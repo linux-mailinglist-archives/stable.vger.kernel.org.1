@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-156231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A236DAE4EB4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EBC9AE5229
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 517267AAC91
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B079A7A954C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C401F582A;
-	Mon, 23 Jun 2025 21:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54D9222576;
+	Mon, 23 Jun 2025 21:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OP6yNfF6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fI+V90Zv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946681ACEDA;
-	Mon, 23 Jun 2025 21:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606EE19D084;
+	Mon, 23 Jun 2025 21:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712903; cv=none; b=IluSVRM1tAKH5OBkLgCjzAe4MAmParLRxsBp7XX7jI6wWodLJQSxzH+9jIb/cHp5HRKwrloLElspLYUz9uFbbwa2LQTLI8Wm95i3gXHFDLtCzDWeTj+oTQw34nKuGZ6d2Dv5lHiG88gZ1LfWDsMbKZPDj6c29sOrTO0J1ZaTBKE=
+	t=1750714858; cv=none; b=UVYNT3hAaC2po1VzdVrhAv0v0Fnf/gb5Cz/kFzrdEgWxPAKknZz+NswVIcDByQY3m22baQQiPEV+YWCaBvn52XUhktKFPTUmGR1F0DQ+v/IPQJjA/zZ0r6v7dYWW84TRIhS5XXfadEQVUSD3bM5nnZmI/hNz37ZtNyowAoOC8Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712903; c=relaxed/simple;
-	bh=/gFPscZ6lrITXzuNOrDbnto73c7R6psSMZkBVcrlQUo=;
+	s=arc-20240116; t=1750714858; c=relaxed/simple;
+	bh=Dq24zDfWLohZ6hgIspsgeDMoMs+glEKu3dq1e/7JGbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kRoZYwFMr/wpoWOCHoUTDuK+8535SfUyRH/0sEccBbeVWVt3uY972EzMQM+iw6NpjNL68nuJX8ZNKoh39juS8Xc2bljWbscpey53ni6W7rvjD2RiuYOg3M3wJCf9qfTQXnmv4niiTdv/YFrq354hkTqOqZJMOQJvCFSBRHN2sjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OP6yNfF6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B388C4CEEA;
-	Mon, 23 Jun 2025 21:08:23 +0000 (UTC)
+	 MIME-Version; b=toe/wgWvuIVzm4lO9MX3I7fmytOId5kngZ123WEpExE35qYOIb3cTi63eSgjk1AQ0Lvwx5DqF0ytrRjMW71xJXAOqirJ5lDPsLKNrwbLvAwnvlwFme9Wxrn2jdFmAfQZ+sxcowpnY2bV9IN0EalQrfgaLXHstEglyGBW1AuWhwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fI+V90Zv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAEA2C4CEEA;
+	Mon, 23 Jun 2025 21:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712903;
-	bh=/gFPscZ6lrITXzuNOrDbnto73c7R6psSMZkBVcrlQUo=;
+	s=korg; t=1750714858;
+	bh=Dq24zDfWLohZ6hgIspsgeDMoMs+glEKu3dq1e/7JGbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OP6yNfF6WZlPlsksBEBrkUAd9s0hGJcF1JA91V2oaT4EpncSjdUJ3crsr7DPDqxZ+
-	 jtJsqOzFPyDfq+c371a3n0z4VUZnUKKLT06mmcuYCbGjZ/JsPiXvBJavRcZ2L9CXG1
-	 qUVeq0SNXqUTAMGmidec5sho5SCKTAky7YqPEjVQ=
+	b=fI+V90Zv84wEawc9geSS10xq7poccAgMfwfMxY0AdNKpMKJx2HeIE1OWkJBBqJREz
+	 1NIjtHxEdlQWf3TxdIRxf6Ze+vSnqsEk7W1s9o+tb6rI6nYk94gZ0IgTuu5eLnAUJj
+	 ZaDRvrdRfQS1LhZiZDo/HwmTcuRyNJfyMAO5Yf24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 037/290] media: v4l2-dev: fix error handling in __video_register_device()
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Andrei Borzenkov <arvidjaar@gmail.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 6.12 161/414] dummycon: Trigger redraw when switching consoles with deferred takeover
 Date: Mon, 23 Jun 2025 15:04:58 +0200
-Message-ID: <20250623130628.113358789@linuxfoundation.org>
+Message-ID: <20250623130646.061636841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +65,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 2a934fdb01db6458288fc9386d3d8ceba6dd551a upstream.
+commit 03bcbbb3995ba5df43af9aba45334e35f2dfe27b upstream.
 
-Once device_register() failed, we should call put_device() to
-decrement reference count for cleanup. Or it could cause memory leak.
-And move callback function v4l2_device_release() and v4l2_device_get()
-before put_device().
+Signal vt subsystem to redraw console when switching to dummycon
+with deferred takeover enabled. Makes the console switch to fbcon
+and displays the available output.
 
-As comment of device_register() says, 'NOTE: _Never_ directly free
-@dev after calling this function, even if it returned an error! Always
-use put_device() to give up the reference initialized in this function
-instead.'
+With deferred takeover enabled, dummycon acts as the placeholder
+until the first output to the console happens. At that point, fbcon
+takes over. If the output happens while dummycon is not active, it
+cannot inform fbcon. This is the case if the vt subsystem runs in
+graphics mode.
 
-Found by code review.
+A typical graphical boot starts plymouth, a display manager and a
+compositor; all while leaving out dummycon. Switching to a text-mode
+console leaves the console with dummycon even if a getty terminal
+has been started.
 
-Cc: stable@vger.kernel.org
-Fixes: dc93a70cc7f9 ("V4L/DVB (9973): v4l2-dev: use the release callback from device instead of cdev")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Returning true from dummycon's con_switch helper signals the vt
+subsystem to redraw the screen. If there's output available dummycon's
+con_putc{s} helpers trigger deferred takeover of fbcon, which sets a
+display mode and displays the output. If no output is available,
+dummycon remains active.
+
+v2:
+- make the comment slightly more verbose (Javier)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reported-by: Andrei Borzenkov <arvidjaar@gmail.com>
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1242191
+Tested-by: Andrei Borzenkov <arvidjaar@gmail.com>
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Fixes: 83d83bebf401 ("console/fbcon: Add support for deferred console takeover")
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v4.19+
+Link: https://lore.kernel.org/r/20250520071418.8462-1-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-dev.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/video/console/dummycon.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-dev.c
-+++ b/drivers/media/v4l2-core/v4l2-dev.c
-@@ -1033,25 +1033,25 @@ int __video_register_device(struct video
- 	vdev->dev.class = &video_class;
- 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
- 	vdev->dev.parent = vdev->dev_parent;
-+	vdev->dev.release = v4l2_device_release;
- 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
+--- a/drivers/video/console/dummycon.c
++++ b/drivers/video/console/dummycon.c
+@@ -85,6 +85,15 @@ static bool dummycon_blank(struct vc_dat
+ 	/* Redraw, so that we get putc(s) for output done while blanked */
+ 	return true;
+ }
 +
-+	/* Increase v4l2_device refcount */
-+	v4l2_device_get(vdev->v4l2_dev);
-+
- 	mutex_lock(&videodev_lock);
- 	ret = device_register(&vdev->dev);
- 	if (ret < 0) {
- 		mutex_unlock(&videodev_lock);
- 		pr_err("%s: device_register failed\n", __func__);
--		goto cleanup;
-+		put_device(&vdev->dev);
-+		return ret;
- 	}
--	/* Register the release callback that will be called when the last
--	   reference to the device goes away. */
--	vdev->dev.release = v4l2_device_release;
++static bool dummycon_switch(struct vc_data *vc)
++{
++	/*
++	 * Redraw, so that we get putc(s) for output done while switched
++	 * away. Informs deferred consoles to take over the display.
++	 */
++	return true;
++}
+ #else
+ static void dummycon_putc(struct vc_data *vc, u16 c, unsigned int y,
+ 			  unsigned int x) { }
+@@ -95,6 +104,10 @@ static bool dummycon_blank(struct vc_dat
+ {
+ 	return false;
+ }
++static bool dummycon_switch(struct vc_data *vc)
++{
++	return false;
++}
+ #endif
  
- 	if (nr != -1 && nr != vdev->num && warn_if_nr_in_use)
- 		pr_warn("%s: requested %s%d, got %s\n", __func__,
- 			name_base, nr, video_device_node_name(vdev));
- 
--	/* Increase v4l2_device refcount */
--	v4l2_device_get(vdev->v4l2_dev);
+ static const char *dummycon_startup(void)
+@@ -123,11 +136,6 @@ static bool dummycon_scroll(struct vc_da
+ {
+ 	return false;
+ }
 -
- 	/* Part 5: Register the entity. */
- 	ret = video_register_media_controller(vdev);
+-static bool dummycon_switch(struct vc_data *vc)
+-{
+-	return false;
+-}
  
+ /*
+  *  The console `switch' structure for the dummy console
 
 
 
