@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356EDAE533D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F69AE5371
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C13044A7759
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71CAF1B66F3B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE31218AC1;
-	Mon, 23 Jun 2025 21:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2123223DEF;
+	Mon, 23 Jun 2025 21:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VOI0oQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1akRHTP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA22136348;
-	Mon, 23 Jun 2025 21:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE83A223714;
+	Mon, 23 Jun 2025 21:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715489; cv=none; b=ttB78CUKQyEIYsPdpDERMXX/hkRV/UuVHfNxDdCPeXVmBImy6DTG2kvv/VcUaaxxtTwoU+3OWfzwkECQkExMIj06Z88P6GZilwLM9ANAzg34QqLvr7oP+9psySaNSgQPNQBHzkoRIT99FQC8wfh2bcW91mM8tN93SfwQc/Uh25g=
+	t=1750715584; cv=none; b=qUcXaHlIPsM+WMh0nm6j45uHQS/E2wfuSZxfM65k/U5X35Tv304UfNlqUtsCom6KwqcgDjSDbduoGIZ90epU18kiA7I5phIn8DgShckWe+hAJlizeBNKhlPDwKXvwoFzBjqCIW1SyHkPs5ET6YnLgoP9n+/forIS8eQbh5CnJGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715489; c=relaxed/simple;
-	bh=1kHpPe2h4SXUppzQ7zsBjTgp8cWUA39qJSTbb95RRZ8=;
+	s=arc-20240116; t=1750715584; c=relaxed/simple;
+	bh=yib6hzuxCZG3eHD/W5GXUIPzvp/p6iV179gOCVTCins=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EpUNOwH/q8YGEWm6sxUMsnf2Q1BG6sxnH3wg8PeP0B3wJPuzZiIq92xyite+F6mjj/tDzSI/jdhFNTwgIeb04jZJ0HEVZn0hkd+PZTWcMe7ycApt+c4FRC23a0f+4mo9BiEVaFcWH2G+79dFkBE/FHN0m2EQsM0I5UMKMMjeOTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VOI0oQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AF5C4CEED;
-	Mon, 23 Jun 2025 21:51:28 +0000 (UTC)
+	 MIME-Version; b=uh0B5T3dVjtjCvFrl7xMATGY88GXA2QxHkHUJmpfe26f4z3M4b5BIeet2L4flGvx/WAfQ9MTYsNb/kF2PDtzxkJUM+THQ3ICMc2i6W+TfwtU1ASIjhJkkBQ0nxOpulJLGkVldm/uD8HVYRj4WNTlTpy6STtdqPsGWfvpx+MQEEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1akRHTP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46EECC4CEF2;
+	Mon, 23 Jun 2025 21:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715489;
-	bh=1kHpPe2h4SXUppzQ7zsBjTgp8cWUA39qJSTbb95RRZ8=;
+	s=korg; t=1750715584;
+	bh=yib6hzuxCZG3eHD/W5GXUIPzvp/p6iV179gOCVTCins=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2VOI0oQ2WlzhSGWZePv58aA9Ypnazv1ewYGpXAuh4kIoBk01Lou2MoxB4/WJ/Xba2
-	 AeA0fmp6hTwi/UKXGmEGs6R5UxPbux4J5aMOnIBQsAbOXiqohp1sdEUk8zHa4BrSRr
-	 gnbZH1ypNTzMKlUkg04jgv2Bwftul5yRn0TqDbFY=
+	b=n1akRHTPMz4hzXj7JjMzv7UeyHlskfK25EDm7E+h5T4zSPPqv6+8HkqpP/MO5fqWR
+	 MdaaZ/3d+SJN24C5Cu35Fi9RnmpNajuu5zD2uhFrQWK5CxpiHuwLAkgUfPWwBFzcZT
+	 Z1aPGy1j5ICyHcDbqKq1iJ4jdryQBX8sG/9SXavw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.6 223/290] udmabuf: use sgtable-based scatterlist wrappers
-Date: Mon, 23 Jun 2025 15:08:04 +0200
-Message-ID: <20250623130633.633165417@linuxfoundation.org>
+	maher azz <maherazz04@gmail.com>,
+	Matt Porter <mporter@kernel.crashing.org>,
+	Alexandre Bounine <alex.bou9@gmail.com>,
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 284/355] drivers/rapidio/rio_cm.c: prevent possible heap overwrite
+Date: Mon, 23 Jun 2025 15:08:05 +0200
+Message-ID: <20250623130635.317741082@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Andrew Morton <akpm@linux-foundation.org>
 
-commit afe382843717d44b24ef5014d57dcbaab75a4052 upstream.
+commit 50695153d7ddde3b1696dbf0085be0033bf3ddb3 upstream.
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
-functions have to be called with the number of elements originally passed
-to dma_map_sg_*() function, not the one returned in sgtable's nents.
+In
 
-Fixes: 1ffe09590121 ("udmabuf: fix dma-buf cpu access")
-CC: stable@vger.kernel.org
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250507160913.2084079-3-m.szyprowski@samsung.com
+riocm_cdev_ioctl(RIO_CM_CHAN_SEND)
+   -> cm_chan_msg_send()
+      -> riocm_ch_send()
+
+cm_chan_msg_send() checks that userspace didn't send too much data but
+riocm_ch_send() failed to check that userspace sent sufficient data.  The
+result is that riocm_ch_send() can write to fields in the rio_ch_chan_hdr
+which were outside the bounds of the space which cm_chan_msg_send()
+allocated.
+
+Address this by teaching riocm_ch_send() to check that the entire
+rio_ch_chan_hdr was copied in from userspace.
+
+Reported-by: maher azz <maherazz04@gmail.com>
+Cc: Matt Porter <mporter@kernel.crashing.org>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/udmabuf.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/rapidio/rio_cm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -161,8 +161,7 @@ static int begin_cpu_udmabuf(struct dma_
- 			ubuf->sg = NULL;
- 		}
- 	} else {
--		dma_sync_sg_for_cpu(dev, ubuf->sg->sgl, ubuf->sg->nents,
--				    direction);
-+		dma_sync_sgtable_for_cpu(dev, ubuf->sg, direction);
- 	}
- 
- 	return ret;
-@@ -177,7 +176,7 @@ static int end_cpu_udmabuf(struct dma_bu
- 	if (!ubuf->sg)
+--- a/drivers/rapidio/rio_cm.c
++++ b/drivers/rapidio/rio_cm.c
+@@ -787,6 +787,9 @@ static int riocm_ch_send(u16 ch_id, void
+ 	if (buf == NULL || ch_id == 0 || len == 0 || len > RIO_MAX_MSG_SIZE)
  		return -EINVAL;
  
--	dma_sync_sg_for_device(dev, ubuf->sg->sgl, ubuf->sg->nents, direction);
-+	dma_sync_sgtable_for_device(dev, ubuf->sg, direction);
- 	return 0;
- }
- 
++	if (len < sizeof(struct rio_ch_chan_hdr))
++		return -EINVAL;		/* insufficient data from user */
++
+ 	ch = riocm_get_channel(ch_id);
+ 	if (!ch) {
+ 		riocm_error("%s(%d) ch_%d not found", current->comm,
 
 
 
