@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-157242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5947CAE530C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1D2AE51DA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A67FD440CA3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CD901B64305
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346C2219A7A;
-	Mon, 23 Jun 2025 21:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8173221FCC;
+	Mon, 23 Jun 2025 21:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXczB4qv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zl69p//A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44C51A00F0;
-	Mon, 23 Jun 2025 21:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64ED14409;
+	Mon, 23 Jun 2025 21:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715389; cv=none; b=P45KoN+oWVO9DXTcD+r4RYj65+TIS8cdaUWyhJSoprFuYEAdEJZdSuyMzrTOH2/Bba35uN4IcFDgaSgk+w2hFeBLsw26NbkplkK8QNl40eCexiRhlSSxaSVPxtg9+KNvdQ0S7ZUsU5bpxO8hEimw9aAvus9YO38Rp+jfeLegJUI=
+	t=1750714684; cv=none; b=NmEeWh1l+IKH2eSCx5IccD1aV5M03cBbBY7WCugHBdpj/ZQH9t1PHPIX3bhQhX4P76NPvwMhKYsoHJw1xEMLlqMElLE6vl59hc3wZMgN1ndUpqWSiq234dczKET8fXQLemn/tzeEq5uBvcd29sUwUPdvsHeXvdTPDhrruhmAWcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715389; c=relaxed/simple;
-	bh=5PKhaEgRy51tNomVjb+VG0zNBFKQ/fgzLaWicPTxMaU=;
+	s=arc-20240116; t=1750714684; c=relaxed/simple;
+	bh=vmhPIEJQmMuZKB7T41/E5dV51yenKuFDzkcyQObozgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9V03eZLr6kdFsZxFU68+W1wLp5utaFqediOnTfIygocY992/kEZ1s78aI13R0oeMnPzxkGbk1Sru68+2I0ihi4ir4LuqWnxAmnq9Me26NFhGPNgM9k3Aw3qSYgfCDv3PEzNp5Q2u+4MPl+t03c5TlkAbCRwLk/uqxl8sSXNVB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXczB4qv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C90BC4CEEA;
-	Mon, 23 Jun 2025 21:49:48 +0000 (UTC)
+	 MIME-Version; b=ZqVpyNIIB1SXEo+RNtxYYpgo5jw5J375Bkktf3kt5E/vPpDZ7CGiK2reS5AGrTF34XL8flZL1AG4IaG/QoTCEGCbR2cNAOUPfIrNsSspDZqo+uoypTyQCezG/50V9Jh4pq25S6Q7kseOWOGirxLO2EAyGmTlA4qcaJdlc6vBmes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zl69p//A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1C3C4CEEA;
+	Mon, 23 Jun 2025 21:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715388;
-	bh=5PKhaEgRy51tNomVjb+VG0zNBFKQ/fgzLaWicPTxMaU=;
+	s=korg; t=1750714684;
+	bh=vmhPIEJQmMuZKB7T41/E5dV51yenKuFDzkcyQObozgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bXczB4qvKnjgSAc1U0veO8wGEE62dWAwihQ7QmZJtbGUdwSuLS6vwI/dstuz1Ah/O
-	 kZfjizBASWJTn+VETuJsY83WkPzaNxO9623F9skCXH8fgfIWnrWd3r4CbNe03x++97
-	 bKzvEAyskezg+/VkA7S3w52orwfjAmo87h8htBIE=
+	b=zl69p//Ah3Pn57tWuogbDlU4Lx42BBw35Cx+mWcOAzRxGvXQGYed5tsm+3F5x/lik
+	 Tp3eYVILr8PszEfDAsqIMHBTIEQPCnC7kiP62ZOa2nCczJ/W5uJAhLaG4ucw8F9EEe
+	 OyciNAY6SVQvvkeYQMmZvrusQn30iGHV8qqdM2Gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	patches@opensource.cirrus.com,
-	Jaroslav Kysela <perex@perex.cz>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.15 455/592] firmware: cs_dsp: Fix OOB memory read access in KUnit test (wmfw info)
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 152/290] tcp: always seek for minimal rtt in tcp_rcv_rtt_update()
 Date: Mon, 23 Jun 2025 15:06:53 +0200
-Message-ID: <20250623130711.252960322@linuxfoundation.org>
+Message-ID: <20250623130631.468467030@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaroslav Kysela <perex@perex.cz>
+From: Eric Dumazet <edumazet@google.com>
 
-commit d979b783d61f7f1f95664031b71a33afc74627b2 upstream.
+[ Upstream commit b879dcb1aeeca278eacaac0b1e2425b1c7599f9f ]
 
-KASAN reported out of bounds access - cs_dsp_mock_wmfw_add_info(),
-because the source string length was rounded up to the allocation size.
+tcp_rcv_rtt_update() goal is to maintain an estimation of the RTT
+in tp->rcv_rtt_est.rtt_us, used by tcp_rcv_space_adjust()
 
-Cc: Simon Trimmer <simont@opensource.cirrus.com>
-Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc: Richard Fitzgerald <rf@opensource.cirrus.com>
-Cc: patches@opensource.cirrus.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Jaroslav Kysela <perex@perex.cz>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250523155814.1256762-1-perex@perex.cz
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When TCP TS are enabled, tcp_rcv_rtt_update() is using
+EWMA to smooth the samples.
+
+Change this to immediately latch the incoming value if it
+is lower than tp->rcv_rtt_est.rtt_us, so that tcp_rcv_space_adjust()
+does not overshoot tp->rcvq_space.space and sk->sk_rcvbuf.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250513193919.1089692-8-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/cirrus/test/cs_dsp_mock_wmfw.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_input.c | 22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
---- a/drivers/firmware/cirrus/test/cs_dsp_mock_wmfw.c
-+++ b/drivers/firmware/cirrus/test/cs_dsp_mock_wmfw.c
-@@ -133,10 +133,11 @@ void cs_dsp_mock_wmfw_add_info(struct cs
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index a172248b66783..994c563b35f32 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -671,10 +671,12 @@ EXPORT_SYMBOL(tcp_initialize_rcv_mss);
+  */
+ static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
+ {
+-	u32 new_sample = tp->rcv_rtt_est.rtt_us;
+-	long m = sample;
++	u32 new_sample, old_sample = tp->rcv_rtt_est.rtt_us;
++	long m = sample << 3;
  
- 	if (info_len % 4) {
- 		/* Create a padded string with length a multiple of 4 */
-+		size_t copy_len = info_len;
- 		info_len = round_up(info_len, 4);
- 		tmp = kunit_kzalloc(builder->test_priv->test, info_len, GFP_KERNEL);
- 		KUNIT_ASSERT_NOT_ERR_OR_NULL(builder->test_priv->test, tmp);
--		memcpy(tmp, info, info_len);
-+		memcpy(tmp, info, copy_len);
- 		info = tmp;
+-	if (new_sample != 0) {
++	if (old_sample == 0 || m < old_sample) {
++		new_sample = m;
++	} else {
+ 		/* If we sample in larger samples in the non-timestamp
+ 		 * case, we could grossly overestimate the RTT especially
+ 		 * with chatty applications or bulk transfer apps which
+@@ -685,17 +687,9 @@ static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
+ 		 * else with timestamps disabled convergence takes too
+ 		 * long.
+ 		 */
+-		if (!win_dep) {
+-			m -= (new_sample >> 3);
+-			new_sample += m;
+-		} else {
+-			m <<= 3;
+-			if (m < new_sample)
+-				new_sample = m;
+-		}
+-	} else {
+-		/* No previous measure. */
+-		new_sample = m << 3;
++		if (win_dep)
++			return;
++		new_sample = old_sample - (old_sample >> 3) + sample;
  	}
  
+ 	tp->rcv_rtt_est.rtt_us = new_sample;
+-- 
+2.39.5
+
 
 
 
