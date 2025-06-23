@@ -1,192 +1,145 @@
-Return-Path: <stable+bounces-155342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F46AE3D96
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:02:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D62AE3DA7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:07:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBB981640C5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:02:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F05F189326F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD43523BF9F;
-	Mon, 23 Jun 2025 11:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B9E23C8DB;
+	Mon, 23 Jun 2025 11:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R1qKOlBp"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ErOkrGCI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F6210E9;
-	Mon, 23 Jun 2025 11:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E2623C4F1
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750676532; cv=none; b=XQQZvvChEjNjeltxj7uPo4El+bxcSkLQsyTEWo8bif/EDnxYQbOZrf5lXwcukpOKLQuoHOMJwfHZ0z16jZhiukxazqWzSeL+EL1julkOFRc/qibrL/dqon/AG0W5v/M3kll2UnX+dUEzM5ot9OMhCn0PCpqtXTQu9YJ3ERG1lsU=
+	t=1750676840; cv=none; b=cB2rp31HqXi6Zg1ExCnn116/MGWk/Dnq9ao8CuE2mJI5Gz2UqO09zeRKFNfUBagPpuZIujLKSMzf/2yRrH0hgriA4z5nx1amQht+nBC0jAEw+6KY0oDSAL0CNJd1v95/YZd2h9P8NbupGiTY+K9WwnwGBsh/KeBoYIFUrso0i/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750676532; c=relaxed/simple;
-	bh=evGzHeB4WNKHHHAGC9tgEqnwu97LeAnrdONED4IO+5Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=brbj/rBTNPoRnPchu3llQxHEypjOqVlOvfKqkvCBny+oZVLJstcSAuZt9riVriPztR0VOIPUJZXCo5OO6kN/B7grG7y/+ZKXDrwdq0XKoYLMKzkw1Ib/hSYaFrw/3hRouv1URJhag32xjVty90SpcsQc1l6Gexg3RDByWeVjJVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R1qKOlBp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D19FC4CEF2;
-	Mon, 23 Jun 2025 11:02:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750676532;
-	bh=evGzHeB4WNKHHHAGC9tgEqnwu97LeAnrdONED4IO+5Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R1qKOlBpu/0rIM6Ji8L5AndT8QVn1RDzf5C2Qt1d1t+47pEidgDvAD6beSBbGdi9c
-	 Xe8RITdWphHD2cYAjWI4UVsD2eLvznZUrUo3m8Fv4D9AFutwkZQEf2xSZNvvCj3av5
-	 sT0k6rYQI5trTwR6wyKUwSCogH0MF1SPBq23/1I2I5tcisBfIX//KBm3Cb3Bpvx+wx
-	 Xx9m3moar4tLyF73R1BJRfOg135UAu86PtjgZ6L4P53pQZQX0Y1FPXH+LqrB/C+lte
-	 KKDYmhP/Ftof4HzJ/AXYK3Ezr9xFFLQ+lRpyxYnxDe08t1Xxj96+fYKL3vQUGBQCsR
-	 ydqg1zDbMOcmA==
-Date: Mon, 23 Jun 2025 19:02:04 +0800
-From: "Peter Chen (CIX)" <peter.chen@kernel.org>
-To: Pawel Laszczak <pawell@cadence.com>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] usb: cdnsp: Fix issue with CV Bad Descriptor test
-Message-ID: <20250623110204.GA53306@nchen-desktop>
-References: <20250620074306.2278838-1-pawell@cadence.com>
- <PH7PR07MB95382CCD50549DABAEFD6156DD7CA@PH7PR07MB9538.namprd07.prod.outlook.com>
+	s=arc-20240116; t=1750676840; c=relaxed/simple;
+	bh=D+OomGbcZF5j+AHcn+7tC6UmRKiK+aSr9UKH6kFSFqc=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EqZ0stKzWEgwBVYRszGg/BV5gwoXvDJiM9lj6vdfmEg1j7rh2c3/7RFozf7NTx3w1Dhhug4Vj+r16L60VtgcoXlFsmVmTcmLZaQ+w3bfeKz7YtMT+PSeHR40izIh3iR+QJ5/xijMx8x1i54mluAL/nASZtFak+i+2nm687Z73n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ErOkrGCI; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55N8EtXq010702
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:07:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=+ANdTPjUbjo3Zu7v8
+	qUW/riJ2+CYiTlhJL64LYnQaAg=; b=ErOkrGCIj88vMLj773GZbunPKs/zIJWYR
+	eJhybvHt6yfMY+XQULfNz5aXHiy6V7nT3e0gmnii9q1RRr/veAWZjhbCdt6dchum
+	ubEs08CNl0+eh3eFyTLHi8TNBpaIhWLRvAyfuN/e7GeJY0SZGCeiYJdD6jF4OzKZ
+	yjyy1em8GFfoU5y3WtThqxGa4z23NeobFmA9kNLK5xgSuW+vEK5Xw5RMblr/S5jf
+	xO0S4BK0L2xbD2vixvs9lrZQfwIWQMxHWzE4dfx57IKjN8tgSXBrOPRMGw0jNKzW
+	Mw6DhKjGdefz7stu4Uhpi9/F2rcdHohUWeka12Hn8wygbpr80rw6A==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dmf2rxx5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:07:17 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55N9a3p0014698
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:07:17 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 47e9s25nyn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:07:17 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55NB7Gqg4194986
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:07:16 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5F9125805B
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:07:16 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D490F58055
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:07:15 +0000 (GMT)
+Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:07:15 +0000 (GMT)
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+To: stable@vger.kernel.org
+Subject: [PATCH 5.10.y] s390/pci: Fix __pcilg_mio_inuser() inline assembly
+Date: Mon, 23 Jun 2025 13:07:15 +0200
+Message-ID: <20250623110715.3446009-1-schnelle@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <2025062022-gracious-throttle-46c8@gregkh>
+References: <2025062022-gracious-throttle-46c8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PH7PR07MB95382CCD50549DABAEFD6156DD7CA@PH7PR07MB9538.namprd07.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=M5FNKzws c=1 sm=1 tr=0 ts=68593565 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=TStIGci8u6cbjIpgzpwA:9 a=+jEqtf1s3R9VXZ0wqowq2kgwd+I=:19
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA2NCBTYWx0ZWRfX5gobKVOxublH MtgSGyTvwxu4L25ZyNy7Bu3iM4mAetr+7ikElMs5xiUeOSEZsU4iYEoT1E5ldSZAB8FCX8P4HyQ fRkIE7FKcLE1o2pDlPIPA7TaV1PMpthsOjNOfmdo0EGE9dKQfhpRpuH/r2gCbQKpYB7IjNYtPka
+ EgoaRWUbXW8jIm7Mq5sGURsIRCUHI8ay9HDZnr5NbtiIQ32YnHC6UAgHXrA8eLB25353ULwclHT N9vjvkVJaakXdvujEVmvf1tnDJDBgl7jgI00Y/DqJ1MYAO9yfMYcCcPQAidhAS+t1cHcdFeizy7 jpjoV4SEYcot8OGkbfLDoOopEFwYLxG17rU93lGS6TEiHQXsLJ7nOSSYal1PkNta/rXlor9CYd+
+ ZpCTG80vYdjhCNgbVafXwy/ZgOv+f401qxDOibI39r7t3J4Qid86VygCJH3JbkoH2B8XjSfj
+X-Proofpoint-GUID: IqxSk1cRla0fzOi-htZ1ssbBbe7CsM4X
+X-Proofpoint-ORIG-GUID: IqxSk1cRla0fzOi-htZ1ssbBbe7CsM4X
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-23_03,2025-06-23_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ priorityscore=1501 phishscore=0 spamscore=0 clxscore=1015 adultscore=0
+ mlxscore=0 mlxlogscore=422 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506230064
 
-On 25-06-20 08:23:12, Pawel Laszczak wrote:
-> The SSP2 controller has extra endpoint state preserve bit (ESP) which
-> setting causes that endpoint state will be preserved during
-> Halt Endpoint command. It is used only for EP0.
-> Without this bit the Command Verifier "TD 9.10 Bad Descriptor Test"
-> failed.
-> Setting this bit doesn't have any impact for SSP controller.
-> 
-> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-> cc: stable@vger.kernel.org
-> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-Acked-by: Peter Chen <peter.chen@kernel.org>
+Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
+assembly. The used "d" constraint allows the compiler to use any general
+purpose register for the shift operand, including register zero.
 
-Peter
-> ---
-> Changelog:
-> v3:
-> - removed else {}
-> 
-> v2:
-> - removed some typos
-> - added pep variable initialization
-> - updated TRB_ESP description
-> 
->  drivers/usb/cdns3/cdnsp-debug.h  |  5 +++--
->  drivers/usb/cdns3/cdnsp-ep0.c    | 18 +++++++++++++++---
->  drivers/usb/cdns3/cdnsp-gadget.h |  6 ++++++
->  drivers/usb/cdns3/cdnsp-ring.c   |  3 ++-
->  4 files changed, 26 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/usb/cdns3/cdnsp-debug.h b/drivers/usb/cdns3/cdnsp-debug.h
-> index cd138acdcce1..86860686d836 100644
-> --- a/drivers/usb/cdns3/cdnsp-debug.h
-> +++ b/drivers/usb/cdns3/cdnsp-debug.h
-> @@ -327,12 +327,13 @@ static inline const char *cdnsp_decode_trb(char *str, size_t size, u32 field0,
->  	case TRB_RESET_EP:
->  	case TRB_HALT_ENDPOINT:
->  		ret = scnprintf(str, size,
-> -				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c",
-> +				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c %c",
->  				cdnsp_trb_type_string(type),
->  				ep_num, ep_id % 2 ? "out" : "in",
->  				TRB_TO_EP_INDEX(field3), field1, field0,
->  				TRB_TO_SLOT_ID(field3),
-> -				field3 & TRB_CYCLE ? 'C' : 'c');
-> +				field3 & TRB_CYCLE ? 'C' : 'c',
-> +				field3 & TRB_ESP ? 'P' : 'p');
->  		break;
->  	case TRB_STOP_RING:
->  		ret = scnprintf(str, size,
-> diff --git a/drivers/usb/cdns3/cdnsp-ep0.c b/drivers/usb/cdns3/cdnsp-ep0.c
-> index f317d3c84781..5cd9b898ce97 100644
-> --- a/drivers/usb/cdns3/cdnsp-ep0.c
-> +++ b/drivers/usb/cdns3/cdnsp-ep0.c
-> @@ -414,6 +414,7 @@ static int cdnsp_ep0_std_request(struct cdnsp_device *pdev,
->  void cdnsp_setup_analyze(struct cdnsp_device *pdev)
->  {
->  	struct usb_ctrlrequest *ctrl = &pdev->setup;
-> +	struct cdnsp_ep *pep;
->  	int ret = -EINVAL;
->  	u16 len;
->  
-> @@ -427,10 +428,21 @@ void cdnsp_setup_analyze(struct cdnsp_device *pdev)
->  		goto out;
->  	}
->  
-> +	pep = &pdev->eps[0];
-> +
->  	/* Restore the ep0 to Stopped/Running state. */
-> -	if (pdev->eps[0].ep_state & EP_HALTED) {
-> -		trace_cdnsp_ep0_halted("Restore to normal state");
-> -		cdnsp_halt_endpoint(pdev, &pdev->eps[0], 0);
-> +	if (pep->ep_state & EP_HALTED) {
-> +		if (GET_EP_CTX_STATE(pep->out_ctx) == EP_STATE_HALTED)
-> +			cdnsp_halt_endpoint(pdev, pep, 0);
-> +
-> +		/*
-> +		 * Halt Endpoint Command for SSP2 for ep0 preserve current
-> +		 * endpoint state and driver has to synchronize the
-> +		 * software endpoint state with endpoint output context
-> +		 * state.
-> +		 */
-> +		pep->ep_state &= ~EP_HALTED;
-> +		pep->ep_state |= EP_STOPPED;
->  	}
->  
->  	/*
-> diff --git a/drivers/usb/cdns3/cdnsp-gadget.h b/drivers/usb/cdns3/cdnsp-gadget.h
-> index 2afa3e558f85..a91cca509db0 100644
-> --- a/drivers/usb/cdns3/cdnsp-gadget.h
-> +++ b/drivers/usb/cdns3/cdnsp-gadget.h
-> @@ -987,6 +987,12 @@ enum cdnsp_setup_dev {
->  #define STREAM_ID_FOR_TRB(p)		((((p)) << 16) & GENMASK(31, 16))
->  #define SCT_FOR_TRB(p)			(((p) << 1) & 0x7)
->  
-> +/*
-> + * Halt Endpoint Command TRB field.
-> + * The ESP bit only exists in the SSP2 controller.
-> + */
-> +#define TRB_ESP				BIT(9)
-> +
->  /* Link TRB specific fields. */
->  #define TRB_TC				BIT(1)
->  
-> diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
-> index fd06cb85c4ea..d397d28efc6e 100644
-> --- a/drivers/usb/cdns3/cdnsp-ring.c
-> +++ b/drivers/usb/cdns3/cdnsp-ring.c
-> @@ -2483,7 +2483,8 @@ void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev, unsigned int ep_index)
->  {
->  	cdnsp_queue_command(pdev, 0, 0, 0, TRB_TYPE(TRB_HALT_ENDPOINT) |
->  			    SLOT_ID_FOR_TRB(pdev->slot_id) |
-> -			    EP_ID_FOR_TRB(ep_index));
-> +			    EP_ID_FOR_TRB(ep_index) |
-> +			    (!ep_index ? TRB_ESP : 0));
->  }
->  
->  void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num)
-> -- 
-> 2.43.0
-> 
+If register zero is used this my result in incorrect code generation:
 
+ 8f6:   a7 0a ff f8             ahi     %r0,-8
+ 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
+
+If register zero is selected to contain the shift value, the srlg
+instruction ignores the contents of the register and always shifts zero
+bits. Therefore use the "a" constraint which does not permit to select
+register zero.
+
+Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
+Cc: stable@vger.kernel.org
+Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+(cherry picked from commit c4abe6234246c75cdc43326415d9cff88b7cf06c)
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+---
+ arch/s390/pci/pci_mmio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/s390/pci/pci_mmio.c b/arch/s390/pci/pci_mmio.c
+index 6e7c4762bd23..d3be09092a3b 100644
+--- a/arch/s390/pci/pci_mmio.c
++++ b/arch/s390/pci/pci_mmio.c
+@@ -229,7 +229,7 @@ static inline int __pcilg_mio_inuser(
+ 		:
+ 		[cc] "+d" (cc), [val] "=d" (val), [len] "+d" (len),
+ 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
+-		[shift] "+d" (shift)
++		[shift] "+a" (shift)
+ 		:
+ 		[ioaddr] "a" (addr)
+ 		: "cc", "memory");
 -- 
+2.48.1
 
-Best regards,
-Peter
 
