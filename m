@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-155727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53FDEAE439F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD05AE43A4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCF2117FC4E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BDC9161A44
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C25253B58;
-	Mon, 23 Jun 2025 13:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAA324E019;
+	Mon, 23 Jun 2025 13:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKEGtVw+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5poOuvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85E72517AF;
-	Mon, 23 Jun 2025 13:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFB84C7F;
+	Mon, 23 Jun 2025 13:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685180; cv=none; b=oS35ym4xPxzYqzR5xVPEICGoW4lpmNUqef3lRlPCfdZr6JA5XEhaWiEbjSTAcJRs6hzEcnScQ2sKcQkl1oqtghg2qGuauuiOV8a6kA7Y0ORPSBfPuCaXa2UTntdgk8ukCAv2+35+HMThM8gOrDuZFSrU5wsHhzgThn+rxXVXG3E=
+	t=1750685191; cv=none; b=nM2i5UuQJdp+NbQp+Qo+682yDajWLMLGoehzhWPTACMoKaAPXl1DGx7bjLXac8vJHetRnIEwlDTDf/xWlSoobgWacCdBkxMFSX60YOWJnRGx2tVr6L8NUemCXGWXBdpVrrGwi8JCEL3YKZsyeQE0VrvPUZaOsP/5isDolt2wMb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685180; c=relaxed/simple;
-	bh=ut+yHLwr/F+Tv6jgujG2AZj3UYok27ElMkJ1qkSbkEE=;
+	s=arc-20240116; t=1750685191; c=relaxed/simple;
+	bh=u86LW8kKY+/rmpySYVgzSAO3SZj3vAL5QBH3LkL+T8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uOS2ZtoUsA0RsPKK/4cPh0yopLkt2xEBc3Egb+It9AdI5a9upHg5lUG5IVDs4bG822qqyTiGltyf3x0/yYuMZ1nm50kpohpDqdnvsKN/lGGdLnAJbnpQib8SV9ezg7/KsFn8L/vmTpsBFSWfbolXykl3MJHsnmE2mEy24ib8nu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKEGtVw+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7BFC4CEEA;
-	Mon, 23 Jun 2025 13:26:20 +0000 (UTC)
+	 MIME-Version; b=IYKUiaoKz9xBJYCrrMgZ5TV3j4UEwC49DvAcJ5erzLUDG1MvUSk7eUmGHBz54x37vRIRXABDq+kCJw/3kQ0tUqPaMVQuTTM1PIbQogrjBzL+JLenohfN4efetmFK0SkB2T/AOKmX5wSnJM4cszpoF4c88c4py/QpjsEqlsyh/bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5poOuvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CA5C4CEEA;
+	Mon, 23 Jun 2025 13:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685180;
-	bh=ut+yHLwr/F+Tv6jgujG2AZj3UYok27ElMkJ1qkSbkEE=;
+	s=korg; t=1750685190;
+	bh=u86LW8kKY+/rmpySYVgzSAO3SZj3vAL5QBH3LkL+T8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WKEGtVw+7QgktMpyN5VCXkojigFrA+qqLP4yiuRIZSBhgiAGQuUg8K+EtipS5TRle
-	 QRNuDnuIBkKGRWRQQOt7+lVMJxAERNjVFlIvymjZ4+ZoE9GEuo+3wj7ML4ewdbo/Lt
-	 ktAGYDMvnSKeBwPQNRQxqR2Dz4bFtRw/9D00JNgk=
+	b=U5poOuvYlyRCceKcjzuT4MnBx0NMvDpgG2XesYHchHXv1E5jJoWk3+IjwwKzdWfof
+	 bqQXwqQBq7ajoSuqF8Utb4ykREg2SaRtfkKuQZzOdJGDVQGfT4stDmY2mIy3R0hMJY
+	 VyDbj9+LgH/4q4yArBr2xEGfrA21+19zjyWL4g4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Zeal Robot <zealci@zte.com.cn>,
+	zhang songyi <zhang.songyi@zte.com.cn>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 072/222] pmdomain: core: Fix error checking in genpd_dev_pm_attach_by_id()
-Date: Mon, 23 Jun 2025 15:06:47 +0200
-Message-ID: <20250623130614.268710150@linuxfoundation.org>
+Subject: [PATCH 5.4 073/222] Input: synaptics-rmi4 - convert to use sysfs_emit() APIs
+Date: Mon, 23 Jun 2025 15:06:48 +0200
+Message-ID: <20250623130614.297836163@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,41 +67,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: zhang songyi <zhang.songyi@zte.com.cn>
 
-[ Upstream commit 0f5757667ec0aaf2456c3b76fcf0c6c3ea3591fe ]
+[ Upstream commit 9dedc915937c33302df7fcab01c45e7936d6195a ]
 
-The error checking for of_count_phandle_with_args() does not handle
-negative error codes correctly.  The problem is that "index" is a u32 so
-in the condition "if (index >= num_domains)" negative error codes stored
-in "num_domains" are type promoted to very high positive values and
-"index" is always going to be valid.
+Follow the advice of the Documentation/filesystems/sysfs.rst and show()
+should only use sysfs_emit() or sysfs_emit_at() when formatting the value
+to be returned to user space.
 
-Test for negative error codes first and then test if "index" is valid.
-
-Fixes: 3ccf3f0cd197 ("PM / Domains: Enable genpd_dev_pm_attach_by_id|name() for single PM domain")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/aBxPQ8AI8N5v-7rL@stanley.mountain
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: zhang songyi <zhang.songyi@zte.com.cn>
+Link: https://lore.kernel.org/r/20220927070936.258300-1-zhang.songyi@zte.com.cn
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Stable-dep-of: ca39500f6af9 ("Input: synaptics-rmi - fix crash with unsupported versions of F34")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/domain.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/rmi4/rmi_f34.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
-index eed4c865a4bf8..2ccd0c8003e24 100644
---- a/drivers/base/power/domain.c
-+++ b/drivers/base/power/domain.c
-@@ -2509,7 +2509,7 @@ struct device *genpd_dev_pm_attach_by_id(struct device *dev,
- 	/* Verify that the index is within a valid range. */
- 	num_domains = of_count_phandle_with_args(dev->of_node, "power-domains",
- 						 "#power-domain-cells");
--	if (index >= num_domains)
-+	if (num_domains < 0 || index >= num_domains)
- 		return NULL;
+diff --git a/drivers/input/rmi4/rmi_f34.c b/drivers/input/rmi4/rmi_f34.c
+index e5dca9868f87f..c26808f10827a 100644
+--- a/drivers/input/rmi4/rmi_f34.c
++++ b/drivers/input/rmi4/rmi_f34.c
+@@ -321,13 +321,13 @@ static ssize_t rmi_driver_bootloader_id_show(struct device *dev,
+ 		f34 = dev_get_drvdata(&fn->dev);
  
- 	/* Allocate and register device on the genpd bus. */
+ 		if (f34->bl_version == 5)
+-			return scnprintf(buf, PAGE_SIZE, "%c%c\n",
+-					 f34->bootloader_id[0],
+-					 f34->bootloader_id[1]);
++			return sysfs_emit(buf, "%c%c\n",
++					  f34->bootloader_id[0],
++					  f34->bootloader_id[1]);
+ 		else
+-			return scnprintf(buf, PAGE_SIZE, "V%d.%d\n",
+-					 f34->bootloader_id[1],
+-					 f34->bootloader_id[0]);
++			return sysfs_emit(buf, "V%d.%d\n",
++					  f34->bootloader_id[1],
++					  f34->bootloader_id[0]);
+ 	}
+ 
+ 	return 0;
+@@ -346,7 +346,7 @@ static ssize_t rmi_driver_configuration_id_show(struct device *dev,
+ 	if (fn) {
+ 		f34 = dev_get_drvdata(&fn->dev);
+ 
+-		return scnprintf(buf, PAGE_SIZE, "%s\n", f34->configuration_id);
++		return sysfs_emit(buf, "%s\n", f34->configuration_id);
+ 	}
+ 
+ 	return 0;
+@@ -499,7 +499,7 @@ static ssize_t rmi_driver_update_fw_status_show(struct device *dev,
+ 	if (data->f34_container)
+ 		update_status = rmi_f34_status(data->f34_container);
+ 
+-	return scnprintf(buf, PAGE_SIZE, "%d\n", update_status);
++	return sysfs_emit(buf, "%d\n", update_status);
+ }
+ 
+ static DEVICE_ATTR(update_fw_status, 0444,
 -- 
 2.39.5
 
