@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-155677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946E2AE436D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:32:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48EB0AE432D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:29:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83A0A17A58B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 522CA189A19B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4541E253937;
-	Mon, 23 Jun 2025 13:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B860253B52;
+	Mon, 23 Jun 2025 13:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlYUiOA7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFBHu+bu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A55239E63;
-	Mon, 23 Jun 2025 13:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5E5248191;
+	Mon, 23 Jun 2025 13:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685047; cv=none; b=WgwcU5tKPAF5TqzQTrbrbEus5tqqbgBy4nqW+XX56+80n36rjMzKoO0MZH+zbFAWvJEF0DbKZda3Tr2icqlVouqc6yWG6brMtKDhQiy6OpMp5CNltOLBdnzu2eTSGYa2gDavoxLith3HEutPC81/MjE0UycOPEmrwR1E74xxocA=
+	t=1750685059; cv=none; b=Bw2x7eOYNhLtK80/JfH/js497ju8cwp58Ho0cl3uw1CDYsXmUoj4/jyFXmJxO5nNqsnOkZROLyepXnRygfDuieEB3q+XcMhtbgipe0OHYCA5E6qCxik3kaZ4ZNjBNPIXL4QrQDphDWbH1ktB2gCDdtIL0LIrvOv5MxTXey1RCp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685047; c=relaxed/simple;
-	bh=HeeYRwpJ/rF03VnGb6+Jcu1MR7xtCNkAlJwXoDIdtb0=;
+	s=arc-20240116; t=1750685059; c=relaxed/simple;
+	bh=7/RQ46W1USMvNb+sDImB9teg1F9sKYXKA2Fv/RsR12o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IXTt1JNyx49KzrYHKls5BcRHRzP24ykwN4HiWqm7FaxC+z2dtsGffRPwpOqd/In1nDEKqbVDMpK9mNwBrp/9RhoNZIq/1ELV1hAtLZlABCm4XmpLMxiKa2i5D/M9sWufRQxuuA2so7BDo6id03stj+ZSXgphOqttTndAPl9Qykw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlYUiOA7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8910CC4CEEA;
-	Mon, 23 Jun 2025 13:24:06 +0000 (UTC)
+	 MIME-Version; b=faxUQZ8BxXd6mEC9oQ5eAcCI8D5JrTBqDEI99ahI2PzqvZtukj8D2vxS9kotysMQNwdRI+kF/3c7hpWb2mKAqiFW76I4gsDHmdjGfq26ADlc7FeB9Uk9OKXkrs1jDI5AwdQqNazrw0Xi68pd92MIpdX5c9w1je4AcrMVoTFuo1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFBHu+bu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A58C4CEEA;
+	Mon, 23 Jun 2025 13:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685046;
-	bh=HeeYRwpJ/rF03VnGb6+Jcu1MR7xtCNkAlJwXoDIdtb0=;
+	s=korg; t=1750685059;
+	bh=7/RQ46W1USMvNb+sDImB9teg1F9sKYXKA2Fv/RsR12o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlYUiOA7m3sLxu/xdASuwOPUoU3xDaqr6FWeJjCb4iW6HzB0Ip9hgCImZAtvlNuTh
-	 vKka/haTw/deev3pi5raK7qzqCmhENW9ebTwYph0RyBIecDt4NNrLUMLg4uv1juOAd
-	 qmYcmzfJscidgNh4nflWIJj1WgMIiqAr8AwxNv0Q=
+	b=TFBHu+buVoBGL5Fh6GJ43ltjsDYL8PcKw+pJNXp9D/3onMO+rEeJT/p8iSbVIXTPs
+	 LvPRgAO9k16UD8hhjDXZa/EZ2WcYj1EnsgP/Gwb4LIgN2C1QovQt6DncsZLw/k48X7
+	 +nTLYvh9ZtWmTG36dE8Qsovnr1L2AxWmR2zv/txA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Neill Kapron <nkapron@google.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 031/411] firmware: psci: Fix refcount leak in psci_dt_init
-Date: Mon, 23 Jun 2025 15:02:55 +0200
-Message-ID: <20250623130633.936976699@linuxfoundation.org>
+Subject: [PATCH 5.15 032/411] selftests/seccomp: fix syscall_restart test for arm compat
+Date: Mon, 23 Jun 2025 15:02:56 +0200
+Message-ID: <20250623130633.971316764@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -68,40 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Neill Kapron <nkapron@google.com>
 
-[ Upstream commit 7ff37d29fd5c27617b9767e1b8946d115cf93a1e ]
+[ Upstream commit 797002deed03491215a352ace891749b39741b69 ]
 
-Fix a reference counter leak in psci_dt_init() where of_node_put(np) was
-missing after of_find_matching_node_and_match() when np is unavailable.
+The inconsistencies in the systcall ABI between arm and arm-compat can
+can cause a failure in the syscall_restart test due to the logic
+attempting to work around the differences. The 'machine' field for an
+ARM64 device running in compat mode can report 'armv8l' or 'armv8b'
+which matches with the string 'arm' when only examining the first three
+characters of the string.
 
-Fixes: d09a0011ec0d ("drivers: psci: Allow PSCI node to be disabled")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20250318151712.28763-1-linmq006@gmail.com
-Signed-off-by: Will Deacon <will@kernel.org>
+This change adds additional validation to the workaround logic to make
+sure we only take the arm path when running natively, not in arm-compat.
+
+Fixes: 256d0afb11d6 ("selftests/seccomp: build and pass on arm64")
+Signed-off-by: Neill Kapron <nkapron@google.com>
+Link: https://lore.kernel.org/r/20250427094103.3488304-2-nkapron@google.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/psci/psci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/seccomp/seccomp_bpf.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
-index cfb448eabdaa2..ec888aba57ffd 100644
---- a/drivers/firmware/psci/psci.c
-+++ b/drivers/firmware/psci/psci.c
-@@ -619,8 +619,10 @@ int __init psci_dt_init(void)
- 
- 	np = of_find_matching_node_and_match(NULL, psci_of_match, &matched_np);
- 
--	if (!np || !of_device_is_available(np))
-+	if (!np || !of_device_is_available(np)) {
-+		of_node_put(np);
- 		return -ENODEV;
-+	}
- 
- 	init_fn = (psci_initcall_t)matched_np->data;
- 	ret = init_fn(np);
+diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
+index ac340a9c09187..c1da445ab4db9 100644
+--- a/tools/testing/selftests/seccomp/seccomp_bpf.c
++++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
+@@ -3085,12 +3085,15 @@ TEST(syscall_restart)
+ 	ret = get_syscall(_metadata, child_pid);
+ #if defined(__arm__)
+ 	/*
+-	 * FIXME:
+ 	 * - native ARM registers do NOT expose true syscall.
+ 	 * - compat ARM registers on ARM64 DO expose true syscall.
++	 * - values of utsbuf.machine include 'armv8l' or 'armb8b'
++	 *   for ARM64 running in compat mode.
+ 	 */
+ 	ASSERT_EQ(0, uname(&utsbuf));
+-	if (strncmp(utsbuf.machine, "arm", 3) == 0) {
++	if ((strncmp(utsbuf.machine, "arm", 3) == 0) &&
++	    (strncmp(utsbuf.machine, "armv8l", 6) != 0) &&
++	    (strncmp(utsbuf.machine, "armv8b", 6) != 0)) {
+ 		EXPECT_EQ(__NR_nanosleep, ret);
+ 	} else
+ #endif
 -- 
 2.39.5
 
