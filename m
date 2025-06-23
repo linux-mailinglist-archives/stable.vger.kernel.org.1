@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-155374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4243AE41B9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:11:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 778E0AE43E4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1CA617388A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:10:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 915547A2252
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23881254855;
-	Mon, 23 Jun 2025 13:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A494C253953;
+	Mon, 23 Jun 2025 13:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PC+zSgql"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIHUslNP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23C02517A0;
-	Mon, 23 Jun 2025 13:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E512F24;
+	Mon, 23 Jun 2025 13:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684197; cv=none; b=Q2QMGxoPS+fMCByqPcipC5eWpq/DIWyPuckk0+ORAAXBI+mnh/a0Z17YMMOR98lHgpzuc/Vrk73zDkb3MrThq8JcfmQF/ifGzv1/sWxLPsp2oNviygAgcG9eS3fOCfYqLKBu01VjaGWgeQ3g8LViZ4yKV/j1QdI7Kdt1C1Eax/0=
+	t=1750685567; cv=none; b=XghpzUn8pTEuqzMrHrixK1vKpoVmOloc++oo7x6OUMeNcLFZcA4zEDlMAgvHmOvexo058lm3m0XJUXvatubNUqcJ3tEE2EMwFQ/yfI69GjzzMD5oPaemws1GbmLDJiqG2D/nkFOtIRcxyOkTiOanjvtLL84cD4wRitRu4W1UmBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684197; c=relaxed/simple;
-	bh=5ipzSLr+PURbwgx2ZA/E+djWklaPOMI7KGmTJOMfsIw=;
+	s=arc-20240116; t=1750685567; c=relaxed/simple;
+	bh=nPNocmBpf3FMQW/3KDyBK/vjm66P9V9HVjPHvs+/+MM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9TUFZH0kZTHRJ3bpFYQSyZsNEva1dddrJeqUSf35FYvclUXC3e9xrOLXaXFqii0lSD1aqb7MjWuiZrQWtSal4nAApjwSjEKL2lhXoIZ4EW+peMIBi/UALXbNXg/Q/CkDugWDnLq79hNtRrUYxuimMxlvCUbWZRZBPt26EJIL0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PC+zSgql; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44102C4CEEA;
-	Mon, 23 Jun 2025 13:09:57 +0000 (UTC)
+	 MIME-Version; b=jl2oURCo1mjBQUnso6oj83Q9HRaYetiwoWRFXjQDFbVpM03Wz20GD7cJHWWK6o5oe9CnYpBTEJCv+hh5ogBmm6yhyaRhw7CF/3LXB4wl/cAmfnSPnR1C9VTKbyLrHEO5nyMcYN7Xv56smKkg2xXK/41186yORpyPOMb48l7R71w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIHUslNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C7CC4CEEA;
+	Mon, 23 Jun 2025 13:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684197;
-	bh=5ipzSLr+PURbwgx2ZA/E+djWklaPOMI7KGmTJOMfsIw=;
+	s=korg; t=1750685567;
+	bh=nPNocmBpf3FMQW/3KDyBK/vjm66P9V9HVjPHvs+/+MM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PC+zSgqlofRvbujaj0UAVkfTfZA8NkuU8rFWh36wUkSoGdTzHo+7mmlqcQj1jtxuv
-	 z6MmCwvF6Cb+LDF3IlhTPPsjWi/GT4mAIINKgRxj+ynP6qRG8so29ceAGeuxW2jMir
-	 1713tCUJG4pkTafuHgHR3hU4EVUrjiBVdauZg40M=
+	b=eIHUslNP328lzr+QZmTGORAVLy2HuvK6YnS3vvy9PyHJF0lhf/VsqxbfQzdeDk0bK
+	 3RtkHjWl4KO83bPHxL8ZNbaiatoerupHH/BfWZmIttKtfL7UdcQGjITM0/Htf+ka0L
+	 XrTr6iGntafmw+dpfqR/BgjdCBFzdLdRcjTmvVlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Pan Taixi <pantaixi@huaweicloud.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 001/355] tracing: Fix compilation warning on arm32
+	Douglas Anderson <dianders@chromium.org>,
+	Damon Ding <damon.ding@rock-chips.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 244/592] drm/bridge: analogix_dp: Add irq flag IRQF_NO_AUTOEN instead of calling disable_irq()
 Date: Mon, 23 Jun 2025 15:03:22 +0200
-Message-ID: <20250623130626.765353096@linuxfoundation.org>
+Message-ID: <20250623130706.095626686@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pan Taixi <pantaixi@huaweicloud.com>
+From: Damon Ding <damon.ding@rock-chips.com>
 
-commit 2fbdb6d8e03b70668c0876e635506540ae92ab05 upstream.
+[ Upstream commit efab13e7d13a641a22c7508cde6e1a5285161944 ]
 
-On arm32, size_t is defined to be unsigned int, while PAGE_SIZE is
-unsigned long. This hence triggers a compilation warning as min()
-asserts the type of two operands to be equal. Casting PAGE_SIZE to size_t
-solves this issue and works on other target architectures as well.
+The IRQF_NO_AUTOEN can be used for the drivers that don't want
+interrupts to be enabled automatically via devm_request_threaded_irq().
+Using this flag can provide be more robust compared to the way of
+calling disable_irq() after devm_request_threaded_irq() without the
+IRQF_NO_AUTOEN flag.
 
-Compilation warning details:
-
-kernel/trace/trace.c: In function 'tracing_splice_read_pipe':
-./include/linux/minmax.h:20:28: warning: comparison of distinct pointer types lacks a cast
-  (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
-                            ^
-./include/linux/minmax.h:26:4: note: in expansion of macro '__typecheck'
-   (__typecheck(x, y) && __no_side_effects(x, y))
-    ^~~~~~~~~~~
-
-...
-
-kernel/trace/trace.c:6771:8: note: in expansion of macro 'min'
-        min((size_t)trace_seq_used(&iter->seq),
-        ^~~
-
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250526013731.1198030-1-pantaixi@huaweicloud.com
-Fixes: f5178c41bb43 ("tracing: Fix oob write in trace_seq_to_buffer()")
-Reviewed-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Pan Taixi <pantaixi@huaweicloud.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+Link: https://lore.kernel.org/r/20250310104114.2608063-2-damon.ding@rock-chips.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -6686,7 +6686,7 @@ static ssize_t tracing_splice_read_pipe(
- 		ret = trace_seq_to_buffer(&iter->seq,
- 					  page_address(spd.pages[i]),
- 					  min((size_t)trace_seq_used(&iter->seq),
--						  PAGE_SIZE));
-+						  (size_t)PAGE_SIZE));
- 		if (ret < 0) {
- 			__free_page(spd.pages[i]);
- 			break;
+diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+index 5222b1e9f533d..f96952e9ff4ef 100644
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+@@ -1622,10 +1622,10 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
+ 		 * that we can get the current state of the GPIO.
+ 		 */
+ 		dp->irq = gpiod_to_irq(dp->hpd_gpiod);
+-		irq_flags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING;
++		irq_flags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_NO_AUTOEN;
+ 	} else {
+ 		dp->irq = platform_get_irq(pdev, 0);
+-		irq_flags = 0;
++		irq_flags = IRQF_NO_AUTOEN;
+ 	}
+ 
+ 	if (dp->irq == -ENXIO) {
+@@ -1641,7 +1641,6 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
+ 		dev_err(&pdev->dev, "failed to request irq\n");
+ 		return ERR_PTR(ret);
+ 	}
+-	disable_irq(dp->irq);
+ 
+ 	dp->aux.name = "DP-AUX";
+ 	dp->aux.transfer = analogix_dpaux_transfer;
+-- 
+2.39.5
+
 
 
 
