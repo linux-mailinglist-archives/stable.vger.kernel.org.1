@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33747AE50E5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50328AE4F3D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B128517F6F1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02CA11B60A01
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920D0221723;
-	Mon, 23 Jun 2025 21:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941D0220F50;
+	Mon, 23 Jun 2025 21:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qe9ENvLf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dNNkcvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518FE1E5B71;
-	Mon, 23 Jun 2025 21:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5229B1E8324;
+	Mon, 23 Jun 2025 21:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714128; cv=none; b=lK4oT7d7n78cndMO4kMMSbhQX8R49yZk8E4PZN6owm3JkRROeDyJe/X1U48Ce/LvBUNZkSBjxf8KzV8GleaQY8CJeFzskXghjR7ok7LCJipCIa4Cmr+Z5CWblqwXAgGLZ3of36u1tFHv/Ph+eeHo6as/fRf9FQRSbG509N6FTTw=
+	t=1750713219; cv=none; b=DmIb5gVUp3as+gjI4pGyOZAYvt3X9Xf49zFRnnyI+hEr/orHBlLMbHjFM2w58fyGUtx9wg6XjbaMQsutlQj+nDw08yOmMVzOG79Zw2YwC/bqAc3C1rp+QfDxDdq2EOxsX+4fBFvMj0/dLFD+WfC4lcz7i5ni72Ha9vEbYKk4Izk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714128; c=relaxed/simple;
-	bh=0ZS06SFxjmXDVuMfsClmXcgNEEcXcaMvC1Q9+7woO1I=;
+	s=arc-20240116; t=1750713219; c=relaxed/simple;
+	bh=TAdRQj+HISuBpCLf3cuKLEt5yoXkGvss6XCumPeEkz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TL566wKZQAFHFQ15zYDY/5+b9v2IB0+6tW7Gmsy6Bj1GL1ds+Q/f/mb1AaGPXiZ34wM1sIPIMmFS121sp0idIXnBIMjJvwISkwsqpQOj23UDA/ljda3uHsZB5uWwDbev6grtA9EkNgxWCC6CWNDpuIfl7ScF/boS2eYIkCpW7kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qe9ENvLf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0338C4CEEA;
-	Mon, 23 Jun 2025 21:28:47 +0000 (UTC)
+	 MIME-Version; b=LaRyRYsf87RiipEwo7kSUFq7xevj7iLrSvOssRpQVa/OCPH0ebfYwDjA9e0YcbgU7h2UInN6weWI6O1BjLB5WYF/D6R+QF4T2NzaXxVRQMjatIogb9SyQSanC8KG72b33XnkQqNhWADj3C+AiFAaUcA5JU8+duNNZXBlAoACffA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dNNkcvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCE1C4CEEA;
+	Mon, 23 Jun 2025 21:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714128;
-	bh=0ZS06SFxjmXDVuMfsClmXcgNEEcXcaMvC1Q9+7woO1I=;
+	s=korg; t=1750713219;
+	bh=TAdRQj+HISuBpCLf3cuKLEt5yoXkGvss6XCumPeEkz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qe9ENvLf2gsDZQ80+Uh0A3DSIFoRbYS06bwJygj8xSTkygvgw7AYco0LLLlQa0s7/
-	 PX8v1kc6i4VCcyoUyQBe9VhrPdqoCWQTJttRt8IoHQSjSN1FKVQ58hHgKEx0oEMdAg
-	 GAPeGxfS70/Hp60EXuwcGUWFYOpisap05Obk++Yc=
+	b=1dNNkcvYfoSfZ+DpbR/LUsC9H+PRTOj8NnOsEgP171KXGxNleX3HtkGvncJBO0oG9
+	 m1uma4TjuEr0cz5bCwWnrCK2quKQjyD5WJI8deXH5Z5tqBQta7PaxoHubNB46xVsiU
+	 PynikrrZq6ASC8hGfF7mvYnBgqnB2rFtYd944rSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 5.15 189/411] kbuild: userprogs: fix bitsize and target detection on clang
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 132/355] net/mlx5: Ensure fw pages are always allocated on same NUMA
 Date: Mon, 23 Jun 2025 15:05:33 +0200
-Message-ID: <20250623130638.438265181@linuxfoundation.org>
+Message-ID: <20250623130630.704462119@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-commit 1b71c2fb04e7a713abc6edde4a412416ff3158f2 upstream.
+[ Upstream commit f37258133c1e95e61db532e14067e28b4881bf24 ]
 
-scripts/Makefile.clang was changed in the linked commit to move --target from
-KBUILD_CFLAGS to KBUILD_CPPFLAGS, as that generally has a broader scope.
-However that variable is not inspected by the userprogs logic,
-breaking cross compilation on clang.
+When firmware asks the driver to allocate more pages, using event of
+give_pages, the driver should always allocate it from same NUMA, the
+original device NUMA. Current code uses dev_to_node() which can result
+in different NUMA as it is changed by other driver flows, such as
+mlx5_dma_zalloc_coherent_node(). Instead, use saved numa node for
+allocating firmware pages.
 
-Use both variables to detect bitsize and target arguments for userprogs.
-
-Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 311c7c71c9bb ("net/mlx5e: Allocate DMA coherent memory on reader NUMA node")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250610151514.1094735-2-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -1126,8 +1126,8 @@ LDFLAGS_vmlinux += --orphan-handling=war
- endif
- 
- # Align the bit size of userspace programs with the kernel
--KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
--KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
-+KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
-+KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
- 
- # userspace programs are linked via the compiler, use the correct linker
- ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+index 1ea71f06fdb1c..b7ccdef697fd0 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+@@ -272,7 +272,7 @@ static void free_4k(struct mlx5_core_dev *dev, u64 addr, u32 function)
+ static int alloc_system_page(struct mlx5_core_dev *dev, u32 function)
+ {
+ 	struct device *device = mlx5_core_dma_dev(dev);
+-	int nid = dev_to_node(device);
++	int nid = dev->priv.numa_node;
+ 	struct page *page;
+ 	u64 zero_addr = 1;
+ 	u64 addr;
+-- 
+2.39.5
+
 
 
 
