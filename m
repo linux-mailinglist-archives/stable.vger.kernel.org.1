@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-156260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F778AE4ED5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC69AE5423
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6343F189FDB8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB674C0760
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7A221CA07;
-	Mon, 23 Jun 2025 21:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA782248B0;
+	Mon, 23 Jun 2025 21:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NnzEj4Jv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrTABY+N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D35270838;
-	Mon, 23 Jun 2025 21:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3FB6136;
+	Mon, 23 Jun 2025 21:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712975; cv=none; b=XIuuPmAeKe82brXx+FfN57NGkErm7jksWpykBJ39ALU2m+CgW9rVfoH3SKZGupXphGYrzPFtMQdTzw7NxYRJ7S7NFLd4zgPot5iSnDWpyI78hMYoDa3MH/QZk0g7D/MtntVsTDr9Dc3TAzubPqpx/q2lTcM1OThI7qh75Kp76CM=
+	t=1750715971; cv=none; b=qZROU9yihDWezgl2dKlrDlStVGo7Fe2N/1XkkJEbqTNHHN0iWzPVAp3p+SnvafaKLzxMiZg+4b4poJvDuDTC/67ck4AxFcmyZXtfSMSAKISVwJwo/yRPUKlWdaM7qn7d2MDCvi/NtIxPpK6NGBL3VGSQjWhixv5/z5q49lZPdDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712975; c=relaxed/simple;
-	bh=MIHAvzo1JtF5w3hQdS/wIF5VWkqrpUewSb/kKAmJ9ys=;
+	s=arc-20240116; t=1750715971; c=relaxed/simple;
+	bh=dTXXHWrYcazqJapTs1bSB9wafvfXS+zUm8b1SrPaqF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6zEQjYlGsFIk4Axn6PXMTI8LBA754K/CG/I+bd8ab/1VZ6btEGdobUSCbiO7vlB+BbqkisRNpRan9M8TNDN6/WrxedaQ9LnxrzKnOo5UdqxTdh0gD4XyD2iJ4NBA7lN1OU8eanVO+IqjxYvxcgbQYnqiE+lqZLBUoXJ3J5gYBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NnzEj4Jv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F343AC4CEEA;
-	Mon, 23 Jun 2025 21:09:34 +0000 (UTC)
+	 MIME-Version; b=Auej81lJKjZiZdkKeMPhTKJq0i/YzKOVgGwO0wTDRYz78yo9bK1jjGuSM2UaRkdzweHBz/Mc9e74bj5huQonoxr2lkEkftHDb4iK7UtK2CDhlUcXvduo+Ix0DLw8oz9xU2jtFkGHc790vn5F0MtKiAmzRnFDu2AWUtWR2BObww4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrTABY+N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D7EC4CEEA;
+	Mon, 23 Jun 2025 21:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712975;
-	bh=MIHAvzo1JtF5w3hQdS/wIF5VWkqrpUewSb/kKAmJ9ys=;
+	s=korg; t=1750715970;
+	bh=dTXXHWrYcazqJapTs1bSB9wafvfXS+zUm8b1SrPaqF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NnzEj4JvDcEVxG7KyLD+3qJC19WWIzXK9gx5MVMCvsJUTr3jTdo6RE/rtKrGRJjye
-	 NHkz3bX0udfP5b6wmGZ8hOd7F2s7igIFV7VQe4mLqKFv9ICmRVd+DQirdpvrytWNG1
-	 S9ocMzdRhNGsTPJM5kVR3GpWwGEGuNGQPZU+xTFg=
+	b=TrTABY+NXZBTX6s0/+38NSMyddNbN7ITyPmtzLEhz107AmR7J5vOWSqHWOqus63rC
+	 r3Cl5EK5Rvc0fpSk/e9UoSGIXDCKw7ArXf1ccycP3pKxdps6xgCx2VuEGVmJwoDna6
+	 28ZV+VPC73YFxI135thyYZTKfMgJP+4ngq24as38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 158/222] cpufreq: Force sync policy boost with global boost on sysfs update
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 232/290] arm64: Restrict pagetable teardown to avoid false warning
 Date: Mon, 23 Jun 2025 15:08:13 +0200
-Message-ID: <20250623130616.834189642@linuxfoundation.org>
+Message-ID: <20250623130633.903176177@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Dev Jain <dev.jain@arm.com>
 
-[ Upstream commit 121baab7b88ed865532dadb7ef1aee6e2bea86f5 ]
+commit 650768c512faba8070bf4cfbb28c95eb5cd203f3 upstream.
 
-If the global boost flag is enabled and policy boost flag is disabled, a
-call to `cpufreq_boost_trigger_state(true)` must enable the policy's
-boost state.
+Commit 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from
+pXd_free_pYd_table()") removes the pxd_present() checks because the
+caller checks pxd_present(). But, in case of vmap_try_huge_pud(), the
+caller only checks pud_present(); pud_free_pmd_page() recurses on each
+pmd through pmd_free_pte_page(), wherein the pmd may be none. Thus it is
+possible to hit a warning in the latter, since pmd_none => !pmd_table().
+Thus, add a pmd_present() check in pud_free_pmd_page().
 
-The current code misses that because of an optimization. Fix it.
+This problem was found by code inspection.
 
-Suggested-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/852ff11c589e6300730d207baac195b2d9d8b95f.1745511526.git.viresh.kumar@linaro.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table()")
+Cc: stable@vger.kernel.org
+Reported-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://lore.kernel.org/r/20250527082633.61073-1-dev.jain@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/mm/mmu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 09510ff16ee2f..2a2fea6743aa6 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2580,8 +2580,10 @@ int cpufreq_boost_trigger_state(int state)
- 	unsigned long flags;
- 	int ret = 0;
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1253,7 +1253,8 @@ int pud_free_pmd_page(pud_t *pudp, unsig
+ 	next = addr;
+ 	end = addr + PUD_SIZE;
+ 	do {
+-		pmd_free_pte_page(pmdp, next);
++		if (pmd_present(pmdp_get(pmdp)))
++			pmd_free_pte_page(pmdp, next);
+ 	} while (pmdp++, next += PMD_SIZE, next != end);
  
--	if (cpufreq_driver->boost_enabled == state)
--		return 0;
-+	/*
-+	 * Don't compare 'cpufreq_driver->boost_enabled' with 'state' here to
-+	 * make sure all policies are in sync with global boost flag.
-+	 */
- 
- 	write_lock_irqsave(&cpufreq_driver_lock, flags);
- 	cpufreq_driver->boost_enabled = state;
--- 
-2.39.5
-
+ 	pud_clear(pudp);
 
 
 
