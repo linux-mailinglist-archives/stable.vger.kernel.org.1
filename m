@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9E0AE4F4C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 366F0AE5360
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 479DA189CBBF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1CFF4A7B68
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C32221ADB5;
-	Mon, 23 Jun 2025 21:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0152D72624;
+	Mon, 23 Jun 2025 21:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2grbFcl2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwBWA7Wa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AED01DF98B;
-	Mon, 23 Jun 2025 21:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15231AD3FA;
+	Mon, 23 Jun 2025 21:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713258; cv=none; b=Ute8BVpHoaIgsjDfduO3glv4dz+okNiBhOBEwSdy8ILNVKuLCql48aNpAMASGYkhp6rqvv7jh9Zt7P2RQOfQe8HYhQwcFrU2EbtaGshjk+YIxLvXCJrdPvjONSCm9979thkRIfE7VioTE+h3NKhivmppw9/rNzNFlNwTa0V/LzY=
+	t=1750715560; cv=none; b=A4ioKzdo967U4LARrXwM3kNCYArfxrPkkkdMTKkYzNv5Fdh7HUhhMZCoiFQLEOhYOQGuq8z91Mf7IVwAqr7bdf1gPtAcjkxMErpmbLVYgM4mb9IHkaHxw6dgpFvoVJYZGB8RsApk255/IqLpGX4A4XnyMIIG/KjckAmSikRydDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713258; c=relaxed/simple;
-	bh=74u9hILTxoYG+SSl/1Q31ZzJ7aKkLcjfmUUGcei6HmM=;
+	s=arc-20240116; t=1750715560; c=relaxed/simple;
+	bh=UnHDJn1/X1rFzEw/u+GJCMYpYeVOU1sVSLeXM1v8ctY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EUXdc6rjKZwKBHu7xA2WSSOkFeYLLy2L9xbFfH3Zi8ZbpU3HYFRx3ctTx5zuk3+G330KqzCjY9yMcq2pAIlSwElKqY9VafXHlHU+U56U+DT4r0OGN3v0loeFxgnmeD1sk16eANGeyJgPRxmN87Z75FRGdyYyrFbaNehOBWR4CBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2grbFcl2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5631C4CEEA;
-	Mon, 23 Jun 2025 21:14:17 +0000 (UTC)
+	 MIME-Version; b=Iu+g8wf7H6RRaFKgqXf/97PyYylci65vojYe+1Cs1JSDNWATiaN59RN78egMW8fP7UTqesbUC+gwqvgFiG/9I2OhNUz765Pa5kfH81AwahJ/9hg3IjoICt8NDBCeBAcwG0IMiMn/SARA0ip1xBMM3eTTRCTjBdnciclofGAGwcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwBWA7Wa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03ED1C4CEEA;
+	Mon, 23 Jun 2025 21:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713258;
-	bh=74u9hILTxoYG+SSl/1Q31ZzJ7aKkLcjfmUUGcei6HmM=;
+	s=korg; t=1750715560;
+	bh=UnHDJn1/X1rFzEw/u+GJCMYpYeVOU1sVSLeXM1v8ctY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2grbFcl2QwVokuyFfQxjuP/ItNZciD4Fy3HATQ6DMBGo9d5PyDdaGcuiQR0mivlQL
-	 5uQWWG9cT7NMD+BHBajK3lOJtAzn1oBfMfwsJja7gIOaWowkb55aCwgjWyUgSlV8Am
-	 x0TxfK1Gk8GwtlXQJ5prkx2JhuI2o5iltzQbicZw=
+	b=CwBWA7WalsNQIFfo+SSdAvmUSCUxmzdyn2Xs2qyKr07lmtOy5VJjaMYkEnsgcZaLt
+	 A8eAm9WD+kPc314gBKGGtizvhZKQSFC0elz+1NnzJHu7B8meZrQ/Y8cqs9xYPNQ0nm
+	 nHYS7Ku5v6GqN8/o31EPplMKFUB6zEhJoA4FEbgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Eddie James <eajames@linux.ibm.com>,
+	Joel Stanley <joel@jms.id.au>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 169/222] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_gpio_set_direction()
+Subject: [PATCH 5.10 303/355] hwmon: (occ) Add new temperature sensor type
 Date: Mon, 23 Jun 2025 15:08:24 +0200
-Message-ID: <20250623130617.156062815@linuxfoundation.org>
+Message-ID: <20250623130635.888729801@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Eddie James <eajames@linux.ibm.com>
 
-[ Upstream commit bfa0ff804ffa8b1246ade8be08de98c9eb19d16f ]
+[ Upstream commit db4919ec86ff405273a767e1a9b51e2760e73ce5 ]
 
-The armada_37xx_gpio_direction_{in,out}put() functions can fail, so
-propagate their error values back to the stack instead of silently
-ignoring those.
+The latest version of the On-Chip Controller (OCC) has a different
+format for the temperature sensor data. Add a new temperature sensor
+version to handle this data.
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-5-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+Link: https://lore.kernel.org/r/20201120010315.190737-4-joel@jms.id.au
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 744c2fe950e9 ("hwmon: (occ) Rework attribute registration for stack usage")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/hwmon/occ/common.c | 75 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 75 insertions(+)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index d3d156b25e96d..4df9dbad0e977 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -464,16 +464,17 @@ static int armada_37xx_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
- {
- 	struct armada_37xx_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
- 	struct gpio_chip *chip = range->gc;
-+	int ret;
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index d052502dc2c0e..580e63d7daa00 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -41,6 +41,14 @@ struct temp_sensor_2 {
+ 	u8 value;
+ } __packed;
  
- 	dev_dbg(info->dev, "gpio_direction for pin %u as %s-%d to %s\n",
- 		offset, range->name, offset, input ? "input" : "output");
- 
- 	if (input)
--		armada_37xx_gpio_direction_input(chip, offset);
-+		ret = armada_37xx_gpio_direction_input(chip, offset);
- 	else
--		armada_37xx_gpio_direction_output(chip, offset, 0);
-+		ret = armada_37xx_gpio_direction_output(chip, offset, 0);
- 
--	return 0;
-+	return ret;
++struct temp_sensor_10 {
++	u32 sensor_id;
++	u8 fru_type;
++	u8 value;
++	u8 throttle;
++	u8 reserved;
++} __packed;
++
+ struct freq_sensor_1 {
+ 	u16 sensor_id;
+ 	u16 value;
+@@ -307,6 +315,60 @@ static ssize_t occ_show_temp_2(struct device *dev,
+ 	return snprintf(buf, PAGE_SIZE - 1, "%u\n", val);
  }
  
- static int armada_37xx_gpio_request_enable(struct pinctrl_dev *pctldev,
++static ssize_t occ_show_temp_10(struct device *dev,
++				struct device_attribute *attr, char *buf)
++{
++	int rc;
++	u32 val = 0;
++	struct temp_sensor_10 *temp;
++	struct occ *occ = dev_get_drvdata(dev);
++	struct occ_sensors *sensors = &occ->sensors;
++	struct sensor_device_attribute_2 *sattr = to_sensor_dev_attr_2(attr);
++
++	rc = occ_update_response(occ);
++	if (rc)
++		return rc;
++
++	temp = ((struct temp_sensor_10 *)sensors->temp.data) + sattr->index;
++
++	switch (sattr->nr) {
++	case 0:
++		val = get_unaligned_be32(&temp->sensor_id);
++		break;
++	case 1:
++		val = temp->value;
++		if (val == OCC_TEMP_SENSOR_FAULT)
++			return -EREMOTEIO;
++
++		/*
++		 * VRM doesn't return temperature, only alarm bit. This
++		 * attribute maps to tempX_alarm instead of tempX_input for
++		 * VRM
++		 */
++		if (temp->fru_type != OCC_FRU_TYPE_VRM) {
++			/* sensor not ready */
++			if (val == 0)
++				return -EAGAIN;
++
++			val *= 1000;
++		}
++		break;
++	case 2:
++		val = temp->fru_type;
++		break;
++	case 3:
++		val = temp->value == OCC_TEMP_SENSOR_FAULT;
++		break;
++	case 4:
++		val = temp->throttle * 1000;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return snprintf(buf, PAGE_SIZE - 1, "%u\n", val);
++}
++
+ static ssize_t occ_show_freq_1(struct device *dev,
+ 			       struct device_attribute *attr, char *buf)
+ {
+@@ -745,6 +807,10 @@ static int occ_setup_sensor_attrs(struct occ *occ)
+ 		num_attrs += (sensors->temp.num_sensors * 4);
+ 		show_temp = occ_show_temp_2;
+ 		break;
++	case 0x10:
++		num_attrs += (sensors->temp.num_sensors * 5);
++		show_temp = occ_show_temp_10;
++		break;
+ 	default:
+ 		sensors->temp.num_sensors = 0;
+ 	}
+@@ -844,6 +910,15 @@ static int occ_setup_sensor_attrs(struct occ *occ)
+ 			attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+ 						     show_temp, NULL, 3, i);
+ 			attr++;
++
++			if (sensors->temp.version == 0x10) {
++				snprintf(attr->name, sizeof(attr->name),
++					 "temp%d_max", s);
++				attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
++							     show_temp, NULL,
++							     4, i);
++				attr++;
++			}
+ 		}
+ 	}
+ 
 -- 
 2.39.5
 
