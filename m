@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-157743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE0DAE5569
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D541AE55E9
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08BBD1BC472F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60C013AE689
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A50F223DEF;
-	Mon, 23 Jun 2025 22:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE57E223DF0;
+	Mon, 23 Jun 2025 22:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATP12G32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QI66RhYj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CD41F7580;
-	Mon, 23 Jun 2025 22:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8F5C2E0;
+	Mon, 23 Jun 2025 22:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716613; cv=none; b=ckycx8kBRfvtYeB9r/w++I6ptvxMM2NCZIb/CwVgHwa2HX8O+rOevbBihXbj29fbtoJeYSEZaaZ8kTvR6vHeEz8w2vLD2/ftO5Cc76hRt83ZRL5KzVsw2xdsq/i/gzCdOhoBm2DAQhzBz+b3LQ9g+apZ87vjH3/x0nDY4WdMpOM=
+	t=1750716808; cv=none; b=b/MEJLIafxLGmroloBKMpQoRsVNdBUJKDtGR2oN40yo4FFlNxnJXReei2HCeyya34PKgSjiMnb1N8XuGUJu6HmIglmaaW4eAzibKraMMCrE/4gGmCxSMOLhgB9dyM+exxPHJqbvfXl/tOjpmaq+ZhO/23lwSnKVHDYQBFnfXYTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716613; c=relaxed/simple;
-	bh=Dmds9ooRpbEAM7A9PI+0v3D/DgPbwtpyNiqCjfJoTRY=;
+	s=arc-20240116; t=1750716808; c=relaxed/simple;
+	bh=zVZpLWl+s4c5XOyoUrEF5d/bG73tIrmUhsqMSOgE+rI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWIzAQEfDf+EwsEk7oyh0PXvntnNE4txMZfCddOZ+jp0PBftL4fFvtA8qvIfwhcZT1RmBDN/Z94jLB6MiDh8ADKRk7ZztNhG2tvYJDoJo43EIcbyvWtSHbL1PukqR15uzFgVh/+fhf9B8Lr5YmfelFDChLGu4mBXvUxi4O2BKp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATP12G32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD66C4CEEA;
-	Mon, 23 Jun 2025 22:10:12 +0000 (UTC)
+	 MIME-Version; b=XX2RWybWSmd9yiF0prhiwMnkD49b/WRNW0w/EsfWFKOBQgiSd4h5kmHhXpkMTkvXgDkL7ABRW0iL5Oadfw7b5DKYmjdoAPmLj0yvnJBiITreLms1r1cF+MA0NZL/cH8J6kjcEVOuWDkwkliZs7zU/eC/Wsw0sRGdKG5up22kFxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QI66RhYj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E0AC4CEEA;
+	Mon, 23 Jun 2025 22:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716612;
-	bh=Dmds9ooRpbEAM7A9PI+0v3D/DgPbwtpyNiqCjfJoTRY=;
+	s=korg; t=1750716808;
+	bh=zVZpLWl+s4c5XOyoUrEF5d/bG73tIrmUhsqMSOgE+rI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ATP12G32hJPhRKdNy/MheZ0CL9mEAZoVYNvhpZXsnZd5ew7u88cc4oYyuOL3qIgcB
-	 XBri3GNRemBC1P7ZCY5WZapiiTkZTJWWz7TqUpSgVHTHOvJ2ogSCq7IXFA2KzTVvjs
-	 pKVxGxEg8G46oZEOyd4QGeHXTu4g8Zigh5JDVIyA=
+	b=QI66RhYjluoaAX26YuLt9lFQ6fH3BznHQprt4Wrl/dRlc0DfUXYuzKmIztCRULOMB
+	 6T9V+FeK/t8EWxkYk7ODNCTB9qelTeUV+JgFn5QAf5xje71Eyty85120jmy4whhY/z
+	 RHavu6xnQj/qNiLQNj3oTR9LfXQGsqVWWvD/BNoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rand Deeb <rand.sec96@gmail.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.12 269/414] ixgbe: Fix unreachable retry logic in combined and byte I2C write functions
+	Khem Raj <raj.khem@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 361/508] mips: Add -std= flag specified in KBUILD_CFLAGS to vdso CFLAGS
 Date: Mon, 23 Jun 2025 15:06:46 +0200
-Message-ID: <20250623130648.755643756@linuxfoundation.org>
+Message-ID: <20250623130654.245442508@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rand Deeb <rand.sec96@gmail.com>
+From: Khem Raj <raj.khem@gmail.com>
 
-[ Upstream commit cdcb3804eeda24d588348bbab6766cf14fddbeaa ]
+commit 0f4ae7c6ecb89bfda026d210dcf8216fb67d2333 upstream.
 
-The current implementation of `ixgbe_write_i2c_combined_generic_int` and
-`ixgbe_write_i2c_byte_generic_int` sets `max_retry` to `1`, which makes
-the condition `retry < max_retry` always evaluate to `false`. This renders
-the retry mechanism ineffective, as the debug message and retry logic are
-never executed.
+GCC 15 changed the default C standard dialect from gnu17 to gnu23,
+which should not have impacted the kernel because it explicitly requests
+the gnu11 standard in the main Makefile. However, mips/vdso code uses
+its own CFLAGS without a '-std=' value, which break with this dialect
+change because of the kernel's own definitions of bool, false, and true
+conflicting with the C23 reserved keywords.
 
-This patch increases `max_retry` to `3` in both functions, aligning them
-with the retry logic in `ixgbe_read_i2c_combined_generic_int`. This
-ensures that the retry mechanism functions as intended, improving
-robustness in case of I2C write failures.
+  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+     11 |         false   = 0,
+        |         ^~~~~
+  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+     35 | typedef _Bool                   bool;
+        |                                 ^~~~
+  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Add -std as specified in KBUILD_CFLAGS to the decompressor and purgatory
+CFLAGS to eliminate these errors and make the C standard version of these
+areas match the rest of the kernel.
 
-Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/vdso/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
-index 07eaa3c3f4d36..530e4319a2e89 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
-@@ -167,7 +167,7 @@ int ixgbe_write_i2c_combined_generic_int(struct ixgbe_hw *hw, u8 addr,
- 					 u16 reg, u16 val, bool lock)
- {
- 	u32 swfw_mask = hw->phy.phy_semaphore_mask;
--	int max_retry = 1;
-+	int max_retry = 3;
- 	int retry = 0;
- 	u8 reg_high;
- 	u8 csum;
-@@ -2284,7 +2284,7 @@ static int ixgbe_write_i2c_byte_generic_int(struct ixgbe_hw *hw, u8 byte_offset,
- 					    u8 dev_addr, u8 data, bool lock)
- {
- 	u32 swfw_mask = hw->phy.phy_semaphore_mask;
--	u32 max_retry = 1;
-+	u32 max_retry = 3;
- 	u32 retry = 0;
- 	int status;
- 
--- 
-2.39.5
-
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -32,6 +32,7 @@ endif
+ # offsets.
+ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
++	$(filter -std=%,$(KBUILD_CFLAGS)) \
+ 	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
+ 	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
 
 
 
