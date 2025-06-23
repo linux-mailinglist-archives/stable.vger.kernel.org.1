@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-158141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6098DAE5720
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E101AE5594
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FA9A1C23EEE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC2754C4F8A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5569D221543;
-	Mon, 23 Jun 2025 22:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2648F22A804;
+	Mon, 23 Jun 2025 22:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmHEeGSy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7nmP0sG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13824223DE5;
-	Mon, 23 Jun 2025 22:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71C7225417;
+	Mon, 23 Jun 2025 22:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717585; cv=none; b=YgSpUFNVDOck6K7URxfirwKkI+BlFI5G2TQxv4tdwvtLPcMW5OpPxDNc/PMVy67+1/kVt8crtW0MJWAIt4/rDpuI6LLhZRe/Bwr0NZpkDnGhOtPFVhlIk7K3gr4RbXLWO3zR0NTOjikUJ5yx4FHryyvzPd7qxKI7cllWL6Q3HJU=
+	t=1750716683; cv=none; b=qZi2Q61ru6cxqS+FcpyVPWvuPP1s7704GbSFNsPfQ27BdyY4sqT5sA80tfx18CiEzB4NxNplrB4FzvLaAxQeG9Ov3NPd5E2eF/vKpSNPjWiOn768mbr/bAJxX//2UQXk4HiHXk5u3OHkDmebs8Lfv0C+pITGFu8fwh5HoPrTSLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717585; c=relaxed/simple;
-	bh=GkvHBtr5VGhm7AbPpHc0YRmAiEoXHLiHpKKrc7jupz4=;
+	s=arc-20240116; t=1750716683; c=relaxed/simple;
+	bh=Ep6RQpVeg8C26Fvv/3TCbG4OURvcxiEFjCjBRLbi6Ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fhOV3z39adEEoxVZGN9U4LnzoHofOl5ZHmaPnzSywyEM1IV1uG2vtbffswjvyxZ//aVLGAhRi1G83kyAlgk2ix3ijBoW7vjhzKXwQ9I+NjIvfw42Z8Cq+WYH2DzoxiEE2BlD5WRh0rebTMXmecM17dCgcknPZBTPTKp0gGReyms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmHEeGSy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24F3C4CEEA;
-	Mon, 23 Jun 2025 22:26:24 +0000 (UTC)
+	 MIME-Version; b=lh1E2fTf3KZsjimQXWLw/HzmO3xVI7mPOsnvs9PqIfYiH/+CrQW5z2TZ4WmnEfdn3kQ66ZvvOB8q/9ydbRQ8FHQL1azTIUQdsgruiuyNnqx/o1M6RLc8XaqRiFP16zemtahUhyxpxkkiKPyXsr89bHvib77r0OKrEoB6yY6V7IA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7nmP0sG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7071DC4CEEA;
+	Mon, 23 Jun 2025 22:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717585;
-	bh=GkvHBtr5VGhm7AbPpHc0YRmAiEoXHLiHpKKrc7jupz4=;
+	s=korg; t=1750716683;
+	bh=Ep6RQpVeg8C26Fvv/3TCbG4OURvcxiEFjCjBRLbi6Ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VmHEeGSy7AaJkXCQGtxSzOzZhg49cJEDKb8tWR6cy/W69GQtyM8K0MU44RuGc3PQ7
-	 cC+6lgvpQqt30ixiV6itYYWrpnD7AaOa6bBuR0XYIr4HYGCsLkUJVbkV+Wk8T0SmX/
-	 H6pZdT0PXH6ns5vlQYuMdQwS9T57b643S+6oHNtU=
+	b=Q7nmP0sGljqb+8sWtjGGYAUMi6uk9f5eKCs+x8HSm0oIv8633V6A3rPxUTDFWi9o+
+	 hvUPSestuNrNWFMe60Kbb1/q0WjY0Z5QGCyZRs75CdlkJEahPbyF5pnfgJeIyjKMrr
+	 Zk7fi4bgz/cc4d+zN3Js9j4FxDdSF85cCIExIccM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 460/508] ALSA: hda/intel: Add Thinkpad E15 to PM deny list
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Rengarajan S <rengarajan.s@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 547/592] net: lan743x: fix potential out-of-bounds write in lan743x_ptp_io_event_clock_get()
 Date: Mon, 23 Jun 2025 15:08:25 +0200
-Message-ID: <20250623130656.443260217@linuxfoundation.org>
+Message-ID: <20250623130713.452918674@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 
-commit c987a390f1b3b8bdac11031d7004e3410fe259bd upstream.
+[ Upstream commit e353b0854d3a1a31cb061df8d022fbfea53a0f24 ]
 
-Lenovo Thinkpad E15 with Conexant CX8070 codec seems causing ugly
-noises after runtime-PM suspend.  Disable the codec runtime PM as a
-workaround.
+Before calling lan743x_ptp_io_event_clock_get(), the 'channel' value
+is checked against the maximum value of PCI11X1X_PTP_IO_MAX_CHANNELS(8).
+This seems correct and aligns with the PTP interrupt status register
+(PTP_INT_STS) specifications.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220210
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250608091415.21170-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, lan743x_ptp_io_event_clock_get() writes to ptp->extts[] with
+only LAN743X_PTP_N_EXTTS(4) elements, using channel as an index:
+
+    lan743x_ptp_io_event_clock_get(..., u8 channel,...)
+    {
+        ...
+        /* Update Local timestamp */
+        extts = &ptp->extts[channel];
+        extts->ts.tv_sec = sec;
+        ...
+    }
+
+To avoid an out-of-bounds write and utilize all the supported GPIO
+inputs, set LAN743X_PTP_N_EXTTS to 8.
+
+Detected using the static analysis tool - Svace.
+Fixes: 60942c397af6 ("net: lan743x: Add support for PTP-IO Event Input External Timestamp (extts)")
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Acked-by: Rengarajan S <rengarajan.s@microchip.com>
+Link: https://patch.msgid.link/20250616113743.36284-1-aleksei.kodanev@bell-sw.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/microchip/lan743x_ptp.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2261,6 +2261,8 @@ static const struct snd_pci_quirk power_
- 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
- 	/* Dell ALC3271 */
- 	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
-+	/* https://bugzilla.kernel.org/show_bug.cgi?id=220210 */
-+	SND_PCI_QUIRK(0x17aa, 0x5079, "Lenovo Thinkpad E15", 0),
- 	{}
- };
- #endif /* CONFIG_PM */
+diff --git a/drivers/net/ethernet/microchip/lan743x_ptp.h b/drivers/net/ethernet/microchip/lan743x_ptp.h
+index 0d29914cd4606..225e8232474d7 100644
+--- a/drivers/net/ethernet/microchip/lan743x_ptp.h
++++ b/drivers/net/ethernet/microchip/lan743x_ptp.h
+@@ -18,9 +18,9 @@
+  */
+ #define LAN743X_PTP_N_EVENT_CHAN	2
+ #define LAN743X_PTP_N_PEROUT		LAN743X_PTP_N_EVENT_CHAN
+-#define LAN743X_PTP_N_EXTTS		4
+-#define LAN743X_PTP_N_PPS		0
+ #define PCI11X1X_PTP_IO_MAX_CHANNELS	8
++#define LAN743X_PTP_N_EXTTS		PCI11X1X_PTP_IO_MAX_CHANNELS
++#define LAN743X_PTP_N_PPS		0
+ #define PTP_CMD_CTL_TIMEOUT_CNT		50
+ 
+ struct lan743x_adapter;
+-- 
+2.39.5
+
 
 
 
