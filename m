@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-157964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0611AE565F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D601EAE56E0
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AAC618901E6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2999B4C6838
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229012192EC;
-	Mon, 23 Jun 2025 22:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73D2223DE8;
+	Mon, 23 Jun 2025 22:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDqSYtql"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sN0+pd4s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39CF16D9BF;
-	Mon, 23 Jun 2025 22:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A302222B2;
+	Mon, 23 Jun 2025 22:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717150; cv=none; b=cbzF9U+2rWse6wx604oNfrpn6C1UWJ7M5Mhmms0tTx8Gdoxy5zvtrO9I+zKv+uHE7Ha+lNIDv7MyWSuWqgByrekl7dKRxUIQlYt1qIpYbTAao+ouWEFQFYQmFdvzxlBycrb2MFLbnO6Vr1xE60zmOrq9eiI8CzSGBQRcinL/1Y8=
+	t=1750717416; cv=none; b=aTGbrMDEYZvSJ3/z8VuTcL8q1RmZK3jbqrawvAOoZFSFcOS1eh+AUdm1Q+weeG9mPKkd4t8OXu2p9Guf91UHMzb/D42K53R0v6veHFG12JOQS0PtTzLDbDAA+6X5dTeez5fwsK403B2+OtK4mC80qvnNWZLgRH8X+oSOJKS4NKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717150; c=relaxed/simple;
-	bh=aetSlRL3gFebaGGZenFP9w1cgcSeaCpNDykah8esWhQ=;
+	s=arc-20240116; t=1750717416; c=relaxed/simple;
+	bh=Fi4zxsdL2Us8qdLQrcnwMB2Y9oLAQ59eZBp5Tb5kfGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JqQi/961hkjFQroA7+vklyzR7sGpPg/Jhels0fyfY/aJehJ1O67/HWXnFvqS/M0T8rC36Ro6YCHGyoRHynmeAl6qXonH6Db+19v7SqYSnGl9yqR0N3ykI4a5sN8BWWpxnWWbuVfXNnnVn1yuZviNxlKNgNN3FYWQNz4lfAK1F9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDqSYtql; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AECCC4CEED;
-	Mon, 23 Jun 2025 22:19:10 +0000 (UTC)
+	 MIME-Version; b=q9udM4pdS/2Iuq6/YOMsYZYdHqjxiJGspiLXkVFRLdknievHBz6eDwBPmALvq4g6iu1oR0Q5xv7AXpuJfFgKS1zEo2JiJp6CRD8nIohvMnQ8BRwwsqXiYxTLnGlEl4K6bn58pOOZgA2CbVDdRhciM3iIA6BuzYhpL2bPiNfz30o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sN0+pd4s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D05CC4CEEA;
+	Mon, 23 Jun 2025 22:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717150;
-	bh=aetSlRL3gFebaGGZenFP9w1cgcSeaCpNDykah8esWhQ=;
+	s=korg; t=1750717416;
+	bh=Fi4zxsdL2Us8qdLQrcnwMB2Y9oLAQ59eZBp5Tb5kfGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DDqSYtqlodJVyOm7fyxTZ1hGu/yL2ub7aaqghiyG7UKb1GRL7ENz+d2Wa7FN291Yu
-	 cnY/ljZfa2BzEK/dhr+SYLWfOOX05ZX1PnvU1ZNeo6ay53bcTWjlEHBbjTLpVmSJ0T
-	 Q9ZCcFuDNYcYT+yttlE8PEGBO1ETsNX0TRqvvJtA=
+	b=sN0+pd4skdTndUBdUAgFY22oJK9uNZ5y4LsupHQWDRuMbPsbqnE2iHfMq85uwUjSb
+	 tC28ms5cjyfDiEnVGtt1BvQqD5G2SnsE9Rk97atebiZ21MT+8olcHdthPDMA5uqSBF
+	 NBwiq2GK60e48tQvAsCXW/diOMIfqbOTUmBrjIIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.12 330/414] arm64: Restrict pagetable teardown to avoid false warning
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 422/508] vxlan: Do not treat dst cache initialization errors as fatal
 Date: Mon, 23 Jun 2025 15:07:47 +0200
-Message-ID: <20250623130650.239017164@linuxfoundation.org>
+Message-ID: <20250623130655.574733172@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dev Jain <dev.jain@arm.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 650768c512faba8070bf4cfbb28c95eb5cd203f3 upstream.
+[ Upstream commit 20c76dadc783759fd3819d289c72be590660cc8b ]
 
-Commit 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from
-pXd_free_pYd_table()") removes the pxd_present() checks because the
-caller checks pxd_present(). But, in case of vmap_try_huge_pud(), the
-caller only checks pud_present(); pud_free_pmd_page() recurses on each
-pmd through pmd_free_pte_page(), wherein the pmd may be none. Thus it is
-possible to hit a warning in the latter, since pmd_none => !pmd_table().
-Thus, add a pmd_present() check in pud_free_pmd_page().
+FDB entries are allocated in an atomic context as they can be added from
+the data path when learning is enabled.
 
-This problem was found by code inspection.
+After converting the FDB hash table to rhashtable, the insertion rate
+will be much higher (*) which will entail a much higher rate of per-CPU
+allocations via dst_cache_init().
 
-Fixes: 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table()")
-Cc: stable@vger.kernel.org
-Reported-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Link: https://lore.kernel.org/r/20250527082633.61073-1-dev.jain@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When adding a large number of entries (e.g., 256k) in a batch, a small
+percentage (< 0.02%) of these per-CPU allocations will fail [1]. This
+does not happen with the current code since the insertion rate is low
+enough to give the per-CPU allocator a chance to asynchronously create
+new chunks of per-CPU memory.
+
+Given that:
+
+a. Only a small percentage of these per-CPU allocations fail.
+
+b. The scenario where this happens might not be the most realistic one.
+
+c. The driver can work correctly without dst caches. The dst_cache_*()
+APIs first check that the dst cache was properly initialized.
+
+d. The dst caches are not always used (e.g., 'tos inherit').
+
+It seems reasonable to not treat these allocation failures as fatal.
+
+Therefore, do not bail when dst_cache_init() fails and suppress warnings
+by specifying '__GFP_NOWARN'.
+
+[1] percpu: allocation failed, size=40 align=8 atomic=1, atomic alloc failed, no space left
+
+(*) 97% reduction in average latency of vxlan_fdb_update() when adding
+256k entries in a batch.
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250415121143.345227-14-idosch@nvidia.com
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/mm/mmu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1285,7 +1285,8 @@ int pud_free_pmd_page(pud_t *pudp, unsig
- 	next = addr;
- 	end = addr + PUD_SIZE;
- 	do {
--		pmd_free_pte_page(pmdp, next);
-+		if (pmd_present(pmdp_get(pmdp)))
-+			pmd_free_pte_page(pmdp, next);
- 	} while (pmdp++, next += PMD_SIZE, next != end);
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index ef61eab81707c..747ce00dd321d 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -653,10 +653,10 @@ static int vxlan_fdb_append(struct vxlan_fdb *f,
+ 	if (rd == NULL)
+ 		return -ENOMEM;
  
- 	pud_clear(pudp);
+-	if (dst_cache_init(&rd->dst_cache, GFP_ATOMIC)) {
+-		kfree(rd);
+-		return -ENOMEM;
+-	}
++	/* The driver can work correctly without a dst cache, so do not treat
++	 * dst cache initialization errors as fatal.
++	 */
++	dst_cache_init(&rd->dst_cache, GFP_ATOMIC | __GFP_NOWARN);
+ 
+ 	rd->remote_ip = *ip;
+ 	rd->remote_port = port;
+-- 
+2.39.5
+
 
 
 
