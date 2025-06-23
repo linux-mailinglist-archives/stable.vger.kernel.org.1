@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-155848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B10CAE43EE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5ECAE44BF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3135B189CD0A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 607717AA659
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A84254873;
-	Mon, 23 Jun 2025 13:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72562475E3;
+	Mon, 23 Jun 2025 13:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/0hOWJy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7TShvdD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1274C6E;
-	Mon, 23 Jun 2025 13:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FA04C6E;
+	Mon, 23 Jun 2025 13:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685493; cv=none; b=ElaOiB01fGtceUinqwTZLsKuXVUm/JOyyV7DMFhJwO4pd50htFkiJbzB9Kc4LwcUx0nVTdz8ILX3RGu8R4W9f7bYKI9afSrzYVIsyxyWBD8QyJn4WI3Z0t+m3TaI2Ld1PYjoeDgmHwX0rXt9uRyQ/nARGzVOzynKf/bMbUtMUvA=
+	t=1750686022; cv=none; b=tKnlGn3x42Xu7gsfZP3p+xBQRo47Uzo3SaccIg86SsOjElsA1ZXwNdxHZhhW3aSBb4C8ofqtZMOATWah79cuvFw42pOvK6haDSaH8B+1DytmhOO/xjifpN37Mj6XH5OEJe+AX8kYX1zzg2GwVvix7BT3SQSKhGlMwzl/3W7+2L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685493; c=relaxed/simple;
-	bh=GPmkiTpCqQzzdWSjby7Pc68YOpKbDB9AA2tHz9RdaZo=;
+	s=arc-20240116; t=1750686022; c=relaxed/simple;
+	bh=HK03IS5nRIz2NAxuwJ+5FCIHuMoozhcXnlcCsENU+Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b806d4jfjhweaMBkWfQCK2F0iWfUSLjO3JObpZfhABKfz9aJ2Ua1Po9HdDxBF8qtof8qbTiJS9JQi/HtQIEruqwp2LzuBGuynYVe6NoPA/PAZhIznYiXqjxq3K7B9TK6xVwiZFeRH2R09lPWuZ0LJq0BdwShXiUSVaHJ4Vk4ERM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/0hOWJy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40DEC4CEEA;
-	Mon, 23 Jun 2025 13:31:32 +0000 (UTC)
+	 MIME-Version; b=Epol5ezc/3SpG4HN/EG19EE+SO6YsZ3WzEZmpU+/1OCzKRhDdKl0jobVUXY/cllp+sC63n6IZjU+08mGi8MNLbTYiNsy7ZHOSdUwCLHl8HXPKuIuvfHjMuEczH/tPZldU0VsXC2eFwzce9sdZRg0ZsQXlhtrJynFyV34R2RYWxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7TShvdD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39827C4CEF1;
+	Mon, 23 Jun 2025 13:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685493;
-	bh=GPmkiTpCqQzzdWSjby7Pc68YOpKbDB9AA2tHz9RdaZo=;
+	s=korg; t=1750686022;
+	bh=HK03IS5nRIz2NAxuwJ+5FCIHuMoozhcXnlcCsENU+Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f/0hOWJy4ii8pvMFf9+qLje5i1es8a+Ll4EwnmmJ24pZT3HNRPp6k8ZRVfLw/mVO8
-	 pYIxUz2J4ZVsKnh+J99fQPySJlDNIvXZqS4otwDjCcd8Kp9iCCuJ5THZKF/w5Ap9L4
-	 U14AfiYruLSotaRuwHCZEIj6uHG9X2j8bnDBozVA=
+	b=N7TShvdD5u5ElKNq6pbV1ssO/czWVf86ddQGcsXokzLnEJjEg0w7B85q8ZaZh2C9t
+	 ee68/y7t1gCaceVy1ITiikILfcA2e18GbuOn1jQBsD71qrD+nnbkYFpu55iYVVn2dw
+	 Jmv1q3PWq3WVxAWwGJpoWhtOzrxQ089d6EXAwdB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 078/355] rpmsg: qcom_smd: Fix uninitialized return variable in __qcom_smd_send()
+	Steve Sears <sjs@hammerspace.com>,
+	Jakub Kacinski <kuba@kernel.org>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>
+Subject: [PATCH 6.6 018/290] SUNRPC: Prevent hang on NFS mount with xprtsec=[m]tls
 Date: Mon, 23 Jun 2025 15:04:39 +0200
-Message-ID: <20250623130629.165371233@linuxfoundation.org>
+Message-ID: <20250623130627.532697286@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 5de775df3362090a6e90046d1f2d83fe62489aa0 ]
+commit 0bd2f6b8996d4f1ca4573652454987826730a04a upstream.
 
-The "ret" variable isn't initialized if we don't enter the loop.  For
-example,  if "channel->state" is not SMD_CHANNEL_OPENED.
+Engineers at Hammerspace noticed that sometimes mounting with
+"xprtsec=tls" hangs for a minute or so, and then times out, even
+when the NFS server is reachable and responsive.
 
-Fixes: 33e3820dda88 ("rpmsg: smd: Use spinlock in tx path")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/aAkhvV0nSbrsef1P@stanley.mountain
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+kTLS shuts off data_ready callbacks if strp->msg_ready is set to
+mitigate data_ready callbacks when a full TLS record is not yet
+ready to be read from the socket.
+
+Normally msg_ready is clear when the first TLS record arrives on
+a socket. However, I observed that sometimes tls_setsockopt() sets
+strp->msg_ready, and that prevents forward progress because
+tls_data_ready() becomes a no-op.
+
+Moreover, Jakub says: "If there's a full record queued at the time
+when [tlshd] passes the socket back to the kernel, it's up to the
+reader to read the already queued data out." So SunRPC cannot
+expect a data_ready call when ingress data is already waiting.
+
+Add an explicit poll after SunRPC's upper transport is set up to
+pick up any data that arrived after the TLS handshake but before
+transport set-up is complete.
+
+Reported-by: Steve Sears <sjs@hammerspace.com>
+Suggested-by: Jakub Kacinski <kuba@kernel.org>
+Fixes: 75eb6af7acdf ("SUNRPC: Add a TCP-with-TLS RPC transport class")
+Tested-by: Mike Snitzer <snitzer@kernel.org>
+Reviewed-by: Mike Snitzer <snitzer@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rpmsg/qcom_smd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/xprtsock.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
-index b5167ef93abf9..6facf1b31d463 100644
---- a/drivers/rpmsg/qcom_smd.c
-+++ b/drivers/rpmsg/qcom_smd.c
-@@ -746,7 +746,7 @@ static int __qcom_smd_send(struct qcom_smd_channel *channel, const void *data,
- 	__le32 hdr[5] = { cpu_to_le32(len), };
- 	int tlen = sizeof(hdr) + len;
- 	unsigned long flags;
--	int ret;
-+	int ret = 0;
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -2724,6 +2724,11 @@ static void xs_tcp_tls_setup_socket(stru
+ 	}
+ 	rpc_shutdown_client(lower_clnt);
  
- 	/* Word aligned channels only accept word size aligned data */
- 	if (channel->info_word && len % 4)
--- 
-2.39.5
-
++	/* Check for ingress data that arrived before the socket's
++	 * ->data_ready callback was set up.
++	 */
++	xs_poll_check_readable(upper_transport);
++
+ out_unlock:
+ 	current_restore_flags(pflags, PF_MEMALLOC);
+ 	upper_transport->clnt = NULL;
 
 
 
