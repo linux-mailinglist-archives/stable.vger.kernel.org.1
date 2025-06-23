@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075DDAE5324
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A5FAE5190
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81E994A4EBF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 114D64422A8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC21221DA8;
-	Mon, 23 Jun 2025 21:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233591EE7C6;
+	Mon, 23 Jun 2025 21:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIDZQPzL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mgwg+tNQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9D1219A7A;
-	Mon, 23 Jun 2025 21:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D561B1EEA5D;
+	Mon, 23 Jun 2025 21:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715421; cv=none; b=g+v50fQZSEgsXUvLYt225RRGWZbQfZsUjqQvIilFabr/g7y4706/xknrkzzaYbNpEoYcCSUD0WPphNlgW9/LCdNJKM6uU8arrzQlN6YnZJvffAsU254qoH+BvjOR0SnLzGdPtw/5l1aut+LGkYeIgmM+qfSXM2iqNtg6ll9GSeA=
+	t=1750714526; cv=none; b=DDCR3JGCrAXnqC9BW1scgIBhamrVklJpn2pjl4p5tBYxjdhYPP+d7GbLm8aRU7Tnq2XJWBCDRVoWBqxBR2Qz2lzeh+lmWyop3iX9PEZZ9ZYD4YGGIHzwoGVonpCiwLZyVPnk0N7MI44eCZdHuVpRa0OQg2nDfrGy6dJvcKkKEgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715421; c=relaxed/simple;
-	bh=wn4blYwhyeuvKPW/hEmA213nBq9KzUFmJE5hOjdJ7J0=;
+	s=arc-20240116; t=1750714526; c=relaxed/simple;
+	bh=UNRSnROeyyOFF79lABnsfxb3QUAiFvnkmcd13d5y13g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7gtPU/zBA54wnrxcELr+d2uYOzv61+6wS/W81OBkEPssuvKxvierFUmNemHdLAiLNsD5mEiR2cw6/JxR9+WxEeCX8T1F+IfBM8ZRb+jO/6uIvCnkYMelZjuak3pnAcr1BEv7tmjNvdS0f0TSsQpPjE404z9H8UK1P38a554vDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIDZQPzL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA744C4CEF1;
-	Mon, 23 Jun 2025 21:50:20 +0000 (UTC)
+	 MIME-Version; b=bF2bCy3pShBlfp8ZGzpAxkOqmN6fJuVr7OfQgxphWhxTqf1+v7YISTxAjqoA65Fkhc6hhhIkQY/rYkAyZyyI0ASFiTWtGmYuUa2P82azsKkZ8lkkonDHQDyl4014d/X/KAFjSIIpXfU8qKgvZqOCMKTenCpRh5uF9BE54ErbHr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mgwg+tNQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E112C4CEEA;
+	Mon, 23 Jun 2025 21:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715421;
-	bh=wn4blYwhyeuvKPW/hEmA213nBq9KzUFmJE5hOjdJ7J0=;
+	s=korg; t=1750714526;
+	bh=UNRSnROeyyOFF79lABnsfxb3QUAiFvnkmcd13d5y13g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WIDZQPzLr6bgcctf04XIOYYC5UNTfQw3yDYwKNqF/GCcUdPDP+x8g9mciYlweDiSJ
-	 rPeQHaN/i4ydYEebCC6l3aazPYlMvLkLal1El5lMrIgtPZ/j8eB5W4SSxNe22TnZTM
-	 33ndqjldL3yay/IFE5wostjMTTC1BvE4/gYdbxlQ=
+	b=Mgwg+tNQl8Kf0Y1rLMxDrPTXFrMcMLDi1Ps9V+zOJDoxGcASzBv/DAFsQtBDSyMtD
+	 9tD/0icpNEhVd7vIRKUleP5g3cYB8mXLrlFWZitbdbFvVTbp8YlEUfw8HG15GZH0MH
+	 rBb5m2KeSdc+4MgPM34H5e6CqI+l9+4+0xKavGY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.15 457/592] jffs2: check jffs2_prealloc_raw_node_refs() result in few other places
+	Ahmed Salem <x0rw3ll@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 214/355] ACPICA: Avoid sequence overread in call to strncmp()
 Date: Mon, 23 Jun 2025 15:06:55 +0200
-Message-ID: <20250623130711.301302022@linuxfoundation.org>
+Message-ID: <20250623130633.179238447@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Ahmed Salem <x0rw3ll@gmail.com>
 
-commit 2b6d96503255a3ed676cd70f8368870c6d6a25c6 upstream.
+[ Upstream commit 64b9dfd0776e9c38d733094859a09f13282ce6f8 ]
 
-Fuzzing hit another invalid pointer dereference due to the lack of
-checking whether jffs2_prealloc_raw_node_refs() completed successfully.
-Subsequent logic implies that the node refs have been allocated.
+ACPICA commit 8b83a8d88dfec59ea147fad35fc6deea8859c58c
 
-Handle that. The code is ready for propagating the error upwards.
+ap_get_table_length() checks if tables are valid by
+calling ap_is_valid_header(). The latter then calls
+ACPI_VALIDATE_RSDP_SIG(Table->Signature).
 
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-CPU: 1 PID: 5835 Comm: syz-executor145 Not tainted 5.10.234-syzkaller #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:jffs2_link_node_ref+0xac/0x690 fs/jffs2/nodelist.c:600
-Call Trace:
- jffs2_mark_erased_block fs/jffs2/erase.c:460 [inline]
- jffs2_erase_pending_blocks+0x688/0x1860 fs/jffs2/erase.c:118
- jffs2_garbage_collect_pass+0x638/0x1a00 fs/jffs2/gc.c:253
- jffs2_reserve_space+0x3f4/0xad0 fs/jffs2/nodemgmt.c:167
- jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
- jffs2_write_end+0x712/0x1110 fs/jffs2/file.c:302
- generic_perform_write+0x2c2/0x500 mm/filemap.c:3347
- __generic_file_write_iter+0x252/0x610 mm/filemap.c:3465
- generic_file_write_iter+0xdb/0x230 mm/filemap.c:3497
- call_write_iter include/linux/fs.h:2039 [inline]
- do_iter_readv_writev+0x46d/0x750 fs/read_write.c:740
- do_iter_write+0x18c/0x710 fs/read_write.c:866
- vfs_writev+0x1db/0x6a0 fs/read_write.c:939
- do_pwritev fs/read_write.c:1036 [inline]
- __do_sys_pwritev fs/read_write.c:1083 [inline]
- __se_sys_pwritev fs/read_write.c:1078 [inline]
- __x64_sys_pwritev+0x235/0x310 fs/read_write.c:1078
- do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x67/0xd1
+ap_is_valid_header() accepts struct acpi_table_header as an argument, so
+the signature size is always fixed to 4 bytes.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+The problem is when the string comparison is between ACPI-defined table
+signature and ACPI_SIG_RSDP. Common ACPI table header specifies the
+Signature field to be 4 bytes long[1], with the exception of the RSDP
+structure whose signature is 8 bytes long "RSD PTR " (including the
+trailing blank character)[2]. Calling strncmp(sig, rsdp_sig, 8) would
+then result in a sequence overread[3] as sig would be smaller (4 bytes)
+than the specified bound (8 bytes).
 
-Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
-Fixes: f560928baa60 ("[JFFS2] Allocate node_ref for wasted space when skipping to page boundary")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As a workaround, pass the bound conditionally based on the size of the
+signature being passed.
+
+Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#system-description-table-header [1]
+Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#root-system-description-pointer-rsdp-structure [2]
+Link: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overread [3]
+Link: https://github.com/acpica/acpica/commit/8b83a8d8
+Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/2248233.Mh6RI2rZIc@rjwysocki.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jffs2/erase.c |    4 +++-
- fs/jffs2/scan.c  |    4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ include/acpi/actypes.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/jffs2/erase.c
-+++ b/fs/jffs2/erase.c
-@@ -425,7 +425,9 @@ static void jffs2_mark_erased_block(stru
- 			.totlen =	cpu_to_je32(c->cleanmarker_size)
- 		};
+diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
+index 7334037624c5c..a2bf54fb946a0 100644
+--- a/include/acpi/actypes.h
++++ b/include/acpi/actypes.h
+@@ -524,7 +524,7 @@ typedef u64 acpi_integer;
  
--		jffs2_prealloc_raw_node_refs(c, jeb, 1);
-+		ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
-+		if (ret)
-+			goto filebad;
+ /* Support for the special RSDP signature (8 characters) */
  
- 		marker.hdr_crc = cpu_to_je32(crc32(0, &marker, sizeof(struct jffs2_unknown_node)-4));
+-#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, 8))
++#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
+ #define ACPI_MAKE_RSDP_SIG(dest)        (memcpy (ACPI_CAST_PTR (char, (dest)), ACPI_SIG_RSDP, 8))
  
---- a/fs/jffs2/scan.c
-+++ b/fs/jffs2/scan.c
-@@ -256,7 +256,9 @@ int jffs2_scan_medium(struct jffs2_sb_in
- 
- 		jffs2_dbg(1, "%s(): Skipping %d bytes in nextblock to ensure page alignment\n",
- 			  __func__, skip);
--		jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
-+		ret = jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
-+		if (ret)
-+			goto out;
- 		jffs2_scan_dirty_space(c, c->nextblock, skip);
- 	}
- #endif
+ /* Support for OEMx signature (x can be any character) */
+-- 
+2.39.5
+
 
 
 
