@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-158150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2AAAE5762
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:29:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68FF1AE5617
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D472F3AE249
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 630651BC3A7C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64816223DF0;
-	Mon, 23 Jun 2025 22:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343632222AF;
+	Mon, 23 Jun 2025 22:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9TYlA0W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTKEOdlu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2052C2222B2;
-	Mon, 23 Jun 2025 22:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58BA19E7F9;
+	Mon, 23 Jun 2025 22:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717607; cv=none; b=Ai5PCcDWEf7tdwax6J7DSMT/yATdkIPIbcsl4jvbdhYilH3TA+mQ3VE8WQ912APiCpRAWYiJzesc4olNPOxhDW9WO34n1jxwBD4ur9zftH4rkt11y7SY9Oh/yLyOg6fFntsddmI7iOy3ot7sNOR70e5GttRzaYcojOD4WfOyeL4=
+	t=1750716970; cv=none; b=aMUF2hNHf8Dm+ZC9ma4lDSJGjd3zpUEXzYEh5BPlK1nHqnvLmJ5gTBKmilF7sqt6kgkCRakAyopgzCMI8pED2/dXYhVOzy9vo4xZMzkyrk/dsAqUCICQySIlOZS2fUxOFP/EEfe2aEPKvNP1Th8SOiL6NXxsiTZwdFPIstI+k0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717607; c=relaxed/simple;
-	bh=+0UASXMhDgAfgOVYZs6uE1sD6RLCyirchii7vAKHNuM=;
+	s=arc-20240116; t=1750716970; c=relaxed/simple;
+	bh=oQ7YVUk91gN1fzxRt/3KRJvVCKXFbbU2bGcbLqYqfQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PgMThqNoA25tbWzmcK2A68Z1d+QKPC9CoStucGjBFD0wGN1x7lcJCRWj0B+h8EttUpaz7/vJsg4wKIclv4ougrdVIRWQ8geIUR1yedbEh0uGDAUY6mC8L1gaR6O+jPrwxcnh/bGK7Znt9djMM2K/n6+k0dJgKzCIE02blUlgK2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9TYlA0W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABECDC4CEEA;
-	Mon, 23 Jun 2025 22:26:46 +0000 (UTC)
+	 MIME-Version; b=HzLCtiDWuDgMWLt1oXST1lNvW7hk2C938NjjZ6rLFYrVycigEhAg/P3ohfmGEGw2GtvA7tUZPsw0xcaLXr/nV55rns/FiK6RdZSMUR59Bu6tGJh8G3D/mZiGnqoVt7n2dRIgP8XaCJsaPInTDOlZAVrRjxRh4A5PPx/4aZi/F3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTKEOdlu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E17DC4CEEA;
+	Mon, 23 Jun 2025 22:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717607;
-	bh=+0UASXMhDgAfgOVYZs6uE1sD6RLCyirchii7vAKHNuM=;
+	s=korg; t=1750716969;
+	bh=oQ7YVUk91gN1fzxRt/3KRJvVCKXFbbU2bGcbLqYqfQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A9TYlA0WO15SCaD56i/HhP16h1qLngL3UnrzRcPwU8wbkDHdHDSlEYMbhTClimWG6
-	 C8n+Q+UfIwjsmO8tTD+XAFzeXC7m5VSXK73Jw5qeGaUDOyDUjDLzMD6Z5kRfEBvp9M
-	 qVYERvBrcqI2Hmvx8lr0b6Mp0bDMpxkjNPXJiXYE=
+	b=GTKEOdlusE6J9gLltsKU4WWlIv2MjbYnIJQFHRpXvgXsm5EDIURYQZ032Gob+QOIC
+	 QjDWAu3+s1DZFpXMKUWDGYJWUgKMQ9CvPTrgnxC6s/KZOOudom0sReIhMrwNKhSTaU
+	 qwAPkUtj1CA9wck2fb5Jl7iDwkcb5DGHstRI/vrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 468/508] bpf: Fix L4 csum update on IPv6 in CHECKSUM_COMPLETE
+	Arnd Bergmann <arnd@arndb.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 369/411] hwmon: (occ) Rework attribute registration for stack usage
 Date: Mon, 23 Jun 2025 15:08:33 +0200
-Message-ID: <20250623130656.616788401@linuxfoundation.org>
+Message-ID: <20250623130642.929271252@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +62,370 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit ead7f9b8de65632ef8060b84b0c55049a33cfea1 upstream.
+[ Upstream commit 744c2fe950e936c4d62430de899d6253424200ed ]
 
-In Cilium, we use bpf_csum_diff + bpf_l4_csum_replace to, among other
-things, update the L4 checksum after reverse SNATing IPv6 packets. That
-use case is however not currently supported and leads to invalid
-skb->csum values in some cases. This patch adds support for IPv6 address
-changes in bpf_l4_csum_update via a new flag.
+clang produces an output with excessive stack usage when building the
+occ_setup_sensor_attrs() function, apparently the result of having
+a lot of struct literals and building with the -fno-strict-overflow
+option that leads clang to skip some optimization in case the 'attr'
+pointer overruns:
 
-When calling bpf_l4_csum_replace in Cilium, it ends up calling
-inet_proto_csum_replace_by_diff:
+drivers/hwmon/occ/common.c:775:12: error: stack frame size (1392) exceeds limit (1280) in 'occ_setup_sensor_attrs' [-Werror,-Wframe-larger-than]
 
-    1:  void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
-    2:                                       __wsum diff, bool pseudohdr)
-    3:  {
-    4:      if (skb->ip_summed != CHECKSUM_PARTIAL) {
-    5:          csum_replace_by_diff(sum, diff);
-    6:          if (skb->ip_summed == CHECKSUM_COMPLETE && pseudohdr)
-    7:              skb->csum = ~csum_sub(diff, skb->csum);
-    8:      } else if (pseudohdr) {
-    9:          *sum = ~csum_fold(csum_add(diff, csum_unfold(*sum)));
-    10:     }
-    11: }
+Replace the custom macros for initializing the attributes with a
+simpler function call that does not run into this corner case.
 
-The bug happens when we're in the CHECKSUM_COMPLETE state. We've just
-updated one of the IPv6 addresses. The helper now updates the L4 header
-checksum on line 5. Next, it updates skb->csum on line 7. It shouldn't.
-
-For an IPv6 packet, the updates of the IPv6 address and of the L4
-checksum will cancel each other. The checksums are set such that
-computing a checksum over the packet including its checksum will result
-in a sum of 0. So the same is true here when we update the L4 checksum
-on line 5. We'll update it as to cancel the previous IPv6 address
-update. Hence skb->csum should remain untouched in this case.
-
-The same bug doesn't affect IPv4 packets because, in that case, three
-fields are updated: the IPv4 address, the IP checksum, and the L4
-checksum. The change to the IPv4 address and one of the checksums still
-cancel each other in skb->csum, but we're left with one checksum update
-and should therefore update skb->csum accordingly. That's exactly what
-inet_proto_csum_replace_by_diff does.
-
-This special case for IPv6 L4 checksums is also described atop
-inet_proto_csum_replace16, the function we should be using in this case.
-
-This patch introduces a new bpf_l4_csum_replace flag, BPF_F_IPV6,
-to indicate that we're updating the L4 checksum of an IPv6 packet. When
-the flag is set, inet_proto_csum_replace_by_diff will skip the
-skb->csum update.
-
-Fixes: 7d672345ed295 ("bpf: add generic bpf_csum_diff helper")
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://patch.msgid.link/96a6bc3a443e6f0b21ff7b7834000e17fb549e05.1748509484.git.paul.chaignon@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://godbolt.org/z/Wf1Yx76a5
+Fixes: 54076cb3b5ff ("hwmon (occ): Add sensor attributes and register hwmon device")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20250610092315.2640039-1-arnd@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/bpf.h       |    2 ++
- net/core/filter.c              |    5 +++--
- tools/include/uapi/linux/bpf.h |    2 ++
- 3 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/hwmon/occ/common.c | 212 +++++++++++++++----------------------
+ 1 file changed, 85 insertions(+), 127 deletions(-)
 
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -1787,6 +1787,7 @@ union bpf_attr {
-  * 		for updates resulting in a null checksum the value is set to
-  * 		**CSUM_MANGLED_0** instead. Flag **BPF_F_PSEUDO_HDR** indicates
-  * 		the checksum is to be computed against a pseudo-header.
-+ * 		Flag **BPF_F_IPV6** should be set for IPv6 packets.
-  *
-  * 		This helper works in combination with **bpf_csum_diff**\ (),
-  * 		which does not update the checksum in-place, but offers more
-@@ -5715,6 +5716,7 @@ enum {
- 	BPF_F_PSEUDO_HDR		= (1ULL << 4),
- 	BPF_F_MARK_MANGLED_0		= (1ULL << 5),
- 	BPF_F_MARK_ENFORCE		= (1ULL << 6),
-+	BPF_F_IPV6			= (1ULL << 7),
- };
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index 1757f3ab842e1..f846c1baff1e7 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -750,29 +750,30 @@ static ssize_t occ_show_extended(struct device *dev,
+ }
  
- /* BPF_FUNC_skb_set_tunnel_key and BPF_FUNC_skb_get_tunnel_key flags. */
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -1958,10 +1958,11 @@ BPF_CALL_5(bpf_l4_csum_replace, struct s
- 	bool is_pseudo = flags & BPF_F_PSEUDO_HDR;
- 	bool is_mmzero = flags & BPF_F_MARK_MANGLED_0;
- 	bool do_mforce = flags & BPF_F_MARK_ENFORCE;
-+	bool is_ipv6   = flags & BPF_F_IPV6;
- 	__sum16 *ptr;
+ /*
+- * Some helper macros to make it easier to define an occ_attribute. Since these
+- * are dynamically allocated, we shouldn't use the existing kernel macros which
++ * A helper to make it easier to define an occ_attribute. Since these
++ * are dynamically allocated, we cannot use the existing kernel macros which
+  * stringify the name argument.
+  */
+-#define ATTR_OCC(_name, _mode, _show, _store) {				\
+-	.attr	= {							\
+-		.name = _name,						\
+-		.mode = VERIFY_OCTAL_PERMISSIONS(_mode),		\
+-	},								\
+-	.show	= _show,						\
+-	.store	= _store,						\
+-}
+-
+-#define SENSOR_ATTR_OCC(_name, _mode, _show, _store, _nr, _index) {	\
+-	.dev_attr	= ATTR_OCC(_name, _mode, _show, _store),	\
+-	.index		= _index,					\
+-	.nr		= _nr,						\
++static void occ_init_attribute(struct occ_attribute *attr, int mode,
++	ssize_t (*show)(struct device *dev, struct device_attribute *attr, char *buf),
++	ssize_t (*store)(struct device *dev, struct device_attribute *attr,
++				   const char *buf, size_t count),
++	int nr, int index, const char *fmt, ...)
++{
++	va_list args;
++
++	va_start(args, fmt);
++	vsnprintf(attr->name, sizeof(attr->name), fmt, args);
++	va_end(args);
++
++	attr->sensor.dev_attr.attr.name = attr->name;
++	attr->sensor.dev_attr.attr.mode = mode;
++	attr->sensor.dev_attr.show = show;
++	attr->sensor.dev_attr.store = store;
++	attr->sensor.index = index;
++	attr->sensor.nr = nr;
+ }
  
- 	if (unlikely(flags & ~(BPF_F_MARK_MANGLED_0 | BPF_F_MARK_ENFORCE |
--			       BPF_F_PSEUDO_HDR | BPF_F_HDR_FIELD_MASK)))
-+			       BPF_F_PSEUDO_HDR | BPF_F_HDR_FIELD_MASK | BPF_F_IPV6)))
- 		return -EINVAL;
- 	if (unlikely(offset > 0xffff || offset & 1))
- 		return -EFAULT;
-@@ -1977,7 +1978,7 @@ BPF_CALL_5(bpf_l4_csum_replace, struct s
- 		if (unlikely(from != 0))
- 			return -EINVAL;
+-#define OCC_INIT_ATTR(_name, _mode, _show, _store, _nr, _index)		\
+-	((struct sensor_device_attribute_2)				\
+-		SENSOR_ATTR_OCC(_name, _mode, _show, _store, _nr, _index))
+-
+ /*
+  * Allocate and instatiate sensor_device_attribute_2s. It's most efficient to
+  * use our own instead of the built-in hwmon attribute types.
+@@ -858,14 +859,15 @@ static int occ_setup_sensor_attrs(struct occ *occ)
+ 		sensors->extended.num_sensors = 0;
+ 	}
  
--		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, false);
-+		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, is_ipv6);
- 		break;
- 	case 2:
- 		inet_proto_csum_replace2(ptr, skb, from, to, is_pseudo);
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -1787,6 +1787,7 @@ union bpf_attr {
-  * 		for updates resulting in a null checksum the value is set to
-  * 		**CSUM_MANGLED_0** instead. Flag **BPF_F_PSEUDO_HDR** indicates
-  * 		the checksum is to be computed against a pseudo-header.
-+ * 		Flag **BPF_F_IPV6** should be set for IPv6 packets.
-  *
-  * 		This helper works in combination with **bpf_csum_diff**\ (),
-  * 		which does not update the checksum in-place, but offers more
-@@ -5715,6 +5716,7 @@ enum {
- 	BPF_F_PSEUDO_HDR		= (1ULL << 4),
- 	BPF_F_MARK_MANGLED_0		= (1ULL << 5),
- 	BPF_F_MARK_ENFORCE		= (1ULL << 6),
-+	BPF_F_IPV6			= (1ULL << 7),
- };
+-	occ->attrs = devm_kzalloc(dev, sizeof(*occ->attrs) * num_attrs,
++	occ->attrs = devm_kcalloc(dev, num_attrs, sizeof(*occ->attrs),
+ 				  GFP_KERNEL);
+ 	if (!occ->attrs)
+ 		return -ENOMEM;
  
- /* BPF_FUNC_clone_redirect and BPF_FUNC_redirect flags. */
+ 	/* null-terminated list */
+-	occ->group.attrs = devm_kzalloc(dev, sizeof(*occ->group.attrs) *
+-					num_attrs + 1, GFP_KERNEL);
++	occ->group.attrs = devm_kcalloc(dev, num_attrs + 1,
++					sizeof(*occ->group.attrs),
++					GFP_KERNEL);
+ 	if (!occ->group.attrs)
+ 		return -ENOMEM;
+ 
+@@ -875,43 +877,33 @@ static int occ_setup_sensor_attrs(struct occ *occ)
+ 		s = i + 1;
+ 		temp = ((struct temp_sensor_2 *)sensors->temp.data) + i;
+ 
+-		snprintf(attr->name, sizeof(attr->name), "temp%d_label", s);
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0444, show_temp, NULL,
+-					     0, i);
++		occ_init_attribute(attr, 0444, show_temp, NULL,
++				   0, i, "temp%d_label", s);
+ 		attr++;
+ 
+ 		if (sensors->temp.version == 2 &&
+ 		    temp->fru_type == OCC_FRU_TYPE_VRM) {
+-			snprintf(attr->name, sizeof(attr->name),
+-				 "temp%d_alarm", s);
++			occ_init_attribute(attr, 0444, show_temp, NULL,
++					   1, i, "temp%d_alarm", s);
+ 		} else {
+-			snprintf(attr->name, sizeof(attr->name),
+-				 "temp%d_input", s);
++			occ_init_attribute(attr, 0444, show_temp, NULL,
++					   1, i, "temp%d_input", s);
+ 		}
+ 
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0444, show_temp, NULL,
+-					     1, i);
+ 		attr++;
+ 
+ 		if (sensors->temp.version > 1) {
+-			snprintf(attr->name, sizeof(attr->name),
+-				 "temp%d_fru_type", s);
+-			attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-						     show_temp, NULL, 2, i);
++			occ_init_attribute(attr, 0444, show_temp, NULL,
++					   2, i, "temp%d_fru_type", s);
+ 			attr++;
+ 
+-			snprintf(attr->name, sizeof(attr->name),
+-				 "temp%d_fault", s);
+-			attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-						     show_temp, NULL, 3, i);
++			occ_init_attribute(attr, 0444, show_temp, NULL,
++					   3, i, "temp%d_fault", s);
+ 			attr++;
+ 
+ 			if (sensors->temp.version == 0x10) {
+-				snprintf(attr->name, sizeof(attr->name),
+-					 "temp%d_max", s);
+-				attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-							     show_temp, NULL,
+-							     4, i);
++				occ_init_attribute(attr, 0444, show_temp, NULL,
++						   4, i, "temp%d_max", s);
+ 				attr++;
+ 			}
+ 		}
+@@ -920,14 +912,12 @@ static int occ_setup_sensor_attrs(struct occ *occ)
+ 	for (i = 0; i < sensors->freq.num_sensors; ++i) {
+ 		s = i + 1;
+ 
+-		snprintf(attr->name, sizeof(attr->name), "freq%d_label", s);
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0444, show_freq, NULL,
+-					     0, i);
++		occ_init_attribute(attr, 0444, show_freq, NULL,
++				   0, i, "freq%d_label", s);
+ 		attr++;
+ 
+-		snprintf(attr->name, sizeof(attr->name), "freq%d_input", s);
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0444, show_freq, NULL,
+-					     1, i);
++		occ_init_attribute(attr, 0444, show_freq, NULL,
++				   1, i, "freq%d_input", s);
+ 		attr++;
+ 	}
+ 
+@@ -943,32 +933,24 @@ static int occ_setup_sensor_attrs(struct occ *occ)
+ 			s = (i * 4) + 1;
+ 
+ 			for (j = 0; j < 4; ++j) {
+-				snprintf(attr->name, sizeof(attr->name),
+-					 "power%d_label", s);
+-				attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-							     show_power, NULL,
+-							     nr++, i);
++				occ_init_attribute(attr, 0444, show_power,
++						   NULL, nr++, i,
++						   "power%d_label", s);
+ 				attr++;
+ 
+-				snprintf(attr->name, sizeof(attr->name),
+-					 "power%d_average", s);
+-				attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-							     show_power, NULL,
+-							     nr++, i);
++				occ_init_attribute(attr, 0444, show_power,
++						   NULL, nr++, i,
++						   "power%d_average", s);
+ 				attr++;
+ 
+-				snprintf(attr->name, sizeof(attr->name),
+-					 "power%d_average_interval", s);
+-				attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-							     show_power, NULL,
+-							     nr++, i);
++				occ_init_attribute(attr, 0444, show_power,
++						   NULL, nr++, i,
++						   "power%d_average_interval", s);
+ 				attr++;
+ 
+-				snprintf(attr->name, sizeof(attr->name),
+-					 "power%d_input", s);
+-				attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-							     show_power, NULL,
+-							     nr++, i);
++				occ_init_attribute(attr, 0444, show_power,
++						   NULL, nr++, i,
++						   "power%d_input", s);
+ 				attr++;
+ 
+ 				s++;
+@@ -980,28 +962,20 @@ static int occ_setup_sensor_attrs(struct occ *occ)
+ 		for (i = 0; i < sensors->power.num_sensors; ++i) {
+ 			s = i + 1;
+ 
+-			snprintf(attr->name, sizeof(attr->name),
+-				 "power%d_label", s);
+-			attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-						     show_power, NULL, 0, i);
++			occ_init_attribute(attr, 0444, show_power, NULL,
++					   0, i, "power%d_label", s);
+ 			attr++;
+ 
+-			snprintf(attr->name, sizeof(attr->name),
+-				 "power%d_average", s);
+-			attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-						     show_power, NULL, 1, i);
++			occ_init_attribute(attr, 0444, show_power, NULL,
++					   1, i, "power%d_average", s);
+ 			attr++;
+ 
+-			snprintf(attr->name, sizeof(attr->name),
+-				 "power%d_average_interval", s);
+-			attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-						     show_power, NULL, 2, i);
++			occ_init_attribute(attr, 0444, show_power, NULL,
++					   2, i, "power%d_average_interval", s);
+ 			attr++;
+ 
+-			snprintf(attr->name, sizeof(attr->name),
+-				 "power%d_input", s);
+-			attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-						     show_power, NULL, 3, i);
++			occ_init_attribute(attr, 0444, show_power, NULL,
++					   3, i, "power%d_input", s);
+ 			attr++;
+ 		}
+ 
+@@ -1009,56 +983,43 @@ static int occ_setup_sensor_attrs(struct occ *occ)
+ 	}
+ 
+ 	if (sensors->caps.num_sensors >= 1) {
+-		snprintf(attr->name, sizeof(attr->name), "power%d_label", s);
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0444, show_caps, NULL,
+-					     0, 0);
++		occ_init_attribute(attr, 0444, show_caps, NULL,
++				   0, 0, "power%d_label", s);
+ 		attr++;
+ 
+-		snprintf(attr->name, sizeof(attr->name), "power%d_cap", s);
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0444, show_caps, NULL,
+-					     1, 0);
++		occ_init_attribute(attr, 0444, show_caps, NULL,
++				   1, 0, "power%d_cap", s);
+ 		attr++;
+ 
+-		snprintf(attr->name, sizeof(attr->name), "power%d_input", s);
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0444, show_caps, NULL,
+-					     2, 0);
++		occ_init_attribute(attr, 0444, show_caps, NULL,
++				   2, 0, "power%d_input", s);
+ 		attr++;
+ 
+-		snprintf(attr->name, sizeof(attr->name),
+-			 "power%d_cap_not_redundant", s);
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0444, show_caps, NULL,
+-					     3, 0);
++		occ_init_attribute(attr, 0444, show_caps, NULL,
++				   3, 0, "power%d_cap_not_redundant", s);
+ 		attr++;
+ 
+-		snprintf(attr->name, sizeof(attr->name), "power%d_cap_max", s);
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0444, show_caps, NULL,
+-					     4, 0);
++		occ_init_attribute(attr, 0444, show_caps, NULL,
++				   4, 0, "power%d_cap_max", s);
+ 		attr++;
+ 
+-		snprintf(attr->name, sizeof(attr->name), "power%d_cap_min", s);
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0444, show_caps, NULL,
+-					     5, 0);
++		occ_init_attribute(attr, 0444, show_caps, NULL,
++				   5, 0, "power%d_cap_min", s);
+ 		attr++;
+ 
+-		snprintf(attr->name, sizeof(attr->name), "power%d_cap_user",
+-			 s);
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0644, show_caps,
+-					     occ_store_caps_user, 6, 0);
++		occ_init_attribute(attr, 0644, show_caps, occ_store_caps_user,
++				   6, 0, "power%d_cap_user", s);
+ 		attr++;
+ 
+ 		if (sensors->caps.version > 1) {
+-			snprintf(attr->name, sizeof(attr->name),
+-				 "power%d_cap_user_source", s);
+-			attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-						     show_caps, NULL, 7, 0);
++			occ_init_attribute(attr, 0444, show_caps, NULL,
++					   7, 0, "power%d_cap_user_source", s);
+ 			attr++;
+ 
+ 			if (sensors->caps.version > 2) {
+-				snprintf(attr->name, sizeof(attr->name),
+-					 "power%d_cap_min_soft", s);
+-				attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-							     show_caps, NULL,
+-							     8, 0);
++				occ_init_attribute(attr, 0444, show_caps, NULL,
++						   8, 0,
++						   "power%d_cap_min_soft", s);
+ 				attr++;
+ 			}
+ 		}
+@@ -1067,19 +1028,16 @@ static int occ_setup_sensor_attrs(struct occ *occ)
+ 	for (i = 0; i < sensors->extended.num_sensors; ++i) {
+ 		s = i + 1;
+ 
+-		snprintf(attr->name, sizeof(attr->name), "extn%d_label", s);
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-					     occ_show_extended, NULL, 0, i);
++		occ_init_attribute(attr, 0444, occ_show_extended, NULL,
++				   0, i, "extn%d_label", s);
+ 		attr++;
+ 
+-		snprintf(attr->name, sizeof(attr->name), "extn%d_flags", s);
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-					     occ_show_extended, NULL, 1, i);
++		occ_init_attribute(attr, 0444, occ_show_extended, NULL,
++				   1, i, "extn%d_flags", s);
+ 		attr++;
+ 
+-		snprintf(attr->name, sizeof(attr->name), "extn%d_input", s);
+-		attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+-					     occ_show_extended, NULL, 2, i);
++		occ_init_attribute(attr, 0444, occ_show_extended, NULL,
++				   2, i, "extn%d_input", s);
+ 		attr++;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
