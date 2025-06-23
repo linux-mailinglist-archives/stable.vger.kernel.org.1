@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B893AE4F46
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB7CAE5410
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F29E189C977
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2215A1BC03E2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9E621ADB5;
-	Mon, 23 Jun 2025 21:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CC8222576;
+	Mon, 23 Jun 2025 21:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEXI2T8o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JX7/pFqC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5ED1DF98B;
-	Mon, 23 Jun 2025 21:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C3670838;
+	Mon, 23 Jun 2025 21:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713243; cv=none; b=qdzhwHTbtcWAmdSzcvAT5EXHvIFcmlZU7dB5GFAIUJ9mKx6yi5BKn6wO6K/pf6bzFt6Q2XkdqHQRRyf9RZn/sgb5JMqTh+DQlMiF+v4EpLMWC3yOhpIF7PPKhoO5dtN0NkXXv9VDdMeKBAm69je9IMPygAQoGPAk+kHQjrdSfqU=
+	t=1750715927; cv=none; b=EyoD3FBs93bUs0bIcGk+y7BM6pzKSCqSmvEzZbFQI4gXaUqJ1W/oFM+IQNPDYpfL0z46nQmqHDRkAEKo25xQ1GnBMHC7hJt33ytBEBgM3AeRkdNWOIneF9p9ziJIxRgQRCY0O2vUtQo4WaQlaab8dbLHvmS3qKYJY8w8k33HdRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713243; c=relaxed/simple;
-	bh=m1zDwvr6xEAgmijXdVE0rtuSFc8TqubI8tf0toF55Uc=;
+	s=arc-20240116; t=1750715927; c=relaxed/simple;
+	bh=1j8vpMI12MOzzC1/xVRpgE0I9uYyZXzb++CuOFqX0bA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hk3ajpn5lvKkEmk2bfWQ5nJTZyKs/OgmtQovmVuK/fzkyIgLZxx29+QC3BF9EeFIBez/HUNG38VghHpLtux+5q6+ry4f9K/TqO1y1I3hBHUROvSJ/O+49cr77PEoNHpuZw6p+oUd1p6sZ/BF85y1P/PFfUmCQAJq87yofL25dhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEXI2T8o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247BDC4CEEA;
-	Mon, 23 Jun 2025 21:14:02 +0000 (UTC)
+	 MIME-Version; b=lzXRRARWI7/gm6vLjkf55PnGYx2jbfD5vxCkPW3naFtxbY+1IELzDGA+qARrmLFU2xpr29y3SEX9qsKOPFTyhsBXx1vw13jjntk5l5tyDaluaOzTA0uM59MnE3nGGNg11cj5QDAyeHBorhELI9AY/1VOva/YEYntEwBbBJx6oC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JX7/pFqC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B27C4CEEA;
+	Mon, 23 Jun 2025 21:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713243;
-	bh=m1zDwvr6xEAgmijXdVE0rtuSFc8TqubI8tf0toF55Uc=;
+	s=korg; t=1750715927;
+	bh=1j8vpMI12MOzzC1/xVRpgE0I9uYyZXzb++CuOFqX0bA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LEXI2T8o/C1LIeRaUNxRDSq+KNBeVbdecwSBFe1WgoGhnqifnBzJyhLxE1SeTqQVh
-	 LJhi0xgEGB2TxdI+cB4Unw8fewtYPtHd0rxgyxYMqHoij61a5Xe0uTsvnFniow9NmL
-	 vOHngh+goB9k4kIlHYGBV1ipmAwdNNUH9/XX73qo=
+	b=JX7/pFqCvGmpwQiz39rC2FJju8yQqtSls7bu+cc2ZnyHw64TW6Yr9ucE/QWx7GG6h
+	 iuOdokHja9bmxBWZCuCtfkoe+XOczncVRT9/nhh6FWU651H+MtrBuG69HyOUBydQxL
+	 91h/ZbGtsjvcLBOehpASkVnIIG7r34fVoHGPVvcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Christian Lamparter <chunkeey@gmail.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 176/222] sock: Correct error checking condition for (assign|release)_proto_idx()
+Subject: [PATCH 5.10 310/355] wifi: carl9170: do not ping device which has failed to load firmware
 Date: Mon, 23 Jun 2025 15:08:31 +0200
-Message-ID: <20250623130617.464275218@linuxfoundation.org>
+Message-ID: <20250623130636.105971648@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit faeefc173be40512341b102cf1568aa0b6571acd ]
+[ Upstream commit 15d25307692312cec4b57052da73387f91a2e870 ]
 
-(assign|release)_proto_idx() wrongly check find_first_zero_bit() failure
-by condition '(prot->inuse_idx == PROTO_INUSE_NR - 1)' obviously.
+Syzkaller reports [1, 2] crashes caused by an attempts to ping
+the device which has failed to load firmware. Since such a device
+doesn't pass 'ieee80211_register_hw()', an internal workqueue
+managed by 'ieee80211_queue_work()' is not yet created and an
+attempt to queue work on it causes null-ptr-deref.
 
-Fix by correcting the condition to '(prot->inuse_idx == PROTO_INUSE_NR)'
+[1] https://syzkaller.appspot.com/bug?extid=9a4aec827829942045ff
+[2] https://syzkaller.appspot.com/bug?extid=0d8afba53e8fb2633217
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250410-fix_net-v2-1-d69e7c5739a4@quicinc.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e4a668c59080 ("carl9170: fix spurious restart due to high latency")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
+Link: https://patch.msgid.link/20250616181205.38883-1-dmantipov@yandex.ru
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/carl9170/usb.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index a8359770fd93a..418d0857d2aaa 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -3370,7 +3370,7 @@ static int assign_proto_idx(struct proto *prot)
- {
- 	prot->inuse_idx = find_first_zero_bit(proto_inuse_idx, PROTO_INUSE_NR);
+diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
+index a5265997b5767..debac4699687e 100644
+--- a/drivers/net/wireless/ath/carl9170/usb.c
++++ b/drivers/net/wireless/ath/carl9170/usb.c
+@@ -438,14 +438,21 @@ static void carl9170_usb_rx_complete(struct urb *urb)
  
--	if (unlikely(prot->inuse_idx == PROTO_INUSE_NR - 1)) {
-+	if (unlikely(prot->inuse_idx == PROTO_INUSE_NR)) {
- 		pr_err("PROTO_INUSE_NR exhausted\n");
- 		return -ENOSPC;
- 	}
-@@ -3381,7 +3381,7 @@ static int assign_proto_idx(struct proto *prot)
+ 		if (atomic_read(&ar->rx_anch_urbs) == 0) {
+ 			/*
+-			 * The system is too slow to cope with
+-			 * the enormous workload. We have simply
+-			 * run out of active rx urbs and this
+-			 * unfortunately leads to an unpredictable
+-			 * device.
++			 * At this point, either the system is too slow to
++			 * cope with the enormous workload (so we have simply
++			 * run out of active rx urbs and this unfortunately
++			 * leads to an unpredictable device), or the device
++			 * is not fully functional after an unsuccessful
++			 * firmware loading attempts (so it doesn't pass
++			 * ieee80211_register_hw() and there is no internal
++			 * workqueue at all).
+ 			 */
  
- static void release_proto_idx(struct proto *prot)
- {
--	if (prot->inuse_idx != PROTO_INUSE_NR - 1)
-+	if (prot->inuse_idx != PROTO_INUSE_NR)
- 		clear_bit(prot->inuse_idx, proto_inuse_idx);
- }
- #else
+-			ieee80211_queue_work(ar->hw, &ar->ping_work);
++			if (ar->registered)
++				ieee80211_queue_work(ar->hw, &ar->ping_work);
++			else
++				pr_warn_once("device %s is not registered\n",
++					     dev_name(&ar->udev->dev));
+ 		}
+ 	} else {
+ 		/*
 -- 
 2.39.5
 
