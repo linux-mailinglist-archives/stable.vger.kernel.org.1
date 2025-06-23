@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9BE0AE5022
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20855AE5257
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96CD13BB4FF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E8C844363E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1893A1EFFA6;
-	Mon, 23 Jun 2025 21:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C09221FCC;
+	Mon, 23 Jun 2025 21:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPmO/aSL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0XkSvbt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C189A1F582A;
-	Mon, 23 Jun 2025 21:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304D44315A;
+	Mon, 23 Jun 2025 21:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713746; cv=none; b=ocfQHujvrWriLCO54REDIsgp6tFFbHK/Q9eDUpK9Y0oyHNB2XssDVp9shPZ5Yk+XJPr32VD65hmfaaNJC+8e+PH0IFbImLRQjFPiE1rlWjAF2tiuWF1fsDdLzAGRvpXmpTbXJJ03z4VxDIEpVqEOCNIZLjOy1aGI7Fnvd92Yj38=
+	t=1750714968; cv=none; b=Jo5SXgKcDf8NiCnJ6R35JZuandOGfmiNRpGNZ+FK1ammtQlZGpVvE0aGkIlD4rBimiSKmlGrJLFQzyuWRdFKBZgnb4T9uZgGcazy96AAquPpasCJptySif8bSn5DMy19aqkAPeHI+KXMuRbwIT75xYZhFyMF8hU+o9jfPZGBolA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713746; c=relaxed/simple;
-	bh=6q6lo7o18JX45nQE+WGh/ElLP1/u15FNNv1OmGGVfH4=;
+	s=arc-20240116; t=1750714968; c=relaxed/simple;
+	bh=/tUszRO6cePgpFtBQ/DdboO5cuVkKErJ9U6L2nNXinQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZJ4QISwToYitwBQkEg+B0Tsj8gaUw0PPwcMYMEtuhNP9JBkjzZjQss55XtjlYy7kNiJSED+cCvBo4cdADig4AaW7Uxl4XH79A/7TB+Tq8RS81eiCrbjWVXOxLnE6p3Xqeql8TN29+gIlIzLg1ctEnHkpjSROrPVb/Fml++JSIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPmO/aSL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B45C4CEEA;
-	Mon, 23 Jun 2025 21:22:26 +0000 (UTC)
+	 MIME-Version; b=BXhUmm+zqeuBaeUWxs/IVUCiY4asIYXqAYW1PGsmaQ+9eeiNWCU4QHbHo7wWbH0/aU1n7Ehmyl8Cr0gtP8tXMxGFjCFp9v4J5mbNuZa5go1/eQM2TVB3v2KaEMi/8mGvIw5wgN8xlKw15MXsqbAwjjxI6a4CwQYWXJGrjAMPmto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0XkSvbt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B449DC4CEEA;
+	Mon, 23 Jun 2025 21:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713746;
-	bh=6q6lo7o18JX45nQE+WGh/ElLP1/u15FNNv1OmGGVfH4=;
+	s=korg; t=1750714968;
+	bh=/tUszRO6cePgpFtBQ/DdboO5cuVkKErJ9U6L2nNXinQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dPmO/aSLM77FN2RqSts5OCo07r67bOJbnCnebfmPef9hgpR/Vv7xemdNtTqqrnZ2h
-	 nhgJtIhh3zZFBFeX8a8+9PevOaCd1Lgb51BeFVrXCQqkyLfnRqzpLQrrs8xBSBOvBB
-	 SXUJs+XAqWnLmh/vx/iWwbEpD7L/JVDfaRlzTkhA=
+	b=p0XkSvbtxMFqOZdItImuMfI1RYqIC9XgIWYv5WCNVPJzDlSP2mfahBwhxjJ1zOjTO
+	 gw8q3OKDqptepOkPhPepgTwSCIZLZnGHwA+nezhm3u9/JDnvBEjWOTb2FCv3L2A0V4
+	 YHOMZSt8Emfci/edJ+paQPnbfv954dKlPg3TlLeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hewitt <christianshewitt@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 163/355] ASoC: meson: meson-card-utils: use of_property_present() for DT parsing
+	Ross Stutterheim <ross.stutterheim@garmin.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 5.15 220/411] ARM: 9447/1: arm/memremap: fix arch_memremap_can_ram_remap()
 Date: Mon, 23 Jun 2025 15:06:04 +0200
-Message-ID: <20250623130631.599669695@linuxfoundation.org>
+Message-ID: <20250623130639.201972865@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Ross Stutterheim <ross.stutterheim@garmin.com>
 
-commit 171eb6f71e9e3ba6a7410a1d93f3ac213f39dae2 upstream.
+commit 96e0b355883006554a0bee3697da475971d6bba8 upstream.
 
-Commit c141ecc3cecd ("of: Warn when of_property_read_bool() is used on
-non-boolean properties") added a warning when trying to parse a property
-with a value (boolean properties are defined as: absent = false, present
-without any value = true). This causes a warning from meson-card-utils.
+arm/memremap: fix arch_memremap_can_ram_remap()
 
-meson-card-utils needs to know about the existence of the
-"audio-routing" and/or "audio-widgets" properties in order to properly
-parse them. Switch to of_property_present() in order to silence the
-following warning messages during boot:
-  OF: /sound: Read of boolean property 'audio-routing' with a value.
-  OF: /sound: Read of boolean property 'audio-widgets' with a value.
+commit 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure
+presence of linear map") added the definition of
+arch_memremap_can_ram_remap() for arm[64] specific filtering of what pages
+can be used from the linear mapping. memblock_is_map_memory() was called
+with the pfn of the address given to arch_memremap_can_ram_remap();
+however, memblock_is_map_memory() expects to be given an address for arm,
+not a pfn.
 
-Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
-Tested-by: Christian Hewitt <christianshewitt@gmail.com>
+This results in calls to memremap() returning a newly mapped area when
+it should return an address in the existing linear mapping.
+
+Fix this by removing the address to pfn translation and pass the
+address directly.
+
+Fixes: 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure presence of linear map")
+Signed-off-by: Ross Stutterheim <ross.stutterheim@garmin.com>
+Cc: Mike Rapoport <rppt@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://patch.msgid.link/20250419213448.59647-1-martin.blumenstingl@googlemail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/meson/meson-card-utils.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mm/ioremap.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/sound/soc/meson/meson-card-utils.c
-+++ b/sound/soc/meson/meson-card-utils.c
-@@ -245,7 +245,7 @@ static int meson_card_parse_of_optional(
- 						    const char *p))
+--- a/arch/arm/mm/ioremap.c
++++ b/arch/arm/mm/ioremap.c
+@@ -483,7 +483,5 @@ void __init early_ioremap_init(void)
+ bool arch_memremap_can_ram_remap(resource_size_t offset, size_t size,
+ 				 unsigned long flags)
  {
- 	/* If property is not provided, don't fail ... */
--	if (!of_property_read_bool(card->dev->of_node, propname))
-+	if (!of_property_present(card->dev->of_node, propname))
- 		return 0;
- 
- 	/* ... but do fail if it is provided and the parsing fails */
+-	unsigned long pfn = PHYS_PFN(offset);
+-
+-	return memblock_is_map_memory(pfn);
++	return memblock_is_map_memory(offset);
+ }
 
 
 
