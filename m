@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461AFAE51A4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D367AE4F7C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:16:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F33618964BB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A43B57A1AA7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A64221F17;
-	Mon, 23 Jun 2025 21:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A4A1F3FF8;
+	Mon, 23 Jun 2025 21:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDU9hNCr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZenexkL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3D31EE7C6;
-	Mon, 23 Jun 2025 21:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74414C62;
+	Mon, 23 Jun 2025 21:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714556; cv=none; b=WrnLYlmYFdevFm0HEEGD9SgaqYbj/f4km+Ci4e9SOMytjLEBefkbe9qnn9Ke2CL2gqv6keJsZlKk2cGeCVQyoVX9tKVYIb54uq1mlW4lmHs9jvVQeUuR0M+ZuSuE3kM8JOIn/bStvYokS+Knle8llRKp+AGVWHnnj0WjjkMGo3A=
+	t=1750713331; cv=none; b=EhwgfXRgQDecKJp2riFEMneJX4qq5I8I4bF+pswuHHbEKgYibUWUvdNd2GD9gz90Hvq77fJbhDljPTw6hLB0YNU7e+dxTEfdMc583pSDqw1XfLAlBLocmGrAzHWZFbD64mHTDvpeJpxgF8EdnNSR0cvsc7IDFmiWDPobnPods/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714556; c=relaxed/simple;
-	bh=KjW7HDVjkekRnZYbxVFDyr2P9YmtiGQCBwx+HII5Z/U=;
+	s=arc-20240116; t=1750713331; c=relaxed/simple;
+	bh=6ZJli0UYyRl7pLKehZP7jLnpS/mF4xh28DDfnAGW57Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fwtSgqRmsmL0mQfkTGOMNvPb2Dk/J/n98CSUNOWL17L22v/tssO7MObZrRCNL+TiJoB5EC0Lot8TdxelH5ZUmL0oRqjA0npUaUkL25W7Tv28lo9rSjy+R481vXq15h+dQVcghV1LsGYWLsy5iVdT+SnwMOTKFMmq0PkQRcjhrgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDU9hNCr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DDBC4CEED;
-	Mon, 23 Jun 2025 21:35:55 +0000 (UTC)
+	 MIME-Version; b=KQsd83Zb9htG+VOabnVmliiklCT+U9dZFbQ62eTpciD+ksKcX/lxarC62vRjlFLPx2Hpmvl4OAGhECqWYTVP4jBz1J6/bJkr6JByeQmnWOVG+rOFesztibANAuqziBeh9ojy4YS9k3X/W4XpU5E74j1YSqJZfn5j4+zSgUKpIjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZenexkL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCA4C4CEEA;
+	Mon, 23 Jun 2025 21:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714556;
-	bh=KjW7HDVjkekRnZYbxVFDyr2P9YmtiGQCBwx+HII5Z/U=;
+	s=korg; t=1750713331;
+	bh=6ZJli0UYyRl7pLKehZP7jLnpS/mF4xh28DDfnAGW57Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDU9hNCrvZ38FdJQIGHsSmjBL4TMDr8Q6oSPJMcYFQFGoRSeIC0YxZ1GvBg8xwTVQ
-	 3pM8JPrcMi6FTUKVNBv5lo/1DOEghqaSK7ECV90jTmqHPB1t1WTux3uu3bEZ8W8xC7
-	 D53/gB8qocw1eQSd+76aljkFsSRvRlqgQObNEgAg=
+	b=LZenexkLw8cV4AaYVDoQXHfZIJjDqXdo3F6lJfwJWM9U/HkRdZMnw9M/Ep+jeLEWA
+	 U4vUk7n6FMJkZScpSpGBZq+d9nFPajx5Jqmv8YYJtU/0qOzo2da2apdfwSrv4EYAYn
+	 DzN2AK/3Y0dzPWEp+a/iP4P3FvvJFEkVdoKZWK6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 195/411] ASoC: qcom: sdm845: Add error handling in sdm845_slim_snd_hw_params()
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 138/355] net_sched: ets: fix a race in ets_qdisc_change()
 Date: Mon, 23 Jun 2025 15:05:39 +0200
-Message-ID: <20250623130638.585650374@linuxfoundation.org>
+Message-ID: <20250623130630.871543113@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 688abe2860fd9c644705b9e11cb9649eb891b879 upstream.
+[ Upstream commit d92adacdd8c2960be856e0b82acc5b7c5395fddb ]
 
-The function sdm845_slim_snd_hw_params() calls the functuion
-snd_soc_dai_set_channel_map() but does not check its return
-value. A proper implementation can be found in msm_snd_hw_params().
+Gerrard Tai reported a race condition in ETS, whenever SFQ perturb timer
+fires at the wrong time.
 
-Add error handling for snd_soc_dai_set_channel_map(). If the
-function fails and it is not a unsupported error, return the
-error code immediately.
+The race is as follows:
 
-Fixes: 5caf64c633a3 ("ASoC: qcom: sdm845: add support to DB845c and Lenovo Yoga")
-Cc: stable@vger.kernel.org # v5.6
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250519075739.1458-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CPU 0                                 CPU 1
+[1]: lock root
+[2]: qdisc_tree_flush_backlog()
+[3]: unlock root
+ |
+ |                                    [5]: lock root
+ |                                    [6]: rehash
+ |                                    [7]: qdisc_tree_reduce_backlog()
+ |
+[4]: qdisc_put()
+
+This can be abused to underflow a parent's qlen.
+
+Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
+should fix the race, because all packets will be purged from the qdisc
+before releasing the lock.
+
+Fixes: b05972f01e7d ("net: sched: tbf: don't call qdisc_put() while holding tree lock")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250611111515.1983366-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/sdm845.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/sched/sch_ets.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/qcom/sdm845.c
-+++ b/sound/soc/qcom/sdm845.c
-@@ -78,6 +78,10 @@ static int sdm845_slim_snd_hw_params(str
- 		else
- 			ret = snd_soc_dai_set_channel_map(cpu_dai, tx_ch_cnt,
- 							  tx_ch, 0, NULL);
-+		if (ret != 0 && ret != -ENOTSUPP) {
-+			dev_err(rtd->dev, "failed to set cpu chan map, err:%d\n", ret);
-+			return ret;
-+		}
+diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
+index 55b3362d27106..4f4da11a2c779 100644
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -675,7 +675,7 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
+ 	for (i = q->nbands; i < oldbands; i++) {
+ 		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
+ 			list_del_init(&q->classes[i].alist);
+-		qdisc_tree_flush_backlog(q->classes[i].qdisc);
++		qdisc_purge_queue(q->classes[i].qdisc);
  	}
- 
- 	return 0;
+ 	q->nstrict = nstrict;
+ 	memcpy(q->prio2band, priomap, sizeof(priomap));
+-- 
+2.39.5
+
 
 
 
