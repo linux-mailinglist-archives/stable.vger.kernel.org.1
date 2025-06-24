@@ -1,139 +1,104 @@
-Return-Path: <stable+bounces-158438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C206AE6D40
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 19:04:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97862AE6D47
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 19:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 141D03A8EAA
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 17:04:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 551533B0F5F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 17:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F5F22D4C3;
-	Tue, 24 Jun 2025 17:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67974C74;
+	Tue, 24 Jun 2025 17:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lKMhAbJb"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rc4lPfKA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC3A1E5219
-	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 17:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1DF26CE07
+	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 17:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750784681; cv=none; b=WXzX0NShKiU7UBuRugRnoZyvZov7lpW7Pt1WntVxXg1N3Ic48l59iJkcCd3ZPm1GJC6YksAlpohsyqweIvjcGS9vDWFV6vNUE5li1jAQ/pGwQBg7R9x7AEcpubKO2QwVp+lAAlQMvAEH60v9obftlKCBHel26oE65IlCJ0Pd+mY=
+	t=1750784872; cv=none; b=pqCzOLumO9WwAjveMTD9suQZETh+fbDkggS/OYPNPki7bzCguIbsJSag2F9S1TVsX1gkQ1JhGoaKdK2rdwwr/sD3PgOg5eoYsWpvv6nAS7NF7LSR8lLeNzTOtjivi6B2mG2xa+db2ApBsg402DYbngWZrQ145kDsUBwQpn5AHag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750784681; c=relaxed/simple;
-	bh=58kcgFOD1RHRrBQgHHL1uMvdKxJf0WroDEhGy+lfJFo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EhOD3RJgP6I+IJBc1bJaLCWjTGNh/w8eyZP3yu4ODHGv9gzRoyja8+WqG9o9WwDqIsy9a9wdYoD6vlN8ss2n5EzO0j9NY+qoG166cFV5Bwj+Py0mFkYOjBL2e28Z+gJvenvFZYTpiPL2th28XxQN1rRKBSspQT+PxV1fIgJ+Y3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lKMhAbJb; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a50fc7ac4dso494390f8f.0
-        for <stable@vger.kernel.org>; Tue, 24 Jun 2025 10:04:39 -0700 (PDT)
+	s=arc-20240116; t=1750784872; c=relaxed/simple;
+	bh=jgwDeGMT+xli/uBXRwHQe/v51mMPAL9t5lAp2ox+Wes=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u651sg3EH06MBqK8aBEs1aAgq/2k8V2KM5i4CPkHo5lHiqP33uIRzL9/lndmdZ5uoUUU2b+iHJNwEQUNEA6vpJ6qsxyr5+zk4nsqL17RvF/z8DbhJjAh1l02ClHmawjPJRb3pg7F6U6mb2v897Zk1B1TQp1qdOwmv/qPQHRja6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rc4lPfKA; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5f438523d6fso487a12.1
+        for <stable@vger.kernel.org>; Tue, 24 Jun 2025 10:07:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750784677; x=1751389477; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1750784869; x=1751389669; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qmK3Mm3VnYwR1mAYmNz88dJoBd6LZQY2x4R8sZw9hDg=;
-        b=lKMhAbJbCrT+9w/vPZdVrQfx1Nds9e5+DKUhIbrgnnHRhSMQVKxGsVLj0/vJxtuyf1
-         hdk5X3sBG/ponvxFcGmZuDr+3GfvYh/JgGKIl4BLPy+ZvCugHMjCPmLfMvbEAnoZRIuH
-         aBZdhz6skPBouqoSlJLzg0MG/U/EnpubK6eaR0jiXonKVRosBcxAU/zEKkMTzoD+pmcU
-         2FDV+rY70NOhvb3rXCIv9rPF2RTcuhfnKk6kQrCxf+AVK8jjV8UL0zfDY7g/x+sgEggJ
-         z0MkXLTdHqsN6mBa94i/mMIRQhWVfgLltSJi/Dn5qMyH2IfORKcr4eTtLPu3P6nXqAJ1
-         jZaQ==
+        bh=jgwDeGMT+xli/uBXRwHQe/v51mMPAL9t5lAp2ox+Wes=;
+        b=Rc4lPfKArM+MHXVRQ5jFE5KWxCMKr1sYfCuyfaqKm1ZftaiAUEeehcVt1y5rh94us/
+         oWt5bhOCE2bZmeeGd4SxhChiyaeF1MlC5DZhITMUN18eyf2617LvJusEG9rAmGUv04Pd
+         wvXsDmR/I1jndB2xyh4dme4u9zRn7wVM5WyAk9r4hiSB8CJHSmwigbrpvjdsa/jJYYEL
+         w1ZWPpswO0w+8r4qSn+OSqCa/xUvUY9MHfoojjewTHqqW0TL4YbQLL3Tr0nsxo/Ko0yg
+         Pw3Mp2+z2V96cZWoCP8Ihs42m1dqwGmYCxHD4XB8kK2kGoIRiC2LeNHC3aELwXWeF6rd
+         pVzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750784677; x=1751389477;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1750784869; x=1751389669;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qmK3Mm3VnYwR1mAYmNz88dJoBd6LZQY2x4R8sZw9hDg=;
-        b=HvRirBb0CtmuKO+txJPxbCi8EbPJ5XMiep9ylfc7Sgo+kFFc9n0Xclj1X3cPM28GJ4
-         03cg/ZEzGLXHGutt2bTOmsC7VSgsdK/wWGu7jAuD9SYOGw4n09o8Ie53pyZ53zto772w
-         3WkAH39roJxR6hE6Lbdd4AXNv3l4tR2D8LEoE4hDU4qptrpZMutwU2D5gcgBTnk9OOR9
-         NVMCFTvflc5Y3Tc9rWOgemhqXd5+wpBv+OsP87rPiVfOhKtmBYeLhqKtq0ab/P1xqvle
-         UsPz/AdPDFUu1l+Lx7fhB8sjwVccPHZ7/OVRhSWpaHMjCBnBw+Vo4O8vWpr1wdykKiBk
-         pOpQ==
-X-Gm-Message-State: AOJu0Yz1HAJbMZK2c9G8enIpvRzzKyFBjhgCFZBro53iRDcxGCvqbUCi
-	zp/WbhLoqJhHv+guSgBXIOLIQ/ZLQMGurahVM7cFP2590mZ7sBIrkbRWp0Aa7pdM
-X-Gm-Gg: ASbGncv+JtQOOMuKemhK/Kv345aZeq58GP1ig3RJWOkf+Mi7AZ6Lw4O7xEdWDK+JMxI
-	ekxe9tT3ucb89E5HPH7pw4Ysijfcvt1PB9sONNEVE4+y8jPyRVc0dRuK2tbs8FX0umYiHf0tgM1
-	+esVHD72AepsEYqa+0xRpjk++WgZTGr6K+IKOCgFJHxouiCEuVfs6Aa3ceg02zk4ZzP86socNte
-	ZXwZn+ve6lLrLP8oj2+2JQKCgZyUNO4BVpB+4kZ7SwYQpVZ5Jhn5My4kGqYJ/7iTNzd6+BmAGbi
-	BXLtgHXxsdJWYoSKbEtJk9yYOlB4NjFF1QByKzBVmi9vh7V3b0l14ToWOH7HffGiJ/0VQb29c2+
-	NWFjegO8OqWbvP75yIPtoA0PK3g==
-X-Google-Smtp-Source: AGHT+IHKgN2P0lUc2h0CDW+1OY55xfaPBy1onzyYUDwOiy4d5qrOl+gmRiQ5pR1Z5f2qQmQShgWQNQ==
-X-Received: by 2002:a05:6000:2dc4:b0:3a5:1cc5:aa6f with SMTP id ffacd0b85a97d-3a6d1322b77mr14626342f8f.34.1750784677243;
-        Tue, 24 Jun 2025 10:04:37 -0700 (PDT)
-Received: from laptop.home (178.75.217.87.dynamic.jazztel.es. [87.217.75.178])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e8069d78sm2386276f8f.45.2025.06.24.10.04.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Jun 2025 10:04:36 -0700 (PDT)
-From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-To: stable@vger.kernel.org,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-Subject: [PATCH v2 6.6.y 2/2] x86/tools: Drop duplicate unlikely() definition in insn_decoder_test.c
-Date: Tue, 24 Jun 2025 19:04:13 +0200
-Message-Id: <20250624170413.9314-3-sergio.collado@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250624170413.9314-1-sergio.collado@gmail.com>
-References: <20250624170413.9314-1-sergio.collado@gmail.com>
+        bh=jgwDeGMT+xli/uBXRwHQe/v51mMPAL9t5lAp2ox+Wes=;
+        b=qvtd9WxSAdpHfGYCSjBrCrmbMzd9Evxc/EHYFk1damGJ7xQFk+5+6fO15SNPbrgRXk
+         sRMufDLG/7O+i2j4JW6NeTjLY7dQQpEcKQicLacC+N+b9fa/++RO/mHr26hE07bzCsfP
+         XUILim036Xnnwis/afvfs0G4y5U2dno72odGMwqcqqYQJ+rFkrmPcg0PZ1l8E9Ky2MNn
+         uAWI74ENsKIqtIyUvCucQ85NIcyIeUNkb7VTBaedsR7DoE72cdXwhAAOHtOxOyCx2Dd8
+         KQUHsLDmtzWouQ03CbQodHIHdTsKEpS0eMVgOwmm8nV+HC+vLK9rRJEduLSK6rWR/04o
+         brBg==
+X-Gm-Message-State: AOJu0Yx24wxmnVav7AEHPO3pLoR4to24l8Q2hi/M4RyPMKrPmxyZtG89
+	I2LRrnGG7CG4KnHIdlPOlqmnEVst1IC4nxKOyIjUYgK3QFnWpBdvUeEKMaC6r5jrwlgehRBcjsv
+	9jyJHkebuV6uumb5OaH0rO/7LW6s2GCnADsFVoJ18
+X-Gm-Gg: ASbGncsYpN8ZDJlS0evVnya479PxciriT4athF1iBASdCzCNuAqbYfJcA2w51GC8Ob+
+	cOVnCazRTzazO6emrZLI1UF2kC3znI8vmaogf8LJCFbeEGqN3uKUCiNVWms65OgeQVY0dtPC0Dk
+	rgyapOCmJOnxIKLYo0K1nn+0fYWxX6zOeWGL8ZoIT5YaNdpYNugwc5FgrlkAAQPUIPOpydlrI=
+X-Google-Smtp-Source: AGHT+IE1zagAjllO9S8j8FAi/iAGTKUFHC+xoj3hF+4rUmILCXqnInb/uZKM8JdNHSEVilNnN4S9qD3OjZixAFV76k8=
+X-Received: by 2002:a50:d7cd:0:b0:607:bd2:4757 with SMTP id
+ 4fb4d7f45d1cf-60c303c8c54mr91183a12.1.1750784868941; Tue, 24 Jun 2025
+ 10:07:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250620213127.157399-1-jannh@google.com> <20250621052841-2e82f10b66fe127f@stable.kernel.org>
+In-Reply-To: <20250621052841-2e82f10b66fe127f@stable.kernel.org>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 24 Jun 2025 19:07:12 +0200
+X-Gm-Features: Ac12FXxFrWjwGIaFDpZ7NqskrbHdhnKY8n6azmNscVztnPNyMHfIsBjXYodBuDE
+Message-ID: <CAG48ez3hLGiYzXq05f9AyCu-0PzoL-hYU2G1WFTmuGmM5Odf4A@mail.gmail.com>
+Subject: Re: [PATCH 6.6.y] mm/hugetlb: unshare page tables during VMA split,
+ not before
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Nathan Chancellor <nathan@kernel.org>
+On Sat, Jun 21, 2025 at 12:15=E2=80=AFPM Sasha Levin <sashal@kernel.org> wr=
+ote:
+> [ Sasha's backport helper bot ]
+>
+> Hi,
+>
+> Summary of potential issues:
+> =E2=9A=A0=EF=B8=8F Found matching upstream commit but patch is missing pr=
+oper reference to it
+>
+> Found matching upstream commit: 081056dc00a27bccb55ccc3c6f230a3d5fd3f7e0
 
-commit f710202b2a45addea3dcdcd862770ecbaf6597ef upstream.
-
-After commit c104c16073b7 ("Kunit to check the longest symbol length"),
-there is a warning when building with clang because there is now a
-definition of unlikely from compiler.h in tools/include/linux, which
-conflicts with the one in the instruction decoder selftest:
-
-  arch/x86/tools/insn_decoder_test.c:15:9: warning: 'unlikely' macro redefined [-Wmacro-redefined]
-
-Remove the second unlikely() definition, as it is no longer necessary,
-clearing up the warning.
-
-Fixes: c104c16073b7 ("Kunit to check the longest symbol length")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
-Link: https://lore.kernel.org/r/20250318-x86-decoder-test-fix-unlikely-redef-v1-1-74c84a7bf05b@kernel.org
----
- arch/x86/tools/insn_decoder_test.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_decoder_test.c
-index 6c2986d2ad11..08cd913cbd4e 100644
---- a/arch/x86/tools/insn_decoder_test.c
-+++ b/arch/x86/tools/insn_decoder_test.c
-@@ -12,8 +12,6 @@
- #include <stdarg.h>
- #include <linux/kallsyms.h>
- 
--#define unlikely(cond) (cond)
--
- #include <asm/insn.h>
- #include <inat.c>
- #include <insn.c>
--- 
-2.39.2
-
+Whoops, sorry about that, I didn't realize "git cherry-pick" needs
+that "-x" flag to record the commit ID being backported.
+I see you fixed it up, thanks!
 
