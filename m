@@ -1,175 +1,130 @@
-Return-Path: <stable+bounces-158345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6399AE5F91
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 10:37:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E32F9AE5F9E
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 10:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC9D34C1383
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 08:36:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF6731920F96
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 08:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B8525E801;
-	Tue, 24 Jun 2025 08:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71F22586EF;
+	Tue, 24 Jun 2025 08:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="qUVdZKPC"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B02125D8E9;
-	Tue, 24 Jun 2025 08:36:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C4D25C829
+	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 08:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750754172; cv=none; b=NPn00nxBGMF1p8/6Ow7iFrFJgyotOmCJg7fGUpgwpqThIeXuUlKfGDtqIPK2Rnp5mx91bbHJPQByFQ1uyw01Ce8p6ghmuccjBU7tdgGO36aLjQTtwrTy7KfwriSsa7Ba+T4QK/6ZieisqNFkr3I+EgD/wlRsw+a4ypD9Ep0+PeQ=
+	t=1750754385; cv=none; b=P4maWKyQORWzA6Lt83OA8jgdkrvOf9ijqbqNX9tMgBsKouS+i3OS97xILdOva6/+VzNTDWSgaruu6SSu7v8Enu4kuqQCu1RGixcs9RqOKl9OCidmkj9swa5Ht86YFdURqEub9RpO/kGQB4uu7XAi8h8nyUCpXDJ/FRbopkks0t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750754172; c=relaxed/simple;
-	bh=Nx9IrRPwmqoCPc33na9M+Lr3g/VXJl7D7gv1DWymz98=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bF2FklsQJxHusQWSCjhdnHdDvrFmzf8RLUNKZVrvy/xmxJiBKBSSr/HmONhwfQvf7G4+EPTvHRUI45k54uXAQIX8TGg4r+Lb9fjh2OcgoK1Hl8Mt5/UEaf36d6yJJNmLLDoXyh1RAvS/aQG92b+CHlT8K1kAK9QBFF6aLgPRNSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from inp1wst086.omp.ru (81.22.207.138) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 24 Jun
- 2025 11:35:58 +0300
-From: Dmitriy Privalov <d.privalov@omp.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Dmitriy Privalov <d.privalov@omp.ru>, Miklos Szeredi <miklos@szeredi.hu>,
-	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH v2 5.10/5.15 3/3] fuse: don't increment nlink in link()
-Date: Tue, 24 Jun 2025 11:35:12 +0300
-Message-ID: <20250624083512.1386802-3-d.privalov@omp.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250624083512.1386802-1-d.privalov@omp.ru>
-References: <20250624083512.1386802-1-d.privalov@omp.ru>
+	s=arc-20240116; t=1750754385; c=relaxed/simple;
+	bh=rX6P9uJ++V6vV1O8h53puKB00AubrWSSwqgASU6o0tE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AwYDHY3n/W2CYhMdy9DjfJsc4/P3MFT5RBWynyESD796++GpmbBe7+jHp2Yy7SyxX/C3BDmQV2SMVQgJ/y2e5Osjna/Z3ZwE3sGuKEq2s8MZc9hJqPpuP93ZpMqQY8DDjkixpFBm9sIJxJAUxYY9kRqwl/nkdGj7/qmEeVGtp/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=qUVdZKPC; arc=none smtp.client-ip=44.202.169.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5009a.ext.cloudfilter.net ([10.0.29.176])
+	by cmsmtp with ESMTPS
+	id Tr51uVXgtiuzSTzBuue4rG; Tue, 24 Jun 2025 08:39:42 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id TzBtuiLn85IQGTzBuuBBy9; Tue, 24 Jun 2025 08:39:42 +0000
+X-Authority-Analysis: v=2.4 cv=Y+7+sAeN c=1 sm=1 tr=0 ts=685a644e
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=w9cJ1qrvW+sy42b7Whs+I9aymfUJla/Cy2Xe7jpLw0w=; b=qUVdZKPCUv6fCnqaqY5L2grqru
+	mYUW45kUMzKD+GkoNo9QcCxHdcCSWzKBc4eZ3IvzmzemHQFMgfLkEpy8J038pkYLe3j0KlZD8HIM7
+	E9pcbZ/RrkRAHBw2Gik2ezpV7+OlScmHZ87xzM1TKda2GXfvidNsMshyVBDi4SJumo0KzI9cdjaMV
+	OhJrtk16bJi+T/uB9PaqJfii2/+7DBI0Qmi10Qt7QcmSNaIAxK+2J3VJLImlV9BbgwWkCVrSUhTOA
+	HBglQPEwOejSu5ihZ9/0JgkPuZJCUHRrj12+MWkUEmhFQLvWa4oNSHxaayszLwQUt0IX8I4GiKRCf
+	yQOYoSAw==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:47032 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <re@w6rz.net>)
+	id 1uTzBr-00000002ROq-0YHg;
+	Tue, 24 Jun 2025 02:39:39 -0600
+Message-ID: <86227a29-2385-4bb1-be18-f1ac734fda55@w6rz.net>
+Date: Tue, 24 Jun 2025 01:39:35 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 06/24/2025 08:21:21
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 19
-X-KSE-AntiSpam-Info: Lua profiles 194289 [Jun 24 2025]
-X-KSE-AntiSpam-Info: Version: 6.1.1.11
-X-KSE-AntiSpam-Info: Envelope from: d.privalov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 62 0.3.62
- e2af3448995f5f8a7fe71abf21bb23519d0f38c3
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 81.22.207.138 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info:
-	omp.ru:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;81.22.207.138:7.1.2;inp1wst086.omp.ru:7.1.1
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 81.22.207.138
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 19
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/24/2025 08:23:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 6/24/2025 7:08:00 AM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 000/411] 5.15.186-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250623130632.993849527@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1uTzBr-00000002ROq-0YHg
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:47032
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 94
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfNGJzU0ad5RtX/WvFCLnHayNCNPaVdEDvms/CDFaXNwQFfCyYiZAtFgNcJKyfK9LqjcMk+8Cp4Cv7dBP3rxMUI5dSovBe73K34JAFUpusVx6X1aKHDB9
+ P4rliy0SZosSC2tCoqLk/Zv6R6qTdSg0mG4u7iA4xqgkCLv+YX7OU8U3sZSEJyoESxy4g3FMzS18YQ==
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+On 6/23/25 06:02, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.186 release.
+> There are 411 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 25 Jun 2025 13:05:51 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.186-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-commit 97f044f690bac2b094bfb7fb2d177ef946c85880 upstream.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-The fuse_iget() call in create_new_entry() already updated the inode with
-all the new attributes and incremented the attribute version.
-
-Incrementing the nlink will result in the wrong count.  This wasn't noticed
-because the attributes were invalidated right after this.
-
-Updating ctime is still needed for the writeback case when the ctime is not
-refreshed.
-
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Dmitriy Privalov <d.privalov@omp.ru>
----
-v2: Add 371e8fd02969 and cefd1b83275d to backport
-
- fs/fuse/dir.c | 30 +++++++++++-------------------
- 1 file changed, 11 insertions(+), 19 deletions(-)
-
-diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-index f8b444674c14..08ede7f7d8dc 100644
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -807,9 +807,8 @@ void fuse_flush_time_update(struct inode *inode)
- 	mapping_set_error(inode->i_mapping, err);
- }
- 
--void fuse_update_ctime(struct inode *inode)
-+static void fuse_update_ctime_in_cache(struct inode *inode)
- {
--	fuse_invalidate_attr(inode);
- 	if (!IS_NOCMTIME(inode)) {
- 		inode->i_ctime = current_time(inode);
- 		mark_inode_dirty_sync(inode);
-@@ -817,6 +816,12 @@ void fuse_update_ctime(struct inode *inode)
- 	}
- }
- 
-+void fuse_update_ctime(struct inode *inode)
-+{
-+	fuse_invalidate_attr(inode);
-+	fuse_update_ctime_in_cache(inode);
-+}
-+
- static void fuse_entry_unlinked(struct dentry *entry)
- {
- 	struct inode *inode = d_inode(entry);
-@@ -987,24 +992,11 @@ static int fuse_link(struct dentry *entry, struct inode *newdir,
- 	args.in_args[1].size = newent->d_name.len + 1;
- 	args.in_args[1].value = newent->d_name.name;
- 	err = create_new_entry(fm, &args, newdir, newent, inode->i_mode);
--	/* Contrary to "normal" filesystems it can happen that link
--	   makes two "logical" inodes point to the same "physical"
--	   inode.  We invalidate the attributes of the old one, so it
--	   will reflect changes in the backing inode (link count,
--	   etc.)
--	*/
--	if (!err) {
--		struct fuse_inode *fi = get_fuse_inode(inode);
--
--		spin_lock(&fi->lock);
--		fi->attr_version = atomic64_inc_return(&fm->fc->attr_version);
--		if (likely(inode->i_nlink < UINT_MAX))
--			inc_nlink(inode);
--		spin_unlock(&fi->lock);
--		fuse_update_ctime(inode);
--	} else if (err == -EINTR) {
-+	if (!err)
-+		fuse_update_ctime_in_cache(inode);
-+	else if (err == -EINTR)
- 		fuse_invalidate_attr(inode);
--	}
-+
- 	return err;
- }
- 
--- 
-2.34.1
+Tested-by: Ron Economos <re@w6rz.net>
 
 
