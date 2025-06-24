@@ -1,106 +1,99 @@
-Return-Path: <stable+bounces-158325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCAA6AE5D09
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 08:45:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB4AAAE5D54
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 09:03:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56B8B166B2F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 06:45:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9646918928D0
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 07:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AA924678E;
-	Tue, 24 Jun 2025 06:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CE1239567;
+	Tue, 24 Jun 2025 07:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="OSkH3z5k"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="yBONtD2M"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4F62405EB
-	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 06:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EEA22258C;
+	Tue, 24 Jun 2025 07:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750747500; cv=none; b=OFu422hQKyXFwWfUqzX1KCTtsl8JYgs8IZcTNsWxfyfs8Cj3Qp0eimZ+gmij7lkYJwWP0I2IREeiqp1nDOrFhURea2IZNRNU2B1x5VhD5Onr3ju05gclql4q5ieANox/bKKnNuvvTWH3w6yhxoCdTyTnXv93Yd90Ierg9qV0edw=
+	t=1750748589; cv=none; b=RfrbfyiFkYTIHCuD2NkBXmdxIWTLEPFOO+l5HVRpkZQQOk9dFng006Nril4QfzGtD3+GEGnaPpDBpUGcQx/m3+4zb3gMxtxn2UY5TlNwmBLH1sevO7Ez7tLGldrgYoLZjMYfWrgZh2ugiP4DdLJGdQJ2Hia4zRNTUDOW+7o8EZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750747500; c=relaxed/simple;
-	bh=UvEzmQ2P9YFloYGf/8N0kv07Y8BVFIQrMBCVxGKEIZU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kTGTqaCSntj4nLxQTpT5NrJ4HF+a4t+kfOwsX25DnJ856263xug8FsarGwcKoY+z9odlmAJNDTOXKT0Lrs3rgnZP8NUdSzf7WaNssg9P85xhxli0fRVlozg6vKdywQnFk7Ma1TIzTioL6IdOpn86Yna4rvmxC6lX2fmM6yPqDlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=OSkH3z5k; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=9L
-	m/COKTCaSQekKfmd0gD1I6B+WiHDivnJkRUzCOtDg=; b=OSkH3z5k6KRY7/E7eb
-	fP/c2jS6bcKhgYMSw7bTGqNp3SLSJsvgyLypI/RFoJjX8oddM3BWiH/0waMXzNh2
-	4gCH1ePzR9qDrvcyR0P+ME3J7KDglczOn6kyUiW1ZALxt7Rv2dwdNWNdm3SC8mGy
-	9rcWYWoP1a4Yj2DJK2ElqkM8c=
-Received: from pek-blan-cn-l1.corp.ad.wrs.com (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgAXwWFFSVpozugbAA--.3324S4;
-	Tue, 24 Jun 2025 14:44:37 +0800 (CST)
-From: jetlan9@163.com
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.12.y] net: libwx: fix Tx L4 checksum
-Date: Tue, 24 Jun 2025 14:44:07 +0800
-Message-Id: <20250624064407.1716-1-jetlan9@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1750748589; c=relaxed/simple;
+	bh=XOD1QPRKZMAXGA5MaZaHtwrD+CxKUTaDpa/4tHaEFoQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sS98DCop9u7uL7lKGGhinpJ+K1x7eQ7eraccb6mSU2oqHImGFfn5LwY9FobK8uCpyIZtPmIDaqSvG2yoCrcYX69OXNTS3c055QHAVyJmkx8PNFhM+iTYBLDZAEZurl9g6e4AjEuuVXRqoRLcvQHpFdi7sdLinfbd6ThgC6qFMy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=yBONtD2M; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id B76BD14C2D3;
+	Tue, 24 Jun 2025 09:02:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1750748580;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Cp+L8jxaNWQ/VZWl/gG/gGy4pfGeCsfwYLw/hzTr0s4=;
+	b=yBONtD2MqCr2UZsn+GD7EgMSDf7AVZG9j81sywJhaKCU4GMLeQTJoUnQvf33TZz+BFtdYp
+	bLB7ulGAqfV2UaVYuqf8ZylbkKCV8NDEYZ46dkaU5c9RCSBT02lP7+jMrNC52guvbk5UZ9
+	xHkU+iL8P912cWtahighLbcC7YPLd6RGQ1G1A3j1UM7RkiZm7KR2XthxunNgkH7J1r6O0Q
+	rBuKqn4A3NhyhPPaeAZEsmXJvf4ycVKkffIUNwy2mtc54E1Hs5DI3JjqaLUtPKXGpXJLf3
+	/aZqGJl+YKPczSppDJs08SCeonYcrFesOrCvy2eoOZAwVZyT2iTvS1BweLzWzQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id e75e798f;
+	Tue, 24 Jun 2025 07:02:54 +0000 (UTC)
+Date: Tue, 24 Jun 2025 16:02:39 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 000/355] 5.10.239-rc1 review
+Message-ID: <aFpNj5SrxHFBU14c@codewreck.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgAXwWFFSVpozugbAA--.3324S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KFW8JFWxtrykCw4rXryrZwb_yoW8Wr15pw
-	s8KrWrZwsrXr18W39rCa1xZr98Xayrtr9Y9ry2kw4Y9ryjyFy5JFW5tr17WFs3XaykAa4f
-	AFnFvw13G3Z5Za7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pR89NwUUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/1tbiQxB1yGhZy1ubAAACsW
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+Greg Kroah-Hartman wrote on Mon, Jun 23, 2025 at 03:03:21PM +0200:
+> This is the start of the stable review cycle for the 5.10.239 release.
+> There are 355 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 25 Jun 2025 13:05:51 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.239-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
-[ Upstream commit c7d82913d5f9e97860772ee4051eaa66b56a6273 ]
+Aside of the build problem on arm64 (and a resume bug on our end that
+seems to have gotten more likely, but does not look caused by this
+update) this looks good to me:
 
-The hardware only supports L4 checksum offload for TCP/UDP/SCTP protocol.
-There was a bug to set Tx checksum flag for the other protocol that results
-in Tx ring hang. Fix to compute software checksum for these packets.
+Tested 7b5e3f5b0ebc ("Linux 5.10.239-rc1") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
 
-Fixes: 3403960cdf86 ("net: wangxun: libwx add tx offload functions")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/20250324103235.823096-2-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_lib.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index 71c891d14fb6..0896742b3f30 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -1336,6 +1336,7 @@ static void wx_tx_csum(struct wx_ring *tx_ring, struct wx_tx_buffer *first,
- 	u8 tun_prot = 0;
- 
- 	if (skb->ip_summed != CHECKSUM_PARTIAL) {
-+csum_failed:
- 		if (!(first->tx_flags & WX_TX_FLAGS_HW_VLAN) &&
- 		    !(first->tx_flags & WX_TX_FLAGS_CC))
- 			return;
-@@ -1429,7 +1430,8 @@ static void wx_tx_csum(struct wx_ring *tx_ring, struct wx_tx_buffer *first,
- 					WX_TXD_L4LEN_SHIFT;
- 			break;
- 		default:
--			break;
-+			skb_checksum_help(skb);
-+			goto csum_failed;
- 		}
- 
- 		/* update TX checksum flag */
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 -- 
-2.39.4
-
+Dominique Martinet
 
