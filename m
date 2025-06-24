@@ -1,143 +1,121 @@
-Return-Path: <stable+bounces-158463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0AF2AE725A
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 00:36:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A5EAE7243
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 00:26:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0CF91882EA0
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 22:36:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D69A179134
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 22:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F5B25A349;
-	Tue, 24 Jun 2025 22:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="mfWXTP1R"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28728256C8D;
+	Tue, 24 Jun 2025 22:26:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD1A3074AE;
-	Tue, 24 Jun 2025 22:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB5D3074AE
+	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 22:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750804567; cv=none; b=fn3zB0AAY6+GPi8VpTRygL8lzcjxFToVcg8hE6x8+3ZA0ZiPqXWcPYFYIjtTRD8kFCXXOufH3cRHBxYSnazZMErSObk14vRfAZp/ZkJKdJPR++vtNe/uo8lhoj32+pHNsAsCh4Y6BMQSTCu+DKfExKE9D+NykfTshnJXuy3rats=
+	t=1750803988; cv=none; b=RRA5q5FUYpvCN2OF+EPNrDPFZX/UBWLvx3nCz4EXQiCYTZC+YLiFhljw/oYnsePGBb4BUrOBeCAmhz3QNTaTjzouiFC2itdeOy+lvzX/T5/x8YCM9jR1YXsjPZzAGEzQJxpkWq372AGoFNyCdIsZ6qZHGhLG7+o5yiV+FxpcuMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750804567; c=relaxed/simple;
-	bh=1eED4mBxxa41vGVxedCAPzdxMNfIB9r1fcfLhnFfTog=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hzVQgcf05MsdE2tcyKx7awuhPg+RWq6umY2nUtbdAlGgGoMlRGjdDJM3CaRXgm4xjBGabVMxDBQ2D+H13g77+xbZchTfYeADt1ejpWgF33DvP/hI0BQslhe3sZ4RDDZgg2rRZhCBLPY7hQTdcLMDv8K8TIzLC2HGRa5Kg07G4AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=mfWXTP1R; arc=none smtp.client-ip=212.227.126.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1750804563; x=1751409363; i=christian@heusel.eu;
-	bh=k84MJ9mlpMMXjFPHzH7zdej7Q7ifP2HIEnnm12B0cgg=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=mfWXTP1RreVwXcuBH2ykPJj66SnBYfy8ewI7d2aaOeESk2xPCE0eUVQO3WjAQ/2x
-	 LX3FoWUgxF0E8/+J4EXu8nx9nBZn9vwFcpCFBwL2WDIGYsW8KxVXSE36Ao8gjcYUt
-	 vc3juZQTqKQD32L0viaRiJyJvzbY7GFemswsO55mMUp3dFAYHVsfXUd4RTPYfxXRv
-	 ms07ExJzfTA9fzuOscwB0HndPwB45rR94NBf8cgIyuQ3XtyviRrOKEurXYzGfAWM6
-	 XfzquxIc2aCahVX/ZEqY4pPUy1D8A5bQ4luymhAOB8ossHDHg7EeYQK+LhN/u7WJ+
-	 nATHb/MHJhAlKJBElQ==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([89.244.90.39]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MkYLW-1vAeHu0hzy-00nH2w; Wed, 25 Jun 2025 00:20:40 +0200
-Date: Wed, 25 Jun 2025 00:20:36 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.15 000/588] 6.15.4-rc2 review
-Message-ID: <77c62de0-8236-46b9-a94a-8bc68873cffd@heusel.eu>
-References: <20250624121449.136416081@linuxfoundation.org>
+	s=arc-20240116; t=1750803988; c=relaxed/simple;
+	bh=MeDzIh5GkNPFeln1unPaj6YAAPet9ycl5IHJEY4pvjY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lv+p4zM+pmDFZmr/Uu5439b76YYDzrRdXWyzkd5Wevw2ojjDgYikcjbHWospBkxMtMANrTwLt/b8qHACbE6i22fsbVFQQtIO6qr1ZPWhivvBpCwiTuJiE3jtQo4BXDFELKQpLufQe/NXWI81GTERlUIPJwsCyNsUfpBWYcSWocE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1uUC5w-003DFm-2b;
+	Tue, 24 Jun 2025 22:26:24 +0000
+Received: from ben by deadeye with local (Exim 4.98.2)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1uUC5v-00000003CY8-0gAM;
+	Wed, 25 Jun 2025 00:26:23 +0200
+Message-ID: <38359c8a4f1edce6a44ea55f9f946b4adb39e92f.camel@decadent.org.uk>
+Subject: Re: [stable 6.12+] x86/pkeys: Simplify PKRU update in signal frame
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable <stable@vger.kernel.org>, "Chang S. Bae"
+ <chang.seok.bae@intel.com>,  Ingo Molnar <mingo@kernel.org>, Larry Wei
+ <larryw3i@yeah.net>, 1103397@bugs.debian.org
+Date: Wed, 25 Jun 2025 00:26:17 +0200
+In-Reply-To: <2025062025-requisite-calcium-ebfa@gregkh>
+References: <103664a92055a889a08cfc7bbe30084c6cb96eda.camel@decadent.org.uk>
+	 <2025062022-upchuck-headless-0475@gregkh>
+	 <2025062025-requisite-calcium-ebfa@gregkh>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-5WEddUScVRsef1rqd7gJ"
+User-Agent: Evolution 3.56.1-1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nturzagk3ts5ndbq"
-Content-Disposition: inline
-In-Reply-To: <20250624121449.136416081@linuxfoundation.org>
-X-Provags-ID: V03:K1:UTT0E38s87OzCdAygoU8p56GP4oApCv4yiNnw4v3qWs7Ly8eVk/
- lQzZATJn9BN9GRpbXUi/VJMjUnfiMIGlvoNyzsskp+FpU8GsOmLz9doN7T/VpkNuUnQBG3B
- tpbs+OYWR+MsV9br8o55StL4svvGDUEOtFUGCGiyWBaJRJ+dAw6P8A1DmBNRzwgFAX6dzWp
- ktWh2P2VwUk2iAnfSLaFw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:YrarjtneV4c=;vJnEpwAEy0LcytAt9yOGOYQtsQ3
- a2c8iqet12T+SKcWO40jHxi/qQxhEdhVOOpN7gCg0YqRw43srD8Txzt8/kwwFYi7AYmVdMoHP
- gUY54AglvqqIiuJl9hSzlsIBVN36jCc9A7DsN2Qahc3vmHd2i5jSnFkV/etDe8Gn9UfDozc8j
- KMlu6ZzRrHMqb4vdS6+97U9gEtDgQJSbMB+LE7VauqFa0u53w3Ke4jmRxegbBKDqecn7fgABx
- CrupENbV6zRnxHirnBArvqMqcxXzwZ858CRCKizDB39hhatOr8AJfiIKTJAzrtOJgSC8NxQwo
- NotuNaufuu5YQVkPoC87P9hYg700vxOzn86q5OClojv/BVMnI176E9BiMN2UC5mP/QC1uCrqz
- eFHcfnsrJDLER4bG+x7IgxHRP7E982ZyPjQgXZqgew/bw4HDRsBPlluqEaqrP9Otta1wqZz3u
- 17OgUJVJs2wngZwaFde/2lQK9BCRFB3aBidSVsQIwMduEq8glJerOLyS3OM90u7u3IaOM5Zwz
- uQZdLkGC2lxcauJMkFNgb34kvDWZ9dy6CFwOs2g9/yrNtzCHghEYz17cwx4Izw39vAkjVZUP3
- Yr2C9ilR0cyZ+8K0TZI4yjQIPau7jXZEGauCBIrZTK7VNS55GY8Ncu1yNU+jfGgIftj0DkJZf
- HNf/VkAPOkOj27Wjtuwysl3xCCv8dzs8w7XWH7qjCd3hPDFy7dskwmNBuqk1pdiD6n1ZH0hwd
- 4cPwF6U38XYq/KLi3jMNe+aEK3qKh9QaUUXMGQAm2+0bnLXMTj/8amdVY/IVAcylmOMMS9tGj
- G0Ra1I36v9DYL/7suLe1xz/beNE7ehfFONLKJ1CGg9TA+utSw4zZmlxGxubcJ/7DFdlxKK6yU
- Zcwey/05XhZEok7AyOKa/YEqBtYh4GZM70qtddHydgK8fGn+UgteZZQqENynOEOjYOBSO8lRq
- vNI+ivaspCS9Axa6zrrRzB5HMEvMTWA50cGt8LmHg8vvviTMNph/cfnEs5JQV+swlE+CjR2Wx
- Tm+61QuuWKl/sgPudqDJYQvoV2EwPCEaTuDx3ovoWV6aawsmfkLxDxkMPW+sERCGpPf0+VNaU
- q05QS1ZFPC8vvPLsSJhZhavte4EjISzL7XQqEJFhxLHMbubcX8zITqfXtVQJ6l5YjhzjVVmxw
- u2yveG+q2kcU9nb4X1lqNPHoZpQCHJVpdfSvcwO2/s0RYoF3qvdyE9yKdm0VKXdTRqi1o2MSR
- eZygDOCNt6czoI+G5ckIW2rwFQ76bHMhSjk+tStojulzFedyiiU4HPlzdB7omDMOJJJWr6ftN
- Gi/3y6fXLniGu0hnCuWwZV91xSDl67U+HwSLp8XQx9rDoGRGLQo7+sfqutRmqsL63W2FZ0X0W
- DAFcx5gJ4ayMGdYRu4DdSBx7Wdv+T5U83SLGm6AhNCmWDIn5lI4V+q6GTC
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 
 
---nturzagk3ts5ndbq
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
+--=-5WEddUScVRsef1rqd7gJ
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 6.15 000/588] 6.15.4-rc2 review
-MIME-Version: 1.0
 
-On 25/06/24 01:30PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.15.4 release.
-> There are 588 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Fri, 2025-06-20 at 18:11 +0200, Greg KH wrote:
+> On Fri, Jun 20, 2025 at 05:56:29PM +0200, Greg KH wrote:
+> > On Sun, Jun 15, 2025 at 09:25:57PM +0200, Ben Hutchings wrote:
+> > > Hi stable maintainers,
+> > >=20
+> > > Please apply commit d1e420772cd1 ("x86/pkeys: Simplify PKRU update in
+> > > signal frame") to the stable branches for 6.12 and later.
+> > >=20
+> > > This fixes a regression introduced in 6.13 by commit ae6012d72fa6
+> > > ("x86/pkeys: Ensure updated PKRU value is XRSTOR'd"), which was also
+> > > backported in 6.12.5.
+> >=20
+> > Now queued up, thanks.
 >=20
-> Responses should be made by Thu, 26 Jun 2025 12:13:28 +0000.
-> Anything received after that time might be too late.
+> Nope, this broke the build on 6.12.y and 6.15.y, so now dropped.  How
+> did you test this?
 
-Tested-by: Christian Heusel <christian@heusel.eu>
+Sorry, I forgot to say this depends on the preceding commit 64e54461ab6e
+("x86/fpu: Refactor xfeature bitmask update code for sigframe XSAVE").
 
-Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU and on the
-Steam Deck (LCD variant) aswell as a Framework Desktop.
+Ben.
 
---nturzagk3ts5ndbq
+--=20
+Ben Hutchings
+The most exhausting thing in life is being insincere.
+                                                 - Anne Morrow Lindberg
+
+--=-5WEddUScVRsef1rqd7gJ
 Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmhbJLQACgkQwEfU8yi1
-JYUW4xAAy3RZvpiOmTLoN9GNNxzlO8mUorLkvDo/9nQlrTQKVyScD8fDVTolEOnf
-SddZR2ozuGN0uPsjp2j/yuQW9qR7ftwMrAQftBmvID3huSqfxMjEq9ukZxACd5bu
-ElhniZZmWguGH2JtuVHwIWtnzwyNqMgX3b7zRqMuyQcSwn+GZ09569AZ494Y+IDj
-cA83UmeASPS9dbZmS51QxU396GbwaGzYqonDes96hYZR8jd4tTCJmCcdS3d9JGBV
-O1OQxTqpW1H1zJODhIGWN2ImVOLYjKSKX/HpZ0nPnausAb+Q12yFbocQ86zG4DeU
-ZeKHeGEPJtJAsJP+BFR9CUGkwMgxlzAsewG/5DJUaGuH8yQQlHQmzGsRkzdD4/cr
-8AStrVPozU/peVHMovwy/4I0q9OwQzEU50d9LsR16qu3bGcaIIiRtg6iKOid9ygA
-Hm0qhACamtp4vck9duk1YjvlWngbbJmizywZOZUlxhQ715t3XcS7b+T9fic+XanO
-WoSypOtLK7eyu4RnRYGXg9JrIFEBbp1cX6SxqWjaEnwMMATFfZNgUERfX5DzTN+S
-rrR2zbMQnjDZuJcm1P8C+YkzE6z33gqdRW5Ls/qHTSzdddjqj2E8Q/WY9a7RHkDu
-oKMLqTdRfyk2rF3vRCoEkUscyvN8Lq9BCI3UtFOG46u51kpkJm4=
-=aWbh
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmhbJgoACgkQ57/I7JWG
+EQmSTA//UogBe1OcAvtahfsWKZ6/BFYx02oSX5Z+TIPuOETuy66vnj1TkCYlL4fg
+dqAojUQL7100V6RL7L7tXQ+FqzUv13g87i11En4/W39DzJvT6SWke/ZQIc/u/FaJ
+tvr1txKNAg06zoa3XHuo0fYh/4+YjlzRmqR5lC3dfmH9vU5lBOlE1CZXJ1ASxhkf
+QuDNWWHkeMIjY6J8cqEjvilJbjK1bzTDjiiZJhK9GwXxRZRl5qybeLbrK4AuP90J
+I1YxJJWyOkHcpm4DyA59uUHEi6V5aLI2I2bpMoaZgzJp10ENpqShYIbuCCd8uoXo
+mPvliWUgzajEw7UUlQ9RisL6FBwXKzlSpnDsyfF/1pEIkDeDFR0wtQ41SLOoaHkN
+hW6/BY0FFtTRc0A647FkYPiJKz3uTeaShjoB9sk6H3Rpm+QLhQWDIYogUxcAnMnH
+I4rINE5HVT8LGZ0VJ7a4xq08gb4rlR6AzUGkDGMdHm7CkyoGhkUG2SxROqcsEqK9
+OFxGAwbq/vVCRqa9djXg+M+cvZn0wsbyA1h55hoMiUD4A4NFoB/yowS9q9XQaBKG
+igf/Fhs9xh9WpQu+P2nbHRZP4MWZ2HgB9S4O+VMGByAtpwKhidCket3UzBAtNx8A
+h2MVeGM1Ha/HhPSUywZrGelSqZlgy4Nbk6/QGmFh+1qoBN3Y6mU=
+=y51a
 -----END PGP SIGNATURE-----
 
---nturzagk3ts5ndbq--
+--=-5WEddUScVRsef1rqd7gJ--
 
