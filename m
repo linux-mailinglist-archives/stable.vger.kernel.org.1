@@ -1,150 +1,128 @@
-Return-Path: <stable+bounces-158404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C468AE6668
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 15:29:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 307BAAE669A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 15:33:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6035517441A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 13:26:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CB7D18925E2
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 13:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2AB2BFC74;
-	Tue, 24 Jun 2025 13:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263ED2C08C8;
+	Tue, 24 Jun 2025 13:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="FqWnnOxY"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="K/ReQUi3"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A844228D8FA
-	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 13:26:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408F8291C35
+	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 13:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750771607; cv=none; b=biDOENxF5eX/EdZRNxeD077GASIjE3NC5F65pBiTUPKYNtzQSZmdORLN1ogd+5ptaVBYQDyFSQjpcYTZuCygnOM7lSh1aAEBPCG7VkCiPm0ojanjQqYjUHU6zwC1X96B1YFtqvg/tv/PadJ4O/HuDqPj73KF+W6pbyUNfxc3TqU=
+	t=1750771988; cv=none; b=RXRpNRe3wWBIO3scbPHGki7hcC8muS/geGUuujsO1By86UfAjIx7C4NTqupPdGZ+10KBAqc49C6r3layGxREef8eu6i++rOmyuhliSR4CnmWqDeudOS0CrWiFwR/fSGFce+vIMfevPf89NmYXYDEYNVD9JdTW6Eb7l12rFmnnhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750771607; c=relaxed/simple;
-	bh=EI20QxxITBDHp2N3lpzP8MYZwfplyvNyTlthOzdrqs4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=hmBDMRDiKF0Q0tdBU8/OmO3FDVQReN++enXhsUQtptCBW3v0CM9LWtfwggmsZn/zi0bV80z8pGNu/8ySwQvWoN4fEGi+QJzZrRyj/0QO2+rGNHTKP8V1uHdD1h3OXSRxK6QoGV4QINmLaqtOUjyMC8OgCztG7kA/7rLi6Q+99UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=FqWnnOxY reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=heiJTn36rLHhW+uEpu9meF5hKQil5QXdHhBGmvegblo=; b=F
-	qWnnOxYEBQpBOqcrS3UzXqMmBi0IUTHi3OU3M1M7skrBVO68x986M7HMQgc9Q4yN
-	/Edr/ueVj8ayUAPMJVRWXxvmweW+tvrtRmE0DT/t+JN7NeIu0xzhLofcBemetG6K
-	SUPth02rQ7qXRALgXYuS5Z28ZiKmjfH5sh/Bku7+6A=
-Received: from 00107082$163.com ( [111.35.191.166] ) by
- ajax-webmail-wmsvr-40-115 (Coremail) ; Tue, 24 Jun 2025 21:25:58 +0800
- (CST)
-Date: Tue, 24 Jun 2025 21:25:58 +0800 (CST)
-From: "David Wang" <00107082@163.com>
-To: "Harry Yoo" <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, surenb@google.com, kent.overstreet@linux.dev,
-	oliver.sang@intel.com, cachen@purestorage.com, linux-mm@kvack.org,
-	oe-lkp@lists.linux.dev, stable@vger.kernel.org
-Subject: Re:[PATCH v3] lib/alloc_tag: do not acquire non-existent lock in
- alloc_tag_top_users()
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
- Copyright (c) 2002-2025 www.mailtech.cn 163com
-In-Reply-To: <20250624072513.84219-1-harry.yoo@oracle.com>
-References: <20250624072513.84219-1-harry.yoo@oracle.com>
-X-NTES-SC: AL_Qu2eAvucvk0u7iCaZ+kZnEYQheY4XMKyuPkg1YJXOp80pCT89Ao8f19DBXrP/MmsDiOxkDimTDNKwP1DQqBEf4Q4vrPbw43lX1UKbSlHhySx
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=arc-20240116; t=1750771988; c=relaxed/simple;
+	bh=2aYjxn/XjyqfROJtwhDsYywKfhT/JjZo+9HmvBofW1o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BH4gZeNxmOz6ZCOXSOQ1HvhyUhAXIX6xjBxQUZ3ez4c9Qd3zb55Oa3pP2YcyH1orRBteYNXyhh6SieSNx3+/Frpc+/yb8LQ074O038kHEDXbj89dyVANSPEk++j5+s7C/QyUewVJCsqB8cnCZEe9mPLXRPKj8tmTl6jw+IZ30yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=K/ReQUi3; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ad88d77314bso92317166b.1
+        for <stable@vger.kernel.org>; Tue, 24 Jun 2025 06:33:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1750771985; x=1751376785; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tkj6v/oyYjnLDQvdndgBTk2Muh6SQTWgkcZpBQ/t9Hg=;
+        b=K/ReQUi3eOOJcY1jqxMDEaPmV8o/99W2V21rfnkTbPHZBkJL70o+rihqgCxoynfV0m
+         EwZFTtQXi9Qenv+w4ZKIRfxQYZXycEnsb5dlofEYuDhrljHNypCqQ1TmXCB5Mjvodej5
+         05vro4Rk4zdHEv7uC3l0wjr48IgKTuaH5+3/Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750771985; x=1751376785;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Tkj6v/oyYjnLDQvdndgBTk2Muh6SQTWgkcZpBQ/t9Hg=;
+        b=dP/+FPKtIo3pJeTw03BGoaNAdly3rgYqe2Rh52xNLYpUtDoHVmgJRm/AYCUqqcNLT6
+         3jFCwR3FOeoMxbKnWqK9XnEVsSkFmhVfJu6HZLQKnsKjiUipHs9N8YHFIWsNf2v+0KgH
+         xDeRRsOc3kbma8vOfteGBCUc+Z/DI4PEszsr2vvXE3/SdQj0dtcnRwPRwxBfQHFOlEGL
+         /nQnx8M8iSo09E2g5vnclF2T/OqRqrASuiqkl3wdzeOOm+EPDhvicRTPr7y5n2vQyMJe
+         9SiptrQuM8ZCUalJXoWimQYPSppP8SYXfLM2OSRICZ1p/ISOjT7rW706pbo9pDT35waw
+         IKcg==
+X-Forwarded-Encrypted: i=1; AJvYcCUPgdjWiJk89TfiZ3iJtBwqJf0dcuSBIZ0k8qAMlGzL4WgdwAruMAyk3NZjyTGjv1ugbJ3hkMs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6HdCIRVFYaKueHnkT3No+5+q/0upJYqUNoJ4EANLp+ckLeAjE
+	v+5uNSGa/Ik7OCmK6/p3t8C+NGmvmUyQhohGydbgRKxhBaPHhSgD9IoT0tEzIqBEoT6nxgAfH7Y
+	6ajbXb7Lq
+X-Gm-Gg: ASbGncu1MrVSC+uTej7zWY/V8GySUuOGSaSZaf24YAmf3O2OrJzKdbPosEYd2Em0kWo
+	Xe9ORJJ5H4Uky0y9BOx/gs7vDXUXEhCNwxp82mPkrvskpHufDOeVjdjdaBpjodtd7SYmKbzdhsx
+	qAYokT+Hd3avhK5/8XjhrDu2eHgcBnwh0fQKQU+ubocu5v/+p0I11efsB3TNq/W0HzsC/O26DpU
+	Urecr4g9NhxtbD332j0E4DK2DSNMuwis8rvFLB46i9iQC5fjzOvIrVPYdTA1Bf9fWTB9v8Cb/5D
+	w6czJUtr/7l8dqvpR4hH6QtWVsWlxm74cyx4bWvudVD3IqNhXCVVay7czb1W31ZlEinCBegFG27
+	cASWgiGvhH4lqf80Au9OCPYMua7GFMeYBsPDGK3BDbK8if/tib9gQ
+X-Google-Smtp-Source: AGHT+IEe0SD7CtPOT2GsU04+3bSuhfq+kqQCtC4tVp5owq6ZynhgbyzhdLvK/T4ZiLjHJSHP8BIZCw==
+X-Received: by 2002:a17:907:948a:b0:ade:bf32:b05a with SMTP id a640c23a62f3a-ae0576a05f2mr1363893566b.0.1750771985028;
+        Tue, 24 Jun 2025 06:33:05 -0700 (PDT)
+Received: from akuchynski.c.googlers.com.com (72.144.91.34.bc.googleusercontent.com. [34.91.144.72])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae053edc0f5sm888265966b.59.2025.06.24.06.33.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Jun 2025 06:33:04 -0700 (PDT)
+From: Andrei Kuchynski <akuchynski@chromium.org>
+To: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Jos Wang <joswang@lenovo.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] usb: typec: displayport: Fix potential deadlock
+Date: Tue, 24 Jun 2025 13:32:46 +0000
+Message-ID: <20250624133246.3936737-1-akuchynski@chromium.org>
+X-Mailer: git-send-email 2.50.0.rc2.761.g2dc52ea45b-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <7f2f180f.a643.197a21de68c.Coremail.00107082@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:cygvCgDnT0Zmp1pooQskAA--.12571W
-X-CM-SenderInfo: qqqrilqqysqiywtou0bp/xtbB0hR2qmhanmlvwQAFs0
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
 
-CkF0IDIwMjUtMDYtMjQgMTU6MjU6MTMsICJIYXJyeSBZb28iIDxoYXJyeS55b29Ab3JhY2xlLmNv
-bT4gd3JvdGU6Cj5hbGxvY190YWdfdG9wX3VzZXJzKCkgYXR0ZW1wdHMgdG8gbG9jayBhbGxvY190
-YWdfY3R0eXBlLT5tb2RfbG9jawo+ZXZlbiB3aGVuIHRoZSBhbGxvY190YWdfY3R0eXBlIGlzIG5v
-dCBhbGxvY2F0ZWQgYmVjYXVzZToKPgo+ICAxKSBhbGxvYyB0YWdnaW5nIGlzIGRpc2FibGVkIGJl
-Y2F1c2UgbWVtIHByb2ZpbGluZyBpcyBkaXNhYmxlZAo+ICAgICAoIWFsbG9jX3RhZ19jdHR5cGUp
-Cj4gIDIpIGFsbG9jIHRhZ2dpbmcgaXMgZW5hYmxlZCwgYnV0IG5vdCB5ZXQgaW5pdGlhbGl6ZWQg
-KCFhbGxvY190YWdfY3R0eXBlKQo+ICAzKSBhbGxvYyB0YWdnaW5nIGlzIGVuYWJsZWQsIGJ1dCBm
-YWlsZWQgaW5pdGlhbGl6YXRpb24KPiAgICAgKCFhbGxvY190YWdfY3R0eXBlIG9yIElTX0VSUihh
-bGxvY190YWdfY3R0eXBlKSkKPgo+SW4gYWxsIGNhc2VzLCBhbGxvY190YWdfY3R0eXBlIGlzIG5v
-dCBhbGxvY2F0ZWQsIGFuZCB0aGVyZWZvcmUKPmFsbG9jX3RhZ190b3BfdXNlcnMoKSBzaG91bGQg
-bm90IGF0dGVtcHQgdG8gYWNxdWlyZSB0aGUgc2VtYXBob3JlLgo+Cj5UaGlzIGxlYWRzIHRvIGEg
-Y3Jhc2ggb24gbWVtb3J5IGFsbG9jYXRpb24gZmFpbHVyZSBieSBhdHRlbXB0aW5nIHRvCj5hY3F1
-aXJlIGEgbm9uLWV4aXN0ZW50IHNlbWFwaG9yZToKPgo+ICBPb3BzOiBnZW5lcmFsIHByb3RlY3Rp
-b24gZmF1bHQsIHByb2JhYmx5IGZvciBub24tY2Fub25pY2FsIGFkZHJlc3MgMHhkZmZmZmMwMDAw
-MDAwMDFiOiAwMDAwIFsjM10gU01QIEtBU0FOIE5PUFRJCj4gIEtBU0FOOiBudWxsLXB0ci1kZXJl
-ZiBpbiByYW5nZSBbMHgwMDAwMDAwMDAwMDAwMGQ4LTB4MDAwMDAwMDAwMDAwMDBkZl0KPiAgQ1BV
-OiAyIFVJRDogMCBQSUQ6IDEgQ29tbTogc3lzdGVtZCBUYWludGVkOiBHICAgICAgRCAgICAgICAg
-ICAgICA2LjE2LjAtcmMyICMxIFZPTFVOVEFSWQo+ICBUYWludGVkOiBbRF09RElFCj4gIEhhcmR3
-YXJlIG5hbWU6IFFFTVUgU3RhbmRhcmQgUEMgKGk0NDBGWCArIFBJSVgsIDE5OTYpLCBCSU9TIDEu
-MTYuMi1kZWJpYW4tMS4xNi4yLTEgMDQvMDEvMjAxNAo+ICBSSVA6IDAwMTA6ZG93bl9yZWFkX3Ry
-eWxvY2srMHhhYS8weDNiMAo+ICBDb2RlOiBkMCA3YyAwOCA4NCBkMiAwZiA4NSBhMCAwMiAwMCAw
-MCA4YiAwZCBkZiAzMSBkZCAwNCA4NSBjOSA3NSAyOSA0OCBiOCAwMCAwMCAwMCAwMCAwMCBmYyBm
-ZiBkZiA0OCA4ZCA2YiA2OCA0OCA4OSBlYSA0OCBjMSBlYSAwMyA8ODA+IDNjIDAyIDAwIDBmIDg1
-IDg4IDAyIDAwIDAwIDQ4IDNiIDViIDY4IDBmIDg1IDUzIDAxIDAwIDAwIDY1IGZmCj4gIFJTUDog
-MDAwMDpmZmZmODg4MTAwMmNlOWI4IEVGTEFHUzogMDAwMTAwMTYKPiAgUkFYOiBkZmZmZmMwMDAw
-MDAwMDAwIFJCWDogMDAwMDAwMDAwMDAwMDA3MCBSQ1g6IDAwMDAwMDAwMDAwMDAwMDAKPiAgUkRY
-OiAwMDAwMDAwMDAwMDAwMDFiIFJTSTogMDAwMDAwMDAwMDAwMDAwYSBSREk6IDAwMDAwMDAwMDAw
-MDAwNzAKPiAgUkJQOiAwMDAwMDAwMDAwMDAwMGQ4IFIwODogMDAwMDAwMDAwMDAwMDAwMSBSMDk6
-IGZmZmZlZDEwN2RkZTQ5ZDEKPiAgUjEwOiBmZmZmODg4M2VlZjI0ZThiIFIxMTogZmZmZjg4ODEw
-MDJjZWMyMCBSMTI6IDFmZmZmMTEwMjAwNTlkMzcKPiAgUjEzOiAwMDAwMDAwMDAwM2ZmZjdiIFIx
-NDogZmZmZjg4ODEwMDJjZWMyMCBSMTU6IGRmZmZmYzAwMDAwMDAwMDAKPiAgRlM6ICAwMDAwN2Y5
-NjNmMjFkOTQwKDAwMDApIEdTOmZmZmY4ODg0NThjYTYwMDAoMDAwMCkga25sR1M6MDAwMDAwMDAw
-MDAwMDAwMAo+ICBDUzogIDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUw
-MDMzCj4gIENSMjogMDAwMDdmOTYzZjVlZGY3MSBDUjM6IDAwMDAwMDAxMDY3MmMwMDAgQ1I0OiAw
-MDAwMDAwMDAwMzUwZWYwCj4gIENhbGwgVHJhY2U6Cj4gICA8VEFTSz4KPiAgIGNvZGV0YWdfdHJ5
-bG9ja19tb2R1bGVfbGlzdCsweGQvMHgyMAo+ICAgYWxsb2NfdGFnX3RvcF91c2VycysweDM2OS8w
-eDRiMAo+ICAgX19zaG93X21lbSsweDFjZC8weDZlMAo+ICAgd2Fybl9hbGxvYysweDJiMS8weDM5
-MAo+ICAgX19hbGxvY19mcm96ZW5fcGFnZXNfbm9wcm9mKzB4MTJiOS8weDIxYTAKPiAgIGFsbG9j
-X3BhZ2VzX21wb2wrMHgxMzUvMHgzZTAKPiAgIGFsbG9jX3NsYWJfcGFnZSsweDgyLzB4ZTAKPiAg
-IG5ld19zbGFiKzB4MjEyLzB4MjQwCj4gICBfX19zbGFiX2FsbG9jKzB4ODJhLzB4ZTAwCj4gICA8
-L1RBU0s+Cj4KPkFzIERhdmlkIFdhbmcgcG9pbnRzIG91dCwgdGhpcyBpc3N1ZSBiZWNhbWUgZWFz
-aWVyIHRvIHRyaWdnZXIgYWZ0ZXIgY29tbWl0Cj43ODAxMzhiMTIzODEgKCJhbGxvY190YWc6IGNo
-ZWNrIG1lbV9wcm9maWxpbmdfc3VwcG9ydCBpbiBhbGxvY190YWdfaW5pdCIpLgo+Cj5CZWZvcmUg
-dGhlIGNvbW1pdCwgdGhlIGlzc3VlIG9jY3VycmVkIG9ubHkgd2hlbiBpdCBmYWlsZWQgdG8gYWxs
-b2NhdGUKPmFuZCBpbml0aWFsaXplIGFsbG9jX3RhZ19jdHR5cGUgb3IgaWYgYSBtZW1vcnkgYWxs
-b2NhdGlvbiBmYWlscyBiZWZvcmUKPmFsbG9jX3RhZ19pbml0KCkgaXMgY2FsbGVkLiBBZnRlciB0
-aGUgY29tbWl0LCBpdCBjYW4gYmUgZWFzaWx5IHRyaWdnZXJlZAo+d2hlbiBtZW1vcnkgcHJvZmls
-aW5nIGlzIGNvbXBpbGVkIGJ1dCBkaXNhYmxlZCBhdCBib290Lgo+Cj5UbyBwcm9wZXJseSBkZXRl
-cm1pbmUgd2hldGhlciBhbGxvY190YWdfaW5pdCgpIGhhcyBiZWVuIGNhbGxlZCBhbmQKPml0cyBk
-YXRhIHN0cnVjdHVyZXMgaW5pdGlhbGl6ZWQsIHZlcmlmeSB0aGF0IGFsbG9jX3RhZ19jdHR5cGUg
-aXMgYSB2YWxpZAo+cG9pbnRlciBiZWZvcmUgYWNxdWlyaW5nIHRoZSBzZW1hcGhvcmUuIElmIHRo
-ZSB2YXJpYWJsZSBpcyBOVUxMIG9yIGFuIGVycm9yCj52YWx1ZSwgaXQgaGFzIG5vdCBiZWVuIHBy
-b3Blcmx5IGluaXRpYWxpemVkLiBJbiBzdWNoIGEgY2FzZSwganVzdCBza2lwCj5hbmQgZG8gbm90
-IGF0dGVtcHQgdG8gYWNxdWlyZSB0aGUgc2VtYXBob3JlLgo+Cj5SZXBvcnRlZC1ieToga2VybmVs
-IHRlc3Qgcm9ib3QgPG9saXZlci5zYW5nQGludGVsLmNvbT4KPkNsb3NlczogaHR0cHM6Ly9sb3Jl
-Lmtlcm5lbC5vcmcvb2UtbGtwLzIwMjUwNjE4MTM1MS5iYmE4NjdkZC1sa3BAaW50ZWwuY29tCj5D
-bG9zZXM6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL29lLWxrcC8yMDI1MDYxMzE3MTEuNWI0MTkz
-MWMtbGtwQGludGVsLmNvbQo+Rml4ZXM6IDc4MDEzOGIxMjM4MSAoImFsbG9jX3RhZzogY2hlY2sg
-bWVtX3Byb2ZpbGluZ19zdXBwb3J0IGluIGFsbG9jX3RhZ19pbml0IikKPkZpeGVzOiAxNDM4ZDM0
-OWQxNmIgKCJsaWI6IGFkZCBtZW1vcnkgYWxsb2NhdGlvbnMgcmVwb3J0IGluIHNob3dfbWVtKCki
-KQo+Q2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKPlNpZ25lZC1vZmYtYnk6IEhhcnJ5IFlvbyA8
-aGFycnkueW9vQG9yYWNsZS5jb20+Cj4tLS0KPgo+QFN1cmVuOiBJIGRpZCBub3QgYWRkIGFub3Ro
-ZXIgcHJfd2FybigpIGJlY2F1c2UgZXZlcnkgZXJyb3IgcGF0aCBpbgo+YWxsb2NfdGFnX2luaXQo
-KSBhbHJlYWR5IGhhcyBwcl9lcnIoKS4KPgo+djIgLT4gdjM6Cj4tIEFkZGVkIGFub3RoZXIgQ2xv
-c2VzOiB0YWcgKERhdmlkKQo+LSBNb3ZlZCB0aGUgY29uZGl0aW9uIGludG8gYSBzdGFuZGFsb25l
-IGlmIGJsb2NrIGZvciBiZXR0ZXIgcmVhZGFiaWxpdHkKPiAgKFN1cmVuKQo+LSBUeXBvIGZpeCAo
-U3VyZW4pCj4KPiBsaWIvYWxsb2NfdGFnLmMgfCAzICsrKwo+IDEgZmlsZSBjaGFuZ2VkLCAzIGlu
-c2VydGlvbnMoKykKPgo+ZGlmZiAtLWdpdCBhL2xpYi9hbGxvY190YWcuYyBiL2xpYi9hbGxvY190
-YWcuYwo+aW5kZXggNDFjY2ZiMDM1YjdiLi5lOWIzMzg0ODcwMGEgMTAwNjQ0Cj4tLS0gYS9saWIv
-YWxsb2NfdGFnLmMKPisrKyBiL2xpYi9hbGxvY190YWcuYwo+QEAgLTEyNyw2ICsxMjcsOSBAQCBz
-aXplX3QgYWxsb2NfdGFnX3RvcF91c2VycyhzdHJ1Y3QgY29kZXRhZ19ieXRlcyAqdGFncywgc2l6
-ZV90IGNvdW50LCBib29sIGNhbl9zbAo+IAlzdHJ1Y3QgY29kZXRhZ19ieXRlcyBuOwo+IAl1bnNp
-Z25lZCBpbnQgaSwgbnIgPSAwOwo+IAo+KwlpZiAoSVNfRVJSX09SX05VTEwoYWxsb2NfdGFnX2N0
-dHlwZSkpCj4rCQlyZXR1cm4gMDsKCldoYXQgYWJvdXQgbWVtX3Byb2ZpbGluZ19zdXBwb3J0IHNl
-dCB0byAwIGFmdGVyIGFsbG9jX3RhZ19pbml0LCBpbiB0aGlzIGNhc2U6CmFsbG9jX3RhZ19jdHR5
-cGUgIT0gTlVMTCAmJiBtZW1fcHJvZmlsaW5nX3N1cHBvcnQ9PTAKCkkga2luZCBvZiB0aGluayBh
-bGxvY190YWdfdG9wX3VzZXJzIHNob3VsZCByZXR1cm4gMCBpbiB0aGlzIGNhc2UuLi4uYW5kICBi
-b3RoIG1lbV9wcm9maWxpbmdfc3VwcG9ydCBhbmQgYWxsb2NfdGFnX2N0dHlwZSBzaG91bGQgYmUg
-Y2hlY2tlZC4uLi4KCj4rCj4gCWlmIChjYW5fc2xlZXApCj4gCQljb2RldGFnX2xvY2tfbW9kdWxl
-X2xpc3QoYWxsb2NfdGFnX2N0dHlwZSwgdHJ1ZSk7Cj4gCWVsc2UgaWYgKCFjb2RldGFnX3RyeWxv
-Y2tfbW9kdWxlX2xpc3QoYWxsb2NfdGFnX2N0dHlwZSkpCj4tLSAKPjIuNDMuMAo=
+The deadlock can occur due to a recursive lock acquisition of
+`cros_typec_altmode_data::mutex`.
+The call chain is as follows:
+1. cros_typec_altmode_work() acquires the mutex
+2. typec_altmode_vdm() -> dp_altmode_vdm() ->
+3. typec_altmode_exit() -> cros_typec_altmode_exit()
+4. cros_typec_altmode_exit() attempts to acquire the mutex again
+
+To prevent this, defer the `typec_altmode_exit()` call by scheduling
+it rather than calling it directly from within the mutex-protected
+context.
+
+Cc: stable@vger.kernel.org
+Fixes: b4b38ffb38c9 ("usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+---
+ drivers/usb/typec/altmodes/displayport.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+index b09b58d7311d..2abbe4de3216 100644
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -394,8 +394,7 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
+ 	case CMDT_RSP_NAK:
+ 		switch (cmd) {
+ 		case DP_CMD_STATUS_UPDATE:
+-			if (typec_altmode_exit(alt))
+-				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
++			dp->state = DP_STATE_EXIT;
+ 			break;
+ 		case DP_CMD_CONFIGURE:
+ 			dp->data.conf = 0;
+-- 
+2.50.0.rc2.761.g2dc52ea45b-goog
+
 
