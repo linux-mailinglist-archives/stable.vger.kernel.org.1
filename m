@@ -1,124 +1,144 @@
-Return-Path: <stable+bounces-158435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25DD2AE6D2A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 19:00:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E398AE6D3E
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 19:04:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E23591BC0A5D
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 17:01:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E95E416B4CB
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 17:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98014223316;
-	Tue, 24 Jun 2025 17:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D020E22B8D9;
+	Tue, 24 Jun 2025 17:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="HKrWAUH4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WSIc2NTA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53E54AEE2;
-	Tue, 24 Jun 2025 17:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F190A307496
+	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 17:04:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750784448; cv=none; b=ny53XUoXHy/7lemz0ox+YA+mqmbQAPDWOL4SGNRSGqv072WcaVRBBjnVddYlWXNr7PWYOqxGtaT7drt+76hp3fKBQa8C+EbgFeJPlzdcwQTUeo3u74dRMwG3MvBHU1rPIl3P8GaskhY959cWjn+djkDl6ZTjaQnRFq8MrnDSLCc=
+	t=1750784672; cv=none; b=AKsm8lzjheB1P0OBBc8ZnpoNvmPfsBPSv62Z1kDrkA8Q0/fjFMt1YpNHHCnltr0fMAnjDbuoG9FyjpQeWdzOSoNHjDf7aham5tI1JCj8yB+4+Rxx4JjGOv9378DzyR8KqP/eEOCjxjhAMZhjZY0Y6N4djeAlN4YhPLUoVTEJ7WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750784448; c=relaxed/simple;
-	bh=rMmIIm4TINIxOqut0X/Io6lixllqSqzkHQn2mUnABFI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VtILmgNEzDIIlldrpjyrwDKEyR5NssOSku1a/mkzJhU0PqwktFYsfEREdY5LogXWeHmUCoyeWQrgYypx3WHwQjyLc+D5W6UkBr7JpvSiWap2kdZeICxeo1j+oWXjCYvgLYHW6sgtkTfFp6ARl90Dqi+DiQZhn50T1D4yp/aN3OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=HKrWAUH4; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a4e742dc97so56877f8f.0;
-        Tue, 24 Jun 2025 10:00:46 -0700 (PDT)
+	s=arc-20240116; t=1750784672; c=relaxed/simple;
+	bh=qteff5OfPTvW7i91rP204W222Nqa2CAGyBXFUikTEjc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=GN28AVqb/LUTh4fy67dvxo1qGQAZeet4zJdkMJ6DdShV7aB88PfgYBErDMX/7HKjy9oU59cWHmrHSbW0bIogsBCA++OffZLwxPqr1tHJm7bkFoZv3+LcAw+h6OxWJdcJE1V1d99txpEiBLi2AQT9rPR3ATTo26YplvvFIQYpQTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WSIc2NTA; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a50fc7ac4dso494262f8f.0
+        for <stable@vger.kernel.org>; Tue, 24 Jun 2025 10:04:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1750784445; x=1751389245; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=te/STPrSTRQW9WE5N0wxDGPRRy2utQtxA+HuKmrb5X8=;
-        b=HKrWAUH4uBO8KqGhhDJRixugpBOJ/DgzzTXUOKU+D2VRa/67+G+uW90LcsGn6ERMfX
-         2lnTOKNeq2T/sqk2grUbkD4G1UirU/F1KsB0MaNrnkGWqLfIdwO4upZLI9zWtJaI212l
-         Ga8XjrkWIYzyZejhlUjgUS3YCbUoUXO1WlbG4pTtyQpwGtCQFcljo5SnQd1MlWTWHIp5
-         c9WLzZo5wQWkTtoFe0Rsfq6oOOPmHkgkyim+B9BE45j5d6xrZZRpQZqMJJ8UdfvgN/G3
-         0sMzqNmcwQocL+UGOid0jTPZOnUroSfVY8vBVTsoaJVHSMDXrWUG0415efeSGHQq/0Ez
-         kWCA==
+        d=gmail.com; s=20230601; t=1750784669; x=1751389469; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=l/5U6jCETnnl7UxdYyeKuhfhx9Vxem6vhjgxrmX0igs=;
+        b=WSIc2NTA+HY3H2flx+i+ULjtFBloP9hJAJUI6jCjparrjIqhDl4aQ7pdUJHJQREdQb
+         0/p+vVy13CgpiYVakaAw9HZOPbVYsTavs72fwsPE6u+woFoDiSIuctyeh7aWB4L31v4M
+         Wr31SaH8Z1kokZJtIj9XYbvM7aLtyIpRL6vhTCj/wzOV9ry7WfqfvQQbDQLQVihT9yoI
+         JgEFUUYAQz4D6xczu1h18Z4j2NhqCNRuUUuN3LWskPT7s9Qc1VVwzEJUo0FKRrRmF4/e
+         FSy06AmL9TcJIABORVP4Mx0+1jLahmHQhjVPE511e87YOcjjFk2H32qOTmb3U5ngGy0j
+         0Nxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750784445; x=1751389245;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=te/STPrSTRQW9WE5N0wxDGPRRy2utQtxA+HuKmrb5X8=;
-        b=MxcszboN9TSpH5OfcG7Y2s5mgB9w0wHUNlXZl3rgmap2UP16x2Q+vTnLCzz99SNZ4N
-         aF9GOF1/qpbXYs77rR6mMHV2qHbOU5OG+q58xlXCUSgOqhZ/Ct2slvK41QXcdhFWYxeq
-         riruwOG/swOqvb0fYDj6kLeI7IlZ4PaOxwZHx0TMUJI0apuOklwqEkUXnEvNpmqoJDfO
-         Ksmaz7YQDmZgH0FpN28rqh4Yku5zOtGaJwsuVFK86RwkVy6QRnYS5rXV8ff4PceBHJnK
-         Ul5GuWaY7/J1g4RQOdNEfeTMLXgexloUe/H72B67aIeSvoA0z2vsUdJUAA19/WQaWAqZ
-         MKqA==
-X-Forwarded-Encrypted: i=1; AJvYcCWpdoACWH5xh65xIl3VASOQxUwutkmyqWgGA64TgM0xnXEFyQb6MprGUyi826+SryGJpo5sFoFe@vger.kernel.org, AJvYcCWziNWGiN+Aq9yB2kFAjvKlzxZz/RffyT1Rm0Ulc4eEyhBRbNGE4+1n4IFmk8G5Ea8WxBYoSZrrpGEe17o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0rxHpAcn6RW5wrtmX46N9pK1ez7yc5d65SNFdYPzLZckMuwzo
-	HQn11Z934+jExPkV4DHpI1DvTWPX1U7bRrSW/O1tBKQ9QoAdY4N/YLM=
-X-Gm-Gg: ASbGncs5K1Ogf+rRr0uBO2+6W554aXvyOKHNzgNqq9040f7XkIhuN4VI2UAf9mKPBn7
-	QRNJE82dMJ6NZ7zPpFOR/tmo7QQ/34EYt6UkI7tFfrdq9OYoLUOAtbtFGB2WmiG0Fvte+l3h9On
-	o7dLdK9xbVXFSr1Ox3X9Ddok50T5Z0OGrkkrQXKVtPWfuE0Avj3jNch2oNpanyvPInDXoOE3joi
-	vpJWYxlQxeLWJqNtOsgw4DVSTQDHh+zQnpCuzBxSo3vWLcquea8mnO32KgsRkNRlFM3+MSEJKRF
-	G1kfMUSYPprjKAVk08WBV4rDHRQ6uiesfVbyxIn1r5F2JoVfOdEf/s0EPIx0TDCXmCfzVJNIvNg
-	x+pyTy0ItMuW/WPCbx/g3JKfSz5Agkjzyd8lFT1k=
-X-Google-Smtp-Source: AGHT+IFUfVerv6+pnCu+sN8dHX/BLfNsI8/p8b9WCDAx95/po6UN9b2bRri9xUJSyTn8llRJAFZcgw==
-X-Received: by 2002:a5d:588d:0:b0:3a4:edf5:8a41 with SMTP id ffacd0b85a97d-3a6e71b86f6mr3784089f8f.4.1750784444740;
-        Tue, 24 Jun 2025 10:00:44 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2acd47.dip0.t-ipconnect.de. [91.42.205.71])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e811039csm2338554f8f.89.2025.06.24.10.00.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Jun 2025 10:00:44 -0700 (PDT)
-Message-ID: <1010f821-c1fd-4096-9f69-49a91336eb56@googlemail.com>
-Date: Tue, 24 Jun 2025 19:00:43 +0200
+        d=1e100.net; s=20230601; t=1750784669; x=1751389469;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l/5U6jCETnnl7UxdYyeKuhfhx9Vxem6vhjgxrmX0igs=;
+        b=r4focCpZzcdoG+jmHawFCn2IScn716o3GQM9ySoOMHKpZCEly/qI/coxfsDqbNC7jM
+         //msOLiPIfVQ58roZiKhvcRIQjIWCpuuECjKDnLalPwoGbxxBwxa6TyV5Zcu+JX1ybnP
+         VFNwR+8NnkUCUraYuRkpEqof1Qgcu+w4O8BSV0DxMPwfcO1LwOjfnOWXJVJhEeslK60I
+         5Vd32rBGMdqc1FkMJPAqmzyYGRAQPq7T1l/NAh+mu/YAJLRbMeD4AyNxo/onz6SZ/NEZ
+         ZZdD2hsQCt/En47KBwGJ78uf/hqpqkKpF1xiv2EiW/GMlxjc96WGtZ7sVrYcVLBvlWt7
+         izLg==
+X-Gm-Message-State: AOJu0YzOQ9rx/N0Fy0ffNqCUa5/s15uQD+/sHZknGb2yQtuSjYLLinpk
+	CWhKbrbjiKbsQc+5uwinUhhPAr/ee5scH8T2L4m9JOBRiTJsIlVn2PdMQ1C9EREi
+X-Gm-Gg: ASbGncuS1GW1Smbm6XRnNxdpqcm4MA0LMXXSkJ22oekYakrhhh3eETQ85eU50rN6ngU
+	fzV40egzxs971V5taQ1JjuJWwoM1fQt3ggVOxBPe7+5zUN/y7Fm2rLhS/qcO2bl4E/tsH9v3VQu
+	9crg+kozTbqFZvDpGBtN9+aXFcrYKQrVXyWmC+ZKT5TapMbz1qtbEXwh5Dwo3E9pMZD6xQig4+t
+	6NP8pNmEHLPeHWW5t6dQzHM2mK+PS6tUZXW6dILi3Pzot8BkMzsN0BiyznDQl/BG2doWKjFOE1q
+	xGdkTgRPqbKUorcj4pzMIPRJozU//xVn+qHuktFthrFOZCUroZsez5zBD1vbgDKzQF5hXEWF4ag
+	PMwyjWTcwfdgRfH8HJwBTHLp4aA==
+X-Google-Smtp-Source: AGHT+IHNb1rARe2y+ZP665yAJCMclz4csKvfpRUA8PAAPmUZPOGaZNxArTnECNx1E+ct2ebc/UnWqg==
+X-Received: by 2002:a05:6000:4021:b0:3a6:d145:e2cc with SMTP id ffacd0b85a97d-3a6d145e448mr13618380f8f.15.1750784668804;
+        Tue, 24 Jun 2025 10:04:28 -0700 (PDT)
+Received: from laptop.home (178.75.217.87.dynamic.jazztel.es. [87.217.75.178])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e8069d78sm2386276f8f.45.2025.06.24.10.04.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Jun 2025 10:04:28 -0700 (PDT)
+From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
+To: stable@vger.kernel.org,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
+Subject: [PATCH v2 6.6.y 0/2] Kunit to check the longest symbol length
+Date: Tue, 24 Jun 2025 19:04:11 +0200
+Message-Id: <20250624170413.9314-1-sergio.collado@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.1 000/507] 6.1.142-rc2 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250624123036.124991422@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250624123036.124991422@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Am 24.06.2025 um 14:31 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.1.142 release.
-> There are 507 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hello,
 
-Just like rc1, rc2 builds, boots and works fine on my 2-socket Ivy Bridge Xeon E5-2697 v2 
-server. No dmesg oddities or regressions found.
+Please consider this series for 6.6.y
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+This patch series backports two patches that implement a test to verify
+that a symbol with KSYM_NAME_LEN of 512 can be read.
+
+The first patch implements the test. This commit also includes a fix
+for the test x86/insn_decoder_test. In the case a symbol exceeds the
+symbol length limit, an error will happen:
+
+    arch/x86/tools/insn_decoder_test: error: malformed line 1152000:
+    tBb_+0xf2>
+
+..which overflowed by 10 characters reading this line:
+
+    ffffffff81458193:   74 3d                   je
+ffffffff814581d2
+<_RNvXse_NtNtNtCshGpAVYOtgW1_4core4iter8adapters7flattenINtB5_13FlattenCompatINtNtB7_3map3MapNtNtNtBb_3str4iter5CharsNtB1v_17CharEscapeDefaultENtNtBb_4char13EscapeDefaultENtNtBb_3fmt5Debug3fmtBb_+0xf2>
+
+The fix was proposed in [1] and initially mentioned at [2].
+
+The second patch fixes a warning when building with clang because
+there was a definition of unlikely from compiler.h in tools/include/linux,
+which conflicted with the one in the instruction decoder selftest.
+
+[1] https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/
+[2] https://lore.kernel.org/lkml/320c4dba-9919-404b-8a26-a8af16be1845@app.fastmail.com/
+
+Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
+---
+Changes in v2: sign-off patch 2/2
+
+---
+Nathan Chancellor (1):
+  x86/tools: Drop duplicate unlikely() definition in insn_decoder_test.c
+
+Sergio González Collado (1):
+  Kunit to check the longest symbol length
+
+ arch/x86/tools/insn_decoder_test.c |  5 +-
+ lib/Kconfig.debug                  |  9 ++++
+ lib/Makefile                       |  2 +
+ lib/longest_symbol_kunit.c         | 82 ++++++++++++++++++++++++++++++
+ 4 files changed, 95 insertions(+), 3 deletions(-)
+ create mode 100644 lib/longest_symbol_kunit.c
 
 
-Beste Grüße,
-Peter Schneider
-
+base-commit: 6282921b6825fef6a1243e1c80063421d41e2576
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.39.2
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
