@@ -1,141 +1,170 @@
-Return-Path: <stable+bounces-158413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C70AE67BD
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01522AE67BC
 	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 16:04:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 885201BC5794
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 14:01:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE8F35A0906
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 14:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2792D3A70;
-	Tue, 24 Jun 2025 13:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3902C15B5;
+	Tue, 24 Jun 2025 14:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FCI7sCs1"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="RhOKanjn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173E12D3A69
-	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 13:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056CA1BC07A
+	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 14:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750773552; cv=none; b=ZbVnPq/6Mvj5OBtUjkgE+ud6JNdDJTec6sNM44NxKoW4hAQS2fivsNw93g+aKk0Cu2KCXNQwLoOMifwbdA0Q5ypxqibxy4JxAItHo/LYqzYeEwF7Swat3xR3S+nfLvG0p7l+qu/BvsP4LK3SHui7wqXNKtWho2OYu6CR31Tvjy8=
+	t=1750773781; cv=none; b=k4fWVpM2MaTTNNSFZdKvc+5u5pCIRyRoIVbSe8kBdj5UwetFZqLUiidU6faVUnbrFIQT8Y55Fl41smsbDcSMiReI5uKEV1Xj3ZnKOFNQHN9r56cM+o/RFMXV9Q0a7mI+Vu4oGiJeJm2rO0LW2I3bjj0+XIwEnbOObktzOwC2JxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750773552; c=relaxed/simple;
-	bh=rwViq7C2aveGgZDK1pUhxPQYD8BRz3zZT2whsBdQw9Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NjG+Ipo9HVV7DQ6BzF7xR8elsXVlHDNyDTlnYA6Lw3Iikkcm10gS69MBqXoIcQpvQmTMn4Cyq+XMhVIDv870Li+69KS6+RoypG6OXqaMH1n58o30gn8knmmxIye3nchcCjSLfPywwmy9shJjw3tdMt6+lET5hL8rsAeJbKv+Glk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FCI7sCs1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317E7C4CEF1;
-	Tue, 24 Jun 2025 13:59:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750773550;
-	bh=rwViq7C2aveGgZDK1pUhxPQYD8BRz3zZT2whsBdQw9Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FCI7sCs1WaERQ5X0BZZMcP8Yb7Vmb8PcPudI0Rem2Cq4EhpyD4oYnxpuNBUc2fUk1
-	 FWXpzs6pkJCxrOVi3DClCriBuvZsb3E8SMC4zBYz1RMP4foT0HRH+oBdfoSJFesV6F
-	 4nVNV64GW+Q4mhMjJ7eQQyfkF3rIRiUd2rWmf4VNdDtiW1Wz/K2SAjASXLnOkci7TA
-	 Sl8eWqAQ/XAVanrUGNvfT/7NGS3lDncmnfM9w/hRqt2x+W+jcGne/3IxjiiD28zDZw
-	 7bf4TOMGuV3g/6hAUiHOW2MefzhD4FmUDfqAkLtVKIoMFCI6kwIrajtpXH9YJ+Z34D
-	 vy2fpNKCf6rtA==
-From: Danilo Krummrich <dakr@kernel.org>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	aliceryhl@google.com,
-	lossin@kernel.org,
-	sashal@kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 4/4] rust: devres: do not dereference to the internal Revocable
-Date: Tue, 24 Jun 2025 15:58:35 +0200
-Message-ID: <20250624135856.60250-5-dakr@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250624135856.60250-1-dakr@kernel.org>
-References: <20250624135856.60250-1-dakr@kernel.org>
+	s=arc-20240116; t=1750773781; c=relaxed/simple;
+	bh=Wo6zbeptNEaLzuGIdaeyFag/DOxEu/P6m0jvxGFKZYU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=NesazAN5DHowXbMJiEQCXf+uGiksYb3qef8hmiIyZwCxpjBH18o5AgtPCRNP0jErCuR+l3WaS5wmGDvYdwpelo9mn73jePUDevdyQ6tmqQdvz7RZYFY30sOdS916V9EnEFxiUQBn47xnNrJLofaV7Rxdysf3wO5+dW4W/K1gwYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=RhOKanjn reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=DtBYcGeO+n21YPGA6A4aWL/cVhCh23uyy/BOH4MVP48=; b=R
+	hOKanjn6DjF6ZZF8umUdnugxUgVc4hvOiDd4JexLdhM3zo7kY7C/eGE2mZPb8kZK
+	ekqop/Xmr82sOtH6s/gUv4B5hzCnhcDRfDZmqiZHeYhSbOGya0Hr1Wh1jbSov0Ke
+	72AV5ZTxSihZbCX1DhHBH+q4cDmWG547E0yLGga2mU=
+Received: from 00107082$163.com ( [111.35.191.166] ) by
+ ajax-webmail-wmsvr-40-138 (Coremail) ; Tue, 24 Jun 2025 22:00:48 +0800
+ (CST)
+Date: Tue, 24 Jun 2025 22:00:48 +0800 (CST)
+From: "David Wang" <00107082@163.com>
+To: "Harry Yoo" <harry.yoo@oracle.com>
+Cc: akpm@linux-foundation.org, surenb@google.com, kent.overstreet@linux.dev,
+	oliver.sang@intel.com, cachen@purestorage.com, linux-mm@kvack.org,
+	oe-lkp@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v3] lib/alloc_tag: do not acquire non-existent lock in
+ alloc_tag_top_users()
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
+ Copyright (c) 2002-2025 www.mailtech.cn 163com
+In-Reply-To: <aFqtCoz1t359Kjp1@hyeyoo>
+References: <20250624072513.84219-1-harry.yoo@oracle.com>
+ <7f2f180f.a643.197a21de68c.Coremail.00107082@163.com>
+ <aFqtCoz1t359Kjp1@hyeyoo>
+X-NTES-SC: AL_Qu2eAvucvE4v7iaYZekXn0oTju85XMCzuv8j3YJeN500iCXR/zkFeXBgB0fKwcOALDGSvxeaUBdszONBT6ZkdrKUppWWLZmR0Lt6prqGnpvo
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <2dba37c6.b15a.197a23dcce2.Coremail.00107082@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:iigvCgDXv9qRr1po4M8jAA--.23373W
+X-CM-SenderInfo: qqqrilqqysqiywtou0bp/xtbBEh52qmharNcHEgACsO
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-[ Upstream commit 20c96ed278e362ae4e324ed7d8c69fb48c508d3c ]
-
-We can't expose direct access to the internal Revocable, since this
-allows users to directly revoke the internal Revocable without Devres
-having the chance to synchronize with the devres callback -- we have to
-guarantee that the internal Revocable has been fully revoked before
-the device is fully unbound.
-
-Hence, remove the corresponding Deref implementation and, instead,
-provide indirect accessors for the internal Revocable.
-
-Note that we can still support Devres::revoke() by implementing the
-required synchronization (which would be almost identical to the
-synchronization in Devres::drop()).
-
-Fixes: 76c01ded724b ("rust: add devres abstraction")
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Link: https://lore.kernel.org/r/20250611174827.380555-1-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- rust/kernel/devres.rs | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
-
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index f3a4e3383b8d..dc6ea014ee60 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -12,13 +12,11 @@
-     error::{Error, Result},
-     ffi::c_void,
-     prelude::*,
--    revocable::Revocable,
--    sync::{Arc, Completion},
-+    revocable::{Revocable, RevocableGuard},
-+    sync::{rcu, Arc, Completion},
-     types::ARef,
- };
- 
--use core::ops::Deref;
--
- #[pin_data]
- struct DevresInner<T> {
-     dev: ARef<Device>,
-@@ -196,13 +194,15 @@ pub fn new_foreign_owned(dev: &Device, data: T, flags: Flags) -> Result {
- 
-         Ok(())
-     }
--}
- 
--impl<T> Deref for Devres<T> {
--    type Target = Revocable<T>;
-+    /// [`Devres`] accessor for [`Revocable::try_access`].
-+    pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
-+        self.0.data.try_access()
-+    }
- 
--    fn deref(&self) -> &Self::Target {
--        &self.0.data
-+    /// [`Devres`] accessor for [`Revocable::try_access_with_guard`].
-+    pub fn try_access_with_guard<'a>(&'a self, guard: &'a rcu::Guard) -> Option<&'a T> {
-+        self.0.data.try_access_with_guard(guard)
-     }
- }
- 
-@@ -210,7 +210,7 @@ impl<T> Drop for Devres<T> {
-     fn drop(&mut self) {
-         // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
-         // anymore, hence it is safe not to wait for the grace period to finish.
--        if unsafe { self.revoke_nosync() } {
-+        if unsafe { self.0.data.revoke_nosync() } {
-             // We revoked `self.0.data` before the devres action did, hence try to remove it.
-             if !DevresInner::remove_action(&self.0) {
-                 // We could not remove the devres action, which means that it now runs concurrently,
--- 
-2.49.0
-
+CkF0IDIwMjUtMDYtMjQgMjE6NTA6MDIsICJIYXJyeSBZb28iIDxoYXJyeS55b29Ab3JhY2xlLmNv
+bT4gd3JvdGU6Cj5PbiBUdWUsIEp1biAyNCwgMjAyNSBhdCAwOToyNTo1OFBNICswODAwLCBEYXZp
+ZCBXYW5nIHdyb3RlOgo+PiAKPj4gQXQgMjAyNS0wNi0yNCAxNToyNToxMywgIkhhcnJ5IFlvbyIg
+PGhhcnJ5Lnlvb0BvcmFjbGUuY29tPiB3cm90ZToKPj4gPmFsbG9jX3RhZ190b3BfdXNlcnMoKSBh
+dHRlbXB0cyB0byBsb2NrIGFsbG9jX3RhZ19jdHR5cGUtPm1vZF9sb2NrCj4+ID5ldmVuIHdoZW4g
+dGhlIGFsbG9jX3RhZ19jdHR5cGUgaXMgbm90IGFsbG9jYXRlZCBiZWNhdXNlOgo+PiA+Cj4+ID4g
+IDEpIGFsbG9jIHRhZ2dpbmcgaXMgZGlzYWJsZWQgYmVjYXVzZSBtZW0gcHJvZmlsaW5nIGlzIGRp
+c2FibGVkCj4+ID4gICAgICghYWxsb2NfdGFnX2N0dHlwZSkKPj4gPiAgMikgYWxsb2MgdGFnZ2lu
+ZyBpcyBlbmFibGVkLCBidXQgbm90IHlldCBpbml0aWFsaXplZCAoIWFsbG9jX3RhZ19jdHR5cGUp
+Cj4+ID4gIDMpIGFsbG9jIHRhZ2dpbmcgaXMgZW5hYmxlZCwgYnV0IGZhaWxlZCBpbml0aWFsaXph
+dGlvbgo+PiA+ICAgICAoIWFsbG9jX3RhZ19jdHR5cGUgb3IgSVNfRVJSKGFsbG9jX3RhZ19jdHR5
+cGUpKQo+PiA+Cj4+ID5JbiBhbGwgY2FzZXMsIGFsbG9jX3RhZ19jdHR5cGUgaXMgbm90IGFsbG9j
+YXRlZCwgYW5kIHRoZXJlZm9yZQo+PiA+YWxsb2NfdGFnX3RvcF91c2VycygpIHNob3VsZCBub3Qg
+YXR0ZW1wdCB0byBhY3F1aXJlIHRoZSBzZW1hcGhvcmUuCj4+ID4KPj4gPlRoaXMgbGVhZHMgdG8g
+YSBjcmFzaCBvbiBtZW1vcnkgYWxsb2NhdGlvbiBmYWlsdXJlIGJ5IGF0dGVtcHRpbmcgdG8KPj4g
+PmFjcXVpcmUgYSBub24tZXhpc3RlbnQgc2VtYXBob3JlOgo+PiA+Cj4+ID4gIE9vcHM6IGdlbmVy
+YWwgcHJvdGVjdGlvbiBmYXVsdCwgcHJvYmFibHkgZm9yIG5vbi1jYW5vbmljYWwgYWRkcmVzcyAw
+eGRmZmZmYzAwMDAwMDAwMWI6IDAwMDAgWyMzXSBTTVAgS0FTQU4gTk9QVEkKPj4gPiAgS0FTQU46
+IG51bGwtcHRyLWRlcmVmIGluIHJhbmdlIFsweDAwMDAwMDAwMDAwMDAwZDgtMHgwMDAwMDAwMDAw
+MDAwMGRmXQo+PiA+ICBDUFU6IDIgVUlEOiAwIFBJRDogMSBDb21tOiBzeXN0ZW1kIFRhaW50ZWQ6
+IEcgICAgICBEICAgICAgICAgICAgIDYuMTYuMC1yYzIgIzEgVk9MVU5UQVJZCj4+ID4gIFRhaW50
+ZWQ6IFtEXT1ESUUKPj4gPiAgSGFyZHdhcmUgbmFtZTogUUVNVSBTdGFuZGFyZCBQQyAoaTQ0MEZY
+ICsgUElJWCwgMTk5NiksIEJJT1MgMS4xNi4yLWRlYmlhbi0xLjE2LjItMSAwNC8wMS8yMDE0Cj4+
+ID4gIFJJUDogMDAxMDpkb3duX3JlYWRfdHJ5bG9jaysweGFhLzB4M2IwCj4+ID4gIENvZGU6IGQw
+IDdjIDA4IDg0IGQyIDBmIDg1IGEwIDAyIDAwIDAwIDhiIDBkIGRmIDMxIGRkIDA0IDg1IGM5IDc1
+IDI5IDQ4IGI4IDAwIDAwIDAwIDAwIDAwIGZjIGZmIGRmIDQ4IDhkIDZiIDY4IDQ4IDg5IGVhIDQ4
+IGMxIGVhIDAzIDw4MD4gM2MgMDIgMDAgMGYgODUgODggMDIgMDAgMDAgNDggM2IgNWIgNjggMGYg
+ODUgNTMgMDEgMDAgMDAgNjUgZmYKPj4gPiAgUlNQOiAwMDAwOmZmZmY4ODgxMDAyY2U5YjggRUZM
+QUdTOiAwMDAxMDAxNgo+PiA+ICBSQVg6IGRmZmZmYzAwMDAwMDAwMDAgUkJYOiAwMDAwMDAwMDAw
+MDAwMDcwIFJDWDogMDAwMDAwMDAwMDAwMDAwMAo+PiA+ICBSRFg6IDAwMDAwMDAwMDAwMDAwMWIg
+UlNJOiAwMDAwMDAwMDAwMDAwMDBhIFJESTogMDAwMDAwMDAwMDAwMDA3MAo+PiA+ICBSQlA6IDAw
+MDAwMDAwMDAwMDAwZDggUjA4OiAwMDAwMDAwMDAwMDAwMDAxIFIwOTogZmZmZmVkMTA3ZGRlNDlk
+MQo+PiA+ICBSMTA6IGZmZmY4ODgzZWVmMjRlOGIgUjExOiBmZmZmODg4MTAwMmNlYzIwIFIxMjog
+MWZmZmYxMTAyMDA1OWQzNwo+PiA+ICBSMTM6IDAwMDAwMDAwMDAzZmZmN2IgUjE0OiBmZmZmODg4
+MTAwMmNlYzIwIFIxNTogZGZmZmZjMDAwMDAwMDAwMAo+PiA+ICBGUzogIDAwMDA3Zjk2M2YyMWQ5
+NDAoMDAwMCkgR1M6ZmZmZjg4ODQ1OGNhNjAwMCgwMDAwKSBrbmxHUzowMDAwMDAwMDAwMDAwMDAw
+Cj4+ID4gIENTOiAgMDAxMCBEUzogMDAwMCBFUzogMDAwMCBDUjA6IDAwMDAwMDAwODAwNTAwMzMK
+Pj4gPiAgQ1IyOiAwMDAwN2Y5NjNmNWVkZjcxIENSMzogMDAwMDAwMDEwNjcyYzAwMCBDUjQ6IDAw
+MDAwMDAwMDAzNTBlZjAKPj4gPiAgQ2FsbCBUcmFjZToKPj4gPiAgIDxUQVNLPgo+PiA+ICAgY29k
+ZXRhZ190cnlsb2NrX21vZHVsZV9saXN0KzB4ZC8weDIwCj4+ID4gICBhbGxvY190YWdfdG9wX3Vz
+ZXJzKzB4MzY5LzB4NGIwCj4+ID4gICBfX3Nob3dfbWVtKzB4MWNkLzB4NmUwCj4+ID4gICB3YXJu
+X2FsbG9jKzB4MmIxLzB4MzkwCj4+ID4gICBfX2FsbG9jX2Zyb3plbl9wYWdlc19ub3Byb2YrMHgx
+MmI5LzB4MjFhMAo+PiA+ICAgYWxsb2NfcGFnZXNfbXBvbCsweDEzNS8weDNlMAo+PiA+ICAgYWxs
+b2Nfc2xhYl9wYWdlKzB4ODIvMHhlMAo+PiA+ICAgbmV3X3NsYWIrMHgyMTIvMHgyNDAKPj4gPiAg
+IF9fX3NsYWJfYWxsb2MrMHg4MmEvMHhlMDAKPj4gPiAgIDwvVEFTSz4KPj4gPgo+PiA+QXMgRGF2
+aWQgV2FuZyBwb2ludHMgb3V0LCB0aGlzIGlzc3VlIGJlY2FtZSBlYXNpZXIgdG8gdHJpZ2dlciBh
+ZnRlciBjb21taXQKPj4gPjc4MDEzOGIxMjM4MSAoImFsbG9jX3RhZzogY2hlY2sgbWVtX3Byb2Zp
+bGluZ19zdXBwb3J0IGluIGFsbG9jX3RhZ19pbml0IikuCj4+ID4KPj4gPkJlZm9yZSB0aGUgY29t
+bWl0LCB0aGUgaXNzdWUgb2NjdXJyZWQgb25seSB3aGVuIGl0IGZhaWxlZCB0byBhbGxvY2F0ZQo+
+PiA+YW5kIGluaXRpYWxpemUgYWxsb2NfdGFnX2N0dHlwZSBvciBpZiBhIG1lbW9yeSBhbGxvY2F0
+aW9uIGZhaWxzIGJlZm9yZQo+PiA+YWxsb2NfdGFnX2luaXQoKSBpcyBjYWxsZWQuIEFmdGVyIHRo
+ZSBjb21taXQsIGl0IGNhbiBiZSBlYXNpbHkgdHJpZ2dlcmVkCj4+ID53aGVuIG1lbW9yeSBwcm9m
+aWxpbmcgaXMgY29tcGlsZWQgYnV0IGRpc2FibGVkIGF0IGJvb3QuCj4+ID4KPj4gPlRvIHByb3Bl
+cmx5IGRldGVybWluZSB3aGV0aGVyIGFsbG9jX3RhZ19pbml0KCkgaGFzIGJlZW4gY2FsbGVkIGFu
+ZAo+PiA+aXRzIGRhdGEgc3RydWN0dXJlcyBpbml0aWFsaXplZCwgdmVyaWZ5IHRoYXQgYWxsb2Nf
+dGFnX2N0dHlwZSBpcyBhIHZhbGlkCj4+ID5wb2ludGVyIGJlZm9yZSBhY3F1aXJpbmcgdGhlIHNl
+bWFwaG9yZS4gSWYgdGhlIHZhcmlhYmxlIGlzIE5VTEwgb3IgYW4gZXJyb3IKPj4gPnZhbHVlLCBp
+dCBoYXMgbm90IGJlZW4gcHJvcGVybHkgaW5pdGlhbGl6ZWQuIEluIHN1Y2ggYSBjYXNlLCBqdXN0
+IHNraXAKPj4gPmFuZCBkbyBub3QgYXR0ZW1wdCB0byBhY3F1aXJlIHRoZSBzZW1hcGhvcmUuCj4+
+ID4KPj4gPlJlcG9ydGVkLWJ5OiBrZXJuZWwgdGVzdCByb2JvdCA8b2xpdmVyLnNhbmdAaW50ZWwu
+Y29tPgo+PiA+Q2xvc2VzOiBodHRwczovL3VybGRlZmVuc2UuY29tL3YzL19faHR0cHM6Ly9sb3Jl
+Lmtlcm5lbC5vcmcvb2UtbGtwLzIwMjUwNjE4MTM1MS5iYmE4NjdkZC1sa3BAaW50ZWwuY29tX187
+ISFBQ1dWNU45TTJSVjk5aFEhTUFEdkdLdHZUdmxMWE54bHJKNEJkT1NuYnNKbHlyU3JvUFVHSjNK
+UUhzX0lGLWd4eHFmUTg5T1RaMjFhTjk2RGJtakc5cUgzV2kxTWxndGlTQSQgCj4+ID5DbG9zZXM6
+IGh0dHBzOi8vdXJsZGVmZW5zZS5jb20vdjMvX19odHRwczovL2xvcmUua2VybmVsLm9yZy9vZS1s
+a3AvMjAyNTA2MTMxNzExLjViNDE5MzFjLWxrcEBpbnRlbC5jb21fXzshIUFDV1Y1TjlNMlJWOTlo
+USFNQUR2R0t0dlR2bExYTnhscko0QmRPU25ic0pseXJTcm9QVUdKM0pRSHNfSUYtZ3h4cWZRODlP
+VFoyMWFOOTZEYm1qRzlxSDNXaTBvMk9veW5BJCAKPj4gPkZpeGVzOiA3ODAxMzhiMTIzODEgKCJh
+bGxvY190YWc6IGNoZWNrIG1lbV9wcm9maWxpbmdfc3VwcG9ydCBpbiBhbGxvY190YWdfaW5pdCIp
+Cj4+ID5GaXhlczogMTQzOGQzNDlkMTZiICgibGliOiBhZGQgbWVtb3J5IGFsbG9jYXRpb25zIHJl
+cG9ydCBpbiBzaG93X21lbSgpIikKPj4gPkNjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnCj4+ID5T
+aWduZWQtb2ZmLWJ5OiBIYXJyeSBZb28gPGhhcnJ5Lnlvb0BvcmFjbGUuY29tPgo+PiA+LS0tCj4+
+ID4KPj4gPkBTdXJlbjogSSBkaWQgbm90IGFkZCBhbm90aGVyIHByX3dhcm4oKSBiZWNhdXNlIGV2
+ZXJ5IGVycm9yIHBhdGggaW4KPj4gPmFsbG9jX3RhZ19pbml0KCkgYWxyZWFkeSBoYXMgcHJfZXJy
+KCkuCj4+ID4KPj4gPnYyIC0+IHYzOgo+PiA+LSBBZGRlZCBhbm90aGVyIENsb3NlczogdGFnIChE
+YXZpZCkKPj4gPi0gTW92ZWQgdGhlIGNvbmRpdGlvbiBpbnRvIGEgc3RhbmRhbG9uZSBpZiBibG9j
+ayBmb3IgYmV0dGVyIHJlYWRhYmlsaXR5Cj4+ID4gIChTdXJlbikKPj4gPi0gVHlwbyBmaXggKFN1
+cmVuKQo+PiA+Cj4+ID4gbGliL2FsbG9jX3RhZy5jIHwgMyArKysKPj4gPiAxIGZpbGUgY2hhbmdl
+ZCwgMyBpbnNlcnRpb25zKCspCj4+ID4KPj4gPmRpZmYgLS1naXQgYS9saWIvYWxsb2NfdGFnLmMg
+Yi9saWIvYWxsb2NfdGFnLmMKPj4gPmluZGV4IDQxY2NmYjAzNWI3Yi4uZTliMzM4NDg3MDBhIDEw
+MDY0NAo+PiA+LS0tIGEvbGliL2FsbG9jX3RhZy5jCj4+ID4rKysgYi9saWIvYWxsb2NfdGFnLmMK
+Pj4gPkBAIC0xMjcsNiArMTI3LDkgQEAgc2l6ZV90IGFsbG9jX3RhZ190b3BfdXNlcnMoc3RydWN0
+IGNvZGV0YWdfYnl0ZXMgKnRhZ3MsIHNpemVfdCBjb3VudCwgYm9vbCBjYW5fc2wKPj4gPiAJc3Ry
+dWN0IGNvZGV0YWdfYnl0ZXMgbjsKPj4gPiAJdW5zaWduZWQgaW50IGksIG5yID0gMDsKPj4gPiAK
+Pj4gPisJaWYgKElTX0VSUl9PUl9OVUxMKGFsbG9jX3RhZ19jdHR5cGUpKQo+PiA+KwkJcmV0dXJu
+IDA7Cj4+IAo+PiBXaGF0IGFib3V0IG1lbV9wcm9maWxpbmdfc3VwcG9ydCBzZXQgdG8gMCBhZnRl
+ciBhbGxvY190YWdfaW5pdCwgaW4gdGhpcyBjYXNlOgo+PiBhbGxvY190YWdfY3R0eXBlICE9IE5V
+TEwgJiYgbWVtX3Byb2ZpbGluZ19zdXBwb3J0PT0wCj4+IAo+PiBJIGtpbmQgb2YgdGhpbmsgYWxs
+b2NfdGFnX3RvcF91c2VycyBzaG91bGQgcmV0dXJuIDAgaW4gdGhpcyBjYXNlLi4uLmFuZCAgYm90
+aCBtZW1fcHJvZmlsaW5nX3N1cHBvcnQgYW5kIGFsbG9jX3RhZ19jdHR5cGUgc2hvdWxkIGJlIGNo
+ZWNrZWQuLi4uCj4KPkFmdGVyIGNvbW1pdCA3ODAxMzhiMTIzODEsIGFsbG9jX3RhZ19jdHR5cGUg
+aXMgbm90IGFsbG9jYXRlZCBpZgo+IW1lbV9wcm9maWxpbmdfc3VwcG9ydC4gKEFuZCB0aGF0J3Mg
+IHdoeSB0aGlzIGJ1ZyBzaG93ZWQgdXApCgpUaGVyZSBpcyBhIHN5c2N0bCgvcHJvYy9zeXMvdm0v
+bWVtX3Byb2ZpbGluZykgd2hpY2ggY2FuIG92ZXJyaWRlIG1lbV9wcm9maWxpbmdfc3VwcG9ydCBh
+bmQgc2V0IGl0IHRvIDAsIGFmdGVyIGFsbG9jX3RhZ19pbml0IHdpdGggbWVtX3Byb2ZpbGluZ19z
+dXBwb3J0PTEKCgo+Cj4+ID4rCj4+ID4gCWlmIChjYW5fc2xlZXApCj4+ID4gCQljb2RldGFnX2xv
+Y2tfbW9kdWxlX2xpc3QoYWxsb2NfdGFnX2N0dHlwZSwgdHJ1ZSk7Cj4+ID4gCWVsc2UgaWYgKCFj
+b2RldGFnX3RyeWxvY2tfbW9kdWxlX2xpc3QoYWxsb2NfdGFnX2N0dHlwZSkpCj4+ID4tLSAKPj4g
+PjIuNDMuMAo+Cj4tLSAKPkNoZWVycywKPkhhcnJ5IC8gSHllb25nZ29uCg==
 
