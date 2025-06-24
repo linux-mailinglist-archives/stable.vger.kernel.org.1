@@ -1,293 +1,135 @@
-Return-Path: <stable+bounces-158395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F42AAE654F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 14:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77530AE6571
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 14:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE6FF4C0880
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 12:46:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75DBD176599
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 12:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E8D6DCE1;
-	Tue, 24 Jun 2025 12:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B2A298992;
+	Tue, 24 Jun 2025 12:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="c/gJKeD6"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="TTNLzfxA"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2065.outbound.protection.outlook.com [40.107.92.65])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF0956B81
-	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 12:46:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750769170; cv=fail; b=DL6WXBA/ojcfj3MxwmG/Hc4iSegSVDl8IF5S4sZS/CrGQ7/ycqKcnJCTFoP1V5/NpJ0v4foDBXFPA+uehBY+ng2ZzaElOIZuuchlPCftOYycOBgt8wMj9VVswAw+PU6TtDe1wGXbsWARiMkKrgbmzI28+yUz8IMpbv/JcZsSRvs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750769170; c=relaxed/simple;
-	bh=g62QfW0FRHwmiA7nd+26XKsAA7pFWwiID+GgF2nQ6XI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=B1XaG+hflPHhJIuO4HLGMj2jz82NsJqj8MXVFZ4KfX6kNtVNdA82mIIGvPaqtwNfmQlkok10mYophXj2/ezZIdUzbTU4RAgyzXdta+Od0WAcFM57/7K0WqI3uvytC6qZD3FuX5z+SKJlgKQ2OoNyEZK1G70qM6n/O9SZuoNrKAM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=c/gJKeD6; arc=fail smtp.client-ip=40.107.92.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HHE0HELNym+IWXuZ2teXfwWt5MrpWdNpz2THAPy+lPVqMOZZ0aOvR0htwJ5Q0PTvX3d/bPuuoznrBndxjG9KCBljXHUTrQLVNoFTn2+XG9FvCEqxPxXqFaa1iL8kX66SUN7QoQ8T1sgj7F7vTTqL6bQ5q2EzQgQcOmvRw9RAoNmVuImxh0x6/czER3nP2Fz/lkc9kQ30alE4lMnXGB9xcB9tNWS7z2HxAUSZtZG+yG4EUIZ4GvGcGRneJ1GMy103d2bpxHfpLHj68CRs6dmvz+0GcRy1dpswVVj/WjWT+49lccsly5JvVRJonMW/aEQbmgmSm8iHV+2eZyZBU0E1tQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jzAeFroxpj4hg6f+/wJekLqZk80+xVyZ2ZcLYVjoZc0=;
- b=wQ+Wkt9DUnGwb0IH278v9m/Xfh0mf7a9i1p3OkXF8gutvj+TpeYJhBKEQD5CuU+whme6cKw/ZXIyGASfnUAfZNQTMN0FJRx6pexk+dX0TdURy7SPB9dGKsfSWyhStw78VsVAAP7Z5cXCLuzZJElqgvYjTRdZpgXifshpSByOArbgtx1GqlRDBpCp2hP044BRjpf+vma5WbSLWS7aocFcmVTJgmTqVG2Lulu7z9I2cG4DHc9RMK6ZKvX8/zq9/ROeKZiavUUnOs49lGJi4MZjUQH8cRK1faVzAuMhhind/N0dw1tY0mX0VYDKdc+Z/xcAYe0jqWWgA6bIAx9ZQHV1kQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jzAeFroxpj4hg6f+/wJekLqZk80+xVyZ2ZcLYVjoZc0=;
- b=c/gJKeD61cAHx5AQpEahTK0PWjiZ+n0uXJSOmyk2skU4MKleogz4egUrpPGG3LZwL/XmCFSjIUZ+m1eCafUpRMWd6oSG3Gwz3UXiWWbfT4rS9S9qa4PspcJCPA6tAUEHCR/r/qBoWT8zMu0lGa4HS+1AsdUKKjqg+F95mfi8J8Y=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by CH1PR12MB9646.namprd12.prod.outlook.com (2603:10b6:610:2af::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.20; Tue, 24 Jun
- 2025 12:46:05 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%5]) with mapi id 15.20.8857.026; Tue, 24 Jun 2025
- 12:46:05 +0000
-Message-ID: <767ca7a5-0450-4697-b35a-4c6fce58a3ea@amd.com>
-Date: Tue, 24 Jun 2025 14:45:58 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drm/amdgpu: Dirty cleared blocks on free
-To: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
- dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org
-Cc: matthew.auld@intel.com, alexander.deucher@amd.com, stable@vger.kernel.org
-References: <20250623055253.56630-1-Arunpravin.PaneerSelvam@amd.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20250623055253.56630-1-Arunpravin.PaneerSelvam@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR2P281CA0147.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:98::12) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33EE2980A1;
+	Tue, 24 Jun 2025 12:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750769459; cv=none; b=FQYn8ybd8EA7trxHx4iyv6vsrkzBy2oWAKgZSosSPMYo9QYT0XLewoxtcnc01POHTFd8Nq77+tVHNw1dIBQ2py9S9NSHU34SlLcgygMt16J06JVF/k5nmKUiqeHVTDZ/SCwfKvQ7u01MPD4XL9GqK1IS2PbGo9A4ufna0X39rnY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750769459; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MkFYeuY+Y6b+sWAs5XDCidBewyJgPybVprf2/qFk2HOTWFO4JzwQI7L3iG9jVETKOZmU/WLVKONTOkM+rhLdn1+KBCzlyGfC3uVLofEF/mpgzxJ0YASf1FcWWsSrLpvvFokPqdnK2hNzHvZfgzVFGrV/AvTUkbmklu8Vw0KTgnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=TTNLzfxA; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1750769453; x=1751374253; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=TTNLzfxAWPqVorOkmt7tbY+S4KrfvHqhZJo/wnb0c9e1XyORR7eEfls/D8IZD8SD
+	 JB4a7QAcrPzHtRQvbVGlnEpNWiWHkCCr1IrtSe+7C0lEvsQQKp2TeGKo/ZHc6K3Gr
+	 fFgjGu629Mov+rte6Qm352z5f9F9E6LiKkXBh6eSbAgpXO0ucahwXmcnLLF1dY01V
+	 Pto+yGtvDTdLmf0QhQajNBF1ir4RwuJsZ/MyXgBuOWj27fgUJrDlnnTK+UZ/P6PlC
+	 3W6IMCnkCt0y8KiCFfgF7dmUhqJoFw2pkKTbUt5xhVkqNFkC7RFkYG65OzfhcjUQm
+	 HZgTdly39h2dvPUXkw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.35.16]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M72sJ-1uOF1O0oUJ-00GPtV; Tue, 24
+ Jun 2025 14:50:53 +0200
+Message-ID: <1dc07d84-b19e-440b-9a49-6a34cd73f3b5@gmx.de>
+Date: Tue, 24 Jun 2025 14:50:50 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|CH1PR12MB9646:EE_
-X-MS-Office365-Filtering-Correlation-Id: 59793247-efaf-41ba-dbdd-08ddb31d1556
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?clltNFI4a1lhRkh0QkoxMWRXelF1ZlROM2J0dk1RTU9rQlZqY0VIbmNRd1dX?=
- =?utf-8?B?SjhabC9mNXN4d2dpM20wVXFibkY1SVVEd2pRcFBVQzA4NStPTUIzUjBxcW9Q?=
- =?utf-8?B?YzI4SWd6TDE1YU9EbWxKdVEvRXJmKzFyN3IyeUVIYkFkYWY0Z0ozbDB0aktM?=
- =?utf-8?B?OFkvUnMwbWlJbUFhVzNsQUVZTk50RzRnb2lIQ2xxeittSWRDMHRwbE9neG5t?=
- =?utf-8?B?ejd4TTRCV29uK0VHQ0dHUnRBZmxNSENYNlVYVWR2Y1JOdEd1Y2x1Mnd4Mmgx?=
- =?utf-8?B?TnRaRDBMd2IydlhzWjA4SE5KZFFZdC9UOU9NZDU3UXNXWW1Qc1prNm00UVNt?=
- =?utf-8?B?c3Q2VWFYVzMwTE9nNXF0TjZJV3lNV0NkTG84NWtjeG1OZUgyR0gxOWdrajV4?=
- =?utf-8?B?Unl3NFVaaWdnTGE2WlErblRCdVVTaWhXNzA3dHJoOGdzRU9rR3pTNmhEQWhj?=
- =?utf-8?B?Y0I0TWtOU1M0cXFmR2lVbWtRelpOK3Vqam5JU1c3OUVSWVFuRmhnaG9uNStt?=
- =?utf-8?B?dDFIalpvb204ZjMvQXZ2ekVhNGVpeUZZYVdXNlA2Y1pLUHhJbkgrb1luWmZZ?=
- =?utf-8?B?TGNFSmx4ZjVJMjFwOEtIZnpLVjVvRngvQzlMZnFUaXZsWUZCRXpjbjFmZkdX?=
- =?utf-8?B?Zjc2OEFSTkpCRDlTc2FCSjJTL1YzQmRwSXVPS0k0UFhDQWFSZlFJbFFrZ3hR?=
- =?utf-8?B?V3JkRUJGMlFNVTRSdy9zUUdzQ2xyNWNzelBLV1lCWUt4MVFSakU5bHpWSVli?=
- =?utf-8?B?U3NSSlVqWWJLeUdpRm9DTVltQ2ZaMWZBTFRZSnVMS3EvMnlWVzh0eTNteTlp?=
- =?utf-8?B?WHluVUZidUIrcTlqUCtuNUVWUXM0UFpYR2d0a0dScXNWK0JaK3FNd0xOUVdU?=
- =?utf-8?B?d3BWaUNvUDFHK2VxRnBLZDQxdUR0cTNGR2NQT1U5MGNTdGp3T2xsQnRFdVhv?=
- =?utf-8?B?eDZuNWhkOHJrWlJPMlNyQUJhaXdDdE1NTHAwRUNqU1krUlJyTDlXNGxsdGlN?=
- =?utf-8?B?MHdYWmx6T3BVVHJaVXJuZyt2NWJMUSt5aXNFbVFaVndUb01ndkx0RmdHK1o1?=
- =?utf-8?B?YitwRUx5SEEvQnBEZDM2Qkplb0V4WXMwN3h4dm55U2RkRzFJamRPdlRnWmFI?=
- =?utf-8?B?WEYvTkk5K1JjVDRwZTJZRGh5amp0bThndHdoRXE1WkhvZ09qKzVNNVhMbHp3?=
- =?utf-8?B?ZXprc3h0UzRleU8xQXBScmxEbkRMcURYVTNRajhJWEtHS0NMVE1NZjBGMlhs?=
- =?utf-8?B?dmt3ZnArektxdFAvU1VBNWdFaTlBT0VwR0ZVRE9nZEl3Q082bVNuMmxKL2w4?=
- =?utf-8?B?MytJT1daWmZ0NFY3Z1pZdmNZczFWMXI4UHYzUlJQWUNBNlArOUt3WUdNcGJw?=
- =?utf-8?B?b2JIZS9uQlhucFlYTC9ORm1BWVlDTG1MdG5iaXlhMVNMOWFZOGRQclpsQkpY?=
- =?utf-8?B?MHVINi9VSjdXRGZkdFR0TFA2NDJmeHVQaTJOdWxoSU5lalJxa29yS1BLZFpE?=
- =?utf-8?B?UHI5UmxmVE5JeHBCdHgydSsxcWJXUXZ3SWJXVEpaQVBkcjNrZmxOVC9NVnhN?=
- =?utf-8?B?OEh3aXdMR09OU2VuRTdsUzhSUFZSZStqVHFFdG9YUjlkcE4yeU54UzlXUm9k?=
- =?utf-8?B?eVoyOFg5Q1FlRW5ja1N2QlhlZ1BNaHd5QjVPYWxoQm83bHNkUEcyR01KNzBn?=
- =?utf-8?B?UjdkRzE2UU1LU3p1UEcwRTB4c2JBZi85NXBaVVdkdzVvZ3NUQWJVV0RHcEdp?=
- =?utf-8?B?c1I0K0FBVlE1a05kakwzTVY2Wmc1VkV3WVNrWUpOWWFoZHFIOHBObEhFMkN1?=
- =?utf-8?B?eExJbXlDMHljQkZqdW15bnZ5VTJDRlo0UjFMbnhtRDR6SUxqc3c2T0ZWb0Zv?=
- =?utf-8?B?RHJWanY2eURhNGtpMlZRcjZLWDBIT2VXc2ZtSjdjN0k0cmhJTnJ1aHoxUUtr?=
- =?utf-8?Q?wYC8gZMYG3Y=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SlppOXI2ZzY0Z3B6cDUxL2NuV1hLOWtvNGprQWdiWTIxeHpoNUhLVzZrU0dZ?=
- =?utf-8?B?ZVpZZmJkci9FaE5PY3pMZnFLVGlsRmZ6cVFxdytxVFRNTnMzbitxR2twZW9m?=
- =?utf-8?B?UTUrcWs2bXJaaDVCUmw5UkZsVTlmRktxOEpRbndqSGJ5WHpvK1BUWUpSU0Jn?=
- =?utf-8?B?Wm9aQTNKdGV1cFJOTjRkVHkvZ0RId3BLZXBCM25ld3gzOUpCczVLalRvS2NZ?=
- =?utf-8?B?L08xY0lJdkZGbWZuYkg4R1gwbEx0cG5WdXBwQURXY0RUYUxXUUtMWEx1c1lN?=
- =?utf-8?B?a0RaM0hrOFYyd0FJQTRNbWpCWFJ3bU1TRC92QVBDTXF0aEFYYlFKQzBYUjBl?=
- =?utf-8?B?dU9rNURMWGRkZ0U0OXBFT0hLR1F6T0JnZzZoVkt1cHEwbDFhVmJlQnNCY3ND?=
- =?utf-8?B?b2FVakZOR1RzWWlnbUM0Y3g1WS9pRTBkZzhqN2NIVkh2RmFjK3FrWWNCT01F?=
- =?utf-8?B?aUtkemk3eWFZK0FveE5iODNCMjVqbDlEbWMwT3lIa3RBdUNjY1hKL2dwRXVF?=
- =?utf-8?B?M0lxU0I2T3oxTnVMWWo3bE5uRXFNWkVGSFFLNnlHemRxaEtISitvNS9pMjRX?=
- =?utf-8?B?d2Q4SHBXekRwWitnaG0wSFdWWEZTR3JkSWc3NmsveFlOT1BMdWkzOHFDMFZx?=
- =?utf-8?B?b0dVSVBIL3BMcFFxcG0zMjdBMTAyMHQ4cTBScW1xSkxrOHd1SXZKZEJNOFk3?=
- =?utf-8?B?aW5MQStBbzE0aXUvekNzbGRWdFdzZ3diSVA3cHNIVmZycVN0WFpCeE9ISGds?=
- =?utf-8?B?dG41dUNGM2FvcE10S1dEdlBWYnNRSXR4ZjRBeHUyeUppUCszR01tbXdycHh0?=
- =?utf-8?B?ZnBjUnBRMTA5NWtRRTVCRGNtZFBZMmpObitCaXZKSVZOeUx3Q1Vhb0JrSTBN?=
- =?utf-8?B?WHJ4dmd3cW5TdFRlM0Z5bzl4VEE5aC9vdDVVdDZ4STRMNVJ1RUFxYk56aEhT?=
- =?utf-8?B?TWVLb3NPNFpud3FOM0pnQkRybTByTmUwMUdtd1RJaCtjNGlPU2VpVXltcDFF?=
- =?utf-8?B?T0JwOXNuT0hkVnJvNGM4TFVKaG1pdmF6cVd5Y1BhTHNldHdzQTl4U2ZMaklM?=
- =?utf-8?B?SXQrTkF1bnRkWmM2S2tpWkhDRGtUcnN0SndBd0NTbU4yZFM5M1VSYWtMS3Bx?=
- =?utf-8?B?SXRuVjR5RDJOYTUzV2hxbm5SdmtzVi95YWdGSk5LNytBNmZqNC9kNUloNGVn?=
- =?utf-8?B?UUt6MHNVQVJlVDFNV3hUZ0Z4RUowa29helNmMUZmRWhUaHFlcXBkaTlac0lz?=
- =?utf-8?B?NDRVc0F0L1c3MXdtRHBRcXZUQkhpUnc5RHc2WWxHb1Y3eDBLdXNmMUxnRUVn?=
- =?utf-8?B?Z2RvK3JhekhtQ1BWRnFIdlRTVFRZNE1abDBGVTY1Q0xCR2NuR3RqbVRBeVJX?=
- =?utf-8?B?ZGg3U0pvREg4b3BSeVRocjdNeDRKSDFYa1QvODR6dGxBaVQ2c08rcEVpbUZD?=
- =?utf-8?B?NmFoS1AxZUh2UFlXMWFjR1lRaDRjczFIbUdob1BIYldzNmlTUTJXMUwrSWVH?=
- =?utf-8?B?ZVhXREdXQkEwbzE3VWRzN2Yzb2FjSEhZMnNiVWY4Nmg1WDVaN1ZYVWdFc09G?=
- =?utf-8?B?aWxOeUlKRjQybUFZWFpVTUpJcnhUUnB1bmN3dW5nUkN0cGlzaWkvQmFtTlVK?=
- =?utf-8?B?K2xaeG5JZUZJbUZ1YUFZREZWUEZ1Smt4U0o0WVRpejJqcFMrck0vWmtnYTdo?=
- =?utf-8?B?UFBwaXAxcEFFMWQ0UTZhdGVXMFhGREtiU0pUVFJmRVJjVmVMUUdORXZBcFJy?=
- =?utf-8?B?ckFmZHEwNSs0TVl3ODV5SFRnb3FWRVQvMnVBT1N0cldFMlJ3TzJYNkZ3N1lV?=
- =?utf-8?B?Mzc0WllKUWlUTnZaWnRDbGxKQTgzYWtRVG1kTmVRdGxZNGNpeVh0NTJnM3kx?=
- =?utf-8?B?THVOVHJrQkhYV3VTYzNVNzllMk5tN0hTVFVqTllNYXgxc3pDZmp2UE90UHJU?=
- =?utf-8?B?VGVycUhhMzBxTjhZZTVNNFd0eXd3SjlIRVNwRkg0bjVjU25aNDBEbVFOdUNk?=
- =?utf-8?B?aXJjM0I5V2QxQndVTVdwQ2tSUWltWWtEcUsvZTV2UDlzd3UvOTlDbkJVQSt2?=
- =?utf-8?B?OXREQ3pOazZaRUhycnZkMmdReGp1ZG9rN3E0Q2Ztc0c1TnN4Ykx6UG9GZ3Y5?=
- =?utf-8?Q?dMgMQQoA3JC6oBh8Q/5U1NfNk?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 59793247-efaf-41ba-dbdd-08ddb31d1556
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2025 12:46:05.5777
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nbl8wV8B5PosthjH0TTHQhAD19X5rmPCP7XMCIZSlnyRIr4ViCfriGpIW9kl6erw
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9646
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.15 000/588] 6.15.4-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250624121449.136416081@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20250624121449.136416081@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:YfHN219fMgd8XtyQpXiI4uiUFd0ajSFLmBBT5maCiSdGcNMm4K9
+ jkeTGTIwZF9tL8cBIQheWL5UIqejgDlfs/UNxYTJz/nEKN6pcfolwk2gEY1fX3djZ+QzOmW
+ DyO0yD9WqVTU39MLqxEk31awXAoXIdB0melyCHQ+Twyf5oXZ8TzExTQIi/S23QHd02Gdo0K
+ KQ7xyNJF0ZkDgEziXiDEw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:gBy6ai+Js54=;RynbtzxjGkVdmOmIqJglyTXcoCz
+ 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
 
-On 23.06.25 07:52, Arunpravin Paneer Selvam wrote:
-> Set the dirty bit when the memory resource is not cleared
-> during BO release.
-> 
-> Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-> Suggested-by: Christian König <christian.koenig@amd.com>
-> Cc: stable@vger.kernel.org
-> Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_object.c   | 26 ++++++++++++++------
->  drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c      |  3 ++-
->  drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.h |  7 ++++--
->  3 files changed, 26 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-> index 73403744331a..ea6ce53c3a44 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-> @@ -1302,28 +1302,40 @@ void amdgpu_bo_release_notify(struct ttm_buffer_object *bo)
->  	 * So when this locking here fails something is wrong with the reference
->  	 * counting.
->  	 */
-> -	if (WARN_ON_ONCE(!dma_resv_trylock(&bo->base._resv)))
-> +	if (WARN_ON_ONCE(!dma_resv_trylock(&bo->base._resv))) {
-> +		if (bo->resource && bo->resource->mem_type == TTM_PL_VRAM)
-> +			amdgpu_vram_mgr_set_clear_state(bo->resource, false);
+Hi Greg
 
-As far as I can see this is illegal while the BO is not locked, so please drop that.
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-> +
->  		return;
-> +	}
->  
->  	amdgpu_amdkfd_remove_all_eviction_fences(abo);
->  
-> -	if (!bo->resource || bo->resource->mem_type != TTM_PL_VRAM ||
-> -	    !(abo->flags & AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE) ||
-> -	    adev->in_suspend || drm_dev_is_unplugged(adev_to_drm(adev)))
-> +	if (!bo->resource || bo->resource->mem_type != TTM_PL_VRAM)
->  		goto out;
->  
-> +	if (!(abo->flags & AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE) ||
-> +	    adev->in_suspend || drm_dev_is_unplugged(adev_to_drm(adev)))
-> +		goto out_clear_err;
-> +
->  	r = dma_resv_reserve_fences(&bo->base._resv, 1);
->  	if (r)
-> -		goto out;
-> +		goto out_clear_err;
->  
->  	r = amdgpu_fill_buffer(abo, 0, &bo->base._resv, &fence, true);
->  	if (WARN_ON(r))
-> -		goto out;
-> +		goto out_clear_err;
->  
-> -	amdgpu_vram_mgr_set_cleared(bo->resource);
-> +	amdgpu_vram_mgr_set_clear_state(bo->resource, true);
->  	dma_resv_add_fence(&bo->base._resv, fence, DMA_RESV_USAGE_KERNEL);
->  	dma_fence_put(fence);
->  
-> +	dma_resv_unlock(&bo->base._resv);
-> +
-> +	return;
-> +
-> +out_clear_err:
-> +	amdgpu_vram_mgr_set_clear_state(bo->resource, false);
+Thanks
 
-As far as I can see that is actually not a good idea. The cleared flag should not be set here in the first place.
-
->  out:
->  	dma_resv_unlock(&bo->base._resv);
->  }
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-> index 9c5df35f05b7..9ec14ab900f4 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-> @@ -407,9 +407,10 @@ static int amdgpu_move_blit(struct ttm_buffer_object *bo,
->  		r = amdgpu_fill_buffer(abo, 0, NULL, &wipe_fence,
->  				       false);
->  		if (r) {
-> +			amdgpu_vram_mgr_set_clear_state(bo->resource, false);
->  			goto error;
->  		} else if (wipe_fence) {
-> -			amdgpu_vram_mgr_set_cleared(bo->resource);
-> +			amdgpu_vram_mgr_set_clear_state(bo->resource, true);
->  			dma_fence_put(fence);
->  			fence = wipe_fence;
->  		}
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.h
-> index b256cbc2bc27..1019c5806ec7 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.h
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.h
-> @@ -64,9 +64,12 @@ to_amdgpu_vram_mgr_resource(struct ttm_resource *res)
->  	return container_of(res, struct amdgpu_vram_mgr_resource, base);
->  }
->  
-> -static inline void amdgpu_vram_mgr_set_cleared(struct ttm_resource *res)
-> +static inline void amdgpu_vram_mgr_set_clear_state(struct ttm_resource *res, bool is_clear)
->  {
-> -	to_amdgpu_vram_mgr_resource(res)->flags |= DRM_BUDDY_CLEARED;
-> +	if (is_clear)
-> +		to_amdgpu_vram_mgr_resource(res)->flags |= DRM_BUDDY_CLEARED;
-> +	else
-> +		to_amdgpu_vram_mgr_resource(res)->flags &= ~DRM_BUDDY_CLEARED;
-
-
-Rather code this here like:
-
-struct amdgpu_vram_mgr_resource *ares = to_amdgpu_vram_mgr_resource(res);
-
-WARN_ON(ares->flags & DRM_BUDDY_CLEARED);
-ares->flags |= DRM_BUDDY_CLEARED;
-
-Regards,
-Christian.
-
->  }
->  
->  #endif
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
 
