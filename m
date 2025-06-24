@@ -1,142 +1,133 @@
-Return-Path: <stable+bounces-158460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19749AE712A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 22:59:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F85AE7131
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 23:01:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 138473BF265
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 20:59:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7F553B2EBB
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 21:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AAF42E9EDF;
-	Tue, 24 Jun 2025 20:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2B71B0402;
+	Tue, 24 Jun 2025 21:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S3uUeOk7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jqhcTpYw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD522251793;
-	Tue, 24 Jun 2025 20:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D04366;
+	Tue, 24 Jun 2025 21:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750798788; cv=none; b=sEDDcuTU3Uo6pnJIsU/hjhaXL7RWHpNhyr2brNJ8Xx8bWQ4vsIQWwc3F0XojOgcYlh3hw4rAaTVYa45jTggTiSNtWRVBwhF5hgmI1d5gttgeC2NK/8OKelCm6YiilZh0RPlWflgMEYRcOeAUg5Lpz8MJgRwINfaTqdotAp8p5jQ=
+	t=1750798912; cv=none; b=cgRtu6gXClS8ftRMUsYR0d9Tt+nC3XAini3b/m0DDWJwn68ELmiY8mrQjz/PhX42mHdqaet15Gm6yV/r4O+uYSVXDWKBuu/hhLwmQIE/DRmfJB99PKKGandPh7ih2WHxG3vLbW+S37Cna6TBo0rA4yE4NPhl99BKVq9TFfzs+Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750798788; c=relaxed/simple;
-	bh=Z41SlrC6shhXVfPH39kxoTqPrwM+ffpfDXIUClZ18i4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JaDzrzqeJ+1dsfZ1NpMLTPab6KW4kAxujT1Ff8gy6WC/QkvUdJcDDwAmc4q+ri9/KgV8tb6OKDBLEj4PdWTgE9PeRNbVCT2Hzdv+AzdKL0cT2O/TA19n6hfilxwujkY43W0eLBqzX7dVp3X+LE8AcQVwAHxWskZeySW88HLXHRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S3uUeOk7; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1750798912; c=relaxed/simple;
+	bh=bMqshJkDZ9w34wfBJ4fDOC1gIdaYCEyKamwtCEgA/40=;
+	h=Subject:To:Cc:From:Date:Message-Id; b=eWFdsXChKvAuPB47os9F5WgvUnzgv/GkGlUjjOXmuboHy/ZjYcEKwmZzpEHu9+nqPUcvS6u2XIe/yFXInwa8ymHOcjCtMPsJwPmqdUa2EINSqP+8/xrnc/V7zeFycM1Qn+hGWYoeN/hobOQROGKEHiCs8Vyd01uBsl9HAN92c6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jqhcTpYw; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750798786; x=1782334786;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Z41SlrC6shhXVfPH39kxoTqPrwM+ffpfDXIUClZ18i4=;
-  b=S3uUeOk7qJ8SG9S8PSGao/+tAlEOyp3HsKZ6N4TzCR/Oqwx+T2QNl/cQ
-   8EHapoa9n8JhCVj9KqfwuKl8txwjiCTX3lJjCm3y1aGDh724ygmkivJxG
-   uKM/OrUks9uFxtmqO+E696X5pBlvLtqKpICr/0A6kskRuW+CsP1s6Za9y
-   Q/ikyekcPyxBbwUM18am996e/8+avl/MW7lgTjd0oqheluaQQo0DtmUHC
-   qVQMl7Mnh8xq9/G7NMP+IPAGK1+IK0EeAE4KtOkgwoFOsCyq6kiMCPdyK
-   r5CccljIMUQwzDX1iHdBWhIjAQxa+5xs4aRrx9btkD2yRt8mRYrEwrvms
-   Q==;
-X-CSE-ConnectionGUID: 8gP1muU1SRSw4OQAkANWnA==
-X-CSE-MsgGUID: z4LYKnWnSHWPloALJdaUnQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="52923160"
+  t=1750798911; x=1782334911;
+  h=subject:to:cc:from:date:message-id;
+  bh=bMqshJkDZ9w34wfBJ4fDOC1gIdaYCEyKamwtCEgA/40=;
+  b=jqhcTpYwCfA2TMK9m+jTShbe/HVujNq2FQxq+gAXscaL9n09bbeGnrib
+   1slfl8mSZavu9hd1qz1rTp8yOTmxMm73PsffcuFEXCazz1Xn4+h7h6G/h
+   Spcx7i+llr9DGsf5ZSjxt8L3Mddu94eDafaVS+w4Nj9OW/5acbVQj9Gl/
+   ez6i81x0mJ8i/WWlmEwxk4fIli/hhiBcVOL7XxTEp8vpbuZ061VwwIzbp
+   iKdow2JBch/neYc9pypuVLs5uVnYw8JnHn4LiAj5VJMTZcOPQVFgm4hmR
+   dmR6+GXv6coEQepvKObvpnZJn3i6Ow/1aknIjv133oetRKCvqcuePtmdN
+   A==;
+X-CSE-ConnectionGUID: CmFMfpmxT16lkrP63hnCbg==
+X-CSE-MsgGUID: HGfEQHFoQl+AZBt67dfALQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="64488307"
 X-IronPort-AV: E=Sophos;i="6.16,263,1744095600"; 
-   d="scan'208";a="52923160"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2025 13:59:46 -0700
-X-CSE-ConnectionGUID: jCoD3aVvSoae4EIxDw8jGw==
-X-CSE-MsgGUID: U3muxXZVRyKmGsK3DAHF+Q==
+   d="scan'208";a="64488307"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2025 14:01:51 -0700
+X-CSE-ConnectionGUID: BZp4o3vOR6q8a7JjP9O4bA==
+X-CSE-MsgGUID: p9udsA64S36RYhCDqDSm3Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,263,1744095600"; 
-   d="scan'208";a="151522934"
-Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.108.216]) ([10.125.108.216])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2025 13:59:46 -0700
-Message-ID: <2a57590b-879d-4920-a20f-beb5cf63d432@intel.com>
-Date: Tue, 24 Jun 2025 13:59:45 -0700
+   d="scan'208";a="189214103"
+Received: from davehans-spike.ostc.intel.com (HELO localhost.localdomain) ([10.165.164.11])
+  by orviesa001.jf.intel.com with ESMTP; 24 Jun 2025 14:01:50 -0700
+Subject: [PATCH] [v2] x86/fpu: Delay instruction pointer fixup until after warning
+To: linux-kernel@vger.kernel.org
+Cc: x86@kernel.org, tglx@linutronix.de, bp@alien8.de, mingo@kernel.org, chao.gao@intel.com, Dave Hansen <dave.hansen@linux.intel.com>, Alison Schofield <alison.schofield@intel.com>, Chang S. Bae <chang.seok.bae@intel.com>, Eric Biggers <ebiggers@google.com>, Rik van Riel <riel@redhat.com>, stable@vger.kernel.org
+From: Dave Hansen <dave.hansen@linux.intel.com>
+Date: Tue, 24 Jun 2025 14:01:48 -0700
+Message-Id: <20250624210148.97126F9E@davehans-spike.ostc.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/fpu: Delay instruction pointer fixup until after
- after warning
-To: Chao Gao <chao.gao@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, tglx@linutronix.de,
- bp@alien8.de, mingo@kernel.org, "Chang S. Bae" <chang.seok.bae@intel.com>,
- Eric Biggers <ebiggers@google.com>, Rik van Riel <riel@redhat.com>,
- stable@vger.kernel.org
-References: <20250618193313.17F0EF2E@davehans-spike.ostc.intel.com>
- <aFN4BuzSCXlcqFQz@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aFN4BuzSCXlcqFQz@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 6/18/25 19:37, Chao Gao wrote:
-> instead of delaying the RIP fixup,
-> 
->> 	fpu_reset_from_exception_fixup();
->> 	return true;
-> can we do
-> 
-> 	return ex_handler_default(fixup, regs);
-> 
-> here? Similar to what other handlers ex_handler_{fault, sgx, uaccess, ...} are
-> doing.
 
-Yep, good idea. I don't see any reason that this should have been
-special in the first place.
+Changes from v1:
+ * Fix minor typos
+ * Use the more generic and standard ex_handler_default(). Had the
+   original code used this helper, the bug would not have been there
+   in the first place.
+
+--
+
+From: Dave Hansen <dave.hansen@linux.intel.com>
+
+Right now, if XRSTOR fails a console message like this is be printed:
+
+	Bad FPU state detected at restore_fpregs_from_fpstate+0x9a/0x170, reinitializing FPU registers.
+
+However, the text location (...+0x9a in this case) is the instruction
+*AFTER* the XRSTOR. The highlighted instruction in the "Code:" dump
+also points one instruction late.
+
+The reason is that the "fixup" moves RIP up to pass the bad XRSTOR and
+keep on running after returning from the #GP handler. But it does this
+fixup before warning.
+
+The resulting warning output is nonsensical because it looks like the
+non-FPU-related instruction is #GP'ing.
+
+Do not fix up RIP until after printing the warning. Do this by using
+the more generic and standard ex_handler_default().
+
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Fixes: d5c8028b4788 ("x86/fpu: Reinitialize FPU registers if restoring FPU state fails")
+Acked-by: Alison Schofield <alison.schofield@intel.com>
+Cc: stable@vger.kernel.org
+Cc: Eric Biggers <ebiggers@google.com>
+Cc: Rik van Riel <riel@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Chang S. Bae <chang.seok.bae@intel.com>
+---
+
+ b/arch/x86/mm/extable.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff -puN arch/x86/mm/extable.c~fixup-fpu-gp-ip-later arch/x86/mm/extable.c
+--- a/arch/x86/mm/extable.c~fixup-fpu-gp-ip-later	2025-06-24 13:58:09.722855233 -0700
++++ b/arch/x86/mm/extable.c	2025-06-24 13:58:09.736856435 -0700
+@@ -122,13 +122,12 @@ static bool ex_handler_sgx(const struct
+ static bool ex_handler_fprestore(const struct exception_table_entry *fixup,
+ 				 struct pt_regs *regs)
+ {
+-	regs->ip = ex_fixup_addr(fixup);
+-
+ 	WARN_ONCE(1, "Bad FPU state detected at %pB, reinitializing FPU registers.",
+ 		  (void *)instruction_pointer(regs));
+ 
+ 	fpu_reset_from_exception_fixup();
+-	return true;
++
++	return ex_handler_default(fixup, regs);
+ }
+ 
+ /*
+_
 
