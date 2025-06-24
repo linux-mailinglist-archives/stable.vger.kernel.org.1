@@ -1,142 +1,95 @@
-Return-Path: <stable+bounces-158207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C68AE580E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 01:35:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E8A7AE58CA
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 02:49:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6D513BF306
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 422E2480CB4
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A06022CBF1;
-	Mon, 23 Jun 2025 23:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D3B7B3E1;
+	Tue, 24 Jun 2025 00:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b="CL9i9zyJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tYo+416U"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2CD218596
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 23:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A191179A3;
+	Tue, 24 Jun 2025 00:49:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750721706; cv=none; b=qxTKmhDJwjGcIwIEMzk2u8EYhjPaS7+nnWd/5ibr7oFKNsUw7PCbkKaNZqLB/loYCEB74K1bpaCRZjK+wAA+81waUDX5pnkggrpj/bIO2mzzyAttADfyjJab0wVoetD0AsjwOSwLufkSGbya4gy0O9TY3PyZpvKjfWP40p4ME8I=
+	t=1750726179; cv=none; b=pjdXW3/tovEnX2Q3eE3ew2SO1zw5S3q8c83mGqtw1CbtdvdC4zROTAQrM2jCt46sOCFjyFn1dUpAoWST/Ca38RsTekGR7REe97HWZ19ffcIrxRkRlF2zUkDwoAkQFICjPDJLP/+4xZXdbJ7YPxjo2yV/I8zboNrMZ8+oHSsXf8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750721706; c=relaxed/simple;
-	bh=UTPQdHjFwKTkGB9t0kUTkGNQ/g2HisdMouEZ4e40bws=;
-	h=Date:Subject:In-Reply-To:CC:From:To:Message-ID:Mime-Version:
-	 Content-Type; b=Q97NOcPx+Zc3O7nOoDJk5HTVzdsofeo7s3/l6urE7dFVZDqZ5owzTM/+QC40fU6vM1wjaP3MjRXT3sXcKhUtYVIgqhMFxklzcSlZffLF9x5npksVoQoH1J5uILiZOcOvBsHPDG+7lAVfWL2LT0Gj4U2kyaOMVVFj2kcHuUqTgbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; spf=pass smtp.mailfrom=dabbelt.com; dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b=CL9i9zyJ; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dabbelt.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-23636167b30so43955105ad.1
-        for <stable@vger.kernel.org>; Mon, 23 Jun 2025 16:35:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1750721702; x=1751326502; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3C1HBX/7TnNGVwZTeosVdWMVJ7HcYu8ETqN6upndI5g=;
-        b=CL9i9zyJnQ7MizxHw3iYMDKz2YejFofDA513x+30WiE/UitLAUHV+16YOFl65GeWCB
-         1XAJh2Kfju2oh51HML9pN5n+6thQbhhKl3LcBEByVnLOM94ECNsrjQ4Mjeb/j+Eyx4LM
-         jXrYM8THpobU5FqcFaG552hMhnN0uSqL0zCg68Z2SGOG8BwKVx3XKy8rkkTggHyVj+N/
-         4Zd9wNrHcGBKuehY1412PKEQpAeDdn9IYbcprwklML74catWfnQKnlt0/PTpqxH3MBni
-         dfmtINCWVV7zuOewR/YSaQSCDNoRAh5xI/UOgSPNy7Fsen/E1V5rUErXAKz/Ci0aGV6o
-         4/Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750721702; x=1751326502;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3C1HBX/7TnNGVwZTeosVdWMVJ7HcYu8ETqN6upndI5g=;
-        b=lWDf4b8LlBc9ecZj+OJAZ2u7Yii5OBgN8UBErrmw2Q4/aluwEo6xDP9fHTjxclmE75
-         WOoZauIatHZrMHLMTThQdEu8bV8bqxNkYG4IrO47qvMHLcOQCmSPXM77NUJb+Eb/tb5K
-         LrJwEY9zgmEyI/ngv3AhCZrqC+loM1lFGJb0UcmheKqY3CsCoMJ37YvpT6K3roYQZiZZ
-         gnAqJQ1jB/uG7KhiLDn+XTNFiWUbwo6dQUrUHTmWV9GHakNISzt2p23M0xCQOfWmjLFt
-         YqUuZqRLTqG2N/uCqIc79VwYJ/c7doAvWlY5yo9LNP1d5kNqEmaQSa6w1d+tMzVx7aGi
-         0UKA==
-X-Forwarded-Encrypted: i=1; AJvYcCWknlchlEIgJsYObchXQHnaGAqWI3RYbMul8NAbkyG8bDwgphvcTp/mEowHVM+8UHSaPzel+o4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxth6DkvXzsN5uu75G3FBivTT2/bxz2766pBzhHu9zRGDmgJYhx
-	QqSYZ2mqo7v+at76bLQushaoyF6dvjAcEmr3J23F4Z7vCdasw9pwB939m1hSGVDYQFQ=
-X-Gm-Gg: ASbGncvBLpTSZKRqUXy78pdz71y4m8v/B0aATuj0OJT9jWy9W5sZCvxDoSrCbpxL3Gf
-	tV/R5fMlcjHTEU96DLUGiF0AHfIHO7yJHhyuJzmQtMSUh//Ya17Ghe0pr2KVUSLpPKNMxExPEbO
-	6xsgPJM/cal0UCgWcToXTgpQG7gaJ4qnuu43dUSasiyL/+gI0xJ8jjeWx5yGSEgmHM93pJWPANn
-	tTDrth3knCpMo4ddhnAN8vx6O4hAzWwYkCnPswV3f8gin5fCeHkX5tqTZIJimhlXbgkoUxc+gCF
-	2IBb5Pu+Xaw9c9BdMZlxw+3w5eedD6Oj6oRRKU3rYe0chsZU85HFRCHyCVcsGdniEbe1nSQ=
-X-Google-Smtp-Source: AGHT+IEWQhK1ybI3F/dHuMp7BGaRHJD1DU/MK1xVISPFslSP0vZBJeLT7Qmd8Fs0FSYtyxoSaqreEQ==
-X-Received: by 2002:a17:903:287:b0:235:ed02:288b with SMTP id d9443c01a7336-237d98f1a1emr169782885ad.30.1750721702579;
-        Mon, 23 Jun 2025 16:35:02 -0700 (PDT)
-Received: from localhost ([2620:10d:c090:500::4:8d10])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-237d83d0bedsm92289545ad.67.2025.06.23.16.35.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 16:35:01 -0700 (PDT)
-Date: Mon, 23 Jun 2025 16:35:01 -0700 (PDT)
-X-Google-Original-Date: Mon, 23 Jun 2025 16:34:57 PDT (-0700)
-Subject:     Re: [PATCH] riscv: export boot_cpu_hartid
-In-Reply-To: <20250619-rummage-cache-93f48564b7fb@wendy>
-CC: klarasmodin@gmail.com, Paul Walmsley <paul.walmsley@sifive.com>,
-  aou@eecs.berkeley.edu, Alexandre Ghiti <alex@ghiti.fr>, valentina.fernandezalanis@microchip.com,
-  linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: Conor Dooley <conor.dooley@microchip.com>
-Message-ID: <mhng-38FFE919-5F5F-4F1E-A06E-85946E791E4B@palmerdabbelt-mac>
+	s=arc-20240116; t=1750726179; c=relaxed/simple;
+	bh=auJG+ebWPdigAZon0xUkAP9Sh4i7/1apI4ycMMIuwnI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=KLibBksurPbZpUsODMEFA0geGg7Hdrzbcmomqo//AzyXjfF994hOirN29bOdm6fDKnQVJO3TdYzywpQPP6lSEKqshGL1+06SEmt/oyBr7nl+Gexw1Tx/kiQEjKPx8DfC8x/KPpZQ3JBNOKThx08Q7HFxzGZsuGLreSBiSLihzhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tYo+416U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00414C4CEEA;
+	Tue, 24 Jun 2025 00:49:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750726179;
+	bh=auJG+ebWPdigAZon0xUkAP9Sh4i7/1apI4ycMMIuwnI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=tYo+416UzkF5unLO+5cq/IgT7Fws78hZETuwzulH0wPGHZK9jye0wFAUDVS89xI1D
+	 zZ4v8aCjXZGEAPo9GMvVOxF9jlWeLmSiNklzmwyuKjAPty2zHZwbrPueF25qMv/EYr
+	 inQ4HZKZB0SUdDaIZOpuwp5NwhMy6ton90LNxLQslz8cjYlE+GlV/+RIixbc9hjdpF
+	 OQMEb60IPneshvBC9mbd0uKnhuNJH3qvUOLB7KQ9Au2+e8bbu7h/pM6MPf5C6vjat5
+	 dhl9NLupsVecmwzPx4nbWScAvg2UBv+Mb+t6dTbHuOdx8KUDkmCJz7wsWXgu49UG6k
+	 njFyy5C3Iuypg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33E6739FEB7D;
+	Tue, 24 Jun 2025 00:50:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] riscv: export boot_cpu_hartid
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <175072620601.3349808.417584899603480594.git-patchwork-notify@kernel.org>
+Date: Tue, 24 Jun 2025 00:50:06 +0000
+References: <20250617125847.23829-1-klarasmodin@gmail.com>
+In-Reply-To: <20250617125847.23829-1-klarasmodin@gmail.com>
+To: Klara Modin <klarasmodin@gmail.com>
+Cc: linux-riscv@lists.infradead.org, paul.walmsley@sifive.com,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+ conor.dooley@microchip.com, valentina.fernandezalanis@microchip.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-On Thu, 19 Jun 2025 03:25:16 PDT (-0700), Conor Dooley wrote:
-> On Tue, Jun 17, 2025 at 02:58:47PM +0200, Klara Modin wrote:
->> The mailbox controller driver for the Microchip Inter-processor
->> Communication can be built as a module. It uses cpuid_to_hartid_map and
->> commit 4783ce32b080 ("riscv: export __cpuid_to_hartid_map") enables that
->> to work for SMP. However, cpuid_to_hartid_map uses boot_cpu_hartid on
->> non-SMP kernels and this driver can be useful in such configurations[1].
->> 
->> Export boot_cpu_hartid so the driver can be built as a module on non-SMP
->> kernels as well.
->> 
->> Link: https://lore.kernel.org/lkml/20250617-confess-reimburse-876101e099cb@spud/ [1]
->> Cc: stable@vger.kernel.org
->> Fixes: e4b1d67e7141 ("mailbox: add Microchip IPC support")
->
-> I'm not sure that this fixes tag is really right, but I have no better
-> suggestions
+Hello:
 
-Seems OK to me, the driver is what causes the symbol to need the 
-definition, so that patch is the first place we'd need this (unless some 
-other drivers want it, which wouldn't be surprising).
+This patch was applied to riscv/linux.git (fixes)
+by Palmer Dabbelt <palmer@dabbelt.com>:
 
-I'm throwing it at the tester, it should show up on fixes soon.
+On Tue, 17 Jun 2025 14:58:47 +0200 you wrote:
+> The mailbox controller driver for the Microchip Inter-processor
+> Communication can be built as a module. It uses cpuid_to_hartid_map and
+> commit 4783ce32b080 ("riscv: export __cpuid_to_hartid_map") enables that
+> to work for SMP. However, cpuid_to_hartid_map uses boot_cpu_hartid on
+> non-SMP kernels and this driver can be useful in such configurations[1].
+> 
+> Export boot_cpu_hartid so the driver can be built as a module on non-SMP
+> kernels as well.
+> 
+> [...]
 
-Thanks!
+Here is the summary with links:
+  - riscv: export boot_cpu_hartid
+    https://git.kernel.org/riscv/c/c5136add3f9b
 
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
->
->> Signed-off-by: Klara Modin <klarasmodin@gmail.com>
->> ---
->>  arch/riscv/kernel/setup.c | 1 +
->>  1 file changed, 1 insertion(+)
->> 
->> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
->> index f7c9a1caa83e..14888e5ea19a 100644
->> --- a/arch/riscv/kernel/setup.c
->> +++ b/arch/riscv/kernel/setup.c
->> @@ -50,6 +50,7 @@ atomic_t hart_lottery __section(".sdata")
->>  #endif
->>  ;
->>  unsigned long boot_cpu_hartid;
->> +EXPORT_SYMBOL_GPL(boot_cpu_hartid);
->>  
->>  /*
->>   * Place kernel memory regions on the resource tree so that
->> -- 
->> 2.49.0
->> 
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
