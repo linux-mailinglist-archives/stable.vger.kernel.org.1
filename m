@@ -1,125 +1,303 @@
-Return-Path: <stable+bounces-158447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F841AE6ED3
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 20:45:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C21CAAE6EF7
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 20:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1979F1BC4C1D
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 18:46:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 598781BC5208
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 18:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC2C238C3B;
-	Tue, 24 Jun 2025 18:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3F32E762F;
+	Tue, 24 Jun 2025 18:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="HH21uuRe"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NxWYQguh"
 X-Original-To: stable@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97D319DF4A;
-	Tue, 24 Jun 2025 18:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179C91BEF7E
+	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 18:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750790749; cv=none; b=tPL/IjP+MXothwzWLRRF1fkiRmNcoJRJu1hAv2pkqdtHFjxqhGn/UFRg7T9zryqWUOWKaWioiIPRIH8NMxSjBNYMgAY0Mdh++9d4oqyBgliCwaSNSALrQxlwmO1NsO03HETpsRYdGfKBCxZYL6kdhlQvwiE7fJ8s47BX+E10PL4=
+	t=1750791418; cv=none; b=QPx5AJ+zwh5tBSbDK+1oJd56eznlDRcRgBCAeMZsZpEadmZHgFbGE6QvBlZq3fHjJ1qgQJZjTbq95BH+95UBQNSsvJ4D0WvMo2W/o0eqRLHypsrepWJJuK+W1RHhx+LmvaLJ20+Z3+/RWRZQY8YTktcqqYmoOkSM4yDC0T4eI3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750790749; c=relaxed/simple;
-	bh=mpigxhq/5ZYuhiGJZPIBKkiwd+dsvZCPwQyOMPGbrh0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e5bZJmiShtc70GpKu809020fF0ZZL3vraXIR0BOxUEL/kKJf9e5om95I3LnSS0AI1P9/WRaWn5fhZeL5K6vT0wyZeiAZbX97WeKOwoSRxmrbkTuqOX/WqM3pBvo26VwVjjVcqawMSuCwV8Quf7nVtx3yjua0OKtpjhzuH6pVDVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=HH21uuRe; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 55OIjadm1238609;
-	Tue, 24 Jun 2025 13:45:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1750790736;
-	bh=jCehJ/03vgXo43v5fdkPlxCVgkwl4XEINgeHUUIjpIM=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=HH21uuRenlyBJrmpV8tV01ggfubYZdd8TpKLoLY4vv8nKQow7ioeLe/uR1A7OxrGW
-	 BMwK7Vxb7qbdWjIW9/IOgMng+DZiWBd9y6KpFb73zyAg1uuKtCgImdTZ3sky1aaxHu
-	 pCS33fARrH9UJeYIpbS+Dio8MKVy5f4JIc1HFnOI=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 55OIjatH264462
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Tue, 24 Jun 2025 13:45:36 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 24
- Jun 2025 13:45:35 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Tue, 24 Jun 2025 13:45:35 -0500
-Received: from uda0132425.dhcp.ti.com (uda0132425.dhcp.ti.com [172.24.227.245])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 55OIjVbv1993190;
-	Tue, 24 Jun 2025 13:45:32 -0500
-From: Vignesh Raghavendra <vigneshr@ti.com>
-To: Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
-        Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-CC: Vignesh Raghavendra <vigneshr@ti.com>,
-        Emanuele Ghidoli
-	<emanuele.ghidoli@toradex.com>,
-        Francesco Dolcini
-	<francesco.dolcini@toradex.com>,
-        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v1] arm64: dts: ti: k3-am62-verdin: Enable pull-ups on I2C buses
-Date: Wed, 25 Jun 2025 00:15:30 +0530
-Message-ID: <175079060330.1874839.7299512877628097063.b4-ty@ti.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250528110741.262336-1-ghidoliemanuele@gmail.com>
-References: <20250528110741.262336-1-ghidoliemanuele@gmail.com>
+	s=arc-20240116; t=1750791418; c=relaxed/simple;
+	bh=k7+87lorjbk7yirRD6WO3f7yv9CJCF2JkVO4XzBluLE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TR3v+RqHaj2MnhIdDyhsGnji8HFHmItLLncqp3V2kolMdVvTznZ5bQ91D8dGryTVSi23kNrnQcN4zgUYmYpLIX9zrH2mjlWGfsmmuh0pDKDXMTBP113uCTrOUgRCve54TfoPwcH/EB56UQDYC/GeRBwtTjv/ovDS1hBH5v1CfF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NxWYQguh; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750791415;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1eJKQCod9a7ytkrDXmSwASYimvlVZPkPrqx9b+5atfg=;
+	b=NxWYQguhgrIBFkxDSl20RRzSCeFQArypvFpGPPOkamQFnsp/A/eGXVhwV8xaJ/IZjFJvUv
+	Fo0+xCAZ+PRX4Poi5gKfGz1IOlPW9OnWuOCm1+IPmlFw87E52YQb19X1k6qV7chqCrRd8h
+	3KuffQ/g5qgc4Z3YhvwSbyrgN9tNJ0M=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-sPeFNE2-MXCRq9skRJc-vw-1; Tue,
+ 24 Jun 2025 14:56:51 -0400
+X-MC-Unique: sPeFNE2-MXCRq9skRJc-vw-1
+X-Mimecast-MFC-AGG-ID: sPeFNE2-MXCRq9skRJc-vw_1750791409
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 969D31920483;
+	Tue, 24 Jun 2025 18:56:25 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.196])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F1DC219560A3;
+	Tue, 24 Jun 2025 18:56:23 +0000 (UTC)
+Date: Tue, 24 Jun 2025 14:56:22 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Parav Pandit <parav@nvidia.com>
+Cc: mst@redhat.com, axboe@kernel.dk, virtualization@lists.linux.dev,
+	linux-block@vger.kernel.org, stable@vger.kernel.org,
+	lirongqing@baidu.com, kch@nvidia.com, xuanzhuo@linux.alibaba.com,
+	pbonzini@redhat.com, jasowang@redhat.com, alok.a.tiwari@oracle.com,
+	Max Gurtovoy <mgurtovoy@nvidia.com>,
+	Israel Rukshin <israelr@nvidia.com>
+Subject: Re: [PATCH v5] virtio_blk: Fix disk deletion hang on device surprise
+ removal
+Message-ID: <20250624185622.GB5519@fedora>
+References: <20250602024358.57114-1-parav@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="PMmMKbCizQT0pNag"
+Content-Disposition: inline
+In-Reply-To: <20250602024358.57114-1-parav@nvidia.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Hi Emanuele Ghidoli,
 
-On Wed, 28 May 2025 13:07:37 +0200, Emanuele Ghidoli wrote:
-> Enable internal bias pull-ups on the SoC-side I2C buses that do not have
-> external pull resistors populated on the SoM. This ensures proper
-> default line levels.
-> 
-> 
+--PMmMKbCizQT0pNag
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I have applied the following to branch ti-k3-dts-next on [1].
-Thank you!
+On Mon, Jun 02, 2025 at 02:44:33AM +0000, Parav Pandit wrote:
+> When the PCI device is surprise removed, requests may not complete
+> the device as the VQ is marked as broken. Due to this, the disk
+> deletion hangs.
 
-[1/1] arm64: dts: ti: k3-am62-verdin: Enable pull-ups on I2C buses
-      commit: bdf4252f736cc1d2a8e3e633c70fe6c728f0756e
+There are loops in the core virtio driver code that expect device
+register reads to eventually return 0:
+drivers/virtio/virtio_pci_modern.c:vp_reset()
+drivers/virtio/virtio_pci_modern_dev.c:vp_modern_set_queue_reset()
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent up the chain during
-the next merge window (or sooner if it is a relevant bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Is there a hang if these loops are hit when a device has been surprise
+removed? I'm trying to understand whether surprise removal is fully
+supported or whether this patch is one step in that direction.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Apart from that, I'm happy with the virtio_blk.c aspects of the patch:
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+>=20
+> Fix it by aborting the requests when the VQ is broken.
+>=20
+> With this fix now fio completes swiftly.
+> An alternative of IO timeout has been considered, however
+> when the driver knows about unresponsive block device, swiftly clearing
+> them enables users and upper layers to react quickly.
+>=20
+> Verified with multiple device unplug iterations with pending requests in
+> virtio used ring and some pending with the device.
+>=20
+> Fixes: 43bb40c5b926 ("virtio_pci: Support surprise removal of virtio pci =
+device")
+> Cc: stable@vger.kernel.org
+> Reported-by: Li RongQing <lirongqing@baidu.com>
+> Closes: https://lore.kernel.org/virtualization/c45dd68698cd47238c55fb73ca=
+9b4741@baidu.com/
+> Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
+> Reviewed-by: Israel Rukshin <israelr@nvidia.com>
+> Signed-off-by: Parav Pandit <parav@nvidia.com>
+>=20
+> ---
+> v4->v5:
+> - fixed comment style where comment to start with one empty line at start
+> - Addressed comments from Alok
+> - fixed typo in broken vq check
+> v3->v4:
+> - Addressed comments from Michael
+> - renamed virtblk_request_cancel() to
+>   virtblk_complete_request_with_ioerr()
+> - Added comments for virtblk_complete_request_with_ioerr()
+> - Renamed virtblk_broken_device_cleanup() to
+>   virtblk_cleanup_broken_device()
+> - Added comments for virtblk_cleanup_broken_device()
+> - Moved the broken vq check in virtblk_remove()
+> - Fixed comment style to have first empty line
+> - replaced freezed to frozen
+> - Fixed comments rephrased
+>=20
+> v2->v3:
+> - Addressed comments from Michael
+> - updated comment for synchronizing with callbacks
+>=20
+> v1->v2:
+> - Addressed comments from Stephan
+> - fixed spelling to 'waiting'
+> - Addressed comments from Michael
+> - Dropped checking broken vq from queue_rq() and queue_rqs()
+>   because it is checked in lower layer routines in virtio core
+>=20
+> v0->v1:
+> - Fixed comments from Stefan to rename a cleanup function
+> - Improved logic for handling any outstanding requests
+>   in bio layer
+> - improved cancel callback to sync with ongoing done()
+> ---
+>  drivers/block/virtio_blk.c | 95 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 95 insertions(+)
+>=20
+> diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+> index 7cffea01d868..c5e383c0ac48 100644
+> --- a/drivers/block/virtio_blk.c
+> +++ b/drivers/block/virtio_blk.c
+> @@ -1554,6 +1554,98 @@ static int virtblk_probe(struct virtio_device *vde=
+v)
+>  	return err;
+>  }
+> =20
+> +/*
+> + * If the vq is broken, device will not complete requests.
+> + * So we do it for the device.
+> + */
+> +static bool virtblk_complete_request_with_ioerr(struct request *rq, void=
+ *data)
+> +{
+> +	struct virtblk_req *vbr =3D blk_mq_rq_to_pdu(rq);
+> +	struct virtio_blk *vblk =3D data;
+> +	struct virtio_blk_vq *vq;
+> +	unsigned long flags;
+> +
+> +	vq =3D &vblk->vqs[rq->mq_hctx->queue_num];
+> +
+> +	spin_lock_irqsave(&vq->lock, flags);
+> +
+> +	vbr->in_hdr.status =3D VIRTIO_BLK_S_IOERR;
+> +	if (blk_mq_request_started(rq) && !blk_mq_request_completed(rq))
+> +		blk_mq_complete_request(rq);
+> +
+> +	spin_unlock_irqrestore(&vq->lock, flags);
+> +	return true;
+> +}
+> +
+> +/*
+> + * If the device is broken, it will not use any buffers and waiting
+> + * for that to happen is pointless. We'll do the cleanup in the driver,
+> + * completing all requests for the device.
+> + */
+> +static void virtblk_cleanup_broken_device(struct virtio_blk *vblk)
+> +{
+> +	struct request_queue *q =3D vblk->disk->queue;
+> +
+> +	/*
+> +	 * Start freezing the queue, so that new requests keeps waiting at the
+> +	 * door of bio_queue_enter(). We cannot fully freeze the queue because
+> +	 * frozen queue is an empty queue and there are pending requests, so
+> +	 * only start freezing it.
+> +	 */
+> +	blk_freeze_queue_start(q);
+> +
+> +	/*
+> +	 * When quiescing completes, all ongoing dispatches have completed
+> +	 * and no new dispatch will happen towards the driver.
+> +	 */
+> +	blk_mq_quiesce_queue(q);
+> +
+> +	/*
+> +	 * Synchronize with any ongoing VQ callbacks that may have started
+> +	 * before the VQs were marked as broken. Any outstanding requests
+> +	 * will be completed by virtblk_complete_request_with_ioerr().
+> +	 */
+> +	virtio_synchronize_cbs(vblk->vdev);
+> +
+> +	/*
+> +	 * At this point, no new requests can enter the queue_rq() and
+> +	 * completion routine will not complete any new requests either for the
+> +	 * broken vq. Hence, it is safe to cancel all requests which are
+> +	 * started.
+> +	 */
+> +	blk_mq_tagset_busy_iter(&vblk->tag_set,
+> +				virtblk_complete_request_with_ioerr, vblk);
+> +	blk_mq_tagset_wait_completed_request(&vblk->tag_set);
+> +
+> +	/*
+> +	 * All pending requests are cleaned up. Time to resume so that disk
+> +	 * deletion can be smooth. Start the HW queues so that when queue is
+> +	 * unquiesced requests can again enter the driver.
+> +	 */
+> +	blk_mq_start_stopped_hw_queues(q, true);
+> +
+> +	/*
+> +	 * Unquiescing will trigger dispatching any pending requests to the
+> +	 * driver which has crossed bio_queue_enter() to the driver.
+> +	 */
+> +	blk_mq_unquiesce_queue(q);
+> +
+> +	/*
+> +	 * Wait for all pending dispatches to terminate which may have been
+> +	 * initiated after unquiescing.
+> +	 */
+> +	blk_mq_freeze_queue_wait(q);
+> +
+> +	/*
+> +	 * Mark the disk dead so that once we unfreeze the queue, requests
+> +	 * waiting at the door of bio_queue_enter() can be aborted right away.
+> +	 */
+> +	blk_mark_disk_dead(vblk->disk);
+> +
+> +	/* Unfreeze the queue so that any waiting requests will be aborted. */
+> +	blk_mq_unfreeze_queue_nomemrestore(q);
+> +}
+> +
+>  static void virtblk_remove(struct virtio_device *vdev)
+>  {
+>  	struct virtio_blk *vblk =3D vdev->priv;
+> @@ -1561,6 +1653,9 @@ static void virtblk_remove(struct virtio_device *vd=
+ev)
+>  	/* Make sure no work handler is accessing the device. */
+>  	flush_work(&vblk->config_work);
+> =20
+> +	if (virtqueue_is_broken(vblk->vqs[0].vq))
+> +		virtblk_cleanup_broken_device(vblk);
+> +
+>  	del_gendisk(vblk->disk);
+>  	blk_mq_free_tag_set(&vblk->tag_set);
+> =20
+> --=20
+> 2.34.1
+>=20
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+--PMmMKbCizQT0pNag
+Content-Type: application/pgp-signature; name=signature.asc
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
---
-Vignesh
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmha9NYACgkQnKSrs4Gr
+c8irNAf/dcQsS90jfXhVTEEf1kGgf/W2L/TCXD9w0qRhXPle17Z1a7N6gSucSxlH
+fudfm7m2xsJ4Y3KaNkeOj+4tjyoRnyeoBUB5E4nFyvvAzQkm5IiJc0ixbB3syQyG
+U/O/Tf0f/BH13xW/UluKrosdop8ZIrg8SnDRu5d2HC0sJXSUxg8vDWEA/MirBubc
+XYsqphNYooPqtAcsXzBqrvu9uVdk1Hzy5TMzKNUe7WZUBElzqvzKsHYcCUVyR8fs
+vjl3V9rQ3AMmO8RtkDPBUrBIb9/2xJJT/f2Gh6DgQbHjMuuy7a+BLXPBkPj6UvC9
+nwTCE1tEbagRLt5MONPk+4jfurniZQ==
+=l+z2
+-----END PGP SIGNATURE-----
+
+--PMmMKbCizQT0pNag--
 
 
