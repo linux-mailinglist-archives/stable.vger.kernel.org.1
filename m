@@ -1,173 +1,198 @@
-Return-Path: <stable+bounces-158353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B67A9AE60E2
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 11:31:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50230AE6143
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 11:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE3A54A2F40
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 09:31:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5249D4004DE
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 09:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB772571A2;
-	Tue, 24 Jun 2025 09:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1893B27F4D0;
+	Tue, 24 Jun 2025 09:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="koabEkrO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d44DNG/7"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817D41F5617
-	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 09:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD82527C872;
+	Tue, 24 Jun 2025 09:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750757503; cv=none; b=ZWn/Z8HqDxmOhiGiY8Pz9xmtPPUi9RvM24am1V7qas33ZtXOZjtLVuX3CTIDRUqAA6wGOgdpnO6QAGEAozTLp57rfpjaajQW4qlkm07cmfEi0GWhyGL5cQwaXCftUwGrb85aL2j8B4Lptdtu24fvdmSA5vHWAflrJjN+zG7P2iQ=
+	t=1750758483; cv=none; b=skvui9bbMeQzeYQ62lQIH6yvACclcyjddJEqRMKzLgXfQqgc63d32a3PQCWFwD7GHiG8dMTmrDdbQnBjCljzVmkGRao+uz37/qohi3IelQFXwc0oHrGsoKAzZiVjqsVYQnePGg65vhKp0rI6/uQ4QmE2ve8PX7A0Tcdpgaz28HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750757503; c=relaxed/simple;
-	bh=uxCsdbjY+iJS/VDA6NKtnJMeFSKo+7bB+sRnO4Ah5UU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=r8Zk5TIWNGab4BHWtsuEgDpiVQ1uIWumkLlyQE5cVxv4UdNqlAlO9hxLAwUVkwkdkyhsm+Z9vc2LbyDo8hnp5HY0Bx6QJDNolCbMOGgKXdAqN0wdMc1H48iNbX2btQASl4NI3qhFk6V28qLKHNvGbt1fYpGp0M/WY4XBfAhxWs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=koabEkrO reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=NTe3TIDBiQU3umeOPZhdMNYuQL39uZUxwIH4mHYch1s=; b=k
-	oabEkrO4MMzLS5utRZkj+5ovFHGtUH1fOKFgz3E1Gq6PTSMKEodLxsLx32OwNwlO
-	ToGgwi6IhZ9mhLcUL+MKMX+gr7ZZ4HA9BEYs9Ipr+BnDU3KrxUTIevSvTLlIOvt5
-	qlOkNX7Xp6zTiadOwxE9QyNpyXAycZTAh306Uf0G/M=
-Received: from 00107082$163.com ( [111.35.191.166] ) by
- ajax-webmail-wmsvr-40-138 (Coremail) ; Tue, 24 Jun 2025 17:30:02 +0800
- (CST)
-Date: Tue, 24 Jun 2025 17:30:02 +0800 (CST)
-From: "David Wang" <00107082@163.com>
-To: "Harry Yoo" <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, surenb@google.com, kent.overstreet@linux.dev,
-	oliver.sang@intel.com, cachen@purestorage.com, linux-mm@kvack.org,
-	oe-lkp@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v3] lib/alloc_tag: do not acquire non-existent lock in
- alloc_tag_top_users()y
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
- Copyright (c) 2002-2025 www.mailtech.cn 163com
-In-Reply-To: <aFprYu5H_ztouxw2@hyeyoo>
-References: <20250624072513.84219-1-harry.yoo@oracle.com>
- <4f12c217.7a79.197a1070f55.Coremail.00107082@163.com>
- <aFprYu5H_ztouxw2@hyeyoo>
-X-NTES-SC: AL_Qu2eAvueuEwr5CCcYekZnEYQheY4XMKyuPkg1YJXOp80iCXp/hEFeXBPAETKwcOtMz6tvxe6XzRR9O1eYKR/YouYvAJidtxwIXgAhTLbf5aG
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=arc-20240116; t=1750758483; c=relaxed/simple;
+	bh=n///fGtdSpT8h/Nj1JMZbBb3xfu39BaKeTW5evsEsKU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X/Y8quoVBWrNLJXtk1cyxCKVzfKNfFWj5DIopV6ikR2J4+lYomnf14dCc5sdBXv8dgHPbVPquZtL+b+HzKOcqHRXHyO0R185gCuF8hyNwJgB7Ka2frZsS9Ax38Xbtpsch4IO98S9fwspcHv2bhI3oZX/IFxSTE3SSBZ/pIwSNWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d44DNG/7; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750758482; x=1782294482;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=n///fGtdSpT8h/Nj1JMZbBb3xfu39BaKeTW5evsEsKU=;
+  b=d44DNG/71Gq+FIfgOuS6egt/CsS0rdkQbP/ugHEr7T2RClPDmL+KS0ve
+   KKpPADBuzfZFvTTX/iIywPBehvjQ95fsYa/u88mI0AB1OH73FZ1ZFvq9B
+   2jyUhnmU2Xp41uVFFGJ+afspu6hYB3Q5CAAEl+vL25LXFZ1buAPwA8I42
+   DG3zaEKWQvH37yA6uDIOAlP8FqA7btftVJA1zTVZh0gY521JJnVSM8KO3
+   EKNHSwh6gn6DT0GA1LzHPcM2fDaQqP5KFwd5r9eDtEiJkDb1jEb6WFX8y
+   S8tih5bFf4O/sbzU2k9KlMCrYIVaB50xaxk7WbVpuVm6ZH/XJ9OTZsmTr
+   w==;
+X-CSE-ConnectionGUID: gqmbEGtATtqKOK9YHv9g+w==
+X-CSE-MsgGUID: KnOvG5cuSWKMxBQdTs1Sww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="53061607"
+X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; 
+   d="scan'208";a="53061607"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2025 02:48:01 -0700
+X-CSE-ConnectionGUID: jMsvlTdwSxS0oMShpnmc/g==
+X-CSE-MsgGUID: 8uBVQj0YRLOvVc8yFHjqSQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; 
+   d="scan'208";a="151463620"
+Received: from unknown (HELO [10.237.72.199]) ([10.237.72.199])
+  by fmviesa007.fm.intel.com with ESMTP; 24 Jun 2025 02:47:59 -0700
+Message-ID: <c8ea2d32-4e8e-49da-9d75-000d34f8e819@linux.intel.com>
+Date: Tue, 24 Jun 2025 12:47:57 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <23eb5af1.9692.197a145e5c2.Coremail.00107082@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:iigvCgD3v9gbcFpof6ojAA--.20560W
-X-CM-SenderInfo: qqqrilqqysqiywtou0bp/xtbBEgl2qmhaZeW4+gAEsz
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] usb: hub: fix detection of high tier USB3 devices
+ behind suspended hubs
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org, stern@rowland.harvard.edu, oneukum@suse.com,
+ stable@vger.kernel.org, Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+References: <20250611112441.2267883-1-mathias.nyman@linux.intel.com>
+ <acaaa928-832c-48ca-b0ea-d202d5cd3d6c@oss.qualcomm.com>
+Content-Language: en-US
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+In-Reply-To: <acaaa928-832c-48ca-b0ea-d202d5cd3d6c@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-CkF0IDIwMjUtMDYtMjQgMTc6MDk6NTQsICJIYXJyeSBZb28iIDxoYXJyeS55b29Ab3JhY2xlLmNv
-bT4gd3JvdGU6Cj5PbiBUdWUsIEp1biAyNCwgMjAyNSBhdCAwNDoyMToyM1BNICswODAwLCBEYXZp
-ZCBXYW5nIHdyb3RlOgo+PiBBdCAyMDI1LTA2LTI0IDE1OjI1OjEzLCAiSGFycnkgWW9vIiA8aGFy
-cnkueW9vQG9yYWNsZS5jb20+IHdyb3RlOgo+PiA+YWxsb2NfdGFnX3RvcF91c2VycygpIGF0dGVt
-cHRzIHRvIGxvY2sgYWxsb2NfdGFnX2N0dHlwZS0+bW9kX2xvY2sKPj4gPmV2ZW4gd2hlbiB0aGUg
-YWxsb2NfdGFnX2N0dHlwZSBpcyBub3QgYWxsb2NhdGVkIGJlY2F1c2U6Cj4+ID4KPj4gPiAgMSkg
-YWxsb2MgdGFnZ2luZyBpcyBkaXNhYmxlZCBiZWNhdXNlIG1lbSBwcm9maWxpbmcgaXMgZGlzYWJs
-ZWQKPj4gPiAgICAgKCFhbGxvY190YWdfY3R0eXBlKQo+PiA+ICAyKSBhbGxvYyB0YWdnaW5nIGlz
-IGVuYWJsZWQsIGJ1dCBub3QgeWV0IGluaXRpYWxpemVkICghYWxsb2NfdGFnX2N0dHlwZSkKPj4g
-PiAgMykgYWxsb2MgdGFnZ2luZyBpcyBlbmFibGVkLCBidXQgZmFpbGVkIGluaXRpYWxpemF0aW9u
-Cj4+ID4gICAgICghYWxsb2NfdGFnX2N0dHlwZSBvciBJU19FUlIoYWxsb2NfdGFnX2N0dHlwZSkp
-Cj4+ID4KPj4gPkluIGFsbCBjYXNlcywgYWxsb2NfdGFnX2N0dHlwZSBpcyBub3QgYWxsb2NhdGVk
-LCBhbmQgdGhlcmVmb3JlCj4+ID5hbGxvY190YWdfdG9wX3VzZXJzKCkgc2hvdWxkIG5vdCBhdHRl
-bXB0IHRvIGFjcXVpcmUgdGhlIHNlbWFwaG9yZS4KPj4gPgo+PiA+VGhpcyBsZWFkcyB0byBhIGNy
-YXNoIG9uIG1lbW9yeSBhbGxvY2F0aW9uIGZhaWx1cmUgYnkgYXR0ZW1wdGluZyB0bwo+PiA+YWNx
-dWlyZSBhIG5vbi1leGlzdGVudCBzZW1hcGhvcmU6Cj4+ID4KPj4gPiAgT29wczogZ2VuZXJhbCBw
-cm90ZWN0aW9uIGZhdWx0LCBwcm9iYWJseSBmb3Igbm9uLWNhbm9uaWNhbCBhZGRyZXNzIDB4ZGZm
-ZmZjMDAwMDAwMDAxYjogMDAwMCBbIzNdIFNNUCBLQVNBTiBOT1BUSQo+PiA+ICBLQVNBTjogbnVs
-bC1wdHItZGVyZWYgaW4gcmFuZ2UgWzB4MDAwMDAwMDAwMDAwMDBkOC0weDAwMDAwMDAwMDAwMDAw
-ZGZdCj4+ID4gIENQVTogMiBVSUQ6IDAgUElEOiAxIENvbW06IHN5c3RlbWQgVGFpbnRlZDogRyAg
-ICAgIEQgICAgICAgICAgICAgNi4xNi4wLXJjMiAjMSBWT0xVTlRBUlkKPj4gPiAgVGFpbnRlZDog
-W0RdPURJRQo+PiA+ICBIYXJkd2FyZSBuYW1lOiBRRU1VIFN0YW5kYXJkIFBDIChpNDQwRlggKyBQ
-SUlYLCAxOTk2KSwgQklPUyAxLjE2LjItZGViaWFuLTEuMTYuMi0xIDA0LzAxLzIwMTQKPj4gPiAg
-UklQOiAwMDEwOmRvd25fcmVhZF90cnlsb2NrKzB4YWEvMHgzYjAKPj4gPiAgQ29kZTogZDAgN2Mg
-MDggODQgZDIgMGYgODUgYTAgMDIgMDAgMDAgOGIgMGQgZGYgMzEgZGQgMDQgODUgYzkgNzUgMjkg
-NDggYjggMDAgMDAgMDAgMDAgMDAgZmMgZmYgZGYgNDggOGQgNmIgNjggNDggODkgZWEgNDggYzEg
-ZWEgMDMgPDgwPiAzYyAwMiAwMCAwZiA4NSA4OCAwMiAwMCAwMCA0OCAzYiA1YiA2OCAwZiA4NSA1
-MyAwMSAwMCAwMCA2NSBmZgo+PiA+ICBSU1A6IDAwMDA6ZmZmZjg4ODEwMDJjZTliOCBFRkxBR1M6
-IDAwMDEwMDE2Cj4+ID4gIFJBWDogZGZmZmZjMDAwMDAwMDAwMCBSQlg6IDAwMDAwMDAwMDAwMDAw
-NzAgUkNYOiAwMDAwMDAwMDAwMDAwMDAwCj4+ID4gIFJEWDogMDAwMDAwMDAwMDAwMDAxYiBSU0k6
-IDAwMDAwMDAwMDAwMDAwMGEgUkRJOiAwMDAwMDAwMDAwMDAwMDcwCj4+ID4gIFJCUDogMDAwMDAw
-MDAwMDAwMDBkOCBSMDg6IDAwMDAwMDAwMDAwMDAwMDEgUjA5OiBmZmZmZWQxMDdkZGU0OWQxCj4+
-ID4gIFIxMDogZmZmZjg4ODNlZWYyNGU4YiBSMTE6IGZmZmY4ODgxMDAyY2VjMjAgUjEyOiAxZmZm
-ZjExMDIwMDU5ZDM3Cj4+ID4gIFIxMzogMDAwMDAwMDAwMDNmZmY3YiBSMTQ6IGZmZmY4ODgxMDAy
-Y2VjMjAgUjE1OiBkZmZmZmMwMDAwMDAwMDAwCj4+ID4gIEZTOiAgMDAwMDdmOTYzZjIxZDk0MCgw
-MDAwKSBHUzpmZmZmODg4NDU4Y2E2MDAwKDAwMDApIGtubEdTOjAwMDAwMDAwMDAwMDAwMDAKPj4g
-PiAgQ1M6ICAwMDEwIERTOiAwMDAwIEVTOiAwMDAwIENSMDogMDAwMDAwMDA4MDA1MDAzMwo+PiA+
-ICBDUjI6IDAwMDA3Zjk2M2Y1ZWRmNzEgQ1IzOiAwMDAwMDAwMTA2NzJjMDAwIENSNDogMDAwMDAw
-MDAwMDM1MGVmMAo+PiA+ICBDYWxsIFRyYWNlOgo+PiA+ICAgPFRBU0s+Cj4+ID4gICBjb2RldGFn
-X3RyeWxvY2tfbW9kdWxlX2xpc3QrMHhkLzB4MjAKPj4gPiAgIGFsbG9jX3RhZ190b3BfdXNlcnMr
-MHgzNjkvMHg0YjAKPj4gPiAgIF9fc2hvd19tZW0rMHgxY2QvMHg2ZTAKPj4gPiAgIHdhcm5fYWxs
-b2MrMHgyYjEvMHgzOTAKPj4gPiAgIF9fYWxsb2NfZnJvemVuX3BhZ2VzX25vcHJvZisweDEyYjkv
-MHgyMWEwCj4+ID4gICBhbGxvY19wYWdlc19tcG9sKzB4MTM1LzB4M2UwCj4+ID4gICBhbGxvY19z
-bGFiX3BhZ2UrMHg4Mi8weGUwCj4+ID4gICBuZXdfc2xhYisweDIxMi8weDI0MAo+PiA+ICAgX19f
-c2xhYl9hbGxvYysweDgyYS8weGUwMAo+PiA+ICAgPC9UQVNLPgo+PiA+Cj4+ID5BcyBEYXZpZCBX
-YW5nIHBvaW50cyBvdXQsIHRoaXMgaXNzdWUgYmVjYW1lIGVhc2llciB0byB0cmlnZ2VyIGFmdGVy
-IGNvbW1pdAo+PiA+NzgwMTM4YjEyMzgxICgiYWxsb2NfdGFnOiBjaGVjayBtZW1fcHJvZmlsaW5n
-X3N1cHBvcnQgaW4gYWxsb2NfdGFnX2luaXQiKS4KPj4gPgo+PiA+QmVmb3JlIHRoZSBjb21taXQs
-IHRoZSBpc3N1ZSBvY2N1cnJlZCBvbmx5IHdoZW4gaXQgZmFpbGVkIHRvIGFsbG9jYXRlCj4+ID5h
-bmQgaW5pdGlhbGl6ZSBhbGxvY190YWdfY3R0eXBlIG9yIGlmIGEgbWVtb3J5IGFsbG9jYXRpb24g
-ZmFpbHMgYmVmb3JlCj4+ID5hbGxvY190YWdfaW5pdCgpIGlzIGNhbGxlZC4gQWZ0ZXIgdGhlIGNv
-bW1pdCwgaXQgY2FuIGJlIGVhc2lseSB0cmlnZ2VyZWQKPj4gPndoZW4gbWVtb3J5IHByb2ZpbGlu
-ZyBpcyBjb21waWxlZCBidXQgZGlzYWJsZWQgYXQgYm9vdC4KPj4gPgo+PiA+VG8gcHJvcGVybHkg
-ZGV0ZXJtaW5lIHdoZXRoZXIgYWxsb2NfdGFnX2luaXQoKSBoYXMgYmVlbiBjYWxsZWQgYW5kCj4+
-ID5pdHMgZGF0YSBzdHJ1Y3R1cmVzIGluaXRpYWxpemVkLCB2ZXJpZnkgdGhhdCBhbGxvY190YWdf
-Y3R0eXBlIGlzIGEgdmFsaWQKPj4gPnBvaW50ZXIgYmVmb3JlIGFjcXVpcmluZyB0aGUgc2VtYXBo
-b3JlLiBJZiB0aGUgdmFyaWFibGUgaXMgTlVMTCBvciBhbiBlcnJvcgo+PiA+dmFsdWUsIGl0IGhh
-cyBub3QgYmVlbiBwcm9wZXJseSBpbml0aWFsaXplZC4gSW4gc3VjaCBhIGNhc2UsIGp1c3Qgc2tp
-cAo+PiA+YW5kIGRvIG5vdCBhdHRlbXB0IHRvIGFjcXVpcmUgdGhlIHNlbWFwaG9yZS4KPj4gPgo+
-PiA+UmVwb3J0ZWQtYnk6IGtlcm5lbCB0ZXN0IHJvYm90IDxvbGl2ZXIuc2FuZ0BpbnRlbC5jb20+
-Cj4+ID5DbG9zZXM6IGh0dHBzOi8vdXJsZGVmZW5zZS5jb20vdjMvX19odHRwczovL2xvcmUua2Vy
-bmVsLm9yZy9vZS1sa3AvMjAyNTA2MTgxMzUxLmJiYTg2N2RkLWxrcEBpbnRlbC5jb21fXzshIUFD
-V1Y1TjlNMlJWOTloUSFQeEpOS3A0Qmo2aDBYSVdwUlhjbUZlSXo1MWpPUnRSUkFvMWoyM1puUmd2
-VG0wRTBNcDVsNlVyTE5Da2lId3c2QVZXT1NmYkREZEJ3S2dKOV9RJCAKPj4gPkNsb3NlczogaHR0
-cHM6Ly91cmxkZWZlbnNlLmNvbS92My9fX2h0dHBzOi8vbG9yZS5rZXJuZWwub3JnL29lLWxrcC8y
-MDI1MDYxMzE3MTEuNWI0MTkzMWMtbGtwQGludGVsLmNvbV9fOyEhQUNXVjVOOU0yUlY5OWhRIVB4
-Sk5LcDRCajZoMFhJV3BSWGNtRmVJejUxak9SdFJSQW8xajIzWm5SZ3ZUbTBFME1wNWw2VXJMTkNr
-aUh3dzZBVldPU2ZiRERkQy03T2lVc2ckIAo+PiA+Rml4ZXM6IDc4MDEzOGIxMjM4MSAoImFsbG9j
-X3RhZzogY2hlY2sgbWVtX3Byb2ZpbGluZ19zdXBwb3J0IGluIGFsbG9jX3RhZ19pbml0IikKPj4g
-PkZpeGVzOiAxNDM4ZDM0OWQxNmIgKCJsaWI6IGFkZCBtZW1vcnkgYWxsb2NhdGlvbnMgcmVwb3J0
-IGluIHNob3dfbWVtKCkiKQo+PiA+Q2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKPj4gPlNpZ25l
-ZC1vZmYtYnk6IEhhcnJ5IFlvbyA8aGFycnkueW9vQG9yYWNsZS5jb20+Cj4+ID4tLS0KPj4gPgo+
-PiA+QFN1cmVuOiBJIGRpZCBub3QgYWRkIGFub3RoZXIgcHJfd2FybigpIGJlY2F1c2UgZXZlcnkg
-ZXJyb3IgcGF0aCBpbgo+PiA+YWxsb2NfdGFnX2luaXQoKSBhbHJlYWR5IGhhcyBwcl9lcnIoKS4K
-Pj4gPgo+PiA+djIgLT4gdjM6Cj4+ID4tIEFkZGVkIGFub3RoZXIgQ2xvc2VzOiB0YWcgKERhdmlk
-KQo+PiA+LSBNb3ZlZCB0aGUgY29uZGl0aW9uIGludG8gYSBzdGFuZGFsb25lIGlmIGJsb2NrIGZv
-ciBiZXR0ZXIgcmVhZGFiaWxpdHkKPj4gPiAgKFN1cmVuKQo+PiA+LSBUeXBvIGZpeCAoU3VyZW4p
-Cj4+ID4KPj4gPiBsaWIvYWxsb2NfdGFnLmMgfCAzICsrKwo+PiA+IDEgZmlsZSBjaGFuZ2VkLCAz
-IGluc2VydGlvbnMoKykKPj4gPgo+PiA+ZGlmZiAtLWdpdCBhL2xpYi9hbGxvY190YWcuYyBiL2xp
-Yi9hbGxvY190YWcuYwo+PiA+aW5kZXggNDFjY2ZiMDM1YjdiLi5lOWIzMzg0ODcwMGEgMTAwNjQ0
-Cj4+ID4tLS0gYS9saWIvYWxsb2NfdGFnLmMKPj4gPisrKyBiL2xpYi9hbGxvY190YWcuYwo+PiA+
-QEAgLTEyNyw2ICsxMjcsOSBAQCBzaXplX3QgYWxsb2NfdGFnX3RvcF91c2VycyhzdHJ1Y3QgY29k
-ZXRhZ19ieXRlcyAqdGFncywgc2l6ZV90IGNvdW50LCBib29sIGNhbl9zbAo+PiA+IAlzdHJ1Y3Qg
-Y29kZXRhZ19ieXRlcyBuOwo+PiA+IAl1bnNpZ25lZCBpbnQgaSwgbnIgPSAwOwo+PiA+IAo+PiA+
-KwlpZiAoSVNfRVJSX09SX05VTEwoYWxsb2NfdGFnX2N0dHlwZSkpCj4+IAo+PiBTaG91bGQgYSB3
-YXJuaW5nICBhZGRlZCBoZXJlPyBpbmRpY2F0aW5nICBjb2RldGFnIG1vZHVsZSBub3QgcmVhZHkg
-eWV0IGFuZCB0aGUgbWVtb3J5IGZhaWx1cmUgaGFwcGVuZWQgZHVyaW5nIGJvb3Q6Cj4+ICBpZiAo
-bWVtX3Byb2ZpbGluZ19zdXBwb3J0KSBwcl93YXJuKCIuLi4KPgo+SSB0aGluayB5b3UncmUgc2F5
-aW5nIHdlIG5lZWQgdG8gcHJpbnQgYSB3YXJuaW5nIHdoZW4gYWxsb2MgdGFnZ2luZwo+Y2FuJ3Qg
-cHJvdmlkZSAidG9wIHVzZXJzIi4KCkkganVzdCBtZWFudCBwcmludGluZyBhIHdhcm5pbmcgd2hl
-biBzaG93X21lbSBpcyBuZWVkZWQgYmVmb3JlIGNvZGV0YWcgbW9kdWxlIGluaXRpYWxpemVkLCAK
-YXMgcmVwb3J0ZWQgaW4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvb2UtbGtwLzIwMjUwNjE4MTM1
-MS5iYmE4NjdkZC1sa3BAaW50ZWwuY29tLwp3aGVyZSBtZW1fcHJvZmlsaW5nX3N1cHBvcnQgaXMg
-MSwgYnV0IGFsbG9jX3RhZ19jdHR5cGUgaXMgc3RpbGwgTlVMTC4KVGhpcyBjYW4gdGVsbCB3ZSBk
-byBoYXZlIGEgbWVtb3J5IGZhaWx1cmUgZHVyaW5nIGJvb3QgYmVmb3JlIGNvZGV0YWdfaW5pdCwg
-ZXZlbiB3aXRoIG1lbW9yeSBwcm9maWxpbmcgYWN0aXZhdGVkLgoKPgo+QW5kIHRoZXJlIGNhbiBi
-ZSB0aHJlZSBkaWZmZXJlbnQgcmVhc29ucyB3aHkgaXQgY2FuJ3QgcHJvdmlkZSB0aGVtOgo+Cj4x
-KSBhbGxvY190YWdfY3R0eXBlIGlzIG5vdCByZWFkeSB5ZXQgb3IgbWVtIHByb2ZpbGluZyBpcyBk
-aXNhYmxlZC4KPjIpIHRoZSBjb250ZXh0IGNhbid0IHNsZWVwIGFuZCB0cnlsb2NrIGZhaWxlZC4K
-ClRoaXMgY2FzZSBpcyBub3QganVzdCBhYm91dCB3YXJuaW5nLCBpdCBpcyBhIGJ1ZyBpZiBwb3Nz
-aWJsZS4KCj4zKSBhbGxvYyB0YWdzIGRvIG5vdCBleGlzdC4KPgoKPi0tIAo+Q2hlZXJzLAo+SGFy
-cnkgLyBIeWVvbmdnb24K
+On 23.6.2025 23.31, Konrad Dybcio wrote:
+> On 6/11/25 1:24 PM, Mathias Nyman wrote:
+>> USB3 devices connected behind several external suspended hubs may not
+>> be detected when plugged in due to aggressive hub runtime pm suspend.
+>>
+>> The hub driver immediately runtime-suspends hubs if there are no
+>> active children or port activity.
+>>
+>> There is a delay between the wake signal causing hub resume, and driver
+>> visible port activity on the hub downstream facing ports.
+>> Most of the LFPS handshake, resume signaling and link training done
+>> on the downstream ports is not visible to the hub driver until completed,
+>> when device then will appear fully enabled and running on the port.
+>>
+>> This delay between wake signal and detectable port change is even more
+>> significant with chained suspended hubs where the wake signal will
+>> propagate upstream first. Suspended hubs will only start resuming
+>> downstream ports after upstream facing port resumes.
+>>
+>> The hub driver may resume a USB3 hub, read status of all ports, not
+>> yet see any activity, and runtime suspend back the hub before any
+>> port activity is visible.
+>>
+>> This exact case was seen when conncting USB3 devices to a suspended
+>> Thunderbolt dock.
+>>
+>> USB3 specification defines a 100ms tU3WakeupRetryDelay, indicating
+>> USB3 devices expect to be resumed within 100ms after signaling wake.
+>> if not then device will resend the wake signal.
+>>
+>> Give the USB3 hubs twice this time (200ms) to detect any port
+>> changes after resume, before allowing hub to runtime suspend again.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 2839f5bcfcfc ("USB: Turn on auto-suspend for USB 3.0 hubs.")
+>> Acked-by: Alan Stern <stern@rowland.harvard.edu>
+>> Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+>> ---
+> Hi, this patch seems to cause the following splat on QC
+> SC8280XP CRD board when resuming the system:
+> 
+> [root@sc8280xp-crd ~]# ./suspend_test.sh
+> [   37.887029] PM: suspend entry (s2idle)
+> [   37.903850] Filesystems sync: 0.012 seconds
+> [   37.915071] Freezing user space processes
+> [   37.920925] Freezing user space processes completed (elapsed 0.001 seconds)
+> [   37.928138] OOM killer disabled.
+> [   37.931479] Freezing remaining freezable tasks
+> [   37.937476] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+> [   38.397272] Unable to handle kernel paging request at virtual address dead00000000012a
+> [   38.405444] Mem abort info:
+> [   38.408349]   ESR = 0x0000000096000044
+> [   38.412231]   EC = 0x25: DABT (current EL), IL = 32 bits
+> [   38.417712]   SET = 0, FnV = 0
+> [   38.420873]   EA = 0, S1PTW = 0
+> [   38.424133]   FSC = 0x04: level 0 translation fault
+> [   38.429168] Data abort info:
+> [   38.432150]   ISV = 0, ISS = 0x00000044, ISS2 = 0x00000000
+> [   38.437804]   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+> [   38.443014]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> [   38.448495] [dead00000000012a] address between user and kernel address ranges
+> [   38.455852] Internal error: Oops: 0000000096000044 [#1]  SMP
+> [   38.461693] Modules linked in:
+> [   38.464872] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.16.0-rc3-next-20250623-00003-g85d3e4a2835b #12226 NONE
+> [   38.475880] Hardware name: Qualcomm QRD, BIOS 6.0.230525.BOOT.MXF.1.1.c1-00114-MAKENA-1 05/25/2023
+> [   38.485096] pstate: 804000c5 (Nzcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [   38.492263] pc : __run_timer_base+0x1e0/0x330
+> [   38.496784] lr : __run_timer_base+0x1c4/0x330
+> [   38.501291] sp : ffff800080003e80
+> [   38.504718] x29: ffff800080003ee0 x28: ffff800080003e98 x27: dead000000000122
+> [   38.512069] x26: 0000000000000000 x25: 0000000000000000 x24: ffffbc2c54fcdc80
+> [   38.519417] x23: 0000000000000101 x22: ffff0000871002d0 x21: 00000000ffff99c6
+> [   38.526766] x20: ffffbc2c54fc1f08 x19: ffff0001fef65dc0 x18: ffff800080005028
+> [   38.534113] x17: 0000000000000001 x16: ffff0001fef65e60 x15: ffff0001fef65e20
+> [   38.541472] x14: 0000000000000040 x13: ffff0000871002d0 x12: ffff800080003ea0
+> [   38.548819] x11: 00000000e0000cc7 x10: ffffbc2c54f647c8 x9 : ffff800080003e98
+> [   38.556178] x8 : dead000000000122 x7 : 0000000000000000 x6 : ffffbc2c5133c620
+> [   38.563526] x5 : 0000000000000000 x4 : 0000000000000001 x3 : 0000000000000000
+> [   38.570884] x2 : 0000000000000079 x1 : 000000000000007b x0 : 0000000000000001
+> [   38.578233] Call trace:
+> [   38.580771]  __run_timer_base+0x1e0/0x330 (P)
+> [   38.585279]  run_timer_softirq+0x40/0x78
+> [   38.589333]  handle_softirqs+0x14c/0x3dc
+> [   38.593404]  __do_softirq+0x1c/0x2c
+> [   38.597025]  ____do_softirq+0x18/0x28
+> [   38.600825]  call_on_irq_stack+0x3c/0x50
+> [   38.604890]  do_softirq_own_stack+0x24/0x34
+> [   38.609220]  __irq_exit_rcu+0xc4/0x174
+> [   38.613108]  irq_exit_rcu+0x18/0x40
+> [   38.616718]  el1_interrupt+0x40/0x5c
+> [   38.620423]  el1h_64_irq_handler+0x20/0x30
+> [   38.624662]  el1h_64_irq+0x6c/0x70
+> [   38.628181]  arch_local_irq_enable+0x8/0xc (P)
+> [   38.632787]  cpuidle_enter+0x40/0x5c
+> [   38.636484]  call_cpuidle+0x24/0x48
+> [   38.640104]  do_idle+0x1a8/0x228
+> [   38.643452]  cpu_startup_entry+0x3c/0x40
+> [   38.647507]  kernel_init+0x0/0x138
+> [   38.651026]  start_kernel+0x334/0x3f0
+> [   38.654828]  __primary_switched+0x90/0x98
+> [   38.658990] Code: 36000428 a94026c8 f9000128 b4000048 (f9000509)
+> [   38.665273] ---[ end trace 0000000000000000 ]---
+> [   38.670045] Kernel panic - not syncing: Oops: Fatal exception in interrupt
+> [   38.677126] SMP: stopping secondary CPUs
+> Waiting for ssh to finish
+
+Thanks for the report.
+Does reverting this one patch fix the issue?
+
+What does ./suspend_test.sh look like?
+Could it be triggered by (system) suspending the hub while the delayed work
+is still pending?
+
+Thanks
+Mathias
 
