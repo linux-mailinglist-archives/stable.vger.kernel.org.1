@@ -1,46 +1,65 @@
-Return-Path: <stable+bounces-158217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F1DAE5988
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 04:06:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BA8AE5A25
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 04:43:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7252A1B6683E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 02:06:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34ED344171F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 02:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A5C158218;
-	Tue, 24 Jun 2025 02:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1751E500C;
+	Tue, 24 Jun 2025 02:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GAyPkHHC"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222E470823
-	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 02:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8974256D;
+	Tue, 24 Jun 2025 02:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750730766; cv=none; b=koLwqBXtWRzz0Gvqy9zYCCDNivunaUDfcJdH3vWK1W6Je140+WCVAbzwAnHnN4LlBhcsXwkti3t6tWGd/ehzv5dZ0Va3uK5Qy1cVDh7bPZ+GofCoDIyJK1DCbvyJ865Thy0Z3QUAoNCrPXOj9ceFTdZWf50/R0cBs85hih+GkSk=
+	t=1750732992; cv=none; b=WBtEGKdxTC39MbW0Daib9OjLzhLBiQN4/iXjbSB5viL90sDnYR6uqedgvBNbQbPKE+40xMVt7o4TOxpAtFqqw9eQa0gFMugXiT1s4C+sHZOD7qAmyPsYt+XV02D755wNCm1i6A2g5WMKlyIeukhVlZmSYNCVghLMe8nztKY7Q9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750730766; c=relaxed/simple;
-	bh=PdzGn8GpEE7c1ExT4673Pc2TbwMJMWVWeFk7wIMCJNo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=FLjFx4m3fF0Z9zXx00PltPTYRpY8Ef5zNGQPshZwZFRXiCROkBxofxKfXD0bSTNsvmL9o7dgE/B/sH/G2ZtUCndAIlCpAVDEhQeL1XbmNSmdi+EC7dKsAjRuAFX3cDS6GmifzeRzWf5cBnAkUhu3UHz8EALBkYkMzucbY4AU6NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4bR7XZ3HVjz1d1YG;
-	Tue, 24 Jun 2025 10:03:42 +0800 (CST)
-Received: from kwepemf100007.china.huawei.com (unknown [7.202.181.221])
-	by mail.maildlp.com (Postfix) with ESMTPS id 46960180493;
-	Tue, 24 Jun 2025 10:06:01 +0800 (CST)
-Received: from [10.67.109.184] (10.67.109.184) by
- kwepemf100007.china.huawei.com (7.202.181.221) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 24 Jun 2025 10:06:00 +0800
-Message-ID: <b6c88c2a-08ae-43b6-906e-1258c741eb34@huawei.com>
-Date: Tue, 24 Jun 2025 10:05:59 +0800
+	s=arc-20240116; t=1750732992; c=relaxed/simple;
+	bh=9vbcNw9Mbs/3u6hDwSuzlhG9OvZfIjeiZZ4bG4w70gM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MxzxYe5RgQypzdaraQ1siS9bw+sqhQBeKTluYsFTyyH+mZEQzJ9MnMskXje33SSNZ4A5gJiNkFJj1whMF+mWD/XVQGkNFqpTugFkrkylpklVInEwC566H8aOFkJmtnQFShwdQxODkDJukQOnePITFwfZhzcQYo3uEVtgiHWml1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GAyPkHHC; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750732991; x=1782268991;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=9vbcNw9Mbs/3u6hDwSuzlhG9OvZfIjeiZZ4bG4w70gM=;
+  b=GAyPkHHCENqu8yC+c6yxIsCb6ASi9WjRLRTcqUtzmzAVlaoaYmT54/EL
+   H/Ckr2Ozarvwbe8ISonM73aCRl5/5vz930rrvDaRrWSIXQWIn8d0C7Jon
+   u/zv2EvL1BE88EQlQdFrQ2W/3+21KKt4wHMdrpSGIsDss3+J4gBMpkWRZ
+   6PahuvILgvNm1H8D6QPfTXsjiZI4DL87KRilCflvrafXjVCnfQA9MWog4
+   etqNJFZx1it73W+TD780kWOdVHI293fLSDLP/b1BrQRg3GjHoWciUCJKY
+   9SuG6vYshF9HQ5JKmaOlTVlh/vYDTnwrMIRW6rNXFI5OmAwyhCcDIDQRQ
+   w==;
+X-CSE-ConnectionGUID: AMDKteQoRBOfPjhxAaCduQ==
+X-CSE-MsgGUID: dQ5q7U1rTaS8Qi1P8q8BRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="78374219"
+X-IronPort-AV: E=Sophos;i="6.16,260,1744095600"; 
+   d="scan'208";a="78374219"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 19:43:10 -0700
+X-CSE-ConnectionGUID: YIvisesFRVWm4WWaUthwAg==
+X-CSE-MsgGUID: 2XPtW4+8QGG1L5+3k6vawA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,260,1744095600"; 
+   d="scan'208";a="156350418"
+Received: from unknown (HELO [10.238.128.162]) ([10.238.128.162])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 19:43:06 -0700
+Message-ID: <a1ea7e74-a90a-4961-9f83-ad04e1d7a573@linux.intel.com>
+Date: Tue, 24 Jun 2025 10:43:03 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,106 +67,247 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 323/355] arm64: move AARCH64_BREAK_FAULT into
- insn-def.h
-Content-Language: en-US
-To: Dominique Martinet <asmadeus@codewreck.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>, Hou Tao
-	<houtao1@huawei.com>, Will Deacon <will@kernel.org>
-References: <20250623130626.716971725@linuxfoundation.org>
- <20250623130636.471359981@linuxfoundation.org>
- <aFniFC7ywCoveOts@codewreck.org>
-From: Pu Lehui <pulehui@huawei.com>
-In-Reply-To: <aFniFC7ywCoveOts@codewreck.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH v4 2/2] x86/traps: Initialize DR7 by writing its
+ architectural reset value
+To: "H. Peter Anvin" <hpa@zytor.com>, "Xin Li (Intel)" <xin@zytor.com>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, seanjc@google.com,
+ pbonzini@redhat.com, peterz@infradead.org, sohil.mehta@intel.com,
+ brgerst@gmail.com, tony.luck@intel.com, fenghuay@nvidia.com
+References: <20250620231504.2676902-1-xin@zytor.com>
+ <20250620231504.2676902-3-xin@zytor.com>
+ <c526eb25-571e-427a-93e9-3afdaa6ca413@linux.intel.com>
+ <EBD6D476-3014-475A-9467-77CA51755D41@zytor.com>
+From: Ethan Zhao <haifeng.zhao@linux.intel.com>
+Autocrypt: addr=haifeng.zhao@linux.intel.com; keydata=
+ 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
+ 8TCx1OJHpvWFmL4Deq8=
+In-Reply-To: <EBD6D476-3014-475A-9467-77CA51755D41@zytor.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemf100007.china.huawei.com (7.202.181.221)
 
 
-
-On 2025/6/24 7:24, Dominique Martinet wrote:
-> Greg Kroah-Hartman wrote on Mon, Jun 23, 2025 at 03:08:44PM +0200:
->> 5.10-stable review patch.  If anyone has any objections, please let me
->> know.
-> 
-> This fails to build on arm64 with the attached config
-> (in particular arm64 defconfig works, I didn't check what's required to
-> make this fail)
-> 
->    CC      arch/arm64/kernel/asm-offsets.s
-> In file included from ../arch/arm64/include/asm/alternative.h:6,
->                   from ../arch/arm64/include/asm/sysreg.h:1050,
->                   from ../arch/arm64/include/asm/cputype.h:194,
->                   from ../arch/arm64/include/asm/cache.h:8,
->                   from ../include/linux/cache.h:6,
->                   from ../include/linux/printk.h:9,
->                   from ../include/linux/kernel.h:17,
->                   from ../include/linux/list.h:9,
->                   from ../include/linux/kobject.h:19,
->                   from ../include/linux/of.h:17,
->                   from ../include/linux/irqdomain.h:35,
->                   from ../include/linux/acpi.h:13,
->                   from ../include/acpi/apei.h:9,
->                   from ../include/acpi/ghes.h:5,
->                   from ../include/linux/arm_sdei.h:8,
->                   from ../arch/arm64/kernel/asm-offsets.c:10:
-> ../arch/arm64/include/asm/insn.h: In function ‘aarch64_insn_gen_atomic_ld_op’:
-> ../arch/arm64/include/asm/insn.h:26:54: error: ‘FAULT_BRK_IMM’ undeclared (first use in this function)
->     26 | #define AARCH64_BREAK_FAULT    (AARCH64_BREAK_MON | (FAULT_BRK_IMM << 5))
->        |                                                      ^~~~~~~~~~~~~
-> ../arch/arm64/include/asm/insn.h:573:16: note: in expansion of macro ‘AARCH64_BREAK_FAULT’
->    573 |         return AARCH64_BREAK_FAULT;
->        |                ^~~~~~~~~~~~~~~~~~~
-> ../arch/arm64/include/asm/insn.h:26:54: note: each undeclared identifier is reported only once for each function it appears in
->     26 | #define AARCH64_BREAK_FAULT    (AARCH64_BREAK_MON | (FAULT_BRK_IMM << 5))
->        |                                                      ^~~~~~~~~~~~~
-> ../arch/arm64/include/asm/insn.h:573:16: note: in expansion of macro ‘AARCH64_BREAK_FAULT’
->    573 |         return AARCH64_BREAK_FAULT;
->        |                ^~~~~~~~~~~~~~~~~~~
-> ../arch/arm64/include/asm/insn.h: In function ‘aarch64_insn_gen_cas’:
-> ../arch/arm64/include/asm/insn.h:26:54: error: ‘FAULT_BRK_IMM’ undeclared (first use in this function)
->     26 | #define AARCH64_BREAK_FAULT    (AARCH64_BREAK_MON | (FAULT_BRK_IMM << 5))
->        |                                                      ^~~~~~~~~~~~~
-> ../arch/arm64/include/asm/insn.h:583:16: note: in expansion of macro ‘AARCH64_BREAK_FAULT’
->    583 |         return AARCH64_BREAK_FAULT;
->        |                ^~~~~~~~~~~~~~~~~~~
-> make[2]: *** [../scripts/Makefile.build:117: arch/arm64/kernel/asm-offsets.s] Error 1
-> make[1]: *** [/home/martinet/code/linux-5.15/Makefile:1262: prepare0]
-> Error 2
-> 
-> 
-> 
->> ------------------
+在 2025/6/24 9:53, H. Peter Anvin 写道:
+> On June 23, 2025 6:41:07 PM PDT, Ethan Zhao <haifeng.zhao@linux.intel.com> wrote:
+>> 在 2025/6/21 7:15, Xin Li (Intel) 写道:
+>>> Initialize DR7 by writing its architectural reset value to always set
+>>> bit 10, which is reserved to '1', when "clearing" DR7 so as not to
+>>> trigger unanticipated behavior if said bit is ever unreserved, e.g. as
+>>> a feature enabling flag with inverted polarity.
+>>>
+>>> Tested-by: Sohil Mehta <sohil.mehta@intel.com>
+>>> Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+>>> Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+>>> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+>>> Acked-by: Sean Christopherson <seanjc@google.com>
+>>> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+>>> Cc: stable@vger.kernel.org
+>>> ---
+>>>
+>>> Change in v4:
+>>> *) Cc stable for backporting, just in case bit 10 of DR7 has become
+>>>      unreserved on new hardware, even though clearing it doesn't
+>>>      currently cause any real issues (Dave Hansen).
+>>>
+>>> Changes in v3:
+>>> *) Reword the changelog using Sean's description.
+>>> *) Explain the definition of DR7_FIXED_1 (Sohil).
+>>> *) Collect TB, RB, AB (PeterZ, Sohil and Sean).
+>>>
+>>> Changes in v2:
+>>> *) Use debug register index 7 rather than DR_CONTROL (PeterZ and Sean).
+>>> *) Use DR7_FIXED_1 as the architectural reset value of DR7 (Sean).
+>>> ---
+>>>    arch/x86/include/asm/debugreg.h | 19 +++++++++++++++----
+>>>    arch/x86/include/asm/kvm_host.h |  2 +-
+>>>    arch/x86/kernel/cpu/common.c    |  2 +-
+>>>    arch/x86/kernel/kgdb.c          |  2 +-
+>>>    arch/x86/kernel/process_32.c    |  2 +-
+>>>    arch/x86/kernel/process_64.c    |  2 +-
+>>>    arch/x86/kvm/x86.c              |  4 ++--
+>>>    7 files changed, 22 insertions(+), 11 deletions(-)
+>>>
+>>> diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
+>>> index 363110e6b2e3..a2c1f2d24b64 100644
+>>> --- a/arch/x86/include/asm/debugreg.h
+>>> +++ b/arch/x86/include/asm/debugreg.h
+>>> @@ -9,6 +9,14 @@
+>>>    #include <asm/cpufeature.h>
+>>>    #include <asm/msr.h>
+>>>    +/*
+>>> + * Define bits that are always set to 1 in DR7, only bit 10 is
+>>> + * architecturally reserved to '1'.
+>>> + *
+>>> + * This is also the init/reset value for DR7.
+>>> + */
+>>> +#define DR7_FIXED_1	0x00000400
+>>> +
+>>>    DECLARE_PER_CPU(unsigned long, cpu_dr7);
+>>>      #ifndef CONFIG_PARAVIRT_XXL
+>>> @@ -100,8 +108,8 @@ static __always_inline void native_set_debugreg(int regno, unsigned long value)
+>>>      static inline void hw_breakpoint_disable(void)
+>>>    {
+>>> -	/* Zero the control register for HW Breakpoint */
+>>> -	set_debugreg(0UL, 7);
+>>> +	/* Reset the control register for HW Breakpoint */
+>>> +	set_debugreg(DR7_FIXED_1, 7);
+>> Given you have it be adhere to SDM about the DR7 reversed bits setting,
 >>
->> From: Hou Tao <houtao1@huawei.com>
+>> then no reason to leave patch[1/2] to set_debugreg(0, 7) alone.
 >>
->> [ Upstream commit 97e58e395e9c074fd096dad13c54e9f4112cf71d ]
+>> did I miss something here ?
 >>
->> If CONFIG_ARM64_LSE_ATOMICS is off, encoders for LSE-related instructions
->> can return AARCH64_BREAK_FAULT directly in insn.h. In order to access
->> AARCH64_BREAK_FAULT in insn.h, we can not include debug-monitors.h in
->> insn.h, because debug-monitors.h has already depends on insn.h, so just
->> move AARCH64_BREAK_FAULT into insn-def.h.
 >>
->> It will be used by the following patch to eliminate unnecessary LSE-related
->> encoders when CONFIG_ARM64_LSE_ATOMICS is off.
+>> Thanks,
 >>
->> Signed-off-by: Hou Tao <houtao1@huawei.com>
->> Link: https://lore.kernel.org/r/20220217072232.1186625-2-houtao1@huawei.com
->> Signed-off-by: Will Deacon <will@kernel.org>
->> [not exist insn-def.h file, move to insn.h]
-> 
-> insn-def.h has `#include <asm/brk-imm.h>` which defines FAULT_BRK_IMM,
-> it'd make sense to add the same to insn.h
+>> Ethan
+>>
+>>
+>>>      	/* Zero-out the individual HW breakpoint address registers */
+>>>    	set_debugreg(0UL, 0);
+>>> @@ -125,9 +133,12 @@ static __always_inline unsigned long local_db_save(void)
+>>>    		return 0;
+>>>      	get_debugreg(dr7, 7);
+>>> -	dr7 &= ~0x400; /* architecturally set bit */
+>>> +
+>>> +	/* Architecturally set bit */
+>>> +	dr7 &= ~DR7_FIXED_1;
+>>>    	if (dr7)
+>>> -		set_debugreg(0, 7);
+>>> +		set_debugreg(DR7_FIXED_1, 7);
+>>> +
+>>>    	/*
+>>>    	 * Ensure the compiler doesn't lower the above statements into
+>>>    	 * the critical section; disabling breakpoints late would not
+>>> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+>>> index b4a391929cdb..639d9bcee842 100644
+>>> --- a/arch/x86/include/asm/kvm_host.h
+>>> +++ b/arch/x86/include/asm/kvm_host.h
+>>> @@ -31,6 +31,7 @@
+>>>      #include <asm/apic.h>
+>>>    #include <asm/pvclock-abi.h>
+>>> +#include <asm/debugreg.h>
+>>>    #include <asm/desc.h>
+>>>    #include <asm/mtrr.h>
+>>>    #include <asm/msr-index.h>
+>>> @@ -249,7 +250,6 @@ enum x86_intercept_stage;
+>>>    #define DR7_BP_EN_MASK	0x000000ff
+>>>    #define DR7_GE		(1 << 9)
+>>>    #define DR7_GD		(1 << 13)
+>>> -#define DR7_FIXED_1	0x00000400
+>>>    #define DR7_VOLATILE	0xffff2bff
+>>>      #define KVM_GUESTDBG_VALID_MASK \
+>>> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+>>> index 0f6c280a94f0..27125e009847 100644
+>>> --- a/arch/x86/kernel/cpu/common.c
+>>> +++ b/arch/x86/kernel/cpu/common.c
+>>> @@ -2246,7 +2246,7 @@ EXPORT_PER_CPU_SYMBOL(__stack_chk_guard);
+>>>    static void initialize_debug_regs(void)
+>>>    {
+>>>    	/* Control register first -- to make sure everything is disabled. */
+>>> -	set_debugreg(0, 7);
+>>> +	set_debugreg(DR7_FIXED_1, 7);
+>>>    	set_debugreg(DR6_RESERVED, 6);
+>>>    	/* dr5 and dr4 don't exist */
+>>>    	set_debugreg(0, 3);
+>>> diff --git a/arch/x86/kernel/kgdb.c b/arch/x86/kernel/kgdb.c
+>>> index 102641fd2172..8b1a9733d13e 100644
+>>> --- a/arch/x86/kernel/kgdb.c
+>>> +++ b/arch/x86/kernel/kgdb.c
+>>> @@ -385,7 +385,7 @@ static void kgdb_disable_hw_debug(struct pt_regs *regs)
+>>>    	struct perf_event *bp;
+>>>      	/* Disable hardware debugging while we are in kgdb: */
+>>> -	set_debugreg(0UL, 7);
+>>> +	set_debugreg(DR7_FIXED_1, 7);
+>>>    	for (i = 0; i < HBP_NUM; i++) {
+>>>    		if (!breakinfo[i].enabled)
+>>>    			continue;
+>>> diff --git a/arch/x86/kernel/process_32.c b/arch/x86/kernel/process_32.c
+>>> index a10e180cbf23..3ef15c2f152f 100644
+>>> --- a/arch/x86/kernel/process_32.c
+>>> +++ b/arch/x86/kernel/process_32.c
+>>> @@ -93,7 +93,7 @@ void __show_regs(struct pt_regs *regs, enum show_regs_mode mode,
+>>>      	/* Only print out debug registers if they are in their non-default state. */
+>>>    	if ((d0 == 0) && (d1 == 0) && (d2 == 0) && (d3 == 0) &&
+>>> -	    (d6 == DR6_RESERVED) && (d7 == 0x400))
+>>> +	    (d6 == DR6_RESERVED) && (d7 == DR7_FIXED_1))
+>>>    		return;
+>>>      	printk("%sDR0: %08lx DR1: %08lx DR2: %08lx DR3: %08lx\n",
+>>> diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+>>> index 8d6cf25127aa..b972bf72fb8b 100644
+>>> --- a/arch/x86/kernel/process_64.c
+>>> +++ b/arch/x86/kernel/process_64.c
+>>> @@ -133,7 +133,7 @@ void __show_regs(struct pt_regs *regs, enum show_regs_mode mode,
+>>>      	/* Only print out debug registers if they are in their non-default state. */
+>>>    	if (!((d0 == 0) && (d1 == 0) && (d2 == 0) && (d3 == 0) &&
+>>> -	    (d6 == DR6_RESERVED) && (d7 == 0x400))) {
+>>> +	    (d6 == DR6_RESERVED) && (d7 == DR7_FIXED_1))) {
+>>>    		printk("%sDR0: %016lx DR1: %016lx DR2: %016lx\n",
+>>>    		       log_lvl, d0, d1, d2);
+>>>    		printk("%sDR3: %016lx DR6: %016lx DR7: %016lx\n",
+>>> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+>>> index b58a74c1722d..a9d992d5652f 100644
+>>> --- a/arch/x86/kvm/x86.c
+>>> +++ b/arch/x86/kvm/x86.c
+>>> @@ -11035,7 +11035,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+>>>      	if (unlikely(vcpu->arch.switch_db_regs &&
+>>>    		     !(vcpu->arch.switch_db_regs & KVM_DEBUGREG_AUTO_SWITCH))) {
+>>> -		set_debugreg(0, 7);
+>>> +		set_debugreg(DR7_FIXED_1, 7);
+>>>    		set_debugreg(vcpu->arch.eff_db[0], 0);
+>>>    		set_debugreg(vcpu->arch.eff_db[1], 1);
+>>>    		set_debugreg(vcpu->arch.eff_db[2], 2);
+>>> @@ -11044,7 +11044,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+>>>    		if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
+>>>    			kvm_x86_call(set_dr6)(vcpu, vcpu->arch.dr6);
+>>>    	} else if (unlikely(hw_breakpoint_active())) {
+>>> -		set_debugreg(0, 7);
+>>> +		set_debugreg(DR7_FIXED_1, 7);
+>>>    	}
+>>>      	vcpu->arch.host_debugctl = get_debugctlmsr();
+> It's split up for the benefit of the stable maintainers.
 
-Hi Dominiqu,
+Undeniably split, as observed. :)
 
-Thanks for reporting. Yeah, make sense to add `#include <asm/brk-imm.h>` 
-to insn.h
 
-> 
-> 
-> Thanks,
+Thanks,
+
+Ethan
+
+>
+-- 
+"firm, enduring, strong, and long-lived"
+
 
