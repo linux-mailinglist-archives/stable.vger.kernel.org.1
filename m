@@ -1,109 +1,236 @@
-Return-Path: <stable+bounces-158220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C27AE5A3D
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 04:48:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC9BAE5A83
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 05:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AE741B64526
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 02:48:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94C91444E9C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 03:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0508518859B;
-	Tue, 24 Jun 2025 02:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P8VT+Qfs"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2DF3596A;
+	Tue, 24 Jun 2025 03:34:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA72A6EB79;
-	Tue, 24 Jun 2025 02:48:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFCC26ACB
+	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 03:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750733284; cv=none; b=QuXLYDOJf6oTbPdFAbz9zYpRTgIWlx+B6n2uv7IS01/zPmoD3h265EeLJ+edG+baLtqPovmVDCVvUaUzbNO2NeVBTt1bLibTnD+HTXIEHOF69uR3D5d2Z57lljuJTlmS3Q1kbi7sxnHgIFwIPwWsvRZrSFb+LXxzN3d9eBib39o=
+	t=1750736049; cv=none; b=lf+ryKzQo2KjFdBPh9jpsoWUF4furRxACXxpxxJgQgnUK5DuEdajxt7NkKzvq7XKxxTbvgHOIa42fps5kvbvudQMBlOQTXcTgw7ewWuAo3e4HMCrqCPau2lirwc7RE5RxEUmDdL+x3ctlfngWLKn1YZWW7zPCVetbAe/PsYjqz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750733284; c=relaxed/simple;
-	bh=0ZETP/chWGG4T9JGaFbl9fh8M/SzCRMYDw4aVpfGbeo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nbuaUd/BvCMNduuI7DSLXRpLzYt1Mht3VdRhHHz/WLWkC77/6Wpof4NKfFbIWNfKvsxT/PUJZ4wJg+WTtV4SHlXzwwEUfT8nDhZWniXDOUs/J530ZRElf7sXPqYMS/FQBbbepINI/3mQ9AsUF2PRtAaRaDrWIkSTWgulrlsySnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P8VT+Qfs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421FEC4CEEA;
-	Tue, 24 Jun 2025 02:48:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750733284;
-	bh=0ZETP/chWGG4T9JGaFbl9fh8M/SzCRMYDw4aVpfGbeo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P8VT+QfsmFyNCARIa6+zv5GeEdHmGYz4b2CXf2QnLCgg2XjI+QzVHFQwaE54p21fT
-	 1LCZ7fSSZ2/nlpVQyeKmcrVqpGzdILXyh4DkrsBuW0Jm2+lMKrL2NYPCa2F1u7qiRq
-	 pmGy+v9rQbqcPMJ5c7Ar9+5dM1PmAGXhnP1d40AksQRUnbL04k4TUW/iADQsjNci5R
-	 /M7bl9YM8W8DfDHtijhEjzPSFgXIzwYJGmERAy0H9kLYjCZywd5ELycQkRygA06DgI
-	 eFstFLW0coTU18586ApXLRLRIQwaVckxTiXEMn3hF5HMSifi0iGk/xafn/MCD06Y2v
-	 j10n7GKclAZ1w==
-Date: Mon, 23 Jun 2025 19:47:30 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld " <Jason@zx2c4.com>,
-	=?iso-8859-1?Q?Ren=E9?= van Dorst <opensource@vdorst.com>,
-	linux-mips@vger.kernel.org, llvm@lists.linux.dev,
-	stable@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] lib/crypto: mips/chacha: Fix clang build and remove
- unneeded byteswap
-Message-ID: <20250624024730.GC7127@sol>
-References: <20250619225535.679301-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1750736049; c=relaxed/simple;
+	bh=+jv93nnAvev8Ht3MTHPIPYA8OWi19DM62BlyGr4FVkQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=k/mHjruMx5hFfsKqpjNdrHrQyQzKtDVK5zW01Kms3/W4QXqTcEm/ckPLxiYwfhUX09aWRhqbo/9UfVXUw1sJwn+zcuBV47yYbyJVlADp23pfVQEqGk7QaKLhsWZV/Lt33iilXieSKaS6+bY2wD2aQ9h53wO4IRAT+45kApIpOTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4bR9Rr4WQJzTgwT;
+	Tue, 24 Jun 2025 11:29:44 +0800 (CST)
+Received: from kwepemf100007.china.huawei.com (unknown [7.202.181.221])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8EB75180087;
+	Tue, 24 Jun 2025 11:34:03 +0800 (CST)
+Received: from [10.67.109.184] (10.67.109.184) by
+ kwepemf100007.china.huawei.com (7.202.181.221) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 24 Jun 2025 11:34:03 +0800
+Message-ID: <596e3d6b-a5ff-4914-9a5b-26603e8de8d0@huawei.com>
+Date: Tue, 24 Jun 2025 11:34:02 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250619225535.679301-1-ebiggers@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 323/355] arm64: move AARCH64_BREAK_FAULT into
+ insn-def.h
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+CC: <patches@lists.linux.dev>, Hou Tao <houtao1@huawei.com>, Will Deacon
+	<will@kernel.org>
+References: <20250623130626.716971725@linuxfoundation.org>
+ <20250623130636.471359981@linuxfoundation.org>
+From: Pu Lehui <pulehui@huawei.com>
+In-Reply-To: <20250623130636.471359981@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemf100007.china.huawei.com (7.202.181.221)
 
-On Thu, Jun 19, 2025 at 03:55:35PM -0700, Eric Biggers wrote:
-> The MIPS32r2 ChaCha code has never been buildable with the clang
-> assembler.  First, clang doesn't support the 'rotl' pseudo-instruction:
+
+On 2025/6/23 21:08, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me know.
 > 
->     error: unknown instruction, did you mean: rol, rotr?
+> ------------------
 > 
-> Second, clang requires that both operands of the 'wsbh' instruction be
-> explicitly given:
+> From: Hou Tao <houtao1@huawei.com>
 > 
->     error: too few operands for instruction
+> [ Upstream commit 97e58e395e9c074fd096dad13c54e9f4112cf71d ]
 > 
-> To fix this, align the code with the real instruction set by (1) using
-> the real instruction 'rotr' instead of the nonstandard pseudo-
-> instruction 'rotl', and (2) explicitly giving both operands to 'wsbh'.
+> If CONFIG_ARM64_LSE_ATOMICS is off, encoders for LSE-related instructions
+> can return AARCH64_BREAK_FAULT directly in insn.h. In order to access
+> AARCH64_BREAK_FAULT in insn.h, we can not include debug-monitors.h in
+> insn.h, because debug-monitors.h has already depends on insn.h, so just
+> move AARCH64_BREAK_FAULT into insn-def.h.
 > 
-> To make removing the use of 'rotl' a bit easier, also remove the
-> unnecessary special-casing for big endian CPUs at
-> .Lchacha_mips_xor_bytes.  The tail handling is actually
-> endian-independent since it processes one byte at a time.  On big endian
-> CPUs the old code byte-swapped SAVED_X, then iterated through it in
-> reverse order.  But the byteswap and reverse iteration canceled out.
+> It will be used by the following patch to eliminate unnecessary LSE-related
+> encoders when CONFIG_ARM64_LSE_ATOMICS is off.
 > 
-> Tested with chacha20poly1305-selftest in QEMU using "-M malta" with both
-> little endian and big endian mips32r2 kernels.
-> 
-> Fixes: 49aa7c00eddf ("crypto: mips/chacha - import 32r2 ChaCha code from Zinc")
-> Cc: stable@vger.kernel.org
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202505080409.EujEBwA0-lkp@intel.com/
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> Signed-off-by: Hou Tao <houtao1@huawei.com>
+> Link: https://lore.kernel.org/r/20220217072232.1186625-2-houtao1@huawei.com
+> Signed-off-by: Will Deacon <will@kernel.org>
+> [not exist insn-def.h file, move to insn.h]
+> Signed-off-by: Pu Lehui <pulehui@huawei.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > ---
+>   arch/arm64/include/asm/debug-monitors.h |   12 ------------
+>   arch/arm64/include/asm/insn.h           |   12 ++++++++++++
+>   2 files changed, 12 insertions(+), 12 deletions(-)
 > 
-> This applies on top of other pending lib/crypto patches and can be
-> retrieved from git at:
-> 
->     git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git mips-chacha-fix
-> 
->  lib/crypto/mips/chacha-core.S | 20 +++++++-------------
->  1 file changed, 7 insertions(+), 13 deletions(-)
+> --- a/arch/arm64/include/asm/debug-monitors.h
+> +++ b/arch/arm64/include/asm/debug-monitors.h
+> @@ -34,18 +34,6 @@
+>    */
+>   #define BREAK_INSTR_SIZE		AARCH64_INSN_SIZE
+>   
+> -/*
+> - * BRK instruction encoding
+> - * The #imm16 value should be placed at bits[20:5] within BRK ins
+> - */
+> -#define AARCH64_BREAK_MON	0xd4200000
+> -
+> -/*
+> - * BRK instruction for provoking a fault on purpose
+> - * Unlike kgdb, #imm16 value with unallocated handler is used for faulting.
+> - */
+> -#define AARCH64_BREAK_FAULT	(AARCH64_BREAK_MON | (FAULT_BRK_IMM << 5))
+> -
+>   #define AARCH64_BREAK_KGDB_DYN_DBG	\
+>   	(AARCH64_BREAK_MON | (KGDB_DYN_DBG_BRK_IMM << 5))
+>   
+> --- a/arch/arm64/include/asm/insn.h
+> +++ b/arch/arm64/include/asm/insn.h
+> @@ -13,6 +13,18 @@
+>   /* A64 instructions are always 32 bits. */
+>   #define	AARCH64_INSN_SIZE		4
+>   
+> +/*
+> + * BRK instruction encoding
+> + * The #imm16 value should be placed at bits[20:5] within BRK ins
+> + */
+> +#define AARCH64_BREAK_MON      0xd4200000
+> +
+> +/*
+> + * BRK instruction for provoking a fault on purpose
+> + * Unlike kgdb, #imm16 value with unallocated handler is used for faulting.
+> + */
+> +#define AARCH64_BREAK_FAULT    (AARCH64_BREAK_MON | (FAULT_BRK_IMM << 5))
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git/log/?h=libcrypto-next
+Hi Greg,
 
-- Eric
+Dominique just discovered a compilation problem [0] caused by not having 
+`#include <asm/brk-imm.h>` in insn.h.
+
+I have fixed it as shown below, should I resend the formal patch?
+
+Link: https://lore.kernel.org/all/aFniFC7ywCoveOts@codewreck.org/ [0]
+
+
+
+ From 23001baa7607fb28d3fc8a96006111503ee2b536 Mon Sep 17 00:00:00 2001
+From: Hou Tao <houtao1@huawei.com>
+Date: Sat, 7 Jun 2025 15:25:09 +0000
+Subject: [PATCH] arm64: move AARCH64_BREAK_FAULT into insn-def.h
+
+[ Upstream commit 97e58e395e9c074fd096dad13c54e9f4112cf71d ]
+
+If CONFIG_ARM64_LSE_ATOMICS is off, encoders for LSE-related instructions
+can return AARCH64_BREAK_FAULT directly in insn.h. In order to access
+AARCH64_BREAK_FAULT in insn.h, we can not include debug-monitors.h in
+insn.h, because debug-monitors.h has already depends on insn.h, so just
+move AARCH64_BREAK_FAULT into insn-def.h.
+
+It will be used by the following patch to eliminate unnecessary LSE-related
+encoders when CONFIG_ARM64_LSE_ATOMICS is off.
+
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20220217072232.1186625-2-houtao1@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[not exist insn-def.h file, move to insn.h]
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+  arch/arm64/include/asm/debug-monitors.h | 12 ------------
+  arch/arm64/include/asm/insn.h           | 13 +++++++++++++
+  2 files changed, 13 insertions(+), 12 deletions(-)
+
+diff --git a/arch/arm64/include/asm/debug-monitors.h 
+b/arch/arm64/include/asm/debug-monitors.h
+index c16ed5b68768..e1d166beb99b 100644
+--- a/arch/arm64/include/asm/debug-monitors.h
++++ b/arch/arm64/include/asm/debug-monitors.h
+@@ -34,18 +34,6 @@
+   */
+  #define BREAK_INSTR_SIZE		AARCH64_INSN_SIZE
+
+-/*
+- * BRK instruction encoding
+- * The #imm16 value should be placed at bits[20:5] within BRK ins
+- */
+-#define AARCH64_BREAK_MON	0xd4200000
+-
+-/*
+- * BRK instruction for provoking a fault on purpose
+- * Unlike kgdb, #imm16 value with unallocated handler is used for faulting.
+- */
+-#define AARCH64_BREAK_FAULT	(AARCH64_BREAK_MON | (FAULT_BRK_IMM << 5))
+-
+  #define AARCH64_BREAK_KGDB_DYN_DBG	\
+  	(AARCH64_BREAK_MON | (KGDB_DYN_DBG_BRK_IMM << 5))
+
+diff --git a/arch/arm64/include/asm/insn.h b/arch/arm64/include/asm/insn.h
+index e16e43a1702b..8757107d3877 100644
+--- a/arch/arm64/include/asm/insn.h
++++ b/arch/arm64/include/asm/insn.h
+@@ -9,10 +9,23 @@
+  #define	__ASM_INSN_H
+  #include <linux/build_bug.h>
+  #include <linux/types.h>
++#include <asm/brk-imm.h>
+
+  /* A64 instructions are always 32 bits. */
+  #define	AARCH64_INSN_SIZE		4
+
++/*
++ * BRK instruction encoding
++ * The #imm16 value should be placed at bits[20:5] within BRK ins
++ */
++#define AARCH64_BREAK_MON      0xd4200000
++
++/*
++ * BRK instruction for provoking a fault on purpose
++ * Unlike kgdb, #imm16 value with unallocated handler is used for faulting.
++ */
++#define AARCH64_BREAK_FAULT    (AARCH64_BREAK_MON | (FAULT_BRK_IMM << 5))
++
+  #ifndef __ASSEMBLY__
+  /*
+   * ARM Architecture Reference Manual for ARMv8 Profile-A, Issue A.a
+-- 
+2.34.1
+
+
+> +
+>   #ifndef __ASSEMBLY__
+>   /*
+>    * ARM Architecture Reference Manual for ARMv8 Profile-A, Issue A.a
+> 
+> 
+> 
 
