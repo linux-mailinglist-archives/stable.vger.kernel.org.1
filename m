@@ -1,191 +1,124 @@
-Return-Path: <stable+bounces-158419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08892AE68E8
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 16:35:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FABAE69E7
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 17:00:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704C416424B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 14:29:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E200D1C24699
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 14:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D15291C37;
-	Tue, 24 Jun 2025 14:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEE82E2EF9;
+	Tue, 24 Jun 2025 14:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="MaLPPkKF"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="gmyDYhfF"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776F3291C09
-	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 14:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229792E3377;
+	Tue, 24 Jun 2025 14:43:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750775368; cv=none; b=USk7XUMQGSHRPiNGrctk51L9PzJ1eIolVv/2NHM00IYCPJw2XKgkzkqQssj2pq8cqWyWC3rxRdih+mxmaxyrB3TUoVPF+JCY28KgA9Ij0gkFzx7qgBao5n12S7B7fhXWFgE/jphb2ssBid7ymsZqlWUYPbXJADj0AGay+3GzvBo=
+	t=1750776206; cv=none; b=Vft7VQ3XzJqfWywYt35i+1hvqhnMh7hsEhC5THPg0P3DorKkFeuqnYcjRilipr2yU0mtY42QAq+CqokEXfQYOeHMtqDkP8IwgVFKvrd74RX3AGilRGYQadQMtD2Gx7RgkO0LPnNtz7zauekFydv8OHKFN9XdXLhO+n26ClWabio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750775368; c=relaxed/simple;
-	bh=Mjs9kNIleLLvVNdD+WFIZ2M/rJpFaihQbaj/xYXFx8g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=pGj6/ycdCfYiJ1ab/jH184M+wngHVUiIGt8OUIrRgR0AXfR3L3zdAo3WFpO9Zi813BlLomYC3LxfG2x2gdv4aGI8oAgQmvHAlIzJLJEQkyzjs7XKKpM9Lovfm/h6hfcyjJw0R3mRnyyCsP1tF7sIfNPblEozDh/gLqDsKKkdu3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=MaLPPkKF reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=3MZzfKR1/KW1SWkbQ4vvKqBAzX0RXCxrBu3uuTRXkYk=; b=M
-	aLPPkKFdpcD9lW8VDR1F8YvfLPgOyBb+samq+7FdeYVwoYl4yOB8t6pMwme1E2Gp
-	+uKomkcB+ltcLRV0gBf20kmPCGc26/BSogU/R+JEz7rR2gZUQlW2sVt24LNMcbGP
-	i2zTLT79JRaFAjU0rinhKb7OTXn6kYeNkQzO0eq3Us=
-Received: from 00107082$163.com ( [111.35.191.166] ) by
- ajax-webmail-wmsvr-40-138 (Coremail) ; Tue, 24 Jun 2025 22:28:30 +0800
- (CST)
-Date: Tue, 24 Jun 2025 22:28:30 +0800 (CST)
-From: "David Wang" <00107082@163.com>
-To: "Harry Yoo" <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, surenb@google.com, kent.overstreet@linux.dev,
-	oliver.sang@intel.com, cachen@purestorage.com, linux-mm@kvack.org,
-	oe-lkp@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v3] lib/alloc_tag: do not acquire non-existent lock in
- alloc_tag_top_users()
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
- Copyright (c) 2002-2025 www.mailtech.cn 163com
-In-Reply-To: <aFqynd6CyJiq8NNF@hyeyoo>
-References: <20250624072513.84219-1-harry.yoo@oracle.com>
- <7f2f180f.a643.197a21de68c.Coremail.00107082@163.com>
- <aFqtCoz1t359Kjp1@hyeyoo>
- <2dba37c6.b15a.197a23dcce2.Coremail.00107082@163.com>
- <aFqynd6CyJiq8NNF@hyeyoo>
-X-NTES-SC: AL_Qu2eAvucuksq5iOQZekXn0oTju85XMCzuv8j3YJeN500iCXR/zkFeXBgB0fKwcOALDGSvxeaUBdszONBT6ZkdrL9SkoDU0JMZ+TQZsO+fkrU
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=arc-20240116; t=1750776206; c=relaxed/simple;
+	bh=DctmSIX4517I3MA7ZTbTzD2Ov8TWIGaK5Jvg0SDP+i4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o3VQN4TDx3MqPGGZYQE0mGbAu8otZqyVVfuCmEBBeKpvfr+IqvCYklzs9bJ5arVMS1x2gvz7yk6TnxJem/JxD1iD/m0q6inA0oMHz87sLOqHtBktdJ6GyeF46fCEp4QSHlBZuPm51TqFxC2or3IHMKUsp99pteWO7CcH0fV89Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=gmyDYhfF; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-451d6ade159so40963405e9.1;
+        Tue, 24 Jun 2025 07:43:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1750776203; x=1751381003; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=l+71XVf5M0IdQ6sdhaRf75cgMjNjt33ZDG+WbL/ULBM=;
+        b=gmyDYhfF1mJ+cxohMSmjecQI1IOqIv0mvSQavrD+KSAwdtQsVSP4OQQPRX0RTrY5t7
+         6mUGujkmDEytbJgSfUDuvDSnByhUG5ymAD4H3lxkI7mt86SQbjHPEHXM2uI2mGzB6oP8
+         c9GruUttt0fuc41xSy9iMrYoe5jUxfqg2rf8tqDmZyp/Z3bMy4sWwKPL0otSc/DHFBlK
+         5eYhErjfTivl5yJRQwd85ffPUMUEHwJDtOGHOwvYkWldzOedYNLJRNGM4Y7xtoNYogsf
+         lxEAJ+x+/r+kSii5wcEdqlxGOymZBC2J2XVHpI/PeUgqFq2NLaOgB+W8to5jTxjoQUPz
+         zUsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750776203; x=1751381003;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=l+71XVf5M0IdQ6sdhaRf75cgMjNjt33ZDG+WbL/ULBM=;
+        b=UcKBP3bqx1Xq/aZmp6zLrp8v+jfLjB2I9b9EQTXPMKfyjxKLlfo/vaHdk/IXCllLiW
+         y6+VCr30QkqzUIKvkTk0rZvyl4kXS11KIZcDxvRxi8z+ylglZullcCOoq2LLLQZtEnn5
+         1QauM0RIdwzh+7S7d4FTLbia7K9/1Gc3qmsASu/9pbg/dOEVX2bxEAG1/C2bl0T6qmf2
+         Z2MiLkebXfwlq8+VE0AEesjv4m5O7f3+k0eFX9DY55HoN1vFkkeLLFUzoCgPnWy9ymKo
+         LYBnywYn43AF/oCtXbvyAjevJUSuQqIAprwl2+wfhbZu+KJuIkmiSLiets+lz/hLws4U
+         09kw==
+X-Forwarded-Encrypted: i=1; AJvYcCUkZNtLdksb6oPMv3RSNkv3Kyq85y1+0ZzISWf9bFeAWusWdUWGqGgMkh35qI4jxQFdaAk/srx1@vger.kernel.org, AJvYcCWMDQn9ILOc/3iwxtcK7QsziQ1NGRCN/H2hl0ZMK4ZJMzuAu1Uv5foEUuJefbyW9zTks0XVxpZQR41fMUM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3LDJpIluLBXxNyTUgbSPL71BCjpejF7fdh+XwJolYCuciIM1a
+	PwbRFRcKLoJyrV8gByNxondjxcE/ySV+nxOXoUL0Aamc2Snjoal9F2E=
+X-Gm-Gg: ASbGncuNYKpTX025nB1LtTvi52cU0/dQZYNnv+c6A3+s41XyUMvabks3gctUYdwC06K
+	cbjnwjJ2ht9jewgj8rgkBzapJiw0Y6I8w+BZx7SvHd9Lv85OjD/k19kM45+tApuNWCm3/O/jA22
+	GwuZ4UYM9AObbbnNXx8T0qy/GKzDX7RZJT2TERGfmUjyhHrrkrMdmA6k/xKfsFwAXvqDCEeZFD/
+	Hg1+0UxUu66x1t2C6d5tNAJ72MzS5lujeb3xJBSQdG9NoUYcfGuqOyJxDNm5oYs42uvXnaiirky
+	jJhQRhTmQdzTKG5/VmT8gViq0UQq3+N7n9FHoxjU+ep2oc+hf1VdRiY3c32Fz117JuY+HY/aLYD
+	qCLtZqfGhOeJQyD5WTJuOjaHfVy+bA/Kx4CoAubM=
+X-Google-Smtp-Source: AGHT+IH1AKZv1w2WizAwNPmvpDCWlcbWMt2nr5hpnlM9rZmI0Nmt6pxF2lAWecQ2nj2UxxcruNtEmg==
+X-Received: by 2002:a05:600c:34c4:b0:450:d30e:ff96 with SMTP id 5b1f17b1804b1-453647921f8mr191327955e9.0.1750776203409;
+        Tue, 24 Jun 2025 07:43:23 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2acd47.dip0.t-ipconnect.de. [91.42.205.71])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e811049bsm2112651f8f.88.2025.06.24.07.43.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Jun 2025 07:43:22 -0700 (PDT)
+Message-ID: <5a417344-fa3f-4806-a39a-ae2ce58b19a9@googlemail.com>
+Date: Tue, 24 Jun 2025 16:43:21 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <3942323b.b31d.197a2572832.Coremail.00107082@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:iigvCgD3v9gPtlpo_tEjAA--.21738W
-X-CM-SenderInfo: qqqrilqqysqiywtou0bp/xtbB0gp2qmhasMFV+gADsr
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 000/413] 6.12.35-rc2 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250624121426.466976226@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250624121426.466976226@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-CkF0IDIwMjUtMDYtMjQgMjI6MTM6NDksICJIYXJyeSBZb28iIDxoYXJyeS55b29Ab3JhY2xlLmNv
-bT4gd3JvdGU6Cj5PbiBUdWUsIEp1biAyNCwgMjAyNSBhdCAxMDowMDo0OFBNICswODAwLCBEYXZp
-ZCBXYW5nIHdyb3RlOgo+PiAKPj4gQXQgMjAyNS0wNi0yNCAyMTo1MDowMiwgIkhhcnJ5IFlvbyIg
-PGhhcnJ5Lnlvb0BvcmFjbGUuY29tPiB3cm90ZToKPj4gPk9uIFR1ZSwgSnVuIDI0LCAyMDI1IGF0
-IDA5OjI1OjU4UE0gKzA4MDAsIERhdmlkIFdhbmcgd3JvdGU6Cj4+ID4+IAo+PiA+PiBBdCAyMDI1
-LTA2LTI0IDE1OjI1OjEzLCAiSGFycnkgWW9vIiA8aGFycnkueW9vQG9yYWNsZS5jb20+IHdyb3Rl
-Ogo+PiA+PiA+YWxsb2NfdGFnX3RvcF91c2VycygpIGF0dGVtcHRzIHRvIGxvY2sgYWxsb2NfdGFn
-X2N0dHlwZS0+bW9kX2xvY2sKPj4gPj4gPmV2ZW4gd2hlbiB0aGUgYWxsb2NfdGFnX2N0dHlwZSBp
-cyBub3QgYWxsb2NhdGVkIGJlY2F1c2U6Cj4+ID4+ID4KPj4gPj4gPiAgMSkgYWxsb2MgdGFnZ2lu
-ZyBpcyBkaXNhYmxlZCBiZWNhdXNlIG1lbSBwcm9maWxpbmcgaXMgZGlzYWJsZWQKPj4gPj4gPiAg
-ICAgKCFhbGxvY190YWdfY3R0eXBlKQo+PiA+PiA+ICAyKSBhbGxvYyB0YWdnaW5nIGlzIGVuYWJs
-ZWQsIGJ1dCBub3QgeWV0IGluaXRpYWxpemVkICghYWxsb2NfdGFnX2N0dHlwZSkKPj4gPj4gPiAg
-MykgYWxsb2MgdGFnZ2luZyBpcyBlbmFibGVkLCBidXQgZmFpbGVkIGluaXRpYWxpemF0aW9uCj4+
-ID4+ID4gICAgICghYWxsb2NfdGFnX2N0dHlwZSBvciBJU19FUlIoYWxsb2NfdGFnX2N0dHlwZSkp
-Cj4+ID4+ID4KPj4gPj4gPkluIGFsbCBjYXNlcywgYWxsb2NfdGFnX2N0dHlwZSBpcyBub3QgYWxs
-b2NhdGVkLCBhbmQgdGhlcmVmb3JlCj4+ID4+ID5hbGxvY190YWdfdG9wX3VzZXJzKCkgc2hvdWxk
-IG5vdCBhdHRlbXB0IHRvIGFjcXVpcmUgdGhlIHNlbWFwaG9yZS4KPj4gPj4gPgo+PiA+PiA+VGhp
-cyBsZWFkcyB0byBhIGNyYXNoIG9uIG1lbW9yeSBhbGxvY2F0aW9uIGZhaWx1cmUgYnkgYXR0ZW1w
-dGluZyB0bwo+PiA+PiA+YWNxdWlyZSBhIG5vbi1leGlzdGVudCBzZW1hcGhvcmU6Cj4+ID4+ID4K
-Pj4gPj4gPiAgT29wczogZ2VuZXJhbCBwcm90ZWN0aW9uIGZhdWx0LCBwcm9iYWJseSBmb3Igbm9u
-LWNhbm9uaWNhbCBhZGRyZXNzIDB4ZGZmZmZjMDAwMDAwMDAxYjogMDAwMCBbIzNdIFNNUCBLQVNB
-TiBOT1BUSQo+PiA+PiA+ICBLQVNBTjogbnVsbC1wdHItZGVyZWYgaW4gcmFuZ2UgWzB4MDAwMDAw
-MDAwMDAwMDBkOC0weDAwMDAwMDAwMDAwMDAwZGZdCj4+ID4+ID4gIENQVTogMiBVSUQ6IDAgUElE
-OiAxIENvbW06IHN5c3RlbWQgVGFpbnRlZDogRyAgICAgIEQgICAgICAgICAgICAgNi4xNi4wLXJj
-MiAjMSBWT0xVTlRBUlkKPj4gPj4gPiAgVGFpbnRlZDogW0RdPURJRQo+PiA+PiA+ICBIYXJkd2Fy
-ZSBuYW1lOiBRRU1VIFN0YW5kYXJkIFBDIChpNDQwRlggKyBQSUlYLCAxOTk2KSwgQklPUyAxLjE2
-LjItZGViaWFuLTEuMTYuMi0xIDA0LzAxLzIwMTQKPj4gPj4gPiAgUklQOiAwMDEwOmRvd25fcmVh
-ZF90cnlsb2NrKzB4YWEvMHgzYjAKPj4gPj4gPiAgQ29kZTogZDAgN2MgMDggODQgZDIgMGYgODUg
-YTAgMDIgMDAgMDAgOGIgMGQgZGYgMzEgZGQgMDQgODUgYzkgNzUgMjkgNDggYjggMDAgMDAgMDAg
-MDAgMDAgZmMgZmYgZGYgNDggOGQgNmIgNjggNDggODkgZWEgNDggYzEgZWEgMDMgPDgwPiAzYyAw
-MiAwMCAwZiA4NSA4OCAwMiAwMCAwMCA0OCAzYiA1YiA2OCAwZiA4NSA1MyAwMSAwMCAwMCA2NSBm
-Zgo+PiA+PiA+ICBSU1A6IDAwMDA6ZmZmZjg4ODEwMDJjZTliOCBFRkxBR1M6IDAwMDEwMDE2Cj4+
-ID4+ID4gIFJBWDogZGZmZmZjMDAwMDAwMDAwMCBSQlg6IDAwMDAwMDAwMDAwMDAwNzAgUkNYOiAw
-MDAwMDAwMDAwMDAwMDAwCj4+ID4+ID4gIFJEWDogMDAwMDAwMDAwMDAwMDAxYiBSU0k6IDAwMDAw
-MDAwMDAwMDAwMGEgUkRJOiAwMDAwMDAwMDAwMDAwMDcwCj4+ID4+ID4gIFJCUDogMDAwMDAwMDAw
-MDAwMDBkOCBSMDg6IDAwMDAwMDAwMDAwMDAwMDEgUjA5OiBmZmZmZWQxMDdkZGU0OWQxCj4+ID4+
-ID4gIFIxMDogZmZmZjg4ODNlZWYyNGU4YiBSMTE6IGZmZmY4ODgxMDAyY2VjMjAgUjEyOiAxZmZm
-ZjExMDIwMDU5ZDM3Cj4+ID4+ID4gIFIxMzogMDAwMDAwMDAwMDNmZmY3YiBSMTQ6IGZmZmY4ODgx
-MDAyY2VjMjAgUjE1OiBkZmZmZmMwMDAwMDAwMDAwCj4+ID4+ID4gIEZTOiAgMDAwMDdmOTYzZjIx
-ZDk0MCgwMDAwKSBHUzpmZmZmODg4NDU4Y2E2MDAwKDAwMDApIGtubEdTOjAwMDAwMDAwMDAwMDAw
-MDAKPj4gPj4gPiAgQ1M6ICAwMDEwIERTOiAwMDAwIEVTOiAwMDAwIENSMDogMDAwMDAwMDA4MDA1
-MDAzMwo+PiA+PiA+ICBDUjI6IDAwMDA3Zjk2M2Y1ZWRmNzEgQ1IzOiAwMDAwMDAwMTA2NzJjMDAw
-IENSNDogMDAwMDAwMDAwMDM1MGVmMAo+PiA+PiA+ICBDYWxsIFRyYWNlOgo+PiA+PiA+ICAgPFRB
-U0s+Cj4+ID4+ID4gICBjb2RldGFnX3RyeWxvY2tfbW9kdWxlX2xpc3QrMHhkLzB4MjAKPj4gPj4g
-PiAgIGFsbG9jX3RhZ190b3BfdXNlcnMrMHgzNjkvMHg0YjAKPj4gPj4gPiAgIF9fc2hvd19tZW0r
-MHgxY2QvMHg2ZTAKPj4gPj4gPiAgIHdhcm5fYWxsb2MrMHgyYjEvMHgzOTAKPj4gPj4gPiAgIF9f
-YWxsb2NfZnJvemVuX3BhZ2VzX25vcHJvZisweDEyYjkvMHgyMWEwCj4+ID4+ID4gICBhbGxvY19w
-YWdlc19tcG9sKzB4MTM1LzB4M2UwCj4+ID4+ID4gICBhbGxvY19zbGFiX3BhZ2UrMHg4Mi8weGUw
-Cj4+ID4+ID4gICBuZXdfc2xhYisweDIxMi8weDI0MAo+PiA+PiA+ICAgX19fc2xhYl9hbGxvYysw
-eDgyYS8weGUwMAo+PiA+PiA+ICAgPC9UQVNLPgo+PiA+PiA+Cj4+ID4+ID5BcyBEYXZpZCBXYW5n
-IHBvaW50cyBvdXQsIHRoaXMgaXNzdWUgYmVjYW1lIGVhc2llciB0byB0cmlnZ2VyIGFmdGVyIGNv
-bW1pdAo+PiA+PiA+NzgwMTM4YjEyMzgxICgiYWxsb2NfdGFnOiBjaGVjayBtZW1fcHJvZmlsaW5n
-X3N1cHBvcnQgaW4gYWxsb2NfdGFnX2luaXQiKS4KPj4gPj4gPgo+PiA+PiA+QmVmb3JlIHRoZSBj
-b21taXQsIHRoZSBpc3N1ZSBvY2N1cnJlZCBvbmx5IHdoZW4gaXQgZmFpbGVkIHRvIGFsbG9jYXRl
-Cj4+ID4+ID5hbmQgaW5pdGlhbGl6ZSBhbGxvY190YWdfY3R0eXBlIG9yIGlmIGEgbWVtb3J5IGFs
-bG9jYXRpb24gZmFpbHMgYmVmb3JlCj4+ID4+ID5hbGxvY190YWdfaW5pdCgpIGlzIGNhbGxlZC4g
-QWZ0ZXIgdGhlIGNvbW1pdCwgaXQgY2FuIGJlIGVhc2lseSB0cmlnZ2VyZWQKPj4gPj4gPndoZW4g
-bWVtb3J5IHByb2ZpbGluZyBpcyBjb21waWxlZCBidXQgZGlzYWJsZWQgYXQgYm9vdC4KPj4gPj4g
-Pgo+PiA+PiA+VG8gcHJvcGVybHkgZGV0ZXJtaW5lIHdoZXRoZXIgYWxsb2NfdGFnX2luaXQoKSBo
-YXMgYmVlbiBjYWxsZWQgYW5kCj4+ID4+ID5pdHMgZGF0YSBzdHJ1Y3R1cmVzIGluaXRpYWxpemVk
-LCB2ZXJpZnkgdGhhdCBhbGxvY190YWdfY3R0eXBlIGlzIGEgdmFsaWQKPj4gPj4gPnBvaW50ZXIg
-YmVmb3JlIGFjcXVpcmluZyB0aGUgc2VtYXBob3JlLiBJZiB0aGUgdmFyaWFibGUgaXMgTlVMTCBv
-ciBhbiBlcnJvcgo+PiA+PiA+dmFsdWUsIGl0IGhhcyBub3QgYmVlbiBwcm9wZXJseSBpbml0aWFs
-aXplZC4gSW4gc3VjaCBhIGNhc2UsIGp1c3Qgc2tpcAo+PiA+PiA+YW5kIGRvIG5vdCBhdHRlbXB0
-IHRvIGFjcXVpcmUgdGhlIHNlbWFwaG9yZS4KPj4gPj4gPgo+PiA+PiA+UmVwb3J0ZWQtYnk6IGtl
-cm5lbCB0ZXN0IHJvYm90IDxvbGl2ZXIuc2FuZ0BpbnRlbC5jb20+Cj4+ID4+ID5DbG9zZXM6IGh0
-dHBzOi8vdXJsZGVmZW5zZS5jb20vdjMvX19odHRwczovL2xvcmUua2VybmVsLm9yZy9vZS1sa3Av
-MjAyNTA2MTgxMzUxLmJiYTg2N2RkLWxrcEBpbnRlbC5jb21fXzshIUFDV1Y1TjlNMlJWOTloUSFN
-QUR2R0t0dlR2bExYTnhscko0QmRPU25ic0pseXJTcm9QVUdKM0pRSHNfSUYtZ3h4cWZRODlPVFoy
-MWFOOTZEYm1qRzlxSDNXaTFNbGd0aVNBJCAKPj4gPj4gPkNsb3NlczogaHR0cHM6Ly91cmxkZWZl
-bnNlLmNvbS92My9fX2h0dHBzOi8vbG9yZS5rZXJuZWwub3JnL29lLWxrcC8yMDI1MDYxMzE3MTEu
-NWI0MTkzMWMtbGtwQGludGVsLmNvbV9fOyEhQUNXVjVOOU0yUlY5OWhRIU1BRHZHS3R2VHZsTFhO
-eGxySjRCZE9TbmJzSmx5clNyb1BVR0ozSlFIc19JRi1neHhxZlE4OU9UWjIxYU45NkRibWpHOXFI
-M1dpMG8yT295bkEkIAo+PiA+PiA+Rml4ZXM6IDc4MDEzOGIxMjM4MSAoImFsbG9jX3RhZzogY2hl
-Y2sgbWVtX3Byb2ZpbGluZ19zdXBwb3J0IGluIGFsbG9jX3RhZ19pbml0IikKPj4gPj4gPkZpeGVz
-OiAxNDM4ZDM0OWQxNmIgKCJsaWI6IGFkZCBtZW1vcnkgYWxsb2NhdGlvbnMgcmVwb3J0IGluIHNo
-b3dfbWVtKCkiKQo+PiA+PiA+Q2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKPj4gPj4gPlNpZ25l
-ZC1vZmYtYnk6IEhhcnJ5IFlvbyA8aGFycnkueW9vQG9yYWNsZS5jb20+Cj4+ID4+ID4tLS0KPj4g
-Pj4gPgo+PiA+PiA+QFN1cmVuOiBJIGRpZCBub3QgYWRkIGFub3RoZXIgcHJfd2FybigpIGJlY2F1
-c2UgZXZlcnkgZXJyb3IgcGF0aCBpbgo+PiA+PiA+YWxsb2NfdGFnX2luaXQoKSBhbHJlYWR5IGhh
-cyBwcl9lcnIoKS4KPj4gPj4gPgo+PiA+PiA+djIgLT4gdjM6Cj4+ID4+ID4tIEFkZGVkIGFub3Ro
-ZXIgQ2xvc2VzOiB0YWcgKERhdmlkKQo+PiA+PiA+LSBNb3ZlZCB0aGUgY29uZGl0aW9uIGludG8g
-YSBzdGFuZGFsb25lIGlmIGJsb2NrIGZvciBiZXR0ZXIgcmVhZGFiaWxpdHkKPj4gPj4gPiAgKFN1
-cmVuKQo+PiA+PiA+LSBUeXBvIGZpeCAoU3VyZW4pCj4+ID4+ID4KPj4gPj4gPiBsaWIvYWxsb2Nf
-dGFnLmMgfCAzICsrKwo+PiA+PiA+IDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKykKPj4g
-Pj4gPgo+PiA+PiA+ZGlmZiAtLWdpdCBhL2xpYi9hbGxvY190YWcuYyBiL2xpYi9hbGxvY190YWcu
-Ywo+PiA+PiA+aW5kZXggNDFjY2ZiMDM1YjdiLi5lOWIzMzg0ODcwMGEgMTAwNjQ0Cj4+ID4+ID4t
-LS0gYS9saWIvYWxsb2NfdGFnLmMKPj4gPj4gPisrKyBiL2xpYi9hbGxvY190YWcuYwo+PiA+PiA+
-QEAgLTEyNyw2ICsxMjcsOSBAQCBzaXplX3QgYWxsb2NfdGFnX3RvcF91c2VycyhzdHJ1Y3QgY29k
-ZXRhZ19ieXRlcyAqdGFncywgc2l6ZV90IGNvdW50LCBib29sIGNhbl9zbAo+PiA+PiA+IAlzdHJ1
-Y3QgY29kZXRhZ19ieXRlcyBuOwo+PiA+PiA+IAl1bnNpZ25lZCBpbnQgaSwgbnIgPSAwOwo+PiA+
-PiA+IAo+PiA+PiA+KwlpZiAoSVNfRVJSX09SX05VTEwoYWxsb2NfdGFnX2N0dHlwZSkpCj4+ID4+
-ID4rCQlyZXR1cm4gMDsKPj4gPj4gCj4+ID4+IFdoYXQgYWJvdXQgbWVtX3Byb2ZpbGluZ19zdXBw
-b3J0IHNldCB0byAwIGFmdGVyIGFsbG9jX3RhZ19pbml0LCBpbiB0aGlzIGNhc2U6Cj4+ID4+IGFs
-bG9jX3RhZ19jdHR5cGUgIT0gTlVMTCAmJiBtZW1fcHJvZmlsaW5nX3N1cHBvcnQ9PTAKPj4gPj4g
-Cj4+ID4+IEkga2luZCBvZiB0aGluayBhbGxvY190YWdfdG9wX3VzZXJzIHNob3VsZCByZXR1cm4g
-MCBpbiB0aGlzIGNhc2UuLi4uYW5kICBib3RoIG1lbV9wcm9maWxpbmdfc3VwcG9ydCBhbmQgYWxs
-b2NfdGFnX2N0dHlwZSBzaG91bGQgYmUgY2hlY2tlZC4uLi4KPj4gPgo+PiA+QWZ0ZXIgY29tbWl0
-IDc4MDEzOGIxMjM4MSwgYWxsb2NfdGFnX2N0dHlwZSBpcyBub3QgYWxsb2NhdGVkIGlmCj4+ID4h
-bWVtX3Byb2ZpbGluZ19zdXBwb3J0LiAoQW5kIHRoYXQncyAgd2h5IHRoaXMgYnVnIHNob3dlZCB1
-cCkKPj4gCj4+IFRoZXJlIGlzIGEgc3lzY3RsKC9wcm9jL3N5cy92bS9tZW1fcHJvZmlsaW5nKSB3
-aGljaCBjYW4gb3ZlcnJpZGUgbWVtX3Byb2ZpbGluZ19zdXBwb3J0IGFuZCBzZXQgaXQgdG8gMCwg
-YWZ0ZXIgYWxsb2NfdGFnX2luaXQgd2l0aCBtZW1fcHJvZmlsaW5nX3N1cHBvcnQ9MQo+Cj5Pay4g
-TWF5YmUgaXQgc2hvdWxkbid0IHJlcG9ydCBtZW1vcnkgYWxsb2NhdGlvbiBpbmZvcm1hdGlvbiB0
-aGF0IGlzCj5jb2xsZWN0ZWQgYmVmb3JlIG1lbSBwcm9maWxpbmcgd2FzIGRpc2FibGVkLiAoSSdt
-IG5vdCBzdXJlIHdoeSBpdCBkaXNhYmxpbmcKPmF0IHJ1bnRpbWUgaXMgYWxsb3dlZCwgdGhvdWdo
-KQo+Cj5UaGF0J3MgYSBnb29kIHRoaW5nIHRvIGhhdmUsIGJ1dCBJIHRoaW5rIHRoYXQncyBhIGJl
-aGF2aW9yYWwgY2hhbmdlIGluCj5tZW0gcHJvZmlsaW5nLCBpcnJlbGV2YW50IHRvIHRoaXMgYnVn
-IGFuZCBub3QgYSAtc3RhYmxlIHRoaW5nLgo+Cj5NYXliZSBhcyBhIGZvbGxvdy11cCBwYXRjaD8K
-Ck9ubHkgYSBsaXR0bGUgbW9yZSBjaGFuZ2VzIG5lZWRlZCwgSSB3YXMgc3VnZ2VzdGluZzoKCkBA
-IC0xMzQsNiArMTIyLDE0IEBAIHNpemVfdCBhbGxvY190YWdfdG9wX3VzZXJzKHN0cnVjdCBjb2Rl
-dGFnX2J5dGVzICp0YWdzLCBzaXplX3QgY291bnQsIGJvb2wgY2FuX3NsCiAgICAgICAgc3RydWN0
-IGNvZGV0YWdfYnl0ZXMgbjsKICAgICAgICB1bnNpZ25lZCBpbnQgaSwgbnIgPSAwOwogCisgICAg
-ICAgaWYgKCFtZW1fcHJvZmlsaW5nX3N1cHBvcnQpCisgICAgICAgICAgICAgICByZXR1cm4gMDsK
-KworICAgICAgIGlmIChJU19FUlJfT1JfTlVMTChhbGxvY190YWdfY3R0eXBlKSkgeworICAgICAg
-ICAgICAgICAgcHJfd2FybigiYWxsb2N0YWcgbW9kdWxlIGlzIG5vdCByZWFkeSB5ZXQuXG4iKTsK
-KyAgICAgICAgICAgICAgIHJldHVybiAwOworICAgICAgIH0KKwogICAgICAgIGlmIChjYW5fc2xl
-ZXApCgoKCkRhdmlk
+Am 24.06.2025 um 14:29 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.12.35 release.
+> There are 413 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Just like rc1, rc2 builds, boots and works fine on my 2-socket Ivy Bridge Xeon E5-2697 v2 
+server. No dmesg oddities or regressions found.
+
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
