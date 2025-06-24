@@ -1,219 +1,215 @@
-Return-Path: <stable+bounces-158372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EE5AE62BA
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 12:41:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5085EAE62F7
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 12:54:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0238E7A6A00
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 10:40:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F0CB7AFADE
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 10:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466ED27C150;
-	Tue, 24 Jun 2025 10:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3EF288C04;
+	Tue, 24 Jun 2025 10:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="O81Rly9R"
+	dkim=pass (1024-bit key) header.d=leica-geosystems.com header.i=@leica-geosystems.com header.b="lGELpFiG"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013019.outbound.protection.outlook.com [40.107.162.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFC7218ABA;
-	Tue, 24 Jun 2025 10:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750761690; cv=none; b=oybFIIhl6JnAVKuzZ77NFIjizOrMzvbVWkK+4PWOuJpb2HKPq1SzN0Y9eMtCYpz2O70VvyhdNi023WClsDiwYlKnTVCkrv2nixb5trWKqxFhm1gZ5O7zIKxie/j2iytpDZZ/8P7wImeixLz4a5KuS73IEK6EiPOzwMXL/BbwrL4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750761690; c=relaxed/simple;
-	bh=mHuFsM00zsmxReWQp0YW0IovyAqAiKaN9vwTtZUpZ1I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qy3O+IYmykWv72EmHLFXfYIcdWS9el4v4Qth8HYkYaaygTPhTvvpBOtPXchcCUfYWATWhBY7FVmGFHy8WMAl+xcH5uE++FgDSfknQaTCrV9vFNJepESy/CRnz3gqOqG1GE2y+32+0V7QkIdor1YgAXjbENqIyw+XLrWpxBAmL7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=O81Rly9R; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E820C101E9287;
-	Tue, 24 Jun 2025 12:41:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1750761677; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=xJNZSdtlkmYSmYR194N6u/IIwvLnmZyLCW5wos6cefs=;
-	b=O81Rly9RWffD1vprGIl6wBGzUIqmAs4FKeptoBWaVbi98DKflcuKrXOi/+WfDxvIkCoNsq
-	B8YX5tAhGPNXO0jpbhC/kdKkicKFvyZVRlXm9SRLc3BF9elb7QkiVxNvlGVnWXvWaPZoQr
-	PKlhnwOnBPAzcW8V9ZXu2vSzAYs5KVeIol/jIMsxD80dsHyb5q7aZto5klDzlZzYDbl6el
-	etk/HqBCVUB8AWsw1JI81+euCWs6ThTGgEJzOSX7wi3rT9UDZx5mGPb4EitnFOo/i+khE7
-	adnF828od6mJWOIBxCGN7Tz1Cq/KZsqsvJCx9U/xUWgwpH7QtOHheeIaEAf45g==
-Date: Tue, 24 Jun 2025 12:41:08 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org,
-	Linux ARM <linux-arm-kernel@lists.infradead.org>,
-	Julien Thierry <jthierry@redhat.com>,
-	James Morse <james.morse@arm.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: [PATCH 5.10 000/355] 5.10.239-rc1 review
-Message-ID: <aFqAxKT6C7idQY32@duo.ucw.cz>
-References: <20250623130626.716971725@linuxfoundation.org>
- <CA+G9fYt2e-ZGhU57oqWwC1_t2RPgxLCJFVC0Pa8-fYPkZcUvVQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB36286D4E;
+	Tue, 24 Jun 2025 10:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750762425; cv=fail; b=WT26rw0zjnArSfAOrfjSKfMgDHIYErLPDP8bP4MWjXUC2EkeaZf/6G0jdgKxA85K4V3t958jdb94qtwjCWxa6csdX+Xfbwk9dL3gYZhkcbPfQFLKDHrSXql1I7aPID/6iAMU0bDyVlye5KSraqrbj1uUy/jsxcG3okVxIKACpDw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750762425; c=relaxed/simple;
+	bh=U9E/hhUR2xYzWugNxJmJGCcHVrHkwaU5t09dWVYudyM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=W+Lvqe9g6H9rzcsjzVC/imHZNqpjCGsAKJT8qdmqSyQ5FgdTNxgfBC9OnC1KhUkQIuyCk0xCG/SsM55ZU51jaJlQCsixnAYpA73jITP6D1ngrWNK/+hc8PjjzYECOSO2I9vkbcnuZyaUMCUsYZJY+7Ho0B6TSeOaF2DU+KK7iBU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com; spf=fail smtp.mailfrom=leica-geosystems.com; dkim=pass (1024-bit key) header.d=leica-geosystems.com header.i=@leica-geosystems.com header.b=lGELpFiG; arc=fail smtp.client-ip=40.107.162.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=leica-geosystems.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SShFqIxnn9sxJXyi5C39SUxGGcCu3s/xNMYgo1IAWL6ESVWuj4ft+o7yG8Ay4FFjOzD5xwRDyMIihyJ8lSJsvRNm6UtQXN6VdzW7GE45l4EPlqY5g1Uaj0qvB6dGOhtU083P5XGpWdTGVH7ItruBsaHiRDahw//yoR6EoJ6SEbA06vtId9cISbHzsTPvSTwuXPu0hhyFOoUPapGpsjE+cx7qFMYbagbz7qePmHCnhuagLsDzrpumzwPGhHt4UMIrC0b8WYH6WVYNYnNTHpCp+wNUeT8c6ZkPPl2jlLr3oT6pZpqC7+nn8ErP0225EpOAYhQLZIUv00Ys+IjiBo6LNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x1SOwFystKE2ge9VOH9hZodBnZUTd3lqqDhPpMuPs5Q=;
+ b=uoqDVwSuiL6qlWqtfbyzbAJLAVXjRX69panb31z9p3IzRpwBvbnS39sQadZYQwEylh98BE0Qu4jPemIDRticjIPZ1sF9OXZobaurUjvMWOGIPJi44loKubTTF0h+mV9FdwK4hB6XkvISXZZfPFrgovGsbcF7aFhW1wkZr2MLv+jWRrAx/Ok8piY7BXMGSyiQTDrXKfmiQ2PKcyO0ZAfzbIiI7nSaf2FlttSwBsVK+Cpnsv8vwwh380dx0zj2XN78htOiEFx6RhJNt1HWQ6KKyC8qAI6FVcW70CptxjsRQmlSxNA0rT958UY/2FsXnxYxSjyolkSkrjkl9XPHF1tgYQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 193.8.40.94) smtp.rcpttodomain=vger.kernel.org
+ smtp.mailfrom=leica-geosystems.com; dmarc=pass (p=reject sp=reject pct=100)
+ action=none header.from=leica-geosystems.com; dkim=none (message not signed);
+ arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x1SOwFystKE2ge9VOH9hZodBnZUTd3lqqDhPpMuPs5Q=;
+ b=lGELpFiG0MZIvFrcxQwLV4VXcCNt2l4ArObEw2PERI1VmEtSM31Il8180efWukSL30f6DsjnDOMmPLhl4CflFfO8rEcnqaq4cps9ThjODDfYtSOV8zJ+P+QaS5fSjZlJIfG/3pT/astS+6xbkr2v1ifn3bqiC1CVZmo5DEneTqU=
+Received: from AM0PR10CA0028.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:17c::38)
+ by DB9PR06MB8122.eurprd06.prod.outlook.com (2603:10a6:10:291::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.29; Tue, 24 Jun
+ 2025 10:53:40 +0000
+Received: from AMS0EPF000001A7.eurprd05.prod.outlook.com
+ (2603:10a6:208:17c:cafe::10) by AM0PR10CA0028.outlook.office365.com
+ (2603:10a6:208:17c::38) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8857.30 via Frontend Transport; Tue,
+ 24 Jun 2025 10:53:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.94)
+ smtp.mailfrom=leica-geosystems.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=leica-geosystems.com;
+Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com
+ designates 193.8.40.94 as permitted sender) receiver=protection.outlook.com;
+ client-ip=193.8.40.94; helo=hexagon.com; pr=C
+Received: from hexagon.com (193.8.40.94) by
+ AMS0EPF000001A7.mail.protection.outlook.com (10.167.16.234) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8880.14 via Frontend Transport; Tue, 24 Jun 2025 10:53:40 +0000
+Received: from aherlnxbspsrv01.lgs-net.com ([10.60.34.116]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
+	 Tue, 24 Jun 2025 12:53:40 +0200
+From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+Subject: [PATCH v2 0/2] usb: dwc3: Fix TRB reclaim regression and clean up
+ reclaim logic
+Date: Tue, 24 Jun 2025 12:53:11 +0200
+Message-Id: <20250624-dwc3-fix-gadget-mtp-v2-0-0e2d9979328f@leica-geosystems.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="99H4i/IRjps6Yc2M"
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYt2e-ZGhU57oqWwC1_t2RPgxLCJFVC0Pa8-fYPkZcUvVQ@mail.gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAJeDWmgC/32NTQ6DIBSEr2JY9zWASn9WvUfjAuGJJFUMj9gaw
+ 91LPUCX32Tmm50RRo/E7tXOIq6efJgLyFPFzKhnh+BtYSa5bLmSAuzb1DD4DzhtHSaY0gK14Te
+ tdH9tjGJluUQsjcP67AqPnlKI23Gyil/637cK4KCbFpXF4SL6/vFCbzQ4DLRRwonOJkysyzl/A
+ Z+h8hbBAAAA
+X-Change-ID: 20250621-dwc3-fix-gadget-mtp-3c09a6ab84c6
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, bsp-development.geo@leica-geosystems.com, 
+ Johannes Schneider <johannes.schneider@leica-geosystems.com>
+X-Mailer: b4 0.14.2
+X-OriginalArrivalTime: 24 Jun 2025 10:53:40.0072 (UTC) FILETIME=[3E96CE80:01DBE4F6]
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS0EPF000001A7:EE_|DB9PR06MB8122:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9211e6f-4442-45fa-7065-08ddb30d613c
+X-SET-LOWER-SCL-SCANNER: YES
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OHpzQ2Z1L2tBZ3BJU1pkbzZzRU0wRHVFc1E2QTByRXBHM0lQUTJ5KzlEQitJ?=
+ =?utf-8?B?VE9MOGF3cS83OTFqQzY2amFHY005eTJNYXFXa3JlZEFkUGc0aUUxWHIzTlk3?=
+ =?utf-8?B?WGZHY1YxOXVYSzlsTnZaMlNkNkhUYWJBa25rVlYrQkhrUUUrbCtpV1YvZkly?=
+ =?utf-8?B?UlQ5TEtkL3lGcVNBTjVXRnFURWVRWXhPUVMzS3laWEY4RHBzOVJXeGszY0cw?=
+ =?utf-8?B?MFdpelZsZGJ3Z2luc2ZxUEZIeVp4RFBWYytHYXR4UkVIek1CRytMczY2QkE5?=
+ =?utf-8?B?ZXRnWUhUclpVMUtGOWRMMXlFQ0NyYTJCQ3VJRzlvaFkxb2Y4NjJVNTg5TlhZ?=
+ =?utf-8?B?L0MrMm9HcTVkSmxzdDl0OWRhTDRydHo1cWNGU1JTREJKYXB3ektXT3RQeEMz?=
+ =?utf-8?B?andoeGl3cnFmanNMMmM2b2xGdWJjQUMzZ2h6UzZwMnV2THdrcmc0M0FQQ21a?=
+ =?utf-8?B?aXp2WEFMQ2Qwa1BJT2dFV3RFRDFleUZkL1pURG5FOWFvd2V2VnNkWXZRV0Rz?=
+ =?utf-8?B?R1VHNVdrekptTlpXZVh0dU9VQ3JVOHFMZG9ycnVPbkU1Qk5uQ2hVZ3N6WTZZ?=
+ =?utf-8?B?QXNjWURUSnNlRUE1TFg2Q20zQW5DSHBKaEgxOUh0Q1p0QkRtamc2NXI1VGpV?=
+ =?utf-8?B?dTBzYVdHWklUTTdGLzlIK1pqS1p6ck8wdW5CTUhQRWhGLzNqV1JXb1h6Q1Fy?=
+ =?utf-8?B?dWsrbTA0MnRKalZOeDRWOEQwblB2TXRxWTJrVlFWb3RMdS95SDhOMXhYanla?=
+ =?utf-8?B?dTRsRUFRVHlIbnZMV0YxbzhHdXRialRCY3ErdDgvdXUxVWQ2OVh5ZWtDZEZV?=
+ =?utf-8?B?YUN1c0txWnpKdXlleFhJTnFJMStmNEN2TVQ3NHVkWkxZVGtkL2ZucWNvUzRW?=
+ =?utf-8?B?WEo4NytRaTVrQ2VESU5zU1dtTFRBQ01mTlN4WkticTNXOTZRRmRTRHdyemx1?=
+ =?utf-8?B?T0RZV2M1c2VMSUNDa2wzR3FFSHJqWW03K3hScFdubDFlZFoxUXBUZW5aRWJX?=
+ =?utf-8?B?Ui9IY3Z3UUJUM3ljS2VVQVUzOEc4NTNBMEMwVVZrT3pvdDB3eU1ISlNHTjh2?=
+ =?utf-8?B?T0NkWWZ0NzJxMEFyaTBnREdrMGlpL3RXcGtwamV4S2NObnJ3ZnZmeEtodldj?=
+ =?utf-8?B?MjFmM3A1RC82bDVKZFFub3BRckJzbWh2Y2lsam5iK3Y3M2hYZWRoejhqdHZU?=
+ =?utf-8?B?TVZLVXBVbFFSRjBHM0N3UENuVmlVTENtMkFyTkVQS1o1cE1QZnFkVlRmQmRs?=
+ =?utf-8?B?ZUZFb0NwZEt6eFh3R0h3SmhUaUtnUStvbUgwRldBOEZielVXQ2l1ZDh1Q05s?=
+ =?utf-8?B?NTNGdGNGQUl1SXZTV1NtWUphOUxZd09LU21VMVBJdUd5SUFOa052TWFCWWFw?=
+ =?utf-8?B?V3VZNU93ZDhuMjdoV0NpMDNNUXdROEFrOW5jUTU1Z2dMaHNDUHVUL0VnNC9K?=
+ =?utf-8?B?d2haVXNvblUxUnZvdDRtRW9qR0J2M3pGblFWQkdlWmVGWnBSUGRyTmhrWU9N?=
+ =?utf-8?B?QjB3NUp6endrODhuZFFPYTRjT1NoWStyamp5K3ovUm5IdWN6QXhIVkFyVGtS?=
+ =?utf-8?B?VDQxbXJsUHJaQ2FiaEJWaGlqcSsxSDBldDNqWHFNa1FhNExBY1FqNk9sSXRM?=
+ =?utf-8?B?VzhRdXVtSy9QL0h2aFlGV29pUFpFUGFGN3RtVFBlQ0xoQXRsbmNBNEpNbHNJ?=
+ =?utf-8?B?TlBGblo0ZzhBNUppQ0tlWmtHYno0NVhnNkpjS3ZJSXFHVnRiVW81ZDRoUUtM?=
+ =?utf-8?B?T3UvVUNPRkxxS0dLeG9SM2t5QjJDUE4yNGtzZ0t0MFZBTGd6UHdTcjR3VlNM?=
+ =?utf-8?B?T2IzRHJMc3pKalVFbmU3NWZBdlkzOTF0Z2ZjS3FvOVBXQVEvR0huMzMvaTFW?=
+ =?utf-8?B?QlBHVkRIaDZFMExYd25lcXBLV0NuNElnK2phZS9JQkQ1RVB3VzIxUFErREow?=
+ =?utf-8?B?dUZsQWpxK25pU2ZjOUZiVUNZUFZTQWprUURZY0h1MzBoVFM2SzJ2ancwMXFv?=
+ =?utf-8?B?WS9jTUlHcjhrNkNndGNkUlh3TmszZVd6YjJEMUEwTVdIdisvTDlqSWxqVXRR?=
+ =?utf-8?B?YUdZeGRoTzZOSkNDcGxoNFpJS1Q5ZUZGam5zUT09?=
+X-Forefront-Antispam-Report:
+	CIP:193.8.40.94;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom50.leica-geosystems.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: leica-geosystems.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2025 10:53:40.2847
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9211e6f-4442-45fa-7065-08ddb30d613c
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.94];Helo=[hexagon.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF000001A7.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR06MB8122
 
+Hoi,
 
---99H4i/IRjps6Yc2M
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch series fixes a subtle regression introduced in the recent
+scatter-gather cleanup for the DWC3 USB gadget driver, and follows up
+with two clean-up patches to simplify and clarify related logic.
 
-Hi!
+Background:
 
-> > This is the start of the stable review cycle for the 5.10.239 release.
-> > There are 355 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Wed, 25 Jun 2025 13:05:51 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patc=
-h-5.10.239-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git linux-5.10.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
->=20
-> Regressions on arm64 tinyconfig builds with gcc-12 and clang failed on
-> the Linux stable-rc 5.10.239-rc1.
+Commit 61440628a4ff ("usb: dwc3: gadget: Cleanup SG handling") removed
+some redundant state tracking in the DWC3 gadget driver, including how
+scatter-gather TRBs are reclaimed after use. However, the reclaim logic
+began relying on the TRB CHN (chain) bit to determine whether TRBs
+belonged to a chain — which led to missed TRB reclamation in some
+cases.
 
-Yeah, we see same problems:
+This broke userspace-facing protocols like MTP (Media Transfer Protocol)
+when used via FunctionFS, causing incomplete transfers due to skipped
+zero-length packets (ZLPs) or improperly reclaimed short TRBs.
 
+The "offending" chunk from 61440628a4ff:
+80                 ret = dwc3_gadget_ep_reclaim_completed_trb(dep, req,
+81 -                               trb, event, status, true);
+82 +                               trb, event, status,
+83 +                               !!(trb->ctrl & DWC3_TRB_CTRL_CHN));
 
-814
-  CC      arch/arm64/kernel/asm-offsets.s
-815
-In file included from ./arch/arm64/include/asm/alternative.h:6,
-816
-                 from ./arch/arm64/include/asm/sysreg.h:1050,
-817
-                 from ./arch/arm64/include/asm/cputype.h:194,
-818
-                 from ./arch/arm64/include/asm/cache.h:8,
-819
-                 from ./include/linux/cache.h:6,
-820
-                 from ./include/linux/printk.h:9,
-821
-                 from ./include/linux/kernel.h:17,
-822
-                 from ./include/linux/list.h:9,
-823
-                 from ./include/linux/kobject.h:19,
-824
-                 from ./include/linux/of.h:17,
-825
-                 from ./include/linux/irqdomain.h:35,
-826
-                 from ./include/linux/acpi.h:13,
-827
-                 from ./include/acpi/apei.h:9,
-828
-                 from ./include/acpi/ghes.h:5,
-829
-                 from ./include/linux/arm_sdei.h:8,
-830
-                 from arch/arm64/kernel/asm-offsets.c:10:
-831
-=2E/arch/arm64/include/asm/insn.h: In function 'aarch64_insn_gen_atomic_ld_=
-op':
-832
-=2E/arch/arm64/include/asm/insn.h:26:54: error: 'FAULT_BRK_IMM' undeclared =
-(first use in this function)
-833
-   26 | #define AARCH64_BREAK_FAULT    (AARCH64_BREAK_MON | (FAULT_BRK_IMM =
-<< 5))
-834
-      |                                                      ^~~~~~~~~~~~~
-835
-=2E/arch/arm64/include/asm/insn.h:573:9: note: in expansion of macro 'AARCH=
-64_BREAK_FAULT'
-836
-  573 |  return AARCH64_BREAK_FAULT;
-837
-      |         ^~~~~~~~~~~~~~~~~~~
-838
-=2E/arch/arm64/include/asm/insn.h:26:54: note: each undeclared identifier i=
-s reported only once for each function it appears in
-839
-   26 | #define AARCH64_BREAK_FAULT    (AARCH64_BREAK_MON | (FAULT_BRK_IMM =
-<< 5))
-840
-      |                                                      ^~~~~~~~~~~~~
-841
-=2E/arch/arm64/include/asm/insn.h:573:9: note: in expansion of macro 'AARCH=
-64_BREAK_FAULT'
-842
-  573 |  return AARCH64_BREAK_FAULT;
-843
-      |         ^~~~~~~~~~~~~~~~~~~
-844
-=2E/arch/arm64/include/asm/insn.h: In function 'aarch64_insn_gen_cas':
-845
-=2E/arch/arm64/include/asm/insn.h:26:54: error: 'FAULT_BRK_IMM' undeclared =
-(first use in this function)
-846
-   26 | #define AARCH64_BREAK_FAULT    (AARCH64_BREAK_MON | (FAULT_BRK_IMM =
-<< 5))
-847
-      |                                                      ^~~~~~~~~~~~~
-848
-=2E/arch/arm64/include/asm/insn.h:583:9: note: in expansion of macro 'AARCH=
-64_BREAK_FAULT'
-849
-  583 |  return AARCH64_BREAK_FAULT;
-850
-      |         ^~~~~~~~~~~~~~~~~~~
-851
-make[1]: *** [scripts/Makefile.build:117: arch/arm64/kernel/asm-offsets.s] =
-Error 1
-852
-make: *** [Makefile:1262: prepare0] Error 2
+Patch 1 fixes the issue by ensuring the HWO bit is always cleared
+on reclaimed TRBs, regardless of the CHN bit.
 
-BR,
-										Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Patches 2 and 3 follow up with simplifications:
+- Patch 2 removes the now-redundant `chain` argument to the reclaim function
+- Patch 3 simplifies the logic in `dwc3_needs_extra_trb()` to make the conditions easier to read and maintain
 
---99H4i/IRjps6Yc2M
-Content-Type: application/pgp-signature; name="signature.asc"
+All three patches have been tested on a imx8mp based hardware, with
+userspace MTP (viveris/uMTP-Responder) over FunctionFS and resolve the
+regression while preserving the recent cleanup work.
 
------BEGIN PGP SIGNATURE-----
+Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+---
+Changes in v2:
+- dropped Patch 3, as it did change the logic
+- CC to stable
+- Link to v1: https://lore.kernel.org/r/20250621-dwc3-fix-gadget-mtp-v1-0-a45e6def71bb@leica-geosystems.com
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaFqAxAAKCRAw5/Bqldv6
-8oO2AJ0THdQP/jgUCOPQIWJxokWKjzBWXwCfbnHq/Z5PGgx+mwo8REY3xKum4EY=
-=7i9r
------END PGP SIGNATURE-----
+---
+Johannes Schneider (2):
+      usb: dwc3: gadget: Fix TRB reclaim logic for short transfers and ZLPs
+      usb: dwc3: gadget: Simplify TRB reclaim logic by removing redundant 'chain' argument
 
---99H4i/IRjps6Yc2M--
+ drivers/usb/dwc3/gadget.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+---
+base-commit: d0c22de9995b624f563bc5004d44ac2655712a56
+change-id: 20250621-dwc3-fix-gadget-mtp-3c09a6ab84c6
+
+Best regards,
+-- 
+Johannes Schneider <johannes.schneider@leica-geosystems.com>
+
 
