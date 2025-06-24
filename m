@@ -1,148 +1,175 @@
-Return-Path: <stable+bounces-158338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3FD8AE5F04
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 10:22:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7B2AE5F0E
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 10:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF0C53B7E71
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 08:22:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9ACF7A813C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 08:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E0D257ACA;
-	Tue, 24 Jun 2025 08:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7BB257431;
+	Tue, 24 Jun 2025 08:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="RA8XNdSd"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="KENbGqH1"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E36248F59
-	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 08:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA6986347;
+	Tue, 24 Jun 2025 08:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750753340; cv=none; b=BwsZVAdRT/laHnw3pP4Y5Ht8SOEV+OXeED+vaCAeXbBjWJU19fEbcaawc7z2mP40yLOIvlLfxg2uvL0/gg3E/ooiJ0ySWGhG8wo5tY9GnU14Q5cxCSskwRw5cqvJgn6OzG5Lt4xaIZKFGF/7p4EcBJcV6daIUjxHgDnSguwdtuI=
+	t=1750753490; cv=none; b=EfEiNPXHLWXEwOyBR3uTfK9P9oieZd3IU3OPUHnsvpPg4PpB/V5PUcPC1So+Mep4tvtoTesLsi8uSsLGq2tZ5Z+5M6KAOvSXP/n3pIsuPM6frsfF8Oj4onsIZkYlP19spYPwDJCm/XxDDD7Kg70r7DtM4s0troCPNAyrTNjRB60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750753340; c=relaxed/simple;
-	bh=YmqCCNhrAhFvqsyVtD2StWdu7RasR0sP0BlrswX/AWI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=Nv/P7G7GvPRrNQh7yvSYuyEF8mzP+cKS2tOdqV7G5ohf8DMaBL1EgxRG4WLaCEwcE/LqDLQHMMunQS9fczMP/x9g8k6n38VgY1MmplNKy8UpLelvuemE8WiNopFtr4l93nl0jDSXkj1rbdLSvF94wokXugJeQbGQUmG9KIbAQ58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=RA8XNdSd reason="signature verification failed"; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=5T3NVfytyjKRvRFRhbC33Fzr/VOMrFiH5CIKbTkE9Lk=; b=R
-	A8XNdSdW9muIPqKXnP38Pl4pXrQeZM4DNY99iH6ldvbSNIeXvNjysbOkU722hACj
-	NlWwvM3FY34fxGeuysLgQAIBs/2rE+50ADMzkSJa6L06VJkKnf7Rb006augowyb3
-	xMfAkma9Zc+oDupwYSsJzo7RaJuzJ+U9RFRIaQHyhs=
-Received: from 00107082$163.com ( [111.35.191.166] ) by
- ajax-webmail-wmsvr-40-125 (Coremail) ; Tue, 24 Jun 2025 16:21:23 +0800
- (CST)
-Date: Tue, 24 Jun 2025 16:21:23 +0800 (CST)
-From: "David Wang" <00107082@163.com>
-To: "Harry Yoo" <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, surenb@google.com, kent.overstreet@linux.dev,
-	oliver.sang@intel.com, cachen@purestorage.com, linux-mm@kvack.org,
-	oe-lkp@lists.linux.dev, stable@vger.kernel.org
-Subject: Re:[PATCH v3] lib/alloc_tag: do not acquire non-existent lock in
- alloc_tag_top_users()
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
- Copyright (c) 2002-2025 www.mailtech.cn 163com
-In-Reply-To: <20250624072513.84219-1-harry.yoo@oracle.com>
-References: <20250624072513.84219-1-harry.yoo@oracle.com>
-X-NTES-SC: AL_Qu2eAvuevEoj5SmaZekZnEYQheY4XMKyuPkg1YJXOp80lCTc5jIlZ25NInnV9PmGOSG9oQmufQBX5cljXqllcrl0LItt3qKU+BOVvopdlBln
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=arc-20240116; t=1750753490; c=relaxed/simple;
+	bh=t/r4fP81Yw+vIDjwYPcV6m/tpx0lYKH6Lg/YHNegfio=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cqPv5HqA1o+RZbGmdW/PzJW6weBDWzNqxKJGrXsyvgDajzzv5yRrHhFXU9mk1chrJ18E8Yqxavksk4C3aANF9RF5Z1rXLo5LvwPcHNMj+wi5AKZJ/yq5OVTz7AW5Odk5A2v/lk6kviHvjGkhEiB4zEMXnAiUT9LqxBlFQFezaRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=KENbGqH1; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=hol7zR9J7UFfqVzHHYfqIbhmRqQAzSznVnGvVjusVKA=; t=1750753488;
+	x=1751185488; b=KENbGqH1zO0FLbbhxUgL+xtDHiwLY3qbtsbP55oj7aznMEMWkolJGnVYCWHG2
+	aQXIv5iT8TjsRo636ig6i9HcRLfzHaFCwpDnJ3ra4FzVsOvFag3JkzcdyxVyMjOEDdKa/quq82tvt
+	EY3PSl+iEJLIAzEKQEbtZkfvUNL2lnuY0NRcCpBnsM6zOZ/xx7mco3FdN1289B7AEUl1xju3+CzNQ
+	rgu92M27R1Vw3vHlpxj+M/GDl+WiL6dUk63i9qJp7AMmTx5PiVF1bm1pJXqnV8btFo1omm6Cjtrhz
+	xKAEwII68t1PWTswdGjDKnWT1wW94e9/nml4jmS6KqxXdAB3UA==;
+Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
+	id 1uTyxS-008lqz-2j;
+	Tue, 24 Jun 2025 10:24:46 +0200
+Message-ID: <ae03cf82-dfda-46fc-914d-2e329cd8d3da@leemhuis.info>
+Date: Tue, 24 Jun 2025 10:24:46 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <4f12c217.7a79.197a1070f55.Coremail.00107082@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:fSgvCgD3XycEYFpo3r0jAA--.8846W
-X-CM-SenderInfo: qqqrilqqysqiywtou0bp/xtbB0gt2qmhaUUU29gACsh
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.15 515/592] rust: devres: fix race in Devres::drop()
+To: Benno Lossin <lossin@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Alice Ryhl <aliceryhl@google.com>,
+ Danilo Krummrich <dakr@kernel.org>, Sasha Levin <sashal@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Christian Heusel <christian@heusel.eu>
+References: <20250623130700.210182694@linuxfoundation.org>
+ <20250623130712.686988131@linuxfoundation.org>
+ <DAUALX71J38F.2E1VBF0YH27KQ@kernel.org>
+ <eYjMg1ry65KlJgUKnqEjkoG6RkGBk1xtTYP1Af8fRBlrZyO8jOIrnAPs209lnvPqLwwwI0uQimzOx-EjmuhPEQ==@protonmail.internalid>
+ <025d9611-2a7f-40fd-9124-7b62fe6c5e84@leemhuis.info>
+ <DAULY9E26AKQ.3DCD5IW7CWUI7@kernel.org>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: de-DE, en-US
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 n7RI
+In-Reply-To: <DAULY9E26AKQ.3DCD5IW7CWUI7@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1750753488;ebb2d63b;
+X-HE-SMSGID: 1uTyxS-008lqz-2j
 
-QXQgMjAyNS0wNi0yNCAxNToyNToxMywgIkhhcnJ5IFlvbyIgPGhhcnJ5Lnlvb0BvcmFjbGUuY29t
-PiB3cm90ZToKPmFsbG9jX3RhZ190b3BfdXNlcnMoKSBhdHRlbXB0cyB0byBsb2NrIGFsbG9jX3Rh
-Z19jdHR5cGUtPm1vZF9sb2NrCj5ldmVuIHdoZW4gdGhlIGFsbG9jX3RhZ19jdHR5cGUgaXMgbm90
-IGFsbG9jYXRlZCBiZWNhdXNlOgo+Cj4gIDEpIGFsbG9jIHRhZ2dpbmcgaXMgZGlzYWJsZWQgYmVj
-YXVzZSBtZW0gcHJvZmlsaW5nIGlzIGRpc2FibGVkCj4gICAgICghYWxsb2NfdGFnX2N0dHlwZSkK
-PiAgMikgYWxsb2MgdGFnZ2luZyBpcyBlbmFibGVkLCBidXQgbm90IHlldCBpbml0aWFsaXplZCAo
-IWFsbG9jX3RhZ19jdHR5cGUpCj4gIDMpIGFsbG9jIHRhZ2dpbmcgaXMgZW5hYmxlZCwgYnV0IGZh
-aWxlZCBpbml0aWFsaXphdGlvbgo+ICAgICAoIWFsbG9jX3RhZ19jdHR5cGUgb3IgSVNfRVJSKGFs
-bG9jX3RhZ19jdHR5cGUpKQo+Cj5JbiBhbGwgY2FzZXMsIGFsbG9jX3RhZ19jdHR5cGUgaXMgbm90
-IGFsbG9jYXRlZCwgYW5kIHRoZXJlZm9yZQo+YWxsb2NfdGFnX3RvcF91c2VycygpIHNob3VsZCBu
-b3QgYXR0ZW1wdCB0byBhY3F1aXJlIHRoZSBzZW1hcGhvcmUuCj4KPlRoaXMgbGVhZHMgdG8gYSBj
-cmFzaCBvbiBtZW1vcnkgYWxsb2NhdGlvbiBmYWlsdXJlIGJ5IGF0dGVtcHRpbmcgdG8KPmFjcXVp
-cmUgYSBub24tZXhpc3RlbnQgc2VtYXBob3JlOgo+Cj4gIE9vcHM6IGdlbmVyYWwgcHJvdGVjdGlv
-biBmYXVsdCwgcHJvYmFibHkgZm9yIG5vbi1jYW5vbmljYWwgYWRkcmVzcyAweGRmZmZmYzAwMDAw
-MDAwMWI6IDAwMDAgWyMzXSBTTVAgS0FTQU4gTk9QVEkKPiAgS0FTQU46IG51bGwtcHRyLWRlcmVm
-IGluIHJhbmdlIFsweDAwMDAwMDAwMDAwMDAwZDgtMHgwMDAwMDAwMDAwMDAwMGRmXQo+ICBDUFU6
-IDIgVUlEOiAwIFBJRDogMSBDb21tOiBzeXN0ZW1kIFRhaW50ZWQ6IEcgICAgICBEICAgICAgICAg
-ICAgIDYuMTYuMC1yYzIgIzEgVk9MVU5UQVJZCj4gIFRhaW50ZWQ6IFtEXT1ESUUKPiAgSGFyZHdh
-cmUgbmFtZTogUUVNVSBTdGFuZGFyZCBQQyAoaTQ0MEZYICsgUElJWCwgMTk5NiksIEJJT1MgMS4x
-Ni4yLWRlYmlhbi0xLjE2LjItMSAwNC8wMS8yMDE0Cj4gIFJJUDogMDAxMDpkb3duX3JlYWRfdHJ5
-bG9jaysweGFhLzB4M2IwCj4gIENvZGU6IGQwIDdjIDA4IDg0IGQyIDBmIDg1IGEwIDAyIDAwIDAw
-IDhiIDBkIGRmIDMxIGRkIDA0IDg1IGM5IDc1IDI5IDQ4IGI4IDAwIDAwIDAwIDAwIDAwIGZjIGZm
-IGRmIDQ4IDhkIDZiIDY4IDQ4IDg5IGVhIDQ4IGMxIGVhIDAzIDw4MD4gM2MgMDIgMDAgMGYgODUg
-ODggMDIgMDAgMDAgNDggM2IgNWIgNjggMGYgODUgNTMgMDEgMDAgMDAgNjUgZmYKPiAgUlNQOiAw
-MDAwOmZmZmY4ODgxMDAyY2U5YjggRUZMQUdTOiAwMDAxMDAxNgo+ICBSQVg6IGRmZmZmYzAwMDAw
-MDAwMDAgUkJYOiAwMDAwMDAwMDAwMDAwMDcwIFJDWDogMDAwMDAwMDAwMDAwMDAwMAo+ICBSRFg6
-IDAwMDAwMDAwMDAwMDAwMWIgUlNJOiAwMDAwMDAwMDAwMDAwMDBhIFJESTogMDAwMDAwMDAwMDAw
-MDA3MAo+ICBSQlA6IDAwMDAwMDAwMDAwMDAwZDggUjA4OiAwMDAwMDAwMDAwMDAwMDAxIFIwOTog
-ZmZmZmVkMTA3ZGRlNDlkMQo+ICBSMTA6IGZmZmY4ODgzZWVmMjRlOGIgUjExOiBmZmZmODg4MTAw
-MmNlYzIwIFIxMjogMWZmZmYxMTAyMDA1OWQzNwo+ICBSMTM6IDAwMDAwMDAwMDAzZmZmN2IgUjE0
-OiBmZmZmODg4MTAwMmNlYzIwIFIxNTogZGZmZmZjMDAwMDAwMDAwMAo+ICBGUzogIDAwMDA3Zjk2
-M2YyMWQ5NDAoMDAwMCkgR1M6ZmZmZjg4ODQ1OGNhNjAwMCgwMDAwKSBrbmxHUzowMDAwMDAwMDAw
-MDAwMDAwCj4gIENTOiAgMDAxMCBEUzogMDAwMCBFUzogMDAwMCBDUjA6IDAwMDAwMDAwODAwNTAw
-MzMKPiAgQ1IyOiAwMDAwN2Y5NjNmNWVkZjcxIENSMzogMDAwMDAwMDEwNjcyYzAwMCBDUjQ6IDAw
-MDAwMDAwMDAzNTBlZjAKPiAgQ2FsbCBUcmFjZToKPiAgIDxUQVNLPgo+ICAgY29kZXRhZ190cnls
-b2NrX21vZHVsZV9saXN0KzB4ZC8weDIwCj4gICBhbGxvY190YWdfdG9wX3VzZXJzKzB4MzY5LzB4
-NGIwCj4gICBfX3Nob3dfbWVtKzB4MWNkLzB4NmUwCj4gICB3YXJuX2FsbG9jKzB4MmIxLzB4Mzkw
-Cj4gICBfX2FsbG9jX2Zyb3plbl9wYWdlc19ub3Byb2YrMHgxMmI5LzB4MjFhMAo+ICAgYWxsb2Nf
-cGFnZXNfbXBvbCsweDEzNS8weDNlMAo+ICAgYWxsb2Nfc2xhYl9wYWdlKzB4ODIvMHhlMAo+ICAg
-bmV3X3NsYWIrMHgyMTIvMHgyNDAKPiAgIF9fX3NsYWJfYWxsb2MrMHg4MmEvMHhlMDAKPiAgIDwv
-VEFTSz4KPgo+QXMgRGF2aWQgV2FuZyBwb2ludHMgb3V0LCB0aGlzIGlzc3VlIGJlY2FtZSBlYXNp
-ZXIgdG8gdHJpZ2dlciBhZnRlciBjb21taXQKPjc4MDEzOGIxMjM4MSAoImFsbG9jX3RhZzogY2hl
-Y2sgbWVtX3Byb2ZpbGluZ19zdXBwb3J0IGluIGFsbG9jX3RhZ19pbml0IikuCj4KPkJlZm9yZSB0
-aGUgY29tbWl0LCB0aGUgaXNzdWUgb2NjdXJyZWQgb25seSB3aGVuIGl0IGZhaWxlZCB0byBhbGxv
-Y2F0ZQo+YW5kIGluaXRpYWxpemUgYWxsb2NfdGFnX2N0dHlwZSBvciBpZiBhIG1lbW9yeSBhbGxv
-Y2F0aW9uIGZhaWxzIGJlZm9yZQo+YWxsb2NfdGFnX2luaXQoKSBpcyBjYWxsZWQuIEFmdGVyIHRo
-ZSBjb21taXQsIGl0IGNhbiBiZSBlYXNpbHkgdHJpZ2dlcmVkCj53aGVuIG1lbW9yeSBwcm9maWxp
-bmcgaXMgY29tcGlsZWQgYnV0IGRpc2FibGVkIGF0IGJvb3QuCj4KPlRvIHByb3Blcmx5IGRldGVy
-bWluZSB3aGV0aGVyIGFsbG9jX3RhZ19pbml0KCkgaGFzIGJlZW4gY2FsbGVkIGFuZAo+aXRzIGRh
-dGEgc3RydWN0dXJlcyBpbml0aWFsaXplZCwgdmVyaWZ5IHRoYXQgYWxsb2NfdGFnX2N0dHlwZSBp
-cyBhIHZhbGlkCj5wb2ludGVyIGJlZm9yZSBhY3F1aXJpbmcgdGhlIHNlbWFwaG9yZS4gSWYgdGhl
-IHZhcmlhYmxlIGlzIE5VTEwgb3IgYW4gZXJyb3IKPnZhbHVlLCBpdCBoYXMgbm90IGJlZW4gcHJv
-cGVybHkgaW5pdGlhbGl6ZWQuIEluIHN1Y2ggYSBjYXNlLCBqdXN0IHNraXAKPmFuZCBkbyBub3Qg
-YXR0ZW1wdCB0byBhY3F1aXJlIHRoZSBzZW1hcGhvcmUuCj4KPlJlcG9ydGVkLWJ5OiBrZXJuZWwg
-dGVzdCByb2JvdCA8b2xpdmVyLnNhbmdAaW50ZWwuY29tPgo+Q2xvc2VzOiBodHRwczovL2xvcmUu
-a2VybmVsLm9yZy9vZS1sa3AvMjAyNTA2MTgxMzUxLmJiYTg2N2RkLWxrcEBpbnRlbC5jb20KPkNs
-b3NlczogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvb2UtbGtwLzIwMjUwNjEzMTcxMS41YjQxOTMx
-Yy1sa3BAaW50ZWwuY29tCj5GaXhlczogNzgwMTM4YjEyMzgxICgiYWxsb2NfdGFnOiBjaGVjayBt
-ZW1fcHJvZmlsaW5nX3N1cHBvcnQgaW4gYWxsb2NfdGFnX2luaXQiKQo+Rml4ZXM6IDE0MzhkMzQ5
-ZDE2YiAoImxpYjogYWRkIG1lbW9yeSBhbGxvY2F0aW9ucyByZXBvcnQgaW4gc2hvd19tZW0oKSIp
-Cj5DYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZwo+U2lnbmVkLW9mZi1ieTogSGFycnkgWW9vIDxo
-YXJyeS55b29Ab3JhY2xlLmNvbT4KPi0tLQo+Cj5AU3VyZW46IEkgZGlkIG5vdCBhZGQgYW5vdGhl
-ciBwcl93YXJuKCkgYmVjYXVzZSBldmVyeSBlcnJvciBwYXRoIGluCj5hbGxvY190YWdfaW5pdCgp
-IGFscmVhZHkgaGFzIHByX2VycigpLgo+Cj52MiAtPiB2MzoKPi0gQWRkZWQgYW5vdGhlciBDbG9z
-ZXM6IHRhZyAoRGF2aWQpCj4tIE1vdmVkIHRoZSBjb25kaXRpb24gaW50byBhIHN0YW5kYWxvbmUg
-aWYgYmxvY2sgZm9yIGJldHRlciByZWFkYWJpbGl0eQo+ICAoU3VyZW4pCj4tIFR5cG8gZml4IChT
-dXJlbikKPgo+IGxpYi9hbGxvY190YWcuYyB8IDMgKysrCj4gMSBmaWxlIGNoYW5nZWQsIDMgaW5z
-ZXJ0aW9ucygrKQo+Cj5kaWZmIC0tZ2l0IGEvbGliL2FsbG9jX3RhZy5jIGIvbGliL2FsbG9jX3Rh
-Zy5jCj5pbmRleCA0MWNjZmIwMzViN2IuLmU5YjMzODQ4NzAwYSAxMDA2NDQKPi0tLSBhL2xpYi9h
-bGxvY190YWcuYwo+KysrIGIvbGliL2FsbG9jX3RhZy5jCj5AQCAtMTI3LDYgKzEyNyw5IEBAIHNp
-emVfdCBhbGxvY190YWdfdG9wX3VzZXJzKHN0cnVjdCBjb2RldGFnX2J5dGVzICp0YWdzLCBzaXpl
-X3QgY291bnQsIGJvb2wgY2FuX3NsCj4gCXN0cnVjdCBjb2RldGFnX2J5dGVzIG47Cj4gCXVuc2ln
-bmVkIGludCBpLCBuciA9IDA7Cj4gCj4rCWlmIChJU19FUlJfT1JfTlVMTChhbGxvY190YWdfY3R0
-eXBlKSkKClNob3VsZCBhIHdhcm5pbmcgIGFkZGVkIGhlcmU/IGluZGljYXRpbmcgIGNvZGV0YWcg
-bW9kdWxlIG5vdCByZWFkeSB5ZXQgYW5kIHRoZSBtZW1vcnkgZmFpbHVyZSBoYXBwZW5lZCBkdXJp
-bmcgYm9vdDoKIGlmIChtZW1fcHJvZmlsaW5nX3N1cHBvcnQpIHByX3dhcm4oIi4uLgoKCj4rCQly
-ZXR1cm4gMDsKPisKPiAJaWYgKGNhbl9zbGVlcCkKPiAJCWNvZGV0YWdfbG9ja19tb2R1bGVfbGlz
-dChhbGxvY190YWdfY3R0eXBlLCB0cnVlKTsKPiAJZWxzZSBpZiAoIWNvZGV0YWdfdHJ5bG9ja19t
-b2R1bGVfbGlzdChhbGxvY190YWdfY3R0eXBlKSkKPi0tIAo+Mi40My4wCg==
+On 24.06.25 10:07, Benno Lossin wrote:
+> On Tue Jun 24, 2025 at 9:24 AM CEST, Thorsten Leemhuis wrote:
+>> [CCing Miguel (JFYI) as well as Christian, who reported the build
+>> error[1] with 6.15.4-rc1 (which I'm seeing as well[2]) caused by the
+>> patch this mail is about according to Benno.]
+> Thanks!
+> 
+>> On 24.06.25 01:14, Benno Lossin wrote:
+>>> On Mon Jun 23, 2025 at 3:07 PM CEST, Greg Kroah-Hartman wrote:
+>>>> 6.15-stable review patch.  If anyone has any objections, please let me know.
+>>>>
+>>>> ------------------
+>>>>
+>>>> From: Danilo Krummrich <dakr@kernel.org>
+>>>>
+>>>> [ Upstream commit f744201c6159fc7323c40936fd079525f7063598 ]
+>>>>
+>>>> In Devres::drop() we first remove the devres action and then drop the
+>>>> wrapped device resource.
+>>>>
+>>>> The design goal is to give the owner of a Devres object control over when
+>>>> the device resource is dropped, but limit the overall scope to the
+>>>> corresponding device being bound to a driver.
+>>> [...]
+>>> This is missing the prerequisite patch #1 from
+>>>
+>>>     https://lore.kernel.org/all/20250612121817.1621-1-dakr@kernel.org
+>>
+>> You afaics mean 1b56e765bf8990 ("rust: completion: implement initial
+>> abstraction") [v6.16-rc3] 
+> 
+> Yes that is the prerequisite.
+> 
+>> – which did not cleanly apply to 6.15.4-rc1 in
+> 
+> In which repository is that tag? I didn't find it in the stable tree.
+
+Use this tree and branch:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/log/?h=linux-6.15.y
+
+There sadly is no tag ("send a patch to Greg's rc-release scripts to
+make them tag -rc releases" is somewhere near the end of my todo list
+for a while already...).
+
+> I tried applying it on top of v6.15.3 and that also results in a
+> conflict, but only in `bindgen_helpers.h` and `helpers.c`, so we can
+> simply provide a fixed patch.
+
+Yeah, that likely is needed to make Greg happy here.
+
+> @Danilo, I think this should be backported, how do you want to proceed?
+
+Ciao, Thorsten
 
