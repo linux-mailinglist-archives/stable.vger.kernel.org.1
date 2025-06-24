@@ -1,237 +1,306 @@
-Return-Path: <stable+bounces-158451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A987BAE6F21
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 21:05:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F4CAE6F29
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 21:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBBB2188BF4C
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 19:05:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F047C3A97CC
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 19:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47C324169B;
-	Tue, 24 Jun 2025 19:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5709323E336;
+	Tue, 24 Jun 2025 19:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="afp+DIJh"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UN63tpCZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF70224502E
-	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 19:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAB9223DE1
+	for <stable@vger.kernel.org>; Tue, 24 Jun 2025 19:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750791900; cv=none; b=UcJM1f04Jm3htibHhZn7rjq/rru2V+MdkC1k4vX51AiXUYZ2wD9DBbChvbpwnT7zil0oTd99V+6nEHUHWsZS+B5qpkGn1rO1Xz3R4oMNay/j7FPD8Ub3DETLcloEir2Ntdrh4AkMsr8bzS06iplCJaKtRvWsauiA4t3Tyvy4Z4M=
+	t=1750791985; cv=none; b=SztdS4w8T5alQzs7Bmo41KK4cZgTU059OXbZeJv6P+fnmGs6Z7wUOoJHkLltU3eEbGTZOIGCSnZXzJg/g5shvUSPf4XvfwTn5B1Q5ewIp4uoXJZjx709p4zqU/lO/++6QKEYlrh3UL9IXcAZRDmtRWdsHrmon6xoXu1C1Jg6jeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750791900; c=relaxed/simple;
-	bh=2gIzDtztlXFsBmfrdVWYGJGg2T2mtarQJIjU/uKnbHs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WfSVf5GtcH4eEJ41n9v44YblDix/ZJaBUgUp3I2ocrE/eWO8Tf748qh8QRBxXxStPwWT87wsIdy8HPmEQtYVA7Z6yQ6QSV5iN1BsoxyUAJj9KJSsta0E6hgjvFGObu0a0tOk6P84UrvxVmXSPPaA60LUV0UzD5yRZaPi5bbgeIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=afp+DIJh; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b31c84b8052so1037728a12.1
-        for <stable@vger.kernel.org>; Tue, 24 Jun 2025 12:04:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750791898; x=1751396698; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K2Kngavp4rtDZRNS2LgoI8pHut0RmsW/toTlJ2MFFp0=;
-        b=afp+DIJh8kaMKzsjPbVLkdTWeWhhAgqy4wfc98CxE0vAqsI+xmK2nI6wzwpknXRrkv
-         +M9dQk2IZil7PmtvVGOshQZ0gvi1fuuHpzextyJxRjWt7Re6GnBnl7yxDIqnTy9GYonC
-         b8qtcZzwB+4UJMwDlTxIRmfjJYp6Lmitw8mP2VcVT2O4cbza5cuMTXFDVXPy7u4tqEHY
-         mhdt9QM+dGyGJisWszTdJNsjSYRGtpkiJTdolGGwBBwMyfEqPaoheaRMVy4k2CM2Dw+H
-         MrD9hPKH0XjPxOR9moFFTPz9gAl//2dyUZjXdBY9t9hPcvSdTEGT+YUSmpmNteCE9ym5
-         umWw==
+	s=arc-20240116; t=1750791985; c=relaxed/simple;
+	bh=2vondAyJOQjOEJ/Upmm3SKYwkamKewsdIk0AER4OiNw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jbg8EzUjFinFvoKAONug9WjGBOjPcmXrmfvds1KbC2K+RtHWF/Jeo2Ypm22KnbsRG0Nx8C/VsBOM+x7QEJbES+rqSXUltP8mEg5PhJWxGJTVSr66U6uk8Pzy4WbNQak4e6SZzq3h3ag83dsCdNQVJFqzEUL286v4FxBhdZ9dQ4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UN63tpCZ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750791982;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xQMdOUYo7v3/bu6tyaCuBGm4w8DagKvG7wDrK2N5Rug=;
+	b=UN63tpCZl48Iekdi1DiX44YAai5jpUsvrr5BelRISf4V+H7TqZlRG9gTTl0RfeGTBlVohj
+	J/1NRv5+SbqrhmNP4R5NMuAM6ZOOBcnbiu3V67XUBWVJhl0plgKuOoqCp/voKyvuy1DlIE
+	cDuPviifPdcjZaXwDywCyqme1WcH6C4=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-19-OswZcLTrPeORNhIYHi1yvg-1; Tue, 24 Jun 2025 15:06:20 -0400
+X-MC-Unique: OswZcLTrPeORNhIYHi1yvg-1
+X-Mimecast-MFC-AGG-ID: OswZcLTrPeORNhIYHi1yvg_1750791980
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-ae0b2bbd8bfso59148266b.2
+        for <stable@vger.kernel.org>; Tue, 24 Jun 2025 12:06:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750791898; x=1751396698;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K2Kngavp4rtDZRNS2LgoI8pHut0RmsW/toTlJ2MFFp0=;
-        b=uCwNws1aY0iG6e7EBExL1lCUiKBgWS4oT8Y+nmMfSCCTyqTANcOFA2+N/9GzhrDP+z
-         35hu2ozpTHTv6gNWLjXqTm/jRVFQMOPWicgj92s4d+aN689dFFbA5jV0ZcTif/2m8NLg
-         sgKVM78SBnRxo3rlMaL5ONtrknT8Wmc/hSlCZJNXfSU22wRa3CiWE1KTMT88TluVWeEo
-         xk8JaAy29kWW85H002lYbDGGCSbpWdmAA9UeLhlfLogcv+xjfExPsOLs5C2oE6Zaowyv
-         TgyPiFnw7MhIdqBxFOZoJO+J16m54rS0nngKbxaHzdl+PqfiwJktGUKmZ9LHqNfETDnG
-         uSdA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxvH6pcZXAp3tQ0h74F7yRjbBAXBCIqeZcNZOPPUTua1RBBOJUAnkhG+DB1FbV97mMbcmsAzs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLOMZu230/3S5IDGzn75A+5N3hkNUyt7sMRbwEKIbjNRA+y+gG
-	2MDgLUukGlTPH66v+N7CDP5GBc0nzjE3LeoDJ/6UHER7p+lDn+EJiPwcw7Jj8QNA7smT2yupB9h
-	A2motuLe0DFZVrrt3Kwgq3hlXnLpJYCfj9rVKxXWI
-X-Gm-Gg: ASbGncupqoJuBCd+50kixQDeKhnYq504occyPN/XZWEY/pG4a6AZTUBp+RFB96kVEbr
-	QG24DvZrQnXlJ3nwjR8GVq16lUDFfRQcR8UBO+L1y/BLzrAY5sJgHKU8LwrE5O1ZdiRF0PCiqHL
-	orQ2q6j18CLqAR5m2Lxbk1Acnv+meF/dyNSVHNmAD6b+c=
-X-Google-Smtp-Source: AGHT+IFKwv0p7g2UPZAuAO0ldFtReM/ENeLUBTFg81N68i1C71I9bm1zFs4UOFtwvKXxSowZacvDiUZFQTjZ6DR5MJk=
-X-Received: by 2002:a17:90b:35cf:b0:312:959:dc3f with SMTP id
- 98e67ed59e1d1-315f25d150dmr30205a91.3.1750791897784; Tue, 24 Jun 2025
- 12:04:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750791979; x=1751396779;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xQMdOUYo7v3/bu6tyaCuBGm4w8DagKvG7wDrK2N5Rug=;
+        b=OD7FRg6CaxWkgFHdwrBqmyTikNZXo3+HvltUNL/Ui6w8w7zocbHOGHQHynwPRVgGpQ
+         EaHbDS940/6w159tNYOOH9KmqrDGKcg3b+59pX181jBZWUQbJIQdAfuXgpwmhG9a5zi6
+         +AH3Gru12CTs2TDVlJzHyWbUK6nqrg1vSWTPjMLdwAbVof8N1KYn91F6tyXjONcvzwtl
+         2QqB5HMC6i+ExviReoJbqi4vJn6uFGRa3bmXh2X/C/5useQrFWX/YV/Guh6cZMQwcRK/
+         L/1ivHokf4GDkHyzM9iF/3ZkyYSXZD5KYYOJwPcSrSBEDwM9MEVRgHHPlS5KHPton9LS
+         RUFw==
+X-Forwarded-Encrypted: i=1; AJvYcCXFY9QiyRa0fIDs/0hjHG1ZcwzAUH9C847Q78j8InmnLDZi0HyRXDiQXZtFiVpSR+A+UxxysUc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJ85uVth5cVylI2gQdorCIL83Z6iPabM1fIrkC1GKRXre3mo7m
+	8qcrzvyxZhmikT6ugV+fbr/h+mwCp6sWK5uIIgDZk8lwHZOocJApZdbFsfX3pNZPO52eWlBfDrU
+	LyQOsjMFYwttTO7vRRD6U0C5oB8KIKrmhWZUInDEf2rWdEUgtvvIhytdtUjgt3wJYG5HQhEM=
+X-Gm-Gg: ASbGncvIFRaOt4MWn17Z4WJ9pYEPXLOARBwwILH64Bfv1wo9YTCDNd/gN/E6Om4jSl9
+	ACKF+mSGMncfo9+TNAdJUsa6oW0YVXFikoBumv6Yo4JcbkjOqsWgPkQ0c1n7I7fTHzy4O5K0/Ea
+	LTU5DySC4u+Zodpv5m3CFQcvTrfgBynzzE368vISaRIcmPV6TcgjkVi5cFyMn0WdSxNVa7iweFm
+	HrIx8BYjSIA3zBb852dtaFcvhnSTqWrIQ2F21afIU11vyEW5fMZUHri0quK6YQ382Clhl+NpJTX
+	NE649giHg6w=
+X-Received: by 2002:a17:907:3d0f:b0:ae0:bd48:b9ce with SMTP id a640c23a62f3a-ae0be7fb932mr40366766b.5.1750791979323;
+        Tue, 24 Jun 2025 12:06:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGL5dq2s+ASYpP57VdaQf7RnHFPBypwOC67UyMU5QVHdjUOvr5AKiEneZCWkOph6tAFAMZ9uQ==
+X-Received: by 2002:a17:907:3d0f:b0:ae0:bd48:b9ce with SMTP id a640c23a62f3a-ae0be7fb932mr40363666b.5.1750791978746;
+        Tue, 24 Jun 2025 12:06:18 -0700 (PDT)
+Received: from redhat.com ([31.187.78.68])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae0a7b0565bsm184234266b.165.2025.06.24.12.06.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Jun 2025 12:06:18 -0700 (PDT)
+Date: Tue, 24 Jun 2025 15:06:15 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Parav Pandit <parav@nvidia.com>, axboe@kernel.dk,
+	virtualization@lists.linux.dev, linux-block@vger.kernel.org,
+	stable@vger.kernel.org, lirongqing@baidu.com, kch@nvidia.com,
+	xuanzhuo@linux.alibaba.com, pbonzini@redhat.com,
+	jasowang@redhat.com, alok.a.tiwari@oracle.com,
+	Max Gurtovoy <mgurtovoy@nvidia.com>,
+	Israel Rukshin <israelr@nvidia.com>
+Subject: Re: [PATCH v5] virtio_blk: Fix disk deletion hang on device surprise
+ removal
+Message-ID: <20250624150435-mutt-send-email-mst@kernel.org>
+References: <20250602024358.57114-1-parav@nvidia.com>
+ <20250624185622.GB5519@fedora>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250609080841.1394941-1-nikunj@amd.com> <858qlhhj4c.fsf@amd.com>
-In-Reply-To: <858qlhhj4c.fsf@amd.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Tue, 24 Jun 2025 12:04:45 -0700
-X-Gm-Features: AX0GCFutkCai5Ej5clSCJJHAvRh79dv943h8tZ9hiv-rxScUYBH5_ybiJhbKr2Q
-Message-ID: <CAAH4kHZPrDRF3sZ2GxFxMeue3o9PsEL7p-j8bKL2mxgBjR0ATg@mail.gmail.com>
-Subject: Re: [PATCH] x86/sev: Use TSC_FACTOR for Secure TSC frequency calculation
-To: Nikunj A Dadhania <nikunj@amd.com>
-Cc: linux-kernel@vger.kernel.org, bp@alien8.de, x86@kernel.org, 
-	tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com, 
-	thomas.lendacky@amd.com, aik@amd.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250624185622.GB5519@fedora>
 
-On Mon, Jun 23, 2025 at 9:17=E2=80=AFPM Nikunj A Dadhania <nikunj@amd.com> =
-wrote:
->
-> Nikunj A Dadhania <nikunj@amd.com> writes:
->
-> > When using Secure TSC, the GUEST_TSC_FREQ MSR reports a frequency based=
- on
-> > the nominal P0 frequency, which deviates slightly (typically ~0.2%) fro=
-m
-> > the actual mean TSC frequency due to clocking parameters. Over extended=
- VM
-> > uptime, this discrepancy accumulates, causing clock skew between the
-> > hypervisor and SEV-SNP VM, leading to early timer interrupts as perceiv=
-ed
-> > by the guest.
-> >
-> > The guest kernel relies on the reported nominal frequency for TSC-based
-> > timekeeping, while the actual frequency set during SNP_LAUNCH_START may
-> > differ. This mismatch results in inaccurate time calculations, causing =
-the
-> > guest to perceive hrtimers as firing earlier than expected.
-> >
-> > Utilize the TSC_FACTOR from the SEV firmware's secrets page (see "Secre=
-ts
-> > Page Format" in the SNP Firmware ABI Specification) to calculate the me=
-an
-> > TSC frequency, ensuring accurate timekeeping and mitigating clock skew =
-in
-> > SEV-SNP VMs.
-> >
-> > Use early_ioremap_encrypted() to map the secrets page as
-> > ioremap_encrypted() uses kmalloc() which is not available during early =
-TSC
-> > initialization and causes a panic.
-> >
-> > Fixes: 73bbf3b0fbba ("x86/tsc: Init the TSC for Secure TSC guests")
-> > Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+On Tue, Jun 24, 2025 at 02:56:22PM -0400, Stefan Hajnoczi wrote:
+> On Mon, Jun 02, 2025 at 02:44:33AM +0000, Parav Pandit wrote:
+> > When the PCI device is surprise removed, requests may not complete
+> > the device as the VQ is marked as broken. Due to this, the disk
+> > deletion hangs.
+> 
+> There are loops in the core virtio driver code that expect device
+> register reads to eventually return 0:
+> drivers/virtio/virtio_pci_modern.c:vp_reset()
+> drivers/virtio/virtio_pci_modern_dev.c:vp_modern_set_queue_reset()
+> 
+> Is there a hang if these loops are hit when a device has been surprise
+> removed?
+
+Probably, yes. We can't really check broken status there though
+I think - reset is called with a broken device normally.
+
+> I'm trying to understand whether surprise removal is fully
+> supported or whether this patch is one step in that direction.
+
+I think it's a step.
+
+> Apart from that, I'm happy with the virtio_blk.c aspects of the patch:
+> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> 
+> > 
+> > Fix it by aborting the requests when the VQ is broken.
+> > 
+> > With this fix now fio completes swiftly.
+> > An alternative of IO timeout has been considered, however
+> > when the driver knows about unresponsive block device, swiftly clearing
+> > them enables users and upper layers to react quickly.
+> > 
+> > Verified with multiple device unplug iterations with pending requests in
+> > virtio used ring and some pending with the device.
+> > 
+> > Fixes: 43bb40c5b926 ("virtio_pci: Support surprise removal of virtio pci device")
 > > Cc: stable@vger.kernel.org
-> > Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
->
-> A gentle reminder for review.
->
-> Thanks
-> Nikunj
->
+> > Reported-by: Li RongQing <lirongqing@baidu.com>
+> > Closes: https://lore.kernel.org/virtualization/c45dd68698cd47238c55fb73ca9b4741@baidu.com/
+> > Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
+> > Reviewed-by: Israel Rukshin <israelr@nvidia.com>
+> > Signed-off-by: Parav Pandit <parav@nvidia.com>
+> > 
 > > ---
-> >  arch/x86/include/asm/sev.h |  5 ++++-
-> >  arch/x86/coco/sev/core.c   | 24 ++++++++++++++++++++++++
-> >  2 files changed, 28 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> > index 58e028d42e41..655d7e37bbcc 100644
-> > --- a/arch/x86/include/asm/sev.h
-> > +++ b/arch/x86/include/asm/sev.h
-> > @@ -282,8 +282,11 @@ struct snp_secrets_page {
-> >       u8 svsm_guest_vmpl;
-> >       u8 rsvd3[3];
-> >
-> > +     /* The percentage decrease from nominal to mean TSC frequency. */
-> > +     u32 tsc_factor;
-> > +
-> >       /* Remainder of page */
-> > -     u8 rsvd4[3744];
-> > +     u8 rsvd4[3740];
-> >  } __packed;
-> >
-> >  struct snp_msg_desc {
-> > diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-> > index b6db4e0b936b..ffd44712cec0 100644
-> > --- a/arch/x86/coco/sev/core.c
-> > +++ b/arch/x86/coco/sev/core.c
-> > @@ -2167,15 +2167,39 @@ static unsigned long securetsc_get_tsc_khz(void=
-)
-> >
-> >  void __init snp_secure_tsc_init(void)
-> >  {
-> > +     struct snp_secrets_page *secrets;
-> >       unsigned long long tsc_freq_mhz;
-> > +     void *mem;
-> >
-> >       if (!cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
-> >               return;
-> >
-> > +     mem =3D early_memremap_encrypted(sev_secrets_pa, PAGE_SIZE);
-> > +     if (!mem) {
-> > +             pr_err("Unable to get TSC_FACTOR: failed to map the SNP s=
-ecrets page.\n");
-> > +             sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SECURE_TSC=
-);
-> > +     }
-> > +
-> > +     secrets =3D (__force struct snp_secrets_page *)mem;
-> > +
-> >       setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
-> >       rdmsrq(MSR_AMD64_GUEST_TSC_FREQ, tsc_freq_mhz);
-> >       snp_tsc_freq_khz =3D (unsigned long)(tsc_freq_mhz * 1000);
-> >
-> > +     /*
-> > +      * Obtain the mean TSC frequency by decreasing the nominal TSC fr=
-equency with
-> > +      * TSC_FACTOR as documented in the SNP Firmware ABI specification=
-:
-> > +      *
-> > +      * GUEST_TSC_FREQ * (1 - (TSC_FACTOR * 0.00001))
-> > +      *
-> > +      * which is equivalent to:
-> > +      *
-> > +      * GUEST_TSC_FREQ -=3D (GUEST_TSC_FREQ * TSC_FACTOR) / 100000;
-> > +      */
-> > +     snp_tsc_freq_khz -=3D (snp_tsc_freq_khz * secrets->tsc_factor) / =
-100000;
-> > +
-
-To better match the documentation and to not store an intermediate
-result in a global, it'd be
-good to add local variables. I'm also not a big fan of ABI constants
-in the implementation.
-
-guest_tsc_freq_khz =3D (unsigned long)(tsc_freq_mhz * 1000);
-snp_tsc_freq_khz =3D guest_tsc_freq_khz -
-SNP_SCALE_TSC_FACTOR(guest_tsc_freq_khz * secrets->tsc_factor);
-
-...in a header somewhere...
-/**
- * The SEV-SNP secrets page contains an encoding of the percentage decrease
- * from nominal TSC frequency to mean TSC frequency due to clocking paramet=
-ers.
- * The encoding is in parts per 100,000, so the following is an
-integer-based scaling macro.
- */
-#define SNP_SCALE_TSC_FACTOR(x) ((x) / 100000)
-
-> >       x86_platform.calibrate_cpu =3D securetsc_get_tsc_khz;
-> >       x86_platform.calibrate_tsc =3D securetsc_get_tsc_khz;
-> > +
-> > +     early_memunmap(mem, PAGE_SIZE);
+> > v4->v5:
+> > - fixed comment style where comment to start with one empty line at start
+> > - Addressed comments from Alok
+> > - fixed typo in broken vq check
+> > v3->v4:
+> > - Addressed comments from Michael
+> > - renamed virtblk_request_cancel() to
+> >   virtblk_complete_request_with_ioerr()
+> > - Added comments for virtblk_complete_request_with_ioerr()
+> > - Renamed virtblk_broken_device_cleanup() to
+> >   virtblk_cleanup_broken_device()
+> > - Added comments for virtblk_cleanup_broken_device()
+> > - Moved the broken vq check in virtblk_remove()
+> > - Fixed comment style to have first empty line
+> > - replaced freezed to frozen
+> > - Fixed comments rephrased
+> > 
+> > v2->v3:
+> > - Addressed comments from Michael
+> > - updated comment for synchronizing with callbacks
+> > 
+> > v1->v2:
+> > - Addressed comments from Stephan
+> > - fixed spelling to 'waiting'
+> > - Addressed comments from Michael
+> > - Dropped checking broken vq from queue_rq() and queue_rqs()
+> >   because it is checked in lower layer routines in virtio core
+> > 
+> > v0->v1:
+> > - Fixed comments from Stefan to rename a cleanup function
+> > - Improved logic for handling any outstanding requests
+> >   in bio layer
+> > - improved cancel callback to sync with ongoing done()
+> > ---
+> >  drivers/block/virtio_blk.c | 95 ++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 95 insertions(+)
+> > 
+> > diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+> > index 7cffea01d868..c5e383c0ac48 100644
+> > --- a/drivers/block/virtio_blk.c
+> > +++ b/drivers/block/virtio_blk.c
+> > @@ -1554,6 +1554,98 @@ static int virtblk_probe(struct virtio_device *vdev)
+> >  	return err;
 > >  }
-> >
-> > base-commit: 337964c8abfbef645cbbe25245e25c11d9d1fc4c
-> > --
-> > 2.43.0
->
+> >  
+> > +/*
+> > + * If the vq is broken, device will not complete requests.
+> > + * So we do it for the device.
+> > + */
+> > +static bool virtblk_complete_request_with_ioerr(struct request *rq, void *data)
+> > +{
+> > +	struct virtblk_req *vbr = blk_mq_rq_to_pdu(rq);
+> > +	struct virtio_blk *vblk = data;
+> > +	struct virtio_blk_vq *vq;
+> > +	unsigned long flags;
+> > +
+> > +	vq = &vblk->vqs[rq->mq_hctx->queue_num];
+> > +
+> > +	spin_lock_irqsave(&vq->lock, flags);
+> > +
+> > +	vbr->in_hdr.status = VIRTIO_BLK_S_IOERR;
+> > +	if (blk_mq_request_started(rq) && !blk_mq_request_completed(rq))
+> > +		blk_mq_complete_request(rq);
+> > +
+> > +	spin_unlock_irqrestore(&vq->lock, flags);
+> > +	return true;
+> > +}
+> > +
+> > +/*
+> > + * If the device is broken, it will not use any buffers and waiting
+> > + * for that to happen is pointless. We'll do the cleanup in the driver,
+> > + * completing all requests for the device.
+> > + */
+> > +static void virtblk_cleanup_broken_device(struct virtio_blk *vblk)
+> > +{
+> > +	struct request_queue *q = vblk->disk->queue;
+> > +
+> > +	/*
+> > +	 * Start freezing the queue, so that new requests keeps waiting at the
+> > +	 * door of bio_queue_enter(). We cannot fully freeze the queue because
+> > +	 * frozen queue is an empty queue and there are pending requests, so
+> > +	 * only start freezing it.
+> > +	 */
+> > +	blk_freeze_queue_start(q);
+> > +
+> > +	/*
+> > +	 * When quiescing completes, all ongoing dispatches have completed
+> > +	 * and no new dispatch will happen towards the driver.
+> > +	 */
+> > +	blk_mq_quiesce_queue(q);
+> > +
+> > +	/*
+> > +	 * Synchronize with any ongoing VQ callbacks that may have started
+> > +	 * before the VQs were marked as broken. Any outstanding requests
+> > +	 * will be completed by virtblk_complete_request_with_ioerr().
+> > +	 */
+> > +	virtio_synchronize_cbs(vblk->vdev);
+> > +
+> > +	/*
+> > +	 * At this point, no new requests can enter the queue_rq() and
+> > +	 * completion routine will not complete any new requests either for the
+> > +	 * broken vq. Hence, it is safe to cancel all requests which are
+> > +	 * started.
+> > +	 */
+> > +	blk_mq_tagset_busy_iter(&vblk->tag_set,
+> > +				virtblk_complete_request_with_ioerr, vblk);
+> > +	blk_mq_tagset_wait_completed_request(&vblk->tag_set);
+> > +
+> > +	/*
+> > +	 * All pending requests are cleaned up. Time to resume so that disk
+> > +	 * deletion can be smooth. Start the HW queues so that when queue is
+> > +	 * unquiesced requests can again enter the driver.
+> > +	 */
+> > +	blk_mq_start_stopped_hw_queues(q, true);
+> > +
+> > +	/*
+> > +	 * Unquiescing will trigger dispatching any pending requests to the
+> > +	 * driver which has crossed bio_queue_enter() to the driver.
+> > +	 */
+> > +	blk_mq_unquiesce_queue(q);
+> > +
+> > +	/*
+> > +	 * Wait for all pending dispatches to terminate which may have been
+> > +	 * initiated after unquiescing.
+> > +	 */
+> > +	blk_mq_freeze_queue_wait(q);
+> > +
+> > +	/*
+> > +	 * Mark the disk dead so that once we unfreeze the queue, requests
+> > +	 * waiting at the door of bio_queue_enter() can be aborted right away.
+> > +	 */
+> > +	blk_mark_disk_dead(vblk->disk);
+> > +
+> > +	/* Unfreeze the queue so that any waiting requests will be aborted. */
+> > +	blk_mq_unfreeze_queue_nomemrestore(q);
+> > +}
+> > +
+> >  static void virtblk_remove(struct virtio_device *vdev)
+> >  {
+> >  	struct virtio_blk *vblk = vdev->priv;
+> > @@ -1561,6 +1653,9 @@ static void virtblk_remove(struct virtio_device *vdev)
+> >  	/* Make sure no work handler is accessing the device. */
+> >  	flush_work(&vblk->config_work);
+> >  
+> > +	if (virtqueue_is_broken(vblk->vqs[0].vq))
+> > +		virtblk_cleanup_broken_device(vblk);
+> > +
+> >  	del_gendisk(vblk->disk);
+> >  	blk_mq_free_tag_set(&vblk->tag_set);
+> >  
+> > -- 
+> > 2.34.1
+> > 
 
 
---=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
 
