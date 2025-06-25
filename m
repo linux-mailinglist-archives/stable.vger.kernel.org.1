@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-158544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44E7AE8310
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 14:46:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C98AE830F
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 14:46:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 773324A4F22
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 12:46:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3DA37B43B3
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 12:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3EC25D1E0;
-	Wed, 25 Jun 2025 12:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DD12620CF;
+	Wed, 25 Jun 2025 12:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="EkG21x0e"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="gCWKdAFo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00ABB2609C3
-	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 12:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7C62609F6
+	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 12:45:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750855545; cv=none; b=uO7K8TtoIhIXu9s08f/zU2kR3Liv+XC3Nzje4co9bw61hxx4qmdvDw91z17ogVbeBiHGInub2ObYIj3AvwqNXMHYmZBNl+36iXQFTF0d4MwDUM1gQxRFS6pEgserkGsszXnkzsgVu3Q2DrtMtOQISv0DORZTrME+21/CviKkgHY=
+	t=1750855545; cv=none; b=fASJ3QsnesWK87+OnqFSHdpnr1pHMWOo6g4ZcrJUzijf3IzAyhsl1wJOjje8MVQVveD4TkOLJWZn15qgIAxd+aI59mzHYZTp3z/jU838idN6keFfzdzJXF7Op1sfRCLw36KprfbXzxZqgTWZY2/kiWb+ezAYgVMvAHVk/GuV9FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750855545; c=relaxed/simple;
-	bh=rAhctzVIyvsQCL05FVX1YVNWlc5Go4yHnKzvw9H3Ckk=;
+	bh=kEdNhB5G7cclDbu/ywgbfBanNDt5JhShRRvGUHubFGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j1+E75ypEyaIycHhCMXdxcxmu416iLF0m9N1uVdwrQYdidMHClJtlm8GlsYK8vcm3nhC3ka5S0ShVeBB+VB3bnNT5VoXMk6OxFNUcEj7HtrKqQL0QLTL1dUGq7nE475ZBizNQalkzLyVJXw78aIL0ibMFdz0ER2Wd6ZtL8jljmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=EkG21x0e; arc=none smtp.client-ip=209.85.167.45
+	 MIME-Version; b=KuXiQqfcrCHLiwmjLJ/5zKZHJOcPQidM0y3z6s12p0tJCEex/6NDrnp98E6FAmUGU0LC5z7ECPFZ6E2BjR1QBUEmJmAz9gMXOd7gXyUSvEWv7tqO7qobMgzfUTmkq4vkavRNbfHpZlY4zwPKlffAKL/GdTB46GnPr3U8sgNHk4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=gCWKdAFo; arc=none smtp.client-ip=209.85.167.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-55351af2fc6so6701605e87.0
-        for <stable@vger.kernel.org>; Wed, 25 Jun 2025 05:45:42 -0700 (PDT)
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-555024588b1so14537e87.1
+        for <stable@vger.kernel.org>; Wed, 25 Jun 2025 05:45:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google; t=1750855541; x=1751460341; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OGBx5gs9oO8b/yGeNgJaAhyuGeE+GfAbBFnFuBSdJh4=;
-        b=EkG21x0ejnn0ReZR4kbjV5BaNPg0G99gtRT0IpgwyQCwe+016CSomqitCebrQvKsON
-         ZBXw+qucrQSuUL6nyAdiQxqocemSDYtGzit5E2jCsshm0kTBmgJHJNBRQv0XsgElNB0Y
-         IG4Px27W0XgFo9UoVbFG7jHFPdzIUDNLOdzq4=
+        bh=shjoDt1kika5kkcIVuSNterr5Qh4wtDEuuNtbgFkMR4=;
+        b=gCWKdAFoLlxTTeTexDSAwL/+w+2dN+MFi2iv2V6xy+UWhRCr9V2wCmyHJXNelsYc45
+         VwHEly9BEmQT4aiNDNc/jx0QR7bOg6VebKOt3JrpgFFyPXEab/UcXa7BtodB+VqHECRj
+         U5jNMlYf4OdT4EF0qpKZSCizhX+YlXlU91mG4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1750855541; x=1751460341;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OGBx5gs9oO8b/yGeNgJaAhyuGeE+GfAbBFnFuBSdJh4=;
-        b=a8YcLP8xN68BtxOWK8AVf24LoqCth+JH5Q8mojuQmzCUOk1lgb6WZInN0m2of6+Ni1
-         zfrOpiJxYRYlrHu9KGD8dTUUA4mWaOqz37N0uVX7mFeu8jxnAdIOPj/bt849m/YpFG9G
-         94FAK/R6bp/ogwFVT3g4496N/H67WochxnYbs1RPZtWyG1JjjgZMyICgPsWjkLh4taSD
-         pkUI47CxxmnjhD/Ope3kbctZrvKs/zEF+IqZMfU/Oz4sMqUgU8uvaLVbxWNtdStJcTxk
-         vGj9DKCNpX4mvcCBPSCiKkzWhkOjM2lAu3b0H01ZqyfWo3Lr8QW9ZXo+we7ut06tUqlH
-         i5eg==
-X-Gm-Message-State: AOJu0YyfOfJktzeLS8LN6HRIhiHexBIFGbPfYIQV3SOq/OMhDyOutJhj
-	U3M3c2WlXU4uSj6/lL5i4KMpVxUL8x06XrW4Y7moQ0HSVT1b9PhLWR17ZGPV+2joih3P4lNQN/K
-	iLXE=
-X-Gm-Gg: ASbGnct6S6VP3vwYb7m9uZ+TiQnWsI/eKkU3HpWZlGJPzMCGB4ZXPcGgdqNcXhTHk92
-	yfQRovOOOseyJHFKlaWQXnGOTUR2o/Hll38+U9D+FNWxWqQZQGntYDLTOQXwDjGoqhHwgPbrt4u
-	OI0Vs/7CSofN8V/pjdWGLXGN8SVk6TprjqtVoQCvE9figdwhz0DBF2jpxDWtDORBV4/+bOUBckk
-	dbhYxvzYoF49Em6Qt0+dIL1I1gflBuuRC+U9Q0riWLp72LQISZaXgPTt+XnZVYrR1/zgdUgFC/W
-	5WdS7Y9P1pq2K6LW06Wj6Wl4KBdEo58i549YUSlbxJKgvol0M8/m4J240jRqDw7HYoXa6YM7awg
-	1AmvjdNS9Z49QSsfHR3h2AxLc4F0vJIXRCE54nnn4RGBd7xs=
-X-Google-Smtp-Source: AGHT+IHFttFHpUZXjXy2RfdANErr4bS+uAsvdKuf4bx9M/Y71YHt1u/LQd1W3EfRg82uHgSMEbhdFg==
-X-Received: by 2002:a05:6512:acd:b0:553:398f:7730 with SMTP id 2adb3069b0e04-554fdc75976mr982732e87.0.1750855540759;
-        Wed, 25 Jun 2025 05:45:40 -0700 (PDT)
+        bh=shjoDt1kika5kkcIVuSNterr5Qh4wtDEuuNtbgFkMR4=;
+        b=mWHIFRtgewjv6rTsfpWk766xn/wXMC4zktDQYTqlwgFiauMWWH0GLFeiBjeQq/Detv
+         kmWImkoR8cHZT0VEd3Gb9TR0MID5gln2pEsvenJcmh/gSQTl8PFlfR3l7HeiCeIkrFsF
+         wUel+MmOcmoN2OmD613HyzHcUHlgF6R2fo3JCVTS48wd7NIN7qzl2bb7khT3CsoUG7KP
+         8Q4MP0Xi7h2HlqC0ot+oKhJ4LL3vgVDs057szb007VucIsYZqjwJaB2OdM4+mMLybNqs
+         nTuUpWgNXxsGmVPFSI1a/Ufcz90onpPAOF5I/Fv34HbemQqlo4aix2Nugrb727znm7gZ
+         RStQ==
+X-Gm-Message-State: AOJu0Yz/1mAjrRbP74zaZCvg7OcIXySGnZLElbBemIi4Ogio/e2j2HK+
+	HFLKHlRQbg1+HRWpZOPqdJt/BIRrNBwx87a1NqGx1T8MvQWZu/OnHW312F08Je96keCZ0pMqnKk
+	+8fI=
+X-Gm-Gg: ASbGncvFb7jF/hNPMjEKAgRq11/KZ8KipHw0Vo2QlQjiS+OIxOe9TgHCuK4qirQ+4p+
+	6uLaGUCEXZ3/+nlw0hsGMCnfkEevUP/pjKE8eXSnShSGIEHzQ3GDLw9igbyEfzN2LnZ12aYLQ+W
+	xpl7mhlnuZVH6UYg28WItDa1+2PKAKrIhra7nOswcsMhjrTlCVqkYKbYHj37TD9i+ycg1qCLRSq
+	i3MK9ZutECiB9HL5txzz5Up7DC+cRaJpHIrOrM85oBmaE6WGuDnXJGqh+Xp2c5B7I7rGTokQSWC
+	UcCyNyZfrEAhTE+CyHi+zPorc2FL2G7JZzIxwIuAg9ppdsEsFbUkwiWW9rcLNbfCqL35f69VlnX
+	iW2VAKBasReeD+flYueI1Fy9g2r8BoAZSOOu2mNoia3Z5zzE=
+X-Google-Smtp-Source: AGHT+IH5hURfOt09dem+kNXA3ZY62B2s0ji+C80zHl+2iKT1SsyQcOvcua853JRNxaO+/gecrvrlfg==
+X-Received: by 2002:a05:6512:e8c:b0:553:3945:82ac with SMTP id 2adb3069b0e04-554fdd1d71amr947775e87.29.1750855541108;
+        Wed, 25 Jun 2025 05:45:41 -0700 (PDT)
 Received: from ribalda.c.googlers.com.com (166.141.88.34.bc.googleusercontent.com. [34.88.141.166])
         by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-553e41c4448sm2196328e87.187.2025.06.25.05.45.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
@@ -74,15 +74,15 @@ From: Ricardo Ribalda <ribalda@chromium.org>
 To: stable@vger.kernel.org
 Cc: Ricardo Ribalda <ribalda@chromium.org>,
 	stable@kernel.org,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Hans de Goede <hdegoede@redhat.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6.y 1/3] media: uvcvideo: Return the number of processed controls
-Date: Wed, 25 Jun 2025 12:45:33 +0000
-Message-ID: <20250625124535.538621-1-ribalda@chromium.org>
+Subject: [PATCH 6.6.y 2/3] media: uvcvideo: Send control events for partial succeeds
+Date: Wed, 25 Jun 2025 12:45:34 +0000
+Message-ID: <20250625124535.538621-2-ribalda@chromium.org>
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-In-Reply-To: <2025062015-vessel-facility-967c@gregkh>
+In-Reply-To: <20250625124535.538621-1-ribalda@chromium.org>
 References: <2025062015-vessel-facility-967c@gregkh>
+ <20250625124535.538621-1-ribalda@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,70 +91,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If we let know our callers that we have not done anything, they will be
-able to optimize their decisions.
+Today, when we are applying a change to entities A, B. If A succeeds and B
+fails the events for A are not sent.
+
+This change changes the code so the events for A are send right after
+they happen.
 
 Cc: stable@kernel.org
 Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250224-uvc-data-backup-v2-1-de993ed9823b@chromium.org>
+Message-ID: <20250224-uvc-data-backup-v2-2-de993ed9823b@chromium.org>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-(cherry picked from commit ba4fafb02ad6a4eb2e00f861893b5db42ba54369)
+(cherry picked from commit 5c791467aea6277430da5f089b9b6c2a9d8a4af7)
 ---
- drivers/media/usb/uvc/uvc_ctrl.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_ctrl.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index 5926a9dfb0b1..36acc7eeff08 100644
+index 36acc7eeff08..59e21746f550 100644
 --- a/drivers/media/usb/uvc/uvc_ctrl.c
 +++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1783,12 +1783,17 @@ int uvc_ctrl_begin(struct uvc_video_chain *chain)
- 	return mutex_lock_interruptible(&chain->ctrl_mutex) ? -ERESTARTSYS : 0;
+@@ -1642,7 +1642,9 @@ static bool uvc_ctrl_xctrls_has_control(const struct v4l2_ext_control *xctrls,
  }
  
-+/*
-+ * Returns the number of uvc controls that have been correctly set, or a
-+ * negative number if there has been an error.
-+ */
- static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 				  struct uvc_fh *handle,
- 				  struct uvc_entity *entity,
- 				  int rollback,
- 				  struct uvc_control **err_ctrl)
+ static void uvc_ctrl_send_events(struct uvc_fh *handle,
+-	const struct v4l2_ext_control *xctrls, unsigned int xctrls_count)
++				 struct uvc_entity *entity,
++				 const struct v4l2_ext_control *xctrls,
++				 unsigned int xctrls_count)
  {
-+	unsigned int processed_ctrls = 0;
+ 	struct uvc_control_mapping *mapping;
  	struct uvc_control *ctrl;
- 	unsigned int i;
- 	int ret;
-@@ -1823,6 +1828,9 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 		else
- 			ret = 0;
+@@ -1653,6 +1655,9 @@ static void uvc_ctrl_send_events(struct uvc_fh *handle,
+ 		u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
  
-+		if (!ret)
-+			processed_ctrls++;
+ 		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
++		if (ctrl->entity != entity)
++			continue;
 +
- 		if (rollback || ret < 0)
- 			memcpy(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
- 			       uvc_ctrl_data(ctrl, UVC_CTRL_DATA_BACKUP),
-@@ -1841,7 +1849,7 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 			uvc_ctrl_set_handle(handle, ctrl, handle);
+ 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+ 			/* Notification will be sent from an Interrupt event. */
+ 			continue;
+@@ -1891,11 +1896,12 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
+ 					uvc_ctrl_find_ctrl_idx(entity, ctrls,
+ 							       err_ctrl);
+ 			goto done;
++		} else if (ret > 0 && !rollback) {
++			uvc_ctrl_send_events(handle, entity,
++					     ctrls->controls, ctrls->count);
+ 		}
  	}
  
--	return 0;
-+	return processed_ctrls;
- }
- 
- static int uvc_ctrl_find_ctrl_idx(struct uvc_entity *entity,
-@@ -1888,6 +1896,7 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
- 
- 	if (!rollback)
- 		uvc_ctrl_send_events(handle, ctrls->controls, ctrls->count);
-+	ret = 0;
+-	if (!rollback)
+-		uvc_ctrl_send_events(handle, ctrls->controls, ctrls->count);
+ 	ret = 0;
  done:
  	mutex_unlock(&chain->ctrl_mutex);
- 	return ret;
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
