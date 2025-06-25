@@ -1,147 +1,111 @@
-Return-Path: <stable+bounces-158518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7ADAAE7D71
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 11:39:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48483AE7D66
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 11:38:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3148189B209
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 09:37:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AD9D3BFBE9
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 09:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9812BF015;
-	Wed, 25 Jun 2025 09:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F3F28850A;
+	Wed, 25 Jun 2025 09:25:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jzYhxl8d"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDABF29ACF1;
-	Wed, 25 Jun 2025 09:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9E71F9F61
+	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 09:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750843452; cv=none; b=mnknI3Zav/VqWCLPq9G08tkg1mS/9LZW/+OYjaH4alFxA6HFq8iWbHwbxYaSQ+VK2diDQlmVgesvlYPLh7Z+83gdWlEFwmLr0GkycU4fTtX7/aiw4cPB/DAI8cxHSAAf8X+0XHbCC9JBpmJtAqEIuDrIcKQ2uidY2oSN7ay8P5Y=
+	t=1750843528; cv=none; b=avkvym817tHMPCFYdBTLkAf9OS23LHLOcmqHScNfiOu62QFg4Oco45n8AVHrfeM2Xztav4X3pXe6+Q4eEaMOJp9M1hvFsviMORQ8NLcLGM2nyDTUWjjHodLnsfEddaIcC99+BwvtPjF/XDMhz2Oi0CsZVi/3ABLT0uSvwRH9VhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750843452; c=relaxed/simple;
-	bh=GtMpUXf0AldAqwlsG4t8bk9VWwvpumUXn1uff4D2zt8=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Xu+hkVtCAjLF0oKaYXNngYQgV7XXa0RK7FTfZm3WZnCRW0IqB68PIHaYlFABN4IgWa1FiP4DaNYtrdvj4qkb/1qeVOzC2A1U6y0t6uxzmkm60CcJlamDrOpObRpvLXmfqbOtdtVCCoWCZQXSR/3+SS47K39BBs+XJOCRowvUJgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.92.39.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:Yeas3t1750843353t755t02024
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [60.186.80.242])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 8753326016482812335
-To: "'Michal Swiatkowski'" <michal.swiatkowski@linux.intel.com>
-Cc: <netdev@vger.kernel.org>,
-	<andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>,
-	<edumazet@google.com>,
-	<kuba@kernel.org>,
-	<pabeni@redhat.com>,
-	<horms@kernel.org>,
-	<mengyuanlou@net-swift.com>,
-	<duanqiangwen@net-swift.com>,
-	<stable@vger.kernel.org>
-References: <20250624085634.14372-1-jiawenwu@trustnetic.com> <20250624085634.14372-2-jiawenwu@trustnetic.com> <aFu4yUsWek/x9kqd@mev-dev.igk.intel.com>
-In-Reply-To: <aFu4yUsWek/x9kqd@mev-dev.igk.intel.com>
-Subject: RE: [PATCH net v2 1/3] net: txgbe: request MISC IRQ in ndo_open
-Date: Wed, 25 Jun 2025 17:22:27 +0800
-Message-ID: <030d01dbe5b2$ab34df70$019e9e50$@trustnetic.com>
+	s=arc-20240116; t=1750843528; c=relaxed/simple;
+	bh=KUy+S/anecKVDl6akzXnp11UuSHFhzHbMvHULZYFPmk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d5oUmLorIl1hOUVzuA65trsEk7Gs0MHymUr1EYwG4x6AVN8eFs/jw/zW4eHbnlv3G9H8KIwtVVBHXro2uZbD6vPOPgPGWt5Ij13tsFlNaY4gLKT+Hm26maOGQoAWre5ss9IleK5DlJrnZ7EBtozxB5oyCgogqs2m+HARM96jw48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jzYhxl8d; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b26fabda6d9so1199988a12.1
+        for <stable@vger.kernel.org>; Wed, 25 Jun 2025 02:25:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750843527; x=1751448327; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KUy+S/anecKVDl6akzXnp11UuSHFhzHbMvHULZYFPmk=;
+        b=jzYhxl8dS9F4fKNABjzVK8wwXCg3d/Jq+K+OYsfYpIkif3kszFacpFSSDF1nfEDKy9
+         JUW2TDAza6ofpdlu4DHNtAlM2nQyqkUfxtdskwu3TrMRTsIBtIAdd0KVIpDeOCOwCVlv
+         jqV+aLlpC0ttXIOqHv2+edWNRqB0hvT0WtkRqWHEdxn7tuPBbcNXZH244UaXlUSdGCj0
+         egdENywJFOEiVbVC0tI/mnYNR8pLNTQDeu/2FBljT7vq0Aj6cTN8zCOAAepW/8yeHz9a
+         DW34WRtTOXq2q8BEM245WSV1SI6iPyFLfrGrG9YmvZGZzPJdcvcdrR+++6golIKFOXq4
+         G4Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750843527; x=1751448327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KUy+S/anecKVDl6akzXnp11UuSHFhzHbMvHULZYFPmk=;
+        b=e9q5DrwKv9mw2I7NVGD/kQkvv5LSxI8X8l6gvqVuGdS/OHubHAN8XhSLp4QFFbU0iW
+         kfjuvs8D/N3scJvrOI7rbl17O5wiKcuqJ8QdXgw7UdfbPqpuck+SB2Yvqe8BTj2sDspf
+         IyHe8lNMjfWIRGWN3fLw/VLd8eFQl8wAM5W/FOfJNkk5dU8iPnbb8BkF0Y7hujc1BMYH
+         pAVVPNbv3V4OxLH7EHXys+MUi/JRaqAVmCxICJHNsV4EP64OkKfMk++vscjTzS7U1/CQ
+         E8PI7Fj6tzaAIFXVQLh/+2ndYobT11nqWlnAhSH0oD7fwPAPYTThRZDakcF9POO2wBkF
+         GTJg==
+X-Gm-Message-State: AOJu0YyEL23YY/JYcNhG03s/QuAMD25O5yRHew8A9VZtlLhLVWqFUuIU
+	39kk/SXLiOzlOZs/jiWAiNLtE1NuW1x46VNY9GkiLwCiXSamfcNTDelSBqYUo/+1TLvVaj2dh8D
+	QNpOya7y8CU3yJ9Y9PMXWgAT/VP7uux4=
+X-Gm-Gg: ASbGncuYACFnab9Ks9ZMBglDs/viFe/nhany0JvWd798RkoE136FSzlMuc6vblnxG1k
+	h2suFPv62P/0OtjQX2ZIROVVAoch6rNBc6ZvtQLjQ17UYAuJ2xUXzishFlBKQvMqUqUF/9BXo3a
+	PrwTucsPmImkSV2jWIv55HJu/Zln7xkaIsiVzhCf4aFas=
+X-Google-Smtp-Source: AGHT+IEo0CwBuaz8DIwVd84OoyEnlb/3IbZ1/7JBRSH/amnf4+fj/whyTG5W64dbXQ9RpCYVknp+cDnZjhSPsYtE+fk=
+X-Received: by 2002:a17:90b:51c6:b0:30a:80bc:ad4 with SMTP id
+ 98e67ed59e1d1-315f25545b6mr1346699a91.0.1750843526665; Wed, 25 Jun 2025
+ 02:25:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQG8FB25wsfEchebLehyFWt5Oiz5UQF8meEIAbHDH+a0OceckA==
-X-QQ-SENDSIZE: 520
-Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MdzdX6p4PZzkstnd+MI+6iK2WIaBPpUZFtVUh2Y7AVwo+LdIRhetfZM1
-	/XdQWu2ZThmfXaA0k78T+Jqk25Whsa9Nmq1kZp7k0/W7QO4rT+RupcbjNWM2QNS2p1NC18W
-	/jeJhkSWx/HuH15Enmsr4CdogPxB5FbKfonLJVX5ojwKZEJRaTen3xMK/Q06vqGSH2RgRzV
-	L7OdW6xCeWCOYlZjn3Zio44YM9/Q4Q6Z67GsQ/m9d/qwna8nt5CZBrAqAH5Iq7UweoqYqJq
-	L8DfW3w/e7aYuWux8TN9GGmfeTTlqxo/1Zm0BVr/GRhLlcjy23pDFlgApCV647mArAAdyoq
-	4zbwiOdIiYZHQfr4AgaBeZdTTso2RcmHkqv+cZde3iL/wWl0UBk/+9v87xCNLHRtg1OEZtV
-	/zTRkEWdRF1sHDICD5IVKf3MfI1sTh/OvvEx72InYb3X2XtLWC/vYdZVDqbsDQORXkDGOiI
-	G6w1cUnv6DKnAClGXlhl+McGGhfzUP6hy6WDA2FIQVgi/93gsYN/HLR2HV79IrDqGC1GUm3
-	XwM0OlWf2PXz+rR8FFBZBmJJMW6ganpu1Df4PXxO8UD8tSkk/4hh8mwTza16sdGnr2RYtF5
-	XEIlaGg3yn1r+VxxjocepjDJFikd9iQI/T3yXMh1xKGpgUH787Qb8JL1DB2j629/ZyQFqaI
-	JAbhi56x4rWpfBDhrrzoCfDSM0eSbc1Ih2iXIZLDxkwSs0aHzvtBXnG8eP3R6g4tBr4XFkI
-	2MBcj0FVARgjf+Y0Dg9lxafabyYqxvysZ1u9MTDMvWHsnIlQgQlSlMD4MBOoZZl2fgOfVQE
-	ek9ygWTKu3XykPDdNIsLBgbL7+IIHtrIOQAT/kzyiTG7ylhxd3Th2NZPjaTfrn6EP/fVvbe
-	V17d2sKJ38bmGffMoc9R3gEGe0D0fUd55JtAH/2YXzWuyIgdk1XdNCT+d/gHil04lMf/ubb
-	6XV1RZ3eAtb6F/lDoz/ynXRx1syr7u7vyx+Z6jBMZf69MCCyC6AGvpNZIzSHI0u7sDCWdxP
-	ECJbH4cf+QjWozfDD+FcjVoaLdEA9AdAjr3JHjnw==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-X-QQ-RECHKSPAM: 0
+References: <20250624170413.9314-1-sergio.collado@gmail.com> <20250624170413.9314-2-sergio.collado@gmail.com>
+In-Reply-To: <20250624170413.9314-2-sergio.collado@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 25 Jun 2025 11:25:14 +0200
+X-Gm-Features: Ac12FXzXblrPRGdVqW0JkY82uNKUPl71Z8Hfd-Wybqq0K3LJLjP16nd8hgx5vos
+Message-ID: <CANiq72nb1BkqNgTY7MQHN=YYq=1E6t9+--sfhmutanNuikEwbA@mail.gmail.com>
+Subject: Re: [PATCH v2 6.6.y 1/2] Kunit to check the longest symbol length
+To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Cc: stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, 
+	Sasha Levin <sashal@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Rae Moar <rmoar@google.com>, David Gow <davidgow@google.com>, Shuah Khan <shuah@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 25, 2025 4:53 PM, Michal Swiatkowski wrote:
-> On Tue, Jun 24, 2025 at 04:56:32PM +0800, Jiawen Wu wrote:
-> > Move the creating of irq_domain for MISC IRQ from .probe to .ndo_open,
-> > and free it in .ndo_stop, to maintain consistency with the queue IRQs.
-> > This it for subsequent adjustments to the IRQ vectors.
-> >
-> > Fixes: aefd013624a1 ("net: txgbe: use irq_domain for interrupt controller")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> > ---
-> >  .../net/ethernet/wangxun/txgbe/txgbe_irq.c    |  2 +-
-> >  .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 22 +++++++++----------
-> >  2 files changed, 11 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-> > index 20b9a28bcb55..dc468053bdf8 100644
-> > --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-> > +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-> > @@ -78,7 +78,6 @@ int txgbe_request_queue_irqs(struct wx *wx)
-> >  		free_irq(wx->msix_q_entries[vector].vector,
-> >  			 wx->q_vector[vector]);
-> >  	}
-> > -	wx_reset_interrupt_capability(wx);
-> >  	return err;
-> >  }
-> >
-> > @@ -211,6 +210,7 @@ void txgbe_free_misc_irq(struct txgbe *txgbe)
-> >  	free_irq(txgbe->link_irq, txgbe);
-> >  	free_irq(txgbe->misc.irq, txgbe);
-> >  	txgbe_del_irq_domain(txgbe);
-> > +	txgbe->wx->misc_irq_domain = false;
-> >  }
-> >
-> >  int txgbe_setup_misc_irq(struct txgbe *txgbe)
-> > diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> > index f3d2778b8e35..a5867f3c93fc 100644
-> > --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> > +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> > @@ -458,10 +458,14 @@ static int txgbe_open(struct net_device *netdev)
-> >
-> >  	wx_configure(wx);
-> >
-> > -	err = txgbe_request_queue_irqs(wx);
-> > +	err = txgbe_setup_misc_irq(wx->priv);
-> 
-> Don't you need misc interrupt before ndo_open is called? I wonder if it
-> won't be simpler to always use last index (8) for misc irq. Is it
-> possible? I mean, use 8 event if the number of queues is lower than 8.
-> If yes you can drop this patch and hardcode misc interrupts on index 8.
-> 
-> [...]
-> 
-> BTW, assuming you can't always use last index, the patch looks fine.
+On Tue, Jun 24, 2025 at 7:04=E2=80=AFPM Sergio Gonz=C3=A1lez Collado
+<sergio.collado@gmail.com> wrote:
+>
+> Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+> Reviewed-by: Rae Moar <rmoar@google.com>
+> Signed-off-by: Sergio Gonz=C3=A1lez Collado <sergio.collado@gmail.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/504
+> Reviewed-by: Rae Moar <rmoar@google.com>
+> Acked-by: David Gow <davidgow@google.com>
+> Signed-off-by: Shuah Khan <shuah@kernel.org>
 
-Cannot always use index (8). Because the max RSS index is 63 for TXGBE,
-but 8 for NGBE. This hardware limitation is only for NGBE. And index (8)
-cannot be used by PF when SRIOV is enabled on NGBE.
+I would have also signed this one again at the bottom, even if it
+originally came from you. But the stable team may be fine with it.
 
-In fact, the misc interrupt is only used when the device is opened.
+(The SoBs are a "list", not a "set", if that makes sense, i.e. it is
+supposed to reflect how the patch was handled.)
 
-
+Cheers,
+Miguel
 
