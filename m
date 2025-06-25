@@ -1,167 +1,142 @@
-Return-Path: <stable+bounces-158472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B61E6AE7489
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 03:55:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5394BAE7491
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 04:01:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C13B37B16AD
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 01:53:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9585417B291
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 02:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15B71991D2;
-	Wed, 25 Jun 2025 01:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC8B19E97A;
+	Wed, 25 Jun 2025 02:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="W9jTFjmz"
+	dkim=pass (2048-bit key) header.d=toshiba.co.jp header.i=nobuhiro1.iwamatsu@toshiba.co.jp header.b="BaioWFcZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mo-csw.securemx.jp (mo-csw1121.securemx.jp [210.130.202.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DFF70813;
-	Wed, 25 Jun 2025 01:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A378222083
+	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 02:01:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.130.202.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750816492; cv=none; b=rGr+R1X1gMEt4IculZ5e8NBgCTj8AGs3QOsm85RH8QKvU13O0uoGvRu8TqGOw6sLSqMsW5w6DNs3lm1qytQIPLC9w239clXqgvmztSg7fjNEBR4+PUZovyoTBoY8Tw2FZFz4FmKtVu5TlpPirZmBWuG3LquIqAQZg61ssA0IddU=
+	t=1750816907; cv=none; b=O27y20zZnCDXW9RTGFc0ARZ+GnTRXibDsDn8R5BMmbJsEoXn/2IayfC57iIfvZyV75M+vp/gc2Xz0QEbzwkA3QzQYOJ+nC+Hf9j4KEL0Ixc3s6exZq7JWIjTy2fmFjeDM2qf4stM3r51ULL+wx/WDNZYMbCEhSMXPdQoLY0Pfp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750816492; c=relaxed/simple;
-	bh=B7I8JEHf3lGoRCj0HUbRwbAqbw30uuDOEl/TpV2GTMA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=uBvLMfyTFgEDg1BLQ2y46XUn0qzGm+8nWawjYTB7QQySMjXmsZKMJNxCsHvirXdTnkD7s6HJ7fduwyUuB8+VMIjl8yEQFL2rIRKj0qwqSStGYfcs6G4GTG/AF8sjtayQZBB1lWFinTKyKbsR8P7zo0NUGNJTB9kWjuQqgUdixY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=W9jTFjmz; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55OFUYXJ014481;
-	Wed, 25 Jun 2025 01:54:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	fMeP4JMT5RRHOVfYF2hWyxK4pUekVhBHFBicBsTy5Cg=; b=W9jTFjmzfljaD9d4
-	dfrPZ7Kbr8Stzy4xrLjEyp/Q54WiWkYSrmBxeUfQSSSGA+/mVEi9rxMAGRjwD4nQ
-	YZhqcp6gpaMYXmi19bhnIdc2uKOULQ/UlDMJQxnHIZy+xgOnrhUifHwWsTP7i7vK
-	PHe3ZZwRVD11OCEgzRVYtgJ6CdfIcKqzBaacT26cQtFZYGi30X+LV888A6IVxyhZ
-	CYBltXK6NHG7eDBGq/ceLTlib1ZgLqdmvuT6Jffa/Kj0PtVYpYsZEkpvL7BjyoNm
-	qin8PZ+OoyGW9BoAZ60YUJqDVbCHg9hs0JWv4Eh/FnJ96OgfTuyuIuJglq9WEU/J
-	Q++DUw==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47evc5q7vr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 01:54:43 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 55P1sgO9010190
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 01:54:42 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 24 Jun
- 2025 18:54:40 -0700
-Message-ID: <2012077d-5da4-4805-a0e1-3c56b40a9b1b@quicinc.com>
-Date: Wed, 25 Jun 2025 09:54:38 +0800
+	s=arc-20240116; t=1750816907; c=relaxed/simple;
+	bh=qKhXi+SVOnEgEp9P7kPbiqpT672ZpGpgS/QYiom4R7E=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=fbBvqNoOg/kAL2/TAo+QZaBeRpFquic4UFzAyspowLr5UsSaa4jdJGlzlJzA3cKCGHfiZCHE4rcSTsZU8gL3oUKj/dXDWgZEu6FTVLRnMO/baG0ZBZJfSipyAGLJZgBdSgSouItkRJEtWbX2Znmg/gID3cZl/4PLykdqAadco9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toshiba.co.jp; spf=pass smtp.mailfrom=toshiba.co.jp; dkim=pass (2048-bit key) header.d=toshiba.co.jp header.i=nobuhiro1.iwamatsu@toshiba.co.jp header.b=BaioWFcZ; arc=none smtp.client-ip=210.130.202.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toshiba.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toshiba.co.jp
+DKIM-Signature: v=1;a=rsa-sha256;c=relaxed/simple;d=toshiba.co.jp;h=From:To:Cc
+	:Subject:Date:Message-Id;i=nobuhiro1.iwamatsu@toshiba.co.jp;s=key1.smx;t=
+	1750816844;x=1752026444;bh=qKhXi+SVOnEgEp9P7kPbiqpT672ZpGpgS/QYiom4R7E=;b=Bai
+	oWFcZSLKB27D76l/KFLkQ2kyFoMl8bnxeVGmxD0xIC9QEpN1Dcrw9Nd+UMPjuOwLZCgFIN4L3zloY
+	8ORXd1wdh91eaKC2C0gAOsHdNONXnm5OkvA64aO1dTK1Bp+NSR132fCClmrORa0dB3Oq3xppS6neu
+	y8ScV2tdoMBmxYkuOERrI8X91C9HwnlO7d29y0fsHtytaf2Ct4ByxFG0fGfuHllMPNbFwYHFdRXcW
+	hPn4C43ROE7+eNlkgXOMRBflPPLIe+orLaZLyBHkZOsOz4VbSFyteGHJTrnK8wtzBC4pQoKHiMWcO
+	xn9+jPzl0mO5i9LfIw54YhEbWBmY2lg==;
+Received: by mo-csw.securemx.jp (mx-mo-csw1121) id 55P20i2Q3340290; Wed, 25 Jun 2025 11:00:44 +0900
+X-Iguazu-Qid: 2rWhyCKR8R2QT014Gx
+X-Iguazu-QSIG: v=2; s=0; t=1750816843; q=2rWhyCKR8R2QT014Gx; m=IkIEtXpU8JkOvTK9wIKnQteAHLCEJBNkJwQq7IxZBvw=
+Received: from imx12-a.toshiba.co.jp ([38.106.60.135])
+	by relay.securemx.jp (mx-mr1122) id 55P20eKm3781710
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 25 Jun 2025 11:00:40 +0900
+From: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
+To: cip-dev@lists.cip-project.org, Ulrich Hecht <uli@fpond.eu>,
+        Pavel Machek <pavel@denx.de>
+Cc: Bart Van Assche <bvanassche@acm.org>,
+        Alan Stern <stern@rowland.harvard.edu>, Yi Zhang <yi.zhang@redhat.com>,
+        stable@vger.kernel.org,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
+Subject: [PATCH for 4.4] scsi: core: Remove the /proc/scsi/${proc_name} directory earlier
+Date: Wed, 25 Jun 2025 11:00:26 +0900
+X-TSB-HOP2: ON
+Message-Id: <1750816826-2341-1-git-send-email-nobuhiro1.iwamatsu@toshiba.co.jp>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] wifi: ath12k: fix dest ring-buffer corruption when
- ring is full
-To: Johan Hovold <johan+linaro@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-CC: Miaoqing Pan <quic_miaoqing@quicinc.com>,
-        Remi Pommarel
-	<repk@triplefau.lt>, <linux-wireless@vger.kernel.org>,
-        <ath12k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250617084402.14475-1-johan+linaro@kernel.org>
- <20250617084402.14475-5-johan+linaro@kernel.org>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <20250617084402.14475-5-johan+linaro@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: BdPMhkEJTPpPpwbGmhdR4FQBFfn_PBf2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI1MDAxMyBTYWx0ZWRfX1XQplLuMN2yH
- /vw3oHTiT85PjC00l0TDL2tohadAG1Gc6CZzS4rS+Qpz3uvBM8e07SJ2FE3pFVnq4MdKdMgsR2w
- OIppEyAb/ugFnGdbCr6Kt9PdRD/GX+aDozkGqPrlkFuFy/CmGgAsIISXUJYDE9QnJQdlnxfgYt9
- BYOF7PLnwLZvxTUqyMV8hahzfjL6CX6w1oB3Bssr9WugJUkYX2MZVj/JYLcCeyjpUgSUkSRJRSa
- BTpIS2YujVWDRvr6I6S9ebbBIvGTr9eFhLJzgU1pHNiIRm2uFg7iAmNled9erUacsXGjuaSISdT
- ZTJSfDymtDayluTYnhRq/K04Wmmz2p4BT7l+dc6eNm+Y7MC0mHkPHW+YO6NT7+MXhj5emODhk5P
- OxI2fbLkatKhgfz1+r9HWgQx3arxJ2s+rhcbL8pi5sJFTeGrML5ZEkv26GuUaeSrHGE8H7Xd
-X-Authority-Analysis: v=2.4 cv=caHSrmDM c=1 sm=1 tr=0 ts=685b56e3 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8
- a=COk6AnOGAAAA:8 a=3Go43yyQdFlCKqBfqAEA:9 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: BdPMhkEJTPpPpwbGmhdR4FQBFfn_PBf2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-24_06,2025-06-23_07,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxlogscore=702 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 adultscore=0 mlxscore=0 spamscore=0
- malwarescore=0 phishscore=0 clxscore=1015 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506250013
 
+From: Bart Van Assche <bvanassche@acm.org>
 
+commit fc663711b94468f4e1427ebe289c9f05669699c9 upstream.
 
-On 6/17/2025 4:44 PM, Johan Hovold wrote:
-> Add the missing memory barriers to make sure that destination ring
-> descriptors are read before updating the tail pointer (and passing
-> ownership to the device) to avoid memory corruption on weakly ordered
-> architectures like aarch64 when the ring is full.
-> 
-> Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-> Cc: stable@vger.kernel.org      # 6.3
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
->  drivers/net/wireless/ath/ath12k/hal.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
-> index d8193d9577bb..6406fcf5d69f 100644
-> --- a/drivers/net/wireless/ath/ath12k/hal.c
-> +++ b/drivers/net/wireless/ath/ath12k/hal.c
-> @@ -2170,7 +2170,6 @@ void ath12k_hal_srng_access_end(struct ath12k_base *ab, struct hal_srng *srng)
->  {
->  	lockdep_assert_held(&srng->lock);
->  
-> -	/* TODO: See if we need a write memory barrier here */
->  	if (srng->flags & HAL_SRNG_FLAGS_LMAC_RING) {
->  		/* For LMAC rings, ring pointer updates are done through FW and
->  		 * hence written to a shared memory location that is read by FW
-> @@ -2185,7 +2184,11 @@ void ath12k_hal_srng_access_end(struct ath12k_base *ab, struct hal_srng *srng)
->  			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
->  		} else {
->  			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
-> -			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
-> +			/* Make sure descriptor is read before updating the
-> +			 * tail pointer.
-> +			 */
-> +			dma_mb();
-> +			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
->  		}
->  	} else {
->  		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
-> @@ -2201,6 +2204,10 @@ void ath12k_hal_srng_access_end(struct ath12k_base *ab, struct hal_srng *srng)
->  					   srng->u.src_ring.hp);
->  		} else {
->  			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
-> +			/* Make sure descriptor is read before updating the
-> +			 * tail pointer.
-> +			 */
-> +			mb();
->  			ath12k_hif_write32(ab,
->  					   (unsigned long)srng->u.dst_ring.tp_addr -
->  					   (unsigned long)ab->mem,
+Remove the /proc/scsi/${proc_name} directory earlier to fix a race
+condition between unloading and reloading kernel modules. This fixes a bug
+introduced in 2009 by commit 77c019768f06 ("[SCSI] fix /proc memory leak in
+the SCSI core").
 
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Fix the following kernel warning:
+
+proc_dir_entry 'scsi/scsi_debug' already registered
+WARNING: CPU: 19 PID: 27986 at fs/proc/generic.c:376 proc_register+0x27d/0x2e0
+Call Trace:
+ proc_mkdir+0xb5/0xe0
+ scsi_proc_hostdir_add+0xb5/0x170
+ scsi_host_alloc+0x683/0x6c0
+ sdebug_driver_probe+0x6b/0x2d0 [scsi_debug]
+ really_probe+0x159/0x540
+ __driver_probe_device+0xdc/0x230
+ driver_probe_device+0x4f/0x120
+ __device_attach_driver+0xef/0x180
+ bus_for_each_drv+0xe5/0x130
+ __device_attach+0x127/0x290
+ device_initial_probe+0x17/0x20
+ bus_probe_device+0x110/0x130
+ device_add+0x673/0xc80
+ device_register+0x1e/0x30
+ sdebug_add_host_helper+0x1a7/0x3b0 [scsi_debug]
+ scsi_debug_init+0x64f/0x1000 [scsi_debug]
+ do_one_initcall+0xd7/0x470
+ do_init_module+0xe7/0x330
+ load_module+0x122a/0x12c0
+ __do_sys_finit_module+0x124/0x1a0
+ __x64_sys_finit_module+0x46/0x50
+ do_syscall_64+0x38/0x80
+ entry_SYSCALL_64_after_hwframe+0x46/0xb0
+
+Link: https://lore.kernel.org/r/20230210205200.36973-3-bvanassche@acm.org
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Yi Zhang <yi.zhang@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 77c019768f06 ("[SCSI] fix /proc memory leak in the SCSI core")
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
+---
+ drivers/scsi/hosts.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+index c59b3fd6b361..7ffdebdd9c54 100644
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -173,6 +173,7 @@ void scsi_remove_host(struct Scsi_Host *shost)
+ 	scsi_forget_host(shost);
+ 	mutex_unlock(&shost->scan_mutex);
+ 	scsi_proc_host_rm(shost);
++	scsi_proc_hostdir_rm(shost->hostt);
+ 
+ 	spin_lock_irqsave(shost->host_lock, flags);
+ 	if (scsi_host_set_state(shost, SHOST_DEL))
+@@ -322,6 +323,7 @@ static void scsi_host_dev_release(struct device *dev)
+ 	struct request_queue *q;
+ 	void *queuedata;
+ 
++	/* In case scsi_remove_host() has not been called. */
+ 	scsi_proc_hostdir_rm(shost->hostt);
+ 
+ 	if (shost->tmf_work_q)
+-- 
+2.25.1
+
 
 
