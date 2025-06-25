@@ -1,249 +1,130 @@
-Return-Path: <stable+bounces-158628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3828AE8F14
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 22:02:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6959EAE8F59
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 22:20:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C85CF172751
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 20:02:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1ADDE7B37F9
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 20:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953572D5415;
-	Wed, 25 Jun 2025 20:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D121926159D;
+	Wed, 25 Jun 2025 20:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xXQOfujg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAJzgcGE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD4828F4
-	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 20:02:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F85F2DA759;
+	Wed, 25 Jun 2025 20:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750881762; cv=none; b=EVRN7uA7nQKbU1j3EQgrniq9VuiuyBBwGjsypYmwiMGZ5qWDK9+x1tE3f7wwVeWgxA7ZHDA/5J3f/WBov5C3Zn3b4LgoShhI0G+9dd8LXiCqWXTPJKe919g0KHHRlCag6QuBtHRw3GtYgeuDj+dOLuUYs7+L1WD2izl3FSdBqdU=
+	t=1750882816; cv=none; b=FqmkoduLmR0qnR2lvzfsnECxJwIogJAViQvwohKu8XA3+AnpJalu0ZqbrSbQmrJW33xo9srcVJ3asJ98CqOiuPHOtXRLBkefMqdMLkA3MtkypyeAnXnSU+V72nYeUUCnf291l1Vg2Ex52Ob+t9/vwvMhNXMswz63ql3uYGtj2l0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750881762; c=relaxed/simple;
-	bh=GWxvHFwPBV5gIX5Qwmy+RsHiRnqW9YVgenIq5FFMcBU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O6eYGtHqAeDDl4cshs+l/7laTGt+hOOKbXQf4mnc5Ls8CeOH6FuJ38hNr0R3smyaN30SxMboAxispQ+/QdXy38vZsIy/Nhcwlzry43+mDDqF2AXPicdB7M5cDbn7JrvrXyuolFwYn24pVauIzUIcaaWacX6A+kyDeJXctsb/4yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xXQOfujg; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-748d982e92cso289245b3a.1
-        for <stable@vger.kernel.org>; Wed, 25 Jun 2025 13:02:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750881759; x=1751486559; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5UB338dJyB9x4dGE/uaHtvPfiiZjGfFWO/fBs+2Cp2E=;
-        b=xXQOfujgGwlFD8JWf/32NnrnQpxrqhWnIPx6A0VzGM+Z5j4mBHBbosPcqCyzKQXVsI
-         /EsKBZDB7/b4U59FfCa7a4hgVeDtJOHX/DEMFZuJ+B09Aazd/LP4dpMd/mNXA2ZOFXss
-         gKOjdQvmtczjFSmekdBdXktfk6jdYhfPXCfjPgOGQ2bnXq4NQll4q/Rebq43zy3TF/5e
-         6F1PWgdtvv0hCLx37h1IDyP3I629TZWuRgysoWYixNVrVgId3NoU2WvGRwAWRw95PO2d
-         J56MlbEKk8vgmlmfAZd4MLe1OK0EMhOwQxISMWTxtKKOh7BJW1p0IMlpYqlOWbM+2dg2
-         +kUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750881759; x=1751486559;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5UB338dJyB9x4dGE/uaHtvPfiiZjGfFWO/fBs+2Cp2E=;
-        b=C/5f6npr/O67w/tUjmYfKGwY5sjmld/NkKNwmS7jysZTYdFIe7pbOgzKAw0epswbd7
-         MYOjeEIl3d78l5xAWEYkTmcMVXmN9cyzFkXPq54iGK6JCRj6mNF1lgrGbUaHTufd+b8L
-         XP0IRSZxydDIyKP55qYWb8MFiMP2Dqx0gOBiAzEjBkTIZuXkiLo735DsxdBjwGWk83zG
-         nEGrC5f87JdqXBGRwB/39sYMRlkcwuI+HP0WwVYe693xCdPt0nCE2sVW0DJQ+Xdbg98k
-         bIHaTmU/slv8GMTCsvj5UUUS0cxK0GrMuwUJnoNz4eajRhuMWPlwxgKb3tBx/Qzjo0hU
-         /8OQ==
-X-Gm-Message-State: AOJu0YzCSEtppZz9TkZM2WvvSEcUe35Lstjcz2tr47aAUAdFzvdKfA6V
-	ipkotCmGxHGKjwzUUysnQZQZ0PZuBeVjegw7MxsMP6uHTcHr0QpnoEStI3tMepvPqegpE1g1sOy
-	nBCaAN8RZ8CjEvgu6dDHjsWt8KvWzhHP80sUXXjCewQ==
-X-Gm-Gg: ASbGnctIP4ERIo83aoFg/eUl+5tBvOp+uv8aHdQXPs+rvIRekNV1tLI4/S0mPuydT5e
-	4oJGCT4ZjBej3ulkd+/y2B6pHoNoi/yZKBS3vg89Lu+D7tpwirR5p5gMqRyuZB3ONVtzVfXKQCX
-	bIRczLhUc8cpccUCgaS1BpdMxczT0RwTRtQSoq+i4ria98GoYIIKAaxiU+VAoJ4iXl++mwWLNZ8
-	iXaQEC6PfOELbA=
-X-Google-Smtp-Source: AGHT+IGp24/z92mP7JfdtfQI7sA5sbT6HecvDxjyl6G3uib8/3VToor/29Vj/jdDEhMiO8w/jgWZY09yEuJRJcmOpZk=
-X-Received: by 2002:a17:90b:2b4b:b0:311:ffe8:20ee with SMTP id
- 98e67ed59e1d1-315f25e9832mr6879387a91.11.1750881758779; Wed, 25 Jun 2025
- 13:02:38 -0700 (PDT)
+	s=arc-20240116; t=1750882816; c=relaxed/simple;
+	bh=Y5XeuJC6rpa9lv1GCVSFtD2ahPsD5739O5u959VDBjw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=DgRy03dGhCwUIt33X7GMG1kzhR0vBHsoZwetfOKWJ4HSrxGnWdheF4yboVXwAllY8hhhEwlJzIvEpZ1XztNcE2bTJ0/XHL9LEI5REagaTR+YasaQkoUO7PcDfdbMrAhbBXstLHitQ8G1GN6KV9SOsBiL8pb2YmLedTcmaCGS1zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAJzgcGE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C909AC4CEEA;
+	Wed, 25 Jun 2025 20:20:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750882816;
+	bh=Y5XeuJC6rpa9lv1GCVSFtD2ahPsD5739O5u959VDBjw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=hAJzgcGEIqm5RXo2voZazqw/D5dbut5+GT5ItUc6w1ViuU4OhtRtBojPkTa3y5qej
+	 7Bjl2uvopVhLETQbvBqwn1x+ZCyTy4kb307WCDylqAAWDcn/D7bFLqAJzmQUVS+jtk
+	 IjeB2PKSglCumfF6AXnZnBJQI2t13soShhHdOCkm1vBAfBovv1+GywcwOC7soD9XMk
+	 YQ53rOZAZe+SEgdHSNh3lNmwbxB0KjkxDcJQ2/TGzPvJrxlfcIH9IYnX2iqe2uwgiu
+	 jRa2rvzb3I3bNrDH5/pKKt4jI1yBAzQHQ39/4TLfazXkk6pwHboqNaXUOxfOox7RKs
+	 oR26qpugCqkwA==
+Date: Wed, 25 Jun 2025 15:20:14 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>,
+	Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+	ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: Instability in ALL stable and LTS distro kernels (IRQ #16 being
+ disabled, PCIe bus errors, ath10k_pci) in Dell Inspiron 5567
+Message-ID: <20250625202014.GA1585022@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250624121412.352317604@linuxfoundation.org>
-In-Reply-To: <20250624121412.352317604@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 26 Jun 2025 01:32:27 +0530
-X-Gm-Features: Ac12FXzEp4L8RYJhUT_Lg9wiamdSRFMkF8CBHtdeGPvPWKEwJR4j0UjhcHdLfRw
-Message-ID: <CA+G9fYse3W=-C0JbR6fhw=PLPy4aWUFqPwPTD0eK+x0sLidxYw@mail.gmail.com>
-Subject: Re: [PATCH 5.10 000/352] 5.10.239-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAEmM+Qi-Waxk5qcR+nfip-QGXaKk0-Kq7QSq890e9oYOPjW+bA@mail.gmail.com>
 
-On Tue, 24 Jun 2025 at 17:59, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.10.239 release.
-> There are 352 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 26 Jun 2025 12:13:28 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.239-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+[+cc Jeff, ath10k maintainer]
 
-Regressions noticed on arm64 allyesconfig build with gcc-12 on the
-stable-rc 5.10.239-rc2.
-(this allyesconfig build was skipped on rc1 due to other build regressions)
+On Thu, Jun 26, 2025 at 12:47:49AM +0530, Bandhan Pramanik wrote:
+> Hello,
+> 
+> The following is the original thread, where a bug was reported to the
+> linux-wireless and ath10k mailing lists. The specific bug has been
+> detailed clearly here.
+> 
+> https://lore.kernel.org/linux-wireless/690B1DB2-C9DC-4FAD-8063-4CED659B1701@gmail.com/T/#t
+> 
+> There is also a Bugzilla report by me, which was opened later:
+> https://bugzilla.kernel.org/show_bug.cgi?id=220264
+> 
+> As stated, it is highly encouraged to check out all the logs,
+> especially the line of IRQ #16 in /proc/interrupts.
+> 
+> Here is where all the logs are:
+> https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180
+> (these logs are taken from an Arch liveboot)
+> 
+> On my daily driver, I found these on my IRQ #16:
+> 
+>   16:     173210          0          0          0 IR-IO-APIC
+> 16-fasteoi   i2c_designware.0, idma64.0, i801_smbus
+> 
+> The fixes stated on the Reddit post for this Wi-Fi card didn't quite
+> work. (But git-cloning the firmware files did give me some more time
+> to have stable internet)
+> 
+> This time, I had to go for the GRUB kernel parameters.
+> 
+> Right now, I'm using "irqpoll" to curb the errors caused.
+> "intel_iommu=off" did not work, and the Wi-Fi was constantly crashing
+> even then. Did not try out "pci=noaer" this time.
+> 
+> If it's of any concern, there is a very weird error in Chromium-based
+> browsers which has only happened after I started using irqpoll. When I
+> Google something, the background of the individual result boxes shows
+> as pure black, while the surrounding space is the usual
+> greyish-blackish, like we see in Dark Mode. Here is a picture of the
+> exact thing I'm experiencing: https://files.catbox.moe/mjew6g.png
+> 
+> If you notice anything in my logs/bug reports, please let me know.
+> (Because it seems like Wi-Fi errors are just a red herring, there are
+> some ACPI or PCIe-related errors in the computers of this model - just
+> a naive speculation, though.)
 
-This was reported on stable-rc 5.15.186-rc1 with bisection results.
-  randstruct: gcc-plugin: Remove bogus void member
-  [ Upstream commit e136a4062174a9a8d1c1447ca040ea81accfa6a8 ]
+Your dmesg log is incomplete, and we would need to see the entire
+thing.  It should start with something like this:
 
-Test environments:
- - arm64
+  Linux version 6.8.0-60-generic (buildd@lcy02-amd64-054) (x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #63-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 15 19:04:15 UTC 2025 (Ubuntu 6.8.0-60.63-generic 6.8.12)
 
-Regression Analysis:
- - New regression? Yes
- - Reproducibility? Yes
+Your lspci output doesn't include the necessary PCI details; collect
+it with "sudo lspci -vv".
 
-Build regression: stable-rc 5.10.239-rc2 qedf_main.c field name not in
-record or union initializer
+We should pick the most serious problem and focus on that instead of
+trying to solve everything at once.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+It sounds like the ath10k issue might be the biggest problem?  If
+"options ath10k_core skip_otp=y" is a workaround for this problem, it
+looks like some ath10k firmware thing, probably unrelated to the PCI
+core.
 
-## Build log
-drivers/scsi/qedf/qedf_main.c:695:9: note: (near initialization for
-'qedf_cb_ops.get_login_failures')
-drivers/scsi/qedf/qedf_main.c:696:17: error: field name not in record
-or union initializer
-  696 |                 .link_update = qedf_link_update,
-      |                 ^
+Bjorn
 
-## Build log
- * Build logs: https://qa-reports.linaro.org/api/testruns/28858666/log_file/
- * Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2yxHG0IfVj37DNnB0QgFB8uKDn2/
- * Build config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2yxHG0IfVj37DNnB0QgFB8uKDn2/config
- * Build details:
-https://regressions.linaro.org/lkft/linux-stable-rc-linux-5.10.y/v5.10.238-353-g9dc843c66f6f/build/gcc-12-allyesconfig/
-
-## Build
-* kernel: 5.10.239-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-* git commit: 9dc843c66f6f9281a760618b9967c74c86438b6a
-* git describe: v5.10.238-353-g9dc843c66f6f
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10.238-353-g9dc843c66f6f
-
-## Test Regressions (compared to v5.10.237-271-g8bfb88108193)
-* arm64, build
-  - gcc-12-allyesconfig
-
-## Metric Regressions (compared to v5.10.237-271-g8bfb88108193)
-
-## Test Fixes (compared to v5.10.237-271-g8bfb88108193)
-
-## Metric Fixes (compared to v5.10.237-271-g8bfb88108193)
-
-## Test result summary
-total: 37161, pass: 28448, fail: 1823, skip: 6742, xfail: 148
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 100 total, 100 passed, 0 failed
-* arm64: 28 total, 27 passed, 1 failed
-* i386: 20 total, 20 passed, 0 failed
-* mips: 22 total, 22 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 21 total, 21 passed, 0 failed
-* riscv: 9 total, 9 passed, 0 failed
-* s390: 9 total, 9 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 24 total, 24 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-exec
-* kselftest-fpu
-* kselftest-futex
-* kselftest-intel_pstate
-* kselftest-kcmp
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
