@@ -1,209 +1,177 @@
-Return-Path: <stable+bounces-158475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD1AAE74A1
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 04:06:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA706AE74BF
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 04:23:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0F1B3A98CB
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 02:06:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E889819234A9
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 02:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23E719B3EC;
-	Wed, 25 Jun 2025 02:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3EA1A5B8F;
+	Wed, 25 Jun 2025 02:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="EXSQfTDY"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="p1BqywLx"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A173074BD;
-	Wed, 25 Jun 2025 02:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E081A5BAE
+	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 02:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750817194; cv=none; b=t9RIEOY8LLOaXla8yi6qJOdNvowncsdR2bSWt+C/bEsMGbcBt545puc6RdgLNJS8c6wpVtqre+0lu+kP2jBsA9RT2FhX+tv0SwhbXZQBzzM4pk/xu5w+17PIPeWSP18rtqzo1uK+LT+JpFltAjB41V08vWcnMphtYz4dbrvlWwc=
+	t=1750818195; cv=none; b=kMin44eizEO6ZJeTH+QJwTSe0sF4tzVI0++6QpqqZgF9fSYgHPFGaFzcB4d8pIMpx5eNE5Envov0lh0ikDfN89wYgM9bhvQYyQRFVZjbaaSuyrNp4Y0CTE7/DRGqBm8amTG+Zx1sBjVTkh/q7K4LLo42bzfTSMGzeIy7bZtYgzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750817194; c=relaxed/simple;
-	bh=YT+KkhqdiCNkSCu7M3gdcOkidLb2vRWJFnSJ3zsGz1w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=eHi4w+l6COeak/980CK/LTj7tqOBv3YS0dN/LxQHGG6oiKCFI3GN1ai4BiWivSSqksCiBUZEE6TBgL4yf6VSZwo5HAOe3CvgkTZkUA7VBrnZcQJx+VvvIcAL8nEBUHF7lHU3LYELLlWKn+hUBuEZMrcTLo160B3SUjXJwzuWzyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=EXSQfTDY; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55OGnrjD015264;
-	Wed, 25 Jun 2025 02:06:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	r/1N/ZEHKCn7//UMBjQ6dKobWUiWwTZry94pyLxUFIc=; b=EXSQfTDYn62Gc/PU
-	9y4u6ymqb8ow7wg26bnQB4wkVDfbPeKXW1qY2/Sq8saVFPtsVWXlN/DaQo1Kw5k8
-	eMICcUlEUEhZCxQK4BaKB1J7OQryX6NR2PB+rdT7QpjpYbYGN3CbWnv+Ajyu+HLD
-	46659Q14bXYB3A6cugfVNRmOWvOYk03D7/pWxVkhXiUfcKCuGht5/oRKTv9YDoVM
-	NnOkPiG6X+Ai3oAZfC0DeAlC6bMcGgo5TfQxl2Jw7EDqeFQQ4rxxhmjyr0vZsWoe
-	s8rt6mJkeUrIovv+YxmHXxFPLSJeHhLMa7RIg1GVLUfVQzWWIQLTorqFDrvi5Ps8
-	I99Iug==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47fbhqmnmn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 02:06:27 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 55P26QRt020815
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 02:06:26 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 24 Jun
- 2025 19:06:24 -0700
-Message-ID: <70b25ff3-b366-4e2d-a52a-0b2d50ce88c4@quicinc.com>
-Date: Wed, 25 Jun 2025 10:06:21 +0800
+	s=arc-20240116; t=1750818195; c=relaxed/simple;
+	bh=MKAjTRYlVxqAtG1849BRHiqFqIqlivXACuMojh41xy8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ao497sBtmI4ubvq3bqoyTPZ1GoFrK+VQbBCQL2Vycl+ABJTsUTpzzN9K49+6RY8IIuj5cC+UA5MJHWNU0ykiZfOeN8teJHgor64Bw5x309Ebd2CiS+7+DXlyZHSd5pR86uP+KbG1nWdhZ7KkSEeqaiWi+HT0MXNtAO9rO3kA/6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=p1BqywLx; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6facf4d8ea8so9853596d6.0
+        for <stable@vger.kernel.org>; Tue, 24 Jun 2025 19:23:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1750818192; x=1751422992; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MhVPhW6zAvMo92rhc/bflxjgJ9TsGXieNEe3ODAbCaM=;
+        b=p1BqywLxN2fg45QyJpptBzMWlAqDqZoNzaFnQJF93JTxI3CsgIqXYu1WrTscGmL9vK
+         ky1R8b5mLYG9/NzqF5EnnnfvyXGGeCHo06N10RUXOREarpHLzlasFuoXXGFhFo5WQp8+
+         ILYrfRLEsPKkXYkrrLZXuBIrV/69kVn3X0R+0Uu/GbmPBKdIIGNyEL35Bya3X0pDW3F7
+         VcTFqaMC/rCab7R9eyXEz+GQQq2hgGQdbSIQNRV29RcCMTlXTnmzTA9MJRuAQQjm95xq
+         7cuIv8iaSEeDthvkkc5/IrXkcw9RxDqHBTwlI2ywc1rla+0eHddwTvOiS0EGBXFR4w6U
+         Q1hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750818192; x=1751422992;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MhVPhW6zAvMo92rhc/bflxjgJ9TsGXieNEe3ODAbCaM=;
+        b=R8xu9xasWGpHz4NaWsy2jOeYgHTYwkODzpqb4L6E+IqmVyZpf79bnVfvGbrsuhnqgd
+         DmcAqOdiJp/kkJtOAca8vpsgqjSpf9rK6q/U/jZwjHrChqrBiUB7hnEO4Dl5QJ2WWalt
+         FMrc89HAY2XcRPSIl7u5m28BXQXivSZmNXz5tKk/7W/x/YLBCDsoozNyL3wTBIMgyIyC
+         6HWNYevRrIURVIayQIWYtqSSLdpX7ej+ea22WMcrEB9JyB/TdxwgW1uHilZtFReg2w7K
+         25R3DWg0CLpynjHEvhLIkWTFTxmETSG9I0l2Wif4NMWEeIV46Ny63DMq8MxdxROhK5je
+         DufA==
+X-Forwarded-Encrypted: i=1; AJvYcCUNC5BD8w830DKXtAWOW2c6Cz2PELqyriOv8hQeh3B0F0DaAob/PSoQp30UCdO1UhdCI9bKcTY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcBwVc5VdI+fJOnIRskvgIx6GnX62SPt4kRdgBI3N2rle2ENSh
+	iPg26w7xEFJH1feeR0z59XHBJ9/4UJFohpoCMkdNfZc+g0eBZJl+bFr/szA9btHnyw==
+X-Gm-Gg: ASbGnctFimOq4Eo1+4FlOH5yB36QTET0xH6aX4wxS0y4+yGHcr/ckGbzh1gZIJ3dsPm
+	44DSmt+BGbIpPxqGSnEUQ7p3oeI/whvfDH14IXlFm134sGq+Xj9orMU+0QDD44qKhoO+a4x51Bd
+	U4g74P9ntW9A+RKZkFrDp49rDOwH7LlkI3ZOIelWRI7gpC4AHdcqWXZHdldPZ3rcvFM4kI1pQ3U
+	fmep5CEAOAJA0vIKWzCvJPdlGQzTfUOhRRmb0/3LFUX1h8yCtSk1WbWyotpzT4HAqG7mdOJrw6X
+	fq1pyzKrth6kc4oTbQOYrwV/07ChiWbRJeuLWcnfMvTWN6ERCMvxrZtMbfbT5u8=
+X-Google-Smtp-Source: AGHT+IF90HyR81uc5IHzklkKvJbHJLLUAtNNBbUQ9KJUQ3fycjUPEibTbX4sfUwdYIlH5lDfz+oMpA==
+X-Received: by 2002:a05:6214:19c6:b0:6fa:9cdb:31a1 with SMTP id 6a1803df08f44-6fd5ef319d0mr17559236d6.1.1750818192146;
+        Tue, 24 Jun 2025 19:23:12 -0700 (PDT)
+Received: from rowland.harvard.edu ([2601:19b:681:fd10::9ca8])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd09599c95sm63214026d6.106.2025.06.24.19.23.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Jun 2025 19:23:11 -0700 (PDT)
+Date: Tue, 24 Jun 2025 22:23:09 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
+Cc: cip-dev@lists.cip-project.org, Ulrich Hecht <uli@fpond.eu>,
+	Pavel Machek <pavel@denx.de>, Bart Van Assche <bvanassche@acm.org>,
+	Yi Zhang <yi.zhang@redhat.com>, stable@vger.kernel.org,
+	"Martin K . Petersen" <martin.petersen@oracle.com>
+Subject: Re: [PATCH for 4.4] scsi: core: Remove the /proc/scsi/${proc_name}
+ directory earlier
+Message-ID: <8187ad4f-32e5-4768-8286-984c5b31845b@rowland.harvard.edu>
+References: <1750816826-2341-1-git-send-email-nobuhiro1.iwamatsu@toshiba.co.jp>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] wifi: ath11k: fix dest ring-buffer corruption
-To: Johan Hovold <johan+linaro@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-CC: Miaoqing Pan <quic_miaoqing@quicinc.com>, <linux-wireless@vger.kernel.org>,
-        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250526114803.2122-1-johan+linaro@kernel.org>
- <20250526114803.2122-2-johan+linaro@kernel.org>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <20250526114803.2122-2-johan+linaro@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 9wFME6JHaVT7uTiZXT16ajUDsX2b25Hq
-X-Authority-Analysis: v=2.4 cv=Id+HWXqa c=1 sm=1 tr=0 ts=685b59a3 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8
- a=ISufsDh2QXdYQW1nCwMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 9wFME6JHaVT7uTiZXT16ajUDsX2b25Hq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI1MDAxNSBTYWx0ZWRfX3S28tbICocQ9
- VLmPHfXR6UhLNOz5QkCsolXN44KhR3xp8oqIT+J5Ink7DFL4DgZQZ30dkOk2TCUyV8OwnOSJH5e
- 15jT9z8TkTH6sRM7hiZKV+6HZTmodIYfnTa+awBEePGEEKyD5ThEZwO6YijeuybtHeacIbrnvZ8
- khJil14J+l1ae9JQUbv4XrQHYSkmd6B4rZ0uRz1MSEsAwKzOWXvX0FrqcuDDG2oNhZzsxflRRD6
- KqhwsmM0C2xrEm9bHj0+Hbc3QMFrIhBn7ssVzPC+QE37pKng8GT4WK6c/xZ67aJK7OezJGkSq9B
- Eu03g3zZApNCGhXQz4eoGAkSA8CEOHA7SzwnbJLkNTVUrw/cq8jRaO9gD9Od96afgvjj2MhDuNI
- XDowaX4HfJ9T242r/2xe/wGbxMuREVii4QRXn5wLKfAPsVNTGEAqoYFx0qecsh7awd5cfr3/
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-24_06,2025-06-23_07,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 mlxlogscore=634 phishscore=0 bulkscore=0
- clxscore=1015 impostorscore=0 mlxscore=0 lowpriorityscore=0 malwarescore=0
- suspectscore=0 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506250015
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1750816826-2341-1-git-send-email-nobuhiro1.iwamatsu@toshiba.co.jp>
 
-
-
-On 5/26/2025 7:48 PM, Johan Hovold wrote:
-> Add the missing memory barriers to make sure that destination ring
-> descriptors are read after the head pointers to avoid using stale data
-> on weakly ordered architectures like aarch64.
+On Wed, Jun 25, 2025 at 11:00:26AM +0900, Nobuhiro Iwamatsu wrote:
+> From: Bart Van Assche <bvanassche@acm.org>
 > 
-> Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+> commit fc663711b94468f4e1427ebe289c9f05669699c9 upstream.
 > 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Cc: stable@vger.kernel.org	# 5.6
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> Remove the /proc/scsi/${proc_name} directory earlier to fix a race
+> condition between unloading and reloading kernel modules. This fixes a bug
+> introduced in 2009 by commit 77c019768f06 ("[SCSI] fix /proc memory leak in
+> the SCSI core").
+> 
+> Fix the following kernel warning:
+> 
+> proc_dir_entry 'scsi/scsi_debug' already registered
+> WARNING: CPU: 19 PID: 27986 at fs/proc/generic.c:376 proc_register+0x27d/0x2e0
+> Call Trace:
+>  proc_mkdir+0xb5/0xe0
+>  scsi_proc_hostdir_add+0xb5/0x170
+>  scsi_host_alloc+0x683/0x6c0
+>  sdebug_driver_probe+0x6b/0x2d0 [scsi_debug]
+>  really_probe+0x159/0x540
+>  __driver_probe_device+0xdc/0x230
+>  driver_probe_device+0x4f/0x120
+>  __device_attach_driver+0xef/0x180
+>  bus_for_each_drv+0xe5/0x130
+>  __device_attach+0x127/0x290
+>  device_initial_probe+0x17/0x20
+>  bus_probe_device+0x110/0x130
+>  device_add+0x673/0xc80
+>  device_register+0x1e/0x30
+>  sdebug_add_host_helper+0x1a7/0x3b0 [scsi_debug]
+>  scsi_debug_init+0x64f/0x1000 [scsi_debug]
+>  do_one_initcall+0xd7/0x470
+>  do_init_module+0xe7/0x330
+>  load_module+0x122a/0x12c0
+>  __do_sys_finit_module+0x124/0x1a0
+>  __x64_sys_finit_module+0x46/0x50
+>  do_syscall_64+0x38/0x80
+>  entry_SYSCALL_64_after_hwframe+0x46/0xb0
+
+Can you or Bart please explain in more detail the race that causes this 
+problem, and add that description to the changelog?  Also, explain how 
+this patch fixes the race.
+
+Alan Stern
+
+> Link: https://lore.kernel.org/r/20230210205200.36973-3-bvanassche@acm.org
+> Cc: Alan Stern <stern@rowland.harvard.edu>
+> Cc: Yi Zhang <yi.zhang@redhat.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 77c019768f06 ("[SCSI] fix /proc memory leak in the SCSI core")
+> Reported-by: Yi Zhang <yi.zhang@redhat.com>
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+> Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
 > ---
->  drivers/net/wireless/ath/ath11k/dp_rx.c | 19 +++++++++++++++++++
->  drivers/net/wireless/ath/ath11k/dp_tx.c |  3 +++
->  2 files changed, 22 insertions(+)
+>  drivers/scsi/hosts.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-> index ea2959305dec..dfe2d889c20f 100644
-> --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-> +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-> @@ -3851,6 +3851,9 @@ int ath11k_dp_process_rx_err(struct ath11k_base *ab, struct napi_struct *napi,
+> diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+> index c59b3fd6b361..7ffdebdd9c54 100644
+> --- a/drivers/scsi/hosts.c
+> +++ b/drivers/scsi/hosts.c
+> @@ -173,6 +173,7 @@ void scsi_remove_host(struct Scsi_Host *shost)
+>  	scsi_forget_host(shost);
+>  	mutex_unlock(&shost->scan_mutex);
+>  	scsi_proc_host_rm(shost);
+> +	scsi_proc_hostdir_rm(shost->hostt);
 >  
->  	ath11k_hal_srng_access_begin(ab, srng);
+>  	spin_lock_irqsave(shost->host_lock, flags);
+>  	if (scsi_host_set_state(shost, SHOST_DEL))
+> @@ -322,6 +323,7 @@ static void scsi_host_dev_release(struct device *dev)
+>  	struct request_queue *q;
+>  	void *queuedata;
 >  
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->  	while (budget &&
->  	       (desc = ath11k_hal_srng_dst_get_next_entry(ab, srng))) {
->  		struct hal_reo_dest_ring *reo_desc = (struct hal_reo_dest_ring *)desc;
-> @@ -4154,6 +4157,9 @@ int ath11k_dp_rx_process_wbm_err(struct ath11k_base *ab,
+> +	/* In case scsi_remove_host() has not been called. */
+>  	scsi_proc_hostdir_rm(shost->hostt);
 >  
->  	ath11k_hal_srng_access_begin(ab, srng);
->  
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->  	while (budget) {
->  		rx_desc = ath11k_hal_srng_dst_get_next_entry(ab, srng);
->  		if (!rx_desc)
-> @@ -4280,6 +4286,9 @@ int ath11k_dp_process_rxdma_err(struct ath11k_base *ab, int mac_id, int budget)
->  
->  	ath11k_hal_srng_access_begin(ab, srng);
->  
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->  	while (quota-- &&
->  	       (desc = ath11k_hal_srng_dst_get_next_entry(ab, srng))) {
->  		ath11k_hal_rx_reo_ent_paddr_get(ab, desc, &paddr, &desc_bank);
-> @@ -4353,6 +4362,9 @@ void ath11k_dp_process_reo_status(struct ath11k_base *ab)
->  
->  	ath11k_hal_srng_access_begin(ab, srng);
->  
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->  	while ((reo_desc = ath11k_hal_srng_dst_get_next_entry(ab, srng))) {
->  		tag = FIELD_GET(HAL_SRNG_TLV_HDR_TAG, *reo_desc);
->  
-> @@ -5168,6 +5180,9 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
->  	rx_bufs_used = 0;
->  	rx_mon_stats = &pmon->rx_mon_stats;
->  
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->  	while ((ring_entry = ath11k_hal_srng_dst_peek(ar->ab, mon_dst_srng))) {
->  		struct sk_buff *head_msdu, *tail_msdu;
->  
-> @@ -5630,6 +5645,10 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
->  	spin_lock_bh(&mon_dst_srng->lock);
->  
->  	ath11k_hal_srng_access_begin(ar->ab, mon_dst_srng);
-> +
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->  	while ((ring_entry = ath11k_hal_srng_dst_peek(ar->ab, mon_dst_srng))) {
->  		head_msdu = NULL;
->  		tail_msdu = NULL;
-> diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-> index 8522c67baabf..549d17d90503 100644
-> --- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-> +++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-> @@ -700,6 +700,9 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
->  
->  	ath11k_hal_srng_access_begin(ab, status_ring);
->  
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->  	while ((ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_head) !=
->  		tx_ring->tx_status_tail) &&
->  	       (desc = ath11k_hal_srng_dst_get_next_entry(ab, status_ring))) {
-
-Johan, dma_rmb() is put inside _srng_access_begin() for ath12k, but here inside each
-caller. Can we achieve consistency between two drivers?
-
-
-
+>  	if (shost->tmf_work_q)
+> -- 
+> 2.25.1
+> 
+> 
 
