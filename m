@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-158589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321A1AE85C7
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 16:10:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 781DDAE85C6
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 16:10:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 851347B58B9
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 14:07:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96F737B5B5E
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 14:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FDCD264A8E;
-	Wed, 25 Jun 2025 14:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863CD264608;
+	Wed, 25 Jun 2025 14:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W/dWTo5i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XYhIKb0S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C80264A9C
-	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 14:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CB126528D
+	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 14:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750860540; cv=none; b=otTITLC4e0pkm5oda7ylcoupnXOWc27ukc1BtLSM/bPEHNcN6Q8FaM0cfyKldgHmothAfaak1VmT7EXzS9EKzxFyjuAL2dP/UIN0Fozharle51Xd6Iw+QXVSRJYjMUaWKkZidi2npKFt3UPIFc+Pi5R9s/3KIbnwfLDwFX8ZMRs=
+	t=1750860541; cv=none; b=Mjy4kAXNNGxnXzS7fpbdLvm0hxP4LjOfUZfHwKsU/sQAJgpnCNwUbEoRW3A4YoyGivXe5pm6pt+KYPY6xv6afNBREechdYex42ni/Lt8R3OUO5DJNL+m3CBC/DWMgRRP5MpNB78ckZXFTVYSJrbroX0ArUaSq1fO7u6GGs42gxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750860540; c=relaxed/simple;
-	bh=2lctFsxJfrTFkWF0rLQFmh892HnUEuKMlVq7uWBSpo8=;
+	s=arc-20240116; t=1750860541; c=relaxed/simple;
+	bh=96ijwgDVlVySzUjfsKKyiT6Ty0Rx9+8ZCsB6Qk2PYzA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZbiaDSeACmJOPYHE8dRS/ANZ/QIMsPo0IsqaoqSXEAclalrlBR3Tgk3nLuDP/O+s8mrfjS+qn+Ndl1A9abUoMcmbvNxbrPtEgBwwPio6DJJuofDFsbY5l/f+AmgJNUgBB81dolFJaZglkNt/EgrgAQLSy1XgW7c0RPad9BiV86Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W/dWTo5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF847C4CEEA;
-	Wed, 25 Jun 2025 14:08:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mE7CfNMXLjhJKB6OtPC1YCGQnscECsyDZFrJsGdfg0zLdwsX2oilkLLJisxUyhMqlpaAV4B7m3OB5Ufp3Wi8lFUUp0eWKk4dB7aaL09c5SczdvLUtMx1payT43BeXJUCjFTh8AkRJQZuGjUzPLDjQFZOEvsN1UZG0xn9U8xeZMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XYhIKb0S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97DCC4CEEA;
+	Wed, 25 Jun 2025 14:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750860539;
-	bh=2lctFsxJfrTFkWF0rLQFmh892HnUEuKMlVq7uWBSpo8=;
+	s=k20201202; t=1750860540;
+	bh=96ijwgDVlVySzUjfsKKyiT6Ty0Rx9+8ZCsB6Qk2PYzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/dWTo5i2LH5hyTLPbDcqjYJJTTe4C9ZdH6/QXyd7QsLoKCf2EZLsVzmGnVIPlZ1T
-	 KhV1Gql93DET3vqX/Ux/misubG23kRa+8o5dpD6fbA00srKbaYYu7cktgF3IZt9LxA
-	 aZTx7Mm2FryLdBjZN1gmaFoV+iql8zICRdgGMhrDfzGoaK2t7wFUsB0f+Lz6J5pN6v
-	 i3WJ+ZID0mZroCyP3v/fg4iZe9cML/JICPCeLwXvsvKoKWPPMe+VIr+d/DUStDxb+C
-	 7LodUvorYDOheZGhbmwu8j8X7/D9yQqGufOJ34a1j57oolUOV771uOjNqdCieNWx57
-	 IO3QZOO3HMZQg==
+	b=XYhIKb0SeHfb2zUzemV45W3vhx/hU2EovjZ4+a7wMejmWxbyd1xD6Mq1renDx80gd
+	 XS/RxcPKIB0+5mJk69APUdsr/IrdamPQUPgLPV9kiqGzKF+YqTG5DOpx7vSU8/xsw3
+	 9JGR77CbB5+5hAKKZoxboZ9n6N5GlkrFZfViUsmXBGug9his3lpc2s311+50EhMMtO
+	 0A3pJm9z1vRBhoSJlXXhZehGWasu4+XWiT/UMDEQdDq5iGMAU/FhA6Qwl5pZf+e8x4
+	 qrf+zEoODkSRtaAichP+0Vhx1K/mk9/PeCTTRme2QNJD21MMNVBhW/iyKhcJicW+yE
+	 1aoClEcKkmobQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Danilo Krummrich <dakr@kernel.org>,
+Cc: Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 3/4] rust: devres: fix race in Devres::drop()
-Date: Wed, 25 Jun 2025 10:08:59 -0400
-Message-Id: <20250624235523-3665f5d1f21a2362@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y] s390: Add '-std=gnu11' to decompressor and purgatory CFLAGS
+Date: Wed, 25 Jun 2025 10:09:00 -0400
+Message-Id: <20250624195532-505e3fa1210a6d89@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250624135856.60250-4-dakr@kernel.org>
+In-Reply-To:  <20250623134240.1107347-1-hca@linux.ibm.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,34 +67,28 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: f744201c6159fc7323c40936fd079525f7063598
+The upstream commit SHA1 provided is correct: 3b8b80e993766dc96d1a1c01c62f5d15fafc79b9
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Heiko Carstens<hca@linux.ibm.com>
+Commit author: Nathan Chancellor<nathan@kernel.org>
+
+Status in newer kernel trees:
+6.15.y | Present (exact SHA1)
+6.12.y | Present (different SHA1: 593d852f7fe2)
+6.6.y | Present (different SHA1: cefbf9f892ce)
+6.1.y | Present (different SHA1: 62d33b9e68bd)
+5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f744201c6159f ! 1:  971cc4bebeda2 rust: devres: fix race in Devres::drop()
-    @@ Metadata
-      ## Commit message ##
-         rust: devres: fix race in Devres::drop()
-     
-    +    [ Upstream commit f744201c6159fc7323c40936fd079525f7063598 ]
-    +
-         In Devres::drop() we first remove the devres action and then drop the
-         wrapped device resource.
-     
-    @@ rust/kernel/devres.rs: struct DevresInner<T> {
-      ///
-      /// To achieve that [`Devres`] registers a devres callback on creation, which is called once the
-      /// [`Device`] is unbound, revoking access to the encapsulated resource (see also [`Revocable`]).
-    -@@ rust/kernel/devres.rs: fn new(dev: &Device<Bound>, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>
-    +@@ rust/kernel/devres.rs: fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
-                      dev: dev.into(),
-                      callback: Self::devres_callback,
-                      data <- Revocable::new(data),
+1:  3b8b80e993766 < -:  ------------- s390: Add '-std=gnu11' to decompressor and purgatory CFLAGS
+-:  ------------- > 1:  1d0205496d23d s390: Add '-std=gnu11' to decompressor and purgatory CFLAGS
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
