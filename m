@@ -1,159 +1,266 @@
-Return-Path: <stable+bounces-158609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191BAAE89C0
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 18:27:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD43AE8A04
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 18:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A83987AC37E
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 16:26:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C49D64A30F1
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 16:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B9B25BF1F;
-	Wed, 25 Jun 2025 16:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF002D6604;
+	Wed, 25 Jun 2025 16:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h7zcnyKZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gJmOp1Ak"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C3326B95B;
-	Wed, 25 Jun 2025 16:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B6A2D5C81;
+	Wed, 25 Jun 2025 16:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750868852; cv=none; b=GHE2s1cTsQ7tIC660h4EXoh2OmUu0jGvDk7enlc76cUijTJaVprukE2Og1ctk50TBPuB8WMBvzKTqu0ohz9cWzjZWLu5LQzbJcEuApjkOZEXwlvIGB73pFu26uWB8DOnFjSO8rWhTBO5tmAQi6HBPEHMvdxXOFsuS/QigkvzhGw=
+	t=1750869406; cv=none; b=bymdCWTMF+C8z1yHgW23N1cqoSorPJCyudxVjO1mhRpERj2z6cAMKEm11j44yg7t5t/xrsbGSvXa6rLqrYzaD4a/nbjwuXN089BC1DpXvGzSEIYyRPpL1bTr7jagawRBJwa0Ezz73nPM0kBoMNseWZTGMVNQvxSa2/0bf04jniA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750868852; c=relaxed/simple;
-	bh=y6W6zPya3lXDxU4cgKvwEtgWuTXgUzRyViA8Bznnolg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qJORMp50YDjskrnj7mHEihhUmxd+7QYwonUndT5xhjbxqsUfbbspHP0K96eKthpUOdrENr5pX5ZacW8Z284TiqXkRBcMxBEvn019LzIWZ+S4mlMGZUoacaSnBO5uTwb6mi1pM8bkPQijAcZoG9kRqwWIf3tbg5PH5C8GAbDoScY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h7zcnyKZ; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1750869406; c=relaxed/simple;
+	bh=QFsZkGHsds4aKU3W+HBMep6Wa8OA2D4Tk7bnZGd2jWU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XGyB/MhH8oGLvofzbLawAhGmJ5DgzoYxqO41c96M/U4ODIleGHSlMyyewjXBbQmpM5W5vsMcuNENl5qP5YGZiuwGwQmdiYSsVScy+csNAOezHAl6zgXVSzyekf2Rk0rR+hhUSRsVDz1IBaHs5iO13NDZAd17G9tZlkN5ZJ1qJPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gJmOp1Ak; arc=none smtp.client-ip=209.85.219.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-234bfe37cccso1500465ad.0;
-        Wed, 25 Jun 2025 09:27:31 -0700 (PDT)
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6faf66905baso1914926d6.2;
+        Wed, 25 Jun 2025 09:36:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750868851; x=1751473651; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=IsFr+1V5iYRWJ75npgS4t1Tq2cZT+LO/CQv+S0XFap8=;
-        b=h7zcnyKZb+wFvAM99W42jT8d2hr2RX1bsUjLgWVWdS5l79f133ZYKKxBJ6bEqgLLe4
-         yske9mbmHqsPOICRplniqVi9D/WEQ9auil8h1xSeGSiXHFtIqNORLzK4Ln6VBMqn0QBO
-         +isKl9/dy/1tnHDwU6H+igEMPNe5qiKko1H0UWlr33UpzO6kleYcniexHP86jPTwlFuh
-         HPjvk9he1AHx8GF5Lf77C7xfiThrl4QCBmy4CMxAmx5c2hknB+YRlfHLX16P7y0z815I
-         tNPUkSUs9chJ46ZZ+IYEATInAXystgfhYlV65Mn0/Z3Eya6p4Ule0OeKivF2vNuskoae
-         QYOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750868851; x=1751473651;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1750869404; x=1751474204; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IsFr+1V5iYRWJ75npgS4t1Tq2cZT+LO/CQv+S0XFap8=;
-        b=jtv7kU1JTKc66ObNINlqbOKimtqyaGgN021mc6PO8l4Z5JOMBd9slktGrENAlfJbk0
-         4Y/2x45Vqv2DvXgb2xsYebJILEORbSqfe+fbWAFtJE6uKeYGXhnmd/SsWlONOvKjGOoM
-         WMgzE88j7qt6QNrglEYBfKo5/yPGDxLrO9IA0+sUqcRxI2aYdZWIgdvNJewmZy7o4vEj
-         OadeTvjhWMnH//b7LbljW7sHxTTZiTf9j2RsKeiBvdGACOEm56ioUUUwZW7s9n4y5yRR
-         D9VrhFaLQoMK9HtfPdxj2df4lvb9Xn1afc0Vgl1/fK2xFyLBCWM+uuBB1LukFqQ+Cz90
-         w30Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVdOtVmKnZWgzNw0D42jpu8HQClh1RhzdrEwgB2oOrXX+hvdXrqZU80wNjVcAsjtskPrrRs+eAP@vger.kernel.org, AJvYcCWKgoA48HQMuqAn1ovgSo7jKkxft3XOOblKQFmHMBHmMAcvQISLyE5IkWnNtunYDKjD6uNLeFZSxl6nrC8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzsnj60Q8L2omnS6wla+6m9A4PfzUg+wKknGKuKqel0ACISbMqY
-	bQOWKUnhSVantviKYXiOHW98bhx+o2UU9UXXUOwbkdZ2Vi4jTmtDPrht
-X-Gm-Gg: ASbGncsK/8zAc1sko+pur0ozvwV+I/yH84AFPMG93u+vtzFHqhmg15QWqC+kksvFqJV
-	JOdAzVWzqjT7O0WJwx6trQ5G30uobBoIhbIJnRvTJGkEwuSEzAXVdgNDmvAIyfCXJINqJe6qsTR
-	VPHlN2pfM1cP5mAFos0pVefjdu+jHFZSN4ngtpfmfrzulOf/+d0AnG/RbjyTuY59MbfjiMKdxXj
-	5fwZanWVWg0p0lA06xbVIz/aI/j2jlBKEvoHOXuv8DU8PzpBvxplkfrkmOnIkHxjqd++a1Twi85
-	wLbNTyUQ9UhEzAv1JSy/qD+wshuAIwwM0030Vncg6h/n/G7t0PmRG24UN8Km3FkwYnwlIjQ9j8x
-	QsEHz3pDC4wyRxw==
-X-Google-Smtp-Source: AGHT+IE86AQsJvE2y+yh5Jnj3E/rQyqP2WOrtHepcYix36Uok6UizH6CyqqmYlJFBCNYqI5ia+iXCQ==
-X-Received: by 2002:a17:903:32c7:b0:234:bfcb:5c21 with SMTP id d9443c01a7336-238240f42bbmr65309555ad.19.1750868850559;
-        Wed, 25 Jun 2025 09:27:30 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d8393275sm141959865ad.39.2025.06.25.09.27.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Jun 2025 09:27:28 -0700 (PDT)
-Message-ID: <f57166da-5d59-4398-b011-7166275dda8e@gmail.com>
-Date: Wed, 25 Jun 2025 09:27:26 -0700
+        bh=4d9eApCSSyTMpsriaBERHWJd5ehcOhQ7ctWFZ18Hr7E=;
+        b=gJmOp1AkqDJhQQ2KrS6+B46wcnFnmxzfE4aEI4uCtM65vwuP7B7QV4yopKbt738l8H
+         oX4G1CPi6tv9zIhXxC7zd15CWeO9C3BAJub3CZJEuIDRJLLL93dt30+u/u0in3LsgwcA
+         A2LTaiUyY4M8YLbTBMSmVkW6L3FTGbHrQnK3BWmF+2FVLShe5bSQWTKjDl0sk/6K0Wfa
+         SNsytCnOms3zvhl3df/ADrI+y2vOsx1FZYVeSe0ufkfugmFKFIvM0simKpj8zAsRk9xM
+         hyXmOrXTk9LDCZU3Alp6QcB8j7DLP9mwvsZ2KFCi/LboS6SCgX6OPqpYmHvAkJdUNIo2
+         jJBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750869404; x=1751474204;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4d9eApCSSyTMpsriaBERHWJd5ehcOhQ7ctWFZ18Hr7E=;
+        b=DZab4fBNiQrezajEmRbmtKbjjJrQi7LsE/bPzrTElkBZaUcvldPmoucZxSbiZhRr4O
+         b7sB4km1GJfsxNRb6yFowJ27Xo1N2W4vLqRZIXdFXIP3/51PMl25EK5QeJ6rCMNgbfHA
+         sL/GAC17XWwkln9mHqSKfCtZjGC5LcK8gSKlZQvGxRdG7CJRuj/IwxEGZcZAYveikca6
+         gzrhzIswhW4WWY2HDZkWZpRllfulhiDQlE5CkgVasFxajLt0cRyKmc4X4X7PMtJ9JMdU
+         0FedrLhvvGko00v3j/9rnzF07ZDpSTR1/5KKNO8nohWpVxothMigP62a3pNJCde7YI/J
+         HZ9w==
+X-Forwarded-Encrypted: i=1; AJvYcCWkDY6SEbZqZV364DcDANDdniw+Ap34bRlIPru91bxYTRZg3eBE8N93JBPCl8m5R++Lk/CbM78=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRq7pznkKK5b6hA+5d1wtbzonZ73HSgwC23gqdcYjA/gBTP4Z0
+	KVWIraekYL12AIMhcU4HnQCxK+GGvLaNhf+44ETCzNrusPr3e2F2BE+j/+fJHzSElTsdYxBqsQb
+	tb1gjmhAhzdQ8L5uqp1eeAApjrFDL8U05FA==
+X-Gm-Gg: ASbGnctZ3w1YCvo7kRsyJCqDJpn4syvX2jLlUjwG8jS+buygu/wsTpuGb9LEZvnjF0v
+	wGWPe3moY+Ul/Qoh1j/VNFwCQt1VLkiuFBmbDABNR4822E1GS02OgT0kyBZ8v78aQszhkRSTz7j
+	9Cv+025g44d1axIQ9ZMXNt6rC4USU5nwOSx+YP5cvY0AnTnn3jgTcYAtJg5vZMUsIkUvycPoSI2
+	jGH
+X-Google-Smtp-Source: AGHT+IEk46fsNFposX423Xj2Z+1uZPrg6VxLruQLBSrEiFJLXmPSmYqDqtmOXEgpHTb3w5yESy0n+EU6eN/yGGGIa18=
+X-Received: by 2002:a05:6214:21ef:b0:6fa:c6e6:11f9 with SMTP id
+ 6a1803df08f44-6fd5ef63fc4mr50324086d6.11.1750869403480; Wed, 25 Jun 2025
+ 09:36:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 000/215] 5.4.295-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250625085227.279764371@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <20250625085227.279764371@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250625081304.943870-1-metze@samba.org>
+In-Reply-To: <20250625081304.943870-1-metze@samba.org>
+From: Steve French <smfrench@gmail.com>
+Date: Wed, 25 Jun 2025 11:36:32 -0500
+X-Gm-Features: Ac12FXxJPsW3fhoWlvY2DNNrJGlkQXu3lWP0Kd-NJ0k1OK9ZSs6jde4_rsqeWg8
+Message-ID: <CAH2r5mvewQhsrpVaj=2oyTjNT1WWTGr0FoN6PikKOqUqi5MCHw@mail.gmail.com>
+Subject: Re: [PATCH] smb: client: remove \t from TP_printk statements
+To: Stefan Metzmacher <metze@samba.org>
+Cc: linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/25/25 01:53, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.295 release.
-> There are 215 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 27 Jun 2025 08:52:04 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.295-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+merged into cifs-2.6.git for-next
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+On Wed, Jun 25, 2025 at 3:13=E2=80=AFAM Stefan Metzmacher <metze@samba.org>=
+ wrote:
+>
+> The generate '[FAILED TO PARSE]' strings in trace-cmd report output like =
+this:
+>
+>   rm-5298  [001]  6084.533748493: smb3_exit_err:        [FAILED TO PARSE]=
+ xid=3D972 func_name=3Dcifs_rmdir rc=3D-39
+>   rm-5298  [001]  6084.533959234: smb3_enter:           [FAILED TO PARSE]=
+ xid=3D973 func_name=3Dcifs_closedir
+>   rm-5298  [001]  6084.533967630: smb3_close_enter:     [FAILED TO PARSE]=
+ xid=3D973 fid=3D94489281833 tid=3D1 sesid=3D96758029877361
+>   rm-5298  [001]  6084.534004008: smb3_cmd_enter:       [FAILED TO PARSE]=
+ tid=3D1 sesid=3D96758029877361 cmd=3D6 mid=3D566
+>   rm-5298  [001]  6084.552248232: smb3_cmd_done:        [FAILED TO PARSE]=
+ tid=3D1 sesid=3D96758029877361 cmd=3D6 mid=3D566
+>   rm-5298  [001]  6084.552280542: smb3_close_done:      [FAILED TO PARSE]=
+ xid=3D973 fid=3D94489281833 tid=3D1 sesid=3D96758029877361
+>   rm-5298  [001]  6084.552316034: smb3_exit_done:       [FAILED TO PARSE]=
+ xid=3D973 func_name=3Dcifs_closedir
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Stefan Metzmacher <metze@samba.org>
+> ---
+>  fs/smb/client/trace.h | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
+>
+> diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
+> index 52bcb55d9952..93e5b2bb9f28 100644
+> --- a/fs/smb/client/trace.h
+> +++ b/fs/smb/client/trace.h
+> @@ -140,7 +140,7 @@ DECLARE_EVENT_CLASS(smb3_rw_err_class,
+>                 __entry->len =3D len;
+>                 __entry->rc =3D rc;
+>         ),
+> -       TP_printk("\tR=3D%08x[%x] xid=3D%u sid=3D0x%llx tid=3D0x%x fid=3D=
+0x%llx offset=3D0x%llx len=3D0x%x rc=3D%d",
+> +       TP_printk("R=3D%08x[%x] xid=3D%u sid=3D0x%llx tid=3D0x%x fid=3D0x=
+%llx offset=3D0x%llx len=3D0x%x rc=3D%d",
+>                   __entry->rreq_debug_id, __entry->rreq_debug_index,
+>                   __entry->xid, __entry->sesid, __entry->tid, __entry->fi=
+d,
+>                   __entry->offset, __entry->len, __entry->rc)
+> @@ -190,7 +190,7 @@ DECLARE_EVENT_CLASS(smb3_other_err_class,
+>                 __entry->len =3D len;
+>                 __entry->rc =3D rc;
+>         ),
+> -       TP_printk("\txid=3D%u sid=3D0x%llx tid=3D0x%x fid=3D0x%llx offset=
+=3D0x%llx len=3D0x%x rc=3D%d",
+> +       TP_printk("xid=3D%u sid=3D0x%llx tid=3D0x%x fid=3D0x%llx offset=
+=3D0x%llx len=3D0x%x rc=3D%d",
+>                 __entry->xid, __entry->sesid, __entry->tid, __entry->fid,
+>                 __entry->offset, __entry->len, __entry->rc)
+>  )
+> @@ -247,7 +247,7 @@ DECLARE_EVENT_CLASS(smb3_copy_range_err_class,
+>                 __entry->len =3D len;
+>                 __entry->rc =3D rc;
+>         ),
+> -       TP_printk("\txid=3D%u sid=3D0x%llx tid=3D0x%x source fid=3D0x%llx=
+ source offset=3D0x%llx target fid=3D0x%llx target offset=3D0x%llx len=3D0x=
+%x rc=3D%d",
+> +       TP_printk("xid=3D%u sid=3D0x%llx tid=3D0x%x source fid=3D0x%llx s=
+ource offset=3D0x%llx target fid=3D0x%llx target offset=3D0x%llx len=3D0x%x=
+ rc=3D%d",
+>                 __entry->xid, __entry->sesid, __entry->tid, __entry->targ=
+et_fid,
+>                 __entry->src_offset, __entry->target_fid, __entry->target=
+_offset, __entry->len, __entry->rc)
+>  )
+> @@ -298,7 +298,7 @@ DECLARE_EVENT_CLASS(smb3_copy_range_done_class,
+>                 __entry->target_offset =3D target_offset;
+>                 __entry->len =3D len;
+>         ),
+> -       TP_printk("\txid=3D%u sid=3D0x%llx tid=3D0x%x source fid=3D0x%llx=
+ source offset=3D0x%llx target fid=3D0x%llx target offset=3D0x%llx len=3D0x=
+%x",
+> +       TP_printk("xid=3D%u sid=3D0x%llx tid=3D0x%x source fid=3D0x%llx s=
+ource offset=3D0x%llx target fid=3D0x%llx target offset=3D0x%llx len=3D0x%x=
+",
+>                 __entry->xid, __entry->sesid, __entry->tid, __entry->targ=
+et_fid,
+>                 __entry->src_offset, __entry->target_fid, __entry->target=
+_offset, __entry->len)
+>  )
+> @@ -482,7 +482,7 @@ DECLARE_EVENT_CLASS(smb3_fd_class,
+>                 __entry->tid =3D tid;
+>                 __entry->sesid =3D sesid;
+>         ),
+> -       TP_printk("\txid=3D%u sid=3D0x%llx tid=3D0x%x fid=3D0x%llx",
+> +       TP_printk("xid=3D%u sid=3D0x%llx tid=3D0x%x fid=3D0x%llx",
+>                 __entry->xid, __entry->sesid, __entry->tid, __entry->fid)
+>  )
+>
+> @@ -521,7 +521,7 @@ DECLARE_EVENT_CLASS(smb3_fd_err_class,
+>                 __entry->sesid =3D sesid;
+>                 __entry->rc =3D rc;
+>         ),
+> -       TP_printk("\txid=3D%u sid=3D0x%llx tid=3D0x%x fid=3D0x%llx rc=3D%=
+d",
+> +       TP_printk("xid=3D%u sid=3D0x%llx tid=3D0x%x fid=3D0x%llx rc=3D%d"=
+,
+>                 __entry->xid, __entry->sesid, __entry->tid, __entry->fid,
+>                 __entry->rc)
+>  )
+> @@ -794,7 +794,7 @@ DECLARE_EVENT_CLASS(smb3_cmd_err_class,
+>                 __entry->status =3D status;
+>                 __entry->rc =3D rc;
+>         ),
+> -       TP_printk("\tsid=3D0x%llx tid=3D0x%x cmd=3D%u mid=3D%llu status=
+=3D0x%x rc=3D%d",
+> +       TP_printk("sid=3D0x%llx tid=3D0x%x cmd=3D%u mid=3D%llu status=3D0=
+x%x rc=3D%d",
+>                 __entry->sesid, __entry->tid, __entry->cmd, __entry->mid,
+>                 __entry->status, __entry->rc)
+>  )
+> @@ -829,7 +829,7 @@ DECLARE_EVENT_CLASS(smb3_cmd_done_class,
+>                 __entry->cmd =3D cmd;
+>                 __entry->mid =3D mid;
+>         ),
+> -       TP_printk("\tsid=3D0x%llx tid=3D0x%x cmd=3D%u mid=3D%llu",
+> +       TP_printk("sid=3D0x%llx tid=3D0x%x cmd=3D%u mid=3D%llu",
+>                 __entry->sesid, __entry->tid,
+>                 __entry->cmd, __entry->mid)
+>  )
+> @@ -867,7 +867,7 @@ DECLARE_EVENT_CLASS(smb3_mid_class,
+>                 __entry->when_sent =3D when_sent;
+>                 __entry->when_received =3D when_received;
+>         ),
+> -       TP_printk("\tcmd=3D%u mid=3D%llu pid=3D%u, when_sent=3D%lu when_r=
+cv=3D%lu",
+> +       TP_printk("cmd=3D%u mid=3D%llu pid=3D%u, when_sent=3D%lu when_rcv=
+=3D%lu",
+>                 __entry->cmd, __entry->mid, __entry->pid, __entry->when_s=
+ent,
+>                 __entry->when_received)
+>  )
+> @@ -898,7 +898,7 @@ DECLARE_EVENT_CLASS(smb3_exit_err_class,
+>                 __assign_str(func_name);
+>                 __entry->rc =3D rc;
+>         ),
+> -       TP_printk("\t%s: xid=3D%u rc=3D%d",
+> +       TP_printk("%s: xid=3D%u rc=3D%d",
+>                 __get_str(func_name), __entry->xid, __entry->rc)
+>  )
+>
+> @@ -924,7 +924,7 @@ DECLARE_EVENT_CLASS(smb3_sync_err_class,
+>                 __entry->ino =3D ino;
+>                 __entry->rc =3D rc;
+>         ),
+> -       TP_printk("\tino=3D%lu rc=3D%d",
+> +       TP_printk("ino=3D%lu rc=3D%d",
+>                 __entry->ino, __entry->rc)
+>  )
+>
+> @@ -950,7 +950,7 @@ DECLARE_EVENT_CLASS(smb3_enter_exit_class,
+>                 __entry->xid =3D xid;
+>                 __assign_str(func_name);
+>         ),
+> -       TP_printk("\t%s: xid=3D%u",
+> +       TP_printk("%s: xid=3D%u",
+>                 __get_str(func_name), __entry->xid)
+>  )
+>
+> --
+> 2.34.1
+>
+>
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+
+--=20
+Thanks,
+
+Steve
 
