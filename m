@@ -1,187 +1,106 @@
-Return-Path: <stable+bounces-158616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C31AE8CF0
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 20:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF92AE8CFC
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 20:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AE9B161A19
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 18:47:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0532D17174B
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 18:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F55F2820CB;
-	Wed, 25 Jun 2025 18:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF152D5415;
+	Wed, 25 Jun 2025 18:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="PwISmq5X"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="foezECFv"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E811805E;
-	Wed, 25 Jun 2025 18:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB3828C87D;
+	Wed, 25 Jun 2025 18:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750877272; cv=none; b=BdzJC+WrzmNdMsj6NU2VqtSfeJ11dHpNFWGK8+LtZABUkM5shfnTqpwT0aKDnqJAQZrKaWP6M9BALkJD0jOjsAmwz1F4Vyir8JZeJxkqRaqRVaDf5mjc/F6iI5tBRh/XoCTDsKYILNb5GQtRPn4sf0IO59kHMeh4d3U0IJuFICs=
+	t=1750877447; cv=none; b=lYETOzQ2If158xTwRecd7pzC8HB3ZTpzi0CyUdx4dodm4L3frqBvQa4K9AKzEc0aYmjdUke91jrcBruv8Mdg0YClZBZw/ju60N+i5yK5/XreziVjHvAduToS1Q/RWzYCMXTKDlveKrSie76MRakQUQVzfoAZocco9Mt/XSEvqg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750877272; c=relaxed/simple;
-	bh=PdylM+KmiPKbbch0SA3L2OCwnVUpRwEBgFHXvyRwVSw=;
+	s=arc-20240116; t=1750877447; c=relaxed/simple;
+	bh=QtpcTY5tK/RAN1SAX8ZAQU4CDZ55UNox/Cr2H+YB4yE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YuuXzsCAQ9+J/ukoObZjt8mTwkEwURuoVY9Nxb0UyvvxDZyKbRMGqwCOLOpwMZEXFqdg4ELXjjk2YyrCRQhr2/udn/nl7SRcwH/COvcE8766VM+udgh9wXPBeuxHX5xnRmh/uujfkpLHC8s6YQQ7RKL3LgOb6OZ6FR1ltslmjug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=PwISmq5X; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=JH5zpr5foFUyaO0HBGLaaCm7laliOv0IKrYZUM7Ho6s=; b=PwISmq5XVkAhTYcnjD4EAoP+q5
-	c4RUu0WBS3zfmcntFWu6xqIF3p7CGEa4MGUteF15zwrI3JjQZMr9F1a6E26vQ4QLD1mvhRF3Bg7Kf
-	M3LB1Xsp1r9gWEQlhfP6d3c85bzLMtVh9pUpe4sTOjlUqBNVrmDfza65Z6yfzpJ8yNhVpqSyLgMuy
-	QfgJM9a/2xxwUbSfaQ+fVQwt9zqu0PFXd1rFHyBMI2IOyhl9GHqU5SEd8lxdbLkkhA5OTJvYwsuV8
-	TMMGbG1dR1Y0NNaZm/DVAn5RJgRmbeOEcLoIUEoauoB61n4JNwRi1W00rvufQPByl43q0X7OKLN4J
-	CATH49rg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <carnil@debian.org>)
-	id 1uUV9p-003KTb-J6; Wed, 25 Jun 2025 18:47:42 +0000
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 9D053BE2DE0; Wed, 25 Jun 2025 20:47:40 +0200 (CEST)
-Date: Wed, 25 Jun 2025 20:47:40 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Igor Tamara <igor.tamara@gmail.com>, 1108069@bugs.debian.org
-Cc: stable@vger.kernel.org, Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>, linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org, regressions@lists.linux.dev
-Subject: [regression] Builtin recognized  microphone Asus X507UA does not
- record
-Message-ID: <aFxETAn3YKNZqpXL@eldamar.lan>
-References: <175038697334.5297.17990232291668400728.reportbug@donsam>
+	 Content-Type:Content-Disposition:In-Reply-To; b=PpjLF30mDkebiu7fNlzpc9CV7b9dgsufxwtn+i1gMOUwTRh2JDZWxLe8rtiuS9+PcThVq8qjxNUVV3vSuBUeaxpYuwbPPxeZl/OdHyBHIMCrwLhfZzq8t3G4HeFKmDZhrSKI1qgKFwn8l8O7EPiKn5Rc36fFF3cG9AZ0qM8+uhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=foezECFv; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5842C1039BD02;
+	Wed, 25 Jun 2025 20:50:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1750877436; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=/lu6lvj/NDfIA8VXi0OFHDRyFpCkeftjpwcptJ9KIwA=;
+	b=foezECFv3Eytw0ulRdzayv9DX8q/0tTj5wFmWvtm2YOXpy00Hm+c3+Wh79xGPGmK3vIWKx
+	5JIBGnkY50XfMWCllI+gBil+mC1zDM/YXu0lUGx0fdiNL/UoAThhkmpbJy1uu6jLpjkrNk
+	HlV+GxsFhvoDY81BXgEklpL7e+Ls8FV7gB7/AH9eST4WTm23ZrRt1B8SucGsKBDjLbgcDI
+	LgNKzfVFtLY0w4xDEx/SeHgbWVFymjxed2+BNYnRShQ3ivgR1ytGJP9h37KDTsSqOD8L0Y
+	9SmQIL81bF8mzaQ/GTtT8g7P1T+klIbeMVF5xMOjz71iJSx0vlnP/+cUVZuDxw==
+Date: Wed, 25 Jun 2025 20:50:28 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 000/352] 5.10.239-rc2 review
+Message-ID: <aFxE9KMnj0K1angs@duo.ucw.cz>
+References: <20250624121412.352317604@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="zXGIuObp+/EcMWqu"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="3dki5SjjNFchw+xw"
 Content-Disposition: inline
-In-Reply-To: <175038697334.5297.17990232291668400728.reportbug@donsam>
-X-Debian-User: carnil
+In-Reply-To: <20250624121412.352317604@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
 
---zXGIuObp+/EcMWqu
+--3dki5SjjNFchw+xw
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Hi Igor,
+Hi!
 
-[For context, there was a regression report in Debian at
-https://bugs.debian.org/1108069]
+> This is the start of the stable review cycle for the 5.10.239 release.
+> There are 352 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-On Thu, Jun 19, 2025 at 09:36:13PM -0500, Igor Tamara wrote:
-> Package: src:linux
-> Version: 6.12.32-1
-> Severity: normal
-> Tags: a11y
-> 
-> Dear Maintainer,
-> 
-> The builtin microphone on my Asus X507UA does not record, is
-> recognized and some time ago it worked on Bookworm with image-6.1.0-31,
-> newer images are able to record when appending snd_hda_intel.model=1043:1271
-> to the boot as a workaround.
-> 
-> The images that work with the boot option appended are, but not without
-> it are:
-> 
-> linux-image-6.15-amd64
-> linux-image-6.12.32-amd64 
-> linux-image-6.1.0-37-amd64
-> linux-image-6.1.0-0.a.test-amd64-unsigned_6.1.129-1a~test_amd64.deb 
-> referenced by https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1100928
-> Also compiled from upstream 6.12.22 and 6.1.133 with the same result
-> 
-> The image linux-image-6.1.0-31-amd64 worked properly, the problem was
-> introduced in 129 and the result of the bisect was
-> 
-> d26408df0e25f2bd2808d235232ab776e4dd08b9 is the first bad commit
-> commit d26408df0e25f2bd2808d235232ab776e4dd08b9
-> Author: Kuan-Wei Chiu <visitorckw@gmail.com>
-> Date:   Wed Jan 29 00:54:15 2025 +0800
-> 
->     ALSA: hda: Fix headset detection failure due to unstable sort
->     
->     commit 3b4309546b48fc167aa615a2d881a09c0a97971f upstream.
->     
->     The auto_parser assumed sort() was stable, but the kernel's sort() uses
->     heapsort, which has never been stable. After commit 0e02ca29a563
->     ("lib/sort: optimize heapsort with double-pop variation"), the order of
->     equal elements changed, causing the headset to fail to work.
->     
->     Fix the issue by recording the original order of elements before
->     sorting and using it as a tiebreaker for equal elements in the
->     comparison function.
->     
->     Fixes: b9030a005d58 ("ALSA: hda - Use standard sort function in hda_auto_parser.c")
->     Reported-by: Austrum <austrum.lab@gmail.com>
->     Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219158
->     Tested-by: Austrum <austrum.lab@gmail.com>
->     Cc: stable@vger.kernel.org
->     Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
->     Link: https://patch.msgid.link/20250128165415.643223-1-visitorckw@gmail.com
->     Signed-off-by: Takashi Iwai <tiwai@suse.de>
->     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> 
->  sound/pci/hda/hda_auto_parser.c | 8 +++++++-
->  sound/pci/hda/hda_auto_parser.h | 1 +
->  2 files changed, 8 insertions(+), 1 deletion(-)
-> 
-> I'm attaching the output of alsa-info_alsa-info.sh script
-> 
-> Please let me know if I can provide more information.
+CIP testing did not find any problems here:
 
-Might you be able to try please the attached patch to see if it fixes
-the issue?
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+5.10.y
 
-Regards,
-Salvatore
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
---zXGIuObp+/EcMWqu
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename="0001-ALSA-hda-realtek-Fix-built-in-mic-on-ASUS-VivoBook-X.patch"
+Best regards,
+                                                                Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-From da92704b8bce54678c46501260efee50de16058f Mon Sep 17 00:00:00 2001
-From: Salvatore Bonaccorso <carnil@debian.org>
-Date: Wed, 25 Jun 2025 20:41:28 +0200
-Subject: [PATCH] ALSA: hda/realtek: Fix built-in mic on ASUS VivoBook X507UAR
+--3dki5SjjNFchw+xw
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The built-in mic of ASUS VivoBook X507UAR is broken recently by the fix
-of the pin sort. The fixup ALC256_FIXUP_ASUS_MIC_NO_PRESENCE is working
-for addressing the regression, too.
+-----BEGIN PGP SIGNATURE-----
 
-Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
-Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
----
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaFxE9AAKCRAw5/Bqldv6
+8i8qAJ4iaY1XcSML9m2teq1mPQ2fbWYf/QCgwD3JjTmeIFTBddxc1arweUl6G9k=
+=3ZH/
+-----END PGP SIGNATURE-----
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 2e1618494c20..3613ed0aa683 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11026,6 +11026,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1df3, "ASUS UM5606WA", ALC294_FIXUP_BASS_SPEAKER_15),
- 	SND_PCI_QUIRK(0x1043, 0x1264, "ASUS UM5606KA", ALC294_FIXUP_BASS_SPEAKER_15),
- 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x1e10, "ASUS VivoBook X507UAR", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
- 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e1f, "ASUS Vivobook 15 X1504VAP", ALC2XX_FIXUP_HEADSET_MIC),
--- 
-2.50.0
-
-
---zXGIuObp+/EcMWqu--
+--3dki5SjjNFchw+xw--
 
