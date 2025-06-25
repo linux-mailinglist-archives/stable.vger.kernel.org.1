@@ -1,160 +1,80 @@
-Return-Path: <stable+bounces-158611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9579AE8A99
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 18:49:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62045AE8AEE
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 19:01:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A9ED1884480
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 16:47:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96F2A3A78C5
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 17:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6742EAD12;
-	Wed, 25 Jun 2025 16:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01972D9EEF;
+	Wed, 25 Jun 2025 16:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B7ITKsAC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHNahn6L"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BDB2E9EC0
-	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 16:43:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B692D5436;
+	Wed, 25 Jun 2025 16:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750869797; cv=none; b=Qm5zYfNxlUSz5BaKLgPzs+78M+Z+JXT/waTy5D4z9sMvlf5++gX9Jfal5ED4sWijH/BNpJid/r4n3qVBUySLUY0LeHE41uHvmW8TODLizEp6RePtx4LaHFgShBxPV4e6anGI1kfLSOjqNUt6cic29iEZ6iPUx+uEaDXhxvBDwm8=
+	t=1750870238; cv=none; b=FEXFj6xqUh4T6BQ7vRjzXcSm4RzAN6chtP8GySd0QEgdOrRyEFSwE1kICPC6DbdMg9/L2devIsRfHi3AOel2L80n7lrU7OJRuaMJMcI+tYQ88HIgM2g1yJXL2cQxBgRdx+7KaUZcZma1mIep8ELoarUqKV4LUDoXMBwYDH+1jlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750869797; c=relaxed/simple;
-	bh=AliD1klfeZmgo/JTUsJ7G3JGESX3QkE+j7pa6SVp2lI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gQY6gDF1NMWoxP4i4Y9shKVIgc4tRStPfzDB/6a8NQAwErun/8UNbckvZSnY/+42DMO+MsdMOznch7+U7I/aED9c2zSNWPwpCPduOfuHgiFmd4AHS1+tHSdmCGBBMIpIMBXLc5+JFN3+qrcRguFdnHec18MZ6bdu7u1ywZSxdWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B7ITKsAC; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750869794;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sCzPzgmppSzHAEtxjqlIXf8IEb60t649a5zwc5vulFQ=;
-	b=B7ITKsACuICSqf/X1mt2OjI484KYBYlb7kJzfr0kdL2hcsY5spXz1Xj9Ru2MkQnz5IeqZl
-	Pt3cnaNE0Y2pF55q/f/BCj7nOrk3r7wg3aQad/0lRnWl3HJ3mddrhkmfjRUi90w0KHiAKm
-	IwQ7JYgkIyG0pGAdJpKwjhK5zNjrtR4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-52K8xfSSOnORCP1C4Wa6QA-1; Wed,
- 25 Jun 2025 12:43:10 -0400
-X-MC-Unique: 52K8xfSSOnORCP1C4Wa6QA-1
-X-Mimecast-MFC-AGG-ID: 52K8xfSSOnORCP1C4Wa6QA_1750869788
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 21CA1180120D;
-	Wed, 25 Jun 2025 16:43:08 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.81])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E557118003FC;
-	Wed, 25 Jun 2025 16:43:03 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
-	Steve French <sfrench@samba.org>
-Cc: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Paulo Alcantara <pc@manguebit.org>,
-	stable@vger.kernel.org,
-	Remy Monsen <monsen@monsen.cc>,
-	Pierguido Lambri <plambri@redhat.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH v2 09/16] smb: client: fix regression with native SMB symlinks
-Date: Wed, 25 Jun 2025 17:42:04 +0100
-Message-ID: <20250625164213.1408754-10-dhowells@redhat.com>
-In-Reply-To: <20250625164213.1408754-1-dhowells@redhat.com>
-References: <20250625164213.1408754-1-dhowells@redhat.com>
+	s=arc-20240116; t=1750870238; c=relaxed/simple;
+	bh=/C5v0k5vwFElv+YbYy/5m/tariiZVeEQsCrYwhIpOgM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q5VcsrpEU+UM5KD1EWLGV/7ldOR7Q3oI31CcFVK8gbjdMlfFEgaupsOavH+q29eBexMqADstAWavTvdKTEeuHKSqVlMrTTT4X0NS8esTGzyPDMx6pnf+Hq04iJab+FfbW8mj+QfHdyiFbmQzbAuRqv8PRTn5If6h3cWPVOGDsVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHNahn6L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23711C4CEEA;
+	Wed, 25 Jun 2025 16:50:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750870238;
+	bh=/C5v0k5vwFElv+YbYy/5m/tariiZVeEQsCrYwhIpOgM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jHNahn6LRu21+klp/cyu2n5YuMLCBWSbr4fTLnpMpKi7gOZxEV+S39okDcHLzcbph
+	 6wZtiAsktCFPmTYkN9YsQ9bZsNbrsb3iG5iG9OLHzB0+kAghrrXHb/3JxnoeU+HU+Y
+	 LFYKhahqlGStnmXkBzJQMi0mh69SU+kuehtKZZP7YICStbPI8+m2CDWR8w8TZQfAJo
+	 t6mY8jWFUpfE2BbEyH1UrwhdRXogN8biZzNRmTNut9wRhGs/IqAPH33F2zzp0U0XlY
+	 DGbx7tAemI8v33e4KdbZTSU/I3rZQk7QmSi8LG0Ik+7K/2g6vGutqnBr0A72HpVfuA
+	 fY9Z8leedl0lw==
+Date: Wed, 25 Jun 2025 17:50:34 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	mengyuanlou@net-swift.com, duanqiangwen@net-swift.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net: libwx: fix the creation of page_pool
+Message-ID: <20250625165034.GG1562@horms.kernel.org>
+References: <434C72BFB40E350A+20250625023924.21821-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <434C72BFB40E350A+20250625023924.21821-1-jiawenwu@trustnetic.com>
 
-From: Paulo Alcantara <pc@manguebit.org>
+On Wed, Jun 25, 2025 at 10:39:24AM +0800, Jiawen Wu wrote:
+> 'rx_ring->size' means the count of ring descriptors multiplied by the
+> size of one descriptor. When increasing the count of ring descriptors,
+> it may exceed the limit of pool size.
+> 
+> [ 864.209610] page_pool_create_percpu() gave up with errno -7
+> [ 864.209613] txgbe 0000:11:00.0: Page pool creation failed: -7
+> 
+> Fix to set the pool_size to the count of ring descriptors.
+> 
+> Fixes: 850b971110b2 ("net: libwx: Allocate Rx and Tx resources")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 
-Some users and customers reported that their backup/copy tools started
-to fail when the directory being copied contained symlink targets that
-the client couldn't parse - even when those symlinks weren't followed.
-
-Fix this by allowing lstat(2) and readlink(2) to succeed even when the
-client can't resolve the symlink target, restoring old behavior.
-
-Cc: linux-cifs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Reported-by: Remy Monsen <monsen@monsen.cc>
-Closes: https://lore.kernel.org/r/CAN+tdP7y=jqw3pBndZAGjQv0ObFq8Q=+PUDHgB36HdEz9QA6FQ@mail.gmail.com
-Reported-by: Pierguido Lambri <plambri@redhat.com>
-Fixes: 12b466eb52d9 ("cifs: Fix creating and resolving absolute NT-style symlinks")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
----
- fs/smb/client/reparse.c | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
-
-diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
-index 511611206dab..1c40e42e4d89 100644
---- a/fs/smb/client/reparse.c
-+++ b/fs/smb/client/reparse.c
-@@ -875,15 +875,8 @@ int smb2_parse_native_symlink(char **target, const char *buf, unsigned int len,
- 			abs_path += sizeof("\\DosDevices\\")-1;
- 		else if (strstarts(abs_path, "\\GLOBAL??\\"))
- 			abs_path += sizeof("\\GLOBAL??\\")-1;
--		else {
--			/* Unhandled absolute symlink, points outside of DOS/Win32 */
--			cifs_dbg(VFS,
--				 "absolute symlink '%s' cannot be converted from NT format "
--				 "because points to unknown target\n",
--				 smb_target);
--			rc = -EIO;
--			goto out;
--		}
-+		else
-+			goto out_unhandled_target;
- 
- 		/* Sometimes path separator after \?? is double backslash */
- 		if (abs_path[0] == '\\')
-@@ -910,13 +903,7 @@ int smb2_parse_native_symlink(char **target, const char *buf, unsigned int len,
- 			abs_path++;
- 			abs_path[0] = drive_letter;
- 		} else {
--			/* Unhandled absolute symlink. Report an error. */
--			cifs_dbg(VFS,
--				 "absolute symlink '%s' cannot be converted from NT format "
--				 "because points to unknown target\n",
--				 smb_target);
--			rc = -EIO;
--			goto out;
-+			goto out_unhandled_target;
- 		}
- 
- 		abs_path_len = strlen(abs_path)+1;
-@@ -966,6 +953,7 @@ int smb2_parse_native_symlink(char **target, const char *buf, unsigned int len,
- 		 * These paths have same format as Linux symlinks, so no
- 		 * conversion is needed.
- 		 */
-+out_unhandled_target:
- 		linux_target = smb_target;
- 		smb_target = NULL;
- 	}
+Reviewed-by: Simon Horman <horms@kernel.org>
 
 
