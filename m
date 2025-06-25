@@ -1,81 +1,196 @@
-Return-Path: <stable+bounces-158499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6714BAE798C
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 10:08:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B366AE79AB
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 10:13:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C612D5A0A3E
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 08:08:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3CC016CE52
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 08:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA541E5B95;
-	Wed, 25 Jun 2025 08:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4485320299E;
+	Wed, 25 Jun 2025 08:13:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="tz1JFH2x"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
+Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278511FBE8C;
-	Wed, 25 Jun 2025 08:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.202.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9981B4231;
+	Wed, 25 Jun 2025 08:13:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750838905; cv=none; b=PuBFmpzyUU+PLilhhVp0K2H5SeuxQDKOp/Mi8sRUOq9gI/S/ppjQTP9OX5j24gbEt2QLqxHw58UZR/2O2KdkoeT3tXLC1vQZZ0EOt9o8xkAVfwV6ZTUIV/i518UeBK/XQCqEoyVhg6/nxVqJmnYxAVx3cKFC805mD29stBVtrAI=
+	t=1750839203; cv=none; b=f7FH+zBWLE1rPRTnFxbY+mC6SCqr1+8mE0F7owrv5phw9zcjp7VyLi15ex2uEelzzEGmffOgt23K5wr6uXdd5dYAJWhFUd5Wi31po/TZMw7jywX8gwF/Bm4ZTeLOJli/3MAdSkuPI8pKMrazFwYVt4fpGJZmH/R1+8orzeDJrrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750838905; c=relaxed/simple;
-	bh=JAxf1CaBgAJOl5eOA6B44Q1dBB+pzL1QrV464SHm514=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=JOzuYmTjF5acamsqqZGblnI9G/yeBT/CPvUOy1SLN+tMFmRAbj7eFi4g8cy9qwNQ9x8YDb7wSCPaZ+Ve2+SAYEIaUFMusAnYyk/L7Rf64iHQb+bHRpogLR0+fHiaGCMotrvY24U2oIyNERwipT95YJwIIdSrYImo3PLneAWGuKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com; spf=pass smtp.mailfrom=applied-asynchrony.com; arc=none smtp.client-ip=85.10.202.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=applied-asynchrony.com
-Received: from tux.applied-asynchrony.com (p5b347a18.dip0.t-ipconnect.de [91.52.122.24])
-	by mail.itouring.de (Postfix) with ESMTPSA id C0FE1C28E;
-	Wed, 25 Jun 2025 10:00:57 +0200 (CEST)
-Received: from [192.168.100.221] (hho.applied-asynchrony.com [192.168.100.221])
-	by tux.applied-asynchrony.com (Postfix) with ESMTP id 639BD6018BEA5;
-	Wed, 25 Jun 2025 10:00:56 +0200 (CEST)
-Subject: Re: [PATCH 6.15 000/588] 6.15.4-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- Christian Brauner <brauner@kernel.org>
-References: <20250624121449.136416081@linuxfoundation.org>
-From: =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
-Organization: Applied Asynchrony, Inc.
-Message-ID: <e9249afe-f039-4180-d50d-b199c26dea26@applied-asynchrony.com>
-Date: Wed, 25 Jun 2025 10:00:56 +0200
+	s=arc-20240116; t=1750839203; c=relaxed/simple;
+	bh=RW4PL4umCD6KYtttmW5IU5lZITStaS1ZPpg6/k3gWxU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m19U7on1fw6FW/wjMLhn3lHD7sWtMekx/Q26EzG47ygnqhKhIfOKZpzPYXJIeSkU2CSVeffsiPQsIn3z9VSJ6H1jXGawdHA0UKJ/jebmhyq5UL2PxJm33cbqsoZ8+nmKxu3c3d6xIFmWT+HE20NR2DD4bMOFR8ODuKM26uOV+KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=tz1JFH2x; arc=none smtp.client-ip=144.76.82.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
+	s=42; h=Message-Id:Date:Cc:To:From;
+	bh=CBZb5cDGLg5Cpz5eR4nb4ApAgqbN2A3G1lLtKu1Ecio=; b=tz1JFH2x5/xHuvBFVTe1GgoD12
+	s7qAKYSNBhchEXF+k9ePAs+HPZZk9/y8zRWchw2dIQ6KYKp8+IR1krCtRiGJJYHxOcemVdgAWXFyo
+	2/CvpWCBAxtyi7SpP9egHI/i/5VuQ7V1nTVMYosyf5TBDLO8JWeb6PCqAM4JQwqSMzS9yrJfFFrnx
+	OGnwejB9ceQkx0v5H7yVuGV/Fgy20JfpacEcYyIqQYm4XnO5iuyaEmzAfUXlQ7YhW8XPzth787U0j
+	0t16IKe/dMbWvWEpyD+qWgJiR5l8IaaqOG9UFeepxVFowTp3d9a6BnZyQ5Ne7qo7T/QoUxtkr8rpl
+	mYGAekvT8BUBeoNajRNowjDtoB/Rd9pwo3FnfpT8D0bp46t3y+Gk9A6Tf6eu/1+5AweBpgx+Z6EOC
+	idpFdt8OdfOLcgVAnAMSwlqvSojW5eNjpAR0J1B1i/8QnCHrKJfXpWsaPm2M5IUXo7KB7XOE9YdJi
+	nsxVUt9RhyhztGh4nEpcGlTI;
+Received: from [127.0.0.2] (localhost [127.0.0.1])
+	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__CHACHA20_POLY1305:256)
+	(Exim)
+	id 1uULFu-00CNwO-1b;
+	Wed, 25 Jun 2025 08:13:18 +0000
+From: Stefan Metzmacher <metze@samba.org>
+To: linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Cc: metze@samba.org,
+	stable@vger.kernel.org
+Subject: [PATCH] smb: client: remove \t from TP_printk statements
+Date: Wed, 25 Jun 2025 10:13:04 +0200
+Message-Id: <20250625081304.943870-1-metze@samba.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20250624121449.136416081@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-(cc: Christian Brauner>
+The generate '[FAILED TO PARSE]' strings in trace-cmd report output like this:
 
-Since 6.15.4-rc1 I noticed that some KDE apps (kded6, kate (the text editor))
-started going into a tailspin with 100% per-process CPU.
+  rm-5298  [001]  6084.533748493: smb3_exit_err:        [FAILED TO PARSE] xid=972 func_name=cifs_rmdir rc=-39
+  rm-5298  [001]  6084.533959234: smb3_enter:           [FAILED TO PARSE] xid=973 func_name=cifs_closedir
+  rm-5298  [001]  6084.533967630: smb3_close_enter:     [FAILED TO PARSE] xid=973 fid=94489281833 tid=1 sesid=96758029877361
+  rm-5298  [001]  6084.534004008: smb3_cmd_enter:       [FAILED TO PARSE] tid=1 sesid=96758029877361 cmd=6 mid=566
+  rm-5298  [001]  6084.552248232: smb3_cmd_done:        [FAILED TO PARSE] tid=1 sesid=96758029877361 cmd=6 mid=566
+  rm-5298  [001]  6084.552280542: smb3_close_done:      [FAILED TO PARSE] xid=973 fid=94489281833 tid=1 sesid=96758029877361
+  rm-5298  [001]  6084.552316034: smb3_exit_done:       [FAILED TO PARSE] xid=973 func_name=cifs_closedir
 
-The symptom is 100% reproducible: open a new file with kate, save empty file,
-make changes, save, watch CPU go 100%. perf top shows copy_to_user running wild.
+Cc: stable@vger.kernel.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+---
+ fs/smb/client/trace.h | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-First I tried to reproduce on 6.15.3 - no problem, everything works fine.
+diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
+index 52bcb55d9952..93e5b2bb9f28 100644
+--- a/fs/smb/client/trace.h
++++ b/fs/smb/client/trace.h
+@@ -140,7 +140,7 @@ DECLARE_EVENT_CLASS(smb3_rw_err_class,
+ 		__entry->len = len;
+ 		__entry->rc = rc;
+ 	),
+-	TP_printk("\tR=%08x[%x] xid=%u sid=0x%llx tid=0x%x fid=0x%llx offset=0x%llx len=0x%x rc=%d",
++	TP_printk("R=%08x[%x] xid=%u sid=0x%llx tid=0x%x fid=0x%llx offset=0x%llx len=0x%x rc=%d",
+ 		  __entry->rreq_debug_id, __entry->rreq_debug_index,
+ 		  __entry->xid, __entry->sesid, __entry->tid, __entry->fid,
+ 		  __entry->offset, __entry->len, __entry->rc)
+@@ -190,7 +190,7 @@ DECLARE_EVENT_CLASS(smb3_other_err_class,
+ 		__entry->len = len;
+ 		__entry->rc = rc;
+ 	),
+-	TP_printk("\txid=%u sid=0x%llx tid=0x%x fid=0x%llx offset=0x%llx len=0x%x rc=%d",
++	TP_printk("xid=%u sid=0x%llx tid=0x%x fid=0x%llx offset=0x%llx len=0x%x rc=%d",
+ 		__entry->xid, __entry->sesid, __entry->tid, __entry->fid,
+ 		__entry->offset, __entry->len, __entry->rc)
+ )
+@@ -247,7 +247,7 @@ DECLARE_EVENT_CLASS(smb3_copy_range_err_class,
+ 		__entry->len = len;
+ 		__entry->rc = rc;
+ 	),
+-	TP_printk("\txid=%u sid=0x%llx tid=0x%x source fid=0x%llx source offset=0x%llx target fid=0x%llx target offset=0x%llx len=0x%x rc=%d",
++	TP_printk("xid=%u sid=0x%llx tid=0x%x source fid=0x%llx source offset=0x%llx target fid=0x%llx target offset=0x%llx len=0x%x rc=%d",
+ 		__entry->xid, __entry->sesid, __entry->tid, __entry->target_fid,
+ 		__entry->src_offset, __entry->target_fid, __entry->target_offset, __entry->len, __entry->rc)
+ )
+@@ -298,7 +298,7 @@ DECLARE_EVENT_CLASS(smb3_copy_range_done_class,
+ 		__entry->target_offset = target_offset;
+ 		__entry->len = len;
+ 	),
+-	TP_printk("\txid=%u sid=0x%llx tid=0x%x source fid=0x%llx source offset=0x%llx target fid=0x%llx target offset=0x%llx len=0x%x",
++	TP_printk("xid=%u sid=0x%llx tid=0x%x source fid=0x%llx source offset=0x%llx target fid=0x%llx target offset=0x%llx len=0x%x",
+ 		__entry->xid, __entry->sesid, __entry->tid, __entry->target_fid,
+ 		__entry->src_offset, __entry->target_fid, __entry->target_offset, __entry->len)
+ )
+@@ -482,7 +482,7 @@ DECLARE_EVENT_CLASS(smb3_fd_class,
+ 		__entry->tid = tid;
+ 		__entry->sesid = sesid;
+ 	),
+-	TP_printk("\txid=%u sid=0x%llx tid=0x%x fid=0x%llx",
++	TP_printk("xid=%u sid=0x%llx tid=0x%x fid=0x%llx",
+ 		__entry->xid, __entry->sesid, __entry->tid, __entry->fid)
+ )
+ 
+@@ -521,7 +521,7 @@ DECLARE_EVENT_CLASS(smb3_fd_err_class,
+ 		__entry->sesid = sesid;
+ 		__entry->rc = rc;
+ 	),
+-	TP_printk("\txid=%u sid=0x%llx tid=0x%x fid=0x%llx rc=%d",
++	TP_printk("xid=%u sid=0x%llx tid=0x%x fid=0x%llx rc=%d",
+ 		__entry->xid, __entry->sesid, __entry->tid, __entry->fid,
+ 		__entry->rc)
+ )
+@@ -794,7 +794,7 @@ DECLARE_EVENT_CLASS(smb3_cmd_err_class,
+ 		__entry->status = status;
+ 		__entry->rc = rc;
+ 	),
+-	TP_printk("\tsid=0x%llx tid=0x%x cmd=%u mid=%llu status=0x%x rc=%d",
++	TP_printk("sid=0x%llx tid=0x%x cmd=%u mid=%llu status=0x%x rc=%d",
+ 		__entry->sesid, __entry->tid, __entry->cmd, __entry->mid,
+ 		__entry->status, __entry->rc)
+ )
+@@ -829,7 +829,7 @@ DECLARE_EVENT_CLASS(smb3_cmd_done_class,
+ 		__entry->cmd = cmd;
+ 		__entry->mid = mid;
+ 	),
+-	TP_printk("\tsid=0x%llx tid=0x%x cmd=%u mid=%llu",
++	TP_printk("sid=0x%llx tid=0x%x cmd=%u mid=%llu",
+ 		__entry->sesid, __entry->tid,
+ 		__entry->cmd, __entry->mid)
+ )
+@@ -867,7 +867,7 @@ DECLARE_EVENT_CLASS(smb3_mid_class,
+ 		__entry->when_sent = when_sent;
+ 		__entry->when_received = when_received;
+ 	),
+-	TP_printk("\tcmd=%u mid=%llu pid=%u, when_sent=%lu when_rcv=%lu",
++	TP_printk("cmd=%u mid=%llu pid=%u, when_sent=%lu when_rcv=%lu",
+ 		__entry->cmd, __entry->mid, __entry->pid, __entry->when_sent,
+ 		__entry->when_received)
+ )
+@@ -898,7 +898,7 @@ DECLARE_EVENT_CLASS(smb3_exit_err_class,
+ 		__assign_str(func_name);
+ 		__entry->rc = rc;
+ 	),
+-	TP_printk("\t%s: xid=%u rc=%d",
++	TP_printk("%s: xid=%u rc=%d",
+ 		__get_str(func_name), __entry->xid, __entry->rc)
+ )
+ 
+@@ -924,7 +924,7 @@ DECLARE_EVENT_CLASS(smb3_sync_err_class,
+ 		__entry->ino = ino;
+ 		__entry->rc = rc;
+ 	),
+-	TP_printk("\tino=%lu rc=%d",
++	TP_printk("ino=%lu rc=%d",
+ 		__entry->ino, __entry->rc)
+ )
+ 
+@@ -950,7 +950,7 @@ DECLARE_EVENT_CLASS(smb3_enter_exit_class,
+ 		__entry->xid = xid;
+ 		__assign_str(func_name);
+ 	),
+-	TP_printk("\t%s: xid=%u",
++	TP_printk("%s: xid=%u",
+ 		__get_str(func_name), __entry->xid)
+ )
+ 
+-- 
+2.34.1
 
-After checking the list of patches for 6.15.4 I reverted the anon_inode series
-(all 3 for the first attempt) and the problem is gone.
-
-Will try to reduce further & can gladly try additional fixes, but for now
-I'd say these patches are not yet suitable for stable.
-
-thanks
-Holger
 
