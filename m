@@ -1,88 +1,85 @@
-Return-Path: <stable+bounces-158552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B91AE836B
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 14:57:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A3AAE83A2
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 15:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C4AE7B654F
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 12:55:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F3651701C0
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 13:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3E8262FC0;
-	Wed, 25 Jun 2025 12:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8695261574;
+	Wed, 25 Jun 2025 13:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="K4QZaT8P"
+	dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b="R2dG4Eom"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013059.outbound.protection.outlook.com [40.107.159.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EFF25B315
-	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 12:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750856149; cv=none; b=Ng/sKu1hAcQgl4LuCUz21i6hj/zS/v4hFDzHQWiq/JuUafrVdEwXiN8JcbOi/Wxxzro1rgqWwQT4BeB9ed4MAF8SKHxfFANWX/QYm+xY7oojLY8aOmTUBA/Jjo/d0n5dUUIIap89hwgqaDOjUXNpeH0XO0cOObuaEXr4NEeBphI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750856149; c=relaxed/simple;
-	bh=UVQpx+J9DhoMW1cLhDJlsTx7sfYkmMaOPhm/X4hiyDU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z5w2AgOBh1S96kpezM6R+mh8k2K3JBcTDOJcF8O3zLuZMxfcuaxGuOQjb6rf9jpG2BBgEiuMohXhJ5lshABZANYjhPaPP5T4jIk029ezqfdcGChbkyIuW+1DxZi5skRpxSi1hzo1/5sXbliXGLRjTyooMr9j6LYsSz8qYZlu/NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=K4QZaT8P; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-32ade3723adso76126671fa.0
-        for <stable@vger.kernel.org>; Wed, 25 Jun 2025 05:55:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1750856145; x=1751460945; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F32Uf0FCsjaaHDpaeeZM3bNuZwjaC0jj1YHK82N/4qE=;
-        b=K4QZaT8P5/X2BvY6VSLUCRkpVGzd0o13OSxJgdnFo77K+JMRBHA8qlwZTTkeWWNU9x
-         tG6vh0q15/2nxqaMFJxf7C3qKntU4egNQjMDWSWwRWUnzwbqQi1xc4WVOj8Frr89WL6f
-         lXm069oBZjCoJ437jVggO4m7pUGWRq0q9oVRk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750856145; x=1751460945;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F32Uf0FCsjaaHDpaeeZM3bNuZwjaC0jj1YHK82N/4qE=;
-        b=IoY55ujRRX5bNcs1VzYyTihhbD+OSSq33TIZO999/bctcpOS3gxbbov7o1xlCJl1C7
-         047KGVsfXFSlxC6DErmq81lpLSbuZWyXoladYKUImnq1bEIP764wNC+ymek47Eyeolrh
-         noPwBs9TuWpOYi1xXgrHN00BBeVojCamSjl1GiQbX2/vgD9ZetRIEBuKaI6eSKbh23+N
-         Pho8J5V1TGNVg+wyalqteOFg+b+6PoEgNN1K9zyy+bonRk/9u6iwhRXN5LTQ5XbwHEnc
-         1EK0PQ3NDU+O3JPlswLSN0danGwLcO9WVN2wSve7n75nkNWvlehiRWVzTpxF6D51g9aQ
-         kZ7Q==
-X-Gm-Message-State: AOJu0YyisGwOVnDJjlv59gAmZDKkdRpJ26/znH6cN9BWxiz3YaeGlyuD
-	rJpJHAGmlVR8KxNHzRPCEVNL9e9nuyATIxw/3AWTqWVJUqMgztWWTECloQayk0dkCRxtYhCNp02
-	6doM=
-X-Gm-Gg: ASbGnctDN6+kJgtRe4fLw99E+vHMvCC+oGRWOjl00EkD1GYkSCp2FUcnAPGDZWqLFQw
-	6gXMBd/yT2UtP94EsLem6JxNnKQCUMUW1WSF8t9ybLBp+8zbVRwOEAER772vhvh/VJ98Yyqwpll
-	C1UYuGy9AYmyg0jdycPn0WRe2CBU0clPOR46zmplOLSES3GtTj+TzXHeOjXiYZck/ZSDPe4fW9f
-	ie8Fwhrmo2fWvMj+LJFHaPTIwTA59wa5opv0AbWqsjQ3SSXIspSiB+xr3vkpAEVFx/uadMk49og
-	igXPgdRlcN8iE6wCzyM+v3+mXVNs3lqqanVnU1i7A7iT2NxK6jHMDWggASyOqY23eqQm7ZKR4ED
-	PyaojVDId63bsAqdwvy0zea/WlbEqM8xqx4BCjYMAF2j8pUI=
-X-Google-Smtp-Source: AGHT+IH1NjKGibvN0ql88mWyR7hCbG84bLmfApwcHYbjgWP2QDV3qdddjnZ/+rssj/Fiv8JmBP8/KA==
-X-Received: by 2002:a2e:a582:0:b0:32a:710f:5a0 with SMTP id 38308e7fff4ca-32cc64fb1e0mr6230011fa.11.1750856145352;
-        Wed, 25 Jun 2025 05:55:45 -0700 (PDT)
-Received: from ribalda.c.googlers.com.com (166.141.88.34.bc.googleusercontent.com. [34.88.141.166])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32ca873a713sm12299411fa.5.2025.06.25.05.55.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 05:55:45 -0700 (PDT)
-From: Ricardo Ribalda <ribalda@chromium.org>
-To: stable@vger.kernel.org
-Cc: Ricardo Ribalda <ribalda@chromium.org>,
-	stable@kernel.org,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15.y 3/3] media: uvcvideo: Rollback non processed entities on error
-Date: Wed, 25 Jun 2025 12:55:42 +0000
-Message-ID: <20250625125542.587528-3-ribalda@chromium.org>
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-In-Reply-To: <20250625125542.587528-1-ribalda@chromium.org>
-References: <2025062016-duress-pronto-30e6@gregkh>
- <20250625125542.587528-1-ribalda@chromium.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EBD8633A;
+	Wed, 25 Jun 2025 13:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750856748; cv=fail; b=KEWxer15wXZ2yAdsrtksBontyBvQ0srLI0KJVJSmr4bAyxDHzQtF5cv9c+RXmxK5gjSufFAl7MmPLznxhEdzk+OZjF6/bHenQkxwrWfCNiSWSWmf04FZwVxsbxxZ+AGvyWUo+Ryc32oZfgYct8KOoih5DTeZmR8hOx1YGEYkT20=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750856748; c=relaxed/simple;
+	bh=Es9sAH/1SfsGVEZ3v8cBcyvs6u5VyVR+PDrFRybqUds=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UqMi7K462hjVSMUeGJxT9tIz27IyFNNKgdM2S8l3Ob0Trk3ZCkJSuqHwwfggKaCWpS4jH0fMnJ/hRBBcyZknM3qwwAA5JYnWTI3MrgzJUGHiovy8TzfGB+Pa3X8Nfei9mgC+V5mnvx114y+gksr5+PweBWwkQfDpbwbbC/O9+u4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de; spf=pass smtp.mailfrom=arri.de; dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b=R2dG4Eom; arc=fail smtp.client-ip=40.107.159.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arri.de
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HWhEAUFCcW8X67NPBYO+8Q0BgV8wIEahJHMRDY9ddNRoePCD1+Fdlu5FDIE60+lhvQjHk9OauL9hJHjJfzOJIcHWuwQ5+QamfhlciAdb8C6DQyci+BBnUyOhqsla+P8nusaWjPqCrc7oz62JlHxyHG8/zvY5vSs/lftD8hxgFR96FqahJwjilcfAWOiDnilEGjVF1wOz7k8tPz/7zaTJrK59Cfpqo4yl55h5A0Xl0tbrlJ5c3FYoeTYrV9Atd/AXKUFtSrd9WqGppZPBYv3lXCe5ONJuUnW+mzTxsgxntwxc1w7w2cpxbhDi0s7arpgjeXtbpUEQ1fRorwlH1H7WWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BovzthIyEm4Vo5ktAtauVxegkmS4zbfAJwFTUZxDacQ=;
+ b=o3tZRUGomoTCYq5qea5suvRT1MxNOlGqzznq7SD81y+pugZVO6bRta4t1STfdkBAnD3RdlazH0rHss9CDpA57uEacGRNEZRsHKwJXIMQxDpzKI+dZSO4LLVWZTyWDaWZIyzs6xzJy8YwWVNzqQbZL2kFs77aubR4Nd0ZCwF7WMxRIzkZmUZCF4IGsZa8U/XQ3s1K/Qelw8ctTLpndQFcsJotAxpKVaf/iF+d4WAAclL9dX8VMoLVG554+7IL1seLk0r0RYFQLV3lk9/fCXPIE/ufrL2QCa3rsydxpr2Mh6MaKss3V7hhUBxgec4ZH9eLftE3Z99clCyVITD1bZx+/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 217.111.95.7) smtp.rcpttodomain=holtmann.org smtp.mailfrom=arri.de;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=arri.de;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arri.de; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BovzthIyEm4Vo5ktAtauVxegkmS4zbfAJwFTUZxDacQ=;
+ b=R2dG4EomHx4jsj5FZLiWiR4LC2YniH4VyVwQaVSak8/WM+CKUcI/+h+CiSkLgfiSh/ix8ovp9PckS3zI9tFWnQxnTKxDau2swFf6JsqpGevHG/HUnqKvsaix/J7ipafG/VUInZtg2A6ktYnr0qH6/DYlQNMHYLI7ii/UiDH6qUw=
+Received: from PA7P264CA0500.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:3da::17)
+ by PAVPR03MB9574.eurprd03.prod.outlook.com (2603:10a6:102:301::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.30; Wed, 25 Jun
+ 2025 13:05:31 +0000
+Received: from AMS0EPF000001A4.eurprd05.prod.outlook.com
+ (2603:10a6:102:3da:cafe::dd) by PA7P264CA0500.outlook.office365.com
+ (2603:10a6:102:3da::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8880.17 via Frontend Transport; Wed,
+ 25 Jun 2025 13:05:31 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 217.111.95.7)
+ smtp.mailfrom=arri.de; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=arri.de;
+Received-SPF: Fail (protection.outlook.com: domain of arri.de does not
+ designate 217.111.95.7 as permitted sender) receiver=protection.outlook.com;
+ client-ip=217.111.95.7; helo=mta.arri.de;
+Received: from mta.arri.de (217.111.95.7) by
+ AMS0EPF000001A4.mail.protection.outlook.com (10.167.16.229) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8880.14 via Frontend Transport; Wed, 25 Jun 2025 13:05:30 +0000
+Received: from N9W6SW14.arri.de (10.30.5.30) by mta.arri.de (10.10.18.5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.38; Wed, 25 Jun
+ 2025 15:05:30 +0200
+From: Christian Eggers <ceggers@arri.de>
+To: Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg
+	<johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Jaganath Kanakkassery <jaganath.k.os@gmail.com>
+CC: <linux-bluetooth@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Christian Eggers <ceggers@arri.de>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] Bluetooth: HCI: Fix HCI command order for extended advertising
+Date: Wed, 25 Jun 2025 15:05:10 +0200
+Message-ID: <20250625130510.18382-1-ceggers@arri.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,117 +87,252 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS0EPF000001A4:EE_|PAVPR03MB9574:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2fcdc2d4-f5d0-4a03-0623-08ddb3e8f679
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?E/nmCz17EQTid7z0wqbWL5Rey+aVBYmCmY/fPT9xUZk3mQhNuyhKfT+LVosn?=
+ =?us-ascii?Q?HEnnZ0oMXfHlZeezFtHmOnue3sjr4AMM2IfeOZaorxplukrEt8NwVV/oEoKM?=
+ =?us-ascii?Q?Rg8f0Hs9dgMFCgga4UCECfSTVsTT+IxqCarZFoz0kDrhppU6YY5ZSlRKb/bL?=
+ =?us-ascii?Q?s71MQN6PuHBTLWAf5wl0Ij+YJJi/0+pW2964XVU9DaFT+4sTePf+q7og2RU5?=
+ =?us-ascii?Q?QSD7Otq5B3p41oUmAxi1oy7D0QR8T/RkAtR6pnq3AeEf0XvnYXcBiSviZHh/?=
+ =?us-ascii?Q?HGwuzaNzOcZjhSuXfvelwHOh9oEVDlBzVG62Kok0W+bxeX37iLYBa/V+cUOd?=
+ =?us-ascii?Q?jU4yaKpBnC5+g1IpWQwxDDXQIAAoF+NciUAnUvktXLxtw3QM0bnD1pUqHCZo?=
+ =?us-ascii?Q?l2EnA1Tr+VCrSkx8TmtwuiTLb/wgyg9E+tt9rcOKWxnKP6OuLSgarhWPWplD?=
+ =?us-ascii?Q?1ka5OFUMygOVvqYVZfNHLer3VA6UpP65SH3pmsBKdt1IfGQcXpIHl5SX2u5B?=
+ =?us-ascii?Q?dE7m07WjKIpwPKIo5mi1KtBqmB24OxpGrHOwLs1jYEVh9UVGlTd25wV6fhn8?=
+ =?us-ascii?Q?Gaf2TGFwsMCASRuFIc15DzTqu7zsCp/U4qqEX52yXJ/ze1bH99IbzyF1D9ka?=
+ =?us-ascii?Q?/dAU2Fya4oKx5NsW5MfHib62cXw2q9XpjKsB6eLM4ylxj0GLvVcV7++3Moky?=
+ =?us-ascii?Q?E5aZAchBbX3KuS2fiH2Wi7ttFIaZoWEsi1+OmoXqCUg8Hve2I2Ne7xWWR3NV?=
+ =?us-ascii?Q?ZO+bC/ubQIeHJwd76mNUC31/1S4teHY7K0fsILK4Zn/LCFadr5SzgpzB6ojX?=
+ =?us-ascii?Q?BomNaETYoHin9vFc77VixuXg7GQHGXyjFBmDS2zWNYGEOvADstLpnjBhsSHn?=
+ =?us-ascii?Q?rcq5iUOX4gVsaLMHaJqQddQI9d8Dpl1/RsuvT36GNIZZ74aESUBIjBuW8twu?=
+ =?us-ascii?Q?QBpEAsNbBBMLUQokz/EMHnLoPVob/7F80C1Qoe7ukOwvyFb+wBIJT09e6EWz?=
+ =?us-ascii?Q?ubPkdaApZ/S5ZjB5vdMfe7piYr5IBeWrMPxvyBYOokXZnpToRBBjjWrzaXoQ?=
+ =?us-ascii?Q?535R8a+f+oMY/WAVu3KONrFExJT06VRkj0BrINFc9oz9K1u+MyLlk10DJqva?=
+ =?us-ascii?Q?b4bCLsao8jj4faaSpo/qsxHU9nzpySmG7wb6GmBd0QjH9zaQd7q4O5xmMFQQ?=
+ =?us-ascii?Q?OANBlyuaJbD/EyDlKH6SgV78TGRHjkWKv3Hd527C9+rFRM8KYjDoW+t8RIi2?=
+ =?us-ascii?Q?EJ5LblJrz63AWFiW5eZEaIb+eiKcu9EJFVAh6/FVJnKpfX3j6sSw8WEuQqLu?=
+ =?us-ascii?Q?REMTwRT2Pafc0LGDuu9RrUBD7LJJ/eTRrgZ8ha541wLBlDvM29Y55PMzVu5e?=
+ =?us-ascii?Q?lCQWGdR2N+uvlog8HKJWhiJYtwNrh7xcuTwj0n8yfl5OCtHSw36751kYuPhk?=
+ =?us-ascii?Q?2B0kbpYy0yGCLxuNJCbKDy96NpE9iqOKYAoMUPmX/ucjQhmrpJ4KLQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:217.111.95.7;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta.arri.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arri.de
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2025 13:05:30.5014
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2fcdc2d4-f5d0-4a03-0623-08ddb3e8f679
+X-MS-Exchange-CrossTenant-Id: e6a73a5a-614d-4c51-b3e3-53b660a9433a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e6a73a5a-614d-4c51-b3e3-53b660a9433a;Ip=[217.111.95.7];Helo=[mta.arri.de]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF000001A4.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR03MB9574
 
-If we fail to commit an entity, we need to restore the
-UVC_CTRL_DATA_BACKUP for the other uncommitted entities. Otherwise the
-control cache and the device would be out of sync.
+For extended advertising capable controllers, hci_start_ext_adv_sync()
+at the moment synchronously calls SET_EXT_ADV_PARAMS [1],
+SET_ADV_SET_RAND_ADDR [2], SET_EXT_SCAN_RSP_DATA [3](optional) and
+SET_EXT_ADV_ENABLE [4].  After all synchronous commands are finished,
+SET_EXT_ADV_DATA is called from the async response handler of
+SET_EXT_ADV_PARAMS [5] (via hci_update_adv_data).
 
-Cc: stable@kernel.org
-Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Closes: https://lore.kernel.org/linux-media/fe845e04-9fde-46ee-9763-a6f00867929a@redhat.com/
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250224-uvc-data-backup-v2-3-de993ed9823b@chromium.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-(cherry picked from commit a70705d3c020d0d5c3ab6a5cc93e011ac35e7d48)
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+So the current implementation sets the advertising data AFTER enabling
+the advertising instance.  The BT Core specification explicitly allows
+for this [6]:
+
+> If advertising is currently enabled for the specified advertising set,
+> the Controller shall use the new data in subsequent extended
+> advertising events for this advertising set. If an extended
+> advertising event is in progress when this command is issued, the
+> Controller may use the old or new data for that event.
+
+In case of the Realtek RTL8761BU chip (almost all contemporary BT USB
+dongles are built on it), updating the advertising data after enabling
+the instance produces (at least one) corrupted advertising message.
+Under normal conditions, a single corrupted advertising message would
+probably not attract much attention, but during MESH provisioning (via
+MGMT I/O / mesh_send(_sync)), up to 3 different messages (BEACON, ACK,
+CAPS) are sent within a loop which causes corruption of ALL provisioning
+messages.
+
+I have no idea whether this could be fixed in the firmware of the USB
+dongles (I didn't even find the chip on the Realtek homepage), but
+generally I would suggest changing the order of the HCI commands as this
+matches the command order for "non-extended adv capable" controllers and
+simply is more natural.
+
+This patch only considers advertising instances with handle > 0, I don't
+know whether this should be extended to further cases.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/bluetooth/hci_sync.c#n1319
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/bluetooth/hci_sync.c#n1204
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/bluetooth/hci_sync.c#n1471
+[4] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/bluetooth/hci_sync.c#n1469
+[5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/bluetooth/hci_event.c#n2180
+[6] https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-60/out/en/host-controller-interface/host-controller-interface-functional-specification.html#UUID-d4f36cb5-f26c-d053-1034-e7a547ed6a13
+
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Fixes: a0fb3726ba55 ("Bluetooth: Use Set ext adv/scan rsp data if controller supports")
+Cc: stable@vger.kernel.org
 ---
- drivers/media/usb/uvc/uvc_ctrl.c | 40 +++++++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 14 deletions(-)
+ include/net/bluetooth/hci_core.h |  1 +
+ include/net/bluetooth/hci_sync.h |  1 +
+ net/bluetooth/hci_event.c        | 33 +++++++++++++++++++++++++++++
+ net/bluetooth/hci_sync.c         | 36 ++++++++++++++++++++++++++------
+ 4 files changed, 65 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index afd9c2d9596c..f37198839a8a 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1697,7 +1697,7 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 	unsigned int processed_ctrls = 0;
- 	struct uvc_control *ctrl;
- 	unsigned int i;
--	int ret;
-+	int ret = 0;
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 9fc8f544e20e..8d37f127ddba 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -237,6 +237,7 @@ struct oob_data {
  
- 	if (entity == NULL)
- 		return 0;
-@@ -1725,8 +1725,6 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 				dev->intfnum, ctrl->info.selector,
- 				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
- 				ctrl->info.size);
--		else
--			ret = 0;
+ struct adv_info {
+ 	struct list_head list;
++	bool	enable_after_set_ext_data;
+ 	bool	enabled;
+ 	bool	pending;
+ 	bool	periodic;
+diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
+index 5224f57f6af2..00eceffeec87 100644
+--- a/include/net/bluetooth/hci_sync.h
++++ b/include/net/bluetooth/hci_sync.h
+@@ -112,6 +112,7 @@ int hci_schedule_adv_instance_sync(struct hci_dev *hdev, u8 instance,
+ int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance);
+ int hci_start_ext_adv_sync(struct hci_dev *hdev, u8 instance);
+ int hci_enable_ext_advertising_sync(struct hci_dev *hdev, u8 instance);
++int hci_enable_ext_advertising(struct hci_dev *hdev, u8 instance);
+ int hci_enable_advertising_sync(struct hci_dev *hdev);
+ int hci_enable_advertising(struct hci_dev *hdev);
  
- 		if (!ret)
- 			processed_ctrls++;
-@@ -1738,17 +1736,24 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 66052d6aaa1d..eb018d8a3c4b 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2184,6 +2184,37 @@ static u8 hci_cc_set_ext_adv_param(struct hci_dev *hdev, void *data,
+ 	return rp->status;
+ }
  
- 		ctrl->dirty = 0;
- 
--		if (ret < 0) {
-+		if (!rollback && handle && !ret &&
-+		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
-+			uvc_ctrl_set_handle(handle, ctrl, handle);
++static u8 hci_cc_le_set_ext_adv_data(struct hci_dev *hdev, void *data,
++				     struct sk_buff *skb)
++{
++	struct hci_cp_le_set_ext_adv_data *cp;
++	struct hci_ev_status *rp = data;
++	struct adv_info *adv_instance;
 +
-+		if (ret < 0 && !rollback) {
- 			if (err_ctrl)
- 				*err_ctrl = ctrl;
--			return ret;
-+			/*
-+			 * If we fail to set a control, we need to rollback
-+			 * the next ones.
-+			 */
-+			rollback = 1;
- 		}
++	bt_dev_dbg(hdev, "status 0x%2.2x", rp->status);
++
++	if (rp->status)
++		return rp->status;
++
++	cp = hci_sent_cmd_data(hdev, HCI_OP_LE_SET_EXT_ADV_DATA);
++	if (!cp)
++		return rp->status;
++
++	hci_dev_lock(hdev);
++
++	if (cp->handle) {
++		adv_instance = hci_find_adv_instance(hdev, cp->handle);
++		if (adv_instance) {
++			if (adv_instance->enable_after_set_ext_data)
++				hci_enable_ext_advertising(hdev, cp->handle);
++		}
++	}
++
++	hci_dev_unlock(hdev);
++
++	return rp->status;
++}
++
+ static u8 hci_cc_read_rssi(struct hci_dev *hdev, void *data,
+ 			   struct sk_buff *skb)
+ {
+@@ -4166,6 +4197,8 @@ static const struct hci_cc {
+ 	       sizeof(struct hci_rp_le_read_num_supported_adv_sets)),
+ 	HCI_CC(HCI_OP_LE_SET_EXT_ADV_PARAMS, hci_cc_set_ext_adv_param,
+ 	       sizeof(struct hci_rp_le_set_ext_adv_params)),
++	HCI_CC_STATUS(HCI_OP_LE_SET_EXT_ADV_DATA,
++		      hci_cc_le_set_ext_adv_data),
+ 	HCI_CC_STATUS(HCI_OP_LE_SET_EXT_ADV_ENABLE,
+ 		      hci_cc_le_set_ext_adv_enable),
+ 	HCI_CC_STATUS(HCI_OP_LE_SET_ADV_SET_RAND_ADDR,
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 1f8806dfa556..da0e39cce721 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -1262,6 +1262,7 @@ int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
+ 		hci_cpu_to_le24(adv->max_interval, cp.max_interval);
+ 		cp.tx_power = adv->tx_power;
+ 		cp.sid = adv->sid;
++		adv->enable_after_set_ext_data = true;
+ 	} else {
+ 		hci_cpu_to_le24(hdev->le_adv_min_interval, cp.min_interval);
+ 		hci_cpu_to_le24(hdev->le_adv_max_interval, cp.max_interval);
+@@ -1456,6 +1457,23 @@ int hci_enable_ext_advertising_sync(struct hci_dev *hdev, u8 instance)
+ 				     data, HCI_CMD_TIMEOUT);
+ }
+ 
++static int enable_ext_advertising_sync(struct hci_dev *hdev, void *data)
++{
++	u8 instance = PTR_UINT(data);
++
++	return hci_enable_ext_advertising_sync(hdev, instance);
++}
++
++int hci_enable_ext_advertising(struct hci_dev *hdev, u8 instance)
++{
++	if (!hci_dev_test_flag(hdev, HCI_ADVERTISING) &&
++	    list_empty(&hdev->adv_instances))
++		return 0;
++
++	return hci_cmd_sync_queue(hdev, enable_ext_advertising_sync,
++				  UINT_PTR(instance), NULL);
++}
++
+ int hci_start_ext_adv_sync(struct hci_dev *hdev, u8 instance)
+ {
+ 	int err;
+@@ -1464,11 +1482,11 @@ int hci_start_ext_adv_sync(struct hci_dev *hdev, u8 instance)
+ 	if (err)
+ 		return err;
+ 
+-	err = hci_set_ext_scan_rsp_data_sync(hdev, instance);
+-	if (err)
+-		return err;
 -
--		if (!rollback && handle &&
--		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
--			uvc_ctrl_set_handle(handle, ctrl, handle);
- 	}
- 
-+	if (ret)
-+		return ret;
-+
- 	return processed_ctrls;
+-	return hci_enable_ext_advertising_sync(hdev, instance);
++	/* SET_EXT_ADV_DATA and SET_EXT_ADV_ENABLE are called in the
++	 * asynchronous response chain of set_ext_adv_params in order to
++	 * set the advertising data first prior enabling it.
++	 */
++	return hci_set_ext_scan_rsp_data_sync(hdev, instance);
  }
  
-@@ -1779,7 +1784,8 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
- 	struct uvc_video_chain *chain = handle->chain;
- 	struct uvc_control *err_ctrl;
- 	struct uvc_entity *entity;
--	int ret = 0;
-+	int ret_out = 0;
-+	int ret;
+ int hci_disable_per_advertising_sync(struct hci_dev *hdev, u8 instance)
+@@ -1832,8 +1850,14 @@ static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
  
- 	/* Find the control. */
- 	list_for_each_entry(entity, &chain->entities, chain) {
-@@ -1790,17 +1796,23 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
- 				ctrls->error_idx =
- 					uvc_ctrl_find_ctrl_idx(entity, ctrls,
- 							       err_ctrl);
--			goto done;
-+			/*
-+			 * When we fail to commit an entity, we need to
-+			 * restore the UVC_CTRL_DATA_BACKUP for all the
-+			 * controls in the other entities, otherwise our cache
-+			 * and the hardware will be out of sync.
-+			 */
-+			rollback = 1;
-+
-+			ret_out = ret;
- 		} else if (ret > 0 && !rollback) {
- 			uvc_ctrl_send_events(handle, entity,
- 					     ctrls->controls, ctrls->count);
- 		}
+ 	if (instance) {
+ 		adv = hci_find_adv_instance(hdev, instance);
+-		if (!adv || !adv->adv_data_changed)
++		if (!adv)
+ 			return 0;
++		if (!adv->adv_data_changed) {
++			if (adv->enable_after_set_ext_data)
++				hci_enable_ext_advertising_sync(hdev,
++								adv->handle);
++			return 0;
++		}
  	}
  
--	ret = 0;
--done:
- 	mutex_unlock(&chain->ctrl_mutex);
--	return ret;
-+	return ret_out;
- }
- 
- int uvc_ctrl_get(struct uvc_video_chain *chain,
+ 	len = eir_create_adv_data(hdev, instance, pdu->data,
 -- 
-2.50.0.727.gbf7dc18ff4-goog
+2.43.0
 
 
