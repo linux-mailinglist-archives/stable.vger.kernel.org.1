@@ -1,173 +1,161 @@
-Return-Path: <stable+bounces-158536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79160AE8270
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 14:15:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C37DAAE82C5
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 14:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D6FB189FA03
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 12:15:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 624245A01B3
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 12:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D7D25BF12;
-	Wed, 25 Jun 2025 12:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569A725F79C;
+	Wed, 25 Jun 2025 12:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="GmkFJZ45";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="L4P/yTBb"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="T1Ay3Q+T"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6267E1ADFFB;
-	Wed, 25 Jun 2025 12:15:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B96E27468
+	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 12:32:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750853730; cv=none; b=PHWjwRjQQ/7wDepM7rPT2kljr0kHqp2aE1L13s8LgW38l7eKvVBR1DxEerqYx2c/wFZ7JsOIqkJ/TKYjsiIfk1v0oOIc0yQjobaZIT7FQiwtkXbJiGfomjqwbQ+GBfgY93lY/6YPYnmo0QdVdLb/PTZancis7yv0KCyff0UqNPY=
+	t=1750854744; cv=none; b=DVDQXQagcXg8m+f70ZJc89LOFfKmUD7BOt9COlKd/C4/q1dcwZC/v5hvG6XPJP43q1EoElObV7qlDIs7VzPVPOSY2PuMTBsSRhJR+8zi/alRs6NrOy0i8Vn25ZGp5nx2NKwmiSthjVXiZEgCPn2MdbUkQNRjaRkbElMkwqYi534=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750853730; c=relaxed/simple;
-	bh=30nOtmBlh3aA5ZF6uHRSVaCLZpCJBiyzVQGIhuSz7e8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fjf+wRJP4KIsvEawmyKqA4mZq04jW2T3J51FsnJtUnJ/fkywx1f4ywMbafmhSyA5RjWoDo+OpF93Pbb0PZWI0QaraokRlv5IfaHl9ohMRekwE3g/2BCnIxLy+n/+0ciD7ADUlLp8UpYnROY1xPKKNLdAF/5apWG3HRdaprmfspM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=GmkFJZ45; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=L4P/yTBb; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 06D587A01A2;
-	Wed, 25 Jun 2025 08:15:27 -0400 (EDT)
-Received: from phl-frontend-02 ([10.202.2.161])
-  by phl-compute-06.internal (MEProxy); Wed, 25 Jun 2025 08:15:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1750853726;
-	 x=1750940126; bh=o3GBtX60wx4Vf1WejvmFEtSL/L3MgcftL3fqrvCo7rw=; b=
-	GmkFJZ45ilwhO3E31M+777jvMNsjhf+Z4wa22BubFTySBV0OQYV/4IDuAHxQpTyd
-	2ie34HZ7VKDMne5aumyLjYEwv2XtFPR+JAI3S1+TMQqFi144xAIQfcDonKqcXwSm
-	1NEQhNu4q5fY8ayJdZGAQ/wFVXx+9vYAIDmguMGJe9V0mk1tCtMva1JY8SkPbhCf
-	WTP8tTpETqu5xWXpvTgQ2WKfIYFNQVhYs7x8VlUI9IDp1WR7UFk26Yjk9jwp4uE8
-	4f/IqASq5AejtXFSqjyEFKy2Q0KdZBNFFz9+CjA1dGB12NU7P5qcmzJHzq8lc9W4
-	kr0eueGWSsTf7nzmBUQLIg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1750853726; x=
-	1750940126; bh=o3GBtX60wx4Vf1WejvmFEtSL/L3MgcftL3fqrvCo7rw=; b=L
-	4P/yTBb3a6APugNmTVULxjOeQuD4g832230VEZDJY1LQJpRXmu9mIWlAEVmWbmvC
-	wjR9kVzCCyHpvSyatkbU5ZgXriqpWpchN5167oecgnqOoykyPu0U6cq0oeGQsgK8
-	zVzeSa0XcRcWOCTYbhkVo26Msh7eLmH0zc99/m7X0WFA+d2rn7EUjrqxV0qqfwQS
-	9yAuc4fJyS66fWfhKRd9hILypsMgKwPagziwX30nD/t9fr0LW10i3Pr5evmBTiog
-	GlN5NPJ1I9B8SPheL1DO+MjTLtPYm21kyjFlpj8ykUSRqNIiSnQa7w+jHH4MniHX
-	8Wz+jJ8JAGNB3Z2LR1ODA==
-X-ME-Sender: <xms:XehbaEQ2dZ2I6hE87lLvn0WZfQrT-i7Jcgt0QeBEHe0lAEh0HQkFUw>
-    <xme:XehbaBxPT6BeaEixTM4EmIY6zFyJJDBIl0zLXdN03u3m892l_ogNiwUgO8UOCVam_
-    tAjCr43sUqU74uaZfI>
-X-ME-Received: <xmr:XehbaB0vCLDaHUY1WHdgNcLWJV1Y_aMsP1Gv3-C3gS02ot-2D3QGYlalqeTJxsyUG8KLWGzi1MA9BxDZ_II_kNk_j_TrnQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvvdejhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomhepfdeurghrrhih
-    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
-    grthhtvghrnhepuddvtdelfeejffekgfekfeekgfekveelleehkeeuheetuedtvdevgeef
-    ieejteeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsggrrhhrhihnsehpohgsohigrdgtohhmpdhnsggprhgtphhtthhopedvuddpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtohephhholhhgvghrsegrphhplhhivgguqdgrshihnh
-    gthhhrohhnhidrtghomhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgu
-    rghtihhonhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehprghttghhvghssehlihhsthhsrdhlihhnuhigrdguvghv
-    pdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhunhgurghtihhonhdr
-    ohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
-    hgpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvghtpdhrtghpthhtohep
-    shhhuhgrhheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:XehbaICJbyfKQTyhySsX82c90BohFvUYP6gKw-0cnqfe7OHoHyHiTw>
-    <xmx:XehbaNhPSv40PdJqhW-jmEkwiLmFk1Dvglew3qiuwK4UIXp76Zi0SQ>
-    <xmx:XehbaEqrZnWnDZCKkO3ovsOtG5p4QD2AmGYMSb1uAsJ5prlbUSZliQ>
-    <xmx:XehbaAj8cMHXCkd2oKxmq3bzHRUYhyU1IKhcdcehtc7hOVCA-RqHtA>
-    <xmx:XuhbaBHwPQWVJ5xuPKAAx3kdAT_MJ5kDtugb5j90Gre3QUiukdlDoTAI>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 25 Jun 2025 08:15:22 -0400 (EDT)
-Message-ID: <6d3b0f28-98cb-46dd-b971-8a11e3b69d68@pobox.com>
-Date: Wed, 25 Jun 2025 05:15:21 -0700
+	s=arc-20240116; t=1750854744; c=relaxed/simple;
+	bh=JqPO/9U3+Ff+KlGnSYR3sbBCY/6eg60IOqwNcb10dEE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Bb5xn3ypj7AybT19acz02B+aio8k+JzL/al+9osUTb63bqHW0rGslfqeo6KbAOPCKWgjz98pwQWicnVFJla6sOpRfk2JZ1fnuqBiiqBjm0Ulh+8vMlyDGs6lmBndvtf1NocIvP7uODZDwptD8ZEWDGdBOD+nKXMqurMSzaBOlqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=T1Ay3Q+T; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-32b2f5d91c8so49372871fa.0
+        for <stable@vger.kernel.org>; Wed, 25 Jun 2025 05:32:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1750854740; x=1751459540; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k/UcRL2CiRusSjTBBonxW3R6u5mp7QJvmDzQeV8NE+I=;
+        b=T1Ay3Q+T5DmkjePaWHsMFlT+20yhqSQdTMwQRqEqDLksgdG/jhG02hdynAPuICDlIz
+         2+9OLDAS2quJbhOPhofs7Z7Mc4d7o8WdD9QLYqSs/S9etYI/xMzzlf1GWvZQtXCd0uMR
+         /KRDNyrVYVevde/e1PAq2jiBSzdA5nOPWwJx0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750854740; x=1751459540;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=k/UcRL2CiRusSjTBBonxW3R6u5mp7QJvmDzQeV8NE+I=;
+        b=s09rQHdd3dEp8DU0O6XmBz7odb3Ltdxcmo14EwsUXwZeLLWjELM+Ai1hxTV/Y1vyCb
+         QnSAbDz8xvtjxy2C13ff80/H1+DbS1ftqtBEPzUrfT3I+MS1b3yNEt5RyKLGeVMVCmuw
+         jMdXvEop/6PB9bSAMbavlXH63gG1hhNGBWGb+7m02pWJJYwoGloe34IxnqDq7bpJPrcr
+         dScTXN1MqoMTyuZhNjhTGfirPXF/9KQb1ZYxDtZ4SkrWTEfC19K0T/hWG1lJtDnqVlG/
+         AaQXXU3QdmQQFT+t/KCwz8q6uGVbUBln/LNYQ6ujFpjuS7fVlUm+PgH7WrgWz8/Uhvqd
+         fMTw==
+X-Gm-Message-State: AOJu0YwWbJnQA0987398ClIqlvceB3pDoSNVnhpNmkqHLPI4odhHYLnH
+	RE7NPFoDtRuVGoEjSEEZY7cCXvtyZM4e39Zjk4FZqL29a0bvXNGrui14cZlA72dWGhSFIw/saYg
+	QyLQ=
+X-Gm-Gg: ASbGncv/Uo6gyY9PLoib89F4nSFvmpZWxG9T9DEq/E9tjEHeiqhM9wMlgGLGHzbzCWo
+	IrSvX/4Nup4Sy4rHxD8W0XZm/T8km28bzJ6rRhL61X4Vzt90d+rjH2Fyi4rzOC6sruZPzBJtY3e
+	QHEXJTLMNqIES1mU3ReWE8tQN87v3xUbDHtXkSZySSLNOaW1JD0fweGlR/jhCZOQC1sCD2aXKYX
+	vYgqn9Cv+E+Eo4xPqPUODFAN2qHN+9E8dnxFw6X8mWJtexLLWxoiFKkDppRAmw0gmPq2T5ekdfL
+	lva1z/FWL2QemuVdyNNCVnUNDBx1tDCj6mai2CtKj1dgAf1kMuCokyekvH5Ug7gfHqshLUorpmE
+	45XUHkk5VHJEEPNwyqzkb8IVbUtnVyfmSTgSqNOMDHY+QeDEuRQ6pDeAQDA==
+X-Google-Smtp-Source: AGHT+IHZZyKQaxryj0iY7w/MNBxO2g1Drmn99ADVMq0+p+V9o4uVRAd/Q78mrO7oLic+tmY+Rlu1AQ==
+X-Received: by 2002:a05:6512:3f06:b0:553:3544:2b31 with SMTP id 2adb3069b0e04-554fdd215b1mr821771e87.40.1750854739959;
+        Wed, 25 Jun 2025 05:32:19 -0700 (PDT)
+Received: from ribalda.c.googlers.com.com (166.141.88.34.bc.googleusercontent.com. [34.88.141.166])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-553ea7f7cf0sm1830850e87.237.2025.06.25.05.32.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Jun 2025 05:32:19 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+To: stable@vger.kernel.org
+Cc: Ricardo Ribalda <ribalda@chromium.org>,
+	stable@kernel.org,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.15.y 1/3] media: uvcvideo: Return the number of processed controls
+Date: Wed, 25 Jun 2025 12:32:14 +0000
+Message-ID: <20250625123216.514435-1-ribalda@chromium.org>
+X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
+In-Reply-To: <2025062014-prideful-exemplary-1838@gregkh>
+References: <2025062014-prideful-exemplary-1838@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.15 000/588] 6.15.4-rc2 review
-To: =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org,
- Christian Brauner <brauner@kernel.org>
-References: <20250624121449.136416081@linuxfoundation.org>
- <e9249afe-f039-4180-d50d-b199c26dea26@applied-asynchrony.com>
- <2025062511-tutor-judiciary-e3f9@gregkh>
- <b875b110-277d-f427-412c-b2cb6512fccc@applied-asynchrony.com>
-Content-Language: en-US
-From: "Barry K. Nathan" <barryn@pobox.com>
-In-Reply-To: <b875b110-277d-f427-412c-b2cb6512fccc@applied-asynchrony.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 6/25/25 02:08, Holger Hoffstätte wrote:
-> On 2025-06-25 10:25, Greg Kroah-Hartman wrote:
->> On Wed, Jun 25, 2025 at 10:00:56AM +0200, Holger Hoffstätte wrote:
->>> (cc: Christian Brauner>
->>>
->>> Since 6.15.4-rc1 I noticed that some KDE apps (kded6, kate (the text 
->>> editor))
->>> started going into a tailspin with 100% per-process CPU.
->>>
->>> The symptom is 100% reproducible: open a new file with kate, save 
->>> empty file,
->>> make changes, save, watch CPU go 100%. perf top shows copy_to_user 
->>> running wild.
->>>
->>> First I tried to reproduce on 6.15.3 - no problem, everything works 
->>> fine.
->>>
->>> After checking the list of patches for 6.15.4 I reverted the 
->>> anon_inode series
->>> (all 3 for the first attempt) and the problem is gone.
->>>
->>> Will try to reduce further & can gladly try additional fixes, but for 
->>> now
->>> I'd say these patches are not yet suitable for stable.
->>
->> Does this same issue also happen for you on 6.16-rc3?
-> 
-> Curiously it does *not* happen on 6.16-rc3, so that's good.
-> I edited/saved several files and everything works as it should.
-> 
-> In 6.15.4-rc the problem occurs (as suspected) with:
-> anon_inode-use-a-proper-mode-internally.patch aka cfd86ef7e8e7 upstream.
-> 
-> thanks
-> Holger
+If we let know our callers that we have not done anything, they will be
+able to optimize their decisions.
 
-For what it's worth, I can confirm this reproduces easily and 
-consistently on Debian trixie's KDE (6.3.5), with either Wayland or X11. 
-It reproduces with kernel 6.15.4-rc2, and with 
-6.15.3+anon_inode-use-a-proper-mode-internally.patch, but not with 
-vanilla 6.15.3 or with 6.16-rc3.
+Cc: stable@kernel.org
+Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-ID: <20250224-uvc-data-backup-v2-1-de993ed9823b@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+(cherry picked from commit ba4fafb02ad6a4eb2e00f861893b5db42ba54369)
+---
+ drivers/media/usb/uvc/uvc_ctrl.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-By the way, my test VM has both GNOME and KDE installed. If I boot one 
-of the affected kernels and log into a GNOME session, I don't get any 
-GNOME processes chewing up CPU the way that some of the KDE processes 
-do. However, if I then start kate within the GNOME session and follow 
-the steps to reproduce (create a new file, save it immediately, type a 
-few characters, save again), kate still starts using 100% CPU.
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index cbf19aa1d823..0a01c8b3625b 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -2090,12 +2090,17 @@ int uvc_ctrl_begin(struct uvc_video_chain *chain)
+ 	return mutex_lock_interruptible(&chain->ctrl_mutex) ? -ERESTARTSYS : 0;
+ }
+ 
++/*
++ * Returns the number of uvc controls that have been correctly set, or a
++ * negative number if there has been an error.
++ */
+ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+ 				  struct uvc_fh *handle,
+ 				  struct uvc_entity *entity,
+ 				  int rollback,
+ 				  struct uvc_control **err_ctrl)
+ {
++	unsigned int processed_ctrls = 0;
+ 	struct uvc_control *ctrl;
+ 	unsigned int i;
+ 	int ret;
+@@ -2130,6 +2135,9 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+ 		else
+ 			ret = 0;
+ 
++		if (!ret)
++			processed_ctrls++;
++
+ 		if (rollback || ret < 0)
+ 			memcpy(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+ 			       uvc_ctrl_data(ctrl, UVC_CTRL_DATA_BACKUP),
+@@ -2148,7 +2156,7 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+ 			uvc_ctrl_set_handle(handle, ctrl, handle);
+ 	}
+ 
+-	return 0;
++	return processed_ctrls;
+ }
+ 
+ static int uvc_ctrl_find_ctrl_idx(struct uvc_entity *entity,
+@@ -2195,6 +2203,7 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
+ 
+ 	if (!rollback)
+ 		uvc_ctrl_send_events(handle, ctrls->controls, ctrls->count);
++	ret = 0;
+ done:
+ 	mutex_unlock(&chain->ctrl_mutex);
+ 	return ret;
 -- 
--Barry K. Nathan  <barryn@pobox.com>
+2.50.0.727.gbf7dc18ff4-goog
+
 
