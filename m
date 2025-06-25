@@ -1,125 +1,99 @@
-Return-Path: <stable+bounces-158630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1130AE8F9B
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 22:40:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BEA5AE8FBB
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 22:59:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60E051C27A41
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 20:40:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E4C73BE64A
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 20:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5D92D8762;
-	Wed, 25 Jun 2025 20:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4680C210F59;
+	Wed, 25 Jun 2025 20:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="j3kzPxW4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KpP9Xsbh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EF520E031;
-	Wed, 25 Jun 2025 20:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B981F4297;
+	Wed, 25 Jun 2025 20:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750884005; cv=none; b=cvKbKKsyUyRm55O1pJhpjO3OClt6EttUnSLDUGLQmgWrehJcaB1ARy4XRUt2yTasBNAJME2sQt9SAhlLlqDY2eSf69eSNq0eHLmIpjP0o4SFUWDyQG6WM09KcuztTKVGjBn6KaNMnOj7AFKtSLBA0qrWhYey2vijf0gXzcOA0yc=
+	t=1750885180; cv=none; b=aqvQsdFvM79r92o0oP7Wq0qeqE6n8IyRijxxGd+Mdbg/2mTFVHbTchRkw8xNshiaDiXTcMF1K+jvmVQfwmYDtJomqDpU7wyynSWmq0HSv8kTSEr60NAxwxZT9WwDPYapPtIIhssf4vm2N7KwDndAOaaUBgT9iT5opUotcE8HzRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750884005; c=relaxed/simple;
-	bh=ozkF1RQtxWQSwdTh9X1qYOTAsbxBp1f5irTjsPEMmW0=;
-	h=Date:To:From:Subject:Message-Id; b=g367yuQRHlVuR4n0Pvf1tnnHPtvy6g3Pz9BeEgkn5d8YaBipGikUjhqt0knNdfgi5PIQkS3fV83xXpwzQd3BTdA1038u0YVrZGSungrHyncVOVUn5icEOXGTx1T16lwHaYpNcMFGeoI7n2tyz+jCiNzocl6gDrAIaDaS81V8MGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=j3kzPxW4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC09C4CEEA;
-	Wed, 25 Jun 2025 20:40:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1750884004;
-	bh=ozkF1RQtxWQSwdTh9X1qYOTAsbxBp1f5irTjsPEMmW0=;
-	h=Date:To:From:Subject:From;
-	b=j3kzPxW40+y0DXg/USw2QJfvZpPnpZz0cOs3rWMtfJVPOzymXX+mhdRrj7f3DAmzY
-	 FTanetEPuK+wFIO3yuGo4OUsXEV75JXR9QVG/k5FurtoVaM4IslmwQOTzvVBMkoSMA
-	 5uHu4uVWs9+Y3XJI3lq7/s5NQWY6FjnlL/7HSqk8=
-Date: Wed, 25 Jun 2025 13:40:04 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,ying.huang@linux.alibaba.com,stable@vger.kernel.org,rakie.kim@sk.com,matthew.brost@intel.com,joshua.hahnjy@gmail.com,gourry@gourry.net,david@redhat.com,byungchul@sk.com,bertranddrouvot.pg@gmail.com,apopple@nvidia.com,myon@debian.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + fix-do_pages_stat-to-use-compat_uptr_t.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250625204004.9DC09C4CEEA@smtp.kernel.org>
+	s=arc-20240116; t=1750885180; c=relaxed/simple;
+	bh=Rvcc4lTctp09M9xQwfdOzq30dweR+tr4oerHDDndRyc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=pZSROpNQfoghI/h0zbYzJVtYjNNw6GKaQLhrlJ8mFpTW2dsYXEKy/xaW3lTffqm4ux2SwskI3RFGeeO0qjrvCR5SlzPbny+zNk+UXPTtI7krjj0ojm4T1+tDTewn9q4cM2T8n4OiS3lfqRWh7lRNK6cZ/IWD2Vo7bYXh/lPYr68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KpP9Xsbh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0ACC4CEEA;
+	Wed, 25 Jun 2025 20:59:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750885179;
+	bh=Rvcc4lTctp09M9xQwfdOzq30dweR+tr4oerHDDndRyc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=KpP9XsbhrXQh27NcbG2R4YtDnyZk5UWtVVNHLGvMnCMQX8OgmqmarwFO1b3XulvpD
+	 8mRT0ldhCr0jpHefOkX1YTl6b1VXrFMx9gmzpHMPPgB3J7Vh6FcvSDu4+bjdBPtyVL
+	 r7znAuGsNRnwLSV960ZlsMNkBkB5+4CnpjeXoyGpmp++aIdbht3sIqyE6tipIOyZMy
+	 UGr68lXtUQ83ItIT+bfL3B9mfM8TL+IsgyoJY1fqFNHq0Tgbcn3xO7Rp3nsp3U8we9
+	 OlVDxWIwltUVVk1hlLh+hCiktjie6fgISOlMe0MKtANwR8i0ytFZ5ABJ63WsqwBu5T
+	 omeZR/3O5LG/g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33E583A40FCB;
+	Wed, 25 Jun 2025 21:00:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/3] Bluetooth: hci_sync: revert some mesh modifications
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <175088520600.619994.15667708350334111089.git-patchwork-notify@kernel.org>
+Date: Wed, 25 Jun 2025 21:00:06 +0000
+References: <20250625130931.19064-1-ceggers@arri.de>
+In-Reply-To: <20250625130931.19064-1-ceggers@arri.de>
+To: Christian Eggers <ceggers@arri.de>
+Cc: marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
+ brian.gix@intel.com, inga.stotland@gmail.com,
+ linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 
+Hello:
 
-The patch titled
-     Subject: mm/migrate.c: fix do_pages_stat to use compat_uptr_t
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     fix-do_pages_stat-to-use-compat_uptr_t.patch
+This series was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fix-do_pages_stat-to-use-compat_uptr_t.patch
+On Wed, 25 Jun 2025 15:09:29 +0200 you wrote:
+> This reverts minor parts of the changes made in commit b338d91703fa
+> ("Bluetooth: Implement support for Mesh"). It looks like these changes
+> were only made for development purposes but shouldn't have been part of
+> the commit.
+> 
+> Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Eggers <ceggers@arri.de>
+> 
+> [...]
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Here is the summary with links:
+  - [1/3] Bluetooth: hci_sync: revert some mesh modifications
+    https://git.kernel.org/bluetooth/bluetooth-next/c/1984453983fd
+  - [2/3] Bluetooth: MGMT: set_mesh: update LE scan interval and window
+    https://git.kernel.org/bluetooth/bluetooth-next/c/41d630621be1
+  - [3/3] Bluetooth: MGMT: mesh_send: check instances prior disabling advertising
+    https://git.kernel.org/bluetooth/bluetooth-next/c/8dcd9b294572
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Christoph Berg <myon@debian.org>
-Subject: mm/migrate.c: fix do_pages_stat to use compat_uptr_t
-Date: Wed, 25 Jun 2025 17:24:14 +0200
-
-For arrays with more than 16 entries, the old code would incorrectly
-advance the pages pointer by 16 words instead of 16 compat_uptr_t.
-
-Link: https://lkml.kernel.org/r/aFwUnu7ObizycCZ8@msg.df7cb.de
-Signed-off-by: Christoph Berg <myon@debian.org>
-Suggested-by: Bertrand Drouvot <bertranddrouvot.pg@gmail.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Mathew Brost <matthew.brost@intel.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/migrate.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
---- a/mm/migrate.c~fix-do_pages_stat-to-use-compat_uptr_t
-+++ a/mm/migrate.c
-@@ -2444,7 +2444,13 @@ static int do_pages_stat(struct mm_struc
- 		if (copy_to_user(status, chunk_status, chunk_nr * sizeof(*status)))
- 			break;
- 
--		pages += chunk_nr;
-+		if (in_compat_syscall()) {
-+			compat_uptr_t __user *pages32 = (compat_uptr_t __user *)pages;
-+
-+			pages32 += chunk_nr;
-+			pages = (const void __user * __user *) pages32;
-+		} else
-+			pages += chunk_nr;
- 		status += chunk_nr;
- 		nr_pages -= chunk_nr;
- 	}
-_
-
-Patches currently in -mm which might be from myon@debian.org are
-
-fix-do_pages_stat-to-use-compat_uptr_t.patch
 
 
