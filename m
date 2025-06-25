@@ -1,130 +1,125 @@
-Return-Path: <stable+bounces-158629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6959EAE8F59
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 22:20:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1130AE8F9B
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 22:40:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1ADDE7B37F9
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 20:19:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60E051C27A41
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 20:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D121926159D;
-	Wed, 25 Jun 2025 20:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5D92D8762;
+	Wed, 25 Jun 2025 20:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAJzgcGE"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="j3kzPxW4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F85F2DA759;
-	Wed, 25 Jun 2025 20:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EF520E031;
+	Wed, 25 Jun 2025 20:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750882816; cv=none; b=FqmkoduLmR0qnR2lvzfsnECxJwIogJAViQvwohKu8XA3+AnpJalu0ZqbrSbQmrJW33xo9srcVJ3asJ98CqOiuPHOtXRLBkefMqdMLkA3MtkypyeAnXnSU+V72nYeUUCnf291l1Vg2Ex52Ob+t9/vwvMhNXMswz63ql3uYGtj2l0=
+	t=1750884005; cv=none; b=cvKbKKsyUyRm55O1pJhpjO3OClt6EttUnSLDUGLQmgWrehJcaB1ARy4XRUt2yTasBNAJME2sQt9SAhlLlqDY2eSf69eSNq0eHLmIpjP0o4SFUWDyQG6WM09KcuztTKVGjBn6KaNMnOj7AFKtSLBA0qrWhYey2vijf0gXzcOA0yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750882816; c=relaxed/simple;
-	bh=Y5XeuJC6rpa9lv1GCVSFtD2ahPsD5739O5u959VDBjw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=DgRy03dGhCwUIt33X7GMG1kzhR0vBHsoZwetfOKWJ4HSrxGnWdheF4yboVXwAllY8hhhEwlJzIvEpZ1XztNcE2bTJ0/XHL9LEI5REagaTR+YasaQkoUO7PcDfdbMrAhbBXstLHitQ8G1GN6KV9SOsBiL8pb2YmLedTcmaCGS1zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAJzgcGE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C909AC4CEEA;
-	Wed, 25 Jun 2025 20:20:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750882816;
-	bh=Y5XeuJC6rpa9lv1GCVSFtD2ahPsD5739O5u959VDBjw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=hAJzgcGEIqm5RXo2voZazqw/D5dbut5+GT5ItUc6w1ViuU4OhtRtBojPkTa3y5qej
-	 7Bjl2uvopVhLETQbvBqwn1x+ZCyTy4kb307WCDylqAAWDcn/D7bFLqAJzmQUVS+jtk
-	 IjeB2PKSglCumfF6AXnZnBJQI2t13soShhHdOCkm1vBAfBovv1+GywcwOC7soD9XMk
-	 YQ53rOZAZe+SEgdHSNh3lNmwbxB0KjkxDcJQ2/TGzPvJrxlfcIH9IYnX2iqe2uwgiu
-	 jRa2rvzb3I3bNrDH5/pKKt4jI1yBAzQHQ39/4TLfazXkk6pwHboqNaXUOxfOox7RKs
-	 oR26qpugCqkwA==
-Date: Wed, 25 Jun 2025 15:20:14 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>,
-	Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-	ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: Instability in ALL stable and LTS distro kernels (IRQ #16 being
- disabled, PCIe bus errors, ath10k_pci) in Dell Inspiron 5567
-Message-ID: <20250625202014.GA1585022@bhelgaas>
+	s=arc-20240116; t=1750884005; c=relaxed/simple;
+	bh=ozkF1RQtxWQSwdTh9X1qYOTAsbxBp1f5irTjsPEMmW0=;
+	h=Date:To:From:Subject:Message-Id; b=g367yuQRHlVuR4n0Pvf1tnnHPtvy6g3Pz9BeEgkn5d8YaBipGikUjhqt0knNdfgi5PIQkS3fV83xXpwzQd3BTdA1038u0YVrZGSungrHyncVOVUn5icEOXGTx1T16lwHaYpNcMFGeoI7n2tyz+jCiNzocl6gDrAIaDaS81V8MGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=j3kzPxW4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC09C4CEEA;
+	Wed, 25 Jun 2025 20:40:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1750884004;
+	bh=ozkF1RQtxWQSwdTh9X1qYOTAsbxBp1f5irTjsPEMmW0=;
+	h=Date:To:From:Subject:From;
+	b=j3kzPxW40+y0DXg/USw2QJfvZpPnpZz0cOs3rWMtfJVPOzymXX+mhdRrj7f3DAmzY
+	 FTanetEPuK+wFIO3yuGo4OUsXEV75JXR9QVG/k5FurtoVaM4IslmwQOTzvVBMkoSMA
+	 5uHu4uVWs9+Y3XJI3lq7/s5NQWY6FjnlL/7HSqk8=
+Date: Wed, 25 Jun 2025 13:40:04 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,ying.huang@linux.alibaba.com,stable@vger.kernel.org,rakie.kim@sk.com,matthew.brost@intel.com,joshua.hahnjy@gmail.com,gourry@gourry.net,david@redhat.com,byungchul@sk.com,bertranddrouvot.pg@gmail.com,apopple@nvidia.com,myon@debian.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + fix-do_pages_stat-to-use-compat_uptr_t.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250625204004.9DC09C4CEEA@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEmM+Qi-Waxk5qcR+nfip-QGXaKk0-Kq7QSq890e9oYOPjW+bA@mail.gmail.com>
 
-[+cc Jeff, ath10k maintainer]
 
-On Thu, Jun 26, 2025 at 12:47:49AM +0530, Bandhan Pramanik wrote:
-> Hello,
-> 
-> The following is the original thread, where a bug was reported to the
-> linux-wireless and ath10k mailing lists. The specific bug has been
-> detailed clearly here.
-> 
-> https://lore.kernel.org/linux-wireless/690B1DB2-C9DC-4FAD-8063-4CED659B1701@gmail.com/T/#t
-> 
-> There is also a Bugzilla report by me, which was opened later:
-> https://bugzilla.kernel.org/show_bug.cgi?id=220264
-> 
-> As stated, it is highly encouraged to check out all the logs,
-> especially the line of IRQ #16 in /proc/interrupts.
-> 
-> Here is where all the logs are:
-> https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180
-> (these logs are taken from an Arch liveboot)
-> 
-> On my daily driver, I found these on my IRQ #16:
-> 
->   16:     173210          0          0          0 IR-IO-APIC
-> 16-fasteoi   i2c_designware.0, idma64.0, i801_smbus
-> 
-> The fixes stated on the Reddit post for this Wi-Fi card didn't quite
-> work. (But git-cloning the firmware files did give me some more time
-> to have stable internet)
-> 
-> This time, I had to go for the GRUB kernel parameters.
-> 
-> Right now, I'm using "irqpoll" to curb the errors caused.
-> "intel_iommu=off" did not work, and the Wi-Fi was constantly crashing
-> even then. Did not try out "pci=noaer" this time.
-> 
-> If it's of any concern, there is a very weird error in Chromium-based
-> browsers which has only happened after I started using irqpoll. When I
-> Google something, the background of the individual result boxes shows
-> as pure black, while the surrounding space is the usual
-> greyish-blackish, like we see in Dark Mode. Here is a picture of the
-> exact thing I'm experiencing: https://files.catbox.moe/mjew6g.png
-> 
-> If you notice anything in my logs/bug reports, please let me know.
-> (Because it seems like Wi-Fi errors are just a red herring, there are
-> some ACPI or PCIe-related errors in the computers of this model - just
-> a naive speculation, though.)
+The patch titled
+     Subject: mm/migrate.c: fix do_pages_stat to use compat_uptr_t
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fix-do_pages_stat-to-use-compat_uptr_t.patch
 
-Your dmesg log is incomplete, and we would need to see the entire
-thing.  It should start with something like this:
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fix-do_pages_stat-to-use-compat_uptr_t.patch
 
-  Linux version 6.8.0-60-generic (buildd@lcy02-amd64-054) (x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #63-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 15 19:04:15 UTC 2025 (Ubuntu 6.8.0-60.63-generic 6.8.12)
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Your lspci output doesn't include the necessary PCI details; collect
-it with "sudo lspci -vv".
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-We should pick the most serious problem and focus on that instead of
-trying to solve everything at once.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-It sounds like the ath10k issue might be the biggest problem?  If
-"options ath10k_core skip_otp=y" is a workaround for this problem, it
-looks like some ath10k firmware thing, probably unrelated to the PCI
-core.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-Bjorn
+------------------------------------------------------
+From: Christoph Berg <myon@debian.org>
+Subject: mm/migrate.c: fix do_pages_stat to use compat_uptr_t
+Date: Wed, 25 Jun 2025 17:24:14 +0200
+
+For arrays with more than 16 entries, the old code would incorrectly
+advance the pages pointer by 16 words instead of 16 compat_uptr_t.
+
+Link: https://lkml.kernel.org/r/aFwUnu7ObizycCZ8@msg.df7cb.de
+Signed-off-by: Christoph Berg <myon@debian.org>
+Suggested-by: Bertrand Drouvot <bertranddrouvot.pg@gmail.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Mathew Brost <matthew.brost@intel.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/migrate.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+--- a/mm/migrate.c~fix-do_pages_stat-to-use-compat_uptr_t
++++ a/mm/migrate.c
+@@ -2444,7 +2444,13 @@ static int do_pages_stat(struct mm_struc
+ 		if (copy_to_user(status, chunk_status, chunk_nr * sizeof(*status)))
+ 			break;
+ 
+-		pages += chunk_nr;
++		if (in_compat_syscall()) {
++			compat_uptr_t __user *pages32 = (compat_uptr_t __user *)pages;
++
++			pages32 += chunk_nr;
++			pages = (const void __user * __user *) pages32;
++		} else
++			pages += chunk_nr;
+ 		status += chunk_nr;
+ 		nr_pages -= chunk_nr;
+ 	}
+_
+
+Patches currently in -mm which might be from myon@debian.org are
+
+fix-do_pages_stat-to-use-compat_uptr_t.patch
 
 
