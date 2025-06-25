@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-158595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB26AE85C9
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 16:10:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F89AE85CA
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 16:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C02318942CB
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 14:09:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EC141895797
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 14:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A468A266B6B;
-	Wed, 25 Jun 2025 14:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7C92652AF;
+	Wed, 25 Jun 2025 14:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FFw8DRhS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyAXyXR3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D362652AC
-	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 14:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1BC264A84
+	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 14:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750860547; cv=none; b=i+Sj/EkSpYkZmCKaWZmWOh8mCg5CtdZcc/+u0+JrTxRKGFxXQSJvW3LDxsbtfX+MAz4Z5kGLj9aYOYCBP3eKqqtY5mW4rXw4N+rlNq+DBUDdLmT0j3uVHB2mDjNW9LzD7LwzyKToZYyGAhpFUjf3LBCxAU0IBv/XEI7KIy0nlcM=
+	t=1750860548; cv=none; b=mlnD2IT0BmxyC9iEq4wOAfoBYCjtopkTJ1U69S09kVTmfLoFY0VnFCqVtHZIC15dA83WIUA+7333yIam3RK4csHvSiZDeoLSTZ7uOT4tztMcss/V9CbxO0PpLGqsBPF79bOe6IvvQ9CsWCUaHwqg4B24p5yf+i4u8l3j7hKgoj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750860547; c=relaxed/simple;
-	bh=q3Vy/aBowBi5MntFlJbsfoGFbv+2yFJ8d1Uyx98Tb3o=;
+	s=arc-20240116; t=1750860548; c=relaxed/simple;
+	bh=DtPRSKlsRkQQar6TDZhRI2LbkVqlNPrpuiBt7oJrsaI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iQI+xPq3OwaC+/hLNfpIaayvnnHflMQpHij43hC9sZ4/GQ84YnNRoeuTlT80miI3cn3dHMJIUhHO7Y2h4cIKd8djbDlRrptB2ko4LJbGPSKwMLdaJFP66qhQI6PEfJkAxsPTidgRHYLpSaX5qM8R8EU4QokGD7JNcxy5JHwEOBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FFw8DRhS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93CEC4CEEA;
-	Wed, 25 Jun 2025 14:09:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p7nzyHGiq6+WnvpMEm70RLqO9SPOmbwjwhBx2MUSTNZiaFVEYNfFZs3KHnSv9o+kbVuBz4Zae7m2tYEHd/EZADkb60TpqtkRH2vJbPDVO+SmYgV89V3J09jHuQlKCt9MjFCjWjzLpg9f7N2+hMEsVw1DycZ+Ke91+YRgLA63vAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyAXyXR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2D4C4CEEA;
+	Wed, 25 Jun 2025 14:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750860546;
-	bh=q3Vy/aBowBi5MntFlJbsfoGFbv+2yFJ8d1Uyx98Tb3o=;
+	s=k20201202; t=1750860547;
+	bh=DtPRSKlsRkQQar6TDZhRI2LbkVqlNPrpuiBt7oJrsaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FFw8DRhSXJFqAymvM14m8dYPZHOVCHr1hLsFnlr4AXjHOqPERtm3ZJmFMjTnkk8tF
-	 sngeW2pSg1LeDFlx/slzw6l2HWVmPZm5JVEhDZPgKfMzXSRzdDKtgVgkas7K3TSMlP
-	 B7O+xdbmtAVqHEWBrwSlFbRRDgTQoUSquIC3sPksSbMCHBDfbZgOtBbYDNubXqLar/
-	 lfTDIr5AjJgKDAtMuLjX4KtnIvLRi5+JD68G5NCla3TwqmRweUel3AKMDBkenqZ5aX
-	 DzE35bylLjqH4I5GqfuBtrX6ZCLwLMwqDcY17RFfjtJvJLTNFCX8mM4YTGVUxFv8j1
-	 phTTp5FdvkQwQ==
+	b=dyAXyXR3LA0pVeXwJivBCIi4FnCB40S414JLsy8WYNh9qf+yLGDWGjjpmF5OVICLw
+	 G0VamR06xrER+je3kAfZFiUAUifggacLxRhd8s38+Eab18fnR4zwumuemMOVNHoAdC
+	 6zzATfd5rXWWCXcU9dy7lO108aKRmOn6ifMD58G3k3zrB2129iTOE9lEvXboyb/d6E
+	 CrC/fSxwaEMwgBEHrMezhN2KQpi9wcDC7Sxn0yYw/hhO5oABxDQPjJ66bqNy5ax8Tm
+	 mcNdmOewWuBzXluvRpP7gdqto6SMa32eLXAHwK40fLngd71EX7njPzfDmhf2P57Fk5
+	 aW/7rWl7zI2Bw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Pranav Tyagi <pranav.tyagi03@gmail.com>,
+Cc: Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] xfs: fix super block buf log item UAF during force shutdown
-Date: Wed, 25 Jun 2025 10:09:06 -0400
-Message-Id: <20250624191559-d8d1fb6d1407e834@stable.kernel.org>
+Subject: Re: [PATCH 5.15.y] s390: Add '-std=gnu11' to decompressor and purgatory CFLAGS
+Date: Wed, 25 Jun 2025 10:09:07 -0400
+Message-Id: <20250624173422-5f3c01e5e85cebb0@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250624134840.47853-1-pranav.tyagi03@gmail.com>
+In-Reply-To:  <20250623133914.1024961-1-hca@linux.ibm.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,44 +67,22 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 575689fc0ffa6c4bb4e72fd18e31a6525a6124e0
+The upstream commit SHA1 provided is correct: 3b8b80e993766dc96d1a1c01c62f5d15fafc79b9
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Pranav Tyagi<pranav.tyagi03@gmail.com>
-Commit author: Guo Xuenan<guoxuenan@huawei.com>
+Backport author: Heiko Carstens<hca@linux.ibm.com>
+Commit author: Nathan Chancellor<nathan@kernel.org>
 
 Status in newer kernel trees:
 6.15.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (different SHA1: 0d889ae85fcf)
+6.12.y | Present (different SHA1: 593d852f7fe2)
+6.6.y | Present (different SHA1: cefbf9f892ce)
+6.1.y | Present (different SHA1: 62d33b9e68bd)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  575689fc0ffa6 ! 1:  9876b048d8f68 xfs: fix super block buf log item UAF during force shutdown
-    @@ Metadata
-      ## Commit message ##
-         xfs: fix super block buf log item UAF during force shutdown
-     
-    +    [ Upstream commit 575689fc0ffa6c4bb4e72fd18e31a6525a6124e0 ]
-    +
-         xfs log io error will trigger xlog shut down, and end_io worker call
-         xlog_state_shutdown_callbacks to unpin and release the buf log item.
-         The race condition is that when there are some thread doing transaction
-    @@ Commit message
-         ==================================================================
-         Disabling lock debugging due to kernel taint
-     
-    +    [ Backport to 5.15: context cleanly applied with no semantic changes.
-    +    Build-tested. ]
-    +
-         Signed-off-by: Guo Xuenan <guoxuenan@huawei.com>
-         Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-         Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-    +    Signed-off-by: Pranav Tyagi <pranav.tyagi03@gmail.com>
-     
-      ## fs/xfs/xfs_buf_item.c ##
-     @@ fs/xfs/xfs_buf_item.c: xfs_buf_item_relse(
+1:  3b8b80e993766 < -:  ------------- s390: Add '-std=gnu11' to decompressor and purgatory CFLAGS
+-:  ------------- > 1:  10199ccc6ed3c s390: Add '-std=gnu11' to decompressor and purgatory CFLAGS
 ---
 
 Results of testing on various branches:
