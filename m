@@ -1,197 +1,113 @@
-Return-Path: <stable+bounces-158481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B523AE75DE
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 06:33:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 938F7AE7636
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 06:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BA4C7A17F1
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 04:32:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85E207AD6F5
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 04:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DC119C542;
-	Wed, 25 Jun 2025 04:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3301DE8BB;
+	Wed, 25 Jun 2025 04:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wkphe7Gt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ej2Zs27E"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289713D76
-	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 04:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016A235280;
+	Wed, 25 Jun 2025 04:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750826016; cv=none; b=gpVS54+7BdwGmoyOAEAHEb+S1a2uEjXgk/rsCx/Ywb4sibJAZFNyE0omxKPll5JgRxa3jPWzQwN7CsfBfFzFgp7VkoQCnbHXvzBj4Nj94v4B/z9xF/EnST0ZsDx9l4PFzfe1GqsUGlhZ/jwSL9LV+Ki9E2rsdcyix/wpjy6iBXU=
+	t=1750827288; cv=none; b=eOOqkugakhDstxGtkCeAPK3JeUrnOWSB9mC+UBAWwzu5EP8T0BFgARR9GTo/RsQn+rO4aqT3ubIIfSSew7f/8Ldv5P+bgPLPqv+gEyl3lX31qHF7KnvEdh88TnxKFuvZSLtedzVIXCdA9bBT8EGVuqzAE701aMx2FG7BcaimmrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750826016; c=relaxed/simple;
-	bh=suGpKOxJrw/x+Qw34YH9Wq5C5aeu6ITuVv0x3tIR8QU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Zc0x+A0LBwvupVCI7REiqnxMuZYOyWQphD+aXh5x4KGTZQZylKe3rOyeKH52XAoqmBxlXJtjoYeqFVSUyKvFkrdFX0hnumwn8N+LzCnS9C8Cq1pjsREqdK+JT+7dodkmdev3r0zUoQuuTuA4uy4AMfwTGVAwY5mnvWvMZnL58uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wkphe7Gt; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-23636167b30so60201855ad.1
-        for <stable@vger.kernel.org>; Tue, 24 Jun 2025 21:33:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750826014; x=1751430814; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+gxLtLJHJekP2m5RDJO4GtXWgXu8wxWquk/PnbuibIg=;
-        b=wkphe7GtVKXlZEf4dSRQ6JoNnkFUNGpSRmwQZzciM0mL9BsFQIwloPQgPuvyRnCy8h
-         706+QFk2DWUHzeDqb+PbEgHGi6HhHzabyXif2IjGVba1HRBi9GDaBBW43/6IWUX4VsFH
-         Fg1wlkL93rEe8+vAlU/KQP6f2UzQvT2uMM5hp7OII0f2L/BzwpS2/UsnrfOm3ATCRdr1
-         LdmqqWBOUISQDoN9Ng+aG9jyPAt67U+S0syDqFFfoa/iC4vY+Hp07H/cQgOoqMXuTIoF
-         ARMlUckqHcsqcQwXQvywXj3428KP0lBhMe5Jeqbs1zT9gNp+jqXalZeJ6/KB+KSDvByk
-         14MA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750826014; x=1751430814;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+gxLtLJHJekP2m5RDJO4GtXWgXu8wxWquk/PnbuibIg=;
-        b=HLSq0Ega41dQrTMesNxEAMYEeORDQYgDtn6rCqWd2JRe6af+QEVpXzp9HY2DHPL2WV
-         YhXw3XTLlZZJL/GvLMvcDpiRU6/ZChVT/0Nkln8jUaYITGlOLfqiZFQtQwQrXFSkznps
-         2gdEtwUhuQyA1iZSiU0AtYUhdKcZLqntyhrfA/k5IF7Jb/lua3pf+qppviK8/b7eTH6D
-         aUNyaLmmzidnAQF3kQ2BLUhDvA1wiTYFmZv2ffuJvnbrPhiRjX8kj14mVBIBszfyhYNZ
-         RAF5C+hDzpH9HpvLOaNSSf5z1F4jcp47TwRh/4TIdeSK1klF6mzBXcwBxPfCsyNZGDKr
-         RWNg==
-X-Gm-Message-State: AOJu0YyInJcbquxZ1xsEN5A4W2v8Xdu73Ovgk1gb6UfN5B+Dzm6dq8O8
-	kKAxDmVszNinafCDiRp36ADF3A1L57SCYZxC4jSsLuDVtcN2kcVY1ayMetYmyBzJnomwv2HUZ4a
-	4lpk7kfksrbIaqS1IRrrIcuBtniYwkCuDOXg9Z8M9/w==
-X-Gm-Gg: ASbGncsIrjJSm+EcslI83IyVOr5QgVvVGyz+/rY//TzdEeETN8KpBv+G+D9gjrdSOfu
-	+VzQyssGg4MKhRhaWOTeQNNjTyebYb4eyyCO0tdLhiFBByYN1f8c/a44Pi4ek4KcopWloaSHePH
-	efVNDvNQ97YBHrQRtr79n/wiCCjvslK6/oOpuwuBIZ6eWuAq8dxqmCcRtRTM6GGHbydlP5eRa1i
-	1Sx
-X-Google-Smtp-Source: AGHT+IGtaQJcYYKVhLp/50lPmuB48IV2mPVXAbLY+hiIPV/anQZIZHdY1a23C23NRxSz7f54xc9tE/nROguaPMm8/Tw=
-X-Received: by 2002:a17:902:ec91:b0:235:7c6:ebbf with SMTP id
- d9443c01a7336-23824047541mr35763975ad.35.1750826014327; Tue, 24 Jun 2025
- 21:33:34 -0700 (PDT)
+	s=arc-20240116; t=1750827288; c=relaxed/simple;
+	bh=dd9Qun5alIb832kjxzLiwo2DDL06Ewvd0ileT0Lq4iI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fzwcAQNRjIF2MZNz3TPKXr7E+C2F1ntUPKsAfnLY6CjjrEpMUZ8fJ1PTGDoxFJnKBDn4hPrKNdDblSA4w65qdIyasX0j95sYE42yg/yJJeYB7r0z8iFI92igZw9IvTu1VEY//Exv3gIpChGkfa74H2znwHBXKBu3vDkdRgG7uzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ej2Zs27E; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750827287; x=1782363287;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=dd9Qun5alIb832kjxzLiwo2DDL06Ewvd0ileT0Lq4iI=;
+  b=ej2Zs27EcZ70ss42YWC9i8d67xQnbKHYZasgOaovb8Ka6/dzIbTtAI4N
+   cD8fJTr9GHkNhU3y6/bQyGtsw+QNDJFFNfJFRsD52AsRiDH/KgyL5yXLJ
+   rR2728M0aQECXM64zV78jMaJy8BXX341R9fcSo/0WWe6Hy5CymVP//txX
+   4mHahTF+usXiJk2/wAYg0T+bBC+rqc02082rF4VhTfKVtOCKoPOP8pfU6
+   Y77MVFyC7h9ttp0p+atIDOpDLXqZp3wF5TcvVXgoQxUb7V0En4/MTb2ox
+   UZG4galYEIBb9MRPpr0t3RXG/a1v1duZY16qhlJ6ux5BW3eKeQ8t//7x3
+   g==;
+X-CSE-ConnectionGUID: 1ApRzU4dRte27iOLR01s4Q==
+X-CSE-MsgGUID: X0ZuPMRCQn2sjG0RJ36jAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="64142051"
+X-IronPort-AV: E=Sophos;i="6.16,263,1744095600"; 
+   d="scan'208";a="64142051"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2025 21:54:45 -0700
+X-CSE-ConnectionGUID: c+mawL3RRL+swpu2DZhapQ==
+X-CSE-MsgGUID: kPfirjqcSd2q+AfUierqVw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,263,1744095600"; 
+   d="scan'208";a="175750369"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2025 21:54:43 -0700
+Message-ID: <c2191a58-5330-406c-b6b0-951a9d370bed@linux.intel.com>
+Date: Wed, 25 Jun 2025 12:53:28 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250623130611.896514667@linuxfoundation.org> <CA+G9fYvpJjhNDS1Knh0YLeZSXawx-F4LPM-0fMrPiVkyE=yjFw@mail.gmail.com>
- <2025062425-waggle-jaybird-ef83@gregkh>
-In-Reply-To: <2025062425-waggle-jaybird-ef83@gregkh>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 25 Jun 2025 10:03:22 +0530
-X-Gm-Features: Ac12FXyd0V9F7KS0Td9Q-UYWV_cQw3EQwUvR1Vc5-PgNTQkt74Bhnhzxgl5WlkY
-Message-ID: <CA+G9fYvNTO2kObFG9RcOOAkGrRa7rgTw+5P3gmbfzuodVj6owQ@mail.gmail.com>
-Subject: Re: [PATCH 5.4 000/222] 5.4.295-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	kvmarm@lists.cs.columbia.edu, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>, 
-	Julien Thierry <julien.thierry.kdev@gmail.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Russell King <linux@armlinux.org.uk>, Linux ARM <linux-arm-kernel@lists.infradead.org>, 
-	Andy Gross <agross@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] iommu/vt-d: Enable ATS before cache tag assignment
+To: "Tian, Kevin" <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>
+Cc: "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20250620060802.3036137-1-baolu.lu@linux.intel.com>
+ <BN9PR11MB5276371ACFE0B5CEAAA021C88C78A@BN9PR11MB5276.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <BN9PR11MB5276371ACFE0B5CEAAA021C88C78A@BN9PR11MB5276.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 24 Jun 2025 at 15:55, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Jun 24, 2025 at 12:46:15AM +0530, Naresh Kamboju wrote:
-> > On Mon, 23 Jun 2025 at 18:40, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > This is the start of the stable review cycle for the 5.4.295 release.
-> > > There are 222 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > >
-> > > Responses should be made by Wed, 25 Jun 2025 13:05:50 +0000.
-> > > Anything received after that time might be too late.
-> > >
-> > > The whole patch series can be found in one patch at:
-> > >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.295-rc1.gz
-> > > or in the git tree and branch at:
-> > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> > > and the diffstat can be found below.
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> >
-> > Regressions on arm defconfig builds with gcc-12 and clang failed on
-> > the Linux stable-rc 5.4.295-rc1.
-> >
-> > Regressions found on arm
-> > * arm, build
-> >   - clang-20-axm55xx_defconfig
-> >   - clang-20-defconfig
-> >   - clang-20-lkftconfig
-> >   - clang-20-lkftconfig-no-kselftest-frag
-> >   - clang-nightly-axm55xx_defconfig
-> >   - clang-nightly-defconfig
-> >   - clang-nightly-lkftconfig
-> >   - gcc-12-axm55xx_defconfig
-> >   - gcc-12-defconfig
-> >   - gcc-12-lkftconfig
-> >   - gcc-12-lkftconfig-debug
-> >   - gcc-12-lkftconfig-kasan
-> >   - gcc-12-lkftconfig-kunit
-> >   - gcc-12-lkftconfig-libgpiod
-> >   - gcc-12-lkftconfig-no-kselftest-frag
-> >   - gcc-12-lkftconfig-perf
-> >   - gcc-12-lkftconfig-rcutorture
-> >   - gcc-8-axm55xx_defconfig
-> >   - gcc-8-defconfig
-> >
-> > Regression Analysis:
-> >  - New regression? Yes
-> >  - Reproducibility? Yes
-> >
-> > Build regression: stable-rc 5.4.295-rc1 arm kvm init.S Error selected
-> > processor does not support `eret' in ARM mode
-> >
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> >
-> >
-> > ## Build errors
-> > arch/arm/kvm/init.S: Assembler messages:
-> > arch/arm/kvm/init.S:109: Error: selected processor does not support
-> > `eret' in ARM mode
-> > arch/arm/kvm/init.S:116: Error: Banked registers are not available
-> > with this architecture. -- `msr ELR_hyp,r1'
-> > arch/arm/kvm/init.S:145: Error: selected processor does not support
-> > `eret' in ARM mode
-> > arch/arm/kvm/init.S:149: Error: selected processor does not support
-> > `eret' in ARM mode
-> > make[2]: *** [scripts/Makefile.build:345: arch/arm/kvm/init.o] Error 1
-> >
-> > and
-> > /tmp/cc0RDxs9.s: Assembler messages:
-> > /tmp/cc0RDxs9.s:45: Error: selected processor does not support `smc
-> > #0' in ARM mode
-> > /tmp/cc0RDxs9.s:94: Error: selected processor does not support `smc
-> > #0' in ARM mode
-> > /tmp/cc0RDxs9.s:160: Error: selected processor does not support `smc
-> > #0' in ARM mode
-> > /tmp/cc0RDxs9.s:296: Error: selected processor does not support `smc
-> > #0' in ARM mode
-> > make[3]: *** [/builds/linux/scripts/Makefile.build:262:
-> > drivers/firmware/qcom_scm-32.o] Error 1
->
-> That's odd, both clang and gcc don't like this?  Any chance you can do
-> 'git bisect' to track down the offending commit?
+On 6/24/25 16:33, Tian, Kevin wrote:
+>> From: Lu Baolu <baolu.lu@linux.intel.com>
+>> Sent: Friday, June 20, 2025 2:08 PM
+>>
+>> Commit <4f1492efb495> ("iommu/vt-d: Revert ATS timing change to fix boot
+>> failure") placed the enabling of ATS in the probe_finalize callback. This
+>> occurs after the default domain attachment, which is when the ATS cache
+>> tag is assigned. Consequently, the device TLB cache tag is missed when the
+>> domain is attached, leading to the device TLB not being invalidated in the
+>> iommu_unmap paths.
+>>
+>> Fix it by moving the ATS enabling to the default domain attachment path,
+>> ensuring ATS is enabled before the cache tag assignment.
+> 
+> this means ATS will never be enabled for drivers with driver_managed_dma
+> set to '1', as they don't expect their devices attached to the default domain
+> automatically.
 
-The git bisection pointing to,
+You are right.
 
-  kbuild: Update assembler calls to use proper flags and language target
-  commit d5c8d6e0fa61401a729e9eb6a9c7077b2d3aebb0 upstream.
+> 
+> does it make more sense sticking to current way (enabling ATS in
+> probe_finalize) and assigning cache tag for device tlb at that point?
+> 
 
-- Naresh
+Yes. I will post v2 with this approach.
 
->
-> thanks,
->
-> greg k-h
+Thanks,
+baolu
 
