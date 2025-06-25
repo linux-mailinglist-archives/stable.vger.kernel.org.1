@@ -1,155 +1,197 @@
-Return-Path: <stable+bounces-158480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56AADAE758D
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 05:55:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B523AE75DE
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 06:33:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE2231BC074C
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 03:56:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BA4C7A17F1
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 04:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE901DF246;
-	Wed, 25 Jun 2025 03:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DC119C542;
+	Wed, 25 Jun 2025 04:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XKhe1bji"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wkphe7Gt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCE71DB122;
-	Wed, 25 Jun 2025 03:55:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289713D76
+	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 04:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750823751; cv=none; b=CB+DxeqT1pJ2CDBcLE2YZhwoonVQsh1IdF+OkNoLlpsdphD7uI5WjVIMOjS5wTeIA/7J9zFEZQDOXuJmpRObyWfyRFbJpqjkbLVCfjkoFwiCMTjXeviWF1y7CpJjZj3SSV4iQrpvcfSp6dX4gYXv6MjYazU8o/SfnBqC9ROB/ik=
+	t=1750826016; cv=none; b=gpVS54+7BdwGmoyOAEAHEb+S1a2uEjXgk/rsCx/Ywb4sibJAZFNyE0omxKPll5JgRxa3jPWzQwN7CsfBfFzFgp7VkoQCnbHXvzBj4Nj94v4B/z9xF/EnST0ZsDx9l4PFzfe1GqsUGlhZ/jwSL9LV+Ki9E2rsdcyix/wpjy6iBXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750823751; c=relaxed/simple;
-	bh=M8HH45Sj8ttJXgcpCkJO8qkeo5a7N+Cjw/sh54F3uK0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TccliQNQR8r4upjxgl/xxAZsDSN1S7fyHTV9XR45INVBFA177ukDa4KntQdvdaDbsnX1VpV+MCmYRafbQfZrQyY15+IpRyYYAkS+Jv3UGQYz7TW5YhTRgHQfxcMgCSl8BpOuKKE5B+lW75LoA5GHoqoWPNdCLHfo/myBJNg/9Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XKhe1bji; arc=none smtp.client-ip=209.85.166.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f50.google.com with SMTP id ca18e2360f4ac-86cdb330b48so95511839f.0;
-        Tue, 24 Jun 2025 20:55:49 -0700 (PDT)
+	s=arc-20240116; t=1750826016; c=relaxed/simple;
+	bh=suGpKOxJrw/x+Qw34YH9Wq5C5aeu6ITuVv0x3tIR8QU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Zc0x+A0LBwvupVCI7REiqnxMuZYOyWQphD+aXh5x4KGTZQZylKe3rOyeKH52XAoqmBxlXJtjoYeqFVSUyKvFkrdFX0hnumwn8N+LzCnS9C8Cq1pjsREqdK+JT+7dodkmdev3r0zUoQuuTuA4uy4AMfwTGVAwY5mnvWvMZnL58uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wkphe7Gt; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-23636167b30so60201855ad.1
+        for <stable@vger.kernel.org>; Tue, 24 Jun 2025 21:33:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750823749; x=1751428549; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=M8HH45Sj8ttJXgcpCkJO8qkeo5a7N+Cjw/sh54F3uK0=;
-        b=XKhe1bjil62/ESIlF1NuKvPD6hP4AZjO+HmWP5+37n5Q1y1pFmpmwybeZ0FmVTVswH
-         bYGzfHI71oUeLAEgYetZ0CAnBztVpCmOgyzt+DydQZ4O0ZEz3Ai8G6AueQgtV4/4LPXs
-         sY3xMn2RSE1kys32JlZ17aeluRlQfrzLBms24y48rD5tToIYSXrH0E7gZOvvopO7YdqT
-         jzczDLGjD7O8L2s89w7Zn7zlcbJnT6jpeYqwOjPopIihgBLr+0Sd5IP8Qs0ElyZKl24W
-         g0I8fn/wf6NydTwy9Eyo86TDJZ5eI8vf8OW6CYbDkc0CdsnE3XhVi6LUqgo5yzlTFwzJ
-         jXqA==
+        d=linaro.org; s=google; t=1750826014; x=1751430814; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=+gxLtLJHJekP2m5RDJO4GtXWgXu8wxWquk/PnbuibIg=;
+        b=wkphe7GtVKXlZEf4dSRQ6JoNnkFUNGpSRmwQZzciM0mL9BsFQIwloPQgPuvyRnCy8h
+         706+QFk2DWUHzeDqb+PbEgHGi6HhHzabyXif2IjGVba1HRBi9GDaBBW43/6IWUX4VsFH
+         Fg1wlkL93rEe8+vAlU/KQP6f2UzQvT2uMM5hp7OII0f2L/BzwpS2/UsnrfOm3ATCRdr1
+         LdmqqWBOUISQDoN9Ng+aG9jyPAt67U+S0syDqFFfoa/iC4vY+Hp07H/cQgOoqMXuTIoF
+         ARMlUckqHcsqcQwXQvywXj3428KP0lBhMe5Jeqbs1zT9gNp+jqXalZeJ6/KB+KSDvByk
+         14MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750823749; x=1751428549;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M8HH45Sj8ttJXgcpCkJO8qkeo5a7N+Cjw/sh54F3uK0=;
-        b=tGS/msGHuwMMoY5eBQkFFyU+TaNVmPpexFQNzONIu4xBc/vuIB3mPcu3VkMXJa/cA6
-         /gP1cxQoy3/N2aglMYiE7C6/RfhNU8Xf2Nh4u/YRYx/rHTEQ6DTgeSrzSckNKc1RT28R
-         SL4vwfu6muqwCbhGaIuUBppw+f7/39wg9deU4vNY5Y+uBftwydi1XeVw6dDmJEcqrkUz
-         R5d6yOE8/R9ViSQwGNXISfDKXnGD2TxM3qG42pcEKciJr9emZtuYhOG+OyGOC2W8nEWL
-         qWN+m4kzaU+B3u+iuewvCdUz8Z8VmrW6CAA+54Doi7uMmOeHZ29sKbi1AaH8IKM95NzH
-         jdMw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+3Sze96DG8qrwt65YZTfsb0vw16w0m9edDnZK0u9rj8nEgeSI008jKqgl9gQuDvcCWg8ACAub@vger.kernel.org, AJvYcCVyfB730IHePUxioXWwPI522Omg4RKyKCk6v8t++3xqPScLvlhj23JyTtfkHKiAkCLyL6G5YI8eVA4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyH4bW/nT8anCiBZjUyuk9ckydzH0SceI5pG5i++tjXB6QMS4cG
-	szkHbJdfelOzN3v+MeakpL4zJ+wmVmjmAIyp/KT5s784+zAcSHqXySh5
-X-Gm-Gg: ASbGncvyWoi7O56amM+NgbYGi44YCb17eZ2mWipce4h8jVmeXROvrDdwDTr355MXaFk
-	6dYzxsh8VIPC4HDP8Ik0WXJwQRkfycylHM2fBocgA5/OYMQg/S9j2iaT4Bpzrxs6xTD6GPsl0BS
-	R5inUdQaeROtOS1Nkx1yalJy/0hty5jrRgX266wqrXkZX7c4MNPo/b/I7VfCE8iru8WhVjKb8Du
-	+57XXpqq0kiwyVXPGwFOINIw61so+JP7qQB4P8VUT0xZoIEAJ13F6VtQDgzkhdLNAHmwPSUA9Zj
-	ATc/GlD3sDaaHV0v0rFotzUDXdQ5LZeVtt/NHbru9zJKpTcQDoQ9HumJjxVhYRE=
-X-Google-Smtp-Source: AGHT+IH+z2bfJeFldTfIUQ1vbcD2anaS+bwA1NXDCxlSwUwYi4lfwisL9U5rWue8kaIlIPsq3gse7w==
-X-Received: by 2002:a6b:4415:0:b0:867:17a6:9fd2 with SMTP id ca18e2360f4ac-8766c0ce0ebmr200635539f.9.1750823748666;
-        Tue, 24 Jun 2025 20:55:48 -0700 (PDT)
-Received: from ?IPV6:2601:282:d00:94b1::174? ([2601:282:d00:94b1::174])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-8762b5ee941sm342550139f.16.2025.06.24.20.55.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Jun 2025 20:55:47 -0700 (PDT)
-Message-ID: <13d0d076-b234-4778-98a6-aa439a351788@gmail.com>
-Date: Tue, 24 Jun 2025 21:55:44 -0600
+        d=1e100.net; s=20230601; t=1750826014; x=1751430814;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+gxLtLJHJekP2m5RDJO4GtXWgXu8wxWquk/PnbuibIg=;
+        b=HLSq0Ega41dQrTMesNxEAMYEeORDQYgDtn6rCqWd2JRe6af+QEVpXzp9HY2DHPL2WV
+         YhXw3XTLlZZJL/GvLMvcDpiRU6/ZChVT/0Nkln8jUaYITGlOLfqiZFQtQwQrXFSkznps
+         2gdEtwUhuQyA1iZSiU0AtYUhdKcZLqntyhrfA/k5IF7Jb/lua3pf+qppviK8/b7eTH6D
+         aUNyaLmmzidnAQF3kQ2BLUhDvA1wiTYFmZv2ffuJvnbrPhiRjX8kj14mVBIBszfyhYNZ
+         RAF5C+hDzpH9HpvLOaNSSf5z1F4jcp47TwRh/4TIdeSK1klF6mzBXcwBxPfCsyNZGDKr
+         RWNg==
+X-Gm-Message-State: AOJu0YyInJcbquxZ1xsEN5A4W2v8Xdu73Ovgk1gb6UfN5B+Dzm6dq8O8
+	kKAxDmVszNinafCDiRp36ADF3A1L57SCYZxC4jSsLuDVtcN2kcVY1ayMetYmyBzJnomwv2HUZ4a
+	4lpk7kfksrbIaqS1IRrrIcuBtniYwkCuDOXg9Z8M9/w==
+X-Gm-Gg: ASbGncsIrjJSm+EcslI83IyVOr5QgVvVGyz+/rY//TzdEeETN8KpBv+G+D9gjrdSOfu
+	+VzQyssGg4MKhRhaWOTeQNNjTyebYb4eyyCO0tdLhiFBByYN1f8c/a44Pi4ek4KcopWloaSHePH
+	efVNDvNQ97YBHrQRtr79n/wiCCjvslK6/oOpuwuBIZ6eWuAq8dxqmCcRtRTM6GGHbydlP5eRa1i
+	1Sx
+X-Google-Smtp-Source: AGHT+IGtaQJcYYKVhLp/50lPmuB48IV2mPVXAbLY+hiIPV/anQZIZHdY1a23C23NRxSz7f54xc9tE/nROguaPMm8/Tw=
+X-Received: by 2002:a17:902:ec91:b0:235:7c6:ebbf with SMTP id
+ d9443c01a7336-23824047541mr35763975ad.35.1750826014327; Tue, 24 Jun 2025
+ 21:33:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [regression v6.12.30..v6.12.32] mmc1: mmc_select_hs400 failed,
- error -110 / boot regression on Lenovo IdeaPad 1 15ADA7
-To: Salvatore Bonaccorso <carnil@debian.org>,
- Adrian Hunter <adrian.hunter@intel.com>
-Cc: Shawn Lin <shawn.lin@rock-chips.com>, regressions@lists.linux.dev,
- Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
- 1108065@bugs.debian.org, stable@vger.kernel.org, net147@gmail.com
-References: <aFW0ia8Jj4PQtFkS@eldamar.lan> <aFXCv50hth-mafOR@eldamar.lan>
- <004c6e95-7c1b-4a7f-ab68-1774ce5a51d7@rock-chips.com>
- <65400f7d-0bfc-4b0c-8edc-c00d3527c12b@intel.com>
- <aFtvlqPxO6eZkhfF@eldamar.lan>
-Content-Language: en-US
-From: Jeremy Lincicome <w0jrl1@gmail.com>
-In-Reply-To: <aFtvlqPxO6eZkhfF@eldamar.lan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250623130611.896514667@linuxfoundation.org> <CA+G9fYvpJjhNDS1Knh0YLeZSXawx-F4LPM-0fMrPiVkyE=yjFw@mail.gmail.com>
+ <2025062425-waggle-jaybird-ef83@gregkh>
+In-Reply-To: <2025062425-waggle-jaybird-ef83@gregkh>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 25 Jun 2025 10:03:22 +0530
+X-Gm-Features: Ac12FXyd0V9F7KS0Td9Q-UYWV_cQw3EQwUvR1Vc5-PgNTQkt74Bhnhzxgl5WlkY
+Message-ID: <CA+G9fYvNTO2kObFG9RcOOAkGrRa7rgTw+5P3gmbfzuodVj6owQ@mail.gmail.com>
+Subject: Re: [PATCH 5.4 000/222] 5.4.295-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	kvmarm@lists.cs.columbia.edu, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>, 
+	Julien Thierry <julien.thierry.kdev@gmail.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Russell King <linux@armlinux.org.uk>, Linux ARM <linux-arm-kernel@lists.infradead.org>, 
+	Andy Gross <agross@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/24/25 21:40, Salvatore Bonaccorso wrote:
-> Hi,
+On Tue, 24 Jun 2025 at 15:55, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On Tue, Jun 24, 2025 at 11:26:41AM +0300, Adrian Hunter wrote:
->> On 23/06/2025 12:13, Shawn Lin wrote:
->>> + Jonathan Liu
->>>
->>> 在 2025/06/21 星期六 4:21, Salvatore Bonaccorso 写道:
->>>> On Fri, Jun 20, 2025 at 09:20:41PM +0200, Salvatore Bonaccorso wrote:
->>>>> Hi
->>>>>
->>>>> In Debian we got a regression report booting on a Lenovo IdeaPad 1
->>>>> 15ADA7 dropping finally into the initramfs shell after updating from
->>>>> 6.12.30 to 6.12.32 with messages before dropping into the intiramfs
->>>>> shell:
->>>>>
->>>>> mmc1: mmc_select_hs400 failed, error -110
->>>>> mmc1: error -110 whilst initialising MMC card
->>>>>
->>>>> The original report is at https://bugs.debian.org/1107979 and the
->>>>> reporter tested as well kernel up to 6.15.3 which still fails to boot.
->>>>>
->>>>> Another similar report landed with after the same version update as
->>>>> https://bugs.debian.org/1107979 .
->>>>>
->>>>> I only see three commits touching drivers/mmc between
->>>>> 6.12.30..6.12.32:
->>>>>
->>>>> 28306c58daf8 ("mmc: sdhci: Disable SD card clock before changing parameters")
->>>>> 38828e0dc771 ("mmc: dw_mmc: add exynos7870 DW MMC support")
->>>>> 67bb2175095e ("mmc: host: Wait for Vdd to settle on card power off")
->>>>>
->>>>> I have found a potential similar issue reported in ArchLinux at
->>>>> https://bbs.archlinux.org/viewtopic.php?id=306024
->>>>>
->>>>> I have asked if we can get more information out of the boot, but maybe
->>>>> this regression report already rings  bell for you?
->>> Jonathan reported a similar failure regarding to hs400 on RK3399
->>> platform.
->>> https://lkml.org/lkml/2025/6/19/145
->>>
->>> Maybe you could try to revert :
->>> 28306c58daf8 ("mmc: sdhci: Disable SD card clock before changing parameters")
->> Given the number of other reports, probably best to revert
->> anyway.
-> FTR, Jeremy Lincicome confirmed that reverting the commit fixes the
-> issue for him as reported in Debian bug #1108065.
+> On Tue, Jun 24, 2025 at 12:46:15AM +0530, Naresh Kamboju wrote:
+> > On Mon, 23 Jun 2025 at 18:40, Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > This is the start of the stable review cycle for the 5.4.295 release.
+> > > There are 222 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > >
+> > > Responses should be made by Wed, 25 Jun 2025 13:05:50 +0000.
+> > > Anything received after that time might be too late.
+> > >
+> > > The whole patch series can be found in one patch at:
+> > >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.295-rc1.gz
+> > > or in the git tree and branch at:
+> > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> > > and the diffstat can be found below.
+> > >
+> > > thanks,
+> > >
+> > > greg k-h
+> >
+> > Regressions on arm defconfig builds with gcc-12 and clang failed on
+> > the Linux stable-rc 5.4.295-rc1.
+> >
+> > Regressions found on arm
+> > * arm, build
+> >   - clang-20-axm55xx_defconfig
+> >   - clang-20-defconfig
+> >   - clang-20-lkftconfig
+> >   - clang-20-lkftconfig-no-kselftest-frag
+> >   - clang-nightly-axm55xx_defconfig
+> >   - clang-nightly-defconfig
+> >   - clang-nightly-lkftconfig
+> >   - gcc-12-axm55xx_defconfig
+> >   - gcc-12-defconfig
+> >   - gcc-12-lkftconfig
+> >   - gcc-12-lkftconfig-debug
+> >   - gcc-12-lkftconfig-kasan
+> >   - gcc-12-lkftconfig-kunit
+> >   - gcc-12-lkftconfig-libgpiod
+> >   - gcc-12-lkftconfig-no-kselftest-frag
+> >   - gcc-12-lkftconfig-perf
+> >   - gcc-12-lkftconfig-rcutorture
+> >   - gcc-8-axm55xx_defconfig
+> >   - gcc-8-defconfig
+> >
+> > Regression Analysis:
+> >  - New regression? Yes
+> >  - Reproducibility? Yes
+> >
+> > Build regression: stable-rc 5.4.295-rc1 arm kvm init.S Error selected
+> > processor does not support `eret' in ARM mode
+> >
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> >
+> >
+> > ## Build errors
+> > arch/arm/kvm/init.S: Assembler messages:
+> > arch/arm/kvm/init.S:109: Error: selected processor does not support
+> > `eret' in ARM mode
+> > arch/arm/kvm/init.S:116: Error: Banked registers are not available
+> > with this architecture. -- `msr ELR_hyp,r1'
+> > arch/arm/kvm/init.S:145: Error: selected processor does not support
+> > `eret' in ARM mode
+> > arch/arm/kvm/init.S:149: Error: selected processor does not support
+> > `eret' in ARM mode
+> > make[2]: *** [scripts/Makefile.build:345: arch/arm/kvm/init.o] Error 1
+> >
+> > and
+> > /tmp/cc0RDxs9.s: Assembler messages:
+> > /tmp/cc0RDxs9.s:45: Error: selected processor does not support `smc
+> > #0' in ARM mode
+> > /tmp/cc0RDxs9.s:94: Error: selected processor does not support `smc
+> > #0' in ARM mode
+> > /tmp/cc0RDxs9.s:160: Error: selected processor does not support `smc
+> > #0' in ARM mode
+> > /tmp/cc0RDxs9.s:296: Error: selected processor does not support `smc
+> > #0' in ARM mode
+> > make[3]: *** [/builds/linux/scripts/Makefile.build:262:
+> > drivers/firmware/qcom_scm-32.o] Error 1
+>
+> That's odd, both clang and gcc don't like this?  Any chance you can do
+> 'git bisect' to track down the offending commit?
 
-I confirm that reverting the commit fixes
+The git bisection pointing to,
 
-Debian bug #1108065.
+  kbuild: Update assembler calls to use proper flags and language target
+  commit d5c8d6e0fa61401a729e9eb6a9c7077b2d3aebb0 upstream.
 
-Tested-by: Jeremy Lincicome<w0jrl1@gmail.com>
+- Naresh
 
+>
+> thanks,
+>
+> greg k-h
 
