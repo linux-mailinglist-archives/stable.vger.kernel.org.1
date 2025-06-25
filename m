@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-158572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F57AE85B7
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 16:09:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8BBFAE85AB
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 16:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 457A46A5450
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 14:07:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 974DB189F765
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 14:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C54264605;
-	Wed, 25 Jun 2025 14:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACE1264FB3;
+	Wed, 25 Jun 2025 14:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ge4TYeER"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErH467c/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9847263F27
-	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 14:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1959B263F27
+	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 14:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750860440; cv=none; b=PPZ7yYQJlRu3JUPMok2OgbiaheVMS8xv2+yYjNAoKN7cKCvfiaNw40HU+ALdWANmEyM3IMHB/fyjDvccXlAQDl2h5PmKLDH6pVrVwQhab+301ocDamJcLERdGSJ8PIekBPhQVyl5SeAu4EuAtLfVSFMHcfAVXCb5wj3y6PcgESo=
+	t=1750860442; cv=none; b=IQFNkr/SmFLtvwaM7C6CHw+PZvgoPQ9G3fC+JHrrCB7MxHr2Rw4E02i2PpA0HRbJqOfUFiOrJc58SzFOxzwDUHRe08GrMbepBaLQDvWXqZ5FFsP21Wh7kb6VEUhxbezZ55sgzlWuDh6p5KpplKVXQ7t/MCD97NkIZo3J1fFyGFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750860440; c=relaxed/simple;
-	bh=VLVOzKo7hix4q8UJCySuA7ObVHMJ0F2/QqWy3PWTJPs=;
+	s=arc-20240116; t=1750860442; c=relaxed/simple;
+	bh=nraSRqxw07NJoeArNAmY6CdUO84Kofm5NmOTO+q1v8k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DW7yvJOlsk1Suow+2bkBlul00IqUxTKESlSIE4Si9RrZfqpGSKhpicAt0t3a455xr6+24qGeZcfU+LpjYXgTLBYJ1ugwKGllSVYoqudCMeJ6VFxHfS02nFXFGeoN4lnYyb+t2rD7XRQ6vUtOnmNP6wFdnxj2HXYHpcSZJR4T85E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ge4TYeER; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51DE7C4CEEA;
-	Wed, 25 Jun 2025 14:07:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TnlhA67QwW2V3JexJEaVdDRTAeC85LbwlQCPIRdJQbvRDFV1nNeHuBn5nofFdeMoDTc/9eDIeGOADLGUO/n+bxupxlaYGEH4CnslZ9zhzIzSsnxSg+nRL6ExdcKm1iCAF2VJx5Uv4pCQn5n7K1Ho7nJ2HBj2RzCZlpLOFkHEF5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErH467c/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897E6C4CEEA;
+	Wed, 25 Jun 2025 14:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750860440;
-	bh=VLVOzKo7hix4q8UJCySuA7ObVHMJ0F2/QqWy3PWTJPs=;
+	s=k20201202; t=1750860441;
+	bh=nraSRqxw07NJoeArNAmY6CdUO84Kofm5NmOTO+q1v8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ge4TYeERKiEcyXt0036N50WRILmo39UuPZZFR7TSP1fzAEDat6YrsY7Xy3qoONZgJ
-	 CqcDpqLqbozQjD4YBsDVroJmAykp4pEY32d+AGOVO0aw7M0gEWAVNhxTktrchVyJ8T
-	 ePp1ivBKF8BotJ9RqPBOFSfkSaQYgIZiAIhcqCNNjZASHAM8LcV9Nz2k9Bc1zIbnAr
-	 Aw3d4qls4G1Q/vYQvkQZ9n00QgnDx7+SAjZeyRdoDQP5LKlp0CpV6jSZu+vLKm4kOq
-	 YSPiPA3U37mwbJSlAV6NXXicgOxtYHVuoqlyZDKpwN5TMTVmVeB12k/WucQuH8hMGX
-	 Fxs24CMeU2wyg==
+	b=ErH467c/x09l88+7/tZV841aigbbwkwVY6imrjl+USr06RHjk3zLZKMpPyw/mPLcW
+	 Wc0eJIIlwUEqFgS0pkMVd2qvclIPE2kmcF0j9trdoY/kuLBIZm1nILDqgk7XdtxLVT
+	 9SKdN5I0OP7JNS0aggt4OTyzBypYpzZ5X+yVAtp41FzFmIaAx1wZLOAcj9VVtrjjXK
+	 C/nWH+UqCiKJHKRKkn1l/USgb/WLS8urX2cwekYjDLKpIM2kx+AVxtM7i0ODewjEtn
+	 ofvibSW9RIpbzy+pAuL+8FoCmGuEIIVnGFdtYLbOZcuWAOHggaabTuJC3Cs9GGxYI8
+	 w0HgnC+Fwhzwg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Danilo Krummrich <dakr@kernel.org>,
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 1/4] rust: completion: implement initial abstraction
-Date: Wed, 25 Jun 2025 10:07:19 -0400
-Message-Id: <20250624234529-286220a945e55396@stable.kernel.org>
+Subject: Re: [PATCH for 6.1/6.6] platform/loongarch: laptop: Add backlight power control support
+Date: Wed, 25 Jun 2025 10:07:20 -0400
+Message-Id: <20250624174529-ce60f6879bc03278@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250624135856.60250-2-dakr@kernel.org>
+In-Reply-To:  <20250623081337.3767935-1-chenhuacai@loongson.cn>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,59 +67,27 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 1b56e765bf8990f1f60e124926c11fc4ac63d752
+The upstream commit SHA1 provided is correct: 53c762b47f726e4079a1f06f684bce2fc0d56fba
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Huacai Chen<chenhuacai@loongson.cn>
+Commit author: Yao Zi<ziyao@disroot.org>
+
+Status in newer kernel trees:
+6.15.y | Present (different SHA1: 7ba966be82c2)
+6.12.y | Present (different SHA1: c452758dc2d8)
+6.6.y | Present (different SHA1: b7a060eab6c4)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  1b56e765bf899 ! 1:  9d44ce9765ef8 rust: completion: implement initial abstraction
-    @@ Metadata
-      ## Commit message ##
-         rust: completion: implement initial abstraction
-     
-    +    [ Upstream commit 1b56e765bf8990f1f60e124926c11fc4ac63d752 ]
-    +
-         Implement a minimal abstraction for the completion synchronization
-         primitive.
-     
-    @@ Commit message
-     
-      ## rust/bindings/bindings_helper.h ##
-     @@
-    + #include <linux/blk-mq.h>
-      #include <linux/blk_types.h>
-      #include <linux/blkdev.h>
-    - #include <linux/clk.h>
-     +#include <linux/completion.h>
-    - #include <linux/configfs.h>
-    - #include <linux/cpu.h>
-    - #include <linux/cpufreq.h>
-    + #include <linux/cpumask.h>
-    + #include <linux/cred.h>
-    + #include <linux/device/faux.h>
-     
-      ## rust/helpers/completion.c (new) ##
-     @@
-    @@ rust/helpers/completion.c (new)
-     
-      ## rust/helpers/helpers.c ##
-     @@
-    + #include "bug.c"
-      #include "build_assert.c"
-      #include "build_bug.c"
-    - #include "clk.c"
-     +#include "completion.c"
-    - #include "cpufreq.c"
-      #include "cpumask.c"
-      #include "cred.c"
-    + #include "device.c"
-     
-      ## rust/kernel/sync.rs ##
-     @@
+1:  53c762b47f726 < -:  ------------- platform/loongarch: laptop: Add backlight power control support
+-:  ------------- > 1:  58485ff1a74f6 Linux 6.1.141
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
