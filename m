@@ -1,143 +1,118 @@
-Return-Path: <stable+bounces-158646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490ECAE92A7
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 01:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5E2AE92B8
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 01:34:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6DC718982F8
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 23:32:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 063221883A61
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 23:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D90D2F4300;
-	Wed, 25 Jun 2025 23:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6CB2D97B9;
+	Wed, 25 Jun 2025 23:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UiQTgQYL"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YUkqDLvQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958612F4301;
-	Wed, 25 Jun 2025 23:21:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685BE2D9791
+	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 23:27:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750893669; cv=none; b=ogLbP4TQLIHKSa4UPvCXRVh/Z6I8+bHblETfIQakWpUtW9GLdWmi/DljZvNmg3/nKcNtCPAbSyQ0XzP78lyWH80z/fXrwYv1OLh0d3IAsRVCmiuvh3yp03VoL1X1bm5RxPxXXu48rvTaP1EFPP1I7OoieTVuQaF2M080rfRUoEc=
+	t=1750894048; cv=none; b=eQ+wJqUJa4LSwMdqTrDJEvfNKG09bNHMe4glL55Zth4F1f3zFBTN3VNPzPG3E1U+z2xQef6cQ7eQmMYrmB3bdnhNhl/dA4jNt0lufa79NQWfdMUhV4vX88ZcZbHEVVeQBGcfLrarAp61vh3v1Cnu1ek/y+3QSaMH4lXc8POZ81o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750893669; c=relaxed/simple;
-	bh=dI6Ivyz+sLztTxhXqq/oYEUvuucLxjYC7EVpm6Tjmes=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VhX2nYEjcMVcLJ9jLB6DrUFZoPimlQrXqPLX1X817zM4ebea1H6TqFDnGO30gq24c4vKY1qqr15ygWjVOtYZCyg/j3BgwONOPKxXuDJm/exIwcBynj9YRpYfi7RLF38PuQ68gcqLIx33A8RZPY+eEZ328rjlhtQKXDsTY7se1lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UiQTgQYL; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750893668; x=1782429668;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=dI6Ivyz+sLztTxhXqq/oYEUvuucLxjYC7EVpm6Tjmes=;
-  b=UiQTgQYLcFJMz3lcBytbknWSt1FapoVOX4Z8CEGB7zp8GAASo2Aa3X+A
-   vKo+IP8vWHVh4HVGJFVVBfUHDkMHDNyY7/xM3rTDvnZnefwNE0wFxrC+4
-   RpviMU4IrJh3qXRQXCRnKd0ntqXBb50E1pWK/WTo4Vb9h4U/ZZvdLcGkn
-   LHA30lOfhKISjj+P9E/yauAE1wL/OTMY0vXv2YtMTAQ6pgbX7htGMnsxL
-   LvZL0bfn2bKkEpgBi7wR0drrQo0zV+/PppxTmfwqzGEy8xAE06PAkSlBD
-   S6qsJCfvdEQcO/2wlMsk/AITSd6C2oOQObIRPxJwLttkkUSnLgI+C10+G
-   w==;
-X-CSE-ConnectionGUID: Xetr5JF+TwOacH97lS3+aw==
-X-CSE-MsgGUID: AIo7C53wTHm3Ej2UiXHcCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="52297118"
-X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="52297118"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 16:21:02 -0700
-X-CSE-ConnectionGUID: eo/55SSOSPC3YQ7Jp9VwjQ==
-X-CSE-MsgGUID: d1elnqv8TI+cCUaE8vv2Rg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="183242774"
-Received: from spandruv-desk1.amr.corp.intel.com (HELO [10.125.109.24]) ([10.125.109.24])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 16:21:01 -0700
-Message-ID: <7ad78deb-82fe-4154-b433-f789d97d370e@intel.com>
-Date: Wed, 25 Jun 2025 16:21:00 -0700
+	s=arc-20240116; t=1750894048; c=relaxed/simple;
+	bh=kx0FBz5kxfLMHCooOeoxb/WH5qJa7rGUaz7/wvuEWhw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tpiouXP4e8IN+dyGkCE7iK8dUZWL/QSb2jK4XxBagffIkgKyGXQ/iySc801RprrZ6EpkC/JUmF0Yay+1N3AlvRhD5CgCCZVYfwNEnr6oFS1Id5iuhCYIQ0SGP1yaDjkxuPfzyXr+FvBmEeF02GtlJsco0Uf/vlxNdmbrzj3rYeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YUkqDLvQ; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-237f18108d2so70305ad.0
+        for <stable@vger.kernel.org>; Wed, 25 Jun 2025 16:27:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1750894045; x=1751498845; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kx0FBz5kxfLMHCooOeoxb/WH5qJa7rGUaz7/wvuEWhw=;
+        b=YUkqDLvQ9BXyZw5hfVqrjyRmDjIwj6EY4X9vTgZ6DkcnzsntkKjBeDj//XQrxrrK4/
+         okgyfq9U0TT6QWHKeL7Fq45ypaNZoow6P2ZtziJyruwdRsuhjCRvNVbt0eH/LdUBTHET
+         Tl05OFm+Gog7+AElRqXI4z8pomQjTbjdWASDwAiJPTzvcf26LPOlBVDoJzKvfhqySw1E
+         PzRIGdqLU2ln+TrjUQ0xXiG9KTS15fi4x9mgT079oX0yVurs3esP58Pjdz56PIi9GWeE
+         t0tALwDGZdWmb6YM5mnavV4q0twzP5z6fUnXdjdR4mOzfXdBhQh5BIieo/9JwwWu+Gmv
+         +x2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750894045; x=1751498845;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kx0FBz5kxfLMHCooOeoxb/WH5qJa7rGUaz7/wvuEWhw=;
+        b=bsvMuHPrix4ug++FW3r4OKd9JDIVXLykIpKeI7toBSlGpyq/VcBukCfK6dJwAZ2R0t
+         2GWRTChPOV6IX4fHSiJPxSMylJWQ+e9UfT1+SS4oIAHU8RDimexYdm/7sZSAXicyXHdg
+         CV4Gg3RjtwxWhngRla+lgLAT0K1mN2eZ0eGVz6MLr6WCOfQJ+nxpM3qNCULcr5EAO/qx
+         DphNskiWToJDsskjZvcwj0aXZ5uPHnKCpKjnUGUBfwsKyi3ttZ5Z/w/3AdFWwk93bKZa
+         PfjXTOeu00/SpKDL9vEvtvA7pAkXuKfpGaHdvkIfP8G3GqdBjYY4yob4PX1DXNXuNAlg
+         kNlg==
+X-Forwarded-Encrypted: i=1; AJvYcCUUBfX7tfF3TnTrSHLaLtfNCOB0BFwSFo9wX4iP5+EB7NZmeJFzZmGUXwy26uduNd4UgX0A/ug=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOBSQxP1VW8u4/jDjYhydbTRKaeyodmboYw0sCHiw5bipZhJhY
+	XRXSPzuys7FUGBMU9OXDJ7CIWNKGa8cdUR+ZDu17wLhA2ixhvzp2rZ+Uq9S4VN4bhKiy6pbVBY6
+	MYGOy+l43blniUfOCNWmE5U2B/848a9LasJq1J2L5
+X-Gm-Gg: ASbGncu0JKhZthGwPTTu2B/L41oKhb38K2m7Iav4R8q5a/+Vs5H8fRYIASWS/jii9lt
+	WjSO5bfI065rrmvbGYNX04Ep4qUWzUEq2vkfXNZYyHIDz+kKg9PqGVZ87rZfTGsXfJBOkV/0qO+
+	/eG0dbQQFtNEpsLVhh/04zmj9v/gciOIYCc37ezVzQWlHQo/zhS9+jhxxYt6LeDnW8WBXnWsCC1
+	Q==
+X-Google-Smtp-Source: AGHT+IFrGat1M8QP/7zoAcIXKoils2gNnPA0GSx4CmoITbKm6/QYmlQ9DspDtT8SNS7GNjrlk9R+lu+OSoZ7G/MIqco=
+X-Received: by 2002:a17:903:1209:b0:223:fd7e:84ab with SMTP id
+ d9443c01a7336-23978ba18b0mr1206005ad.24.1750894045108; Wed, 25 Jun 2025
+ 16:27:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] [v2] x86/fpu: Delay instruction pointer fixup until after
- warning
-To: Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, tglx@linutronix.de,
- bp@alien8.de, mingo@kernel.org, chao.gao@intel.com,
- Alison Schofield <alison.schofield@intel.com>,
- "Chang S. Bae" <chang.seok.bae@intel.com>, Eric Biggers
- <ebiggers@google.com>, Rik van Riel <riel@redhat.com>, stable@vger.kernel.org
-References: <20250624210148.97126F9E@davehans-spike.ostc.intel.com>
- <20250625085730.GD1613200@noisy.programming.kicks-ass.net>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20250625085730.GD1613200@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <434C72BFB40E350A+20250625023924.21821-1-jiawenwu@trustnetic.com>
+In-Reply-To: <434C72BFB40E350A+20250625023924.21821-1-jiawenwu@trustnetic.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Wed, 25 Jun 2025 16:27:09 -0700
+X-Gm-Features: Ac12FXw9dIpBvK2gofOzg6ZIJftbo8Gcj1PZacPrSRZh88xnBf67PtMxM5KLs40
+Message-ID: <CAHS8izOCvLBWee3vp-Xv_XATztcTA2Rnu7CDtRfN+2CHo_cgww@mail.gmail.com>
+Subject: Re: [PATCH net] net: libwx: fix the creation of page_pool
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	mengyuanlou@net-swift.com, duanqiangwen@net-swift.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/25/25 01:57, Peter Zijlstra wrote:
-> On Tue, Jun 24, 2025 at 02:01:48PM -0700, Dave Hansen wrote:
->> Changes from v1:
->>  * Fix minor typos
->>  * Use the more generic and standard ex_handler_default(). Had the
->>    original code used this helper, the bug would not have been there
->>    in the first place.
-> Doesn't this here typically go under the --- with the diffstat etc?
+On Tue, Jun 24, 2025 at 7:41=E2=80=AFPM Jiawen Wu <jiawenwu@trustnetic.com>=
+ wrote:
+>
+> 'rx_ring->size' means the count of ring descriptors multiplied by the
+> size of one descriptor. When increasing the count of ring descriptors,
+> it may exceed the limit of pool size.
+>
+> [ 864.209610] page_pool_create_percpu() gave up with errno -7
+> [ 864.209613] txgbe 0000:11:00.0: Page pool creation failed: -7
+>
+> Fix to set the pool_size to the count of ring descriptors.
+>
+> Fixes: 850b971110b2 ("net: libwx: Allocate Rx and Tx resources")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 
-I always put it first because it's the first thing I want the reviewers
-to see. I don't like the idea of burying it.
+Looks correct to me. pool_size is meant to be the number of entries in
+the ptr_ring indeed, not a size in bytes. wx_setup_rx_resources does
+set up rx_ring->size to be the size in bytes based on the
+rx_ring->count.
 
-But maybe I'm weird.
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+
+--=20
+Thanks,
+Mina
 
