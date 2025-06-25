@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-158591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806EFAE85BD
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 16:09:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F290AE85C2
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 16:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 108A4173217
-	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 14:09:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C252E1889349
+	for <lists+stable@lfdr.de>; Wed, 25 Jun 2025 14:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3650126528F;
-	Wed, 25 Jun 2025 14:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B9F264A84;
+	Wed, 25 Jun 2025 14:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TG+86qyb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lGtyAv9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FD026528D
-	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 14:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F7D264A9C
+	for <stable@vger.kernel.org>; Wed, 25 Jun 2025 14:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750860542; cv=none; b=evXNuShUfob8acVe0afo4VIkrH1odOTX7AyusMFVOUko7minuEN+cEivbgiw4JrmL8iUkDJMUhWQgtflW2z/vT0JHPk7Ex7ZNwgSBhMhFNXc+gkfLZqkvvkIUubalE+Ki1ZFzE9CcC0nTyc9+yFacA9u6TSqs10S6jwHSq7RE3Y=
+	t=1750860543; cv=none; b=Z6Z1S0zIxqsItKgui5dHkGkUgKL9cnKHq0Y3382yHrtu7kJtzjQSywfoUsdt+6X/yZAoQhwOxs3Lb5tAMlptrG3+jHxWdkrWeG5DvvlSKzu7FHuTTo9rs3UROdlAoUy/mq4LH/ikps3zDZYP0zDBl99peVq/gVrmV8e3YeD4UXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750860542; c=relaxed/simple;
-	bh=XQMLLndhZ9qeoeBoOYTJgfiQnERc1x8+d0SQ0wX91tI=;
+	s=arc-20240116; t=1750860543; c=relaxed/simple;
+	bh=KYC55DC3WWZ0J5bnBCWz8ijFvYPy5hG2AGa6eyB2FgM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g8At+51J3pLJRAA5nX2ZF7wfWN2sf3dCVuXbgfLG3GhJS20k8quhfTOvM2ikZWRf8BxUxJiqSzpDNjmaQL9a76yabh6Jl9PGaOmkPYFCw6TdkvqyV2VgWKWbuInFU7uXoxvotgTIzfPUTmHKOkWUQMJghUNzZh3akYTaOONsM1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TG+86qyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1332C4CEEA;
-	Wed, 25 Jun 2025 14:09:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lSB2mf73hmNf608Z4CTiRNceubdI4b5ahT+7B6C9a09/QXNZh2I4JJqNYdu3oGKeZ6L96w/srZBy/sf0l/5o0/4Lee3cIm+UD4VxfDUWlvwzL8jcj4FSQkmxIu569hZ3fayVge4bLjg8lx4sGNGalt1Kw39lq53rLuC1V8gSCKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lGtyAv9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F287C4CEEA;
+	Wed, 25 Jun 2025 14:09:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750860541;
-	bh=XQMLLndhZ9qeoeBoOYTJgfiQnERc1x8+d0SQ0wX91tI=;
+	s=k20201202; t=1750860542;
+	bh=KYC55DC3WWZ0J5bnBCWz8ijFvYPy5hG2AGa6eyB2FgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TG+86qybIu+DVLswyJT1B8MXs1JEQq+G4e6li9VoT61MQ/FUYs9CgdLpRyFp2sBg0
-	 o67O3tQi1l1JjjF4Gfn7g+M/JH/O9e7Yhuovkq4l0W2+aBE3oev0RQnbFc/4mZycUc
-	 59TJFdoX60A5u1T/AS8Y8GysaGqU7li0/Yo1XqxOzmgx+Y65Hc0SN8rfdCSHdiX2Wy
-	 ldT4gLz5GALUqsiBAvMHihsONMDuk/B1zeLAD0Jvm4lNGvHp1NyE8mBAAsHiJjLQJ5
-	 1J5P7dzvKT3/3LvjG3LG1J3Bihll7Ip1TvB7LPxNGQHXfmdAFx8J1t0WK8r/0eQF5H
-	 Y7YA/gAQBAzvA==
+	b=lGtyAv9p/C1c9ATNe8A2wzi+BBf7U1ibpd5JhD3sVMM1yj+tWdch9sl+4upTypObF
+	 nQNGf3+buUYEkBvf+PMeF5UYwC0jg0JBky02UYp1R+D/l0U48UZj5nFJm0lrWDCVuZ
+	 OO/fjTyJBRcKp3fc670kt5bD8qz5QAnRF+shypgM5WR/tqqV8SGZVldqkFq78cQ2bt
+	 OzWtbpv7t7hpDRidAn2HYL3xyCbnPnAHEHSPoOsreVpD2nnDIjnFlRReEJ4SzIKvyS
+	 iWQwx+Hv3HEuxHKGnp3D+Jd+rOOisvM9nyCHSVebQq/0CNZNPPDre0CQKtbE86e1Bv
+	 npeuXdemP4z4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Danilo Krummrich <dakr@kernel.org>,
+Cc: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 2/4] rust: revocable: indicate whether `data` has been revoked already
-Date: Wed, 25 Jun 2025 10:09:01 -0400
-Message-Id: <20250624235025-5d3f0fe8161a1549@stable.kernel.org>
+Subject: Re: [PATCH v2 6.6.y 2/2] x86/tools: Drop duplicate unlikely() definition in insn_decoder_test.c
+Date: Wed, 25 Jun 2025 10:09:02 -0400
+Message-Id: <20250624194811-bfb1b41e1104004e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250624135856.60250-3-dakr@kernel.org>
+In-Reply-To:  <20250624170413.9314-3-sergio.collado@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,34 +67,41 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 4b76fafb20dd4a2becb94949d78e86bc88006509
+The upstream commit SHA1 provided is correct: f710202b2a45addea3dcdcd862770ecbaf6597ef
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <sergio.collado@gmail.com>
+Commit author: Nathan Chancellor<nathan@kernel.org>
+
+Status in newer kernel trees:
+6.15.y | Present (exact SHA1)
+6.12.y | Present (different SHA1: ebd352672790)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  4b76fafb20dd4 ! 1:  b26ce8d6f1c62 rust: revocable: indicate whether `data` has been revoked already
+1:  f710202b2a45a ! 1:  defa6b7af5a11 x86/tools: Drop duplicate unlikely() definition in insn_decoder_test.c
     @@ Metadata
       ## Commit message ##
-         rust: revocable: indicate whether `data` has been revoked already
+         x86/tools: Drop duplicate unlikely() definition in insn_decoder_test.c
      
-    +    [ Upstream commit 4b76fafb20dd4a2becb94949d78e86bc88006509 ]
+    +    commit f710202b2a45addea3dcdcd862770ecbaf6597ef upstream.
     +
-         Return a boolean from Revocable::revoke() and Revocable::revoke_nosync()
-         to indicate whether the data has been revoked already.
-     
+         After commit c104c16073b7 ("Kunit to check the longest symbol length"),
+         there is a warning when building with clang because there is now a
+         definition of unlikely from compiler.h in tools/include/linux, which
     @@ Commit message
-         Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+         Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+         Signed-off-by: Ingo Molnar <mingo@kernel.org>
+         Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+    +    Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
+         Link: https://lore.kernel.org/r/20250318-x86-decoder-test-fix-unlikely-redef-v1-1-74c84a7bf05b@kernel.org
      
-      ## rust/kernel/revocable.rs ##
-    -@@ rust/kernel/revocable.rs: pub unsafe fn access(&self) -> &T {
-    +@@ rust/kernel/revocable.rs: pub fn try_access_with_guard<'a>(&'a self, _guard: &'a rcu::Guard) -> Option<&'a
-          /// # Safety
-          ///
-          /// Callers must ensure that there are no more concurrent users of the revocable object.
+      ## arch/x86/tools/insn_decoder_test.c ##
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
