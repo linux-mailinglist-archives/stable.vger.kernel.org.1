@@ -1,42 +1,42 @@
-Return-Path: <stable+bounces-158670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 905FAAE98F6
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 10:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1736BAE98F5
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 10:51:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 705911899DC7
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 08:50:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0BFB1896D16
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 08:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AAE12C3274;
-	Thu, 26 Jun 2025 08:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716202BD584;
+	Thu, 26 Jun 2025 08:49:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87213237162;
-	Thu, 26 Jun 2025 08:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D09529AB13;
+	Thu, 26 Jun 2025 08:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750927768; cv=none; b=ldADwJl12Rq8Y0opUO7YREvMAVenfF6WE92iJkSNLDhcFnf0IpAZGZ0MM0YkgebqQWq32KVXSdTNfA6IrTjVHIYF6oQkgt3luXPXxJQEd/3hJPR2fiHv0KzmBthHXIUxrNQNG+4ydqvUzpTKEl//6yGax5RkZkzg+/6HpWbnLIk=
+	t=1750927768; cv=none; b=NHUShqkdjUTA8NkEBugLnrYbir9aR1Y6aMCyLPLQNaYWNl/WHNUlJiO4LjuG1PCBq3GQwem5QgrW1rj3hlOh9U/uorfcStVgRrES3uGyiXd/ehfJ3beEZQ8l/Ch93S6u6v6t97phwajS3rajrSBTJeG1xgQl0i5kdoI3u6+aENE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750927768; c=relaxed/simple;
-	bh=XdqAjjYQ7KDAvxmL6f4pGW5ogaf6brW1bGjT4WOUXSI=;
+	bh=VLbiWkX8kQdNOTQe/nl+zGd6Uct821hYaKB9Ta26SfM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qulDNMK2yr3VV+mtOEfOgJir/ot87fBxB74ic97NsBjyNAiU29bf1elkLLraocScje1T4Be0W6Vg9eEDejRayrAWoNTOqjM2+bAqTnGrbbIPz5qtWf3lM1tbQuiPHn/SAzH3z2jqxcS3gZyHSoNupmqcPKX54ctczQeF+JpmTo4=
+	 MIME-Version; b=J/7GSbnbai1QZpB62QFJA/DT8atJBTFLz2tTH7ktX5ViaENDkwkcVaWBqRNvAMVYWrIdBhzTv04IWuLnNyERHci74X8m8PqAxQnzbTSg6RSv2OAH5C2+3r5RL3xIaeF4gEUuI/4rgPjwrXXdp7LSgcpd8If1p5uK81fNwp/Gs6o=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.19.206
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz10t1750927702t62a19487
-X-QQ-Originating-IP: tLB48kySe8CaAxuRZXc9fpLmVh3m2fKmhceJ45KmPkM=
+X-QQ-mid: esmtpsz10t1750927705t9f47a40d
+X-QQ-Originating-IP: xEyEJ6SSb16iXx9cRzSBuiMq66O4SA3YPzuED/dG9Gw=
 Received: from lap-jiawenwu.trustnetic.com ( [36.27.0.255])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 26 Jun 2025 16:48:20 +0800 (CST)
+	id ; Thu, 26 Jun 2025 16:48:23 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 14218738192378290163
+X-BIZMAIL-ID: 2030941367130155282
 EX-QQ-RecipientCnt: 12
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org,
@@ -51,9 +51,9 @@ Cc: mengyuanlou@net-swift.com,
 	duanqiangwen@net-swift.com,
 	Jiawen Wu <jiawenwu@trustnetic.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net v3 1/3] net: txgbe: request MISC IRQ in ndo_open
-Date: Thu, 26 Jun 2025 16:48:02 +0800
-Message-Id: <20250626084804.21044-2-jiawenwu@trustnetic.com>
+Subject: [PATCH net v3 2/3] net: wangxun: revert the adjustment of the IRQ vector sequence
+Date: Thu, 26 Jun 2025 16:48:03 +0800
+Message-Id: <20250626084804.21044-3-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <20250626084804.21044-1-jiawenwu@trustnetic.com>
 References: <20250626084804.21044-1-jiawenwu@trustnetic.com>
@@ -66,153 +66,196 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NH62s74zCdjlkturCokt1Oegcsl/u2i8S4OUXChng54g/Vaw5qrPDG8Y
-	alpLPr9RVPKKhjHmPiEHYNfopLXW738p9uYYccN8FA4FmQwyyroRTYj4N0DFy5+pmNMrsQF
-	pB+RmICXaDbvvKb8lV5IbwQqWVAdEL+kr8bXtkZ1MmCnOWpATVO2ZVmQ7z8sTDu9KNqj3ZY
-	tfN/NcqkcwPVqhunO7odkLpUuuQ9eM6L6VHjxhWvlm9W85tjWwp+HWkzGdEeLkTN46Nh8vg
-	nzHdoyeOjF8QuvXnwRgEZ9Cs5JG4fnng9y++iUMSdQw6moUClNoRZr93Pj7M0sl1mEUpx4w
-	mFzfT7QrnA9gmJjycqaCv51HaKQeBClM1iaR44Z5++wI8eE4BTFlNrX6LoKkq2Ks0gdZiFY
-	2Vg85L3klf5Si4lkUgflyXvPOi9oc+igLwHNb1GXBUtkrHFTKfzf7EawxvzjBlF2YRrjIgY
-	aVvsPIp/uXfpwSxy9BlOX19bmWXOz9orx9Xx2OoslzGK0hGEcSE25B3Z6GGXwjcoWm4cV9P
-	qXI0WCMcufbROZdTzmRXYK3VuvRtEEVPIlKzOIH23YqNwTXVZojs3/tC4YDv2La6czAGG+8
-	+uV/OeTcsjh1eYTd+jTOYoKUPkYQL2MeLlK7gBsvkH0lt9v5oyXnQIHt9qd99vtIC/6n1+G
-	4N6T47nR1T6r4uRt28dMClwlBQPP9iyt9o5mX2ZHFaxtsRM34um726a+E7gz9G4+q17+aMz
-	nj/adXrUOF1zV98FYdR3MZhvwe+XnsjJG1mWyhBFfuT+UtQ6JsnWdRkgC+ZK7hzMY4097JB
-	M9jePT2SbQk3oHezTlaQzTNWNeRUtyr6T9NqHHDKv1y3kurPXlt3CuA6gVGithdjapOpFUf
-	/ygo79/88X0p/w89aatdMuEc3tW5vUSFMaqSG78xv8x3j2jBKLCmhhE2VHIDbSpt48TLWsU
-	kZkNQM9sPUIs6eywbxXUTWwz/wVgFMxDszOzE4np+EGZurMpjv+ECXMUv2kcZrMV7Bv3y2Z
-	EUMIimWPgNrBf4Y00OeJmSWBVKqSvfrQu6hWCf3+ctenIc4+fMN17udGKIHC0gxW1I2/oFN
-	QoB95WVv8JhBzPcWu0Mjvp1MbroO31Svw==
+X-QQ-XMAILINFO: OCrOINyfR5I/YDuPsQ88K/guSdGDbR5iH4DcEWLOkiUcyAgMj5peYDZo
+	naD5XHDwYJscavj2WiB7iFiHahtzk2NvRkpVKBe6RQ7lbKHzTHtQHNju/nVRdOqDwD8d5Gq
+	F6kiYaxgSIE9LkfAntYP3sHDsyF5G8ryzIs+CTuzLWO9o+k6MSLu2oluBmTJFkYd7eqkfLL
+	3ASGSfk/vRKFPTzXgs3SNnLAJ0VeiUcXDv2SjuqeU1TbUHuqDNFmkBxxzdaqPhxClcAlZW/
+	bVQoVk+Au/Xw71+0GGJpKqBhodE360558w5BsdIQiZ4y9GJN3fwB0UUxSbGtzsipMY+QuGf
+	tfqZk9y0I17l8RlX4YL5RRwGQzMyONAB/9NbB1Pyc0Dqe4a1MPyzfPxMcr/nFmRBVabtMCV
+	kplPYykzNQ5V7/35+jkivS/bNMSkIEDk3KUosCD6EjU6Kjw2+GSuoXnBcIrEYz889GRqMkn
+	28TCZnYsG/9AAHBsrmk2Tc3Cmn6itdIOwgk9mOVYOUTvlDPzSjpPKno6X7WtXjt2FyzSQmq
+	vlPrNwZ6eHpNTtLJQctDeY2U2ol00/8EUQOSaxFIGSi7qnmV+PJKTZMwdxHeBoQ+8CtFCmT
+	9XYWBJCdtek9W/CWrnfxwmcws0oxZIdzW+jYfDLEobJbotnd6MH8ONR+vi0FYXnKZYB7tpZ
+	h4sC2CTnxhWZDeRw78DaLaW+lgEa2Rd6v2vrvm/Abvt5vlNUzcsBBcsG18TNZN36cNg8l0l
+	X+KiBBg+YDmw+dwMsgnpQI5u6On/2NREdXpCBEmEmcQrDwQlyM72gMXITNks6YI9UvOha8W
+	TfNBCC8Rd105xj7go7KCnHrFGifeQL8Dktavq0BsA0M7JMdmvLLt79VuGxtQy7pspiPFPNc
+	v1Xjf7ndC1l/zDFIyvexmZm/Is078nlC9PlJmfe2TTB1ed9aQEvHVUWl8x9+XADOjTLiD7F
+	/ofQwYTJI4Fus8iGFDNlkSO/zorXTl/G+7IC69BzoEVoLXk4u7Ve++y5VU8pHF9JDlzpozB
+	CwgpsSRR63Y5F9UKxbp7WPvnigJ4c9qESmcrYRg0hWAeSxcnpC
 X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
 X-QQ-RECHKSPAM: 0
 
-Move the creating of irq_domain for MISC IRQ from .probe to .ndo_open,
-and free it in .ndo_stop, to maintain consistency with the queue IRQs.
-This it for subsequent adjustments to the IRQ vectors.
+Due to hardware limitations of NGBE, queue IRQs can only be requested
+on vector 0 to 7. When the number of queues is set to the maximum 8,
+the PCI IRQ vectors are allocated from 0 to 8. The vector 0 is used by
+MISC interrupt, and althrough the vector 8 is used by queue interrupt,
+it is unable to receive packets. This will cause some packets to be
+dropped when RSS is enabled and they are assigned to queue 8.
 
-Fixes: aefd013624a1 ("net: txgbe: use irq_domain for interrupt controller")
+So revert the adjustment of the MISC IRQ location, to make it be the
+last one in IRQ vectors.
+
+Fixes: 937d46ecc5f9 ("net: wangxun: add ethtool_ops for channel number")
 Cc: stable@vger.kernel.org
 Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 ---
- .../net/ethernet/wangxun/txgbe/txgbe_irq.c    |  2 +-
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 22 +++++++++----------
- 2 files changed, 11 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c     | 17 ++++++++---------
+ drivers/net/ethernet/wangxun/libwx/wx_type.h    |  2 +-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c   |  2 +-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h   |  2 +-
+ drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c  |  6 +++---
+ drivers/net/ethernet/wangxun/txgbe/txgbe_type.h |  4 ++--
+ 6 files changed, 16 insertions(+), 17 deletions(-)
 
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index 7f2e6cddfeb1..66eaf5446115 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -1746,7 +1746,7 @@ static void wx_set_num_queues(struct wx *wx)
+  */
+ static int wx_acquire_msix_vectors(struct wx *wx)
+ {
+-	struct irq_affinity affd = { .pre_vectors = 1 };
++	struct irq_affinity affd = { .post_vectors = 1 };
+ 	int nvecs, i;
+ 
+ 	/* We start by asking for one vector per queue pair */
+@@ -1783,16 +1783,17 @@ static int wx_acquire_msix_vectors(struct wx *wx)
+ 		return nvecs;
+ 	}
+ 
+-	wx->msix_entry->entry = 0;
+-	wx->msix_entry->vector = pci_irq_vector(wx->pdev, 0);
+ 	nvecs -= 1;
+ 	for (i = 0; i < nvecs; i++) {
+ 		wx->msix_q_entries[i].entry = i;
+-		wx->msix_q_entries[i].vector = pci_irq_vector(wx->pdev, i + 1);
++		wx->msix_q_entries[i].vector = pci_irq_vector(wx->pdev, i);
+ 	}
+ 
+ 	wx->num_q_vectors = nvecs;
+ 
++	wx->msix_entry->entry = nvecs;
++	wx->msix_entry->vector = pci_irq_vector(wx->pdev, nvecs);
++
+ 	return 0;
+ }
+ 
+@@ -2299,8 +2300,6 @@ static void wx_set_ivar(struct wx *wx, s8 direction,
+ 		wr32(wx, WX_PX_MISC_IVAR, ivar);
+ 	} else {
+ 		/* tx or rx causes */
+-		if (!(wx->mac.type == wx_mac_em && wx->num_vfs == 7))
+-			msix_vector += 1; /* offset for queue vectors */
+ 		msix_vector |= WX_PX_IVAR_ALLOC_VAL;
+ 		index = ((16 * (queue & 1)) + (8 * direction));
+ 		ivar = rd32(wx, WX_PX_IVAR(queue >> 1));
+@@ -2339,7 +2338,7 @@ void wx_write_eitr(struct wx_q_vector *q_vector)
+ 
+ 	itr_reg |= WX_PX_ITR_CNT_WDIS;
+ 
+-	wr32(wx, WX_PX_ITR(v_idx + 1), itr_reg);
++	wr32(wx, WX_PX_ITR(v_idx), itr_reg);
+ }
+ 
+ /**
+@@ -2392,9 +2391,9 @@ void wx_configure_vectors(struct wx *wx)
+ 		wx_write_eitr(q_vector);
+ 	}
+ 
+-	wx_set_ivar(wx, -1, 0, 0);
++	wx_set_ivar(wx, -1, 0, v_idx);
+ 	if (pdev->msix_enabled)
+-		wr32(wx, WX_PX_ITR(0), 1950);
++		wr32(wx, WX_PX_ITR(v_idx), 1950);
+ }
+ EXPORT_SYMBOL(wx_configure_vectors);
+ 
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index 7730c9fc3e02..d392394791b3 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1343,7 +1343,7 @@ struct wx {
+ };
+ 
+ #define WX_INTR_ALL (~0ULL)
+-#define WX_INTR_Q(i) BIT((i) + 1)
++#define WX_INTR_Q(i) BIT((i))
+ 
+ /* register operations */
+ #define wr32(a, reg, value)	writel((value), ((a)->hw_addr + (reg)))
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index b5022c49dc5e..68415a7ef12f 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -161,7 +161,7 @@ static void ngbe_irq_enable(struct wx *wx, bool queues)
+ 	if (queues)
+ 		wx_intr_enable(wx, NGBE_INTR_ALL);
+ 	else
+-		wx_intr_enable(wx, NGBE_INTR_MISC);
++		wx_intr_enable(wx, NGBE_INTR_MISC(wx));
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+index bb74263f0498..6eca6de475f7 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+@@ -87,7 +87,7 @@
+ #define NGBE_PX_MISC_IC_TIMESYNC		BIT(11) /* time sync */
+ 
+ #define NGBE_INTR_ALL				0x1FF
+-#define NGBE_INTR_MISC				BIT(0)
++#define NGBE_INTR_MISC(A)			BIT((A)->num_q_vectors)
+ 
+ #define NGBE_PHY_CONFIG(reg_offset)		(0x14000 + ((reg_offset) * 4))
+ #define NGBE_CFG_LAN_SPEED			0x14440
 diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-index 20b9a28bcb55..dc468053bdf8 100644
+index dc468053bdf8..3885283681ec 100644
 --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
 +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-@@ -78,7 +78,6 @@ int txgbe_request_queue_irqs(struct wx *wx)
- 		free_irq(wx->msix_q_entries[vector].vector,
- 			 wx->q_vector[vector]);
+@@ -31,7 +31,7 @@ void txgbe_irq_enable(struct wx *wx, bool queues)
+ 	wr32(wx, WX_PX_MISC_IEN, misc_ien);
+ 
+ 	/* unmask interrupt */
+-	wx_intr_enable(wx, TXGBE_INTR_MISC);
++	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
+ 	if (queues)
+ 		wx_intr_enable(wx, TXGBE_INTR_QALL(wx));
+ }
+@@ -131,7 +131,7 @@ static irqreturn_t txgbe_misc_irq_handle(int irq, void *data)
+ 		txgbe->eicr = eicr;
+ 		if (eicr & TXGBE_PX_MISC_IC_VF_MBOX) {
+ 			wx_msg_task(txgbe->wx);
+-			wx_intr_enable(wx, TXGBE_INTR_MISC);
++			wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
+ 		}
+ 		return IRQ_WAKE_THREAD;
  	}
--	wx_reset_interrupt_capability(wx);
- 	return err;
+@@ -183,7 +183,7 @@ static irqreturn_t txgbe_misc_irq_thread_fn(int irq, void *data)
+ 		nhandled++;
+ 	}
+ 
+-	wx_intr_enable(wx, TXGBE_INTR_MISC);
++	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
+ 	return (nhandled > 0 ? IRQ_HANDLED : IRQ_NONE);
  }
  
-@@ -211,6 +210,7 @@ void txgbe_free_misc_irq(struct txgbe *txgbe)
- 	free_irq(txgbe->link_irq, txgbe);
- 	free_irq(txgbe->misc.irq, txgbe);
- 	txgbe_del_irq_domain(txgbe);
-+	txgbe->wx->misc_irq_domain = false;
- }
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+index 42ec815159e8..41915d7dd372 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+@@ -302,8 +302,8 @@ struct txgbe_fdir_filter {
+ #define TXGBE_DEFAULT_RX_WORK           128
+ #endif
  
- int txgbe_setup_misc_irq(struct txgbe *txgbe)
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index f3d2778b8e35..a5867f3c93fc 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -458,10 +458,14 @@ static int txgbe_open(struct net_device *netdev)
+-#define TXGBE_INTR_MISC       BIT(0)
+-#define TXGBE_INTR_QALL(A)    GENMASK((A)->num_q_vectors, 1)
++#define TXGBE_INTR_MISC(A)    BIT((A)->num_q_vectors)
++#define TXGBE_INTR_QALL(A)    (TXGBE_INTR_MISC(A) - 1)
  
- 	wx_configure(wx);
+ #define TXGBE_MAX_EITR        GENMASK(11, 3)
  
--	err = txgbe_request_queue_irqs(wx);
-+	err = txgbe_setup_misc_irq(wx->priv);
- 	if (err)
- 		goto err_free_resources;
- 
-+	err = txgbe_request_queue_irqs(wx);
-+	if (err)
-+		goto err_free_misc_irq;
-+
- 	/* Notify the stack of the actual queue counts. */
- 	err = netif_set_real_num_tx_queues(netdev, wx->num_tx_queues);
- 	if (err)
-@@ -479,6 +483,9 @@ static int txgbe_open(struct net_device *netdev)
- 
- err_free_irq:
- 	wx_free_irq(wx);
-+err_free_misc_irq:
-+	txgbe_free_misc_irq(wx->priv);
-+	wx_reset_interrupt_capability(wx);
- err_free_resources:
- 	wx_free_resources(wx);
- err_reset:
-@@ -519,6 +526,7 @@ static int txgbe_close(struct net_device *netdev)
- 	wx_ptp_stop(wx);
- 	txgbe_down(wx);
- 	wx_free_irq(wx);
-+	txgbe_free_misc_irq(wx->priv);
- 	wx_free_resources(wx);
- 	txgbe_fdir_filter_exit(wx);
- 	wx_control_hw(wx, false);
-@@ -564,7 +572,6 @@ static void txgbe_shutdown(struct pci_dev *pdev)
- int txgbe_setup_tc(struct net_device *dev, u8 tc)
- {
- 	struct wx *wx = netdev_priv(dev);
--	struct txgbe *txgbe = wx->priv;
- 
- 	/* Hardware has to reinitialize queues and interrupts to
- 	 * match packet buffer alignment. Unfortunately, the
-@@ -575,7 +582,6 @@ int txgbe_setup_tc(struct net_device *dev, u8 tc)
- 	else
- 		txgbe_reset(wx);
- 
--	txgbe_free_misc_irq(txgbe);
- 	wx_clear_interrupt_scheme(wx);
- 
- 	if (tc)
-@@ -584,7 +590,6 @@ int txgbe_setup_tc(struct net_device *dev, u8 tc)
- 		netdev_reset_tc(dev);
- 
- 	wx_init_interrupt_scheme(wx);
--	txgbe_setup_misc_irq(txgbe);
- 
- 	if (netif_running(dev))
- 		txgbe_open(dev);
-@@ -882,13 +887,9 @@ static int txgbe_probe(struct pci_dev *pdev,
- 
- 	txgbe_init_fdir(txgbe);
- 
--	err = txgbe_setup_misc_irq(txgbe);
--	if (err)
--		goto err_release_hw;
--
- 	err = txgbe_init_phy(txgbe);
- 	if (err)
--		goto err_free_misc_irq;
-+		goto err_release_hw;
- 
- 	err = register_netdev(netdev);
- 	if (err)
-@@ -916,8 +917,6 @@ static int txgbe_probe(struct pci_dev *pdev,
- 
- err_remove_phy:
- 	txgbe_remove_phy(txgbe);
--err_free_misc_irq:
--	txgbe_free_misc_irq(txgbe);
- err_release_hw:
- 	wx_clear_interrupt_scheme(wx);
- 	wx_control_hw(wx, false);
-@@ -957,7 +956,6 @@ static void txgbe_remove(struct pci_dev *pdev)
- 	unregister_netdev(netdev);
- 
- 	txgbe_remove_phy(txgbe);
--	txgbe_free_misc_irq(txgbe);
- 	wx_free_isb_resources(wx);
- 
- 	pci_release_selected_regions(pdev,
 -- 
 2.48.1
 
