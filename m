@@ -1,139 +1,163 @@
-Return-Path: <stable+bounces-158659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0086EAE9651
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 08:34:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 356BDAE9691
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 09:04:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D355A1439
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 06:33:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64F135A5A2B
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 07:03:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4E9230D35;
-	Thu, 26 Jun 2025 06:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FE5238C36;
+	Thu, 26 Jun 2025 07:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aIR3paP/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UO2yXuDg"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F2913A3F7
-	for <stable@vger.kernel.org>; Thu, 26 Jun 2025 06:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501AB1411EB
+	for <stable@vger.kernel.org>; Thu, 26 Jun 2025 07:03:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750919639; cv=none; b=FjODLam8vfW/4rM6v5WY5Ornh/QlTexUWeazvREpx8cT/Lj7RpTbqThRSW0paL6m72xpb+psRDTQvTADp0xDWShTHHQjUkMqu1Iq6Q+Q19j6WXEw6UnEg/JLRWhWpKAcJIbagCB4/7t7sguFhexrSByUFl3GPhDQiGd3xvny7c0=
+	t=1750921437; cv=none; b=iRYtnv6HzFsng4Tr3SPlKBENe2MlJQZogOlsJg98M2Pz7+t72QOyMcWXRq1rlXi0xEYeHjVSwiVcfW3zzCb/EmfWKIxc5svif1gsc6YtbPimM8A/U80khCu/PQmnmr1XCBv2pokQci9XTmZFg/MZGFpmpJQcVHi5n6vHmLFHylk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750919639; c=relaxed/simple;
-	bh=J4s9+J+hh9eMHsOMiBgtL6JiImJ/4Z+NIXFm3a0EhpQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mXp4vrDbAartGxMJxJulnQc0raBYkXS+TP/jvDF3kfxLhHEJL3EQkGW/cKfbGmIPXKfYWbfKUexCeHvG0sivbX4UAoRpnSYUkJWD5Rjnu+cuL1vAfoZzvpfy5Xwq7ztgPt1ARzjUVAm5sL04NUHoHaHeaNruEqIcW7ENheHn5Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aIR3paP/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750919636;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h/TLlMh3aXs2TRrbk8rfKXAxcWbrMfWOfFVjrAWZ8rQ=;
-	b=aIR3paP/I7Jad4i6rnZoKfrZU/CExFQTaLTlgbY5DK/dWA8yzHgZs1GMV33PO4H2hvgMKI
-	3cdekMXZdfNYXABIJFVOB+QFXPaxyqQpPtHF1s1s0nJ3PP32+dyQV1+XW5a3oR4uF1C5lk
-	i1YGxeC+SFCgXgOOXX07ZDnHW7PWYUY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-499-0U7OSWu0NkalokMpKaxpQQ-1; Thu, 26 Jun 2025 02:33:54 -0400
-X-MC-Unique: 0U7OSWu0NkalokMpKaxpQQ-1
-X-Mimecast-MFC-AGG-ID: 0U7OSWu0NkalokMpKaxpQQ_1750919634
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-453817323afso3223895e9.1
-        for <stable@vger.kernel.org>; Wed, 25 Jun 2025 23:33:54 -0700 (PDT)
+	s=arc-20240116; t=1750921437; c=relaxed/simple;
+	bh=9C/yPC65dyt5L285Ad0r8Enf6n6g55IaUv+DoEN+0PI=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=AKeGI3i3MiC3KPy0CjH1a5AHYcYZA2WgzM0m4+iN4YQdYfL10HLwomTksUjoXJz5DAFhUMm0sLmSXqFnBKMcwDhTW5JdRPxK8/wOdLKJYb3SUUsX6eZDeJwh3WadiHHPjIsRVZbIlUQMSHKjjb9qqra1V82J2E0O5/loInxnQxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UO2yXuDg; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3137c20213cso736320a91.3
+        for <stable@vger.kernel.org>; Thu, 26 Jun 2025 00:03:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750921435; x=1751526235; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9C/yPC65dyt5L285Ad0r8Enf6n6g55IaUv+DoEN+0PI=;
+        b=UO2yXuDgntwHQ6MR8cvQeo7Q9IirTmfpF4LlGbTd9hES9M+eDcsJ7d0WzpG5bAFYkR
+         c/7gVPNjpgZfWvXbUkiprXq5V+JUcPLbX7jde260tH2YizxHrd0iTNUiqSZALXk4E+Pd
+         F2fIRvrGM56c9U6H+Dycyt8YoTk/o5hFvAurBZ0vz7xZGSFCH+SbJf5bd8DHZFPxahtQ
+         uqw+PCoTjHvMAGTdJD/T5/GECwChBPNjJZCk60zK2Z/tLLJjsb1D/rUdclEmq8LeG2Ih
+         7okva+6XM2mKiKKU6JQi4Llg+KB95AlRwXL0+Z/0vqLLkX3zb3T/fqjXGNPUyBnUBvP6
+         5D8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750919633; x=1751524433;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h/TLlMh3aXs2TRrbk8rfKXAxcWbrMfWOfFVjrAWZ8rQ=;
-        b=Vh8tJtA5FOVCfvGxzPpj2yDMwmrNOVy28/dufkL93IHLO2j9AfMYEIXOhGXM1WUuQ6
-         N5O4Md7gX2TRVZ6NtVE7NqwwfGPhID2/gFmk813dzMaIRwZAuRDKoqVfn+i+921ZOTmw
-         9kSWjcO0UJfL57cJHH9acjpsAGYtz6tWWhd8Fv760O4MGJgIVoMDD9NCbBo5xCxGo3rx
-         Cd/hi1qNZ6nuCo/bLn+z+ws6Zm3TY8BfDGopAOLTXJ5OoJ8gGdxfgeiccv7xDbWa63AG
-         kBAr60hBsthRswYAokoi8FCpX0dY+WjbIUtPLB9KTRAggr/swsHoePB6qF9rH0Onbg7d
-         +HOg==
-X-Forwarded-Encrypted: i=1; AJvYcCUeJbWGk49eSvX7j8/cUFwSRkQK4tWzVBzVr60Q3IcEHWwMPaZCUddkhHSPFDkTXLDpFwJ/YF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkkyfFEYxCFn9rNCvUxRSJhgBvf/VZRn8dEB6/XP3R7/DbPj5e
-	6Inhfd9Ganj7YJMGT8A98fq2yrJtFdrtdoKIFBms3+g5uervIvZ4xPrjHNpIl7UZjbk2OkviB4Q
-	7qQqKa6Cg/xfLqNWx/IMROSwFU6pQDScGRwPAN7HqpPzw6O7rKDw+Nqrh/Q==
-X-Gm-Gg: ASbGncvwREeL1s9RR2InkvQmkfsfRdEUwowimVE1tcUX1/gbM0oDiFn+gsDi/QBdCVe
-	U2TG/k4cEj3jxNpIX45K3T9M2qv5RSVacA6vdsCM5iLKjdoP4DHJjJM3kyksTAGkswGkQHQwFzz
-	+EEdzw1yjZqtNsc4PIaAAfhbljSp71jZ09PtCwS2Bh+I1XsWlDF+BvEpHhEXc+7G7IAGy8QRf52
-	xsJ9J8TW6B3D/P8m3mCX7QxSkj3XU3QIJQFoyuftB8frRbOrYrd75SgumKe76wCkG7gn0vyxNOU
-	DpAFM2UJR0uRF6sE
-X-Received: by 2002:a05:600c:3b03:b0:450:d367:c385 with SMTP id 5b1f17b1804b1-45381af6a8fmr60953685e9.16.1750919633501;
-        Wed, 25 Jun 2025 23:33:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEY1gVtAu6xNPmuOKtlgkoZHvhQWkHC705oPq3RWgy6yjcOgBSGke0BghulB4p8vItj5d6DqQ==
-X-Received: by 2002:a05:600c:3b03:b0:450:d367:c385 with SMTP id 5b1f17b1804b1-45381af6a8fmr60953305e9.16.1750919633023;
-        Wed, 25 Jun 2025 23:33:53 -0700 (PDT)
-Received: from redhat.com ([2a06:c701:73ea:4300:f7cc:3f8:48e8:2142])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453823c3c7csm39585545e9.36.2025.06.25.23.33.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 23:33:52 -0700 (PDT)
-Date: Thu, 26 Jun 2025 02:33:49 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Parav Pandit <parav@nvidia.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
-	"axboe@kernel.dk" <axboe@kernel.dk>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"NBU-Contact-Li Rongqing (EXTERNAL)" <lirongqing@baidu.com>,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"jasowang@redhat.com" <jasowang@redhat.com>,
-	"alok.a.tiwari@oracle.com" <alok.a.tiwari@oracle.com>,
-	Max Gurtovoy <mgurtovoy@nvidia.com>,
-	Israel Rukshin <israelr@nvidia.com>
-Subject: Re: [PATCH v5] virtio_blk: Fix disk deletion hang on device surprise
- removal
-Message-ID: <20250626023324-mutt-send-email-mst@kernel.org>
-References: <20250624155157-mutt-send-email-mst@kernel.org>
- <CY8PR12MB71953EFA4BD60651BFD66BD7DC7BA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250625070228-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195AF9E34DF2A4821F590A8DC7BA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250625074112-mutt-send-email-mst@kernel.org>
- <CY8PR12MB719531F26136254CC4764CD4DC7BA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250625151732-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195D92360146FFE1A59941CDC7AA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250626020230-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195435970A9B3F64E45825ADC7AA@CY8PR12MB7195.namprd12.prod.outlook.com>
+        d=1e100.net; s=20230601; t=1750921435; x=1751526235;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9C/yPC65dyt5L285Ad0r8Enf6n6g55IaUv+DoEN+0PI=;
+        b=MfI07fxLa9Ho5kuYDkdmby2x65/NGvBGMT3LjB30PzOL+E+If32LTcmUBadV3xBYpA
+         nP613XW6qOg1FiQgrHfXjfIRieXxLfOImRY7n1GJEYrKQN0A0S4+BTpWbaix2iZgc/ve
+         1ceIvyo4c6ROvSd+29Cljn4meuCrFH9vDarlV0YnVxjw/7A1tdKt416HzDqsj6jzX4mY
+         vNiL/sYMV6zeYuo7B/BBSc+HmBdmdGY5SCpPWdufIEoYbyoETAadLsMHGuBx4JeTX4FU
+         RyB2IiKY75DMOl96/bwKKa8x/UiizhPkyxW28s02AWgWfPxW24cuVyJpkDd0onzG4R/U
+         qQiw==
+X-Forwarded-Encrypted: i=1; AJvYcCX+D8vsA9BrqoJtQMJhUDuWofbf2mT8LYeuksG0vPYJRj4WsfnboeLfT1/Chr3VX4FFjWZSx0o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzwg/ZEbH1PB75XiIMbIGmbWbzA0uDYER3CutlFtK78RAn1YPfO
+	jNWHUBC5IjdfXQt5Lg7UcogoBXJR+LHogndqrd8jCwGcuCGxu1qLLXgp8ez6U6UuslJdvcyx5mH
+	cvmrF8kzVzzhCwun+Ymd5d5Kiwxw+Q7h1zqd+UfOuvg==
+X-Gm-Gg: ASbGncthgxBP2HnQDRpDCkbb4sqiRJ8vd3UumllGYRYYITIiDxuCYNpedQqpnWopegI
+	tl3ZUPwKTes8FoDiHnk4v3P62u5l5l9nOovY/Ayag0hqjhYBYc8EtDG2CXjBkG0qee1UYUtUp76
+	6k7kHIjRfOIP1YfOFsSS7Y1L3cDuGxsN+HjW+lO0wKplTtURUtjmzGUVUJwNNfDAEtjd3oMcMKL
+	pfZ
+X-Google-Smtp-Source: AGHT+IGB3/XrVvwCiSKGcdM/uKLZZR2BBjt/EJ8TFkLwSBLUw9n1kq4/A/cuTaHIdw+LRFJ+QBCRjPhK4cZiYm51gdc=
+X-Received: by 2002:a17:90b:53c5:b0:312:1508:fb4e with SMTP id
+ 98e67ed59e1d1-315f2675bbbmr9154353a91.17.1750921435517; Thu, 26 Jun 2025
+ 00:03:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CY8PR12MB7195435970A9B3F64E45825ADC7AA@CY8PR12MB7195.namprd12.prod.outlook.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 26 Jun 2025 12:33:43 +0530
+X-Gm-Features: Ac12FXzrp0QOBUWJ7tIxkv-cgchxT19rQvDD483_utcFbw2DHpKfR-GbfFmMvSU
+Message-ID: <CA+G9fYtJO4DbiabJwpSamTPHjPzyrD3O6ZCwm2+CDEUA7f+ZYw@mail.gmail.com>
+Subject: stable-rc: 5.4 and 5.10: fanotify01.c:339: TFAIL: fanotify_mark(fd_notify,
+ 0x00000001, 0x00000008, -100, ".") expected EXDEV: ENODEV (19)
+To: LTP List <ltp@lists.linux.it>, open list <linux-kernel@vger.kernel.org>, 
+	linux-stable <stable@vger.kernel.org>, lkft-triage@lists.linaro.org, 
+	Linux Regressions <regressions@lists.linux.dev>
+Cc: Amir Goldstein <amir73il@gmail.com>, chrubis <chrubis@suse.cz>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Petr Vorel <pvorel@suse.cz>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 26, 2025 at 06:29:09AM +0000, Parav Pandit wrote:
-> > > > yes however this is not at all different that hotunplug right after reset.
-> > > >
-> > > For hotunplug after reset, we likely need a timeout handler.
-> > > Because block driver running inside the remove() callback waiting for the IO,
-> > may not get notified from driver core to synchronize ongoing remove().
-> > 
-> > 
-> > Notified of what? 
-> Notification that surprise-removal occurred.
-> 
-> > So is the scenario that graceful remove starts, and
-> > meanwhile a surprise removal happens?
-> > 
-> Right.
+Regression in the LTP syscalls/fanotify01 test on the Linux stable-rc 5.4
+and 5.10 kernel after upgrading to LTP version 20250530.
+
+ - The test passed with LTP version 20250130
+ - The test fails with LTP version 20250530
+
+Regressions found on stable-rc 5.4 and 5.10 LTP syscalls fanotify01.c
+fanotify_mark expected EXDEV: ENODEV (19)
+
+Regression Analysis:
+ - New regression? Yes
+ - Reproducibility? Yes
+
+Test regression: stable-rc 5.4 and 5.10
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+fanotify01.c:339: TFAIL: fanotify_mark(fd_notify, 0x00000001,
+0x00000008, -100, ".") expected EXDEV: ENODEV (19)
+
+The test expected fanotify_mark() to fail with EXDEV, but received
+ENODEV instead. This indicates a potential mismatch between updated
+LTP test expectations and the behavior of the 5.4 kernel=E2=80=99s fanotify
+implementation.
+
+Test log,
+--
+
+fanotify01.c:94: TINFO: Test #3: inode mark events (FAN_REPORT_FID)
+fanotify01.c:301: TPASS: got event: mask=3D31 pid=3D2364 fd=3D-1
+...
+fanotify01.c:301: TPASS: got event: mask=3D8 pid=3D2364 fd=3D-1
+fanotify01.c:339: TFAIL: fanotify_mark(fd_notify, 0x00000001,
+0x00000008, -100, ".") expected EXDEV: ENODEV (19)
+fanotify01.c:94: TINFO: Test #4: mount mark events (FAN_REPORT_FID)
+fanotify01.c:301: TPASS: got event: mask=3D31 pid=3D2364 fd=3D-1
+...
+fanotify01.c:301: TPASS: got event: mask=3D8 pid=3D2364 fd=3D-1
+fanotify01.c:339: TFAIL: fanotify_mark(fd_notify, 0x00000001,
+0x00000008, -100, ".") expected EXDEV: ENODEV (19)
+fanotify01.c:94: TINFO: Test #5: filesystem mark events (FAN_REPORT_FID)
+fanotify01.c:301: TPASS: got event: mask=3D31 pid=3D2364 fd=3D-1
+...
+fanotify01.c:301: TPASS: got event: mask=3D8 pid=3D2364 fd=3D-1
+fanotify01.c:339: TFAIL: fanotify_mark(fd_notify, 0x00000001,
+0x00000008, -100, ".") expected EXDEV: ENODEV (19)
 
 
-where is it stuck then? can you explain?
+## Test logs
+* Build details:
+https://regressions.linaro.org/lkft/linux-stable-rc-linux-5.4.y/v5.4.294-22=
+3-g7ff2d32362e4/ltp-syscalls/fanotify01/
+* Build detail 2:
+https://regressions.linaro.org/lkft/linux-stable-rc-linux-5.10.y/v5.10.238-=
+353-g9dc843c66f6f/ltp-syscalls/fanotify01/
+* Test log: https://qa-reports.linaro.org/api/testruns/28859312/log_file/
+* Issue: https://regressions.linaro.org/-/known-issues/6609/
+* Test LAVA job 1:
+https://lkft.validation.linaro.org/scheduler/job/8329278#L28572
+* Test LAVA job 2:
+https://lkft.validation.linaro.org/scheduler/job/8326518#L28491
+* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2yxHGv=
+VkVpcbKqPahSKRnlITnVS/
+* Build config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2yxHGvVkVpcbKqPahSKR=
+nlITnVS/bzImage
 
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
