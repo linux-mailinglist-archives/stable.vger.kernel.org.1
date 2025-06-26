@@ -1,178 +1,124 @@
-Return-Path: <stable+bounces-158671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A25CAE9953
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 10:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C16AE9992
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 11:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89B7F1699C5
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 08:59:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F1BA17172C
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 09:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD7829AAEC;
-	Thu, 26 Jun 2025 08:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434D8295533;
+	Thu, 26 Jun 2025 09:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="nst+KXhL";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZqPnWj3T"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="J+tIHJZK"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4532266EEA;
-	Thu, 26 Jun 2025 08:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F461DF99C;
+	Thu, 26 Jun 2025 09:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750928380; cv=none; b=kVKnD4wdqXToEG9UTfc0+srABmNqaJwdQzcaLa70Sfg61YZ2tvNekHV1b0PFZgjJG3046rugQCifFj8R+5obwwyAJTSrwM0IOEJx2VHs5yDgl+QNRl3sXRpsRTUDBsU7UmrOeRL5PhHCcy7F1aiWGPspgCWgIlFFB6h7tSFesic=
+	t=1750928706; cv=none; b=Vd2fiumt9xIDxMGiWvT1tTcIB6HQGxKik8Xu5qjFylmMWp+lQPPC0gvgYvhBs8coaJb2D+L0nox4DJJlTjMits18AGvEAZKSDyUcvQu4S7MSmCR6idacOwJaH6hkAeTR7cG8VsN0mt7fFg/WqhB/URUuPQiRueflaWfgIdslkd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750928380; c=relaxed/simple;
-	bh=aBl0QIuDVXqWQ1gVsSGkKN8r3eIUjjET6iE1LlcQ2D8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=i0eBoNXRWfEg67UEdXTnrkFLu9+N02PzkZV/NyBLNsqCmEYb76ADK6yNVmn+QBwgsUSDXqzuKsPSQ84R5xMDV3VMElKgEd6x4p9dg6xw6Dt44Y7Gph5JsTY4tIh1JIQm7OijIrnZ9jjrMstCPSU8a+l5J7a9155AwdGJSGuKuOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=nst+KXhL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZqPnWj3T; arc=none smtp.client-ip=202.12.124.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 96AF87A02BE;
-	Thu, 26 Jun 2025 04:59:37 -0400 (EDT)
-Received: from phl-frontend-01 ([10.202.2.160])
-  by phl-compute-01.internal (MEProxy); Thu, 26 Jun 2025 04:59:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1750928377;
-	 x=1751014777; bh=drwBUjTKqDmvGvM3SVRsKqApsIIca2T/4d08mRhDSGg=; b=
-	nst+KXhLIcDo/slOZ1gKYGZLu3V32TzYeJR0EuiYkIRG/+89BCWE1NJuEyFwCwGo
-	aa/l6tgbsa1oHNuQG/85la5YOfetGRgY0YLn0l3VzDgcRWGdGnv37zb37o3C0Ghm
-	RA1tF0wuyuZdAO82xZZFE6pvfNwRc18XzHXYGveoHOT8NHLU5n30OhImczw08JcH
-	Ze3MxtAaXdM12DEWVsVCR7cRGxNnAtN0fyZ5OZPewsGwU+Dq9fU+KSohx9ToIYvO
-	0uHqKV01YiZoJjbiqFjHRtoLb+/PBv9U/kATq4DeFPW0+jvcbTxWCC1wWyAFqupx
-	bd0IgC6TJfMB0XVJhnMAVw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1750928377; x=
-	1751014777; bh=drwBUjTKqDmvGvM3SVRsKqApsIIca2T/4d08mRhDSGg=; b=Z
-	qPnWj3T5jTPaxStHDAHOkvgUOUHI0hdIxVu4xlfvoiwwxXNPMJdbij2qUE4/MyVI
-	VFbnrr5X6eiYK3621CYVHUVNq4wQ3tbdztD5v4irqAzG/GfA0C2ZgxjEAwJCl7xq
-	PhAjfJvifAdG1IYZKiLs1fMhxvvy9zhYxfZqdYNk9PDpEIKvF1NIngCqYLvSHfIs
-	nYi2fhfHW2qlPb2yPViyUwiwzUrzm+ZRx2vti4mY/Da/O56U9gIoiBn31fQtBDo2
-	bJ2ScAkV2OqeGthl1SU5uQae3z3tTv4HjlHV28Kjz0Px0bvc5WLNp7rcxObx/D6F
-	vrdHIrVq9qzgbdFAuoZjg==
-X-ME-Sender: <xms:-AtdaMhkshihAAodqPEVDmF9A9yrrw81J2HMUSzDJmm0lEaLib4qQA>
-    <xme:-AtdaFC11mrtCTBMuEmF4sk8v9IbzAPGcKpFmhFDrI9nCSdaQPFV0l6Pd7P-Rh5vz
-    1jiAGbewLbXTyP-0-Q>
-X-ME-Received: <xmr:-AtdaEFrceHXvJhLRG8J2npU5B1RB2TclpAerYrHotPNfON-ltBgxIZ9vI9RTCD-akSQTAk7lEQ8shoBY1e609bpIw5O-w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvhedvfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefkffggfgfuhffvvehfjggtgfesthekredttddvjeenucfhrhhomhepfdeurghrrhih
-    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
-    grthhtvghrnhepffejveffjeevvdeuueehfffhueevveejgeeuveeguedvveevieejudeg
-    feduueetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsggrrhhrhihnsehpohgsohigrdgtohhmpdhnsggprhgtphhtthhopedvuddpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtohephhholhhgvghrsegrphhplhhivgguqdgrshihnh
-    gthhhrohhnhidrtghomhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgu
-    rghtihhonhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehprghttghhvghssehlihhsthhsrdhlihhnuhigrdguvghv
-    pdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhunhgurghtihhonhdr
-    ohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
-    hgpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvghtpdhrtghpthhtohep
-    shhhuhgrhheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:-AtdaNR8dmbI2n-K7oSWtVLoBHB648cMiMgHmYpxyPzONwWDydMh6Q>
-    <xmx:-AtdaJxiTTyT89K5_X_ryMgNsvDzDXgtK9YZUMSLGFvU6SEYLvbQNQ>
-    <xmx:-AtdaL7AQeRQbsO793UjogxaM5Px109G1KX6FFmvOWQHB_DNb3Ve3g>
-    <xmx:-AtdaGxW7yhHDFvr3KnGFWV00aJ_blsJID_kzCr1unHYrBrqB7VG5g>
-    <xmx:-QtdaHI1Cv5gM3zyHuVHod4flfasyp4Aooedm-0KLu2gSpZkS6VdGkKL>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Jun 2025 04:59:33 -0400 (EDT)
-Message-ID: <7069cc77-a224-4753-8088-0302fc444710@pobox.com>
-Date: Thu, 26 Jun 2025 01:59:32 -0700
+	s=arc-20240116; t=1750928706; c=relaxed/simple;
+	bh=JnFsgXspVjKa1rNS5RtYOsRh0fSxuour6+9sS+lpfco=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K0kZBKnXm4IV5rdRuwi6t7m3GBJ9qoZb2B16jW+Q1BTnc5XqIHUtSjVbPgL7Wh2RqSp61WQct5QWigLs43PV4QXtM0TFv10DAgsGlf+x7ayLP96hK6hdddBE45JH6hb1E7j2XIAJIhW3PMrLDgzMb1a2j9tcLHYFsJsYN/nb7vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=J+tIHJZK; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1DBD940E00DC;
+	Thu, 26 Jun 2025 09:05:00 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id y14xr2C5g0xI; Thu, 26 Jun 2025 09:04:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1750928695; bh=1VkhzI0/iZpiDzjB4lyKYYG4z33A7c2AtxjeF5dgRJI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J+tIHJZKqjgT4woD1+qxtEX+lcbtmqTlw9YEnn+bwYeaJ3YI/t6F4xnYiPrmnNTCn
+	 60p0ZcYFncvoEpc3qjUkRR75GQryN5G52EGImdN5oFOfZWgPVvuqmje+QuJBoj89vT
+	 nWdlNKeNTJeSVNZy9SijD8UspU8frF1LuZesET5JpdtVRJgOed/nnlf/imlw4PnHRq
+	 Ufqbs5CLHIA/Y88mj3P+I0ukMGEMlHZ0SWGFZ/eY4EUD64h5kAD/o+Sn6hlIPU0did
+	 BLSXp8aCpCt4snw7h4WvXpTh2/Xf/RWO14QVSKmi/1+Zh27ACoK8HbzFQ6OHttXb6M
+	 38OdxeGkxE1944D7fan/chrp0XHZNxUgimAeHCcPNECWDRm27CoHHkQ1aLMzzn9tmQ
+	 cPW74gwEe3FnEG7NtFXO5kf/fZ5rN8tGVIZjtIfQ5Xc90A5MTWUfkk+t4YOqW6JoL8
+	 sYGWnwLEmEvSczSuZHGw2Kw21LIrwPF1ruUxb2tUM+dyUreixxk9uILfgtcBCbZx2N
+	 9LRM+niwkmb18cFWN51fwmVGkMmJfDKBr0dbPfTlqpP6wJHSkxKm37EJAe1X+eDhq/
+	 58IZIKTnG8K/VOnU4wG9GXL5o2zcBiEGXQ+Kat1XV38acugxsQR47raLvGORKRQIR7
+	 kpXpPHijerfJnPKD7WMtURBY=
+Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B006C40E00DE;
+	Thu, 26 Jun 2025 09:04:45 +0000 (UTC)
+Date: Thu, 26 Jun 2025 11:04:39 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Xin Li (Intel)" <xin@zytor.com>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sean Christopherson <seanjc@google.com>, stable@vger.kernel.org,
+	x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/traps: Initialize DR7 by writing its
+ architectural reset value
+Message-ID: <20250626090439.GBaF0NJ34n065_4vb-@fat_crate.local>
+References: <175079732220.406.9335430223954818839.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.15 000/588] 6.15.4-rc2 review
-From: "Barry K. Nathan" <barryn@pobox.com>
-To: =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org,
- Christian Brauner <brauner@kernel.org>
-References: <20250624121449.136416081@linuxfoundation.org>
- <e9249afe-f039-4180-d50d-b199c26dea26@applied-asynchrony.com>
- <2025062511-tutor-judiciary-e3f9@gregkh>
- <b875b110-277d-f427-412c-b2cb6512fccc@applied-asynchrony.com>
- <6d3b0f28-98cb-46dd-b971-8a11e3b69d68@pobox.com>
-Content-Language: en-US
-In-Reply-To: <6d3b0f28-98cb-46dd-b971-8a11e3b69d68@pobox.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <175079732220.406.9335430223954818839.tip-bot2@tip-bot2>
 
-On 6/25/25 05:15, Barry K. Nathan wrote:
-> On 6/25/25 02:08, Holger Hoffstätte wrote:
->> On 2025-06-25 10:25, Greg Kroah-Hartman wrote:
->>> On Wed, Jun 25, 2025 at 10:00:56AM +0200, Holger Hoffstätte wrote:
->>>> (cc: Christian Brauner>
->>>>
->>>> Since 6.15.4-rc1 I noticed that some KDE apps (kded6, kate (the text 
->>>> editor))
->>>> started going into a tailspin with 100% per-process CPU.
->>>>
->>>> The symptom is 100% reproducible: open a new file with kate, save 
->>>> empty file,
->>>> make changes, save, watch CPU go 100%. perf top shows copy_to_user 
->>>> running wild.
->>>>
->>>> First I tried to reproduce on 6.15.3 - no problem, everything works 
->>>> fine.
->>>>
->>>> After checking the list of patches for 6.15.4 I reverted the 
->>>> anon_inode series
->>>> (all 3 for the first attempt) and the problem is gone.
->>>>
->>>> Will try to reduce further & can gladly try additional fixes, but 
->>>> for now
->>>> I'd say these patches are not yet suitable for stable.
->>>
->>> Does this same issue also happen for you on 6.16-rc3?
->>
->> Curiously it does *not* happen on 6.16-rc3, so that's good.
->> I edited/saved several files and everything works as it should.
->>
->> In 6.15.4-rc the problem occurs (as suspected) with:
->> anon_inode-use-a-proper-mode-internally.patch aka cfd86ef7e8e7 upstream.
->>
->> thanks
->> Holger
+On Tue, Jun 24, 2025 at 08:35:22PM -0000, tip-bot2 for Xin Li (Intel) wrote:
+> The following commit has been merged into the x86/urgent branch of tip:
 > 
-> For what it's worth, I can confirm this reproduces easily and 
-> consistently on Debian trixie's KDE (6.3.5), with either Wayland or X11. 
-> It reproduces with kernel 6.15.4-rc2, and with 6.15.3+anon_inode-use-a- 
-> proper-mode-internally.patch, but not with vanilla 6.15.3 or with 6.16-rc3.
+> Commit-ID:     fa7d0f83c5c4223a01598876352473cb3d3bd4d7
+> Gitweb:        https://git.kernel.org/tip/fa7d0f83c5c4223a01598876352473cb3d3bd4d7
+> Author:        Xin Li (Intel) <xin@zytor.com>
+> AuthorDate:    Fri, 20 Jun 2025 16:15:04 -07:00
+> Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+> CommitterDate: Tue, 24 Jun 2025 13:15:52 -07:00
 > 
-> By the way, my test VM has both GNOME and KDE installed. If I boot one 
-> of the affected kernels and log into a GNOME session, I don't get any 
-> GNOME processes chewing up CPU the way that some of the KDE processes 
-> do. However, if I then start kate within the GNOME session and follow 
-> the steps to reproduce (create a new file, save it immediately, type a 
-> few characters, save again), kate still starts using 100% CPU.
+> x86/traps: Initialize DR7 by writing its architectural reset value
+> 
+> Initialize DR7 by writing its architectural reset value to always set
+> bit 10, which is reserved to '1', when "clearing" DR7 so as not to
+> trigger unanticipated behavior if said bit is ever unreserved, e.g. as
+> a feature enabling flag with inverted polarity.
 
-After some testing and bisecting, I found that "anon_inode: use a proper 
-mode internally" needs to be followed up with "fs: add S_ANON_INODE" 
-(upstream commit 19bbfe7b5fcc) in order to avoid this regression.
+OMG, who wrote that "text"? 
+
+I asked AI to simplify it:
+
+"Set DR7 to its standard reset value and always make sure bit 10 is set to 1.
+This prevents unexpected issues if bit 10 later becomes a feature flag that is
+active when cleared."
+
+It sure does read better and I can understand what you're trying to say.
+
+So can we *please* use simple, declarative sentences in our commit messages
+and not perpetuate the SDM?
+
+Thx.
+
 -- 
--Barry K. Nathan  <barryn@pobox.com>
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
