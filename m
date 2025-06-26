@@ -1,488 +1,238 @@
-Return-Path: <stable+bounces-158686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E04AE9CE3
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 13:53:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 095A2AE9D2C
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 14:06:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 067643B4F40
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 11:53:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B3177B5200
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 12:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA684169AE6;
-	Thu, 26 Jun 2025 11:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800B8C147;
+	Thu, 26 Jun 2025 12:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b="utXnEQnO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fDSL7iVS"
 X-Original-To: stable@vger.kernel.org
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010010.outbound.protection.outlook.com [52.101.84.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBE54C81;
-	Thu, 26 Jun 2025 11:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15ED4C81;
+	Thu, 26 Jun 2025 12:04:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750938758; cv=fail; b=Wwl0ee+6DGyTfJ+T4j86z9YUfSqJALRnY/zeBdaYgi4zCPi0eObBg3dULP/kAlLdzgqOXA0wfgn+PI/PT6Hrtd4lvWtYZeaA+sMAuH/mnZay4n+rNlctbyoxpbpW6cmJ8tDiq9XIWjR05sFFSxCgig/D3gWS1snsv6IITLE+Fxw=
+	t=1750939479; cv=fail; b=S+DdXxp+mOwWrzkpMypqDFdLg9Q75ec1ehD+EUjOjQ5A61SwM3vZMfHP2cwWV5/VQizmXFV9ldUu2SDqUUJ6AKS5WuYnK24hdqV0mfZnPfFdb0/m5z3tDT8pMk1dHRoF3zqahBb2T5x0aS8I6zot+uyvJgnbdBjaFnSOQLhxFpo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750938758; c=relaxed/simple;
-	bh=v60pAHgQF9p8BwK4KxOcttdB+fkOUn2RWM1ZxYuJBF0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eIdCMT+z+kKTHC249KxaEpkQE0cuU3VPRX1kDb5gEuH79Dm6rbNqmT0KiO8Xd6d1E5UsmEv1oB4QJPaUNgKTtvbNZk7dDUrAWIbiKad6lgkoMcyp8TgvcTN9bf7SzC7c6PQYLpapUH2opf95weD1+2l4BiPXQeaqYmnREU54TPI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de; spf=pass smtp.mailfrom=arri.de; dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b=utXnEQnO; arc=fail smtp.client-ip=52.101.84.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arri.de
+	s=arc-20240116; t=1750939479; c=relaxed/simple;
+	bh=/2GPWCIZ85lPCv+QqtSaWXEpMrNBC2vtj7ax+D6jHFY=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ro2yqZ9cc5iz4ENkpJ3Z2oIm3Dkt5AcmLr2GHrWZqemu1h3ilJjOjplskgNAdsZI2B0fWGfZqNwdD8SqTqhVvq9p5AUoAtD9ZOBBDKJ18pFvk8NH8Iik6b4SXab355XcxEFEeoNhjcRLjemyYucZEl9mKni/RrILaLTKk/GXrlk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fDSL7iVS; arc=fail smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750939477; x=1782475477;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=/2GPWCIZ85lPCv+QqtSaWXEpMrNBC2vtj7ax+D6jHFY=;
+  b=fDSL7iVSGaSdGIUWhfTNhDMu1VsolZ7fhv4mrYzryqQA5lwlTlinlHMU
+   wqzIukEYGGfFtfFxLsK/dNcSVMfYmUQ/9R9lPiJx9OvhdkQElswyEXE4G
+   Zfxo+ZgomohJwG0gImdYb/XNKr1Ud7k9gKDHwGkJ4P/YaKeBv7Hi39t3Z
+   hSTnYU0B14p5ps2scerkxwGcSrZJGjnOZhzUHPVtwbeAgB9iotgFi+X0k
+   bPAllkj0u6F5UDFQdwDjJ2S0SkXLQ1E3QwS13UXPvbXWojF+z/2Jb48+P
+   ilD8WSisk4JQLwSQcdCrWtweWfD088I/9a3mbh77Vp1NalC2xrgOfd7s1
+   Q==;
+X-CSE-ConnectionGUID: trhCsbJVTm2wWPwWu+XWjg==
+X-CSE-MsgGUID: RGlkLrMTTBacFfK6lfIagA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="52460072"
+X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; 
+   d="scan'208";a="52460072"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 05:04:36 -0700
+X-CSE-ConnectionGUID: QwkoSd4ZQXukRuri0ZJvHw==
+X-CSE-MsgGUID: tCuH/Sj9TG6S6PDDlcFGIA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; 
+   d="scan'208";a="152665694"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 05:04:37 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 26 Jun 2025 05:04:36 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Thu, 26 Jun 2025 05:04:36 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (40.107.92.82) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 26 Jun 2025 05:04:35 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nH6JWDmwj5/RCtJ72xyufBvqoNZxNHY2TYDJXtvPHj1yC8kFzpzSs4G75eef+PfU4j4A7wQZwFwi51kavmqndz5ALz25+0maUALlVo44W84fdpqsrqJz90GJVeM/6Ujfwfirvg00p2HhCr9XF3GgqVFZKRNz/D5+ZqfKDIAttiAm5WfQGi7TtQmOuwO72bauLKsjXeG4xJNwoXz98YWVHKwG6QvdEcZxkK8fI4lhj1Ka4dXakC1BRvJRjp2wPCKpBnlWTvA9waiXELzmakwuKyidxoVXhh/PVDaHR+XLVor5amedHZXuRwEYSnRTpJJYNAJs28eOuI1MWLFSzsKFlQ==
+ b=snjkJKFU132t3OAoVCPGpFgP79IERHGxf9Rc+qF/BVw2npd8xBz5Gn5vuGLLt8zW7jGZV1SWSTRIpjV03OBMS8qQHfLiQix0/ACJU4VT9LRD1opm8svZGlCid1gpZZWzPSiHh3vb7uNHFxRvIoM7ve8rGSgsVF3qijTKMhfOGzz0R57G+UjhcnzqbUzIHhvReYTH1FCwKnMC+gJeHcKPAQNBx/LT4FtbH0ql3e3c39byctgzRWaCUIL/WgnjU1efdjXxKRxMmOo6UVjejSrcEV0pNeplmAty1BrF8VlJtXFwXT6qE3KZwGgNHP0mxOR8ehHP/WT0HtqA2RZ3E+RCjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=88wpuiJEIZFceLk091o/GhGyAD3IYNyqpPsypgndQ0g=;
- b=VNiTzdC52mDkAtPNuz4ts9JPcayYJKBAh3pjjv+D7zskOa8ZKpiHz9qMbqgbdqfprFTeD9XRgfkaePnnS3ug0vjIjsTY94R7bZjaJvgdeth5QdzNCaBTR510Jl0VestGlcdmNaTmOARzCRx5exMO8Y6c1xo/5G7v2ZVd508ECUfWEmvqGdDmVPDZeTMUC0LD58M/XiDYFqPsFkGa+EGHVikS02SpNvdNHN689jKjyWlKfb+oH1z3wktlIGwSvWmlq44QXopUGMdyTpwXoCdFzFFvwUTKGEmBsHgEVVdnf5MuYjav/j2BXKU6x8RrGjGxsjb/m+HHUnhhpRGf1lijUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 217.111.95.7) smtp.rcpttodomain=holtmann.org smtp.mailfrom=arri.de;
- dmarc=fail (p=none sp=none pct=100) action=none header.from=arri.de;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arri.de; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=88wpuiJEIZFceLk091o/GhGyAD3IYNyqpPsypgndQ0g=;
- b=utXnEQnOhN3qBZ58gOPBlG00moO+gqnS+8jR9i+BB1p62u7Y2i+EZMgkOYXau/EOjZC5BzIjN9p8fokgD7vgAf8g5ZFTQNRhsuNqdXaN/z7TbVqLoZrkqVRSNETwTRUu4JF2D1p8zzo2q6KsPXZFlC1zt2OPbTW/0kBF6GSjE0w=
-Received: from AM0PR02CA0193.eurprd02.prod.outlook.com (2603:10a6:20b:28e::30)
- by GV1PR03MB8688.eurprd03.prod.outlook.com (2603:10a6:150:90::10) with
+ bh=gk6iqnqTrPBmmk/aa/qm7usAHp2/O1z4QQQTEhAuLsM=;
+ b=IFZ5ifjjByLwIAmod1s3ILcGMA9psNBq5S+2WmDy3VvkZLLZNZCyjIm87fr1vwZUsD/IYZp7obM1BVldxELGtRlelS/x1okO8tl3XDoGfndKWpn0uv8F/GEyl4uzzhjV4N3t+rgMby9E1M4aIkgVDvkMbfMthcPjiJymsoergyi7BRiNFfWecsQJ9RNJMQLV2ymEuf9Zvj90kcdNg3EfrvsDt8pTJU31P6YMUE0VsxbAy1RrKXcPwtfZ/YlThBCquBFhySa1ywNmm2cr58jzKDjj+Hv5JE3xCGdO5KNNd5ioIcl5RBrApLrMnK019gCheXgwLQq1YbQ0BaxunBvXpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA1PR11MB7917.namprd11.prod.outlook.com (2603:10b6:208:3fe::19)
+ by CY8PR11MB6867.namprd11.prod.outlook.com (2603:10b6:930:5d::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.18; Thu, 26 Jun
- 2025 11:52:29 +0000
-Received: from AMS0EPF00000196.eurprd05.prod.outlook.com
- (2603:10a6:20b:28e:cafe::cc) by AM0PR02CA0193.outlook.office365.com
- (2603:10a6:20b:28e::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8880.17 via Frontend Transport; Thu,
- 26 Jun 2025 11:52:29 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 217.111.95.7)
- smtp.mailfrom=arri.de; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=arri.de;
-Received-SPF: Fail (protection.outlook.com: domain of arri.de does not
- designate 217.111.95.7 as permitted sender) receiver=protection.outlook.com;
- client-ip=217.111.95.7; helo=mta.arri.de;
-Received: from mta.arri.de (217.111.95.7) by
- AMS0EPF00000196.mail.protection.outlook.com (10.167.16.217) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8880.14 via Frontend Transport; Thu, 26 Jun 2025 11:52:28 +0000
-Received: from N9W6SW14.arri.de (10.30.5.30) by mta.arri.de (10.10.18.5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.38; Thu, 26 Jun
- 2025 13:52:28 +0200
-From: Christian Eggers <ceggers@arri.de>
-To: Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg
-	<johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Jaganath Kanakkassery <jaganath.k.os@gmail.com>
-CC: <linux-bluetooth@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Christian Eggers <ceggers@arri.de>,
-	<stable@vger.kernel.org>
-Subject: [PATCH v2] Bluetooth: HCI: Set extended advertising data synchronously
-Date: Thu, 26 Jun 2025 13:52:08 +0200
-Message-ID: <20250626115209.17839-1-ceggers@arri.de>
-X-Mailer: git-send-email 2.43.0
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.26; Thu, 26 Jun
+ 2025 12:04:19 +0000
+Received: from IA1PR11MB7917.namprd11.prod.outlook.com
+ ([fe80::c689:71de:da2e:2d3]) by IA1PR11MB7917.namprd11.prod.outlook.com
+ ([fe80::c689:71de:da2e:2d3%4]) with mapi id 15.20.8880.021; Thu, 26 Jun 2025
+ 12:04:19 +0000
+Message-ID: <83f82177-8349-427e-b670-ef0a9ff94c9e@intel.com>
+Date: Thu, 26 Jun 2025 21:04:09 +0900
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] [v2] x86/fpu: Delay instruction pointer fixup until after
+ warning
+To: Dave Hansen <dave.hansen@linux.intel.com>, <linux-kernel@vger.kernel.org>
+CC: <x86@kernel.org>, <tglx@linutronix.de>, <bp@alien8.de>,
+	<mingo@kernel.org>, <chao.gao@intel.com>, Alison Schofield
+	<alison.schofield@intel.com>, Eric Biggers <ebiggers@google.com>, "Rik van
+ Riel" <riel@redhat.com>, <stable@vger.kernel.org>
+References: <20250624210148.97126F9E@davehans-spike.ostc.intel.com>
+Content-Language: en-US
+From: "Chang S. Bae" <chang.seok.bae@intel.com>
+In-Reply-To: <20250624210148.97126F9E@davehans-spike.ostc.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI1PR02CA0016.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::17) To IA1PR11MB7917.namprd11.prod.outlook.com
+ (2603:10b6:208:3fe::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS0EPF00000196:EE_|GV1PR03MB8688:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8504c419-f96f-4d22-6663-08ddb4a7ed22
+X-MS-TrafficTypeDiagnostic: IA1PR11MB7917:EE_|CY8PR11MB6867:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1bc5f9cd-4152-4e97-0f8c-08ddb4a99472
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VTPEIFspmamzt5ZJS+WGxTkTBuuHZiZwxFtoeV7On3Qnobis/h5mDKAfcIz1?=
- =?us-ascii?Q?TvlagH2XAtdz9WugZNvCflYDuaWYYqmlhmfCOQYMEJ6cMKyst5wVnbd1YPbh?=
- =?us-ascii?Q?2QoKbz3R4CoqQUQEik7ZCLRmabeaVFu8iV5Y20aN7bKW5gJ0YQ+uS3bMBORw?=
- =?us-ascii?Q?KaTwB7b/eVde3S/YVSMAEW0fW0uebJ703W3/343EcK5V9pH4tYtaG5NBlpM3?=
- =?us-ascii?Q?WDpGNcWbsTuXVd/TkOMYvte/D3IE97FRBuKaC7yHnuAUFiENFrJ3lHgTyooo?=
- =?us-ascii?Q?dAUnNpFFy10DWJ4rVE6MB56fttKhKYc4kBOJQ5Vckbw8d7mFqlHhOxuFDNSz?=
- =?us-ascii?Q?VBt+q2Gamd93GxryixpfeIv2XjH+quBH1q1tcWyHuLfaFq0yATB6ieam/byw?=
- =?us-ascii?Q?4vxkVfxOV6Fvstyg30qgnDf1xeRpLi6cZV2jrX1nTzB6AgaXkYkUL8+f5Saj?=
- =?us-ascii?Q?BXrmx6lm4C/mtSkMaGvQI0pouEka8WUVwzLBgDnKmm2gJKgQT6Q+m3tKDlNP?=
- =?us-ascii?Q?Cnkg7hQszn9GtxcWwwhoyoe/n1lhvab3OSnXcBxm+nxYFiR3BOry9bdTKuzI?=
- =?us-ascii?Q?4tTMJxbqsCHLw5d3/TNEsyiWu7MYyTNAOtLIJkd0zsIV4tTenDh9HXitxFN+?=
- =?us-ascii?Q?rXQBF9XM/Hwqkjnor4PkKvl5NndCNLF5yLspeAngvoXnAHld/B4lGv+5vDoE?=
- =?us-ascii?Q?OQcbrIYlw0NGL7S4kDs57jaJnEMWcXSSylxzEHPN7pEojy+U6vU6rpA//dGu?=
- =?us-ascii?Q?njPCE3IqA8YHeF/9OMVSsiRTmby8L2g76DTRKGsswWVSY92hMDvSkmokkZFz?=
- =?us-ascii?Q?gf2DExIIJoQ43pZ1TuZjUGTsgMKXr4rI+AO4h0wdr2YwASXwBssaxhnyFx4Y?=
- =?us-ascii?Q?/BVYgwyTAmqfeOFD30XksS7whIJ0w5ucoqEjEIFTZWgcdqsJ7LJEJP2SvJ7Z?=
- =?us-ascii?Q?QssckBXlz2dBDvE10SYxlzwabfaCju6YvXyS0ELKP2koIcAIA59qnjLHclUK?=
- =?us-ascii?Q?+9F1KbqXV8t0DOPC85GUbc7+fjumTSBTW0Xq97ZS0Iq2VoMyNt4NKGDnUfUn?=
- =?us-ascii?Q?02MBIoXC6DVAE9vpQjBZd3bC0nC9h4/inu57/IXulDgCTdj4Dv6WT1p66YRc?=
- =?us-ascii?Q?WlrLOEqFg61u3BZuAWDxnSKPfSjK9fX+JYozsH2XLBUkwQrXIt6986REDj3X?=
- =?us-ascii?Q?5XflcXhz+a8/zXsKp4o2Eu0n3/ghqBSvyvaptdW5hN0x2epC2Eb5+5OtTc6U?=
- =?us-ascii?Q?AQ8C0sEyt9jVxNvaVsT7BZ4BKVXlbhDsyMAyCVqcnj/cpGiWFSGdJ5kQRZEN?=
- =?us-ascii?Q?vu7O2KhmDPdmdWpbtCsfEe3x/XKbsG6xtTJZEhvCtWdXY5sH85xNdMEc7RWe?=
- =?us-ascii?Q?bBvmt9S7EP64aWB82ZITsv11GenpY7In5MxnYuHG3W8QzicQLGzNuKtP6Sku?=
- =?us-ascii?Q?4Yc1bUxRfJN3iY4f4KT7ZiLc9dgybFoyvHa7ulSLN7SviGBJTYGCwuFjp07h?=
- =?us-ascii?Q?w8f+fhm/qWPV9P38J9Pmwyw+vOxcwFd5FfR6jfQMAiHRNzkCwnRvpvg+gw?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:217.111.95.7;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta.arri.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arri.de
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2025 11:52:28.7096
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?SVZyTndtdGhXQjVlQ0lyM3JWZ29oeXhWU3lsWHZYMGNwRjhwWlJvaUZGK0Y5?=
+ =?utf-8?B?bzFhdDZiY01KOXB6b3RBdTdad09BWE5Xbzk5b0xlbWRJUkFXQjc0bGViZGw0?=
+ =?utf-8?B?QnJpMjA1U1ZRL1VPeGQyZ1d4QVhJaXU2ZXNrMFpFR1lWRnlneDdVWmw0cTky?=
+ =?utf-8?B?R1FHUnFoL2tHOU5MaU5RTUNzSUs3TTVTYmFuOUk4YTExalFXYzl3a2k1RjBY?=
+ =?utf-8?B?bm9EVmZBVkNJclVSY0Z4dFNiczd4SUVZUTliRWZaN1BZY0FReG5wVDJQS1dk?=
+ =?utf-8?B?Y2VPV1Z1UlVFTlRnQmJ5alBCRDdjeHRFdDBKWEZxMnl4cWFYRy9EU3AxQ1B0?=
+ =?utf-8?B?WmdocllWOE1tNkxQTWxpVk54eEF4Tjl2bnU2TzVrVDdyd25JV3JwZ0gvZkg1?=
+ =?utf-8?B?dDlwelNzNHptMURZOXlSVE5tUURsQ3NqTzFHMzJqM1lPc2NBR1NIVFh2NGFG?=
+ =?utf-8?B?TGZKMHZrcmVDeFBSbGFhdWdIZ29BMC9VZlVNcU4zaXlzL1dEeE9jVytIVU5l?=
+ =?utf-8?B?WEM1UCt2MlhQWlRoQ1dEV0dac3I1MXpSS29FYlZkbnYvbVN5UWFSdGVrTU1r?=
+ =?utf-8?B?M1c0ak12YjdldzMxbEtnVFFSL1Q5cmV5SmpRMUNuZWp5dVdDZ2dPRjkzaTlw?=
+ =?utf-8?B?Qzd5Q01KeFByMFZhcW5yTVdNQWZ6ZUF0YmdIb1VocVpvbTgzV0pyVWl5R2Nk?=
+ =?utf-8?B?UEE3cWpjaHZzTXhRcVlDNkFqbTFDUEpjYnJjV0J2ZmFVUmZ4Z2txRCtBWkVq?=
+ =?utf-8?B?ZVE3U1Z1QytnWkl6Qlc3V3lKN0FzSkQzNlA3NUwvMkJkYmo1a0dub1V0LzdB?=
+ =?utf-8?B?OGpIMXdnMlRlajBwdU9yd1dLdWNzelN3Y2tOZHJnZ29oRkxsdjJKQVZIMStN?=
+ =?utf-8?B?cFpYN0hkMXpJeUM5SG8rTkh3YVR4RHdTVEp4S2xqSHFLWVJiSGs5L1MwRXcr?=
+ =?utf-8?B?TWg1OVZ2cjZ3a050OFl5aTZCalhLL1RCWDQrOHRjWjU3ZmRaNU00OEhUSHY2?=
+ =?utf-8?B?V3RxelJLblNhUG05enRiL2NEUndSZlpxblFRcjZmdWFFMFc5d0wyc2NCNDhS?=
+ =?utf-8?B?VGZJNExBbE5nOGsvclJYZFZ4c1pHWVdpeEpZZmVNNTczZHl0QmhUOGpBSWNK?=
+ =?utf-8?B?dDE2SjVRd21malJZb3g3d2dDSTNwYUpacDUyR3hmVTdVWHdzVDNkWWxlMEhx?=
+ =?utf-8?B?NktZTW1sMWpCelJqVmkvWFRCL1hkVFBqd0lIc25zYlRZNE5EaWo0QlhFR2tj?=
+ =?utf-8?B?UERsZVdTeXhDbFNxK1p0WVVRaXA2a1BOVkVtZDdWTWVRYmJ2OEh3bjlSVExm?=
+ =?utf-8?B?eW52MFN0TFNPaW5jYXk2U1dHWTVvR0VKalE4WjhhZ2xpNXVOMGdvVFExQ29h?=
+ =?utf-8?B?aWFPbkc5UlhzZVhnRStHOGVsenF6TVZoZmI3NjlBY3hVZk5ybUdGOENxNzFk?=
+ =?utf-8?B?d1ZCY1RJdHdqYlhTby9CaTJkV3VCN3VEVXhvNHR1RHp1RHlYT3E5dlVGb3pD?=
+ =?utf-8?B?TmJRYXBWa0JkMXVYZzE1bm02eU1rd0lFZm5icFlhZUd2OGlIMWVpYW5uQzRT?=
+ =?utf-8?B?MEZabWwvb1V5b3RNa2dkU0Y1UVd0bnUwSHVUTlpkSzk2KzhKeXppYmxJdVRK?=
+ =?utf-8?B?SGhXSUtPako1UWFMcnRkV2FJRStNQUpmQ1JkVjZoV0JVTVNvMnN4d1lBNGdv?=
+ =?utf-8?B?QzE0Q1BuUXZKRjVCb1VlVHdpQmsrM2NISEFRRWxSaElMQ21yWGlCc0djQW13?=
+ =?utf-8?B?eEhkRjJtbHp2VnVrQVJ4YUlPYlNpMG5iUmUrcHpFOThQcFZQYkx1TjQ1QjND?=
+ =?utf-8?B?YWRhdU5qb2tlakxIZnhzWW5hdTUrUUs0cjR2QTROY3RyUFBydmhXeGliUXpr?=
+ =?utf-8?B?Wk9tWEIvL0QrVFJzSUIrcDFpMnVWNFhHNU5pTC9FY0pLVVI2ODUxcFM1MUpY?=
+ =?utf-8?Q?Q/CDAlA94l4=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7917.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c3hXcERQVHdDRWVBUmxKWWFIbVJ1czUvSm5obys2TGJzcHBBR3R2Rmo4SVdx?=
+ =?utf-8?B?UVBjN3NOekdoeURFK1pHSmt4RWRBTVNpYzNJWGRSU0tEa1RvME1HaWlkRlRV?=
+ =?utf-8?B?bmllK0ZQbG5JMUQrRG1oazA1N3hyNVNHakE3dGM5d252Ky9TNGcyRTlMKzdL?=
+ =?utf-8?B?d3l2R2xYVVJHZjFkakJ4SVN3MklSU25PRU9YVEdhQXkzWTN6NEhPV3dzb2tH?=
+ =?utf-8?B?SUtVOFBBdndKTk9sOVVLM2hqT3AyUUhlRGRYd0VHS095citIYzJFeTJybkRt?=
+ =?utf-8?B?bDBFT3Zia0o5YWZ2Q3RlTGhTWkxmcm1ORmphdHlyVGlsemJGdGhqS2RlQWlS?=
+ =?utf-8?B?UzZzZ2FpcnFRR0JJaTN6K2Y4bEJNWGZFWVQyVm9uRlcyeUVJdkJoNTVjM2dH?=
+ =?utf-8?B?VzN6OWwyL1dTV2Nsc1lGVTMzT0FqLy9zanpPYjZyNjlKUmxCRENyOGFjcFJj?=
+ =?utf-8?B?ZzY0bXk0Yno4aUVGSHZFd3hLaVlwOXlhU3BwS2Y3Z1NMM0QvcHdjMi90N1py?=
+ =?utf-8?B?Y0V0WFhVQm41TStDdHZRa1F0eUJETi91TGZjdllYSWdKK01sNU9ZT0c4Z1RW?=
+ =?utf-8?B?eW5wbjhnZmhJQk1jdm9LRmVPVkpGYk0rWEpVOWduVVFwSjFBdUZMU0tTa3Ji?=
+ =?utf-8?B?aXZEOHF2Q3NBZUI5M1hDbWQ2NDFFSnUwdy9Mc2ZHbXpQMnVEL3dKN0dyWlp5?=
+ =?utf-8?B?aHNZY1d2a3JxUXY1UnNrQUEzeEZncDhvVWtnODBMcnQzR0l6bHVLbjFuTkQz?=
+ =?utf-8?B?OEowa0R1UGRmNUttWlUzRThRcmJ2QjNzQmFWSTYxeUVUUnhqWW01bTlOUXBz?=
+ =?utf-8?B?aXBDTkJGU0tvUzFxcm5vMFl5M3BiR0NKWkdLd2k5S2tjL29RNFZHSXdRckhK?=
+ =?utf-8?B?ejdPa3pCNi82SEZ1a3RhZjFEUUhXQUFvaFJ6VXg1dEtrY2pOSUc3Zzk2TWRr?=
+ =?utf-8?B?VlBpT284UlRrNHJQamdPY2tnbXN5elg4UmhsbTFNWUNjZHNpeitnTFM3TFdU?=
+ =?utf-8?B?SjFkNXZGMThveWxZNjJJRWVhRXlKYkpsUEMwWHJxZmV5Uk55UzZSTE1OWk5p?=
+ =?utf-8?B?NlRjVHN2YlU1b21qRjV0U3JBellyK2Y5YTBHbGV4c3JjTnJsQTBkUEdmYUlB?=
+ =?utf-8?B?eEJ3bVpXeDdsZmZxMWJFNHdGS1BSdnBkclRURXlJdHhlMXAvRndFZFRtcFNM?=
+ =?utf-8?B?bitDVmdQcFAwNDZYQ2JjS3ZpM1JCaWMzbzlSMDhjaEZwdzhLcEcweWlDYVZZ?=
+ =?utf-8?B?M2JKTWNhUEdrdVRRUDFsZzAwNEt3TFJOdHdkRVdyMEN6aDRJb3BLSXJtakRN?=
+ =?utf-8?B?LzBzbkVheWh6V0xydUJiQjJWMVF4ckJPWEdXNWFiOHZBbFZ3L3hHT0ZCVG16?=
+ =?utf-8?B?RjFzZWpjWEgyTXVzbmRCait5OVdlQUlOT3VpYVpmaDV4TmVleWZJUVRBY2hO?=
+ =?utf-8?B?ekJHWFMzeFJrcjVOUnpUdVIycG9KRG9QODlrWlE0bnN4Zk1tTDFmb0xMYlNU?=
+ =?utf-8?B?ZFpVMmRQTmYwTVhXOUtZckd4MkdDTXhHMHI1VHB6Uk9yTml4ZGJRVjFNTk44?=
+ =?utf-8?B?cit1UCttaEFnUXRLQU93R0ZSREtsU3AvMUl1dE12STRWV01VZk5TU01YNW5o?=
+ =?utf-8?B?T3p1R2lnU09IMjFmbUpZVkh2QmFtZGdGZzNrYm9rTk5yM1ExTFpyV3IyY3Vx?=
+ =?utf-8?B?aW83Ymtqekd6UDRKUCtjVUJwUHFYekxVWW94NTA4TE1vaWFxTERaM29oeWRo?=
+ =?utf-8?B?cjNmTmdDWkFncnE4ZGJtSjZ3c1JJNzRjU3NLMWVZZ3Vwak9EOFkxbDEzQzc3?=
+ =?utf-8?B?N21rVGxWKyszSk5ZNGhGMG10Y2ZmN2lwaEliSVlkckYyV3ZQaWxWSHFseXA0?=
+ =?utf-8?B?OWtpY2Rubit3eEpkQmFXS0duM1BQWDFKaGRYaXlKbmhiMlNZQ2RDc2pvV2Rz?=
+ =?utf-8?B?dTVnNnVaczBXSkJ6OEo3aHFZU3M4NzYyd2ZBM1FGSnlTZndrbWNVR1JtOUth?=
+ =?utf-8?B?bXp2aEIvVkNZOEJEL214Z3gyNmVTUUxSQ3h0bU5oUkhZc2daUzRGa3NTTXcz?=
+ =?utf-8?B?K3NhTUNOM05JNEVlSVBVa0ZobUU5OEt4cUgyK1pKRmwyUE5UakJobnk2N1Zp?=
+ =?utf-8?B?eVM3VUJZNlNUSERyZzFrdEkzWHA0WXlSQVpnVmFOYnlKVjFxOENpNVlrWU5V?=
+ =?utf-8?B?OFE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1bc5f9cd-4152-4e97-0f8c-08ddb4a99472
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7917.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2025 12:04:19.4703
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8504c419-f96f-4d22-6663-08ddb4a7ed22
-X-MS-Exchange-CrossTenant-Id: e6a73a5a-614d-4c51-b3e3-53b660a9433a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e6a73a5a-614d-4c51-b3e3-53b660a9433a;Ip=[217.111.95.7];Helo=[mta.arri.de]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS0EPF00000196.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR03MB8688
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: H3Ra2qT6RqCO6LALT5MczyhsCytaN8e0bo0lccdW0XNg4Ym1GXZvG0YKp1lIjTo7HMLlRcsyyA2oz3ociSE2U1L35U/VgPlOERjFmWuC4os=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6867
+X-OriginatorOrg: intel.com
 
-Currently, for controllers with extended advertising, the advertising
-data is set in the asynchronous response handler for extended
-adverstising params. As most advertising settings are performed in a
-synchronous context, the (asynchronous) setting of the advertising data
-is done too late (after enabling the advertising).
+On 6/25/2025 6:01 AM, Dave Hansen wrote:
+> 
+> Right now, if XRSTOR fails a console message like this is be printed:
+> 
+> 	Bad FPU state detected at restore_fpregs_from_fpstate+0x9a/0x170, reinitializing FPU registers.
+> 
+> However, the text location (...+0x9a in this case) is the instruction
+> *AFTER* the XRSTOR. The highlighted instruction in the "Code:" dump
+> also points one instruction late.
+> 
+> The reason is that the "fixup" moves RIP up to pass the bad XRSTOR and
+> keep on running after returning from the #GP handler. But it does this
+> fixup before warning.
+> 
+> The resulting warning output is nonsensical because it looks like the
+> non-FPU-related instruction is #GP'ing.
+> 
+> Do not fix up RIP until after printing the warning. Do this by using> the more generic and standard ex_handler_default().
 
-Move setting of adverstising data from asynchronous response handler
-into synchronous context to fix ordering of HCI commands.
+Indeed, the fix looks obvious and correct.
 
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Fixes: a0fb3726ba55 ("Bluetooth: Use Set ext adv/scan rsp data if controller supports")
-Cc: stable@vger.kernel.org
-v1: https://lore.kernel.org/linux-bluetooth/20250625130510.18382-1-ceggers@arri.de/
----
-v2: convert setting of adv data into synchronous context (rather than moving
-more methods into asynchronous response handlers).
-- hci_set_ext_adv_params_sync: new method
-- hci_set_ext_adv_data_sync: move within source file (no changes)
-- hci_set_adv_data_sync: dito
-- hci_update_adv_data_sync: dito
-- hci_cc_set_ext_adv_param: remove (performed synchronously now)
+Also, the trick you previously shared for reproducing the fault is very 
+useful for testing cases like this.
 
-On Wednesday, 25 June 2025, 15:26:58 CEST, Luiz Augusto von Dentz wrote:
-> That said for the likes of MGMT_OP_ADD_EXT_ADV_DATA you will still
-> need to detect if the instance has already been enabled then do
-> disable/re-enable logic if the quirk is set.
+I would be happy to provide my tag:
+Reviewed-by: Chang S. Bae <chang.seok.bae@intel.com>
 
-The critical opcode (HCI_OP_LE_SET_EXT_ADV_DATA) is only used in
-hci_set_ext_adv_data_sync(). Two of the callers already ensure that
-the advertising instance is disabled, so only hci_update_adv_data_sync()
-may need a quirk. I suggest doing this in a separate patch.
-
-regards,
-Christian
-
- net/bluetooth/hci_event.c |  36 -------
- net/bluetooth/hci_sync.c  | 209 ++++++++++++++++++++++++--------------
- 2 files changed, 132 insertions(+), 113 deletions(-)
-
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 66052d6aaa1d..4d5ace9d245d 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2150,40 +2150,6 @@ static u8 hci_cc_set_adv_param(struct hci_dev *hdev, void *data,
- 	return rp->status;
- }
- 
--static u8 hci_cc_set_ext_adv_param(struct hci_dev *hdev, void *data,
--				   struct sk_buff *skb)
--{
--	struct hci_rp_le_set_ext_adv_params *rp = data;
--	struct hci_cp_le_set_ext_adv_params *cp;
--	struct adv_info *adv_instance;
--
--	bt_dev_dbg(hdev, "status 0x%2.2x", rp->status);
--
--	if (rp->status)
--		return rp->status;
--
--	cp = hci_sent_cmd_data(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS);
--	if (!cp)
--		return rp->status;
--
--	hci_dev_lock(hdev);
--	hdev->adv_addr_type = cp->own_addr_type;
--	if (!cp->handle) {
--		/* Store in hdev for instance 0 */
--		hdev->adv_tx_power = rp->tx_power;
--	} else {
--		adv_instance = hci_find_adv_instance(hdev, cp->handle);
--		if (adv_instance)
--			adv_instance->tx_power = rp->tx_power;
--	}
--	/* Update adv data as tx power is known now */
--	hci_update_adv_data(hdev, cp->handle);
--
--	hci_dev_unlock(hdev);
--
--	return rp->status;
--}
--
- static u8 hci_cc_read_rssi(struct hci_dev *hdev, void *data,
- 			   struct sk_buff *skb)
- {
-@@ -4164,8 +4130,6 @@ static const struct hci_cc {
- 	HCI_CC(HCI_OP_LE_READ_NUM_SUPPORTED_ADV_SETS,
- 	       hci_cc_le_read_num_adv_sets,
- 	       sizeof(struct hci_rp_le_read_num_supported_adv_sets)),
--	HCI_CC(HCI_OP_LE_SET_EXT_ADV_PARAMS, hci_cc_set_ext_adv_param,
--	       sizeof(struct hci_rp_le_set_ext_adv_params)),
- 	HCI_CC_STATUS(HCI_OP_LE_SET_EXT_ADV_ENABLE,
- 		      hci_cc_le_set_ext_adv_enable),
- 	HCI_CC_STATUS(HCI_OP_LE_SET_ADV_SET_RAND_ADDR,
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 1f8806dfa556..2a09b2cb983e 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -1205,9 +1205,116 @@ static int hci_set_adv_set_random_addr_sync(struct hci_dev *hdev, u8 instance,
- 				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
- }
- 
-+static int
-+hci_set_ext_adv_params_sync(struct hci_dev *hdev,
-+			    const struct hci_cp_le_set_ext_adv_params *cp,
-+			    struct hci_rp_le_set_ext_adv_params *rp)
-+{
-+	struct sk_buff *skb;
-+
-+	skb = __hci_cmd_sync(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS, sizeof(*cp),
-+			     cp, HCI_CMD_TIMEOUT);
-+
-+	/* If command return a status event, skb will be set to -ENODATA */
-+	if (skb == ERR_PTR(-ENODATA))
-+		return 0;
-+
-+	if (IS_ERR(skb)) {
-+		bt_dev_err(hdev, "Opcode 0x%4.4x failed: %ld",
-+			   HCI_OP_LE_SET_EXT_ADV_PARAMS, PTR_ERR(skb));
-+		return PTR_ERR(skb);
-+	}
-+
-+	if (skb->len != sizeof(*rp)) {
-+		bt_dev_err(hdev, "Invalid response length for "
-+			   "HCI_OP_LE_SET_EXT_ADV_PARAMS: %u", skb->len);
-+		kfree_skb(skb);
-+		return -EIO;
-+	}
-+
-+	memcpy(rp, skb->data, sizeof(*rp));
-+	kfree_skb(skb);
-+
-+	return rp->status;
-+}
-+
-+static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
-+{
-+	DEFINE_FLEX(struct hci_cp_le_set_ext_adv_data, pdu, data, length,
-+		    HCI_MAX_EXT_AD_LENGTH);
-+	u8 len;
-+	struct adv_info *adv = NULL;
-+	int err;
-+
-+	if (instance) {
-+		adv = hci_find_adv_instance(hdev, instance);
-+		if (!adv || !adv->adv_data_changed)
-+			return 0;
-+	}
-+
-+	len = eir_create_adv_data(hdev, instance, pdu->data,
-+				  HCI_MAX_EXT_AD_LENGTH);
-+
-+	pdu->length = len;
-+	pdu->handle = adv ? adv->handle : instance;
-+	pdu->operation = LE_SET_ADV_DATA_OP_COMPLETE;
-+	pdu->frag_pref = LE_SET_ADV_DATA_NO_FRAG;
-+
-+	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_DATA,
-+				    struct_size(pdu, data, len), pdu,
-+				    HCI_CMD_TIMEOUT);
-+	if (err)
-+		return err;
-+
-+	/* Update data if the command succeed */
-+	if (adv) {
-+		adv->adv_data_changed = false;
-+	} else {
-+		memcpy(hdev->adv_data, pdu->data, len);
-+		hdev->adv_data_len = len;
-+	}
-+
-+	return 0;
-+}
-+
-+static int hci_set_adv_data_sync(struct hci_dev *hdev, u8 instance)
-+{
-+	struct hci_cp_le_set_adv_data cp;
-+	u8 len;
-+
-+	memset(&cp, 0, sizeof(cp));
-+
-+	len = eir_create_adv_data(hdev, instance, cp.data, sizeof(cp.data));
-+
-+	/* There's nothing to do if the data hasn't changed */
-+	if (hdev->adv_data_len == len &&
-+	    memcmp(cp.data, hdev->adv_data, len) == 0)
-+		return 0;
-+
-+	memcpy(hdev->adv_data, cp.data, sizeof(cp.data));
-+	hdev->adv_data_len = len;
-+
-+	cp.length = len;
-+
-+	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_DATA,
-+				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-+}
-+
-+int hci_update_adv_data_sync(struct hci_dev *hdev, u8 instance)
-+{
-+	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED))
-+		return 0;
-+
-+	if (ext_adv_capable(hdev))
-+		return hci_set_ext_adv_data_sync(hdev, instance);
-+
-+	return hci_set_adv_data_sync(hdev, instance);
-+}
-+
- int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
- {
- 	struct hci_cp_le_set_ext_adv_params cp;
-+	struct hci_rp_le_set_ext_adv_params rp;
- 	bool connectable;
- 	u32 flags;
- 	bdaddr_t random_addr;
-@@ -1316,8 +1423,20 @@ int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
- 		cp.secondary_phy = HCI_ADV_PHY_1M;
- 	}
- 
--	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS,
--				    sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-+	err = hci_set_ext_adv_params_sync(hdev, &cp, &rp);
-+	if (err)
-+		return err;
-+
-+	hdev->adv_addr_type = own_addr_type;
-+	if (!cp.handle) {
-+		/* Store in hdev for instance 0 */
-+		hdev->adv_tx_power = rp.tx_power;
-+	} else if (adv) {
-+		adv->tx_power = rp.tx_power;
-+	}
-+
-+	/* Update adv data as tx power is known now */
-+	err = hci_set_ext_adv_data_sync(hdev, cp.handle);
- 	if (err)
- 		return err;
- 
-@@ -1822,79 +1941,6 @@ int hci_le_terminate_big_sync(struct hci_dev *hdev, u8 handle, u8 reason)
- 				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
- }
- 
--static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
--{
--	DEFINE_FLEX(struct hci_cp_le_set_ext_adv_data, pdu, data, length,
--		    HCI_MAX_EXT_AD_LENGTH);
--	u8 len;
--	struct adv_info *adv = NULL;
--	int err;
--
--	if (instance) {
--		adv = hci_find_adv_instance(hdev, instance);
--		if (!adv || !adv->adv_data_changed)
--			return 0;
--	}
--
--	len = eir_create_adv_data(hdev, instance, pdu->data,
--				  HCI_MAX_EXT_AD_LENGTH);
--
--	pdu->length = len;
--	pdu->handle = adv ? adv->handle : instance;
--	pdu->operation = LE_SET_ADV_DATA_OP_COMPLETE;
--	pdu->frag_pref = LE_SET_ADV_DATA_NO_FRAG;
--
--	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_DATA,
--				    struct_size(pdu, data, len), pdu,
--				    HCI_CMD_TIMEOUT);
--	if (err)
--		return err;
--
--	/* Update data if the command succeed */
--	if (adv) {
--		adv->adv_data_changed = false;
--	} else {
--		memcpy(hdev->adv_data, pdu->data, len);
--		hdev->adv_data_len = len;
--	}
--
--	return 0;
--}
--
--static int hci_set_adv_data_sync(struct hci_dev *hdev, u8 instance)
--{
--	struct hci_cp_le_set_adv_data cp;
--	u8 len;
--
--	memset(&cp, 0, sizeof(cp));
--
--	len = eir_create_adv_data(hdev, instance, cp.data, sizeof(cp.data));
--
--	/* There's nothing to do if the data hasn't changed */
--	if (hdev->adv_data_len == len &&
--	    memcmp(cp.data, hdev->adv_data, len) == 0)
--		return 0;
--
--	memcpy(hdev->adv_data, cp.data, sizeof(cp.data));
--	hdev->adv_data_len = len;
--
--	cp.length = len;
--
--	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_DATA,
--				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
--}
--
--int hci_update_adv_data_sync(struct hci_dev *hdev, u8 instance)
--{
--	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED))
--		return 0;
--
--	if (ext_adv_capable(hdev))
--		return hci_set_ext_adv_data_sync(hdev, instance);
--
--	return hci_set_adv_data_sync(hdev, instance);
--}
--
- int hci_schedule_adv_instance_sync(struct hci_dev *hdev, u8 instance,
- 				   bool force)
- {
-@@ -6269,6 +6315,7 @@ static int hci_le_ext_directed_advertising_sync(struct hci_dev *hdev,
- 						struct hci_conn *conn)
- {
- 	struct hci_cp_le_set_ext_adv_params cp;
-+	struct hci_rp_le_set_ext_adv_params rp;
- 	int err;
- 	bdaddr_t random_addr;
- 	u8 own_addr_type;
-@@ -6310,8 +6357,16 @@ static int hci_le_ext_directed_advertising_sync(struct hci_dev *hdev,
- 	if (err)
- 		return err;
- 
--	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS,
--				    sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-+	err = hci_set_ext_adv_params_sync(hdev, &cp, &rp);
-+	if (err)
-+		return err;
-+
-+	hdev->adv_addr_type = own_addr_type;
-+	/* Store in hdev for instance 0 */
-+	hdev->adv_tx_power = rp.tx_power;
-+
-+	/* Update adv data as tx power is known now */
-+	err = hci_set_ext_adv_data_sync(hdev, cp.handle);
- 	if (err)
- 		return err;
- 
--- 
-2.44.1
-
+Thanks,
+Chang
 
