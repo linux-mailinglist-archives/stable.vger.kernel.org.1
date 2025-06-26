@@ -1,98 +1,98 @@
-Return-Path: <stable+bounces-158696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04298AEA116
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 16:46:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4331AEA1E4
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 17:06:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F8324E48E0
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 14:40:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA1C87B9F60
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 15:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FDA2ED175;
-	Thu, 26 Jun 2025 14:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE622EBDFA;
+	Thu, 26 Jun 2025 14:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tY0KRNJt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/yjG2dW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE772EAD18;
-	Thu, 26 Jun 2025 14:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AB22EBDC8;
+	Thu, 26 Jun 2025 14:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750948704; cv=none; b=sWM/L4cBGLv4DIeX+3VnYW2z0drovt2bYMsOZ9hfJIsOcn6myIktN+Thi1wb3DW0pG34bdhcdsMZqb2jbuUDesNSpK8ONhcdgKH4D//jlQUp/cAw8pQXypM+DNlBqBnFjhGG/U5ldYBT1xgNDki98/44tDIuJjuzSXhL13NmPec=
+	t=1750949846; cv=none; b=YsoGTW8NYPouongvolmjDmLaqiRUB8GP7B03nqnShafhf48pSlsc494DaI+jdyB6NAa8cLxIN7mMVHG2bmXDgMmL5WZpwsleSJVaha21xg9Cr9zkEzwXB8tWAqVTDOze+LNrbOX+m+79rOiQBST0jLvMmhgFJ02KlzejJq4/f18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750948704; c=relaxed/simple;
-	bh=HmlF4V5OvC+ua5Uphw2sCzRiditsU582Yu86XWrvPUc=;
+	s=arc-20240116; t=1750949846; c=relaxed/simple;
+	bh=DpQu293QtnkVCjW/dcgcoz5uwg7vQNBKK1Jw3JgSQ40=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gTtqTPfKJ2zDgRb3zc0QFhdOJfGqehrABa4WpZD+Gepu/8xgTmykJUxOEFGyNItPYIZ4a4OvUR8+SlwFezlwPCQT0VIo1O4jdTPd1Ey/21uhpHTaJVgz4tp7Ao2/F+SLEsexHClZMT5n3NX5TXPaW96lOcTxye9yEY+1TsVgHbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tY0KRNJt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146E1C4CEEB;
-	Thu, 26 Jun 2025 14:38:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750948703;
-	bh=HmlF4V5OvC+ua5Uphw2sCzRiditsU582Yu86XWrvPUc=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=RzpBN+s0YtiXfhdS+QGcSIGjE+JTp9Sji5Zk2RHNRQ3yh2qd9TyKxdR+eu9I6hcqTMUz0JQp5aMNc7mNsVq8WYv9wld6c3AT8NZyJ3b5Wvp6X2qb7ylcByUiAfo+5dwLeukXpBvdAQGn9mvc8pv5kXGjZ5OdgRhB0vtdu+KP8Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/yjG2dW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43249C4CEEB;
+	Thu, 26 Jun 2025 14:57:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750949845;
+	bh=DpQu293QtnkVCjW/dcgcoz5uwg7vQNBKK1Jw3JgSQ40=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tY0KRNJtLbs6YW+Ddp0WaoGNQnfOqhjMjDbLPFMQIpgq8ECCYZoV+5cSHVdvHd6U6
-	 aQYV9WhAll0/+0DK9M7to7Y4iu2Z7zcu7eXRi0n/qmT+0zvmegPo75PkZTsjrGnULu
-	 vs1ON27iEQe9zblEd+tQa4UC799pBmT1+M0GV3KhfnlpHt2rgvbafxpiMpbuiwxxzF
-	 ZB9wVDtCuFqjyVFat4FvbSMYgTAQMtNHB/Nsl2yVsWysTKR/o7MOyci25Oag0YjhuI
-	 71dKrEFK+xjQM4t3EoJl+ycnmKpPA4GYbns2o13poknCzcpF8LifMMbEJY243gJ8bD
-	 QUGofcv6/kd1g==
-Date: Thu, 26 Jun 2025 15:38:19 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 6.15 000/589] 6.15.4-rc3 review
-Message-ID: <aF1bWxZVpHYsbm6H@finisterre.sirena.org.uk>
-References: <20250626105243.160967269@linuxfoundation.org>
+	b=h/yjG2dWFn9WJLfhtEMNsY4uEfjYEayQAJL4nbfuLyf0IEfVA+bsMr2naPrff9YRz
+	 Qz0s6K8uKmFpUpVU0AmSQoOFAeH27b6xFGkUTBMAvZK21AdAQSCnNa2CWGoYWKyz+L
+	 LamXjn3K8rm15iHh60tz+sPTgTVcYHzezZVx0GFA=
+Date: Thu, 26 Jun 2025 15:57:21 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Pranav Tyagi <pranav.tyagi03@gmail.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, daniel@ffwll.ch, airlied@linux.ie,
+	mcanal@igalia.com, arthurgrillo@riseup.net, mairacanal@riseup.net,
+	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev,
+	stable@vger.kernel.org, sashal@kernel.org
+Subject: Re: [PATCH] drm/vkms: Fix race-condition between the hrtimer and the
+ atomic commit
+Message-ID: <2025062607-hardener-splotchy-1e70@gregkh>
+References: <20250626142243.19071-1-pranav.tyagi03@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zzvonBl00PEabfAL"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250626105243.160967269@linuxfoundation.org>
-X-Cookie: Do not cut switchbacks.
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250626142243.19071-1-pranav.tyagi03@gmail.com>
 
+On Thu, Jun 26, 2025 at 07:52:43PM +0530, Pranav Tyagi wrote:
+> From: Maíra Canal <mcanal@igalia.com>
+> 
+> [ Upstream commit a0e6a017ab56936c0405fe914a793b241ed25ee0 ]
+> 
+> Currently, it is possible for the composer to be set as enabled and then
+> as disabled without a proper call for the vkms_vblank_simulate(). This
+> is problematic, because the driver would skip one CRC output, causing CRC
+> tests to fail. Therefore, we need to make sure that, for each time the
+> composer is set as enabled, a composer job is added to the queue.
+> 
+> In order to provide this guarantee, add a mutex that will lock before
+> the composer is set as enabled and will unlock only after the composer
+> job is added to the queue. This way, we can have a guarantee that the
+> driver won't skip a CRC entry.
+> 
+> This race-condition is affecting the IGT test "writeback-check-output",
+> making the test fail and also, leaking writeback framebuffers, as the
+> writeback job is queued, but it is not signaled. This patch avoids both
+> problems.
+> 
+> [v2]:
+>     * Create a new mutex and keep the spinlock across the atomic commit in
+>       order to avoid interrupts that could result in deadlocks.
+> 
+> [ Backport to 5.15: context cleanly applied with no semantic changes.
+> Build-tested. ]
 
---zzvonBl00PEabfAL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Did you forget about 6.1.y?
 
-On Thu, Jun 26, 2025 at 11:55:53AM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.15.4 release.
-> There are 589 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+confused,
 
-Tested-by: Mark Brown <broonie@kernel.org>
-
---zzvonBl00PEabfAL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmhdW1MACgkQJNaLcl1U
-h9DDBwf+O6v3cpbbkMA764fMCQ8m8h3T2uIn0VHcvfX41qPjq2Imj8tfcbucAw2B
-9awzVZtkmAcvbtLSeCqPnNOgqD8Gd/Ossnijcs3/p/55GZ27jNXsORtvbgCxw5Vn
-pp/UrVNW0lAtmJ/h+Q3v1v5slCtpWxYj/z1udGl4l/XdzVay45JinWfaSPSo6gWC
-oOo9wnVhmcHZ7GqsLZy2UiI6LqoJXjVBsuBIj9n0PTeyOHBbfyBHeuKdL3957Dn3
-wbxGhA5+Jxa3hhcdCYWEJA56Mb7Kpcjs07hZnzLSJmrCLN9G163hbGRSm7KEKrTl
-tDs1XGbKsZVQ0+KCksUlPMRYydWhMQ==
-=sM3H
------END PGP SIGNATURE-----
-
---zzvonBl00PEabfAL--
+greg k-h
 
