@@ -1,163 +1,117 @@
-Return-Path: <stable+bounces-158660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356BDAE9691
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 09:04:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D0AAE96BE
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 09:30:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64F135A5A2B
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 07:03:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2ABE3A527D
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 07:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FE5238C36;
-	Thu, 26 Jun 2025 07:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F9823B61E;
+	Thu, 26 Jun 2025 07:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UO2yXuDg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOz4Dkoa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501AB1411EB
-	for <stable@vger.kernel.org>; Thu, 26 Jun 2025 07:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8FD23B62A;
+	Thu, 26 Jun 2025 07:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750921437; cv=none; b=iRYtnv6HzFsng4Tr3SPlKBENe2MlJQZogOlsJg98M2Pz7+t72QOyMcWXRq1rlXi0xEYeHjVSwiVcfW3zzCb/EmfWKIxc5svif1gsc6YtbPimM8A/U80khCu/PQmnmr1XCBv2pokQci9XTmZFg/MZGFpmpJQcVHi5n6vHmLFHylk=
+	t=1750923001; cv=none; b=svCqhcKJfGCE13m9WG2TnyTzcexa5R6wkjbXoSa/gRe88EkBsqJGLCFNVdhQ5CHi3AUGPYvJ7NtC0sBXNufAhA+IgSo1EAwJ5X9TeuA94zpmZjU6XiZIlhIyKUr6jYVXIPBVsUDO1u8Ryb/PzVw4WI+VgON2rrKi3tC+Fs/Dtw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750921437; c=relaxed/simple;
-	bh=9C/yPC65dyt5L285Ad0r8Enf6n6g55IaUv+DoEN+0PI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=AKeGI3i3MiC3KPy0CjH1a5AHYcYZA2WgzM0m4+iN4YQdYfL10HLwomTksUjoXJz5DAFhUMm0sLmSXqFnBKMcwDhTW5JdRPxK8/wOdLKJYb3SUUsX6eZDeJwh3WadiHHPjIsRVZbIlUQMSHKjjb9qqra1V82J2E0O5/loInxnQxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UO2yXuDg; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3137c20213cso736320a91.3
-        for <stable@vger.kernel.org>; Thu, 26 Jun 2025 00:03:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750921435; x=1751526235; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9C/yPC65dyt5L285Ad0r8Enf6n6g55IaUv+DoEN+0PI=;
-        b=UO2yXuDgntwHQ6MR8cvQeo7Q9IirTmfpF4LlGbTd9hES9M+eDcsJ7d0WzpG5bAFYkR
-         c/7gVPNjpgZfWvXbUkiprXq5V+JUcPLbX7jde260tH2YizxHrd0iTNUiqSZALXk4E+Pd
-         F2fIRvrGM56c9U6H+Dycyt8YoTk/o5hFvAurBZ0vz7xZGSFCH+SbJf5bd8DHZFPxahtQ
-         uqw+PCoTjHvMAGTdJD/T5/GECwChBPNjJZCk60zK2Z/tLLJjsb1D/rUdclEmq8LeG2Ih
-         7okva+6XM2mKiKKU6JQi4Llg+KB95AlRwXL0+Z/0vqLLkX3zb3T/fqjXGNPUyBnUBvP6
-         5D8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750921435; x=1751526235;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9C/yPC65dyt5L285Ad0r8Enf6n6g55IaUv+DoEN+0PI=;
-        b=MfI07fxLa9Ho5kuYDkdmby2x65/NGvBGMT3LjB30PzOL+E+If32LTcmUBadV3xBYpA
-         nP613XW6qOg1FiQgrHfXjfIRieXxLfOImRY7n1GJEYrKQN0A0S4+BTpWbaix2iZgc/ve
-         1ceIvyo4c6ROvSd+29Cljn4meuCrFH9vDarlV0YnVxjw/7A1tdKt416HzDqsj6jzX4mY
-         vNiL/sYMV6zeYuo7B/BBSc+HmBdmdGY5SCpPWdufIEoYbyoETAadLsMHGuBx4JeTX4FU
-         RyB2IiKY75DMOl96/bwKKa8x/UiizhPkyxW28s02AWgWfPxW24cuVyJpkDd0onzG4R/U
-         qQiw==
-X-Forwarded-Encrypted: i=1; AJvYcCX+D8vsA9BrqoJtQMJhUDuWofbf2mT8LYeuksG0vPYJRj4WsfnboeLfT1/Chr3VX4FFjWZSx0o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzwg/ZEbH1PB75XiIMbIGmbWbzA0uDYER3CutlFtK78RAn1YPfO
-	jNWHUBC5IjdfXQt5Lg7UcogoBXJR+LHogndqrd8jCwGcuCGxu1qLLXgp8ez6U6UuslJdvcyx5mH
-	cvmrF8kzVzzhCwun+Ymd5d5Kiwxw+Q7h1zqd+UfOuvg==
-X-Gm-Gg: ASbGncthgxBP2HnQDRpDCkbb4sqiRJ8vd3UumllGYRYYITIiDxuCYNpedQqpnWopegI
-	tl3ZUPwKTes8FoDiHnk4v3P62u5l5l9nOovY/Ayag0hqjhYBYc8EtDG2CXjBkG0qee1UYUtUp76
-	6k7kHIjRfOIP1YfOFsSS7Y1L3cDuGxsN+HjW+lO0wKplTtURUtjmzGUVUJwNNfDAEtjd3oMcMKL
-	pfZ
-X-Google-Smtp-Source: AGHT+IGB3/XrVvwCiSKGcdM/uKLZZR2BBjt/EJ8TFkLwSBLUw9n1kq4/A/cuTaHIdw+LRFJ+QBCRjPhK4cZiYm51gdc=
-X-Received: by 2002:a17:90b:53c5:b0:312:1508:fb4e with SMTP id
- 98e67ed59e1d1-315f2675bbbmr9154353a91.17.1750921435517; Thu, 26 Jun 2025
- 00:03:55 -0700 (PDT)
+	s=arc-20240116; t=1750923001; c=relaxed/simple;
+	bh=USPecJ+fVgr0c6joAtvhKAAbQeCia+AOGrJmMy5S67s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Smqi/BNKF43zjBh3vO5viv+eQIIGfIsay1Lc2A4jBNIQKVoxHltUROjkT0dH6augKxsJajrp0jiTU+eoZ54b/C5H3GK1SoLI+XvtmufgvuXwe7RipED/wgng9AXWsuJgtaN0DZeD8BeOrqJ0L61NSljMgvmOPFea0OJkbngv7Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOz4Dkoa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99F2C4CEEB;
+	Thu, 26 Jun 2025 07:30:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750923001;
+	bh=USPecJ+fVgr0c6joAtvhKAAbQeCia+AOGrJmMy5S67s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=zOz4DkoaO1jWxTi1g8gxaqhuZFjhE58S2mC08ZOo65kPh8SCcNbP/rKvuW+4l78g8
+	 fgF47yIEpADGouZPK6Z7LTVUYQyBDzVmeDDL6Vm0wv4U9fLCT3zHF2wkC5oa81G/us
+	 oM69Ad7pj8HIncudOUeIlD2SyDqSz8kzL4dfsMlo=
+Date: Thu, 26 Jun 2025 08:29:58 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: stable@vger.kernel.org, Jeff Johnson <jjohnson@kernel.org>,
+	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Gregoire <gregoire.s93@live.fr>,
+	Sebastian Reichel <sre@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: Re: [PATCH ath-next 0/2] wifi: ath12k: install pairwise key first
+Message-ID: <2025062637-facsimile-chatter-f87a@gregkh>
+References: <20250523-ath12k-unicast-key-first-v1-0-f53c3880e6d8@quicinc.com>
+ <aFvGnJwMTqDbYsHF@hovoldconsulting.com>
+ <2d688040-e547-4e18-905e-ea31ea9d627b@quicinc.com>
+ <e23d7674-31cd-4499-9711-6e5695b149c6@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 26 Jun 2025 12:33:43 +0530
-X-Gm-Features: Ac12FXzrp0QOBUWJ7tIxkv-cgchxT19rQvDD483_utcFbw2DHpKfR-GbfFmMvSU
-Message-ID: <CA+G9fYtJO4DbiabJwpSamTPHjPzyrD3O6ZCwm2+CDEUA7f+ZYw@mail.gmail.com>
-Subject: stable-rc: 5.4 and 5.10: fanotify01.c:339: TFAIL: fanotify_mark(fd_notify,
- 0x00000001, 0x00000008, -100, ".") expected EXDEV: ENODEV (19)
-To: LTP List <ltp@lists.linux.it>, open list <linux-kernel@vger.kernel.org>, 
-	linux-stable <stable@vger.kernel.org>, lkft-triage@lists.linaro.org, 
-	Linux Regressions <regressions@lists.linux.dev>
-Cc: Amir Goldstein <amir73il@gmail.com>, chrubis <chrubis@suse.cz>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Petr Vorel <pvorel@suse.cz>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Anders Roxell <anders.roxell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e23d7674-31cd-4499-9711-6e5695b149c6@oss.qualcomm.com>
 
-Regression in the LTP syscalls/fanotify01 test on the Linux stable-rc 5.4
-and 5.10 kernel after upgrading to LTP version 20250530.
+On Wed, Jun 25, 2025 at 07:48:54AM -0700, Jeff Johnson wrote:
+> On 6/25/2025 3:15 AM, Baochen Qiang wrote:
+> > 
+> > 
+> > On 6/25/2025 5:51 PM, Johan Hovold wrote:
+> >> [ +CC: Gregoire ]
+> >>
+> >> On Fri, May 23, 2025 at 11:49:00AM +0800, Baochen Qiang wrote:
+> >>> We got report that WCN7850 is not working with IWD [1][2]. Debug
+> >>> shows the reason is that IWD installs group key before pairwise
+> >>> key, which goes against WCN7850's firmware.
+> >>>
+> >>> Reorder key install to workaround this.
+> >>>
+> >>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=218733
+> >>> [2] https://lore.kernel.org/all/AS8P190MB12051DDBD84CD88E71C40AD7873F2@AS8P190MB1205.EURP190.PROD.OUTLOOK.COM
+> >>>
+> >>> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> >>> ---
+> >>> ---
+> >>> Baochen Qiang (2):
+> >>>       wifi: ath12k: avoid bit operation on key flags
+> >>>       wifi: ath12k: install pairwise key first
+> >>
+> >> Thanks for fixing this, Baochen.
+> >>
+> >> I noticed the patches weren't clearly marked as fixes. Do you think we
+> >> should ask the stable team to backport these once they are in mainline
+> >> (e.g. after 6.17-rc1 is out)? Or do you think they are too intrusive and
+> >> risky to backport or similar?
+> > 
+> > Yeah, I think they should be backported.
+> > 
+> >>
+> >> [ Also please try to remember to CC any (public) reporters. I only found
+> >>   out today that this had been addressed in linux-next. ]
+> > 
+> > Thanks, will keep in mind.
+> 
+> +Stable team,
+> Per the above discussion please backport the series:
+> https://msgid.link/20250523-ath12k-unicast-key-first-v1-0-f53c3880e6d8@quicinc.com
 
- - The test passed with LTP version 20250130
- - The test fails with LTP version 20250530
+<formletter>
 
-Regressions found on stable-rc 5.4 and 5.10 LTP syscalls fanotify01.c
-fanotify_mark expected EXDEV: ENODEV (19)
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-Regression Analysis:
- - New regression? Yes
- - Reproducibility? Yes
-
-Test regression: stable-rc 5.4 and 5.10
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-fanotify01.c:339: TFAIL: fanotify_mark(fd_notify, 0x00000001,
-0x00000008, -100, ".") expected EXDEV: ENODEV (19)
-
-The test expected fanotify_mark() to fail with EXDEV, but received
-ENODEV instead. This indicates a potential mismatch between updated
-LTP test expectations and the behavior of the 5.4 kernel=E2=80=99s fanotify
-implementation.
-
-Test log,
---
-
-fanotify01.c:94: TINFO: Test #3: inode mark events (FAN_REPORT_FID)
-fanotify01.c:301: TPASS: got event: mask=3D31 pid=3D2364 fd=3D-1
-...
-fanotify01.c:301: TPASS: got event: mask=3D8 pid=3D2364 fd=3D-1
-fanotify01.c:339: TFAIL: fanotify_mark(fd_notify, 0x00000001,
-0x00000008, -100, ".") expected EXDEV: ENODEV (19)
-fanotify01.c:94: TINFO: Test #4: mount mark events (FAN_REPORT_FID)
-fanotify01.c:301: TPASS: got event: mask=3D31 pid=3D2364 fd=3D-1
-...
-fanotify01.c:301: TPASS: got event: mask=3D8 pid=3D2364 fd=3D-1
-fanotify01.c:339: TFAIL: fanotify_mark(fd_notify, 0x00000001,
-0x00000008, -100, ".") expected EXDEV: ENODEV (19)
-fanotify01.c:94: TINFO: Test #5: filesystem mark events (FAN_REPORT_FID)
-fanotify01.c:301: TPASS: got event: mask=3D31 pid=3D2364 fd=3D-1
-...
-fanotify01.c:301: TPASS: got event: mask=3D8 pid=3D2364 fd=3D-1
-fanotify01.c:339: TFAIL: fanotify_mark(fd_notify, 0x00000001,
-0x00000008, -100, ".") expected EXDEV: ENODEV (19)
-
-
-## Test logs
-* Build details:
-https://regressions.linaro.org/lkft/linux-stable-rc-linux-5.4.y/v5.4.294-22=
-3-g7ff2d32362e4/ltp-syscalls/fanotify01/
-* Build detail 2:
-https://regressions.linaro.org/lkft/linux-stable-rc-linux-5.10.y/v5.10.238-=
-353-g9dc843c66f6f/ltp-syscalls/fanotify01/
-* Test log: https://qa-reports.linaro.org/api/testruns/28859312/log_file/
-* Issue: https://regressions.linaro.org/-/known-issues/6609/
-* Test LAVA job 1:
-https://lkft.validation.linaro.org/scheduler/job/8329278#L28572
-* Test LAVA job 2:
-https://lkft.validation.linaro.org/scheduler/job/8326518#L28491
-* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2yxHGv=
-VkVpcbKqPahSKRnlITnVS/
-* Build config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2yxHGvVkVpcbKqPahSKR=
-nlITnVS/bzImage
-
-
---
-Linaro LKFT
-https://lkft.linaro.org
+</formletter>
 
