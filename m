@@ -1,83 +1,107 @@
-Return-Path: <stable+bounces-158709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8BBAEA556
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 20:25:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E14FAEA605
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 21:04:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F27EC564396
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 18:24:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF2123BF6AD
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 19:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7D92EBDC8;
-	Thu, 26 Jun 2025 18:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67BEC2ED163;
+	Thu, 26 Jun 2025 19:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QU+X3+6F"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eHY9uDwS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D9E2ED14B;
-	Thu, 26 Jun 2025 18:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81B321348
+	for <stable@vger.kernel.org>; Thu, 26 Jun 2025 19:04:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750962312; cv=none; b=Dt21mNOYau7Qp+E+/fVYY0OmsWjU0nJhZA0DC8RhzdzkJ7ONoDD1+rRGKCdxpsQbPLWGvlDIboM1vS56y08PvB3JuFs/jSynS9+gii9+Ut1FFEYwvF3n44+DDq0lHJpuvaEY5gM3AXkLGc8o4ulmHl1bo2fZPE8Wy0zE+nvPA9w=
+	t=1750964649; cv=none; b=fGgjUCTXj5/GnXYHFHzQAPp5THhzwHOyfnrMYKy0ZMeLAVZe9QkEcc4p0W8LnFy8L1HdUINquGNFrwObbXCsdMeRrZv+oAnM6ZYoCqKS+PKGq2G2L4Y4/GpDLEXQcxHrdOhNWW5Dq+OdgD8kPTYWG6r2LZDgPpVkPlAvuiVHfig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750962312; c=relaxed/simple;
-	bh=Pnn9NA6mkXrRF9hQBs3X8XnGQwuVPw0s4N02XxLYa+c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tex48HLdnjQlANgB2TO5vrVwjbv8EfjuE2+ifPkLumPWVpGD9YzzhK56WWjA50AG1U9UKdsynqA46e2AByKrCKdTcYAKlwuzFoCVVoosoWXY4VuznWKSrPhvfdD2F1BomVg4MsDeDKG++jV59KSMq6wgj/uiZTlQ4nlaiEaEKSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QU+X3+6F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4338AC4CEEB;
-	Thu, 26 Jun 2025 18:25:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750962311;
-	bh=Pnn9NA6mkXrRF9hQBs3X8XnGQwuVPw0s4N02XxLYa+c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QU+X3+6FKTQq15l5UXmL13/IEnbERmM6bzgXI6R5qtgatD9Tn1uU7eQu8vBc1yrWQ
-	 /KMuVj9/9URdy58lQkyEwzel7SHp8Pmfba5kqZhAem3/ToTMPr9KVjHtNj/sCU+Fh2
-	 bd91Fe4Qe9W3V67BXcCwGJNAYWmwqDB7G8KIacfHL3cP5kYARzRqMtq4jWVZE6BHv/
-	 DdI62XkT3HNr/PY2yYkC7DCcN/nMswRswlZHLrz0l1y9rGCnFHnfCkh+K99PXrHn4R
-	 /eMsbAqsvuDLifKgxBweGAzlXuyWSvW4A9CAD5OiAnO9CCv2telAxsXnxqe7WGG7Mb
-	 jpXbtmXs5v1Vg==
-Date: Thu, 26 Jun 2025 21:25:07 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-	Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
-	stable@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Sudeep Holla <sudeep.holla@arm.com>,
-	Stuart Yoder <stuart.yoder@arm.com>,
-	"open list:TPM DEVICE DRIVER" <linux-integrity@vger.kernel.org>
-Subject: Re: [PATCH] tpm_crb_ffa: Remove unused export
-Message-ID: <aF2Qgx4Y0T583H3E@kernel.org>
-References: <20250626105423.1043485-1-jarkko@kernel.org>
- <aF0pcV9TNsiOYXVM@e129823.arm.com>
+	s=arc-20240116; t=1750964649; c=relaxed/simple;
+	bh=W96jFi0ozYt7piTYdJEZ/ATHq9mzwXp5ZChmtko8xmQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=by+wUi8Ttvumqwwo6X5LjFVpjhkqtT2ZfMTWXA4CinMNBDLKYygxYenc2HzGpu5Zsg7Dbu8VPXEYITjIFB3HMqAp1+SfpcbbYbgZgjBwsfk4mbixJhJXUYCtuGLmTZfYUN9No+ZXDXJpNxQyfqW1mL1+gUMhRPWxUf7VC1uHSCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eHY9uDwS; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750964647; x=1782500647;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=W96jFi0ozYt7piTYdJEZ/ATHq9mzwXp5ZChmtko8xmQ=;
+  b=eHY9uDwSZJbLuY+jfpOAivVmnJucgs40tABBRB8V7Rihx6jwMq44qHfL
+   qvkzt29h2ooDMj+HvWl1wuI1oKqENkwPnrbDe+z4i0YKs3bjRX1vtSl/k
+   rPoUU0LAyyUdg2aAiwcixCSGDqnxIMgYb/5MSegL4D80itrEUEVKzxres
+   iBfAvn7tJQ1tEVXOUI2sYWq4EyFjAIMfS+glVbXuKcbNAL+V/qEtp97Wm
+   79dZIXUfeVdW0aenRAQGi66f9hQMJV1omTwu+EhVK2YwVU8Tkp4DyMOlH
+   dSQjcKOajjXkoPlLvt7qLl5OO0pT51ySM7nAARyb8zQiv/TcxLKUG5OwT
+   A==;
+X-CSE-ConnectionGUID: y2ynt3TNTAStqIgmLRYATA==
+X-CSE-MsgGUID: J55CQr16Q2yYwycpg6dtdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="75819905"
+X-IronPort-AV: E=Sophos;i="6.16,268,1744095600"; 
+   d="scan'208";a="75819905"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 12:04:06 -0700
+X-CSE-ConnectionGUID: RC1L0FADQt+BgXC73RbPLg==
+X-CSE-MsgGUID: k9pklT2dSK+6pmzwwqV5Vg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,268,1744095600"; 
+   d="scan'208";a="176273419"
+Received: from mjruhl-desk.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.220.105])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 12:04:05 -0700
+From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
+To: micheal.j.ruhl@intel.com
+Cc: "Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] i2c/designware: Fix an initialization issue
+Date: Thu, 26 Jun 2025 15:03:55 -0400
+Message-ID: <20250626190355.469590-1-michael.j.ruhl@intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aF0pcV9TNsiOYXVM@e129823.arm.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 26, 2025 at 12:05:21PM +0100, Yeoreum Yun wrote:
-> [...]
-> 
-> Look good to me. Feel free to add:
-> 
-> Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> 
-> Thanks!
-> 
-> --
-> Sincerely,
-> Yeoreum Yun
+The i2c_dw_xfer_init() function requires msgs and msg_write_idx from the
+dev context to be initialized.
 
-Thanks!
+amd_i2c_dw_xfer_quirk() inits msgs and msgs_num, but not msg_write_idx.
 
-BR, Jarkko
+This could allow an out of bounds access (of msgs).
+
+Initialize msg_write_idx before calling i2c_dw_xfer_init().
+
+Fixes: 17631e8ca2d3 ("i2c: designware: Add driver support for AMD NAVI GPU")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+---
+ drivers/i2c/busses/i2c-designware-master.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
+index c5394229b77f..40aa5114bf8c 100644
+--- a/drivers/i2c/busses/i2c-designware-master.c
++++ b/drivers/i2c/busses/i2c-designware-master.c
+@@ -363,6 +363,7 @@ static int amd_i2c_dw_xfer_quirk(struct i2c_adapter *adap, struct i2c_msg *msgs,
+ 
+ 	dev->msgs = msgs;
+ 	dev->msgs_num = num_msgs;
++	dev->msg_write_idx = 0;
+ 	i2c_dw_xfer_init(dev);
+ 
+ 	/* Initiate messages read/write transaction */
+-- 
+2.49.0
+
 
