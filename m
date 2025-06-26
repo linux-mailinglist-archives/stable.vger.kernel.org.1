@@ -1,262 +1,178 @@
-Return-Path: <stable+bounces-158669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1736BAE98F5
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 10:51:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A25CAE9953
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 10:59:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0BFB1896D16
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 08:50:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89B7F1699C5
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 08:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716202BD584;
-	Thu, 26 Jun 2025 08:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD7829AAEC;
+	Thu, 26 Jun 2025 08:59:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="nst+KXhL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZqPnWj3T"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D09529AB13;
-	Thu, 26 Jun 2025 08:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4532266EEA;
+	Thu, 26 Jun 2025 08:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750927768; cv=none; b=NHUShqkdjUTA8NkEBugLnrYbir9aR1Y6aMCyLPLQNaYWNl/WHNUlJiO4LjuG1PCBq3GQwem5QgrW1rj3hlOh9U/uorfcStVgRrES3uGyiXd/ehfJ3beEZQ8l/Ch93S6u6v6t97phwajS3rajrSBTJeG1xgQl0i5kdoI3u6+aENE=
+	t=1750928380; cv=none; b=kVKnD4wdqXToEG9UTfc0+srABmNqaJwdQzcaLa70Sfg61YZ2tvNekHV1b0PFZgjJG3046rugQCifFj8R+5obwwyAJTSrwM0IOEJx2VHs5yDgl+QNRl3sXRpsRTUDBsU7UmrOeRL5PhHCcy7F1aiWGPspgCWgIlFFB6h7tSFesic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750927768; c=relaxed/simple;
-	bh=VLbiWkX8kQdNOTQe/nl+zGd6Uct821hYaKB9Ta26SfM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=J/7GSbnbai1QZpB62QFJA/DT8atJBTFLz2tTH7ktX5ViaENDkwkcVaWBqRNvAMVYWrIdBhzTv04IWuLnNyERHci74X8m8PqAxQnzbTSg6RSv2OAH5C2+3r5RL3xIaeF4gEUuI/4rgPjwrXXdp7LSgcpd8If1p5uK81fNwp/Gs6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.19.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz10t1750927705t9f47a40d
-X-QQ-Originating-IP: xEyEJ6SSb16iXx9cRzSBuiMq66O4SA3YPzuED/dG9Gw=
-Received: from lap-jiawenwu.trustnetic.com ( [36.27.0.255])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 26 Jun 2025 16:48:23 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 2030941367130155282
-EX-QQ-RecipientCnt: 12
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	michal.swiatkowski@linux.intel.com
-Cc: mengyuanlou@net-swift.com,
-	duanqiangwen@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v3 2/3] net: wangxun: revert the adjustment of the IRQ vector sequence
-Date: Thu, 26 Jun 2025 16:48:03 +0800
-Message-Id: <20250626084804.21044-3-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20250626084804.21044-1-jiawenwu@trustnetic.com>
-References: <20250626084804.21044-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1750928380; c=relaxed/simple;
+	bh=aBl0QIuDVXqWQ1gVsSGkKN8r3eIUjjET6iE1LlcQ2D8=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=i0eBoNXRWfEg67UEdXTnrkFLu9+N02PzkZV/NyBLNsqCmEYb76ADK6yNVmn+QBwgsUSDXqzuKsPSQ84R5xMDV3VMElKgEd6x4p9dg6xw6Dt44Y7Gph5JsTY4tIh1JIQm7OijIrnZ9jjrMstCPSU8a+l5J7a9155AwdGJSGuKuOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=nst+KXhL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZqPnWj3T; arc=none smtp.client-ip=202.12.124.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 96AF87A02BE;
+	Thu, 26 Jun 2025 04:59:37 -0400 (EDT)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-01.internal (MEProxy); Thu, 26 Jun 2025 04:59:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1750928377;
+	 x=1751014777; bh=drwBUjTKqDmvGvM3SVRsKqApsIIca2T/4d08mRhDSGg=; b=
+	nst+KXhLIcDo/slOZ1gKYGZLu3V32TzYeJR0EuiYkIRG/+89BCWE1NJuEyFwCwGo
+	aa/l6tgbsa1oHNuQG/85la5YOfetGRgY0YLn0l3VzDgcRWGdGnv37zb37o3C0Ghm
+	RA1tF0wuyuZdAO82xZZFE6pvfNwRc18XzHXYGveoHOT8NHLU5n30OhImczw08JcH
+	Ze3MxtAaXdM12DEWVsVCR7cRGxNnAtN0fyZ5OZPewsGwU+Dq9fU+KSohx9ToIYvO
+	0uHqKV01YiZoJjbiqFjHRtoLb+/PBv9U/kATq4DeFPW0+jvcbTxWCC1wWyAFqupx
+	bd0IgC6TJfMB0XVJhnMAVw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1750928377; x=
+	1751014777; bh=drwBUjTKqDmvGvM3SVRsKqApsIIca2T/4d08mRhDSGg=; b=Z
+	qPnWj3T5jTPaxStHDAHOkvgUOUHI0hdIxVu4xlfvoiwwxXNPMJdbij2qUE4/MyVI
+	VFbnrr5X6eiYK3621CYVHUVNq4wQ3tbdztD5v4irqAzG/GfA0C2ZgxjEAwJCl7xq
+	PhAjfJvifAdG1IYZKiLs1fMhxvvy9zhYxfZqdYNk9PDpEIKvF1NIngCqYLvSHfIs
+	nYi2fhfHW2qlPb2yPViyUwiwzUrzm+ZRx2vti4mY/Da/O56U9gIoiBn31fQtBDo2
+	bJ2ScAkV2OqeGthl1SU5uQae3z3tTv4HjlHV28Kjz0Px0bvc5WLNp7rcxObx/D6F
+	vrdHIrVq9qzgbdFAuoZjg==
+X-ME-Sender: <xms:-AtdaMhkshihAAodqPEVDmF9A9yrrw81J2HMUSzDJmm0lEaLib4qQA>
+    <xme:-AtdaFC11mrtCTBMuEmF4sk8v9IbzAPGcKpFmhFDrI9nCSdaQPFV0l6Pd7P-Rh5vz
+    1jiAGbewLbXTyP-0-Q>
+X-ME-Received: <xmr:-AtdaEFrceHXvJhLRG8J2npU5B1RB2TclpAerYrHotPNfON-ltBgxIZ9vI9RTCD-akSQTAk7lEQ8shoBY1e609bpIw5O-w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvhedvfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefkffggfgfuhffvvehfjggtgfesthekredttddvjeenucfhrhhomhepfdeurghrrhih
+    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
+    grthhtvghrnhepffejveffjeevvdeuueehfffhueevveejgeeuveeguedvveevieejudeg
+    feduueetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsggrrhhrhihnsehpohgsohigrdgtohhmpdhnsggprhgtphhtthhopedvuddpmhhouggv
+    pehsmhhtphhouhhtpdhrtghpthhtohephhholhhgvghrsegrphhplhhivgguqdgrshihnh
+    gthhhrohhnhidrtghomhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgu
+    rghtihhonhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehprghttghhvghssehlihhsthhsrdhlihhnuhigrdguvghv
+    pdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhunhgurghtihhonhdr
+    ohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
+    hgpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvghtpdhrtghpthhtohep
+    shhhuhgrhheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:-AtdaNR8dmbI2n-K7oSWtVLoBHB648cMiMgHmYpxyPzONwWDydMh6Q>
+    <xmx:-AtdaJxiTTyT89K5_X_ryMgNsvDzDXgtK9YZUMSLGFvU6SEYLvbQNQ>
+    <xmx:-AtdaL7AQeRQbsO793UjogxaM5Px109G1KX6FFmvOWQHB_DNb3Ve3g>
+    <xmx:-AtdaGxW7yhHDFvr3KnGFWV00aJ_blsJID_kzCr1unHYrBrqB7VG5g>
+    <xmx:-QtdaHI1Cv5gM3zyHuVHod4flfasyp4Aooedm-0KLu2gSpZkS6VdGkKL>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 26 Jun 2025 04:59:33 -0400 (EDT)
+Message-ID: <7069cc77-a224-4753-8088-0302fc444710@pobox.com>
+Date: Thu, 26 Jun 2025 01:59:32 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.15 000/588] 6.15.4-rc2 review
+From: "Barry K. Nathan" <barryn@pobox.com>
+To: =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org,
+ Christian Brauner <brauner@kernel.org>
+References: <20250624121449.136416081@linuxfoundation.org>
+ <e9249afe-f039-4180-d50d-b199c26dea26@applied-asynchrony.com>
+ <2025062511-tutor-judiciary-e3f9@gregkh>
+ <b875b110-277d-f427-412c-b2cb6512fccc@applied-asynchrony.com>
+ <6d3b0f28-98cb-46dd-b971-8a11e3b69d68@pobox.com>
+Content-Language: en-US
+In-Reply-To: <6d3b0f28-98cb-46dd-b971-8a11e3b69d68@pobox.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: OCrOINyfR5I/YDuPsQ88K/guSdGDbR5iH4DcEWLOkiUcyAgMj5peYDZo
-	naD5XHDwYJscavj2WiB7iFiHahtzk2NvRkpVKBe6RQ7lbKHzTHtQHNju/nVRdOqDwD8d5Gq
-	F6kiYaxgSIE9LkfAntYP3sHDsyF5G8ryzIs+CTuzLWO9o+k6MSLu2oluBmTJFkYd7eqkfLL
-	3ASGSfk/vRKFPTzXgs3SNnLAJ0VeiUcXDv2SjuqeU1TbUHuqDNFmkBxxzdaqPhxClcAlZW/
-	bVQoVk+Au/Xw71+0GGJpKqBhodE360558w5BsdIQiZ4y9GJN3fwB0UUxSbGtzsipMY+QuGf
-	tfqZk9y0I17l8RlX4YL5RRwGQzMyONAB/9NbB1Pyc0Dqe4a1MPyzfPxMcr/nFmRBVabtMCV
-	kplPYykzNQ5V7/35+jkivS/bNMSkIEDk3KUosCD6EjU6Kjw2+GSuoXnBcIrEYz889GRqMkn
-	28TCZnYsG/9AAHBsrmk2Tc3Cmn6itdIOwgk9mOVYOUTvlDPzSjpPKno6X7WtXjt2FyzSQmq
-	vlPrNwZ6eHpNTtLJQctDeY2U2ol00/8EUQOSaxFIGSi7qnmV+PJKTZMwdxHeBoQ+8CtFCmT
-	9XYWBJCdtek9W/CWrnfxwmcws0oxZIdzW+jYfDLEobJbotnd6MH8ONR+vi0FYXnKZYB7tpZ
-	h4sC2CTnxhWZDeRw78DaLaW+lgEa2Rd6v2vrvm/Abvt5vlNUzcsBBcsG18TNZN36cNg8l0l
-	X+KiBBg+YDmw+dwMsgnpQI5u6On/2NREdXpCBEmEmcQrDwQlyM72gMXITNks6YI9UvOha8W
-	TfNBCC8Rd105xj7go7KCnHrFGifeQL8Dktavq0BsA0M7JMdmvLLt79VuGxtQy7pspiPFPNc
-	v1Xjf7ndC1l/zDFIyvexmZm/Is078nlC9PlJmfe2TTB1ed9aQEvHVUWl8x9+XADOjTLiD7F
-	/ofQwYTJI4Fus8iGFDNlkSO/zorXTl/G+7IC69BzoEVoLXk4u7Ve++y5VU8pHF9JDlzpozB
-	CwgpsSRR63Y5F9UKxbp7WPvnigJ4c9qESmcrYRg0hWAeSxcnpC
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-X-QQ-RECHKSPAM: 0
 
-Due to hardware limitations of NGBE, queue IRQs can only be requested
-on vector 0 to 7. When the number of queues is set to the maximum 8,
-the PCI IRQ vectors are allocated from 0 to 8. The vector 0 is used by
-MISC interrupt, and althrough the vector 8 is used by queue interrupt,
-it is unable to receive packets. This will cause some packets to be
-dropped when RSS is enabled and they are assigned to queue 8.
+On 6/25/25 05:15, Barry K. Nathan wrote:
+> On 6/25/25 02:08, Holger Hoffstätte wrote:
+>> On 2025-06-25 10:25, Greg Kroah-Hartman wrote:
+>>> On Wed, Jun 25, 2025 at 10:00:56AM +0200, Holger Hoffstätte wrote:
+>>>> (cc: Christian Brauner>
+>>>>
+>>>> Since 6.15.4-rc1 I noticed that some KDE apps (kded6, kate (the text 
+>>>> editor))
+>>>> started going into a tailspin with 100% per-process CPU.
+>>>>
+>>>> The symptom is 100% reproducible: open a new file with kate, save 
+>>>> empty file,
+>>>> make changes, save, watch CPU go 100%. perf top shows copy_to_user 
+>>>> running wild.
+>>>>
+>>>> First I tried to reproduce on 6.15.3 - no problem, everything works 
+>>>> fine.
+>>>>
+>>>> After checking the list of patches for 6.15.4 I reverted the 
+>>>> anon_inode series
+>>>> (all 3 for the first attempt) and the problem is gone.
+>>>>
+>>>> Will try to reduce further & can gladly try additional fixes, but 
+>>>> for now
+>>>> I'd say these patches are not yet suitable for stable.
+>>>
+>>> Does this same issue also happen for you on 6.16-rc3?
+>>
+>> Curiously it does *not* happen on 6.16-rc3, so that's good.
+>> I edited/saved several files and everything works as it should.
+>>
+>> In 6.15.4-rc the problem occurs (as suspected) with:
+>> anon_inode-use-a-proper-mode-internally.patch aka cfd86ef7e8e7 upstream.
+>>
+>> thanks
+>> Holger
+> 
+> For what it's worth, I can confirm this reproduces easily and 
+> consistently on Debian trixie's KDE (6.3.5), with either Wayland or X11. 
+> It reproduces with kernel 6.15.4-rc2, and with 6.15.3+anon_inode-use-a- 
+> proper-mode-internally.patch, but not with vanilla 6.15.3 or with 6.16-rc3.
+> 
+> By the way, my test VM has both GNOME and KDE installed. If I boot one 
+> of the affected kernels and log into a GNOME session, I don't get any 
+> GNOME processes chewing up CPU the way that some of the KDE processes 
+> do. However, if I then start kate within the GNOME session and follow 
+> the steps to reproduce (create a new file, save it immediately, type a 
+> few characters, save again), kate still starts using 100% CPU.
 
-So revert the adjustment of the MISC IRQ location, to make it be the
-last one in IRQ vectors.
-
-Fixes: 937d46ecc5f9 ("net: wangxun: add ethtool_ops for channel number")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_lib.c     | 17 ++++++++---------
- drivers/net/ethernet/wangxun/libwx/wx_type.h    |  2 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c   |  2 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_type.h   |  2 +-
- drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c  |  6 +++---
- drivers/net/ethernet/wangxun/txgbe/txgbe_type.h |  4 ++--
- 6 files changed, 16 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index 7f2e6cddfeb1..66eaf5446115 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -1746,7 +1746,7 @@ static void wx_set_num_queues(struct wx *wx)
-  */
- static int wx_acquire_msix_vectors(struct wx *wx)
- {
--	struct irq_affinity affd = { .pre_vectors = 1 };
-+	struct irq_affinity affd = { .post_vectors = 1 };
- 	int nvecs, i;
- 
- 	/* We start by asking for one vector per queue pair */
-@@ -1783,16 +1783,17 @@ static int wx_acquire_msix_vectors(struct wx *wx)
- 		return nvecs;
- 	}
- 
--	wx->msix_entry->entry = 0;
--	wx->msix_entry->vector = pci_irq_vector(wx->pdev, 0);
- 	nvecs -= 1;
- 	for (i = 0; i < nvecs; i++) {
- 		wx->msix_q_entries[i].entry = i;
--		wx->msix_q_entries[i].vector = pci_irq_vector(wx->pdev, i + 1);
-+		wx->msix_q_entries[i].vector = pci_irq_vector(wx->pdev, i);
- 	}
- 
- 	wx->num_q_vectors = nvecs;
- 
-+	wx->msix_entry->entry = nvecs;
-+	wx->msix_entry->vector = pci_irq_vector(wx->pdev, nvecs);
-+
- 	return 0;
- }
- 
-@@ -2299,8 +2300,6 @@ static void wx_set_ivar(struct wx *wx, s8 direction,
- 		wr32(wx, WX_PX_MISC_IVAR, ivar);
- 	} else {
- 		/* tx or rx causes */
--		if (!(wx->mac.type == wx_mac_em && wx->num_vfs == 7))
--			msix_vector += 1; /* offset for queue vectors */
- 		msix_vector |= WX_PX_IVAR_ALLOC_VAL;
- 		index = ((16 * (queue & 1)) + (8 * direction));
- 		ivar = rd32(wx, WX_PX_IVAR(queue >> 1));
-@@ -2339,7 +2338,7 @@ void wx_write_eitr(struct wx_q_vector *q_vector)
- 
- 	itr_reg |= WX_PX_ITR_CNT_WDIS;
- 
--	wr32(wx, WX_PX_ITR(v_idx + 1), itr_reg);
-+	wr32(wx, WX_PX_ITR(v_idx), itr_reg);
- }
- 
- /**
-@@ -2392,9 +2391,9 @@ void wx_configure_vectors(struct wx *wx)
- 		wx_write_eitr(q_vector);
- 	}
- 
--	wx_set_ivar(wx, -1, 0, 0);
-+	wx_set_ivar(wx, -1, 0, v_idx);
- 	if (pdev->msix_enabled)
--		wr32(wx, WX_PX_ITR(0), 1950);
-+		wr32(wx, WX_PX_ITR(v_idx), 1950);
- }
- EXPORT_SYMBOL(wx_configure_vectors);
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 7730c9fc3e02..d392394791b3 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1343,7 +1343,7 @@ struct wx {
- };
- 
- #define WX_INTR_ALL (~0ULL)
--#define WX_INTR_Q(i) BIT((i) + 1)
-+#define WX_INTR_Q(i) BIT((i))
- 
- /* register operations */
- #define wr32(a, reg, value)	writel((value), ((a)->hw_addr + (reg)))
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index b5022c49dc5e..68415a7ef12f 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -161,7 +161,7 @@ static void ngbe_irq_enable(struct wx *wx, bool queues)
- 	if (queues)
- 		wx_intr_enable(wx, NGBE_INTR_ALL);
- 	else
--		wx_intr_enable(wx, NGBE_INTR_MISC);
-+		wx_intr_enable(wx, NGBE_INTR_MISC(wx));
- }
- 
- /**
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-index bb74263f0498..6eca6de475f7 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-@@ -87,7 +87,7 @@
- #define NGBE_PX_MISC_IC_TIMESYNC		BIT(11) /* time sync */
- 
- #define NGBE_INTR_ALL				0x1FF
--#define NGBE_INTR_MISC				BIT(0)
-+#define NGBE_INTR_MISC(A)			BIT((A)->num_q_vectors)
- 
- #define NGBE_PHY_CONFIG(reg_offset)		(0x14000 + ((reg_offset) * 4))
- #define NGBE_CFG_LAN_SPEED			0x14440
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-index dc468053bdf8..3885283681ec 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-@@ -31,7 +31,7 @@ void txgbe_irq_enable(struct wx *wx, bool queues)
- 	wr32(wx, WX_PX_MISC_IEN, misc_ien);
- 
- 	/* unmask interrupt */
--	wx_intr_enable(wx, TXGBE_INTR_MISC);
-+	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
- 	if (queues)
- 		wx_intr_enable(wx, TXGBE_INTR_QALL(wx));
- }
-@@ -131,7 +131,7 @@ static irqreturn_t txgbe_misc_irq_handle(int irq, void *data)
- 		txgbe->eicr = eicr;
- 		if (eicr & TXGBE_PX_MISC_IC_VF_MBOX) {
- 			wx_msg_task(txgbe->wx);
--			wx_intr_enable(wx, TXGBE_INTR_MISC);
-+			wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
- 		}
- 		return IRQ_WAKE_THREAD;
- 	}
-@@ -183,7 +183,7 @@ static irqreturn_t txgbe_misc_irq_thread_fn(int irq, void *data)
- 		nhandled++;
- 	}
- 
--	wx_intr_enable(wx, TXGBE_INTR_MISC);
-+	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
- 	return (nhandled > 0 ? IRQ_HANDLED : IRQ_NONE);
- }
- 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index 42ec815159e8..41915d7dd372 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -302,8 +302,8 @@ struct txgbe_fdir_filter {
- #define TXGBE_DEFAULT_RX_WORK           128
- #endif
- 
--#define TXGBE_INTR_MISC       BIT(0)
--#define TXGBE_INTR_QALL(A)    GENMASK((A)->num_q_vectors, 1)
-+#define TXGBE_INTR_MISC(A)    BIT((A)->num_q_vectors)
-+#define TXGBE_INTR_QALL(A)    (TXGBE_INTR_MISC(A) - 1)
- 
- #define TXGBE_MAX_EITR        GENMASK(11, 3)
- 
+After some testing and bisecting, I found that "anon_inode: use a proper 
+mode internally" needs to be followed up with "fs: add S_ANON_INODE" 
+(upstream commit 19bbfe7b5fcc) in order to avoid this regression.
 -- 
-2.48.1
-
+-Barry K. Nathan  <barryn@pobox.com>
 
