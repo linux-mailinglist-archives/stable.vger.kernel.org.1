@@ -1,69 +1,81 @@
-Return-Path: <stable+bounces-158697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4331AEA1E4
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 17:06:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59CB7AEA260
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 17:23:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA1C87B9F60
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 15:04:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B247B1C64ECA
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 15:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE622EBDFA;
-	Thu, 26 Jun 2025 14:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A10E2EF9A2;
+	Thu, 26 Jun 2025 15:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/yjG2dW"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="ltGfW6AV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AB22EBDC8;
-	Thu, 26 Jun 2025 14:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D882EF673;
+	Thu, 26 Jun 2025 15:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750949846; cv=none; b=YsoGTW8NYPouongvolmjDmLaqiRUB8GP7B03nqnShafhf48pSlsc494DaI+jdyB6NAa8cLxIN7mMVHG2bmXDgMmL5WZpwsleSJVaha21xg9Cr9zkEzwXB8tWAqVTDOze+LNrbOX+m+79rOiQBST0jLvMmhgFJ02KlzejJq4/f18=
+	t=1750950158; cv=none; b=lmRpBdDUHVIpxFNrSQQ/LghxbwuEXwV2qrtSkYQYzBzFthDxP9LckgV5Qrfa7yfTWhoNwzdkxlXtgbqeb9pibKOEOnYfVFiRDMihIYf7wZoC/hWaHDWZmZiBibOHfjVmRpr0AJl4trkjL6gPBeiKGiFkQcIGusnkFQUr6k/UvqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750949846; c=relaxed/simple;
-	bh=DpQu293QtnkVCjW/dcgcoz5uwg7vQNBKK1Jw3JgSQ40=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RzpBN+s0YtiXfhdS+QGcSIGjE+JTp9Sji5Zk2RHNRQ3yh2qd9TyKxdR+eu9I6hcqTMUz0JQp5aMNc7mNsVq8WYv9wld6c3AT8NZyJ3b5Wvp6X2qb7ylcByUiAfo+5dwLeukXpBvdAQGn9mvc8pv5kXGjZ5OdgRhB0vtdu+KP8Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/yjG2dW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43249C4CEEB;
-	Thu, 26 Jun 2025 14:57:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750949845;
-	bh=DpQu293QtnkVCjW/dcgcoz5uwg7vQNBKK1Jw3JgSQ40=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h/yjG2dWFn9WJLfhtEMNsY4uEfjYEayQAJL4nbfuLyf0IEfVA+bsMr2naPrff9YRz
-	 Qz0s6K8uKmFpUpVU0AmSQoOFAeH27b6xFGkUTBMAvZK21AdAQSCnNa2CWGoYWKyz+L
-	 LamXjn3K8rm15iHh60tz+sPTgTVcYHzezZVx0GFA=
-Date: Thu, 26 Jun 2025 15:57:21 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Pranav Tyagi <pranav.tyagi03@gmail.com>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, daniel@ffwll.ch, airlied@linux.ie,
-	mcanal@igalia.com, arthurgrillo@riseup.net, mairacanal@riseup.net,
-	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev,
-	stable@vger.kernel.org, sashal@kernel.org
-Subject: Re: [PATCH] drm/vkms: Fix race-condition between the hrtimer and the
- atomic commit
-Message-ID: <2025062607-hardener-splotchy-1e70@gregkh>
-References: <20250626142243.19071-1-pranav.tyagi03@gmail.com>
+	s=arc-20240116; t=1750950158; c=relaxed/simple;
+	bh=Bbgc2DY40jng+4DfV8RXgOGPojDihC9w3OdSooOoJWg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MileT7PBwobfyl8F8vsIjvOnzLNcXevEArchjkBDDIsbnL7t3qlZeeolDzvXDOVO/v+o4IJZUj9OPPXygyTim37yuHIohFRCoxPHMMCfVyzQf8ii+Ywe5FRv7Q9jJbNWiHYtjn6KuxYShHQyENx2egVWt2F1GXJmp7vXG72+xJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=ltGfW6AV; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=f5DlpX2huMTLf4bsOPml/8rj3dKo7+jspuRt9BtAGXg=; b=ltGfW6AV9dczegMNqj5U4DixS/
+	s/6eN/vh/A38dEvSYJ4tcZS+aXcbzTWdsxkz9jL5N9G5akCrOVn7aqIJVF5QgSruAnI32KrnD8wZk
+	580DShYV0S/dbwNIild2rS7Q6HFp8YvthqfKeybOAQR+BMF4M8WeUv4ofL10jVk6c2+gmI1AYV8RC
+	Kn92AiR2qxwEEvti3DJ6ZQUYlZYvJ21W9IReIXIl9e4G+hNT8Hz048xZDtaDQ330CpzzQeGQNMCvD
+	eakZr/mNWtOAfjJjpI/lX9t6R72uIMh0ISRfj4egQEfFpyPiu/STYKRA14aAHIICUDRBXm47rfUfQ
+	tTazxPcQ==;
+Received: from [189.7.87.79] (helo=[192.168.0.7])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1uUo7R-0091W2-U4; Thu, 26 Jun 2025 17:02:30 +0200
+Message-ID: <5baab2ed-c48d-41ae-819a-71ca195c4407@igalia.com>
+Date: Thu, 26 Jun 2025 12:02:23 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/vkms: Fix race-condition between the hrtimer and the
+ atomic commit
+To: Pranav Tyagi <pranav.tyagi03@gmail.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
+Cc: rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+ hamohammed.sa@gmail.com, daniel@ffwll.ch, airlied@linux.ie,
+ arthurgrillo@riseup.net, mairacanal@riseup.net, skhan@linuxfoundation.org,
+ linux-kernel-mentees@lists.linux.dev, stable@vger.kernel.org,
+ gregkh@linuxfoundation.org, sashal@kernel.org
+References: <20250626142243.19071-1-pranav.tyagi03@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
 In-Reply-To: <20250626142243.19071-1-pranav.tyagi03@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 26, 2025 at 07:52:43PM +0530, Pranav Tyagi wrote:
-> From: Ma�ra Canal <mcanal@igalia.com>
+Hi Pranav,
+
+On 26/06/25 11:22, Pranav Tyagi wrote:
+> From: Maíra Canal <mcanal@igalia.com>
 > 
 > [ Upstream commit a0e6a017ab56936c0405fe914a793b241ed25ee0 ]
 > 
@@ -84,15 +96,22 @@ On Thu, Jun 26, 2025 at 07:52:43PM +0530, Pranav Tyagi wrote:
 > problems.
 > 
 > [v2]:
->     * Create a new mutex and keep the spinlock across the atomic commit in
->       order to avoid interrupts that could result in deadlocks.
+>      * Create a new mutex and keep the spinlock across the atomic commit in
+>        order to avoid interrupts that could result in deadlocks.
 > 
 > [ Backport to 5.15: context cleanly applied with no semantic changes.
 > Build-tested. ]
+> 
+> Signed-off-by: Maíra Canal <mcanal@igalia.com>
+> Reviewed-by: Arthur Grillo <arthurgrillo@riseup.net>
+> Signed-off-by: Maíra Canal <mairacanal@riseup.net>
+> Link: https://patchwork.freedesktop.org/patch/msgid/20230523123207.173976-1-mcanal@igalia.com
+> Signed-off-by: Pranav Tyagi <pranav.tyagi03@gmail.com>
 
-Did you forget about 6.1.y?
+This patch violates locking rules and it was reversed a while ago.
+Please, check commit 7908632f2927 ("Revert "drm/vkms: Fix race-condition
+between the hrtimer and the atomic commit"").
 
-confused,
-
-greg k-h
+Best Regards,
+- Maíra
 
