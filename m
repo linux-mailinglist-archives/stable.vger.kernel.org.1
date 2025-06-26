@@ -1,102 +1,96 @@
-Return-Path: <stable+bounces-158702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF43CAEA335
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 18:08:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1FEAAEA3F8
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 19:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98DE9164F33
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 16:08:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4344F1C43407
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 17:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0DD1F5413;
-	Thu, 26 Jun 2025 16:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E61216E24;
+	Thu, 26 Jun 2025 17:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="RtacytCX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+GmA7VV"
 X-Original-To: stable@vger.kernel.org
-Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33B31E7C03;
-	Thu, 26 Jun 2025 16:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1519214236
+	for <stable@vger.kernel.org>; Thu, 26 Jun 2025 17:04:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750954078; cv=none; b=Q16NKSXqwRTXHBp9m9TQBdsvKT3s7DXsEPmhBUg2DJwMzOTlPWs+Es37t7BdWgzo+VgtKwZa4xYecgrL8EqiYjHWgFH6bFBHRHLpdsyyLrun4KuywRHaPogr8dSzEeDtFag0byAEYa6Hjw5rI48wJgeQO/UtBkub1q8u1mbtmnY=
+	t=1750957496; cv=none; b=upo3H8FpNtHoh+8MAsO6D7FdzwlZpBAshnKprRUKQ8FdhLEegTpADQAE11E41GzME6VNtB9lQp8DOFs09c2lyoc6quCu2ULWpH+hAXnKslQF0psydgHGiUwG5ztF2JH7Fpu7varAjmo6nar7s3zmtjPaPhY08lryzaQoPnJKbg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750954078; c=relaxed/simple;
-	bh=KL21l540I30nzx4Nr1L75eKP0fD9eowHptJE81pUqAE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MgofRlfbz6gv2eBJ/IcH9gsfhitSW3dx7PAdUDiBo1P7M+PEg3aqeyHCrZH4wg8SRpI7eUmxLaghAJowG3h8Kj6dx7OhSLINWxvHpQCL+5Cy/efTIMESf9PMPWt60QAmzJHsoBbEwLCvWVEI7LrYwtKSD2hzQscK7+EHQXne4tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=RtacytCX; arc=none smtp.client-ip=199.89.3.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 004.mia.mailroute.net (Postfix) with ESMTP id 4bSk9l5Bhxzm0gbQ;
-	Thu, 26 Jun 2025 16:07:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1750954074; x=1753546075; bh=KxYf3wLLOYlrd/Sq54BhcuYs
-	cJ+t0s1eZz/49Duoj2o=; b=RtacytCXZggDdgGc5XN9L0A4Yi6WrzdFIzugXbiz
-	IoLofwmvX+CGA92RBQQkCkW6dnhgKq1xA0QtYpkjriS9DVI5Wb44wY2k2yH1jGLf
-	U5VV5ANTI0fllZRB2QVn7O/FcL2Sk0O0PC1jfC5xcp+pH5qY264nNn2fdEZ3XD2P
-	E1W5EWjOeI8C1g4v7nmQflmA3Ah9rg/K1aTchA2ZnjD1JGS+ou7ysbC35dROVPsa
-	SgM+jDsISCdGYGwfRS/Ean0u64Zc4AmndfrWA//SCRyBLIiNghLK7WftYh4lsjwi
-	Q3+UnuIjpBLT9VA1em1X2fVD2bSNbkY4ZVcmgDEKkhMNcg==
-X-Virus-Scanned: by MailRoute
-Received: from 004.mia.mailroute.net ([127.0.0.1])
- by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id bHDVGSpCp3Fp; Thu, 26 Jun 2025 16:07:54 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4bSk9f5cWBzm0gcN;
-	Thu, 26 Jun 2025 16:07:49 +0000 (UTC)
-Message-ID: <43efadb7-8251-4a7c-a962-437a6c97762d@acm.org>
-Date: Thu, 26 Jun 2025 09:07:48 -0700
+	s=arc-20240116; t=1750957496; c=relaxed/simple;
+	bh=H0t0WvZ/Wwcx/5TG3QZ/5MbnzmtzifnbaRaXVI2FSUU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nejCIWmfJRvjQwP63Ip230Zz3w5g77TrYFFtXIhUfa+2cygeuaXO2efVYmmLhvNhhemTJVRKiMgeQfEKsqDqdt3jLS9PbzUEd182VNgHvOmeLp1l3llw4hN5N6GnjE1aoondrt1Rz5BZ7B6l2setoHvilh9/689brl+Bi35Es8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+GmA7VV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DA6C4CEED;
+	Thu, 26 Jun 2025 17:04:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750957495;
+	bh=H0t0WvZ/Wwcx/5TG3QZ/5MbnzmtzifnbaRaXVI2FSUU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=f+GmA7VVcvB8m6hM2NDmUxN6hbB0x3RtIsbbuRhi3thE74Bdy4THs/bDAYQtBvspM
+	 WXSoUUOVFgSxtqEgT6TeOti6VwxQPCrej9LrkMGemGeJk17IlJoWzwnDrZiBAk03K/
+	 TZiG36lF9o+WKt2NRW/vXrFt1ECQsvOXOZ36kIdtjaw8jDYAdEKy0Wn3pI6a6d6wFw
+	 qHBt2noPTE5Vw6GSIBnKOjZpOSRFk/UTHPIwOYIPPfT8V14yk6Lic/WYMahbCqD3kD
+	 0L92n2Z+ssFOiKDqR3gsDIHqGLhfPPJCDno+SdIzUusNDjyjuu4vf/Wi1JqSre0oIX
+	 7uJRSSB+tWDEQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	pranav.tyagi03@gmail.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH] drm/vkms: Fix race-condition between the hrtimer and the atomic commit
+Date: Thu, 26 Jun 2025 12:53:28 -0400
+Message-Id: <20250626120819-02861fc697c8f416@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250626142243.19071-1-pranav.tyagi03@gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block: Fix a deadlock related to modifying the readahead
- attribute
-To: Christoph Hellwig <hch@lst.de>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
- Nilay Shroff <nilay@linux.ibm.com>, stable@vger.kernel.org
-References: <20250625195450.1172740-1-bvanassche@acm.org>
- <20250626051506.GD23248@lst.de>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20250626051506.GD23248@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 6/25/25 10:15 PM, Christoph Hellwig wrote:
-> On Wed, Jun 25, 2025 at 12:54:50PM -0700, Bart Van Assche wrote:
->> Fix this by removing the superfluous queue freezing/unfreezing code from
->> queue_ra_store().
-> 
-> You'll need to explain why it is useless here.
+[ Sasha's backport helper bot ]
 
-If nobody objects I will add the following text to the patch
-description:
+Hi,
 
-"Freezing the request queue from inside a block layer sysfs store
-callback function is essential when modifying parameters that affect how
-bios or requests are processed, e.g. parameters that affect
-bio_split_to_limit(). Freezing the request queue when modifying
-parameters that do not affect bio nor request processing is not
-necessary."
+Summary of potential issues:
+❌ Commit was reverted in mainline
 
-Thanks,
+The upstream commit SHA1 provided is correct: a0e6a017ab56936c0405fe914a793b241ed25ee0
 
-Bart.
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Pranav Tyagi<pranav.tyagi03@gmail.com>
+Commit author: Maíra Canal<mcanal@igalia.com>
 
+Found revert commits:
+7908632f2927 Revert "drm/vkms: Fix race-condition between the hrtimer and the atomic commit"
+
+Note: The patch differs from the upstream commit:
+---
+1:  a0e6a017ab569 < -:  ------------- drm/vkms: Fix race-condition between the hrtimer and the atomic commit
+-:  ------------- > 1:  a2b47f77e740a Linux 6.15.3
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.15.y       |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
