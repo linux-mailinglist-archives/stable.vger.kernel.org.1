@@ -1,147 +1,126 @@
-Return-Path: <stable+bounces-158712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34ED7AEA631
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 21:15:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AA0AEA651
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 21:20:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 852914E0193
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 19:15:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BD0E3B6181
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 19:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C112ED862;
-	Thu, 26 Jun 2025 19:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72492EF9CE;
+	Thu, 26 Jun 2025 19:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BdeRN5Hl"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="cfgEGIK5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8B32CCA9;
-	Thu, 26 Jun 2025 19:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25ED2EF9B1;
+	Thu, 26 Jun 2025 19:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750965333; cv=none; b=K7nzbksOEzXns53iYKQoAILyuZxrfF0rxGExriPMljKUUP50e5JueWW4ja7BxqOj2OvzjtLZ7BGPiJWqL825itFZzCaSd8z/1rG3E91otqwnXx5Tj84H+erA6OJ+RkLbpNVfdU/U7+h48xiBdl1mJ4u4UwARrbZHxlkgWqf4Ih8=
+	t=1750965652; cv=none; b=rCjs6iNjn16rsnMC8+kLCXJgfyLi9cHvXyAPK+kmTGOBRlAasNtCEYe7/WxQjG13ERzB4O4PBAskU6726Q2VC+agwUw3bgiu0GSvgPa0Ic731klkhSPZskrgm4hUxaRGyesvhIlww1gepoUywN3nZWcreftzdSYQky645vhVpLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750965333; c=relaxed/simple;
-	bh=GVTVZKAcmUFrxnDCM5D1GDi3JRVk55utZxoEDR6QU+8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nbooe41m8NeGu5hOkAQd1uUQZSqPwM9nYhHW+ySzxkCZ1oV5R1v/Vuq46JJ7g/kSxRJjcy3MeRtY+yQAakQjCQhZPXepxiknYGq2tv6i0NeXeJ31xbfaiRADdUxElpmJtcz9Jau7DPnINkwGUy9dm0UoV8WUvDtxFgzgePuDdK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BdeRN5Hl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86560C4AF09;
-	Thu, 26 Jun 2025 19:15:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750965332;
-	bh=GVTVZKAcmUFrxnDCM5D1GDi3JRVk55utZxoEDR6QU+8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BdeRN5Hl8XOH+v0XpP96wSL+JU4vbDSfi0H1r3RDkvdoC6WAB+/pUvVt94HnLJ9dP
-	 MDTs4oYtq4/76SEN3QF5RSfRt2O3XuwcJkO3eX6PezWoAvTTK5LtKv59oiu4gbU3Bg
-	 OD4I9rKo1/EoEP4ZjGY5a2yZHi8pMH75nQlwVjzbm4pP4SRXmePRPPCyUfI1shHmYG
-	 N8BdqTadbVA+aIrB6WyzpBltNRNLKKjHn3oAJOZYid7WxIlyPjs16uAios+mBTUnOF
-	 QvZYpvqgG1meoGDjJygywTuM5/WPNeaXMsxXruS5qWcLqCLNPj1RNesgyurK6GvFO7
-	 KH4PP6RIi78WA==
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2d09d495c6cso379891fac.3;
-        Thu, 26 Jun 2025 12:15:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU+D/1cnWS6T93Hrld5Us1G3No86VNLz4Dmm5h0Arz6ccroahPcfKKKS3GSqdp6HTEw9wa+JuUA6b/y9kc=@vger.kernel.org, AJvYcCVEZXGhPyKcDArH6QPtdO0+PoEqUnaUcSiKVpxtv9/Bgp6YoeQzQEG/g6XyEaQKeucE4/zvUrz8@vger.kernel.org, AJvYcCW9HBTRkhrobq5xFpO5CXkWByjj/7Pi/qIxS7a4jEhESjGpajHrHvK/AjeRYpDNHvUiqR/hMZbj+qw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNbT7EvJerfgsthntmExK7JJMB0yPlKR4YN5yI+LLTFxEQsm/0
-	X/sPK+q8FtttefbXKso1v/6cf1zFhrENlXw7A+dusmIYXX6pJ+lvDGaCehQkIjqia7YdIawsYAi
-	0HndHKtHefwAHOu8XvUDp2fZC/VPGdx8=
-X-Google-Smtp-Source: AGHT+IHF9pqM5Ydclvi+iFU8TmSmeOmdqu4oVPUqgHbDY7h2PY1K/BE4yM1Tsg43GYzwGgNnIRIujkcAM4w7hZ2UsvQ=
-X-Received: by 2002:a05:6870:3511:b0:2cc:3d66:b6ea with SMTP id
- 586e51a60fabf-2efed795392mr158783fac.34.1750965331752; Thu, 26 Jun 2025
- 12:15:31 -0700 (PDT)
+	s=arc-20240116; t=1750965652; c=relaxed/simple;
+	bh=F5drME/H2x0yXDYGBijt8T+fC00BBnPVtIbKK7Wla90=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gEtrMQ1BWugEVmyvDr2nokJlJXOVBSVyEUjozawk0o3vYXp9KgO/RinrNRUxJ9yoOTlIytsNSGgL9oatmjIAHuam0riJEaZsFQhgKXHCAFzuNHqRYGGikjDVQg/+PIV/xbNS4KJuZIZ5aPnpFyrPKfu3bddHNt0btB6bpDy5sUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=cfgEGIK5; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
+Received: from mail01.disroot.lan (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id 43249260B3;
+	Thu, 26 Jun 2025 21:20:46 +0200 (CEST)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+ by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id FrQBf9LbrxWq; Thu, 26 Jun 2025 21:20:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1750965645; bh=F5drME/H2x0yXDYGBijt8T+fC00BBnPVtIbKK7Wla90=;
+	h=From:Subject:Date:To:Cc;
+	b=cfgEGIK5oLeB3XE1aJRZiOc/topaDddu3H+5KwtYmrpCELXS+o9lcEtdVkU6YMAqw
+	 jwdsTKis6jw+tuuMRZtX4YWEww9nbuuLr9pq/fEGTysVxfkiDFcJj6bU3uNcG+H1uy
+	 zqhehyxyYkreANKoQgePjWbulMaPTN3/lKsYblC/M7W14OybtZpQymq/si99jNYFc3
+	 mepd4mnR+W4qQFnKDY59ZpuEDP6dRdW502NUBg0aariog0pccrZCMc2/M8LtJZkfuL
+	 zexhf8751JoCiJ5a4O4EXRPTFJQxKpHqSsC+qfhX9cXhle8EGSdZug2YiH9KVMq9Re
+	 Y5eBgvwPzzO6Q==
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
+Subject: [PATCH v3 0/3] Samsung Exynos 7870 DECON driver support
+Date: Fri, 27 Jun 2025 00:50:27 +0530
+Message-Id: <20250627-exynosdrm-decon-v3-0-5b456f88cfea@disroot.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250619071340.384782-1-rui.zhang@intel.com>
-In-Reply-To: <20250619071340.384782-1-rui.zhang@intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 26 Jun 2025 21:15:19 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hfO6eSbwYo2iD4JuqHth0AUQY3cG2109Yhyz-=RNaVWQ@mail.gmail.com>
-X-Gm-Features: Ac12FXzJ7BuhzTdUQAYlDXdtcJzEQvwlFR3N2p_d41kJUWcGANG9wZIpsJco93c
-Message-ID: <CAJZ5v0hfO6eSbwYo2iD4JuqHth0AUQY3cG2109Yhyz-=RNaVWQ@mail.gmail.com>
-Subject: Re: [PATCH V2] powercap: intel_rapl: Do not change CLAMPING bit if
- ENABLE bit cannot be changed
-To: Zhang Rui <rui.zhang@intel.com>
-Cc: rafael.j.wysocki@intel.com, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, stable@vger.kernel.org, 
-	srinivas.pandruvada@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHudXWgC/2XOwQqDMAyA4VeRntfRZFp1p73H2GEmVXuYHa0UR
+ Xz3VcHD8PgH8iWLCMZbE8Q9W4Q30QbrhhS3Syaofw+dkZZTC1SYqxpKaaZ5cIH9R7IhN8icECt
+ mYGxakba+3rR22sXnK3Vvw+j8vB+IsE0Pqz5ZEaSSmopKAwE1Kn+wDd658ep8JzYt4iEUSgOeB
+ UwCa0rvAFWqKP+FdV1/pr3Nw/IAAAA=
+X-Change-ID: 20240917-exynosdrm-decon-4c228dd1d2bf
+To: Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>, 
+ Kyungmin Park <kyungmin.park@samsung.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Krzysztof Kozlowski <krzk@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor@kernel.org>, 
+ Ajay Kumar <ajaykumar.rs@samsung.com>, Akshu Agrawal <akshua@gmail.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+ linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Kaustabh Chakraborty <kauschluss@disroot.org>, 
+ stable@vger.kernel.org
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1750965633; l=1575;
+ i=kauschluss@disroot.org; s=20250202; h=from:subject:message-id;
+ bh=F5drME/H2x0yXDYGBijt8T+fC00BBnPVtIbKK7Wla90=;
+ b=P19wZTZkJiUTW4xG+909e0UrW1ziOcHgEQAG5ZPLLi/lYtIXzLuRKoE+HKtBa5MAXUQqHSErB
+ WKc/kO+8Q4uBXCdO9UHxPatIed3cuAkjsV/5rglvVwj2qEQmt9ZORY1
+X-Developer-Key: i=kauschluss@disroot.org; a=ed25519;
+ pk=h2xeR+V2I1+GrfDPAhZa3M+NWA0Cnbdkkq1bH3ct1hE=
 
-On Thu, Jun 19, 2025 at 9:13=E2=80=AFAM Zhang Rui <rui.zhang@intel.com> wro=
-te:
->
-> PL1 cannot be disabled on some platforms. The ENABLE bit is still set
-> after software clears it. This behavior leads to a scenario where, upon
-> user request to disable the Power Limit through the powercap sysfs, the
-> ENABLE bit remains set while the CLAMPING bit is inadvertently cleared.
->
-> According to the Intel Software Developer's Manual, the CLAMPING bit,
-> "When set, allows the processor to go below the OS requested P states in
-> order to maintain the power below specified Platform Power Limit value."
->
-> Thus this means the system may operate at higher power levels than
-> intended on such platforms.
->
-> Enhance the code to check ENABLE bit after writing to it, and stop
-> further processing if ENABLE bit cannot be changed.
->
-> Cc: stable@vger.kernel.org
-> Reported-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Fixes: 2d281d8196e3 ("PowerCap: Introduce Intel RAPL power capping driver=
-")
-> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-> ---
-> Changes since V1:
-> - Add Fixes tag
-> - CC stable kernel
-> ---
->  drivers/powercap/intel_rapl_common.c | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/inte=
-l_rapl_common.c
-> index e3be40adc0d7..602f540cbe15 100644
-> --- a/drivers/powercap/intel_rapl_common.c
-> +++ b/drivers/powercap/intel_rapl_common.c
-> @@ -341,12 +341,27 @@ static int set_domain_enable(struct powercap_zone *=
-power_zone, bool mode)
->  {
->         struct rapl_domain *rd =3D power_zone_to_rapl_domain(power_zone);
->         struct rapl_defaults *defaults =3D get_defaults(rd->rp);
-> +       u64 val;
->         int ret;
->
->         cpus_read_lock();
->         ret =3D rapl_write_pl_data(rd, POWER_LIMIT1, PL_ENABLE, mode);
-> -       if (!ret && defaults->set_floor_freq)
-> +       if (ret)
-> +               goto end;
-> +
-> +       ret =3D rapl_read_pl_data(rd, POWER_LIMIT1, PL_ENABLE, false, &va=
-l);
-> +       if (ret)
-> +               goto end;
-> +
-> +       if (mode !=3D val) {
-> +               pr_debug("%s cannot be %s\n", power_zone->name, mode ? "e=
-nabled" : "disabled");
-> +               goto end;
-> +       }
-> +
-> +       if (defaults->set_floor_freq)
->                 defaults->set_floor_freq(rd, mode);
-> +
-> +end:
->         cpus_read_unlock();
->
->         return ret;
-> --
+This patch series aims at adding support for Exynos7870's DECON in the
+Exynos7 DECON driver. It introduces a driver data struct so that support
+for DECON on other SoCs can be added to it in the future.
 
-Applied as 6.16-rc material, thanks!
+It also fixes a few bugs in the driver, such as functions receiving bad
+pointers.
+
+Tested on Samsung Galaxy J7 Prime (samsung-on7xelte), Samsung Galaxy A2
+Core (samsung-a2corelte), and Samsung Galaxy J6 (samsung-j6lte).
+
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+---
+Changes in v3:
+- Add a new commit documenting iommus and ports dt properties.
+- Link to v2: https://lore.kernel.org/r/20250612-exynosdrm-decon-v2-0-d6c1d21c8057@disroot.org
+
+Changes in v2:
+- Add a new commit to prevent an occasional panic under circumstances.
+- Rewrite and redo [v1 2/6] to be a more sensible commit.
+- Link to v1: https://lore.kernel.org/r/20240919-exynosdrm-decon-v1-0-6c5861c1cb04@disroot.org
+
+---
+Kaustabh Chakraborty (3):
+      dt-bindings: display: samsung,exynos7-decon: add properties for iommus and ports
+      drm/exynos: exynos7_drm_decon: fix call of decon_commit()
+      drm/exynos: exynos7_drm_decon: add vblank check in IRQ handling
+
+ .../bindings/display/samsung/samsung,exynos7-decon.yaml           | 8 ++++++++
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c                        | 8 ++++++--
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+---
+base-commit: 1b152eeca84a02bdb648f16b82ef3394007a9dcf
+change-id: 20240917-exynosdrm-decon-4c228dd1d2bf
+
+Best regards,
+-- 
+Kaustabh Chakraborty <kauschluss@disroot.org>
+
 
