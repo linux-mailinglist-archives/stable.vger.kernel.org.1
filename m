@@ -1,112 +1,83 @@
-Return-Path: <stable+bounces-158665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB879AE96D2
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 09:34:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF16AE9831
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 10:25:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AFF46A234D
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 07:33:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CE53188877E
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 08:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF61C25CC61;
-	Thu, 26 Jun 2025 07:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15333285C8A;
+	Thu, 26 Jun 2025 08:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="Bwryadrc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hfM1ePHX"
 X-Original-To: stable@vger.kernel.org
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1226A25BF12;
-	Thu, 26 Jun 2025 07:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C490823B63A;
+	Thu, 26 Jun 2025 08:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750923203; cv=none; b=CrDG2sC/+Ydu6/t5nHRpH19/AEfY7KpE1cakZVCLyfoD3hyjx6WzLL5G6nR8+LE+61mxi/TkTe+8SqQ0a+a8Jd88uAeAkA1LXF7pYyrW2fk98rBQV9kA5TlJrLb164vXg+Dnaw70OfHUymUZHQgdlWpNtW36+yyWITA67PhsRIc=
+	t=1750926285; cv=none; b=qPwH0G5P5Np/b6k+njTAF9yExCJwKh42OxLCbFFv8sQFfcDoqpbXomhz+sQa65ei9D219jRJhi3PySjZZNhaHcE4aGrZ/5gkuoAED2CSVje5o30s2CWygiCKXvxAHJt1wbNZIm4d/Cr85YuE7KiDz/mB0xz9GryL1vVOapQBET4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750923203; c=relaxed/simple;
-	bh=azo+dF0/vQXfWfiOeYfh4bE+wwsnpSA8HM+IBY43R8w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VrzBSU6nJDMTA2nY6H507oTNZ+0ng2JaTUh/ygONLOQwwf/4XfcxyI3JPHfIrnLXiak5dzm6Rruj4wVMxqRbO2VoJL54/AgQLvplJDJr24o25UM+wqOj+LBih/qEo1q76DnFxJ5Efvt8BmS+g0dzexwS+7DJqc0P19XdExrL4ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=Bwryadrc; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
-Received: from mail01.disroot.lan (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id 728A025F96;
-	Thu, 26 Jun 2025 09:33:20 +0200 (CEST)
-X-Virus-Scanned: SPAM Filter at disroot.org
-Received: from layka.disroot.org ([127.0.0.1])
- by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id Ttrd3yj_m4ac; Thu, 26 Jun 2025 09:33:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1750923199; bh=azo+dF0/vQXfWfiOeYfh4bE+wwsnpSA8HM+IBY43R8w=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=BwryadrcGi3V9qOdtqjbsTAsNbxlGTkwycy6VP7YbAqFisQeViuW2pFckeIdxOWZS
-	 EJVu68Kuv7kcyr+1CLW/1NVwD6HcdfPYDzg5KvXc6ureq/9L5ErRwqPAA50wq2qPiF
-	 wAXTNPWuRANvl0uPJNVtqLJkiu43BVg9FySOoOFa5jImb0VP6NuEbe+5AFf7+FQzRl
-	 pBMCoC4q8Abw/B0CxDUlzkmgDFMiBBEKpLiwuhFAu+AXp3tmJOWunfs5zwlfgJ4RAJ
-	 lrW8UOejR/maiIYR9VZWzrA94h8lFia6EhIygqA0lFxSWuiF9lFAyZIPT/691wo2iC
-	 4a1aLdsfc0n6Q==
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
-Date: Thu, 26 Jun 2025 13:02:58 +0530
-Subject: [PATCH 3/3] arm64: dts: exynos7870-j6lte: reduce memory ranges to
- base amount
+	s=arc-20240116; t=1750926285; c=relaxed/simple;
+	bh=I9vZdEkAWXh73EN+tnd305QlTyFdASaPKKuepsi0GTo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p4MYMac+t0rQ+XKkRiGnSWFq9SPFnZGWTm6uKThd2+s1JUWWujQH/mgX02oWQApsUQhL7NtcefIPZOaCGbQ++oLESL6o49Z9P2MJ1zzZvkn/xGN2s3fligNw9BS/B2Ud9ZtDFgtQpHSClmL6Jxg5ey3BFWSAV9yMWm9Kb8AFTb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hfM1ePHX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F89C4CEEB;
+	Thu, 26 Jun 2025 08:24:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750926285;
+	bh=I9vZdEkAWXh73EN+tnd305QlTyFdASaPKKuepsi0GTo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hfM1ePHXmN+1ekJbJPITqLWNeBh0AWGrkuvHdW26YnIloQKVFaj2Q1iWFevNM1xcE
+	 q6Fb9EsNxmiHGzH8XHTHQpT4cZMu7bTvwXb4mkdfmYhXq1Yf+sIfS/wId6AW8L6/zP
+	 6/Ex1hA8qpR8HLrVh6s4ObpKMabCeBIRy4gUFR+Kl3Ts1VV69fA9DnoIrFPMbDYC00
+	 dcXjF6j600ZIV4RVypNM630ORc0hezJJQas3GodjTFW7Cdde1zut5OzR6QziJvmK/3
+	 NOgcF87lXZ+sH+oQvag35KINoEbldBFZB2xngbORZQZM4u3miVuQDJcTMm50Gr6sm5
+	 c3m3aiWkEdysA==
+Date: Thu, 26 Jun 2025 10:24:34 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Andy Yang <andyybtc79@gmail.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Hans de Goede <hansg@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>
+Subject: Re: [PATCH v2] ata: ahci: Use correct DMI identifier for
+ ASUSPRO-D840SA LPM quirk
+Message-ID: <aF0DwglTSwicu/8C@x1-carbon>
+References: <20250624074029.963028-2-cassel@kernel.org>
+ <175085763212.1222616.11590478108629299286.b4-ty@kernel.org>
+ <CAGEiHrDtfwKGN+veFjgODf_0W4yJfDP0f6kqp-dF9xsypoH_0A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250626-exynos7870-dts-fixes-v1-3-349987874d9a@disroot.org>
-References: <20250626-exynos7870-dts-fixes-v1-0-349987874d9a@disroot.org>
-In-Reply-To: <20250626-exynos7870-dts-fixes-v1-0-349987874d9a@disroot.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Kaustabh Chakraborty <kauschluss@disroot.org>, stable@vger.kernel.org
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1750923181; l=1280;
- i=kauschluss@disroot.org; s=20250202; h=from:subject:message-id;
- bh=azo+dF0/vQXfWfiOeYfh4bE+wwsnpSA8HM+IBY43R8w=;
- b=6bBR/hVe24hlOvDEHg/XhfcMj1PPn1XlpC7I+O57R0KzlX7oAUaImRFbeywRHbBaGWTyQDu0/
- ca8fmbAZjOAAUkr648+JgB2wQrmbtfncfIOmIITPouAKGnb3Yl2I1GR
-X-Developer-Key: i=kauschluss@disroot.org; a=ed25519;
- pk=h2xeR+V2I1+GrfDPAhZa3M+NWA0Cnbdkkq1bH3ct1hE=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGEiHrDtfwKGN+veFjgODf_0W4yJfDP0f6kqp-dF9xsypoH_0A@mail.gmail.com>
 
-The device is available in multiple variants with differing RAM
-capacities. The memory range defined in the 0x80000000 bank exceeds the
-address range of the memory controller, which eventually leads to ARM
-SError crashes. Reduce the bank size to a value which is available to
-all devices.
+Hello Andy,
 
-The bootloader must be responsible for identifying the RAM capacity and
-editing the memory node accordingly.
+On Thu, Jun 26, 2025 at 12:39:26AM +0000, Andy Yang wrote:
+> Thank you once again for your efforts on this patch. I also want to
+> sincerely apologize for any inconvenience caused by the email reply
+> incident.
 
-Fixes: d6f3a7f91fdb ("arm64: dts: exynos: add initial devicetree support for exynos7870")
-Cc: stable@vger.kernel.org # v6.16
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
----
- arch/arm64/boot/dts/exynos/exynos7870-j6lte.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Don't even think about it :)
 
-diff --git a/arch/arm64/boot/dts/exynos/exynos7870-j6lte.dts b/arch/arm64/boot/dts/exynos/exynos7870-j6lte.dts
-index 61eec1aff32ef397c69ee3f0cba8050755f74fc6..b8ce433b93b1b488da31bbe4846f8092243611ad 100644
---- a/arch/arm64/boot/dts/exynos/exynos7870-j6lte.dts
-+++ b/arch/arm64/boot/dts/exynos/exynos7870-j6lte.dts
-@@ -89,7 +89,7 @@ key-volup {
- 	memory@40000000 {
- 		device_type = "memory";
- 		reg = <0x0 0x40000000 0x3d800000>,
--		      <0x0 0x80000000 0x7d800000>;
-+		      <0x0 0x80000000 0x40000000>;
- 	};
- 
- 	pwrseq_mmc1: pwrseq-mmc1 {
+We might have been able to avoid this extra fix,
+but that's it. No biggie regardless.
 
--- 
-2.49.0
+Thank you for your help debugging this.
 
+
+Kind regards,
+Niklas
 
