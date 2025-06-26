@@ -1,102 +1,104 @@
-Return-Path: <stable+bounces-158699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90369AEA252
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 17:21:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6608AEA238
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 17:16:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0BC91C62D56
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 15:10:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8C4E6A72BE
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 15:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F172ED878;
-	Thu, 26 Jun 2025 15:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E0B2EA48F;
+	Thu, 26 Jun 2025 15:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OkwbPVJ9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="htA+xgCC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A80D12CDBE;
-	Thu, 26 Jun 2025 15:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4FE28C039;
+	Thu, 26 Jun 2025 15:10:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750950505; cv=none; b=u8N7aasQ0C08SiP0Gq/IWimEWmnWDL5YXpvkyCC93346M0dML6uuotiwdwHIQ5M6ToaoBcprCwfeftMdEfjbJatBjsbvRH+EznkLzYLPuqErKoRf8UK7LacdwLPZR2d2Jp7EJC57F1nTTd2Lh3+d2NgF7nnAE9EUEcN9yMnyTlk=
+	t=1750950638; cv=none; b=FsUa/74Dp4kZWehon3QupC80+YGe2zI5KeaES2KnAG1OP7XXEtYjjiMtBvYqHboV61gfYf0ULaACcfzja65+zreZIYQJUkLBZ0E6ca9wSLS0xdjPw9wgKhJQ+Fhz4l3qGTsfWequGqS7tjIqbvamtbi0985wxlO+C3kVjlBfd7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750950505; c=relaxed/simple;
-	bh=Ha+edyNTGZ8ndXkb5lo/UV54gtYkiA8WRmrab3d+X4s=;
+	s=arc-20240116; t=1750950638; c=relaxed/simple;
+	bh=Fsz5f/99U5JBaQvbPVrImfkgU9hAjFN83v0YZEnzFrM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hnzjNKsqhE7cKHzCay6K6H0ahFp4I4dCWPkLBVvZM+I7DQ+mas5V2/p1Lf/0lRHZdqTwfVy3YZI6VUgDWddbJczmOFJeadrF2O93mACBqyeUs0/TeRfFp98NjdF3Y144VteBN+vcVFwaAXcqw6GXIq6G8u3hiC9BVCQbwVNepSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OkwbPVJ9; arc=none smtp.client-ip=209.85.208.173
+	 To:Cc:Content-Type; b=CO9mE09CmTqdMPzHVDwBWvIzdWXrk/fD2gt4QRrB91TFWsDKoXxklhSFJOqRwnOS/nKeHmvIY+SQG5rqJScNuysMcFalnRtVDum9S+xFePPITW1pUY3n6WlmeATBtoUvoLqaDCrBshFgRIC/TNKckvPh8KvqsOswqjZ4zBjKuEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=htA+xgCC; arc=none smtp.client-ip=209.85.167.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-32ae3e94e57so9827211fa.1;
-        Thu, 26 Jun 2025 08:08:23 -0700 (PDT)
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5532a30ac45so1078505e87.0;
+        Thu, 26 Jun 2025 08:10:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750950502; x=1751555302; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750950634; x=1751555434; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rFuEEDOzNJYie2aS6VWkJQnYh/biJhh/VjmDxkcdYnA=;
-        b=OkwbPVJ9qrz1KvliLjvg5rbn1Kmrlb8FUbchfN0dLrMGdbY6kCgRDkvmTdKpwIAPxv
-         EDXp+Go8RnvrUf15xT9kOqZCtUGkTUdhCuADZlJr0Q8NmGgU73rGL72lVy2bRFNUbyXM
-         /8411Y/Ax28UR/ASExTwyqa7lv/17O4rVLi2KvU41H2CvLmEUihSLTQ51Vb5Dl7+FV0R
-         gxQXDdXnlQ+HRMUTipd5lUsW940aF8LgYzl2CgOQjnLpxUSxxK5dxTrCUet9w+z5mZCF
-         k239WYllfi7dBleSAaOw9JGfI2xFNgt4b21IEbdyfSBnhEKhd3SVPnjCa0vLzdkjFZfW
-         zJ/A==
+        bh=axf5NbpAUzrmzPpqLLrUEqqBeYpEBv2j8XoiaPjeVEQ=;
+        b=htA+xgCC5P+bdM5pRZAZunzSwqQ6LH42uACKcuIEzqOZ5HW7Ngf+WktrcD8AhpVudU
+         TTQyj8xoqOY05vSHekDT3/M0UGMQTItenJB8soADs8+cLFCDi8/fZXTXS4bIxib+a1Ux
+         /orC3o9hBGvoKPo0z6XPlzgtjRT5+Eo3lmvYd2VMYwoa+JY+oppJ3BVslR8tcvIUWl6T
+         izvVON4z9NL9O4RbN6XkLFLEhHUkYTnlz3rQbqTD+mZp0fNhK7zJQ7i8sh87K+5cxnne
+         YaynfJiTp/9yT9H+LM0CacoB7XHM+lmpTJTQ1Ys0Ude0UEhMC50+HvlKbR622eVbFUfl
+         gbHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750950502; x=1751555302;
+        d=1e100.net; s=20230601; t=1750950634; x=1751555434;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rFuEEDOzNJYie2aS6VWkJQnYh/biJhh/VjmDxkcdYnA=;
-        b=Y/jTJ68AvU69H8B8eY5LEqBw4EPrDYk8O4WrUOWVS8P8Mc3rEhenyZmP60Xp8ZcHjy
-         fnaEHDHBX+mLd8kLiNRghs77We3jj20cjpbI5cs3FqrXUG5CsZzYQmenMthqhcyWHexP
-         kp1g6OXG6CFlcYzR7O80dniAxCxFdUZC7jdumsSo51U20QVhmn9IJcep3NWu0QOTKn3U
-         n+v+pzosfl1tokrYUL3VYuLBX++JuKhmT0/EIyVaIiDi/FIm6V04rog3opCeDlae6Nim
-         711fmGlLGSy47BtOm1kRKyXrjfOTtCsiUM1IKzYfBwC+CbbEaO62gyQ3NVnOUNLjSAFT
-         pddQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXdkrV12lmFC6islqWe1ZEWj21Lbh86luvlf8bP90yPanclxQp5DsVdvhJHRwTpDAR5HJXF2C4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3I4U3GcviMUFE/mWRdWl9MM0jRkEtoEoUe7z3Rqhpg7so0QwP
-	AAc0CE5nyvH+Td/JHmtN5mf207DtZMOPxwQCoApfyGeWPbt9hskK4L3LQSMS8HyzY0Kwqu63G5H
-	ouZYEGtHWwR1iacaSsolf0eUU2LW8EWE=
-X-Gm-Gg: ASbGncs4ovyaZuq7MBvdbQPlGudtAUgCGX6Z0VVbRqgBRVSaVpIM/XIWURHxoKvyI4p
-	FraqfvBr509oUs8RpaeH3HRVd2d/NSshI14hwUMziKusReAYIEokq8goJhdOnD0VU2RN5wHyHMb
-	GnOSvuGrjkKyCerajpn4cQODxge2hrhQkNEZSJHhvXDWFLpTZtgAW8xiP/w3thKGzkYIKlU6Uo1
-	Ev2xw==
-X-Google-Smtp-Source: AGHT+IGrpoccZpE7gCl7xfdKVG914W+wx7VH7Dsg1ZCo+rhw6h3VHHsoRSKoF6qysZJ9WGyQege+2T82Jbrty12yIA0=
-X-Received: by 2002:a2e:a011:0:b0:32b:59d1:7ef3 with SMTP id
- 38308e7fff4ca-32cc65b7b0cmr18432591fa.35.1750950500472; Thu, 26 Jun 2025
- 08:08:20 -0700 (PDT)
+        bh=axf5NbpAUzrmzPpqLLrUEqqBeYpEBv2j8XoiaPjeVEQ=;
+        b=g4Dn6kdIVJ0ZpenuOs8qEP7I7aor30xYJf9LauFlBD6yIb5tdkHC75T2Ppe6eRn0Yy
+         pMGfLCn/jZTKbXhcJNF1wyOCXB6erjipB3l7GwMb9RZ68wpLnStNdZEmGRpuGDdBs6+w
+         fyDCmsijknbrLolcPWMWVtV3OZ+pTcdJG32oIt0aLbZEOghcAtBrO1tCRhUOa6tqyeyu
+         bVnVlTn7ySgjnN3UK9nhuh6odwc+ffFxtEHGecW3gwnGJvUuAG43FkIU0l7QYzRpz04g
+         OQWQ92Dks06n0dOj6mmVQy0kYN5KrwZjHQK0mvegWTEAUHBj7QIuSnjZORKRGUwfQDRH
+         vt6w==
+X-Forwarded-Encrypted: i=1; AJvYcCWdc9bEfoXCF8JLe2fUtM08enXCNAXx9HLESvL3poS4Vi+Vdd4Bo53068Yvh/Q40EGT1LQvpnI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJoTHWb1o16/Iqi0JWG9GRgIPfkq/b3BsOV58mkeAD1/MOcYaG
+	UBEPQ6jL7jdp/5wTMY/S6Z4YvsM7b19Pi0QqQ/cUVpcc5w57/gfw3XaKvSLSFWwXzJ+0PWJMJ4p
+	7tYGlmCHkzKiHgC1LHXBwl0ioNtabCMY=
+X-Gm-Gg: ASbGnctCnDdhd61JN2NyT+kwDWr0gUmIjQ0IzypHnm35gmt6fCV3nOaSt8X/EYKGIdO
+	fJnlNEEv9N3myRyWby8ElgRvpszP4gf9Bi0/EKnl69cELJTl9Oy4BSSMRlExqFOdHuW/aHWu2Bt
+	V8beU3foY/SLhTkqkZSHOwLdCfKR4J107cDgx/v7fOy2PCI2onfPbR5Ala5NMMQpA9XSK3txdNH
+	bYJ1g==
+X-Google-Smtp-Source: AGHT+IG3aKdtoEX8k5XdMgWvxuQl/T0lmpkWTNORwe1brAkFFcnT7EjGtyotrt42fszQPUKuv/8ziotoOqBGlnuUj28=
+X-Received: by 2002:a05:6512:239e:b0:553:2159:8716 with SMTP id
+ 2adb3069b0e04-55502caf1a4mr1616123e87.26.1750950633544; Thu, 26 Jun 2025
+ 08:10:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250626142243.19071-1-pranav.tyagi03@gmail.com> <2025062607-hardener-splotchy-1e70@gregkh>
-In-Reply-To: <2025062607-hardener-splotchy-1e70@gregkh>
+References: <20250626142243.19071-1-pranav.tyagi03@gmail.com> <5baab2ed-c48d-41ae-819a-71ca195c4407@igalia.com>
+In-Reply-To: <5baab2ed-c48d-41ae-819a-71ca195c4407@igalia.com>
 From: Pranav Tyagi <pranav.tyagi03@gmail.com>
-Date: Thu, 26 Jun 2025 20:38:09 +0530
-X-Gm-Features: Ac12FXz90vVDsL3CpnJRMV-o2H8K_6Vief1VnLAmxr4fTIuJkeSDNsKRMhYHXKg
-Message-ID: <CAH4c4jJqX6C4+xvHKqC2fmN7HRhKPgD2XcjnwO2MR0xtMyEhRQ@mail.gmail.com>
+Date: Thu, 26 Jun 2025 20:40:22 +0530
+X-Gm-Features: Ac12FXzNyUo0k5FLeYm1nQk0x2e9IyduCv2spuHDSlghF9NcaV2B_Em4IpBcyCY
+Message-ID: <CAH4c4jLqQORVWNLmNGAqevbSCnALtkfod6gTuXe-oae0izR9Bw@mail.gmail.com>
 Subject: Re: [PATCH] drm/vkms: Fix race-condition between the hrtimer and the
  atomic commit
-To: Greg KH <gregkh@linuxfoundation.org>
+To: =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>
 Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
 	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com, hamohammed.sa@gmail.com, 
-	daniel@ffwll.ch, airlied@linux.ie, mcanal@igalia.com, arthurgrillo@riseup.net, 
+	daniel@ffwll.ch, airlied@linux.ie, arthurgrillo@riseup.net, 
 	mairacanal@riseup.net, skhan@linuxfoundation.org, 
 	linux-kernel-mentees@lists.linux.dev, stable@vger.kernel.org, 
-	sashal@kernel.org
+	gregkh@linuxfoundation.org, sashal@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 26, 2025 at 8:27=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+On Thu, Jun 26, 2025 at 8:32=E2=80=AFPM Ma=C3=ADra Canal <mcanal@igalia.com=
 > wrote:
 >
-> On Thu, Jun 26, 2025 at 07:52:43PM +0530, Pranav Tyagi wrote:
+> Hi Pranav,
+>
+> On 26/06/25 11:22, Pranav Tyagi wrote:
 > > From: Ma=C3=ADra Canal <mcanal@igalia.com>
 > >
 > > [ Upstream commit a0e6a017ab56936c0405fe914a793b241ed25ee0 ]
@@ -120,20 +122,32 @@ RC
 > > problems.
 > >
 > > [v2]:
-> >     * Create a new mutex and keep the spinlock across the atomic commit=
- in
-> >       order to avoid interrupts that could result in deadlocks.
+> >      * Create a new mutex and keep the spinlock across the atomic commi=
+t in
+> >        order to avoid interrupts that could result in deadlocks.
 > >
 > > [ Backport to 5.15: context cleanly applied with no semantic changes.
 > > Build-tested. ]
+> >
+> > Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+> > Reviewed-by: Arthur Grillo <arthurgrillo@riseup.net>
+> > Signed-off-by: Ma=C3=ADra Canal <mairacanal@riseup.net>
+> > Link: https://patchwork.freedesktop.org/patch/msgid/20230523123207.1739=
+76-1-mcanal@igalia.com
+> > Signed-off-by: Pranav Tyagi <pranav.tyagi03@gmail.com>
 >
-> Did you forget about 6.1.y?
+> This patch violates locking rules and it was reversed a while ago.
+> Please, check commit 7908632f2927 ("Revert "drm/vkms: Fix race-condition
+> between the hrtimer and the atomic commit"").
 >
-> confused,
->
-> greg k-h
+> Best Regards,
+> - Ma=C3=ADra
 
-Apologies for the oversight.
+Thanks for pointing that out.
+
+I missed the revert. I now see that commit 7908632f2927 reversed
+this due to locking issues. I=E2=80=99ll drop this backport from 5.15
+accordingly.
 
 Regards
 Pranav Tyagi
