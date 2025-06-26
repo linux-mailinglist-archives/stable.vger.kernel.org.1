@@ -1,109 +1,147 @@
-Return-Path: <stable+bounces-158711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96B6AAEA60B
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 21:05:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34ED7AEA631
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 21:15:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CB8A4A46A6
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 19:05:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 852914E0193
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 19:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637742EE980;
-	Thu, 26 Jun 2025 19:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C112ED862;
+	Thu, 26 Jun 2025 19:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L9RJwSSy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BdeRN5Hl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE1321348;
-	Thu, 26 Jun 2025 19:05:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8B32CCA9;
+	Thu, 26 Jun 2025 19:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750964744; cv=none; b=V2AjM/9IDS6PEmDudkxgRAEhrXQtQjw007itN47CaL8MJ3RJTEpzv+7tBaj84HARFnpOPkvjVMx7RbBUXC8PESyOhlnJAJSk0yKPaSaHI7wCjAOK7jTG3wQ0HNAPC7lUbm/Evc4yLa3AugLsZa9aED375lxwVnQg3g5Au3e270g=
+	t=1750965333; cv=none; b=K7nzbksOEzXns53iYKQoAILyuZxrfF0rxGExriPMljKUUP50e5JueWW4ja7BxqOj2OvzjtLZ7BGPiJWqL825itFZzCaSd8z/1rG3E91otqwnXx5Tj84H+erA6OJ+RkLbpNVfdU/U7+h48xiBdl1mJ4u4UwARrbZHxlkgWqf4Ih8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750964744; c=relaxed/simple;
-	bh=W96jFi0ozYt7piTYdJEZ/ATHq9mzwXp5ZChmtko8xmQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=blb5OuWD51fEaEMabouP7PTSLy76mu/kFrZNgO+BlIrQkIYkS0KVhZEHLa8UHSwnFfRkAtGw8NfaSBqXbY1DoTaNd5QCeAPH9EVg6IUt97MGrb5LDrwZvspRsDkNzht4HPaIGMn1NAzv9KD359UQj60AML84CAUVgHtb8fnlB0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L9RJwSSy; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750964743; x=1782500743;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=W96jFi0ozYt7piTYdJEZ/ATHq9mzwXp5ZChmtko8xmQ=;
-  b=L9RJwSSyLbWU3P04xjhGLICdqD4jCUm9D+ZFWKXQTGh4O7L0AEW7mQsy
-   YOXjurDfGO/o+tgIFK5ZpQ1uskVkzbR3WkcA5cHlNLuyUJFOoZuLH2uaN
-   MK6nO7Wwy2MwrNZYPOVUEUfsBa23bCEV2w+/jGBuAdG7xehbiq22V1GAZ
-   SEo0+nudBYrM+NRRcjvkeYJPGtj2mvpgCVfR2wUBheEK/OcWXpRXB7Ot1
-   FVXJeX3QqPSCabrAZaXzldJ7gulK3+g0e7xD4KA82It5wson9urfd4S9o
-   JhCEWB5b/dSBJbLqXVuPprKuxf3DbZHHc21HPGwvHZG35Q6iLLthD8coX
-   w==;
-X-CSE-ConnectionGUID: z59Z8Md1SVODH4sjQMXP1g==
-X-CSE-MsgGUID: aGB1cIsVT7m+LGhBd+Y9fQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="52503827"
-X-IronPort-AV: E=Sophos;i="6.16,268,1744095600"; 
-   d="scan'208";a="52503827"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 12:05:42 -0700
-X-CSE-ConnectionGUID: UtGSwUrvTgCJ/e5p76g7+g==
-X-CSE-MsgGUID: nDUCc86UQ56XE4f56yrnCQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,268,1744095600"; 
-   d="scan'208";a="153119214"
-Received: from mjruhl-desk.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.220.105])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 12:05:41 -0700
-From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
-To: linux-i2c@vger.kernel.org,
-	andi.shyti@kernel.org,
-	andriy.shevchenko@intel.com
-Cc: "Michael J. Ruhl" <michael.j.ruhl@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] i2c/designware: Fix an initialization issue
-Date: Thu, 26 Jun 2025 15:05:25 -0400
-Message-ID: <20250626190525.469618-1-michael.j.ruhl@intel.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1750965333; c=relaxed/simple;
+	bh=GVTVZKAcmUFrxnDCM5D1GDi3JRVk55utZxoEDR6QU+8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Nbooe41m8NeGu5hOkAQd1uUQZSqPwM9nYhHW+ySzxkCZ1oV5R1v/Vuq46JJ7g/kSxRJjcy3MeRtY+yQAakQjCQhZPXepxiknYGq2tv6i0NeXeJ31xbfaiRADdUxElpmJtcz9Jau7DPnINkwGUy9dm0UoV8WUvDtxFgzgePuDdK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BdeRN5Hl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86560C4AF09;
+	Thu, 26 Jun 2025 19:15:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750965332;
+	bh=GVTVZKAcmUFrxnDCM5D1GDi3JRVk55utZxoEDR6QU+8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=BdeRN5Hl8XOH+v0XpP96wSL+JU4vbDSfi0H1r3RDkvdoC6WAB+/pUvVt94HnLJ9dP
+	 MDTs4oYtq4/76SEN3QF5RSfRt2O3XuwcJkO3eX6PezWoAvTTK5LtKv59oiu4gbU3Bg
+	 OD4I9rKo1/EoEP4ZjGY5a2yZHi8pMH75nQlwVjzbm4pP4SRXmePRPPCyUfI1shHmYG
+	 N8BdqTadbVA+aIrB6WyzpBltNRNLKKjHn3oAJOZYid7WxIlyPjs16uAios+mBTUnOF
+	 QvZYpvqgG1meoGDjJygywTuM5/WPNeaXMsxXruS5qWcLqCLNPj1RNesgyurK6GvFO7
+	 KH4PP6RIi78WA==
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2d09d495c6cso379891fac.3;
+        Thu, 26 Jun 2025 12:15:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU+D/1cnWS6T93Hrld5Us1G3No86VNLz4Dmm5h0Arz6ccroahPcfKKKS3GSqdp6HTEw9wa+JuUA6b/y9kc=@vger.kernel.org, AJvYcCVEZXGhPyKcDArH6QPtdO0+PoEqUnaUcSiKVpxtv9/Bgp6YoeQzQEG/g6XyEaQKeucE4/zvUrz8@vger.kernel.org, AJvYcCW9HBTRkhrobq5xFpO5CXkWByjj/7Pi/qIxS7a4jEhESjGpajHrHvK/AjeRYpDNHvUiqR/hMZbj+qw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNbT7EvJerfgsthntmExK7JJMB0yPlKR4YN5yI+LLTFxEQsm/0
+	X/sPK+q8FtttefbXKso1v/6cf1zFhrENlXw7A+dusmIYXX6pJ+lvDGaCehQkIjqia7YdIawsYAi
+	0HndHKtHefwAHOu8XvUDp2fZC/VPGdx8=
+X-Google-Smtp-Source: AGHT+IHF9pqM5Ydclvi+iFU8TmSmeOmdqu4oVPUqgHbDY7h2PY1K/BE4yM1Tsg43GYzwGgNnIRIujkcAM4w7hZ2UsvQ=
+X-Received: by 2002:a05:6870:3511:b0:2cc:3d66:b6ea with SMTP id
+ 586e51a60fabf-2efed795392mr158783fac.34.1750965331752; Thu, 26 Jun 2025
+ 12:15:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250619071340.384782-1-rui.zhang@intel.com>
+In-Reply-To: <20250619071340.384782-1-rui.zhang@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 26 Jun 2025 21:15:19 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hfO6eSbwYo2iD4JuqHth0AUQY3cG2109Yhyz-=RNaVWQ@mail.gmail.com>
+X-Gm-Features: Ac12FXzJ7BuhzTdUQAYlDXdtcJzEQvwlFR3N2p_d41kJUWcGANG9wZIpsJco93c
+Message-ID: <CAJZ5v0hfO6eSbwYo2iD4JuqHth0AUQY3cG2109Yhyz-=RNaVWQ@mail.gmail.com>
+Subject: Re: [PATCH V2] powercap: intel_rapl: Do not change CLAMPING bit if
+ ENABLE bit cannot be changed
+To: Zhang Rui <rui.zhang@intel.com>
+Cc: rafael.j.wysocki@intel.com, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, stable@vger.kernel.org, 
+	srinivas.pandruvada@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The i2c_dw_xfer_init() function requires msgs and msg_write_idx from the
-dev context to be initialized.
+On Thu, Jun 19, 2025 at 9:13=E2=80=AFAM Zhang Rui <rui.zhang@intel.com> wro=
+te:
+>
+> PL1 cannot be disabled on some platforms. The ENABLE bit is still set
+> after software clears it. This behavior leads to a scenario where, upon
+> user request to disable the Power Limit through the powercap sysfs, the
+> ENABLE bit remains set while the CLAMPING bit is inadvertently cleared.
+>
+> According to the Intel Software Developer's Manual, the CLAMPING bit,
+> "When set, allows the processor to go below the OS requested P states in
+> order to maintain the power below specified Platform Power Limit value."
+>
+> Thus this means the system may operate at higher power levels than
+> intended on such platforms.
+>
+> Enhance the code to check ENABLE bit after writing to it, and stop
+> further processing if ENABLE bit cannot be changed.
+>
+> Cc: stable@vger.kernel.org
+> Reported-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> Fixes: 2d281d8196e3 ("PowerCap: Introduce Intel RAPL power capping driver=
+")
+> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+> ---
+> Changes since V1:
+> - Add Fixes tag
+> - CC stable kernel
+> ---
+>  drivers/powercap/intel_rapl_common.c | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/inte=
+l_rapl_common.c
+> index e3be40adc0d7..602f540cbe15 100644
+> --- a/drivers/powercap/intel_rapl_common.c
+> +++ b/drivers/powercap/intel_rapl_common.c
+> @@ -341,12 +341,27 @@ static int set_domain_enable(struct powercap_zone *=
+power_zone, bool mode)
+>  {
+>         struct rapl_domain *rd =3D power_zone_to_rapl_domain(power_zone);
+>         struct rapl_defaults *defaults =3D get_defaults(rd->rp);
+> +       u64 val;
+>         int ret;
+>
+>         cpus_read_lock();
+>         ret =3D rapl_write_pl_data(rd, POWER_LIMIT1, PL_ENABLE, mode);
+> -       if (!ret && defaults->set_floor_freq)
+> +       if (ret)
+> +               goto end;
+> +
+> +       ret =3D rapl_read_pl_data(rd, POWER_LIMIT1, PL_ENABLE, false, &va=
+l);
+> +       if (ret)
+> +               goto end;
+> +
+> +       if (mode !=3D val) {
+> +               pr_debug("%s cannot be %s\n", power_zone->name, mode ? "e=
+nabled" : "disabled");
+> +               goto end;
+> +       }
+> +
+> +       if (defaults->set_floor_freq)
+>                 defaults->set_floor_freq(rd, mode);
+> +
+> +end:
+>         cpus_read_unlock();
+>
+>         return ret;
+> --
 
-amd_i2c_dw_xfer_quirk() inits msgs and msgs_num, but not msg_write_idx.
-
-This could allow an out of bounds access (of msgs).
-
-Initialize msg_write_idx before calling i2c_dw_xfer_init().
-
-Fixes: 17631e8ca2d3 ("i2c: designware: Add driver support for AMD NAVI GPU")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
----
- drivers/i2c/busses/i2c-designware-master.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
-index c5394229b77f..40aa5114bf8c 100644
---- a/drivers/i2c/busses/i2c-designware-master.c
-+++ b/drivers/i2c/busses/i2c-designware-master.c
-@@ -363,6 +363,7 @@ static int amd_i2c_dw_xfer_quirk(struct i2c_adapter *adap, struct i2c_msg *msgs,
- 
- 	dev->msgs = msgs;
- 	dev->msgs_num = num_msgs;
-+	dev->msg_write_idx = 0;
- 	i2c_dw_xfer_init(dev);
- 
- 	/* Initiate messages read/write transaction */
--- 
-2.49.0
-
+Applied as 6.16-rc material, thanks!
 
