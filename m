@@ -1,345 +1,248 @@
-Return-Path: <stable+bounces-158705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE670AEA481
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 19:39:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FCFAAEA4B0
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 19:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 172723A407E
-	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 17:38:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAFDB188729D
+	for <lists+stable@lfdr.de>; Thu, 26 Jun 2025 17:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B1D25A2CF;
-	Thu, 26 Jun 2025 17:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD3B2ECEAE;
+	Thu, 26 Jun 2025 17:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FBCtn/ro"
 X-Original-To: stable@vger.kernel.org
-Received: from constellation.wizardsworks.org (wizardsworks.org [24.234.38.212])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1122E2F1FD6;
-	Thu, 26 Jun 2025 17:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.234.38.212
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A08E2EB5CC
+	for <stable@vger.kernel.org>; Thu, 26 Jun 2025 17:44:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750959542; cv=none; b=cTJvkzsLSmO8z0ICFXbEmZ1Te8gZY+4v821MOZPLBBZ8rDwpZFJw91GnIBDinl3+7GRGvVic1HEMVm3LopKEGm78hYP6rTxn45JSp0HMh8e+KU50vYF3zkjvGRzOs8WHP5Ok8ppDUrh03EWjWLVhKPNlyCddayPGBtq4iqIAW2g=
+	t=1750959888; cv=none; b=e5gZBV5LhXgNdT2cZuu31ni69NBqEBGtZtOgs7drCsnMzem1XERQcE8CNMBEFrAjDorZX64n0kN7RE1yEqMBChyrzHLDw4ZdOKSQQEfjamqGC6/Y5hwamREZ8afuE4IQeLFQ1S26iaMW3RUxr1Q8lBknmnOzUolJaBQPzW4BoFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750959542; c=relaxed/simple;
-	bh=DVjIuJM2pezWfUZTjnitRJ5py/hWh0P/9+CZa/0ZHeI=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=B98aufdsu30geXM6VV9d2EgpVuCqGrd8y2MDefXPaTr14Jcld+a6QM1RPjkd4vyliC/0BaOegwgBECZHYzGH8al7T4Yz4HZcfDsdzoqNi0IlZvm/+FzOd9S4+g+c+gPYZ5tbMHWu6X1HGwjbXHr8+xak3m1tfSViBkGs8SUU02U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wizardsworks.org; spf=pass smtp.mailfrom=wizardsworks.org; arc=none smtp.client-ip=24.234.38.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wizardsworks.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wizardsworks.org
-Received: from mail.wizardsworks.org (localhost [127.0.0.1])
-	by constellation.wizardsworks.org (8.18.1/8.18.1) with ESMTP id 55QHeE3B006108;
-	Thu, 26 Jun 2025 10:40:15 -0700
+	s=arc-20240116; t=1750959888; c=relaxed/simple;
+	bh=zqUO0sW+cNaKMWzNEDMI98mGQvarDe1iRGXhZ+Veqss=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=USwYz/VPvKN8lVq0TaVA5rA2xnE5d3y62QjOyaBDLxy9rYY+z3cayj9rywyk4YZOMzmOwkSAo5XD08Iw39FaAinHVTzpnv40mCXqrloK91MFGr3zqstU68YeQgSeICNFKFdp+95V1YKF0+OkG/BxldqygbwPA/3yIxFcfnsLTQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FBCtn/ro; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-315cd33fa79so1002443a91.3
+        for <stable@vger.kernel.org>; Thu, 26 Jun 2025 10:44:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750959885; x=1751564685; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=awzZr2qt61hMaORaAhilI11J4L+Y4ATtUQ36+lUSj4E=;
+        b=FBCtn/ron0kYEA+/6EO/VYIzRzGisMQFV58vimNt/6bM7W6wxjx6gsubpxGhEKkJVL
+         T3AVg4enXNe1axnDBJE95/1riYSFdrUdzhjd/EsBEb7A57vx+K/rV6Zk/gqydGcMFud9
+         Li7bz+8ejPqwGbf0QM7/X9SDwS1HHImJP08nlgtaTW6ibxssJAobas8tLvE5qTVK3gcj
+         qV1lRcSQBMOuE+3Dl2y1uUT960/ZxGaCDNCghHvOJ6mtZPQ7uYzfwNbQb70Gjwt3JlES
+         CgPvqUFRYw/TEuqtj3HpKKqKRCGmFF6v4Spl/EzrqdfS2fvSSrEB10KbSoe6/0y1tZwa
+         b8Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750959885; x=1751564685;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=awzZr2qt61hMaORaAhilI11J4L+Y4ATtUQ36+lUSj4E=;
+        b=rWW+ZBRCDIoLEXob3vwPa2ou7bLESPomozUGdHm4pdlgbkHYP2n53uFAUGrmf1ofPM
+         2ztzR7P2r7OdNWbn4FlRbLRSXYDle9xR3HFUAxzloZnIeEefG8N+LtdQs9nc56dRLFKS
+         FMVOjzHZNF1bmbWcMyV9DZBQ8ZV5ugWeTnpdDBurCurFDQEJlfQZw+gKpUX6VmyJRO0+
+         LV70ctUSBZIMJwRs7xoqfu1g04lzBBhbj37C4lhUvj18SdcpETZbDvxlrGFHSyCwtEnC
+         Ki+531B4gnY83aFxAgF4BkUaO4uzzn2IrIB5QBSM/dxZMsUUeV2/1CPxmUdMdgwqf9VI
+         AQRQ==
+X-Gm-Message-State: AOJu0YwMcjI9tAQII1PCokkuhuUONtkBa3Gd/kVvqeod4T+z4X9NZUxW
+	iXy+SC6TSV/2h5xXOl6JKjV4/7dL4u9Wiz+FuJU/37yYN072nEyrYtoSeWL/DBWPQOElK7N8nFi
+	N9A5QgTbKMKpcOV7iVxcW5mfGyyOxG+zVwHg5vowrEQ==
+X-Gm-Gg: ASbGnctBFxrOtXPHTpUTVxcohdApxs4H6iGYWbw1el6az6qgiy0thy1SQc7R/gAzcwo
+	mze4Tvx5wqOYIMFL7MiWPvZOaSHMTAp/FovnB0z0JZYDY1+iKSdUh5m6lg8+HJfbNS7MHowpwFF
+	ds7CQlPoON7gb1wHgnTlVcsA+bX87tFKpv5phiqwofcyq8vf5E0j7DbLJbSpXKSXvBl6XCVuZsX
+	mmp
+X-Google-Smtp-Source: AGHT+IEFPPEqV7DtiqEA1oE1/fKrctRNlSpnteTT9tcvCUfZIlkuK+VPMsW7r1iS1qPSXO31ZrE+Ng7a60BAXQEdGNk=
+X-Received: by 2002:a17:90b:3cd0:b0:311:d258:3473 with SMTP id
+ 98e67ed59e1d1-316158cc4d5mr6717061a91.13.1750959885262; Thu, 26 Jun 2025
+ 10:44:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 26 Jun 2025 10:40:14 -0700
-From: Greg Chandler <chandleg@wizardsworks.org>
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>,
-        Florian Fainelli
- <f.fainelli@gmail.com>, stable@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: Tulip 21142 panic on physical link disconnect
-In-Reply-To: <c56aabfb06cfc653ff3619da4eacb4c1@wizardsworks.org>
-References: <53bb866f5bb12cc1b6c33b3866007f2b@wizardsworks.org>
- <02e3f9b8-9e60-4574-88e2-906ccd727829@gmail.com>
- <385f2469f504dd293775d3c39affa979@wizardsworks.org>
- <fba6a52c-bedf-4d06-814f-eb78257e4cb3@gmail.com>
- <6a079cd0233b33c6faf6af6a1da9661f@wizardsworks.org>
- <9292e561-09bf-4d70-bcb7-f90f9cfbae7b@gmail.com>
- <a3d8ee993b73b826b537f374d78084ad@wizardsworks.org>
- <12ccf3e4c24e8db2545f6ccaba8ce273@wizardsworks.org>
- <8c06f8969e726912b46ef941d36571ad@wizardsworks.org>
- <alpine.DEB.2.21.2506192007440.37405@angie.orcam.me.uk>
- <52564e1f-ab05-4347-bd64-b38a69180499@gmail.com>
- <alpine.DEB.2.21.2506192238280.37405@angie.orcam.me.uk>
- <5a21c21844beadb68ead00cb401ca1c0@wizardsworks.org>
- <alpine.DEB.2.21.2506200144030.37405@angie.orcam.me.uk>
- <2e30ae181acadd45da8cb91619326f37@wizardsworks.org>
- <c56aabfb06cfc653ff3619da4eacb4c1@wizardsworks.org>
-Message-ID: <dce2d0518711d710806c87f98669cd39@wizardsworks.org>
-X-Sender: chandleg@wizardsworks.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250626105243.160967269@linuxfoundation.org>
+In-Reply-To: <20250626105243.160967269@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 26 Jun 2025 23:14:33 +0530
+X-Gm-Features: Ac12FXycaF7oeRJLnS3XeYXVpdhngxsyXODthsn8k9cqqTJDz0BHwpoRhfHoX6U
+Message-ID: <CA+G9fYunftA3YqTxm-2GMN1fpQ_PVviBpDOnGznUo4YSW9pmSA@mail.gmail.com>
+Subject: Re: [PATCH 6.15 000/589] 6.15.4-rc3 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2025/06/24 16:18, Greg Chandler wrote:
-> On 2025/06/24 16:10, Greg Chandler wrote:
->> On 2025/06/19 17:57, Maciej W. Rozycki wrote:
->>> On Thu, 19 Jun 2025, Greg Chandler wrote:
->>> 
->>>> > > I am still not sure why I could not see that warning on by Cobalt Qube2
->>>> > > trying
->>>> > > to reproduce Greg's original issue, that is with an IP assigned on the
->>>> > > interface yanking the cable did not trigger a timer warning. It could be
->>>> > > that
->>>> > > machine is orders of magnitude slower and has a different CONFIG_HZ value
->>>> > > that
->>>> > > just made it less likely to be seen?
->>>> >
->>>> >  Can it have a different PHY attached?  There's this code:
->>>> >
->>>> > 	if (tp->chip_id == PNIC2)
->>>> > 		tp->link_change = pnic2_lnk_change;
->>>> > 	else if (tp->flags & HAS_NWAY)
->>>> > 		tp->link_change = t21142_lnk_change;
->>>> > 	else if (tp->flags & HAS_PNICNWAY)
->>>> > 		tp->link_change = pnic_lnk_change;
->>>> 
->>>> I'm not sure which of us that was directed at, but for my onboard 
->>>> tulips:
->>> 
->>>  It was for Florian, as obviously your system does trigger the issue.
->>> 
->>>> I found a link to the datasheet (If needed), but have had mixed luck 
->>>> with
->>>> alldatasheets:
->>>> https://www.alldatasheet.com/datasheet-pdf/pdf/75840/MICRO-LINEAR/ML6698CH.html
->>> 
->>>  There's no need to chase hw documentation as the issue isn't 
->>> directly
->>> related to it.
->>> 
->>>  As I noted in the earlier e-mail it seems a regression in the 
->>> handling of
->>> `del_timer_sync', perhaps deliberate, introduced sometime between 
->>> 5.18 and
->>> 6.4.  I suggest that you try 5.18 (or 5.17 as it was 5.18.0-rc2 
->>> actually
->>> here that worked correctly) and see if it still triggers the problem 
->>> and
->>> if it does not then bisect it (perhaps limiting the upper bound to 
->>> 6.4 if
->>> it does trigger it for you, to save an iteration or a couple).  Once 
->>> you
->>> know the offender you'll likely know the solution.  Or you can come 
->>> back
->>> with results and ask for one if unsure.
->>> 
->>>  HTH,
->>> 
->>>   Maciej
->> 
->> 
->> I haven't had keyboard time in quite a few days, but I've been looking 
->> over the code today.
->> I removed the HAS_ACPI from the 21142 setup, only to find later it was 
->> only used in a single function to deal with sleep mode stuff.
->> As I was reading over the driver, I've been taking a look at what 
->> could potentially drop in some of the debgugging statements, and 
->> loaded the module with:
->> 
->> insmod ./tulip.ko tulip_debug=100
->> 
->> [16933.489376] tulip0: EEPROM default media type Autosense
->> [16933.489376] tulip0: Index #0 - Media 10baseT (#0) described by a 
->> 21142 Serial PHY (2) block
->> [16933.489376] tulip0: Index #1 - Media 10baseT-FDX (#4) described by 
->> a 21142 Serial PHY (2) block
->> [16933.489376] tulip0: Index #2 - Media 100baseTx (#3) described by a 
->> 21143 SYM PHY (4) block
->> [16933.489376] tulip0: Index #3 - Media 100baseTx-FDX (#5) described 
->> by a 21143 SYM PHY (4) block
->> [16933.498165] net eth0: Digital DS21142/43 Tulip rev 65 at MMIO 
->> 0xa120000, 08:00:2b:86:ab:b1, IRQ 29
->> [16933.498165] tulip 0000:00:09.0 eth0: Restarting 21143 
->> autonegotiation, csr14=0003ffff
->> [16933.498165] tulip 0000:00:09.0: vgaarb: pci_notify
->> [16933.498165] tulip 0000:00:0b.0: vgaarb: pci_notify
->> [16933.498165] tulip 0000:00:0b.0: assign IRQ: got 30
->> [16933.498165] tulip 0000:00:0b.0 (unnamed net_device) 
->> (uninitialized): tulip_mwi_config()
->> [16933.498165] tulip 0000:00:0b.0 (unnamed net_device) 
->> (uninitialized): MWI config cacheline=16, csr0=01a09000
->> [16933.498165] tulip 0000:00:0b.0: enabling bus mastering
->> [16933.505001] tulip1: EEPROM default media type Autosense
->> [16933.505001] tulip1: Index #0 - Media 10baseT (#0) described by a 
->> 21142 Serial PHY (2) block
->> [16933.505001] tulip1: Index #1 - Media 10baseT-FDX (#4) described by 
->> a 21142 Serial PHY (2) block
->> [16933.505001] tulip1: Index #2 - Media 100baseTx (#3) described by a 
->> 21143 SYM PHY (4) block
->> [16933.505001] tulip1: Index #3 - Media 100baseTx-FDX (#5) described 
->> by a 21143 SYM PHY (4) block
->> [16933.513790] net eth1: Digital DS21142/43 Tulip rev 65 at MMIO 
->> 0xa121000, 08:00:2b:86:a8:5b, IRQ 30
->> [16933.513790] tulip 0000:00:0b.0 eth1: Restarting 21143 
->> autonegotiation, csr14=0003ffff
->> [16933.513790] tulip 0000:00:0b.0: vgaarb: pci_notify
->> [16933.609494] tulip 0000:00:09.0 eth109: renamed from eth0
->> [16933.619259] tulip 0000:00:09.0 eth2: renamed from eth109
->> 
->> 
->> 
->> 
->> This popped up when I bound an IP address to the interface (but not 
->> before)
->> 
->> [17042.757875] tulip 0000:00:0b.0 eth1: tulip_up(), irq==30
->> [17042.757875] tulip 0000:00:0b.0 eth1: Restarting 21143 
->> autonegotiation, csr14=0003ffff
->> [17042.757875] tulip 0000:00:0b.0 eth1: interrupt  csr5=0xf0670004 new 
->> csr5=0xf0660000
->> [17042.757875] tulip 0000:00:0b.0 eth1: exiting interrupt, 
->> csr5=0xf0660000
->> [17042.757875] tulip 0000:00:0b.0 eth1: Done tulip_up(), CSR0 
->> f9a09000, CSR5 f0760000 CSR6 b2422202
->> [17042.757875] tulip 0000:00:0b.0 eth1: interrupt  csr5=0xf0670004 new 
->> csr5=0xf0660000
->> [17042.757875] tulip 0000:00:0b.0 eth1: exiting interrupt, 
->> csr5=0xf0660000
->> [17042.757875] tulip 0000:00:0b.0 eth1: interrupt  csr5=0xf0670004 new 
->> csr5=0xf0660000
->> [17042.757875] tulip 0000:00:0b.0 eth1: exiting interrupt, 
->> csr5=0xf0660000
->> [17042.758852] tulip 0000:00:0b.0 eth1: interrupt  csr5=0xf0670004 new 
->> csr5=0xf0660000
->> [17042.758852] tulip 0000:00:0b.0 eth1: exiting interrupt, 
->> csr5=0xf0660000
->> [17043.033266] tulip 0000:00:09.0 eth2: tulip_up(), irq==29
->> [17043.033266] tulip 0000:00:09.0 eth2: Restarting 21143 
->> autonegotiation, csr14=0003ffff
->> [17043.033266] tulip 0000:00:09.0 eth2: interrupt  csr5=0xf0670004 new 
->> csr5=0xf0660000
->> [17043.033266] tulip 0000:00:09.0 eth2: exiting interrupt, 
->> csr5=0xf0660000
->> [17043.034242] tulip 0000:00:09.0 eth2: Done tulip_up(), CSR0 
->> f9a09000, CSR5 f0760000 CSR6 b2422202
->> [17043.034242] tulip 0000:00:09.0 eth2: interrupt  csr5=0xf0670004 new 
->> csr5=0xf0660000
->> [17043.034242] tulip 0000:00:09.0 eth2: exiting interrupt, 
->> csr5=0xf0660000
->> [17043.034242] tulip 0000:00:09.0 eth2: interrupt  csr5=0xf0670004 new 
->> csr5=0xf0660000
->> [17043.034242] tulip 0000:00:09.0 eth2: exiting interrupt, 
->> csr5=0xf0660000
->> [17043.035219] tulip 0000:00:09.0 eth2: interrupt  csr5=0xf0670004 new 
->> csr5=0xf0660000
->> [17043.035219] tulip 0000:00:09.0 eth2: exiting interrupt, 
->> csr5=0xf0660000
->> [17043.330140] e1000: eth3 NIC Link is Up 1000 Mbps Full Duplex, Flow 
->> Control: RX/TX
->> [17044.690491] tulip 0000:00:09.0 eth2: interrupt  csr5=0xf0268010 new 
->> csr5=0xf0260000
->> [17044.690491] net eth2: 21143 link status interrupt cde1d2ce, CSR5 
->> f0268010, fffbffff
->> [17044.690491] net eth2: Switching to 100baseTx-FDX based on link 
->> negotiation 01e0 & cde1 = 01e0
->> [17044.690491] tulip 0000:00:09.0 eth2: 21143 non-MII 100baseTx-FDX 
->> transceiver control 08af/00a0
->> [17044.690491] tulip 0000:00:09.0 eth2: Setting CSR15 to 
->> 08af0008/00a00008
->> [17044.690491] tulip 0000:00:09.0 eth2: Using media type 
->> 100baseTx-FDX, CSR12 is ce
->> [17044.690491] tulip 0000:00:09.0 eth2:  Setting CSR6 
->> 83860200/b3862202 CSR12 cde1d2ce
->> [17044.690491] tulip 0000:00:09.0 eth2: interrupt  csr5=0xf0670004 new 
->> csr5=0xf0660000
->> [17044.690491] tulip 0000:00:09.0 eth2: Transmit error, Tx status 
->> 7fffbc85
->> [17044.690491] tulip 0000:00:09.0 eth2: Transmit error, Tx status 
->> 7fffbc84
->> [17044.690491] tulip 0000:00:09.0 eth2: Transmit error, Tx status 
->> 7fffbc84
->> [17044.690491] tulip 0000:00:09.0 eth2: Transmit error, Tx status 
->> 7fffbc84
->> [17044.690491] tulip 0000:00:09.0 eth2: exiting interrupt, 
->> csr5=0xf0660000
->> [17044.691468] tulip 0000:00:09.0 eth2: interrupt  csr5=0xf8668000 new 
->> csr5=0xf8668000
->> [17044.691468] net eth2: 21143 link status interrupt cde1d2cc, CSR5 
->> f8668000, fffbffff
->> [17044.691468] net eth2: 21143 100baseTx-FDX link beat good
->> [17044.691468] tulip 0000:00:09.0 eth2: exiting interrupt, 
->> csr5=0xf0660000
->> [17044.691468] tulip 0000:00:09.0 eth2: interrupt  csr5=0xf0668010 new 
->> csr5=0xf0660000
->> [17044.691468] net eth2: 21143 link status interrupt 000002c8, CSR5 
->> f0668010, fffbff7f
->> [17044.691468] net eth2: 21143 100baseTx-FDX link beat good
->> [17044.691468] tulip 0000:00:09.0 eth2: exiting interrupt, 
->> csr5=0xf0660000
->> [17045.493225] tulip 0000:00:09.0 eth2: interrupt  csr5=0xf0670004 new 
->> csr5=0xf0660000
->> [17045.493225] tulip 0000:00:09.0 eth2: Transmit error, Tx status 
->> 7fffb000
->> [17045.493225] tulip 0000:00:09.0 eth2: exiting interrupt, 
->> csr5=0xf0660000
->> [17045.803772] net eth1: 21143 negotiation status 000021c6, 10baseT
->> [17045.803772] net eth1: 21143 negotiation failed, status 000021c6
->> [17045.803772] net eth1: Testing new 21143 media 100baseTx
->> [17045.803772] tulip 0000:00:0b.0 eth1: interrupt  csr5=0xf0208100 new 
->> csr5=0xf0200000
->> [17045.803772] tulip 0000:00:0b.0 eth1: exiting interrupt, 
->> csr5=0xf0260000
->> [17045.803772] tulip 0000:00:0b.0 eth1: interrupt  csr5=0xf0670004 new 
->> csr5=0xf0660000
->> [17045.803772] tulip 0000:00:0b.0 eth1: Transmit error, Tx status 
->> 7fffbc85
->> [17045.803772] tulip 0000:00:0b.0 eth1: Transmit error, Tx status 
->> 7fffbc84
->> [17045.803772] tulip 0000:00:0b.0 eth1: Transmit error, Tx status 
->> 7fffbc84
->> [17045.803772] tulip 0000:00:0b.0 eth1: Transmit error, Tx status 
->> 7fffbc84
->> [17045.803772] tulip 0000:00:0b.0 eth1: Transmit error, Tx status 
->> 7fffbc84
->> [17045.803772] tulip 0000:00:0b.0 eth1: exiting interrupt, 
->> csr5=0xf0660000
->> [17045.805725] tulip 0000:00:0b.0 eth1: tulip_stop_rxtx() failed (CSR5 
->> 0xf0660000 CSR6 0xb3862002)
->> [17046.053772] net eth2: 21143 negotiation status 000002c8, 
->> 100baseTx-FDX
->> [17046.053772] net eth2: Using NWay-set 100baseTx-FDX media, csr12 
->> 000002c8
->> 
->> 
->> 
->> I'm still working my way through the driver, but I figured I'd post 
->> the additional debug info in case anyone wanted it.
-> 
-> 
-> 
-> 
-> As I hit send on that last mail, I noticed a line that has not shown up 
-> before:
-> [17044.690491] net eth2: Switching to 100baseTx-FDX based on link 
-> negotiation 01e0 & cde1 = 01e0
-> 
-> I looked down at the switch, and it was actually linked at 100MB/FDX, 
-> until now it has only linked at 10-Half
-> 
-> The interface worked even with the errors above (I brought the intel 
-> adapter hard down and unplugged the cable to check).
-> 
-> The only thing I have changed is the ACPI disable which should do 
-> litterally nothing in this case, and loading the module with a debug 
-> flag.
-> I am going to reboot the machine to clear out everything and see what 
-> exactly did this.  I can't beleive that turning on debugging fixed it, 
-> but I have seen much weirder stuff happen.
+On Thu, 26 Jun 2025 at 16:26, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.15.4 release.
+> There are 589 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 28 Jun 2025 10:51:38 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.15.4-rc3.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Another bit of info that might help as I am tracing through this.
-Debug levels 1-10 panic:
-insmod ./tulip.ko tulip_debug=1
-insmod ./tulip.ko tulip_debug=2
-insmod ./tulip.ko tulip_debug=3
-insmod ./tulip.ko tulip_debug=4
-insmod ./tulip.ko tulip_debug=5
-insmod ./tulip.ko tulip_debug=6
-insmod ./tulip.ko tulip_debug=7
-insmod ./tulip.ko tulip_debug=8
-insmod ./tulip.ko tulip_debug=9
-insmod ./tulip.ko tulip_debug=10
+NOTE:
+The reported regressions on 6.15.4-rc1 / rc2 LTP syscalls readahead01 has
+been fixed on this 6.15.4-rc3.
 
-This does not, so hopfully that will narrow the search today:
-insmod ./tulip.ko tulip_debug=100
+## Build
+* kernel: 6.15.4-rc3
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: d93bc5feded1181a1f0de02e38b4634a7a76b549
+* git describe: v6.15.3-590-gd93bc5feded1
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.15.y/build/v6.15=
+.3-590-gd93bc5feded1
+
+## Test Regressions (compared to v6.15.1-816-gd878a60be557)
+
+## Metric Regressions (compared to v6.15.1-816-gd878a60be557)
+
+## Test Fixes (compared to v6.15.1-816-gd878a60be557)
+
+## Metric Fixes (compared to v6.15.1-816-gd878a60be557)
+
+## Test result summary
+total: 270887, pass: 246235, fail: 6441, skip: 18211, xfail: 0
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 139 total, 137 passed, 2 failed
+* arm64: 56 total, 56 passed, 0 failed
+* i386: 18 total, 18 passed, 0 failed
+* mips: 33 total, 27 passed, 6 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 40 total, 39 passed, 1 failed
+* riscv: 25 total, 25 passed, 0 failed
+* s390: 22 total, 22 passed, 0 failed
+* sh: 5 total, 5 passed, 0 failed
+* sparc: 4 total, 3 passed, 1 failed
+* x86_64: 49 total, 49 passed, 0 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-rust
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* modules
+* perf
+* rcutorture
+* rt-tests-cyclicdeadline
+* rt-tests-pi-stress
+* rt-tests-pmqtest
+* rt-tests-rt-migrate-test
+* rt-tests-signaltest
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
