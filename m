@@ -1,156 +1,79 @@
-Return-Path: <stable+bounces-158800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE72AEBF5B
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 20:58:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E43CAEBF6D
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 21:08:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45A3A17DEB4
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 18:58:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E83551C4659D
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 19:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC531EF39F;
-	Fri, 27 Jun 2025 18:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACACC1FC109;
+	Fri, 27 Jun 2025 19:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K8B8+Fbv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EoNInXet"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F764502A;
-	Fri, 27 Jun 2025 18:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE461F473C;
+	Fri, 27 Jun 2025 19:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751050710; cv=none; b=SUBXmbPQY1ywa8Ik/zPnW8kytWHu0Pchh/waN/NUNzJE5BtWB11j6x0QWo/t4qUvmzv9YBOwKDIfcO19gF+9dYl3XJChXCuT+nWw4f0rmKS0zVe8x6BU47/QXJ2pItWh/L3Fj+Kh24aE8+8Mb+CqHkynwgoJ1eQ2aNzvAdDU5iw=
+	t=1751051270; cv=none; b=SNRCj+cSsyLiRtbclorRz8CarAssVSFHQw56hdHZqkjgJ0yJja9HYBQvxDQDhlMlzyQkGP6jVkXgp/F92wkg+BJTTG14By5IfifsgktUaSkuxXp5vYSHEBLU6PoKZUfznGpHf+FnhpRjUHQP6fmVfBDyCwom/DmJnkrq4WxumhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751050710; c=relaxed/simple;
-	bh=9RDwtHBhtKqPblXPI9Fl8+SOfUWmVmsCQUmrhnB+dXQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dnw2CoFHg0aNJ3SlpZ80xXWpXwMQZ+kUynaIUS34eQO3LpCoNiv5Oo7Wh5nmlvxZT4+Q5EZrrWrMN/FNWo6h7pnPTALW6jnAYxN/7LmomFQZNDhFWe6I7AG6idHW5br8BRn1H4E4gwDBUxFnRuvXHUDIv1m2cNI4UMWzWlUHmIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K8B8+Fbv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFCD9C4CEE3;
-	Fri, 27 Jun 2025 18:58:29 +0000 (UTC)
+	s=arc-20240116; t=1751051270; c=relaxed/simple;
+	bh=HIhKSfWvwkdsX1z7HRNgiPtJGkgBB0cwT3oK/I1EHSQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bL4k4WRPwgnXzA44DlYkyw4mWlLJzPIj5BOqOyfTJ3H3noXcfGiXq1xqhkA8X6cAmdiCl204F4obej+wDoNM2YtYHMcsw0FxY+9ynO5DJSKZ0qg+O2wuBFDPrPgyDPF85XdX4skWqg2cGp0ugaV3kN9rFeC0Y9uJ3Tl67OegqH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EoNInXet; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34731C4CEE3;
+	Fri, 27 Jun 2025 19:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751050710;
-	bh=9RDwtHBhtKqPblXPI9Fl8+SOfUWmVmsCQUmrhnB+dXQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=K8B8+Fbv7KXzak+U3czwcfQhzenUICqY1D1SNkNyEBEVO8dWtodGLnYZc/2yTKvdL
-	 3XLV+AE++myPPGNeWKzP583+2086g1bo25VwRU964W6u47ykRh/0S12m662cX1XDFJ
-	 bvG6rslCukIPs3KEzU5dcZsnstElmkvBDVhslAbvTH40bcF1A5SJEA3AggAdMuIbJq
-	 a24jq0Ch4UnNaPoS+sDFbp8SL/uGM5MU3Z6yQOdxhG0lFRzpfLe1Z4J6YrErMNnHcX
-	 zMasnhAnR615OWywI09i0qUKSIhqdv5bvkWgkGv2RGQT3/X3i06Vw+omFnBI3Bx+bw
-	 KVTkhIUq38keg==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-s390@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Joerg Schmidbauer <jschmidb@de.ibm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org,
-	Ingo Franzki <ifranzki@linux.ibm.com>
-Subject: [PATCH] crypto: s390/sha - Fix uninitialized variable in SHA-1 and SHA-2
-Date: Fri, 27 Jun 2025 11:56:49 -0700
-Message-ID: <20250627185649.35321-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.50.0
+	s=k20201202; t=1751051270;
+	bh=HIhKSfWvwkdsX1z7HRNgiPtJGkgBB0cwT3oK/I1EHSQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EoNInXet/SF/XDDWcDAzOipleBp0RN+4LCu1mdZxWZm/j7yp3U6PFv0hUxTuwFiJF
+	 URMUAt05RbHzhZSGjlFnOIxzIPJYXuG+xqaZu2ml1SryXrC2qynxiNHXo3lpLrhXqL
+	 K1eEisRKtjhKQJ+BdYTZi7n7Vpnz5fgBbzZ+mZECZ6sHm00ZzoYvARQ3sWrQKubnZs
+	 ZN3YWoKe3jiWuhjMXkxUr2QdNGQkTGPxMPfvOrKfufS7OaB0GktLdqkvhe259a/N3G
+	 aRnwN/Ndl1aNAv6uyp2o0YPCZvcNJXGb93+4v3SQFJXTmEkSl227g6T1aO6GT/e2Tu
+	 9Xwr42m7pUjVg==
+Date: Fri, 27 Jun 2025 20:07:45 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	mengyuanlou@net-swift.com, stable@vger.kernel.org
+Subject: Re: [PATCH] net: libwx: fix the incorrect display of the queue number
+Message-ID: <20250627190745.GC1776@horms.kernel.org>
+References: <7F26D304FEA08514+20250627080938.84883-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7F26D304FEA08514+20250627080938.84883-1-jiawenwu@trustnetic.com>
 
-Commit 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
-added the field s390_sha_ctx::first_message_part and made it be used by
-s390_sha_update_blocks().  At the time, s390_sha_update_blocks() was
-used by all the s390 SHA-1, SHA-2, and SHA-3 algorithms.  However, only
-the initialization functions for SHA-3 were updated, leaving SHA-1 and
-SHA-2 using first_message_part uninitialized.
+On Fri, Jun 27, 2025 at 04:09:38PM +0800, Jiawen Wu wrote:
+> When setting "ethtool -L eth0 combined 1", the number of RX/TX queue is
+> changed to be 1. RSS is disabled at this moment, and the indices of FDIR
+> have not be changed in wx_set_rss_queues(). So the combined count still
+> shows the previous value. This issue was introduced when supporting
+> FDIR. Fix it for those devices that support FDIR.
+> 
+> Fixes: 34744a7749b3 ("net: txgbe: add FDIR info to ethtool ops")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 
-This could cause e.g. CPACF_KIMD_SHA_512 | CPACF_KIMD_NIP to be used
-instead of just CPACF_KIMD_NIP.  It's unclear why this didn't cause a
-problem earlier; this bug was found only when UBSAN detected the
-uninitialized boolean.  Perhaps the CPU ignores CPACF_KIMD_NIP for SHA-1
-and SHA-2.  Regardless, let's fix this.  For now just initialize to
-false, i.e. don't try to "optimize" the SHA state initialization.
+I am assuming that this is for net.
 
-Note: in 6.16, we need to patch SHA-1, SHA-384, and SHA-512.  In 6.15
-and earlier, we'll also need to patch SHA-224 and SHA-256, as they
-hadn't yet been librarified (which incidentally fixed this bug).
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Fixes: 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
-Cc: stable@vger.kernel.org
-Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Closes: https://lore.kernel.org/r/12740696-595c-4604-873e-aefe8b405fbf@linux.ibm.com
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
-
-This is targeting 6.16.  I'd prefer to take this through
-libcrypto-fixes, since the librarification work is also touching this
-area.  But let me know if there's a preference for the crypto tree or
-the s390 tree instead.
-
- arch/s390/crypto/sha1_s390.c   | 1 +
- arch/s390/crypto/sha512_s390.c | 2 ++
- 2 files changed, 3 insertions(+)
-
-diff --git a/arch/s390/crypto/sha1_s390.c b/arch/s390/crypto/sha1_s390.c
-index d229cbd2ba229..73672e76a88f9 100644
---- a/arch/s390/crypto/sha1_s390.c
-+++ b/arch/s390/crypto/sha1_s390.c
-@@ -36,10 +36,11 @@ static int s390_sha1_init(struct shash_desc *desc)
- 	sctx->state[2] = SHA1_H2;
- 	sctx->state[3] = SHA1_H3;
- 	sctx->state[4] = SHA1_H4;
- 	sctx->count = 0;
- 	sctx->func = CPACF_KIMD_SHA_1;
-+	sctx->first_message_part = false;
- 
- 	return 0;
- }
- 
- static int s390_sha1_export(struct shash_desc *desc, void *out)
-diff --git a/arch/s390/crypto/sha512_s390.c b/arch/s390/crypto/sha512_s390.c
-index 33711a29618c3..e9e112025ff22 100644
---- a/arch/s390/crypto/sha512_s390.c
-+++ b/arch/s390/crypto/sha512_s390.c
-@@ -30,10 +30,11 @@ static int sha512_init(struct shash_desc *desc)
- 	ctx->sha512.state[6] = SHA512_H6;
- 	ctx->sha512.state[7] = SHA512_H7;
- 	ctx->count = 0;
- 	ctx->sha512.count_hi = 0;
- 	ctx->func = CPACF_KIMD_SHA_512;
-+	ctx->first_message_part = false;
- 
- 	return 0;
- }
- 
- static int sha512_export(struct shash_desc *desc, void *out)
-@@ -95,10 +96,11 @@ static int sha384_init(struct shash_desc *desc)
- 	ctx->sha512.state[6] = SHA384_H6;
- 	ctx->sha512.state[7] = SHA384_H7;
- 	ctx->count = 0;
- 	ctx->sha512.count_hi = 0;
- 	ctx->func = CPACF_KIMD_SHA_512;
-+	ctx->first_message_part = false;
- 
- 	return 0;
- }
- 
- static struct shash_alg sha384_alg = {
-
-base-commit: e540341508ce2f6e27810106253d5de194b66750
--- 
-2.50.0
-
+...
 
