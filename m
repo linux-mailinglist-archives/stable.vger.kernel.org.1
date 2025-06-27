@@ -1,55 +1,103 @@
-Return-Path: <stable+bounces-158757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFCBAEB27A
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 11:17:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1D8FAEB1EF
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 11:04:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F466561DC0
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 09:16:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B065189475D
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 09:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2B7293C64;
-	Fri, 27 Jun 2025 09:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15FD3293B75;
+	Fri, 27 Jun 2025 09:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QYwzdnyM"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5282957C0;
-	Fri, 27 Jun 2025 09:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552C929346F;
+	Fri, 27 Jun 2025 09:04:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751015523; cv=none; b=QwDM5SrD+/AL3TZsZYBfIlTlUX+olGUUcYrQFQ5nJZ1Zyu7XRElnYwbFWauLHNrOwj8yedJGhsPOT/MWrZ1HKOqXZxNwg50lQlaGr3Fbi2ylGJSO6jZKBIDdsQ4sacgqmRdhhYMqDrTzaZlVxRr4pdsWMFoOjQp2xqHjgixCfCU=
+	t=1751015049; cv=none; b=iQmpDt6a7ZyDRgdm4ZZi5tMYwW7aWdffd09fmzOBme0rXvat3SdZEzgdMT2gOUHy3u5jddMyiRpMjqjp7KOz6gaAh55dRKQv9PtevliGqKFRxmN7RCINDmHFJ8juxjtjMnDgsO84iY6GTBplB58jq4bT+szG4ywXmFvBZlgP6U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751015523; c=relaxed/simple;
-	bh=GVRCKGSKR6GX4ns1XYW2cgh8ldp9Mp84DNxhiD2jLXA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XzJmTO8z1iO7weK0h+ZaDZP+vTmVTIC/gFqn12ls0F+f1oScimEjTznYXX+MZibqXABhSUKscYWHCzwYYogNAtieoIDeJeuRv8iz4X8NBokhoBZu8vXS0PxyjBx7rFJJwH1aMhQ+sI12/7wMg/m7pxydKB0gXKDlspp+UiTUyx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4bT8ny1Slsz10XVg;
-	Fri, 27 Jun 2025 17:07:18 +0800 (CST)
-Received: from kwepemk200016.china.huawei.com (unknown [7.202.194.82])
-	by mail.maildlp.com (Postfix) with ESMTPS id 67EE81400D1;
-	Fri, 27 Jun 2025 17:11:56 +0800 (CST)
-Received: from huawei.com (10.67.174.78) by kwepemk200016.china.huawei.com
- (7.202.194.82) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 27 Jun
- 2025 17:11:55 +0800
-From: Yi Yang <yiyang13@huawei.com>
-To: <yiyang13@huawei.com>
-CC: <corey@minyard.net>, <linux-kernel@vger.kernel.org>,
-	<lujialin4@huawei.com>, <openipmi-developer@lists.sourceforge.net>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH] ipmi: fix underflow in ipmi_create_user()
-Date: Fri, 27 Jun 2025 09:02:20 +0000
-Message-ID: <20250627090220.592415-1-yiyang13@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250610121523.252149-1-yiyang13@huawei.com>
-References: <20250610121523.252149-1-yiyang13@huawei.com>
+	s=arc-20240116; t=1751015049; c=relaxed/simple;
+	bh=26Z1MwHnjk2h7wspYJq72P8Nt3nRYsPC+dd6E2tbHiA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rqzs3OdzEm4mKYb1VkgZpPgKv62tkpIgMdV80GzgH+fBLNfFJGOaTybjn6ehtL+hWoR9bjIgbDZDONiwpe2TUo0lYELKG95wVoy4x82XMpjWSVZovbwMMBZtgRPy7hKrXsPkcPTTx6FEDtbS01aTmpEnBbEykG63mB1m79H6tlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QYwzdnyM; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-74801bc6dc5so1803855b3a.1;
+        Fri, 27 Jun 2025 02:04:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751015047; x=1751619847; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+OPOjWi2p5Z5MHfvR9PBiYVVI5F5wJufIgUU5dhlzxE=;
+        b=QYwzdnyMXyzC/AkjUu+yLzPM4JBPyFuOqerNlmYneVAZoFc6ADqf5+esANONCuLIl4
+         CS8oTCfd0kUw42QtYWVN3ON44t2T1IEb8JCUZPlWzTiQ/a8cgDvP3XVyutFZ6/lcmPCe
+         y06KezVNckEazH9MBDXS4N80TTql4cBrww0xUxt17cbvdLce2hs+3mOuLv8HwpoqgkD7
+         YeTo8leP0KJHhJv4Ljb7AB5fVbBcduq11LKT3UetyeLS3/Hrz2ayYLrZE7sgdXA0DbvL
+         U99kY4OP/hd9vZKzX2c5OSJn4FntClnCODkkr5MwhmTLkcFIEn11+sE24P/+ktWOkOmR
+         asDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751015047; x=1751619847;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+OPOjWi2p5Z5MHfvR9PBiYVVI5F5wJufIgUU5dhlzxE=;
+        b=pPha3/yf0x60fMiHwykMyAj41MR/XJDAhaoK+CKDu+P1xLXHkeRxDYLBeUhChxc02+
+         sSpu8+gG/ezo/JH+XwakbW9uA3u0nmUjUsOs0XIpRHp7kP4VByS5KUSX5i1QYB1W3MIE
+         5mjgQOAbHME4HBQQlx3S5AV6t4MpDdK+TJVXuWA2lGQuFfK4W489qbEIr1+AEqwskqQL
+         EatK3fx27OInM05iyXo6fcundPeo1ho2AnmYhG6oT9TpOz1xTHLqSNGnsikdyaWgijok
+         C7U1EXfC2wrTaJaBIwOjEwNvUbaCywxqrYQ6EkYSCkk+GwJOq3SXE2Zw4fL3Dhfxr/pV
+         pxXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3NbkwiI9v7+tOTkGlk/cNX3uF7Y3FeNnB6FSKmoTBhczhcVT39tLun7CawgNJF6LRPYGwaAXOdXD4NV6o@vger.kernel.org, AJvYcCUaKYHffPD6j2C8T9+sbFOLYr8kOrJXCxi8Xa5yh2nHGuS6zlU6w4wK/zPI92INYWp1Wkk=@vger.kernel.org, AJvYcCVf8xcDBhlopQUz+MVMGSIvMbLQ/GlA+eQTNfI6KV1Nnm60xN1KSaWCoHUNHTrNZoOPvYJTNL25@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1sMXnb7FuPPVpAFraTkECgPB1QbMNKugwVq7lur/X0AeQ/UZ0
+	RBfxPtuAyv9yvtroO0W+RwqJECx87bb0LRlmeRzZceHBuJLARyvT5otM1qG09Drt
+X-Gm-Gg: ASbGnctsnA0hGUQZcXbhx8cGeALOokG2ZZmE2kc2Mbrqulgi3VpyEKc7QDnbqKjUm+o
+	PLbRgCG3G/0kHj1tm0Ag6DRZKXyr5RIvoKr3yimxrqyXo5rHTOKTcPzvgzoKe829zbpFaE2+dH5
+	wDD7akexEXTnmDEaCQMP1JMmdatV0eHsYnNDeX5EUaTZk40vFL13K0cnzm64F5oU8tosMBkC1++
+	AflXFB3svvFExiGKGs2wZ2EfkVJ575pAr055R+B+Dzlkd6mbQeZaWjgN+Rb3qZPd4iOjMuuFFEp
+	jyy3UBHs/R1JRrP/UfKicpKPkrXDXs6t38GIA/4BGReHWSi9fl0EjoCizXYNputlweVrZD2e/j1
+	3o+JEFLs=
+X-Google-Smtp-Source: AGHT+IFi7uSNU0NXFWo1RpPm1TGTKsqRNAglzlIgdaPSrhHfNLCIMhftBcZcOffl8C56MCw/UDFE6w==
+X-Received: by 2002:a05:6a00:8ca:b0:749:1e60:bdd with SMTP id d2e1a72fcca58-74af7893218mr3329499b3a.2.1751015046910;
+        Fri, 27 Jun 2025 02:04:06 -0700 (PDT)
+Received: from manjaro.domain.name ([2401:4900:1c67:6116:afb5:b6ab:2dc8:4a21])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74af540b389sm1846158b3a.35.2025.06.27.02.04.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Jun 2025 02:04:06 -0700 (PDT)
+From: Pranav Tyagi <pranav.tyagi03@gmail.com>
+To: netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: john.fastabend@gmail.com,
+	daniel@iogearbox.net,
+	jakub@cloudflare.com,
+	lmb@cloudflare.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	ast@kernel.org,
+	andrii@kernel.org,
+	kafai@fb.com,
+	songliubraving@fb.com,
+	yhs@fb.com,
+	kpsingh@kernel.org,
+	cong.wang@bytedance.com,
+	skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linux.dev,
+	stable@vger.kernel.org,
+	Jiri Olsa <jolsa@kernel.org>,
+	Xu Kuohai <xukuohai@huawei.com>,
+	Pranav Tyagi <pranav.tyagi03@gmail.com>
+Subject: [PATCH 5.15] bpf, sockmap: Fix skb refcnt race after locking changes
+Date: Fri, 27 Jun 2025 14:33:54 +0530
+Message-ID: <20250627090354.10491-1-pranav.tyagi03@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,133 +105,127 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemk200016.china.huawei.com (7.202.194.82)
 
-On 2025/6/27 17:10, yiyang wrote:
-> Syzkaller reported this bug:
-> ==================================================================
-> BUG: KASAN: global-out-of-bounds in instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
-> BUG: KASAN: global-out-of-bounds in atomic_dec include/linux/atomic/atomic-instrumented.h:592 [inline]
-> BUG: KASAN: global-out-of-bounds in ipmi_create_user.part.0+0x5e5/0x790 drivers/char/ipmi/ipmi_msghandler.c:1291
-> Write of size 4 at addr ffffffff8fc6a438 by task syz.5.1074/5888
->
-> CPU: 0 PID: 5888 Comm: syz.5.1074 Not tainted 6.6.0+ #60
-> ......
-> Call Trace:
->  <TASK>
->  __dump_stack lib/dump_stack.c:88 [inline]
->  dump_stack_lvl+0x72/0xa0 lib/dump_stack.c:106
->  print_address_description.constprop.0+0x6b/0x3d0 mm/kasan/report.c:364
->  print_report+0xba/0x280 mm/kasan/report.c:475
->  kasan_report+0xa9/0xe0 mm/kasan/report.c:588
->  check_region_inline mm/kasan/generic.c:181 [inline]
->  kasan_check_range+0x100/0x1c0 mm/kasan/generic.c:187
->  instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
->  atomic_dec include/linux/atomic/atomic-instrumented.h:592 [inline]
->  ipmi_create_user.part.0+0x5e5/0x790 drivers/char/ipmi/ipmi_msghandler.c:1291
->  ipmi_create_user+0x56/0x80 drivers/char/ipmi/ipmi_msghandler.c:1236
->  ipmi_open+0xac/0x2b0 drivers/char/ipmi/ipmi_devintf.c:97
->  chrdev_open+0x276/0x700 fs/char_dev.c:414
->  do_dentry_open+0x6a7/0x1410 fs/open.c:929
->  vfs_open+0xd1/0x440 fs/open.c:1060
->  do_open+0x957/0x10d0 fs/namei.c:3671
->  path_openat+0x258/0x770 fs/namei.c:3830
->  do_filp_open+0x1c7/0x410 fs/namei.c:3857
->  do_sys_openat2+0x5bd/0x6a0 fs/open.c:1428
->  do_sys_open fs/open.c:1443 [inline]
->  __do_sys_openat fs/open.c:1459 [inline]
->  __se_sys_openat fs/open.c:1454 [inline]
->  __x64_sys_openat+0x17a/0x210 fs/open.c:1454
->  do_syscall_x64 arch/x86/entry/common.c:51 [inline]
->  do_syscall_64+0x59/0x110 arch/x86/entry/common.c:81
->  entry_SYSCALL_64_after_hwframe+0x78/0xe2
-> RIP: 0033:0x54d2cd
-> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007f4751920048 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-> RAX: ffffffffffffffda RBX: 0000000000796080 RCX: 000000000054d2cd
-> RDX: 0000000000000000 RSI: 0000000020004280 RDI: ffffffffffffff9c
-> RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-> R10: 000000000000001e R11: 0000000000000246 R12: 000000000079608c
-> R13: 0000000000000000 R14: 0000000000796080 R15: 00007f4751900000
->  </TASK>
->
-> The buggy address belongs to the variable:
->  ipmi_interfaces+0x38/0x40
->
-> The buggy address belongs to the physical page:
-> page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x45a6a
-> flags: 0x3fffff00004000(reserved|node=0|zone=1|lastcpupid=0x1fffff)
-> raw: 003fffff00004000 ffffea0001169a88 ffffea0001169a88 0000000000000000
-> raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-> page dumped because: kasan: bad access detected
->
-> Memory state around the buggy address:
->  ffffffff8fc6a300: 00 00 00 00 f9 f9 f9 f9 00 00 00 00 f9 f9 f9 f9
->  ffffffff8fc6a380: 00 00 f9 f9 f9 f9 f9 f9 00 00 00 00 f9 f9 f9 f9
->> ffffffff8fc6a400: 00 00 f9 f9 f9 f9 f9 f9 00 00 00 00 f9 f9 f9 f9
->                                         ^
->  ffffffff8fc6a480: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->  ffffffff8fc6a500: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f9 f9
-> ==================================================================
->
-> In the ipmi_create_user() function, the intf->nr_users variable has an
-> underflow issue. Specifically, on the exception path (goto out_kfree;)
-> before atomic_add_return(), calling atomic_dec() when intf->nr_users has
-> not been incremented will result in an underflow.
->
-> The relevant code has been completely rewritten in the next tree and has
-> been fixed with commit 9e91f8a6c868 ("ipmi:msghandler: Remove srcu for the
-> ipmi_interfaces list"). However, the issue still exists in the 5.19+
-> stable branches and needs to be fixed on those branches.
->
-> Cc: stable@vger.kernel.org # 5.19+
-> Fixes: 8e76741c3d8b ("ipmi: Add a limit on the number of users that may use IPMI")
-> Signed-off-by: Yi Yang <yiyang13@huawei.com>
-> ---
->  drivers/char/ipmi/ipmi_msghandler.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-> index 186f1fee7534..0293fad2f4f2 100644
-> --- a/drivers/char/ipmi/ipmi_msghandler.c
-> +++ b/drivers/char/ipmi/ipmi_msghandler.c
-> @@ -1246,18 +1246,18 @@ int ipmi_create_user(unsigned int          if_num,
->   found:
->      if (atomic_add_return(1, &intf->nr_users) > max_users) {
->          rv = -EBUSY;
-> -        goto out_kfree;
-> +        goto out_dec;
->      }
->  
->      INIT_WORK(&new_user->remove_work, free_user_work);
->  
->      rv = init_srcu_struct(&new_user->release_barrier);
->      if (rv)
-> -        goto out_kfree;
-> +        goto out_dec;
->  
->      if (!try_module_get(intf->owner)) {
->          rv = -ENODEV;
-> -        goto out_kfree;
-> +        goto out_dec;
->      }
->  
->      /* Note that each existing user holds a refcount to the interface. */
-> @@ -1281,8 +1281,9 @@ int ipmi_create_user(unsigned int          if_num,
->      *user = new_user;
->      return 0;
->  
-> -out_kfree:
-> +out_dec:
->      atomic_dec(&intf->nr_users);
-> +out_kfree:
->      srcu_read_unlock(&ipmi_interfaces_srcu, index);
->      vfree(new_user);
->      return rv;
-> -- 
-> 2.25.1
+From: John Fastabend <john.fastabend@gmail.com>
 
-ping 
+[ Upstream commit a454d84ee20baf7bd7be90721b9821f73c7d23d9 ]
+
+There is a race where skb's from the sk_psock_backlog can be referenced
+after userspace side has already skb_consumed() the sk_buff and its refcnt
+dropped to zer0 causing use after free.
+
+The flow is the following:
+
+  while ((skb = skb_peek(&psock->ingress_skb))
+    sk_psock_handle_Skb(psock, skb, ..., ingress)
+    if (!ingress) ...
+    sk_psock_skb_ingress
+       sk_psock_skb_ingress_enqueue(skb)
+          msg->skb = skb
+          sk_psock_queue_msg(psock, msg)
+    skb_dequeue(&psock->ingress_skb)
+
+The sk_psock_queue_msg() puts the msg on the ingress_msg queue. This is
+what the application reads when recvmsg() is called. An application can
+read this anytime after the msg is placed on the queue. The recvmsg hook
+will also read msg->skb and then after user space reads the msg will call
+consume_skb(skb) on it effectively free'ing it.
+
+But, the race is in above where backlog queue still has a reference to
+the skb and calls skb_dequeue(). If the skb_dequeue happens after the
+user reads and free's the skb we have a use after free.
+
+The !ingress case does not suffer from this problem because it uses
+sendmsg_*(sk, msg) which does not pass the sk_buff further down the
+stack.
+
+The following splat was observed with 'test_progs -t sockmap_listen':
+
+  [ 1022.710250][ T2556] general protection fault, ...
+  [...]
+  [ 1022.712830][ T2556] Workqueue: events sk_psock_backlog
+  [ 1022.713262][ T2556] RIP: 0010:skb_dequeue+0x4c/0x80
+  [ 1022.713653][ T2556] Code: ...
+  [...]
+  [ 1022.720699][ T2556] Call Trace:
+  [ 1022.720984][ T2556]  <TASK>
+  [ 1022.721254][ T2556]  ? die_addr+0x32/0x80^M
+  [ 1022.721589][ T2556]  ? exc_general_protection+0x25a/0x4b0
+  [ 1022.722026][ T2556]  ? asm_exc_general_protection+0x22/0x30
+  [ 1022.722489][ T2556]  ? skb_dequeue+0x4c/0x80
+  [ 1022.722854][ T2556]  sk_psock_backlog+0x27a/0x300
+  [ 1022.723243][ T2556]  process_one_work+0x2a7/0x5b0
+  [ 1022.723633][ T2556]  worker_thread+0x4f/0x3a0
+  [ 1022.723998][ T2556]  ? __pfx_worker_thread+0x10/0x10
+  [ 1022.724386][ T2556]  kthread+0xfd/0x130
+  [ 1022.724709][ T2556]  ? __pfx_kthread+0x10/0x10
+  [ 1022.725066][ T2556]  ret_from_fork+0x2d/0x50
+  [ 1022.725409][ T2556]  ? __pfx_kthread+0x10/0x10
+  [ 1022.725799][ T2556]  ret_from_fork_asm+0x1b/0x30
+  [ 1022.726201][ T2556]  </TASK>
+
+To fix we add an skb_get() before passing the skb to be enqueued in the
+engress queue. This bumps the skb->users refcnt so that consume_skb()
+and kfree_skb will not immediately free the sk_buff. With this we can
+be sure the skb is still around when we do the dequeue. Then we just
+need to decrement the refcnt or free the skb in the backlog case which
+we do by calling kfree_skb() on the ingress case as well as the sendmsg
+case.
+
+Before locking change from fixes tag we had the sock locked so we
+couldn't race with user and there was no issue here.
+
+[ Backport to 5.15: context cleanly applied with no semantic changes.
+Build-tested. ]
+
+Fixes: 799aa7f98d53e ("skmsg: Avoid lock_sock() in sk_psock_backlog()")
+Reported-by: Jiri Olsa  <jolsa@kernel.org>
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Xu Kuohai <xukuohai@huawei.com>
+Tested-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20230901202137.214666-1-john.fastabend@gmail.com
+Signed-off-by: Pranav Tyagi <pranav.tyagi03@gmail.com>
+---
+ net/core/skmsg.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index a5947aa55983..a13ddb9976ad 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -608,12 +608,18 @@ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb
+ static int sk_psock_handle_skb(struct sk_psock *psock, struct sk_buff *skb,
+ 			       u32 off, u32 len, bool ingress)
+ {
++	int err = 0;
++
+ 	if (!ingress) {
+ 		if (!sock_writeable(psock->sk))
+ 			return -EAGAIN;
+ 		return skb_send_sock(psock->sk, skb, off, len);
+ 	}
+-	return sk_psock_skb_ingress(psock, skb, off, len);
++	skb_get(skb);
++	err = sk_psock_skb_ingress(psock, skb, off, len);
++	if (err < 0)
++		kfree_skb(skb);
++	return err;
+ }
+ 
+ static void sk_psock_skb_state(struct sk_psock *psock,
+@@ -681,9 +687,7 @@ static void sk_psock_backlog(struct work_struct *work)
+ 		} while (len);
+ 
+ 		skb = skb_dequeue(&psock->ingress_skb);
+-		if (!ingress) {
+-			kfree_skb(skb);
+-		}
++		kfree_skb(skb);
+ 	}
+ end:
+ 	mutex_unlock(&psock->work_mutex);
+-- 
+2.49.0
+
 
