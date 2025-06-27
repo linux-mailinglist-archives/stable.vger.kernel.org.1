@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-158785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E023CAEBA10
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 16:41:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD95AEBA17
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 16:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C547560C21
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 14:41:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11E683B253D
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 14:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4020C2E6D2C;
-	Fri, 27 Jun 2025 14:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3732E7177;
+	Fri, 27 Jun 2025 14:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YtcP7IZL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HlK11Ao9"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7B52E3AF8;
-	Fri, 27 Jun 2025 14:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027613234;
+	Fri, 27 Jun 2025 14:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751035295; cv=none; b=kke0Hhw2ocoFDAptC9D4KLPmP4docLhUXJo0sGLgrnH7uEHHk54D8d3R5XGgZHLHYcj+gKBVwi/UW2/RCZDwMVhFyb+5CVH2yZBoOBAkMhaxHgqTvc9iUvQ8aw0MaW67igD42wKS6KbhQWUhEeoE3Ng1+WjLoyiWApvxExrHkwE=
+	t=1751035296; cv=none; b=gbmluQcA7B+/26koKD27P41S6KwWbUjYm93Mihc/BygkL6+Gsnk/HsoLSn1rJcwyCqjC5VttxtpQIwneh1iLsMZz4LgyjLOtWqAObQd0cFRy1N1bjBcLOgduRrmZdPOwdAIeMXzekxfpbQo8ZMosakfaKDoNh5s9zJT/h1ds6zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751035295; c=relaxed/simple;
-	bh=xt6/sAS4BHCLEVkqN7E8VYj0bIMlzbaYeRUfBFzu8WQ=;
+	s=arc-20240116; t=1751035296; c=relaxed/simple;
+	bh=DkSV88qksqUtLKJI7ol90y8ckHSURyruXuGh6rf06DU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=an93yBaj3vqkn4GI2CiBzDqjGFJpQbc+jPH5W4ckn5RO78HYKuzWPJPnUfRXuuFyuqUeEGHmplifMFH5yhRiJRwcqJWTk56kwMJxbp6ekLeBR+29sYQYRJnsVxorn/474ps9VXPpElq0V2TVGPZoPaA8FPdqPenxPz4WYe9Yqwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YtcP7IZL; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=CFy6tH0YcqFvG3McMiKGmsS3ePPYENX79L1e0iXnuyJ4j70XtT79fMcWdKR6nqupv0HwupILGwGqJ1kK67TjcMiwob1CP0+2BZ6dyXfR/OMTgCFXY3mvE5gbeDxP8xL8oJGRMXFFjs4BIH/kXzl/MB7+ix15u2yY+oIlhqKRCRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HlK11Ao9; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751035293; x=1782571293;
+  t=1751035295; x=1782571295;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=xt6/sAS4BHCLEVkqN7E8VYj0bIMlzbaYeRUfBFzu8WQ=;
-  b=YtcP7IZLulWo5642o9v14stdQwcIrNEjZ7MMaB/kMcfSv398VmJR0OpZ
-   +fiQXF0eJ36frCOVFyYphGwymrNJV4BPHgRL0bIruU1EGMv352Hluf+G/
-   LCqCsyI22G9/4fcE6Iw3VADGdrgCW5uX2KHS8zB9K67IAtr2tyS9mVbun
-   OPmTb3SjTagr66wixsLKE3r/9kok1QnBPsE5ptosoOmOC4TMIhKrP06ti
-   JReeC3SZiF0k1xei+ATTXYM5A98BjKd2QXc1nmDXoo4J5+A7sm4QVQxwZ
-   08jjoQmskLz1zTDo4mn2vzjNQ/XshL8++5x5Tyw/M0ABukrtaWU1d3Md8
-   A==;
-X-CSE-ConnectionGUID: cyUq8cRaR9qPYTyZnn6kcA==
-X-CSE-MsgGUID: xUfGeLfERd+b+k24je8gtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="53444930"
+  bh=DkSV88qksqUtLKJI7ol90y8ckHSURyruXuGh6rf06DU=;
+  b=HlK11Ao9C2E0tXr73sR/qn/meNHwczf/xtB1u5aSMYUdKj8Qthzir8sh
+   t+RZh464WQXAg/aE3vbnhG9GyRuRhH9pxmBfdBfF3Wykcu1c9bGHjv0Oy
+   BmzP0h2Jle/tkzAOjRpDFjG343ixnjj7FHjrOh5YoPs+pHKlZ9q+aBIGj
+   YDs4F3EV33FfLXqjVurdZghFvRq2AUAH4Rz8rp/K/ITHreGE/XogHsSlR
+   3GvsFqi0a6LoFiNmkB6Spspbx+AuuFcW+rZxw3tfN3kdk+04ZBzdsDndf
+   4W/ej8aYh7DUaW17knSTbUuHp84p3ojyFMMRzcJG4NpocX1zj5P/HazGz
+   w==;
+X-CSE-ConnectionGUID: dBgZyzSfTkSOhUinuIu9kQ==
+X-CSE-MsgGUID: zh1EmXz+SIGLYCxGcPaDlQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="53444934"
 X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="53444930"
+   d="scan'208";a="53444934"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 07:41:33 -0700
-X-CSE-ConnectionGUID: sY18WkD7TxyxR1JkZjSOlg==
-X-CSE-MsgGUID: l2bgz+JrRAKIbiRyH+H3BQ==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 07:41:34 -0700
+X-CSE-ConnectionGUID: F+BBiHYaQheEKYjgAMG6Mw==
+X-CSE-MsgGUID: C1z0T1TMSHe3QODxTj1Xeg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="156872906"
+   d="scan'208";a="156872916"
 Received: from unknown (HELO mnyman-desk.fi.intel.com) ([10.237.72.199])
-  by fmviesa003.fm.intel.com with ESMTP; 27 Jun 2025 07:41:31 -0700
+  by fmviesa003.fm.intel.com with ESMTP; 27 Jun 2025 07:41:33 -0700
 From: Mathias Nyman <mathias.nyman@linux.intel.com>
 To: <gregkh@linuxfoundation.org>
 Cc: <linux-usb@vger.kernel.org>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Hongyu Xie <xiehongyu1@kylinos.cn>,
 	stable@vger.kernel.org,
 	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 1/4] usb: xhci: quirk for data loss in ISOC transfers
-Date: Fri, 27 Jun 2025 17:41:19 +0300
-Message-ID: <20250627144127.3889714-2-mathias.nyman@linux.intel.com>
+Subject: [PATCH 2/4] xhci: Disable stream for xHC controller with XHCI_BROKEN_STREAMS
+Date: Fri, 27 Jun 2025 17:41:20 +0300
+Message-ID: <20250627144127.3889714-3-mathias.nyman@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250627144127.3889714-1-mathias.nyman@linux.intel.com>
 References: <20250627144127.3889714-1-mathias.nyman@linux.intel.com>
@@ -78,113 +78,32 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Hongyu Xie <xiehongyu1@kylinos.cn>
 
-During the High-Speed Isochronous Audio transfers, xHCI
-controller on certain AMD platforms experiences momentary data
-loss. This results in Missed Service Errors (MSE) being
-generated by the xHCI.
+Disable stream for platform xHC controller with broken stream.
 
-The root cause of the MSE is attributed to the ISOC OUT endpoint
-being omitted from scheduling. This can happen when an IN
-endpoint with a 64ms service interval either is pre-scheduled
-prior to the ISOC OUT endpoint or the interval of the ISOC OUT
-endpoint is shorter than that of the IN endpoint. Consequently,
-the OUT service is neglected when an IN endpoint with a service
-interval exceeding 32ms is scheduled concurrently (every 64ms in
-this scenario).
-
-This issue is particularly seen on certain older AMD platforms.
-To mitigate this problem, it is recommended to adjust the service
-interval of the IN endpoint to not exceed 32ms (interval 8). This
-adjustment ensures that the OUT endpoint will not be bypassed,
-even if a smaller interval value is utilized.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Fixes: 14aec589327a6 ("storage: accept some UAS devices if streams are unavailable")
+Cc: stable@vger.kernel.org # 5.4
+Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
 Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 ---
- drivers/usb/host/xhci-mem.c |  4 ++++
- drivers/usb/host/xhci-pci.c | 25 +++++++++++++++++++++++++
- drivers/usb/host/xhci.h     |  1 +
- 3 files changed, 30 insertions(+)
+ drivers/usb/host/xhci-plat.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index bd745a0f2f78..6680afa4f596 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -1449,6 +1449,10 @@ int xhci_endpoint_init(struct xhci_hcd *xhci,
- 	/* Periodic endpoint bInterval limit quirk */
- 	if (usb_endpoint_xfer_int(&ep->desc) ||
- 	    usb_endpoint_xfer_isoc(&ep->desc)) {
-+		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
-+		    interval >= 9) {
-+			interval = 8;
-+		}
- 		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_7) &&
- 		    udev->speed >= USB_SPEED_HIGH &&
- 		    interval >= 7) {
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index 0c481cbc8f08..00fac8b233d2 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -71,12 +71,22 @@
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_XHCI		0x15ec
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_XHCI		0x15f0
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index 6dab142e7278..c79d5ed48a08 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -328,7 +328,8 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
+ 	}
  
-+#define PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI		0x13ed
-+#define PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI		0x13ee
-+#define PCI_DEVICE_ID_AMD_STARSHIP_XHCI			0x148c
-+#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI		0x15d4
-+#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI		0x15d5
-+#define PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI		0x15e0
-+#define PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI		0x15e1
-+#define PCI_DEVICE_ID_AMD_RAVEN2_XHCI			0x15e5
- #define PCI_DEVICE_ID_AMD_RENOIR_XHCI			0x1639
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_4			0x43b9
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_3			0x43ba
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_2			0x43bb
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_1			0x43bc
+ 	usb3_hcd = xhci_get_usb3_hcd(xhci);
+-	if (usb3_hcd && HCC_MAX_PSA(xhci->hcc_params) >= 4)
++	if (usb3_hcd && HCC_MAX_PSA(xhci->hcc_params) >= 4 &&
++	    !(xhci->quirks & XHCI_BROKEN_STREAMS))
+ 		usb3_hcd->can_do_streams = 1;
  
-+#define PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI		0x7316
-+
- #define PCI_DEVICE_ID_ASMEDIA_1042_XHCI			0x1042
- #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
- #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
-@@ -280,6 +290,21 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 	if (pdev->vendor == PCI_VENDOR_ID_NEC)
- 		xhci->quirks |= XHCI_NEC_HOST;
- 
-+	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
-+	    (pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_STARSHIP_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN2_XHCI))
-+		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
-+
-+	if (pdev->vendor == PCI_VENDOR_ID_ATI &&
-+	    pdev->device == PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI)
-+		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
-+
- 	if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version == 0x96)
- 		xhci->quirks |= XHCI_AMD_0x96_HOST;
- 
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index fa1ea0e0c7fb..a20f4e7cd43a 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1643,6 +1643,7 @@ struct xhci_hcd {
- #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
- #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
- #define XHCI_ETRON_HOST	BIT_ULL(49)
-+#define XHCI_LIMIT_ENDPOINT_INTERVAL_9 BIT_ULL(50)
- 
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
+ 	if (xhci->shared_hcd) {
 -- 
 2.43.0
 
