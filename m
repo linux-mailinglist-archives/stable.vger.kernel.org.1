@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-158786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD95AEBA17
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 16:41:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 616CDAEBA14
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 16:41:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11E683B253D
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 14:41:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 567EB1C439B5
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 14:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3732E7177;
-	Fri, 27 Jun 2025 14:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F0A2E718C;
+	Fri, 27 Jun 2025 14:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HlK11Ao9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I7jGoOG8"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027613234;
-	Fri, 27 Jun 2025 14:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E6E3234;
+	Fri, 27 Jun 2025 14:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751035296; cv=none; b=gbmluQcA7B+/26koKD27P41S6KwWbUjYm93Mihc/BygkL6+Gsnk/HsoLSn1rJcwyCqjC5VttxtpQIwneh1iLsMZz4LgyjLOtWqAObQd0cFRy1N1bjBcLOgduRrmZdPOwdAIeMXzekxfpbQo8ZMosakfaKDoNh5s9zJT/h1ds6zU=
+	t=1751035300; cv=none; b=JhqcgXqnviaDUtd/AL3DeQzqv4yAV1fsiGx5B/peZtMkraZl4Dq1Q9qj5Obs8q9cC/Ay9yS9l6mkkeKgOPIJaFv9CDSVDsir7B+f/KBcCTSOtG/nae14iICsGSol+VohS8FJ/llqQVqWqPMuxJ3EYwsmPjUGL7q8tcdtE/pwhAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751035296; c=relaxed/simple;
-	bh=DkSV88qksqUtLKJI7ol90y8ckHSURyruXuGh6rf06DU=;
+	s=arc-20240116; t=1751035300; c=relaxed/simple;
+	bh=eBTAjbYxNXhiEfw1Pw48KCE9G06Yeyt8BnO4r4Jre0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFy6tH0YcqFvG3McMiKGmsS3ePPYENX79L1e0iXnuyJ4j70XtT79fMcWdKR6nqupv0HwupILGwGqJ1kK67TjcMiwob1CP0+2BZ6dyXfR/OMTgCFXY3mvE5gbeDxP8xL8oJGRMXFFjs4BIH/kXzl/MB7+ix15u2yY+oIlhqKRCRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HlK11Ao9; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version:Content-Type; b=hFv59TnndwLqZI8teBaHOhR+kUDGH0PyT2fNjoptckyudgMB0mFyib4trbCfnm0r8yqjgkQUuzsQzR5XXcFCvBE8CzWQuf3vc8luiAjTuAm91ZVE0jE9YtUuRKHsoH4yEom7Q7UvMYtLtbDEROuP28k2TYp6Y92ngj/rz6Tea+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I7jGoOG8; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751035295; x=1782571295;
+  t=1751035299; x=1782571299;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=DkSV88qksqUtLKJI7ol90y8ckHSURyruXuGh6rf06DU=;
-  b=HlK11Ao9C2E0tXr73sR/qn/meNHwczf/xtB1u5aSMYUdKj8Qthzir8sh
-   t+RZh464WQXAg/aE3vbnhG9GyRuRhH9pxmBfdBfF3Wykcu1c9bGHjv0Oy
-   BmzP0h2Jle/tkzAOjRpDFjG343ixnjj7FHjrOh5YoPs+pHKlZ9q+aBIGj
-   YDs4F3EV33FfLXqjVurdZghFvRq2AUAH4Rz8rp/K/ITHreGE/XogHsSlR
-   3GvsFqi0a6LoFiNmkB6Spspbx+AuuFcW+rZxw3tfN3kdk+04ZBzdsDndf
-   4W/ej8aYh7DUaW17knSTbUuHp84p3ojyFMMRzcJG4NpocX1zj5P/HazGz
-   w==;
-X-CSE-ConnectionGUID: dBgZyzSfTkSOhUinuIu9kQ==
-X-CSE-MsgGUID: zh1EmXz+SIGLYCxGcPaDlQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="53444934"
+  bh=eBTAjbYxNXhiEfw1Pw48KCE9G06Yeyt8BnO4r4Jre0A=;
+  b=I7jGoOG8vX7A985rfM+Lz6Wf5IrlhZfn3xVHpyKQpLL6oe/4+XyMgkYO
+   6pE+N+NORBUf5gbS7TQ/+dyLM601jSASfpgJKZM3H98wMivLtCceiJzNJ
+   ZLImMl9BVIncefgSGsu1cSOPDIuL1e3VpGvRjeE87HDLZGMP8tlMR4x7O
+   SteYOeFMgt89VSivcBRsH+o6F37P83S1aJuGXLGtdcPbr8ur/azKRsqDa
+   u3iC8buk/hZskyu829h0UTSGruxQzdcTgNXgk15hNmFHfijIJncdYF/VJ
+   tBRQxeS+YqCAX2u00pJm2GD6XGKh9X8mj1miJYcMWbSxd8ZhK/HixQCaq
+   g==;
+X-CSE-ConnectionGUID: ZBAfFPABRP6YCOUJnY9q/Q==
+X-CSE-MsgGUID: WzDrYg5FTfWzlbDPFTjdcw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="53444940"
 X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="53444934"
+   d="scan'208";a="53444940"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 07:41:34 -0700
-X-CSE-ConnectionGUID: F+BBiHYaQheEKYjgAMG6Mw==
-X-CSE-MsgGUID: C1z0T1TMSHe3QODxTj1Xeg==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 07:41:36 -0700
+X-CSE-ConnectionGUID: yvovHnSxSRCUrPYuUXjk7Q==
+X-CSE-MsgGUID: u74AGl21TD+8gR6FdFBa0A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="156872916"
+   d="scan'208";a="156872925"
 Received: from unknown (HELO mnyman-desk.fi.intel.com) ([10.237.72.199])
-  by fmviesa003.fm.intel.com with ESMTP; 27 Jun 2025 07:41:33 -0700
+  by fmviesa003.fm.intel.com with ESMTP; 27 Jun 2025 07:41:35 -0700
 From: Mathias Nyman <mathias.nyman@linux.intel.com>
 To: <gregkh@linuxfoundation.org>
 Cc: <linux-usb@vger.kernel.org>,
-	Hongyu Xie <xiehongyu1@kylinos.cn>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
 	stable@vger.kernel.org,
 	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 2/4] xhci: Disable stream for xHC controller with XHCI_BROKEN_STREAMS
-Date: Fri, 27 Jun 2025 17:41:20 +0300
-Message-ID: <20250627144127.3889714-3-mathias.nyman@linux.intel.com>
+Subject: [PATCH 3/4] xhci: dbctty: disable ECHO flag by default
+Date: Fri, 27 Jun 2025 17:41:21 +0300
+Message-ID: <20250627144127.3889714-4-mathias.nyman@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250627144127.3889714-1-mathias.nyman@linux.intel.com>
 References: <20250627144127.3889714-1-mathias.nyman@linux.intel.com>
@@ -76,34 +76,37 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Hongyu Xie <xiehongyu1@kylinos.cn>
+From: Łukasz Bartosik <ukaszb@chromium.org>
 
-Disable stream for platform xHC controller with broken stream.
+When /dev/ttyDBC0 device is created then by default ECHO flag
+is set for the terminal device. However if data arrives from
+a peer before application using /dev/ttyDBC0 applies its set
+of terminal flags then the arriving data will be echoed which
+might not be desired behavior.
 
-Fixes: 14aec589327a6 ("storage: accept some UAS devices if streams are unavailable")
-Cc: stable@vger.kernel.org # 5.4
-Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
+Fixes: 4521f1613940 ("xhci: dbctty: split dbc tty driver registration and unregistration functions.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
 Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 ---
- drivers/usb/host/xhci-plat.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-dbgtty.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index 6dab142e7278..c79d5ed48a08 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -328,7 +328,8 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
- 	}
- 
- 	usb3_hcd = xhci_get_usb3_hcd(xhci);
--	if (usb3_hcd && HCC_MAX_PSA(xhci->hcc_params) >= 4)
-+	if (usb3_hcd && HCC_MAX_PSA(xhci->hcc_params) >= 4 &&
-+	    !(xhci->quirks & XHCI_BROKEN_STREAMS))
- 		usb3_hcd->can_do_streams = 1;
- 
- 	if (xhci->shared_hcd) {
+diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
+index 60ed753c85bb..d894081d8d15 100644
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -617,6 +617,7 @@ int dbc_tty_init(void)
+ 	dbc_tty_driver->type = TTY_DRIVER_TYPE_SERIAL;
+ 	dbc_tty_driver->subtype = SERIAL_TYPE_NORMAL;
+ 	dbc_tty_driver->init_termios = tty_std_termios;
++	dbc_tty_driver->init_termios.c_lflag &= ~ECHO;
+ 	dbc_tty_driver->init_termios.c_cflag =
+ 			B9600 | CS8 | CREAD | HUPCL | CLOCAL;
+ 	dbc_tty_driver->init_termios.c_ispeed = 9600;
 -- 
 2.43.0
 
