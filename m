@@ -1,89 +1,111 @@
-Return-Path: <stable+bounces-158783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 163F3AEB962
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 16:00:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 703C0AEBA03
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 16:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D6F91C45E25
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 14:00:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23A03189E49B
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 14:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CD829B8FB;
-	Fri, 27 Jun 2025 14:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBE72676D9;
+	Fri, 27 Jun 2025 14:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dYXbDRFa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YM/LY4rc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B28F18DB14;
-	Fri, 27 Jun 2025 14:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA8927F00F;
+	Fri, 27 Jun 2025 14:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751032809; cv=none; b=OIjanm6d4XvERmrZmPXlRFEoPZwmK249OJ0qovYtb9yMMc8JZ59nuXcidXu1mm+6glfLwmYulrQdbeNjYvKNPt6Ywbi/DmR4nc3T8qCDxBNVxXypK19Rx0zIU6AKiHHfvLnUZ3IMTkgeE5WeLAfyZxo7bATfZQnDmKCg0ARJGTo=
+	t=1751034925; cv=none; b=novl/7q4cAzP3QRH7UYBhRqRbVbSRuyrOO3MJjrzUGsnv9PY7kJCSBuMbmTJz/g9Ze9s9fVycQiathaNHHwtkWjhykca6yaj9twcT7xOMVtejoqb443z55OeyKV3MKuY/stqQimyGbzyWt1r2WO6nAyU2CwVD4+tfL/Q1qv94pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751032809; c=relaxed/simple;
-	bh=9PsIdObdQYdLva1DL+FRjtpGjZk7PWQC7B36NSZIapU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WojDv+LOVyll0it0yRebK0jxPtboHspX3xe/1DIO96RDup7W6Si3BemVBbroovbfVOXObf4otVYWPogoKf5YMbfvZRQtI+8JIuI0sJDWCnHWG+7DgfE5Iy8bzrByos4Bt6WO9Mao3CPATl6Iz1g1mLyGVxD4lqymQoZjSR4eOVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dYXbDRFa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBB6C4CEED;
-	Fri, 27 Jun 2025 14:00:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751032809;
-	bh=9PsIdObdQYdLva1DL+FRjtpGjZk7PWQC7B36NSZIapU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dYXbDRFaRuex7XrmOT9aL2vjzn7DEqPQlMZzr+KQHHKPuPn/nl40Hho03cZTYSOyh
-	 lfk/iG/2mA6Y+6FVG5T2yianqQmVUnYwCDBs9YhikJEAeyLGvSZNHmJj3gbGL+/qHq
-	 hFBRezGVA8hJE5L6XLPOXRXcGw3JZJnucbqTutpPHwKt0IkWUBBB/N3GKeG/DnQa0T
-	 qdcdTszvYieCrWKbuQTGehoq0jWz1y+0UOdGxN1A5Q2Y30/3MTE1e2iwD8Rz20eDvv
-	 fhedfdoNyCs0oBmnpHbJJGmmUdF5+UcXcKomaI8xeBz8Qy2moVJpOdW5R4duRhVZ6r
-	 rbgs+xDUbqLNQ==
-Date: Fri, 27 Jun 2025 08:00:05 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Parav Pandit <parav@nvidia.com>, Stefan Hajnoczi <stefanha@redhat.com>,
-	"axboe@kernel.dk" <axboe@kernel.dk>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"NBU-Contact-Li Rongqing (EXTERNAL)" <lirongqing@baidu.com>,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"jasowang@redhat.com" <jasowang@redhat.com>,
-	"alok.a.tiwari@oracle.com" <alok.a.tiwari@oracle.com>,
-	Max Gurtovoy <mgurtovoy@nvidia.com>,
-	Israel Rukshin <israelr@nvidia.com>
-Subject: Re: [PATCH v5] virtio_blk: Fix disk deletion hang on device surprise
- removal
-Message-ID: <aF6j5U2qOi3v0Jf_@kbusch-mbp>
-References: <CY8PR12MB7195AF9E34DF2A4821F590A8DC7BA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250625074112-mutt-send-email-mst@kernel.org>
- <CY8PR12MB719531F26136254CC4764CD4DC7BA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250625151732-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195D92360146FFE1A59941CDC7AA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250626020230-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195435970A9B3F64E45825ADC7AA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250626023324-mutt-send-email-mst@kernel.org>
- <CY8PR12MB71958505493CE570B5C519A0DC7AA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250627082048-mutt-send-email-mst@kernel.org>
+	s=arc-20240116; t=1751034925; c=relaxed/simple;
+	bh=NZZXC515ZgT0fUOzjmcsg0e8paiYFX5FCo8x0ojHTjI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BB7W2/H1XeR6h6+xec4A0QoSr74Dz+EA8dkcJxdWuTEDmeB3J9u2347TNJS2ylVWrDKlVED+MSLNZb9ZtwhVp3mgvr8JzXBiL090K0qBBrRiZQ3ZaWwqMVq8aFl/5pU5aQewX8dbpmaliO+LMo6ZdXisiEC/X0A2G9sPeRswo2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YM/LY4rc; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751034924; x=1782570924;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=NZZXC515ZgT0fUOzjmcsg0e8paiYFX5FCo8x0ojHTjI=;
+  b=YM/LY4rcYdzBT0045NKsx1WsWxgzeRslaB8ch+VtnwIb5GntTQtllqgu
+   W2bp6pW2gHmhHq2FUIPVsA510uTxXmGfOoyzpeGR4w0f2RpyrJCriq8xG
+   6ZnJ5EOuQFTk7i09rYu4acmuFtRNRncmWVEN7hAeuSqapZjcj8zyXYh8L
+   Ow/a0eATXKyvQrtgG+orHPwkMxMyvvVaVJI6SaycCAlmu8davNeWKy4vZ
+   fW1an+FZkw2mqhBOQAzeEwXgcHtnNewXDT5JoY5KvtzwWkNOO1u3PX3iW
+   M06tRtjXo48YIeLLWUPZpJ4tcHWClX2gYBlrcGneprF7JAqF+D4R2O8RH
+   A==;
+X-CSE-ConnectionGUID: TaeS3RtmTAyZ+/VKltemuA==
+X-CSE-MsgGUID: 45EU7pBJS3mznCxZ4355fw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="63606894"
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
+   d="scan'208";a="63606894"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 07:35:24 -0700
+X-CSE-ConnectionGUID: 3M/Ip3BYSE+KIXNI9eqoUw==
+X-CSE-MsgGUID: CKtq3BtuRv+ft8Xnww3Elw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
+   d="scan'208";a="152344332"
+Received: from mjruhl-desk.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.220.252])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 07:35:23 -0700
+From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
+To: linux-i2c@vger.kernel.org,
+	andi.shyti@kernel.org,
+	andriy.shevchenko@intel.com
+Cc: "Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] i2c/designware: Fix an initialization issue
+Date: Fri, 27 Jun 2025 10:35:11 -0400
+Message-ID: <20250627143511.489570-1-michael.j.ruhl@intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250627082048-mutt-send-email-mst@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 27, 2025 at 08:21:16AM -0400, Michael S. Tsirkin wrote:
-> 
-> You did, thanks! How do other drivers handle this? The issue seems generic.
+The i2c_dw_xfer_init() function requires msgs and msg_write_idx from the
+dev context to be initialized.
 
-They implement blk_mq_ops' ".timeout" callback, which appears to be
-missing in virtio_mq_ops.
+amd_i2c_dw_xfer_quirk() inits msgs and msgs_num, but not msg_write_idx.
+
+This could allow an out of bounds access (of msgs).
+
+Initialize msg_write_idx before calling i2c_dw_xfer_init().
+
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 17631e8ca2d3 ("i2c: designware: Add driver support for AMD NAVI GPU")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+---
+ drivers/i2c/busses/i2c-designware-master.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
+index c5394229b77f..40aa5114bf8c 100644
+--- a/drivers/i2c/busses/i2c-designware-master.c
++++ b/drivers/i2c/busses/i2c-designware-master.c
+@@ -363,6 +363,7 @@ static int amd_i2c_dw_xfer_quirk(struct i2c_adapter *adap, struct i2c_msg *msgs,
+ 
+ 	dev->msgs = msgs;
+ 	dev->msgs_num = num_msgs;
++	dev->msg_write_idx = 0;
+ 	i2c_dw_xfer_init(dev);
+ 
+ 	/* Initiate messages read/write transaction */
+-- 
+2.49.0
+
 
