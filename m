@@ -1,276 +1,109 @@
-Return-Path: <stable+bounces-158808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8AAAEC0C0
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 22:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 351CBAEC185
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 22:52:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 888BB56544F
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 20:16:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EE5F5649A0
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 20:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1C020E6F9;
-	Fri, 27 Jun 2025 20:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C092ECD35;
+	Fri, 27 Jun 2025 20:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oZpNVPE/"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="vi13Vr9N";
+	dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b="lgZvdzfO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from e3i282.smtp2go.com (e3i282.smtp2go.com [158.120.85.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DE71FDA9E;
-	Fri, 27 Jun 2025 20:16:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F672ECD1F
+	for <stable@vger.kernel.org>; Fri, 27 Jun 2025 20:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.85.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751055401; cv=none; b=ulAuk9aYA+y8Z7Ezj5xiYly8eqrxxMqKt6ifLNfc8heLAIcUeNOBoaAbEZZ8UUvRuEp9xcmjA5pnNNfRIGm0pz+KoT5y3q8fDkZZg1OiWijXZdoZ1ZKc4jkZmUVQhBLKe15qVVoJ4zki6ThKGmV4UL0/LvooH2HiWRXTA22Z8Qw=
+	t=1751057519; cv=none; b=GdZdN0qhezP6nIPKWbE02b3gk/N6Yr+nNauOBNGIrEIkd31TFA+sdfUT+8pfGBM5buUWmv+lHnJdJEdxO4ENsmyducCbnq6ayXqhyjAB+NUwZm3lphRtrUWkEwbu6Bus0OFJ84ZtYG1k/SYxaGjSvAVeX1U0bxqzA/BbYTECJOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751055401; c=relaxed/simple;
-	bh=0ycLypSsxTbjWTppD9VeLyvJ/v5bkiAZHWTGUWJZgv0=;
-	h=Date:To:From:Subject:Message-Id; b=ieczfZsnOmYytmv2m/4xaL+9XzmykVgNo7ATvQhsCZlEJjwmCSZ0I1BqMPVNft7VGZ1lZWjwd4qY53Jq62Vmc4GZVHn4IXfq+herTq/gIWeZZlKrKrcgNRjjO6BmT8OXguLBDlXWDzX+37gXFtqjgtP+mPARndk2j3G2sk5dKzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oZpNVPE/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFB5C4CEE3;
-	Fri, 27 Jun 2025 20:16:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1751055401;
-	bh=0ycLypSsxTbjWTppD9VeLyvJ/v5bkiAZHWTGUWJZgv0=;
-	h=Date:To:From:Subject:From;
-	b=oZpNVPE/BrkdEFvPbqeauQ7Rwr+Mcyzsy9fcpIZWVAEJXtFWBB8fNpTVSzqY9RbSZ
-	 Ui0BWz37+dXcQk7fwXOnC+lOngwuybV2fJE/JjMlqn4X63PL+9Hmaaky6b0/eFttfU
-	 OUQo/jfgYz6s7XeHH9g2jxJ0mUJQlN9qqAtUG6i0=
-Date: Fri, 27 Jun 2025 13:16:40 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,hughd@google.com,dev.jain@arm.com,chrisl@kernel.org,bhe@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung.patch added to mm-new branch
-Message-Id: <20250627201641.1EFB5C4CEE3@smtp.kernel.org>
+	s=arc-20240116; t=1751057519; c=relaxed/simple;
+	bh=hnIQiztxMqZWdOo1P+htuYxmTRJegAPaInqW5mKJO1o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CDlSgA6UssyvwxtHNYH719LS4Z44mdwn8VT+kMqnH3wwXB4lAVzU2U6gsgIIOPxE64CGUgRoU5e9M+RFKUSGaho7lNKd9ylGzuMXDE/VPNqrMx7zpeyTbMNztVLpQHaEQl9VX/H18rrmYbITYlWBzXSy1vKXEkNUpT3LBTGDD5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev; spf=pass smtp.mailfrom=em1255854.medip.dev; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=vi13Vr9N; dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b=lgZvdzfO; arc=none smtp.client-ip=158.120.85.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1255854.medip.dev
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1751056606; h=feedback-id :
+ x-smtpcorp-track : date : message-id : to : subject : from : reply-to
+ : sender : list-unsubscribe : list-unsubscribe-post;
+ bh=TqdWV7/vA1rvF4B46py+BIoi1Rg8y4mycuMpMH6ZDBQ=;
+ b=vi13Vr9NPMhOKmLQi06MTgpuUftt1t+syJlMHZUTC7yzvSkr29I4GUqc5IHXvr45hsOSJ
+ fLiP98DpSkVdBonH9nHtyJwLkPk6+ph6be8yI5SgzgUm1OItLTOg/H3IKMwIQXM7xXMxu8v
+ qeEXSrDhURXLXb5EyYFAFPU0AlX0DICTmeOJ0jsDIcBO+kBqcbGS2kIFuzdHYy9EgobIaiH
+ ni+MecjNLLnl165T67ZCbeU4yTeYzMI//6qc0nzolIbslIYhgh/dIWsy5TsE+Mabl8gjNMv
+ IveO0b9XSQzyH5wMd64eMaKuqAiU26P+wHoeD25kv8hNUWng7R1kgZSDFWUQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=medip.dev;
+ i=@medip.dev; q=dns/txt; s=s1255854; t=1751056606; h=from : subject :
+ to : message-id : date;
+ bh=TqdWV7/vA1rvF4B46py+BIoi1Rg8y4mycuMpMH6ZDBQ=;
+ b=lgZvdzfO6aWTo0/NBKQAdrvxMrnCflDXCUWUgdxI7bl8PzDIYLTabWQpmsrtUHhNlqyci
+ ZGTfdGcMdiPSByGW0+D31s93zM1Npvrs8oGvqUrYLNRrjur/6HCmNNVWX+a9nCU7I3Z+vLq
+ 5eujiU4mS7dzqqb0GaBI9fsTlGd3aY6KS1QFnk/uHE9GjblCu44hz888xWfgR2zymx8DS02
+ gr51PcR5ySafAIm42Ei8PXSaNIa+HTOG3DizoWVK4GeuUgO1aBQuyY1kiUOIv/e7o/d6S0G
+ YZ6XFIPDiWQ5Rb7br92oXAK2eO35HwPDsw3Q7BgskMJFAZWJWtRaT6ySTQiw==
+Received: from [10.152.250.198] (helo=vilez)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.1-S2G)
+	(envelope-from <edip@medip.dev>)
+	id 1uVFoO-FnQW0hPsXUs-39tC;
+	Fri, 27 Jun 2025 20:36:41 +0000
+From: edip@medip.dev
+To: perex@perex.cz,
+	tiwai@suse.com
+Cc: linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Edip Hazuri <edip@medip.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH] ALSA: hda/realtek - Add mute LED support for HP Victus 15-fb2xxx
+Date: Fri, 27 Jun 2025 23:34:16 +0300
+Message-ID: <20250627203415.56785-2-edip@medip.dev>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
+Feedback-ID: 1255854m:1255854ay30w_v:1255854sS8hnAP156
+X-smtpcorp-track: hqnQodpysGgN.LNQv72zjzQYz.38XRhQgJ60Z
 
+From: Edip Hazuri <edip@medip.dev>
 
-The patch titled
-     Subject: mm/shmem, swap: improve cached mTHP handling and fix potential hung
-has been added to the -mm mm-new branch.  Its filename is
-     mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung.patch
+The mute led on this laptop is using ALC245 but requires a quirk to work
+This patch enables the existing quirk for the device.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung.patch
+Tested on my friend's Victus 15-fb2xxx Laptop. The LED behaviour works as intended.
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Kairui Song <kasong@tencent.com>
-Subject: mm/shmem, swap: improve cached mTHP handling and fix potential hung
-Date: Fri, 27 Jun 2025 14:20:14 +0800
-
-Patch series "mm/shmem, swap: bugfix and improvement of mTHP swap in", v3.
-
-The current mTHP swapin path have some problems.  It may potentially hang,
-may cause redundant faults due to false positive swap cache lookup, and it
-will involve at least 4 Xarray tree walks (get order, get order again,
-confirm swap, insert folio).  And for !CONFIG_TRANSPARENT_HUGEPAGE builds,
-it will performs some mTHP related checks.
-
-This series fixes all of the mentioned issues, and the code should be more
-robust and prepared for the swap table series.  Now tree walks is reduced
-to twice (get order & confirm, insert folio) and added more sanity checks
-and comments.  !CONFIG_TRANSPARENT_HUGEPAGE build overhead is also
-minimized, and comes with a sanity check now.
-
-The performance is slightly better after this series, sequential swap in
-of 24G data from ZRAM, using transparent_hugepage_tmpfs=always (24 samples
-each):
-
-Before:        11.17, Standard Deviation: 0.02
-After patch 1: 10.89, Standard Deviation: 0.05
-After patch 2: 10.84, Standard Deviation: 0.03
-After patch 3: 10.91, Standard Deviation: 0.03
-After patch 4: 10.86, Standard Deviation: 0.03
-After patch 5: 10.07, Standard Deviation: 0.04
-After patch 7: 10.09, Standard Deviation: 0.03
-
-Each patch improves the performance by a little, which is about ~10%
-faster in total.
-
-Build kernel test showed very slightly improvement, testing with make -j24
-with defconfig in a 256M memcg also using ZRAM as swap, and
-transparent_hugepage_tmpfs=always (6 test runs):
-
-Before:      system time avg: 3911.80s
-After:       system time avg: 3863.76s
-
-
-This patch (of 7):
-
-The current swap-in code assumes that, when a swap entry in shmem mapping
-is order 0, its cached folios (if present) must be order 0 too, which
-turns out not always correct.
-
-The problem is shmem_split_large_entry is called before verifying the
-folio will eventually be swapped in, one possible race is:
-
-    CPU1                          CPU2
-shmem_swapin_folio
-/* swap in of order > 0 swap entry S1 */
-  folio = swap_cache_get_folio
-  /* folio = NULL */
-  order = xa_get_order
-  /* order > 0 */
-  folio = shmem_swap_alloc_folio
-  /* mTHP alloc failure, folio = NULL */
-  <... Interrupted ...>
-                                 shmem_swapin_folio
-                                 /* S1 is swapped in */
-                                 shmem_writeout
-                                 /* S1 is swapped out, folio cached */
-  shmem_split_large_entry(..., S1)
-  /* S1 is split, but the folio covering it has order > 0 now */
-
-Now any following swapin of S1 will hang: `xa_get_order` returns 0, and
-folio lookup will return a folio with order > 0.  The
-`xa_get_order(&mapping->i_pages, index) != folio_order(folio)` will always
-return false causing swap-in to return -EEXIST.
-
-And this looks fragile.  So fix this up by allowing seeing a larger folio
-in swap cache, and check the whole shmem mapping range covered by the
-swapin have the right swap value upon inserting the folio.  And drop the
-redundant tree walks before the insertion.
-
-This will actually improve performance, as it avoids two redundant Xarray
-tree walks in the hot path, and the only side effect is that in the
-failure path, shmem may redundantly reallocate a few folios causing
-temporary slight memory pressure.
-
-And worth noting, it may seems the order and value check before inserting
-might help reducing the lock contention, which is not true.  The swap
-cache layer ensures raced swapin will either see a swap cache folio or
-failed to do a swapin (we have SWAP_HAS_CACHE bit even if swap cache is
-bypassed), so holding the folio lock and checking the folio flag is
-already good enough for avoiding the lock contention.  The chance that a
-folio passes the swap entry value check but the shmem mapping slot has
-changed should be very low.
-
-Link: https://lkml.kernel.org/r/20250627062020.534-2-ryncsn@gmail.com
-Link: https://lkml.kernel.org/r/20250627062020.534-2-ryncsn@gmail.com
-Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Dev Jain <dev.jain@arm.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Edip Hazuri <edip@medip.dev>
 ---
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- mm/shmem.c |   30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
-
---- a/mm/shmem.c~mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung
-+++ a/mm/shmem.c
-@@ -884,7 +884,9 @@ static int shmem_add_to_page_cache(struc
- 				   pgoff_t index, void *expected, gfp_t gfp)
- {
- 	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
--	long nr = folio_nr_pages(folio);
-+	unsigned long nr = folio_nr_pages(folio);
-+	swp_entry_t iter, swap;
-+	void *entry;
- 
- 	VM_BUG_ON_FOLIO(index != round_down(index, nr), folio);
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-@@ -896,14 +898,24 @@ static int shmem_add_to_page_cache(struc
- 
- 	gfp &= GFP_RECLAIM_MASK;
- 	folio_throttle_swaprate(folio, gfp);
-+	swap = iter = radix_to_swp_entry(expected);
- 
- 	do {
- 		xas_lock_irq(&xas);
--		if (expected != xas_find_conflict(&xas)) {
--			xas_set_err(&xas, -EEXIST);
--			goto unlock;
-+		xas_for_each_conflict(&xas, entry) {
-+			/*
-+			 * The range must either be empty, or filled with
-+			 * expected swap entries. Shmem swap entries are never
-+			 * partially freed without split of both entry and
-+			 * folio, so there shouldn't be any holes.
-+			 */
-+			if (!expected || entry != swp_to_radix_entry(iter)) {
-+				xas_set_err(&xas, -EEXIST);
-+				goto unlock;
-+			}
-+			iter.val += 1 << xas_get_order(&xas);
- 		}
--		if (expected && xas_find_conflict(&xas)) {
-+		if (expected && iter.val - nr != swap.val) {
- 			xas_set_err(&xas, -EEXIST);
- 			goto unlock;
- 		}
-@@ -2323,7 +2335,7 @@ static int shmem_swapin_folio(struct ino
- 			error = -ENOMEM;
- 			goto failed;
- 		}
--	} else if (order != folio_order(folio)) {
-+	} else if (order > folio_order(folio)) {
- 		/*
- 		 * Swap readahead may swap in order 0 folios into swapcache
- 		 * asynchronously, while the shmem mapping can still stores
-@@ -2348,15 +2360,15 @@ static int shmem_swapin_folio(struct ino
- 
- 			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
- 		}
-+	} else if (order < folio_order(folio)) {
-+		swap.val = round_down(swap.val, 1 << folio_order(folio));
- 	}
- 
- alloced:
- 	/* We have to do this with folio locked to prevent races */
- 	folio_lock(folio);
- 	if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
--	    folio->swap.val != swap.val ||
--	    !shmem_confirm_swap(mapping, index, swap) ||
--	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
-+	    folio->swap.val != swap.val) {
- 		error = -EEXIST;
- 		goto unlock;
- 	}
-_
-
-Patches currently in -mm which might be from kasong@tencent.com are
-
-mm-list_lru-refactor-the-locking-code.patch
-mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung.patch
-mm-shmem-swap-avoid-redundant-xarray-lookup-during-swapin.patch
-mm-shmem-swap-tidy-up-thp-swapin-checks.patch
-mm-shmem-swap-clean-up-swap-entry-splitting.patch
-mm-shmem-swap-never-use-swap-cache-and-readahead-for-swp_synchronous_io.patch
-mm-shmem-swap-fix-major-fault-counting.patch
-mm-shmem-swap-avoid-false-positive-swap-cache-lookup.patch
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 5d6d01ecf..a33e8a654 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10881,6 +10881,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8ce0, "HP SnowWhite", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8d01, "HP ZBook Power 14 G12", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8d07, "HP Victus 15-fb2xxx (MB 8D07)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8d18, "HP EliteStudio 8 AIO", ALC274_FIXUP_HP_AIO_BIND_DACS),
+ 	SND_PCI_QUIRK(0x103c, 0x8d84, "HP EliteBook X G1i", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8d85, "HP EliteBook 14 G12", ALC285_FIXUP_HP_GPIO_LED),
+-- 
+2.50.0
 
 
