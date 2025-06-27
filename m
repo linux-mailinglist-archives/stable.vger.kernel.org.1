@@ -1,111 +1,97 @@
-Return-Path: <stable+bounces-158787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D60AEBA12
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 16:41:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8047AEBB62
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 17:14:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47DE0564094
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 14:41:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECDB91C62B8C
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 15:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B67C2E542C;
-	Fri, 27 Jun 2025 14:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969F82EA169;
+	Fri, 27 Jun 2025 15:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KsGydZeY"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="OaZ+X8EH"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9ED92E4251;
-	Fri, 27 Jun 2025 14:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F972EA159;
+	Fri, 27 Jun 2025 15:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751035300; cv=none; b=rWjzJlx/XvQZftUNExgNOvlp7YC1ruqZLR7jLlE1a3w6GgV5DBrW388TnEGHwuziCC510Z0R10MSKBwBI5yQ1G8abikCF8oZOd+ffZ+gU/UX7NuoVt9IIFB3FsG1WSdmGQ/0ePdGHOgLGOSeGyCeeDoQGnTrvaUeFRMlmQWi+6Y=
+	t=1751037054; cv=none; b=EZwuO4v0VBs4fusZJ6aYBUtQZzbUfGyDSPzLb2KGb0jXpC0tcGZk6bT9YaKfgyx2D88KA8QcNvgOLRN92kjcjVrgxtnIMLC/ktCBWDwahVCaYlc8PIh+uv325oJ10FWjwOm+Zkxv0+sTzW5I6Dl63iKaJtceaOotPQL0pfNjCj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751035300; c=relaxed/simple;
-	bh=K6l+N8ifqM+Flxuijc9b15/P0vfZU5+LDCNITCeiCNo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JACHcGIcnqbZAp/V2hH15AMxWCGjNvCikmkofOeMCc6cgGnoBwHSlKaLsF5Z9dfy+T2GQn5FtH2YBK+G00PW9OfegbHy+YsI9IjdO5Huafe2V3bh/VpvlxP+/QoQiQfhWyXN/3dCogHhSaBxO66UTQYpqQ1pofmg19rlfSWsDoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KsGydZeY; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751035299; x=1782571299;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=K6l+N8ifqM+Flxuijc9b15/P0vfZU5+LDCNITCeiCNo=;
-  b=KsGydZeYrlILQqM2stVQhsgZlES9fcoepFOsXY0RGOLMyabfN/dKyFMR
-   we5D3iPCEg2A4cCkTNvohcTzNneeRiV1nQ6fj+KS83E0CY1TigrBh6Y3z
-   KuWm3Bp7MaNX7oVum2H3sWSwabHdB7jNsDS9kQ8RuFpE8y8mZL3Czm2ZM
-   gnd+wxLbuN1VBaYypOEZesCeQPjHnpc9MndYLPcvNKp0l6/NPkk5XYpJX
-   35KCK/EO5lkMVVOjQ30FOrgPUEaEgLKVfeoXYEPHlSSkxX2TyF9vLhaxr
-   FTx3gKTZhyi+owdb2isAgEpimWqBmDM3M7LaqxME2jypG2kujCU9GO5X1
-   A==;
-X-CSE-ConnectionGUID: 8IrwRDu7THaQlo8agpBYhw==
-X-CSE-MsgGUID: jlTkYmNxRcKgmu7klxwHPA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="53444945"
-X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="53444945"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 07:41:38 -0700
-X-CSE-ConnectionGUID: drHRAQwaR+qQWeMD++w0Zg==
-X-CSE-MsgGUID: GXEimql5RSaXROXp43L/ag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="156872932"
-Received: from unknown (HELO mnyman-desk.fi.intel.com) ([10.237.72.199])
-  by fmviesa003.fm.intel.com with ESMTP; 27 Jun 2025 07:41:37 -0700
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-To: <gregkh@linuxfoundation.org>
-Cc: <linux-usb@vger.kernel.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 4/4] xhci: dbc: Flush queued requests before stopping dbc
-Date: Fri, 27 Jun 2025 17:41:22 +0300
-Message-ID: <20250627144127.3889714-5-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250627144127.3889714-1-mathias.nyman@linux.intel.com>
-References: <20250627144127.3889714-1-mathias.nyman@linux.intel.com>
+	s=arc-20240116; t=1751037054; c=relaxed/simple;
+	bh=t4nnXnVLbMeu6uCk07CL3es50V7NSScr2thgSrL2oj8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=glLy3LUBJMtP0Kgr5oIhJv0hXnfyffMXPEIwLnh1+Yndfr9nVOOs04zaavfxky++pS7lxvaDbjy8JUbIFccqI8XJUsrSaK5GrvW7w7WBspBErtr6J7hMTCKwcFN7y2xb9XwZFNgkHVI1dRZaH6nNb8iR/ihb+luk5I/9f+1VCyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=OaZ+X8EH; arc=none smtp.client-ip=199.89.3.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 003.mia.mailroute.net (Postfix) with ESMTP id 4bTJsR22HvzlvX8d;
+	Fri, 27 Jun 2025 15:10:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1751037050; x=1753629051; bh=t4nnXnVLbMeu6uCk07CL3es5
+	0V7NSScr2thgSrL2oj8=; b=OaZ+X8EH1w74TDU8/38Koa8VCuy4Ez+tKm5hGnKi
+	QEJ4BxsTINGsyE/2dHwRquIFFMSFDKTtuJVvijlZVKAbvtsLu/A/CcMO+nj5HU9o
+	DtIu8A205XIa6+mTAaZWcqGVv4IQX06iRaJNmZ9AJtjJTCNQsfZ9MN0/Hnw2h+i8
+	BhQ8DDrUOdoWI4j9vksMg14mNwCbYphl31/nkX/rBN2DO61nYGi2uAXCvi62sKbR
+	O6x21d1yVPVUXFrnKPpVNdp/p/V+wYk3CzPOKlBuFYuUdCY874S6cbgMlYnHIStZ
+	gDhbTQZWqYjJy1DwzU64pPj+cOBmgn52rn9NmMJL8boxqw==
+X-Virus-Scanned: by MailRoute
+Received: from 003.mia.mailroute.net ([127.0.0.1])
+ by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id H-oLh7ZuUa70; Fri, 27 Jun 2025 15:10:50 +0000 (UTC)
+Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4bTJsK0syQzlgqyt;
+	Fri, 27 Jun 2025 15:10:43 +0000 (UTC)
+Message-ID: <344a0eef-6942-455a-9fb2-f80fd72d4668@acm.org>
+Date: Fri, 27 Jun 2025 08:10:42 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] block: Fix a deadlock related to modifying the readahead
+ attribute
+To: Nilay Shroff <nilay@linux.ibm.com>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ stable@vger.kernel.org
+References: <20250625195450.1172740-1-bvanassche@acm.org>
+ <1816437d-240a-4834-bef9-c9c4a66bee0a@linux.ibm.com>
+ <ca4c60c9-c5df-4a82-8045-54ed9c0ba9be@acm.org>
+ <7e4ff7e0-b2e0-4e2d-92a4-65b3d695c5e1@linux.ibm.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <7e4ff7e0-b2e0-4e2d-92a4-65b3d695c5e1@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Flush dbc requests when dbc is stopped and transfer rings are freed.
-Failure to flush them lead to leaking memory and dbc completing odd
-requests after resuming from suspend, leading to error messages such as:
+On 6/26/25 11:16 PM, Nilay Shroff wrote:
+> Thanks! this makes sense now. But then we do have few other limits
+> (e.g. iostats_passthrough, iostats, write_cache etc.) which are accessed
+> during IO hotpath. So if we were to update those limits then we acquire
+> ->limits_lock and also freezes the queue. So I wonder how could those be
+> addressed?
 
-[   95.344392] xhci_hcd 0000:00:0d.0: no matched request
+Is there any Linux distro that sets these sysfs attributes from a udev
+rule? If not, I don't think that we have to worry about these sysfs
+attributes.
 
-Cc: stable@vger.kernel.org
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
----
- drivers/usb/host/xhci-dbgcap.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Thanks,
 
-diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
-index 0d4ce5734165..06a2edb9e86e 100644
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -652,6 +652,10 @@ static void xhci_dbc_stop(struct xhci_dbc *dbc)
- 	case DS_DISABLED:
- 		return;
- 	case DS_CONFIGURED:
-+		spin_lock(&dbc->lock);
-+		xhci_dbc_flush_requests(dbc);
-+		spin_unlock(&dbc->lock);
-+
- 		if (dbc->driver->disconnect)
- 			dbc->driver->disconnect(dbc);
- 		break;
--- 
-2.43.0
-
+Bart.
 
