@@ -1,99 +1,106 @@
-Return-Path: <stable+bounces-158733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377B8AEAEF4
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 08:22:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34537AEAEFC
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 08:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F3A71778A6
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 06:22:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E492A562306
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 06:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF64204866;
-	Fri, 27 Jun 2025 06:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3995475E;
+	Fri, 27 Jun 2025 06:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="atfME/wd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YxxHP/+B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB690202C3A;
-	Fri, 27 Jun 2025 06:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496F582866;
+	Fri, 27 Jun 2025 06:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751005367; cv=none; b=TEyPJSdPDVUIOR/POYTG/MBFC2K8MxRjuiao7GVfQGzI1XReVD4Nf+JgDT/nsWKK+izOwAusbFckdPasLTkXD4uJc3/a/Bm0ezb5Ig2PrI8I//l/kSbIeLwUQNkSZ0dBjSI6E7N584MYYK/uIywyuxI3S+cr+z//Xyw+gScdspg=
+	t=1751005428; cv=none; b=kx/kh/ep1lSCEweoMH7A0XGXSgYpnPtpLBVYdvEYq4pK7igzRhwM7fCzYpTMN6+6ILPWWDj4iaHTLT5H90Mn/IaU46f7s+IqKYvCBCTrw8LcwPfHQ4L0+J1KJoxGzpfXdMkrd9m8LEvIpNriFWsxLT2bjE1EqqsrZsHNrjnERX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751005367; c=relaxed/simple;
-	bh=NR1Le/QeGmW3hnvTusfj4VqQPx1dEdIZ91YrkkAOqLM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWpKPWyvx4bWextoxKeIuLcne48VAboFC0CYmOqUpVTkMTmxS0uUjqOKkSTfjEsdepnrFQjmSxn4alWNFb14x6/+KY/QY939qLq07so4Oyyy1QL+oOQ+ixRlt+XwieIb8H6QLAirxQL4iIJvJC55WSDvz06nT1joh5E156sbicw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=atfME/wd; arc=none smtp.client-ip=209.85.210.180
+	s=arc-20240116; t=1751005428; c=relaxed/simple;
+	bh=sxKU4vp0w5gNhXkyFUOM3H3iHQyXxFxKA4+jwYiBH5M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=APaQBxUVrzWuD3vtDfzPSrDR6OxHsKMwFAvwfS7F8brV15Uhle7CtFB31Iz8gaq4SYV08FV+Y6evoSbl221GPFtxJb74+bC12UhyQ5N/CeXZQPFI0qu9/ebUP1vBSStceDVncK/3HQHCn3ppKN9qCZR3AxOj7cwdoKQ3/7Rle4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YxxHP/+B; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-748f5a4a423so1279194b3a.1;
-        Thu, 26 Jun 2025 23:22:45 -0700 (PDT)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-451d41e1ad1so11725765e9.1;
+        Thu, 26 Jun 2025 23:23:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751005365; x=1751610165; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=v/lPSXdBTYyYcW2f1P/9Kus+D32Lno4t+GB7GicU1lE=;
-        b=atfME/wdOkkQeOyrzLRDRI30piORfIfup+Fab6XCOfue9pY6u1dcIDSuANVxXyzgo2
-         t82jvM5u04QS2zFRStBXVRdKDxK8F22qu6HLm/NwsBS94h6WknD/l3e4zufWJ2yI8TSw
-         Igt5rFWXp3FS2PVUGHLyKgqByJ/Ln2ruLmE5tmh46ok5VpFxRMxZa30AL85PRzPSXZs4
-         7JJm2tHseBHAKvy22efjEyZ0100VGE50O1BoghF9BjMXcf2zCDhXq/aH+nCnNB2yBmsF
-         OpifxsxX92ouXDxgA428EP/drFJp5tPytP5dBKCI0VRWJQWsQ4oIxWGHMKvpa7KyRRfm
-         oAxQ==
+        d=gmail.com; s=20230601; t=1751005425; x=1751610225; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mtGJ3hLLX6kLkhpS+Roj43p3ubAD6EYXh2l2qlYKI+A=;
+        b=YxxHP/+BnUN7zKxwp9oofA4SO8TIRyOBSQhYUCabqF5BZkDXNQL1rcbSM6Tb6AFxO8
+         BEoElSpaM6+PADHcxjeZKjVM040G1AKvPuhcDs098zd/0fa9rraZTh4v3evC8qTsPzjN
+         G5uHdjPnzWB4cSnJXg/8pCmZ2KEy+PArFAF/HaRvvJ2bqJixmwkqu5tKf57kUjYmeOR6
+         UAnf+muT+OVhJ9cQNVt07Nv0j3vb8qSbcb1T0K/3n7G++nqZ//j3BTQHcZhSRpHw34xp
+         5DCSiaXFVwwRKGp+ldHB147cetZMnPqfxxsTWacuQa0115GUUzbNGvkGDBxYZoSMLd6a
+         jh+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751005365; x=1751610165;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=v/lPSXdBTYyYcW2f1P/9Kus+D32Lno4t+GB7GicU1lE=;
-        b=LpxSEBQ6Cdp+VVu7HbHxMwiaKtG9Ck0nNibcprgcCq+fa3Jbtc5xqd37war45jLk8Z
-         StzkBsYlZ/igopeQ2cYxahoWtnTSiju1Qcydnt3X8cTCft5y+iaurc/xy5UxXaY2zeo/
-         bOGr1HheTID2Lkv0DsNaQmD4ZXYqu3CZI1pA/YBY1AKqLP00hWj1i1wWIHmlFgGaUFd2
-         RVNuos0lcIIKADu0cvOBkYlQYbpndU91GZgBsGbH1FRClELH9AOz8ORGwvqWXpBWDUXc
-         k9bjTSZhEtocchOhMbo5gCoKG5A6DHA7kC15mfhmQYMBbNIIwibOJ1c/HHDq8wTOVAr6
-         umjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVBQRwb9111usquD+0S2bSecbBFg10BJvjjPTfWKDw1UveVc7MUZTeJ8iwu3GsWeLBUeKynVpWZSUNKOhs=@vger.kernel.org, AJvYcCWZHwJ73vx5Q7jpDAnZpWaK7DBsMPFeLDmIka/uTrohDZ+qausVl37XfgPDwM4ziXihU2Ox3GdJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCphIqhtTyJBsF3+m/1qqAU2hhu8/eJCjewUiU/ZfdvPCJ5FNE
-	mRzyDMyFowUTOXWJpyFZ59GQ0mh0dy1/o3BxmrTON6RdXuNLeBXErcXq
-X-Gm-Gg: ASbGncsbGzT6Iy1uySCfwWX2jlKuMKsb7CytmbdD8gwyS02juVRWR3P/D9TPxA+2Ymf
-	s0VlacOQjP65ep66ThJNd2SEf9O+oZbewTaqxqkhl6pLxcGaSTGg1VENu+A+g6OD+ACEdTLwwoM
-	WtlllNvXqGdZk/5F5CLfLTXFISGBW45oYWx6VqgvUMm7pgWUEwhL7gIda3yDWUXjteVMLgvNu8w
-	xqA3mqBG+M4BYkEG3ISwyebVZDMO3s9Ri1idQVqnwaJ1CnBtQlMYXngSok1DOe2ttqk8I6drxUB
-	bPRIUH0x5jXCBLW8BoRT/EOM7IDFdpcUC9e0XPx+3x786KgvJ9OvRP7pzsXMuy1mI1l+lxrArTO
-	v
-X-Google-Smtp-Source: AGHT+IEHehy1Nsijf5r8v/quVVBhH3AlbhVTvjTmjKxr/kL02DNDQ1CmikQ6GIVuWlF8J/CCf3tK0Q==
-X-Received: by 2002:a05:6a00:2ea6:b0:748:3a1a:ba72 with SMTP id d2e1a72fcca58-74af701c716mr2887242b3a.20.1751005364750;
-        Thu, 26 Jun 2025 23:22:44 -0700 (PDT)
-Received: from KASONG-MC4 ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74af5409cb6sm1456212b3a.23.2025.06.26.23.22.41
+        d=1e100.net; s=20230601; t=1751005425; x=1751610225;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mtGJ3hLLX6kLkhpS+Roj43p3ubAD6EYXh2l2qlYKI+A=;
+        b=IXQSq9g6LLkjiMrxnOF8+EzVzA3yzMK5H+R73mrh14icZJE666AyRAAjHT7wiwND8U
+         f5RPH4EGZSHr6pno2rDBndzDGCs8H27IDETW1m9M0K96GXi8Z8aOmIQlZQwbIVpXyPmk
+         GONorJuLlL08GE+AIlY4/XuTMf2S+LiW48looP3l5N2JWyqp5VEjOpH6qzd1qEua88Cl
+         iU5ZMZYpImu3WpAfWe152t2GvBjEjjLX/a+Y6Y7+NQVwIH2WH31eLzgUKYQVB58VwQ7v
+         KExuK8QyfFRrm0q+M50QCdzoQIsM2UAIuQQ9QPvRKhOzHBY6eFn8AuEzyMraotlXbnI0
+         K7sw==
+X-Forwarded-Encrypted: i=1; AJvYcCVG+rj6uPNNUqCSrge/4GE0KWo1uAIij5aP5WRorLOzU6aR7hg07isPy8R+QQ3x5eD3dGrM7RkSv2bbwts=@vger.kernel.org, AJvYcCWRXzZTuge59wEcUxWHaQ2NuO90L3gr51TV5hdAX3R/hvot9q9hw1mBUKYe+0/+DNHUp9FKEwc+@vger.kernel.org
+X-Gm-Message-State: AOJu0YwV0syFx/oZnL+mWIF3N8ShIIxEjSUOdD0pCYqV4GwdcgbG1DiB
+	2/8bFENNZJYaybVXVqd2yULe/VMAVE348z6a8qZKIOGHMJXIUIPR/NXT
+X-Gm-Gg: ASbGncsDOasi//16cihKfwIe6cWVghH9BrdZ1sa4R8pcGh0rP/x3uMZZP+UDUf7m67/
+	enLAZT1HTCqz8TpXDkNQZL+lBCTVUUUysEEfi7jMSfP2ydQT1Uoj3LoaqbijH45CX5NkshKWwFE
+	arg6fjlRls364vc3wrAsv9izSd4ji6HS6hYCFNTIHbGlb/OInsJkyBZuszBbPxtASlDHO9B9KAT
+	pfSCzIU+1T/ZkFEvlScG2V094WKcsAa+jJVVv1FvvCb9//A0ECP4Vg2ToDtap4eyPcEku5f5UoM
+	w6neyRmRREg2gskmtLDs/lihfCeQAwB95MkAoeJ/WviplEAG
+X-Google-Smtp-Source: AGHT+IEoFmH9LFHUYF3P7bOEbto60ZCDPCXGpSefiJHXbVDjvZl7uEcOX8LVwFH/mVmusY3MGMlK3g==
+X-Received: by 2002:a05:600c:c4ac:b0:442:d9fc:7de with SMTP id 5b1f17b1804b1-4538ee85615mr17039465e9.22.1751005424277;
+        Thu, 26 Jun 2025 23:23:44 -0700 (PDT)
+Received: from EBJ9932692.tcent.cn ([2a09:0:1:2::302c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a892e5f8b6sm1792296f8f.91.2025.06.26.23.23.38
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 26 Jun 2025 23:22:44 -0700 (PDT)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Chris Li <chrisl@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
+        Thu, 26 Jun 2025 23:23:43 -0700 (PDT)
+From: Lance Yang <ioworker0@gmail.com>
+X-Google-Original-From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	21cnbao@gmail.com
+Cc: baolin.wang@linux.alibaba.com,
+	chrisl@kernel.org,
+	ioworker0@gmail.com,
+	kasong@tencent.com,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 1/7] mm/shmem, swap: improve cached mTHP handling and fix potential hung
-Date: Fri, 27 Jun 2025 14:20:14 +0800
-Message-ID: <20250627062020.534-2-ryncsn@gmail.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250627062020.534-1-ryncsn@gmail.com>
-References: <20250627062020.534-1-ryncsn@gmail.com>
-Reply-To: Kairui Song <kasong@tencent.com>
+	linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	lorenzo.stoakes@oracle.com,
+	ryan.roberts@arm.com,
+	v-songbaohua@oppo.com,
+	x86@kernel.org,
+	huang.ying.caritas@gmail.com,
+	zhengtangquan@oppo.com,
+	riel@surriel.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	harry.yoo@oracle.com,
+	mingzhe.yang@ly.com,
+	stable@vger.kernel.org,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH v2 1/1] mm/rmap: fix potential out-of-bounds page table access during batched unmap
+Date: Fri, 27 Jun 2025 14:23:19 +0800
+Message-ID: <20250627062319.84936-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,137 +109,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Kairui Song <kasong@tencent.com>
+From: Lance Yang <lance.yang@linux.dev>
 
-The current swap-in code assumes that, when a swap entry in shmem mapping
-is order 0, its cached folios (if present) must be order 0 too, which
-turns out not always correct.
+As pointed out by David[1], the batched unmap logic in try_to_unmap_one()
+can read past the end of a PTE table if a large folio is mapped starting at
+the last entry of that table. It would be quite rare in practice, as
+MADV_FREE typically splits the large folio ;)
 
-The problem is shmem_split_large_entry is called before verifying the
-folio will eventually be swapped in, one possible race is:
+So let's fix the potential out-of-bounds read by refactoring the logic into
+a new helper, folio_unmap_pte_batch().
 
-    CPU1                          CPU2
-shmem_swapin_folio
-/* swap in of order > 0 swap entry S1 */
-  folio = swap_cache_get_folio
-  /* folio = NULL */
-  order = xa_get_order
-  /* order > 0 */
-  folio = shmem_swap_alloc_folio
-  /* mTHP alloc failure, folio = NULL */
-  <... Interrupted ...>
-                                 shmem_swapin_folio
-                                 /* S1 is swapped in */
-                                 shmem_writeout
-                                 /* S1 is swapped out, folio cached */
-  shmem_split_large_entry(..., S1)
-  /* S1 is split, but the folio covering it has order > 0 now */
+The new helper now correctly calculates the safe number of pages to scan by
+limiting the operation to the boundaries of the current VMA and the PTE
+table.
 
-Now any following swapin of S1 will hang: `xa_get_order` returns 0, and
-folio lookup will return a folio with order > 0.  The
-`xa_get_order(&mapping->i_pages, index) != folio_order(folio)` will always
-return false causing swap-in to return -EEXIST.
+In addition, the "all-or-nothing" batching restriction is removed to
+support partial batches. The reference counting is also cleaned up to use
+folio_put_refs().
 
-And this looks fragile.  So fix this up by allowing seeing a larger folio
-in swap cache, and check the whole shmem mapping range covered by the
-swapin have the right swap value upon inserting the folio.  And drop the
-redundant tree walks before the insertion.
+[1] https://lore.kernel.org/linux-mm/a694398c-9f03-4737-81b9-7e49c857fcbe@redhat.com
 
-This will actually improve performance, as it avoids two redundant Xarray
-tree walks in the hot path, and the only side effect is that in the
-failure path, shmem may redundantly reallocate a few folios causing
-temporary slight memory pressure.
-
-And worth noting, it may seems the order and value check before inserting
-might help reducing the lock contention, which is not true.  The swap
-cache layer ensures raced swapin will either see a swap cache folio or
-failed to do a swapin (we have SWAP_HAS_CACHE bit even if swap cache is
-bypassed), so holding the folio lock and checking the folio flag is
-already good enough for avoiding the lock contention.  The chance that a
-folio passes the swap entry value check but the shmem mapping slot has
-changed should be very low.
-
-Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
 Cc: <stable@vger.kernel.org>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Suggested-by: Barry Song <baohua@kernel.org>
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
 ---
- mm/shmem.c | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+v1 -> v2:
+ - Update subject and changelog (per Barry)
+ - https://lore.kernel.org/linux-mm/20250627025214.30887-1-lance.yang@linux.dev
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 334b7b4a61a0..e3c9a1365ff4 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -884,7 +884,9 @@ static int shmem_add_to_page_cache(struct folio *folio,
- 				   pgoff_t index, void *expected, gfp_t gfp)
+ mm/rmap.c | 46 ++++++++++++++++++++++++++++------------------
+ 1 file changed, 28 insertions(+), 18 deletions(-)
+
+diff --git a/mm/rmap.c b/mm/rmap.c
+index fb63d9256f09..1320b88fab74 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1845,23 +1845,32 @@ void folio_remove_rmap_pud(struct folio *folio, struct page *page,
+ #endif
+ }
+ 
+-/* We support batch unmapping of PTEs for lazyfree large folios */
+-static inline bool can_batch_unmap_folio_ptes(unsigned long addr,
+-			struct folio *folio, pte_t *ptep)
++static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
++			struct page_vma_mapped_walk *pvmw,
++			enum ttu_flags flags, pte_t pte)
  {
- 	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
--	long nr = folio_nr_pages(folio);
-+	unsigned long nr = folio_nr_pages(folio);
-+	swp_entry_t iter, swap;
-+	void *entry;
+ 	const fpb_t fpb_flags = FPB_IGNORE_DIRTY | FPB_IGNORE_SOFT_DIRTY;
+-	int max_nr = folio_nr_pages(folio);
+-	pte_t pte = ptep_get(ptep);
++	unsigned long end_addr, addr = pvmw->address;
++	struct vm_area_struct *vma = pvmw->vma;
++	unsigned int max_nr;
++
++	if (flags & TTU_HWPOISON)
++		return 1;
++	if (!folio_test_large(folio))
++		return 1;
  
- 	VM_BUG_ON_FOLIO(index != round_down(index, nr), folio);
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-@@ -896,14 +898,24 @@ static int shmem_add_to_page_cache(struct folio *folio,
++	/* We may only batch within a single VMA and a single page table. */
++	end_addr = pmd_addr_end(addr, vma->vm_end);
++	max_nr = (end_addr - addr) >> PAGE_SHIFT;
++
++	/* We only support lazyfree batching for now ... */
+ 	if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
+-		return false;
++		return 1;
+ 	if (pte_unused(pte))
+-		return false;
+-	if (pte_pfn(pte) != folio_pfn(folio))
+-		return false;
++		return 1;
  
- 	gfp &= GFP_RECLAIM_MASK;
- 	folio_throttle_swaprate(folio, gfp);
-+	swap = iter = radix_to_swp_entry(expected);
+-	return folio_pte_batch(folio, addr, ptep, pte, max_nr, fpb_flags, NULL,
+-			       NULL, NULL) == max_nr;
++	return folio_pte_batch(folio, addr, pvmw->pte, pte, max_nr, fpb_flags,
++			       NULL, NULL, NULL);
+ }
  
- 	do {
- 		xas_lock_irq(&xas);
--		if (expected != xas_find_conflict(&xas)) {
--			xas_set_err(&xas, -EEXIST);
--			goto unlock;
-+		xas_for_each_conflict(&xas, entry) {
-+			/*
-+			 * The range must either be empty, or filled with
-+			 * expected swap entries. Shmem swap entries are never
-+			 * partially freed without split of both entry and
-+			 * folio, so there shouldn't be any holes.
-+			 */
-+			if (!expected || entry != swp_to_radix_entry(iter)) {
-+				xas_set_err(&xas, -EEXIST);
-+				goto unlock;
-+			}
-+			iter.val += 1 << xas_get_order(&xas);
+ /*
+@@ -2024,9 +2033,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 			if (pte_dirty(pteval))
+ 				folio_mark_dirty(folio);
+ 		} else if (likely(pte_present(pteval))) {
+-			if (folio_test_large(folio) && !(flags & TTU_HWPOISON) &&
+-			    can_batch_unmap_folio_ptes(address, folio, pvmw.pte))
+-				nr_pages = folio_nr_pages(folio);
++			nr_pages = folio_unmap_pte_batch(folio, &pvmw, flags, pteval);
+ 			end_addr = address + nr_pages * PAGE_SIZE;
+ 			flush_cache_range(vma, address, end_addr);
+ 
+@@ -2206,13 +2213,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 			hugetlb_remove_rmap(folio);
+ 		} else {
+ 			folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
+-			folio_ref_sub(folio, nr_pages - 1);
  		}
--		if (expected && xas_find_conflict(&xas)) {
-+		if (expected && iter.val - nr != swap.val) {
- 			xas_set_err(&xas, -EEXIST);
- 			goto unlock;
- 		}
-@@ -2323,7 +2335,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 			error = -ENOMEM;
- 			goto failed;
- 		}
--	} else if (order != folio_order(folio)) {
-+	} else if (order > folio_order(folio)) {
- 		/*
- 		 * Swap readahead may swap in order 0 folios into swapcache
- 		 * asynchronously, while the shmem mapping can still stores
-@@ -2348,15 +2360,15 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 
- 			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
- 		}
-+	} else if (order < folio_order(folio)) {
-+		swap.val = round_down(swap.val, 1 << folio_order(folio));
- 	}
- 
- alloced:
- 	/* We have to do this with folio locked to prevent races */
- 	folio_lock(folio);
- 	if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
--	    folio->swap.val != swap.val ||
--	    !shmem_confirm_swap(mapping, index, swap) ||
--	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
-+	    folio->swap.val != swap.val) {
- 		error = -EEXIST;
- 		goto unlock;
- 	}
+ 		if (vma->vm_flags & VM_LOCKED)
+ 			mlock_drain_local();
+-		folio_put(folio);
+-		/* We have already batched the entire folio */
+-		if (nr_pages > 1)
++		folio_put_refs(folio, nr_pages);
++
++		/*
++		 * If we are sure that we batched the entire folio and cleared
++		 * all PTEs, we can just optimize and stop right here.
++		 */
++		if (nr_pages == folio_nr_pages(folio))
+ 			goto walk_done;
+ 		continue;
+ walk_abort:
 -- 
-2.50.0
+2.49.0
 
 
