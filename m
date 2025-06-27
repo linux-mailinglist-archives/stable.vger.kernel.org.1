@@ -1,73 +1,75 @@
-Return-Path: <stable+bounces-158784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 703C0AEBA03
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 16:35:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E023CAEBA10
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 16:41:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23A03189E49B
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 14:35:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C547560C21
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 14:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBE72676D9;
-	Fri, 27 Jun 2025 14:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4020C2E6D2C;
+	Fri, 27 Jun 2025 14:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YM/LY4rc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YtcP7IZL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA8927F00F;
-	Fri, 27 Jun 2025 14:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7B52E3AF8;
+	Fri, 27 Jun 2025 14:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751034925; cv=none; b=novl/7q4cAzP3QRH7UYBhRqRbVbSRuyrOO3MJjrzUGsnv9PY7kJCSBuMbmTJz/g9Ze9s9fVycQiathaNHHwtkWjhykca6yaj9twcT7xOMVtejoqb443z55OeyKV3MKuY/stqQimyGbzyWt1r2WO6nAyU2CwVD4+tfL/Q1qv94pc=
+	t=1751035295; cv=none; b=kke0Hhw2ocoFDAptC9D4KLPmP4docLhUXJo0sGLgrnH7uEHHk54D8d3R5XGgZHLHYcj+gKBVwi/UW2/RCZDwMVhFyb+5CVH2yZBoOBAkMhaxHgqTvc9iUvQ8aw0MaW67igD42wKS6KbhQWUhEeoE3Ng1+WjLoyiWApvxExrHkwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751034925; c=relaxed/simple;
-	bh=NZZXC515ZgT0fUOzjmcsg0e8paiYFX5FCo8x0ojHTjI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BB7W2/H1XeR6h6+xec4A0QoSr74Dz+EA8dkcJxdWuTEDmeB3J9u2347TNJS2ylVWrDKlVED+MSLNZb9ZtwhVp3mgvr8JzXBiL090K0qBBrRiZQ3ZaWwqMVq8aFl/5pU5aQewX8dbpmaliO+LMo6ZdXisiEC/X0A2G9sPeRswo2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YM/LY4rc; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1751035295; c=relaxed/simple;
+	bh=xt6/sAS4BHCLEVkqN7E8VYj0bIMlzbaYeRUfBFzu8WQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=an93yBaj3vqkn4GI2CiBzDqjGFJpQbc+jPH5W4ckn5RO78HYKuzWPJPnUfRXuuFyuqUeEGHmplifMFH5yhRiJRwcqJWTk56kwMJxbp6ekLeBR+29sYQYRJnsVxorn/474ps9VXPpElq0V2TVGPZoPaA8FPdqPenxPz4WYe9Yqwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YtcP7IZL; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751034924; x=1782570924;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=NZZXC515ZgT0fUOzjmcsg0e8paiYFX5FCo8x0ojHTjI=;
-  b=YM/LY4rcYdzBT0045NKsx1WsWxgzeRslaB8ch+VtnwIb5GntTQtllqgu
-   W2bp6pW2gHmhHq2FUIPVsA510uTxXmGfOoyzpeGR4w0f2RpyrJCriq8xG
-   6ZnJ5EOuQFTk7i09rYu4acmuFtRNRncmWVEN7hAeuSqapZjcj8zyXYh8L
-   Ow/a0eATXKyvQrtgG+orHPwkMxMyvvVaVJI6SaycCAlmu8davNeWKy4vZ
-   fW1an+FZkw2mqhBOQAzeEwXgcHtnNewXDT5JoY5KvtzwWkNOO1u3PX3iW
-   M06tRtjXo48YIeLLWUPZpJ4tcHWClX2gYBlrcGneprF7JAqF+D4R2O8RH
+  t=1751035293; x=1782571293;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=xt6/sAS4BHCLEVkqN7E8VYj0bIMlzbaYeRUfBFzu8WQ=;
+  b=YtcP7IZLulWo5642o9v14stdQwcIrNEjZ7MMaB/kMcfSv398VmJR0OpZ
+   +fiQXF0eJ36frCOVFyYphGwymrNJV4BPHgRL0bIruU1EGMv352Hluf+G/
+   LCqCsyI22G9/4fcE6Iw3VADGdrgCW5uX2KHS8zB9K67IAtr2tyS9mVbun
+   OPmTb3SjTagr66wixsLKE3r/9kok1QnBPsE5ptosoOmOC4TMIhKrP06ti
+   JReeC3SZiF0k1xei+ATTXYM5A98BjKd2QXc1nmDXoo4J5+A7sm4QVQxwZ
+   08jjoQmskLz1zTDo4mn2vzjNQ/XshL8++5x5Tyw/M0ABukrtaWU1d3Md8
    A==;
-X-CSE-ConnectionGUID: TaeS3RtmTAyZ+/VKltemuA==
-X-CSE-MsgGUID: 45EU7pBJS3mznCxZ4355fw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="63606894"
+X-CSE-ConnectionGUID: cyUq8cRaR9qPYTyZnn6kcA==
+X-CSE-MsgGUID: xUfGeLfERd+b+k24je8gtA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="53444930"
 X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="63606894"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 07:35:24 -0700
-X-CSE-ConnectionGUID: 3M/Ip3BYSE+KIXNI9eqoUw==
-X-CSE-MsgGUID: CKtq3BtuRv+ft8Xnww3Elw==
+   d="scan'208";a="53444930"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 07:41:33 -0700
+X-CSE-ConnectionGUID: sY18WkD7TxyxR1JkZjSOlg==
+X-CSE-MsgGUID: l2bgz+JrRAKIbiRyH+H3BQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="152344332"
-Received: from mjruhl-desk.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.220.252])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 07:35:23 -0700
-From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
-To: linux-i2c@vger.kernel.org,
-	andi.shyti@kernel.org,
-	andriy.shevchenko@intel.com
-Cc: "Michael J. Ruhl" <michael.j.ruhl@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] i2c/designware: Fix an initialization issue
-Date: Fri, 27 Jun 2025 10:35:11 -0400
-Message-ID: <20250627143511.489570-1-michael.j.ruhl@intel.com>
-X-Mailer: git-send-email 2.49.0
+   d="scan'208";a="156872906"
+Received: from unknown (HELO mnyman-desk.fi.intel.com) ([10.237.72.199])
+  by fmviesa003.fm.intel.com with ESMTP; 27 Jun 2025 07:41:31 -0700
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+To: <gregkh@linuxfoundation.org>
+Cc: <linux-usb@vger.kernel.org>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	stable@vger.kernel.org,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 1/4] usb: xhci: quirk for data loss in ISOC transfers
+Date: Fri, 27 Jun 2025 17:41:19 +0300
+Message-ID: <20250627144127.3889714-2-mathias.nyman@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250627144127.3889714-1-mathias.nyman@linux.intel.com>
+References: <20250627144127.3889714-1-mathias.nyman@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,36 +78,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The i2c_dw_xfer_init() function requires msgs and msg_write_idx from the
-dev context to be initialized.
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-amd_i2c_dw_xfer_quirk() inits msgs and msgs_num, but not msg_write_idx.
+During the High-Speed Isochronous Audio transfers, xHCI
+controller on certain AMD platforms experiences momentary data
+loss. This results in Missed Service Errors (MSE) being
+generated by the xHCI.
 
-This could allow an out of bounds access (of msgs).
+The root cause of the MSE is attributed to the ISOC OUT endpoint
+being omitted from scheduling. This can happen when an IN
+endpoint with a 64ms service interval either is pre-scheduled
+prior to the ISOC OUT endpoint or the interval of the ISOC OUT
+endpoint is shorter than that of the IN endpoint. Consequently,
+the OUT service is neglected when an IN endpoint with a service
+interval exceeding 32ms is scheduled concurrently (every 64ms in
+this scenario).
 
-Initialize msg_write_idx before calling i2c_dw_xfer_init().
+This issue is particularly seen on certain older AMD platforms.
+To mitigate this problem, it is recommended to adjust the service
+interval of the IN endpoint to not exceed 32ms (interval 8). This
+adjustment ensures that the OUT endpoint will not be bypassed,
+even if a smaller interval value is utilized.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Fixes: 17631e8ca2d3 ("i2c: designware: Add driver support for AMD NAVI GPU")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 ---
- drivers/i2c/busses/i2c-designware-master.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/xhci-mem.c |  4 ++++
+ drivers/usb/host/xhci-pci.c | 25 +++++++++++++++++++++++++
+ drivers/usb/host/xhci.h     |  1 +
+ 3 files changed, 30 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
-index c5394229b77f..40aa5114bf8c 100644
---- a/drivers/i2c/busses/i2c-designware-master.c
-+++ b/drivers/i2c/busses/i2c-designware-master.c
-@@ -363,6 +363,7 @@ static int amd_i2c_dw_xfer_quirk(struct i2c_adapter *adap, struct i2c_msg *msgs,
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index bd745a0f2f78..6680afa4f596 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1449,6 +1449,10 @@ int xhci_endpoint_init(struct xhci_hcd *xhci,
+ 	/* Periodic endpoint bInterval limit quirk */
+ 	if (usb_endpoint_xfer_int(&ep->desc) ||
+ 	    usb_endpoint_xfer_isoc(&ep->desc)) {
++		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
++		    interval >= 9) {
++			interval = 8;
++		}
+ 		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_7) &&
+ 		    udev->speed >= USB_SPEED_HIGH &&
+ 		    interval >= 7) {
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 0c481cbc8f08..00fac8b233d2 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -71,12 +71,22 @@
+ #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_XHCI		0x15ec
+ #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_XHCI		0x15f0
  
- 	dev->msgs = msgs;
- 	dev->msgs_num = num_msgs;
-+	dev->msg_write_idx = 0;
- 	i2c_dw_xfer_init(dev);
++#define PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI		0x13ed
++#define PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI		0x13ee
++#define PCI_DEVICE_ID_AMD_STARSHIP_XHCI			0x148c
++#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI		0x15d4
++#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI		0x15d5
++#define PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI		0x15e0
++#define PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI		0x15e1
++#define PCI_DEVICE_ID_AMD_RAVEN2_XHCI			0x15e5
+ #define PCI_DEVICE_ID_AMD_RENOIR_XHCI			0x1639
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_4			0x43b9
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_3			0x43ba
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_2			0x43bb
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_1			0x43bc
  
- 	/* Initiate messages read/write transaction */
++#define PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI		0x7316
++
+ #define PCI_DEVICE_ID_ASMEDIA_1042_XHCI			0x1042
+ #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
+ #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
+@@ -280,6 +290,21 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 	if (pdev->vendor == PCI_VENDOR_ID_NEC)
+ 		xhci->quirks |= XHCI_NEC_HOST;
+ 
++	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
++	    (pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_STARSHIP_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN2_XHCI))
++		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
++
++	if (pdev->vendor == PCI_VENDOR_ID_ATI &&
++	    pdev->device == PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI)
++		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
++
+ 	if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version == 0x96)
+ 		xhci->quirks |= XHCI_AMD_0x96_HOST;
+ 
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index fa1ea0e0c7fb..a20f4e7cd43a 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1643,6 +1643,7 @@ struct xhci_hcd {
+ #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
+ #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
+ #define XHCI_ETRON_HOST	BIT_ULL(49)
++#define XHCI_LIMIT_ENDPOINT_INTERVAL_9 BIT_ULL(50)
+ 
+ 	unsigned int		num_active_eps;
+ 	unsigned int		limit_active_eps;
 -- 
-2.49.0
+2.43.0
 
 
