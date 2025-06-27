@@ -1,337 +1,231 @@
-Return-Path: <stable+bounces-158746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F10AEB13C
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 10:24:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3956CAEB1A5
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 10:51:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80D9A18886B7
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 08:24:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9456B4A79BF
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 08:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB4023C8A2;
-	Fri, 27 Jun 2025 08:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1F727F006;
+	Fri, 27 Jun 2025 08:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ZfhjzxQX";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SGXusrlv";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zEq2JLPi";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DUV5RsZ2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cioVz7Pb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA54923E32E
-	for <stable@vger.kernel.org>; Fri, 27 Jun 2025 08:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6AD27F00C
+	for <stable@vger.kernel.org>; Fri, 27 Jun 2025 08:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751012632; cv=none; b=pPBZuSVNTu1vz1Y+alFtKNG1PknqCmZUBtNpwBUuJlD73eUW0GG3x1dKb8LVqf/gj2K60nRL6WVLqXZMDdh1g+z9m/GpKePBCJCLFqV9hzoOMgy3co0qRNALEKBg5sUZfe7oi4lbi2n57evFlK95Sm2CwC6dYItDtsz/jplRYgo=
+	t=1751014302; cv=none; b=awGBpqgwQP6CBfYOC3l9x2SjDV5Mtvsy7JUKyqGpIMZwLI/nDgc7t+Zw95aCODI2x/63UVCsKfgbq0bO4uCCWRr2ZUr4EHuH9jpX5J8AO8DLi7gqqNKnDNIs/D9YO7WynTzRxWFo2hLZoTxHki7EjfhC8wTbKM2Wtk5jQm3UxLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751012632; c=relaxed/simple;
-	bh=XEA4NDVF1l6cDa55zZoXmOx6xOJUumFQRcw6d+CsAw8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ctIzOo8hCPO42boVUCJj7GllS6mOdAc2ydsz4NfIml+D9Q9x+KvLZ35a2Dq14fskmAa5XuQqc9gL0hYPXtueRfUZ3PVV+kIlmBHhBVV48bD8Wey19Gxd5u3R3XfZvwSraGfnmV/tdCOJUZz3ICyOBsdY6QyZZNb5qYPq0FC3Iig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ZfhjzxQX; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SGXusrlv; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zEq2JLPi; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DUV5RsZ2; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id DBCEA1F387;
-	Fri, 27 Jun 2025 08:23:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1751012629; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+mXih3LTIHDYAvgNDfd3lZJ1IYE6rjF2/019w24ukbY=;
-	b=ZfhjzxQX2/DSN0PosLGC+NJALd3qRJWGdSPUmGXhwUUNGNT7Rtpt5rwZ+Q1OTHhSN5uBuy
-	dewx4R75t3C+90K370Wvb/7QR7kpSF8ibNzXz+8wxBcpXozcgnd88tUyGxqYc7K1xpokao
-	gGr1Jg2UxDIKHKQNG+/hTjtwsaoFN74=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1751012629;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+mXih3LTIHDYAvgNDfd3lZJ1IYE6rjF2/019w24ukbY=;
-	b=SGXusrlvkr/Quz+4DSDsUiZaPnPL7p82BhuVngSQT3QN2QZJnLTLzh2hz/uxDPAioxgD1B
-	KVTAWxm4Lg8m04Cg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1751012628; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+mXih3LTIHDYAvgNDfd3lZJ1IYE6rjF2/019w24ukbY=;
-	b=zEq2JLPiTtvXKkiBgbmvHc8fVNjwup++0Hu1Hwexc2b87riY7tKEN9RdupYmkWMoBNiqa7
-	UMcZAxWb+P0Zkg1WjHmtyhrTBDxmKGjYn3zoWGnnvlKeyedvILkuO/DcjzJsYBw3Gox7pv
-	V7NXQHeOf9vvorD6RWL6pA1qFRXi/yM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1751012628;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+mXih3LTIHDYAvgNDfd3lZJ1IYE6rjF2/019w24ukbY=;
-	b=DUV5RsZ2Aoe046S5TVucLHy88qvh5Wiy9rSdrDX0/hD4R8qUs8982S+k5CJ7TvzmZ2pnDD
-	aYFWpBBh1CIrB+Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 843C313786;
-	Fri, 27 Jun 2025 08:23:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GtC1HhRVXmhFWQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 27 Jun 2025 08:23:48 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: christian.koenig@amd.com,
-	asrivats@redhat.com,
-	maarten.lankhorst@linux.intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
+	s=arc-20240116; t=1751014302; c=relaxed/simple;
+	bh=rQB1ET568iZW3YnEaR45bf29KM1ljr7cfj6VXtgEb0s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MfLHD557p72fIAcg3MKVo4Mmrv1/KVx4/MYggA9PlViU9D3SDutrlMt6j1WPJETSJSJr696dpMMo925dNvTuGjZNc8I36NghnSRPxQQfZ6Cob3IePAuErrB6vPKG8wWSflgB6MxD9BY5IZrV8dE5HLq9otJQHykw1WxFFoJtpbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cioVz7Pb; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751014300; x=1782550300;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=rQB1ET568iZW3YnEaR45bf29KM1ljr7cfj6VXtgEb0s=;
+  b=cioVz7PbVJgi6mA1JFVixLwOI56DuNFL6lloyFcUblUmRfUIOMjAZFFL
+   1YPVvYVPRfcY/0KaGpP4ZazzG/+6NDqniSqhBfFlPtAexoowRjJcr7l89
+   oDeULEPLMrDpbtDuEmSCtZRIluH32p8w4tDye5K666SGWwDZmikzkdO0N
+   fz09vTlf6SDlQ+wt0znwQ2ln4Npe674mzEd+GRGdsSLjcZ2tY6BCTHld0
+   S2vwIzeiLhH0H0tdjowhVQ1UfSjJpnZ7COc3GdYGEgsNt5HIng4TaZG5z
+   lxJxo8DeY+HzGxcXb8Hf8gY7klzuBKTxy1+QeQFvxE1LI8SWxnN1m18Gq
+   Q==;
+X-CSE-ConnectionGUID: oN3P7hd4S5qTzv3n3v+XGQ==
+X-CSE-MsgGUID: hoSdWU3YTAOZSzUj4gLEQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="53266043"
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
+   d="scan'208";a="53266043"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 01:51:39 -0700
+X-CSE-ConnectionGUID: Y/TQ7DKaScu52kTl7VE4hw==
+X-CSE-MsgGUID: FlUkHyA9STuTktIp8KgcqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
+   d="scan'208";a="157302544"
+Received: from srr4-3-linux-103-aknautiy.iind.intel.com ([10.223.34.160])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 01:51:38 -0700
+From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+To: intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org
+Cc: ville.syrjala@linux.intel.com,
+	jani.nikula@linux.intel.com,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] drm/gem: Acquire references on GEM handles for framebuffers
-Date: Fri, 27 Jun 2025 10:20:19 +0200
-Message-ID: <20250627082052.26181-1-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.50.0
+Subject: [PATCH 1/1] drm/i915/dp: Refine TPS4-based HBR3 rejection and add quirk to limit eDP to HBR2
+Date: Fri, 27 Jun 2025 14:10:59 +0530
+Message-ID: <20250627084059.2575794-2-ankit.k.nautiyal@intel.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250627084059.2575794-1-ankit.k.nautiyal@intel.com>
+References: <20250627084059.2575794-1-ankit.k.nautiyal@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_TO(0.00)[amd.com,redhat.com,linux.intel.com,gmail.com,ffwll.ch];
-	MIME_TRACE(0.00)[0:+];
-	URIBL_BLOCKED(0.00)[suse.de:email,suse.de:mid,intel.com:email,linaro.org:email];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,linaro.org:email,intel.com:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -3.30
 
-A GEM handle can be released while the GEM buffer object is attached
-to a DRM framebuffer. This leads to the release of the dma-buf backing
-the buffer object, if any. [1] Trying to use the framebuffer in further
-mode-setting operations leads to a segmentation fault. Most easily
-happens with driver that use shadow planes for vmap-ing the dma-buf
-during a page flip. An example is shown below.
+Refine the logic introduced in commit 584cf613c24a ("drm/i915/dp: Reject
+HBR3 when sink doesn't support TPS4") to allow HBR3 on eDP panels that
+report DPCD revision 1.4, even if TPS4 is not supported. This aligns with
+the DisplayPort specification, which does not mandate TPS4 support for eDP
+with DPCD rev 1.4.
 
-[  156.791968] ------------[ cut here ]------------
-[  156.796830] WARNING: CPU: 2 PID: 2255 at drivers/dma-buf/dma-buf.c:1527 dma_buf_vmap+0x224/0x430
-[...]
-[  156.942028] RIP: 0010:dma_buf_vmap+0x224/0x430
-[  157.043420] Call Trace:
-[  157.045898]  <TASK>
-[  157.048030]  ? show_trace_log_lvl+0x1af/0x2c0
-[  157.052436]  ? show_trace_log_lvl+0x1af/0x2c0
-[  157.056836]  ? show_trace_log_lvl+0x1af/0x2c0
-[  157.061253]  ? drm_gem_shmem_vmap+0x74/0x710
-[  157.065567]  ? dma_buf_vmap+0x224/0x430
-[  157.069446]  ? __warn.cold+0x58/0xe4
-[  157.073061]  ? dma_buf_vmap+0x224/0x430
-[  157.077111]  ? report_bug+0x1dd/0x390
-[  157.080842]  ? handle_bug+0x5e/0xa0
-[  157.084389]  ? exc_invalid_op+0x14/0x50
-[  157.088291]  ? asm_exc_invalid_op+0x16/0x20
-[  157.092548]  ? dma_buf_vmap+0x224/0x430
-[  157.096663]  ? dma_resv_get_singleton+0x6d/0x230
-[  157.101341]  ? __pfx_dma_buf_vmap+0x10/0x10
-[  157.105588]  ? __pfx_dma_resv_get_singleton+0x10/0x10
-[  157.110697]  drm_gem_shmem_vmap+0x74/0x710
-[  157.114866]  drm_gem_vmap+0xa9/0x1b0
-[  157.118763]  drm_gem_vmap_unlocked+0x46/0xa0
-[  157.123086]  drm_gem_fb_vmap+0xab/0x300
-[  157.126979]  drm_atomic_helper_prepare_planes.part.0+0x487/0xb10
-[  157.133032]  ? lockdep_init_map_type+0x19d/0x880
-[  157.137701]  drm_atomic_helper_commit+0x13d/0x2e0
-[  157.142671]  ? drm_atomic_nonblocking_commit+0xa0/0x180
-[  157.147988]  drm_mode_atomic_ioctl+0x766/0xe40
-[...]
-[  157.346424] ---[ end trace 0000000000000000 ]---
+This change avoids regressions on panels that require HBR3 to operate at
+their native resolution but do not advertise TPS4 support.
 
-Acquiring GEM handles for the framebuffer's GEM buffer objects prevents
-this from happening. The framebuffer's cleanup later puts the handle
-references.
+Additionally, some ICL/TGL platforms with combo PHY ports suffer from
+signal integrity issues at HBR3. While certain systems include a
+Parade PS8461 mux to mitigate this, its presence cannot be reliably
+detected. Furthermore, broken or missing VBT entries make it unsafe to
+rely on VBT for enforcing link rate limits.
 
-The Fixes tag points to commit 1a148af06000 ("drm/gem-shmem: Use dma_buf
-from GEM object instance"), which triggers the segmentation fault. The
-issue has been present before.
+To address the HBR3-related issues on such platforms and eDP panels,
+introduce a device specific quirk to cap the eDP link rate to HBR2
+(540000 kHz). This will override any higher advertised rates from
+the sink or DPCD for specific devices.
 
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 1a148af06000 ("drm/gem-shmem: Use dma_buf from GEM object instance")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Anusha Srivatsa <asrivats@redhat.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: linux-media@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linaro-mm-sig@lists.linaro.org
-Cc: <stable@vger.kernel.org>
+Currently, the quirk is added for Dell XPS 13 7390 2-in-1 which is
+reported in gitlab issue #5969 [1].
+
+[1] https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5969
+[2] https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14517
+
+Fixes: 584cf613c24a ("drm/i915/dp: Reject HBR3 when sink doesn't support TPS4")
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Ville Syrj_l_ <ville.syrjala@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5969
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14517
+Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- drivers/gpu/drm/drm_gem.c                    | 44 ++++++++++++++++++--
- drivers/gpu/drm/drm_gem_framebuffer_helper.c |  7 +++-
- drivers/gpu/drm/drm_internal.h               |  2 +
- 3 files changed, 48 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c     | 31 +++++++++++++++++++--
+ drivers/gpu/drm/i915/display/intel_quirks.c |  9 ++++++
+ drivers/gpu/drm/i915/display/intel_quirks.h |  1 +
+ 3 files changed, 39 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-index 19d50d254fe6..8be50b3cc9c2 100644
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -213,6 +213,35 @@ void drm_gem_private_object_fini(struct drm_gem_object *obj)
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index f48912f308df..362e376fca27 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -171,6 +171,15 @@ int intel_dp_link_symbol_clock(int rate)
+ 	return DIV_ROUND_CLOSEST(rate * 10, intel_dp_link_symbol_size(rate));
  }
- EXPORT_SYMBOL(drm_gem_private_object_fini);
  
-+static void drm_gem_object_handle_get(struct drm_gem_object *obj)
++static bool intel_dp_reject_hbr3_due_to_tps4(struct intel_dp *intel_dp)
 +{
-+	struct drm_device *dev = obj->dev;
++	/* TPS4 is not mandatory for eDP with DPCD rev 1.4 */
++	if (intel_dp_is_edp(intel_dp) && intel_dp->dpcd[DP_DPCD_REV] == 0x14)
++		return false;
 +
-+	drm_WARN_ON(dev, !mutex_is_locked(&dev->object_name_lock));
-+
-+	if (obj->handle_count++ == 0)
-+		drm_gem_object_get(obj);
++	return !drm_dp_tps4_supported(intel_dp->dpcd);
 +}
 +
-+/**
-+ * drm_gem_object_handle_get_unlocked - acquire reference on user-space handles
-+ * @obj: GEM object
-+ *
-+ * Acquires a reference on the GEM buffer object's handle. Required
-+ * to keep the GEM object alive. Call drm_gem_object_handle_put_unlocked()
-+ * to release the reference.
-+ */
-+void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj)
+ static int max_dprx_rate(struct intel_dp *intel_dp)
+ {
+ 	struct intel_display *display = to_intel_display(intel_dp);
+@@ -187,13 +196,22 @@ static int max_dprx_rate(struct intel_dp *intel_dp)
+ 	 * HBR3 without TPS4, and are unable to produce a stable
+ 	 * output. Reject HBR3 when TPS4 is not available.
+ 	 */
+-	if (max_rate >= 810000 && !drm_dp_tps4_supported(intel_dp->dpcd)) {
++	if (max_rate >= 810000 && intel_dp_reject_hbr3_due_to_tps4(intel_dp)) {
+ 		drm_dbg_kms(display->drm,
+ 			    "[ENCODER:%d:%s] Rejecting HBR3 due to missing TPS4 support\n",
+ 			    encoder->base.base.id, encoder->base.name);
+ 		max_rate = 540000;
+ 	}
+ 
++	/*
++	 * Some platforms + eDP panels may not reliably support HBR3
++	 * due to signal integrity limitations, despite advertising it.
++	 * Cap the link rate to HBR2 to avoid unstable configurations for the
++	 * known machines.
++	 */
++	if (intel_dp_is_edp(intel_dp) && intel_has_quirk(display, QUIRK_EDP_LIMIT_RATE_HBR2))
++		max_rate = min(max_rate, 540000);
++
+ 	return max_rate;
+ }
+ 
+@@ -4304,13 +4322,22 @@ intel_edp_set_sink_rates(struct intel_dp *intel_dp)
+ 			 * HBR3 without TPS4, and are unable to produce a stable
+ 			 * output. Reject HBR3 when TPS4 is not available.
+ 			 */
+-			if (rate >= 810000 && !drm_dp_tps4_supported(intel_dp->dpcd)) {
++			if (rate >= 810000 && intel_dp_reject_hbr3_due_to_tps4(intel_dp)) {
+ 				drm_dbg_kms(display->drm,
+ 					    "[ENCODER:%d:%s] Rejecting HBR3 due to missing TPS4 support\n",
+ 					    encoder->base.base.id, encoder->base.name);
+ 				break;
+ 			}
+ 
++			/*
++			 * Some platforms cannot reliably drive HBR3 rates due to PHY limitations,
++			 * even if the sink advertises support. Reject any sink rates above HBR2 on
++			 * the known machines for stable output.
++			 */
++			if (rate >= 810000 &&
++			    intel_has_quirk(display, QUIRK_EDP_LIMIT_RATE_HBR2))
++				break;
++
+ 			intel_dp->sink_rates[i] = rate;
+ 		}
+ 		intel_dp->num_sink_rates = i;
+diff --git a/drivers/gpu/drm/i915/display/intel_quirks.c b/drivers/gpu/drm/i915/display/intel_quirks.c
+index a32fae510ed2..d2e16b79d6be 100644
+--- a/drivers/gpu/drm/i915/display/intel_quirks.c
++++ b/drivers/gpu/drm/i915/display/intel_quirks.c
+@@ -80,6 +80,12 @@ static void quirk_fw_sync_len(struct intel_dp *intel_dp)
+ 	drm_info(display->drm, "Applying Fast Wake sync pulse count quirk\n");
+ }
+ 
++static void quirk_edp_limit_rate_hbr2(struct intel_display *display)
 +{
-+	struct drm_device *dev = obj->dev;
-+
-+	guard(mutex)(&dev->object_name_lock);
-+
-+	drm_WARN_ON(dev, !obj->handle_count); // first ref taken in create-tail helper
-+	drm_gem_object_handle_get(obj);
++	intel_set_quirk(display, QUIRK_EDP_LIMIT_RATE_HBR2);
++	drm_info(display->drm, "Applying eDP Limit rate to HBR2 quirk\n");
 +}
-+EXPORT_SYMBOL(drm_gem_object_handle_get_unlocked);
 +
- /**
-  * drm_gem_object_handle_free - release resources bound to userspace handles
-  * @obj: GEM object to clean up.
-@@ -243,8 +272,14 @@ static void drm_gem_object_exported_dma_buf_free(struct drm_gem_object *obj)
- 	}
- }
- 
--static void
--drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
-+/**
-+ * drm_gem_object_handle_put_unlocked - releases reference on user-space handles
-+ * @obj: GEM object
-+ *
-+ * Releases a reference on the GEM buffer object's handle. Possibly releases
-+ * the GEM buffer object and associated dma-buf objects.
-+ */
-+void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
- {
- 	struct drm_device *dev = obj->dev;
- 	bool final = false;
-@@ -269,6 +304,7 @@ drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
- 	if (final)
- 		drm_gem_object_put(obj);
- }
-+EXPORT_SYMBOL(drm_gem_object_handle_put_unlocked);
- 
- /*
-  * Called at device or object close to release the file's
-@@ -390,8 +426,8 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
- 	int ret;
- 
- 	WARN_ON(!mutex_is_locked(&dev->object_name_lock));
--	if (obj->handle_count++ == 0)
--		drm_gem_object_get(obj);
+ struct intel_quirk {
+ 	int device;
+ 	int subsystem_vendor;
+@@ -231,6 +237,9 @@ static struct intel_quirk intel_quirks[] = {
+ 	{ 0x3184, 0x1019, 0xa94d, quirk_increase_ddi_disabled_time },
+ 	/* HP Notebook - 14-r206nv */
+ 	{ 0x0f31, 0x103c, 0x220f, quirk_invert_brightness },
 +
-+	drm_gem_object_handle_get(obj);
++	/* Dell XPS 13 7390 2-in-1 */
++	{ 0x8a12, 0x1028, 0x08b0, quirk_edp_limit_rate_hbr2 },
+ };
  
- 	/*
- 	 * Get the user-visible handle using idr.  Preload and perform
-diff --git a/drivers/gpu/drm/drm_gem_framebuffer_helper.c b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
-index 618ce725cd75..723f1d652c01 100644
---- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
-+++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
-@@ -99,8 +99,10 @@ void drm_gem_fb_destroy(struct drm_framebuffer *fb)
- {
- 	unsigned int i;
+ static const struct intel_dpcd_quirk intel_dpcd_quirks[] = {
+diff --git a/drivers/gpu/drm/i915/display/intel_quirks.h b/drivers/gpu/drm/i915/display/intel_quirks.h
+index cafdebda7535..06da0e286c67 100644
+--- a/drivers/gpu/drm/i915/display/intel_quirks.h
++++ b/drivers/gpu/drm/i915/display/intel_quirks.h
+@@ -20,6 +20,7 @@ enum intel_quirk_id {
+ 	QUIRK_LVDS_SSC_DISABLE,
+ 	QUIRK_NO_PPS_BACKLIGHT_POWER_HOOK,
+ 	QUIRK_FW_SYNC_LEN,
++	QUIRK_EDP_LIMIT_RATE_HBR2,
+ };
  
--	for (i = 0; i < fb->format->num_planes; i++)
-+	for (i = 0; i < fb->format->num_planes; i++) {
-+		drm_gem_object_handle_put_unlocked(fb->obj[i]);
- 		drm_gem_object_put(fb->obj[i]);
-+	}
- 
- 	drm_framebuffer_cleanup(fb);
- 	kfree(fb);
-@@ -185,6 +187,7 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
- 			ret = -ENOENT;
- 			goto err_gem_object_put;
- 		}
-+		drm_gem_object_handle_get_unlocked(objs[i]);
- 
- 		min_size = (height - 1) * mode_cmd->pitches[i]
- 			 + drm_format_info_min_pitch(info, i, width)
-@@ -195,6 +198,7 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
- 				    "GEM object size (%zu) smaller than minimum size (%u) for plane %d\n",
- 				    objs[i]->size, min_size, i);
- 			drm_gem_object_put(objs[i]);
-+			drm_gem_object_handle_put_unlocked(objs[i]);
- 			ret = -EINVAL;
- 			goto err_gem_object_put;
- 		}
-@@ -210,6 +214,7 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
- 	while (i > 0) {
- 		--i;
- 		drm_gem_object_put(objs[i]);
-+		drm_gem_object_handle_put_unlocked(objs[i]);
- 	}
- 	return ret;
- }
-diff --git a/drivers/gpu/drm/drm_internal.h b/drivers/gpu/drm/drm_internal.h
-index 442eb31351dd..f7b414a813ae 100644
---- a/drivers/gpu/drm/drm_internal.h
-+++ b/drivers/gpu/drm/drm_internal.h
-@@ -161,6 +161,8 @@ void drm_sysfs_lease_event(struct drm_device *dev);
- 
- /* drm_gem.c */
- int drm_gem_init(struct drm_device *dev);
-+void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj);
-+void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj);
- int drm_gem_handle_create_tail(struct drm_file *file_priv,
- 			       struct drm_gem_object *obj,
- 			       u32 *handlep);
+ void intel_init_quirks(struct intel_display *display);
 -- 
-2.50.0
+2.45.2
 
 
