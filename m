@@ -1,170 +1,222 @@
-Return-Path: <stable+bounces-158798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ADD8AEBD7F
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 18:34:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B1CCAEBE6F
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 19:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AA2A3AD897
-	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 16:33:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA2744A7AAA
+	for <lists+stable@lfdr.de>; Fri, 27 Jun 2025 17:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69362EA730;
-	Fri, 27 Jun 2025 16:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="vgb+4uvk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E855266EFB;
+	Fri, 27 Jun 2025 17:29:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FC52EA496
-	for <stable@vger.kernel.org>; Fri, 27 Jun 2025 16:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFE8171092
+	for <stable@vger.kernel.org>; Fri, 27 Jun 2025 17:29:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751042007; cv=none; b=F6kEjWtGqvueHCMRPrX6nmA+btx5VCcLVQbPCYarC6gzru3IAhANsuUt1HvjZR/+bSp/u5y6KZqm0QUum8bikRvYJQI/1ACILqRyRoro31GrnSLrcuOX/Q3ikK9DFIikoHzDk40nBK7XOUZLrci7/R6mrd/mrotmSzqsPwkUSXI=
+	t=1751045383; cv=none; b=PBa5vRzIEa6t6AdTfFenYBx7oxzwdSUXNMHY9MCVbD9mfmQP8hMyIysRx9pps8D0/G7g6sgDF80vXwKVR+Ciw9los2IHx1Idr7/bgEwC1CYT20xBdPrru+uxFT1GTb+JVTrTIN+cGmG27dEZ1n+cn6VvIa/HokTmmr+9UOdKheY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751042007; c=relaxed/simple;
-	bh=uqS6lXyRm2rw7QE9EAxJNG2Wt0wSjDLKMZf6XFvPE8o=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=Eg1Z0L325fVutDwKikoP9ULLKw4EROKcyRhOxaBfnSH+6gQf9LNUUGQe5mSZx3ev8p8JRZAiVyzpAtfbx5u2+aju72B7VVapuAQIdhEhK004wkQTLpHnDldvFr7KYAkX87iyomINxxTJB/71ffEBgyagHLNrEs/YoWMaye4zXx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=vgb+4uvk; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-748e378ba4fso3417472b3a.1
-        for <stable@vger.kernel.org>; Fri, 27 Jun 2025 09:33:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1751042004; x=1751646804; darn=vger.kernel.org;
-        h=in-reply-to:content-language:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q4nGtntNWiIPwUj1ee1XnNi/5sRluRtItIk84qqS3V8=;
-        b=vgb+4uvkklPD7hiL5mR666VWG+UTFmaoe96+TDPJ2ZNly5mBPTngRrlXqKQnsF8RHY
-         m54nCngvl7wxrhv+MldNUzGtxA05qJCxqNuqSSqLyICp56Zxtes073CmrhzL7RuNdIvp
-         ousrKgBz/t4Lj674xLUUSGE0CAKM3cCXYbvDR1O/2KiIskIfCcRUKt5TNBJXdwoXwu07
-         4yjjHzvyPvNt8k4KNX05wSC4k3SOcb/IH5qrsdCTFBVOif7JS9ZsNRuQdgwG5emoAF0a
-         Sz0dX4jI9zCbTjc6IzU7lZqkxbZVqJudGms931n9W2kX8GPIWKhgijP2I4wW2N4tpnmD
-         Gj7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751042004; x=1751646804;
-        h=in-reply-to:content-language:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=q4nGtntNWiIPwUj1ee1XnNi/5sRluRtItIk84qqS3V8=;
-        b=NoItA3WschLIQR/bZK6xieRHlMTETj4FsX20PI/Vg8LrocFi4IALaZ+/g3coK5w7ez
-         Yibav0bExZ3gSrIYvepvveHzBnQdedmTb68zZsY4SeRsSO5eHu11PGOaKr/YcP7VqQgO
-         PvShJDuNtyFUskBeHhhlR6VPwnmqX0xYaAd1uwK1x9BZUVxZmz2BfQTfm19vgiUBhH6B
-         TXbqivi0SJOOf29ApHe2WLYXOvbjzeywsb7Zss6iKcyEOYxlAvce8DRomTmBRtNBHV09
-         O1K8d9vSHBl/6i5OfwMDSv2Xt8rdjEjQBWYg+90VgGYiuI6uP+MQgi6FoL7clu//k31d
-         V78Q==
-X-Gm-Message-State: AOJu0YxIzCxf3eVt/HEmqQpWF1UI9xKkdLiTqrpwjHB9nP/MCVCfUVke
-	xm1D2NVhC3im2VPH0PqvhZipTe2aCdxcBWPW5AR7sSk/+VewfrlbSZDJW+s0H+21u+e9KHYbqyz
-	5iMRw
-X-Gm-Gg: ASbGncsKJNxzcYEKdvSPXgpX7knsXIpLGxya2NpL+PEC/dpFmvLXE5bCNVqSwmKFqKl
-	vVhNyhXtDFTBW1zuMblQvnil7/WbhRZkBbqXUN5+55gubdbiOPMl0FSD9p77tQJu8gaSICSIlvu
-	dJX1K4r4gmGXhpHd+EFaXJwLLdEJji020i2qLVfaLyGR6Tn9Wq7J8hIiWsIpTLcMFrwEMPMa9Jd
-	q7VoKNeulURJZ8PO4eWnUEwdEE0sDg1u9sJhzSQbTIvaeLeejsP2NFAQO9idqIep3Ko1VAmZII9
-	z26DeyMY2IZtCAQUpOJtlpe12AuV+Xbc6YQ2GXnmCzUyBlVsUvadfioLeA==
-X-Google-Smtp-Source: AGHT+IFY1YoKsFYrPpqoihSWdsKOSdiYGWIli99QOAjPncnrrhz8DWKEZ/tZCG7ahtBVnxu9KVGsrA==
-X-Received: by 2002:a17:902:e84a:b0:235:866:9fac with SMTP id d9443c01a7336-23ac3bffa3emr63126585ad.2.1751042003645;
-        Fri, 27 Jun 2025 09:33:23 -0700 (PDT)
-Received: from [172.20.0.228] ([12.48.65.201])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb3c8649sm20087595ad.236.2025.06.27.09.33.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jun 2025 09:33:22 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------K5AiNv8YcmSDRNtRrqv0UpE4"
-Message-ID: <9f95ec1e-88fe-4760-9ecd-31c01c722516@kernel.dk>
-Date: Fri, 27 Jun 2025 10:33:22 -0600
+	s=arc-20240116; t=1751045383; c=relaxed/simple;
+	bh=qU+32HtJD32EEV/VN8KIi/RHiaKqMXsTtdoJLC1RUFk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JkbSFvuIf1F2JKjagCzWW+QVWlF9IehBA4h3CJ4TM/Yi+AJWFCiRy1BoDQgwFN32C6bfYev8JbkIDwKu4FZe/OTwAgJXpSWnw1BzDDeUekc/z+SsoW5DEPDoHblezL2bqI8sb9pdNTG+d+WWUHUnoeNQnmPkACIsKuIWhgOAifw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dev-suse (unknown [223.72.91.169])
+	by APP-01 (Coremail) with SMTP id qwCowADHeNfg1F5omh6oCQ--.1108S2;
+	Sat, 28 Jun 2025 01:29:05 +0800 (CST)
+From: Jingwei Wang <wangjingwei@iscas.ac.cn>
+To: linux-riscv@lists.infradead.org
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Jesse Taube <jesse@rivosinc.com>,
+	Yixun Lan <dlan@gentoo.org>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Tsukasa OI <research_trasio@irq.a4lg.com>,
+	stable@vger.kernel.org,
+	Jingwei Wang <wangjingwei@iscas.ac.cn>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: [PATCH v4] riscv: hwprobe: Fix stale vDSO data for late-initialized keys at boot
+Date: Sat, 28 Jun 2025 01:27:42 +0800
+Message-ID: <20250627172814.66367-1-wangjingwei@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] nvme: always punt polled uring_cmd end_io
- work to task_work" failed to apply to 6.6-stable tree
-To: gregkh@linuxfoundation.org
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADHeNfg1F5omh6oCQ--.1108S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3Gr1DAF4xZFy7tryxKFy3Jwb_yoW7Cr4kpF
+	WDCrsYqFy5Jr4xWay7K3s7ZF10gas5Gr43GFsFkw15ZryxZr13J3saqrsxAr1DtrWqva40
+	9F45WFWYkw42yr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
+	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
+	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
+	x4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
+	1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
+	JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
+	sGvfC2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
+X-CM-SenderInfo: pzdqwy5lqj4v3l6l2u1dvotugofq/
+
+The value for some hwprobe keys, like MISALIGNED_VECTOR_PERF, is
+determined by an asynchronous kthread. This kthread can finish after
+the hwprobe vDSO data is populated, creating a race condition where
+userspace can read stale values.
+
+A completion-based framework is introduced to synchronize the async
+probes with the vDSO population. The init_hwprobe_vdso_data()
+function is deferred to `late_initcall` and now blocks until all
+probes signal completion.
+
+Reported-by: Tsukasa OI <research_trasio@irq.a4lg.com>
+Closes: https://lore.kernel.org/linux-riscv/760d637b-b13b-4518-b6bf-883d55d44e7f@irq.a4lg.com/
+Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
 Cc: stable@vger.kernel.org
-References: <2025062012-skydiver-undergrad-6e0f@gregkh>
-From: Jens Axboe <axboe@kernel.dk>
-Content-Language: en-US
-In-Reply-To: <2025062012-skydiver-undergrad-6e0f@gregkh>
+Signed-off-by: Jingwei Wang <wangjingwei@iscas.ac.cn>
+---
+Changes in v4:
+	- Reworked the synchronization mechanism based on feedback from Palmer
+    	and Alexandre.
+	- Instead of a post-hoc refresh, this version introduces a robust
+	completion-based framework using an atomic counter to ensure async
+	probes are finished before populating the vDSO.
+	- Moved the vdso data initialization to a late_initcall to avoid
+	impacting boot time.
 
-This is a multi-part message in MIME format.
---------------K5AiNv8YcmSDRNtRrqv0UpE4
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Changes in v3:
+	- Retained existing blank line.
 
-On 6/20/25 9:10 AM, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.6-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 9ce6c9875f3e995be5fd720b65835291f8a609b1
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062012-skydiver-undergrad-6e0f@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+Changes in v2:
+	- Addressed feedback from Yixun's regarding #ifdef CONFIG_MMU usage.
+	- Updated commit message to provide a high-level summary.
+	- Added Fixes tag for commit e7c9d66e313b.
 
-Here's one for 6.6-stable.
+v1: https://lore.kernel.org/linux-riscv/20250521052754.185231-1-wangjingwei@iscas.ac.cn/T/#u
 
+ arch/riscv/include/asm/hwprobe.h           |  8 +++++++-
+ arch/riscv/kernel/sys_hwprobe.c            | 20 +++++++++++++++++++-
+ arch/riscv/kernel/unaligned_access_speed.c |  9 +++++++--
+ 3 files changed, 33 insertions(+), 4 deletions(-)
+
+diff --git a/arch/riscv/include/asm/hwprobe.h b/arch/riscv/include/asm/hwprobe.h
+index 7fe0a379474ae2c6..87af186d92e75ddb 100644
+--- a/arch/riscv/include/asm/hwprobe.h
++++ b/arch/riscv/include/asm/hwprobe.h
+@@ -40,5 +40,11 @@ static inline bool riscv_hwprobe_pair_cmp(struct riscv_hwprobe *pair,
+ 
+ 	return pair->value == other_pair->value;
+ }
+-
++#ifdef CONFIG_MMU
++void riscv_hwprobe_register_async_probe(void);
++void riscv_hwprobe_complete_async_probe(void);
++#else
++inline void riscv_hwprobe_register_async_probe(void) {}
++inline void riscv_hwprobe_complete_async_probe(void) {}
++#endif
+ #endif
+diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
+index 0b170e18a2beba57..8c50dcec2b754c30 100644
+--- a/arch/riscv/kernel/sys_hwprobe.c
++++ b/arch/riscv/kernel/sys_hwprobe.c
+@@ -5,6 +5,8 @@
+  * more details.
+  */
+ #include <linux/syscalls.h>
++#include <linux/completion.h>
++#include <linux/atomic.h>
+ #include <asm/cacheflush.h>
+ #include <asm/cpufeature.h>
+ #include <asm/hwprobe.h>
+@@ -467,6 +469,20 @@ static int do_riscv_hwprobe(struct riscv_hwprobe __user *pairs,
+ 
+ #ifdef CONFIG_MMU
+ 
++static DECLARE_COMPLETION(boot_probes_done);
++static atomic_t pending_boot_probes = ATOMIC_INIT(0);
++
++void riscv_hwprobe_register_async_probe(void)
++{
++	atomic_inc(&pending_boot_probes);
++}
++
++void riscv_hwprobe_complete_async_probe(void)
++{
++	if (atomic_dec_and_test(&pending_boot_probes))
++		complete(&boot_probes_done);
++}
++
+ static int __init init_hwprobe_vdso_data(void)
+ {
+ 	struct vdso_arch_data *avd = vdso_k_arch_data;
+@@ -474,6 +490,8 @@ static int __init init_hwprobe_vdso_data(void)
+ 	struct riscv_hwprobe pair;
+ 	int key;
+ 
++	if (unlikely(atomic_read(&pending_boot_probes) > 0))
++		wait_for_completion(&boot_probes_done);
+ 	/*
+ 	 * Initialize vDSO data with the answers for the "all CPUs" case, to
+ 	 * save a syscall in the common case.
+@@ -504,7 +522,7 @@ static int __init init_hwprobe_vdso_data(void)
+ 	return 0;
+ }
+ 
+-arch_initcall_sync(init_hwprobe_vdso_data);
++late_initcall(init_hwprobe_vdso_data);
+ 
+ #endif /* CONFIG_MMU */
+ 
+diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
+index ae2068425fbcd207..4b8ad2673b0f7470 100644
+--- a/arch/riscv/kernel/unaligned_access_speed.c
++++ b/arch/riscv/kernel/unaligned_access_speed.c
+@@ -379,6 +379,7 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
+ static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
+ {
+ 	schedule_on_each_cpu(check_vector_unaligned_access);
++	riscv_hwprobe_complete_async_probe();
+ 
+ 	return 0;
+ }
+@@ -473,8 +474,12 @@ static int __init check_unaligned_access_all_cpus(void)
+ 			per_cpu(vector_misaligned_access, cpu) = unaligned_vector_speed_param;
+ 	} else if (!check_vector_unaligned_access_emulated_all_cpus() &&
+ 		   IS_ENABLED(CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS)) {
+-		kthread_run(vec_check_unaligned_access_speed_all_cpus,
+-			    NULL, "vec_check_unaligned_access_speed_all_cpus");
++		riscv_hwprobe_register_async_probe();
++		if (IS_ERR(kthread_run(vec_check_unaligned_access_speed_all_cpus,
++				NULL, "vec_check_unaligned_access_speed_all_cpus"))) {
++			pr_warn("Failed to create vec_unalign_check kthread\n");
++			riscv_hwprobe_complete_async_probe();
++		}
+ 	}
+ 
+ 	/*
 -- 
-Jens Axboe
---------------K5AiNv8YcmSDRNtRrqv0UpE4
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-nvme-always-punt-polled-uring_cmd-end_io-work-to-tas.patch"
-Content-Disposition: attachment;
- filename*0="0001-nvme-always-punt-polled-uring_cmd-end_io-work-to-tas.pa";
- filename*1="tch"
-Content-Transfer-Encoding: base64
+2.50.0
 
-RnJvbSAxMWYzMjg3MmFlYjU4MWQ5YTIwMDdmNzRhMGYwYzFhNTM0ZTRlMzYxIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
-dGU6IEZyaSwgMTMgSnVuIDIwMjUgMTM6Mzc6NDEgLTA2MDAKU3ViamVjdDogW1BBVENIXSBu
-dm1lOiBhbHdheXMgcHVudCBwb2xsZWQgdXJpbmdfY21kIGVuZF9pbyB3b3JrIHRvIHRhc2tf
-d29yawoKQ29tbWl0IDljZTZjOTg3NWYzZTk5NWJlNWZkNzIwYjY1ODM1MjkxZjhhNjA5YjEg
-dXBzdHJlYW0uCgpDdXJyZW50bHkgTlZNZSB1cmluZ19jbWQgY29tcGxldGlvbnMgd2lsbCBj
-b21wbGV0ZSBsb2NhbGx5LCBpZiB0aGV5IGFyZQpwb2xsZWQuIFRoaXMgaXMgZG9uZSBiZWNh
-dXNlIHRob3NlIGNvbXBsZXRpb25zIGFyZSBhbHdheXMgaW52b2tlZCBmcm9tCnRhc2sgY29u
-dGV4dC4gQW5kIHdoaWxlIHRoYXQgaXMgdHJ1ZSwgdGhlcmUncyBubyBndWFyYW50ZWUgdGhh
-dCBpdCdzCmludm9rZWQgdW5kZXIgdGhlIHJpZ2h0IHJpbmcgY29udGV4dCwgb3IgZXZlbiB0
-YXNrLiBJZiBzb21lb25lIGRvZXMKTlZNZSBwYXNzdGhyb3VnaCB2aWEgbXVsdGlwbGUgdGhy
-ZWFkcyBhbmQgd2l0aCBhIGxpbWl0ZWQgbnVtYmVyIG9mCnBvbGwgcXVldWVzLCB0aGVuIHJp
-bmdBIG1heSBmaW5kIGNvbXBsZXRpb25zIGZyb20gcmluZ0IuIEZvciB0aGF0IGNhc2UsCmNv
-bXBsZXRpbmcgdGhlIHJlcXVlc3QgbWF5IG5vdCBiZSBzb3VuZC4KCkFsd2F5cyBqdXN0IHB1
-bnQgdGhlIHBhc3N0aHJvdWdoIGNvbXBsZXRpb25zIHZpYSB0YXNrX3dvcmssIHdoaWNoIHdp
-bGwKcmVkaXJlY3QgdGhlIGNvbXBsZXRpb24sIGlmIG5lZWRlZC4KCkNjOiBzdGFibGVAdmdl
-ci5rZXJuZWwub3JnCkZpeGVzOiA1ODUwNzliNmU0MjUgKCJudm1lOiB3aXJlIHVwIGFzeW5j
-IHBvbGxpbmcgZm9yIGlvIHBhc3N0aHJvdWdoIGNvbW1hbmRzIikKU2lnbmVkLW9mZi1ieTog
-SmVucyBBeGJvZSA8YXhib2VAa2VybmVsLmRrPgotLS0KIGRyaXZlcnMvbnZtZS9ob3N0L2lv
-Y3RsLmMgfCAxNiArKysrKysrLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRp
-b25zKCspLCA5IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbnZtZS9ob3N0
-L2lvY3RsLmMgYi9kcml2ZXJzL252bWUvaG9zdC9pb2N0bC5jCmluZGV4IDRjZTMxZjlmMDY5
-NC4uNWNmMDUwZTU2MmI3IDEwMDY0NAotLS0gYS9kcml2ZXJzL252bWUvaG9zdC9pb2N0bC5j
-CisrKyBiL2RyaXZlcnMvbnZtZS9ob3N0L2lvY3RsLmMKQEAgLTUyNiwxNiArNTI2LDE0IEBA
-IHN0YXRpYyBlbnVtIHJxX2VuZF9pb19yZXQgbnZtZV91cmluZ19jbWRfZW5kX2lvKHN0cnVj
-dCByZXF1ZXN0ICpyZXEsCiAJcGR1LT51LnJlc3VsdCA9IGxlNjRfdG9fY3B1KG52bWVfcmVx
-KHJlcSktPnJlc3VsdC51NjQpOwogCiAJLyoKLQkgKiBGb3IgaW9wb2xsLCBjb21wbGV0ZSBp
-dCBkaXJlY3RseS4KLQkgKiBPdGhlcndpc2UsIG1vdmUgdGhlIGNvbXBsZXRpb24gdG8gdGFz
-ayB3b3JrLgorCSAqIElPUE9MTCBjb3VsZCBwb3RlbnRpYWxseSBjb21wbGV0ZSB0aGlzIHJl
-cXVlc3QgZGlyZWN0bHksIGJ1dAorCSAqIGlmIG11bHRpcGxlIHJpbmdzIGFyZSBwb2xsaW5n
-IG9uIHRoZSBzYW1lIHF1ZXVlLCB0aGVuIGl0J3MgcG9zc2libGUKKwkgKiBmb3Igb25lIHJp
-bmcgdG8gZmluZCBjb21wbGV0aW9ucyBmb3IgYW5vdGhlciByaW5nLiBQdW50aW5nIHRoZQor
-CSAqIGNvbXBsZXRpb24gdmlhIHRhc2tfd29yayB3aWxsIGFsd2F5cyBkaXJlY3QgaXQgdG8g
-dGhlIHJpZ2h0CisJICogbG9jYXRpb24sIHJhdGhlciB0aGFuIHBvdGVudGlhbGx5IGNvbXBs
-ZXRlIHJlcXVlc3RzIGZvciByaW5nQQorCSAqIHVuZGVyIGlvcG9sbCBpbnZvY2F0aW9ucyBm
-cm9tIHJpbmdCLgogCSAqLwotCWlmIChibGtfcnFfaXNfcG9sbChyZXEpKSB7Ci0JCVdSSVRF
-X09OQ0UoaW91Y21kLT5jb29raWUsIE5VTEwpOwotCQludm1lX3VyaW5nX3Rhc2tfY2IoaW91
-Y21kLCBJT19VUklOR19GX1VOTE9DS0VEKTsKLQl9IGVsc2UgewotCQlpb191cmluZ19jbWRf
-ZG9faW5fdGFza19sYXp5KGlvdWNtZCwgbnZtZV91cmluZ190YXNrX2NiKTsKLQl9Ci0KKwlp
-b191cmluZ19jbWRfZG9faW5fdGFza19sYXp5KGlvdWNtZCwgbnZtZV91cmluZ190YXNrX2Ni
-KTsKIAlyZXR1cm4gUlFfRU5EX0lPX0ZSRUU7CiB9CiAKLS0gCjIuNTAuMAoK
-
---------------K5AiNv8YcmSDRNtRrqv0UpE4--
 
