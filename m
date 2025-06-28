@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-158819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38567AEC6B1
-	for <lists+stable@lfdr.de>; Sat, 28 Jun 2025 13:33:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E02AEC6B5
+	for <lists+stable@lfdr.de>; Sat, 28 Jun 2025 13:34:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4828E4A0FC4
-	for <lists+stable@lfdr.de>; Sat, 28 Jun 2025 11:33:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 308B8189E9C8
+	for <lists+stable@lfdr.de>; Sat, 28 Jun 2025 11:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B370D24728A;
-	Sat, 28 Jun 2025 11:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4155C24A041;
+	Sat, 28 Jun 2025 11:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="I8kq+ohB";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2UJmiogp"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jVMIzboJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RHFvY1R+"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C312185AC;
-	Sat, 28 Jun 2025 11:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899D524886E;
+	Sat, 28 Jun 2025 11:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751110416; cv=none; b=bh9C4hDo/Yi0bgkktg8dbg8cKEsDlGVfD45aVxtLWmhgZ5mGn0P17E5WAPhUOBRhfcHWAABJaDF7dn13ro17+WRyyLHXwjB1h97YsJhyXyG2c2g+iBfAil2/XUMtpwabzb+Z9I+ztq6hIEfpwCGI+Vp1ovi5pCFmASFa+zFTWZg=
+	t=1751110419; cv=none; b=kbotLbdOCpTCj/HxIXrIZOvcC23hN2K4GVeVhkhV6UP4q/CzHu09XaLqISDJdcNEvsnN6FLevCLfjQscH9afVzjayttX9WJSvYfkmcsnooDSJjUuUyWNPMfanygMGkWvzA9YzazTmSGAbQjmbY/u3ny3GksF7AnIlvNTqOMU5Gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751110416; c=relaxed/simple;
-	bh=16u7OuaNPXHqJuONnAOhuvO11B/SLK3UyITi5S4M1ZE=;
+	s=arc-20240116; t=1751110419; c=relaxed/simple;
+	bh=n8f1meyC1x2IA7HRbtjNHFhlgg/poQrB3y+HLZS3qq8=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ImrpK1flJBVZW0AZ06FpD0ccqgfAdYeELBh8WlOJ+AbRo0qHKrf+j14gygOv099B6NZU+jJ0kE263UXcxBVex0/xkh+pXudihlJhH+PTDDaee+kDdxCwnm3p20mrcwz9JAGxPqlI/gE7RNYji4V5JHIhom7kvMqkSR58Htray1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=I8kq+ohB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2UJmiogp; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=HqCKZ2Qrk+n2na8j5wHtji0HoU5uRV/6PY4FSyB5qgVpKXqLK+Z932vhm/z/+Rg/5ojD2ce2d/uMUIuZBbsRPjnMzQAIYMnjtPqWWYKE53mRrSkiEPGeSp6kU9OBKPOXPcbz7nsPDZ1jKzmjRqOODJXvLEb+mmRi3+XClsxohBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jVMIzboJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RHFvY1R+; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 28 Jun 2025 11:33:25 -0000
+Date: Sat, 28 Jun 2025 11:33:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1751110407;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -40,12 +40,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vqh3z7X+ejo3GlM/NkpN6SjfNNFzgO7ETNPHrHWrrsg=;
-	b=I8kq+ohBjrCF3GmobreHoYHMvQUFKb4c8t/wXRd45PobGkabRW7PQ+OOvD9uErL58QYFaa
-	SaAoG9LvQb4slhswwqTIs4LYTqNGggskcK9ztDUpCqJ+qWmpV3fTnSd9Df8CwAUDNYvBcZ
-	b+qJvQf5yj0nD4Zb8VTHKyQ7j4aI28JcTSNCdxa4y25pSxbF1ytLVJwflCSQLXn+Em0+nM
-	qdK5LmaiHGczrVTRZ33PAGfE50dElprCmaiB/4Xvyia10HDi25u4QyxQ1mDezmdFUOe6ew
-	IrLz605JdUNBzRfVpFbYrZUmCIivZMDYH6hNqjsPi7SN0wIj2oxYfTsaqbO8KA==
+	bh=7M/Sszoop9a+orpc/GfW/zHJ0j6f9de5MqPRmC8f6i8=;
+	b=jVMIzboJkty5LnrPAzWtPzBEq2OHqiAiBt4zB30MlLtGi80qjyrmMGW7AxJi5mAI85lxjy
+	8T+d2rDpZQ1b0ucCC/qDSjeGHuyXckHFqsXCh8/yolLy3HQCF9IrEBtYLyXMs4fnxTUBae
+	fMVOOtcrrxWZ1//+UpBVrGkuWuAEUJxwOtzQa+ONTUW0IYTnDpDpZtiLo8clKICGTkipcX
+	2ZrH97D5FTo6lmhIGNf26CImZUJg/rh6Oqxm1iE+OMgk8FMb7P2m/qzhM1171GgQiDl/Qt
+	9ypZ77Wr1RoI5oaODA2EOEQodobDqK86IhwRWQEt5qBNkwr9SecXFM99MaEjoA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1751110407;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -53,27 +53,27 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vqh3z7X+ejo3GlM/NkpN6SjfNNFzgO7ETNPHrHWrrsg=;
-	b=2UJmiogpcyo5Y0gHFjID3n9lRL3VN/5RUjg+JtkNzJ0mSCLI9B9w5Sh4iy91CmrCT2uK/q
-	cIMshPBfxXtzIhAw==
+	bh=7M/Sszoop9a+orpc/GfW/zHJ0j6f9de5MqPRmC8f6i8=;
+	b=RHFvY1R+5BI4PDtVHrYKjBtTWIOQS8b9VNCNpjXfpT0gJDrPDe5fhqavMuH3gvToGKxFJS
+	izJ3e0N8P8RZE/BA==
 From: "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: ras/urgent] x86/mce/amd: Add default names for MCA banks and blocks
+Subject: [tip: ras/urgent] x86/mce: Ensure user polling settings are honored
+ when restarting timer
 Cc: Yazen Ghannam <yazen.ghannam@amd.com>,
  "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250624-wip-mca-updates-v4-3-236dd74f645f@amd.com>
-References: <20250624-wip-mca-updates-v4-3-236dd74f645f@amd.com>
+In-Reply-To: <20250624-wip-mca-updates-v4-2-236dd74f645f@amd.com>
+References: <20250624-wip-mca-updates-v4-2-236dd74f645f@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175111040592.406.7571245350529428930.tip-bot2@tip-bot2>
+Message-ID: <175111040683.406.12960335626922770660.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,63 +83,80 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the ras/urgent branch of tip:
 
-Commit-ID:     d66e1e90b16055d2f0ee76e5384e3f119c3c2773
-Gitweb:        https://git.kernel.org/tip/d66e1e90b16055d2f0ee76e5384e3f119c3c2773
+Commit-ID:     00c092de6f28ebd32208aef83b02d61af2229b60
+Gitweb:        https://git.kernel.org/tip/00c092de6f28ebd32208aef83b02d61af2229b60
 Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Tue, 24 Jun 2025 14:15:58 
+AuthorDate:    Tue, 24 Jun 2025 14:15:57 
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 27 Jun 2025 13:13:36 +02:00
+CommitterDate: Fri, 27 Jun 2025 12:41:44 +02:00
 
-x86/mce/amd: Add default names for MCA banks and blocks
+x86/mce: Ensure user polling settings are honored when restarting timer
 
-Ensure that sysfs init doesn't fail for new/unrecognized bank types or if
-a bank has additional blocks available.
+Users can disable MCA polling by setting the "ignore_ce" parameter or by
+setting "check_interval=0". This tells the kernel to *not* start the MCE
+timer on a CPU.
 
-Most MCA banks have a single thresholding block, so the block takes the same
-name as the bank.
+If the user did not disable CMCI, then storms can occur. When these
+happen, the MCE timer will be started with a fixed interval. After the
+storm subsides, the timer's next interval is set to check_interval.
 
-Unified Memory Controllers (UMCs) are a special case where there are two
-blocks and each has a unique name.
+This disregards the user's input through "ignore_ce" and
+"check_interval". Furthermore, if "check_interval=0", then the new timer
+will run faster than expected.
 
-However, the microarchitecture allows for five blocks. Any new MCA bank types
-with more than one block will be missing names for the extra blocks. The MCE
-sysfs will fail to initialize in this case.
+Create a new helper to check these conditions and use it when a CMCI
+storm ends.
 
-Fixes: 87a6d4091bd7 ("x86/mce/AMD: Update sysfs bank names for SMCA systems")
+  [ bp: Massage. ]
+
+Fixes: 7eae17c4add5 ("x86/mce: Add per-bank CMCI storm mitigation")
 Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-3-236dd74f645f@amd.com
+Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-2-236dd74f645f@amd.com
 ---
- arch/x86/kernel/cpu/mce/amd.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index 9d852c3..6820ebc 100644
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -1113,13 +1113,20 @@ static const char *get_name(unsigned int cpu, unsigned int bank, struct threshol
- 	}
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 07d6193..4da4eab 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -1740,6 +1740,11 @@ static void mc_poll_banks_default(void)
  
- 	bank_type = smca_get_bank_type(cpu, bank);
--	if (bank_type >= N_SMCA_BANK_TYPES)
--		return NULL;
+ void (*mc_poll_banks)(void) = mc_poll_banks_default;
  
- 	if (b && (bank_type == SMCA_UMC || bank_type == SMCA_UMC_V2)) {
- 		if (b->block < ARRAY_SIZE(smca_umc_block_names))
- 			return smca_umc_block_names[b->block];
--		return NULL;
-+	}
++static bool should_enable_timer(unsigned long iv)
++{
++	return !mca_cfg.ignore_ce && iv;
++}
 +
-+	if (b && b->block) {
-+		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_block_%u", b->block);
-+		return buf_mcatype;
-+	}
-+
-+	if (bank_type >= N_SMCA_BANK_TYPES) {
-+		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_bank_%u", bank);
-+		return buf_mcatype;
- 	}
+ static void mce_timer_fn(struct timer_list *t)
+ {
+ 	struct timer_list *cpu_t = this_cpu_ptr(&mce_timer);
+@@ -1763,7 +1768,7 @@ static void mce_timer_fn(struct timer_list *t)
  
- 	if (per_cpu(smca_bank_counts, cpu)[bank_type] == 1)
+ 	if (mce_get_storm_mode()) {
+ 		__start_timer(t, HZ);
+-	} else {
++	} else if (should_enable_timer(iv)) {
+ 		__this_cpu_write(mce_next_interval, iv);
+ 		__start_timer(t, iv);
+ 	}
+@@ -2156,11 +2161,10 @@ static void mce_start_timer(struct timer_list *t)
+ {
+ 	unsigned long iv = check_interval * HZ;
+ 
+-	if (mca_cfg.ignore_ce || !iv)
+-		return;
+-
+-	this_cpu_write(mce_next_interval, iv);
+-	__start_timer(t, iv);
++	if (should_enable_timer(iv)) {
++		this_cpu_write(mce_next_interval, iv);
++		__start_timer(t, iv);
++	}
+ }
+ 
+ static void __mcheck_cpu_setup_timer(void)
 
