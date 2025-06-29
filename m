@@ -1,103 +1,162 @@
-Return-Path: <stable+bounces-158829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C420AECABB
-	for <lists+stable@lfdr.de>; Sun, 29 Jun 2025 00:59:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03058AECB94
+	for <lists+stable@lfdr.de>; Sun, 29 Jun 2025 09:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FB2C3B99C7
-	for <lists+stable@lfdr.de>; Sat, 28 Jun 2025 22:58:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D25FA1897F71
+	for <lists+stable@lfdr.de>; Sun, 29 Jun 2025 07:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067B32405E5;
-	Sat, 28 Jun 2025 22:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A81C1E5702;
+	Sun, 29 Jun 2025 07:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="aVUFYSU+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oe3xpJaW"
 X-Original-To: stable@vger.kernel.org
-Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C1C13DDAE;
-	Sat, 28 Jun 2025 22:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F752BAF9;
+	Sun, 29 Jun 2025 07:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751151542; cv=none; b=GCzzRQAPno4zjAFfSX4U7i5FZSPSzUmQLRC3cKZz8mH1ak0ai0wQFq01wsYcIjwf+v14y1H6CZsTP+5czd/aeX2hB5UK3a6PFuHoksJan6cXT3qAXyJAKJYgUpH0b4lPt3HiY+j5ur6dA8O5B6pk7R8n258Ufo7A6ZIlbgEXkCA=
+	t=1751182824; cv=none; b=VKddyw7XIdqAldd9gXv+ksL1x0Xtd8TOrWPyaR7yYcxAKqUd9zfswz1A9ADtgf1hfa7oXFtc4qgsST0ejhwj9qHg1k9bsTN1CvK8GdkBsOe3hM73HjzI6LlPILodcj25rnLJDfobeRpJ7NDHNarMJjgDcmh+s104yuunlvfq8RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751151542; c=relaxed/simple;
-	bh=+jzkSM2A9zgoV3VybZGZYGv8wbcXdSGxPnbEMCyOZc4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=To4hxMeBG875geZw9c0qyAnQZ74VBBOFjXlzxZtyWioUJzzUvd6+rFl8EwdwPFK9QNMIJAne01tkrdyrrCeGLSumgSq+Usaxqm5whi5z/EGM3UFztuBDZQq+TAQRWZIyo60nob1CYm59BThUQxHmTyAf33iKGg6zne5ET6oeiss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=aVUFYSU+; arc=none smtp.client-ip=199.89.3.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 003.mia.mailroute.net (Postfix) with ESMTP id 4bV7C24GRSzlgqV0;
-	Sat, 28 Jun 2025 22:58:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1751151533; x=1753743534; bh=Y/jSSs6jyPDYUAf6whi66yCP
-	J+ejH/UOR/g6IA5dr+U=; b=aVUFYSU+vQeuukVKNj70aXs6du4zcx6NxUaGuxPh
-	HIHxj9wAxxS2oVb6VyV1xX6mOLZm+8k1+pF9G1h5iebDgoSf3McE1AAyto/O/STJ
-	gKguHq2/23quVzkm5Rn3+3nlLZpI4DiSaTlO4ZqRLeB7zqHavu/06tb1YKzHpCG/
-	p9hd2ASPS/xplE+0Xsv2EVWrU04tKdB68f6LUO+ub8RQaxsmz2AB8W3lsH9A4hWd
-	Mm6rfDeuAozY2B0L65C1wV/STaKqQoPTRrUSSgiRz5ybSfWU3Y8/kP71fRt64g5J
-	qIYDPd9Ujb1RNLQAAUXAQbrk3I7e5RpYaxx9zQEuEkBZXw==
-X-Virus-Scanned: by MailRoute
-Received: from 003.mia.mailroute.net ([127.0.0.1])
- by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id V9wAqjNWhz3R; Sat, 28 Jun 2025 22:58:53 +0000 (UTC)
-Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4bV7Bx2g9yzlgqTr;
-	Sat, 28 Jun 2025 22:58:47 +0000 (UTC)
-Message-ID: <bb5df3e6-ba72-47c1-846d-b6e7f2d5a5c1@acm.org>
-Date: Sat, 28 Jun 2025 15:58:46 -0700
+	s=arc-20240116; t=1751182824; c=relaxed/simple;
+	bh=0pkDIgKgJcoIUak+Q1ldoChrgf3t0SaaqA9PQnbbfxc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U2Ll1o8P6pVSyMp1TjyNfHQzAwWG/W42TGAlTXE1LevkRqF7hI+uYMyXry7uH+0FTZBcS1O61Uz6Y76TIhsxksIJxE6OmLlOKPEsEsYoH3hHEB4S/GCcfUz4krCI2PH+CzJsMPDcVVfN43NkoFyL6S63lISOqm8DzCx2XcRft98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oe3xpJaW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD6BC4CEEB;
+	Sun, 29 Jun 2025 07:40:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751182824;
+	bh=0pkDIgKgJcoIUak+Q1ldoChrgf3t0SaaqA9PQnbbfxc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Oe3xpJaWpxtOyptwR4HtiXngqEQK1RBeOE5fAHBhhTnC0ISfLwP73JpchWZwf0Bhm
+	 Nezfi/blHNfNkscVLx5pxkAu4YfgaI7RyEM9FV4kJzHjIFMbZeIxZdedNCXz7yTLrK
+	 eNtsHCECT5Lgn+HVg7sNbcR+7ppZr5YTtNV18hsJFcncjcUmYof8TKe6A3Z0VnHVwb
+	 91R1YpKZlvDAKD0+V5++wstSAj1A2kYANfblm4KfxgmSQbka0gGRwZKF5G5RkP0mCH
+	 ZuPUE5tbQn2cISPxyjrjsWucy/WzQ3PM5CS2SGGdAIZWc8AN2On86eT8zlaoPj/hw0
+	 BZTHRd//F4D5g==
+From: Sasha Levin <sashal@kernel.org>
+To: viro@zeniv.linux.org.uk,
+	brauner@kernel.org
+Cc: jack@suse.cz,
+	akpm@linux-foundation.org,
+	dada1@cosmosbay.com,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] fs: Prevent file descriptor table allocations exceeding INT_MAX
+Date: Sun, 29 Jun 2025 03:40:21 -0400
+Message-Id: <20250629074021.1038845-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] block: Fix a deadlock related to modifying the
- readahead attribute
-To: Christoph Hellwig <hch@lst.de>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
- Nilay Shroff <nilay@linux.ibm.com>, stable@vger.kernel.org
-References: <20250626203713.2258558-1-bvanassche@acm.org>
- <20250627071702.GA992@lst.de>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20250627071702.GA992@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/27/25 12:17 AM, Christoph Hellwig wrote:
-> On Thu, Jun 26, 2025 at 01:37:13PM -0700, Bart Van Assche wrote:
->> This deadlock happens because blk_mq_freeze_queue_nomemsave() waits for
->> pending requests to finish. The pending requests do never complete because
->> the dm-multipath queue_if_no_path option is enabled and the only path in
->> the dm-multipath configuration is being removed.
-> 
-> Well, if there are queued never completed bios the freeze will obviously
-> fail.  I don't see how this freeze is special vs other freezes or other
-> attributes that freeze.
+When sysctl_nr_open is set to a very high value (for example, 1073741816
+as set by systemd), processes attempting to use file descriptors near
+the limit can trigger massive memory allocation attempts that exceed
+INT_MAX, resulting in a WARNING in mm/slub.c:
 
-Hi Christoph,
+  WARNING: CPU: 0 PID: 44 at mm/slub.c:5027 __kvmalloc_node_noprof+0x21a/0x288
 
-There is a difference: there are Linux distros, e.g. openSUSE, that set 
-the read_ahead_kb attribute from a udev rule. I'm not aware of any Linux
-distros that set any of the other attributes from a udev rule for which
-the queue gets frozen from the .store callback (nr_requests, nomerges,
-rq_affinity, io_poll, io_timeout and wbt_lat_usec).
+This happens because kvmalloc_array() and kvmalloc() check if the
+requested size exceeds INT_MAX and emit a warning when the allocation is
+not flagged with __GFP_NOWARN.
 
-Thanks,
+Specifically, when nr_open is set to 1073741816 (0x3ffffff8) and a
+process calls dup2(oldfd, 1073741880), the kernel attempts to allocate:
+- File descriptor array: 1073741880 * 8 bytes = 8,589,935,040 bytes
+- Multiple bitmaps: ~400MB
+- Total allocation size: > 8GB (exceeding INT_MAX = 2,147,483,647)
 
-Bart.
+Reproducer:
+1. Set /proc/sys/fs/nr_open to 1073741816:
+   # echo 1073741816 > /proc/sys/fs/nr_open
+
+2. Run a program that uses a high file descriptor:
+   #include <unistd.h>
+   #include <sys/resource.h>
+
+   int main() {
+       struct rlimit rlim = {1073741824, 1073741824};
+       setrlimit(RLIMIT_NOFILE, &rlim);
+       dup2(2, 1073741880);  // Triggers the warning
+       return 0;
+   }
+
+3. Observe WARNING in dmesg at mm/slub.c:5027
+
+systemd commit a8b627a introduced automatic bumping of fs.nr_open to the
+maximum possible value. The rationale was that systems with memory
+control groups (memcg) no longer need separate file descriptor limits
+since memory is properly accounted. However, this change overlooked
+that:
+
+1. The kernel's allocation functions still enforce INT_MAX as a maximum
+   size regardless of memcg accounting
+2. Programs and tests that legitimately test file descriptor limits can
+   inadvertently trigger massive allocations
+3. The resulting allocations (>8GB) are impractical and will always fail
+
+systemd's algorithm starts with INT_MAX and keeps halving the value
+until the kernel accepts it. On most systems, this results in nr_open
+being set to 1073741816 (0x3ffffff8), which is just under 1GB of file
+descriptors.
+
+While processes rarely use file descriptors near this limit in normal
+operation, certain selftests (like
+tools/testing/selftests/core/unshare_test.c) and programs that test file
+descriptor limits can trigger this issue.
+
+Fix this by adding a check in alloc_fdtable() to ensure the requested
+allocation size does not exceed INT_MAX. This causes the operation to
+fail with -EMFILE instead of triggering a kernel warning and avoids the
+impractical >8GB memory allocation request.
+
+Fixes: 9cfe015aa424 ("get rid of NR_OPEN and introduce a sysctl_nr_open")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/file.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/fs/file.c b/fs/file.c
+index b6db031545e65..6d2275c3be9c6 100644
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -197,6 +197,21 @@ static struct fdtable *alloc_fdtable(unsigned int slots_wanted)
+ 			return ERR_PTR(-EMFILE);
+ 	}
+ 
++	/*
++	 * Check if the allocation size would exceed INT_MAX. kvmalloc_array()
++	 * and kvmalloc() will warn if the allocation size is greater than
++	 * INT_MAX, as filp_cachep objects are not __GFP_NOWARN.
++	 *
++	 * This can happen when sysctl_nr_open is set to a very high value and
++	 * a process tries to use a file descriptor near that limit. For example,
++	 * if sysctl_nr_open is set to 1073741816 (0x3ffffff8) - which is what
++	 * systemd typically sets it to - then trying to use a file descriptor
++	 * close to that value will require allocating a file descriptor table
++	 * that exceeds 8GB in size.
++	 */
++	if (unlikely(nr > INT_MAX / sizeof(struct file *)))
++		return ERR_PTR(-EMFILE);
++
+ 	fdt = kmalloc(sizeof(struct fdtable), GFP_KERNEL_ACCOUNT);
+ 	if (!fdt)
+ 		goto out;
+-- 
+2.39.5
+
 
