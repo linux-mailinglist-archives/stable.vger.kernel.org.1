@@ -1,59 +1,87 @@
-Return-Path: <stable+bounces-158830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03058AECB94
-	for <lists+stable@lfdr.de>; Sun, 29 Jun 2025 09:40:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4703AECBD9
+	for <lists+stable@lfdr.de>; Sun, 29 Jun 2025 11:04:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D25FA1897F71
-	for <lists+stable@lfdr.de>; Sun, 29 Jun 2025 07:40:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8EF03B3A4E
+	for <lists+stable@lfdr.de>; Sun, 29 Jun 2025 09:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A81C1E5702;
-	Sun, 29 Jun 2025 07:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE52C200110;
+	Sun, 29 Jun 2025 09:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oe3xpJaW"
+	dkim=pass (1024-bit key) header.d=leica-geosystems.com header.i=@leica-geosystems.com header.b="dQaNmsMh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011054.outbound.protection.outlook.com [40.107.130.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F752BAF9;
-	Sun, 29 Jun 2025 07:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751182824; cv=none; b=VKddyw7XIdqAldd9gXv+ksL1x0Xtd8TOrWPyaR7yYcxAKqUd9zfswz1A9ADtgf1hfa7oXFtc4qgsST0ejhwj9qHg1k9bsTN1CvK8GdkBsOe3hM73HjzI6LlPILodcj25rnLJDfobeRpJ7NDHNarMJjgDcmh+s104yuunlvfq8RA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751182824; c=relaxed/simple;
-	bh=0pkDIgKgJcoIUak+Q1ldoChrgf3t0SaaqA9PQnbbfxc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U2Ll1o8P6pVSyMp1TjyNfHQzAwWG/W42TGAlTXE1LevkRqF7hI+uYMyXry7uH+0FTZBcS1O61Uz6Y76TIhsxksIJxE6OmLlOKPEsEsYoH3hHEB4S/GCcfUz4krCI2PH+CzJsMPDcVVfN43NkoFyL6S63lISOqm8DzCx2XcRft98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oe3xpJaW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD6BC4CEEB;
-	Sun, 29 Jun 2025 07:40:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751182824;
-	bh=0pkDIgKgJcoIUak+Q1ldoChrgf3t0SaaqA9PQnbbfxc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Oe3xpJaWpxtOyptwR4HtiXngqEQK1RBeOE5fAHBhhTnC0ISfLwP73JpchWZwf0Bhm
-	 Nezfi/blHNfNkscVLx5pxkAu4YfgaI7RyEM9FV4kJzHjIFMbZeIxZdedNCXz7yTLrK
-	 eNtsHCECT5Lgn+HVg7sNbcR+7ppZr5YTtNV18hsJFcncjcUmYof8TKe6A3Z0VnHVwb
-	 91R1YpKZlvDAKD0+V5++wstSAj1A2kYANfblm4KfxgmSQbka0gGRwZKF5G5RkP0mCH
-	 ZuPUE5tbQn2cISPxyjrjsWucy/WzQ3PM5CS2SGGdAIZWc8AN2On86eT8zlaoPj/hw0
-	 BZTHRd//F4D5g==
-From: Sasha Levin <sashal@kernel.org>
-To: viro@zeniv.linux.org.uk,
-	brauner@kernel.org
-Cc: jack@suse.cz,
-	akpm@linux-foundation.org,
-	dada1@cosmosbay.com,
-	linux-fsdevel@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D3AEEC3;
+	Sun, 29 Jun 2025 09:04:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751187864; cv=fail; b=mPfxNHCpMDR2sF9Q6egCFA9/GjkOmMMC39CeA1N0hWQK6DXPVN1TakckLbmCdryp3aQUSFoepP1B+XlaaNcoTH0D5j1Ii6iIc/tInEdXy9qlA0AtghC89x9VRu0LyxZCHyT0YOJF7td1zuBWwYf31Cwt1jDphjGTkCrDYjssljM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751187864; c=relaxed/simple;
+	bh=B0VVU6QU8JtngRFaZVc0klC5dAqrqu0LsRXUwqm0AfM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eR8OM286W/XeN6Pnfgv2SRxC9+Vj91yciL3fl45e3TP93Dd+NyluX2vInYkSQmJLMyPsvurbgbKlBDWXIuh9PzRguS/oePwvoPIMoq56rS9WrH30dimOM+ek/Say6RG+9yp6rIau0+jGFOvZ474Lf2o+FGz7Rl9sUYEeU+zbBv4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com; spf=fail smtp.mailfrom=leica-geosystems.com; dkim=pass (1024-bit key) header.d=leica-geosystems.com header.i=@leica-geosystems.com header.b=dQaNmsMh; arc=fail smtp.client-ip=40.107.130.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=leica-geosystems.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SdLNZFYDqrMl+47C7yKVIveh/68vEgxpmHm697Dbsqdt/2JJ3LuNiRxfmu4pUMtV5n3q/6QsCr6UypCvK84aFwGHGjzE6MNi9dAY9CruXK6vW14MLcq3O9gHpLalb+AED/SdENORojjC3EIMIG0rD5nPc3r34E+nwAu+jsx83U57B2M2Vx+6QJJXDmlU7PVHWWEqdm2gcOxl7zna1NCRUNQg8IAJ6GpcMC1DDmhTWS1zdIOjPb2HAgvyTeZ1RQPIaKSzcVmbAvpxV4v2Udt+kdWUZ9c+NAhBKvXXVFZA8JoX55dBTOz/fLkZcSC5dZFT68XkU8Pcp0epNeqn8i3Ahg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tXIH3GtGrObn0vTWvtiKQdN8fgfMaOAyV/ty6pkAyto=;
+ b=SyFSAzzoY0fwmeGBznjrprXlczmQ09NzLwQuT6bnGN960LhUAYjD/JcGKG1cReslBZv7u/clDBW2bhJIIQP0Q3SsFWeX36X6c97oB/hUBDvfTkY0B1h3UA+pTjaI/3L2ZXI9PvcUjSdodEZFiyf2BgbyfT2JkbQ3+7+IC2HdnKara+wccoTgoaoKmVUfJ36pHgAcxznIdA03WPIl6nu5o+Xt+uRGWJzuyM/amsG161RU6b5P4Jk8aQQzIGSJIUTCKXXqKIN2gk1RTczpVh5NR8IQHWjt6iCzzmnADcSbIxLRpuC1++xLFbkql9y07RJ4qKj8avHzBPvh8C7tLRYUdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 193.8.40.94) smtp.rcpttodomain=vger.kernel.org
+ smtp.mailfrom=leica-geosystems.com; dmarc=pass (p=reject sp=reject pct=100)
+ action=none header.from=leica-geosystems.com; dkim=none (message not signed);
+ arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tXIH3GtGrObn0vTWvtiKQdN8fgfMaOAyV/ty6pkAyto=;
+ b=dQaNmsMh5GFZD6JakU9sOXBkVHJLgdsZC097K6qpgVU0v1KeZCsByIrMkHUK2rky0y5OGdbistzdkjiLqImFJVk3dFah78yK9hg56XdRR6BUywqHoRP6q62++eYTi9YHvkjXGKXl4eJkIB1JjKt4vig3uXnt/Lbycg5Hgy5uhdo=
+Received: from CWLP123CA0066.GBRP123.PROD.OUTLOOK.COM (2603:10a6:401:59::30)
+ by DB3PR06MB9897.eurprd06.prod.outlook.com (2603:10a6:10:5c6::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.25; Sun, 29 Jun
+ 2025 09:04:17 +0000
+Received: from AM4PEPF00027A65.eurprd04.prod.outlook.com
+ (2603:10a6:401:59:cafe::da) by CWLP123CA0066.outlook.office365.com
+ (2603:10a6:401:59::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8880.25 via Frontend Transport; Sun,
+ 29 Jun 2025 09:04:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.94)
+ smtp.mailfrom=leica-geosystems.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=leica-geosystems.com;
+Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com
+ designates 193.8.40.94 as permitted sender) receiver=protection.outlook.com;
+ client-ip=193.8.40.94; helo=hexagon.com; pr=C
+Received: from hexagon.com (193.8.40.94) by
+ AM4PEPF00027A65.mail.protection.outlook.com (10.167.16.86) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8901.15 via Frontend Transport; Sun, 29 Jun 2025 09:04:17 +0000
+Received: from GEO-H84s5E2W8Pk.lgs-net.com ([10.60.34.121]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
+	 Sun, 29 Jun 2025 11:04:16 +0200
+From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+To: Thinh.Nguyen@synopsys.com,
+	gregkh@linuxfoundation.org
+Cc: kernel@pengutronix.de,
+	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>,
+	bsp-development.geo@leica-geosystems.com,
+	Johannes Schneider <johannes.schneider@leica-geosystems.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] fs: Prevent file descriptor table allocations exceeding INT_MAX
-Date: Sun, 29 Jun 2025 03:40:21 -0400
-Message-Id: <20250629074021.1038845-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
+Subject: [PATCH v4 1/2] usb: dwc3: gadget: Fix TRB reclaim logic for short transfers and ZLPs
+Date: Sun, 29 Jun 2025 11:04:13 +0200
+Message-ID: <20250629090414.294308-1-johannes.schneider@leica-geosystems.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,102 +89,113 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 29 Jun 2025 09:04:16.0662 (UTC) FILETIME=[CA8EAB60:01DBE8D4]
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM4PEPF00027A65:EE_|DB3PR06MB9897:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: dfa8d838-04a9-4322-a8c0-08ddb6ebed52
+X-SET-LOWER-SCL-SCANNER: YES
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?CgtcLfcDKdN/NNPEHpXYBA8oHs4ExHhZsFJy6vOyyrvmWF2XeuFgDjHRhL9R?=
+ =?us-ascii?Q?f8VT1R7A1bKGxrC6HpL6K/Ho1sxibxx5W1emiV+JsJmH834EhnQ5ifodRwlH?=
+ =?us-ascii?Q?7TrBErVPA4B2Aauo6rkhNYCJRM6mbTGlS9sTWcTGeMTVXxjziEK1WmHqlnCA?=
+ =?us-ascii?Q?9Sj+Aq8FOX9IijXA2AT5XIlEsW5LJgbBBVaC68qLIiYXciU8npyCgSl18OAw?=
+ =?us-ascii?Q?lpbpcrqFjjUlq/HLaBxjs2vYKV9f7phOFcOOd5CthlOSz4uPYPayZo+Q9b/F?=
+ =?us-ascii?Q?vyAcCTo7WvE46eMy18CJijc0INLtner+OcunTYDscPZMhfWPiqRkzSEAAc2O?=
+ =?us-ascii?Q?ib/sJd5bxaCxLbOAtRv8KZAsUtdrMzZzeeALHnt5DJPvS6RKB3XRo8GGk9vh?=
+ =?us-ascii?Q?B1b7mFbU9Gu2Zsc4ByDte6QNblVRx80nEUPUacMW5LxK7is0wnodp5wfyKmQ?=
+ =?us-ascii?Q?d4AMi/sFhevMckvXdVqYV3IZWEzk95WFDehjo0wO79NK3Hu9E9Jo7+woaE67?=
+ =?us-ascii?Q?ocfSFqC8Nwo+0lFKqfLZllJeowiHqgsdjPhOGcJtY155QqCHNg/q9U7QJvDC?=
+ =?us-ascii?Q?xSTKv30ocK5+8HtvCH1clx5mgB5gr29rk+Fp8cYT6mKh7h/C/3uIYrzROLlM?=
+ =?us-ascii?Q?OjLNzitBSrGIgcoBQDVIqkcqfkhAYWLfzV2pn505CP7CqK0NQ7Zt5DZ/b0xs?=
+ =?us-ascii?Q?CxTLhyB4tnubCHKW9OAd1E8khChknTT13pLRbP7uN1O3hzm2ySyrpcQx2Cpa?=
+ =?us-ascii?Q?k4YMRfEeR9ZTnaHPCY5mBs0q3mPhnWGR8r0QNzrGj5lbFWd5LNm3zy/0BRgw?=
+ =?us-ascii?Q?yRsKFmOqrSI6gsXusIq2yWxPFtZa5Qy7RkLR8e6cF8WNDcnO801WZYygwlrk?=
+ =?us-ascii?Q?O3pUPaQAX1miUFGpxjLwbg/ig4wX1c664tMDEjeiG1Qsxr4/90f4xhpvvo4Z?=
+ =?us-ascii?Q?7yo54xavZIg66BKRN+wjoyShCsqINXatdMLxZhadE5emFlkmi4SDX91zYHG2?=
+ =?us-ascii?Q?Elp6Og2G9JhhXqlnMhrBuj8yFzUT5r1tgz0AWEGqfbfhe4FhYgILsKSj9yEo?=
+ =?us-ascii?Q?dzV5Gk7xXPq5g1UR2EEX9+kQ+EkpwSXC5NQ4yCKYkrzqVKBj3CIPlmSazX8Y?=
+ =?us-ascii?Q?G9qOPkhNfQLTQi27wwHamGyFDzffHwwe1sjt+wH3W/lGv0T+aLsV+xjvyHPv?=
+ =?us-ascii?Q?SXWp/5SGVEmWi/UTdOA0nzKtE+Mz3WNJfX9w7rY2IWOnBb5tDH60QePqazbU?=
+ =?us-ascii?Q?iK7kotXYWLVJTOOlvi1RIrpl/44wYi6VFyqgFMYYmlvdrFVTIe4mVOXyhciv?=
+ =?us-ascii?Q?Do8xPBA9BOWZUdr0ed3uqslrqshF0PmdkAKFdDu9X86Tf0Xk/Muo2OW+3JlX?=
+ =?us-ascii?Q?SRTZiYZ9D1f2K8Q2xNHZ9CvOe1yWdpW8FzAqh57+ZeHvp5zZ4ACIk0aepuY9?=
+ =?us-ascii?Q?JeP9CyKJrOEKXJ4rzwZ4p/xJZDBPfUbc0EQ8YUDTJNpx8FT9DRYzQBufiN9G?=
+ =?us-ascii?Q?bAxNn1qA6F/JDe2HDMTAaQgonpXaWTteuydz7hJL+uMACPHwWxXGWP5l4A?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:193.8.40.94;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom50.leica-geosystems.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: leica-geosystems.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2025 09:04:17.0684
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: dfa8d838-04a9-4322-a8c0-08ddb6ebed52
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.94];Helo=[hexagon.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM4PEPF00027A65.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR06MB9897
 
-When sysctl_nr_open is set to a very high value (for example, 1073741816
-as set by systemd), processes attempting to use file descriptors near
-the limit can trigger massive memory allocation attempts that exceed
-INT_MAX, resulting in a WARNING in mm/slub.c:
+Commit 61440628a4ff ("usb: dwc3: gadget: Cleanup SG handling") updated
+the TRB reclaim path to use the TRB CHN (Chain) bit to determine whether
+a TRB was part of a chain. However, this inadvertently changed the
+behavior of reclaiming the final TRB in some scatter-gather or short
+transfer cases.
 
-  WARNING: CPU: 0 PID: 44 at mm/slub.c:5027 __kvmalloc_node_noprof+0x21a/0x288
+In particular, if the final TRB did not have the CHN bit set, the
+cleanup path could incorrectly skip clearing the HWO (Hardware Own)
+bit, leaving stale TRBs in the ring. This resulted in broken data
+transfer completions in userspace, notably for MTP over FunctionFS.
 
-This happens because kvmalloc_array() and kvmalloc() check if the
-requested size exceeds INT_MAX and emit a warning when the allocation is
-not flagged with __GFP_NOWARN.
+Fix this by unconditionally clearing the HWO bit during TRB reclaim,
+regardless of the CHN bit state. This restores correct behavior
+especially for transfers that require ZLPs or end on non-CHN TRBs.
 
-Specifically, when nr_open is set to 1073741816 (0x3ffffff8) and a
-process calls dup2(oldfd, 1073741880), the kernel attempts to allocate:
-- File descriptor array: 1073741880 * 8 bytes = 8,589,935,040 bytes
-- Multiple bitmaps: ~400MB
-- Total allocation size: > 8GB (exceeding INT_MAX = 2,147,483,647)
-
-Reproducer:
-1. Set /proc/sys/fs/nr_open to 1073741816:
-   # echo 1073741816 > /proc/sys/fs/nr_open
-
-2. Run a program that uses a high file descriptor:
-   #include <unistd.h>
-   #include <sys/resource.h>
-
-   int main() {
-       struct rlimit rlim = {1073741824, 1073741824};
-       setrlimit(RLIMIT_NOFILE, &rlim);
-       dup2(2, 1073741880);  // Triggers the warning
-       return 0;
-   }
-
-3. Observe WARNING in dmesg at mm/slub.c:5027
-
-systemd commit a8b627a introduced automatic bumping of fs.nr_open to the
-maximum possible value. The rationale was that systems with memory
-control groups (memcg) no longer need separate file descriptor limits
-since memory is properly accounted. However, this change overlooked
-that:
-
-1. The kernel's allocation functions still enforce INT_MAX as a maximum
-   size regardless of memcg accounting
-2. Programs and tests that legitimately test file descriptor limits can
-   inadvertently trigger massive allocations
-3. The resulting allocations (>8GB) are impractical and will always fail
-
-systemd's algorithm starts with INT_MAX and keeps halving the value
-until the kernel accepts it. On most systems, this results in nr_open
-being set to 1073741816 (0x3ffffff8), which is just under 1GB of file
-descriptors.
-
-While processes rarely use file descriptors near this limit in normal
-operation, certain selftests (like
-tools/testing/selftests/core/unshare_test.c) and programs that test file
-descriptor limits can trigger this issue.
-
-Fix this by adding a check in alloc_fdtable() to ensure the requested
-allocation size does not exceed INT_MAX. This causes the operation to
-fail with -EMFILE instead of triggering a kernel warning and avoids the
-impractical >8GB memory allocation request.
-
-Fixes: 9cfe015aa424 ("get rid of NR_OPEN and introduce a sysctl_nr_open")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 61440628a4ff ("usb: dwc3: gadget: Cleanup SG handling")
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+Cc: <stable@vger.kernel.org> # v6.13
 ---
- fs/file.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Changes in v4:
+- None, patch content is the same
+- re-assembled into a patch-series, and re-submission to solve b4 troubles
+- Link to v3:
+  1. https://lore.kernel.org/all/AM8PR06MB7521A29A8863C838B54987B6BC7BA@AM8PR06MB7521.eurprd06.prod.outlook.com/
+  2. https://lore.kernel.org/all/AM8PR06MB752168CCAF31023017025DD5BC7BA@AM8PR06MB7521.eurprd06.prod.outlook.com/
+Changes in v3:
+- re-submission as singular patch
+- Link to v2: https://lore.kernel.org/r/20250624-dwc3-fix-gadget-mtp-v2-0-0e2d9979328f@leica-geosystems.com
 
-diff --git a/fs/file.c b/fs/file.c
-index b6db031545e65..6d2275c3be9c6 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -197,6 +197,21 @@ static struct fdtable *alloc_fdtable(unsigned int slots_wanted)
- 			return ERR_PTR(-EMFILE);
- 	}
+Changes in v2:
+- None, resubmission as separate patches
+- dropped Patch 3, as it did change the logic
+- CC to stable
+- Link to v1: https://lore.kernel.org/r/20250621-dwc3-fix-gadget-mtp-v1-0-a45e6def71bb@leica-geosystems.com
+
+---
+ drivers/usb/dwc3/gadget.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 321361288935..99fbd29d8f46 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3516,7 +3516,7 @@ static int dwc3_gadget_ep_reclaim_completed_trb(struct dwc3_ep *dep,
+ 	 * We're going to do that here to avoid problems of HW trying
+ 	 * to use bogus TRBs for transfers.
+ 	 */
+-	if (chain && (trb->ctrl & DWC3_TRB_CTRL_HWO))
++	if (trb->ctrl & DWC3_TRB_CTRL_HWO)
+ 		trb->ctrl &= ~DWC3_TRB_CTRL_HWO;
  
-+	/*
-+	 * Check if the allocation size would exceed INT_MAX. kvmalloc_array()
-+	 * and kvmalloc() will warn if the allocation size is greater than
-+	 * INT_MAX, as filp_cachep objects are not __GFP_NOWARN.
-+	 *
-+	 * This can happen when sysctl_nr_open is set to a very high value and
-+	 * a process tries to use a file descriptor near that limit. For example,
-+	 * if sysctl_nr_open is set to 1073741816 (0x3ffffff8) - which is what
-+	 * systemd typically sets it to - then trying to use a file descriptor
-+	 * close to that value will require allocating a file descriptor table
-+	 * that exceeds 8GB in size.
-+	 */
-+	if (unlikely(nr > INT_MAX / sizeof(struct file *)))
-+		return ERR_PTR(-EMFILE);
-+
- 	fdt = kmalloc(sizeof(struct fdtable), GFP_KERNEL_ACCOUNT);
- 	if (!fdt)
- 		goto out;
+ 	/*
 -- 
-2.39.5
+2.34.1
 
 
