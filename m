@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-158842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E46CAECC9D
-	for <lists+stable@lfdr.de>; Sun, 29 Jun 2025 14:45:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D949AECC9E
+	for <lists+stable@lfdr.de>; Sun, 29 Jun 2025 14:45:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 771243A64A1
-	for <lists+stable@lfdr.de>; Sun, 29 Jun 2025 12:45:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7D921890F53
+	for <lists+stable@lfdr.de>; Sun, 29 Jun 2025 12:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6CE1DE3A5;
-	Sun, 29 Jun 2025 12:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AF91E521D;
+	Sun, 29 Jun 2025 12:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ud0cShEw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWDSQhHZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3391EEA9
-	for <stable@vger.kernel.org>; Sun, 29 Jun 2025 12:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF7FEEA9
+	for <stable@vger.kernel.org>; Sun, 29 Jun 2025 12:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751201142; cv=none; b=mUyTb0PWsByEvUHjroTimdTbE7k3H1/gALQF79sNu2Dj9QKwOOeAys+zA1Xb8b3chZOpXgWuAW2gbOoxf2j2B12p18RDcZ1XT7McFydu5BppqWMiZhOKbVdx6t3isWyfs1Mmhs1l81qF6r1BbzHDORcqTaEhhxffmzrl7vyvn/c=
+	t=1751201145; cv=none; b=B6Nq6IvsmKVkZuvSD9hgbZ1khykdPzuKqsJd1C3poCO6mraZeeOtXorDLFrZgJng50/hjkHpaa5YTShoG1PGtcsF34CeoKTkYK+qyM7GC9Pu869hXzzhg1ugbytW1fe71j/sSTP8370TaKlXxhpTTNPc+fnAm8FpxG5RxZpSFAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751201142; c=relaxed/simple;
-	bh=GTOmXe8SKYPHS3mcj6Bfxh6omIwvWzEVqtbIAbDi7nE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AcH7Q8FoyauQULOY8Ar97Txo6EzNtaHmQzn77coyT0JAekbF+Yy3HYuIqnyvsjTlIyO6CaIXOd1qf2HfCoFIAYkXaFHRl9X2vh/wa0uFfJ25LRgmrv9X2164dDGavi/zQT0J5rtQ1g1sVKHf7EUmbGzCjoOPaYYnxADC0HhoGDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ud0cShEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC943C4CEEB;
-	Sun, 29 Jun 2025 12:45:41 +0000 (UTC)
+	s=arc-20240116; t=1751201145; c=relaxed/simple;
+	bh=U7iEsyK/zUimR4khgIE93lDITtHyn8ddM9a25G/J8Mc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WZSdsWgMtgPMJ0UecqfCx8Z1/GT7ahnktKHCiX1lIh3Hz/E6tnjynF4pywrZu8lpwb1a4BNozJBG8ay4S2vUa7lQ8JHnsrtE2ZzwI3r2C7GIBLhZamtCzgV8nQZ2P/4gQBrRzt7PUGPvZqi9UCGlKf64JCtjgcDGc/sKhu5puqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWDSQhHZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E537BC4CEEB;
+	Sun, 29 Jun 2025 12:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751201142;
-	bh=GTOmXe8SKYPHS3mcj6Bfxh6omIwvWzEVqtbIAbDi7nE=;
+	s=korg; t=1751201145;
+	bh=U7iEsyK/zUimR4khgIE93lDITtHyn8ddM9a25G/J8Mc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ud0cShEwXvdd8EgQSw7alEKO9n4x6Lyv4TGToiSzq+stW6cUagWB97j8R/B8lrHw+
-	 85RqSKwSCCsuHqxkibs9U2Cb0+1Wn63MvSLdJVh1vZCS7SYcDoaKfksX5eFidxk/Ze
-	 hXKxfXpB2ollW2mg3QdGHs6AFatDezNh2ESrHnm0=
-Subject: FAILED: patch "[PATCH] io_uring/kbuf: flag partial buffer mappings" failed to apply to 6.12-stable tree
-To: axboe@kernel.dk
+	b=UWDSQhHZ+/RCDO+gAgT6vjOYoLhwAMqB0rkIEquz3YaFmUzHG+d7NTiYzJ5cyEaNW
+	 eLF+l5pgMu2YUfdvcHNxq1bjLRHMf6vcZ1uOVFETWGPEUvsU7xnuIHmp6xYbjzICPl
+	 IT12ZNb3aK7h3+8Rtqc8Ltzf1exMqOH3wtrVNOJQ=
+Subject: FAILED: patch "[PATCH] mm/hugetlb: remove unnecessary holding of hugetlb_lock" failed to apply to 6.15-stable tree
+To: yangge1116@126.com,21cnbao@gmail.com,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,david@redhat.com,muchun.song@linux.dev,osalvador@suse.de,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 29 Jun 2025 14:42:21 +0200
-Message-ID: <2025062921-froth-singing-509c@gregkh>
+Date: Sun, 29 Jun 2025 14:42:48 +0200
+Message-ID: <2025062948-cape-pebble-cad9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 178b8ff66ff827c41b4fa105e9aabb99a0b5c537
+git cherry-pick -x 344ef45b03336e7f74658814f66483b5417c9cf1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062921-froth-singing-509c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062948-cape-pebble-cad9@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,145 +77,158 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 178b8ff66ff827c41b4fa105e9aabb99a0b5c537 Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Thu, 26 Jun 2025 12:17:48 -0600
-Subject: [PATCH] io_uring/kbuf: flag partial buffer mappings
+From 344ef45b03336e7f74658814f66483b5417c9cf1 Mon Sep 17 00:00:00 2001
+From: Ge Yang <yangge1116@126.com>
+Date: Tue, 27 May 2025 11:36:50 +0800
+Subject: [PATCH] mm/hugetlb: remove unnecessary holding of hugetlb_lock
 
-A previous commit aborted mapping more for a non-incremental ring for
-bundle peeking, but depending on where in the process this peeking
-happened, it would not necessarily prevent a retry by the user. That can
-create gaps in the received/read data.
+In isolate_or_dissolve_huge_folio(), after acquiring the hugetlb_lock, it
+is only for the purpose of obtaining the correct hstate, which is then
+passed to alloc_and_dissolve_hugetlb_folio().
 
-Add struct buf_sel_arg->partial_map, which can pass this information
-back. The networking side can then map that to internal state and use it
-to gate retry as well.
+alloc_and_dissolve_hugetlb_folio() itself also acquires the hugetlb_lock.
+We can have alloc_and_dissolve_hugetlb_folio() obtain the hstate by
+itself, so that isolate_or_dissolve_huge_folio() no longer needs to
+acquire the hugetlb_lock.  In addition, we keep the folio_test_hugetlb()
+check within isolate_or_dissolve_huge_folio().  By doing so, we can avoid
+disrupting the normal path by vainly holding the hugetlb_lock.
 
-Since this necessitates a new flag, change io_sr_msg->retry to a
-retry_flags member, and store both the retry and partial map condition
-in there.
+replace_free_hugepage_folios() has the same issue, and we should address
+it as well.
 
-Cc: stable@vger.kernel.org
-Fixes: 26ec15e4b0c1 ("io_uring/kbuf: don't truncate end buffer for multiple buffer peeks")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Addresses a possible performance problem which was added by the hotfix
+113ed54ad276 ("mm/hugetlb: fix kernel NULL pointer dereference when
+replacing free hugetlb folios").
 
-diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
-index ce95e3af44a9..f2d2cc319faa 100644
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -271,6 +271,7 @@ static int io_ring_buffers_peek(struct io_kiocb *req, struct buf_sel_arg *arg,
- 		if (len > arg->max_len) {
- 			len = arg->max_len;
- 			if (!(bl->flags & IOBL_INC)) {
-+				arg->partial_map = 1;
- 				if (iov != arg->iovs)
- 					break;
- 				buf->len = len;
-diff --git a/io_uring/kbuf.h b/io_uring/kbuf.h
-index 5d83c7adc739..723d0361898e 100644
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -58,7 +58,8 @@ struct buf_sel_arg {
- 	size_t max_len;
- 	unsigned short nr_iovs;
- 	unsigned short mode;
--	unsigned buf_group;
-+	unsigned short buf_group;
-+	unsigned short partial_map;
- };
- 
- void __user *io_buffer_select(struct io_kiocb *req, size_t *len,
-diff --git a/io_uring/net.c b/io_uring/net.c
-index 5c1e8c4ba468..43a43522f406 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -75,12 +75,17 @@ struct io_sr_msg {
- 	u16				flags;
- 	/* initialised and used only by !msg send variants */
- 	u16				buf_group;
--	bool				retry;
-+	unsigned short			retry_flags;
- 	void __user			*msg_control;
- 	/* used only for send zerocopy */
- 	struct io_kiocb 		*notif;
- };
- 
-+enum sr_retry_flags {
-+	IO_SR_MSG_RETRY		= 1,
-+	IO_SR_MSG_PARTIAL_MAP	= 2,
-+};
-+
+Link: https://lkml.kernel.org/r/1748317010-16272-1-git-send-email-yangge1116@126.com
+Fixes: 113ed54ad276 ("mm/hugetlb: fix kernel NULL pointer dereference when replacing free hugetlb folios")
+Signed-off-by: Ge Yang <yangge1116@126.com>
+Suggested-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <21cnbao@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 8746ed2fec13..9dc95eac558c 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2787,20 +2787,24 @@ void restore_reserve_on_error(struct hstate *h, struct vm_area_struct *vma,
  /*
-  * Number of times we'll try and do receives if there's more data. If we
-  * exceed this limit, then add us to the back of the queue and retry from
-@@ -187,7 +192,7 @@ static inline void io_mshot_prep_retry(struct io_kiocb *req,
+  * alloc_and_dissolve_hugetlb_folio - Allocate a new folio and dissolve
+  * the old one
+- * @h: struct hstate old page belongs to
+  * @old_folio: Old folio to dissolve
+  * @list: List to isolate the page in case we need to
+  * Returns 0 on success, otherwise negated error.
+  */
+-static int alloc_and_dissolve_hugetlb_folio(struct hstate *h,
+-			struct folio *old_folio, struct list_head *list)
++static int alloc_and_dissolve_hugetlb_folio(struct folio *old_folio,
++			struct list_head *list)
+ {
+-	gfp_t gfp_mask = htlb_alloc_mask(h) | __GFP_THISNODE;
++	gfp_t gfp_mask;
++	struct hstate *h;
+ 	int nid = folio_nid(old_folio);
+ 	struct folio *new_folio = NULL;
+ 	int ret = 0;
  
- 	req->flags &= ~REQ_F_BL_EMPTY;
- 	sr->done_io = 0;
--	sr->retry = false;
-+	sr->retry_flags = 0;
- 	sr->len = 0; /* get from the provided buffer */
- }
- 
-@@ -397,7 +402,7 @@ int io_sendmsg_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
- 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
- 
- 	sr->done_io = 0;
--	sr->retry = false;
-+	sr->retry_flags = 0;
- 	sr->len = READ_ONCE(sqe->len);
- 	sr->flags = READ_ONCE(sqe->ioprio);
- 	if (sr->flags & ~SENDMSG_FLAGS)
-@@ -751,7 +756,7 @@ int io_recvmsg_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
- 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
- 
- 	sr->done_io = 0;
--	sr->retry = false;
-+	sr->retry_flags = 0;
- 
- 	if (unlikely(sqe->file_index || sqe->addr2))
- 		return -EINVAL;
-@@ -823,7 +828,7 @@ static inline bool io_recv_finish(struct io_kiocb *req, int *ret,
- 
- 		cflags |= io_put_kbufs(req, this_ret, io_bundle_nbufs(kmsg, this_ret),
- 				      issue_flags);
--		if (sr->retry)
-+		if (sr->retry_flags & IO_SR_MSG_RETRY)
- 			cflags = req->cqe.flags | (cflags & CQE_F_MASK);
- 		/* bundle with no more immediate buffers, we're done */
- 		if (req->flags & REQ_F_BL_EMPTY)
-@@ -832,12 +837,12 @@ static inline bool io_recv_finish(struct io_kiocb *req, int *ret,
- 		 * If more is available AND it was a full transfer, retry and
- 		 * append to this one
- 		 */
--		if (!sr->retry && kmsg->msg.msg_inq > 1 && this_ret > 0 &&
-+		if (!sr->retry_flags && kmsg->msg.msg_inq > 1 && this_ret > 0 &&
- 		    !iov_iter_count(&kmsg->msg.msg_iter)) {
- 			req->cqe.flags = cflags & ~CQE_F_MASK;
- 			sr->len = kmsg->msg.msg_inq;
- 			sr->done_io += this_ret;
--			sr->retry = true;
-+			sr->retry_flags |= IO_SR_MSG_RETRY;
- 			return false;
- 		}
+ retry:
++	/*
++	 * The old_folio might have been dissolved from under our feet, so make sure
++	 * to carefully check the state under the lock.
++	 */
+ 	spin_lock_irq(&hugetlb_lock);
+ 	if (!folio_test_hugetlb(old_folio)) {
+ 		/*
+@@ -2829,8 +2833,10 @@ static int alloc_and_dissolve_hugetlb_folio(struct hstate *h,
+ 		cond_resched();
+ 		goto retry;
  	} else {
-@@ -1082,6 +1087,8 @@ static int io_recv_buf_select(struct io_kiocb *req, struct io_async_msghdr *kmsg
- 			kmsg->vec.iovec = arg.iovs;
- 			req->flags |= REQ_F_NEED_CLEANUP;
- 		}
-+		if (arg.partial_map)
-+			sr->retry_flags |= IO_SR_MSG_PARTIAL_MAP;
++		h = folio_hstate(old_folio);
+ 		if (!new_folio) {
+ 			spin_unlock_irq(&hugetlb_lock);
++			gfp_mask = htlb_alloc_mask(h) | __GFP_THISNODE;
+ 			new_folio = alloc_buddy_hugetlb_folio(h, gfp_mask, nid,
+ 							      NULL, NULL);
+ 			if (!new_folio)
+@@ -2874,35 +2880,24 @@ static int alloc_and_dissolve_hugetlb_folio(struct hstate *h,
  
- 		/* special case 1 vec, can be a fast path */
- 		if (ret == 1) {
-@@ -1276,7 +1283,7 @@ int io_send_zc_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
- 	int ret;
+ int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list)
+ {
+-	struct hstate *h;
+ 	int ret = -EBUSY;
  
- 	zc->done_io = 0;
--	zc->retry = false;
-+	zc->retry_flags = 0;
+-	/*
+-	 * The page might have been dissolved from under our feet, so make sure
+-	 * to carefully check the state under the lock.
+-	 * Return success when racing as if we dissolved the page ourselves.
+-	 */
+-	spin_lock_irq(&hugetlb_lock);
+-	if (folio_test_hugetlb(folio)) {
+-		h = folio_hstate(folio);
+-	} else {
+-		spin_unlock_irq(&hugetlb_lock);
++	/* Not to disrupt normal path by vainly holding hugetlb_lock */
++	if (!folio_test_hugetlb(folio))
+ 		return 0;
+-	}
+-	spin_unlock_irq(&hugetlb_lock);
  
- 	if (unlikely(READ_ONCE(sqe->__pad2[0]) || READ_ONCE(sqe->addr3)))
- 		return -EINVAL;
+ 	/*
+ 	 * Fence off gigantic pages as there is a cyclic dependency between
+ 	 * alloc_contig_range and them. Return -ENOMEM as this has the effect
+ 	 * of bailing out right away without further retrying.
+ 	 */
+-	if (hstate_is_gigantic(h))
++	if (folio_order(folio) > MAX_PAGE_ORDER)
+ 		return -ENOMEM;
+ 
+ 	if (folio_ref_count(folio) && folio_isolate_hugetlb(folio, list))
+ 		ret = 0;
+ 	else if (!folio_ref_count(folio))
+-		ret = alloc_and_dissolve_hugetlb_folio(h, folio, list);
++		ret = alloc_and_dissolve_hugetlb_folio(folio, list);
+ 
+ 	return ret;
+ }
+@@ -2916,7 +2911,6 @@ int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list)
+  */
+ int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn)
+ {
+-	struct hstate *h;
+ 	struct folio *folio;
+ 	int ret = 0;
+ 
+@@ -2925,23 +2919,9 @@ int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn)
+ 	while (start_pfn < end_pfn) {
+ 		folio = pfn_folio(start_pfn);
+ 
+-		/*
+-		 * The folio might have been dissolved from under our feet, so make sure
+-		 * to carefully check the state under the lock.
+-		 */
+-		spin_lock_irq(&hugetlb_lock);
+-		if (folio_test_hugetlb(folio)) {
+-			h = folio_hstate(folio);
+-		} else {
+-			spin_unlock_irq(&hugetlb_lock);
+-			start_pfn++;
+-			continue;
+-		}
+-		spin_unlock_irq(&hugetlb_lock);
+-
+-		if (!folio_ref_count(folio)) {
+-			ret = alloc_and_dissolve_hugetlb_folio(h, folio,
+-							       &isolate_list);
++		/* Not to disrupt normal path by vainly holding hugetlb_lock */
++		if (folio_test_hugetlb(folio) && !folio_ref_count(folio)) {
++			ret = alloc_and_dissolve_hugetlb_folio(folio, &isolate_list);
+ 			if (ret)
+ 				break;
+ 
 
 
