@@ -1,136 +1,173 @@
-Return-Path: <stable+bounces-158994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46640AEE75F
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 21:18:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC419AEE783
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 21:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43CC9442527
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 19:18:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEC217A07EE
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 19:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2BC1D79A5;
-	Mon, 30 Jun 2025 19:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C701A23A5;
+	Mon, 30 Jun 2025 19:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="udu3GcZ8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QbK+FEdh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2181FF1B5
-	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 19:18:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E302E5418
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 19:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751311110; cv=none; b=TVbg1OPHrgX6mEuUFgq+Feu7VMx37uOoAZQMtfch0+g4RcKFPjCKQXKdmXt73+T/kv5ejJHDruCYLvPXelTk578W3YrA9aFL4+rle4t6rU/ceHQ3zDTN+u0mzv6ZBSeQo5/tW/9SEHrrtjzFwawWil/aYZbLgJFismvJ5jqIXWQ=
+	t=1751312011; cv=none; b=MuGZw0q3DkNlefhsOwcp5AhAkQ+V8iP7q9BlIaBIxiVPkRWxFAO9QsOHS+hkRUeFQ3cvZKmqKvsn2D/5FWDv6cNvfpZUeHk5DE8JvKgLSMvNehQ8JyokAopOsuq4/9efXUgAyRIa9EuMRSeb4xBtUvLOpLr0O03+uUQPuqvQK6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751311110; c=relaxed/simple;
-	bh=ktEryih8VY5+ifM0aJwk7uE1X1N1qfRnzVACndRwNvo=;
+	s=arc-20240116; t=1751312011; c=relaxed/simple;
+	bh=L1dWw3ul8yVaWeCdfKGPbkNq6yPKle7qYiNxccwTWIk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ga/cCdAXU/1UpPrsWMzSYf88ADBW4w5y+Xw6unoR742A+6HGg/T3DXL+NTtqc/c8Iq0N70QP1pPUoQFc+u22+rJK3suIkNM7kF6A3irblrdwQXmxA5VGFJqkjGomgCFr5cLb4MOgQV4q6YdBROmDpEXwbGKcRBwE2gUqdKIkZAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=udu3GcZ8; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6098ef283f0so2352a12.0
-        for <stable@vger.kernel.org>; Mon, 30 Jun 2025 12:18:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751311107; x=1751915907; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/tNFLYcYmuq0LkQjKHt7ObSCKck4x3ZAcVp6YK+ku9A=;
-        b=udu3GcZ8Y4G/Atp62uHXi+vDmZ0tuhS+mQ+Sdn01zp60lHWLFXFubFA5qQD9lzMWKt
-         RLALCCDYtOGkU0ms6xl8UU593IODyI7UvpfLQX/bw+3NTVD3r7HrB0F0+ZA6Yq3bTB9D
-         hoViKK6VSqHNUVHR1SBtTnjCFuQWeAXsQ3geUNGU21DNbVke+pmV44Ip4U2V9uFgToXS
-         MuSXm5sxFErpVs6ZqqcHve7uPKif9IHpFOWKI7gEE4UIudI8r2TeKG8n4eol1sKM8CFh
-         Z3R2NGzrQ9fCJw5YguGz/TYuKDZZwie11SayZQCChHudbbxgyK3MMys2opw7SDzYV1oc
-         e9kg==
+	 To:Cc:Content-Type; b=ciNNVjMInb0u50K3HkLlvmxdP/eJXtwfPgLksbkNmACPEyfHxr4hvNYybwwRHkks46qQX7VOYI3Bo5OsX9mWAum58waqVma2Q9A0xyBf0psJcqKoAZpHFd0ozvUyfPto6pOhypVJzbzq5fQbKdBJs6JWBV2nru0OX6oojqXWOL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QbK+FEdh; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751312008;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xLG9XHK+6+oCii41uDgkWY6xC+gN79cm3T8XpClkT4c=;
+	b=QbK+FEdhOvMJAjk0BeCUtUdLkz5XhMmAOEEp31tY0lh2xuYQJ6ON55DhxWDcJIAD3cQuEx
+	StVKcoOBoE10czjjM09DWQSBVe0LO6Ig1EccAexhu1xiHL8RXb6KD2/fkPl4qXkx0lb6dp
+	oN5W71/TgT4/89FEacoUYsHsk/1if5s=
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
+ [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-100-yYbyR_e3PNOxmMSL9fl4gw-1; Mon, 30 Jun 2025 15:33:27 -0400
+X-MC-Unique: yYbyR_e3PNOxmMSL9fl4gw-1
+X-Mimecast-MFC-AGG-ID: yYbyR_e3PNOxmMSL9fl4gw_1751312006
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-86463467dddso198656839f.3
+        for <stable@vger.kernel.org>; Mon, 30 Jun 2025 12:33:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751311107; x=1751915907;
+        d=1e100.net; s=20230601; t=1751312006; x=1751916806;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/tNFLYcYmuq0LkQjKHt7ObSCKck4x3ZAcVp6YK+ku9A=;
-        b=I6Fdri+qdzW2G/jVHgY684Rx0NmZ5IyWiKBoTJGfIb26WJF/tASetuqHN6+CD2p3vC
-         yjOs558v+PwLXkHZ62Tk8sST0WX8+eBsaZqIvYKCWDfgxeWIHYq07UKHJw2WjfW8tPZT
-         0g16YCvJoxllkssRh4OvvWgbW+kBW/gpu8ZCfL/1wLE/OsRJg18fMW0hxfs3t5KPhZwa
-         yIhX5nkOwRJl8Era4fwPsjflYmOG52JC3slaNBvHaeuxAibhJUjT1wb5LXzE59N9WeUD
-         UwpsBHw1H8penR1Hw9DwJqG9Ypd5HZxo83zyd0gbzyq3afKjhwvdVf68aAr6y6Zob3DW
-         kCFw==
-X-Forwarded-Encrypted: i=1; AJvYcCUS63a1scdzg2ZPR6SYILpQQ8MIr2UJuxnvjRcTP6CyriPFEf30k1Oq+kGp/48f2Y5oZ+BoFxI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3rc8i7T8QhNJv+vIbN3ROV00YI4WBsNIiHyffn+IEWqcX3iV+
-	mjQadc0I0AIv4res5B7j2o5DBOBEMvdeL+DGLy1HIjn0toSGkmpdmwO7Qvtk25JK8strN10HAY2
-	2eS8OgZzkjeGhdMWTUqROttN5Ek40dYTzjKtsQVNF
-X-Gm-Gg: ASbGncvRDN92BU1+FObYSjElsHCJsaH4/6k62aH9nCve0hO/od4Xr6HltnnsfZbts5C
-	B9FYTMiaA85ImbItVrYdLGrLYn3Or8KaT5OGOlcpRJ+DAHBUYhk8Uwdtb7Dist4VaOAjbO3S7Eg
-	SCOXEc2VtYSnLElCLMHANyy4l5555emQZf++SCZg1kPjpQilac28Ai9MD3O4BkqlBEJnxBHiwVr
-	pOAc1oZTo8=
-X-Google-Smtp-Source: AGHT+IEAj1zqpjuM7UlhxZycs5/VVtcZm5W51dZaMAG/kHQVzfNT6TD6MZvE5QVt44ZCJeBAgTSC9ZxL2NFCAmkQPqY=
-X-Received: by 2002:a50:ccc7:0:b0:60c:9b28:350 with SMTP id
- 4fb4d7f45d1cf-60e3344d499mr11050a12.6.1751311106379; Mon, 30 Jun 2025
- 12:18:26 -0700 (PDT)
+        bh=xLG9XHK+6+oCii41uDgkWY6xC+gN79cm3T8XpClkT4c=;
+        b=TqjtQmaJJVkNdVGT1jlXSy19r4q4aqSvrXkHOn3Zz4UcYbNWvU3mCPwnQvPNbba9T+
+         IkaLOf0VFTCjkUAkKNB1yp//MLFGB7bn+jNCaLuNQAaYPIW4UQDbtfd1CzZQJqDEaGb7
+         C0nPDr3eSdEewoGNj5lWAbvXGxGqxfot95w5NeoCcxEjpRzIUAVGxwo8jHmMR5Z8iRS/
+         SpsY6gEUUoJ0VSJeaqjnnEdm4ScUdjd8n3SBpFeiHqBYSkvxGMgvDtPt3GBkR/TdA9n3
+         pVfOO/CuwybA5ObcSHOdPeSBaEG9IeZVJ/Nd93jX+tkQ1+5EDjXGhlosC0uXr7fjVZUu
+         AU+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXGL+xYYUweDOHdagZCeiUHSSV6JemhGr9J1Hn98cVEnpDq3dj+wXNyb0msdOOBCx60ikKXzQc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDoPgCKKhMwmC9OY5qZrBKPjyZI79htBnXAqjItG2oMgrMvnjP
+	Ae53FAlozsSwAa10TngI1LCxNa6foQZADXRAtDcaJuh+gP9vDZXlSCWZrr4HOIX6nYF8/QfZH3v
+	b/9eMe/ev8i7osHpIALu29j10nzcBl5nuXFBzQH3+E4pt3tLjdZ5Yh1JV7urbXnbkdtIfIkfd+J
+	Kkl3+cZf8EwI0j5ZX2uXWNbo7BhfBsl9ug
+X-Gm-Gg: ASbGncsv5fISjEni3saif7Wi2kLQPRQeKdkaSKS7JiVM3kXr6uu0UKsoHPfzmOrvLjr
+	6LkuypRioKR2ryKP3AJiWSvMTOFQ4dj90usceNpFsv1g0GMYe70/kNCtuv4jh43M8qQFeMm08tQ
+	xkCQCkS/9+65WiUYfSeOP4BGFY+Gt+LBGmIA==
+X-Received: by 2002:a05:6e02:19cb:b0:3dd:cbbb:b731 with SMTP id e9e14a558f8ab-3df4ab4ba97mr150694505ab.9.1751312006510;
+        Mon, 30 Jun 2025 12:33:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGLhV90dERUX5Cd1c5ylxgqUOBdppuowz9AEfillEd98+IoEDDYoWIMv0J5NlnbYP/AW4Dv2idc1WkdgUvuL7M=
+X-Received: by 2002:a05:6e02:19cb:b0:3dd:cbbb:b731 with SMTP id
+ e9e14a558f8ab-3df4ab4ba97mr150694345ab.9.1751312006196; Mon, 30 Jun 2025
+ 12:33:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2025062041-uplifted-cahoots-6c42@gregkh> <20250620213334.158850-1-jannh@google.com>
- <20250620213334.158850-2-jannh@google.com> <srhpjxlqfna67blvma5frmy3aa@altlinux.org>
- <CAG48ez26QWvqPoL-B0p934P9U6hDyGTUDjE6srGdUhBeCR2Z=w@mail.gmail.com>
-In-Reply-To: <CAG48ez26QWvqPoL-B0p934P9U6hDyGTUDjE6srGdUhBeCR2Z=w@mail.gmail.com>
-From: Jann Horn <jannh@google.com>
-Date: Mon, 30 Jun 2025 21:17:49 +0200
-X-Gm-Features: Ac12FXx22E442tjOx_8u750cqqoSYvckeUpo0UbyTVndVgyGXOg51PKWaTgpf5s
-Message-ID: <CAG48ez35o7RsinJxLv=fuce2=B2wguSpHMXB8DGN3tbMr1X82w@mail.gmail.com>
-Subject: Re: [PATCH 6.1.y 2/3] mm: hugetlb: independent PMD page table shared count
-To: Vitaly Chikunov <vt@altlinux.org>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, gregkh@linuxfoundation.org
-Cc: Sasha Levin <sashal@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org, 
-	Jane Chu <jane.chu@oracle.com>, Nanyong Sun <sunnanyong@huawei.com>, 
-	Kefeng Wang <wangkefeng.wang@huawei.com>, Liu Shixin <liushixin2@huawei.com>, linux-mm@kvack.org
+References: <20250630150107.23421-1-desnesn@redhat.com> <CANiDSCu83Ky-604gu2Yt34Wj1Km6Xh+TcPYzQxKZJNWdT7=m8A@mail.gmail.com>
+In-Reply-To: <CANiDSCu83Ky-604gu2Yt34Wj1Km6Xh+TcPYzQxKZJNWdT7=m8A@mail.gmail.com>
+From: Desnes Nunes <desnesn@redhat.com>
+Date: Mon, 30 Jun 2025 16:33:15 -0300
+X-Gm-Features: Ac12FXy--Z6I9HxATLzBVcIlb8GTaPJ1_nqz4ejlUIKc7XXzJzGy66npCNZsE3E
+Message-ID: <CACaw+exN2qHSPpEmZBNBvXCkrzVUb_VCW7YfYYYaaLzNoOSebg@mail.gmail.com>
+Subject: Re: [PATCH] media: uvcvideo: fix build error in uvc_ctrl_cleanup_fh
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: laurent.pinchart@ideasonboard.com, hansg@kernel.org, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 30, 2025 at 7:12=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
-> tl;dr: 32-bit x86 without PAE opts into hugetlb page table sharing
-> despite only having 2-level paging, which means the "sharable" page
-> tables are PGDs, and then stuff breaks
->
-> On Sun, Jun 29, 2025 at 3:00=E2=80=AFPM Vitaly Chikunov <vt@altlinux.org>=
- wrote:
-> > LTP tests failure with the following commit described below:
->
-> Uuugh... thanks for letting me know.
->
-> > On Fri, Jun 20, 2025 at 11:33:32PM +0200, Jann Horn wrote:
-> > > From: Liu Shixin <liushixin2@huawei.com>
-> > >
-> > > [ Upstream commit 59d9094df3d79443937add8700b2ef1a866b1081 ]
-> > >
-> > > The folio refcount may be increased unexpectly through try_get_folio(=
-) by
-> > > caller such as split_huge_pages.  In huge_pmd_unshare(), we use refco=
-unt
-> > > to check whether a pmd page table is shared.  The check is incorrect =
-if
-> > > the refcount is increased by the above caller, and this can cause the=
- page
-> > > table leaked:
-> [...]
-> > The commit causes LTP test memfd_create03 to fail on i586 architecture
-> > on v6.1.142 stable release, the test was passing on v6.1.141. Found the
-> > commit with git bisect.
->
-> Ah, yes, I can reproduce this; specifically it reproduces on a 32-bit
-> X86 builds without X86_PAE. If I enable X86_PAE, the tests pass.
-[...]
-> I guess I'll send a patch later to disable page table sharing in
-> non-PAE 32-bit x86... or maybe we should disable it entirely for
-> 32-bit x86...
+Hello Ricardo,
 
-This follow-up patch should address that:
-<https://lore.kernel.org/r/20250630-x86-2level-hugetlb-v1-1-077cd53d8255@go=
-ogle.com>
+I triggered this build error while working in an older codebase that
+uses C89 due to legacy support reasons.
+Indeed - will focus on submitting C11 compatible fixes even when
+working on older codebases.
+
+Thanks for the review Ricardo,
+
+
+On Mon, Jun 30, 2025 at 12:16=E2=80=AFPM Ricardo Ribalda <ribalda@chromium.=
+org> wrote:
+>
+> Hi Desdes
+>
+> How did you trigger this build warning? I believe we use C11
+>
+> https://www.kernel.org/doc/html/latest/process/programming-language.html
+>
+>
+> Regards!
+>
+> On Mon, 30 Jun 2025 at 17:07, Desnes Nunes <desnesn@redhat.com> wrote:
+> >
+> > This fixes the following compilation failure: "error: =E2=80=98for=E2=
+=80=99 loop
+> > initial declarations are only allowed in C99 or C11 mode"
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 221cd51efe45 ("media: uvcvideo: Remove dangling pointers")
+> > Signed-off-by: Desnes Nunes <desnesn@redhat.com>
+> > ---
+> >  drivers/media/usb/uvc/uvc_ctrl.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/u=
+vc_ctrl.c
+> > index 44b6513c5264..532615d8484b 100644
+> > --- a/drivers/media/usb/uvc/uvc_ctrl.c
+> > +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+> > @@ -3260,7 +3260,7 @@ int uvc_ctrl_init_device(struct uvc_device *dev)
+> >  void uvc_ctrl_cleanup_fh(struct uvc_fh *handle)
+> >  {
+> >         struct uvc_entity *entity;
+> > -       int i;
+> > +       unsigned int i;
+> >
+> >         guard(mutex)(&handle->chain->ctrl_mutex);
+> >
+> > @@ -3268,7 +3268,7 @@ void uvc_ctrl_cleanup_fh(struct uvc_fh *handle)
+> >                 return;
+> >
+> >         list_for_each_entry(entity, &handle->chain->dev->entities, list=
+) {
+> > -               for (unsigned int i =3D 0; i < entity->ncontrols; ++i) =
+{
+> > +               for (i =3D 0; i < entity->ncontrols; ++i) {
+> >                         if (entity->controls[i].handle !=3D handle)
+> >                                 continue;
+> >                         uvc_ctrl_set_handle(handle, &entity->controls[i=
+], NULL);
+> > --
+> > 2.49.0
+> >
+> >
+>
+>
+> --
+> Ricardo Ribalda
+>
+
+
+--=20
+Desnes Nunes
+
 
