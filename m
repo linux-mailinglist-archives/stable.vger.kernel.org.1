@@ -1,85 +1,84 @@
-Return-Path: <stable+bounces-158964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99194AEE0B0
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 16:28:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA0CAEE126
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 16:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 588447A1AAE
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 14:27:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B62E188D7B5
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 14:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A0F28BABC;
-	Mon, 30 Jun 2025 14:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E483E28C031;
+	Mon, 30 Jun 2025 14:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aDjehArq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d7WvG6wH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90AA28C03E
-	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 14:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10E628C014
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 14:27:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751293670; cv=none; b=drJE8+83zoOMJf8ly5VOoTJllcx1gj1F5IvtGzh52bxDZl/XNTazJdCZGFGS3dSHL0PWJ4XEez695qucOJ1VIzz4uARRLKRlm4Guhm1qvbkh+q7yWwLRPOeam+WDJTf5KcMi+VdjYriJIyECE1p2qtHpbn8Yax3srr2fdFGZ3Bc=
+	t=1751293675; cv=none; b=jo5LnusQWMz6FB9m9n/nnml/dDAyZw0bVnEaOfpgWDev+VroESjaZ6GSvn5/Gn9UUfEViaVbxY4yTQgTIr2GcoLsew/P4BICiC657tAJGGOoD6WhN0soZQJCRG+xFa3HggGZ4bSSTfYuGMsuWW2WLyuebSZeTZPwRmlMxAlu5f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751293670; c=relaxed/simple;
-	bh=2KnN1WQXTZclcTxdCcK+47cap7DTWrJ2d78j+ejhcy8=;
+	s=arc-20240116; t=1751293675; c=relaxed/simple;
+	bh=Bgc0MREU1fOvtWhkn9kG+aq5FYrFseWHynQyS7eFaVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HDbPzCBkMbMRePYMTurjCvUN5ZG3Z+MzEqRR02nzoShak76nxGhNi6AEG2jg4ZlqzLwUqw7NRwWbfyLdc7zhPDkwmVcisGE/OLAjxjIIPd22mUdiVGxLnuIOnt2kGLXq/Goh6EaGhvN/do/oJyPO36VIXwNUibett0qmSiqP7+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aDjehArq; arc=none smtp.client-ip=209.85.221.51
+	 MIME-Version; b=ZUppWzBlZXKYHrdoxZEXFWD6pL0bErV9GUFqv+g2oqI9Bcp5vj1utK7J4RLUouKS1dCOPw8KC50YwgCFSr5b56DCGDqgQYTthT56hZqi3XNIINZN5YC9WlIIrVEibYg1y8ulgCT2sq7ANEbPjGPCoz9OWoF0pY+AciFtpFyWVWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d7WvG6wH; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3a6d77b43c9so1954505f8f.3
-        for <stable@vger.kernel.org>; Mon, 30 Jun 2025 07:27:48 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-453608ed113so22624985e9.0
+        for <stable@vger.kernel.org>; Mon, 30 Jun 2025 07:27:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751293667; x=1751898467; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751293672; x=1751898472; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZPMToTBnaOvrwhblwxnmz8wGV0bxvsiZncyb1RYzzeo=;
-        b=aDjehArqScOyiDzKDkEnBBBbMPdqdsSXzarjj5fVFOWWpZUbjjhzL2J8QTg0n7c9Ti
-         AlEVgQAV2j3DiLILHEZQOR0pEdkJ0RRfSZlK6nbelZePhMxO4LoJYJJJXM/+rRxlUj1t
-         CZlqsfARBm1x179YLyyprLTYQG1qiDcENvKLlT3EYBQklDpPX404+7YnXVtg4//5AgX/
-         jP+9faI0NQNNzFtH5edllwRpBs/2IU2LxzHZtxJoX8tZdlYzrpsP6YiLo/zlobS/00x6
-         XhJ6/N/WgXfS6EEIkxyJkPppdV/epKjgN07T+lm/koJBjAEMrdsWHWvBpnqbUb8ZYoBP
-         Ic5Q==
+        bh=Mcl2J+FRU9/v6S7AK3hPNwR82s0qXN2xVjJynVb9oNI=;
+        b=d7WvG6wHlZB4qAfHTFK1Kzvq3Tky0DEvKQ57GFFLEtj76xStvMwGm5K7JBclV34XUy
+         +zmO+cAw7vmriTZ0RHjFKM+i0Ra9Rn4VQFtK04gaREZ1LfxC66moprP+t+cqgyU8UPqB
+         GVV0wpHy/6PVH6mNN/fMiNISI8ZGAaI31uZdZ5cpKUPudJdBsny/dZlUUOXu2Yh5SBiL
+         hqENp+ZmARdfmd0MVz65+7K7KFekZBQdxJsD7mR+qJxS0p0flr60hC5a6Lzp5cmb/cdl
+         HgvRDoPEK5hcCwk8q7TYcr7VuhapRhh5uLtWzmJF6YPQdCBJGCC+BPTcqdoNcg9muVtM
+         QSIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751293667; x=1751898467;
+        d=1e100.net; s=20230601; t=1751293672; x=1751898472;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZPMToTBnaOvrwhblwxnmz8wGV0bxvsiZncyb1RYzzeo=;
-        b=H/ywtnXcyVrNuGvu8PeRrd9taJYR0/kT/khwU8HI04D1hBGQvB15uZlUOwFTRuseWu
-         +k8svGEYIgvOSSIwTBKEgQqkM1CTQRI01kvZd+rpyTPBHwMhaXU02iHj/Rtbc3PZ1pwO
-         eTor8LO4CaRuyR7F8KzJJe11K2aRYy2N+jFSfKSepJRm5ZZmwbLpgzCHTV2umZb04IHj
-         YPuDbfBc/m4zfj2mTmKlRK6uJp4HY4Ua9QfyqZgGmp1VGIlFDET8H96JHDQxLL+pSzhV
-         C1KdRtdNwrAHxrc22yQ0G7wnpYOCxtBChIubWE9GzWQL4kjQuPk4xjgtj69xr05GkYE7
-         PExQ==
-X-Gm-Message-State: AOJu0Yx/VNYJRtrsY9vKHKJrsAzY/zEuA+z2KwK8Ypv47K+qnLZmxZo/
-	fq1+S6ptD6gn5yZ/9JGFU0nD9qRhaZBg3dLA8hB7HeMbmQoKyBY06VxpsLCQU3O8
-X-Gm-Gg: ASbGncvQEHr1+qMW9TsmoJl/PNV2xS74WCx/cR3vvJneNTHRrH80mhAt+nwO4Xgmknk
-	g/XSakGXTUoAnO+EGCY0znMHPepq68RnP2meauqMgzUfsyTM2RAVK6/Hp78qmXwH3oLnrOjAoDN
-	HB07fCuF4OU2TSIPui8ELH35EZaoN89P12ImrAoamshvlH+5bXlPcj9OPxb1V3Bhj54egjWSueg
-	qjswqS+JWNtRw88Cyb3shSa4ZSv0TOtJzZaRH/M99VQkVQiJbcFAHAcIy0dm5PV9F5cBOlGsRsn
-	cKgaIrpZA4hKMhhIhPR8Zn172nZsUOR0429WSEgH2cpy0FOSBJZ0df9db4/iprQ+TkNn4Vn74mv
-	wOb1gNq4lCuw=
-X-Google-Smtp-Source: AGHT+IFUDMwATAJNlYPJ8np1ZJyncwx0PO/H5ua7Ld20YybKKz+BZGXCLdLpi+vH8to5f1Hnkspnyw==
-X-Received: by 2002:adf:b649:0:b0:3a4:dfa9:ce28 with SMTP id ffacd0b85a97d-3a8f4549152mr11164945f8f.5.1751293666610;
-        Mon, 30 Jun 2025 07:27:46 -0700 (PDT)
+        bh=Mcl2J+FRU9/v6S7AK3hPNwR82s0qXN2xVjJynVb9oNI=;
+        b=Q2M7gwf55KZf+05lidOwYoehMx+085dtNvrn8SmwHZ5K+y14mFSKJ3JptqfMLWGAYl
+         K4EAK+nfYnOCYJqjey2jrhXb1n0T9WIIndl/XlS6IJkEDXKNgg8laC2Ixei1DUloJMrv
+         40jg2Sh8jplaQ79ePuWve/oeKnXWjOL9+ENlZfPG80z0d7iU+a/bSTYh0MwYBMxBm2FS
+         c9oOcAbna3Jd8rmuWF80fD/Pc8zGYhUVsF5yCAR3M5lNwkP/ICi/w+o+TJMG5TCkemQr
+         v3LnRwOApafygjJPqasvfr9V6vCToGeWpZn6O5q+A2bHVUELrzMNJcl0XBURdZjkmnL/
+         whcQ==
+X-Gm-Message-State: AOJu0YwnQld6eoh2xuaxHjRxmjDc+EZjYro0PYhdqsdrx8sUNUOrMgTP
+	g5vOfmFd/BydBeFqzGTA1pq3jR50Hfgv3mJuFqVTIzguMjYfzOpHWog+kJee32NM
+X-Gm-Gg: ASbGncsZtYYN2fU1WqIEtrZYhbeBLPQgLrCsfzhuuXOIvzlx5RJojaXRuiB3Kk3hNV+
+	a6/3bA7bfVuFrIIYYcPUfJw7d9gvyChRYi1VdBZK9p6FIyzbBwQ6JSrbvPpL3HJA4g+m7cxW8hP
+	biGfyOK5MmpnI7tgv9wbYsmnUEl0OSExkeoAz7HKKSmTMxvMN6kMQ9mQv5gcLWKvrFsahlFxEgm
+	q7ehxWW8llFYBVe7QzPDVprn8Vmb5wtzlQz9B8/c94pOv9Q84v/7hCZEXkJa/RlRB7vHeJhWAZg
+	A+C0PFgPlf2iaNC33TNTj8M79zbhH0JsIWLvOKmWuItF5JZ98Y6byjdsJHib/Ow/QPxE8Zx9Jgg
+	Zp+FKP0+FOYA=
+X-Google-Smtp-Source: AGHT+IEhfPCov+XXcwAT192yBcRLrRWo3p+a94Qg73Doa4nCCqTpHwLbqEBeyvDQI/KwTHjszQTRHQ==
+X-Received: by 2002:a05:600c:6212:b0:442:f8e7:25ef with SMTP id 5b1f17b1804b1-45399c3ca08mr66170225e9.11.1751293671409;
+        Mon, 30 Jun 2025 07:27:51 -0700 (PDT)
 Received: from localhost.localdomain ([2a01:cb14:740:2b00:1a5e:fff:fe3d:95be])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453835798acsm165871905e9.10.2025.06.30.07.27.46
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453835798acsm165871905e9.10.2025.06.30.07.27.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Jun 2025 07:27:46 -0700 (PDT)
+        Mon, 30 Jun 2025 07:27:51 -0700 (PDT)
 From: mathieu.tortuyaux@gmail.com
 To: stable@vger.kernel.org
 Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12.y 1/3] r8169: add support for RTL8125D
-Date: Mon, 30 Jun 2025 16:27:14 +0200
-Message-ID: <20250630142717.70619-2-mathieu.tortuyaux@gmail.com>
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12.y 2/3] net: phy: realtek: merge the drivers for internal NBase-T PHY's
+Date: Mon, 30 Jun 2025 16:27:15 +0200
+Message-ID: <20250630142717.70619-3-mathieu.tortuyaux@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250630142717.70619-1-mathieu.tortuyaux@gmail.com>
 References: <20250630142717.70619-1-mathieu.tortuyaux@gmail.com>
@@ -93,152 +92,140 @@ Content-Transfer-Encoding: 8bit
 
 From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit f75d1fbe7809bc5ed134204b920fd9e2fc5db1df upstream.
+commit f87a17ed3b51fba4dfdd8f8b643b5423a85fc551 upstream.
 
-This adds support for new chip version RTL8125D, which can be found on
-boards like Gigabyte X870E AORUS ELITE WIFI7. Firmware rtl8125d-1.fw
-for this chip version is available in linux-firmware already.
+The Realtek RTL8125/RTL8126 NBase-T MAC/PHY chips have internal PHY's
+which are register-compatible, at least for the registers we use here.
+So let's use just one PHY driver to support all of them.
+These internal PHY's exist also as external C45 PHY's, but on the
+internal PHY's no access to MMD registers is possible. This can be
+used to differentiate between the internal and external version.
+
+As a side effect the drivers for two now external-only drivers don't
+require read_mmd/write_mmd hooks any longer.
 
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/d0306912-e88e-4c25-8b5d-545ae8834c0c@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/c57081a6-811f-4571-ab35-34f4ca6de9af@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 ---
- drivers/net/ethernet/realtek/r8169.h          |  1 +
- drivers/net/ethernet/realtek/r8169_main.c     | 23 +++++++++++++------
- .../net/ethernet/realtek/r8169_phy_config.c   | 10 ++++++++
- 3 files changed, 27 insertions(+), 7 deletions(-)
+ drivers/net/phy/realtek.c | 53 +++++++++++++++++++++++++++++++--------
+ 1 file changed, 43 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169.h b/drivers/net/ethernet/realtek/r8169.h
-index e2db944e6fa8..be4c9622618d 100644
---- a/drivers/net/ethernet/realtek/r8169.h
-+++ b/drivers/net/ethernet/realtek/r8169.h
-@@ -68,6 +68,7 @@ enum mac_version {
- 	/* support for RTL_GIGA_MAC_VER_60 has been removed */
- 	RTL_GIGA_MAC_VER_61,
- 	RTL_GIGA_MAC_VER_63,
-+	RTL_GIGA_MAC_VER_64,
- 	RTL_GIGA_MAC_VER_65,
- 	RTL_GIGA_MAC_VER_66,
- 	RTL_GIGA_MAC_NONE
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 85bb5121cd24..7b82779e4cd5 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -55,6 +55,7 @@
- #define FIRMWARE_8107E_2	"rtl_nic/rtl8107e-2.fw"
- #define FIRMWARE_8125A_3	"rtl_nic/rtl8125a-3.fw"
- #define FIRMWARE_8125B_2	"rtl_nic/rtl8125b-2.fw"
-+#define FIRMWARE_8125D_1	"rtl_nic/rtl8125d-1.fw"
- #define FIRMWARE_8126A_2	"rtl_nic/rtl8126a-2.fw"
- #define FIRMWARE_8126A_3	"rtl_nic/rtl8126a-3.fw"
+diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
+index 166f6a728373..830a0d337de5 100644
+--- a/drivers/net/phy/realtek.c
++++ b/drivers/net/phy/realtek.c
+@@ -92,6 +92,7 @@
  
-@@ -138,6 +139,7 @@ static const struct {
- 	[RTL_GIGA_MAC_VER_61] = {"RTL8125A",		FIRMWARE_8125A_3},
- 	/* reserve 62 for CFG_METHOD_4 in the vendor driver */
- 	[RTL_GIGA_MAC_VER_63] = {"RTL8125B",		FIRMWARE_8125B_2},
-+	[RTL_GIGA_MAC_VER_64] = {"RTL8125D",		FIRMWARE_8125D_1},
- 	[RTL_GIGA_MAC_VER_65] = {"RTL8126A",		FIRMWARE_8126A_2},
- 	[RTL_GIGA_MAC_VER_66] = {"RTL8126A",		FIRMWARE_8126A_3},
- };
-@@ -707,6 +709,7 @@ MODULE_FIRMWARE(FIRMWARE_8168FP_3);
- MODULE_FIRMWARE(FIRMWARE_8107E_2);
- MODULE_FIRMWARE(FIRMWARE_8125A_3);
- MODULE_FIRMWARE(FIRMWARE_8125B_2);
-+MODULE_FIRMWARE(FIRMWARE_8125D_1);
- MODULE_FIRMWARE(FIRMWARE_8126A_2);
- MODULE_FIRMWARE(FIRMWARE_8126A_3);
- 
-@@ -2098,10 +2101,7 @@ static void rtl_set_eee_txidle_timer(struct rtl8169_private *tp)
- 		tp->tx_lpi_timer = timer_val;
- 		r8168_mac_ocp_write(tp, 0xe048, timer_val);
- 		break;
--	case RTL_GIGA_MAC_VER_61:
--	case RTL_GIGA_MAC_VER_63:
--	case RTL_GIGA_MAC_VER_65:
--	case RTL_GIGA_MAC_VER_66:
-+	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_66:
- 		tp->tx_lpi_timer = timer_val;
- 		RTL_W16(tp, EEE_TXIDLE_TIMER_8125, timer_val);
- 		break;
-@@ -2233,6 +2233,9 @@ static enum mac_version rtl8169_get_mac_version(u16 xid, bool gmii)
- 		{ 0x7cf, 0x64a,	RTL_GIGA_MAC_VER_66 },
- 		{ 0x7cf, 0x649,	RTL_GIGA_MAC_VER_65 },
- 
-+		/* 8125D family. */
-+		{ 0x7cf, 0x688,	RTL_GIGA_MAC_VER_64 },
-+
- 		/* 8125B family. */
- 		{ 0x7cf, 0x641,	RTL_GIGA_MAC_VER_63 },
- 
-@@ -2500,9 +2503,7 @@ static void rtl_init_rxcfg(struct rtl8169_private *tp)
- 	case RTL_GIGA_MAC_VER_61:
- 		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST);
- 		break;
--	case RTL_GIGA_MAC_VER_63:
--	case RTL_GIGA_MAC_VER_65:
--	case RTL_GIGA_MAC_VER_66:
-+	case RTL_GIGA_MAC_VER_63 ... RTL_GIGA_MAC_VER_66:
- 		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST |
- 			RX_PAUSE_SLOT_ON);
- 		break;
-@@ -3840,6 +3841,12 @@ static void rtl_hw_start_8125b(struct rtl8169_private *tp)
- 	rtl_hw_start_8125_common(tp);
+ #define RTL_GENERIC_PHYID			0x001cc800
+ #define RTL_8211FVD_PHYID			0x001cc878
++#define RTL_8221B				0x001cc840
+ #define RTL_8221B_VB_CG				0x001cc849
+ #define RTL_8221B_VN_CG				0x001cc84a
+ #define RTL_8251B				0x001cc862
+@@ -1040,6 +1041,23 @@ static bool rtlgen_supports_2_5gbps(struct phy_device *phydev)
+ 	return val >= 0 && val & MDIO_PMA_SPEED_2_5G;
  }
  
-+static void rtl_hw_start_8125d(struct rtl8169_private *tp)
++/* On internal PHY's MMD reads over C22 always return 0.
++ * Check a MMD register which is known to be non-zero.
++ */
++static bool rtlgen_supports_mmd(struct phy_device *phydev)
 +{
-+	rtl_set_def_aspm_entry_latency(tp);
-+	rtl_hw_start_8125_common(tp);
++	int val;
++
++	phy_lock_mdio_bus(phydev);
++	__phy_write(phydev, MII_MMD_CTRL, MDIO_MMD_PCS);
++	__phy_write(phydev, MII_MMD_DATA, MDIO_PCS_EEE_ABLE);
++	__phy_write(phydev, MII_MMD_CTRL, MDIO_MMD_PCS | MII_MMD_CTRL_NOINCR);
++	val = __phy_read(phydev, MII_MMD_DATA);
++	phy_unlock_mdio_bus(phydev);
++
++	return val > 0;
 +}
 +
- static void rtl_hw_start_8126a(struct rtl8169_private *tp)
+ static int rtlgen_match_phy_device(struct phy_device *phydev)
  {
- 	rtl_disable_zrxdc_timeout(tp);
-@@ -3889,6 +3896,7 @@ static void rtl_hw_config(struct rtl8169_private *tp)
- 		[RTL_GIGA_MAC_VER_53] = rtl_hw_start_8117,
- 		[RTL_GIGA_MAC_VER_61] = rtl_hw_start_8125a_2,
- 		[RTL_GIGA_MAC_VER_63] = rtl_hw_start_8125b,
-+		[RTL_GIGA_MAC_VER_64] = rtl_hw_start_8125d,
- 		[RTL_GIGA_MAC_VER_65] = rtl_hw_start_8126a,
- 		[RTL_GIGA_MAC_VER_66] = rtl_hw_start_8126a,
- 	};
-@@ -3906,6 +3914,7 @@ static void rtl_hw_start_8125(struct rtl8169_private *tp)
- 	/* disable interrupt coalescing */
- 	switch (tp->mac_version) {
- 	case RTL_GIGA_MAC_VER_61:
-+	case RTL_GIGA_MAC_VER_64:
- 		for (i = 0xa00; i < 0xb00; i += 4)
- 			RTL_W32(tp, i, 0);
- 		break;
-diff --git a/drivers/net/ethernet/realtek/r8169_phy_config.c b/drivers/net/ethernet/realtek/r8169_phy_config.c
-index cf29b1208482..d09b2a41cd06 100644
---- a/drivers/net/ethernet/realtek/r8169_phy_config.c
-+++ b/drivers/net/ethernet/realtek/r8169_phy_config.c
-@@ -1104,6 +1104,15 @@ static void rtl8125b_hw_phy_config(struct rtl8169_private *tp,
- 	rtl8125b_config_eee_phy(phydev);
+ 	return phydev->phy_id == RTL_GENERIC_PHYID &&
+@@ -1049,7 +1067,8 @@ static int rtlgen_match_phy_device(struct phy_device *phydev)
+ static int rtl8226_match_phy_device(struct phy_device *phydev)
+ {
+ 	return phydev->phy_id == RTL_GENERIC_PHYID &&
+-	       rtlgen_supports_2_5gbps(phydev);
++	       rtlgen_supports_2_5gbps(phydev) &&
++	       rtlgen_supports_mmd(phydev);
  }
  
-+static void rtl8125d_hw_phy_config(struct rtl8169_private *tp,
-+				   struct phy_device *phydev)
+ static int rtlgen_is_c45_match(struct phy_device *phydev, unsigned int id,
+@@ -1061,6 +1080,11 @@ static int rtlgen_is_c45_match(struct phy_device *phydev, unsigned int id,
+ 		return !is_c45 && (id == phydev->phy_id);
+ }
+ 
++static int rtl8221b_match_phy_device(struct phy_device *phydev)
 +{
-+	r8169_apply_firmware(tp);
-+	rtl8125_legacy_force_mode(phydev);
-+	rtl8168g_disable_aldps(phydev);
-+	rtl8125b_config_eee_phy(phydev);
++	return phydev->phy_id == RTL_8221B && rtlgen_supports_mmd(phydev);
 +}
 +
- static void rtl8126a_hw_phy_config(struct rtl8169_private *tp,
- 				   struct phy_device *phydev)
+ static int rtl8221b_vb_cg_c22_match_phy_device(struct phy_device *phydev)
  {
-@@ -1160,6 +1169,7 @@ void r8169_hw_phy_config(struct rtl8169_private *tp, struct phy_device *phydev,
- 		[RTL_GIGA_MAC_VER_53] = rtl8117_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_61] = rtl8125a_2_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_63] = rtl8125b_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_64] = rtl8125d_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_65] = rtl8126a_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_66] = rtl8126a_hw_phy_config,
- 	};
+ 	return rtlgen_is_c45_match(phydev, RTL_8221B_VB_CG, false);
+@@ -1081,9 +1105,21 @@ static int rtl8221b_vn_cg_c45_match_phy_device(struct phy_device *phydev)
+ 	return rtlgen_is_c45_match(phydev, RTL_8221B_VN_CG, true);
+ }
+ 
+-static int rtl8251b_c22_match_phy_device(struct phy_device *phydev)
++static int rtl_internal_nbaset_match_phy_device(struct phy_device *phydev)
+ {
+-	return rtlgen_is_c45_match(phydev, RTL_8251B, false);
++	if (phydev->is_c45)
++		return false;
++
++	switch (phydev->phy_id) {
++	case RTL_GENERIC_PHYID:
++	case RTL_8221B:
++	case RTL_8251B:
++		break;
++	default:
++		return false;
++	}
++
++	return rtlgen_supports_2_5gbps(phydev) && !rtlgen_supports_mmd(phydev);
+ }
+ 
+ static int rtl8251b_c45_match_phy_device(struct phy_device *phydev)
+@@ -1345,10 +1381,8 @@ static struct phy_driver realtek_drvs[] = {
+ 		.resume		= rtlgen_resume,
+ 		.read_page	= rtl821x_read_page,
+ 		.write_page	= rtl821x_write_page,
+-		.read_mmd	= rtl822x_read_mmd,
+-		.write_mmd	= rtl822x_write_mmd,
+ 	}, {
+-		PHY_ID_MATCH_EXACT(0x001cc840),
++		.match_phy_device = rtl8221b_match_phy_device,
+ 		.name		= "RTL8226B_RTL8221B 2.5Gbps PHY",
+ 		.get_features	= rtl822x_get_features,
+ 		.config_aneg	= rtl822x_config_aneg,
+@@ -1359,8 +1393,6 @@ static struct phy_driver realtek_drvs[] = {
+ 		.resume		= rtlgen_resume,
+ 		.read_page	= rtl821x_read_page,
+ 		.write_page	= rtl821x_write_page,
+-		.read_mmd	= rtl822x_read_mmd,
+-		.write_mmd	= rtl822x_write_mmd,
+ 	}, {
+ 		PHY_ID_MATCH_EXACT(0x001cc838),
+ 		.name           = "RTL8226-CG 2.5Gbps PHY",
+@@ -1438,8 +1470,9 @@ static struct phy_driver realtek_drvs[] = {
+ 		.read_page      = rtl821x_read_page,
+ 		.write_page     = rtl821x_write_page,
+ 	}, {
+-		.match_phy_device = rtl8251b_c22_match_phy_device,
+-		.name           = "RTL8126A-internal 5Gbps PHY",
++		.match_phy_device = rtl_internal_nbaset_match_phy_device,
++		.name           = "Realtek Internal NBASE-T PHY",
++		.flags		= PHY_IS_INTERNAL,
+ 		.get_features   = rtl822x_get_features,
+ 		.config_aneg    = rtl822x_config_aneg,
+ 		.read_status    = rtl822x_read_status,
 -- 
 2.49.0
 
