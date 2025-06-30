@@ -1,107 +1,236 @@
-Return-Path: <stable+bounces-158882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1534AED852
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:15:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00949AED857
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C607B1893EAA
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 09:15:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC7563A8F31
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 09:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0F9220680;
-	Mon, 30 Jun 2025 09:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1438123F405;
+	Mon, 30 Jun 2025 09:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="p+mVLfZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgD6nlFk"
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633C626AF3;
-	Mon, 30 Jun 2025 09:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B900F238C0F
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 09:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751274916; cv=none; b=q3AUcj6xa96SEQF0NYKOvNtretieSqzI271+0le60p4AfJzzpfNkQHJqeOno3ZMwdMtREATseDP0+z6hHK5hI5k8I/kowgdDVIueHNkQqZeYNolyhIzOwOgIA4DeC+xsgLlbyA+lRd3MJZgEm4oEVgE2C+W3qhjV/XJgq7fMRrI=
+	t=1751274986; cv=none; b=uRY6++LOJr5gs8/V1tvb0PllebzplyE18roB/tOGFnfhWnZPepqZCK7oglWNZZzmALdNXqh+OaMXFdoTrsz7lbC/UuDFX41iWlkz4BU0Q+fBCOPnQm5cN6CQi/dGA8lIzLEWCA7Npr+zBnsjPL6Z7L1tsC4cKplk139VSVn0UXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751274916; c=relaxed/simple;
-	bh=TkLhFhWumGvB9oEam+IXBxxJbwl1aAR9CRlttTKT5kM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wm4cCIkZC+A21PmGR3hA7yeqmaLoqEPJ+Gh51oA/+v3Z4wTVNWkV6mVrOnCuwtVzGvfcsqQOqu6nBU1htkz0yntqWs1e3eulrsWEMdtTZyVkgzyrSaZXJNLN5t1jbsm8Fi4GBQtl3Sl6m2oapmiT2bU+ru7b0HiSyUXPEG47x6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=p+mVLfZ6; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=+fqpA/Lpac9+JlswIBpsVSCZtAGmxs1CgIvPDGfFS84=; b=p+mVLfZ6Sbj4jjBCwKAaXU3Eh1
-	BQ99XI07HJ0uWwEVHEhluIiblIYNyzteiu1sClMHdiViQuFQv9vaL+EHhkDWTefKVtNq7H9Kv/DwN
-	WrvFu7bkHcLzdUQ5FeJRWha2fWeH3X38S+6GSE/7Ey7ZUcqB3n/xlMv38L5tlPqUTsgFLLnTy7ENu
-	9Riljpgx4CyvPsr9fYiTfOOc98BULHfeQ4F6W8vDaCuJ88QY/YuuTtCuvjmIa2XEaLx6zUBOtnAwB
-	VhYe/9iU26D7U0XmPloUlvO575XgXzYLPEzaJxXN8SopKWtsSPrBb0EoJZSHWVCMJdtvwFYyi4NDE
-	Qa3cWGnw==;
-Received: from i53875bfd.versanet.de ([83.135.91.253] helo=localhost.localdomain)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1uWAbC-00068L-5E; Mon, 30 Jun 2025 11:14:50 +0200
-From: Heiko Stuebner <heiko@sntech.de>
-To: Sandy Huang <hjc@rock-chips.com>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	kernel@collabora.com,
-	Andy Yan <andyshrk@163.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: (subset) [PATCH 0/3] arm64: dts: rockchip: Fix HDMI output on RK3576
-Date: Mon, 30 Jun 2025 11:14:38 +0200
-Message-ID: <175127486757.133006.13048263625888495346.b4-ty@sntech.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250612-rk3576-hdmitx-fix-v1-0-4b11007d8675@collabora.com>
-References: <20250612-rk3576-hdmitx-fix-v1-0-4b11007d8675@collabora.com>
+	s=arc-20240116; t=1751274986; c=relaxed/simple;
+	bh=rq5Yb4XCz6mzg6uwF72LiOJHcfD33UDVqEqrpzSMctA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=H0T7cs0W8ExEgd30T5gwWiVCtclSuyvlEk0Kdmv+BeZNdcOuXyZ0urwJPO4xtXZG2iIaYAuztAgwykKjpXcYQlCR/0oDw3PWUduuwmnxHdiAqCHbR1B1Npe46+DAdcdkk+KDG4Dj26B4xgZFD3sayWi/LFiJ94IHcDEuc90SmZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgD6nlFk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E52C4CEE3;
+	Mon, 30 Jun 2025 09:16:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1751274986;
+	bh=rq5Yb4XCz6mzg6uwF72LiOJHcfD33UDVqEqrpzSMctA=;
+	h=Subject:To:Cc:From:Date:From;
+	b=zgD6nlFkm0irwAeW/en6xpIqNnW8Esy53/rFHDfhSWHs+wSEPmA9K/3Rwv7tYClfA
+	 sA0lgY5m7e2gFuwGX9HdXEYMZiQsjuqkte2bgTwWBTwQOfBrmFeq3R1odQxV8O3hlr
+	 wGgRkkJE+OJCAKlnbexbOqQVRdfWgGSuheSRT/SA=
+Subject: FAILED: patch "[PATCH] EDAC/amd64: Fix size calculation for Non-Power-of-Two DIMMs" failed to apply to 6.1-stable tree
+To: avadhut.naik@amd.com,bp@alien8.de,yazen.ghannam@amd.com,zilvinas@natrix.lt
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 30 Jun 2025 11:16:23 +0200
+Message-ID: <2025063022-frail-ceremony-f06e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-On Thu, 12 Jun 2025 00:47:46 +0300, Cristian Ciocaltea wrote:
-> Since commit c871a311edf0 ("phy: rockchip: samsung-hdptx: Setup TMDS
-> char rate via phy_configure_opts_hdmi"), the workaround of passing the
-> PHY rate from DW HDMI QP bridge driver via phy_set_bus_width() became
-> partially broken, unless the rate adjustment is done as with RK3588,
-> i.e. by CCF from VOP2.
-> 
-> Attempting to fix this up at PHY level would not only introduce
-> additional hacks, but it would also fail to adequately resolve the
-> display issues that are a consequence of the system CRU limitations.
-> 
-> [...]
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Applied, thanks!
+To reproduce the conflict and resubmit, you may use the following commands:
 
-[1/3] dt-bindings: display: vop2: Add optional PLL clock property for rk3576
-      commit: 3832dc42aed9b047ccecebf5917d008bd2dac940
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x a3f3040657417aeadb9622c629d4a0c2693a0f93
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025063022-frail-ceremony-f06e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-Best regards,
--- 
-Heiko Stuebner <heiko@sntech.de>
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From a3f3040657417aeadb9622c629d4a0c2693a0f93 Mon Sep 17 00:00:00 2001
+From: Avadhut Naik <avadhut.naik@amd.com>
+Date: Thu, 29 May 2025 20:50:04 +0000
+Subject: [PATCH] EDAC/amd64: Fix size calculation for Non-Power-of-Two DIMMs
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Each Chip-Select (CS) of a Unified Memory Controller (UMC) on AMD Zen-based
+SOCs has an Address Mask and a Secondary Address Mask register associated with
+it. The amd64_edac module logs DIMM sizes on a per-UMC per-CS granularity
+during init using these two registers.
+
+Currently, the module primarily considers only the Address Mask register for
+computing DIMM sizes. The Secondary Address Mask register is only considered
+for odd CS. Additionally, if it has been considered, the Address Mask register
+is ignored altogether for that CS. For power-of-two DIMMs i.e. DIMMs whose
+total capacity is a power of two (32GB, 64GB, etc), this is not an issue
+since only the Address Mask register is used.
+
+For non-power-of-two DIMMs i.e., DIMMs whose total capacity is not a power of
+two (48GB, 96GB, etc), however, the Secondary Address Mask register is used
+in conjunction with the Address Mask register. However, since the module only
+considers either of the two registers for a CS, the size computed by the
+module is incorrect. The Secondary Address Mask register is not considered for
+even CS, and the Address Mask register is not considered for odd CS.
+
+Introduce a new helper function so that both Address Mask and Secondary
+Address Mask registers are considered, when valid, for computing DIMM sizes.
+Furthermore, also rename some variables for greater clarity.
+
+Fixes: 81f5090db843 ("EDAC/amd64: Support asymmetric dual-rank DIMMs")
+Closes: https://lore.kernel.org/dbec22b6-00f2-498b-b70d-ab6f8a5ec87e@natrix.lt
+Reported-by: Žilvinas Žaltiena <zilvinas@natrix.lt>
+Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Tested-by: Žilvinas Žaltiena <zilvinas@natrix.lt>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250529205013.403450-1-avadhut.naik@amd.com
+
+diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
+index b681c0663203..07f1e9dc1ca7 100644
+--- a/drivers/edac/amd64_edac.c
++++ b/drivers/edac/amd64_edac.c
+@@ -1209,7 +1209,9 @@ static int umc_get_cs_mode(int dimm, u8 ctrl, struct amd64_pvt *pvt)
+ 	if (csrow_enabled(2 * dimm + 1, ctrl, pvt))
+ 		cs_mode |= CS_ODD_PRIMARY;
+ 
+-	/* Asymmetric dual-rank DIMM support. */
++	if (csrow_sec_enabled(2 * dimm, ctrl, pvt))
++		cs_mode |= CS_EVEN_SECONDARY;
++
+ 	if (csrow_sec_enabled(2 * dimm + 1, ctrl, pvt))
+ 		cs_mode |= CS_ODD_SECONDARY;
+ 
+@@ -1230,12 +1232,13 @@ static int umc_get_cs_mode(int dimm, u8 ctrl, struct amd64_pvt *pvt)
+ 	return cs_mode;
+ }
+ 
+-static int __addr_mask_to_cs_size(u32 addr_mask_orig, unsigned int cs_mode,
+-				  int csrow_nr, int dimm)
++static int calculate_cs_size(u32 mask, unsigned int cs_mode)
+ {
+-	u32 msb, weight, num_zero_bits;
+-	u32 addr_mask_deinterleaved;
+-	int size = 0;
++	int msb, weight, num_zero_bits;
++	u32 deinterleaved_mask;
++
++	if (!mask)
++		return 0;
+ 
+ 	/*
+ 	 * The number of zero bits in the mask is equal to the number of bits
+@@ -1248,19 +1251,30 @@ static int __addr_mask_to_cs_size(u32 addr_mask_orig, unsigned int cs_mode,
+ 	 * without swapping with the most significant bit. This can be handled
+ 	 * by keeping the MSB where it is and ignoring the single zero bit.
+ 	 */
+-	msb = fls(addr_mask_orig) - 1;
+-	weight = hweight_long(addr_mask_orig);
++	msb = fls(mask) - 1;
++	weight = hweight_long(mask);
+ 	num_zero_bits = msb - weight - !!(cs_mode & CS_3R_INTERLEAVE);
+ 
+ 	/* Take the number of zero bits off from the top of the mask. */
+-	addr_mask_deinterleaved = GENMASK_ULL(msb - num_zero_bits, 1);
++	deinterleaved_mask = GENMASK(msb - num_zero_bits, 1);
++	edac_dbg(1, "  Deinterleaved AddrMask: 0x%x\n", deinterleaved_mask);
++
++	return (deinterleaved_mask >> 2) + 1;
++}
++
++static int __addr_mask_to_cs_size(u32 addr_mask, u32 addr_mask_sec,
++				  unsigned int cs_mode, int csrow_nr, int dimm)
++{
++	int size;
+ 
+ 	edac_dbg(1, "CS%d DIMM%d AddrMasks:\n", csrow_nr, dimm);
+-	edac_dbg(1, "  Original AddrMask: 0x%x\n", addr_mask_orig);
+-	edac_dbg(1, "  Deinterleaved AddrMask: 0x%x\n", addr_mask_deinterleaved);
++	edac_dbg(1, "  Primary AddrMask: 0x%x\n", addr_mask);
+ 
+ 	/* Register [31:1] = Address [39:9]. Size is in kBs here. */
+-	size = (addr_mask_deinterleaved >> 2) + 1;
++	size = calculate_cs_size(addr_mask, cs_mode);
++
++	edac_dbg(1, "  Secondary AddrMask: 0x%x\n", addr_mask_sec);
++	size += calculate_cs_size(addr_mask_sec, cs_mode);
+ 
+ 	/* Return size in MBs. */
+ 	return size >> 10;
+@@ -1269,8 +1283,8 @@ static int __addr_mask_to_cs_size(u32 addr_mask_orig, unsigned int cs_mode,
+ static int umc_addr_mask_to_cs_size(struct amd64_pvt *pvt, u8 umc,
+ 				    unsigned int cs_mode, int csrow_nr)
+ {
++	u32 addr_mask = 0, addr_mask_sec = 0;
+ 	int cs_mask_nr = csrow_nr;
+-	u32 addr_mask_orig;
+ 	int dimm, size = 0;
+ 
+ 	/* No Chip Selects are enabled. */
+@@ -1308,13 +1322,13 @@ static int umc_addr_mask_to_cs_size(struct amd64_pvt *pvt, u8 umc,
+ 	if (!pvt->flags.zn_regs_v2)
+ 		cs_mask_nr >>= 1;
+ 
+-	/* Asymmetric dual-rank DIMM support. */
+-	if ((csrow_nr & 1) && (cs_mode & CS_ODD_SECONDARY))
+-		addr_mask_orig = pvt->csels[umc].csmasks_sec[cs_mask_nr];
+-	else
+-		addr_mask_orig = pvt->csels[umc].csmasks[cs_mask_nr];
++	if (cs_mode & (CS_EVEN_PRIMARY | CS_ODD_PRIMARY))
++		addr_mask = pvt->csels[umc].csmasks[cs_mask_nr];
+ 
+-	return __addr_mask_to_cs_size(addr_mask_orig, cs_mode, csrow_nr, dimm);
++	if (cs_mode & (CS_EVEN_SECONDARY | CS_ODD_SECONDARY))
++		addr_mask_sec = pvt->csels[umc].csmasks_sec[cs_mask_nr];
++
++	return __addr_mask_to_cs_size(addr_mask, addr_mask_sec, cs_mode, csrow_nr, dimm);
+ }
+ 
+ static void umc_debug_display_dimm_sizes(struct amd64_pvt *pvt, u8 ctrl)
+@@ -3512,9 +3526,10 @@ static void gpu_get_err_info(struct mce *m, struct err_info *err)
+ static int gpu_addr_mask_to_cs_size(struct amd64_pvt *pvt, u8 umc,
+ 				    unsigned int cs_mode, int csrow_nr)
+ {
+-	u32 addr_mask_orig = pvt->csels[umc].csmasks[csrow_nr];
++	u32 addr_mask		= pvt->csels[umc].csmasks[csrow_nr];
++	u32 addr_mask_sec	= pvt->csels[umc].csmasks_sec[csrow_nr];
+ 
+-	return __addr_mask_to_cs_size(addr_mask_orig, cs_mode, csrow_nr, csrow_nr >> 1);
++	return __addr_mask_to_cs_size(addr_mask, addr_mask_sec, cs_mode, csrow_nr, csrow_nr >> 1);
+ }
+ 
+ static void gpu_debug_display_dimm_sizes(struct amd64_pvt *pvt, u8 ctrl)
+
 
