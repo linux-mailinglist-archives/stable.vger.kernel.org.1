@@ -1,209 +1,137 @@
-Return-Path: <stable+bounces-158918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E83AED8EC
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:41:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A5EAED8EF
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:42:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2ADF3A830D
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 09:40:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD5D71746F8
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 09:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2408246BC5;
-	Mon, 30 Jun 2025 09:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lmL1dWNu";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UL+SN8g8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6DE246788;
+	Mon, 30 Jun 2025 09:42:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04225FC1D;
-	Mon, 30 Jun 2025 09:40:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C628FC1D;
+	Mon, 30 Jun 2025 09:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751276456; cv=none; b=DpNqRJ2HsSoXSKfwWG0AevdV7fa3dwH5UF6RpGNezx4uRw6290kxoUO7Zig54+e51eMimXMdH3HQmomo0sVVOmijOybKiUg4AzmhQDlWvRAhc9RDaL2v8jaaKAMx9G53uOYK8j9/pCqFduDZiZr56wRfiz9NcbbaZM4Z4xd0vd8=
+	t=1751276554; cv=none; b=g9ZwAVncvulwOG/Ym2sH7mVsX4kYYaXo3ltCc+4x84yMsvMT83pbl1XqcBcflSq0vIlth/T+5Yqb9F/kaJeKCnQGnvBfDyMjg/w62kkxoT2n47YcU+Sw6H7Qji+Mt9UjZ3LAFwdXFd4zWaBMu2JjMBfTfJ4PnBjwAGSX7DzY/94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751276456; c=relaxed/simple;
-	bh=sSM9jhLp1pVLT02DnOy2UJo6+c5qUjmWV0NjvlqNvV4=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=V8Zh0R9cOJadAlSlx4sqwiQphwj7sMNjwBio/dUcqei65/KmiSx2cXfArrTRF2XZqPKjV1tLsUO9DmDrr1YSvDmg7h0WF6GQclRLsAeYKIoJrWpEreWVzj979ZRAUl5kpCVnl29EHq7T6Y+iF+A9csNMnCVC+9s9dygKOYYBwRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lmL1dWNu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UL+SN8g8; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 30 Jun 2025 09:40:51 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1751276453;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jM3QnOVAguvJas4rHQZdJ5pvDo16SPMhJSEapvMUsDY=;
-	b=lmL1dWNu+cqethtpNY819RFtjP39FBZEX7upgIv5Fvy3I4IWXGB+8YhruodmVnhG+ZNi82
-	CW8cMTyq0Z8P1Vt7ii/Yd59p6nUB8ttDuEdTogdKEe07bVhK797lT5nZFWZIKULkxt9/6Y
-	KckchT0x3q0AKohtkBsB00K+YrunQERoA/TxuSW+loTroMsTxQaWUX97aUPGvwK0oxBwGF
-	DRV2cc3NxHOv3tMp2MNaU9hGbaIOdyqEOr4gsKvKiCJ/m93SmfZ2Dt77Ah/hLbthxOEf/n
-	MDitpGMFOnYLF/2pkC5qUt0wFpjFnB5DSZrTziZK2DBGG1pSta7Jbe2wPbcRlA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1751276453;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jM3QnOVAguvJas4rHQZdJ5pvDo16SPMhJSEapvMUsDY=;
-	b=UL+SN8g8Go18Iu+AQW7tJSNV2dcnLizRvpLS7SMF5ijmkfEXG3IJTBKp1jqLVC+35/GDsb
-	aVlxzrB5eH922QCA==
-From: "tip-bot2 for Nikunj A Dadhania" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sev: Use TSC_FACTOR for Secure TSC frequency
- calculation
-Cc: Nikunj A Dadhania <nikunj@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250630081858.485187-1-nikunj@amd.com>
-References: <20250630081858.485187-1-nikunj@amd.com>
+	s=arc-20240116; t=1751276554; c=relaxed/simple;
+	bh=ouLFgmRvYWHiYjRbi0QKE+hRqzA8wYBedRhl6jY4HNY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jKBcY44ZwV9HxeNbwm8DeRb1egJYCSyN24473FsNyz55xKPIUS1RGn8xG0tOrQyS0OO2MLJ1pkmxMQnlFpxvMVDuNHoM9LJXyHlDzyElN/1N6IVO1H6HuDa4aGlLp3EHqcBKWV3Fbp2RnGE+EakRM4Pc2HygabavGmKDukskUDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz16t1751276476t83dedbc1
+X-QQ-Originating-IP: wB8ILOyR8jZl/vHVC7KPmfZjJkgAgDakoffsBLAVl1M=
+Received: from w-MS-7E16.trustnetic.com ( [125.120.151.178])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 30 Jun 2025 17:41:10 +0800 (CST)
+X-QQ-SSF: 0001000000000000000000000000000
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 106915942635377542
+EX-QQ-RecipientCnt: 11
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: mengyuanlou@net-swift.com,
+	duanqiangwen@net-swift.com,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: libwx: fix double put of page to page_pool
+Date: Mon, 30 Jun 2025 17:41:02 +0800
+Message-ID: <C8A23A11DB646E60+20250630094102.22265-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175127645164.406.7323471406735520474.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: NYlggeZuI0UG1AEP5h9/MiWHNUNwK8W/x/Q0TKVIPxS7c0ZRIH+mXXgX
+	SFTDwIy4RNzWiEVtkebgt4rekD1NzopKtZiAk0QM8z9lU6SO9lVRxJpNwwPwt69oCUsO+w3
+	y+HL/cH6ZNaaMoWUzYJW0rPfPH5aViqrpPEXcTT2bJvz1oPNDDxLlBUmNCmJQfP/1hHButc
+	T4dQsYE8RQCCNog4t2tiXXAlYpd2BHOh+mAY3UdIjeiIGC5hnxgyqy6tL+foaNPWQiKKtVU
+	T/dGCdBHMJPUWkcDXb7Pic9tWZYOTkdRK1w29DT3yeSRUiQiMKsLXYEtgrm7gC5ZVkDw0/b
+	3MHzqM2mPUTvrrr085LZZrO7h6I2punl2miLjY57zjTZ+6B9fr3s7DygLG2IqhOBjBUJWob
+	6ZkkST3uh/Yyv8lIUQgAg5JJ9f5zIhR8cSWrRpl15hfNpr+n19aGs5VwGQTizzIB9mVho/8
+	2ezDSDEpVEPGP920xna0Mj9T99ZXRQZibc4yldBS9aE8SKabi7iGlXfJl4/QwrU6SSCSc0u
+	8lB6dJVAXLukZyTnPMRKLA/bxif7THu+rgYzfdjzcrEOmZ+RRlG/gt6DQ6WtJUAlMp8ydKE
+	a68wz7u2MUDUZg80gC2wKiCBHVZ0cuw9dU1hCI5fIVv09Ut7GIk766vaPSn+k5HWwVCaBm9
+	BMUNQMSJimhDfysP4MAVhAbdmjJPhVWM5zVcuxwPtGVMkok+ebAVRovMKZc/COAeIFSiv3z
+	06UUPUF0nwMoAdPworvL5hx6gzjP9fq0wxyNp0fVENDuH1uMdbdHxD5QkfT/3bj7TEHDQnv
+	YaypGyXxt/jjyFYFRu7sDKR5rvKuSPgTb1+QT+ETj9UfcgBNtC8mTTtLQsXoOjttGZ8Kbf5
+	U9EhuSbV2+YzijUrQqtvp7MFQkUA/7c8fMqBneaYoFMLsGYrXrAmIse41LWSyIDWRMzK1Fp
+	G13vsLlRF2r2y3dpU9jzuhAVTDnPOdfWcf/PsYIqTNZYMG5p10E6Q0rwTa6DfAVAV61FsCS
+	W1+YCLDMRO2Naz9FsKjtU9w3ojHdoyCfkIWVYGl2CLrPAAr3ufKHFm4FZa3Co=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+X-QQ-RECHKSPAM: 0
 
-The following commit has been merged into the x86/urgent branch of tip:
+wx_dma_sync_frag() incorrectly attempted to return the page to
+page_pool, which is already handled via buffer reuse or wx_build_skb()
+paths. Under high MTU and high throughput, this causes list corruption
+inside page_pool due to double free.
 
-Commit-ID:     4a35d2b5254af89595fd90dae9ee0c8f990a148d
-Gitweb:        https://git.kernel.org/tip/4a35d2b5254af89595fd90dae9ee0c8f990a148d
-Author:        Nikunj A Dadhania <nikunj@amd.com>
-AuthorDate:    Mon, 30 Jun 2025 13:48:58 +05:30
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 30 Jun 2025 11:11:46 +02:00
+[  876.949950] Call Trace:
+[  876.949951]  <IRQ>
+[  876.949952]  __rmqueue_pcplist+0x53/0x2c0
+[  876.949955]  alloc_pages_bulk_noprof+0x2e0/0x660
+[  876.949958]  __page_pool_alloc_pages_slow+0xa9/0x400
+[  876.949961]  page_pool_alloc_pages+0xa/0x20
+[  876.949963]  wx_alloc_rx_buffers+0xd7/0x110 [libwx]
+[  876.949967]  wx_clean_rx_irq+0x262/0x430 [libwx]
+[  876.949971]  wx_poll+0x92/0x130 [libwx]
+[  876.949975]  __napi_poll+0x28/0x190
+[  876.949977]  net_rx_action+0x301/0x3f0
+[  876.949980]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  876.949981]  ? profile_tick+0x30/0x70
+[  876.949983]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  876.949984]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  876.949986]  ? timerqueue_add+0xa3/0xc0
+[  876.949988]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  876.949989]  ? __raise_softirq_irqoff+0x16/0x70
+[  876.949991]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  876.949993]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  876.949994]  ? wx_msix_clean_rings+0x41/0x50 [libwx]
+[  876.949998]  handle_softirqs+0xf9/0x2c0
 
-x86/sev: Use TSC_FACTOR for Secure TSC frequency calculation
-
-When using Secure TSC, the GUEST_TSC_FREQ MSR reports a frequency based on
-the nominal P0 frequency, which deviates slightly (typically ~0.2%) from
-the actual mean TSC frequency due to clocking parameters.
-
-Over extended VM uptime, this discrepancy accumulates, causing clock skew
-between the hypervisor and a SEV-SNP VM, leading to early timer interrupts as
-perceived by the guest.
-
-The guest kernel relies on the reported nominal frequency for TSC-based
-timekeeping, while the actual frequency set during SNP_LAUNCH_START may
-differ. This mismatch results in inaccurate time calculations, causing the
-guest to perceive hrtimers as firing earlier than expected.
-
-Utilize the TSC_FACTOR from the SEV firmware's secrets page (see "Secrets
-Page Format" in the SNP Firmware ABI Specification) to calculate the mean
-TSC frequency, ensuring accurate timekeeping and mitigating clock skew in
-SEV-SNP VMs.
-
-Use early_ioremap_encrypted() to map the secrets page as
-ioremap_encrypted() uses kmalloc() which is not available during early TSC
-initialization and causes a panic.
-
-Fixes: 73bbf3b0fbba ("x86/tsc: Init the TSC for Secure TSC guests")
-Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Fixes: 3c47e8ae113a ("net: libwx: Support to receive packets in NAPI")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250630081858.485187-1-nikunj@amd.com
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- arch/x86/coco/sev/core.c   | 22 ++++++++++++++++++----
- arch/x86/include/asm/sev.h | 18 +++++++++++++++++-
- 2 files changed, 35 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index b6db4e0..47d10d9 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -88,7 +88,7 @@ static const char * const sev_status_feat_names[] = {
-  */
- static u64 snp_tsc_scale __ro_after_init;
- static u64 snp_tsc_offset __ro_after_init;
--static u64 snp_tsc_freq_khz __ro_after_init;
-+static unsigned long snp_tsc_freq_khz __ro_after_init;
- 
- DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
- DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
-@@ -2167,15 +2167,29 @@ static unsigned long securetsc_get_tsc_khz(void)
- 
- void __init snp_secure_tsc_init(void)
- {
--	unsigned long long tsc_freq_mhz;
-+	unsigned long tsc_freq_mhz, dummy;
-+	struct snp_secrets_page *secrets;
-+	void *mem;
- 
- 	if (!cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
- 		return;
- 
-+	mem = early_memremap_encrypted(sev_secrets_pa, PAGE_SIZE);
-+	if (!mem) {
-+		pr_err("Unable to get TSC_FACTOR: failed to map the SNP secrets page.\n");
-+		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SECURE_TSC);
-+	}
-+
-+	secrets = (__force struct snp_secrets_page *)mem;
-+
- 	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
--	rdmsrq(MSR_AMD64_GUEST_TSC_FREQ, tsc_freq_mhz);
--	snp_tsc_freq_khz = (unsigned long)(tsc_freq_mhz * 1000);
-+	rdmsr(MSR_AMD64_GUEST_TSC_FREQ, tsc_freq_mhz, dummy);
-+	/* Extract the GUEST TSC MHZ from BIT[17:0], rest is reserved space */
-+	tsc_freq_mhz = tsc_freq_mhz & GENMASK_ULL(17, 0);
-+	snp_tsc_freq_khz = SNP_SCALE_TSC_FREQ(tsc_freq_mhz * 1000, secrets->tsc_factor);
- 
- 	x86_platform.calibrate_cpu = securetsc_get_tsc_khz;
- 	x86_platform.calibrate_tsc = securetsc_get_tsc_khz;
-+
-+	early_memunmap(mem, PAGE_SIZE);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index c57cc4f27249..246b18a0285e 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -174,10 +174,6 @@ static void wx_dma_sync_frag(struct wx_ring *rx_ring,
+ 				      skb_frag_off(frag),
+ 				      skb_frag_size(frag),
+ 				      DMA_FROM_DEVICE);
+-
+-	/* If the page was released, just unmap it. */
+-	if (unlikely(WX_CB(skb)->page_released))
+-		page_pool_put_full_page(rx_ring->page_pool, rx_buffer->page, false);
  }
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 58e028d..2624947 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -223,6 +223,19 @@ struct snp_tsc_info_resp {
- 	u8 rsvd2[100];
- } __packed;
  
-+
-+/*
-+ * Obtain the mean TSC frequency by decreasing the nominal TSC frequency with
-+ * TSC_FACTOR as documented in the SNP Firmware ABI specification:
-+ *
-+ * GUEST_TSC_FREQ * (1 - (TSC_FACTOR * 0.00001))
-+ *
-+ * which is equivalent to:
-+ *
-+ * GUEST_TSC_FREQ -= (GUEST_TSC_FREQ * TSC_FACTOR) / 100000;
-+ */
-+#define SNP_SCALE_TSC_FREQ(freq, factor) ((freq) - (freq) * (factor) / 100000)
-+
- struct snp_guest_req {
- 	void *req_buf;
- 	size_t req_sz;
-@@ -282,8 +295,11 @@ struct snp_secrets_page {
- 	u8 svsm_guest_vmpl;
- 	u8 rsvd3[3];
- 
-+	/* The percentage decrease from nominal to mean TSC frequency. */
-+	u32 tsc_factor;
-+
- 	/* Remainder of page */
--	u8 rsvd4[3744];
-+	u8 rsvd4[3740];
- } __packed;
- 
- struct snp_msg_desc {
+ static struct wx_rx_buffer *wx_get_rx_buffer(struct wx_ring *rx_ring,
+-- 
+2.48.1
+
 
