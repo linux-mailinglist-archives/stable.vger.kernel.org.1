@@ -1,147 +1,330 @@
-Return-Path: <stable+bounces-158924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191D1AEDA14
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 12:41:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 042B4AEDA2C
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 12:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90B1A3A4A30
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 10:41:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38B99176CB0
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 10:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932CE2512E6;
-	Mon, 30 Jun 2025 10:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387A024166F;
+	Mon, 30 Jun 2025 10:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AJfoRn8O"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="C1p/Dblg"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EDC1F8691;
-	Mon, 30 Jun 2025 10:41:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7866E23ABA7
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 10:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751280087; cv=none; b=hvoubW01ZucnTMeeIv4HrY/N+r9+gZmi+pE9auvAe5irSA9g0v18+RSC7WwvkoeG2oYU5p8THogxTN+I+/HT0mQKpeBvyOJPSvENLVLijaM7EBOMyhA0Ota+ibwmg0b0P+J2AsMMgTYitKvBjhEuIR4QUvPYSHNu+3KmWYB/m0A=
+	t=1751280284; cv=none; b=bZ+teq3cHuOH2zzylUZBKij5oi5EIKZ+BoPmMxT2ESeKKXOxmg3Dqxq+HPft5HfykFkS4YLC9yDD9QzLLPKkWClQ0tathXxrlruuoBvFUiJuVrMMXszHaN7ilI5QemvmGvCiaLC52q1uxacGmUbh9M4lFayO4Al717uY9Bpuwwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751280087; c=relaxed/simple;
-	bh=Aaihtn+lbGVZl/8yJbeLECyjWVpfc4LymOW18ipEcIU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h+6N/OQ1pLqaY/O3vQE3lMMh+VWx2/D5kR21wJZ3NCxtuaIzmwTxX5HExJQOyd1q2qt1xtbE7dPOMOe6G8vi75oQbOrvICo1ZEdmelLmJlbryMmPT2X7mfPa55addmf8DNuifEOQkzNg2/edwPeZ+8VGW0vmVnALLbL4jtvcpiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AJfoRn8O; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55U4muw7025176;
-	Mon, 30 Jun 2025 10:41:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=P8X+64
-	+7LUiKdRgKSuWacnq6CITlx8G1mp1YsoR5fZ0=; b=AJfoRn8O1SdGFxwJZfu7ga
-	TWTM3VpkSkkVLoIdLYSQYwIZqauHiW10RlBiuFNCGyqnUTIsQS0w+CHmvK0HWtD1
-	gCAGoXeXr2SXwPddh9g/Q53zqRqhFrmuaaZtCp8f/XOHb1e/W7TurKQeOS6QmjBK
-	XdUBPfyLLq7LKmaAekRBWPNp5XrFWQHuPVCPh1j7j84xFgh/bQV5x9kT9OoUOIpP
-	BtcxYSWiX/kB1PH08flX6YSPKrWwN0vbnH0XC9bnvK7xHOBTM2zatDWFuoTbxDR6
-	D/xX/BIQB7bJo9gcdr0ULQ/lLQkLcwMwt+sjdGtV+iqmgWI3ExRgjbyEbzdXebzQ
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j6u1gu5m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Jun 2025 10:41:07 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55U9gGbs021934;
-	Mon, 30 Jun 2025 10:41:06 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47juqpdea7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Jun 2025 10:41:06 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55UAf6IH19530454
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 30 Jun 2025 10:41:06 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1352158056;
-	Mon, 30 Jun 2025 10:41:06 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E86F558052;
-	Mon, 30 Jun 2025 10:41:03 +0000 (GMT)
-Received: from [9.43.10.179] (unknown [9.43.10.179])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 30 Jun 2025 10:41:03 +0000 (GMT)
-Message-ID: <6a9bf05f-f315-417a-b328-6a243de3568e@linux.ibm.com>
-Date: Mon, 30 Jun 2025 16:11:02 +0530
+	s=arc-20240116; t=1751280284; c=relaxed/simple;
+	bh=x9QJy2yZLCj5ovTLBMK0RDZodk5zbpNEu228aflMOyc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=neJ1ZNI2LlgCpxOBJeQs1ebhyCMP6r8w5ciuzJbd3YIRKX+u9iaaHWcMo3S0DtaGDfEPzynYaJuSXDS58oXa8raHnrjOFFzsACLLrOXxm7baznenAP09Nx8hI1cYBqENPaQkenRyIIR+lsBpJtZB1Z1KzDrWT17CPP+hMdaCl34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=C1p/Dblg; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=BVaBcQr9EzIh6LRB1ICsLnNLx7oOkAXVTeIQ2p5ofoo=; b=C1p/Dblg19t0+M87Zlm9tEMye8
+	z8LJnnWu8ZAe26eQ3TONvkyp+enFob0wPXgeFl1+k6nxfzAtzGWnTzQx+ASjuiZ+xOvNpmyEdCn1x
+	nDLglRgq+KqaT7CaSzUN1a+sjS0y+wc/yu2zdO7fxA5VBzefLU0GecLktht+wCeNELsiv+i+kD6j2
+	6WMjlKNNdLuWTc01MGt9c3Xr6rchvZxkUA3/u0tZryHWN1berhXUj88/1T1uJgiv7Z7eT024BmYGY
+	wPDsm9e6DAGWq6sE8e5FB81oQZPMJQIyodoixMsKzEQw4DK+SSJ4z07yloWJ87d54Sl8TIMCOzBS6
+	Elqk7WZQ==;
+Received: from 80.174.120.123.dyn.user.ono.com ([80.174.120.123] helo=[192.168.0.17])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1uWC03-00ARAx-Di; Mon, 30 Jun 2025 12:44:35 +0200
+Message-ID: <dbd7db39a4995485ebe5c90f128a66058ff44c20.camel@igalia.com>
+Subject: Re: [PATCH] drm/v3d: Disable interrupts before resetting the GPU
+From: Iago Toral <itoral@igalia.com>
+To: =?ISO-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>, Melissa Wen
+ <mwen@igalia.com>, "Juan A ." =?ISO-8859-1?Q?Su=E1rez?=
+ <jasuarez@igalia.com>
+Cc: dri-devel@lists.freedesktop.org, kernel-dev@igalia.com, 
+	stable@vger.kernel.org
+Date: Mon, 30 Jun 2025 12:44:24 +0200
+In-Reply-To: <20250628224243.47599-1-mcanal@igalia.com>
+References: <20250628224243.47599-1-mcanal@igalia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block: Fix a deadlock related to modifying the readahead
- attribute
-To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-        stable@vger.kernel.org
-References: <20250625195450.1172740-1-bvanassche@acm.org>
- <1816437d-240a-4834-bef9-c9c4a66bee0a@linux.ibm.com>
- <ca4c60c9-c5df-4a82-8045-54ed9c0ba9be@acm.org>
- <7e4ff7e0-b2e0-4e2d-92a4-65b3d695c5e1@linux.ibm.com>
- <344a0eef-6942-455a-9fb2-f80fd72d4668@acm.org>
-Content-Language: en-US
-From: Nilay Shroff <nilay@linux.ibm.com>
-In-Reply-To: <344a0eef-6942-455a-9fb2-f80fd72d4668@acm.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: UctT0kDWsL7sF0AsxcvPKI3p62yvSlJ6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjMwMDA4NSBTYWx0ZWRfX/er402KbNDZd pbDWmyW9JMu5rpqA55qZvmSXaMtYfbJH+xjpT6c5E+ciCA3rCCDJD/r9UteSSlkKrqV5lF15AdW f5qJvIy14Ori01DJJABY0aaSq2LKcZXhn7BtdFeJm9NB8m/L1js5iI5zr40PUaylfH/bsiaLXKA
- XBh2FvuxDPAhCRWfnwnflV2maaIjdbUYgqxWx+U8pPCEpvsqEiEGlpRMPmWuaOBlxGDzan4CLkS sc4/BXxbU/NRi4/kx13wKPgD1iRXNK/Lw5XLLjYR39+Lrgg0xvNXB7kPnZuS6gv6AiUiW0iWzem kfh+4bz5ZhlLpsgbswpi8ZvuzyV6UgD9RhUINlhpV6T1Dk7EKt16Cjgqsjrj7uNSPXHeC6NnitJ
- LSgueWtrg61AhtTGLYK7DJTcDRQJQHAMW7CDux6Iz9lES0DZtnUuE4Bk0memh8fQVvgVmzJH
-X-Proofpoint-GUID: UctT0kDWsL7sF0AsxcvPKI3p62yvSlJ6
-X-Authority-Analysis: v=2.4 cv=GrRC+l1C c=1 sm=1 tr=0 ts=686269c3 cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=ukeuSQTfHjOFx7Hybm4A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-30_02,2025-06-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 adultscore=0 mlxlogscore=999 mlxscore=0 impostorscore=0
- phishscore=0 spamscore=0 suspectscore=0 bulkscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506300085
 
+Good catch!
 
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
 
-On 6/27/25 8:40 PM, Bart Van Assche wrote:
-> On 6/26/25 11:16 PM, Nilay Shroff wrote:
->> Thanks! this makes sense now. But then we do have few other limits
->> (e.g. iostats_passthrough, iostats, write_cache etc.) which are accessed
->> during IO hotpath. So if we were to update those limits then we acquire
->> ->limits_lock and also freezes the queue. So I wonder how could those be
->> addressed?
-> 
-> Is there any Linux distro that sets these sysfs attributes from a udev
-> rule? If not, I don't think that we have to worry about these sysfs
-> attributes.
-> 
+El s=C3=A1b, 28-06-2025 a las 19:42 -0300, Ma=C3=ADra Canal escribi=C3=B3:
+> Currently, an interrupt can be triggered during a GPU reset, which
+> can
+> lead to GPU hangs and NULL pointer dereference in an interrupt
+> context
+> as shown in the following trace:
+>=20
+> =C2=A0[=C2=A0 314.035040] Unable to handle kernel NULL pointer dereferenc=
+e at
+> virtual address 00000000000000c0
+> =C2=A0[=C2=A0 314.043822] Mem abort info:
+> =C2=A0[=C2=A0 314.046606]=C2=A0=C2=A0 ESR =3D 0x0000000096000005
+> =C2=A0[=C2=A0 314.050347]=C2=A0=C2=A0 EC =3D 0x25: DABT (current EL), IL =
+=3D 32 bits
+> =C2=A0[=C2=A0 314.055651]=C2=A0=C2=A0 SET =3D 0, FnV =3D 0
+> =C2=A0[=C2=A0 314.058695]=C2=A0=C2=A0 EA =3D 0, S1PTW =3D 0
+> =C2=A0[=C2=A0 314.061826]=C2=A0=C2=A0 FSC =3D 0x05: level 1 translation f=
+ault
+> =C2=A0[=C2=A0 314.066694] Data abort info:
+> =C2=A0[=C2=A0 314.069564]=C2=A0=C2=A0 ISV =3D 0, ISS =3D 0x00000005, ISS2=
+ =3D 0x00000000
+> =C2=A0[=C2=A0 314.075039]=C2=A0=C2=A0 CM =3D 0, WnR =3D 0, TnD =3D 0, Tag=
+Access =3D 0
+> =C2=A0[=C2=A0 314.080080]=C2=A0=C2=A0 GCS =3D 0, Overlay =3D 0, DirtyBit =
+=3D 0, Xs =3D 0
+> =C2=A0[=C2=A0 314.085382] user pgtable: 4k pages, 39-bit VAs,
+> pgdp=3D0000000102728000
+> =C2=A0[=C2=A0 314.091814] [00000000000000c0] pgd=3D0000000000000000,
+> p4d=3D0000000000000000, pud=3D0000000000000000
+> =C2=A0[=C2=A0 314.100511] Internal error: Oops: 0000000096000005 [#1] PRE=
+EMPT
+> SMP
+> =C2=A0[=C2=A0 314.106770] Modules linked in: v3d i2c_brcmstb vc4
+> snd_soc_hdmi_codec gpu_sched drm_shmem_helper drm_display_helper cec
+> drm_dma_helper drm_kms_helper drm drm_panel_orientation_quirks
+> snd_soc_core snd_compress snd_pcm_dmaengine snd_pcm snd_timer snd
+> backlight
+> =C2=A0[=C2=A0 314.129654] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainte=
+d
+> 6.12.25+rpt-rpi-v8 #1=C2=A0 Debian 1:6.12.25-1+rpt1
+> =C2=A0[=C2=A0 314.139388] Hardware name: Raspberry Pi 4 Model B Rev 1.4 (=
+DT)
+> =C2=A0[=C2=A0 314.145211] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT=
+ -SSBS
+> BTYPE=3D--)
+> =C2=A0[=C2=A0 314.152165] pc : v3d_irq+0xec/0x2e0 [v3d]
+> =C2=A0[=C2=A0 314.156187] lr : v3d_irq+0xe0/0x2e0 [v3d]
+> =C2=A0[=C2=A0 314.160198] sp : ffffffc080003ea0
+> =C2=A0[=C2=A0 314.163502] x29: ffffffc080003ea0 x28: ffffffec1f184980 x27=
+:
+> 021202b000000000
+> =C2=A0[=C2=A0 314.170633] x26: ffffffec1f17f630 x25: ffffff8101372000 x24=
+:
+> ffffffec1f17d9f0
+> =C2=A0[=C2=A0 314.177764] x23: 000000000000002a x22: 000000000000002a x21=
+:
+> ffffff8103252000
+> =C2=A0[=C2=A0 314.184895] x20: 0000000000000001 x19: 00000000deadbeef x18=
+:
+> 0000000000000000
+> =C2=A0[=C2=A0 314.192026] x17: ffffff94e51d2000 x16: ffffffec1dac3cb0 x15=
+:
+> c306000000000000
+> =C2=A0[=C2=A0 314.199156] x14: 0000000000000000 x13: b2fc982e03cc5168 x12=
+:
+> 0000000000000001
+> =C2=A0[=C2=A0 314.206286] x11: ffffff8103f8bcc0 x10: ffffffec1f196868 x9 =
+:
+> ffffffec1dac3874
+> =C2=A0[=C2=A0 314.213416] x8 : 0000000000000000 x7 : 0000000000042a3a x6 =
+:
+> ffffff810017a180
+> =C2=A0[=C2=A0 314.220547] x5 : ffffffec1ebad400 x4 : ffffffec1ebad320 x3 =
+:
+> 00000000000bebeb
+> =C2=A0[=C2=A0 314.227677] x2 : 0000000000000000 x1 : 0000000000000000 x0 =
+:
+> 0000000000000000
+> =C2=A0[=C2=A0 314.234807] Call trace:
+> =C2=A0[=C2=A0 314.237243]=C2=A0 v3d_irq+0xec/0x2e0 [v3d]
+> =C2=A0[=C2=A0 314.240906]=C2=A0 __handle_irq_event_percpu+0x58/0x218
+> =C2=A0[=C2=A0 314.245609]=C2=A0 handle_irq_event+0x54/0xb8
+> =C2=A0[=C2=A0 314.249439]=C2=A0 handle_fasteoi_irq+0xac/0x240
+> =C2=A0[=C2=A0 314.253527]=C2=A0 handle_irq_desc+0x48/0x68
+> =C2=A0[=C2=A0 314.257269]=C2=A0 generic_handle_domain_irq+0x24/0x38
+> =C2=A0[=C2=A0 314.261879]=C2=A0 gic_handle_irq+0x48/0xd8
+> =C2=A0[=C2=A0 314.265533]=C2=A0 call_on_irq_stack+0x24/0x58
+> =C2=A0[=C2=A0 314.269448]=C2=A0 do_interrupt_handler+0x88/0x98
+> =C2=A0[=C2=A0 314.273624]=C2=A0 el1_interrupt+0x34/0x68
+> =C2=A0[=C2=A0 314.277193]=C2=A0 el1h_64_irq_handler+0x18/0x28
+> =C2=A0[=C2=A0 314.281281]=C2=A0 el1h_64_irq+0x64/0x68
+> =C2=A0[=C2=A0 314.284673]=C2=A0 default_idle_call+0x3c/0x168
+> =C2=A0[=C2=A0 314.288675]=C2=A0 do_idle+0x1fc/0x230
+> =C2=A0[=C2=A0 314.291895]=C2=A0 cpu_startup_entry+0x3c/0x50
+> =C2=A0[=C2=A0 314.295810]=C2=A0 rest_init+0xe4/0xf0
+> =C2=A0[=C2=A0 314.299030]=C2=A0 start_kernel+0x5e8/0x790
+> =C2=A0[=C2=A0 314.302684]=C2=A0 __primary_switched+0x80/0x90
+> =C2=A0[=C2=A0 314.306691] Code: 940029eb 360ffc13 f9442ea0 52800001 (f940=
+6017)
+> =C2=A0[=C2=A0 314.312775] ---[ end trace 0000000000000000 ]---
+> =C2=A0[=C2=A0 314.317384] Kernel panic - not syncing: Oops: Fatal excepti=
+on in
+> interrupt
+> =C2=A0[=C2=A0 314.324249] SMP: stopping secondary CPUs
+> =C2=A0[=C2=A0 314.328167] Kernel Offset: 0x2b9da00000 from 0xffffffc08000=
+0000
+> =C2=A0[=C2=A0 314.334076] PHYS_OFFSET: 0x0
+> =C2=A0[=C2=A0 314.336946] CPU features: 0x08,00002013,c0200000,0200421b
+> =C2=A0[=C2=A0 314.342337] Memory Limit: none
+> =C2=A0[=C2=A0 314.345382] ---[ end Kernel panic - not syncing: Oops: Fata=
+l
+> exception in interrupt ]---
+>=20
+> Before resetting the GPU, it's necessary to disable all interrupts
+> and
+> deal with any interrupt handler still in-flight. Otherwise, the GPU
+> might
+> reset with jobs still running, or yet, an interrupt could be handled
+> during the reset.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 57692c94dcbe ("drm/v3d: Introduce a new DRM driver for
+> Broadcom V3D V3.x+")
+> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+> ---
+> =C2=A0drivers/gpu/drm/v3d/v3d_drv.h |=C2=A0 8 ++++++++
+> =C2=A0drivers/gpu/drm/v3d/v3d_gem.c |=C2=A0 2 ++
+> =C2=A0drivers/gpu/drm/v3d/v3d_irq.c | 37 +++++++++++++++++++++++++-------=
+-
+> --
+> =C2=A03 files changed, 37 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/v3d/v3d_drv.h
+> b/drivers/gpu/drm/v3d/v3d_drv.h
+> index b51f0b648a08..411e47702f8a 100644
+> --- a/drivers/gpu/drm/v3d/v3d_drv.h
+> +++ b/drivers/gpu/drm/v3d/v3d_drv.h
+> @@ -101,6 +101,12 @@ enum v3d_gen {
+> =C2=A0	V3D_GEN_71 =3D 71,
+> =C2=A0};
+> =C2=A0
+> +enum v3d_irq {
+> +	V3D_CORE_IRQ,
+> +	V3D_HUB_IRQ,
+> +	V3D_MAX_IRQS,
+> +};
+> +
+> =C2=A0struct v3d_dev {
+> =C2=A0	struct drm_device drm;
+> =C2=A0
+> @@ -112,6 +118,8 @@ struct v3d_dev {
+> =C2=A0
+> =C2=A0	bool single_irq_line;
+> =C2=A0
+> +	int irq[V3D_MAX_IRQS];
+> +
+> =C2=A0	struct v3d_perfmon_info perfmon_info;
+> =C2=A0
+> =C2=A0	void __iomem *hub_regs;
+> diff --git a/drivers/gpu/drm/v3d/v3d_gem.c
+> b/drivers/gpu/drm/v3d/v3d_gem.c
+> index d7d16da78db3..37bf5eecdd2c 100644
+> --- a/drivers/gpu/drm/v3d/v3d_gem.c
+> +++ b/drivers/gpu/drm/v3d/v3d_gem.c
+> @@ -134,6 +134,8 @@ v3d_reset(struct v3d_dev *v3d)
+> =C2=A0	if (false)
+> =C2=A0		v3d_idle_axi(v3d, 0);
+> =C2=A0
+> +	v3d_irq_disable(v3d);
+> +
+> =C2=A0	v3d_idle_gca(v3d);
+> =C2=A0	v3d_reset_sms(v3d);
+> =C2=A0	v3d_reset_v3d(v3d);
+> diff --git a/drivers/gpu/drm/v3d/v3d_irq.c
+> b/drivers/gpu/drm/v3d/v3d_irq.c
+> index 2cca5d3a26a2..a515a301e480 100644
+> --- a/drivers/gpu/drm/v3d/v3d_irq.c
+> +++ b/drivers/gpu/drm/v3d/v3d_irq.c
+> @@ -260,7 +260,7 @@ v3d_hub_irq(int irq, void *arg)
+> =C2=A0int
+> =C2=A0v3d_irq_init(struct v3d_dev *v3d)
+> =C2=A0{
+> -	int irq1, ret, core;
+> +	int irq, ret, core;
+> =C2=A0
+> =C2=A0	INIT_WORK(&v3d->overflow_mem_work, v3d_overflow_mem_work);
+> =C2=A0
+> @@ -271,17 +271,24 @@ v3d_irq_init(struct v3d_dev *v3d)
+> =C2=A0		V3D_CORE_WRITE(core, V3D_CTL_INT_CLR,
+> V3D_CORE_IRQS(v3d->ver));
+> =C2=A0	V3D_WRITE(V3D_HUB_INT_CLR, V3D_HUB_IRQS(v3d->ver));
+> =C2=A0
+> -	irq1 =3D platform_get_irq_optional(v3d_to_pdev(v3d), 1);
+> -	if (irq1 =3D=3D -EPROBE_DEFER)
+> -		return irq1;
+> -	if (irq1 > 0) {
+> -		ret =3D devm_request_irq(v3d->drm.dev, irq1,
+> +	irq =3D platform_get_irq_optional(v3d_to_pdev(v3d), 1);
+> +	if (irq =3D=3D -EPROBE_DEFER)
+> +		return irq;
+> +	if (irq > 0) {
+> +		v3d->irq[V3D_CORE_IRQ] =3D irq;
+> +
+> +		ret =3D devm_request_irq(v3d->drm.dev, v3d-
+> >irq[V3D_CORE_IRQ],
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 v3d_irq, IRQF_SHARED,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "v3d_core0", v3d);
+> =C2=A0		if (ret)
+> =C2=A0			goto fail;
+> -		ret =3D devm_request_irq(v3d->drm.dev,
+> -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> platform_get_irq(v3d_to_pdev(v3d), 0),
+> +
+> +		irq =3D platform_get_irq(v3d_to_pdev(v3d), 0);
+> +		if (irq < 0)
+> +			return irq;
+> +		v3d->irq[V3D_HUB_IRQ] =3D irq;
+> +
+> +		ret =3D devm_request_irq(v3d->drm.dev, v3d-
+> >irq[V3D_HUB_IRQ],
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 v3d_hub_irq, IRQF_SHARED,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "v3d_hub", v3d);
+> =C2=A0		if (ret)
+> @@ -289,8 +296,12 @@ v3d_irq_init(struct v3d_dev *v3d)
+> =C2=A0	} else {
+> =C2=A0		v3d->single_irq_line =3D true;
+> =C2=A0
+> -		ret =3D devm_request_irq(v3d->drm.dev,
+> -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> platform_get_irq(v3d_to_pdev(v3d), 0),
+> +		irq =3D platform_get_irq(v3d_to_pdev(v3d), 0);
+> +		if (irq < 0)
+> +			return irq;
+> +		v3d->irq[V3D_CORE_IRQ] =3D irq;
+> +
+> +		ret =3D devm_request_irq(v3d->drm.dev, v3d-
+> >irq[V3D_CORE_IRQ],
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 v3d_irq, IRQF_SHARED,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "v3d", v3d);
+> =C2=A0		if (ret)
+> @@ -331,6 +342,12 @@ v3d_irq_disable(struct v3d_dev *v3d)
+> =C2=A0		V3D_CORE_WRITE(core, V3D_CTL_INT_MSK_SET, ~0);
+> =C2=A0	V3D_WRITE(V3D_HUB_INT_MSK_SET, ~0);
+> =C2=A0
+> +	/* Finish any interrupt handler still in flight. */
+> +	for (int i =3D 0; i < V3D_MAX_IRQS; i++) {
+> +		if (v3d->irq[i])
+> +			synchronize_irq(v3d->irq[i]);
+> +	}
+> +
+> =C2=A0	/* Clear any pending interrupts we might have left. */
+> =C2=A0	for (core =3D 0; core < v3d->cores; core++)
+> =C2=A0		V3D_CORE_WRITE(core, V3D_CTL_INT_CLR,
+> V3D_CORE_IRQS(v3d->ver));
 
-I think that's not only about distro udev rules setting queue limits.
-It's quite possible that some user applications may programmatically update
-these queue limits during runtime. In such cases, the application would need
-to freeze the queue before making changes. So even if no current distro sets
-these attributes via udev, that could change in the future, and we don't have
-control over that.
-
-Looking at your earlier dmsetup command:
-# dmsetup table mpatha
-0 65536 multipath 1 queue_if_no_path 1 alua 1 1 service-time 0 1 2 8:32 1 1 
-
-In the above rule, the option queue_if_no_path seems bit odd (unless used 
-with timeout). Can't we add module param queue_if_no_path_timeout_secs=<N>
-while loading dm-multipath and thus avoid hanging the queue I/O indefinitely 
-when all paths of a multipath device is lost? IMO, queue_if_no_path without
-timeout may make sense when we know that the paths will eventually recover 
-and that applications should simply wait.
-
-Thanks,
---Nilay
 
