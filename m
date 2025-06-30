@@ -1,208 +1,154 @@
-Return-Path: <stable+bounces-158873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 879AFAED5C3
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 09:34:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E4CAED5D8
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 09:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92D111887A5B
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 07:35:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D9273AE829
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 07:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B10221286;
-	Mon, 30 Jun 2025 07:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54BA615A8;
+	Mon, 30 Jun 2025 07:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="e1i4YqiD"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876751FBC8E;
-	Mon, 30 Jun 2025 07:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D562258A;
+	Mon, 30 Jun 2025 07:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751268877; cv=none; b=qHvteiW/xsiFrTU94R4EMQA0j7UkliMU+LEDKGddld9B/ckYufFr50fHSbIzl6dT1sUTmVGHf1OQc9bnGajTSkKzkczRlncwdaaoAi3V59AK+p7ModPUPvZ5k8ezunn//NE93alhTop2VorvKVUYQyusv1AHExui5sNcsHdlndg=
+	t=1751269065; cv=none; b=fLlyZhzcfqqgblC6KsTu8rQQjLLElfvsAGgmufB4oJQXGABTzMvlw3gEPYKmFFyfoYoKMiE86i6bcW4/Ic96CT2P9f6bR2i5S/nlmx9g4Ry0bgHd7xuW1vxZySzMDP1OuGX/Cc330Y5phRcea+xab5a6fW++izSIi0qRaOnkjT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751268877; c=relaxed/simple;
-	bh=iDFC2uzeH1O6YJJ+KNWE7uV0iY8CLCu4IrCkwx9Smio=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=g5GzTeoizmrz+DVDFcXkSYH0+IQEzMXuICyRcU96Gxhulr+hjVrfEYaiD0ML7bgu/LgfkHN1sd6gwUnHvg/sqPH9qud/s/k0juhZ11P165LWsdoPc1G3yYqsZkTNkycbIk1I6Lei/Fg0RzV6FJzY28Z+cKIpuJF8rW12CbHDV1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4bVyVV2D2szCsGj;
-	Mon, 30 Jun 2025 15:30:10 +0800 (CST)
-Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0AA7E180486;
-	Mon, 30 Jun 2025 15:34:32 +0800 (CST)
-Received: from [127.0.0.1] (10.174.177.71) by dggpemf500013.china.huawei.com
- (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 30 Jun
- 2025 15:34:31 +0800
-Message-ID: <5bf464c0-5cfe-4e29-8138-4fb85c83f5bb@huawei.com>
-Date: Mon, 30 Jun 2025 15:34:30 +0800
+	s=arc-20240116; t=1751269065; c=relaxed/simple;
+	bh=sG18V9YH6xwaMCKoP5b6EmXZZdF6kA34hDti89/UFzA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CljHt8S2S18CiSD8ZayDEqVl12z3nDtAVBZL9ezhVBi+JGwpg8A2k82vnJNmLSYYgsaM7CaqPQaFDWGBbxkS4jJ8Oi/RsZglxEqdEU0bb1UN+S6Ruf4gjdARHL4caJ+sW2zwk5GvtRpmNx1yMhKP55pLM//Ef1yiMWSbYewCIiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=e1i4YqiD; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55TKuAvD027682;
+	Mon, 30 Jun 2025 07:36:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=LRuxJGeazOAFE04HqsIYG5vhTHeYxo
+	okmIsQ4rJ0tr8=; b=e1i4YqiDY8naXnepnWvjDRT1icKqYeUPy0sKroEwdegooK
+	XhfgAqCcIHNY99Fo1ms6mc8/sunnG8B0qa4T2RyDa7atatmN9GaAEi0trTxO8t59
+	5BmkOURCLWZwzeqRt2LbBek/J5GYoEjShxtT4Hiu/BXe7lXlVFk6SWg583iLQS/+
+	VadCkhXg93j+UrNuKOmxrmNcWeVHKWcy8HRfraiNw1XkdkASwbhZjSkSW0bIhPBc
+	axodA+w9wi8dyp+cvXjrHNRgMuX+tcJVkcIELmUf/W6S5oKzKx4pxIO7Sjz2y43d
+	8apG/Ixb+L7BRxxnBDKsdy8lz7aU/gEtGWkWHT/w==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j84cyw1f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Jun 2025 07:36:39 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55U4P3Yt032250;
+	Mon, 30 Jun 2025 07:36:37 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47ju40d014-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Jun 2025 07:36:37 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55U7aVQC19136952
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 30 Jun 2025 07:36:31 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2CCCE200F7;
+	Mon, 30 Jun 2025 07:36:31 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A9864200FD;
+	Mon, 30 Jun 2025 07:36:23 +0000 (GMT)
+Received: from osiris (unknown [9.111.82.77])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 30 Jun 2025 07:36:23 +0000 (GMT)
+Date: Mon, 30 Jun 2025 09:36:11 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Holger Dengler <dengler@linux.ibm.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Joerg Schmidbauer <jschmidb@de.ibm.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>, stable@vger.kernel.org,
+        Ingo Franzki <ifranzki@linux.ibm.com>
+Subject: Re: [PATCH] crypto: s390/sha - Fix uninitialized variable in SHA-1
+ and SHA-2
+Message-ID: <20250630073611.15284Ab6-hca@linux.ibm.com>
+References: <20250627185649.35321-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/16] ext4: fix largest free orders lists corruption
- on mb_optimize_scan switch
-To: Jan Kara <jack@suse.cz>
-CC: <linux-ext4@vger.kernel.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
-	<ojaswin@linux.ibm.com>, <linux-kernel@vger.kernel.org>,
-	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <stable@vger.kernel.org>,
-	Baokun Li <libaokun1@huawei.com>
-References: <20250623073304.3275702-1-libaokun1@huawei.com>
- <20250623073304.3275702-11-libaokun1@huawei.com>
- <a4rctz75l4c6vejweqq67ptzojs276eicqp6kqegpxinirk32n@dnhg6h4pbvdr>
-Content-Language: en-US
-From: Baokun Li <libaokun1@huawei.com>
-In-Reply-To: <a4rctz75l4c6vejweqq67ptzojs276eicqp6kqegpxinirk32n@dnhg6h4pbvdr>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf500013.china.huawei.com (7.185.36.188)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250627185649.35321-1-ebiggers@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: lUTN_MH2-aHDhXdBvhoSJxnHTj2BMH8s
+X-Proofpoint-GUID: lUTN_MH2-aHDhXdBvhoSJxnHTj2BMH8s
+X-Authority-Analysis: v=2.4 cv=Ib6HWXqa c=1 sm=1 tr=0 ts=68623e87 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=kj9zAlcOel0A:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=adFIAS80RBVZD6iCsq0A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjMwMDA1OSBTYWx0ZWRfX4fBph0upJLoJ qAnseUygVc31k1QlUokbrLSgo1tcxWae2LXhVcad06UInBCAzoYSneVvU8zkzrsd+ooHLNqKLBs JGHGyAP6assaCXlMdDjozBidzIik70S5p5lVsG4sNoCW6rI4MWSikRASdJg80OsbMoqwoId1VhM
+ OvN3aI2Z0vqXTxr2B3WqBB/1Gc3zEBdDkUnBHBeUtJf95/JYI4nN4eo9Le/p+Ycer41iFDxI6qu /o0aGbFJZiFftAWvI4Mqm2PmwiyyPN4vM9JIba+Wn4txqeiuxoFBCo6tuDKkpYOat3XpWYhovo3 td/MKH5hU42E9OAdoO4AYx4/LE6L5yqc1cs2HI1hJlxwKqJNtgwjXID2GeA6CK8plmzQNkiNePt
+ 87rmZVMpdZvYUtjrjHYUeaB5w9a+4vFM2PUlxTPAUK7AYdg7f9VcT9P1UrTHI3kzp1hzpLNX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-30_01,2025-06-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
+ clxscore=1015 mlxlogscore=442 lowpriorityscore=0 impostorscore=0
+ mlxscore=0 malwarescore=0 spamscore=0 priorityscore=1501 adultscore=0
+ bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506300059
 
-On 2025/6/28 3:34, Jan Kara wrote:
-> On Mon 23-06-25 15:32:58, Baokun Li wrote:
->> The grp->bb_largest_free_order is updated regardless of whether
->> mb_optimize_scan is enabled. This can lead to inconsistencies between
->> grp->bb_largest_free_order and the actual s_mb_largest_free_orders list
->> index when mb_optimize_scan is repeatedly enabled and disabled via remount.
->>
->> For example, if mb_optimize_scan is initially enabled, largest free
->> order is 3, and the group is in s_mb_largest_free_orders[3]. Then,
->> mb_optimize_scan is disabled via remount, block allocations occur,
->> updating largest free order to 2. Finally, mb_optimize_scan is re-enabled
->> via remount, more block allocations update largest free order to 1.
->>
->> At this point, the group would be removed from s_mb_largest_free_orders[3]
->> under the protection of s_mb_largest_free_orders_locks[2]. This lock
->> mismatch can lead to list corruption.
->>
->> To fix this, a new field bb_largest_free_order_idx is added to struct
->> ext4_group_info to explicitly track the list index. Then still update
->> bb_largest_free_order unconditionally, but only update
->> bb_largest_free_order_idx when mb_optimize_scan is enabled. so that there
->> is no inconsistency between the lock and the data to be protected.
->>
->> Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
->> CC: stable@vger.kernel.org
->> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> Hum, rather than duplicating index like this, couldn't we add to
-> mb_set_largest_free_order():
->
-> 	/* Did mb_optimize_scan setting change? */
-> 	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) &&
-> 	    !list_empty(&grp->bb_largest_free_order_node)) {
-> 		write_lock(&sbi->s_mb_largest_free_orders_locks[old]);
-> 		list_del_init(&grp->bb_largest_free_order_node);
-> 		write_unlock(&sbi->s_mb_largest_free_orders_locks[old]);
-> 	}
->
-> Also arguably we should reinit bb lists when mb_optimize_scan gets
-> reenabled because otherwise inconsistent lists could lead to suboptimal
-> results... But that's less important to fix I guess.
->
-> 								Honza
+On Fri, Jun 27, 2025 at 11:56:49AM -0700, Eric Biggers wrote:
+> Commit 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
+> added the field s390_sha_ctx::first_message_part and made it be used by
+> s390_sha_update_blocks().  At the time, s390_sha_update_blocks() was
+> used by all the s390 SHA-1, SHA-2, and SHA-3 algorithms.  However, only
+> the initialization functions for SHA-3 were updated, leaving SHA-1 and
+> SHA-2 using first_message_part uninitialized.
+> 
+> This could cause e.g. CPACF_KIMD_SHA_512 | CPACF_KIMD_NIP to be used
+> instead of just CPACF_KIMD_NIP.  It's unclear why this didn't cause a
+> problem earlier; this bug was found only when UBSAN detected the
+> uninitialized boolean.  Perhaps the CPU ignores CPACF_KIMD_NIP for SHA-1
+> and SHA-2.  Regardless, let's fix this.  For now just initialize to
+> false, i.e. don't try to "optimize" the SHA state initialization.
+> 
+> Note: in 6.16, we need to patch SHA-1, SHA-384, and SHA-512.  In 6.15
+> and earlier, we'll also need to patch SHA-224 and SHA-256, as they
+> hadn't yet been librarified (which incidentally fixed this bug).
+> 
+> Fixes: 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
+> Cc: stable@vger.kernel.org
+> Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
+> Closes: https://lore.kernel.org/r/12740696-595c-4604-873e-aefe8b405fbf@linux.ibm.com
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> ---
+> 
+> This is targeting 6.16.  I'd prefer to take this through
+> libcrypto-fixes, since the librarification work is also touching this
+> area.  But let me know if there's a preference for the crypto tree or
+> the s390 tree instead.
+> 
+>  arch/s390/crypto/sha1_s390.c   | 1 +
+>  arch/s390/crypto/sha512_s390.c | 2 ++
+>  2 files changed, 3 insertions(+)
 
-Yeah, this looks good. We just need to remove groups modified when
-mb_optimize_scan=0 from the list. Groups that remain in the list after
-mb_optimize_scan is re-enabled can be used normally.
+Routing this via libcrypto-fixes is fine.
 
-As for the groups that were removed, they will be re-added to their
-corresponding lists during block freeing or block allocation when
-cr >= CR_GOAL_LEN_SLOW. So, I agree that we don't need to explicitly
-reinit them.
-
-
-
-Cheers,
-Baokun
-
->> ---
->>   fs/ext4/ext4.h    |  1 +
->>   fs/ext4/mballoc.c | 35 ++++++++++++++++-------------------
->>   2 files changed, 17 insertions(+), 19 deletions(-)
->>
->> diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
->> index 003b8d3726e8..0e574378c6a3 100644
->> --- a/fs/ext4/ext4.h
->> +++ b/fs/ext4/ext4.h
->> @@ -3476,6 +3476,7 @@ struct ext4_group_info {
->>   	int		bb_avg_fragment_size_order;	/* order of average
->>   							   fragment in BG */
->>   	ext4_grpblk_t	bb_largest_free_order;/* order of largest frag in BG */
->> +	ext4_grpblk_t	bb_largest_free_order_idx; /* index of largest frag */
->>   	ext4_group_t	bb_group;	/* Group number */
->>   	struct          list_head bb_prealloc_list;
->>   #ifdef DOUBLE_CHECK
->> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
->> index e6d6c2da3c6e..dc82124f0905 100644
->> --- a/fs/ext4/mballoc.c
->> +++ b/fs/ext4/mballoc.c
->> @@ -1152,33 +1152,29 @@ static void
->>   mb_set_largest_free_order(struct super_block *sb, struct ext4_group_info *grp)
->>   {
->>   	struct ext4_sb_info *sbi = EXT4_SB(sb);
->> -	int i;
->> +	int new, old = grp->bb_largest_free_order_idx;
->>   
->> -	for (i = MB_NUM_ORDERS(sb) - 1; i >= 0; i--)
->> -		if (grp->bb_counters[i] > 0)
->> +	for (new = MB_NUM_ORDERS(sb) - 1; new >= 0; new--)
->> +		if (grp->bb_counters[new] > 0)
->>   			break;
->> +
->> +	grp->bb_largest_free_order = new;
->>   	/* No need to move between order lists? */
->> -	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) ||
->> -	    i == grp->bb_largest_free_order) {
->> -		grp->bb_largest_free_order = i;
->> +	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || new == old)
->>   		return;
->> -	}
->>   
->> -	if (grp->bb_largest_free_order >= 0) {
->> -		write_lock(&sbi->s_mb_largest_free_orders_locks[
->> -					      grp->bb_largest_free_order]);
->> +	if (old >= 0) {
->> +		write_lock(&sbi->s_mb_largest_free_orders_locks[old]);
->>   		list_del_init(&grp->bb_largest_free_order_node);
->> -		write_unlock(&sbi->s_mb_largest_free_orders_locks[
->> -					      grp->bb_largest_free_order]);
->> +		write_unlock(&sbi->s_mb_largest_free_orders_locks[old]);
->>   	}
->> -	grp->bb_largest_free_order = i;
->> -	if (grp->bb_largest_free_order >= 0 && grp->bb_free) {
->> -		write_lock(&sbi->s_mb_largest_free_orders_locks[
->> -					      grp->bb_largest_free_order]);
->> +
->> +	grp->bb_largest_free_order_idx = new;
->> +	if (new >= 0 && grp->bb_free) {
->> +		write_lock(&sbi->s_mb_largest_free_orders_locks[new]);
->>   		list_add_tail(&grp->bb_largest_free_order_node,
->> -		      &sbi->s_mb_largest_free_orders[grp->bb_largest_free_order]);
->> -		write_unlock(&sbi->s_mb_largest_free_orders_locks[
->> -					      grp->bb_largest_free_order]);
->> +			      &sbi->s_mb_largest_free_orders[new]);
->> +		write_unlock(&sbi->s_mb_largest_free_orders_locks[new]);
->>   	}
->>   }
->>   
->> @@ -3391,6 +3387,7 @@ int ext4_mb_add_groupinfo(struct super_block *sb, ext4_group_t group,
->>   	INIT_LIST_HEAD(&meta_group_info[i]->bb_avg_fragment_size_node);
->>   	meta_group_info[i]->bb_largest_free_order = -1;  /* uninit */
->>   	meta_group_info[i]->bb_avg_fragment_size_order = -1;  /* uninit */
->> +	meta_group_info[i]->bb_largest_free_order_idx = -1;  /* uninit */
->>   	meta_group_info[i]->bb_group = group;
->>   
->>   	mb_group_bb_bitmap_alloc(sb, meta_group_info[i], group);
->> -- 
->> 2.46.1
->>
-
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
 
