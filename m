@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-158933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385A3AEDB36
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 13:36:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 219F9AEDB40
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 13:37:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D9EB178D26
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:36:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30EAE7ABDBE
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD9225F780;
-	Mon, 30 Jun 2025 11:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5546325C833;
+	Mon, 30 Jun 2025 11:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bazfT99n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbUMgEEK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD50425D21A
-	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 11:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D56241663
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 11:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751283331; cv=none; b=dzDw6wfnYWV0CSGzsRCeqORToBzIVbonKxmG5gZuya7r5Y3apy8jaQtum08i556ymgc1TLols/JqshLb7xexw4nIQ6nmbumdlBvdI/y0Ae+lRso8JQj9lXLwqip3PBU9vtqxZfJ66Dhghuo3uXoNWDuudlBBYrOw+FcLv6aff4I=
+	t=1751283431; cv=none; b=P49ICoIiDAHaAW2d5kaJb0LSXxQlEpHNgAll+ZdAQUdlXFzj3I9S4CN1OLbbwiobS3O3yjZhvsBbNpu70ENrWqLwZ379KLeu1dUCld7g/Q9lpQzY0utR8Hqe/Jos1t/tBBaAg+jOsiwixkVPtqYJbMh/QJjPrfZyNQrg6XRoZ9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751283331; c=relaxed/simple;
-	bh=P819Ip2ZTZd1FHh9x9io678l10+e6RVICuFVSEHI/Jc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a81ujG6/GhOPHlm7AQYQHA5UbQxghjQJ22X8Efzx5FgfRYiU65P1OKwNTIKzxhPhEJuOOx9i5MK/UhJsxdIgJ/qM3DW+QIJlzxQp3SrxgUfu8Iee1PJot+upIpUHI+ayGUusGyplyDGBHvGng9ErfrrwYDsHpkhNALg/9DieNO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bazfT99n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA479C4CEE3;
-	Mon, 30 Jun 2025 11:35:30 +0000 (UTC)
+	s=arc-20240116; t=1751283431; c=relaxed/simple;
+	bh=i4Crf4Uf+UtJBsfXETnGZD+EePBHV8k/5KHjffhBjoo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pL4Hz9K2R1VB9jpago+SSsKoZ+yHrj4hWJ28LNdbUqj/IF3tGIyyYQURrJicI/75V/2Ctw17yL3gxeM+FRFZXr3ylvfF6mr4A2OUFfijoJJkY2zonSk691W3mGTSHsXbBp10CvGIAXhYQhnUJ6z2X+iZPe8UKSWDMr+GSDh4VE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbUMgEEK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26797C4CEE3;
+	Mon, 30 Jun 2025 11:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751283331;
-	bh=P819Ip2ZTZd1FHh9x9io678l10+e6RVICuFVSEHI/Jc=;
+	s=korg; t=1751283430;
+	bh=i4Crf4Uf+UtJBsfXETnGZD+EePBHV8k/5KHjffhBjoo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bazfT99nY5EZg9zvYJxtE16nQkE2zGpUL+nLDnCSGXWkDLrGfu0PPdcmkHEYRvJNi
-	 GD9bNu8zIHQrwZ8pXBJoupmPbr8SC+B4qVSYifjJg2rGmHmGqbCuHGnS5TNuTrZuMy
-	 FoaB3wMhOB9vqz8J9sMRy45IMFKJnpvrHM5yG2RE=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Add null pointer check for" failed to apply to 5.10-stable tree
-To: vulab@iscas.ac.cn,alex.hung@amd.com,alexander.deucher@amd.com
+	b=kbUMgEEKe8z+2NWAzBr/fyOvvYiDSXv8HaYz7gIq8c5cB/fBeAVJNjrjtOmappcOZ
+	 hSHRhaHlz87kOAhAGy70GKRtf8q+qXjbam+zA+j0q7cgPnYxahK03ykzQwnMky0iaC
+	 6odM3WT/4JBlBy/D22XYOATCVBsPSgnn/gTjk9VI=
+Subject: FAILED: patch "[PATCH] drm/i915/dp_mst: Work around Thunderbolt sink disconnect" failed to apply to 6.1-stable tree
+To: imre.deak@intel.com,joonas.lahtinen@linux.intel.com,mika.westerberg@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Jun 2025 13:35:28 +0200
-Message-ID: <2025063028-crayon-registry-8ae0@gregkh>
+Date: Mon, 30 Jun 2025 13:37:07 +0200
+Message-ID: <2025063007-january-unworldly-01d5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x c3e9826a22027a21d998d3e64882fa377b613006
+git cherry-pick -x 9cb15478916e849d62a6ec44b10c593b9663328c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025063028-crayon-registry-8ae0@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025063007-january-unworldly-01d5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,40 +77,64 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c3e9826a22027a21d998d3e64882fa377b613006 Mon Sep 17 00:00:00 2001
-From: Wentao Liang <vulab@iscas.ac.cn>
-Date: Mon, 26 May 2025 10:37:31 +0800
-Subject: [PATCH] drm/amd/display: Add null pointer check for
- get_first_active_display()
+From 9cb15478916e849d62a6ec44b10c593b9663328c Mon Sep 17 00:00:00 2001
+From: Imre Deak <imre.deak@intel.com>
+Date: Mon, 19 May 2025 16:34:17 +0300
+Subject: [PATCH] drm/i915/dp_mst: Work around Thunderbolt sink disconnect
+ after SINK_COUNT_ESI read
 
-The function mod_hdcp_hdcp1_enable_encryption() calls the function
-get_first_active_display(), but does not check its return value.
-The return value is a null pointer if the display list is empty.
-This will lead to a null pointer dereference in
-mod_hdcp_hdcp2_enable_encryption().
+Due to a problem in the iTBT DP-in adapter's firmware the sink on a TBT
+link may get disconnected inadvertently if the SINK_COUNT_ESI and the
+DP_LINK_SERVICE_IRQ_VECTOR_ESI0 registers are read in a single AUX
+transaction. Work around the issue by reading these registers in
+separate transactions.
 
-Add a null pointer check for get_first_active_display() and return
-MOD_HDCP_STATUS_DISPLAY_NOT_FOUND if the function return null.
+The issue affects MTL+ platforms and will be fixed in the DP-in adapter
+firmware, however releasing that firmware fix may take some time and is
+not guaranteed to be available for all systems. Based on this apply the
+workaround on affected platforms.
 
-Fixes: 2deade5ede56 ("drm/amd/display: Remove hdcp display state with mst fix")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # v5.8
+See HSD #13013007775.
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-index 8c137d7c032e..e58e7b93810b 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-@@ -368,6 +368,9 @@ enum mod_hdcp_status mod_hdcp_hdcp1_enable_encryption(struct mod_hdcp *hdcp)
- 	struct mod_hdcp_display *display = get_first_active_display(hdcp);
- 	enum mod_hdcp_status status = MOD_HDCP_STATUS_SUCCESS;
- 
-+	if (!display)
-+		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
+v2: Cc'ing Mika Westerberg.
+
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13760
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14147
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250519133417.1469181-1-imre.deak@intel.com
+(cherry picked from commit c3a48363cf1f76147088b1adb518136ac5df86a0)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index ad1e4fc9c7fe..640c43bf62d4 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -4532,6 +4532,23 @@ intel_dp_mst_disconnect(struct intel_dp *intel_dp)
+ static bool
+ intel_dp_get_sink_irq_esi(struct intel_dp *intel_dp, u8 *esi)
+ {
++	struct intel_display *display = to_intel_display(intel_dp);
 +
- 	mutex_lock(&psp->hdcp_context.mutex);
- 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
- 	memset(hdcp_cmd, 0, sizeof(struct ta_hdcp_shared_memory));
++	/*
++	 * Display WA for HSD #13013007775: mtl/arl/lnl
++	 * Read the sink count and link service IRQ registers in separate
++	 * transactions to prevent disconnecting the sink on a TBT link
++	 * inadvertently.
++	 */
++	if (IS_DISPLAY_VER(display, 14, 20) && !display->platform.battlemage) {
++		if (drm_dp_dpcd_read(&intel_dp->aux, DP_SINK_COUNT_ESI, esi, 3) != 3)
++			return false;
++
++		/* DP_SINK_COUNT_ESI + 3 == DP_LINK_SERVICE_IRQ_VECTOR_ESI0 */
++		return drm_dp_dpcd_readb(&intel_dp->aux, DP_LINK_SERVICE_IRQ_VECTOR_ESI0,
++					 &esi[3]) == 1;
++	}
++
+ 	return drm_dp_dpcd_read(&intel_dp->aux, DP_SINK_COUNT_ESI, esi, 4) == 4;
+ }
+ 
 
 
