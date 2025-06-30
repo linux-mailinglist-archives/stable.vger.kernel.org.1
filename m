@@ -1,143 +1,149 @@
-Return-Path: <stable+bounces-158981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3459AEE530
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 19:03:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65ABEAEE565
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 19:10:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9401217BB9A
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 17:03:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C98FE165FC2
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 17:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F62C2900B2;
-	Mon, 30 Jun 2025 17:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C48F2957A7;
+	Mon, 30 Jun 2025 17:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sQiB/pHK"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fpkAvPto"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CB0CA4E;
-	Mon, 30 Jun 2025 17:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A1E2951D8
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 17:09:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751303004; cv=none; b=bCHpAXapkg84PEsLe2lKNznAYrGU6ozGaqVahj1mkxKTMhGI+YuulS78hDI7PjHe2RZ4XY5T8AmulcIYKqaWHhaqymK0geKOgC9G8lpoA/RVHMAeX1FQlwFxt5IyZ6N0yJQ6Gy+gbkSEXi0tFUkeZ0b/mvzUoqfYNI/DlpA9JAs=
+	t=1751303360; cv=none; b=r1+ecfOtQJOsfmg47Z3dE533iDQIdrCCpEc7OJdUL1ErTmrpZG81g3ETBemHT0njktI+0W81OQcrdXYKQhaLfDYTvaauP9y821A6Wum6mWaGETv0RxtUWD5Ulc7jAlSvs04sef1iJkH21w2j4+mzNn/KIDXKk1KAOZ32fBOViGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751303004; c=relaxed/simple;
-	bh=7pdCdKfXKgNVJgSu9uMlTMuwlr8iJXqLYAu7X1e5P9Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HyOMLUcSziZwFh+nzSY7fWNcrNmaiBkwxRfmCiDA7JnTj/pMuOgw8xG7LjFouxobq5SchHArU6qUSmr6PhBh9XUCFQ+IE6gOL8d0sWie+PPRHUEPaEjmqWRQmAg6CramoWlKjTjjZXKlpHEV8Y3q9OHtNOK5YzmyRvlrPg7yNWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sQiB/pHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D609CC4CEE3;
-	Mon, 30 Jun 2025 17:03:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751303004;
-	bh=7pdCdKfXKgNVJgSu9uMlTMuwlr8iJXqLYAu7X1e5P9Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sQiB/pHKX4Cf2mkicAi9zi8JVZfNw+FgwpmOeSbmE2l0IjR36sr21mD/5bPKOjf+a
-	 JFQ0lTKLsgQ3pnSIR8UKLn/B6y4eMObpon8TTO4TvgxzWv9fHOyh5fHZmiNMTzqBzx
-	 QRkMiYJjvRQBvTa+67B+wjMxz/D50fOUXpdYIpt112vyzDIUcsCnPsHlLXlyn3FXCl
-	 SZS+EAEumBgQDLs0mCuy426H4rwGlkMeZqyq9S4L6e8udQD/NDydYWRU09Ew9J+TcD
-	 d3APRAHVSbWbmtGTaymXOoO4sMr4OqmXgj9WghKipAirSeQSMBv9zqnzf51b9tTSN7
-	 yv4jmr0vy5k5w==
-Date: Mon, 30 Jun 2025 10:02:45 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Joerg Schmidbauer <jschmidb@de.ibm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>, stable@vger.kernel.org,
-	Ingo Franzki <ifranzki@linux.ibm.com>
-Subject: Re: [PATCH] crypto: s390/sha - Fix uninitialized variable in SHA-1
- and SHA-2
-Message-ID: <20250630170245.GD1220@sol>
-References: <20250627185649.35321-1-ebiggers@kernel.org>
- <20250630165805.GC1220@sol>
+	s=arc-20240116; t=1751303360; c=relaxed/simple;
+	bh=UUSKaxqW2JiZ6k8aAINHbR5UNuJdzh+o69P4Z8rDROo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IoM9Y+QL+GgdRXtiMVr8rv/9Lji5cLywgMn6Z5sdz+ToXSUy/u76cQSYB3aVklwQX1n+M14TnUXmG2tN7ZcRH0t5K8f0bOpVLTUEKuYyXLsLKU5gLmfYxYS2D7wZuQw3Qqbq22rLenYIqSR4VYvzALgjUjYaYcS8SPC0oG5JyMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fpkAvPto; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45311704d1fso14437245e9.1
+        for <stable@vger.kernel.org>; Mon, 30 Jun 2025 10:09:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1751303357; x=1751908157; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=kM+poFmpKItXkYaDEhmuFa89I8i1fFFkiIMelce0Oe4=;
+        b=fpkAvPtosy3mbcWEeN9ocHxwPv/cCBOvKQLhH77veW3Use6wVoR8I7A4m9OpeYrfNG
+         0YTaUhsWfF9PVuWzomVHetWHh8s81r+7N0WlMK/46h94PQwRAiDnXykvZ9SV14+LIQBO
+         Vv3YE6pGdGZVZhsncFidxGKlPQRupF87QTeKmfkVvUsc8Szvtc4u5U5HaUwe3N1G38Yt
+         g+7xfDeNEPDTs+vuL1u3HySwY+NDR7+bqGY62nNQeLK6Gzr6zQ76PG2zhpeWBZ9QWonE
+         Rup3Huy0tJ4oriN4rT6o6DntRkT9P1JGV0yjm1G3mliAh63OtfkbeRrby2O98vFraYL4
+         IA2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751303357; x=1751908157;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kM+poFmpKItXkYaDEhmuFa89I8i1fFFkiIMelce0Oe4=;
+        b=VvYex+ciZQS14fv3xQbt9q7ZvAoPzXY2SZ3PDq4HMi/A7SKXciKvFENtKqyt2lUVl5
+         r0cYQWCoi85D4jjLtd3UWRFPp/XYBdYdjV9oPPdMWnCoLVgEeDgbHXZ+/+zlKZG0DMEh
+         y6JWs+m4s+EnOUBW3M7pbhzVnvDmjB5RB6RDgW3yRGInQqPGh02N1MBljInr/5ft4fvt
+         7KauzJfhYY78gLcwVcz/7LPgpVHjNlezfCOVCbibI3NQpohw/0Pe5wYP/wTsji398PLJ
+         SHLjYxlMrqsP+Yr0TVfdsMXnF0AFR8mC069DvayqYTDVxrUSmkzM9phUdxHdFhST3pTs
+         u/bg==
+X-Gm-Message-State: AOJu0Yy1+i+8jQZ2lNUD/Pj110CMm26nYEmLrkswXC7QLTEh9CPZgaVg
+	pto7qz952lt7jiA27E+Ar9CfIKrGcPeXutWiUdxCX5gsuQoLxi11BgbrDbHFsTZ04TBPZ6Y46Sm
+	3o3i5EI06aBEYAaSQyo3jT7G8Lo5dqkbMs4P3OPLs2cq4FrSHkYT9vQEEMAVr32jOPk9c2ChV0H
+	UG8h4GUXiH8+yrAx25Png5hARlnxFOWYiwuZG5aQiUDFdOHXI=
+X-Google-Smtp-Source: AGHT+IFZGpWbed6vexGOhMFfsFnZUtmsDJtWbg/hA2nciuk/aGV5FLxw5JHySasMeCX1Yv92C2NXaTWKwGhhHQ==
+X-Received: from wmbeq14.prod.google.com ([2002:a05:600c:848e:b0:442:ea0c:c453])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4fd1:b0:453:6f1:bdba with SMTP id 5b1f17b1804b1-4538ee60a60mr116785185e9.20.1751303357487;
+ Mon, 30 Jun 2025 10:09:17 -0700 (PDT)
+Date: Mon, 30 Jun 2025 17:09:02 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250630165805.GC1220@sol>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAK3EYmgC/x2MWwqAIBAAryL7nWCG9rhK9GG21kJZaEQg3j3pc
+ 4ZhEkQMhBEGliDgQ5FOX6CuGNjN+BU5LYVBCqmEbgSn6yDu6OVWaeVa0XfGLVDyK2DR/2qEeJt 5R5hy/gD2RrruYgAAAA==
+X-Change-Id: 20250630-ipmi-fix-c565f7098afd
+X-Mailer: b4 0.14.2
+Message-ID: <20250630-ipmi-fix-v1-1-2d496de3c856@google.com>
+Subject: [PATCH stable] ipmi:msghandler: Fix potential memory corruption in ipmi_create_user()
+From: Brendan Jackman <jackmanb@google.com>
+To: stable@vger.kernel.org, Corey Minyard <minyard@acm.org>
+Cc: Corey Minyard <cminyard@mvista.com>, openipmi-developer@lists.sourceforge.net, 
+	linux-kernel@vger.kernel.org, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Corey Minyard <corey@minyard.net>, Brendan Jackman <jackmanb@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Jun 30, 2025 at 09:58:05AM -0700, Eric Biggers wrote:
-> On Fri, Jun 27, 2025 at 11:56:49AM -0700, Eric Biggers wrote:
-> > Commit 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
-> > added the field s390_sha_ctx::first_message_part and made it be used by
-> > s390_sha_update_blocks().  At the time, s390_sha_update_blocks() was
-> > used by all the s390 SHA-1, SHA-2, and SHA-3 algorithms.  However, only
-> > the initialization functions for SHA-3 were updated, leaving SHA-1 and
-> > SHA-2 using first_message_part uninitialized.
-> > 
-> > This could cause e.g. CPACF_KIMD_SHA_512 | CPACF_KIMD_NIP to be used
-> > instead of just CPACF_KIMD_NIP.  It's unclear why this didn't cause a
-> > problem earlier; this bug was found only when UBSAN detected the
-> > uninitialized boolean.  Perhaps the CPU ignores CPACF_KIMD_NIP for SHA-1
-> > and SHA-2.  Regardless, let's fix this.  For now just initialize to
-> > false, i.e. don't try to "optimize" the SHA state initialization.
-> > 
-> > Note: in 6.16, we need to patch SHA-1, SHA-384, and SHA-512.  In 6.15
-> > and earlier, we'll also need to patch SHA-224 and SHA-256, as they
-> > hadn't yet been librarified (which incidentally fixed this bug).
-> > 
-> > Fixes: 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
-> > Closes: https://lore.kernel.org/r/12740696-595c-4604-873e-aefe8b405fbf@linux.ibm.com
-> > Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-> > ---
-> > 
-> > This is targeting 6.16.  I'd prefer to take this through
-> > libcrypto-fixes, since the librarification work is also touching this
-> > area.  But let me know if there's a preference for the crypto tree or
-> > the s390 tree instead.
-> 
-> Applied to https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git/log/?h=libcrypto-fixes
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-Forgot to mention: I revised the first two paragraphs of the commit message to
-fix a couple things and clarify that the accidental CPACF_KIMD_NIP was indeed
-ignored (as per Ingo):
+commit fa332f5dc6fc662ad7d3200048772c96b861cf6b upstream
 
-    crypto: s390/sha - Fix uninitialized variable in SHA-1 and SHA-2
-    
-    Commit 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
-    added the field s390_sha_ctx::first_message_part and made it be used by
-    s390_sha_update() (now s390_sha_update_blocks()).  At the time,
-    s390_sha_update() was used by all the s390 SHA-1, SHA-2, and SHA-3
-    algorithms.  However, only the initialization functions for SHA-3 were
-    updated, leaving SHA-1 and SHA-2 using first_message_part uninitialized.
-    
-    This could cause e.g. the function code CPACF_KIMD_SHA_512 |
-    CPACF_KIMD_NIP to be used instead of just CPACF_KIMD_SHA_512.  This
-    apparently was harmless, as the SHA-1 and SHA-2 function codes ignore
-    CPACF_KIMD_NIP; it is recognized only by the SHA-3 function codes
-    (https://lore.kernel.org/r/73477fe9-a1dc-4e38-98a6-eba9921e8afa@linux.ibm.com/).
-    Therefore, this bug was found only when first_message_part was later
-    converted to a boolean and UBSAN detected its uninitialized use.
-    Regardless, let's fix this by just initializing to false.
-    
-    Note: in 6.16, we need to patch SHA-1, SHA-384, and SHA-512.  In 6.15
-    and earlier, we'll also need to patch SHA-224 and SHA-256, as they
-    hadn't yet been librarified (which incidentally fixed this bug).
-    
-    Fixes: 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
-    Cc: stable@vger.kernel.org
-    Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
-    Closes: https://lore.kernel.org/r/12740696-595c-4604-873e-aefe8b405fbf@linux.ibm.com
-    Acked-by: Heiko Carstens <hca@linux.ibm.com>
-    Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-    Link: https://lore.kernel.org/r/20250627185649.35321-1-ebiggers@kernel.org
-    Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+The "intf" list iterator is an invalid pointer if the correct
+"intf->intf_num" is not found.  Calling atomic_dec(&intf->nr_users) on
+and invalid pointer will lead to memory corruption.
+
+We don't really need to call atomic_dec() if we haven't called
+atomic_add_return() so update the if (intf->in_shutdown) path as well.
+
+Fixes: 8e76741c3d8b ("ipmi: Add a limit on the number of users that may use IPMI")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Message-ID: <aBjMZ8RYrOt6NOgi@stanley.mountain>
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+---
+I have tested this in 6.12 with Google's platform drivers added to
+reproduce the bug.  The bug causes the panic notifier chain to get
+corrupted leading to a crash. With the fix this goes away.
+
+Applies to 6.6 too but I haven't tested it there.
+
+Backport changes:
+
+- Dropped change to the `if (intf->in_shutdown)` block since that logic
+  doesn't exist yet.
+- Modified out_unlock to release the srcu lock instead of the mutex
+  since we don't have the mutex here yet.
+---
+ drivers/char/ipmi/ipmi_msghandler.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index e12b531f5c2f338008a42dc2c35b0a62395c9f3c..6a4a8ecd0edd02793eda70f9f9ae578e37da477f 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -1241,7 +1241,7 @@ int ipmi_create_user(unsigned int          if_num,
+ 	}
+ 	/* Not found, return an error */
+ 	rv = -EINVAL;
+-	goto out_kfree;
++	goto out_unlock;
+ 
+  found:
+ 	if (atomic_add_return(1, &intf->nr_users) > max_users) {
+@@ -1283,6 +1283,7 @@ int ipmi_create_user(unsigned int          if_num,
+ 
+ out_kfree:
+ 	atomic_dec(&intf->nr_users);
++out_unlock:
+ 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
+ 	vfree(new_user);
+ 	return rv;
+
+---
+base-commit: 783cd2c3dca8b6c434e955b84c20c8940588dc68
+change-id: 20250630-ipmi-fix-c565f7098afd
+
+Best regards,
+-- 
+Brendan Jackman <jackmanb@google.com>
+
 
