@@ -1,372 +1,262 @@
-Return-Path: <stable+bounces-158957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01BBBAEDF66
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 15:42:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10702AEDF62
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 15:41:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A06651777CE
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 13:42:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01D1B1892EFD
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 13:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967F928B3F6;
-	Mon, 30 Jun 2025 13:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 872C328B7E1;
+	Mon, 30 Jun 2025 13:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F0WI3OkR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YvzH9EN2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7756C28A738;
-	Mon, 30 Jun 2025 13:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751290927; cv=fail; b=sAz5P2i5k2bP0NHm4JNyKj9x4+20wXC+VyuqDQ9FC1+5o/06m1vw8NhnuqOFUlbF+t9tIdTxuodCTTeCYMFNYdGVboCGMxhGW7O3n3HcQj4NcQ3MB8lm6OKxHKkLVTNFDTvi1Fjmvhc7qK2jYmSFN5YzIXtl4htBwCiYRf5z8zY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751290927; c=relaxed/simple;
-	bh=ieTq5YUNeX3BRqyOnqPlWflsFKHTGyQozdCiZlxC1NY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=pFjWqcOzPTRav5XC3XvwBficvh8omLPQAlaAiMpAwVh0huEx0jrRk2X1MpZ8fxxGwMGV3QYnta3cx9GWtEjpCrOk0wFURXL4WmBu4OHZdSQ4J6qHvS0NNWPq/OQZDh+J4ocTS357wRxrDS05ivH+wei6iepMfQAHsKQdhzyz8EE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F0WI3OkR; arc=fail smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751290926; x=1782826926;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=ieTq5YUNeX3BRqyOnqPlWflsFKHTGyQozdCiZlxC1NY=;
-  b=F0WI3OkR+c6fys7d7qfJ0r0MmxTzDRaJFZTCagnGnRCeRgQHZ2FnlEoE
-   GhMIJUULvdbyz95faNOC9DKFL9r48HvN6X5cFeVHrrjYqJDT3qnpiB1kW
-   FMdKjWfA6xrXGK8ZP94tZZZUwNBJnYpLQ5xpZ6my68iF8HnEYT69COiMn
-   IPEOQaMNTK39JabKzC5w2G01KAYySQvLZBWrTvE8uYaG7IsnBkFz16xvf
-   U1Lmoyl1sohqib0gllZ5sETt045+WHcwMULVdWBxnkRjYSfpaz/iGv75k
-   72c1ELuzQk66lZ4jGAHXA9PbXEMwH/ePyoc2HK4gOYDg781sY9OxJxLoP
-   w==;
-X-CSE-ConnectionGUID: j7J8zO4AQ+Sxv29LvqK11Q==
-X-CSE-MsgGUID: bOaRETeeTGCQ5Q38rpiDpw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="52746409"
-X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; 
-   d="scan'208";a="52746409"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 06:42:02 -0700
-X-CSE-ConnectionGUID: LVtUEwDGT/6IBZdSSAK1Dg==
-X-CSE-MsgGUID: 739+LvLaQwCDaGGCoFlsTQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; 
-   d="scan'208";a="184388203"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 06:41:51 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 30 Jun 2025 06:41:50 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Mon, 30 Jun 2025 06:41:50 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (40.107.94.88) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 30 Jun 2025 06:41:48 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W4RIuZ48KSDVPQI3EHRBdewg7aA6Vjir0VTV49ciR1boa9RDo7mFx7bjyNi9fvRPgHMPan4kAvI7514REjV2CQrQtsf+UxEDtMR47CgRstPA7u4IFkaEwVMMeqZt0SkyEZjvpxyDMGMpBEu1SbOCNtUJ5f3DXs1SuZFJb4CdyEUNP0HtSdVp7y0/VVIDflCLyh+TXEWI14YPA/XmVPLd02sRn8UgTXNkwUmQEGcPR6EGZ8rwe5RTUGw0vXQ0VU1ghVsz/QmIwKeyMgnL7U7JyksQ33TGmI0lcfPp+dzncuSKbVcqdxXTeZ5xNtoh6EGDX/e8RgH1pzdh61dkbspMkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QgQzYjJgW5mUtpMQnCs22tDZVSrGc9cl6qKZriEm9Zw=;
- b=wGYfuUd00I1otAA5aUxs4EFEPyaK7BFBfEXKHwy7LiUabxjTydwzSpWTR7NcuIyGYEHvk+YITtiiL+ntiKyFIU0+VMK7EpfCbxiaWW/K6rTjvYkGJ90eUImKF5x/nMl4PfjX20SjHuJ5z83NLEKhM7M+HgGTVpn9gZQC6PjghecEnZlHWbFwodnaCnoM/aKz+va95S73L8JHM2grPlsMOVNwMjJqnr5HJTi6O0ryHtK/O9q6tPURLXLUO/bBtR5UeKJfnlNuYWglVnCzYNqEAmHUBgD+wkn6gJmZuNb+XCjSBSp7+f7MQ9NqL7jC0DGGemZ1xD3Hx6wxdVYW5o1aag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SN7PR11MB7540.namprd11.prod.outlook.com (2603:10b6:806:340::7)
- by IA0PR11MB7816.namprd11.prod.outlook.com (2603:10b6:208:407::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.30; Mon, 30 Jun
- 2025 13:41:19 +0000
-Received: from SN7PR11MB7540.namprd11.prod.outlook.com
- ([fe80::399f:ff7c:adb2:8d29]) by SN7PR11MB7540.namprd11.prod.outlook.com
- ([fe80::399f:ff7c:adb2:8d29%5]) with mapi id 15.20.8880.030; Mon, 30 Jun 2025
- 13:41:19 +0000
-Date: Mon, 30 Jun 2025 15:41:06 +0200
-From: Larysa Zaremba <larysa.zaremba@intel.com>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-CC: <netdev@vger.kernel.org>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<horms@kernel.org>, <michal.swiatkowski@linux.intel.com>,
-	<mengyuanlou@net-swift.com>, <duanqiangwen@net-swift.com>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH net v3 2/3] net: wangxun: revert the adjustment of the
- IRQ vector sequence
-Message-ID: <aGKT8gP2D6A5fHy-@soc-5CG4396X81.clients.intel.com>
-References: <20250626084804.21044-1-jiawenwu@trustnetic.com>
- <20250626084804.21044-3-jiawenwu@trustnetic.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250626084804.21044-3-jiawenwu@trustnetic.com>
-X-ClientProxiedBy: VI1PR08CA0215.eurprd08.prod.outlook.com
- (2603:10a6:802:15::24) To SN7PR11MB7540.namprd11.prod.outlook.com
- (2603:10b6:806:340::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EA928B519
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 13:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751290892; cv=none; b=GJrdN15D7LRVMmO9DkmucE6G4alNB4mdMTC7pwkquJ5ASomdrPCpwTdtmjqoU0F4ZJDseqA0jfj2a84NKDXWuLdggaCcirzDg31CCxwA34SuhzyZLcVxxGcYbCveNrIMGqSJOzm+MnlKJ6r8oaXtBaIQwbvnYLRr6uLWDH25gyE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751290892; c=relaxed/simple;
+	bh=QZn2BEF/evNs8BvFiNzRZp8rMPW8oD3AV94A/f5+hRU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iLY+sxaPUsHG02Z56wBHPOZoO6sD/Z9b+ONdCgIstacZjPZ7EoDYxMRHNbzyWWZT2tgJzjUSU8TLIdFtBSOf2xV/03nEzk0xAmPS3YyhUQM6xxsI7HJ4cedQ/pnaCu0fF9R+uqylbvJ2NgWl1snfyhY6qwm+hdiFRruQk9Hy56w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YvzH9EN2; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751290889;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0k2rxKDyTrLeAGCInolANnXu3A8lQ0DXnhu+vRzUrjA=;
+	b=YvzH9EN2l0cI2FK2nvtXeu/Vf9R8jUU/ftguiiSwGx6r1BcRspevGCdIN2NUutyLcelwVw
+	4J1KlMrbmeEhG90C6Djef+nu4J0iz1hduD1eQh3WVANbFmLfjg6MvOgvLVAyCShxM8shlr
+	VKBylXOnSFz4soU8pJB7Y5qf+3TblX4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-180-deWqSgYKPQurJEfGTQ4A5Q-1; Mon, 30 Jun 2025 09:41:25 -0400
+X-MC-Unique: deWqSgYKPQurJEfGTQ4A5Q-1
+X-Mimecast-MFC-AGG-ID: deWqSgYKPQurJEfGTQ4A5Q_1751290885
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-451deff247cso26241265e9.1
+        for <stable@vger.kernel.org>; Mon, 30 Jun 2025 06:41:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751290884; x=1751895684;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0k2rxKDyTrLeAGCInolANnXu3A8lQ0DXnhu+vRzUrjA=;
+        b=csZrdb5a0a7HC13g36dd0RseTdKr8vif+WRYQ8IXSuK7rarn0gsTIYrVsJOZZb4zc+
+         HGjMA5WklTMy0bK4qMInMmSs+CNbnYM69b42/hwNNyy0+E9kRpR11MToRddp2jbKZTfg
+         UbhLuImSRRb58K6KhVB7P30akKCxUBQ6QPrgUNKKd85JI8JwDCX13PQrusDgU8g1xuKZ
+         Lp7n2slRcbdoK+GLUu3vRSZYLo1g30YCZsYC0MALh/Cehxx2MorR4yofL/quBFFi7Gpf
+         wzir1oakziKgv9dsSZBArNJCBfd9u7u44HoxQGIltdpFScYu5ZxRpy7ULkEbMMeHmG+X
+         F9vA==
+X-Forwarded-Encrypted: i=1; AJvYcCXHgHN+RJECkXZAE6LUUYW6mapqJAlUoLYhVq2R8U6Bw1etwveDRyGcILxmZv2cmKOFvgdw1T4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPoSV+D7HMnhkzEHwde5kboITD8AYP+4Ymk2VzUcrqpzH0XO1w
+	W8b9kWSRLlA+3cl+3XHVkQBD87G+PmomITeHpxtqeTs/I526kZGjTjY1y9nAh26FbwPXmo8iSWN
+	Y9dLi3mTXEcMP/qEpE8LXlByb/P7pFwkoEY98+oMMkI8Jg97N6GBE/Y295Q==
+X-Gm-Gg: ASbGncuD9LdLvxqZtMBlZzCFZg1CWtwkNfgcIIEjRmNLnGyRPFJMoHED+2Ri2ByF0lU
+	9C1yfHLrEO+vDQWhSPynkEZkXE94LqDhF5oqRSCUUpKyPPxvxWcdKjNen9Y+Rrh0DIpgggoGUCg
+	RhLCzf3gW5Uwjsq1okV9Ry+7g8OE31GxmXhzhqnXqxK9yBoqkPcENgNrWalM8kZB72z5ih7vWSe
+	PX7Q0gng4M7dKLhbQe7gyFBBoHs+RJ2L4pKMl4GOOhlpYSWLPYX/JJ9GPDhC/GJ3TG3eqe1RDcX
+	JVTw8QnsbJUk0KrjIFbq8GZfz0/5YVwATLpnLHySKiQTouDbxJiu19rlzWz0tZa3WHmxu6q2hmK
+	F0Af0B/RogJw+9IBVSqjvpXvEwWk3xmgjlGZ2wfaOYVeFKtQkvg==
+X-Received: by 2002:a05:600c:6212:b0:43c:f3e1:a729 with SMTP id 5b1f17b1804b1-45388a0371cmr160686195e9.12.1751290884459;
+        Mon, 30 Jun 2025 06:41:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHrR723N0U4a8LBGYdriPUXtPEH33drejJE1WXOFzTtappaVkC0Rw6pAoF4eAVkr6seqmnUEg==
+X-Received: by 2002:a05:600c:6212:b0:43c:f3e1:a729 with SMTP id 5b1f17b1804b1-45388a0371cmr160685765e9.12.1751290883904;
+        Mon, 30 Jun 2025 06:41:23 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f40:b300:53f7:d260:aff4:7256? (p200300d82f40b30053f7d260aff47256.dip0.t-ipconnect.de. [2003:d8:2f40:b300:53f7:d260:aff4:7256])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4538a3a5b7fsm138954025e9.10.2025.06.30.06.41.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Jun 2025 06:41:23 -0700 (PDT)
+Message-ID: <498648fd-655e-47b3-8b7b-9c2ee11acc9b@redhat.com>
+Date: Mon, 30 Jun 2025 15:41:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR11MB7540:EE_|IA0PR11MB7816:EE_
-X-MS-Office365-Filtering-Correlation-Id: 74a978f0-986e-4daf-9ae2-08ddb7dbcb07
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|10070799003|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?6NqpMURbTxzhFs8UvUaaTkPSz6LtBxYmSBco1vS8w1roTQ4oppa4E4UDDX4d?=
- =?us-ascii?Q?GTd57fcQlWRLE9JW1SP+V1gFaJMYf9wTuRADOb2c/MWomnT7S5zJrdz9+8SN?=
- =?us-ascii?Q?cRC4rZmwU5Iipxqyy0lZTHDRoqyRZ5pTxWR8DSfBcSRIf7hRV3wPv1eyyg7T?=
- =?us-ascii?Q?Y71N8sCa5Jv53khMoenL3/VL7RxvtzDfAVBY4PzonGsAi+P4TQL6X37r5qFU?=
- =?us-ascii?Q?VYSnnjAo1jG2ObZn0UUWa6zsJc+TDUMZgS6FenHw/T7/yuqyWwXoKXWizyMl?=
- =?us-ascii?Q?fJQruPw9cf6v/BydiyUDpb0Ze5Sog8jmu3yriz84Iv8nZYbOPD1oIvT/T2Cx?=
- =?us-ascii?Q?/Puw6CTzYX+w/4m6RfohK21gnHqVLqe1fuTGQL0wuxj2vYQgG3hm9bYtu318?=
- =?us-ascii?Q?ESbyH+HKOlNWbnVVnq3fPvLRKJH1jL00ZQbw/+v81M9vwf/45PITE9OXdEim?=
- =?us-ascii?Q?aIX4Wtm2ZgzoDdl82n/2eq9uSKDaP0bvo15H+I15tmJqAlv0RljsEA4116Bd?=
- =?us-ascii?Q?+BTIsPVIGIfCeR9qni1pc3uY8PT6QheBPkRULxPhFEQ48FOxS6DWcV6EPE6B?=
- =?us-ascii?Q?t0qG/qMWd/ARlAaU/VSB4LRe+kf+q2ONT7GeXjcNikIt9Ckh1MWhySgJicTv?=
- =?us-ascii?Q?B5ocYVyO/LXiXkeKNjdNbnwScm8X5KGtS5aVJxKQ1oNRU+5ArM6USJZhDctm?=
- =?us-ascii?Q?/F4o5Yw0XQTtUNu0ANgU0LhXP118cg6TClt/5NaiZUbItx6DQiWDik1TOA/u?=
- =?us-ascii?Q?ChyWo/CcVxD/OZz85PI+xv0K4ZPLQ2jBQyFn6usyiKs0/s3FBxXYh5uKSRbG?=
- =?us-ascii?Q?ViiFyeT51oeK9I2XHdOWR9Q8RgF+wWvhWM9jydyBUdssnBbld0F6uatByoTR?=
- =?us-ascii?Q?tGyyGYHVIm4gMzD9tdB020OHFZrbuk2hRwKXCRb0EalDvJoJ3pO/TiZwDmYW?=
- =?us-ascii?Q?SfJwQ6SRo98fofO8CsIuQ+1qU7vN3as5xSdcsFK4d/9oLKkcJFTLuVXCWUHZ?=
- =?us-ascii?Q?Q53fbXwMfQgli8Rh1RdYTBOpCYt3m2Rpm15+nynpJgSvbKc7k05PD8eid/eQ?=
- =?us-ascii?Q?YhYKAgPa649Y8C5QZNxJVSLa/4dqqdeja6b7ALkRel1RffTaH6JUJqnlGCn9?=
- =?us-ascii?Q?jZy36en4MQeNiFtnZleMixryaQHIAeXXtVUwBIe+y4MBk1/gBD0/1N1nVtre?=
- =?us-ascii?Q?i0tMdvY+ei6m0ndfqWUHNHOt6oQltbzsEhDjkhoutUhNj/e2OAiY3+eOXFCJ?=
- =?us-ascii?Q?5PjOTwca80dhRvR/CyDU/tOYxyVquzHqdMkxYgusGaNb+byA0pnan/h1q0BL?=
- =?us-ascii?Q?VjxA8Jpu7M6EwBUEfpYP5WvyIEwDPNyz86GiqhQtIe8/b0oK6qYWpmNToqUW?=
- =?us-ascii?Q?KatbZPgfTnGOgfhZLVpzq4Ft5WTa/+c4Eae4YX7foFzt3VdO87IermZIAx3p?=
- =?us-ascii?Q?X4ZfISpQL8E=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB7540.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(10070799003)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?U5FIDcb9q0u6bUrnAgNk8HsmjhC7r+2iZdDucuBid6EdWX6TH7Ug1tLLD7fZ?=
- =?us-ascii?Q?y0UTg4CxyOGess5GjDfWnEKAh5NSieuIN6VPjttltd+v3FTo+cT8+yz5mgVn?=
- =?us-ascii?Q?E2i+c8rWCl7rU553lKfu2T4iP6dDxvx7GaOGTJLXtyW9dPZ8glcZnkrKNsQh?=
- =?us-ascii?Q?Qo+ssuY7TBm+eDmgtrObWYpsJc2HAArZX4i5NglO/j+awTXzJTTN8t+KN2tB?=
- =?us-ascii?Q?CxDjXIs/t2OF9+ajbBPcobLVam1/0OOxpemyCrnA7nxa5t0bfgxZDnRiGKKT?=
- =?us-ascii?Q?GwdbV5CfYZQpnPTimHsOdNj/ge9y5BqjrGgGsB4iUP5BcJZedyAM57Jga5oH?=
- =?us-ascii?Q?s3S74YQWXvIL0Zi7P+AM4OyXIp3aeHrrV4gs/4jMbyeGBrLxzi9xyuhj/gBh?=
- =?us-ascii?Q?TKkeT/pmlAEUYqYvqPVtt50/zdGqfyNJ+0ifyJPN4Z/OiMYsrlIWuqNVk3KZ?=
- =?us-ascii?Q?oCImecKIv29fIXtY7PIZtw8n0x3Q1LZLiQ6hg4GVUsqQhwYO53qr+2P9920H?=
- =?us-ascii?Q?0KX4zcokIpQ/dFS8ni/s0t6ISw59K8rtsfVZWUfZl6Q5iIkBph2Cl9rmSszV?=
- =?us-ascii?Q?FpoEK8/dfAJDD8uas2d9E7Gr0X0TaypY6RtioLa1FHLDBKkOFoMnhQEMEA1K?=
- =?us-ascii?Q?AWm0Yv3G1USdvUcUy+4Sf8zcGcI8oW/vZopTYyWkfbZs99QJQtvBxyhMPPlp?=
- =?us-ascii?Q?l1bGEbIBD9y+GbPnN2WxXdTJ7TmUpNTxCedtkz3/zST76HVmZtHuCsRL38lb?=
- =?us-ascii?Q?dfxIWYQMI1Vck6fk23VBIQQz8qU8SctMpUfnTiHNEB5TO2taVeR97t26FndY?=
- =?us-ascii?Q?Www4wjIBRLmOYmjRN+LGG2+F/MOIJNuoTfJHqT5CsQRFtM6x+l0c9zeEr8/B?=
- =?us-ascii?Q?P5Rn6Hfi/fH4sJhDQkUelq3b2+xuPdVC+rqYNhb73jiHtE138tO/9e+FH81T?=
- =?us-ascii?Q?E3nJcmkGUUejL20OCE4liJXhH3v1Im6YXFqOATVp49GrsjUEjZtILIl5B1Pm?=
- =?us-ascii?Q?xKT5wCeLW65v6jPw9ebcxmHdyanZcLnHU59opdfL2tZmI6Ivd3tWX09Qb0YP?=
- =?us-ascii?Q?ruOrmhJkBk1K5eYfuokijV14A7StppfJt1CasMpPZF/QOFXI6fKCE1mwlHgi?=
- =?us-ascii?Q?aBR8TYc0RWGB36mVuSlEYrm+O+3SSmRA6kCkbTrIEFDxOu+w6LMwH2uZYYzO?=
- =?us-ascii?Q?WwhYXZO6RPhrqkniaV7wBzxe5yM7d7u3QK9XBM5B8Tvj6cTEkmD6jC1nRnYf?=
- =?us-ascii?Q?ptwt9gRqIgnkIGmg97sT7Tv/RplbyoBRp1Kc7jtcdjwI7I8prwsniM0t3QZv?=
- =?us-ascii?Q?++Q5w8YJfmbf2KNuty0r3qRhL+h/8I0FvWuMF1yskLraQ1LMeoMkn7x9U9XZ?=
- =?us-ascii?Q?33i+p/TO4djHA53Gr6cfquOpIDwDMG0ptGAZ9/t1pR4mbkEEVGmD+QeWIsED?=
- =?us-ascii?Q?uVwVSzoFLfeaEyBfNVO2POHERKCpSphfmFxyTTGlMWEIlOqTB4XlSwBbr7Su?=
- =?us-ascii?Q?nfL6QYlROgydR/5bU3u8ganBx+bSFGEFIxOM0R13ELcZxI/81RpUgKzTCKgd?=
- =?us-ascii?Q?3JxlsK3R1a6UXPe654CW1B0KgPZ6+NPthOMh3cP37OuIJpF811CF1o+xMXiE?=
- =?us-ascii?Q?PErwnczLLbNFI4HZ5Wz/hRPIn5+XV9iuEHHGhSINoK5ouSvilQHrX8kDgJvj?=
- =?us-ascii?Q?5r6pSg=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 74a978f0-986e-4daf-9ae2-08ddb7dbcb07
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB7540.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2025 13:41:19.3056
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 14H2x30US03RB9BCzvaG/fot08gBX0RaD0jJDlPLRhH9bD0AC91HbsMmmmWo9noWA6wkxP43furFrvQaGdCyf2paTlftQFPAlH4HW4Mq6WQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7816
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] mm/rmap: fix potential out-of-bounds page table
+ access during batched unmap
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Lance Yang <ioworker0@gmail.com>
+Cc: akpm@linux-foundation.org, 21cnbao@gmail.com,
+ baolin.wang@linux.alibaba.com, chrisl@kernel.org, kasong@tencent.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-riscv@lists.infradead.org, ryan.roberts@arm.com,
+ v-songbaohua@oppo.com, x86@kernel.org, huang.ying.caritas@gmail.com,
+ zhengtangquan@oppo.com, riel@surriel.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, harry.yoo@oracle.com, mingzhe.yang@ly.com,
+ stable@vger.kernel.org, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>
+References: <20250630011305.23754-1-lance.yang@linux.dev>
+ <41483c78-84f2-42fc-b9ab-09823eb796c4@lucifer.local>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <41483c78-84f2-42fc-b9ab-09823eb796c4@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 26, 2025 at 04:48:03PM +0800, Jiawen Wu wrote:
-> Due to hardware limitations of NGBE, queue IRQs can only be requested
-> on vector 0 to 7. When the number of queues is set to the maximum 8,
-> the PCI IRQ vectors are allocated from 0 to 8. The vector 0 is used by
-> MISC interrupt, and althrough the vector 8 is used by queue interrupt,
-> it is unable to receive packets. This will cause some packets to be
-> dropped when RSS is enabled and they are assigned to queue 8.
+On 30.06.25 15:39, Lorenzo Stoakes wrote:
+> On Mon, Jun 30, 2025 at 09:13:05AM +0800, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> As pointed out by David[1], the batched unmap logic in try_to_unmap_one()
+>> may read past the end of a PTE table when a large folio's PTE mappings
+>> are not fully contained within a single page table.
+>>
+>> While this scenario might be rare, an issue triggerable from userspace must
+>> be fixed regardless of its likelihood. This patch fixes the out-of-bounds
+>> access by refactoring the logic into a new helper, folio_unmap_pte_batch().
+>>
+>> The new helper correctly calculates the safe batch size by capping the scan
+>> at both the VMA and PMD boundaries. To simplify the code, it also supports
+>> partial batching (i.e., any number of pages from 1 up to the calculated
+>> safe maximum), as there is no strong reason to special-case for fully
+>> mapped folios.
+>>
+>> [1] https://lore.kernel.org/linux-mm/a694398c-9f03-4737-81b9-7e49c857fcbe@redhat.com
+>>
+>> Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
+>> Cc: <stable@vger.kernel.org>
+>> Acked-by: Barry Song <baohua@kernel.org>
+>> Suggested-by: David Hildenbrand <david@redhat.com>
+>> Suggested-by: Barry Song <baohua@kernel.org>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
 > 
-> So revert the adjustment of the MISC IRQ location, to make it be the
-> last one in IRQ vectors.
+> This LGTM:
 > 
-> Fixes: 937d46ecc5f9 ("net: wangxun: add ethtool_ops for channel number")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> 
+>> ---
+>> v2 -> v3:
+>>   - Tweak changelog (per Barry and David)
+>>   - Pick AB from Barry - thanks!
+>>   - https://lore.kernel.org/linux-mm/20250627062319.84936-1-lance.yang@linux.dev
+>>
+>> v1 -> v2:
+>>   - Update subject and changelog (per Barry)
+>>   - https://lore.kernel.org/linux-mm/20250627025214.30887-1-lance.yang@linux.dev
+>>
+>>   mm/rmap.c | 46 ++++++++++++++++++++++++++++------------------
+>>   1 file changed, 28 insertions(+), 18 deletions(-)
+>>
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index fb63d9256f09..1320b88fab74 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -1845,23 +1845,32 @@ void folio_remove_rmap_pud(struct folio *folio, struct page *page,
+>>   #endif
+>>   }
+>>
+>> -/* We support batch unmapping of PTEs for lazyfree large folios */
+>> -static inline bool can_batch_unmap_folio_ptes(unsigned long addr,
+>> -			struct folio *folio, pte_t *ptep)
+>> +static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>> +			struct page_vma_mapped_walk *pvmw,
+>> +			enum ttu_flags flags, pte_t pte)
+>>   {
+>>   	const fpb_t fpb_flags = FPB_IGNORE_DIRTY | FPB_IGNORE_SOFT_DIRTY;
+>> -	int max_nr = folio_nr_pages(folio);
+>> -	pte_t pte = ptep_get(ptep);
+>> +	unsigned long end_addr, addr = pvmw->address;
+>> +	struct vm_area_struct *vma = pvmw->vma;
+>> +	unsigned int max_nr;
+>> +
+>> +	if (flags & TTU_HWPOISON)
+>> +		return 1;
+>> +	if (!folio_test_large(folio))
+>> +		return 1;
+>>
+>> +	/* We may only batch within a single VMA and a single page table. */
+>> +	end_addr = pmd_addr_end(addr, vma->vm_end);
+>> +	max_nr = (end_addr - addr) >> PAGE_SHIFT;
+>> +
+>> +	/* We only support lazyfree batching for now ... */
+>>   	if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
+>> -		return false;
+>> +		return 1;
+>>   	if (pte_unused(pte))
+>> -		return false;
+>> -	if (pte_pfn(pte) != folio_pfn(folio))
+>> -		return false;
+>> +		return 1;
+>>
+>> -	return folio_pte_batch(folio, addr, ptep, pte, max_nr, fpb_flags, NULL,
+>> -			       NULL, NULL) == max_nr;
+>> +	return folio_pte_batch(folio, addr, pvmw->pte, pte, max_nr, fpb_flags,
+>> +			       NULL, NULL, NULL);
+> 
+> I guess this will conflict with David's changes, but maybe in this simpler case
+> and given this was existing code a bit less? Anyway let's see.
 
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+It's a fix, so this is fine to go in first. (I already rebased on top of 
+mm/mm-new where this is in)
 
-> ---
->  drivers/net/ethernet/wangxun/libwx/wx_lib.c     | 17 ++++++++---------
->  drivers/net/ethernet/wangxun/libwx/wx_type.h    |  2 +-
->  drivers/net/ethernet/wangxun/ngbe/ngbe_main.c   |  2 +-
->  drivers/net/ethernet/wangxun/ngbe/ngbe_type.h   |  2 +-
->  drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c  |  6 +++---
->  drivers/net/ethernet/wangxun/txgbe/txgbe_type.h |  4 ++--
->  6 files changed, 16 insertions(+), 17 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> index 7f2e6cddfeb1..66eaf5446115 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> @@ -1746,7 +1746,7 @@ static void wx_set_num_queues(struct wx *wx)
->   */
->  static int wx_acquire_msix_vectors(struct wx *wx)
->  {
-> -	struct irq_affinity affd = { .pre_vectors = 1 };
-> +	struct irq_affinity affd = { .post_vectors = 1 };
->  	int nvecs, i;
->  
->  	/* We start by asking for one vector per queue pair */
-> @@ -1783,16 +1783,17 @@ static int wx_acquire_msix_vectors(struct wx *wx)
->  		return nvecs;
->  	}
->  
-> -	wx->msix_entry->entry = 0;
-> -	wx->msix_entry->vector = pci_irq_vector(wx->pdev, 0);
->  	nvecs -= 1;
->  	for (i = 0; i < nvecs; i++) {
->  		wx->msix_q_entries[i].entry = i;
-> -		wx->msix_q_entries[i].vector = pci_irq_vector(wx->pdev, i + 1);
-> +		wx->msix_q_entries[i].vector = pci_irq_vector(wx->pdev, i);
->  	}
->  
->  	wx->num_q_vectors = nvecs;
->  
-> +	wx->msix_entry->entry = nvecs;
-> +	wx->msix_entry->vector = pci_irq_vector(wx->pdev, nvecs);
-> +
->  	return 0;
->  }
->  
-> @@ -2299,8 +2300,6 @@ static void wx_set_ivar(struct wx *wx, s8 direction,
->  		wr32(wx, WX_PX_MISC_IVAR, ivar);
->  	} else {
->  		/* tx or rx causes */
-> -		if (!(wx->mac.type == wx_mac_em && wx->num_vfs == 7))
-> -			msix_vector += 1; /* offset for queue vectors */
->  		msix_vector |= WX_PX_IVAR_ALLOC_VAL;
->  		index = ((16 * (queue & 1)) + (8 * direction));
->  		ivar = rd32(wx, WX_PX_IVAR(queue >> 1));
-> @@ -2339,7 +2338,7 @@ void wx_write_eitr(struct wx_q_vector *q_vector)
->  
->  	itr_reg |= WX_PX_ITR_CNT_WDIS;
->  
-> -	wr32(wx, WX_PX_ITR(v_idx + 1), itr_reg);
-> +	wr32(wx, WX_PX_ITR(v_idx), itr_reg);
->  }
->  
->  /**
-> @@ -2392,9 +2391,9 @@ void wx_configure_vectors(struct wx *wx)
->  		wx_write_eitr(q_vector);
->  	}
->  
-> -	wx_set_ivar(wx, -1, 0, 0);
-> +	wx_set_ivar(wx, -1, 0, v_idx);
->  	if (pdev->msix_enabled)
-> -		wr32(wx, WX_PX_ITR(0), 1950);
-> +		wr32(wx, WX_PX_ITR(v_idx), 1950);
->  }
->  EXPORT_SYMBOL(wx_configure_vectors);
->  
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> index 7730c9fc3e02..d392394791b3 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> @@ -1343,7 +1343,7 @@ struct wx {
->  };
->  
->  #define WX_INTR_ALL (~0ULL)
-> -#define WX_INTR_Q(i) BIT((i) + 1)
-> +#define WX_INTR_Q(i) BIT((i))
->  
->  /* register operations */
->  #define wr32(a, reg, value)	writel((value), ((a)->hw_addr + (reg)))
-> diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> index b5022c49dc5e..68415a7ef12f 100644
-> --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> @@ -161,7 +161,7 @@ static void ngbe_irq_enable(struct wx *wx, bool queues)
->  	if (queues)
->  		wx_intr_enable(wx, NGBE_INTR_ALL);
->  	else
-> -		wx_intr_enable(wx, NGBE_INTR_MISC);
-> +		wx_intr_enable(wx, NGBE_INTR_MISC(wx));
->  }
->  
->  /**
-> diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-> index bb74263f0498..6eca6de475f7 100644
-> --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-> +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-> @@ -87,7 +87,7 @@
->  #define NGBE_PX_MISC_IC_TIMESYNC		BIT(11) /* time sync */
->  
->  #define NGBE_INTR_ALL				0x1FF
-> -#define NGBE_INTR_MISC				BIT(0)
-> +#define NGBE_INTR_MISC(A)			BIT((A)->num_q_vectors)
->  
->  #define NGBE_PHY_CONFIG(reg_offset)		(0x14000 + ((reg_offset) * 4))
->  #define NGBE_CFG_LAN_SPEED			0x14440
-> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-> index dc468053bdf8..3885283681ec 100644
-> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-> @@ -31,7 +31,7 @@ void txgbe_irq_enable(struct wx *wx, bool queues)
->  	wr32(wx, WX_PX_MISC_IEN, misc_ien);
->  
->  	/* unmask interrupt */
-> -	wx_intr_enable(wx, TXGBE_INTR_MISC);
-> +	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
->  	if (queues)
->  		wx_intr_enable(wx, TXGBE_INTR_QALL(wx));
->  }
-> @@ -131,7 +131,7 @@ static irqreturn_t txgbe_misc_irq_handle(int irq, void *data)
->  		txgbe->eicr = eicr;
->  		if (eicr & TXGBE_PX_MISC_IC_VF_MBOX) {
->  			wx_msg_task(txgbe->wx);
-> -			wx_intr_enable(wx, TXGBE_INTR_MISC);
-> +			wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
->  		}
->  		return IRQ_WAKE_THREAD;
->  	}
-> @@ -183,7 +183,7 @@ static irqreturn_t txgbe_misc_irq_thread_fn(int irq, void *data)
->  		nhandled++;
->  	}
->  
-> -	wx_intr_enable(wx, TXGBE_INTR_MISC);
-> +	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
->  	return (nhandled > 0 ? IRQ_HANDLED : IRQ_NONE);
->  }
->  
-> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-> index 42ec815159e8..41915d7dd372 100644
-> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-> @@ -302,8 +302,8 @@ struct txgbe_fdir_filter {
->  #define TXGBE_DEFAULT_RX_WORK           128
->  #endif
->  
-> -#define TXGBE_INTR_MISC       BIT(0)
-> -#define TXGBE_INTR_QALL(A)    GENMASK((A)->num_q_vectors, 1)
-> +#define TXGBE_INTR_MISC(A)    BIT((A)->num_q_vectors)
-> +#define TXGBE_INTR_QALL(A)    (TXGBE_INTR_MISC(A) - 1)
->  
->  #define TXGBE_MAX_EITR        GENMASK(11, 3)
->  
-> -- 
-> 2.48.1
-> 
-> 
+Acked-by: David Hildenbrand <david@redhat.com>
+
+-- 
+Cheers,
+
+David / dhildenb
+
 
