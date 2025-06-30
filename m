@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-158911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FA8AED8A0
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:24:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D967FAED8A4
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:25:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBEAF7AA40D
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 09:23:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1B141898E51
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 09:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBBE244689;
-	Mon, 30 Jun 2025 09:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461F423BD02;
+	Mon, 30 Jun 2025 09:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZEIaczD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJ7GcC4n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7C224467B
-	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 09:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0738721420F
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 09:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751275470; cv=none; b=Qr0Ng55yUsFYgoJ/nDl/nC8cDz8F2fh/CkMGOu+fTqzE6HFaRQ6HzL+ImwUYyHHwNrqXztvk5t4KolF1tjU/TTlZsPEaC8XkI8Ct/72BfvGKuABQOmeG6ommOEiWDUxjlyNGEyXBLyWAbkDhZc/uOKt33l0J0cxmGBkftPFdZcg=
+	t=1751275526; cv=none; b=MgLBByM45SrlLZrNhFdfnJKTMIUOWu4aHcjm8mFKDHYy9apDfPxobpVQaWy1EHGHPaUiaRl+n6gWG95cG+oh2DTAwImQD1yF80Cnv/KbsO015Hp67mGGL6Aj0SzeagWeuuXDnKlQ0fmrwlArMB2Zgh3oU8SgOiJYbRmPRd09fWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751275470; c=relaxed/simple;
-	bh=HzZZnKZxqeHY+ydcRz0wJCwGFLKszUVdcMFX2seJ5/o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YldPUgQ/b0LANMlojvPmQh6pEZM8IUWf020Qjr9woeoEhLyDA3BluFbFwfTWrplITIPn+y5/uyA7d9er4q2WLPby9SFJPc7mRyEuCTh4Ht1TD9bsY7hMKA+4JmZGwhigGWsFxnzGHLFxh72heuflzpfCVr0ZXZsqaDMql9grWzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZEIaczD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187B3C4CEE3;
-	Mon, 30 Jun 2025 09:24:29 +0000 (UTC)
+	s=arc-20240116; t=1751275526; c=relaxed/simple;
+	bh=aCTnSJsHSaJ8JQK1MN96CjTn2VRILHTQAOhnk983zeg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=V80wau6PZ+E0PDRycXQKEtOqYY/jWkgF/J2YcqIRVZsvjAOiOD4i5G8wgAVL5NsYcLBfaHKfaB7/4E/FF8RbWX+HlbWurMQE3q4UCXblmtxTixKBH9Y0DHgkGouXkYtxCUhgTaVx9oWZ/DX3HXmhAr4tAINuZms/X0YJEH5DZHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJ7GcC4n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E034C4CEE3;
+	Mon, 30 Jun 2025 09:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751275470;
-	bh=HzZZnKZxqeHY+ydcRz0wJCwGFLKszUVdcMFX2seJ5/o=;
+	s=korg; t=1751275525;
+	bh=aCTnSJsHSaJ8JQK1MN96CjTn2VRILHTQAOhnk983zeg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hZEIaczDLryDqy0RR9gIZTpafnsA/HMp3+FVPEZtwSnLjj/9GTZBrhF/BpCZMp9N/
-	 xqun5p/fn1QKKRvrAcgW6WyYFI2c/ybLyCz2lkqj895TTPpsLeegRjYSFXivoSNFAJ
-	 fhyhA+WkMX2qY67QoOE8Z+yyblGKvqtasWFTCOlU=
-Subject: FAILED: patch "[PATCH] scsi: ufs: core: Fix clk scaling to be conditional in reset" failed to apply to 5.4-stable tree
-To: anvithdosapati@google.com,bvanassche@acm.org,martin.petersen@oracle.com
+	b=xJ7GcC4nHYxPG8akfA6g7HVhAp3bomlbtZFYeo3h9w4cY3i6OWJUI8db/1G3Lh6Xz
+	 GtSBl0tyrtLWWf4j4LD0kfaz3XlTooGqZBJ2q0mmPOBSBERl1aZtbBQ9iZ1RgTwAOx
+	 7rqkgv0IxScqOxY1IHZH8DIkYIJCaNY1Ilqy2loc=
+Subject: FAILED: patch "[PATCH] drm/cirrus-qemu: Fix pitch programming" failed to apply to 6.1-stable tree
+To: tzimmermann@suse.de,airlied@redhat.com,ajax@redhat.com,kraxel@redhat.com,maarten.lankhorst@linux.intel.com,mripard@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Jun 2025 11:24:05 +0200
-Message-ID: <2025063005-groggily-acid-85ff@gregkh>
+Date: Mon, 30 Jun 2025 11:25:22 +0200
+Message-ID: <2025063022-scrap-uncured-d6c9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2e083cd802294693a5414e4557a183dd7e442e71
+git cherry-pick -x 4bfb389a0136a13f0802eeb5e97a0e76d88f77ae
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025063005-groggily-acid-85ff@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025063022-scrap-uncured-d6c9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,36 +77,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2e083cd802294693a5414e4557a183dd7e442e71 Mon Sep 17 00:00:00 2001
-From: anvithdosapati <anvithdosapati@google.com>
-Date: Mon, 16 Jun 2025 08:57:34 +0000
-Subject: [PATCH] scsi: ufs: core: Fix clk scaling to be conditional in reset
- and restore
+From 4bfb389a0136a13f0802eeb5e97a0e76d88f77ae Mon Sep 17 00:00:00 2001
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Date: Fri, 28 Mar 2025 10:17:05 +0100
+Subject: [PATCH] drm/cirrus-qemu: Fix pitch programming
 
-In ufshcd_host_reset_and_restore(), scale up clocks only when clock
-scaling is supported. Without this change CPU latency is voted for 0
-(ufshcd_pm_qos_update) during resume unconditionally.
+Do not set CR1B[6] when programming the pitch. The bit effects VGA
+text mode and is not interpreted by qemu. [1] It has no affect on
+the scanline pitch.
 
-Signed-off-by: anvithdosapati <anvithdosapati@google.com>
-Link: https://lore.kernel.org/r/20250616085734.2133581-1-anvithdosapati@google.com
-Fixes: a3cd5ec55f6c ("scsi: ufs: add load based scaling of UFS gear")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The scanline bit that is set into CR1B[6] belongs into CR13[7], which
+the driver sets up correctly.
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index f62d89c8e580..50adfb8b335b 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -7807,7 +7807,8 @@ static int ufshcd_host_reset_and_restore(struct ufs_hba *hba)
- 	hba->silence_err_logs = false;
+This bug goes back to the driver's initial commit.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Link: https://gitlab.com/qemu-project/qemu/-/blob/stable-9.2/hw/display/cirrus_vga.c?ref_type=heads#L1112 # 1
+Fixes: f9aa76a85248 ("drm/kms: driver for virtual cirrus under qemu")
+Cc: Adam Jackson <ajax@redhat.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: <stable@vger.kernel.org> # v3.5+
+Link: https://lore.kernel.org/r/20250328091821.195061-2-tzimmermann@suse.de
+
+diff --git a/drivers/gpu/drm/tiny/cirrus-qemu.c b/drivers/gpu/drm/tiny/cirrus-qemu.c
+index 52ec1e4ea9e5..a00d3b7ded6c 100644
+--- a/drivers/gpu/drm/tiny/cirrus-qemu.c
++++ b/drivers/gpu/drm/tiny/cirrus-qemu.c
+@@ -318,7 +318,6 @@ static void cirrus_pitch_set(struct cirrus_device *cirrus, unsigned int pitch)
+ 	/* Enable extended blanking and pitch bits, and enable full memory */
+ 	cr1b = 0x22;
+ 	cr1b |= (pitch >> 7) & 0x10;
+-	cr1b |= (pitch >> 6) & 0x40;
+ 	wreg_crt(cirrus, 0x1b, cr1b);
  
- 	/* scale up clocks to max frequency before full reinitialization */
--	ufshcd_scale_clks(hba, ULONG_MAX, true);
-+	if (ufshcd_is_clkscaling_supported(hba))
-+		ufshcd_scale_clks(hba, ULONG_MAX, true);
- 
- 	err = ufshcd_hba_enable(hba);
- 
+ 	cirrus_set_start_address(cirrus, 0);
 
 
