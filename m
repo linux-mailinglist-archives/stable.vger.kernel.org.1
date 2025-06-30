@@ -1,178 +1,421 @@
-Return-Path: <stable+bounces-158930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C0EAEDB14
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 13:32:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1FE8AEDB2F
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 13:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6855817893A
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:32:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D94E189B46D
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7654423E354;
-	Mon, 30 Jun 2025 11:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F65825DD07;
+	Mon, 30 Jun 2025 11:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alyssa.is header.i=@alyssa.is header.b="csu2QSGk";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YiJ2a1fg"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wcFEuoQC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lTKoR93/";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wcFEuoQC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lTKoR93/"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9304425DD0C;
-	Mon, 30 Jun 2025 11:32:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFA1245022
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 11:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751283159; cv=none; b=UDhtPNqiykNuy/8j77eaWDcod+u49isRBxvXuhrkNoywMDABt+NIBURiQtWcdxWR9CKA5mmPEd2OswFqh8oq2d7/+SUWCL2cIgNRy0sNrywhC4NkDEjTWVod+noWmvLNVGe4AD7KpDxajhbJ1NBw9uKR5N/0qrNWbxkIdrl2VUo=
+	t=1751283302; cv=none; b=P91xpeMgDyubiknJ4pzW6AmpBM2HlP2J7R6uV2V9oItfVZ9dqM5JJna9YtlePieDQf5bd322wuKPf5MuJJrDJLOznKY0hAdSSpFml2WhTlD2jDSYdG/lJb/YuHzRbgiNe2YMLS0XgRnZ6cbNicPHtAhlWTe7bJVl8ldm9DMua6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751283159; c=relaxed/simple;
-	bh=JrmlR7cLmGq/tenetqwJwHO2uvIPQlOMEhSGW/+rgAc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=NuvwgyyidI9dyLCiuIUXfSvOSisSglIk/BLf/ELn4XsNkx2W5/3BFXD3TH27crBLIldzWZiUJ63zCTLimeXPsxJTGnla76kpw55EI9fMD33GXKoNgupMA7DojoCQPuogKTFBI1S0jSIh4hCQP//wBGcP0Ba1KvNSmyd6jN8Mhks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alyssa.is; spf=pass smtp.mailfrom=alyssa.is; dkim=pass (2048-bit key) header.d=alyssa.is header.i=@alyssa.is header.b=csu2QSGk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YiJ2a1fg; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alyssa.is
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alyssa.is
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 4C28B7A019A;
-	Mon, 30 Jun 2025 07:32:34 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Mon, 30 Jun 2025 07:32:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1751283154; x=1751369554; bh=oxMmJEyGhz
-	TthN/fcdYjXuV9Dle9faFe4SUXcAQ8dVk=; b=csu2QSGkClyMxmuRwIW0PwP+li
-	5gV1wqPMHqr/vTZyhDfR3pyk+JF0NtddP9i3ulCfqcC3h+XJxUzblBDK0ky3BuJU
-	67aE63jbUhZCV3NFu6+Wu2kXiMkMJCLFxgepLyuMIFINbH/ZU6FMLEhLqsOuQClJ
-	7rovYPb7fVJLrOQHnZTPjE0DGxqNY8yqqushnV+W9vfVpissJxLeTD2j6u4WuCzR
-	pPQeTWjbDMjBPdm7mLkUmbpVbbJpQPqyTh4Tbl4PPdpVerHV2xuKZVsqFGSZgWwQ
-	VujgOVsF2eW0wOCHEJBZAsvNuUmiELQINx1ORRyY+waHC+whPL7/hqk7xdKw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1751283154; x=1751369554; bh=oxMmJEyGhzTthN/fcdYjXuV9Dle9faFe4SU
-	XcAQ8dVk=; b=YiJ2a1fg8eGUzNMgDfTwhXdw4q527o3pahzWBnnnHJsMBWBsltg
-	nsvZ2XD76Z0XH3ezMJBg9ZjVZWSJwKmjPPKs9nu9w1Yf/JkXsd2ddLLTE2gpYHw3
-	paa00xKoJBGEgFAazZXWLBCJJxtGeE+Jxxao15o7jJNYcLWrdKgVD1qYykAtGzxZ
-	SNtVxThtzBqAP/nEyNnzwvrfbMu2TvZ/5f6jAmqGOO0h2btXNE+XbBNIS7YSIZzP
-	XXrVQDeE2dcuQyzl25TwgepNF3rdcAs6iIWFDaJibvIoRMxSjZzX8g4Spdxg0cQz
-	psoEBlSr4OT5xRuDiKVPvzMFn6Ydh+ixOpA==
-X-ME-Sender: <xms:0XViaMPHzfnTDOUAxmeSp_X8Lg2AIpMsDqNr5v8ED07hdDo5FIp0GQ>
-    <xme:0XViaC9c0ceDFpCq8eUOW_ZXwWdHrBryRO_FP-4Pnpu6usya189j81lWRbzdRuVvD
-    cHD68s-vPqzZpo2hQ>
-X-ME-Received: <xmr:0XViaDTSquGai8Nx7b9NNP8SwyqlVSdkD_vpYj2GVUehx16ylo8TmLjkIDBzhjsQ0SqSuHv-DBE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudehlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufgjfhffkfggtgesghdtreertddtjeenucfhrhhomheptehlhihsshgrucft
-    ohhsshcuoehhihesrghlhihsshgrrdhisheqnecuggftrfgrthhtvghrnhepgfehhffgke
-    ekleejveeftdegtdetieduieeifedvheehleetgeekvefgudehuedvnecuffhomhgrihhn
-    pehkvghrnhgvlhdrohhrghdpghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhephhhisegrlhihshhsrgdrihhspdhnsggp
-    rhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhgrrhhioh
-    drlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtphhtthhopeihvghhvgiikhgv
-    lhhshhgssehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghnughrvggrshdrnhhovghvvg
-    hrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepkhhimhdrlhhinhgusggvrhhgvghrsehg
-    mhgrihhlrdgtohhmpdhrtghpthhtohepmhhitghhrggvlhdrjhgrmhgvthesihhnthgvlh
-    drtghomhdprhgtphhtthhopehrrghjrghtrdhkhhgrnhguvghlfigrlhesihhnthgvlhdr
-    tghomhdprhgtphhtthhopehsrghshhgrlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    epshhuphgvrhhmudeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfigvshhtvghrihes
-    khgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:0XViaEukabNgbE45KuY_Dw6mme3I0NhnKdROnZ2GQODuRKSiqcCHJw>
-    <xmx:0XViaEca_gh47sr9P5vqa3swavqttcmg-GR1jbuSe5raivaazb8sUQ>
-    <xmx:0XViaI2WJ2xFaT8AgCu0SxP3dJkVO-4cSDjCL8PSu8uBqCHPSOoSIw>
-    <xmx:0XViaI9ZtyAvIHts0MssvTOkAxEwbOxGDdxSl2s_OPuBsfA0m0oldw>
-    <xmx:0nViaBDb-wnrmph_UwUpRwy-__9ybQWQoEd9542yttoAigqp-H9f2-90>
-Feedback-ID: i12284293:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 30 Jun 2025 07:32:33 -0400 (EDT)
-Received: by sf.qyliss.net (Postfix, from userid 1000)
-	id D269C26678DCF; Mon, 30 Jun 2025 13:32:31 +0200 (CEST)
-From: Alyssa Ross <hi@alyssa.is>
-To: regressions@lists.linux.dev
-Cc: mario.limonciello@amd.com, andreas.noever@gmail.com,
- michael.jamet@intel.com, westeri@kernel.org, YehezkelShB@gmail.com,
- rajat.khandelwal@intel.com, mika.westerberg@linux.intel.com,
- linux-usb@vger.kernel.org, kim.lindberger@gmail.com, linux@lunaa.ch, Sasha
- Levin <sashal@kernel.org>, stable@vger.kernel.org, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Mario Limonciello <superm1@kernel.org>
-Subject: Re: [REGRESSION] thunderbolt: Fix a logic error in wake on connect
-In-Reply-To: <cavyeum32dd7kxj65argtem6xh2575oq3gcv3svd3ubnvdc6cr@6nv7ieimfc5e>
-References: <20250411151446.4121877-1-superm1@kernel.org>
- <cavyeum32dd7kxj65argtem6xh2575oq3gcv3svd3ubnvdc6cr@6nv7ieimfc5e>
-Date: Mon, 30 Jun 2025 13:32:27 +0200
-Message-ID: <87v7odo46s.fsf@alyssa.is>
+	s=arc-20240116; t=1751283302; c=relaxed/simple;
+	bh=jMCAWqbRImgF/EHCONFITy3YAQSv3tJsJwPcm+NY8Ac=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KxAFwWoCOwKqFqrHl12Vaz4smQ5sQYnHjyli4qwOpVxB7xiATkjtkXYggZdpC8jNvx5BTeCt8vlu//hGRO6qlPaEyYEATBc7Dbe1GGu7xgIIgELWyoOC5beM788lLcYEg1zhVhRYqU46sFXz5d6WCTHIDyykMBSxtkL9mass8/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wcFEuoQC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=lTKoR93/; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wcFEuoQC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=lTKoR93/; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A9F171F390;
+	Mon, 30 Jun 2025 11:34:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1751283298; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wbgDC0ZRdKrtm2pRADzZklnD+ZGXDDFTn3lHR6tDBSI=;
+	b=wcFEuoQC1DqkdqRbN/6KBhQ1qT/tzdjyjtZjW+oCjbOTmbBwJ/qM7zN6QxbF0dbcYzHGjW
+	fmflKOejYN4Ugz6slkHm9NdPSP9RcDWtsHnBWG9J+VrL1e2B0V4N6JD7aOpcpEK/PulyKC
+	+J7eq1Dr2ymnjUlZct/LRo8ZO98JFho=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1751283298;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wbgDC0ZRdKrtm2pRADzZklnD+ZGXDDFTn3lHR6tDBSI=;
+	b=lTKoR93/fAl78bdpT0XtFBwGiVJuECd6frh3zArWZ5+2dscWMVlqSdwjRO0IzNBjerwphk
+	QgrnEjfhB0sz6cCw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wcFEuoQC;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="lTKoR93/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1751283298; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wbgDC0ZRdKrtm2pRADzZklnD+ZGXDDFTn3lHR6tDBSI=;
+	b=wcFEuoQC1DqkdqRbN/6KBhQ1qT/tzdjyjtZjW+oCjbOTmbBwJ/qM7zN6QxbF0dbcYzHGjW
+	fmflKOejYN4Ugz6slkHm9NdPSP9RcDWtsHnBWG9J+VrL1e2B0V4N6JD7aOpcpEK/PulyKC
+	+J7eq1Dr2ymnjUlZct/LRo8ZO98JFho=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1751283298;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wbgDC0ZRdKrtm2pRADzZklnD+ZGXDDFTn3lHR6tDBSI=;
+	b=lTKoR93/fAl78bdpT0XtFBwGiVJuECd6frh3zArWZ5+2dscWMVlqSdwjRO0IzNBjerwphk
+	QgrnEjfhB0sz6cCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5BC8413983;
+	Mon, 30 Jun 2025 11:34:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WST4FGJ2YmhxOQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 30 Jun 2025 11:34:58 +0000
+Message-ID: <3477130c-8470-43cc-ba97-0ce48bdf025d@suse.de>
+Date: Mon, 30 Jun 2025 13:34:57 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha512; protocol="application/pgp-signature"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/gem: Acquire references on GEM handles for
+ framebuffers
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ asrivats@redhat.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ airlied@gmail.com, simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org, Sumit Semwal <sumit.semwal@linaro.org>,
+ linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ stable@vger.kernel.org
+References: <20250630084001.293053-1-tzimmermann@suse.de>
+ <9009d89b-91f0-496c-a45d-03d8f0fb7bf6@amd.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <9009d89b-91f0-496c-a45d-03d8f0fb7bf6@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: A9F171F390
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_TO(0.00)[amd.com,redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,amd.com:email,suse.de:mid,suse.de:dkim,suse.de:email];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Score: -4.51
+X-Spam-Level: 
 
---=-=-=
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Hi
 
-Alyssa Ross <hi@alyssa.is> writes:
-
-> On Fri, Apr 11, 2025 at 10:14:44AM -0500, Mario Limonciello wrote:
->> From: Mario Limonciello <mario.limonciello@amd.com>
+Am 30.06.25 um 10:49 schrieb Christian König:
+> On 30.06.25 10:36, Thomas Zimmermann wrote:
+>> A GEM handle can be released while the GEM buffer object is attached
+>> to a DRM framebuffer. This leads to the release of the dma-buf backing
+>> the buffer object, if any. [1] Trying to use the framebuffer in further
+>> mode-setting operations leads to a segmentation fault. Most easily
+>> happens with driver that use shadow planes for vmap-ing the dma-buf
+>> during a page flip. An example is shown below.
 >>
->> commit a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect
->> on USB4 ports") introduced a sysfs file to control wake up policy
->> for a given USB4 port that defaulted to disabled.
+>> [  156.791968] ------------[ cut here ]------------
+>> [  156.796830] WARNING: CPU: 2 PID: 2255 at drivers/dma-buf/dma-buf.c:1527 dma_buf_vmap+0x224/0x430
+>> [...]
+>> [  156.942028] RIP: 0010:dma_buf_vmap+0x224/0x430
+>> [  157.043420] Call Trace:
+>> [  157.045898]  <TASK>
+>> [  157.048030]  ? show_trace_log_lvl+0x1af/0x2c0
+>> [  157.052436]  ? show_trace_log_lvl+0x1af/0x2c0
+>> [  157.056836]  ? show_trace_log_lvl+0x1af/0x2c0
+>> [  157.061253]  ? drm_gem_shmem_vmap+0x74/0x710
+>> [  157.065567]  ? dma_buf_vmap+0x224/0x430
+>> [  157.069446]  ? __warn.cold+0x58/0xe4
+>> [  157.073061]  ? dma_buf_vmap+0x224/0x430
+>> [  157.077111]  ? report_bug+0x1dd/0x390
+>> [  157.080842]  ? handle_bug+0x5e/0xa0
+>> [  157.084389]  ? exc_invalid_op+0x14/0x50
+>> [  157.088291]  ? asm_exc_invalid_op+0x16/0x20
+>> [  157.092548]  ? dma_buf_vmap+0x224/0x430
+>> [  157.096663]  ? dma_resv_get_singleton+0x6d/0x230
+>> [  157.101341]  ? __pfx_dma_buf_vmap+0x10/0x10
+>> [  157.105588]  ? __pfx_dma_resv_get_singleton+0x10/0x10
+>> [  157.110697]  drm_gem_shmem_vmap+0x74/0x710
+>> [  157.114866]  drm_gem_vmap+0xa9/0x1b0
+>> [  157.118763]  drm_gem_vmap_unlocked+0x46/0xa0
+>> [  157.123086]  drm_gem_fb_vmap+0xab/0x300
+>> [  157.126979]  drm_atomic_helper_prepare_planes.part.0+0x487/0xb10
+>> [  157.133032]  ? lockdep_init_map_type+0x19d/0x880
+>> [  157.137701]  drm_atomic_helper_commit+0x13d/0x2e0
+>> [  157.142671]  ? drm_atomic_nonblocking_commit+0xa0/0x180
+>> [  157.147988]  drm_mode_atomic_ioctl+0x766/0xe40
+>> [...]
+>> [  157.346424] ---[ end trace 0000000000000000 ]---
 >>
->> However when testing commit 4bfeea6ec1c02 ("thunderbolt: Use wake
->> on connect and disconnect over suspend") I found that it was working
->> even without making changes to the power/wakeup file (which defaults
->> to disabled). This is because of a logic error doing a bitwise or
->> of the wake-on-connect flag with device_may_wakeup() which should
->> have been a logical AND.
+>> Acquiring GEM handles for the framebuffer's GEM buffer objects prevents
+>> this from happening. The framebuffer's cleanup later puts the handle
+>> references.
 >>
->> Adjust the logic so that policy is only applied when wakeup is
->> actually enabled.
+>> Commit 1a148af06000 ("drm/gem-shmem: Use dma_buf from GEM object
+>> instance") triggers the segmentation fault easily by using the dma-buf
+>> field more widely. The underlying issue with reference counting has
+>> been present before.
 >>
->> Fixes: a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect on US=
-B4 ports")
->> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> v2:
+>> - acquire the handle instead of the BO (Christian)
+>> - fix comment style (Christian)
+>> - drop the Fixes tag (Christian)
+>> - rename err_ gotos
+>> - add missing Link tag
+>>
+>> Suggested-by: Christian König <christian.koenig@amd.com>
+>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Reviewed-by: Christian König <christian.koenig@amd.com>
+
+Thanks a lot
+
 >
-> Hi! There have been a couple of reports of a Thunderbolt regression in
-> recent stable kernels, and one reporter has now bisected it to this
-> change:
+> But I strongly suggest to let the different CI systems take a look as well, we already had to much fun with that.
+
+I can wait a bit longer for reports, but the patch fixes a regression in 
+v6.15. I'd rather see it merged soon-ish.
+
+Best regards
+Thomas
+
 >
->  =E2=80=A2 https://bugzilla.kernel.org/show_bug.cgi?id=3D220284
->  =E2=80=A2 https://github.com/NixOS/nixpkgs/issues/420730
+> Regards,
+> Christian.
 >
-> Both reporters are CCed, and say it starts working after the module is
-> reloaded.
->
-> Link: https://lore.kernel.org/r/bug-220284-208809@https.bugzilla.kernel.o=
-rg%2F/
-> (for regzbot)
+>> Link: https://elixir.bootlin.com/linux/v6.15/source/drivers/gpu/drm/drm_gem.c#L241 # [1]
+>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>> Cc: Anusha Srivatsa <asrivats@redhat.com>
+>> Cc: Christian König <christian.koenig@amd.com>
+>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>> Cc: Maxime Ripard <mripard@kernel.org>
+>> Cc: Sumit Semwal <sumit.semwal@linaro.org>
+>> Cc: "Christian König" <christian.koenig@amd.com>
+>> Cc: linux-media@vger.kernel.org
+>> Cc: dri-devel@lists.freedesktop.org
+>> Cc: linaro-mm-sig@lists.linaro.org
+>> Cc: <stable@vger.kernel.org>
+>> ---
+>>   drivers/gpu/drm/drm_gem.c                    | 44 ++++++++++++++++++--
+>>   drivers/gpu/drm/drm_gem_framebuffer_helper.c | 16 +++----
+>>   drivers/gpu/drm/drm_internal.h               |  2 +
+>>   3 files changed, 51 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+>> index 19d50d254fe6..bc505d938b3e 100644
+>> --- a/drivers/gpu/drm/drm_gem.c
+>> +++ b/drivers/gpu/drm/drm_gem.c
+>> @@ -213,6 +213,35 @@ void drm_gem_private_object_fini(struct drm_gem_object *obj)
+>>   }
+>>   EXPORT_SYMBOL(drm_gem_private_object_fini);
+>>   
+>> +static void drm_gem_object_handle_get(struct drm_gem_object *obj)
+>> +{
+>> +	struct drm_device *dev = obj->dev;
+>> +
+>> +	drm_WARN_ON(dev, !mutex_is_locked(&dev->object_name_lock));
+>> +
+>> +	if (obj->handle_count++ == 0)
+>> +		drm_gem_object_get(obj);
+>> +}
+>> +
+>> +/**
+>> + * drm_gem_object_handle_get_unlocked - acquire reference on user-space handles
+>> + * @obj: GEM object
+>> + *
+>> + * Acquires a reference on the GEM buffer object's handle. Required
+>> + * to keep the GEM object alive. Call drm_gem_object_handle_put_unlocked()
+>> + * to release the reference.
+>> + */
+>> +void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj)
+>> +{
+>> +	struct drm_device *dev = obj->dev;
+>> +
+>> +	guard(mutex)(&dev->object_name_lock);
+>> +
+>> +	drm_WARN_ON(dev, !obj->handle_count); /* first ref taken in create-tail helper */
+>> +	drm_gem_object_handle_get(obj);
+>> +}
+>> +EXPORT_SYMBOL(drm_gem_object_handle_get_unlocked);
+>> +
+>>   /**
+>>    * drm_gem_object_handle_free - release resources bound to userspace handles
+>>    * @obj: GEM object to clean up.
+>> @@ -243,8 +272,14 @@ static void drm_gem_object_exported_dma_buf_free(struct drm_gem_object *obj)
+>>   	}
+>>   }
+>>   
+>> -static void
+>> -drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
+>> +/**
+>> + * drm_gem_object_handle_put_unlocked - releases reference on user-space handles
+>> + * @obj: GEM object
+>> + *
+>> + * Releases a reference on the GEM buffer object's handle. Possibly releases
+>> + * the GEM buffer object and associated dma-buf objects.
+>> + */
+>> +void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
+>>   {
+>>   	struct drm_device *dev = obj->dev;
+>>   	bool final = false;
+>> @@ -269,6 +304,7 @@ drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
+>>   	if (final)
+>>   		drm_gem_object_put(obj);
+>>   }
+>> +EXPORT_SYMBOL(drm_gem_object_handle_put_unlocked);
+>>   
+>>   /*
+>>    * Called at device or object close to release the file's
+>> @@ -390,8 +426,8 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
+>>   	int ret;
+>>   
+>>   	WARN_ON(!mutex_is_locked(&dev->object_name_lock));
+>> -	if (obj->handle_count++ == 0)
+>> -		drm_gem_object_get(obj);
+>> +
+>> +	drm_gem_object_handle_get(obj);
+>>   
+>>   	/*
+>>   	 * Get the user-visible handle using idr.  Preload and perform
+>> diff --git a/drivers/gpu/drm/drm_gem_framebuffer_helper.c b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+>> index 618ce725cd75..c60d0044d036 100644
+>> --- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+>> +++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+>> @@ -100,7 +100,7 @@ void drm_gem_fb_destroy(struct drm_framebuffer *fb)
+>>   	unsigned int i;
+>>   
+>>   	for (i = 0; i < fb->format->num_planes; i++)
+>> -		drm_gem_object_put(fb->obj[i]);
+>> +		drm_gem_object_handle_put_unlocked(fb->obj[i]);
+>>   
+>>   	drm_framebuffer_cleanup(fb);
+>>   	kfree(fb);
+>> @@ -183,8 +183,10 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
+>>   		if (!objs[i]) {
+>>   			drm_dbg_kms(dev, "Failed to lookup GEM object\n");
+>>   			ret = -ENOENT;
+>> -			goto err_gem_object_put;
+>> +			goto err_gem_object_handle_put_unlocked;
+>>   		}
+>> +		drm_gem_object_handle_get_unlocked(objs[i]);
+>> +		drm_gem_object_put(objs[i]);
+>>   
+>>   		min_size = (height - 1) * mode_cmd->pitches[i]
+>>   			 + drm_format_info_min_pitch(info, i, width)
+>> @@ -194,22 +196,22 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
+>>   			drm_dbg_kms(dev,
+>>   				    "GEM object size (%zu) smaller than minimum size (%u) for plane %d\n",
+>>   				    objs[i]->size, min_size, i);
+>> -			drm_gem_object_put(objs[i]);
+>> +			drm_gem_object_handle_put_unlocked(objs[i]);
+>>   			ret = -EINVAL;
+>> -			goto err_gem_object_put;
+>> +			goto err_gem_object_handle_put_unlocked;
+>>   		}
+>>   	}
+>>   
+>>   	ret = drm_gem_fb_init(dev, fb, mode_cmd, objs, i, funcs);
+>>   	if (ret)
+>> -		goto err_gem_object_put;
+>> +		goto err_gem_object_handle_put_unlocked;
+>>   
+>>   	return 0;
+>>   
+>> -err_gem_object_put:
+>> +err_gem_object_handle_put_unlocked:
+>>   	while (i > 0) {
+>>   		--i;
+>> -		drm_gem_object_put(objs[i]);
+>> +		drm_gem_object_handle_put_unlocked(objs[i]);
+>>   	}
+>>   	return ret;
+>>   }
+>> diff --git a/drivers/gpu/drm/drm_internal.h b/drivers/gpu/drm/drm_internal.h
+>> index 442eb31351dd..f7b414a813ae 100644
+>> --- a/drivers/gpu/drm/drm_internal.h
+>> +++ b/drivers/gpu/drm/drm_internal.h
+>> @@ -161,6 +161,8 @@ void drm_sysfs_lease_event(struct drm_device *dev);
+>>   
+>>   /* drm_gem.c */
+>>   int drm_gem_init(struct drm_device *dev);
+>> +void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj);
+>> +void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj);
+>>   int drm_gem_handle_create_tail(struct drm_file *file_priv,
+>>   			       struct drm_gem_object *obj,
+>>   			       u32 *handlep);
 
-Apparently[1] fixed by the first linked patch below, which is currently in
-the Thunderbolt tree waiting to be pulled into the USB tree.
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
-#regzbot monitor: https://lore.kernel.org/linux-usb/20250619213840.2388646-=
-1-superm1@kernel.org/
-#regzbot monitor: https://lore.kernel.org/linux-usb/20250626154009.GK282438=
-0@black.fi.intel.com/
-
-[1]: https://github.com/NixOS/nixpkgs/issues/420730#issuecomment-3018563631
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQRV/neXydHjZma5XLJbRZGEIw/wogUCaGJ1ywAKCRBbRZGEIw/w
-oiguAQCD0+DyZKWZ/DT6JDF6WXi8cVaX1sacdj2IQCj2Zfxu/wEAi2OPNEpEvxZx
-tgHo3hWI+2KnGFcpNcksmna1mhv82wE=
-=cA20
------END PGP SIGNATURE-----
---=-=-=--
 
