@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-158915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 342E7AED8A7
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:25:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9734CAED8AB
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DB887AACDD
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 09:24:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC1613ADB41
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 09:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B75323F27B;
-	Mon, 30 Jun 2025 09:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DD023BD02;
+	Mon, 30 Jun 2025 09:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bh6H2Zzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhaEChTB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDB421420F
-	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 09:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175E2238C0F
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 09:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751275541; cv=none; b=gFuPhQC3IxXvwV+IQd2+VtaA4C5+ufkkPjyieP82ERVXjShsvntvMvGJbYq2z9RcSD4WvCrEIGWdYLOVhuNrhDeMBjOa7hej1tFWd2MtjcRqcYcQBVFHh3elEFb8EA42EDJV9mFSb/uK0jdU5axBxP4v0NnlB0v3lmF3WA06r34=
+	t=1751275616; cv=none; b=FZ4BiH8+jFK2KJtVkXf2LH0eeuQppAswwVENpWYrk2pf1kvfcXC2uun9PG7EyqyoZ2mgPuAqgaV5ldonYuXwM+zmsUTwlEzPA0LW1+7oAR2QeNPmqneF8hcPDqFt2R0xye97VYMb50OXhgcoRTwN8kib8Sce+kwYVNY/23gAYEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751275541; c=relaxed/simple;
-	bh=+b3EUGhF/kIh6R8y4d5Ui9YFnSVnmojo9UPCK/N/yWE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tiTLws03CvSi33u5fF+ciXgghk440HcFkCvVEf4Wu3c7JhTxHuTNYJIO/vOKVXxnmcsJtem1KOjZB4NZKlyTcBCVFcpWEC4t5s49E38hW1zX+ddgddEDu4G5aoU7veKwC6L2oW23USnmfjq96ZAvfptwB9KGA+xtYtonYLnoBUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bh6H2Zzo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74DCC4CEE3;
-	Mon, 30 Jun 2025 09:25:40 +0000 (UTC)
+	s=arc-20240116; t=1751275616; c=relaxed/simple;
+	bh=23U66rCChJkG+sCgEVrl82MrHWHilSme2BPUC9jHoTo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=adMbQt4QjNoOj8azTvi6KNuMho44AfkLgQaVStBvGFjWQiOvPuFpMa8go6ZpB+47gmOvHz8L7CdrjY0SpCtMacNj+0eyTVGZ+wDKXpIqAMubAa6upbaYaoDrbn4/lA4I7UtfY++JKgYUsM06oMMz9WAnY7HI3npKaNS7l8MK36o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhaEChTB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB93C4CEE3;
+	Mon, 30 Jun 2025 09:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751275541;
-	bh=+b3EUGhF/kIh6R8y4d5Ui9YFnSVnmojo9UPCK/N/yWE=;
+	s=korg; t=1751275616;
+	bh=23U66rCChJkG+sCgEVrl82MrHWHilSme2BPUC9jHoTo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bh6H2Zzowk5mSEQe2wjt/wiwMzKTPAy7rBvonVeRS2A/y0WyN0i86qAuz5g41XDkV
-	 hUuE7Q+5E+N68qw+Omad4e/05PjaC08x9R0mIiq/inpPEcA43vP9Qqh76IJRhXeMJv
-	 T5qwH6ugqhhs1Ne7q2yaOe/dS60m3JbSeeW60SPw=
-Subject: FAILED: patch "[PATCH] drm/cirrus-qemu: Fix pitch programming" failed to apply to 5.10-stable tree
-To: tzimmermann@suse.de,airlied@redhat.com,ajax@redhat.com,kraxel@redhat.com,maarten.lankhorst@linux.intel.com,mripard@kernel.org,stable@vger.kernel.org
+	b=MhaEChTBmiRfV/AG0uzVsPoqMVMwfFy+FtWljzIVaXtoODvUjuUXv50BcKuDEwGfn
+	 kyF4Kxnex0NuFTPuEjKLnMDLc6EB9KuL5c7BrcYpJ0XNs8mQp/CANMikU+sOsQhXQD
+	 4sV9bc0sfrQf6Qmw5mr+G5M3eAykYfcJFfaLSwk8=
+Subject: FAILED: patch "[PATCH] drm/tegra: Fix a possible null pointer dereference" failed to apply to 5.4-stable tree
+To: chenqiuji666@gmail.com,treding@nvidia.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Jun 2025 11:25:24 +0200
-Message-ID: <2025063024-nibble-exit-e642@gregkh>
+Date: Mon, 30 Jun 2025 11:26:53 +0200
+Message-ID: <2025063053-vastness-consuming-8fce@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4bfb389a0136a13f0802eeb5e97a0e76d88f77ae
+git cherry-pick -x 780351a5f61416ed2ba1199cc57e4a076fca644d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025063024-nibble-exit-e642@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025063053-vastness-consuming-8fce@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,43 +77,36 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4bfb389a0136a13f0802eeb5e97a0e76d88f77ae Mon Sep 17 00:00:00 2001
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Date: Fri, 28 Mar 2025 10:17:05 +0100
-Subject: [PATCH] drm/cirrus-qemu: Fix pitch programming
+From 780351a5f61416ed2ba1199cc57e4a076fca644d Mon Sep 17 00:00:00 2001
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
+Date: Wed, 6 Nov 2024 17:59:06 +0800
+Subject: [PATCH] drm/tegra: Fix a possible null pointer dereference
 
-Do not set CR1B[6] when programming the pitch. The bit effects VGA
-text mode and is not interpreted by qemu. [1] It has no affect on
-the scanline pitch.
+In tegra_crtc_reset(), new memory is allocated with kzalloc(), but
+no check is performed. Before calling __drm_atomic_helper_crtc_reset,
+state should be checked to prevent possible null pointer dereference.
 
-The scanline bit that is set into CR1B[6] belongs into CR13[7], which
-the driver sets up correctly.
+Fixes: b7e0b04ae450 ("drm/tegra: Convert to using __drm_atomic_helper_crtc_reset() for reset.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20241106095906.15247-1-chenqiuji666@gmail.com
 
-This bug goes back to the driver's initial commit.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-Link: https://gitlab.com/qemu-project/qemu/-/blob/stable-9.2/hw/display/cirrus_vga.c?ref_type=heads#L1112 # 1
-Fixes: f9aa76a85248 ("drm/kms: driver for virtual cirrus under qemu")
-Cc: Adam Jackson <ajax@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: <stable@vger.kernel.org> # v3.5+
-Link: https://lore.kernel.org/r/20250328091821.195061-2-tzimmermann@suse.de
-
-diff --git a/drivers/gpu/drm/tiny/cirrus-qemu.c b/drivers/gpu/drm/tiny/cirrus-qemu.c
-index 52ec1e4ea9e5..a00d3b7ded6c 100644
---- a/drivers/gpu/drm/tiny/cirrus-qemu.c
-+++ b/drivers/gpu/drm/tiny/cirrus-qemu.c
-@@ -318,7 +318,6 @@ static void cirrus_pitch_set(struct cirrus_device *cirrus, unsigned int pitch)
- 	/* Enable extended blanking and pitch bits, and enable full memory */
- 	cr1b = 0x22;
- 	cr1b |= (pitch >> 7) & 0x10;
--	cr1b |= (pitch >> 6) & 0x40;
- 	wreg_crt(cirrus, 0x1b, cr1b);
+diff --git a/drivers/gpu/drm/tegra/dc.c b/drivers/gpu/drm/tegra/dc.c
+index 56f12dbcee3e..59d5c1ba145a 100644
+--- a/drivers/gpu/drm/tegra/dc.c
++++ b/drivers/gpu/drm/tegra/dc.c
+@@ -1393,7 +1393,10 @@ static void tegra_crtc_reset(struct drm_crtc *crtc)
+ 	if (crtc->state)
+ 		tegra_crtc_atomic_destroy_state(crtc, crtc->state);
  
- 	cirrus_set_start_address(cirrus, 0);
+-	__drm_atomic_helper_crtc_reset(crtc, &state->base);
++	if (state)
++		__drm_atomic_helper_crtc_reset(crtc, &state->base);
++	else
++		__drm_atomic_helper_crtc_reset(crtc, NULL);
+ }
+ 
+ static struct drm_crtc_state *
 
 
