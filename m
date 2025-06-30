@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-158949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FA7AEDD58
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 14:45:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95EE0AEDD59
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 14:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1F0E188F918
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 12:45:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8BDC3A7DCC
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 12:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122961DE891;
-	Mon, 30 Jun 2025 12:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449341DE891;
+	Mon, 30 Jun 2025 12:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqMljLUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUo8kngM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55231DFF7
-	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 12:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A471DFF7
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 12:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751287525; cv=none; b=cqWRli/bPekbUyah+THhg8YENYY1RVLoCvQlmGCquVl5WAKGzWih+pKevqt3o81LBBHgKKyrE5FLwP5e05e0q0cNKsmpP/c0kQTyqzHQKc8gkCUlRwGtAw9qsDSNqlPOVciKXqxllOHsuXfQCb18SUhCLq39HVdwZ/JEvN8e9YI=
+	t=1751287534; cv=none; b=UjWozYaSrKU91fOEQ7saqdBZqM1pTZUL1wvTYTx4FBocxMMHJQWkGHy1t2m6WAmSSsnfwlhEbOTlHJixSZtwOk0B9pnUKXYodNmBkiDjQ4OTZmhUMqvzgWucqXdo+QtWthhTzDXvEahhlqytjnlot2jiGgl3J4FYnKYRP0yiM5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751287525; c=relaxed/simple;
-	bh=sfOGEDaspY/3BRosUF12hBo8mlZWglS3md3VeNXVGc4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ahZDWY0tD/r/fKTMsPyeWzUV4x18rdXnl/+IwJnRcYKYmIAYfT3oqMBw+SR0wMoRCFSc1Nsm2BsQk3M6L1EVGqwcLfsrAt5XY8Q9dfM7T1K749XpfgTS35dRYIsn/BHiaXLsT3UjcADay/7sni9KxZltlLHm87MLpWMDWd+ECLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqMljLUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0BA8C4CEE3;
-	Mon, 30 Jun 2025 12:45:24 +0000 (UTC)
+	s=arc-20240116; t=1751287534; c=relaxed/simple;
+	bh=4TZtyk4ch6wcy0H7CCCLdgpQU+4kKH2ad+LUxW0v4bA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IhavV+LtarFL6Nz6NIGpwKdEftTgUX2bruNRqY8T2ImoPd44/EDW3qaZydFsUFPEPs7xUcMlH8Tdtg1P5WMLed/1t9YU6JtyhGsPMgVtcPbN3YuPhqt/6O6N7wCTuDQZYBRPZ7xWOEmTh6IpUe5w9v+qbanB7zFQffFNuX0kY9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUo8kngM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13287C4CEE3;
+	Mon, 30 Jun 2025 12:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751287525;
-	bh=sfOGEDaspY/3BRosUF12hBo8mlZWglS3md3VeNXVGc4=;
+	s=korg; t=1751287533;
+	bh=4TZtyk4ch6wcy0H7CCCLdgpQU+4kKH2ad+LUxW0v4bA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ZqMljLUoFRXbvxDdUJ8+WHkPKRvgfcy7iVa0zfV/G9FkbQm2MW/eZxfYb2MGtfd55
-	 nKU3Nn9SX4+T8viH/zmdyspn7K0y+1bM0B0oua/0djpnajRIHfTGEWqTZ1gJ2OaGvW
-	 fOnW6NHhe2yh7l5OtxjZtTshnTpaOeSJZzI9d/3U=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: Fix SDMA engine reset with logical instance ID" failed to apply to 6.15-stable tree
-To: jesse.zhang@amd.com,Jesse.Zhang@amd.com,alexander.deucher@amd.com,jonathan.kim@amd.com
+	b=NUo8kngMkb/BEGlFsu8QgIcWkQVCiMg0MZODU1YGbO48ExoYWLlkwcar0NSAcoIY0
+	 +fh/Kf2HbtXWApnxF9ZRkZq9h7XHkpGFMqwNvlP6NHJujtVKl5+EkjyegSuJjeR1K7
+	 Xf94oF2vDIDpCN/wgiiepIuhwmNqylEZH1lqeUNA=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Export full brightness range to userspace" failed to apply to 6.15-stable tree
+To: mario.limonciello@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,roman.li@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Jun 2025 14:45:22 +0200
-Message-ID: <2025063022-wham-parachute-8574@gregkh>
+Date: Mon, 30 Jun 2025 14:45:30 +0200
+Message-ID: <2025063030-pardon-shock-f4d7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 09b585592fa481384597c81388733aed4a04dd05
+git cherry-pick -x 16dc8bc27c2aa3c93905d3e885e27f1e3535f09a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025063022-wham-parachute-8574@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025063030-pardon-shock-f4d7@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,65 +77,131 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 09b585592fa481384597c81388733aed4a04dd05 Mon Sep 17 00:00:00 2001
-From: Jesse Zhang <jesse.zhang@amd.com>
-Date: Wed, 11 Jun 2025 15:02:09 +0800
-Subject: [PATCH] drm/amdgpu: Fix SDMA engine reset with logical instance ID
+From 16dc8bc27c2aa3c93905d3e885e27f1e3535f09a Mon Sep 17 00:00:00 2001
+From: Mario Limonciello <mario.limonciello@amd.com>
+Date: Thu, 29 May 2025 09:46:32 -0500
+Subject: [PATCH] drm/amd/display: Export full brightness range to userspace
 
-This commit makes the following improvements to SDMA engine reset handling:
+[WHY]
+Userspace currently is offered a range from 0-0xFF but the PWM is
+programmed from 0-0xFFFF.  This can be limiting to some software
+that wants to apply greater granularity.
 
-1. Clarifies in the function documentation that instance_id refers to a logical ID
-2. Adds conversion from logical to physical instance ID before performing reset
-   using GET_INST(SDMA0, instance_id) macro
-3. Improves error messaging to indicate when a logical instance reset fails
-4. Adds better code organization with blank lines for readability
+[HOW]
+Convert internally to firmware values only when mapping custom
+brightness curves because these are in 0-0xFF range. Advertise full
+PWM range to userspace.
 
-The change ensures proper SDMA engine reset by using the correct physical
-instance ID while maintaining the logical ID interface for callers.
-
-V2: Remove harvest_config check and convert directly to physical instance (Lijo)
-
-Suggested-by: Jonathan Kim <jonathan.kim@amd.com>
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5efa6217c239ed1ceec0f0414f9b6f6927387dfc)
+(cherry picked from commit 8dbd72cb790058ce52279af38a43c2b302fdd3e5)
 Cc: stable@vger.kernel.org
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
-index 6716ac281c49..9b54a1ece447 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
-@@ -540,8 +540,10 @@ static int amdgpu_sdma_soft_reset(struct amdgpu_device *adev, u32 instance_id)
- 	case IP_VERSION(4, 4, 2):
- 	case IP_VERSION(4, 4, 4):
- 	case IP_VERSION(4, 4, 5):
--		/* For SDMA 4.x, use the existing DPM interface for backward compatibility */
--		r = amdgpu_dpm_reset_sdma(adev, 1 << instance_id);
-+		/* For SDMA 4.x, use the existing DPM interface for backward compatibility,
-+		 * we need to convert the logical instance ID to physical instance ID before reset.
-+		 */
-+		r = amdgpu_dpm_reset_sdma(adev, 1 << GET_INST(SDMA0, instance_id));
- 		break;
- 	case IP_VERSION(5, 0, 0):
- 	case IP_VERSION(5, 0, 1):
-@@ -568,7 +570,7 @@ static int amdgpu_sdma_soft_reset(struct amdgpu_device *adev, u32 instance_id)
- /**
-  * amdgpu_sdma_reset_engine - Reset a specific SDMA engine
-  * @adev: Pointer to the AMDGPU device
-- * @instance_id: ID of the SDMA engine instance to reset
-+ * @instance_id: Logical ID of the SDMA engine instance to reset
-  *
-  * Returns: 0 on success, or a negative error code on failure.
-  */
-@@ -601,7 +603,7 @@ int amdgpu_sdma_reset_engine(struct amdgpu_device *adev, uint32_t instance_id)
- 	/* Perform the SDMA reset for the specified instance */
- 	ret = amdgpu_sdma_soft_reset(adev, instance_id);
- 	if (ret) {
--		dev_err(adev->dev, "Failed to reset SDMA instance %u\n", instance_id);
-+		dev_err(adev->dev, "Failed to reset SDMA logical instance %u\n", instance_id);
- 		goto exit;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 0b5d5ab14a69..bc4cd11bfc79 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4718,9 +4718,23 @@ static int get_brightness_range(const struct amdgpu_dm_backlight_caps *caps,
+ 	return 1;
+ }
  
+-static void convert_custom_brightness(const struct amdgpu_dm_backlight_caps *caps,
+-				      uint32_t *brightness)
++/* Rescale from [min..max] to [0..AMDGPU_MAX_BL_LEVEL] */
++static inline u32 scale_input_to_fw(int min, int max, u64 input)
+ {
++	return DIV_ROUND_CLOSEST_ULL(input * AMDGPU_MAX_BL_LEVEL, max - min);
++}
++
++/* Rescale from [0..AMDGPU_MAX_BL_LEVEL] to [min..max] */
++static inline u32 scale_fw_to_input(int min, int max, u64 input)
++{
++	return min + DIV_ROUND_CLOSEST_ULL(input * (max - min), AMDGPU_MAX_BL_LEVEL);
++}
++
++static void convert_custom_brightness(const struct amdgpu_dm_backlight_caps *caps,
++				      unsigned int min, unsigned int max,
++				      uint32_t *user_brightness)
++{
++	u32 brightness = scale_input_to_fw(min, max, *user_brightness);
+ 	u8 prev_signal = 0, prev_lum = 0;
+ 	int i = 0;
+ 
+@@ -4731,7 +4745,7 @@ static void convert_custom_brightness(const struct amdgpu_dm_backlight_caps *cap
+ 		return;
+ 
+ 	/* choose start to run less interpolation steps */
+-	if (caps->luminance_data[caps->data_points/2].input_signal > *brightness)
++	if (caps->luminance_data[caps->data_points/2].input_signal > brightness)
+ 		i = caps->data_points/2;
+ 	do {
+ 		u8 signal = caps->luminance_data[i].input_signal;
+@@ -4742,17 +4756,18 @@ static void convert_custom_brightness(const struct amdgpu_dm_backlight_caps *cap
+ 		 * brightness < signal: interpolate between previous and current luminance numerator
+ 		 * brightness > signal: find next data point
+ 		 */
+-		if (*brightness > signal) {
++		if (brightness > signal) {
+ 			prev_signal = signal;
+ 			prev_lum = lum;
+ 			i++;
+ 			continue;
+ 		}
+-		if (*brightness < signal)
++		if (brightness < signal)
+ 			lum = prev_lum + DIV_ROUND_CLOSEST((lum - prev_lum) *
+-							   (*brightness - prev_signal),
++							   (brightness - prev_signal),
+ 							   signal - prev_signal);
+-		*brightness = DIV_ROUND_CLOSEST(lum * *brightness, 101);
++		*user_brightness = scale_fw_to_input(min, max,
++						     DIV_ROUND_CLOSEST(lum * brightness, 101));
+ 		return;
+ 	} while (i < caps->data_points);
+ }
+@@ -4765,11 +4780,10 @@ static u32 convert_brightness_from_user(const struct amdgpu_dm_backlight_caps *c
+ 	if (!get_brightness_range(caps, &min, &max))
+ 		return brightness;
+ 
+-	convert_custom_brightness(caps, &brightness);
++	convert_custom_brightness(caps, min, max, &brightness);
+ 
+-	// Rescale 0..255 to min..max
+-	return min + DIV_ROUND_CLOSEST((max - min) * brightness,
+-				       AMDGPU_MAX_BL_LEVEL);
++	// Rescale 0..max to min..max
++	return min + DIV_ROUND_CLOSEST_ULL((u64)(max - min) * brightness, max);
+ }
+ 
+ static u32 convert_brightness_to_user(const struct amdgpu_dm_backlight_caps *caps,
+@@ -4782,8 +4796,8 @@ static u32 convert_brightness_to_user(const struct amdgpu_dm_backlight_caps *cap
+ 
+ 	if (brightness < min)
+ 		return 0;
+-	// Rescale min..max to 0..255
+-	return DIV_ROUND_CLOSEST(AMDGPU_MAX_BL_LEVEL * (brightness - min),
++	// Rescale min..max to 0..max
++	return DIV_ROUND_CLOSEST_ULL((u64)max * (brightness - min),
+ 				 max - min);
+ }
+ 
+@@ -4933,11 +4947,10 @@ amdgpu_dm_register_backlight_device(struct amdgpu_dm_connector *aconnector)
+ 		drm_dbg(drm, "Backlight caps: min: %d, max: %d, ac %d, dc %d\n", min, max,
+ 			caps->ac_level, caps->dc_level);
+ 	} else
+-		props.brightness = AMDGPU_MAX_BL_LEVEL;
++		props.brightness = props.max_brightness = AMDGPU_MAX_BL_LEVEL;
+ 
+ 	if (caps->data_points && !(amdgpu_dc_debug_mask & DC_DISABLE_CUSTOM_BRIGHTNESS_CURVE))
+ 		drm_info(drm, "Using custom brightness curve\n");
+-	props.max_brightness = AMDGPU_MAX_BL_LEVEL;
+ 	props.type = BACKLIGHT_RAW;
+ 
+ 	snprintf(bl_name, sizeof(bl_name), "amdgpu_bl%d",
 
 
