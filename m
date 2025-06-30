@@ -1,232 +1,154 @@
-Return-Path: <stable+bounces-158859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64916AED227
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 03:13:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B185AED2D1
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 05:13:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D8F53B49F5
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 01:13:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C213A1892463
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 03:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96F674059;
-	Mon, 30 Jun 2025 01:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33F516E863;
+	Mon, 30 Jun 2025 03:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EdNtSdiX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ozceJGQK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9E078F24;
-	Mon, 30 Jun 2025 01:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A5D3D6F;
+	Mon, 30 Jun 2025 03:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751246002; cv=none; b=AK/zjcvRgUvKpyW5llqUhW+3aIF1FzMrNnlcp6gggA5Zg56NOprjnLYguKSIH633RSlwzXIqI/wIpK838sdoVOKERjKxyQljI6Xs3E/afAuXKmvC5TJA9cLjIx2rz8mB00CxJbPvcNGGYiEUDxhO2T76s4wQz9RqZmDXSIBdR28=
+	t=1751253210; cv=none; b=nJ+5tqG/Cxl378IeGm2XG6GMbTYRwYnT3yt/vwVzSOxlMQzfYor1IisEDCjSzDyru3d0geo01bLp5jSbhFRGXUgZR1rNFbuk5l/iW64xzfgu069w1TmUFy32Vu7sEdrSa8WlswjJYpAhWOR4y1Oce1gmobe3tapnZ4YIZSMubiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751246002; c=relaxed/simple;
-	bh=vNHSQQAYVcc4uD1KveBlGS066NoRCj08nymU/rir7Kk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=drg3IidrcSv26FQWWz4YCywgvmhfagjMuV+jzcjx6VnUghl/X0X46GPFyjFfBT/i9OaJJ8HhQzVboS67LVWE6+TnmzqLoke6UBsrRhoJzdDMl54bW4MSsOn1bQYcOIWI6Mn7dl6rdEuZDR+39nfVWjcQbUbgocfah50jnnFcJO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EdNtSdiX; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a5123c1533so802544f8f.2;
-        Sun, 29 Jun 2025 18:13:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751245998; x=1751850798; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qvYmFatUul6C95sdqfwhbwawXh1OZ/t57imv68gIbAs=;
-        b=EdNtSdiXfZQ8GEAbEJIEJeG4abRRPqQojjVb2KABySzYBQqsmKrrRf/lET+7HSykKg
-         miIHsPbvYZ+yzfRb5iBBxwkqghQwu3K85G50Uw9Hc5h9HbUeAnNq3Y1SGmU/uFCl6VSK
-         ZNPOLBkTepk2GtmZ+bYCVJnI67mkBsR0KcXAxeUpNIk8KX5jXnJC0OZNr/N1LfTom+tr
-         6GLp/0k9PWCPtSxAlJxsdNW0glWkgrFqI3vJ4MO3WgCbZhb3kueWAymVDTV2ZolZOyQ3
-         Z7e0a3FQ0mkwj1WmbSwVXBx7rrO3OkP0lP4C63tdt0owO9AVfUQeV1MojTC5agz0LuPb
-         P/rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751245998; x=1751850798;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qvYmFatUul6C95sdqfwhbwawXh1OZ/t57imv68gIbAs=;
-        b=pDw/bliTjnOUNBCoe8lM0GnqnS33DLwn07kpZ5QNR1GwAIj/YY87XF3Gq8KNeV67kw
-         gZ0zVtZNfNfC1HhuEXMy1oYNce6K3h3SzLczfQSLfbpetYTEwXx7XJ05HL/HvoZYiHe+
-         90YUiLLD7rdxI2Jxhub1o4LLAwPcduB2NCckgSnyxy7Ow4AADlyvvPvfyYLCgQXgTiqk
-         0NIZevg9nwCiNQfaaTVnXmXKnLMXUz87cd6S1Ey+CusVbqELtwsCDLHfs9iYXIo9jw13
-         F0QToeLZGfVkCz/my5st8Snv0PtYDSMlLCfp9h4CXTeFlcWxsurh5kY3P9Iq4ZYLAMLp
-         JR3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUhdnwsGnoIcwAdqQErClG97hYtpVQZk5GORRboJJgHzE7SDSdcOD3MHGA6/V2Jcb+M+CTuoKc8@vger.kernel.org, AJvYcCX40xQ5MrTWTIPCzj+p7FfzRc0KT3N1ZVMsmv0zCRZlvjHI3WneHcvik3wKBPnGlLkKkrZ4jGOVnFvhIoc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjH6uF50obSjmQ9nMILanAnVSSj2JtZ1pj5qVT5SLEAni3f/mS
-	5NtgL0wOkDV/zXVCpEt2SFSVACpIWhGlIq0F5ZRws0ICJwUxsmE+mZV0
-X-Gm-Gg: ASbGncu7lncZAfc9bsWCi9Y61CG4QdKOW8qRtHIzKmcMLmyHBsdyG6YD04nNOvuYkV/
-	8H/kuyrpvljZLwpxaGGdee/CCD6+YksLcPGBdwXMV14ZIsq9aIHsTcEjftHvftvxHGPOlkGQwfS
-	LAF7P25BG+A7s9BlvSJKtiNtFxTH0BMggD0f7OxZ2jgnmR0yyv8EDGZCIt0iCFp0OY0QZIsfKD8
-	avEZI2cbIOYoQ7XqlawhuaARFL6oF8bO/7n3bY+5p9XUvh710Ohiv6B/5RkaGnGtxYxFbUwuH/n
-	mavkM1GlDGnCcs+kaV+UQMGCPyhXNYtXJWps60GQe/gT8ZVb
-X-Google-Smtp-Source: AGHT+IG9vFE1ILgi8HDEneBoTPP9xiU1dYIZXp7wDUVsQw07A+lHFULl/cv0/NgbZly8KJ0xCHEmug==
-X-Received: by 2002:a05:6000:42c7:b0:3a4:e5bc:9892 with SMTP id ffacd0b85a97d-3a8f50cc97cmr7907228f8f.21.1751245997833;
-        Sun, 29 Jun 2025 18:13:17 -0700 (PDT)
-Received: from EBJ9932692.tcent.cn ([2a09:0:1:2::302c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a88c7e74fbsm9123735f8f.10.2025.06.29.18.13.11
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 29 Jun 2025 18:13:17 -0700 (PDT)
-From: Lance Yang <ioworker0@gmail.com>
-X-Google-Original-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	21cnbao@gmail.com
-Cc: baolin.wang@linux.alibaba.com,
-	chrisl@kernel.org,
-	ioworker0@gmail.com,
-	kasong@tencent.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org,
-	lorenzo.stoakes@oracle.com,
-	ryan.roberts@arm.com,
-	v-songbaohua@oppo.com,
-	x86@kernel.org,
-	huang.ying.caritas@gmail.com,
-	zhengtangquan@oppo.com,
-	riel@surriel.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	harry.yoo@oracle.com,
-	mingzhe.yang@ly.com,
-	stable@vger.kernel.org,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v3 1/1] mm/rmap: fix potential out-of-bounds page table access during batched unmap
-Date: Mon, 30 Jun 2025 09:13:05 +0800
-Message-ID: <20250630011305.23754-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1751253210; c=relaxed/simple;
+	bh=3W6SKAqPjU0OF1wARKz8145crr8XIY1C3ru/WExeWoI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GCNFEfHTb9YpkatZoDhxk89bHz5fBr6R/NSuDsHOL1bM3mniNRvmSBEU39wkMlDT2NqfmiO1x6gLqAJx1Dp4HABgu0ftCmTrETNUpBFzu+1TuqIcHnzsXeDnxV25Z6YGv3xXGjjkj0CypMXP70RoNxIny3j/Vg4RaLrlNl61TZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ozceJGQK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDDAC4CEEB;
+	Mon, 30 Jun 2025 03:13:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751253209;
+	bh=3W6SKAqPjU0OF1wARKz8145crr8XIY1C3ru/WExeWoI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ozceJGQK3cusldE3bHGo9Ju05ldPUVlW0tuzNsKIxjkAIO6cW1ect2pMJZxppVSGt
+	 eG2MwKcOtqYmXenhT63KxMwUstj1Dcui+vCWxCoPHlakvbp22JsrLw+ELcIwMTt3cu
+	 MOUgcRI3UrRW0URKhq/J1A2Iji6eHhoRxMRSTtDnvX86H6UYSb1vwpZg44f7eX30N/
+	 hK4TdwdxiUPMwLa1vEggPdVHRdHixSowXjJ5ytaB6y+xvPJ+9eJnXYaNwLI2IitOO9
+	 Z1wllCdBwI2gz+UFm35Y1Mp8D1ORVUVtmGbvJf9c4YdwWPT/fv4z9fcTyt4kGAfZK1
+	 iXEbm2rwm1X6g==
+Date: Sun, 29 Jun 2025 23:13:27 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
+	akpm@linux-foundation.org, dada1@cosmosbay.com,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fs: Prevent file descriptor table allocations exceeding
+ INT_MAX
+Message-ID: <aGIA18cgkzv-05A2@lappy>
+References: <20250629074021.1038845-1-sashal@kernel.org>
+ <i3l4wxfnnnqfg76yg22zfjwzluog2buvc7rtpp67nnxtbslsb3@sggjxvhv7j2h>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <i3l4wxfnnnqfg76yg22zfjwzluog2buvc7rtpp67nnxtbslsb3@sggjxvhv7j2h>
 
-From: Lance Yang <lance.yang@linux.dev>
+On Sun, Jun 29, 2025 at 09:58:12PM +0200, Mateusz Guzik wrote:
+>On Sun, Jun 29, 2025 at 03:40:21AM -0400, Sasha Levin wrote:
+>> When sysctl_nr_open is set to a very high value (for example, 1073741816
+>> as set by systemd), processes attempting to use file descriptors near
+>> the limit can trigger massive memory allocation attempts that exceed
+>> INT_MAX, resulting in a WARNING in mm/slub.c:
+>>
+>>   WARNING: CPU: 0 PID: 44 at mm/slub.c:5027 __kvmalloc_node_noprof+0x21a/0x288
+>>
+>> This happens because kvmalloc_array() and kvmalloc() check if the
+>> requested size exceeds INT_MAX and emit a warning when the allocation is
+>> not flagged with __GFP_NOWARN.
+>>
+>> Specifically, when nr_open is set to 1073741816 (0x3ffffff8) and a
+>> process calls dup2(oldfd, 1073741880), the kernel attempts to allocate:
+>> - File descriptor array: 1073741880 * 8 bytes = 8,589,935,040 bytes
+>> - Multiple bitmaps: ~400MB
+>> - Total allocation size: > 8GB (exceeding INT_MAX = 2,147,483,647)
+>>
+>> Reproducer:
+>> 1. Set /proc/sys/fs/nr_open to 1073741816:
+>>    # echo 1073741816 > /proc/sys/fs/nr_open
+>>
+>> 2. Run a program that uses a high file descriptor:
+>>    #include <unistd.h>
+>>    #include <sys/resource.h>
+>>
+>>    int main() {
+>>        struct rlimit rlim = {1073741824, 1073741824};
+>>        setrlimit(RLIMIT_NOFILE, &rlim);
+>>        dup2(2, 1073741880);  // Triggers the warning
+>>        return 0;
+>>    }
+>>
+>> 3. Observe WARNING in dmesg at mm/slub.c:5027
+>>
+>> systemd commit a8b627a introduced automatic bumping of fs.nr_open to the
+>> maximum possible value. The rationale was that systems with memory
+>> control groups (memcg) no longer need separate file descriptor limits
+>> since memory is properly accounted. However, this change overlooked
+>> that:
+>>
+>> 1. The kernel's allocation functions still enforce INT_MAX as a maximum
+>>    size regardless of memcg accounting
+>> 2. Programs and tests that legitimately test file descriptor limits can
+>>    inadvertently trigger massive allocations
+>> 3. The resulting allocations (>8GB) are impractical and will always fail
+>>
+>
+>alloc_fdtable() seems like the wrong place to do it.
+>
+>If there is an explicit de facto limit, the machinery which alters
+>fs.nr_open should validate against it.
+>
+>I understand this might result in systemd setting a new value which
+>significantly lower than what it uses now which technically is a change
+>in behavior, but I don't think it's a big deal.
+>
+>I'm assuming the kernel can't just set the value to something very high
+>by default.
+>
+>But in that case perhaps it could expose the max settable value? Then
+>systemd would not have to guess.
 
-As pointed out by David[1], the batched unmap logic in try_to_unmap_one()
-may read past the end of a PTE table when a large folio's PTE mappings
-are not fully contained within a single page table.
+The patch is in alloc_fdtable() because it's addressing a memory
+allocator limitation, not a fundamental file descriptor limitation.
 
-While this scenario might be rare, an issue triggerable from userspace must
-be fixed regardless of its likelihood. This patch fixes the out-of-bounds
-access by refactoring the logic into a new helper, folio_unmap_pte_batch().
+The INT_MAX restriction comes from kvmalloc(), not from any inherent
+constraint on how many FDs a process can have. If we implemented sparse
+FD tables or if kvmalloc() later supports larger allocations, the same
+nr_open value could become usable without any changes to FD handling
+code.
 
-The new helper correctly calculates the safe batch size by capping the scan
-at both the VMA and PMD boundaries. To simplify the code, it also supports
-partial batching (i.e., any number of pages from 1 up to the calculated
-safe maximum), as there is no strong reason to special-case for fully
-mapped folios.
+Putting the check at the sysctl layer would codify a temporary
+implementation detail of the memory allocator as if it were a
+fundamental FD limit. By keeping it at the allocation point, the check
+reflects what it actually is - a current limitation of how large a
+contiguous allocation we can make.
 
-[1] https://lore.kernel.org/linux-mm/a694398c-9f03-4737-81b9-7e49c857fcbe@redhat.com
+This placement also means the limit naturally adjusts if the underlying
+implementation changes, rather than requiring coordinated updates
+between the sysctl validation and the allocator capabilities.
 
-Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
-Cc: <stable@vger.kernel.org>
-Acked-by: Barry Song <baohua@kernel.org>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Suggested-by: Barry Song <baohua@kernel.org>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
-v2 -> v3:
- - Tweak changelog (per Barry and David)
- - Pick AB from Barry - thanks!
- - https://lore.kernel.org/linux-mm/20250627062319.84936-1-lance.yang@linux.dev
+I don't have a strong opinion either way...
 
-v1 -> v2:
- - Update subject and changelog (per Barry)
- - https://lore.kernel.org/linux-mm/20250627025214.30887-1-lance.yang@linux.dev
-
- mm/rmap.c | 46 ++++++++++++++++++++++++++++------------------
- 1 file changed, 28 insertions(+), 18 deletions(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index fb63d9256f09..1320b88fab74 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1845,23 +1845,32 @@ void folio_remove_rmap_pud(struct folio *folio, struct page *page,
- #endif
- }
- 
--/* We support batch unmapping of PTEs for lazyfree large folios */
--static inline bool can_batch_unmap_folio_ptes(unsigned long addr,
--			struct folio *folio, pte_t *ptep)
-+static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
-+			struct page_vma_mapped_walk *pvmw,
-+			enum ttu_flags flags, pte_t pte)
- {
- 	const fpb_t fpb_flags = FPB_IGNORE_DIRTY | FPB_IGNORE_SOFT_DIRTY;
--	int max_nr = folio_nr_pages(folio);
--	pte_t pte = ptep_get(ptep);
-+	unsigned long end_addr, addr = pvmw->address;
-+	struct vm_area_struct *vma = pvmw->vma;
-+	unsigned int max_nr;
-+
-+	if (flags & TTU_HWPOISON)
-+		return 1;
-+	if (!folio_test_large(folio))
-+		return 1;
- 
-+	/* We may only batch within a single VMA and a single page table. */
-+	end_addr = pmd_addr_end(addr, vma->vm_end);
-+	max_nr = (end_addr - addr) >> PAGE_SHIFT;
-+
-+	/* We only support lazyfree batching for now ... */
- 	if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
--		return false;
-+		return 1;
- 	if (pte_unused(pte))
--		return false;
--	if (pte_pfn(pte) != folio_pfn(folio))
--		return false;
-+		return 1;
- 
--	return folio_pte_batch(folio, addr, ptep, pte, max_nr, fpb_flags, NULL,
--			       NULL, NULL) == max_nr;
-+	return folio_pte_batch(folio, addr, pvmw->pte, pte, max_nr, fpb_flags,
-+			       NULL, NULL, NULL);
- }
- 
- /*
-@@ -2024,9 +2033,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			if (pte_dirty(pteval))
- 				folio_mark_dirty(folio);
- 		} else if (likely(pte_present(pteval))) {
--			if (folio_test_large(folio) && !(flags & TTU_HWPOISON) &&
--			    can_batch_unmap_folio_ptes(address, folio, pvmw.pte))
--				nr_pages = folio_nr_pages(folio);
-+			nr_pages = folio_unmap_pte_batch(folio, &pvmw, flags, pteval);
- 			end_addr = address + nr_pages * PAGE_SIZE;
- 			flush_cache_range(vma, address, end_addr);
- 
-@@ -2206,13 +2213,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			hugetlb_remove_rmap(folio);
- 		} else {
- 			folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
--			folio_ref_sub(folio, nr_pages - 1);
- 		}
- 		if (vma->vm_flags & VM_LOCKED)
- 			mlock_drain_local();
--		folio_put(folio);
--		/* We have already batched the entire folio */
--		if (nr_pages > 1)
-+		folio_put_refs(folio, nr_pages);
-+
-+		/*
-+		 * If we are sure that we batched the entire folio and cleared
-+		 * all PTEs, we can just optimize and stop right here.
-+		 */
-+		if (nr_pages == folio_nr_pages(folio))
- 			goto walk_done;
- 		continue;
- walk_abort:
 -- 
-2.49.0
-
+Thanks,
+Sasha
 
