@@ -1,149 +1,136 @@
-Return-Path: <stable+bounces-158993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45464AEE750
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 21:12:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46640AEE75F
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 21:18:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 107563AFE29
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 19:11:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43CC9442527
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 19:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9A42E719D;
-	Mon, 30 Jun 2025 19:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2BC1D79A5;
+	Mon, 30 Jun 2025 19:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QysighSP"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="udu3GcZ8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549752E7192
-	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 19:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2181FF1B5
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 19:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751310471; cv=none; b=dkIvA6aoh0/jRFxuNYpCXQSuxnUNts6H41fFZ0+PyLmGwPwWe1TDmkCDL/lyGBjiIejAQHEpysy9+XjOvAmqZZeYmDFr3nW/OMNaRkkn3W+ejPPfqNKSsgQ+er3sChTy7kxbSmowZlKm5p3JsKV5GVTZykkiwJz8aHHzNC8nQGk=
+	t=1751311110; cv=none; b=TVbg1OPHrgX6mEuUFgq+Feu7VMx37uOoAZQMtfch0+g4RcKFPjCKQXKdmXt73+T/kv5ejJHDruCYLvPXelTk578W3YrA9aFL4+rle4t6rU/ceHQ3zDTN+u0mzv6ZBSeQo5/tW/9SEHrrtjzFwawWil/aYZbLgJFismvJ5jqIXWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751310471; c=relaxed/simple;
-	bh=fZfTk5Vh6fk3qEeQcDy4mPHUEYnCIWWCDffCZM4Mbko=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=C7ktOzo/t5kwSaCIPeXdRch0DrN0c9f7ia7XtTwI50NCDe/b7oo97QuRzY88BFVYmH6zRwMl/zm57IuEJapSxdy21DN0jYPKa76q+ZHc2NyupDparw9oZa/7hndzk9Z6siwv25rvTzAGnxSgawMHYcDSknAfmnlomCznV7c5Xf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QysighSP; arc=none smtp.client-ip=209.85.128.50
+	s=arc-20240116; t=1751311110; c=relaxed/simple;
+	bh=ktEryih8VY5+ifM0aJwk7uE1X1N1qfRnzVACndRwNvo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ga/cCdAXU/1UpPrsWMzSYf88ADBW4w5y+Xw6unoR742A+6HGg/T3DXL+NTtqc/c8Iq0N70QP1pPUoQFc+u22+rJK3suIkNM7kF6A3irblrdwQXmxA5VGFJqkjGomgCFr5cLb4MOgQV4q6YdBROmDpEXwbGKcRBwE2gUqdKIkZAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=udu3GcZ8; arc=none smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-453a1208973so11875e9.1
-        for <stable@vger.kernel.org>; Mon, 30 Jun 2025 12:07:49 -0700 (PDT)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6098ef283f0so2352a12.0
+        for <stable@vger.kernel.org>; Mon, 30 Jun 2025 12:18:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751310468; x=1751915268; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hXx0muI33yyrsJI+RM5hAO2k29pecRZJHRerqdYdA4w=;
-        b=QysighSPx++2K4p7lfNc5QclhM1Iu5k1LU9V+v9rsdOGkq91C99RcRwGSHE3MnNpY2
-         MgxlD6zRR6a4Ksd/sADGmiZjdZezbX6IgwACz4q3vCBM3E1SU8HK+h1OrNORBb/618sN
-         w475etu55qOEb/CBg2m45gyj48UWDaMNvq8zARmxYx+jD7pH9rbPEGg35freQTd3g5MN
-         4u5Bg5BN2k63WBnZbynJAXHgoTM0/+PrZWR423+0AF/Q9qyQyvjFp3oya71Oaj7alkGU
-         Y63ON8GVTKrMdhUvG1jmHe5Y/d1slUzOOiKp1VXoLDdOVnMOlnF90VoFKsdUJi0bAHHW
-         6afQ==
+        d=google.com; s=20230601; t=1751311107; x=1751915907; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/tNFLYcYmuq0LkQjKHt7ObSCKck4x3ZAcVp6YK+ku9A=;
+        b=udu3GcZ8Y4G/Atp62uHXi+vDmZ0tuhS+mQ+Sdn01zp60lHWLFXFubFA5qQD9lzMWKt
+         RLALCCDYtOGkU0ms6xl8UU593IODyI7UvpfLQX/bw+3NTVD3r7HrB0F0+ZA6Yq3bTB9D
+         hoViKK6VSqHNUVHR1SBtTnjCFuQWeAXsQ3geUNGU21DNbVke+pmV44Ip4U2V9uFgToXS
+         MuSXm5sxFErpVs6ZqqcHve7uPKif9IHpFOWKI7gEE4UIudI8r2TeKG8n4eol1sKM8CFh
+         Z3R2NGzrQ9fCJw5YguGz/TYuKDZZwie11SayZQCChHudbbxgyK3MMys2opw7SDzYV1oc
+         e9kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751310468; x=1751915268;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hXx0muI33yyrsJI+RM5hAO2k29pecRZJHRerqdYdA4w=;
-        b=lvV+1/PLshisvJeBT4kliatn065ukBWTxlL89jFv5KWa9QyZ1yfFnbLY4glaN4omzw
-         +VXE4hMex+3J5TpoSJ4lB/YlS0U/N8C0KBXXr00KC/fWLozbPa3H/YO7UTKViwHG8dzC
-         huTwEDG1rqSZP2BoK7aRLvBEeO4wfbg7DVj72UA0extG9XHL/0/7Rw0QacScKj/gJcy2
-         zqmA0ZzNcXu3pcw5KHIYK7hQTAcPEO2wHdmG4H2g0jCQpYnDtQmynamT4YzOShotoXQ+
-         CtAEmesx2B5geDzy1/6P3t2MVIZ4TF7MxmlUOWyaJ16R68pk3362ziUQxAUdbjYByXwf
-         EYZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVLIeN0X+Ek8TRw0LG57J713WZEmAJJyXual10CtQyqlpPb78v0LfRjztp4uWQuKhe9rXSA4ZY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAVdJtxmL53KcKyISlDpvapwf4+GX8WGk9jH1DliA13dYhhxoz
-	sltz85/Ni9FsVDy6KtRneD7IAG5FzmKD6xUfNq2jObK34jPdMTVOHdvWYEmxfgqsDQ==
-X-Gm-Gg: ASbGncssdLwjEHGLNdisPpPEzD2xPG8eCBcLYT1A9miyHcw7UyAtg+iLm3cQMMUgXc3
-	TcCZyk+e5ZYTPTyuEG20KCKDJfTbIkiLt3byH6D7mrkmUs/2eMFs0FQNqR0vaJ/ltBRsK57SnYf
-	wICCUwETHn7UAO1yjwUIpwe9NOuFnifkZZ0aInZMoLbCEPbAwDVo3kb0mRqkQBO47zaBF0cYP4D
-	ueygpZaNzgXNE8nuDySDfbZa4uwZFOhNJP0m32TaRy959Sdv/clM8gqQSExVLx0l9nbmcrneTIV
-	OAKzz3sSXUapSX+RxMqlmGWPOIb7TS45iQMy/RyO4i/qzhEeHg==
-X-Google-Smtp-Source: AGHT+IEOtpexKrK9C200H5QylvI7By2axtMWEC2awkl7w6Yep+kOnYzpwv7SNg5/2NVyrrB7n8uhfA==
-X-Received: by 2002:a05:600c:8b54:b0:453:7d31:2f8c with SMTP id 5b1f17b1804b1-453a82f541dmr100835e9.3.1751310467398;
-        Mon, 30 Jun 2025 12:07:47 -0700 (PDT)
-Received: from localhost ([2a00:79e0:9d:4:efbc:81c2:63ca:f4bd])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-453a85b3211sm171495e9.1.2025.06.30.12.07.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Jun 2025 12:07:46 -0700 (PDT)
-From: Jann Horn <jannh@google.com>
-Date: Mon, 30 Jun 2025 21:07:34 +0200
-Subject: [PATCH] x86/mm: Disable hugetlb page table sharing on non-PAE
- 32-bit
+        d=1e100.net; s=20230601; t=1751311107; x=1751915907;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/tNFLYcYmuq0LkQjKHt7ObSCKck4x3ZAcVp6YK+ku9A=;
+        b=I6Fdri+qdzW2G/jVHgY684Rx0NmZ5IyWiKBoTJGfIb26WJF/tASetuqHN6+CD2p3vC
+         yjOs558v+PwLXkHZ62Tk8sST0WX8+eBsaZqIvYKCWDfgxeWIHYq07UKHJw2WjfW8tPZT
+         0g16YCvJoxllkssRh4OvvWgbW+kBW/gpu8ZCfL/1wLE/OsRJg18fMW0hxfs3t5KPhZwa
+         yIhX5nkOwRJl8Era4fwPsjflYmOG52JC3slaNBvHaeuxAibhJUjT1wb5LXzE59N9WeUD
+         UwpsBHw1H8penR1Hw9DwJqG9Ypd5HZxo83zyd0gbzyq3afKjhwvdVf68aAr6y6Zob3DW
+         kCFw==
+X-Forwarded-Encrypted: i=1; AJvYcCUS63a1scdzg2ZPR6SYILpQQ8MIr2UJuxnvjRcTP6CyriPFEf30k1Oq+kGp/48f2Y5oZ+BoFxI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3rc8i7T8QhNJv+vIbN3ROV00YI4WBsNIiHyffn+IEWqcX3iV+
+	mjQadc0I0AIv4res5B7j2o5DBOBEMvdeL+DGLy1HIjn0toSGkmpdmwO7Qvtk25JK8strN10HAY2
+	2eS8OgZzkjeGhdMWTUqROttN5Ek40dYTzjKtsQVNF
+X-Gm-Gg: ASbGncvRDN92BU1+FObYSjElsHCJsaH4/6k62aH9nCve0hO/od4Xr6HltnnsfZbts5C
+	B9FYTMiaA85ImbItVrYdLGrLYn3Or8KaT5OGOlcpRJ+DAHBUYhk8Uwdtb7Dist4VaOAjbO3S7Eg
+	SCOXEc2VtYSnLElCLMHANyy4l5555emQZf++SCZg1kPjpQilac28Ai9MD3O4BkqlBEJnxBHiwVr
+	pOAc1oZTo8=
+X-Google-Smtp-Source: AGHT+IEAj1zqpjuM7UlhxZycs5/VVtcZm5W51dZaMAG/kHQVzfNT6TD6MZvE5QVt44ZCJeBAgTSC9ZxL2NFCAmkQPqY=
+X-Received: by 2002:a50:ccc7:0:b0:60c:9b28:350 with SMTP id
+ 4fb4d7f45d1cf-60e3344d499mr11050a12.6.1751311106379; Mon, 30 Jun 2025
+ 12:18:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250630-x86-2level-hugetlb-v1-1-077cd53d8255@google.com>
-X-B4-Tracking: v=1; b=H4sIAHXgYmgC/x3MQQqAIBBG4avErBsww4iuEi2yfm1AKrQiiO6et
- PwW7z2UEAWJuuKhiEuSbGtGVRY0LePqwTJnk1baqKZWfLcN64ALgZfT4wiWbTW3DlYbM4FyuEc
- 4uf9pP7zvB5jCzAFkAAAA
-X-Change-ID: 20250630-x86-2level-hugetlb-b1d8feb255ce
-To: Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- Vitaly Chikunov <vt@altlinux.org>, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, stable@vger.kernel.org, Jann Horn <jannh@google.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751310463; l=1751;
- i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=fZfTk5Vh6fk3qEeQcDy4mPHUEYnCIWWCDffCZM4Mbko=;
- b=kvQS4ouJ3b19TCoh5GA7p1y72qr1wSvm2vBPrDtuH/ptozufVWlQnwIJEVJgZVGCD4avNN+Ph
- sdoHh9GDeRFB/3o80OYgEquVoPd1SnKDwWdYKGd/UzJKzG59yxQgeHs
-X-Developer-Key: i=jannh@google.com; a=ed25519;
- pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
+References: <2025062041-uplifted-cahoots-6c42@gregkh> <20250620213334.158850-1-jannh@google.com>
+ <20250620213334.158850-2-jannh@google.com> <srhpjxlqfna67blvma5frmy3aa@altlinux.org>
+ <CAG48ez26QWvqPoL-B0p934P9U6hDyGTUDjE6srGdUhBeCR2Z=w@mail.gmail.com>
+In-Reply-To: <CAG48ez26QWvqPoL-B0p934P9U6hDyGTUDjE6srGdUhBeCR2Z=w@mail.gmail.com>
+From: Jann Horn <jannh@google.com>
+Date: Mon, 30 Jun 2025 21:17:49 +0200
+X-Gm-Features: Ac12FXx22E442tjOx_8u750cqqoSYvckeUpo0UbyTVndVgyGXOg51PKWaTgpf5s
+Message-ID: <CAG48ez35o7RsinJxLv=fuce2=B2wguSpHMXB8DGN3tbMr1X82w@mail.gmail.com>
+Subject: Re: [PATCH 6.1.y 2/3] mm: hugetlb: independent PMD page table shared count
+To: Vitaly Chikunov <vt@altlinux.org>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, gregkh@linuxfoundation.org
+Cc: Sasha Levin <sashal@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org, 
+	Jane Chu <jane.chu@oracle.com>, Nanyong Sun <sunnanyong@huawei.com>, 
+	Kefeng Wang <wangkefeng.wang@huawei.com>, Liu Shixin <liushixin2@huawei.com>, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Only select ARCH_WANT_HUGE_PMD_SHARE if hugetlb page table sharing is
-actually possible; page table sharing requires at least three levels,
-because it involves shared references to PMD tables.
+On Mon, Jun 30, 2025 at 7:12=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
+> tl;dr: 32-bit x86 without PAE opts into hugetlb page table sharing
+> despite only having 2-level paging, which means the "sharable" page
+> tables are PGDs, and then stuff breaks
+>
+> On Sun, Jun 29, 2025 at 3:00=E2=80=AFPM Vitaly Chikunov <vt@altlinux.org>=
+ wrote:
+> > LTP tests failure with the following commit described below:
+>
+> Uuugh... thanks for letting me know.
+>
+> > On Fri, Jun 20, 2025 at 11:33:32PM +0200, Jann Horn wrote:
+> > > From: Liu Shixin <liushixin2@huawei.com>
+> > >
+> > > [ Upstream commit 59d9094df3d79443937add8700b2ef1a866b1081 ]
+> > >
+> > > The folio refcount may be increased unexpectly through try_get_folio(=
+) by
+> > > caller such as split_huge_pages.  In huge_pmd_unshare(), we use refco=
+unt
+> > > to check whether a pmd page table is shared.  The check is incorrect =
+if
+> > > the refcount is increased by the above caller, and this can cause the=
+ page
+> > > table leaked:
+> [...]
+> > The commit causes LTP test memfd_create03 to fail on i586 architecture
+> > on v6.1.142 stable release, the test was passing on v6.1.141. Found the
+> > commit with git bisect.
+>
+> Ah, yes, I can reproduce this; specifically it reproduces on a 32-bit
+> X86 builds without X86_PAE. If I enable X86_PAE, the tests pass.
+[...]
+> I guess I'll send a patch later to disable page table sharing in
+> non-PAE 32-bit x86... or maybe we should disable it entirely for
+> 32-bit x86...
 
-Having ARCH_WANT_HUGE_PMD_SHARE enabled on non-PAE 32-bit X86 (which
-has 2-level paging) became particularly problematic after commit
-59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count"),
-since that changes `struct ptdesc` such that the `pt_mm` (for PGDs) and
-the `pt_share_count` (for PMDs) share the same union storage - and with
-2-level paging, PMDs are PGDs.
-
-(For comparison, arm64 also gates ARCH_WANT_HUGE_PMD_SHARE on the
-configuration of page tables such that it is never enabled with 2-level
-paging.)
-
-Reported-by: Vitaly Chikunov <vt@altlinux.org>
-Closes: https://lore.kernel.org/r/srhpjxlqfna67blvma5frmy3aa@altlinux.org
-Fixes: cfe28c5d63d8 ("x86: mm: Remove x86 version of huge_pmd_share.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
----
- arch/x86/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 71019b3b54ea..917f523b994b 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -147,7 +147,7 @@ config X86
- 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
- 	select ARCH_WANTS_NO_INSTR
- 	select ARCH_WANT_GENERAL_HUGETLB
--	select ARCH_WANT_HUGE_PMD_SHARE
-+	select ARCH_WANT_HUGE_PMD_SHARE		if PGTABLE_LEVELS > 2
- 	select ARCH_WANT_LD_ORPHAN_WARN
- 	select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP	if X86_64
- 	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP	if X86_64
-
----
-base-commit: d0b3b7b22dfa1f4b515fd3a295b3fd958f9e81af
-change-id: 20250630-x86-2level-hugetlb-b1d8feb255ce
-
--- 
-Jann Horn <jannh@google.com>
-
+This follow-up patch should address that:
+<https://lore.kernel.org/r/20250630-x86-2level-hugetlb-v1-1-077cd53d8255@go=
+ogle.com>
 
