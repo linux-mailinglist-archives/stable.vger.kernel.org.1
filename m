@@ -1,71 +1,70 @@
-Return-Path: <stable+bounces-158941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8292EAEDD0B
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 14:37:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E20AEDD29
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 14:40:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8DEA17785E
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 12:37:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EEE47AAF7D
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 12:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3609628A3EF;
-	Mon, 30 Jun 2025 12:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD01728C2A2;
+	Mon, 30 Jun 2025 12:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="Ow+qjnB/"
+	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="nN6LXT5e"
 X-Original-To: stable@vger.kernel.org
-Received: from PNZPR01CU001.outbound.protection.outlook.com (mail-centralindiaazolkn19011024.outbound.protection.outlook.com [52.103.68.24])
+Received: from MA0PR01CU012.outbound.protection.outlook.com (mail-southindiaazolkn19011036.outbound.protection.outlook.com [52.103.67.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD73289E05;
-	Mon, 30 Jun 2025 12:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.68.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A03128BA90;
+	Mon, 30 Jun 2025 12:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.67.36
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751287044; cv=fail; b=UeGRShfCnegXfcWbB2Hgmdguh4i27+wEFCHKFcIKgmM46gMG5MG6yMN9UEgq0GtM6EoXHZdTDyM9U364nT5JSS3Hcv4bPDOpPMofSG1RPyvbo7YK1AYlQB4S9STxETHcqVUhTykKUuLMkkIRn11d0L48uxPIHYOwZCRDzThHcwM=
+	t=1751287052; cv=fail; b=tGk8sulprAw0DbyXiy9qNbqaf9mSk12yzi6GyBM7E5WAJ+RHd5He5DU4z6Qmg4K4nFbq4bWMn/tYnsTO6WQisiOii2yyWk7OIJupe+iZe6lkaIRqsd1C5MRsk/ApxRRiDo5tjpxRqo2xo+ojN21aI1yBrAZ9Ks7rRB1jt+FfOp0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751287044; c=relaxed/simple;
-	bh=Bd5flgCQW8tE3ZQrY40hgeX/OMHhFdM3/Y06c/0U/UY=;
+	s=arc-20240116; t=1751287052; c=relaxed/simple;
+	bh=wDoits4n0Q3g1p/WWps4rhcduJJ4hS9C7pROUlZ+Tik=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=O8lQst4V8Z0PwouyjHl1HeRZqPHy/q2RE7PFfaky9pazTiKgOuwgi6mdc5Z2dcjB9QJ4j9aKBho0nx5aZI+5E3X0fYDGJ79XlEEc6WLhkf2kPMcc3jl3RFomTLC91RYIPWdf2/FT1LLWL+TFHa7yHAGz+SUC8uRTOPpJx9HMbbk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=Ow+qjnB/; arc=fail smtp.client-ip=52.103.68.24
+	 Content-Type:MIME-Version; b=r6sQ4z/Lb2wUXBzL+dZmiOzOfm2YW/t2epTZa5vmkdE3BzO6jerrUbCDWsBF3L1EGRcmYDTLfABRaNy1wcLSZI8LxP74bPG+cO8tnS0UHWiIAsDpC7zBxDZBCgyxPywN/vxvV3qvbbI+l80v2jR3fY2BeD/ZudKwU535KfsIuV8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=nN6LXT5e; arc=fail smtp.client-ip=52.103.67.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CjlNICdY0oFA6wIEMR5OdtH7swkD1NZvmn5RTb1C3NxwZhW+wWYHDg396pCXpUqbBRXB0qId6UsRR0mFq5aXj9YKmraIdJhY5TwayPFq+SnxUucghm+DvM/eaP7aKK9cmu+RlyANCw8Xw/8/zbPW8ln9ziwPTTLd0FrxH3ZxXvKM6+n0/+Ke8Gm2cS9E+0q0ej3UujdA3Vb16tOSH38E+275diGv4qWLnjERR11sjLbqO1gph7932rJGQ9Ml1vpfWzVwt/gTM0YHPvkrZbqUT2HHYTaMoZz02xT2Hs0txMig26uFdy6bejeRgg8RtwiuPQPVTsESv6QGnT3pT/bTCw==
+ b=Yel+9ToDkIHOw0P4usk1tFbhatQSRpPA5ZEaxOHUTHg/EMHcISGMomWcRPfjvcJ1zp2EztlmuSk00Y4Unt7qsT0exoUO6fdKcnkNgOluiV0tJterczEMqG0Z0v1gNim6d4PUKXe5JpPFLplCBFlBt52D7KmcbEFM1tqODZOxY0U1SyOjqP7RamzuLYlp9tMlXMU2IJyEmdv3kqVJrH0uv/ZAh4IuIglbzObZVkCVfMvdN2/Oy9zzFHbDqjoz86nK6qiEAIGx/TSGICb4VrLjF4/2V3Y3D8dLlvTTIQh/35FAbyKA7AIhiV+pquQE7n06OOsf9ksPA6emv36rvKuSvg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CQNC/cOSpIZVgzNgwji4426d0Js4jdAtVFgK1J8dj8g=;
- b=bql7wY0OBg125ZymKjTz1krHoVaOtiaLKjqE+T5A7s0UCrvxy1Az0FSyh75F/6hzD6B/awhpv/V2lY6xYF7xAd8MxBVOGJsSLDG3CkLVUuXnO1oVQv+b7OMrMBJoOOFH/NWQ2kuCpQ1Y34YO0yumnO1AdDWWO+5Ia2CEzSvkMMVp3Fd2HliuB4/KTJtVduhMXon/RQQD3Je8/YLYs1nJAd8xhv1xa3NX/eIk/GzB5xgU88g4aaXfhBTWVl2uiBH9D84MIA3TLFQJ1Rbw4sx3WolR+n9G5illmIZRbLQpH6IgSFE1662SwX/2L3nZilXqaoKC99fSpXDINoC5I/DZXQ==
+ bh=nl/VbXF6dM4FyGF/wf1EP6kIomY7JYnz1BwqQaLqsOQ=;
+ b=dZrl2ITMhHqirlOi+I58hxP1nv7P30dZLVDIGYNwEudbl8BQFM/bZoxdS+7eod0H7zUb138s1PWEu6kEt0eG5BMYr6WZoZj4XvZSLNIO7v0DjmVIqXyn48yatTlt1V2KZOslao6UUehvIa75EzW2AdCXgohngkP0WEsiTdCaPvgVT7hhoyqaidwic/1wxxAsoXr2MPEHTybRWit4FDymDJcWuJRrUsiQVnQvTjPyU3pgnpybgKChYLxkNiCU3nODykLW5hXtvbF2OGe6vQu7JNQieTcSmY8FufIySXlTFkBeVr2qpgIKmcUgxg5C+NODVZC+BqPvbCsasezHst+o+g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CQNC/cOSpIZVgzNgwji4426d0Js4jdAtVFgK1J8dj8g=;
- b=Ow+qjnB/gNN8MM+UcJuqchLrzBX4/zIznmsyxWHSrQzqIdpY/J7nHYvIZaUOne3bEDsUokjdKI1XhAabixEgrXH7gutaPd7xHEPG6mLv57kW+7d/Sqsz6f7AHMV84bmqjsQYPn5kq4s/eJtNzTkE2lYjQWc3N1p1n3X6RtZen0K7pnJUUFnUkuZ/AH44N/p3OpexT/e73QfUQOQ4WxABfqtzkO51c6brosGzntCHmWybwQ5A7gmOQlkjM8YKjJT4aSTbW3p/oEkdqecPJfWeYwIYiD3SsilPNGHqLYYosm2hnzvg7Q8FBfPOKsJdFB9DfQ/qIbuip8wVHIfAGVHNmw==
+ bh=nl/VbXF6dM4FyGF/wf1EP6kIomY7JYnz1BwqQaLqsOQ=;
+ b=nN6LXT5eJic5vaHnTzcDgELHL5TEwVoBioPrYcpJJfjkpvoNbHEII0UWTiv/VTh3150pmGsNSnNYHKUx/X+7Qu0CyNQ2ecCeYLaw2UpPF98vq4Ko6zvimxIF3AcP0XaVzX/qjPqdncH24nzc3ILG+o1m47YtrUI6HHhfHUupd82S9II25jIHU/YYFsNjzl/ohPJXyhJOmWWr9RCyorrdkXNcmUKzXufUtW8gVKW53WS21Z+t5HSNw9pmBb+hdwktjVZ50D3dkhjKJXt8O1fO/PoGzas9AEuF37nPejzcfoc7ympmdRmoTePnaMRhknqhkRN76XeocTYiFdIdlDFPLw==
 Received: from PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:f7::14)
  by PN0PR01MB6210.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:6b::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.30; Mon, 30 Jun
- 2025 12:37:14 +0000
+ 2025 12:37:15 +0000
 Received: from PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
  ([fe80::324:c085:10c8:4e77]) by PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
  ([fe80::324:c085:10c8:4e77%3]) with mapi id 15.20.8880.029; Mon, 30 Jun 2025
- 12:37:14 +0000
+ 12:37:15 +0000
 From: Aditya Garg <gargaditya08@live.com>
 To: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>
 CC: "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"stable@vger.kernel.org" <stable@vger.kernel.org>,
 	=?iso-8859-1?Q?Jos=E9_Exp=F3sito?= <jose.exposito89@gmail.com>
-Subject: [PATCH v2 2/4] HID: magicmouse: avoid setting up battery timer when
- not needed
-Thread-Topic: [PATCH v2 2/4] HID: magicmouse: avoid setting up battery timer
- when not needed
-Thread-Index: AQHb6bu0+MDa7xrg90+z0DbzfExmmQ==
-Date: Mon, 30 Jun 2025 12:37:13 +0000
-Message-ID: <20250630123649.80395-3-gargaditya08@live.com>
+Subject: [PATCH v2 3/4] HID: apple: use secs_to_jiffies() for battery timeout
+Thread-Topic: [PATCH v2 3/4] HID: apple: use secs_to_jiffies() for battery
+ timeout
+Thread-Index: AQHb6bu1FU1FYuV0ZUSv2pnM88peTA==
+Date: Mon, 30 Jun 2025 12:37:14 +0000
+Message-ID: <20250630123649.80395-4-gargaditya08@live.com>
 References: <20250630123649.80395-1-gargaditya08@live.com>
 In-Reply-To: <20250630123649.80395-1-gargaditya08@live.com>
 Accept-Language: en-IN, en-US
@@ -74,56 +73,56 @@ X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: PN3PR01MB9597:EE_|PN0PR01MB6210:EE_
-x-ms-office365-filtering-correlation-id: ef150f74-0d50-46d8-66ee-08ddb7d2d784
+x-ms-office365-filtering-correlation-id: 63c9cce5-6f6a-436e-e608-08ddb7d2d7e7
 x-microsoft-antispam:
- BCL:0;ARA:14566002|19110799006|15080799009|41001999006|8062599006|7092599006|8060799009|461199028|38102599003|52005399003|40105399003|440099028|3412199025|102099032;
+ BCL:0;ARA:14566002|19110799006|15080799009|8062599006|7092599006|8060799009|461199028|38102599003|52005399003|40105399003|440099028|3412199025|102099032;
 x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?YFBpi8u9pryQ/06EYpSaiDU+6K++ZhHI4lu5ZLWIwaka9weu9SsK5vEwdw?=
- =?iso-8859-1?Q?ltc0Bk59H2D++SsplaDXqn5qeMh2WiRslrnyrWjleudgN6Xi7zjpNI5aY8?=
- =?iso-8859-1?Q?y5Hgo6YNBPPLv8opdw3lOyLORyHULmYJsC5ftNKWaXWC2i/1OoAyQVCn2Q?=
- =?iso-8859-1?Q?k8fXM4x813v8OPurTRxtpCqpbDDfhs6d9brR4Ef9cNsR6Dz5/DabpLUnYX?=
- =?iso-8859-1?Q?3qPZWVK821WmJpqV6wObj7KHpn05tCM8N6u5W3vk2ckMbwskoyGmEYmP9V?=
- =?iso-8859-1?Q?b/p13VFpwYQ2KzHQjpyVcNakq28Q96bQElIvRGbz3MpqNEix9Su3FOr3Qq?=
- =?iso-8859-1?Q?8IvKkS4U8YGGheAZ+Lxn5OKCgXFRG1MoVSdrcEm5fryD64W1Q9KXoUqUPi?=
- =?iso-8859-1?Q?Liw6v6wSEzO6cn7veWYORZiJedoXJQU4wgFhLELKQSsOMJgcAGA7zC9FUr?=
- =?iso-8859-1?Q?fF9jRgdY163xlKxJoB0osdPM9fVkl7wL6VJYBi9ppuejbobB0tvcX26rVR?=
- =?iso-8859-1?Q?4gXUDe3Q20EpM8+vAxCq9Dvlj800p6GuDxW1/lahIMTSAeyBqVh6zkvzBX?=
- =?iso-8859-1?Q?F43j0bqe4DBSHc2TyWc3tqQC1NpBWnHBEjLZ0GSkjUfcrKfQLt99n2hBuR?=
- =?iso-8859-1?Q?a/rcFRY0RKoGJZGkZdJjnVxemOvA9ErmqVPWVYj+ubxjJoTiDLZPuU50Le?=
- =?iso-8859-1?Q?eC2QN9tlXDZwUYiH1gjg9MRqTs51zhNipHJy6KGJnfBKW5KdsSq9Mokihp?=
- =?iso-8859-1?Q?N0lq6qj/80vw4zi/HnTQhyfUemS9dlJ/1qJuAKO+VOSTehvHAaDbgDhQI9?=
- =?iso-8859-1?Q?YShE1WSZ8U0GbwUjFWdf6f4G0vVXCk4e0hBTFkEFxpccWrriI5nCF2dQ68?=
- =?iso-8859-1?Q?euV3Q3DSgX+oqn431PbHPwJT+JwZLI62i/IyvOS6j7Paz0OJ2T9fQdSkiY?=
- =?iso-8859-1?Q?l60wNyc8pupU2F621PZFuRXW/o+NofF9q11BVcfipdCRng1eYj4W3ZDeZQ?=
- =?iso-8859-1?Q?gfP9EZ5dLcmn9DbNP6Bv37bNNa1ZkbAhj/bi9zQ0hkCkwFkqnze9ckJBB+?=
- =?iso-8859-1?Q?zHUAPI4qgCThfOJWtXGCUt+7cZZOVK8tVL/8onbRT3Z5gztZWDGtOnbOpx?=
- =?iso-8859-1?Q?xg1peFGkUOhaP826KApqCmK5WXF92upf562igIRSTBmsvrtLlHctnb8Esa?=
- =?iso-8859-1?Q?nocqBOO4dp8Ltes9PS8df+Gu6UnK/z+G/ThUfzobq9+GmXHMK0tfZGhlWT?=
- =?iso-8859-1?Q?Gn73iIDf8GwQbnXqacSKMhxxZLcsZmKgToJeUvwAc=3D?=
+ =?iso-8859-1?Q?4j3QDYGSnQQ5szqywT2MIan9/vOBbWm9X2UsDP37sFL0ILNdz0iSqEk7J7?=
+ =?iso-8859-1?Q?5LMoL1mV2RayF+Sc9SzAzkp+JqvPzFHbmtDhhv+/dlSGaHEG95mT9vrK64?=
+ =?iso-8859-1?Q?jLS0s98ZLkgHRrSf3sftEPL039KjUo1S6C4VKIib5LUASPc3fm1J0pmZDe?=
+ =?iso-8859-1?Q?lGcq+DOiFyNd/P+a2nD9D2Iu66m35fy0IRmQYJfy20ImcQk0Fem5RFQMco?=
+ =?iso-8859-1?Q?zZEqcQkyEQ0G2LEUxk6922w5Squ2raDX6AYmNiFXIzATTgQgtHwUTfh6GU?=
+ =?iso-8859-1?Q?hJVEJ2U5FyuhlwjvszVtCNLvxY+V0ZbBaAaRvsQ7Y6l0cGKE2E12nDnG0K?=
+ =?iso-8859-1?Q?6L5Da8QbwB1St2JcV8DuE+Sf8e4Wxr+/Y7FkBsxK7RjZ1Bx3xPzpuMe+SH?=
+ =?iso-8859-1?Q?B6+jssVSCXGL/qdKr6VNChjdeqC+ed47aLDy6o5sxSIZe8azblTBzsd2R5?=
+ =?iso-8859-1?Q?agJaKStVXAvk/NvH32nyhHZezhlgr47R2JLa3BFf8ITdgNnDKYCmYSG84e?=
+ =?iso-8859-1?Q?wJdkgSV3Npn2sHDIpSl3WDEdSaJaD/qC87JEaN6YeyswvjSu0kKK+ItHAQ?=
+ =?iso-8859-1?Q?ddaQH/5ikX+c/NkKcpzOs33tCv7tMiEwxPlB0T4f14i30ojCmjrupEUZRs?=
+ =?iso-8859-1?Q?PPaEd55LeYvEDpHXqLv7Z8wMCEszyxcXoiyfZtX2uchcizYBk1CVROkQwi?=
+ =?iso-8859-1?Q?UsP83PEnFTwWpk28ERPsNL53VBpM0byqmHVq69U2ac6czEveXzQJzyBoYt?=
+ =?iso-8859-1?Q?W2SIgzeDzHi/bA7mMRHuu62HYvEi+H9Z3c3jknnJn2CW2jDpxwzW6d1d9h?=
+ =?iso-8859-1?Q?NnhNLKq97Te+vJsNeOUuWQwSzN3iqBOSRNIIpQa0jFZwcgVyfI0RiuRzyL?=
+ =?iso-8859-1?Q?6nD2SpJRBVLVeh1SvcuZB98OKRz2pdxX+RLyd4jWMJpV/E7sEU2M81bJWc?=
+ =?iso-8859-1?Q?9Aa8NfCIw8r39dKCzqvZrjFMF4RYb15pJi/W5dtPED7JOVUlH6c1oW2uI5?=
+ =?iso-8859-1?Q?rHbWAM0sCozKOKKexOqAspaB/1v/3gXkUo5p99He3fRxNSlS+E/JpvfUfG?=
+ =?iso-8859-1?Q?VuR3MQ5nmU9/2QbJre2r9wLgdN4ptysgjq43scz6P5sDA3NtvNDVCu4UOp?=
+ =?iso-8859-1?Q?PUpMW6LHumN/dBcyRfYE7Qi7hygq/Zk6mztH0G+gPRy3izgXo7zX7JMwg6?=
+ =?iso-8859-1?Q?wR15/AFNOG/G1Cn5emMWmwZW1ee1WjA7frlkT/hM1WwwR0HMrdkYo446eT?=
+ =?iso-8859-1?Q?B9d0GaZ+8+MynsMF6/ZQ=3D=3D?=
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?JbGja3Sl0xyt51unrsIbk4BO0l3J/oJyvoSr9CYII2t9z3+Txe0nBcWXiY?=
- =?iso-8859-1?Q?y5CbMurztZNGLvOn0/xwVG8tSI/DyavswaFwaTiwvqf4gPIOeACPBWeG4L?=
- =?iso-8859-1?Q?dpwIdJIWhTcW9RU6zs8LCoKWQLC1PQhBvzhpHjBTvvg2Jm76aCj6bPuE7Z?=
- =?iso-8859-1?Q?ekhGf7wOECsvdITMdqQGsaydjhDiRZ0hIqGr3fNYOYg1WbpDJTYclf30FV?=
- =?iso-8859-1?Q?qdfj0+xdwaQjh2MYPQ0dTN7rtPq32S72FgmwIcwG5PLWgDtJdtn//a7PQ2?=
- =?iso-8859-1?Q?xpeeEmUvONq3fO4Y9tQVV6ccCkqCt6KdOEuILr/e/FKPgMvPdiMX4ioi7i?=
- =?iso-8859-1?Q?F84OsPA1LiXCW82uw7BkesQ16PGyb2BrqyofN8Y1uuuQsVkacmW0frA+ro?=
- =?iso-8859-1?Q?zL9oQSx6h4AgG6oQDqAkfVzBqlt4rrYgpPEzZKt6MLGYCHhI+louF2KG/a?=
- =?iso-8859-1?Q?PnTr5zSN/dAdzLs9nqcu7cYZ6zi4Wo1bz3OqtDoH986ZWcu4355qIwPTAT?=
- =?iso-8859-1?Q?1YdkNkKiui8aVDK/iwjR04A0Npi+TSSHh2R99U4WqlFP8r53BKKWcasUzg?=
- =?iso-8859-1?Q?tBzKeQHkEA36+Y5b3sDOBcuQOj3HnVhDSfXWOz2GFlTE/qovFysn5lqafZ?=
- =?iso-8859-1?Q?Lyw4SQ6IICNrtcSkJusbSgEsrlxSu+ca5V0gK147MabgvslsjOGvCMtDv6?=
- =?iso-8859-1?Q?B9oj6sowxfMhpxz7u8dyBiqE1eZSTPOUrXq07GMmqk+J3Xue+evb8D6x1g?=
- =?iso-8859-1?Q?2HD+d9jxIXoWRGf4jouz2nlEurIyvXVaeA60yBPOp9RmgjJy0HVMGGR3Pr?=
- =?iso-8859-1?Q?PLY3RkkDZmfE7xtZZ33+UpkgiUI/rX+WH40vwylvIJde5WR7fhJqCElNGH?=
- =?iso-8859-1?Q?KjP+q/NZUOp7PNFVyysH4oFF4f5XEZ6IUqbxAqItmD8vzQxJI0ZEoIKn70?=
- =?iso-8859-1?Q?mr+coCjCxkTObvVKgjawfGW0TlWw+A59uoj9YHx7AF0bIrHUQrHTfxres1?=
- =?iso-8859-1?Q?/IQwiG6FW441g7+meR/prviQNnqDe0lxDk95m+TZSrAdCOKXe73dmreGMY?=
- =?iso-8859-1?Q?6rvA0arW7PfQYAdOFhWbd/UzdHawlDchKpxvYVI5ZefyV10wYu3LII/8L1?=
- =?iso-8859-1?Q?hd2ZhuuJDW5tHxJWwP948w92jI8h+4++fiEfzcGTQOUXf6S6fRewm/FKTg?=
- =?iso-8859-1?Q?bpiIXzmvJrJJSFVBknT6SDYtExYi+n6pugxTpEKGMseAUvicxBMYv52VxQ?=
- =?iso-8859-1?Q?331kY1JeW5J8v1U2kgwreZda1ijne0mwzCnfGAv8E=3D?=
+ =?iso-8859-1?Q?9orFFYQqMiFTWSMGgF/HW3OKInpIyx2Lg/NUfalNVGVno+trQyTg7ZeTnW?=
+ =?iso-8859-1?Q?IgW2ZSsZAa0Gbx5XbQbjiVYV9usLZ5AhYzjmEGqmJHGkJ5oMcF5g6euUzM?=
+ =?iso-8859-1?Q?VBdNaZ6KA8mZ9qy+opYKAc45Fl5PZ9Oh9ZAvmMIdZexJOeFonUWATX4LN+?=
+ =?iso-8859-1?Q?R/NgpYXy06a1KVjvrrKpES5Ewt2e46imK6xfQx8jWgaQmagTTWaJM60aOV?=
+ =?iso-8859-1?Q?k7NgAGcqXuSXxc9M6nDAhGmzR+KFkex2DMQkhJrJkB4JQlgPHQl5/mSZt/?=
+ =?iso-8859-1?Q?bUSHdsJmhxhlosnWKwaLNPt2SRWII4nlGtY1SRRlbVL1b8LPZ2U2pLjjL7?=
+ =?iso-8859-1?Q?kDCkLoB1LrXqB1vgVod3f+vU23UMZlrXEsAnzasKKcLVMtNd7S3ElC7L1C?=
+ =?iso-8859-1?Q?B5RSi77eMeNJFkczhKH4EYF07m5iC24DBeJExW6QTzeggQZB+sSPC69zSy?=
+ =?iso-8859-1?Q?alv6t0FAWyO2oN/nmimYnwYv6k81G83Akpd9urAG6j0a8AWXdqmwk+Q2r3?=
+ =?iso-8859-1?Q?9ad+mcPJ0Zp5tC2autis/n2OPdTqiAKeAPcqMrJb1p6J2YLgoYtPrXYqmG?=
+ =?iso-8859-1?Q?FmQgK52kGimQZ2lEMK9zs3OYS/0alnWC5c+CCKhnafNwf05l4twLukYB8S?=
+ =?iso-8859-1?Q?UTs5IG1eFXVVfqvfh9irlWc/jW2ESNHb/4jyanypoamImf1aIBMuX1HNhy?=
+ =?iso-8859-1?Q?nOvVwCHiMx1XDyXYuY6956ns8w3Uls2LRkdMXm84UtmwEvYiYtB1gbPvRg?=
+ =?iso-8859-1?Q?45zkhw794sXg+G+R1KHCRAa2sy0h+XgJAcot9yK0d1IpFCzSJ8/8RVDAQR?=
+ =?iso-8859-1?Q?2qhA7x3gX/HTVAnW6lPSEPWHvxWwPmV2hjaf5fSksWzv15NPv8IoVlea/k?=
+ =?iso-8859-1?Q?3+y2LmrBLf7qrrNhoIQfllLsI9hJdC7F/p0zDdR6DvAxK5f7ClUEey47Ra?=
+ =?iso-8859-1?Q?/Ay5LE4wZfSrLGh3e3nfeLpd4/GldmvdsTUATqINAB+f0BUFa9NRjko9Xh?=
+ =?iso-8859-1?Q?n36W8bN4OcPZ3A7uoriIDnoLcTy1B5cF3LYBhwnJrEKQUDJumRKqf0EU8V?=
+ =?iso-8859-1?Q?ojE2oReVb61j3CfShIRMf4oleLP5ucTPGPgIkl5vXi81ei8M3e1edaAi5o?=
+ =?iso-8859-1?Q?V6Nl0OLPonjEVbFHYJ0gEViyvskgiTT6f45svyUSR0dKUAvkL6PgRg3h9J?=
+ =?iso-8859-1?Q?QNr90tLkg0VGQNza6gdQTDq2Nzs06t72dMwRuBSRVhie/aOjI5bLPA4NOH?=
+ =?iso-8859-1?Q?LQk3cXnoq0h3qHZlUxcnePTaeuIUs3F4w4b9afNps=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -136,137 +135,55 @@ X-OriginatorOrg: sct-15-20-8813-0-msonline-outlook-f2c18.templateTenant
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef150f74-0d50-46d8-66ee-08ddb7d2d784
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jun 2025 12:37:13.8488
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63c9cce5-6f6a-436e-e608-08ddb7d2d7e7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jun 2025 12:37:14.4669
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
 X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN0PR01MB6210
 
-Currently, the battery timer is set up for all devices using
-hid-magicmouse, irrespective of whether they actually need it or not.
+The kernel now has a secs_to_jiffies() function which expands to a simpler
+code than msecs_to_jiffies(). Use the same for battery timeout which was
+using 60000 milliseconds (60 seconds).
 
-The current implementation requires the battery timer for Magic Mouse 2
-and Magic Trackpad 2 when connected via USB only. Add checks to ensure
-that the battery timer is only set up when they are connected via USB.
-
-Fixes: 0b91b4e4dae6 ("HID: magicmouse: Report battery level over USB")
-Cc: stable@vger.kernel.org
 Signed-off-by: Aditya Garg <gargaditya08@live.com>
 ---
- drivers/hid/hid-magicmouse.c | 62 +++++++++++++++++++++++-------------
- 1 file changed, 39 insertions(+), 23 deletions(-)
+ drivers/hid/hid-apple.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-magicmouse.c b/drivers/hid/hid-magicmouse.c
-index d4d91e49b..4ca0cbac9 100644
---- a/drivers/hid/hid-magicmouse.c
-+++ b/drivers/hid/hid-magicmouse.c
-@@ -791,17 +791,31 @@ static void magicmouse_enable_mt_work(struct work_str=
-uct *work)
- 		hid_err(msc->hdev, "unable to request touch data (%d)\n", ret);
+diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
+index c8f0e2446..8ee99d603 100644
+--- a/drivers/hid/hid-apple.c
++++ b/drivers/hid/hid-apple.c
+@@ -48,7 +48,7 @@
+ #define APPLE_FLAG_TB_FKEY	BIT(1)
+=20
+ #define HID_COUNTRY_INTERNATIONAL_ISO	13
+-#define APPLE_BATTERY_TIMEOUT_MS	60000
++#define APPLE_BATTERY_TIMEOUT_SEC	60
+=20
+ #define HID_USAGE_MAGIC_BL			0xff00000f
+ #define APPLE_MAGIC_REPORT_ID_POWER		3
+@@ -645,7 +645,7 @@ static void apple_battery_timer_tick(struct timer_list =
+*t)
+=20
+ 	if (apple_fetch_battery(hdev) =3D=3D 0) {
+ 		mod_timer(&asc->battery_timer,
+-			  jiffies + msecs_to_jiffies(APPLE_BATTERY_TIMEOUT_MS));
++			  jiffies + secs_to_jiffies(APPLE_BATTERY_TIMEOUT_SEC));
+ 	}
  }
 =20
-+static bool is_usb_magicmouse2(__u32 vendor, __u32 product)
-+{
-+	if (vendor !=3D USB_VENDOR_ID_APPLE)
-+		return false;
-+	return product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
-+	       product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2_USBC;
-+}
-+
-+static bool is_usb_magictrackpad2(__u32 vendor, __u32 product)
-+{
-+	if (vendor !=3D USB_VENDOR_ID_APPLE)
-+		return false;
-+	return product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
-+	       product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC;
-+}
-+
- static int magicmouse_fetch_battery(struct hid_device *hdev)
- {
- #ifdef CONFIG_HID_BATTERY_STRENGTH
- 	struct hid_report_enum *report_enum;
- 	struct hid_report *report;
-=20
--	if (!hdev->battery || hdev->vendor !=3D USB_VENDOR_ID_APPLE ||
--	    (hdev->product !=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2 &&
--	     hdev->product !=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2_USBC &&
--	     hdev->product !=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
--	     hdev->product !=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC))
-+	if (!hdev->battery ||
-+	    (!is_usb_magicmouse2(hdev->vendor, hdev->product) &&
-+	     !is_usb_magictrackpad2(hdev->vendor, hdev->product)))
- 		return -1;
-=20
- 	report_enum =3D &hdev->report_enum[hdev->battery_report_type];
-@@ -863,17 +877,17 @@ static int magicmouse_probe(struct hid_device *hdev,
- 		return ret;
+@@ -962,7 +962,7 @@ static int apple_probe(struct hid_device *hdev,
+ 	if (quirks & APPLE_RDESC_BATTERY) {
+ 		timer_setup(&asc->battery_timer, apple_battery_timer_tick, 0);
+ 		mod_timer(&asc->battery_timer,
+-			  jiffies + msecs_to_jiffies(APPLE_BATTERY_TIMEOUT_MS));
++			  jiffies + secs_to_jiffies(APPLE_BATTERY_TIMEOUT_SEC));
+ 		apple_fetch_battery(hdev);
  	}
 =20
--	timer_setup(&msc->battery_timer, magicmouse_battery_timer_tick, 0);
--	mod_timer(&msc->battery_timer,
--		  jiffies + msecs_to_jiffies(USB_BATTERY_TIMEOUT_MS));
--	magicmouse_fetch_battery(hdev);
--
--	if (id->vendor =3D=3D USB_VENDOR_ID_APPLE &&
--	    (id->product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
--	     id->product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2_USBC ||
--	     ((id->product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
--	       id->product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
--	      hdev->type !=3D HID_TYPE_USBMOUSE)))
-+	if (is_usb_magicmouse2(id->vendor, id->product) ||
-+	    is_usb_magictrackpad2(id->vendor, id->product)) {
-+		timer_setup(&msc->battery_timer, magicmouse_battery_timer_tick, 0);
-+		mod_timer(&msc->battery_timer,
-+			  jiffies + msecs_to_jiffies(USB_BATTERY_TIMEOUT_MS));
-+		magicmouse_fetch_battery(hdev);
-+	}
-+
-+	if (is_usb_magicmouse2(id->vendor, id->product) ||
-+	    (is_usb_magictrackpad2(id->vendor, id->product) &&
-+	     hdev->type !=3D HID_TYPE_USBMOUSE))
- 		return 0;
-=20
- 	if (!msc->input) {
-@@ -936,7 +950,10 @@ static int magicmouse_probe(struct hid_device *hdev,
-=20
- 	return 0;
- err_stop_hw:
--	timer_delete_sync(&msc->battery_timer);
-+	if (is_usb_magicmouse2(id->vendor, id->product) ||
-+	    is_usb_magictrackpad2(id->vendor, id->product))
-+		timer_delete_sync(&msc->battery_timer);
-+
- 	hid_hw_stop(hdev);
- 	return ret;
- }
-@@ -947,7 +964,9 @@ static void magicmouse_remove(struct hid_device *hdev)
-=20
- 	if (msc) {
- 		cancel_delayed_work_sync(&msc->work);
--		timer_delete_sync(&msc->battery_timer);
-+		if (is_usb_magicmouse2(hdev->vendor, hdev->product) ||
-+		    is_usb_magictrackpad2(hdev->vendor, hdev->product))
-+			timer_delete_sync(&msc->battery_timer);
- 	}
-=20
- 	hid_hw_stop(hdev);
-@@ -964,11 +983,8 @@ static const __u8 *magicmouse_report_fixup(struct hid_=
-device *hdev, __u8 *rdesc,
- 	 *   0x05, 0x01,       // Usage Page (Generic Desktop)        0
- 	 *   0x09, 0x02,       // Usage (Mouse)                       2
- 	 */
--	if (hdev->vendor =3D=3D USB_VENDOR_ID_APPLE &&
--	    (hdev->product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
--	     hdev->product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2_USBC ||
--	     hdev->product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
--	     hdev->product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
-+	if ((is_usb_magicmouse2(hdev->vendor, hdev->product) ||
-+	     is_usb_magictrackpad2(hdev->vendor, hdev->product)) &&
- 	    *rsize =3D=3D 83 && rdesc[46] =3D=3D 0x84 && rdesc[58] =3D=3D 0x85) {
- 		hid_info(hdev,
- 			 "fixing up magicmouse battery report descriptor\n");
 --=20
 2.49.0
 
