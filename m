@@ -1,184 +1,365 @@
-Return-Path: <stable+bounces-158878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE700AED772
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 10:36:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC167AED7A3
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 10:43:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82D187A53B9
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 08:34:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1AA63A3A9C
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 08:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510A7241CA8;
-	Mon, 30 Jun 2025 08:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C5A23F40A;
+	Mon, 30 Jun 2025 08:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JKHQ5+0m"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="d7/juvx4";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="z+QxDf0u";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="d7/juvx4";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="z+QxDf0u"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A426D2397B0;
-	Mon, 30 Jun 2025 08:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4438422156F
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 08:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751272556; cv=none; b=MkyJy+X5binDkq8S3I1K7K97YCvtcVdawAPXQWiUJlHk0HmQ4xe2OEPXhOeH1QAV5gFNTmefaqUHjzSxc2J4BYp8IKheigLuianix2DvUqFKZTj1pT3CL5wbL6e3IGyBthFid/mfVsZMg0ApFnRTJYnuC+ldVWRqR2uhH33rr5M=
+	t=1751273002; cv=none; b=cPuTMFd+0iVfdLTcxf/ezEC+67l/h3wbf+IZU9rU6FZUz9gfy1EZ0DPZ4vlb+orb4poBJz9C4u8w1q8KuYK2GT/HgRexLUqmZOggb3/Q9OT6rwFNUVSVZYFEUWjQBUyvYzh51XYtr1DxXEfwKvhSF6qqMlBJK79YysbGLGAQ9sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751272556; c=relaxed/simple;
-	bh=hbl6aKOFyrCpAMd3O9ukAhgw6X3wjq6glq0MIKEE2gk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ErGUBPFysG91mUBF9ojvcghNbT9geuCUuAs0dB0i9q79NKEWFdFUd1uxKIo2fblix5T+4aeTf20lC0Ts49QvxcvPa4YvSyBohEUZ1ZePGIQntgS/XvX/oY4c4oimDnsCDhtRxCYhba1rA9ylyn80pduVvw23Pms8igTamTkn/RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JKHQ5+0m; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-74801bc6dc5so4034473b3a.1;
-        Mon, 30 Jun 2025 01:35:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751272554; x=1751877354; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=c4plGK5bq5RnwaM8ctVOu6ZgjjUnMHD+gm6XjSI880o=;
-        b=JKHQ5+0mIWsvzEMBMcDUAmcgBy55rmQ3rcn1DGIbNTcTC3GLWshpC85OVWQwJvehlC
-         NyDJrx8wdAACQYqlngeAK7X6bPQSsaVFawCNzIbb0bcHs0p+oOtrV6qb63kdPhjN7DYK
-         dbgxVdOo0xffpjb6QgPPnEmyDriPVWVn50OFgjnaAH9v4ozUIgPniQVvFV6daYXfsqd3
-         N1YZw1J8wKIDOSJHr38tdpB7hsOh7w8S0f9GMvd+ASqToYeYolnf3GAPhl5R7B/+sc39
-         LTTnzJoqfhxOozti/ufmjAJGkG0EUiiC6h/MwEwKcTOs9Y3Kq1k1apdJvfHibUsexSyr
-         FQDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751272554; x=1751877354;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=c4plGK5bq5RnwaM8ctVOu6ZgjjUnMHD+gm6XjSI880o=;
-        b=Grn2rb/O4/qZj+u5KQSaBNW/jWtfzbY2uBLFr8GB6rAGh/HB+Y0MNRNKHkWNbgJbJX
-         3FLjFUylGXLK594tXXoV/P8iWlxCgvI6SH2GDV89h48B3CtEnxQTgASoNQ50ffgl6n71
-         NBne4vHT4Qxi6Ex6vJYuAsuQexB+8yrqIcrp5A32LlryOO4vSMIdeSnjqV7pwIm6V4L9
-         VrNDkqdwlsnaKlfB50NjwoQq7uSvy/3+Csc5eZOXfnW4N0NWobhL2jrIfXxvCpuSrsXm
-         P/tXDAUxcPqEulk4Ohd8IwaXbfNPRhFMHx577WxMnj3IYzc12lnn8OdRuzQzT/UaWdOg
-         ko3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWq5eLLt0bFdCGSWJsMi5sKVa2dFPljj8Ta0ZPslresfNXuYMFY+YbSPHedI+lkzRxKEIPTiZs1@vger.kernel.org, AJvYcCWtoGwAl3e37GNZJW+VFSdMOr4RDs8KzXW6wx7Vwb/mBGsgI5anL2wPn0bkQT54aGpaXb2QF834grGeuAY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywf2stLFz+Yuu2o/UbJBOiHQCXsJX9X/+0kVrIOz0KJGKd1jak8
-	FoCpvRrnX3eB2IU8RT24oxTgLsoeK/x28Rr6di/eSpT+4VKOV174RqKm
-X-Gm-Gg: ASbGncuRl58ZQxnpZt5OCT9BZvtcxOb9qLc5aTigArtkOMLsfbMdBetltwqiiySzeRK
-	r/OXZz11SGywNDKqPVZcKeII2BsRA5HGLtYZO3Y+kMDlgUqloVHMAhWdcmfZWMCLhclLS+VFb3V
-	2WBRoi0NI6Q9ffDANxDSnmq58kwEcdvqmNzdZ+JZv2bVf0mgGBYux4PpdoOonXTf3GUMLp3aBw1
-	NthaUKmj8SoYdVDK1UfteFCiEYt6N700mjEy4bbm9STq/7nu25XZacH5CLueVJlkn+Iofl5qPfE
-	mtVCOQDyK+6YgFwNPRd5HEhgRJe5J9CuQ1GIIRi5GjkX5dtRuet7AljOLmlCD2N/RK61UN00iYw
-	XlVFPow==
-X-Google-Smtp-Source: AGHT+IGM9wfHSeMMXfeBZheGggepk2ZqiWnb9R0ko13yd/AL0hGgh5N+CjMk8e3oprn88leMOC/mQA==
-X-Received: by 2002:a05:6a00:b52:b0:748:6a12:1b47 with SMTP id d2e1a72fcca58-74af7aef473mr17756726b3a.10.1751272553630;
-        Mon, 30 Jun 2025 01:35:53 -0700 (PDT)
-Received: from manjaro.domain.name ([2401:4900:1c31:3031:bed6:689:68b3:ea6e])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74af57ebcb5sm8320722b3a.151.2025.06.30.01.35.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Jun 2025 01:35:53 -0700 (PDT)
-From: Pranav Tyagi <pranav.tyagi03@gmail.com>
-To: ocfs2-devel@oss.oracle.com,
-	linux-kernel@vger.kernel.org
-Cc: mark@fasheh.com,
-	jlbec@evilplan.org,
-	joseph.qi@linux.alibaba.com,
-	pvmohammedanees2003@gmail.com,
-	akpm@linux-foundation.org,
-	gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	skhan@linuxfoundation.org,
-	stable@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	syzbot+e0055ea09f1f5e6fabdd@syzkaller.appspotmail.com,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Pranav Tyagi <pranav.tyagi03@gmail.com>
-Subject: [PATCH 5.15.y] ocfs2: fix deadlock in ocfs2_get_system_file_inode
-Date: Mon, 30 Jun 2025 14:05:42 +0530
-Message-ID: <20250630083542.10121-1-pranav.tyagi03@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1751273002; c=relaxed/simple;
+	bh=zUvOlFW0n5fZq41hWVdOSTeTqAg753yHp7wp889PbRY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uy5NqAP3mxVm1dw/qslf63GD9j/NEpMbTQGHKWEjqBpuCSlH1CjjhpwN55HHtD+Gwl1LB6KnPPG5lyc9AsfB2ZcV0zPXkYtJsxxjaumvuPM7kXXeQvRUXPdBPC2hKjnyn019lEEi7cZPunYJFkjGJfEtRtYz+vrnT11KOFtnE+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=d7/juvx4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=z+QxDf0u; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=d7/juvx4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=z+QxDf0u; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3EC511F445;
+	Mon, 30 Jun 2025 08:43:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1751272998; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bgJuoDeKkYrjTuznYwVQBAIRKkITcshLZ4Mm6eQkgVs=;
+	b=d7/juvx479uHngSufonZGZiAku6yGTuxHewCHkLHRCV0fQl85s8Jjm+g2jiHziahMwf+6Q
+	mTkXJK7Pp7WGUsHbSFAo1agWyqS9LjJTm8T4rlQiJd5FZwCaxdQEwNmqIREaItcrcqj0Oc
+	/AXZOMAU+2T2N7f0cAOhMz4+Y51IpmQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1751272998;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bgJuoDeKkYrjTuznYwVQBAIRKkITcshLZ4Mm6eQkgVs=;
+	b=z+QxDf0uKn/tj2/6xbHHDaQZBjRCXXO0rpNt/CoLSx/TXctMaZ9QstF4J8YgsyfTxUKxln
+	84f9jFFiq7IkeJCw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="d7/juvx4";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z+QxDf0u
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1751272998; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bgJuoDeKkYrjTuznYwVQBAIRKkITcshLZ4Mm6eQkgVs=;
+	b=d7/juvx479uHngSufonZGZiAku6yGTuxHewCHkLHRCV0fQl85s8Jjm+g2jiHziahMwf+6Q
+	mTkXJK7Pp7WGUsHbSFAo1agWyqS9LjJTm8T4rlQiJd5FZwCaxdQEwNmqIREaItcrcqj0Oc
+	/AXZOMAU+2T2N7f0cAOhMz4+Y51IpmQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1751272998;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bgJuoDeKkYrjTuznYwVQBAIRKkITcshLZ4Mm6eQkgVs=;
+	b=z+QxDf0uKn/tj2/6xbHHDaQZBjRCXXO0rpNt/CoLSx/TXctMaZ9QstF4J8YgsyfTxUKxln
+	84f9jFFiq7IkeJCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DA66A1399F;
+	Mon, 30 Jun 2025 08:43:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id eQzaMyVOYmgLAgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 30 Jun 2025 08:43:17 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: christian.koenig@amd.com,
+	asrivats@redhat.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] drm/gem: Acquire references on GEM handles for framebuffers
+Date: Mon, 30 Jun 2025 10:36:47 +0200
+Message-ID: <20250630084001.293053-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 3EC511F445
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_TO(0.00)[amd.com,redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linaro.org:email,suse.de:mid,suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Score: -3.51
+X-Spam-Level: 
 
-From: Mohammed Anees <pvmohammedanees2003@gmail.com>
+A GEM handle can be released while the GEM buffer object is attached
+to a DRM framebuffer. This leads to the release of the dma-buf backing
+the buffer object, if any. [1] Trying to use the framebuffer in further
+mode-setting operations leads to a segmentation fault. Most easily
+happens with driver that use shadow planes for vmap-ing the dma-buf
+during a page flip. An example is shown below.
 
-[ Upstream commit 7bf1823e010e8db2fb649c790bd1b449a75f52d8 ]
+[  156.791968] ------------[ cut here ]------------
+[  156.796830] WARNING: CPU: 2 PID: 2255 at drivers/dma-buf/dma-buf.c:1527 dma_buf_vmap+0x224/0x430
+[...]
+[  156.942028] RIP: 0010:dma_buf_vmap+0x224/0x430
+[  157.043420] Call Trace:
+[  157.045898]  <TASK>
+[  157.048030]  ? show_trace_log_lvl+0x1af/0x2c0
+[  157.052436]  ? show_trace_log_lvl+0x1af/0x2c0
+[  157.056836]  ? show_trace_log_lvl+0x1af/0x2c0
+[  157.061253]  ? drm_gem_shmem_vmap+0x74/0x710
+[  157.065567]  ? dma_buf_vmap+0x224/0x430
+[  157.069446]  ? __warn.cold+0x58/0xe4
+[  157.073061]  ? dma_buf_vmap+0x224/0x430
+[  157.077111]  ? report_bug+0x1dd/0x390
+[  157.080842]  ? handle_bug+0x5e/0xa0
+[  157.084389]  ? exc_invalid_op+0x14/0x50
+[  157.088291]  ? asm_exc_invalid_op+0x16/0x20
+[  157.092548]  ? dma_buf_vmap+0x224/0x430
+[  157.096663]  ? dma_resv_get_singleton+0x6d/0x230
+[  157.101341]  ? __pfx_dma_buf_vmap+0x10/0x10
+[  157.105588]  ? __pfx_dma_resv_get_singleton+0x10/0x10
+[  157.110697]  drm_gem_shmem_vmap+0x74/0x710
+[  157.114866]  drm_gem_vmap+0xa9/0x1b0
+[  157.118763]  drm_gem_vmap_unlocked+0x46/0xa0
+[  157.123086]  drm_gem_fb_vmap+0xab/0x300
+[  157.126979]  drm_atomic_helper_prepare_planes.part.0+0x487/0xb10
+[  157.133032]  ? lockdep_init_map_type+0x19d/0x880
+[  157.137701]  drm_atomic_helper_commit+0x13d/0x2e0
+[  157.142671]  ? drm_atomic_nonblocking_commit+0xa0/0x180
+[  157.147988]  drm_mode_atomic_ioctl+0x766/0xe40
+[...]
+[  157.346424] ---[ end trace 0000000000000000 ]---
 
-syzbot has found a possible deadlock in ocfs2_get_system_file_inode [1].
+Acquiring GEM handles for the framebuffer's GEM buffer objects prevents
+this from happening. The framebuffer's cleanup later puts the handle
+references.
 
-The scenario is depicted here,
+Commit 1a148af06000 ("drm/gem-shmem: Use dma_buf from GEM object
+instance") triggers the segmentation fault easily by using the dma-buf
+field more widely. The underlying issue with reference counting has
+been present before.
 
-	CPU0					CPU1
-lock(&ocfs2_file_ip_alloc_sem_key);
-                               lock(&osb->system_file_mutex);
-                               lock(&ocfs2_file_ip_alloc_sem_key);
-lock(&osb->system_file_mutex);
+v2:
+- acquire the handle instead of the BO (Christian)
+- fix comment style (Christian)
+- drop the Fixes tag (Christian)
+- rename err_ gotos
+- add missing Link tag
 
-The function calls which could lead to this are:
-
-CPU0
-ocfs2_mknod - lock(&ocfs2_file_ip_alloc_sem_key);
-.
-.
-.
-ocfs2_get_system_file_inode - lock(&osb->system_file_mutex);
-
-CPU1 -
-ocfs2_fill_super - lock(&osb->system_file_mutex);
-.
-.
-.
-ocfs2_read_virt_blocks - lock(&ocfs2_file_ip_alloc_sem_key);
-
-This issue can be resolved by making the down_read -> down_read_try
-in the ocfs2_read_virt_blocks.
-
-[1] https://syzkaller.appspot.com/bug?extid=e0055ea09f1f5e6fabdd
-
-[ Backport to 5.15: context cleanly applied with no semantic changes.
-Build-tested. ]
-
-Link: https://lkml.kernel.org/r/20240924093257.7181-1-pvmohammedanees2003@gmail.com
-Signed-off-by: Mohammed Anees <pvmohammedanees2003@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: <syzbot+e0055ea09f1f5e6fabdd@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=e0055ea09f1f5e6fabdd
-Tested-by: syzbot+e0055ea09f1f5e6fabdd@syzkaller.appspotmail.com
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Pranav Tyagi <pranav.tyagi03@gmail.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://elixir.bootlin.com/linux/v6.15/source/drivers/gpu/drm/drm_gem.c#L241 # [1]
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Anusha Srivatsa <asrivats@redhat.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: linux-media@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linaro-mm-sig@lists.linaro.org
+Cc: <stable@vger.kernel.org>
 ---
- fs/ocfs2/extent_map.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_gem.c                    | 44 ++++++++++++++++++--
+ drivers/gpu/drm/drm_gem_framebuffer_helper.c | 16 +++----
+ drivers/gpu/drm/drm_internal.h               |  2 +
+ 3 files changed, 51 insertions(+), 11 deletions(-)
 
-diff --git a/fs/ocfs2/extent_map.c b/fs/ocfs2/extent_map.c
-index 70a768b623cf..f7672472fa82 100644
---- a/fs/ocfs2/extent_map.c
-+++ b/fs/ocfs2/extent_map.c
-@@ -973,7 +973,13 @@ int ocfs2_read_virt_blocks(struct inode *inode, u64 v_block, int nr,
+diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+index 19d50d254fe6..bc505d938b3e 100644
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -213,6 +213,35 @@ void drm_gem_private_object_fini(struct drm_gem_object *obj)
+ }
+ EXPORT_SYMBOL(drm_gem_private_object_fini);
+ 
++static void drm_gem_object_handle_get(struct drm_gem_object *obj)
++{
++	struct drm_device *dev = obj->dev;
++
++	drm_WARN_ON(dev, !mutex_is_locked(&dev->object_name_lock));
++
++	if (obj->handle_count++ == 0)
++		drm_gem_object_get(obj);
++}
++
++/**
++ * drm_gem_object_handle_get_unlocked - acquire reference on user-space handles
++ * @obj: GEM object
++ *
++ * Acquires a reference on the GEM buffer object's handle. Required
++ * to keep the GEM object alive. Call drm_gem_object_handle_put_unlocked()
++ * to release the reference.
++ */
++void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj)
++{
++	struct drm_device *dev = obj->dev;
++
++	guard(mutex)(&dev->object_name_lock);
++
++	drm_WARN_ON(dev, !obj->handle_count); /* first ref taken in create-tail helper */
++	drm_gem_object_handle_get(obj);
++}
++EXPORT_SYMBOL(drm_gem_object_handle_get_unlocked);
++
+ /**
+  * drm_gem_object_handle_free - release resources bound to userspace handles
+  * @obj: GEM object to clean up.
+@@ -243,8 +272,14 @@ static void drm_gem_object_exported_dma_buf_free(struct drm_gem_object *obj)
+ 	}
+ }
+ 
+-static void
+-drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
++/**
++ * drm_gem_object_handle_put_unlocked - releases reference on user-space handles
++ * @obj: GEM object
++ *
++ * Releases a reference on the GEM buffer object's handle. Possibly releases
++ * the GEM buffer object and associated dma-buf objects.
++ */
++void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
+ {
+ 	struct drm_device *dev = obj->dev;
+ 	bool final = false;
+@@ -269,6 +304,7 @@ drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
+ 	if (final)
+ 		drm_gem_object_put(obj);
+ }
++EXPORT_SYMBOL(drm_gem_object_handle_put_unlocked);
+ 
+ /*
+  * Called at device or object close to release the file's
+@@ -390,8 +426,8 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
+ 	int ret;
+ 
+ 	WARN_ON(!mutex_is_locked(&dev->object_name_lock));
+-	if (obj->handle_count++ == 0)
+-		drm_gem_object_get(obj);
++
++	drm_gem_object_handle_get(obj);
+ 
+ 	/*
+ 	 * Get the user-visible handle using idr.  Preload and perform
+diff --git a/drivers/gpu/drm/drm_gem_framebuffer_helper.c b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+index 618ce725cd75..c60d0044d036 100644
+--- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
++++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+@@ -100,7 +100,7 @@ void drm_gem_fb_destroy(struct drm_framebuffer *fb)
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < fb->format->num_planes; i++)
+-		drm_gem_object_put(fb->obj[i]);
++		drm_gem_object_handle_put_unlocked(fb->obj[i]);
+ 
+ 	drm_framebuffer_cleanup(fb);
+ 	kfree(fb);
+@@ -183,8 +183,10 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
+ 		if (!objs[i]) {
+ 			drm_dbg_kms(dev, "Failed to lookup GEM object\n");
+ 			ret = -ENOENT;
+-			goto err_gem_object_put;
++			goto err_gem_object_handle_put_unlocked;
+ 		}
++		drm_gem_object_handle_get_unlocked(objs[i]);
++		drm_gem_object_put(objs[i]);
+ 
+ 		min_size = (height - 1) * mode_cmd->pitches[i]
+ 			 + drm_format_info_min_pitch(info, i, width)
+@@ -194,22 +196,22 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
+ 			drm_dbg_kms(dev,
+ 				    "GEM object size (%zu) smaller than minimum size (%u) for plane %d\n",
+ 				    objs[i]->size, min_size, i);
+-			drm_gem_object_put(objs[i]);
++			drm_gem_object_handle_put_unlocked(objs[i]);
+ 			ret = -EINVAL;
+-			goto err_gem_object_put;
++			goto err_gem_object_handle_put_unlocked;
+ 		}
  	}
  
- 	while (done < nr) {
--		down_read(&OCFS2_I(inode)->ip_alloc_sem);
-+		if (!down_read_trylock(&OCFS2_I(inode)->ip_alloc_sem)) {
-+			rc = -EAGAIN;
-+			mlog(ML_ERROR,
-+				 "Inode #%llu ip_alloc_sem is temporarily unavailable\n",
-+				 (unsigned long long)OCFS2_I(inode)->ip_blkno);
-+			break;
-+		}
- 		rc = ocfs2_extent_map_get_blocks(inode, v_block + done,
- 						 &p_block, &p_count, NULL);
- 		up_read(&OCFS2_I(inode)->ip_alloc_sem);
+ 	ret = drm_gem_fb_init(dev, fb, mode_cmd, objs, i, funcs);
+ 	if (ret)
+-		goto err_gem_object_put;
++		goto err_gem_object_handle_put_unlocked;
+ 
+ 	return 0;
+ 
+-err_gem_object_put:
++err_gem_object_handle_put_unlocked:
+ 	while (i > 0) {
+ 		--i;
+-		drm_gem_object_put(objs[i]);
++		drm_gem_object_handle_put_unlocked(objs[i]);
+ 	}
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/drm_internal.h b/drivers/gpu/drm/drm_internal.h
+index 442eb31351dd..f7b414a813ae 100644
+--- a/drivers/gpu/drm/drm_internal.h
++++ b/drivers/gpu/drm/drm_internal.h
+@@ -161,6 +161,8 @@ void drm_sysfs_lease_event(struct drm_device *dev);
+ 
+ /* drm_gem.c */
+ int drm_gem_init(struct drm_device *dev);
++void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj);
++void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj);
+ int drm_gem_handle_create_tail(struct drm_file *file_priv,
+ 			       struct drm_gem_object *obj,
+ 			       u32 *handlep);
 -- 
-2.49.0
+2.50.0
 
 
