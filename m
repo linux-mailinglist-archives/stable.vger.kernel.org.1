@@ -1,207 +1,124 @@
-Return-Path: <stable+bounces-158962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A70AEE0AB
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 16:28:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FAB2AEE0AF
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 16:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9439189E169
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 14:28:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48C0B7A2E4A
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 14:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B2128C2B3;
-	Mon, 30 Jun 2025 14:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C95B28C00E;
+	Mon, 30 Jun 2025 14:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WHkyl209"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CZ9Nxu1q"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C30328C2B1;
-	Mon, 30 Jun 2025 14:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B5428C005
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 14:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751293643; cv=none; b=PzskdNEtaXvNwAbkqe3OIltLUvfpO/ijrnchNxPDokPTCsslWOiNl/rJci3N8yIoORk9fYZ7ePb2lXJBQzZg6PXn9wGcTkfqjtI9dD/OI7VhZCb7WV90L0/kMh4VC1otjpvLh1bOdgU9r+yKFvU8X2v4mrmmIzMZf7tst8FngvU=
+	t=1751293665; cv=none; b=AkHRuUH4yq1MEHikkCTZeHSPwEfypR6z80RcoH8jNSyxG3StZa5uF99LvDOo7p/G6NU6Tqgu9N6EvUAfXbScdDJfKnRPXHcz9Ub0iReoE7Y34YXQ6yY+gNF+PJ9qAgYIJ3NgIGhee0h1Mg4dcS8pvJpyBoLR7CjbQXeGbihc0A0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751293643; c=relaxed/simple;
-	bh=nuAWTsMItNCCzscLTP8xkr9U8H1LoMJ5NrTQyP/NGvo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rm56f9nr0tGbFXiPHMj2pxExZwR5i5zFd9PcV3zWi73Knc4caHlwxnCEFCxZk3mKZSShIF7E+rRdp8AfBetSmPxJ4NMz16iZTWl09ZLVNAOxNiF+hEA+n5/LFKVhz4fdkNFVn9TbZtqtzJR5EwQyIHV547563J1+fmBENz92FfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WHkyl209; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751293642; x=1782829642;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=nuAWTsMItNCCzscLTP8xkr9U8H1LoMJ5NrTQyP/NGvo=;
-  b=WHkyl2092MfQgWL5xTnlJmQ9HZwcLIwXLXbBuII8VhBCK20FvVgom9Z6
-   yF4q8MvGgkboelSeHa/hDTV4ti/SAl1URFEGu3PwA/iU//PfaTZS+5B2o
-   n148NJKWx6P9zvzE94NAOezsoTkhkav3x48zp0u1YJRZvt/0j2oHJ0MXR
-   H50hi9rW8VOyRnv7nxBff1/NWdJ6iJFZkGR3QUg4kytJbcrkp8F1gB/WT
-   HcIrFpMsMuUXFl3rLbX07OgzENWNfmABQEIqcXMdUWuEsein9Q8941SW2
-   vR3EowBvOSle0haEZKBF6y7X7uzOOQWrBP0vuWQbPePADxZuz9BinGldn
-   A==;
-X-CSE-ConnectionGUID: TQqkPNVhRMiNr0bIDuA27w==
-X-CSE-MsgGUID: 84iJt1sJQ5qaUGCRt+mfpw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="76071121"
-X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; 
-   d="scan'208";a="76071121"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 07:27:21 -0700
-X-CSE-ConnectionGUID: 0vWuU3l9Tz6APbBipBzcfQ==
-X-CSE-MsgGUID: MEyr22i0SgOMn8ipV46Uwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; 
-   d="scan'208";a="153649823"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.65])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 07:27:17 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: linux-pci@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Rio <rio@r26.me>,
-	D Scott Phillips <scott@os.amperecomputing.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 3/3] PCI: Fix failure detection during resource resize
-Date: Mon, 30 Jun 2025 17:26:41 +0300
-Message-Id: <20250630142641.3516-4-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250630142641.3516-1-ilpo.jarvinen@linux.intel.com>
-References: <20250630142641.3516-1-ilpo.jarvinen@linux.intel.com>
+	s=arc-20240116; t=1751293665; c=relaxed/simple;
+	bh=4BwrmB39jxfPik6LGKsILbO35wsW1RW1VnJRHdXYRfk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nNYaUhZ9uSyk3fITnfcmJlz/41x60wK4YWdzfIqalqEyNUH7R00lVhXSqoLPvX7GPlLl0aiGk9v24XXtIsPG5WIvhW8oZoQHKLR+6UYjGVo36nPvE/23vg4cMnJvVQpBD3OM2d9eTuujfRZN0QDdGWzx5Lt5nhHat5POd9TDcaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CZ9Nxu1q; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3ab112dea41so1079987f8f.1
+        for <stable@vger.kernel.org>; Mon, 30 Jun 2025 07:27:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751293662; x=1751898462; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pgymszMlzA/NGtV72uiUav7nmxj4cJ0thLj3a1qVEDM=;
+        b=CZ9Nxu1qjKUVBHgTJGlOcMBKsd/Spq27Q8lWXdbu+0IXG6DaIcYF4M9Amhi0sJdcNl
+         KHKmh8kniOcPPG0ZHKQhZD5c3U2FGbp6iiTMqbscnHR/f3i0qjz7fLAMyyH7Tu2R+Ai0
+         WkXN5Pa3OxeSdb2him931JIcieTBNknegp1PGJWwYo7nymlA+WXfR/DguubIZG/gWMHi
+         RlClV0y6MhyPOQzIAjh9XQnSLv2B7qBDFTjzbAa+6jhwEbNkDUeQec22LkopsM1Luklc
+         wemi1PY+FZiPU3XlfeXvz0FEwKoWqmQiPrsgKavwMmH3fPbR/BokLr5suO3DvrE+aUbv
+         XBIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751293662; x=1751898462;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pgymszMlzA/NGtV72uiUav7nmxj4cJ0thLj3a1qVEDM=;
+        b=VNIwgQsvg3xlAqahhO1YMTt9OK3JEfJ6N7hvrauIR4Mn0hfLifbLYS+J0B7drn+duj
+         olMM+iRpFFYxBsNGV8hSM08TTRvH+OMxFs0SHQgqfflTRUryspYSuTNcSCCy1eL8NpfS
+         fwx1CMH70PkfX/xWgT+G7soI1VDTgtGnXb4+Bo2PpMjUhoqVbkCCh5qhLAKjpqKml537
+         8f5BS5IjlHeUxVZoIv2AtyCp9jlW8XUKmWsRkn0gcy1fD5n16TH5lyCjHdQP2vg7oBqS
+         nmsGu7/eSkpqZ9MDlFi1UXCGlcn1Qf3Dsh7XPYM47GOpyiUYkvzkbOXktNmMRa7pi19H
+         cIjQ==
+X-Gm-Message-State: AOJu0Yz3PkGnpmcq9fUi7Y6tmMFjQ8iQtZ9d7fdvOTu7qbbyiBwBaZ6o
+	RvaWi+mmap3E0hOCPyDe4xw7NBroM510oqfJbLX3VlW37Gbi/L6SM8av8T1IUw==
+X-Gm-Gg: ASbGnctdy5Uw9r7idSsxgnw8KQRMR7kdcB/eK8AGQcmjx82NmSKDcWP3qTIdmCAoO6N
+	DtMaqpJaPj14sjjHpOHniCA+r5KlVv/AMEx/t1IaXWJX7v9MQ/Hi++Zk40Hh1DXJXa0vb++8nYg
+	v7xP3Kuyc997foVT2Q4dQu7uS81coV7tmoQ6KfByQNvtBMwC3pEKQJScQA3LI2egUelKODSyILV
+	PeqEofF2hyeGyarMpgNaILLaLg8iw6wyG1jeY5Megl7Td5JnL5gLpdO16QfhrZS9PtL03Cm1WhM
+	vs7OQXsEfgbnsHNc4VpTVO134wONrb2ESKWngjV3cQ5cCeRJw/A94lAfWR3CpzMdZZQ21MEoO1+
+	QPLkXJZORHtAzTc21No/eBw==
+X-Google-Smtp-Source: AGHT+IGM5CJcopjgL4nm/8+2DrOl02fYiD11C2YChK2s49XJnhGDJD0PHtnZvsFgp46ZkMzqYFzbQQ==
+X-Received: by 2002:a05:6000:4211:b0:3aa:34f4:d437 with SMTP id ffacd0b85a97d-3aa34f4d5e9mr8640360f8f.37.1751293661857;
+        Mon, 30 Jun 2025 07:27:41 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:cb14:740:2b00:1a5e:fff:fe3d:95be])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453835798acsm165871905e9.10.2025.06.30.07.27.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Jun 2025 07:27:41 -0700 (PDT)
+From: mathieu.tortuyaux@gmail.com
+To: stable@vger.kernel.org
+Cc: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+Subject: [PATCH 6.12.y 0/3] r8169: add support for RTL8125D
+Date: Mon, 30 Jun 2025 16:27:13 +0200
+Message-ID: <20250630142717.70619-1-mathieu.tortuyaux@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Since the commit 96336ec70264 ("PCI: Perform reset_resource() and build
-fail list in sync") the failed list is always built and returned to let
-the caller decide what to do with the failures. The caller may want to
-retry resource fitting and assignment and before that can happen, the
-resources should be restored to their original state (a reset
-effectively clears the struct resource), which requires returning them
-on the failed list so that the original state remains stored in the
-associated struct pci_dev_resource.
+From: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
 
-Resource resizing is different from the ordinary resource fitting and
-assignment in that it only considers part of the resources. This means
-failures for other resource types are not relevant at all and should be
-ignored. As resize doesn't unassign such unrelated resources, those
-resource ending up into the failed list implies assignment of that
-resource must have failed before resize too. The check in
-pci_reassign_bridge_resources() to decide if the whole assignment is
-successful, however, is based on list emptiness which will cause false
-negatives when the failed list has resources with an unrelated type.
+Hi,
 
-If the failed list is not empty, call pci_required_resource_failed()
-and extend it to be able to filter on specific resource types too (if
-provided).
+This backports support for Realtek device 0x688 on Kernel 6.12.y:
+* Tested in Flatcar CI w/ Kernel 6.12.35 on qemu (for regression): https://github.com/flatcar/scripts/pull/3006
+* The user requesting this support has confirmed correct behavior: https://github.com/flatcar/Flatcar/issues/1749#issuecomment-3005483988 
 
-Calling pci_required_resource_failed() at this point is slightly
-problematic because the resource itself is reset when the failed list
-is constructed in __assign_resources_sorted(). As a result,
-pci_resource_is_optional() does not have access to the original
-resource flags. This could be worked around by restoring and
-re-reseting the resource around the call to pci_resource_is_optional(),
-however, it shouldn't cause issue as resource resizing is meant for
-64-bit prefetchable resources according to Christian König (see the
-Link which unfortunately doesn't point directly to Christian's reply
-because lore didn't store that email at all).
+The two other commits ("net: phy: realtek: merge the drivers for
+internal NBase-T PHY's" and "net: phy: realtek: add RTL8125D-internal PHY")
+are required to add support here as well, otherwise it fails with:
+```
+$ dmesg
+...
+r8169 ... : no dedicated PHY driver found for PHY ID 0x001cc841
+...
+```
 
-Fixes: 96336ec70264 ("PCI: Perform reset_resource() and build fail list in sync")
-Link: https://lore.kernel.org/all/c5d1b5d8-8669-5572-75a7-0b480f581ac1@linux.intel.com/
-Reported-by: D Scott Phillips <scott@os.amperecomputing.com>
-Tested-by: D Scott Phillips <scott@os.amperecomputing.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: D Scott Phillips <scott@os.amperecomputing.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: <stable@vger.kernel.org>
----
- drivers/pci/setup-bus.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+Thanks and have a great day,
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 24863d8d0053..dbbd80d78d3d 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -28,6 +28,10 @@
- #include <linux/acpi.h>
- #include "pci.h"
- 
-+#define PCI_RES_TYPE_MASK \
-+	(IORESOURCE_IO | IORESOURCE_MEM | IORESOURCE_PREFETCH |\
-+	 IORESOURCE_MEM_64)
-+
- unsigned int pci_flags;
- EXPORT_SYMBOL_GPL(pci_flags);
- 
-@@ -384,13 +388,19 @@ static bool pci_need_to_release(unsigned long mask, struct resource *res)
- }
- 
- /* Return: @true if assignment of a required resource failed. */
--static bool pci_required_resource_failed(struct list_head *fail_head)
-+static bool pci_required_resource_failed(struct list_head *fail_head,
-+					 unsigned long type)
- {
- 	struct pci_dev_resource *fail_res;
- 
-+	type &= PCI_RES_TYPE_MASK;
-+
- 	list_for_each_entry(fail_res, fail_head, list) {
- 		int idx = pci_resource_num(fail_res->dev, fail_res->res);
- 
-+		if (type && (fail_res->flags & PCI_RES_TYPE_MASK) != type)
-+			continue;
-+
- 		if (!pci_resource_is_optional(fail_res->dev, idx))
- 			return true;
- 	}
-@@ -504,7 +514,7 @@ static void __assign_resources_sorted(struct list_head *head,
- 	}
- 
- 	/* Without realloc_head and only optional fails, nothing more to do. */
--	if (!pci_required_resource_failed(&local_fail_head) &&
-+	if (!pci_required_resource_failed(&local_fail_head, 0) &&
- 	    list_empty(realloc_head)) {
- 		list_for_each_entry(save_res, &save_head, list) {
- 			struct resource *res = save_res->res;
-@@ -1708,10 +1718,6 @@ static void __pci_bridge_assign_resources(const struct pci_dev *bridge,
- 	}
- }
- 
--#define PCI_RES_TYPE_MASK \
--	(IORESOURCE_IO | IORESOURCE_MEM | IORESOURCE_PREFETCH |\
--	 IORESOURCE_MEM_64)
--
- static void pci_bridge_release_resources(struct pci_bus *bus,
- 					 unsigned long type)
- {
-@@ -2449,8 +2455,12 @@ int pci_reassign_bridge_resources(struct pci_dev *bridge, unsigned long type)
- 		free_list(&added);
- 
- 	if (!list_empty(&failed)) {
--		ret = -ENOSPC;
--		goto cleanup;
-+		if (pci_required_resource_failed(&failed, type)) {
-+			ret = -ENOSPC;
-+			goto cleanup;
-+		}
-+		/* Only resources with unrelated types failed (again) */
-+		free_list(&failed);
- 	}
- 
- 	list_for_each_entry(dev_res, &saved, list) {
+Mathieu (@tormath1)
+
+Heiner Kallweit (3):
+  r8169: add support for RTL8125D
+  net: phy: realtek: merge the drivers for internal NBase-T PHY's
+  net: phy: realtek: add RTL8125D-internal PHY
+
+ drivers/net/ethernet/realtek/r8169.h          |  1 +
+ drivers/net/ethernet/realtek/r8169_main.c     | 23 +++++---
+ .../net/ethernet/realtek/r8169_phy_config.c   | 10 ++++
+ drivers/net/phy/realtek.c                     | 54 +++++++++++++++----
+ 4 files changed, 71 insertions(+), 17 deletions(-)
+
 -- 
-2.39.5
+2.49.0
 
 
