@@ -1,126 +1,227 @@
-Return-Path: <stable+bounces-158872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1289AED504
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 08:56:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 535FDAED5C9
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 09:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBBBC1896235
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 06:57:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E63BA7A43FB
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 07:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779B020F07C;
-	Mon, 30 Jun 2025 06:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vC+CiMtZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE583221DB5;
+	Mon, 30 Jun 2025 07:34:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D66B2036ED
-	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 06:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4290B22DFBA
+	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 07:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751266605; cv=none; b=GxYrpvVpMC0ojJ81kcBbgOhfWGnlBJY/7Qs1t1/Qkazw2An7Dn7Wl0H5Ao1Uj7gta+aMvs8gKqRDnaW7eCobK77z5X3gzwavPP+MTIJTnRwW6bYrBCijKsC/jlvhq363CMFW9uoBMZG/C5wu+oIwxhS2iW8vcRsCswCsnOIYUO8=
+	t=1751268885; cv=none; b=Oq+WrZH4HkjcIXbGWajHlQzM0IlLIXKy20CSbE7sXYpghChuJz1alPgPdRjPEjEXMy+SA/6vbI0cH1fYSJzceLUQNT/BoOiCYnCr76Lw6Fdukp0VObKvxzR8MWYbhbFjrw02Uy88pziWLhdpDPp7DYBNJau0Hre6dilodz+vI74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751266605; c=relaxed/simple;
-	bh=V8lMI/ycTv3tqtCuknt2wqYhGtqZO6N//510l4dI67w=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=qeaHAMcRhhAOuI/y+kGPh4UO3kkordiFkiCc8C90MzQOX24T/a4087QDZ2yAl17K/YzYu8O1zPt7p+6m7sBEaRb37Nigs5iTdLmQ/C/ZXVoN2tgtLrl9AqDpz+eFqpUWZ3JpiY/uj9FnhQQYjV4g6kGwr8ufRd0ZtIEh5ToZd6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vC+CiMtZ; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6089c0d376eso844645a12.2
-        for <stable@vger.kernel.org>; Sun, 29 Jun 2025 23:56:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751266601; x=1751871401; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G+ucKXlTGds2s7GThwxlN7FGLXCQFZmOc6TZ3BNHKTU=;
-        b=vC+CiMtZHVNmByHQKluhGBTBh7ivXLQDBwwKfgdWYb35QBN1k+xoCMMwwLKhbZ7mra
-         dp0GmZwpBrXnQmyXuvBGGwv+KALZbA2TWc/hWmB3C3dvTaKJ1cYDsBnjawV2y1GIfIbt
-         jRwGYZKLc/zo+lSPz9s0Y7ZSeBQheQiWHLxIQH/6sEORZ9Voul1iHiZWN69k1wCXQge4
-         LR1o/GcAXANpjaosNR6sBuxXDPp8piCo3/5HcZ8TKbI29bV4OGZbQwZ0g+yCvWcvwZIi
-         QgGVFIyQCPYmb+vRqX+xTQ0R7cOZKsm8B14L0DVugE9mS7TWsSBUDxWWAcogikomYfdq
-         Wk5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751266601; x=1751871401;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G+ucKXlTGds2s7GThwxlN7FGLXCQFZmOc6TZ3BNHKTU=;
-        b=GHTF7J8bQw7kxe02oj8g1sjH98PF0hL9VlX+DzidllR1p3qVTBh8V4xR+T15Snt8BU
-         7PTKGhg1S7wJJ9/lxiYLYdYdMV8zXLDmGcBcII1xDIhnJ5UScz5CoFdncQK02ndP4Y4e
-         3C4xWJBClMAftLVvHxAwWAkdRpBdQRJev8cyChjAZ9tJEoPX+2vZSnlCZxl5WMt1x1KK
-         PfmtiUYKev5cVg+4ML9thiC1QvBoe5ju/dhHRLJxpZWV8n9+utY4L8htMl1xpM7ev8AK
-         EDimc5wsrswX10TAxmzswP1ev6/1xnvWhwtAoUFphjAhztFhmHjpxoRvZ1TnnkFQb8h3
-         EkAw==
-X-Forwarded-Encrypted: i=1; AJvYcCX9d2K6oWWBY/DmnWTSdDMGMIKAsR8kS+m0J2AjNAO2eSQNLjKgbEFWo/QUkhOLr2+ET0VFlhQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlZGct30E+gTVE6CG8oHM6FQIuGYRuwaSCjwteXVFBZD7hhuDz
-	N2bY8TXKyVIyOSROOenvbXSRbWxZPnV1C6FBH15cR34SuF25AmplhJmfV8O+X5nqfMT/I4qypaz
-	FTmXUQnc=
-X-Gm-Gg: ASbGncvGDYZgEwOHG77zoLJou6+Udn1zF3bpx2799RPyBqUzbts669cTtQBx1YAA2vl
-	0I5+lsObR5MnMVpJuBf7ldpf7HpqFsFSqf+Fwm4oGiQhlhsKImjtCP1A5iWJeVXSDTeDJpeW5L7
-	+cumZxeCwX+Od8RODsl2xh5o+HlXscaHiANhYUelZz8LDCH08wBsXWOw3hZLu6+SYGZe//6YnBk
-	c7xrZgEasJZvSOqyP8/wd2QTgGA8TvHJqP+Ux+d7bKrSKg/SRC6pnqIEnyA+V7qvaUkrFKXXv5G
-	QbAbF+0T2VGF5+J2VjYL6rw8zs447P3OL/I85miHaSaGkPIUbw2SV7c2pcrgF/5YAkRAIAgZGKE
-	3
-X-Google-Smtp-Source: AGHT+IGU9xP+Go/413QUXOq1KbVbfMFxzQ8IwfNr4sg069oTmFb0gdttj33NjsLt9OC8dhZXTxaTLg==
-X-Received: by 2002:a05:6402:1e94:b0:5ff:9994:92d3 with SMTP id 4fb4d7f45d1cf-60ca35c05b9mr2021686a12.2.1751266601314;
-        Sun, 29 Jun 2025 23:56:41 -0700 (PDT)
-Received: from [127.0.1.1] ([178.197.222.89])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60c828bb118sm5368960a12.2.2025.06.29.23.56.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Jun 2025 23:56:40 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
- Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, 
- "Martin K. Petersen" <martin.petersen@oracle.com>, 
- Peter Griffin <peter.griffin@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-scsi@vger.kernel.org, kernel-team@android.com, 
- willmcvicker@google.com, stable@vger.kernel.org
-In-Reply-To: <20250314-ufs-dma-coherent-v1-1-bdf9f9be2919@linaro.org>
-References: <20250314-ufs-dma-coherent-v1-0-bdf9f9be2919@linaro.org>
- <20250314-ufs-dma-coherent-v1-1-bdf9f9be2919@linaro.org>
-Subject: Re: (subset) [PATCH 1/2] arm64: dts: exynos: gs101: ufs: add
- dma-coherent property
-Message-Id: <175126659939.23797.4726512180709761065.b4-ty@linaro.org>
-Date: Mon, 30 Jun 2025 08:56:39 +0200
+	s=arc-20240116; t=1751268885; c=relaxed/simple;
+	bh=Il4G5bz+3WE9oLupMEBB20mV1Hmyh27La4L9UIYCZFA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qph4vYbQKr5QdvrjIOxHZHRrdk4gTKH90acTB43n8aaDwIqS3IsGXurpYLbWdXB6zOsqXweI54qWRl5IR8j39zWB4EdPHyi9na3O4Y8bhyEXtbJ1Qi0pdYrjYlHvg6onjkWVVsEqXQauMKiBIxC9CbhJNchQD+5ncRTLOLQNYJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8634D442CE;
+	Mon, 30 Jun 2025 07:34:28 +0000 (UTC)
+Message-ID: <a57e83be-c506-4ab4-962d-4cdbce4aaed9@ghiti.fr>
+Date: Mon, 30 Jun 2025 09:34:28 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] riscv: hwprobe: Fix stale vDSO data for
+ late-initialized keys at boot
+To: Jingwei Wang <wangjingwei@iscas.ac.cn>, linux-riscv@lists.infradead.org
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ Conor Dooley <conor.dooley@microchip.com>,
+ =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>,
+ Charlie Jenkins <charlie@rivosinc.com>, Jesse Taube <jesse@rivosinc.com>,
+ Yixun Lan <dlan@gentoo.org>, Yanteng Si <si.yanteng@linux.dev>,
+ Tsukasa OI <research_trasio@irq.a4lg.com>, stable@vger.kernel.org,
+ Alexandre Ghiti <alexghiti@rivosinc.com>
+References: <20250627172814.66367-1-wangjingwei@iscas.ac.cn>
+Content-Language: en-US
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <20250627172814.66367-1-wangjingwei@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudduudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeetlhgvgigrnhgurhgvucfihhhithhiuceorghlvgigsehghhhithhirdhfrheqnecuggftrfgrthhtvghrnhephffhuddtveegleeggeefledtudfhudelvdetudfhgeffffeigffgkeethfejudejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvddttddumeekiedumeeffeekvdemvghfledtmegtheekieemkeehhegvmeguugdutdemfeejudhfnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddttddumeekiedumeeffeekvdemvghfledtmegtheekieemkeehhegvmeguugdutdemfeejudhfpdhhvghloheplgfkrfggieemvddttddumeekiedumeeffeekvdemvghfledtmegtheekieemkeehhegvmeguugdutdemfeejudhfngdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhnsggprhgtphhtthhopeduhedprhgtphhtthhopeifrghnghhjihhnghifvghisehishgtrghsrdgrtgdrtghnpdhrtghpthhtoheplhhinhhugidqrhhishgtvheslhhishhtshdrihhnfhhrrgguvggrugdro
+ hhrghdprhgtphhtthhopehprghulhdrfigrlhhmshhlvgihsehsihhfihhvvgdrtghomhdprhgtphhtthhopehprghlmhgvrhesuggrsggsvghlthdrtghomhdprhgtphhtthhopegrohhusegvvggtshdrsggvrhhkvghlvgihrdgvughupdhrtghpthhtoheprghjohhnvghssehvvghnthgrnhgrmhhitghrohdrtghomhdprhgtphhtthhopegtohhnohhrrdguohholhgvhiesmhhitghrohgthhhiphdrtghomhdprhgtphhtthhopegtlhgvghgvrhesrhhivhhoshhinhgtrdgtohhm
+X-GND-Sasl: alex@ghiti.fr
+
+Hi Jingwei,
+
+On 6/27/25 19:27, Jingwei Wang wrote:
+> The value for some hwprobe keys, like MISALIGNED_VECTOR_PERF, is
+> determined by an asynchronous kthread. This kthread can finish after
+> the hwprobe vDSO data is populated, creating a race condition where
+> userspace can read stale values.
+>
+> A completion-based framework is introduced to synchronize the async
+> probes with the vDSO population. The init_hwprobe_vdso_data()
+> function is deferred to `late_initcall` and now blocks until all
+> probes signal completion.
 
 
-On Fri, 14 Mar 2025 15:38:02 +0000, Peter Griffin wrote:
-> ufs-exynos driver configures the sysreg shareability as
-> cacheable for gs101 so we need to set the dma-coherent
-> property so the descriptors are also allocated cacheable.
-> 
-> This fixes the UFS stability issues we have seen with
-> the upstream UFS driver on gs101.
-> 
-> [...]
+Can you add an explanation of why the move to late_initcall() here?
 
-Applied, thanks!
 
-[1/2] arm64: dts: exynos: gs101: ufs: add dma-coherent property
-      https://git.kernel.org/krzk/linux/c/4292564c71cffd8094abcc52dd4840870d05cd30
+>
+> Reported-by: Tsukasa OI <research_trasio@irq.a4lg.com>
+> Closes: https://lore.kernel.org/linux-riscv/760d637b-b13b-4518-b6bf-883d55d44e7f@irq.a4lg.com/
+> Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jingwei Wang <wangjingwei@iscas.ac.cn>
+> ---
+> Changes in v4:
+> 	- Reworked the synchronization mechanism based on feedback from Palmer
+>      	and Alexandre.
+> 	- Instead of a post-hoc refresh, this version introduces a robust
+> 	completion-based framework using an atomic counter to ensure async
+> 	probes are finished before populating the vDSO.
+> 	- Moved the vdso data initialization to a late_initcall to avoid
+> 	impacting boot time.
+>
+> Changes in v3:
+> 	- Retained existing blank line.
+>
+> Changes in v2:
+> 	- Addressed feedback from Yixun's regarding #ifdef CONFIG_MMU usage.
+> 	- Updated commit message to provide a high-level summary.
+> 	- Added Fixes tag for commit e7c9d66e313b.
+>
+> v1: https://lore.kernel.org/linux-riscv/20250521052754.185231-1-wangjingwei@iscas.ac.cn/T/#u
+>
+>   arch/riscv/include/asm/hwprobe.h           |  8 +++++++-
+>   arch/riscv/kernel/sys_hwprobe.c            | 20 +++++++++++++++++++-
+>   arch/riscv/kernel/unaligned_access_speed.c |  9 +++++++--
+>   3 files changed, 33 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/riscv/include/asm/hwprobe.h b/arch/riscv/include/asm/hwprobe.h
+> index 7fe0a379474ae2c6..87af186d92e75ddb 100644
+> --- a/arch/riscv/include/asm/hwprobe.h
+> +++ b/arch/riscv/include/asm/hwprobe.h
+> @@ -40,5 +40,11 @@ static inline bool riscv_hwprobe_pair_cmp(struct riscv_hwprobe *pair,
+>   
+>   	return pair->value == other_pair->value;
+>   }
+> -
+> +#ifdef CONFIG_MMU
+> +void riscv_hwprobe_register_async_probe(void);
+> +void riscv_hwprobe_complete_async_probe(void);
+> +#else
+> +inline void riscv_hwprobe_register_async_probe(void) {}
+> +inline void riscv_hwprobe_complete_async_probe(void) {}
+> +#endif
+>   #endif
+> diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
+> index 0b170e18a2beba57..8c50dcec2b754c30 100644
+> --- a/arch/riscv/kernel/sys_hwprobe.c
+> +++ b/arch/riscv/kernel/sys_hwprobe.c
+> @@ -5,6 +5,8 @@
+>    * more details.
+>    */
+>   #include <linux/syscalls.h>
+> +#include <linux/completion.h>
+> +#include <linux/atomic.h>
+>   #include <asm/cacheflush.h>
+>   #include <asm/cpufeature.h>
+>   #include <asm/hwprobe.h>
+> @@ -467,6 +469,20 @@ static int do_riscv_hwprobe(struct riscv_hwprobe __user *pairs,
+>   
+>   #ifdef CONFIG_MMU
+>   
+> +static DECLARE_COMPLETION(boot_probes_done);
+> +static atomic_t pending_boot_probes = ATOMIC_INIT(0);
+> +
+> +void riscv_hwprobe_register_async_probe(void)
+> +{
+> +	atomic_inc(&pending_boot_probes);
+> +}
+> +
+> +void riscv_hwprobe_complete_async_probe(void)
+> +{
+> +	if (atomic_dec_and_test(&pending_boot_probes))
+> +		complete(&boot_probes_done);
+> +}
+> +
+>   static int __init init_hwprobe_vdso_data(void)
+>   {
+>   	struct vdso_arch_data *avd = vdso_k_arch_data;
+> @@ -474,6 +490,8 @@ static int __init init_hwprobe_vdso_data(void)
+>   	struct riscv_hwprobe pair;
+>   	int key;
+>   
+> +	if (unlikely(atomic_read(&pending_boot_probes) > 0))
+> +		wait_for_completion(&boot_probes_done);
 
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
+To me it's not working: if a first async probe registers and completes 
+before another async probe registers, pending_boot_probes will be > 0 
+but wait_for_completion() will proceed before the second async probe 
+completes (since the first async probe marked the completion as done).
+
+Let me know if I missed something,
+
+Thanks,
+
+Alex
+
+
+>   	/*
+>   	 * Initialize vDSO data with the answers for the "all CPUs" case, to
+>   	 * save a syscall in the common case.
+> @@ -504,7 +522,7 @@ static int __init init_hwprobe_vdso_data(void)
+>   	return 0;
+>   }
+>   
+> -arch_initcall_sync(init_hwprobe_vdso_data);
+> +late_initcall(init_hwprobe_vdso_data);
+>   
+>   #endif /* CONFIG_MMU */
+>   
+> diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
+> index ae2068425fbcd207..4b8ad2673b0f7470 100644
+> --- a/arch/riscv/kernel/unaligned_access_speed.c
+> +++ b/arch/riscv/kernel/unaligned_access_speed.c
+> @@ -379,6 +379,7 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
+>   static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
+>   {
+>   	schedule_on_each_cpu(check_vector_unaligned_access);
+> +	riscv_hwprobe_complete_async_probe();
+>   
+>   	return 0;
+>   }
+> @@ -473,8 +474,12 @@ static int __init check_unaligned_access_all_cpus(void)
+>   			per_cpu(vector_misaligned_access, cpu) = unaligned_vector_speed_param;
+>   	} else if (!check_vector_unaligned_access_emulated_all_cpus() &&
+>   		   IS_ENABLED(CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS)) {
+> -		kthread_run(vec_check_unaligned_access_speed_all_cpus,
+> -			    NULL, "vec_check_unaligned_access_speed_all_cpus");
+> +		riscv_hwprobe_register_async_probe();
+> +		if (IS_ERR(kthread_run(vec_check_unaligned_access_speed_all_cpus,
+> +				NULL, "vec_check_unaligned_access_speed_all_cpus"))) {
+> +			pr_warn("Failed to create vec_unalign_check kthread\n");
+> +			riscv_hwprobe_complete_async_probe();
+> +		}
+>   	}
+>   
+>   	/*
 
