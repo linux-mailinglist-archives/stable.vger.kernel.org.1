@@ -1,416 +1,335 @@
-Return-Path: <stable+bounces-158938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4765AEDB83
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 13:46:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5FE9AEDD0A
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 14:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDE8D3A4D90
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:45:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53C7B7A6944
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 12:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA5227A130;
-	Mon, 30 Jun 2025 11:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F352820DC;
+	Mon, 30 Jun 2025 12:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QlXCJGGX"
+	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="UnfigRqo"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2055.outbound.protection.outlook.com [40.107.244.55])
+Received: from PNZPR01CU001.outbound.protection.outlook.com (mail-centralindiaazolkn19011024.outbound.protection.outlook.com [52.103.68.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B64279DCB;
-	Mon, 30 Jun 2025 11:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255802472AB;
+	Mon, 30 Jun 2025 12:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.68.24
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751283974; cv=fail; b=RWEXhzWFUox8oJGtTJJF2sUTrM1+WCaaMgW77hCfRSf7sl8c6ZzTUoJa+JT7wib1v5apXyHRIZNofOm94GAsAOcDjvX/2jP0dNOjYMNSQwX/XuGrNgpCbB/Pgv9cLxNbqpgqxN5fLKM2kd+TnEQ1NYCpNS7VlP3fOWq8g1Iuwrc=
+	t=1751287039; cv=fail; b=DYeu/1GPEn+4rp6fNXCIy4yNu6oXYkcUmiaJqa+czRJ7acHx8PCmGxn0H6wjzMw4k6IDlK0GFOcpPxudvqj+FcgweXTxDVaqtgEtafdhYc3P1TEmU4ddtI5HR0S2klhGyWBb/2/j3v8SY5A19YQzCPUhePYx/hUfYgpFodRq7Yo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751283974; c=relaxed/simple;
-	bh=gD/U88isa15To/5W9Da0Y2hVUrB2/a1pwaFc8sK68bs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=YWMnmKKfbwv7G2a8qjKFS8CBGN7EeO3UiKgMM0FSGmd37ePOjoaMRRkM3ms35TzLRahsATf4Zw3FPvNYL9U7nDM+ajxb/eP28Fr3T4TdKIGmc/+ftcjhUHDcvb5ICzbYCO2O8K0OG+xUW9jnSJQv+dH7iv/z6dVfK07diWYiSgc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QlXCJGGX; arc=fail smtp.client-ip=40.107.244.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1751287039; c=relaxed/simple;
+	bh=D6s2TGl2pv5eXxJd+AC6Q7Sgwv24dX/Ufcjg9k0VR9o=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=n+/lH7awPpcDCzOR3oGBzgcYmC+6c9WwTTsLzDhrrot4p26gftCvpNai//S4geKMRa/FfxTUpaaTnEc68ZEQPN58dffm6ePfevYZhgzpYDfJ0fxxMthvblxpPabjNtqjwPRecdM+ybm5mROy7gNhHhMcVXO/wDmZ6Y/Y3W8Lfh0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=UnfigRqo; arc=fail smtp.client-ip=52.103.68.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fc715L115mzypSHEU+gOCTgZ61qu6F/0zs6rFPtMDDMSAiGplPxKAXT1PsCx0dDDMnFoSDoewS9mN2UV9k4HG/uv9MHMMMt0CQae+JT3Z+61dcRbzBXnwWCo1MonoR3ZBLV6ajtZ/3Gs0sfw908itgfWryrbp3NX7fkXOfJZ9TRLOSRKqWaUFDO7g0GAfjF+8oaIRoUuMeQrBf/LZP4DMhq1CW9h2Hfw+q46DU7M4p4Mo7XjuB2AkASJIQWBWKHR86DzvKpBz+zrFT2Nl7UA/3i0j8pFeMXbf55Mu+DLfwbnlViAcnvUutu+qxihhrhUQ04G8m0dgB88Tz/N/W+URA==
+ b=oKZmGwWKENAxtL1Ua16714RESCZorVXFojJi1ZDTU4aPHuXLxbeFCLPMnHrf4vitnfyGj6bY/iJvnNPiERHadVuQqmVr0b3tXHsBnuRKV2c4AfKGscZCyxYn6vGumDpV1R2IiblMBqPd3bMRydoAlCwoVdKrAS6+tRFkM53R7v/gHbvGm9C4POeXYwFkH2Up0Vv8yr+hXG1siu5lH0rB0ay/I5LZJRpeC64DAKO2xoXTTUODPxJG3euaV7L3Geoqi0czmb2zKODx1+2SQW7ULN4mJULYmRcfTOK+L0/+pNsU7eCeTgIxKqlkrvCdTRKamb2XiDNcAF4Y7AlRaaJ3Nw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JvaGFZyJ4VZg5EpREqjoTRxaYDQrvCVU1003mr84vKQ=;
- b=QnfekthtNCZxrHd1KtUgmCOohFi1H0QLYdUdWcnukCynBuC9mBFlE5AW6AM2vMHmpa9f15h98WxqgYxMiKRQ50DU4BAmLKHqF2O9ys0OyDc5GUvTk0v4YJGA/HxXlqAiBW5lxw3MslauhVcaSHOY+TBYend2QL9lUOUZzhaSqeSjIs7IrgmIEtoslFEcr2LHSwRGhI88ex1uQZ0/3uUqV29l0asBPJFIa9/46kUKjfApBURrVEewaa89/F10jRzgJXseVIRCuHTKHbitN4vOFdSe+JvYCgE+EtY5YFZtnwimicFrgUkVek8vW5oChEUKaCwehwKYjOAec/3egjbfKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=v1kuxqsY8M/TVH05pXts8imoZ/5G7Qixmzw7U8ImIm0=;
+ b=ZknTZacjBry47buckQMAalvVhcGINn3vGOo27QqktJOl+yDWizfRCzaP7dDnH0KWv/yyf41CNvvhzBp6t/eRZ1AOlOvS/ppyXI/w6YyXxDFZnIkfrz2j9oDdpullKCf5D8JHrnUa4JxRptdV2UVaYl3uLbVLsvdpzCySGaDKdtqmjdIUyXxNMz+FQA95sNdUSJdIV4hBPoQ3HDKDtJBhIo2lQLAP5IoStZY9KW7G+b5E8SUOjPmLM76XIEXubwHvda0UHonL5Ci7YvEnGBMlKLky9VCKa89ViCivqIO/T28ClKXBefhbVOTekjwtvGIx9bnkxaE/KCU1OaOsYX+Zuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JvaGFZyJ4VZg5EpREqjoTRxaYDQrvCVU1003mr84vKQ=;
- b=QlXCJGGXWLkeGjXCLfk4CfGEnuPHxELM0HqnvKk4vgoVRbNY/03qKOgwk7kn30lsko+O9oa54gc7TvI6Kj6y92i6H8Rajma+QKzZATq5Cfl7K5nwaJ2WUjZvsXylk28vOyOvmiUMSALuJ66K2wwWMmgrFB/wXk7aJ4DyxlhDThs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by DM4PR12MB6614.namprd12.prod.outlook.com (2603:10b6:8:bb::13) with
+ bh=v1kuxqsY8M/TVH05pXts8imoZ/5G7Qixmzw7U8ImIm0=;
+ b=UnfigRqoHuwF2Nqn3LYKece/5K5Sr1O2y4Pu4pE2uc0r9bo5HeanGnyuoI72XQv824cpLFSx9vdZdcS/Ie5QUYQ5IcpmCi82RBDF0YzXX2l9H4R0SA0R7uSbhNEWU9lzYLIWmwu6inUnnAf2iZVANuapF5wUky9RFcq7XJxYgGZKY19Disk0OvQBf1+m9hmfXJPnCP64CXMzJmtmtriTG7UgGNDk4a5G7x3Wd/2WNRAAi5NQcmLZjBPga7bTAlBqDm2w8ETPx7kLH1oYtAUG2XlJjjZehN7lCXZiPU5/t2Dj6n1TvrWMqoddcR6oPYTjZqUSm/ewKgir16sYR/I2qg==
+Received: from PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:f7::14)
+ by PN0PR01MB6210.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:6b::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.29; Mon, 30 Jun
- 2025 11:46:10 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%5]) with mapi id 15.20.8880.027; Mon, 30 Jun 2025
- 11:46:10 +0000
-Message-ID: <e29a3b7c-31b0-406e-b839-999f7884a3c9@amd.com>
-Date: Mon, 30 Jun 2025 13:46:05 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/gem: Acquire references on GEM handles for
- framebuffers
-To: Thomas Zimmermann <tzimmermann@suse.de>, asrivats@redhat.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
- simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org, Sumit Semwal <sumit.semwal@linaro.org>,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- stable@vger.kernel.org
-References: <20250630084001.293053-1-tzimmermann@suse.de>
- <9009d89b-91f0-496c-a45d-03d8f0fb7bf6@amd.com>
- <3477130c-8470-43cc-ba97-0ce48bdf025d@suse.de>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.30; Mon, 30 Jun
+ 2025 12:37:12 +0000
+Received: from PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::324:c085:10c8:4e77]) by PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::324:c085:10c8:4e77%3]) with mapi id 15.20.8880.029; Mon, 30 Jun 2025
+ 12:37:12 +0000
+From: Aditya Garg <gargaditya08@live.com>
+To: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>
+CC: "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	=?iso-8859-1?Q?Jos=E9_Exp=F3sito?= <jose.exposito89@gmail.com>
+Subject: [PATCH v2 0/4] HID: avoid setting up battery timer when not needed in
+ hid-apple and magicmouse
+Thread-Topic: [PATCH v2 0/4] HID: avoid setting up battery timer when not
+ needed in hid-apple and magicmouse
+Thread-Index: AQHb6bu0boEw496P5kWf4S4YYOwYPg==
+Date: Mon, 30 Jun 2025 12:37:12 +0000
+Message-ID: <20250630123649.80395-1-gargaditya08@live.com>
+Accept-Language: en-IN, en-US
 Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <3477130c-8470-43cc-ba97-0ce48bdf025d@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0196.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e5::18) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PN3PR01MB9597:EE_|PN0PR01MB6210:EE_
+x-ms-office365-filtering-correlation-id: 3b46f866-4415-4c4c-a700-08ddb7d2d6a1
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|19110799006|15080799009|41001999006|8062599006|7092599006|8060799009|461199028|38102599003|52005399003|40105399003|440099028|3412199025|102099032;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?KTws4lq91JGsvBTzLFpvh6JZvgA1Fd3O7HD4r8onkplhox43s9/aSoEGAE?=
+ =?iso-8859-1?Q?gFzhhJgsmG10FNHqnrdihbFoGCtNVg3cFkuZNEu1Hpuzx+VmZuimOFP6mG?=
+ =?iso-8859-1?Q?W2p/GPXdtAdXubbD7ab3yx3KIGOZQCqZDVjl3cOWy7sPKTl5dYbmNiNvRX?=
+ =?iso-8859-1?Q?Ga2y/Tf6BQ6n1AIOsT+6IBUZ9XyUNGfZn589fgpIjE6CAx8lne0pavFMX7?=
+ =?iso-8859-1?Q?P4B5R5QO6y/Hle+tebKAYn/FqIjVsAOJUl1VqchRAmQSpRYAuG2pIqPuEY?=
+ =?iso-8859-1?Q?016AgmkJQFwlwkugIA9qoNJjjQsNZCDK3Uv/L9INQoWvBKCOf/TsDq0aW3?=
+ =?iso-8859-1?Q?zhT02EZwK3YJ/yL5RH13v9Dd2ZNg+6pRf/ug3Z2vSb6TiBHW4PrJfZy7qW?=
+ =?iso-8859-1?Q?eqQsRkIYtgRqzRe8QNl1MJ9971fr5Pm9z3PYHUbypv51N9OuYnau0RXOj3?=
+ =?iso-8859-1?Q?MqosC+JYduPrcptpwK/7CERCrQzfHKta1nXrWjrfKKDSWCWP/+Lf822Gr4?=
+ =?iso-8859-1?Q?bs3P6Vnc4YH0tl8WdBjzLolsAPR9jUbyoW4/kitK0bzcoQQCwTtevh9wvs?=
+ =?iso-8859-1?Q?A40qiAEkfL9XgSV2tLnRcvaruiGRpCOihmeMgxUgpJrlSfm1MwoTBfsO/i?=
+ =?iso-8859-1?Q?ipO+JjS7y6HwA6kgpNdNpSFC9YRA3yRHf0pyexPxZzEz5Fc5ZtwEOFeG33?=
+ =?iso-8859-1?Q?MJxvFG1Jki8XaxjBYOyLDUZraRBAVAjwoOQspaRDmHDj/D8lMCUN+rPhX9?=
+ =?iso-8859-1?Q?Al2cbetxEgxW9j0oirSxY1X55Y6bXN3tJvKqtVR7tUYYqGVZkegbbPmeZg?=
+ =?iso-8859-1?Q?viLrPnmSJGqgKEWkYmRII6BMU6Uw/iWwDBuWhOZiq2wouwp+f0AChYPirZ?=
+ =?iso-8859-1?Q?ji3pjud/qVuOsZ6zgoEh4gdEkPkgaFn/P39aBj4DqLeWTPl+WUL7GJjGE8?=
+ =?iso-8859-1?Q?JeMhU6GYsMNkoVjXuVjz35vsrBv2IGgTVlSM7bj4qIGbaQ7a/PKi59pX00?=
+ =?iso-8859-1?Q?roNRac5MZf6STfPKYvLFYgj+KeRuo7IHU5dHDKrc4xxvTEna2rd+1M2uR4?=
+ =?iso-8859-1?Q?fZ2izzKYziHDLw/hJHSXtd8JYxZ/Obxoab4FW7Z/+Khr0fvTX8NecAT9uL?=
+ =?iso-8859-1?Q?3hSh+T+KfeTIOCb6JoG4bmGxIpOsfNHvouZSNc+4uA/1YlT7svMfPqzvlj?=
+ =?iso-8859-1?Q?xYb2hQeK0TZL7r58Z3VXLEOF/Ih85ObFqpft5dRfI4P53V7Ukv6bmTj1s/?=
+ =?iso-8859-1?Q?dQlgeXQxjq7h+v/vpO6R3x5U/7EvVbXqiB7W/66YU=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?tN/p1Fwz5nXMiV1yky52K5B6KkcjeMXEaNdcvUL2c/Y8pzNRYj92GUQZ/J?=
+ =?iso-8859-1?Q?fItdlYuqLN4ayAPG2rebe7uyavyWdto1SyutLBFRnOk0Odfx5PHluw43yE?=
+ =?iso-8859-1?Q?yzERhKvUEYOwd0ZhZ2FqteYEEKlb9B5vhn0VOgx8WwAKf1ywgPliudDYYC?=
+ =?iso-8859-1?Q?mPRMcVNXTPN2F76ocncLW8tIdZovEcGxQTLnuW8+yTna7kZ2C8Mk+wypNV?=
+ =?iso-8859-1?Q?rXEOSgPFCI6YDQYtrQM7D6K4GZ5yk+MlUqAvBUDsEKSHw16+DiY7P7dK3a?=
+ =?iso-8859-1?Q?ybZWjP8mLwvXvsn9Aox7Q6p7yUn1OKcRONkSBXZkbMoc2TNjiOoqx6L9Gj?=
+ =?iso-8859-1?Q?kBRnsElElp+gtJW1uvQM39OBcRVC+v8r7zfH5x60zD89bF82m6BRe2vteC?=
+ =?iso-8859-1?Q?n/zPjCcNedEQ0yb/KDK2x8tTLyZlyNC8MkhpOOf7JIlZtYuh1JaHE8q5bg?=
+ =?iso-8859-1?Q?D07jgl+V1qdSxU5gd3ZKPHKxJq091xJaXcnyJaPLJ6FIrUwJY7nbUQIEEO?=
+ =?iso-8859-1?Q?hH2v4HncQhUREQ4wmQXqalBm095mSiqE1rhegbYQ8od3QD02X5U1J+KHnE?=
+ =?iso-8859-1?Q?nj+uS0TL4GmywQCMxElyTh3jyTmLjzQxEK1HO3+z36gTkcgCH9LeS5XQLs?=
+ =?iso-8859-1?Q?OlKNrHokPnFTFNPAvPFvJhBH5vReBRBZohNPznCmoulsqeFbC+9jarwR8U?=
+ =?iso-8859-1?Q?4TRsnf6RiiA1Skq+Sr/+3EzCq3PjF9uiri4Jv/Hjakc0P9KYrPg0288Iyg?=
+ =?iso-8859-1?Q?iDJVnlJViOMRYdOcKc4d7YsRHVd6mWURK3BaDVak8ueGIuOe5JLP4aGEhl?=
+ =?iso-8859-1?Q?H61xAamVWKkmwu6THxIRsxmeZKKjKHlDbV83pb7WxBRtjo6c4SWo8MXB3H?=
+ =?iso-8859-1?Q?lKQUs1kRU+QoBsnB9gqFP4qGDIomuLFr0YBVTBch3b+mKi7Kmm0NlojUXh?=
+ =?iso-8859-1?Q?p6H9h2iVyfC9d4FfXjAK9+nsfMp2WTgRykpUxClprTDugp3MqI4VkizGHm?=
+ =?iso-8859-1?Q?IHcl/PeoFmqUesWIoYZ+aon3jU2zcby79jgW6LLLixNSfOMvAq3S9oLyKa?=
+ =?iso-8859-1?Q?7slOOSH5+ddQ+mfzswC06P76ZG6niEeFZnLUxGW03k2dRjqGKXTx1aEGVR?=
+ =?iso-8859-1?Q?12V6xVcnW9368GQhNOC5SvAtyfQZfLosBrytZkVu09B8HtUCiMCKG1/TPI?=
+ =?iso-8859-1?Q?jsGLCsm6VBp75zMsTMbyymI0Do+5rKE8gX0NWPqOosl7rX5FnmeG8nfUe8?=
+ =?iso-8859-1?Q?ZlQsnJiagSIuVK7g1vgGbV7To8rtdYQlXLoiBngeI=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DM4PR12MB6614:EE_
-X-MS-Office365-Filtering-Correlation-Id: 22f41dc9-7fcc-4797-1205-08ddb7cbb4fb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZUFyZjUzdmlxMG1xQ2dNWjI5b0pLYUh6VzVYN3JrQUl0V2czdEZWK3hEdHFU?=
- =?utf-8?B?UUQ1SU9UcHpZWVkxdkhsbi9iRXVMU3ZhWk5CUGtlUXk5QkV0Z0RVQXJEMVlH?=
- =?utf-8?B?aXdkeTJUcUJwVXVHb1J2dXFLUFBLcG9Kd25JQzJDRVdvUzZLQk9idXorL0FH?=
- =?utf-8?B?bWYrQ0YvUnlYa2ZESU9jUUdJSEd0VlFLeFlrSFRsZzltdFVhbUMxYmNkc2Vi?=
- =?utf-8?B?eUloTkt0allkT25Ia3l4VllyWFNDZVBoRHluNFJwdGxCM1JrTUwwNFIxTy9q?=
- =?utf-8?B?OC9kU1VrbnhkRXg0OXk3Q292UGpGc0MrdTVESFFtZEVvYkZBRDQyS1RsSndT?=
- =?utf-8?B?Uys3MWIrQ1BvdXFJR2RlQ1NGaFFURzVCM0lnZDVVaDk0THpvMW5qVm4vVUNU?=
- =?utf-8?B?S2R0Y1JZRFFaeUNudjFLb3RBNXZTM1BCdDQ4UEJkaGRhWGVpNFBnQ1Q4b3hN?=
- =?utf-8?B?N2I0T3NyNTBkODQyWGJoVFZrVEM4VWd3cGF6SFhJNTFpeEdEOVc0SlVPTlp5?=
- =?utf-8?B?eVlPNWsxMlZTS2hTNkhPWm1kemZYRzk2a1JJYnVlQWRiV0JrUDJ5L21UTDNO?=
- =?utf-8?B?djdWbms5akh0OWxOUTRuZkVnS1c0UERtNnZ6US9OUklzbFJsc0c5UGZBZmx3?=
- =?utf-8?B?blQxRmZhTm9hbFlPSHM2ZGt2ZFVrL0hJV2FVK2JTR0pvV0s2dkFjN3d2VDgx?=
- =?utf-8?B?YnNOR1A4azdROVdGbUZNSXh0UU5NQS92TTFwREhWbHZoK0Vtdk93L0MrNm1L?=
- =?utf-8?B?elpQZXdQeGMydVRnM09ST0V6MHJJRFlTRkI2aG9JSm9tV3Nsc2J4SElyVTAz?=
- =?utf-8?B?N0NMT2ZkRlNISk51c1c4QlVkVUEwb1VjZE9kY0VwZHhoalJSZ1ZNTzNXbzRH?=
- =?utf-8?B?MUh6VXZCdnA1TkxVWXZXbkRtQTYzc0g4MjlpOUdldi9UcGtRUkQwb1N0Ym5t?=
- =?utf-8?B?TlBuMkk1ZHY2djdsZTN6YXZGb3BCaFlMSmVhRnptYys2OEMwaEZsZHl2ZmRi?=
- =?utf-8?B?WEROeG12RGNJeUErSE9Dc21WY09xVVNpbjk5OUsxM2pJMHFrZ3cxVGE0Vmg1?=
- =?utf-8?B?MUpRSXptSmJWV2NNTTdzdjc3UWRncXkvbWpZNURsK0RicEhQYTdKRE9FT0Jr?=
- =?utf-8?B?ejMycmpOS3RBSVVvZXlkbFgwaENLR0Q3VVk3YjVMYTdGSGo4NWdvdDNzZzRz?=
- =?utf-8?B?Y0JhVWZ0akFNNE5lUHV6dVBWWWVQUnJDM2hZR3h6NElKSlRqYXZSYTM1aXNN?=
- =?utf-8?B?NWFUZVdPMkphb1lMVXl1WnhxT2xRakgvZnV0WU14WXA2WGVvNk1jN1U1c1Ft?=
- =?utf-8?B?SFFTOUYrc2NRbWg4RWt4NFVleGY4THVxS29VdUJBODl5R3FhdkpkdVhzeDVo?=
- =?utf-8?B?ZzlLQnVkY2ZaSXRoYmo0OEE1dThSVWxweDdsYXlLMjBUODMzY1krMHc3MGJH?=
- =?utf-8?B?dWJudEs3NlZTaW42REVkcWdJY1pyL1hvTCt5L013UDhDNFpvTGtaWXpvanNI?=
- =?utf-8?B?QUpMb2RWUjVUNXR5dFZRV0M2UmoxYmErWjRpUjhOL2dHTndOdElwN1hOU3pn?=
- =?utf-8?B?d09Bd3NlREYrajViQXVaQlhhd2d2bFQ5VWNkL3FmYWxTWEpFT1IxeXhNVEdt?=
- =?utf-8?B?bGZSNzE1S2F5ZlIrbWlFekFXSldyY1FkM3pKaFpwWmRkQnZuZHlWMTRxanFq?=
- =?utf-8?B?RDlxdGU2cFFOQWo5Ry9kc09qWE9LNXFuRkRNdklXTGVYNFJSOWdGMndCd1hF?=
- =?utf-8?B?blFlNWMrZ3dOTkZCOXp6Q3N0YU9JWTcyeW9WZTQzVzZwY1hidHNFVmc1YU9P?=
- =?utf-8?Q?I5O0Zxv9rXoamkPp5MdsuX+a8j6VVhPm9rNYw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?U3V1UnRpT2FBZ1hOSWtRM0l1UWRibVpGNGFNZXRCUUpnalpjcTVjTnZKV044?=
- =?utf-8?B?ckZlbU1xN1VrLzllTVM3dXBSU3FPUnhHU0RndVQrb2dDbzVMV3U2eWd6dFVR?=
- =?utf-8?B?dmQ0YVF2MlM1aE03ZjdMZytqTGI3RG9aSGNya2RpVTdnZkRBY1dlTWxHYU43?=
- =?utf-8?B?blhzTVNIUDR0cHV2OFVxQ0RuVjBZMFRMRVMxR2owb01GRWlsNFRwY0Z0dFVz?=
- =?utf-8?B?TkJiNVRxQWdrZDEwVDBYYnFIbWo1ZUZFbkJQL0J5UTBYYzdvby9JTWtvdGpz?=
- =?utf-8?B?U2FGNW1EUjJkYUpNMGlkblJNN3NIYWNGamVvMldOUllBWHJDTldyTU5JMmQ4?=
- =?utf-8?B?cUR2c3hYTVBVc3JZZUtNN3VkdFRVenZSanhXK0dBZXcyT0lTN2V0T3h4WE40?=
- =?utf-8?B?c0ZQK1dBazZiaUtCanJtRUkyZmNpSDhwT29wcFJpUHN6V3BKNndLdkJJMW9T?=
- =?utf-8?B?WDFMb0pSS3FqTkNNQTNYUE9XRXFrZm9SeUtHenZ6blRYdFpYazVaK0h3U2Fn?=
- =?utf-8?B?SmVkQVA2SmFuL1hjSDdmWXk0Z2tJOXBSK1p2RkVyV0dEUmxuTnJ1eHowczk4?=
- =?utf-8?B?eVBac0NRYTJuVkxKSks3d2JxR1F0UTNTYlB3WGpiWmw2dDgxZjJuRTlwS2o2?=
- =?utf-8?B?UE9rTWNJeE15czVQMnN5bE5jUC94Y0oxQmQwOXB0LzJKMGFzSmJpQXV3Tk5q?=
- =?utf-8?B?bWt5VnZMdFlESzd1MmZGS0dGbk5BSFUrQU5XNGRHcTdqemhORTFjVnZXQ2Js?=
- =?utf-8?B?aTdZaGJCa29Qb3NDSlZJQUk5YzhNWVFlcUo0d05oeWFYQXFCcEVRaG90MFBq?=
- =?utf-8?B?THNaN2VvcmptOVhSdjZaTzRCSUI5ZStacWxsamlWblZLYVBDaE9qWWEyWGRJ?=
- =?utf-8?B?cUJlM3AyQ3M4NlRrRDAyTjhadU9xTFFmNW1OTmRqVXVpbWZqN3JrVngrRzhv?=
- =?utf-8?B?c3FRaFVWeDdOa29XcFRjNUM3a3E2MU13Y1VOcHRDZWxJRTBVa0FaYlZpaUI3?=
- =?utf-8?B?TGZIOXBwODFpODVsYnJYZWp2L2h0MmNpK1h4S0NHeHFXUnBCZHdnZndBa2hX?=
- =?utf-8?B?Uk5wM0tUODY3Nnd2UzZMRjZia05NQWNNRzNXMk14b3lWYTZwMFl2VUV3TmVG?=
- =?utf-8?B?MHVRZFZnd2lwN2xFKzVXRzlkRnFMb1dtNU5mMUIvRERJK3ozMGY0R3VRSnVE?=
- =?utf-8?B?ejlkUDBYaUhZZ2RhaXNhSnIvVDlpRXFsMlJYSFU1ZVowbmdUUENESVJRZldD?=
- =?utf-8?B?L09icHNMNjA4ZFgwUExheVoyNmhMcVdQYnArVFJhWjR5eVFheHE2ZU43Unps?=
- =?utf-8?B?NDZzSm05dTh4Q3lRU2E3Mkl3VVYydXB2ZDFoUks3Yk82dGRtVkU1Tzdmb0xs?=
- =?utf-8?B?N1JQd1g3dzJqVVFQam1ZZktKWlgrdnYrdHdjV1MyWjlIU3VrbnJWVlhUWTI3?=
- =?utf-8?B?eFA2eVdtdkx6RzFYMnZNNkRyTDd0UHNpYzNSWTBRb1YydkJkQVlBVUVSL09i?=
- =?utf-8?B?bDVqbkJGQVVqbEczYktSeWdTb0FHeHB1QUlTczVHeG1YZVlic1RUN1A3OUhP?=
- =?utf-8?B?M1JRT1F0U3YwTElsUXJraDhvZitUbDVTOVBtc1Mwbkc3OWhDN2NBWnRhWTZi?=
- =?utf-8?B?bnFtWHZwaTIxYjBWbjYzdVdtdzJxbS9aOS9jd2dWUHF5b2hqV0FPZUtQY0Jt?=
- =?utf-8?B?SlloUGZTeUZ0Q0ZrbTlqNG9yMjlxSXRlU2M5TkRHcTBDM3JCelVweGlnR2lM?=
- =?utf-8?B?c01VSmJad3EySHBSZFpVN0lpSzJUa2tjZkNVZjRFa3B0Q25jSVZML0d4QXdH?=
- =?utf-8?B?UnFMZVF1RldXVk9wQkRycWNpakJTNCt6L1V6ZHN5eUE3SldGSzIvdWU3RHVy?=
- =?utf-8?B?dnhWT3pxdWY0K1dEdzEzMlA2UHRNL24zMEdsYUUxako3TDNBWWRjTW1Bb2My?=
- =?utf-8?B?SVZ3UlZ6UENuY1N2bjFDblU3aGkvb2ZHWmZ0WDUzM0sydkNRWWZWUk40UDE1?=
- =?utf-8?B?UEVLY3YzVjlmYjg0L1VOSlZjaFJiSkl5Um1aY0hZOGt1N0Zxa2FrMzZCb1VN?=
- =?utf-8?B?b3ZacE93VkZ6U3hodXc1UVNBTkNLVHIvd3U0QzJyQ05WUVFsc3pJSmRscEl4?=
- =?utf-8?Q?l1aIXHAsPTcBw63HkyD+UQd4a?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 22f41dc9-7fcc-4797-1205-08ddb7cbb4fb
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-OriginatorOrg: sct-15-20-8813-0-msonline-outlook-f2c18.templateTenant
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2025 11:46:10.1485
+X-MS-Exchange-CrossTenant-AuthSource: PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3b46f866-4415-4c4c-a700-08ddb7d2d6a1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jun 2025 12:37:12.7780
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1Gbhzp79rSWidgzKG8CsIue0+HoFWWM/IJWOXU+sjZbqmBXNxie4spywjrTynwmI
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6614
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN0PR01MB6210
 
-On 30.06.25 13:34, Thomas Zimmermann wrote:
-> Hi
-> 
-> Am 30.06.25 um 10:49 schrieb Christian König:
->> On 30.06.25 10:36, Thomas Zimmermann wrote:
->>> A GEM handle can be released while the GEM buffer object is attached
->>> to a DRM framebuffer. This leads to the release of the dma-buf backing
->>> the buffer object, if any. [1] Trying to use the framebuffer in further
->>> mode-setting operations leads to a segmentation fault. Most easily
->>> happens with driver that use shadow planes for vmap-ing the dma-buf
->>> during a page flip. An example is shown below.
->>>
->>> [  156.791968] ------------[ cut here ]------------
->>> [  156.796830] WARNING: CPU: 2 PID: 2255 at drivers/dma-buf/dma-buf.c:1527 dma_buf_vmap+0x224/0x430
->>> [...]
->>> [  156.942028] RIP: 0010:dma_buf_vmap+0x224/0x430
->>> [  157.043420] Call Trace:
->>> [  157.045898]  <TASK>
->>> [  157.048030]  ? show_trace_log_lvl+0x1af/0x2c0
->>> [  157.052436]  ? show_trace_log_lvl+0x1af/0x2c0
->>> [  157.056836]  ? show_trace_log_lvl+0x1af/0x2c0
->>> [  157.061253]  ? drm_gem_shmem_vmap+0x74/0x710
->>> [  157.065567]  ? dma_buf_vmap+0x224/0x430
->>> [  157.069446]  ? __warn.cold+0x58/0xe4
->>> [  157.073061]  ? dma_buf_vmap+0x224/0x430
->>> [  157.077111]  ? report_bug+0x1dd/0x390
->>> [  157.080842]  ? handle_bug+0x5e/0xa0
->>> [  157.084389]  ? exc_invalid_op+0x14/0x50
->>> [  157.088291]  ? asm_exc_invalid_op+0x16/0x20
->>> [  157.092548]  ? dma_buf_vmap+0x224/0x430
->>> [  157.096663]  ? dma_resv_get_singleton+0x6d/0x230
->>> [  157.101341]  ? __pfx_dma_buf_vmap+0x10/0x10
->>> [  157.105588]  ? __pfx_dma_resv_get_singleton+0x10/0x10
->>> [  157.110697]  drm_gem_shmem_vmap+0x74/0x710
->>> [  157.114866]  drm_gem_vmap+0xa9/0x1b0
->>> [  157.118763]  drm_gem_vmap_unlocked+0x46/0xa0
->>> [  157.123086]  drm_gem_fb_vmap+0xab/0x300
->>> [  157.126979]  drm_atomic_helper_prepare_planes.part.0+0x487/0xb10
->>> [  157.133032]  ? lockdep_init_map_type+0x19d/0x880
->>> [  157.137701]  drm_atomic_helper_commit+0x13d/0x2e0
->>> [  157.142671]  ? drm_atomic_nonblocking_commit+0xa0/0x180
->>> [  157.147988]  drm_mode_atomic_ioctl+0x766/0xe40
->>> [...]
->>> [  157.346424] ---[ end trace 0000000000000000 ]---
->>>
->>> Acquiring GEM handles for the framebuffer's GEM buffer objects prevents
->>> this from happening. The framebuffer's cleanup later puts the handle
->>> references.
->>>
->>> Commit 1a148af06000 ("drm/gem-shmem: Use dma_buf from GEM object
->>> instance") triggers the segmentation fault easily by using the dma-buf
->>> field more widely. The underlying issue with reference counting has
->>> been present before.
->>>
->>> v2:
->>> - acquire the handle instead of the BO (Christian)
->>> - fix comment style (Christian)
->>> - drop the Fixes tag (Christian)
->>> - rename err_ gotos
->>> - add missing Link tag
->>>
->>> Suggested-by: Christian König <christian.koenig@amd.com>
->>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Reviewed-by: Christian König <christian.koenig@amd.com>
-> 
-> Thanks a lot
-> 
->>
->> But I strongly suggest to let the different CI systems take a look as well, we already had to much fun with that.
-> 
-> I can wait a bit longer for reports, but the patch fixes a regression in v6.15. I'd rather see it merged soon-ish.
+Both hid-apple and hid-magicmouse require set up a battery timer for
+certain devices in order to fetch battery status. However, the timer
+is being set unconditionally for all devices. This patch series
+introduces checks to ensure that the battery timer is only set up for
+devices that actually require it.
 
-Yeah, agree. I just want to make sure that we don't have a case where we never create a handle for a BO, but still try to have a FB for it.
+v2: - Address the cases of out_err and err_stop_hw left in v1
+    - Create a function to check if the device is a USB Magic Mouse 2 or Ma=
+gic Trackpad 2
+      to reduce code duplication.
+    - Add 2 new patches that convert the battery timeout to use
+      secs_to_jiffies() instead of msecs_to_jiffies().
 
-I'm pretty sure such cases don't exists any more, but who knows?
+Aditya Garg (4):
+  HID: apple: avoid setting up battery timer for devices without battery
+  HID: magicmouse: avoid setting up battery timer when not needed
+  HID: apple: use secs_to_jiffies() for battery timeout
+  HID: magicmouse: use secs_to_jiffies() for battery timeout
 
-Anyway feel free to push it to drm-misc-fixes as soon as possible, just keep it in the back of your mind to keep an eye on it.
+ drivers/hid/hid-apple.c      | 21 +++++++-----
+ drivers/hid/hid-magicmouse.c | 66 ++++++++++++++++++++++--------------
+ 2 files changed, 54 insertions(+), 33 deletions(-)
 
-Regards,
-Christian.
-
-> 
-> Best regards
-> Thomas
-> 
->>
->> Regards,
->> Christian.
->>
->>> Link: https://elixir.bootlin.com/linux/v6.15/source/drivers/gpu/drm/drm_gem.c#L241 # [1]
->>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->>> Cc: Anusha Srivatsa <asrivats@redhat.com>
->>> Cc: Christian König <christian.koenig@amd.com>
->>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->>> Cc: Maxime Ripard <mripard@kernel.org>
->>> Cc: Sumit Semwal <sumit.semwal@linaro.org>
->>> Cc: "Christian König" <christian.koenig@amd.com>
->>> Cc: linux-media@vger.kernel.org
->>> Cc: dri-devel@lists.freedesktop.org
->>> Cc: linaro-mm-sig@lists.linaro.org
->>> Cc: <stable@vger.kernel.org>
->>> ---
->>>   drivers/gpu/drm/drm_gem.c                    | 44 ++++++++++++++++++--
->>>   drivers/gpu/drm/drm_gem_framebuffer_helper.c | 16 +++----
->>>   drivers/gpu/drm/drm_internal.h               |  2 +
->>>   3 files changed, 51 insertions(+), 11 deletions(-)
->>>
->>> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
->>> index 19d50d254fe6..bc505d938b3e 100644
->>> --- a/drivers/gpu/drm/drm_gem.c
->>> +++ b/drivers/gpu/drm/drm_gem.c
->>> @@ -213,6 +213,35 @@ void drm_gem_private_object_fini(struct drm_gem_object *obj)
->>>   }
->>>   EXPORT_SYMBOL(drm_gem_private_object_fini);
->>>   +static void drm_gem_object_handle_get(struct drm_gem_object *obj)
->>> +{
->>> +    struct drm_device *dev = obj->dev;
->>> +
->>> +    drm_WARN_ON(dev, !mutex_is_locked(&dev->object_name_lock));
->>> +
->>> +    if (obj->handle_count++ == 0)
->>> +        drm_gem_object_get(obj);
->>> +}
->>> +
->>> +/**
->>> + * drm_gem_object_handle_get_unlocked - acquire reference on user-space handles
->>> + * @obj: GEM object
->>> + *
->>> + * Acquires a reference on the GEM buffer object's handle. Required
->>> + * to keep the GEM object alive. Call drm_gem_object_handle_put_unlocked()
->>> + * to release the reference.
->>> + */
->>> +void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj)
->>> +{
->>> +    struct drm_device *dev = obj->dev;
->>> +
->>> +    guard(mutex)(&dev->object_name_lock);
->>> +
->>> +    drm_WARN_ON(dev, !obj->handle_count); /* first ref taken in create-tail helper */
->>> +    drm_gem_object_handle_get(obj);
->>> +}
->>> +EXPORT_SYMBOL(drm_gem_object_handle_get_unlocked);
->>> +
->>>   /**
->>>    * drm_gem_object_handle_free - release resources bound to userspace handles
->>>    * @obj: GEM object to clean up.
->>> @@ -243,8 +272,14 @@ static void drm_gem_object_exported_dma_buf_free(struct drm_gem_object *obj)
->>>       }
->>>   }
->>>   -static void
->>> -drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
->>> +/**
->>> + * drm_gem_object_handle_put_unlocked - releases reference on user-space handles
->>> + * @obj: GEM object
->>> + *
->>> + * Releases a reference on the GEM buffer object's handle. Possibly releases
->>> + * the GEM buffer object and associated dma-buf objects.
->>> + */
->>> +void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
->>>   {
->>>       struct drm_device *dev = obj->dev;
->>>       bool final = false;
->>> @@ -269,6 +304,7 @@ drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
->>>       if (final)
->>>           drm_gem_object_put(obj);
->>>   }
->>> +EXPORT_SYMBOL(drm_gem_object_handle_put_unlocked);
->>>     /*
->>>    * Called at device or object close to release the file's
->>> @@ -390,8 +426,8 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
->>>       int ret;
->>>         WARN_ON(!mutex_is_locked(&dev->object_name_lock));
->>> -    if (obj->handle_count++ == 0)
->>> -        drm_gem_object_get(obj);
->>> +
->>> +    drm_gem_object_handle_get(obj);
->>>         /*
->>>        * Get the user-visible handle using idr.  Preload and perform
->>> diff --git a/drivers/gpu/drm/drm_gem_framebuffer_helper.c b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
->>> index 618ce725cd75..c60d0044d036 100644
->>> --- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
->>> +++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
->>> @@ -100,7 +100,7 @@ void drm_gem_fb_destroy(struct drm_framebuffer *fb)
->>>       unsigned int i;
->>>         for (i = 0; i < fb->format->num_planes; i++)
->>> -        drm_gem_object_put(fb->obj[i]);
->>> +        drm_gem_object_handle_put_unlocked(fb->obj[i]);
->>>         drm_framebuffer_cleanup(fb);
->>>       kfree(fb);
->>> @@ -183,8 +183,10 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
->>>           if (!objs[i]) {
->>>               drm_dbg_kms(dev, "Failed to lookup GEM object\n");
->>>               ret = -ENOENT;
->>> -            goto err_gem_object_put;
->>> +            goto err_gem_object_handle_put_unlocked;
->>>           }
->>> +        drm_gem_object_handle_get_unlocked(objs[i]);
->>> +        drm_gem_object_put(objs[i]);
->>>             min_size = (height - 1) * mode_cmd->pitches[i]
->>>                + drm_format_info_min_pitch(info, i, width)
->>> @@ -194,22 +196,22 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
->>>               drm_dbg_kms(dev,
->>>                       "GEM object size (%zu) smaller than minimum size (%u) for plane %d\n",
->>>                       objs[i]->size, min_size, i);
->>> -            drm_gem_object_put(objs[i]);
->>> +            drm_gem_object_handle_put_unlocked(objs[i]);
->>>               ret = -EINVAL;
->>> -            goto err_gem_object_put;
->>> +            goto err_gem_object_handle_put_unlocked;
->>>           }
->>>       }
->>>         ret = drm_gem_fb_init(dev, fb, mode_cmd, objs, i, funcs);
->>>       if (ret)
->>> -        goto err_gem_object_put;
->>> +        goto err_gem_object_handle_put_unlocked;
->>>         return 0;
->>>   -err_gem_object_put:
->>> +err_gem_object_handle_put_unlocked:
->>>       while (i > 0) {
->>>           --i;
->>> -        drm_gem_object_put(objs[i]);
->>> +        drm_gem_object_handle_put_unlocked(objs[i]);
->>>       }
->>>       return ret;
->>>   }
->>> diff --git a/drivers/gpu/drm/drm_internal.h b/drivers/gpu/drm/drm_internal.h
->>> index 442eb31351dd..f7b414a813ae 100644
->>> --- a/drivers/gpu/drm/drm_internal.h
->>> +++ b/drivers/gpu/drm/drm_internal.h
->>> @@ -161,6 +161,8 @@ void drm_sysfs_lease_event(struct drm_device *dev);
->>>     /* drm_gem.c */
->>>   int drm_gem_init(struct drm_device *dev);
->>> +void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj);
->>> +void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj);
->>>   int drm_gem_handle_create_tail(struct drm_file *file_priv,
->>>                      struct drm_gem_object *obj,
->>>                      u32 *handlep);
-> 
+Range-diff against v1:
+1:  05b6ac964 ! 1:  41c49e1d6 HID: apple: avoid setting up battery timer fo=
+r devices without battery
+    @@ drivers/hid/hid-apple.c: static int apple_probe(struct hid_device *h=
+dev,
+     =20
+      	if (quirks & APPLE_BACKLIGHT_CTL)
+      		apple_backlight_init(hdev);
+    +@@ drivers/hid/hid-apple.c: static int apple_probe(struct hid_device *=
+hdev,
+    + 	return 0;
+    +=20
+    + out_err:
+    +-	timer_delete_sync(&asc->battery_timer);
+    ++	if (quirks & APPLE_RDESC_BATTERY)
+    ++		timer_delete_sync(&asc->battery_timer);
+    ++
+    + 	hid_hw_stop(hdev);
+    + 	return ret;
+    + }
+     @@ drivers/hid/hid-apple.c: static void apple_remove(struct hid_device=
+ *hdev)
+      {
+      	struct apple_sc *asc =3D hid_get_drvdata(hdev);
+2:  25b52facf ! 2:  a1617042f HID: magicmouse: avoid setting up battery tim=
+er when not needed
+    @@ Commit message
+         Signed-off-by: Aditya Garg <gargaditya08@live.com>
+    =20
+      ## drivers/hid/hid-magicmouse.c ##
+    +@@ drivers/hid/hid-magicmouse.c: static void magicmouse_enable_mt_work=
+(struct work_struct *work)
+    + 		hid_err(msc->hdev, "unable to request touch data (%d)\n", ret);
+    + }
+    +=20
+    ++static bool is_usb_magicmouse2(__u32 vendor, __u32 product)
+    ++{
+    ++	if (vendor !=3D USB_VENDOR_ID_APPLE)
+    ++		return false;
+    ++	return product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
+    ++	       product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2_USBC;
+    ++}
+    ++
+    ++static bool is_usb_magictrackpad2(__u32 vendor, __u32 product)
+    ++{
+    ++	if (vendor !=3D USB_VENDOR_ID_APPLE)
+    ++		return false;
+    ++	return product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
+    ++	       product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC;
+    ++}
+    ++
+    + static int magicmouse_fetch_battery(struct hid_device *hdev)
+    + {
+    + #ifdef CONFIG_HID_BATTERY_STRENGTH
+    + 	struct hid_report_enum *report_enum;
+    + 	struct hid_report *report;
+    +=20
+    +-	if (!hdev->battery || hdev->vendor !=3D USB_VENDOR_ID_APPLE ||
+    +-	    (hdev->product !=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2 &&
+    +-	     hdev->product !=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2_USBC &&
+    +-	     hdev->product !=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
+    +-	     hdev->product !=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC))
+    ++	if (!hdev->battery ||
+    ++	    (!is_usb_magicmouse2(hdev->vendor, hdev->product) &&
+    ++	     !is_usb_magictrackpad2(hdev->vendor, hdev->product)))
+    + 		return -1;
+    +=20
+    + 	report_enum =3D &hdev->report_enum[hdev->battery_report_type];
+     @@ drivers/hid/hid-magicmouse.c: static int magicmouse_probe(struct hi=
+d_device *hdev,
+      		return ret;
+      	}
+    @@ drivers/hid/hid-magicmouse.c: static int magicmouse_probe(struct hid=
+_device *hde
+     -	     ((id->product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
+     -	       id->product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &=
+&
+     -	      hdev->type !=3D HID_TYPE_USBMOUSE)))
+    --		return 0;
+    -+	if (id->vendor =3D=3D USB_VENDOR_ID_APPLE) {
+    -+		bool is_mouse2 =3D (id->product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOU=
+SE2 ||
+    -+				  id->product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2_USBC);
+    -+		bool is_trackpad2 =3D (id->product =3D=3D USB_DEVICE_ID_APPLE_MAGIC=
+TRACKPAD2 ||
+    -+				     id->product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC);
+    -+
+    -+		if (is_mouse2 || is_trackpad2) {
+    -+			timer_setup(&msc->battery_timer, magicmouse_battery_timer_tick, 0)=
+;
+    -+			mod_timer(&msc->battery_timer,
+    -+				  jiffies + msecs_to_jiffies(USB_BATTERY_TIMEOUT_MS));
+    -+			magicmouse_fetch_battery(hdev);
+    -+		}
+    -+
+    -+		if (is_mouse2 || (is_trackpad2 && hdev->type !=3D HID_TYPE_USBMOUSE=
+))
+    -+			return 0;
+    ++	if (is_usb_magicmouse2(id->vendor, id->product) ||
+    ++	    is_usb_magictrackpad2(id->vendor, id->product)) {
+    ++		timer_setup(&msc->battery_timer, magicmouse_battery_timer_tick, 0);
+    ++		mod_timer(&msc->battery_timer,
+    ++			  jiffies + msecs_to_jiffies(USB_BATTERY_TIMEOUT_MS));
+    ++		magicmouse_fetch_battery(hdev);
+     +	}
+    ++
+    ++	if (is_usb_magicmouse2(id->vendor, id->product) ||
+    ++	    (is_usb_magictrackpad2(id->vendor, id->product) &&
+    ++	     hdev->type !=3D HID_TYPE_USBMOUSE))
+    + 		return 0;
+     =20
+      	if (!msc->input) {
+    - 		hid_err(hdev, "magicmouse input not registered\n");
+    +@@ drivers/hid/hid-magicmouse.c: static int magicmouse_probe(struct hi=
+d_device *hdev,
+    +=20
+    + 	return 0;
+    + err_stop_hw:
+    +-	timer_delete_sync(&msc->battery_timer);
+    ++	if (is_usb_magicmouse2(id->vendor, id->product) ||
+    ++	    is_usb_magictrackpad2(id->vendor, id->product))
+    ++		timer_delete_sync(&msc->battery_timer);
+    ++
+    + 	hid_hw_stop(hdev);
+    + 	return ret;
+    + }
+     @@ drivers/hid/hid-magicmouse.c: static void magicmouse_remove(struct =
+hid_device *hdev)
+     =20
+      	if (msc) {
+      		cancel_delayed_work_sync(&msc->work);
+     -		timer_delete_sync(&msc->battery_timer);
+    -+		if (hdev->vendor =3D=3D USB_VENDOR_ID_APPLE &&
+    -+		    (hdev->product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
+    -+		     hdev->product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2_USBC ||
+    -+		     hdev->product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
+    -+		     hdev->product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC))
+    -+
+    ++		if (is_usb_magicmouse2(hdev->vendor, hdev->product) ||
+    ++		    is_usb_magictrackpad2(hdev->vendor, hdev->product))
+     +			timer_delete_sync(&msc->battery_timer);
+      	}
+     =20
+      	hid_hw_stop(hdev);
+    +@@ drivers/hid/hid-magicmouse.c: static const __u8 *magicmouse_report_=
+fixup(struct hid_device *hdev, __u8 *rdesc,
+    + 	 *   0x05, 0x01,       // Usage Page (Generic Desktop)        0
+    + 	 *   0x09, 0x02,       // Usage (Mouse)                       2
+    + 	 */
+    +-	if (hdev->vendor =3D=3D USB_VENDOR_ID_APPLE &&
+    +-	    (hdev->product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
+    +-	     hdev->product =3D=3D USB_DEVICE_ID_APPLE_MAGICMOUSE2_USBC ||
+    +-	     hdev->product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
+    +-	     hdev->product =3D=3D USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &=
+&
+    ++	if ((is_usb_magicmouse2(hdev->vendor, hdev->product) ||
+    ++	     is_usb_magictrackpad2(hdev->vendor, hdev->product)) &&
+    + 	    *rsize =3D=3D 83 && rdesc[46] =3D=3D 0x84 && rdesc[58] =3D=3D 0x=
+85) {
+    + 		hid_info(hdev,
+    + 			 "fixing up magicmouse battery report descriptor\n");
+-:  --------- > 3:  3ebe25998 HID: apple: use secs_to_jiffies() for battery=
+ timeout
+-:  --------- > 4:  1d3400714 HID: magicmouse: use secs_to_jiffies() for ba=
+ttery timeout
+--=20
+2.49.0
 
 
