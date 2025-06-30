@@ -1,421 +1,198 @@
-Return-Path: <stable+bounces-158931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1FE8AEDB2F
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 13:35:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92EC8AEDB32
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 13:35:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D94E189B46D
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:35:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 533427AAB1D
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 11:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F65825DD07;
-	Mon, 30 Jun 2025 11:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D4225F975;
+	Mon, 30 Jun 2025 11:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wcFEuoQC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lTKoR93/";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wcFEuoQC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lTKoR93/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W9q8UUaM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFA1245022
-	for <stable@vger.kernel.org>; Mon, 30 Jun 2025 11:35:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8A125F780;
+	Mon, 30 Jun 2025 11:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751283302; cv=none; b=P91xpeMgDyubiknJ4pzW6AmpBM2HlP2J7R6uV2V9oItfVZ9dqM5JJna9YtlePieDQf5bd322wuKPf5MuJJrDJLOznKY0hAdSSpFml2WhTlD2jDSYdG/lJb/YuHzRbgiNe2YMLS0XgRnZ6cbNicPHtAhlWTe7bJVl8ldm9DMua6c=
+	t=1751283327; cv=none; b=hX2RX2C/MhUrmZDn7drhtRr0t7gecm6iqdlOPwfDZvLd1/yDbkjA8qFW4cRuWQb7/NGtbXSGTR4teAl9Ot4KZmlpbChUmNRGtvO/Og/p7n5O/r/PPiVs3x6tp6MLzryEAT6yDvBJhtWPu540d7purUUfScftLNjEncmU52JEa/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751283302; c=relaxed/simple;
-	bh=jMCAWqbRImgF/EHCONFITy3YAQSv3tJsJwPcm+NY8Ac=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KxAFwWoCOwKqFqrHl12Vaz4smQ5sQYnHjyli4qwOpVxB7xiATkjtkXYggZdpC8jNvx5BTeCt8vlu//hGRO6qlPaEyYEATBc7Dbe1GGu7xgIIgELWyoOC5beM788lLcYEg1zhVhRYqU46sFXz5d6WCTHIDyykMBSxtkL9mass8/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wcFEuoQC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=lTKoR93/; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wcFEuoQC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=lTKoR93/; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A9F171F390;
-	Mon, 30 Jun 2025 11:34:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1751283298; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wbgDC0ZRdKrtm2pRADzZklnD+ZGXDDFTn3lHR6tDBSI=;
-	b=wcFEuoQC1DqkdqRbN/6KBhQ1qT/tzdjyjtZjW+oCjbOTmbBwJ/qM7zN6QxbF0dbcYzHGjW
-	fmflKOejYN4Ugz6slkHm9NdPSP9RcDWtsHnBWG9J+VrL1e2B0V4N6JD7aOpcpEK/PulyKC
-	+J7eq1Dr2ymnjUlZct/LRo8ZO98JFho=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1751283298;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wbgDC0ZRdKrtm2pRADzZklnD+ZGXDDFTn3lHR6tDBSI=;
-	b=lTKoR93/fAl78bdpT0XtFBwGiVJuECd6frh3zArWZ5+2dscWMVlqSdwjRO0IzNBjerwphk
-	QgrnEjfhB0sz6cCw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wcFEuoQC;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="lTKoR93/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1751283298; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wbgDC0ZRdKrtm2pRADzZklnD+ZGXDDFTn3lHR6tDBSI=;
-	b=wcFEuoQC1DqkdqRbN/6KBhQ1qT/tzdjyjtZjW+oCjbOTmbBwJ/qM7zN6QxbF0dbcYzHGjW
-	fmflKOejYN4Ugz6slkHm9NdPSP9RcDWtsHnBWG9J+VrL1e2B0V4N6JD7aOpcpEK/PulyKC
-	+J7eq1Dr2ymnjUlZct/LRo8ZO98JFho=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1751283298;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wbgDC0ZRdKrtm2pRADzZklnD+ZGXDDFTn3lHR6tDBSI=;
-	b=lTKoR93/fAl78bdpT0XtFBwGiVJuECd6frh3zArWZ5+2dscWMVlqSdwjRO0IzNBjerwphk
-	QgrnEjfhB0sz6cCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5BC8413983;
-	Mon, 30 Jun 2025 11:34:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WST4FGJ2YmhxOQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 30 Jun 2025 11:34:58 +0000
-Message-ID: <3477130c-8470-43cc-ba97-0ce48bdf025d@suse.de>
-Date: Mon, 30 Jun 2025 13:34:57 +0200
+	s=arc-20240116; t=1751283327; c=relaxed/simple;
+	bh=jxDgTymgrkOCfaHXF2Y6MXcF4JNlwCcl3zCw9mUO+7c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n06ryWl7Yf26TRNXFyw4bMO3Ufl29CLIIv4MVx5BeJbqV+5ZNAx4Sh/jB9HNfrQ4dHmbQyTMJPd/50O83L9I1Phrg6Q396Iz67N7MGU72SxvT2ueB2/3wT2dY5P7YFAlh1P5WXPAa8AYDHVXiLdpo4Gw8BBZDyzxCF2oB1/sqJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W9q8UUaM; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ae3a604b43bso6961266b.0;
+        Mon, 30 Jun 2025 04:35:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751283324; x=1751888124; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TN1pNkGyILLKxYs8q0ZgJa0IyHDHxUxA0RrIfq1B4rM=;
+        b=W9q8UUaMrCeeMHwVZpFZG93F04vUq97QIKHlFKmn9hRF9kKU7E5dP2xngBiF/WHW/r
+         t5TAajjRCPggG71z7pD5R5zRYDJwewgXx7AGjlXSxfgINgTmkLSowHCdVNXR7tH7gtv9
+         tTO0x/X013tY1OHAtDpp/Xo2j3F+I4bV9wueZKhsG/Pqiqds7NPt5H3mrJYNCDkHO6ZF
+         SvL41lE7DxZRGLdhK9kp+jcdliVYMB2/whXDJr291omjplMY8p0m2+bGtjsy86gynEBF
+         uYUZXNJ6H3e1mVD5NibOPMoG7paDwymkIdsxbslCjCFUmLnQCbk6TH7tcqG4Y+J818sl
+         UgOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751283324; x=1751888124;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TN1pNkGyILLKxYs8q0ZgJa0IyHDHxUxA0RrIfq1B4rM=;
+        b=gxdgLzaAoBELJ3ItVN7GCo68tn5txc7jM1ZIQHfv1NHQZnrJdyjj/HYlc8d9R2ZoTO
+         yKeZ64NxB5zV04ph2td8VhicD3NLhsLWsK66y+PFTvn5hI8fpzsqSnSmT0qkS4BoRkFS
+         VXVZluTDFpQJPPgsXUgSBR87anuxhMjM+wiXE/woIaCFRNrWL7fNPlMYFF0ZBdbfwX5t
+         5vmtyKeqvHfaqAr5+T0KlqX0+D3jorZ5mwBoV9CgFrtoD5TqdtvGW1gFM5PuzM5d+TXj
+         YDjweZX1wl1lvyfC7OqpySGDdHIsRLGlbrRTxAOW6swxKS7AkzhHCCmj9nekBLoc0tu3
+         7bgg==
+X-Forwarded-Encrypted: i=1; AJvYcCVXhsGYIfczRNZORwo/ZkhAQOJPNrTSw7a3xyt+j9gT+HqjZ1/KkxweGEl+dLZ3N9Y8jJQwuRqY8xuLUHK+@vger.kernel.org, AJvYcCWUgl568lrC93ZWK3ATn6oP1mcp5JDMDHAUaoRG6Jzt3CdH1YKYZMc357Y+ic4aJNAhp+Bfa6hTIqiKiiog@vger.kernel.org, AJvYcCXGwzOHCNYIOYpxe/iZe7Pay86c0N1D7G+s8aLUDw7UvjUpxxAtoonb34ungVWETmkT+XLKaplk@vger.kernel.org
+X-Gm-Message-State: AOJu0YwToVPHscd+zOKg860+3moqULrL2NDFufTfo0TZ7+lxQqLAmTEY
+	JXDrnE6GTfIh3VFLIJqjFP4n2QJPtEoog+lxsrj3cYMzyhBXtCD+t3bN4+PV/YyZWgmUBj51mlU
+	s7Cq/TA8fg7Jpj0NM4JVgYX1UyuE7pk+WnQ==
+X-Gm-Gg: ASbGncutM5JWdtUkOgXyJ3rjFbVUGDm91NP0x6IiRI/Ool6nj/ZYhNwJBf7RPAV1Y2K
+	bQaDg7SelKmZa0LcVlFu5XHE9eRt4SA1ZRS//+xdqDN+ImREp+TBZXpM5CBgngI4KJU44KyyeK8
+	ZxdspUTZQ+piFRvTk/YPtB4SLLojeJ4JpRWg2hEvsTDg==
+X-Google-Smtp-Source: AGHT+IGtXw4MK1+g3jT+Sq0XnairCuX39bxiUwT4AmNz3L+jvZSG0RA+WE095s6R3gIsGqhSXEWOHoc0lKUTw6QvQsA=
+X-Received: by 2002:a17:907:e84c:b0:ae3:53b3:b67d with SMTP id
+ a640c23a62f3a-ae353b3b746mr1037919966b.1.1751283323269; Mon, 30 Jun 2025
+ 04:35:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/gem: Acquire references on GEM handles for
- framebuffers
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- asrivats@redhat.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- airlied@gmail.com, simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org, Sumit Semwal <sumit.semwal@linaro.org>,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- stable@vger.kernel.org
-References: <20250630084001.293053-1-tzimmermann@suse.de>
- <9009d89b-91f0-496c-a45d-03d8f0fb7bf6@amd.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <9009d89b-91f0-496c-a45d-03d8f0fb7bf6@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: A9F171F390
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_TO(0.00)[amd.com,redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,amd.com:email,suse.de:mid,suse.de:dkim,suse.de:email];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Score: -4.51
-X-Spam-Level: 
+References: <20250629074021.1038845-1-sashal@kernel.org> <i3l4wxfnnnqfg76yg22zfjwzluog2buvc7rtpp67nnxtbslsb3@sggjxvhv7j2h>
+ <aGIA18cgkzv-05A2@lappy>
+In-Reply-To: <aGIA18cgkzv-05A2@lappy>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Mon, 30 Jun 2025 13:35:08 +0200
+X-Gm-Features: Ac12FXxKcLCNFnGjHQv0vFJY-m6rv6DvOVyZJ9Y8NkFLTQErXrsXjDGNf3iGevE
+Message-ID: <CAGudoHHuBBX_FWKp96TZV7vs2xvxkFNkukt4wysx7K3OZDsLDw@mail.gmail.com>
+Subject: Re: [PATCH] fs: Prevent file descriptor table allocations exceeding INT_MAX
+To: Sasha Levin <sashal@kernel.org>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
+	akpm@linux-foundation.org, dada1@cosmosbay.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi
-
-Am 30.06.25 um 10:49 schrieb Christian König:
-> On 30.06.25 10:36, Thomas Zimmermann wrote:
->> A GEM handle can be released while the GEM buffer object is attached
->> to a DRM framebuffer. This leads to the release of the dma-buf backing
->> the buffer object, if any. [1] Trying to use the framebuffer in further
->> mode-setting operations leads to a segmentation fault. Most easily
->> happens with driver that use shadow planes for vmap-ing the dma-buf
->> during a page flip. An example is shown below.
->>
->> [  156.791968] ------------[ cut here ]------------
->> [  156.796830] WARNING: CPU: 2 PID: 2255 at drivers/dma-buf/dma-buf.c:1527 dma_buf_vmap+0x224/0x430
->> [...]
->> [  156.942028] RIP: 0010:dma_buf_vmap+0x224/0x430
->> [  157.043420] Call Trace:
->> [  157.045898]  <TASK>
->> [  157.048030]  ? show_trace_log_lvl+0x1af/0x2c0
->> [  157.052436]  ? show_trace_log_lvl+0x1af/0x2c0
->> [  157.056836]  ? show_trace_log_lvl+0x1af/0x2c0
->> [  157.061253]  ? drm_gem_shmem_vmap+0x74/0x710
->> [  157.065567]  ? dma_buf_vmap+0x224/0x430
->> [  157.069446]  ? __warn.cold+0x58/0xe4
->> [  157.073061]  ? dma_buf_vmap+0x224/0x430
->> [  157.077111]  ? report_bug+0x1dd/0x390
->> [  157.080842]  ? handle_bug+0x5e/0xa0
->> [  157.084389]  ? exc_invalid_op+0x14/0x50
->> [  157.088291]  ? asm_exc_invalid_op+0x16/0x20
->> [  157.092548]  ? dma_buf_vmap+0x224/0x430
->> [  157.096663]  ? dma_resv_get_singleton+0x6d/0x230
->> [  157.101341]  ? __pfx_dma_buf_vmap+0x10/0x10
->> [  157.105588]  ? __pfx_dma_resv_get_singleton+0x10/0x10
->> [  157.110697]  drm_gem_shmem_vmap+0x74/0x710
->> [  157.114866]  drm_gem_vmap+0xa9/0x1b0
->> [  157.118763]  drm_gem_vmap_unlocked+0x46/0xa0
->> [  157.123086]  drm_gem_fb_vmap+0xab/0x300
->> [  157.126979]  drm_atomic_helper_prepare_planes.part.0+0x487/0xb10
->> [  157.133032]  ? lockdep_init_map_type+0x19d/0x880
->> [  157.137701]  drm_atomic_helper_commit+0x13d/0x2e0
->> [  157.142671]  ? drm_atomic_nonblocking_commit+0xa0/0x180
->> [  157.147988]  drm_mode_atomic_ioctl+0x766/0xe40
->> [...]
->> [  157.346424] ---[ end trace 0000000000000000 ]---
->>
->> Acquiring GEM handles for the framebuffer's GEM buffer objects prevents
->> this from happening. The framebuffer's cleanup later puts the handle
->> references.
->>
->> Commit 1a148af06000 ("drm/gem-shmem: Use dma_buf from GEM object
->> instance") triggers the segmentation fault easily by using the dma-buf
->> field more widely. The underlying issue with reference counting has
->> been present before.
->>
->> v2:
->> - acquire the handle instead of the BO (Christian)
->> - fix comment style (Christian)
->> - drop the Fixes tag (Christian)
->> - rename err_ gotos
->> - add missing Link tag
->>
->> Suggested-by: Christian König <christian.koenig@amd.com>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Reviewed-by: Christian König <christian.koenig@amd.com>
-
-Thanks a lot
-
+On Mon, Jun 30, 2025 at 5:13=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
+te:
 >
-> But I strongly suggest to let the different CI systems take a look as well, we already had to much fun with that.
-
-I can wait a bit longer for reports, but the patch fixes a regression in 
-v6.15. I'd rather see it merged soon-ish.
-
-Best regards
-Thomas
-
+> On Sun, Jun 29, 2025 at 09:58:12PM +0200, Mateusz Guzik wrote:
+> >On Sun, Jun 29, 2025 at 03:40:21AM -0400, Sasha Levin wrote:
+> >> When sysctl_nr_open is set to a very high value (for example, 10737418=
+16
+> >> as set by systemd), processes attempting to use file descriptors near
+> >> the limit can trigger massive memory allocation attempts that exceed
+> >> INT_MAX, resulting in a WARNING in mm/slub.c:
+> >>
+> >>   WARNING: CPU: 0 PID: 44 at mm/slub.c:5027 __kvmalloc_node_noprof+0x2=
+1a/0x288
+> >>
+> >> This happens because kvmalloc_array() and kvmalloc() check if the
+> >> requested size exceeds INT_MAX and emit a warning when the allocation =
+is
+> >> not flagged with __GFP_NOWARN.
+> >>
+> >> Specifically, when nr_open is set to 1073741816 (0x3ffffff8) and a
+> >> process calls dup2(oldfd, 1073741880), the kernel attempts to allocate=
+:
+> >> - File descriptor array: 1073741880 * 8 bytes =3D 8,589,935,040 bytes
+> >> - Multiple bitmaps: ~400MB
+> >> - Total allocation size: > 8GB (exceeding INT_MAX =3D 2,147,483,647)
+> >>
+> >> Reproducer:
+> >> 1. Set /proc/sys/fs/nr_open to 1073741816:
+> >>    # echo 1073741816 > /proc/sys/fs/nr_open
+> >>
+> >> 2. Run a program that uses a high file descriptor:
+> >>    #include <unistd.h>
+> >>    #include <sys/resource.h>
+> >>
+> >>    int main() {
+> >>        struct rlimit rlim =3D {1073741824, 1073741824};
+> >>        setrlimit(RLIMIT_NOFILE, &rlim);
+> >>        dup2(2, 1073741880);  // Triggers the warning
+> >>        return 0;
+> >>    }
+> >>
+> >> 3. Observe WARNING in dmesg at mm/slub.c:5027
+> >>
+> >> systemd commit a8b627a introduced automatic bumping of fs.nr_open to t=
+he
+> >> maximum possible value. The rationale was that systems with memory
+> >> control groups (memcg) no longer need separate file descriptor limits
+> >> since memory is properly accounted. However, this change overlooked
+> >> that:
+> >>
+> >> 1. The kernel's allocation functions still enforce INT_MAX as a maximu=
+m
+> >>    size regardless of memcg accounting
+> >> 2. Programs and tests that legitimately test file descriptor limits ca=
+n
+> >>    inadvertently trigger massive allocations
+> >> 3. The resulting allocations (>8GB) are impractical and will always fa=
+il
+> >>
+> >
+> >alloc_fdtable() seems like the wrong place to do it.
+> >
+> >If there is an explicit de facto limit, the machinery which alters
+> >fs.nr_open should validate against it.
+> >
+> >I understand this might result in systemd setting a new value which
+> >significantly lower than what it uses now which technically is a change
+> >in behavior, but I don't think it's a big deal.
+> >
+> >I'm assuming the kernel can't just set the value to something very high
+> >by default.
+> >
+> >But in that case perhaps it could expose the max settable value? Then
+> >systemd would not have to guess.
 >
-> Regards,
-> Christian.
+> The patch is in alloc_fdtable() because it's addressing a memory
+> allocator limitation, not a fundamental file descriptor limitation.
 >
->> Link: https://elixir.bootlin.com/linux/v6.15/source/drivers/gpu/drm/drm_gem.c#L241 # [1]
->> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: Anusha Srivatsa <asrivats@redhat.com>
->> Cc: Christian König <christian.koenig@amd.com>
->> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->> Cc: Maxime Ripard <mripard@kernel.org>
->> Cc: Sumit Semwal <sumit.semwal@linaro.org>
->> Cc: "Christian König" <christian.koenig@amd.com>
->> Cc: linux-media@vger.kernel.org
->> Cc: dri-devel@lists.freedesktop.org
->> Cc: linaro-mm-sig@lists.linaro.org
->> Cc: <stable@vger.kernel.org>
->> ---
->>   drivers/gpu/drm/drm_gem.c                    | 44 ++++++++++++++++++--
->>   drivers/gpu/drm/drm_gem_framebuffer_helper.c | 16 +++----
->>   drivers/gpu/drm/drm_internal.h               |  2 +
->>   3 files changed, 51 insertions(+), 11 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
->> index 19d50d254fe6..bc505d938b3e 100644
->> --- a/drivers/gpu/drm/drm_gem.c
->> +++ b/drivers/gpu/drm/drm_gem.c
->> @@ -213,6 +213,35 @@ void drm_gem_private_object_fini(struct drm_gem_object *obj)
->>   }
->>   EXPORT_SYMBOL(drm_gem_private_object_fini);
->>   
->> +static void drm_gem_object_handle_get(struct drm_gem_object *obj)
->> +{
->> +	struct drm_device *dev = obj->dev;
->> +
->> +	drm_WARN_ON(dev, !mutex_is_locked(&dev->object_name_lock));
->> +
->> +	if (obj->handle_count++ == 0)
->> +		drm_gem_object_get(obj);
->> +}
->> +
->> +/**
->> + * drm_gem_object_handle_get_unlocked - acquire reference on user-space handles
->> + * @obj: GEM object
->> + *
->> + * Acquires a reference on the GEM buffer object's handle. Required
->> + * to keep the GEM object alive. Call drm_gem_object_handle_put_unlocked()
->> + * to release the reference.
->> + */
->> +void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj)
->> +{
->> +	struct drm_device *dev = obj->dev;
->> +
->> +	guard(mutex)(&dev->object_name_lock);
->> +
->> +	drm_WARN_ON(dev, !obj->handle_count); /* first ref taken in create-tail helper */
->> +	drm_gem_object_handle_get(obj);
->> +}
->> +EXPORT_SYMBOL(drm_gem_object_handle_get_unlocked);
->> +
->>   /**
->>    * drm_gem_object_handle_free - release resources bound to userspace handles
->>    * @obj: GEM object to clean up.
->> @@ -243,8 +272,14 @@ static void drm_gem_object_exported_dma_buf_free(struct drm_gem_object *obj)
->>   	}
->>   }
->>   
->> -static void
->> -drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
->> +/**
->> + * drm_gem_object_handle_put_unlocked - releases reference on user-space handles
->> + * @obj: GEM object
->> + *
->> + * Releases a reference on the GEM buffer object's handle. Possibly releases
->> + * the GEM buffer object and associated dma-buf objects.
->> + */
->> +void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
->>   {
->>   	struct drm_device *dev = obj->dev;
->>   	bool final = false;
->> @@ -269,6 +304,7 @@ drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
->>   	if (final)
->>   		drm_gem_object_put(obj);
->>   }
->> +EXPORT_SYMBOL(drm_gem_object_handle_put_unlocked);
->>   
->>   /*
->>    * Called at device or object close to release the file's
->> @@ -390,8 +426,8 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
->>   	int ret;
->>   
->>   	WARN_ON(!mutex_is_locked(&dev->object_name_lock));
->> -	if (obj->handle_count++ == 0)
->> -		drm_gem_object_get(obj);
->> +
->> +	drm_gem_object_handle_get(obj);
->>   
->>   	/*
->>   	 * Get the user-visible handle using idr.  Preload and perform
->> diff --git a/drivers/gpu/drm/drm_gem_framebuffer_helper.c b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
->> index 618ce725cd75..c60d0044d036 100644
->> --- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
->> +++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
->> @@ -100,7 +100,7 @@ void drm_gem_fb_destroy(struct drm_framebuffer *fb)
->>   	unsigned int i;
->>   
->>   	for (i = 0; i < fb->format->num_planes; i++)
->> -		drm_gem_object_put(fb->obj[i]);
->> +		drm_gem_object_handle_put_unlocked(fb->obj[i]);
->>   
->>   	drm_framebuffer_cleanup(fb);
->>   	kfree(fb);
->> @@ -183,8 +183,10 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
->>   		if (!objs[i]) {
->>   			drm_dbg_kms(dev, "Failed to lookup GEM object\n");
->>   			ret = -ENOENT;
->> -			goto err_gem_object_put;
->> +			goto err_gem_object_handle_put_unlocked;
->>   		}
->> +		drm_gem_object_handle_get_unlocked(objs[i]);
->> +		drm_gem_object_put(objs[i]);
->>   
->>   		min_size = (height - 1) * mode_cmd->pitches[i]
->>   			 + drm_format_info_min_pitch(info, i, width)
->> @@ -194,22 +196,22 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
->>   			drm_dbg_kms(dev,
->>   				    "GEM object size (%zu) smaller than minimum size (%u) for plane %d\n",
->>   				    objs[i]->size, min_size, i);
->> -			drm_gem_object_put(objs[i]);
->> +			drm_gem_object_handle_put_unlocked(objs[i]);
->>   			ret = -EINVAL;
->> -			goto err_gem_object_put;
->> +			goto err_gem_object_handle_put_unlocked;
->>   		}
->>   	}
->>   
->>   	ret = drm_gem_fb_init(dev, fb, mode_cmd, objs, i, funcs);
->>   	if (ret)
->> -		goto err_gem_object_put;
->> +		goto err_gem_object_handle_put_unlocked;
->>   
->>   	return 0;
->>   
->> -err_gem_object_put:
->> +err_gem_object_handle_put_unlocked:
->>   	while (i > 0) {
->>   		--i;
->> -		drm_gem_object_put(objs[i]);
->> +		drm_gem_object_handle_put_unlocked(objs[i]);
->>   	}
->>   	return ret;
->>   }
->> diff --git a/drivers/gpu/drm/drm_internal.h b/drivers/gpu/drm/drm_internal.h
->> index 442eb31351dd..f7b414a813ae 100644
->> --- a/drivers/gpu/drm/drm_internal.h
->> +++ b/drivers/gpu/drm/drm_internal.h
->> @@ -161,6 +161,8 @@ void drm_sysfs_lease_event(struct drm_device *dev);
->>   
->>   /* drm_gem.c */
->>   int drm_gem_init(struct drm_device *dev);
->> +void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj);
->> +void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj);
->>   int drm_gem_handle_create_tail(struct drm_file *file_priv,
->>   			       struct drm_gem_object *obj,
->>   			       u32 *handlep);
+> The INT_MAX restriction comes from kvmalloc(), not from any inherent
+> constraint on how many FDs a process can have. If we implemented sparse
+> FD tables or if kvmalloc() later supports larger allocations, the same
+> nr_open value could become usable without any changes to FD handling
+> code.
+>
+> Putting the check at the sysctl layer would codify a temporary
+> implementation detail of the memory allocator as if it were a
+> fundamental FD limit. By keeping it at the allocation point, the check
+> reflects what it actually is - a current limitation of how large a
+> contiguous allocation we can make.
+>
+> This placement also means the limit naturally adjusts if the underlying
+> implementation changes, rather than requiring coordinated updates
+> between the sysctl validation and the allocator capabilities.
+>
+> I don't have a strong opinion either way...
+>
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+Allowing privileged userspace to set a limit which the kernel knows it
+cannot reach sounds like a bug to me.
 
+Indeed the limitation is an artifact of the current implementation, I
+don't understand the logic behind pretending it's not there.
+
+Regardless, not my call :)
+--=20
+Mateusz Guzik <mjguzik gmail.com>
 
