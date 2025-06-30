@@ -1,122 +1,206 @@
-Return-Path: <stable+bounces-158861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089FBAED2DD
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 05:20:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F949AED2FE
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 05:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ED8D16AE15
-	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 03:20:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C327188C67F
+	for <lists+stable@lfdr.de>; Mon, 30 Jun 2025 03:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C318229CE6;
-	Mon, 30 Jun 2025 03:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7AE91885A5;
+	Mon, 30 Jun 2025 03:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KX9WY1hR"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="SiabUvLc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBF81DA55;
-	Mon, 30 Jun 2025 03:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E77779D2;
+	Mon, 30 Jun 2025 03:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751253602; cv=none; b=SYCMZKPT8Az/n17+WUcjZkmlv6WpKg98wRHinNRqc6FYAKi46hQy/xh2qo29FP2MtHkxN9NlXc48MpLG6FmQheCobT9LDzsMjIdj11VGjAYMsGMBx2cyPDdSB0vGL+Ij/Rdh4rSo6mF3VLx7tsg+yzWw/iWZef6G0AjbZZXErc0=
+	t=1751255095; cv=none; b=ncXsBF/ltw1KWq8TypgWPz6Jp1VFFxM8cvFKKZy6GsXHYdfDMRNEM41PdoC1d6Lf4B7Ljrm4ddDabxPidbaQnZBlthxcifdlEebK5poN7HMuu6u7ScP9I1H6MBG98I+p7qQraqKdRdtvN7Y6roMGq/L6nPXe8up3TwHNPGNxbuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751253602; c=relaxed/simple;
-	bh=I+E03Pih6Nc8R/ntsygbzVXB+VC/CQ5HinZSLniQbM0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VBetRoR4XfWH97Z/L1vprH4ofAOJSuBALEAE9v35uEU3E9IZHe57wbvY10zy5dlnAl6HnLkjyMbO9PmpdvgOb8scM4z91AKazbOqioi75KcjFu5vSJqEUpvYrrk7MVl3j41YK4HOs6guWrylQcel2qwAHEwNtdW4YuYHuZ9dOIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KX9WY1hR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04368C4CEEB;
-	Mon, 30 Jun 2025 03:20:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751253602;
-	bh=I+E03Pih6Nc8R/ntsygbzVXB+VC/CQ5HinZSLniQbM0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KX9WY1hRAbcunK11JaGE9UFymH5CUhaFBBbpAQTkvvBP+HAPGNz/+9Byw6Sl1tcDg
-	 72Js+EaI382Ylk9jtThNh0JCi7/sQzn6YAu3U2mehSspH6WwrYsE7Le42wy5jCXBny
-	 aSVNvXXrsLUGm2eL0MngEhD8WUzxvf0El9qeKoNPp8HX6B+n24zM3EO0cW7+qWcevy
-	 zJSxxT54eEPe96wHEVspKO5lW6DEMjOHyM1OjIfZXniNY4g4KDesTBy6pcaonAOOwE
-	 GYyZ0MfiZupg4Yj0i7QL+pds5x6obGOPMHfyCTTfQSdm4jXMkeCdZaT5w693AhJFaD
-	 JUCSbcTohKVtA==
-From: Sasha Levin <sashal@kernel.org>
-To: akpm@linux-foundation.org,
-	peterx@redhat.com
-Cc: aarcange@redhat.com,
-	surenb@google.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/userfaultfd: fix missing PTE unmap for non-migration entries
-Date: Sun, 29 Jun 2025 23:19:58 -0400
-Message-Id: <20250630031958.1225651-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1751255095; c=relaxed/simple;
+	bh=88ulF0REYyPDR0/UxS+GxEO4n2Ih2fT7fzGanLXy7Cc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cqJGe+OOxUhh7MQZNlK7dkMdSeMuVhK36wrvGPIeSedpFNpprbF/wknlCwRbnC+G1buC9eThMk79VSAERbucPspOUnDhT68FAan2NFfG2fMvlcc7gAtT4cJd6pQ5SCIMPoImSGcmZ8o67zz2rNdI1A981WXv2xHg6XO0hLIA23M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=SiabUvLc; arc=none smtp.client-ip=115.124.30.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1751255089; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=QsTpXV2V1rV0+Oa1zr7kOXHhIJsc5m47BLpH4PEFQbM=;
+	b=SiabUvLc6+71VW+iMWKxuHC942qBYUdFLfoOkTLBtCpHgE5HgkEhoGVF5n3j+np2uV2jfvefis2RgCymkIhGfu+BqGms2tDa29VyaUmrYQtylVoeOO0CLvt8HxjIVZ68F+jCySROM2/GaHg5ziQh607U3STpBzpgo5TJSGA9HCA=
+Received: from 30.74.144.137(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wg3VK0b_1751255087 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 30 Jun 2025 11:44:47 +0800
+Message-ID: <4cbd6804-deff-4541-8c37-1ee4ba1a3845@linux.alibaba.com>
+Date: Mon, 30 Jun 2025 11:44:46 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/7] mm/shmem, swap: improve cached mTHP handling and
+ fix potential hung
+To: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins
+ <hughd@google.com>, Matthew Wilcox <willy@infradead.org>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Chris Li <chrisl@kernel.org>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250627062020.534-1-ryncsn@gmail.com>
+ <20250627062020.534-2-ryncsn@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20250627062020.534-2-ryncsn@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-When handling non-swap entries in move_pages_pte(), the error handling
-for entries that are NOT migration entries fails to unmap the page table
-entries before jumping to the error handling label.
 
-This results in a kmap/kunmap imbalance which on CONFIG_HIGHPTE systems
-triggers a WARNING in kunmap_local_indexed() because the kmap stack is
-corrupted.
 
-Example call trace on ARM32 (CONFIG_HIGHPTE enabled):
-  WARNING: CPU: 1 PID: 633 at mm/highmem.c:622 kunmap_local_indexed+0x178/0x17c
-  Call trace:
-    kunmap_local_indexed from move_pages+0x964/0x19f4
-    move_pages from userfaultfd_ioctl+0x129c/0x2144
-    userfaultfd_ioctl from sys_ioctl+0x558/0xd24
+On 2025/6/27 14:20, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> The current swap-in code assumes that, when a swap entry in shmem mapping
+> is order 0, its cached folios (if present) must be order 0 too, which
+> turns out not always correct.
+> 
+> The problem is shmem_split_large_entry is called before verifying the
+> folio will eventually be swapped in, one possible race is:
+> 
+>      CPU1                          CPU2
+> shmem_swapin_folio
+> /* swap in of order > 0 swap entry S1 */
+>    folio = swap_cache_get_folio
+>    /* folio = NULL */
+>    order = xa_get_order
+>    /* order > 0 */
+>    folio = shmem_swap_alloc_folio
+>    /* mTHP alloc failure, folio = NULL */
+>    <... Interrupted ...>
+>                                   shmem_swapin_folio
+>                                   /* S1 is swapped in */
+>                                   shmem_writeout
+>                                   /* S1 is swapped out, folio cached */
+>    shmem_split_large_entry(..., S1)
+>    /* S1 is split, but the folio covering it has order > 0 now */
+> 
+> Now any following swapin of S1 will hang: `xa_get_order` returns 0, and
+> folio lookup will return a folio with order > 0.  The
+> `xa_get_order(&mapping->i_pages, index) != folio_order(folio)` will always
+> return false causing swap-in to return -EEXIST.
+> 
+> And this looks fragile.  So fix this up by allowing seeing a larger folio
+> in swap cache, and check the whole shmem mapping range covered by the
+> swapin have the right swap value upon inserting the folio.  And drop the
+> redundant tree walks before the insertion.
+> 
+> This will actually improve performance, as it avoids two redundant Xarray
+> tree walks in the hot path, and the only side effect is that in the
+> failure path, shmem may redundantly reallocate a few folios causing
+> temporary slight memory pressure.
+> 
+> And worth noting, it may seems the order and value check before inserting
+> might help reducing the lock contention, which is not true.  The swap
+> cache layer ensures raced swapin will either see a swap cache folio or
+> failed to do a swapin (we have SWAP_HAS_CACHE bit even if swap cache is
+> bypassed), so holding the folio lock and checking the folio flag is
+> already good enough for avoiding the lock contention.  The chance that a
+> folio passes the swap entry value check but the shmem mapping slot has
+> changed should be very low.
+> 
+> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
+> Cc: <stable@vger.kernel.org>
 
-The issue was introduced with the UFFDIO_MOVE feature but became more
-frequent with the addition of guard pages (commit 7c53dfbdb024 ("mm: add
-PTE_MARKER_GUARD PTE marker")) which made the non-migration entry code
-path more commonly executed during userfaultfd operations.
+Thanks for fixing the issue.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-Fix this by ensuring PTEs are properly unmapped in all non-swap entry
-paths before jumping to the error handling label, not just for migration
-entries.
-
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- mm/userfaultfd.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 8253978ee0fb1..7c298e9cbc18f 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1384,14 +1384,15 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
- 
- 		entry = pte_to_swp_entry(orig_src_pte);
- 		if (non_swap_entry(entry)) {
-+			pte_unmap(src_pte);
-+			pte_unmap(dst_pte);
-+			src_pte = dst_pte = NULL;
- 			if (is_migration_entry(entry)) {
--				pte_unmap(src_pte);
--				pte_unmap(dst_pte);
--				src_pte = dst_pte = NULL;
- 				migration_entry_wait(mm, src_pmd, src_addr);
- 				err = -EAGAIN;
--			} else
-+			} else {
- 				err = -EFAULT;
-+			}
- 			goto out;
- 		}
- 
--- 
-2.39.5
+> ---
+>   mm/shmem.c | 30 +++++++++++++++++++++---------
+>   1 file changed, 21 insertions(+), 9 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 334b7b4a61a0..e3c9a1365ff4 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -884,7 +884,9 @@ static int shmem_add_to_page_cache(struct folio *folio,
+>   				   pgoff_t index, void *expected, gfp_t gfp)
+>   {
+>   	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
+> -	long nr = folio_nr_pages(folio);
+> +	unsigned long nr = folio_nr_pages(folio);
+> +	swp_entry_t iter, swap;
+> +	void *entry;
+>   
+>   	VM_BUG_ON_FOLIO(index != round_down(index, nr), folio);
+>   	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+> @@ -896,14 +898,24 @@ static int shmem_add_to_page_cache(struct folio *folio,
+>   
+>   	gfp &= GFP_RECLAIM_MASK;
+>   	folio_throttle_swaprate(folio, gfp);
+> +	swap = iter = radix_to_swp_entry(expected);
+>   
+>   	do {
+>   		xas_lock_irq(&xas);
+> -		if (expected != xas_find_conflict(&xas)) {
+> -			xas_set_err(&xas, -EEXIST);
+> -			goto unlock;
+> +		xas_for_each_conflict(&xas, entry) {
+> +			/*
+> +			 * The range must either be empty, or filled with
+> +			 * expected swap entries. Shmem swap entries are never
+> +			 * partially freed without split of both entry and
+> +			 * folio, so there shouldn't be any holes.
+> +			 */
+> +			if (!expected || entry != swp_to_radix_entry(iter)) {
+> +				xas_set_err(&xas, -EEXIST);
+> +				goto unlock;
+> +			}
+> +			iter.val += 1 << xas_get_order(&xas);
+>   		}
+> -		if (expected && xas_find_conflict(&xas)) {
+> +		if (expected && iter.val - nr != swap.val) {
+>   			xas_set_err(&xas, -EEXIST);
+>   			goto unlock;
+>   		}
+> @@ -2323,7 +2335,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+>   			error = -ENOMEM;
+>   			goto failed;
+>   		}
+> -	} else if (order != folio_order(folio)) {
+> +	} else if (order > folio_order(folio)) {
+>   		/*
+>   		 * Swap readahead may swap in order 0 folios into swapcache
+>   		 * asynchronously, while the shmem mapping can still stores
+> @@ -2348,15 +2360,15 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+>   
+>   			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
+>   		}
+> +	} else if (order < folio_order(folio)) {
+> +		swap.val = round_down(swap.val, 1 << folio_order(folio));
+>   	}
+>   
+>   alloced:
+>   	/* We have to do this with folio locked to prevent races */
+>   	folio_lock(folio);
+>   	if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
+> -	    folio->swap.val != swap.val ||
+> -	    !shmem_confirm_swap(mapping, index, swap) ||
+> -	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
+> +	    folio->swap.val != swap.val) {
+>   		error = -EEXIST;
+>   		goto unlock;
+>   	}
 
 
