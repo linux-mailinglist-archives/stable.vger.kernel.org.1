@@ -1,175 +1,153 @@
-Return-Path: <stable+bounces-159134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43B0AEF557
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 12:42:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0049CAEF68D
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 13:30:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18CFB4A3CE0
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 10:42:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 348BB440BC5
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 11:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A5B26F445;
-	Tue,  1 Jul 2025 10:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1FA272E74;
+	Tue,  1 Jul 2025 11:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="muqR9yG8"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dIOPd/uU"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA9626A0FC;
-	Tue,  1 Jul 2025 10:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C19242D8C
+	for <stable@vger.kernel.org>; Tue,  1 Jul 2025 11:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751366533; cv=none; b=Vs0f/QsLYdy/Krda7br+hwgHgzmKyxmXBPe2EQ6GOPOLoi8NLDzXgs/vd6bgdLQapQEfvk8DFeS65sOPl3tG9BEZ6tYMVcjZ5sl7uVdcyyCIwWrbyZ6gVNsh6L6JPVTAaA61fCEKKMyzit+g8HPPl6TkMM4y9gYrjsWE4cMhVEg=
+	t=1751369391; cv=none; b=SrwjAtlWZGwSohajRCIyQxw2chutkU0vdscdCXsTYU5lSfjChZrb4X01tJn8KGMzFGVr5EvAfOk3D5IGHvPRr66a6lw68afKZ4bz7cDT6X0N0L7lmis0DH9zFOjB/VVPVAjL9Cy9EioPAzqgydOvBacWpYIc3SakJ7jWLybAeps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751366533; c=relaxed/simple;
-	bh=QYOItan62HYv9O4lGIDnu60/liPxAvZrr1WMtny4nzY=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=tqjKl/8JjRc1v8w9scU/KpyRVAobeIVcHkEUxT8KV5lYeeg+qQayLtLAne7axxgoODkSxk1TSd3v+gLYmY4gCb/fpNU3KVqkiGKRFDZOsx/126zF+aBQSPxIn0CH4tzySIBRbZBhUl9a/g0C7V4MpekMjmMz4aCKN3r3E1sfpBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=muqR9yG8; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751366531; x=1782902531;
-  h=mime-version:content-transfer-encoding:in-reply-to:
-   references:subject:from:cc:to:date:message-id;
-  bh=QYOItan62HYv9O4lGIDnu60/liPxAvZrr1WMtny4nzY=;
-  b=muqR9yG8TBAbqg271PmpbtfLUJRbtx0byn0TTscISJX3B5bKanFAEM/3
-   DfBriirERWU0yyEA3SXA7K8NwXYyLRs1r0+4jehW5klEeimJhEh3KX+9C
-   GCfmhl9GnhwlNf70zZsASsF4QHIyn4MjSNuTqtxsjLnp6ET+mHsojyBDH
-   iqGudf48HxZ1DALuWCBP/ck/0Y2aiPv5mW3rQtwxBrDwGAP4MutbNT1rD
-   tfPBw7SFXTSmKqaCW2i45GqPG0rdQyjKiOIJXO9z93ZpnCmW7BkSKTgT7
-   ZFq+CIEQpmIgb8o1hmZiWsxvFTeuNHvH0BG0etnb85bWHQCsTjCSYH3N5
-   A==;
-X-CSE-ConnectionGUID: ti8lTiFMQbaP21NO5VNetw==
-X-CSE-MsgGUID: s/mHGmQIQ9+v5UMu9PMxbA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="64678934"
-X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
-   d="scan'208";a="64678934"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 03:42:11 -0700
-X-CSE-ConnectionGUID: lTZQofz/RpeePrUDcyVUwQ==
-X-CSE-MsgGUID: pDnQWFaUSNOQzX0s4F8A0A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
-   d="scan'208";a="184778799"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.225])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 03:42:08 -0700
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1751369391; c=relaxed/simple;
+	bh=aecfqIgcgMS8NEZYswyAdEeWrhP/4nJk5uApShw52ac=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LLBBnnsx1udJa/y4b/cFHQumd4MUxybhzpI8VczI61bVv4PUctmYwZiNsUqjhJ5ysXfn2StWQVY6ZgN5m5AEegun1a7iO+E4RqUzVEHOi51Z/DIAhH8P0KSL8iDRbTdCVDCiRuiSEEu1dMnp/7TtbPw0WMsd1SMJ+xJcicdzjHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dIOPd/uU; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 561A6xEH008169
+	for <stable@vger.kernel.org>; Tue, 1 Jul 2025 11:29:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=HeCUTIvo2J1PhAD2wDzz5Zb5
+	XHzZC9YruSB6ZaOdH04=; b=dIOPd/uUrm1KFxuvaymajs9D5M53DEntgx/u9nzu
+	yQbOgJ1n5XwxciyfA5G3aTNFJwP314unQHYkGGGdAd2w3e+YFUwp1wjNOe7yuQys
+	mwPB4uMJCR242jdy9hjaWPvRRi/7p6yiSADi+3EY5WU6NGy+3RzQo+BRosJKQmfB
+	pnKXC9sTCSedMq4zLhi5gKQcKVGxPaBYlNRuUn4U1OR0uGamvj0PlV0i//3ZYgv8
+	pmDcdocRb1gQlxbUnmRD8SGB/B/LyXtUiQnI5c3Q73pNXKGJcZ/qUMduPtHsnaIN
+	tCjbEZlJC3RBixAoY6Pa2Z9AegRiSw7Qf+r6oMe9TRNpeg==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47kkfmwcju-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 01 Jul 2025 11:29:48 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7ceb5b5140eso816809285a.2
+        for <stable@vger.kernel.org>; Tue, 01 Jul 2025 04:29:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751369387; x=1751974187;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HeCUTIvo2J1PhAD2wDzz5Zb5XHzZC9YruSB6ZaOdH04=;
+        b=SJiU1lfE/Zwt/Vy6/ucE063+K0HF/61lIvTKr144nvFC8ecEupIRLbAhGTlVi8JpZ9
+         zVO1sN+7MBel40pUzMygpOvbGlaU9kYx59Nz8MqptNdEia5KeAOWgFWTKnkoRoJ2qcKf
+         1h/Kurpz2MqL2BVoPc6AIKAars8cLwzQoNd/t/ErzJmQviXjEkWEgWgxfSe8GxBdLWB5
+         aGHlwksaXfhc8Jq+QsZwTEtepqhWNEBf+1Cl6ovsWngujcGK4vkSIO6edQzJJVde4kxe
+         pb5O2X5qgLqvbR0ZHyktNBT6sRdOYZ0T/PMCZS7KQ9cPVXcipPLI9ZC9muLqzsPLD0NN
+         tDEw==
+X-Forwarded-Encrypted: i=1; AJvYcCVcHlZUVSirzW59Iom2GnnPULU6kgVzscZmblDmPyiZ2TK8dG4ndaHMCfnIg9xZ/VY3FO32vz4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyypiNxEZtbPp2EoDY9q58bYnGFTtUxRrYANCSfMpil5V0Fuvbx
+	EDzD08GQY/tf5rNX/+s/i92Yt0EOR4Cnl2NhqwZU0lzhoW3+ash2yrE0wca8G94BGcVPmVLZrYS
+	JIUE20CbzAkUW0ufWhIMGwPhkLBKmy1fyxRJzpjtmhNpmWAxUfsTM2RUB5Eo=
+X-Gm-Gg: ASbGnct5dnxX8INYLjrut9U96QZi2IddmTr89T4V/2Sp47x2D/vSlVhOi5sHte9+cdR
+	2MSV/jp3qTqpyASitgxdrC5hUSbL+8qIZDsAV6ELqY+g795IUdUBw5ZJdQ9gBgb7DXNOefjotop
+	2sGmXYP19jin6b8AGcqMjyCLtnYeI8GfSRIBXSlnCwfCSqXgI+QFDdJUpp8CbyjEvgA2FiBHLhr
+	+jo6vSrGo6zuTfrjKra/AVk7E5YPUPw6lfFkXmuntkvnE7MiSxgOmzUhAosQmIn+F1hytMSLrYR
+	Bp5tEjlzapgm9soI/FoJLt9FG05xmSG2ChJNrFr5USX1DS7+lKmIg0l9Yjt71+/hw+0lNkW/Zmn
+	9Kn/sThSBrgFPG9/YNHVNDu3f0zVYWuS00E8=
+X-Received: by 2002:a05:620a:29ca:b0:7d3:9025:5db7 with SMTP id af79cd13be357-7d44390de6cmr2236947085a.20.1751369387462;
+        Tue, 01 Jul 2025 04:29:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGlEPq2TzJvQkQhhpGX0KRHwjYHWsll+9h6ewOO18Z+pocOSxBGiQFARtIuoG0qr8FCuX/VUA==
+X-Received: by 2002:a05:620a:29ca:b0:7d3:9025:5db7 with SMTP id af79cd13be357-7d44390de6cmr2236942285a.20.1751369386888;
+        Tue, 01 Jul 2025 04:29:46 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5550b2da80dsm1785087e87.220.2025.07.01.04.29.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Jul 2025 04:29:45 -0700 (PDT)
+Date: Tue, 1 Jul 2025 14:29:44 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Cc: andersson@kernel.org, konradybcio@kernel.org, robh@kernel.org,
+        krzk+dt@kernel.org, conor+dt@kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        quic_msavaliy@quicinc.com, quic_anupkulk@quicinc.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: dts: qcom: qcs615: add missing dt property in
+ QUP SEs
+Message-ID: <3qji4ppbdd5lvalx6qmbr6f7jsvyhyulfshchlya3ajsykbkel@rlu5uwvc2biz>
+References: <20250630064338.2487409-1-viken.dadhaniya@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <2025063043-down-countable-2999@gregkh>
-References: <2025063043-down-countable-2999@gregkh>
-Subject: Re: Patch "drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1" has been added to the 6.1-stable tree
-From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org
-To: andi.shyti@kernel.org, andi.shyti@linux.intel.com, gregkh@linuxfoundation.org, matthew.auld@intel.com, thomas.hellstrom@linux.intel.com, ville.syrjala@linux.intel.com, sashal@kernel.org
-Date: Tue, 01 Jul 2025 13:42:05 +0300
-Message-ID: <175136652541.22602.12580210971758725103@jlahtine-mobl>
-User-Agent: alot/0.12.dev7+g16b50e5f
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250630064338.2487409-1-viken.dadhaniya@oss.qualcomm.com>
+X-Proofpoint-ORIG-GUID: 9Djkv5Sem4tdAaw1IdTN6C5aju_J3KX6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAxMDA3MCBTYWx0ZWRfX2uqjjKqOcur9
+ 8dvXrVLKY+6H1ljYdTe+SCgw36ou5MlwRnY2vLv0g8IlfbhKrHh8vRGSl30NOY9RPe48+dy+OxR
+ GmPMkniYabEugeLYgED5viXUzktAFqbFjXGc6whdEKhHBTUcWsiiF4cPYCJPmZRSXVe/nXUK/I7
+ zBpadxd9gMG0VCjU/w899OyYu70vDal8z4NF6b24+Mg94xorgD1jqdPad3TrZMWdVlXTHOsQkP3
+ 96gQZxZDH6mjRUEXsrGghOadDFzzKTtqV9Cuo6qkpFU8l3qRplH5PPSbMRX0rKKgLOdslaSJ+N8
+ bO0Esvkd5yXSCUsnGIfvmApR+0GS7/4UWKz8zxKPkm7UhHtYN4h86IU8dkBJmFzpCgae+nue7N0
+ uODpWZpqu1uMxh/rTBf7PGWimrrN7j/SFo19cp5YgYMnOC5AF9bh3xx3kQiRHfxLWKNvRaKB
+X-Authority-Analysis: v=2.4 cv=L9sdQ/T8 c=1 sm=1 tr=0 ts=6863c6ac cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=mQHHEpzZ3wyIVHhDumQA:9
+ a=CjuIK1q_8ugA:10 a=IoWCM6iH3mJn3m4BftBB:22
+X-Proofpoint-GUID: 9Djkv5Sem4tdAaw1IdTN6C5aju_J3KX6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-01_02,2025-06-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 phishscore=0 impostorscore=0 priorityscore=1501
+ malwarescore=0 lowpriorityscore=0 adultscore=0 suspectscore=0 mlxlogscore=673
+ bulkscore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507010070
 
-Hi Greg,
-
-Please do note that there is a revert for this patch that was part of
-the same pull request. That needs to be picked in too in case you are
-picking the original patch.
-
-I already got the automated mails from Sasha that both the original commit
-and revert were already picked into 6.1, 6.6 and 6.12 trees. Are now in
-a perpetual machinery induced loop where the original commit and revert will
-be picked in alternating fashion to the stable trees? [1]
-
-Regards, Joonas
-
-[1] Originally, I was under the assumption stable machinery would
-automatically skip over patches that have later been reverted, but
-that doesn't seem to be the case?
-
-Quoting gregkh@linuxfoundation.org (2025-06-30 14:39:44)
->=20
-> This is a note to let you know that I've just added the patch titled
->=20
->     drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1
->=20
-> to the 6.1-stable tree which can be found at:
->     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
-it;a=3Dsummary
->=20
-> The filename of the patch is:
->      drm-i915-gem-allow-exec_capture-on-recoverable-contexts-on-dg1.patch
-> and it can be found in the queue-6.1 subdirectory.
->=20
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
->=20
->=20
-> From 25eeba495b2fc16037647c1a51bcdf6fc157af5c Mon Sep 17 00:00:00 2001
-> From: =3D?UTF-8?q?Ville=3D20Syrj=3DC3=3DA4l=3DC3=3DA4?=3D <ville.syrjala@=
-linux.intel.com>
-> Date: Mon, 12 May 2025 21:22:15 +0200
-> Subject: drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1
-> MIME-Version: 1.0
-> Content-Type: text/plain; charset=3DUTF-8
-> Content-Transfer-Encoding: 8bit
->=20
-> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
->=20
-> commit 25eeba495b2fc16037647c1a51bcdf6fc157af5c upstream.
->=20
-> The intel-media-driver is currently broken on DG1 because
-> it uses EXEC_CAPTURE with recovarable contexts. Relax the
-> check to allow that.
->=20
-> I've also submitted a fix for the intel-media-driver:
-> https://github.com/intel/media-driver/pull/1920
->=20
-> Cc: stable@vger.kernel.org # v6.0+
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-> Testcase: igt/gem_exec_capture/capture-invisible
-> Fixes: 71b1669ea9bd ("drm/i915/uapi: tweak error capture on recoverable c=
-ontexts")
-> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-> Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-> Link: https://lore.kernel.org/r/20250411144313.11660-2-ville.syrjala@linu=
-x.intel.com
-> (cherry picked from commit d6e020819612a4a06207af858e0978be4d3e3140)
-> Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+On Mon, Jun 30, 2025 at 12:13:38PM +0530, Viken Dadhaniya wrote:
+> Add the missing required-opps and operating-points-v2 properties to
+> several I2C, SPI, and UART nodes in the QUP SEs.
+> 
+> Fixes: f6746dc9e379 ("arm64: dts: qcom: qcs615: Add QUPv3 configuration")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 > ---
->  drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-> @@ -2001,7 +2001,7 @@ static int eb_capture_stage(struct i915_
->                         continue;
-> =20
->                 if (i915_gem_context_is_recoverable(eb->gem_context) &&
-> -                   (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > I=
-P_VER(12, 0)))
-> +                   GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
->                         return -EINVAL;
-> =20
->                 for_each_batch_create_order(eb, j) {
->=20
->=20
-> Patches currently in stable-queue which might be from ville.syrjala@linux=
-.intel.com are
->=20
-> queue-6.1/drm-dp-change-aux-dpcd-probe-address-from-dpcd_rev-to-lane0_1_s=
-tatus.patch
-> queue-6.1/revert-drm-i915-gem-allow-exec_capture-on-recoverabl.patch
-> queue-6.1/drm-i915-gem-allow-exec_capture-on-recoverable-contexts-on-dg1.=
-patch
-> queue-6.1/drm-i915-gem-allow-exec_capture-on-recoverable-conte.patch
+> 
+> v1 -> v2:
+> 
+> - Added Fixes and Cc tag.
+> 
+> v1 Link: https://lore.kernel.org/all/20250626102826.3422984-1-viken.dadhaniya@oss.qualcomm.com/
+> ---
+> ---
+>  arch/arm64/boot/dts/qcom/qcs615.dtsi | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+
+
+-- 
+With best wishes
+Dmitry
 
