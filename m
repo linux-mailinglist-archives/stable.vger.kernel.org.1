@@ -1,119 +1,129 @@
-Return-Path: <stable+bounces-159106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17474AEEC63
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 04:20:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5950AEEC69
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 04:21:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7170A1BC2B72
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 02:20:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D75AB7AD5E2
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 02:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059511B3939;
-	Tue,  1 Jul 2025 02:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778D91442E8;
+	Tue,  1 Jul 2025 02:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LxRwnIJV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aRk/C3dh"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B911917F1
-	for <stable@vger.kernel.org>; Tue,  1 Jul 2025 02:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AF91917F1;
+	Tue,  1 Jul 2025 02:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751336411; cv=none; b=ayVCz4vJIIpWpkeprJlQK/EaetFtq2VInjAhe9W7AUb2TdJb8i/qC03YqeXDOxM57jPOvWl7juPxLI+aHrFJV/qfDUiC+HXOX39abzGuZC6SWS5/YadSsbdgQae0PjKbMOrNn/Z5XYVegKgz1LWnbWi1B6K80fpHV5N8ilYb1Zc=
+	t=1751336459; cv=none; b=JgLWlrbYGAm+KXnhRpBnYC3AhSdgKcC3i1ZdRDYKBl/g1JYveAZHhQbskGSp+2OSiXsT9zyxcL7ueiHpb1aRys9pEGevgtB1MqqSgXEMJJZFT+0YpD/deBOcm/I6GtsWj9trPRnP8KStKKauvAP7+8AN+zCzE0r5NUpaqsAiPFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751336411; c=relaxed/simple;
-	bh=Bz/86j3mpJf6RZwOMLVBi8P/cdclQpstyJilpZn/LWw=;
+	s=arc-20240116; t=1751336459; c=relaxed/simple;
+	bh=UQK1K/8AjN/ed7zGRgmjFNcMMKvnbu3QZaVDcn1BSMI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ixLf0RWleMvf4xhRfEyheaF+qj/dFJZ0EzR2Vqx51G6qydV1mCh9uuZCZL4gglRK4jxs+cZb+m8BH7PYMgTvwsFCugZyjuT1VuWStRc279o2de2fYUIgHpXHeRMfDMO5bNfoiiXVMIQiUCso9um6lF0OOkfQ0QkMT1OW7/Ya+nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LxRwnIJV; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751336409;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Bz/86j3mpJf6RZwOMLVBi8P/cdclQpstyJilpZn/LWw=;
-	b=LxRwnIJV1PK3FTkiBBCPHK6eFm4srrqxAXKtXpSGEczEzRlOAgChDJUddzRjk0B/X0hXc/
-	JIrR8VHCaTvZ8/A7ZKK5gG263o4niyvwokfoYxQpUhVKT3fIu4Pa2bQJo+AZ6+LKglgvMW
-	0jqsiFX5tTtWyIw9MQl5FlL58qott3c=
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
- [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-1-6AfdKk_LMCO7mc2HB_TZiw-1; Mon, 30 Jun 2025 22:20:07 -0400
-X-MC-Unique: 6AfdKk_LMCO7mc2HB_TZiw-1
-X-Mimecast-MFC-AGG-ID: 6AfdKk_LMCO7mc2HB_TZiw_1751336406
-Received: by mail-vs1-f69.google.com with SMTP id ada2fe7eead31-4e81805effeso406576137.1
-        for <stable@vger.kernel.org>; Mon, 30 Jun 2025 19:20:07 -0700 (PDT)
+	 To:Cc:Content-Type; b=c+OZptn/pYE7YWCuYJxUs/28FAZKFN665TfI3zrN6g7OA8XRBIOdILqCBGhERxXU5GehwMh9cXAeaaYVqC91zWZSfUmfBxBa2pssR9CVXmVHwKEhKGGgYgE0ZxKr5qGPDMnhIpY/czs7kVsln4a6gu5aP5kkFFwGaDpLBNpP2kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aRk/C3dh; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-60bf5a08729so5926842a12.0;
+        Mon, 30 Jun 2025 19:20:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751336455; x=1751941255; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8c2vbb9gJxCkMktav4zEHdcZ05yBTFdozTdnnSMg7+M=;
+        b=aRk/C3dh7Qqm034ZthNf/3gEtTOlugVpFVhhyp+FWhmymw+rpUqSDIddnU1D56UI5q
+         QIDVvnDkBsifc9T811id6hjHy3qC7MckEUeoMqQwlFiWopGKeyuOPVIA0MqWY8qQy+dU
+         /9mx5aph8UPA2a7qzWr+rBp3rnRi5VGW0WuB8uiqOxnONLjjKMIm6kc/iV7QuQjueHG9
+         /tPD45iU9sbFbr7+cXvqDcKRwcNEQmtZU7HQMZ7KhI12tqDlMlZw0Hk2Ahb/hrSZgglr
+         fknR0YvBCCxMweMq1DOt1sbwcoPEvNXyCCzQhRjr+IJszUCd9+rpl8YZDboorfctb11V
+         ikLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751336406; x=1751941206;
+        d=1e100.net; s=20230601; t=1751336455; x=1751941255;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Bz/86j3mpJf6RZwOMLVBi8P/cdclQpstyJilpZn/LWw=;
-        b=t0YGEOEo4mBPkyPHjmQ5QZ5t49B5Zu/scmz5mcO+pq4u55hUbZpiTPjSCzeJ4zXQR4
-         S3roGlguKu4gZ+zKEmvwJLiJmzz/0B0lzEC+8Mlx86Zf9qw1vyK/omUdZMte+17iPcpH
-         0xGsVL5d82a0PdbqxBXcNa1ppPONMI5MR+WAZEQ9Y7fxgN9vpCXt1NOJDlX3QGby6DCy
-         WvlwFYCB76x+K3yx059s1yOU+rPFw7qaUYTlZcafcT3lSYVJY/4V4p124Pv3lk1sGgN5
-         q+zpKbH4X+c8se6jfH1NBH7YHq32PQioNc7WjWjUs90YM43cpeCUZSVEQ/0H4xhP5/L7
-         PhpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVML33bxL+//YUUcibj7HaqgwTrLm8B88f77Y88CXs9iVhh+kpqfkymC9mPAQIQ71SZ59R7M3M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwooTXoAqy4DuoYWUCt1lxA+RN3wwnggGJ2GbAvrE+BtJ3/Pzru
-	pXkTHo/60qo5dQSXAFzNxGGB8NjRdyHJjOPhtoucCu0/eRUEnj/2mOdCa8tIOpJEONhxa/8JZQB
-	ZXUopRIurEqeqG/3GezytsbNvk8ctb2LCYQTuCeasHeGDVv8/EYaZDyvo2SgpZYd51ljP3aAMyT
-	2y1AKktx3nTXRW9+JwXtl3eH/kQk4xJ2d2
-X-Gm-Gg: ASbGncv7gkcfcEJmLrp1JdjoxAsh1y7kOtsj169hWxra2TWf01XxSpTspBCdmkQgMq9
-	7R5c55uoO82Q6BvJTG1ZS+O2k2dB2VNqatlJzrZ7AYSi+t8iQhLGDE4BP6QthDFTyWWdIAy8hlz
-	AU
-X-Received: by 2002:a05:6102:b0f:b0:4e7:db51:ea5d with SMTP id ada2fe7eead31-4ee4f57b220mr9035433137.6.1751336405878;
-        Mon, 30 Jun 2025 19:20:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFfwt0IUN9XzbcPTMYkve3OC1WK/0fpTeOcXovTvrlwz1DP2O24mIjCZg0vVcRzjUe2M01DvNuq273bCwcQw/Y=
-X-Received: by 2002:a05:6102:b0f:b0:4e7:db51:ea5d with SMTP id
- ada2fe7eead31-4ee4f57b220mr9035421137.6.1751336405513; Mon, 30 Jun 2025
- 19:20:05 -0700 (PDT)
+        bh=8c2vbb9gJxCkMktav4zEHdcZ05yBTFdozTdnnSMg7+M=;
+        b=DbrEOGYMTU7wUa99nGz9TTh8lSp3elBe471nmfgUndSVMIoNq/FRiTYzqGPdTXqCwe
+         GofdNQCpPduzsEfVO54/qwpuTBTM9KX9TelS/k0Rt5Qy/k1wIW84jV0nF1txftSGLcgd
+         rzPOzMM4uTS9MTNsrkJko3s7fo6chjbQkyTI/uB+kDFOkWli7JqVwE2/4o6Jkge5MiHj
+         bbby85JaGySl9d0x7zkNC8AxPtd8yzUbvzoZg8Nf00V9UMCp8wMYLlYlZssh6RDbQb8n
+         ikx406slWHgAsLlLMWMEYq1YDw3kKWZuAvhKYz7PHHDW51zGT4WckfNczOfZMkvfM8mA
+         1n8A==
+X-Forwarded-Encrypted: i=1; AJvYcCUXIvq1TUFWYBFVXWiIGjKh56uOfqcHo6nGnROPiIbcGqKAvflLmgiiIqr6dMk+5/EVzodhi0xX4P3T@vger.kernel.org, AJvYcCVmZoe81Sap+aOaRM0RkZFVXoTciUJ2wD+Mvji5aVpqFp+ov96HveMWZevfQiUBOmFRuBxL4U8j@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTt1Bb8BPXLwt40CtvcZlxqNr08DO+8CXdEdvY6WTeCZEuiWjn
+	yVjs+QHZXC13gcnvMgon7aZPMqBt/DSUD43hjW+P9sefplwe/pk6uVNSgbO+6sE7WQOMcdg0k+1
+	fFDInFGu4ooxFZ06XXu8ZiG1D/gRUxauwvjbe
+X-Gm-Gg: ASbGncvojFRwPeV7tz6VneiGOC9q+xgR8ORXltwGJzeepvQcHUrcd9Hy+qP69rnMFok
+	ReKkHkjFxUm6e6kWkqh19Z28hxUWdHwfnEKOqIMD0Nf3t6f5yRyKigyB84zPRCBIWhqmqQW0O0r
+	qealrGMTYDCFa4xX/QhVATRdd8rYjYVVcH+zj+XuLC0w==
+X-Google-Smtp-Source: AGHT+IGNFNbhilCOJJyOdnpcryO/IwqMwWsq8uviPHqQSqZ3ZmdRNOS/jFE13ob7OMFpCRdZmtmLA9ZWfxqfYLwsb54=
+X-Received: by 2002:a05:6402:354e:b0:609:7ed1:c791 with SMTP id
+ 4fb4d7f45d1cf-60c88e4d734mr14468736a12.32.1751336454511; Mon, 30 Jun 2025
+ 19:20:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250630144212.48471-1-minhquangbui99@gmail.com> <20250630144212.48471-2-minhquangbui99@gmail.com>
-In-Reply-To: <20250630144212.48471-2-minhquangbui99@gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 1 Jul 2025 10:19:53 +0800
-X-Gm-Features: Ac12FXwg9udMXpdfqk8skCNczA1b4cFLqKAJ_PlRVtyvo3Mi9xA6wAsp9nIVFQs
-Message-ID: <CACGkMEuJk=PF2aGQj4FNhSv=VvOTzruK6PMpEykB9MVHwU4nDw@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/3] virtio-net: ensure the received length does
- not exceed allocated size
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, virtualization@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
+References: <20250630174049.887492-1-sprasad@microsoft.com> <87104723045d2e07849384ba8e3b4cc0@manguebit.org>
+In-Reply-To: <87104723045d2e07849384ba8e3b4cc0@manguebit.org>
+From: Shyam Prasad N <nspmangalore@gmail.com>
+Date: Tue, 1 Jul 2025 07:50:42 +0530
+X-Gm-Features: Ac12FXwmrqFJRoWmaDbzkfDUnJAZVDZ9hhcl_fvg71UCXQwWFfC_fUs6YM7ck9E
+Message-ID: <CANT5p=rEUppfa5E_ySYnXtB8cq5x=V-Yhia6c+1W8a9b7ctLWg@mail.gmail.com>
+Subject: Re: [PATCH] cifs: all initializations for tcon should happen in tcon_info_alloc
+To: Paulo Alcantara <pc@manguebit.org>
+Cc: smfrench@gmail.com, linux-cifs@vger.kernel.org, dhowells@redhat.com, 
+	Shyam Prasad N <sprasad@microsoft.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 30, 2025 at 10:42=E2=80=AFPM Bui Quang Minh
-<minhquangbui99@gmail.com> wrote:
+On Tue, Jul 1, 2025 at 1:06=E2=80=AFAM Paulo Alcantara <pc@manguebit.org> w=
+rote:
 >
-> In xdp_linearize_page, when reading the following buffers from the ring,
-> we forget to check the received length with the true allocate size. This
-> can lead to an out-of-bound read. This commit adds that missing check.
+> nspmangalore@gmail.com writes:
 >
-> Cc: <stable@vger.kernel.org>
-> Fixes: 4941d472bf95 ("virtio-net: do not reset during XDP set")
-> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+> > From: Shyam Prasad N <sprasad@microsoft.com>
+> >
+> > Today, a few work structs inside tcon are initialized inside
+> > cifs_get_tcon and not in tcon_info_alloc. As a result, if a tcon
+> > is obtained from tcon_info_alloc, but not called as a part of
+> > cifs_get_tcon, we may trip over.
+> >
+> > Cc: <stable@vger.kernel.org>
+>
+> stable?  Makes no sense.
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+I feel this is a serious one. If some code were to use
+tcon_info_alloc, they'd expect that it's fully initialized, but they'd
+end up with the problem that you and David saw.
+I feel that this is the correct fix to that problem (although that
+addresses the problem of unnecessary scheduling of work).
 
-Thanks
+>
+> > Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+> > ---
+> >  fs/smb/client/cifsproto.h | 1 +
+> >  fs/smb/client/connect.c   | 8 +-------
+> >  fs/smb/client/misc.c      | 6 ++++++
+> >  3 files changed, 8 insertions(+), 7 deletions(-)
+>
+> Otherwise, looks good:
+>
+> Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
 
+Thanks.
+
+--=20
+Regards,
+Shyam
 
