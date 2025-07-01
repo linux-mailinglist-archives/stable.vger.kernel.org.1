@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-159170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D17AF051A
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 22:46:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C795AF052C
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 22:55:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 178BA1C207E8
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 20:46:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E27A27A8597
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 20:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4AC265CBD;
-	Tue,  1 Jul 2025 20:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C79B2FEE3B;
+	Tue,  1 Jul 2025 20:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="w8Fhvl3v"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pOA0cWuh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128E225F97F;
-	Tue,  1 Jul 2025 20:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D5C1D07BA;
+	Tue,  1 Jul 2025 20:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751402767; cv=none; b=td9LXs3FK8pbnJu+BVEGb4IjnJnlrkCCQ/cIf/TthDliIDeU8T9yMRvcEOzp9F+z2qTJIyEJn8SPLK335LNbEQjkkTW0gYzL5jwMhw5oV/l2tAGfhDcE+Js3NUMmvYiv3sQJ0JdUNWys/355V7uelpu+Vp3xpKyKbrV14lvm8jY=
+	t=1751403346; cv=none; b=E1j98wNUECacZSMfDpcJZVRnYpJC+FlqUgvTBz+itqDBk1gEgeUzrvIkkJVtDI5/Is1evbOGmYWI9Xok8xC8jNCAW7UCUzuOYo0dWfmmto/u7bRoVXvzdHlrzZUYSZ9cm6tCenyWOS8u+D0JRtryPieTkkBT/jhReVgJJkqzJ7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751402767; c=relaxed/simple;
-	bh=PPuAHOh3dZj7mhkDNq3If+vUzbU+xhacUxUvLBZaUfU=;
-	h=Date:To:From:Subject:Message-Id; b=QEfmz3FeS17DQT53wlyhBDfL2MX8WeL4FFdJiLW30rNHFISCxvd/Uyod4S+00Gndr/JK+iohBZlM+Z19FvbnZJX2mb1VmRkI2/CpS2fvPQKZrsX73JMTYX7uKK8cI8Wm3TrxuMPM13I/A+UNVj8wdt7etAqn2tx7c0xtoUOwfqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=w8Fhvl3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77395C4CEF1;
-	Tue,  1 Jul 2025 20:46:06 +0000 (UTC)
+	s=arc-20240116; t=1751403346; c=relaxed/simple;
+	bh=Vs1fBYHjKhjmGj9zUFscYQR5COOQdNFBCFCSWtXEyyk=;
+	h=Date:To:From:Subject:Message-Id; b=Tc/tzaDvPa/Y86hYEMVlJKcr8VZD49KGu2w2ZH7PPqekYc14UCzwK/3ir6KCDpav2UkYyejZWN5rQz7+VKjhxWFPHNnFMOaMB8IzWDXp56mnj6njbbWKvTJBeL0wW3wqJ2LVihmQmh4zXdbloiRJjhgJ7NY9SheMyGzyON0OGIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pOA0cWuh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71599C4CEF1;
+	Tue,  1 Jul 2025 20:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1751402766;
-	bh=PPuAHOh3dZj7mhkDNq3If+vUzbU+xhacUxUvLBZaUfU=;
+	s=korg; t=1751403345;
+	bh=Vs1fBYHjKhjmGj9zUFscYQR5COOQdNFBCFCSWtXEyyk=;
 	h=Date:To:From:Subject:From;
-	b=w8Fhvl3vDEvq9sees4wKVmfeWu/oVLW45kw1HqhK4DTMprBJyLEp7EZPgJVGLu+2B
-	 tM0q9xe+VZwJ3qjhcveQ5uLIPq4YbVr3rZbuDYioVBGOx22JOORJnB3m9rTiJCl3Mv
-	 f5EeftldvhZUPi63zcvoA1VnvmOee1rJpoC3oDyg=
-Date: Tue, 01 Jul 2025 13:46:05 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,ying.huang@linux.alibaba.com,stable@vger.kernel.org,rakie.kim@sk.com,matthew.brost@intel.com,joshua.hahnjy@gmail.com,gourry@gourry.net,david@redhat.com,byungchul@sk.com,bertranddrouvot.pg@gmail.com,apopple@nvidia.com,myon@debian.org,akpm@linux-foundation.org
+	b=pOA0cWuhvAv91+SAM99Zus5CWDrcWnbPkWctexJENjSgdVGQAOifVhYdfHEAfDZw2
+	 ZUhj+Kkqsrf5K51Lf6b85Wfu4Ou74mr4+TaWXetPBhzzpaN8pfHVGhVd0C0a+yXgbO
+	 XtAdGKFCIpL640WBsGX7PUin0phgqpDL3DDLUByU=
+Date: Tue, 01 Jul 2025 13:55:44 -0700
+To: mm-commits@vger.kernel.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,kbingham@kernel.org,jan.kiszka@siemens.com,jack@suse.cz,florian.fainelli@broadcom.com,brauner@kernel.org,illia@yshyn.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] fix-do_pages_stat-to-use-compat_uptr_t.patch removed from -mm tree
-Message-Id: <20250701204606.77395C4CEF1@smtp.kernel.org>
+Subject: + scripts-gdb-vfs-support-external-dentry-names.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250701205545.71599C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,62 +49,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
-The quilt patch titled
-     Subject: mm/migrate.c: fix do_pages_stat to use compat_uptr_t
-has been removed from the -mm tree.  Its filename was
-     fix-do_pages_stat-to-use-compat_uptr_t.patch
+The patch titled
+     Subject: scripts: gdb: vfs: support external dentry names
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     scripts-gdb-vfs-support-external-dentry-names.patch
 
-This patch was dropped because an updated version will be issued
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/scripts-gdb-vfs-support-external-dentry-names.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Christoph Berg <myon@debian.org>
-Subject: mm/migrate.c: fix do_pages_stat to use compat_uptr_t
-Date: Wed, 25 Jun 2025 17:24:14 +0200
+From: Illia Ostapyshyn <illia@yshyn.com>
+Subject: scripts: gdb: vfs: support external dentry names
+Date: Sun, 29 Jun 2025 02:38:11 +0200
 
-For arrays with more than 16 entries, the old code would incorrectly
-advance the pages pointer by 16 words instead of 16 compat_uptr_t.
+d_shortname of struct dentry only reserves D_NAME_INLINE_LEN characters
+and contains garbage for longer names.  Use d_name instead, which always
+references the valid name.
 
-[akpm@linux-foundation.org: fix coding style]
-Link: https://lkml.kernel.org/r/aFwUnu7ObizycCZ8@msg.df7cb.de
-Signed-off-by: Christoph Berg <myon@debian.org>
-Suggested-by: Bertrand Drouvot <bertranddrouvot.pg@gmail.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Mathew Brost <matthew.brost@intel.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Zi Yan <ziy@nvidia.com>
+Link: https://lore.kernel.org/all/20250525213709.878287-2-illia@yshyn.com/
+Link: https://lkml.kernel.org/r/20250629003811.2420418-1-illia@yshyn.com
+Fixes: 79300ac805b672a84b64 ("scripts/gdb: fix dentry_name() lookup")
+Signed-off-by: Illia Ostapyshyn <illia@yshyn.com>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/migrate.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ scripts/gdb/linux/vfs.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/migrate.c~fix-do_pages_stat-to-use-compat_uptr_t
-+++ a/mm/migrate.c
-@@ -2444,7 +2444,14 @@ static int do_pages_stat(struct mm_struc
- 		if (copy_to_user(status, chunk_status, chunk_nr * sizeof(*status)))
- 			break;
+--- a/scripts/gdb/linux/vfs.py~scripts-gdb-vfs-support-external-dentry-names
++++ a/scripts/gdb/linux/vfs.py
+@@ -22,7 +22,7 @@ def dentry_name(d):
+     if parent == d or parent == 0:
+         return ""
+     p = dentry_name(d['d_parent']) + "/"
+-    return p + d['d_shortname']['string'].string()
++    return p + d['d_name']['name'].string()
  
--		pages += chunk_nr;
-+		if (in_compat_syscall()) {
-+			compat_uptr_t __user *pages32 = (compat_uptr_t __user *)pages;
-+
-+			pages32 += chunk_nr;
-+			pages = (const void __user * __user *) pages32;
-+		} else {
-+			pages += chunk_nr;
-+		}
- 		status += chunk_nr;
- 		nr_pages -= chunk_nr;
- 	}
+ class DentryName(gdb.Function):
+     """Return string of the full path of a dentry.
 _
 
-Patches currently in -mm which might be from myon@debian.org are
+Patches currently in -mm which might be from illia@yshyn.com are
 
+scripts-gdb-vfs-support-external-dentry-names.patch
 
 
