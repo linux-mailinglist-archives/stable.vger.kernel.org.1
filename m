@@ -1,96 +1,110 @@
-Return-Path: <stable+bounces-159169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D597AF04F6
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 22:35:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D17AF051A
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 22:46:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0CDC4E3FF5
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 20:35:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 178BA1C207E8
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 20:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD632FE322;
-	Tue,  1 Jul 2025 20:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4AC265CBD;
+	Tue,  1 Jul 2025 20:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DoNLWaQV"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="w8Fhvl3v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017A5281355;
-	Tue,  1 Jul 2025 20:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128E225F97F;
+	Tue,  1 Jul 2025 20:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751402129; cv=none; b=PYBep3KpWxbjIWMfwakAbsvELh2T0Ke5ukdVJAQa7p7LZ3xzJpd2eW+cWL0+lIq94WmI1hbNBYD5VMWMFNs7NMR0Y+j4JqqqvlZVh1bZjA1V9mfvKruDjeUAn0BoTGHITTrJ4wDyDhaRr4xTH8C2ywC54GQH27mCj7o/+UE4UcI=
+	t=1751402767; cv=none; b=td9LXs3FK8pbnJu+BVEGb4IjnJnlrkCCQ/cIf/TthDliIDeU8T9yMRvcEOzp9F+z2qTJIyEJn8SPLK335LNbEQjkkTW0gYzL5jwMhw5oV/l2tAGfhDcE+Js3NUMmvYiv3sQJ0JdUNWys/355V7uelpu+Vp3xpKyKbrV14lvm8jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751402129; c=relaxed/simple;
-	bh=I6JQFok9D5wKOjJaufxumgrPJ4Vt5SFOzuUQhLx/Q5c=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=jn9hZaKUfIoKOqZl0atUn6FdU5mkvqj4cHaGKCi51KMum0AOMr8/8esf0RMenixqCNHax0+W+K7dYXVigaiaX8mFOWyDI7hYx8FQ7WnHeba9n6X5zSwjl+2XZRq8hesCteivltjADr+NwZdB7XuVGFiWjZJlx8XtMvJq1z5YPxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DoNLWaQV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECCDC4CEEE;
-	Tue,  1 Jul 2025 20:35:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751402128;
-	bh=I6JQFok9D5wKOjJaufxumgrPJ4Vt5SFOzuUQhLx/Q5c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=DoNLWaQVMb95RqC3gJrE41oKtcZ1/5qtyH27rYyX5KkC8SwX0jmwxkPmHYFqJocdw
-	 CfD4bjdVniIKo5XCFTyl0d0gX7TsUV91+cxje7kuDMsqUeunAsxQoXDCtLtqRz7GQL
-	 0VYb/LgMWLogj/LdfVPJ6QpHJ2Y+Yn+ppX79dMODS0muPEXzogWTNlABnng6JLMUD8
-	 wEy1xTqWfLprk5Uzhx8SSeTfBpHlpphyu0ACkhroJldDlgvPFGCRg8AthdLs5pEBXK
-	 qYokL8ZKCtgvl5B6Gp58NSI4uR8j4Bq/hEn92faFgxvxWgzbjwBasUOmJUFav4Lzk1
-	 XZ4KkiqLpdX2w==
-Date: Tue, 1 Jul 2025 15:35:26 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: bhelgaas@google.com, lukas@wunner.de, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Jim Quinlan <james.quinlan@broadcom.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v2] PCI/pwrctrl: Skip creating pwrctrl device unless
- CONFIG_PCI_PWRCTRL is enabled
-Message-ID: <20250701203526.GA1849466@bhelgaas>
+	s=arc-20240116; t=1751402767; c=relaxed/simple;
+	bh=PPuAHOh3dZj7mhkDNq3If+vUzbU+xhacUxUvLBZaUfU=;
+	h=Date:To:From:Subject:Message-Id; b=QEfmz3FeS17DQT53wlyhBDfL2MX8WeL4FFdJiLW30rNHFISCxvd/Uyod4S+00Gndr/JK+iohBZlM+Z19FvbnZJX2mb1VmRkI2/CpS2fvPQKZrsX73JMTYX7uKK8cI8Wm3TrxuMPM13I/A+UNVj8wdt7etAqn2tx7c0xtoUOwfqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=w8Fhvl3v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77395C4CEF1;
+	Tue,  1 Jul 2025 20:46:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1751402766;
+	bh=PPuAHOh3dZj7mhkDNq3If+vUzbU+xhacUxUvLBZaUfU=;
+	h=Date:To:From:Subject:From;
+	b=w8Fhvl3vDEvq9sees4wKVmfeWu/oVLW45kw1HqhK4DTMprBJyLEp7EZPgJVGLu+2B
+	 tM0q9xe+VZwJ3qjhcveQ5uLIPq4YbVr3rZbuDYioVBGOx22JOORJnB3m9rTiJCl3Mv
+	 f5EeftldvhZUPi63zcvoA1VnvmOee1rJpoC3oDyg=
+Date: Tue, 01 Jul 2025 13:46:05 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,ying.huang@linux.alibaba.com,stable@vger.kernel.org,rakie.kim@sk.com,matthew.brost@intel.com,joshua.hahnjy@gmail.com,gourry@gourry.net,david@redhat.com,byungchul@sk.com,bertranddrouvot.pg@gmail.com,apopple@nvidia.com,myon@debian.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] fix-do_pages_stat-to-use-compat_uptr_t.patch removed from -mm tree
+Message-Id: <20250701204606.77395C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250701064731.52901-1-manivannan.sadhasivam@linaro.org>
 
-[+cc Bart]
 
-On Tue, Jul 01, 2025 at 12:17:31PM +0530, Manivannan Sadhasivam wrote:
-> If devicetree describes power supplies related to a PCI device, we
-> previously created a pwrctrl device even if CONFIG_PCI_PWRCTL was
-> not enabled.
-> 
-> When pci_pwrctrl_create_device() creates and returns a pwrctrl device,
-> pci_scan_device() doesn't enumerate the PCI device. It assumes the pwrctrl
-> core will rescan the bus after turning on the power. However, if
-> CONFIG_PCI_PWRCTL is not enabled, the rescan never happens.
+The quilt patch titled
+     Subject: mm/migrate.c: fix do_pages_stat to use compat_uptr_t
+has been removed from the -mm tree.  Its filename was
+     fix-do_pages_stat-to-use-compat_uptr_t.patch
 
-Separate from this patch, can we refine the comment in
-pci_scan_device() to explain *why* we should skip scanning if a
-pwrctrl device was created?  The current comment leaves me with two
-questions:
+This patch was dropped because an updated version will be issued
 
-  1) How do we know the pwrctrl device is currently off?  If it is
-     already on, why should we defer enumerating the device?
+------------------------------------------------------
+From: Christoph Berg <myon@debian.org>
+Subject: mm/migrate.c: fix do_pages_stat to use compat_uptr_t
+Date: Wed, 25 Jun 2025 17:24:14 +0200
 
-  2) If the pwrctrl device is currently off, won't the Vendor ID read
-     just fail like it does for every other non-existent device?  If
-     so, why can't we just let that happen?
+For arrays with more than 16 entries, the old code would incorrectly
+advance the pages pointer by 16 words instead of 16 compat_uptr_t.
 
-This behavior is from 2489eeb777af ("PCI/pwrctrl: Skip scanning for
-the device further if pwrctrl device is created"), which just says
-"there's no need to continue scanning."  Prior to 2489eeb777af, it
-looks like we *did* what try to enumerate the device even if a pwrctrl
-device was created, and 2489eeb777af doesn't mention a bug fix, so I
-assume it's just an optimization.
+[akpm@linux-foundation.org: fix coding style]
+Link: https://lkml.kernel.org/r/aFwUnu7ObizycCZ8@msg.df7cb.de
+Signed-off-by: Christoph Berg <myon@debian.org>
+Suggested-by: Bertrand Drouvot <bertranddrouvot.pg@gmail.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Mathew Brost <matthew.brost@intel.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-Bjorn
+ mm/migrate.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+--- a/mm/migrate.c~fix-do_pages_stat-to-use-compat_uptr_t
++++ a/mm/migrate.c
+@@ -2444,7 +2444,14 @@ static int do_pages_stat(struct mm_struc
+ 		if (copy_to_user(status, chunk_status, chunk_nr * sizeof(*status)))
+ 			break;
+ 
+-		pages += chunk_nr;
++		if (in_compat_syscall()) {
++			compat_uptr_t __user *pages32 = (compat_uptr_t __user *)pages;
++
++			pages32 += chunk_nr;
++			pages = (const void __user * __user *) pages32;
++		} else {
++			pages += chunk_nr;
++		}
+ 		status += chunk_nr;
+ 		nr_pages -= chunk_nr;
+ 	}
+_
+
+Patches currently in -mm which might be from myon@debian.org are
+
+
 
