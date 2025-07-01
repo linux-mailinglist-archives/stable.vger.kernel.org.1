@@ -1,99 +1,101 @@
-Return-Path: <stable+bounces-159163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47FA3AF01A9
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 19:21:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CFDAF02E3
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 20:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AA8F1C20930
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 17:12:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE3921BC4D14
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 18:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62B9277CB0;
-	Tue,  1 Jul 2025 17:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED66D280CD5;
+	Tue,  1 Jul 2025 18:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="XS9t/U9R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gei8FHcJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911B027A903
-	for <stable@vger.kernel.org>; Tue,  1 Jul 2025 17:12:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125D7271442;
+	Tue,  1 Jul 2025 18:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751389922; cv=none; b=PThqxzsl+u5YkXGIi11cGeuskxPSgqyKUcGWPj5vX3Rdv8WZaucbMb+PqKPUCoHAyCG+apwz/wWZ3qt/UTuORQIMAQ1raYK6QzM7tp0BT7u2v94aKWmQAJPDmHAUeQO1q8UdNIvXCktFP4StjreGM5LGniG2cnYNTlXx9TrfqPY=
+	t=1751394993; cv=none; b=HD44DlLFBQbWbOV65iCA/ecMvUCUTGYSNkQzmk1eH1pY+gU08FXFv330k2AZ6VIvnYJKTBPmGPy2eTDI4YXBNjZnbbsWgqxvly0kVc3OKaXWaTAjhTv3+YUNNBh7sVW15qPhhUnOHIVH6RxShbUZfH7AorRyNySObYDpxe6qbnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751389922; c=relaxed/simple;
-	bh=SX2heC/Qk6afxGMZKjrW09kyPvYeBI0adPXbi3Fnvpc=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=k97T/jy/5F/JshydD/74Ikfm3BqxDkKO+zceuj5IrPwl/UJaqW5zGsXgQfMpF2Irgp9WGNmUIER9tbo6j4SfTKIqYfHC43I2nexB9loOv/K3vt1ojYb76NW8ZpKV1TUwSSV4Ia2t9x+hBHqnUsN0j0h1DQcMJgTwYyhyaeGFoik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=XS9t/U9R; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 787613F18C
-	for <stable@vger.kernel.org>; Tue,  1 Jul 2025 17:11:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1751389918;
-	bh=sU2Tqd6bdvzOLtqB6osCLzx8U1+d3a8Z2ezfvd4F1oM=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=XS9t/U9R+3zUPjGMo8TXfF8V4bFRO48sGEJTHDFEwALEQlklu34q5iWKNWJAxeJDN
-	 +K3J8c/GIUaMzj/GAXRLelvWCBv1t1aNu430TZblitWvrwTVWBchyyxHwyT9K2nFJV
-	 2SWUvcYUGjOfRYSLdpCwNODR9T1Oe/hhRKxARi7O1Z4AJmUcQosDyXFPrM9D3+2a97
-	 w2pqLs5qGElOjXvgryvDOJ7FE1c8xrUPTzjxFZdV2sZU22COfpkD6ECGQ0PtD7Jyp5
-	 u1S0HgtOspnVPWIHNGHSQOAgw/iDhvS32Yt2ki1VYu1t0R/B2Mce+anQPsZXBmoaSU
-	 nEIFsheOI6nHA==
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-60c776678edso5783961a12.1
-        for <stable@vger.kernel.org>; Tue, 01 Jul 2025 10:11:58 -0700 (PDT)
+	s=arc-20240116; t=1751394993; c=relaxed/simple;
+	bh=yRjplaKXpH/VFpaOavRCRnqrcAYZmLRtHLxP0FlmjEs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZQCoLM5R8wYUTybCCq8ayV9XPR2ge+idIugAUxT+zPn1cNR7QbaleQvyMvmT0Q7wUg7jNNNZOpRfpLQCKXRhLPvny18aVeBH3P8/aEQuMSJ8V5QW6LsaH72L8Y32YJ0iprAlhmdiwJopiUfnk6ohI5OIWt/lbFl7HWfazH+J34Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gei8FHcJ; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ae0e0271d82so1058684566b.3;
+        Tue, 01 Jul 2025 11:36:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751394990; x=1751999790; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EvZSAsGgT4y6tCjof4rP96wWIXxPBf7t0erZSib3VB4=;
+        b=Gei8FHcJDZXbSnyP4PE+fIXvWRm45zmJWxp1kwP9uSwDZoAKCgMjwaCiCN8vYtwQ4t
+         TcZGX+XuomNCMwOrjYcluCysaFKs4Pkz8nCdM44ETa03LFzLMGRFvWDDJI62+tNR3iE0
+         Jxzfs2oJfqJJCHtgQ8iL66XXcOY45rjmBcxk20WincucQzCXBSuLqTVpWgDRypuy7r13
+         qw4E2MN4Sykcu7QXEIZT62K01vboCQN7JnzRpi//2kb0YPnBvkMqm31abrFE0pYli4H7
+         sfA3SOY/3z63hnXtBNFpNNSDbSn+nm0kncRnRYf72uK3bEfyqFDbikIQnweqAk0Cv1Rd
+         0oSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751389918; x=1751994718;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sU2Tqd6bdvzOLtqB6osCLzx8U1+d3a8Z2ezfvd4F1oM=;
-        b=Xj0g3EeVtE1Kbu02svqQVVOSX11sVQbbPjGbLfiifZSECOcShUDdJ95UqSdyW4jtLt
-         rNInNhIi7zLOLWWqOzgPNZ+O9brzBhpu95kAXejkE2fIfOlNxF8G5T1XSCgmhIOhcfDp
-         GAL+lFulQ21wBzL525+fxyp8vTOl18uojLpGvBaMm29g8sJJyXXiRbHMz15Q0/3YKUSJ
-         a5msnoORjRfzluNSfub+OarHfpD+6ZldxxWQx6QNzveoP0S6g7gDR3Voeq2Dr1Osv0iX
-         LZ1/7TNuv/JPPaxWuo36/fq6dbGWQG49qLmzcLg1TkELBPb2X8gw+0Ag4tgADwIjQGzL
-         rSFA==
-X-Forwarded-Encrypted: i=1; AJvYcCX94fuRo+GvFPxt0JZfYTWiAq5r8OnnYdREVDB9BsoP6eRxXvXrrXWmWhphX8fscYf6EcJehxo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGJDhSLq/OlRGmsljm7316gHWkXjuD+c8lC0ZAc/0pXXYsvYlZ
-	zdNG/YpOlrYyZeofAmzXana5ErH53DRMIrfGUnhHPQkLkhd7erB1wH9rRdxT8QjP0pKgMbayAom
-	hWGVoc4Ohkq3Kpl//bxy4QIEvn1fWsKQMYwK3JphJnCAkgTJYFq+f+rNBWuZA8zD+koGSWqNJMA
-	==
-X-Gm-Gg: ASbGnctAfVQzzdWktKFVkTDb2/TjCXTJUesx9G8v+46mx832fjQ9v0vm2fv298HFlHS
-	2SI7SQ5+0MeeP3JSPeTvluAm5aKoWq4lAtITlVL6DSJlnYFr7U7UYXaH+CBaSDD/Esbjw/+eJzg
-	+CPnD/SdqrKtz2O3DK2w66ngP/xkHv/Jvct/UGXglNTQUmkauNgkqHMeuNFCQYBdpmissCU8ejp
-	CP1tM89toSEUzKRN2kjyMipWZlxcdk+wkD2vhtfEWHp1k43kokWHgnVG38UoImlbT+ti+ezfXcn
-	xbw+HG5bwLJnUzTFO4E3WQZkVpN9Sfgi7sEhJfmNvU5fAZXsIJPj3Ki7rt7hlCQ4
-X-Received: by 2002:a50:ed87:0:b0:608:40bf:caed with SMTP id 4fb4d7f45d1cf-60e3a8f3b4cmr2512625a12.7.1751389917970;
-        Tue, 01 Jul 2025 10:11:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEu8J6lVnS+AjHzqRmWb7aXWSa8lc+z3NV7ufWDiI84tWqPRb7bwIpffBsf/O52QDBXHBTQ1w==
-X-Received: by 2002:a50:ed87:0:b0:608:40bf:caed with SMTP id 4fb4d7f45d1cf-60e3a8f3b4cmr2512601a12.7.1751389917513;
-        Tue, 01 Jul 2025 10:11:57 -0700 (PDT)
-Received: from t14s.. (adsl-6.109.242.31.tellas.gr. [109.242.31.6])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60c828bbea9sm7818156a12.1.2025.07.01.10.11.55
+        d=1e100.net; s=20230601; t=1751394990; x=1751999790;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EvZSAsGgT4y6tCjof4rP96wWIXxPBf7t0erZSib3VB4=;
+        b=Z87AKytHIKstUbrLjY1Gn6vlrE1YsVq+liR1o8A3W3ahLkmEEu1Oe+ER/GWGAkHQpa
+         jkpHPQhm9VpTox71dG/I9DscH1T3xVybcoxSdvr3HHhp7l0xkPztWqHq+DOfWDlqTcYN
+         44aBhmETLOxduNMlZZNBUnZkXZdIYHlP9heZCQNRpbiYE0Um38AkVCEZbop9Gv/a8NLe
+         /0LfE2TiqM9Xfud5e75J37ZKG3Yv4P+tvxb/eXxy8SB/mwNKUuh2fj4NUxNiB7x0nfxr
+         8kdFyZVOJ59gnR2RQ4dbeS2e6MllxRGcfgtxuK+b0JGlUFe4orMM2IvJjM5ttq5VRF0Y
+         C1uw==
+X-Forwarded-Encrypted: i=1; AJvYcCUBzicsYU2EyZIU4DMzTSfoBLVha9wRRFzIWrl7ghQkf2UJPNBRgpomrI2/k3x+OlS1vz72mxtXeBkkQT86QQ==@vger.kernel.org, AJvYcCVzjYyU5waoxZsxV9cmAxA+MCZRSMwBzxpZDLS63YGMmoe7Xjoyl1kDWr+tT8R99YotMeuRoNu9l36ATYMr@vger.kernel.org, AJvYcCW2Mmnu9NN5dX/ZWtwzO/UYpYhus3sjndFYVE/A6L/8DVityDwqWDDsFHfmiE9s62SjsTBUzQDT@vger.kernel.org, AJvYcCW3cA9PlCrSPcBvMzs5jHeLZMQEA+Y/Vlhezvhz69AJk49Ygc/mnqk5Y0NJ4Igs/j7JfIFusS0tWuIK@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6Jd8kIMcgxasXrju62jec0lpN1OUujf0q25rLfC2GGMtxh979
+	FNYTarJEtL7W5kUIcvfC5jC9vAWmECxHxF6HFCabIkZe6NNvOJfCjpBszOnMLrVzyw==
+X-Gm-Gg: ASbGncu5WdkXnvjGJs58HsUCIOg8Xn25h+C0hPPweL8cOo7Own/AFaeoDHGISB0uZ01
+	n3CS6PjtCmt5C3ZIyd/2jv/e358+rmQK1w1Z/cK3aERJVMet1wcqW98I704CH8Ecb789sGGmIrI
+	BuMyL7DZBFUI/f78I5NSZDgza941nIlEEdml2xx0hiQHBBfmDT97JBeRa7pQdhLzSi0LG/mo6PC
+	0yJCXkTChoYp6yqTbExzsdY9eDp/f1SGcUksOeuwM0GLHXqYHv1UkeERpaGAfVNaTVPLgUAhZT+
+	amUNipvnHbg38pKCrO8Bzzh3Utvl9kn8zPzaHP5FXGM7PXAAaGjNGAVoZJ+ndl/TSTvG6APm/5x
+	lmMuYabxqLclHjQw=
+X-Google-Smtp-Source: AGHT+IGxDgDRfcO4OsA6oSf98ANF2jZNp1bEJWf7WwHC3hoaBCRtjYBncfle2chgYxw2mC3t34wNJQ==
+X-Received: by 2002:a17:907:3d8c:b0:ae0:1fdf:ea65 with SMTP id a640c23a62f3a-ae34fd8821fmr1755494466b.17.1751394990039;
+        Tue, 01 Jul 2025 11:36:30 -0700 (PDT)
+Received: from alex-x1e.localdomain ([84.226.118.249])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae353c013b7sm915374566b.80.2025.07.01.11.36.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jul 2025 10:11:57 -0700 (PDT)
-From: Ioanna Alifieraki <ioanna-maria.alifieraki@canonical.com>
-To: baolu.lu@linux.intel.com,
-	kevin.tian@intel.com,
-	jroedel@suse.de,
-	robin.murphy@arm.com,
-	will@kernel.org,
-	joro@8bytes.org,
-	dwmw2@infradead.org,
-	iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [REGRESSION][BISECTED] Performance Regression in IOMMU/VT-d Since Kernel 6.10
-Date: Tue,  1 Jul 2025 20:11:54 +0300
-Message-Id: <20250701171154.52435-1-ioanna-maria.alifieraki@canonical.com>
-X-Mailer: git-send-email 2.34.1
+        Tue, 01 Jul 2025 11:36:29 -0700 (PDT)
+From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	laurentiu.tudor1@dell.com,
+	abel.vesa@linaro.org,
+	bryan.odonoghue@linaro.org,
+	jens.glathe@oldschoolsolutions.biz,
+	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
+	stable@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH v2 1/1] arm64: dts: qcom: x1e80100-pmics: Disable pm8010 by default
+Date: Tue,  1 Jul 2025 20:35:53 +0200
+Message-ID: <20250701183625.1968246-2-alex.vinarskis@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250701183625.1968246-1-alex.vinarskis@gmail.com>
+References: <20250701183625.1968246-1-alex.vinarskis@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,38 +104,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-#regzbot introduced: 129dab6e1286
+pm8010 is a camera specific PMIC, and may not be present on some
+devices. These may instead use a dedicated vreg for this purpose (Dell
+XPS 9345, Dell Inspiron..) or use USB webcam instead of a MIPI one
+alltogether (Lenovo Thinbook 16, Lenovo Yoga..).
 
-Hello everyone,
+Disable pm8010 by default, let platforms that actually have one onboard
+enable it instead.
 
-We've identified a performance regression that starts with linux
-kernel 6.10 and persists through 6.16(tested at commit e540341508ce).
-Bisection pointed to commit:
-129dab6e1286 ("iommu/vt-d: Use cache_tag_flush_range_np() in iotlb_sync_map").
+Cc: <stable@vger.kernel.org>
+Fixes: 2559e61e7ef4 ("arm64: dts: qcom: x1e80100-pmics: Add the missing PMICs")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+---
+ arch/arm64/boot/dts/qcom/x1e80100-pmics.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-The issue occurs when running fio against two NVMe devices located
-under the same PCIe bridge (dual-port NVMe configuration). Performance
-drops compared to configurations where the devices are on different
-bridges.
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100-pmics.dtsi b/arch/arm64/boot/dts/qcom/x1e80100-pmics.dtsi
+index e3888bc143a0..621890ada153 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100-pmics.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100-pmics.dtsi
+@@ -475,6 +475,8 @@ pm8010: pmic@c {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 
++		status = "disabled";
++
+ 		pm8010_temp_alarm: temp-alarm@2400 {
+ 			compatible = "qcom,spmi-temp-alarm";
+ 			reg = <0x2400>;
+-- 
+2.48.1
 
-Observed Performance:
-- Before the commit: ~6150 MiB/s, regardless of NVMe device placement.
-- After the commit:
-  -- Same PCIe bridge: ~4985 MiB/s
-  -- Different PCIe bridges: ~6150 MiB/s
-
-
-Currently we can only reproduce the issue on a Z3 metal instance on
-gcp. I suspect the issue can be reproducible if you have a dual port
-nvme on any machine.
-At [1] there's a more detailed description of the issue and details
-on the reproducer. 
-
-Could you please advise on the appropriate path forward to mitigate or
-address this regression?
-
-Thanks,
-Jo
-
-[1] https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2115738
 
