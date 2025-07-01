@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-159112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC988AEED3B
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 06:27:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EDD9AEED4F
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 06:38:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 046031BC0279
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 04:27:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 591351BC2204
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 04:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4A61CF5C0;
-	Tue,  1 Jul 2025 04:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8666B19F130;
+	Tue,  1 Jul 2025 04:37:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F591805A
-	for <stable@vger.kernel.org>; Tue,  1 Jul 2025 04:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E643B13D539
+	for <stable@vger.kernel.org>; Tue,  1 Jul 2025 04:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751344034; cv=none; b=Nlqdo+xTBspuG9JuoqL0xCDIqgV8/1IwT2pBRSKdp35XP6ptNgLpQTLY7I/BiThj+OheVi2pb4NjgK8Nii8MMVQMY0MDHpxZtDKLLtavf+a/ImY7567ADDfcyMXI5ciFsq9K0VXTi7YOqC4cTOIBg4Tzz6+lGFGaNcRXbGN+PAU=
+	t=1751344675; cv=none; b=s12XVFAUIZxva6hvyyaJ6ZECFz1w/mX3Guis4K8SgautToBnUbDosemggzosyLbjiupQrKkT9dy/tjFjyXkCs6CLWSjSgiTugBzUwslnZ8Z+TOgEZhquJc6NwSYoxyVkG2Qe1ugBoQuuQ3SbAJ2b2WdAK7QnqlHQzaXZ/x+K8+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751344034; c=relaxed/simple;
-	bh=XQEp5pT9VUCtr5c+mDMHDWdkcJbJDyOjdUPFYv1TCJI=;
+	s=arc-20240116; t=1751344675; c=relaxed/simple;
+	bh=Z1weWazKElAbY6OXFl+dioPyyGiTYo7MZ1E/oG/g4qQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ac8MXXh7NfH4iK2JkXhDFQ5Ljh4cC08APiDDUuOV9RZ1jBWJ1Zz3YQ0W5oBYRt6At8omhZl+kqrJvtQefNJSb2iGVmg7GTBHD7Mfjz4RM27QIJGIMZK44uEpGetqCP1tFHJ/18sVDe1zPlN8y8QT5foEGT3Wen7h7UOLkYRj8w4=
+	 MIME-Version; b=LD9+hIPKTzV9qhNC/FyXB85HqyfRGPGJUJ4TqbGOfUsSBn8widdGY30UVwsLeRw46MPED4pXbR+j3VAxXE/axS9tKvs+2hfpOkIOI9XPxTcHDPpfEVk7lhckNDz/GxcgD8PS+cyGIpLa1AiXNZz+yCh5LdYuyvp7SGoAGfMP7Ns=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D53DD15A1;
-	Mon, 30 Jun 2025 21:26:56 -0700 (PDT)
-Received: from MacBook-Pro.blr.arm.com (MacBook-Pro.blr.arm.com [10.164.18.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 83ED23F58B;
-	Mon, 30 Jun 2025 21:27:09 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B151015A1;
+	Mon, 30 Jun 2025 21:37:36 -0700 (PDT)
+Received: from Mac.blr.arm.com (unknown [10.164.136.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 26AD63F58B;
+	Mon, 30 Jun 2025 21:37:48 -0700 (PDT)
 From: Dev Jain <dev.jain@arm.com>
 To: gregkh@linuxfoundation.org
 Cc: anshuman.khandual@arm.com,
@@ -42,12 +42,12 @@ Cc: anshuman.khandual@arm.com,
 	ryan.roberts@arm.com,
 	stable@vger.kernel.org,
 	will@kernel.org
-Subject: [PATCH 5.15.y] arm64: Restrict pagetable teardown to avoid false warning
-Date: Tue,  1 Jul 2025 09:57:05 +0530
-Message-Id: <20250701042705.22120-1-dev.jain@arm.com>
+Subject: [PATCH 6.1.y] arm64: Restrict pagetable teardown to avoid false warning
+Date: Tue,  1 Jul 2025 10:07:45 +0530
+Message-Id: <20250701043745.22336-1-dev.jain@arm.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <2025062304-prune-getup-2943@gregkh>
-References: <2025062304-prune-getup-2943@gregkh>
+In-Reply-To: <2025062304-oyster-overhang-6204@gregkh>
+References: <2025062304-oyster-overhang-6204@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,10 +85,10 @@ Signed-off-by: Will Deacon <will@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index fc86e7465df4..e3e4defdea42 100644
+index cd14c3c22320..e9288b28cb1e 100644
 --- a/arch/arm64/mm/mmu.c
 +++ b/arch/arm64/mm/mmu.c
-@@ -1466,7 +1466,8 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
+@@ -1503,7 +1503,8 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
  	next = addr;
  	end = addr + PUD_SIZE;
  	do {
