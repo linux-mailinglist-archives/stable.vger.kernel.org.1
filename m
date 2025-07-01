@@ -1,125 +1,96 @@
-Return-Path: <stable+bounces-159166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE18CAF0363
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 21:09:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D597AF04F6
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 22:35:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F9157A4941
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 19:08:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0CDC4E3FF5
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 20:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DF927EFF7;
-	Tue,  1 Jul 2025 19:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD632FE322;
+	Tue,  1 Jul 2025 20:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NAJkSLnS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DoNLWaQV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AFD27FB34;
-	Tue,  1 Jul 2025 19:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017A5281355;
+	Tue,  1 Jul 2025 20:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751396983; cv=none; b=irM4ppabJ0DTRcw41zQfUctLbY3v3OGkVMg/rr5RD1NFBA5J2E36LIstOl07msOpykBLj7GfbUbogXQm5wmdptOI2Yq7LtQClCDZOEDH4UfW18MrzmhQaad5o3YWqABTxA/j0C9igdw2Dgbbk3kbLHukuE2XhoAHQSHhTP7U8ZY=
+	t=1751402129; cv=none; b=PYBep3KpWxbjIWMfwakAbsvELh2T0Ke5ukdVJAQa7p7LZ3xzJpd2eW+cWL0+lIq94WmI1hbNBYD5VMWMFNs7NMR0Y+j4JqqqvlZVh1bZjA1V9mfvKruDjeUAn0BoTGHITTrJ4wDyDhaRr4xTH8C2ywC54GQH27mCj7o/+UE4UcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751396983; c=relaxed/simple;
-	bh=+aq+ORyCy6Lpz9SFUKrcE4bWltJnfJWhZuLKvrvBDpQ=;
-	h=Date:To:From:Subject:Message-Id; b=KCMwEO4ZCuSCumgShno1CByZUHVBgE4vGn7swiniBPpG/jSgasHNt6fh14/J2nCrs5CcBmA78SPAhtyuxHTxlo6ps7A+ve0VOFQVJJmU3JXGqQIipMz/1UuIIAqcKNLyJwTLRN13k67WQVm+CXdlZERWjRMoHBBaVDfDGTYUV7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NAJkSLnS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F122C4CEEB;
-	Tue,  1 Jul 2025 19:09:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1751396983;
-	bh=+aq+ORyCy6Lpz9SFUKrcE4bWltJnfJWhZuLKvrvBDpQ=;
-	h=Date:To:From:Subject:From;
-	b=NAJkSLnSeQ7vFh8xP4Vqrut7oceEPRJ1AQ+AuAjhniKrMECFJi+fRzxgsJHzGv4Jy
-	 RgL5P0sCFj4y+aofKeBU49/qpD7UhuCkVrZnuE0eqVUE4J670Hok1nEesgTeZ9GIfC
-	 4M3tP/1nspHbGd7rKfsWk0npOg19dzhV0vnVyOAs=
-Date: Tue, 01 Jul 2025 12:09:42 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,luis@igalia.com,gregkh@linuxfoundation.org,fossdd@pwned.life,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kallsyms-fix-build-without-execinfo.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250701190943.0F122C4CEEB@smtp.kernel.org>
+	s=arc-20240116; t=1751402129; c=relaxed/simple;
+	bh=I6JQFok9D5wKOjJaufxumgrPJ4Vt5SFOzuUQhLx/Q5c=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=jn9hZaKUfIoKOqZl0atUn6FdU5mkvqj4cHaGKCi51KMum0AOMr8/8esf0RMenixqCNHax0+W+K7dYXVigaiaX8mFOWyDI7hYx8FQ7WnHeba9n6X5zSwjl+2XZRq8hesCteivltjADr+NwZdB7XuVGFiWjZJlx8XtMvJq1z5YPxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DoNLWaQV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECCDC4CEEE;
+	Tue,  1 Jul 2025 20:35:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751402128;
+	bh=I6JQFok9D5wKOjJaufxumgrPJ4Vt5SFOzuUQhLx/Q5c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=DoNLWaQVMb95RqC3gJrE41oKtcZ1/5qtyH27rYyX5KkC8SwX0jmwxkPmHYFqJocdw
+	 CfD4bjdVniIKo5XCFTyl0d0gX7TsUV91+cxje7kuDMsqUeunAsxQoXDCtLtqRz7GQL
+	 0VYb/LgMWLogj/LdfVPJ6QpHJ2Y+Yn+ppX79dMODS0muPEXzogWTNlABnng6JLMUD8
+	 wEy1xTqWfLprk5Uzhx8SSeTfBpHlpphyu0ACkhroJldDlgvPFGCRg8AthdLs5pEBXK
+	 qYokL8ZKCtgvl5B6Gp58NSI4uR8j4Bq/hEn92faFgxvxWgzbjwBasUOmJUFav4Lzk1
+	 XZ4KkiqLpdX2w==
+Date: Tue, 1 Jul 2025 15:35:26 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: bhelgaas@google.com, lukas@wunner.de, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH v2] PCI/pwrctrl: Skip creating pwrctrl device unless
+ CONFIG_PCI_PWRCTRL is enabled
+Message-ID: <20250701203526.GA1849466@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250701064731.52901-1-manivannan.sadhasivam@linaro.org>
 
+[+cc Bart]
 
-The patch titled
-     Subject: kallsyms: fix build without execinfo
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kallsyms-fix-build-without-execinfo.patch
+On Tue, Jul 01, 2025 at 12:17:31PM +0530, Manivannan Sadhasivam wrote:
+> If devicetree describes power supplies related to a PCI device, we
+> previously created a pwrctrl device even if CONFIG_PCI_PWRCTL was
+> not enabled.
+> 
+> When pci_pwrctrl_create_device() creates and returns a pwrctrl device,
+> pci_scan_device() doesn't enumerate the PCI device. It assumes the pwrctrl
+> core will rescan the bus after turning on the power. However, if
+> CONFIG_PCI_PWRCTL is not enabled, the rescan never happens.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kallsyms-fix-build-without-execinfo.patch
+Separate from this patch, can we refine the comment in
+pci_scan_device() to explain *why* we should skip scanning if a
+pwrctrl device was created?  The current comment leaves me with two
+questions:
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+  1) How do we know the pwrctrl device is currently off?  If it is
+     already on, why should we defer enumerating the device?
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+  2) If the pwrctrl device is currently off, won't the Vendor ID read
+     just fail like it does for every other non-existent device?  If
+     so, why can't we just let that happen?
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+This behavior is from 2489eeb777af ("PCI/pwrctrl: Skip scanning for
+the device further if pwrctrl device is created"), which just says
+"there's no need to continue scanning."  Prior to 2489eeb777af, it
+looks like we *did* what try to enumerate the device even if a pwrctrl
+device was created, and 2489eeb777af doesn't mention a bug fix, so I
+assume it's just an optimization.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Achill Gilgenast <fossdd@pwned.life>
-Subject: kallsyms: fix build without execinfo
-Date: Sun, 22 Jun 2025 03:45:49 +0200
-
-Some libc's like musl libc don't provide execinfo.h since it's not part of
-POSIX.  In order to fix compilation on musl, only include execinfo.h if
-available (HAVE_BACKTRACE_SUPPORT)
-
-This was discovered with c104c16073b7 ("Kunit to check the longest symbol
-length") which starts to include linux/kallsyms.h with Alpine Linux'
-configs.
-
-Link: https://lkml.kernel.org/r/20250622014608.448718-1-fossdd@pwned.life
-Fixes: c104c16073b7 ("Kunit to check the longest symbol length")
-Signed-off-by: Achill Gilgenast <fossdd@pwned.life>
-Cc: Luis Henriques <luis@igalia.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- tools/include/linux/kallsyms.h |    4 ++++
- 1 file changed, 4 insertions(+)
-
---- a/tools/include/linux/kallsyms.h~kallsyms-fix-build-without-execinfo
-+++ a/tools/include/linux/kallsyms.h
-@@ -18,6 +18,7 @@ static inline const char *kallsyms_looku
- 	return NULL;
- }
- 
-+#ifdef HAVE_BACKTRACE_SUPPORT
- #include <execinfo.h>
- #include <stdlib.h>
- static inline void print_ip_sym(const char *loglvl, unsigned long ip)
-@@ -30,5 +31,8 @@ static inline void print_ip_sym(const ch
- 
- 	free(name);
- }
-+#else
-+static inline void print_ip_sym(const char *loglvl, unsigned long ip) {}
-+#endif
- 
- #endif
-_
-
-Patches currently in -mm which might be from fossdd@pwned.life are
-
-kallsyms-fix-build-without-execinfo.patch
-
+Bjorn
 
