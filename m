@@ -1,140 +1,109 @@
-Return-Path: <stable+bounces-159136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0753AEF690
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 13:30:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D873AEF6EF
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 13:45:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1B541BC84F8
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 11:30:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3820C1BC33EE
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 11:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B3C272E47;
-	Tue,  1 Jul 2025 11:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFECA242D8B;
+	Tue,  1 Jul 2025 11:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="najk3iCg"
+	dkim=pass (1024-bit key) header.d=pwned.life header.i=@pwned.life header.b="p5jRpfyY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.nixnet.email (mx.nixnet.email [5.161.67.119])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133C8272E5D
-	for <stable@vger.kernel.org>; Tue,  1 Jul 2025 11:30:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF88259C83;
+	Tue,  1 Jul 2025 11:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.161.67.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751369406; cv=none; b=SoElbLUpCQ96HF+duYKPKIyvhUrxVyuZBOFtgsMy+s+mYoht6LrkdYHk2/2DKcPlqTchx5Lfgj0AOHnJamXDHemmwvQs9sVaQznw1wTwnTsDRUsePZdiERRzd8gNfj2OJJm47I6YIbutbwq8wSjI24hnFXSWxTfKkAia7S7T/Og=
+	t=1751370317; cv=none; b=XFLjgGn1nKvODFkyOcmQn5PGtha2eqYhBTGNDlFeutL9quH05S+/zCHEBGLcAuFHyzH0QVPy+T7KAr2vlEMPGvBGR82jNCaVasjp/+eh18wu75nOOAE0scodA1e0E6HXz91yI5oqzibPYMXe1cesWxFtV6k+Xc9YDbrFo7as0PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751369406; c=relaxed/simple;
-	bh=gl4xZyAxbepWznSUGg6LJeMRxN/TwOAl+AaAGUxLjlA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GKWh4TzoE61fCIxXQpQyZGB2J2pYC4jqLjsWY74XCTpWqgen4z0WQZxIrNjdRMdolCId/qNEjpxhkkEX9+VhYme/vcrHuMxBNXxMKTcUr4kwT2QcD80/nDTnTFiWxoFbj1mtEKdnN1I+1K4/bCrlWaVGCm6tNnYILkYK0PHjZoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=najk3iCg; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a3696a0d3aso1457085f8f.2
-        for <stable@vger.kernel.org>; Tue, 01 Jul 2025 04:30:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751369401; x=1751974201; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nY2MChASwYPFQeeJZJw/kzZhoLPwcfZ0+qyLebAdBf4=;
-        b=najk3iCgQJ8SdQ2HIRRi3qALXHCMvh5Y80gvWfUATsex+SdoClMZWXrLuhPoZjkqow
-         4rpghtTLY8vuFOSjcGXmc/6xFWn3gX31N5Bu81quGWvwA48QhMEhvBsYXjcONCQ7NTzk
-         AYyZfI30XYFzCkVrgrEkZ9dLCNjIXp4Icleyk2UuaM2Yf3NeHmPIHavx2rosTmhoirH7
-         ab6U13sDdpwUShCRAuei0IavBfxMtTxmZwljmJUxQTrzV2UumaPVaNgL0x7vMJEEpdn5
-         oPnSDHN1tWMTabL7/9ete9F2t30DyaFThv/JOO5zKujpMJYhRbuIZropCUptge2Z51ck
-         CXhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751369401; x=1751974201;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nY2MChASwYPFQeeJZJw/kzZhoLPwcfZ0+qyLebAdBf4=;
-        b=mSgSiThSF1UH30UpsDa2hHFbOrwxUXdlp+K+NqTixrbqp79R5rGrlXvkcN6zToHmi7
-         xxrSuH5/TQ1JKDhP/mox6mFCcR4E/Wb/Xy9orManu8AzIBH+c3GWU9HuGvomXPVbwoET
-         tIrDhJ2M21vHIvOQxjTVtTqBorAlTuujNKetg2vtu7LxyWchMO8i42QQvTF79Tl3N0BJ
-         3S1ReRT9xpUYSXbsvFuR9+fZbicIuaqfYhTwfyL1maj8JnDPJSSMonsP+l5ZEyBNI8Re
-         diRX6TGWwM0dc+bPiKLUgZ9jDBfRa8r0JHapr6ZMx4WYftWVVMr6gfJEemWjaBgWotlv
-         1YaQ==
-X-Gm-Message-State: AOJu0YwgvM6VMdMVg4EICt4GnHL/fXd1AExCDLIw3DrJh7ALlOz7PEBo
-	HGGVkCeQXQhtk29k0dP962WHty1kad2N/cAply01P5HwqNDxj5vk443ikX+Axtb/qj2X+mfUQnB
-	RWL5CxGwV9RD3pg==
-X-Google-Smtp-Source: AGHT+IGFKc3APByuuUCC/SJ/U3h/jsYQ5L0n7CiuMCpjGBt4me8xIhMm+owqe3Jpb+ZT+O252CMSOajCRUIPFA==
-X-Received: from wmbhe15.prod.google.com ([2002:a05:600c:540f:b0:442:f45c:c10c])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:adf:9c81:0:b0:3a8:6262:e78 with SMTP id ffacd0b85a97d-3a8fe5b1dd8mr9761747f8f.37.1751369401366;
- Tue, 01 Jul 2025 04:30:01 -0700 (PDT)
-Date: Tue, 01 Jul 2025 11:29:59 +0000
-In-Reply-To: <2025070142-equation-unlighted-9720@gregkh>
+	s=arc-20240116; t=1751370317; c=relaxed/simple;
+	bh=sVovuMTF5tAHPiCPKHLjhZPgKA8N730V48hVE+q9Zs8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=fwiHX5mpr/y1uUH8lH/swgbhLfuFifN/WKCIl48twq782pHUYKcKFTSDMOyT3WCoUQBmVu+o1DKVDfAEoFdjbInvzPKlmtJdRAKulBN9IIwCoxECsqEK6p3nc+AwqpY+q/ckXaArssAaqSuv0zr/hBzJ4OK3VcxfHsuXlPEgs4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pwned.life; spf=pass smtp.mailfrom=pwned.life; dkim=pass (1024-bit key) header.d=pwned.life header.i=@pwned.life header.b=p5jRpfyY; arc=none smtp.client-ip=5.161.67.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pwned.life
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pwned.life
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by mx.nixnet.email (Postfix) with ESMTPSA id 43C547D3B8;
+	Tue,  1 Jul 2025 13:37:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pwned.life; s=202002021149;
+	t=1751369861;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QVgDAEpVfCK2rfSTwfo8zjZAUpXMr5uBg9i9X14EHcs=;
+	b=p5jRpfyY83dkXaHxaCJPcaV4zjMzuqIdqo5Xi1qvNeRy+2poIk1vHlYxIPRYO5+A0GpbnR
+	9A94O3kpaBmg9kOMld4bQiLBiY1rLu+6kV/3pTOn9p3nyRShzXeLmr+Bpj9PKFaGHejkQT
+	m4tYZD4+qySJM1eJoIl/UE0RfDg/iL8=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250630-ipmi-fix-v1-1-2d496de3c856@google.com>
- <2025063054-abridge-conclude-3dad@gregkh> <DB0MKNAAHYVK.3V2BN2WP3C7ZI@google.com>
- <2025070142-equation-unlighted-9720@gregkh>
-X-Mailer: aerc 0.20.1
-Message-ID: <DB0OMYW0QFR0.33PUE4BU0XS5D@google.com>
-Subject: Re: [PATCH stable] ipmi:msghandler: Fix potential memory corruption
- in ipmi_create_user()
-From: Brendan Jackman <jackmanb@google.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>, Corey Minyard <minyard@acm.org>, 
-	Corey Minyard <cminyard@mvista.com>, <openipmi-developer@lists.sourceforge.net>, 
-	<linux-kernel@vger.kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Corey Minyard <corey@minyard.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 01 Jul 2025 13:37:37 +0200
+Message-Id: <DB0OSTC6N4TL.2NK75K2CWE9JV@pwned.life>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, "Shuah Khan" <skhan@linuxfoundation.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>, "Achill Gilgenast" <fossdd@pwned.life>
+Subject: Re: [RESEND PATCH v2] kallsyms: fix build without execinfo
+From: "Achill Gilgenast" <fossdd@pwned.life>
+To: "Andrew Morton" <akpm@linux-foundation.org>
+X-Greeting: Hi mom! Look, I'm in somebodys mail client!
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250622014608.448718-1-fossdd@pwned.life>
+ <20250622113602.48092b368afc5f1729b45cb6@linux-foundation.org>
+ <DATW4DAU81FO.388H7H1WSUKAB@pwned.life>
+In-Reply-To: <DATW4DAU81FO.388H7H1WSUKAB@pwned.life>
 
-On Tue Jul 1, 2025 at 10:14 AM UTC, Greg KH wrote:
-> On Tue, Jul 01, 2025 at 09:52:55AM +0000, Brendan Jackman wrote:
->> On Mon Jun 30, 2025 at 6:10 PM UTC, Greg KH wrote:
->> > On Mon, Jun 30, 2025 at 05:09:02PM +0000, Brendan Jackman wrote:
->> >> From: Dan Carpenter <dan.carpenter@linaro.org>
->> >> 
->> >> commit fa332f5dc6fc662ad7d3200048772c96b861cf6b upstream
->> >> 
->> >> The "intf" list iterator is an invalid pointer if the correct
->> >> "intf->intf_num" is not found.  Calling atomic_dec(&intf->nr_users) on
->> >> and invalid pointer will lead to memory corruption.
->> >> 
->> >> We don't really need to call atomic_dec() if we haven't called
->> >> atomic_add_return() so update the if (intf->in_shutdown) path as well.
->> >> 
->> >> Fixes: 8e76741c3d8b ("ipmi: Add a limit on the number of users that may use IPMI")
->> >> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
->> >> Message-ID: <aBjMZ8RYrOt6NOgi@stanley.mountain>
->> >> Signed-off-by: Corey Minyard <corey@minyard.net>
->> >> Signed-off-by: Brendan Jackman <jackmanb@google.com>
->> >> ---
->> >> I have tested this in 6.12 with Google's platform drivers added to
->> >> reproduce the bug.  The bug causes the panic notifier chain to get
->> >> corrupted leading to a crash. With the fix this goes away.
->> >> 
->> >> Applies to 6.6 too but I haven't tested it there.
->> >
->> > So what kernels are you wanting this to be applied to?
->> 
->> Right, sorry for the ambiguity.  I've just applied the patch to 6.6 and
->> booted QEMU and it worked fine.
->> 
->> I have not reproduced a crash in 6.6 but it's pretty clearly a real bug
->> (it decrements the target of an uninitialized pointer).
->> 
->> So if you're OK with that then please apply to 6.6 and 6.12. Otherwise
->> just 6.12 is fine, I will send another PATCH if I ever hit the issue for
->> real in 6.6.
+On Mon Jun 23, 2025 at 1:53 PM CEST, Achill Gilgenast wrote:
+> On Sun Jun 22, 2025 at 8:36 PM CEST, Andrew Morton wrote:
+>> On Sun, 22 Jun 2025 03:45:49 +0200 Achill Gilgenast <fossdd@pwned.life> =
+wrote:
+>>
+>>> Some libc's like musl libc don't provide execinfo.h since it's not part
+>>> of POSIX. In order to fix compilation on musl, only include execinfo.h
+>>> if available (HAVE_BACKTRACE_SUPPORT)
+>>>=20
+>>> This was discovered with c104c16073b7 ("Kunit to check the longest symb=
+ol length")
+>>> which starts to include linux/kallsyms.h with Alpine Linux' configs.
+>>>=20
+>>> ...
+>>>
+>>> --- a/tools/include/linux/kallsyms.h
+>>> +++ b/tools/include/linux/kallsyms.h
+>>> @@ -18,6 +18,7 @@ static inline const char *kallsyms_lookup(unsigned lo=
+ng addr,
+>>>  	return NULL;
+>>>  }
+>>> =20
+>>> +#ifdef HAVE_BACKTRACE_SUPPORT
+>>>  #include <execinfo.h>
+>>>  #include <stdlib.h>
+>>>  static inline void print_ip_sym(const char *loglvl, unsigned long ip)
+>>
+>> I'm not seeing anything in there which needs execinfo.h.  Can we simply
+>> remove the inclusion?
 >
-> But why would we skip 6.15.y?  
+> No, since backtrace_symbols is provided by execinfo.h.
 
-Ah, sorry. I forgot that existed (I was conflating "longterm" and
-"stable" in my mind).
+Is there some status on it? I saw you picked it in mm-hotfixes-unstable,
+but it got dropped out again.
 
-I've just applied this patch to 6.15.y and booted QEMU, seems OK.
+Is there something I can do to push it?
 
-Aaand now this made me realise I also forgot 6.1 existed and it also
-has the bug. So I've just applied it to 6.1.y and booted that in QEMU
-too.
-
-So: 6.15, 6.12, 6.6, and 6.1.
+Thanks!
 
