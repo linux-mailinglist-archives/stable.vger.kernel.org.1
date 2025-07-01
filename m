@@ -1,83 +1,125 @@
-Return-Path: <stable+bounces-159165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D95E1AF0360
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 21:09:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE18CAF0363
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 21:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E575D1C075B4
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 19:09:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F9157A4941
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 19:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8681A280CD5;
-	Tue,  1 Jul 2025 19:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DF927EFF7;
+	Tue,  1 Jul 2025 19:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GZa0mg3h"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NAJkSLnS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F020277CBA;
-	Tue,  1 Jul 2025 19:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AFD27FB34;
+	Tue,  1 Jul 2025 19:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751396962; cv=none; b=dD25nrPVulqfVBegRjgI4eQO3s1AN8Wtr4ywq6EF3pIBUpq/Rqqpn3gj2ADyEyfPsLEhZmB3LWNx2Yzu5+H3RxxyHPEixBO4DmAeJNeO1pgtO8gpzAhrMLTXaLRpLTaRlacxLajkRWzC4ydM/GeMWQL0ZgXnpcH4xFu0nxlhUuo=
+	t=1751396983; cv=none; b=irM4ppabJ0DTRcw41zQfUctLbY3v3OGkVMg/rr5RD1NFBA5J2E36LIstOl07msOpykBLj7GfbUbogXQm5wmdptOI2Yq7LtQClCDZOEDH4UfW18MrzmhQaad5o3YWqABTxA/j0C9igdw2Dgbbk3kbLHukuE2XhoAHQSHhTP7U8ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751396962; c=relaxed/simple;
-	bh=GIDM07D74e88J5iKzzjQjxabKCpfk+BcWb9tNgQsLUM=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=TB1cqAJptazUM1udLkRNtGS9mQw4micCxYqw7Me9dkMKC+xij96yZThve/LdST+p+OO1HJ7EXrYZGBZ11vlTujmpzaB+SE8mP1Nrysw27J30FeTtlD/NoRr43Zyc/gdbXwdtRTMTl9YuJIW1ugr/UJt2vVvYev1H5Hrdn5Oj/kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GZa0mg3h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5955BC4CEF1;
-	Tue,  1 Jul 2025 19:09:21 +0000 (UTC)
+	s=arc-20240116; t=1751396983; c=relaxed/simple;
+	bh=+aq+ORyCy6Lpz9SFUKrcE4bWltJnfJWhZuLKvrvBDpQ=;
+	h=Date:To:From:Subject:Message-Id; b=KCMwEO4ZCuSCumgShno1CByZUHVBgE4vGn7swiniBPpG/jSgasHNt6fh14/J2nCrs5CcBmA78SPAhtyuxHTxlo6ps7A+ve0VOFQVJJmU3JXGqQIipMz/1UuIIAqcKNLyJwTLRN13k67WQVm+CXdlZERWjRMoHBBaVDfDGTYUV7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NAJkSLnS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F122C4CEEB;
+	Tue,  1 Jul 2025 19:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1751396961;
-	bh=GIDM07D74e88J5iKzzjQjxabKCpfk+BcWb9tNgQsLUM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GZa0mg3hI39Ery9ChDXGj/+uw+L0iw4iNlMP6kQ0ymtqJ3t1OCZLx6TANzt+G+hFy
-	 1H78KJtC5r5JcINGoqnlFA40ruqom5hpo+8dWzG0RcXsWUlD2WAIDo5Gkq2/qTjJKC
-	 Rce9UXZ4PTNsYeO107+n7wNaT2uIoaRCqQq1hS/k=
-Date: Tue, 1 Jul 2025 12:09:20 -0700
+	s=korg; t=1751396983;
+	bh=+aq+ORyCy6Lpz9SFUKrcE4bWltJnfJWhZuLKvrvBDpQ=;
+	h=Date:To:From:Subject:From;
+	b=NAJkSLnSeQ7vFh8xP4Vqrut7oceEPRJ1AQ+AuAjhniKrMECFJi+fRzxgsJHzGv4Jy
+	 RgL5P0sCFj4y+aofKeBU49/qpD7UhuCkVrZnuE0eqVUE4J670Hok1nEesgTeZ9GIfC
+	 4M3tP/1nspHbGd7rKfsWk0npOg19dzhV0vnVyOAs=
+Date: Tue, 01 Jul 2025 12:09:42 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,luis@igalia.com,gregkh@linuxfoundation.org,fossdd@pwned.life,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Luis Henriques <luis@igalia.com>
-Cc: "Achill Gilgenast" <fossdd@pwned.life>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Shuah Khan" <skhan@linuxfoundation.org>,
- <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [RESEND PATCH v2] kallsyms: fix build without execinfo
-Message-Id: <20250701120920.49cd122526b3032a4db1e218@linux-foundation.org>
-In-Reply-To: <87ecuz51eg.fsf@igalia.com>
-References: <20250622014608.448718-1-fossdd@pwned.life>
-	<20250622113602.48092b368afc5f1729b45cb6@linux-foundation.org>
-	<DATW4DAU81FO.388H7H1WSUKAB@pwned.life>
-	<DB0OSTC6N4TL.2NK75K2CWE9JV@pwned.life>
-	<87ecuz51eg.fsf@igalia.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Subject: + kallsyms-fix-build-without-execinfo.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250701190943.0F122C4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Tue, 01 Jul 2025 17:19:51 +0100 Luis Henriques <luis@igalia.com> wrote:
 
-> >> No, since backtrace_symbols is provided by execinfo.h.
-> >
-> > Is there some status on it? I saw you picked it in mm-hotfixes-unstable,
-> > but it got dropped out again.
-> >
-> > Is there something I can do to push it?
-> 
-> FWIW I can confirm this is indeed a regression.  And specially annoying
-> because it has been backported into stable kernels (even if having kunit
-> tests backported sounds odd to me).
-> 
-> It would be great to have this fixed, or reverted.
+The patch titled
+     Subject: kallsyms: fix build without execinfo
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     kallsyms-fix-build-without-execinfo.patch
 
-OK, thanks for the reminder, I restored this.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kallsyms-fix-build-without-execinfo.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Achill Gilgenast <fossdd@pwned.life>
+Subject: kallsyms: fix build without execinfo
+Date: Sun, 22 Jun 2025 03:45:49 +0200
+
+Some libc's like musl libc don't provide execinfo.h since it's not part of
+POSIX.  In order to fix compilation on musl, only include execinfo.h if
+available (HAVE_BACKTRACE_SUPPORT)
+
+This was discovered with c104c16073b7 ("Kunit to check the longest symbol
+length") which starts to include linux/kallsyms.h with Alpine Linux'
+configs.
+
+Link: https://lkml.kernel.org/r/20250622014608.448718-1-fossdd@pwned.life
+Fixes: c104c16073b7 ("Kunit to check the longest symbol length")
+Signed-off-by: Achill Gilgenast <fossdd@pwned.life>
+Cc: Luis Henriques <luis@igalia.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ tools/include/linux/kallsyms.h |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+--- a/tools/include/linux/kallsyms.h~kallsyms-fix-build-without-execinfo
++++ a/tools/include/linux/kallsyms.h
+@@ -18,6 +18,7 @@ static inline const char *kallsyms_looku
+ 	return NULL;
+ }
+ 
++#ifdef HAVE_BACKTRACE_SUPPORT
+ #include <execinfo.h>
+ #include <stdlib.h>
+ static inline void print_ip_sym(const char *loglvl, unsigned long ip)
+@@ -30,5 +31,8 @@ static inline void print_ip_sym(const ch
+ 
+ 	free(name);
+ }
++#else
++static inline void print_ip_sym(const char *loglvl, unsigned long ip) {}
++#endif
+ 
+ #endif
+_
+
+Patches currently in -mm which might be from fossdd@pwned.life are
+
+kallsyms-fix-build-without-execinfo.patch
+
 
