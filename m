@@ -1,104 +1,160 @@
-Return-Path: <stable+bounces-159113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EDD9AEED4F
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 06:38:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E26AEED64
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 06:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 591351BC2204
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 04:38:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC2D216CCA9
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 04:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8666B19F130;
-	Tue,  1 Jul 2025 04:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3153A1F3FE2;
+	Tue,  1 Jul 2025 04:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tE6q0Y9V"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E643B13D539
-	for <stable@vger.kernel.org>; Tue,  1 Jul 2025 04:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBBE1F239B;
+	Tue,  1 Jul 2025 04:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751344675; cv=none; b=s12XVFAUIZxva6hvyyaJ6ZECFz1w/mX3Guis4K8SgautToBnUbDosemggzosyLbjiupQrKkT9dy/tjFjyXkCs6CLWSjSgiTugBzUwslnZ8Z+TOgEZhquJc6NwSYoxyVkG2Qe1ugBoQuuQ3SbAJ2b2WdAK7QnqlHQzaXZ/x+K8+A=
+	t=1751345820; cv=none; b=oS2XdBXN4wOrLMcg5KXsuv+ScTQnMToHk3Q43ONeAnj8ZLB76dBcqCrT9t9DmwlncKgyIk3RqB1Lw0erWs4VTcrjVnZbcakOliEHQ3vqO4V/CD1tmagKZWQ3vYy2QSpoyk1tYDYjBA35Lc5lgjCOX7J5qrx67PNQ6BK2N/PIHjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751344675; c=relaxed/simple;
-	bh=Z1weWazKElAbY6OXFl+dioPyyGiTYo7MZ1E/oG/g4qQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LD9+hIPKTzV9qhNC/FyXB85HqyfRGPGJUJ4TqbGOfUsSBn8widdGY30UVwsLeRw46MPED4pXbR+j3VAxXE/axS9tKvs+2hfpOkIOI9XPxTcHDPpfEVk7lhckNDz/GxcgD8PS+cyGIpLa1AiXNZz+yCh5LdYuyvp7SGoAGfMP7Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B151015A1;
-	Mon, 30 Jun 2025 21:37:36 -0700 (PDT)
-Received: from Mac.blr.arm.com (unknown [10.164.136.37])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 26AD63F58B;
-	Mon, 30 Jun 2025 21:37:48 -0700 (PDT)
-From: Dev Jain <dev.jain@arm.com>
-To: gregkh@linuxfoundation.org
-Cc: anshuman.khandual@arm.com,
-	catalin.marinas@arm.com,
-	david@redhat.com,
-	dev.jain@arm.com,
-	ryan.roberts@arm.com,
-	stable@vger.kernel.org,
-	will@kernel.org
-Subject: [PATCH 6.1.y] arm64: Restrict pagetable teardown to avoid false warning
-Date: Tue,  1 Jul 2025 10:07:45 +0530
-Message-Id: <20250701043745.22336-1-dev.jain@arm.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <2025062304-oyster-overhang-6204@gregkh>
-References: <2025062304-oyster-overhang-6204@gregkh>
+	s=arc-20240116; t=1751345820; c=relaxed/simple;
+	bh=CyTTALPDGzJEGx5kejZTHaonS/g8TKbNMC/M4WYeEqk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E3tMPjeV5lq1MjVubftH4g91LGyASYqBP+28mqFaDXNukdmtTuQnjcz1qY54juPGkLajeX+JWViUPRNNlPHh7Fei2s9806/73aBkaGXXf6jOL3L5VgylDecJ2i3taT9cAfgErvB6a9Axe4NZ+nAWPbiox1j72hQ2ZW91u9t65ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tE6q0Y9V; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55UIJWoN032170;
+	Tue, 1 Jul 2025 04:56:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Kn1okj
+	zMk2tUg9ap6GcxCIUXgyEWvR3Gb8Bma63x9OM=; b=tE6q0Y9VGQnQHTUwT+eN/Y
+	DEZLu9RPoAx5ZkvB892uaS2nH+P1XPQQJhEyBoK9fho/2IPm04VsRUbMcnqKw+i6
+	pmnosSfY0JtVdOPCjgxqItWMCXEZ04uvUtWrKeknazdU0pKxTXMuHYUNQYXWfs2V
+	O5NwEZfTQwFKh8gWmmAZWQCVWtJGqKrxL2qhfEZOzAazg11dR3Vfz5NbRLUqh0cI
+	XOIMHNGl5pqb5JkvhYTls4gjy5QZSnUueW+qfLQ1sGShK5u0mzQ5MUvTIvOWpZY3
+	YGL2t5xuG20cmjZmKjse/jYkDm+GUgCHrZ5WThuMx8lQXQKYtrKhrDYHrTCrMz6Q
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j82fn1fn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Jul 2025 04:56:40 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5613dEG8011840;
+	Tue, 1 Jul 2025 04:56:39 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47jv7ms0hk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Jul 2025 04:56:39 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5614uYhC30737016
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 1 Jul 2025 04:56:34 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9847C5805E;
+	Tue,  1 Jul 2025 04:56:39 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D310358050;
+	Tue,  1 Jul 2025 04:56:37 +0000 (GMT)
+Received: from [9.109.198.197] (unknown [9.109.198.197])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  1 Jul 2025 04:56:37 +0000 (GMT)
+Message-ID: <a1f5b332-d3c5-4a38-b450-014b14f99ef1@linux.ibm.com>
+Date: Tue, 1 Jul 2025 10:26:35 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] block: Fix a deadlock related to modifying the readahead
+ attribute
+To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+        stable@vger.kernel.org
+References: <20250625195450.1172740-1-bvanassche@acm.org>
+ <1816437d-240a-4834-bef9-c9c4a66bee0a@linux.ibm.com>
+ <ca4c60c9-c5df-4a82-8045-54ed9c0ba9be@acm.org>
+ <7e4ff7e0-b2e0-4e2d-92a4-65b3d695c5e1@linux.ibm.com>
+ <344a0eef-6942-455a-9fb2-f80fd72d4668@acm.org>
+ <6a9bf05f-f315-417a-b328-6a243de3568e@linux.ibm.com>
+ <765d62a8-bb5d-4f1d-8996-afc005bc2d1d@acm.org>
+Content-Language: en-US
+From: Nilay Shroff <nilay@linux.ibm.com>
+In-Reply-To: <765d62a8-bb5d-4f1d-8996-afc005bc2d1d@acm.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: pVddDtzalOO302lR97EAfuVgCOOubmyK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAxMDAyMSBTYWx0ZWRfX/OmAX9StZZ1O vkIeDheibgdbmukOAWP+HneOTkwY3SvUhPkcGgR27xJ4Dby8X5aVAjytnF7XrOmCehFzgyB+v7A uZpGDZQWnMO1ETUOYDu3HWtli9bV2msSkHsLd7oKjgB2/BMSw3e+LDIOwgpjMdBb9+2y6zOBFkY
+ X+cAQFCmXI8lz/JN33MI/Is9DgjOgX613Xdxnb4Ja1+N2V2RF6nOkR+DvRKvN3XS7Qu6jTXByyS PMmMjXevZhHOU8DT0lzHORPYEDNkz49D36vnysLe/PXaHs+9XSWLKNYvlLIZShyFj7qWsiC81Tr ud1cXrBTmyKVw3MrsIDXvKTb3Dm0LSnqP9pemnAxkp72DsGceGGXVvxBRHGq9ysPcDWGYDZIZLa
+ nprKU4xuEfBJcTC3+cvq/96opYlhBWV+wkkGBiHDw5FhtykFIahRNV+UOgKemoEoqlogDn9T
+X-Authority-Analysis: v=2.4 cv=LpeSymdc c=1 sm=1 tr=0 ts=68636a88 cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=lWPI-tUN4iWXceEnCj0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: pVddDtzalOO302lR97EAfuVgCOOubmyK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-01_01,2025-06-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
+ impostorscore=0 mlxscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
+ malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507010021
 
-[Commit 650768c512faba8070bf4cfbb28c95eb5cd203f3 upstream]
 
-Commit 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from
-pXd_free_pYd_table()") removes the pxd_present() checks because the
-caller checks pxd_present(). But, in case of vmap_try_huge_pud(), the
-caller only checks pud_present(); pud_free_pmd_page() recurses on each
-pmd through pmd_free_pte_page(), wherein the pmd may be none. Thus it is
-possible to hit a warning in the latter, since pmd_none => !pmd_table().
-Thus, add a pmd_present() check in pud_free_pmd_page().
 
-This problem was found by code inspection.
+On 6/30/25 8:58 PM, Bart Van Assche wrote:
+> On 6/30/25 3:41 AM, Nilay Shroff wrote:
+>> Looking at your earlier dmsetup command:
+>> # dmsetup table mpatha
+>> 0 65536 multipath 1 queue_if_no_path 1 alua 1 1 service-time 0 1 2 8:32 1 1
+>>
+>> In the above rule, the option queue_if_no_path seems bit odd (unless used
+>> with timeout). Can't we add module param queue_if_no_path_timeout_secs=<N>
+>> while loading dm-multipath and thus avoid hanging the queue I/O indefinitely
+>> when all paths of a multipath device is lost? IMO, queue_if_no_path without
+>> timeout may make sense when we know that the paths will eventually recover
+>> and that applications should simply wait.
+> 
+> I refuse to modify the tests that trigger the deadlock because:
+> 1. The deadlock is a REGRESSION. Regressions are not tolerated in the
+>    Linux kernel and should be fixed instead of arguing about whether or
+>    not the use case should be modified.
+> 2. The test that triggers the deadlock is not new. It is almost ten
+>    years old and the deadlock reported at the start of this email thread
+>    is the first deadlock in the block layer triggered by that test.
+> 3. queue_if_no_path is widely used to avoid I/O errors if all paths are
+>    temporarily unavailable and if it is not known how long it will take
+>    to restore a path. queue_if_no_path can e.g. be used to prevent I/O
+>    errors if a technician mistakenly pulls the wrong cable(s) in a data
+>    center.
+> 4. Unnecessary blk_mq_freeze_queue()/blk_mq_unfreeze_queue() pairs slow
+>    down the workflows that trigger these kernel function calls. Hence,
+>    if blk_mq_freeze_queue() and blk_mq_unfreeze_queue() are called
+>    unnecessarily, the calls to these functions should be removed.
 
-Fixes: 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table()")
-Cc: stable@vger.kernel.org
-Reported-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Link: https://lore.kernel.org/r/20250527082633.61073-1-dev.jain@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-(cherry picked from commit 650768c512faba8070bf4cfbb28c95eb5cd203f3)
-(use READ_ONCE since pmdp_get() is not defined)
----
- arch/arm64/mm/mmu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Yes agreed.. Your above points makes sense. As this is REGRESSION we
+must fix this. I am convinced that the readahead attribute is not used
+in IO hotpath so in that sense your patch is valid, no issues with that.
+However my only concern was about other sysfs attributes which needs 
+queue freeze and that's legitimate as those attributes are used in IO 
+hotpath. But I just saw that you proposed some idea about addressing 
+those other sysfs attributes, so lets discuss this on that thread.
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index cd14c3c22320..e9288b28cb1e 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1503,7 +1503,8 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
- 	next = addr;
- 	end = addr + PUD_SIZE;
- 	do {
--		pmd_free_pte_page(pmdp, next);
-+		if (pmd_present(READ_ONCE(*pmdp)))
-+			pmd_free_pte_page(pmdp, next);
- 	} while (pmdp++, next += PMD_SIZE, next != end);
- 
- 	pud_clear(pudp);
--- 
-2.30.2
+Meanwhile, I'd review your patch.
+
+Thanks,
+--Nilay
+
 
 
