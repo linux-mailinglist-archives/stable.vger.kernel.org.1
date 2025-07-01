@@ -1,130 +1,124 @@
-Return-Path: <stable+bounces-159139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9325FAEF7A9
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 14:02:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47434AEF82B
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 14:20:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CBB57ADA43
-	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 12:00:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3115188DDD7
+	for <lists+stable@lfdr.de>; Tue,  1 Jul 2025 12:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5364273815;
-	Tue,  1 Jul 2025 11:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06DB273808;
+	Tue,  1 Jul 2025 12:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IFqTf1yY"
+	dkim=pass (1024-bit key) header.d=alpinelinux.org header.i=@alpinelinux.org header.b="JpMC2Vk1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gbr-app-1.alpinelinux.org (gbr-app-1.alpinelinux.org [213.219.36.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBA6275112;
-	Tue,  1 Jul 2025 11:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA77128373
+	for <stable@vger.kernel.org>; Tue,  1 Jul 2025 12:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.219.36.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751371060; cv=none; b=jY9P10gzHzxvszybhA9YptJgARBRcQydcFG6NWA1rVuKbgh32P686K2z66l//XXq5JplzNcDDiTLg3qsc11e+dKBdFhsXrB7Ywd1DVwOl2NBMlyNKSS7sjdy2EcI/jCtBEGoamlIkIgM5G3Z8xxwbaEMIVa/LM5+tjo6PRQaRV4=
+	t=1751372403; cv=none; b=asvTWzO9Kwllc6bJVOKcon1eF45xI5S5TtlNcnvvIHe1ymIBRBvNGp1NNMfUKmQutN1Ql6QtIivseYKHlblTRKQ+PuKvFOQju4VJtJTVSzFW7iealW8OFT2jKV/wrV+dxz7B/ns5MKcV0ISLpwaSIxa20TbAyUpobCLEFvFv5Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751371060; c=relaxed/simple;
-	bh=VwRW6iX/Igy0SBU1tuHE4cuDIm18Y4pVZANCC4AQf9M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vC7AmClBYHQIwfx446mkjhhoeeolqqFWHJW6SXEeh0EbDF41cqE2ElWFgvjwsZP7mVF7P0edditeFiRI/8ncnyIL2Xpwt6D/IPVtXggc0vicERLJO2kcrcP5WdEPH97UWRqxQmVDUhwH9J95b59wkFRNVFHpg6QhIkh6BX/all0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IFqTf1yY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8643C4CEEB;
-	Tue,  1 Jul 2025 11:57:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751371060;
-	bh=VwRW6iX/Igy0SBU1tuHE4cuDIm18Y4pVZANCC4AQf9M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IFqTf1yYmp7A9KHA0f3w4oB5yY4QmKC7ykrvXpG3u/okaLZARyB7R8lwtSpKbayyS
-	 QdcB1x0XHjp2pTF+E0bFSwZhRmHLV2z8Wz8edBrWRX2uVWo8WA6Sciiq+PjZnbvOkR
-	 1k02W/Eiq2QqP/c3/SM/dQrB9oLVei4BYx+tgeMDzrlnjXkGSCULvwAd/kp7lUj+P1
-	 ILV2Wb/wcKHJwf9Qhfg6ZfsL/4dyXwozQwRzh72xM8l3dH1iL/mRnETviOeMxChxzc
-	 gAOnyoyBkLNaVOmZrQl2qf5JJr6aH7beIqtnmLTAGcpKV5FrTbj9LbKdzCCkisdpY4
-	 oSFyDQ8ceGipw==
-Date: Tue, 1 Jul 2025 17:27:27 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
-	bhelgaas@google.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Jim Quinlan <james.quinlan@broadcom.com>
-Subject: Re: [PATCH v2] PCI/pwrctrl: Skip creating pwrctrl device unless
- CONFIG_PCI_PWRCTRL is enabled
-Message-ID: <n23tedrmgzfo7bxe4mbde2rrsayalcz4jya5yopoeahlll3qaw@mpz4oemtyern>
-References: <20250701064731.52901-1-manivannan.sadhasivam@linaro.org>
- <aGOHkmG1jnDistgh@wunner.de>
+	s=arc-20240116; t=1751372403; c=relaxed/simple;
+	bh=DuNcpJgkR/fC+tbNSrCG4eMxDYwYGtqY2sP0scrPwCk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=Gt7X5LFoh05Z3Y+TmKzKgFLpmnzofyYP9NFqnievy1qH4LCWQIwCHyEhr+9/Do6hti/H5frd+6MVgx/9YaYNqfpnvXblCx31SFFXwe5Dd6LjNSYkAT/WPaWnbTcqaoGylygeV023El6thOBylYdkl95Qq/oDPWHnWKEWvdgZ8tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpinelinux.org; spf=pass smtp.mailfrom=alpinelinux.org; dkim=pass (1024-bit key) header.d=alpinelinux.org header.i=@alpinelinux.org header.b=JpMC2Vk1; arc=none smtp.client-ip=213.219.36.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpinelinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpinelinux.org
+Received: from ncopa-desktop (unknown [IPv6:2001:4646:fb05:0:4470:81ef:576c:2941])
+	(Authenticated sender: ncopa@alpinelinux.org)
+	by gbr-app-1.alpinelinux.org (Postfix) with ESMTPSA id 08558223627;
+	Tue,  1 Jul 2025 12:10:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alpinelinux.org;
+	s=smtp; t=1751371831;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tXTc4KwG/jXUxAlRTXSvdzPmRvD0sV0P1VqGDcbK7yg=;
+	b=JpMC2Vk1VNAN2hgUHJ9mIqJCeTwW/N2XRje/VNIWAFr2aXTGgVZUmuplZknwZBBpNPaiJJ
+	LPx2+eiqcZAczilGiNUw8JaHM4a9m7E0zXaF1kyNdl9H2IAQ43UoICMPOVnRz3jmkPeLsu
+	UMkiFmTfulNrmH/uVjYVrqORocksRcI=
+Date: Tue, 1 Jul 2025 14:10:26 +0200
+From: Natanael Copa <ncopa@alpinelinux.org>
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, Sergio =?ISO-8859-1?B?R29ueuFsZXo=?=
+ Collado <sergio.collado@gmail.com>, Achill Gilgenast <fossdd@pwned.life>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [REGRESSION] v6.12.35: (build) kallsyms.h:21:10: fatal error:
+ execinfo.h: No such file or directory
+Message-ID: <20250701141026.6133a3aa@ncopa-desktop>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-alpine-linux-musl)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aGOHkmG1jnDistgh@wunner.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 01, 2025 at 09:00:34AM GMT, Lukas Wunner wrote:
-> On Tue, Jul 01, 2025 at 12:17:31PM +0530, Manivannan Sadhasivam wrote:
-> > --- a/drivers/pci/probe.c
-> > +++ b/drivers/pci/probe.c
-> > @@ -2508,6 +2508,7 @@ bool pci_bus_read_dev_vendor_id(struct pci_bus *bus, int devfn, u32 *l,
-> >  }
-> >  EXPORT_SYMBOL(pci_bus_read_dev_vendor_id);
-> >  
-> > +#if IS_ENABLED(CONFIG_PCI_PWRCTRL)
-> >  static struct platform_device *pci_pwrctrl_create_device(struct pci_bus *bus, int devfn)
-> >  {
-> 
-> Hm, why does pci_pwrctrl_create_device() return a pointer, even though the
-> sole caller doesn't make any use of it?  Why not return a negative errno?
-> 
-> Then you could just do this:
-> 
-> 	if (!IS_ENABLED(CONFIG_PCI_PWRCTRL))
-> 		return 0;
-> 
-> ... at the top of the function and you don't need the extra LoC for the
-> empty inline stub.
-> 
+Hi!
 
-This is what I initially submitted [1] though that returned NULL, but the idea
-was the same. But Bjorn didn't like that.
+I bumped into a build regression when building Alpine Linux kernel 6.12.35 on x86_64:
 
-> Another option is to set "struct pci_dev *pdev = NULL;" and #ifdef the body
-> of the function, save for the "return pdev;" at the bottom.
-> 
+In file included from ../arch/x86/tools/insn_decoder_test.c:13:
+../tools/include/linux/kallsyms.h:21:10: fatal error: execinfo.h: No such file or directory
+   21 | #include <execinfo.h>
+      |          ^~~~~~~~~~~~
+compilation terminated.
 
-This is similar to what Bjorn submitted [2], but you were in favor of providing
-a stub instead [3]. It also looked better to my eyes.
+The 6.12.34 kernel built just fine.
 
-> Of course you could also do:
-> 
-> 	if (!IS_ENABLED(CONFIG_PCI_PWRCTRL))
-> 		return NULL;
-> 
-> ... at the top of the function, but again, the caller doesn't make any
-> use of the returned pointer.
-> 
+I bisected it to:
 
-Right. I could make it to return a errno, but that's not the scope of this
-patch. Bjorn wanted to have the #ifdef to be guarded to make the compiled out
-part more visible [4], so I ended up with this version.
+commit b8abcba6e4aec53868dfe44f97270fc4dee0df2a (HEAD)
+Author: Sergio Gonz_lez Collado <sergio.collado@gmail.com>
+Date:   Sun Mar 2 23:15:18 2025 +0100
 
-But whatever the style is, we should make sure that the patch lands in 6.16-rcS.
-It is taking more time than needed.
+    Kunit to check the longest symbol length
+    
+    commit c104c16073b7fdb3e4eae18f66f4009f6b073d6f upstream.
+    
+which has this hunk:
 
-- Mani
+diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_decoder_test.c
+index 472540aeabc2..6c2986d2ad11 100644
+--- a/arch/x86/tools/insn_decoder_test.c
++++ b/arch/x86/tools/insn_decoder_test.c
+@@ -10,6 +10,7 @@
+ #include <assert.h>
+ #include <unistd.h>
+ #include <stdarg.h>
++#include <linux/kallsyms.h>
+ 
+ #define unlikely(cond) (cond)
+ 
+@@ -106,7 +107,7 @@ static void parse_args(int argc, char **argv)
+        }
+ }
+ 
+-#define BUFSIZE 256
++#define BUFSIZE (256 + KSYM_NAME_LEN)
+ 
+ int main(int argc, char **argv)
+ {
 
-[1] https://lore.kernel.org/all/20250522140326.93869-1-manivannan.sadhasivam@linaro.org/
-[2] https://lore.kernel.org/linux-pci/20250523201935.1586198-1-helgaas@kernel.org/
-[3] https://lore.kernel.org/linux-pci/aDFnWhFa9ZGqr67T@wunner.de/
-[4] https://lore.kernel.org/linux-pci/20250629190219.GA1717534@bhelgaas/
+It looks like the linux/kallsyms.h was included to get KSYM_NAME_LEN.
+Unfortunately it also introduced the include of execinfo.h, which does
+not exist on musl libc.
 
-> Thanks,
-> 
-> Lukas
-> 
+This has previously been reported to and tried fixed:
+https://lore.kernel.org/stable/DB0OSTC6N4TL.2NK75K2CWE9JV@pwned.life/T/#t
 
--- 
-மணிவண்ணன் சதாசிவம்
+Would it be an idea to revert commit b8abcba6e4ae til we have a proper
+solution for this?
+
+Thanks!
+
+-nc
 
