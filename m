@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-159236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA5AAF1462
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 13:46:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 977D7AF142F
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 13:40:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B93B4E78FE
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 11:46:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F274440F5D
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 11:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC402676E6;
-	Wed,  2 Jul 2025 11:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06754267B01;
+	Wed,  2 Jul 2025 11:39:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE841E520C;
-	Wed,  2 Jul 2025 11:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA99265CBA;
+	Wed,  2 Jul 2025 11:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751456752; cv=none; b=DqXl94IEm6g/Yr7Uf476uVD1X3+KP1AzYRhZAUZN36IB08oa2fAXk+3dLYsriilDPmMSxIA+d2SRRMLvMfPHes08VkeQzEk8y1xMyoLs/Otb073aABaPvqtC7gkMX1ces1br3GiB30aezgsLEjA1u4gFBhlY1W0s3sZyjgMa+0Q=
+	t=1751456376; cv=none; b=WaOOPkQLAkx41cT+eGWuZlu/YBDAIev3roBQDFII8KiJNoVcTMgrd8bqgcEsyW1XCb1MmHBqotQH5AnY67pMTcnRxIDG/W0Zkbxk/i9lzVT7pOGnUKAEHmaqeMg5m2INfLIwyvjQs+q3ni8ZKv4ZKuK+9f2BVcWVVWNtaDyiT+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751456752; c=relaxed/simple;
-	bh=9AuOxN1fLsFD/X58/PFQmlQF9iWSU+GWlT4u317PpB8=;
+	s=arc-20240116; t=1751456376; c=relaxed/simple;
+	bh=VMy7mcqlqH64w71EzrB6BQCYSIwJgdwPsOj4BOot7x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IvdRb1FEVYYuxVnEK5ctff89YQBcFFiKnfBFVBAcaNrIsNH50k8yNPQH86FUjaPFcdUwP7P3tqVyWy1FKrSk9SRu+CPIVapl6dWhwjU/l9x7FOsWUCpkWralTcKkYcbpOB5X7JtVhxJ/GDaAHXQp3DH9iZTDQJV0eiIyH7/l1jw=
+	 MIME-Version; b=cl4/FXiWA8r8Ow3dMya8u36CVemarrGdGsNGKfHy7vMUjzP4n68s9EHTTuLrXY0WbgDDvkadz/Cbhb9srJC+Mw6G+yH7wq1axTU71wope1b6wLWgMZebwxRM1TH4UzieJ2hGXJQBs0MlslcNU7PxayR9k/4uHa96e9JPEIXnfJE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-Received: from [2a0c:e303:0:7000:1adb:f2ff:fe4f:84eb] (port=48378 helo=karahi.gladserv.com)
+Received: from [2a0c:e303:0:7000:1adb:f2ff:fe4f:84eb] (port=33688 helo=karahi.gladserv.com)
 	by bregans-0.gladserv.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(envelope-from <bacs@librecast.net>)
-	id 1uWvn8-008bMu-2w;
-	Wed, 02 Jul 2025 11:38:18 +0000
+	id 1uWvoH-008bN5-1O;
+	Wed, 02 Jul 2025 11:39:29 +0000
 From: Brett A C Sheffield <bacs@librecast.net>
 To: gregkh@linuxfoundation.org
 Cc: regressions@lists.linux.dev,
 	stable@vger.kernel.org,
 	willemb@google.com,
 	Brett A C Sheffield <bacs@librecast.net>
-Subject: [PATCH 6.6.y] Revert "ipv6: save dontfrag in cork"
-Date: Wed,  2 Jul 2025 13:37:32 +0200
-Message-ID: <20250702113731.2322-2-bacs@librecast.net>
+Subject: [PATCH 5.15.y] Revert "ipv6: save dontfrag in cork"
+Date: Wed,  2 Jul 2025 13:38:50 +0200
+Message-ID: <20250702113849.2401-2-bacs@librecast.net>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <2025070216-duplex-ecologist-20ce@gregkh>
 References: <2025070216-duplex-ecologist-20ce@gregkh>
@@ -56,7 +56,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Brett A C Sheffield (Librecast) <bacs@librecast.net>
 
-This reverts commit 8ebf2709fe4dcd0a1b7b95bf61e529ddcd3cdf51 which is
+This reverts commit 2b572c40981138349c04b3f69220ac878a36c561 which is
 commit a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a upstream.
 
 A regression was introduced when backporting this to the stable kernels
@@ -75,30 +75,30 @@ Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
  2 files changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
-index d79851c5fabd..af8a771a053c 100644
+index 5dfd663b70a2..b6fb76568b01 100644
 --- a/include/linux/ipv6.h
 +++ b/include/linux/ipv6.h
-@@ -199,7 +199,6 @@ struct inet6_cork {
+@@ -195,7 +195,6 @@ struct inet6_cork {
  	struct ipv6_txoptions *opt;
  	u8 hop_limit;
  	u8 tclass;
 -	u8 dontfrag:1;
  };
  
- /* struct ipv6_pinfo - ipv6 private area */
+ /**
 diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 28777b142240..c86d5dca29df 100644
+index a71b7a106995..4fcff4fe5a98 100644
 --- a/net/ipv6/ip6_output.c
 +++ b/net/ipv6/ip6_output.c
-@@ -1452,7 +1452,6 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
- 	}
+@@ -1428,7 +1428,6 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
+ 	cork->fl.u.ip6 = *fl6;
  	v6_cork->hop_limit = ipc6->hlimit;
  	v6_cork->tclass = ipc6->tclass;
 -	v6_cork->dontfrag = ipc6->dontfrag;
  	if (rt->dst.flags & DST_XFRM_TUNNEL)
  		mtu = np->pmtudisc >= IPV6_PMTUDISC_PROBE ?
  		      READ_ONCE(rt->dst.dev->mtu) : dst_mtu(&rt->dst);
-@@ -1486,7 +1485,7 @@ static int __ip6_append_data(struct sock *sk,
+@@ -1463,7 +1462,7 @@ static int __ip6_append_data(struct sock *sk,
  			     int getfrag(void *from, char *to, int offset,
  					 int len, int odd, struct sk_buff *skb),
  			     void *from, size_t length, int transhdrlen,
@@ -106,27 +106,27 @@ index 28777b142240..c86d5dca29df 100644
 +			     unsigned int flags, struct ipcm6_cookie *ipc6)
  {
  	struct sk_buff *skb, *skb_prev = NULL;
- 	struct inet_cork *cork = &cork_full->base;
-@@ -1542,7 +1541,7 @@ static int __ip6_append_data(struct sock *sk,
+ 	unsigned int maxfraglen, fragheaderlen, mtu, orig_mtu, pmtu;
+@@ -1520,7 +1519,7 @@ static int __ip6_append_data(struct sock *sk,
  	if (headersize + transhdrlen > mtu)
  		goto emsgsize;
  
 -	if (cork->length + length > mtu - headersize && v6_cork->dontfrag &&
 +	if (cork->length + length > mtu - headersize && ipc6->dontfrag &&
  	    (sk->sk_protocol == IPPROTO_UDP ||
- 	     sk->sk_protocol == IPPROTO_ICMPV6 ||
  	     sk->sk_protocol == IPPROTO_RAW)) {
-@@ -1914,7 +1913,7 @@ int ip6_append_data(struct sock *sk,
+ 		ipv6_local_rxpmtu(sk, fl6, mtu - headersize +
+@@ -1837,7 +1836,7 @@ int ip6_append_data(struct sock *sk,
  
- 	return __ip6_append_data(sk, &sk->sk_write_queue, &inet->cork,
+ 	return __ip6_append_data(sk, fl6, &sk->sk_write_queue, &inet->cork.base,
  				 &np->cork, sk_page_frag(sk), getfrag,
 -				 from, length, transhdrlen, flags);
 +				 from, length, transhdrlen, flags, ipc6);
  }
  EXPORT_SYMBOL_GPL(ip6_append_data);
  
-@@ -2119,7 +2118,7 @@ struct sk_buff *ip6_make_skb(struct sock *sk,
- 	err = __ip6_append_data(sk, &queue, cork, &v6_cork,
+@@ -2032,7 +2031,7 @@ struct sk_buff *ip6_make_skb(struct sock *sk,
+ 	err = __ip6_append_data(sk, fl6, &queue, &cork->base, &v6_cork,
  				&current->task_frag, getfrag, from,
  				length + exthdrlen, transhdrlen + exthdrlen,
 -				flags);
@@ -135,7 +135,7 @@ index 28777b142240..c86d5dca29df 100644
  		__ip6_flush_pending_frames(sk, &queue, cork, &v6_cork);
  		return ERR_PTR(err);
 
-base-commit: 3f5b4c104b7d3267d015daf9d9681c5fe3b01224
+base-commit: 1c700860e8bc079c5c71d73c55e51865d273943c
 -- 
 2.49.0
 
