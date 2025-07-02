@@ -1,47 +1,60 @@
-Return-Path: <stable+bounces-159178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFC2AF0727
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 02:02:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C14BDAF0735
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 02:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DCC84832EB
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 00:01:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB29C1C06B32
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 00:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8200B1361;
-	Wed,  2 Jul 2025 00:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3111C32;
+	Wed,  2 Jul 2025 00:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M1Kkziel"
 X-Original-To: stable@vger.kernel.org
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FFEF3209
-	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 00:02:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69771361;
+	Wed,  2 Jul 2025 00:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751414541; cv=none; b=VB9uUjvO2CTfdKD1ajRYOgHocn8SLP8+MEuMv8o1PKp0I3tn6EJ6xTspiCAxm5NS4cQ1Yws7HKSFDweOwxHwGtqXOwtRYMYuYfHBbdhZph37uMbSFLTBtdDOZkAkyBKXzgn5CqQpG8gHa3M9iHYW23OKn84TCWKn05fv/tht3ww=
+	t=1751415546; cv=none; b=Su+UEjnb8eCDEZeQySPgGXLX5128+AS3C0m5JiguNHw5aaWRKcZNfYok2LBE8+N9o5kcTnoJzzsRIWMQpaTTSYuRtW2ZU1yCnPkkez39iZnYwLx400I39mfWmnFQOWTfvEvqCtlhf2s+9MNjmVf3fHTtt3JNG8zT5aP9rxn3lCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751414541; c=relaxed/simple;
-	bh=Z2QBJoMxLfvkUimBFt/t+6UsMVqGgn0hR3C/mq2uO0c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ff0Sp/JK23FXO9AFVELCiu/tz4Z+YRReQa6UxufqPh0E8V1UFgceMRR5J3kRzq9Fc31tUS/e3pgVlj2ENDZnZNEQ141jDZdR7vZdMjLad2s0fuFirUMHCZmhK/uHju6f7366g4y/93VsBT8O2ed2hLaelCDeGk6VSscnjM5H9vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-681ff7000002311f-a9-68647702b276
-From: Honggyu Kim <honggyu.kim@sk.com>
-To: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+	s=arc-20240116; t=1751415546; c=relaxed/simple;
+	bh=7bxXGamIholbw7+4wzB+BHOO+zX+wIAamKMjO2n1EY4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=AosI579OwFIDU6whDdlG+HhlA8F5NFryHeDwTkLiZiJoHfB0jHO66x3f8DScDsEaZc3ksNhi47oLgfIJAUTVXn58EU/rmVwknwABLp5w/HwwI1tLMp6AFbqySrMVFxnUDLe4nxF8S04GmzGMa4E4aa3NWa7MlGHe6Fkf3VOQkwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M1Kkziel; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974BCC4CEEB;
+	Wed,  2 Jul 2025 00:19:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751415545;
+	bh=7bxXGamIholbw7+4wzB+BHOO+zX+wIAamKMjO2n1EY4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=M1Kkziel5JT+mt+BbAP0GklAlCCvf0PmJm2wYMYvKor5d3e3BVSAsKzQj7eTVKB9D
+	 TuV5YrCgzN2oxKe7UOpyaZclF2ZmiNRz3JgxTEFBJd51t+vevyg76JCrUro8DmYwHK
+	 P7ZKUiZa3HR3wryTn6eXj/OdquHKSsq9fwsR6hIFAyPi9dSVxKCqe/KudwA263OnXh
+	 DDtkCnadu3k9E+xhy/uMD97nk5+MV9ZKjU9C/3zgkCjhhh0yqEezb8zTm0rx1d1J39
+	 7Femx8GnfJ/yEYnI2i4fl2Jj3YecHz2wI8Kfjh6IWCHMP1bN2Dya3HezA2QbJAeoVM
+	 Qi8bMJWAo4PPQ==
+From: SeongJae Park <sj@kernel.org>
+To: Honggyu Kim <honggyu.kim@sk.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org,
 	kernel_team@skhynix.com,
-	Honggyu Kim <honggyu.kim@sk.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 4/4] mm/damon: fix divide by zero in damon_get_intervals_score()
-Date: Wed,  2 Jul 2025 09:02:04 +0900
-Message-ID: <20250702000205.1921-5-honggyu.kim@sk.com>
-X-Mailer: git-send-email 2.43.0.windows.1
-In-Reply-To: <20250702000205.1921-1-honggyu.kim@sk.com>
-References: <20250702000205.1921-1-honggyu.kim@sk.com>
+Subject: Re: [PATCH v3 4/4] mm/damon: fix divide by zero in damon_get_intervals_score()
+Date: Tue,  1 Jul 2025 17:19:02 -0700
+Message-Id: <20250702001902.937-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250702000205.1921-5-honggyu.kim@sk.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,63 +62,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrMLMWRmVeSWpSXmKPExsXC9ZZnoS5TeUqGwdUGKYs569ewWTz5/5vV
-	4t6a/6wWh7++YbJYsPERowOrx6ZVnWwemz5NYvc4MeM3i8eLzTMZPT5vkgtgjeKySUnNySxL
-	LdK3S+DKuNqbWbCJs+LOg4nsDYx32LsYOTkkBEwkJk//ytbFyAFmfzvECxJmE1CTuPJyEhNI
-	WETASmLajtguRi4OZoE5jBLf3u1iBqkRFgiWWPvsNyOIzSKgKnFt/Rp2kHpeATOJXbOiIaZr
-	Sjze/hNsE6eAucTH5tVsILYQUMm8w+/A4rwCghInZz5hAbGZBeQlmrfOZgbZJSEwh01i0upN
-	bBCDJCUOrrjBMoGRfxaSnllIehYwMq1iFMrMK8tNzMwx0cuozMus0EvOz93ECAzKZbV/oncw
-	froQfIhRgINRiYf3xJXkDCHWxLLiytxDjBIczEoivHyyQCHelMTKqtSi/Pii0pzU4kOM0hws
-	SuK8Rt/KU4QE0hNLUrNTUwtSi2CyTBycUg2MYV1lsbwqMj38P21fRXk8Fs6KsBbeel5KsKVh
-	Podg/xfe6q1rf87/qnl5i9ABd7Eq3Y5vaeWH77huy+aasf9XxIqX+3n3mme1+c/8kX4k594e
-	rSRm07wTDeLd3H6ya7fY3bmvlXhAevX9TemqqQcnhbAfeXDqMt8tZQbXPf0f9p4v8XXLTWNQ
-	YinOSDTUYi4qTgQAoII9iEYCAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMLMWRmVeSWpSXmKPExsXCNUNLT5epPCXD4PhrIYs569ewWTz5/5vV
-	4vOz18wWh+eeZLW4t+Y/q8Xhr2+YLBZsfMTowO6xaVUnm8emT5PYPU7M+M3i8WLzTEaPb7c9
-	PBa/+MDk8XmTXAB7FJdNSmpOZllqkb5dAlfG1d7Mgk2cFXceTGRvYLzD3sXIwSEhYCLx7RBv
-	FyMnB5uAmsSVl5OYQMIiAlYS03bEdjFycTALzGGU+PZuFzNIjbBAsMTaZ78ZQWwWAVWJa+vX
-	gI3hFTCT2DUrGiQsIaAp8Xj7T3YQm1PAXOJj82o2EFsIqGTe4XdgcV4BQYmTM5+wgNjMAvIS
-	zVtnM09g5JmFJDULSWoBI9MqRpHMvLLcxMwcU73i7IzKvMwKveT83E2MwKBbVvtn4g7GL5fd
-	DzEKcDAq8fAeOJucIcSaWFZcmXuIUYKDWUmEl08WKMSbklhZlVqUH19UmpNafIhRmoNFSZzX
-	Kzw1QUggPbEkNTs1tSC1CCbLxMEp1cB490jdxO0rXd4UrclKrvyx6KiQ7ZbTiasStDnflTJv
-	q51wvCR0/gwBVYHP/4rkd/S9l9/QcEDhNi+Ts5LnmTbe6SI/gtiZ1JMLH+251btjz5qQbdec
-	2Y2an12btP55TU2n+i2LB7z7ZglxXmcydq3suTHjtO9n6ywZ5Zb6RZMWXykyu3h3qjerEktx
-	RqKhFnNRcSIAUn7B+TYCAAA=
-X-CFilter-Loop: Reflected
 
-The current implementation allows having zero size regions with no
-special reasons, but damon_get_intervals_score() gets crashed by divide
-by zero when the region size is zero.
+Hello Honggyu,
 
-  [   29.403950] Oops: divide error: 0000 [#1] SMP NOPTI
+On Wed,  2 Jul 2025 09:02:04 +0900 Honggyu Kim <honggyu.kim@sk.com> wrote:
 
-This patch fixes the bug, but does not disallow zero size regions to
-keep the backward compatibility since disallowing zero size regions
-might be a breaking change for some users.
+> The current implementation allows having zero size regions with no
+> special reasons, but damon_get_intervals_score() gets crashed by divide
+> by zero when the region size is zero.
+> 
+>   [   29.403950] Oops: divide error: 0000 [#1] SMP NOPTI
+> 
+> This patch fixes the bug, but does not disallow zero size regions to
+> keep the backward compatibility since disallowing zero size regions
+> might be a breaking change for some users.
+> 
+> In addition, the same crash can happen when intervals_goal.access_bp is
+> zero so this should be fixed in stable trees as well.
 
-In addition, the same crash can happen when intervals_goal.access_bp is
-zero so this should be fixed in stable trees as well.
+Thank you for this fix!
 
-Fixes: f04b0fedbe71 ("mm/damon/core: implement intervals auto-tuning")
-Signed-off-by: Honggyu Kim <honggyu.kim@sk.com>
-Cc: stable@vger.kernel.org
----
- mm/damon/core.c | 1 +
- 1 file changed, 1 insertion(+)
+> 
+> Fixes: f04b0fedbe71 ("mm/damon/core: implement intervals auto-tuning")
+> Signed-off-by: Honggyu Kim <honggyu.kim@sk.com>
+> Cc: stable@vger.kernel.org
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index b217e0120e09..2a6b8d1c2c9e 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1449,6 +1449,7 @@ static unsigned long damon_get_intervals_score(struct damon_ctx *c)
- 		}
- 	}
- 	target_access_events = max_access_events * goal_bp / 10000;
-+	target_access_events = target_access_events ? : 1;
- 	return access_events * 10000 / target_access_events;
- }
- 
--- 
-2.34.1
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
+
+Thanks,
+SJ
+
+[...]
 
