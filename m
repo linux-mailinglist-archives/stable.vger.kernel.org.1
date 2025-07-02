@@ -1,153 +1,189 @@
-Return-Path: <stable+bounces-159211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D8ABAF0F43
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 11:11:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65269AF0FB3
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 11:19:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7724C4E59D8
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 09:11:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22A63446F55
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 09:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E8E23D295;
-	Wed,  2 Jul 2025 09:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE7C24113C;
+	Wed,  2 Jul 2025 09:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="aXMmvAqm"
+	dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b="xJbcQc7X";
+	dkim=pass (2048-bit key) header.d=vates.tech header.i=teddy.astie@vates.tech header.b="kZklyvij"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mail186-10.suw21.mandrillapp.com (mail186-10.suw21.mandrillapp.com [198.2.186.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F3923D2A4;
-	Wed,  2 Jul 2025 09:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BD4246BA5
+	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 09:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.2.186.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751447493; cv=none; b=QlJBZsLNov32UGJNNkxoeU7KnxDInB2bqCD0tQDunEPS/TJAu7HQ+RlCXqc7J6lKNnv87GZa50eBv5VpXjymcc6tOF8s9XKehEvSMDizy8rgnCCCSINNfuWUULh04vslcAHF4YIJeEvDbKX3BcZuAgzEFAdECQidu+bjFhVZEZk=
+	t=1751447682; cv=none; b=UIfNzfR6NBwX3K7I2VXtlDdxJbSMByKeB0AoVKnaxERS9k7A7My3drfvX5lmp6HOuc6CwOcz8+F1ICdZS2Zy1YDnb3OIF9rXV/3JtDlwcqTrGDWiQ9J4J4+7V5gT6e2usebRk/Q7ym99CsjrwHM5blDeiSffgT9slwU3o5FrBuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751447493; c=relaxed/simple;
-	bh=gb9PArGeVtVBJceqS5jT/2Pe/gOdat2eaUjsNLZ204E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o1QhKAqZ2uWrGI+n4Qu/Iq0XB78qDi8/dWUcvZFFO5nZs97A0LNaAEUw5XlqEq1+6o7or2TKCT263X6rWeNZg46Yq1ISWXQT995fBr2KSn4RrD5r7yla8gfWunYs0mXp5gTvU2vD/ADQ/9t0rVnH8ujl8mF+d33SVgVkTDBSj9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=aXMmvAqm; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5627Mamw026815;
-	Wed, 2 Jul 2025 09:10:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=4dBOpWr8id00dZ4J
-	PyVc8gbGRIWehHNPoJUiC+hXwHw=; b=aXMmvAqm2HSkl4z/OZn/BOTlupo7hCK5
-	XofZ+0om8ZfoVOvivruvtRS8uYeYxBZztTcMg0knGLzh2Xrht+Mn0Xjt1RKXMpQ4
-	Xbsi1aqCSF1IUepJU1zPEiXQG5e11znV1qUAssl7IZdbIaFVobqpP7YfV6X4VDzA
-	WUhDB1hlqP3MxegPkd9vYrTgRFAarIQeM+Bx8mkNvBYzGPX2XhEduNwgFBGgwHBz
-	vjqVA10Rs2KryE7auE+zzzayH7YxNT82NZ3IGYWaI/Idk+uRy+mC63iqbnsskrbV
-	7HhCFR1W5UdSzTUui5qkJhwC81AaU9jmHswtjQynAP0olsjbuxiRog==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47j6tfefjs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 02 Jul 2025 09:10:42 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5628UG43033801;
-	Wed, 2 Jul 2025 09:10:41 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47j6uaxyse-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 02 Jul 2025 09:10:41 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5629Afp3033109;
-	Wed, 2 Jul 2025 09:10:41 GMT
-Received: from lab61.no.oracle.com (lab61.no.oracle.com [10.172.144.82])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 47j6uaxypg-1;
-	Wed, 02 Jul 2025 09:10:40 +0000
-From: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
-To: Song Liu <song@kernel.org>, Yu Kuai <yukuai3@huawei.com>,
-        Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
-        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
-        Zheng Qixing <zhengqixing@huawei.com>
-Cc: stable@vger.kernel.org, Gerald Gibson <gerald.gibson@oracle.com>,
-        =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-        linux-raid@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] md/md-bitmap: fix GPF in bitmap_get_stats()
-Date: Wed,  2 Jul 2025 11:10:34 +0200
-Message-ID: <20250702091035.2061312-1-haakon.bugge@oracle.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1751447682; c=relaxed/simple;
+	bh=Si1a2Et2LYNNn6CB/OAkXf+8gYYVG6lXWvn6v9/6LJo=;
+	h=From:Subject:To:Cc:Message-Id:Date:MIME-Version:Content-Type; b=oxcGSvh1UqP8rXtu3y/bgHoOQZcmoLpQN0Jkul4nAikhrlL4p6Ic98EWhsPSRlFyvNvIFsvrWaJThCvKW/3tRzV+Iywyyj+Fo0XneVyH44wXfWKaSvybBhTcfjCu7HqU8yWjiWmtUXL5HofIsQCkCATXvW5kM7dxBJ+UHSo0mJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech; spf=pass smtp.mailfrom=bounce.vates.tech; dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b=xJbcQc7X; dkim=pass (2048-bit key) header.d=vates.tech header.i=teddy.astie@vates.tech header.b=kZklyvij; arc=none smtp.client-ip=198.2.186.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounce.vates.tech
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
+	s=mte1; t=1751447680; x=1751717680;
+	bh=CRG6VfCN4cKBDNecRFO7k0i/n5pBPOpFaCLwPgkXqR4=;
+	h=From:Subject:To:Cc:Message-Id:Feedback-ID:Date:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:CC:Date:Subject:From;
+	b=xJbcQc7XQgcT/BOXZTxTSyCp5MgWV6nF8aPwCjgR5nn70Z2ncuiYIRs+1Z8mcEvyC
+	 BNvHvTPRPtncZGXk+JH6/JmQKhhOKPoKCWrQoOeKmDeszKBHxgdcaRnJ3o+WR9kbVh
+	 D3tX4v6r5zq7APQE8YAQV1kRHzOAv2p2nJWZ4JhSsZnKAe0n+myy4RKcCRghFOP7Ml
+	 OboNwnEKs61yF6FhBj/ebureESQQHoQDpC1TeFdIqBTyhz9lnEcrEBttgiP7xBuwcm
+	 Vn461+ULjcfjXNys6hYRk3mnZPrYX4EIxQUkC2CwMNP1pEEEUtp0KNakCC1TUmUzlO
+	 LM8VQ7OO2XuIg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech; s=mte1;
+	t=1751447680; x=1751708180; i=teddy.astie@vates.tech;
+	bh=CRG6VfCN4cKBDNecRFO7k0i/n5pBPOpFaCLwPgkXqR4=;
+	h=From:Subject:To:Cc:Message-Id:Feedback-ID:Date:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:CC:Date:Subject:From;
+	b=kZklyvijFgte2MCu/fbRnmOgrymivt7WvZRT3BaF+Q4/kWIiTsoNxxYvCdTVFsP9C
+	 azZ0y1zJRI7bQxa/QQ1zvuf38LMJllKcFEjTgj8Z86YjLWA4n2enbAavgbfIc8vODI
+	 m7GpFEsCS9qbleeRQhIJVRWuZ9S9c4jOkNFS7B53lKuqcOLKZxpVUWn+DTdr4hoXqR
+	 qe3sDXjVbJmmt7ExyPA0f3DIIxEqHzOxCDw5w2VNnphAXcM8Lgrqlo5RBQkwkfElug
+	 iBvIfxEjuKkgWRr+J9x53dLV5pPYj/1bNe3mDdMpqWdLs/HwDyBu5VWF7FakckfX7l
+	 mrW924jhreJUA==
+Received: from pmta10.mandrill.prod.suw01.rsglab.com (localhost [127.0.0.1])
+	by mail186-10.suw21.mandrillapp.com (Mailchimp) with ESMTP id 4bXDk81Gl6z5QkPWr
+	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 09:14:40 +0000 (GMT)
+From: "Teddy Astie" <teddy.astie@vates.tech>
+Subject: =?utf-8?Q?[PATCH=205.15.y]=20xen:=20replace=20xen=5Fremap()=20with=20memremap()?=
+Received: from [37.26.189.201] by mandrillapp.com id 3d62def3b2d54855adb018878a221a41; Wed, 02 Jul 2025 09:14:40 +0000
+X-Mailer: git-send-email 2.50.0
+X-Bm-Disclaimer: Yes
+X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
+X-Bm-Transport-Timestamp: 1751447677873
+To: linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org
+Cc: "Teddy Astie" <teddy.astie@vates.tech>, "Boris Ostrovsky" <boris.ostrovsky@oracle.com>, "Juergen Gross" <jgross@suse.com>, "Stefano Stabellini" <sstabellini@kernel.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Sasha Levin" <sashal@kernel.org>, "Jason Andryuk" <jason.andryuk@amd.com>, stable@vger.kernel.org, "kernel test robot" <lkp@intel.com>
+Message-Id: <2398723b73ddd9923a9bb994364c2c7d3b89d21d.1751446695.git.teddy.astie@vates.tech>
+X-Native-Encoded: 1
+X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,=20including=20all=20headers,=20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.3d62def3b2d54855adb018878a221a41?=
+X-Mandrill-User: md_30504962
+Feedback-ID: 30504962:30504962.20250702:md
+Date: Wed, 02 Jul 2025 09:14:40 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-02_01,2025-06-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 adultscore=0
- mlxlogscore=999 phishscore=0 suspectscore=0 mlxscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507020073
-X-Authority-Analysis: v=2.4 cv=CMMqXQrD c=1 sm=1 tr=0 ts=6864f792 cx=c_pps a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=M51BFTxLslgA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=ff15VUUy24FoKP-N-78A:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 4R6cwTqIV5KDWNyL6OkaUxTpg5Vebak7
-X-Proofpoint-ORIG-GUID: 4R6cwTqIV5KDWNyL6OkaUxTpg5Vebak7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDA3MyBTYWx0ZWRfX4AKsRvmrnLRv 1cNOopFv04eSWZHqgo3LalLefSEubeVK5iV/tr+rR1jbz/0qzi9/wI2dImLLfbwpVQVhUPyNwOF aQm6JJgr4MIJ0sVqSg3FUwlSDbSeAkbfjlISUAsSlnkKPXQm/5WKFKsb40KYGj95nju4DfSiUoo
- HmDyCoQ2KFuBxj76+JI3sG8t6kzCxARIU1ma8LI5SG2eODo+aFocs66t3EIl/1gAG8ysuuNejFq LY3AnAyy7VJao7hurduXbDxzcGqpz7jKf4f6j82YHB0NHaQApM4htZs1O7ZvT1C/Y47Q9D0Jnc/ cGYme1iulurA4OX6oW2tszhDOvr1RR+Z8zfbj9djogtDBt2CFU89dDPxZ4CHsN+7dSmGt6bNT0Y
- TgEzeETz4uNQ2n+WXUT9A/2RoHcqtt1/D5nSklCmIDoQTWoq4WdhoTaS5trjx1F6ICJAv1dt
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-The commit message of commit 6ec1f0239485 ("md/md-bitmap: fix stats
-collection for external bitmaps") states:
+From: Juergen Gross <jgross@suse.com>
 
-    Remove the external bitmap check as the statistics should be
-    available regardless of bitmap storage location.
+[ upstream commit 41925b105e345ebc84cedb64f59d20cb14a62613 ]
 
-    Return -EINVAL only for invalid bitmap with no storage (neither in
-    superblock nor in external file).
+xen_remap() is used to establish mappings for frames not under direct
+control of the kernel: for Xenstore and console ring pages, and for
+grant pages of non-PV guests.
 
-But, the code does not adhere to the above, as it does only check for
-a valid super-block for "internal" bitmaps. Hence, we observe:
+Today xen_remap() is defined to use ioremap() on x86 (doing uncached
+mappings), and ioremap_cache() on Arm (doing cached mappings).
 
-Oops: GPF, probably for non-canonical address 0x1cd66f1f40000028
-RIP: 0010:bitmap_get_stats+0x45/0xd0
-Call Trace:
+Uncached mappings for those use cases are bad for performance, so they
+should be avoided if possible. As all use cases of xen_remap() don't
+require uncached mappings (the mapped area is always physical RAM),
+a mapping using the standard WB cache mode is fine.
 
- seq_read_iter+0x2b9/0x46a
- seq_read+0x12f/0x180
- proc_reg_read+0x57/0xb0
- vfs_read+0xf6/0x380
- ksys_read+0x6d/0xf0
- do_syscall_64+0x8c/0x1b0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+As sparse is flagging some of the xen_remap() use cases to be not
+appropriate for iomem(), as the result is not annotated with the
+__iomem modifier, eliminate xen_remap() completely and replace all
+use cases with memremap() specifying the MEMREMAP_WB caching mode.
 
-We fix this by checking the existence of a super-block for both the
-internal and external case.
+xen_unmap() can be replaced with memunmap().
 
-Fixes: 6ec1f0239485 ("md/md-bitmap: fix stats collection for external bitmaps")
-Cc: stable@vger.kernel.org
-Reported-by: Gerald Gibson <gerald.gibson@oracle.com>
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+Link: https://lore.kernel.org/r/20220530082634.6339-1-jgross@suse.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Teddy Astie <teddy.astie@vates.tech> [backport to 5.15.y]
 ---
- drivers/md/md-bitmap.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/include/asm/xen/page.h   | 3 ---
+ drivers/xen/grant-table.c         | 6 +++---
+ drivers/xen/xenbus/xenbus_probe.c | 3 +--
+ 3 files changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index bd694910b01b0..7f524a26cebca 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2366,8 +2366,7 @@ static int bitmap_get_stats(void *data, struct md_bitmap_stats *stats)
+diff --git a/arch/x86/include/asm/xen/page.h b/arch/x86/include/asm/xen/page.h
+index 1a162e559753..c183b7f9efef 100644
+--- a/arch/x86/include/asm/xen/page.h
++++ b/arch/x86/include/asm/xen/page.h
+@@ -355,9 +355,6 @@ unsigned long arbitrary_virt_to_mfn(void *vaddr);
+ void make_lowmem_page_readonly(void *vaddr);
+ void make_lowmem_page_readwrite(void *vaddr);
  
- 	if (!bitmap)
- 		return -ENOENT;
--	if (!bitmap->mddev->bitmap_info.external &&
--	    !bitmap->storage.sb_page)
-+	if (!bitmap->storage.sb_page)
+-#define xen_remap(cookie, size) ioremap((cookie), (size))
+-#define xen_unmap(cookie) iounmap((cookie))
+-
+ static inline bool xen_arch_need_swiotlb(struct device *dev,
+ 					 phys_addr_t phys,
+ 					 dma_addr_t dev_addr)
+diff --git a/drivers/xen/grant-table.c b/drivers/xen/grant-table.c
+index 0a2d24d6ac6f..a10e0741bec5 100644
+--- a/drivers/xen/grant-table.c
++++ b/drivers/xen/grant-table.c
+@@ -743,7 +743,7 @@ int gnttab_setup_auto_xlat_frames(phys_addr_t addr)
+ 	if (xen_auto_xlat_grant_frames.count)
  		return -EINVAL;
- 	sb = kmap_local_page(bitmap->storage.sb_page);
- 	stats->sync_size = le64_to_cpu(sb->sync_size);
+ 
+-	vaddr = xen_remap(addr, XEN_PAGE_SIZE * max_nr_gframes);
++	vaddr = memremap(addr, XEN_PAGE_SIZE * max_nr_gframes, MEMREMAP_WB);
+ 	if (vaddr == NULL) {
+ 		pr_warn("Failed to ioremap gnttab share frames (addr=%pa)!\n",
+ 			&addr);
+@@ -751,7 +751,7 @@ int gnttab_setup_auto_xlat_frames(phys_addr_t addr)
+ 	}
+ 	pfn = kcalloc(max_nr_gframes, sizeof(pfn[0]), GFP_KERNEL);
+ 	if (!pfn) {
+-		xen_unmap(vaddr);
++		memunmap(vaddr);
+ 		return -ENOMEM;
+ 	}
+ 	for (i = 0; i < max_nr_gframes; i++)
+@@ -770,7 +770,7 @@ void gnttab_free_auto_xlat_frames(void)
+ 	if (!xen_auto_xlat_grant_frames.count)
+ 		return;
+ 	kfree(xen_auto_xlat_grant_frames.pfn);
+-	xen_unmap(xen_auto_xlat_grant_frames.vaddr);
++	memunmap(xen_auto_xlat_grant_frames.vaddr);
+ 
+ 	xen_auto_xlat_grant_frames.pfn = NULL;
+ 	xen_auto_xlat_grant_frames.count = 0;
+diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
+index 2068f83556b7..77ca24611293 100644
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -982,8 +982,7 @@ static int __init xenbus_init(void)
+ #endif
+ 		xen_store_gfn = (unsigned long)v;
+ 		xen_store_interface =
+-			xen_remap(xen_store_gfn << XEN_PAGE_SHIFT,
+-				  XEN_PAGE_SIZE);
++			memremap(xen_store_gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE, MEMREMAP_WB);
+ 		break;
+ 	default:
+ 		pr_warn("Xenstore state unknown\n");
 -- 
-2.43.5
+2.50.0
+
+
+
+Teddy Astie | Vates XCP-ng Developer
+
+XCP-ng & Xen Orchestra - Vates solutions
+
+web: https://vates.tech
 
 
