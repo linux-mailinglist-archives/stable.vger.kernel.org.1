@@ -1,106 +1,153 @@
-Return-Path: <stable+bounces-159210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE02AF0EBE
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 11:02:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8ABAF0F43
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 11:11:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C1783BBDA9
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 09:01:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7724C4E59D8
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 09:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D50C2367C3;
-	Wed,  2 Jul 2025 09:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E8E23D295;
+	Wed,  2 Jul 2025 09:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VUJgvhw4"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="aXMmvAqm"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616C91F7569;
-	Wed,  2 Jul 2025 09:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F3923D2A4;
+	Wed,  2 Jul 2025 09:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751446925; cv=none; b=MRowbUA9S+dTEhFiCG/ZuzzYBM2amAq3ucLZLMmVSKSvqBlLMy+A9o0EOGo+oLV79kElVZvN+MrXslBuP2swa2x6azBe7s7SCDYPHFqXVkh9kjqY/+tH4MzNKr6HEwPvS2M1xh/tpZWQgHQTDnsp+GVnRkW7bbX4xmSmT1Tr2GA=
+	t=1751447493; cv=none; b=QlJBZsLNov32UGJNNkxoeU7KnxDInB2bqCD0tQDunEPS/TJAu7HQ+RlCXqc7J6lKNnv87GZa50eBv5VpXjymcc6tOF8s9XKehEvSMDizy8rgnCCCSINNfuWUULh04vslcAHF4YIJeEvDbKX3BcZuAgzEFAdECQidu+bjFhVZEZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751446925; c=relaxed/simple;
-	bh=dVN7LRamAB9cwP9nwfv1OV0vvgLCmi985U/7q4xxfY8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=mIvSYN55OkciCHyZ8Wy46CUai4ucTzXNwmwCWyWQjLztzHGjMaDszWf9Jd7myV20ukkF/C1BtA6w04loxfQB5At3oiwQxn9yEiPipBx+Vs8U8TTvGKk5qPOCnQnmTMTKnYKWEhWCjgqkd0LcNRe9hSQoRZk2XZc96F6ArAn22OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VUJgvhw4; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751446924; x=1782982924;
-  h=from:to:cc:in-reply-to:references:subject:message-id:
-   date:mime-version:content-transfer-encoding;
-  bh=dVN7LRamAB9cwP9nwfv1OV0vvgLCmi985U/7q4xxfY8=;
-  b=VUJgvhw4yItY9nNjkCvQplarAZXHu8MeLNy04dzG9S61kkGWsuShUljT
-   I5SQQk67TB8YsdA6rlU39w5DaykZlELKx6nDeC1PFc/rPUBbq8HUKM9ak
-   CRd8k1zDNL7MczfMrTCPkcxU/8mS5xJTnYCYfhgj+BdQhARZ+PQmU/XyJ
-   zKTGddYntd3/0YvvrgrMtcQNtkGgYiMlj4r1kj9LaIaKV/zBI0FD7dxWk
-   6Ns/dUNypvrt34qMFbDIJZ82Ro+I45ibSSbRmDuBkEOg2tVVEF/5jpCfO
-   5WOSHLzA/5Sz2bIv+jrsPFhGWxBRh/y0LtE69bjoXUWxf0i3FZiVncT1D
-   Q==;
-X-CSE-ConnectionGUID: IoIkOKU8Qay98rEXzASslw==
-X-CSE-MsgGUID: t0dnFwcFRKmg4CFNoxFIJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="64780042"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="64780042"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 02:02:04 -0700
-X-CSE-ConnectionGUID: 4KAkIXN0TIajIqfzY0a4dA==
-X-CSE-MsgGUID: kZf+UOuOR+uCPj7GkVGMaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="154171081"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.228])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 02:02:01 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Mark Pearson <mpearson-lenovo@squebb.ca>, 
- Hans de Goede <hansg@kernel.org>, Kurt Borja <kuurtb@gmail.com>
-Cc: platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20250630-lmi-fix-v3-0-ce4f81c9c481@gmail.com>
-References: <20250630-lmi-fix-v3-0-ce4f81c9c481@gmail.com>
-Subject: Re: [PATCH v3 0/3] platform/x86: think-lmi: Fix resource cleanup
- flaws
-Message-Id: <175144691633.2264.11381075609618544066.b4-ty@linux.intel.com>
-Date: Wed, 02 Jul 2025 12:01:56 +0300
+	s=arc-20240116; t=1751447493; c=relaxed/simple;
+	bh=gb9PArGeVtVBJceqS5jT/2Pe/gOdat2eaUjsNLZ204E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o1QhKAqZ2uWrGI+n4Qu/Iq0XB78qDi8/dWUcvZFFO5nZs97A0LNaAEUw5XlqEq1+6o7or2TKCT263X6rWeNZg46Yq1ISWXQT995fBr2KSn4RrD5r7yla8gfWunYs0mXp5gTvU2vD/ADQ/9t0rVnH8ujl8mF+d33SVgVkTDBSj9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=aXMmvAqm; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5627Mamw026815;
+	Wed, 2 Jul 2025 09:10:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=corp-2025-04-25; bh=4dBOpWr8id00dZ4J
+	PyVc8gbGRIWehHNPoJUiC+hXwHw=; b=aXMmvAqm2HSkl4z/OZn/BOTlupo7hCK5
+	XofZ+0om8ZfoVOvivruvtRS8uYeYxBZztTcMg0knGLzh2Xrht+Mn0Xjt1RKXMpQ4
+	Xbsi1aqCSF1IUepJU1zPEiXQG5e11znV1qUAssl7IZdbIaFVobqpP7YfV6X4VDzA
+	WUhDB1hlqP3MxegPkd9vYrTgRFAarIQeM+Bx8mkNvBYzGPX2XhEduNwgFBGgwHBz
+	vjqVA10Rs2KryE7auE+zzzayH7YxNT82NZ3IGYWaI/Idk+uRy+mC63iqbnsskrbV
+	7HhCFR1W5UdSzTUui5qkJhwC81AaU9jmHswtjQynAP0olsjbuxiRog==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47j6tfefjs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 02 Jul 2025 09:10:42 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5628UG43033801;
+	Wed, 2 Jul 2025 09:10:41 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47j6uaxyse-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 02 Jul 2025 09:10:41 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5629Afp3033109;
+	Wed, 2 Jul 2025 09:10:41 GMT
+Received: from lab61.no.oracle.com (lab61.no.oracle.com [10.172.144.82])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 47j6uaxypg-1;
+	Wed, 02 Jul 2025 09:10:40 +0000
+From: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
+To: Song Liu <song@kernel.org>, Yu Kuai <yukuai3@huawei.com>,
+        Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+        Zheng Qixing <zhengqixing@huawei.com>
+Cc: stable@vger.kernel.org, Gerald Gibson <gerald.gibson@oracle.com>,
+        =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+        linux-raid@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] md/md-bitmap: fix GPF in bitmap_get_stats()
+Date: Wed,  2 Jul 2025 11:10:34 +0200
+Message-ID: <20250702091035.2061312-1-haakon.bugge@oracle.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-02_01,2025-06-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 adultscore=0
+ mlxlogscore=999 phishscore=0 suspectscore=0 mlxscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2507020073
+X-Authority-Analysis: v=2.4 cv=CMMqXQrD c=1 sm=1 tr=0 ts=6864f792 cx=c_pps a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=M51BFTxLslgA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=ff15VUUy24FoKP-N-78A:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 4R6cwTqIV5KDWNyL6OkaUxTpg5Vebak7
+X-Proofpoint-ORIG-GUID: 4R6cwTqIV5KDWNyL6OkaUxTpg5Vebak7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDA3MyBTYWx0ZWRfX4AKsRvmrnLRv 1cNOopFv04eSWZHqgo3LalLefSEubeVK5iV/tr+rR1jbz/0qzi9/wI2dImLLfbwpVQVhUPyNwOF aQm6JJgr4MIJ0sVqSg3FUwlSDbSeAkbfjlISUAsSlnkKPXQm/5WKFKsb40KYGj95nju4DfSiUoo
+ HmDyCoQ2KFuBxj76+JI3sG8t6kzCxARIU1ma8LI5SG2eODo+aFocs66t3EIl/1gAG8ysuuNejFq LY3AnAyy7VJao7hurduXbDxzcGqpz7jKf4f6j82YHB0NHaQApM4htZs1O7ZvT1C/Y47Q9D0Jnc/ cGYme1iulurA4OX6oW2tszhDOvr1RR+Z8zfbj9djogtDBt2CFU89dDPxZ4CHsN+7dSmGt6bNT0Y
+ TgEzeETz4uNQ2n+WXUT9A/2RoHcqtt1/D5nSklCmIDoQTWoq4WdhoTaS5trjx1F6ICJAv1dt
 
-On Mon, 30 Jun 2025 14:31:18 -0300, Kurt Borja wrote:
+The commit message of commit 6ec1f0239485 ("md/md-bitmap: fix stats
+collection for external bitmaps") states:
 
-> First patch is a prerequisite in order to avoid NULL pointer
-> dereferences in error paths. Then two fixes follow.
-> 
-> 
+    Remove the external bitmap check as the statistics should be
+    available regardless of bitmap storage location.
 
+    Return -EINVAL only for invalid bitmap with no storage (neither in
+    superblock nor in external file).
 
-Thank you for your contribution, it has been applied to my local
-review-ilpo-fixes branch. Note it will show up in the public
-platform-drivers-x86/review-ilpo-fixes branch only once I've pushed my
-local branch there, which might take a while.
+But, the code does not adhere to the above, as it does only check for
+a valid super-block for "internal" bitmaps. Hence, we observe:
 
-The list of commits applied:
-[1/3] platform/x86: think-lmi: Create ksets consecutively
-      commit: 8dab34ca77293b409c3223636dde915a22656748
-[2/3] platform/x86: think-lmi: Fix kobject cleanup
-      commit: 9110056fe10b0519529bdbbac37311a5037ea0c2
-[3/3] platform/x86: think-lmi: Fix sysfs group cleanup
-      commit: 4f30f946f27b7f044cf8f3f1f353dee1dcd3517a
+Oops: GPF, probably for non-canonical address 0x1cd66f1f40000028
+RIP: 0010:bitmap_get_stats+0x45/0xd0
+Call Trace:
 
---
- i.
+ seq_read_iter+0x2b9/0x46a
+ seq_read+0x12f/0x180
+ proc_reg_read+0x57/0xb0
+ vfs_read+0xf6/0x380
+ ksys_read+0x6d/0xf0
+ do_syscall_64+0x8c/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+We fix this by checking the existence of a super-block for both the
+internal and external case.
+
+Fixes: 6ec1f0239485 ("md/md-bitmap: fix stats collection for external bitmaps")
+Cc: stable@vger.kernel.org
+Reported-by: Gerald Gibson <gerald.gibson@oracle.com>
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+---
+ drivers/md/md-bitmap.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index bd694910b01b0..7f524a26cebca 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -2366,8 +2366,7 @@ static int bitmap_get_stats(void *data, struct md_bitmap_stats *stats)
+ 
+ 	if (!bitmap)
+ 		return -ENOENT;
+-	if (!bitmap->mddev->bitmap_info.external &&
+-	    !bitmap->storage.sb_page)
++	if (!bitmap->storage.sb_page)
+ 		return -EINVAL;
+ 	sb = kmap_local_page(bitmap->storage.sb_page);
+ 	stats->sync_size = le64_to_cpu(sb->sync_size);
+-- 
+2.43.5
 
 
