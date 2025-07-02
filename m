@@ -1,50 +1,96 @@
-Return-Path: <stable+bounces-159217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E057BAF1111
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 12:03:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16615AF1114
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 12:04:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10782483725
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:02:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92CCC188E316
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B3223D2B8;
-	Wed,  2 Jul 2025 10:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611F02417E6;
+	Wed,  2 Jul 2025 10:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGkFT4SQ"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="MUZfxUV0";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XgpgVrOF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40BD223DEF
-	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 10:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA3F2A1AA
+	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 10:03:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751450588; cv=none; b=W1MAHE8CppLKKc5yPJ9etDTjcrfd5OxFtbRKylBwG07jbwZRzXaCthTIv6VvTWxNUtwLG9w2xs9wSb9J6bFh3w22Uyc+QE1v7dfqisuH3XBKR5yTmWOa9pq33Ko5iaVrTE5VJrliafb7AidV6N6i/yyDaEf/9zo0eIFUVpk2dQk=
+	t=1751450637; cv=none; b=EPIagKmshoJieZgNhZWDtp2DWXkeLlvV4fJ31HoL1l5xKO540zZtQwlDoWDuG1DM8lEHiFDxfubKYZfgz6xteWcbJFHag0nDQD/6qeq0YbiHAr72kWmVDbDWlpg/EjiayMV7+mORtCcitq4rIfBz8vnpNFZDnIK4eAiLMzqiuTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751450588; c=relaxed/simple;
-	bh=1QG1NDhltwyomt8Q0/pRGI048AtmLD0aYgE30VlsWUk=;
+	s=arc-20240116; t=1751450637; c=relaxed/simple;
+	bh=WqagJWOWNJIIEDMtwz9Am5AUvnR8bcTmoyVURwHdewc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=revMyxxY59X6ilX+vnvI0dU1cyEh1XUuK8LpYUZO44MO0A8FCOXwOCfXcwP8E6s2XPAmtt69XScUF3hVB5mSA2W7/fR8t3bDWKldXJc8Q/JljiR4RU0G+LLvvueVY/pjfM9ooRMK6nXDZesTwRTRTC0OE881uKtB/J95XsAvIws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGkFT4SQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0C7C4CEED;
-	Wed,  2 Jul 2025 10:03:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751450588;
-	bh=1QG1NDhltwyomt8Q0/pRGI048AtmLD0aYgE30VlsWUk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WGkFT4SQkFBBJ33aBSleIWMMHORqCUoRsmToMAQ/+m0CiolGgO00MkXIFxMCQtE7r
-	 dxlWSMu6uPn7hniPqcV4rOm6E8ELFs8OYk3ANhcBowQXqoXatzGGILGpEJewwQTP8E
-	 F5DpF1XB5IsKgEVwBpYm3HFfKIU8ixJkKSAHfWCE=
-Date: Wed, 2 Jul 2025 12:03:05 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=og/9KfuSC0Qvd4PONqLwkLUVkbUBstlmIzIpZ+XSfukTDOJP/6a+5LVFyTN30AU0oIHtsBH1vbbvF+uQRB2tUEy63RN/bJU9Uz8JaivYYJq97yHEuxHm8UOtJGLvCt14IWsuyqTM8NsIOzS0VaGQJgRGyrRLQGlQcl/kJEF8iD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=MUZfxUV0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XgpgVrOF; arc=none smtp.client-ip=202.12.124.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
+	by mailfout.stl.internal (Postfix) with ESMTP id 4618A1D000A0;
+	Wed,  2 Jul 2025 06:03:52 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Wed, 02 Jul 2025 06:03:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1751450632; x=1751537032; bh=jC8CfuOvx/
+	KNTmRSD/2VUFEIcrhVecMZ373ils6PjdY=; b=MUZfxUV05qJSbsvHxH44agNV1N
+	/Sr+rtGKU/XuJeFU/tbfYGOz73TNvIFwWENRPwCtRvP9aMPnV5Xk3E0jwC6htdw6
+	VQLfZQ7qpzsTalsjAohq444Hjio4+FS1aJjLTpjQc59xGs4yTkKW2oCi9qKZp1zR
+	1rZesENqlRKGnxE/FG3JRsj3nFZ3Qbaelg715jGSEad4u9h1C91F7geq4FmhUTIe
+	MJ1qTLlfNh4xvrjo/NakCKYSAM5dnQNYQSHrpm1Bb0Tc/mlM9p+EddZZmZz04ZsT
+	BUd+JXCRVFfqhMsaHNYfuzsP73S0sMa6S4k8kRpbUbBnLAWFAkr8h6zBoTZw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1751450632; x=1751537032; bh=jC8CfuOvx/KNTmRSD/2VUFEIcrhVecMZ373
+	ils6PjdY=; b=XgpgVrOFk1F3scYMo73du4ON0eriXMExWTILI2jWiyCe6H0x+c7
+	Pu7CHZ9/00UanRwtQxpqXf78w/iYDIMZ5iqY4PQd/Ws/W5ng4ASm19kV2GrRJmXq
+	ddWKAfzL/beAt8AvNrLH/ul2zaBrGqoCNP6B1crfSdOJITqWnfrfpmmwiekdrTEg
+	BPiiedGN0qRctk/pKABJD9RKcO5NbqyWB0dE6+2wf/X+LMZfp4GhKJzjXA8Wsh/b
+	NJmOdMg/UNUewTZO0aG1tHhapx/uwfqZAvtbkOcVW72J6IakIGKn/E8V/yZyY1vO
+	GPo9Kxe0io9kaudulcDtsYsScq/Abhb8h6g==
+X-ME-Sender: <xms:BgRlaG__XF9UgRsaN5qXk53fusQrwokINsA9tr-ysRqYdxKaDl-1Kg>
+    <xme:BgRlaGuYYCx0bf134DIKLyb1rT7PmccuCwPydWrM3qe9vqIGGIWgebYEB30Vel0HU
+    2qSHfcXF9dfuA>
+X-ME-Received: <xmr:BgRlaMBfFfKoGCu_lYrEiEnsyL3FKVD-6KphStn7MepAuQCoPOOgu02IkXK0pEEzh-1d0BpLDamTz6nLxKC5QjvEEr2cgEI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddujeduudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcumffj
+    uceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhefgtd
+    eluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghinhep
+    khgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopedutddp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhgrjhgrnhhikhgrnhhthhgrsegvnh
+    hgihhnvggvrhdrtghomhdprhgtphhtthhopehkvggvshesihhjiigvrhgsohhuthdrnhhl
+    pdhrtghpthhtohepsggrohhluhdrlhhusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtg
+    hpthhtohepjhhrohgvuggvlhesshhushgvrdguvgdprhgtphhtthhopehsthgrsghlvges
+    vhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:BgRlaOewA1Hinfcv214xLKeMK8xO9DgzF3nu-5hg9yV4CgDLaIJxMA>
+    <xmx:BgRlaLOguXKZWKwNwHzzgkx8gmgVOTw4YVV_xszigzpCgsiO6mqXAQ>
+    <xmx:BgRlaInaVH_6DQouram8Z0DLd5wECogvjHR_mMzXyziW4y0xY7gOvg>
+    <xmx:BgRlaNuzYSolAiHsnNG6BoL0ZJ1HNcEkmEng2VDnDTpx8FB8-ZDcTQ>
+    <xmx:CARlaEvcJSCKmxNj9LC-7oYlFyElTDj5zRkKW8BqZeIwa8jeeNOSaGmc>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 2 Jul 2025 06:03:49 -0400 (EDT)
+Date: Wed, 2 Jul 2025 12:03:48 +0200
+From: Greg KH <greg@kroah.com>
 To: Rajani kantha <rajanikantha@engineer.com>
 Cc: kees@ijzerbout.nl, baolu.lu@linux.intel.com, jroedel@suse.de,
 	stable@vger.kernel.org
 Subject: Re: [PATCH 6.12.y] iommu/vt-d: Avoid use of NULL after WARN_ON_ONCE
-Message-ID: <2025070217-bright-energetic-3537@gregkh>
+Message-ID: <2025070233-unimpeded-reversion-ab61@gregkh>
 References: <trinity-5b3af13a-3731-4b47-80a1-8ac7af67791f-1751424444098@3c-app-mailcom-lxa07>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -93,11 +139,14 @@ On Wed, Jul 02, 2025 at 04:47:24AM +0200, Rajani kantha wrote:
 > +               intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
 > +               kfree(dev_pasid);
 > +       }
+>         intel_pasid_tear_down_entry(iommu, dev, pasid, false);
+>         intel_drain_pasid_prq(dev, pasid);
+>  }
+> --
+> 2.34.1
+> 
 
-Meta-comment about this patch.  If this does trigger, it will still
-crash the billions of Linux instances that run with panic-on-warn
-enabled.  So you really haven't "solved" the issue here.  If this can be
-NULL, then properly handle it please, don't crash boxes...
+Does not apply to the 6.12.y branch at all, what was this made against?
 
 thanks,
 
