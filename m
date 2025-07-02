@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-159233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 977D7AF142F
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 13:40:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0435AF1443
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 13:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F274440F5D
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 11:40:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F34F644536F
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 11:42:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06754267B01;
-	Wed,  2 Jul 2025 11:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A697D266B72;
+	Wed,  2 Jul 2025 11:41:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA99265CBA;
-	Wed,  2 Jul 2025 11:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD3B26D4E4;
+	Wed,  2 Jul 2025 11:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751456376; cv=none; b=WaOOPkQLAkx41cT+eGWuZlu/YBDAIev3roBQDFII8KiJNoVcTMgrd8bqgcEsyW1XCb1MmHBqotQH5AnY67pMTcnRxIDG/W0Zkbxk/i9lzVT7pOGnUKAEHmaqeMg5m2INfLIwyvjQs+q3ni8ZKv4ZKuK+9f2BVcWVVWNtaDyiT+4=
+	t=1751456504; cv=none; b=Uv6GeoMCbMT8se+gAqkFPlOOIVQKATbXmVBnJb88Rh5kyU4ZB4VpPsa8CB4BzYBTR1SijEqT6V29viZc17/7TLiBAtIEBM5QG2V0Xvufsr0o4qp0ZiCMoY/7gVy4OWMvDrNcSsac53RjD/WTCTK2N5CW3duoHBme9rebYaZvRK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751456376; c=relaxed/simple;
-	bh=VMy7mcqlqH64w71EzrB6BQCYSIwJgdwPsOj4BOot7x4=;
+	s=arc-20240116; t=1751456504; c=relaxed/simple;
+	bh=gfCgbUedLVjBGIi5cslyFGbWD5umG2CZn5+V0FBr918=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cl4/FXiWA8r8Ow3dMya8u36CVemarrGdGsNGKfHy7vMUjzP4n68s9EHTTuLrXY0WbgDDvkadz/Cbhb9srJC+Mw6G+yH7wq1axTU71wope1b6wLWgMZebwxRM1TH4UzieJ2hGXJQBs0MlslcNU7PxayR9k/4uHa96e9JPEIXnfJE=
+	 MIME-Version; b=icgH9avVsX7h01Zf03TO4S9VjscvE6SMRf2kLoIRpRCuqUVpH59mAB2z8LMKbpzgz07WNG38R04rpKOCmyYm6rpSUvklGFUiDZ9vatLHlfwaKXt3wmXoi4alD+HYOnaf+BfSB+hMVrm+NehANekZOa1p6P5CHVxZ1IjHsvgGfe4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-Received: from [2a0c:e303:0:7000:1adb:f2ff:fe4f:84eb] (port=33688 helo=karahi.gladserv.com)
+Received: from [2a0c:e303:0:7000:1adb:f2ff:fe4f:84eb] (port=45366 helo=karahi.gladserv.com)
 	by bregans-0.gladserv.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(envelope-from <bacs@librecast.net>)
-	id 1uWvoH-008bN5-1O;
-	Wed, 02 Jul 2025 11:39:29 +0000
+	id 1uWvqN-008bNM-0M;
+	Wed, 02 Jul 2025 11:41:39 +0000
 From: Brett A C Sheffield <bacs@librecast.net>
 To: gregkh@linuxfoundation.org
 Cc: regressions@lists.linux.dev,
 	stable@vger.kernel.org,
 	willemb@google.com,
 	Brett A C Sheffield <bacs@librecast.net>
-Subject: [PATCH 5.15.y] Revert "ipv6: save dontfrag in cork"
-Date: Wed,  2 Jul 2025 13:38:50 +0200
-Message-ID: <20250702113849.2401-2-bacs@librecast.net>
+Subject: [PATCH 5.10.y] Revert "ipv6: save dontfrag in cork"
+Date: Wed,  2 Jul 2025 13:41:14 +0200
+Message-ID: <20250702114113.2512-2-bacs@librecast.net>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <2025070216-duplex-ecologist-20ce@gregkh>
 References: <2025070216-duplex-ecologist-20ce@gregkh>
@@ -56,7 +56,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Brett A C Sheffield (Librecast) <bacs@librecast.net>
 
-This reverts commit 2b572c40981138349c04b3f69220ac878a36c561 which is
+This reverts commit 29533d1a54b8de5aaf8c4aa6790dc67d5c14fba5 which is
 commit a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a upstream.
 
 A regression was introduced when backporting this to the stable kernels
@@ -75,10 +75,10 @@ Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
  2 files changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
-index 5dfd663b70a2..b6fb76568b01 100644
+index 89b3527e0367..d758c131ed5e 100644
 --- a/include/linux/ipv6.h
 +++ b/include/linux/ipv6.h
-@@ -195,7 +195,6 @@ struct inet6_cork {
+@@ -189,7 +189,6 @@ struct inet6_cork {
  	struct ipv6_txoptions *opt;
  	u8 hop_limit;
  	u8 tclass;
@@ -87,10 +87,10 @@ index 5dfd663b70a2..b6fb76568b01 100644
  
  /**
 diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index a71b7a106995..4fcff4fe5a98 100644
+index f024d89cb0f8..426330b8dfa4 100644
 --- a/net/ipv6/ip6_output.c
 +++ b/net/ipv6/ip6_output.c
-@@ -1428,7 +1428,6 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
+@@ -1416,7 +1416,6 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
  	cork->fl.u.ip6 = *fl6;
  	v6_cork->hop_limit = ipc6->hlimit;
  	v6_cork->tclass = ipc6->tclass;
@@ -98,7 +98,7 @@ index a71b7a106995..4fcff4fe5a98 100644
  	if (rt->dst.flags & DST_XFRM_TUNNEL)
  		mtu = np->pmtudisc >= IPV6_PMTUDISC_PROBE ?
  		      READ_ONCE(rt->dst.dev->mtu) : dst_mtu(&rt->dst);
-@@ -1463,7 +1462,7 @@ static int __ip6_append_data(struct sock *sk,
+@@ -1451,7 +1450,7 @@ static int __ip6_append_data(struct sock *sk,
  			     int getfrag(void *from, char *to, int offset,
  					 int len, int odd, struct sk_buff *skb),
  			     void *from, size_t length, int transhdrlen,
@@ -107,7 +107,7 @@ index a71b7a106995..4fcff4fe5a98 100644
  {
  	struct sk_buff *skb, *skb_prev = NULL;
  	unsigned int maxfraglen, fragheaderlen, mtu, orig_mtu, pmtu;
-@@ -1520,7 +1519,7 @@ static int __ip6_append_data(struct sock *sk,
+@@ -1508,7 +1507,7 @@ static int __ip6_append_data(struct sock *sk,
  	if (headersize + transhdrlen > mtu)
  		goto emsgsize;
  
@@ -116,7 +116,7 @@ index a71b7a106995..4fcff4fe5a98 100644
  	    (sk->sk_protocol == IPPROTO_UDP ||
  	     sk->sk_protocol == IPPROTO_RAW)) {
  		ipv6_local_rxpmtu(sk, fl6, mtu - headersize +
-@@ -1837,7 +1836,7 @@ int ip6_append_data(struct sock *sk,
+@@ -1826,7 +1825,7 @@ int ip6_append_data(struct sock *sk,
  
  	return __ip6_append_data(sk, fl6, &sk->sk_write_queue, &inet->cork.base,
  				 &np->cork, sk_page_frag(sk), getfrag,
@@ -125,7 +125,7 @@ index a71b7a106995..4fcff4fe5a98 100644
  }
  EXPORT_SYMBOL_GPL(ip6_append_data);
  
-@@ -2032,7 +2031,7 @@ struct sk_buff *ip6_make_skb(struct sock *sk,
+@@ -2021,7 +2020,7 @@ struct sk_buff *ip6_make_skb(struct sock *sk,
  	err = __ip6_append_data(sk, fl6, &queue, &cork->base, &v6_cork,
  				&current->task_frag, getfrag, from,
  				length + exthdrlen, transhdrlen + exthdrlen,
@@ -135,7 +135,7 @@ index a71b7a106995..4fcff4fe5a98 100644
  		__ip6_flush_pending_frames(sk, &queue, cork, &v6_cork);
  		return ERR_PTR(err);
 
-base-commit: 1c700860e8bc079c5c71d73c55e51865d273943c
+base-commit: ecbc622e0f5202e17a2f13dadb0900273faee0eb
 -- 
 2.49.0
 
