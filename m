@@ -1,160 +1,147 @@
-Return-Path: <stable+bounces-159181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2790AF08A9
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 04:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D807AF08D6
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 05:02:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0233178361
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 02:47:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5A5B4A5DE9
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 03:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B9272604;
-	Wed,  2 Jul 2025 02:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D123C47B;
+	Wed,  2 Jul 2025 03:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=engineer.com header.i=rajanikantha@engineer.com header.b="iYQkf8rV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kCJNXREF"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.mail.com (mout.mail.com [74.208.4.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFF3B663
-	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 02:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A3423B0
+	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 03:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751424451; cv=none; b=LBYilkcd6gCAGQjh95yC9pX9BwMVummkeh/HcFKiGgXqQuZf6lpj60YqntmgW2NoAIvx9nxn/mhoqpDHCwvy1rHiqy8m3YtiNZUFJt5EaIOAlxAiMD7fs+65DCcjty4pliybjvz1h8387++obuANvHNjMocVbZlaxpFYLtYfVM8=
+	t=1751425370; cv=none; b=DjRtJVn6hxEOtCULXkQBKm1UGWp5qvAggMBGbL/RKNki4LtVk1WwP3AZFkq67H6SyD4sXC/4OnFXfuX7NxBMHDQIrr/1Cp2JXztUZD4azUhHbIVPtstUDmSwwLupu/ONhH8XiVn3zvg8aFA4v7MSG7hwR508E4mrD5cEBcCfnfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751424451; c=relaxed/simple;
-	bh=O58UjhHMfD+rNIQ+gv4LJT9rLwhfRhBHWPCQO97Itbw=;
-	h=MIME-Version:Message-ID:From:To:Cc:Subject:Content-Type:Date; b=X6NXB7QwL3hfOrqc6oadtVAiFv8NGlOcOxbvBB7/U7/nyZOAZlc8RaQ9Jv4ECUFgOIZa76uGrCiC6zLYNtLcyTZBq8YGxO/GEAN66UauXMctK444m4fiaaox1H2knqySYYOaOsooVyVa6/Cia1nPmSguzLgotY9MeDhkoIUoP8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=engineer.com; spf=pass smtp.mailfrom=engineer.com; dkim=pass (2048-bit key) header.d=engineer.com header.i=rajanikantha@engineer.com header.b=iYQkf8rV; arc=none smtp.client-ip=74.208.4.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=engineer.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engineer.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=engineer.com;
-	s=s1089575; t=1751424446; x=1752029246;
-	i=rajanikantha@engineer.com;
-	bh=wUJm3pY/9/lRXRA3SGxJx7ficG2CJmPkatB+u6FaWKI=;
-	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Cc:Subject:
-	 Content-Type:Date:cc:content-transfer-encoding:content-type:date:
-	 from:message-id:mime-version:reply-to:subject:to;
-	b=iYQkf8rVO7KNFIbYdJtJzj3GWHq8taiEcMRwpdk0xiLtt1nFBFLf8/2LWtWMCZg2
-	 kPj/8C8Zox5Grxu9SqCwGHoVzR4PZ7iUdVKSqilcYSiNbfc6trv7VRWjlQXNOoTtN
-	 TEVHwqZVFZjyjDZEEC2s7FPnioaPBYQdNre+YC3jH9JBmRycfBI+LA9dpHKSKeeEk
-	 zS1IZK2rOR7FW2EWuHGORWqXNgY/dSFxmOGjfigy6g3y0s3fSEgYurrgWtIQ/4nd3
-	 jl5Pwuq+YPRRCAhx3Y+Ft5jj7lErpFyrLCgva8afHCjpAf36kFbQRijnGJRiq7fvC
-	 yBCvzVq/PCWzJra9Cw==
-X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
-Received: from [147.11.252.42] ([147.11.252.42]) by web-mail.mail.com
- (3c-app-mailcom-lxa07.server.lan [10.76.45.8]) (via HTTP); Wed, 2 Jul 2025
- 04:47:24 +0200
+	s=arc-20240116; t=1751425370; c=relaxed/simple;
+	bh=3BeZV52G7LNe+l2AbAwMOK1ym02PisGmpQlRT8oRfYo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eau1i2+6XbXPRl9TtuYVLgkhlprBWhTwnxfsEhK7sWhrNR27G+iMlJyBkD58atFetC7/M586Ct60bVJoQDH/Y36y3RxgEPaYWAgM9viiWeo2cKVs3VDHhMivInGh38WiTAoHU22ojCjZK3YNfWM27qWO4rsqPG92N5hfQWO70ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kCJNXREF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC6BC4CEEF;
+	Wed,  2 Jul 2025 03:02:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751425370;
+	bh=3BeZV52G7LNe+l2AbAwMOK1ym02PisGmpQlRT8oRfYo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kCJNXREF+OnUJEphurLorBzP0owgJy0p3JTSsme3b63Q4rqw8Mz6nj64NFGRBu82r
+	 O2ZgIa6s3zdU66aEKkbw0mJ3z+xD5o0Yl41df7LExVJE8A90+vJf8R4ug3IDn6ELHn
+	 gJ9uRFT/kRcCZyXYs3g8qB853d+TxfvFJw0vpYnXAwpDiLUSdCniRZW052PCQQaeFN
+	 RhwnLakbY6t1ZhZw/4PWQhVCk0YNEOFLlxTpY2kmx2LddUIHMSaPNnk8BoBEi0xBKP
+	 jIiQ+0Hk4TbTR8Y08mHn3gPvDUYJAojAejCJAYHbzd+pIS0XH62IN5Xil6qWg4PDnv
+	 2iFZWDaNcfvuA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 and 5.4] staging: rtl8723bs: Avoid memset() in aes_cipher() and aes_decipher()
+Date: Tue,  1 Jul 2025 23:02:48 -0400
+Message-Id: <20250701211415-f25753bf340e041d@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250701152324.3571007-1-nathan@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <trinity-5b3af13a-3731-4b47-80a1-8ac7af67791f-1751424444098@3c-app-mailcom-lxa07>
-From: Rajani kantha <rajanikantha@engineer.com>
-To: kees@ijzerbout.nl, baolu.lu@linux.intel.com, jroedel@suse.de
-Cc: stable@vger.kernel.org
-Subject: [PATCH 6.12.y] iommu/vt-d: Avoid use of NULL after WARN_ON_ONCE
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 2 Jul 2025 04:47:24 +0200
-Importance: normal
-Sensitivity: Normal
-X-Priority: 3
-X-Provags-ID: V03:K1:H9DvUc7UACdydBNVRo/m2HsuMOM/o/BXc3PakBpU+qZbppyFeipMLq9IcwedWsr9CXNQU
- Ir5ZfFv1Dmv4t7wY/WLJFgWDvUjKXE3HYbgI9K4aNij5q8bi+ukkU4/wtfdW/oD+tAUA11e9LFKD
- 4fDWl912yi58wBcsN1XhvVlOXJNSWnwa1tC+H3YGeuYrtqYpfUtJYSN2kGRaRXFfYJM/5S4Eimvr
- W0jgVsvDxhr6e1Vd8Aq05F8omWEsqomxQ9pNDCnJOFMlCvENhqhqFRiIlJdbEVYVSA0bJaQbENMO
- w4=
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:EatKTg9TXPk=;kILkd3GiCiw6U0nxI0KHF96Tujs
- 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
+Content-Transfer-Encoding: 8bit
 
-From: Kees Bakker <kees@ijzerbout.nl>
+[ Sasha's backport helper bot ]
 
-[ Upstream commit 60f030f7418d3f1d94f2fb207fe3080e1844630b ]
+Hi,
 
-There is a WARN_ON_ONCE to catch an unlikely situation when
-domain_remove_dev_pasid can't find the `pasid`. In case it nevertheless
-happens we must avoid using a NULL pointer.
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Signed-off-by: Kees Bakker <kees@ijzerbout.nl>
-Link: https://lore.kernel.org/r/20241218201048.E544818E57E@bout3.ijzerbout.nl
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Rajani Kantha <rajanikantha@engineer.com>
+The upstream commit SHA1 provided is correct: a55bc4ffc06d8c965a7d6f0a01ed0ed41380df28
+
+Status in newer kernel trees:
+6.15.y | Present (different SHA1: 53d7bf452fe7)
+6.12.y | Present (different SHA1: 5da335f62003)
+6.6.y | Present (different SHA1: b62980fa236b)
+6.1.y | Present (different SHA1: 5d678ffa4843)
+5.15.y | Present (different SHA1: 4b29ab1d5c42)
+5.10.y | Not found
+
+Note: The patch differs from the upstream commit:
 ---
- drivers/iommu/intel/iommu.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+1:  a55bc4ffc06d8 ! 1:  72e918d867583 staging: rtl8723bs: Avoid memset() in aes_cipher() and aes_decipher()
+    @@ Metadata
+      ## Commit message ##
+         staging: rtl8723bs: Avoid memset() in aes_cipher() and aes_decipher()
+     
+    +    commit a55bc4ffc06d8c965a7d6f0a01ed0ed41380df28 upstream.
+    +
+         After commit 6f110a5e4f99 ("Disable SLUB_TINY for build testing"), which
+         causes CONFIG_KASAN to be enabled in allmodconfig again, arm64
+         allmodconfig builds with older versions of clang (15 through 17) show an
+    @@ Commit message
+         Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+         Link: https://lore.kernel.org/r/20250609-rtl8723bs-fix-clang-arm64-wflt-v1-1-e2accba43def@kernel.org
+         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    +    Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+     
+      ## drivers/staging/rtl8723bs/core/rtw_security.c ##
+    -@@ drivers/staging/rtl8723bs/core/rtw_security.c: static signed int aes_cipher(u8 *key, uint	hdrlen,
+    +@@ drivers/staging/rtl8723bs/core/rtw_security.c: static sint aes_cipher(u8 *key, uint	hdrlen,
+      		num_blocks, payload_index;
+      
+      	u8 pn_vector[6];
+    @@ drivers/staging/rtl8723bs/core/rtw_security.c: static signed int aes_cipher(u8 *
+      
+      	frsubtype = frsubtype>>4;
+      
+    +-
+     -	memset((void *)mic_iv, 0, 16);
+     -	memset((void *)mic_header1, 0, 16);
+     -	memset((void *)mic_header2, 0, 16);
+    @@ drivers/staging/rtl8723bs/core/rtw_security.c: static signed int aes_cipher(u8 *
+      	if ((hdrlen == WLAN_HDR_A3_LEN) || (hdrlen ==  WLAN_HDR_A3_QOS_LEN))
+      		a4_exists = 0;
+      	else
+    -@@ drivers/staging/rtl8723bs/core/rtw_security.c: static signed int aes_decipher(u8 *key, uint	hdrlen,
+    +@@ drivers/staging/rtl8723bs/core/rtw_security.c: static sint aes_decipher(u8 *key, uint	hdrlen,
+      			num_blocks, payload_index;
+    - 	signed int res = _SUCCESS;
+    + 	sint res = _SUCCESS;
+      	u8 pn_vector[6];
+     -	u8 mic_iv[16];
+     -	u8 mic_header1[16];
+    @@ drivers/staging/rtl8723bs/core/rtw_security.c: static signed int aes_decipher(u8
+     +	u8 padded_buffer[16] = {};
+      	u8 mic[8];
+      
+    - 	uint frtype  = GetFrameType(pframe);
+    -@@ drivers/staging/rtl8723bs/core/rtw_security.c: static signed int aes_decipher(u8 *key, uint	hdrlen,
+    + 
+    +@@ drivers/staging/rtl8723bs/core/rtw_security.c: static sint aes_decipher(u8 *key, uint	hdrlen,
+      
+      	frsubtype = frsubtype>>4;
+      
+    +-
+     -	memset((void *)mic_iv, 0, 16);
+     -	memset((void *)mic_header1, 0, 16);
+     -	memset((void *)mic_header2, 0, 16);
+---
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 56e9f125cda9..7c351274d004 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -4306,13 +4306,14 @@ static void intel_iommu_remove_dev_pasid(struct device *dev, ioasid_t pasid,
-                        break;
-                }
-        }
--       WARN_ON_ONCE(!dev_pasid);
-        spin_unlock_irqrestore(&dmar_domain->lock, flags);
+Results of testing on various branches:
 
-        cache_tag_unassign_domain(dmar_domain, dev, pasid);
-        domain_detach_iommu(dmar_domain, iommu);
--       intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
--       kfree(dev_pasid);
-+       if (!WARN_ON_ONCE(!dev_pasid)) {
-+               intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
-+               kfree(dev_pasid);
-+       }
-        intel_pasid_tear_down_entry(iommu, dev, pasid, false);
-        intel_drain_pasid_prq(dev, pasid);
- }
---
-2.34.1
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
