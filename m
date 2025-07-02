@@ -1,90 +1,97 @@
-Return-Path: <stable+bounces-159267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54B3AF640C
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 23:31:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DD8AF6462
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 23:50:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A49D5228E4
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 21:31:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A7CC1893797
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 21:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60881239E63;
-	Wed,  2 Jul 2025 21:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C51B24113C;
+	Wed,  2 Jul 2025 21:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZRHlHoT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jsRy0b2u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBA22C9A;
-	Wed,  2 Jul 2025 21:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AFE2405FD;
+	Wed,  2 Jul 2025 21:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751491914; cv=none; b=h8Rkr5N5bR4EDBmQobIlI9PqD0Doglcjyvu9JAYSY6XWo0jFd77DFV6dhkGHM6Fh9NNCQijxgbbgE8cck44qS5F73tTBNJFi++Dl2MUrDTHGAburDBO4R6XBtZVqrpq3PY1Z2WDpqGbkAX0TuVN6w9CSc/qE/QinogSFpn2JjIY=
+	t=1751492989; cv=none; b=o8nDXgKZWaXz5CZj2Ucc5rlma3hZuxGo6oFBfkCehlcGr0DOMBVIgQysAqJQz0y5HE5iTeWLrLstCZcLsLPAVCUYW+wSVWR1DWFjcbg2Sr4qxQbF3En2j5pFwHeVz1sNPcmOL/w/SbnNkuXHx0FRT15QjigzcMdbyIBHQBs6IvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751491914; c=relaxed/simple;
-	bh=jzuLxHC9Uv+OUUWTt79avAJ566i/3yVd42ByhldChw4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q8/6LsS40tCNkbKIvuIm/6vu9SrrWvTuxGGVIER1XfMS0p5qcqEdgHJtTAFAnkIaqee31edwTFETaAoFPH1Z+/ARd7xTF4qb3YdIO7RntMHNHTHbEHIQHereU6vPpdcpkPRFvlPyy7K4bPQ/ErKqpaBkvpVFCcitT7ErLfJhjAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZRHlHoT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C72C4CEE7;
-	Wed,  2 Jul 2025 21:31:53 +0000 (UTC)
+	s=arc-20240116; t=1751492989; c=relaxed/simple;
+	bh=cQ4AeuAJQRdOm1S0Qcwv5gFojYvdFZYJNZXYXjyg2Fc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=YPSAO1hjIgAyCLKUW9tPVR5xFuNtmrTSF1VSXLe78Yo+0lM3lv18xogMr0yDsyGRCf33gNr4ays6Gadxa8gBjayyj7p59WL6isj40ibqFB6TQHHt35R0ildI14H9VGyN17vtv0ut64ALA6+S+ujmh/xULOD7AHHzBoed5d97/mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jsRy0b2u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49A9C4CEF0;
+	Wed,  2 Jul 2025 21:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751491913;
-	bh=jzuLxHC9Uv+OUUWTt79avAJ566i/3yVd42ByhldChw4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HZRHlHoTGy+g/1aNgLxhPgFbZnq278AxETgu0ki8GNKptTrMw/M3OBClefV5ZPTNr
-	 PxJ+bN2jAHJwQs6Gm+YQoAj1QKURdqSLRZI+DIwJWCPaRMtTeZNkNGYvxt4LHPK2yX
-	 8X6XgDLxOnVWZXqUhoYsnRI/QchZPD0Y8OZ9I9JcqyNj9elCFW7jCHnnzw9RmdSbe7
-	 G1EOOOYD5ZjWokBX/wumv6JEQ03EzG1MG1lBpMt+lfJihd9Z69IDCDA/VPd0UL23Xq
-	 jfZ3D1AbL+1HMnszBgr7jOS2ZOMr8sHHKr8XBzvKzaKYDxQrhor9CmtvwCRNQLSPdw
-	 TYJPugFhM4T6A==
-Date: Wed, 2 Jul 2025 14:31:52 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- mengyuanlou@net-swift.com, duanqiangwen@net-swift.com,
- stable@vger.kernel.org
-Subject: Re: [PATCH net] net: libwx: fix double put of page to page_pool
-Message-ID: <20250702143152.6046ab7c@kernel.org>
-In-Reply-To: <C8A23A11DB646E60+20250630094102.22265-1-jiawenwu@trustnetic.com>
-References: <C8A23A11DB646E60+20250630094102.22265-1-jiawenwu@trustnetic.com>
+	s=k20201202; t=1751492988;
+	bh=cQ4AeuAJQRdOm1S0Qcwv5gFojYvdFZYJNZXYXjyg2Fc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=jsRy0b2u198xmEEOIbpMa5hZ4s7u6b87ItjEE2NEml4MCezh4g7bPNUHqKOk+knI0
+	 BUMFxqwiiOvwcQIvRXobZhaL/wZinJnYVeaZKQ0/c2AM+QyWMKfDQKZmtAlP/JWHy8
+	 UMpGJfE1l3e3NjV3z86x5kVxoZ9GJKGrOQmBGldv4ExDrks2/RMw0WJ3KQe2oJIp6G
+	 zKZBFftN43ZUZNFOMNQNzdUbZOCN8nWEVJTfu7r7jaqWZ0TCEg+O+MFiWV5YISlOLi
+	 7G5aTZCvjq1k8KAOY8L1p5rC439XP9uv5N1CfN3QxwpQLgec41cmMnWWx8N8NUcx+V
+	 M71muETI6CiGg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70F29383B273;
+	Wed,  2 Jul 2025 21:50:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] net: libwx: fix the incorrect display of the queue
+ number
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175149301300.875317.11023203910034838166.git-patchwork-notify@kernel.org>
+Date: Wed, 02 Jul 2025 21:50:13 +0000
+References: <A5C8FE56D6C04608+20250701070625.73680-1-jiawenwu@trustnetic.com>
+In-Reply-To: <A5C8FE56D6C04608+20250701070625.73680-1-jiawenwu@trustnetic.com>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ mengyuanlou@net-swift.com, stable@vger.kernel.org
 
-On Mon, 30 Jun 2025 17:41:02 +0800 Jiawen Wu wrote:
-> wx_dma_sync_frag() incorrectly attempted to return the page to
-> page_pool, which is already handled via buffer reuse or wx_build_skb()
-> paths.
+Hello:
 
-The conditions is:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-	if (unlikely(WX_CB(skb)->page_released))
-
-And only wx_put_rx_buffer() sets that to true.  And it sets page to
-NULL, so I don't understand how this is supposed to work.
-
-Please improve the commit message, if not the code..
-
-> Under high MTU and high throughput, this causes list corruption
-> inside page_pool due to double free.
+On Tue,  1 Jul 2025 15:06:25 +0800 you wrote:
+> When setting "ethtool -L eth0 combined 1", the number of RX/TX queue is
+> changed to be 1. RSS is disabled at this moment, and the indices of FDIR
+> have not be changed in wx_set_rss_queues(). So the combined count still
+> shows the previous value. This issue was introduced when supporting
+> FDIR. Fix it for those devices that support FDIR.
 > 
-> [  876.949950] Call Trace:
-> [  876.949951]  <IRQ>
-> [  876.949952]  __rmqueue_pcplist+0x53/0x2c0
-> [  876.949955]  alloc_pages_bulk_noprof+0x2e0/0
+> Fixes: 34744a7749b3 ("net: txgbe: add FDIR info to ethtool ops")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> 
+> [...]
 
-This is just the stack trace you're missing the earlier lines which
-tell us what problem happened and where.
+Here is the summary with links:
+  - [net,v2] net: libwx: fix the incorrect display of the queue number
+    https://git.kernel.org/netdev/net/c/5186ff7e1d0e
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
