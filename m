@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-159216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46FB0AF1101
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 12:01:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E057BAF1111
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 12:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A7A4188D799
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:01:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10782483725
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BD11E3775;
-	Wed,  2 Jul 2025 10:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B3223D2B8;
+	Wed,  2 Jul 2025 10:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEcOu4FJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGkFT4SQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4010BDF42
-	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 10:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40BD223DEF
+	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 10:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751450482; cv=none; b=iTXm9cLmjfmVp4VCD+2wsLV3kzscQKWELmpYAev80pel7pVZy8xL9kaRC3t4sFv9svoyqL/cqecO2/krsHqBAGwJ9Qf31QG0ceshEk3gAkBL5F/8kQbLif60xviSYYCuNIaNdZGsS5LuclpGm+hwO2hiTj1Ye7I9+jojj9V3pEg=
+	t=1751450588; cv=none; b=W1MAHE8CppLKKc5yPJ9etDTjcrfd5OxFtbRKylBwG07jbwZRzXaCthTIv6VvTWxNUtwLG9w2xs9wSb9J6bFh3w22Uyc+QE1v7dfqisuH3XBKR5yTmWOa9pq33Ko5iaVrTE5VJrliafb7AidV6N6i/yyDaEf/9zo0eIFUVpk2dQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751450482; c=relaxed/simple;
-	bh=RgQFStYlYlslBKrhBZbNt8FxeUd0M2Dfg/D3xy3NFuA=;
+	s=arc-20240116; t=1751450588; c=relaxed/simple;
+	bh=1QG1NDhltwyomt8Q0/pRGI048AtmLD0aYgE30VlsWUk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=txKlR0CkJz3k8rxm/VHznM5gsuR4o2g321jD3QtQJ8DpWpBVOMcl9VUkN61v6wjdO+pT1NzF8TgZjGXC+AJfqv3VegcjVHm+vPEfDgcl7Ta1uLXb6dtQkf1sCIS6CMW8h7WqP6JVvbuP8oESrRWWTivO+QRPcjwPNJ/L9cE8TvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEcOu4FJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A267C4CEF4;
-	Wed,  2 Jul 2025 10:01:21 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=revMyxxY59X6ilX+vnvI0dU1cyEh1XUuK8LpYUZO44MO0A8FCOXwOCfXcwP8E6s2XPAmtt69XScUF3hVB5mSA2W7/fR8t3bDWKldXJc8Q/JljiR4RU0G+LLvvueVY/pjfM9ooRMK6nXDZesTwRTRTC0OE881uKtB/J95XsAvIws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGkFT4SQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0C7C4CEED;
+	Wed,  2 Jul 2025 10:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751450481;
-	bh=RgQFStYlYlslBKrhBZbNt8FxeUd0M2Dfg/D3xy3NFuA=;
+	s=korg; t=1751450588;
+	bh=1QG1NDhltwyomt8Q0/pRGI048AtmLD0aYgE30VlsWUk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wEcOu4FJ9Vk7DlRVlR/usB1M12LAhEoiQ3M/yWO5jbOfwO2hXc4wyfGN5+opsVp5P
-	 uuF6q4qpT9iF50Gg53arkIAD246pyFSMfyEd5KvdPjw45p+pNlge6kEV7vKNV8xItJ
-	 5SQOAPjHjKdbEcKcYlqQ+QHYOZ3pay3w4VEB2zkg=
-Date: Wed, 2 Jul 2025 12:01:18 +0200
+	b=WGkFT4SQkFBBJ33aBSleIWMMHORqCUoRsmToMAQ/+m0CiolGgO00MkXIFxMCQtE7r
+	 dxlWSMu6uPn7hniPqcV4rOm6E8ELFs8OYk3ANhcBowQXqoXatzGGILGpEJewwQTP8E
+	 F5DpF1XB5IsKgEVwBpYm3HFfKIU8ixJkKSAHfWCE=
+Date: Wed, 2 Jul 2025 12:03:05 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] io_uring/kbuf: flag partial buffer
- mappings" failed to apply to 6.12-stable tree
-Message-ID: <2025070212-duplex-synapse-ef8a@gregkh>
-References: <2025062921-froth-singing-509c@gregkh>
- <9e257146-d7a5-4221-a784-3b1cf543a932@kernel.dk>
+To: Rajani kantha <rajanikantha@engineer.com>
+Cc: kees@ijzerbout.nl, baolu.lu@linux.intel.com, jroedel@suse.de,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 6.12.y] iommu/vt-d: Avoid use of NULL after WARN_ON_ONCE
+Message-ID: <2025070217-bright-energetic-3537@gregkh>
+References: <trinity-5b3af13a-3731-4b47-80a1-8ac7af67791f-1751424444098@3c-app-mailcom-lxa07>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,29 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9e257146-d7a5-4221-a784-3b1cf543a932@kernel.dk>
+In-Reply-To: <trinity-5b3af13a-3731-4b47-80a1-8ac7af67791f-1751424444098@3c-app-mailcom-lxa07>
 
-On Sun, Jun 29, 2025 at 01:20:31PM -0600, Jens Axboe wrote:
-> On 6/29/25 6:42 AM, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 6.12-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> > 
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> > 
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 178b8ff66ff827c41b4fa105e9aabb99a0b5c537
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062921-froth-singing-509c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+On Wed, Jul 02, 2025 at 04:47:24AM +0200, Rajani kantha wrote:
+> From: Kees Bakker <kees@ijzerbout.nl>
 > 
-> 6.12-stable is missing a few backports here. Here's this one, with the
-> prior ones added first.
+> [ Upstream commit 60f030f7418d3f1d94f2fb207fe3080e1844630b ]
+> 
+> There is a WARN_ON_ONCE to catch an unlikely situation when
+> domain_remove_dev_pasid can't find the `pasid`. In case it nevertheless
+> happens we must avoid using a NULL pointer.
+> 
+> Signed-off-by: Kees Bakker <kees@ijzerbout.nl>
+> Link: https://lore.kernel.org/r/20241218201048.E544818E57E@bout3.ijzerbout.nl
+> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+> Signed-off-by: Joerg Roedel <jroedel@suse.de>
+> Signed-off-by: Rajani Kantha <rajanikantha@engineer.com>
+> ---
+>  drivers/iommu/intel/iommu.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index 56e9f125cda9..7c351274d004 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -4306,13 +4306,14 @@ static void intel_iommu_remove_dev_pasid(struct device *dev, ioasid_t pasid,
+>                         break;
+>                 }
+>         }
+> -       WARN_ON_ONCE(!dev_pasid);
+>         spin_unlock_irqrestore(&dmar_domain->lock, flags);
+> 
+>         cache_tag_unassign_domain(dmar_domain, dev, pasid);
+>         domain_detach_iommu(dmar_domain, iommu);
+> -       intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
+> -       kfree(dev_pasid);
+> +       if (!WARN_ON_ONCE(!dev_pasid)) {
+> +               intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
+> +               kfree(dev_pasid);
+> +       }
 
-All now queued up, thanks.
+Meta-comment about this patch.  If this does trigger, it will still
+crash the billions of Linux instances that run with panic-on-warn
+enabled.  So you really haven't "solved" the issue here.  If this can be
+NULL, then properly handle it please, don't crash boxes...
+
+thanks,
 
 greg k-h
 
