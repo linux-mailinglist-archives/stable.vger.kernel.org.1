@@ -1,97 +1,149 @@
-Return-Path: <stable+bounces-159268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DD8AF6462
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 23:50:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D942AF6518
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 00:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A7CC1893797
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 21:50:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86A3D17F57A
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 22:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C51B24113C;
-	Wed,  2 Jul 2025 21:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1DA1EC014;
+	Wed,  2 Jul 2025 22:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jsRy0b2u"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="JzhVz3LA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AFE2405FD;
-	Wed,  2 Jul 2025 21:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE3A244660
+	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 22:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751492989; cv=none; b=o8nDXgKZWaXz5CZj2Ucc5rlma3hZuxGo6oFBfkCehlcGr0DOMBVIgQysAqJQz0y5HE5iTeWLrLstCZcLsLPAVCUYW+wSVWR1DWFjcbg2Sr4qxQbF3En2j5pFwHeVz1sNPcmOL/w/SbnNkuXHx0FRT15QjigzcMdbyIBHQBs6IvY=
+	t=1751495116; cv=none; b=Aj8t0waT//y4pO55Y55cgmNvh8C+urKHk/DG3WCEDdGrEtYiYG0Y0ASd3f0uQD5O+grsQiUm55vBiqi1AWHOFI8P+wDophHwXSQl1mCY+oQ7QkMMD1NWi+nMEKSK3sUHnduXoR/2TPYuc0ja68zbRbOsSyHLsml21PNEs7OXUG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751492989; c=relaxed/simple;
-	bh=cQ4AeuAJQRdOm1S0Qcwv5gFojYvdFZYJNZXYXjyg2Fc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YPSAO1hjIgAyCLKUW9tPVR5xFuNtmrTSF1VSXLe78Yo+0lM3lv18xogMr0yDsyGRCf33gNr4ays6Gadxa8gBjayyj7p59WL6isj40ibqFB6TQHHt35R0ildI14H9VGyN17vtv0ut64ALA6+S+ujmh/xULOD7AHHzBoed5d97/mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jsRy0b2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49A9C4CEF0;
-	Wed,  2 Jul 2025 21:49:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751492988;
-	bh=cQ4AeuAJQRdOm1S0Qcwv5gFojYvdFZYJNZXYXjyg2Fc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=jsRy0b2u198xmEEOIbpMa5hZ4s7u6b87ItjEE2NEml4MCezh4g7bPNUHqKOk+knI0
-	 BUMFxqwiiOvwcQIvRXobZhaL/wZinJnYVeaZKQ0/c2AM+QyWMKfDQKZmtAlP/JWHy8
-	 UMpGJfE1l3e3NjV3z86x5kVxoZ9GJKGrOQmBGldv4ExDrks2/RMw0WJ3KQe2oJIp6G
-	 zKZBFftN43ZUZNFOMNQNzdUbZOCN8nWEVJTfu7r7jaqWZ0TCEg+O+MFiWV5YISlOLi
-	 7G5aTZCvjq1k8KAOY8L1p5rC439XP9uv5N1CfN3QxwpQLgec41cmMnWWx8N8NUcx+V
-	 M71muETI6CiGg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70F29383B273;
-	Wed,  2 Jul 2025 21:50:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1751495116; c=relaxed/simple;
+	bh=MzMMZzRbMa0ZTX+DtQ9hTGyeTj4Dp+U113gEJW20Llg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cDRAwmLY+LovVpBuZvBl3v/k85n5GQFcwITb3U3N0odQ50vHg9BZDU0vp0XL7um63xkwgwN54PACWcUfcxHC2Bfh7PWgI6mTugNBjxYaAM0cRdGY/dl552TUFX9kShqEzE7iwfd5SlwW3FpVWoosSWnJ8Te1mkJtwl/0pt4dtFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=JzhVz3LA; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Yk0ycOmnsxbXDGome0X32AZzO4GzLwJnDsvNl3HTL2k=; b=JzhVz3LAxTv44YmOG8Apv/pdP1
+	YDXhKrbrwLXvDVt2KfBayHzhZin0JSAxuBt36Zi7RJQq49jNVR8wukGrdyn1YCM5FrGVwthAG5PKH
+	b4MiecarD6aqVTVvWZ+yPUgXh1/+zYhcommfVAPRR07Dg0+WPj7UIXT6MOBmiHJC06ktKsWQb3Zwx
+	TcxIn3ksYoC0ahNPSHOzZmf4CEBnwkymNh38DPRZXt6pgfQMRQeaO1N9ZvnDpnqzQYQeaHFVG3sNM
+	qoXa2cuv0aq6UOqoL8hn/5riKGCiTlymE1ePjtyvJ8UJdFRhFo53ZMj3Xz9KedbQqXF2Gai4MGE3N
+	xxhIJSTQ==;
+Received: from [189.7.87.79] (helo=[192.168.0.7])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1uX5sv-00Bee3-LX; Thu, 03 Jul 2025 00:24:57 +0200
+Message-ID: <d849afe5-af7f-4ef3-a545-96e19e217b43@igalia.com>
+Date: Wed, 2 Jul 2025 19:24:52 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/v3d: Disable interrupts before resetting the GPU
+To: Melissa Wen <mwen@igalia.com>, Iago Toral <itoral@igalia.com>,
+ =?UTF-8?Q?Juan_A_=2E_Su=C3=A1rez?= <jasuarez@igalia.com>
+Cc: dri-devel@lists.freedesktop.org, kernel-dev@igalia.com,
+ stable@vger.kernel.org
+References: <20250628224243.47599-1-mcanal@igalia.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+In-Reply-To: <20250628224243.47599-1-mcanal@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: libwx: fix the incorrect display of the queue
- number
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175149301300.875317.11023203910034838166.git-patchwork-notify@kernel.org>
-Date: Wed, 02 Jul 2025 21:50:13 +0000
-References: <A5C8FE56D6C04608+20250701070625.73680-1-jiawenwu@trustnetic.com>
-In-Reply-To: <A5C8FE56D6C04608+20250701070625.73680-1-jiawenwu@trustnetic.com>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- mengyuanlou@net-swift.com, stable@vger.kernel.org
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue,  1 Jul 2025 15:06:25 +0800 you wrote:
-> When setting "ethtool -L eth0 combined 1", the number of RX/TX queue is
-> changed to be 1. RSS is disabled at this moment, and the indices of FDIR
-> have not be changed in wx_set_rss_queues(). So the combined count still
-> shows the previous value. This issue was introduced when supporting
-> FDIR. Fix it for those devices that support FDIR.
+On 28/06/25 19:42, Maíra Canal wrote:
+> Currently, an interrupt can be triggered during a GPU reset, which can
+> lead to GPU hangs and NULL pointer dereference in an interrupt context
+> as shown in the following trace:
 > 
-> Fixes: 34744a7749b3 ("net: txgbe: add FDIR info to ethtool ops")
+>   [  314.035040] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000c0
+>   [  314.043822] Mem abort info:
+>   [  314.046606]   ESR = 0x0000000096000005
+>   [  314.050347]   EC = 0x25: DABT (current EL), IL = 32 bits
+>   [  314.055651]   SET = 0, FnV = 0
+>   [  314.058695]   EA = 0, S1PTW = 0
+>   [  314.061826]   FSC = 0x05: level 1 translation fault
+>   [  314.066694] Data abort info:
+>   [  314.069564]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+>   [  314.075039]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+>   [  314.080080]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+>   [  314.085382] user pgtable: 4k pages, 39-bit VAs, pgdp=0000000102728000
+>   [  314.091814] [00000000000000c0] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
+>   [  314.100511] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+>   [  314.106770] Modules linked in: v3d i2c_brcmstb vc4 snd_soc_hdmi_codec gpu_sched drm_shmem_helper drm_display_helper cec drm_dma_helper drm_kms_helper drm drm_panel_orientation_quirks snd_soc_core snd_compress snd_pcm_dmaengine snd_pcm snd_timer snd backlight
+>   [  314.129654] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.25+rpt-rpi-v8 #1  Debian 1:6.12.25-1+rpt1
+>   [  314.139388] Hardware name: Raspberry Pi 4 Model B Rev 1.4 (DT)
+>   [  314.145211] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>   [  314.152165] pc : v3d_irq+0xec/0x2e0 [v3d]
+>   [  314.156187] lr : v3d_irq+0xe0/0x2e0 [v3d]
+>   [  314.160198] sp : ffffffc080003ea0
+>   [  314.163502] x29: ffffffc080003ea0 x28: ffffffec1f184980 x27: 021202b000000000
+>   [  314.170633] x26: ffffffec1f17f630 x25: ffffff8101372000 x24: ffffffec1f17d9f0
+>   [  314.177764] x23: 000000000000002a x22: 000000000000002a x21: ffffff8103252000
+>   [  314.184895] x20: 0000000000000001 x19: 00000000deadbeef x18: 0000000000000000
+>   [  314.192026] x17: ffffff94e51d2000 x16: ffffffec1dac3cb0 x15: c306000000000000
+>   [  314.199156] x14: 0000000000000000 x13: b2fc982e03cc5168 x12: 0000000000000001
+>   [  314.206286] x11: ffffff8103f8bcc0 x10: ffffffec1f196868 x9 : ffffffec1dac3874
+>   [  314.213416] x8 : 0000000000000000 x7 : 0000000000042a3a x6 : ffffff810017a180
+>   [  314.220547] x5 : ffffffec1ebad400 x4 : ffffffec1ebad320 x3 : 00000000000bebeb
+>   [  314.227677] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
+>   [  314.234807] Call trace:
+>   [  314.237243]  v3d_irq+0xec/0x2e0 [v3d]
+>   [  314.240906]  __handle_irq_event_percpu+0x58/0x218
+>   [  314.245609]  handle_irq_event+0x54/0xb8
+>   [  314.249439]  handle_fasteoi_irq+0xac/0x240
+>   [  314.253527]  handle_irq_desc+0x48/0x68
+>   [  314.257269]  generic_handle_domain_irq+0x24/0x38
+>   [  314.261879]  gic_handle_irq+0x48/0xd8
+>   [  314.265533]  call_on_irq_stack+0x24/0x58
+>   [  314.269448]  do_interrupt_handler+0x88/0x98
+>   [  314.273624]  el1_interrupt+0x34/0x68
+>   [  314.277193]  el1h_64_irq_handler+0x18/0x28
+>   [  314.281281]  el1h_64_irq+0x64/0x68
+>   [  314.284673]  default_idle_call+0x3c/0x168
+>   [  314.288675]  do_idle+0x1fc/0x230
+>   [  314.291895]  cpu_startup_entry+0x3c/0x50
+>   [  314.295810]  rest_init+0xe4/0xf0
+>   [  314.299030]  start_kernel+0x5e8/0x790
+>   [  314.302684]  __primary_switched+0x80/0x90
+>   [  314.306691] Code: 940029eb 360ffc13 f9442ea0 52800001 (f9406017)
+>   [  314.312775] ---[ end trace 0000000000000000 ]---
+>   [  314.317384] Kernel panic - not syncing: Oops: Fatal exception in interrupt
+>   [  314.324249] SMP: stopping secondary CPUs
+>   [  314.328167] Kernel Offset: 0x2b9da00000 from 0xffffffc080000000
+>   [  314.334076] PHYS_OFFSET: 0x0
+>   [  314.336946] CPU features: 0x08,00002013,c0200000,0200421b
+>   [  314.342337] Memory Limit: none
+>   [  314.345382] ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
+> 
+> Before resetting the GPU, it's necessary to disable all interrupts and
+> deal with any interrupt handler still in-flight. Otherwise, the GPU might
+> reset with jobs still running, or yet, an interrupt could be handled
+> during the reset.
+> 
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> 
-> [...]
+> Fixes: 57692c94dcbe ("drm/v3d: Introduce a new DRM driver for Broadcom V3D V3.x+")
+> Signed-off-by: Maíra Canal <mcanal@igalia.com>
 
-Here is the summary with links:
-  - [net,v2] net: libwx: fix the incorrect display of the queue number
-    https://git.kernel.org/netdev/net/c/5186ff7e1d0e
+Applied to misc/kernel.git (drm-misc-fixes). Thanks for the review!
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Best Regards,
+- Maíra
 
