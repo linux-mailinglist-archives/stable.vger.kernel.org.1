@@ -1,97 +1,50 @@
-Return-Path: <stable+bounces-159218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16615AF1114
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 12:04:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D32AF1115
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 12:04:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92CCC188E316
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:04:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4D00188DA72
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611F02417E6;
-	Wed,  2 Jul 2025 10:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BDC2417E6;
+	Wed,  2 Jul 2025 10:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="MUZfxUV0";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XgpgVrOF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqI7C/QC"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA3F2A1AA
-	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 10:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CC82A1AA
+	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 10:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751450637; cv=none; b=EPIagKmshoJieZgNhZWDtp2DWXkeLlvV4fJ31HoL1l5xKO540zZtQwlDoWDuG1DM8lEHiFDxfubKYZfgz6xteWcbJFHag0nDQD/6qeq0YbiHAr72kWmVDbDWlpg/EjiayMV7+mORtCcitq4rIfBz8vnpNFZDnIK4eAiLMzqiuTQ=
+	t=1751450683; cv=none; b=YAPW3Zr4eds9HbwoxBb8EGDSZ20TqF3/nVNl0bsBcErULnJG2KDsjK8uykIVvzw8yUSe7DApVBp7RYGgJkeS3IurDjn6IS1uJaiNYwSxc1ETvSK796zj5a6ZU+eHNXBO9Bg4849Q4d2aL43HV7LTmbqKNnfuMuZ1/gORrpojiho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751450637; c=relaxed/simple;
-	bh=WqagJWOWNJIIEDMtwz9Am5AUvnR8bcTmoyVURwHdewc=;
+	s=arc-20240116; t=1751450683; c=relaxed/simple;
+	bh=jIq6ZIjLEM9VELXnD/fgwoJ/Bpbz1Vqype3GyE2W284=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=og/9KfuSC0Qvd4PONqLwkLUVkbUBstlmIzIpZ+XSfukTDOJP/6a+5LVFyTN30AU0oIHtsBH1vbbvF+uQRB2tUEy63RN/bJU9Uz8JaivYYJq97yHEuxHm8UOtJGLvCt14IWsuyqTM8NsIOzS0VaGQJgRGyrRLQGlQcl/kJEF8iD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=MUZfxUV0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XgpgVrOF; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
-	by mailfout.stl.internal (Postfix) with ESMTP id 4618A1D000A0;
-	Wed,  2 Jul 2025 06:03:52 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Wed, 02 Jul 2025 06:03:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1751450632; x=1751537032; bh=jC8CfuOvx/
-	KNTmRSD/2VUFEIcrhVecMZ373ils6PjdY=; b=MUZfxUV05qJSbsvHxH44agNV1N
-	/Sr+rtGKU/XuJeFU/tbfYGOz73TNvIFwWENRPwCtRvP9aMPnV5Xk3E0jwC6htdw6
-	VQLfZQ7qpzsTalsjAohq444Hjio4+FS1aJjLTpjQc59xGs4yTkKW2oCi9qKZp1zR
-	1rZesENqlRKGnxE/FG3JRsj3nFZ3Qbaelg715jGSEad4u9h1C91F7geq4FmhUTIe
-	MJ1qTLlfNh4xvrjo/NakCKYSAM5dnQNYQSHrpm1Bb0Tc/mlM9p+EddZZmZz04ZsT
-	BUd+JXCRVFfqhMsaHNYfuzsP73S0sMa6S4k8kRpbUbBnLAWFAkr8h6zBoTZw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1751450632; x=1751537032; bh=jC8CfuOvx/KNTmRSD/2VUFEIcrhVecMZ373
-	ils6PjdY=; b=XgpgVrOFk1F3scYMo73du4ON0eriXMExWTILI2jWiyCe6H0x+c7
-	Pu7CHZ9/00UanRwtQxpqXf78w/iYDIMZ5iqY4PQd/Ws/W5ng4ASm19kV2GrRJmXq
-	ddWKAfzL/beAt8AvNrLH/ul2zaBrGqoCNP6B1crfSdOJITqWnfrfpmmwiekdrTEg
-	BPiiedGN0qRctk/pKABJD9RKcO5NbqyWB0dE6+2wf/X+LMZfp4GhKJzjXA8Wsh/b
-	NJmOdMg/UNUewTZO0aG1tHhapx/uwfqZAvtbkOcVW72J6IakIGKn/E8V/yZyY1vO
-	GPo9Kxe0io9kaudulcDtsYsScq/Abhb8h6g==
-X-ME-Sender: <xms:BgRlaG__XF9UgRsaN5qXk53fusQrwokINsA9tr-ysRqYdxKaDl-1Kg>
-    <xme:BgRlaGuYYCx0bf134DIKLyb1rT7PmccuCwPydWrM3qe9vqIGGIWgebYEB30Vel0HU
-    2qSHfcXF9dfuA>
-X-ME-Received: <xmr:BgRlaMBfFfKoGCu_lYrEiEnsyL3FKVD-6KphStn7MepAuQCoPOOgu02IkXK0pEEzh-1d0BpLDamTz6nLxKC5QjvEEr2cgEI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddujeduudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcumffj
-    uceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhefgtd
-    eluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghinhep
-    khgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
-    hilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopedutddp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhgrjhgrnhhikhgrnhhthhgrsegvnh
-    hgihhnvggvrhdrtghomhdprhgtphhtthhopehkvggvshesihhjiigvrhgsohhuthdrnhhl
-    pdhrtghpthhtohepsggrohhluhdrlhhusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtg
-    hpthhtohepjhhrohgvuggvlhesshhushgvrdguvgdprhgtphhtthhopehsthgrsghlvges
-    vhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:BgRlaOewA1Hinfcv214xLKeMK8xO9DgzF3nu-5hg9yV4CgDLaIJxMA>
-    <xmx:BgRlaLOguXKZWKwNwHzzgkx8gmgVOTw4YVV_xszigzpCgsiO6mqXAQ>
-    <xmx:BgRlaInaVH_6DQouram8Z0DLd5wECogvjHR_mMzXyziW4y0xY7gOvg>
-    <xmx:BgRlaNuzYSolAiHsnNG6BoL0ZJ1HNcEkmEng2VDnDTpx8FB8-ZDcTQ>
-    <xmx:CARlaEvcJSCKmxNj9LC-7oYlFyElTDj5zRkKW8BqZeIwa8jeeNOSaGmc>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 2 Jul 2025 06:03:49 -0400 (EDT)
-Date: Wed, 2 Jul 2025 12:03:48 +0200
-From: Greg KH <greg@kroah.com>
-To: Rajani kantha <rajanikantha@engineer.com>
-Cc: kees@ijzerbout.nl, baolu.lu@linux.intel.com, jroedel@suse.de,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 6.12.y] iommu/vt-d: Avoid use of NULL after WARN_ON_ONCE
-Message-ID: <2025070233-unimpeded-reversion-ab61@gregkh>
-References: <trinity-5b3af13a-3731-4b47-80a1-8ac7af67791f-1751424444098@3c-app-mailcom-lxa07>
+	 Content-Type:Content-Disposition:In-Reply-To; b=h1owQT/X+Wq/+2i2hECfSsaUvIuvPgjtOMeZJJq5/bvM1OVkTeXJTTNs5hM1yjm5rE611xZugOkZXarIhO7p9aEmTBgOi42/ULl5GLC+fasIdW4b7ztvw+4Idl3fbpi6XWu0SyIKraqagRtTa8NI1Zqx0biITM6shIsZtcxmdfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqI7C/QC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0D0C4CEED;
+	Wed,  2 Jul 2025 10:04:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1751450682;
+	bh=jIq6ZIjLEM9VELXnD/fgwoJ/Bpbz1Vqype3GyE2W284=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RqI7C/QCQ9O2xcmQSILnwuM1RDigzzjAjUtTvy6EZ53y/oJw910RJuA3JXEL7wFvR
+	 aede3m+7kc7b3gv50IEdeDcxU6u9KiPLju0B3FLSwMbknme4FOv4q1unlG8Nk+n4xv
+	 SuNhWXSJpEoEdpAhKN0RVBoQR6JOykldtLBeuJEY=
+Date: Wed, 2 Jul 2025 12:04:39 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: mathieu.tortuyaux@gmail.com
+Cc: stable@vger.kernel.org, Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+Subject: Re: [PATCH 6.12.y 0/3] r8169: add support for RTL8125D
+Message-ID: <2025070224-plethora-thread-8ef2@gregkh>
+References: <20250630142717.70619-1-mathieu.tortuyaux@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,55 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <trinity-5b3af13a-3731-4b47-80a1-8ac7af67791f-1751424444098@3c-app-mailcom-lxa07>
+In-Reply-To: <20250630142717.70619-1-mathieu.tortuyaux@gmail.com>
 
-On Wed, Jul 02, 2025 at 04:47:24AM +0200, Rajani kantha wrote:
-> From: Kees Bakker <kees@ijzerbout.nl>
+On Mon, Jun 30, 2025 at 04:27:13PM +0200, mathieu.tortuyaux@gmail.com wrote:
+> From: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
 > 
-> [ Upstream commit 60f030f7418d3f1d94f2fb207fe3080e1844630b ]
+> Hi,
 > 
-> There is a WARN_ON_ONCE to catch an unlikely situation when
-> domain_remove_dev_pasid can't find the `pasid`. In case it nevertheless
-> happens we must avoid using a NULL pointer.
+> This backports support for Realtek device 0x688 on Kernel 6.12.y:
+> * Tested in Flatcar CI w/ Kernel 6.12.35 on qemu (for regression): https://github.com/flatcar/scripts/pull/3006
+> * The user requesting this support has confirmed correct behavior: https://github.com/flatcar/Flatcar/issues/1749#issuecomment-3005483988 
 > 
-> Signed-off-by: Kees Bakker <kees@ijzerbout.nl>
-> Link: https://lore.kernel.org/r/20241218201048.E544818E57E@bout3.ijzerbout.nl
-> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-> Signed-off-by: Joerg Roedel <jroedel@suse.de>
-> Signed-off-by: Rajani Kantha <rajanikantha@engineer.com>
-> ---
->  drivers/iommu/intel/iommu.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+> The two other commits ("net: phy: realtek: merge the drivers for
+> internal NBase-T PHY's" and "net: phy: realtek: add RTL8125D-internal PHY")
+> are required to add support here as well, otherwise it fails with:
+> ```
+> $ dmesg
+> ...
+> r8169 ... : no dedicated PHY driver found for PHY ID 0x001cc841
+> ...
+> ```
 > 
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index 56e9f125cda9..7c351274d004 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -4306,13 +4306,14 @@ static void intel_iommu_remove_dev_pasid(struct device *dev, ioasid_t pasid,
->                         break;
->                 }
->         }
-> -       WARN_ON_ONCE(!dev_pasid);
->         spin_unlock_irqrestore(&dmar_domain->lock, flags);
+> Thanks and have a great day,
 > 
->         cache_tag_unassign_domain(dmar_domain, dev, pasid);
->         domain_detach_iommu(dmar_domain, iommu);
-> -       intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
-> -       kfree(dev_pasid);
-> +       if (!WARN_ON_ONCE(!dev_pasid)) {
-> +               intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
-> +               kfree(dev_pasid);
-> +       }
->         intel_pasid_tear_down_entry(iommu, dev, pasid, false);
->         intel_drain_pasid_prq(dev, pasid);
->  }
-> --
-> 2.34.1
+> Mathieu (@tormath1)
 > 
+> Heiner Kallweit (3):
+>   r8169: add support for RTL8125D
+>   net: phy: realtek: merge the drivers for internal NBase-T PHY's
+>   net: phy: realtek: add RTL8125D-internal PHY
+> 
+>  drivers/net/ethernet/realtek/r8169.h          |  1 +
+>  drivers/net/ethernet/realtek/r8169_main.c     | 23 +++++---
+>  .../net/ethernet/realtek/r8169_phy_config.c   | 10 ++++
+>  drivers/net/phy/realtek.c                     | 54 +++++++++++++++----
+>  4 files changed, 71 insertions(+), 17 deletions(-)
 
-Does not apply to the 6.12.y branch at all, what was this made against?
-
-thanks,
-
-greg k-h
+You did not sign off on any of these patches that you forwarded on :(
 
