@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-159215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C779AAF10FF
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 12:00:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46FB0AF1101
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 12:01:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E370116F725
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:00:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A7A4188D799
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0E1242D74;
-	Wed,  2 Jul 2025 10:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BD11E3775;
+	Wed,  2 Jul 2025 10:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QQGCDSG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEcOu4FJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4E623D2B8
-	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 10:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4010BDF42
+	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 10:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751450453; cv=none; b=B/f/iDjZ1R+OBfPIr0aMsn3tQayrCHw8UIXizKkPA+xXgVlVis/6NSQ/uhL70/RF667oZMRsJLpntLD2e65eAnuWpnoDFRYuU0HqQEIUyQ3O6KoS13xibYEpsMg0FmhZn1szfqu7r6NfAWwkBljWVc9TsQmPP7v9KmvFK5c4dZw=
+	t=1751450482; cv=none; b=iTXm9cLmjfmVp4VCD+2wsLV3kzscQKWELmpYAev80pel7pVZy8xL9kaRC3t4sFv9svoyqL/cqecO2/krsHqBAGwJ9Qf31QG0ceshEk3gAkBL5F/8kQbLif60xviSYYCuNIaNdZGsS5LuclpGm+hwO2hiTj1Ye7I9+jojj9V3pEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751450453; c=relaxed/simple;
-	bh=XLDfwlRfxCpf35ZQqa05oBQVyGbrXmpdJHG36djuhs4=;
+	s=arc-20240116; t=1751450482; c=relaxed/simple;
+	bh=RgQFStYlYlslBKrhBZbNt8FxeUd0M2Dfg/D3xy3NFuA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QLRwBz6/ZlSNPCsUJ/zaKNpKkVYOr2zSwykAeGCRYJ+RID5uSNvUEa9pPZzHpSCivj8j9xrnUq93Rl2BAijLql2AdImDGUSrogWRhpQHlCnU442Tg3QnUO6MTapxsw4NQXDw1q50yh/vQcVVAOgyjvh6seFxbHV2eVkd48yw9+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QQGCDSG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B25C4CEED;
-	Wed,  2 Jul 2025 10:00:52 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=txKlR0CkJz3k8rxm/VHznM5gsuR4o2g321jD3QtQJ8DpWpBVOMcl9VUkN61v6wjdO+pT1NzF8TgZjGXC+AJfqv3VegcjVHm+vPEfDgcl7Ta1uLXb6dtQkf1sCIS6CMW8h7WqP6JVvbuP8oESrRWWTivO+QRPcjwPNJ/L9cE8TvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEcOu4FJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A267C4CEF4;
+	Wed,  2 Jul 2025 10:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751450453;
-	bh=XLDfwlRfxCpf35ZQqa05oBQVyGbrXmpdJHG36djuhs4=;
+	s=korg; t=1751450481;
+	bh=RgQFStYlYlslBKrhBZbNt8FxeUd0M2Dfg/D3xy3NFuA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1QQGCDSG0olG9CxC+6MaIsPoKFuq4Xx1ABT69EJbK0B1ghD/rOCBfmufKQsUAOO0k
-	 8zbj24kA1enu6qcJbbG3WmbLdu/8DDs+0x2PMi886qrKR/u4LlNHuQ8GjxvNPze6oO
-	 5Vb9hSt9+CRV1OXhZmZsXrEbgJ9n4xmYQFeijFXg=
-Date: Wed, 2 Jul 2025 12:00:50 +0200
+	b=wEcOu4FJ9Vk7DlRVlR/usB1M12LAhEoiQ3M/yWO5jbOfwO2hXc4wyfGN5+opsVp5P
+	 uuF6q4qpT9iF50Gg53arkIAD246pyFSMfyEd5KvdPjw45p+pNlge6kEV7vKNV8xItJ
+	 5SQOAPjHjKdbEcKcYlqQ+QHYOZ3pay3w4VEB2zkg=
+Date: Wed, 2 Jul 2025 12:01:18 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Jens Axboe <axboe@kernel.dk>
-Cc: asml.silence@gmail.com, david@redhat.com, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] io_uring/rsrc: fix folio unpinning"
- failed to apply to 6.12-stable tree
-Message-ID: <2025070242-revolt-mardi-23f7@gregkh>
-References: <2025062950-football-lifting-1443@gregkh>
- <14c7b39a-d489-4265-8165-892ffcb81af9@kernel.dk>
+Cc: stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] io_uring/kbuf: flag partial buffer
+ mappings" failed to apply to 6.12-stable tree
+Message-ID: <2025070212-duplex-synapse-ef8a@gregkh>
+References: <2025062921-froth-singing-509c@gregkh>
+ <9e257146-d7a5-4221-a784-3b1cf543a932@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,10 +55,10 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <14c7b39a-d489-4265-8165-892ffcb81af9@kernel.dk>
+In-Reply-To: <9e257146-d7a5-4221-a784-3b1cf543a932@kernel.dk>
 
-On Sun, Jun 29, 2025 at 10:41:57AM -0600, Jens Axboe wrote:
-> On 6/29/25 6:41 AM, gregkh@linuxfoundation.org wrote:
+On Sun, Jun 29, 2025 at 01:20:31PM -0600, Jens Axboe wrote:
+> On 6/29/25 6:42 AM, gregkh@linuxfoundation.org wrote:
 > > 
 > > The patch below does not apply to the 6.12-stable tree.
 > > If someone wants it applied there, or to any other stable or longterm
@@ -69,12 +69,13 @@ On Sun, Jun 29, 2025 at 10:41:57AM -0600, Jens Axboe wrote:
 > > 
 > > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 > > git checkout FETCH_HEAD
-> > git cherry-pick -x 5afb4bf9fc62d828647647ec31745083637132e4
+> > git cherry-pick -x 178b8ff66ff827c41b4fa105e9aabb99a0b5c537
 > > # <resolve conflicts, build, test, etc.>
 > > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062950-football-lifting-1443@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062921-froth-singing-509c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 > 
-> Set for 6.12-stable, thanks.
+> 6.12-stable is missing a few backports here. Here's this one, with the
+> prior ones added first.
 
 All now queued up, thanks.
 
