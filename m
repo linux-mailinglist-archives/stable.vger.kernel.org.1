@@ -1,99 +1,135 @@
-Return-Path: <stable+bounces-159196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D986CAF0C22
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 09:01:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CCF0AF0C66
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 09:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7EB31C0396C
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 07:01:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48FAD7A7DDF
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 07:18:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5161220A5EB;
-	Wed,  2 Jul 2025 07:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423F1223DEA;
+	Wed,  2 Jul 2025 07:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Km6oWRog"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bF5Yyc/t"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F5A1F791C
-	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 07:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CD0634EC;
+	Wed,  2 Jul 2025 07:19:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751439661; cv=none; b=gS7JAt4NKWO4DP6QKrg55PUkCOJp4cBbH92ejt8mqa/B4EWJ3AIqOpwY4NHSRyb9mdnI7UPlL6oNnSvJShsT510dndrxpRmCJbi7vBfCqaPGBonTf5MLgS73O0XmfyYKmMkUqG0YygctShWmc59+EL3dbng81u8M30dqpes7RS4=
+	t=1751440791; cv=none; b=M3Wh8zbdBTNjWFZ8mwRkNT824ZQKq/lEdKoXNYUtG/fCFpOEcM7mZfVfRJFZVqHbHVMuouxD65xWBExauMR+7AjD9gF2Lf2YOUIXyG6eKF9wol4mJVCGgK0/vTz+I0HqsIMEwhtpxtelHyOop4C9imNTCY039Eu6kO7Wb7ThAn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751439661; c=relaxed/simple;
-	bh=1ukfgXEYLmTnbRPbu4h9NQ19dsvCVBPOwpvfp/jvQgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=erI275UprCInUsLzeOKDjRRP4d5WbPBKfyBp/ywsh17HvxjgpRSHKeU0TJzL5UjmUyHm3W+aaFhngYs3jybmZSraM5TMkcdTSbK932XPTghR/vxuLVUGoJOWlvNDuE5uxmkE77N6WyMEtvuyXsvj9+rRQ7iK6TqiFhVsIMroB78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Km6oWRog; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751439659; x=1782975659;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=1ukfgXEYLmTnbRPbu4h9NQ19dsvCVBPOwpvfp/jvQgg=;
-  b=Km6oWRogwituaWOoE2htYdRdBzLmvsCnyqAgYdpGrhDx/bwjAB/8TwtY
-   ij9LCzro7HDPPl3h9/EgIK+4cVetOMYl5aZf6Te5oGwwKsxweHE/7sT5L
-   HVxZ+3pwSBHZCPuERyo8fyd8/aOieZ+iF6Po5p945juB7dZgrE95lVaCo
-   MsApJoogAdonUJFAFvd32H1LvBO/K+W6AX8Aqrkcw4I6ktobqeC9zC324
-   pbjnlFxInmgzMTZWzSu12jcU6tuWX4fXHLXb9++6CyXDnEtmTKQosnvqZ
-   1PHkIHK3U2wziy0uUwPXsdRTVA69QHq2pm6L3/j1VsdHhd4y2LaVIUxVZ
-   A==;
-X-CSE-ConnectionGUID: H5t2+TbxRA+j+PLUmzREoA==
-X-CSE-MsgGUID: W8EjEWVuTZeUt5T9dLe3KA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="76268460"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="76268460"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 00:00:59 -0700
-X-CSE-ConnectionGUID: H6Nw0e8ZQmG74bYbs7YaPA==
-X-CSE-MsgGUID: 1cWQRlDhR7m3DnKID7/n0A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="154475457"
-Received: from lkp-server01.sh.intel.com (HELO 0b2900756c14) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 02 Jul 2025 00:00:58 -0700
-Received: from kbuild by 0b2900756c14 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uWrSh-0000I7-2F;
-	Wed, 02 Jul 2025 07:00:55 +0000
-Date: Wed, 2 Jul 2025 15:00:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2] mtd: rawnand: atmel: Add missing check after DMA map
-Message-ID: <aGTY9O960kU6w2ox@08871597274f>
+	s=arc-20240116; t=1751440791; c=relaxed/simple;
+	bh=HZwQzes1s0dCeXQ80X1zgZSKLvoJz6waGynj8z/p1Nk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lQzv2Yx566Z9/6ZAPeVce4HyUlzJnUth7Z3AS7Ix+1KXq4D8vo33e5hq2zGvTqROp23Ts5RBPvdj7woYMPxxOOzG7ZBiwv6Z7F9bnxK5ikZZz1F9Xpad0avoWmi7GLAnw9I176A/0mtz3y51m5uvVrmH9lvotNNiqeScOXN0BZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bF5Yyc/t; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a577ab8c34so878242f8f.3;
+        Wed, 02 Jul 2025 00:19:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751440787; x=1752045587; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=29Ak/ncEpBZr7ANmY5PCAbSSEdsdCcghSMWZ9aad75g=;
+        b=bF5Yyc/tRQz+JkdV7OjYCWVLyqY3ddBsBBkFmAlmyeQkYOvCwVMJM08TYBlTRipPRt
+         CEZpJL2vQ757pu5ChCEy+XyqT8/wwcPVDOrPi9rQX7KQGlCDskayuWM0FbCNQyKSxrVf
+         jPYCYZv/8rZkHvcUMzA8hee49WxuITYun7mofSh//6+VTC1ZsjdonxXgVWmUjBJe238L
+         oLOvpdtmuU7kuanczTjyvXS79yMTb1jZrlcffQE6pVvxQz4gz1GJSz+4e/wgqknmlybU
+         akrDpQksXPp4G+cfsPRyoGDVqwA+vrajMazjCS65afvV53ZfbC4pNKwCUmTnyW3mgTZM
+         F+PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751440787; x=1752045587;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=29Ak/ncEpBZr7ANmY5PCAbSSEdsdCcghSMWZ9aad75g=;
+        b=dedW+PMutUk3s/s0jLW6uyk2uVNuMoLuDGiFAaVSpR63oA91BQuRlw8ZMCru3Ie84i
+         B3/+nqDEpcQ+xHRjWoJpxisGSzT+96NoHUT3171D+RrOh+qvUQsH0HZBG8taDxgKz5qQ
+         kN6R8cOaU2Sl2s7Gpjx0XqQdz5OFyY9keOJRdYr8+V/6B+W3WBTEAMLud3LMMQsrfz7E
+         biP+OLNuv/CtdpBAH6kGfgr0Fc0/sZ2//dHC5j0ZTO0jV9pxCLJSidGnjudhJgl2IBF1
+         q92AQ1HS9W9ZPFDrbuiu5P8Q3+wjjhrOo+dTFQrVZX/og6gM44p7lgHnE5qeqK1mK/8o
+         Z4KA==
+X-Forwarded-Encrypted: i=1; AJvYcCUWhSozJHXtibnMugPn9gwozApr5JxEh9sFya3Pb+PaUma5KqGrzQSEiPN2Npbf3Q02oWrZraE041jjKVs=@vger.kernel.org, AJvYcCXCzyzmMyio+w8P/rV4488GisnthQjy850IN1k05hmPJoYfjqVysx40DPHhx3xH7aXwf7ZlQRXu@vger.kernel.org, AJvYcCXFlXYmjpO7PfT2PVI4XcnxZIPibHYEe1k1/CqRlhKtjhJ2+Xyza4nhJFz0YnAjGXMKIsDKF0nFg0sSlpJHUTGrYIE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxHsG87buLfQ+Wo5+iFRT8pGBNG0cXMJM7zkkW/Yw2ALsFnjBS
+	XrH/ac+LOK1udie/GiV9CxtZLsb8x7iGcOGFlrhWhFBKXWEpn3CWiPBE
+X-Gm-Gg: ASbGncsgnlvhwJWmAbb63Dvl2nWfpyyQg5ILy1KPcUwkYkXUvOZzRMQTN04fsq14MpI
+	DNTDhcxWn3tPvf6nMdXX1vxhpFeL8eUdBY97IL9fQiUqPqoXWNZcJ7ZFNTLjTO/Doo7woadfL5/
+	PDqP9yV9INi87+LMlO7rJAAHLvQqa3ACM44OCnncic7xTgIjuR8wUDuhqCsXkWVXpggdA3drW3U
+	0X5t3+aGclpU7EWFIvvCvvg5gWp/+e+azOuFGUSfcCrmJ8vgbCa2v7tpW+sHhhiaZ/bgGF7MVWy
+	ed8n/WTFIlVjw86oftCzwTmJeC6Ap2Ve61AlVPcl87HOwV0q2iBf494g7erK7paQbqiapkLJKs5
+	ePyyLkghysVNz
+X-Google-Smtp-Source: AGHT+IFvEc/YQH0iMY9kuno2iXyUVs1TvRbucMzr5iCCWzoq4QGjRiP5liXmGKiCZcU1DHEwPw2+Hg==
+X-Received: by 2002:a05:600c:358f:b0:439:8c80:6aee with SMTP id 5b1f17b1804b1-454a370c4d7mr6204995e9.4.1751440787221;
+        Wed, 02 Jul 2025 00:19:47 -0700 (PDT)
+Received: from thomas-precision3591.imag.fr ([2001:660:5301:24:9d5:215:761c:daff])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-453823ad0f3sm223424525e9.19.2025.07.02.00.19.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Jul 2025 00:19:46 -0700 (PDT)
+From: Thomas Fourier <fourier.thomas@gmail.com>
+To: 
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	stable@vger.kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	linux-mtd@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mtd: rawnand: renesas: Add missing check after DMA map
+Date: Wed,  2 Jul 2025 09:17:22 +0200
+Message-ID: <20250702071722.24921-3-fourier.thomas@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250702065806.20983-2-fourier.thomas@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+The DMA map functions can fail and should be tested for errors.
 
-Thanks for your patch.
+Fixes: d8701fe890ec ("mtd: rawnand: renesas: Add new NAND controller driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+---
+ drivers/mtd/nand/raw/renesas-nand-controller.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v2] mtd: rawnand: atmel: Add missing check after DMA map
-Link: https://lore.kernel.org/stable/20250702065806.20983-2-fourier.thomas%40gmail.com
-
+diff --git a/drivers/mtd/nand/raw/renesas-nand-controller.c b/drivers/mtd/nand/raw/renesas-nand-controller.c
+index 44f6603736d1..f4a775571733 100644
+--- a/drivers/mtd/nand/raw/renesas-nand-controller.c
++++ b/drivers/mtd/nand/raw/renesas-nand-controller.c
+@@ -426,6 +426,10 @@ static int rnandc_read_page_hw_ecc(struct nand_chip *chip, u8 *buf,
+ 	/* Configure DMA */
+ 	dma_addr = dma_map_single(rnandc->dev, rnandc->buf, mtd->writesize,
+ 				  DMA_FROM_DEVICE);
++	if (dma_mapping_error(rnandc->dev, dma_addr)) {
++		dev_err(rnandc->dev, "DMA mapping failed.\n");
++		return -ENOMEM;
++	}
+ 	writel(dma_addr, rnandc->regs + DMA_ADDR_LOW_REG);
+ 	writel(mtd->writesize, rnandc->regs + DMA_CNT_REG);
+ 	writel(DMA_TLVL_MAX, rnandc->regs + DMA_TLVL_REG);
+@@ -606,6 +610,10 @@ static int rnandc_write_page_hw_ecc(struct nand_chip *chip, const u8 *buf,
+ 	/* Configure DMA */
+ 	dma_addr = dma_map_single(rnandc->dev, (void *)rnandc->buf, mtd->writesize,
+ 				  DMA_TO_DEVICE);
++	if (dma_mapping_error(rnandc->dev, dma_addr)) {
++		dev_err(rnandc->dev, "DMA mapping failed.\n");
++		return -ENOMEM;
++	}
+ 	writel(dma_addr, rnandc->regs + DMA_ADDR_LOW_REG);
+ 	writel(mtd->writesize, rnandc->regs + DMA_CNT_REG);
+ 	writel(DMA_TLVL_MAX, rnandc->regs + DMA_TLVL_REG);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.43.0
 
 
