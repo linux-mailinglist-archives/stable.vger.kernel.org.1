@@ -1,135 +1,164 @@
-Return-Path: <stable+bounces-159221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F3DAF119C
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 12:20:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C49D8AF11BD
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 12:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45EBB17CC22
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:20:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 240A0481635
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0571E24C664;
-	Wed,  2 Jul 2025 10:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8722E253953;
+	Wed,  2 Jul 2025 10:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldHuEhFu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="huMpaUmb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E0E19CC11;
-	Wed,  2 Jul 2025 10:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50F62512C6;
+	Wed,  2 Jul 2025 10:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751451633; cv=none; b=pbEwtAbeigOBR0/EKAcdLo+dNTNbaR++yHWXU5PVoXedcgDgcj1WMKRHFqcpu2K/OaRjcqDlOfQl4a0ruYaHGVCQverz29e3VPbN7Jm1ebOdT0uEw21H1fnxjVWU843z3RmzZe3gNe+YjiYl7tnTJmzk0yMxCwo5S6Qm9rFT8nI=
+	t=1751451806; cv=none; b=QIDpZWFsLuXqVfiIz6GaIoXX3JvCtaBEEVCQXXqVJ3cAsc089M5oo4Ui7xR38JEgQpWlZdr9iGUy/Nx+iFsxuuBqbT3VizgZdNeKai0ngDyt7QPu6tX695s7da03jGQ38YP113fRxrTFkkwy6EN25yKz1RewE52+t6kXA4xQ69k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751451633; c=relaxed/simple;
-	bh=isVC2OxjtYeqrfimdWGEstYRYwCNvNScMRWqnkaXR5Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J+bvHatC/ZitxfW3tLY20B5fz8soXRhoGn8D76zezFLJxUERf9w9VD7cMOGjc/zmjkY5xmwslvebtcTZmug+yIzRieXPQMyTVj5gMRTDhdt9SJ+CKwbANlJ2NdXPApGKpW9ouaxPPMSIHd60HERazoT+k5AGlVOz7Zw3bs/dCRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldHuEhFu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C11C2C4CEED;
-	Wed,  2 Jul 2025 10:20:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751451633;
-	bh=isVC2OxjtYeqrfimdWGEstYRYwCNvNScMRWqnkaXR5Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ldHuEhFu2SGpKZLoH1Ob+UWzanKdn4CbBABLItbBdbvqk3EYLiAREtyvVyNJVJsIO
-	 QrfOqR5WxC997Tn11w9ouYm+N85Vqt49rr2e9zg3opiRPnIPU9fQampZJR72A3VlTj
-	 zdlyJ/H5U3hvRbdazjEt7nnd6gwVcNf3kUtzYgWI=
-Date: Wed, 2 Jul 2025 12:20:30 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Lee Jones <lee@kernel.org>
-Cc: Chao Yu <chao@kernel.org>, stable@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>, jaegeuk@kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Subject: Re: [STABLE 5.15+] f2fs: sysfs: add encoding_flags entry
-Message-ID: <2025070253-erased-armadillo-0984@gregkh>
-References: <20250416054805.1416834-1-chao@kernel.org>
- <20250624100039.GA3680448@google.com>
+	s=arc-20240116; t=1751451806; c=relaxed/simple;
+	bh=5l0STjhS+Ewa7qZ2YzJ7JzJuAr3mhaNFoItK0ZwOzbQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oFnvBtcRpjkINbSTIqEU75aGfYCPLkr5StbMv53iSnBCuXG3BMPvJkgQZj/JgeIRdtHBft7SeoKhP/SHYmXQDwnyQ0fsigm8rmdGSc43bvqBd6jWOkXg01YaqIqJsg/O+9HeCrrRaozZhHw7ZdK9SZW6+hzMO3FzvBv1WteyceA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=huMpaUmb; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751451805; x=1782987805;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5l0STjhS+Ewa7qZ2YzJ7JzJuAr3mhaNFoItK0ZwOzbQ=;
+  b=huMpaUmbKLkGHEKYckS0kkSR7Dp2kKyJpEXAk8Wgf1PyoGZoX1tTw6zm
+   3950e6MXwBsjVtiTmGiD/7UGq7/mtGNybjcXZ//1PcraHZjdAV7grH/Sf
+   0OauX5cgQ3tg26JSlcClBFLHdFEJG1CXQ1NW9n/sbA0N187AYH6kOVwG/
+   zQjUmsu0dTyU3YJYjkzUEGjSBvCHiIEar/1HsBW+kNO+bWMLWieBSnJXW
+   KoL41uVQXZypQZnlCZykKRwI/VxwctMIA+4PLz/9E6HEpn9YiCnQgCQcj
+   TVxj5UPnQC7NNbmgs/o6LNmEOymPt5djpIAnIM8gYyoovJxPguRkViBva
+   A==;
+X-CSE-ConnectionGUID: wO0uR//TSu+cQZanmSGiPw==
+X-CSE-MsgGUID: 3x23BNkQRGyFnixHWPXIYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="57518370"
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
+   d="scan'208";a="57518370"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 03:23:25 -0700
+X-CSE-ConnectionGUID: Cn8NkYV1Qx6lxf5fOWfO/Q==
+X-CSE-MsgGUID: AN8RcvltTcaZlibe9v3eVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
+   d="scan'208";a="154769101"
+Received: from unknown (HELO [10.238.224.237]) ([10.238.224.237])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 03:23:21 -0700
+Message-ID: <116ea6fa-e9b8-4c28-bc31-f4d1589eb34b@intel.com>
+Date: Wed, 2 Jul 2025 18:23:19 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250624100039.GA3680448@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] platform/x86: int3472: add hpd pin support
+To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, linux-media@vger.kernel.org,
+ sakari.ailus@linux.intel.com, hverkuil@xs4all.nl,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Hans de Goede <hdegoede@redhat.com>, u.kleine-koenig@baylibre.com,
+ ricardo.ribalda@gmail.com, bingbu.cao@linux.intel.com,
+ stable@vger.kernel.org, dongcheng.yan@linux.intel.com, hao.yao@intel.com
+References: <20250425104331.3165876-1-dongcheng.yan@intel.com>
+ <5a04f105-3075-3226-6ad6-f2c3f31b29da@linux.intel.com>
+Content-Language: en-US
+From: "Yan, Dongcheng" <dongcheng.yan@intel.com>
+In-Reply-To: <5a04f105-3075-3226-6ad6-f2c3f31b29da@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 24, 2025 at 11:00:39AM +0100, Lee Jones wrote:
-> On Wed, 16 Apr 2025, Chao Yu wrote:
-> 
-> > This patch adds a new sysfs entry /sys/fs/f2fs/<disk>/encoding_flags,
-> > it is a read-only entry to show the value of sb.s_encoding_flags, the
-> > value is hexadecimal.
-> > 
-> > ===========================      ==========
-> > Flag_Name                        Flag_Value
-> > ===========================      ==========
-> > SB_ENC_STRICT_MODE_FL            0x00000001
-> > SB_ENC_NO_COMPAT_FALLBACK_FL     0x00000002
-> > ===========================      ==========
-> > 
-> > case#1
-> > mkfs.f2fs -f -O casefold -C utf8:strict /dev/vda
-> > mount /dev/vda /mnt/f2fs
-> > cat /sys/fs/f2fs/vda/encoding_flags
-> > 1
-> > 
-> > case#2
-> > mkfs.f2fs -f -O casefold -C utf8 /dev/vda
-> > fsck.f2fs --nolinear-lookup=1 /dev/vda
-> > mount /dev/vda /mnt/f2fs
-> > cat /sys/fs/f2fs/vda/encoding_flags
-> > 2
-> > 
-> > Signed-off-by: Chao Yu <chao@kernel.org>
-> > ---
-> >  Documentation/ABI/testing/sysfs-fs-f2fs | 13 +++++++++++++
-> >  fs/f2fs/sysfs.c                         |  9 +++++++++
-> >  2 files changed, 22 insertions(+)
-> 
-> This patch, commit 617e0491abe4 ("f2fs: sysfs: export linear_lookup in
-> features directory") upstream, needs to find its way into all Stable
-> branches containing upstream commit 91b587ba79e1 ("f2fs: Introduce
-> linear search for dentries"), which is essentially linux-5.15.y and
-> newer.
-> 
-> stable/linux-5.4.y:
-> MISSING:     f2fs: Introduce linear search for dentries
-> MISSING:     f2fs: sysfs: export linear_lookup in features directory
-> 
-> stable/linux-5.10.y:
-> MISSING:     f2fs: Introduce linear search for dentries
-> MISSING:     f2fs: sysfs: export linear_lookup in features directory
-> 
-> stable/linux-5.15.y:
-> b0938ffd39ae f2fs: Introduce linear search for dentries [5.15.179]
-> MISSING:     f2fs: sysfs: export linear_lookup in features directory
-> 
-> stable/linux-6.1.y:
-> de605097eb17 f2fs: Introduce linear search for dentries [6.1.129]
-> MISSING:     f2fs: sysfs: export linear_lookup in features directory
-> 
-> stable/linux-6.6.y:
-> 0bf2adad03e1 f2fs: Introduce linear search for dentries [6.6.76]
-> MISSING:     f2fs: sysfs: export linear_lookup in features directory
-> 
-> stable/linux-6.12.y:
-> 00d1943fe46d f2fs: Introduce linear search for dentries [6.12.13]
-> MISSING:     f2fs: sysfs: export linear_lookup in features directory
-> 
-> mainline:
-> 91b587ba79e1 f2fs: Introduce linear search for dentries
-> 617e0491abe4 f2fs: sysfs: export linear_lookup in features directory
+Hi Ilpo,
 
-Great, then can someone submit these in a format we can apply them in?
-or do clean cherry-picks work properly?
+On 7/2/2025 6:19 PM, Ilpo Järvinen wrote:
+> On Fri, 25 Apr 2025, Dongcheng Yan wrote:
+> 
+>> Typically HDMI to MIPI CSI-2 bridges have a pin to signal image data is
+>> being received. On the host side this is wired to a GPIO for polling or
+>> interrupts. This includes the Lontium HDMI to MIPI CSI-2 bridges
+>> lt6911uxe and lt6911uxc.
+>>
+>> The GPIO "hpd" is used already by other HDMI to CSI-2 bridges, use it
+>> here as well.
+>>
+>> Signed-off-by: Dongcheng Yan <dongcheng.yan@intel.com>
+>> ---
+>>  drivers/platform/x86/intel/int3472/common.h   | 1 +
+>>  drivers/platform/x86/intel/int3472/discrete.c | 6 ++++++
+>>  2 files changed, 7 insertions(+)
+>>
+>> diff --git a/drivers/platform/x86/intel/int3472/common.h b/drivers/platform/x86/intel/int3472/common.h
+>> index 51b818e62a25..4593d567caf4 100644
+>> --- a/drivers/platform/x86/intel/int3472/common.h
+>> +++ b/drivers/platform/x86/intel/int3472/common.h
+>> @@ -23,6 +23,7 @@
+>>  #define INT3472_GPIO_TYPE_CLK_ENABLE				0x0c
+>>  #define INT3472_GPIO_TYPE_PRIVACY_LED				0x0d
+>>  #define INT3472_GPIO_TYPE_HANDSHAKE				0x12
+>> +#define INT3472_GPIO_TYPE_HOTPLUG_DETECT			0x13
+>>  
+>>  #define INT3472_PDEV_MAX_NAME_LEN				23
+>>  #define INT3472_MAX_SENSOR_GPIOS				3
+>> diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
+>> index 394975f55d64..efa3bc7af193 100644
+>> --- a/drivers/platform/x86/intel/int3472/discrete.c
+>> +++ b/drivers/platform/x86/intel/int3472/discrete.c
+>> @@ -191,6 +191,10 @@ static void int3472_get_con_id_and_polarity(struct int3472_discrete_device *int3
+>>  		*con_id = "privacy-led";
+>>  		*gpio_flags = GPIO_ACTIVE_HIGH;
+>>  		break;
+>> +	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
+>> +		*con_id = "hpd";
+>> +		*gpio_flags = GPIO_ACTIVE_HIGH;
+>> +		break;
+>>  	case INT3472_GPIO_TYPE_POWER_ENABLE:
+>>  		*con_id = "avdd";
+>>  		*gpio_flags = GPIO_ACTIVE_HIGH;
+>> @@ -221,6 +225,7 @@ static void int3472_get_con_id_and_polarity(struct int3472_discrete_device *int3
+>>   * 0x0b Power enable
+>>   * 0x0c Clock enable
+>>   * 0x0d Privacy LED
+>> + * 0x13 Hotplug detect
+>>   *
+>>   * There are some known platform specific quirks where that does not quite
+>>   * hold up; for example where a pin with type 0x01 (Power down) is mapped to
+>> @@ -290,6 +295,7 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
+>>  	switch (type) {
+>>  	case INT3472_GPIO_TYPE_RESET:
+>>  	case INT3472_GPIO_TYPE_POWERDOWN:
+>> +	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
+>>  		ret = skl_int3472_map_gpio_to_sensor(int3472, agpio, con_id, gpio_flags);
+>>  		if (ret)
+>>  			err_msg = "Failed to map GPIO pin to sensor\n";
+> 
+> I was informed about existance of this patch through an off-band channel 
+> (as I was not among receipients). In future, please include all relevant 
+> maintainers and MLs as receipients as indicated by 
+> scripts/get_maintainers.pl.
+> 
+> This may go through a media tree,
+> 
+> Acked-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> 
+> 
 
-thanks,
+Thanks a lot and sorry for the trouble caused by me.
 
-greg k-h
+Thanks,
+Dongcheng
 
