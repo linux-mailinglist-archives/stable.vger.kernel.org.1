@@ -1,266 +1,171 @@
-Return-Path: <stable+bounces-159261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C88C0AF6129
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 20:24:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00FBCAF6156
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 20:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22FC4167D28
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 18:24:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BA3C3AAA26
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 18:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7952E4992;
-	Wed,  2 Jul 2025 18:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6656C221723;
+	Wed,  2 Jul 2025 18:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="Qe0RzKf0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nI56ny61"
 X-Original-To: stable@vger.kernel.org
-Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF852E498F;
-	Wed,  2 Jul 2025 18:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC442E499A;
+	Wed,  2 Jul 2025 18:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751480695; cv=none; b=r532rwSSD0cU3XXQmpYBgvpbf58Teu4En/wuNdJoTxbJsTOzXqY2VEo+xljGFoPOQdCRjgFN2/yuc8DxdzbMlnteyjt7evQjvBRdX1t2rPoVcZ+dujYKZQCOz27CPfub8G31oYsuOvrOTsHRJFSZ2THXhz1F3LAwOInyxAO1GwY=
+	t=1751481055; cv=none; b=mfbEBcL5LaSpt/o10qY7fsb52wd1HQej7mwM950jGbq0nbD3NSIUllcIaY8dY8Y5E7jED/STaV+6aE2s1++sID2Q/n7CRZUw56cAp0MwwrGVhiR16UfT0u6Z0HZQHMtieswKk0cL/KwSF3UFE8bqAWn3/VOWWDxVMba/SYjoASs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751480695; c=relaxed/simple;
-	bh=Z7w2EElGyohA2SqdU87tdCECohPKySYQX1tLMyYL9rw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otc+pjjvR3JzXkaN7/P2UBSELf3JfTzaIMc6MhLMf1uirJhtcjRQQsKR4iCW1BErAnAgIWM12W587TWaoCCbrOMi9uOMgQrygeBVpcer1uw11he156ujfMK8E2Wf71rSzRiyQbCVdaH5vppTBNfkip9/x4+AqJd2KI8oVFCkfa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=Qe0RzKf0; arc=none smtp.client-ip=199.89.3.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 004.mia.mailroute.net (Postfix) with ESMTP id 4bXSx01Qldzm0XBf;
-	Wed,  2 Jul 2025 18:24:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:mime-version:references:in-reply-to
-	:x-mailer:message-id:date:date:subject:subject:from:from
-	:received:received; s=mr01; t=1751480690; x=1754072691; bh=hzzvY
-	E9l/lDgH+Z4erLQHYmRCe/GVGQFXbr8+aKs/ag=; b=Qe0RzKf0WeYI7uBSTb9IF
-	QiKxwFz3nUsaNciYPXxbBx6ycXiP6LQ49W6rDBd5MNyh7Hz/Ky9G6XaINZRRaaDB
-	L/T1rF2w1e8VXxz00qrpswGrOCccSOFnkug4l6xrrcsmMm9JYGLyI+H9SyyGwAZR
-	ayb4z+Sg9vuZdR1kJ3FUV6Nl1ROdcJgRGx0YYLnvFANOkCmH4kXcdjha8GfYZOtY
-	3F1r/gwQ5bo17x6KAUrxV78q42bO2uuw12r1zDXOXNTAZ6GXJ0iCpnq2NjWmti/Q
-	9uEBcvImiTZt0IFz1lXsbtaAGul4NylQr359hLI5LZsGCATUMhjAN5kVFoB9NTek
-	Q==
-X-Virus-Scanned: by MailRoute
-Received: from 004.mia.mailroute.net ([127.0.0.1])
- by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id IVWFJS-00Yo9; Wed,  2 Jul 2025 18:24:50 +0000 (UTC)
-Received: from bvanassche.mtv.corp.google.com (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4bXSwv0nbCzm0bg2;
-	Wed,  2 Jul 2025 18:24:46 +0000 (UTC)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/3] block: Remove queue freezing from several sysfs store callbacks
-Date: Wed,  2 Jul 2025 11:24:28 -0700
-Message-ID: <20250702182430.3764163-2-bvanassche@acm.org>
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-In-Reply-To: <20250702182430.3764163-1-bvanassche@acm.org>
-References: <20250702182430.3764163-1-bvanassche@acm.org>
+	s=arc-20240116; t=1751481055; c=relaxed/simple;
+	bh=SFXuw97PSEUrxUglhPmZ8lic5NsVXj9rz3VueJiKsvA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RZFy46BdK5q/04hBT7HhcIJU/Bqjpz2DthmuI9R6c28GLDNU1XsVvlYo40jp1x9lMcMkGvnSkv2L4Jl1DJfM8HXv6HRH77yNgz2kEc+/Bx2FB5bEBzetBu4puDTTMTeG6Yp/WWF3qXxSPhFmdKRYN/fZS2CLNN/XkCxP1Lmv1DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nI56ny61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E47C4CEE7;
+	Wed,  2 Jul 2025 18:30:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751481054;
+	bh=SFXuw97PSEUrxUglhPmZ8lic5NsVXj9rz3VueJiKsvA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nI56ny61V/kCAgcohER8DsmSdySYn4FMw2ExEZDUeSgF6ieZhNNn5SqM56I8VJ6I9
+	 6y/KGq3/Txk47Wr6uop2fvIXT229uYkynwjIalp0c0EskFXiriC/J2zwmytIqs/wjq
+	 KB4kM70iRzLTpvrjh0r3ZtjHG2CXOOq1eUZ9wMG1hVPet0RUwm/UhzO0wHNrrVnjq9
+	 JDQ2owX3T96JC/uvrzTIqSIAWGPbtGHUJyVsjpPYJsVwHrXihJi2KubR5R7t6ODDCi
+	 ssE+XZ1gAzoGtWTDHyiyUrf5AXlrJxUR5KRNRtXFLx45IXpF4mIkmxKmsjgf6e5zB1
+	 xL0Xs3JxXs5Cw==
+Date: Thu, 3 Jul 2025 00:00:43 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	bhelgaas@google.com, lukas@wunner.de, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Jim Quinlan <james.quinlan@broadcom.com>, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH v2] PCI/pwrctrl: Skip creating pwrctrl device unless
+ CONFIG_PCI_PWRCTRL is enabled
+Message-ID: <ezlr2xqy5bnq6cnrrjltlim7oiorcy2xrsoclj6fnu5jcymie5@xfatlrts6vod>
+References: <myhg3xn3subujf3buarctgexipvjhale6zyqkhfpnm6qwitlg6@27kjexp337aj>
+ <20250702175307.GA1891739@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250702175307.GA1891739@bhelgaas>
 
-Freezing the request queue from inside sysfs store callbacks may cause a
-deadlock in combination with the dm-multipath driver and the
-queue_if_no_path option. Additionally, freezing the request queue slows
-down system boot on systems where sysfs attributes are set synchronously.
+On Wed, Jul 02, 2025 at 12:53:07PM GMT, Bjorn Helgaas wrote:
+> On Wed, Jul 02, 2025 at 12:17:00PM +0530, Manivannan Sadhasivam wrote:
+> > On Tue, Jul 01, 2025 at 03:35:26PM -0500, Bjorn Helgaas wrote:
+> > > [+cc Bart]
+> > > 
+> > > On Tue, Jul 01, 2025 at 12:17:31PM +0530, Manivannan Sadhasivam wrote:
+> > > > If devicetree describes power supplies related to a PCI device, we
+> > > > previously created a pwrctrl device even if CONFIG_PCI_PWRCTL was
+> > > > not enabled.
+> > > > 
+> > > > When pci_pwrctrl_create_device() creates and returns a pwrctrl device,
+> > > > pci_scan_device() doesn't enumerate the PCI device. It assumes the pwrctrl
+> > > > core will rescan the bus after turning on the power. However, if
+> > > > CONFIG_PCI_PWRCTL is not enabled, the rescan never happens.
+> > > 
+> > > Separate from this patch, can we refine the comment in
+> > > pci_scan_device() to explain *why* we should skip scanning if a
+> > > pwrctrl device was created?  The current comment leaves me with two
+> > > questions:
+> > > 
+> > >   1) How do we know the pwrctrl device is currently off?  If it is
+> > >      already on, why should we defer enumerating the device?
+> > 
+> > I believe you meant to ask "how do we know the PCI device is
+> > currently off". If the pwrctrl device is created, then we for sure
+> > know that the pwrctrl driver will power on the PCI device at some
+> > point (depending on when the driver gets loaded). Even if the device
+> > was already powered on, we do not want to probe the client driver
+> > because, we have seen race between pwrctrl driver and PCI client
+> > driver probing in parallel. So I had imposed a devlink dependency
+> > (see b458ff7e8176) that makes sure that the PCI client driver
+> > wouldn't get probed until the pwrctrl driver (if the pwrctrl device
+> > was created) is probed. This will ensure that the PCI device state
+> > is reset and initialized by the pwrctrl driver before the client
+> > driver probes.
+> 
+> I'm confused about this.  Assume there is a pwrctrl device and the
+> related PCI device is already powered on when Linux boots.  Apparently
+> we do NOT want to enumerate the PCI device?  We want to wait for the
+> pwrctrl driver to claim the pwrctrl device and do a rescan?  Even
+> though the pwrctrl driver may be a loadable module and may not even be
+> available at all?
+> 
+> It seems to me that a PCI device that is already powered on should be
+> enumerated and made available.  If there's a pwrctrl device for it,
+> and we decide to load pwrctrl, then we also get the ability to turn
+> the PCI device off and on again as needed.  But if we *don't* load
+> pwrctrl, it seems like we should still be able to use a PCI device
+> that's already powered on.
+> 
 
-Fix this by removing the blk_mq_freeze_queue() / blk_mq_unfreeze_queue()
-calls from the store callbacks that do not strictly need these callbacks.
-This patch may cause a small delay in applying the new settings.
+The problem with enumerating the PCI device which was already powered on is that
+the pwrctrl driver cannot reliably know whether the device is powered on or not.
+So by the time the pwrctrl driver probes, the client driver might also be
+probing. For the case of WLAN chipsets, the pwrctrl driver used to sample the EN
+(Enable) GPIO pin to know whether the device is powered on or not (see
+a9aaf1ff88a8), but that also turned out to be racy and people were complaining.
 
-This patch affects the following sysfs attributes:
-* io_poll_delay
-* io_timeout
-* nomerges
-* read_ahead_kb
-* rq_affinity
+So to simplify things, we enforced this dependency.
 
-Here is an example of a deadlock triggered by running test srp/002:
+> > >   2) If the pwrctrl device is currently off, won't the Vendor ID read
+> > >      just fail like it does for every other non-existent device?  If
+> > >      so, why can't we just let that happen?
+> > 
+> > Again, it is not the pwrctrl device that is off, it is the PCI
+> > device. If it is not turned on, yes VID read will fail, but why do
+> > we need to read the VID in the first place if we know that the PCI
+> > device requires pwrctrl and the pwrctrl driver is going to be probed
+> > later.
+> 
+> I was assuming pwrctrl is only required if we want to turn the PCI
+> device power on or off.  Maybe that's not true?
+> 
 
-task:multipathd
-Call Trace:
- <TASK>
- __schedule+0x8c1/0x1bf0
- schedule+0xdd/0x270
- schedule_preempt_disabled+0x1c/0x30
- __mutex_lock+0xb89/0x1650
- mutex_lock_nested+0x1f/0x30
- dm_table_set_restrictions+0x823/0xdf0
- __bind+0x166/0x590
- dm_swap_table+0x2a7/0x490
- do_resume+0x1b1/0x610
- dev_suspend+0x55/0x1a0
- ctl_ioctl+0x3a5/0x7e0
- dm_ctl_ioctl+0x12/0x20
- __x64_sys_ioctl+0x127/0x1a0
- x64_sys_call+0xe2b/0x17d0
- do_syscall_64+0x96/0x3a0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
- </TASK>
-task:(udev-worker)
-Call Trace:
- <TASK>
- __schedule+0x8c1/0x1bf0
- schedule+0xdd/0x270
- blk_mq_freeze_queue_wait+0xf2/0x140
- blk_mq_freeze_queue_nomemsave+0x23/0x30
- queue_ra_store+0x14e/0x290
- queue_attr_store+0x23e/0x2c0
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3b2/0x630
- vfs_write+0x4fd/0x1390
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x276/0x17d0
- do_syscall_64+0x96/0x3a0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
- </TASK>
+Pretty much so, but we will also use it to do D3Cold (during system suspend) in
+the near future.
 
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Nilay Shroff <nilay@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Fixes: af2814149883 ("block: freeze the queue in queue_attr_store")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- block/blk-sysfs.c | 16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+> > > This behavior is from 2489eeb777af ("PCI/pwrctrl: Skip scanning for
+> > > the device further if pwrctrl device is created"), which just says
+> > > "there's no need to continue scanning."  Prior to 2489eeb777af, it
+> > > looks like we *did* what try to enumerate the device even if a pwrctrl
+> > > device was created, and 2489eeb777af doesn't mention a bug fix, so I
+> > > assume it's just an optimization.
+> > 
+> > Yes, it is indeed an optimization.
+> > 
+> > To summarize, we have imposed a dependency between the PCI client
+> > driver and pwrctrl driver to make sure that the PCI device state is
+> > fully reset and initialized before the client driver probes.
+> 
+> If the PCI device is already powered on, what more should we do to
+> fully reset and initialize it?  If it needed more initialization, I
+> assume the platform should have left it powered off.
+> 
 
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index b2b9b89d6967..ab34fe62f4da 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -105,7 +105,6 @@ queue_ra_store(struct gendisk *disk, const char *page=
-, size_t count)
- {
- 	unsigned long ra_kb;
- 	ssize_t ret;
--	unsigned int memflags;
- 	struct request_queue *q =3D disk->queue;
-=20
- 	ret =3D queue_var_store(&ra_kb, page, count);
-@@ -116,10 +115,8 @@ queue_ra_store(struct gendisk *disk, const char *pag=
-e, size_t count)
- 	 * calculated from the queue limits by queue_limits_commit_update.
- 	 */
- 	mutex_lock(&q->limits_lock);
--	memflags =3D blk_mq_freeze_queue(q);
- 	disk->bdi->ra_pages =3D ra_kb >> (PAGE_SHIFT - 10);
- 	mutex_unlock(&q->limits_lock);
--	blk_mq_unfreeze_queue(q, memflags);
-=20
- 	return ret;
- }
-@@ -317,21 +314,18 @@ static ssize_t queue_nomerges_store(struct gendisk =
-*disk, const char *page,
- 				    size_t count)
- {
- 	unsigned long nm;
--	unsigned int memflags;
- 	struct request_queue *q =3D disk->queue;
- 	ssize_t ret =3D queue_var_store(&nm, page, count);
-=20
- 	if (ret < 0)
- 		return ret;
-=20
--	memflags =3D blk_mq_freeze_queue(q);
- 	blk_queue_flag_clear(QUEUE_FLAG_NOMERGES, q);
- 	blk_queue_flag_clear(QUEUE_FLAG_NOXMERGES, q);
- 	if (nm =3D=3D 2)
- 		blk_queue_flag_set(QUEUE_FLAG_NOMERGES, q);
- 	else if (nm)
- 		blk_queue_flag_set(QUEUE_FLAG_NOXMERGES, q);
--	blk_mq_unfreeze_queue(q, memflags);
-=20
- 	return ret;
- }
-@@ -351,7 +345,6 @@ queue_rq_affinity_store(struct gendisk *disk, const c=
-har *page, size_t count)
- #ifdef CONFIG_SMP
- 	struct request_queue *q =3D disk->queue;
- 	unsigned long val;
--	unsigned int memflags;
-=20
- 	ret =3D queue_var_store(&val, page, count);
- 	if (ret < 0)
-@@ -363,7 +356,6 @@ queue_rq_affinity_store(struct gendisk *disk, const c=
-har *page, size_t count)
- 	 * are accessed individually using atomic test_bit operation. So we
- 	 * don't grab any lock while updating these flags.
- 	 */
--	memflags =3D blk_mq_freeze_queue(q);
- 	if (val =3D=3D 2) {
- 		blk_queue_flag_set(QUEUE_FLAG_SAME_COMP, q);
- 		blk_queue_flag_set(QUEUE_FLAG_SAME_FORCE, q);
-@@ -374,7 +366,6 @@ queue_rq_affinity_store(struct gendisk *disk, const c=
-har *page, size_t count)
- 		blk_queue_flag_clear(QUEUE_FLAG_SAME_COMP, q);
- 		blk_queue_flag_clear(QUEUE_FLAG_SAME_FORCE, q);
- 	}
--	blk_mq_unfreeze_queue(q, memflags);
- #endif
- 	return ret;
- }
-@@ -388,11 +379,9 @@ static ssize_t queue_poll_delay_store(struct gendisk=
- *disk, const char *page,
- static ssize_t queue_poll_store(struct gendisk *disk, const char *page,
- 				size_t count)
- {
--	unsigned int memflags;
- 	ssize_t ret =3D count;
- 	struct request_queue *q =3D disk->queue;
-=20
--	memflags =3D blk_mq_freeze_queue(q);
- 	if (!(q->limits.features & BLK_FEAT_POLL)) {
- 		ret =3D -EINVAL;
- 		goto out;
-@@ -401,7 +390,6 @@ static ssize_t queue_poll_store(struct gendisk *disk,=
- const char *page,
- 	pr_info_ratelimited("writes to the poll attribute are ignored.\n");
- 	pr_info_ratelimited("please use driver specific parameters instead.\n")=
-;
- out:
--	blk_mq_unfreeze_queue(q, memflags);
- 	return ret;
- }
-=20
-@@ -414,7 +402,7 @@ static ssize_t queue_io_timeout_show(struct gendisk *=
-disk, char *page)
- static ssize_t queue_io_timeout_store(struct gendisk *disk, const char *=
-page,
- 				  size_t count)
- {
--	unsigned int val, memflags;
-+	unsigned int val;
- 	int err;
- 	struct request_queue *q =3D disk->queue;
-=20
-@@ -422,9 +410,7 @@ static ssize_t queue_io_timeout_store(struct gendisk =
-*disk, const char *page,
- 	if (err || val =3D=3D 0)
- 		return -EINVAL;
-=20
--	memflags =3D blk_mq_freeze_queue(q);
- 	blk_queue_rq_timeout(q, msecs_to_jiffies(val));
--	blk_mq_unfreeze_queue(q, memflags);
-=20
- 	return count;
- }
+As I mentioned above, we cannot reliably detect whether a device is already
+powered on or not from the pwrctrl driver when it probes. So because of that
+reason, we enforce dependency and always reset/initialize the device to POR
+state. If there is a reliable way
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
