@@ -1,164 +1,121 @@
-Return-Path: <stable+bounces-159222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C49D8AF11BD
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 12:23:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2853AF11E0
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 12:29:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 240A0481635
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:23:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06D424A307F
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8722E253953;
-	Wed,  2 Jul 2025 10:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2340825487B;
+	Wed,  2 Jul 2025 10:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="huMpaUmb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ox/Qtwpp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50F62512C6;
-	Wed,  2 Jul 2025 10:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371A224BBFD
+	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 10:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751451806; cv=none; b=QIDpZWFsLuXqVfiIz6GaIoXX3JvCtaBEEVCQXXqVJ3cAsc089M5oo4Ui7xR38JEgQpWlZdr9iGUy/Nx+iFsxuuBqbT3VizgZdNeKai0ngDyt7QPu6tX695s7da03jGQ38YP113fRxrTFkkwy6EN25yKz1RewE52+t6kXA4xQ69k=
+	t=1751452115; cv=none; b=khsN99ACk4llZbWDr9XDXDPREAqSeN2WFYHceJdD9ZGsTMp+OdxmfS7eK6gyzmMRCTYiLScXp/TxA8mTAyu867QutxVj6gOWTWeL/XQjZT1ia8FqeZhGQzyYi4mrjeVYQx8/c8J5jlikFyOb3DlZqnl2pHc4bUvTmSU//Nohf+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751451806; c=relaxed/simple;
-	bh=5l0STjhS+Ewa7qZ2YzJ7JzJuAr3mhaNFoItK0ZwOzbQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oFnvBtcRpjkINbSTIqEU75aGfYCPLkr5StbMv53iSnBCuXG3BMPvJkgQZj/JgeIRdtHBft7SeoKhP/SHYmXQDwnyQ0fsigm8rmdGSc43bvqBd6jWOkXg01YaqIqJsg/O+9HeCrrRaozZhHw7ZdK9SZW6+hzMO3FzvBv1WteyceA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=huMpaUmb; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751451805; x=1782987805;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=5l0STjhS+Ewa7qZ2YzJ7JzJuAr3mhaNFoItK0ZwOzbQ=;
-  b=huMpaUmbKLkGHEKYckS0kkSR7Dp2kKyJpEXAk8Wgf1PyoGZoX1tTw6zm
-   3950e6MXwBsjVtiTmGiD/7UGq7/mtGNybjcXZ//1PcraHZjdAV7grH/Sf
-   0OauX5cgQ3tg26JSlcClBFLHdFEJG1CXQ1NW9n/sbA0N187AYH6kOVwG/
-   zQjUmsu0dTyU3YJYjkzUEGjSBvCHiIEar/1HsBW+kNO+bWMLWieBSnJXW
-   KoL41uVQXZypQZnlCZykKRwI/VxwctMIA+4PLz/9E6HEpn9YiCnQgCQcj
-   TVxj5UPnQC7NNbmgs/o6LNmEOymPt5djpIAnIM8gYyoovJxPguRkViBva
-   A==;
-X-CSE-ConnectionGUID: wO0uR//TSu+cQZanmSGiPw==
-X-CSE-MsgGUID: 3x23BNkQRGyFnixHWPXIYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="57518370"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="57518370"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 03:23:25 -0700
-X-CSE-ConnectionGUID: Cn8NkYV1Qx6lxf5fOWfO/Q==
-X-CSE-MsgGUID: AN8RcvltTcaZlibe9v3eVQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="154769101"
-Received: from unknown (HELO [10.238.224.237]) ([10.238.224.237])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 03:23:21 -0700
-Message-ID: <116ea6fa-e9b8-4c28-bc31-f4d1589eb34b@intel.com>
-Date: Wed, 2 Jul 2025 18:23:19 +0800
+	s=arc-20240116; t=1751452115; c=relaxed/simple;
+	bh=+QVotqdwA70sgRW5ax4MbfUA9kJCetvcQw3WKt8aCrg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ueMgEHdCSAPxnjXRjp7+xUdxKV3iPNQtDxatgIfW2+FwL68jUBP200pqnrPv26li/FHntW3rVNX5Yw8jfDozl4PIkYX/XaG/YXTTTyruKomsijaduNT05KWBElN8WdITMaVX0WjivDynlgYbVxYMP2TvIJ02uMyfozu8lmumVKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ox/Qtwpp; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-453426170b6so40199675e9.1
+        for <stable@vger.kernel.org>; Wed, 02 Jul 2025 03:28:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751452112; x=1752056912; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LPNz/NmzAd54ABa83+86c4tijpK5324PryNPOQHPrzE=;
+        b=Ox/Qtwppzpc0E1dLevFw5Kabewil+a6MdfjaElHKXXX6qs/8FMZH1r5nae9YIjmpJ2
+         6T5lN1PTUO2WblxyXdjKBEUi1mXtlbbwXCB2JUb0gPli2eKYEeWiBss3Wvg6r54ePdCY
+         uV9xPcOClU0ucXmgBVMWD6sEg0ElpQ7tjBbe9TP7BWNDdS0E5zjx2qy+MNiIuaGM9Ucc
+         37s5vjq57fpNq9xg8gtB3VwDx2XAhccgIaZ569eYPrJ0rKvS0V2PvPGKAOb0v9sHPTlw
+         LeDCLfZVayZF70o1qUeN5+9aKxQbc6dWvX0cPcepAt3s6LvSjqvQPLIXrUZtMF7U4sll
+         i5FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751452112; x=1752056912;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LPNz/NmzAd54ABa83+86c4tijpK5324PryNPOQHPrzE=;
+        b=hanwL1nyEW/Swp7h5FILsQRSwYRC2FoCnxpCrQWcqBY3jkWSKcfdfOfP2AauNccldT
+         lBZTQNvbClkuTE9tJGBpw9hWN232NBrzGx50iDIErrgfDLd/qShDhxHrFkcqTnY4e3NO
+         xwvPClkEyBFoBOQwBFJAi1mtEtAa95T5M4SbUvkJYpHkF5kZm2fbkd3pHirHyWLoFNNm
+         bzunHz9QLMAKMHBwsMJVK5J9auP2JmPxW1Gy9NOwFPBUo5/9WZ//Ab+nr748FyKLDu7+
+         rWMyLYCk5lxplR4CwO/F7zHDg6qgkkuiSocCL6VltyWz6TRAsl1B5dN+PCFMzW+3x18o
+         Ul/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUtqxz4S+a/RvRPws5BDB07YvoU//k7kMl43WdP4HxEY45E840DNOFkX+ZhPfdGgjL0jVK3XOw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8E/ga78/ZhWhIhixh/HfrpZVA8ah7NlyANSlm3N5PYeHm9T8F
+	WpaJUPrFHIBUUBlMAdGRcn5jz08J6Mfi3Jaq/KQ97dWk0VCMCqEkRApx
+X-Gm-Gg: ASbGncvlLfSk0+5SmmyL7l81VAMmnvM38eumYf9zheOo9+WA0tYFeWj6ujyC9AzY4+k
+	MJFXCYhMk7mqYE6VmnJ1Y/pxE2Qhp3mINqSheogUFwHL0uRNZ6ls0EUKCXT46tFW6YwaQhotmQZ
+	6wYZpGwsdH0DcjwH9LNVB03p2afmCF1H12HSppXssL8xeYz983e/3ewKGTW+BLWAUvPP+J8Z2ua
+	L3KUJsDOKu+GSTHVdYL+VmJiqIY1N6V6puHKYQqNyG/sqIiN1YPloj0/k1Ydp3zxF/ZNM6Q7Qs6
+	nVvB82mvBjOpakSsGekNMGsLuoN/Tn5V+/C12fznMDUZczyz8ih+u/S3qKqMTrkLHNiIvbv2mwz
+	MY4qNS/a+B9k=
+X-Google-Smtp-Source: AGHT+IGxVQ3NCI4DhE6Gvgaj9+IPimfTEDulKkK/vpBGfx2lFv8OGYl5F9/Lsj0d41241QHQoR26Xg==
+X-Received: by 2002:a05:600c:a10a:b0:43c:f509:2bbf with SMTP id 5b1f17b1804b1-454a3c61a24mr13649665e9.15.1751452112296;
+        Wed, 02 Jul 2025 03:28:32 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:cb14:740:2b00:1a5e:fff:fe3d:95be])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453823ad20bsm224443185e9.20.2025.07.02.03.28.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Jul 2025 03:28:31 -0700 (PDT)
+From: mathieu.tortuyaux@gmail.com
+To: gregkh@linuxfoundation.org
+Cc: mathieu.tortuyaux@gmail.com,
+	mtortuyaux@microsoft.com,
+	stable@vger.kernel.org
+Subject: [PATCH 6.12.y v2 0/3] r8169: add support for RTL8125D
+Date: Wed,  2 Jul 2025 12:28:04 +0200
+Message-ID: <20250702102807.29282-1-mathieu.tortuyaux@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <2025070224-plethora-thread-8ef2@gregkh>
+References: <2025070224-plethora-thread-8ef2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] platform/x86: int3472: add hpd pin support
-To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, linux-media@vger.kernel.org,
- sakari.ailus@linux.intel.com, hverkuil@xs4all.nl,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Hans de Goede <hdegoede@redhat.com>, u.kleine-koenig@baylibre.com,
- ricardo.ribalda@gmail.com, bingbu.cao@linux.intel.com,
- stable@vger.kernel.org, dongcheng.yan@linux.intel.com, hao.yao@intel.com
-References: <20250425104331.3165876-1-dongcheng.yan@intel.com>
- <5a04f105-3075-3226-6ad6-f2c3f31b29da@linux.intel.com>
-Content-Language: en-US
-From: "Yan, Dongcheng" <dongcheng.yan@intel.com>
-In-Reply-To: <5a04f105-3075-3226-6ad6-f2c3f31b29da@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Ilpo,
+From: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
 
-On 7/2/2025 6:19 PM, Ilpo Järvinen wrote:
-> On Fri, 25 Apr 2025, Dongcheng Yan wrote:
-> 
->> Typically HDMI to MIPI CSI-2 bridges have a pin to signal image data is
->> being received. On the host side this is wired to a GPIO for polling or
->> interrupts. This includes the Lontium HDMI to MIPI CSI-2 bridges
->> lt6911uxe and lt6911uxc.
->>
->> The GPIO "hpd" is used already by other HDMI to CSI-2 bridges, use it
->> here as well.
->>
->> Signed-off-by: Dongcheng Yan <dongcheng.yan@intel.com>
->> ---
->>  drivers/platform/x86/intel/int3472/common.h   | 1 +
->>  drivers/platform/x86/intel/int3472/discrete.c | 6 ++++++
->>  2 files changed, 7 insertions(+)
->>
->> diff --git a/drivers/platform/x86/intel/int3472/common.h b/drivers/platform/x86/intel/int3472/common.h
->> index 51b818e62a25..4593d567caf4 100644
->> --- a/drivers/platform/x86/intel/int3472/common.h
->> +++ b/drivers/platform/x86/intel/int3472/common.h
->> @@ -23,6 +23,7 @@
->>  #define INT3472_GPIO_TYPE_CLK_ENABLE				0x0c
->>  #define INT3472_GPIO_TYPE_PRIVACY_LED				0x0d
->>  #define INT3472_GPIO_TYPE_HANDSHAKE				0x12
->> +#define INT3472_GPIO_TYPE_HOTPLUG_DETECT			0x13
->>  
->>  #define INT3472_PDEV_MAX_NAME_LEN				23
->>  #define INT3472_MAX_SENSOR_GPIOS				3
->> diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
->> index 394975f55d64..efa3bc7af193 100644
->> --- a/drivers/platform/x86/intel/int3472/discrete.c
->> +++ b/drivers/platform/x86/intel/int3472/discrete.c
->> @@ -191,6 +191,10 @@ static void int3472_get_con_id_and_polarity(struct int3472_discrete_device *int3
->>  		*con_id = "privacy-led";
->>  		*gpio_flags = GPIO_ACTIVE_HIGH;
->>  		break;
->> +	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
->> +		*con_id = "hpd";
->> +		*gpio_flags = GPIO_ACTIVE_HIGH;
->> +		break;
->>  	case INT3472_GPIO_TYPE_POWER_ENABLE:
->>  		*con_id = "avdd";
->>  		*gpio_flags = GPIO_ACTIVE_HIGH;
->> @@ -221,6 +225,7 @@ static void int3472_get_con_id_and_polarity(struct int3472_discrete_device *int3
->>   * 0x0b Power enable
->>   * 0x0c Clock enable
->>   * 0x0d Privacy LED
->> + * 0x13 Hotplug detect
->>   *
->>   * There are some known platform specific quirks where that does not quite
->>   * hold up; for example where a pin with type 0x01 (Power down) is mapped to
->> @@ -290,6 +295,7 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
->>  	switch (type) {
->>  	case INT3472_GPIO_TYPE_RESET:
->>  	case INT3472_GPIO_TYPE_POWERDOWN:
->> +	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
->>  		ret = skl_int3472_map_gpio_to_sensor(int3472, agpio, con_id, gpio_flags);
->>  		if (ret)
->>  			err_msg = "Failed to map GPIO pin to sensor\n";
-> 
-> I was informed about existance of this patch through an off-band channel 
-> (as I was not among receipients). In future, please include all relevant 
-> maintainers and MLs as receipients as indicated by 
-> scripts/get_maintainers.pl.
-> 
-> This may go through a media tree,
-> 
-> Acked-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> 
-> 
+Hi,
 
-Thanks a lot and sorry for the trouble caused by me.
+> You did not sign off on any of these patches that you forwarded on :(
 
-Thanks,
-Dongcheng
+Thanks for the feedback, this is now done. I am sorry about that.
+
+Have a great day,
+
+Mathieu (@tormath1)
+
+Heiner Kallweit (3):
+  r8169: add support for RTL8125D
+  net: phy: realtek: merge the drivers for internal NBase-T PHY's
+  net: phy: realtek: add RTL8125D-internal PHY
+
+ drivers/net/ethernet/realtek/r8169.h          |  1 +
+ drivers/net/ethernet/realtek/r8169_main.c     | 23 +++++---
+ .../net/ethernet/realtek/r8169_phy_config.c   | 10 ++++
+ drivers/net/phy/realtek.c                     | 54 +++++++++++++++----
+ 4 files changed, 71 insertions(+), 17 deletions(-)
+
+-- 
+2.49.0
+
 
