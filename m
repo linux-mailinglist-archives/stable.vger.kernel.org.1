@@ -1,102 +1,50 @@
-Return-Path: <stable+bounces-159207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675C5AF0E74
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:50:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2695AF0E77
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 10:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2429D4A00D3
-	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 08:50:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0400844380C
+	for <lists+stable@lfdr.de>; Wed,  2 Jul 2025 08:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD1123C51E;
-	Wed,  2 Jul 2025 08:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90B123C4F9;
+	Wed,  2 Jul 2025 08:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="i2uuhOkB";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cFjhV2Fn";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="i2uuhOkB";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cFjhV2Fn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Posgb6/I"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2A623C4E5
-	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 08:50:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E6623C4E5
+	for <stable@vger.kernel.org>; Wed,  2 Jul 2025 08:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751446234; cv=none; b=ilvUy2LgwA7u0BcMRGMCNiRf0H6TB7RAwKM1YBdFDw2OqtMeWH78Z5dZGRTuI6ojPGyEsR8koCTwa6sPpIOAPHRFjVXiJeFM2hr9Hzk4r9+lCrQuRUmbK+1JBKb4+p89BiBOWgTpmLu48BN9fFIyTXvWVAc5WLTtk+34tQ8HGIk=
+	t=1751446242; cv=none; b=KE0SX7WeK9mD3+VTTpXEn01tbwuOX8GCwI63TW1neSZvZvm2DLXWZGEGzFMbNeubSHJ7CiAw5fnKim6y57dQt8l3YN/9cLtGd0pQWXaN2ww+2G254oFfB4yQiFyz3REARltk8sL5kBvMGe+3um9g8chaj6Rv1qUisGE+MAe4yvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751446234; c=relaxed/simple;
-	bh=zzDkSI9R25eVLahJ2BbWU8Vqi8n7G8j8PUZU2tqjb3Y=;
+	s=arc-20240116; t=1751446242; c=relaxed/simple;
+	bh=n2QJPm+kybT5UdTx1gQm3LNXkYxjN9BZQv8wZbVEXB4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C19Iom7IubIzvyAFXEEUvuT0dAoPyrAHVXred/RpTOM+HMKzwiD++t3S13jIxKOzWR2T7xoVjjeIIh17lbrMK3RlY1DrpbKNorLEcJt21HHMo4c5eQezMKnBrJRULRJzxrXPPYF+IekzzvbjuqEXiEgCzGmwKZYc6Bh40fU/s6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=i2uuhOkB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cFjhV2Fn; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=i2uuhOkB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cFjhV2Fn; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id ADC70210F2;
-	Wed,  2 Jul 2025 08:50:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1751446230; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cdXar4DNswhxGVw1NPqLE991gP8Ek/4mxCvFBmnXOFU=;
-	b=i2uuhOkB23fvR4vQHS1IlytYsD5c3mu25psQx36URpgVr9eLaMCLpMkqmXNzOVyRhQihUZ
-	yMqTOrch/JnCp6T77W8knQQiUwlFrF3lovzNqTo+ESR5ifd2j0FK+gK1SzLW5khf1OALGk
-	YVe4cth19GU2wxrQcEbjZOyRYpsy1Y0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1751446230;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cdXar4DNswhxGVw1NPqLE991gP8Ek/4mxCvFBmnXOFU=;
-	b=cFjhV2FnJ+e7e3iwz72tWC8muxH+/oBMovp6jSgTX7HFwkvGWVEC4WO0byaGlikDwVXt6R
-	2wq+oSEOMtL7bODA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1751446230; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cdXar4DNswhxGVw1NPqLE991gP8Ek/4mxCvFBmnXOFU=;
-	b=i2uuhOkB23fvR4vQHS1IlytYsD5c3mu25psQx36URpgVr9eLaMCLpMkqmXNzOVyRhQihUZ
-	yMqTOrch/JnCp6T77W8knQQiUwlFrF3lovzNqTo+ESR5ifd2j0FK+gK1SzLW5khf1OALGk
-	YVe4cth19GU2wxrQcEbjZOyRYpsy1Y0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1751446230;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cdXar4DNswhxGVw1NPqLE991gP8Ek/4mxCvFBmnXOFU=;
-	b=cFjhV2FnJ+e7e3iwz72tWC8muxH+/oBMovp6jSgTX7HFwkvGWVEC4WO0byaGlikDwVXt6R
-	2wq+oSEOMtL7bODA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 215911369C;
-	Wed,  2 Jul 2025 08:50:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id bgBcBdbyZGi2VAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Wed, 02 Jul 2025 08:50:30 +0000
-Date: Wed, 2 Jul 2025 10:50:24 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Jann Horn <jannh@google.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Vitaly Chikunov <vt@altlinux.org>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] x86/mm: Disable hugetlb page table sharing on 32-bit
-Message-ID: <aGTy0GPyc5o_uDgq@localhost.localdomain>
-References: <20250702-x86-2level-hugetlb-v2-1-1a98096edf92@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=BIgIN7mCwwyxU9tuTYJtqR5KSwT96S5g0LOVZSU4tie/rSUHfObA7g5LBNXElCw0GASFJx9ll+cV/dtlqfX2/gEddPIne3dR3qhKDCXZddWj6igpQN8fuJLYdJoI5cvorAUD3WMYCOuxMmO76zbqg/c8HLN02YjU24IiqAh5y44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Posgb6/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E70FAC4CEED;
+	Wed,  2 Jul 2025 08:50:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1751446242;
+	bh=n2QJPm+kybT5UdTx1gQm3LNXkYxjN9BZQv8wZbVEXB4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Posgb6/Il9wKAbrU1cft6oUk1o6O5mbHeV+4HaepRnt6IgRDLthOHUJ1Xj3HcP+mq
+	 /gTxSi16S0jGIlqcwBLkfv2CWRrW10/LZ2D+4kU5Oqan9kIOcNQDHdX9h+UycKXj0T
+	 HVx42wjS/KHsUblB5ZhFdqGcofPIto/3p586VxXE=
+Date: Wed, 2 Jul 2025 10:50:39 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: Re: 6.15.5 stable request, regression from 6.15.3..6.15.4
+Message-ID: <2025070232-dude-pectin-afa0@gregkh>
+References: <3dbc6a08-ad33-467b-babd-437d37312e90@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,63 +53,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250702-x86-2level-hugetlb-v2-1-1a98096edf92@google.com>
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[localhost.localdomain:mid,suse.de:email,intel.com:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
+In-Reply-To: <3dbc6a08-ad33-467b-babd-437d37312e90@kernel.dk>
 
-On Wed, Jul 02, 2025 at 10:32:04AM +0200, Jann Horn wrote:
-> Only select ARCH_WANT_HUGE_PMD_SHARE on 64-bit x86.
-> Page table sharing requires at least three levels because it involves
-> shared references to PMD tables; 32-bit x86 has either two-level paging
-> (without PAE) or three-level paging (with PAE), but even with
-> three-level paging, having a dedicated PGD entry for hugetlb is only
-> barely possible (because the PGD only has four entries), and it seems
-> unlikely anyone's actually using PMD sharing on 32-bit.
+On Mon, Jun 30, 2025 at 07:03:06PM -0600, Jens Axboe wrote:
+> Hi,
 > 
-> Having ARCH_WANT_HUGE_PMD_SHARE enabled on non-PAE 32-bit X86 (which
-> has 2-level paging) became particularly problematic after commit
-> 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count"),
-> since that changes `struct ptdesc` such that the `pt_mm` (for PGDs) and
-> the `pt_share_count` (for PMDs) share the same union storage - and with
-> 2-level paging, PMDs are PGDs.
+> Details in the patch attached, but an unrelated vfs change broke io_uring
+> for anon inode reading/writing. Please queue this up asap for 6.15.5 so we
+> don't have have any further 6.15-stable kernels with this regression.
 > 
-> (For comparison, arm64 also gates ARCH_WANT_HUGE_PMD_SHARE on the
-> configuration of page tables such that it is never enabled with 2-level
-> paging.)
+> You can also just cherry pick it, picks cleanly. Sha is:
 > 
-> Reported-by: Vitaly Chikunov <vt@altlinux.org>
-> Closes: https://lore.kernel.org/r/srhpjxlqfna67blvma5frmy3aa@altlinux.org
-> Suggested-by: Dave Hansen <dave.hansen@intel.com>
-> Tested-by: Vitaly Chikunov <vt@altlinux.org>
-> Fixes: cfe28c5d63d8 ("x86: mm: Remove x86 version of huge_pmd_share.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jann Horn <jannh@google.com>
+> 6f11adcc6f36ffd8f33dbdf5f5ce073368975bc3
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
+Now queued up, thanks.
 
-Thanks!
-
--- 
-Oscar Salvador
-SUSE Labs
+greg k-h
 
