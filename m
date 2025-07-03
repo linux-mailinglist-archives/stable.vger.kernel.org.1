@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-159463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E0CAF78A3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FDBAF79FC
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DCEB7AFECF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D837C4E0E3F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5322E7BBF;
-	Thu,  3 Jul 2025 14:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF022ED86E;
+	Thu,  3 Jul 2025 15:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4NNgZ0D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JT0X1Hc3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5CC2E7649;
-	Thu,  3 Jul 2025 14:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC272E7BD6;
+	Thu,  3 Jul 2025 15:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554311; cv=none; b=Wm0z550X00Jak6jUK209QldD93Np/uBM6jMH+hDH54jdzeWGZiqTED03lI2jMLtmc9ZHLnJ3NRD1s4LPAmGa76vmEYNB8Or3SClWgj/4KGZAaMMwZOTYXwvBqrMEZ+JUMm0oXSO3tOsZhRoQ7OlWcT1BU4GjELc5vSIcQfQzW1k=
+	t=1751555093; cv=none; b=ao+trequImaSL51pLBHYNZcABQLSW8tsypFkEIe4m8SkxrLjOJ2XXcGx+Sc753E/cylRoe+YMRe3CSEbIQZz5FtjUXZ24+T/jcW90WkXmNh7EcC8QX0MKngsQeiwGwX78avotft6MCx//k5k3l3k9Zvw0BuvIfjJiHFHcnNDL7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554311; c=relaxed/simple;
-	bh=TSVTSSGFULwsJxRT7HzxqweysG18FozcJYw/v2SThsY=;
+	s=arc-20240116; t=1751555093; c=relaxed/simple;
+	bh=x27GByyevSoXJ9NGiBEoUhihJxA70X3rU/t4n4ch6xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sni6mtrNd3pEO3266S6IsryhAM/ZNnG0P0qziYitSYldUu6eGzbhR0u6aKaCff1+anwDkULszZVXJNDqeL+bGpEtqe51e5g8EGBW+RXGBHzFj/UaL9GTM+BGIYqFJuAVlotPP/rHt8vxy/ZolAntuDGq9cY8v+BcWbO/m8dIWsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4NNgZ0D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0A5C4CEE3;
-	Thu,  3 Jul 2025 14:51:51 +0000 (UTC)
+	 MIME-Version; b=Mgl4eMZurzEumMn13mInefB27vVvL6M1VTOAbJgaGmo8eGXY7cMWs9+0EiDVcjxQgU0LjWCc1ji5mn4fc35Mrrgy2YX+lCsmRgMV4qTHUVeWvYfThpwFHI2QcI42xE3DS1WE7Uz1qU4ZzqBLLIc3+KHcZg+ufdpvyGUX+kp+TqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JT0X1Hc3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DB5C4CEE3;
+	Thu,  3 Jul 2025 15:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554311;
-	bh=TSVTSSGFULwsJxRT7HzxqweysG18FozcJYw/v2SThsY=;
+	s=korg; t=1751555093;
+	bh=x27GByyevSoXJ9NGiBEoUhihJxA70X3rU/t4n4ch6xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4NNgZ0DIoBYXxj3sJC3P4CwiP7TS2JoH0xZ+4FlVdihdjca1wSVH10FqEVjFaYDd
-	 zVuWPznoiQTfYQk5LnzQtX0IQCVud0eAvUm3kRses1ajpSThoQiJ5beR3fufguhFD6
-	 91CIwTPyWtzFZf0hmVa5Ms6KUq1O+negCWDCvNAM=
+	b=JT0X1Hc3ioZawkYA1zSUPz3F1tMCSM+kjFasR77SGHvAlCeTID9gjmohWGlt8wpNa
+	 Dqx0oxhxyBm4TBr62D3Mebv57Eww4O9jwv5gNBDprV9VWvM0biR2bZOmBKzVd7H4+w
+	 U7W2e8D1NwHtmNJ4U18pVCUZ0p/kXG1aqBbSQfec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yu <yu.c.chen@intel.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 146/218] scsi: megaraid_sas: Fix invalid node index
+	stable <stable@kernel.org>,
+	Yao Zi <ziyao@disroot.org>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 6.15 174/263] dt-bindings: serial: 8250: Make clocks and clock-frequency exclusive
 Date: Thu,  3 Jul 2025 16:41:34 +0200
-Message-ID: <20250703144001.959426643@linuxfoundation.org>
+Message-ID: <20250703144011.326209267@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: Yao Zi <ziyao@disroot.org>
 
-commit 752eb816b55adb0673727ba0ed96609a17895654 upstream.
+commit 09812134071b3941fb81def30b61ed36d3a5dfb5 upstream.
 
-On a system with DRAM interleave enabled, out-of-bound access is
-detected:
+The 8250 binding before converting to json-schema states,
 
-megaraid_sas 0000:3f:00.0: requested/available msix 128/128 poll_queue 0
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in ./arch/x86/include/asm/topology.h:72:28
-index -1 is out of range for type 'cpumask *[1024]'
-dump_stack_lvl+0x5d/0x80
-ubsan_epilogue+0x5/0x2b
-__ubsan_handle_out_of_bounds.cold+0x46/0x4b
-megasas_alloc_irq_vectors+0x149/0x190 [megaraid_sas]
-megasas_probe_one.cold+0xa4d/0x189c [megaraid_sas]
-local_pci_probe+0x42/0x90
-pci_device_probe+0xdc/0x290
-really_probe+0xdb/0x340
-__driver_probe_device+0x78/0x110
-driver_probe_device+0x1f/0xa0
-__driver_attach+0xba/0x1c0
-bus_for_each_dev+0x8b/0xe0
-bus_add_driver+0x142/0x220
-driver_register+0x72/0xd0
-megasas_init+0xdf/0xff0 [megaraid_sas]
-do_one_initcall+0x57/0x310
-do_init_module+0x90/0x250
-init_module_from_file+0x85/0xc0
-idempotent_init_module+0x114/0x310
-__x64_sys_finit_module+0x65/0xc0
-do_syscall_64+0x82/0x170
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  - clock-frequency : the input clock frequency for the UART
+  	or
+  - clocks phandle to refer to the clk used as per Documentation/devicetree
 
-Fix it accordingly.
+for clock-related properties, where "or" indicates these properties
+shouldn't exist at the same time.
 
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Link: https://lore.kernel.org/r/20250604042556.3731059-1-yu.c.chen@intel.com
-Fixes: 8049da6f3943 ("scsi: megaraid_sas: Use irq_set_affinity_and_hint()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Additionally, the behavior of Linux's driver is strange when both clocks
+and clock-frequency are specified: it ignores clocks and obtains the
+frequency from clock-frequency, left the specified clocks unclaimed. It
+may even be disabled, which is undesired most of the time.
+
+But "anyOf" doesn't prevent these two properties from coexisting, as it
+considers the object valid as long as there's at LEAST one match.
+
+Let's switch to "oneOf" and disallows the other property if one exists,
+precisely matching the original binding and avoiding future confusion on
+the driver's behavior.
+
+Fixes: e69f5dc623f9 ("dt-bindings: serial: Convert 8250 to json-schema")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20250623093445.62327-1-ziyao@disroot.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/megaraid/megaraid_sas_base.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/serial/8250.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/megaraid/megaraid_sas_base.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -5910,7 +5910,11 @@ megasas_set_high_iops_queue_affinity_and
- 	const struct cpumask *mask;
+--- a/Documentation/devicetree/bindings/serial/8250.yaml
++++ b/Documentation/devicetree/bindings/serial/8250.yaml
+@@ -45,7 +45,7 @@ allOf:
+                   - ns16550
+                   - ns16550a
+     then:
+-      anyOf:
++      oneOf:
+         - required: [ clock-frequency ]
+         - required: [ clocks ]
  
- 	if (instance->perf_mode == MR_BALANCED_PERF_MODE) {
--		mask = cpumask_of_node(dev_to_node(&instance->pdev->dev));
-+		int nid = dev_to_node(&instance->pdev->dev);
-+
-+		if (nid == NUMA_NO_NODE)
-+			nid = 0;
-+		mask = cpumask_of_node(nid);
- 
- 		for (i = 0; i < instance->low_latency_index_start; i++) {
- 			irq = pci_irq_vector(instance->pdev, i);
 
 
 
