@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-159947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3271EAF7B84
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3048AF7C14
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA0E91888500
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD1976E669B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9D129827E;
-	Thu,  3 Jul 2025 15:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7739D2EACE1;
+	Thu,  3 Jul 2025 15:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usLCEkGP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XxvcP8pm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B58A2F0035;
-	Thu,  3 Jul 2025 15:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3227B1D5CE5;
+	Thu,  3 Jul 2025 15:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555878; cv=none; b=TAXQ1zY1zH++REGbEzt6MzYYwAufzxIrioFv5ztYmUxhwoBOgV5DZW/fab3yOmfngteRYdw7OU0i4Bzytw9j18fe7W9FvrX0HxlFOSNfDQRWRlwiqbbKH/ZA6FgSGMnhXiaKAm7W4BE87i/qXRKWNxklyPD+Trg3uxv89zRW26s=
+	t=1751556219; cv=none; b=RG1gHPingY2ao7RrlycGVH7pbA0W06oVl3BkVzYV+rpvhmnbgWxDm/nyEk2CRvR9Rh/xYy4tYPHVCcxn0C+9c/7RxyAzOjgozjGMRcJwrkH96kgBEdCntKENyjWnM4vdnpSL6kO+/BgMihY7SCG3YrC5uhTM8b/mjBKVKr1ONHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555878; c=relaxed/simple;
-	bh=aPPhuRp9qLU2zp0HullSm1VvzIRUn2d7rtzM8x5BRmk=;
+	s=arc-20240116; t=1751556219; c=relaxed/simple;
+	bh=a9+hZGKvQqfHQRz6J71P+7dOdAy7jhaNx442ENwmLYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VS8R0G71Rk4QO5i20BNZRjQtC6FPPjTG0QQtmGHSpZggcA7jiz8k7uJNugcBseGnZuE7PBC56iCs6J6/tOMdVfZjMkq+GAdbcHja8YT60QMqOobF4fOcQ4+fV/eYnaGEQMZteTYKPXJH/YoBWauAPKo/22cNedxsh8EwCIDX26k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usLCEkGP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EC3C4CEE3;
-	Thu,  3 Jul 2025 15:17:57 +0000 (UTC)
+	 MIME-Version; b=jG7QasDJjqgVhdQRH42LoD+Jr1LIapEzmhswOjO9YaR6tWLuo/dyBx4q3cqFdQb1sWnDHELagLMAMXSK/pcZhfeEyHW3S5/VDXEly73K3tFGqdFXngmQLJCvUbL9L6Yo8bY2xkmUPrJ2okOlqyfmRafc1a+NvpqTlRHvfs6Za9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XxvcP8pm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B18C4CEEE;
+	Thu,  3 Jul 2025 15:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555878;
-	bh=aPPhuRp9qLU2zp0HullSm1VvzIRUn2d7rtzM8x5BRmk=;
+	s=korg; t=1751556218;
+	bh=a9+hZGKvQqfHQRz6J71P+7dOdAy7jhaNx442ENwmLYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=usLCEkGPAXTiVsjRPFxoemRfnByE+uzKbTIYYVZk/c06hteJb+83cqKQsaO4DvXcN
-	 NpSjGOszIedik/Q6S7ISN/6dAa0gwh1NOpEG/hWWPtZmyADB2CzJmX5alQ0X2ZXEN5
-	 sM2srs1p3hHhwaDP8xpYSgrUBAs53kg1t8wrDI0w=
+	b=XxvcP8pm+em2OqSv2I95xJnwkt7AkeAX3ks1voymvCILhHR+KPnLLxOaRdfzuks6+
+	 0Yu/onX93lT3cpi62K9I4Wpx+Kk84qsAhKDhILXJ1mbTwRPFkSVhYUoNwE1U6AVqLk
+	 7TrKppa7F64b7oNDCMchsylWuMNfCV0V6QnkEoWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 137/139] nvme: always punt polled uring_cmd end_io work to task_work
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 6.1 111/132] drm/bridge: cdns-dsi: Check return value when getting default PHY config
 Date: Thu,  3 Jul 2025 16:43:20 +0200
-Message-ID: <20250703143946.536560966@linuxfoundation.org>
+Message-ID: <20250703143943.749298670@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Aradhya Bhatia <a-bhatia1@ti.com>
 
-Commit 9ce6c9875f3e995be5fd720b65835291f8a609b1 upstream.
+commit c6a7ef0d4856b9629df390e9935d7fd67fe39f81 upstream.
 
-Currently NVMe uring_cmd completions will complete locally, if they are
-polled. This is done because those completions are always invoked from
-task context. And while that is true, there's no guarantee that it's
-invoked under the right ring context, or even task. If someone does
-NVMe passthrough via multiple threads and with a limited number of
-poll queues, then ringA may find completions from ringB. For that case,
-completing the request may not be sound.
+Check for the return value of the phy_mipi_dphy_get_default_config()
+call, and in case of an error, return back the same.
 
-Always just punt the passthrough completions via task_work, which will
-redirect the completion, if needed.
-
+Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
 Cc: stable@vger.kernel.org
-Fixes: 585079b6e425 ("nvme: wire up async polling for io passthrough commands")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Link: https://lore.kernel.org/r/20250329113925.68204-5-aradhya.bhatia@linux.dev
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/ioctl.c |   16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/bridge/cdns-dsi.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -526,16 +526,14 @@ static enum rq_end_io_ret nvme_uring_cmd
- 	pdu->u.result = le64_to_cpu(nvme_req(req)->result.u64);
+--- a/drivers/gpu/drm/bridge/cdns-dsi.c
++++ b/drivers/gpu/drm/bridge/cdns-dsi.c
+@@ -616,9 +616,11 @@ static int cdns_dsi_check_conf(struct cd
+ 	if (ret)
+ 		return ret;
  
- 	/*
--	 * For iopoll, complete it directly.
--	 * Otherwise, move the completion to task work.
-+	 * IOPOLL could potentially complete this request directly, but
-+	 * if multiple rings are polling on the same queue, then it's possible
-+	 * for one ring to find completions for another ring. Punting the
-+	 * completion via task_work will always direct it to the right
-+	 * location, rather than potentially complete requests for ringA
-+	 * under iopoll invocations from ringB.
- 	 */
--	if (blk_rq_is_poll(req)) {
--		WRITE_ONCE(ioucmd->cookie, NULL);
--		nvme_uring_task_cb(ioucmd, IO_URING_F_UNLOCKED);
--	} else {
--		io_uring_cmd_do_in_task_lazy(ioucmd, nvme_uring_task_cb);
--	}
--
-+	io_uring_cmd_do_in_task_lazy(ioucmd, nvme_uring_task_cb);
- 	return RQ_END_IO_FREE;
- }
+-	phy_mipi_dphy_get_default_config(mode_clock * 1000,
+-					 mipi_dsi_pixel_format_to_bpp(output->dev->format),
+-					 nlanes, phy_cfg);
++	ret = phy_mipi_dphy_get_default_config(mode_clock * 1000,
++					       mipi_dsi_pixel_format_to_bpp(output->dev->format),
++					       nlanes, phy_cfg);
++	if (ret)
++		return ret;
  
+ 	ret = cdns_dsi_adjust_phy_config(dsi, dsi_cfg, phy_cfg, mode, mode_valid_check);
+ 	if (ret)
 
 
 
