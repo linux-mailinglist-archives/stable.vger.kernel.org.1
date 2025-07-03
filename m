@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3863EAF78D3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:54:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8C8AF7A34
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 055814A1AA7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E6E21890BAE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE792EE28F;
-	Thu,  3 Jul 2025 14:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9275B2EE973;
+	Thu,  3 Jul 2025 15:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQxm81Yv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxRihC7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4C62EE99C;
-	Thu,  3 Jul 2025 14:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492252EE281;
+	Thu,  3 Jul 2025 15:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554368; cv=none; b=EK9JXML2hbEL/WRTKaHIjd74vYcdZLT2sl6hVJHIZ35fZDz1j8byLFg+EjKee5gMwMPHhCwcraj2ITxSUcL57tw0/gckBriippHmd8n74y9HNr01SNJEJuotzonvPbld8RjHeHunDFRd5IedNgfm4Fv/bqEK/FVjGdoFcMdUZN0=
+	t=1751555133; cv=none; b=ktWppuzc9fs+sGVC9z6sLHfG3nZB7ONaDbhE285UsZ/U0nzItipOhNcKHQ+swUg0K9qoaLV/elni4vuEhEoLEKDpNssJpZm9b8KX8ZRRgu7UtYltZLev6C4qGT4YoDENgRtdndbQ+0FtGPTXT7pKRcmNMya5IySMiC7KVaDDskY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554368; c=relaxed/simple;
-	bh=g8JQYJmEEp689Azks5dHpOLLHvG2WKJk3+N+HSQhuzQ=;
+	s=arc-20240116; t=1751555133; c=relaxed/simple;
+	bh=9LFNUqzj/hFQhM+nrJJEBA9irFkQ8gbqM5oxf4NmsBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QfpqzuRBfgFijAb+hlZcCfPBTAgHJwxMmz07MuT1s1r7F/WUfPc0YF4Z7ekBYdtwbqOcgztyxW7noVBqKLLLlOePbGmK0qGz8z5b6uVfZaaJKkoKZz4LrXVyAhCWsVmA6wonUFF6pCQmImMIxWbRsi4GvNUoQ0wzr/D+7BD/AGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQxm81Yv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E97EC4CEE3;
-	Thu,  3 Jul 2025 14:52:47 +0000 (UTC)
+	 MIME-Version; b=sgmFzDb6MJZHtac8tXPU27muMkgz/OA1UuhoTnkXAg4R4ZEPJ5Sn2moa64+McsCnlMMRKopajHJTZ52PkVcq+sADLeZ55O+gXA11OMt5WUeEG044aH9E0vn3/KgR/ULeco2S1+w6qGQMr8kT503xShbvRKIOhVmFQI0IQVzsUII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxRihC7F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3FA7C4CEE3;
+	Thu,  3 Jul 2025 15:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554368;
-	bh=g8JQYJmEEp689Azks5dHpOLLHvG2WKJk3+N+HSQhuzQ=;
+	s=korg; t=1751555133;
+	bh=9LFNUqzj/hFQhM+nrJJEBA9irFkQ8gbqM5oxf4NmsBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VQxm81YvfRmSY4Rf4NxNvBtzODkEHsmT6hxu8U/0K6l0R/t5RFjx6U2LYqSZwPNQt
-	 Lk6DOAtmJGTnvTCtcXocyNVA9XdjPFECYShK+wmUGW+gydsUixZSzy/pi9clQroiP6
-	 wWEGXgc1xc1V3bDntbPzkdMrYXLrk1O/YWxj++Sk=
+	b=cxRihC7Fg43bogjd4nHEx8VciNEH0ksgi5FW6WPYhUjrVpzeHu7OUVq3nmCw+xVmL
+	 /wTS4lruP8Rs3rO4wQCYX3orkYJeAtpSko4AMbRfS1V8EjA7ZNK3aouo46C/WmCHX3
+	 ih4XhZZkglzy+w2B9Rd/6Q05NDmf7eU7I6NNmxNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.12 157/218] drm/bridge: cdns-dsi: Fix phy de-init and flag it so
+	Guido Trentalancia <guido@trentalancia.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.15 185/263] selinux: change security_compute_sid to return the ssid or tsid on match
 Date: Thu,  3 Jul 2025 16:41:45 +0200
-Message-ID: <20250703144002.428082137@linuxfoundation.org>
+Message-ID: <20250703144011.758733118@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-commit fd2611c13f69cbbc6b81d9fc7502abf4f7031d21 upstream.
+commit fde46f60f6c5138ee422087addbc5bf5b4968bf1 upstream.
 
-The driver code doesn't have a Phy de-initialization path as yet, and so
-it does not clear the phy_initialized flag while suspending. This is a
-problem because after resume the driver looks at this flag to determine
-if a Phy re-initialization is required or not. It is in fact required
-because the hardware is resuming from a suspend, but the driver does not
-carry out any re-initialization causing the D-Phy to not work at all.
+If the end result of a security_compute_sid() computation matches the
+ssid or tsid, return that SID rather than looking it up again. This
+avoids the problem of multiple initial SIDs that map to the same
+context.
 
-Call the counterparts of phy_init() and phy_power_on(), that are
-phy_exit() and phy_power_off(), from _bridge_post_disable(), and clear
-the flags so that the Phy can be initialized again when required.
-
-Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
 Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Link: https://lore.kernel.org/r/20250329113925.68204-3-aradhya.bhatia@linux.dev
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reported-by: Guido Trentalancia <guido@trentalancia.com>
+Fixes: ae254858ce07 ("selinux: introduce an initial SID for early boot processes")
+Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Tested-by: Guido Trentalancia <guido@trentalancia.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ security/selinux/ss/services.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-@@ -681,6 +681,11 @@ static void cdns_dsi_bridge_post_disable
- 	struct cdns_dsi_input *input = bridge_to_cdns_dsi_input(bridge);
- 	struct cdns_dsi *dsi = input_to_dsi(input);
- 
-+	dsi->phy_initialized = false;
-+	dsi->link_initialized = false;
-+	phy_power_off(dsi->dphy);
-+	phy_exit(dsi->dphy);
-+
- 	pm_runtime_put(dsi->base.dev);
- }
- 
-@@ -1153,7 +1158,6 @@ static int __maybe_unused cdns_dsi_suspe
- 	clk_disable_unprepare(dsi->dsi_sys_clk);
- 	clk_disable_unprepare(dsi->dsi_p_clk);
- 	reset_control_assert(dsi->dsi_p_rst);
--	dsi->link_initialized = false;
- 	return 0;
- }
- 
+--- a/security/selinux/ss/services.c
++++ b/security/selinux/ss/services.c
+@@ -1909,11 +1909,17 @@ retry:
+ 			goto out_unlock;
+ 	}
+ 	/* Obtain the sid for the context. */
+-	rc = sidtab_context_to_sid(sidtab, &newcontext, out_sid);
+-	if (rc == -ESTALE) {
+-		rcu_read_unlock();
+-		context_destroy(&newcontext);
+-		goto retry;
++	if (context_equal(scontext, &newcontext))
++		*out_sid = ssid;
++	else if (context_equal(tcontext, &newcontext))
++		*out_sid = tsid;
++	else {
++		rc = sidtab_context_to_sid(sidtab, &newcontext, out_sid);
++		if (rc == -ESTALE) {
++			rcu_read_unlock();
++			context_destroy(&newcontext);
++			goto retry;
++		}
+ 	}
+ out_unlock:
+ 	rcu_read_unlock();
 
 
 
