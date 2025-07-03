@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-159974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E8B5AF7BEF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:30:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FE6AF78C5
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:54:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D37B65420B6
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2758170B7C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E54E2EF9DA;
-	Thu,  3 Jul 2025 15:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B74F2EFD9F;
+	Thu,  3 Jul 2025 14:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oK4JYGzi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fsmlBy3s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1F619CC3D;
-	Thu,  3 Jul 2025 15:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B9A2EFD94;
+	Thu,  3 Jul 2025 14:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555965; cv=none; b=o9b3+gt364s61ZELS4qH6SnnGDxk069NWvktbrMT10Z4XAjrmUHyAM13Z5DYwdHe/fOw81V8wPnWNuhkFuaPVNtNGgH+sOOC0zEMQKJT2tsQj/lVqv4ZNqhMUOblH9gWpUn1bcYoN5sd0WTwap/UI2Yj8FlzlEebI+z70tO0/Jg=
+	t=1751554327; cv=none; b=u6b4p8Y3E2A1wn5R5Ihux/K/7GvCzBjx7Wp3SUb/uIEFs74RMtg/UtltxWUG+9rmnzvBOQW8hoh62xdJ1tFOK+LSB1kQiI+/ZBzfLBmyANcDQTaGXtFgFxR4aKu1bugQbM2F0MR2agm2QkCGpaOA1OSHJHnrbwkfoZcm4B5Ypdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555965; c=relaxed/simple;
-	bh=aVgn7JqOzUkDzjTWWjNBKuKzPb/+cuGfbSULDZxTu4k=;
+	s=arc-20240116; t=1751554327; c=relaxed/simple;
+	bh=jr32VKFARZiDUktzfKYJVQP2q/vMN6SgYDKLaEc2l9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3Ar4s5M3WSpcvn/sUVjtnpQBmTmfqwZMqqBDZLUllRNvdlW/9DIThkBrSOxznNP7nSWu6f0uzq/4zxOXhF9FuhTqoI3w6j8Ij6mx4Nt0NoojtEMENPLe4UjnD9MB6AAZKd1EUNy2LXydOELAt+0C3y0Qqism4SYw8qOT2rZZ2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oK4JYGzi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66462C4CEE3;
-	Thu,  3 Jul 2025 15:19:24 +0000 (UTC)
+	 MIME-Version; b=Ss54YuePrLFVSBn0ZaPCJKLm96JrqpdBGH9NefyMY5EEO3bXkjk6zfq9FVRoCbZzZkIhrqAuCeKClGdScpoTmvqb+no6aTnwVgjQPUUqDAODEdUyw758XqSn17E5w06Mx0hZg/yOdUmonKSfqfmm18+dW8yHg+/8ohLYrANrfGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fsmlBy3s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66039C4CEEE;
+	Thu,  3 Jul 2025 14:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555964;
-	bh=aVgn7JqOzUkDzjTWWjNBKuKzPb/+cuGfbSULDZxTu4k=;
+	s=korg; t=1751554326;
+	bh=jr32VKFARZiDUktzfKYJVQP2q/vMN6SgYDKLaEc2l9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oK4JYGziSM/CrLg2a3a7YNSQYMHPktNuE4bZEOokfnmNu6jzk047+oroLGGRq7NnA
-	 81Kh9sS5O7O1bLPeqKcqDVTa4p+D68vHOJARvmyvrAoWNtX2rKXV0Xaa0VG6XXwcKK
-	 3mV4A3N3TXn9RWNfcuZfbl+H7cJ7oVoeHt8ucCE0=
+	b=fsmlBy3se0R+QFckDXAGPfz4xMUSpYpw1rBFr433gBWG+QEBWJQ0uziUgPgjWBl5C
+	 GXrAAdW5NOK0KtPtFaUEL+rZ6daFNULzZN1KBdmL5/Jg6ebF8KEZA0wFD4QtO0CTfl
+	 M18Zc12XtKMbn0tXSGWroKVmgZbfi4VfZAFNZvao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexis Czezar Torreno <alexisczezar.torreno@analog.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/132] hwmon: (pmbus/max34440) Fix support for max34451
-Date: Thu,  3 Jul 2025 16:41:38 +0200
-Message-ID: <20250703143939.759330430@linuxfoundation.org>
+	Aaron Kling <webgeek1234@gmail.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.12 151/218] drm/tegra: Assign plane type before registration
+Date: Thu,  3 Jul 2025 16:41:39 +0200
+Message-ID: <20250703144002.187412849@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,149 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Czezar Torreno <alexisczezar.torreno@analog.com>
+From: Thierry Reding <treding@nvidia.com>
 
-[ Upstream commit 19932f844f3f51646f762f3eac4744ec3a405064 ]
+commit 9ff4fdf4f44b69237c0afc1d3a8dac916ce66f3e upstream.
 
-The max344** family has an issue with some PMBUS address being switched.
-This includes max34451 however version MAX34451-NA6 and later has this
-issue fixed and this commit supports that update.
+Changes to a plane's type after it has been registered aren't propagated
+to userspace automatically. This could possibly be achieved by updating
+the property, but since we can already determine which type this should
+be before the registration, passing in the right type from the start is
+a much better solution.
 
-Signed-off-by: Alexis Czezar Torreno <alexisczezar.torreno@analog.com>
-Link: https://lore.kernel.org/r/20250407-dev_adpm12160-v3-1-9cd3095445c8@analog.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Aaron Kling <webgeek1234@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Cc: stable@vger.kernel.org
+Fixes: 473079549f27 ("drm/tegra: dc: Add Tegra186 support")
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250421-tegra-drm-primary-v2-1-7f740c4c2121@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/max34440.c | 48 +++++++++++++++++++++++++++++++---
- 1 file changed, 44 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/tegra/dc.c  |   12 ++++++++----
+ drivers/gpu/drm/tegra/hub.c |    4 ++--
+ drivers/gpu/drm/tegra/hub.h |    3 ++-
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/max34440.c b/drivers/hwmon/pmbus/max34440.c
-index ea7609058a12f..91359647d1e78 100644
---- a/drivers/hwmon/pmbus/max34440.c
-+++ b/drivers/hwmon/pmbus/max34440.c
-@@ -34,16 +34,21 @@ enum chips { max34440, max34441, max34446, max34451, max34460, max34461 };
- /*
-  * The whole max344* family have IOUT_OC_WARN_LIMIT and IOUT_OC_FAULT_LIMIT
-  * swapped from the standard pmbus spec addresses.
-+ * For max34451, version MAX34451ETNA6+ and later has this issue fixed.
-  */
- #define MAX34440_IOUT_OC_WARN_LIMIT	0x46
- #define MAX34440_IOUT_OC_FAULT_LIMIT	0x4A
- 
-+#define MAX34451ETNA6_MFR_REV		0x0012
+--- a/drivers/gpu/drm/tegra/dc.c
++++ b/drivers/gpu/drm/tegra/dc.c
+@@ -1320,10 +1320,16 @@ static struct drm_plane *tegra_dc_add_sh
+ 		if (wgrp->dc == dc->pipe) {
+ 			for (j = 0; j < wgrp->num_windows; j++) {
+ 				unsigned int index = wgrp->windows[j];
++				enum drm_plane_type type;
 +
- #define MAX34451_MFR_CHANNEL_CONFIG	0xe4
- #define MAX34451_MFR_CHANNEL_CONFIG_SEL_MASK	0x3f
++				if (primary)
++					type = DRM_PLANE_TYPE_OVERLAY;
++				else
++					type = DRM_PLANE_TYPE_PRIMARY;
  
- struct max34440_data {
- 	int id;
- 	struct pmbus_driver_info info;
-+	u8 iout_oc_warn_limit;
-+	u8 iout_oc_fault_limit;
- };
+ 				plane = tegra_shared_plane_create(drm, dc,
+ 								  wgrp->index,
+-								  index);
++								  index, type);
+ 				if (IS_ERR(plane))
+ 					return plane;
  
- #define to_max34440_data(x)  container_of(x, struct max34440_data, info)
-@@ -60,11 +65,11 @@ static int max34440_read_word_data(struct i2c_client *client, int page,
- 	switch (reg) {
- 	case PMBUS_IOUT_OC_FAULT_LIMIT:
- 		ret = pmbus_read_word_data(client, page, phase,
--					   MAX34440_IOUT_OC_FAULT_LIMIT);
-+					   data->iout_oc_fault_limit);
- 		break;
- 	case PMBUS_IOUT_OC_WARN_LIMIT:
- 		ret = pmbus_read_word_data(client, page, phase,
--					   MAX34440_IOUT_OC_WARN_LIMIT);
-+					   data->iout_oc_warn_limit);
- 		break;
- 	case PMBUS_VIRT_READ_VOUT_MIN:
- 		ret = pmbus_read_word_data(client, page, phase,
-@@ -133,11 +138,11 @@ static int max34440_write_word_data(struct i2c_client *client, int page,
+@@ -1331,10 +1337,8 @@ static struct drm_plane *tegra_dc_add_sh
+ 				 * Choose the first shared plane owned by this
+ 				 * head as the primary plane.
+ 				 */
+-				if (!primary) {
+-					plane->type = DRM_PLANE_TYPE_PRIMARY;
++				if (!primary)
+ 					primary = plane;
+-				}
+ 			}
+ 		}
+ 	}
+--- a/drivers/gpu/drm/tegra/hub.c
++++ b/drivers/gpu/drm/tegra/hub.c
+@@ -755,9 +755,9 @@ static const struct drm_plane_helper_fun
+ struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
+ 					    struct tegra_dc *dc,
+ 					    unsigned int wgrp,
+-					    unsigned int index)
++					    unsigned int index,
++					    enum drm_plane_type type)
+ {
+-	enum drm_plane_type type = DRM_PLANE_TYPE_OVERLAY;
+ 	struct tegra_drm *tegra = drm->dev_private;
+ 	struct tegra_display_hub *hub = tegra->hub;
+ 	struct tegra_shared_plane *plane;
+--- a/drivers/gpu/drm/tegra/hub.h
++++ b/drivers/gpu/drm/tegra/hub.h
+@@ -80,7 +80,8 @@ void tegra_display_hub_cleanup(struct te
+ struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
+ 					    struct tegra_dc *dc,
+ 					    unsigned int wgrp,
+-					    unsigned int index);
++					    unsigned int index,
++					    enum drm_plane_type type);
  
- 	switch (reg) {
- 	case PMBUS_IOUT_OC_FAULT_LIMIT:
--		ret = pmbus_write_word_data(client, page, MAX34440_IOUT_OC_FAULT_LIMIT,
-+		ret = pmbus_write_word_data(client, page, data->iout_oc_fault_limit,
- 					    word);
- 		break;
- 	case PMBUS_IOUT_OC_WARN_LIMIT:
--		ret = pmbus_write_word_data(client, page, MAX34440_IOUT_OC_WARN_LIMIT,
-+		ret = pmbus_write_word_data(client, page, data->iout_oc_warn_limit,
- 					    word);
- 		break;
- 	case PMBUS_VIRT_RESET_POUT_HISTORY:
-@@ -235,6 +240,25 @@ static int max34451_set_supported_funcs(struct i2c_client *client,
- 	 */
- 
- 	int page, rv;
-+	bool max34451_na6 = false;
-+
-+	rv = i2c_smbus_read_word_data(client, PMBUS_MFR_REVISION);
-+	if (rv < 0)
-+		return rv;
-+
-+	if (rv >= MAX34451ETNA6_MFR_REV) {
-+		max34451_na6 = true;
-+		data->info.format[PSC_VOLTAGE_IN] = direct;
-+		data->info.format[PSC_CURRENT_IN] = direct;
-+		data->info.m[PSC_VOLTAGE_IN] = 1;
-+		data->info.b[PSC_VOLTAGE_IN] = 0;
-+		data->info.R[PSC_VOLTAGE_IN] = 3;
-+		data->info.m[PSC_CURRENT_IN] = 1;
-+		data->info.b[PSC_CURRENT_IN] = 0;
-+		data->info.R[PSC_CURRENT_IN] = 2;
-+		data->iout_oc_fault_limit = PMBUS_IOUT_OC_FAULT_LIMIT;
-+		data->iout_oc_warn_limit = PMBUS_IOUT_OC_WARN_LIMIT;
-+	}
- 
- 	for (page = 0; page < 16; page++) {
- 		rv = i2c_smbus_write_byte_data(client, PMBUS_PAGE, page);
-@@ -251,16 +275,30 @@ static int max34451_set_supported_funcs(struct i2c_client *client,
- 		case 0x20:
- 			data->info.func[page] = PMBUS_HAVE_VOUT |
- 				PMBUS_HAVE_STATUS_VOUT;
-+
-+			if (max34451_na6)
-+				data->info.func[page] |= PMBUS_HAVE_VIN |
-+					PMBUS_HAVE_STATUS_INPUT;
- 			break;
- 		case 0x21:
- 			data->info.func[page] = PMBUS_HAVE_VOUT;
-+
-+			if (max34451_na6)
-+				data->info.func[page] |= PMBUS_HAVE_VIN;
- 			break;
- 		case 0x22:
- 			data->info.func[page] = PMBUS_HAVE_IOUT |
- 				PMBUS_HAVE_STATUS_IOUT;
-+
-+			if (max34451_na6)
-+				data->info.func[page] |= PMBUS_HAVE_IIN |
-+					PMBUS_HAVE_STATUS_INPUT;
- 			break;
- 		case 0x23:
- 			data->info.func[page] = PMBUS_HAVE_IOUT;
-+
-+			if (max34451_na6)
-+				data->info.func[page] |= PMBUS_HAVE_IIN;
- 			break;
- 		default:
- 			break;
-@@ -494,6 +532,8 @@ static int max34440_probe(struct i2c_client *client)
- 		return -ENOMEM;
- 	data->id = i2c_match_id(max34440_id, client)->driver_data;
- 	data->info = max34440_info[data->id];
-+	data->iout_oc_fault_limit = MAX34440_IOUT_OC_FAULT_LIMIT;
-+	data->iout_oc_warn_limit = MAX34440_IOUT_OC_WARN_LIMIT;
- 
- 	if (data->id == max34451) {
- 		rv = max34451_set_supported_funcs(client, data);
--- 
-2.39.5
-
+ int tegra_display_hub_atomic_check(struct drm_device *drm,
+ 				   struct drm_atomic_state *state);
 
 
 
