@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-159845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAAF1AF7B03
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:20:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40928AF7A45
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 696BC6E2940
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:13:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B4003ACA0A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2C82F0022;
-	Thu,  3 Jul 2025 15:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04CBE2E7197;
+	Thu,  3 Jul 2025 15:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUxoOp4w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6E8TquS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C4A2EF66B;
-	Thu,  3 Jul 2025 15:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87641E9B3D;
+	Thu,  3 Jul 2025 15:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555539; cv=none; b=F6GOsSwtc8dit0Z/gUmlyPRRpgJAvi07NSTYoKf3ea8cTRCLvKZugD9zQGEbg+yNxw2vHS1WvaCUquBjkZNiyPpJecn2D8F3BPBpOKdfXL9dADs823Y4KZYUCOiJ9tG57XKDo3ABbcPGoM7Z9PTrCRVX/i+xegVgG+9sxltTnrU=
+	t=1751555279; cv=none; b=B40DfgspaehrT+MxrWSuoAdHgy3mJ/hht0rjSqhbER5fcIUmzivyUpjx+uqivZgitWrQj86pNhsNRORwTlnP+LsfhuR0MthN0EZugLobYTGfE9XvWAyVcGd3LeHuejWPMBJDaDeo2om6EIGhVsjfA2IS7+E+cFNNMxdWdKRY3P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555539; c=relaxed/simple;
-	bh=VRlXP4k3DhQ86GLCKVMUm0w/RCq/6E+bg6ELZ2biV48=;
+	s=arc-20240116; t=1751555279; c=relaxed/simple;
+	bh=2LptzDQN6BKVKngLBmvrJoAYc6hkJ6aPrvqvTPIVpkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IksDUxLYA9YjFOenf9tr2fUxXCsHcB3rbn2lpg4SqFQ8HX2NjgFGEGuVPqKkXiFMzpSgygtLGfpnqDFjZWXsvDJUEgwrv2cP/otP2UDgW0Iq03w/Bbrd7Hs+Zv92b2PGlisfUCB4JdPjn0I1VX0IaqCuoJzADO4R4U9m79h/axw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUxoOp4w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0645FC4CEE3;
-	Thu,  3 Jul 2025 15:12:17 +0000 (UTC)
+	 MIME-Version; b=N52Nl5TdSQF1/Eqp1IWfvEuzp9tx5C89r2Zu8A+PAOwejUsrP3JPfN5rP9yPHjyKsl6RXrhiWFKjY5Ggo/BeBC7KLsAx0mAZgpZOjr2JnhJ+cZ83eTtWnjNwqRScJ/lhgHzo+ycTbbLNJQbEa+u/rJVgVoJEd7eci7pYCRGlbbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6E8TquS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AA8C4CEE3;
+	Thu,  3 Jul 2025 15:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555538;
-	bh=VRlXP4k3DhQ86GLCKVMUm0w/RCq/6E+bg6ELZ2biV48=;
+	s=korg; t=1751555279;
+	bh=2LptzDQN6BKVKngLBmvrJoAYc6hkJ6aPrvqvTPIVpkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YUxoOp4wMpSkEjcp/YNekk5gvqMCpSTt1afvoeF6+92WuolMwe1BrPTwar1/n1ldb
-	 iTinFNIUObV6aSASFqe88RPl+sOh3QZ+78PW70hVMvHqcw6mPAxr0NM9SEn2lQm1hU
-	 aO8uBqNhxGYpgSLoQrsZVzR1csKmFwbAmCssC1/c=
+	b=F6E8TquS1JbqIP9JPvKGyvA/0XSBgwZzNPWs6aHMGgN+IulW9bo0LwErqZ5Ca/CW9
+	 iLecEr4MekN8CaTDWHMM/opYu+QsqM/nYuGeNC23eFHOK/hTAd0ptlv3TJDYQv90l+
+	 izg7v7roo7MKUgpvNMQLodCxZXXk8dYdKIUw61Z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/139] ovl: Check for NULL d_inode() in ovl_dentry_upper()
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+	Hailong Liu <hailong.liu@oppo.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"zhangpeng.00@bytedance.com" <zhangpeng.00@bytedance.com>,
+	Steve Kang <Steve.Kang@unisoc.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 188/263] maple_tree: fix MA_STATE_PREALLOC flag in mas_preallocate()
 Date: Thu,  3 Jul 2025 16:41:48 +0200
-Message-ID: <20250703143942.935794509@linuxfoundation.org>
+Message-ID: <20250703144011.881857680@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +69,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-[ Upstream commit 8a39f1c870e9d6fbac5638f3a42a6a6363829c49 ]
+commit fba46a5d83ca8decb338722fb4899026d8d9ead2 upstream.
 
-In ovl_path_type() and ovl_is_metacopy_dentry() GCC notices that it is
-possible for OVL_E() to return NULL (which implies that d_inode(dentry)
-may be NULL). This would result in out of bounds reads via container_of(),
-seen with GCC 15's -Warray-bounds -fdiagnostics-details. For example:
+Temporarily clear the preallocation flag when explicitly requesting
+allocations.  Pre-existing allocations are already counted against the
+request through mas_node_count_gfp(), but the allocations will not happen
+if the MA_STATE_PREALLOC flag is set.  This flag is meant to avoid
+re-allocating in bulk allocation mode, and to detect issues with
+preallocation calculations.
 
-In file included from arch/x86/include/generated/asm/rwonce.h:1,
-                 from include/linux/compiler.h:339,
-                 from include/linux/export.h:5,
-                 from include/linux/linkage.h:7,
-                 from include/linux/fs.h:5,
-                 from fs/overlayfs/util.c:7:
-In function 'ovl_upperdentry_dereference',
-    inlined from 'ovl_dentry_upper' at ../fs/overlayfs/util.c:305:9,
-    inlined from 'ovl_path_type' at ../fs/overlayfs/util.c:216:6:
-include/asm-generic/rwonce.h:44:26: error: array subscript 0 is outside array bounds of 'struct inode[7486503276667837]' [-Werror=array-bounds=]
-   44 | #define __READ_ONCE(x)  (*(const volatile __unqual_scalar_typeof(x) *)&(x))
-      |                         ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-include/asm-generic/rwonce.h:50:9: note: in expansion of macro '__READ_ONCE'
-   50 |         __READ_ONCE(x);                                                 \
-      |         ^~~~~~~~~~~
-fs/overlayfs/ovl_entry.h:195:16: note: in expansion of macro 'READ_ONCE'
-  195 |         return READ_ONCE(oi->__upperdentry);
-      |                ^~~~~~~~~
-  'ovl_path_type': event 1
-  185 |         return inode ? OVL_I(inode)->oe : NULL;
-  'ovl_path_type': event 2
+The MA_STATE_PREALLOC flag should also always be set on zero allocations
+so that detection of underflow allocations will print a WARN_ON() during
+consumption.
 
-Avoid this by allowing ovl_dentry_upper() to return NULL if d_inode() is
-NULL, as that means the problematic dereferencing can never be reached.
-Note that this fixes the over-eager compiler warning in an effort to
-being able to enable -Warray-bounds globally. There is no known
-behavioral bug here.
+User visible effect of this flaw is a WARN_ON() followed by a null pointer
+dereference when subsequent requests for larger number of nodes is
+ignored, such as the vma merge retry in mmap_region() caused by drivers
+altering the vma flags (which happens in v6.6, at least)
 
-Suggested-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250616184521.3382795-3-Liam.Howlett@oracle.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Reported-by: Hailong Liu <hailong.liu@oppo.com>
+Link: https://lore.kernel.org/all/1652f7eb-a51b-4fee-8058-c73af63bacd1@oppo.com/
+Link: https://lore.kernel.org/all/20250428184058.1416274-1-Liam.Howlett@oracle.com/
+Link: https://lore.kernel.org/all/20250429014754.1479118-1-Liam.Howlett@oracle.com/
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Hailong Liu <hailong.liu@oppo.com>
+Cc: zhangpeng.00@bytedance.com <zhangpeng.00@bytedance.com>
+Cc: Steve Kang <Steve.Kang@unisoc.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/overlayfs/util.c | 4 +++-
+ lib/maple_tree.c |    4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
-index 0bf3ffcd072f6..0da1cd01d01cf 100644
---- a/fs/overlayfs/util.c
-+++ b/fs/overlayfs/util.c
-@@ -274,7 +274,9 @@ enum ovl_path_type ovl_path_realdata(struct dentry *dentry, struct path *path)
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -5496,8 +5496,9 @@ int mas_preallocate(struct ma_state *mas
+ 	mas->store_type = mas_wr_store_type(&wr_mas);
+ 	request = mas_prealloc_calc(mas, entry);
+ 	if (!request)
+-		return ret;
++		goto set_flag;
  
- struct dentry *ovl_dentry_upper(struct dentry *dentry)
- {
--	return ovl_upperdentry_dereference(OVL_I(d_inode(dentry)));
-+	struct inode *inode = d_inode(dentry);
-+
-+	return inode ? ovl_upperdentry_dereference(OVL_I(inode)) : NULL;
++	mas->mas_flags &= ~MA_STATE_PREALLOC;
+ 	mas_node_count_gfp(mas, request, gfp);
+ 	if (mas_is_err(mas)) {
+ 		mas_set_alloc_req(mas, 0);
+@@ -5507,6 +5508,7 @@ int mas_preallocate(struct ma_state *mas
+ 		return ret;
+ 	}
+ 
++set_flag:
+ 	mas->mas_flags |= MA_STATE_PREALLOC;
+ 	return ret;
  }
- 
- struct dentry *ovl_dentry_lower(struct dentry *dentry)
--- 
-2.39.5
-
 
 
 
