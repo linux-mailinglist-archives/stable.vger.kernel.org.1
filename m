@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A03EAF78A4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 575FAAF79B0
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84C46583105
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FD835857A8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A962EFD8B;
-	Thu,  3 Jul 2025 14:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B702E339E;
+	Thu,  3 Jul 2025 15:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKD1C+dz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHgNHrNg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF072EF9C1;
-	Thu,  3 Jul 2025 14:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473F638F91;
+	Thu,  3 Jul 2025 15:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554256; cv=none; b=C8sWA05zlnn57QyxiU7o3o6DL7HbLxYBxGKrc0SXZzxSsAy7RJKoc6TyeN9BsSvDv1OXCxhUXWmdne/J9bN6qQUEiwa1YQdNqK5lYBEYlAfXYXeyc0qcIytWQJfQVzsTBvi7C7UanAYs80ODYoO3HubiSEhzIM+mOovZbGu/w20=
+	t=1751554915; cv=none; b=TfWAz2AmDdXb6ddBvXIj5vCuqffBrTckscMY/Mfl2eIjUO60qwodzz0o3KLXpRc2qNxwnsPX4VUUDoxs8Dv7K03KWhZpioMEK5VAYonFVRTJHeCBdRS0/Rb+7vpie9jD0xEQo1mI4bW11aGM8eq1NUJRdPd7SwzvUk0epU9iWc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554256; c=relaxed/simple;
-	bh=eJvx+2EFDiXD3JkpaV9HTI2u6cM2pTudbqiIcaZhUU8=;
+	s=arc-20240116; t=1751554915; c=relaxed/simple;
+	bh=98v3aOt1yABcPc/Miy/zNvx6el3GTa6CbIi2Z1srxT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JRyVbyIf2UyKV0TcLAH/4mHS7NMK3H4gFsmYMYOFwxD7aPWeeyWCQm1J5u8NcYlcFAM1SXUhDIBJrKB3px5NYnW8tt+09U7PzNxWyT+teMFxzz2nCiWkcXNeeSCyQ6lNLFmC9c6wHarOANboY2j+xcWEJrPA7RVD5sfFEgs7uWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKD1C+dz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E54C4CEE3;
-	Thu,  3 Jul 2025 14:50:55 +0000 (UTC)
+	 MIME-Version; b=FYxG8lzLHUKOFcvkLYEV359IQyUItFQ848WL67PHNHGBq516yfs0xbwuvouEc4YpmdQ6wvkAQiAu36cz5auLP/baYJRHLWZGrJsaljDschYdXa4eI4dAkg8zJm5ziNLRhZ2E6lNu4xwE93p+Omz1pA696GlsLDu8OuVIspNkTdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHgNHrNg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEBCC4CEE3;
+	Thu,  3 Jul 2025 15:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554256;
-	bh=eJvx+2EFDiXD3JkpaV9HTI2u6cM2pTudbqiIcaZhUU8=;
+	s=korg; t=1751554915;
+	bh=98v3aOt1yABcPc/Miy/zNvx6el3GTa6CbIi2Z1srxT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eKD1C+dzU+UNbnDcxAm0R2GLWYA/05LdaQ1mRKPWFFXUaubzYcgwpkRzrrHeXnJpd
-	 Vsc3Tw+9s02p3RqZRuSQofegg/8ttG/tqFqbk9hRD2FjrILP4h6Xq6zpDZjvD2NYbl
-	 YvzkUa/UuIOcLLupxeZTyT7P2yN+eXwuVLRGJusE=
+	b=GHgNHrNgB/Oct/YE3K7O2usZu0Qj0dBBRF1iw359i8irWz2ryJlBCzi9VG7juNsZi
+	 qD5SXspVbmqiR3pALfJDRXtctAmHKRkD43CgrvUgUUjjpD884p/YxFpFAmKOOsHZ3H
+	 kRMK9o2elw1Ax/BpK+G57CszNuhBw9s2LYc21wg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zeitlhofer <thomas.zeitlhofer+lkml@ze-it.at>,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 090/218] HID: wacom: fix crash in wacom_aes_battery_handler()
+	David Hildenbrand <david@redhat.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.15 118/263] io_uring/rsrc: dont rely on user vaddr alignment
 Date: Thu,  3 Jul 2025 16:40:38 +0200
-Message-ID: <20250703143959.541483988@linuxfoundation.org>
+Message-ID: <20250703144009.088988253@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zeitlhofer <thomas.zeitlhofer+lkml@ze-it.at>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit f3054152c12e2eed1e72704aff47b0ea58229584 ]
+commit 3a3c6d61577dbb23c09df3e21f6f9eda1ecd634b upstream.
 
-Commit fd2a9b29dc9c ("HID: wacom: Remove AES power_supply after extended
-inactivity") introduced wacom_aes_battery_handler() which is scheduled
-as a delayed work (aes_battery_work).
+There is no guaranteed alignment for user pointers, however the
+calculation of an offset of the first page into a folio after coalescing
+uses some weird bit mask logic, get rid of it.
 
-In wacom_remove(), aes_battery_work is not canceled. Consequently, if
-the device is removed while aes_battery_work is still pending, then hard
-crashes or "Oops: general protection fault..." are experienced when
-wacom_aes_battery_handler() is finally called. E.g., this happens with
-built-in USB devices after resume from hibernate when aes_battery_work
-was still pending at the time of hibernation.
-
-So, take care to cancel aes_battery_work in wacom_remove().
-
-Fixes: fd2a9b29dc9c ("HID: wacom: Remove AES power_supply after extended inactivity")
-Signed-off-by: Thomas Zeitlhofer <thomas.zeitlhofer+lkml@ze-it.at>
-Acked-by: Ping Cheng <ping.cheng@wacom.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: David Hildenbrand <david@redhat.com>
+Fixes: a8edbb424b139 ("io_uring/rsrc: enable multi-hugepage buffer coalescing")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/io-uring/e387b4c78b33f231105a601d84eefd8301f57954.1750771718.git.asml.silence@gmail.com/
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_sys.c | 1 +
- 1 file changed, 1 insertion(+)
+ io_uring/rsrc.c |    7 ++++++-
+ io_uring/rsrc.h |    1 +
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
-index 34428349fa311..64afaa243942c 100644
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2874,6 +2874,7 @@ static void wacom_remove(struct hid_device *hdev)
- 	hid_hw_stop(hdev);
+--- a/io_uring/rsrc.c
++++ b/io_uring/rsrc.c
+@@ -738,6 +738,7 @@ bool io_check_coalesce_buffer(struct pag
  
- 	cancel_delayed_work_sync(&wacom->init_work);
-+	cancel_delayed_work_sync(&wacom->aes_battery_work);
- 	cancel_work_sync(&wacom->wireless_work);
- 	cancel_work_sync(&wacom->battery_work);
- 	cancel_work_sync(&wacom->remote_work);
--- 
-2.39.5
-
+ 	data->nr_pages_mid = folio_nr_pages(folio);
+ 	data->folio_shift = folio_shift(folio);
++	data->first_folio_page_idx = folio_page_idx(folio, page_array[0]);
+ 
+ 	/*
+ 	 * Check if pages are contiguous inside a folio, and all folios have
+@@ -831,7 +832,11 @@ static struct io_rsrc_node *io_sqe_buffe
+ 	if (coalesced)
+ 		imu->folio_shift = data.folio_shift;
+ 	refcount_set(&imu->refs, 1);
+-	off = (unsigned long) iov->iov_base & ((1UL << imu->folio_shift) - 1);
++
++	off = (unsigned long)iov->iov_base & ~PAGE_MASK;
++	if (coalesced)
++		off += data.first_folio_page_idx << PAGE_SHIFT;
++
+ 	node->buf = imu;
+ 	ret = 0;
+ 
+--- a/io_uring/rsrc.h
++++ b/io_uring/rsrc.h
+@@ -49,6 +49,7 @@ struct io_imu_folio_data {
+ 	unsigned int	nr_pages_mid;
+ 	unsigned int	folio_shift;
+ 	unsigned int	nr_folios;
++	unsigned long	first_folio_page_idx;
+ };
+ 
+ bool io_rsrc_cache_init(struct io_ring_ctx *ctx);
 
 
 
