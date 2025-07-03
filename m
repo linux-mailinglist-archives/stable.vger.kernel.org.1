@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-159997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FAC9AF7BC9
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49860AF7922
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FE8B5A11E7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:22:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66D694A52C9
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC8223A99E;
-	Thu,  3 Jul 2025 15:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9837B2E7BB6;
+	Thu,  3 Jul 2025 14:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kjyroke"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBfxiBzS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270791DA23;
-	Thu,  3 Jul 2025 15:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535332E7BBE;
+	Thu,  3 Jul 2025 14:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556039; cv=none; b=WMjE87aCwa7NuvzG/55MVv51VHbP9SuOLNDFvIWApV12pFf5TVJp/CL0Oh2GfbJdGQ1PShjndiYbwnWO+arv0eqDVGtcYPYyHyOCcutJsPQTsav83Xu/nnpbKkKu/PbGqNvdeqGDjkK+dm/knmaBx02sozId2nBHEILg7QWtGbQ=
+	t=1751554554; cv=none; b=oQNI1Z44MQbYIhCiqDFDDJSI1Sulzb0Gd9yDWnualZci5ildueib80066PFZENA6aAUXhJ2l1U3ydbV0noeGuXFP1zIsnVQnSS0XXlbwskpHxTqizITouptXkFkeFCPsGxqGmg8VulY+4butqfY5knY1tMgaKoR6048mAwIkLpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556039; c=relaxed/simple;
-	bh=BlJKlORyZdqbPJ1UC1wF2BobK2QKWLChb2Xf4lV8HrQ=;
+	s=arc-20240116; t=1751554554; c=relaxed/simple;
+	bh=Z0IYY42aEhVQWAGKDidrLfnTo0y/P9hBeSizFwrZsxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wz3FtIUQbnxD/SOfCgMko3I3p0Z04oolGfwgXyivzSfSe5pD/tFPBtCJUO+egAQjFW7icMx+h2hmVWfFZGDVMROvRPT/e2FOj5eh/Uh26WPL53M+lUnjyXe9Wut/PhZWzaEL+VPJyFvhsEe5YZRU0z4RS9cvZyngGctPTpXade0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kjyroke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A323DC4CEE3;
-	Thu,  3 Jul 2025 15:20:38 +0000 (UTC)
+	 MIME-Version; b=GfgvqqMBF7KXDscfMLxWEDFvbcy0birVpzlNRYlXnivVRYJCt185fjB7hobb6Pk9Um/lJSvbbHUgE6/ypE7NaSnrnGdFSTYNYp/UavN5pApp+2AV9Z6/zRXo+N/SOgwjBi9fekJvTliWgUqxBMf/Y6DbrQZ2Sdv7Bn9kAAdORAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBfxiBzS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5BC3C4CEE3;
+	Thu,  3 Jul 2025 14:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556039;
-	bh=BlJKlORyZdqbPJ1UC1wF2BobK2QKWLChb2Xf4lV8HrQ=;
+	s=korg; t=1751554554;
+	bh=Z0IYY42aEhVQWAGKDidrLfnTo0y/P9hBeSizFwrZsxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0kjyrokebkR7RGVy3idWAsRPzbcT57HTNPaCBfPa/FHDuPftIdRz+NkDXr7VxX59k
-	 qAF4dD9pzWtQfThFAq2HZ23/mzx0poiRr3B8n4jo98CyivfF00bejyLQVUFsweDhOc
-	 rotZFuKHGzHv5vVXUQxjOv7HpRwjUkm1jPyFrjyo=
+	b=kBfxiBzSS3bDcTTjTYXQQXmSCiivMB8NqwDrzRpEkykXlzPpiW3XGtnUGU5CChhMX
+	 xmCosR9DsSeKRelgKrj1giZCioxa6GJyA8MZuu+B4ckfoML7IeMJBMiGJiu3I27Z1G
+	 VlJEc9OsohVs4yTiubalQuisTTTLNyvU9bFrjWO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kameron Carr <kameroncarr@linux.microsoft.com>,
-	Nuno Das Neves <nunodasneves@linux.microsoft.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/132] Drivers: hv: Change hv_free_hyperv_page() to take void * argument
-Date: Thu,  3 Jul 2025 16:42:24 +0200
-Message-ID: <20250703143941.584078964@linuxfoundation.org>
+Subject: [PATCH 6.12 197/218] iio: dac: ad3552r-common: fix ad3541/2r ranges
+Date: Thu,  3 Jul 2025 16:42:25 +0200
+Message-ID: <20250703144004.089995663@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,131 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kameron Carr <kameroncarr@linux.microsoft.com>
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-[ Upstream commit a6fe043880820981f6e4918240f967ea79bb063e ]
+[ Upstream commit 1e758b613212b6964518a67939535910b5aee831 ]
 
-Currently hv_free_hyperv_page() takes an unsigned long argument, which
-is inconsistent with the void * return value from the corresponding
-hv_alloc_hyperv_page() function and variants. This creates unnecessary
-extra casting.
+Fix ad3541/2r voltage ranges to be as per ad3542r datasheet,
+rev. C, table 38 (page 57).
 
-Change the hv_free_hyperv_page() argument type to void *.
-Also remove redundant casts from invocations of
-hv_alloc_hyperv_page() and variants.
+The wrong ad354xr ranges was generating erroneous Vpp output.
 
-Signed-off-by: Kameron Carr <kameroncarr@linux.microsoft.com>
-Reviewed-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Link: https://lore.kernel.org/r/1687558189-19734-1-git-send-email-kameroncarr@linux.microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Stable-dep-of: 09eea7ad0b8e ("Drivers: hv: Allocate interrupt and monitor pages aligned to system page boundary")
+In more details:
+- fix wrong number of ranges, they are 5 ranges, not 6,
+- remove non-existent 0-3V range,
+- adjust order, since ad3552r_find_range() get a wrong index,
+  producing a wrong Vpp as output.
+
+Retested all the ranges on real hardware, EVALAD3542RFMCZ:
+
+adi,output-range-microvolt (fdt):
+<(000000) (2500000)>;   ok (Rfbx1, switch 10)
+<(000000) (5000000)>;   ok (Rfbx1, switch 10)
+<(000000) (10000000)>;  ok (Rfbx1, switch 10)
+<(-5000000) (5000000)>; ok (Rfbx2, switch +/- 5)
+<(-2500000) (7500000)>; ok (Rfbx2, switch -2.5/7.5)
+
+Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-1-2dac02f04638@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/connection.c        | 13 ++++++-------
- drivers/hv/hv_common.c         | 10 +++++-----
- include/asm-generic/mshyperv.h |  2 +-
- 3 files changed, 12 insertions(+), 13 deletions(-)
+ drivers/iio/dac/ad3552r-common.c | 5 ++---
+ drivers/iio/dac/ad3552r.h        | 9 ++++-----
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/hv/connection.c b/drivers/hv/connection.c
-index 5978e9dbc286f..ebf15f31d97e3 100644
---- a/drivers/hv/connection.c
-+++ b/drivers/hv/connection.c
-@@ -209,8 +209,7 @@ int vmbus_connect(void)
- 	 * Setup the vmbus event connection for channel interrupt
- 	 * abstraction stuff
- 	 */
--	vmbus_connection.int_page =
--	(void *)hv_alloc_hyperv_zeroed_page();
-+	vmbus_connection.int_page = hv_alloc_hyperv_zeroed_page();
- 	if (vmbus_connection.int_page == NULL) {
- 		ret = -ENOMEM;
- 		goto cleanup;
-@@ -225,8 +224,8 @@ int vmbus_connect(void)
- 	 * Setup the monitor notification facility. The 1st page for
- 	 * parent->child and the 2nd page for child->parent
- 	 */
--	vmbus_connection.monitor_pages[0] = (void *)hv_alloc_hyperv_page();
--	vmbus_connection.monitor_pages[1] = (void *)hv_alloc_hyperv_page();
-+	vmbus_connection.monitor_pages[0] = hv_alloc_hyperv_page();
-+	vmbus_connection.monitor_pages[1] = hv_alloc_hyperv_page();
- 	if ((vmbus_connection.monitor_pages[0] == NULL) ||
- 	    (vmbus_connection.monitor_pages[1] == NULL)) {
- 		ret = -ENOMEM;
-@@ -333,15 +332,15 @@ void vmbus_disconnect(void)
- 		destroy_workqueue(vmbus_connection.work_queue);
+diff --git a/drivers/iio/dac/ad3552r-common.c b/drivers/iio/dac/ad3552r-common.c
+index 2dfeca3656d21..94869ad15c27e 100644
+--- a/drivers/iio/dac/ad3552r-common.c
++++ b/drivers/iio/dac/ad3552r-common.c
+@@ -22,11 +22,10 @@ EXPORT_SYMBOL_NS_GPL(ad3552r_ch_ranges, IIO_AD3552R);
  
- 	if (vmbus_connection.int_page) {
--		hv_free_hyperv_page((unsigned long)vmbus_connection.int_page);
-+		hv_free_hyperv_page(vmbus_connection.int_page);
- 		vmbus_connection.int_page = NULL;
- 	}
+ const s32 ad3542r_ch_ranges[AD3542R_MAX_RANGES][2] = {
+ 	[AD3542R_CH_OUTPUT_RANGE_0__2P5V]	= { 0, 2500 },
+-	[AD3542R_CH_OUTPUT_RANGE_0__3V]		= { 0, 3000 },
+ 	[AD3542R_CH_OUTPUT_RANGE_0__5V]		= { 0, 5000 },
+ 	[AD3542R_CH_OUTPUT_RANGE_0__10V]	= { 0, 10000 },
+-	[AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V]	= { -2500, 7500 },
+-	[AD3542R_CH_OUTPUT_RANGE_NEG_5__5V]	= { -5000, 5000 }
++	[AD3542R_CH_OUTPUT_RANGE_NEG_5__5V]	= { -5000, 5000 },
++	[AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V]	= { -2500, 7500 }
+ };
+ EXPORT_SYMBOL_NS_GPL(ad3542r_ch_ranges, IIO_AD3552R);
  
- 	set_memory_encrypted((unsigned long)vmbus_connection.monitor_pages[0], 1);
- 	set_memory_encrypted((unsigned long)vmbus_connection.monitor_pages[1], 1);
+diff --git a/drivers/iio/dac/ad3552r.h b/drivers/iio/dac/ad3552r.h
+index 7511e3f1882cb..c20f64f80d5db 100644
+--- a/drivers/iio/dac/ad3552r.h
++++ b/drivers/iio/dac/ad3552r.h
+@@ -128,7 +128,8 @@
+ #define AD3552R_LDAC_PULSE_US				100
  
--	hv_free_hyperv_page((unsigned long)vmbus_connection.monitor_pages[0]);
--	hv_free_hyperv_page((unsigned long)vmbus_connection.monitor_pages[1]);
-+	hv_free_hyperv_page(vmbus_connection.monitor_pages[0]);
-+	hv_free_hyperv_page(vmbus_connection.monitor_pages[1]);
- 	vmbus_connection.monitor_pages[0] = NULL;
- 	vmbus_connection.monitor_pages[1] = NULL;
- }
-diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
-index 07338f6ec1e2c..2bc1aea070468 100644
---- a/drivers/hv/hv_common.c
-+++ b/drivers/hv/hv_common.c
-@@ -112,12 +112,12 @@ void *hv_alloc_hyperv_zeroed_page(void)
- }
- EXPORT_SYMBOL_GPL(hv_alloc_hyperv_zeroed_page);
+ #define AD3552R_MAX_RANGES	5
+-#define AD3542R_MAX_RANGES	6
++#define AD3542R_MAX_RANGES	5
++#define AD3552R_QUAD_SPI	2
  
--void hv_free_hyperv_page(unsigned long addr)
-+void hv_free_hyperv_page(void *addr)
- {
- 	if (PAGE_SIZE == HV_HYP_PAGE_SIZE)
--		free_page(addr);
-+		free_page((unsigned long)addr);
- 	else
--		kfree((void *)addr);
-+		kfree(addr);
- }
- EXPORT_SYMBOL_GPL(hv_free_hyperv_page);
+ extern const s32 ad3552r_ch_ranges[AD3552R_MAX_RANGES][2];
+ extern const s32 ad3542r_ch_ranges[AD3542R_MAX_RANGES][2];
+@@ -185,16 +186,14 @@ enum ad3552r_ch_vref_select {
+ enum ad3542r_ch_output_range {
+ 	/* Range from 0 V to 2.5 V. Requires Rfb1x connection */
+ 	AD3542R_CH_OUTPUT_RANGE_0__2P5V,
+-	/* Range from 0 V to 3 V. Requires Rfb1x connection  */
+-	AD3542R_CH_OUTPUT_RANGE_0__3V,
+ 	/* Range from 0 V to 5 V. Requires Rfb1x connection  */
+ 	AD3542R_CH_OUTPUT_RANGE_0__5V,
+ 	/* Range from 0 V to 10 V. Requires Rfb2x connection  */
+ 	AD3542R_CH_OUTPUT_RANGE_0__10V,
+-	/* Range from -2.5 V to 7.5 V. Requires Rfb2x connection  */
+-	AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V,
+ 	/* Range from -5 V to 5 V. Requires Rfb2x connection  */
+ 	AD3542R_CH_OUTPUT_RANGE_NEG_5__5V,
++	/* Range from -2.5 V to 7.5 V. Requires Rfb2x connection  */
++	AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V,
+ };
  
-@@ -250,7 +250,7 @@ static void hv_kmsg_dump_unregister(void)
- 	atomic_notifier_chain_unregister(&panic_notifier_list,
- 					 &hyperv_panic_report_block);
- 
--	hv_free_hyperv_page((unsigned long)hv_panic_page);
-+	hv_free_hyperv_page(hv_panic_page);
- 	hv_panic_page = NULL;
- }
- 
-@@ -267,7 +267,7 @@ static void hv_kmsg_dump_register(void)
- 	ret = kmsg_dump_register(&hv_kmsg_dumper);
- 	if (ret) {
- 		pr_err("Hyper-V: kmsg dump register error 0x%x\n", ret);
--		hv_free_hyperv_page((unsigned long)hv_panic_page);
-+		hv_free_hyperv_page(hv_panic_page);
- 		hv_panic_page = NULL;
- 	}
- }
-diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
-index bfb9eb9d7215b..a9b52845335c0 100644
---- a/include/asm-generic/mshyperv.h
-+++ b/include/asm-generic/mshyperv.h
-@@ -187,7 +187,7 @@ int hv_common_cpu_die(unsigned int cpu);
- 
- void *hv_alloc_hyperv_page(void);
- void *hv_alloc_hyperv_zeroed_page(void);
--void hv_free_hyperv_page(unsigned long addr);
-+void hv_free_hyperv_page(void *addr);
- 
- /**
-  * hv_cpu_number_to_vp_number() - Map CPU to VP.
+ enum ad3552r_ch_output_range {
 -- 
 2.39.5
 
