@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-159513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877AEAF7905
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3067DAF7BC6
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44F8E5467FF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDB834E4529
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9312F002B;
-	Thu,  3 Jul 2025 14:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3A61FDA94;
+	Thu,  3 Jul 2025 15:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K99egrWZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwrA4CWQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956E42EF9B8;
-	Thu,  3 Jul 2025 14:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D034086348;
+	Thu,  3 Jul 2025 15:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554465; cv=none; b=Wt5+wUPFI8SKUX5cLJM9dTl66qkHmnprINnKxbA53gH1wsekG6X2ozIB5n71j8btRNBRhTzyNrPjyAUYAPlllvljFJeGmVnswAY5AqClKgypdlNSsBmb1GMMJEEmLlmA9XCiG8zAiWIc3xixgqtTd4VbujGY0puYbaxHnF4pzFw=
+	t=1751555906; cv=none; b=C5iXGbb36EVlEzorQXpK9Nw+4yt3oRd0WOPG59EG53fjEQyzpCHZ7cFQPuILJMkNDnfx1fggHlwdmNWRSS+8ib1xC0NH8GFz49k8jlzD6uq49/I6ykiF1D3eajGRlbxnYXwwkFHZj2UKbz97yGdwKUxlxVByT9xxaROK5BO1qCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554465; c=relaxed/simple;
-	bh=8CdtrllSFJqPQh54cJaG5tJO1YPFzIR9oR+ELe8riYw=;
+	s=arc-20240116; t=1751555906; c=relaxed/simple;
+	bh=FGE3h5gZwBcw1Yvb3nQsuERROcP88fGc5AlaQB1emck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfKPt62VHvTp2uNW97LdPgVJeGKx5/IgsRzKe55WInjq9ajkKPpM472dqG2wPd1RXg+/yZUTt4rvh0i0bgPq3aj7/F+nlouquhFIWvANFsV4h9tK5W+773rVq78i5eG0M0CEW6Uf1YQFQk0mGovZC8cqbIVUo7auNjyplKeNvKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K99egrWZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283B8C4CEE3;
-	Thu,  3 Jul 2025 14:54:24 +0000 (UTC)
+	 MIME-Version; b=aj4wIqG/IFcRIe/++LJM5xx+Q3NKQQXEOmqfh7+i49LU2Z7Mj6PkoY8DIH4NtHfP3llb3VIH50c/xWineqV0Lx6zFhbtkpn8v7fkPWBeDLOUGMRPBOdksIXsnKJRmK4oaxixTw5iSYcxK6Roju/PHMnFXd3W6Buggdq43dVDCxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwrA4CWQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57578C4CEE3;
+	Thu,  3 Jul 2025 15:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554465;
-	bh=8CdtrllSFJqPQh54cJaG5tJO1YPFzIR9oR+ELe8riYw=;
+	s=korg; t=1751555906;
+	bh=FGE3h5gZwBcw1Yvb3nQsuERROcP88fGc5AlaQB1emck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K99egrWZ3SQo7l4gBIDB1TKfHk8+kHaNk98utH60E1XyeIlMPUckfGc3C6BL4gKXq
-	 Hv8xgMgr/TmdNbVJp9JFOQE8Zo4LRa/BFSgTOBg1TYavLGjFZpeCj6e5GYy2S4b/QG
-	 P0O5A8U9zf2LNB4yWc/4rYpdXrsLXyyki5gl9RpY=
+	b=GwrA4CWQ8bT2cVmpy0UBCvfXTKSTdX2S5k+MRZBlFnEQHUEj+6v2MRtGtVA47qQEG
+	 v5/Yw/E08oHCnjlcRzMtsREPHP4a+Nm5JRHyuNdCqeC+X6ZBUsjCpsq89LdjIYI/9N
+	 GK5TjhpX30ETczEpoullG2LYi1Jwoa8/DW6DeqZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.12 156/218] drm/bridge: cdns-dsi: Fix the clock variable for mode_valid()
+	Yu Kuai <yukuai3@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 015/132] md/md-bitmap: fix dm-raid max_write_behind setting
 Date: Thu,  3 Jul 2025 16:41:44 +0200
-Message-ID: <20250703144002.388843370@linuxfoundation.org>
+Message-ID: <20250703143939.998345033@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 132bdcec399be6ae947582249a134b38cf56731c upstream.
+[ Upstream commit 2afe17794cfed5f80295b1b9facd66e6f65e5002 ]
 
-The crtc_* mode parameters do not get generated (duplicated in this
-case) from the regular parameters before the mode validation phase
-begins.
+It's supposed to be COUNTER_MAX / 2, not COUNTER_MAX.
 
-The rest of the code conditionally uses the crtc_* parameters only
-during the bridge enable phase, but sticks to the regular parameters
-for mode validation. In this singular instance, however, the driver
-tries to use the crtc_clock parameter even during the mode validation,
-causing the validation to fail.
-
-Allow the D-Phy config checks to use mode->clock instead of
-mode->crtc_clock during mode_valid checks, like everywhere else in the
-driver.
-
-Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
-Cc: stable@vger.kernel.org
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Link: https://lore.kernel.org/r/20250329113925.68204-4-aradhya.bhatia@linux.dev
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-raid/20250524061320.370630-14-yukuai1@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/md/md-bitmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-@@ -568,13 +568,14 @@ static int cdns_dsi_check_conf(struct cd
- 	struct phy_configure_opts_mipi_dphy *phy_cfg = &output->phy_opts.mipi_dphy;
- 	unsigned long dsi_hss_hsa_hse_hbp;
- 	unsigned int nlanes = output->dev->lanes;
-+	int mode_clock = (mode_valid_check ? mode->clock : mode->crtc_clock);
- 	int ret;
- 
- 	ret = cdns_dsi_mode2cfg(dsi, mode, dsi_cfg, mode_valid_check);
- 	if (ret)
- 		return ret;
- 
--	phy_mipi_dphy_get_default_config(mode->crtc_clock * 1000,
-+	phy_mipi_dphy_get_default_config(mode_clock * 1000,
- 					 mipi_dsi_pixel_format_to_bpp(output->dev->format),
- 					 nlanes, phy_cfg);
- 
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index 02629516748e4..dac27206cd3df 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -546,7 +546,7 @@ static int md_bitmap_new_disk_sb(struct bitmap *bitmap)
+ 	 * is a good choice?  We choose COUNTER_MAX / 2 arbitrarily.
+ 	 */
+ 	write_behind = bitmap->mddev->bitmap_info.max_write_behind;
+-	if (write_behind > COUNTER_MAX)
++	if (write_behind > COUNTER_MAX / 2)
+ 		write_behind = COUNTER_MAX / 2;
+ 	sb->write_behind = cpu_to_le32(write_behind);
+ 	bitmap->mddev->bitmap_info.max_write_behind = write_behind;
+-- 
+2.39.5
+
 
 
 
