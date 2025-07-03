@@ -1,158 +1,183 @@
-Return-Path: <stable+bounces-160095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A18CEAF7EBA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 19:24:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F04AF7ECD
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 19:27:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25D16585973
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:24:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4D401C8541F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA616289E33;
-	Thu,  3 Jul 2025 17:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E71A289343;
+	Thu,  3 Jul 2025 17:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="lipg0T1a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m16XJT2h"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD8B288C9F;
-	Thu,  3 Jul 2025 17:23:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502CB288C8E;
+	Thu,  3 Jul 2025 17:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751563413; cv=none; b=MqR7QHLfWdxd+YW1E+n/G/OojQTgHT08YAiSmxro2svjI1VLmFSFGphm+kyS0ETp64A+KAuU6Fj/P6hqQmfHH64L3gYlUftqHEysSCug4LmbrEqbyP3J+p6YjjkjLsYnhMvNyCBu5cb6K3PmqRJyBjCKST4ZUi8MCeIjVG23eTM=
+	t=1751563507; cv=none; b=asDjqt1vkONhJNZa0gJZlqbFs9p68W0gmKo4xdXgWEx82CIN5EWdimfnjVAP7uSrIogxOg7jf3gpt5K4E6IX2xo2+EMM63Rs2NPSMTM4gvFi8HQajdqsrjRdeyW8LrPQXDFrLdpE2RGCF+mhI2SWduN7WKJ7lYNEdqgas2Z45PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751563413; c=relaxed/simple;
-	bh=S1io0LIVsFQHZEpdQUfLbvR5j6Xpu074sP9c1cVQpAc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aEIo/U2NPREKmgJ6au9VvS6aWD9s1OnVwtS4D9wF3Q7kr1n0eVGV6oOaBMleM0xPBP9AkJWRAv3dh7aTiFrieRcBhMXiI297ybvZE5YMRhFyeVY3E4uC5Hzls2mFq29eab1vLzltZnZ+Wy9rOh9tAG1QZIhIVWUMJGB0u7iwdtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=lipg0T1a; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1751563392; x=1752168192; i=spasswolf@web.de;
-	bh=S1io0LIVsFQHZEpdQUfLbvR5j6Xpu074sP9c1cVQpAc=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=lipg0T1aKnkt1j9PvnqnyJ1SqoaGmp/Yxc1075FnmHgWs6ru9mXE5gqUkuo+ys68
-	 tAoYBOidmubXOWwi9xBmBOuqDgiHQQJJB6hiNNiX/Aj9/AybCAAKU7CDJZexDhRCf
-	 oYPfebGIfM8zjrB+p4VtiowXTzBqoGPYd4pTpjlbE6E7XAGElw2MZ5vPDwtUYLI6/
-	 688MsF8zAVIlQbnUU2ZfWLaXzBzLqgN8DZWs5ed1wuqIlJT0pvaMq2W0yjvqNOxqx
-	 R25b2LskNzAiHx/0zKRlAKVPJ//Qvyn//7XPhJk9mcbzW3MpbqF0nhYvDEysIac68
-	 mQhDh20VWu+Eno6Qkw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.0.101] ([95.223.134.88]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1McIkg-1v7WoV3U8y-00jZlM; Thu, 03
- Jul 2025 19:23:11 +0200
-Message-ID: <7a56d95dc2b15fa2dac0c8a4dd20f0e253bf414f.camel@web.de>
-Subject: Re: Warnings in next-20250703 caused by commit 582111e630f5
-From: Bert Karwatzki <spasswolf@web.de>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: linux-kernel@vger.kernel.org, linux-next@vger.kernel.org, Anusha
- Srivatsa	 <asrivats@redhat.com>, Christian =?ISO-8859-1?Q?K=F6nig?=	
- <christian.koenig@amd.com>, Maarten Lankhorst	
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
- Sumit Semwal <sumit.semwal@linaro.org>, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, 	linaro-mm-sig@lists.linaro.org,
- stable@vger.kernel.org, spasswolf@web.de
-Date: Thu, 03 Jul 2025 19:23:09 +0200
-In-Reply-To: <75abf5c1-aa1a-4405-aae4-a2efccbc3bcb@suse.de>
-References: <20250703115915.3096-1-spasswolf@web.de>
-	 <75abf5c1-aa1a-4405-aae4-a2efccbc3bcb@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.56.1-1 
+	s=arc-20240116; t=1751563507; c=relaxed/simple;
+	bh=A15z3AA71ydQ9j/FLKzepHpNvIVkbCiQdVaADIO/60w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k/O1zvMYgzr/8mGwHp95MfcGYIr/gw7tz8jeidMcabFUVQwfOt8bi5yrTuUAelKrWuh4H6uZnGStFggNWiGzzQvQ7sHp8zTTfWO/rbJ18ObG1oHUVUvk8U4OJUKVIgc9Yu5ugu/QcjeHYZ+a3kaGYhO9rrA1q74R7TzP5KVZpk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m16XJT2h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E5E4C4CEE3;
+	Thu,  3 Jul 2025 17:25:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751563506;
+	bh=A15z3AA71ydQ9j/FLKzepHpNvIVkbCiQdVaADIO/60w=;
+	h=From:To:Cc:Subject:Date:From;
+	b=m16XJT2hqQXJpfk5u6m0DE15gcd5YTtkSD+i3RI3aspNCD9Hdp3X9B6oHk1MjQMlQ
+	 +8PRfaqvLo4KYeALIcvvunkm63qf+hNd5xyFLykaUZ3kYTJykD1RUob4u+DBu0zUlJ
+	 gURZrBgB9uKoi1HPNQPBgLc06r0aI4oGW9B27UVbFmiVTvysEDNdRAZueoloOvS4P2
+	 vLmlVFSMEqo31PoSrCCH8Q6nxYjnxrbE/1RVV4WoAbw9XjR/ZGmSlBJrO3rxh2wyPU
+	 mtQoVh7n0TrfM1yPRrNWXW/hden970MiDJmUq3aD1D8MpxPvbrSOIUep3LWvP6v9K6
+	 5XWOvhVLo9WNA==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Joerg Schmidbauer <jschmidb@de.ibm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org,
+	Ingo Franzki <ifranzki@linux.ibm.com>
+Subject: [PATCH v2] crypto: s390/sha - Fix uninitialized variable in SHA-1 and SHA-2
+Date: Thu,  3 Jul 2025 10:23:16 -0700
+Message-ID: <20250703172316.7914-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:iKUObCwBfbAmFtuOCtyqlyfhBxYF2qyp4/I2Cs7/tmJrOtEbGP3
- vE/jBK3FWrD7o3XJLlN3LwzE16yAFjwLEV8eEJQkuNDji0HKOdqHB8aFb1u05krkNMRIn4F
- XUDUofPf8G7JuuOpRGJw702VM4uPUDBjGvatWhD92RFge3UVXD1t6VuAYs+U4KNuzPYS24X
- TJB8C4SpKb9xm93knN3Uw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:MGtY5l0oiH8=;Jca8Ks4fzwdDBKQ2Y77F8B1ntOT
- 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
+Content-Transfer-Encoding: 8bit
 
-Am Donnerstag, dem 03.07.2025 um 18:09 +0200 schrieb Thomas Zimmermann:
-> Hi,
->=20
-> before I give up on the issue, could you please test the attached patch?
->=20
-> Best regards
-> Thomas
->=20
->=20
-> --
-> Thomas Zimmermann
-> Graphics Driver Developer
-> SUSE Software Solutions Germany GmbH
-> Frankenstrasse 146, 90461 Nuernberg, Germany
-> GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-> HRB 36809 (AG Nuernberg)
+Commit 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
+added the field s390_sha_ctx::first_message_part and made it be used by
+s390_sha_update() (now s390_sha_update_blocks()).  At the time,
+s390_sha_update() was used by all the s390 SHA-1, SHA-2, and SHA-3
+algorithms.  However, only the initialization functions for SHA-3 were
+updated, leaving SHA-1 and SHA-2 using first_message_part uninitialized.
 
-I applied the patch on top of next-20250703
+This could cause e.g. the function code CPACF_KIMD_SHA_512 |
+CPACF_KIMD_NIP to be used instead of just CPACF_KIMD_SHA_512.  This
+apparently was harmless, as the SHA-1 and SHA-2 function codes ignore
+CPACF_KIMD_NIP; it is recognized only by the SHA-3 function codes
+(https://lore.kernel.org/r/73477fe9-a1dc-4e38-98a6-eba9921e8afa@linux.ibm.com/).
+Therefore, this bug was found only when first_message_part was later
+converted to a boolean and UBSAN detected its uninitialized use.
+Regardless, let's fix this by just initializing to zero.
 
-$ git log --oneline
-18ee3ed3cb60 (HEAD -> drm_gem_object_handle_put) drm/amdgpu: Provide custo=
-m framebuffer destroy function
-8d6c58332c7a (tag: next-20250703, origin/master, origin/HEAD, master) Add =
-linux-next specific files for 20250703
+Note: in 6.16, we need to patch SHA-1, SHA-384, and SHA-512.  In 6.15
+and earlier, we'll also need to patch SHA-224 and SHA-256, as they
+hadn't yet been librarified (which incidentally fixed this bug).
 
-and it solves the issue for me (i.e. no warnings).
+Fixes: 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
+Cc: stable@vger.kernel.org
+Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Closes: https://lore.kernel.org/r/12740696-595c-4604-873e-aefe8b405fbf@linux.ibm.com
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
 
-Bert Karwatzki
+v2:
+  - Also fix s390_sha1_import() and sha512_import()
+  - Use 0 instead of false
+  - Improved commit message
+
+ arch/s390/crypto/sha1_s390.c   | 2 ++
+ arch/s390/crypto/sha512_s390.c | 3 +++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/arch/s390/crypto/sha1_s390.c b/arch/s390/crypto/sha1_s390.c
+index d229cbd2ba229..9b0d55be12394 100644
+--- a/arch/s390/crypto/sha1_s390.c
++++ b/arch/s390/crypto/sha1_s390.c
+@@ -36,10 +36,11 @@ static int s390_sha1_init(struct shash_desc *desc)
+ 	sctx->state[2] = SHA1_H2;
+ 	sctx->state[3] = SHA1_H3;
+ 	sctx->state[4] = SHA1_H4;
+ 	sctx->count = 0;
+ 	sctx->func = CPACF_KIMD_SHA_1;
++	sctx->first_message_part = 0;
+ 
+ 	return 0;
+ }
+ 
+ static int s390_sha1_export(struct shash_desc *desc, void *out)
+@@ -58,10 +59,11 @@ static int s390_sha1_import(struct shash_desc *desc, const void *in)
+ 	const struct sha1_state *ictx = in;
+ 
+ 	sctx->count = ictx->count;
+ 	memcpy(sctx->state, ictx->state, sizeof(ictx->state));
+ 	sctx->func = CPACF_KIMD_SHA_1;
++	sctx->first_message_part = 0;
+ 	return 0;
+ }
+ 
+ static struct shash_alg alg = {
+ 	.digestsize	=	SHA1_DIGEST_SIZE,
+diff --git a/arch/s390/crypto/sha512_s390.c b/arch/s390/crypto/sha512_s390.c
+index 33711a29618c3..6cbbf5e8555f8 100644
+--- a/arch/s390/crypto/sha512_s390.c
++++ b/arch/s390/crypto/sha512_s390.c
+@@ -30,10 +30,11 @@ static int sha512_init(struct shash_desc *desc)
+ 	ctx->sha512.state[6] = SHA512_H6;
+ 	ctx->sha512.state[7] = SHA512_H7;
+ 	ctx->count = 0;
+ 	ctx->sha512.count_hi = 0;
+ 	ctx->func = CPACF_KIMD_SHA_512;
++	ctx->first_message_part = 0;
+ 
+ 	return 0;
+ }
+ 
+ static int sha512_export(struct shash_desc *desc, void *out)
+@@ -55,10 +56,11 @@ static int sha512_import(struct shash_desc *desc, const void *in)
+ 	sctx->count = ictx->count[0];
+ 	sctx->sha512.count_hi = ictx->count[1];
+ 
+ 	memcpy(sctx->state, ictx->state, sizeof(ictx->state));
+ 	sctx->func = CPACF_KIMD_SHA_512;
++	sctx->first_message_part = 0;
+ 	return 0;
+ }
+ 
+ static struct shash_alg sha512_alg = {
+ 	.digestsize	=	SHA512_DIGEST_SIZE,
+@@ -95,10 +97,11 @@ static int sha384_init(struct shash_desc *desc)
+ 	ctx->sha512.state[6] = SHA384_H6;
+ 	ctx->sha512.state[7] = SHA384_H7;
+ 	ctx->count = 0;
+ 	ctx->sha512.count_hi = 0;
+ 	ctx->func = CPACF_KIMD_SHA_512;
++	ctx->first_message_part = 0;
+ 
+ 	return 0;
+ }
+ 
+ static struct shash_alg sha384_alg = {
+
+base-commit: 64f7548aad63d2fbca2eeb6eb33361c218ebd5a5
+-- 
+2.50.0
+
 
