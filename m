@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44529AF7891
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:51:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C01AF7AC6
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED9081C86CDD
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:50:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 996B9189D7B9
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC742EF295;
-	Thu,  3 Jul 2025 14:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDE72EF9A4;
+	Thu,  3 Jul 2025 15:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xm2sUjy+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QrRifO7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885D72EF299;
-	Thu,  3 Jul 2025 14:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF73E2D9492;
+	Thu,  3 Jul 2025 15:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554214; cv=none; b=bRx+NGaCTNrJAFozYJItlBK31bNwrddFK8WuKDCpUdJNOiRFRzNA5HhZMES7rBlY1NlPpdq0ViDOdiq9VL4FhBgwgFA9lzVrnbvHxI05X8YCyN59y8NFR4Tpi3HwDqpolbsGKF7LK0+aHEPXxQ2edym52FRc3u48SO2vl8CmQvo=
+	t=1751555422; cv=none; b=k2/BdOAUTSGbnzvtiypZHQC/IhaKP+U/XtyTHYdxXvCVJjfX7sO6plPTwjjjvp9Oli7g8aGQHj5torYnUaWq/sWOYL4lqRAkIWaaEPh4ZJ5Hs4WFd1YnAdI2tfP4jc9HNnRe/uKyirUR7QBWGK4k1EdXDgu8WSv4VfMQxSt2pgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554214; c=relaxed/simple;
-	bh=FEYmclfBdXjCdxwXVEdh/8KPi214qbxEb4pJU/e2GCM=;
+	s=arc-20240116; t=1751555422; c=relaxed/simple;
+	bh=l/cOQmtqTZUlRP8zV5DmUb94F2mkPBpS3Ru0ZrZrdt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uqwCiJvaqEJtzhJFaobtJghOZM+B+lDHm42ukYBWpB0N0rKscip32nyLHwOZ06a4MGRu9OMAJYSy2nrmW8PZO1JiaJr4Ok8fHPfsX3Fnh1pbmNH2ku5bfNIwfE11DKEbTa5zU7RYZJT1t5F2tszQyCNq3+D7FrS7PRMojnQeJI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xm2sUjy+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC0BC4AF09;
-	Thu,  3 Jul 2025 14:50:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dmmwL5M6O/HhiXwQ7WgMTGRk5u9rUJlqMT3m5AHmzC4ADeE1xZPl9RDr787I3po80jpgdVyLDFmEDB3r9pv2GlxG4YJnP3oo7Xzeq3FrkSDbegLmKbmHkCtLqMIs7mWxT3zf/2eWXdtMbrf/TIiWwBBFF5fYVgxJJ9D1xcDhjAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QrRifO7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60232C4CEE3;
+	Thu,  3 Jul 2025 15:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554214;
-	bh=FEYmclfBdXjCdxwXVEdh/8KPi214qbxEb4pJU/e2GCM=;
+	s=korg; t=1751555421;
+	bh=l/cOQmtqTZUlRP8zV5DmUb94F2mkPBpS3Ru0ZrZrdt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xm2sUjy+EGX8wD3W2e4IA6gs5lavp3WlyMDaTINLTQUmMeRXQLbtIKfLcqRirpoer
-	 fdySXQNRkW6xHF25U8WeiisaolV9DKil/gHLtQClgjRE+A6x4VJd5QA2fEQVZ8dk1e
-	 ADZVE+ZQx2EJW6nyla4onqCdYCQmACW2cPgAjRRQ=
+	b=1QrRifO7iMfTgc9Z/gKQWutu5ZSHPbJ7nIu4TP9PR8fpCIlsFv7NCCZ25itlAN/XK
+	 Weyh3tJSyknbzrjMtu4DPD85LsT59OzWHHbi6gWKojxyVncnRHZ7aaOT9WDH/bCIh1
+	 BQzZO13a+alHzNgsyKWOyF9L7W1Z8NJ5YC/8t8rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 116/218] drm/xe: Process deferred GGTT node removals on device unwind
+Subject: [PATCH 6.6 001/139] cifs: Correctly set SMB1 SessionKey field in Session Setup Request
 Date: Thu,  3 Jul 2025 16:41:04 +0200
-Message-ID: <20250703144000.580199261@linuxfoundation.org>
+Message-ID: <20250703143941.242060472@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +63,105 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit af2b588abe006bd55ddd358c4c3b87523349c475 ]
+[ Upstream commit 89381c72d52094988e11d23ef24a00066a0fa458 ]
 
-While we are indirectly draining our dedicated workqueue ggtt->wq
-that we use to complete asynchronous removal of some GGTT nodes,
-this happends as part of the managed-drm unwinding (ggtt_fini_early),
-which could be later then manage-device unwinding, where we could
-already unmap our MMIO/GMS mapping (mmio_fini).
+[MS-CIFS] specification in section 2.2.4.53.1 where is described
+SMB_COM_SESSION_SETUP_ANDX Request, for SessionKey field says:
 
-This was recently observed during unsuccessful VF initialization:
+    The client MUST set this field to be equal to the SessionKey field in
+    the SMB_COM_NEGOTIATE Response for this SMB connection.
 
- [ ] xe 0000:00:02.1: probe with driver xe failed with error -62
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e747340 __xe_bo_unpin_map_no_vm (16 bytes)
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e747540 __xe_bo_unpin_map_no_vm (16 bytes)
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e747240 __xe_bo_unpin_map_no_vm (16 bytes)
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e747040 tiles_fini (16 bytes)
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e746840 mmio_fini (16 bytes)
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e747f40 xe_bo_pinned_fini (16 bytes)
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e746b40 devm_drm_dev_init_release (16 bytes)
- [ ] xe 0000:00:02.1: [drm:drm_managed_release] drmres release begin
- [ ] xe 0000:00:02.1: [drm:drm_managed_release] REL ffff88810ef81640 __fini_relay (8 bytes)
- [ ] xe 0000:00:02.1: [drm:drm_managed_release] REL ffff88810ef80d40 guc_ct_fini (8 bytes)
- [ ] xe 0000:00:02.1: [drm:drm_managed_release] REL ffff88810ef80040 __drmm_mutex_release (8 bytes)
- [ ] xe 0000:00:02.1: [drm:drm_managed_release] REL ffff88810ef80140 ggtt_fini_early (8 bytes)
+Linux SMB client currently set this field to zero. This is working fine
+against Windows NT SMB servers thanks to [MS-CIFS] product behavior <94>:
 
-and this was leading to:
+    Windows NT Server ignores the client's SessionKey.
 
- [ ] BUG: unable to handle page fault for address: ffffc900058162a0
- [ ] #PF: supervisor write access in kernel mode
- [ ] #PF: error_code(0x0002) - not-present page
- [ ] Oops: Oops: 0002 [#1] SMP NOPTI
- [ ] Tainted: [W]=WARN
- [ ] Workqueue: xe-ggtt-wq ggtt_node_remove_work_func [xe]
- [ ] RIP: 0010:xe_ggtt_set_pte+0x6d/0x350 [xe]
- [ ] Call Trace:
- [ ]  <TASK>
- [ ]  xe_ggtt_clear+0xb0/0x270 [xe]
- [ ]  ggtt_node_remove+0xbb/0x120 [xe]
- [ ]  ggtt_node_remove_work_func+0x30/0x50 [xe]
- [ ]  process_one_work+0x22b/0x6f0
- [ ]  worker_thread+0x1e8/0x3d
+For compatibility with [MS-CIFS], set this SessionKey field in Session
+Setup Request to value retrieved from Negotiate response.
 
-Add managed-device action that will explicitly drain the workqueue
-with all pending node removals prior to releasing MMIO/GSM mapping.
-
-Fixes: 919bb54e989c ("drm/xe: Fix missing runtime outer protection for ggtt_remove_node")
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://lore.kernel.org/r/20250612220937.857-2-michal.wajdeczko@intel.com
-(cherry picked from commit 89d2835c3680ab1938e22ad81b1c9f8c686bd391)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_ggtt.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/smb/client/cifsglob.h | 1 +
+ fs/smb/client/cifspdu.h  | 6 +++---
+ fs/smb/client/cifssmb.c  | 1 +
+ fs/smb/client/sess.c     | 1 +
+ 4 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_ggtt.c b/drivers/gpu/drm/xe/xe_ggtt.c
-index ff19eca5d358b..e9820126feb96 100644
---- a/drivers/gpu/drm/xe/xe_ggtt.c
-+++ b/drivers/gpu/drm/xe/xe_ggtt.c
-@@ -198,6 +198,13 @@ static const struct xe_ggtt_pt_ops xelpg_pt_wa_ops = {
- 	.ggtt_set_pte = xe_ggtt_set_pte_and_flush,
- };
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 6a4ed99e162c5..c7da6bf2f44be 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -739,6 +739,7 @@ struct TCP_Server_Info {
+ 	char workstation_RFC1001_name[RFC1001_NAME_LEN_WITH_NULL];
+ 	__u32 sequence_number; /* for signing, protected by srv_mutex */
+ 	__u32 reconnect_instance; /* incremented on each reconnect */
++	__le32 session_key_id; /* retrieved from negotiate response and send in session setup request */
+ 	struct session_key session_key;
+ 	unsigned long lstrp; /* when we got last response from this server */
+ 	struct cifs_secmech secmech; /* crypto sec mech functs, descriptors */
+diff --git a/fs/smb/client/cifspdu.h b/fs/smb/client/cifspdu.h
+index ca33f6cd6a800..763178b774542 100644
+--- a/fs/smb/client/cifspdu.h
++++ b/fs/smb/client/cifspdu.h
+@@ -557,7 +557,7 @@ typedef union smb_com_session_setup_andx {
+ 		__le16 MaxBufferSize;
+ 		__le16 MaxMpxCount;
+ 		__le16 VcNumber;
+-		__u32 SessionKey;
++		__le32 SessionKey;
+ 		__le16 SecurityBlobLength;
+ 		__u32 Reserved;
+ 		__le32 Capabilities;	/* see below */
+@@ -576,7 +576,7 @@ typedef union smb_com_session_setup_andx {
+ 		__le16 MaxBufferSize;
+ 		__le16 MaxMpxCount;
+ 		__le16 VcNumber;
+-		__u32 SessionKey;
++		__le32 SessionKey;
+ 		__le16 CaseInsensitivePasswordLength; /* ASCII password len */
+ 		__le16 CaseSensitivePasswordLength; /* Unicode password length*/
+ 		__u32 Reserved;	/* see below */
+@@ -614,7 +614,7 @@ typedef union smb_com_session_setup_andx {
+ 		__le16 MaxBufferSize;
+ 		__le16 MaxMpxCount;
+ 		__le16 VcNumber;
+-		__u32 SessionKey;
++		__le32 SessionKey;
+ 		__le16 PasswordLength;
+ 		__u32 Reserved; /* encrypt key len and offset */
+ 		__le16 ByteCount;
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index c36ab20050c16..db35e68e8a583 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -479,6 +479,7 @@ CIFSSMBNegotiate(const unsigned int xid,
+ 	server->max_rw = le32_to_cpu(pSMBr->MaxRawSize);
+ 	cifs_dbg(NOISY, "Max buf = %d\n", ses->server->maxBuf);
+ 	server->capabilities = le32_to_cpu(pSMBr->Capabilities);
++	server->session_key_id = pSMBr->SessionKey;
+ 	server->timeAdj = (int)(__s16)le16_to_cpu(pSMBr->ServerTimeZone);
+ 	server->timeAdj *= 60;
  
-+static void dev_fini_ggtt(void *arg)
-+{
-+	struct xe_ggtt *ggtt = arg;
-+
-+	drain_workqueue(ggtt->wq);
-+}
-+
- /**
-  * xe_ggtt_init_early - Early GGTT initialization
-  * @ggtt: the &xe_ggtt to be initialized
-@@ -254,6 +261,10 @@ int xe_ggtt_init_early(struct xe_ggtt *ggtt)
- 	if (err)
- 		return err;
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index 8959206a0353e..81ac4196bb743 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -683,6 +683,7 @@ static __u32 cifs_ssetup_hdr(struct cifs_ses *ses,
+ 					USHRT_MAX));
+ 	pSMB->req.MaxMpxCount = cpu_to_le16(server->maxReq);
+ 	pSMB->req.VcNumber = cpu_to_le16(1);
++	pSMB->req.SessionKey = server->session_key_id;
  
-+	err = devm_add_action_or_reset(xe->drm.dev, dev_fini_ggtt, ggtt);
-+	if (err)
-+		return err;
-+
- 	if (IS_SRIOV_VF(xe)) {
- 		err = xe_gt_sriov_vf_prepare_ggtt(xe_tile_get_gt(ggtt->tile, 0));
- 		if (err)
+ 	/* Now no need to set SMBFLG_CASELESS or obsolete CANONICAL PATH */
+ 
 -- 
 2.39.5
 
