@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-159950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC2BAF7BCA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D72EAF7AAE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:16:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04D6B4E45C8
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E96775A03B3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60AA2F004F;
-	Thu,  3 Jul 2025 15:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3C82F0C4F;
+	Thu,  3 Jul 2025 15:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xICHuVVp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ippGlISI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E632F003A;
-	Thu,  3 Jul 2025 15:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E682EF671;
+	Thu,  3 Jul 2025 15:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555887; cv=none; b=Q1sB3Eb9YW3tStgiLeV+DQIBD82PwJTk5XMAeyxmQ/twETOl0PW75Ak08jHTrhoHsGElCDf9DLorXX7JJ6S3fEGu2llarJCAhkDYh38QrYi8CNSQ1pb7HxeKVEgb5urw95KAqc+ZJ6S0IWFfsauVUvvGqPDWbiEpLKv4OvEIuuA=
+	t=1751555482; cv=none; b=Bv69r+8a9LgEA3QK9W5S2dXoXMy+yfWyY0cAof0iN7Kzx3pxa1nLAzNh8oCA8efcpLD43/fisd9eQVAnJPNArHYLBEZPiwiYWBF85FIv6OieFNM8lJMCg3TP8iAwp6XXHhzvgETPnhZoABCMl/mqj5EXPISpk6kUI21qtgGBw1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555887; c=relaxed/simple;
-	bh=WB+0MvdrebAR+IHZr+wsXP3OpIdV10T5jva0VURnm5k=;
+	s=arc-20240116; t=1751555482; c=relaxed/simple;
+	bh=kVjEumwB6XR/We/UQAy3pAsgR/e+urKCbvrHMcVZwV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DeMDIeaCbL/BdFl1cHuxiLA5YDpY5UHef+cG6Ht5Qyvdq3sbShdKEQBvYpaIG+fSelJT+CoyunrdfMsIPU/ewAMNpPabCZQF+ys96BmWR1pjh0bS26BvYlbCjIYAyi278dYXfhCTLnxIOOA5Xeibhk1kRdzhQ595NzaiZ5LO0xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xICHuVVp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B02C4CEE3;
-	Thu,  3 Jul 2025 15:18:06 +0000 (UTC)
+	 MIME-Version; b=GZkdPI38/7LWq7of7brQU4Uvl3LhTpirbxu2b6vQS/+hGHUF7Pb6B7qMqOb0fUuc0aaAt7bywPhAcn8vG90YATa/BOxToksbkmgNKwhKckrhNYplvI3GdODJI7XLq0TZnqA1/RoobR7JpkO1wNi/Va5Qy6Ei0omTLHByFlyAZn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ippGlISI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35973C4CEE3;
+	Thu,  3 Jul 2025 15:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555887;
-	bh=WB+0MvdrebAR+IHZr+wsXP3OpIdV10T5jva0VURnm5k=;
+	s=korg; t=1751555482;
+	bh=kVjEumwB6XR/We/UQAy3pAsgR/e+urKCbvrHMcVZwV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xICHuVVpQpqAVfyAXvIE3cphvMcwlA+mSIGuweFmYDpxZfOUcONtS4u+Bdy66JWNO
-	 RIJzq/RDTqgExuPGuvYlpMSYylGH4d94H2p0ITE4gwb5Ez4SE234PMnJhu9e1yAL62
-	 c5XV5DyNeeDR8wQW7XArJoxFa6E2h9jA5A/1VuMM=
+	b=ippGlISIe5HojZ03C2dwFt7evpgWZZeXvcbjO1X3BB2bWlzc47lKD+xju8BrDup16
+	 tSTwRlYnpXc966tqyY2rumygmp9yEeLU4QNohkJiZnVjc5YN928LiVVfBEFdVz2Hhj
+	 cKvr2w+yOwWPkIMDMGnlEIPTQET6iQL61grqJHyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	linux-kbuild@vger.kernel.org,
+	kernel test robot <lkp@intel.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/132] cifs: Correctly set SMB1 SessionKey field in Session Setup Request
+Subject: [PATCH 6.6 027/139] um: Add cmpxchg8b_emu and checksum functions to asm-prototypes.h
 Date: Thu,  3 Jul 2025 16:41:30 +0200
-Message-ID: <20250703143939.442546993@linuxfoundation.org>
+Message-ID: <20250703143942.245196831@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,108 +63,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Sami Tolvanen <samitolvanen@google.com>
 
-[ Upstream commit 89381c72d52094988e11d23ef24a00066a0fa458 ]
+[ Upstream commit 674d03f6bd6b0f8327f1a4920ff5893557facfbd ]
 
-[MS-CIFS] specification in section 2.2.4.53.1 where is described
-SMB_COM_SESSION_SETUP_ANDX Request, for SessionKey field says:
+With CONFIG_GENDWARFKSYMS, um builds fail due to missing prototypes
+in asm/asm-prototypes.h. Add declarations for cmpxchg8b_emu and the
+exported checksum functions, including csum_partial_copy_generic as
+it's also exported.
 
-    The client MUST set this field to be equal to the SessionKey field in
-    the SMB_COM_NEGOTIATE Response for this SMB connection.
-
-Linux SMB client currently set this field to zero. This is working fine
-against Windows NT SMB servers thanks to [MS-CIFS] product behavior <94>:
-
-    Windows NT Server ignores the client's SessionKey.
-
-For compatibility with [MS-CIFS], set this SessionKey field in Session
-Setup Request to value retrieved from Negotiate response.
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: linux-kbuild@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202503251216.lE4t9Ikj-lkp@intel.com/
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Link: https://patch.msgid.link/20250326190500.847236-2-samitolvanen@google.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsglob.h | 1 +
- fs/smb/client/cifspdu.h  | 6 +++---
- fs/smb/client/cifssmb.c  | 1 +
- fs/smb/client/sess.c     | 1 +
- 4 files changed, 6 insertions(+), 3 deletions(-)
+ arch/um/include/asm/asm-prototypes.h | 5 +++++
+ arch/x86/um/asm/checksum.h           | 3 +++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 17fce0afb297f..9c5aa646b8cc8 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -675,6 +675,7 @@ struct TCP_Server_Info {
- 	char workstation_RFC1001_name[RFC1001_NAME_LEN_WITH_NULL];
- 	__u32 sequence_number; /* for signing, protected by srv_mutex */
- 	__u32 reconnect_instance; /* incremented on each reconnect */
-+	__le32 session_key_id; /* retrieved from negotiate response and send in session setup request */
- 	struct session_key session_key;
- 	unsigned long lstrp; /* when we got last response from this server */
- 	struct cifs_secmech secmech; /* crypto sec mech functs, descriptors */
-diff --git a/fs/smb/client/cifspdu.h b/fs/smb/client/cifspdu.h
-index 9cb4577063344..a682c50d7ace4 100644
---- a/fs/smb/client/cifspdu.h
-+++ b/fs/smb/client/cifspdu.h
-@@ -557,7 +557,7 @@ typedef union smb_com_session_setup_andx {
- 		__le16 MaxBufferSize;
- 		__le16 MaxMpxCount;
- 		__le16 VcNumber;
--		__u32 SessionKey;
-+		__le32 SessionKey;
- 		__le16 SecurityBlobLength;
- 		__u32 Reserved;
- 		__le32 Capabilities;	/* see below */
-@@ -576,7 +576,7 @@ typedef union smb_com_session_setup_andx {
- 		__le16 MaxBufferSize;
- 		__le16 MaxMpxCount;
- 		__le16 VcNumber;
--		__u32 SessionKey;
-+		__le32 SessionKey;
- 		__le16 CaseInsensitivePasswordLength; /* ASCII password len */
- 		__le16 CaseSensitivePasswordLength; /* Unicode password length*/
- 		__u32 Reserved;	/* see below */
-@@ -614,7 +614,7 @@ typedef union smb_com_session_setup_andx {
- 		__le16 MaxBufferSize;
- 		__le16 MaxMpxCount;
- 		__le16 VcNumber;
--		__u32 SessionKey;
-+		__le32 SessionKey;
- 		__le16 PasswordLength;
- 		__u32 Reserved; /* encrypt key len and offset */
- 		__le16 ByteCount;
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index 6077fe1dcc9ce..0c6ade1968947 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -469,6 +469,7 @@ CIFSSMBNegotiate(const unsigned int xid,
- 	server->max_rw = le32_to_cpu(pSMBr->MaxRawSize);
- 	cifs_dbg(NOISY, "Max buf = %d\n", ses->server->maxBuf);
- 	server->capabilities = le32_to_cpu(pSMBr->Capabilities);
-+	server->session_key_id = pSMBr->SessionKey;
- 	server->timeAdj = (int)(__s16)le16_to_cpu(pSMBr->ServerTimeZone);
- 	server->timeAdj *= 60;
+diff --git a/arch/um/include/asm/asm-prototypes.h b/arch/um/include/asm/asm-prototypes.h
+index 5898a26daa0dd..408b31d591279 100644
+--- a/arch/um/include/asm/asm-prototypes.h
++++ b/arch/um/include/asm/asm-prototypes.h
+@@ -1 +1,6 @@
+ #include <asm-generic/asm-prototypes.h>
++#include <asm/checksum.h>
++
++#ifdef CONFIG_UML_X86
++extern void cmpxchg8b_emu(void);
++#endif
+diff --git a/arch/x86/um/asm/checksum.h b/arch/x86/um/asm/checksum.h
+index b07824500363f..ddc144657efad 100644
+--- a/arch/x86/um/asm/checksum.h
++++ b/arch/x86/um/asm/checksum.h
+@@ -20,6 +20,9 @@
+  */
+ extern __wsum csum_partial(const void *buff, int len, __wsum sum);
  
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index c8f7ae0a20064..883d1cb1fc8b0 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -605,6 +605,7 @@ static __u32 cifs_ssetup_hdr(struct cifs_ses *ses,
- 					USHRT_MAX));
- 	pSMB->req.MaxMpxCount = cpu_to_le16(server->maxReq);
- 	pSMB->req.VcNumber = cpu_to_le16(1);
-+	pSMB->req.SessionKey = server->session_key_id;
- 
- 	/* Now no need to set SMBFLG_CASELESS or obsolete CANONICAL PATH */
- 
++/* Do not call this directly. Declared for export type visibility. */
++extern __visible __wsum csum_partial_copy_generic(const void *src, void *dst, int len);
++
+ /**
+  * csum_fold - Fold and invert a 32bit checksum.
+  * sum: 32bit unfolded sum
 -- 
 2.39.5
 
