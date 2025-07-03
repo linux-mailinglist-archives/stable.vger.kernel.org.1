@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C6AAF7B0A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2CD0AF7B7E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B615D587278
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF021583E60
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DC72EF656;
-	Thu,  3 Jul 2025 15:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E60C221DB7;
+	Thu,  3 Jul 2025 15:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oknbb+7H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5LwY9rq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50962EF67F;
-	Thu,  3 Jul 2025 15:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FA51C68A6;
+	Thu,  3 Jul 2025 15:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555613; cv=none; b=B6MLlE3a4h861ixgd/ibcfxjFEM3lAK3arzYmnxOJXB4FkOb0BSnZVg07WvCYa8M0cfOYOxyreaCuMmFwvLK3zv8o8BuE1OR+PQRqZj87Jn1Bz/5/VKwdMbaBjpZYhvP0esl3e9tInBOE7ZYYUwz5KgjhA7FglXbBLo6QAyz+Ps=
+	t=1751555901; cv=none; b=XALToEtT2Hat0G/qLJArOTf+YOsTr5en0m0gx49vjE7qgcDTrQ8LY1aE7NR8+Gv9Yp1xUj5HVTjvI10Qz8NsLpWWVG1QqaaTojLL+TVqJDa9IJxZeWdEOUYp+EqePrG+8Rn9w/gwXZmk2SG3D4vdBPMPmd23jcJqvXCTGLQQnB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555613; c=relaxed/simple;
-	bh=s3BXem6d4DcHUgbH93b6UJrvmVjbJDeNlj88yyJdrrw=;
+	s=arc-20240116; t=1751555901; c=relaxed/simple;
+	bh=cXoxnBVpPPm+scZWH5ge5U4lDEYUZA5KReRpUDjNpS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PM4suE8Jlyr8McqslCgJ5lV9KbhTfWaO7qCvz7/t+yjEln3tAXv2tXvuIhcNohqDR/dd2HWBH2PlCbHMTOnGDMThjiA5N8493Tlvs6S6yy0LTpf0oTnnRtowkgODt3+oW0rDaPpH4bY/HGErQ4ks+O3i8uwelfSNJeBTrrtygCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oknbb+7H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1510EC4CEE3;
-	Thu,  3 Jul 2025 15:13:32 +0000 (UTC)
+	 MIME-Version; b=AUFTlZ6yvPkW0dy5+AedgofBF6DfJVB+Din/W9LxRQjgjtniegZrJVSJKSGRAcdmKEvZvsCmUNfrXz5yniMqPR4YtsK1ErbLnp2OySNqH+i0n/jW2VS8ywN2Om71oSVTZl7O6jqeqIMJFrvZ3JNbjn4J7iYwmGhEltk9tzjcwtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5LwY9rq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D696C4CEE3;
+	Thu,  3 Jul 2025 15:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555613;
-	bh=s3BXem6d4DcHUgbH93b6UJrvmVjbJDeNlj88yyJdrrw=;
+	s=korg; t=1751555900;
+	bh=cXoxnBVpPPm+scZWH5ge5U4lDEYUZA5KReRpUDjNpS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oknbb+7HQzNvZAwl4Kd2WnJhk1EG8+65vipc6IJMnLVeKkq8Szb8+SyMDEpADo6tX
-	 OtowQd4Ygum++HNx4GblqRqUxkbS3NCMytvhyJI1+o3eq5gc19SenzmDgNnoNXqhdp
-	 zDTNE3altqHWs1Ztyjc6bR1/KItBb6dNtAz3y1DM=
+	b=t5LwY9rqT/yEk4VWTi7wqzoF3e7xaXFC/xu/6nz3T43EHDw3ic8ZyDIjAMWKi3wgv
+	 Nyhr+i6A5Xt/I1FscK6+7VxfwyPAmrtzuDYihm+CCjIO8LtceZoFzl567tjo56mUTG
+	 zJ5CCCTY5tfWM6Meta6rdX2VS/oJEOSXr1r+tNoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>,
+	Suraj Gupta <suraj.gupta2@amd.com>,
+	Folker Schwesinger <dev@folker-schwesinger.de>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/139] usb: typec: mux: do not return on EOPNOTSUPP in {mux, switch}_set
+Subject: [PATCH 6.1 013/132] dmaengine: xilinx_dma: Set dma_device directions
 Date: Thu,  3 Jul 2025 16:41:42 +0200
-Message-ID: <20250703143942.708580898@linuxfoundation.org>
+Message-ID: <20250703143939.913873888@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>
 
-[ Upstream commit 0f7bbef1794dc87141897f804e5871a293aa174b ]
+[ Upstream commit 7e01511443c30a55a5ae78d3debd46d4d872517e ]
 
-Since the typec connectors can have many muxes or switches for different
-lanes (sbu, usb2, usb3) going into different modal states (usb2, usb3,
-audio, debug) all of them will be called on typec_switch_set and
-typec_mux_set. But not all of them will be handling the expected mode.
+Coalesce the direction bits from the enabled TX and/or RX channels into
+the directions bit mask of dma_device. Without this mask set,
+dma_get_slave_caps() in the DMAEngine fails, which prevents the driver
+from being used with an IIO DMAEngine buffer.
 
-If one of the mux or switch will come back with EOPTNOSUPP this is no
-reason to stop running through the next ones. Therefor we skip this
-particular error value and continue calling the next.
-
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250404-ml-topic-typec-mux-v1-1-22c0526381ba@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>
+Reviewed-by: Suraj Gupta <suraj.gupta2@amd.com>
+Tested-by: Folker Schwesinger <dev@folker-schwesinger.de>
+Link: https://lore.kernel.org/r/20250507182101.909010-1-thomas.gessler@brueckmann-gmbh.de
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/mux.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma/xilinx/xilinx_dma.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/typec/mux.c b/drivers/usb/typec/mux.c
-index 80dd91938d960..a5b2a6f9c5795 100644
---- a/drivers/usb/typec/mux.c
-+++ b/drivers/usb/typec/mux.c
-@@ -214,7 +214,7 @@ int typec_switch_set(struct typec_switch *sw,
- 		sw_dev = sw->sw_devs[i];
- 
- 		ret = sw_dev->set(sw_dev, orientation);
--		if (ret)
-+		if (ret && ret != -EOPNOTSUPP)
- 			return ret;
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index 7660175704883..e2175651f9795 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -2859,6 +2859,8 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
+ 		return -EINVAL;
  	}
  
-@@ -378,7 +378,7 @@ int typec_mux_set(struct typec_mux *mux, struct typec_mux_state *state)
- 		mux_dev = mux->mux_devs[i];
- 
- 		ret = mux_dev->set(mux_dev, state);
--		if (ret)
-+		if (ret && ret != -EOPNOTSUPP)
- 			return ret;
- 	}
- 
++	xdev->common.directions |= chan->direction;
++
+ 	/* Request the interrupt */
+ 	chan->irq = of_irq_get(node, chan->tdest);
+ 	if (chan->irq < 0)
 -- 
 2.39.5
 
