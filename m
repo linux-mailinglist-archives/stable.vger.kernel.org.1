@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-159793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B534AF7A74
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:13:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4BDAF7916
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6767F4A31A6
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC18F584E5F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68122ED143;
-	Thu,  3 Jul 2025 15:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408A92EF9B8;
+	Thu,  3 Jul 2025 14:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBEzDEZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7bisfzg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E9B1E9B3D;
-	Thu,  3 Jul 2025 15:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6422EE996;
+	Thu,  3 Jul 2025 14:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555367; cv=none; b=T++eEiSCClv7l/npocFhw8QO0eLejLIGuSAfTNh9fXqNMrCtzk3Mk2JDeabZfe8ak3N7aSvtNCgTo2MgSIGOnluCP7zsmah6u7OaavA2NcApbqdKktOYhvJqBD0R0bM4MLRslJiFgf6qpsRNywdpZfujOOh21QUUmCPq9iJ3o+U=
+	t=1751554472; cv=none; b=cTCM9jwqMC8HBseMoJuAygdy84wXCE9nxki443ymqfziUHsUETvIGY+j+9Z18WrLzWI+SD7BcJIHMMM9Y7pvENfQWTbATYgXGmZ454dkwFpIhRh8hZwGvvwvkFfawCo0AggVdSe8lHDXrwvSV80ZBVrHsvi5G42zdRJzkZO9sJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555367; c=relaxed/simple;
-	bh=Ghrrd0h/Xo8iFwFvh5Z69Py2u9uzaKoV57O6QOjHlp4=;
+	s=arc-20240116; t=1751554472; c=relaxed/simple;
+	bh=MwoFAKfIgAbpGto5ohT+pzZJ8qJPjXJtroI7jMy73eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1fbxdC20zqW/klYaRyi1cJC7B97nyI5DUFvPdgRPjKr8VOIHoaoGtrOU4xUSyTPh7qjWogbFx8++HdVRCMd1wmxtNhQebPgUAmF/wec+8xbMAHAv6xNGJ5IFWd4mQ1inbboF0WVJp2bMknosHizOrsoce69eXPLmgjLbj2puJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBEzDEZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC157C4CEE3;
-	Thu,  3 Jul 2025 15:09:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ul8RCy40FnoN3LcDINpy47eU5n8p6zPL9bF5Y2tgBxWMb3pgaqdsHUxlp6bK9XFyBkiyAAkJfmOEMRly6rT8RUpy6YaqqhXy0prVsjwEdzNq0wG9pvCctWu6KQpGEVO9RtYz6PtvasL0iEbGTy1urpBZL1cMMwPX64LqNUjN5og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7bisfzg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650ECC4CEE3;
+	Thu,  3 Jul 2025 14:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555367;
-	bh=Ghrrd0h/Xo8iFwFvh5Z69Py2u9uzaKoV57O6QOjHlp4=;
+	s=korg; t=1751554471;
+	bh=MwoFAKfIgAbpGto5ohT+pzZJ8qJPjXJtroI7jMy73eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rBEzDEZySdDpKRTPvUTAgSJgYArM2qB90ta9ng+3b7sZweJZOH7/5a4dH0Lkq1AJb
-	 SXMdV8HXmePkxr/b2a2IpmI8400SmcOE88wdL78S7ldm+kDJsNojiKFJ6KbAUD7pbU
-	 n7OZsFJ+dYzmAODjx0hHd9pqIwBMxwKmBKeoEZdA=
+	b=K7bisfzgFNC8NaiNJkLMSLLoF0Y+hKoRlEuhR6/uoeXuCX8zIPBTfXU86eOQCfr1L
+	 UngGv7kTZsFeoExhEvzdoCLRMgoXQ/8iJL2xelFBV46MMJRdgBu1Ld/samGjt/2eAf
+	 6ppo/2yMn/ZbzPG6gbsNZThnxbd7lxkZvnnwbMQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sonny Jiang <sonny.jiang@amd.com>,
-	Leo Liu <leo.liu@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.15 227/263] drm/amdgpu: VCN v5_0_1 to prevent FW checking RB during DPG pause
+	stable <stable@kernel.org>,
+	Jos Wang <joswang@lenovo.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 199/218] usb: typec: tcpm: PSSourceOffTimer timeout in PR_Swap enters ERROR_RECOVERY
 Date: Thu,  3 Jul 2025 16:42:27 +0200
-Message-ID: <20250703144013.492017851@linuxfoundation.org>
+Message-ID: <20250703144004.172118009@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sonny Jiang <sonny.jiang@amd.com>
+[ Upstream commit 659f5d55feb75782bd46cf130da3c1f240afe9ba ]
 
-commit 46e15197b513e60786a44107759d6ca293d6288c upstream.
+As PD2.0 spec ("6.5.6.2 PSSourceOffTimer")，the PSSourceOffTimer is
+used by the Policy Engine in Dual-Role Power device that is currently
+acting as a Sink to timeout on a PS_RDY Message during a Power Role
+Swap sequence. This condition leads to a Hard Reset for USB Type-A and
+Type-B Plugs and Error Recovery for Type-C plugs and return to USB
+Default Operation.
 
-Add a protection to ensure programming are all complete prior VCPU
-starting. This is a WA for an unintended VCPU running.
+Therefore, after PSSourceOffTimer timeout, the tcpm state machine should
+switch from PR_SWAP_SNK_SRC_SINK_OFF to ERROR_RECOVERY. This can also
+solve the test items in the USB power delivery compliance test:
+TEST.PD.PROT.SNK.12 PR_Swap – PSSourceOffTimer Timeout
 
-Signed-off-by: Sonny Jiang <sonny.jiang@amd.com>
-Acked-by: Leo Liu <leo.liu@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c29521b529fa5e225feaf709d863a636ca0cbbfa)
-Cc: stable@vger.kernel.org
+[1] https://usb.org/document-library/usb-power-delivery-compliance-test-specification-0/USB_PD3_CTS_Q4_2025_OR.zip
+
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jos Wang <joswang@lenovo.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Amit Sunil Dhamne <amitsd@google.com>
+Link: https://lore.kernel.org/r/20250213134921.3798-1-joswang1221@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-@@ -629,6 +629,9 @@ static int vcn_v5_0_1_start_dpg_mode(str
- 	if (indirect)
- 		amdgpu_vcn_psp_update_sram(adev, inst_idx, AMDGPU_UCODE_ID_VCN0_RAM);
- 
-+	/* resetting ring, fw should not check RB ring */
-+	fw_shared->sq.queue_mode |= FW_QUEUE_RING_RESET;
-+
- 	/* Pause dpg */
- 	vcn_v5_0_1_pause_dpg_mode(vinst, &state);
- 
-@@ -641,7 +644,7 @@ static int vcn_v5_0_1_start_dpg_mode(str
- 	tmp = RREG32_SOC15(VCN, vcn_inst, regVCN_RB_ENABLE);
- 	tmp &= ~(VCN_RB_ENABLE__RB1_EN_MASK);
- 	WREG32_SOC15(VCN, vcn_inst, regVCN_RB_ENABLE, tmp);
--	fw_shared->sq.queue_mode |= FW_QUEUE_RING_RESET;
-+
- 	WREG32_SOC15(VCN, vcn_inst, regUVD_RB_RPTR, 0);
- 	WREG32_SOC15(VCN, vcn_inst, regUVD_RB_WPTR, 0);
- 
-@@ -652,6 +655,7 @@ static int vcn_v5_0_1_start_dpg_mode(str
- 	tmp = RREG32_SOC15(VCN, vcn_inst, regVCN_RB_ENABLE);
- 	tmp |= VCN_RB_ENABLE__RB1_EN_MASK;
- 	WREG32_SOC15(VCN, vcn_inst, regVCN_RB_ENABLE, tmp);
-+	/* resetting done, fw can check RB ring */
- 	fw_shared->sq.queue_mode &= ~(FW_QUEUE_RING_RESET | FW_QUEUE_DPG_HOLD_OFF);
- 
- 	WREG32_SOC15(VCN, vcn_inst, regVCN_RB1_DB_CTRL,
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 1d8e760df483c..9838a2c8c1b85 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -5566,8 +5566,7 @@ static void run_state_machine(struct tcpm_port *port)
+ 		tcpm_set_auto_vbus_discharge_threshold(port, TYPEC_PWR_MODE_USB,
+ 						       port->pps_data.active, 0);
+ 		tcpm_set_charge(port, false);
+-		tcpm_set_state(port, hard_reset_state(port),
+-			       PD_T_PS_SOURCE_OFF);
++		tcpm_set_state(port, ERROR_RECOVERY, PD_T_PS_SOURCE_OFF);
+ 		break;
+ 	case PR_SWAP_SNK_SRC_SOURCE_ON:
+ 		tcpm_enable_auto_vbus_discharge(port, true);
+-- 
+2.39.5
+
 
 
 
