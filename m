@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-160053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3048AF7C14
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E32DAF7BA2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD1976E669B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB34D1CC0538
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7739D2EACE1;
-	Thu,  3 Jul 2025 15:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA152F0035;
+	Thu,  3 Jul 2025 15:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XxvcP8pm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i05ggkb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3227B1D5CE5;
-	Thu,  3 Jul 2025 15:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D98A2F003A;
+	Thu,  3 Jul 2025 15:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556219; cv=none; b=RG1gHPingY2ao7RrlycGVH7pbA0W06oVl3BkVzYV+rpvhmnbgWxDm/nyEk2CRvR9Rh/xYy4tYPHVCcxn0C+9c/7RxyAzOjgozjGMRcJwrkH96kgBEdCntKENyjWnM4vdnpSL6kO+/BgMihY7SCG3YrC5uhTM8b/mjBKVKr1ONHA=
+	t=1751555881; cv=none; b=uXoO5J6ca9SloN6HgLvvgATCRzniHMnHZldjmL0S4QFT+mpjsiNV4v1h0fxbosuVuH/tCk50UrM+RAsjWrgnBjZWAB1HEW1vWfujZpIhbTIrif718DmnMJupzGYb3xdQKQGurBDCv7aMWOb5l2aQqJawvneabCNik0vt+bp0lOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556219; c=relaxed/simple;
-	bh=a9+hZGKvQqfHQRz6J71P+7dOdAy7jhaNx442ENwmLYY=;
+	s=arc-20240116; t=1751555881; c=relaxed/simple;
+	bh=3I25Dy4gEiNii7cbFNaUgdDCRePs4G6PufoK2MCFZzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jG7QasDJjqgVhdQRH42LoD+Jr1LIapEzmhswOjO9YaR6tWLuo/dyBx4q3cqFdQb1sWnDHELagLMAMXSK/pcZhfeEyHW3S5/VDXEly73K3tFGqdFXngmQLJCvUbL9L6Yo8bY2xkmUPrJ2okOlqyfmRafc1a+NvpqTlRHvfs6Za9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XxvcP8pm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B18C4CEEE;
-	Thu,  3 Jul 2025 15:23:38 +0000 (UTC)
+	 MIME-Version; b=T+mOQg2P6VFUm0kgNypmdhrWKXoz+gRM2vCXbIIV6J2nRLTSJuEDD+DKgB8s/v3Lwc2qFXt9Vif2DxedNwlDxlR49ZyQH7IHR1Ky4qYWJ0EhRfRwRE2EglBSnQZVVfbKs8rUHU2eJ6AYSWg+XvCZIeyR512XhnXk1IkrCoZfbSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i05ggkb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1476C4CEE3;
+	Thu,  3 Jul 2025 15:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556218;
-	bh=a9+hZGKvQqfHQRz6J71P+7dOdAy7jhaNx442ENwmLYY=;
+	s=korg; t=1751555881;
+	bh=3I25Dy4gEiNii7cbFNaUgdDCRePs4G6PufoK2MCFZzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XxvcP8pm+em2OqSv2I95xJnwkt7AkeAX3ks1voymvCILhHR+KPnLLxOaRdfzuks6+
-	 0Yu/onX93lT3cpi62K9I4Wpx+Kk84qsAhKDhILXJ1mbTwRPFkSVhYUoNwE1U6AVqLk
-	 7TrKppa7F64b7oNDCMchsylWuMNfCV0V6QnkEoWc=
+	b=i05ggkb1xK1U7ko1HJQgZ/KkhDtkQIZDbal9yn1dSfTHL0BVpnV8USy7D0gPw+cqK
+	 iXRRzOtJORTcj3OWu7GtIIazqfPpSoFpfewHxt4vUjV8+KFmbQBfNF1SPgRMWf8qE6
+	 /uikOw011W/+RV19EeBgusS500qzoNxXklD7iIEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.1 111/132] drm/bridge: cdns-dsi: Check return value when getting default PHY config
-Date: Thu,  3 Jul 2025 16:43:20 +0200
-Message-ID: <20250703143943.749298670@linuxfoundation.org>
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.6 138/139] firmware: arm_scmi: Add a common helper to check if a message is supported
+Date: Thu,  3 Jul 2025 16:43:21 +0200
+Message-ID: <20250703143946.574282468@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-commit c6a7ef0d4856b9629df390e9935d7fd67fe39f81 upstream.
+commit 637b6d6cae9c42db5a9525da67c991294924d2cd upstream.
 
-Check for the return value of the phy_mipi_dphy_get_default_config()
-call, and in case of an error, return back the same.
+A common helper is provided to check if a specific protocol message is
+supported or not.
 
-Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
-Cc: stable@vger.kernel.org
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Link: https://lore.kernel.org/r/20250329113925.68204-5-aradhya.bhatia@linux.dev
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Link: https://lore.kernel.org/r/20240212123233.1230090-3-cristian.marussi@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/cdns-dsi.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/firmware/arm_scmi/driver.c    |   34 ++++++++++++++++++++++++++++++++++
+ drivers/firmware/arm_scmi/protocols.h |    4 ++++
+ 2 files changed, 38 insertions(+)
 
---- a/drivers/gpu/drm/bridge/cdns-dsi.c
-+++ b/drivers/gpu/drm/bridge/cdns-dsi.c
-@@ -616,9 +616,11 @@ static int cdns_dsi_check_conf(struct cd
- 	if (ret)
- 		return ret;
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -1820,10 +1820,44 @@ static void scmi_common_fastchannel_db_r
+ #endif
+ }
  
--	phy_mipi_dphy_get_default_config(mode_clock * 1000,
--					 mipi_dsi_pixel_format_to_bpp(output->dev->format),
--					 nlanes, phy_cfg);
-+	ret = phy_mipi_dphy_get_default_config(mode_clock * 1000,
-+					       mipi_dsi_pixel_format_to_bpp(output->dev->format),
-+					       nlanes, phy_cfg);
++/**
++ * scmi_protocol_msg_check  - Check protocol message attributes
++ *
++ * @ph: A reference to the protocol handle.
++ * @message_id: The ID of the message to check.
++ * @attributes: A parameter to optionally return the retrieved message
++ *		attributes, in case of Success.
++ *
++ * An helper to check protocol message attributes for a specific protocol
++ * and message pair.
++ *
++ * Return: 0 on SUCCESS
++ */
++static int scmi_protocol_msg_check(const struct scmi_protocol_handle *ph,
++				   u32 message_id, u32 *attributes)
++{
++	int ret;
++	struct scmi_xfer *t;
++
++	ret = xfer_get_init(ph, PROTOCOL_MESSAGE_ATTRIBUTES,
++			    sizeof(__le32), 0, &t);
 +	if (ret)
 +		return ret;
- 
- 	ret = cdns_dsi_adjust_phy_config(dsi, dsi_cfg, phy_cfg, mode, mode_valid_check);
- 	if (ret)
++
++	put_unaligned_le32(message_id, t->tx.buf);
++	ret = do_xfer(ph, t);
++	if (!ret && attributes)
++		*attributes = get_unaligned_le32(t->rx.buf);
++	xfer_put(ph, t);
++
++	return ret;
++}
++
+ static const struct scmi_proto_helpers_ops helpers_ops = {
+ 	.extended_name_get = scmi_common_extended_name_get,
+ 	.iter_response_init = scmi_iterator_init,
+ 	.iter_response_run = scmi_iterator_run,
++	.protocol_msg_check = scmi_protocol_msg_check,
+ 	.fastchannel_init = scmi_common_fastchannel_init,
+ 	.fastchannel_db_ring = scmi_common_fastchannel_db_ring,
+ };
+--- a/drivers/firmware/arm_scmi/protocols.h
++++ b/drivers/firmware/arm_scmi/protocols.h
+@@ -250,6 +250,8 @@ struct scmi_fc_info {
+  *			provided in @ops.
+  * @iter_response_run: A common helper to trigger the run of a previously
+  *		       initialized iterator.
++ * @protocol_msg_check: A common helper to check is a specific protocol message
++ *			is supported.
+  * @fastchannel_init: A common helper used to initialize FC descriptors by
+  *		      gathering FC descriptions from the SCMI platform server.
+  * @fastchannel_db_ring: A common helper to ring a FC doorbell.
+@@ -262,6 +264,8 @@ struct scmi_proto_helpers_ops {
+ 				    unsigned int max_resources, u8 msg_id,
+ 				    size_t tx_size, void *priv);
+ 	int (*iter_response_run)(void *iter);
++	int (*protocol_msg_check)(const struct scmi_protocol_handle *ph,
++				  u32 message_id, u32 *attributes);
+ 	void (*fastchannel_init)(const struct scmi_protocol_handle *ph,
+ 				 u8 describe_id, u32 message_id,
+ 				 u32 valid_size, u32 domain,
 
 
 
