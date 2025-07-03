@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-159616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C983AF7982
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:02:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 823D0AF7821
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDFD717702E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:59:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 473801C8449A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA852EE973;
-	Thu,  3 Jul 2025 14:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686052E7620;
+	Thu,  3 Jul 2025 14:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FyJYq9eh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jn27m7uV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BF92E7F1A;
-	Thu,  3 Jul 2025 14:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2737A101DE;
+	Thu,  3 Jul 2025 14:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554793; cv=none; b=JUcaIC531JuhwIHTy+T/OitFTxpDVQNEZq64oTwewlrU3U8DNMaH5ZvgBUGXiQH3qo+LUUnkpZACADCAFfT100WZ9ZO0J4uE0vCAPGnoMX0HJhCsu86IIM43MOdFhOTFARvmBPnsO8KmqZYnUdCsbJG8OSZa1jEBY+n6Lco1uM8=
+	t=1751554010; cv=none; b=NYRXmUQB1qOTaxEQ+nCPZMFM+HLNb4f53yJtFoXIxnm688qlv24q3bknkUXJgCvMfJtT5mis2CV3p9+lXHTPPVqu0nzQDYQyznHLcsXrgzCHX2p2ZHrl4ZolqkpmVHxzi9VasEZK0c32sZpjxcn/YhZmZO3Kxduh09bnrfJM0oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554793; c=relaxed/simple;
-	bh=F9+VP7ENzMkxnUGuDZ1MQEg98U+HovtH6sMdaHSk/uM=;
+	s=arc-20240116; t=1751554010; c=relaxed/simple;
+	bh=x3L1qlFAnVdUrkNran6yrTpMUNfokItZycq/BPh0Tq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rCSrloWiY4nNhUb7Aeq68EvHumZPqKn0AL3fB6zn5J0N2Oe9WFY+/Jdy4vhPVDVba5rdEYcKcQrpgbvilM/XzuJaI5YJHjFhmOcG0xc8tmr1JO5VXn1S1wFZMfXCbJ4sWmMZAdoF8P9hQpf/K9AoVFDjMEE5hsHRK7GLYAYXZ/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FyJYq9eh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69FFFC4CEE3;
-	Thu,  3 Jul 2025 14:59:52 +0000 (UTC)
+	 MIME-Version; b=Cn4gf69kW3cASjNkFEWW81bES2uZxsgppCIfS+A+74Ul9t75Ysy6T98FBS5+5wxOxdJrI3tn6r0kIrRLlsK5MTqehaj9yOP4jXL8/cqbNfZO3egtz2MYE1rClRK7dLjzwX5k00BgmKlFdjyqbOI/ENnfSryIvoFQEyRg4Rb04/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jn27m7uV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBA1C4CEE3;
+	Thu,  3 Jul 2025 14:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554792;
-	bh=F9+VP7ENzMkxnUGuDZ1MQEg98U+HovtH6sMdaHSk/uM=;
+	s=korg; t=1751554010;
+	bh=x3L1qlFAnVdUrkNran6yrTpMUNfokItZycq/BPh0Tq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FyJYq9ehlThaJmaBQ48lLO4ND7arhTzwA5OVdMRqNXfKdgdgr9AklJEvD316v0G6R
-	 5ZKv9LHTnbs24artWpDlQyMbYEqz2ootJlNUJNwWtx0e1YZlw1NdNnsJHoIx0Z92wV
-	 y8/CaxGCARn4vCNkzqyiB5qJtkP+5eZ9O0BK+n6w=
+	b=Jn27m7uVK/OxE2osuWQ85GaYWGLn3f1Jt5OMhdapV71B2E3x1zaIeY+ysVh828r70
+	 HaWCvdfzLCza9Vz111tyXZOfu5TmmAwX9DawCZe58OxkZA6Igy1CJLthExsig8O1rY
+	 zgfxmG6Iz63bgzpfJnOZwDhnes1smke40rPxI6gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 080/263] drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1
+Subject: [PATCH 6.12 052/218] ALSA: usb-audio: Add a quirk for Lenovo Thinkpad Thunderbolt 3 dock
 Date: Thu,  3 Jul 2025 16:40:00 +0200
-Message-ID: <20250703144007.506696063@linuxfoundation.org>
+Message-ID: <20250703143958.013524160@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 25eeba495b2fc16037647c1a51bcdf6fc157af5c ]
+[ Upstream commit 4919353c7789b8047e06a9b2b943f775a8f72883 ]
 
-The intel-media-driver is currently broken on DG1 because
-it uses EXEC_CAPTURE with recovarable contexts. Relax the
-check to allow that.
+The audio controller in the Lenovo Thinkpad Thunderbolt 3 dock doesn't
+support reading the sampling rate.
 
-I've also submitted a fix for the intel-media-driver:
-https://github.com/intel/media-driver/pull/1920
+Add a quirk for it.
 
-Cc: stable@vger.kernel.org # v6.0+
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Testcase: igt/gem_exec_capture/capture-invisible
-Fixes: 71b1669ea9bd ("drm/i915/uapi: tweak error capture on recoverable contexts")
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250411144313.11660-2-ville.syrjala@linux.intel.com
-(cherry picked from commit d6e020819612a4a06207af858e0978be4d3e3140)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Stable-dep-of: ed5915cfce2a ("Revert "drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1"")
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20250527172657.1972565-1-superm1@kernel.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-index 7796c4119ef5e..1974a300b24a1 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-@@ -2014,7 +2014,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
- 			continue;
- 
- 		if (i915_gem_context_is_recoverable(eb->gem_context) &&
--		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
-+		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
- 			return -EINVAL;
- 
- 		for_each_batch_create_order(eb, j) {
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index c7387081577cd..0da4ee9757c01 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2282,6 +2282,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
+ 	DEVICE_FLG(0x17aa, 0x104d, /* Lenovo ThinkStation P620 Internal Speaker + Front Headset */
+ 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
++	DEVICE_FLG(0x17ef, 0x3083, /* Lenovo TBT3 dock */
++		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x1852, 0x5062, /* Luxman D-08u */
+ 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
+ 	DEVICE_FLG(0x1852, 0x5065, /* Luxman DA-06 */
 -- 
 2.39.5
 
