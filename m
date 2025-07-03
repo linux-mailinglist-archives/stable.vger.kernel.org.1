@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-159663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D439BAF79C2
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAAE9AF7837
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:48:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25E4858621E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:02:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4BAFB404B3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE622E7649;
-	Thu,  3 Jul 2025 15:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532A11C5D46;
+	Thu,  3 Jul 2025 14:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPSa43dh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5KOFN/W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D042E339E;
-	Thu,  3 Jul 2025 15:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C5872610;
+	Thu,  3 Jul 2025 14:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554944; cv=none; b=tSVf4x3Mmmxzk0Q+qg2A/jIqbtwQ7cMt4+6D37FLogSo2RTn4byu9b8Fpezk8uBdPuAVzZu7d53BiYpm0TFHLteEC4WTwl/LCrqyi/27/v2675vqZyJuZFDJLHBuHZdZQI5/GpOtpaO7Aou2MQ8CXwXCczTa8KFOUiymSrBI6TA=
+	t=1751554062; cv=none; b=YnBRs4XyhDQFWNYigJ8UCZ62kfj20WxlsELKM3wS/PsYopeoJuNdYhhNg7tmWiOsxjKGYWMEqLFuvSPfu3k6CIWn88W2pxmOO0vB38tDIYT9s+ImAeP6ruQc2APnehUXR0I1csltBaV77bJ/LQHNb8Mg2Kk0rCa6TQZlWGM5yAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554944; c=relaxed/simple;
-	bh=qyvQmIndpK4v5S+j1AvzgjbmdtIW83yFuAWXVkCVDF0=;
+	s=arc-20240116; t=1751554062; c=relaxed/simple;
+	bh=vAJ7GZwL+QLJEkyaKfZghcWzcdTPSz+s9eJXZFXiTps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ob34odDBP+hUW+fj+kURM4hrOat/Y4H6pI6ZcoNv6qykLNUNJWbBsM/M/Bh7Zxogevx3xdNMhlHbnq9WPMq/32QBFGXxUVkRoGH2lBX7mQm7m1KdVLo88Yd1x1TYak+ATtITMiIl/uaaAvKFcXVFI8gr1kTuk7CSFUSPItQMzrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPSa43dh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FAAC4CEE3;
-	Thu,  3 Jul 2025 15:02:23 +0000 (UTC)
+	 MIME-Version; b=V6hFOpWZ7OYjF11Gi6dohUy1LWmcNtSSdYo+40ktjmoUqRbDIDS95XS8rFXcs7tWzX9GLdGLcZjvt5PFBv77LLgxmHJYxWDZZV23m87v8/9LUkTXixL707N/DixDBTOk4tsJ9xMMhLIe9oDfPXkylSMwpurVw37Ti2zdZPXzr3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5KOFN/W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176EBC4CEE3;
+	Thu,  3 Jul 2025 14:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554944;
-	bh=qyvQmIndpK4v5S+j1AvzgjbmdtIW83yFuAWXVkCVDF0=;
+	s=korg; t=1751554061;
+	bh=vAJ7GZwL+QLJEkyaKfZghcWzcdTPSz+s9eJXZFXiTps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HPSa43dhQtvN1FFLCv8jtdBhOm+bZE6lRW5tzBrACjJ/w2oNJfjFPxkZRcDFa23P9
-	 jYJCCFbMFZCrT1CDKHKnH5ri0beQbUBArQ+9Wt6dudt6bIsAx5bDIdLpoVLRUP3AVZ
-	 q8QuNn5/v0UIjqIk27Nx4CNlYrb4Nco/Ed0cFbBU=
+	b=t5KOFN/WwdceWFUE/1MfIHaXdunKVAXUVBp7p8XywQUEO0gvZejGmD70sOkOYHBq7
+	 sQzkw2yVKll+QsJKKXCoS2E2n7u4xGWmwnxsboDFJ45oz1TKMe2MFnYh6zd4Ff8vqp
+	 N++pb96BOdXh94Kc3yO2Dm5qOQpLJkmoxaIHqgNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.15 097/263] i2c: omap: Fix an error handling path in omap_i2c_probe()
+	Janne Grunau <j@jannau.net>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Marc Zyngier <maz@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 069/218] PCI: apple: Set only available ports up
 Date: Thu,  3 Jul 2025 16:40:17 +0200
-Message-ID: <20250703144008.189959412@linuxfoundation.org>
+Message-ID: <20250703143958.699279553@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Janne Grunau <j@jannau.net>
 
-commit 666c23af755dccca8c25b5d5200ca28153c69a05 upstream.
+[ Upstream commit 751bec089c4eed486578994abd2c5395f08d0302 ]
 
-If an error occurs after calling mux_state_select(), mux_state_deselect()
-should be called as already done in the remove function.
+Iterating over disabled ports results in of_irq_parse_raw() parsing
+the wrong "interrupt-map" entries, as it takes the status of the node
+into account.
 
-Fixes: b6ef830c60b6 ("i2c: omap: Add support for setting mux")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: <stable@vger.kernel.org> # v6.15+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/998542981b6d2435c057dd8b9fe71743927babab.1749913149.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This became apparent after disabling unused PCIe ports in the Apple
+Silicon device trees instead of deleting them.
+
+Switching from for_each_child_of_node_scoped() to
+for_each_available_child_of_node_scoped() solves this issue.
+
+Fixes: 1e33888fbe44 ("PCI: apple: Add initial hardware bring-up")
+Fixes: a0189fdfb73d ("arm64: dts: apple: t8103: Disable unused PCIe ports")
+Signed-off-by: Janne Grunau <j@jannau.net>
+Signed-off-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Tested-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Acked-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/asahi/20230214-apple_dts_pcie_disable_unused-v1-0-5ea0d3ddcde3@jannau.net/
+Link: https://lore.kernel.org/asahi/1ea2107a-bb86-8c22-0bbc-82c453ab08ce@linaro.org/
+Link: https://patch.msgid.link/20250401091713.2765724-2-maz@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-omap.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pci/controller/pcie-apple.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-index f1cc26ac5b80..8b01df3cc8e9 100644
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -1461,13 +1461,13 @@ omap_i2c_probe(struct platform_device *pdev)
- 		if (IS_ERR(mux_state)) {
- 			r = PTR_ERR(mux_state);
- 			dev_dbg(&pdev->dev, "failed to get I2C mux: %d\n", r);
--			goto err_disable_pm;
-+			goto err_put_pm;
- 		}
- 		omap->mux_state = mux_state;
- 		r = mux_state_select(omap->mux_state);
- 		if (r) {
- 			dev_err(&pdev->dev, "failed to select I2C mux: %d\n", r);
--			goto err_disable_pm;
-+			goto err_put_pm;
- 		}
- 	}
+diff --git a/drivers/pci/controller/pcie-apple.c b/drivers/pci/controller/pcie-apple.c
+index 43280a366266b..16725f9536f65 100644
+--- a/drivers/pci/controller/pcie-apple.c
++++ b/drivers/pci/controller/pcie-apple.c
+@@ -789,7 +789,7 @@ static int apple_pcie_init(struct pci_config_window *cfg)
+ 	if (ret)
+ 		return ret;
  
-@@ -1515,6 +1515,9 @@ omap_i2c_probe(struct platform_device *pdev)
- 
- err_unuse_clocks:
- 	omap_i2c_write_reg(omap, OMAP_I2C_CON_REG, 0);
-+	if (omap->mux_state)
-+		mux_state_deselect(omap->mux_state);
-+err_put_pm:
- 	pm_runtime_dont_use_autosuspend(omap->dev);
- 	pm_runtime_put_sync(omap->dev);
- err_disable_pm:
+-	for_each_child_of_node_scoped(dev->of_node, of_port) {
++	for_each_available_child_of_node_scoped(dev->of_node, of_port) {
+ 		ret = apple_pcie_setup_port(pcie, of_port);
+ 		if (ret) {
+ 			dev_err(pcie->dev, "Port %pOF setup fail: %d\n", of_port, ret);
 -- 
-2.50.0
+2.39.5
 
 
 
