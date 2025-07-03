@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-159469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D0AAF78C0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:54:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DFEEAF7A0F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:09:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 679093A9B69
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDAD918835D4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A68B2EFDB5;
-	Thu,  3 Jul 2025 14:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5192E7BBF;
+	Thu,  3 Jul 2025 15:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQgiUa/m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ka8WYOyG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A44F2EF669;
-	Thu,  3 Jul 2025 14:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED012B9A6;
+	Thu,  3 Jul 2025 15:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554330; cv=none; b=c70NpIH7qRGsg4RJ50N6AilBH3GvgSs3tvUXj7591eWdcsUSIC/fQPljU++kYgHG7zdk6ZThGyPvkkPdrIQyINgmzWCbalIBOwvU5oInGJlJVLOeH2OVB1EGn3fKC5JrwHxWkn2HZ4eZjlyxE1mxHVbtHjelbSNyflYaoIyKrFQ=
+	t=1751555031; cv=none; b=l0jaQRFoFnBGUBHgoAO37Knx0Ed8xCmTg28kq64INnBDNDW5svvGu/QmeT+18zEjAfps4Jg6VT9AylPwGPCmIIiyrTQpAhhEWFWwlMBoSjjE0ZTTb4ODpv1dzeOTec8h1hlaFO8KuvtocuIiSSxEqO/D3rR8an32acEsa+7xzYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554330; c=relaxed/simple;
-	bh=LIUyBTlrf3lGa3rz2x62J3hDLj2o6rK0+wuPyx4xY44=;
+	s=arc-20240116; t=1751555031; c=relaxed/simple;
+	bh=J0D0eIhsh1Jo9Day2HSbmTCmJWceYWnZEEJiTudB8l8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4sKkG0XL1s5ZFsQrktQquSAtaQAl7cvBlGwi97oMdh8l2r1PjkT7S2i3y+tLN6dWerfztzJ8r2ZFX4XvjA5fOz+2+ucfxUTvmHBKieiPJoVetbZzP5o581qVUqGDPFykULvCcMh4rRJm3CaHv6F+Wcjwy9Qx3tZo6FIMzn8ta0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQgiUa/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9B0C4CEE3;
-	Thu,  3 Jul 2025 14:52:09 +0000 (UTC)
+	 MIME-Version; b=E0OpwAZzCjN2AYGGYSdxmM2BtLM5MJZS3b0ZCA0zt0ODGrnvWYziYVoeIoIXB1lf1JLfPQfu0FNjidjbDGkx/YP4kSEZDBfVv/tAvIiaFN9v9NgJWD8BlfR7n870RclTYtKWU4hw/mIy60S3mWslGAdy+LGmqHN+kCyg3D71moA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ka8WYOyG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7F3C4CEE3;
+	Thu,  3 Jul 2025 15:03:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554330;
-	bh=LIUyBTlrf3lGa3rz2x62J3hDLj2o6rK0+wuPyx4xY44=;
+	s=korg; t=1751555030;
+	bh=J0D0eIhsh1Jo9Day2HSbmTCmJWceYWnZEEJiTudB8l8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQgiUa/mZQm6KT4iY3dzcmyj4Ss7khw+XIEEqGNbmdITaI0nbqJApoTZWkhF/4+yM
-	 HXpc2BExObCKzSSw0ktJ3nmnosruiySWmiZkRmLlLI9mDu2nsznIpoCSlRgEX9MPoN
-	 dn9abe2grSdJI+u+rSivMSFqj9jpV6lheP5taUPA=
+	b=ka8WYOyG+bZ3jfGTusl797PdcRIHqhZoPv7Y3H7mEVa3PhGCDDjih4mAHnQ3HHnwQ
+	 FwaMVlJYkPC7Zg1nKfTiVmBHkmAgwGSIEs8OpN5UMbXgcZj92tWH1pI00sZUEvP88h
+	 nbvvhv3e6OY0VmsELfwN71X4ZTLuEJnEO6rY/XGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Metzmacher <metze@samba.org>,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 125/218] cifs: Fix the smbd_response slab to allow usercopy
+Subject: [PATCH 6.15 153/263] io_uring/net: mark iov as dynamically allocated even for single segments
 Date: Thu,  3 Jul 2025 16:41:13 +0200
-Message-ID: <20250703144001.109811899@linuxfoundation.org>
+Message-ID: <20250703144010.498828697@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,101 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 43e7e284fc77b710d899569360ea46fa3374ae22 ]
+[ Upstream commit 9a709b7e98e6fa51600b5f2d24c5068efa6d39de ]
 
-The handling of received data in the smbdirect client code involves using
-copy_to_iter() to copy data from the smbd_reponse struct's packet trailer
-to a folioq buffer provided by netfslib that encapsulates a chunk of
-pagecache.
+A bigger array of vecs could've been allocated, but
+io_ring_buffers_peek() still decided to cap the mapped range depending
+on how much data was available. Hence don't rely on the segment count
+to know if the request should be marked as needing cleanup, always
+check upfront if the iov array is different than the fast_iov array.
 
-If, however, CONFIG_HARDENED_USERCOPY=y, this will result in the checks
-then performed in copy_to_iter() oopsing with something like the following:
-
- CIFS: Attempting to mount //172.31.9.1/test
- CIFS: VFS: RDMA transport established
- usercopy: Kernel memory exposure attempt detected from SLUB object 'smbd_response_0000000091e24ea1' (offset 81, size 63)!
- ------------[ cut here ]------------
- kernel BUG at mm/usercopy.c:102!
- ...
- RIP: 0010:usercopy_abort+0x6c/0x80
- ...
- Call Trace:
-  <TASK>
-  __check_heap_object+0xe3/0x120
-  __check_object_size+0x4dc/0x6d0
-  smbd_recv+0x77f/0xfe0 [cifs]
-  cifs_readv_from_socket+0x276/0x8f0 [cifs]
-  cifs_read_from_socket+0xcd/0x120 [cifs]
-  cifs_demultiplex_thread+0x7e9/0x2d50 [cifs]
-  kthread+0x396/0x830
-  ret_from_fork+0x2b8/0x3b0
-  ret_from_fork_asm+0x1a/0x30
-
-The problem is that the smbd_response slab's packet field isn't marked as
-being permitted for usercopy.
-
-Fix this by passing parameters to kmem_slab_create() to indicate that
-copy_to_iter() is permitted from the packet region of the smbd_response
-slab objects, less the header space.
-
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Reported-by: Stefan Metzmacher <metze@samba.org>
-Link: https://lore.kernel.org/r/acb7f612-df26-4e2a-a35d-7cd040f513e1@samba.org/
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Stefan Metzmacher <metze@samba.org>
-Tested-by: Stefan Metzmacher <metze@samba.org>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 26ec15e4b0c1 ("io_uring/kbuf: don't truncate end buffer for multiple buffer peeks")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smbdirect.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ io_uring/net.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index cbc85bca006f7..b7932f63b4650 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1452,6 +1452,9 @@ static int allocate_caches_and_workqueue(struct smbd_connection *info)
- 	char name[MAX_NAME_LEN];
- 	int rc;
+diff --git a/io_uring/net.c b/io_uring/net.c
+index 3feceb2b5b97e..adfdcea01e39b 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1084,6 +1084,12 @@ static int io_recv_buf_select(struct io_kiocb *req, struct io_async_msghdr *kmsg
+ 		if (unlikely(ret < 0))
+ 			return ret;
  
-+	if (WARN_ON_ONCE(sp->max_recv_size < sizeof(struct smbdirect_data_transfer)))
-+		return -ENOMEM;
++		if (arg.iovs != &kmsg->fast_iov && arg.iovs != kmsg->vec.iovec) {
++			kmsg->vec.nr = ret;
++			kmsg->vec.iovec = arg.iovs;
++			req->flags |= REQ_F_NEED_CLEANUP;
++		}
 +
- 	scnprintf(name, MAX_NAME_LEN, "smbd_request_%p", info);
- 	info->request_cache =
- 		kmem_cache_create(
-@@ -1469,12 +1472,17 @@ static int allocate_caches_and_workqueue(struct smbd_connection *info)
- 		goto out1;
- 
- 	scnprintf(name, MAX_NAME_LEN, "smbd_response_%p", info);
-+
-+	struct kmem_cache_args response_args = {
-+		.align		= __alignof__(struct smbd_response),
-+		.useroffset	= (offsetof(struct smbd_response, packet) +
-+				   sizeof(struct smbdirect_data_transfer)),
-+		.usersize	= sp->max_recv_size - sizeof(struct smbdirect_data_transfer),
-+	};
- 	info->response_cache =
--		kmem_cache_create(
--			name,
--			sizeof(struct smbd_response) +
--				sp->max_recv_size,
--			0, SLAB_HWCACHE_ALIGN, NULL);
-+		kmem_cache_create(name,
-+				  sizeof(struct smbd_response) + sp->max_recv_size,
-+				  &response_args, SLAB_HWCACHE_ALIGN);
- 	if (!info->response_cache)
- 		goto out2;
+ 		/* special case 1 vec, can be a fast path */
+ 		if (ret == 1) {
+ 			sr->buf = arg.iovs[0].iov_base;
+@@ -1092,11 +1098,6 @@ static int io_recv_buf_select(struct io_kiocb *req, struct io_async_msghdr *kmsg
+ 		}
+ 		iov_iter_init(&kmsg->msg.msg_iter, ITER_DEST, arg.iovs, ret,
+ 				arg.out_len);
+-		if (arg.iovs != &kmsg->fast_iov && arg.iovs != kmsg->vec.iovec) {
+-			kmsg->vec.nr = ret;
+-			kmsg->vec.iovec = arg.iovs;
+-			req->flags |= REQ_F_NEED_CLEANUP;
+-		}
+ 	} else {
+ 		void __user *buf;
  
 -- 
 2.39.5
