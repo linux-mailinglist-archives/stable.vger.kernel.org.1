@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-159528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB94AF793E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:59:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05491AF7BF1
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A714C188F3AF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D563917868C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794792EE978;
-	Thu,  3 Jul 2025 14:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B937319F43A;
+	Thu,  3 Jul 2025 15:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaMBE7yn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2Wr9jIP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345342EF670;
-	Thu,  3 Jul 2025 14:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F722DE6F1;
+	Thu,  3 Jul 2025 15:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554514; cv=none; b=H20NK5hsAgel4WGT2irObPlP7PivZMn7XrmSMNwreJVf86jK/dtThqfiREtvLEDjJ4IxzQB0H7fgG4xKhWryZJjl6mTvS/2e441vQ9ChT5JAedhisfdI1mmKuIAUDUecEhE0EYY38Cr07ZvzAZneNHum3dWit3+nCSG7dbQdv+0=
+	t=1751556087; cv=none; b=Sk2TWn4vezi0UuucEmrs5b8k8DJFNJrqPohtQmPxhExch0LbvBdYG+p8vhCdHONXhAjclM61xTjYVg5XDxjpgP5cZfUKiZh36y4aAlnf8LXoLFapgiH+//QrAbxzmRT2V9AAMAN0OJznHr+0/kGEGJp6YsnE1jxuu31ZtFduiWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554514; c=relaxed/simple;
-	bh=R1hW+Rm2hlIBJ2N4KJw9jshdWHwDuRIzTgKUXszAjes=;
+	s=arc-20240116; t=1751556087; c=relaxed/simple;
+	bh=6lsK5SCbIcVOwbuLKOeTGTYkucUTEsoq1HUDbYF4O1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N7PTGDftLC31ART4jBucmoa1tjZPfsd/3L65wNpdYWAwn2s9nf7iXZCKpjEWmu+Z5sC3fH1mSghshWpQjeg0e9SvDBtVmRnXIja+RhWHYJm5jaTcaHPw3oTkg1v4WnHW5mQKVHcNX6qYJl32zdiHzZ7f6851/+Cl7urISXwnaEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaMBE7yn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567A5C4CEE3;
-	Thu,  3 Jul 2025 14:55:13 +0000 (UTC)
+	 MIME-Version; b=F+njtamhj1yGt5ECX8MR37LX/0JTuOeTAtOkjvW2zM6p6Du/nuKiP1T9lhr5+iOXo0Wp4UdtEQxh0eymFqa6Pf6KiGgIQqVZadcHqHy/bnbjp5zSs6I7jmO2Qi3ZFkkE6LWYt9gEQpIz/MM9Wt89UIPXHUQYtU5V/j1ZpU6Sh0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2Wr9jIP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA64BC4CEE3;
+	Thu,  3 Jul 2025 15:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554513;
-	bh=R1hW+Rm2hlIBJ2N4KJw9jshdWHwDuRIzTgKUXszAjes=;
+	s=korg; t=1751556087;
+	bh=6lsK5SCbIcVOwbuLKOeTGTYkucUTEsoq1HUDbYF4O1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OaMBE7ynX1b1GZEz2Y1FS2zBSdd2C5qhvBXzjqyZ8HR9ri508ntrSUPj+48GMYXc5
-	 916IgR9HF9zsQ61CG4t0sNeb7iPGRVHMekwopo+9yieWJ1wY2LAbk27jGH7HEe2kfx
-	 1Y5gxdb2JLes1DZF8E+VsQ+jQUmPtAsvkmYSjuVg=
+	b=h2Wr9jIPamcP6TJsOsNgyq166KuJhVawB1UxboQX2fBsqfz4gnSReuxwC4DWnd0Hs
+	 YuxEl8dSkm0qNgp31Iqw3rm2EtuDgt8R0fL3Rrdt2u1qi97qf7UtvO9bPlbVYudDkr
+	 senANAf5h1oU0VMyuhHYrL34wrCfIz6pA6BMhnvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 211/218] net: stmmac: Fix accessing freed irq affinity_hint
-Date: Thu,  3 Jul 2025 16:42:39 +0200
-Message-ID: <20250703144004.653311063@linuxfoundation.org>
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.1 071/132] i2c: tiny-usb: disable zero-length read messages
+Date: Thu,  3 Jul 2025 16:42:40 +0200
+Message-ID: <20250703143942.205374925@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit c60d101a226f18e9a8f01bb4c6ca2b47dfcb15ef ]
+commit cbdb25ccf7566eee0c2b945e35cb98baf9ed0aa6 upstream.
 
-The cpumask should not be a local variable, since its pointer is saved
-to irq_desc and may be accessed from procfs.
-To fix it, use the persistent mask cpumask_of(cpu#).
+This driver passes the length of an i2c_msg directly to
+usb_control_msg(). If the message is now a read and of length 0, it
+violates the USB protocol and a warning will be printed. Enable the
+I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
+read messages altogether.
 
-Cc: stable@vger.kernel.org
-Fixes: 8deec94c6040 ("net: stmmac: set IRQ affinity hint for multi MSI vectors")
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250318032424.112067-1-dqfext@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e8c76eed2ecd ("i2c: New i2c-tiny-usb bus driver")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: <stable@vger.kernel.org> # v2.6.22+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250522064349.3823-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/i2c/busses/i2c-tiny-usb.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 0250c5cb28ff2..36328298dc9b8 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3603,7 +3603,6 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 	enum request_irq_err irq_err;
--	cpumask_t cpu_mask;
- 	int irq_idx = 0;
- 	char *int_name;
- 	int ret;
-@@ -3732,9 +3731,8 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
- 			irq_idx = i;
- 			goto irq_error;
- 		}
--		cpumask_clear(&cpu_mask);
--		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
--		irq_set_affinity_hint(priv->rx_irq[i], &cpu_mask);
-+		irq_set_affinity_hint(priv->rx_irq[i],
-+				      cpumask_of(i % num_online_cpus()));
- 	}
+--- a/drivers/i2c/busses/i2c-tiny-usb.c
++++ b/drivers/i2c/busses/i2c-tiny-usb.c
+@@ -140,6 +140,11 @@ out:
+ 	return ret;
+ }
  
- 	/* Request Tx MSI irq */
-@@ -3757,9 +3755,8 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
- 			irq_idx = i;
- 			goto irq_error;
- 		}
--		cpumask_clear(&cpu_mask);
--		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
--		irq_set_affinity_hint(priv->tx_irq[i], &cpu_mask);
-+		irq_set_affinity_hint(priv->tx_irq[i],
-+				      cpumask_of(i % num_online_cpus()));
- 	}
- 
- 	return 0;
--- 
-2.39.5
-
++/* prevent invalid 0-length usb_control_msg */
++static const struct i2c_adapter_quirks usb_quirks = {
++	.flags = I2C_AQ_NO_ZERO_LEN_READ,
++};
++
+ /* This is the actual algorithm we define */
+ static const struct i2c_algorithm usb_algorithm = {
+ 	.master_xfer	= usb_xfer,
+@@ -244,6 +249,7 @@ static int i2c_tiny_usb_probe(struct usb
+ 	/* setup i2c adapter description */
+ 	dev->adapter.owner = THIS_MODULE;
+ 	dev->adapter.class = I2C_CLASS_HWMON;
++	dev->adapter.quirks = &usb_quirks;
+ 	dev->adapter.algo = &usb_algorithm;
+ 	dev->adapter.algo_data = dev;
+ 	snprintf(dev->adapter.name, sizeof(dev->adapter.name),
 
 
 
