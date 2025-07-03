@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-159853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A98AF7A8C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:14:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D73C0AF7BED
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:30:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FBED7B356C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:13:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 545815A3E60
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EDE2F0C58;
-	Thu,  3 Jul 2025 15:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7B22F2710;
+	Thu,  3 Jul 2025 15:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HC9+jwCV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xeda3q8t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5742EF672;
-	Thu,  3 Jul 2025 15:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2D52F270C;
+	Thu,  3 Jul 2025 15:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555564; cv=none; b=j4kpytXZGv3A4DZyLBgx+4IUzlT3FH259OwloncfIr8HNP+pWQ1bu+2pFj9qkJ/CPCT6TNTcLAhBxmkAOtsxs7PknKkPA+60MQfn2zu5buIItZQtcCQSlHtLHPdkZ+6Fig8eFlx1zsnQCOKMZnRV+V+TSFrndmsSaOQHieEsesg=
+	t=1751556074; cv=none; b=PDydkXkTkqjSwpXijrxb5PAsOSlyoEFoArLMfNcVYKbBCCziWHeNdFNRaKmLvzxes9buxbrGiqT3gywKKTWxfp8Q9URCwQUXNH+4sCqO3XW61dJlSDc+7W0Dkrx0v2tNK+mcjGReTjRzTQkDenAUJiJmqkD4uLz6FbiI9wsGPMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555564; c=relaxed/simple;
-	bh=GipkuSzoJFwRhSWaVkOEglBq/uZFGKnpcM69ENxhgvM=;
+	s=arc-20240116; t=1751556074; c=relaxed/simple;
+	bh=4D1vBgMPwJXz+GeegKdtzuOvgQvBwVA4xRGlZaTtqxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=omPEfdb9yG4RYWFHsG+RixiKMPTzLE1C2h9N0lVYm+pb8MRu73M25OOFJN+DJW2rSz0iFzAj8qo+HfyAqQtzzLp5eDO4xlYJcPkH44heQDWKLNTiN016N4L9GMYvXEsjkwbbKryECGGJPQqkKeG69oiY3vaXObU5LPPnRH3AEvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HC9+jwCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E540C4CEE3;
-	Thu,  3 Jul 2025 15:12:43 +0000 (UTC)
+	 MIME-Version; b=I0ZLs3fAotEoiewlkMi0zG5Iqrklu5URCI4VnR1lWtBG4FhQvi9YA5BOTmIAk4uED8wDYg+4nEb4txYLDnSrv9ldRKnlFB2oMxC6SiWIXlwswVeaWysqXr4UMNMvd6NvTlJM0D1T0bEpEPpFcmVRqTmT7ZhJJ4Bh0HUON/0IeWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xeda3q8t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F00C4CEED;
+	Thu,  3 Jul 2025 15:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555563;
-	bh=GipkuSzoJFwRhSWaVkOEglBq/uZFGKnpcM69ENxhgvM=;
+	s=korg; t=1751556074;
+	bh=4D1vBgMPwJXz+GeegKdtzuOvgQvBwVA4xRGlZaTtqxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HC9+jwCV+d1Xlg7d7M9Ztowv+CHSGfNUdLtOFCG/EBZPBJjSXA93+vONcwu8ZZ6st
-	 D2JqSRbxY8FHdQggUMH4m8s3s7k4AirnJBVUE8ec3jfg21jYBheYtonYv+0rFTBjGG
-	 Sgh3xFB/FjwgwSUmvsWPzoMaURLmPerpSL2/R3vg=
+	b=Xeda3q8tvmIr4VmjInD1cpGsoxYs7Mg9l1glXieXCiUX4GxEScM15yJNZI2SoI3Ra
+	 hXkyaC7RGkwd/K/Vzw2jVIqnYd3QgoVZblo8a9eqoUiYgOajVV5gjQ0GU/++5w9PZY
+	 UFeluZmIlCJE05sA5F68bJsg4qmmzIHEl9RR3dnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Chance Yang <chance.yang@kneron.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/139] f2fs: dont over-report free space or inodes in statvfs
+Subject: [PATCH 6.1 026/132] usb: common: usb-conn-gpio: use a unique name for usb connector device
 Date: Thu,  3 Jul 2025 16:41:55 +0200
-Message-ID: <20250703143943.201972437@linuxfoundation.org>
+Message-ID: <20250703143940.426640498@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Chance Yang <chance.yang@kneron.us>
 
-[ Upstream commit a9201960623287927bf5776de3f70fb2fbde7e02 ]
+[ Upstream commit d4e5b10c55627e2f3fc9e5b337a28b4e2f02a55e ]
 
-This fixes an analogus bug that was fixed in modern filesystems:
-a) xfs in commit 4b8d867ca6e2 ("xfs: don't over-report free space or
-inodes in statvfs")
-b) ext4 in commit f87d3af74193 ("ext4: don't over-report free space
-or inodes in statvfs")
-where statfs can report misleading / incorrect information where
-project quota is enabled, and the free space is less than the
-remaining quota.
+The current implementation of the usb-conn-gpio driver uses a fixed
+"usb-charger" name for all USB connector devices. This causes conflicts
+in the power supply subsystem when multiple USB connectors are present,
+as duplicate names are not allowed.
 
-This commit will resolve a test failure in generic/762 which tests
-for this bug.
+Use IDA to manage unique IDs for naming usb connectors (e.g.,
+usb-charger-0, usb-charger-1).
 
-generic/762       - output mismatch (see /share/git/fstests/results//generic/762.out.bad)
-#    --- tests/generic/762.out   2025-04-15 10:21:53.371067071 +0800
-#    +++ /share/git/fstests/results//generic/762.out.bad 2025-05-13 16:13:37.000000000 +0800
-#    @@ -6,8 +6,10 @@
-#     root blocks2 is in range
-#     dir blocks2 is in range
-#     root bavail2 is in range
-#    -dir bavail2 is in range
-#    +dir bavail2 has value of 1539066
-#    +dir bavail2 is NOT in range 304734.87 .. 310891.13
-#     root blocks3 is in range
-#    ...
-#    (Run 'diff -u /share/git/fstests/tests/generic/762.out /share/git/fstests/results//generic/762.out.bad'  to see the entire diff)
-
-HINT: You _MAY_ be missing kernel fix:
-      XXXXXXXXXXXXXX xfs: don't over-report free space or inodes in statvfs
-
-Cc: stable@kernel.org
-Fixes: ddc34e328d06 ("f2fs: introduce f2fs_statfs_project")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Chance Yang <chance.yang@kneron.us>
+Link: https://lore.kernel.org/r/20250411-work-next-v3-1-7cd9aa80190c@kneron.us
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ drivers/usb/common/usb-conn-gpio.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 702137eafaa67..b9913ab526fd1 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1774,26 +1774,32 @@ static int f2fs_statfs_project(struct super_block *sb,
- 
- 	limit = min_not_zero(dquot->dq_dqb.dqb_bsoftlimit,
- 					dquot->dq_dqb.dqb_bhardlimit);
--	if (limit)
--		limit >>= sb->s_blocksize_bits;
-+	limit >>= sb->s_blocksize_bits;
+diff --git a/drivers/usb/common/usb-conn-gpio.c b/drivers/usb/common/usb-conn-gpio.c
+index 3f5180d64931b..91461c744fcdd 100644
+--- a/drivers/usb/common/usb-conn-gpio.c
++++ b/drivers/usb/common/usb-conn-gpio.c
+@@ -20,6 +20,9 @@
+ #include <linux/power_supply.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/usb/role.h>
++#include <linux/idr.h>
 +
-+	if (limit) {
-+		uint64_t remaining = 0;
++static DEFINE_IDA(usb_conn_ida);
  
--	if (limit && buf->f_blocks > limit) {
- 		curblock = (dquot->dq_dqb.dqb_curspace +
- 			    dquot->dq_dqb.dqb_rsvspace) >> sb->s_blocksize_bits;
--		buf->f_blocks = limit;
--		buf->f_bfree = buf->f_bavail =
--			(buf->f_blocks > curblock) ?
--			 (buf->f_blocks - curblock) : 0;
-+		if (limit > curblock)
-+			remaining = limit - curblock;
+ #define USB_GPIO_DEB_MS		20	/* ms */
+ #define USB_GPIO_DEB_US		((USB_GPIO_DEB_MS) * 1000)	/* us */
+@@ -29,6 +32,7 @@
+ 
+ struct usb_conn_info {
+ 	struct device *dev;
++	int conn_id; /* store the IDA-allocated ID */
+ 	struct usb_role_switch *role_sw;
+ 	enum usb_role last_role;
+ 	struct regulator *vbus;
+@@ -160,7 +164,17 @@ static int usb_conn_psy_register(struct usb_conn_info *info)
+ 		.of_node = dev->of_node,
+ 	};
+ 
+-	desc->name = "usb-charger";
++	info->conn_id = ida_alloc(&usb_conn_ida, GFP_KERNEL);
++	if (info->conn_id < 0)
++		return info->conn_id;
 +
-+		buf->f_blocks = min(buf->f_blocks, limit);
-+		buf->f_bfree = min(buf->f_bfree, remaining);
-+		buf->f_bavail = min(buf->f_bavail, remaining);
- 	}
- 
- 	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
- 					dquot->dq_dqb.dqb_ihardlimit);
- 
--	if (limit && buf->f_files > limit) {
--		buf->f_files = limit;
--		buf->f_ffree =
--			(buf->f_files > dquot->dq_dqb.dqb_curinodes) ?
--			 (buf->f_files - dquot->dq_dqb.dqb_curinodes) : 0;
-+	if (limit) {
-+		uint64_t remaining = 0;
++	desc->name = devm_kasprintf(dev, GFP_KERNEL, "usb-charger-%d",
++				    info->conn_id);
++	if (!desc->name) {
++		ida_free(&usb_conn_ida, info->conn_id);
++		return -ENOMEM;
++	}
 +
-+		if (limit > dquot->dq_dqb.dqb_curinodes)
-+			remaining = limit - dquot->dq_dqb.dqb_curinodes;
-+
-+		buf->f_files = min(buf->f_files, limit);
-+		buf->f_ffree = min(buf->f_ffree, remaining);
- 	}
+ 	desc->properties = usb_charger_properties;
+ 	desc->num_properties = ARRAY_SIZE(usb_charger_properties);
+ 	desc->get_property = usb_charger_get_property;
+@@ -168,8 +182,10 @@ static int usb_conn_psy_register(struct usb_conn_info *info)
+ 	cfg.drv_data = info;
  
- 	spin_unlock(&dquot->dq_dqb_lock);
+ 	info->charger = devm_power_supply_register(dev, desc, &cfg);
+-	if (IS_ERR(info->charger))
+-		dev_err(dev, "Unable to register charger\n");
++	if (IS_ERR(info->charger)) {
++		dev_err(dev, "Unable to register charger %d\n", info->conn_id);
++		ida_free(&usb_conn_ida, info->conn_id);
++	}
+ 
+ 	return PTR_ERR_OR_ZERO(info->charger);
+ }
+@@ -277,6 +293,9 @@ static int usb_conn_remove(struct platform_device *pdev)
+ 
+ 	cancel_delayed_work_sync(&info->dw_det);
+ 
++	if (info->charger)
++		ida_free(&usb_conn_ida, info->conn_id);
++
+ 	if (info->last_role == USB_ROLE_HOST && info->vbus)
+ 		regulator_disable(info->vbus);
+ 
 -- 
 2.39.5
 
