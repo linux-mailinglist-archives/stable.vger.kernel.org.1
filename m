@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC7DFAF7A63
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:12:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C61EBAF7B17
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 843FF189B544
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:08:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2BA75A0D47
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49ABA2D6622;
-	Thu,  3 Jul 2025 15:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E442EE5F3;
+	Thu,  3 Jul 2025 15:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5nAmvvV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJt4+M4q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BC615442C;
-	Thu,  3 Jul 2025 15:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B5117332C;
+	Thu,  3 Jul 2025 15:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555283; cv=none; b=JgXupDselC55t0kVGiLgqpavz7IBVbjDFvkdgWIHK1pJlJGFq2ou+5mt7R5LBSFhiKbhOGiDWZ9RJrX+H+n+gZvnRHAa7nPWHPGZS3vqGcMyICVOqEM99qT7Dvs3swzuakfsKQebv27wT0mx3APetaiGFWJ1rSS/KokmkP7l0A8=
+	t=1751555654; cv=none; b=hF9WZaygs1683+iuZ+7y4w7PsQrLNUr5mE6culQH/CpP5vhZDLPoLYW1/NQoIKWxyq/oZ/PNx5jXIcgPTCYYrZykIPDbGas+5i08kYJBWjTnBclcdlQMNVxtWCNnpXqnCtMpm9gWM3Z5eMsjYwhOefzZ1tO/e+2FXL85PAneMDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555283; c=relaxed/simple;
-	bh=S3ZeoCBbZMUz4m1cNEdv7mqnRRNm1vWgk/nzAwGAT+4=;
+	s=arc-20240116; t=1751555654; c=relaxed/simple;
+	bh=MUxlDOAmzHbat28gNfvtU5Xm3JwPuKQJqh+I9lXMsxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OMP3cQz7hViecXSR4H/5V3rFj3gglYgMmYN9prHPydUyRoZ4/evxcGJP3FGYWF06R/Lqd6/eT2ABdXmfgM5tcrHEJiJp1WsblirKzroLyP/PggQure47uN6NMFPvLem/mX7cxsJXmTQM9J8BTgjnliw7nClpVLj18gpMXE622X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5nAmvvV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690DDC4CEE3;
-	Thu,  3 Jul 2025 15:08:02 +0000 (UTC)
+	 MIME-Version; b=OuXWc2cpm6IfPlCsCInoiCFcuYXVIdIXPQiv0uWe/ZEK879tKgz/PRRVN1j2JeP/wVHmGrJiK3AgjwQKiSYRIHqDKcIPeesITspXewFQevOVnVX4VIgclg4IsP1OV1aJ8iJ1ZA7sjGNvoJmJSdWIu3o6/OIWCdr60X9NDY6qa10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJt4+M4q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E224C4CEE3;
+	Thu,  3 Jul 2025 15:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555282;
-	bh=S3ZeoCBbZMUz4m1cNEdv7mqnRRNm1vWgk/nzAwGAT+4=;
+	s=korg; t=1751555654;
+	bh=MUxlDOAmzHbat28gNfvtU5Xm3JwPuKQJqh+I9lXMsxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l5nAmvvV5cLV/jfgHlBEE4BvpEweDvErvDmi2/+cUtOZK7CKoN1vXiy7vNoJE5WL6
-	 i27n1ZAvGVVoe1L8JAUqM0iUvVxyNYPKxedeorxDbljMMhUaWZA50y35v9cqTwePVD
-	 pPrT5XcfqHXNYT8VAurdM3KuF2xqnXJofv4+PphU=
+	b=WJt4+M4qNb9NWW4boov3MoS10RV0+x9ywBsHLgG56A8tSQJH7y5hHY1efSF1Bk484
+	 2GDQ8GnOQlPCqWf+mVm9isOYgK+diz8bSjs/ZJN8J9qo7QO7bPFaX28djmcwgs6HCa
+	 ZKIvxMM5MD++zMMCZDtSHekAa2rCd65ZkV6fOMwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.15 223/263] drm/xe/vm: move rebind_work init earlier
-Date: Thu,  3 Jul 2025 16:42:23 +0200
-Message-ID: <20250703144013.321705167@linuxfoundation.org>
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 081/139] libbpf: Fix null pointer dereference in btf_dump__free on allocation failure
+Date: Thu,  3 Jul 2025 16:42:24 +0200
+Message-ID: <20250703143944.329215152@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-commit a63e99b4d6d3a0353ef47146dd5bd562f08e1786 upstream.
+[ Upstream commit aa485e8789d56a4573f7c8d000a182b749eaa64d ]
 
-In xe_vm_close_and_put() we need to be able to call
-flush_work(rebind_work), however during vm creation we can call this on
-the error path, before having actually set up the worker, leading to a
-splat from flush_work().
+When btf_dump__new() fails to allocate memory for the internal hashmap
+(btf_dump->type_names), it returns an error code. However, the cleanup
+function btf_dump__free() does not check if btf_dump->type_names is NULL
+before attempting to free it. This leads to a null pointer dereference
+when btf_dump__free() is called on a btf_dump object.
 
-It looks like we can simply move the worker init step earlier to fix
-this.
-
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250514152424.149591-3-matthew.auld@intel.com
-(cherry picked from commit 96af397aa1a2d1032a6e28ff3f4bc0ab4be40e1d)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 351131b51c7a ("libbpf: add btf_dump API for BTF-to-C conversion")
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250618011933.11423-1-chenyuan_fl@163.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_vm.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/lib/bpf/btf_dump.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -1678,8 +1678,10 @@ struct xe_vm *xe_vm_create(struct xe_dev
- 	 * scheduler drops all the references of it, hence protecting the VM
- 	 * for this case is necessary.
- 	 */
--	if (flags & XE_VM_FLAG_LR_MODE)
-+	if (flags & XE_VM_FLAG_LR_MODE) {
-+		INIT_WORK(&vm->preempt.rebind_work, preempt_rebind_work_func);
- 		xe_pm_runtime_get_noresume(xe);
-+	}
+diff --git a/tools/lib/bpf/btf_dump.c b/tools/lib/bpf/btf_dump.c
+index ebf56d21d08ee..cf4db51b99eb5 100644
+--- a/tools/lib/bpf/btf_dump.c
++++ b/tools/lib/bpf/btf_dump.c
+@@ -225,6 +225,9 @@ static void btf_dump_free_names(struct hashmap *map)
+ 	size_t bkt;
+ 	struct hashmap_entry *cur;
  
- 	if (flags & XE_VM_FLAG_FAULT_MODE) {
- 		err = xe_svm_init(vm);
-@@ -1730,10 +1732,8 @@ struct xe_vm *xe_vm_create(struct xe_dev
- 		vm->batch_invalidate_tlb = true;
- 	}
++	if (!map)
++		return;
++
+ 	hashmap__for_each_entry(map, cur, bkt)
+ 		free((void *)cur->pkey);
  
--	if (vm->flags & XE_VM_FLAG_LR_MODE) {
--		INIT_WORK(&vm->preempt.rebind_work, preempt_rebind_work_func);
-+	if (vm->flags & XE_VM_FLAG_LR_MODE)
- 		vm->batch_invalidate_tlb = false;
--	}
- 
- 	/* Fill pt_root after allocating scratch tables */
- 	for_each_tile(tile, xe, id) {
+-- 
+2.39.5
+
 
 
 
