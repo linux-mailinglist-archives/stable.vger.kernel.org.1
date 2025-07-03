@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-159810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7C0AF7A99
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:15:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D0AAF78C0
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 571C3587B11
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:11:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 679093A9B69
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695342EF9A6;
-	Thu,  3 Jul 2025 15:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A68B2EFDB5;
+	Thu,  3 Jul 2025 14:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtgAsqjr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQgiUa/m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B1D2D9492;
-	Thu,  3 Jul 2025 15:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A44F2EF669;
+	Thu,  3 Jul 2025 14:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555425; cv=none; b=Ar6ed5GC0iHoFgfm4QReM9E6RPgjmw8A66SHVxDm+jQDb67aNIMxhTlPemWNmewNU535FO6P6dKullC+/fiaU7Jp9GW5/j7pGeU2a5F9W7mFWCMEdgN0uFwHMdkfDi1ZSbl8R407dDgl9z8NBGwdVxwEvga8C5ySYePaaOBvt3A=
+	t=1751554330; cv=none; b=c70NpIH7qRGsg4RJ50N6AilBH3GvgSs3tvUXj7591eWdcsUSIC/fQPljU++kYgHG7zdk6ZThGyPvkkPdrIQyINgmzWCbalIBOwvU5oInGJlJVLOeH2OVB1EGn3fKC5JrwHxWkn2HZ4eZjlyxE1mxHVbtHjelbSNyflYaoIyKrFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555425; c=relaxed/simple;
-	bh=ex9lhKvW9/1U5kp0cX+hsXxGssVKOh2J07vrL/WMArs=;
+	s=arc-20240116; t=1751554330; c=relaxed/simple;
+	bh=LIUyBTlrf3lGa3rz2x62J3hDLj2o6rK0+wuPyx4xY44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QA3Eit1uJwjeElAI+uzYLp4qEUOS+QW8adUHeHUNNO6zVmIJPUOT5a1n15J8gxv0VsGIwV2P8CoaRzALvLeH6wf9KUvLsyP9ESJdTJ8Z0lhI8qzuj24iKGxDapDeUI/4kmaHFuTL3Qb+jf/MSr3f4Rnq5RTDytVZ+BbqOxUWtkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtgAsqjr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A408C4CEE3;
-	Thu,  3 Jul 2025 15:10:24 +0000 (UTC)
+	 MIME-Version; b=C4sKkG0XL1s5ZFsQrktQquSAtaQAl7cvBlGwi97oMdh8l2r1PjkT7S2i3y+tLN6dWerfztzJ8r2ZFX4XvjA5fOz+2+ucfxUTvmHBKieiPJoVetbZzP5o581qVUqGDPFykULvCcMh4rRJm3CaHv6F+Wcjwy9Qx3tZo6FIMzn8ta0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQgiUa/m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9B0C4CEE3;
+	Thu,  3 Jul 2025 14:52:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555425;
-	bh=ex9lhKvW9/1U5kp0cX+hsXxGssVKOh2J07vrL/WMArs=;
+	s=korg; t=1751554330;
+	bh=LIUyBTlrf3lGa3rz2x62J3hDLj2o6rK0+wuPyx4xY44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xtgAsqjrLCr5xAjdVLgrRFot9Q/hDAk2104+nY2pkP8+cXaDTC7MAIEWoaYj1vuue
-	 4QpZLyxjjgs29lkIVy4dvVhWDPlhSFleKiJr/dbB8Tad+S6wyHuZkrjcN9R5mggW5y
-	 ysfEbBAI7BYRrBVumMSU5FYRzTzFDMm1A5Ytx7/I=
+	b=xQgiUa/mZQm6KT4iY3dzcmyj4Ss7khw+XIEEqGNbmdITaI0nbqJApoTZWkhF/4+yM
+	 HXpc2BExObCKzSSw0ktJ3nmnosruiySWmiZkRmLlLI9mDu2nsznIpoCSlRgEX9MPoN
+	 dn9abe2grSdJI+u+rSivMSFqj9jpV6lheP5taUPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guang Yuan Wu <gwu@ddn.com>,
-	Bernd Schubert <bschubert@ddn.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/139] fuse: fix race between concurrent setattrs from multiple nodes
+Subject: [PATCH 6.12 125/218] cifs: Fix the smbd_response slab to allow usercopy
 Date: Thu,  3 Jul 2025 16:41:13 +0200
-Message-ID: <20250703143941.579816012@linuxfoundation.org>
+Message-ID: <20250703144001.109811899@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +67,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guang Yuan Wu <gwu@ddn.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 69efbff69f89c9b2b72c4d82ad8b59706add768a ]
+[ Upstream commit 43e7e284fc77b710d899569360ea46fa3374ae22 ]
 
-When mounting a user-space filesystem on multiple clients, after
-concurrent ->setattr() calls from different node, stale inode
-attributes may be cached in some node.
+The handling of received data in the smbdirect client code involves using
+copy_to_iter() to copy data from the smbd_reponse struct's packet trailer
+to a folioq buffer provided by netfslib that encapsulates a chunk of
+pagecache.
 
-This is caused by fuse_setattr() racing with
-fuse_reverse_inval_inode().
+If, however, CONFIG_HARDENED_USERCOPY=y, this will result in the checks
+then performed in copy_to_iter() oopsing with something like the following:
 
-When filesystem server receives setattr request, the client node
-with valid iattr cached will be required to update the fuse_inode's
-attr_version and invalidate the cache by fuse_reverse_inval_inode(),
-and at the next call to ->getattr() they will be fetched from user
-space.
+ CIFS: Attempting to mount //172.31.9.1/test
+ CIFS: VFS: RDMA transport established
+ usercopy: Kernel memory exposure attempt detected from SLUB object 'smbd_response_0000000091e24ea1' (offset 81, size 63)!
+ ------------[ cut here ]------------
+ kernel BUG at mm/usercopy.c:102!
+ ...
+ RIP: 0010:usercopy_abort+0x6c/0x80
+ ...
+ Call Trace:
+  <TASK>
+  __check_heap_object+0xe3/0x120
+  __check_object_size+0x4dc/0x6d0
+  smbd_recv+0x77f/0xfe0 [cifs]
+  cifs_readv_from_socket+0x276/0x8f0 [cifs]
+  cifs_read_from_socket+0xcd/0x120 [cifs]
+  cifs_demultiplex_thread+0x7e9/0x2d50 [cifs]
+  kthread+0x396/0x830
+  ret_from_fork+0x2b8/0x3b0
+  ret_from_fork_asm+0x1a/0x30
 
-The race scenario is:
-1. client-1 sends setattr (iattr-1) request to server
-2. client-1 receives the reply from server
-3. before client-1 updates iattr-1 to the cached attributes by
-   fuse_change_attributes_common(), server receives another setattr
-   (iattr-2) request from client-2
-4. server requests client-1 to update the inode attr_version and
-   invalidate the cached iattr, and iattr-1 becomes staled
-5. client-2 receives the reply from server, and caches iattr-2
-6. continue with step 2, client-1 invokes
-   fuse_change_attributes_common(), and caches iattr-1
+The problem is that the smbd_response slab's packet field isn't marked as
+being permitted for usercopy.
 
-The issue has been observed from concurrent of chmod, chown, or
-truncate, which all invoke ->setattr() call.
+Fix this by passing parameters to kmem_slab_create() to indicate that
+copy_to_iter() is permitted from the packet region of the smbd_response
+slab objects, less the header space.
 
-The solution is to use fuse_inode's attr_version to check whether
-the attributes have been modified during the setattr request's
-lifetime.  If so, mark the attributes as invalid in the function
-fuse_change_attributes_common().
-
-Signed-off-by: Guang Yuan Wu <gwu@ddn.com>
-Reviewed-by: Bernd Schubert <bschubert@ddn.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Reported-by: Stefan Metzmacher <metze@samba.org>
+Link: https://lore.kernel.org/r/acb7f612-df26-4e2a-a35d-7cd040f513e1@samba.org/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Stefan Metzmacher <metze@samba.org>
+Tested-by: Stefan Metzmacher <metze@samba.org>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dir.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/smb/client/smbdirect.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-index 82951a535d2d4..0b84284ece98f 100644
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -1860,6 +1860,7 @@ int fuse_do_setattr(struct dentry *dentry, struct iattr *attr,
- 	int err;
- 	bool trust_local_cmtime = is_wb;
- 	bool fault_blocked = false;
-+	u64 attr_version;
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index cbc85bca006f7..b7932f63b4650 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1452,6 +1452,9 @@ static int allocate_caches_and_workqueue(struct smbd_connection *info)
+ 	char name[MAX_NAME_LEN];
+ 	int rc;
  
- 	if (!fc->default_permissions)
- 		attr->ia_valid |= ATTR_FORCE;
-@@ -1944,6 +1945,8 @@ int fuse_do_setattr(struct dentry *dentry, struct iattr *attr,
- 		if (fc->handle_killpriv_v2 && !capable(CAP_FSETID))
- 			inarg.valid |= FATTR_KILL_SUIDGID;
- 	}
++	if (WARN_ON_ONCE(sp->max_recv_size < sizeof(struct smbdirect_data_transfer)))
++		return -ENOMEM;
 +
-+	attr_version = fuse_get_attr_version(fm->fc);
- 	fuse_setattr_fill(fc, &args, inode, &inarg, &outarg);
- 	err = fuse_simple_request(fm, &args);
- 	if (err) {
-@@ -1969,6 +1972,14 @@ int fuse_do_setattr(struct dentry *dentry, struct iattr *attr,
- 		/* FIXME: clear I_DIRTY_SYNC? */
- 	}
+ 	scnprintf(name, MAX_NAME_LEN, "smbd_request_%p", info);
+ 	info->request_cache =
+ 		kmem_cache_create(
+@@ -1469,12 +1472,17 @@ static int allocate_caches_and_workqueue(struct smbd_connection *info)
+ 		goto out1;
  
-+	if (fi->attr_version > attr_version) {
-+		/*
-+		 * Apply attributes, for example for fsnotify_change(), but set
-+		 * attribute timeout to zero.
-+		 */
-+		outarg.attr_valid = outarg.attr_valid_nsec = 0;
-+	}
+ 	scnprintf(name, MAX_NAME_LEN, "smbd_response_%p", info);
 +
- 	fuse_change_attributes_common(inode, &outarg.attr, NULL,
- 				      ATTR_TIMEOUT(&outarg),
- 				      fuse_get_cache_mask(inode));
++	struct kmem_cache_args response_args = {
++		.align		= __alignof__(struct smbd_response),
++		.useroffset	= (offsetof(struct smbd_response, packet) +
++				   sizeof(struct smbdirect_data_transfer)),
++		.usersize	= sp->max_recv_size - sizeof(struct smbdirect_data_transfer),
++	};
+ 	info->response_cache =
+-		kmem_cache_create(
+-			name,
+-			sizeof(struct smbd_response) +
+-				sp->max_recv_size,
+-			0, SLAB_HWCACHE_ALIGN, NULL);
++		kmem_cache_create(name,
++				  sizeof(struct smbd_response) + sp->max_recv_size,
++				  &response_args, SLAB_HWCACHE_ALIGN);
+ 	if (!info->response_cache)
+ 		goto out2;
+ 
 -- 
 2.39.5
 
