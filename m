@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-160052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B93AF7C0E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 432BCAF7ACD
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 909D156214F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B967B1CA402D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD262EF285;
-	Thu,  3 Jul 2025 15:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6F62F19AD;
+	Thu,  3 Jul 2025 15:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Ezuez3w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YumWkAzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB711D5CE5;
-	Thu,  3 Jul 2025 15:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D342EF9B0;
+	Thu,  3 Jul 2025 15:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556215; cv=none; b=CLUgcAUIbg8JYBclo4HlE14fL8t1PbJwPAgAwrmk6yVxnvXW7I6sRZmatyhH+xNByZnXKtIru7pajVtIuIxjTuiRsoW3K3ijguEAlbj0B6A1Bcx2nC9KqdvB117W1YPJSMYjdlFdK8mdAJUi8sTi38qzz+DhXi54Yge0kDGyqzc=
+	t=1751555412; cv=none; b=E8GhPZ8GDAQXPRIhTxq5bBJXM7NZOv+xD6WUe+YzUgc6W0phXal4beVD0EdbRgQ0zf+2x6/XDHL9JEf29fwQt+AMHYB6pT3FnLWyF2PtG3GSGm/AvcDB/1nhQzxS210phz0ROY5VzkMWxItVNxrkmqauToc/+8QmY0JyLw1Lpic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556215; c=relaxed/simple;
-	bh=r4gA33f7R9SN/WBXJxWScPO2uogmtozFwgXvtviEpCk=;
+	s=arc-20240116; t=1751555412; c=relaxed/simple;
+	bh=2+7W0VY0eFLCdWYePtk+NLlQat+z6ZZIeTE1JhNO+V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fcm8LV3pTBfdhFw5Ip/pB9TgolaIa7nHQwrr3faE68ozCiEt5CUt7bdozcz1ud93U6egEgViVW0e4noRyuNUbYHLFchGsArtRKQNdrohew+Ma6XspGP+RHBQsuqRT5tT44MjLfS3hYpVUX9/f5ASvJsa+bZIKpYRWYL9zPZ3q84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Ezuez3w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180C8C4CEE3;
-	Thu,  3 Jul 2025 15:23:34 +0000 (UTC)
+	 MIME-Version; b=OArdJ1HweB7eoZC2pXF4epNSqre3HZzuXEHZrN7fkR5g6HW0AH8VYbpYka6EDuI99Y2dVBPabYDsZ6v1+2y5iPGRXzp+45YamwUtli7qXkdrNVuMiOnBdcFv1sTscUA3I7re+oeSzJhHdsUBC1TzFsWxitNCtVQvbImDgJOpziE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YumWkAzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA76DC4CEE3;
+	Thu,  3 Jul 2025 15:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556215;
-	bh=r4gA33f7R9SN/WBXJxWScPO2uogmtozFwgXvtviEpCk=;
+	s=korg; t=1751555412;
+	bh=2+7W0VY0eFLCdWYePtk+NLlQat+z6ZZIeTE1JhNO+V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Ezuez3wEyePgKfNICpEFp/D2QL0rgkGRBaDffTWsb73Lxx5+oU9rHHG+/H9A0YPG
-	 ocPI8s3bpCRSV4yZATj2/vnZMpYG25KXTSRu2A/Xjt+boqfTH0rwhM1X82H+d1nLuD
-	 5caxaoQTUuT/6wyPJn/E0MKrY0gSZhEriKmO17o4=
+	b=YumWkAzQtz2NvrUTx3bLl2g+awfd1C96aKxv1eCjvjt2rWbLw1QsswFTJtxykW0to
+	 kjvKYbZaGurA7YUU2l6Ldw46X+613J5/VVB2wJzqxmLOtbGdz7LmHyDar7M7EEiePh
+	 0VcKKUy+5z258GTPjg4gXc3gcUwGEHyVDMPEAu/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 093/132] Bluetooth: L2CAP: Fix L2CAP MTU negotiation
+	Christian Brauner <brauner@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.15 262/263] io_uring: gate REQ_F_ISREG on !S_ANON_INODE as well
 Date: Thu,  3 Jul 2025 16:43:02 +0200
-Message-ID: <20250703143943.050816663@linuxfoundation.org>
+Message-ID: <20250703144014.917642322@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,231 +59,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frédéric Danis <frederic.danis@collabora.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 042bb9603c44620dce98717a2d23235ca57a00d7 upstream.
+commit 6f11adcc6f36ffd8f33dbdf5f5ce073368975bc3 upstream.
 
-OBEX download from iPhone is currently slow due to small packet size
-used to transfer data which doesn't follow the MTU negotiated during
-L2CAP connection, i.e. 672 bytes instead of 32767:
+io_uring marks a request as dealing with a regular file on S_ISREG. This
+drives things like retries on short reads or writes, which is generally
+not expected on a regular file (or bdev). Applications tend to not
+expect that, so io_uring tries hard to ensure it doesn't deliver short
+IO on regular files.
 
-  < ACL Data TX: Handle 11 flags 0x00 dlen 12
-      L2CAP: Connection Request (0x02) ident 18 len 4
-        PSM: 4103 (0x1007)
-        Source CID: 72
-  > ACL Data RX: Handle 11 flags 0x02 dlen 16
-      L2CAP: Connection Response (0x03) ident 18 len 8
-        Destination CID: 14608
-        Source CID: 72
-        Result: Connection successful (0x0000)
-        Status: No further information available (0x0000)
-  < ACL Data TX: Handle 11 flags 0x00 dlen 27
-      L2CAP: Configure Request (0x04) ident 20 len 19
-        Destination CID: 14608
-        Flags: 0x0000
-        Option: Maximum Transmission Unit (0x01) [mandatory]
-          MTU: 32767
-        Option: Retransmission and Flow Control (0x04) [mandatory]
-          Mode: Enhanced Retransmission (0x03)
-          TX window size: 63
-          Max transmit: 3
-          Retransmission timeout: 2000
-          Monitor timeout: 12000
-          Maximum PDU size: 1009
-  > ACL Data RX: Handle 11 flags 0x02 dlen 26
-      L2CAP: Configure Request (0x04) ident 72 len 18
-        Destination CID: 72
-        Flags: 0x0000
-        Option: Retransmission and Flow Control (0x04) [mandatory]
-          Mode: Enhanced Retransmission (0x03)
-          TX window size: 32
-          Max transmit: 255
-          Retransmission timeout: 0
-          Monitor timeout: 0
-          Maximum PDU size: 65527
-        Option: Frame Check Sequence (0x05) [mandatory]
-          FCS: 16-bit FCS (0x01)
-  < ACL Data TX: Handle 11 flags 0x00 dlen 29
-      L2CAP: Configure Response (0x05) ident 72 len 21
-        Source CID: 14608
-        Flags: 0x0000
-        Result: Success (0x0000)
-        Option: Maximum Transmission Unit (0x01) [mandatory]
-          MTU: 672
-        Option: Retransmission and Flow Control (0x04) [mandatory]
-          Mode: Enhanced Retransmission (0x03)
-          TX window size: 32
-          Max transmit: 255
-          Retransmission timeout: 2000
-          Monitor timeout: 12000
-          Maximum PDU size: 1009
-  > ACL Data RX: Handle 11 flags 0x02 dlen 32
-      L2CAP: Configure Response (0x05) ident 20 len 24
-        Source CID: 72
-        Flags: 0x0000
-        Result: Success (0x0000)
-        Option: Maximum Transmission Unit (0x01) [mandatory]
-          MTU: 32767
-        Option: Retransmission and Flow Control (0x04) [mandatory]
-          Mode: Enhanced Retransmission (0x03)
-          TX window size: 63
-          Max transmit: 3
-          Retransmission timeout: 2000
-          Monitor timeout: 12000
-          Maximum PDU size: 1009
-        Option: Frame Check Sequence (0x05) [mandatory]
-          FCS: 16-bit FCS (0x01)
-  ...
-  > ACL Data RX: Handle 11 flags 0x02 dlen 680
-      Channel: 72 len 676 ctrl 0x0202 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
-      I-frame: Unsegmented TxSeq 1 ReqSeq 2
-  < ACL Data TX: Handle 11 flags 0x00 dlen 13
-      Channel: 14608 len 9 ctrl 0x0204 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
-      I-frame: Unsegmented TxSeq 2 ReqSeq 2
-  > ACL Data RX: Handle 11 flags 0x02 dlen 680
-      Channel: 72 len 676 ctrl 0x0304 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
-      I-frame: Unsegmented TxSeq 2 ReqSeq 3
+However, a recent commit added S_IFREG to anonymous inodes. When
+io_uring is used to read from various things that are backed by anon
+inodes, like eventfd, timerfd, etc, then it'll now all of a sudden wait
+for more data when rather than deliver what was read or written in a
+single operation. This breaks applications that issue reads on anon
+inodes, if they ask for more data than a single read delivers.
 
-The MTUs are negotiated for each direction. In this traces 32767 for
-iPhone->localhost and no MTU for localhost->iPhone, which based on
-'4.4 L2CAP_CONFIGURATION_REQ' (Core specification v5.4, Vol. 3, Part
-A):
+Add a check for !S_ANON_INODE as well before setting REQ_F_ISREG to
+prevent that.
 
-  The only parameters that should be included in the
-  L2CAP_CONFIGURATION_REQ packet are those that require different
-  values than the default or previously agreed values.
-  ...
-  Any missing configuration parameters are assumed to have their
-  most recently explicitly or implicitly accepted values.
-
-and '5.1 Maximum transmission unit (MTU)':
-
-  If the remote device sends a positive L2CAP_CONFIGURATION_RSP
-  packet it should include the actual MTU to be used on this channel
-  for traffic flowing into the local device.
-  ...
-  The default value is 672 octets.
-
-is set by BlueZ to 672 bytes.
-
-It seems that the iPhone used the lowest negotiated value to transfer
-data to the localhost instead of the negotiated one for the incoming
-direction.
-
-This could be fixed by using the MTU negotiated for the other
-direction, if exists, in the L2CAP_CONFIGURATION_RSP.
-This allows to use segmented packets as in the following traces:
-
-  < ACL Data TX: Handle 11 flags 0x00 dlen 12
-        L2CAP: Connection Request (0x02) ident 22 len 4
-          PSM: 4103 (0x1007)
-          Source CID: 72
-  < ACL Data TX: Handle 11 flags 0x00 dlen 27
-        L2CAP: Configure Request (0x04) ident 24 len 19
-          Destination CID: 2832
-          Flags: 0x0000
-          Option: Maximum Transmission Unit (0x01) [mandatory]
-            MTU: 32767
-          Option: Retransmission and Flow Control (0x04) [mandatory]
-            Mode: Enhanced Retransmission (0x03)
-            TX window size: 63
-            Max transmit: 3
-            Retransmission timeout: 2000
-            Monitor timeout: 12000
-            Maximum PDU size: 1009
-  > ACL Data RX: Handle 11 flags 0x02 dlen 26
-        L2CAP: Configure Request (0x04) ident 15 len 18
-          Destination CID: 72
-          Flags: 0x0000
-          Option: Retransmission and Flow Control (0x04) [mandatory]
-            Mode: Enhanced Retransmission (0x03)
-            TX window size: 32
-            Max transmit: 255
-            Retransmission timeout: 0
-            Monitor timeout: 0
-            Maximum PDU size: 65527
-          Option: Frame Check Sequence (0x05) [mandatory]
-            FCS: 16-bit FCS (0x01)
-  < ACL Data TX: Handle 11 flags 0x00 dlen 29
-        L2CAP: Configure Response (0x05) ident 15 len 21
-          Source CID: 2832
-          Flags: 0x0000
-          Result: Success (0x0000)
-          Option: Maximum Transmission Unit (0x01) [mandatory]
-            MTU: 32767
-          Option: Retransmission and Flow Control (0x04) [mandatory]
-            Mode: Enhanced Retransmission (0x03)
-            TX window size: 32
-            Max transmit: 255
-            Retransmission timeout: 2000
-            Monitor timeout: 12000
-            Maximum PDU size: 1009
-  > ACL Data RX: Handle 11 flags 0x02 dlen 32
-        L2CAP: Configure Response (0x05) ident 24 len 24
-          Source CID: 72
-          Flags: 0x0000
-          Result: Success (0x0000)
-          Option: Maximum Transmission Unit (0x01) [mandatory]
-            MTU: 32767
-          Option: Retransmission and Flow Control (0x04) [mandatory]
-            Mode: Enhanced Retransmission (0x03)
-            TX window size: 63
-            Max transmit: 3
-            Retransmission timeout: 2000
-            Monitor timeout: 12000
-            Maximum PDU size: 1009
-          Option: Frame Check Sequence (0x05) [mandatory]
-            FCS: 16-bit FCS (0x01)
-  ...
-  > ACL Data RX: Handle 11 flags 0x02 dlen 1009
-        Channel: 72 len 1005 ctrl 0x4202 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
-        I-frame: Start (len 21884) TxSeq 1 ReqSeq 2
-  > ACL Data RX: Handle 11 flags 0x02 dlen 1009
-        Channel: 72 len 1005 ctrl 0xc204 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
-        I-frame: Continuation TxSeq 2 ReqSeq 2
-
-This has been tested with kernel 5.4 and BlueZ 5.77.
-
+Cc: Christian Brauner <brauner@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Link: https://github.com/ghostty-org/ghostty/discussions/7720
+Fixes: cfd86ef7e8e7 ("anon_inode: use a proper mode internally")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -3600,7 +3600,7 @@ static int l2cap_parse_conf_req(struct l
- 	struct l2cap_conf_rfc rfc = { .mode = L2CAP_MODE_BASIC };
- 	struct l2cap_conf_efs efs;
- 	u8 remote_efs = 0;
--	u16 mtu = L2CAP_DEFAULT_MTU;
-+	u16 mtu = 0;
- 	u16 result = L2CAP_CONF_SUCCESS;
- 	u16 size;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1647,11 +1647,12 @@ static void io_iopoll_req_issued(struct
  
-@@ -3711,6 +3711,13 @@ done:
- 		/* Configure output options and let the other side know
- 		 * which ones we don't like. */
+ io_req_flags_t io_file_get_flags(struct file *file)
+ {
++	struct inode *inode = file_inode(file);
+ 	io_req_flags_t res = 0;
  
-+		/* If MTU is not provided in configure request, use the most recently
-+		 * explicitly or implicitly accepted value for the other direction,
-+		 * or the default value.
-+		 */
-+		if (mtu == 0)
-+			mtu = chan->imtu ? chan->imtu : L2CAP_DEFAULT_MTU;
-+
- 		if (mtu < L2CAP_DEFAULT_MIN_MTU)
- 			result = L2CAP_CONF_UNACCEPT;
- 		else {
+ 	BUILD_BUG_ON(REQ_F_ISREG_BIT != REQ_F_SUPPORT_NOWAIT_BIT + 1);
+ 
+-	if (S_ISREG(file_inode(file)->i_mode))
++	if (S_ISREG(inode->i_mode) && !(inode->i_flags & S_ANON_INODE))
+ 		res |= REQ_F_ISREG;
+ 	if ((file->f_flags & O_NONBLOCK) || (file->f_mode & FMODE_NOWAIT))
+ 		res |= REQ_F_SUPPORT_NOWAIT;
 
 
 
