@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-159409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA3FAF7856
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:49:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 606C4AF79CB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F0D8541D7E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74ABB18951C4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF3C2E62CD;
-	Thu,  3 Jul 2025 14:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280AE2EE98F;
+	Thu,  3 Jul 2025 15:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwB68rUl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vglv3/32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD7F126BFF;
-	Thu,  3 Jul 2025 14:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD162D23A8;
+	Thu,  3 Jul 2025 15:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554141; cv=none; b=N2kAUyt/hr5rjQGJ/YB8VcDqAZbDb/csKngFbyFhWR7Oa/ZBtp/lIWVtsNCumPLFTCjUMzUYvEZOCWKB2VLHWEIOkge3INAEm7ICf8hc+mPXckOifn8RV/91+chdf0L4v+oJhJLARLypFnKOp0GzR+A+5Hc3CAZ0p825Zg6UfgI=
+	t=1751554850; cv=none; b=tNSOZY7R4jzoPwOqWs84PjaahKtWGK+WUF0clrATLpCHiChYoYlTP4lEiw5CTq7l+8A28NGDwLvK5+3xjP7DX3MjuiGvl/OQifXSGgYBC6/f3vpqF0azBJC6elOu5R5cgxNvtDRQ7xc5ZEW/l6EgSk8JpXFlb3VLu2nX1zBDzmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554141; c=relaxed/simple;
-	bh=frAGtIk1GJm2kSlEZmGeLyBxksirpTnR+RgZW+Xg1uk=;
+	s=arc-20240116; t=1751554850; c=relaxed/simple;
+	bh=gvlppTiMeI75EWrl05zS8uBqDGXUto9UERVIr173lk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDjn/peXwvFFA/XQQiPCL+Ip8qOwLPtPYvIgOg2rGb7v6XDTuh6cGMjRLuDPfdqbvAWimdUMYigc2/vsuAeBr9yNs380JwoeM6dPDmO90I9nKik6yxZWFw+3GzFwZqCfMuEj1ATlOolGxkLHfTtUIMokDNMfRpKo9TX3ReEQVkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwB68rUl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D43C4CEE3;
-	Thu,  3 Jul 2025 14:49:00 +0000 (UTC)
+	 MIME-Version; b=S9tdwmaVvTQ/hOc7qMW7JkkfOV7r5tEb8azx7lB00CoWpUOHGjsFJUeNnPE5t5lbgEyY84p4lFZTYVzaARBKMYxaxmDE0ivgVYgPerOoKNSRPm1L7MDAiak25hH+gKuizCmurW73c8NbD/jr1GTt4m2+14mQhKBKCQsYbE9Tq0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vglv3/32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49658C4CEE3;
+	Thu,  3 Jul 2025 15:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554141;
-	bh=frAGtIk1GJm2kSlEZmGeLyBxksirpTnR+RgZW+Xg1uk=;
+	s=korg; t=1751554850;
+	bh=gvlppTiMeI75EWrl05zS8uBqDGXUto9UERVIr173lk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HwB68rUlbo49nBk4bf7JSIR9bIdt7GEhgpNwTf2p1DvKkhLQK2R2TlC5QJEdzFX8F
-	 OkXSEu5wVvBdxZRJbyhW/zNpnvzWoO3SLJW3BZNXX6Y04Smc7UpchLbOXmKZRr20Na
-	 9R2TeDE455kWu+VIF2/jwpiJj2WKLI/AcWV6yBPs=
+	b=vglv3/32GuEMkY+u/dMat1YGd4912FnplMwe+RmVGulz99iLMFTlM9FJlUjIFJpFa
+	 UTZzU3I2w39tvRhTCK2vr9UuqV8ZHiMquWY99rn8+ca4B1ddPWia+//GG0WF9+rhYj
+	 DpZ6mbHV5qcOat1bxe9p1imXWsQG6jPOs/tVwAyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	David Wei <dw@davidwei.uk>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/218] fs/jfs: consolidate sanity checking in dbMount
+Subject: [PATCH 6.15 091/263] io_uring/zcrx: move io_zcrx_iov_page
 Date: Thu,  3 Jul 2025 16:40:11 +0200
-Message-ID: <20250703143958.463390911@linuxfoundation.org>
+Message-ID: <20250703144007.947772249@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Kleikamp <dave.kleikamp@oracle.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 0d250b1c52484d489e31df2cf9118b7c4bd49d31 ]
+[ Upstream commit a79154ae5df9e21dbacb1eb77fad984fd4c45cca ]
 
-Sanity checks have been added to dbMount as individual if clauses with
-identical error handling. Move these all into one clause.
+We'll need io_zcrx_iov_page at the top to keep offset calculations
+closer together, move it there.
 
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Stable-dep-of: 37bfb464ddca ("jfs: validate AG parameters in dbMount() to prevent crashes")
+Reviewed-by: David Wei <dw@davidwei.uk>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/575617033a8b84a5985c7eb760b7121efdbe7e56.1745141261.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 0ec33c81d9c7 ("io_uring/zcrx: fix area release on registration failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 37 +++++++++----------------------------
- 1 file changed, 9 insertions(+), 28 deletions(-)
+ io_uring/zcrx.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 0e1019382cf51..26e89d0c69b61 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -178,45 +178,26 @@ int dbMount(struct inode *ipbmap)
- 	dbmp_le = (struct dbmap_disk *) mp->data;
- 	bmp->db_mapsize = le64_to_cpu(dbmp_le->dn_mapsize);
- 	bmp->db_nfree = le64_to_cpu(dbmp_le->dn_nfree);
--
- 	bmp->db_l2nbperpage = le32_to_cpu(dbmp_le->dn_l2nbperpage);
--	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE ||
--		bmp->db_l2nbperpage < 0) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
--
- 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
--	if (!bmp->db_numag || bmp->db_numag > MAXAG) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
--
- 	bmp->db_maxlevel = le32_to_cpu(dbmp_le->dn_maxlevel);
- 	bmp->db_maxag = le32_to_cpu(dbmp_le->dn_maxag);
- 	bmp->db_agpref = le32_to_cpu(dbmp_le->dn_agpref);
--	if (bmp->db_maxag >= MAXAG || bmp->db_maxag < 0 ||
--		bmp->db_agpref >= MAXAG || bmp->db_agpref < 0) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
--
- 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
- 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
- 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
--	if (!bmp->db_agwidth) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
- 	bmp->db_agstart = le32_to_cpu(dbmp_le->dn_agstart);
- 	bmp->db_agl2size = le32_to_cpu(dbmp_le->dn_agl2size);
--	if (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG ||
--	    bmp->db_agl2size < 0) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
+diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+index fe86606b9f304..ecb59182d9b2c 100644
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -31,6 +31,20 @@ static inline struct io_zcrx_ifq *io_pp_to_ifq(struct page_pool *pp)
+ 	return pp->mp_priv;
+ }
  
--	if (((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
-+	if ((bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE) ||
-+	    (bmp->db_l2nbperpage < 0) ||
-+	    !bmp->db_numag || (bmp->db_numag > MAXAG) ||
-+	    (bmp->db_maxag >= MAXAG) || (bmp->db_maxag < 0) ||
-+	    (bmp->db_agpref >= MAXAG) || (bmp->db_agpref < 0) ||
-+	    !bmp->db_agwidth ||
-+	    (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG) ||
-+	    (bmp->db_agl2size < 0) ||
-+	    ((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
- 		err = -EINVAL;
- 		goto err_release_metapage;
- 	}
++static inline struct io_zcrx_area *io_zcrx_iov_to_area(const struct net_iov *niov)
++{
++	struct net_iov_area *owner = net_iov_owner(niov);
++
++	return container_of(owner, struct io_zcrx_area, nia);
++}
++
++static inline struct page *io_zcrx_iov_page(const struct net_iov *niov)
++{
++	struct io_zcrx_area *area = io_zcrx_iov_to_area(niov);
++
++	return area->pages[net_iov_idx(niov)];
++}
++
+ #define IO_DMA_ATTR (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING)
+ 
+ static void __io_zcrx_unmap_area(struct io_zcrx_ifq *ifq,
+@@ -118,13 +132,6 @@ struct io_zcrx_args {
+ 
+ static const struct memory_provider_ops io_uring_pp_zc_ops;
+ 
+-static inline struct io_zcrx_area *io_zcrx_iov_to_area(const struct net_iov *niov)
+-{
+-	struct net_iov_area *owner = net_iov_owner(niov);
+-
+-	return container_of(owner, struct io_zcrx_area, nia);
+-}
+-
+ static inline atomic_t *io_get_user_counter(struct net_iov *niov)
+ {
+ 	struct io_zcrx_area *area = io_zcrx_iov_to_area(niov);
+@@ -147,13 +154,6 @@ static void io_zcrx_get_niov_uref(struct net_iov *niov)
+ 	atomic_inc(io_get_user_counter(niov));
+ }
+ 
+-static inline struct page *io_zcrx_iov_page(const struct net_iov *niov)
+-{
+-	struct io_zcrx_area *area = io_zcrx_iov_to_area(niov);
+-
+-	return area->pages[net_iov_idx(niov)];
+-}
+-
+ static int io_allocate_rbuf_ring(struct io_zcrx_ifq *ifq,
+ 				 struct io_uring_zcrx_ifq_reg *reg,
+ 				 struct io_uring_region_desc *rd)
 -- 
 2.39.5
 
