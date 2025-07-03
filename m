@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-159404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156FAAF7869
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:50:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB92AF79B3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7E761C84A44
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:49:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB26E3AE381
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85DCA101DE;
-	Thu,  3 Jul 2025 14:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDE02E7BD6;
+	Thu,  3 Jul 2025 15:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVCvwpBO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQ0QHFOe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432B123AB86;
-	Thu,  3 Jul 2025 14:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D353B2E7649;
+	Thu,  3 Jul 2025 15:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554125; cv=none; b=bXXcd6pi0srra768flrTkaXT8oNhMWtEyK3JszqlSSzRErnrGIOVWle1NOHyqgM0d093APfcQt2Fq4MQgc3ksvhirOiOkQKtws8T3w8HxL7nt/KxJTMknS/gcNCBZj8qXRU0xoYnZJJLkP3gTGVblbZU/C7MmPieCzV448wQY2k=
+	t=1751554908; cv=none; b=JW6IV+k1GSk+HbjdQjHvTSBqkF7HdJTuTBFmAhwdLTwJ6okjMuJOpWNuBd5a3ivRlfW4vo5qHkMQgLp3So9id+JUqbpTJGm6FMT5UGaYrJHRSkgyv27jRIkFSa/ql5a2tZ7i3sUb6n5woNmHgvMXiILwype7EGdxenL4ysyRASk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554125; c=relaxed/simple;
-	bh=T/jUc8ugZxQVd63Ek6YpknsXMWvbybaInTh6spL9AgU=;
+	s=arc-20240116; t=1751554908; c=relaxed/simple;
+	bh=3G6xCF9gZ0GKtslKKwBR4iYdPifgQaC6mcX3Iu8bAvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k5FLPHguc2EE9Nbt6TNrzSfzwXlj9RgABU+UzFn/ZhomXxs3ZjZQmJlWWmrJoY1nX44hnAqfwLQZ5PkRFl+RAMfON1upqCLoPNf1m8QD7EpPg90sdaZzs8/D8nPfikHyG2ofwB7T3f9z8oKktCQXoti64cy6tSrX+kZgtwGgyyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVCvwpBO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A0BC4CEE3;
-	Thu,  3 Jul 2025 14:48:44 +0000 (UTC)
+	 MIME-Version; b=OVOfOoI3oG6q6a8l7oTGtALZylk42ipDu/0d9xWz0XBLDmlBR5DtJPlzgtcGHPh/xOH+AYJAcIuMhrKMPBDzp7lHXWXrIuCMG76jWeiuCuWBWxjOI/QAr2WMedHvbLPKLnMhlQ8aZZcHnmZBExtqLqAbssE6vdrrR4OTFvIbEiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQ0QHFOe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F472C4CEE3;
+	Thu,  3 Jul 2025 15:01:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554125;
-	bh=T/jUc8ugZxQVd63Ek6YpknsXMWvbybaInTh6spL9AgU=;
+	s=korg; t=1751554908;
+	bh=3G6xCF9gZ0GKtslKKwBR4iYdPifgQaC6mcX3Iu8bAvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVCvwpBOpSe+S41c/sjomDkxOleQA9VD0sxGA9rKh8wE0eL70Y/bBpGYU+kkzUgvh
-	 ztYK3fer0WN6bLEc01DCACA3ATkx3jcF1KkdBk1QnbvZ1LfMUWKSFdy6HLfw+vxAHO
-	 m2b8bQ22j2fBLs8x7WjEqelEAW0Y8/BtBuIwq6/w=
+	b=pQ0QHFOeIiauLnESi+64cjIWvR/knA1zcLY2ddgLP/f0P4BTkgXrNtAdTgqYLSXpY
+	 dHdNs6GTAS6XnhpT6dfa9Wm1k/JaB1SM4k8uhquqFTTjGyA4DjTm++/Da1jpa/6+MV
+	 ynvr+25mp6dHsWsTK/VirrQxanuTeKpqjUTXs8Aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>
-Subject: [PATCH 6.12 087/218] Revert "riscv: misaligned: fix sleeping function called during misaligned access handling"
-Date: Thu,  3 Jul 2025 16:40:35 +0200
-Message-ID: <20250703143959.419550251@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.15 116/263] s390/pkey: Prevent overflow in size calculation for memdup_user()
+Date: Thu,  3 Jul 2025 16:40:36 +0200
+Message-ID: <20250703144008.994854217@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 2f73c62d4e13df67380ff6faca39eec2bf08dd93 upstream.
+commit 7360ee47599af91a1d5f4e74d635d9408a54e489 upstream.
 
-This reverts commit 61a74ad25462 ("riscv: misaligned: fix sleeping function
-called during misaligned access handling"). The commit addresses a sleeping
-in atomic context problem, but it is not the correct fix as explained by
-Clément:
+Number of apqn target list entries contained in 'nr_apqns' variable is
+determined by userspace via an ioctl call so the result of the product in
+calculation of size passed to memdup_user() may overflow.
 
-"Using nofault would lead to failure to read from user memory that is paged
-out for instance. This is not really acceptable, we should handle user
-misaligned access even at an address that would generate a page fault."
+In this case the actual size of the allocated area and the value
+describing it won't be in sync leading to various types of unpredictable
+behaviour later.
 
-This bug has been properly fixed by commit 453805f0a28f ("riscv:
-misaligned: enable IRQs while handling misaligned accesses").
+Use a proper memdup_array_user() helper which returns an error if an
+overflow is detected. Note that it is different from when nr_apqns is
+initially zero - that case is considered valid and should be handled in
+subsequent pkey_handler implementations.
 
-Revert this improper fix.
+Found by Linux Verification Center (linuxtesting.org).
 
-Link: https://lore.kernel.org/linux-riscv/b779beed-e44e-4a5e-9551-4647682b0d21@rivosinc.com/
-Signed-off-by: Nam Cao <namcao@linutronix.de>
+Fixes: f2bbc96e7cfa ("s390/pkey: add CCA AES cipher key support")
 Cc: stable@vger.kernel.org
-Reviewed-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Fixes: 61a74ad25462 ("riscv: misaligned: fix sleeping function called during misaligned access handling")
-Link: https://lore.kernel.org/r/20250620110939.1642735-1-namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250611192011.206057-1-pchelkin@ispras.ru
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/traps_misaligned.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/s390/crypto/pkey_api.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -429,7 +429,7 @@ int handle_misaligned_load(struct pt_reg
+--- a/drivers/s390/crypto/pkey_api.c
++++ b/drivers/s390/crypto/pkey_api.c
+@@ -85,7 +85,7 @@ static void *_copy_apqns_from_user(void
+ 	if (!uapqns || nr_apqns == 0)
+ 		return NULL;
  
- 	val.data_u64 = 0;
- 	if (user_mode(regs)) {
--		if (copy_from_user_nofault(&val, (u8 __user *)addr, len))
-+		if (copy_from_user(&val, (u8 __user *)addr, len))
- 			return -1;
- 	} else {
- 		memcpy(&val, (u8 *)addr, len);
-@@ -530,7 +530,7 @@ int handle_misaligned_store(struct pt_re
- 		return -EOPNOTSUPP;
+-	return memdup_user(uapqns, nr_apqns * sizeof(struct pkey_apqn));
++	return memdup_array_user(uapqns, nr_apqns, sizeof(struct pkey_apqn));
+ }
  
- 	if (user_mode(regs)) {
--		if (copy_to_user_nofault((u8 __user *)addr, &val, len))
-+		if (copy_to_user((u8 __user *)addr, &val, len))
- 			return -1;
- 	} else {
- 		memcpy((u8 *)addr, &val, len);
+ static int pkey_ioctl_genseck(struct pkey_genseck __user *ugs)
 
 
 
