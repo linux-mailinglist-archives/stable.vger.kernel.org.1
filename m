@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE94AF78ED
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CA1DAF7A25
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FBEA1CA2116
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A9CD188C091
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3831D2ED852;
-	Thu,  3 Jul 2025 14:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3051E23AB86;
+	Thu,  3 Jul 2025 15:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gb6W/crm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6mElV2k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACFA2E7F0B;
-	Thu,  3 Jul 2025 14:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32972E7BD6;
+	Thu,  3 Jul 2025 15:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554359; cv=none; b=s5z/+ghdAu0eVnJ5j/eVgJDsbEOIYlhsI5RESQoxir4EZRXf5dQG2/xN6vI8OUDwLfPtwZTMEz0/Wf3KgUtAuBAangpJhThW2vtN5e6vhQVBOz5sEnQHBQWeIxuYEa8oAcKigXaZj/7z0qH8oJpcK244YyZJp7eFGZ4m+TpOVWk=
+	t=1751555100; cv=none; b=q2Od/FS7CZTD/RTZ1O6cHCi+hh2Rn5FVC9fKiLVkh7D/XhJwH/qCZq+Tvou2Q0eVF7wYVjFIauANG+UT0BNdNsAOc4tdePkxf3Z8pHMbi95VELqTrLUujXQ2oVVJshRqaPGQeBIdzcEI/ZPtPdPXa3UF3wS4gkAGscaSIY3mtZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554359; c=relaxed/simple;
-	bh=a6LejNzVC0cqQQEoQguF2Rmz+IXkvBc6UoHZGD3XBQY=;
+	s=arc-20240116; t=1751555100; c=relaxed/simple;
+	bh=IjiQR7MHaqfZUE7R70NvZ24OLsrqv8l8fUqN7315HB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHuEufxhk7d6520UEVBp1s7cTLOPiUGSi0nIDXBk7Y02/42QQklINe1WPw7tJw+qSPi6djta6ASsR5BmlBfRQjKAi5lYeLMO3UOWndZ0m2TlAwLskilgdfaZGgcvz/EUWEPP8ApwbuF/YqBTXSE2UpbTuBd0r5//unwMsdt0PuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gb6W/crm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B100C4CEED;
-	Thu,  3 Jul 2025 14:52:37 +0000 (UTC)
+	 MIME-Version; b=sL6zmX4SZ6MxlQ6/Cm/THQJVPEoSzY+KxAmsx2EkcqdGBIFbV1Wb9AbfEDaTlkmbbGLlV5jowGH7BotI4CS+SZojtAqlJiM7WCFZ+0uoTygPPo3p+WyHNoXRJvzUQFZ60xzkrALq6HtAec6JGIO7Q0zWzIuqnQvL+XAB5iktS8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6mElV2k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53471C4CEE3;
+	Thu,  3 Jul 2025 15:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554358;
-	bh=a6LejNzVC0cqQQEoQguF2Rmz+IXkvBc6UoHZGD3XBQY=;
+	s=korg; t=1751555099;
+	bh=IjiQR7MHaqfZUE7R70NvZ24OLsrqv8l8fUqN7315HB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gb6W/crmM1euYHBa2jp3ccKqgVBaR5sD8raBAaParAHJ0rY1TjaY45/n+OzX44InK
-	 QsrVSXTEbRmEJfl9nxcPrMR0HjKqYrSihoNOqUFVEwYNlYqa2ZP8ndz5iNkqUxwCwE
-	 uWu8XHFFFyv9PdZvNBYPYtUngUHIhjZGZqUiKEzk=
+	b=i6mElV2kl1pe0NibHyYqbSitags09iVDxPquQd58WXkYavvPJoFb4Lu7SIfkzZZHN
+	 gGl7paodJfaH0LLhlPOHpjNnwlWPHcjka5QwNkImcosg7eHQIULja24KBFKIkh0Bmg
+	 BU0ORMnq0Sx4xPqPt8JOkMC8Pq25tRhnIXh921qU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yao Zi <ziyao@disroot.org>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH 6.12 130/218] dt-bindings: serial: 8250: Make clocks and clock-frequency exclusive
+	Igor Tamara <igor.tamara@gmail.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 158/263] ALSA: hda/realtek: Fix built-in mic on ASUS VivoBook X507UAR
 Date: Thu,  3 Jul 2025 16:41:18 +0200
-Message-ID: <20250703144001.308153817@linuxfoundation.org>
+Message-ID: <20250703144010.697677260@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Salvatore Bonaccorso <carnil@debian.org>
 
-commit 09812134071b3941fb81def30b61ed36d3a5dfb5 upstream.
+[ Upstream commit 7ab6847a03229e73bb7c58ca397630f699e79b53 ]
 
-The 8250 binding before converting to json-schema states,
+The built-in mic of ASUS VivoBook X507UAR is broken recently by the fix
+of the pin sort. The fixup ALC256_FIXUP_ASUS_MIC_NO_PRESENCE is working
+for addressing the regression, too.
 
-  - clock-frequency : the input clock frequency for the UART
-  	or
-  - clocks phandle to refer to the clk used as per Documentation/devicetree
-
-for clock-related properties, where "or" indicates these properties
-shouldn't exist at the same time.
-
-Additionally, the behavior of Linux's driver is strange when both clocks
-and clock-frequency are specified: it ignores clocks and obtains the
-frequency from clock-frequency, left the specified clocks unclaimed. It
-may even be disabled, which is undesired most of the time.
-
-But "anyOf" doesn't prevent these two properties from coexisting, as it
-considers the object valid as long as there's at LEAST one match.
-
-Let's switch to "oneOf" and disallows the other property if one exists,
-precisely matching the original binding and avoiding future confusion on
-the driver's behavior.
-
-Fixes: e69f5dc623f9 ("dt-bindings: serial: Convert 8250 to json-schema")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20250623093445.62327-1-ziyao@disroot.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
+Reported-by: Igor Tamara <igor.tamara@gmail.com>
+Closes: https://bugs.debian.org/1108069
+Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
+Link: https://lore.kernel.org/CADdHDco7_o=4h_epjEAb92Dj-vUz_PoTC2-W9g5ncT2E0NzfeQ@mail.gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/serial/8250.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/Documentation/devicetree/bindings/serial/8250.yaml
-+++ b/Documentation/devicetree/bindings/serial/8250.yaml
-@@ -45,7 +45,7 @@ allOf:
-                   - ns16550
-                   - ns16550a
-     then:
--      anyOf:
-+      oneOf:
-         - required: [ clock-frequency ]
-         - required: [ clocks ]
- 
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 02a424b7a9920..03ffaec49998d 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11002,6 +11002,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1df3, "ASUS UM5606WA", ALC294_FIXUP_BASS_SPEAKER_15),
+ 	SND_PCI_QUIRK(0x1043, 0x1264, "ASUS UM5606KA", ALC294_FIXUP_BASS_SPEAKER_15),
+ 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x1e10, "ASUS VivoBook X507UAR", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
+ 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1e1f, "ASUS Vivobook 15 X1504VAP", ALC2XX_FIXUP_HEADSET_MIC),
+-- 
+2.39.5
+
 
 
 
