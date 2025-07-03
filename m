@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-159838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 274A0AF7AE6
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:19:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB36AF78C2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:54:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED5764A1648
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:13:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2542D1C843BB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82492EF9A4;
-	Thu,  3 Jul 2025 15:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 301182EF9AA;
+	Thu,  3 Jul 2025 14:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEievK2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYW6EmTe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769542ED143;
-	Thu,  3 Jul 2025 15:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1522EE983;
+	Thu,  3 Jul 2025 14:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555515; cv=none; b=GfyyFrZPNHY4WR0bj1Lt0ysX9NEu29BnqwwYTV004yJcU7AbhoyKU1huQNrSk1HIkoxrrBn23Pg3+6PzEFtI8Smoh5vmHZTt+slZ8MuEBdJe9d1Pjp7pS8bNM0Kq70UOfAJL+KmD8ADuhOv82fY00lkz/ELdoTM8fGVHqr9YH/A=
+	t=1751554260; cv=none; b=jvOfzPl9Uj1wJ9YoydqQ5i/DN+nBB9ZYp7pxI+1NpVf4KISEAv+vYRh0O+eMFYxsUyZGXXP6BC3KsV9Haa0Y9LJCSw9/tMmb2p3AxRLHX7pGD5V1ysL/JcbEvKr86SKwbQJoh4rZtYRfZsMbxpQl01omYgN1TrsFOOi2jGZKBBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555515; c=relaxed/simple;
-	bh=q3c7+OqGsjdIFWkzmezD/uQOa7L1V+Bg4mbjZ+mxYoM=;
+	s=arc-20240116; t=1751554260; c=relaxed/simple;
+	bh=9//XgK8MpM24VHUZ0kdQr3e0vMJ+u1SF4ffvTD9tuzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCJygcWjJHwN+nkhm+eJBQBPK9W+/bKsd/70g2ZyUNHfUeIQ3KjEiGR6zFXPdKntmHdJocvOqoPhh8bxVJpeZkVAzhDM4080NxZ1/UpStFcfTB+4F7A0p3+pzqIloBS/IlyvPtEC1JZneHd6HjhSPsjjKKbtiCN1bDkaJ/BrHS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEievK2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC5AC4CEE3;
-	Thu,  3 Jul 2025 15:11:54 +0000 (UTC)
+	 MIME-Version; b=aNtSTezzT2xkrSeHEBtLELG5EpZHTQPkndLikSNC+6oKw/rBQkM6FF+ZxMMkS7f+r9JGl2eHfVjX105xG0cnwpJXN/ZlDByA4geLpNd2n1XoIdqRnCidm+SnJOeB5874ahKXztECRQfxiqF7UG9NSAy/s1twdakWf6bybsHbVBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYW6EmTe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5151C4CEE3;
+	Thu,  3 Jul 2025 14:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555515;
-	bh=q3c7+OqGsjdIFWkzmezD/uQOa7L1V+Bg4mbjZ+mxYoM=;
+	s=korg; t=1751554259;
+	bh=9//XgK8MpM24VHUZ0kdQr3e0vMJ+u1SF4ffvTD9tuzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vEievK2sm3KdSHR2BY4dXmkLaOjSfnWpTAzUiIDAhvm5TnTxksvOIYd71iuUJcQ2g
-	 eEehfwKln5VFsatbYv++OJI4G1a/rqsPwXuV8SuW0nblaFULL1VBaYRJJuRmiBSCGR
-	 McHc9noGzm1oLwG6L0OHWw/mUekHV8CQbYwlkE3g=
+	b=uYW6EmTeDPwD04PERQIvVSsebO4PJgVIEwx7UuTYnIgomCGPpDINeMUsqFJdGUsk1
+	 xVqkj9atjRrRtAh3s7US+KRE8+RJ2f0lKxc+93DhetNqeCwexY9f3Ke7w9Ske9v+sL
+	 V4XrYcZllC9hWcJvCBtjAHQ+PR8TDhxNiZLhj6hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikhil Jha <njha@janestreet.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Hyunchul Lee <hyc.lee@gmail.com>,
+	Meetakshi Setiya <meetakshisetiyaoss@gmail.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/139] sunrpc: dont immediately retransmit on seqno miss
+Subject: [PATCH 6.12 123/218] smb: smbdirect: introduce smbdirect_socket_parameters
 Date: Thu,  3 Jul 2025 16:41:11 +0200
-Message-ID: <20250703143941.504307874@linuxfoundation.org>
+Message-ID: <20250703144001.031907692@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +70,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikhil Jha <njha@janestreet.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit fadc0f3bb2de8c570ced6d9c1f97222213d93140 ]
+[ Upstream commit dce8047f4725d4469c0813ff50c4115fc2d0b628 ]
 
-RFC2203 requires that retransmitted messages use a new gss sequence
-number, but the same XID. This means that if the server is just slow
-(e.x. overloaded), the client might receive a response using an older
-seqno than the one it has recorded.
+This is the next step in the direction of a common smbdirect layer.
 
-Currently, Linux's client immediately retransmits in this case. However,
-this leads to a lot of wasted retransmits until the server eventually
-responds faster than the client can resend.
-
-Client -> SEQ 1 -> Server
-Client -> SEQ 2 -> Server
-Client <- SEQ 1 <- Server (misses, expecting seqno = 2)
-Client -> SEQ 3 -> Server (immediate retransmission on miss)
-Client <- SEQ 2 <- Server (misses, expecting seqno = 3)
-Client -> SEQ 4 -> Server (immediate retransmission on miss)
-... and so on ...
-
-This commit makes it so that we ignore messages with bad checksums
-due to seqnum mismatch, and rely on the usual timeout behavior for
-retransmission instead of doing so immediately.
-
-Signed-off-by: Nikhil Jha <njha@janestreet.com>
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Hyunchul Lee <hyc.lee@gmail.com>
+Cc: Meetakshi Setiya <meetakshisetiyaoss@gmail.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 43e7e284fc77 ("cifs: Fix the smbd_response slab to allow usercopy")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/clnt.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/smb/client/smbdirect.h                  |  1 +
+ fs/smb/common/smbdirect/smbdirect.h        | 20 ++++++++++++++++++++
+ fs/smb/common/smbdirect/smbdirect_socket.h |  2 ++
+ 3 files changed, 23 insertions(+)
 
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 4ffb2bcaf3648..63756607f6327 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -2733,8 +2733,13 @@ rpc_decode_header(struct rpc_task *task, struct xdr_stream *xdr)
- 	case -EPROTONOSUPPORT:
- 		goto out_err;
- 	case -EACCES:
--		/* Re-encode with a fresh cred */
--		fallthrough;
-+		/* possible RPCSEC_GSS out-of-sequence event (RFC2203),
-+		 * reset recv state and keep waiting, don't retransmit
-+		 */
-+		task->tk_rqstp->rq_reply_bytes_recvd = 0;
-+		task->tk_status = xprt_request_enqueue_receive(task);
-+		task->tk_action = call_transmit_status;
-+		return -EBADMSG;
- 	default:
- 		goto out_garbage;
- 	}
+diff --git a/fs/smb/client/smbdirect.h b/fs/smb/client/smbdirect.h
+index ffc38a48b6140..4b559a4147af1 100644
+--- a/fs/smb/client/smbdirect.h
++++ b/fs/smb/client/smbdirect.h
+@@ -15,6 +15,7 @@
+ #include <rdma/rdma_cm.h>
+ #include <linux/mempool.h>
+ 
++#include "../common/smbdirect/smbdirect.h"
+ #include "../common/smbdirect/smbdirect_socket.h"
+ 
+ extern int rdma_readwrite_threshold;
+diff --git a/fs/smb/common/smbdirect/smbdirect.h b/fs/smb/common/smbdirect/smbdirect.h
+index eedbdf0d04337..b9a385344ff31 100644
+--- a/fs/smb/common/smbdirect/smbdirect.h
++++ b/fs/smb/common/smbdirect/smbdirect.h
+@@ -14,4 +14,24 @@ struct smbdirect_buffer_descriptor_v1 {
+ 	__le32 length;
+ } __packed;
+ 
++/*
++ * Connection parameters mostly from [MS-SMBD] 3.1.1.1
++ *
++ * These are setup and negotiated at the beginning of a
++ * connection and remain constant unless explicitly changed.
++ *
++ * Some values are important for the upper layer.
++ */
++struct smbdirect_socket_parameters {
++	__u16 recv_credit_max;
++	__u16 send_credit_target;
++	__u32 max_send_size;
++	__u32 max_fragmented_send_size;
++	__u32 max_recv_size;
++	__u32 max_fragmented_recv_size;
++	__u32 max_read_write_size;
++	__u32 keepalive_interval_msec;
++	__u32 keepalive_timeout_msec;
++} __packed;
++
+ #endif /* __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_H__ */
+diff --git a/fs/smb/common/smbdirect/smbdirect_socket.h b/fs/smb/common/smbdirect/smbdirect_socket.h
+index 69a55561f91ae..e5b15cc44a7ba 100644
+--- a/fs/smb/common/smbdirect/smbdirect_socket.h
++++ b/fs/smb/common/smbdirect/smbdirect_socket.h
+@@ -36,6 +36,8 @@ struct smbdirect_socket {
+ 		struct ib_qp *qp;
+ 		struct ib_device *dev;
+ 	} ib;
++
++	struct smbdirect_socket_parameters parameters;
+ };
+ 
+ #endif /* __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_SOCKET_H__ */
 -- 
 2.39.5
 
