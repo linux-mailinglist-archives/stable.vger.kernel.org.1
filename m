@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-159554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A88AF795E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C94AF7961
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:00:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D7711891D79
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:56:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2B31189266E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25232ED857;
-	Thu,  3 Jul 2025 14:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918542EE5E4;
+	Thu,  3 Jul 2025 14:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqTufh1Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izASFNuO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F77F2EACE1;
-	Thu,  3 Jul 2025 14:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A32B2ED157;
+	Thu,  3 Jul 2025 14:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554594; cv=none; b=QCpLDuz4tbwRDuGC8pYWHEDjGuhCGvpIanIAV8lVkE/HbpGviIf2gkm2A5S6hhC8QftEjiqhmc/E2FnUPSvkJnzQs7NYsjOYPEXueFLyjLCD+pSCy+Zc7Ma2OlGSSR1SPPeycVA6OKDqAb7HZVtQ8RIWtdGPfPbjrSrIq/9VdVU=
+	t=1751554600; cv=none; b=IlQOp4OlBaj91pZzTRT1e8v/2zfLK1SfM7CMOa1pxDJ4JgudQLluvZ0IYATvsXZY1tuxaE/5BS1iNWoORM1kM1ccQIUhrhM6o+niGG16eMoauyo3kE1tjeZjGe5YvFUB12Zp+jWbDrXQjKGihhtyhlrPMKMORNScCpiFGVth33k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554594; c=relaxed/simple;
-	bh=1ybA2YKoVKxtkiep5o0aNp5zR9FOYTtcZkh0KyEcKlg=;
+	s=arc-20240116; t=1751554600; c=relaxed/simple;
+	bh=dUHY3WhqGU1km+TAlxTSlDLhV1mK4HWGStUiaWhqxNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FRPIdAo8yVFjsyIuUOPfKSBj+wZLlOr7Sc6zfDP5YDZo2AZ0AfI3u6eSeyli354sFxx1R3y0y3krEQ9iyiGx070rYYGhh3GBpPpmi4qgApPNOIF3H/pRez8npZ64dAPmtkxjr1A+KjIR8Dl/cEK9h5eBcVrMNTY40cmTvZyfLDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqTufh1Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33C8C4CEE3;
-	Thu,  3 Jul 2025 14:56:33 +0000 (UTC)
+	 MIME-Version; b=ICOOYcqgRSdTJ9LGL1AQk4Q7troFi0vor9nvgm5V9QpM5QV8xiG3lGEZk8y7n5FsXAMR7/EH2NplDqVslVNJetr9SWtkcSDWbjwDqF+2eT9r6gHcy/uGLW6ZPV6Fjlesywbi7+YUg4RhDEn+3R9zAIUgBeEEpT9Nkk6Co6qKmeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izASFNuO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C651CC4CEE3;
+	Thu,  3 Jul 2025 14:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554594;
-	bh=1ybA2YKoVKxtkiep5o0aNp5zR9FOYTtcZkh0KyEcKlg=;
+	s=korg; t=1751554600;
+	bh=dUHY3WhqGU1km+TAlxTSlDLhV1mK4HWGStUiaWhqxNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqTufh1ZDFyRNK6Yi4lO+muDzo9Z9bwdkNzitnwLtxZp7IU2tdFs3ClOunQ9anE4t
-	 iaxgiSQI9c80RaHrH3C/PNj7zlICexB20HsLiakElPk7dhd91UcCph/Soa0qWxbmlN
-	 FmpLVe8JIYEv8wro4aBYA5MeysfWS9wqfIR851VE=
+	b=izASFNuO+qSbiCJLPu2svp19zhLlN8geZAUCaFmehlUDqTDhJIqOF/Q/Shfsgzryb
+	 6q2u3Z8qJvDah7p9COILqnSZ621N/DHxLhVIpaOEhHWvIPOyDl2wLI5xMewE/Vmyw5
+	 QLiBVMKAilPITwp4DdDgx4hh64dfoUzyA9w2hTQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Price <gourry@gourry.net>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dan Williams <dan.j.williams@intel.com>,
+	Scott Mayhew <smayhew@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 019/263] cxl: core/region - ignore interleave granularity when ways=1
-Date: Thu,  3 Jul 2025 16:38:59 +0200
-Message-ID: <20250703144005.064149810@linuxfoundation.org>
+Subject: [PATCH 6.15 020/263] NFSv4: xattr handlers should check for absent nfs filehandles
+Date: Thu,  3 Jul 2025 16:39:00 +0200
+Message-ID: <20250703144005.104656160@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
 References: <20250703144004.276210867@linuxfoundation.org>
@@ -70,63 +66,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gregory Price <gourry@gourry.net>
+From: Scott Mayhew <smayhew@redhat.com>
 
-[ Upstream commit ce32b0c9c522e5a69ef9c62a56d6ca08fb036d67 ]
+[ Upstream commit 6e9a2f8dbe93c8004c2af2c0158888628b7ca034 ]
 
-When validating decoder IW/IG when setting up regions, the granularity
-is irrelevant when iw=1 - all accesses will always route to the only
-target anyway - so all ig values are "correct". Loosen the requirement
-that `ig = (parent_iw * parent_ig)` when iw=1.
+The nfs inodes for referral anchors that have not yet been followed have
+their filehandles zeroed out.
 
-On some Zen5 platforms, the platform BIOS specifies a 256-byte
-interleave granularity window for host bridges when there is only
-one target downstream.  This leads to Linux rejecting the configuration
-of a region with a x2 root with two x1 hostbridges.
+Attempting to call getxattr() on one of these will cause the nfs client
+to send a GETATTR to the nfs server with the preceding PUTFH sans
+filehandle.  The server will reply NFS4ERR_NOFILEHANDLE, leading to -EIO
+being returned to the application.
 
-Decoder Programming:
-   root - iw:2 ig:256
-   hb1  - iw:1 ig:256  (Linux expects 512)
-   hb2  - iw:1 ig:256  (Linux expects 512)
-   ep1  - iw:2 ig:256
-   ep2  - iw:2 ig:256
+For example:
 
-This change allows all decoders downstream of a passthrough decoder to
-also be configured as passthrough (iw:1 ig:X), but still disallows
-downstream decoders from applying subsequent interleaves.
+$ strace -e trace=getxattr getfattr -n system.nfs4_acl /mnt/t/ref
+getxattr("/mnt/t/ref", "system.nfs4_acl", NULL, 0) = -1 EIO (Input/output error)
+/mnt/t/ref: system.nfs4_acl: Input/output error
++++ exited with 1 +++
 
-e.g. in the above example if there was another decoder south of hb1
-attempting to interleave 2 endpoints - Linux would enforce hb1.ig=512
-because the southern decoder would have iw:2 and require ig=pig*piw.
+Have the xattr handlers return -ENODATA instead.
 
-[DJ: Fixed up against 6.15-rc1]
-
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Tested-by: Li Zhijian <lizhijian@fujitsu.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://patch.msgid.link/20250402232552.999634-1-gourry@gourry.net
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/region.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 24b161c7749f9..7585f0302f3a2 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -1446,7 +1446,7 @@ static int cxl_port_setup_targets(struct cxl_port *port,
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 6c3896a9b9d0f..2f5a6aa3fd48e 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -6220,6 +6220,8 @@ static ssize_t nfs4_proc_get_acl(struct inode *inode, void *buf, size_t buflen,
+ 	struct nfs_server *server = NFS_SERVER(inode);
+ 	int ret;
  
- 	if (test_bit(CXL_REGION_F_AUTO, &cxlr->flags)) {
- 		if (cxld->interleave_ways != iw ||
--		    cxld->interleave_granularity != ig ||
-+		    (iw > 1 && cxld->interleave_granularity != ig) ||
- 		    !region_res_match_cxl_range(p, &cxld->hpa_range) ||
- 		    ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)) {
- 			dev_err(&cxlr->dev,
++	if (unlikely(NFS_FH(inode)->size == 0))
++		return -ENODATA;
+ 	if (!nfs4_server_supports_acls(server, type))
+ 		return -EOPNOTSUPP;
+ 	ret = nfs_revalidate_inode(inode, NFS_INO_INVALID_CHANGE);
+@@ -6294,6 +6296,9 @@ static int nfs4_proc_set_acl(struct inode *inode, const void *buf,
+ {
+ 	struct nfs4_exception exception = { };
+ 	int err;
++
++	if (unlikely(NFS_FH(inode)->size == 0))
++		return -ENODATA;
+ 	do {
+ 		err = __nfs4_proc_set_acl(inode, buf, buflen, type);
+ 		trace_nfs4_set_acl(inode, err);
 -- 
 2.39.5
 
