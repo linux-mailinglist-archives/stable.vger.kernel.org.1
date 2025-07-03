@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-159650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40C5AF79EA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:07:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC69AF784F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:48:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4357B1CA0CB9
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:02:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9650C540168
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F99638F91;
-	Thu,  3 Jul 2025 15:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DDA2D948F;
+	Thu,  3 Jul 2025 14:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZZG0sHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtRqQcT0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFBC2E339E;
-	Thu,  3 Jul 2025 15:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70441DC98B;
+	Thu,  3 Jul 2025 14:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554902; cv=none; b=B7EEx15MA6vT1g2G2DyNL5lHT83pqDspGFFKON6DQJKepL2ZpJ697BkehGbgJQ6deUnMKAMf+JQvID7JZG3FnDx7mO7SWSyyNLg/u+W7bjsd9EjTDB3Q+VGD6eDA9bJxrvG9vJh9G5lMfxWQpTh8ZlxuxPbuvsKHFcjJTRo8W7c=
+	t=1751554120; cv=none; b=SFxPGqKXbaY9hBhuPyoxEqOrr354dFv2UsXo0zD4nwQXrJ1Y2CHrO/B1l9i63ULJiR2qKwc+psaftzzLGF90GFlYg/u1ejTqu8UzQr+3PwfGhUu7zZuuKryCy4XJ+goMqeO2jNnEaG91BGytMc0F5AwUOB2V37s1MplRHDxj3II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554902; c=relaxed/simple;
-	bh=GPoAzZb9KTjB9xCwhA8xFWdjBrk64hYGMJOdjehe8zY=;
+	s=arc-20240116; t=1751554120; c=relaxed/simple;
+	bh=TTdqEXVBEhrcmXf4N0CYJwgYpwsRKwWK9B6FZIVomew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CroxSRvEDrQ1256iRfHfD1xhFR+EeWaZd/WYyhUyeHESrTW4iXqkGp/qTHe64FEVXIIlfPId6R2XNClz+/d6wiQZjT+g+9lXJim0iqsIK0KkNDvCSPHkITahsymx4dN+xaUbYWQUs8GS/slQbyu1XPdRhkqjRYajXULdlXK53BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZZG0sHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFB6C4CEE3;
-	Thu,  3 Jul 2025 15:01:41 +0000 (UTC)
+	 MIME-Version; b=V26817K/uGDqH4N/T4GafBWygWI9iVTtEOvYi8vIfb0tmB3fUTbExS4Ll8qg5hQNNVxGXIbzr/MBuLz2uh2KfvI/TzE95jePEy5cBL/bim3DoA1rbdMMKemvlFQ/WHjY9DCHCRnuncXmySNZA7SUaQTcA01jSYkQhXRoQJFTaoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtRqQcT0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A36C4CEE3;
+	Thu,  3 Jul 2025 14:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554902;
-	bh=GPoAzZb9KTjB9xCwhA8xFWdjBrk64hYGMJOdjehe8zY=;
+	s=korg; t=1751554118;
+	bh=TTdqEXVBEhrcmXf4N0CYJwgYpwsRKwWK9B6FZIVomew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uZZG0sHPXPLArFG8freurlMPbW9pbkIdAIeeoxNNdr9mBRXnBDowAdspMKMs/LlZu
-	 rUZ9NcMOjdeqCIOR6azaHQAK9CWSo56Yb/urULj987LfpdRZhP4wgc6MQy9JHFAvcW
-	 D8o6tZ8+jCvN240qkZrEaeUVHAm17Bas+vhxTkG8=
+	b=TtRqQcT0N3A9uiWUPggMS5TyGxUJBkGQZ1Oe2h15VHBdv1g1QWBiwmbCoV7IdprQ4
+	 8hHzGxt0UIGDti4CjXDkmF+wxo8pc80AHplWz2tDBnu1uRrtZRVKX0O7rldK/6zup6
+	 16fbCIScxXC1Tmf8cpR2ww31qVgeh94g0iPHmBIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Schramm <oliver.schramm97@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.15 114/263] ASoC: amd: yc: Add DMI quirk for Lenovo IdeaPad Slim 5 15
+	rtm@csail.mit.edu,
+	Nam Cao <namcao@linutronix.de>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>
+Subject: [PATCH 6.12 086/218] Revert "riscv: Define TASK_SIZE_MAX for __access_ok()"
 Date: Thu,  3 Jul 2025 16:40:34 +0200
-Message-ID: <20250703144008.913862131@linuxfoundation.org>
+Message-ID: <20250703143959.381217768@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Schramm <oliver.schramm97@gmail.com>
+From: Nam Cao <namcao@linutronix.de>
 
-commit bf39286adc5e10ce3e32eb86ad316ae56f3b52a0 upstream.
+commit 890ba5be6335dbbbc99af14ea007befb5f83f174 upstream.
 
-It's smaller brother has already received the patch to enable the microphone,
-now add it too to the DMI quirk table.
+This reverts commit ad5643cf2f69 ("riscv: Define TASK_SIZE_MAX for
+__access_ok()").
 
+This commit changes TASK_SIZE_MAX to be LONG_MAX to optimize access_ok(),
+because the previous TASK_SIZE_MAX (default to TASK_SIZE) requires some
+computation.
+
+The reasoning was that all user addresses are less than LONG_MAX, and all
+kernel addresses are greater than LONG_MAX. Therefore access_ok() can
+filter kernel addresses.
+
+Addresses between TASK_SIZE and LONG_MAX are not valid user addresses, but
+access_ok() let them pass. That was thought to be okay, because they are
+not valid addresses at hardware level.
+
+Unfortunately, one case is missed: get_user_pages_fast() happily accepts
+addresses between TASK_SIZE and LONG_MAX. futex(), for instance, uses
+get_user_pages_fast(). This causes the problem reported by Robert [1].
+
+Therefore, revert this commit. TASK_SIZE_MAX is changed to the default:
+TASK_SIZE.
+
+This unfortunately reduces performance, because TASK_SIZE is more expensive
+to compute compared to LONG_MAX. But correctness first, we can think about
+optimization later, if required.
+
+Reported-by: <rtm@csail.mit.edu>
+Closes: https://lore.kernel.org/linux-riscv/77605.1750245028@localhost/
+Signed-off-by: Nam Cao <namcao@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Schramm <oliver.schramm97@gmail.com>
-Link: https://patch.msgid.link/20250621223000.11817-2-oliver.schramm97@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: ad5643cf2f69 ("riscv: Define TASK_SIZE_MAX for __access_ok()")
+Link: https://lore.kernel.org/r/20250619155858.1249789-1-namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/riscv/include/asm/pgtable.h |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -356,6 +356,13 @@ static const struct dmi_system_id yc_acp
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83J3"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "UM5302TA"),
- 		}
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -916,7 +916,6 @@ static inline pte_t pte_swp_clear_exclus
+  */
+ #ifdef CONFIG_64BIT
+ #define TASK_SIZE_64	(PGDIR_SIZE * PTRS_PER_PGD / 2)
+-#define TASK_SIZE_MAX	LONG_MAX
+ 
+ #ifdef CONFIG_COMPAT
+ #define TASK_SIZE_32	(_AC(0x80000000, UL) - PAGE_SIZE)
 
 
 
