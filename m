@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21058AF7955
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:00:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC207AF77E8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:44:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ED033B2C22
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:57:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79EA81C83A3B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769C02ECEBA;
-	Thu,  3 Jul 2025 14:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0182ED85C;
+	Thu,  3 Jul 2025 14:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTqtDM9W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WV2w+aX8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34394126C02;
-	Thu,  3 Jul 2025 14:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90BF2DE6E5;
+	Thu,  3 Jul 2025 14:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554664; cv=none; b=pXLZUgEn4sYhGpHTCeNbEipRXa7+iu0Pb6LPtMMl8qLqgIYdbaxAJh51u3Id2T2pWjrB/4BgjbFplyIO5PRj+keV/0k34rkA6h9wf+nN2dg+IG4kptU76sWycZXgs2nYW5Tx9zt1VUee+SR0r9ly1xfobpRO+6F7KVILEZTQ4Wk=
+	t=1751553887; cv=none; b=q9num0o6v2YgQzBqgBKZy/il0UsDNuBF+nO9Sof3WYfmVDmWHxKvKLOolFspoVPzlw9ahEWFyMtzmZckhfHW4vJAZCsgHX9Ac1YfW93mgB0KLZj4LbDXSaXwrTM1s3OXU26lnROzYB9azKyceV+2s/Rchfjg/BZZe5bcznte2k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554664; c=relaxed/simple;
-	bh=mXv1W8kt6/hTgQ2JmWLzdYM7mJyGsZMF82H7rORuLZE=;
+	s=arc-20240116; t=1751553887; c=relaxed/simple;
+	bh=7stMMUUA+vFWT45nsiWPVEd2TVr7jHqOlec0Xk4Fcys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dwyp/tPRy4VVQWBTqL3iTbKPCGBZYAFjEZ6eFGClGx+YULJAu4n8KhJ8a/uAHwB7ocDbOiCB8Rdz6fKvEAQZ+ILvtx0vi9fgoAcLjf8Od/buw+oM3E3xuLSwHEdDNmflk9C3IrO5S4wmcSMAf02BgZRc+5tHUr+htzenRZco3nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTqtDM9W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D81C4CEE3;
-	Thu,  3 Jul 2025 14:57:43 +0000 (UTC)
+	 MIME-Version; b=IQQiS7vh0VcFoduSVfMeB2OG56FAc6DD+j/7G5+GeRe0e5IbXioiG2jbPhQUGyRuYZLEj5GZSVWdJtAn+fbikCYt/rz5sf2asF0tQOpoWJATY1KTylI/JtUFFtDIn9GS6vOYWGBWV+LhrNpA3ax4tnp4VFYHPNcJ8HcnH0mCO/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WV2w+aX8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A3BC4CEF1;
+	Thu,  3 Jul 2025 14:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554664;
-	bh=mXv1W8kt6/hTgQ2JmWLzdYM7mJyGsZMF82H7rORuLZE=;
+	s=korg; t=1751553887;
+	bh=7stMMUUA+vFWT45nsiWPVEd2TVr7jHqOlec0Xk4Fcys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JTqtDM9WLhBGbnBPPsqZJXJM7D9GRCjNPv5XNL29FVBohuDDynThfMUhp//mu4WFD
-	 Ci24Vi8htzISzji1JQ9U8JEiswZtioH5W619ud4YNeSm7hmCfoJp7sn8dD7BI8B381
-	 soiBAAe6h6j574EFM3PvuyTa78Ha6u0QGFNOtt3M=
+	b=WV2w+aX89SUio0OhHO6nt9d8Us/zBRg9bkl3+FD2siIA6ykYDfzxJsdjhxHZjSRgv
+	 FvdWApOkHjDC52R63koHEjzka2hSjiuPSBXP5UswlQz4L5uulGESV9emr9eS88LO14
+	 iC9thdTDpiXtszjIpW+L8J6FUs6/6Qj83EzPXVHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Scott Mayhew <smayhew@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 042/263] drm/amdgpu: seq64 memory unmap uses uninterruptible lock
+Subject: [PATCH 6.12 014/218] NFSv4: xattr handlers should check for absent nfs filehandles
 Date: Thu,  3 Jul 2025 16:39:22 +0200
-Message-ID: <20250703144005.995957353@linuxfoundation.org>
+Message-ID: <20250703143956.529058209@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Scott Mayhew <smayhew@redhat.com>
 
-[ Upstream commit a359288ccb4dd8edb086e7de8fdf6e36f544c922 ]
+[ Upstream commit 6e9a2f8dbe93c8004c2af2c0158888628b7ca034 ]
 
-To unmap and free seq64 memory when drm node close to free vm, if there
-is signal accepted, then taking vm lock failed and leaking seq64 va
-mapping, and then dmesg has error log "still active bo inside vm".
+The nfs inodes for referral anchors that have not yet been followed have
+their filehandles zeroed out.
 
-Change to use uninterruptible lock fix the mapping leaking and no dmesg
-error log.
+Attempting to call getxattr() on one of these will cause the nfs client
+to send a GETATTR to the nfs server with the preceding PUTFH sans
+filehandle.  The server will reply NFS4ERR_NOFILEHANDLE, leading to -EIO
+being returned to the application.
 
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+For example:
+
+$ strace -e trace=getxattr getfattr -n system.nfs4_acl /mnt/t/ref
+getxattr("/mnt/t/ref", "system.nfs4_acl", NULL, 0) = -1 EIO (Input/output error)
+/mnt/t/ref: system.nfs4_acl: Input/output error
++++ exited with 1 +++
+
+Have the xattr handlers return -ENODATA instead.
+
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_seq64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_seq64.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_seq64.c
-index e22cb2b5cd926..dba8051b8c14b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_seq64.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_seq64.c
-@@ -133,7 +133,7 @@ void amdgpu_seq64_unmap(struct amdgpu_device *adev, struct amdgpu_fpriv *fpriv)
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 413f8be7106cc..77b239b10d418 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -6174,6 +6174,8 @@ static ssize_t nfs4_proc_get_acl(struct inode *inode, void *buf, size_t buflen,
+ 	struct nfs_server *server = NFS_SERVER(inode);
+ 	int ret;
  
- 	vm = &fpriv->vm;
- 
--	drm_exec_init(&exec, DRM_EXEC_INTERRUPTIBLE_WAIT, 0);
-+	drm_exec_init(&exec, 0, 0);
- 	drm_exec_until_all_locked(&exec) {
- 		r = amdgpu_vm_lock_pd(vm, &exec, 0);
- 		if (likely(!r))
++	if (unlikely(NFS_FH(inode)->size == 0))
++		return -ENODATA;
+ 	if (!nfs4_server_supports_acls(server, type))
+ 		return -EOPNOTSUPP;
+ 	ret = nfs_revalidate_inode(inode, NFS_INO_INVALID_CHANGE);
+@@ -6248,6 +6250,9 @@ static int nfs4_proc_set_acl(struct inode *inode, const void *buf,
+ {
+ 	struct nfs4_exception exception = { };
+ 	int err;
++
++	if (unlikely(NFS_FH(inode)->size == 0))
++		return -ENODATA;
+ 	do {
+ 		err = __nfs4_proc_set_acl(inode, buf, buflen, type);
+ 		trace_nfs4_set_acl(inode, err);
 -- 
 2.39.5
 
