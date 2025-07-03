@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E6E8AF7937
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:59:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1FC5AF7C09
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CD17188CFB9
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EF955A41AD
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5786B2EE982;
-	Thu,  3 Jul 2025 14:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6242EF9A6;
+	Thu,  3 Jul 2025 15:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ahGSCgi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVPrOy49"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EA92E7F1A;
-	Thu,  3 Jul 2025 14:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A570F2EF661;
+	Thu,  3 Jul 2025 15:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554477; cv=none; b=nwOL9AFNWW721GeKRre3tWfD2bT5xjMSxkxpHfpMNqaFxb8Fu6yucy7szRpNO1MXAEQ0VCr04p/bLjQCW3vHUkpxKx08NV37AIag0hyzTjh31plkf8Ecov9E9ZTNAG2KCYf4YagOHQBrEbAnHMoWwQ4/kay/kPAgrGcsz2B0yjc=
+	t=1751556177; cv=none; b=i+0gAjC829oqqXnwtTofEg1RE3YuKV8NKisl7jZwI0rJhq2awNb13F2r9rpI9SvcYgHdhIEq7NHflqxtJox94s73lDDP5DtYjHO+rJZxHc4GRTNOmzLkSB4TzY+/Rbuh+3M7Zn9W9PoRFlxEo8zMWHDZhcoZZrrwYQSzLWyT/kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554477; c=relaxed/simple;
-	bh=qIfJr8FQNb0GOjA49MnXvwUTvvmyCn/PYab47DhAh0Y=;
+	s=arc-20240116; t=1751556177; c=relaxed/simple;
+	bh=jiD8bbq2EXDWOb7gq8tTf+oaZr1A2PSZVolBL9ODaXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=biu9zeL7YLbnwpZp7SqxrolSoIFA4NqiDG4W/EDbD0BGAkQrQ/b7fQnzdSNeRj5ntaxRhR2OVsk8HX4D2DLviZ6cmuYlYKacdayfTXmrf00NUDr1lxjXsf20OaYeBElHUAJVd0oXiiyaBX/WjRi3y4Dt8SKB4b6WZgQf/FZu8BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ahGSCgi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A7FC4CEE3;
-	Thu,  3 Jul 2025 14:54:34 +0000 (UTC)
+	 MIME-Version; b=GubOcDkyHsqZX4cjKQfthPazp+IBDKMEMSV8eEkNH46A9HsbS6peiFQao5VJLy5ekhtMrRD1usOY8a8lEyopAXYee1eWyhScA2JhAC8jh6W5lBMUYyQ2Ci1SJqpn0eiRItF6387cb+xVoEJF78IZ2C3qz19+QMB9B4th23d8MBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVPrOy49; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4A5C4CEE3;
+	Thu,  3 Jul 2025 15:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554475;
-	bh=qIfJr8FQNb0GOjA49MnXvwUTvvmyCn/PYab47DhAh0Y=;
+	s=korg; t=1751556177;
+	bh=jiD8bbq2EXDWOb7gq8tTf+oaZr1A2PSZVolBL9ODaXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ahGSCgioxsSKkrfEjWalU8cfMQjUENZS+TXOJ4oXzlDRBafOyO8J5hHjhwrSEMEN
-	 Kzn1AlGMj2vooTdequ8KTjXOS9J1kSM825DabLwn/zlVnujZ82TN0k6l4KrQrOTZeg
-	 22kZESySsv844wColoX5QDvc/7jTI3vHyFHs6hx8=
+	b=gVPrOy49eYQJNg5TAxPkKyikPUBxXHsc+l+1e0g5ug/oZFFA4ROYReOdBwYkGYqiq
+	 OdsBNkB7PuU+yNnKM7F1oJousNp6wUtOrFIzk9KuH/ne7Rx0hvad4fzl8FRdmVZ52i
+	 Bw5qTedgCwuY+ELN0EbGSsCmN0Ms1Ew7L6guO9iU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dale Whinham <daleyo@gmail.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Long Li <longli@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 200/218] drm/msm/dp: account for widebus and yuv420 during mode validation
+Subject: [PATCH 6.1 059/132] uio_hv_generic: Query the ringbuffer size for device
 Date: Thu,  3 Jul 2025 16:42:28 +0200
-Message-ID: <20250703144004.211919421@linuxfoundation.org>
+Message-ID: <20250703143941.735456492@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-[ Upstream commit df9cf852ca3099feb8fed781bdd5d3863af001c8 ]
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-Widebus allows the DP controller to operate in 2 pixel per clock mode.
-The mode validation logic validates the mode->clock against the max
-DP pixel clock. However the max DP pixel clock limit assumes widebus
-is already enabled. Adjust the mode validation logic to only compare
-the adjusted pixel clock which accounts for widebus against the max DP
-pixel clock. Also fix the mode validation logic for YUV420 modes as in
-that case as well, only half the pixel clock is needed.
+[ Upstream commit e566ed5b64177a0c07b677568f623ed31d23406d ]
 
-Cc: stable@vger.kernel.org
-Fixes: 757a2f36ab09 ("drm/msm/dp: enable widebus feature for display port")
-Fixes: 6db6e5606576 ("drm/msm/dp: change clock related programming for YUV420 over DP")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Dale Whinham <daleyo@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/635789/
-Link: https://lore.kernel.org/r/20250206-dp-widebus-fix-v2-1-cb89a0313286@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Query the ring buffer size from pre defined table per device
+and use that value for allocating the ring buffer for that
+device. Keep the size as current default which is 2 MB if
+the device doesn't have any preferred ring size.
+
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Link: https://lore.kernel.org/r/1711788723-8593-3-git-send-email-ssengar@linux.microsoft.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_display.c | 11 ++++++-----
- drivers/gpu/drm/msm/dp/dp_drm.c     |  5 ++++-
- 2 files changed, 10 insertions(+), 6 deletions(-)
+ drivers/uio/uio_hv_generic.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
-index e1228fb093ee0..a5c1534eafdb1 100644
---- a/drivers/gpu/drm/msm/dp/dp_display.c
-+++ b/drivers/gpu/drm/msm/dp/dp_display.c
-@@ -928,16 +928,17 @@ enum drm_mode_status dp_bridge_mode_valid(struct drm_bridge *bridge,
- 		return -EINVAL;
+diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
+index 94dda3d4d509f..8cb724095be6d 100644
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -249,6 +249,7 @@ hv_uio_probe(struct hv_device *dev,
+ 	struct hv_uio_private_data *pdata;
+ 	void *ring_buffer;
+ 	int ret;
++	size_t ring_size = hv_dev_ring_size(channel);
+ 
+ 	/* Communicating with host has to be via shared memory not hypercall */
+ 	if (!channel->offermsg.monitor_allocated) {
+@@ -256,12 +257,14 @@ hv_uio_probe(struct hv_device *dev,
+ 		return -ENOTSUPP;
  	}
  
--	if (mode->clock > DP_MAX_PIXEL_CLK_KHZ)
--		return MODE_CLOCK_HIGH;
--
- 	dp_display = container_of(dp, struct dp_display_private, dp_display);
- 	link_info = &dp_display->panel->link_info;
- 
--	if (drm_mode_is_420_only(&dp->connector->display_info, mode) &&
--	    dp_display->panel->vsc_sdp_supported)
-+	if ((drm_mode_is_420_only(&dp->connector->display_info, mode) &&
-+	     dp_display->panel->vsc_sdp_supported) ||
-+	     msm_dp_wide_bus_available(dp))
- 		mode_pclk_khz /= 2;
- 
-+	if (mode_pclk_khz > DP_MAX_PIXEL_CLK_KHZ)
-+		return MODE_CLOCK_HIGH;
++	if (!ring_size)
++		ring_size = HV_RING_SIZE * PAGE_SIZE;
 +
- 	mode_bpp = dp->connector->display_info.bpc * num_components;
- 	if (!mode_bpp)
- 		mode_bpp = default_bpp;
-diff --git a/drivers/gpu/drm/msm/dp/dp_drm.c b/drivers/gpu/drm/msm/dp/dp_drm.c
-index 1b9be5bd97f12..da0176eae3fe3 100644
---- a/drivers/gpu/drm/msm/dp/dp_drm.c
-+++ b/drivers/gpu/drm/msm/dp/dp_drm.c
-@@ -257,7 +257,10 @@ static enum drm_mode_status edp_bridge_mode_valid(struct drm_bridge *bridge,
- 		return -EINVAL;
- 	}
+ 	pdata = devm_kzalloc(&dev->device, sizeof(*pdata), GFP_KERNEL);
+ 	if (!pdata)
+ 		return -ENOMEM;
  
--	if (mode->clock > DP_MAX_PIXEL_CLK_KHZ)
-+	if (msm_dp_wide_bus_available(dp))
-+		mode_pclk_khz /= 2;
-+
-+	if (mode_pclk_khz > DP_MAX_PIXEL_CLK_KHZ)
- 		return MODE_CLOCK_HIGH;
+-	ret = vmbus_alloc_ring(channel, HV_RING_SIZE * PAGE_SIZE,
+-			       HV_RING_SIZE * PAGE_SIZE);
++	ret = vmbus_alloc_ring(channel, ring_size, ring_size);
+ 	if (ret)
+ 		return ret;
  
- 	/*
 -- 
 2.39.5
 
