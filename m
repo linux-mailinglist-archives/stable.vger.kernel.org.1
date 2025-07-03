@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-159326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE1DAF77E4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:44:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F113AF790E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C37963B0FF0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:44:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B85337B0B02
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939262ED86E;
-	Thu,  3 Jul 2025 14:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674292E7BBE;
+	Thu,  3 Jul 2025 14:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgjowKXw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xswJFABJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0022DE6E5;
-	Thu,  3 Jul 2025 14:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24713126C02;
+	Thu,  3 Jul 2025 14:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751553881; cv=none; b=E2QpEHHO0zPkSRhQFGN4MzdT4blerYONvB1wsWkx+x6ce6TOyHvjTEnDyFhGCfs/K1rt7Mv+s2IF5d+MD5LzOKjjZBgBse6mBBmybmXt5WLOYVL3rzFP3nC6157gX8O7Kf0LqJr+MYtjDzHgNEeb0Jghu65c+iRgj4olq9g+yz0=
+	t=1751554661; cv=none; b=G6EzQlchxUEeWpciOnVvDK46RjyVaxECYCt373kyyV4YKd3Y3rSpjJtdwSgpeSMaSQwnMiqm8f3ohO8A75OGbfpg+nHUYkgqai73uiEOi+EyVOkfjMcxkaSRaHcptrNmVgvebsl8vUj5ZxSg7Au2jr8Nnbamx6tBCwMP2RWyvN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751553881; c=relaxed/simple;
-	bh=ft+Dwkmiob4WtVKhlmCh+UNG5NXpnBBcyzbWCsNFdaM=;
+	s=arc-20240116; t=1751554661; c=relaxed/simple;
+	bh=kv2vQBdTvEz/LUdtbmfbt7GuFKhMmB2PKZInn+8AaY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVUxDYPYJOuaGrzUCSJkLl3PLOtjSvsO4EJmp/Zq8xQhI0ICrgqvK2YcYofSfYNsdJPCHOSIzm1FRMUODdl907o4E3O5Ykos1t4+0NYtZrECUwnKnOqf9tnFiXVb73UdSKvqhlm5djPdTxtSg4zpAIc6SiH0W6Yh1sKIksBR7D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgjowKXw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D3AC4CEED;
-	Thu,  3 Jul 2025 14:44:40 +0000 (UTC)
+	 MIME-Version; b=J2Xct/d/j/LEr6JIX3YQilmzUN586DKfLiHvWe804zT7XjJ8ivgQM88talNvtaCo+TNjqI+YSyFrswycNWGTEvooxVaNausJFEtgj2tFcOtQTr4VQHmSwxup6Z3rl3voEHw77yz7nH4hVOgjlSoiZYRUgJfA7GU2bYrYL9lRaX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xswJFABJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946B8C4CEEE;
+	Thu,  3 Jul 2025 14:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751553880;
-	bh=ft+Dwkmiob4WtVKhlmCh+UNG5NXpnBBcyzbWCsNFdaM=;
+	s=korg; t=1751554661;
+	bh=kv2vQBdTvEz/LUdtbmfbt7GuFKhMmB2PKZInn+8AaY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgjowKXwlCzQXkYi7gC0Ix00yDkNLmDNQm6VJjMwP6gV0KCzZgvs/k+eeRddYHPXs
-	 IAlrXGLvB4Ay9dG9AgAY/W/T+uL6jJzD7xYlRTEBC9KU/n6OJ6eNKH/zwiqju2n6Tv
-	 yNnr5bxWQg/Lnl2xzrocvKk1hMZnLvlPi3UEP7JU=
+	b=xswJFABJ9kUu5FYjjxmF8ZQjXRadNPFDyy+chjQJY29P/RmY/Wo+P0kXORrpbbvas
+	 X/AN5wzM6W7DWIfZ10TPWSEejNZAstM1VvFAAKhmocSo/jhso0CgCorS7kkJfaeOG5
+	 CrI7UFoW4XY0tOfmChB99Bf8hn1cEdl9R/GOYk+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guang Yuan Wu <gwu@ddn.com>,
-	Bernd Schubert <bschubert@ddn.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Linggang Zeng <linggang.zeng@easystack.cn>,
+	Mingzhe Zou <mingzhe.zou@easystack.cn>,
+	Coly Li <colyli@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 012/218] fuse: fix race between concurrent setattrs from multiple nodes
-Date: Thu,  3 Jul 2025 16:39:20 +0200
-Message-ID: <20250703143956.450551288@linuxfoundation.org>
+Subject: [PATCH 6.15 041/263] bcache: fix NULL pointer in cache_set_flush()
+Date: Thu,  3 Jul 2025 16:39:21 +0200
+Message-ID: <20250703144005.957474585@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +64,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guang Yuan Wu <gwu@ddn.com>
+From: Linggang Zeng <linggang.zeng@easystack.cn>
 
-[ Upstream commit 69efbff69f89c9b2b72c4d82ad8b59706add768a ]
+[ Upstream commit 1e46ed947ec658f89f1a910d880cd05e42d3763e ]
 
-When mounting a user-space filesystem on multiple clients, after
-concurrent ->setattr() calls from different node, stale inode
-attributes may be cached in some node.
+1. LINE#1794 - LINE#1887 is some codes about function of
+   bch_cache_set_alloc().
+2. LINE#2078 - LINE#2142 is some codes about function of
+   register_cache_set().
+3. register_cache_set() will call bch_cache_set_alloc() in LINE#2098.
 
-This is caused by fuse_setattr() racing with
-fuse_reverse_inval_inode().
+ 1794 struct cache_set *bch_cache_set_alloc(struct cache_sb *sb)
+ 1795 {
+ ...
+ 1860         if (!(c->devices = kcalloc(c->nr_uuids, sizeof(void *), GFP_KERNEL)) ||
+ 1861             mempool_init_slab_pool(&c->search, 32, bch_search_cache) ||
+ 1862             mempool_init_kmalloc_pool(&c->bio_meta, 2,
+ 1863                                 sizeof(struct bbio) + sizeof(struct bio_vec) *
+ 1864                                 bucket_pages(c)) ||
+ 1865             mempool_init_kmalloc_pool(&c->fill_iter, 1, iter_size) ||
+ 1866             bioset_init(&c->bio_split, 4, offsetof(struct bbio, bio),
+ 1867                         BIOSET_NEED_BVECS|BIOSET_NEED_RESCUER) ||
+ 1868             !(c->uuids = alloc_bucket_pages(GFP_KERNEL, c)) ||
+ 1869             !(c->moving_gc_wq = alloc_workqueue("bcache_gc",
+ 1870                                                 WQ_MEM_RECLAIM, 0)) ||
+ 1871             bch_journal_alloc(c) ||
+ 1872             bch_btree_cache_alloc(c) ||
+ 1873             bch_open_buckets_alloc(c) ||
+ 1874             bch_bset_sort_state_init(&c->sort, ilog2(c->btree_pages)))
+ 1875                 goto err;
+                      ^^^^^^^^
+ 1876
+ ...
+ 1883         return c;
+ 1884 err:
+ 1885         bch_cache_set_unregister(c);
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 1886         return NULL;
+ 1887 }
+ ...
+ 2078 static const char *register_cache_set(struct cache *ca)
+ 2079 {
+ ...
+ 2098         c = bch_cache_set_alloc(&ca->sb);
+ 2099         if (!c)
+ 2100                 return err;
+                      ^^^^^^^^^^
+ ...
+ 2128         ca->set = c;
+ 2129         ca->set->cache[ca->sb.nr_this_dev] = ca;
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ ...
+ 2138         return NULL;
+ 2139 err:
+ 2140         bch_cache_set_unregister(c);
+ 2141         return err;
+ 2142 }
 
-When filesystem server receives setattr request, the client node
-with valid iattr cached will be required to update the fuse_inode's
-attr_version and invalidate the cache by fuse_reverse_inval_inode(),
-and at the next call to ->getattr() they will be fetched from user
-space.
+(1) If LINE#1860 - LINE#1874 is true, then do 'goto err'(LINE#1875) and
+    call bch_cache_set_unregister()(LINE#1885).
+(2) As (1) return NULL(LINE#1886), LINE#2098 - LINE#2100 would return.
+(3) As (2) has returned, LINE#2128 - LINE#2129 would do *not* give the
+    value to c->cache[], it means that c->cache[] is NULL.
 
-The race scenario is:
-1. client-1 sends setattr (iattr-1) request to server
-2. client-1 receives the reply from server
-3. before client-1 updates iattr-1 to the cached attributes by
-   fuse_change_attributes_common(), server receives another setattr
-   (iattr-2) request from client-2
-4. server requests client-1 to update the inode attr_version and
-   invalidate the cached iattr, and iattr-1 becomes staled
-5. client-2 receives the reply from server, and caches iattr-2
-6. continue with step 2, client-1 invokes
-   fuse_change_attributes_common(), and caches iattr-1
+LINE#1624 - LINE#1665 is some codes about function of cache_set_flush().
+As (1), in LINE#1885 call
+bch_cache_set_unregister()
+---> bch_cache_set_stop()
+     ---> closure_queue()
+          -.-> cache_set_flush() (as below LINE#1624)
 
-The issue has been observed from concurrent of chmod, chown, or
-truncate, which all invoke ->setattr() call.
+ 1624 static void cache_set_flush(struct closure *cl)
+ 1625 {
+ ...
+ 1654         for_each_cache(ca, c, i)
+ 1655                 if (ca->alloc_thread)
+                          ^^
+ 1656                         kthread_stop(ca->alloc_thread);
+ ...
+ 1665 }
 
-The solution is to use fuse_inode's attr_version to check whether
-the attributes have been modified during the setattr request's
-lifetime.  If so, mark the attributes as invalid in the function
-fuse_change_attributes_common().
+(4) In LINE#1655 ca is NULL(see (3)) in cache_set_flush() then the
+    kernel crash occurred as below:
+[  846.712887] bcache: register_cache() error drbd6: cannot allocate memory
+[  846.713242] bcache: register_bcache() error : failed to register device
+[  846.713336] bcache: cache_set_free() Cache set 2f84bdc1-498a-4f2f-98a7-01946bf54287 unregistered
+[  846.713768] BUG: unable to handle kernel NULL pointer dereference at 00000000000009f8
+[  846.714790] PGD 0 P4D 0
+[  846.715129] Oops: 0000 [#1] SMP PTI
+[  846.715472] CPU: 19 PID: 5057 Comm: kworker/19:16 Kdump: loaded Tainted: G           OE    --------- -  - 4.18.0-147.5.1.el8_1.5es.3.x86_64 #1
+[  846.716082] Hardware name: ESPAN GI-25212/X11DPL-i, BIOS 2.1 06/15/2018
+[  846.716451] Workqueue: events cache_set_flush [bcache]
+[  846.716808] RIP: 0010:cache_set_flush+0xc9/0x1b0 [bcache]
+[  846.717155] Code: 00 4c 89 a5 b0 03 00 00 48 8b 85 68 f6 ff ff a8 08 0f 84 88 00 00 00 31 db 66 83 bd 3c f7 ff ff 00 48 8b 85 48 ff ff ff 74 28 <48> 8b b8 f8 09 00 00 48 85 ff 74 05 e8 b6 58 a2 e1 0f b7 95 3c f7
+[  846.718026] RSP: 0018:ffffb56dcf85fe70 EFLAGS: 00010202
+[  846.718372] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+[  846.718725] RDX: 0000000000000001 RSI: 0000000040000001 RDI: 0000000000000000
+[  846.719076] RBP: ffffa0ccc0f20df8 R08: ffffa0ce1fedb118 R09: 000073746e657665
+[  846.719428] R10: 8080808080808080 R11: 0000000000000000 R12: ffffa0ce1fee8700
+[  846.719779] R13: ffffa0ccc0f211a8 R14: ffffa0cd1b902840 R15: ffffa0ccc0f20e00
+[  846.720132] FS:  0000000000000000(0000) GS:ffffa0ce1fec0000(0000) knlGS:0000000000000000
+[  846.720726] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  846.721073] CR2: 00000000000009f8 CR3: 00000008ba00a005 CR4: 00000000007606e0
+[  846.721426] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[  846.721778] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[  846.722131] PKRU: 55555554
+[  846.722467] Call Trace:
+[  846.722814]  process_one_work+0x1a7/0x3b0
+[  846.723157]  worker_thread+0x30/0x390
+[  846.723501]  ? create_worker+0x1a0/0x1a0
+[  846.723844]  kthread+0x112/0x130
+[  846.724184]  ? kthread_flush_work_fn+0x10/0x10
+[  846.724535]  ret_from_fork+0x35/0x40
 
-Signed-off-by: Guang Yuan Wu <gwu@ddn.com>
-Reviewed-by: Bernd Schubert <bschubert@ddn.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Now, check whether that ca is NULL in LINE#1655 to fix the issue.
+
+Signed-off-by: Linggang Zeng <linggang.zeng@easystack.cn>
+Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
+Signed-off-by: Coly Li <colyli@kernel.org>
+Link: https://lore.kernel.org/r/20250527051601.74407-2-colyli@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dir.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/md/bcache/super.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-index ff543dc09130e..ce7324d0d9ed1 100644
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -1921,6 +1921,7 @@ int fuse_do_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 	int err;
- 	bool trust_local_cmtime = is_wb;
- 	bool fault_blocked = false;
-+	u64 attr_version;
+diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+index 813b38aec3e4e..37f5e31618c0a 100644
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -1733,7 +1733,12 @@ static CLOSURE_CALLBACK(cache_set_flush)
+ 			mutex_unlock(&b->write_lock);
+ 		}
  
- 	if (!fc->default_permissions)
- 		attr->ia_valid |= ATTR_FORCE;
-@@ -2005,6 +2006,8 @@ int fuse_do_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 		if (fc->handle_killpriv_v2 && !capable(CAP_FSETID))
- 			inarg.valid |= FATTR_KILL_SUIDGID;
- 	}
-+
-+	attr_version = fuse_get_attr_version(fm->fc);
- 	fuse_setattr_fill(fc, &args, inode, &inarg, &outarg);
- 	err = fuse_simple_request(fm, &args);
- 	if (err) {
-@@ -2030,6 +2033,14 @@ int fuse_do_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 		/* FIXME: clear I_DIRTY_SYNC? */
- 	}
+-	if (ca->alloc_thread)
++	/*
++	 * If the register_cache_set() call to bch_cache_set_alloc() failed,
++	 * ca has not been assigned a value and return error.
++	 * So we need check ca is not NULL during bch_cache_set_unregister().
++	 */
++	if (ca && ca->alloc_thread)
+ 		kthread_stop(ca->alloc_thread);
  
-+	if (fi->attr_version > attr_version) {
-+		/*
-+		 * Apply attributes, for example for fsnotify_change(), but set
-+		 * attribute timeout to zero.
-+		 */
-+		outarg.attr_valid = outarg.attr_valid_nsec = 0;
-+	}
-+
- 	fuse_change_attributes_common(inode, &outarg.attr, NULL,
- 				      ATTR_TIMEOUT(&outarg),
- 				      fuse_get_cache_mask(inode));
+ 	if (c->journal.cur) {
 -- 
 2.39.5
 
