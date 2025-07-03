@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FDBAF79FC
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 249FDAF7BD8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D837C4E0E3F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:04:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CE1F1C82EE4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF022ED86E;
-	Thu,  3 Jul 2025 15:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFE62EF66F;
+	Thu,  3 Jul 2025 15:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JT0X1Hc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="py1ilsAe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC272E7BD6;
-	Thu,  3 Jul 2025 15:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496562EA46B;
+	Thu,  3 Jul 2025 15:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555093; cv=none; b=ao+trequImaSL51pLBHYNZcABQLSW8tsypFkEIe4m8SkxrLjOJ2XXcGx+Sc753E/cylRoe+YMRe3CSEbIQZz5FtjUXZ24+T/jcW90WkXmNh7EcC8QX0MKngsQeiwGwX78avotft6MCx//k5k3l3k9Zvw0BuvIfjJiHFHcnNDL7c=
+	t=1751555952; cv=none; b=BKRitI6RiXTrplpry48lZCXSEHcfsXUANdBu5KTFwKSkMc4XIXlQpYAdjAXuBAtfjNYacRT1tIejSu9AXUy8JaEvNzDGuSvxcEtrM3v6l1IVogs1uLu5SN+5saml303R7a31rdVVk49iyYZVkTT0tqQ/2IBX1bWKGIjlNLsFlh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555093; c=relaxed/simple;
-	bh=x27GByyevSoXJ9NGiBEoUhihJxA70X3rU/t4n4ch6xk=;
+	s=arc-20240116; t=1751555952; c=relaxed/simple;
+	bh=H+BP69rgNvMPCVQACW+y3Zpf3KystQs1L4BUgDGdXZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mgl4eMZurzEumMn13mInefB27vVvL6M1VTOAbJgaGmo8eGXY7cMWs9+0EiDVcjxQgU0LjWCc1ji5mn4fc35Mrrgy2YX+lCsmRgMV4qTHUVeWvYfThpwFHI2QcI42xE3DS1WE7Uz1qU4ZzqBLLIc3+KHcZg+ufdpvyGUX+kp+TqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JT0X1Hc3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DB5C4CEE3;
-	Thu,  3 Jul 2025 15:04:52 +0000 (UTC)
+	 MIME-Version; b=JWtVLGpVsYa311efVTvqxZqUYNIiY19moKC84/B12iYbSiGyW0cNIaFXGKQ1P9oebnKfRwHbmjvVcJAQLh09shumqqc2T1GO5W0h81egDzcs1qXuslGxdo11hOSyQOUE/Bez7HG90RDwev2tF5Pyn3qO6RkRSxWROhy86O8WzjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=py1ilsAe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F7CC4CEE3;
+	Thu,  3 Jul 2025 15:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555093;
-	bh=x27GByyevSoXJ9NGiBEoUhihJxA70X3rU/t4n4ch6xk=;
+	s=korg; t=1751555951;
+	bh=H+BP69rgNvMPCVQACW+y3Zpf3KystQs1L4BUgDGdXZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JT0X1Hc3ioZawkYA1zSUPz3F1tMCSM+kjFasR77SGHvAlCeTID9gjmohWGlt8wpNa
-	 Dqx0oxhxyBm4TBr62D3Mebv57Eww4O9jwv5gNBDprV9VWvM0biR2bZOmBKzVd7H4+w
-	 U7W2e8D1NwHtmNJ4U18pVCUZ0p/kXG1aqBbSQfec=
+	b=py1ilsAeYMnrti9df5ptxVOd93y6FldYmMJQL7o/p0cBYOGrRKpmquFu1Llxb7gdb
+	 xO3Q5cGXT82x7oSr1gqO+qWQM7F9S7E9ozt/lQp9WnZ7zSOw9su1MFdFqi12lfX9LD
+	 P+b/LLT3QVeqHdPNV2nT+gy3aJOTEoE1NQGw/rj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yao Zi <ziyao@disroot.org>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH 6.15 174/263] dt-bindings: serial: 8250: Make clocks and clock-frequency exclusive
+	Peng Fan <peng.fan@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 005/132] mailbox: Not protect module_put with spin_lock_irqsave
 Date: Thu,  3 Jul 2025 16:41:34 +0200
-Message-ID: <20250703144011.326209267@linuxfoundation.org>
+Message-ID: <20250703143939.596504104@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit 09812134071b3941fb81def30b61ed36d3a5dfb5 upstream.
+[ Upstream commit dddbd233e67e792bb0a3f9694a4707e6be29b2c6 ]
 
-The 8250 binding before converting to json-schema states,
+&chan->lock is not supposed to protect 'chan->mbox'.
+And in __mbox_bind_client, try_module_get is also not protected
+by &chan->lock. So move module_put out of the lock protected
+region.
 
-  - clock-frequency : the input clock frequency for the UART
-  	or
-  - clocks phandle to refer to the clk used as per Documentation/devicetree
-
-for clock-related properties, where "or" indicates these properties
-shouldn't exist at the same time.
-
-Additionally, the behavior of Linux's driver is strange when both clocks
-and clock-frequency are specified: it ignores clocks and obtains the
-frequency from clock-frequency, left the specified clocks unclaimed. It
-may even be disabled, which is undesired most of the time.
-
-But "anyOf" doesn't prevent these two properties from coexisting, as it
-considers the object valid as long as there's at LEAST one match.
-
-Let's switch to "oneOf" and disallows the other property if one exists,
-precisely matching the original binding and avoiding future confusion on
-the driver's behavior.
-
-Fixes: e69f5dc623f9 ("dt-bindings: serial: Convert 8250 to json-schema")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20250623093445.62327-1-ziyao@disroot.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/serial/8250.yaml |    2 +-
+ drivers/mailbox/mailbox.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/serial/8250.yaml
-+++ b/Documentation/devicetree/bindings/serial/8250.yaml
-@@ -45,7 +45,7 @@ allOf:
-                   - ns16550
-                   - ns16550a
-     then:
--      anyOf:
-+      oneOf:
-         - required: [ clock-frequency ]
-         - required: [ clocks ]
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index 6f54501dc7762..cb31ad917b352 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -459,8 +459,8 @@ void mbox_free_channel(struct mbox_chan *chan)
+ 	if (chan->txdone_method == TXDONE_BY_ACK)
+ 		chan->txdone_method = TXDONE_BY_POLL;
  
+-	module_put(chan->mbox->dev->driver->owner);
+ 	spin_unlock_irqrestore(&chan->lock, flags);
++	module_put(chan->mbox->dev->driver->owner);
+ }
+ EXPORT_SYMBOL_GPL(mbox_free_channel);
+ 
+-- 
+2.39.5
+
 
 
 
