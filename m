@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CA1AF79D4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49AC1AF7868
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:50:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19A541648A2
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94E597AE399
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406AF2E7BBF;
-	Thu,  3 Jul 2025 15:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40167126BFF;
+	Thu,  3 Jul 2025 14:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qj7BHjXn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GeolWIDh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12664414;
-	Thu,  3 Jul 2025 15:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A1C19F43A;
+	Thu,  3 Jul 2025 14:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554983; cv=none; b=jkffmeZvjOiA8Yy3PR79ov8UEDx1LL3nxRU0u7aMgAlFA4Rkr3PzukfMpqrMy7OPIWxm5GBFDRoqQBhNhabR5HRYJADAnOZa5hsPHZngTOr+XBDqdLQZv4HgOD+gYNW4FiJXG6mFvF6Rj2UjExFowWaL/WNEtApkaCo5u+OgcxA=
+	t=1751554202; cv=none; b=KOBccs3xOHFU7vJEBLg54o6kv8i+ObWpAzlHXNNG7RNNo3U7CIJwUbbJdp1vr6VISGlt3+dbODQhfee4+y2K/tyhroSBpNnJ8onYGYTDnoSdhmJm7eMjIoc6PNKgSfiPJ7DB0Lc2+wmErSgV3B/IdlxQo3ujeH+5UdNg90nVEWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554983; c=relaxed/simple;
-	bh=mnWUtI51LSJBbGo0pDyym5AfaFxbwvF39c4JelBs01M=;
+	s=arc-20240116; t=1751554202; c=relaxed/simple;
+	bh=OCsOAVy6TpF9mlGGLdIkh/QyQs0yW1znZkLPBfWUyZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XzJgNeBKyWGxzGTkOolMKpuhUdvBu2Zl9pInTDD9GSFKeCV8sNWAUWTJKfkrGjXJ1rNF7kV5k2iuVdu9dKmHJ4Y9jAkHkeyZ4oMDxpdSUczwuq35VLmsrUBxQ1TRCObSPsCLF4eNIL0bLIjJOeupR9j6SAeUfKcfqQhRZDhlYUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qj7BHjXn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 300B9C4CEE3;
-	Thu,  3 Jul 2025 15:03:01 +0000 (UTC)
+	 MIME-Version; b=WwEAAer6afAtm9J+tGCFJ2FClYsL4vh0VK/4ffVkH3rP5XTDD4Vyc9vARvX0AVfxfbmd0h5NVjOGA/B3214iiZW8c8LqwNnTirH2ArM4Wd4g7RZ1PkmCQbYte0+RPg1AmeXMYx1laR9aN9JLUaGZeKJISINYWqU5jcrZlWNk/Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GeolWIDh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C36CC4CEE3;
+	Thu,  3 Jul 2025 14:50:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554982;
-	bh=mnWUtI51LSJBbGo0pDyym5AfaFxbwvF39c4JelBs01M=;
+	s=korg; t=1751554201;
+	bh=OCsOAVy6TpF9mlGGLdIkh/QyQs0yW1znZkLPBfWUyZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qj7BHjXn2XnkYbyNtm2N3a5i7uBU7Pjp+rIetBKQNfX2rBeS0s7nqwwPkai5b1qcU
-	 pexqGuBxpWF7TWVERVNMigSJpyLlDYrV1pM9rPzUT0ghCLT2+sjyBCLaZ2ZehfU/+3
-	 2V5Uf4hZpX+3CTgKlGqdjb33g16ATpx0n6Z0UXYM=
+	b=GeolWIDhNtpY4J1vNr1qKMZmGUdsukZOYgKUKuQ7tHpSvkSwF+wnlpL91jr2kHxTB
+	 5z9Z/F++ioQOir2E0ypkFoxPQBRSiCg2dBq5UQcwkZUfYBEWPx/M8JeWZOZduQ5PcP
+	 znkgwkqcR+e7r5TJ9d656TVDgtaGITFtCis+keFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Marcus Seyfarth <m.seyfarth@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 140/263] libbpf: Fix null pointer dereference in btf_dump__free on allocation failure
+Subject: [PATCH 6.12 112/218] drm/amd: Adjust output for discovery error handling
 Date: Thu,  3 Jul 2025 16:41:00 +0200
-Message-ID: <20250703144009.972688773@linuxfoundation.org>
+Message-ID: <20250703144000.418183441@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit aa485e8789d56a4573f7c8d000a182b749eaa64d ]
+[ Upstream commit 73eab78721f7b85216f1ca8c7b732f13213b5b32 ]
 
-When btf_dump__new() fails to allocate memory for the internal hashmap
-(btf_dump->type_names), it returns an error code. However, the cleanup
-function btf_dump__free() does not check if btf_dump->type_names is NULL
-before attempting to free it. This leads to a null pointer dereference
-when btf_dump__free() is called on a btf_dump object.
+commit 017fbb6690c2 ("drm/amdgpu/discovery: check ip_discovery fw file
+available") added support for reading an amdgpu IP discovery bin file
+for some specific products. If it's not found then it will fallback to
+hardcoded values. However if it's not found there is also a lot of noise
+about missing files and errors.
 
-Fixes: 351131b51c7a ("libbpf: add btf_dump API for BTF-to-C conversion")
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250618011933.11423-1-chenyuan_fl@163.com
+Adjust the error handling to decrease most messages to DEBUG and to show
+users less about missing files.
+
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4312
+Tested-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+Fixes: 017fbb6690c2 ("drm/amdgpu/discovery: check ip_discovery fw file available")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20250617183052.1692059-1-superm1@kernel.org
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 49f1f9f6c3c9febf8ba93f94a8d9c8d03e1ea0a1)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/btf_dump.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 28 +++++++++----------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/tools/lib/bpf/btf_dump.c b/tools/lib/bpf/btf_dump.c
-index 460c3e57fadb6..0381f209920a6 100644
---- a/tools/lib/bpf/btf_dump.c
-+++ b/tools/lib/bpf/btf_dump.c
-@@ -226,6 +226,9 @@ static void btf_dump_free_names(struct hashmap *map)
- 	size_t bkt;
- 	struct hashmap_entry *cur;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+index 8929478a8f45c..34d41e3ce3474 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+@@ -301,10 +301,12 @@ static int amdgpu_discovery_read_binary_from_file(struct amdgpu_device *adev,
+ 	const struct firmware *fw;
+ 	int r;
  
-+	if (!map)
-+		return;
-+
- 	hashmap__for_each_entry(map, cur, bkt)
- 		free((void *)cur->pkey);
+-	r = request_firmware(&fw, fw_name, adev->dev);
++	r = firmware_request_nowarn(&fw, fw_name, adev->dev);
+ 	if (r) {
+-		dev_err(adev->dev, "can't load firmware \"%s\"\n",
+-			fw_name);
++		if (amdgpu_discovery == 2)
++			dev_err(adev->dev, "can't load firmware \"%s\"\n", fw_name);
++		else
++			drm_info(&adev->ddev, "Optional firmware \"%s\" was not found\n", fw_name);
+ 		return r;
+ 	}
  
+@@ -419,16 +421,12 @@ static int amdgpu_discovery_init(struct amdgpu_device *adev)
+ 	/* Read from file if it is the preferred option */
+ 	fw_name = amdgpu_discovery_get_fw_name(adev);
+ 	if (fw_name != NULL) {
+-		dev_info(adev->dev, "use ip discovery information from file");
++		drm_dbg(&adev->ddev, "use ip discovery information from file");
+ 		r = amdgpu_discovery_read_binary_from_file(adev, adev->mman.discovery_bin, fw_name);
+-
+-		if (r) {
+-			dev_err(adev->dev, "failed to read ip discovery binary from file\n");
+-			r = -EINVAL;
++		if (r)
+ 			goto out;
+-		}
+-
+ 	} else {
++		drm_dbg(&adev->ddev, "use ip discovery information from memory");
+ 		r = amdgpu_discovery_read_binary_from_mem(
+ 			adev, adev->mman.discovery_bin);
+ 		if (r)
+@@ -1286,10 +1284,8 @@ static int amdgpu_discovery_reg_base_init(struct amdgpu_device *adev)
+ 	int r;
+ 
+ 	r = amdgpu_discovery_init(adev);
+-	if (r) {
+-		DRM_ERROR("amdgpu_discovery_init failed\n");
++	if (r)
+ 		return r;
+-	}
+ 
+ 	adev->gfx.xcc_mask = 0;
+ 	adev->sdma.sdma_mask = 0;
+@@ -2451,8 +2447,10 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
+ 		break;
+ 	default:
+ 		r = amdgpu_discovery_reg_base_init(adev);
+-		if (r)
+-			return -EINVAL;
++		if (r) {
++			drm_err(&adev->ddev, "discovery failed: %d\n", r);
++			return r;
++		}
+ 
+ 		amdgpu_discovery_harvest_ip(adev);
+ 		amdgpu_discovery_get_gfx_info(adev);
 -- 
 2.39.5
 
