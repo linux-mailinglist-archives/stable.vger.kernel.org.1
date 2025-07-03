@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-159835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14BCFAF7ACE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25CB3AF7A0A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C2AB16B6D8
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:13:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B49B1CA1CD8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A672F235F;
-	Thu,  3 Jul 2025 15:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092622E7BD6;
+	Thu,  3 Jul 2025 15:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seF0uELU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtOZzAZm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AE92F235B;
-	Thu,  3 Jul 2025 15:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B937A2B9A6;
+	Thu,  3 Jul 2025 15:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555506; cv=none; b=QT1k6jDI/MHayRAtd2ah0swTGcVz45NoHg85oLimM/rze6TvhLxny71ZkuupsoPBfRqO3SCovzy54yPhOmD6NEjixG7dXVKwN90isRZD2VYQxrRJJN/FGtKe2zJ0BUeNbYep+U4JfyF6migdi327qAg31PJBJzUiKOtVsE3DcgE=
+	t=1751555011; cv=none; b=ilmuUwxmsBxn978r5/1gHMsu1GSiTXnjdnzgiNNXDD+edXWN5FG1MIjkHkklBNGjaLTv+qMYxtEIudGbGEjIeOrISzHA4+tyc11TDQ2j31vE43dxFd7hVA1gUyEUXTmP3W3iNruZE8AI+Jg8UbhQGsEYb90o+fEFO1anowcI3W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555506; c=relaxed/simple;
-	bh=pJfEMZFqEcsy0Kfr7O0xcpoIOhbFZwYAvaDBH7yneus=;
+	s=arc-20240116; t=1751555011; c=relaxed/simple;
+	bh=hZAmVJaZ33Cmq0Vw0cV71Jb0S6WlSJ7NEEIZqjmEWss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tiv1nvO9FHC4aGg9EkHp/3WR4+md84ScaUV+Plwctq9oImWs0BMtMIuRETyRYgAX9DwdhTsltXoAfPuZkUJOSzWHzthqrr8pi3a3++xca2iDNF2TkHepJbNWBlY9VtcdK72HDZ9uot9+3nlTXnrZTe/ffDXcd8BJEWoc2WZwM1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seF0uELU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A244EC4CEF4;
-	Thu,  3 Jul 2025 15:11:45 +0000 (UTC)
+	 MIME-Version; b=fSAOSjs9VCKgkWAHnxZV0EGkE28S/BdLwtXCrJg3XLX3ROjJuKbumvQJhHj5QtdKf/onVT5bi06yFRvZPxpXF415Tm7nYnRq9uvaARV3CDSTfiJ3dE9r7m51229brI2irWXj0Wrz9YW1m0FmdjciwisrlJeAkDLYynPyrUg6cKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtOZzAZm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29367C4CEE3;
+	Thu,  3 Jul 2025 15:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555506;
-	bh=pJfEMZFqEcsy0Kfr7O0xcpoIOhbFZwYAvaDBH7yneus=;
+	s=korg; t=1751555011;
+	bh=hZAmVJaZ33Cmq0Vw0cV71Jb0S6WlSJ7NEEIZqjmEWss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=seF0uELUQ6vIGC1h6GssOIAnve39MWrV+w/DMsAlzsW5FU3scBeYkB6d/5yhHqNEL
-	 Uq2eRQIhth0czXIxG0QiNd2luEr17/FZGFcYnMblk74SHgIZ+mBIj9wAO0Y/1UacOw
-	 3pv5PBLP8i8xS8LOC5zIhKo33qlojGTnUv9ePb4s=
+	b=HtOZzAZmkU/IlUZPCbdgRJvuWB7XSaGQ6+RulvZ0RpLEYBXZlfC6XMlC4YuHChYd4
+	 6GBQLnPOky/OYHIF3PHxKdYM/CkgB6buC4bphHjoySs4OIlAtrKKDE+QjkjBt6SN5n
+	 TLeISNXfWjUWyfYGD3sMNbqAEK2zyCOKuwX0MnBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/139] NFSv4.2: fix listxattr to return selinux security label
+Subject: [PATCH 6.15 148/263] wifi: mac80211: finish link init before RCU publish
 Date: Thu,  3 Jul 2025 16:41:08 +0200
-Message-ID: <20250703143941.392619173@linuxfoundation.org>
+Message-ID: <20250703144010.291450634@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 243fea134633ba3d64aceb4c16129c59541ea2c6 ]
+[ Upstream commit d87c3ca0f8f1ca4c25f2ed819e954952f4d8d709 ]
 
-Currently, when NFS is queried for all the labels present on the
-file via a command example "getfattr -d -m . /mnt/testfile", it
-does not return the security label. Yet when asked specifically for
-the label (getfattr -n security.selinux) it will be returned.
-Include the security label when all attributes are queried.
+Since the link/conf pointers can be accessed without any
+protection other than RCU, make sure the data is actually
+set up before publishing the structures.
 
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: b2e8434f1829 ("wifi: mac80211: set up/tear down client vif links properly")
+Link: https://patch.msgid.link/20250624130749.9a308b713c74.I4a80f5eead112a38730939ea591d2e275c721256@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ net/mac80211/link.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 1b94a55215e7d..97a009e007f95 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -10625,7 +10625,7 @@ const struct nfs4_minor_version_ops *nfs_v4_minor_ops[] = {
+diff --git a/net/mac80211/link.c b/net/mac80211/link.c
+index d40c2bd3b50b0..4f7b7d0f64f24 100644
+--- a/net/mac80211/link.c
++++ b/net/mac80211/link.c
+@@ -93,9 +93,6 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
+ 	if (link_id < 0)
+ 		link_id = 0;
  
- static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
- {
--	ssize_t error, error2, error3;
-+	ssize_t error, error2, error3, error4;
- 	size_t left = size;
+-	rcu_assign_pointer(sdata->vif.link_conf[link_id], link_conf);
+-	rcu_assign_pointer(sdata->link[link_id], link);
+-
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN) {
+ 		struct ieee80211_sub_if_data *ap_bss;
+ 		struct ieee80211_bss_conf *ap_bss_conf;
+@@ -145,6 +142,9 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
  
- 	error = generic_listxattr(dentry, list, left);
-@@ -10648,8 +10648,16 @@ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
- 	error3 = nfs4_listxattr_nfs4_user(d_inode(dentry), list, left);
- 	if (error3 < 0)
- 		return error3;
-+	if (list) {
-+		list += error3;
-+		left -= error3;
-+	}
+ 		ieee80211_link_debugfs_add(link);
+ 	}
 +
-+	error4 = security_inode_listsecurity(d_inode(dentry), list, left);
-+	if (error4 < 0)
-+		return error4;
++	rcu_assign_pointer(sdata->vif.link_conf[link_id], link_conf);
++	rcu_assign_pointer(sdata->link[link_id], link);
+ }
  
--	error += error2 + error3;
-+	error += error2 + error3 + error4;
- 	if (size && error > size)
- 		return -ERANGE;
- 	return error;
+ void ieee80211_link_stop(struct ieee80211_link_data *link)
 -- 
 2.39.5
 
