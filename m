@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-160104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35541AF8035
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 20:36:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC4AAF8037
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 20:36:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 978BD584180
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 18:36:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D42EC1CA1E80
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 18:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113802F2726;
-	Thu,  3 Jul 2025 18:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5318C2F5334;
+	Thu,  3 Jul 2025 18:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qqkvnzyr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jKK0dmIG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69A92F272C
-	for <stable@vger.kernel.org>; Thu,  3 Jul 2025 18:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A4C2F532C
+	for <stable@vger.kernel.org>; Thu,  3 Jul 2025 18:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751567686; cv=none; b=Pz+prgtnSVOEWf/WbO86ylxS6SesVzxckPGYDltHYsRmZ1yGNg0t6sKlQWhHob7Qkw+fkIZ5z6eWHrc84clYelHON2kS7+f0NKILOiksQ0EeXPiQtpHX/GRJ10qSL2jKyGuj14meZ90mXdanRTZSLXnt3ES/L+BM7RCxHfo04TM=
+	t=1751567689; cv=none; b=WRvwU5RMszwulSmkngPSBBWQVDUa8HL17VBuF2nzpEwOXKyRJ9OcRJcstKk0naUcEfl0pGUCt/sOIeSm4z/MYKlK8rKW/stUHySMrJIN11KfwpJqJ6SBZ6cg6pSDRxLGAftWvdkLG9dqSIShSEuRnErK49WYidKIDRZH7N6nR6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751567686; c=relaxed/simple;
-	bh=V5+dObnmeh1LIkck8geWwcVvuw1HDeRHLKrVLTYI/j4=;
+	s=arc-20240116; t=1751567689; c=relaxed/simple;
+	bh=sU6P+kaVSmFG5H5cqKg9LS/UTfDXC7WEni/PL6gHuag=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ArD9PG+qSz7lY9wVEuJyF0hWPebifsu2BPVA7TltOl4XapT/cgH4xmfSmGwlQ06mMSqYDOJJueumqbspQHKGjrkS9yY0czf4wuCaEYdJ0/WOEoEOTnHblmIlFMwTl2uKYYCkfktZt8/znSK7rwiLMcZQB6sRXkdR/CqDJW0QjPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qqkvnzyr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9D9C4CEE3;
-	Thu,  3 Jul 2025 18:34:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mHecdeTgTPv91LYBdyehHD8q3b45muDKpY6fFC6kF3cQwRZYQmwuF+0JW/pf0442Ug+1EK6EL5hsIqbmgA5d1/77GAV3tzgf4PpZWd9/AIwabOuHuUvG6QkbvkZzQAnRoIxj8ObZAGIw47QlGmYZ8m/TnFKH9oN4MVfHHZQF+UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jKK0dmIG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41896C4CEE3;
+	Thu,  3 Jul 2025 18:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751567686;
-	bh=V5+dObnmeh1LIkck8geWwcVvuw1HDeRHLKrVLTYI/j4=;
+	s=k20201202; t=1751567688;
+	bh=sU6P+kaVSmFG5H5cqKg9LS/UTfDXC7WEni/PL6gHuag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqkvnzyrQnRu5L1gcFeO7fyY0ze2EnLnqRBHpYY5be+/Fjm0tIYwzeKGF7GD4mt2f
-	 eEfv8j3UUKzbh0RdL5ki0wne+FRanO9wDiQs6tzvDM7tqGR2tXjEeLOxo10xacqb1E
-	 IwQgeK3FvXooyHNQ1tBvkbZ/Qd1XM+iLwqCXuHBaInwUKfzQB7nr+WajBODt/1bttd
-	 ky0UIbKAhk8Nmsy8Ab3Do7eaUbZJgUnZtcIRA0zqbABVU+JSWz35nX9I5yhZ8YbDxS
-	 5gXuQ/EgyYCoQF6w5Ocz9epeonCQGdB6CcVGCxvCNbbhki7DRLhs5B2eI+9XxNLKiT
-	 3jMKm3Q5myGhg==
+	b=jKK0dmIGP5brbMpYNXYyks6+gAGJjJhjM2NCLeptZlmanglQMIRcNd84f2Kv98WaJ
+	 1ELwM60wE9PnfHExj+4++0LhFTX1bxv4BGCzua8BbvUXHfRyJ6wvCg5Oz8PnttqedB
+	 gWSvLF0lbNqmeX7spj0IKsxbwRhCU/BpzIjHTeoQB4TCanl6dJxD24KQIrvPGeeVDX
+	 zmufaH1mXubxg8m/w1TWUEFWQu+tF0HQEVWsbdsZiFhfChyd4xAoVzHRGW3ONDNSZx
+	 OeBfA/talQH0OL5ZvWLdJ/SLwo3zSzgYnYiiGnFq2mEsYt3WI7VemgtsY//9OdRyvN
+	 sHdGldXK9T3fA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: mathieu.tortuyaux@gmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12.y v2 1/3] r8169: add support for RTL8125D
-Date: Thu,  3 Jul 2025 14:34:45 -0400
-Message-Id: <20250703114005-f7e405804919c955@stable.kernel.org>
+Subject: Re: [PATCH 6.12.y v2 2/3] net: phy: realtek: merge the drivers for internal NBase-T PHY's
+Date: Thu,  3 Jul 2025 14:34:47 -0400
+Message-Id: <20250703114429-7c612512be0de726@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250702102807.29282-2-mathieu.tortuyaux@gmail.com>
+In-Reply-To:  <20250702102807.29282-3-mathieu.tortuyaux@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,7 +67,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: f75d1fbe7809bc5ed134204b920fd9e2fc5db1df
+The upstream commit SHA1 provided is correct: f87a17ed3b51fba4dfdd8f8b643b5423a85fc551
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: mathieu.tortuyaux@gmail.com
@@ -78,38 +78,29 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f75d1fbe7809b ! 1:  ad11b51351b91 r8169: add support for RTL8125D
+1:  f87a17ed3b51f ! 1:  70e9914c26e15 net: phy: realtek: merge the drivers for internal NBase-T PHY's
     @@ Metadata
       ## Commit message ##
-         r8169: add support for RTL8125D
+         net: phy: realtek: merge the drivers for internal NBase-T PHY's
      
-    +    commit f75d1fbe7809bc5ed134204b920fd9e2fc5db1df upstream.
+    +    commit f87a17ed3b51fba4dfdd8f8b643b5423a85fc551 upstream.
     +
-         This adds support for new chip version RTL8125D, which can be found on
-         boards like Gigabyte X870E AORUS ELITE WIFI7. Firmware rtl8125d-1.fw
-         for this chip version is available in linux-firmware already.
+         The Realtek RTL8125/RTL8126 NBase-T MAC/PHY chips have internal PHY's
+         which are register-compatible, at least for the registers we use here.
+         So let's use just one PHY driver to support all of them.
     @@ Commit message
-         Reviewed-by: Simon Horman <horms@kernel.org>
-         Link: https://patch.msgid.link/d0306912-e88e-4c25-8b5d-545ae8834c0c@gmail.com
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+         Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+         Link: https://patch.msgid.link/c57081a6-811f-4571-ab35-34f4ca6de9af@gmail.com
+         Signed-off-by: Paolo Abeni <pabeni@redhat.com>
     +    Signed-off-by: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
      
-      ## drivers/net/ethernet/realtek/r8169.h ##
-     @@ drivers/net/ethernet/realtek/r8169.h: enum mac_version {
-    @@ drivers/net/ethernet/realtek/r8169_main.c: static void rtl_hw_start_8125b(struct
-     +
-      static void rtl_hw_start_8126a(struct rtl8169_private *tp)
-      {
-    - 	rtl_set_def_aspm_entry_latency(tp);
-    + 	rtl_disable_zrxdc_timeout(tp);
-     @@ drivers/net/ethernet/realtek/r8169_main.c: static void rtl_hw_config(struct rtl8169_private *tp)
-      		[RTL_GIGA_MAC_VER_53] = rtl_hw_start_8117,
-      		[RTL_GIGA_MAC_VER_61] = rtl_hw_start_8125a_2,
+      ## drivers/net/phy/realtek.c ##
+     @@
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.15.y       |  Success    |  Success   |
 
