@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-159614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B775AAF797F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:02:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11595AF781D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06DF44A2695
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:59:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F20B71C8411E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23DA22EE97A;
-	Thu,  3 Jul 2025 14:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3A2190498;
+	Thu,  3 Jul 2025 14:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jns6Pm4t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qq2D13uO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FB02EA730;
-	Thu,  3 Jul 2025 14:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5D2101DE;
+	Thu,  3 Jul 2025 14:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554786; cv=none; b=UyiXAk/eppAtZW7JhEtrx3h9R/4Ni38x162DTuN7svjrZp0OoJ1sQtS0qpUDFLhHW54qw4Z32panU7QbnNw3O/8Yd+LdeICdTMh8DQstIVxCO9elGIiqNEmqnckyBTR8nfqC1AufvrHYHnxIqMCeJI5QZsKtepmnN4oqdW9hC+g=
+	t=1751554003; cv=none; b=pxpHh8Eyj+FQUfw1eKnUPRPfO1KWK4iTECrCg+8w5gaG//l8JdooGkrkPIvO1efGkZQ8XxrIB58VLjJ4NIGX6sHPhzerGOyy5G1xNAQ9UhloRMkGCCQCmB2a3LWl5nPUT0jDybs5EjbyH1GVmBzzWOQYhrCHcjWM3dWFcm5e0yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554786; c=relaxed/simple;
-	bh=xgVoa1FjWd8OTQHnE1wvYGLkd8kyn7KEJg9CRTAhFeU=;
+	s=arc-20240116; t=1751554003; c=relaxed/simple;
+	bh=hgmduiHdTHvWil+y73QjP6lXH2r9+24LBa5arl75BCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FnQKgewh4IZzcVEGHw7If6TgQ6fYR4L15cm5pfe0cj1aJhmSygLwPIxGu9pV5LXk7ADw4GPcvzr7yFZOwWl1nNlmPH2zpAJPobFtcdrcgzjzRheroyQXHFSvKrfywIpcgwF+9417F7Pki4ZfctVw35ujLh6rBznk1mP+6rwuBo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jns6Pm4t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5476CC4CEE3;
-	Thu,  3 Jul 2025 14:59:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P/usEj+VAmJT5PSl0syle8102z4OpT8xJeNiDhA9cSytHrdMvoxXTKqB4oZe0klB9oNQmgvKldMEJheq1LVnFC2LlwbYosgLadGqQ0HYCbK8tqTm9ZLt96rXmrKNAG5B08MZ/yrZO3xTq5yIWrruhKD2B19r5jCTq9FN3hIT4sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qq2D13uO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ED5C4CEE3;
+	Thu,  3 Jul 2025 14:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554786;
-	bh=xgVoa1FjWd8OTQHnE1wvYGLkd8kyn7KEJg9CRTAhFeU=;
+	s=korg; t=1751554003;
+	bh=hgmduiHdTHvWil+y73QjP6lXH2r9+24LBa5arl75BCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jns6Pm4tq4PMzlcFHCpQcs3Hhsk1Sa6ncxbQEVI2nngsf1hFYekbcjlRgN9TjAhUk
-	 feAJSWO3atagykxRIW2tQcIv8lIioaLhTfEXF6kVI7aU9qRlQfvX2H6YODWep5sGdm
-	 tO4yBDd2oA9AZaT4iOmo4cutKni4HJsV+HFiMxYk=
+	b=qq2D13uORiTU2gaSwvpcdmRpsm7eyvgJ2yX6VpNWXFIs+ipmmGXkLY7XMzLvXNyLD
+	 9EfetmKnkxwxSV91x2hfEkhbgpltTslwTOZ/MVkVQH5eVfmGt2Gc9zsY1MDwLj54Gf
+	 CqzNgjt2SG3Zuj86JeOu2pbdsgduO/Fjnj2QJ0YE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0ed30ad435bf6f5b7a42@syzkaller.appspotmail.com,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 078/263] btrfs: fix race between async reclaim worker and close_ctree()
+Subject: [PATCH 6.12 050/218] ALSA: hda: Ignore unsol events for cards being shut down
 Date: Thu,  3 Jul 2025 16:39:58 +0200
-Message-ID: <20250703144007.429303679@linuxfoundation.org>
+Message-ID: <20250703143957.935288110@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,151 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit a26bf338cdad3643a6e7c3d78a172baadba15c1a ]
+[ Upstream commit 3f100f524e75586537e337b34d18c8d604b398e7 ]
 
-Syzbot reported an assertion failure due to an attempt to add a delayed
-iput after we have set BTRFS_FS_STATE_NO_DELAYED_IPUT in the fs_info
-state:
+For the classic snd_hda_intel driver, codec->card and bus->card point to
+the exact same thing. When snd_card_diconnect() fires, bus->shutdown is
+set thanks to azx_dev_disconnect(). card->shutdown is already set when
+that happens but both provide basically the same functionality.
 
-  WARNING: CPU: 0 PID: 65 at fs/btrfs/inode.c:3420 btrfs_add_delayed_iput+0x2f8/0x370 fs/btrfs/inode.c:3420
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 65 Comm: kworker/u8:4 Not tainted 6.15.0-next-20250530-syzkaller #0 PREEMPT(full)
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-  Workqueue: btrfs-endio-write btrfs_work_helper
-  RIP: 0010:btrfs_add_delayed_iput+0x2f8/0x370 fs/btrfs/inode.c:3420
-  Code: 4e ad 5d (...)
-  RSP: 0018:ffffc9000213f780 EFLAGS: 00010293
-  RAX: ffffffff83c635b7 RBX: ffff888058920000 RCX: ffff88801c769e00
-  RDX: 0000000000000000 RSI: 0000000000000100 RDI: 0000000000000000
-  RBP: 0000000000000001 R08: ffff888058921b67 R09: 1ffff1100b12436c
-  R10: dffffc0000000000 R11: ffffed100b12436d R12: 0000000000000001
-  R13: dffffc0000000000 R14: ffff88807d748000 R15: 0000000000000100
-  FS:  0000000000000000(0000) GS:ffff888125c53000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00002000000bd038 CR3: 000000006a142000 CR4: 00000000003526f0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   <TASK>
-   btrfs_put_ordered_extent+0x19f/0x470 fs/btrfs/ordered-data.c:635
-   btrfs_finish_one_ordered+0x11d8/0x1b10 fs/btrfs/inode.c:3312
-   btrfs_work_helper+0x399/0xc20 fs/btrfs/async-thread.c:312
-   process_one_work kernel/workqueue.c:3238 [inline]
-   process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
-   worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
-   kthread+0x70e/0x8a0 kernel/kthread.c:464
-   ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
-   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-   </TASK>
+For the DSP snd_soc_avs driver where multiple codecs are located on
+multiple cards, bus->shutdown 'shortcut' is not sufficient. One codec
+card may be unregistered while other codecs are still operational.
+Proper check in form of card->shutdown must be used to verify whether
+the codec's card is being shut down.
 
-This can happen due to a race with the async reclaim worker like this:
-
-1) The async metadata reclaim worker enters shrink_delalloc(), which calls
-   btrfs_start_delalloc_roots() with an nr_pages argument that has a value
-   less than LONG_MAX, and that in turn enters start_delalloc_inodes(),
-   which sets the local variable 'full_flush' to false because
-   wbc->nr_to_write is less than LONG_MAX;
-
-2) There it finds inode X in a root's delalloc list, grabs a reference for
-   inode X (with igrab()), and triggers writeback for it with
-   filemap_fdatawrite_wbc(), which creates an ordered extent for inode X;
-
-3) The unmount sequence starts from another task, we enter close_ctree()
-   and we flush the workqueue fs_info->endio_write_workers, which waits
-   for the ordered extent for inode X to complete and when dropping the
-   last reference of the ordered extent, with btrfs_put_ordered_extent(),
-   when we call btrfs_add_delayed_iput() we don't add the inode to the
-   list of delayed iputs because it has a refcount of 2, so we decrement
-   it to 1 and return;
-
-4) Shortly after at close_ctree() we call btrfs_run_delayed_iputs() which
-   runs all delayed iputs, and then we set BTRFS_FS_STATE_NO_DELAYED_IPUT
-   in the fs_info state;
-
-5) The async reclaim worker, after calling filemap_fdatawrite_wbc(), now
-   calls btrfs_add_delayed_iput() for inode X and there we trigger an
-   assertion failure since the fs_info state has the flag
-   BTRFS_FS_STATE_NO_DELAYED_IPUT set.
-
-Fix this by setting BTRFS_FS_STATE_NO_DELAYED_IPUT only after we wait for
-the async reclaim workers to finish, after we call cancel_work_sync() for
-them at close_ctree(), and by running delayed iputs after wait for the
-reclaim workers to finish and before setting the bit.
-
-This race was recently introduced by commit 19e60b2a95f5 ("btrfs: add
-extra warning if delayed iput is added when it's not allowed"). Without
-the new validation at btrfs_add_delayed_iput(), this described scenario
-was safe because close_ctree() later calls btrfs_commit_super(). That
-will run any final delayed iputs added by reclaim workers in the window
-between the btrfs_run_delayed_iputs() and the the reclaim workers being
-shut down.
-
-Reported-by: syzbot+0ed30ad435bf6f5b7a42@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/6840481c.a00a0220.d4325.000c.GAE@google.com/T/#u
-Fixes: 19e60b2a95f5 ("btrfs: add extra warning if delayed iput is added when it's not allowed")
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250530141309.2943404-1-cezary.rojewski@intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ sound/pci/hda/hda_bind.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index aa58e0663a5d7..87501762d81fb 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -4385,8 +4385,8 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
- 	 *
- 	 * So wait for all ongoing ordered extents to complete and then run
- 	 * delayed iputs. This works because once we reach this point no one
--	 * can either create new ordered extents nor create delayed iputs
--	 * through some other means.
-+	 * can create new ordered extents, but delayed iputs can still be added
-+	 * by a reclaim worker (see comments further below).
- 	 *
- 	 * Also note that btrfs_wait_ordered_roots() is not safe here, because
- 	 * it waits for BTRFS_ORDERED_COMPLETE to be set on an ordered extent,
-@@ -4397,15 +4397,29 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
- 	btrfs_flush_workqueue(fs_info->endio_write_workers);
- 	/* Ordered extents for free space inodes. */
- 	btrfs_flush_workqueue(fs_info->endio_freespace_worker);
-+	/*
-+	 * Run delayed iputs in case an async reclaim worker is waiting for them
-+	 * to be run as mentioned above.
-+	 */
- 	btrfs_run_delayed_iputs(fs_info);
--	/* There should be no more workload to generate new delayed iputs. */
--	set_bit(BTRFS_FS_STATE_NO_DELAYED_IPUT, &fs_info->fs_state);
+diff --git a/sound/pci/hda/hda_bind.c b/sound/pci/hda/hda_bind.c
+index 90633970b59f7..f8f1b1f6b1382 100644
+--- a/sound/pci/hda/hda_bind.c
++++ b/sound/pci/hda/hda_bind.c
+@@ -44,7 +44,7 @@ static void hda_codec_unsol_event(struct hdac_device *dev, unsigned int ev)
+ 	struct hda_codec *codec = container_of(dev, struct hda_codec, core);
  
- 	cancel_work_sync(&fs_info->async_reclaim_work);
- 	cancel_work_sync(&fs_info->async_data_reclaim_work);
- 	cancel_work_sync(&fs_info->preempt_reclaim_work);
- 	cancel_work_sync(&fs_info->em_shrinker_work);
+ 	/* ignore unsol events during shutdown */
+-	if (codec->bus->shutdown)
++	if (codec->card->shutdown || codec->bus->shutdown)
+ 		return;
  
-+	/*
-+	 * Run delayed iputs again because an async reclaim worker may have
-+	 * added new ones if it was flushing delalloc:
-+	 *
-+	 * shrink_delalloc() -> btrfs_start_delalloc_roots() ->
-+	 *    start_delalloc_inodes() -> btrfs_add_delayed_iput()
-+	 */
-+	btrfs_run_delayed_iputs(fs_info);
-+
-+	/* There should be no more workload to generate new delayed iputs. */
-+	set_bit(BTRFS_FS_STATE_NO_DELAYED_IPUT, &fs_info->fs_state);
-+
- 	/* Cancel or finish ongoing discard work */
- 	btrfs_discard_cleanup(fs_info);
- 
+ 	/* ignore unsol events during system suspend/resume */
 -- 
 2.39.5
 
