@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B8FAF7806
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0324AF7906
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0788D581A65
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F32C37B09A1
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14902EF656;
-	Thu,  3 Jul 2025 14:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AE92E7BBE;
+	Thu,  3 Jul 2025 14:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGUrvbSY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ROeAzvD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FF12EF2B3;
-	Thu,  3 Jul 2025 14:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78AC2EAD1B;
+	Thu,  3 Jul 2025 14:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751553935; cv=none; b=i0SbAKSnvtVi15v4gleWgcHkhxKoZdezFZDamgz90a6go3nRPGDqvhk3t2aY1Exiutcj1snTNI2g4Ae5LzLajV1+Kh4dOo2Uq+hv4rMJM706QQtHgxqN9QgmMDNwsu6td4ayAW/x9DIajk1Si/49ekqpCT6tDMpO4idTTvSjspY=
+	t=1751554645; cv=none; b=X9ExPAoUGpb81pEvaKUEUfSvS2vnci6qyYyLlThwYPZrEBfwULyA1HRY8IAoruCGyfhgmj7JpnUIJeWOnUwHaMOrd9ETo8AUj1DSKTly9lcg2u3F87DBCEnVa9ADO4hurViVwCG27444gOklJBanJ2oGhv6eEd05geDjEERQ8bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751553935; c=relaxed/simple;
-	bh=REhjrUiMYeXu9FkTT4OPQf8W+ebHTTLxx1gweNmagC4=;
+	s=arc-20240116; t=1751554645; c=relaxed/simple;
+	bh=Psc32TIf+X58j4XYxRKYMZBHJhb7A867Piy+jx7dryA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bgiA30ORxCS5TuW26AeyQN2hg9GyPn6WMJ199ujZ7wEfcPcqDED/AXmgNMe+kX3RDd51AupbqXabwkWX7SXsvRWcM3rIAU2Dnbk8CJatUEXYHnIRoT0ITSP9wNbAsNqlT1N4hAQwEoso75UB1BazC4Hhwc6agtn81gkCXqokEWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGUrvbSY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD5EC4CEE3;
-	Thu,  3 Jul 2025 14:45:34 +0000 (UTC)
+	 MIME-Version; b=OHGmOs9WvS8pPlfiX+oLkkFqSKHqL77RmuL48tfIaDqRfAJXllaCguQU8RIbC8LuDeLw2mRibs3h954VaUfKK+LoJ5ivys6QhDK9NgW3J/jntv+X4ieVEY1JVmEMFUJ+l9iV/3hHMoHvfyX58Y7qVTLmlPyuNuKxt/yWI+R1oLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ROeAzvD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E18FC4CEE3;
+	Thu,  3 Jul 2025 14:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751553935;
-	bh=REhjrUiMYeXu9FkTT4OPQf8W+ebHTTLxx1gweNmagC4=;
+	s=korg; t=1751554645;
+	bh=Psc32TIf+X58j4XYxRKYMZBHJhb7A867Piy+jx7dryA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wGUrvbSYGYq5/wuBGaUSOYR1akgjyvEB7PBKS24E3ceRii34I8kMOGeWhwhBYIWwK
-	 HQ9abSZFcFwZkrJlsCJqtaRGs/lRm/Z5z8KsLmyh5Qn3AP/Ufvt/zic+a7EN2ZyZZi
-	 wI3Slthuf0WXZ3Fq2G/3T4+v+yApBWchEnlCCygE=
+	b=0ROeAzvDUM7z300Ydp98xdYNGh2hhswAaxpCvBs1fA5ZpnzOzgWtBxakWZzdMeo+Z
+	 /wgw059u27uN2QyUUboDwQYKjWIQrVJ6F9YCJkl5LscTIsjwpD5oaVcr+yjkcZR5nt
+	 +jWD1Wgx7cJAp7ob3/nHmsWY88hlTBWiCvz+ahqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>,
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/218] mfd: max14577: Fix wakeup source leaks on device unbind
+Subject: [PATCH 6.15 036/263] amd/amdkfd: fix a kfd_process ref leak
 Date: Thu,  3 Jul 2025 16:39:16 +0200
-Message-ID: <20250703143956.290503111@linuxfoundation.org>
+Message-ID: <20250703144005.745167089@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Yifan Zhang <yifan1.zhang@amd.com>
 
-[ Upstream commit d905d06e64b0eb3da43af6186c132f5282197998 ]
+[ Upstream commit 90237b16ec1d7afa16e2173cc9a664377214cdd9 ]
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.
+This patch is to fix a kfd_prcess ref leak.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250406-mfd-device-wakekup-leak-v1-3-318e14bdba0a@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Reviewed-by: Philip Yang <Philip.Yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/max14577.c | 1 +
+ drivers/gpu/drm/amd/amdkfd/kfd_events.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/max14577.c b/drivers/mfd/max14577.c
-index 6fce79ec2dc64..7e7e8af9af224 100644
---- a/drivers/mfd/max14577.c
-+++ b/drivers/mfd/max14577.c
-@@ -456,6 +456,7 @@ static void max14577_i2c_remove(struct i2c_client *i2c)
- {
- 	struct max14577 *max14577 = i2c_get_clientdata(i2c);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_events.c b/drivers/gpu/drm/amd/amdkfd/kfd_events.c
+index fecdb67940750..3a926eb82379b 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_events.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_events.c
+@@ -1331,6 +1331,7 @@ void kfd_signal_poison_consumed_event(struct kfd_node *dev, u32 pasid)
+ 	user_gpu_id = kfd_process_get_user_gpu_id(p, dev->id);
+ 	if (unlikely(user_gpu_id == -EINVAL)) {
+ 		WARN_ONCE(1, "Could not get user_gpu_id from dev->id:%x\n", dev->id);
++		kfd_unref_process(p);
+ 		return;
+ 	}
  
-+	device_init_wakeup(max14577->dev, false);
- 	mfd_remove_devices(max14577->dev);
- 	regmap_del_irq_chip(max14577->irq, max14577->irq_data);
- 	if (max14577->dev_type == MAXIM_DEVICE_TYPE_MAX77836)
 -- 
 2.39.5
 
