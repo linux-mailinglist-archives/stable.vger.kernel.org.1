@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-159979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689B3AF7BDE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:29:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25DABAF7A46
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A317B6E0262
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4638B1CA3217
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A232EF9DD;
-	Thu,  3 Jul 2025 15:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C052ED143;
+	Thu,  3 Jul 2025 15:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSQQ4qVY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JR9Mnr8A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E5017FAC2;
-	Thu,  3 Jul 2025 15:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D48A1E9B3D;
+	Thu,  3 Jul 2025 15:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555980; cv=none; b=SuxJnmql0uFy4j465qsK1ztcIkkFczZQx2EHND9nIBz3RycZPs0nvAJNI0dSa5wJwEl29G/hB1r6r0Co1jVG8nhuJV+FqasfQ4fBP9oIZcUgPQXY60II4we+9tH3f7J39fOl62O3MYfGrxoJyPHWh6zIMlyvBpAitWLHSO/MVGY=
+	t=1751555201; cv=none; b=ry12eNQIP8Ic25T+cVRadVJIRmvtlz4xJlHQ0hh5cOKmGpFJtaHEKrzNbciDhnInW35oKXd0lnKAUdHTzHVm5Peiz6JIAnY2Gy8rvOMepXwMzohWpHWG7AgjpI926FDDoMex5CVmr7NMyr+Q4KesWqkFl+tp+PYBTsfSCZlUbSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555980; c=relaxed/simple;
-	bh=iiOGRGYatcqoxJMlo1lzksMm6rY9ccIWdQfz9Ml9xBA=;
+	s=arc-20240116; t=1751555201; c=relaxed/simple;
+	bh=8JEEHqKHA6ZiUVRvBFB42k96gKwobuRK4c4t773sxgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dcCcRfLveyxkQslr5P9anka+7ioG+zwsuKoAr2fZioWksEebku49Abeu/qv8zXsgtrbzKJFGC8yF4DEssnK/6Cce1cAJnGNr036qL8/q4Uya7I5B7EWEG01zW2v3MaT3jjaSKhuHUDMJajbwGgkO8O2Mjtbsq8ieKNwvx5R6faY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSQQ4qVY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCFDC4CEEE;
-	Thu,  3 Jul 2025 15:19:40 +0000 (UTC)
+	 MIME-Version; b=gPUj9lXgeRtbccIVLdJptx4WnS8UImblxf0rDpmrGvMXjbgWxbi+gtGpTpkwUuZoPyTOeIpEAM1z5hQudJnc0DIHdCcCqiyA8t0CaW2ImXfS3ErWRdCvnukJClECUIY/XhOXGVceJB7lJhSoL3kQ2HOAgoghe4SHrDlszNA2NhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JR9Mnr8A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF09FC4CEE3;
+	Thu,  3 Jul 2025 15:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555980;
-	bh=iiOGRGYatcqoxJMlo1lzksMm6rY9ccIWdQfz9Ml9xBA=;
+	s=korg; t=1751555201;
+	bh=8JEEHqKHA6ZiUVRvBFB42k96gKwobuRK4c4t773sxgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WSQQ4qVY/i3JnjzvxKbW1J93Mq0RqMyG1QwnxjYsULAjRUq8GQXodaQv7tFUmCouW
-	 hvxlhhg4zZ7lZ30njQ6oZjYhtL+l3Z5uRsNNrZ7oo9XHbFTbvG4dmk22/CoEiusDz5
-	 jfs97NbmaTAWwnQG3uB8G1jnZvmfQ/w0Vmsacm8Y=
+	b=JR9Mnr8AGJryqetWP0vAEAbVu5qEoTuEIL53jmiofB46Qsy/dO7ON6rhq9JweSASa
+	 LApAnEL+FTbHPynkSEpQOnx9RagBPuLsceVFpUuxAV48zK9yY2ykVC9r2b2p4xD8U8
+	 PFFe5JvXtHoDOa7Z8ZAwQvsu3gV/hciApEVP/ytQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/132] Revert "drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1"
+	Aaron Kling <webgeek1234@gmail.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.15 207/263] drm/tegra: Assign plane type before registration
 Date: Thu,  3 Jul 2025 16:42:07 +0200
-Message-ID: <20250703143940.920964291@linuxfoundation.org>
+Message-ID: <20250703144012.678946520@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +59,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+From: Thierry Reding <treding@nvidia.com>
 
-[ Upstream commit ed5915cfce2abb9a553c3737badebd4a11d6c9c7 ]
+commit 9ff4fdf4f44b69237c0afc1d3a8dac916ce66f3e upstream.
 
-This reverts commit d6e020819612a4a06207af858e0978be4d3e3140.
+Changes to a plane's type after it has been registered aren't propagated
+to userspace automatically. This could possibly be achieved by updating
+the property, but since we can already determine which type this should
+be before the registration, passing in the right type from the start is
+a much better solution.
 
-The IS_DGFX check was put in place because error capture of buffer
-objects is expected to be broken on devices with VRAM.
-
-Userspace fix[1] to the impacted media driver has been submitted, merged
-and a new driver release is out as 25.2.3 where the capture flag is
-dropped on DG1 thus unblocking the usage of media driver on DG1.
-
-[1] https://github.com/intel/media-driver/commit/93c07d9b4b96a78bab21f6acd4eb863f4313ea4a
-
-Cc: stable@vger.kernel.org # v6.0+
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20250522064127.24293-1-joonas.lahtinen@linux.intel.com
-[Joonas: Update message to point out the merged userspace fix]
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-(cherry picked from commit d2dc30e0aa252830f908c8e793d3139d51321370)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Aaron Kling <webgeek1234@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Cc: stable@vger.kernel.org
+Fixes: 473079549f27 ("drm/tegra: dc: Add Tegra186 support")
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250421-tegra-drm-primary-v2-1-7f740c4c2121@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/tegra/dc.c  |   12 ++++++++----
+ drivers/gpu/drm/tegra/hub.c |    4 ++--
+ drivers/gpu/drm/tegra/hub.h |    3 ++-
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-index 9424606710a10..0a123bb44c9fb 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-@@ -2001,7 +2001,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
- 			continue;
+--- a/drivers/gpu/drm/tegra/dc.c
++++ b/drivers/gpu/drm/tegra/dc.c
+@@ -1321,10 +1321,16 @@ static struct drm_plane *tegra_dc_add_sh
+ 		if (wgrp->dc == dc->pipe) {
+ 			for (j = 0; j < wgrp->num_windows; j++) {
+ 				unsigned int index = wgrp->windows[j];
++				enum drm_plane_type type;
++
++				if (primary)
++					type = DRM_PLANE_TYPE_OVERLAY;
++				else
++					type = DRM_PLANE_TYPE_PRIMARY;
  
- 		if (i915_gem_context_is_recoverable(eb->gem_context) &&
--		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
-+		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
- 			return -EINVAL;
+ 				plane = tegra_shared_plane_create(drm, dc,
+ 								  wgrp->index,
+-								  index);
++								  index, type);
+ 				if (IS_ERR(plane))
+ 					return plane;
  
- 		for_each_batch_create_order(eb, j) {
--- 
-2.39.5
-
+@@ -1332,10 +1338,8 @@ static struct drm_plane *tegra_dc_add_sh
+ 				 * Choose the first shared plane owned by this
+ 				 * head as the primary plane.
+ 				 */
+-				if (!primary) {
+-					plane->type = DRM_PLANE_TYPE_PRIMARY;
++				if (!primary)
+ 					primary = plane;
+-				}
+ 			}
+ 		}
+ 	}
+--- a/drivers/gpu/drm/tegra/hub.c
++++ b/drivers/gpu/drm/tegra/hub.c
+@@ -755,9 +755,9 @@ static const struct drm_plane_helper_fun
+ struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
+ 					    struct tegra_dc *dc,
+ 					    unsigned int wgrp,
+-					    unsigned int index)
++					    unsigned int index,
++					    enum drm_plane_type type)
+ {
+-	enum drm_plane_type type = DRM_PLANE_TYPE_OVERLAY;
+ 	struct tegra_drm *tegra = drm->dev_private;
+ 	struct tegra_display_hub *hub = tegra->hub;
+ 	struct tegra_shared_plane *plane;
+--- a/drivers/gpu/drm/tegra/hub.h
++++ b/drivers/gpu/drm/tegra/hub.h
+@@ -80,7 +80,8 @@ void tegra_display_hub_cleanup(struct te
+ struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
+ 					    struct tegra_dc *dc,
+ 					    unsigned int wgrp,
+-					    unsigned int index);
++					    unsigned int index,
++					    enum drm_plane_type type);
+ 
+ int tegra_display_hub_atomic_check(struct drm_device *drm,
+ 				   struct drm_atomic_state *state);
 
 
 
