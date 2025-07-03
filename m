@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-159512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01593AF7913
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A1EAF7B8E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77DA1584C85
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB4AE58415E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040C22E7BD6;
-	Thu,  3 Jul 2025 14:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D772EE978;
+	Thu,  3 Jul 2025 15:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukmEJJ9+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fck8Zzh8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EFE2EFDB5;
-	Thu,  3 Jul 2025 14:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B3B2EE5ED;
+	Thu,  3 Jul 2025 15:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554462; cv=none; b=RjTPVBV/stInImz+FtmsOHariLzxNlzGUMtGtZOQZ0T+96DhBYmQN6N3BIp4FIv9dG8A+T0OnrzhiMzBLNetQb4iZvVOHFQPiOwXWI3W8DPHazbgkzN4I8P1ukHN/kK3j+Ra2DqaK4CtLizhIaFPkmd4GO/UlpOC/I9RrYOLVUw=
+	t=1751555939; cv=none; b=dLGNJFaMEoHudQ8UAmL8F3TsL+F0fL8/qXlecBs9SDvrqEHTP6ZNgw5YdvBHjj0f99iq61BcgY+6sYT2ljhVzYRFOcfbvbXYyIrjR4CfQLmW+nl519x8X6t+hrgvH42/a2unlBYM1lor+95CsCZ6ULnajxzkeAGWu65CUM79+cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554462; c=relaxed/simple;
-	bh=/5EICoytUxlrP8Ezhdl+et1Mt0JAud/TUmYXO+fvQcw=;
+	s=arc-20240116; t=1751555939; c=relaxed/simple;
+	bh=q2mfwGU1w2Sa1i8x5ha9tVW5JEXlFnIDov3pg05Fq4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=got7Iy1JVNm0pG3mnpKzgBTPPIJ4XU9XNCckq8FyZQeo0yRXb2efs5+C4Yl9wxPV8XOO45qkh3zkG9BMCZ1+KYVqRWaD5M8V+TJqjTSIqj9mpp25aRtxr2kNuSkSCIsIas8DbuVOMliiTgxL6rS2+ypaWApbEctPxYaB2vEojUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukmEJJ9+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2570C4CEEE;
-	Thu,  3 Jul 2025 14:54:21 +0000 (UTC)
+	 MIME-Version; b=Q7VWNJPscMX7qiQcKRYPNUPvrL9TuszoteepPwDJZK3CIEgy+b8JlkbYL4dsAPumY3S2QZ687TnyKnkyoCf0R8TJWP4klKdo1Ij9wTFCo4dyDoJOpcfslr4cdmyeObLE8atZ0mOpVE2OuEsJnLFc6z+L46JIzAUln6zXqM88FRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fck8Zzh8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D240C4CEE3;
+	Thu,  3 Jul 2025 15:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554462;
-	bh=/5EICoytUxlrP8Ezhdl+et1Mt0JAud/TUmYXO+fvQcw=;
+	s=korg; t=1751555938;
+	bh=q2mfwGU1w2Sa1i8x5ha9tVW5JEXlFnIDov3pg05Fq4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukmEJJ9+PSQsStvlmirCtbFJsH/AA9IDqwH2gUg5XOmKG7sN/sBoahjR8SKx1IsbE
-	 cE7kIi5zWybOoLeyehr+YhveMr9kKX2mG+WQw07xl/a7N389G6VVWNPWFyW5wbi8h2
-	 H5WNVqD12UVyvPEppFGhsVQp26CzNqn+0hU0SZFo=
+	b=Fck8Zzh8dg1YqlX1cL5vO5gS/a8sc+qrAfYBrsC+aiRXUMtkxXpvVUuZ4Y9RqKAgg
+	 utio+U0n0bpZyxCXneb35yG4gh27JRIaaocAyF85mbIHzcltd1BB5xVYHyuD/Pajyy
+	 9iMGqlMB9/Hl4SwCUYYivywIByZAkPBkWQ23QDwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	William Tseng <william.tseng@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>
-Subject: [PATCH 6.12 165/218] drm/xe/sched: stop re-submitting signalled jobs
+	Chen Yufeng <chenyufeng@iie.ac.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 024/132] usb: potential integer overflow in usbg_make_tpg()
 Date: Thu,  3 Jul 2025 16:41:53 +0200
-Message-ID: <20250703144002.758645489@linuxfoundation.org>
+Message-ID: <20250703143940.349640973@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Chen Yufeng <chenyufeng@iie.ac.cn>
 
-commit 0ee54d5cacc0276ec631ac149825a24b59c51c38 upstream.
+[ Upstream commit 153874010354d050f62f8ae25cbb960c17633dc5 ]
 
-Customer is reporting a really subtle issue where we get random DMAR
-faults, hangs and other nasties for kernel migration jobs when stressing
-stuff like s2idle/s3/s4. The explosions seems to happen somewhere
-after resuming the system with splats looking something like:
+The variable tpgt in usbg_make_tpg() is defined as unsigned long and is
+assigned to tpgt->tport_tpgt, which is defined as u16. This may cause an
+integer overflow when tpgt is greater than USHRT_MAX (65535). I
+haven't tried to trigger it myself, but it is possible to trigger it
+by calling usbg_make_tpg() with a large value for tpgt.
 
-PM: suspend exit
-rfkill: input handler disabled
-xe 0000:00:02.0: [drm] GT0: Engine reset: engine_class=bcs, logical_mask: 0x2, guc_id=0
-xe 0000:00:02.0: [drm] GT0: Timedout job: seqno=24496, lrc_seqno=24496, guc_id=0, flags=0x13 in no process [-1]
-xe 0000:00:02.0: [drm] GT0: Kernel-submitted job timed out
+I modified the type of tpgt to match tpgt->tport_tpgt and adjusted the
+relevant code accordingly.
 
-The likely cause appears to be a race between suspend cancelling the
-worker that processes the free_job()'s, such that we still have pending
-jobs to be freed after the cancel. Following from this, on resume the
-pending_list will now contain at least one already complete job, but it
-looks like we call drm_sched_resubmit_jobs(), which will then call
-run_job() on everything still on the pending_list. But if the job was
-already complete, then all the resources tied to the job, like the bb
-itself, any memory that is being accessed, the iommu mappings etc. might
-be long gone since those are usually tied to the fence signalling.
+This patch is similar to commit 59c816c1f24d ("vhost/scsi: potential
+memory corruption").
 
-This scenario can be seen in ftrace when running a slightly modified
-xe_pm IGT (kernel was only modified to inject artificial latency into
-free_job to make the race easier to hit):
-
-xe_sched_job_run: dev=0000:00:02.0, fence=0xffff888276cc8540, seqno=0, lrc_seqno=0, gt=0, guc_id=0, batch_addr=0x000000146910 ...
-xe_exec_queue_stop:   dev=0000:00:02.0, 3:0x2, gt=0, width=1, guc_id=0, guc_state=0x0, flags=0x13
-xe_exec_queue_stop:   dev=0000:00:02.0, 3:0x2, gt=0, width=1, guc_id=1, guc_state=0x0, flags=0x4
-xe_exec_queue_stop:   dev=0000:00:02.0, 4:0x1, gt=1, width=1, guc_id=0, guc_state=0x0, flags=0x3
-xe_exec_queue_stop:   dev=0000:00:02.0, 1:0x1, gt=1, width=1, guc_id=1, guc_state=0x0, flags=0x3
-xe_exec_queue_stop:   dev=0000:00:02.0, 4:0x1, gt=1, width=1, guc_id=2, guc_state=0x0, flags=0x3
-xe_exec_queue_resubmit: dev=0000:00:02.0, 3:0x2, gt=0, width=1, guc_id=0, guc_state=0x0, flags=0x13
-xe_sched_job_run: dev=0000:00:02.0, fence=0xffff888276cc8540, seqno=0, lrc_seqno=0, gt=0, guc_id=0, batch_addr=0x000000146910 ...
-.....
-xe_exec_queue_memory_cat_error: dev=0000:00:02.0, 3:0x2, gt=0, width=1, guc_id=0, guc_state=0x3, flags=0x13
-
-So the job_run() is clearly triggered twice for the same job, even
-though the first must have already signalled to completion during
-suspend. We can also see a CAT error after the re-submit.
-
-To prevent this only resubmit jobs on the pending_list that have not yet
-signalled.
-
-v2:
-  - Make sure to re-arm the fence callbacks with sched_start().
-v3 (Matt B):
-  - Stop using drm_sched_resubmit_jobs(), which appears to be deprecated
-    and just open-code a simple loop such that we skip calling run_job()
-    on anything already signalled.
-
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4856
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: William Tseng <william.tseng@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Link: https://lore.kernel.org/r/20250528113328.289392-2-matthew.auld@intel.com
-(cherry picked from commit 38fafa9f392f3110d2de431432d43f4eef99cd1b)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
+Link: https://lore.kernel.org/r/20250415065857.1619-1-chenyufeng@iie.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gpu_scheduler.h |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_tcm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_gpu_scheduler.h
-+++ b/drivers/gpu/drm/xe/xe_gpu_scheduler.h
-@@ -51,7 +51,15 @@ static inline void xe_sched_tdr_queue_im
+diff --git a/drivers/usb/gadget/function/f_tcm.c b/drivers/usb/gadget/function/f_tcm.c
+index 3c9541357c241..55a81ad6837b6 100644
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -1321,14 +1321,14 @@ static struct se_portal_group *usbg_make_tpg(struct se_wwn *wwn,
+ 	struct usbg_tport *tport = container_of(wwn, struct usbg_tport,
+ 			tport_wwn);
+ 	struct usbg_tpg *tpg;
+-	unsigned long tpgt;
++	u16 tpgt;
+ 	int ret;
+ 	struct f_tcm_opts *opts;
+ 	unsigned i;
  
- static inline void xe_sched_resubmit_jobs(struct xe_gpu_scheduler *sched)
- {
--	drm_sched_resubmit_jobs(&sched->base);
-+	struct drm_sched_job *s_job;
-+
-+	list_for_each_entry(s_job, &sched->base.pending_list, list) {
-+		struct drm_sched_fence *s_fence = s_job->s_fence;
-+		struct dma_fence *hw_fence = s_fence->parent;
-+
-+		if (hw_fence && !dma_fence_is_signaled(hw_fence))
-+			sched->base.ops->run_job(s_job);
-+	}
- }
- 
- static inline bool
+ 	if (strstr(name, "tpgt_") != name)
+ 		return ERR_PTR(-EINVAL);
+-	if (kstrtoul(name + 5, 0, &tpgt) || tpgt > UINT_MAX)
++	if (kstrtou16(name + 5, 0, &tpgt))
+ 		return ERR_PTR(-EINVAL);
+ 	ret = -ENODEV;
+ 	mutex_lock(&tpg_instances_lock);
+-- 
+2.39.5
+
 
 
 
