@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-159668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A7DAF79FE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79022AF785F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC7C518878E6
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B3BF54384F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC8A2EF669;
-	Thu,  3 Jul 2025 15:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB232E62CD;
+	Thu,  3 Jul 2025 14:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWxc9C/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eB2qQPRq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CDC2EF292;
-	Thu,  3 Jul 2025 15:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871D71DC98B;
+	Thu,  3 Jul 2025 14:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554960; cv=none; b=ZIkc2DyYQ4ududIqMdZe+ar4WJ9oofv2Y/02mvepff0KJqP51MIeDiFFnZB2o6bfDqpCi0EApL41u0AcjGbup7TLSDWgpkNE4T1SJQBjRrFcIK93MmtMqrlFCk3mpsQRBf4vQD7LvrtStyWn+aW2M82E1r4c1xdrTN4/uk4AS1U=
+	t=1751554177; cv=none; b=HSZBuUKTNKB9WQNM7UZXXDJyXBTs6yCNOKeAgPVSTZacoV1sp3cgz74KTEatTYSjM+dxIuGNjBq+fXBAluOT6ipqoHug+j/LnlRTzsFFe5eRQZjgnBGX6uVND3zhR0hvMNwEeZUlUxh3lk+eIkFqzaOn/5JLvtqaw3kh8Vg7hHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554960; c=relaxed/simple;
-	bh=ne0c1yIdXBCpJOCc53TXV+N4AzzOYLda0q2ECZfSPKE=;
+	s=arc-20240116; t=1751554177; c=relaxed/simple;
+	bh=yYYW23QIb7dw0athFO7oLys/48OFb6yIjD0BFm2hxaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K44VssapHXTcpIIgs9Mk9jzSU/2uHs3YUPZ2VDSYVrLWFlf9z/TsTC+wGV0CE4ezOHZDcktg9mqVV3JzG/X+6yCBUHPt2wW+91OwL7BKktmHYQ9bK7pkkfD+RXoc40KBULC35ioxDyUJqsfn+02s4/n8uvDeaEQNfAQ56cY3dqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWxc9C/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE63C4CEED;
-	Thu,  3 Jul 2025 15:02:39 +0000 (UTC)
+	 MIME-Version; b=Ecqw24VnS4eydVlRnimkHbnC/EJbmLKLNqPu/bXk4qL7SnUtlC/QtXwPkQjh1AaS5NbeHX05KkQN/z26rpVobn0yUYj0kZ0bFGsZOsz5ANQtGDg16q+HqyCpvTYFC9H29afdp+EzaD+cNbOl+8TumYSpCsHQ95nabqm9YlZFkcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eB2qQPRq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94137C4CEE3;
+	Thu,  3 Jul 2025 14:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554960;
-	bh=ne0c1yIdXBCpJOCc53TXV+N4AzzOYLda0q2ECZfSPKE=;
+	s=korg; t=1751554177;
+	bh=yYYW23QIb7dw0athFO7oLys/48OFb6yIjD0BFm2hxaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWxc9C/KzN5CSo+YOFiRweeMrvNpocsvROcOWx5Cx5rgEYXN3CUVzTAZsc4JkGrCz
-	 4fBeMv67FlXcQnuo8GoZH6Jn+zejDtpafRXouEk04rcDliebvztxPZ+O9n5mvsig/1
-	 /ZjZdAG2vkJX/HRmOnjPyxjsQOzHAvHLJG5aVvqc=
+	b=eB2qQPRqC7PmK+T4h+iCfqZA0XUgOsdLMqM+VwRt0xeyYyzvZjObOei+6jyYFtsoE
+	 tkbOAw+GTetJ+9d5vdNw3QN/DAjKfE0+1zFYkCUzMqCRjp7+2yopHH02/YyFEtJ/74
+	 TyXMom3jqG4wxXZ6x5SVutCf8qBjaPckm8ii4lug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Bowman <terry.bowman@amd.com>,
-	Li Ming <ming.li@zohomail.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Adin Scannell <amscanne@meta.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 133/263] cxl/ras: Fix CPER handler device confusion
+Subject: [PATCH 6.12 105/218] libbpf: Fix possible use-after-free for externs
 Date: Thu,  3 Jul 2025 16:40:53 +0200
-Message-ID: <20250703144009.697396544@linuxfoundation.org>
+Message-ID: <20250703144000.135389391@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,146 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Adin Scannell <amscanne@meta.com>
 
-[ Upstream commit 3c70ec71abdaf4e4fa48cd8fdfbbd864d78235a8 ]
+[ Upstream commit fa6f092cc0a02d0fcee37e9e8172eda372a03d33 ]
 
-By inspection, cxl_cper_handle_prot_err() is making a series of fragile
-assumptions that can lead to crashes:
+The `name` field in `obj->externs` points into the BTF data at initial
+open time. However, some functions may invalidate this after opening and
+before loading (e.g. `bpf_map__set_value_size`), which results in
+pointers into freed memory and undefined behavior.
 
-1/ It assumes that endpoints identified in the record are a CXL-type-3
-   device, nothing guarantees that.
+The simplest solution is to simply `strdup` these strings, similar to
+the `essent_name`, and free them at the same time.
 
-2/ It assumes that the device is bound to the cxl_pci driver, nothing
-   guarantees that.
+In order to test this path, the `global_map_resize` BPF selftest is
+modified slightly to ensure the presence of an extern, which causes this
+test to fail prior to the fix. Given there isn't an obvious API or error
+to test against, I opted to add this to the existing test as an aspect
+of the resizing feature rather than duplicate the test.
 
-3/ Minor, it holds the device lock over the switch-port tracing for no
-   reason as the trace is 100% generated from data in the record.
-
-Correct those by checking that the PCIe endpoint parents a cxl_memdev
-before assuming the format of the driver data, and move the lock to where
-it is required. Consequently this also makes the implementation ready for
-CXL accelerators that are not bound to cxl_pci.
-
-Fixes: 36f257e3b0ba ("acpi/ghes, cxl/pci: Process CXL CPER Protocol Errors")
-Cc: Terry Bowman <terry.bowman@amd.com>
-Cc: Li Ming <ming.li@zohomail.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Li Ming <ming.li@zohomail.com>
-Link: https://patch.msgid.link/20250612192043.2254617-1-dan.j.williams@intel.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: 9d0a23313b1a ("libbpf: Add capability for resizing datasec maps")
+Signed-off-by: Adin Scannell <amscanne@meta.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250625050215.2777374-1-amscanne@meta.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/ras.c | 47 ++++++++++++++++++++++++------------------
- 1 file changed, 27 insertions(+), 20 deletions(-)
+ tools/lib/bpf/libbpf.c                           | 10 +++++++---
+ .../selftests/bpf/progs/test_global_map_resize.c | 16 ++++++++++++++++
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cxl/core/ras.c b/drivers/cxl/core/ras.c
-index 485a831695c70..2731ba3a07993 100644
---- a/drivers/cxl/core/ras.c
-+++ b/drivers/cxl/core/ras.c
-@@ -31,40 +31,38 @@ static void cxl_cper_trace_uncorr_port_prot_err(struct pci_dev *pdev,
- 					       ras_cap.header_log);
- }
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 1290314da6761..36e341b4b77bf 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -596,7 +596,7 @@ struct extern_desc {
+ 	int sym_idx;
+ 	int btf_id;
+ 	int sec_btf_id;
+-	const char *name;
++	char *name;
+ 	char *essent_name;
+ 	bool is_set;
+ 	bool is_weak;
+@@ -4223,7 +4223,9 @@ static int bpf_object__collect_externs(struct bpf_object *obj)
+ 			return ext->btf_id;
+ 		}
+ 		t = btf__type_by_id(obj->btf, ext->btf_id);
+-		ext->name = btf__name_by_offset(obj->btf, t->name_off);
++		ext->name = strdup(btf__name_by_offset(obj->btf, t->name_off));
++		if (!ext->name)
++			return -ENOMEM;
+ 		ext->sym_idx = i;
+ 		ext->is_weak = ELF64_ST_BIND(sym->st_info) == STB_WEAK;
  
--static void cxl_cper_trace_corr_prot_err(struct pci_dev *pdev,
--				  struct cxl_ras_capability_regs ras_cap)
-+static void cxl_cper_trace_corr_prot_err(struct cxl_memdev *cxlmd,
-+					 struct cxl_ras_capability_regs ras_cap)
- {
- 	u32 status = ras_cap.cor_status & ~ras_cap.cor_mask;
--	struct cxl_dev_state *cxlds;
+@@ -9062,8 +9064,10 @@ void bpf_object__close(struct bpf_object *obj)
+ 	zfree(&obj->btf_custom_path);
+ 	zfree(&obj->kconfig);
  
--	cxlds = pci_get_drvdata(pdev);
--	if (!cxlds)
--		return;
--
--	trace_cxl_aer_correctable_error(cxlds->cxlmd, status);
-+	trace_cxl_aer_correctable_error(cxlmd, status);
- }
+-	for (i = 0; i < obj->nr_extern; i++)
++	for (i = 0; i < obj->nr_extern; i++) {
++		zfree(&obj->externs[i].name);
+ 		zfree(&obj->externs[i].essent_name);
++	}
  
--static void cxl_cper_trace_uncorr_prot_err(struct pci_dev *pdev,
--				    struct cxl_ras_capability_regs ras_cap)
-+static void
-+cxl_cper_trace_uncorr_prot_err(struct cxl_memdev *cxlmd,
-+			       struct cxl_ras_capability_regs ras_cap)
- {
- 	u32 status = ras_cap.uncor_status & ~ras_cap.uncor_mask;
--	struct cxl_dev_state *cxlds;
- 	u32 fe;
+ 	zfree(&obj->externs);
+ 	obj->nr_extern = 0;
+diff --git a/tools/testing/selftests/bpf/progs/test_global_map_resize.c b/tools/testing/selftests/bpf/progs/test_global_map_resize.c
+index a3f220ba7025b..ee65bad0436d0 100644
+--- a/tools/testing/selftests/bpf/progs/test_global_map_resize.c
++++ b/tools/testing/selftests/bpf/progs/test_global_map_resize.c
+@@ -32,6 +32,16 @@ int my_int_last SEC(".data.array_not_last");
  
--	cxlds = pci_get_drvdata(pdev);
--	if (!cxlds)
--		return;
--
- 	if (hweight32(status) > 1)
- 		fe = BIT(FIELD_GET(CXL_RAS_CAP_CONTROL_FE_MASK,
- 				   ras_cap.cap_control));
- 	else
- 		fe = status;
+ int percpu_arr[1] SEC(".data.percpu_arr");
  
--	trace_cxl_aer_uncorrectable_error(cxlds->cxlmd, status, fe,
-+	trace_cxl_aer_uncorrectable_error(cxlmd, status, fe,
- 					  ras_cap.header_log);
- }
- 
-+static int match_memdev_by_parent(struct device *dev, const void *uport)
-+{
-+	if (is_cxl_memdev(dev) && dev->parent == uport)
-+		return 1;
-+	return 0;
-+}
++/* at least one extern is included, to ensure that a specific
++ * regression is tested whereby resizing resulted in a free-after-use
++ * bug after type information is invalidated by the resize operation.
++ *
++ * There isn't a particularly good API to test for this specific condition,
++ * but by having externs for the resizing tests it will cover this path.
++ */
++extern int LINUX_KERNEL_VERSION __kconfig;
++long version_sink;
 +
- static void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
+ SEC("tp/syscalls/sys_enter_getpid")
+ int bss_array_sum(void *ctx)
  {
- 	unsigned int devfn = PCI_DEVFN(data->prot_err.agent_addr.device,
-@@ -73,13 +71,12 @@ static void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
- 		pci_get_domain_bus_and_slot(data->prot_err.agent_addr.segment,
- 					    data->prot_err.agent_addr.bus,
- 					    devfn);
-+	struct cxl_memdev *cxlmd;
- 	int port_type;
+@@ -44,6 +54,9 @@ int bss_array_sum(void *ctx)
+ 	for (size_t i = 0; i < bss_array_len; ++i)
+ 		sum += array[i];
  
- 	if (!pdev)
- 		return;
- 
--	guard(device)(&pdev->dev);
--
- 	port_type = pci_pcie_type(pdev);
- 	if (port_type == PCI_EXP_TYPE_ROOT_PORT ||
- 	    port_type == PCI_EXP_TYPE_DOWNSTREAM ||
-@@ -92,10 +89,20 @@ static void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
- 		return;
- 	}
- 
-+	guard(device)(&pdev->dev);
-+	if (!pdev->dev.driver)
-+		return;
++	/* see above; ensure this is not optimized out */
++	version_sink = LINUX_KERNEL_VERSION;
 +
-+	struct device *mem_dev __free(put_device) = bus_find_device(
-+		&cxl_bus_type, NULL, pdev, match_memdev_by_parent);
-+	if (!mem_dev)
-+		return;
-+
-+	cxlmd = to_cxl_memdev(mem_dev);
- 	if (data->severity == AER_CORRECTABLE)
--		cxl_cper_trace_corr_prot_err(pdev, data->ras_cap);
-+		cxl_cper_trace_corr_prot_err(cxlmd, data->ras_cap);
- 	else
--		cxl_cper_trace_uncorr_prot_err(pdev, data->ras_cap);
-+		cxl_cper_trace_uncorr_prot_err(cxlmd, data->ras_cap);
+ 	return 0;
  }
  
- static void cxl_cper_prot_err_work_fn(struct work_struct *work)
+@@ -59,6 +72,9 @@ int data_array_sum(void *ctx)
+ 	for (size_t i = 0; i < data_array_len; ++i)
+ 		sum += my_array[i];
+ 
++	/* see above; ensure this is not optimized out */
++	version_sink = LINUX_KERNEL_VERSION;
++
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
