@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-159879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12178AF7B44
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:23:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC07AF7954
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24DBB6E4156
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68E471896D34
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624182F3C30;
-	Thu,  3 Jul 2025 15:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456792ED85E;
+	Thu,  3 Jul 2025 14:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5JXTwyv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtvMa83T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2085A29827E;
-	Thu,  3 Jul 2025 15:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A432EE98F;
+	Thu,  3 Jul 2025 14:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555646; cv=none; b=JKJZr5w4rR+BQGTrwWhfR+rmM2zgF3UHsnk+Mpkj0qVV0T6FNVsZ3TxTzmDUtYQeTfW9j3AZOg8y/xgIqvdx3PD7J1xdD77dTdP3RR4QF/bfQDmVolptPHf68vqnYENcbpRmNw+rmhNTUx1TN0+0VBVMZ02RvE1/qiqJ8eeI0V4=
+	t=1751554542; cv=none; b=etPB5a6StSN1+MlBF5zBsGdOyfejCZuWzzbpjwN9Wg7RpQGYvmnDvgreEeMP0nKCWZKmzfvN4JapvQQ/po496liQJhxSgY80ASkmoNJ7KtSw+lRTUISIsABG2ngm5L2K6g/5nrF3MwzIevP/mdsetXw7jds0QGLVrxypVYQXtD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555646; c=relaxed/simple;
-	bh=yHUBFFIXyrzNd+DbCkKcjffbBNqEgGl6LUcAAkPl6rQ=;
+	s=arc-20240116; t=1751554542; c=relaxed/simple;
+	bh=Hqxiiod4sMo3NFBJdmIU7rAGUAKNvCxh9jP+x1ekyxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XS3nWAcF2kiEtsMLJWRs8U4eGoz+kqVOGewUtsVYgWZuqlhNWD3a9Rsbj0POgvgliDXLvAXU5skDcg3ZyxoBQCcKrmTSHqzR0QwlvCi+7ICv9JZZ8J1YEx5SH2I79KTWrvsdtj5DoDQKRyTNhUSjr3wzxPqy5fJD7dJwfC9zdz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5JXTwyv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3FDC4CEE3;
-	Thu,  3 Jul 2025 15:14:05 +0000 (UTC)
+	 MIME-Version; b=AByfCrFvXMgT5dCzSOT2y0lbsyVb1OoCFInhTUoqWQvecnSTxedFwzHH3JGr6xVTeU/gt1ETdamPHWLlVAk8g/D9arRigOYlVL7K30acv3tA8rl3ifgxv3VHS9tME0d9uDxbsJoe2475Ji83206lRU4lozdhirTy9uy8FFGGFQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtvMa83T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DDCC4CEE3;
+	Thu,  3 Jul 2025 14:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555645;
-	bh=yHUBFFIXyrzNd+DbCkKcjffbBNqEgGl6LUcAAkPl6rQ=;
+	s=korg; t=1751554541;
+	bh=Hqxiiod4sMo3NFBJdmIU7rAGUAKNvCxh9jP+x1ekyxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q5JXTwyvoQuM0goohCBZpmHxR3v4J3C2vBaechOpDUJdiG5l2GMUnjrNhkAQDc2Ai
-	 jFf9v8cgzA4XlSUQjpl0MgHQKQIs7HCSxxqsaDtMmBUFf3uLbwUtEN8rFVOFyQxJUM
-	 uCEGXEqcoIfknOT+0L4EYDbL2wfqZ17Gc6DRGraE=
+	b=BtvMa83TXdMJxqgn0ZwglWRvT1Bez18NdtyN8qZCsOcxnfSbROb7uAOmpBHOBLf83
+	 E2q4xNMsvVawAcuOPLIymSyMDHEPbNSDHWZnZTukPavaCiYDc94Kk9+/Tinl88RJCQ
+	 CwE2GZMmDfhe7y491phPNuUV6VE89AfRVowe4K3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Gengming Liu <l.dmxcsnsbh@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/139] atm: clip: prevent NULL deref in clip_push()
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+Subject: [PATCH 6.12 193/218] net: phy: realtek: add RTL8125D-internal PHY
 Date: Thu,  3 Jul 2025 16:42:21 +0200
-Message-ID: <20250703143944.214139431@linuxfoundation.org>
+Message-ID: <20250703144003.922213606@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,65 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit b993ea46b3b601915ceaaf3c802adf11e7d6bac6 ]
+commit 8989bad541133c43550bff2b80edbe37b8fb9659 upstream.
 
-Blamed commit missed that vcc_destroy_socket() calls
-clip_push() with a NULL skb.
+The first boards show up with Realtek's RTL8125D. This MAC/PHY chip
+comes with an integrated 2.5Gbps PHY with ID 0x001cc841. It's not
+clear yet whether there's an external version of this PHY and how
+Realtek calls it, therefore use the numeric id for now.
 
-If clip_devs is NULL, clip_push() then crashes when reading
-skb->truesize.
-
-Fixes: 93a2014afbac ("atm: fix a UAF in lec_arp_clear_vccs()")
-Reported-by: syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68556f59.a00a0220.137b3.004e.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Gengming Liu <l.dmxcsnsbh@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/netdev/2ada65e1-5dfa-456c-9334-2bc51272e9da@gmail.com/T/
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Message-ID: <7d2924de-053b-44d2-a479-870dc3878170@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/atm/clip.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/phy/realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/atm/clip.c b/net/atm/clip.c
-index 294cb9efe3d38..511467bb7fe40 100644
---- a/net/atm/clip.c
-+++ b/net/atm/clip.c
-@@ -193,12 +193,6 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
- 
- 	pr_debug("\n");
- 
--	if (!clip_devs) {
--		atm_return(vcc, skb->truesize);
--		kfree_skb(skb);
--		return;
--	}
--
- 	if (!skb) {
- 		pr_debug("removing VCC %p\n", clip_vcc);
- 		if (clip_vcc->entry)
-@@ -208,6 +202,11 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
- 		return;
- 	}
- 	atm_return(vcc, skb->truesize);
-+	if (!clip_devs) {
-+		kfree_skb(skb);
-+		return;
-+	}
-+
- 	skb->dev = clip_vcc->entry ? clip_vcc->entry->neigh->dev : clip_devs;
- 	/* clip_vcc->entry == NULL if we don't have an IP address yet */
- 	if (!skb->dev) {
--- 
-2.39.5
-
+--- a/drivers/net/phy/realtek.c
++++ b/drivers/net/phy/realtek.c
+@@ -1114,6 +1114,7 @@ static int rtl_internal_nbaset_match_phy
+ 	case RTL_GENERIC_PHYID:
+ 	case RTL_8221B:
+ 	case RTL_8251B:
++	case 0x001cc841:
+ 		break;
+ 	default:
+ 		return false;
 
 
 
