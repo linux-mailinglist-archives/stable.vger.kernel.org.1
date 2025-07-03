@@ -1,97 +1,108 @@
-Return-Path: <stable+bounces-159285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F46AF6BD0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 09:43:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D46AF6D6B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 10:48:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EA721C474A4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 07:43:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D36C17B600B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 08:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFD629A9F3;
-	Thu,  3 Jul 2025 07:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1F32D0C94;
+	Thu,  3 Jul 2025 08:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZQ449BD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qGhAV1XX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0849B224AF3;
-	Thu,  3 Jul 2025 07:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA46B1CD1F;
+	Thu,  3 Jul 2025 08:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751528564; cv=none; b=tT1QZawoZu8peD4VAqE5qIEyYeX8fj0lBVP3yktHEqSlEqDjLzbOR/ufeMVLqYGbw8t1nj5vO1NMIx2p/qwbJTbnsJc4QQaffAKnZh9nAcmC73mqKWT+Za4a+Q9LXuEiQ5DC01DSik0eP7zsC3BZ1x+CDvXfbTNH/itaBcdTh48=
+	t=1751532484; cv=none; b=m3E0B84dZibg4JAqbTuDlMOi8V3X02NruWoHVCDSFVOY/+CUWq54ogDIlGUevimGc/0zJDLcbz95lnxaM4b72tzKXMBdMU3FgTenkU9f/WMNcyVYOxn9zH976JXihPm7byoXhCYo+XO8ZvniUUpmZri5fj6eObOwafwBICFdRHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751528564; c=relaxed/simple;
-	bh=cF8Ua7YJaZbM5bwnuzDzNl9ZXP/Z8Hj6fkb5ybjwmtU=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=i4RITrKZwvbZpq/rSvusbG01f3hqMwygUiq7elhNlcR1J1Y6yozps4Rp6kOatpkWK6K2WsJl88yzH88h7fP4ofiADcwPOVey85WWxoACh4Zu82YzPggUsIv6x/CCswA7jOo9d7Q7kfiNpGYTmqLQwiEuOYzbrm0l+Fq1tiV2luQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZQ449BD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30284C4CEF1;
-	Thu,  3 Jul 2025 07:42:43 +0000 (UTC)
+	s=arc-20240116; t=1751532484; c=relaxed/simple;
+	bh=lTjN/T78K45dyw3gEcHGK9KZwnJk9ZsO4WHHVT6J4KU=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kUiYtJgTD740bnH0DzxLiOE24M0eHlrYzLOlZiQVRR/4q3Gp3oDyJdJ9VmOTCyG9HqI7z3NCvQZgs6GtomQXVmhRSK7mR74bZSD/scEaOv/AYeUppHSxWJS2gzIDlMkwGwZOJ08iu7zWfBWMmUQdN6onCxMr+j/OtlJHn+AoovE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qGhAV1XX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406A9C4CEE3;
+	Thu,  3 Jul 2025 08:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751528563;
-	bh=cF8Ua7YJaZbM5bwnuzDzNl9ZXP/Z8Hj6fkb5ybjwmtU=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=aZQ449BDgfQl4baEb6f0MYVTl+I4xys59DPYWmOAayE0YX+4pdNJQWRFrKFySCS7+
-	 0mYN3/vr94A4U6/mpZukbFHWglSw/pdKZEhzoFXCZZvrClYjzYniuKSfbe925EkN38
-	 juanfQg7ybvyphBqatvro7pJAEdSeGStMgd6gF3qSQv6xZDy6ZWpivXBdK2bEDUwC4
-	 KDQPOwl2/amp0pDnLMCeP5pd7AM90NeAA+/V51Lj6Q8M+FKg03PGy+Sb5T/NW+lgd1
-	 cGfwdmhqbPDMK+RW6JziKFZTx9oUox9mM/zHOySjTe6dkKYpB+6a4z/GGew1TpdO51
-	 BZXIE0CfOnNFg==
-Date: Thu, 3 Jul 2025 09:42:40 +0200 (CEST)
-From: Jiri Kosina <jikos@kernel.org>
-To: Aditya Garg <gargaditya08@live.com>
-cc: Benjamin Tissoires <bentiss@kernel.org>, 
-    "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>, 
-    "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-    "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-    =?ISO-8859-15?Q?Jos=E9_Exp=F3sito?= <jose.exposito89@gmail.com>
-Subject: Re: [PATCH v2 0/4] HID: avoid setting up battery timer when not
- needed in hid-apple and magicmouse
-In-Reply-To: <20250630123649.80395-1-gargaditya08@live.com>
-Message-ID: <q323o796-541q-5q8n-6250-7298q0r46pr6@xreary.bet>
-References: <20250630123649.80395-1-gargaditya08@live.com>
+	s=k20201202; t=1751532484;
+	bh=lTjN/T78K45dyw3gEcHGK9KZwnJk9ZsO4WHHVT6J4KU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qGhAV1XXpZWx5XYk4pIu2Kq2t5OtytNb+38/ac4oLfpoA7R2q4kOWN/XHnndNL2k+
+	 5wAPwpNs8huzFisCy8j+CXyn+NdsNlRJcnWWhylGKB9Nv2nVqyJHzjHbrdmi6qC39M
+	 xZLGzyq305u2yq8Sjjvfc7GxpRIuA6/emIhvgQxU5IgOKYSRzeEJGql1OzcbYydzld
+	 DGiIe6vroZFqI+M271Xk+ZFlVkf9ZSnRS/uS2qicrXcT+7yNbVHFFphXV+XOA9pnnY
+	 VjbgemGS0PQxlf/M0s+omaKEKLCiQ2nb3xGR1Y412D8Y/6d/mIKbKBQkPbKXOsLQTP
+	 8ezaf8wwO+9hw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1uXFbt-00CELB-Ut;
+	Thu, 03 Jul 2025 09:48:02 +0100
+Date: Thu, 03 Jul 2025 09:48:01 +0100
+Message-ID: <867c0pbqym.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org,
+	sashal@kernel.org,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: Patch "KVM: arm64: Set HCR_EL2.TID1 unconditionally" has been added to the 6.12-stable tree
+In-Reply-To: <20250703015257.2692314-1-sashal@kernel.org>
+References: <20250703015257.2692314-1-sashal@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: stable@vger.kernel.org, stable-commits@vger.kernel.org, sashal@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, 30 Jun 2025, Aditya Garg wrote:
-
-> Both hid-apple and hid-magicmouse require set up a battery timer for
-> certain devices in order to fetch battery status. However, the timer
-> is being set unconditionally for all devices. This patch series
-> introduces checks to ensure that the battery timer is only set up for
-> devices that actually require it.
+On Thu, 03 Jul 2025 02:52:57 +0100,
+Sasha Levin <sashal@kernel.org> wrote:
 > 
-> v2: - Address the cases of out_err and err_stop_hw left in v1
->     - Create a function to check if the device is a USB Magic Mouse 2 or Magic Trackpad 2
->       to reduce code duplication.
->     - Add 2 new patches that convert the battery timeout to use
->       secs_to_jiffies() instead of msecs_to_jiffies().
+> This is a note to let you know that I've just added the patch titled
 > 
-> Aditya Garg (4):
->   HID: apple: avoid setting up battery timer for devices without battery
->   HID: magicmouse: avoid setting up battery timer when not needed
->   HID: apple: use secs_to_jiffies() for battery timeout
->   HID: magicmouse: use secs_to_jiffies() for battery timeout
+>     KVM: arm64: Set HCR_EL2.TID1 unconditionally
 > 
->  drivers/hid/hid-apple.c      | 21 +++++++-----
->  drivers/hid/hid-magicmouse.c | 66 ++++++++++++++++++++++--------------
->  2 files changed, 54 insertions(+), 33 deletions(-)
+> to the 6.12-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      kvm-arm64-set-hcr_el2.tid1-unconditionally.patch
+> and it can be found in the queue-6.12 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
+> 
+> 
+> commit 0510d3297a23920caf74a63e3f38c0ede70d6555
+> Author: Sasha Levin <sashal@kernel.org>
 
-Now queued in hid.git#for-6.17/battery-timer-fixes.
+Really?
 
-Thanks,
+	M.
 
 -- 
-Jiri Kosina
-SUSE Labs
-
+Without deviation from the norm, progress is not possible.
 
