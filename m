@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-159334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D344AF77F1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:45:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF356AF7967
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:01:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E40C4E60A2
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:44:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8130167F33
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218662E7F1A;
-	Thu,  3 Jul 2025 14:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095F52EAB95;
+	Thu,  3 Jul 2025 14:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5Rq7D1j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PsFTj5z5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16A319F43A;
-	Thu,  3 Jul 2025 14:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2C12EA49E;
+	Thu,  3 Jul 2025 14:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751553906; cv=none; b=Gv/Wy5F+2Hd0TOL2NhtipXMely2AiW049GuX4/h6j4OOdnPHOjI+184DiBu6/dOKA0hWKy8CLaslyXLFps+ouiKunkltdEjSh4bLwvy6yVWaHJKkbdtlajEreCOfMgQxYyWtyTv0eucwlN3Vd7pdzcOcpG0mAd5ieC6Or/la2oY=
+	t=1751554730; cv=none; b=fivZMNELym/rcJ/cBER2Qr96sEJdZXnHV4AZOqnubzml+uhdW+08pNI8cGWC8T5UYRJYB1lHPHNCjNPpHHumw0cFVkPqQB7NZi4S+NtM+XEiq5v8qvYAFyJ3lDQ97BVmWSZiP4teS2V1v+KDxfViX4AtfpWgW0RCUS/lqxc7eBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751553906; c=relaxed/simple;
-	bh=lziwcvgu0Ejj0aqinEm7VDwWLSbhtgb8zQvD/WUyhOY=;
+	s=arc-20240116; t=1751554730; c=relaxed/simple;
+	bh=CxnY0dmZaIwRaRQZ/EYl3OFkasYW1GNG60sBBgvVX10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bwKsWijwDGo7adIwmgOB/1WJpJImfTB6hRyyAQLHkzQLMovc0mlGFS4UAukCB8d++8lnMNXRFIfsczeTngLyzCaZQIIwCNyoELHNjY2NMksr/LAISV5hMy4gERp8OSnVfe6SqBbx1cmbDu/B562FLQxSRwRU4xLuKJymqm2svU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5Rq7D1j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1ECC4CEE3;
-	Thu,  3 Jul 2025 14:45:06 +0000 (UTC)
+	 MIME-Version; b=ShAXVGDVa+HofmwQolB5RsdWX7iyHMtU+CXVZzKHQDgD8pp1HIAKLwhejm/MYaKyNG1EmByjdO+P3c1zqCUkmSEVh8rZw5WkjM/x8MDNSHdwg7NHbPznmtcW5WeMJmqUyu/+SeSwKCvyVJbw0U1yzCM02pfPbXbGyrOBmTWw6hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PsFTj5z5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB09C4CEE3;
+	Thu,  3 Jul 2025 14:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751553906;
-	bh=lziwcvgu0Ejj0aqinEm7VDwWLSbhtgb8zQvD/WUyhOY=;
+	s=korg; t=1751554730;
+	bh=CxnY0dmZaIwRaRQZ/EYl3OFkasYW1GNG60sBBgvVX10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K5Rq7D1jQYGZAEH+4p+eKFou4UejAKUhycn1yWFtWtur4dw4jv+Xt0wEw44OX11mn
-	 MRmZxSoFA4jo2vrtvvbZudMpyz/uA5oPNXNP52CfXRN3agUYIIlI/pNs1rtI4MTS63
-	 d6f2EqNOOzsu6Ro7WzliqQ1Ye2kkyXufGyesMM0c=
+	b=PsFTj5z5riPvU6A6za2vGbqmTXZNpQT8+Z76D4EJUNN9krYrH6KpXEabGoCV/gmom
+	 2Up3a6ASiTUv8op0oIbWBnAxPVbeavDb4Yg89T04G2eBMBHfBcaPFMSv9KGmljdgMt
+	 JBG4PT9D0r921kVprhLv99Z+KS9nokMJAgAtnKAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Hector Martin <marcan@marcan.st>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Marc Zyngier <maz@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Janne Grunau <j@jannau.net>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/218] cifs: Fix cifs_query_path_info() for Windows NT servers
+Subject: [PATCH 6.15 030/263] PCI: apple: Fix missing OF node reference in apple_pcie_setup_port
 Date: Thu,  3 Jul 2025 16:39:10 +0200
-Message-ID: <20250703143956.058955113@linuxfoundation.org>
+Message-ID: <20250703144005.506411511@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +64,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit a3e771afbb3bce91c8296828304903e7348003fe ]
+[ Upstream commit 7fa9fbf39116b061f8a41cd84f1884c545f322c4 ]
 
-For TRANS2 QUERY_PATH_INFO request when the path does not exist, the
-Windows NT SMB server returns error response STATUS_OBJECT_NAME_NOT_FOUND
-or ERRDOS/ERRbadfile without the SMBFLG_RESPONSE flag set. Similarly it
-returns STATUS_DELETE_PENDING when the file is being deleted. And looks
-like that any error response from TRANS2 QUERY_PATH_INFO does not have
-SMBFLG_RESPONSE flag set.
+In the success path, we hang onto a reference to the node, so make sure
+to grab one. The caller iterator puts our borrowed reference when we
+return.
 
-So relax check in check_smb_hdr() for detecting if the packet is response
-for this special case.
-
-This change fixes stat() operation against Windows NT SMB servers and also
-all operations which depends on -ENOENT result from stat like creat() or
-mkdir().
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Tested-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Acked-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Link: https://patch.msgid.link/20250401091713.2765724-9-maz@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/misc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pci/controller/pcie-apple.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
-index 4373dd64b66d4..5122f3895dfc2 100644
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -323,6 +323,14 @@ check_smb_hdr(struct smb_hdr *smb)
- 	if (smb->Command == SMB_COM_LOCKING_ANDX)
- 		return 0;
+diff --git a/drivers/pci/controller/pcie-apple.c b/drivers/pci/controller/pcie-apple.c
+index 32f57b8a6ecbd..8f7fc9161760c 100644
+--- a/drivers/pci/controller/pcie-apple.c
++++ b/drivers/pci/controller/pcie-apple.c
+@@ -584,6 +584,9 @@ static int apple_pcie_setup_port(struct apple_pcie *pcie,
+ 	list_add_tail(&port->entry, &pcie->ports);
+ 	init_completion(&pcie->event);
  
-+	/*
-+	 * Windows NT server returns error resposne (e.g. STATUS_DELETE_PENDING
-+	 * or STATUS_OBJECT_NAME_NOT_FOUND or ERRDOS/ERRbadfile or any other)
-+	 * for some TRANS2 requests without the RESPONSE flag set in header.
-+	 */
-+	if (smb->Command == SMB_COM_TRANSACTION2 && smb->Status.CifsError != 0)
-+		return 0;
++	/* In the success path, we keep a reference to np around */
++	of_node_get(np);
 +
- 	cifs_dbg(VFS, "Server sent request, not response. mid=%u\n",
- 		 get_mid(smb));
- 	return 1;
+ 	ret = apple_pcie_port_register_irqs(port);
+ 	WARN_ON(ret);
+ 
 -- 
 2.39.5
 
