@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-159910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ECFCAF7B65
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:24:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8577EAF7A8D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB6241896D43
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEF611CA1B0E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28372EE99E;
-	Thu,  3 Jul 2025 15:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277212ED168;
+	Thu,  3 Jul 2025 15:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3j7P93V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exuXLv8+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998E1101DE;
-	Thu,  3 Jul 2025 15:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2BA22069F;
+	Thu,  3 Jul 2025 15:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555745; cv=none; b=Ww77XtuIok+JVDd/Pu1YRFK8tXD1PqCwXf0yfaAMtO9VJwsxbgwGBQgNlKNxb07lKCVwoE89z5EDH3H4fCHr/Yf7dHeldQVI25xKCaiN4KqxkhKjKnXUL6JWhTpv2heiyzQ4J8Qvby13vSJB3tM3cK4TyLzgsAbbiv8+yvAaZUo=
+	t=1751555360; cv=none; b=V3HE0jSjpWqEiOO6V0UBfKRxtyn7X+KmV6xE2GDzxCganJcWIKMIeAGGdM8tFL3q9b2rEmxu/vpQ5uTCLi/uASMuvglPZ2Eukpt+wzcA1ri6215iTAZYswywJE3sKpQxoxsMGIYMOv3D0l10JJJqtqxS74xOXYpOVen+AxZ4pLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555745; c=relaxed/simple;
-	bh=fEq8uHDq933BvqMqmWkcXrC1untgundPo8vh4CfgZeM=;
+	s=arc-20240116; t=1751555360; c=relaxed/simple;
+	bh=0fqBu1PBjNDxLo/WKH/kPy5FBsz19THuvrYyd5sSCYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K8TNYscE9DGrg7AJtgjA2PVYqvzxoHs8y9iucitJ4HlPh/TrfO4T4b2CuN64QtZ7wLQ4tM27E+GXl0nLIIaoMaSUXKU+Y/N5ExZgT1v+Q/9mx+SZ4gNNaXeSM2A9z7SiIs8Nr3k/9SwJ54/rX7jGQeWXTqEO61EC+A0a9yCUG4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3j7P93V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DEDC4CEE3;
-	Thu,  3 Jul 2025 15:15:44 +0000 (UTC)
+	 MIME-Version; b=JF9s8xwBpyX/NxLZi/aJY+5p+bhb2J0txMSBfotMaqdPrHq26XccZ+SHiIccOuDkBZNLiZRibtWffzWjfIObjo7aKUzCPnCHurrSELSt+DMBn6jj2kfkuA3fdWKSDT7MKffrZg/lI6PuKQ61FZYdvx+cSxTCzFtknHULbWF7BRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exuXLv8+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86FEC4CEE3;
+	Thu,  3 Jul 2025 15:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555745;
-	bh=fEq8uHDq933BvqMqmWkcXrC1untgundPo8vh4CfgZeM=;
+	s=korg; t=1751555360;
+	bh=0fqBu1PBjNDxLo/WKH/kPy5FBsz19THuvrYyd5sSCYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q3j7P93VLrKwgDINelNTcmn65gCARN+41mgkNgVmzBh+A8DZZpK87/o3u+75jGtxe
-	 RaxDXK3jlkefrNXPEcOQkbX/zf7J+yiNAesvquyECN9XRZt2BV1/Bf54B0ULKyeHyX
-	 g5Xe3Hzt1R18zSwBfNmJrvBoVar/r0xGUdjYtWR0=
+	b=exuXLv8+iHDeiCWAdo1N7QZrywn5UCcVODt5g8o6le9pqLZo0YnGF52gZnach8E8s
+	 URckOO0djqJfq0unTDpsoS+i7eQI5CMWSIJwlE99mB8XyY/CDmibCFOrffeLCtCj/d
+	 yXcaRy777ytL5P3Ykck9Y3e6AH8N/P1Ga1KHgVd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.6 109/139] drm/ast: Fix comment on modeset lock
-Date: Thu,  3 Jul 2025 16:42:52 +0200
-Message-ID: <20250703143945.438640264@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.15 253/263] drm/amd/display: Export full brightness range to userspace
+Date: Thu,  3 Jul 2025 16:42:53 +0200
+Message-ID: <20250703144014.556357863@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 7cce65f3789e04c0f7668a66563e680d81d54493 upstream.
+[WHY]
+Userspace currently is offered a range from 0-0xFF but the PWM is
+programmed from 0-0xFFFF.  This can be limiting to some software
+that wants to apply greater granularity.
 
-The ast driver protects the commit tail against concurrent reads
-of the display modes by acquiring a lock. The comment is misleading
-as the lock is not released in atomic_flush, but at the end of the
-commit-tail helper. Rewrite the comment.
+[HOW]
+Convert internally to firmware values only when mapping custom
+brightness curves because these are in 0-0xFF range. Advertise full
+PWM range to userspace.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 1fe182154984 ("drm/ast: Acquire I/O-register lock in atomic_commit_tail function")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.2+
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Link: https://lore.kernel.org/r/20250324094520.192974-2-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8dbd72cb790058ce52279af38a43c2b302fdd3e5)
+Cc: stable@vger.kernel.org
 ---
- drivers/gpu/drm/ast/ast_mode.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 41 ++++++++++++-------
+ 1 file changed, 27 insertions(+), 14 deletions(-)
 
---- a/drivers/gpu/drm/ast/ast_mode.c
-+++ b/drivers/gpu/drm/ast/ast_mode.c
-@@ -1868,9 +1868,9 @@ static void ast_mode_config_helper_atomi
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index a9a719f051f90..c5c2f82448f21 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4655,9 +4655,23 @@ static int get_brightness_range(const struct amdgpu_dm_backlight_caps *caps,
+ 	return 1;
+ }
  
- 	/*
- 	 * Concurrent operations could possibly trigger a call to
--	 * drm_connector_helper_funcs.get_modes by trying to read the
--	 * display modes. Protect access to I/O registers by acquiring
--	 * the I/O-register lock. Released in atomic_flush().
-+	 * drm_connector_helper_funcs.get_modes by reading the display
-+	 * modes. Protect access to registers by acquiring the modeset
-+	 * lock.
- 	 */
- 	mutex_lock(&ast->ioregs_lock);
- 	drm_atomic_helper_commit_tail_rpm(state);
++/* Rescale from [min..max] to [0..AMDGPU_MAX_BL_LEVEL] */
++static inline u32 scale_input_to_fw(int min, int max, u64 input)
++{
++	return DIV_ROUND_CLOSEST_ULL(input * AMDGPU_MAX_BL_LEVEL, max - min);
++}
++
++/* Rescale from [0..AMDGPU_MAX_BL_LEVEL] to [min..max] */
++static inline u32 scale_fw_to_input(int min, int max, u64 input)
++{
++	return min + DIV_ROUND_CLOSEST_ULL(input * (max - min), AMDGPU_MAX_BL_LEVEL);
++}
++
+ static void convert_custom_brightness(const struct amdgpu_dm_backlight_caps *caps,
+-				      uint32_t *brightness)
++				      unsigned int min, unsigned int max,
++				      uint32_t *user_brightness)
+ {
++	u32 brightness = scale_input_to_fw(min, max, *user_brightness);
+ 	u8 prev_signal = 0, prev_lum = 0;
+ 	int i = 0;
+ 
+@@ -4668,7 +4682,7 @@ static void convert_custom_brightness(const struct amdgpu_dm_backlight_caps *cap
+ 		return;
+ 
+ 	/* choose start to run less interpolation steps */
+-	if (caps->luminance_data[caps->data_points/2].input_signal > *brightness)
++	if (caps->luminance_data[caps->data_points/2].input_signal > brightness)
+ 		i = caps->data_points/2;
+ 	do {
+ 		u8 signal = caps->luminance_data[i].input_signal;
+@@ -4679,17 +4693,18 @@ static void convert_custom_brightness(const struct amdgpu_dm_backlight_caps *cap
+ 		 * brightness < signal: interpolate between previous and current luminance numerator
+ 		 * brightness > signal: find next data point
+ 		 */
+-		if (*brightness > signal) {
++		if (brightness > signal) {
+ 			prev_signal = signal;
+ 			prev_lum = lum;
+ 			i++;
+ 			continue;
+ 		}
+-		if (*brightness < signal)
++		if (brightness < signal)
+ 			lum = prev_lum + DIV_ROUND_CLOSEST((lum - prev_lum) *
+-							   (*brightness - prev_signal),
++							   (brightness - prev_signal),
+ 							   signal - prev_signal);
+-		*brightness = DIV_ROUND_CLOSEST(lum * *brightness, 101);
++		*user_brightness = scale_fw_to_input(min, max,
++						     DIV_ROUND_CLOSEST(lum * brightness, 101));
+ 		return;
+ 	} while (i < caps->data_points);
+ }
+@@ -4702,11 +4717,10 @@ static u32 convert_brightness_from_user(const struct amdgpu_dm_backlight_caps *c
+ 	if (!get_brightness_range(caps, &min, &max))
+ 		return brightness;
+ 
+-	convert_custom_brightness(caps, &brightness);
++	convert_custom_brightness(caps, min, max, &brightness);
+ 
+-	// Rescale 0..255 to min..max
+-	return min + DIV_ROUND_CLOSEST((max - min) * brightness,
+-				       AMDGPU_MAX_BL_LEVEL);
++	// Rescale 0..max to min..max
++	return min + DIV_ROUND_CLOSEST_ULL((u64)(max - min) * brightness, max);
+ }
+ 
+ static u32 convert_brightness_to_user(const struct amdgpu_dm_backlight_caps *caps,
+@@ -4719,8 +4733,8 @@ static u32 convert_brightness_to_user(const struct amdgpu_dm_backlight_caps *cap
+ 
+ 	if (brightness < min)
+ 		return 0;
+-	// Rescale min..max to 0..255
+-	return DIV_ROUND_CLOSEST(AMDGPU_MAX_BL_LEVEL * (brightness - min),
++	// Rescale min..max to 0..max
++	return DIV_ROUND_CLOSEST_ULL((u64)max * (brightness - min),
+ 				 max - min);
+ }
+ 
+@@ -4870,11 +4884,10 @@ amdgpu_dm_register_backlight_device(struct amdgpu_dm_connector *aconnector)
+ 		drm_dbg(drm, "Backlight caps: min: %d, max: %d, ac %d, dc %d\n", min, max,
+ 			caps->ac_level, caps->dc_level);
+ 	} else
+-		props.brightness = AMDGPU_MAX_BL_LEVEL;
++		props.brightness = props.max_brightness = AMDGPU_MAX_BL_LEVEL;
+ 
+ 	if (caps->data_points && !(amdgpu_dc_debug_mask & DC_DISABLE_CUSTOM_BRIGHTNESS_CURVE))
+ 		drm_info(drm, "Using custom brightness curve\n");
+-	props.max_brightness = AMDGPU_MAX_BL_LEVEL;
+ 	props.type = BACKLIGHT_RAW;
+ 
+ 	snprintf(bl_name, sizeof(bl_name), "amdgpu_bl%d",
+-- 
+2.39.5
+
 
 
 
