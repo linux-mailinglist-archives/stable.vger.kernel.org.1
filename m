@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-159819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0148FAF7AA3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:16:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB49BAF7A14
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:09:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 108D116DDA9
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B0AE547165
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D897D2F0020;
-	Thu,  3 Jul 2025 15:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCCC2BDC1B;
+	Thu,  3 Jul 2025 15:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kis3PMcJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3kAMNz/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9777B1E9B3D;
-	Thu,  3 Jul 2025 15:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0A32DE6F9;
+	Thu,  3 Jul 2025 15:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555453; cv=none; b=Y6t6WBREyv12LWBqILoQophMQO+Pun16T1HKTayP6N2pJCPUGBqANpN2eIsASwzEBU7UeCgS49StZ8VV5jPjTBIlkWeRipp6WkJGRcN3pFgeBmn0Btm0KdBSbAXEMk+NTKaiE/YmkHhCsmDu2wbzWLYgHo4TiBRTz7b6AVvKDS8=
+	t=1751555152; cv=none; b=GYEWMk+Tq/j7W6YlFxuX5dgZdvfhDvmDVxHVzbV3Getl1kwWweNeoCeiA1ZEoa6uryblYJxXI/fVze23SOCUHsXxDvxFQiEDO61Ywn3x4qy5i9/zZ/UjdZFX7xOq4+2FB+YkElIXsCRk99CKqZK3zGgnuaSbNU9wiIQXYOx8PLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555453; c=relaxed/simple;
-	bh=Po9+SBe4tpf2HBnmrIRZwSGLUFSJ7JGeBlpM2uRlUzw=;
+	s=arc-20240116; t=1751555152; c=relaxed/simple;
+	bh=7LAX9YAE6i6sG3W8Qzp5WPRNxeirvyUcjJjNDxXikvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PjJkB+wYz8427QT+gbySXcIOs4o8OnJYUuQB9SoIgLc3e0inYu+MRhYayArlHoMkBgWBH6YY9NA9TUDt3IPFg1gcM04FUxRC+XbZsEjza3P1BrWNnKLo7aXIgprhZz/UwxgwxSx0KL+e/H99id0lxwxj70xcevORbHgEOHNyUdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kis3PMcJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07908C4CEE3;
-	Thu,  3 Jul 2025 15:10:52 +0000 (UTC)
+	 MIME-Version; b=Xxj5HdhSEI963hRvRtcYrsZCdfWTN1wlpOo/wZlLC5UHftJVPkN+REz6PLDzUibsX67xAKTIdkyEWRWduzCYKRSAogNSV6Wcz6tMi4JSdw8TXm3wjyI4SikZGcAdOMZrLH57M6K7yvYoobYtC75rTg+ndP9hDQkZq43Z8ayqrAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3kAMNz/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2255FC4CEE3;
+	Thu,  3 Jul 2025 15:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555453;
-	bh=Po9+SBe4tpf2HBnmrIRZwSGLUFSJ7JGeBlpM2uRlUzw=;
+	s=korg; t=1751555152;
+	bh=7LAX9YAE6i6sG3W8Qzp5WPRNxeirvyUcjJjNDxXikvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kis3PMcJM0pnVNE2ri9LV8ZcpMVxhZNBaJ/wdk+JHf5gYBq5rm/Q8jHLAAQgW2P6V
-	 z1kfhPoUFMJV+xAbtWEFAbzE5dzE16Lk8gNSIlH1ylQEEj7yBsRt9MY+lcPOt1ITom
-	 ppm9Vw/oG10tGF/iZm6L04n4qLayNxC3hX/mxo44=
+	b=j3kAMNz/CQ41gpIFyhccgwVC/qq2ErvORKNBp0BAbYQjvjGnIK1TaQrtgQWBjLj93
+	 NM7j9L8hYY9jblBdJ6EbiFb3XKiPvEcKRjUHG7tId8dcYIRDqyhxGliSA9ww9ZpQS8
+	 1kSDkl31/uy5bDk7CHoQ/X9gdFhzGnJaEJ8GOPYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>,
-	Suraj Gupta <suraj.gupta2@amd.com>,
-	Folker Schwesinger <dev@folker-schwesinger.de>,
-	Vinod Koul <vkoul@kernel.org>,
+	Charles Mirabile <cmirabil@redhat.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/139] dmaengine: xilinx_dma: Set dma_device directions
+Subject: [PATCH 6.15 162/263] riscv: fix runtime constant support for nommu kernels
 Date: Thu,  3 Jul 2025 16:41:22 +0200
-Message-ID: <20250703143941.925518041@linuxfoundation.org>
+Message-ID: <20250703144010.861074652@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>
+From: Charles Mirabile <cmirabil@redhat.com>
 
-[ Upstream commit 7e01511443c30a55a5ae78d3debd46d4d872517e ]
+[ Upstream commit 8d90d9872edae7e78c3a12b98e239bfaa66f3639 ]
 
-Coalesce the direction bits from the enabled TX and/or RX channels into
-the directions bit mask of dma_device. Without this mask set,
-dma_get_slave_caps() in the DMAEngine fails, which prevents the driver
-from being used with an IIO DMAEngine buffer.
+the `__runtime_fixup_32` function does not handle the case where `val` is
+zero correctly (as might occur when patching a nommu kernel and referring
+to a physical address below the 4GiB boundary whose upper 32 bits are all
+zero) because nothing in the existing logic prevents the code from taking
+the `else` branch of both nop-checks and emitting two `nop` instructions.
 
-Signed-off-by: Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>
-Reviewed-by: Suraj Gupta <suraj.gupta2@amd.com>
-Tested-by: Folker Schwesinger <dev@folker-schwesinger.de>
-Link: https://lore.kernel.org/r/20250507182101.909010-1-thomas.gessler@brueckmann-gmbh.de
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+This leaves random garbage in the register that is supposed to receive the
+upper 32 bits of the pointer instead of zero that when combined with the
+value for the lower 32 bits yields an invalid pointer and causes a kernel
+panic when that pointer is eventually accessed.
+
+The author clearly considered the fact that if the `lui` is converted into
+a `nop` that the second instruction needs to be adjusted to become an `li`
+instead of an `addi`, hence introducing the `addi_insn_mask` variable, but
+didn't follow that logic through fully to the case where the `else` branch
+executes. To fix it just adjust the logic to ensure that the second `else`
+branch is not taken if the first instruction will be patched to a `nop`.
+
+Fixes: a44fb5722199 ("riscv: Add runtime constant support")
+
+Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Tested-by: Charlie Jenkins <charlie@rivosinc.com>
+Link: https://lore.kernel.org/r/20250530211422.784415-2-cmirabil@redhat.com
+Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/riscv/include/asm/runtime-const.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index 0a3b2e22f23db..14c4c5031b556 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -2900,6 +2900,8 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
- 		return -EINVAL;
+diff --git a/arch/riscv/include/asm/runtime-const.h b/arch/riscv/include/asm/runtime-const.h
+index 451fd76b88115..d766e2b9e6df1 100644
+--- a/arch/riscv/include/asm/runtime-const.h
++++ b/arch/riscv/include/asm/runtime-const.h
+@@ -206,7 +206,7 @@ static inline void __runtime_fixup_32(__le16 *lui_parcel, __le16 *addi_parcel, u
+ 		addi_insn_mask &= 0x07fff;
  	}
  
-+	xdev->common.directions |= chan->direction;
-+
- 	/* Request the interrupt */
- 	chan->irq = of_irq_get(node, chan->tdest);
- 	if (chan->irq < 0)
+-	if (lower_immediate & 0x00000fff) {
++	if (lower_immediate & 0x00000fff || lui_insn == RISCV_INSN_NOP4) {
+ 		/* replace upper 12 bits of addi with lower 12 bits of val */
+ 		addi_insn &= addi_insn_mask;
+ 		addi_insn |= (lower_immediate & 0x00000fff) << 20;
 -- 
 2.39.5
 
