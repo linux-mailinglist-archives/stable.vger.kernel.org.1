@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810BCAF7C0F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3D2AF7BA1
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A69BD6E4357
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FCD81CC0495
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F15F2EF9CB;
-	Thu,  3 Jul 2025 15:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6B92F0027;
+	Thu,  3 Jul 2025 15:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SExcb+iY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="geEEkfqT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2AC2EFD81;
-	Thu,  3 Jul 2025 15:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1202EF676;
+	Thu,  3 Jul 2025 15:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556199; cv=none; b=nNf5GFR9QHeZJaz6MUPOn+gV/MiwXSjwaCnpz/KUlvlo/Pkl48CkBIiHtHqu84e2jgoLWXWOU09UxUnETUXUcTGjN2HP5i+eRF36sp41qsKzNQ+r0tOrbhy4YPBgYHqu0L5EzZer8ERiTG1+IpL84NBQboU+tXglI2pHLxqlgTY=
+	t=1751555862; cv=none; b=R5RORHHpIghNJEMqyS5MLZT1GFZy082+bew8HzhpbsAG0dl2LoUlK58PXY3we1eJo3KqJgvOWjOP45keKVFigYHO61/1TCBdyD0xfTtrJFCbUtAqWyz2RGVeNNxrGxVOfCoXPfI5gcvsqSRC6qGqQ/1guNRb9NQYWHhYaZd0BYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556199; c=relaxed/simple;
-	bh=rQUVZ8KxjmR64E1AC7j43eX+odG/olngUfbe1MK3T08=;
+	s=arc-20240116; t=1751555862; c=relaxed/simple;
+	bh=mA7+JLcmiZg4uAveMRexUN/dBRS/qfxogvK/+X7nrZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H3EIjp7dI2AdvqLslNF2V8dXN9pAj9fWrmiqUTGFhwOi2NnN6bElmbY+fmQFirpT+Mb00CxSBUA4gkMQvyJIo1EBnk5PBIY64VtVsCLn4WhUAhO6QzEaJKh23iR5ZRLv9f4oSCOuBkcco9QXKvz83DItrntRx3MiHREb5xiLNpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SExcb+iY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0546DC4CEE3;
-	Thu,  3 Jul 2025 15:23:18 +0000 (UTC)
+	 MIME-Version; b=avWaFSOdORCs7zDQvHwDN3Cd/zULIy2TyzjCHd4aV+iJnYMqIOsoBqo63rLVq9TbEDP9O5Dyk84P/8kw/1RZ1//ExB0/B7B37VGk3N+EgA/XxDNe/OQc6uq0MshEMKjK6GL6zSTY0X45tieebphKRfZwKd9pvxbZ19brJRsPLew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=geEEkfqT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D16C4CEE3;
+	Thu,  3 Jul 2025 15:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556199;
-	bh=rQUVZ8KxjmR64E1AC7j43eX+odG/olngUfbe1MK3T08=;
+	s=korg; t=1751555862;
+	bh=mA7+JLcmiZg4uAveMRexUN/dBRS/qfxogvK/+X7nrZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SExcb+iYoGfq7ND3Ryp6NyEDXGmNGwem9WOqIvDyGD5Va0VEX+oz+xLSVvb2VHy3x
-	 ULNFgUDfoNUyXuPoZ5ixu2EQdcmSStVh2Ffdsgu3dU8Ym5TZ05/yGDte8aJMjz1aCr
-	 YQBUV0A15Aquv/M4wQnWcjwPqUEhLvI7gyGuYkqs=
+	b=geEEkfqTeHft/Pa9+lprx3okur+N4tKJcv4GpCKIJLlqj0L8L+AmclWBfZoMTojzs
+	 0W5tlFrx3joMnew7Wu3qSvyA2kYyh/t7UwUhov+1s14Faz0gjTLhMnzHTBsGsb4ylU
+	 x3ikVJJgCKzlA8qg+ocH40b57U9pu/8JdyHhlWwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Rob Clark <robdclark@chromium.org>
-Subject: [PATCH 6.1 106/132] drm/msm/gpu: Fix crash when throttling GPU immediately during boot
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.6 132/139] s390/entry: Fix last breaking event handling in case of stack corruption
 Date: Thu,  3 Jul 2025 16:43:15 +0200
-Message-ID: <20250703143943.551650219@linuxfoundation.org>
+Message-ID: <20250703143946.341617442@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit b71717735be48d7743a34897e9e44a0b53e30c0e upstream.
+commit ae952eea6f4a7e2193f8721a5366049946e012e7 upstream.
 
-There is a small chance that the GPU is already hot during boot. In that
-case, the call to of_devfreq_cooling_register() will immediately try to
-apply devfreq cooling, as seen in the following crash:
+In case of stack corruption stack_invalid() is called and the expectation
+is that register r10 contains the last breaking event address. This
+dependency is quite subtle and broke a couple of years ago without that
+anybody noticed.
 
-  Unable to handle kernel paging request at virtual address 0000000000014110
-  pc : a6xx_gpu_busy+0x1c/0x58 [msm]
-  lr : msm_devfreq_get_dev_status+0xbc/0x140 [msm]
-  Call trace:
-   a6xx_gpu_busy+0x1c/0x58 [msm] (P)
-   devfreq_simple_ondemand_func+0x3c/0x150
-   devfreq_update_target+0x44/0xd8
-   qos_max_notifier_call+0x30/0x84
-   blocking_notifier_call_chain+0x6c/0xa0
-   pm_qos_update_target+0xd0/0x110
-   freq_qos_apply+0x3c/0x74
-   apply_constraint+0x88/0x148
-   __dev_pm_qos_update_request+0x7c/0xcc
-   dev_pm_qos_update_request+0x38/0x5c
-   devfreq_cooling_set_cur_state+0x98/0xf0
-   __thermal_cdev_update+0x64/0xb4
-   thermal_cdev_update+0x4c/0x58
-   step_wise_manage+0x1f0/0x318
-   __thermal_zone_device_update+0x278/0x424
-   __thermal_cooling_device_register+0x2bc/0x308
-   thermal_of_cooling_device_register+0x10/0x1c
-   of_devfreq_cooling_register_power+0x240/0x2bc
-   of_devfreq_cooling_register+0x14/0x20
-   msm_devfreq_init+0xc4/0x1a0 [msm]
-   msm_gpu_init+0x304/0x574 [msm]
-   adreno_gpu_init+0x1c4/0x2e0 [msm]
-   a6xx_gpu_init+0x5c8/0x9c8 [msm]
-   adreno_bind+0x2a8/0x33c [msm]
-   ...
+Fix this by getting rid of the dependency and read the last breaking event
+address from lowcore.
 
-At this point we haven't initialized the GMU at all yet, so we cannot read
-the GMU registers inside a6xx_gpu_busy(). A similar issue was fixed before
-in commit 6694482a70e9 ("drm/msm: Avoid unclocked GMU register access in
-6xx gpu_busy"): msm_devfreq_init() does call devfreq_suspend_device(), but
-unlike msm_devfreq_suspend(), it doesn't set the df->suspended flag
-accordingly. This means the df->suspended flag does not match the actual
-devfreq state after initialization and msm_devfreq_get_dev_status() will
-end up accessing GMU registers, causing the crash.
-
-Fix this by setting df->suspended correctly during initialization.
-
-Cc: stable@vger.kernel.org
-Fixes: 6694482a70e9 ("drm/msm: Avoid unclocked GMU register access in 6xx gpu_busy")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/650772/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: 56e62a737028 ("s390: convert to generic entry")
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/msm_gpu_devfreq.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/s390/kernel/entry.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/msm/msm_gpu_devfreq.c
-+++ b/drivers/gpu/drm/msm/msm_gpu_devfreq.c
-@@ -147,6 +147,7 @@ void msm_devfreq_init(struct msm_gpu *gp
- 		return;
- 
- 	mutex_init(&df->lock);
-+	df->suspended = true;
- 
- 	ret = dev_pm_qos_add_request(&gpu->pdev->dev, &df->boost_freq,
- 				     DEV_PM_QOS_MIN_FREQUENCY, 0);
+--- a/arch/s390/kernel/entry.S
++++ b/arch/s390/kernel/entry.S
+@@ -639,7 +639,7 @@ SYM_CODE_START(stack_overflow)
+ 	stmg	%r0,%r7,__PT_R0(%r11)
+ 	stmg	%r8,%r9,__PT_PSW(%r11)
+ 	mvc	__PT_R8(64,%r11),0(%r14)
+-	stg	%r10,__PT_ORIG_GPR2(%r11) # store last break to orig_gpr2
++	mvc	__PT_ORIG_GPR2(8,%r11),__LC_PGM_LAST_BREAK
+ 	xc	__SF_BACKCHAIN(8,%r15),__SF_BACKCHAIN(%r15)
+ 	lgr	%r2,%r11		# pass pointer to pt_regs
+ 	jg	kernel_stack_overflow
 
 
 
