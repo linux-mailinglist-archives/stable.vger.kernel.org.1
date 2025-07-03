@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6313AF79F1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE10EAF789D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F3ED171031
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:04:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0394317626B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D222EA149;
-	Thu,  3 Jul 2025 15:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8B52EF671;
+	Thu,  3 Jul 2025 14:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xp+7piym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZzClF3K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851582B9A6;
-	Thu,  3 Jul 2025 15:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885D519F43A;
+	Thu,  3 Jul 2025 14:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555041; cv=none; b=rC/PeZvTUjg98F6J5dYHm+R5Q1AvuzS5u1XevZE0nEoDudpa6Aq9XiRUAQgpL0LpVyHZOUfNggzkXp1w8RHu4h8O0ZBbna64WK6sVYXcGaS4ozgbU6f035ifaA0v/rSs+h37Chlr+xifJ67y9rYmzgg4M/wiBkAnlYOibGDU9So=
+	t=1751554252; cv=none; b=uoxr6MXVXvKhNGlBmvRyG6SLmQ/FwNq67Lbc/NXqWb6Yy6BE3VCSQJ4kr3j1bZ28Y3YlTaqRfWfbizEkFMbvD1XNv2WZJON0BUhq9lciDrNltKdMFLilVeSB6iTUOiGjCS758G2n2h9m60crDfpeSSpXHROdhgmgAlIJZIfhakw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555041; c=relaxed/simple;
-	bh=AY7xhSTNd9jy2SpoNZFfn9Dlu/rbm5nfUbcKWN9T8pM=;
+	s=arc-20240116; t=1751554252; c=relaxed/simple;
+	bh=6BIweqKezPx4x7XgeEqJfwbWt0x2XFtYFBX17rl09QU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L3IlqGSeevo3twixQqEuVq7J1iueyaGhGT2zMVOM9PW1wsmbXlXMTTcayHHnfq9bjtS+RU0HW4+efXR7c7N4uvrQKLDC/sWu0t1k1Mm5iAxhP9rRsdtTvATFeR6NgRMwKNU1i8GVhnDu0zKXdG/1bstzrS33NM9Gb8HBDGKgM7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xp+7piym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C206C4CEE3;
-	Thu,  3 Jul 2025 15:04:00 +0000 (UTC)
+	 MIME-Version; b=tqbIvGqxlbMvGIkeFkNpDDrqIv+1WQyKE6vIB1TXLlDUmq48s3/PxY/Rq0JolcQYKk94Wh8tuHbIk5llG8OQ2BtLud77QOCbGlzfHscjTr4+QQyYgV7BstAWGS9qIVx7qKLLoFOd40Eb8jWmOgM0acP7P3erxwLEaR2vNNEpLoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZzClF3K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAEFC4CEE3;
+	Thu,  3 Jul 2025 14:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555041;
-	bh=AY7xhSTNd9jy2SpoNZFfn9Dlu/rbm5nfUbcKWN9T8pM=;
+	s=korg; t=1751554252;
+	bh=6BIweqKezPx4x7XgeEqJfwbWt0x2XFtYFBX17rl09QU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xp+7piymMES1xRdMa8VeRUdipGCdPJf/dxidSNajDNoRsyqYmfhfvQkz8hWmcPHW0
-	 bdTGR50NUQY+HiKcW3LT2JbYNMSnIG7IlqQ8S7Nh2Hwh605tcbi0s3jwwR3eLnRoz4
-	 ZBV3ppYICWyVfJDUQSH3WXjLAxV23HDE1Xsb9owg=
+	b=PZzClF3Ku5mgnF9SqrUvGvUtryzptfDOuWtj++Ex2gwVTYptB80wQv6fHzvdbmPmA
+	 rz4I3LD2wBTtx0Lk9M2C3XPREIpH3p4wAZ9gKjNbPsPejSQZqj0e1BtzWAa5jr2yNm
+	 mfqaUIi9Ak1TK/OWFjAsGrl1AfEzCWCheNAuiEEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.15 127/263] drm/xe/display: Add check for alloc_ordered_workqueue()
+	Muna Sinada <muna.sinada@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 099/218] wifi: mac80211: Add link iteration macro for link data
 Date: Thu,  3 Jul 2025 16:40:47 +0200
-Message-ID: <20250703144009.447952637@linuxfoundation.org>
+Message-ID: <20250703143959.895753859@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Muna Sinada <muna.sinada@oss.qualcomm.com>
 
-commit 62207293479e6c03ef498a70f2914c51f4d31d2c upstream.
+[ Upstream commit f61c7b3d442bef91dd432d468d08f72eadcc3209 ]
 
-Add check for the return value of alloc_ordered_workqueue()
-in xe_display_create() to catch potential exception.
+Currently before iterating through valid links we are utilizing
+open-coding when checking if vif valid_links is a non-zero value.
 
-Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://lore.kernel.org/r/4ee1b0e5d1626ce1dde2e82af05c2edaed50c3aa.1747397638.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 5b62d63395d5b7d4094e7cd380bccae4b25415cb)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add new macro, for_each_link_data(), which iterates through link_id
+and checks if it is set on vif valid_links. If it is a valid link then
+access link data for that link id.
+
+Signed-off-by: Muna Sinada <muna.sinada@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250325213125.1509362-2-muna.sinada@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: d87c3ca0f8f1 ("wifi: mac80211: finish link init before RCU publish")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/display/xe_display.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/mac80211/ieee80211_i.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/gpu/drm/xe/display/xe_display.c
-+++ b/drivers/gpu/drm/xe/display/xe_display.c
-@@ -104,6 +104,8 @@ int xe_display_create(struct xe_device *
- 	spin_lock_init(&xe->display.fb_tracking.lock);
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index bfe0514efca37..41e69e066b386 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1209,6 +1209,15 @@ struct ieee80211_sub_if_data *vif_to_sdata(struct ieee80211_vif *p)
+ 	if ((_link = wiphy_dereference((local)->hw.wiphy,		\
+ 				       ___sdata->link[___link_id])))
  
- 	xe->display.hotplug.dp_wq = alloc_ordered_workqueue("xe-dp", 0);
-+	if (!xe->display.hotplug.dp_wq)
-+		return -ENOMEM;
- 
- 	return drmm_add_action_or_reset(&xe->drm, display_destroy, NULL);
- }
++#define for_each_link_data(sdata, __link)					\
++	struct ieee80211_sub_if_data *__sdata = sdata;				\
++	for (int __link_id = 0;							\
++	     __link_id < ARRAY_SIZE((__sdata)->link); __link_id++)		\
++		if ((!(__sdata)->vif.valid_links ||				\
++		     (__sdata)->vif.valid_links & BIT(__link_id)) &&		\
++		    ((__link) = sdata_dereference((__sdata)->link[__link_id],	\
++						  (__sdata))))
++
+ static inline int
+ ieee80211_get_mbssid_beacon_len(struct cfg80211_mbssid_elems *elems,
+ 				struct cfg80211_rnr_elems *rnr_elems,
+-- 
+2.39.5
+
 
 
 
