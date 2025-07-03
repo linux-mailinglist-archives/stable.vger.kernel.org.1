@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-159752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFCD3AF7A33
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3D2AF78FA
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 438BD4E08D0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FB36545A2B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374DD2E7649;
-	Thu,  3 Jul 2025 15:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CB22EF66A;
+	Thu,  3 Jul 2025 14:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HqQfI4av"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvKdtIQz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D4115442C;
-	Thu,  3 Jul 2025 15:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA812EFD81;
+	Thu,  3 Jul 2025 14:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555229; cv=none; b=duXMixY867XNMQyWqrZLkKyqNOyZs8kwMLS1AZKsN1c0cE0ZyKhLctyGdSkz9lUYuymgR/FU+/doI+jZZkbg4Y5UAraiCrtpnH5fBMVVKilp0lXNo7oyX7ih1RPPOLbn91YCeF9rq9Ou+rgwQ0O3/Z2CovoD7o4w/RbaJIp1yrk=
+	t=1751554439; cv=none; b=olJFnh9lUSIDRMM++BvV2XEoISPDy7dx5Nfz066RcrDHvAGNMOLfLyzyBtJVH3gqQiVjNqkqidbLWxoZ75iBRtThrjQehKuIsKHTrGp3ooLP9TMMtcxDcjs2kyIhmdwqOHI8vkBXW+xEPpG0PGwzzk/kZqUZXrzylFCes9TXHG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555229; c=relaxed/simple;
-	bh=ajumfJV/mQRSGZTH+Z3lwWtvR6mtJ9WGs+4C0GmPCqo=;
+	s=arc-20240116; t=1751554439; c=relaxed/simple;
+	bh=3sY2zjUaBuVUaiRu+Az0IyREQAV8t6JB9y/hYyGtvkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oot4K0m0c6nDoTqKSoHudW/TGv/vqqRjo2N9Gs8JfWC9BXwA8QIwcxWfKeha+XaIMNrpIMIis6nbwejr97FRMCIzMJBleI1iiYQzNhh/LILxN4EBcXgq2YxgsfKAcSeBgKcFyfPAe/MjCobNdYBOD43JVFpttJdnUdvbKBGdQcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HqQfI4av; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9B4C4CEE3;
-	Thu,  3 Jul 2025 15:07:08 +0000 (UTC)
+	 MIME-Version; b=G55LJf8f3UOJctyd8aJdHH4ttfYB92eA1Yn5lw9UHrbNaXeekVe/vNu4BGZTKQApbz8nPRb13Mbo5+TIqI365VTsomigagF0Hf4iZp2ozNCIQ5QE+Gg9sSqeNDA90drubVJIaeEz+3UejQthEb/XEYNZWR6WNqwfmYp4n3+B/kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvKdtIQz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2419CC4CEE3;
+	Thu,  3 Jul 2025 14:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555228;
-	bh=ajumfJV/mQRSGZTH+Z3lwWtvR6mtJ9WGs+4C0GmPCqo=;
+	s=korg; t=1751554439;
+	bh=3sY2zjUaBuVUaiRu+Az0IyREQAV8t6JB9y/hYyGtvkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HqQfI4avDUlyWv8bNrxfY3zsrlfJzmdnLGdCNRpz1HstHn9GTHcX9GymLLjY2EBlp
-	 GYnSlV4UiPtmGw1XTp4ePkj+ykDLp42Ko2KwjD9sugcZqdgGt7Lw3h6QBajARExFI4
-	 Pll8lGNIOxqQDX8C9IQriSLtOE9Gk/8OFraC22tk=
+	b=zvKdtIQz2kKv82cYGV94Ad9LCKdbETwQFo3vu1KDofNqznNBRsIEocw0vQAocCGbJ
+	 1UZ+CUHeHBIJx0Q0LQfSu8BfCNOgCQ6u9UIvE60BJ0P3WCl3TUMN9upwY5TPyta/MN
+	 p0jyHhNzBqbMzvHNNnrtTNYjycgKaWJRWdo5rIeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.15 215/263] drm/bridge: cdns-dsi: Fix phy de-init and flag it so
+	"Roy Tang (ErgoniaTrading)" <royonia@ergonia.io>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 187/218] io_uring/net: always use current transfer count for buffer put
 Date: Thu,  3 Jul 2025 16:42:15 +0200
-Message-ID: <20250703144013.008043425@linuxfoundation.org>
+Message-ID: <20250703144003.664260027@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit fd2611c13f69cbbc6b81d9fc7502abf4f7031d21 upstream.
+A previous fix corrected the retry condition for when to continue a
+current bundle, but it missed that the current (not the total) transfer
+count also applies to the buffer put. If not, then for incrementally
+consumed buffer rings repeated completions on the same request may end
+up over consuming.
 
-The driver code doesn't have a Phy de-initialization path as yet, and so
-it does not clear the phy_initialized flag while suspending. This is a
-problem because after resume the driver looks at this flag to determine
-if a Phy re-initialization is required or not. It is in fact required
-because the hardware is resuming from a suspend, but the driver does not
-carry out any re-initialization causing the D-Phy to not work at all.
-
-Call the counterparts of phy_init() and phy_power_on(), that are
-phy_exit() and phy_power_off(), from _bridge_post_disable(), and clear
-the flags so that the Phy can be initialized again when required.
-
-Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
+Reported-by: Roy Tang (ErgoniaTrading) <royonia@ergonia.io>
 Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Link: https://lore.kernel.org/r/20250329113925.68204-3-aradhya.bhatia@linux.dev
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: 3a08988123c8 ("io_uring/net: only retry recv bundle for a full transfer")
+Link: https://github.com/axboe/liburing/issues/1423
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+(cherry picked from commit 51a4598ad5d9eb6be4ec9ba65bbfdf0ac302eb2e)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ io_uring/net.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-@@ -681,6 +681,11 @@ static void cdns_dsi_bridge_post_disable
- 	struct cdns_dsi_input *input = bridge_to_cdns_dsi_input(bridge);
- 	struct cdns_dsi *dsi = input_to_dsi(input);
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -854,7 +854,7 @@ static inline bool io_recv_finish(struct
+ 	if (sr->flags & IORING_RECVSEND_BUNDLE) {
+ 		size_t this_ret = *ret - sr->done_io;
  
-+	dsi->phy_initialized = false;
-+	dsi->link_initialized = false;
-+	phy_power_off(dsi->dphy);
-+	phy_exit(dsi->dphy);
-+
- 	pm_runtime_put(dsi->base.dev);
- }
- 
-@@ -1153,7 +1158,6 @@ static int __maybe_unused cdns_dsi_suspe
- 	clk_disable_unprepare(dsi->dsi_sys_clk);
- 	clk_disable_unprepare(dsi->dsi_p_clk);
- 	reset_control_assert(dsi->dsi_p_rst);
--	dsi->link_initialized = false;
- 	return 0;
- }
- 
+-		cflags |= io_put_kbufs(req, *ret, io_bundle_nbufs(kmsg, this_ret),
++		cflags |= io_put_kbufs(req, this_ret, io_bundle_nbufs(kmsg, this_ret),
+ 				      issue_flags);
+ 		if (sr->retry)
+ 			cflags = req->cqe.flags | (cflags & CQE_F_MASK);
 
 
 
