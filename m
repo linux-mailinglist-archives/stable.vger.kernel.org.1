@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2699FAF7C2F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:32:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F828AF7B7B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76C3E1897ADB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B45C06E4A85
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82AD2D6622;
-	Thu,  3 Jul 2025 15:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE66A22B8AB;
+	Thu,  3 Jul 2025 15:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yas3A1Yp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIBWnBzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E152DE6F1;
-	Thu,  3 Jul 2025 15:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD0723A99E;
+	Thu,  3 Jul 2025 15:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556090; cv=none; b=gqL3UKuVScVw8LtO8ycDWhh4pfcJUDyfLwuOk6lvApRiqDEOYsn1vMXEKlV26Pm0ovBAVtE4rQ/7CUCyzravEXiMohSbhskyvlxU2D1ul7ZxbBUZhxCGy+xrERGAV0StDfpS8FQoOGzBK7DTBJ83k+oq1hBOFQjiFU8mr84l64E=
+	t=1751555736; cv=none; b=spNP/5QwwJUr3hB8L/QwlSfQK292Oh3pmVeiqPYjI/y+z7dQ010P+kSTZvfODqPHru+53TzZZooBdkZelozxLD5ZpPf14fwENKWH/SSf01pSjM8tnWV3zcn+2OXCBU7lzoDYzUAe8diw6I88BxCEdeOBQ9lkjk7i36MQKRD/NxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556090; c=relaxed/simple;
-	bh=IrP+r+A25sVOqcCFMgWJD6/ETb1Az5mH2pebFkDVJGs=;
+	s=arc-20240116; t=1751555736; c=relaxed/simple;
+	bh=pqW5Nb9Jibmiijznop8vyldFimYL0AxBXzWIACIaLFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=It3u0Ta6ePtTMn7HDPX3pl1zio7ysrLAMEFnFx5tv7/8PkdJcVZ8t8F+urEnCAUE0UB06v/NBs/SkdEjV2wFLUj3jykE1EMmnqzFFmzuBmsiKwEFoCQFj+rFsmxCevq5PwcL/fdfnwBHIBYEZmdLcmBtGklWxAK9NCMXew8NIL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yas3A1Yp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B28CC4CEE3;
-	Thu,  3 Jul 2025 15:21:29 +0000 (UTC)
+	 MIME-Version; b=I6pUGZnrVu5cReEZOQX9OwfukjbUObW71R3JpSy/llw8mY8OleUurtMtiL9yyCT1prIqaHWo5c1dJMFYVTGwOq2SECEV3ihW9azmNfnGpVI8IENsB3LRa2IApehCCeRH62+uVM/kWROEGjPuV6xXV03buheNYU6dMF/bUzkQ7G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIBWnBzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB196C4CEE3;
+	Thu,  3 Jul 2025 15:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556090;
-	bh=IrP+r+A25sVOqcCFMgWJD6/ETb1Az5mH2pebFkDVJGs=;
+	s=korg; t=1751555736;
+	bh=pqW5Nb9Jibmiijznop8vyldFimYL0AxBXzWIACIaLFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yas3A1YpVmoZcGlvz1qW5wi0VvcTIVB+kVCMydkNUsn3gG2/TccesLGcS41lqMUjO
-	 5WhlItDTdJAxWnApgw5NMGxO3ESZIe1gKea3SZiUYJRhV0tDrfu769bxk8cZpxZKS6
-	 fMC1xH6EI/gMhSr9xyk8x95of7K0RxDGDBq5g4Ig=
+	b=EIBWnBznam0ahssdKY4SIyoEnON5tZTsCdZi82Z5dgHgH24KW1DvSJwAuI+P0IjEV
+	 5Kvk5Xb42WP9/GDkdCVNppbKuG1Rm1y9O4oTOR3HH8sk4Ob0eFifL8DFYRF2TBMoy2
+	 xO5bGhi6ZcrqIV5Nuig3V8MaG5MN2rHpgjyXCfXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.1 072/132] i2c: robotfuzz-osif: disable zero-length read messages
+	stable <stable@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH 6.6 098/139] serial: imx: Restore original RXTL for console to fix data loss
 Date: Thu,  3 Jul 2025 16:42:41 +0200
-Message-ID: <20250703143942.244891432@linuxfoundation.org>
+Message-ID: <20250703143945.001958275@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Fabio Estevam <festevam@gmail.com>
 
-commit 56ad91c1aa9c18064348edf69308080b03c9dc48 upstream.
+commit f23c52aafb1675ab1d1f46914556d8e29cbbf7b3 upstream.
 
-This driver passes the length of an i2c_msg directly to
-usb_control_msg(). If the message is now a read and of length 0, it
-violates the USB protocol and a warning will be printed. Enable the
-I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
-read messages altogether.
+Commit 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
+introduced a regression on the i.MX6UL EVK board. The issue can be
+reproduced with the following steps:
 
-Fixes: 83e53a8f120f ("i2c: Add bus driver for for OSIF USB i2c device.")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: <stable@vger.kernel.org> # v3.14+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250522064234.3721-2-wsa+renesas@sang-engineering.com
+- Open vi on the board.
+- Paste a text file (~150 characters).
+- Save the file, then repeat the process.
+- Compare the sha256sum of the saved files.
+
+The checksums do not match due to missing characters or entire lines.
+
+Fix this by restoring the RXTL value to 1 when the UART is used as a
+console.
+
+This ensures timely RX interrupts and reliable data reception in console
+mode.
+
+With this change, pasted content is saved correctly, and checksums are
+always consistent.
+
+Cc: stable <stable@kernel.org>
+Fixes: 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250619114617.2791939-1-festevam@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-robotfuzz-osif.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/tty/serial/imx.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/drivers/i2c/busses/i2c-robotfuzz-osif.c
-+++ b/drivers/i2c/busses/i2c-robotfuzz-osif.c
-@@ -111,6 +111,11 @@ static u32 osif_func(struct i2c_adapter
- 	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL;
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -234,6 +234,7 @@ struct imx_port {
+ 	enum imx_tx_state	tx_state;
+ 	struct hrtimer		trigger_start_tx;
+ 	struct hrtimer		trigger_stop_tx;
++	unsigned int		rxtl;
+ };
+ 
+ struct imx_port_ucrs {
+@@ -1337,6 +1338,7 @@ static void imx_uart_clear_rx_errors(str
+ 
+ #define TXTL_DEFAULT 8
+ #define RXTL_DEFAULT 8 /* 8 characters or aging timer */
++#define RXTL_CONSOLE_DEFAULT 1
+ #define TXTL_DMA 8 /* DMA burst setting */
+ #define RXTL_DMA 9 /* DMA burst setting */
+ 
+@@ -1449,7 +1451,7 @@ static void imx_uart_disable_dma(struct
+ 	ucr1 &= ~(UCR1_RXDMAEN | UCR1_TXDMAEN | UCR1_ATDMAEN);
+ 	imx_uart_writel(sport, ucr1, UCR1);
+ 
+-	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
+ 
+ 	sport->dma_is_enabled = 0;
  }
+@@ -1474,7 +1476,12 @@ static int imx_uart_startup(struct uart_
+ 		return retval;
+ 	}
  
-+/* prevent invalid 0-length usb_control_msg */
-+static const struct i2c_adapter_quirks osif_quirks = {
-+	.flags = I2C_AQ_NO_ZERO_LEN_READ,
-+};
+-	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++	if (uart_console(&sport->port))
++		sport->rxtl = RXTL_CONSOLE_DEFAULT;
++	else
++		sport->rxtl = RXTL_DEFAULT;
 +
- static const struct i2c_algorithm osif_algorithm = {
- 	.master_xfer	= osif_xfer,
- 	.functionality	= osif_func,
-@@ -143,6 +148,7 @@ static int osif_probe(struct usb_interfa
++	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
  
- 	priv->adapter.owner = THIS_MODULE;
- 	priv->adapter.class = I2C_CLASS_HWMON;
-+	priv->adapter.quirks = &osif_quirks;
- 	priv->adapter.algo = &osif_algorithm;
- 	priv->adapter.algo_data = priv;
- 	snprintf(priv->adapter.name, sizeof(priv->adapter.name),
+ 	/* disable the DREN bit (Data Ready interrupt enable) before
+ 	 * requesting IRQs
+@@ -1887,7 +1894,7 @@ static int imx_uart_poll_init(struct uar
+ 	if (retval)
+ 		clk_disable_unprepare(sport->clk_ipg);
+ 
+-	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
+ 
+ 	spin_lock_irqsave(&sport->port.lock, flags);
+ 
+@@ -1979,7 +1986,7 @@ static int imx_uart_rs485_config(struct
+ 		/* If the receiver trigger is 0, set it to a default value */
+ 		ufcr = imx_uart_readl(sport, UFCR);
+ 		if ((ufcr & UFCR_RXTL_MASK) == 0)
+-			imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++			imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
+ 		imx_uart_start_rx(port);
+ 	}
+ 
+@@ -2164,7 +2171,7 @@ imx_uart_console_setup(struct console *c
+ 	else
+ 		imx_uart_console_get_options(sport, &baud, &parity, &bits);
+ 
+-	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
+ 
+ 	retval = uart_set_options(&sport->port, co, baud, parity, bits, flow);
+ 
 
 
 
