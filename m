@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-159828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D72EAF7AAE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:16:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC294AF78AD
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E96775A03B3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 213A43B1168
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3C82F0C4F;
-	Thu,  3 Jul 2025 15:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFCB2EF9CC;
+	Thu,  3 Jul 2025 14:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ippGlISI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwFjKUnc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E682EF671;
-	Thu,  3 Jul 2025 15:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9102EF9C2;
+	Thu,  3 Jul 2025 14:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555482; cv=none; b=Bv69r+8a9LgEA3QK9W5S2dXoXMy+yfWyY0cAof0iN7Kzx3pxa1nLAzNh8oCA8efcpLD43/fisd9eQVAnJPNArHYLBEZPiwiYWBF85FIv6OieFNM8lJMCg3TP8iAwp6XXHhzvgETPnhZoABCMl/mqj5EXPISpk6kUI21qtgGBw1U=
+	t=1751554299; cv=none; b=Keah/MO/Y/42Kz0zD+OM3rmqb1TKonjIHkfc3o1x9fKc5HJe0SzL0Yxc/shgR2t7pSZ71PBxkmlAAu+gxY/YcR38yQ3E+49CBosry9ieetbcOEDuLPWNfRIstUtsB8UiaJhfY6LqRhStkxDEa51cyEdN4MQMoYzP7NyODc1nfJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555482; c=relaxed/simple;
-	bh=kVjEumwB6XR/We/UQAy3pAsgR/e+urKCbvrHMcVZwV4=;
+	s=arc-20240116; t=1751554299; c=relaxed/simple;
+	bh=KruklGAiXj+4euSnLrVY5r3Il7NKUU9sqPq9SxJvEuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZkdPI38/7LWq7of7brQU4Uvl3LhTpirbxu2b6vQS/+hGHUF7Pb6B7qMqOb0fUuc0aaAt7bywPhAcn8vG90YATa/BOxToksbkmgNKwhKckrhNYplvI3GdODJI7XLq0TZnqA1/RoobR7JpkO1wNi/Va5Qy6Ei0omTLHByFlyAZn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ippGlISI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35973C4CEE3;
-	Thu,  3 Jul 2025 15:11:21 +0000 (UTC)
+	 MIME-Version; b=MapgP6FNrsfCfrUXydF7wQH/jcPLBYKoAyiupm7lKMOMECbG7xrBEzLKu6Breu33Lh4m8WdsyLtnVeUmjjMND5IJM2Mr3cbczmCZd115CTCwsJftSYocGQ+Uj3jngvCv0gW4fg9PybUlTV29rcSrSkLkPvaOD7DTee009b1ZQzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwFjKUnc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E304C4CEE3;
+	Thu,  3 Jul 2025 14:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555482;
-	bh=kVjEumwB6XR/We/UQAy3pAsgR/e+urKCbvrHMcVZwV4=;
+	s=korg; t=1751554298;
+	bh=KruklGAiXj+4euSnLrVY5r3Il7NKUU9sqPq9SxJvEuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ippGlISIe5HojZ03C2dwFt7evpgWZZeXvcbjO1X3BB2bWlzc47lKD+xju8BrDup16
-	 tSTwRlYnpXc966tqyY2rumygmp9yEeLU4QNohkJiZnVjc5YN928LiVVfBEFdVz2Hhj
-	 cKvr2w+yOwWPkIMDMGnlEIPTQET6iQL61grqJHyI=
+	b=MwFjKUncgoqCiiKX/IBnlgQ8tZElJAn/x5PWkXmDf6ZoXn6k5C7Ak1QKqlTalA5s0
+	 nUMo9YUuvVFtMjpaQXVALavhbeMYDKL2NvDgI78Z+ceR7LwX36bQe1BpVu3NQ2IrMy
+	 mKZOTh7qXo3txBbI/M6OcpvlkJIceQjzlqRkW1Yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	linux-kbuild@vger.kernel.org,
-	kernel test robot <lkp@intel.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/139] um: Add cmpxchg8b_emu and checksum functions to asm-prototypes.h
+	Iusico Maxim <iusico.maxim@libero.it>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.12 142/218] HID: lenovo: Restrict F7/9/11 mode to compact keyboards only
 Date: Thu,  3 Jul 2025 16:41:30 +0200
-Message-ID: <20250703143942.245196831@linuxfoundation.org>
+Message-ID: <20250703144001.801812016@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sami Tolvanen <samitolvanen@google.com>
+From: Iusico Maxim <iusico.maxim@libero.it>
 
-[ Upstream commit 674d03f6bd6b0f8327f1a4920ff5893557facfbd ]
+commit 9327e3ee5b077c4ab4495a09b67624f670ed88b6 upstream.
 
-With CONFIG_GENDWARFKSYMS, um builds fail due to missing prototypes
-in asm/asm-prototypes.h. Add declarations for cmpxchg8b_emu and the
-exported checksum functions, including csum_partial_copy_generic as
-it's also exported.
+Commit 2f2bd7cbd1d1 ("hid: lenovo: Resend all settings on reset_resume
+for compact keyboards") introduced a regression for ThinkPad TrackPoint
+Keyboard II by removing the conditional check for enabling F7/9/11 mode
+needed for compact keyboards only. As a result, the non-compact
+keyboards can no longer toggle Fn-lock via Fn+Esc, although it can be
+controlled via sysfs knob that directly sends raw commands.
 
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: linux-kbuild@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202503251216.lE4t9Ikj-lkp@intel.com/
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-Link: https://patch.msgid.link/20250326190500.847236-2-samitolvanen@google.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch restores the previous conditional check without any
+additions.
+
+Cc: stable@vger.kernel.org
+Fixes: 2f2bd7cbd1d1 ("hid: lenovo: Resend all settings on reset_resume for compact keyboards")
+Signed-off-by: Iusico Maxim <iusico.maxim@libero.it>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/include/asm/asm-prototypes.h | 5 +++++
- arch/x86/um/asm/checksum.h           | 3 +++
- 2 files changed, 8 insertions(+)
+ drivers/hid/hid-lenovo.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/arch/um/include/asm/asm-prototypes.h b/arch/um/include/asm/asm-prototypes.h
-index 5898a26daa0dd..408b31d591279 100644
---- a/arch/um/include/asm/asm-prototypes.h
-+++ b/arch/um/include/asm/asm-prototypes.h
-@@ -1 +1,6 @@
- #include <asm-generic/asm-prototypes.h>
-+#include <asm/checksum.h>
-+
-+#ifdef CONFIG_UML_X86
-+extern void cmpxchg8b_emu(void);
-+#endif
-diff --git a/arch/x86/um/asm/checksum.h b/arch/x86/um/asm/checksum.h
-index b07824500363f..ddc144657efad 100644
---- a/arch/x86/um/asm/checksum.h
-+++ b/arch/x86/um/asm/checksum.h
-@@ -20,6 +20,9 @@
-  */
- extern __wsum csum_partial(const void *buff, int len, __wsum sum);
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -529,11 +529,14 @@ static void lenovo_features_set_cptkbd(s
  
-+/* Do not call this directly. Declared for export type visibility. */
-+extern __visible __wsum csum_partial_copy_generic(const void *src, void *dst, int len);
-+
- /**
-  * csum_fold - Fold and invert a 32bit checksum.
-  * sum: 32bit unfolded sum
--- 
-2.39.5
-
+ 	/*
+ 	 * Tell the keyboard a driver understands it, and turn F7, F9, F11 into
+-	 * regular keys
++	 * regular keys (Compact only)
+ 	 */
+-	ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
+-	if (ret)
+-		hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
++	if (hdev->product == USB_DEVICE_ID_LENOVO_CUSBKBD ||
++	    hdev->product == USB_DEVICE_ID_LENOVO_CBTKBD) {
++		ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
++		if (ret)
++			hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
++	}
+ 
+ 	/* Switch middle button to native mode */
+ 	ret = lenovo_send_cmd_cptkbd(hdev, 0x09, 0x01);
 
 
 
