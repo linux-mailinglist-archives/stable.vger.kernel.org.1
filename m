@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0AC9AF7C1A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D52D1AF7A97
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:15:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 470971CA81E5
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:25:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 809D558787A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E8717FAC2;
-	Thu,  3 Jul 2025 15:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FC02EE281;
+	Thu,  3 Jul 2025 15:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsjL3LcZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaLeR2TD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54E3EEBA;
-	Thu,  3 Jul 2025 15:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27E42ED143;
+	Thu,  3 Jul 2025 15:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556250; cv=none; b=XfdhtZ07hgfdmFuKI3e8brHu4vWRocV+4VFTUWL/vcxExUtao4jIiWIcWyqKJzt9l+K9HFZAruohSvTpeJrY+aJUXZD+Kusdz5wUyqt0dDKRxSOLDo5rSrsT4n52z9SCBdvwBrDIiiDj+NL1Tl/PEMFz5ojsxlyRM+kgoQHhFJc=
+	t=1751555415; cv=none; b=UQksOpK0FqaZ2WAlMhrr2u/PA0Knm8zaJa/xxhi2VfWEKlfVa4zMyz+N6aS1BnFHFITn/8dTHIDxPjMqU7qDSgcgJhij0L4zCWnDe+3QRFFIm3g6SNEAc6QjlYgM6auQGw7qNTbXNXFwmpP2ShT4Tt9MDkf0cAFqxLeXyp07ekU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556250; c=relaxed/simple;
-	bh=4brq7RxdhJgHT5dWOhH4ODEuNgIAJtvT1cnfJzWE/nU=;
+	s=arc-20240116; t=1751555415; c=relaxed/simple;
+	bh=5C0S64BK+QHXI8Ucx+sFrQMa5qGCNby4IAxF4ZA/oEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFaSA4xd7Uu77Kt88Lait30Zsaq2ExLv2IVq56ZSGEfoije8hNVJ4YRwDrUTWxYppzQEdD1fnrmYW5UuJav+iL2Sab9X02/vVmnk25XKZOFIKyuzNSysICp93a6pfdIm6M1JclHdJQEEcxIwLWRNpsmLj/r8pYIepUE/GonAILE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsjL3LcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370F7C4CEE3;
-	Thu,  3 Jul 2025 15:24:10 +0000 (UTC)
+	 MIME-Version; b=UHf2qh480+L7Yaz21JiOXi41aK0FtKoN6DI6JXutEL0rssE936R+HGOprGkan+l/684jYOVaVRR2au3YmRTX3i1/JvbUKwUTlnCU0nS/vYEVUbVQ0vZrTcIEKO5TV0tx8WsvuP2dkc7bqQ1mSB7xhJwide7NKmLSAFnYsdP6x+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaLeR2TD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A30C4CEE3;
+	Thu,  3 Jul 2025 15:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556250;
-	bh=4brq7RxdhJgHT5dWOhH4ODEuNgIAJtvT1cnfJzWE/nU=;
+	s=korg; t=1751555415;
+	bh=5C0S64BK+QHXI8Ucx+sFrQMa5qGCNby4IAxF4ZA/oEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QsjL3LcZMKSQWOL6VlblTLV1TKSwhjUP8ivZ42TMZv23Hh5iU8Nz4xzz7azCFUYCF
-	 ec5LrR1iEx+E4lusN6Xnd16PqCqz1acRtRWdU+8ldwHXX834hLSwuzH15VWLopee1Z
-	 /siS0F9ROhaMnYlvlnY+k5/57gEdIwOHxTgmgMFA=
+	b=oaLeR2TDm1CCSxmD7Ozx9gNYoL5wiW6x7I1ixQavRt2PqTK7plf851+D4uUlMlWHR
+	 YJOjPZSAG1JM4zOrSINwojbGsXUqW+jPV8SFV84u+usa4S6mdEfk9/5xJ0Xug1ICIz
+	 GdtdLlSXswEkGqByf/HDBftcXMsSCf/2BBfdFzxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heinz Mauelshagen <heinzm@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.1 094/132] dm-raid: fix variable in journal device check
+	Cyril Bur <cyrilbur@tenstorrent.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>
+Subject: [PATCH 6.15 263/263] riscv: uaccess: Only restore the CSR_STATUS SUM bit
 Date: Thu,  3 Jul 2025 16:43:03 +0200
-Message-ID: <20250703143943.089016616@linuxfoundation.org>
+Message-ID: <20250703144014.959025313@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heinz Mauelshagen <heinzm@redhat.com>
+From: Cyril Bur <cyrilbur@tenstorrent.com>
 
-commit db53805156f1e0aa6d059c0d3f9ac660d4ef3eb4 upstream.
+commit 265d6aba165c500389c80d394ac247460c443ef5 upstream.
 
-Replace "rdev" with correct loop variable name "r".
+During switch to csrs will OR the value of the register into the
+corresponding csr. In this case we're only interested in restoring the
+SUM bit not the entire register.
 
-Signed-off-by: Heinz Mauelshagen <heinzm@redhat.com>
-Cc: stable@vger.kernel.org
-Fixes: 63c32ed4afc2 ("dm raid: add raid4/5/6 journaling support")
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Cyril Bur <cyrilbur@tenstorrent.com>
+Link: https://lore.kernel.org/r/20250522160954.429333-1-cyrilbur@tenstorrent.com
+Co-developed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: 788aa64c01f1 ("riscv: save the SR_SUM status over switches")
+Link: https://lore.kernel.org/r/20250602121543.1544278-1-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-raid.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/processor.h |    2 +-
+ arch/riscv/kernel/asm-offsets.c    |    6 +++---
+ arch/riscv/kernel/entry.S          |    9 +++++----
+ 3 files changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/md/dm-raid.c
-+++ b/drivers/md/dm-raid.c
-@@ -2381,7 +2381,7 @@ static int super_init_validation(struct
- 	 */
- 	sb_retrieve_failed_devices(sb, failed_devices);
- 	rdev_for_each(r, mddev) {
--		if (test_bit(Journal, &rdev->flags) ||
-+		if (test_bit(Journal, &r->flags) ||
- 		    !r->sb_page)
- 			continue;
- 		sb2 = page_address(r->sb_page);
+--- a/arch/riscv/include/asm/processor.h
++++ b/arch/riscv/include/asm/processor.h
+@@ -103,7 +103,7 @@ struct thread_struct {
+ 	struct __riscv_d_ext_state fstate;
+ 	unsigned long bad_cause;
+ 	unsigned long envcfg;
+-	unsigned long status;
++	unsigned long sum;
+ 	u32 riscv_v_flags;
+ 	u32 vstate_ctrl;
+ 	struct __riscv_v_ext_state vstate;
+--- a/arch/riscv/kernel/asm-offsets.c
++++ b/arch/riscv/kernel/asm-offsets.c
+@@ -34,7 +34,7 @@ void asm_offsets(void)
+ 	OFFSET(TASK_THREAD_S9, task_struct, thread.s[9]);
+ 	OFFSET(TASK_THREAD_S10, task_struct, thread.s[10]);
+ 	OFFSET(TASK_THREAD_S11, task_struct, thread.s[11]);
+-	OFFSET(TASK_THREAD_STATUS, task_struct, thread.status);
++	OFFSET(TASK_THREAD_SUM, task_struct, thread.sum);
+ 
+ 	OFFSET(TASK_TI_CPU, task_struct, thread_info.cpu);
+ 	OFFSET(TASK_TI_PREEMPT_COUNT, task_struct, thread_info.preempt_count);
+@@ -347,8 +347,8 @@ void asm_offsets(void)
+ 		  offsetof(struct task_struct, thread.s[11])
+ 		- offsetof(struct task_struct, thread.ra)
+ 	);
+-	DEFINE(TASK_THREAD_STATUS_RA,
+-		  offsetof(struct task_struct, thread.status)
++	DEFINE(TASK_THREAD_SUM_RA,
++		  offsetof(struct task_struct, thread.sum)
+ 		- offsetof(struct task_struct, thread.ra)
+ 	);
+ 
+--- a/arch/riscv/kernel/entry.S
++++ b/arch/riscv/kernel/entry.S
+@@ -399,14 +399,15 @@ SYM_FUNC_START(__switch_to)
+ 	REG_S s11, TASK_THREAD_S11_RA(a3)
+ 
+ 	/* save the user space access flag */
+-	li    s0, SR_SUM
+-	csrr  s1, CSR_STATUS
+-	REG_S s1, TASK_THREAD_STATUS_RA(a3)
++	csrr  s0, CSR_STATUS
++	REG_S s0, TASK_THREAD_SUM_RA(a3)
+ 
+ 	/* Save the kernel shadow call stack pointer */
+ 	scs_save_current
+ 	/* Restore context from next->thread */
+-	REG_L s0,  TASK_THREAD_STATUS_RA(a4)
++	REG_L s0,  TASK_THREAD_SUM_RA(a4)
++	li    s1,  SR_SUM
++	and   s0,  s0, s1
+ 	csrs  CSR_STATUS, s0
+ 	REG_L ra,  TASK_THREAD_RA_RA(a4)
+ 	REG_L sp,  TASK_THREAD_SP_RA(a4)
 
 
 
