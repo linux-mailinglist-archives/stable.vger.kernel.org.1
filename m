@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B16AF7990
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D7B8AF77FA
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 752DE188A277
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:59:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31BD81C83F89
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CDF2EE29D;
-	Thu,  3 Jul 2025 14:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE3372610;
+	Thu,  3 Jul 2025 14:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0whISYQt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlFIHjLY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51892E7F1A;
-	Thu,  3 Jul 2025 14:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0772EE29E;
+	Thu,  3 Jul 2025 14:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554733; cv=none; b=cXqNR14AkVyIR4HNpE/XWtNou9kWhhsSP5W38scBNHkfZm2U9oXhDAmvdcJ+VRGMpG52xIH569vnpz/5xtorQcFiyLw9TJ7xYmCZRuJllVDyrJk+Oabm0onufmMxcHaufyQ55S4CCT0FWJ+zPSA78S2n2I21EsrahdWj4ew3nKE=
+	t=1751553920; cv=none; b=YUwHk6YioBcXxjL/hVKnetxkRnR0lL6uwBQQwyVen5TP8GEtjl6EF3HcPpYGGohjb+g2JrvOZDspZT2asOgsBzGsr24uv9pmJqJdUn01we2dKNjmGRGPDN39JDpaj1JipWaRHupjPcER9DyCZpztU4fOIHARjeyprBhTh98pnB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554733; c=relaxed/simple;
-	bh=LI+Jy1iWp/cnUYIELtoHNJkZDKjp2KtBm8SfZVhpHEc=;
+	s=arc-20240116; t=1751553920; c=relaxed/simple;
+	bh=nFStz9c8ztYQNVijCtf9Y53vwH+vCbzsrAUOSkwojj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/xsY2UvEQ2ZExF0a5fR6mxC3Horh6vdg7+R7cHEITZ87PrrET55Eo2A5XmvYmINVy1rZ7+Emjd5o4YdaiJHN3xCiBSYZd2gOquc1346UdEdd4t000Y2R+Tba1Jwl7mjL2vED5qGjN7FRz20advmEcFwKP2SmJeuq8BPOjzocGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0whISYQt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D70DC4CEE3;
-	Thu,  3 Jul 2025 14:58:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EJhxiRrOGqzpCjtwH0WW0ahYBShqHfPLMYfQdYfkXugHjsSQ5P3nZ6jFAz9wVGhR1jZMvnX9HXpPoU/u5ocFwqsRLRDURwVyFH/DRcL4i6jMcJZV5xjdNDRRBQvoJ4jIrCAC5xPwLQhSv2eKXyH1Ee1ZsDcPM5UO90ChL1oGvNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlFIHjLY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A346AC4CEE3;
+	Thu,  3 Jul 2025 14:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554733;
-	bh=LI+Jy1iWp/cnUYIELtoHNJkZDKjp2KtBm8SfZVhpHEc=;
+	s=korg; t=1751553920;
+	bh=nFStz9c8ztYQNVijCtf9Y53vwH+vCbzsrAUOSkwojj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0whISYQt2KYWcfM2UIQA+zlDuZccr2L+Mt6AmwR7VxXy2HS1V8Yn7g5/4PZBSNNil
-	 kDBU8s08vuYl2bUjFpWGpo8X+ECei3vdbBdueLwCSsf4pZ96JzN62HvOiPxcYL/2ni
-	 PkNvHHc974H0LfegroOkKRDzUZ9YSBmgL+ay6UdY=
+	b=rlFIHjLYWXSN41G5khGQvSA/or29CVoJSls6Cz859MqXgoVgDnpw4qbLtLLjcqLS+
+	 PcBu9hqB0nSYYG7ujoey7OiZNEr9tow683qhbTA9sa7lt3JlHQRdtCFujaabOp+GNK
+	 nLzVp44nAt9WxxT46t0AIZtp8R1trx1A1FxZC2sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 031/263] PCI: imx6: Add workaround for errata ERR051624
+Subject: [PATCH 6.12 003/218] cifs: Fix encoding of SMB1 Session Setup NTLMSSP Request in non-UNICODE mode
 Date: Thu,  3 Jul 2025 16:39:11 +0200
-Message-ID: <20250703144005.545719736@linuxfoundation.org>
+Message-ID: <20250703143956.097771325@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit ce0c43e855c7f652b6351110aaaabf9b521debd7 ]
+[ Upstream commit 6510ef4230b68c960309e0c1d6eb3e32eb785142 ]
 
-ERR051624: The Controller Without Vaux Cannot Exit L23 Ready Through Beacon
-or PERST# De-assertion
+SMB1 Session Setup NTLMSSP Request in non-UNICODE mode is similar to
+UNICODE mode, just strings are encoded in ASCII and not in UTF-16.
 
-When the auxiliary power is not available, the controller cannot exit from
-L23 Ready with beacon or PERST# de-assertion when main power is not
-removed. So the workaround is to set SS_RW_REG_1[SYS_AUX_PWR_DET] to 1.
+With this change it is possible to setup SMB1 session with NTLM
+authentication in non-UNICODE mode with Windows SMB server.
 
-This workaround is required irrespective of whether Vaux is supplied to the
-link partner or not.
+This change fixes mounting SMB1 servers with -o nounicode mount option
+together with -o sec=ntlmssp mount option (which is the default sec=).
 
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[mani: subject and description rewording]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://patch.msgid.link/20250416081314.3929794-5-hongxing.zhu@nxp.com
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ fs/smb/client/sess.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index ea5c06371171f..1b6fbf507166f 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -48,6 +48,8 @@
- #define IMX95_PCIE_SS_RW_REG_0			0xf0
- #define IMX95_PCIE_REF_CLKEN			BIT(23)
- #define IMX95_PCIE_PHY_CR_PARA_SEL		BIT(9)
-+#define IMX95_PCIE_SS_RW_REG_1			0xf4
-+#define IMX95_PCIE_SYS_AUX_PWR_DET		BIT(31)
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index 830516a9e03b0..8be7c4d2d9d62 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -1715,22 +1715,22 @@ _sess_auth_rawntlmssp_assemble_req(struct sess_data *sess_data)
+ 	pSMB = (SESSION_SETUP_ANDX *)sess_data->iov[0].iov_base;
  
- #define IMX95_PE0_GEN_CTRL_1			0x1050
- #define IMX95_PCIE_DEVICE_TYPE			GENMASK(3, 0)
-@@ -231,6 +233,19 @@ static unsigned int imx_pcie_grp_offset(const struct imx_pcie *imx_pcie)
+ 	capabilities = cifs_ssetup_hdr(ses, server, pSMB);
+-	if ((pSMB->req.hdr.Flags2 & SMBFLG2_UNICODE) == 0) {
+-		cifs_dbg(VFS, "NTLMSSP requires Unicode support\n");
+-		return -ENOSYS;
+-	}
+-
+ 	pSMB->req.hdr.Flags2 |= SMBFLG2_EXT_SEC;
+ 	capabilities |= CAP_EXTENDED_SECURITY;
+ 	pSMB->req.Capabilities |= cpu_to_le32(capabilities);
  
- static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
- {
-+	/*
-+	 * ERR051624: The Controller Without Vaux Cannot Exit L23 Ready
-+	 * Through Beacon or PERST# De-assertion
-+	 *
-+	 * When the auxiliary power is not available, the controller
-+	 * cannot exit from L23 Ready with beacon or PERST# de-assertion
-+	 * when main power is not removed.
-+	 *
-+	 * Workaround: Set SS_RW_REG_1[SYS_AUX_PWR_DET] to 1.
-+	 */
-+	regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_1,
-+			IMX95_PCIE_SYS_AUX_PWR_DET);
+ 	bcc_ptr = sess_data->iov[2].iov_base;
+-	/* unicode strings must be word aligned */
+-	if (!IS_ALIGNED(sess_data->iov[0].iov_len + sess_data->iov[1].iov_len, 2)) {
+-		*bcc_ptr = 0;
+-		bcc_ptr++;
 +
- 	regmap_update_bits(imx_pcie->iomuxc_gpr,
- 			IMX95_PCIE_SS_RW_REG_0,
- 			IMX95_PCIE_PHY_CR_PARA_SEL,
++	if (pSMB->req.hdr.Flags2 & SMBFLG2_UNICODE) {
++		/* unicode strings must be word aligned */
++		if (!IS_ALIGNED(sess_data->iov[0].iov_len + sess_data->iov[1].iov_len, 2)) {
++			*bcc_ptr = 0;
++			bcc_ptr++;
++		}
++		unicode_oslm_strings(&bcc_ptr, sess_data->nls_cp);
++	} else {
++		ascii_oslm_strings(&bcc_ptr, sess_data->nls_cp);
+ 	}
+-	unicode_oslm_strings(&bcc_ptr, sess_data->nls_cp);
+ 
+ 	sess_data->iov[2].iov_len = (long) bcc_ptr -
+ 					(long) sess_data->iov[2].iov_base;
 -- 
 2.39.5
 
