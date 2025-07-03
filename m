@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-159934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A60AF7BA3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECF91AF7A5F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85F126E5026
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08B035606EB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54D12EFDAD;
-	Thu,  3 Jul 2025 15:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6190B2EF65A;
+	Thu,  3 Jul 2025 15:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzTr2RLY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiRlR4in"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934BD2EACE1;
-	Thu,  3 Jul 2025 15:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5232EF299;
+	Thu,  3 Jul 2025 15:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555828; cv=none; b=X3WxRgafvjFjmI13DsStHr/45vjY0vBwz6vSZ0K4umYlfT1OrPUW5QBLxiiSToUKcYZgNTVVFKm00/e+2NSEM7LBT7YRf86AFghYgXiNv+VXKTTeoCwropYcRP4Ylphrw4sWyT5YEiqy/3JhQtNuC48ayHrtQSiB7uvP+AMinZw=
+	t=1751555338; cv=none; b=LcVCORvg9MPU0x/vx268gIMY2UT3PqPqidSsmsAU4lZERb617sbN0QTBc5jPdEqhfP5StkN/Emr6RdF0xPwVODexc1WiL+7dbHrOvfNGgfZaAxJx9nKAc4ytWjlI52L0xJsHtmfCgDle6re4sN4+Li2hmChTaVn0OZP+B2KM9yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555828; c=relaxed/simple;
-	bh=kBOBw0ntQlwgVgDQ81CZv1woxoyVYnBPllw/60Af4j8=;
+	s=arc-20240116; t=1751555338; c=relaxed/simple;
+	bh=XpRFKb49J0G+iJ91watV7H0gVDdekBuNJ2J2KrABarg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AGnQCJi2C4nMnsOZGqQ38yw8dsrZ5HiCEzskzoGJ1tLVNaAUbQjfotHaupvAVQIHkMAJZIUQ6HeGb0xr8oRKRf2KzIJN/2AmOXzUX57Sn2Zt0Qiewe7Q0tyV8h8YHT7YyGNpAeH+aXp04Xwt9l/7NBNe4ooFlIBgCGnvxfDJ4QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzTr2RLY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB5EC4CEE3;
-	Thu,  3 Jul 2025 15:17:07 +0000 (UTC)
+	 MIME-Version; b=o45Q6bEcgi0/jytWJ/PPKR+q74NlONjI61CcLALa7Za9RdRtvgyoc7YjPXvPhak/8c2bqUxoVjauTWUxyOKnOlnEjwk0SZuDDOFTbz0fQBK1Y9X1LY4+fgdo4BHpMwszbqxJi97H6a3LIbUCKgjKEZWKxOXwByapmH9atB9gZIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiRlR4in; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D49C4CEE3;
+	Thu,  3 Jul 2025 15:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555828;
-	bh=kBOBw0ntQlwgVgDQ81CZv1woxoyVYnBPllw/60Af4j8=;
+	s=korg; t=1751555338;
+	bh=XpRFKb49J0G+iJ91watV7H0gVDdekBuNJ2J2KrABarg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YzTr2RLYghYqgwQL8tBp4iJ8FuPBnR9Czkd4L3vTcDTo+fbqh/EjHt9DmXTpt5OZO
-	 jMHxMGleEl/BNMlHA1EmD//OaLeRe6JgAEnRj7WM2p8ZfRVwpPSeJj7S6ztZAaf7gT
-	 yqZE4QS2s/L8SP53vz5XyUN4X3bGzgbIDQLino5g=
+	b=jiRlR4iniMr7wjAdYyawkao5wmHkueIcyX3nG7NUltW4ItxvxDXQoIsnd4gOMdSGw
+	 ncLTwW0L3WBU2p4r8tIt/TaWCSQxJqqjeX9wfvew5eRGNk0Zpr+3Ocysxf5+vHyyWi
+	 5gH0m0okK7odf4fqkB2+QAcB6CEV8ybvQMC7Op+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Simon Horman <horms@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 103/139] net: libwx: fix the creation of page_pool
-Date: Thu,  3 Jul 2025 16:42:46 +0200
-Message-ID: <20250703143945.197228511@linuxfoundation.org>
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 247/263] sched_ext: Make scx_group_set_weight() always update tg->scx.weight
+Date: Thu,  3 Jul 2025 16:42:47 +0200
+Message-ID: <20250703144014.321089259@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+[ Upstream commit c50784e99f0e7199cdb12dbddf02229b102744ef ]
 
-commit 85720e04d9af0b77f8092b12a06661a8d459d4a0 upstream.
+Otherwise, tg->scx.weight can go out of sync while scx_cgroup is not enabled
+and ops.cgroup_init() may be called with a stale weight value.
 
-'rx_ring->size' means the count of ring descriptors multiplied by the
-size of one descriptor. When increasing the count of ring descriptors,
-it may exceed the limit of pool size.
-
-[ 864.209610] page_pool_create_percpu() gave up with errno -7
-[ 864.209613] txgbe 0000:11:00.0: Page pool creation failed: -7
-
-Fix to set the pool_size to the count of ring descriptors.
-
-Fixes: 850b971110b2 ("net: libwx: Allocate Rx and Tx resources")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/434C72BFB40E350A+20250625023924.21821-1-jiawenwu@trustnetic.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 819513666966 ("sched_ext: Add cgroup support")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_lib.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/ext.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -2368,7 +2368,7 @@ static int wx_alloc_page_pool(struct wx_
- 	struct page_pool_params pp_params = {
- 		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
- 		.order = 0,
--		.pool_size = rx_ring->size,
-+		.pool_size = rx_ring->count,
- 		.nid = dev_to_node(rx_ring->dev),
- 		.dev = rx_ring->dev,
- 		.dma_dir = DMA_FROM_DEVICE,
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index afaf49e5ecb97..86ce43fa36693 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -4074,12 +4074,12 @@ void scx_group_set_weight(struct task_group *tg, unsigned long weight)
+ {
+ 	percpu_down_read(&scx_cgroup_rwsem);
+ 
+-	if (scx_cgroup_enabled && tg->scx_weight != weight) {
+-		if (SCX_HAS_OP(cgroup_set_weight))
+-			SCX_CALL_OP(SCX_KF_UNLOCKED, cgroup_set_weight, NULL,
+-				    tg_cgrp(tg), weight);
+-		tg->scx_weight = weight;
+-	}
++	if (scx_cgroup_enabled && SCX_HAS_OP(cgroup_set_weight) &&
++	    tg->scx_weight != weight)
++		SCX_CALL_OP(SCX_KF_UNLOCKED, cgroup_set_weight, NULL,
++			    tg_cgrp(tg), weight);
++
++	tg->scx_weight = weight;
+ 
+ 	percpu_up_read(&scx_cgroup_rwsem);
+ }
+-- 
+2.39.5
+
 
 
 
