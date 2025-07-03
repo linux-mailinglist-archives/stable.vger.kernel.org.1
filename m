@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E23AF77FF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B36AF797E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:02:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2114B1C84172
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 139BD1BC516B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7212EF29C;
-	Thu,  3 Jul 2025 14:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8262EE98D;
+	Thu,  3 Jul 2025 14:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVwu1OEY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="do7lCqJr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C6B2EF28C;
-	Thu,  3 Jul 2025 14:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9A12EE96D;
+	Thu,  3 Jul 2025 14:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751553933; cv=none; b=mESxugjK7YlGGHwLsvkZfFrx/gbf0k52HXAKCGRHq8lNQx63kO1IslVXeCbvWtcDzuAqpoGDbQZ+bS0yHDgRZWVl1m0D1Cly+TxnhM4C9mEkVc0DR+8exG+rOkTTdhUcYX4b3MF1dIdF/PIzOwwFM/0ekIkOo1XCDtg47Gqts4Y=
+	t=1751554642; cv=none; b=mS1iWMjaGckjajSKxtx5T9dtw8uIfh2N7kkGAohgq8anwwuQbAks+px1QMNSIPtKyffD5tVug18p7w4uiuS1O9lyJoFyOHbKqaA8W8e1OBe8FT7yfU6kIeG4BHbt94uF3iS57jQQl5ONgzrb5nFMbKpfc6OnsIiuTBipOIW4x/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751553933; c=relaxed/simple;
-	bh=vX5uxkpKnGjmNx6dQUIukU2uNLzXJw7Ix0f7qxIOdYg=;
+	s=arc-20240116; t=1751554642; c=relaxed/simple;
+	bh=DI4JjvV3nkFi1sAwyQElZBv+GfomhD08oBhOHL0YGuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdOSkcRLnbAnvRTGgybClt7NTJEZ+MjYoQsnVyFdEU5bZigShXsKMuj1hw6v3j6cGlX/Fj9FBL4ifBN6ZPXt8IbnVFG1+cz9H897B4wfD9z2oQtvXzF1BBV6238BuNonEjizwFFPIlyaUdac+A1E+3DWt3ah42pev1Jxf5HMa9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVwu1OEY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A20C4CEE3;
-	Thu,  3 Jul 2025 14:45:32 +0000 (UTC)
+	 MIME-Version; b=QzbZoJEB5cGCM0vjGwqb+rcIt+QS96Sa2ZXb8A9ApBTqb2qn1MdnPrE518U7abZT/W2D26Ktrmjd2y7OS34/+5IAzYjOcavPL9udg9DXm9hLHywC2CYGYBRhmSG2r0As69Y5xoqu2tp6Z50A5Zm0sINOtjNprrLhOdr6UP4+RIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=do7lCqJr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF233C4CEE3;
+	Thu,  3 Jul 2025 14:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751553932;
-	bh=vX5uxkpKnGjmNx6dQUIukU2uNLzXJw7Ix0f7qxIOdYg=;
+	s=korg; t=1751554642;
+	bh=DI4JjvV3nkFi1sAwyQElZBv+GfomhD08oBhOHL0YGuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JVwu1OEYQFa5lAD1Kj4wUFHpMc6BVEz1TfjWfNOQvkRRCfopeQQopSY2VIs1mr+Ud
-	 irlxch5ThGs2FMCfwd5Xopds9m9vV9K+q4h452JcYQ1i/7Q7bz9IDfTvk8C0D5Er5w
-	 w3SHFilmskbgBcUtY4y7qkCW8XEBcMEuHX4qaApw=
+	b=do7lCqJrN0eyHx0gyMo8xZ6QGRxvssML1R6MOOLMm7XQOCkw6dKtDtW1D/l3r3+R0
+	 lxi24hd6sVDd+KzYiDGL6KZpM9tW+LIegmym+YsA8hu4uGxZCjuD7jQXx8N+5AE9lT
+	 aAf1PN7895l6Wh2x83ZwBby6YigOorUTp8MYkAa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 007/218] mailbox: Not protect module_put with spin_lock_irqsave
+Subject: [PATCH 6.15 035/263] md/md-bitmap: fix dm-raid max_write_behind setting
 Date: Thu,  3 Jul 2025 16:39:15 +0200
-Message-ID: <20250703143956.250486984@linuxfoundation.org>
+Message-ID: <20250703144005.704353181@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit dddbd233e67e792bb0a3f9694a4707e6be29b2c6 ]
+[ Upstream commit 2afe17794cfed5f80295b1b9facd66e6f65e5002 ]
 
-&chan->lock is not supposed to protect 'chan->mbox'.
-And in __mbox_bind_client, try_module_get is also not protected
-by &chan->lock. So move module_put out of the lock protected
-region.
+It's supposed to be COUNTER_MAX / 2, not COUNTER_MAX.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Link: https://lore.kernel.org/linux-raid/20250524061320.370630-14-yukuai1@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 2 +-
+ drivers/md/md-bitmap.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index cb174e788a96c..92c2fb618c8e1 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -490,8 +490,8 @@ void mbox_free_channel(struct mbox_chan *chan)
- 	if (chan->txdone_method == TXDONE_BY_ACK)
- 		chan->txdone_method = TXDONE_BY_POLL;
- 
--	module_put(chan->mbox->dev->driver->owner);
- 	spin_unlock_irqrestore(&chan->lock, flags);
-+	module_put(chan->mbox->dev->driver->owner);
- }
- EXPORT_SYMBOL_GPL(mbox_free_channel);
- 
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index 37b08f26c62f5..45dd3d9f01a8e 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -789,7 +789,7 @@ static int md_bitmap_new_disk_sb(struct bitmap *bitmap)
+ 	 * is a good choice?  We choose COUNTER_MAX / 2 arbitrarily.
+ 	 */
+ 	write_behind = bitmap->mddev->bitmap_info.max_write_behind;
+-	if (write_behind > COUNTER_MAX)
++	if (write_behind > COUNTER_MAX / 2)
+ 		write_behind = COUNTER_MAX / 2;
+ 	sb->write_behind = cpu_to_le32(write_behind);
+ 	bitmap->mddev->bitmap_info.max_write_behind = write_behind;
 -- 
 2.39.5
 
