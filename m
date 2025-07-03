@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-159483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E9BAF78D6
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:55:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1F3AF7BE1
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:29:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEF363BD90E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 102D9540956
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E052EFD89;
-	Thu,  3 Jul 2025 14:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF782F0C63;
+	Thu,  3 Jul 2025 15:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1v2frQe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EB64pO6b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91172EE96D;
-	Thu,  3 Jul 2025 14:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C95D2EFD94;
+	Thu,  3 Jul 2025 15:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554374; cv=none; b=h/mwOsw5MRy8jNEbmy0vz6rzDQdTqmXGLEgRAk/ZvnHDc8Goeik5Gwb03Glzrila/sTlw7yeDN+V0T8aIWJxr3MkaRcym2R1lsDaPT76D7oP4tUAaVg/Z3eFrkSBVe/2zNLx+3rwOeDb5HZkKSMTFTE7ZCwUlXoyPrnGRKcV6CA=
+	t=1751555972; cv=none; b=PhVLdlDdw02sj/Z69dk/12ijdZm5mThIk+8S+a4cKSJQOzP7W4xY+VHGbwj5+Zwr07fy7ML3XgZpTeZ7WGnIkD4JU3pRz3dtGKqch2UObuiQYqdbUb2n3KFU6da5LBgSYQN/QehnlUvuVFxCrZacJO7ar2KoWAFtI1PK41aqZnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554374; c=relaxed/simple;
-	bh=PHv0qYv7utuS1J7yDPCJxuslr5MzFCOxN5puuDFoVCY=;
+	s=arc-20240116; t=1751555972; c=relaxed/simple;
+	bh=TrBwcs0lSlsg5xzw88x8tzwx/Bm+3T9+IwHFvVeYIRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVd1IrG4FImqCFFpSa2caHCvcVLGIoMHrfIVryMMW3K1CVQjkLoOtj2GQ9qXqcu262S3nvEURQJ3KQLQ8+XbJu9yZMcEhWv/SBA4hBl35ENzyVcuMwOGECSJhATh4a8s5EfwZ4ntxKoDCGm2UWZJ2S/n4bPcz4er8j6lLsOiuWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1v2frQe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88F2C4CEE3;
-	Thu,  3 Jul 2025 14:52:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H+mkBVROiK3FDb2dqJutodY+cBcfNG/RZabZl9T/GsS2mNn6APRRvXHaEx6s/Y+kKZsYclYZgam8u3gHcCNjc6z7MhD73xHd7y/3SL7VeJsZmo3VPfJbFEcU5Q+PkJp5jZR+LjPnjK/7fOwX8RmpuYue4MQmmW4YFcixVL2xuPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EB64pO6b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D95C4CEE3;
+	Thu,  3 Jul 2025 15:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554374;
-	bh=PHv0qYv7utuS1J7yDPCJxuslr5MzFCOxN5puuDFoVCY=;
+	s=korg; t=1751555971;
+	bh=TrBwcs0lSlsg5xzw88x8tzwx/Bm+3T9+IwHFvVeYIRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1v2frQekQNZD6tTeJ3yCADbQsJnCneiDqqtLFOtBJ5Xa5JSQ8pxPaERvVcrGAchY
-	 xselxOvTR8RD9s2lBEy/DnWtErASSz14TJppNUvkOLuQ5n/C7CE9FgodV+4X4ooNV8
-	 o4J3YCMXRzuSIjPjuC9gSV19hcY9rxfnz5h1kgu8=
+	b=EB64pO6bnE0LYqtpYCd6NuY6rP7snRRIPLc7LRx5Q8YrMggPd5oH/XJkTJB0dGhGu
+	 pGpR1ujn72Ui5I24cSO9vPY5VPZyCA0pQGocFL/EYNhBE+G1qFKa1IZL+pQjH4Fhau
+	 RZjKB37BUBXs4NooBxTPKoSUqdHyhoE+YiEdaN3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>,
-	Yihan Zhu <Yihan.Zhu@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.12 167/218] drm/amd/display: Fix RMCM programming seq errors
-Date: Thu,  3 Jul 2025 16:41:55 +0200
-Message-ID: <20250703144002.836774196@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 027/132] usb: Add checks for snprintf() calls in usb_alloc_dev()
+Date: Thu,  3 Jul 2025 16:41:56 +0200
+Message-ID: <20250703143940.474656621@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +59,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihan Zhu <Yihan.Zhu@amd.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 158f9944ac05dafd2d3a23d0688e6cf40ef68b90 upstream.
+[ Upstream commit 82fe5107fa3d21d6c3fba091c9dbc50495588630 ]
 
-[WHY & HOW]
-Fix RMCM programming sequence errors and mapping issues to pass the RMCM
-test.
+When creating a device path in the driver the snprintf() takes
+up to 16 characters long argument along with the additional up to
+12 characters for the signed integer (as it can't see the actual limits)
+and tries to pack this into 16 bytes array. GCC complains about that
+when build with `make W=1`:
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
-Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 11baa4975025033547f45f5894087a0dda6efbb8)
-Cc: stable@vger.kernel.org
+  drivers/usb/core/usb.c:705:25: note: ‘snprintf’ output between 3 and 28 bytes into a destination of size 16
+
+Since everything works until now, let's just check for the potential
+buffer overflow and bail out. It is most likely a never happen situation,
+but at least it makes GCC happy.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250321164949.423957-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/core/usb.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-@@ -4651,7 +4651,10 @@ static void calculate_tdlut_setting(
- 	//the tdlut is fetched during the 2 row times of prefetch.
- 	if (p->setup_for_tdlut) {
- 		*p->tdlut_groups_per_2row_ub = (unsigned int)math_ceil2((double) *p->tdlut_bytes_per_frame / *p->tdlut_bytes_per_group, 1);
--		*p->tdlut_opt_time = (*p->tdlut_bytes_per_frame - p->cursor_buffer_size * 1024) / tdlut_drain_rate;
-+		if (*p->tdlut_bytes_per_frame > p->cursor_buffer_size * 1024)
-+			*p->tdlut_opt_time = (*p->tdlut_bytes_per_frame - p->cursor_buffer_size * 1024) / tdlut_drain_rate;
-+		else
-+			*p->tdlut_opt_time = 0;
- 		*p->tdlut_drain_time = p->cursor_buffer_size * 1024 / tdlut_drain_rate;
- 	}
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 3500e3c94c4b8..2215f8ca54170 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -704,15 +704,16 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
+ 		dev_set_name(&dev->dev, "usb%d", bus->busnum);
+ 		root_hub = 1;
+ 	} else {
++		int n;
++
+ 		/* match any labeling on the hubs; it's one-based */
+ 		if (parent->devpath[0] == '0') {
+-			snprintf(dev->devpath, sizeof dev->devpath,
+-				"%d", port1);
++			n = snprintf(dev->devpath, sizeof(dev->devpath), "%d", port1);
+ 			/* Root ports are not counted in route string */
+ 			dev->route = 0;
+ 		} else {
+-			snprintf(dev->devpath, sizeof dev->devpath,
+-				"%s.%d", parent->devpath, port1);
++			n = snprintf(dev->devpath, sizeof(dev->devpath), "%s.%d",
++				     parent->devpath, port1);
+ 			/* Route string assumes hubs have less than 16 ports */
+ 			if (port1 < 15)
+ 				dev->route = parent->route +
+@@ -721,6 +722,11 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
+ 				dev->route = parent->route +
+ 					(15 << ((parent->level - 1)*4));
+ 		}
++		if (n >= sizeof(dev->devpath)) {
++			usb_put_hcd(bus_to_hcd(bus));
++			usb_put_dev(dev);
++			return NULL;
++		}
  
+ 		dev->dev.parent = &parent->dev;
+ 		dev_set_name(&dev->dev, "%d-%s", bus->busnum, dev->devpath);
+-- 
+2.39.5
+
 
 
 
