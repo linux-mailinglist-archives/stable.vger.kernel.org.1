@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-159889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB37AF7B45
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:23:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 133E3AF790D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D57FB1890117
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:17:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0EF5546BD0
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BA42EF9A7;
-	Thu,  3 Jul 2025 15:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740192EA149;
+	Thu,  3 Jul 2025 14:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjEAPlrc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOnknggR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3232D6622;
-	Thu,  3 Jul 2025 15:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CEE2EE5F3;
+	Thu,  3 Jul 2025 14:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555679; cv=none; b=rreiNwVdPB6pvncDTYP94n1b37Q/7rggcfjVjymMG0zyzIGRvzhfyvArO4tptQi6DYNQFs1v/TCCogR3F96id2AUSn19CHr12X5QsEuN6FSsPODXKpScsxV3uHYa3m/e/t3rpLLdVwzuJX6bGamKvb8IJA2WqhzmlDMI9mP1ikg=
+	t=1751554482; cv=none; b=GSpVcBZKY1RuXV2KZLq44YVZnRK0thKpi2wTaQMQM7xcwGy9AGddPIsfALZQg8iGCmEaRUQ2N1z+shkzbbdGqC9lutXcMjrCDlFx+lxEm0yJ62SCOlI8IYo3OvsJR3OYbzMt4W6IfzW3lt4ifUZU2pkpZM1k2TujsYG5mRvvHS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555679; c=relaxed/simple;
-	bh=kAOwhzWgcb2zH08QDws2u6PaE5ShFqSbp/aZwgZMCz8=;
+	s=arc-20240116; t=1751554482; c=relaxed/simple;
+	bh=Xl8/croTMAR5ZIFJRyqzVZvfaMw/UNZ9XzdQ4/1A3Es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OlvOllcPukKyWWz240SbWHhM0AyWsiy8xbZOEqJUT+wdLX/7fpwFJXM3SbGnMzHYOeuVSukDyPcSnxseukyzGSmgmJ5vZbCSs+I2AY+H4I+diPEfWEVvNMeCTRXqjPvX453hELi7R2OvXIJ1m4Iay3+OpoLX2BaC5pv//YVl8KE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjEAPlrc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB582C4CEE3;
-	Thu,  3 Jul 2025 15:14:38 +0000 (UTC)
+	 MIME-Version; b=Rw+TCyBe1kwiFJQMXCIu0mavz3eg9ctFGkZCajE/gWzZ5Jjmk8FHVKnLtkyAANosWPgG6Hd6MT148xfq2VvHj+RkuvX4UgUM8G2gReoI++LxToeqMjM6z7/W+ziob76OR0yfbXrUf6brEwcvZG5EVDgp3LbLp6CVWUXw5Tv3nYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOnknggR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53248C4CEED;
+	Thu,  3 Jul 2025 14:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555679;
-	bh=kAOwhzWgcb2zH08QDws2u6PaE5ShFqSbp/aZwgZMCz8=;
+	s=korg; t=1751554481;
+	bh=Xl8/croTMAR5ZIFJRyqzVZvfaMw/UNZ9XzdQ4/1A3Es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DjEAPlrc65V+uLyBMVlhLGC4RmaRONVHC5V93nEqZyubLUVfwWOdYf3NwaiwEEzt1
-	 Ls4evPLmpTnOtaA2wtPXql/0P45KP8zT4ORNGjXOlxn7N0K1FqT36wkzkOeYgrCcIE
-	 tVCMi+X/g/eM7GYEm/9zSm/i5bPkGXwPfWyHf5Rg=
+	b=mOnknggRtU9/N0k1dYCzWAdX+sBLuwqUXgpShfcj3Vi13clibXMm50Vt0rGr2wcOa
+	 rtvi/a6DjT4g3O+9vG376NtHQix5bKLANIve246QJPNghKLmgHZRMEpMSNybatx2Fb
+	 cUpL0OL71QAL5/2O/chnwrjeX6CEVnQev+CHpl9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ivan Shapovalov <intelfx@intelfx.name>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/139] net: enetc: Correct endianness handling in _enetc_rd_reg64
+Subject: [PATCH 6.12 202/218] btrfs: skip inodes without loaded extent maps when shrinking extent maps
 Date: Thu,  3 Jul 2025 16:42:30 +0200
-Message-ID: <20250703143944.563607898@linuxfoundation.org>
+Message-ID: <20250703144004.301677993@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +65,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 7b515f35a911fdc31fbde6531828dcd6ae9803d3 ]
+[ Upstream commit c6c9c4d56483d941f567eb921434c25fc6086dfa ]
 
-enetc_hw.h provides two versions of _enetc_rd_reg64.
-One which simply calls ioread64() when available.
-And another that composes the 64-bit result from ioread32() calls.
+If there are inodes that don't have any loaded extent maps, we end up
+grabbing a reference on them and later adding a delayed iput, which wakes
+up the cleaner and makes it do unnecessary work. This is common when for
+example the inodes were open only to run stat(2) or all their extent maps
+were already released through the folio release callback
+(btrfs_release_folio()) or released by a previous run of the shrinker, or
+directories which never have extent maps.
 
-In the second case the code appears to assume that each ioread32() call
-returns a little-endian value. However both the shift and logical or
-used to compose the return value would not work correctly on big endian
-systems if this were the case. Moreover, this is inconsistent with the
-first case where the return value of ioread64() is assumed to be in host
-byte order.
-
-It appears that the correct approach is for both versions to treat the
-return value of ioread*() functions as being in host byte order. And
-this patch corrects the ioread32()-based version to do so.
-
-This is a bug but would only manifest on big endian systems
-that make use of the ioread32-based implementation of _enetc_rd_reg64.
-While all in-tree users of this driver are little endian and
-make use of the ioread64-based implementation of _enetc_rd_reg64.
-Thus, no in-tree user of this driver is affected by this bug.
-
-Flagged by Sparse.
-Compile tested only.
-
-Fixes: 16eb4c85c964 ("enetc: Add ethtool statistics")
-Closes: https://lore.kernel.org/all/AM9PR04MB850500D3FC24FE23DEFCEA158879A@AM9PR04MB8505.eurprd04.prod.outlook.com/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250624-etnetc-le-v1-1-a73a95d96e4e@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Ivan Shapovalov <intelfx@intelfx.name>
+Tested-by: Ivan Shapovalov <intelfx@intelfx.name>
+Link: https://lore.kernel.org/linux-btrfs/0414d690ac5680d0d77dfc930606cdc36e42e12f.camel@intelfx.name/
+CC: stable@vger.kernel.org # 6.13+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_hw.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/extent_map.c | 78 +++++++++++++++++++++++++++++++------------
+ 1 file changed, 57 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-index 1619943fb2637..4e8881b479e48 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-@@ -485,7 +485,7 @@ static inline u64 _enetc_rd_reg64(void __iomem *reg)
- 		tmp = ioread32(reg + 4);
- 	} while (high != tmp);
+diff --git a/fs/btrfs/extent_map.c b/fs/btrfs/extent_map.c
+index 1d93e1202c339..d67abf5f97a77 100644
+--- a/fs/btrfs/extent_map.c
++++ b/fs/btrfs/extent_map.c
+@@ -1133,6 +1133,8 @@ static long btrfs_scan_inode(struct btrfs_inode *inode, struct btrfs_em_shrink_c
+ 	long nr_dropped = 0;
+ 	struct rb_node *node;
  
--	return le64_to_cpu((__le64)high << 32 | low);
-+	return (u64)high << 32 | low;
++	lockdep_assert_held_write(&tree->lock);
++
+ 	/*
+ 	 * Take the mmap lock so that we serialize with the inode logging phase
+ 	 * of fsync because we may need to set the full sync flag on the inode,
+@@ -1144,28 +1146,12 @@ static long btrfs_scan_inode(struct btrfs_inode *inode, struct btrfs_em_shrink_c
+ 	 * to find new extents, which may not be there yet because ordered
+ 	 * extents haven't completed yet.
+ 	 *
+-	 * We also do a try lock because otherwise we could deadlock. This is
+-	 * because the shrinker for this filesystem may be invoked while we are
+-	 * in a path that is holding the mmap lock in write mode. For example in
+-	 * a reflink operation while COWing an extent buffer, when allocating
+-	 * pages for a new extent buffer and under memory pressure, the shrinker
+-	 * may be invoked, and therefore we would deadlock by attempting to read
+-	 * lock the mmap lock while we are holding already a write lock on it.
++	 * We also do a try lock because we don't want to block for too long and
++	 * we are holding the extent map tree's lock in write mode.
+ 	 */
+ 	if (!down_read_trylock(&inode->i_mmap_lock))
+ 		return 0;
+ 
+-	/*
+-	 * We want to be fast so if the lock is busy we don't want to spend time
+-	 * waiting for it - either some task is about to do IO for the inode or
+-	 * we may have another task shrinking extent maps, here in this code, so
+-	 * skip this inode.
+-	 */
+-	if (!write_trylock(&tree->lock)) {
+-		up_read(&inode->i_mmap_lock);
+-		return 0;
+-	}
+-
+ 	node = rb_first(&tree->root);
+ 	while (node) {
+ 		struct rb_node *next = rb_next(node);
+@@ -1205,21 +1191,71 @@ static long btrfs_scan_inode(struct btrfs_inode *inode, struct btrfs_em_shrink_c
+ 			break;
+ 		node = next;
+ 	}
+-	write_unlock(&tree->lock);
+ 	up_read(&inode->i_mmap_lock);
+ 
+ 	return nr_dropped;
  }
- #endif
  
++static struct btrfs_inode *find_first_inode_to_shrink(struct btrfs_root *root,
++						      u64 min_ino)
++{
++	struct btrfs_inode *inode;
++	unsigned long from = min_ino;
++
++	xa_lock(&root->inodes);
++	while (true) {
++		struct extent_map_tree *tree;
++
++		inode = xa_find(&root->inodes, &from, ULONG_MAX, XA_PRESENT);
++		if (!inode)
++			break;
++
++		tree = &inode->extent_tree;
++
++		/*
++		 * We want to be fast so if the lock is busy we don't want to
++		 * spend time waiting for it (some task is about to do IO for
++		 * the inode).
++		 */
++		if (!write_trylock(&tree->lock))
++			goto next;
++
++		/*
++		 * Skip inode if it doesn't have loaded extent maps, so we avoid
++		 * getting a reference and doing an iput later. This includes
++		 * cases like files that were opened for things like stat(2), or
++		 * files with all extent maps previously released through the
++		 * release folio callback (btrfs_release_folio()) or released in
++		 * a previous run, or directories which never have extent maps.
++		 */
++		if (RB_EMPTY_ROOT(&tree->root)) {
++			write_unlock(&tree->lock);
++			goto next;
++		}
++
++		if (igrab(&inode->vfs_inode))
++			break;
++
++		write_unlock(&tree->lock);
++next:
++		from = btrfs_ino(inode) + 1;
++		cond_resched_lock(&root->inodes.xa_lock);
++	}
++	xa_unlock(&root->inodes);
++
++	return inode;
++}
++
+ static long btrfs_scan_root(struct btrfs_root *root, struct btrfs_em_shrink_ctx *ctx)
+ {
+ 	struct btrfs_inode *inode;
+ 	long nr_dropped = 0;
+ 	u64 min_ino = ctx->last_ino + 1;
+ 
+-	inode = btrfs_find_first_inode(root, min_ino);
++	inode = find_first_inode_to_shrink(root, min_ino);
+ 	while (inode) {
+ 		nr_dropped += btrfs_scan_inode(inode, ctx);
++		write_unlock(&inode->extent_tree.lock);
+ 
+ 		min_ino = btrfs_ino(inode) + 1;
+ 		ctx->last_ino = btrfs_ino(inode);
+@@ -1230,7 +1266,7 @@ static long btrfs_scan_root(struct btrfs_root *root, struct btrfs_em_shrink_ctx
+ 
+ 		cond_resched();
+ 
+-		inode = btrfs_find_first_inode(root, min_ino);
++		inode = find_first_inode_to_shrink(root, min_ino);
+ 	}
+ 
+ 	if (inode) {
 -- 
 2.39.5
 
