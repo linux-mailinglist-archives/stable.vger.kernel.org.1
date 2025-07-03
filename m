@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-159453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9275AF78AF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:53:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B94FAF7ACC
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6CA817377C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 821B06E1CC9
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF312EF652;
-	Thu,  3 Jul 2025 14:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48ACE2F0045;
+	Thu,  3 Jul 2025 15:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKBAGNhb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCDcPdmS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1632EF29C;
-	Thu,  3 Jul 2025 14:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065362F003C;
+	Thu,  3 Jul 2025 15:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554283; cv=none; b=Cpui7sTnBkI5BalE7W3zy0seCG9UszzTklpC3PHKRIxzjAajSjhoZzS6oeWASchZsUVLX2Fh4H2J7UzPKXXkriQ82LlJh8WfgM4ps7PiZoTtYXTSyflPv+u5Q/ZT3MDTGbNeaBDYNobTVt49zVUmMmccXuynhXP+njJEO3XpLh0=
+	t=1751555470; cv=none; b=Kxa9odDTkXKZFpAQBY29JngTO27bTt5dXsGJm3xeqBO/u+jy762+5O1djd3XNxf38/RB1wgHL4pvFMP4U/ecikIezL+bSWc1HjhxlrwDFXNeDLwA19y9iduAcxPNtRsEIrkgJP8sfQO8+k3xBJV+docynH41j29TSiXFRsHa3KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554283; c=relaxed/simple;
-	bh=ZL5YP6zVy7mjdEZaD0++D44nhG1pQjqbDcFqKAb0JfA=;
+	s=arc-20240116; t=1751555470; c=relaxed/simple;
+	bh=MUtsHCYYcqQQX+VGU/hemmnuVrKc7eROnJqGB6PNMfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MiBhR/oSx+zfROjNhIY/D1F02WgZ3bpadSpq1Y4zR+kKjWkzu7Sy/pyOIXsN/QEiiIZ/RKjI7NOpETBMJjjDwhshEiy966UyBWoO9pAZSra0L63R43tivO8/gL+TMWpf1mM56JHz45mlEuCAMoxr8wvpw4EFho9VqHnmVhocbaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKBAGNhb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D538C4CEED;
-	Thu,  3 Jul 2025 14:51:22 +0000 (UTC)
+	 MIME-Version; b=nk03jrjnd9+Hh6n8rHUlIX2jH1ALU8gi23yGdAi/AYB426GJ4B8H2ZKErAjn8/5Yybkw0wBGOztU2lp95olY//DhmLq9jTKCt/zyFmsQOAJDx8OaQXs6pWK0iD/EQOb0KZnAUXTDpPS3SFRMle7xDYGTLHPpmAcgqenRpkoxWE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCDcPdmS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CD1C4CEED;
+	Thu,  3 Jul 2025 15:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554283;
-	bh=ZL5YP6zVy7mjdEZaD0++D44nhG1pQjqbDcFqKAb0JfA=;
+	s=korg; t=1751555469;
+	bh=MUtsHCYYcqQQX+VGU/hemmnuVrKc7eROnJqGB6PNMfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WKBAGNhbBG2e03AgqsPxiwm42ASAVXNBt39MLvQ6o7swockUyJlmd1pqq9Di3i6ba
-	 Vm71KGGpOLU9VEEtzOfHW5IbEBrhx4GVI1FRbHojfEHqnkTCoWIeDE0and25+9DTep
-	 bZkD5Yr/qE5K9YWEpk9schkUQfV9jjE5dJ050LE8=
+	b=kCDcPdmSda2gDgYkWwwYZq+3F0Tj5mAg3fSjzbWZfNckX/cqSjA+Z0huab/LZV+rN
+	 jBCoY2L1N6HTOE9kZg2Q4UrMORD9TDDlyWnqjP9w7sg8rAmsH2ZaZspfj1dc8RCBeX
+	 G3SfBxhkV+h/OEKBz+y5EC8fL1EZXDtITuM2+bR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Simon Horman <horms@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 138/218] net: libwx: fix the creation of page_pool
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 023/139] amd/amdkfd: fix a kfd_process ref leak
 Date: Thu,  3 Jul 2025 16:41:26 +0200
-Message-ID: <20250703144001.648362582@linuxfoundation.org>
+Message-ID: <20250703143942.089231134@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Yifan Zhang <yifan1.zhang@amd.com>
 
-commit 85720e04d9af0b77f8092b12a06661a8d459d4a0 upstream.
+[ Upstream commit 90237b16ec1d7afa16e2173cc9a664377214cdd9 ]
 
-'rx_ring->size' means the count of ring descriptors multiplied by the
-size of one descriptor. When increasing the count of ring descriptors,
-it may exceed the limit of pool size.
+This patch is to fix a kfd_prcess ref leak.
 
-[ 864.209610] page_pool_create_percpu() gave up with errno -7
-[ 864.209613] txgbe 0000:11:00.0: Page pool creation failed: -7
-
-Fix to set the pool_size to the count of ring descriptors.
-
-Fixes: 850b971110b2 ("net: libwx: Allocate Rx and Tx resources")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/434C72BFB40E350A+20250625023924.21821-1-jiawenwu@trustnetic.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Reviewed-by: Philip Yang <Philip.Yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_lib.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_events.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -2425,7 +2425,7 @@ static int wx_alloc_page_pool(struct wx_
- 	struct page_pool_params pp_params = {
- 		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
- 		.order = 0,
--		.pool_size = rx_ring->size,
-+		.pool_size = rx_ring->count,
- 		.nid = dev_to_node(rx_ring->dev),
- 		.dev = rx_ring->dev,
- 		.dma_dir = DMA_FROM_DEVICE,
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_events.c b/drivers/gpu/drm/amd/amdkfd/kfd_events.c
+index 0f58be65132fc..2b07c0000df6e 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_events.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_events.c
+@@ -1287,6 +1287,7 @@ void kfd_signal_poison_consumed_event(struct kfd_node *dev, u32 pasid)
+ 	user_gpu_id = kfd_process_get_user_gpu_id(p, dev->id);
+ 	if (unlikely(user_gpu_id == -EINVAL)) {
+ 		WARN_ONCE(1, "Could not get user_gpu_id from dev->id:%x\n", dev->id);
++		kfd_unref_process(p);
+ 		return;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
