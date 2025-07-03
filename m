@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-160029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A789FAF7C5D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:34:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC7ABAF7B8A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B7B66E1776
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C66B6E4C2D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E7C224882;
-	Thu,  3 Jul 2025 15:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529782F0E5F;
+	Thu,  3 Jul 2025 15:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UM/HVZ57"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O749JW0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1000619D8AC;
-	Thu,  3 Jul 2025 15:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB7C2F0E2A;
+	Thu,  3 Jul 2025 15:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556142; cv=none; b=aROAojebf8cWmt/mRkkHwRJ2sKlBKcso9Cruv+at1zJq/e6UKs+0jxar7N7xt4YvoIjLTg7dTscr308fVkhokF7ihUbxPgmVnCGmMVkBege4tfJTy6KvZaa9vbCJlvEoNC87QQ4gz4REF97WQYlFnt5bX3GkxYvmRPopop0DO7g=
+	t=1751555758; cv=none; b=A0NqNMTLKipKaicxl7AHR5blZRCG0ORMFb2nZLM5LwaYfO8BHI5HyEDgTSBqi9H2djkOwVR0Zzwm2jnZsG2CVinPhtMAV/0BY84mFjYLYvHMRjRKOeb/CmXlw5b/U244L2ZVZPb2762RH0W6JSZS0yOiis8YYWF6pG7bcTQ81RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556142; c=relaxed/simple;
-	bh=KA/ppR5XLxKkfyFu84O94xglI0plwbHbzh584Tg92lo=;
+	s=arc-20240116; t=1751555758; c=relaxed/simple;
+	bh=eb/bVKvalizXvFNqlOWD9+KK8Cuf0VIMZdGOFDSW2fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kLuOyvVtl4cveJxsYTc3doL3Kfg6iv4mWoI5n5jeUkVtHdvSChjeWr8/wAgUn23hgQm3DR7oT4GJSwOHAgng4WZ3ccxxrN948lUI97t1SEqUdH5LMsK1IWoF/slki8LPwIjCnM6oUaadHrMapJNZ3bXQdstklu3cVPAfKuUWIh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UM/HVZ57; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747EAC4CEE3;
-	Thu,  3 Jul 2025 15:22:21 +0000 (UTC)
+	 MIME-Version; b=utSlx7TSBk5UMJ5lVB897sfUKvflwObPcXymiboGbEhqZEcaN6OHqBBVBy2aKIStdEqTf+A7Th0nzs3viWf40nK7+DvkGyl9XeKkTmBBIaw6oNma7pYRLDhfJoO1roqjkXM23Ckh3UO4rD5+/yhF76/pMTGvNfObDYmWKJmLuNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O749JW0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D91C4CEE3;
+	Thu,  3 Jul 2025 15:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556141;
-	bh=KA/ppR5XLxKkfyFu84O94xglI0plwbHbzh584Tg92lo=;
+	s=korg; t=1751555757;
+	bh=eb/bVKvalizXvFNqlOWD9+KK8Cuf0VIMZdGOFDSW2fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UM/HVZ57XpAL7HTugOBFZbRSsUngL7DWX5zU0fDR3OjQpHwcZlQqPV7q21v2/H5Xz
-	 BwQaoi6FUxG9IWXuM9MbupfGN0pqi99yO5lKzzmrz+xXoQ0Bz2YhNIbNw4Uib0hwNF
-	 Hr9FJLfKjXnqhHem59xx/kzSU9rM5WEhX3I5ogoU=
+	b=O749JW0CGpAykipNq6svzcOd4YiXy0nVtJZZ7zeQbVV5ORDX/CUDB0LI5PyDKYuPr
+	 SNOtfvodMxCQX/Sc6gwcBTAdIbQTvMLm03hOE1XoF2pBSmuh4iMZnudS2VkbnP+bzf
+	 NJ9fMx+m3H1QMMUB40+qqfw8Z/iXDGl1wSwMSm3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/132] net: selftests: fix TCP packet checksum
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.6 113/139] drm/tegra: Fix a possible null pointer dereference
 Date: Thu,  3 Jul 2025 16:42:56 +0200
-Message-ID: <20250703143942.818568833@linuxfoundation.org>
+Message-ID: <20250703143945.595461400@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-[ Upstream commit 8d89661a36dd3bb8c9902cff36dc0c144dce3faf ]
+commit 780351a5f61416ed2ba1199cc57e4a076fca644d upstream.
 
-The length in the pseudo header should be the length of the L3 payload
-AKA the L4 header+payload. The selftest code builds the packet from
-the lower layers up, so all the headers are pushed already when it
-constructs L4. We need to subtract the lower layer headers from skb->len.
+In tegra_crtc_reset(), new memory is allocated with kzalloc(), but
+no check is performed. Before calling __drm_atomic_helper_crtc_reset,
+state should be checked to prevent possible null pointer dereference.
 
-Fixes: 3e1e58d64c3d ("net: add generic selftest support")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Reported-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20250624183258.3377740-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b7e0b04ae450 ("drm/tegra: Convert to using __drm_atomic_helper_crtc_reset() for reset.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20241106095906.15247-1-chenqiuji666@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/selftests.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/tegra/dc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/selftests.c b/net/core/selftests.c
-index 7af99d07762ea..946e92cca2111 100644
---- a/net/core/selftests.c
-+++ b/net/core/selftests.c
-@@ -160,8 +160,9 @@ static struct sk_buff *net_test_get_skb(struct net_device *ndev,
- 	skb->csum = 0;
- 	skb->ip_summed = CHECKSUM_PARTIAL;
- 	if (attr->tcp) {
--		thdr->check = ~tcp_v4_check(skb->len, ihdr->saddr,
--					    ihdr->daddr, 0);
-+		int l4len = skb->len - skb_transport_offset(skb);
-+
-+		thdr->check = ~tcp_v4_check(l4len, ihdr->saddr, ihdr->daddr, 0);
- 		skb->csum_start = skb_transport_header(skb) - skb->head;
- 		skb->csum_offset = offsetof(struct tcphdr, check);
- 	} else {
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/tegra/dc.c
++++ b/drivers/gpu/drm/tegra/dc.c
+@@ -1392,7 +1392,10 @@ static void tegra_crtc_reset(struct drm_
+ 	if (crtc->state)
+ 		tegra_crtc_atomic_destroy_state(crtc, crtc->state);
+ 
+-	__drm_atomic_helper_crtc_reset(crtc, &state->base);
++	if (state)
++		__drm_atomic_helper_crtc_reset(crtc, &state->base);
++	else
++		__drm_atomic_helper_crtc_reset(crtc, NULL);
+ }
+ 
+ static struct drm_crtc_state *
 
 
 
