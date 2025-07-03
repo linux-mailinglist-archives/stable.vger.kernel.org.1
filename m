@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80CE9AF78E3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B44AF7B9B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C475E188E045
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D01C31CA6178
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBD02EF67D;
-	Thu,  3 Jul 2025 14:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC83A20102C;
+	Thu,  3 Jul 2025 15:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWpHACwW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMVKZTC3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAD92EF29C;
-	Thu,  3 Jul 2025 14:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B55D19F120;
+	Thu,  3 Jul 2025 15:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554337; cv=none; b=FUYye20olD6tJszYBtfWV8g71I0ZkAVIsCjZMQpoyrzqjrNmA88N6YSqC9eO8IGLSF2jLWW6HBzodV+wvc8AdwVy/sGoSuJ3KukXA0KhhSpFBpw2ynz8l7LXKUE2vgkc7M97bIn0sQMWoqTk5nbPnWVUx+k4kNc5fNYR5D+bKvE=
+	t=1751555897; cv=none; b=KDwLxL5IlvWSci0/wqev4vtul/etgO+IvT9y/aJHNhOrtzuSh01C7tIFf3616ajrzrM4IUacnIk2s61AcOHHDMakccaUxKIxtO5BrbxRs+xY+D6vbEXhmGVq4phS26Hg9tifo/W9eafOhC+eUBPgzmXmQHhKfSia/dogrKimKbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554337; c=relaxed/simple;
-	bh=5+wj4n+tiLJiMQbvNLOZaDRccKn/1ag9CrvSt5VYvl4=;
+	s=arc-20240116; t=1751555897; c=relaxed/simple;
+	bh=07vSGT+vdbSMiT2WHNZV07THnJIUcIAx2oskhtD5CIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+qpyhDhxZwg6tvaC9ss9OeAaMx7x2pfPlPz2RRq5UDSkStoKa05UpUW7YWsQvm8Ky4ohiFZiMS5aL9fVVe4YU2b5kT1SZTU5bdhJxrjNanOJgXhD+Z91UE4S/FtrotvGOg3/dQL73ylkINFA+Aq7AnpU1wjTwe0ur0YJKS1DY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWpHACwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0997FC4CEE3;
-	Thu,  3 Jul 2025 14:52:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eN3Wn5llKtmieeOwd13IH/08KPPP1iXS20eyMo79EnTY9QqrrxGNkvWLRxnh3gnArPmUBXvLFU1szWMUZkYQJ0GUbhct9kprA9a+3tq67y40S8PzhNyXi3thgmGlWnSmkSescFGXA/3e4lhLZ527j2r+umc6qy4Ii5PLi3JYsYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMVKZTC3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5B0C4CEE3;
+	Thu,  3 Jul 2025 15:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554336;
-	bh=5+wj4n+tiLJiMQbvNLOZaDRccKn/1ag9CrvSt5VYvl4=;
+	s=korg; t=1751555897;
+	bh=07vSGT+vdbSMiT2WHNZV07THnJIUcIAx2oskhtD5CIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWpHACwWsLR8yH2t5k+NUBJE9KVRQvAHchK5+DgKBO48lduPhGqdJte8FR0WNcZCz
-	 LcPIJoBTcMf3/ebfFVCt3W509GAFFDk4RFcFtp1dG7QvT3y7am/1lv6unDqAHXrHnG
-	 lQP5MMLplwbd37irK3vZtd7j4UBZ6wNiOr7myJ4I=
+	b=yMVKZTC3PoIGv1UbjFUlaqA57ggDjC/1FL4KlH3RSjVhXtCyDesIVVn70M+zu0MtK
+	 33GzYALvqq0w+pV7EUGw5pT1UoOlDZ6Cszz6ZFvFtgxbQfXwZcFB+jxdM3Im1gOz0O
+	 d685R1X0m5YSXvaNlLcwk9J8Fxc/PwrcpdzlFmjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	dri-devel@lists.freedesktop.org,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Subject: [PATCH 6.12 153/218] drm/udl: Unregister device before cleaning up on disconnect
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 012/132] Revert "iommu/amd: Prevent binding other PCI drivers to IOMMU PCI devices"
 Date: Thu,  3 Jul 2025 16:41:41 +0200
-Message-ID: <20250703144002.269762376@linuxfoundation.org>
+Message-ID: <20250703143939.876189552@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +62,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit ff9cb6d2035c586ea7c8f1754d4409eec7a2d26d upstream.
+[ Upstream commit 3be5fa236649da6404f1bca1491bf02d4b0d5cce ]
 
-Disconnecting a DisplayLink device results in the following kernel
-error messages
+Commit 991de2e59090 ("PCI, x86: Implement pcibios_alloc_irq() and
+pcibios_free_irq()") changed IRQ handling on PCI driver probing.
+It inadvertently broke resume from system sleep on AMD platforms:
 
-[   93.041748] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
-[   93.055299] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
-[   93.065363] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
-[   93.078207] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
+  https://lore.kernel.org/r/20150926164651.GA3640@pd.tnic/
 
-coming from KMS poll helpers. Shutting down poll helpers runs them
-one final time when the USB device is already gone.
+This was fixed by two independent commits:
 
-Run drm_dev_unplug() first in udl's USB disconnect handler. Udl's
-polling code already handles disconnects gracefully if the device has
-been marked as unplugged.
+* 8affb487d4a4 ("x86/PCI: Don't alloc pcibios-irq when MSI is enabled")
+* cbbc00be2ce3 ("iommu/amd: Prevent binding other PCI drivers to IOMMU PCI devices")
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: b1a981bd5576 ("drm/udl: drop drm_driver.release hook")
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.8+
-Reviewed-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250303145604.62962-2-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The breaking change and one of these two fixes were subsequently reverted:
+
+* fe25d078874f ("Revert "x86/PCI: Don't alloc pcibios-irq when MSI is enabled"")
+* 6c777e8799a9 ("Revert "PCI, x86: Implement pcibios_alloc_irq() and pcibios_free_irq()"")
+
+This rendered the second fix unnecessary, so revert it as well.  It used
+the match_driver flag in struct pci_dev, which is internal to the PCI core
+and not supposed to be touched by arbitrary drivers.
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Acked-by: Joerg Roedel <jroedel@suse.de>
+Link: https://patch.msgid.link/9a3ddff5cc49512044f963ba0904347bd404094d.1745572340.git.lukas@wunner.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/udl/udl_drv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/amd/init.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/gpu/drm/udl/udl_drv.c
-+++ b/drivers/gpu/drm/udl/udl_drv.c
-@@ -126,9 +126,9 @@ static void udl_usb_disconnect(struct us
- {
- 	struct drm_device *dev = usb_get_intfdata(interface);
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index bc78e86655516..02e3167b02717 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -2053,9 +2053,6 @@ static int __init iommu_init_pci(struct amd_iommu *iommu)
+ 	if (!iommu->dev)
+ 		return -ENODEV;
  
-+	drm_dev_unplug(dev);
- 	drm_kms_helper_poll_fini(dev);
- 	udl_drop_usb(dev);
--	drm_dev_unplug(dev);
- }
+-	/* Prevent binding other PCI device drivers to IOMMU devices */
+-	iommu->dev->match_driver = false;
+-
+ 	/* ACPI _PRT won't have an IRQ for IOMMU */
+ 	iommu->dev->irq_managed = 1;
  
- /*
+-- 
+2.39.5
+
 
 
 
