@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C674DAF7872
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:50:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1EAAAF79C0
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E1EA18842BA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:49:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B80973B2FB8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123E172610;
-	Thu,  3 Jul 2025 14:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 000622EE29E;
+	Thu,  3 Jul 2025 15:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXVNFlAz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpfpAVfI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C457E101DE;
-	Thu,  3 Jul 2025 14:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A712E339E;
+	Thu,  3 Jul 2025 15:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554147; cv=none; b=DOZG4JDcx9a6j1N6ceOTDqlIpgRrZgZudvNX2gq83WZExIzdyT1/aQtyu4PGKU5G1XiKSK1K/I1PsIrNwX4fV/g9eGlq+chEswRtQ1S+jqQTAdKjQxwL4zlRS2kaFv4BWoN0b5zokSLhTRJoAsaB97oroaqMC9DvSUZ3lXR/4+Y=
+	t=1751554934; cv=none; b=qsBegSE6KckLmGnDP/+B6GI1UWB5+29sp7WUGtKtX8DeBSBKU33+zqblS+pOequIsKDEvYqJ64OByPBNkLzx996cZeXWgiPyw/T3ar+SU8ELo0XRpwLPwHHURzjqOQpEYLrdpNnuFNP3xlCrAmI7URycQQpsMbNs5jrIfhCmIKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554147; c=relaxed/simple;
-	bh=3y5c/q2cmYQ4wPpPW6mcQsJNJh/WoA9bUCT/baiQzjk=;
+	s=arc-20240116; t=1751554934; c=relaxed/simple;
+	bh=pe+pmp1J4l5DNaG7S6O4Exqsbf0n9yyQ2bruNyVrPOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKRZLT+rAwCje+g4ZymvnlSDj5RpGqJWjPUOes0J6zii23bScIy+70u8yFvVtbcbYAhRYV/5NKuVbeM1GMTf0yPXXrsjRoe/f2kwRuSKKbpNDyNPPtjOdWFrC1SjaT59uOcq8otgTlVzOw6256lfSzHbzp+4Gb4aS56lP0DGJd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXVNFlAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F27C4CEE3;
-	Thu,  3 Jul 2025 14:49:07 +0000 (UTC)
+	 MIME-Version; b=YBl4ZlMMB0xZ/v2kNFhNgkuwQ96n6RK1VwukNM9qcCrJ1usx8zMRN/SbV0FRp+w3Cydkc67MfTDufLHZ8Ym1bw513wRyAS5u+6zy5Zm/8XxhpxODF7KamKWeV/v/zoc+v8OHEug3yVd1hbTAT6kF0FiBVl3OfouRHo1963fgosw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpfpAVfI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F38C4CEE3;
+	Thu,  3 Jul 2025 15:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554147;
-	bh=3y5c/q2cmYQ4wPpPW6mcQsJNJh/WoA9bUCT/baiQzjk=;
+	s=korg; t=1751554934;
+	bh=pe+pmp1J4l5DNaG7S6O4Exqsbf0n9yyQ2bruNyVrPOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IXVNFlAzLFv+AR9b6poRW2wF+NmVMJBv8F9XnpLLCuDFfr7aE8NTSohpJ3eRx9Fp7
-	 m/6EulShKVrQbC73A60tHHzbgCxVF3B9sd0dQ3+b+MGen61CUl+P+5jr19apXhi1in
-	 qdwLwpqq+Q8qw5Y7clDByeXtO22ZCQFaedbznmCw=
+	b=dpfpAVfILT7+yauyzJ0sZtqJImyYNlOC74UM+oi55eN2ymJbfYaTM6nhzfO219T3c
+	 TS6tbUt5OG2V1yoUhmfcPWOCj9hgwYFNg+wfiX2lM4VmJ1UQVJj8Ij0RG4bKTcexM5
+	 QodBRgmii1IcQwa+zM/3K68vvr79ZpC1TTUfIt7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 065/218] ASoC: codec: wcd9335: Convert to GPIO descriptors
-Date: Thu,  3 Jul 2025 16:40:13 +0200
-Message-ID: <20250703143958.542299657@linuxfoundation.org>
+Subject: [PATCH 6.15 094/263] io_uring/zcrx: fix area release on registration failure
+Date: Thu,  3 Jul 2025 16:40:14 +0200
+Message-ID: <20250703144008.064147616@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit d5099bc1b56417733f4cccf10c61ee74dadd5562 ]
+[ Upstream commit 0ec33c81d9c7342f03864101ddb2e717a0cce03e ]
 
-of_gpio.h is deprecated, update the driver to use GPIO descriptors.
-- Use dev_gpiod_get to get GPIO descriptor.
-- Use gpiod_set_value to configure output value.
+On area registration failure there might be no ifq set and it's not safe
+to access area->ifq in the release path without checking it first.
 
-With legacy of_gpio API, the driver set gpio value 0 to assert reset,
-and 1 to deassert reset. And the reset-gpios use GPIO_ACTIVE_LOW flag in
-DTS, so set GPIOD_OUT_LOW when get GPIO descriptors, and set value 1 means
-output low, set value 0 means output high with gpiod API.
-
-The in-tree DTS files have the right polarity set up already so we can
-expect this to "just work"
-
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Link: https://patch.msgid.link/20250324-wcd-gpiod-v2-3-773f67ce3b56@nxp.com
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 9079db287fc3 ("ASoC: codecs: wcd9335: Fix missing free of regulator supplies")
+Cc: stable@vger.kernel.org
+Fixes: f12ecf5e1c5ec ("io_uring/zcrx: fix late dma unmap for a dead dev")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/bc02878678a5fec28bc77d33355cdba735418484.1748365640.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd9335.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ io_uring/zcrx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
-index 373a31ddccb2d..db6a1facf8a92 100644
---- a/sound/soc/codecs/wcd9335.c
-+++ b/sound/soc/codecs/wcd9335.c
-@@ -17,7 +17,7 @@
- #include <sound/soc.h>
- #include <sound/pcm_params.h>
- #include <sound/soc-dapm.h>
--#include <linux/of_gpio.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/of.h>
- #include <linux/of_irq.h>
- #include <sound/tlv.h>
-@@ -329,7 +329,7 @@ struct wcd9335_codec {
- 	int comp_enabled[COMPANDER_MAX];
+diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+index 7214236c14882..a53058dd6b7a1 100644
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -222,7 +222,8 @@ static void io_free_rbuf_ring(struct io_zcrx_ifq *ifq)
  
- 	int intr1;
--	int reset_gpio;
-+	struct gpio_desc *reset_gpio;
- 	struct regulator_bulk_data supplies[WCD9335_MAX_SUPPLY];
- 
- 	unsigned int rx_port_value[WCD9335_RX_MAX];
-@@ -4973,12 +4973,11 @@ static const struct regmap_irq_chip wcd9335_regmap_irq1_chip = {
- static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
+ static void io_zcrx_free_area(struct io_zcrx_area *area)
  {
- 	struct device *dev = wcd->dev;
--	struct device_node *np = dev->of_node;
- 	int ret;
+-	io_zcrx_unmap_area(area->ifq, area);
++	if (area->ifq)
++		io_zcrx_unmap_area(area->ifq, area);
+ 	io_release_area_mem(&area->mem);
  
--	wcd->reset_gpio = of_get_named_gpio(np,	"reset-gpios", 0);
--	if (wcd->reset_gpio < 0)
--		return dev_err_probe(dev, wcd->reset_gpio, "Reset GPIO missing from DT\n");
-+	wcd->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
-+	if (IS_ERR(wcd->reset_gpio))
-+		return dev_err_probe(dev, PTR_ERR(wcd->reset_gpio), "Reset GPIO missing from DT\n");
- 
- 	wcd->mclk = devm_clk_get(dev, "mclk");
- 	if (IS_ERR(wcd->mclk))
-@@ -5021,9 +5020,9 @@ static int wcd9335_power_on_reset(struct wcd9335_codec *wcd)
- 	 */
- 	usleep_range(600, 650);
- 
--	gpio_direction_output(wcd->reset_gpio, 0);
-+	gpiod_set_value(wcd->reset_gpio, 1);
- 	msleep(20);
--	gpio_set_value(wcd->reset_gpio, 1);
-+	gpiod_set_value(wcd->reset_gpio, 0);
- 	msleep(20);
- 
- 	return 0;
+ 	kvfree(area->freelist);
 -- 
 2.39.5
 
