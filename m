@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52E3DAF787C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:51:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B81AF79BA
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29ECB7B9A4C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:49:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56ECD3B12A7
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CDD62EE98B;
-	Thu,  3 Jul 2025 14:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CF42E7BD6;
+	Thu,  3 Jul 2025 15:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NmKVoVLo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxE30ZpI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C112EF67A;
-	Thu,  3 Jul 2025 14:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A213D2E7649;
+	Thu,  3 Jul 2025 15:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554227; cv=none; b=D8kDmqMMfSVS+TuEsozShNw1d262Mg9wiDfRxmcXgN7+QdDIrWdopI8sc6XEjZfalMWkqxlDDLs5cKjkl+2BMcrjRna8CrUD5+dl8JWdPe/2sxOK3uw9e/zPmnKmWoyG5m9gyCq1MsVeFbGPpetPSMUD6OQkaoCwwK9ARO+J/0o=
+	t=1751554931; cv=none; b=LXp0jEGWl3U0FhfbIU1YmA/cVSSkldiKxfert1TEp7OvOqvbnEUEFBqwMm6VVDt4R/ykRIQ6WsY9FcIisksmuAUBahuUK2jxgy7kDSywblchyByufQPC+7Oru5KS5DHL009Hb+eBgXSvi9TRdzQXk9G6s2m2xn/CXddhjMmu770=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554227; c=relaxed/simple;
-	bh=q/mFpIB2cNK5yPSWDWgiGNzjB5y6/D8KRtW/4+v05Fs=;
+	s=arc-20240116; t=1751554931; c=relaxed/simple;
+	bh=Jf6n4+AZO3mYERWxWmsMPrSzOtXwx+ODykdWPOjLP9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hHp1zUQzzYvCFzwyw7uRpSeloxVUzALyGtd0mdiim8Zf1qX9kibabV4W7Jrz7wJkYzIgJV8E+BTaxoqePxqu1hdAKbCev1EqLCpgHdORVNXBt4Iy4dcKbrNgGZ+EozZSzn/XfDgf8PxxZT4eaivnsL24sj7O0M16w08IhPYzg9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NmKVoVLo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A52DC4CEED;
-	Thu,  3 Jul 2025 14:50:26 +0000 (UTC)
+	 MIME-Version; b=ApzDytJNdxU1YH7b/6047ipSIZre3MXe2ZOgsTvDHV2cz58f/yhCmnkrCtYn4ZkjlMzf3/ukj2H6dHJtmE3cw0Z0QKapxpB05FeurAZ8qGlsCbtarT+38Y4y4NFVstEuxvAyF8E/ch+KXKhxf9fZriEXGktlA44tBV3yyNpDnHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxE30ZpI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02D6C4CEEE;
+	Thu,  3 Jul 2025 15:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554226;
-	bh=q/mFpIB2cNK5yPSWDWgiGNzjB5y6/D8KRtW/4+v05Fs=;
+	s=korg; t=1751554931;
+	bh=Jf6n4+AZO3mYERWxWmsMPrSzOtXwx+ODykdWPOjLP9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NmKVoVLoFc0kkZOADL3B51vkZUoPme3+9xuXjk4JjMHUCj58VSzPm/oIHF5PnO4FG
-	 ZlvAmjphHkWDpQMRG6WAlPa+0h26i7deKvIlRKx6AIOJiysNgLzkzRld6JkhQlqx1h
-	 wDuYpUrzQr3HO78r3q+V7ItPLJSQeAgAhM/6SOTA=
+	b=AxE30ZpIV3Gd2sbZ3a/p3km2Oy+PHseXPM9BFmLdtQ8xgQdcFpOkoFt00ccJaLmGZ
+	 +AyJaMxPnFIcRoRsqlRIbFMIaLvmF3H6hn1n3aS3GO8YG7nVrzWtStXfiosA0xqH9K
+	 gF8zY5K7QbQ+RIxNDb38mk3abXsQ7XTXxgjGeFyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youngjun Lee <yjjuny.lee@samsung.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/218] ALSA: usb-audio: Fix out-of-bounds read in snd_usb_get_audioformat_uac3()
-Date: Thu,  3 Jul 2025 16:40:41 +0200
-Message-ID: <20250703143959.655189731@linuxfoundation.org>
+	rtm@csail.mit.edu,
+	Nam Cao <namcao@linutronix.de>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>
+Subject: [PATCH 6.15 122/263] Revert "riscv: Define TASK_SIZE_MAX for __access_ok()"
+Date: Thu,  3 Jul 2025 16:40:42 +0200
+Message-ID: <20250703144009.245056181@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youngjun Lee <yjjuny.lee@samsung.com>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit fb4e2a6e8f28a3c0ad382e363aeb9cd822007b8a ]
+commit 890ba5be6335dbbbc99af14ea007befb5f83f174 upstream.
 
-In snd_usb_get_audioformat_uac3(), the length value returned from
-snd_usb_ctl_msg() is used directly for memory allocation without
-validation. This length is controlled by the USB device.
+This reverts commit ad5643cf2f69 ("riscv: Define TASK_SIZE_MAX for
+__access_ok()").
 
-The allocated buffer is cast to a uac3_cluster_header_descriptor
-and its fields are accessed without verifying that the buffer
-is large enough. If the device returns a smaller than expected
-length, this leads to an out-of-bounds read.
+This commit changes TASK_SIZE_MAX to be LONG_MAX to optimize access_ok(),
+because the previous TASK_SIZE_MAX (default to TASK_SIZE) requires some
+computation.
 
-Add a length check to ensure the buffer is large enough for
-uac3_cluster_header_descriptor.
+The reasoning was that all user addresses are less than LONG_MAX, and all
+kernel addresses are greater than LONG_MAX. Therefore access_ok() can
+filter kernel addresses.
 
-Signed-off-by: Youngjun Lee <yjjuny.lee@samsung.com>
-Fixes: 9a2fe9b801f5 ("ALSA: usb: initial USB Audio Device Class 3.0 support")
-Link: https://patch.msgid.link/20250623-uac3-oob-fix-v1-1-527303eaf40a@samsung.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Addresses between TASK_SIZE and LONG_MAX are not valid user addresses, but
+access_ok() let them pass. That was thought to be okay, because they are
+not valid addresses at hardware level.
+
+Unfortunately, one case is missed: get_user_pages_fast() happily accepts
+addresses between TASK_SIZE and LONG_MAX. futex(), for instance, uses
+get_user_pages_fast(). This causes the problem reported by Robert [1].
+
+Therefore, revert this commit. TASK_SIZE_MAX is changed to the default:
+TASK_SIZE.
+
+This unfortunately reduces performance, because TASK_SIZE is more expensive
+to compute compared to LONG_MAX. But correctness first, we can think about
+optimization later, if required.
+
+Reported-by: <rtm@csail.mit.edu>
+Closes: https://lore.kernel.org/linux-riscv/77605.1750245028@localhost/
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: ad5643cf2f69 ("riscv: Define TASK_SIZE_MAX for __access_ok()")
+Link: https://lore.kernel.org/r/20250619155858.1249789-1-namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/stream.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/riscv/include/asm/pgtable.h |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/usb/stream.c b/sound/usb/stream.c
-index c1ea8844a46fc..aa91d63749f2c 100644
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -987,6 +987,8 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
- 	 * and request Cluster Descriptor
- 	 */
- 	wLength = le16_to_cpu(hc_header.wLength);
-+	if (wLength < sizeof(cluster))
-+		return NULL;
- 	cluster = kzalloc(wLength, GFP_KERNEL);
- 	if (!cluster)
- 		return ERR_PTR(-ENOMEM);
--- 
-2.39.5
-
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -980,7 +980,6 @@ static inline pte_t pte_swp_clear_exclus
+  */
+ #ifdef CONFIG_64BIT
+ #define TASK_SIZE_64	(PGDIR_SIZE * PTRS_PER_PGD / 2)
+-#define TASK_SIZE_MAX	LONG_MAX
+ 
+ #ifdef CONFIG_COMPAT
+ #define TASK_SIZE_32	(_AC(0x80000000, UL) - PAGE_SIZE)
 
 
 
