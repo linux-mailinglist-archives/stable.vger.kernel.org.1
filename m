@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-159623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331DDAF7952
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:00:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 220EBAF7842
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 678AC7A4ECD
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:58:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ADB4581D7A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146872EF67D;
-	Thu,  3 Jul 2025 15:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636062EE287;
+	Thu,  3 Jul 2025 14:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQS6SLOP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZQOERlM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52FD2EF656;
-	Thu,  3 Jul 2025 15:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2090A1C5D46;
+	Thu,  3 Jul 2025 14:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554816; cv=none; b=TFe1O5RSgjB2HUchgcx6x1u+vb0J7hBb3xw9QuGJfDnqeKrdSUIcFmTzXgnnF4R1hqB/RZntUrbVav9MfnWlEMGq0ZDHB/fXIg6U9nmrUYKyS8XEQ0ASHA19g2BdN3Dw8xsYOCkZahm0fG54/rN94n9AnEx/bq33ocVgsi0JvVc=
+	t=1751554045; cv=none; b=PtVekElOK0mvOBzUdDLb7zOjuglB/pPZBsRt/LxxPIYA4GTRTHnDimbAumNsfTxyrDE9vDHw5iXly4iCGP9nWl3//nlC4O2Abv/Kle9XMPqL6F1ZUkdxh2oVexG4q8PUYTr/zLBlrtxHilj1ftSQ8MxnZIuzkwAbL1mDfq6+QhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554816; c=relaxed/simple;
-	bh=/jXbf7ktmgseNv2asmwhTVnumBXxtl5dDLx5k2DHbI8=;
+	s=arc-20240116; t=1751554045; c=relaxed/simple;
+	bh=aI5TN+yeF5Hw0oue197arOiTq/D/GvleE0qTHUqUHYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gd1/puWF8eFnrbpUVTM2omzlfT65ZXpuHKULsMQfL4L9PiXhyQ7GkWZEuYwaE7LI0jUaVBeY97U1KdkdoeCGsZy8fdHHcU7gQu0ozNvJsqBMSGlvF6lE57QNJ+yLp1kzLsoSQiHz0Xo04EcGq16Ls6Pe7iy9vQZo7Zw8VNA5pkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQS6SLOP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46DAC4CEED;
-	Thu,  3 Jul 2025 15:00:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pyfZIvPXNsdXqcC2zE1JS724rtkPRznaE7+UW2KdQ2EUcMfbHLPcpot4D/c1CtHuISryp+d2e6Oz9C9rvay9Vv17en4L1atXl2/KgyIDj0J45mCdyqLMb4h0aTkDvj1EGNA9VDGJXbHhuKvA04epHSIRqqoncpffT+MM6jBR7+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZQOERlM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B981C4CEE3;
+	Thu,  3 Jul 2025 14:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554815;
-	bh=/jXbf7ktmgseNv2asmwhTVnumBXxtl5dDLx5k2DHbI8=;
+	s=korg; t=1751554045;
+	bh=aI5TN+yeF5Hw0oue197arOiTq/D/GvleE0qTHUqUHYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pQS6SLOPJhRrkbfGWiMDzCCXArZheYGkfLy7RRotxNogGmWYz6WP8mZ/lXMMPaRIN
-	 N6E1Maa9UJuR5I9+FNKa3oNk7d3unQ17asWO9RViQX7t/PU+DTSMBTSyvqj/b7oeac
-	 KK6D8t16R75+2NGqYlUCTnwZe99HpElPhbQvCXiI=
+	b=fZQOERlMaKVzSCrYO7gAwyLOd1c2mqOdR4/3xhlBpJjrTdI9L5MJ25kZUfDhuBdSB
+	 80C8auwIRTcZH2xY4fmnXVNw+JLfqmkrvKTAzBRil/EuDKZ4R6wijgy1mCmTBH9exi
+	 w1SwPNjza4YWQc51dYVoIelNzzYSxkpTAoqhIX4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Lin.Cao" <lincao12@amd.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 060/263] usb: Add checks for snprintf() calls in usb_alloc_dev()
+Subject: [PATCH 6.12 032/218] drm/scheduler: signal scheduled fence when kill job
 Date: Thu,  3 Jul 2025 16:39:40 +0200
-Message-ID: <20250703144006.714068357@linuxfoundation.org>
+Message-ID: <20250703143957.239556130@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +64,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Lin.Cao <lincao12@amd.com>
 
-[ Upstream commit 82fe5107fa3d21d6c3fba091c9dbc50495588630 ]
+[ Upstream commit 471db2c2d4f80ee94225a1ef246e4f5011733e50 ]
 
-When creating a device path in the driver the snprintf() takes
-up to 16 characters long argument along with the additional up to
-12 characters for the signed integer (as it can't see the actual limits)
-and tries to pack this into 16 bytes array. GCC complains about that
-when build with `make W=1`:
+When an entity from application B is killed, drm_sched_entity_kill()
+removes all jobs belonging to that entity through
+drm_sched_entity_kill_jobs_work(). If application A's job depends on a
+scheduled fence from application B's job, and that fence is not properly
+signaled during the killing process, application A's dependency cannot be
+cleared.
 
-  drivers/usb/core/usb.c:705:25: note: ‘snprintf’ output between 3 and 28 bytes into a destination of size 16
+This leads to application A hanging indefinitely while waiting for a
+dependency that will never be resolved. Fix this issue by ensuring that
+scheduled fences are properly signaled when an entity is killed, allowing
+dependent applications to continue execution.
 
-Since everything works until now, let's just check for the potential
-buffer overflow and bail out. It is most likely a never happen situation,
-but at least it makes GCC happy.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250321164949.423957-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lin.Cao <lincao12@amd.com>
+Reviewed-by: Philipp Stanner <phasta@kernel.org>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250515020713.1110476-1-lincao12@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/usb.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/scheduler/sched_entity.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 0b4685aad2d50..118fa4c93a795 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -695,15 +695,16 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
- 		device_set_of_node_from_dev(&dev->dev, bus->sysdev);
- 		dev_set_name(&dev->dev, "usb%d", bus->busnum);
- 	} else {
-+		int n;
-+
- 		/* match any labeling on the hubs; it's one-based */
- 		if (parent->devpath[0] == '0') {
--			snprintf(dev->devpath, sizeof dev->devpath,
--				"%d", port1);
-+			n = snprintf(dev->devpath, sizeof(dev->devpath), "%d", port1);
- 			/* Root ports are not counted in route string */
- 			dev->route = 0;
- 		} else {
--			snprintf(dev->devpath, sizeof dev->devpath,
--				"%s.%d", parent->devpath, port1);
-+			n = snprintf(dev->devpath, sizeof(dev->devpath), "%s.%d",
-+				     parent->devpath, port1);
- 			/* Route string assumes hubs have less than 16 ports */
- 			if (port1 < 15)
- 				dev->route = parent->route +
-@@ -712,6 +713,11 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
- 				dev->route = parent->route +
- 					(15 << ((parent->level - 1)*4));
- 		}
-+		if (n >= sizeof(dev->devpath)) {
-+			usb_put_hcd(bus_to_hcd(bus));
-+			usb_put_dev(dev);
-+			return NULL;
-+		}
+diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
+index 002057be0d84a..c9c50e3b18a23 100644
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -189,6 +189,7 @@ static void drm_sched_entity_kill_jobs_work(struct work_struct *wrk)
+ {
+ 	struct drm_sched_job *job = container_of(wrk, typeof(*job), work);
  
- 		dev->dev.parent = &parent->dev;
- 		dev_set_name(&dev->dev, "%d-%s", bus->busnum, dev->devpath);
++	drm_sched_fence_scheduled(job->s_fence, NULL);
+ 	drm_sched_fence_finished(job->s_fence, -ESRCH);
+ 	WARN_ON(job->s_fence->parent);
+ 	job->sched->ops->free_job(job);
 -- 
 2.39.5
 
