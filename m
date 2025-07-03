@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-159405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F4ECAF7852
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:49:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC402AF79B4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D258541173
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BA1A3AED9B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB8B101DE;
-	Thu,  3 Jul 2025 14:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630B42E7BD6;
+	Thu,  3 Jul 2025 15:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTM6ZlAj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTc5gydC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C07B72610;
-	Thu,  3 Jul 2025 14:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A062E339E;
+	Thu,  3 Jul 2025 15:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554128; cv=none; b=AuPtxV050ajdpK4UJn7ZYj6f1FXogjoZPaZbsQ5u1RETTedzNkybBIl/YKihE7GbUO9rJhTQi9ORfK2tSfWGsomsp9Lej0p6DitskcPvodX2i89djKQLTUQKDh/ak03l4xOayooN8Cd+dEznpXD0F5jhYf6wCAqySPdOPb3Wv18=
+	t=1751554912; cv=none; b=Lyq3MKqwgmNjmWEBIS/afF3ZL/SZy6ampUogQhmETx0d0qegPlW4yMEJDINFTT2oiMRNPTcqzG4uBtgi8EVpfZ/cA+JsmIoxctrUnko4UOnIgXB3/zt59lYvJZrx0tD8ItHgS+Hw3D1XsP4xMKc/nFgJ22QNaFCTl8Eq8unFNOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554128; c=relaxed/simple;
-	bh=z06qb7GynI2NJ2phsTAimxPvHZYhZRVGDFzfi3vtvOM=;
+	s=arc-20240116; t=1751554912; c=relaxed/simple;
+	bh=iHX4JR3RkhOev3vaEqiA4bDxi+ROGP+WBeonqAMuYkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eoFRoo3cYPKUs5RQdOA+f19CmTMJKLw5y59DYwByEDilo6a5N+uakyPoM6ZtsrTTBEjpGQo2VSw7RMxIGp8zHavDjtKd8VFhe5ljwes1vPn99mo2rx4gs14u8bQBpbsLyi1XCgO8bhUdMGj43w+Hb4KPql9gpXpRRHxZwMr0/L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gTM6ZlAj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D038DC4CEE3;
-	Thu,  3 Jul 2025 14:48:47 +0000 (UTC)
+	 MIME-Version; b=Ihm8PFub36SW604Z8P6M4yjfwNFf+M9WRRIhpILggLYX746Qe8LIKjr7TGup5jA3pm0y5IF4Y0XDLD6fFs0gmqv6ii/ViZ4PI/sAICidmF7FpbOEzwU3hXS+iM0idz428JujVJ7eQYFVJqWhj3eVW+2fqmWw59wkMQMnWbWSDuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTc5gydC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FAFC4CEED;
+	Thu,  3 Jul 2025 15:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554128;
-	bh=z06qb7GynI2NJ2phsTAimxPvHZYhZRVGDFzfi3vtvOM=;
+	s=korg; t=1751554912;
+	bh=iHX4JR3RkhOev3vaEqiA4bDxi+ROGP+WBeonqAMuYkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gTM6ZlAjmtx6ZuR1FpHj33rkf16MH1waj/sB08jGmGFJc9gByhDFXig/W1RD7K7jX
-	 fWV4Q0j0KtCax90gUnhcZe42lqZ4HMsNMv1RoB3skQaNJmdcCZBQbdt1SD0t/VafAi
-	 97xpYCzjKNzuwDrFSv0aZ8rzxPm23nQapWf31QHc=
+	b=hTc5gydC9Ga7lT5VW0gy7WwtgTHa16oEzuuHIqByVibNq06XQ1qeXbXE+GNsor3bq
+	 qUWkegXkrODfhCjHUyeRJ804hcnnxh0Uo/4JsQbjRqcv1jqcFe3mvgniOUMSUO5u4n
+	 GA157JFRqUa+uOEmecM0SFQW62/2NzRamdTbFfWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.12 088/218] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
-Date: Thu,  3 Jul 2025 16:40:36 +0200
-Message-ID: <20250703143959.464767193@linuxfoundation.org>
+	syzbot+1d335893772467199ab6@syzkaller.appspotmail.com,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH 6.15 117/263] io_uring/rsrc: fix folio unpinning
+Date: Thu,  3 Jul 2025 16:40:37 +0200
+Message-ID: <20250703144009.041867916@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit a3ef3c2da675a8a564c8bea1a511cdd0a2a9aa49 upstream.
+commit 5afb4bf9fc62d828647647ec31745083637132e4 upstream.
 
-Reading DPCD registers has side-effects in general. In particular
-accessing registers outside of the link training register range
-(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
-forbidden by the DP v2.1 Standard, see
+syzbot complains about an unmapping failure:
 
-3.6.5.1 DPTX AUX Transaction Handling Mandates
-3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
+[  108.070381][   T14] kernel BUG at mm/gup.c:71!
+[  108.070502][   T14] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[  108.123672][   T14] Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20250221-8.fc42 02/21/2025
+[  108.127458][   T14] Workqueue: iou_exit io_ring_exit_work
+[  108.174205][   T14] Call trace:
+[  108.175649][   T14]  sanity_check_pinned_pages+0x7cc/0x7d0 (P)
+[  108.178138][   T14]  unpin_user_page+0x80/0x10c
+[  108.180189][   T14]  io_release_ubuf+0x84/0xf8
+[  108.182196][   T14]  io_free_rsrc_node+0x250/0x57c
+[  108.184345][   T14]  io_rsrc_data_free+0x148/0x298
+[  108.186493][   T14]  io_sqe_buffers_unregister+0x84/0xa0
+[  108.188991][   T14]  io_ring_ctx_free+0x48/0x480
+[  108.191057][   T14]  io_ring_exit_work+0x764/0x7d8
+[  108.193207][   T14]  process_one_work+0x7e8/0x155c
+[  108.195431][   T14]  worker_thread+0x958/0xed8
+[  108.197561][   T14]  kthread+0x5fc/0x75c
+[  108.199362][   T14]  ret_from_fork+0x10/0x20
 
-Based on my tests, accessing the DPCD_REV register during the link
-training of an UHBR TBT DP tunnel sink leads to link training failures.
+We can pin a tail page of a folio, but then io_uring will try to unpin
+the head page of the folio. While it should be fine in terms of keeping
+the page actually alive, mm folks say it's wrong and triggers a debug
+warning. Use unpin_user_folio() instead of unpin_user_page*.
 
-Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
-DPCD register access quirk.
-
-Cc: <stable@vger.kernel.org>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
-(cherry picked from commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Debugged-by: David Hildenbrand <david@redhat.com>
+Reported-by: syzbot+1d335893772467199ab6@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/683f1551.050a0220.55ceb.0017.GAE@google.com
+Fixes: a8edbb424b139 ("io_uring/rsrc: enable multi-hugepage buffer coalescing")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/io-uring/a28b0f87339ac2acf14a645dad1e95bbcbf18acd.1750771718.git.asml.silence@gmail.com/
+[axboe: adapt to current tree, massage commit message]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/display/drm_dp_helper.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/rsrc.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/display/drm_dp_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -664,7 +664,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
- 	 * monitor doesn't power down exactly after the throw away read.
- 	 */
- 	if (!aux->is_remote) {
--		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
-+		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
- 		if (ret < 0)
- 			return ret;
+--- a/io_uring/rsrc.c
++++ b/io_uring/rsrc.c
+@@ -112,8 +112,11 @@ static void io_release_ubuf(void *priv)
+ 	struct io_mapped_ubuf *imu = priv;
+ 	unsigned int i;
+ 
+-	for (i = 0; i < imu->nr_bvecs; i++)
+-		unpin_user_page(imu->bvec[i].bv_page);
++	for (i = 0; i < imu->nr_bvecs; i++) {
++		struct folio *folio = page_folio(imu->bvec[i].bv_page);
++
++		unpin_user_folio(folio, 1);
++	}
+ }
+ 
+ static struct io_mapped_ubuf *io_alloc_imu(struct io_ring_ctx *ctx,
+@@ -844,8 +847,10 @@ done:
+ 	if (ret) {
+ 		if (imu)
+ 			io_free_imu(ctx, imu);
+-		if (pages)
+-			unpin_user_pages(pages, nr_pages);
++		if (pages) {
++			for (i = 0; i < nr_pages; i++)
++				unpin_user_folio(page_folio(pages[i]), 1);
++		}
+ 		io_cache_free(&ctx->node_cache, node);
+ 		node = ERR_PTR(ret);
  	}
 
 
