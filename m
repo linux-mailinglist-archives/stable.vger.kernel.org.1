@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C61EBAF7B17
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:22:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B816CAF7A68
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:13:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2BA75A0D47
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:17:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FFE8486115
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E442EE5F3;
-	Thu,  3 Jul 2025 15:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2AE2EF9D4;
+	Thu,  3 Jul 2025 15:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJt4+M4q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2ehCtCj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B5117332C;
-	Thu,  3 Jul 2025 15:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2582EF9CD;
+	Thu,  3 Jul 2025 15:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555654; cv=none; b=hF9WZaygs1683+iuZ+7y4w7PsQrLNUr5mE6culQH/CpP5vhZDLPoLYW1/NQoIKWxyq/oZ/PNx5jXIcgPTCYYrZykIPDbGas+5i08kYJBWjTnBclcdlQMNVxtWCNnpXqnCtMpm9gWM3Z5eMsjYwhOefzZ1tO/e+2FXL85PAneMDM=
+	t=1751555318; cv=none; b=F9CW/YLE6wk15S//V86aWFr5lHq0PvxNLVHvQk1jWNE8IrnisbJXrJvvCPApuLoaT9fYX9l6Tyv/FvyuItY4KEvxHn1PJeo0ZEG9DtGXyaYdNVxjbtYMHUGYchiEDQcorLLIOJxwJfyRiLyXU68wBqP0In3tXq3AGQ6FerTf360=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555654; c=relaxed/simple;
-	bh=MUxlDOAmzHbat28gNfvtU5Xm3JwPuKQJqh+I9lXMsxA=;
+	s=arc-20240116; t=1751555318; c=relaxed/simple;
+	bh=L9pdv8tBhkiaCY/O7L6U8vqU2kp0QLWQ58Cv9ijMMnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OuXWc2cpm6IfPlCsCInoiCFcuYXVIdIXPQiv0uWe/ZEK879tKgz/PRRVN1j2JeP/wVHmGrJiK3AgjwQKiSYRIHqDKcIPeesITspXewFQevOVnVX4VIgclg4IsP1OV1aJ8iJ1ZA7sjGNvoJmJSdWIu3o6/OIWCdr60X9NDY6qa10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJt4+M4q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E224C4CEE3;
-	Thu,  3 Jul 2025 15:14:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FPlPVGRf4nPUOiKSCxeNHrqB1fLLAWUgUFszd5GxebWSIbFGejP5HPkcF2iFS9LlM3hnRCK71yRwcdgaIBLBVgRGma6mja1TtBkOkmURX5vU3yZAuwMDo+qpYN8AED+/+FzX1boehuAdR/n+03CpGtFmJbYqxBM3Y5kYBpR6FjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2ehCtCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2CEC4CEED;
+	Thu,  3 Jul 2025 15:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555654;
-	bh=MUxlDOAmzHbat28gNfvtU5Xm3JwPuKQJqh+I9lXMsxA=;
+	s=korg; t=1751555318;
+	bh=L9pdv8tBhkiaCY/O7L6U8vqU2kp0QLWQ58Cv9ijMMnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJt4+M4qNb9NWW4boov3MoS10RV0+x9ywBsHLgG56A8tSQJH7y5hHY1efSF1Bk484
-	 2GDQ8GnOQlPCqWf+mVm9isOYgK+diz8bSjs/ZJN8J9qo7QO7bPFaX28djmcwgs6HCa
-	 ZKIvxMM5MD++zMMCZDtSHekAa2rCd65ZkV6fOMwc=
+	b=L2ehCtCjkvbrhJ45v3TdBHA6p5FCsFQbstJwu9x0GzrwXc6MW/c/KiKCugwGisAPX
+	 89b0nam6hcv6DLNReTTYAO49GpqHwvA8WhZ/QpWxP604ARtZlKWVQENS2qpiPa8hHu
+	 3jEkCPNjhlM2TAle7myg1LdmOKFqY65Gwmje5ZRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/139] libbpf: Fix null pointer dereference in btf_dump__free on allocation failure
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	William Tseng <william.tseng@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>
+Subject: [PATCH 6.15 224/263] drm/xe/sched: stop re-submitting signalled jobs
 Date: Thu,  3 Jul 2025 16:42:24 +0200
-Message-ID: <20250703143944.329215152@linuxfoundation.org>
+Message-ID: <20250703144013.361509215@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +62,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit aa485e8789d56a4573f7c8d000a182b749eaa64d ]
+commit 0ee54d5cacc0276ec631ac149825a24b59c51c38 upstream.
 
-When btf_dump__new() fails to allocate memory for the internal hashmap
-(btf_dump->type_names), it returns an error code. However, the cleanup
-function btf_dump__free() does not check if btf_dump->type_names is NULL
-before attempting to free it. This leads to a null pointer dereference
-when btf_dump__free() is called on a btf_dump object.
+Customer is reporting a really subtle issue where we get random DMAR
+faults, hangs and other nasties for kernel migration jobs when stressing
+stuff like s2idle/s3/s4. The explosions seems to happen somewhere
+after resuming the system with splats looking something like:
 
-Fixes: 351131b51c7a ("libbpf: add btf_dump API for BTF-to-C conversion")
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250618011933.11423-1-chenyuan_fl@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+PM: suspend exit
+rfkill: input handler disabled
+xe 0000:00:02.0: [drm] GT0: Engine reset: engine_class=bcs, logical_mask: 0x2, guc_id=0
+xe 0000:00:02.0: [drm] GT0: Timedout job: seqno=24496, lrc_seqno=24496, guc_id=0, flags=0x13 in no process [-1]
+xe 0000:00:02.0: [drm] GT0: Kernel-submitted job timed out
+
+The likely cause appears to be a race between suspend cancelling the
+worker that processes the free_job()'s, such that we still have pending
+jobs to be freed after the cancel. Following from this, on resume the
+pending_list will now contain at least one already complete job, but it
+looks like we call drm_sched_resubmit_jobs(), which will then call
+run_job() on everything still on the pending_list. But if the job was
+already complete, then all the resources tied to the job, like the bb
+itself, any memory that is being accessed, the iommu mappings etc. might
+be long gone since those are usually tied to the fence signalling.
+
+This scenario can be seen in ftrace when running a slightly modified
+xe_pm IGT (kernel was only modified to inject artificial latency into
+free_job to make the race easier to hit):
+
+xe_sched_job_run: dev=0000:00:02.0, fence=0xffff888276cc8540, seqno=0, lrc_seqno=0, gt=0, guc_id=0, batch_addr=0x000000146910 ...
+xe_exec_queue_stop:   dev=0000:00:02.0, 3:0x2, gt=0, width=1, guc_id=0, guc_state=0x0, flags=0x13
+xe_exec_queue_stop:   dev=0000:00:02.0, 3:0x2, gt=0, width=1, guc_id=1, guc_state=0x0, flags=0x4
+xe_exec_queue_stop:   dev=0000:00:02.0, 4:0x1, gt=1, width=1, guc_id=0, guc_state=0x0, flags=0x3
+xe_exec_queue_stop:   dev=0000:00:02.0, 1:0x1, gt=1, width=1, guc_id=1, guc_state=0x0, flags=0x3
+xe_exec_queue_stop:   dev=0000:00:02.0, 4:0x1, gt=1, width=1, guc_id=2, guc_state=0x0, flags=0x3
+xe_exec_queue_resubmit: dev=0000:00:02.0, 3:0x2, gt=0, width=1, guc_id=0, guc_state=0x0, flags=0x13
+xe_sched_job_run: dev=0000:00:02.0, fence=0xffff888276cc8540, seqno=0, lrc_seqno=0, gt=0, guc_id=0, batch_addr=0x000000146910 ...
+.....
+xe_exec_queue_memory_cat_error: dev=0000:00:02.0, 3:0x2, gt=0, width=1, guc_id=0, guc_state=0x3, flags=0x13
+
+So the job_run() is clearly triggered twice for the same job, even
+though the first must have already signalled to completion during
+suspend. We can also see a CAT error after the re-submit.
+
+To prevent this only resubmit jobs on the pending_list that have not yet
+signalled.
+
+v2:
+  - Make sure to re-arm the fence callbacks with sched_start().
+v3 (Matt B):
+  - Stop using drm_sched_resubmit_jobs(), which appears to be deprecated
+    and just open-code a simple loop such that we skip calling run_job()
+    on anything already signalled.
+
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4856
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: William Tseng <william.tseng@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Link: https://lore.kernel.org/r/20250528113328.289392-2-matthew.auld@intel.com
+(cherry picked from commit 38fafa9f392f3110d2de431432d43f4eef99cd1b)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/bpf/btf_dump.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/xe/xe_gpu_scheduler.h |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/btf_dump.c b/tools/lib/bpf/btf_dump.c
-index ebf56d21d08ee..cf4db51b99eb5 100644
---- a/tools/lib/bpf/btf_dump.c
-+++ b/tools/lib/bpf/btf_dump.c
-@@ -225,6 +225,9 @@ static void btf_dump_free_names(struct hashmap *map)
- 	size_t bkt;
- 	struct hashmap_entry *cur;
+--- a/drivers/gpu/drm/xe/xe_gpu_scheduler.h
++++ b/drivers/gpu/drm/xe/xe_gpu_scheduler.h
+@@ -51,7 +51,15 @@ static inline void xe_sched_tdr_queue_im
  
-+	if (!map)
-+		return;
+ static inline void xe_sched_resubmit_jobs(struct xe_gpu_scheduler *sched)
+ {
+-	drm_sched_resubmit_jobs(&sched->base);
++	struct drm_sched_job *s_job;
 +
- 	hashmap__for_each_entry(map, cur, bkt)
- 		free((void *)cur->pkey);
++	list_for_each_entry(s_job, &sched->base.pending_list, list) {
++		struct drm_sched_fence *s_fence = s_job->s_fence;
++		struct dma_fence *hw_fence = s_fence->parent;
++
++		if (hw_fence && !dma_fence_is_signaled(hw_fence))
++			sched->base.ops->run_job(s_job);
++	}
+ }
  
--- 
-2.39.5
-
+ static inline bool
 
 
 
