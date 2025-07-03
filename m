@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-159506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A57AAF7923
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:58:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34FA8AF7B37
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:23:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F311188B680
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 155006E3F66
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3FC2EFD9F;
-	Thu,  3 Jul 2025 14:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2EF12EFDAE;
+	Thu,  3 Jul 2025 15:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YE02oR8Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYICHYnt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4756B2EFD8A;
-	Thu,  3 Jul 2025 14:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A002F2F3C39;
+	Thu,  3 Jul 2025 15:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554443; cv=none; b=bTIYjz0XeQw9y+2+4d0b8GJX5pitIS1IbjBH+kd5mLADaA3xn3BAC3TAJeyM5jq7XOyB1zhj9ULfsCmE1CkVjW3FXDVeajQXICGGvNqyLG/kD3vbdICHCKQFw6qT8dbi/JUfbzW74PQDwxNpAUjBwXGMc6rFK8h8NxjmBCcRnf0=
+	t=1751555632; cv=none; b=Ll2Sq2v9e6X5EzmJr/9jBtil3I/GDI1cS16/M8d0CU+LtAT63F5DJ5cu5/WhT9nendqQglt7hfcsArgsSnGkRu08Vk2x6tu4+A0Lb0t/XxhNjiCx4G7z31XomPNb2+1j42aNldFfR5OY44mhl6dNDxB/ij9x1RALyy24P8jbxaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554443; c=relaxed/simple;
-	bh=Xaco5PkhDR311TRmWAG5EAElCJ0cMB2vgi6yQs1Uq2k=;
+	s=arc-20240116; t=1751555632; c=relaxed/simple;
+	bh=OLtEKR/iZZmc67tCHb3wYuWtMleSowzdVJ+3pR7l2Qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fL5Tpgb2wdJk1kvstyJf5Vj6xGQPpKCgKjv9P3cr876rzIgliliZ04M3aBe/yymVBRdyqkLbvKFNDd/EJWG6C6P6Fg1iVjaOWUQhblec5TfDJ1t3LldXpzOscovksX+CI6I5TUcI8SM33D9qB5YaGrfVw7CK9zHDsqq1tM2Xy3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YE02oR8Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5199AC4CEF1;
-	Thu,  3 Jul 2025 14:54:02 +0000 (UTC)
+	 MIME-Version; b=g+dPGdTICejeE75B7Vp+o6tJbaiOwviP9AZVjPkQBUPl3YpPEvfDceIQb8p4Kn8oE5MF2RRIKVFOvXz8C2H4z0Z7CRWtWvpNq6+IqGTWg0PyKmhwjgxpkYGNRNDvFCBRwJfukJZwe7jjRotZraBCuTzw9/T1JtONHaOy8smZigQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYICHYnt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139BEC4CEE3;
+	Thu,  3 Jul 2025 15:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554442;
-	bh=Xaco5PkhDR311TRmWAG5EAElCJ0cMB2vgi6yQs1Uq2k=;
+	s=korg; t=1751555632;
+	bh=OLtEKR/iZZmc67tCHb3wYuWtMleSowzdVJ+3pR7l2Qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YE02oR8QVljfciU5yQzL5R7Soq8Spu6UD0tI792+TkNQgUPuXmpBFrqY0/Z6jRZRS
-	 MPX6ObuEwbF4FWdZMxorTmTFpus7iArc9BAc9jdVdqDBmZ4Tzh04p0K27kiCrzN1Zo
-	 Jzh87an8Llu6jbo/9dh81PJoWCQeEdHRtmxY3yJw=
+	b=qYICHYntXY2lmLvl+3e1GLhyjwOQNCd8lVl2NFFlp3fBemGTu50K7vkf+CPN9t6IG
+	 fCpdlxHujfEyCZaGq1t7MFr9LIFBpb7Isy7a0ImdBOrkJl1ka+tt2tjFbjMgR7Zilb
+	 ppJvjq6/nhMMel7hXKuG65NvvYOftTivmHCgIDO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 188/218] io_uring/net: mark iov as dynamically allocated even for single segments
-Date: Thu,  3 Jul 2025 16:42:16 +0200
-Message-ID: <20250703144003.713458259@linuxfoundation.org>
+	Oliver Schramm <oliver.schramm97@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 074/139] ASoC: amd: yc: Add DMI quirk for Lenovo IdeaPad Slim 5 15
+Date: Thu,  3 Jul 2025 16:42:17 +0200
+Message-ID: <20250703143944.065456839@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Oliver Schramm <oliver.schramm97@gmail.com>
 
-Commit 9a709b7e98e6fa51600b5f2d24c5068efa6d39de upstream.
+commit bf39286adc5e10ce3e32eb86ad316ae56f3b52a0 upstream.
 
-A bigger array of vecs could've been allocated, but
-io_ring_buffers_peek() still decided to cap the mapped range depending
-on how much data was available. Hence don't rely on the segment count
-to know if the request should be marked as needing cleanup, always
-check upfront if the iov array is different than the fast_iov array.
+It's smaller brother has already received the patch to enable the microphone,
+now add it too to the DMI quirk table.
 
-Fixes: 26ec15e4b0c1 ("io_uring/kbuf: don't truncate end buffer for multiple buffer peeks")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org
+Signed-off-by: Oliver Schramm <oliver.schramm97@gmail.com>
+Link: https://patch.msgid.link/20250621223000.11817-2-oliver.schramm97@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -1118,6 +1118,12 @@ static int io_recv_buf_select(struct io_
- 		if (unlikely(ret < 0))
- 			return ret;
- 
-+		if (arg.iovs != &kmsg->fast_iov && arg.iovs != kmsg->free_iov) {
-+			kmsg->free_iov_nr = ret;
-+			kmsg->free_iov = arg.iovs;
-+			req->flags |= REQ_F_NEED_CLEANUP;
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -356,6 +356,13 @@ static const struct dmi_system_id yc_acp
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83J3"),
 +		}
-+
- 		/* special case 1 vec, can be a fast path */
- 		if (ret == 1) {
- 			sr->buf = arg.iovs[0].iov_base;
-@@ -1126,11 +1132,6 @@ static int io_recv_buf_select(struct io_
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "UM5302TA"),
  		}
- 		iov_iter_init(&kmsg->msg.msg_iter, ITER_DEST, arg.iovs, ret,
- 				arg.out_len);
--		if (arg.iovs != &kmsg->fast_iov && arg.iovs != kmsg->free_iov) {
--			kmsg->free_iov_nr = ret;
--			kmsg->free_iov = arg.iovs;
--			req->flags |= REQ_F_NEED_CLEANUP;
--		}
- 	} else {
- 		void __user *buf;
- 
 
 
 
