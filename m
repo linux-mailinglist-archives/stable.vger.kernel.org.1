@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-159895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E3DAF7B3A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:23:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F11FAF7C07
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F40116CE4D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:17:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B85166E498E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37992F0C68;
-	Thu,  3 Jul 2025 15:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591202EE99E;
+	Thu,  3 Jul 2025 15:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiDc1OJ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkedZON1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8232F2F0C6A;
-	Thu,  3 Jul 2025 15:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3B122B8AB;
+	Thu,  3 Jul 2025 15:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555699; cv=none; b=Tkci10UuZPd6UVtVPRvDzsKTlI01cpkH9zh1v7dTxcq+KAO7K0UOVZ0xFPoeUFCtD/3Og0D7yNchLvB1aIM9ATlscfLgazaC84vADJ+CskEFvx2s4naJZeZvZbknyQfdM/M/jAEQ9eT0QZqW2aBWau+d2xnFP2lCBE4wN9VJizI=
+	t=1751556171; cv=none; b=e2CYRPRzycSpikIUMlrKzYMiY1KUthCSxFjWxuWBkx8uVy2wrrIa1T9gXbMusu81ToFYSmpqbldBbeRV80eBwk2laW63mGtPtpEJJ18uYYl13XEI4KRp+jI2pBl1aHGv5wvuMCImtqUc1oixv5+EL/x03nwuY26BewzsA/ExRZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555699; c=relaxed/simple;
-	bh=X6Ba+HiI70GXUuWd3PWnqWxKyRA8mpmejyxzEw+6ZnI=;
+	s=arc-20240116; t=1751556171; c=relaxed/simple;
+	bh=G+d5zU5IK4v4xzlKuv/P65nXp+C3iKIWtkM/kXuegU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3T0ZbeDqGRjeGJrnj5f8lWgHLwL6Kfx/V5q7VXH+8Qi0nqSVDPmlKKz8x4zUoWHtYqspcVrIB9Sduc21QrmMarft20P8hoMYFnxMLczqr02aoDinCgwKHr3G07lxvGIDbybetSS8CKUoj0ULY63sZSBp74/xjwsYWoNvHbLn5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiDc1OJ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19711C4CEED;
-	Thu,  3 Jul 2025 15:14:58 +0000 (UTC)
+	 MIME-Version; b=aIldz6kk4bOwZrf9zb9f4wFbEtpNO7IWtRFJvwrEHxyXPoepUEGi3QXLxVc3kpUDyprZCIIbMqPq5QFKgCa+szeP0ucLvezKYy2V4abksHMSokI/1FBA3eBWb59I7oALkX5EJEQMGetzgAqWI9meOsZMOh5+rveeFYUajm7vjZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkedZON1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AA3C4CEE3;
+	Thu,  3 Jul 2025 15:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555699;
-	bh=X6Ba+HiI70GXUuWd3PWnqWxKyRA8mpmejyxzEw+6ZnI=;
+	s=korg; t=1751556170;
+	bh=G+d5zU5IK4v4xzlKuv/P65nXp+C3iKIWtkM/kXuegU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OiDc1OJ3KU/E5yxTKzbDtYFzJBrBrclawlvYaLkwdl4xbkL1zarM4VWusyJvK4x8q
-	 8xZiUJiMr1atKjqp2bwvujDcc/78AqmZ5D5yfMcNZH2eCiNOg+/paZyGCdS60Oobb0
-	 Fro7dE1yR8s+LGz6Daoy8SmyUV6zYzjJQ/cFPA/4=
+	b=RkedZON16BHnf4mv+z6YsYVuW/y74ySPtSazqF/VFJoAFW+kxnn+IZ3C/bw1hhDVo
+	 EF9HCIZf6w5rnQuyhbzb4vHPCBwqjPrfd0X65NMK0JM0N0h129s1B2yKzV4te3uzCT
+	 CjELiXLoUCvEpuUJtxZz9xbeXYPhPVW4lS9Pi3eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Krummenacher <max.krummenacher@toradex.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Jayesh Choudhary <j-choudhary@ti.com>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Helge Deller <deller@gmx.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-parisc@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/139] drm/bridge: ti-sn65dsi86: Add HPD for DisplayPort connector type
+Subject: [PATCH 6.1 067/132] tty: vt: make consw::con_switch() return a bool
 Date: Thu,  3 Jul 2025 16:42:36 +0200
-Message-ID: <20250703143944.794524588@linuxfoundation.org>
+Message-ID: <20250703143942.044485578@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,152 +67,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jayesh Choudhary <j-choudhary@ti.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 55e8ff842051b1150461d7595d8f1d033c69d66b ]
+[ Upstream commit 8d5cc8eed738e3202379722295c626cba0849785 ]
 
-By default, HPD was disabled on SN65DSI86 bridge. When the driver was
-added (commit "a095f15c00e27"), the HPD_DISABLE bit was set in pre-enable
-call which was moved to other function calls subsequently.
-Later on, commit "c312b0df3b13" added detect utility for DP mode. But with
-HPD_DISABLE bit set, all the HPD events are disabled[0] and the debounced
-state always return 1 (always connected state).
+The non-zero (true) return value from consw::con_switch() means a redraw
+is needed. So make this return type a bool explicitly instead of int.
+The latter might imply that -Eerrors are expected. They are not.
 
-Set HPD_DISABLE bit conditionally based on display sink's connector type.
-Since the HPD_STATE is reflected correctly only after waiting for debounce
-time (~100-400ms) and adding this delay in detect() is not feasible
-owing to the performace impact (glitches and frame drop), remove runtime
-calls in detect() and add hpd_enable()/disable() bridge hooks with runtime
-calls, to detect hpd properly without any delay.
+And document the hook.
 
-[0]: <https://www.ti.com/lit/gpn/SN65DSI86> (Pg. 32)
-
-Fixes: c312b0df3b13 ("drm/bridge: ti-sn65dsi86: Implement bridge connector operations for DP")
-Cc: Max Krummenacher <max.krummenacher@toradex.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20250624044835.165708-1-j-choudhary@ti.com
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-parisc@vger.kernel.org
+Tested-by: Helge Deller <deller@gmx.de> # parisc STI console
+Link: https://lore.kernel.org/r/20240122110401.7289-31-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 03bcbbb3995b ("dummycon: Trigger redraw when switching consoles with deferred takeover")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi86.c | 69 +++++++++++++++++++++++----
- 1 file changed, 60 insertions(+), 9 deletions(-)
+ drivers/tty/vt/vt.c                 | 2 +-
+ drivers/video/console/dummycon.c    | 4 ++--
+ drivers/video/console/mdacon.c      | 4 ++--
+ drivers/video/console/newport_con.c | 4 ++--
+ drivers/video/console/sticon.c      | 4 ++--
+ drivers/video/console/vgacon.c      | 4 ++--
+ drivers/video/fbdev/core/fbcon.c    | 6 +++---
+ include/linux/console.h             | 4 +++-
+ 8 files changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-index 3e31a0c5a6d25..002f8aaa509bc 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-@@ -331,12 +331,18 @@ static void ti_sn65dsi86_enable_comms(struct ti_sn65dsi86 *pdata)
- 	 * 200 ms.  We'll assume that the panel driver will have the hardcoded
- 	 * delay in its prepare and always disable HPD.
- 	 *
--	 * If HPD somehow makes sense on some future panel we'll have to
--	 * change this to be conditional on someone specifying that HPD should
--	 * be used.
-+	 * For DisplayPort bridge type, we need HPD. So we use the bridge type
-+	 * to conditionally disable HPD.
-+	 * NOTE: The bridge type is set in ti_sn_bridge_probe() but enable_comms()
-+	 * can be called before. So for DisplayPort, HPD will be enabled once
-+	 * bridge type is set. We are using bridge type instead of "no-hpd"
-+	 * property because it is not used properly in devicetree description
-+	 * and hence is unreliable.
- 	 */
--	regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG, HPD_DISABLE,
--			   HPD_DISABLE);
-+
-+	if (pdata->bridge.type != DRM_MODE_CONNECTOR_DisplayPort)
-+		regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG, HPD_DISABLE,
-+				   HPD_DISABLE);
+diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
+index 609d2bac58d0b..ccfd9d93c10c5 100644
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -1014,7 +1014,7 @@ void redraw_screen(struct vc_data *vc, int is_switch)
+ 	}
  
- 	pdata->comms_enabled = true;
+ 	if (redraw) {
+-		int update;
++		bool update;
+ 		int old_was_color = vc->vc_can_do_color;
  
-@@ -1173,9 +1179,14 @@ static enum drm_connector_status ti_sn_bridge_detect(struct drm_bridge *bridge)
- 	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
- 	int val = 0;
- 
--	pm_runtime_get_sync(pdata->dev);
-+	/*
-+	 * Runtime reference is grabbed in ti_sn_bridge_hpd_enable()
-+	 * as the chip won't report HPD just after being powered on.
-+	 * HPD_DEBOUNCED_STATE reflects correct state only after the
-+	 * debounce time (~100-400 ms).
-+	 */
-+
- 	regmap_read(pdata->regmap, SN_HPD_DISABLE_REG, &val);
--	pm_runtime_put_autosuspend(pdata->dev);
- 
- 	return val & HPD_DEBOUNCED_STATE ? connector_status_connected
- 					 : connector_status_disconnected;
-@@ -1198,6 +1209,26 @@ static void ti_sn65dsi86_debugfs_init(struct drm_bridge *bridge, struct dentry *
- 	debugfs_create_file("status", 0600, debugfs, pdata, &status_fops);
+ 		set_origin(vc);
+diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
+index 6918014b02408..d701f2b51f5b1 100644
+--- a/drivers/video/console/dummycon.c
++++ b/drivers/video/console/dummycon.c
+@@ -119,9 +119,9 @@ static bool dummycon_scroll(struct vc_data *vc, unsigned int top,
+ 	return false;
  }
  
-+static void ti_sn_bridge_hpd_enable(struct drm_bridge *bridge)
-+{
-+	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
-+
-+	/*
-+	 * Device needs to be powered on before reading the HPD state
-+	 * for reliable hpd detection in ti_sn_bridge_detect() due to
-+	 * the high debounce time.
-+	 */
-+
-+	pm_runtime_get_sync(pdata->dev);
-+}
-+
-+static void ti_sn_bridge_hpd_disable(struct drm_bridge *bridge)
-+{
-+	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
-+
-+	pm_runtime_put_autosuspend(pdata->dev);
-+}
-+
- static const struct drm_bridge_funcs ti_sn_bridge_funcs = {
- 	.attach = ti_sn_bridge_attach,
- 	.detach = ti_sn_bridge_detach,
-@@ -1212,6 +1243,8 @@ static const struct drm_bridge_funcs ti_sn_bridge_funcs = {
- 	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
- 	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
- 	.debugfs_init = ti_sn65dsi86_debugfs_init,
-+	.hpd_enable = ti_sn_bridge_hpd_enable,
-+	.hpd_disable = ti_sn_bridge_hpd_disable,
- };
+-static int dummycon_switch(struct vc_data *vc)
++static bool dummycon_switch(struct vc_data *vc)
+ {
+-	return 0;
++	return false;
+ }
  
- static void ti_sn_bridge_parse_lanes(struct ti_sn65dsi86 *pdata,
-@@ -1300,8 +1333,26 @@ static int ti_sn_bridge_probe(struct auxiliary_device *adev,
- 	pdata->bridge.type = pdata->next_bridge->type == DRM_MODE_CONNECTOR_DisplayPort
- 			   ? DRM_MODE_CONNECTOR_DisplayPort : DRM_MODE_CONNECTOR_eDP;
+ /*
+diff --git a/drivers/video/console/mdacon.c b/drivers/video/console/mdacon.c
+index 1ddbb6cd5b0ca..26b41a8f36c87 100644
+--- a/drivers/video/console/mdacon.c
++++ b/drivers/video/console/mdacon.c
+@@ -454,9 +454,9 @@ static void mdacon_clear(struct vc_data *c, unsigned int y, unsigned int x,
+ 	scr_memsetw(dest, eattr, width * 2);
+ }
  
--	if (pdata->bridge.type == DRM_MODE_CONNECTOR_DisplayPort)
--		pdata->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
-+	if (pdata->bridge.type == DRM_MODE_CONNECTOR_DisplayPort) {
-+		pdata->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT |
-+				    DRM_BRIDGE_OP_HPD;
-+		/*
-+		 * If comms were already enabled they would have been enabled
-+		 * with the wrong value of HPD_DISABLE. Update it now. Comms
-+		 * could be enabled if anyone is holding a pm_runtime reference
-+		 * (like if a GPIO is in use). Note that in most cases nobody
-+		 * is doing AUX channel xfers before the bridge is added so
-+		 * HPD doesn't _really_ matter then. The only exception is in
-+		 * the eDP case where the panel wants to read the EDID before
-+		 * the bridge is added. We always consistently have HPD disabled
-+		 * for eDP.
-+		 */
-+		mutex_lock(&pdata->comms_mutex);
-+		if (pdata->comms_enabled)
-+			regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG,
-+					   HPD_DISABLE, 0);
-+		mutex_unlock(&pdata->comms_mutex);
-+	};
+-static int mdacon_switch(struct vc_data *c)
++static bool mdacon_switch(struct vc_data *c)
+ {
+-	return 1;	/* redrawing needed */
++	return true;	/* redrawing needed */
+ }
  
- 	drm_bridge_add(&pdata->bridge);
+ static int mdacon_blank(struct vc_data *c, int blank, int mode_switch)
+diff --git a/drivers/video/console/newport_con.c b/drivers/video/console/newport_con.c
+index 5dac00c825946..1ebb18bf10983 100644
+--- a/drivers/video/console/newport_con.c
++++ b/drivers/video/console/newport_con.c
+@@ -462,7 +462,7 @@ static void newport_cursor(struct vc_data *vc, int mode)
+ 	}
+ }
  
+-static int newport_switch(struct vc_data *vc)
++static bool newport_switch(struct vc_data *vc)
+ {
+ 	static int logo_drawn = 0;
+ 
+@@ -476,7 +476,7 @@ static int newport_switch(struct vc_data *vc)
+ 		}
+ 	}
+ 
+-	return 1;
++	return true;
+ }
+ 
+ static int newport_blank(struct vc_data *c, int blank, int mode_switch)
+diff --git a/drivers/video/console/sticon.c b/drivers/video/console/sticon.c
+index 58e983b18f1f4..6b82194a8ef36 100644
+--- a/drivers/video/console/sticon.c
++++ b/drivers/video/console/sticon.c
+@@ -309,9 +309,9 @@ static void sticon_clear(struct vc_data *conp, unsigned int sy, unsigned int sx,
+ 	      conp->vc_video_erase_char, font_data[conp->vc_num]);
+ }
+ 
+-static int sticon_switch(struct vc_data *conp)
++static bool sticon_switch(struct vc_data *conp)
+ {
+-    return 1;	/* needs refreshing */
++    return true;	/* needs refreshing */
+ }
+ 
+ static int sticon_blank(struct vc_data *c, int blank, int mode_switch)
+diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
+index 6998e28441c97..81f27cd610271 100644
+--- a/drivers/video/console/vgacon.c
++++ b/drivers/video/console/vgacon.c
+@@ -595,7 +595,7 @@ static int vgacon_doresize(struct vc_data *c,
+ 	return 0;
+ }
+ 
+-static int vgacon_switch(struct vc_data *c)
++static bool vgacon_switch(struct vc_data *c)
+ {
+ 	int x = c->vc_cols * VGA_FONTWIDTH;
+ 	int y = c->vc_rows * c->vc_cell_height;
+@@ -624,7 +624,7 @@ static int vgacon_switch(struct vc_data *c)
+ 			vgacon_doresize(c, c->vc_cols, c->vc_rows);
+ 	}
+ 
+-	return 0;		/* Redrawing not needed */
++	return false;		/* Redrawing not needed */
+ }
+ 
+ static void vga_set_palette(struct vc_data *vc, const unsigned char *table)
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 3fd76dc6010b4..1a17274187112 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2073,7 +2073,7 @@ static int fbcon_resize(struct vc_data *vc, unsigned int width,
+ 	return 0;
+ }
+ 
+-static int fbcon_switch(struct vc_data *vc)
++static bool fbcon_switch(struct vc_data *vc)
+ {
+ 	struct fb_info *info, *old_info = NULL;
+ 	struct fbcon_ops *ops;
+@@ -2195,9 +2195,9 @@ static int fbcon_switch(struct vc_data *vc)
+ 			      vc->vc_origin + vc->vc_size_row * vc->vc_top,
+ 			      vc->vc_size_row * (vc->vc_bottom -
+ 						 vc->vc_top) / 2);
+-		return 0;
++		return false;
+ 	}
+-	return 1;
++	return true;
+ }
+ 
+ static void fbcon_generic_blank(struct vc_data *vc, struct fb_info *info,
+diff --git a/include/linux/console.h b/include/linux/console.h
+index d7b45c60cf02f..ab8b19f6affab 100644
+--- a/include/linux/console.h
++++ b/include/linux/console.h
+@@ -40,6 +40,8 @@ enum vc_intensity;
+  * @con_scroll: move lines from @top to @bottom in direction @dir by @lines.
+  *		Return true if no generic handling should be done.
+  *		Invoked by csi_M and printing to the console.
++ * @con_switch: notifier about the console switch; it is supposed to return
++ *		true if a redraw is needed.
+  * @con_set_palette: sets the palette of the console to @table (optional)
+  * @con_scrolldelta: the contents of the console should be scrolled by @lines.
+  *		     Invoked by user. (optional)
+@@ -58,7 +60,7 @@ struct consw {
+ 	bool	(*con_scroll)(struct vc_data *vc, unsigned int top,
+ 			unsigned int bottom, enum con_scroll dir,
+ 			unsigned int lines);
+-	int	(*con_switch)(struct vc_data *vc);
++	bool	(*con_switch)(struct vc_data *vc);
+ 	int	(*con_blank)(struct vc_data *vc, int blank, int mode_switch);
+ 	int	(*con_font_set)(struct vc_data *vc, struct console_font *font,
+ 			unsigned int flags);
 -- 
 2.39.5
 
