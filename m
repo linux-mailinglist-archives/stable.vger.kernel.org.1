@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-159926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D90AF7B7F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E49ADAF7C3D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE40D1CA5C43
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D157D6E1E61
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0712EFD87;
-	Thu,  3 Jul 2025 15:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7773C222580;
+	Thu,  3 Jul 2025 15:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrHeJ4Q6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbmTJVwm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAA32D6639;
-	Thu,  3 Jul 2025 15:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346A42DE6F1;
+	Thu,  3 Jul 2025 15:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555795; cv=none; b=q4nyQ6Vs2Wln4ecB3c9y4sMZiQRJ69KVTLPHAe/G7fJVg/WfKQPKCkNP4gpfCY1m0X/u+rnupsiQx5eICWt0h0M/Ns8YtG9DqfRU9Wh8NtV809AdQ0r9Vmp9S0vsFinmpWgpl1KVFLgDWFRIoj39qD5m7HoHU5I0fuckpblrWkY=
+	t=1751556270; cv=none; b=RQHBuZXCeT3Bw6XrcHbcMuEvcmQJ+2LKTrvgFmjVqlUD5zErf85Gn2NS8JKxoBzGrWDENWJ4GM6FyGVEtdkA4A1ZSEybyDz9+RUMkmkRg7oEUTnBybll7GNgKAvLYR/4uCrhaGAWVdc5z7aFEiwOsxGRoE4tY20GJ/kD6WI2ED0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555795; c=relaxed/simple;
-	bh=4npm4VZ0cAs9tieB2Hpxg3cjBA2Qdt4AOdwaYBkoqU0=;
+	s=arc-20240116; t=1751556270; c=relaxed/simple;
+	bh=JEBdxJKBI1kB/s+h3MIzqhwigJjCaFZdhhd94Bta+os=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=THZrmEZIin0vw5ivB/bQni7YhbvlWajXc7W98aVosIqTuR10vveyvl44a4ZvBN2e5JRF/kgQZ47vVZIrQKcMhb+b7O/S5OY1o7XFrtDSuQyVuNPC9AERbuHsH6lTihZyiGdcOSgBESGV50zeih1odVPWKhRbOqe3Rmsui7QvYJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrHeJ4Q6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DC9C4CEF3;
-	Thu,  3 Jul 2025 15:16:34 +0000 (UTC)
+	 MIME-Version; b=Fq8V4K0PH7HMVVglIbbknGRuYxG5tlSqXjtEvY7RpUeYM00rhZh6WyQZF9GGapo82OIEkma2xYSIsabVuAs3PVYT5mZBgUpxUf1V+BB9O1PFsaoEjWVYmrBopGtwCBgdd/GW9r9A5Gjo+U053nDGq23MOlE2b+uEo3OVvSu2TKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbmTJVwm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E798C4CEED;
+	Thu,  3 Jul 2025 15:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555795;
-	bh=4npm4VZ0cAs9tieB2Hpxg3cjBA2Qdt4AOdwaYBkoqU0=;
+	s=korg; t=1751556270;
+	bh=JEBdxJKBI1kB/s+h3MIzqhwigJjCaFZdhhd94Bta+os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BrHeJ4Q6xSLRnUaXG1+RXWKpLkysYXVgKl1MbCP4m1i1fqXPM04t2D5UuAauImNHV
-	 3GdJ87EECtZcEBBAAhpfmpo7RDajoVH8ug3Hcr8ItrMfhSQrKgWNV8v3+Vd3GJeZIn
-	 2s6IafdJcjTJb5SD71jLWQTtRAJR3qFDt/Gzhoug=
+	b=dbmTJVwmwdm8vYOvnOki/EU/OcXJCbIp7B5rgdHKc28xNgCa0+gR58W0QRb7GgeG+
+	 S50M6BKcJB3svjlLAC/RZ93LBHkBTMdrtHNO/6zC7rjWqV3queU1yo652rtarj4jC2
+	 T6ycxZIsHybs1UNsTIShP+wsDAAGNTIvI0WjLNcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.6 124/139] drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1
+	Ping Cheng <ping.cheng@wacom.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.1 098/132] HID: wacom: fix memory leak on kobject creation failure
 Date: Thu,  3 Jul 2025 16:43:07 +0200
-Message-ID: <20250703143946.031173292@linuxfoundation.org>
+Message-ID: <20250703143943.245309928@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-commit 25eeba495b2fc16037647c1a51bcdf6fc157af5c upstream.
+commit 5ae416c5b1e2e816aee7b3fc8347adf70afabb4c upstream.
 
-The intel-media-driver is currently broken on DG1 because
-it uses EXEC_CAPTURE with recovarable contexts. Relax the
-check to allow that.
+During wacom_initialize_remotes() a fifo buffer is allocated
+with kfifo_alloc() and later a cleanup action is registered
+during devm_add_action_or_reset() to clean it up.
 
-I've also submitted a fix for the intel-media-driver:
-https://github.com/intel/media-driver/pull/1920
+However if the code fails to create a kobject and register it
+with sysfs the code simply returns -ENOMEM before the cleanup
+action is registered leading to a memory leak.
 
-Cc: stable@vger.kernel.org # v6.0+
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Testcase: igt/gem_exec_capture/capture-invisible
-Fixes: 71b1669ea9bd ("drm/i915/uapi: tweak error capture on recoverable contexts")
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250411144313.11660-2-ville.syrjala@linux.intel.com
-(cherry picked from commit d6e020819612a4a06207af858e0978be4d3e3140)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fix this by ensuring the fifo is freed when the kobject creation
+and registration process fails.
+
+Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/wacom_sys.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-@@ -2013,7 +2013,7 @@ static int eb_capture_stage(struct i915_
- 			continue;
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2012,8 +2012,10 @@ static int wacom_initialize_remotes(stru
  
- 		if (i915_gem_context_is_recoverable(eb->gem_context) &&
--		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
-+		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
- 			return -EINVAL;
+ 	remote->remote_dir = kobject_create_and_add("wacom_remote",
+ 						    &wacom->hdev->dev.kobj);
+-	if (!remote->remote_dir)
++	if (!remote->remote_dir) {
++		kfifo_free(&remote->remote_fifo);
+ 		return -ENOMEM;
++	}
  
- 		for_each_batch_create_order(eb, j) {
+ 	error = sysfs_create_files(remote->remote_dir, remote_unpair_attrs);
+ 
 
 
 
