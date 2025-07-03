@@ -1,50 +1,54 @@
-Return-Path: <stable+bounces-159301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF92AF7154
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 13:01:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64B1FAF7276
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 13:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B290F4E68CD
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 11:00:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABA4854004B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 11:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40892E5418;
-	Thu,  3 Jul 2025 10:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1914D2E2EE9;
+	Thu,  3 Jul 2025 11:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRjHPSCk"
+	dkim=pass (2048-bit key) header.d=aladdin.ru header.i=@aladdin.ru header.b="vRMO+IMi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-out.aladdin-rd.ru (mail-out.aladdin-rd.ru [91.199.251.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DCF2E49AF;
-	Thu,  3 Jul 2025 10:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0152E426A;
+	Thu,  3 Jul 2025 11:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.199.251.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751540385; cv=none; b=Pil0TLAPmL+z9J0Vri85TYagKVYPUDF5riMMbJ+xex3yUwqAyUgGkf+RY6sXIVqTvLCigf7/y52ZnGr930eY/TPzOWSHRvfXiyozbzYNo9fJMfxq1740jDZvHUPsuaOLqBv7GUN0KHpyHyDcAkXWr+GxvEXeoaYWcEnoH1mgt5k=
+	t=1751542390; cv=none; b=t3d01PSMqkDHr+gU4fWqGi6k5qLEMeD/xhy+6duKvpFcmEpwsZb4icROyAaE8zXo2y6eNnLxQozn1LcHb45EN5NIZ4tlMolhhDkkDMkQ9VBRiQUPw6qPrzxI33aHa79V3E7gJ82IYloCTJt7ytidJW8HeRs4C9f1bh5+xCFGXaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751540385; c=relaxed/simple;
-	bh=5Wfu3BOvo6JOU2//k5Zq3JqFIi9e1V4gRH8NmL7fsD0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ehZtSO3yEgHccbAxi3E1vFHYGuEIJo5PgNYiHfWlSYAv1vySF3MHoY1vp0uPBUqsNLpp+58xKXiXzTkTSL4p4858X7lhYohFbn5Bjr9vGUaW80MuKYBXFmm5Wf3g0YUtHZMJUGPrZtLYexSPJyDsVOPjyYpf4CUPbAmc4fWstOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRjHPSCk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E22C4CEE3;
-	Thu,  3 Jul 2025 10:59:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751540385;
-	bh=5Wfu3BOvo6JOU2//k5Zq3JqFIi9e1V4gRH8NmL7fsD0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=oRjHPSCk2Ehs7XgfW8EUvFjU1aHTAOW0sFsEX1FpOe8ck4oDoyJ1v2kYG2IfMSqpZ
-	 lTTlaCa66BWx7SvJzO8UmMWEztsfmgz9rDDAgebXt3a74c5GqpczqmgrCmvK+ngK80
-	 ryiqHtAvh2yqR+enjVPW0a/dFz3ZJP32rZEo1Sz8emihr8Mo3MbWBbc9Vl7i4/iHXk
-	 2KCgQNYCu8SxlSzU8SVdPxNiE8MQlfTRWlpKWrIYTHR2/1b08eLyN5ruvqVRAcDAuN
-	 rETvLuvaazPFvXDieGc/COmJJh12qx45jYgYL1EL5QSrwVaZc4xkhmmuqH9zSXbRw8
-	 8WNlk4yW2L3RQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE0B8383B273;
-	Thu,  3 Jul 2025 11:00:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1751542390; c=relaxed/simple;
+	bh=CyQhUnN9yDUDBFRVhw4ghu3ibqesztbBUa/txXVxbe4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gKcZxuSL8FILhGNERsm8pZ5l/200iBcekF8HW6RhJMXoWHfseIN4vjWjdtMQorDMf2mi1bDSXYL61+mQXxoN7tLjpVoOMdQ6EOnnlAHl4keQuW4ruGiGwTjDhVe6rJnVeUm2QHuJf+kWo0G/wZ6oRF7bpN89d6xXSD5tw9x/D7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru; spf=pass smtp.mailfrom=aladdin.ru; dkim=pass (2048-bit key) header.d=aladdin.ru header.i=@aladdin.ru header.b=vRMO+IMi; arc=none smtp.client-ip=91.199.251.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aladdin.ru
+DKIM-Signature: v=1; a=rsa-sha256; d=aladdin.ru; s=mail; c=simple/simple;
+	t=1751542376; h=from:subject:to:date:message-id;
+	bh=CyQhUnN9yDUDBFRVhw4ghu3ibqesztbBUa/txXVxbe4=;
+	b=vRMO+IMi3XxKo7NY4fxaOR+3ZJOosaJy8ibaMkoyuHLol/Rk3cByQ014tIZ8nBqpgbbOToQKqDs
+	rKrUV4tVMfmBG46XmuM15ABi/F5IHuREwdI1od0yDpM1C5qaCWA39tXh2cvIrudnRMolo5uuQMU/X
+	pbXTHtO0nvSvqL8dnxIb1ocveOTJuwN0Y/aKFyAcRjGrvSbJQL0//qw2DSchc0uICWfgzQ/DQWz4f
+	BSuTGiKWisAPZkeSINEOLG9yWPK+EbDLBDkWiH+dY751Hd4q2FeuRTp//+TPy/4fGhiB2A61v5EQ2
+	Baz8zdnooeWM36KOxfEWctAh8gk/cFFpVK3g==
+From: Daniil Dulov <d.dulov@aladdin.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Daniil Dulov <d.dulov@aladdin.ru>, Song Liu <song@kernel.org>, "Vishal
+ Verma" <vverma@digitalocean.com>, Jens Axboe <axboe@kernel.dk>,
+	<linux-raid@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, Xiao Ni <xni@redhat.com>, Coly Li
+	<colyli@kernel.org>, Yu Kuai <yukuai3@huawei.com>
+Subject: [PATCH 5.15/6.1/6.6/6.12] md/raid10: wait barrier before returning discard request with REQ_NOWAIT
+Date: Thu, 3 Jul 2025 14:32:33 +0300
+Message-ID: <20250703113233.51484-1-d.dulov@aladdin.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,47 +56,49 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] dt-bindings: net: sophgo,sg2044-dwmac: Drop status
- from
- the example
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175154040925.1407041.4796273578925200591.git-patchwork-notify@kernel.org>
-Date: Thu, 03 Jul 2025 11:00:09 +0000
-References: <20250701063621.23808-2-krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20250701063621.23808-2-krzysztof.kozlowski@linaro.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, unicorn_wang@outlook.com, inochiama@gmail.com,
- netdev@vger.kernel.org, devicetree@vger.kernel.org, sophgo@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain
+X-ClientProxiedBy: EXCH-2016-02.aladdin.ru (192.168.1.102) To
+ EXCH-2016-01.aladdin.ru (192.168.1.101)
 
-Hello:
+From: Xiao Ni <xni@redhat.com>
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+commit 3db4404435397a345431b45f57876a3df133f3b4 upstream.
 
-On Tue,  1 Jul 2025 08:36:22 +0200 you wrote:
-> Examples should be complete and should not have a 'status' property,
-> especially a disabled one because this disables the dt_binding_check of
-> the example against the schema.  Dropping 'status' property shows
-> missing other properties - phy-mode and phy-handle.
-> 
-> Fixes: 114508a89ddc ("dt-bindings: net: Add support for Sophgo SG2044 dwmac")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> [...]
+raid10_handle_discard should wait barrier before returning a discard bio
+which has REQ_NOWAIT. And there is no need to print warning calltrace
+if a discard bio has REQ_NOWAIT flag. Quality engineer usually checks
+dmesg and reports error if dmesg has warning/error calltrace.
 
-Here is the summary with links:
-  - [net] dt-bindings: net: sophgo,sg2044-dwmac: Drop status from the example
-    https://git.kernel.org/netdev/net/c/f030713e5abf
+Fixes: c9aa889b035f ("md: raid10 add nowait support")
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Acked-by: Coly Li <colyli@kernel.org>
+Link: https://lore.kernel.org/linux-raid/20250306094938.48952-1-xni@redhat.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+---
+Backport fix for CVE-2025-40325.
 
-You are awesome, thank you!
+ drivers/md/raid10.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index cc194f6ec18d..a02c02684237 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -1585,11 +1585,10 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
+ 	if (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery))
+ 		return -EAGAIN;
+ 
+-	if (WARN_ON_ONCE(bio->bi_opf & REQ_NOWAIT)) {
++	if (!wait_barrier(conf, bio->bi_opf & REQ_NOWAIT)) {
+ 		bio_wouldblock_error(bio);
+ 		return 0;
+ 	}
+-	wait_barrier(conf, false);
+ 
+ 	/*
+ 	 * Check reshape again to avoid reshape happens after checking
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
 
