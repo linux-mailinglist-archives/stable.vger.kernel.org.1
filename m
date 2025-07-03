@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-159482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5EBAF78FC
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A98AF7A8C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:14:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BC8D1CA2498
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FBED7B356C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5C12EF64C;
-	Thu,  3 Jul 2025 14:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EDE2F0C58;
+	Thu,  3 Jul 2025 15:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0SeSHIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HC9+jwCV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE512F0030;
-	Thu,  3 Jul 2025 14:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5742EF672;
+	Thu,  3 Jul 2025 15:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554371; cv=none; b=SAWOExc65pRaA4OyqdLyttY7DDzO8oldurI4ghMn6wncdAqb+7HFgZqrUPVwIriaNrhpWCu8+Hz318orYASSpM7K6yF/tgd2O8bYYeT9MBfFcGdYOkAAt1pQlhBXoe3G1meuoyFy+Q+Qt4N3C3mBBC1o7MasLdzjJAhmy0ZezDU=
+	t=1751555564; cv=none; b=j4kpytXZGv3A4DZyLBgx+4IUzlT3FH259OwloncfIr8HNP+pWQ1bu+2pFj9qkJ/CPCT6TNTcLAhBxmkAOtsxs7PknKkPA+60MQfn2zu5buIItZQtcCQSlHtLHPdkZ+6Fig8eFlx1zsnQCOKMZnRV+V+TSFrndmsSaOQHieEsesg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554371; c=relaxed/simple;
-	bh=+TcYuGUBXPgVHmQZLoZGMAYGsI/9xytFsGOBw79oxI4=;
+	s=arc-20240116; t=1751555564; c=relaxed/simple;
+	bh=GipkuSzoJFwRhSWaVkOEglBq/uZFGKnpcM69ENxhgvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KrzJ16aPaA19MJPgv8MFNUeZwKDwWgR/NXgHuMirrZUbNMVXH55Kel7gRHOZvuIpIIdlIgf2LDI54jsE9LF0PG0DVjyAnZQcoRQo0zN/acCnMc2mDKxareqlr/PMYW9VPwn4bA6NjvIIj9sEVU+puD3LOWcJ6Ru0pRH/QEk9X9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0SeSHIc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7656C4CEE3;
-	Thu,  3 Jul 2025 14:52:50 +0000 (UTC)
+	 MIME-Version; b=omPEfdb9yG4RYWFHsG+RixiKMPTzLE1C2h9N0lVYm+pb8MRu73M25OOFJN+DJW2rSz0iFzAj8qo+HfyAqQtzzLp5eDO4xlYJcPkH44heQDWKLNTiN016N4L9GMYvXEsjkwbbKryECGGJPQqkKeG69oiY3vaXObU5LPPnRH3AEvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HC9+jwCV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E540C4CEE3;
+	Thu,  3 Jul 2025 15:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554371;
-	bh=+TcYuGUBXPgVHmQZLoZGMAYGsI/9xytFsGOBw79oxI4=;
+	s=korg; t=1751555563;
+	bh=GipkuSzoJFwRhSWaVkOEglBq/uZFGKnpcM69ENxhgvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V0SeSHIcc1xcHEGnecVvClace9dKc1k289EXuITTrN3b4FftdYgEJ59ApJXAtksvn
-	 1GwEfgNYcImPbAnhT709aKHucoE5z7CQ7Yg03ATNM1bFk4D0vXeMyP41EKIo8+l4Du
-	 +nntjvGwChb5NLRCUBTZfhhVGR2pPatdXZHnOopI=
+	b=HC9+jwCV+d1Xlg7d7M9Ztowv+CHSGfNUdLtOFCG/EBZPBJjSXA93+vONcwu8ZZ6st
+	 D2JqSRbxY8FHdQggUMH4m8s3s7k4AirnJBVUE8ec3jfg21jYBheYtonYv+0rFTBjGG
+	 Sgh3xFB/FjwgwSUmvsWPzoMaURLmPerpSL2/R3vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.12 166/218] drm/xe/guc_submit: add back fix
-Date: Thu,  3 Jul 2025 16:41:54 +0200
-Message-ID: <20250703144002.797711168@linuxfoundation.org>
+	stable@kernel.org,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 052/139] f2fs: dont over-report free space or inodes in statvfs
+Date: Thu,  3 Jul 2025 16:41:55 +0200
+Message-ID: <20250703143943.201972437@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 2e824747cfbdf1fba88df5e5800d284b2602ae8f upstream.
+[ Upstream commit a9201960623287927bf5776de3f70fb2fbde7e02 ]
 
-Daniele noticed that the fix in commit 2d2be279f1ca ("drm/xe: fix UAF
-around queue destruction") looks to have been unintentionally removed as
-part of handling a conflict in some past merge commit. Add it back.
+This fixes an analogus bug that was fixed in modern filesystems:
+a) xfs in commit 4b8d867ca6e2 ("xfs: don't over-report free space or
+inodes in statvfs")
+b) ext4 in commit f87d3af74193 ("ext4: don't over-report free space
+or inodes in statvfs")
+where statfs can report misleading / incorrect information where
+project quota is enabled, and the free space is less than the
+remaining quota.
 
-Fixes: ac44ff7cec33 ("Merge tag 'drm-xe-fixes-2024-10-10' of https://gitlab.freedesktop.org/drm/xe/kernel into drm-fixes")
-Reported-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.12+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250603174213.1543579-2-matthew.auld@intel.com
-(cherry picked from commit 9d9fca62dc49d96f97045b6d8e7402a95f8cf92a)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commit will resolve a test failure in generic/762 which tests
+for this bug.
+
+generic/762       - output mismatch (see /share/git/fstests/results//generic/762.out.bad)
+#    --- tests/generic/762.out   2025-04-15 10:21:53.371067071 +0800
+#    +++ /share/git/fstests/results//generic/762.out.bad 2025-05-13 16:13:37.000000000 +0800
+#    @@ -6,8 +6,10 @@
+#     root blocks2 is in range
+#     dir blocks2 is in range
+#     root bavail2 is in range
+#    -dir bavail2 is in range
+#    +dir bavail2 has value of 1539066
+#    +dir bavail2 is NOT in range 304734.87 .. 310891.13
+#     root blocks3 is in range
+#    ...
+#    (Run 'diff -u /share/git/fstests/tests/generic/762.out /share/git/fstests/results//generic/762.out.bad'  to see the entire diff)
+
+HINT: You _MAY_ be missing kernel fix:
+      XXXXXXXXXXXXXX xfs: don't over-report free space or inodes in statvfs
+
+Cc: stable@kernel.org
+Fixes: ddc34e328d06 ("f2fs: introduce f2fs_statfs_project")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/f2fs/super.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -227,6 +227,17 @@ static bool exec_queue_killed_or_banned_
- static void guc_submit_fini(struct drm_device *drm, void *arg)
- {
- 	struct xe_guc *guc = arg;
-+	struct xe_device *xe = guc_to_xe(guc);
-+	struct xe_gt *gt = guc_to_gt(guc);
-+	int ret;
-+
-+	ret = wait_event_timeout(guc->submission_state.fini_wq,
-+				 xa_empty(&guc->submission_state.exec_queue_lookup),
-+				 HZ * 5);
-+
-+	drain_workqueue(xe->destroy_wq);
-+
-+	xe_gt_assert(gt, ret);
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 702137eafaa67..b9913ab526fd1 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1774,26 +1774,32 @@ static int f2fs_statfs_project(struct super_block *sb,
  
- 	xa_destroy(&guc->submission_state.exec_queue_lookup);
- }
+ 	limit = min_not_zero(dquot->dq_dqb.dqb_bsoftlimit,
+ 					dquot->dq_dqb.dqb_bhardlimit);
+-	if (limit)
+-		limit >>= sb->s_blocksize_bits;
++	limit >>= sb->s_blocksize_bits;
++
++	if (limit) {
++		uint64_t remaining = 0;
+ 
+-	if (limit && buf->f_blocks > limit) {
+ 		curblock = (dquot->dq_dqb.dqb_curspace +
+ 			    dquot->dq_dqb.dqb_rsvspace) >> sb->s_blocksize_bits;
+-		buf->f_blocks = limit;
+-		buf->f_bfree = buf->f_bavail =
+-			(buf->f_blocks > curblock) ?
+-			 (buf->f_blocks - curblock) : 0;
++		if (limit > curblock)
++			remaining = limit - curblock;
++
++		buf->f_blocks = min(buf->f_blocks, limit);
++		buf->f_bfree = min(buf->f_bfree, remaining);
++		buf->f_bavail = min(buf->f_bavail, remaining);
+ 	}
+ 
+ 	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
+ 					dquot->dq_dqb.dqb_ihardlimit);
+ 
+-	if (limit && buf->f_files > limit) {
+-		buf->f_files = limit;
+-		buf->f_ffree =
+-			(buf->f_files > dquot->dq_dqb.dqb_curinodes) ?
+-			 (buf->f_files - dquot->dq_dqb.dqb_curinodes) : 0;
++	if (limit) {
++		uint64_t remaining = 0;
++
++		if (limit > dquot->dq_dqb.dqb_curinodes)
++			remaining = limit - dquot->dq_dqb.dqb_curinodes;
++
++		buf->f_files = min(buf->f_files, limit);
++		buf->f_ffree = min(buf->f_ffree, remaining);
+ 	}
+ 
+ 	spin_unlock(&dquot->dq_dqb_lock);
+-- 
+2.39.5
+
 
 
 
