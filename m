@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-160049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3945AF7C26
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:32:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54AA0AF7B9C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ECD51CA498B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:25:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EF066E5081
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33632EF67F;
-	Thu,  3 Jul 2025 15:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AAB2F0030;
+	Thu,  3 Jul 2025 15:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwbvzG6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Csi23R1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B962EF285;
-	Thu,  3 Jul 2025 15:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E902D2F0026;
+	Thu,  3 Jul 2025 15:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556206; cv=none; b=KSsljrIiKpDU/BXLdmXbt5rESRKpkzEIOiJcXaxc/P92cGjiLvEnXlko0NoCWOlxv918Yy429+2coUSyz5qKYgMiZtdGDlz2lrEduyAasu3gn1G4+5LZ+WkpLDb0q1Mlp9pVCRZMmIgc1vgXxdTcuLTP1/atzc2q0aYhWYWyqP4=
+	t=1751555869; cv=none; b=X7HIZ/Il2sL5ogwazOU45pzVKRW3698jU92ervHrcAAcUYexzYUxYjcBNPajCD7UXFT8Kc9y56ilK9sqUQflSBZAzgAmyFLveRYIue/u+IgubFrz1KB4eTumVtIzYUjD7pfVf2FBpzi/3KIGyVYtw9oE8pqQA7XmKQ6mppPrZk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556206; c=relaxed/simple;
-	bh=OIzitvXx9cdGNV6K4G127XTCrraY/uwgFrSETti6+qg=;
+	s=arc-20240116; t=1751555869; c=relaxed/simple;
+	bh=lyFC/cBoRvACIEfhJhzBzrFlvymEsoz5jzTnhUWyjoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZFRBuamWyBT21PA1wU3AMcgSHZbsl37phuPTpEWUSkfrsuArvNtG046QqydRgmL6FSnK3Z82wO9OglvKQ0X+DSyzR6nfgaGzw6Fpx+iGDmcS4Nrz/Dw+nFwCMEtEsw9DAcsiktBoRtLXFp0I0kRD6tIM4isfk5CIyoEC1PZePk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwbvzG6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7639BC4CEE3;
-	Thu,  3 Jul 2025 15:23:25 +0000 (UTC)
+	 MIME-Version; b=tnF9WBAPyC7P2jmQ6ID8qYb21isa3yPuBHS38K4Vri5ZK7TciSjphM1aeA0tNMv26FQ16aUSVQ3Qu4QFM+WDut8qZbaWohoeUKScaZ1u+MbWr5CXjZpTW1w8srdX/4sPgpHJyhgADFPWrd2cdWl9izblyCg3LEUROXVKUkOOtI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Csi23R1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF75C4CEE3;
+	Thu,  3 Jul 2025 15:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556205;
-	bh=OIzitvXx9cdGNV6K4G127XTCrraY/uwgFrSETti6+qg=;
+	s=korg; t=1751555868;
+	bh=lyFC/cBoRvACIEfhJhzBzrFlvymEsoz5jzTnhUWyjoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WwbvzG6zbVTdLxKl0uTrlZWQc8fqo9LDUNAxPSEpIMKoh0Yf0v7razitkEZMM0m8S
-	 iKttY4t9xstVGi6ZLDAMJcYIebvLC/2kh5Duq5nAS26cpNC2r69sob0CNgKs8X3LxP
-	 RO46GPI/1aDKY2gbowkzNxY/GDPN8mQdPpj3+5lo=
+	b=Csi23R1pY68X01tllpp2d/Hl5Pw3yhZAFR0SIytu5p5tpd08Ob7OBrMubsCJuitYW
+	 awZenWiva43Xk9OOBZzmW0KU7scUHFUfIYYvoxhAlslZ1K7bTiDpgCNxWTv6Gc2wdN
+	 YmbJEiOjBdq2IN49sscXJPNsEvmFc0HZHtxuL61w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.1 108/132] drm/bridge: cdns-dsi: Fix the clock variable for mode_valid()
+	Nathan Chancellor <nathan@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.6 134/139] x86/tools: Drop duplicate unlikely() definition in insn_decoder_test.c
 Date: Thu,  3 Jul 2025 16:43:17 +0200
-Message-ID: <20250703143943.628341161@linuxfoundation.org>
+Message-ID: <20250703143946.418227822@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 132bdcec399be6ae947582249a134b38cf56731c upstream.
+commit f710202b2a45addea3dcdcd862770ecbaf6597ef upstream.
 
-The crtc_* mode parameters do not get generated (duplicated in this
-case) from the regular parameters before the mode validation phase
-begins.
+After commit c104c16073b7 ("Kunit to check the longest symbol length"),
+there is a warning when building with clang because there is now a
+definition of unlikely from compiler.h in tools/include/linux, which
+conflicts with the one in the instruction decoder selftest:
 
-The rest of the code conditionally uses the crtc_* parameters only
-during the bridge enable phase, but sticks to the regular parameters
-for mode validation. In this singular instance, however, the driver
-tries to use the crtc_clock parameter even during the mode validation,
-causing the validation to fail.
+  arch/x86/tools/insn_decoder_test.c:15:9: warning: 'unlikely' macro redefined [-Wmacro-redefined]
 
-Allow the D-Phy config checks to use mode->clock instead of
-mode->crtc_clock during mode_valid checks, like everywhere else in the
-driver.
+Remove the second unlikely() definition, as it is no longer necessary,
+clearing up the warning.
 
-Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
-Cc: stable@vger.kernel.org
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Link: https://lore.kernel.org/r/20250329113925.68204-4-aradhya.bhatia@linux.dev
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: c104c16073b7 ("Kunit to check the longest symbol length")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250318-x86-decoder-test-fix-unlikely-redef-v1-1-74c84a7bf05b@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/cdns-dsi.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/tools/insn_decoder_test.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/gpu/drm/bridge/cdns-dsi.c
-+++ b/drivers/gpu/drm/bridge/cdns-dsi.c
-@@ -609,13 +609,14 @@ static int cdns_dsi_check_conf(struct cd
- 	struct phy_configure_opts_mipi_dphy *phy_cfg = &output->phy_opts.mipi_dphy;
- 	unsigned long dsi_hss_hsa_hse_hbp;
- 	unsigned int nlanes = output->dev->lanes;
-+	int mode_clock = (mode_valid_check ? mode->clock : mode->crtc_clock);
- 	int ret;
+--- a/arch/x86/tools/insn_decoder_test.c
++++ b/arch/x86/tools/insn_decoder_test.c
+@@ -12,8 +12,6 @@
+ #include <stdarg.h>
+ #include <linux/kallsyms.h>
  
- 	ret = cdns_dsi_mode2cfg(dsi, mode, dsi_cfg, mode_valid_check);
- 	if (ret)
- 		return ret;
- 
--	phy_mipi_dphy_get_default_config(mode->crtc_clock * 1000,
-+	phy_mipi_dphy_get_default_config(mode_clock * 1000,
- 					 mipi_dsi_pixel_format_to_bpp(output->dev->format),
- 					 nlanes, phy_cfg);
- 
+-#define unlikely(cond) (cond)
+-
+ #include <asm/insn.h>
+ #include <inat.c>
+ #include <insn.c>
 
 
 
