@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC35AF7B82
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5B0AF7A13
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:09:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 757DB584F5E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D10F1798E7
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEED223DC0;
-	Thu,  3 Jul 2025 15:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A602DE6F9;
+	Thu,  3 Jul 2025 15:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mK11grs2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZOilGCkf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F5C86348;
-	Thu,  3 Jul 2025 15:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49B12ED143;
+	Thu,  3 Jul 2025 15:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555916; cv=none; b=KtxjUckHar0k4Wl/dsSxmkkP63MELEqU2dcItDBc8t0hdUi+HF7GFyUseQ3zTAcFLv9aPnqRTcDRPKbFzRxU3JRZR1+xPX4GajzYLcn/DmeqwP82zsXgX/RyO/phO8UYIZTctwRU9vtHjmlGbtem1SzeMBDCrPy+aKVPxHgbwMw=
+	t=1751555143; cv=none; b=Mn0XrlJxE0M7829Nxehqjc71mMzgw4Z+a4ahjnMgxUpSeVohPHm8CWEIKt5xN5Djx/QgZo6/VqDko97A9GlUxhONb+uUAkBBM2OASqobUpr8CpwS74IMziij8165ZhALiR0iuA7Cb6XvJInY6BiqxXSSW+1fn5qpJv7WjGsJ6yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555916; c=relaxed/simple;
-	bh=EHdEeODl7ZBX221lHBoHeFEqL3LmuA3S76k7YuqSZts=;
+	s=arc-20240116; t=1751555143; c=relaxed/simple;
+	bh=C8RCy3NirBWMXCAuOqR/5B69OvxMwDFfRCnrgGs0+ys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ddxKa/MdJuUYphCG0VphIPhTBLXcpgFTNIMV1NHQTO0MsnN0KEzTa/GFoPasUVaufVljsgQp/UKM+z2ZNdZMxsfv2n7gUQendBVErIypUZQYZQi341Hn6UnNGK3hu8rER9ZfMj3KlIC62hD3+3kuJXENoz/CqS0uGtlzYu0lZEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mK11grs2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C3FC4CEE3;
-	Thu,  3 Jul 2025 15:18:35 +0000 (UTC)
+	 MIME-Version; b=sCnpiQTYGQoz+sm69tlw0YsuSBEQB0pBqFCc3D3pRuWLMlThYl2dJK5twrO1EtCdHIcxnrI4Sxsn1+eYX5yC4YbVAYt5gP+Z7gMHPIW6BIfKA+h0XVqlcBP57GSxvhRqItyeQbc5ztR0oJpLYMTKqBq5Quvzrece+NiK2I+Ddbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZOilGCkf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55261C4CEE3;
+	Thu,  3 Jul 2025 15:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555916;
-	bh=EHdEeODl7ZBX221lHBoHeFEqL3LmuA3S76k7YuqSZts=;
+	s=korg; t=1751555142;
+	bh=C8RCy3NirBWMXCAuOqR/5B69OvxMwDFfRCnrgGs0+ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mK11grs2zDskM6NnkcuLu1rV82KRooLUoeAYXIibxdYTwzjwmuZrCkrNqx4VEqEe9
-	 beFcGd1CBZKhpJNu1KFNsH5dEbfP6XxK6GMFD4QvTpDptikwKzXv7y5yPlHw1Fjosm
-	 HXrOZfOw708Y4mLsge8J35joP0cdZBJaZXJT4jZU=
+	b=ZOilGCkfAnt/6GwjLEc+HNLPfSd+0FWUYK2RXbE47Aoi+Xwx4q6ar126rfQhUXlz3
+	 GzLNXapQ9vGrd2zzqfRqW0qsPTXQgcLLt3HsRhFka6TPna8TSCworT2g+p+ofGndH8
+	 W72GPQGS29zvwUkKUzyktl+nhR7H1xpkZ8OP9jMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/132] iio: pressure: zpa2326: Use aligned_s64 for the timestamp
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Simon Horman <horms@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.15 187/263] net: libwx: fix the creation of page_pool
 Date: Thu,  3 Jul 2025 16:41:47 +0200
-Message-ID: <20250703143940.113839039@linuxfoundation.org>
+Message-ID: <20250703144011.840937566@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 886a446b76afddfad307488e95e87f23a08ffd51 ]
+commit 85720e04d9af0b77f8092b12a06661a8d459d4a0 upstream.
 
-On x86_32 s64 fields are only 32-bit aligned.  Hence force the alignment of
-the field and padding in the structure by using aligned_s64 instead.
+'rx_ring->size' means the count of ring descriptors multiplied by the
+size of one descriptor. When increasing the count of ring descriptors,
+it may exceed the limit of pool size.
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250413103443.2420727-19-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ 864.209610] page_pool_create_percpu() gave up with errno -7
+[ 864.209613] txgbe 0000:11:00.0: Page pool creation failed: -7
+
+Fix to set the pool_size to the count of ring descriptors.
+
+Fixes: 850b971110b2 ("net: libwx: Allocate Rx and Tx resources")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/434C72BFB40E350A+20250625023924.21821-1-jiawenwu@trustnetic.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/pressure/zpa2326.c | 2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
-index fdb1b765206bc..7f352a79c1a55 100644
---- a/drivers/iio/pressure/zpa2326.c
-+++ b/drivers/iio/pressure/zpa2326.c
-@@ -582,7 +582,7 @@ static int zpa2326_fill_sample_buffer(struct iio_dev               *indio_dev,
- 	struct {
- 		u32 pressure;
- 		u16 temperature;
--		u64 timestamp;
-+		aligned_s64 timestamp;
- 	}   sample;
- 	int err;
- 
--- 
-2.39.5
-
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -2496,7 +2496,7 @@ static int wx_alloc_page_pool(struct wx_
+ 	struct page_pool_params pp_params = {
+ 		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
+ 		.order = 0,
+-		.pool_size = rx_ring->size,
++		.pool_size = rx_ring->count,
+ 		.nid = dev_to_node(rx_ring->dev),
+ 		.dev = rx_ring->dev,
+ 		.dma_dir = DMA_FROM_DEVICE,
 
 
 
