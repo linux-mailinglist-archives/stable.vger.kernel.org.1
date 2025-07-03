@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5EAAF7B6D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD765AF7B68
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9321C5A25B3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 989F87B5C95
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6762EFD9B;
-	Thu,  3 Jul 2025 15:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5AD2EF9B9;
+	Thu,  3 Jul 2025 15:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHskGQu1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BlBgFOp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D5517FAC2;
-	Thu,  3 Jul 2025 15:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF5722B8AB;
+	Thu,  3 Jul 2025 15:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555814; cv=none; b=UZmFRsAz1MjuPtrtOIJ/IGfTZCBti1hsJ46bll+Usa02QE74LgoESsholmodAV6d43wuykdlNAUR67X8TRzw6i+yHsuscx/u04JOH4/YXVqEKgW+a3Ju+rAdgtvJPmWAyhzG694Pofce+/hLT/B1WlcGW2UBejiTHqjmvrgOAyQ=
+	t=1751556187; cv=none; b=dREv41fkRPeMS2iWN97fwC/H88KHDKcGoIIGEEWa52Y+yzI+7D9whxAVQ6V5rDNsSJ7cpvB/dnwR8woV0mIyKDxbI8HUmrek111d3lSMHHpGJUIKwXC9X+DP6twwH5vGWzuF9gg6T2B32qvOO12QM7vG1w7pidOxde/yA6gyf2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555814; c=relaxed/simple;
-	bh=OndXkaLkM1TEay9L/vfZkk+JCmW66Fyc0lJNyioSvdM=;
+	s=arc-20240116; t=1751556187; c=relaxed/simple;
+	bh=5afH0e2oAIZJ9LXAuyeZNaa+Pkv0OhP7TLrbnMy4sUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SsenMAc5Qlf61ZPTe1I2XcHod/NQTsSm6wb+Fxpngtdl/kuiXr5zXVZk7b+6In4H+5aKPuVuq58GsxymyzqwaJhDKB+/ZUzfz7NohQ5pe6LCCP0uXj1TEQXswkmheNNkIWfTQAm0lQBtyL5zzAKNv/kj+mNpsaQWjGLDNLLdeak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHskGQu1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E36FC4CEE3;
-	Thu,  3 Jul 2025 15:16:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ErPSHNp5WrYBapdjA4Ml2u4TYdLjcftSz25fCN8rYUSAys8o0ihwV6nuJPg9XZgkgbX6cD9gFo2tHNt3TXSjIhj2joRw7bVUtBATm826sBRsNH7InxcWgb6Kqbr1sLXeMVfOl+LMmb/w+3ad4m6xrQk1RcY1zZtH3Gsg/9/YqIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BlBgFOp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505E0C4CEE3;
+	Thu,  3 Jul 2025 15:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555814;
-	bh=OndXkaLkM1TEay9L/vfZkk+JCmW66Fyc0lJNyioSvdM=;
+	s=korg; t=1751556186;
+	bh=5afH0e2oAIZJ9LXAuyeZNaa+Pkv0OhP7TLrbnMy4sUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cHskGQu1pDb5fRViGo8lqxaHYWbRxCtA6uKdco7+8YUH3C1z8Il5cJxZOc7ruCza/
-	 24zLBcWMT4bTxyOB6h5GvYuFMHA3+h9675FfKQlEkttsHJJxUuCkPKhzlDhnjNX5+Q
-	 kmPSjJ9bJ76ps6mc+4YE7M0O68AwOPeoHeNm+VW0=
+	b=1BlBgFOpiMymTil71I+yFur2gZmfCcVSCc67jz0JEkY+VGl7xJvgzoe14HZIO508h
+	 exRY7uaV3q4yJF//qRac97/IUUVz97NsRQ4s2emLft9jddkJkp0Qqb+AMmtwExJmha
+	 lkxCmlBme+pZrzPbjhCh35bH1JFjHGqZzF/11gBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 128/139] ksmbd: remove unsafe_memcpy use in session setup
+	Philipp Stanner <phasta@kernel.org>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 6.1 102/132] drm/etnaviv: Protect the schedulers pending list with its lock
 Date: Thu,  3 Jul 2025 16:43:11 +0200
-Message-ID: <20250703143946.192125088@linuxfoundation.org>
+Message-ID: <20250703143943.398227884@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Maíra Canal <mcanal@igalia.com>
 
-commit d782d6e1d9078d6b82f8468dd6421050165e7d75 upstream.
+commit 61ee19dedb8d753249e20308782bf4e9e2fb7344 upstream.
 
-Kees pointed out to just use directly ->Buffer instead of pointing
-->Buffer using offset not to use unsafe_memcpy().
+Commit 704d3d60fec4 ("drm/etnaviv: don't block scheduler when GPU is still
+active") ensured that active jobs are returned to the pending list when
+extending the timeout. However, it didn't use the pending list's lock to
+manipulate the list, which causes a race condition as the scheduler's
+workqueues are running.
 
-Suggested-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Hold the lock while manipulating the scheduler's pending list to prevent
+a race.
+
+Cc: stable@vger.kernel.org
+Fixes: 704d3d60fec4 ("drm/etnaviv: don't block scheduler when GPU is still active")
+Reported-by: Philipp Stanner <phasta@kernel.org>
+Closes: https://lore.kernel.org/dri-devel/964e59ba1539083ef29b06d3c78f5e2e9b138ab8.camel@mailbox.org/
+Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Philipp Stanner <phasta@kernel.org>
+Link: https://lore.kernel.org/r/20250602132240.93314-1-mcanal@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |   12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/etnaviv/etnaviv_sched.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1345,8 +1345,7 @@ static int ntlm_negotiate(struct ksmbd_w
- 		return rc;
+--- a/drivers/gpu/drm/etnaviv/etnaviv_sched.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_sched.c
+@@ -34,6 +34,7 @@ static enum drm_gpu_sched_stat etnaviv_s
+ 							  *sched_job)
+ {
+ 	struct etnaviv_gem_submit *submit = to_etnaviv_submit(sched_job);
++	struct drm_gpu_scheduler *sched = sched_job->sched;
+ 	struct etnaviv_gpu *gpu = submit->gpu;
+ 	u32 dma_addr;
+ 	int change;
+@@ -75,7 +76,9 @@ static enum drm_gpu_sched_stat etnaviv_s
+ 	return DRM_GPU_SCHED_STAT_NOMINAL;
  
- 	sz = le16_to_cpu(rsp->SecurityBufferOffset);
--	chgblob =
--		(struct challenge_message *)((char *)&rsp->hdr.ProtocolId + sz);
-+	chgblob = (struct challenge_message *)rsp->Buffer;
- 	memset(chgblob, 0, sizeof(struct challenge_message));
+ out_no_timeout:
+-	list_add(&sched_job->list, &sched_job->sched->pending_list);
++	spin_lock(&sched->job_list_lock);
++	list_add(&sched_job->list, &sched->pending_list);
++	spin_unlock(&sched->job_list_lock);
+ 	return DRM_GPU_SCHED_STAT_NOMINAL;
+ }
  
- 	if (!work->conn->use_spnego) {
-@@ -1379,9 +1378,7 @@ static int ntlm_negotiate(struct ksmbd_w
- 		goto out;
- 	}
- 
--	sz = le16_to_cpu(rsp->SecurityBufferOffset);
--	unsafe_memcpy((char *)&rsp->hdr.ProtocolId + sz, spnego_blob, spnego_blob_len,
--			/* alloc is larger than blob, see smb2_allocate_rsp_buf() */);
-+	memcpy(rsp->Buffer, spnego_blob, spnego_blob_len);
- 	rsp->SecurityBufferLength = cpu_to_le16(spnego_blob_len);
- 
- out:
-@@ -1463,10 +1460,7 @@ static int ntlm_authenticate(struct ksmb
- 		if (rc)
- 			return -ENOMEM;
- 
--		sz = le16_to_cpu(rsp->SecurityBufferOffset);
--		unsafe_memcpy((char *)&rsp->hdr.ProtocolId + sz, spnego_blob,
--				spnego_blob_len,
--				/* alloc is larger than blob, see smb2_allocate_rsp_buf() */);
-+		memcpy(rsp->Buffer, spnego_blob, spnego_blob_len);
- 		rsp->SecurityBufferLength = cpu_to_le16(spnego_blob_len);
- 		kfree(spnego_blob);
- 	}
 
 
 
