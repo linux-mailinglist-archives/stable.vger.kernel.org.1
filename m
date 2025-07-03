@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-159711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CA1DAF7A25
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA80FAF7AA2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:16:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A9CD188C091
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EB2F5A0081
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3051E23AB86;
-	Thu,  3 Jul 2025 15:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A429122069F;
+	Thu,  3 Jul 2025 15:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6mElV2k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMroLGef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32972E7BD6;
-	Thu,  3 Jul 2025 15:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDA42EFDBD;
+	Thu,  3 Jul 2025 15:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555100; cv=none; b=q2Od/FS7CZTD/RTZ1O6cHCi+hh2Rn5FVC9fKiLVkh7D/XhJwH/qCZq+Tvou2Q0eVF7wYVjFIauANG+UT0BNdNsAOc4tdePkxf3Z8pHMbi95VELqTrLUujXQ2oVVJshRqaPGQeBIdzcEI/ZPtPdPXa3UF3wS4gkAGscaSIY3mtZk=
+	t=1751555445; cv=none; b=DPJZ0mHytdtqYLDHIZJhrcTV9ki4LpVW5+gng5buDOpaBW+O0lI5RTCMY2yPitWRAxiFYOYeoUYMFDaUGoMCB6hvuEz+4akET6YOFWL7ggjB9IPA6HKaNFT2bECb4nvvqGTULuFjMvsKad9sBixwHMynY5dDDqH2aL9Bv6HIAds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555100; c=relaxed/simple;
-	bh=IjiQR7MHaqfZUE7R70NvZ24OLsrqv8l8fUqN7315HB4=;
+	s=arc-20240116; t=1751555445; c=relaxed/simple;
+	bh=F1d2qU9NhdMQI8txaQlAn8YifHyYHjqUf47rRK/nRWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sL6zmX4SZ6MxlQ6/Cm/THQJVPEoSzY+KxAmsx2EkcqdGBIFbV1Wb9AbfEDaTlkmbbGLlV5jowGH7BotI4CS+SZojtAqlJiM7WCFZ+0uoTygPPo3p+WyHNoXRJvzUQFZ60xzkrALq6HtAec6JGIO7Q0zWzIuqnQvL+XAB5iktS8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6mElV2k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53471C4CEE3;
-	Thu,  3 Jul 2025 15:04:59 +0000 (UTC)
+	 MIME-Version; b=DOtnujdDFxpOGHOptPGLSpWnx9TzwMcdwbpuSbuNEUwEX7mRqXGmuZ5gl2xMDpH9zy6FTXWh+6AVqVDmgNr59SkLHARAu7T4GEuvxATM+kL5iqTjbbDkL6nT3eTYBpqQpDQtXxh0hLnxeJS3qXPc6tMb316ECv5CbptlgGy09jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jMroLGef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AC2C4CEE3;
+	Thu,  3 Jul 2025 15:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555099;
-	bh=IjiQR7MHaqfZUE7R70NvZ24OLsrqv8l8fUqN7315HB4=;
+	s=korg; t=1751555444;
+	bh=F1d2qU9NhdMQI8txaQlAn8YifHyYHjqUf47rRK/nRWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i6mElV2kl1pe0NibHyYqbSitags09iVDxPquQd58WXkYavvPJoFb4Lu7SIfkzZZHN
-	 gGl7paodJfaH0LLhlPOHpjNnwlWPHcjka5QwNkImcosg7eHQIULja24KBFKIkh0Bmg
-	 BU0ORMnq0Sx4xPqPt8JOkMC8Pq25tRhnIXh921qU=
+	b=jMroLGefFffMp2iJhvQiSNR3qJYVhZFGuGeEJxmNSVV7DppzlRtxrcJNxI1Njmju6
+	 pFn0D95AV+p87vShhNKS4fyvfLUPS32RQbTNAPkFBLF2jls5Gd9eNsVKO03wP4n1GU
+	 AyEVB4ohezaAFE614EWRs3xw6Flg366QtihgD4Bg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Tamara <igor.tamara@gmail.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 158/263] ALSA: hda/realtek: Fix built-in mic on ASUS VivoBook X507UAR
-Date: Thu,  3 Jul 2025 16:41:18 +0200
-Message-ID: <20250703144010.697677260@linuxfoundation.org>
+Subject: [PATCH 6.6 016/139] rust: module: place cleanup_module() in .exit.text section
+Date: Thu,  3 Jul 2025 16:41:19 +0200
+Message-ID: <20250703143941.813026063@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salvatore Bonaccorso <carnil@debian.org>
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-[ Upstream commit 7ab6847a03229e73bb7c58ca397630f699e79b53 ]
+[ Upstream commit 249c3a0e53acefc2b06d3b3e1fc28fb2081f878d ]
 
-The built-in mic of ASUS VivoBook X507UAR is broken recently by the fix
-of the pin sort. The fixup ALC256_FIXUP_ASUS_MIC_NO_PRESENCE is working
-for addressing the regression, too.
+Place cleanup_module() in .exit.text section. Currently,
+cleanup_module() is likely placed in the .text section. It's
+inconsistent with the layout of C modules, where cleanup_module() is
+placed in .exit.text.
 
-Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
-Reported-by: Igor Tamara <igor.tamara@gmail.com>
-Closes: https://bugs.debian.org/1108069
-Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
-Link: https://lore.kernel.org/CADdHDco7_o=4h_epjEAb92Dj-vUz_PoTC2-W9g5ncT2E0NzfeQ@mail.gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ Boqun asked for an example of how the section changed to be
+  put in the log. Tomonori provided the following examples:
+
+    C module:
+
+      $ objdump -t ~/build/x86/drivers/block/loop.o|grep clean
+      0000000000000000 l     O .exit.data    0000000000000008 __UNIQUE_ID___addressable_cleanup_module412
+      0000000000000000 g     F .exit.text    000000000000009c cleanup_module
+
+    Rust module without this patch:
+
+      $ objdump -t ~/build/x86/samples/rust/rust_minimal.o|grep clean
+      00000000000002b0 g     F .text         00000000000000c6 cleanup_module
+      0000000000000000 g     O .exit.data    0000000000000008 _R...___UNIQUE_ID___addressable_cleanup_module
+
+    Rust module with this patch:
+
+      $ objdump -t ~/build/x86/samples/rust/rust_minimal.o|grep clean
+      0000000000000000 g     F .exit.text    00000000000000c6 cleanup_module
+      0000000000000000 g     O .exit.data    0000000000000008 _R...___UNIQUE_ID___addressable_cleanup_module
+
+  - Miguel ]
+
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/r/20250308044506.14458-1-fujita.tomonori@gmail.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
+ rust/macros/module.rs | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 02a424b7a9920..03ffaec49998d 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11002,6 +11002,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1df3, "ASUS UM5606WA", ALC294_FIXUP_BASS_SPEAKER_15),
- 	SND_PCI_QUIRK(0x1043, 0x1264, "ASUS UM5606KA", ALC294_FIXUP_BASS_SPEAKER_15),
- 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x1e10, "ASUS VivoBook X507UAR", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
- 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e1f, "ASUS Vivobook 15 X1504VAP", ALC2XX_FIXUP_HEADSET_MIC),
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 7dee348ef0cc8..7614a7198ce20 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -249,6 +249,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+                     #[cfg(MODULE)]
+                     #[doc(hidden)]
+                     #[no_mangle]
++                    #[link_section = \".exit.text\"]
+                     pub extern \"C\" fn cleanup_module() {{
+                         // SAFETY:
+                         // - This function is inaccessible to the outside due to the double
 -- 
 2.39.5
 
