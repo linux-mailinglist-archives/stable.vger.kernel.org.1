@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F440AF78CE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:54:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CDA5AF7A2E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B5687B6ED9
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEE5F4A648F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA1A2EF662;
-	Thu,  3 Jul 2025 14:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AD22E7649;
+	Thu,  3 Jul 2025 15:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHmgAA4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d56jTUs3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195542EE99E;
-	Thu,  3 Jul 2025 14:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B1F22069F;
+	Thu,  3 Jul 2025 15:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554427; cv=none; b=L6Ifp6fOnSGlo08z6kgqJzBJrh9eWthU0B4TjzWSL8zyhS2qZVCHRk9ZkZt6LZNBUZWgLqvkP6DZhzflf80BPy+ifpXT61GSBM2giTTzTkcgqd1AW526sUt/mXj0tkHcbq7u4MUqF0DurmnLF/yyWf10DrqIEK/P5LZO3Omo/Pg=
+	t=1751555216; cv=none; b=A2+TxibgAe5BiVtiOQdBqA0iTZk+tztk30SfbzjYSNB0HXfMRKd/GD1E7pJc6mWLDH/h1PfcePqt5uEC1jVa3ZfJocfYNSfbGcGVRL7VBJc4mXfw4iZ7EPSJFFgJyGmb07Ahqi8w8iVCuNkXtbX1bkLAnDRMGvUr5ADQQeZ/V/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554427; c=relaxed/simple;
-	bh=7YA0v9yF3uJP9tfCmuhe2gcxtkEyuLILk7ZOP7rELwI=;
+	s=arc-20240116; t=1751555216; c=relaxed/simple;
+	bh=ysnSyECkftrwFPR4zsdC51FnlG3cy4alkqgxv4tvBAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FetITPKL6TN5uzxOWcwq+9Rq682VuRgPj3+6ZWKXni6pjj6gj6zuFiBrgK5s+1VIHXPD6iOEkU1IBdh6K0WxBCUbBSlHMvtublcH9vNeJp+cAd3zDYfaE7fGJsWKQ1et5uLBONgmaW+USZvQhESXRNAGk5FCJZXMAsjaTethu6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHmgAA4x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34731C4CEE3;
-	Thu,  3 Jul 2025 14:53:44 +0000 (UTC)
+	 MIME-Version; b=vFqFA/ovQNV2lmuv5Hmb0EE4unSMw2Bb53rHokULeI1eNdufNJsxyPC065bDmtzIvVGiCB+mdDQ+8ThbYWBgzWaxCFWrMnC1rlLPyPeGAv4xIdcPg5OMqQxpGVYNwO0UIq54uLAH6Izv9fk8G1oKwEkc/ZM76B65f/5kbs70pOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d56jTUs3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12684C4CEE3;
+	Thu,  3 Jul 2025 15:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554424;
-	bh=7YA0v9yF3uJP9tfCmuhe2gcxtkEyuLILk7ZOP7rELwI=;
+	s=korg; t=1751555216;
+	bh=ysnSyECkftrwFPR4zsdC51FnlG3cy4alkqgxv4tvBAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHmgAA4xq7aGUrbpA8fHUpzm3iU3D4i7emlxMkXz0r9F8PBlMRL71t8CEDbbRPp9P
-	 U8PwXzpRh0Kgr/+qX1QMNnlzE+pHvCAsbtCpm8qdAaB2j9TXsuFEEaETg7mV1Q4lOM
-	 lr962jfzcFX3tLvTdlt8cwH1KamOTr1EkQigMoXk=
+	b=d56jTUs3s5vsqfe0TRXpyrNVeM/eh0tKqgm+cERdKzKTovqdfEtfv8YcSKbuIxxrj
+	 JUzuFf5rgwQU0UDebBrzriBx4MuGqAWHyuCLe0x8alv6rjFC4XDgKl8CJl03UeffTv
+	 JdWIzxvgMCK/PjvU1YHYMi/r86X8j6t8qEZd5xus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 183/218] io_uring/rsrc: dont rely on user vaddr alignment
+	Jay Cornwall <jay.cornwall@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.15 211/263] drm/amdkfd: Fix race in GWS queue scheduling
 Date: Thu,  3 Jul 2025 16:42:11 +0200
-Message-ID: <20250703144003.500771300@linuxfoundation.org>
+Message-ID: <20250703144012.850680070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Jay Cornwall <jay.cornwall@amd.com>
 
-Commit 3a3c6d61577dbb23c09df3e21f6f9eda1ecd634b upstream.
+commit cfb05257ae168a0496c7637e1d9e3ab8a25cbffe upstream.
 
-There is no guaranteed alignment for user pointers, however the
-calculation of an offset of the first page into a folio after coalescing
-uses some weird bit mask logic, get rid of it.
+q->gws is not updated atomically with qpd->mapped_gws_queue. If a
+runlist is created between pqm_set_gws and update_queue it will
+contain a queue which uses GWS in a process with no GWS allocated.
+This will result in a scheduler hang.
 
+Use q->properties.is_gws which is changed while holding the DQM lock.
+
+Signed-off-by: Jay Cornwall <jay.cornwall@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b98370220eb3110e82248e3354e16a489a492cfb)
 Cc: stable@vger.kernel.org
-Reported-by: David Hildenbrand <david@redhat.com>
-Fixes: a8edbb424b139 ("io_uring/rsrc: enable multi-hugepage buffer coalescing")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/io-uring/e387b4c78b33f231105a601d84eefd8301f57954.1750771718.git.asml.silence@gmail.com/
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/rsrc.c |    5 ++++-
- io_uring/rsrc.h |    1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_packet_manager_v9.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -918,6 +918,7 @@ static bool io_try_coalesce_buffer(struc
- 		return false;
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_packet_manager_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_packet_manager_v9.c
+@@ -237,7 +237,7 @@ static int pm_map_queues_v9(struct packe
  
- 	data->folio_shift = folio_shift(folio);
-+	data->first_folio_page_idx = folio_page_idx(folio, page_array[0]);
- 	/*
- 	 * Check if pages are contiguous inside a folio, and all folios have
- 	 * the same page count except for the head and tail.
-@@ -998,7 +999,9 @@ static int io_sqe_buffer_register(struct
- 	if (coalesced)
- 		imu->folio_shift = data.folio_shift;
- 	refcount_set(&imu->refs, 1);
--	off = (unsigned long) iov->iov_base & ((1UL << imu->folio_shift) - 1);
-+	off = (unsigned long)iov->iov_base & ~PAGE_MASK;
-+	if (coalesced)
-+		off += data.first_folio_page_idx << PAGE_SHIFT;
- 	*pimu = imu;
- 	ret = 0;
- 
---- a/io_uring/rsrc.h
-+++ b/io_uring/rsrc.h
-@@ -56,6 +56,7 @@ struct io_imu_folio_data {
- 	/* For non-head/tail folios, has to be fully included */
- 	unsigned int	nr_pages_mid;
- 	unsigned int	folio_shift;
-+	unsigned long	first_folio_page_idx;
- };
- 
- void io_rsrc_node_ref_zero(struct io_rsrc_node *node);
+ 	packet->bitfields2.engine_sel =
+ 		engine_sel__mes_map_queues__compute_vi;
+-	packet->bitfields2.gws_control_queue = q->gws ? 1 : 0;
++	packet->bitfields2.gws_control_queue = q->properties.is_gws ? 1 : 0;
+ 	packet->bitfields2.extended_engine_sel =
+ 		extended_engine_sel__mes_map_queues__legacy_engine_sel;
+ 	packet->bitfields2.queue_type =
 
 
 
