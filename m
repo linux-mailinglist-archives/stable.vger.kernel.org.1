@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-160111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE28AF8046
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 20:37:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C70B8AF8048
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 20:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 175A97B1F23
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 18:36:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FAE71CA1E50
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 18:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E602F2C59;
-	Thu,  3 Jul 2025 18:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479EE2F6F86;
+	Thu,  3 Jul 2025 18:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NSdm268E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OA08W6GZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79362F6F84
-	for <stable@vger.kernel.org>; Thu,  3 Jul 2025 18:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C9C2F3624
+	for <stable@vger.kernel.org>; Thu,  3 Jul 2025 18:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751567704; cv=none; b=qPFMZeZRIGpFOpqD3bDchYaQPV1eQFpP/E3FVKM4A05+OiTFTG9PEIiaIvnjvcXtcHqKNBWDFzkwiejklmuUupg3lLD9aRETL5ro0SSFlYaC8P7bLB+S4isW1Rb+5tgVMreWudEdYlBztFwoPgXjNNsbNbu+FHAm99YaS4rCyZo=
+	t=1751567707; cv=none; b=gCe95qTmSQhSQGhG16OAepm906Q992K4UZhhUxRnL7SYUb4dNnqac/cR/bVOlWvWEmLKyOw85BovNs3xLUaQqeaC5Ltk8RkwBOAYoMzdA83DyKU0KYrxz1km7MuprcwB1JDOl383Uxl2gpcI73WAaLK6XegMS31gbsEgqE/HV/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751567704; c=relaxed/simple;
-	bh=RMOgrtkwmy8r3Oms7Hm7098YpOT2Tvv32ioa+DXuNjk=;
+	s=arc-20240116; t=1751567707; c=relaxed/simple;
+	bh=zlAdJEY7Ij42jwYYqyNJSHxQo3zPM4LwI5/WMp/+62A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m+1dL1/i7X0Fw0nW3kTkoVNqTDRjKRjJoo4S1OD4te+1eFeiLYpmri2JPJNuCJ3eaaMCcbHdfxS14v795/TqKpvrJ+SEPk/fCyxkplG+Adeg0/BJ4X3r4rINqT62KjGy1gTjX3WHnFexcz6oHSYaTcxHVfgyXxK6VlfZ5y2xCy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NSdm268E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5AAC4CEE3;
-	Thu,  3 Jul 2025 18:35:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bQkndhT8en809uPoVjpz/nOKm/YOruqHyYKc009IebKP8OLDySlNu3fiIjToMwoEvKFTv6KF8BF8maI8prHCpcVhmPwCnoWfP43NRiFAQFIU84D3rPhSFq0cSYNgliKL0/QueuYiuQIXT1ARCuV99DXBvcaeATVlPmj2OqAtDtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OA08W6GZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483F3C4CEE3;
+	Thu,  3 Jul 2025 18:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751567704;
-	bh=RMOgrtkwmy8r3Oms7Hm7098YpOT2Tvv32ioa+DXuNjk=;
+	s=k20201202; t=1751567706;
+	bh=zlAdJEY7Ij42jwYYqyNJSHxQo3zPM4LwI5/WMp/+62A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSdm268EfaSyvslSHVc1tpPd7/Zg9IS9smEsrg5cEgoxQcm+9SuzyvqsUlmY5Zyv0
-	 zFjkCWy+XbMnmVB2Idh4eB363nEPouI6BIT7gaxXtVvPNQjKemHvQ78+MiA4icu5K3
-	 XZOFPFE7p6lcpTU4X4rOYVqQQ5+q5ROxaf6c9l89WFwEuenUVihI7AxaVRFLnei7VY
-	 x+O5dWIhNxiEqxxbAQa2k3ssyTMzapTbygxk7qLaW3N5xWjuJfhkhO9w2rbs//wE6t
-	 tZZLBiSRyRJF6mD98WKNVriYmFgFQAEY3eigoLhZ0EXftgwrmFxKB/2bW1/XLiTAky
-	 vJxFGjl9wllng==
+	b=OA08W6GZZXDGHVn0BoiJqxtdpT3MNodApEwo1V6BffZwGhB4NuiFUZAcHh+PlH7V7
+	 8QPYpC28/StSy7GH6hsd0v0VPvOZA+tMI+huSTbr9wUvn2IgHiz1j9HvpZPXjXsR/e
+	 Jizd3fedgeNhGMpYWolIUd3fdJBJb6yf6Siht/9Z/p5627HjhUp1LqLAJY8o4DJI8q
+	 23Pw9WKdK/y0gxv2xorwwZO5r+lj189ivTQ9Tw4cFDKjTvSQfAC94IugYLMaNhI2h6
+	 ybyDW4OZ0BdSN1lp4maYrfrh1HJPTMoKLnQv3DUYC3fL0rsvj3sJx2Vf3IhmQVvKYh
+	 grq3nR45LTtzw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Jeongjun Park <aha310510@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.15.y] mm/vmalloc: fix data race in show_numa_info()
-Date: Thu,  3 Jul 2025 14:35:03 -0400
-Message-Id: <20250703111959-3ad2d7e72d03f7be@stable.kernel.org>
+Subject: Re: [PATCH 6.12.y] mm/vmalloc: fix data race in show_numa_info()
+Date: Thu,  3 Jul 2025 14:35:05 -0400
+Message-Id: <20250703104026-0d4e9a45eb691786@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250702153312.351080-1-aha310510@gmail.com>
+In-Reply-To:  <20250702153428.352047-1-aha310510@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,9 +69,12 @@ No action required from the submitter.
 
 The upstream commit SHA1 provided is correct: 5c5f0468d172ddec2e333d738d2a1f85402cf0bc
 
+Status in newer kernel trees:
+6.15.y | Not found
+
 Note: The patch differs from the upstream commit:
 ---
-1:  5c5f0468d172d ! 1:  99ac6d1cf98b4 mm/vmalloc: fix data race in show_numa_info()
+1:  5c5f0468d172d ! 1:  b24f97a37c454 mm/vmalloc: fix data race in show_numa_info()
     @@ Metadata
       ## Commit message ##
          mm/vmalloc: fix data race in show_numa_info()
@@ -116,5 +119,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.15.y       |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
