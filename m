@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-159986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6304AF7BEA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:29:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE3E7AF7A31
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BC02543500
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 229E44E015D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD262D6622;
-	Thu,  3 Jul 2025 15:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478D92D6622;
+	Thu,  3 Jul 2025 15:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANwNz2hL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPeAtKUp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677F315442C;
-	Thu,  3 Jul 2025 15:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5DE15442C;
+	Thu,  3 Jul 2025 15:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556003; cv=none; b=RdVtsaPdmbZEIia5/G1knA6rePcK096eaDMiU6PR4p/18LnQMLAWxA8H+340+Tq7Xbug4LuIKBO64ybhyQHpAIZle0VjE0XQMeegI87Wu66RVq6FaTHEpXIMG1zDfp+5wCElkK/tTAe/uS8vxKNBwYiwKBhiF1t3weAk7UP+5L8=
+	t=1751555225; cv=none; b=LfmfS4Rx3tQ20BUQMDojojtkUJiGXlM3p//KLmYd1S84eIT9Un3dV5bK7BOzjEkAnrWRMcwFmcRBcmgT4hHdfGIRes9YnrsJN67P6RcCLQyXAI0zCY/W/d7T8Z/wQs4YQHintJCnWgKovIvVZjMvOs1Kj/Be744wwLCTDMAcF4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556003; c=relaxed/simple;
-	bh=N6a6dQwtF2MB1NfDqpXcKl61IHWm4KDJju5om5L8sXI=;
+	s=arc-20240116; t=1751555225; c=relaxed/simple;
+	bh=OU9u9emYTArwJaJonid0RixZwwF8pJ+iyaI45jCcrZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nOwIIAJwT2tGD6OjRNZwHsKCwTrRlV6MGwVaChXVmDLZ5CKmnR6HYc6VQgGO9K1a7xrK79Z8CVeYbHfTvBhJWou/Gp1j7kZwLqYoIEvOMmPSkybteXl8PbeDFBcEU92U9Kqh2MLhVp7xT5oauZlvxmw6EJ0itZ0KX+9f2AdmZTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANwNz2hL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99FAC4CEF2;
-	Thu,  3 Jul 2025 15:20:02 +0000 (UTC)
+	 MIME-Version; b=OVFBMpFCu6sF3QD0+l05jvLVD3eIdkN+qGUUOFOKGUqHChKYIXJ4YjuJfea1JNHKuuc6b9MoqW6ikm+F1mzzjbt5ttM3vPIPl5yvCLmcapriNV5GCfh/LanxfCQR5T0CuqrRyaJn4gF+UwP1sAJRcPbN6R5zhmwSN2DomStmS8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPeAtKUp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE94C4CEE3;
+	Thu,  3 Jul 2025 15:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556003;
-	bh=N6a6dQwtF2MB1NfDqpXcKl61IHWm4KDJju5om5L8sXI=;
+	s=korg; t=1751555224;
+	bh=OU9u9emYTArwJaJonid0RixZwwF8pJ+iyaI45jCcrZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ANwNz2hL7xi/ILg1B/qA9elFDExQFk7OZBv9H/ZmgrcX5XOUUqoV64bUzDRJZxEu5
-	 KfePHtKAAvoTTTcnk1NvMwu8pOS01fZ2jmV+DczMkahVM5Qwj4Q+sY6bGgWS5sWQZ4
-	 C6agZcsMkx7iFP0+JqeDwM9BMr0yoq3yZaN0faKQ=
+	b=NPeAtKUpMKWHuB6Y6Awdt3Z/ohWJ3KfynBpJ74uzFXDYDm9sPHIhMxTqQeRPjfihQ
+	 QWHl/YUldkeAFdfxa6mXAKDEsNK7L22CNopQjFnjSva/xltzHwVp7Islg1Vwt+PJxN
+	 h2Sza7XZhvtmI4REhCa1soygohNarM3IKePWOy0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/132] media: imx-jpeg: Reset slot data pointers when freed
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 6.15 214/263] drm/bridge: cdns-dsi: Fix the clock variable for mode_valid()
 Date: Thu,  3 Jul 2025 16:42:14 +0200
-Message-ID: <20250703143941.194401457@linuxfoundation.org>
+Message-ID: <20250703144012.969476171@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+From: Aradhya Bhatia <a-bhatia1@ti.com>
 
-[ Upstream commit faa8051b128f4b34277ea8a026d02d83826f8122 ]
+commit 132bdcec399be6ae947582249a134b38cf56731c upstream.
 
-Ensure that the slot data pointers are reset to NULL and handles are
-set to 0 after freeing the coherent memory. This makes he function
-mxc_jpeg_alloc_slot_data() and mxc_jpeg_free_slot_data() safe to be
-called multiple times.
+The crtc_* mode parameters do not get generated (duplicated in this
+case) from the regular parameters before the mode validation phase
+begins.
 
-Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
+The rest of the code conditionally uses the crtc_* parameters only
+during the bridge enable phase, but sticks to the regular parameters
+for mode validation. In this singular instance, however, the driver
+tries to use the crtc_clock parameter even during the mode validation,
+causing the validation to fail.
+
+Allow the D-Phy config checks to use mode->clock instead of
+mode->crtc_clock during mode_valid checks, like everywhere else in the
+driver.
+
+Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Link: https://lore.kernel.org/r/20250329113925.68204-4-aradhya.bhatia@linux.dev
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-index bfab38eec3e64..3602324b254a6 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -491,16 +491,22 @@ static void mxc_jpeg_free_slot_data(struct mxc_jpeg_dev *jpeg)
- 	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
- 			  jpeg->slot_data.desc,
- 			  jpeg->slot_data.desc_handle);
-+	jpeg->slot_data.desc = NULL;
-+	jpeg->slot_data.desc_handle = 0;
+--- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+@@ -568,13 +568,14 @@ static int cdns_dsi_check_conf(struct cd
+ 	struct phy_configure_opts_mipi_dphy *phy_cfg = &output->phy_opts.mipi_dphy;
+ 	unsigned long dsi_hss_hsa_hse_hbp;
+ 	unsigned int nlanes = output->dev->lanes;
++	int mode_clock = (mode_valid_check ? mode->clock : mode->crtc_clock);
+ 	int ret;
  
- 	/* free descriptor for encoder configuration phase / decoder DHT */
- 	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
- 			  jpeg->slot_data.cfg_desc,
- 			  jpeg->slot_data.cfg_desc_handle);
-+	jpeg->slot_data.cfg_desc_handle = 0;
-+	jpeg->slot_data.cfg_desc = NULL;
+ 	ret = cdns_dsi_mode2cfg(dsi, mode, dsi_cfg, mode_valid_check);
+ 	if (ret)
+ 		return ret;
  
- 	/* free configuration stream */
- 	dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
- 			  jpeg->slot_data.cfg_stream_vaddr,
- 			  jpeg->slot_data.cfg_stream_handle);
-+	jpeg->slot_data.cfg_stream_vaddr = NULL;
-+	jpeg->slot_data.cfg_stream_handle = 0;
+-	phy_mipi_dphy_get_default_config(mode->crtc_clock * 1000,
++	phy_mipi_dphy_get_default_config(mode_clock * 1000,
+ 					 mipi_dsi_pixel_format_to_bpp(output->dev->format),
+ 					 nlanes, phy_cfg);
  
- 	jpeg->slot_data.used = false;
- }
--- 
-2.39.5
-
 
 
 
