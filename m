@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-159976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D1F3AF7BE1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:29:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4CDBAF78D7
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:55:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 102D9540956
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA4214A3736
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF782F0C63;
-	Thu,  3 Jul 2025 15:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F33D2ED85E;
+	Thu,  3 Jul 2025 14:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EB64pO6b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmZvnUi+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C95D2EFD94;
-	Thu,  3 Jul 2025 15:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D502EFD8B;
+	Thu,  3 Jul 2025 14:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555972; cv=none; b=PhVLdlDdw02sj/Z69dk/12ijdZm5mThIk+8S+a4cKSJQOzP7W4xY+VHGbwj5+Zwr07fy7ML3XgZpTeZ7WGnIkD4JU3pRz3dtGKqch2UObuiQYqdbUb2n3KFU6da5LBgSYQN/QehnlUvuVFxCrZacJO7ar2KoWAFtI1PK41aqZnU=
+	t=1751554377; cv=none; b=q2Gzv+BnCpvKAFq78pDQHXkiWV5U8PmJrtw2LF8owrZvwitV0QSBwzU478pbCOxEwqJq8DH9fjKThW/wQW5qHzkHZgt3JlHq3wHUydIYJXKm0mW5HA+jHzx/YyOlfPeOLy2YoFn6BsS/JTdVDHH1EqqjP9m20NeDxfzj0qOJSGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555972; c=relaxed/simple;
-	bh=TrBwcs0lSlsg5xzw88x8tzwx/Bm+3T9+IwHFvVeYIRk=;
+	s=arc-20240116; t=1751554377; c=relaxed/simple;
+	bh=0722p8CYsgoKBA7ung+bJdvksBWRoFSOSa17msQOkyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H+mkBVROiK3FDb2dqJutodY+cBcfNG/RZabZl9T/GsS2mNn6APRRvXHaEx6s/Y+kKZsYclYZgam8u3gHcCNjc6z7MhD73xHd7y/3SL7VeJsZmo3VPfJbFEcU5Q+PkJp5jZR+LjPnjK/7fOwX8RmpuYue4MQmmW4YFcixVL2xuPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EB64pO6b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D95C4CEE3;
-	Thu,  3 Jul 2025 15:19:30 +0000 (UTC)
+	 MIME-Version; b=mAYsFBqiZaB+TVfs0/w6SBwwR05NH6SEeLh2ocIhn8XrZiLIpBIhFYeYf6atVl4X/5IMTWT8PIlEf2SWGyQmxI0Tw2ps0355sWFfM400NvxmN+rt/fIGOxcXfoqctae9W1lV9TNNwCAD/m4x8kA2BIeTvmgmVQUuQF+koQA4qvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmZvnUi+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DE5C4CEE3;
+	Thu,  3 Jul 2025 14:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555971;
-	bh=TrBwcs0lSlsg5xzw88x8tzwx/Bm+3T9+IwHFvVeYIRk=;
+	s=korg; t=1751554377;
+	bh=0722p8CYsgoKBA7ung+bJdvksBWRoFSOSa17msQOkyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EB64pO6bnE0LYqtpYCd6NuY6rP7snRRIPLc7LRx5Q8YrMggPd5oH/XJkTJB0dGhGu
-	 pGpR1ujn72Ui5I24cSO9vPY5VPZyCA0pQGocFL/EYNhBE+G1qFKa1IZL+pQjH4Fhau
-	 RZjKB37BUBXs4NooBxTPKoSUqdHyhoE+YiEdaN3s=
+	b=kmZvnUi+PR0rwwS45Ax6e5MmlM2VajF6zZPOADeCv/ghdi4E7/xSKmo+JRUpPwb+l
+	 99OPt/nLRHEijHyK5HGXKarZjoegnq4fgigP33zGXZChFHU0/+wQEb6JcfIozgxkcB
+	 wqHiMlmTovZd2pZPVZV9kFlDuQuOVQmCZM0PiKNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/132] usb: Add checks for snprintf() calls in usb_alloc_dev()
+	Frank Min <Frank.Min@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 168/218] drm/amdgpu: Add kicker device detection
 Date: Thu,  3 Jul 2025 16:41:56 +0200
-Message-ID: <20250703143940.474656621@linuxfoundation.org>
+Message-ID: <20250703144002.875838393@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,77 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Frank Min <Frank.Min@amd.com>
 
-[ Upstream commit 82fe5107fa3d21d6c3fba091c9dbc50495588630 ]
+commit 0bbf5fd86c585d437b75003f11365b324360a5d6 upstream.
 
-When creating a device path in the driver the snprintf() takes
-up to 16 characters long argument along with the additional up to
-12 characters for the signed integer (as it can't see the actual limits)
-and tries to pack this into 16 bytes array. GCC complains about that
-when build with `make W=1`:
+1. add kicker device list
+2. add kicker device checking helper function
 
-  drivers/usb/core/usb.c:705:25: note: ‘snprintf’ output between 3 and 28 bytes into a destination of size 16
-
-Since everything works until now, let's just check for the potential
-buffer overflow and bail out. It is most likely a never happen situation,
-but at least it makes GCC happy.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250321164949.423957-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Frank Min <Frank.Min@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 09aa2b408f4ab689c3541d22b0968de0392ee406)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/usb.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c |   17 +++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h |    6 ++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 3500e3c94c4b8..2215f8ca54170 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -704,15 +704,16 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
- 		dev_set_name(&dev->dev, "usb%d", bus->busnum);
- 		root_hub = 1;
- 	} else {
-+		int n;
-+
- 		/* match any labeling on the hubs; it's one-based */
- 		if (parent->devpath[0] == '0') {
--			snprintf(dev->devpath, sizeof dev->devpath,
--				"%d", port1);
-+			n = snprintf(dev->devpath, sizeof(dev->devpath), "%d", port1);
- 			/* Root ports are not counted in route string */
- 			dev->route = 0;
- 		} else {
--			snprintf(dev->devpath, sizeof dev->devpath,
--				"%s.%d", parent->devpath, port1);
-+			n = snprintf(dev->devpath, sizeof(dev->devpath), "%s.%d",
-+				     parent->devpath, port1);
- 			/* Route string assumes hubs have less than 16 ports */
- 			if (port1 < 15)
- 				dev->route = parent->route +
-@@ -721,6 +722,11 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
- 				dev->route = parent->route +
- 					(15 << ((parent->level - 1)*4));
- 		}
-+		if (n >= sizeof(dev->devpath)) {
-+			usb_put_hcd(bus_to_hcd(bus));
-+			usb_put_dev(dev);
-+			return NULL;
-+		}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
+@@ -30,6 +30,10 @@
  
- 		dev->dev.parent = &parent->dev;
- 		dev_set_name(&dev->dev, "%d-%s", bus->busnum, dev->devpath);
--- 
-2.39.5
-
+ #define AMDGPU_UCODE_NAME_MAX		(128)
+ 
++static const struct kicker_device kicker_device_list[] = {
++	{0x744B, 0x00},
++};
++
+ static void amdgpu_ucode_print_common_hdr(const struct common_firmware_header *hdr)
+ {
+ 	DRM_DEBUG("size_bytes: %u\n", le32_to_cpu(hdr->size_bytes));
+@@ -1383,6 +1387,19 @@ static const char *amdgpu_ucode_legacy_n
+ 	return NULL;
+ }
+ 
++bool amdgpu_is_kicker_fw(struct amdgpu_device *adev)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(kicker_device_list); i++) {
++		if (adev->pdev->device == kicker_device_list[i].device &&
++			adev->pdev->revision == kicker_device_list[i].revision)
++		return true;
++	}
++
++	return false;
++}
++
+ void amdgpu_ucode_ip_version_decode(struct amdgpu_device *adev, int block_type, char *ucode_prefix, int len)
+ {
+ 	int maj, min, rev;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h
+@@ -595,6 +595,11 @@ struct amdgpu_firmware {
+ 	uint64_t fw_buf_mc;
+ };
+ 
++struct kicker_device{
++	unsigned short device;
++	u8 revision;
++};
++
+ void amdgpu_ucode_print_mc_hdr(const struct common_firmware_header *hdr);
+ void amdgpu_ucode_print_smc_hdr(const struct common_firmware_header *hdr);
+ void amdgpu_ucode_print_imu_hdr(const struct common_firmware_header *hdr);
+@@ -622,5 +627,6 @@ amdgpu_ucode_get_load_type(struct amdgpu
+ const char *amdgpu_ucode_name(enum AMDGPU_UCODE_ID ucode_id);
+ 
+ void amdgpu_ucode_ip_version_decode(struct amdgpu_device *adev, int block_type, char *ucode_prefix, int len);
++bool amdgpu_is_kicker_fw(struct amdgpu_device *adev);
+ 
+ #endif
 
 
 
