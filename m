@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-159392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E3EAF7863
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:49:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9273CAF79BF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C24316F7BC
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CFB418901AE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3362EE276;
-	Thu,  3 Jul 2025 14:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D142EE5EB;
+	Thu,  3 Jul 2025 15:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJDu61Ze"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdxTfK96"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA1472610;
-	Thu,  3 Jul 2025 14:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F10B6F53E;
+	Thu,  3 Jul 2025 15:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554087; cv=none; b=NorZRo8vHAI6+k1LlFbmcOhw6PVzeduvlWo73wPL/6mEN5waRutEkeipqJNaC6z+W0W//i/T/vpvsiaPY3pQh/mhH66ppMqEI5EptkjkvP/nKMZXOIOnCTKsUFGfigHMiEl3dqQ8tuxod6Fmp5kCn2QtLk3+62JbhX+bD4jQHPM=
+	t=1751554820; cv=none; b=C8kJ9XA/2CGS7z3LjGz8FXQpSGhsVM3MSh4l3tcPMs4lfHVpaMb06vW1rrR/dxGNy0YU92KZYiTyXAiV00UD7dw93n8200cHb0MQbqPIzaLQFrUJHfQ3g0dGJv+WYeQg06yUDuERYMn69E9A/hkaXP7zTi/1YhhxZo4jhrFZ5iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554087; c=relaxed/simple;
-	bh=eDHxOLUn6KWcpKw5VJbTS0+dj42du5Pmam/1uX89iis=;
+	s=arc-20240116; t=1751554820; c=relaxed/simple;
+	bh=WSZxIENh+rpNYtpyFMqektCrYwZaNcH7NgFjQHhJgOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YCGSjXwDJjeOS9cj6Ns7rKd9+hKlCk8p0+mT9DcToRgcDm1fIltKnvXxo0G3L/9N/iVfQlAo4BPzttIoqnivrMY/Z1LXO7xLnZzwtIRxRfKd0DYficA5rr6Dzf/lqSGr4Fa4GW7c2WuwujU1dFI+CS66BkwkoqN5jYI7eKH8Pyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJDu61Ze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10F8C4CEE3;
-	Thu,  3 Jul 2025 14:48:06 +0000 (UTC)
+	 MIME-Version; b=VPclOynskoLPmSSzOGIfvW0RWeYqXauNV6VeCHTpZmJQiBLAgnURCIe9O2LEOLkezqWxiykfwimC/A/nHKEv+On6kamMxyXFN4uwADugEKbV832KggP0fsA9/zT1zhRz7zbw/xvX+30OzeGmLnGBxhscFyjzn7aXpgJOYOan9AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdxTfK96; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D7EC4CEE3;
+	Thu,  3 Jul 2025 15:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554087;
-	bh=eDHxOLUn6KWcpKw5VJbTS0+dj42du5Pmam/1uX89iis=;
+	s=korg; t=1751554818;
+	bh=WSZxIENh+rpNYtpyFMqektCrYwZaNcH7NgFjQHhJgOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJDu61Zevw67ayOkAaVGsv96vsG+h4GQ4jJjJKJnHrkpFGnOjkjnv2PCO3+vYQang
-	 dEzAEKVVjDmDDdNJli5yEZP3roZt13+JpGMVuSgFuzBfxBcWyqAs3bGr7nbya51t+h
-	 GIRHGw3j84K25XLff5bbkXng6tKPzLJlfwTSetZ0=
+	b=sdxTfK967CitQsup/ZUzD6f81xZVthQS+1aQHvGNq6smDDD0tH630ScH9XLQizuVu
+	 H3E/4LnVpg8kQ0Ai7ExDOHjw+UPCyIBXEKfg7lMdn2zh4gbZIp5Cuz7l140YnmmyLm
+	 +/Jv/PrMmlb/HvYPFsILANcFVVoPy+urJ5r8J+5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	stable@kernel.org,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/218] Revert "drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1"
+Subject: [PATCH 6.15 087/263] media: uvcvideo: Rollback non processed entities on error
 Date: Thu,  3 Jul 2025 16:40:07 +0200
-Message-ID: <20250703143958.304605702@linuxfoundation.org>
+Message-ID: <20250703144007.792391733@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +62,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit ed5915cfce2abb9a553c3737badebd4a11d6c9c7 ]
+[ Upstream commit a70705d3c020d0d5c3ab6a5cc93e011ac35e7d48 ]
 
-This reverts commit d6e020819612a4a06207af858e0978be4d3e3140.
+If we fail to commit an entity, we need to restore the
+UVC_CTRL_DATA_BACKUP for the other uncommitted entities. Otherwise the
+control cache and the device would be out of sync.
 
-The IS_DGFX check was put in place because error capture of buffer
-objects is expected to be broken on devices with VRAM.
-
-Userspace fix[1] to the impacted media driver has been submitted, merged
-and a new driver release is out as 25.2.3 where the capture flag is
-dropped on DG1 thus unblocking the usage of media driver on DG1.
-
-[1] https://github.com/intel/media-driver/commit/93c07d9b4b96a78bab21f6acd4eb863f4313ea4a
-
-Cc: stable@vger.kernel.org # v6.0+
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20250522064127.24293-1-joonas.lahtinen@linux.intel.com
-[Joonas: Update message to point out the merged userspace fix]
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-(cherry picked from commit d2dc30e0aa252830f908c8e793d3139d51321370)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: stable@kernel.org
+Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
+Reported-by: Hans de Goede <hdegoede@redhat.com>
+Closes: https://lore.kernel.org/linux-media/fe845e04-9fde-46ee-9763-a6f00867929a@redhat.com/
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-ID: <20250224-uvc-data-backup-v2-3-de993ed9823b@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_ctrl.c | 32 ++++++++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-index 841438301d802..a3b83cfe17267 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-@@ -2014,7 +2014,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
- 			continue;
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index 636ce1eb2a6bf..44b6513c52642 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -2119,7 +2119,7 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+ 	unsigned int processed_ctrls = 0;
+ 	struct uvc_control *ctrl;
+ 	unsigned int i;
+-	int ret;
++	int ret = 0;
  
- 		if (i915_gem_context_is_recoverable(eb->gem_context) &&
--		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
-+		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
- 			return -EINVAL;
+ 	if (entity == NULL)
+ 		return 0;
+@@ -2148,8 +2148,6 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+ 				dev->intfnum, ctrl->info.selector,
+ 				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+ 				ctrl->info.size);
+-		else
+-			ret = 0;
  
- 		for_each_batch_create_order(eb, j) {
+ 		if (!ret)
+ 			processed_ctrls++;
+@@ -2165,13 +2163,20 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+ 		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+ 			ret = uvc_ctrl_set_handle(handle, ctrl, handle);
+ 
+-		if (ret < 0) {
++		if (ret < 0 && !rollback) {
+ 			if (err_ctrl)
+ 				*err_ctrl = ctrl;
+-			return ret;
++			/*
++			 * If we fail to set a control, we need to rollback
++			 * the next ones.
++			 */
++			rollback = 1;
+ 		}
+ 	}
+ 
++	if (ret)
++		return ret;
++
+ 	return processed_ctrls;
+ }
+ 
+@@ -2202,7 +2207,8 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
+ 	struct uvc_video_chain *chain = handle->chain;
+ 	struct uvc_control *err_ctrl;
+ 	struct uvc_entity *entity;
+-	int ret = 0;
++	int ret_out = 0;
++	int ret;
+ 
+ 	/* Find the control. */
+ 	list_for_each_entry(entity, &chain->entities, chain) {
+@@ -2213,17 +2219,23 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
+ 				ctrls->error_idx =
+ 					uvc_ctrl_find_ctrl_idx(entity, ctrls,
+ 							       err_ctrl);
+-			goto done;
++			/*
++			 * When we fail to commit an entity, we need to
++			 * restore the UVC_CTRL_DATA_BACKUP for all the
++			 * controls in the other entities, otherwise our cache
++			 * and the hardware will be out of sync.
++			 */
++			rollback = 1;
++
++			ret_out = ret;
+ 		} else if (ret > 0 && !rollback) {
+ 			uvc_ctrl_send_events(handle, entity,
+ 					     ctrls->controls, ctrls->count);
+ 		}
+ 	}
+ 
+-	ret = 0;
+-done:
+ 	mutex_unlock(&chain->ctrl_mutex);
+-	return ret;
++	return ret_out;
+ }
+ 
+ static int uvc_mapping_get_xctrl_compound(struct uvc_video_chain *chain,
 -- 
 2.39.5
 
