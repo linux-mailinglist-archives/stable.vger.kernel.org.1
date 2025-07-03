@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-159971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEDC5AF7BBF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:27:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E051BAF79AE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2E041C44CF1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73FC97ABEBC
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983872EF9B8;
-	Thu,  3 Jul 2025 15:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20BD2EE281;
+	Thu,  3 Jul 2025 15:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZAS6VLI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4RQ0E/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5569D2EE286;
-	Thu,  3 Jul 2025 15:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07602EA149;
+	Thu,  3 Jul 2025 15:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555955; cv=none; b=fvk8UzchTgJwSG0RYuUXld54YRlY4V7NlXMpsmTx8mcxp758n8+3QiQyLYnWs4e1Q4HtNPuu+B3wkR6PDsuM/FawaEm/dsAppkIFped6O0iii3TPdcyu8Lt0gA5AE6U+o+Q0ySTjY1ns7plN+JaGHbcBMidFpaxgOyVeeGNyxfs=
+	t=1751555096; cv=none; b=rQM3u1lkmU/H3wWVhSqUx9f1BLaUuRp+XRX4zVsCerxZSAbrkR8Sl5FW1IBYqlLmMbOBa3nKVqZb8bTSwF5vqTbz+a4vRFdWFCU4UKtsLBI0zOpcMkgOQyjezc0GWthvbwi43I8Nl2Rq95Y2KvYLBo4OigglEp4v/77C8GrWejc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555955; c=relaxed/simple;
-	bh=ts9LY2EZe23ERyTbUiltZQHvt1DtBrVI7fPvNV23yMg=;
+	s=arc-20240116; t=1751555096; c=relaxed/simple;
+	bh=7sm6wYlrVYK9rRnz0pyC0lKeCqwc19xFwmFde8GN8G4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DNJrSeUO2IalYj2xTWXJU9JjB3G1MQDTi1HcPdUyX5k+QF6yXWJmKTwhF+9zTM6TKMW1iE0zdqXVFTO+6KytpxjWe2IH9LucMX8jf1oHUZF7iMC0Hlno3lSXA9yyfpfWoMCX9WqL5Mkh268uMpT6xOkBhr4jopyvWBZUnOvPiNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZAS6VLI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC098C4CEEE;
-	Thu,  3 Jul 2025 15:19:14 +0000 (UTC)
+	 MIME-Version; b=OAcBR++kqhOkd+/Ly2uEGUdBDXHFCmXi5JUQYljD3IThmKcWXLzDvkJ17siLFkyLrJpy/PWAHiQkyc7QXoyKe+3fgr+H+ddvmKAWJe/jaGnqZuKsFoor7Zy4+3Hsz51k0KMUQTiMoZiLV8Z3kG0gANyfv4low3fPGuJCY8TAJaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4RQ0E/+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC78C4CEE3;
+	Thu,  3 Jul 2025 15:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555955;
-	bh=ts9LY2EZe23ERyTbUiltZQHvt1DtBrVI7fPvNV23yMg=;
+	s=korg; t=1751555096;
+	bh=7sm6wYlrVYK9rRnz0pyC0lKeCqwc19xFwmFde8GN8G4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wZAS6VLIq/Qz8H69ma2XV3gEGzN0+wrPqDQV81epsC3Yj/oPuOSFYGvMf5FHfn/bJ
-	 padQ/Khx2TPEnJd3MGhiFh7RekAljqEE988rYO4J8M+SVhMfkk+H/gZzy7HeqBLWOj
-	 tYU+qZbEGf7m1DEUralOnjbWuXsyaXC1Wwcn0+L0=
+	b=g4RQ0E/+CEyHL6v8fUk5l2HWR3L1sdwPnXoa+Mqb0ta9yWRTGWsctpxAcPVH6wu/N
+	 jTreeX+KVXAG22SqpXRfZaJ5HOYCHQCiiBmnW6r83OqWxVGcjRS648va9Kn5T1MAFE
+	 209WK2mznL9vSUUS0hWWUKYiDeD3SGWQ6CPObxiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/132] mfd: max14577: Fix wakeup source leaks on device unbind
+	Aidan Stewart <astewart@tektelic.com>
+Subject: [PATCH 6.15 175/263] serial: core: restore of_node information in sysfs
 Date: Thu,  3 Jul 2025 16:41:35 +0200
-Message-ID: <20250703143939.634906027@linuxfoundation.org>
+Message-ID: <20250703144011.364566973@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Aidan Stewart <astewart@tektelic.com>
 
-[ Upstream commit d905d06e64b0eb3da43af6186c132f5282197998 ]
+commit d36f0e9a0002f04f4d6dd9be908d58fe5bd3a279 upstream.
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.
+Since in v6.8-rc1, the of_node symlink under tty devices is
+missing. This breaks any udev rules relying on this information.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250406-mfd-device-wakekup-leak-v1-3-318e14bdba0a@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link the of_node information in the serial controller device with the
+parent defined in the device tree. This will also apply to the serial
+device which takes the serial controller as a parent device.
+
+Fixes: b286f4e87e32 ("serial: core: Move tty and serdev to be children of serial core port device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aidan Stewart <astewart@tektelic.com>
+Link: https://lore.kernel.org/r/20250617164819.13912-1-astewart@tektelic.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/max14577.c | 1 +
+ drivers/tty/serial/serial_base_bus.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/max14577.c b/drivers/mfd/max14577.c
-index d44ad6f337425..61a5ccafa18e0 100644
---- a/drivers/mfd/max14577.c
-+++ b/drivers/mfd/max14577.c
-@@ -467,6 +467,7 @@ static void max14577_i2c_remove(struct i2c_client *i2c)
- {
- 	struct max14577 *max14577 = i2c_get_clientdata(i2c);
+--- a/drivers/tty/serial/serial_base_bus.c
++++ b/drivers/tty/serial/serial_base_bus.c
+@@ -72,6 +72,7 @@ static int serial_base_device_init(struc
+ 	dev->parent = parent_dev;
+ 	dev->bus = &serial_base_bus_type;
+ 	dev->release = release;
++	device_set_of_node_from_dev(dev, parent_dev);
  
-+	device_init_wakeup(max14577->dev, false);
- 	mfd_remove_devices(max14577->dev);
- 	regmap_del_irq_chip(max14577->irq, max14577->irq_data);
- 	if (max14577->dev_type == MAXIM_DEVICE_TYPE_MAX77836)
--- 
-2.39.5
-
+ 	if (!serial_base_initialized) {
+ 		dev_dbg(port->dev, "uart_add_one_port() called before arch_initcall()?\n");
 
 
 
