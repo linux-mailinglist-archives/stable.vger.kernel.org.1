@@ -1,195 +1,120 @@
-Return-Path: <stable+bounces-160115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C51AF8056
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 20:39:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE28AF8046
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 20:37:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 826223BBA99
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 18:37:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 175A97B1F23
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 18:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCB22F7CE0;
-	Thu,  3 Jul 2025 18:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E602F2C59;
+	Thu,  3 Jul 2025 18:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b="Yz+UzLtf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NSdm268E"
 X-Original-To: stable@vger.kernel.org
-Received: from sonic301-22.consmr.mail.gq1.yahoo.com (sonic301-22.consmr.mail.gq1.yahoo.com [98.137.64.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639692F2C7C
-	for <stable@vger.kernel.org>; Thu,  3 Jul 2025 18:35:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.64.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79362F6F84
+	for <stable@vger.kernel.org>; Thu,  3 Jul 2025 18:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751567717; cv=none; b=EuxPy3QKY9mTwNvc4OuXvhQsG4mej9vZjxyUN4RhkZAysfagXLw1p9kxt1BS4ZjkM1d9cegfMWcoO4s5z75i/vYON/Dn9tH659cLKI8/ZkpkNhtKcRn5aId1Cag1Tx5SM0Poaei2fr8ylT2v0mRYarF4aKyqrBW3VQruWoZmbWo=
+	t=1751567704; cv=none; b=qPFMZeZRIGpFOpqD3bDchYaQPV1eQFpP/E3FVKM4A05+OiTFTG9PEIiaIvnjvcXtcHqKNBWDFzkwiejklmuUupg3lLD9aRETL5ro0SSFlYaC8P7bLB+S4isW1Rb+5tgVMreWudEdYlBztFwoPgXjNNsbNbu+FHAm99YaS4rCyZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751567717; c=relaxed/simple;
-	bh=+dGWQql/riTJw5LXzDDtI7Z0SZTVe9RhdHwHCSgrIEQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kcE65P91J6HJhK9supsBSz54jSQKMgN4fgNgjrmjUy3G5UhPVtzj0YiLwqN4GAOObEZ0Q0E4ADAwW86BaxA7OBCZyJLIz9V2LVR7FOmsF7B826pBq+vU8DFJ2frk5duxrjdkB5/zYYkn3JS5hjJX0CwVrU9+q+rX1esynHB9XCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com; spf=pass smtp.mailfrom=aol.com; dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b=Yz+UzLtf; arc=none smtp.client-ip=98.137.64.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aol.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1751567706; bh=EXHlWa5asA9Z4RCqSrFnCiNHYAx1soLe4UthSuVCGas=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=Yz+UzLtfI9XxeD/hu1qZpZfySzMWZrRhTK5rq85W39ZrjIgTj5OcTqaUMAmVjNA93M89NttPSevoOtVL8XZgJrAwZtGMpwDFfMr4sYXMXw8V8ukK88EI5QUyAEwGCJbPW8+4189k0QyqmCVX0fEg2HUBY24KUvVaJW4AU1feLMvzCCGHIOW1MHQhuh4gkt6qoEIhxwhWbFrUT+EFd+iPrLawb+Fb6ym3MDt4j86MYEGd6HPKBKnDnZ5Wkp5RWqJ+DNUS2F84kIGtJKwAFC0tIwmP2g2AB1+5mC6Sn70lazDX/hka8eNX8ZLDeCf7jE6+j45LeKoBBBlyUl9lb/hCew==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1751567706; bh=Hrhy2ni07h5gydNEaQVhBeWfqsOHYuYGLunqIgvcQ9h=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=N0g343I3cz1J4rJZ/+nhdwFtWCgb2KXND5cLSqjKej+WvfoABDpNSFxSzP4USDALK631zugk+P6z760va/ixV6V4766jGafjmNNh/+8Hc8gBiBX+nhnVRIOqUmPGHC9MMLni6q+8EHvNUQtOZMzBVsfAwXOPESTyW2SdFzG/w3TiFTOm37upniz57FXtkED0QohFRBnYr0ouoU8frlnMAZtUUElkJHnzd4FkIV9yIEPhv4jYFvX8RDA571aj1cZJiaPjhbsHe0cXpBglasKMoM0O2PGKSnoLkgTalJVUdmK3R+SacPedGkd+iiU5cDPobqFqwbHZdr4fVPOe8u7x4Q==
-X-YMail-OSG: vcvWGOoVM1mgQsyzXm1E58.xLt2_4SWqk4fBZkRJTMlJMbcanRo09FUCHdczfwr
- .0r0S3L6hxwsj9ZYHcCA0ckjlEaPbtsi18npxhrRFDqkxXl78VVr5hHl_LBlDJkqlGaPY6CMBMHT
- rjXguqa91TtKbP5QzK0jCQNWvogt5FUeKqLSpQMhOft5f_.dERjKDU3pv98H5LX3Ek1Us3XWHCMH
- 7qKpoQaV659CdS96cKtsmWreHyLiJFCbXDNUdnfYYAb7cnWKUZmnStWCaOD1a4Ft5Ogjx5KmFnY7
- TpHvLezmNRNd9IGF2uqg6wnbkXEa1cARuRUF97JJcmlEA5NsQeM_s.IfSdjgKgMINbxj58wlUNta
- r6XGfqf0jTKGP6jSbQIGe9avwPwnqzTZgqb1E0L8SYSSZFQa7XeYvjClNc9EyCYOJkQ5q1uR.a9s
- Qq3ApymDoUUuG8Ua4KnZ1HMF19Xg0ejUZMIdU2MUkpCTY5ie46MXvN4h.piyk8FAHxrJ0L4_9.Xm
- 38GwRxBxGZ.he5Ovrybxd.6KCROg8fMzaYh0Gs1dCMcAtzYO6Byy9GolUx5_derQu4I3aQ3LvRpc
- Ds37RDxbImRtt6ASeCdo2g5zLaa3LD7OadOHZOhRAvl8Uc_GoxLYcKOy2zZuPi81lpnW_tz6U9rN
- MMnVkl..JK0eTDCG0q1DJMAnSgcQ8Abvm9D6_zwVbSVqaY5EXWH_8R4cTXCirNYDHeIvXPPSinB2
- FZF5t3g1xOTsK32DGXw3XJkHXg99GeNM91tNtAclDE9KVVxB6MvgnPTpAT0fHuVVR.FBFhYHJVm6
- 17ueM2yT.3h8Tjqia6rY6_au7GGTyngiRplYXgyU6ah968QfrpIo1PCgxM8T1_5o9lckJznVA4LQ
- zqh9r6IdNMqdtTXwW2a730D1WlelZ_LySj3NKvarxahcPgb2Vm9xSH2BMjCxA0gECxDE3n6oow4e
- CRhbmCt_y6b8WLai8MB22TdrYn_dfn1Jz1uli1EUeO5wisuIg9y9Z2YewcFAAzrffw0ylhtLetnT
- xWmpOdEjPq383uJWCGuOBFAqAfTjlYplg.ZmFDU2xz30.nLlfeOXdC.eMsxcVUO1taR4H7OX8Nzj
- vW2KxE9VsrEz8QjmOH.SeCSXfwxIkr4kDtfyrIRMQ.v20jnIbwFhBrlClrQaCKyC7_ztPLQAHiGM
- 3eC3uuNzZn8eZhgpgZw6rc65LATqaGWctFDA_IvOZezDAClzUxQVT7tE0pxRBTLa7uPUjYDhRNbX
- bMOPGBisJ04fZ.bmKc9TPdJjg5w6GIXdZwsJd9kvyw.HU.RLhgGiYB7vfXjtuoIzkWLSLomQhSKw
- rZ7eG35U85inedg0xSpFrw4H0_Lhwf.t4rmMq7K6ueuSPYXQmwqgVaor2FWUyu6w7xGaIZDmDT4e
- _UwYIwWUN8pEcfMbk4RjWgoFIJhVjhz5c5NK.aaBpgegikAF3FRWrAMK7YFauzI7II83qK1kJo2t
- EupynnoYKyBMTPDJsACpbg.p9fFl2gX3GJ5fgX.HipphYAER0RFHfftUxHgQzch1gzYS9Rxbc8Xd
- D7BtVxUlSdlBPdXXSMDSMPq1C0Q1NCN0rM8CXDF6R_41In7TxpWnO4DAj4bTqjTxELKi9tUH90aS
- LDBejKO3KQ6K9GT517.5JCUq8MBn_TYoY7AWr4kFvs9_S7VcooUqYXN3dZZyTvEqrmtkEaZ_Vlv_
- xxruWhr714_cPb5J6yIm36xvcvWPRZVYUQKthyYr.QO.F3GzQ86eo0DxE3XXEAsbMiUEFk0_c.NX
- B2MZxTzQcwj_DnAxf3wQsqdBfbkNiscAF7WOPSLtHmGqwDLldh.DGoGj81_YjejyyRICIUHyNOpD
- ftawoUQa08a0.kCpeH..a6jc31tnKwXOJHEA_wv9v9vKqAuK4jfWvdypkDrWxD8x79.KNac_2KKw
- jU50Om0v7gOMizNzOCbcfJx7fGmK1ELsb3l2_uN85l6UI27eGJDdp5.zBZMbRptNpPj2gfndO_mD
- h3wir7WfsasYPX7tZL.XDilylr8qtfBuSfweHx2MQvOeojJiyYOMqbX1Q6UlueMiRuWQ.EGObedd
- x4sayS0REOpgMaV0NQ0apLWpcvlK9R.LJ_83Gc0JlNKDsQcLlHfQ65sKR6sfM1TojZTKN6Yl3d7p
- AVtm8DbkymbW0LbkbATPxKRi0Jm4kiTNTyK_HBV01aKK_l5EpHzIrmncmXyKJ8t5X6WzjIwV4IsO
- Y54QPpVzuedkSNUXUGZm.mU43u.YJ
-X-Sonic-MF: <brchuckz@aol.com>
-X-Sonic-ID: dc7a2c9f-f440-4691-8260-e4cb2c65db45
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.gq1.yahoo.com with HTTP; Thu, 3 Jul 2025 18:35:06 +0000
-Received: by hermes--production-bf1-689c4795f-895qn (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 074e72aac6a3c642c4975b8914dc21bf;
-          Thu, 03 Jul 2025 18:35:02 +0000 (UTC)
-Message-ID: <6b15fd25-5f42-43fe-81b6-ac7d0d9f1b3b@aol.com>
-Date: Thu, 3 Jul 2025 14:35:01 -0400
+	s=arc-20240116; t=1751567704; c=relaxed/simple;
+	bh=RMOgrtkwmy8r3Oms7Hm7098YpOT2Tvv32ioa+DXuNjk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=m+1dL1/i7X0Fw0nW3kTkoVNqTDRjKRjJoo4S1OD4te+1eFeiLYpmri2JPJNuCJ3eaaMCcbHdfxS14v795/TqKpvrJ+SEPk/fCyxkplG+Adeg0/BJ4X3r4rINqT62KjGy1gTjX3WHnFexcz6oHSYaTcxHVfgyXxK6VlfZ5y2xCy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NSdm268E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5AAC4CEE3;
+	Thu,  3 Jul 2025 18:35:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751567704;
+	bh=RMOgrtkwmy8r3Oms7Hm7098YpOT2Tvv32ioa+DXuNjk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NSdm268EfaSyvslSHVc1tpPd7/Zg9IS9smEsrg5cEgoxQcm+9SuzyvqsUlmY5Zyv0
+	 zFjkCWy+XbMnmVB2Idh4eB363nEPouI6BIT7gaxXtVvPNQjKemHvQ78+MiA4icu5K3
+	 XZOFPFE7p6lcpTU4X4rOYVqQQ5+q5ROxaf6c9l89WFwEuenUVihI7AxaVRFLnei7VY
+	 x+O5dWIhNxiEqxxbAQa2k3ssyTMzapTbygxk7qLaW3N5xWjuJfhkhO9w2rbs//wE6t
+	 tZZLBiSRyRJF6mD98WKNVriYmFgFQAEY3eigoLhZ0EXftgwrmFxKB/2bW1/XLiTAky
+	 vJxFGjl9wllng==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jeongjun Park <aha310510@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.15.y] mm/vmalloc: fix data race in show_numa_info()
+Date: Thu,  3 Jul 2025 14:35:03 -0400
+Message-Id: <20250703111959-3ad2d7e72d03f7be@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250702153312.351080-1-aha310510@gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] Linux 6.15.1 xen/dom0 domain_crash_sync called from
- entry.S
-To: Chuck Zmudzinski <brchuckz@netscape.net>, stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, xen-devel <xen-devel@lists.xenproject.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, =?UTF-8?B?SsO8cmdlbiBHcm8=?=
- =?UTF-8?B?w58=?= <jgross@suse.com>
-References: <8ed96ec9-7c84-4bb4-90ec-5b753be9fd40.ref@netscape.net>
- <8ed96ec9-7c84-4bb4-90ec-5b753be9fd40@netscape.net>
- <8ad4304d-43bc-4584-bc69-822eb0661e7b@suse.com>
- <5a962cae-b65d-4a27-9189-20027344567e@netscape.net>
-Content-Language: en-US
-From: Chuck Zmudzinski <brchuckz@aol.com>
-In-Reply-To: <5a962cae-b65d-4a27-9189-20027344567e@netscape.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.24099 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol
 
-On 6/11/25 5:34 PM, Chuck Zmudzinski wrote:
-> On 6/10/25 12:22 AM, Jürgen Groß wrote:
->> On 10.06.25 00:43, Chuck Zmudzinski wrote:
->>> Hi,
->>> 
->>> I am seeing the following regression between Linux 6.14.8 and 6.15.1.
->>> 
->>> Kernel version 6.14.8 boots fine but version 6.15.1 crashes and
->>> reboots on Xen. I don't know if 6.14.9 or 6.14.10 is affected, or
->>> if 6.15 or the 6.15 release candidates are affected because I did
->>> not test them.
->>> 
->>> Also, Linux 6.15.1 boots fine on bare metal without Xen.
->>> 
->>> Hardware: Intel i5-14500 Raptor Lake CPU, and ASRock B760M PG motherboard and 32 GB RAM.
->>> 
->>> Xen version: 4.19.2 (mockbuild@dynavirt.com) (gcc (GCC) 13.3.1 20240611 (Red Hat 13.3.1-2)) debug=n Sun Apr 13 15:24:29 PDT 2025
->>> 
->>> Xen Command line: placeholder dom0_mem=2G,max:2G conring_size=32k com1=9600,8n1,0x40c0,16,1:0.0 console=com1
->>> 
->>> Linux version 6.15.1-1.el9.elrepo.x86_64 (mockbuild@5b7a5dab3b71429898b4f8474fab8fa0) (gcc (GCC) 11.5.0 20240719 (Red Hat 11.5.0-5), GNU ld version 2.35.2-63.el9) #1 SMP PREEMPT_DYNAMIC Wed Jun  4 16:42:58 EDT 2025
->>> 
->>> Linux Kernel Command line: placeholder root=/dev/mapper/systems-rootalma ro crashkernel=1G-4G:192M,4G-64G:256M,64G-:512M resume=UUID=2ddc2e3b-8f7b-498b-a4e8-bb4d33a1e5a7 console=hvc0
->>> 
->>> The Linux 6.15.1 dom0 kernel causes Xen to crash and reboot, here are
->>> the last messages on the serial console (includes messages from both
->>> dom0 and Xen) before crash:
->>> 
->>> [    0.301573] Speculative Store Bypass: Mitigation: Speculative Store Bypass disabled via prctl
->>> 
->>> [    0.301577] Register File Data Sampling: Vulnerable: No microcode
->>> 
->>> [    0.301581] ITS: Mitigation: Aligned branch/return thunks
->>> 
->>> [    0.301594] x86/fpu: Supporting XSAVE feature 0x001: 'x87 floating point registers'
->>> 
->>> [    0.301598] x86/fpu: Supporting XSAVE feature 0x002: 'SSE registers'
->>> 
->>> [    0.301602] x86/fpu: Supporting XSAVE feature 0x004: 'AVX registers'
->>> 
->>> [    0.301605] x86/fpu: xstate_offset[2]:  576, xstate_sizes[2]:  256
->>> 
->>> [    0.301609] x86/fpu: Enabled xstate features 0x7, context size is 832 bytes, using 'compacted' format.
->>> 
->>> (XEN) Pagetable walk from ffffc9003ffffff8:
->>> (XEN)  L4[0x192] = 0000000855bee067 0000000000060e56
->>> (XEN)  L3[0x000] = 0000000855bed067 0000000000060e55
->>> (XEN)  L2[0x1ff] = 0000000855bf0067 0000000000060e58
->>> (XEN)  L1[0x1ff] = 8010000855bf2025 0000000000060e5a
->>> (XEN) domain_crash_sync called from entry.S: fault at ffff82d04036e5b0 x86_64/entry.S#domain_crash_page_fault_6x8+0/0x4
->>> (XEN) Domain 0 (vcpu#0) crashed on cpu#11:
->>> (XEN) ----[ Xen-4.19.2  x86_64  debug=n  Not tainted ]----
->>> (XEN) CPU:    11
->>> (XEN) RIP:    e033:[<ffffffff810014fe>]
->>> (XEN) RFLAGS: 0000000000010206   EM: 1   CONTEXT: pv guest (d0v0)
->>> (XEN) rax: ffffffff81fb12d0   rbx: 000000000000029a   rcx: 000000000000000c
->>> (XEN) rdx: 000000000000029a   rsi: ffffffff81000b99   rdi: ffffc900400000f0
->>> (XEN) rbp: 000000000000014d   rsp: ffffc90040000000   r8:  0000000000000f9c
->>> (XEN) r9:  0000000000000000   r10: 0000000000000000   r11: 0000000000000000
->>> (XEN) r12: 000000000000000c   r13: ffffffff82771530   r14: ffffffff827724cc
->>> (XEN) r15: ffffc900400000f0   cr0: 0000000080050033   cr4: 0000000000b526e0
->>> (XEN) cr3: 000000086ae24000   cr2: ffffc9003ffffff8
->>> (XEN) fsb: 0000000000000000   gsb: ffff88819ac55000   gss: 0000000000000000
->>> (XEN) ds: 0000   es: 0000   fs: 0000   gs: 0000   ss: e02b   cs: e033
->>> (XEN) Guest stack trace from rsp=ffffc90040000000:
->>> (XEN)   Stack empty.
->>> (XEN) Hardware Dom0 crashed: rebooting machine in 5 seconds.
->>> (XEN) Resetting with ACPI MEMORY or I/O RESET_REG.
->>> 
->>> I searched mailing lists but could not find a report similar to what I am
->>> seeing here.
->>> 
->>> I don't know what to try except to git bisect, but I have not done that yet.
->> 
->> This is a known issue.
->> 
->> A patch series to fix that has been posted:
->> 
->> https://lore.kernel.org/lkml/20250603111446.2609381-1-rppt@kernel.org/
->> 
->> 
->> Juergen
-> 
-> Yes, that patch set (the original 5 patches) fixes this issue (I
-> tested it on top of 6.15.2 released yesterday).
-> 
-> There is a suggested sixth patch in the thread, and I tried that
-> also but it caused a kernel panic in Xen PV dom0.
-> 
-> Thanks,
-> 
-> Chuck Zmudzinski
+[ Sasha's backport helper bot ]
 
-The fix for this issue landed in Linux 6.15.4. Thanks!
+Hi,
 
-Chuck Zmudzinski
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
+The upstream commit SHA1 provided is correct: 5c5f0468d172ddec2e333d738d2a1f85402cf0bc
+
+Note: The patch differs from the upstream commit:
+---
+1:  5c5f0468d172d ! 1:  99ac6d1cf98b4 mm/vmalloc: fix data race in show_numa_info()
+    @@ Metadata
+      ## Commit message ##
+         mm/vmalloc: fix data race in show_numa_info()
+     
+    +    commit 5c5f0468d172ddec2e333d738d2a1f85402cf0bc upstream.
+    +
+         The following data-race was found in show_numa_info():
+     
+         ==================================================================
+    @@ Commit message
+         m->private, vmalloc_info_show() should allocate the heap.
+     
+         Link: https://lkml.kernel.org/r/20250508165620.15321-1-aha310510@gmail.com
+    -    Fixes: 8e1d743f2c26 ("mm: vmalloc: support multiple nodes in vmallocinfo")
+    +    Fixes: 8e1d743 ("mm: vmalloc: support multiple nodes in vmallocinfo")
+         Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+         Suggested-by: Eric Dumazet <edumazet@google.com>
+         Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+    @@ mm/vmalloc.c: bool vmalloc_dump_obj(void *object)
+      
+      static void show_purge_info(struct seq_file *m)
+     @@ mm/vmalloc.c: static int vmalloc_info_show(struct seq_file *m, void *p)
+    - 	struct vmap_node *vn;
+      	struct vmap_area *va;
+      	struct vm_struct *v;
+    + 	int i;
+     +	unsigned int *counters;
+     +
+     +	if (IS_ENABLED(CONFIG_NUMA))
+     +		counters = kmalloc(nr_node_ids * sizeof(unsigned int), GFP_KERNEL);
+      
+    - 	for_each_vmap_node(vn) {
+    - 		spin_lock(&vn->busy.lock);
+    + 	for (i = 0; i < nr_vmap_nodes; i++) {
+    + 		vn = &vmap_nodes[i];
+     @@ mm/vmalloc.c: static int vmalloc_info_show(struct seq_file *m, void *p)
+      			}
+      
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.15.y       |  Success    |  Success   |
 
