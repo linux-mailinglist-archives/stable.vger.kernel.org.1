@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-159741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C265AF7A2A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94088AF7BB0
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:27:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3574C3AE115
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:06:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 288095A2D6A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4A52ED17E;
-	Thu,  3 Jul 2025 15:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3482F2F0C65;
+	Thu,  3 Jul 2025 15:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0Z02ftz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCtIDNWa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3A12ED168;
-	Thu,  3 Jul 2025 15:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C7B2EFD9C;
+	Thu,  3 Jul 2025 15:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555194; cv=none; b=m/MR32y8M7N8Phtm/dOMOJ3pEptV+ZufeLPpTGw2rtfz9eRZsCDRpvr4zcvig5S4gJK02gwwnfr2vv3YbP5WhwaYc61jFtx/Jy6Ae1TNV4rgAqG+igrug4YR76bl7fWUO6aaliD09p6p4lgJGlpNaU80/WRNwNMoxzpN/q07NM8=
+	t=1751555975; cv=none; b=QbS1FsUrmBvVj0oJSpH/5jMBbwK/z+S7aIyAsKapEi7V/y9Aj6T3ikutoOuQFuvCB37dSB8pL8SpEzJl57yJZhREqd/ngKYtvNY9DA3BCh9oTUCzX7bDuy7kAEmnmYbEIP0ON4ua3HyeYM9PKvuaL8cB99nE+oI06PlAeM2ImAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555194; c=relaxed/simple;
-	bh=dOxeDfG5q9iwBpMm85ONnheAteuPg4TNcpfg4CwnKdc=;
+	s=arc-20240116; t=1751555975; c=relaxed/simple;
+	bh=XzunkzWVT33S5GqTNR45Q+6bc+AZSIr7nSkPWOjB2MI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mAfOWHbWt0bho2jZPQZ8n3CqihZHOkxiH5rdFy1JUTNeTCT0568agKTgcg3kTtF2LAr9BGuSeVv70FlY8lPpBw3yaxzyC1Zp3Meix9jiNBhzlBwJB0ID6N1UcNKoFRmSAas/kpSfUZZAH4XWy0ZUM1GaFor5Y7pVJno+sTO1GbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0Z02ftz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E176C4CEE3;
-	Thu,  3 Jul 2025 15:06:33 +0000 (UTC)
+	 MIME-Version; b=tvqcJkOVBha7ACjFAP+Zt8cUS/KG/ZQPPeXT4qGAZ4xdZTcUlt09jQ+TZQpeHUxreAzmJeoTiM2VMsy/TrcVYm+h4PBIxzdB0pxQghWbrjXCYXbl8YQrnu9514wtJBPIppzn3Z9Mf8UaVhdzTQC2+m9ZYLJ4KjcSeFbRe7AS0S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCtIDNWa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5714CC4CEE3;
+	Thu,  3 Jul 2025 15:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555194;
-	bh=dOxeDfG5q9iwBpMm85ONnheAteuPg4TNcpfg4CwnKdc=;
+	s=korg; t=1751555974;
+	bh=XzunkzWVT33S5GqTNR45Q+6bc+AZSIr7nSkPWOjB2MI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x0Z02ftz/wyYZ2d8ImX0Doe43c99f43PQmFqDiS5bGL9dcc7iHOl29ULyeQ2I453r
-	 8xmOOEx2pEWUZuqo/CEvEsfzfgkca4jIWpxUJFQPdXDRwhdfjJjnAHlqqvjBYUHFXP
-	 dWR3drLYY1SiEtACrVh+9R5GYKqeven4bOcdv310=
+	b=mCtIDNWa64XlcAAIc0Ve2eqj2v2ZJ42NVJPZgBHVANg8vvYAnPEoHA3/V/ViX1iOb
+	 f2kisHpKuQqwbh8rpZTPbhzMn6Kd3Yw5ckZvfKo/yd80oeypwDJFJWJu5M3/0w2IDD
+	 w6RBDmYNozZE7iS99JLhRw/LdImqruU7mmNTgrFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.15 205/263] drm/panel: simple: Tianma TM070JDHG34-00: add delays
+	Zhiyu Zhang <zhiyuzhang999@gmail.com>,
+	Longxing Li <coregee2000@gmail.com>,
+	David Sterba <dsterba@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 036/132] btrfs: handle csum tree error with rescue=ibadroots correctly
 Date: Thu,  3 Jul 2025 16:42:05 +0200
-Message-ID: <20250703144012.588133563@linuxfoundation.org>
+Message-ID: <20250703143940.841294588@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +64,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 716c75afd83c837f14042309126e838de040658b upstream.
+[ Upstream commit 547e836661554dcfa15c212a3821664e85b4191a ]
 
-Add power on/off delays for the Tianma TM070JDHG34-00.
+[BUG]
+There is syzbot based reproducer that can crash the kernel, with the
+following call trace: (With some debug output added)
 
-Fixes: bf6daaa281f7 ("drm/panel: simple: Add Tianma TM070JDHG34-00 panel support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250411-tianma-p0700wxf1mbaa-v3-2-acbefe9ea669@bootlin.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250411-tianma-p0700wxf1mbaa-v3-2-acbefe9ea669@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ DEBUG: rescue=ibadroots parsed
+ BTRFS: device fsid 14d642db-7b15-43e4-81e6-4b8fac6a25f8 devid 1 transid 8 /dev/loop0 (7:0) scanned by repro (1010)
+ BTRFS info (device loop0): first mount of filesystem 14d642db-7b15-43e4-81e6-4b8fac6a25f8
+ BTRFS info (device loop0): using blake2b (blake2b-256-generic) checksum algorithm
+ BTRFS info (device loop0): using free-space-tree
+ BTRFS warning (device loop0): checksum verify failed on logical 5312512 mirror 1 wanted 0xb043382657aede36608fd3386d6b001692ff406164733d94e2d9a180412c6003 found 0x810ceb2bacb7f0f9eb2bf3b2b15c02af867cb35ad450898169f3b1f0bd818651 level 0
+ DEBUG: read tree root path failed for tree csum, ret=-5
+ BTRFS warning (device loop0): checksum verify failed on logical 5328896 mirror 1 wanted 0x51be4e8b303da58e6340226815b70e3a93592dac3f30dd510c7517454de8567a found 0x51be4e8b303da58e634022a315b70e3a93592dac3f30dd510c7517454de8567a level 0
+ BTRFS warning (device loop0): checksum verify failed on logical 5292032 mirror 1 wanted 0x1924ccd683be9efc2fa98582ef58760e3848e9043db8649ee382681e220cdee4 found 0x0cb6184f6e8799d9f8cb335dccd1d1832da1071d12290dab3b85b587ecacca6e level 0
+ process 'repro' launched './file2' with NULL argv: empty string added
+ DEBUG: no csum root, idatacsums=0 ibadroots=134217728
+ Oops: general protection fault, probably for non-canonical address 0xdffffc0000000041: 0000 [#1] SMP KASAN NOPTI
+ KASAN: null-ptr-deref in range [0x0000000000000208-0x000000000000020f]
+ CPU: 5 UID: 0 PID: 1010 Comm: repro Tainted: G           OE       6.15.0-custom+ #249 PREEMPT(full)
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
+ RIP: 0010:btrfs_lookup_csum+0x93/0x3d0 [btrfs]
+ Call Trace:
+  <TASK>
+  btrfs_lookup_bio_sums+0x47a/0xdf0 [btrfs]
+  btrfs_submit_bbio+0x43e/0x1a80 [btrfs]
+  submit_one_bio+0xde/0x160 [btrfs]
+  btrfs_readahead+0x498/0x6a0 [btrfs]
+  read_pages+0x1c3/0xb20
+  page_cache_ra_order+0x4b5/0xc20
+  filemap_get_pages+0x2d3/0x19e0
+  filemap_read+0x314/0xde0
+  __kernel_read+0x35b/0x900
+  bprm_execve+0x62e/0x1140
+  do_execveat_common.isra.0+0x3fc/0x520
+  __x64_sys_execveat+0xdc/0x130
+  do_syscall_64+0x54/0x1d0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ ---[ end trace 0000000000000000 ]---
+
+[CAUSE]
+Firstly the fs has a corrupted csum tree root, thus to mount the fs we
+have to go "ro,rescue=ibadroots" mount option.
+
+Normally with that mount option, a bad csum tree root should set
+BTRFS_FS_STATE_NO_DATA_CSUMS flag, so that any future data read will
+ignore csum search.
+
+But in this particular case, we have the following call trace that
+caused NULL csum root, but not setting BTRFS_FS_STATE_NO_DATA_CSUMS:
+
+load_global_roots_objectid():
+
+		ret = btrfs_search_slot();
+		/* Succeeded */
+		btrfs_item_key_to_cpu()
+		found = true;
+		/* We found the root item for csum tree. */
+		root = read_tree_root_path();
+		if (IS_ERR(root)) {
+			if (!btrfs_test_opt(fs_info, IGNOREBADROOTS))
+			/*
+			 * Since we have rescue=ibadroots mount option,
+			 * @ret is still 0.
+			 */
+			break;
+	if (!found || ret) {
+		/* @found is true, @ret is 0, error handling for csum
+		 * tree is skipped.
+		 */
+	}
+
+This means we completely skipped to set BTRFS_FS_STATE_NO_DATA_CSUMS if
+the csum tree is corrupted, which results unexpected later csum lookup.
+
+[FIX]
+If read_tree_root_path() failed, always populate @ret to the error
+number.
+
+As at the end of the function, we need @ret to determine if we need to
+do the extra error handling for csum tree.
+
+Fixes: abed4aaae4f7 ("btrfs: track the csum, extent, and free space trees in a rb tree")
+Reported-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+Reported-by: Longxing Li <coregee2000@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/btrfs/disk-io.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -4455,6 +4455,12 @@ static const struct panel_desc tianma_tm
- 		.width = 150, /* 149.76 */
- 		.height = 94, /* 93.60 */
- 	},
-+	.delay = {
-+		.prepare = 15,		/* Tp1 */
-+		.enable = 150,		/* Tp2 */
-+		.disable = 150,		/* Tp4 */
-+		.unprepare = 120,	/* Tp3 */
-+	},
- 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
- 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
- };
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 8c0da0025bc71..76a261cbf39d6 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -2481,8 +2481,7 @@ static int load_global_roots_objectid(struct btrfs_root *tree_root,
+ 		found = true;
+ 		root = read_tree_root_path(tree_root, path, &key);
+ 		if (IS_ERR(root)) {
+-			if (!btrfs_test_opt(fs_info, IGNOREBADROOTS))
+-				ret = PTR_ERR(root);
++			ret = PTR_ERR(root);
+ 			break;
+ 		}
+ 		set_bit(BTRFS_ROOT_TRACK_DIRTY, &root->state);
+-- 
+2.39.5
+
 
 
 
