@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-159333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF303AF77EF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B7EAF77F6
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EC225662B5
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:45:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C16EC568207
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F892EBB8F;
-	Thu,  3 Jul 2025 14:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EA91DB124;
+	Thu,  3 Jul 2025 14:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4iJuLD9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYfOvDz4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E4C2E62CD;
-	Thu,  3 Jul 2025 14:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7692EE29F;
+	Thu,  3 Jul 2025 14:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751553903; cv=none; b=UqS7XFlYNoI9OCXvn4ufDwQDW+6HPORBl7NaxFJWTLcd/Z0wvhMh2ki/7riHU/TVR0YRVlyHV8ogiA4BhR36S0GbJlhkuplTnPGDeGx5OzUHAWn+ohgAnlmVaXrqfKQr8XCOQ7anEv/KyKdk7OyDRSolseWIwOljYJhqC3gOzRU=
+	t=1751553910; cv=none; b=u3nfIrmHK9BL58asXHk7CLo+7Gheiq6EKJOCvhBsOebi74ICHAwo64MDHvMVmuAqHQpTNjnpmqVYzIYHD6sZ+h/pqjkKP7rrpfthGXPuV2FkoJv/QNwq5wNLS+Fn+eqi/MSnc8ZozcwdrDTDmCYYot3nC3rsN5eNhLE5Ki5nL+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751553903; c=relaxed/simple;
-	bh=cMdVmCywmr8AMcHfBYfn5X0XGBKzndi3o8A55Ciwfl8=;
+	s=arc-20240116; t=1751553910; c=relaxed/simple;
+	bh=IOfyN11FxBvRUTkiziqYajUsVPa8xXVHrVIiQuJi8l8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e24+5A0ds3k+HXuU8+CeLcuAypfPdD2AdMi5hZ2+gxtT4E9Phb31FHYyrxWDttMd6nouuzA7YN10ALZGvj1CCqiog3EKZpFMMYhB9dwAEcU74bFCnuanp9udl5PBpRvfYrDzYvRWqqCr1Ub8u3eE1qBa290ysA2YKVmswpzx9rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4iJuLD9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E21BC4CEED;
-	Thu,  3 Jul 2025 14:45:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OBOEc/CITmnsCrvwcDreWG9rE6lG3NMbZEuMAK4YPdyAn94KIrYh6P1Ml3fOJoaTy3TWJ5VDzXAGzmByt8nLmWf9+ZAjReDMwhje13gUCvhsTvcRM7YFosLGbvNCVxYwwpbKX6i4I66vqvXRDCkglRvA9fII9f2F66rDX0tbaWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYfOvDz4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5586C4CEED;
+	Thu,  3 Jul 2025 14:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751553903;
-	bh=cMdVmCywmr8AMcHfBYfn5X0XGBKzndi3o8A55Ciwfl8=;
+	s=korg; t=1751553910;
+	bh=IOfyN11FxBvRUTkiziqYajUsVPa8xXVHrVIiQuJi8l8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p4iJuLD9j0caN/KBHKMaGZ3/j6y7Nad3LKME3MCB/u/scnmIkCfQnsMpFox93/hqO
-	 kwTju8B7MZh53YCJe7PVX8rPa9yUYbWdKst97nmPeztf9Tmch+rQhmZuaOVOnR1fxS
-	 EDe+pV2KtxEhtU1Rz+ADli1fv87ojyUqgZwrhT+A=
+	b=dYfOvDz4DM7c3JX18mSsvNeCDL/jwIxXMqDjBe5GlHDCTNOv35+abGpkZ2QTJ0g2V
+	 jz27dU6eFY2iNoc/Awuz/2MwnwjidhqR1N9lYVuDDb6jAXhih3OF08+AV4EH0/LKKM
+	 FkgyOUnyxsbwfuzzbVCsv9aXErosTh9mfVimLFl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Rudraksha Gupta <guptarud@gmail.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/218] rust: arm: fix unknown (to Clang) argument -mno-fdpic
-Date: Thu,  3 Jul 2025 16:39:27 +0200
-Message-ID: <20250703143956.727099591@linuxfoundation.org>
+Subject: [PATCH 6.12 020/218] Revert "iommu/amd: Prevent binding other PCI drivers to IOMMU PCI devices"
+Date: Thu,  3 Jul 2025 16:39:28 +0200
+Message-ID: <20250703143956.766086832@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
 References: <20250703143955.956569535@linuxfoundation.org>
@@ -62,85 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rudraksha Gupta <guptarud@gmail.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 977c4308ee4270cf46e2c66b37de8e04670daa0c ]
+[ Upstream commit 3be5fa236649da6404f1bca1491bf02d4b0d5cce ]
 
-Currently rust on arm fails to compile due to '-mno-fdpic'. This flag
-disables a GCC feature that we don't want for kernel builds, so let's
-skip it as it doesn't apply to Clang.
+Commit 991de2e59090 ("PCI, x86: Implement pcibios_alloc_irq() and
+pcibios_free_irq()") changed IRQ handling on PCI driver probing.
+It inadvertently broke resume from system sleep on AMD platforms:
 
-    UPD     include/generated/asm-offsets.h
-    CALL    scripts/checksyscalls.sh
-    RUSTC L rust/core.o
-    BINDGEN rust/bindings/bindings_generated.rs
-    BINDGEN rust/bindings/bindings_helpers_generated.rs
-    CC      rust/helpers/helpers.o
-    Unable to generate bindings: clang diagnosed error: error: unknown argument: '-mno-fdpic'
-    make[2]: *** [rust/Makefile:369: rust/bindings/bindings_helpers_generated.rs] Error 1
-    make[2]: *** Deleting file 'rust/bindings/bindings_helpers_generated.rs'
-    make[2]: *** Waiting for unfinished jobs....
-    Unable to generate bindings: clang diagnosed error: error: unknown argument: '-mno-fdpic'
-    make[2]: *** [rust/Makefile:349: rust/bindings/bindings_generated.rs] Error 1
-    make[2]: *** Deleting file 'rust/bindings/bindings_generated.rs'
-    make[1]: *** [/home/pmos/build/src/linux-next-next-20250521/Makefile:1285: prepare] Error 2
-    make: *** [Makefile:248: __sub-make] Error 2
+  https://lore.kernel.org/r/20150926164651.GA3640@pd.tnic/
 
-[ Naresh provided the draft diff [1].
+This was fixed by two independent commits:
 
-  Ben explained [2]:
+* 8affb487d4a4 ("x86/PCI: Don't alloc pcibios-irq when MSI is enabled")
+* cbbc00be2ce3 ("iommu/amd: Prevent binding other PCI drivers to IOMMU PCI devices")
 
-    FDPIC is only relevant with no-MMU targets, and then only for userspace.
-    When configured for the arm-*-uclinuxfdpiceabi target, GCC enables FDPIC
-    by default to facilitate compiling userspace programs. FDPIC is never
-    used for the kernel, and we pass -mno-fdpic when building the kernel to
-    override the default and make sure FDPIC is disabled.
+The breaking change and one of these two fixes were subsequently reverted:
 
-  and [3]:
+* fe25d078874f ("Revert "x86/PCI: Don't alloc pcibios-irq when MSI is enabled"")
+* 6c777e8799a9 ("Revert "PCI, x86: Implement pcibios_alloc_irq() and pcibios_free_irq()"")
 
-    -mno-fdpic disables a GCC feature that we don't want for kernel builds.
-    clang does not support this feature, so it always behaves as though
-    -mno-fdpic is passed. Therefore, it should be fine to mix the two, at
-    least as far as FDPIC is concerned.
+This rendered the second fix unnecessary, so revert it as well.  It used
+the match_driver flag in struct pci_dev, which is internal to the PCI core
+and not supposed to be touched by arbitrary drivers.
 
-  [1] https://lore.kernel.org/rust-for-linux/CA+G9fYt4otQK4pHv8pJBW9e28yHSGCDncKquwuJiJ_1ou0pq0w@mail.gmail.com/
-  [2] https://lore.kernel.org/rust-for-linux/aAKrq2InExQk7f_k@dell-precision-5540/
-  [3] https://lore.kernel.org/rust-for-linux/aAo_F_UP1Gd4jHlZ@dell-precision-5540/
-
-    - Miguel ]
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/all/CA+G9fYvOanQBYXKSg7C6EU30k8sTRC0JRPJXYu7wWK51w38QUQ@mail.gmail.com/
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Acked-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
-Link: https://lore.kernel.org/r/20250522-rust-mno-fdpic-arm-fix-v2-1-a6f691d9c198@gmail.com
-[ Reworded title. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Acked-by: Joerg Roedel <jroedel@suse.de>
+Link: https://patch.msgid.link/9a3ddff5cc49512044f963ba0904347bd404094d.1745572340.git.lukas@wunner.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/amd/init.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 93650b2ee7d57..b8b7f817c48e4 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -238,7 +238,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
- 	-fzero-call-used-regs=% -fno-stack-clash-protection \
- 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
- 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
--	-fzero-init-padding-bits=% \
-+	-fzero-init-padding-bits=% -mno-fdpic \
- 	--param=% --param asan-%
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index ff11cd7e5c068..b8b10140d41b2 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -2026,9 +2026,6 @@ static int __init iommu_init_pci(struct amd_iommu *iommu)
+ 	if (!iommu->dev)
+ 		return -ENODEV;
  
- # Derived from `scripts/Makefile.clang`.
+-	/* Prevent binding other PCI device drivers to IOMMU devices */
+-	iommu->dev->match_driver = false;
+-
+ 	/* ACPI _PRT won't have an IRQ for IOMMU */
+ 	iommu->dev->irq_managed = 1;
+ 
 -- 
 2.39.5
 
