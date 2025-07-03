@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65687AF7A23
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F5CAF78B9
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53F71188B5F0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC5751786AB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03062ED168;
-	Thu,  3 Jul 2025 15:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BDB2EF9CD;
+	Thu,  3 Jul 2025 14:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dls6DjEH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdm29UjI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4542E7BD6;
-	Thu,  3 Jul 2025 15:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5422EAD1B;
+	Thu,  3 Jul 2025 14:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555083; cv=none; b=oTcFKSwzMIjLBOmONvWxSncinyMoObTewsypSGHvLJw6NPx3gjjmvNkiKMHZD7ZfwvgCjzg6fjgDk0iNA0Rq6+iymGGgrIWhsuwYIHZnE46XwM9XAg3r1UbBfpLU0heXoxInwo9fz6KgWJQXy77gQhwQfL+M2NzPNrioYMDgpQY=
+	t=1751554302; cv=none; b=eF4wI9gID130SiZWlme2aQcgQCB7VM9BtioEltsFCs24S2merkxc/laCCcEuiC89PYu56u/eq352oMQpgK/U1AV5PHs9n+2J7CVFYGlUxPjJKVoARMalKXEGySEsVpEzE4ohv56Lipclv+/95KRxf9nBH8M9jZIICOabVLJm4As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555083; c=relaxed/simple;
-	bh=2VmoEoqX320taLWqPdckWyhy3SwR0LCzIa6YL7Ef+sA=;
+	s=arc-20240116; t=1751554302; c=relaxed/simple;
+	bh=6+xSFem/qFCuWboc7AFJ5pEIuT6n2H9PlJXFQtNDvs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nhnQj9AXarFvLEFNBaIHfK7rLLEGNnz1ZXLLG07iNS/QKxxA1bAEoPDDZfAqV20DLLSzQ257wWi0CwAdiqDvwu+ZbaZUs3Ncg8txgtCvcVNT/dRwqcBWEYw1CC6BAw0hp52SBagY5zW1l7bZLwmMrhgCSZmvj/jejIZbEcyFbJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dls6DjEH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16765C4CEE3;
-	Thu,  3 Jul 2025 15:04:42 +0000 (UTC)
+	 MIME-Version; b=uAPRA0ooTPsrJzSG3KblBm3wZ0mYPtetfqUweRYTgDAwg1gB1jiossMZsyT6gfed/C8iBBzcLac8mNCyJhgit14ch+s9Eds7+E32ZYjwKWQS7s0e5uaBfoWcVMVUubWCFDwHO41u1oGZ9picGozmBsFs2Xi13dXV8cL9zBVkUak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdm29UjI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9214C4CEE3;
+	Thu,  3 Jul 2025 14:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555083;
-	bh=2VmoEoqX320taLWqPdckWyhy3SwR0LCzIa6YL7Ef+sA=;
+	s=korg; t=1751554302;
+	bh=6+xSFem/qFCuWboc7AFJ5pEIuT6n2H9PlJXFQtNDvs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dls6DjEH9/nY1GC/vytKK8/eQRUOS8Tn4wwSKlQnKEfKwn3t5mQgwDJy4cnXIkysR
-	 RV5kpJYcM1VtT2VHJcDfysuluRAEWTkuuLQihM/jidqPiGgV2ErAuV0y5kpXaqxSs7
-	 hkdbHZ1XRwqnNO09uJctNjYWxb4jGVP3VP9AC0Ds=
+	b=vdm29UjIGtuUihfF7HCDP9I3iwBS3HjJGDAiST+wV2HeJAkHEtr+XLAfWaFCTIX8P
+	 wGb2Aj65UnR3jREHUvD5lX2NHhACVgIN80VwqjzkmmBcu38M1uoTFdeOqGPiZTJHak
+	 BnN6c2vBH7CEgacrFA4j5SOPhMFof4ErC1Azp0+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C5=BDilvinas=20=C5=BDaltiena?= <zilvinas@natrix.lt>,
-	Avadhut Naik <avadhut.naik@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Yazen Ghannam <yazen.ghannam@amd.com>
-Subject: [PATCH 6.15 171/263] EDAC/amd64: Fix size calculation for Non-Power-of-Two DIMMs
+	Ping Cheng <ping.cheng@wacom.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.12 143/218] HID: wacom: fix memory leak on kobject creation failure
 Date: Thu,  3 Jul 2025 16:41:31 +0200
-Message-ID: <20250703144011.209348906@linuxfoundation.org>
+Message-ID: <20250703144001.843109755@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,166 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avadhut Naik <avadhut.naik@amd.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-commit a3f3040657417aeadb9622c629d4a0c2693a0f93 upstream.
+commit 5ae416c5b1e2e816aee7b3fc8347adf70afabb4c upstream.
 
-Each Chip-Select (CS) of a Unified Memory Controller (UMC) on AMD Zen-based
-SOCs has an Address Mask and a Secondary Address Mask register associated with
-it. The amd64_edac module logs DIMM sizes on a per-UMC per-CS granularity
-during init using these two registers.
+During wacom_initialize_remotes() a fifo buffer is allocated
+with kfifo_alloc() and later a cleanup action is registered
+during devm_add_action_or_reset() to clean it up.
 
-Currently, the module primarily considers only the Address Mask register for
-computing DIMM sizes. The Secondary Address Mask register is only considered
-for odd CS. Additionally, if it has been considered, the Address Mask register
-is ignored altogether for that CS. For power-of-two DIMMs i.e. DIMMs whose
-total capacity is a power of two (32GB, 64GB, etc), this is not an issue
-since only the Address Mask register is used.
+However if the code fails to create a kobject and register it
+with sysfs the code simply returns -ENOMEM before the cleanup
+action is registered leading to a memory leak.
 
-For non-power-of-two DIMMs i.e., DIMMs whose total capacity is not a power of
-two (48GB, 96GB, etc), however, the Secondary Address Mask register is used
-in conjunction with the Address Mask register. However, since the module only
-considers either of the two registers for a CS, the size computed by the
-module is incorrect. The Secondary Address Mask register is not considered for
-even CS, and the Address Mask register is not considered for odd CS.
+Fix this by ensuring the fifo is freed when the kobject creation
+and registration process fails.
 
-Introduce a new helper function so that both Address Mask and Secondary
-Address Mask registers are considered, when valid, for computing DIMM sizes.
-Furthermore, also rename some variables for greater clarity.
-
-Fixes: 81f5090db843 ("EDAC/amd64: Support asymmetric dual-rank DIMMs")
-Closes: https://lore.kernel.org/dbec22b6-00f2-498b-b70d-ab6f8a5ec87e@natrix.lt
-Reported-by: Žilvinas Žaltiena <zilvinas@natrix.lt>
-Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Tested-by: Žilvinas Žaltiena <zilvinas@natrix.lt>
+Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250529205013.403450-1-avadhut.naik@amd.com
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/amd64_edac.c |   57 +++++++++++++++++++++++++++++-----------------
- 1 file changed, 36 insertions(+), 21 deletions(-)
+ drivers/hid/wacom_sys.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/edac/amd64_edac.c
-+++ b/drivers/edac/amd64_edac.c
-@@ -1209,7 +1209,9 @@ static int umc_get_cs_mode(int dimm, u8
- 	if (csrow_enabled(2 * dimm + 1, ctrl, pvt))
- 		cs_mode |= CS_ODD_PRIMARY;
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2021,8 +2021,10 @@ static int wacom_initialize_remotes(stru
  
--	/* Asymmetric dual-rank DIMM support. */
-+	if (csrow_sec_enabled(2 * dimm, ctrl, pvt))
-+		cs_mode |= CS_EVEN_SECONDARY;
-+
- 	if (csrow_sec_enabled(2 * dimm + 1, ctrl, pvt))
- 		cs_mode |= CS_ODD_SECONDARY;
+ 	remote->remote_dir = kobject_create_and_add("wacom_remote",
+ 						    &wacom->hdev->dev.kobj);
+-	if (!remote->remote_dir)
++	if (!remote->remote_dir) {
++		kfifo_free(&remote->remote_fifo);
+ 		return -ENOMEM;
++	}
  
-@@ -1230,12 +1232,13 @@ static int umc_get_cs_mode(int dimm, u8
- 	return cs_mode;
- }
+ 	error = sysfs_create_files(remote->remote_dir, remote_unpair_attrs);
  
--static int __addr_mask_to_cs_size(u32 addr_mask_orig, unsigned int cs_mode,
--				  int csrow_nr, int dimm)
-+static int calculate_cs_size(u32 mask, unsigned int cs_mode)
- {
--	u32 msb, weight, num_zero_bits;
--	u32 addr_mask_deinterleaved;
--	int size = 0;
-+	int msb, weight, num_zero_bits;
-+	u32 deinterleaved_mask;
-+
-+	if (!mask)
-+		return 0;
- 
- 	/*
- 	 * The number of zero bits in the mask is equal to the number of bits
-@@ -1248,19 +1251,30 @@ static int __addr_mask_to_cs_size(u32 ad
- 	 * without swapping with the most significant bit. This can be handled
- 	 * by keeping the MSB where it is and ignoring the single zero bit.
- 	 */
--	msb = fls(addr_mask_orig) - 1;
--	weight = hweight_long(addr_mask_orig);
-+	msb = fls(mask) - 1;
-+	weight = hweight_long(mask);
- 	num_zero_bits = msb - weight - !!(cs_mode & CS_3R_INTERLEAVE);
- 
- 	/* Take the number of zero bits off from the top of the mask. */
--	addr_mask_deinterleaved = GENMASK_ULL(msb - num_zero_bits, 1);
-+	deinterleaved_mask = GENMASK(msb - num_zero_bits, 1);
-+	edac_dbg(1, "  Deinterleaved AddrMask: 0x%x\n", deinterleaved_mask);
-+
-+	return (deinterleaved_mask >> 2) + 1;
-+}
-+
-+static int __addr_mask_to_cs_size(u32 addr_mask, u32 addr_mask_sec,
-+				  unsigned int cs_mode, int csrow_nr, int dimm)
-+{
-+	int size;
- 
- 	edac_dbg(1, "CS%d DIMM%d AddrMasks:\n", csrow_nr, dimm);
--	edac_dbg(1, "  Original AddrMask: 0x%x\n", addr_mask_orig);
--	edac_dbg(1, "  Deinterleaved AddrMask: 0x%x\n", addr_mask_deinterleaved);
-+	edac_dbg(1, "  Primary AddrMask: 0x%x\n", addr_mask);
- 
- 	/* Register [31:1] = Address [39:9]. Size is in kBs here. */
--	size = (addr_mask_deinterleaved >> 2) + 1;
-+	size = calculate_cs_size(addr_mask, cs_mode);
-+
-+	edac_dbg(1, "  Secondary AddrMask: 0x%x\n", addr_mask_sec);
-+	size += calculate_cs_size(addr_mask_sec, cs_mode);
- 
- 	/* Return size in MBs. */
- 	return size >> 10;
-@@ -1269,8 +1283,8 @@ static int __addr_mask_to_cs_size(u32 ad
- static int umc_addr_mask_to_cs_size(struct amd64_pvt *pvt, u8 umc,
- 				    unsigned int cs_mode, int csrow_nr)
- {
-+	u32 addr_mask = 0, addr_mask_sec = 0;
- 	int cs_mask_nr = csrow_nr;
--	u32 addr_mask_orig;
- 	int dimm, size = 0;
- 
- 	/* No Chip Selects are enabled. */
-@@ -1308,13 +1322,13 @@ static int umc_addr_mask_to_cs_size(stru
- 	if (!pvt->flags.zn_regs_v2)
- 		cs_mask_nr >>= 1;
- 
--	/* Asymmetric dual-rank DIMM support. */
--	if ((csrow_nr & 1) && (cs_mode & CS_ODD_SECONDARY))
--		addr_mask_orig = pvt->csels[umc].csmasks_sec[cs_mask_nr];
--	else
--		addr_mask_orig = pvt->csels[umc].csmasks[cs_mask_nr];
-+	if (cs_mode & (CS_EVEN_PRIMARY | CS_ODD_PRIMARY))
-+		addr_mask = pvt->csels[umc].csmasks[cs_mask_nr];
-+
-+	if (cs_mode & (CS_EVEN_SECONDARY | CS_ODD_SECONDARY))
-+		addr_mask_sec = pvt->csels[umc].csmasks_sec[cs_mask_nr];
- 
--	return __addr_mask_to_cs_size(addr_mask_orig, cs_mode, csrow_nr, dimm);
-+	return __addr_mask_to_cs_size(addr_mask, addr_mask_sec, cs_mode, csrow_nr, dimm);
- }
- 
- static void umc_debug_display_dimm_sizes(struct amd64_pvt *pvt, u8 ctrl)
-@@ -3512,9 +3526,10 @@ static void gpu_get_err_info(struct mce
- static int gpu_addr_mask_to_cs_size(struct amd64_pvt *pvt, u8 umc,
- 				    unsigned int cs_mode, int csrow_nr)
- {
--	u32 addr_mask_orig = pvt->csels[umc].csmasks[csrow_nr];
-+	u32 addr_mask		= pvt->csels[umc].csmasks[csrow_nr];
-+	u32 addr_mask_sec	= pvt->csels[umc].csmasks_sec[csrow_nr];
- 
--	return __addr_mask_to_cs_size(addr_mask_orig, cs_mode, csrow_nr, csrow_nr >> 1);
-+	return __addr_mask_to_cs_size(addr_mask, addr_mask_sec, cs_mode, csrow_nr, csrow_nr >> 1);
- }
- 
- static void gpu_debug_display_dimm_sizes(struct amd64_pvt *pvt, u8 ctrl)
 
 
 
