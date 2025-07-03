@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-159429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2850EAF787D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:51:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DA2AF7A04
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7896A168723
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:50:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56A60188954C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E71B2E54BF;
-	Thu,  3 Jul 2025 14:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A15C2ED143;
+	Thu,  3 Jul 2025 15:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKPInmIa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KP2f/PJg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D83519F43A;
-	Thu,  3 Jul 2025 14:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD1A2B9A6;
+	Thu,  3 Jul 2025 15:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554205; cv=none; b=Aw0CfsnxQmbtNeKb8FgEQIT+IdePI+RJseF4iZUOIpQXM/KQvY4xcfr3lf3+EnryRpV63mgFeusBZ+OGM2ZZ85FijY0AZSHCumebKyvb3Tv6cLhlSGNETuEbrH6yoz6qsmuJN6MR6z155pI0zoqg/WacvAOH5AVp33a25NRryTk=
+	t=1751554989; cv=none; b=da+93yYygH3iAYqpGWtPO6ZqRFNpuj8hRtNSy8a3IBqXY4GZ0kMXopK6PuA+wJmyfFH62JEe9NSetd9rm7dx4nIfJnmNl7joI7/BMKsephMRHZF7URJyUcon/0K8JLVPcUfsgXsdD3wzE+PA7NjC6KUr+mZsM4n3n6sz/cetSnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554205; c=relaxed/simple;
-	bh=U1GDE8bY40T2tT9b7uC+tAHtjqbDJK+CIe9SYGUmvN4=;
+	s=arc-20240116; t=1751554989; c=relaxed/simple;
+	bh=4Uj5Ta7+vm+GvCKP240ghn624nw7jYYmO/BPpOJnj6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UzGCZu/aenAggKGoC6GceIflRCMGPar7+vooltckW6rwLx4L9+J9+iuJVHVGVp3DcJc9477p/3wignfgfVUqh7E3S36pkHyikaplQLSe1s1uEissQg6b0oXRsjS9FkzELPBKV6sSkuFs3K73+jGMa8E4OWd7CizUcb+KHqRLYoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKPInmIa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB53C4CEE3;
-	Thu,  3 Jul 2025 14:50:04 +0000 (UTC)
+	 MIME-Version; b=L55tB5Qx3C3ysOnOcm78vPlL6lB57q33EQ3bT+7F649RQP/nSy6GoK1FezgYC0ktdKJGixkPXbp9K/sPvHz8eH/x7MSgR4Pdv7Dg/mrG+JDP7nVo9YGS82fsYbtg8VqHlKekn4GIIMoGAbTghTL1B76qCMbl7LafMho3zRSWrO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KP2f/PJg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7AFBC4CEE3;
+	Thu,  3 Jul 2025 15:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554205;
-	bh=U1GDE8bY40T2tT9b7uC+tAHtjqbDJK+CIe9SYGUmvN4=;
+	s=korg; t=1751554989;
+	bh=4Uj5Ta7+vm+GvCKP240ghn624nw7jYYmO/BPpOJnj6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKPInmIazoXxRCjEkKThOLTcvZ+bSLQKmHTnRvTzDxgRpFTFDH0cVP7Y3mR0+yU3R
-	 0nwGUqXejBSBCpdUfJIfbpMbbKv+Oy3F/CL05dty6TfiAfjZx8ftwE5NuP/tLghfWR
-	 NRZxfqWKEFBUFJMY2HqVR/s32CpDaeVKg9l+9viE=
+	b=KP2f/PJgRUBXCG2jNUnIEh4s90RCxFH/OaZTn0fzPHLKfNrAz0vYtULZMtKmMnnag
+	 LlRFW90b6wSP87DFAi5iXwE0vNd2QJc8VyMvn2QBHt9D5/5yFEL8+dNJIm05E7ReS+
+	 3yZMefsFT9juxGo9rIGrv8akV/2jeX+hZcXl4yXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 113/218] drm/i915: fix build error some more
-Date: Thu,  3 Jul 2025 16:41:01 +0200
-Message-ID: <20250703144000.457496089@linuxfoundation.org>
+Subject: [PATCH 6.15 142/263] ethernet: ionic: Fix DMA mapping tests
+Date: Thu,  3 Jul 2025 16:41:02 +0200
+Message-ID: <20250703144010.051209929@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit d02b2103a08b6d6908f1d3d8e8783d3f342555ac ]
+[ Upstream commit d5e3241c5a386a2425823c8c7afb77a465bd040f ]
 
-An earlier patch fixed a build failure with clang, but I still see the
-same problem with some configurations using gcc:
+Change error values of `ionic_tx_map_single()` and `ionic_tx_map_frag()`
+from 0 to `DMA_MAPPING_ERROR` to prevent collision with 0 as a valid
+address.
 
-drivers/gpu/drm/i915/i915_pmu.c: In function 'config_mask':
-include/linux/compiler_types.h:568:38: error: call to '__compiletime_assert_462' declared with attribute error: BUILD_BUG_ON failed: bit > BITS_PER_TYPE(typeof_member(struct i915_pmu, enable)) - 1
-drivers/gpu/drm/i915/i915_pmu.c:116:3: note: in expansion of macro 'BUILD_BUG_ON'
-  116 |   BUILD_BUG_ON(bit >
+This also fixes the use of `dma_mapping_error()` to test against 0 in
+`ionic_xdp_post_frame()`
 
-As I understand it, the problem is that the function is not always fully
-inlined, but the __builtin_constant_p() can still evaluate the argument
-as being constant.
-
-Marking it as __always_inline so far works for me in all configurations.
-
-Fixes: a7137b1825b5 ("drm/i915/pmu: Fix build error with GCOV and AutoFDO enabled")
-Fixes: a644fde77ff7 ("drm/i915/pmu: Change bitmask of enabled events to u32")
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20250620111824.3395007-1-arnd@kernel.org
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit ef69f9dd1cd7301cdf04ba326ed28152a3affcf6)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fixes: 0f3154e6bcb3 ("ionic: Add Tx and Rx handling")
+Fixes: 56e41ee12d2d ("ionic: better dma-map error handling")
+Fixes: ac8813c0ab7d ("ionic: convert Rx queue buffers to use page_pool")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Link: https://patch.msgid.link/20250619094538.283723-2-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/pensando/ionic/ionic_txrx.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_pmu.c b/drivers/gpu/drm/i915/i915_pmu.c
-index c43223916a1b1..5cc302ad13e16 100644
---- a/drivers/gpu/drm/i915/i915_pmu.c
-+++ b/drivers/gpu/drm/i915/i915_pmu.c
-@@ -111,7 +111,7 @@ static unsigned int config_bit(const u64 config)
- 		return other_bit(config);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
+index 2ac59564ded18..d10b58ebf6034 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
+@@ -321,7 +321,7 @@ static int ionic_xdp_post_frame(struct ionic_queue *q, struct xdp_frame *frame,
+ 					   len, DMA_TO_DEVICE);
+ 	} else /* XDP_REDIRECT */ {
+ 		dma_addr = ionic_tx_map_single(q, frame->data, len);
+-		if (!dma_addr)
++		if (dma_addr == DMA_MAPPING_ERROR)
+ 			return -EIO;
+ 	}
+ 
+@@ -357,7 +357,7 @@ static int ionic_xdp_post_frame(struct ionic_queue *q, struct xdp_frame *frame,
+ 			} else {
+ 				dma_addr = ionic_tx_map_frag(q, frag, 0,
+ 							     skb_frag_size(frag));
+-				if (dma_mapping_error(q->dev, dma_addr)) {
++				if (dma_addr == DMA_MAPPING_ERROR) {
+ 					ionic_tx_desc_unmap_bufs(q, desc_info);
+ 					return -EIO;
+ 				}
+@@ -1083,7 +1083,7 @@ static dma_addr_t ionic_tx_map_single(struct ionic_queue *q,
+ 		net_warn_ratelimited("%s: DMA single map failed on %s!\n",
+ 				     dev_name(dev), q->name);
+ 		q_to_tx_stats(q)->dma_map_err++;
+-		return 0;
++		return DMA_MAPPING_ERROR;
+ 	}
+ 	return dma_addr;
  }
+@@ -1100,7 +1100,7 @@ static dma_addr_t ionic_tx_map_frag(struct ionic_queue *q,
+ 		net_warn_ratelimited("%s: DMA frag map failed on %s!\n",
+ 				     dev_name(dev), q->name);
+ 		q_to_tx_stats(q)->dma_map_err++;
+-		return 0;
++		return DMA_MAPPING_ERROR;
+ 	}
+ 	return dma_addr;
+ }
+@@ -1116,7 +1116,7 @@ static int ionic_tx_map_skb(struct ionic_queue *q, struct sk_buff *skb,
+ 	int frag_idx;
  
--static u32 config_mask(const u64 config)
-+static __always_inline u32 config_mask(const u64 config)
- {
- 	unsigned int bit = config_bit(config);
- 
+ 	dma_addr = ionic_tx_map_single(q, skb->data, skb_headlen(skb));
+-	if (!dma_addr)
++	if (dma_addr == DMA_MAPPING_ERROR)
+ 		return -EIO;
+ 	buf_info->dma_addr = dma_addr;
+ 	buf_info->len = skb_headlen(skb);
+@@ -1126,7 +1126,7 @@ static int ionic_tx_map_skb(struct ionic_queue *q, struct sk_buff *skb,
+ 	nfrags = skb_shinfo(skb)->nr_frags;
+ 	for (frag_idx = 0; frag_idx < nfrags; frag_idx++, frag++) {
+ 		dma_addr = ionic_tx_map_frag(q, frag, 0, skb_frag_size(frag));
+-		if (!dma_addr)
++		if (dma_addr == DMA_MAPPING_ERROR)
+ 			goto dma_fail;
+ 		buf_info->dma_addr = dma_addr;
+ 		buf_info->len = skb_frag_size(frag);
 -- 
 2.39.5
 
