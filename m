@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-159419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405A1AF787A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:50:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A7DAF79FE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 968191888CA4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:49:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC7C518878E6
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF6D231853;
-	Thu,  3 Jul 2025 14:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC8A2EF669;
+	Thu,  3 Jul 2025 15:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ynArB0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWxc9C/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEB472610;
-	Thu,  3 Jul 2025 14:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CDC2EF292;
+	Thu,  3 Jul 2025 15:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554173; cv=none; b=R/17XLCqXkxZqWe/WPE5YTn2Ub50ej1v5OnnOphd2tu95bO1EQmxaQAgG4vYOKqb2J2rYgIyKHmsAjourL3Ikkn3Bl5I+AalhNjxd/6MenTzDQh1I2EzRJfIhIgQ6ZNOngUnqPqyOQTTS26NQg/IBb9U6dsANG5/MbnAHR8je40=
+	t=1751554960; cv=none; b=ZIkc2DyYQ4ududIqMdZe+ar4WJ9oofv2Y/02mvepff0KJqP51MIeDiFFnZB2o6bfDqpCi0EApL41u0AcjGbup7TLSDWgpkNE4T1SJQBjRrFcIK93MmtMqrlFCk3mpsQRBf4vQD7LvrtStyWn+aW2M82E1r4c1xdrTN4/uk4AS1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554173; c=relaxed/simple;
-	bh=NsGhP3o+bau5ff622TAOLpyHSVe2SHrM/P1hVUipAHw=;
+	s=arc-20240116; t=1751554960; c=relaxed/simple;
+	bh=ne0c1yIdXBCpJOCc53TXV+N4AzzOYLda0q2ECZfSPKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FE1KdmlO0kkUAeJSWDogp86KFaIoiZZ5FIF0aciZKx6W5vuZiizx+6Ar6yJeTlG2UmRRjnTpI0ZkoT7X+Os3NcWGO4agG8F9dbA+UnI7S4BHCshUtBUZQj1icWp0IdUPp9qWligqD6rkfA6SbyTBODxx9vCKgliLCTM0C7ucRs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ynArB0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8E7C4CEE3;
-	Thu,  3 Jul 2025 14:49:32 +0000 (UTC)
+	 MIME-Version; b=K44VssapHXTcpIIgs9Mk9jzSU/2uHs3YUPZ2VDSYVrLWFlf9z/TsTC+wGV0CE4ezOHZDcktg9mqVV3JzG/X+6yCBUHPt2wW+91OwL7BKktmHYQ9bK7pkkfD+RXoc40KBULC35ioxDyUJqsfn+02s4/n8uvDeaEQNfAQ56cY3dqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWxc9C/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE63C4CEED;
+	Thu,  3 Jul 2025 15:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554173;
-	bh=NsGhP3o+bau5ff622TAOLpyHSVe2SHrM/P1hVUipAHw=;
+	s=korg; t=1751554960;
+	bh=ne0c1yIdXBCpJOCc53TXV+N4AzzOYLda0q2ECZfSPKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ynArB0wM9TjGjRn4JoM7UR3rpfySW7HSlhfhqPPLq5yD1arSCjluzY0ajSjfwWNs
-	 k1szj1FmQe5QaK8Yx0GfJ1NexunuiKMD0UUn9uXormOKLpFWTLhh80mhMAHybKqxhA
-	 Uyc5e1V/GwLJZ1Ft1TYyJ8PtNp9GZ3YUeBUG/RaY=
+	b=PWxc9C/KzN5CSo+YOFiRweeMrvNpocsvROcOWx5Cx5rgEYXN3CUVzTAZsc4JkGrCz
+	 4fBeMv67FlXcQnuo8GoZH6Jn+zejDtpafRXouEk04rcDliebvztxPZ+O9n5mvsig/1
+	 /ZjZdAG2vkJX/HRmOnjPyxjsQOzHAvHLJG5aVvqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Terry Bowman <terry.bowman@amd.com>,
+	Li Ming <ming.li@zohomail.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/218] um: ubd: Add missing error check in start_io_thread()
-Date: Thu,  3 Jul 2025 16:40:52 +0200
-Message-ID: <20250703144000.096943260@linuxfoundation.org>
+Subject: [PATCH 6.15 133/263] cxl/ras: Fix CPER handler device confusion
+Date: Thu,  3 Jul 2025 16:40:53 +0200
+Message-ID: <20250703144009.697396544@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +69,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit c55c7a85e02a7bfee20a3ffebdff7cbeb41613ef ]
+[ Upstream commit 3c70ec71abdaf4e4fa48cd8fdfbbd864d78235a8 ]
 
-The subsequent call to os_set_fd_block() overwrites the previous
-return value. OR the two return values together to fix it.
+By inspection, cxl_cper_handle_prot_err() is making a series of fragile
+assumptions that can lead to crashes:
 
-Fixes: f88f0bdfc32f ("um: UBD Improvements")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20250606124428.148164-2-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+1/ It assumes that endpoints identified in the record are a CXL-type-3
+   device, nothing guarantees that.
+
+2/ It assumes that the device is bound to the cxl_pci driver, nothing
+   guarantees that.
+
+3/ Minor, it holds the device lock over the switch-port tracing for no
+   reason as the trace is 100% generated from data in the record.
+
+Correct those by checking that the PCIe endpoint parents a cxl_memdev
+before assuming the format of the driver data, and move the lock to where
+it is required. Consequently this also makes the implementation ready for
+CXL accelerators that are not bound to cxl_pci.
+
+Fixes: 36f257e3b0ba ("acpi/ghes, cxl/pci: Process CXL CPER Protocol Errors")
+Cc: Terry Bowman <terry.bowman@amd.com>
+Cc: Li Ming <ming.li@zohomail.com>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Reviewed-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Li Ming <ming.li@zohomail.com>
+Link: https://patch.msgid.link/20250612192043.2254617-1-dan.j.williams@intel.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/ubd_user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cxl/core/ras.c | 47 ++++++++++++++++++++++++------------------
+ 1 file changed, 27 insertions(+), 20 deletions(-)
 
-diff --git a/arch/um/drivers/ubd_user.c b/arch/um/drivers/ubd_user.c
-index b4f8b8e605644..592b899820d64 100644
---- a/arch/um/drivers/ubd_user.c
-+++ b/arch/um/drivers/ubd_user.c
-@@ -41,7 +41,7 @@ int start_io_thread(unsigned long sp, int *fd_out)
- 	*fd_out = fds[1];
+diff --git a/drivers/cxl/core/ras.c b/drivers/cxl/core/ras.c
+index 485a831695c70..2731ba3a07993 100644
+--- a/drivers/cxl/core/ras.c
++++ b/drivers/cxl/core/ras.c
+@@ -31,40 +31,38 @@ static void cxl_cper_trace_uncorr_port_prot_err(struct pci_dev *pdev,
+ 					       ras_cap.header_log);
+ }
  
- 	err = os_set_fd_block(*fd_out, 0);
--	err = os_set_fd_block(kernel_fd, 0);
-+	err |= os_set_fd_block(kernel_fd, 0);
- 	if (err) {
- 		printk("start_io_thread - failed to set nonblocking I/O.\n");
- 		goto out_close;
+-static void cxl_cper_trace_corr_prot_err(struct pci_dev *pdev,
+-				  struct cxl_ras_capability_regs ras_cap)
++static void cxl_cper_trace_corr_prot_err(struct cxl_memdev *cxlmd,
++					 struct cxl_ras_capability_regs ras_cap)
+ {
+ 	u32 status = ras_cap.cor_status & ~ras_cap.cor_mask;
+-	struct cxl_dev_state *cxlds;
+ 
+-	cxlds = pci_get_drvdata(pdev);
+-	if (!cxlds)
+-		return;
+-
+-	trace_cxl_aer_correctable_error(cxlds->cxlmd, status);
++	trace_cxl_aer_correctable_error(cxlmd, status);
+ }
+ 
+-static void cxl_cper_trace_uncorr_prot_err(struct pci_dev *pdev,
+-				    struct cxl_ras_capability_regs ras_cap)
++static void
++cxl_cper_trace_uncorr_prot_err(struct cxl_memdev *cxlmd,
++			       struct cxl_ras_capability_regs ras_cap)
+ {
+ 	u32 status = ras_cap.uncor_status & ~ras_cap.uncor_mask;
+-	struct cxl_dev_state *cxlds;
+ 	u32 fe;
+ 
+-	cxlds = pci_get_drvdata(pdev);
+-	if (!cxlds)
+-		return;
+-
+ 	if (hweight32(status) > 1)
+ 		fe = BIT(FIELD_GET(CXL_RAS_CAP_CONTROL_FE_MASK,
+ 				   ras_cap.cap_control));
+ 	else
+ 		fe = status;
+ 
+-	trace_cxl_aer_uncorrectable_error(cxlds->cxlmd, status, fe,
++	trace_cxl_aer_uncorrectable_error(cxlmd, status, fe,
+ 					  ras_cap.header_log);
+ }
+ 
++static int match_memdev_by_parent(struct device *dev, const void *uport)
++{
++	if (is_cxl_memdev(dev) && dev->parent == uport)
++		return 1;
++	return 0;
++}
++
+ static void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
+ {
+ 	unsigned int devfn = PCI_DEVFN(data->prot_err.agent_addr.device,
+@@ -73,13 +71,12 @@ static void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
+ 		pci_get_domain_bus_and_slot(data->prot_err.agent_addr.segment,
+ 					    data->prot_err.agent_addr.bus,
+ 					    devfn);
++	struct cxl_memdev *cxlmd;
+ 	int port_type;
+ 
+ 	if (!pdev)
+ 		return;
+ 
+-	guard(device)(&pdev->dev);
+-
+ 	port_type = pci_pcie_type(pdev);
+ 	if (port_type == PCI_EXP_TYPE_ROOT_PORT ||
+ 	    port_type == PCI_EXP_TYPE_DOWNSTREAM ||
+@@ -92,10 +89,20 @@ static void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
+ 		return;
+ 	}
+ 
++	guard(device)(&pdev->dev);
++	if (!pdev->dev.driver)
++		return;
++
++	struct device *mem_dev __free(put_device) = bus_find_device(
++		&cxl_bus_type, NULL, pdev, match_memdev_by_parent);
++	if (!mem_dev)
++		return;
++
++	cxlmd = to_cxl_memdev(mem_dev);
+ 	if (data->severity == AER_CORRECTABLE)
+-		cxl_cper_trace_corr_prot_err(pdev, data->ras_cap);
++		cxl_cper_trace_corr_prot_err(cxlmd, data->ras_cap);
+ 	else
+-		cxl_cper_trace_uncorr_prot_err(pdev, data->ras_cap);
++		cxl_cper_trace_uncorr_prot_err(cxlmd, data->ras_cap);
+ }
+ 
+ static void cxl_cper_prot_err_work_fn(struct work_struct *work)
 -- 
 2.39.5
 
