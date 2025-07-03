@@ -1,97 +1,117 @@
-Return-Path: <stable+bounces-159274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A5AAF67BF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 04:08:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D53DAF685D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 04:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1C2C1C45D11
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 02:09:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CD49522724
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 02:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB93F13A258;
-	Thu,  3 Jul 2025 02:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503F12192F8;
+	Thu,  3 Jul 2025 02:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Pq+UjU/s"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="HavHrXb4"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21EC10E5
-	for <stable@vger.kernel.org>; Thu,  3 Jul 2025 02:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.9])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D8C23BE;
+	Thu,  3 Jul 2025 02:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751508535; cv=none; b=OKRvP/4yN6To8zfFPDMHHktXVE+VEk6cspCRmnvYT4PQhttzEyLWRVx26v5YZ9sDqa6F3Q4yvMnJv7f9Z6F0ieESemv9hO9+PdQu5BcwwdjxG4FCtf0koRc1g9Gf+OuXVFCEFbAZIFK/pPsNFkwHyTelxXVb6W//XPdLpYMlWSM=
+	t=1751511290; cv=none; b=e1zHLOxOey/CUiCbyAnozN1q3bNyN0dlN43ERRuMHMF6cNjFcbL0WQir9JGS5QAXfZ+Rx0Y4D6u38PTdamnc2d/4w3ysS+QABDRJtXNiVriWgFsCLK2hKW3nB7NBGbwONp3EUfekUO7jhI/5WxnpQ4iPzv+5Wl1zkf5SllKwN80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751508535; c=relaxed/simple;
-	bh=xuxmoyBv6Hc83w0VaD6m722C+zV2bRMFHcP9kM94acA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cTa5sslUWtfA21lS3hUAudNXftJ8TuWd0J5pqrcPatyrZURICNH1o5oRNsPY6zLyn4RJChIy257kmKCthJL3lVJs8EacrJFGkRQ1yyhmmolrJKzeDweUkuZL2Ezc27rKRFdSK+1V2iIMHPbbhh8yfV97Ymv+jO4qYmCG8+oiGJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Pq+UjU/s; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751508532;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/M29umMbsMChXKdFRpWTtKhVV8sXKJDMlvqyNyuZTXE=;
-	b=Pq+UjU/sbKTXuFUVSEG24/LCTpyoqKM9tbFrLtRnB3qZYO30hmV9fqQdULJVPtgtB8Um4z
-	oGHaYuInN71/4Dd0u32zpMQxf4ayMYhA+qVcyxyxaI0y2tK4rTzVgwy2H6C2HMWBVVlcyA
-	hxpE/nPeYuHeabfkGfVQZdHZV6Dl8Zg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-635-9pv0A832OzGQ9SjaN3FE1w-1; Wed,
- 02 Jul 2025 22:08:51 -0400
-X-MC-Unique: 9pv0A832OzGQ9SjaN3FE1w-1
-X-Mimecast-MFC-AGG-ID: 9pv0A832OzGQ9SjaN3FE1w_1751508530
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C3877180034E;
-	Thu,  3 Jul 2025 02:08:49 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.108])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 171F9180045C;
-	Thu,  3 Jul 2025 02:08:44 +0000 (UTC)
-Date: Thu, 3 Jul 2025 10:08:38 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>, Nilay Shroff <nilay@linux.ibm.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] block: Remove queue freezing from several sysfs
- store callbacks
-Message-ID: <aGXmJg-ZIuFO9WnP@fedora>
-References: <20250702182430.3764163-1-bvanassche@acm.org>
- <20250702182430.3764163-2-bvanassche@acm.org>
+	s=arc-20240116; t=1751511290; c=relaxed/simple;
+	bh=5WYfMc5xlqprXqGplo8TPRTwoTJcHq8cNIKht6TcDnM=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=P+fFE11oKocdnxaL/c2aEnreIKi3McsCNoBGR9G3lT4RyZRXLWoKeQgXJTciZi9kHRdmwV0LgDmdVT1Lkb92VgzY45mymYZu8D7amO8P+509zwY1n38ISI4zTklloCFAMAbvhUjLZ7h3npFIMXmtoBI2WWRKRGnMuzpoEI1CgRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=HavHrXb4; arc=none smtp.client-ip=117.135.210.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id; bh=RNGiMRA7tuQYaNu
+	ZL6aNqt4/FrG725yke/AkkJExntU=; b=HavHrXb4n7y1jl4SFU67iohdY9hlFac
+	nVJw3fz3JqKzheZtNn87cqcdMyJYJV8cJ4F0U7r8AvffxQ0Wu2X8cTmc7ay/Rhbd
+	NEo8tPF6HzazIgXBnFj/Mj6zQvcAfGlWNs/cm08EKXZDK5CjcIZGpSzzeelUnwN3
+	xtxpPAMZJXiw=
+Received: from hg-OptiPlex-7040.hygon.cn (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wDHz3Iv7WVo3yJGAw--.37667S2;
+	Thu, 03 Jul 2025 10:38:40 +0800 (CST)
+From: yangge1116@126.com
+To: ardb@kernel.org
+Cc: jarkko@kernel.org,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	ilias.apalodimas@linaro.org,
+	jgg@ziepe.ca,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	liuzixing@hygon.cn,
+	Ge Yang <yangge1116@126.com>
+Subject: [PATCH] efi/tpm: Fix the issue where the CC platforms event log header can't be correctly identified
+Date: Thu,  3 Jul 2025 10:38:37 +0800
+Message-Id: <1751510317-12152-1-git-send-email-yangge1116@126.com>
+X-Mailer: git-send-email 2.7.4
+X-CM-TRANSID:_____wDHz3Iv7WVo3yJGAw--.37667S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJryxCF4UKF4rtF1UXFyrZwb_yoW8Zry8p3
+	ZrGrnakr95try2gr93Zw18Cw4UA395CrZrGFykKw10yr98Wr92qayjg345K3WfGrZrJFZ8
+	Wa4jqr17Ca4UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRoKZXUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOgZ-G2hl5F7-FQAAsF
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250702182430.3764163-2-bvanassche@acm.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Wed, Jul 02, 2025 at 11:24:28AM -0700, Bart Van Assche wrote:
-> Freezing the request queue from inside sysfs store callbacks may cause a
-> deadlock in combination with the dm-multipath driver and the
-> queue_if_no_path option. Additionally, freezing the request queue slows
-> down system boot on systems where sysfs attributes are set synchronously.
-> 
-> Fix this by removing the blk_mq_freeze_queue() / blk_mq_unfreeze_queue()
-> calls from the store callbacks that do not strictly need these callbacks.
+From: Ge Yang <yangge1116@126.com>
 
-Please add commit log why freeze isn't needed for these sysfs attributes
-callbacks.
+Since commit d228814b1913 ("efi/libstub: Add get_event_log() support
+for CC platforms") reuses TPM2 support code for the CC platforms, when
+launching a TDX virtual machine with coco measurement enabled, the
+following error log is generated:
 
+[Firmware Bug]: Failed to parse event in TPM Final Events Log
 
-Thanks, 
-Ming
+Call Trace:
+efi_config_parse_tables()
+  efi_tpm_eventlog_init()
+    tpm2_calc_event_log_size()
+      __calc_tpm2_event_size()
+
+The pcr_idx value in the Intel TDX log header is 1, causing the
+function __calc_tpm2_event_size() to fail to recognize the log header,
+ultimately leading to the "Failed to parse event in TPM Final Events
+Log" error.
+
+According to UEFI Spec 2.10 Section 38.4.1: For Tdx, TPM PCR 0 maps to
+MRTD, so the log header uses TPM PCR 1. To successfully parse the TDX
+event log header, the check for a pcr_idx value of 0 has been removed
+here, and it appears that this will not affect other functionalities.
+
+Link: https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#intel-trust-domain-extension
+Fixes: d228814b1913 ("efi/libstub: Add get_event_log() support for CC platforms")
+Signed-off-by: Ge Yang <yangge1116@126.com>
+Cc: stable@vger.kernel.org
+---
+ include/linux/tpm_eventlog.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+index 891368e..05c0ae5 100644
+--- a/include/linux/tpm_eventlog.h
++++ b/include/linux/tpm_eventlog.h
+@@ -202,8 +202,7 @@ static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *ev
+ 	event_type = event->event_type;
+ 
+ 	/* Verify that it's the log header */
+-	if (event_header->pcr_idx != 0 ||
+-	    event_header->event_type != NO_ACTION ||
++	if (event_header->event_type != NO_ACTION ||
+ 	    memcmp(event_header->digest, zero_digest, sizeof(zero_digest))) {
+ 		size = 0;
+ 		goto out;
+-- 
+2.7.4
 
 
