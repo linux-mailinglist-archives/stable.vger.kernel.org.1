@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-159400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6CDAF784C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:48:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC1FAF79AB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:04:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2571854155D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6FC35854C3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EF52D948F;
-	Thu,  3 Jul 2025 14:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620C92ED143;
+	Thu,  3 Jul 2025 15:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DD78r3qO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzDHeXuI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73209101DE;
-	Thu,  3 Jul 2025 14:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED5638F91;
+	Thu,  3 Jul 2025 15:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554112; cv=none; b=Thn+wgomxvLKLnJgCRYc1M/H+ZYMW2qHZis1IJcrDA7Acn6DzO/UlmFHe3ixEc68AqTjZ8UtM5wgBg3TC7Jg1f/9cQ9iecnHC4kxnWZYZKDwn+vpuhkhsoQhyxTzyXRDk6zyYi7Zy5DiJbAzLj+6XPB/X5M61KWGwDOkacq902Q=
+	t=1751554899; cv=none; b=Wienh1IAiLsgLODCIGCoXLAj6HtW8s1dDMw0PPTKUtI+c+OlrE4LuE2jsrvH1cUqZCl/ugUYarERoq2GmPsOxgIyUIxqS1DCKpDq9L2r2MVZY7t/0924TN0e/ggJK+Bc5QixAFBh7Pd9Tjy3aXklUVyVO13hfTTlj3og0o4aZP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554112; c=relaxed/simple;
-	bh=FLUCEJtj0ujzUVqP2rJ7YrG2NDpJVOpIBN8mANWZVzI=;
+	s=arc-20240116; t=1751554899; c=relaxed/simple;
+	bh=d0NoP+5oK/o5th1OuZqOS+g4J9EMehi2SZ/ZcMwZ7/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tCuvvO984S69lq1Ey87pNe36hmwEMFITbuGuvOV5NiP7rtSZ1x3nweibae/c7yNhLUT4VnQWKbnBUwPH8t+YAWkzFg105C7L9aVV8V2/x1t1woT6dB5sItHBCVqKtH4xUfCvW4HkTS0WjQApCwxD7aiO2vf7xIZnNXZx4IfyAYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DD78r3qO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DD6C4CEE3;
-	Thu,  3 Jul 2025 14:48:31 +0000 (UTC)
+	 MIME-Version; b=WzLHzQKcpkqA0TU03UGC8Hlq9DyvNXCh+PKDX5lgf0MBr4lG/34E+DWFDtbmd87UTPrL/kr+piSO79+ORpfrrgTsmR6nDgCAf5agO/yTPOQUpUcJg3dCqsEFgiIb7Sp8fX7yHauJ7z6+i3yBUtRAnXQc3Yg9s4IRjQWRcG1KTvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzDHeXuI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BAEC4CEE3;
+	Thu,  3 Jul 2025 15:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554112;
-	bh=FLUCEJtj0ujzUVqP2rJ7YrG2NDpJVOpIBN8mANWZVzI=;
+	s=korg; t=1751554899;
+	bh=d0NoP+5oK/o5th1OuZqOS+g4J9EMehi2SZ/ZcMwZ7/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DD78r3qO1mRiOW8pvfFhbPU3LMf2bEqlNiNzOcMBkaQKhx+vXjJTDrRNuomtcccTS
-	 qcqh/+VBESrHqwf2fjmf+1R1OOiToyU0O5sUbj4t3IOJm0PUBFlGmb7STrKd+zvOQF
-	 0TB225DDZJ+g9mxTWXIk6ROlO0uHn5EoY47jxiZU=
+	b=YzDHeXuI4RdT6HXU+jfMCe7XSqrmDA3ZhwTWokCVLfNtJQKmsYo6TLnVTOiyBrsfD
+	 mxURPnYaojJq3DXzC0+NdeBDUK6RwzHSnuPDj8ZcH8x6Rv3sawMJsIRIBS6UU8ixaU
+	 i1+eoAv6g2FTwc16dZcbUTeuFpTlC9au6zq1XurI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 084/218] fs/proc/task_mmu: fix PAGE_IS_PFNZERO detection for the huge zero folio
-Date: Thu,  3 Jul 2025 16:40:32 +0200
-Message-ID: <20250703143959.302323493@linuxfoundation.org>
+	Han Gao <rabenda.cn@gmail.com>,
+	Xiongchuan Tan <tanxiongchuan@isrc.iscas.ac.cn>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Andy Chiu <andybnac@gmail.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>
+Subject: [PATCH 6.15 113/263] riscv: vector: Fix context save/restore with xtheadvector
+Date: Thu,  3 Jul 2025 16:40:33 +0200
+Message-ID: <20250703144008.874049190@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +66,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Han Gao <rabenda.cn@gmail.com>
 
-commit 4a5e85f4eb8fd18b1266342d100e4f0849544ca0 upstream.
+commit 4262bd0d9cc704ea1365ac00afc1272400c2cbef upstream.
 
-is_zero_pfn() does not work for the huge zero folio. Fix it by using
-is_huge_zero_pmd().
+Previously only v0-v7 were correctly saved/restored,
+and the context of v8-v31 are damanged.
+Correctly save/restore v8-v31 to avoid breaking userspace.
 
-This can cause the PAGEMAP_SCAN ioctl against /proc/pid/pagemap to
-present pages as PAGE_IS_PRESENT rather than as PAGE_IS_PFNZERO.
-
-Found by code inspection.
-
-Link: https://lkml.kernel.org/r/20250617143532.2375383-1-david@redhat.com
-Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: d863910eabaf ("riscv: vector: Support xtheadvector save/restore")
+Cc: stable@vger.kernel.org
+Signed-off-by: Han Gao <rabenda.cn@gmail.com>
+Tested-by: Xiongchuan Tan <tanxiongchuan@isrc.iscas.ac.cn>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+Reviewed-by: Andy Chiu <andybnac@gmail.com>
+Link: https://lore.kernel.org/r/9b9eb2337f3d5336ce813721f8ebea51e0b2b553.1747994822.git.rabenda.cn@gmail.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/task_mmu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/vector.h |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -2155,7 +2155,7 @@ static unsigned long pagemap_thp_categor
- 				categories |= PAGE_IS_FILE;
- 		}
- 
--		if (is_zero_pfn(pmd_pfn(pmd)))
-+		if (is_huge_zero_pmd(pmd))
- 			categories |= PAGE_IS_PFNZERO;
- 		if (pmd_soft_dirty(pmd))
- 			categories |= PAGE_IS_SOFT_DIRTY;
+--- a/arch/riscv/include/asm/vector.h
++++ b/arch/riscv/include/asm/vector.h
+@@ -200,11 +200,11 @@ static inline void __riscv_v_vstate_save
+ 			THEAD_VSETVLI_T4X0E8M8D1
+ 			THEAD_VSB_V_V0T0
+ 			"add		t0, t0, t4\n\t"
+-			THEAD_VSB_V_V0T0
++			THEAD_VSB_V_V8T0
+ 			"add		t0, t0, t4\n\t"
+-			THEAD_VSB_V_V0T0
++			THEAD_VSB_V_V16T0
+ 			"add		t0, t0, t4\n\t"
+-			THEAD_VSB_V_V0T0
++			THEAD_VSB_V_V24T0
+ 			: : "r" (datap) : "memory", "t0", "t4");
+ 	} else {
+ 		asm volatile (
+@@ -236,11 +236,11 @@ static inline void __riscv_v_vstate_rest
+ 			THEAD_VSETVLI_T4X0E8M8D1
+ 			THEAD_VLB_V_V0T0
+ 			"add		t0, t0, t4\n\t"
+-			THEAD_VLB_V_V0T0
++			THEAD_VLB_V_V8T0
+ 			"add		t0, t0, t4\n\t"
+-			THEAD_VLB_V_V0T0
++			THEAD_VLB_V_V16T0
+ 			"add		t0, t0, t4\n\t"
+-			THEAD_VLB_V_V0T0
++			THEAD_VLB_V_V24T0
+ 			: : "r" (datap) : "memory", "t0", "t4");
+ 	} else {
+ 		asm volatile (
 
 
 
