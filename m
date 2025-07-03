@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-159496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC750AF78FF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0293CAF79D8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB0D95831A0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4744C7A262D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242072EF9DD;
-	Thu,  3 Jul 2025 14:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B170D2ED86E;
+	Thu,  3 Jul 2025 15:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcryNDaA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AO7qOxDJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A8E2EF672;
-	Thu,  3 Jul 2025 14:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA1D1E9B3D;
+	Thu,  3 Jul 2025 15:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554412; cv=none; b=guFQy3gZqHwNWpCYLZNPCT5v4NUtF4HAuwas61nktpcTYm2wdQ94MKkm6fOAGU6YvkVw4/8VO9pZy7lIct1JG7ilcyQq2CTiIoIrkkeHN7Ew7rPC1tP52OQx0Vy091I4/1FPWL/S13CqZ9xFW1tJq7pjvF0/0bhts3Yk3lkuJKE=
+	t=1751555207; cv=none; b=gATm0BicmIrxiDygTD6tM6AevLTh9zFpd7VZoOZWR//FrK0I5AwtgyphYZjA5Wl+6dOQr59N+fYRGnmxTyt0lMySTkmiyneY3eB1YSZ0H4VkQzmZD6pMnoWF+Jac6vEpbJrU7a2ohfLb2oT1KvlMQ4WyvLojqsiruH4vN8eus3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554412; c=relaxed/simple;
-	bh=qM5SEuJqLgRzw5uI1Lq2hnBeRryy70oRgSETfad44Jw=;
+	s=arc-20240116; t=1751555207; c=relaxed/simple;
+	bh=QRg0vNDGVIS/NgUMKmTD7FDbBuhJUiMhUkKBjZMx1uY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jloxu1RRg33JtB9H7GKJs3RCLqGMFIL61akv4owDGakgiX13vp8OphhmTMbwgM4YTzK3LqH6Yu/ZQLUz9majW9teOX2guxMEJnqni8zarjrSqAIpXCviwGex+ouVe5grDUDcyIhQ79ZnjZ/xFqjtV22HKNx3NnRSbIdy/1BIm34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcryNDaA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2D7C4CEE3;
-	Thu,  3 Jul 2025 14:53:32 +0000 (UTC)
+	 MIME-Version; b=VSKtPEyjwKLAbIoB1bS59+JhPuBHLyoGIDZCZzslt0KVtWWnGgsWrWq0qVOyAZiPcfLQhD3Fx1lB9n1LMjv5UpwupJiAR4aSFnyT3PgPGFIHGLxw5Kn0WrQDmjZifE3EqKlg0GEFzGTqprIg4CdBL40YITMZggS847ncIx5MgbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AO7qOxDJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA497C4CEE3;
+	Thu,  3 Jul 2025 15:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554412;
-	bh=qM5SEuJqLgRzw5uI1Lq2hnBeRryy70oRgSETfad44Jw=;
+	s=korg; t=1751555207;
+	bh=QRg0vNDGVIS/NgUMKmTD7FDbBuhJUiMhUkKBjZMx1uY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dcryNDaA4vGNPmPvVOlHDYoTz3lcbXP45VxMlpQx9bXH25An/4cn9i/f0/NBISXNY
-	 JOkO6HTsj2GkWFSBIhCvgSaitlC2hZnqSYqSYrUjdivM+1aiSURDeXPG91ryaOXJOE
-	 eTUhdIlKnqUCXaDNsA6jWB1izwVy/6qZCUlNd7Gw=
+	b=AO7qOxDJLShO1xeA2xpjCByX5VQPsotVj16uc9pyb6uFASYHoPRN6e91Iw/W8PWGw
+	 g5svfZIC+NA2Gpuqm94/E9JMZGrXiQXvTX27ssnZEoPX8OpQHJMT+g5I/zuMoLzCRO
+	 tHMI0Q3N1TpjYe5RlYsquvXoj63Dq2/RKIsDYyhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chang S. Bae" <chang.seok.bae@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Aruna Ramakrishna <aruna.ramakrishna@oracle.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ben Hutchings <ben@decadent.org.uk>
-Subject: [PATCH 6.12 179/218] x86/pkeys: Simplify PKRU update in signal frame
-Date: Thu,  3 Jul 2025 16:42:07 +0200
-Message-ID: <20250703144003.331961227@linuxfoundation.org>
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.15 208/263] drm/tegra: Fix a possible null pointer dereference
+Date: Thu,  3 Jul 2025 16:42:08 +0200
+Message-ID: <20250703144012.716960018@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,74 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chang S. Bae <chang.seok.bae@intel.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-commit d1e420772cd1eb0afe5858619c73ce36f3e781a1 upstream.
+commit 780351a5f61416ed2ba1199cc57e4a076fca644d upstream.
 
-The signal delivery logic was modified to always set the PKRU bit in
-xregs_state->header->xfeatures by this commit:
+In tegra_crtc_reset(), new memory is allocated with kzalloc(), but
+no check is performed. Before calling __drm_atomic_helper_crtc_reset,
+state should be checked to prevent possible null pointer dereference.
 
-    ae6012d72fa6 ("x86/pkeys: Ensure updated PKRU value is XRSTOR'd")
-
-However, the change derives the bitmask value using XGETBV(1), rather
-than simply updating the buffer that already holds the value. Thus, this
-approach induces an unnecessary dependency on XGETBV1 for PKRU handling.
-
-Eliminate the dependency by using the established helper function.
-Subsequently, remove the now-unused 'mask' argument.
-
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/r/20250416021720.12305-9-chang.seok.bae@intel.com
-Cc: Ben Hutchings <ben@decadent.org.uk>
+Fixes: b7e0b04ae450 ("drm/tegra: Convert to using __drm_atomic_helper_crtc_reset() for reset.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20241106095906.15247-1-chenqiuji666@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/fpu/xstate.h |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/tegra/dc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/fpu/xstate.h
-+++ b/arch/x86/kernel/fpu/xstate.h
-@@ -85,18 +85,15 @@ static inline int set_xfeature_in_sigfra
- /*
-  * Update the value of PKRU register that was already pushed onto the signal frame.
-  */
--static inline int update_pkru_in_sigframe(struct xregs_state __user *buf, u64 mask, u32 pkru)
-+static inline int update_pkru_in_sigframe(struct xregs_state __user *buf, u32 pkru)
- {
--	u64 xstate_bv;
- 	int err;
+--- a/drivers/gpu/drm/tegra/dc.c
++++ b/drivers/gpu/drm/tegra/dc.c
+@@ -1393,7 +1393,10 @@ static void tegra_crtc_reset(struct drm_
+ 	if (crtc->state)
+ 		tegra_crtc_atomic_destroy_state(crtc, crtc->state);
  
- 	if (unlikely(!cpu_feature_enabled(X86_FEATURE_OSPKE)))
- 		return 0;
- 
- 	/* Mark PKRU as in-use so that it is restored correctly. */
--	xstate_bv = (mask & xfeatures_in_use()) | XFEATURE_MASK_PKRU;
--
--	err =  __put_user(xstate_bv, &buf->header.xfeatures);
-+	err = set_xfeature_in_sigframe(buf, XFEATURE_MASK_PKRU);
- 	if (err)
- 		return err;
- 
-@@ -317,7 +314,7 @@ static inline int xsave_to_user_sigframe
- 	clac();
- 
- 	if (!err)
--		err = update_pkru_in_sigframe(buf, mask, pkru);
-+		err = update_pkru_in_sigframe(buf, pkru);
- 
- 	return err;
+-	__drm_atomic_helper_crtc_reset(crtc, &state->base);
++	if (state)
++		__drm_atomic_helper_crtc_reset(crtc, &state->base);
++	else
++		__drm_atomic_helper_crtc_reset(crtc, NULL);
  }
+ 
+ static struct drm_crtc_state *
 
 
 
