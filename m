@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-159951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B917AF7BD9
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62711AF78D1
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:54:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12A7A188355F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B7D3168CF2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0001E51EB;
-	Thu,  3 Jul 2025 15:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A99F2EF673;
+	Thu,  3 Jul 2025 14:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5EmesQV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1IiS0zL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449FC199920;
-	Thu,  3 Jul 2025 15:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F2C2EF661;
+	Thu,  3 Jul 2025 14:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555892; cv=none; b=VpedjtRBdWIkRf2qx/sw2LT32x13j0ZNhyB7WIkDUWdvYDqcuni1QbnumHjvUjFUxV/d5PTUB8iN6pgP5Wgbjf+nK6illexwkZFpny10IA/gTSYD0DAipuTnPFcweigkszRLUdNc1oYbKuCOSG1xB9VpMoROvrSaMaqtafmtZx4=
+	t=1751554333; cv=none; b=TpIj1qv5Om6KNxVI2PSSfuRKR7wiumdjbk8qDVgp0R1pL/v8AtBcmNSWE1yPXkRAKkqA8V7q09V5YrUiBZr5QRYtdk5WIbCZ+u5TJ8tyvRqvCd8VdUj/S98fPIxgsCgXCsoT7YcZcqMyw3VzQgeOfeuB3jeH+wzsfX9hP6/vUpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555892; c=relaxed/simple;
-	bh=99MYjvx+sA5kfrpttcEStp5zbkjJAH38IQR141gCjlw=;
+	s=arc-20240116; t=1751554333; c=relaxed/simple;
+	bh=KhwNaxlplhqYkMAluHMMQa5PI3cdOwZ+HpH/zJ3IVT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hE56RHWpuNSe3eH0j4y3TijUV7l5wN05supHyD8eM72JxzLLIVMuQoe4N4pZbpVpOsvhWfLojJn2As2533gLLTMtK87aciBeErWxmACq/hmKgrUGQ4uywjOFS+srPIwZhRCm00l/cRq9YOpLknYBOrLv5jNZTNoPVCaYb2kDAlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5EmesQV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4728DC4CEE3;
-	Thu,  3 Jul 2025 15:18:10 +0000 (UTC)
+	 MIME-Version; b=RroFYMD84FFldW50JR4aSDu3M3HrmAn5KKS1ta1mZ2u2tvpt3J6U+tPVs8OdoSvkkDbDrkMmckw5w37aXtQx1/QUGdkWfpXv4X8UXkvaw5ZZ6PnhC7f/RpH+RttYSnRWLjkEx/gaBvrR0+WShtOoBzgGTCiS6/Gr+8p3BiFNOUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1IiS0zL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C004BC4CEE3;
+	Thu,  3 Jul 2025 14:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555890;
-	bh=99MYjvx+sA5kfrpttcEStp5zbkjJAH38IQR141gCjlw=;
+	s=korg; t=1751554333;
+	bh=KhwNaxlplhqYkMAluHMMQa5PI3cdOwZ+HpH/zJ3IVT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5EmesQVAXR6luW5jqpUUwgY1IR04TgsH33adCI6ZNFtRl3/ahRnAfPnkBPaUGoAz
-	 OtsNX8ujMZs0vzdmDeqEcqDpK427Ho/7Y+QaQOwraTBIGlt8heFwgA0nqBAxSquY5O
-	 XbJjrUBfqINE104LSjdKWZMgTRA5NPbBjMhvoa+w=
+	b=S1IiS0zL4CEE43m5XUTL4P+8/snR+n2QgPU+QxsU1YURXSoKdxuBzWehQNlUEzllG
+	 MrgF49FyumE2XItAKFcdO9xln9U1GIrWirtxPQWV9r79Mfq4zTcdiVcZSDh7DIHMmE
+	 mpyE9Mlg1h1EtLrX4JgL9UqB5zqG2Jg1R/dpPxBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Kerling <pkerling@casix.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/132] ksmbd: allow a filename to contain special characters on SMB3.1.1 posix extension
-Date: Thu,  3 Jul 2025 16:41:39 +0200
-Message-ID: <20250703143939.799287716@linuxfoundation.org>
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.12 152/218] drm/tegra: Fix a possible null pointer dereference
+Date: Thu,  3 Jul 2025 16:41:40 +0200
+Message-ID: <20250703144002.231877923@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-[ Upstream commit dc3e0f17f74558e8a2fce00608855f050de10230 ]
+commit 780351a5f61416ed2ba1199cc57e4a076fca644d upstream.
 
-If client send SMB2_CREATE_POSIX_CONTEXT to ksmbd, Allow a filename
-to contain special characters.
+In tegra_crtc_reset(), new memory is allocated with kzalloc(), but
+no check is performed. Before calling __drm_atomic_helper_crtc_reset,
+state should be checked to prevent possible null pointer dereference.
 
-Reported-by: Philipp Kerling <pkerling@casix.org>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b7e0b04ae450 ("drm/tegra: Convert to using __drm_atomic_helper_crtc_reset() for reset.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20241106095906.15247-1-chenqiuji666@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c | 53 +++++++++++++++++++++--------------------
- 1 file changed, 27 insertions(+), 26 deletions(-)
+ drivers/gpu/drm/tegra/dc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index ca54ac7ff6ea5..2f18229ee33c9 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2686,7 +2686,7 @@ int smb2_open(struct ksmbd_work *work)
- 	int req_op_level = 0, open_flags = 0, may_flags = 0, file_info = 0;
- 	int rc = 0;
- 	int contxt_cnt = 0, query_disk_id = 0;
--	int maximal_access_ctxt = 0, posix_ctxt = 0;
-+	bool maximal_access_ctxt = false, posix_ctxt = false;
- 	int s_type = 0;
- 	int next_off = 0;
- 	char *name = NULL;
-@@ -2713,6 +2713,27 @@ int smb2_open(struct ksmbd_work *work)
- 		return create_smb2_pipe(work);
- 	}
+--- a/drivers/gpu/drm/tegra/dc.c
++++ b/drivers/gpu/drm/tegra/dc.c
+@@ -1392,7 +1392,10 @@ static void tegra_crtc_reset(struct drm_
+ 	if (crtc->state)
+ 		tegra_crtc_atomic_destroy_state(crtc, crtc->state);
  
-+	if (req->CreateContextsOffset && tcon->posix_extensions) {
-+		context = smb2_find_context_vals(req, SMB2_CREATE_TAG_POSIX, 16);
-+		if (IS_ERR(context)) {
-+			rc = PTR_ERR(context);
-+			goto err_out2;
-+		} else if (context) {
-+			struct create_posix *posix = (struct create_posix *)context;
-+
-+			if (le16_to_cpu(context->DataOffset) +
-+				le32_to_cpu(context->DataLength) <
-+			    sizeof(struct create_posix) - 4) {
-+				rc = -EINVAL;
-+				goto err_out2;
-+			}
-+			ksmbd_debug(SMB, "get posix context\n");
-+
-+			posix_mode = le32_to_cpu(posix->Mode);
-+			posix_ctxt = true;
-+		}
-+	}
-+
- 	if (req->NameLength) {
- 		if ((req->CreateOptions & FILE_DIRECTORY_FILE_LE) &&
- 		    *(char *)req->Buffer == '\\') {
-@@ -2744,9 +2765,11 @@ int smb2_open(struct ksmbd_work *work)
- 				goto err_out2;
- 		}
+-	__drm_atomic_helper_crtc_reset(crtc, &state->base);
++	if (state)
++		__drm_atomic_helper_crtc_reset(crtc, &state->base);
++	else
++		__drm_atomic_helper_crtc_reset(crtc, NULL);
+ }
  
--		rc = ksmbd_validate_filename(name);
--		if (rc < 0)
--			goto err_out2;
-+		if (posix_ctxt == false) {
-+			rc = ksmbd_validate_filename(name);
-+			if (rc < 0)
-+				goto err_out2;
-+		}
- 
- 		if (ksmbd_share_veto_filename(share, name)) {
- 			rc = -ENOENT;
-@@ -2861,28 +2884,6 @@ int smb2_open(struct ksmbd_work *work)
- 			rc = -EBADF;
- 			goto err_out2;
- 		}
--
--		if (tcon->posix_extensions) {
--			context = smb2_find_context_vals(req,
--							 SMB2_CREATE_TAG_POSIX, 16);
--			if (IS_ERR(context)) {
--				rc = PTR_ERR(context);
--				goto err_out2;
--			} else if (context) {
--				struct create_posix *posix =
--					(struct create_posix *)context;
--				if (le16_to_cpu(context->DataOffset) +
--				    le32_to_cpu(context->DataLength) <
--				    sizeof(struct create_posix) - 4) {
--					rc = -EINVAL;
--					goto err_out2;
--				}
--				ksmbd_debug(SMB, "get posix context\n");
--
--				posix_mode = le32_to_cpu(posix->Mode);
--				posix_ctxt = 1;
--			}
--		}
- 	}
- 
- 	if (ksmbd_override_fsids(work)) {
--- 
-2.39.5
-
+ static struct drm_crtc_state *
 
 
 
