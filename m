@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-159818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBB0AF7A54
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:12:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 292D8AF7A12
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:09:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33AC97B40F1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:10:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A456546F95
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D7C2E54BF;
-	Thu,  3 Jul 2025 15:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F432ED143;
+	Thu,  3 Jul 2025 15:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgx2sXeY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XteK5rLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F40F2F0020;
-	Thu,  3 Jul 2025 15:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C427B101DE;
+	Thu,  3 Jul 2025 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555450; cv=none; b=JWQ3UNlk2uqsyQamAFuY140y6qH7G2uZL0gW/ZbT4kohxlmTGQyFmNlFDuNCsZvuyW95/tkvkYDaPcA9nPctm0klwiIzu9s3geksWiuPezRiFVksTOBJaS4ftRD+RyKE6rAdZvK9Kkj52NOhZ2Wg4NMppqGRKiGURxoCI8p7jlc=
+	t=1751555149; cv=none; b=uFWcusDzmGnHViYBhvmSBiSOp19ugkngYt1n++FAZSgE7WDydFExKLZNhl2T/+/9wrT91ox2FBak/puwtOGodm3i/iMTjSojwJA7eB8JMLegmHQqQC7e9qmLNL2I3GrOyZeFI236xcFmnvHxI+sSRa3nsypL2G/k36+MBgDyh+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555450; c=relaxed/simple;
-	bh=qQ9Tiq1zSg4qtsyP/XKe3IqAcQXiQKd+x5qkCc3sWxo=;
+	s=arc-20240116; t=1751555149; c=relaxed/simple;
+	bh=/PLPHf3yLU8ly2EOwu86uHRs9xkeXSg+GU15seiPgnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=thj6ky9wYrHDg4gtsY0A3srrh6BLED8LDpE3jAoXJ2BfMsKLir84sY7QBBf0u2LjHXaGUlsHupc6yjcipWqtZTxNylkFBDqlXm505G+nSyYd72dQ0ZRgG9vzQNrHoktNe6uqUV9I2vWveXbSW2+HgM/nI/NyoaAqnEdZtx0ymO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgx2sXeY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A28C4CEE3;
-	Thu,  3 Jul 2025 15:10:49 +0000 (UTC)
+	 MIME-Version; b=e03NLsWL46AsYl25rlH5vyA0kZWvZgxivi67trfOKpCEc6EQQRsK8Xg/Vmu/wFq7Z8+wBgncBYQzD4MqrjkLDSwimwm3qiDiLpEAYKSRDxgOT7quZvnmb958h8vLUUnDHaN0/YAqQyLx7ycp4FjiRItCQRHRe7Zfqo+lSGK17Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XteK5rLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB19DC4CEE3;
+	Thu,  3 Jul 2025 15:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555450;
-	bh=qQ9Tiq1zSg4qtsyP/XKe3IqAcQXiQKd+x5qkCc3sWxo=;
+	s=korg; t=1751555149;
+	bh=/PLPHf3yLU8ly2EOwu86uHRs9xkeXSg+GU15seiPgnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mgx2sXeYldhqCPE5yPb7vxZAS+sCArUF07lCAnHm3zrst/Wz9RBV7cOibvGMyOTLo
-	 I+PmqBAFbWxcsYoy0IPIqV0vNUVO803MzZNygeWLouYcVowKlAuOaDcZgn3cnItiFc
-	 n/8NI6McEnxlepI5Exmf8GjsR8jFJKaFPbSKOAH4=
+	b=XteK5rLX8US8XeLRMHPjmluR/B1LPnI+7TPx5dycN1Kf/TkP5miyfRmXzOpLrffd8
+	 pc9pMd3SGBHA39nwupMAh6kA6tVzGdOdumEuBllk8VP7XzHRaX/so1/M+D5exvNHAd
+	 DJ423riD/dERvWE8fKphjZmZWcNsU6yE9GJMeSs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Sun <yi.sun@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Yi Zhang <yi.zhang@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	John Garry <john.g.garry@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/139] dmaengine: idxd: Check availability of workqueue allocated by idxd wq driver before using
+Subject: [PATCH 6.15 161/263] nvme: fix atomic write size validation
 Date: Thu,  3 Jul 2025 16:41:21 +0200
-Message-ID: <20250703143941.888185923@linuxfoundation.org>
+Message-ID: <20250703144010.816387114@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Sun <yi.sun@intel.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 17502e7d7b7113346296f6758324798d536c31fd ]
+[ Upstream commit f46d273449ba65afd53f3dd8fe0182c9df877e08 ]
 
-Running IDXD workloads in a container with the /dev directory mounted can
-trigger a call trace or even a kernel panic when the parent process of the
-container is terminated.
+Don't mix the namespace and controller values, and validate the
+per-controller limit when probing the controller.  This avoid spurious
+failures for controllers with namespaces that have different namespaces
+with different logical block sizes, or report the per-namespace values
+only for some namespaces.
 
-This issue occurs because, under certain configurations, Docker does not
-properly propagate the mount replica back to the original mount point.
+It also fixes a missing queue_limits_cancel_update in an error path by
+removing that error path.
 
-In this case, when the user driver detaches, the WQ is destroyed but it
-still calls destroy_workqueue() attempting to completes all pending work.
-It's necessary to check wq->wq and skip the drain if it no longer exists.
-
-Signed-off-by: Yi Sun <yi.sun@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
-
-Link: https://lore.kernel.org/r/20250509000304.1402863-1-yi.sun@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 8695f060a029 ("nvme: all namespaces in a subsystem must adhere to a common atomic write size")
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idxd/cdev.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/nvme/host/core.c | 33 +++++++++++----------------------
+ drivers/nvme/host/nvme.h |  3 +--
+ 2 files changed, 12 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
-index 7e3a67f9f0a65..aa39fcd389a94 100644
---- a/drivers/dma/idxd/cdev.c
-+++ b/drivers/dma/idxd/cdev.c
-@@ -354,7 +354,9 @@ static void idxd_cdev_evl_drain_pasid(struct idxd_wq *wq, u32 pasid)
- 			set_bit(h, evl->bmap);
- 		h = (h + 1) % size;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 1c853c5b8169b..d253b82901110 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -2022,17 +2022,7 @@ static u32 nvme_configure_atomic_write(struct nvme_ns *ns,
+ 		 * no clear language in the specification prohibiting different
+ 		 * values for different controllers in the subsystem.
+ 		 */
+-		atomic_bs = (1 + ns->ctrl->awupf) * bs;
+-	}
+-
+-	if (!ns->ctrl->subsys->atomic_bs) {
+-		ns->ctrl->subsys->atomic_bs = atomic_bs;
+-	} else if (ns->ctrl->subsys->atomic_bs != atomic_bs) {
+-		dev_err_ratelimited(ns->ctrl->device,
+-			"%s: Inconsistent Atomic Write Size, Namespace will not be added: Subsystem=%d bytes, Controller/Namespace=%d bytes\n",
+-			ns->disk ? ns->disk->disk_name : "?",
+-			ns->ctrl->subsys->atomic_bs,
+-			atomic_bs);
++		atomic_bs = (1 + ns->ctrl->subsys->awupf) * bs;
  	}
--	drain_workqueue(wq->wq);
-+	if (wq->wq)
-+		drain_workqueue(wq->wq);
-+
- 	mutex_unlock(&evl->lock);
- }
  
+ 	lim->atomic_write_hw_max = atomic_bs;
+@@ -2219,16 +2209,6 @@ static int nvme_update_ns_info_block(struct nvme_ns *ns,
+ 	if (!nvme_update_disk_info(ns, id, &lim))
+ 		capacity = 0;
+ 
+-	/*
+-	 * Validate the max atomic write size fits within the subsystem's
+-	 * atomic write capabilities.
+-	 */
+-	if (lim.atomic_write_hw_max > ns->ctrl->subsys->atomic_bs) {
+-		blk_mq_unfreeze_queue(ns->disk->queue, memflags);
+-		ret = -ENXIO;
+-		goto out;
+-	}
+-
+ 	nvme_config_discard(ns, &lim);
+ 	if (IS_ENABLED(CONFIG_BLK_DEV_ZONED) &&
+ 	    ns->head->ids.csi == NVME_CSI_ZNS)
+@@ -3044,6 +3024,7 @@ static int nvme_init_subsystem(struct nvme_ctrl *ctrl, struct nvme_id_ctrl *id)
+ 	memcpy(subsys->model, id->mn, sizeof(subsys->model));
+ 	subsys->vendor_id = le16_to_cpu(id->vid);
+ 	subsys->cmic = id->cmic;
++	subsys->awupf = le16_to_cpu(id->awupf);
+ 
+ 	/* Versions prior to 1.4 don't necessarily report a valid type */
+ 	if (id->cntrltype == NVME_CTRL_DISC ||
+@@ -3373,6 +3354,15 @@ static int nvme_init_identify(struct nvme_ctrl *ctrl)
+ 		if (ret)
+ 			goto out_free;
+ 	}
++
++	if (le16_to_cpu(id->awupf) != ctrl->subsys->awupf) {
++		dev_err_ratelimited(ctrl->device,
++			"inconsistent AWUPF, controller not added (%u/%u).\n",
++			le16_to_cpu(id->awupf), ctrl->subsys->awupf);
++		ret = -EINVAL;
++		goto out_free;
++	}
++
+ 	memcpy(ctrl->subsys->firmware_rev, id->fr,
+ 	       sizeof(ctrl->subsys->firmware_rev));
+ 
+@@ -3468,7 +3458,6 @@ static int nvme_init_identify(struct nvme_ctrl *ctrl)
+ 		dev_pm_qos_expose_latency_tolerance(ctrl->device);
+ 	else if (!ctrl->apst_enabled && prev_apst_enabled)
+ 		dev_pm_qos_hide_latency_tolerance(ctrl->device);
+-	ctrl->awupf = le16_to_cpu(id->awupf);
+ out_free:
+ 	kfree(id);
+ 	return ret;
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index 8fc4683418a3a..d8c4e545f732c 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -410,7 +410,6 @@ struct nvme_ctrl {
+ 
+ 	enum nvme_ctrl_type cntrltype;
+ 	enum nvme_dctype dctype;
+-	u16 awupf; /* 0's based value. */
+ };
+ 
+ static inline enum nvme_ctrl_state nvme_ctrl_state(struct nvme_ctrl *ctrl)
+@@ -443,11 +442,11 @@ struct nvme_subsystem {
+ 	u8			cmic;
+ 	enum nvme_subsys_type	subtype;
+ 	u16			vendor_id;
++	u16			awupf; /* 0's based value. */
+ 	struct ida		ns_ida;
+ #ifdef CONFIG_NVME_MULTIPATH
+ 	enum nvme_iopolicy	iopolicy;
+ #endif
+-	u32			atomic_bs;
+ };
+ 
+ /*
 -- 
 2.39.5
 
