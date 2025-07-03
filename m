@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-159617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37647AF79B5
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D81EAF7826
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7710E188B51E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:00:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE0CEB401F0
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4042ECEBA;
-	Thu,  3 Jul 2025 14:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0950B2EE5F3;
+	Thu,  3 Jul 2025 14:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cubw87nA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGmDDhrU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DAB2ED857;
-	Thu,  3 Jul 2025 14:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91402ED85E;
+	Thu,  3 Jul 2025 14:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554796; cv=none; b=AnrrF/42hHPkPVPAQKr7YqKA6kz1DsE9NbqyWa6VPpTxAAoNWvz26yFV+Nz6BPUYPp56uGewu/dyV5gb4NlrAnr6t+9Tc1JfWuU6plzRJMtBlEHhg9zCVfIZ+8iu9U51X/hxfUt8sYB6qrRzydZ7qmpJ3kUDN6bNZUJ/bl08oeg=
+	t=1751554016; cv=none; b=so8QVFt68xqds4bPKSTEb2xKCqO5rKWwRongCCJdXMm/zGS5a0nO/1yUkd7lv+sNV4eSQEPSLsGNdrZH9+ZaGMJObdiRvVFo/1PHtji62uPrJIzIeLqKIc0E/KibLQL4XWLr3H6FrHLFZsdySWZEPLtxgZDaOp3sr0z919fU2PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554796; c=relaxed/simple;
-	bh=0CJ2UD4zfwl2yCOVqJqffdkbYr9eJzqmez3Up6nwzvc=;
+	s=arc-20240116; t=1751554016; c=relaxed/simple;
+	bh=3/NxoIz+Zvk+biMn/RrPlDVrt4D0ZCXaIrunpHXwq+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iXITsEwpMCL62ymybZvPB0+GmUBd2umJb8MAbK5aixiyY0kvcPkwyBq8CTZYfIbwbBORn/3usUu95qlZIMaruYT8plgTQ9Wi4N4mGsW0Wu8Jw+iA6wxkncQGHyDi5VLaFG23N2PQjIqFnSPsfaMt+R3a0JvMqcNMWAq0IRPxyNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cubw87nA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5E9C4CEE3;
-	Thu,  3 Jul 2025 14:59:55 +0000 (UTC)
+	 MIME-Version; b=tTmz/kNreCRi9A2XFK/0EdkExsa7vHXgaNUP1/9sEsvn0HB2t0IwI5YtuHSff+OsLiZNAMDzTSQwlFnIBMma5/NSYdvrZlHipQq8Q+17cOhBjwAdOes8hX1g4ubN3vAnh20ysU9X8+PoNUfSSADMEHgSdifnfsVhB0jwc53C3Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGmDDhrU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F6AC4AF09;
+	Thu,  3 Jul 2025 14:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554796;
-	bh=0CJ2UD4zfwl2yCOVqJqffdkbYr9eJzqmez3Up6nwzvc=;
+	s=korg; t=1751554016;
+	bh=3/NxoIz+Zvk+biMn/RrPlDVrt4D0ZCXaIrunpHXwq+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cubw87nAfvUaWDs3qnDnGKAsEPwl2LsifaFUeBwjItGr4MU0wucxCeSt6HfRzXnm+
-	 OiRIrqRMlMBYcSzhwt8rUJDiVDe3obqRVIyQ0elWrbnjGlv7PO4biTmbNpKuLgqFuc
-	 rCPHnERWHJZ+rVWEcJo37YjEpOQdzdbauk1URR6I=
+	b=HGmDDhrUHge4+2iqkC8T5nRkkLvm2I79eQ5cJsgOutD/JNzKFlN9afrt3zrcsOhcr
+	 HVi68L//mCL5wD7PSiTftDdNOQwWlByNoeOyQG638ZsgzNY+b3GL48X3ovlSxYchz+
+	 9QyeEKPCdQgVnzU6DFbX8lAnjKkybJfgJ8t/CUP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Shuming Fan <shumingf@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 081/263] Revert "drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1"
+Subject: [PATCH 6.12 053/218] ASoC: rt1320: fix speaker noise when volume bar is 100%
 Date: Thu,  3 Jul 2025 16:40:01 +0200
-Message-ID: <20250703144007.551744992@linuxfoundation.org>
+Message-ID: <20250703143958.056669072@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+From: Shuming Fan <shumingf@realtek.com>
 
-[ Upstream commit ed5915cfce2abb9a553c3737badebd4a11d6c9c7 ]
+[ Upstream commit 9adf2de86611ac108d07e769a699556d87f052e2 ]
 
-This reverts commit d6e020819612a4a06207af858e0978be4d3e3140.
+This patch updates the settings to fix the speaker noise.
 
-The IS_DGFX check was put in place because error capture of buffer
-objects is expected to be broken on devices with VRAM.
-
-Userspace fix[1] to the impacted media driver has been submitted, merged
-and a new driver release is out as 25.2.3 where the capture flag is
-dropped on DG1 thus unblocking the usage of media driver on DG1.
-
-[1] https://github.com/intel/media-driver/commit/93c07d9b4b96a78bab21f6acd4eb863f4313ea4a
-
-Cc: stable@vger.kernel.org # v6.0+
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20250522064127.24293-1-joonas.lahtinen@linux.intel.com
-[Joonas: Update message to point out the merged userspace fix]
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-(cherry picked from commit d2dc30e0aa252830f908c8e793d3139d51321370)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Link: https://patch.msgid.link/20250602085851.4081886-1-shumingf@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/rt1320-sdw.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-index 1974a300b24a1..7796c4119ef5e 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-@@ -2014,7 +2014,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
- 			continue;
- 
- 		if (i915_gem_context_is_recoverable(eb->gem_context) &&
--		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
-+		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
- 			return -EINVAL;
- 
- 		for_each_batch_create_order(eb, j) {
+diff --git a/sound/soc/codecs/rt1320-sdw.c b/sound/soc/codecs/rt1320-sdw.c
+index f2d194e76a947..8755a63478d79 100644
+--- a/sound/soc/codecs/rt1320-sdw.c
++++ b/sound/soc/codecs/rt1320-sdw.c
+@@ -2085,7 +2085,7 @@ static const struct reg_sequence rt1320_vc_patch_code_write[] = {
+ 	{ 0x3fc2bfc0, 0x03 },
+ 	{ 0x0000d486, 0x43 },
+ 	{ SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE23, RT1320_SDCA_CTL_REQ_POWER_STATE, 0), 0x00 },
+-	{ 0x1000db00, 0x04 },
++	{ 0x1000db00, 0x07 },
+ 	{ 0x1000db01, 0x00 },
+ 	{ 0x1000db02, 0x11 },
+ 	{ 0x1000db03, 0x00 },
+@@ -2106,6 +2106,21 @@ static const struct reg_sequence rt1320_vc_patch_code_write[] = {
+ 	{ 0x1000db12, 0x00 },
+ 	{ 0x1000db13, 0x00 },
+ 	{ 0x1000db14, 0x45 },
++	{ 0x1000db15, 0x0d },
++	{ 0x1000db16, 0x01 },
++	{ 0x1000db17, 0x00 },
++	{ 0x1000db18, 0x00 },
++	{ 0x1000db19, 0xbf },
++	{ 0x1000db1a, 0x13 },
++	{ 0x1000db1b, 0x09 },
++	{ 0x1000db1c, 0x00 },
++	{ 0x1000db1d, 0x00 },
++	{ 0x1000db1e, 0x00 },
++	{ 0x1000db1f, 0x12 },
++	{ 0x1000db20, 0x09 },
++	{ 0x1000db21, 0x00 },
++	{ 0x1000db22, 0x00 },
++	{ 0x1000db23, 0x00 },
+ 	{ 0x0000d540, 0x01 },
+ 	{ 0x0000c081, 0xfc },
+ 	{ 0x0000f01e, 0x80 },
 -- 
 2.39.5
 
