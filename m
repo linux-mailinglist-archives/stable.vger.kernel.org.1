@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-159701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1DBAF79F8
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9275AF78AF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:53:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43F1817307F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:04:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6CA817377C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583272EA149;
-	Thu,  3 Jul 2025 15:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF312EF652;
+	Thu,  3 Jul 2025 14:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZoVF11/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKBAGNhb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1638F2B9A6;
-	Thu,  3 Jul 2025 15:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1632EF29C;
+	Thu,  3 Jul 2025 14:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555064; cv=none; b=bFdq/aZ07sgkVNxR5n9HC8CH0yI0E80MEpp2yxVu6GlV84JBZNDniD5xX7Q03PIVEtqc+J8S0NDp895lDHPuhojGJc+5X/TASkHSEn96cdsM8vln8qZUGErBOIdWMkkJ7l6U4PeWjGmEf3SUUXsXP9812ReaYOAoQ/ikGG5xZ9U=
+	t=1751554283; cv=none; b=Cpui7sTnBkI5BalE7W3zy0seCG9UszzTklpC3PHKRIxzjAajSjhoZzS6oeWASchZsUVLX2Fh4H2J7UzPKXXkriQ82LlJh8WfgM4ps7PiZoTtYXTSyflPv+u5Q/ZT3MDTGbNeaBDYNobTVt49zVUmMmccXuynhXP+njJEO3XpLh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555064; c=relaxed/simple;
-	bh=p4rpvQ4GRB8Xyk2IFCcZ0TcMH/MGJPEu15aeoUqcy/U=;
+	s=arc-20240116; t=1751554283; c=relaxed/simple;
+	bh=ZL5YP6zVy7mjdEZaD0++D44nhG1pQjqbDcFqKAb0JfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLQLUGtsnTM93GOMV2uJ45OFlgy1rjO27s+/Z71a6JFfMSEdktGBiKfHVtKlGFFiGVGRx7fgkNbkLJTYuakOmzEG25qddl0jWiks5POQWX3TdSF/u6DkH1TbK9YpiVZEdhoahVqIhFw7Ky6KH6t/y+/btIAUK7LJ4Z5Eb5kSmKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZoVF11/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92262C4CEE3;
-	Thu,  3 Jul 2025 15:04:23 +0000 (UTC)
+	 MIME-Version; b=MiBhR/oSx+zfROjNhIY/D1F02WgZ3bpadSpq1Y4zR+kKjWkzu7Sy/pyOIXsN/QEiiIZ/RKjI7NOpETBMJjjDwhshEiy966UyBWoO9pAZSra0L63R43tivO8/gL+TMWpf1mM56JHz45mlEuCAMoxr8wvpw4EFho9VqHnmVhocbaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKBAGNhb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D538C4CEED;
+	Thu,  3 Jul 2025 14:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555064;
-	bh=p4rpvQ4GRB8Xyk2IFCcZ0TcMH/MGJPEu15aeoUqcy/U=;
+	s=korg; t=1751554283;
+	bh=ZL5YP6zVy7mjdEZaD0++D44nhG1pQjqbDcFqKAb0JfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ZoVF11/5EJHIeWtGBdnzzt4zOmcY03L+FA9/KwBbmOSp0jBzbSK4fSNzu6eh9b3e
-	 O2Xh0h8FyjUqxcy+bsAnp+l6TsPDS6DTjWr162NFk0Wwu1AHXpWLMhz9qpv0SintRu
-	 533By8IZ2i+iVM1Dn5nd00K3jfC4mWcWeTFBkAcM=
+	b=WKBAGNhbBG2e03AgqsPxiwm42ASAVXNBt39MLvQ6o7swockUyJlmd1pqq9Di3i6ba
+	 Vm71KGGpOLU9VEEtzOfHW5IbEBrhx4GVI1FRbHojfEHqnkTCoWIeDE0and25+9DTep
+	 bZkD5Yr/qE5K9YWEpk9schkUQfV9jjE5dJ050LE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 166/263] drm/bridge: ti-sn65dsi86: make use of debugfs_init callback
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Simon Horman <horms@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 138/218] net: libwx: fix the creation of page_pool
 Date: Thu,  3 Jul 2025 16:41:26 +0200
-Message-ID: <20250703144011.017013448@linuxfoundation.org>
+Message-ID: <20250703144001.648362582@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 1d1f7b15cb9c11974cebfd39da51dc69b8cb31ff ]
+commit 85720e04d9af0b77f8092b12a06661a8d459d4a0 upstream.
 
-Do not create a custom directory in debugfs-root, but use the
-debugfs_init callback to create a custom directory at the given place
-for the bridge. The new directory layout looks like this on a Renesas
-GrayHawk-Single with a R-Car V4M SoC:
+'rx_ring->size' means the count of ring descriptors multiplied by the
+size of one descriptor. When increasing the count of ring descriptors,
+it may exceed the limit of pool size.
 
-	/sys/kernel/debug/dri/feb00000.display/DP-1/1-002c
+[ 864.209610] page_pool_create_percpu() gave up with errno -7
+[ 864.209613] txgbe 0000:11:00.0: Page pool creation failed: -7
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250315201651.7339-2-wsa+renesas@sang-engineering.com
-Stable-dep-of: 55e8ff842051 ("drm/bridge: ti-sn65dsi86: Add HPD for DisplayPort connector type")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix to set the pool_size to the count of ring descriptors.
+
+Fixes: 850b971110b2 ("net: libwx: Allocate Rx and Tx resources")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/434C72BFB40E350A+20250625023924.21821-1-jiawenwu@trustnetic.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi86.c | 40 +++++++--------------------
- 1 file changed, 10 insertions(+), 30 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-index 01d456b955abb..c1ed1a3d68447 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-@@ -423,36 +423,8 @@ static int status_show(struct seq_file *s, void *data)
- 
- 	return 0;
- }
--
- DEFINE_SHOW_ATTRIBUTE(status);
- 
--static void ti_sn65dsi86_debugfs_remove(void *data)
--{
--	debugfs_remove_recursive(data);
--}
--
--static void ti_sn65dsi86_debugfs_init(struct ti_sn65dsi86 *pdata)
--{
--	struct device *dev = pdata->dev;
--	struct dentry *debugfs;
--	int ret;
--
--	debugfs = debugfs_create_dir(dev_name(dev), NULL);
--
--	/*
--	 * We might get an error back if debugfs wasn't enabled in the kernel
--	 * so let's just silently return upon failure.
--	 */
--	if (IS_ERR_OR_NULL(debugfs))
--		return;
--
--	ret = devm_add_action_or_reset(dev, ti_sn65dsi86_debugfs_remove, debugfs);
--	if (ret)
--		return;
--
--	debugfs_create_file("status", 0600, debugfs, pdata, &status_fops);
--}
--
- /* -----------------------------------------------------------------------------
-  * Auxiliary Devices (*not* AUX)
-  */
-@@ -1216,6 +1188,15 @@ static const struct drm_edid *ti_sn_bridge_edid_read(struct drm_bridge *bridge,
- 	return drm_edid_read_ddc(connector, &pdata->aux.ddc);
- }
- 
-+static void ti_sn65dsi86_debugfs_init(struct drm_bridge *bridge, struct dentry *root)
-+{
-+	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
-+	struct dentry *debugfs;
-+
-+	debugfs = debugfs_create_dir(dev_name(pdata->dev), root);
-+	debugfs_create_file("status", 0600, debugfs, pdata, &status_fops);
-+}
-+
- static const struct drm_bridge_funcs ti_sn_bridge_funcs = {
- 	.attach = ti_sn_bridge_attach,
- 	.detach = ti_sn_bridge_detach,
-@@ -1229,6 +1210,7 @@ static const struct drm_bridge_funcs ti_sn_bridge_funcs = {
- 	.atomic_reset = drm_atomic_helper_bridge_reset,
- 	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
- 	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
-+	.debugfs_init = ti_sn65dsi86_debugfs_init,
- };
- 
- static void ti_sn_bridge_parse_lanes(struct ti_sn65dsi86 *pdata,
-@@ -1937,8 +1919,6 @@ static int ti_sn65dsi86_probe(struct i2c_client *client)
- 	if (ret)
- 		return ret;
- 
--	ti_sn65dsi86_debugfs_init(pdata);
--
- 	/*
- 	 * Break ourselves up into a collection of aux devices. The only real
- 	 * motiviation here is to solve the chicken-and-egg problem of probe
--- 
-2.39.5
-
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -2425,7 +2425,7 @@ static int wx_alloc_page_pool(struct wx_
+ 	struct page_pool_params pp_params = {
+ 		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
+ 		.order = 0,
+-		.pool_size = rx_ring->size,
++		.pool_size = rx_ring->count,
+ 		.nid = dev_to_node(rx_ring->dev),
+ 		.dev = rx_ring->dev,
+ 		.dma_dir = DMA_FROM_DEVICE,
 
 
 
