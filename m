@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-159874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0BA7AF7B34
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:22:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4A6FAF7BAB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EC231891695
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 759791654E4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E30B2F3C1F;
-	Thu,  3 Jul 2025 15:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3527D2EACE1;
+	Thu,  3 Jul 2025 15:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbmN/M+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fq7UXCSh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B512F3C0E;
-	Thu,  3 Jul 2025 15:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E711D22069F;
+	Thu,  3 Jul 2025 15:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555630; cv=none; b=C8atNSknR6nYyCTw5XaEVKPhr8Kb+Bs4r9BCPIiqnpr31Rih6XSMTac+4x6QkMjmhxLM/F6J1/4/mqgxwdKOP59l/tE31BVblpGrAFDFiirIg3emgmnooV8zGilG0WzzERdR3rEEiOxDSO1RfTjmBNEBfsvfBSQJrSO8EYD0MJo=
+	t=1751555984; cv=none; b=SSdc2a2P1mRpNcjntk3JXzU0z+oJTmG3LGJeOiSyGjnMq6HPF4qLci4+IuSTH7huL0/K5hJ1QZOCSYee4yzykf4sf+EAO0d8ehAqqXQwU9EFgLU1obGLIcShdTqNWPN/23a9AXCHaI4cu76mZ6E+hhS35ukqYz22DU0ihhyFnnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555630; c=relaxed/simple;
-	bh=pxhMN8YVaeGHLPehtOXOr3AIecSnVVIqPb83IkRXcaE=;
+	s=arc-20240116; t=1751555984; c=relaxed/simple;
+	bh=A+fpRMKbp8mQ8gyUnPS+Zir3OyJWlSSR7iT2AFtesIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M4iwgNv53bUZWf9mZYxkvYj6wC6QENtu2fxEyqwPWTpuEj1Sl+DjO4wqAu4Tr5xnw7yq6XF94hxH4pAerwQE9uhIHTf4oZQxqtbWEDSyh1dbjGGxHSqAqKdeDSKmA4mw5bBQbnlYbPJNwNLh6XSpppLSpg9Iufsias7hVbh3VfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbmN/M+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A920C4CEE3;
-	Thu,  3 Jul 2025 15:13:49 +0000 (UTC)
+	 MIME-Version; b=J6Rs8uPFkolJ1e6QU8sXI4xCZXfsrSmP7E15FAf4pnE07el2OwSyCE61UV3KHafNlFc+wQZAPzdvhrnI7jX2l3t/JPkgsMQK8lgx1OYwHZvruF7AUIRUkHHafp88BsiOoI58gwr4CLnWULphqvQyPNMCuamXMcbxVRCSTvnEIqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fq7UXCSh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 725F8C4CEE3;
+	Thu,  3 Jul 2025 15:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555629;
-	bh=pxhMN8YVaeGHLPehtOXOr3AIecSnVVIqPb83IkRXcaE=;
+	s=korg; t=1751555983;
+	bh=A+fpRMKbp8mQ8gyUnPS+Zir3OyJWlSSR7iT2AFtesIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MbmN/M+BfGG709qq3orcKZ/+Og3rTMLxNrrrJKRJTJu4hmL76Re9EZlJxf08PSn8C
-	 HCPOPMctpSAdvNMTosb6UzxO3zVhMSiaGXgBx7NV5aArBhpUY2FvvkU65Y2EHp8k/6
-	 uNIsPwadWf8JWhNpDnVcMLRHsndYRVFlXuM0WLkk=
+	b=fq7UXCShcVJ6VegLzb6WmTPqfUgCmvCNwYjJXTKnKmbM5iTETF4HsKWHP/d13wUfx
+	 fcTH/LpsaeesoSHQdweARH8kn+6YGVdh7XUGKXBU1spVynEwrcOszjKEKUzcHfGRRR
+	 0gqJ/yDWGfSdIi4galm1tjcbVfl2TWIVaOb8Krxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Yan <felixonmars@archlinux.org>,
-	Eric Long <i@hack3r.moe>,
-	Jianfei Zhang <zhangjianfei3@gmail.com>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Minh Le <minhld139@gmail.com>,
-	Sicheng Zhu <Emmet_Z@outlook.com>,
-	Rong Zhang <i@rong.moe>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/139] platform/x86: ideapad-laptop: use usleep_range() for EC polling
+Subject: [PATCH 6.1 039/132] fs/jfs: consolidate sanity checking in dbMount
 Date: Thu,  3 Jul 2025 16:42:08 +0200
-Message-ID: <20250703143943.709711944@linuxfoundation.org>
+Message-ID: <20250703143940.960724428@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,129 +59,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Zhang <i@rong.moe>
+From: Dave Kleikamp <dave.kleikamp@oracle.com>
 
-[ Upstream commit 5808c34216954cd832bd4b8bc52dfa287049122b ]
+[ Upstream commit 0d250b1c52484d489e31df2cf9118b7c4bd49d31 ]
 
-It was reported that ideapad-laptop sometimes causes some recent (since
-2024) Lenovo ThinkBook models shut down when:
- - suspending/resuming
- - closing/opening the lid
- - (dis)connecting a charger
- - reading/writing some sysfs properties, e.g., fan_mode, touchpad
- - pressing down some Fn keys, e.g., Brightness Up/Down (Fn+F5/F6)
- - (seldom) loading the kmod
+Sanity checks have been added to dbMount as individual if clauses with
+identical error handling. Move these all into one clause.
 
-The issue has existed since the launch day of such models, and there
-have been some out-of-tree workarounds (see Link:) for the issue. One
-disables some functionalities, while another one simply shortens
-IDEAPAD_EC_TIMEOUT. The disabled functionalities have read_ec_data() in
-their call chains, which calls schedule() between each poll.
-
-It turns out that these models suffer from the indeterminacy of
-schedule() because of their low tolerance for being polled too
-frequently. Sometimes schedule() returns too soon due to the lack of
-ready tasks, causing the margin between two polls to be too short.
-In this case, the command is somehow aborted, and too many subsequent
-polls (they poll for "nothing!") may eventually break the state machine
-in the EC, resulting in a hard shutdown. This explains why shortening
-IDEAPAD_EC_TIMEOUT works around the issue - it reduces the total number
-of polls sent to the EC.
-
-Even when it doesn't lead to a shutdown, frequent polls may also disturb
-the ongoing operation and notably delay (+ 10-20ms) the availability of
-EC response. This phenomenon is unlikely to be exclusive to the models
-mentioned above, so dropping the schedule() manner should also slightly
-improve the responsiveness of various models.
-
-Fix these issues by migrating to usleep_range(150, 300). The interval is
-chosen to add some margin to the minimal 50us and considering EC
-responses are usually available after 150-2500us based on my test. It
-should be enough to fix these issues on all models subject to the EC bug
-without introducing latency on other models.
-
-Tested on ThinkBook 14 G7+ ASP and solved both issues. No regression was
-introduced in the test on a model without the EC bug (ThinkBook X IMH,
-thanks Eric).
-
-Link: https://github.com/ty2/ideapad-laptop-tb2024g6plus/commit/6c5db18c9e8109873c2c90a7d2d7f552148f7ad4
-Link: https://github.com/ferstar/ideapad-laptop-tb/commit/42d1e68e5009529d31bd23f978f636f79c023e80
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218771
-Fixes: 6a09f21dd1e2 ("ideapad: add ACPI helpers")
-Cc: stable@vger.kernel.org
-Tested-by: Felix Yan <felixonmars@archlinux.org>
-Tested-by: Eric Long <i@hack3r.moe>
-Tested-by: Jianfei Zhang <zhangjianfei3@gmail.com>
-Tested-by: Mingcong Bai <jeffbai@aosc.io>
-Tested-by: Minh Le <minhld139@gmail.com>
-Tested-by: Sicheng Zhu <Emmet_Z@outlook.com>
-Signed-off-by: Rong Zhang <i@rong.moe>
-Link: https://lore.kernel.org/r/20250525201833.37939-1-i@rong.moe
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Stable-dep-of: 37bfb464ddca ("jfs: validate AG parameters in dbMount() to prevent crashes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/ideapad-laptop.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ fs/jfs/jfs_dmap.c | 37 +++++++++----------------------------
+ 1 file changed, 9 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
-index db8256cde34aa..e84fcb444d872 100644
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -14,6 +14,7 @@
- #include <linux/bitops.h>
- #include <linux/bug.h>
- #include <linux/debugfs.h>
-+#include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/dmi.h>
- #include <linux/fb.h>
-@@ -265,6 +266,20 @@ static void ideapad_shared_exit(struct ideapad_private *priv)
-  */
- #define IDEAPAD_EC_TIMEOUT 200 /* in ms */
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 5e32526174e88..621f0d871af67 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -178,45 +178,26 @@ int dbMount(struct inode *ipbmap)
+ 	dbmp_le = (struct dbmap_disk *) mp->data;
+ 	bmp->db_mapsize = le64_to_cpu(dbmp_le->dn_mapsize);
+ 	bmp->db_nfree = le64_to_cpu(dbmp_le->dn_nfree);
+-
+ 	bmp->db_l2nbperpage = le32_to_cpu(dbmp_le->dn_l2nbperpage);
+-	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE ||
+-		bmp->db_l2nbperpage < 0) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
+-
+ 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
+-	if (!bmp->db_numag || bmp->db_numag > MAXAG) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
+-
+ 	bmp->db_maxlevel = le32_to_cpu(dbmp_le->dn_maxlevel);
+ 	bmp->db_maxag = le32_to_cpu(dbmp_le->dn_maxag);
+ 	bmp->db_agpref = le32_to_cpu(dbmp_le->dn_agpref);
+-	if (bmp->db_maxag >= MAXAG || bmp->db_maxag < 0 ||
+-		bmp->db_agpref >= MAXAG || bmp->db_agpref < 0) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
+-
+ 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
+ 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
+ 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
+-	if (!bmp->db_agwidth) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
+ 	bmp->db_agstart = le32_to_cpu(dbmp_le->dn_agstart);
+ 	bmp->db_agl2size = le32_to_cpu(dbmp_le->dn_agl2size);
+-	if (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG ||
+-	    bmp->db_agl2size < 0) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
  
-+/*
-+ * Some models (e.g., ThinkBook since 2024) have a low tolerance for being
-+ * polled too frequently. Doing so may break the state machine in the EC,
-+ * resulting in a hard shutdown.
-+ *
-+ * It is also observed that frequent polls may disturb the ongoing operation
-+ * and notably delay the availability of EC response.
-+ *
-+ * These values are used as the delay before the first poll and the interval
-+ * between subsequent polls to solve the above issues.
-+ */
-+#define IDEAPAD_EC_POLL_MIN_US 150
-+#define IDEAPAD_EC_POLL_MAX_US 300
-+
- static int eval_int(acpi_handle handle, const char *name, unsigned long *res)
- {
- 	unsigned long long result;
-@@ -381,7 +396,7 @@ static int read_ec_data(acpi_handle handle, unsigned long cmd, unsigned long *da
- 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
- 
- 	while (time_before(jiffies, end_jiffies)) {
--		schedule();
-+		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
- 
- 		err = eval_vpcr(handle, 1, &val);
- 		if (err)
-@@ -412,7 +427,7 @@ static int write_ec_cmd(acpi_handle handle, unsigned long cmd, unsigned long dat
- 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
- 
- 	while (time_before(jiffies, end_jiffies)) {
--		schedule();
-+		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
- 
- 		err = eval_vpcr(handle, 1, &val);
- 		if (err)
+-	if (((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
++	if ((bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE) ||
++	    (bmp->db_l2nbperpage < 0) ||
++	    !bmp->db_numag || (bmp->db_numag > MAXAG) ||
++	    (bmp->db_maxag >= MAXAG) || (bmp->db_maxag < 0) ||
++	    (bmp->db_agpref >= MAXAG) || (bmp->db_agpref < 0) ||
++	    !bmp->db_agwidth ||
++	    (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG) ||
++	    (bmp->db_agl2size < 0) ||
++	    ((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
+ 		err = -EINVAL;
+ 		goto err_release_metapage;
+ 	}
 -- 
 2.39.5
 
