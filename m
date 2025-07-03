@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-159988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C7CAF7BD5
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFCD3AF7A33
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4990E1CC0DA8
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:22:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 438BD4E08D0
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9201C68A6;
-	Thu,  3 Jul 2025 15:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374DD2E7649;
+	Thu,  3 Jul 2025 15:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9IalgkV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HqQfI4av"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA532222B2;
-	Thu,  3 Jul 2025 15:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D4115442C;
+	Thu,  3 Jul 2025 15:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556010; cv=none; b=O3fZYbcWkccmsGP/xaAFP9TSOe9950nv+HqPh3MzKLxzemoYsDCns5ZwTmU5volcWoJp7PBj8X4eusM/MSdLW0Kv05MpamcBVJecpBgSuN66itTEXk00PVHQspk0mWwU9Bv31VHLeP+yzcYLfKibRg9J3DKkycQAG4aoXm8L/8A=
+	t=1751555229; cv=none; b=duXMixY867XNMQyWqrZLkKyqNOyZs8kwMLS1AZKsN1c0cE0ZyKhLctyGdSkz9lUYuymgR/FU+/doI+jZZkbg4Y5UAraiCrtpnH5fBMVVKilp0lXNo7oyX7ih1RPPOLbn91YCeF9rq9Ou+rgwQ0O3/Z2CovoD7o4w/RbaJIp1yrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556010; c=relaxed/simple;
-	bh=OdDYLCxHRoCYb/2ZojYiTiHP5BmZnROViVhaQghPqaE=;
+	s=arc-20240116; t=1751555229; c=relaxed/simple;
+	bh=ajumfJV/mQRSGZTH+Z3lwWtvR6mtJ9WGs+4C0GmPCqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tod7rqHoZtwcLTVX6LXcXCCOTe4PFyWbXluHCnoHPs8cY/2e4sVFQQiJ9tMB7biGIku/51SXZ8+sf4aASw1gmzZpqf7zNBdH6Rv1gpGorNv6ojbYXQJdZeWVpVxWPDpQsuBLGgMZt8DN7fKZykHvSBx+gw1I5SUf7Uy7PDhv9kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9IalgkV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C536C4CEE3;
-	Thu,  3 Jul 2025 15:20:09 +0000 (UTC)
+	 MIME-Version; b=Oot4K0m0c6nDoTqKSoHudW/TGv/vqqRjo2N9Gs8JfWC9BXwA8QIwcxWfKeha+XaIMNrpIMIis6nbwejr97FRMCIzMJBleI1iiYQzNhh/LILxN4EBcXgq2YxgsfKAcSeBgKcFyfPAe/MjCobNdYBOD43JVFpttJdnUdvbKBGdQcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HqQfI4av; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9B4C4CEE3;
+	Thu,  3 Jul 2025 15:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556009;
-	bh=OdDYLCxHRoCYb/2ZojYiTiHP5BmZnROViVhaQghPqaE=;
+	s=korg; t=1751555228;
+	bh=ajumfJV/mQRSGZTH+Z3lwWtvR6mtJ9WGs+4C0GmPCqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u9IalgkVCftTJhUuURGQj60iPqc0KwngwAgBk9InFboya4JhHYTmk6DbzQ/ceGpp1
-	 OYzi9wRVyD9XSEtn8yyN94e5VAmt5lVb9zj7fPH0IF9jXJTbc5K9zfiuFT3nAfU5K1
-	 YB3TcoHvPRKc34yD5zO/HXkl+8k8GRDEzVEBZTSA=
+	b=HqQfI4avDUlyWv8bNrxfY3zsrlfJzmdnLGdCNRpz1HstHn9GTHcX9GymLLjY2EBlp
+	 GYnSlV4UiPtmGw1XTp4ePkj+ykDLp42Ko2KwjD9sugcZqdgGt7Lw3h6QBajARExFI4
+	 Pll8lGNIOxqQDX8C9IQriSLtOE9Gk/8OFraC22tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/132] media: imx-jpeg: Cleanup after an allocation error
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 6.15 215/263] drm/bridge: cdns-dsi: Fix phy de-init and flag it so
 Date: Thu,  3 Jul 2025 16:42:15 +0200
-Message-ID: <20250703143941.231824744@linuxfoundation.org>
+Message-ID: <20250703144013.008043425@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+From: Aradhya Bhatia <a-bhatia1@ti.com>
 
-[ Upstream commit 7500bb9cf164edbb2c8117d57620227b1a4a8369 ]
+commit fd2611c13f69cbbc6b81d9fc7502abf4f7031d21 upstream.
 
-When allocation failures are not cleaned up by the driver, further
-allocation errors will be false-positives, which will cause buffers to
-remain uninitialized and cause NULL pointer dereferences.
-Ensure proper cleanup of failed allocations to prevent these issues.
+The driver code doesn't have a Phy de-initialization path as yet, and so
+it does not clear the phy_initialized flag while suspending. This is a
+problem because after resume the driver looks at this flag to determine
+if a Phy re-initialization is required or not. It is in fact required
+because the hardware is resuming from a suspend, but the driver does not
+carry out any re-initialization causing the D-Phy to not work at all.
 
-Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
+Call the counterparts of phy_init() and phy_power_on(), that are
+phy_exit() and phy_power_off(), from _bridge_post_disable(), and clear
+the flags so that the Phy can be initialized again when required.
+
+Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Link: https://lore.kernel.org/r/20250329113925.68204-3-aradhya.bhatia@linux.dev
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-index 3602324b254a6..6e8d95a2406fd 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -553,6 +553,7 @@ static bool mxc_jpeg_alloc_slot_data(struct mxc_jpeg_dev *jpeg)
- 	return true;
- err:
- 	dev_err(jpeg->dev, "Could not allocate descriptors for slot %d", jpeg->slot_data.slot);
-+	mxc_jpeg_free_slot_data(jpeg);
+--- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+@@ -681,6 +681,11 @@ static void cdns_dsi_bridge_post_disable
+ 	struct cdns_dsi_input *input = bridge_to_cdns_dsi_input(bridge);
+ 	struct cdns_dsi *dsi = input_to_dsi(input);
  
- 	return false;
++	dsi->phy_initialized = false;
++	dsi->link_initialized = false;
++	phy_power_off(dsi->dphy);
++	phy_exit(dsi->dphy);
++
+ 	pm_runtime_put(dsi->base.dev);
  }
--- 
-2.39.5
-
+ 
+@@ -1153,7 +1158,6 @@ static int __maybe_unused cdns_dsi_suspe
+ 	clk_disable_unprepare(dsi->dsi_sys_clk);
+ 	clk_disable_unprepare(dsi->dsi_p_clk);
+ 	reset_control_assert(dsi->dsi_p_rst);
+-	dsi->link_initialized = false;
+ 	return 0;
+ }
+ 
 
 
 
