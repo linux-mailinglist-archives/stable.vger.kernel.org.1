@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3431AAF7B47
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:23:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4921AF7A76
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:13:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E920F3A2EE4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:17:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B25C93AE2D3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD78E2F005F;
-	Thu,  3 Jul 2025 15:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9FD2EA149;
+	Thu,  3 Jul 2025 15:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vL+as7uJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDyr+GGr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6B52F237B;
-	Thu,  3 Jul 2025 15:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299C515442C;
+	Thu,  3 Jul 2025 15:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555670; cv=none; b=Ccmrb9Tunow44eReFr2e4rlqQDH+3I5uqnjSAnHFJ2T1EvRLByZ4FcqitiV86DKCJkxybp5F4t3ELpj2zjksn4mohynSZU5+pKc8zXvTSG/Kf+aPfd59ciXiy26qDZugyPxMT2lltJFo3HJM3rGAGu+cWylE7zYiCL+j7KpE+is=
+	t=1751555370; cv=none; b=dgLj/wF9fq/UGLjUCv4Yy5YMPoi5l87JHIvuS3ErMgoaPhr1ubpkkFKKUQqzGc2mnXwtgvH3SH4JCSil6dlrszBThUufqooDDO3KKfFqRHiaa5eZuMsYpTWTHhfBLLKH1BtgNO6zqmEPoMj7gvvO60Ed7BfVVpFGAmJx/chc6WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555670; c=relaxed/simple;
-	bh=K8T0L81kcUFoAYM7zsFsTfYTefi0slOFj9dZLdN5kyQ=;
+	s=arc-20240116; t=1751555370; c=relaxed/simple;
+	bh=QWzDrCyIAY4pIaPXTyLHXx0TUIGD6Mk5r0eeGPTus0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V5EOgy6sXKYXGWijX82KPa0bUrIzxlC7J61ykZQSQj4jZ6ooxEB1l7ZBWfWKclAdgNJ/GGbx2EJmF5lz9L06muVdzeI9q/tgDF8btTP8WSovrcG1hd0sKm/XHWwpFWHDKSyMmnEt2/IZsVF8u69/V8ftbdLhgANHWwASt50EDro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vL+as7uJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7796C4CEE3;
-	Thu,  3 Jul 2025 15:14:29 +0000 (UTC)
+	 MIME-Version; b=IT0+XGZjOoSLbzqC/rTDU5wyddFpty5HWuB6sA/PGaUAIehg+swbaZKjyfSm9EQwG05Hh3r9oloH35y79AgIuVOuBrV4sb8de6Dh/ThdKi3TmzSKQXB3ObjJ+0j+tnDg4QqGjJW+Enf0rmRvvRkA6fFW0x8HPzPCkFICAV2xGTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDyr+GGr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A599DC4CEE3;
+	Thu,  3 Jul 2025 15:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555670;
-	bh=K8T0L81kcUFoAYM7zsFsTfYTefi0slOFj9dZLdN5kyQ=;
+	s=korg; t=1751555370;
+	bh=QWzDrCyIAY4pIaPXTyLHXx0TUIGD6Mk5r0eeGPTus0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vL+as7uJcdk0L1NQhvS8T04Jtaf4OZuailIKXNodi/Nnzmg5QDU/KOLxTyoZ/O9MZ
-	 +xkZjEXSnYmll2NO2pJi/md8T1bjQohid7ssKZzVK7kA38K5Y6BPr3dHSk2TTLY/9F
-	 DsTxagQy6gj5H8GVfZ66C4JMl6TN3UzxRNQ5mbjQ=
+	b=tDyr+GGr8daVdFI9XKMK+UyeOH7wVRkMiZXmr1Ds6hIauHwee7b3VSvcH8zleT2Xl
+	 UcnX+bXXYuc3I8yWUW3jMNU6wR5r+BmheJ/mG8L0BVXul+FA3NUKdcXr9SgUFGHNK5
+	 /koqaR/bUthricHRAJVca8gyLMw0FawzU+7VFdRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daan De Meyer <daan.j.demeyer@gmail.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/139] vsock/uapi: fix linux/vm_sockets.h userspace compilation errors
-Date: Thu,  3 Jul 2025 16:42:27 +0200
-Message-ID: <20250703143944.443226179@linuxfoundation.org>
+	Frank Min <Frank.Min@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.15 228/263] drm/amdgpu: Add kicker device detection
+Date: Thu,  3 Jul 2025 16:42:28 +0200
+Message-ID: <20250703144013.531309192@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Frank Min <Frank.Min@amd.com>
 
-[ Upstream commit 22bbc1dcd0d6785fb390c41f0dd5b5e218d23bdd ]
+commit 0bbf5fd86c585d437b75003f11365b324360a5d6 upstream.
 
-If a userspace application just include <linux/vm_sockets.h> will fail
-to build with the following errors:
+1. add kicker device list
+2. add kicker device checking helper function
 
-    /usr/include/linux/vm_sockets.h:182:39: error: invalid application of ‘sizeof’ to incomplete type ‘struct sockaddr’
-      182 |         unsigned char svm_zero[sizeof(struct sockaddr) -
-          |                                       ^~~~~~
-    /usr/include/linux/vm_sockets.h:183:39: error: ‘sa_family_t’ undeclared here (not in a function)
-      183 |                                sizeof(sa_family_t) -
-          |
-
-Include <sys/socket.h> for userspace (guarded by ifndef __KERNEL__)
-where `struct sockaddr` and `sa_family_t` are defined.
-We already do something similar in <linux/mptcp.h> and <linux/if.h>.
-
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Reported-by: Daan De Meyer <daan.j.demeyer@gmail.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20250623100053.40979-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Frank Min <Frank.Min@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 09aa2b408f4ab689c3541d22b0968de0392ee406)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/vm_sockets.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c |   17 +++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h |    6 ++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/include/uapi/linux/vm_sockets.h b/include/uapi/linux/vm_sockets.h
-index ed07181d4eff9..e05280e415228 100644
---- a/include/uapi/linux/vm_sockets.h
-+++ b/include/uapi/linux/vm_sockets.h
-@@ -17,6 +17,10 @@
- #ifndef _UAPI_VM_SOCKETS_H
- #define _UAPI_VM_SOCKETS_H
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
+@@ -30,6 +30,10 @@
  
-+#ifndef __KERNEL__
-+#include <sys/socket.h>        /* for struct sockaddr and sa_family_t */
-+#endif
+ #define AMDGPU_UCODE_NAME_MAX		(128)
+ 
++static const struct kicker_device kicker_device_list[] = {
++	{0x744B, 0x00},
++};
 +
- #include <linux/socket.h>
- #include <linux/types.h>
+ static void amdgpu_ucode_print_common_hdr(const struct common_firmware_header *hdr)
+ {
+ 	DRM_DEBUG("size_bytes: %u\n", le32_to_cpu(hdr->size_bytes));
+@@ -1384,6 +1388,19 @@ static const char *amdgpu_ucode_legacy_n
+ 	return NULL;
+ }
  
--- 
-2.39.5
-
++bool amdgpu_is_kicker_fw(struct amdgpu_device *adev)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(kicker_device_list); i++) {
++		if (adev->pdev->device == kicker_device_list[i].device &&
++			adev->pdev->revision == kicker_device_list[i].revision)
++		return true;
++	}
++
++	return false;
++}
++
+ void amdgpu_ucode_ip_version_decode(struct amdgpu_device *adev, int block_type, char *ucode_prefix, int len)
+ {
+ 	int maj, min, rev;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h
+@@ -602,6 +602,11 @@ struct amdgpu_firmware {
+ 	uint64_t fw_buf_mc;
+ };
+ 
++struct kicker_device{
++	unsigned short device;
++	u8 revision;
++};
++
+ void amdgpu_ucode_print_mc_hdr(const struct common_firmware_header *hdr);
+ void amdgpu_ucode_print_smc_hdr(const struct common_firmware_header *hdr);
+ void amdgpu_ucode_print_imu_hdr(const struct common_firmware_header *hdr);
+@@ -629,5 +634,6 @@ amdgpu_ucode_get_load_type(struct amdgpu
+ const char *amdgpu_ucode_name(enum AMDGPU_UCODE_ID ucode_id);
+ 
+ void amdgpu_ucode_ip_version_decode(struct amdgpu_device *adev, int block_type, char *ucode_prefix, int len);
++bool amdgpu_is_kicker_fw(struct amdgpu_device *adev);
+ 
+ #endif
 
 
 
