@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6167BAF7995
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:03:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF79AF780D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F5A64E4C08
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:00:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E0FF1C842DB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F222EE5EB;
-	Thu,  3 Jul 2025 15:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5C62EAB95;
+	Thu,  3 Jul 2025 14:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZQo87+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjrxDs3F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B0957C9F;
-	Thu,  3 Jul 2025 15:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0432E7649;
+	Thu,  3 Jul 2025 14:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554844; cv=none; b=bY+M3mq4n5FK73kpsXqh+IeA9BoY97xT52qMOpXF8YiG5OOn8FezVcwBGJEjWaAUI6pUHDa/B/lGlUjku05Ngf53Fj7SfzFPwo+INAVGnMe6TNMYpuAsGLhnHvuZ3M4BURftgJzulegOG61DdjAs6K5GE0hhLar+nVqNYR3N11Y=
+	t=1751553963; cv=none; b=KheNuKGG6JTb+EtYZijC6U89a3v7i3WdtfZ/04mq+Wxp94fP2mJjjMMnY6Ngkafp9O7rovFaOCobS9x3V+82WCFl8VhzCCjDdAXyytUjNqgObjBQ0QTlcOcobzdBC3nbg4/B5L7CnH59ci25avxPTcoC6smjvtVmXAIZYH0xEG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554844; c=relaxed/simple;
-	bh=aU3ifmTY+R2wuwQKFrS44KF3nqRTu6uaMnAR3TOFmig=;
+	s=arc-20240116; t=1751553963; c=relaxed/simple;
+	bh=N7WhwXzs20T7quzX5sq+scY5rr86HnSOdnYx7M82+b0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=brmr7OihZG10lDLS+0Y/PKRP1X9xyMtYwPEjgmFBeL3BLg4sp17HlfPh8ylBMa24LHuPu4QYcWqjma+tpMvhfyw+Ike6fyQQYcJSYsbpyxUgb9IqGWLEo6IGhEfxv+QNnYa972zWbgMobZn+regGgum3N6DiRJiaizV5Qh89I1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZQo87+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E620EC4CEE3;
-	Thu,  3 Jul 2025 15:00:43 +0000 (UTC)
+	 MIME-Version; b=tnnZUDa3+5hnpZc4DiDOxUEmu/s28jH6O8xPzanNXeQ9t33fRp2rQ+jLE7x9MkrdkKD/onj6neHxKeQ3Zp+Kn0wqdLAiV665YrRb+1v+H0P2F3HBA0/9tzOFCfjfsCchBDgaEiEv//jKE6ShDKqMJNzJyMIfjrVwOMoDiRkumRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjrxDs3F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F211DC4CEE3;
+	Thu,  3 Jul 2025 14:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554844;
-	bh=aU3ifmTY+R2wuwQKFrS44KF3nqRTu6uaMnAR3TOFmig=;
+	s=korg; t=1751553963;
+	bh=N7WhwXzs20T7quzX5sq+scY5rr86HnSOdnYx7M82+b0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZQo87+cCY/7SAtSFOveoFqzjRgCSnejgaAfUzs3yv4shtBHRb6H9Y0dg/sxvAcj4
-	 lxxuvehSsHp3jhvb4Yz9XZ2w2Lb8T7FS+mtAE/g55HWAC2lSBJ6UbBTuZgQ3AqTqz3
-	 zDIFEo1nxHqT7qferDz4UZmMzynEvLfcQA24Fg3E=
+	b=zjrxDs3FaljZsbX37cWKOYc6WJ4WLwv2DbwcgpICMwEyGv0ueOGpfGj5npmTS7Efa
+	 g+SaptMXX4ZCVDzjjjV7EPILzBQ3e7NrCLIArg6DFABMK8dZtVJzqnihu1z8/PsxqM
+	 iCys/v4S4DoEyTouUqofKhb1L7qF5olHc1SnCvpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Minas Harutyunyan <hminas@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 066/263] usb: typec: mux: do not return on EOPNOTSUPP in {mux, switch}_set
+Subject: [PATCH 6.12 038/218] usb: dwc2: also exit clock_gating when stopping udc while suspended
 Date: Thu,  3 Jul 2025 16:39:46 +0200
-Message-ID: <20250703144006.953220000@linuxfoundation.org>
+Message-ID: <20250703143957.471491113@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-[ Upstream commit 0f7bbef1794dc87141897f804e5871a293aa174b ]
+[ Upstream commit af076a41f8a28faf9ceb9dd2d88aef2c202ef39a ]
 
-Since the typec connectors can have many muxes or switches for different
-lanes (sbu, usb2, usb3) going into different modal states (usb2, usb3,
-audio, debug) all of them will be called on typec_switch_set and
-typec_mux_set. But not all of them will be handling the expected mode.
+It is possible that the gadget will be disabled, while the udc is
+suspended. When enabling the udc in that case, the clock gating
+will not be enabled again. Leaving the phy unclocked. Even when the
+udc is not enabled, connecting this powered but not clocked phy leads
+to enumeration errors on the host side.
 
-If one of the mux or switch will come back with EOPTNOSUPP this is no
-reason to stop running through the next ones. Therefor we skip this
-particular error value and continue calling the next.
+To ensure that the clock gating will be in an valid state, we ensure
+that the clock gating will be enabled before stopping the udc.
 
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250404-ml-topic-typec-mux-v1-1-22c0526381ba@pengutronix.de
+Acked-by: Minas Harutyunyan <hminas@synopsys.com>
+Link: https://lore.kernel.org/r/20250417-dwc2_clock_gating-v1-1-8ea7c4d53d73@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/mux.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/dwc2/gadget.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/usb/typec/mux.c b/drivers/usb/typec/mux.c
-index 49926d6e72c71..182c902c42f61 100644
---- a/drivers/usb/typec/mux.c
-+++ b/drivers/usb/typec/mux.c
-@@ -214,7 +214,7 @@ int typec_switch_set(struct typec_switch *sw,
- 		sw_dev = sw->sw_devs[i];
+diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
+index bd4c788f03bc1..d3d0d75ab1f59 100644
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -4604,6 +4604,12 @@ static int dwc2_hsotg_udc_stop(struct usb_gadget *gadget)
+ 	if (!hsotg)
+ 		return -ENODEV;
  
- 		ret = sw_dev->set(sw_dev, orientation);
--		if (ret)
-+		if (ret && ret != -EOPNOTSUPP)
- 			return ret;
- 	}
- 
-@@ -378,7 +378,7 @@ int typec_mux_set(struct typec_mux *mux, struct typec_mux_state *state)
- 		mux_dev = mux->mux_devs[i];
- 
- 		ret = mux_dev->set(mux_dev, state);
--		if (ret)
-+		if (ret && ret != -EOPNOTSUPP)
- 			return ret;
- 	}
- 
++	/* Exit clock gating when driver is stopped. */
++	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
++	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
++		dwc2_gadget_exit_clock_gating(hsotg, 0);
++	}
++
+ 	/* all endpoints should be shutdown */
+ 	for (ep = 1; ep < hsotg->num_of_eps; ep++) {
+ 		if (hsotg->eps_in[ep])
 -- 
 2.39.5
 
