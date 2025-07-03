@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5AAAF7985
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:02:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF303AF77EF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA1E518884F4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:58:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EC225662B5
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE782E7BBE;
-	Thu,  3 Jul 2025 14:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F892EBB8F;
+	Thu,  3 Jul 2025 14:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmgD4kDQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4iJuLD9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1A72EA49E;
-	Thu,  3 Jul 2025 14:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E4C2E62CD;
+	Thu,  3 Jul 2025 14:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554688; cv=none; b=qwbgptX7YSzmyrQGBK7I0FoNk8JQhdDZy2QlQFmeUabmTTQ7RyP1AdGmLkgp/3AVzdf1xC/blnbcG/1g1c1IeGLhvfY0ikTgMerHaXQAibfrqkcl4kffItpvi7VuiR/3nNeWdEcoZnbLBrECvPusHMPb03nX0wCwXmuOd9TmM3w=
+	t=1751553903; cv=none; b=UqS7XFlYNoI9OCXvn4ufDwQDW+6HPORBl7NaxFJWTLcd/Z0wvhMh2ki/7riHU/TVR0YRVlyHV8ogiA4BhR36S0GbJlhkuplTnPGDeGx5OzUHAWn+ohgAnlmVaXrqfKQr8XCOQ7anEv/KyKdk7OyDRSolseWIwOljYJhqC3gOzRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554688; c=relaxed/simple;
-	bh=UbAo0ZAU+URQaJIPKXZEijKLqaJ9y0DKQFO09yMFNSU=;
+	s=arc-20240116; t=1751553903; c=relaxed/simple;
+	bh=cMdVmCywmr8AMcHfBYfn5X0XGBKzndi3o8A55Ciwfl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B3LuHpXQbTix0TvdgOL3Wucd1hIccIXMOf4wX6z9gQ5scB9H2lnyN7/FgifDd+xc7YDHtsCA4QJV1OhEwroXNKK5yIJGHo5t0wzKZQgRFY/4V4kZJrDxc6dUsooSkbphHRSPvTW+D3iFzTdUcCuE9Clswa8KlQXbFs2fSJCo17g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmgD4kDQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C845EC4CEED;
-	Thu,  3 Jul 2025 14:58:07 +0000 (UTC)
+	 MIME-Version; b=e24+5A0ds3k+HXuU8+CeLcuAypfPdD2AdMi5hZ2+gxtT4E9Phb31FHYyrxWDttMd6nouuzA7YN10ALZGvj1CCqiog3EKZpFMMYhB9dwAEcU74bFCnuanp9udl5PBpRvfYrDzYvRWqqCr1Ub8u3eE1qBa290ysA2YKVmswpzx9rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4iJuLD9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E21BC4CEED;
+	Thu,  3 Jul 2025 14:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554688;
-	bh=UbAo0ZAU+URQaJIPKXZEijKLqaJ9y0DKQFO09yMFNSU=;
+	s=korg; t=1751553903;
+	bh=cMdVmCywmr8AMcHfBYfn5X0XGBKzndi3o8A55Ciwfl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YmgD4kDQgVtzaTmcx+X2WR4GSh77dZVtwsbOgEuFujy70RdCiUk8LRCq1ZI3N+cxv
-	 aGSU0+y/qDyr75cPnfwGOFD1BJDYEC7Km7o4GWR42aF0RJGMtVcqnhSL8AWVVY/rR0
-	 Gy3VR2jqYCFCm70X6V/l7gn/xHRTZQtZuZOkzqSs=
+	b=p4iJuLD9j0caN/KBHKMaGZ3/j6y7Nad3LKME3MCB/u/scnmIkCfQnsMpFox93/hqO
+	 kwTju8B7MZh53YCJe7PVX8rPa9yUYbWdKst97nmPeztf9Tmch+rQhmZuaOVOnR1fxS
+	 EDe+pV2KtxEhtU1Rz+ADli1fv87ojyUqgZwrhT+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Rudraksha Gupta <guptarud@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 047/263] um: use proper care when taking mmap lock during segfault
+Subject: [PATCH 6.12 019/218] rust: arm: fix unknown (to Clang) argument -mno-fdpic
 Date: Thu,  3 Jul 2025 16:39:27 +0200
-Message-ID: <20250703144006.191011222@linuxfoundation.org>
+Message-ID: <20250703143956.727099591@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,179 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Rudraksha Gupta <guptarud@gmail.com>
 
-[ Upstream commit 6767e8784cd2e8b386a62330ea6864949d983a3e ]
+[ Upstream commit 977c4308ee4270cf46e2c66b37de8e04670daa0c ]
 
-Segfaults can occur at times where the mmap lock cannot be taken. If
-that happens the segfault handler may not be able to take the mmap lock.
+Currently rust on arm fails to compile due to '-mno-fdpic'. This flag
+disables a GCC feature that we don't want for kernel builds, so let's
+skip it as it doesn't apply to Clang.
 
-Fix the code to use the same approach as most other architectures.
-Unfortunately, this requires copying code from mm/memory.c and modifying
-it slightly as UML does not have exception tables.
+    UPD     include/generated/asm-offsets.h
+    CALL    scripts/checksyscalls.sh
+    RUSTC L rust/core.o
+    BINDGEN rust/bindings/bindings_generated.rs
+    BINDGEN rust/bindings/bindings_helpers_generated.rs
+    CC      rust/helpers/helpers.o
+    Unable to generate bindings: clang diagnosed error: error: unknown argument: '-mno-fdpic'
+    make[2]: *** [rust/Makefile:369: rust/bindings/bindings_helpers_generated.rs] Error 1
+    make[2]: *** Deleting file 'rust/bindings/bindings_helpers_generated.rs'
+    make[2]: *** Waiting for unfinished jobs....
+    Unable to generate bindings: clang diagnosed error: error: unknown argument: '-mno-fdpic'
+    make[2]: *** [rust/Makefile:349: rust/bindings/bindings_generated.rs] Error 1
+    make[2]: *** Deleting file 'rust/bindings/bindings_generated.rs'
+    make[1]: *** [/home/pmos/build/src/linux-next-next-20250521/Makefile:1285: prepare] Error 2
+    make: *** [Makefile:248: __sub-make] Error 2
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Link: https://patch.msgid.link/20250408074524.300153-2-benjamin@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Naresh provided the draft diff [1].
+
+  Ben explained [2]:
+
+    FDPIC is only relevant with no-MMU targets, and then only for userspace.
+    When configured for the arm-*-uclinuxfdpiceabi target, GCC enables FDPIC
+    by default to facilitate compiling userspace programs. FDPIC is never
+    used for the kernel, and we pass -mno-fdpic when building the kernel to
+    override the default and make sure FDPIC is disabled.
+
+  and [3]:
+
+    -mno-fdpic disables a GCC feature that we don't want for kernel builds.
+    clang does not support this feature, so it always behaves as though
+    -mno-fdpic is passed. Therefore, it should be fine to mix the two, at
+    least as far as FDPIC is concerned.
+
+  [1] https://lore.kernel.org/rust-for-linux/CA+G9fYt4otQK4pHv8pJBW9e28yHSGCDncKquwuJiJ_1ou0pq0w@mail.gmail.com/
+  [2] https://lore.kernel.org/rust-for-linux/aAKrq2InExQk7f_k@dell-precision-5540/
+  [3] https://lore.kernel.org/rust-for-linux/aAo_F_UP1Gd4jHlZ@dell-precision-5540/
+
+    - Miguel ]
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/all/CA+G9fYvOanQBYXKSg7C6EU30k8sTRC0JRPJXYu7wWK51w38QUQ@mail.gmail.com/
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Acked-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
+Link: https://lore.kernel.org/r/20250522-rust-mno-fdpic-arm-fix-v2-1-a6f691d9c198@gmail.com
+[ Reworded title. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/trap.c | 129 ++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 117 insertions(+), 12 deletions(-)
+ rust/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/um/kernel/trap.c b/arch/um/kernel/trap.c
-index ef2272e92a432..8a2e68d07de61 100644
---- a/arch/um/kernel/trap.c
-+++ b/arch/um/kernel/trap.c
-@@ -18,6 +18,122 @@
- #include <skas.h>
- #include <arch.h>
+diff --git a/rust/Makefile b/rust/Makefile
+index 93650b2ee7d57..b8b7f817c48e4 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -238,7 +238,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+ 	-fzero-call-used-regs=% -fno-stack-clash-protection \
+ 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
+ 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
+-	-fzero-init-padding-bits=% \
++	-fzero-init-padding-bits=% -mno-fdpic \
+ 	--param=% --param asan-%
  
-+/*
-+ * NOTE: UML does not have exception tables. As such, this is almost a copy
-+ * of the code in mm/memory.c, only adjusting the logic to simply check whether
-+ * we are coming from the kernel instead of doing an additional lookup in the
-+ * exception table.
-+ * We can do this simplification because we never get here if the exception was
-+ * fixable.
-+ */
-+static inline bool get_mmap_lock_carefully(struct mm_struct *mm, bool is_user)
-+{
-+	if (likely(mmap_read_trylock(mm)))
-+		return true;
-+
-+	if (!is_user)
-+		return false;
-+
-+	return !mmap_read_lock_killable(mm);
-+}
-+
-+static inline bool mmap_upgrade_trylock(struct mm_struct *mm)
-+{
-+	/*
-+	 * We don't have this operation yet.
-+	 *
-+	 * It should be easy enough to do: it's basically a
-+	 *    atomic_long_try_cmpxchg_acquire()
-+	 * from RWSEM_READER_BIAS -> RWSEM_WRITER_LOCKED, but
-+	 * it also needs the proper lockdep magic etc.
-+	 */
-+	return false;
-+}
-+
-+static inline bool upgrade_mmap_lock_carefully(struct mm_struct *mm, bool is_user)
-+{
-+	mmap_read_unlock(mm);
-+	if (!is_user)
-+		return false;
-+
-+	return !mmap_write_lock_killable(mm);
-+}
-+
-+/*
-+ * Helper for page fault handling.
-+ *
-+ * This is kind of equivalend to "mmap_read_lock()" followed
-+ * by "find_extend_vma()", except it's a lot more careful about
-+ * the locking (and will drop the lock on failure).
-+ *
-+ * For example, if we have a kernel bug that causes a page
-+ * fault, we don't want to just use mmap_read_lock() to get
-+ * the mm lock, because that would deadlock if the bug were
-+ * to happen while we're holding the mm lock for writing.
-+ *
-+ * So this checks the exception tables on kernel faults in
-+ * order to only do this all for instructions that are actually
-+ * expected to fault.
-+ *
-+ * We can also actually take the mm lock for writing if we
-+ * need to extend the vma, which helps the VM layer a lot.
-+ */
-+static struct vm_area_struct *
-+um_lock_mm_and_find_vma(struct mm_struct *mm,
-+			unsigned long addr, bool is_user)
-+{
-+	struct vm_area_struct *vma;
-+
-+	if (!get_mmap_lock_carefully(mm, is_user))
-+		return NULL;
-+
-+	vma = find_vma(mm, addr);
-+	if (likely(vma && (vma->vm_start <= addr)))
-+		return vma;
-+
-+	/*
-+	 * Well, dang. We might still be successful, but only
-+	 * if we can extend a vma to do so.
-+	 */
-+	if (!vma || !(vma->vm_flags & VM_GROWSDOWN)) {
-+		mmap_read_unlock(mm);
-+		return NULL;
-+	}
-+
-+	/*
-+	 * We can try to upgrade the mmap lock atomically,
-+	 * in which case we can continue to use the vma
-+	 * we already looked up.
-+	 *
-+	 * Otherwise we'll have to drop the mmap lock and
-+	 * re-take it, and also look up the vma again,
-+	 * re-checking it.
-+	 */
-+	if (!mmap_upgrade_trylock(mm)) {
-+		if (!upgrade_mmap_lock_carefully(mm, is_user))
-+			return NULL;
-+
-+		vma = find_vma(mm, addr);
-+		if (!vma)
-+			goto fail;
-+		if (vma->vm_start <= addr)
-+			goto success;
-+		if (!(vma->vm_flags & VM_GROWSDOWN))
-+			goto fail;
-+	}
-+
-+	if (expand_stack_locked(vma, addr))
-+		goto fail;
-+
-+success:
-+	mmap_write_downgrade(mm);
-+	return vma;
-+
-+fail:
-+	mmap_write_unlock(mm);
-+	return NULL;
-+}
-+
- /*
-  * Note this is constrained to return 0, -EFAULT, -EACCES, -ENOMEM by
-  * segv().
-@@ -44,21 +160,10 @@ int handle_page_fault(unsigned long address, unsigned long ip,
- 	if (is_user)
- 		flags |= FAULT_FLAG_USER;
- retry:
--	mmap_read_lock(mm);
--	vma = find_vma(mm, address);
--	if (!vma)
--		goto out;
--	if (vma->vm_start <= address)
--		goto good_area;
--	if (!(vma->vm_flags & VM_GROWSDOWN))
--		goto out;
--	if (is_user && !ARCH_IS_STACKGROW(address))
--		goto out;
--	vma = expand_stack(mm, address);
-+	vma = um_lock_mm_and_find_vma(mm, address, is_user);
- 	if (!vma)
- 		goto out_nosemaphore;
- 
--good_area:
- 	*code_out = SEGV_ACCERR;
- 	if (is_write) {
- 		if (!(vma->vm_flags & VM_WRITE))
+ # Derived from `scripts/Makefile.clang`.
 -- 
 2.39.5
 
