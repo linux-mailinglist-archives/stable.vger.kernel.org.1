@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-160037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180B2AF7C2D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:32:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C2BAF7947
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F74B1CA3FD0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE060188E173
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FAB82EE60E;
-	Thu,  3 Jul 2025 15:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253322EF662;
+	Thu,  3 Jul 2025 14:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Ngce2n1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAQSVR9T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DB623A99E;
-	Thu,  3 Jul 2025 15:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C422E7BB6;
+	Thu,  3 Jul 2025 14:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556168; cv=none; b=X8aaL35ApWV58p3nN3UNsEg+O5oPuIXbOmeQNR8SM0v2gRgg/iN0zRZ0trVidcRRgSUx28ZHVmJ8NAstPRG32LWK7ldWl+AoEWj8Erc7h6Nv/J0FMiLZlwiThTRv30hmG8rCb6/xggvnlWiw1gcD3PLf2b428nVegmfTCrqU1m8=
+	t=1751554500; cv=none; b=bmScGmPJdxdhymRsC1BkL8QcG1hF23D4oPLVfbqQ0GbD0Fc1yOUWfPbawg+ewtzhxndLXtbwKL8tY70e1Ixj9+XflE/xZOSW/Q32MqlfPGt3+qOeXjyLkHXNFCgr9r5q4l2+bOuoO1gwNkLAU/ZrsHTtUtJMht3SaB5K7ryr4hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556168; c=relaxed/simple;
-	bh=DTueafincTHyhxM4Q3gt/NBNXIt9+G5O27Pf3BRIyXE=;
+	s=arc-20240116; t=1751554500; c=relaxed/simple;
+	bh=0ZNedpu9aeENyeEqy+z9lN8hrpKPGoad/cZ0o0XVAYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7lFFM6Ia2P4bzbKSwUrfepe/3Um7rgTH3gv1ORJ5NVXKL/dTL8N4NRq8j8mPsZjz+NbSo9z+UEv6745Qk5W6UnraUejwvzSjYAygfhGeSul4Jy1EtI0qKd3C+WLXDctY+AE3VzG4nd04iq/20Gq9GqPHvUN9T4zCssugH36CuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Ngce2n1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4438AC4CEE3;
-	Thu,  3 Jul 2025 15:22:47 +0000 (UTC)
+	 MIME-Version; b=rFlHyiwQLw6aYEMY1eBsSfnACesq1svhzzJcpMKfyxb7XxVh0i5H+lhZtgLNJYS6wVsJWQoLNLJuYz200uGc3TfFGnqMyxrEfvpfI+Atjrfx2jBlHEo8AHhOQYiIR2Bxb7YrHRtOYdiJuhYsAiVoEwq1CbSwOdnboTQIu/8GO5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAQSVR9T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148B8C4CEE3;
+	Thu,  3 Jul 2025 14:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556167;
-	bh=DTueafincTHyhxM4Q3gt/NBNXIt9+G5O27Pf3BRIyXE=;
+	s=korg; t=1751554500;
+	bh=0ZNedpu9aeENyeEqy+z9lN8hrpKPGoad/cZ0o0XVAYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Ngce2n1qo2poMT+9Rm3ova4GIFf2BjAMXWItq80Q4MpZarBPd04PbGj7YVlzkfxm
-	 Diar8BvlV3fChpE6JvMzYPOGGD2YG/Oft61dVK0QdZgmDH0H7YzD2O1mnK3j+Lp3jb
-	 M7HobQfZ9hTYZB4wmE0DGBW2tfw4onSvq/P6xvUE=
+	b=qAQSVR9T+/PGeiKjCEi9MCXBDZs2/0JRawFuz8k/RdOlHI9Qy1GHipU3S3udl41gR
+	 8986C4ccG71ekXW4IfnQvvmtFhRaXTR9UKtnYkT8PlXXBrgKHx9OgTiYwl5c2pX01E
+	 2g7+aoonwAlnzppJIHzYP4ArrWIyAV4/8IzJjpdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Helge Deller <deller@gmx.de>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-parisc@vger.kernel.org,
+	Andres Traumann <andres.traumann.01@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/132] tty: vt: sanitize arguments of consw::con_clear()
-Date: Thu,  3 Jul 2025 16:42:35 +0200
-Message-ID: <20250703143942.004087736@linuxfoundation.org>
+Subject: [PATCH 6.12 208/218] ALSA: hda/realtek: Bass speaker fixup for ASUS UM5606KA
+Date: Thu,  3 Jul 2025 16:42:36 +0200
+Message-ID: <20250703144004.535367227@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,315 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Andres Traumann <andres.traumann.01@gmail.com>
 
-[ Upstream commit 559f01a0ee6d924c6fec3eaf6a5b078b15e71070 ]
+[ Upstream commit be8cd366beb80c709adbc7688ee72750f5aee3ff ]
 
-In consw::con_clear():
-* Height is always 1, so drop it.
-* Offsets and width are always unsigned values, so re-type them as such.
+This patch applies the ALC294 bass speaker fixup (ALC294_FIXUP_BASS_SPEAKER_15),
+previously introduced in commit a7df7f909cec ("ALSA: hda: improve bass
+speaker support for ASUS Zenbook UM5606WA"), to the ASUS Zenbook UM5606KA.
+This hardware configuration matches ASUS Zenbook UM5606WA, where DAC NID
+0x06 was removed from the bass speaker (NID 0x15), routing both speaker
+pins to DAC NID 0x03.
 
-This needs a new __fbcon_clear() in the fbcon code to still handle
-height which might not be 1 when called internally.
+This resolves the bass speaker routing issue, ensuring correct audio
+output on ASUS UM5606KA.
 
-Note that tests for negative count/width are left in place -- they are
-taken care of in the next patches.
-
-And document the hook.
-
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-parisc@vger.kernel.org
-Tested-by: Helge Deller <deller@gmx.de> # parisc STI console
-Link: https://lore.kernel.org/r/20240122110401.7289-22-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 03bcbbb3995b ("dummycon: Trigger redraw when switching consoles with deferred takeover")
+Signed-off-by: Andres Traumann <andres.traumann.01@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250325102535.8172-1-andres.traumann.01@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vt/vt.c                 |  2 +-
- drivers/video/console/dummycon.c    |  4 ++--
- drivers/video/console/mdacon.c      | 15 +++++---------
- drivers/video/console/newport_con.c |  6 +++---
- drivers/video/console/sticon.c      |  8 ++++----
- drivers/video/console/vgacon.c      |  4 ++--
- drivers/video/fbdev/core/fbcon.c    | 32 +++++++++++++++++------------
- include/linux/console.h             |  5 +++--
- 8 files changed, 39 insertions(+), 37 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index cca448ea758b8..609d2bac58d0b 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -1628,7 +1628,7 @@ static void csi_X(struct vc_data *vc, unsigned int vpar)
- 	vc_uniscr_clear_line(vc, vc->state.x, count);
- 	scr_memsetw((unsigned short *)vc->vc_pos, vc->vc_video_erase_char, 2 * count);
- 	if (con_should_update(vc))
--		vc->vc_sw->con_clear(vc, vc->state.y, vc->state.x, 1, count);
-+		vc->vc_sw->con_clear(vc, vc->state.y, vc->state.x, count);
- 	vc->vc_need_wrap = 0;
- }
- 
-diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
-index 9a19eb72a18b9..6918014b02408 100644
---- a/drivers/video/console/dummycon.c
-+++ b/drivers/video/console/dummycon.c
-@@ -108,8 +108,8 @@ static void dummycon_init(struct vc_data *vc, bool init)
- }
- 
- static void dummycon_deinit(struct vc_data *vc) { }
--static void dummycon_clear(struct vc_data *vc, int sy, int sx, int height,
--			   int width) { }
-+static void dummycon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
-+			   unsigned int width) { }
- static void dummycon_cursor(struct vc_data *vc, int mode) { }
- 
- static bool dummycon_scroll(struct vc_data *vc, unsigned int top,
-diff --git a/drivers/video/console/mdacon.c b/drivers/video/console/mdacon.c
-index c5b255c968794..1ddbb6cd5b0ca 100644
---- a/drivers/video/console/mdacon.c
-+++ b/drivers/video/console/mdacon.c
-@@ -442,23 +442,18 @@ static void mdacon_putcs(struct vc_data *c, const unsigned short *s,
- 	}
- }
- 
--static void mdacon_clear(struct vc_data *c, int y, int x, 
--			  int height, int width)
-+static void mdacon_clear(struct vc_data *c, unsigned int y, unsigned int x,
-+			 unsigned int width)
- {
- 	u16 *dest = mda_addr(x, y);
- 	u16 eattr = mda_convert_attr(c->vc_video_erase_char);
- 
--	if (width <= 0 || height <= 0)
-+	if (width <= 0)
- 		return;
- 
--	if (x==0 && width==mda_num_columns) {
--		scr_memsetw(dest, eattr, height*width*2);
--	} else {
--		for (; height > 0; height--, dest+=mda_num_columns)
--			scr_memsetw(dest, eattr, width*2);
--	}
-+	scr_memsetw(dest, eattr, width * 2);
- }
--                        
-+
- static int mdacon_switch(struct vc_data *c)
- {
- 	return 1;	/* redrawing needed */
-diff --git a/drivers/video/console/newport_con.c b/drivers/video/console/newport_con.c
-index 4b7161a81b2f6..5dac00c825946 100644
---- a/drivers/video/console/newport_con.c
-+++ b/drivers/video/console/newport_con.c
-@@ -346,12 +346,12 @@ static void newport_deinit(struct vc_data *c)
- 	}
- }
- 
--static void newport_clear(struct vc_data *vc, int sy, int sx, int height,
--			  int width)
-+static void newport_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
-+			  unsigned int width)
- {
- 	int xend = ((sx + width) << 3) - 1;
- 	int ystart = ((sy << 4) + topscan) & 0x3ff;
--	int yend = (((sy + height) << 4) + topscan - 1) & 0x3ff;
-+	int yend = (((sy + 1) << 4) + topscan - 1) & 0x3ff;
- 
- 	if (logo_active)
- 		return;
-diff --git a/drivers/video/console/sticon.c b/drivers/video/console/sticon.c
-index 10302df885147..58e983b18f1f4 100644
---- a/drivers/video/console/sticon.c
-+++ b/drivers/video/console/sticon.c
-@@ -299,13 +299,13 @@ static void sticon_deinit(struct vc_data *c)
- 	sticon_set_def_font(i, NULL);
- }
- 
--static void sticon_clear(struct vc_data *conp, int sy, int sx, int height,
--			 int width)
-+static void sticon_clear(struct vc_data *conp, unsigned int sy, unsigned int sx,
-+			 unsigned int width)
- {
--    if (!height || !width)
-+    if (!width)
- 	return;
- 
--    sti_clear(sticon_sti, sy, sx, height, width,
-+    sti_clear(sticon_sti, sy, sx, 1, width,
- 	      conp->vc_video_erase_char, font_data[conp->vc_num]);
- }
- 
-diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
-index 45c611cfce292..6998e28441c97 100644
---- a/drivers/video/console/vgacon.c
-+++ b/drivers/video/console/vgacon.c
-@@ -1166,8 +1166,8 @@ static bool vgacon_scroll(struct vc_data *c, unsigned int t, unsigned int b,
-  *  The console `switch' structure for the VGA based console
-  */
- 
--static void vgacon_clear(struct vc_data *vc, int sy, int sx, int height,
--			 int width) { }
-+static void vgacon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
-+			 unsigned int width) { }
- static void vgacon_putc(struct vc_data *vc, int c, int ypos, int xpos) { }
- static void vgacon_putcs(struct vc_data *vc, const unsigned short *s,
- 			 int count, int ypos, int xpos) { }
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 3ab08af9cb416..3fd76dc6010b4 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -1240,8 +1240,8 @@ static void fbcon_deinit(struct vc_data *vc)
-  *  restriction is simplicity & efficiency at the moment.
-  */
- 
--static void fbcon_clear(struct vc_data *vc, int sy, int sx, int height,
--			int width)
-+static void __fbcon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
-+			  unsigned int height, unsigned int width)
- {
- 	struct fb_info *info = fbcon_info_from_console(vc->vc_num);
- 	struct fbcon_ops *ops = info->fbcon_par;
-@@ -1280,6 +1280,12 @@ static void fbcon_clear(struct vc_data *vc, int sy, int sx, int height,
- 		ops->clear(vc, info, real_y(p, sy), sx, height, width, fg, bg);
- }
- 
-+static void fbcon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
-+			unsigned int width)
-+{
-+	__fbcon_clear(vc, sy, sx, 1, width);
-+}
-+
- static void fbcon_putcs(struct vc_data *vc, const unsigned short *s,
- 			int count, int ypos, int xpos)
- {
-@@ -1768,7 +1774,7 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
- 		case SCROLL_MOVE:
- 			fbcon_redraw_blit(vc, info, p, t, b - t - count,
- 				     count);
--			fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
-+			__fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
- 			scr_memsetw((unsigned short *) (vc->vc_origin +
- 							vc->vc_size_row *
- 							(b - count)),
-@@ -1791,7 +1797,7 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
- 					    b - t - count, vc->vc_cols);
- 			else
- 				goto redraw_up;
--			fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
-+			__fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
- 			break;
- 
- 		case SCROLL_PAN_REDRAW:
-@@ -1809,7 +1815,7 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
- 							  vc->vc_rows - b, b);
- 			} else
- 				fbcon_redraw_move(vc, p, t + count, b - t - count, t);
--			fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
-+			__fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
- 			break;
- 
- 		case SCROLL_PAN_MOVE:
-@@ -1832,14 +1838,14 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
- 					    b - t - count, vc->vc_cols);
- 			else
- 				goto redraw_up;
--			fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
-+			__fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
- 			break;
- 
- 		case SCROLL_REDRAW:
- 		      redraw_up:
- 			fbcon_redraw(vc, p, t, b - t - count,
- 				     count * vc->vc_cols);
--			fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
-+			__fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
- 			scr_memsetw((unsigned short *) (vc->vc_origin +
- 							vc->vc_size_row *
- 							(b - count)),
-@@ -1856,7 +1862,7 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
- 		case SCROLL_MOVE:
- 			fbcon_redraw_blit(vc, info, p, b - 1, b - t - count,
- 				     -count);
--			fbcon_clear(vc, t, 0, count, vc->vc_cols);
-+			__fbcon_clear(vc, t, 0, count, vc->vc_cols);
- 			scr_memsetw((unsigned short *) (vc->vc_origin +
- 							vc->vc_size_row *
- 							t),
-@@ -1879,7 +1885,7 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
- 					    b - t - count, vc->vc_cols);
- 			else
- 				goto redraw_down;
--			fbcon_clear(vc, t, 0, count, vc->vc_cols);
-+			__fbcon_clear(vc, t, 0, count, vc->vc_cols);
- 			break;
- 
- 		case SCROLL_PAN_MOVE:
-@@ -1901,7 +1907,7 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
- 					    b - t - count, vc->vc_cols);
- 			else
- 				goto redraw_down;
--			fbcon_clear(vc, t, 0, count, vc->vc_cols);
-+			__fbcon_clear(vc, t, 0, count, vc->vc_cols);
- 			break;
- 
- 		case SCROLL_PAN_REDRAW:
-@@ -1918,14 +1924,14 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
- 					fbcon_redraw_move(vc, p, count, t, 0);
- 			} else
- 				fbcon_redraw_move(vc, p, t, b - t - count, t + count);
--			fbcon_clear(vc, t, 0, count, vc->vc_cols);
-+			__fbcon_clear(vc, t, 0, count, vc->vc_cols);
- 			break;
- 
- 		case SCROLL_REDRAW:
- 		      redraw_down:
- 			fbcon_redraw(vc, p, b - 1, b - t - count,
- 				     -count * vc->vc_cols);
--			fbcon_clear(vc, t, 0, count, vc->vc_cols);
-+			__fbcon_clear(vc, t, 0, count, vc->vc_cols);
- 			scr_memsetw((unsigned short *) (vc->vc_origin +
- 							vc->vc_size_row *
- 							t),
-@@ -2204,7 +2210,7 @@ static void fbcon_generic_blank(struct vc_data *vc, struct fb_info *info,
- 
- 		oldc = vc->vc_video_erase_char;
- 		vc->vc_video_erase_char &= charmask;
--		fbcon_clear(vc, 0, 0, vc->vc_rows, vc->vc_cols);
-+		__fbcon_clear(vc, 0, 0, vc->vc_rows, vc->vc_cols);
- 		vc->vc_video_erase_char = oldc;
- 	}
- }
-diff --git a/include/linux/console.h b/include/linux/console.h
-index 7c17e0cc24f16..d7b45c60cf02f 100644
---- a/include/linux/console.h
-+++ b/include/linux/console.h
-@@ -36,6 +36,7 @@ enum vc_intensity;
-  *
-  * @con_init:   initialize the console on @vc. @init is true for the very first
-  *		call on this @vc.
-+ * @con_clear:  erase @count characters at [@x, @y] on @vc. @count >= 1.
-  * @con_scroll: move lines from @top to @bottom in direction @dir by @lines.
-  *		Return true if no generic handling should be done.
-  *		Invoked by csi_M and printing to the console.
-@@ -48,8 +49,8 @@ struct consw {
- 	const char *(*con_startup)(void);
- 	void	(*con_init)(struct vc_data *vc, bool init);
- 	void	(*con_deinit)(struct vc_data *vc);
--	void	(*con_clear)(struct vc_data *vc, int sy, int sx, int height,
--			int width);
-+	void	(*con_clear)(struct vc_data *vc, unsigned int y,
-+			     unsigned int x, unsigned int count);
- 	void	(*con_putc)(struct vc_data *vc, int c, int ypos, int xpos);
- 	void	(*con_putcs)(struct vc_data *vc, const unsigned short *s,
- 			int count, int ypos, int xpos);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 94c5151c456d6..30e9e26c5b2a7 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10859,6 +10859,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1204, "ASUS Strix G615JHR_JMR_JPR", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x1214, "ASUS Strix G615LH_LM_LP", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x125e, "ASUS Q524UQK", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1043, 0x1264, "ASUS UM5606KA", ALC294_FIXUP_BASS_SPEAKER_15),
+ 	SND_PCI_QUIRK(0x1043, 0x1271, "ASUS X430UN", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1290, "ASUS X441SA", ALC233_FIXUP_EAPD_COEF_AND_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1294, "ASUS B3405CVA", ALC245_FIXUP_CS35L41_SPI_2),
 -- 
 2.39.5
 
