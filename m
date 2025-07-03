@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-159916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E554AF7B96
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B014EAF7A3B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6F6C1CA5910
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADABA7B3812
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE6C2F19B1;
-	Thu,  3 Jul 2025 15:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765AE2EF64D;
+	Thu,  3 Jul 2025 15:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9ceiYGY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grr+QwdS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4BF2EF285;
-	Thu,  3 Jul 2025 15:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320CB2F0049;
+	Thu,  3 Jul 2025 15:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555765; cv=none; b=jsLsT/MthMigdsNrINcQH40rcJyTzAz07X/5kpjiLGGaDpLHeqARZPViDLv6Y+wWp/Vgkd9+PdOfrhg79aOmtazMJYmyZD0rslq8aGkYlAFVXS5oDI3MOceD3fS4NAsWalUI9vLUx4zdcVvGCsCUQYEihAFt0ged1JFRmYxT83E=
+	t=1751555400; cv=none; b=r/hytxIVjT3GGil8h4fgE7nGqUcmR9ZYmRxCP9UJpZJ25LEhB3aJTQHtvIpsH4/bjmGGhLO5efPToTM0ynZ0IJJhArOzrRDTPL+lx91dpOl8kmvGEXMm3DgbVUmrQexl299aCAuzD7kARmjNBP1e4HlVyM4S0ZDPfU8nPX0y80g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555765; c=relaxed/simple;
-	bh=ZoM3KBTDCAcpREGar3/QI4r7yQW5z4Zz3xouXbWcBs8=;
+	s=arc-20240116; t=1751555400; c=relaxed/simple;
+	bh=aUcAte/scCSsepJMMuEDVt8059h2URg6SjsyxP7CGLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oikfOlCFpEa0kb6dLaYqBnEpq/M6BjdzN4neHRh1uYsgNZnkMyGYQtloisigDX4uJXtYuGLZ7tVvq5f/BqUivM6zRhcFd00MqRW4hBFBSD9tBTcCFvOL/W45G2nyZVvA2mQgebpOy5WRSpRWjqYCRsAIiBRRPpcTMgON4lLiyJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9ceiYGY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0740DC4CEED;
-	Thu,  3 Jul 2025 15:16:03 +0000 (UTC)
+	 MIME-Version; b=YWW14Mwsude1OECf1d+jyjQwe8j7eaKWtIHu4QoueA2zWrSQg4fmDoz6Yl+LLg5NJrsb4zwY0boAy+KXCBvaHCpLG2C5CcanMqqUMDX16zuHF+QsYAu8A1D+OkXyKdEFMf06zd0G8Y9TgKkNrAG9XO0vHzeUDOaN9tskITuaPrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grr+QwdS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBC1C4CEED;
+	Thu,  3 Jul 2025 15:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555764;
-	bh=ZoM3KBTDCAcpREGar3/QI4r7yQW5z4Zz3xouXbWcBs8=;
+	s=korg; t=1751555399;
+	bh=aUcAte/scCSsepJMMuEDVt8059h2URg6SjsyxP7CGLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d9ceiYGYGgHncRpKyn6nh3POPlOkUNUGFxOh8nIm6l+5me0JwXX8hFWV3T6D2tjsH
-	 kYquhgitcmHAwvoof1C0otKizEoGdqkWDcu+6UffOdruWBq/goBrf/pgMlcKtVSISd
-	 +VYPbpWvcgkr1LLSUx5xQF4gH+mlshl2CUQz6LQc=
+	b=grr+QwdSPEwd9o0rODAHB8JihRanRgXZW5sxY0uvZP23kcE4xae6PsNg4WjG3Wzy1
+	 BrcMkPh2sZPpbo/NYxbK12YvU2F5mR3sFf8rW+60UrCfXRbCwaXtH+qNpIW0/rFWLs
+	 wPSrNvOnOShMnO3DxFPBUiZPaVv4uJy8vqQc1vJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Rob Clark <robdclark@chromium.org>
-Subject: [PATCH 6.6 115/139] drm/msm/gpu: Fix crash when throttling GPU immediately during boot
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Ben Hutchings <ben@decadent.org.uk>
+Subject: [PATCH 6.15 258/263] x86/fpu: Refactor xfeature bitmask update code for sigframe XSAVE
 Date: Thu,  3 Jul 2025 16:42:58 +0200
-Message-ID: <20250703143945.685591243@linuxfoundation.org>
+Message-ID: <20250703144014.752022860@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +66,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Chang S. Bae <chang.seok.bae@intel.com>
 
-commit b71717735be48d7743a34897e9e44a0b53e30c0e upstream.
+commit 64e54461ab6e8524a8de4e63b7d1a3e4481b5cf3 upstream.
 
-There is a small chance that the GPU is already hot during boot. In that
-case, the call to of_devfreq_cooling_register() will immediately try to
-apply devfreq cooling, as seen in the following crash:
+Currently, saving register states in the signal frame, the legacy feature
+bits are always set in xregs_state->header->xfeatures. This code sequence
+can be generalized for reuse in similar cases.
 
-  Unable to handle kernel paging request at virtual address 0000000000014110
-  pc : a6xx_gpu_busy+0x1c/0x58 [msm]
-  lr : msm_devfreq_get_dev_status+0xbc/0x140 [msm]
-  Call trace:
-   a6xx_gpu_busy+0x1c/0x58 [msm] (P)
-   devfreq_simple_ondemand_func+0x3c/0x150
-   devfreq_update_target+0x44/0xd8
-   qos_max_notifier_call+0x30/0x84
-   blocking_notifier_call_chain+0x6c/0xa0
-   pm_qos_update_target+0xd0/0x110
-   freq_qos_apply+0x3c/0x74
-   apply_constraint+0x88/0x148
-   __dev_pm_qos_update_request+0x7c/0xcc
-   dev_pm_qos_update_request+0x38/0x5c
-   devfreq_cooling_set_cur_state+0x98/0xf0
-   __thermal_cdev_update+0x64/0xb4
-   thermal_cdev_update+0x4c/0x58
-   step_wise_manage+0x1f0/0x318
-   __thermal_zone_device_update+0x278/0x424
-   __thermal_cooling_device_register+0x2bc/0x308
-   thermal_of_cooling_device_register+0x10/0x1c
-   of_devfreq_cooling_register_power+0x240/0x2bc
-   of_devfreq_cooling_register+0x14/0x20
-   msm_devfreq_init+0xc4/0x1a0 [msm]
-   msm_gpu_init+0x304/0x574 [msm]
-   adreno_gpu_init+0x1c4/0x2e0 [msm]
-   a6xx_gpu_init+0x5c8/0x9c8 [msm]
-   adreno_bind+0x2a8/0x33c [msm]
-   ...
+Refactor the logic to ensure a consistent approach across similar usages.
 
-At this point we haven't initialized the GMU at all yet, so we cannot read
-the GMU registers inside a6xx_gpu_busy(). A similar issue was fixed before
-in commit 6694482a70e9 ("drm/msm: Avoid unclocked GMU register access in
-6xx gpu_busy"): msm_devfreq_init() does call devfreq_suspend_device(), but
-unlike msm_devfreq_suspend(), it doesn't set the df->suspended flag
-accordingly. This means the df->suspended flag does not match the actual
-devfreq state after initialization and msm_devfreq_get_dev_status() will
-end up accessing GMU registers, causing the crash.
-
-Fix this by setting df->suspended correctly during initialization.
-
-Cc: stable@vger.kernel.org
-Fixes: 6694482a70e9 ("drm/msm: Avoid unclocked GMU register access in 6xx gpu_busy")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/650772/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250416021720.12305-8-chang.seok.bae@intel.com
+Cc: Ben Hutchings <ben@decadent.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/msm_gpu_devfreq.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/fpu/signal.c |   11 +----------
+ arch/x86/kernel/fpu/xstate.h |   13 +++++++++++++
+ 2 files changed, 14 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/msm/msm_gpu_devfreq.c
-+++ b/drivers/gpu/drm/msm/msm_gpu_devfreq.c
-@@ -156,6 +156,7 @@ void msm_devfreq_init(struct msm_gpu *gp
- 	priv->gpu_devfreq_config.downdifferential = 10;
+--- a/arch/x86/kernel/fpu/signal.c
++++ b/arch/x86/kernel/fpu/signal.c
+@@ -114,7 +114,6 @@ static inline bool save_xstate_epilog(vo
+ {
+ 	struct xregs_state __user *x = buf;
+ 	struct _fpx_sw_bytes sw_bytes = {};
+-	u32 xfeatures;
+ 	int err;
  
- 	mutex_init(&df->lock);
-+	df->suspended = true;
+ 	/* Setup the bytes not touched by the [f]xsave and reserved for SW. */
+@@ -128,12 +127,6 @@ static inline bool save_xstate_epilog(vo
+ 			  (__u32 __user *)(buf + fpstate->user_size));
  
- 	ret = dev_pm_qos_add_request(&gpu->pdev->dev, &df->boost_freq,
- 				     DEV_PM_QOS_MIN_FREQUENCY, 0);
+ 	/*
+-	 * Read the xfeatures which we copied (directly from the cpu or
+-	 * from the state in task struct) to the user buffers.
+-	 */
+-	err |= __get_user(xfeatures, (__u32 __user *)&x->header.xfeatures);
+-
+-	/*
+ 	 * For legacy compatible, we always set FP/SSE bits in the bit
+ 	 * vector while saving the state to the user context. This will
+ 	 * enable us capturing any changes(during sigreturn) to
+@@ -144,9 +137,7 @@ static inline bool save_xstate_epilog(vo
+ 	 * header as well as change any contents in the memory layout.
+ 	 * xrestore as part of sigreturn will capture all the changes.
+ 	 */
+-	xfeatures |= XFEATURE_MASK_FPSSE;
+-
+-	err |= __put_user(xfeatures, (__u32 __user *)&x->header.xfeatures);
++	err |= set_xfeature_in_sigframe(x, XFEATURE_MASK_FPSSE);
+ 
+ 	return !err;
+ }
+--- a/arch/x86/kernel/fpu/xstate.h
++++ b/arch/x86/kernel/fpu/xstate.h
+@@ -69,6 +69,19 @@ static inline u64 xfeatures_mask_indepen
+ 	return fpu_kernel_cfg.independent_features;
+ }
+ 
++static inline int set_xfeature_in_sigframe(struct xregs_state __user *xbuf, u64 mask)
++{
++	u64 xfeatures;
++	int err;
++
++	/* Read the xfeatures value already saved in the user buffer */
++	err  = __get_user(xfeatures, &xbuf->header.xfeatures);
++	xfeatures |= mask;
++	err |= __put_user(xfeatures, &xbuf->header.xfeatures);
++
++	return err;
++}
++
+ /*
+  * Update the value of PKRU register that was already pushed onto the signal frame.
+  */
 
 
 
