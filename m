@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-159635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829F5AF79CD
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D19AF783B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:48:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FD56189543A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A55D14A2646
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5281E2EE299;
-	Thu,  3 Jul 2025 15:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582382EE276;
+	Thu,  3 Jul 2025 14:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MO/6k1Vp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KgjtHwbe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9E96F53E;
-	Thu,  3 Jul 2025 15:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FF62D948F;
+	Thu,  3 Jul 2025 14:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554854; cv=none; b=tLgebi6B9pZ6objUs8yu/9vH+9aepbXExkzGcO1Kr7L8wqiII9vWRBBViEKRSRXX/Znv0dCnrilUvLjJpy9sTEIoSEPOqK9ClMaYjUwgboMWW0RK5dOACcznz+g2i4NXRe403LLpqOSqQxaLYl0mnLs0TJAzFHLKURAj9IZLkUg=
+	t=1751554071; cv=none; b=YTbAi68VcRoS2bqtfHsz0q/O2GzmBPZmiuwO1CBnY7z9dgqpsE1GHFn0U26/QgIdq3JxdIJhbNwICOHhQmb689Adc5eXN/zApDMTdz+Bgnks64txOVW/JZn18gJ68HJnCNgkUlK10ZPGTUHgJCh/QiimfR/kObY0LmMGSztIZ4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554854; c=relaxed/simple;
-	bh=y1BrGBw2PSc/KJlXHCI2+Bm6Gz0Bu7Ry9FKKOpMIAa4=;
+	s=arc-20240116; t=1751554071; c=relaxed/simple;
+	bh=J1TWLEs0rbt6wFu9fuBRjUJuyBcL2JNHfpGWS7Asg2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0EIfy+tIlYsUv0Em1pdGsZL/Xd5YHKwVYSr+86Wj3wq1QXvehhQFlIP/xnMQ2x/DvydmgHf8TI8GHMTr6XaHhCvcjAK8S7lrYO3+Mr07aWp5NuAmJst9vJxhLu1C/AsVWGYKKdrusQdZFp6fmk+LmN6q782KSQftoe7AeixFvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MO/6k1Vp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA09C4CEE3;
-	Thu,  3 Jul 2025 15:00:53 +0000 (UTC)
+	 MIME-Version; b=D067t1qz89Lzw+murpmSn92WwDsGQkJY13sZq8dVcnVKaFxKWb9wm0CCzOxp9ntRIM3YGWaJ1oiLZbeGdj4chVCQs/FZRSysn0tmuhAZg+6XWDlV9aOAtARtsvVEfwhlemShSygsoi/HlW4ekKtZfA0PL2VQ22dmc6AXq5ODtYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KgjtHwbe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312D0C4CEED;
+	Thu,  3 Jul 2025 14:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554853;
-	bh=y1BrGBw2PSc/KJlXHCI2+Bm6Gz0Bu7Ry9FKKOpMIAa4=;
+	s=korg; t=1751554070;
+	bh=J1TWLEs0rbt6wFu9fuBRjUJuyBcL2JNHfpGWS7Asg2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MO/6k1VpSm5kDnztG3/RhoqkTGy+s4zQGWzq8e1uxKeGxKzJqPYURmECaaax9GrwY
-	 IiJmPeKl8cruNnVfoBxiNW6hxh6/MPbl21RCCL1MsMfcvwqk2K4FDuTJ/m6bHVhaUT
-	 Oqhh92lmI7I8fnMKlAhsMmAZ8yv8sFmTaUPAGOuI=
+	b=KgjtHwbeEUFhaKkOe/CCAtYpXc4L1JQDyySG93eg8fL+wDnEcP6gvGrvGKM2Jm0Tx
+	 aqnQTcItT/lz8SCDWP3x1iATO69uva+IlzjODU4DqeQA+/9nnYXbdqgLvCI+lZ7dTo
+	 CIt37W4pIoKa0NLHVNIGckRIbkty2HwRw9fW07PI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.15 100/263] i2c: robotfuzz-osif: disable zero-length read messages
+	Karol Wachowski <karol.wachowski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 072/218] accel/ivpu: Make command queue ID allocated on XArray
 Date: Thu,  3 Jul 2025 16:40:20 +0200
-Message-ID: <20250703144008.316941981@linuxfoundation.org>
+Message-ID: <20250703143958.819867708@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,332 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Karol Wachowski <karol.wachowski@intel.com>
 
-commit 56ad91c1aa9c18064348edf69308080b03c9dc48 upstream.
+[ Upstream commit 76ad741ec7349bb1112f3a0ff27adf1ca75cf025 ]
 
-This driver passes the length of an i2c_msg directly to
-usb_control_msg(). If the message is now a read and of length 0, it
-violates the USB protocol and a warning will be printed. Enable the
-I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
-read messages altogether.
+Use XArray for dynamic command queue ID allocations instead of fixed
+ones. This is required by upcoming changes to UAPI that will allow to
+manage command queues by user space instead of having predefined number
+of queues in a context.
 
-Fixes: 83e53a8f120f ("i2c: Add bus driver for for OSIF USB i2c device.")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: <stable@vger.kernel.org> # v3.14+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250522064234.3721-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
+Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241017145817.121590-8-jacek.lawrynowicz@linux.intel.com
+Stable-dep-of: a47e36dc5d90 ("accel/ivpu: Trigger device recovery on engine reset/resume failure")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-robotfuzz-osif.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/accel/ivpu/ivpu_drv.c |  6 +++
+ drivers/accel/ivpu/ivpu_drv.h |  7 ++-
+ drivers/accel/ivpu/ivpu_job.c | 91 ++++++++++++++++++-----------------
+ drivers/accel/ivpu/ivpu_job.h |  2 +
+ 4 files changed, 60 insertions(+), 46 deletions(-)
 
---- a/drivers/i2c/busses/i2c-robotfuzz-osif.c
-+++ b/drivers/i2c/busses/i2c-robotfuzz-osif.c
-@@ -111,6 +111,11 @@ static u32 osif_func(struct i2c_adapter
- 	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL;
+diff --git a/drivers/accel/ivpu/ivpu_drv.c b/drivers/accel/ivpu/ivpu_drv.c
+index 67d56a944d549..00208c4a65807 100644
+--- a/drivers/accel/ivpu/ivpu_drv.c
++++ b/drivers/accel/ivpu/ivpu_drv.c
+@@ -102,6 +102,8 @@ static void file_priv_release(struct kref *ref)
+ 	pm_runtime_get_sync(vdev->drm.dev);
+ 	mutex_lock(&vdev->context_list_lock);
+ 	file_priv_unbind(vdev, file_priv);
++	drm_WARN_ON(&vdev->drm, !xa_empty(&file_priv->cmdq_xa));
++	xa_destroy(&file_priv->cmdq_xa);
+ 	mutex_unlock(&vdev->context_list_lock);
+ 	pm_runtime_put_autosuspend(vdev->drm.dev);
+ 
+@@ -261,6 +263,10 @@ static int ivpu_open(struct drm_device *dev, struct drm_file *file)
+ 	file_priv->job_limit.min = FIELD_PREP(IVPU_JOB_ID_CONTEXT_MASK, (file_priv->ctx.id - 1));
+ 	file_priv->job_limit.max = file_priv->job_limit.min | IVPU_JOB_ID_JOB_MASK;
+ 
++	xa_init_flags(&file_priv->cmdq_xa, XA_FLAGS_ALLOC1);
++	file_priv->cmdq_limit.min = IVPU_CMDQ_MIN_ID;
++	file_priv->cmdq_limit.max = IVPU_CMDQ_MAX_ID;
++
+ 	mutex_unlock(&vdev->context_list_lock);
+ 	drm_dev_exit(idx);
+ 
+diff --git a/drivers/accel/ivpu/ivpu_drv.h b/drivers/accel/ivpu/ivpu_drv.h
+index 4519c93fb377c..f2ba3ed8b3fc5 100644
+--- a/drivers/accel/ivpu/ivpu_drv.h
++++ b/drivers/accel/ivpu/ivpu_drv.h
+@@ -53,6 +53,9 @@
+ #define IVPU_NUM_PRIORITIES    4
+ #define IVPU_NUM_CMDQS_PER_CTX (IVPU_NUM_PRIORITIES)
+ 
++#define IVPU_CMDQ_MIN_ID 1
++#define IVPU_CMDQ_MAX_ID 255
++
+ #define IVPU_PLATFORM_SILICON 0
+ #define IVPU_PLATFORM_SIMICS  2
+ #define IVPU_PLATFORM_FPGA    3
+@@ -171,13 +174,15 @@ struct ivpu_file_priv {
+ 	struct kref ref;
+ 	struct ivpu_device *vdev;
+ 	struct mutex lock; /* Protects cmdq */
+-	struct ivpu_cmdq *cmdq[IVPU_NUM_CMDQS_PER_CTX];
++	struct xarray cmdq_xa;
+ 	struct ivpu_mmu_context ctx;
+ 	struct mutex ms_lock; /* Protects ms_instance_list, ms_info_bo */
+ 	struct list_head ms_instance_list;
+ 	struct ivpu_bo *ms_info_bo;
+ 	struct xa_limit job_limit;
+ 	u32 job_id_next;
++	struct xa_limit cmdq_limit;
++	u32 cmdq_id_next;
+ 	bool has_mmu_faults;
+ 	bool bound;
+ 	bool aborted;
+diff --git a/drivers/accel/ivpu/ivpu_job.c b/drivers/accel/ivpu/ivpu_job.c
+index ed3f60d809bc0..5eaf219170eee 100644
+--- a/drivers/accel/ivpu/ivpu_job.c
++++ b/drivers/accel/ivpu/ivpu_job.c
+@@ -93,9 +93,16 @@ static struct ivpu_cmdq *ivpu_cmdq_alloc(struct ivpu_file_priv *file_priv)
+ 		goto err_free_cmdq;
+ 	}
+ 
++	ret = xa_alloc_cyclic(&file_priv->cmdq_xa, &cmdq->id, cmdq, file_priv->cmdq_limit,
++			      &file_priv->cmdq_id_next, GFP_KERNEL);
++	if (ret < 0) {
++		ivpu_err(vdev, "Failed to allocate command queue id: %d\n", ret);
++		goto err_erase_db_xa;
++	}
++
+ 	cmdq->mem = ivpu_bo_create_global(vdev, SZ_4K, DRM_IVPU_BO_WC | DRM_IVPU_BO_MAPPABLE);
+ 	if (!cmdq->mem)
+-		goto err_erase_xa;
++		goto err_erase_cmdq_xa;
+ 
+ 	ret = ivpu_preemption_buffers_create(vdev, file_priv, cmdq);
+ 	if (ret)
+@@ -103,7 +110,9 @@ static struct ivpu_cmdq *ivpu_cmdq_alloc(struct ivpu_file_priv *file_priv)
+ 
+ 	return cmdq;
+ 
+-err_erase_xa:
++err_erase_cmdq_xa:
++	xa_erase(&file_priv->cmdq_xa, cmdq->id);
++err_erase_db_xa:
+ 	xa_erase(&vdev->db_xa, cmdq->db_id);
+ err_free_cmdq:
+ 	kfree(cmdq);
+@@ -127,13 +136,13 @@ static int ivpu_hws_cmdq_init(struct ivpu_file_priv *file_priv, struct ivpu_cmdq
+ 	struct ivpu_device *vdev = file_priv->vdev;
+ 	int ret;
+ 
+-	ret = ivpu_jsm_hws_create_cmdq(vdev, file_priv->ctx.id, file_priv->ctx.id, cmdq->db_id,
++	ret = ivpu_jsm_hws_create_cmdq(vdev, file_priv->ctx.id, file_priv->ctx.id, cmdq->id,
+ 				       task_pid_nr(current), engine,
+ 				       cmdq->mem->vpu_addr, ivpu_bo_size(cmdq->mem));
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = ivpu_jsm_hws_set_context_sched_properties(vdev, file_priv->ctx.id, cmdq->db_id,
++	ret = ivpu_jsm_hws_set_context_sched_properties(vdev, file_priv->ctx.id, cmdq->id,
+ 							priority);
+ 	if (ret)
+ 		return ret;
+@@ -147,20 +156,21 @@ static int ivpu_register_db(struct ivpu_file_priv *file_priv, struct ivpu_cmdq *
+ 	int ret;
+ 
+ 	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
+-		ret = ivpu_jsm_hws_register_db(vdev, file_priv->ctx.id, cmdq->db_id, cmdq->db_id,
++		ret = ivpu_jsm_hws_register_db(vdev, file_priv->ctx.id, cmdq->id, cmdq->db_id,
+ 					       cmdq->mem->vpu_addr, ivpu_bo_size(cmdq->mem));
+ 	else
+ 		ret = ivpu_jsm_register_db(vdev, file_priv->ctx.id, cmdq->db_id,
+ 					   cmdq->mem->vpu_addr, ivpu_bo_size(cmdq->mem));
+ 
+ 	if (!ret)
+-		ivpu_dbg(vdev, JOB, "DB %d registered to ctx %d\n", cmdq->db_id, file_priv->ctx.id);
++		ivpu_dbg(vdev, JOB, "DB %d registered to cmdq %d ctx %d\n",
++			 cmdq->db_id, cmdq->id, file_priv->ctx.id);
+ 
+ 	return ret;
  }
  
-+/* prevent invalid 0-length usb_control_msg */
-+static const struct i2c_adapter_quirks osif_quirks = {
-+	.flags = I2C_AQ_NO_ZERO_LEN_READ,
-+};
-+
- static const struct i2c_algorithm osif_algorithm = {
- 	.xfer = osif_xfer,
- 	.functionality = osif_func,
-@@ -143,6 +148,7 @@ static int osif_probe(struct usb_interfa
+ static int
+-ivpu_cmdq_init(struct ivpu_file_priv *file_priv, struct ivpu_cmdq *cmdq, u16 engine, u8 priority)
++ivpu_cmdq_init(struct ivpu_file_priv *file_priv, struct ivpu_cmdq *cmdq, u8 priority)
+ {
+ 	struct ivpu_device *vdev = file_priv->vdev;
+ 	struct vpu_job_queue_header *jobq_header;
+@@ -176,13 +186,13 @@ ivpu_cmdq_init(struct ivpu_file_priv *file_priv, struct ivpu_cmdq *cmdq, u16 eng
  
- 	priv->adapter.owner = THIS_MODULE;
- 	priv->adapter.class = I2C_CLASS_HWMON;
-+	priv->adapter.quirks = &osif_quirks;
- 	priv->adapter.algo = &osif_algorithm;
- 	priv->adapter.algo_data = priv;
- 	snprintf(priv->adapter.name, sizeof(priv->adapter.name),
+ 	cmdq->jobq = (struct vpu_job_queue *)ivpu_bo_vaddr(cmdq->mem);
+ 	jobq_header = &cmdq->jobq->header;
+-	jobq_header->engine_idx = engine;
++	jobq_header->engine_idx = VPU_ENGINE_COMPUTE;
+ 	jobq_header->head = 0;
+ 	jobq_header->tail = 0;
+ 	wmb(); /* Flush WC buffer for jobq->header */
+ 
+ 	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW) {
+-		ret = ivpu_hws_cmdq_init(file_priv, cmdq, engine, priority);
++		ret = ivpu_hws_cmdq_init(file_priv, cmdq, VPU_ENGINE_COMPUTE, priority);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -209,9 +219,9 @@ static int ivpu_cmdq_fini(struct ivpu_file_priv *file_priv, struct ivpu_cmdq *cm
+ 	cmdq->db_registered = false;
+ 
+ 	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW) {
+-		ret = ivpu_jsm_hws_destroy_cmdq(vdev, file_priv->ctx.id, cmdq->db_id);
++		ret = ivpu_jsm_hws_destroy_cmdq(vdev, file_priv->ctx.id, cmdq->id);
+ 		if (!ret)
+-			ivpu_dbg(vdev, JOB, "Command queue %d destroyed\n", cmdq->db_id);
++			ivpu_dbg(vdev, JOB, "Command queue %d destroyed\n", cmdq->id);
+ 	}
+ 
+ 	ret = ivpu_jsm_unregister_db(vdev, cmdq->db_id);
+@@ -221,51 +231,46 @@ static int ivpu_cmdq_fini(struct ivpu_file_priv *file_priv, struct ivpu_cmdq *cm
+ 	return 0;
+ }
+ 
+-static struct ivpu_cmdq *ivpu_cmdq_acquire(struct ivpu_file_priv *file_priv, u16 engine,
+-					   u8 priority)
++static struct ivpu_cmdq *ivpu_cmdq_acquire(struct ivpu_file_priv *file_priv, u8 priority)
+ {
+-	struct ivpu_cmdq *cmdq = file_priv->cmdq[priority];
++	struct ivpu_cmdq *cmdq;
++	unsigned long cmdq_id;
+ 	int ret;
+ 
+ 	lockdep_assert_held(&file_priv->lock);
+ 
++	xa_for_each(&file_priv->cmdq_xa, cmdq_id, cmdq)
++		if (cmdq->priority == priority)
++			break;
++
+ 	if (!cmdq) {
+ 		cmdq = ivpu_cmdq_alloc(file_priv);
+ 		if (!cmdq)
+ 			return NULL;
+-		file_priv->cmdq[priority] = cmdq;
++		cmdq->priority = priority;
+ 	}
+ 
+-	ret = ivpu_cmdq_init(file_priv, cmdq, engine, priority);
++	ret = ivpu_cmdq_init(file_priv, cmdq, priority);
+ 	if (ret)
+ 		return NULL;
+ 
+ 	return cmdq;
+ }
+ 
+-static void ivpu_cmdq_release_locked(struct ivpu_file_priv *file_priv, u8 priority)
++void ivpu_cmdq_release_all_locked(struct ivpu_file_priv *file_priv)
+ {
+-	struct ivpu_cmdq *cmdq = file_priv->cmdq[priority];
++	struct ivpu_cmdq *cmdq;
++	unsigned long cmdq_id;
+ 
+ 	lockdep_assert_held(&file_priv->lock);
+ 
+-	if (cmdq) {
+-		file_priv->cmdq[priority] = NULL;
++	xa_for_each(&file_priv->cmdq_xa, cmdq_id, cmdq) {
++		xa_erase(&file_priv->cmdq_xa, cmdq_id);
+ 		ivpu_cmdq_fini(file_priv, cmdq);
+ 		ivpu_cmdq_free(file_priv, cmdq);
+ 	}
+ }
+ 
+-void ivpu_cmdq_release_all_locked(struct ivpu_file_priv *file_priv)
+-{
+-	u8 priority;
+-
+-	lockdep_assert_held(&file_priv->lock);
+-
+-	for (priority = 0; priority < IVPU_NUM_PRIORITIES; priority++)
+-		ivpu_cmdq_release_locked(file_priv, priority);
+-}
+-
+ /*
+  * Mark the doorbell as unregistered
+  * This function needs to be called when the VPU hardware is restarted
+@@ -274,16 +279,13 @@ void ivpu_cmdq_release_all_locked(struct ivpu_file_priv *file_priv)
+  */
+ static void ivpu_cmdq_reset(struct ivpu_file_priv *file_priv)
+ {
+-	u8 priority;
++	struct ivpu_cmdq *cmdq;
++	unsigned long cmdq_id;
+ 
+ 	mutex_lock(&file_priv->lock);
+ 
+-	for (priority = 0; priority < IVPU_NUM_PRIORITIES; priority++) {
+-		struct ivpu_cmdq *cmdq = file_priv->cmdq[priority];
+-
+-		if (cmdq)
+-			cmdq->db_registered = false;
+-	}
++	xa_for_each(&file_priv->cmdq_xa, cmdq_id, cmdq)
++		cmdq->db_registered = false;
+ 
+ 	mutex_unlock(&file_priv->lock);
+ }
+@@ -303,12 +305,11 @@ void ivpu_cmdq_reset_all_contexts(struct ivpu_device *vdev)
+ 
+ static void ivpu_cmdq_fini_all(struct ivpu_file_priv *file_priv)
+ {
+-	u8 priority;
++	struct ivpu_cmdq *cmdq;
++	unsigned long cmdq_id;
+ 
+-	for (priority = 0; priority < IVPU_NUM_PRIORITIES; priority++) {
+-		if (file_priv->cmdq[priority])
+-			ivpu_cmdq_fini(file_priv, file_priv->cmdq[priority]);
+-	}
++	xa_for_each(&file_priv->cmdq_xa, cmdq_id, cmdq)
++		ivpu_cmdq_fini(file_priv, cmdq);
+ }
+ 
+ void ivpu_context_abort_locked(struct ivpu_file_priv *file_priv)
+@@ -335,8 +336,8 @@ static int ivpu_cmdq_push_job(struct ivpu_cmdq *cmdq, struct ivpu_job *job)
+ 
+ 	/* Check if there is space left in job queue */
+ 	if (next_entry == header->head) {
+-		ivpu_dbg(vdev, JOB, "Job queue full: ctx %d engine %d db %d head %d tail %d\n",
+-			 job->file_priv->ctx.id, job->engine_idx, cmdq->db_id, header->head, tail);
++		ivpu_dbg(vdev, JOB, "Job queue full: ctx %d cmdq %d db %d head %d tail %d\n",
++			 job->file_priv->ctx.id, cmdq->id, cmdq->db_id, header->head, tail);
+ 		return -EBUSY;
+ 	}
+ 
+@@ -550,7 +551,7 @@ static int ivpu_job_submit(struct ivpu_job *job, u8 priority)
+ 	mutex_lock(&vdev->submitted_jobs_lock);
+ 	mutex_lock(&file_priv->lock);
+ 
+-	cmdq = ivpu_cmdq_acquire(file_priv, job->engine_idx, priority);
++	cmdq = ivpu_cmdq_acquire(file_priv, priority);
+ 	if (!cmdq) {
+ 		ivpu_warn_ratelimited(vdev, "Failed to get job queue, ctx %d engine %d prio %d\n",
+ 				      file_priv->ctx.id, job->engine_idx, priority);
+diff --git a/drivers/accel/ivpu/ivpu_job.h b/drivers/accel/ivpu/ivpu_job.h
+index 0ae77f0638fad..af1ed039569cd 100644
+--- a/drivers/accel/ivpu/ivpu_job.h
++++ b/drivers/accel/ivpu/ivpu_job.h
+@@ -28,8 +28,10 @@ struct ivpu_cmdq {
+ 	struct ivpu_bo *secondary_preempt_buf;
+ 	struct ivpu_bo *mem;
+ 	u32 entry_count;
++	u32 id;
+ 	u32 db_id;
+ 	bool db_registered;
++	u8 priority;
+ };
+ 
+ /**
+-- 
+2.39.5
+
 
 
 
