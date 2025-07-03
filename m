@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-159790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B57AF7A89
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:14:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A2EAF7BFA
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:30:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 523E01CA1AA1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 261DA6E0F68
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9A82EE96D;
-	Thu,  3 Jul 2025 15:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1117E2E7BD3;
+	Thu,  3 Jul 2025 15:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6YExVhS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWkqiocv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F6222069F;
-	Thu,  3 Jul 2025 15:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83892E3B1A;
+	Thu,  3 Jul 2025 15:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555357; cv=none; b=LipRg6p/xxD7guQk+p6s1lr/xTWKIWn5/EQZ+bXh90UDmxUQ/86/ibRgl3E6G3giBtg5wAggbS1Op0jWV+j0SqYKEYpNB3qjfmctjIxPcHuaYAhpS7Lms5rRTd/aWh/sn6d7UFmhr0FjoFX7DTCcdpB6OvAPhiJKkAexk6EiJ1A=
+	t=1751556045; cv=none; b=Xbnvq7rtRtOz6rTherEdPewDJsAByxuZUpSt5BUQLvEHJUkVTDR0xEA/atlFJ+MyIhXtctqsCrFQ0/YKLHj3yCme+Po6/BQef3ZtNSBPhkMOeqxbkbW3scEGyNwPfKQHOg3Tl0SSEx0Lp8CQh+Hje4O0TVWjOlF9AnbwH5dO+68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555357; c=relaxed/simple;
-	bh=6Ze/NE6YOLzl/beCOEhB2wgUsX4hygHudPkzFK4M2/w=;
+	s=arc-20240116; t=1751556045; c=relaxed/simple;
+	bh=rTc4g/wkR7LGHBfwH8Dg0T05O+HFBvsY1px8C98jDyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GMlJOOb3jeLWsEsdGqCA03QYYj6saCY5vzhSOwZAt61MfvcrVHMr6Yj/ptvKaWTJzwtD/cQJeji7p8m9gKwvgWcZD/h2LbzSGs9eW5RFQ4yABTeJ/HT+mKAj+OzVK8YD3GIrWTjIc82yvthhIKhZKcyjgyJRXkTfTKbEWowB1+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6YExVhS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42E5C4CEE3;
-	Thu,  3 Jul 2025 15:09:13 +0000 (UTC)
+	 MIME-Version; b=K+Q1q5SEoQHyBoDyVy0fiz/msqwbQTiBziCCqqvDGzcLFR8hMAs0WN4/LHX22n8agui3Nx4MPaprSfapM3nEcT5c+XXmaFFvcOeyOBZvgZ+Vmcm/IhXWkae/mM/130iRoL+aUErI2N2A9Nwd9yxElgZCfXnshBJ1bch8L+LRYhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWkqiocv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D871C4CEED;
+	Thu,  3 Jul 2025 15:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555354;
-	bh=6Ze/NE6YOLzl/beCOEhB2wgUsX4hygHudPkzFK4M2/w=;
+	s=korg; t=1751556045;
+	bh=rTc4g/wkR7LGHBfwH8Dg0T05O+HFBvsY1px8C98jDyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m6YExVhSKb5ilgKhcEpZ1u9XqKqpV6ldfcK5qZ9gN9Rvp0L6OGhZb2GYIySzZ8Ky0
-	 rpJr3gLThbJdKKb/14eo6uNlfgltHIwLfkLocY/J2B+t+/4LJ4CnzPahJNW7eOm3rh
-	 QUHQ36bc7yLIl+MAT9+nGtxSXwvQEPDm72Aui80U=
+	b=TWkqiocv07JY0hn3G6PVYF9nBG+JyBBFZE+989LCH/U4JoZW69diSEL7Km6RlODA8
+	 Ykv6VLIggPNKFC8BgvlyOgYULi6NKjI05uWKhCcEsh5AdpGw55rZq3mHnJ1F+9IQz+
+	 g6y+Ahl7IMexJZfiBiwVo5RCMoQCD+A1CJ5D3gC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.15 225/263] drm/xe/guc_submit: add back fix
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 056/132] Drivers: hv: vmbus: Leak pages if set_memory_encrypted() fails
 Date: Thu,  3 Jul 2025 16:42:25 +0200
-Message-ID: <20250703144013.406813149@linuxfoundation.org>
+Message-ID: <20250703143941.622681705@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-commit 2e824747cfbdf1fba88df5e5800d284b2602ae8f upstream.
+[ Upstream commit 03f5a999adba062456c8c818a683beb1b498983a ]
 
-Daniele noticed that the fix in commit 2d2be279f1ca ("drm/xe: fix UAF
-around queue destruction") looks to have been unintentionally removed as
-part of handling a conflict in some past merge commit. Add it back.
+In CoCo VMs it is possible for the untrusted host to cause
+set_memory_encrypted() or set_memory_decrypted() to fail such that an
+error is returned and the resulting memory is shared. Callers need to
+take care to handle these errors to avoid returning decrypted (shared)
+memory to the page allocator, which could lead to functional or security
+issues.
 
-Fixes: ac44ff7cec33 ("Merge tag 'drm-xe-fixes-2024-10-10' of https://gitlab.freedesktop.org/drm/xe/kernel into drm-fixes")
-Reported-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.12+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250603174213.1543579-2-matthew.auld@intel.com
-(cherry picked from commit 9d9fca62dc49d96f97045b6d8e7402a95f8cf92a)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+VMBus code could free decrypted pages if set_memory_encrypted()/decrypted()
+fails. Leak the pages if this happens.
+
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Link: https://lore.kernel.org/r/20240311161558.1310-2-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240311161558.1310-2-mhklinux@outlook.com>
+Stable-dep-of: 09eea7ad0b8e ("Drivers: hv: Allocate interrupt and monitor pages aligned to system page boundary")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/hv/connection.c | 29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -229,6 +229,17 @@ static bool exec_queue_killed_or_banned_
- static void guc_submit_fini(struct drm_device *drm, void *arg)
- {
- 	struct xe_guc *guc = arg;
-+	struct xe_device *xe = guc_to_xe(guc);
-+	struct xe_gt *gt = guc_to_gt(guc);
-+	int ret;
-+
-+	ret = wait_event_timeout(guc->submission_state.fini_wq,
-+				 xa_empty(&guc->submission_state.exec_queue_lookup),
-+				 HZ * 5);
-+
-+	drain_workqueue(xe->destroy_wq);
-+
-+	xe_gt_assert(gt, ret);
+diff --git a/drivers/hv/connection.c b/drivers/hv/connection.c
+index ebf15f31d97e3..744d2809acc3f 100644
+--- a/drivers/hv/connection.c
++++ b/drivers/hv/connection.c
+@@ -236,8 +236,17 @@ int vmbus_connect(void)
+ 				vmbus_connection.monitor_pages[0], 1);
+ 	ret |= set_memory_decrypted((unsigned long)
+ 				vmbus_connection.monitor_pages[1], 1);
+-	if (ret)
++	if (ret) {
++		/*
++		 * If set_memory_decrypted() fails, the encryption state
++		 * of the memory is unknown. So leak the memory instead
++		 * of risking returning decrypted memory to the free list.
++		 * For simplicity, always handle both pages the same.
++		 */
++		vmbus_connection.monitor_pages[0] = NULL;
++		vmbus_connection.monitor_pages[1] = NULL;
+ 		goto cleanup;
++	}
  
- 	xa_destroy(&guc->submission_state.exec_queue_lookup);
+ 	/*
+ 	 * Set_memory_decrypted() will change the memory contents if
+@@ -336,13 +345,19 @@ void vmbus_disconnect(void)
+ 		vmbus_connection.int_page = NULL;
+ 	}
+ 
+-	set_memory_encrypted((unsigned long)vmbus_connection.monitor_pages[0], 1);
+-	set_memory_encrypted((unsigned long)vmbus_connection.monitor_pages[1], 1);
++	if (vmbus_connection.monitor_pages[0]) {
++		if (!set_memory_encrypted(
++			(unsigned long)vmbus_connection.monitor_pages[0], 1))
++			hv_free_hyperv_page(vmbus_connection.monitor_pages[0]);
++		vmbus_connection.monitor_pages[0] = NULL;
++	}
+ 
+-	hv_free_hyperv_page(vmbus_connection.monitor_pages[0]);
+-	hv_free_hyperv_page(vmbus_connection.monitor_pages[1]);
+-	vmbus_connection.monitor_pages[0] = NULL;
+-	vmbus_connection.monitor_pages[1] = NULL;
++	if (vmbus_connection.monitor_pages[1]) {
++		if (!set_memory_encrypted(
++			(unsigned long)vmbus_connection.monitor_pages[1], 1))
++			hv_free_hyperv_page(vmbus_connection.monitor_pages[1]);
++		vmbus_connection.monitor_pages[1] = NULL;
++	}
  }
+ 
+ /*
+-- 
+2.39.5
+
 
 
 
