@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-159438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E4FAF78A7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FFCAF7AE8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:19:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C76CB1CA0C95
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AD2C3B2FF6
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D942EF2B0;
-	Thu,  3 Jul 2025 14:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FC72EE973;
+	Thu,  3 Jul 2025 15:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGzKQkuI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idRWf99J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3258E2EE99C;
-	Thu,  3 Jul 2025 14:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00AF2ED17E;
+	Thu,  3 Jul 2025 15:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554233; cv=none; b=Jca5oI6Zhtz7V6RMZWikwUOkNqsLxabGMGGL5+bu/MssGClLVY0GRUGr1K8o4pspiuoX17kFWIRuqxY7s0/BiCnPfw4yhTZgrxkyyGK9VAl8O8ulwDay66dIGpycsO/VZLSjcMC5ITy4QeAcbcRjsApPFwFjH3AoN/fNtgCuEOE=
+	t=1751555512; cv=none; b=qov1hIeRzBw2nuaOqhQ0y/XQ/1zPsN0BcxhCKdREyGSvzm8AAkr46/AhCws5f4RsAjgP0cvTvkw3scbxQwFSeG083KM/b0H6/iiQnNJtgRM9WAh5/UnYCfPQy3BL0z8ZMJWU6tHK6CbIRegPDX6m8bKnG1m1HqfTH6nqge0BBt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554233; c=relaxed/simple;
-	bh=Wz/UHFMKLhlswTESC90CzmPM2fdNvMk8fiFo0jWttuo=;
+	s=arc-20240116; t=1751555512; c=relaxed/simple;
+	bh=gqdzqfU5XuZI7pbEYzOt/cebTNXRCNT6IkqIHYi1M2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPnvuHmejU9cYlhlrrz6pCRkmINKqroZGyt2l7y6jhPkZBr/ytvgO825OEc/flogigz7waxGV5mcz09FCqvDTd+0yr4yapgcTZFEZs3jeackdNfyOPIMBsYUS8tJjrDwOEXsOsN6m5TKGEDT9EQNpozIWH913zn5+SuIbpstF9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGzKQkuI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6CCC4CEE3;
-	Thu,  3 Jul 2025 14:50:32 +0000 (UTC)
+	 MIME-Version; b=shhthAYoqaC7ZnCuPEAf0rCV5K9iX0fXSIz+Lx6knRg9/kAwySu6z9Ao6qkWrRgXAUzIGjE/DTl1KKBZOfdkdZgS4xidtp4VqPCfoXneuO+yng8RK4hNsWruXpzdN0mN17Rrg643zU6bjLXk1iKkfDeAU/NRl5SpehbCRujDfrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idRWf99J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB66C4CEF2;
+	Thu,  3 Jul 2025 15:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554233;
-	bh=Wz/UHFMKLhlswTESC90CzmPM2fdNvMk8fiFo0jWttuo=;
+	s=korg; t=1751555512;
+	bh=gqdzqfU5XuZI7pbEYzOt/cebTNXRCNT6IkqIHYi1M2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGzKQkuIW4IlmKyqJrCHqlQ9sl7qtdEcb4YlCs9NFjE5vBe1AVNJ2c1GL8F7L4795
-	 B8sOzlzMiAQdYmDpMd/xMXFtzq2aQxJk4VX7ggbvnqitqSGGibqUiaC7GBwS7gyZ8m
-	 4jvZQLpJ1pEUqhQdFOYhy6Icd+Vh+QKw7oyHI9wU=
+	b=idRWf99JWoySbgCw20FKWpZ1g2Q9tI23kS5gy9/iF8FK0/snxHDW1j8cx8NjdPnEK
+	 InntKD+aMzZYpdz2e5bxHsDHDOf9A/vqTx90w2RMGNdhkolPazU2HIeaeN8WA6ehyl
+	 v2riFiMDx0Kppx0gXseNwWs88yAbQi8SfzVyUMdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Meetakshi Setiya <meetakshisetiyaoss@gmail.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 121/218] smb: smbdirect: add smbdirect_socket.h
-Date: Thu,  3 Jul 2025 16:41:09 +0200
-Message-ID: <20250703144000.775347106@linuxfoundation.org>
+Subject: [PATCH 6.6 007/139] mfd: max14577: Fix wakeup source leaks on device unbind
+Date: Thu,  3 Jul 2025 16:41:10 +0200
+Message-ID: <20250703143941.466615907@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,86 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 22234e37d7e97652cb53133009da5e14793d3c10 ]
+[ Upstream commit d905d06e64b0eb3da43af6186c132f5282197998 ]
 
-This abstracts the common smbdirect layer.
+Device can be unbound, so driver must also release memory for the wakeup
+source.
 
-Currently with just a few things in it,
-but that will change over time until everything is
-in common.
-
-Will be used in client and server in the next commits
-
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Hyunchul Lee <hyc.lee@gmail.com>
-Cc: Meetakshi Setiya <meetakshisetiyaoss@gmail.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 43e7e284fc77 ("cifs: Fix the smbd_response slab to allow usercopy")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250406-mfd-device-wakekup-leak-v1-3-318e14bdba0a@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/common/smbdirect/smbdirect_socket.h | 41 ++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
- create mode 100644 fs/smb/common/smbdirect/smbdirect_socket.h
+ drivers/mfd/max14577.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/common/smbdirect/smbdirect_socket.h b/fs/smb/common/smbdirect/smbdirect_socket.h
-new file mode 100644
-index 0000000000000..69a55561f91ae
---- /dev/null
-+++ b/fs/smb/common/smbdirect/smbdirect_socket.h
-@@ -0,0 +1,41 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ *   Copyright (c) 2025 Stefan Metzmacher
-+ */
-+
-+#ifndef __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_SOCKET_H__
-+#define __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_SOCKET_H__
-+
-+enum smbdirect_socket_status {
-+	SMBDIRECT_SOCKET_CREATED,
-+	SMBDIRECT_SOCKET_CONNECTING,
-+	SMBDIRECT_SOCKET_CONNECTED,
-+	SMBDIRECT_SOCKET_NEGOTIATE_FAILED,
-+	SMBDIRECT_SOCKET_DISCONNECTING,
-+	SMBDIRECT_SOCKET_DISCONNECTED,
-+	SMBDIRECT_SOCKET_DESTROYED
-+};
-+
-+struct smbdirect_socket {
-+	enum smbdirect_socket_status status;
-+
-+	/* RDMA related */
-+	struct {
-+		struct rdma_cm_id *cm_id;
-+	} rdma;
-+
-+	/* IB verbs related */
-+	struct {
-+		struct ib_pd *pd;
-+		struct ib_cq *send_cq;
-+		struct ib_cq *recv_cq;
-+
-+		/*
-+		 * shortcuts for rdma.cm_id->{qp,device};
-+		 */
-+		struct ib_qp *qp;
-+		struct ib_device *dev;
-+	} ib;
-+};
-+
-+#endif /* __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_SOCKET_H__ */
+diff --git a/drivers/mfd/max14577.c b/drivers/mfd/max14577.c
+index 1f4f5002595c0..17672eeb1732a 100644
+--- a/drivers/mfd/max14577.c
++++ b/drivers/mfd/max14577.c
+@@ -463,6 +463,7 @@ static void max14577_i2c_remove(struct i2c_client *i2c)
+ {
+ 	struct max14577 *max14577 = i2c_get_clientdata(i2c);
+ 
++	device_init_wakeup(max14577->dev, false);
+ 	mfd_remove_devices(max14577->dev);
+ 	regmap_del_irq_chip(max14577->irq, max14577->irq_data);
+ 	if (max14577->dev_type == MAXIM_DEVICE_TYPE_MAX77836)
 -- 
 2.39.5
 
