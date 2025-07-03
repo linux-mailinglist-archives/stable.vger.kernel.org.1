@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-160002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D813AF7C0A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD43AF78FE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3953D1CA37DF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB8091CA2554
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9537E2F2376;
-	Thu,  3 Jul 2025 15:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC002EF64D;
+	Thu,  3 Jul 2025 14:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJzhz1vW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/6Tv1iY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5442F2F2370;
-	Thu,  3 Jul 2025 15:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394742E7BB6;
+	Thu,  3 Jul 2025 14:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556055; cv=none; b=b/d4pfdKW9DDxaKQxwRUXZIxZ1UBBZGvrFLtR3PU4KwyfkN+lrBfoRY7trZZ7koSeI895f/yESGgYI2KqLd1V7uDSRhFV60pbdgt77sWAswGxXvdE/qaISjU3a8kH93HWroKjTSwSrGMf5PMdZn2LOmwkBsw2QkOnu8pvUr/NNY=
+	t=1751554387; cv=none; b=n6ava10WHAQif9Gsw6VXXd6EQEDdEOf0wFLqdVNA6Sc2K7UVpmaQ9bpzEs6kv7wY64ozmfMLCgG2tXM6PiO7393wGaMFrfs3E4iUAOoO4pk6wVa5+6PSb5pzQMZv4INg9HSXfwoow2/MWsT8ytuUpZ9fgK0JNRSQbAVz/BM3tuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556055; c=relaxed/simple;
-	bh=9Vjnu34MEhf81t8P7A88O7sUCbhfkKPYWXBCaGdpmj0=;
+	s=arc-20240116; t=1751554387; c=relaxed/simple;
+	bh=L8VR7rEtbvrxmkU8ZlKvY9KI+Tei6hx3/RK3wX7EM+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcJdPUvpycpnxtj0/15N8j5uXt/xpQ2jPJdCUxApYkHimm8ANz4ew/qAOZ2jdYelR2/BLqh5/Ps0vjB16D9MT0xoUqWN0Z4Mqh9/B7c8Nrdf0QfmrkpvaU5SCvo+rYCrpl83wvrPWshRO9GVfNESED6VlG2CNvBXfen4aNlArpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJzhz1vW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5FB1C4CEED;
-	Thu,  3 Jul 2025 15:20:54 +0000 (UTC)
+	 MIME-Version; b=UOWtyZ0Y6qoSqvswjm3CBMtx9EEtXdkgiTVH98yE/BwRw2G51gYtXgNK+8tG/6+XquJLRKSxxCHqBb/G5c1nJFwsZfmAU+70pWx+wd1D0uyehtVEgM8R9oobPPBxeDBaFiuv9WHDlUSIM83+c2NziXHxs16+AqWDFyrzS7KCsx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/6Tv1iY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798B0C4CEE3;
+	Thu,  3 Jul 2025 14:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556055;
-	bh=9Vjnu34MEhf81t8P7A88O7sUCbhfkKPYWXBCaGdpmj0=;
+	s=korg; t=1751554386;
+	bh=L8VR7rEtbvrxmkU8ZlKvY9KI+Tei6hx3/RK3wX7EM+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fJzhz1vWixcE8y+gq8BcFYBjqMyWyH66PoyElnfIYMlgBRovsb6KwIXF5vAwQBYXr
-	 1FYMTBKN9h0iVevx7Dx0lsqmEr626JM8qZ8ttJfIfpLskXOCknX16iVVCZPZe91kfH
-	 ki+U0IXU1qmpJ3ma/5t5Gc0G2CiKGS7HwKVJZ2TU=
+	b=Q/6Tv1iY+lDlfUorWnONy9Z5xXdzbAIDfQuSd5V3ZZIj2RVy045VoadvU6PXF3ngm
+	 IBm6afK1COOkKz0nbVtPDFB+R/5fYYcUL62sDrk/X1j85PMwNO/szt05UBBSKNdga8
+	 GfFTAcFSPrOlIvFbMFp9ievAYDqCDTT8UHHLDM9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/132] usb: typec: mux: do not return on EOPNOTSUPP in {mux, switch}_set
+	Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.12 171/218] drm/xe: Fix taking invalid lock on wedge
 Date: Thu,  3 Jul 2025 16:41:59 +0200
-Message-ID: <20250703143940.591629362@linuxfoundation.org>
+Message-ID: <20250703144003.010119691@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit 0f7bbef1794dc87141897f804e5871a293aa174b ]
+commit 1e1981b16bb1bbe2fafa57ed439b45cb5b34e32d upstream.
 
-Since the typec connectors can have many muxes or switches for different
-lanes (sbu, usb2, usb3) going into different modal states (usb2, usb3,
-audio, debug) all of them will be called on typec_switch_set and
-typec_mux_set. But not all of them will be handling the expected mode.
+If device wedges on e.g. GuC upload, the submission is not yet enabled
+and the state is not even initialized. Protect the wedge call so it does
+nothing in this case. It fixes the following splat:
 
-If one of the mux or switch will come back with EOPTNOSUPP this is no
-reason to stop running through the next ones. Therefor we skip this
-particular error value and continue calling the next.
+	[] xe 0000:bf:00.0: [drm] device wedged, needs recovery
+	[] ------------[ cut here ]------------
+	[] DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+	[] WARNING: CPU: 48 PID: 312 at kernel/locking/mutex.c:564 __mutex_lock+0x8a1/0xe60
+	...
+	[] RIP: 0010:__mutex_lock+0x8a1/0xe60
+	[]  mutex_lock_nested+0x1b/0x30
+	[]  xe_guc_submit_wedge+0x80/0x2b0 [xe]
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250404-ml-topic-typec-mux-v1-1-22c0526381ba@pengutronix.de
+Reviewed-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+Link: https://lore.kernel.org/r/20250402-warn-after-wedge-v1-1-93e971511fa5@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/mux.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_submit.c |    9 +++++++++
+ drivers/gpu/drm/xe/xe_guc_types.h  |    5 +++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/usb/typec/mux.c b/drivers/usb/typec/mux.c
-index 941735c731619..a74f8e1a28c21 100644
---- a/drivers/usb/typec/mux.c
-+++ b/drivers/usb/typec/mux.c
-@@ -214,7 +214,7 @@ int typec_switch_set(struct typec_switch *sw,
- 		sw_dev = sw->sw_devs[i];
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -309,6 +309,8 @@ int xe_guc_submit_init(struct xe_guc *gu
  
- 		ret = sw_dev->set(sw_dev, orientation);
--		if (ret)
-+		if (ret && ret != -EOPNOTSUPP)
- 			return ret;
- 	}
+ 	primelockdep(guc);
  
-@@ -421,7 +421,7 @@ int typec_mux_set(struct typec_mux *mux, struct typec_mux_state *state)
- 		mux_dev = mux->mux_devs[i];
++	guc->submission_state.initialized = true;
++
+ 	return drmm_add_action_or_reset(&xe->drm, guc_submit_fini, guc);
+ }
  
- 		ret = mux_dev->set(mux_dev, state);
--		if (ret)
-+		if (ret && ret != -EOPNOTSUPP)
- 			return ret;
- 	}
+@@ -837,6 +839,13 @@ void xe_guc_submit_wedge(struct xe_guc *
  
--- 
-2.39.5
-
+ 	xe_gt_assert(guc_to_gt(guc), guc_to_xe(guc)->wedged.mode);
+ 
++	/*
++	 * If device is being wedged even before submission_state is
++	 * initialized, there's nothing to do here.
++	 */
++	if (!guc->submission_state.initialized)
++		return;
++
+ 	err = devm_add_action_or_reset(guc_to_xe(guc)->drm.dev,
+ 				       guc_submit_wedged_fini, guc);
+ 	if (err) {
+--- a/drivers/gpu/drm/xe/xe_guc_types.h
++++ b/drivers/gpu/drm/xe/xe_guc_types.h
+@@ -74,6 +74,11 @@ struct xe_guc {
+ 		struct mutex lock;
+ 		/** @submission_state.enabled: submission is enabled */
+ 		bool enabled;
++		/**
++		 * @submission_state.initialized: mark when submission state is
++		 * even initialized - before that not even the lock is valid
++		 */
++		bool initialized;
+ 		/** @submission_state.fini_wq: submit fini wait queue */
+ 		wait_queue_head_t fini_wq;
+ 	} submission_state;
 
 
 
