@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-159518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133E3AF790D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 994D0AF7AC7
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0EF5546BD0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27CD87AF564
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740192EA149;
-	Thu,  3 Jul 2025 14:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9282F2700;
+	Thu,  3 Jul 2025 15:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOnknggR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FtAouCx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CEE2EE5F3;
-	Thu,  3 Jul 2025 14:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371DF2F0C45;
+	Thu,  3 Jul 2025 15:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554482; cv=none; b=GSpVcBZKY1RuXV2KZLq44YVZnRK0thKpi2wTaQMQM7xcwGy9AGddPIsfALZQg8iGCmEaRUQ2N1z+shkzbbdGqC9lutXcMjrCDlFx+lxEm0yJ62SCOlI8IYo3OvsJR3OYbzMt4W6IfzW3lt4ifUZU2pkpZM1k2TujsYG5mRvvHS8=
+	t=1751555682; cv=none; b=O8ShQojbHvrbDxkbkubC8245OzSxcoD+9rDxL8v1BsE26Qq8PNwXRYcNGMBgI//XARg2+lGAmj1OWUvMQtO/yvJchOu0xrcwGD1AkFJS4yl8INAnzyD6KLwiOVzAY8egiKFzyGayA52WVYXlbEFdBDn2gQ+Nc18GwBHnTBLXhdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554482; c=relaxed/simple;
-	bh=Xl8/croTMAR5ZIFJRyqzVZvfaMw/UNZ9XzdQ4/1A3Es=;
+	s=arc-20240116; t=1751555682; c=relaxed/simple;
+	bh=cytagB6ii7CENti4312EqQqqmWt4Jx3Ijsn8upEE670=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rw+TCyBe1kwiFJQMXCIu0mavz3eg9ctFGkZCajE/gWzZ5Jjmk8FHVKnLtkyAANosWPgG6Hd6MT148xfq2VvHj+RkuvX4UgUM8G2gReoI++LxToeqMjM6z7/W+ziob76OR0yfbXrUf6brEwcvZG5EVDgp3LbLp6CVWUXw5Tv3nYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOnknggR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53248C4CEED;
-	Thu,  3 Jul 2025 14:54:41 +0000 (UTC)
+	 MIME-Version; b=CoaIY2nHyUWQsyIbo5LvgK+SxWxMaZ0aZ0olTUiU7sIksnUrpythCEcv4VBk/HvpiRhqqJxIE0XfT32XLHNHlAHW7CM+w30Gln0gkJLJ8Zi/3mZpDLSyEmIfGG/HkGNUhOh0gAHu/WcVXZcxl2RyZw3ZStY9u951m7RdXYN0X7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FtAouCx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9AAC4CEED;
+	Thu,  3 Jul 2025 15:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554481;
-	bh=Xl8/croTMAR5ZIFJRyqzVZvfaMw/UNZ9XzdQ4/1A3Es=;
+	s=korg; t=1751555682;
+	bh=cytagB6ii7CENti4312EqQqqmWt4Jx3Ijsn8upEE670=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mOnknggRtU9/N0k1dYCzWAdX+sBLuwqUXgpShfcj3Vi13clibXMm50Vt0rGr2wcOa
-	 rtvi/a6DjT4g3O+9vG376NtHQix5bKLANIve246QJPNghKLmgHZRMEpMSNybatx2Fb
-	 cUpL0OL71QAL5/2O/chnwrjeX6CEVnQev+CHpl9s=
+	b=2FtAouCxF0RS3FgkiYdwn/63h3yuoUOAevLaaHREuXJuCs9LamKm46YW0b8DpwuRJ
+	 hDI0+Mrv5x5fJztl8eJNbxTL6nie0aMc5oUuuNRqT0NoR8jUrT7ms/K97PQ9AfeSLP
+	 6y2iv4OLqih3P0vJxl47miidGq5ZZoF00gJppggk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Shapovalov <intelfx@intelfx.name>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	syzbot+8bd335d2ad3b93e80715@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 202/218] btrfs: skip inodes without loaded extent maps when shrinking extent maps
-Date: Thu,  3 Jul 2025 16:42:30 +0200
-Message-ID: <20250703144004.301677993@linuxfoundation.org>
+Subject: [PATCH 6.6 088/139] atm: Release atm_dev_mutex after removing procfs in atm_dev_deregister().
+Date: Thu,  3 Jul 2025 16:42:31 +0200
+Message-ID: <20250703143944.600963523@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,162 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit c6c9c4d56483d941f567eb921434c25fc6086dfa ]
+[ Upstream commit a433791aeaea6e84df709e0b9584b9bbe040cd1c ]
 
-If there are inodes that don't have any loaded extent maps, we end up
-grabbing a reference on them and later adding a delayed iput, which wakes
-up the cleaner and makes it do unnecessary work. This is common when for
-example the inodes were open only to run stat(2) or all their extent maps
-were already released through the folio release callback
-(btrfs_release_folio()) or released by a previous run of the shrinker, or
-directories which never have extent maps.
+syzbot reported a warning below during atm_dev_register(). [0]
 
-Reported-by: Ivan Shapovalov <intelfx@intelfx.name>
-Tested-by: Ivan Shapovalov <intelfx@intelfx.name>
-Link: https://lore.kernel.org/linux-btrfs/0414d690ac5680d0d77dfc930606cdc36e42e12f.camel@intelfx.name/
-CC: stable@vger.kernel.org # 6.13+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Before creating a new device and procfs/sysfs for it, atm_dev_register()
+looks up a duplicated device by __atm_dev_lookup().  These operations are
+done under atm_dev_mutex.
+
+However, when removing a device in atm_dev_deregister(), it releases the
+mutex just after removing the device from the list that __atm_dev_lookup()
+iterates over.
+
+So, there will be a small race window where the device does not exist on
+the device list but procfs/sysfs are still not removed, triggering the
+splat.
+
+Let's hold the mutex until procfs/sysfs are removed in
+atm_dev_deregister().
+
+[0]:
+proc_dir_entry 'atm/atmtcp:0' already registered
+WARNING: CPU: 0 PID: 5919 at fs/proc/generic.c:377 proc_register+0x455/0x5f0 fs/proc/generic.c:377
+Modules linked in:
+CPU: 0 UID: 0 PID: 5919 Comm: syz-executor284 Not tainted 6.16.0-rc2-syzkaller-00047-g52da431bf03b #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+RIP: 0010:proc_register+0x455/0x5f0 fs/proc/generic.c:377
+Code: 48 89 f9 48 c1 e9 03 80 3c 01 00 0f 85 a2 01 00 00 48 8b 44 24 10 48 c7 c7 20 c0 c2 8b 48 8b b0 d8 00 00 00 e8 0c 02 1c ff 90 <0f> 0b 90 90 48 c7 c7 80 f2 82 8e e8 0b de 23 09 48 8b 4c 24 28 48
+RSP: 0018:ffffc9000466fa30 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff817ae248
+RDX: ffff888026280000 RSI: ffffffff817ae255 RDI: 0000000000000001
+RBP: ffff8880232bed48 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000001 R12: ffff888076ed2140
+R13: dffffc0000000000 R14: ffff888078a61340 R15: ffffed100edda444
+FS:  00007f38b3b0c6c0(0000) GS:ffff888124753000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f38b3bdf953 CR3: 0000000076d58000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ proc_create_data+0xbe/0x110 fs/proc/generic.c:585
+ atm_proc_dev_register+0x112/0x1e0 net/atm/proc.c:361
+ atm_dev_register+0x46d/0x890 net/atm/resources.c:113
+ atmtcp_create+0x77/0x210 drivers/atm/atmtcp.c:369
+ atmtcp_attach drivers/atm/atmtcp.c:403 [inline]
+ atmtcp_ioctl+0x2f9/0xd60 drivers/atm/atmtcp.c:464
+ do_vcc_ioctl+0x12c/0x930 net/atm/ioctl.c:159
+ sock_do_ioctl+0x115/0x280 net/socket.c:1190
+ sock_ioctl+0x227/0x6b0 net/socket.c:1311
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl fs/ioctl.c:893 [inline]
+ __x64_sys_ioctl+0x18b/0x210 fs/ioctl.c:893
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f38b3b74459
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 18 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f38b3b0c198 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f38b3bfe318 RCX: 00007f38b3b74459
+RDX: 0000000000000000 RSI: 0000000000006180 RDI: 0000000000000005
+RBP: 00007f38b3bfe310 R08: 65732f636f72702f R09: 65732f636f72702f
+R10: 65732f636f72702f R11: 0000000000000246 R12: 00007f38b3bcb0ac
+R13: 00007f38b3b0c1a0 R14: 0000200000000200 R15: 00007f38b3bcb03b
+ </TASK>
+
+Fixes: 64bf69ddff76 ("[ATM]: deregistration removes device from atm_devs list immediately")
+Reported-by: syzbot+8bd335d2ad3b93e80715@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/685316de.050a0220.216029.0087.GAE@google.com/
+Tested-by: syzbot+8bd335d2ad3b93e80715@syzkaller.appspotmail.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250624214505.570679-1-kuni1840@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_map.c | 78 +++++++++++++++++++++++++++++++------------
- 1 file changed, 57 insertions(+), 21 deletions(-)
+ net/atm/resources.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/extent_map.c b/fs/btrfs/extent_map.c
-index 1d93e1202c339..d67abf5f97a77 100644
---- a/fs/btrfs/extent_map.c
-+++ b/fs/btrfs/extent_map.c
-@@ -1133,6 +1133,8 @@ static long btrfs_scan_inode(struct btrfs_inode *inode, struct btrfs_em_shrink_c
- 	long nr_dropped = 0;
- 	struct rb_node *node;
- 
-+	lockdep_assert_held_write(&tree->lock);
-+
- 	/*
- 	 * Take the mmap lock so that we serialize with the inode logging phase
- 	 * of fsync because we may need to set the full sync flag on the inode,
-@@ -1144,28 +1146,12 @@ static long btrfs_scan_inode(struct btrfs_inode *inode, struct btrfs_em_shrink_c
- 	 * to find new extents, which may not be there yet because ordered
- 	 * extents haven't completed yet.
- 	 *
--	 * We also do a try lock because otherwise we could deadlock. This is
--	 * because the shrinker for this filesystem may be invoked while we are
--	 * in a path that is holding the mmap lock in write mode. For example in
--	 * a reflink operation while COWing an extent buffer, when allocating
--	 * pages for a new extent buffer and under memory pressure, the shrinker
--	 * may be invoked, and therefore we would deadlock by attempting to read
--	 * lock the mmap lock while we are holding already a write lock on it.
-+	 * We also do a try lock because we don't want to block for too long and
-+	 * we are holding the extent map tree's lock in write mode.
+diff --git a/net/atm/resources.c b/net/atm/resources.c
+index 995d29e7fb138..b19d851e1f443 100644
+--- a/net/atm/resources.c
++++ b/net/atm/resources.c
+@@ -146,11 +146,10 @@ void atm_dev_deregister(struct atm_dev *dev)
  	 */
- 	if (!down_read_trylock(&inode->i_mmap_lock))
- 		return 0;
- 
--	/*
--	 * We want to be fast so if the lock is busy we don't want to spend time
--	 * waiting for it - either some task is about to do IO for the inode or
--	 * we may have another task shrinking extent maps, here in this code, so
--	 * skip this inode.
--	 */
--	if (!write_trylock(&tree->lock)) {
--		up_read(&inode->i_mmap_lock);
--		return 0;
--	}
+ 	mutex_lock(&atm_dev_mutex);
+ 	list_del(&dev->dev_list);
+-	mutex_unlock(&atm_dev_mutex);
 -
- 	node = rb_first(&tree->root);
- 	while (node) {
- 		struct rb_node *next = rb_next(node);
-@@ -1205,21 +1191,71 @@ static long btrfs_scan_inode(struct btrfs_inode *inode, struct btrfs_em_shrink_c
- 			break;
- 		node = next;
- 	}
--	write_unlock(&tree->lock);
- 	up_read(&inode->i_mmap_lock);
+ 	atm_dev_release_vccs(dev);
+ 	atm_unregister_sysfs(dev);
+ 	atm_proc_dev_deregister(dev);
++	mutex_unlock(&atm_dev_mutex);
  
- 	return nr_dropped;
+ 	atm_dev_put(dev);
  }
- 
-+static struct btrfs_inode *find_first_inode_to_shrink(struct btrfs_root *root,
-+						      u64 min_ino)
-+{
-+	struct btrfs_inode *inode;
-+	unsigned long from = min_ino;
-+
-+	xa_lock(&root->inodes);
-+	while (true) {
-+		struct extent_map_tree *tree;
-+
-+		inode = xa_find(&root->inodes, &from, ULONG_MAX, XA_PRESENT);
-+		if (!inode)
-+			break;
-+
-+		tree = &inode->extent_tree;
-+
-+		/*
-+		 * We want to be fast so if the lock is busy we don't want to
-+		 * spend time waiting for it (some task is about to do IO for
-+		 * the inode).
-+		 */
-+		if (!write_trylock(&tree->lock))
-+			goto next;
-+
-+		/*
-+		 * Skip inode if it doesn't have loaded extent maps, so we avoid
-+		 * getting a reference and doing an iput later. This includes
-+		 * cases like files that were opened for things like stat(2), or
-+		 * files with all extent maps previously released through the
-+		 * release folio callback (btrfs_release_folio()) or released in
-+		 * a previous run, or directories which never have extent maps.
-+		 */
-+		if (RB_EMPTY_ROOT(&tree->root)) {
-+			write_unlock(&tree->lock);
-+			goto next;
-+		}
-+
-+		if (igrab(&inode->vfs_inode))
-+			break;
-+
-+		write_unlock(&tree->lock);
-+next:
-+		from = btrfs_ino(inode) + 1;
-+		cond_resched_lock(&root->inodes.xa_lock);
-+	}
-+	xa_unlock(&root->inodes);
-+
-+	return inode;
-+}
-+
- static long btrfs_scan_root(struct btrfs_root *root, struct btrfs_em_shrink_ctx *ctx)
- {
- 	struct btrfs_inode *inode;
- 	long nr_dropped = 0;
- 	u64 min_ino = ctx->last_ino + 1;
- 
--	inode = btrfs_find_first_inode(root, min_ino);
-+	inode = find_first_inode_to_shrink(root, min_ino);
- 	while (inode) {
- 		nr_dropped += btrfs_scan_inode(inode, ctx);
-+		write_unlock(&inode->extent_tree.lock);
- 
- 		min_ino = btrfs_ino(inode) + 1;
- 		ctx->last_ino = btrfs_ino(inode);
-@@ -1230,7 +1266,7 @@ static long btrfs_scan_root(struct btrfs_root *root, struct btrfs_em_shrink_ctx
- 
- 		cond_resched();
- 
--		inode = btrfs_find_first_inode(root, min_ino);
-+		inode = find_first_inode_to_shrink(root, min_ino);
- 	}
- 
- 	if (inode) {
 -- 
 2.39.5
 
