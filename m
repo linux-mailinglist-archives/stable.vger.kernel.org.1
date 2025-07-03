@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-159442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C45AF7890
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D3E3AF79EB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4592516FC79
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE28916CB92
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47FB2ED871;
-	Thu,  3 Jul 2025 14:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0B72ED143;
+	Thu,  3 Jul 2025 15:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tl70wr/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVxyR7+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20B2231853;
-	Thu,  3 Jul 2025 14:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAC82B9A6;
+	Thu,  3 Jul 2025 15:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554246; cv=none; b=WzdfBgWKcYkQGqsIgZWEYvUSwmPgycyAJVX7ySc61bAXqqvDS67Fg9I3WqJL9WHBtiIGq7KJJaFISBQjERAa3FfvYPAjgGkxftC2rC52m4WX1ryGO/ARQR8jzD6xIVXoRADqyULlyVXum8Dyuq48KL60tauWDRQRUtqvraX94hs=
+	t=1751555028; cv=none; b=N43yrm+P8s5SLhZXoKTJEgG0xPvj0DjTvAtn8b6GlvL7bCgVIcT8nlWMsREipCQpnhjMgHHQGus4PYHsQ7o14zI2XwTKP70DYfXD2CX53owe/Ngbib0wveWOqrqR+x83D2GdMkU39fxqryoLez9XFsnFEdyZES258SqcCj/XxAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554246; c=relaxed/simple;
-	bh=wweRQkhXbqWGWzx+mKJ4kZaiMRbn7k3of98POqxJrGk=;
+	s=arc-20240116; t=1751555028; c=relaxed/simple;
+	bh=yG18Dr5taKJKxPVplmBf14jWrWBiZOIYwW4XWTNP2GY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MbJEkkCdfWq2aZKXx6chcRyxEiMLAZr0NbrLef3nsi0ERQ2jzHEEQrrWlF/P1m7wWDcAYWLYi80qHe6DQZ880ayzlsWNA8uoIUfV1EDpNBW/zRmf4+9/0F2usEVAeN1z9Hzklq9bqJFZ1hHIy8FqRXrnxyMv56lq1bCXTJU6DrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tl70wr/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00B3C4CEE3;
-	Thu,  3 Jul 2025 14:50:45 +0000 (UTC)
+	 MIME-Version; b=jrg5Ouxys+vR3Z+CraGRm3gnBUJourhUCvPqU8eungsfDwfeIQL/UOGSNoo+9A2BBfAv2T+FlXJ8ix9votT+GJSS3ZTTu8aB5OEdrkcZJrQMZimyM/Lczxkk9Pyvb4J4OPqdROwYlzjlTHFN4UBD7kuBzwemGXNx7YJNpCQv/L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVxyR7+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5590AC4CEE3;
+	Thu,  3 Jul 2025 15:03:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554246;
-	bh=wweRQkhXbqWGWzx+mKJ4kZaiMRbn7k3of98POqxJrGk=;
+	s=korg; t=1751555027;
+	bh=yG18Dr5taKJKxPVplmBf14jWrWBiZOIYwW4XWTNP2GY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1tl70wr/Zs4VTtl5zZyZgkChqF2jGSDj4aVgFL5hN/1TY4zMUJhRkEUOa7NBAb3of
-	 /8xpMgCivQITewoaj3VK0XVf9kOY2K+7uJhfCx5C4T/G8zGwu51mM933c0YbdB9J4S
-	 U19Eqj5INYfMXmCoadLvxM91ksorr+SsmTPLqvVg=
+	b=aVxyR7+Y5MAS7pIsCKmrtqDClULwsrJ4zAxZ1huEFfIBB9S2v0OZO5rK8L86TOoW3
+	 wUPkbXQ3N6p8V/I7iF6r83AxCGcHBU/pDb7fxOdAIeGvxGt2BQP50w1DUAb8JNKqz1
+	 9pJJyQOv0B/e5SnEYMTc/HLr+EtqA6/E/nYN4wO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 097/218] wifi: mac80211: fix beacon interval calculation overflow
-Date: Thu,  3 Jul 2025 16:40:45 +0200
-Message-ID: <20250703143959.813430829@linuxfoundation.org>
+	Shaoyun Liu <shaoyun.liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.15 126/263] drm/amdgpu/mes: add compatibility checks for set_hw_resource_1
+Date: Thu,  3 Jul 2025 16:40:46 +0200
+Message-ID: <20250703144009.408780724@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 7a3750ff0f2e8fee338a9c168f429f6c37f0e820 ]
+commit 99579c55c3d6132a5236926652c0a72a526b809d upstream.
 
-As we are converting from TU to usecs, a beacon interval of
-100*1024 usecs will lead to integer wrapping. To fix change
-to use a u32.
+Seems some older MES firmware versions do not properly support
+this packet.  Add back some the compatibility checks.
 
-Fixes: 057d5f4ba1e4 ("mac80211: sync dtim_count to TSF")
-Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Link: https://patch.msgid.link/20250621123209.511796-1-lachlan.hodges@morsemicro.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v2: switch to fw version check (Shaoyun)
+
+Fixes: f81cd793119e ("drm/amd/amdgpu: Fix MES init sequence")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4295
+Cc: Shaoyun Liu <shaoyun.liu@amd.com>
+Reviewed-by: shaoyun.liu <shaoyun.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 0180e0a5dd5c6ff118043ee42dbbbddaf881f283)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/util.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/mes_v11_0.c |   10 ++++++----
+ drivers/gpu/drm/amd/amdgpu/mes_v12_0.c |    3 ++-
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index a98ae563613c0..77638e965726c 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -3908,7 +3908,7 @@ void ieee80211_recalc_dtim(struct ieee80211_local *local,
- {
- 	u64 tsf = drv_get_tsf(local, sdata);
- 	u64 dtim_count = 0;
--	u16 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
-+	u32 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
- 	u8 dtim_period = sdata->vif.bss_conf.dtim_period;
- 	struct ps_data *ps;
- 	u8 bcns_from_dtim;
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+@@ -1649,10 +1649,12 @@ static int mes_v11_0_hw_init(struct amdg
+ 	if (r)
+ 		goto failure;
+ 
+-	r = mes_v11_0_set_hw_resources_1(&adev->mes);
+-	if (r) {
+-		DRM_ERROR("failed mes_v11_0_set_hw_resources_1, r=%d\n", r);
+-		goto failure;
++	if ((adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x50) {
++		r = mes_v11_0_set_hw_resources_1(&adev->mes);
++		if (r) {
++			DRM_ERROR("failed mes_v11_0_set_hw_resources_1, r=%d\n", r);
++			goto failure;
++		}
+ 	}
+ 
+ 	r = mes_v11_0_query_sched_status(&adev->mes);
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
+@@ -1761,7 +1761,8 @@ static int mes_v12_0_hw_init(struct amdg
+ 	if (r)
+ 		goto failure;
+ 
+-	mes_v12_0_set_hw_resources_1(&adev->mes, AMDGPU_MES_SCHED_PIPE);
++	if ((adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x4b)
++		mes_v12_0_set_hw_resources_1(&adev->mes, AMDGPU_MES_SCHED_PIPE);
+ 
+ 	mes_v12_0_init_aggregated_doorbell(&adev->mes);
+ 
 
 
 
