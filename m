@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-159427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B78AF7883
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:51:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F30AF79D3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A33AC188ED0A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:50:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A68F1628AC
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFFC51DC98B;
-	Thu,  3 Jul 2025 14:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFA12ED143;
+	Thu,  3 Jul 2025 15:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8kqhxHe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGJvUmzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7A6230996;
-	Thu,  3 Jul 2025 14:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8225F2E7BBF;
+	Thu,  3 Jul 2025 15:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554198; cv=none; b=cs2bAYRsEw+9WGaZolqGTU3v/aHeQ5AnokN28jpfL2PpsLKMar0iUmW8+9nxyMXbxfhAqx0o3siK2zoRTLu42bfCaC53jbrEboGqPV1SyDe4NKcGxpxfXz16czV9f68laA+IkJspGjDHWbhbW7/q3BPUvAffZcdlYAuIP7cZWHY=
+	t=1751554979; cv=none; b=OtKoyAzYlZamCGs/mh+m/4qDlgd4RPbDC26rgXHPNMmbsbmAvK1YvX0eMOAjpuhHe2iQ/nD8Mx8wmaGmxzdq7q+SJ7h0ObKKb5lZSgNH7NbSCzz0whqEJ4kLaqmlUeL+r5jFGCKe4PzolKBcGIvjd2PpbCmLL3sVMSCTPRLWzGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554198; c=relaxed/simple;
-	bh=skJWsGvcpVKb9ZhP6NCUBarUMggLGzPbI0BMsRdnnTQ=;
+	s=arc-20240116; t=1751554979; c=relaxed/simple;
+	bh=97VTEJQZ+mRnhw6axTjNBkIsbpJA7xM5C2sk9Uh9+jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fkbxtnkvi3BYInCf+t26PvSHV6mGJoYM/UA0AlRLgoanT8dvgyZfK+1Z2fCvCP1C/Mpbffpp8aLgVed+U4kALTxHoOip07+Yk7FMxgC9JRGCCyDpwsG1074g5P4c5kZ8o8Nzfh1al2xyOCfe0SOVsJKuvOf6Z0us+WvnR8HXwd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8kqhxHe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B217C4CEE3;
-	Thu,  3 Jul 2025 14:49:57 +0000 (UTC)
+	 MIME-Version; b=Ry/gZcsk6GmyR5zgknRTwVJkIFZbJp111dGoEM+9R3U3cUcEFHE5ILwi0haZk4nBLs/FszKdYq0FhqAIKbX6NacXxy5RVLydcsg4/ZHAAMyMV0TEVd/mdY0oSIG+AdK3Yo36g1zuqCFqAt1LUkQUTORbjiF4RyIgi1LXnjo+kPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGJvUmzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB65C4CEE3;
+	Thu,  3 Jul 2025 15:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554198;
-	bh=skJWsGvcpVKb9ZhP6NCUBarUMggLGzPbI0BMsRdnnTQ=;
+	s=korg; t=1751554979;
+	bh=97VTEJQZ+mRnhw6axTjNBkIsbpJA7xM5C2sk9Uh9+jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F8kqhxHeaDbKjo2jXeayndDlsz6Fb6QOSZzHCe/8bzoKnByEf7lFIaRextRAfAoMq
-	 Cg3BqnJQrglC5jWlGm9tXVkuNTlP5K8xtSFLocIi8F+xBSpOCyo/XFqsDMVT+Lk3NM
-	 bSIurwUVR68elZRjncOE5itYtbaOLVPZDkLJsHH4=
+	b=xGJvUmzFWP/deBmaxB6mSMN/8yMXG3l/tVBQBUuyLAVGHRuQtWEn65S7DZzyu2yJB
+	 3dNxIfIRHzI7O4X8ah5FX9yRIF0fGpmWTeKcDwprKp9pMMSpzopSf3Z3bSYywpnDnZ
+	 Q/wkWfNtvTUiTpgzk+fk/Na29FQwebua8i4s7R8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Flora Cui <flora.cui@amd.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 111/218] drm/amdgpu/discovery: optionally use fw based ip discovery
+Subject: [PATCH 6.15 139/263] attach_recursive_mnt(): do not lock the covering tree when sliding something under it
 Date: Thu,  3 Jul 2025 16:40:59 +0200
-Message-ID: <20250703144000.379903939@linuxfoundation.org>
+Message-ID: <20250703144009.930671954@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 80a0e828293389358f7db56adcdcb22b28df5e11 ]
+[ Upstream commit ce7df19686530920f2f6b636e71ce5eb1d9303ef ]
 
-On chips without native IP discovery support, use the fw binary
-if available, otherwise we can continue without it.
+If we are propagating across the userns boundary, we need to lock the
+mounts added there.  However, in case when something has already
+been mounted there and we end up sliding a new tree under that,
+the stuff that had been there before should not get locked.
 
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Flora Cui <flora.cui@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 73eab78721f7 ("drm/amd: Adjust output for discovery error handling")
+IOW, lock_mnt_tree() should be called before we reparent the
+preexisting tree on top of what we are adding.
+
+Fixes: 3bd045cc9c4b ("separate copying and locking mount tree on cross-userns copies")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 40 +++++++++++++++----
- 1 file changed, 32 insertions(+), 8 deletions(-)
+ fs/namespace.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-index 018240a2ab96a..8929478a8f45c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -2429,6 +2429,38 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
- {
- 	int r;
- 
-+	switch (adev->asic_type) {
-+	case CHIP_VEGA10:
-+	case CHIP_VEGA12:
-+	case CHIP_RAVEN:
-+	case CHIP_VEGA20:
-+	case CHIP_ARCTURUS:
-+	case CHIP_ALDEBARAN:
-+		/* this is not fatal.  We have a fallback below
-+		 * if the new firmwares are not present. some of
-+		 * this will be overridden below to keep things
-+		 * consistent with the current behavior.
-+		 */
-+		r = amdgpu_discovery_reg_base_init(adev);
-+		if (!r) {
-+			amdgpu_discovery_harvest_ip(adev);
-+			amdgpu_discovery_get_gfx_info(adev);
-+			amdgpu_discovery_get_mall_info(adev);
-+			amdgpu_discovery_get_vcn_info(adev);
-+		}
-+		break;
-+	default:
-+		r = amdgpu_discovery_reg_base_init(adev);
-+		if (r)
-+			return -EINVAL;
-+
-+		amdgpu_discovery_harvest_ip(adev);
-+		amdgpu_discovery_get_gfx_info(adev);
-+		amdgpu_discovery_get_mall_info(adev);
-+		amdgpu_discovery_get_vcn_info(adev);
-+		break;
-+	}
-+
- 	switch (adev->asic_type) {
- 	case CHIP_VEGA10:
- 		vega10_reg_base_init(adev);
-@@ -2591,14 +2623,6 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
- 		adev->ip_versions[XGMI_HWIP][0] = IP_VERSION(6, 1, 0);
- 		break;
- 	default:
--		r = amdgpu_discovery_reg_base_init(adev);
--		if (r)
--			return -EINVAL;
--
--		amdgpu_discovery_harvest_ip(adev);
--		amdgpu_discovery_get_gfx_info(adev);
--		amdgpu_discovery_get_mall_info(adev);
--		amdgpu_discovery_get_vcn_info(adev);
- 		break;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index d6ac7e533b021..24b087ba88159 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2765,14 +2765,14 @@ static int attach_recursive_mnt(struct mount *source_mnt,
+ 	hlist_for_each_entry_safe(child, n, &tree_list, mnt_hash) {
+ 		struct mount *q;
+ 		hlist_del_init(&child->mnt_hash);
+-		q = __lookup_mnt(&child->mnt_parent->mnt,
+-				 child->mnt_mountpoint);
+-		if (q)
+-			mnt_change_mountpoint(child, smp, q);
+ 		/* Notice when we are propagating across user namespaces */
+ 		if (child->mnt_parent->mnt_ns->user_ns != user_ns)
+ 			lock_mnt_tree(child);
+ 		child->mnt.mnt_flags &= ~MNT_LOCKED;
++		q = __lookup_mnt(&child->mnt_parent->mnt,
++				 child->mnt_mountpoint);
++		if (q)
++			mnt_change_mountpoint(child, smp, q);
+ 		commit_tree(child);
  	}
- 
+ 	put_mountpoint(smp);
 -- 
 2.39.5
 
