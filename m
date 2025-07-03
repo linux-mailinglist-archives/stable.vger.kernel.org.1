@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-159421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63D31AF7879
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:50:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53136AF79CE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37A4C582392
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:49:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63C9A16782D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6739F2E7BBF;
-	Thu,  3 Jul 2025 14:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E6D2EE29E;
+	Thu,  3 Jul 2025 15:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xtwv3BQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/Xzbncy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235E31DC98B;
-	Thu,  3 Jul 2025 14:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F4E2E7BBF;
+	Thu,  3 Jul 2025 15:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554180; cv=none; b=TAmHaY79CuyKEzFCzPpphkpO+eURb4PLcvLCMAfPWxs1dq8oDxPrs3bi8a/y2RY5ezRwh5N6qJcJJ2tsSsXFhfYC3sJW3WNNMVtGfVgD4acQZZ1pi0FMl6/vj+Z6gvuA4helFHUGWQym19uRs9duGtSmH1EiXR+7PAsNeVE3l0U=
+	t=1751554967; cv=none; b=p0Mmh2MLILmhEQkWmPfLENpbQ7p7FcQYadYTrkG36HdqksZXK6YH6mEHmZkcvutgF+EitfYZR8SFrJONNsFGK1qecrerot48GCt5WRIlwcRj7i1Wiwc8saTjH7pZ/LOUFRllClMvDE8jZVwhFDZbGOprUZ1uG6isMIeGfcrk/vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554180; c=relaxed/simple;
-	bh=pl8zy/mjvfu7EMuYD9vKnihs94GT/CkXpK20nD+fQeM=;
+	s=arc-20240116; t=1751554967; c=relaxed/simple;
+	bh=/HfwqvIv9C/chl6CVP/ZqOWK4l6BjKW4OdSRhu0vXmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XJcyyBrUAmo4NoREyj/Hq0RNFRYm4wCz/Ag6yAnxJ7MxhViCuVcprGlabvasEJ0qbMu2ouN/1/QljqZXWiI1FuV+wx0H1jmRgRwxymEb+ER6SEwJrtHG5xHWKg4XaCCzfSCE7qEswVPUjEPCS5vxbf+cqMJPl+6bMP/yd2/r+yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xtwv3BQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDBBC4CEE3;
-	Thu,  3 Jul 2025 14:49:39 +0000 (UTC)
+	 MIME-Version; b=QZ6SIYDYnhHwBDw72wKnqUlZlb2mYInqFS3vkEgn0VlZqADudoxoohDXYJKMo9yX1UXAkZwLenj7Nyo/SKXIsnPA9GEdYH1yZLlQr88NAo4ZSBaI25tMe5ZHCihNY5R/NZBdF+M7RAsO1SiggJZGCgD/LIwPZoOyJbn8spFTDT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/Xzbncy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5C0C4CEE3;
+	Thu,  3 Jul 2025 15:02:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554179;
-	bh=pl8zy/mjvfu7EMuYD9vKnihs94GT/CkXpK20nD+fQeM=;
+	s=korg; t=1751554966;
+	bh=/HfwqvIv9C/chl6CVP/ZqOWK4l6BjKW4OdSRhu0vXmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xtwv3BQRpfE0RSwIFQD9gI+FoBH58gEAczGZqogg32X7GvNyj857GrKxt9/XXlfBW
-	 Cg0NdEkOUabLsFCAgrf3YvNFxxMIIRPSwd9muv+jXF945fVuSxZFSwCRe8DVI8O7Mp
-	 EIdeW3NqxSWEctfjvh4fZ2z7gAWNRrb4cjWJjvDk=
+	b=f/XzbncyGXQNkU3X7DovUOZcm8H2ujFoR23SWg1fZIzV9AucJhPfCrXBz55zzYL97
+	 kT6z+DDPceerT4fRIBdfkiFi4gjCkYl0plOW1u4ezABHRli8ZWa4e+EruMz/RLgJao
+	 H4oabRNkbgL++EiTkGvPQ17/QYO6Zo0WQYpnLe6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Gengming Liu <l.dmxcsnsbh@gmail.com>,
 	Simon Horman <horms@kernel.org>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 106/218] net: enetc: Correct endianness handling in _enetc_rd_reg64
-Date: Thu,  3 Jul 2025 16:40:54 +0200
-Message-ID: <20250703144000.175059487@linuxfoundation.org>
+Subject: [PATCH 6.15 135/263] atm: clip: prevent NULL deref in clip_push()
+Date: Thu,  3 Jul 2025 16:40:55 +0200
+Message-ID: <20250703144009.774238337@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 7b515f35a911fdc31fbde6531828dcd6ae9803d3 ]
+[ Upstream commit b993ea46b3b601915ceaaf3c802adf11e7d6bac6 ]
 
-enetc_hw.h provides two versions of _enetc_rd_reg64.
-One which simply calls ioread64() when available.
-And another that composes the 64-bit result from ioread32() calls.
+Blamed commit missed that vcc_destroy_socket() calls
+clip_push() with a NULL skb.
 
-In the second case the code appears to assume that each ioread32() call
-returns a little-endian value. However both the shift and logical or
-used to compose the return value would not work correctly on big endian
-systems if this were the case. Moreover, this is inconsistent with the
-first case where the return value of ioread64() is assumed to be in host
-byte order.
+If clip_devs is NULL, clip_push() then crashes when reading
+skb->truesize.
 
-It appears that the correct approach is for both versions to treat the
-return value of ioread*() functions as being in host byte order. And
-this patch corrects the ioread32()-based version to do so.
-
-This is a bug but would only manifest on big endian systems
-that make use of the ioread32-based implementation of _enetc_rd_reg64.
-While all in-tree users of this driver are little endian and
-make use of the ioread64-based implementation of _enetc_rd_reg64.
-Thus, no in-tree user of this driver is affected by this bug.
-
-Flagged by Sparse.
-Compile tested only.
-
-Fixes: 16eb4c85c964 ("enetc: Add ethtool statistics")
-Closes: https://lore.kernel.org/all/AM9PR04MB850500D3FC24FE23DEFCEA158879A@AM9PR04MB8505.eurprd04.prod.outlook.com/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250624-etnetc-le-v1-1-a73a95d96e4e@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 93a2014afbac ("atm: fix a UAF in lec_arp_clear_vccs()")
+Reported-by: syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68556f59.a00a0220.137b3.004e.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: Gengming Liu <l.dmxcsnsbh@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_hw.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/atm/clip.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-index 1619943fb2637..4e8881b479e48 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-@@ -485,7 +485,7 @@ static inline u64 _enetc_rd_reg64(void __iomem *reg)
- 		tmp = ioread32(reg + 4);
- 	} while (high != tmp);
+diff --git a/net/atm/clip.c b/net/atm/clip.c
+index 61b5b700817de..b234dc3bcb0d4 100644
+--- a/net/atm/clip.c
++++ b/net/atm/clip.c
+@@ -193,12 +193,6 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
  
--	return le64_to_cpu((__le64)high << 32 | low);
-+	return (u64)high << 32 | low;
- }
- #endif
+ 	pr_debug("\n");
  
+-	if (!clip_devs) {
+-		atm_return(vcc, skb->truesize);
+-		kfree_skb(skb);
+-		return;
+-	}
+-
+ 	if (!skb) {
+ 		pr_debug("removing VCC %p\n", clip_vcc);
+ 		if (clip_vcc->entry)
+@@ -208,6 +202,11 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
+ 		return;
+ 	}
+ 	atm_return(vcc, skb->truesize);
++	if (!clip_devs) {
++		kfree_skb(skb);
++		return;
++	}
++
+ 	skb->dev = clip_vcc->entry ? clip_vcc->entry->neigh->dev : clip_devs;
+ 	/* clip_vcc->entry == NULL if we don't have an IP address yet */
+ 	if (!skb->dev) {
 -- 
 2.39.5
 
