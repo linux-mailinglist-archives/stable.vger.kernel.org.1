@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076F2AF79B7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C674DAF7872
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:50:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4ADB3AFCAA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E1EA18842BA
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7BF2ED143;
-	Thu,  3 Jul 2025 15:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123E172610;
+	Thu,  3 Jul 2025 14:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QY57X2ZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXVNFlAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECB02E7BBF;
-	Thu,  3 Jul 2025 15:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C457E101DE;
+	Thu,  3 Jul 2025 14:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554921; cv=none; b=KaEStfrP2su4C/4fsmoss4hY4uv1iVbSWFhIWoNGPJVqjz4l/weJ0o7wiJfg14DFwG1DtB7iSNezlRW8ph9cG63NQjTmYeUkywKzYT/NaYTjBHsuPV18HI6YsqLwgy2U4+XBFAiGRRpAR5o3OeCwcKxFD8JLNblgjuMFs/JZvgQ=
+	t=1751554147; cv=none; b=DOZG4JDcx9a6j1N6ceOTDqlIpgRrZgZudvNX2gq83WZExIzdyT1/aQtyu4PGKU5G1XiKSK1K/I1PsIrNwX4fV/g9eGlq+chEswRtQ1S+jqQTAdKjQxwL4zlRS2kaFv4BWoN0b5zokSLhTRJoAsaB97oroaqMC9DvSUZ3lXR/4+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554921; c=relaxed/simple;
-	bh=XxAmZt55gPmfnrazjVNtFd7MOuvFbxzK3w+9dSsOuCU=;
+	s=arc-20240116; t=1751554147; c=relaxed/simple;
+	bh=3y5c/q2cmYQ4wPpPW6mcQsJNJh/WoA9bUCT/baiQzjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkM4HPql39o8JDM3/BS76sn1J48vkkFtb202tM5zUU5tmX25PK0R+sIO9oMbdAn1+J5PWZiyl3hUO2wkxHoUrALp9ssDEdjiuljJGWm0wL8AFsdhm5FzI4GZwnuYzaj6wyScc4R+GKtG/kwW+PvBvqc+JeO3DFu9+JZ0cwi01y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QY57X2ZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7A2C4CEE3;
-	Thu,  3 Jul 2025 15:02:00 +0000 (UTC)
+	 MIME-Version; b=KKRZLT+rAwCje+g4ZymvnlSDj5RpGqJWjPUOes0J6zii23bScIy+70u8yFvVtbcbYAhRYV/5NKuVbeM1GMTf0yPXXrsjRoe/f2kwRuSKKbpNDyNPPtjOdWFrC1SjaT59uOcq8otgTlVzOw6256lfSzHbzp+4Gb4aS56lP0DGJd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXVNFlAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F27C4CEE3;
+	Thu,  3 Jul 2025 14:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554921;
-	bh=XxAmZt55gPmfnrazjVNtFd7MOuvFbxzK3w+9dSsOuCU=;
+	s=korg; t=1751554147;
+	bh=3y5c/q2cmYQ4wPpPW6mcQsJNJh/WoA9bUCT/baiQzjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QY57X2ZZ9PrNIFt+YXiHfpYyG1qTti5wD74i/uq05qrCYG/kvPofYW4ljNuox2jv8
-	 n2hLSjmG9VEi6xBuTLi57N8UjXYG7Tk/sIpYcDyGkMeLol4PzZsyaY9+/YGZNpBkYR
-	 Z8SBbCykzpqvPS4joPeM3YMmwFu4T+IjKjTaKvE4=
+	b=IXVNFlAzLFv+AR9b6poRW2wF+NmVMJBv8F9XnpLLCuDFfr7aE8NTSohpJ3eRx9Fp7
+	 m/6EulShKVrQbC73A60tHHzbgCxVF3B9sd0dQ3+b+MGen61CUl+P+5jr19apXhi1in
+	 qdwLwpqq+Q8qw5Y7clDByeXtO22ZCQFaedbznmCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 093/263] io_uring/zcrx: split out memory holders from area
+Subject: [PATCH 6.12 065/218] ASoC: codec: wcd9335: Convert to GPIO descriptors
 Date: Thu,  3 Jul 2025 16:40:13 +0200
-Message-ID: <20250703144008.024903602@linuxfoundation.org>
+Message-ID: <20250703143958.542299657@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,194 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 782dfa329ac9d1b5ca7b6df56a7696bac58cb829 ]
+[ Upstream commit d5099bc1b56417733f4cccf10c61ee74dadd5562 ]
 
-In the data path users of struct io_zcrx_area don't need to know what
-kind of memory it's backed by. Only keep there generic bits in there and
-and split out memory type dependent fields into a new structure. It also
-logically separates the step that actually imports the memory, e.g.
-pinning user pages, from the generic area initialisation.
+of_gpio.h is deprecated, update the driver to use GPIO descriptors.
+- Use dev_gpiod_get to get GPIO descriptor.
+- Use gpiod_set_value to configure output value.
 
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/b60fc09c76921bf69e77eb17e07eb4decedb3bf4.1746097431.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 0ec33c81d9c7 ("io_uring/zcrx: fix area release on registration failure")
+With legacy of_gpio API, the driver set gpio value 0 to assert reset,
+and 1 to deassert reset. And the reset-gpios use GPIO_ACTIVE_LOW flag in
+DTS, so set GPIOD_OUT_LOW when get GPIO descriptors, and set value 1 means
+output low, set value 0 means output high with gpiod API.
+
+The in-tree DTS files have the right polarity set up already so we can
+expect this to "just work"
+
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://patch.msgid.link/20250324-wcd-gpiod-v2-3-773f67ce3b56@nxp.com
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 9079db287fc3 ("ASoC: codecs: wcd9335: Fix missing free of regulator supplies")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/zcrx.c | 71 ++++++++++++++++++++++++++++++++-----------------
- io_uring/zcrx.h | 11 ++++++--
- 2 files changed, 56 insertions(+), 26 deletions(-)
+ sound/soc/codecs/wcd9335.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 0771a57d81a5b..7214236c14882 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -26,6 +26,8 @@
- #include "zcrx.h"
- #include "rsrc.h"
+diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
+index 373a31ddccb2d..db6a1facf8a92 100644
+--- a/sound/soc/codecs/wcd9335.c
++++ b/sound/soc/codecs/wcd9335.c
+@@ -17,7 +17,7 @@
+ #include <sound/soc.h>
+ #include <sound/pcm_params.h>
+ #include <sound/soc-dapm.h>
+-#include <linux/of_gpio.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/of.h>
+ #include <linux/of_irq.h>
+ #include <sound/tlv.h>
+@@ -329,7 +329,7 @@ struct wcd9335_codec {
+ 	int comp_enabled[COMPANDER_MAX];
  
-+#define IO_DMA_ATTR (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING)
-+
- static inline struct io_zcrx_ifq *io_pp_to_ifq(struct page_pool *pp)
+ 	int intr1;
+-	int reset_gpio;
++	struct gpio_desc *reset_gpio;
+ 	struct regulator_bulk_data supplies[WCD9335_MAX_SUPPLY];
+ 
+ 	unsigned int rx_port_value[WCD9335_RX_MAX];
+@@ -4973,12 +4973,11 @@ static const struct regmap_irq_chip wcd9335_regmap_irq1_chip = {
+ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
  {
- 	return pp->mp_priv;
-@@ -42,10 +44,43 @@ static inline struct page *io_zcrx_iov_page(const struct net_iov *niov)
- {
- 	struct io_zcrx_area *area = io_zcrx_iov_to_area(niov);
+ 	struct device *dev = wcd->dev;
+-	struct device_node *np = dev->of_node;
+ 	int ret;
  
--	return area->pages[net_iov_idx(niov)];
-+	return area->mem.pages[net_iov_idx(niov)];
- }
+-	wcd->reset_gpio = of_get_named_gpio(np,	"reset-gpios", 0);
+-	if (wcd->reset_gpio < 0)
+-		return dev_err_probe(dev, wcd->reset_gpio, "Reset GPIO missing from DT\n");
++	wcd->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
++	if (IS_ERR(wcd->reset_gpio))
++		return dev_err_probe(dev, PTR_ERR(wcd->reset_gpio), "Reset GPIO missing from DT\n");
  
--#define IO_DMA_ATTR (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING)
-+static void io_release_area_mem(struct io_zcrx_mem *mem)
-+{
-+	if (mem->pages) {
-+		unpin_user_pages(mem->pages, mem->nr_folios);
-+		kvfree(mem->pages);
-+	}
-+}
-+
-+static int io_import_area(struct io_zcrx_ifq *ifq,
-+			  struct io_zcrx_mem *mem,
-+			  struct io_uring_zcrx_area_reg *area_reg)
-+{
-+	struct page **pages;
-+	int nr_pages;
-+	int ret;
-+
-+	ret = io_validate_user_buf_range(area_reg->addr, area_reg->len);
-+	if (ret)
-+		return ret;
-+	if (!area_reg->addr)
-+		return -EFAULT;
-+	if (area_reg->addr & ~PAGE_MASK || area_reg->len & ~PAGE_MASK)
-+		return -EINVAL;
-+
-+	pages = io_pin_pages((unsigned long)area_reg->addr, area_reg->len,
-+				   &nr_pages);
-+	if (IS_ERR(pages))
-+		return PTR_ERR(pages);
-+
-+	mem->pages = pages;
-+	mem->nr_folios = nr_pages;
-+	mem->size = area_reg->len;
-+	return 0;
-+}
+ 	wcd->mclk = devm_clk_get(dev, "mclk");
+ 	if (IS_ERR(wcd->mclk))
+@@ -5021,9 +5020,9 @@ static int wcd9335_power_on_reset(struct wcd9335_codec *wcd)
+ 	 */
+ 	usleep_range(600, 650);
  
- static void __io_zcrx_unmap_area(struct io_zcrx_ifq *ifq,
- 				 struct io_zcrx_area *area, int nr_mapped)
-@@ -84,8 +119,8 @@ static int io_zcrx_map_area(struct io_zcrx_ifq *ifq, struct io_zcrx_area *area)
- 		struct net_iov *niov = &area->nia.niovs[i];
- 		dma_addr_t dma;
+-	gpio_direction_output(wcd->reset_gpio, 0);
++	gpiod_set_value(wcd->reset_gpio, 1);
+ 	msleep(20);
+-	gpio_set_value(wcd->reset_gpio, 1);
++	gpiod_set_value(wcd->reset_gpio, 0);
+ 	msleep(20);
  
--		dma = dma_map_page_attrs(ifq->dev, area->pages[i], 0, PAGE_SIZE,
--					 DMA_FROM_DEVICE, IO_DMA_ATTR);
-+		dma = dma_map_page_attrs(ifq->dev, area->mem.pages[i], 0,
-+					 PAGE_SIZE, DMA_FROM_DEVICE, IO_DMA_ATTR);
- 		if (dma_mapping_error(ifq->dev, dma))
- 			break;
- 		if (net_mp_niov_set_dma_addr(niov, dma)) {
-@@ -188,14 +223,11 @@ static void io_free_rbuf_ring(struct io_zcrx_ifq *ifq)
- static void io_zcrx_free_area(struct io_zcrx_area *area)
- {
- 	io_zcrx_unmap_area(area->ifq, area);
-+	io_release_area_mem(&area->mem);
- 
- 	kvfree(area->freelist);
- 	kvfree(area->nia.niovs);
- 	kvfree(area->user_refs);
--	if (area->pages) {
--		unpin_user_pages(area->pages, area->nr_folios);
--		kvfree(area->pages);
--	}
- 	kfree(area);
- }
- 
-@@ -204,36 +236,27 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
- 			       struct io_uring_zcrx_area_reg *area_reg)
- {
- 	struct io_zcrx_area *area;
--	int i, ret, nr_pages, nr_iovs;
-+	unsigned nr_iovs;
-+	int i, ret;
- 
- 	if (area_reg->flags || area_reg->rq_area_token)
- 		return -EINVAL;
- 	if (area_reg->__resv1 || area_reg->__resv2[0] || area_reg->__resv2[1])
- 		return -EINVAL;
--	if (area_reg->addr & ~PAGE_MASK || area_reg->len & ~PAGE_MASK)
--		return -EINVAL;
--
--	ret = io_validate_user_buf_range(area_reg->addr, area_reg->len);
--	if (ret)
--		return ret;
--	if (!area_reg->addr)
--		return -EFAULT;
- 
- 	ret = -ENOMEM;
- 	area = kzalloc(sizeof(*area), GFP_KERNEL);
- 	if (!area)
- 		goto err;
- 
--	area->pages = io_pin_pages((unsigned long)area_reg->addr, area_reg->len,
--				   &nr_pages);
--	if (IS_ERR(area->pages)) {
--		ret = PTR_ERR(area->pages);
--		area->pages = NULL;
-+	ret = io_import_area(ifq, &area->mem, area_reg);
-+	if (ret)
- 		goto err;
--	}
--	area->nr_folios = nr_iovs = nr_pages;
-+
-+	nr_iovs = area->mem.size >> PAGE_SHIFT;
- 	area->nia.num_niovs = nr_iovs;
- 
-+	ret = -ENOMEM;
- 	area->nia.niovs = kvmalloc_array(nr_iovs, sizeof(area->nia.niovs[0]),
- 					 GFP_KERNEL | __GFP_ZERO);
- 	if (!area->nia.niovs)
-diff --git a/io_uring/zcrx.h b/io_uring/zcrx.h
-index f2bc811f022c6..64796c90851e1 100644
---- a/io_uring/zcrx.h
-+++ b/io_uring/zcrx.h
-@@ -7,6 +7,13 @@
- #include <net/page_pool/types.h>
- #include <net/net_trackers.h>
- 
-+struct io_zcrx_mem {
-+	unsigned long			size;
-+
-+	struct page			**pages;
-+	unsigned long			nr_folios;
-+};
-+
- struct io_zcrx_area {
- 	struct net_iov_area	nia;
- 	struct io_zcrx_ifq	*ifq;
-@@ -14,13 +21,13 @@ struct io_zcrx_area {
- 
- 	bool			is_mapped;
- 	u16			area_id;
--	struct page		**pages;
--	unsigned long		nr_folios;
- 
- 	/* freelist */
- 	spinlock_t		freelist_lock ____cacheline_aligned_in_smp;
- 	u32			free_count;
- 	u32			*freelist;
-+
-+	struct io_zcrx_mem	mem;
- };
- 
- struct io_zcrx_ifq {
+ 	return 0;
 -- 
 2.39.5
 
