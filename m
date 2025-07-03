@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8EBAF7A1F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:09:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42DB6AF7AAC
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6641F188B5CB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:04:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6998717753B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018DA2EE28F;
-	Thu,  3 Jul 2025 15:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFBF2F0041;
+	Thu,  3 Jul 2025 15:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCQ2s5oF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1HZb6rVl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1EA2ED143;
-	Thu,  3 Jul 2025 15:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7322EF672;
+	Thu,  3 Jul 2025 15:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555073; cv=none; b=k/uAlHFJR7aYnx7/hDXLIk4ETZINNiY+KL6CSFaMNvf6qqZbvlXQKEKBZOVCoSgEAo0Yk2bxN4PA0lvfoI8X4euMuAgHv3L+OCmcREfIZZ52ynV7RnHm0GtdhZHynb5LGkCojBXSBo9I9MIZ0MUL+mZDNdsWEhFf1GoFvnWEDCw=
+	t=1751555479; cv=none; b=GGnx3905DCNLIVvWpCAVYp929kXO45yxroghxFJb7rNstSiG3E7U/oc6qlKrOOEF9V9QxTdWbaAQXk9FcxgADIgKZDlJ2ejo69N0sgCKtf1JanZDei6LDIbgK2W3bskajJAWMVe2gdFBVfJZQIhHpUTemLtpPfP98m3uQleaz7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555073; c=relaxed/simple;
-	bh=Pl04QGGXh8Bqreg5ZQ/FOtHl7MK1qouMXlAMjtHHYLM=;
+	s=arc-20240116; t=1751555479; c=relaxed/simple;
+	bh=vh0BSDKE5z9PTiFb7v0fbs1CrT+vOVeAIbQzN0mq/bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c9xX3MEAwTJ9P4dCy6AM2WjoT5sQ/UD/SuKM24QXLP/xM2E8m6cvX848wUzfHUtcDvYIrGxmpIBSSb0kz03L9vvy+7AIn/9MRzXOiPgyzjouw2MTbmurR+kFyu7MDjhj1kZUugAhPKjjnwUYTIrqr1GFgkJ+zGeT0Zqw0HMgutc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCQ2s5oF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F25BC4CEEE;
-	Thu,  3 Jul 2025 15:04:32 +0000 (UTC)
+	 MIME-Version; b=N1Coy5IoXYlxE5wa29l2nf8BR0qIiTm9Vao7PwiiIo9tLytXoN6DsS0Wfk0T5VGW+MiZcESFTbQ2chuBoTs/KZlkDxqhgtZvt0OaUXMyI9VXsQHn+NwSzGSM0hibVP3SKx5NO7AWjw3VQp9lQDrm6EdZBas0nCt+tTvxb3b0zzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1HZb6rVl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23000C4CEE3;
+	Thu,  3 Jul 2025 15:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555073;
-	bh=Pl04QGGXh8Bqreg5ZQ/FOtHl7MK1qouMXlAMjtHHYLM=;
+	s=korg; t=1751555479;
+	bh=vh0BSDKE5z9PTiFb7v0fbs1CrT+vOVeAIbQzN0mq/bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCQ2s5oFCkKU0KKMwvI6rLsneLiwEI8LCZ2Srw8/sMMZipBUTB5Ppbe9NiJjdmxXY
-	 dCZmSZVbMVEmgoWfoOH3Rd7qKjg904bFFbNUBwuUuXj00nqOx+xpdWEilZJ1g6bwuF
-	 qhoY3DCkg68iEnS/pLy2fdj7bgrrN9wpdhTqS30I=
+	b=1HZb6rVllsKGn85q4dBlFbf+c6tsE0P0q21CHAUCA2CTZx9LxcA2K0rCynWa9ccl2
+	 n9oOwexZGjT1atpyOfAYyY+fcXuhCByfaFnGW2VTmkApMFwctToLgVWsc3A1nNMQFg
+	 g6LGpahHPgld9PNAGPJWE4WIzGbM6fHpwc2eTnEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 169/263] drm/xe: Process deferred GGTT node removals on device unwind
+Subject: [PATCH 6.6 026/139] iio: pressure: zpa2326: Use aligned_s64 for the timestamp
 Date: Thu,  3 Jul 2025 16:41:29 +0200
-Message-ID: <20250703144011.132633083@linuxfoundation.org>
+Message-ID: <20250703143942.205508324@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit af2b588abe006bd55ddd358c4c3b87523349c475 ]
+[ Upstream commit 886a446b76afddfad307488e95e87f23a08ffd51 ]
 
-While we are indirectly draining our dedicated workqueue ggtt->wq
-that we use to complete asynchronous removal of some GGTT nodes,
-this happends as part of the managed-drm unwinding (ggtt_fini_early),
-which could be later then manage-device unwinding, where we could
-already unmap our MMIO/GMS mapping (mmio_fini).
+On x86_32 s64 fields are only 32-bit aligned.  Hence force the alignment of
+the field and padding in the structure by using aligned_s64 instead.
 
-This was recently observed during unsuccessful VF initialization:
-
- [ ] xe 0000:00:02.1: probe with driver xe failed with error -62
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e747340 __xe_bo_unpin_map_no_vm (16 bytes)
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e747540 __xe_bo_unpin_map_no_vm (16 bytes)
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e747240 __xe_bo_unpin_map_no_vm (16 bytes)
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e747040 tiles_fini (16 bytes)
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e746840 mmio_fini (16 bytes)
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e747f40 xe_bo_pinned_fini (16 bytes)
- [ ] xe 0000:00:02.1: DEVRES REL ffff88811e746b40 devm_drm_dev_init_release (16 bytes)
- [ ] xe 0000:00:02.1: [drm:drm_managed_release] drmres release begin
- [ ] xe 0000:00:02.1: [drm:drm_managed_release] REL ffff88810ef81640 __fini_relay (8 bytes)
- [ ] xe 0000:00:02.1: [drm:drm_managed_release] REL ffff88810ef80d40 guc_ct_fini (8 bytes)
- [ ] xe 0000:00:02.1: [drm:drm_managed_release] REL ffff88810ef80040 __drmm_mutex_release (8 bytes)
- [ ] xe 0000:00:02.1: [drm:drm_managed_release] REL ffff88810ef80140 ggtt_fini_early (8 bytes)
-
-and this was leading to:
-
- [ ] BUG: unable to handle page fault for address: ffffc900058162a0
- [ ] #PF: supervisor write access in kernel mode
- [ ] #PF: error_code(0x0002) - not-present page
- [ ] Oops: Oops: 0002 [#1] SMP NOPTI
- [ ] Tainted: [W]=WARN
- [ ] Workqueue: xe-ggtt-wq ggtt_node_remove_work_func [xe]
- [ ] RIP: 0010:xe_ggtt_set_pte+0x6d/0x350 [xe]
- [ ] Call Trace:
- [ ]  <TASK>
- [ ]  xe_ggtt_clear+0xb0/0x270 [xe]
- [ ]  ggtt_node_remove+0xbb/0x120 [xe]
- [ ]  ggtt_node_remove_work_func+0x30/0x50 [xe]
- [ ]  process_one_work+0x22b/0x6f0
- [ ]  worker_thread+0x1e8/0x3d
-
-Add managed-device action that will explicitly drain the workqueue
-with all pending node removals prior to releasing MMIO/GSM mapping.
-
-Fixes: 919bb54e989c ("drm/xe: Fix missing runtime outer protection for ggtt_remove_node")
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://lore.kernel.org/r/20250612220937.857-2-michal.wajdeczko@intel.com
-(cherry picked from commit 89d2835c3680ab1938e22ad81b1c9f8c686bd391)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250413103443.2420727-19-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_ggtt.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/iio/pressure/zpa2326.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_ggtt.c b/drivers/gpu/drm/xe/xe_ggtt.c
-index 5fcb2b4c2c139..60bce5de52725 100644
---- a/drivers/gpu/drm/xe/xe_ggtt.c
-+++ b/drivers/gpu/drm/xe/xe_ggtt.c
-@@ -201,6 +201,13 @@ static const struct xe_ggtt_pt_ops xelpg_pt_wa_ops = {
- 	.ggtt_set_pte = xe_ggtt_set_pte_and_flush,
- };
+diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
+index ef1d0349f4247..a1c694199c989 100644
+--- a/drivers/iio/pressure/zpa2326.c
++++ b/drivers/iio/pressure/zpa2326.c
+@@ -582,7 +582,7 @@ static int zpa2326_fill_sample_buffer(struct iio_dev               *indio_dev,
+ 	struct {
+ 		u32 pressure;
+ 		u16 temperature;
+-		u64 timestamp;
++		aligned_s64 timestamp;
+ 	}   sample;
+ 	int err;
  
-+static void dev_fini_ggtt(void *arg)
-+{
-+	struct xe_ggtt *ggtt = arg;
-+
-+	drain_workqueue(ggtt->wq);
-+}
-+
- /**
-  * xe_ggtt_init_early - Early GGTT initialization
-  * @ggtt: the &xe_ggtt to be initialized
-@@ -257,6 +264,10 @@ int xe_ggtt_init_early(struct xe_ggtt *ggtt)
- 	if (err)
- 		return err;
- 
-+	err = devm_add_action_or_reset(xe->drm.dev, dev_fini_ggtt, ggtt);
-+	if (err)
-+		return err;
-+
- 	if (IS_SRIOV_VF(xe)) {
- 		err = xe_gt_sriov_vf_prepare_ggtt(xe_tile_get_gt(ggtt->tile, 0));
- 		if (err)
 -- 
 2.39.5
 
