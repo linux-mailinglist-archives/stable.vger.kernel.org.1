@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-159973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 586B1AF7BA4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BD2AF7B1D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:22:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EC475870CA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04066188B5E3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C19F2F0C49;
-	Thu,  3 Jul 2025 15:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBEC2EF9BC;
+	Thu,  3 Jul 2025 15:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pH8ZcbOM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbydlVEX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6322F0C44;
-	Thu,  3 Jul 2025 15:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FAB2EF9B8;
+	Thu,  3 Jul 2025 15:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555962; cv=none; b=KNApALJlhoVOtWzNTMmwAfU1CRj7KKZwJ2QdZV04ijaukqb26dMIOBAoxnm3iS5haz8yxufqvzz8xVmDTz3dMEdNeypIsYkaW1klmBv7S/kowGCo5SOWbbOEvLwnJZhkC//kZhgViPFSm3GFXIJ7zD0g83IUskUyKBFnB6yit3E=
+	t=1751555596; cv=none; b=SdPTEnMlo9bldOVWWv9i/+r87g0yfYfzinGJr9jH+P4mQJrlYTr9/AV4zfi1uxiJfoGAj0DJSKbDof09h404F20nHwzq8sdtqiKFu7r2Rnj7/xXodPWzQ5aMNKJrorG/Zo6yn/62ZqRguhmyInzA7rNtp09hikji8KC9gFFjn6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555962; c=relaxed/simple;
-	bh=OyxbcDNAV9g3JYerzyV9ekq32oh7eGoFU9HIK/5SZHc=;
+	s=arc-20240116; t=1751555596; c=relaxed/simple;
+	bh=E23ymLqNLKC3wYRDL0FEnNnPGrOyKWQOYWp/4+WS740=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EaSfD1KFsZ0D4MefKajxpbr6FRP2woh/d5ROnSnPi5q7gOiTlzE1YwKbOvHvE55n8Jwud6wseE0wLlg++Qg9tyV1BJzvo94Ou8EHwOOXDJRMe6zXStuvHbBTjz2unNViRv8iH0iHWou+tH2b+4BZZCb7fuDlxT4NtIOuoU5DOHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pH8ZcbOM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC51C4CEE3;
-	Thu,  3 Jul 2025 15:19:21 +0000 (UTC)
+	 MIME-Version; b=kEhf10/KdfURjjw9HWZ1+ipuj8Z5lz/pXnMrJwZ78VbJWT/F5bioY91PU8QEastHarul4Lpk0vm5T3QzTH4aI2MFEk6biwmIcBWCKbmREn9te6Ey7U0Bj7aVmMmQf4FQ/qw27/cNtAXkhEi7LwDNVK7EjCATLR30sD73BjTxBXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbydlVEX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53237C4CEEE;
+	Thu,  3 Jul 2025 15:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555961;
-	bh=OyxbcDNAV9g3JYerzyV9ekq32oh7eGoFU9HIK/5SZHc=;
+	s=korg; t=1751555594;
+	bh=E23ymLqNLKC3wYRDL0FEnNnPGrOyKWQOYWp/4+WS740=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pH8ZcbOMjkvr85ZDo9Mt29A3FU9V3HwTZ/8XwvW0Tt1XjqkGGZvYuWfhFytJTRHzT
-	 2+RqR7bP4l99sgrWU6CawrBkc5FO2s+EN7nCqiCGjHzHHcatDMcQ+hIuvMhgFeqAI+
-	 AKFhd7GkQ9q47tcH031wRzzYIbw813VC8kOms03U=
+	b=XbydlVEXjbdND0VDPkKdr+BBDLIHejoMWL2uFKgc9KD9xxMsqI/CZBfKLO74G04cB
+	 4oASejTT29pesTZq2F7AhU/kPNJf1u8d0RhClERNlaG/PEOx1BbgwcNP6kpWykW5Wd
+	 7imBN9LIyWYt/h1AGphG0aiY4Cyl6yEu2ip1i+zU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Mayhew <smayhew@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Chance Yang <chance.yang@kneron.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/132] NFSv4: xattr handlers should check for absent nfs filehandles
-Date: Thu,  3 Jul 2025 16:41:37 +0200
-Message-ID: <20250703143939.720845606@linuxfoundation.org>
+Subject: [PATCH 6.6 035/139] usb: common: usb-conn-gpio: use a unique name for usb connector device
+Date: Thu,  3 Jul 2025 16:41:38 +0200
+Message-ID: <20250703143942.555707928@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Chance Yang <chance.yang@kneron.us>
 
-[ Upstream commit 6e9a2f8dbe93c8004c2af2c0158888628b7ca034 ]
+[ Upstream commit d4e5b10c55627e2f3fc9e5b337a28b4e2f02a55e ]
 
-The nfs inodes for referral anchors that have not yet been followed have
-their filehandles zeroed out.
+The current implementation of the usb-conn-gpio driver uses a fixed
+"usb-charger" name for all USB connector devices. This causes conflicts
+in the power supply subsystem when multiple USB connectors are present,
+as duplicate names are not allowed.
 
-Attempting to call getxattr() on one of these will cause the nfs client
-to send a GETATTR to the nfs server with the preceding PUTFH sans
-filehandle.  The server will reply NFS4ERR_NOFILEHANDLE, leading to -EIO
-being returned to the application.
+Use IDA to manage unique IDs for naming usb connectors (e.g.,
+usb-charger-0, usb-charger-1).
 
-For example:
-
-$ strace -e trace=getxattr getfattr -n system.nfs4_acl /mnt/t/ref
-getxattr("/mnt/t/ref", "system.nfs4_acl", NULL, 0) = -1 EIO (Input/output error)
-/mnt/t/ref: system.nfs4_acl: Input/output error
-+++ exited with 1 +++
-
-Have the xattr handlers return -ENODATA instead.
-
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Chance Yang <chance.yang@kneron.us>
+Link: https://lore.kernel.org/r/20250411-work-next-v3-1-7cd9aa80190c@kneron.us
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/common/usb-conn-gpio.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 2d94d1d7b0c62..29f8a2df2c11a 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -6065,6 +6065,8 @@ static ssize_t nfs4_proc_get_acl(struct inode *inode, void *buf, size_t buflen,
- 	struct nfs_server *server = NFS_SERVER(inode);
- 	int ret;
- 
-+	if (unlikely(NFS_FH(inode)->size == 0))
-+		return -ENODATA;
- 	if (!nfs4_server_supports_acls(server, type))
- 		return -EOPNOTSUPP;
- 	ret = nfs_revalidate_inode(inode, NFS_INO_INVALID_CHANGE);
-@@ -6139,6 +6141,9 @@ static int nfs4_proc_set_acl(struct inode *inode, const void *buf,
- {
- 	struct nfs4_exception exception = { };
- 	int err;
+diff --git a/drivers/usb/common/usb-conn-gpio.c b/drivers/usb/common/usb-conn-gpio.c
+index 501e8bc9738eb..1096a884c8d70 100644
+--- a/drivers/usb/common/usb-conn-gpio.c
++++ b/drivers/usb/common/usb-conn-gpio.c
+@@ -20,6 +20,9 @@
+ #include <linux/power_supply.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/usb/role.h>
++#include <linux/idr.h>
 +
-+	if (unlikely(NFS_FH(inode)->size == 0))
-+		return -ENODATA;
- 	do {
- 		err = __nfs4_proc_set_acl(inode, buf, buflen, type);
- 		trace_nfs4_set_acl(inode, err);
++static DEFINE_IDA(usb_conn_ida);
+ 
+ #define USB_GPIO_DEB_MS		20	/* ms */
+ #define USB_GPIO_DEB_US		((USB_GPIO_DEB_MS) * 1000)	/* us */
+@@ -29,6 +32,7 @@
+ 
+ struct usb_conn_info {
+ 	struct device *dev;
++	int conn_id; /* store the IDA-allocated ID */
+ 	struct usb_role_switch *role_sw;
+ 	enum usb_role last_role;
+ 	struct regulator *vbus;
+@@ -160,7 +164,17 @@ static int usb_conn_psy_register(struct usb_conn_info *info)
+ 		.of_node = dev->of_node,
+ 	};
+ 
+-	desc->name = "usb-charger";
++	info->conn_id = ida_alloc(&usb_conn_ida, GFP_KERNEL);
++	if (info->conn_id < 0)
++		return info->conn_id;
++
++	desc->name = devm_kasprintf(dev, GFP_KERNEL, "usb-charger-%d",
++				    info->conn_id);
++	if (!desc->name) {
++		ida_free(&usb_conn_ida, info->conn_id);
++		return -ENOMEM;
++	}
++
+ 	desc->properties = usb_charger_properties;
+ 	desc->num_properties = ARRAY_SIZE(usb_charger_properties);
+ 	desc->get_property = usb_charger_get_property;
+@@ -168,8 +182,10 @@ static int usb_conn_psy_register(struct usb_conn_info *info)
+ 	cfg.drv_data = info;
+ 
+ 	info->charger = devm_power_supply_register(dev, desc, &cfg);
+-	if (IS_ERR(info->charger))
+-		dev_err(dev, "Unable to register charger\n");
++	if (IS_ERR(info->charger)) {
++		dev_err(dev, "Unable to register charger %d\n", info->conn_id);
++		ida_free(&usb_conn_ida, info->conn_id);
++	}
+ 
+ 	return PTR_ERR_OR_ZERO(info->charger);
+ }
+@@ -277,6 +293,9 @@ static void usb_conn_remove(struct platform_device *pdev)
+ 
+ 	cancel_delayed_work_sync(&info->dw_det);
+ 
++	if (info->charger)
++		ida_free(&usb_conn_ida, info->conn_id);
++
+ 	if (info->last_role == USB_ROLE_HOST && info->vbus)
+ 		regulator_disable(info->vbus);
+ 
 -- 
 2.39.5
 
