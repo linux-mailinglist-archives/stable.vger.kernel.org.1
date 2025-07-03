@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 742BBAF7B36
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80CE9AF78E3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91C331CA747D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C475E188E045
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F532EE973;
-	Thu,  3 Jul 2025 15:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBD02EF67D;
+	Thu,  3 Jul 2025 14:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0GYR/ug"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWpHACwW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935902EBB8D;
-	Thu,  3 Jul 2025 15:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAD92EF29C;
+	Thu,  3 Jul 2025 14:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555610; cv=none; b=YJ/z4dUbs/SErcSpSqIrwqNezmsF2SQbb+30c6bUSZ4wO0+qPRNRsoho3iJbeaK8DHIhIRXmelmf8kB7pj2VpcbcQlp2O4cO4sZ8Y4OKSVACuGxJ/OsW0ZZVmy7zzjM5vrpjov56Mw1Bww2FipABC9vtMbTNS4u70sQ0EhHu6oI=
+	t=1751554337; cv=none; b=FUYye20olD6tJszYBtfWV8g71I0ZkAVIsCjZMQpoyrzqjrNmA88N6YSqC9eO8IGLSF2jLWW6HBzodV+wvc8AdwVy/sGoSuJ3KukXA0KhhSpFBpw2ynz8l7LXKUE2vgkc7M97bIn0sQMWoqTk5nbPnWVUx+k4kNc5fNYR5D+bKvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555610; c=relaxed/simple;
-	bh=3iz7ti98M0KgQrGxBGt4BEIzmLw+4PUCNnkwN8DBPwk=;
+	s=arc-20240116; t=1751554337; c=relaxed/simple;
+	bh=5+wj4n+tiLJiMQbvNLOZaDRccKn/1ag9CrvSt5VYvl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Il/a5iLqGYW27V7/VAjIe0Gzl6oPh3adw8ZkFQkXnl3qAKZQQBot+epSdYkjSIQ1Q9KK9jILIqi/uLgKpTPeJjMoZYmWuDgnSEPDKFviZULSil3GP4PCUHfFGn00gg5lh+IC1cHvJMKU1MokW6n9i/l18heAiWll1GADZNaYkEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0GYR/ug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05970C4CEE3;
-	Thu,  3 Jul 2025 15:13:29 +0000 (UTC)
+	 MIME-Version; b=p+qpyhDhxZwg6tvaC9ss9OeAaMx7x2pfPlPz2RRq5UDSkStoKa05UpUW7YWsQvm8Ky4ohiFZiMS5aL9fVVe4YU2b5kT1SZTU5bdhJxrjNanOJgXhD+Z91UE4S/FtrotvGOg3/dQL73ylkINFA+Aq7AnpU1wjTwe0ur0YJKS1DY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWpHACwW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0997FC4CEE3;
+	Thu,  3 Jul 2025 14:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555610;
-	bh=3iz7ti98M0KgQrGxBGt4BEIzmLw+4PUCNnkwN8DBPwk=;
+	s=korg; t=1751554336;
+	bh=5+wj4n+tiLJiMQbvNLOZaDRccKn/1ag9CrvSt5VYvl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0GYR/ugBoti/TCf1NVPzx0NBgjyslBbrwdbeud7IWRiSS/c5BNSXAqbvH0QaTSOp
-	 lpoT6GH3CGLBkouhZDRMyoKW/pg3X4ODOAwnrfSqkWdXH1VGEfwDLaaHTAocoH81et
-	 eI8kp0ZeLu/7wlGLa1TkCAQIVfsoR7yW5lYOc/V4=
+	b=sWpHACwWsLR8yH2t5k+NUBJE9KVRQvAHchK5+DgKBO48lduPhGqdJte8FR0WNcZCz
+	 LcPIJoBTcMf3/ebfFVCt3W509GAFFDk4RFcFtp1dG7QvT3y7am/1lv6unDqAHXrHnG
+	 lQP5MMLplwbd37irK3vZtd7j4UBZ6wNiOr7myJ4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jos Wang <joswang@lenovo.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/139] usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	dri-devel@lists.freedesktop.org,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Subject: [PATCH 6.12 153/218] drm/udl: Unregister device before cleaning up on disconnect
 Date: Thu,  3 Jul 2025 16:41:41 +0200
-Message-ID: <20250703143942.669718788@linuxfoundation.org>
+Message-ID: <20250703144002.269762376@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jos Wang <joswang@lenovo.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit b4b38ffb38c91afd4dc387608db26f6fc34ed40b ]
+commit ff9cb6d2035c586ea7c8f1754d4409eec7a2d26d upstream.
 
-Although some Type-C DRD devices that do not support the DP Sink
-function (such as Huawei Mate 40Pro), the Source Port initiates
-Enter Mode CMD, but the device responds to Enter Mode ACK, the
-Source port then initiates DP Status Update CMD, and the device
-responds to DP Status Update NAK.
+Disconnecting a DisplayLink device results in the following kernel
+error messages
 
-As PD2.0 spec ("6.4.4.3.4 Enter Mode Command")，A DR_Swap Message
-Shall Not be sent during Modal Operation between the Port Partners.
-At this time, the source port initiates DR_Swap message through the
-"echo device > /sys/class/typec/port0/data_role" command to switch
-the data role from host to device. The device will initiate a Hard
-Reset for recovery, resulting in the failure of data role swap.
+[   93.041748] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
+[   93.055299] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
+[   93.065363] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
+[   93.078207] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
 
-Therefore, when DP Status Update NAK is received, Exit Mode CMD is
-initiated to exit the currently entered DP altmode.
+coming from KMS poll helpers. Shutting down poll helpers runs them
+one final time when the USB device is already gone.
 
-Signed-off-by: Jos Wang <joswang@lenovo.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250209071926.69625-1-joswang1221@gmail.com
+Run drm_dev_unplug() first in udl's USB disconnect handler. Udl's
+polling code already handles disconnects gracefully if the device has
+been marked as unplugged.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: b1a981bd5576 ("drm/udl: drop drm_driver.release hook")
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250303145604.62962-2-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/altmodes/displayport.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/udl/udl_drv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-index ccff838ab89e1..5f6fc5b79212e 100644
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -323,6 +323,10 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
- 		break;
- 	case CMDT_RSP_NAK:
- 		switch (cmd) {
-+		case DP_CMD_STATUS_UPDATE:
-+			if (typec_altmode_exit(alt))
-+				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
-+			break;
- 		case DP_CMD_CONFIGURE:
- 			dp->data.conf = 0;
- 			ret = dp_altmode_configured(dp);
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/udl/udl_drv.c
++++ b/drivers/gpu/drm/udl/udl_drv.c
+@@ -126,9 +126,9 @@ static void udl_usb_disconnect(struct us
+ {
+ 	struct drm_device *dev = usb_get_intfdata(interface);
+ 
++	drm_dev_unplug(dev);
+ 	drm_kms_helper_poll_fini(dev);
+ 	udl_drop_usb(dev);
+-	drm_dev_unplug(dev);
+ }
+ 
+ /*
 
 
 
