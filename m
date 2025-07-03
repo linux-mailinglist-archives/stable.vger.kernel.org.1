@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C047AF7B70
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E73AAF791B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:58:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42D73567F86
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C5B7585182
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B07A2EFDB8;
-	Thu,  3 Jul 2025 15:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0262EF669;
+	Thu,  3 Jul 2025 14:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkzGXuSm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1sKPZoI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA132E54BF;
-	Thu,  3 Jul 2025 15:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBDD2E7F0B;
+	Thu,  3 Jul 2025 14:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555850; cv=none; b=CVYTBLh0uY+tHCCgtA/8HmKB7dei08ThD0XLLBySKs6/nTJVDZKd0AvN16Q3PvB23Vl+0eIQ0iq0pwsFBsVpQUX4qoHQiLGaPUFIEyZiveA9zhdw67vHEedqTJeuSiFtIL0j5teNjL2jkZEOvEVhj9J5mXCnwWV0JCBl2MlYxjQ=
+	t=1751554520; cv=none; b=SvFRFFr43QIcXO/tWDrHpd2wZ0FijkjSUrD4bKV3sLydwcDpMvGTbr09d7n9+mnmgxWthvw18FjzeH2K4rfZf0cK/5D5lThTjCaZfDpR9eYb6gRtd82DLn3R0JSuF5QKKID9UGwZCh8mK1RceDcDYuB7cnLxxHLYIDGTvURyGvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555850; c=relaxed/simple;
-	bh=WMlfZL7QrdFpHK6PiDuoF7zqVPYR8nVP28Y6B8aSFlM=;
+	s=arc-20240116; t=1751554520; c=relaxed/simple;
+	bh=DC2Asas4pxn8y5n2w9BAE6XcBlMDUhhKdsQqWTsun/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTVsLUveK6Homy1MxGt5OHC75Uz8yj2L/Iw2nTEZ7ZG0mueRJc1uoeTXk2wiQHRPuY8jfIUhVCMQ4o62AHbTyJz09tR+dqePsDVkKo31d8eaWMHoqZvrfXELO9QxHvgJKA6xaBLMFcAaiG1IGSlTOomzqtIbZoe0l8JTfDSbInk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkzGXuSm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F53C4CEE3;
-	Thu,  3 Jul 2025 15:17:29 +0000 (UTC)
+	 MIME-Version; b=sDTWoMlR8SC9hDa1a5tUMwWa1epHcFTrE2vpcj/dDyq7LqF/OzHkRNRzK6gXTLXPc/l48aD+00KufWbvvaODMdQfSIZ9CEme7tLlQVL1tAowuLq9YYWihYKQ9gRm/C675obfuCq7cyl/0GyraxjGbCLFR5RfOwAcsuhjyNt3GRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1sKPZoI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0516C4CEE3;
+	Thu,  3 Jul 2025 14:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555849;
-	bh=WMlfZL7QrdFpHK6PiDuoF7zqVPYR8nVP28Y6B8aSFlM=;
+	s=korg; t=1751554520;
+	bh=DC2Asas4pxn8y5n2w9BAE6XcBlMDUhhKdsQqWTsun/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NkzGXuSm/QNgXMj7Z7LbhLuN9xAATEsQKG8VLttgkiVTic2XETw44CrbZB8n1eBm6
-	 NhEqqi4MZZHIpIUsqGVYLp4GaP49MNtfsXrzrBY8B/E9BUq/DHmIXGUQYTziuNr5Nl
-	 UrBiLm7re5SCyNskQgZw3SzCKlF5GAFAb3uGEuXA=
+	b=j1sKPZoIgapj8D5dAG86SClLrFwsSJ8rV+idwb1BhNhMdZDreDJvpw7xPq50ZUsD4
+	 negpRtZrz3At6MsfsomWGOG7xzZDeThd0CKFFd2NAgXiDaAqUmi1akKUW+M/wOWcPX
+	 IsX4RpUNJhMP3rNOBH+4RtzKGx7KcXsHXK9s/GTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yao Zi <ziyao@disroot.org>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH 6.6 097/139] dt-bindings: serial: 8250: Make clocks and clock-frequency exclusive
-Date: Thu,  3 Jul 2025 16:42:40 +0200
-Message-ID: <20250703143944.962524670@linuxfoundation.org>
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 213/218] spi: spi-mem: Add a new controller capability
+Date: Thu,  3 Jul 2025 16:42:41 +0200
+Message-ID: <20250703144004.731610136@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit 09812134071b3941fb81def30b61ed36d3a5dfb5 upstream.
+[ Upstream commit 1248c9b8d54120950fda10fbeb98fb8932b4d45c ]
 
-The 8250 binding before converting to json-schema states,
+There are spi devices with multiple frequency limitations depending on
+the invoked command. We probably do not want to afford running at the
+lowest supported frequency all the time, so if we want to get the most
+of our hardware, we need to allow per-operation frequency limitations.
 
-  - clock-frequency : the input clock frequency for the UART
-  	or
-  - clocks phandle to refer to the clk used as per Documentation/devicetree
+Among all the SPI memory controllers, I believe all are capable of
+changing the spi frequency on the fly. Some of the drivers do not make
+any frequency setup though. And some others will derive a per chip
+prescaler value which will be used forever.
 
-for clock-related properties, where "or" indicates these properties
-shouldn't exist at the same time.
+Actually changing the frequency on the fly is something new in Linux, so
+we need to carefully flag the drivers which do and do not support it. A
+controller capability is created for that, and the presence for this
+capability will always be checked before accepting such pattern.
 
-Additionally, the behavior of Linux's driver is strange when both clocks
-and clock-frequency are specified: it ignores clocks and obtains the
-frequency from clock-frequency, left the specified clocks unclaimed. It
-may even be disabled, which is undesired most of the time.
-
-But "anyOf" doesn't prevent these two properties from coexisting, as it
-considers the object valid as long as there's at LEAST one match.
-
-Let's switch to "oneOf" and disallows the other property if one exists,
-precisely matching the original binding and avoiding future confusion on
-the driver's behavior.
-
-Fixes: e69f5dc623f9 ("dt-bindings: serial: Convert 8250 to json-schema")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20250623093445.62327-1-ziyao@disroot.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://patch.msgid.link/20241224-winbond-6-11-rc1-quad-support-v2-2-ad218dbc406f@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/serial/8250.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-mem.c       | 6 ++++++
+ include/linux/spi/spi-mem.h | 2 ++
+ 2 files changed, 8 insertions(+)
 
---- a/Documentation/devicetree/bindings/serial/8250.yaml
-+++ b/Documentation/devicetree/bindings/serial/8250.yaml
-@@ -45,7 +45,7 @@ allOf:
-                   - ns16550
-                   - ns16550a
-     then:
--      anyOf:
-+      oneOf:
-         - required: [ clock-frequency ]
-         - required: [ clocks ]
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index f8b598ba962d9..d0ae20d433d61 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -188,6 +188,12 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
+ 	    op->max_freq < mem->spi->controller->min_speed_hz)
+ 		return false;
  
++	if (op->max_freq &&
++	    op->max_freq < mem->spi->max_speed_hz) {
++		if (!spi_mem_controller_is_capable(ctlr, per_op_freq))
++			return false;
++	}
++
+ 	return spi_mem_check_buswidth(mem, op);
+ }
+ EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 44b7ecee0e74c..0f00d74beb24c 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -306,10 +306,12 @@ struct spi_controller_mem_ops {
+  * struct spi_controller_mem_caps - SPI memory controller capabilities
+  * @dtr: Supports DTR operations
+  * @ecc: Supports operations with error correction
++ * @per_op_freq: Supports per operation frequency switching
+  */
+ struct spi_controller_mem_caps {
+ 	bool dtr;
+ 	bool ecc;
++	bool per_op_freq;
+ };
+ 
+ #define spi_mem_controller_is_capable(ctlr, cap)	\
+-- 
+2.39.5
+
 
 
 
