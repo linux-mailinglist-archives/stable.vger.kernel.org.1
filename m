@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94088AF7BB0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:27:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BAEAF7A2B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 288095A2D6A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 790113AFB53
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3482F2F0C65;
-	Thu,  3 Jul 2025 15:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401B62E7649;
+	Thu,  3 Jul 2025 15:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCtIDNWa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9NuIS1S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C7B2EFD9C;
-	Thu,  3 Jul 2025 15:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3A61E9B3D;
+	Thu,  3 Jul 2025 15:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555975; cv=none; b=QbS1FsUrmBvVj0oJSpH/5jMBbwK/z+S7aIyAsKapEi7V/y9Aj6T3ikutoOuQFuvCB37dSB8pL8SpEzJl57yJZhREqd/ngKYtvNY9DA3BCh9oTUCzX7bDuy7kAEmnmYbEIP0ON4ua3HyeYM9PKvuaL8cB99nE+oI06PlAeM2ImAg=
+	t=1751555198; cv=none; b=NZAsWn2g7fBsaLNEKFlgcHYpGNP3Ai7gEWZGyvGuF1XnbS+0VzryPK2fl/8E1YpwCP6JIGg1Iy8402jUhzT+G8iZkHTdiIUOK6BP79XDQjsDEnu/6XyDr8YgqdPTmc00IxIVruxqijBnnLQx6TDYszoqRa5ThY2QmFm4xhmEfQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555975; c=relaxed/simple;
-	bh=XzunkzWVT33S5GqTNR45Q+6bc+AZSIr7nSkPWOjB2MI=;
+	s=arc-20240116; t=1751555198; c=relaxed/simple;
+	bh=MEGYntyt9hyAqWBGcSdXDZ5MvMa/5h2EbgN/wG+3k2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tvqcJkOVBha7ACjFAP+Zt8cUS/KG/ZQPPeXT4qGAZ4xdZTcUlt09jQ+TZQpeHUxreAzmJeoTiM2VMsy/TrcVYm+h4PBIxzdB0pxQghWbrjXCYXbl8YQrnu9514wtJBPIppzn3Z9Mf8UaVhdzTQC2+m9ZYLJ4KjcSeFbRe7AS0S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCtIDNWa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5714CC4CEE3;
-	Thu,  3 Jul 2025 15:19:34 +0000 (UTC)
+	 MIME-Version; b=KFU2iGY6wzrhzvO4O8p97CPecydKj5RlFYb1bHMuIMrAb+JbhJEUUswgG3JSplQRAn/YVmpfD+PrVPpWwv8xotNyjfU2QpqRgoIfaT5d7YJM0wHJ1BDjYoQLayYFMsuMjBwpz12z35YXTJm8rTgUkdbqd4wXFHr0qufQTHkyWYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9NuIS1S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1DFC4CEE3;
+	Thu,  3 Jul 2025 15:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555974;
-	bh=XzunkzWVT33S5GqTNR45Q+6bc+AZSIr7nSkPWOjB2MI=;
+	s=korg; t=1751555197;
+	bh=MEGYntyt9hyAqWBGcSdXDZ5MvMa/5h2EbgN/wG+3k2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCtIDNWa64XlcAAIc0Ve2eqj2v2ZJ42NVJPZgBHVANg8vvYAnPEoHA3/V/ViX1iOb
-	 f2kisHpKuQqwbh8rpZTPbhzMn6Kd3Yw5ckZvfKo/yd80oeypwDJFJWJu5M3/0w2IDD
-	 w6RBDmYNozZE7iS99JLhRw/LdImqruU7mmNTgrFI=
+	b=j9NuIS1SiR6Phgt9T1IcK2QlT0RR9TuLxo10pUKvtYHxjJPGYqmWkPaSIs2xRUY/M
+	 9R0apNWkhahf/5XMdepx4hWN7uPK4dNFKkjw5JEhNQApwpduiaWi9SZahls/CW/XaE
+	 pQjr6iGWrW2Q5k0tYxCGcpTRlBQ4FcSxKENMc+K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiyu Zhang <zhiyuzhang999@gmail.com>,
-	Longxing Li <coregee2000@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/132] btrfs: handle csum tree error with rescue=ibadroots correctly
-Date: Thu,  3 Jul 2025 16:42:05 +0200
-Message-ID: <20250703143940.841294588@linuxfoundation.org>
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH 6.15 206/263] drm/simpledrm: Do not upcast in release helpers
+Date: Thu,  3 Jul 2025 16:42:06 +0200
+Message-ID: <20250703144012.629268777@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,122 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 547e836661554dcfa15c212a3821664e85b4191a ]
+commit d231cde7c84359fb18fb268cf6cff03b5bce48ff upstream.
 
-[BUG]
-There is syzbot based reproducer that can crash the kernel, with the
-following call trace: (With some debug output added)
+The res pointer passed to simpledrm_device_release_clocks() and
+simpledrm_device_release_regulators() points to an instance of
+struct simpledrm_device. No need to upcast from struct drm_device.
+The upcast is harmless, as DRM device is the first field in struct
+simpledrm_device.
 
- DEBUG: rescue=ibadroots parsed
- BTRFS: device fsid 14d642db-7b15-43e4-81e6-4b8fac6a25f8 devid 1 transid 8 /dev/loop0 (7:0) scanned by repro (1010)
- BTRFS info (device loop0): first mount of filesystem 14d642db-7b15-43e4-81e6-4b8fac6a25f8
- BTRFS info (device loop0): using blake2b (blake2b-256-generic) checksum algorithm
- BTRFS info (device loop0): using free-space-tree
- BTRFS warning (device loop0): checksum verify failed on logical 5312512 mirror 1 wanted 0xb043382657aede36608fd3386d6b001692ff406164733d94e2d9a180412c6003 found 0x810ceb2bacb7f0f9eb2bf3b2b15c02af867cb35ad450898169f3b1f0bd818651 level 0
- DEBUG: read tree root path failed for tree csum, ret=-5
- BTRFS warning (device loop0): checksum verify failed on logical 5328896 mirror 1 wanted 0x51be4e8b303da58e6340226815b70e3a93592dac3f30dd510c7517454de8567a found 0x51be4e8b303da58e634022a315b70e3a93592dac3f30dd510c7517454de8567a level 0
- BTRFS warning (device loop0): checksum verify failed on logical 5292032 mirror 1 wanted 0x1924ccd683be9efc2fa98582ef58760e3848e9043db8649ee382681e220cdee4 found 0x0cb6184f6e8799d9f8cb335dccd1d1832da1071d12290dab3b85b587ecacca6e level 0
- process 'repro' launched './file2' with NULL argv: empty string added
- DEBUG: no csum root, idatacsums=0 ibadroots=134217728
- Oops: general protection fault, probably for non-canonical address 0xdffffc0000000041: 0000 [#1] SMP KASAN NOPTI
- KASAN: null-ptr-deref in range [0x0000000000000208-0x000000000000020f]
- CPU: 5 UID: 0 PID: 1010 Comm: repro Tainted: G           OE       6.15.0-custom+ #249 PREEMPT(full)
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
- RIP: 0010:btrfs_lookup_csum+0x93/0x3d0 [btrfs]
- Call Trace:
-  <TASK>
-  btrfs_lookup_bio_sums+0x47a/0xdf0 [btrfs]
-  btrfs_submit_bbio+0x43e/0x1a80 [btrfs]
-  submit_one_bio+0xde/0x160 [btrfs]
-  btrfs_readahead+0x498/0x6a0 [btrfs]
-  read_pages+0x1c3/0xb20
-  page_cache_ra_order+0x4b5/0xc20
-  filemap_get_pages+0x2d3/0x19e0
-  filemap_read+0x314/0xde0
-  __kernel_read+0x35b/0x900
-  bprm_execve+0x62e/0x1140
-  do_execveat_common.isra.0+0x3fc/0x520
-  __x64_sys_execveat+0xdc/0x130
-  do_syscall_64+0x54/0x1d0
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- ---[ end trace 0000000000000000 ]---
-
-[CAUSE]
-Firstly the fs has a corrupted csum tree root, thus to mount the fs we
-have to go "ro,rescue=ibadroots" mount option.
-
-Normally with that mount option, a bad csum tree root should set
-BTRFS_FS_STATE_NO_DATA_CSUMS flag, so that any future data read will
-ignore csum search.
-
-But in this particular case, we have the following call trace that
-caused NULL csum root, but not setting BTRFS_FS_STATE_NO_DATA_CSUMS:
-
-load_global_roots_objectid():
-
-		ret = btrfs_search_slot();
-		/* Succeeded */
-		btrfs_item_key_to_cpu()
-		found = true;
-		/* We found the root item for csum tree. */
-		root = read_tree_root_path();
-		if (IS_ERR(root)) {
-			if (!btrfs_test_opt(fs_info, IGNOREBADROOTS))
-			/*
-			 * Since we have rescue=ibadroots mount option,
-			 * @ret is still 0.
-			 */
-			break;
-	if (!found || ret) {
-		/* @found is true, @ret is 0, error handling for csum
-		 * tree is skipped.
-		 */
-	}
-
-This means we completely skipped to set BTRFS_FS_STATE_NO_DATA_CSUMS if
-the csum tree is corrupted, which results unexpected later csum lookup.
-
-[FIX]
-If read_tree_root_path() failed, always populate @ret to the error
-number.
-
-As at the end of the function, we need @ret to determine if we need to
-do the extra error handling for csum tree.
-
-Fixes: abed4aaae4f7 ("btrfs: track the csum, extent, and free space trees in a rb tree")
-Reported-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
-Reported-by: Longxing Li <coregee2000@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 11e8f5fd223b ("drm: Add simpledrm driver")
+Cc: <stable@vger.kernel.org> # v5.14+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://lore.kernel.org/r/20250407134753.985925-2-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/tiny/simpledrm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 8c0da0025bc71..76a261cbf39d6 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2481,8 +2481,7 @@ static int load_global_roots_objectid(struct btrfs_root *tree_root,
- 		found = true;
- 		root = read_tree_root_path(tree_root, path, &key);
- 		if (IS_ERR(root)) {
--			if (!btrfs_test_opt(fs_info, IGNOREBADROOTS))
--				ret = PTR_ERR(root);
-+			ret = PTR_ERR(root);
- 			break;
- 		}
- 		set_bit(BTRFS_ROOT_TRACK_DIRTY, &root->state);
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/tiny/simpledrm.c
++++ b/drivers/gpu/drm/tiny/simpledrm.c
+@@ -284,7 +284,7 @@ static struct simpledrm_device *simpledr
+ 
+ static void simpledrm_device_release_clocks(void *res)
+ {
+-	struct simpledrm_device *sdev = simpledrm_device_of_dev(res);
++	struct simpledrm_device *sdev = res;
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < sdev->clk_count; ++i) {
+@@ -382,7 +382,7 @@ static int simpledrm_device_init_clocks(
+ 
+ static void simpledrm_device_release_regulators(void *res)
+ {
+-	struct simpledrm_device *sdev = simpledrm_device_of_dev(res);
++	struct simpledrm_device *sdev = res;
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < sdev->regulator_count; ++i) {
 
 
 
