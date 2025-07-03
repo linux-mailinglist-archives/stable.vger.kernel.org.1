@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-159909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0BFAF7B4A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:23:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540E3AF7A87
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:14:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2465917B04D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:18:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07E051CA1900
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF652EE978;
-	Thu,  3 Jul 2025 15:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628EB2EE281;
+	Thu,  3 Jul 2025 15:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8xgpECV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bkbgljln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03522ED168;
-	Thu,  3 Jul 2025 15:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD0022069F;
+	Thu,  3 Jul 2025 15:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555742; cv=none; b=GOFvk8buVKq+fVF07vON0o6RI6TCxCFjmm27wnn8lA+3RmdOE8wpi59NrnlPi+z37q0wWRnKbC434DxVL1xABkqa9IKZnl6JghaIy82aTZN/gu1zcLe/1uQxT3UjeHUc1Er7XGAxhsC1XkCI6Qi4RkJLqq3XuQmD/MBjnoDm53M=
+	t=1751555351; cv=none; b=N8j8njgl69ozbZYtfVbySLfhKTo12yTpSrPxD10L+oVrg7BmjWf53Oc1hS74pAOG3FGJcoHoYrTVXBqvY08ct0g3xjVwXGZRWbx9rvfU1aMzmg1AlYGU0BmqWK7CaI2bKrFZng1lEwNuPrpBjl9G0BkLlhWMZC6Oqe8H/FYGruk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555742; c=relaxed/simple;
-	bh=Lp8KlqqR2nwcj5G0haJ4dsydZKdyCe5QGWNjCVfP7OU=;
+	s=arc-20240116; t=1751555351; c=relaxed/simple;
+	bh=NV/PU24PJ7db0L6xL8lgrym6HxL7wt7XQ/HX7zh6/w8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAPiWLKjujy4MSBgSnX4uk3qsj650vkdErzPaBwTQ51mE6wIkDuTf5ym2+vF6W6RbFuhKTen3qi4gWyH+WpTHmv16ik7G+X7kN2aXLnR+7R75uZfN/EsiT+zmIiczIp5UEAJPg0s4V7jOkle2qZK7d+aZirvQnn1k98gIhGAGy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8xgpECV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF20EC4CEE3;
-	Thu,  3 Jul 2025 15:15:41 +0000 (UTC)
+	 MIME-Version; b=mLfrF3frKPR5Fbgbi6smk0KLOR/EdTTMhjQH5a4wmbbeBXgd/RVWy5HB6zmhclXwl6bWuZU7Pt2dey82GUp8sVYXp9GRn4NClh9tNdVVHb19mVCSwQPi8vjfWNSaFbHcwgihb7/V02oG0GYUxbbxPK0ofoxnCW8m8HbQo/RK0AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bkbgljln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82135C4CEF1;
+	Thu,  3 Jul 2025 15:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555742;
-	bh=Lp8KlqqR2nwcj5G0haJ4dsydZKdyCe5QGWNjCVfP7OU=;
+	s=korg; t=1751555351;
+	bh=NV/PU24PJ7db0L6xL8lgrym6HxL7wt7XQ/HX7zh6/w8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8xgpECVxZqWD/qZXsxSxGZ2ivWdGxntkPKGW3sbNwISCpx2ms85F8Y8Mqeuxj8b1
-	 KwIcMjtcPmLoaurYV/wTjdMVMb8HTm4w7lQVafncPAyV603uXzwqtVA571/SXbsOyY
-	 3IXOX/g0FwlbZHH1pvyDyQvNZjzYz7bxUGFFWQHk=
+	b=BkbgljlnyqFLGBbb60/MluPAF53jeZZvHxOVVBjwp9gKr7aJy1DFOA2EFBHz5rB0O
+	 RmaguLtqmcEpG84dnFr5uybjx2hX6JVgpFCexQxb1ucHjwhQPJ51ELoCF2erl3umFY
+	 +iNwhZo9+K+r7Bo2bqO5kmPw/H6oxJjn2WLD9TfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yu <yu.c.chen@intel.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 108/139] scsi: megaraid_sas: Fix invalid node index
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 251/263] drm/amd/display: Only read ACPI backlight caps once
 Date: Thu,  3 Jul 2025 16:42:51 +0200
-Message-ID: <20250703143945.400198994@linuxfoundation.org>
+Message-ID: <20250703144014.476434238@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 752eb816b55adb0673727ba0ed96609a17895654 upstream.
+[ Upstream commit ffcaed1d7ecef31198000dfbbea791f30f7ca437 ]
 
-On a system with DRAM interleave enabled, out-of-bound access is
-detected:
+[WHY]
+Backlight caps are read already in amdgpu_dm_update_backlight_caps().
+They may be updated by update_connector_ext_caps(). Reading again when
+registering backlight device may cause wrong values to be used.
 
-megaraid_sas 0000:3f:00.0: requested/available msix 128/128 poll_queue 0
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in ./arch/x86/include/asm/topology.h:72:28
-index -1 is out of range for type 'cpumask *[1024]'
-dump_stack_lvl+0x5d/0x80
-ubsan_epilogue+0x5/0x2b
-__ubsan_handle_out_of_bounds.cold+0x46/0x4b
-megasas_alloc_irq_vectors+0x149/0x190 [megaraid_sas]
-megasas_probe_one.cold+0xa4d/0x189c [megaraid_sas]
-local_pci_probe+0x42/0x90
-pci_device_probe+0xdc/0x290
-really_probe+0xdb/0x340
-__driver_probe_device+0x78/0x110
-driver_probe_device+0x1f/0xa0
-__driver_attach+0xba/0x1c0
-bus_for_each_dev+0x8b/0xe0
-bus_add_driver+0x142/0x220
-driver_register+0x72/0xd0
-megasas_init+0xdf/0xff0 [megaraid_sas]
-do_one_initcall+0x57/0x310
-do_init_module+0x90/0x250
-init_module_from_file+0x85/0xc0
-idempotent_init_module+0x114/0x310
-__x64_sys_finit_module+0x65/0xc0
-do_syscall_64+0x82/0x170
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[HOW]
+Use backlight caps already registered to the dm.
 
-Fix it accordingly.
-
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Link: https://lore.kernel.org/r/20250604042556.3731059-1-yu.c.chen@intel.com
-Fixes: 8049da6f3943 ("scsi: megaraid_sas: Use irq_set_affinity_and_hint()")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 148144f6d2f14b02eaaa39b86bbe023cbff350bd)
 Cc: stable@vger.kernel.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/megaraid/megaraid_sas_base.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/scsi/megaraid/megaraid_sas_base.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -5908,7 +5908,11 @@ megasas_set_high_iops_queue_affinity_and
- 	const struct cpumask *mask;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 389748c420b02..e61166a8230b6 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4832,7 +4832,7 @@ amdgpu_dm_register_backlight_device(struct amdgpu_dm_connector *aconnector)
+ 	struct drm_device *drm = aconnector->base.dev;
+ 	struct amdgpu_display_manager *dm = &drm_to_adev(drm)->dm;
+ 	struct backlight_properties props = { 0 };
+-	struct amdgpu_dm_backlight_caps caps = { 0 };
++	struct amdgpu_dm_backlight_caps *caps;
+ 	char bl_name[16];
+ 	int min, max;
  
- 	if (instance->perf_mode == MR_BALANCED_PERF_MODE) {
--		mask = cpumask_of_node(dev_to_node(&instance->pdev->dev));
-+		int nid = dev_to_node(&instance->pdev->dev);
-+
-+		if (nid == NUMA_NO_NODE)
-+			nid = 0;
-+		mask = cpumask_of_node(nid);
+@@ -4846,20 +4846,20 @@ amdgpu_dm_register_backlight_device(struct amdgpu_dm_connector *aconnector)
+ 		return;
+ 	}
  
- 		for (i = 0; i < instance->low_latency_index_start; i++) {
- 			irq = pci_irq_vector(instance->pdev, i);
+-	amdgpu_acpi_get_backlight_caps(&caps);
+-	if (caps.caps_valid && get_brightness_range(&caps, &min, &max)) {
++	caps = &dm->backlight_caps[aconnector->bl_idx];
++	if (get_brightness_range(caps, &min, &max)) {
+ 		if (power_supply_is_system_supplied() > 0)
+-			props.brightness = (max - min) * DIV_ROUND_CLOSEST(caps.ac_level, 100);
++			props.brightness = (max - min) * DIV_ROUND_CLOSEST(caps->ac_level, 100);
+ 		else
+-			props.brightness = (max - min) * DIV_ROUND_CLOSEST(caps.dc_level, 100);
++			props.brightness = (max - min) * DIV_ROUND_CLOSEST(caps->dc_level, 100);
+ 		/* min is zero, so max needs to be adjusted */
+ 		props.max_brightness = max - min;
+ 		drm_dbg(drm, "Backlight caps: min: %d, max: %d, ac %d, dc %d\n", min, max,
+-			caps.ac_level, caps.dc_level);
++			caps->ac_level, caps->dc_level);
+ 	} else
+ 		props.brightness = AMDGPU_MAX_BL_LEVEL;
+ 
+-	if (caps.data_points && !(amdgpu_dc_debug_mask & DC_DISABLE_CUSTOM_BRIGHTNESS_CURVE))
++	if (caps->data_points && !(amdgpu_dc_debug_mask & DC_DISABLE_CUSTOM_BRIGHTNESS_CURVE))
+ 		drm_info(drm, "Using custom brightness curve\n");
+ 	props.max_brightness = AMDGPU_MAX_BL_LEVEL;
+ 	props.type = BACKLIGHT_RAW;
+-- 
+2.39.5
+
 
 
 
