@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-159703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFDB9AF7A20
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:09:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91808AF78AB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26A14188B519
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:04:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90DC33AFA8E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B808F2ED86E;
-	Thu,  3 Jul 2025 15:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E8A2EF9C0;
+	Thu,  3 Jul 2025 14:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFKNmKOu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOpvAYzo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BD92E7649;
-	Thu,  3 Jul 2025 15:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662DF126BFF;
+	Thu,  3 Jul 2025 14:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555070; cv=none; b=TZZAzvUJaZTHostUxX4GNOTKc5+GqHN3NyX1xVK7atL0cL6HshMPf2/E7VABWxQK+f/tlfBm12V5nKCUkL3+PSTVLNWarYFp+TH0NxY9i4r9qZh+BaIcwgDI2FJ9QPZV4G/mCI2PHwAPVrkkFqjwBld4KkKINMKXqwV5+Wlmnv4=
+	t=1751554289; cv=none; b=e+B6dnPQ9ymeCHOHrZMWi44eDYw/MmRPXDVppBc0dXkq8J0BuuTGGOe8cvxcCjzO5pj87KnS1t1PR57aa9PAbSh6RcreO9kNjGLKImrmXK4Ha8sXzghBGPNdOA52kklGxBaWBvjJHBBboyBWsW/gWmVLXs46LrKosMmIry4WWWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555070; c=relaxed/simple;
-	bh=ZDU3BzaVfCeCaCVDdlhT4XegTSaf+5yDrY/bUvv0698=;
+	s=arc-20240116; t=1751554289; c=relaxed/simple;
+	bh=4JPHWYs6lUOTJYsFDUaoTt8lwojOYSGldx2eqgYZSEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bwvia6dLp5DDx/+aYwx4mKje5TX/pEqn4rF9KB+V80KJmxfPSoDzwHT7C/UfOdOjIPGOKOIacz6q7vagFIPVpAixJ8cAFH7hzJpWWvRDi1KlC+zmBC+s/RSrn4GYTySJw6MinnYrQkAGtpPir8K/aXbR2Gcnlu6nPSAkqc+PgdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFKNmKOu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7565C4CEE3;
-	Thu,  3 Jul 2025 15:04:29 +0000 (UTC)
+	 MIME-Version; b=i/oAeEjwiknuOALC8eAsPsdbsWVAeaGzjWzCgFqKfnKHIfiiVOEskR9miZyNP7/n6kNe0BsPUPhY9FY1F0TOajtliOcbVvhGhlRb7dvqppJWFsDt5iK5U0II3b4OMUwaY9TYBQOhT/PPk2FKP5oMwSYSVxjvl8WvVokEhbES8Ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOpvAYzo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA379C4CEE3;
+	Thu,  3 Jul 2025 14:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555070;
-	bh=ZDU3BzaVfCeCaCVDdlhT4XegTSaf+5yDrY/bUvv0698=;
+	s=korg; t=1751554289;
+	bh=4JPHWYs6lUOTJYsFDUaoTt8lwojOYSGldx2eqgYZSEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFKNmKOupH78WNgFzDk37axYEoBTtQd17mj7HcEsUNEjkhfCdtkGiFHiQc24rhB3j
-	 U18r2sRpD49EI9kjCxfSIbo7eWrJNbS6ThJO3OoFh3qYwtCIxONntmbcGLSrf/LA4h
-	 RGIBm9okkWxoL2WDOu/A1771oWUyYhuB56AJldic=
+	b=iOpvAYzo5xu6eGIdsWtM7v265cJCPVQqsS6agDA3cnN8XBwu52ECEgsCCdTSkbbd1
+	 WRACKcX7jxDl52gP2r0k85cVchDi6NVAGgrPVEuOwt+u98A9wP4TzQ4Pt0qlbpzcTv
+	 J8NjclvabL7skKgigFUdwPYs8NbBta0i9jJ93fXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 168/263] drm/xe/guc: Explicitly exit CT safe mode on unwind
+	David Hildenbrand <david@redhat.com>,
+	Hyesoo Yu <hyesoo.yu@samsung.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Peter Xu <peterx@redhat.com>,
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+	Aijun Sun <aijun.sun@unisoc.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 140/218] mm/gup: revert "mm: gup: fix infinite loop within __get_longterm_locked"
 Date: Thu,  3 Jul 2025 16:41:28 +0200
-Message-ID: <20250703144011.093120752@linuxfoundation.org>
+Message-ID: <20250703144001.725325792@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +66,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit ad40098da5c3b43114d860a5b5740e7204158534 ]
+commit 517f496e1e61bd169d585dab4dd77e7147506322 upstream.
 
-During driver probe we might be briefly using CT safe mode, which
-is based on a delayed work, but usually we are able to stop this
-once we have IRQ fully operational.  However, if we abort the probe
-quite early then during unwind we might try to destroy the workqueue
-while there is still a pending delayed work that attempts to restart
-itself which triggers a WARN.
+After commit 1aaf8c122918 ("mm: gup: fix infinite loop within
+__get_longterm_locked") we are able to longterm pin folios that are not
+supposed to get longterm pinned, simply because they temporarily have the
+LRU flag cleared (esp.  temporarily isolated).
 
-This was recently observed during unsuccessful VF initialization:
+For example, two __get_longterm_locked() callers can race, or
+__get_longterm_locked() can race with anything else that temporarily
+isolates folios.
 
- [ ] xe 0000:00:02.1: probe with driver xe failed with error -62
- [ ] ------------[ cut here ]------------
- [ ] workqueue: cannot queue safe_mode_worker_func [xe] on wq xe-g2h-wq
- [ ] WARNING: CPU: 9 PID: 0 at kernel/workqueue.c:2257 __queue_work+0x287/0x710
- [ ] RIP: 0010:__queue_work+0x287/0x710
- [ ] Call Trace:
- [ ]  delayed_work_timer_fn+0x19/0x30
- [ ]  call_timer_fn+0xa1/0x2a0
+The introducing commit mentions the use case of a driver that uses
+vm_ops->fault to insert pages allocated through cma_alloc() into the page
+tables, assuming they can later get longterm pinned.  These pages/ folios
+would never have the LRU flag set and consequently cannot get isolated.
+There is no known in-tree user making use of that so far, fortunately.
 
-Exit the CT safe mode on unwind to avoid that warning.
+To handle that in the future -- and avoid retrying forever to
+isolate/migrate them -- we will need a different mechanism for the CMA
+area *owner* to indicate that it actually already allocated the page and
+is fine with longterm pinning it.  The LRU flag is not suitable for that.
 
-Fixes: 09b286950f29 ("drm/xe/guc: Allow CTB G2H processing without G2H IRQ")
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250612220937.857-3-michal.wajdeczko@intel.com
-(cherry picked from commit 2ddbb73ec20b98e70a5200cb85deade22ccea2ec)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Probably we can lookup the relevant CMA area and query the bitmap; we only
+have have to care about some races, probably.  If already allocated, we
+could just allow longterm pinning)
+
+Anyhow, let's fix the "must not be longterm pinned" problem first by
+reverting the original commit.
+
+Link: https://lkml.kernel.org/r/20250611131314.594529-1-david@redhat.com
+Fixes: 1aaf8c122918 ("mm: gup: fix infinite loop within __get_longterm_locked")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Closes: https://lore.kernel.org/all/20250522092755.GA3277597@tiffany/
+Reported-by: Hyesoo Yu <hyesoo.yu@samsung.com>
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Cc: Aijun Sun <aijun.sun@unisoc.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_guc_ct.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ mm/gup.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index 72ad576fc18eb..c9abca63998b1 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -34,6 +34,11 @@
- #include "xe_pm.h"
- #include "xe_trace_guc.h"
- 
-+static void receive_g2h(struct xe_guc_ct *ct);
-+static void g2h_worker_func(struct work_struct *w);
-+static void safe_mode_worker_func(struct work_struct *w);
-+static void ct_exit_safe_mode(struct xe_guc_ct *ct);
-+
- #if IS_ENABLED(CONFIG_DRM_XE_DEBUG)
- enum {
- 	/* Internal states, not error conditions */
-@@ -186,14 +191,11 @@ static void guc_ct_fini(struct drm_device *drm, void *arg)
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2326,13 +2326,13 @@ static void pofs_unpin(struct pages_or_f
+ /*
+  * Returns the number of collected folios. Return value is always >= 0.
+  */
+-static void collect_longterm_unpinnable_folios(
++static unsigned long collect_longterm_unpinnable_folios(
+ 		struct list_head *movable_folio_list,
+ 		struct pages_or_folios *pofs)
  {
- 	struct xe_guc_ct *ct = arg;
++	unsigned long i, collected = 0;
+ 	struct folio *prev_folio = NULL;
+ 	bool drain_allow = true;
+-	unsigned long i;
  
-+	ct_exit_safe_mode(ct);
- 	destroy_workqueue(ct->g2h_wq);
- 	xa_destroy(&ct->fence_lookup);
+ 	for (i = 0; i < pofs->nr_entries; i++) {
+ 		struct folio *folio = pofs_get_folio(pofs, i);
+@@ -2344,6 +2344,8 @@ static void collect_longterm_unpinnable_
+ 		if (folio_is_longterm_pinnable(folio))
+ 			continue;
+ 
++		collected++;
++
+ 		if (folio_is_device_coherent(folio))
+ 			continue;
+ 
+@@ -2365,6 +2367,8 @@ static void collect_longterm_unpinnable_
+ 				    NR_ISOLATED_ANON + folio_is_file_lru(folio),
+ 				    folio_nr_pages(folio));
+ 	}
++
++	return collected;
  }
  
--static void receive_g2h(struct xe_guc_ct *ct);
--static void g2h_worker_func(struct work_struct *w);
--static void safe_mode_worker_func(struct work_struct *w);
--
- static void primelockdep(struct xe_guc_ct *ct)
+ /*
+@@ -2441,9 +2445,11 @@ static long
+ check_and_migrate_movable_pages_or_folios(struct pages_or_folios *pofs)
  {
- 	if (!IS_ENABLED(CONFIG_LOCKDEP))
--- 
-2.39.5
-
+ 	LIST_HEAD(movable_folio_list);
++	unsigned long collected;
+ 
+-	collect_longterm_unpinnable_folios(&movable_folio_list, pofs);
+-	if (list_empty(&movable_folio_list))
++	collected = collect_longterm_unpinnable_folios(&movable_folio_list,
++						       pofs);
++	if (!collected)
+ 		return 0;
+ 
+ 	return migrate_longterm_unpinnable_folios(&movable_folio_list, pofs);
 
 
 
