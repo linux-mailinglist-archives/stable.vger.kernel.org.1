@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93145AF7999
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:03:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8899AF7815
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 287C3565642
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:00:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 681654E1036
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA162EE98F;
-	Thu,  3 Jul 2025 15:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FC61DC98B;
+	Thu,  3 Jul 2025 14:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMd/yivZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVGqd+Tx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B062EE97A;
-	Thu,  3 Jul 2025 15:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDF82E62CD;
+	Thu,  3 Jul 2025 14:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554835; cv=none; b=mpWjNYFe6XfSdU6hKOQ42ckxjDAbtWb/x64403BnEzE5jE258468rETqdY7EH7Czhx8uMpcraR8YtcrSEoChW45lpK3rIQ87XrA1i9gUlmJn2W/EcXkqhI4/8VId6UMtbHnPawsEav2MdzIxmVYXGaDyrJ5s4L6k2sTf4CSZN6o=
+	t=1751553957; cv=none; b=K60rotmzWposdLEJ3gV9cx059lYgm/tsZYG2k3feNmI6vttdrOWdCbSNeVYKSByxBEO6296Hob0nNaPQYUG1Poyi1EpjAF28mLiT0qaGCAOZMU+xSeouzDW6lw1uR2m6ocrONREI1g1d3MypRCOfZJl0PTlQOZlFvKc77TzWJ/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554835; c=relaxed/simple;
-	bh=oknGgImAYoUPEMZkKwV985zpXkgrw/LAdP+eOS43GJU=;
+	s=arc-20240116; t=1751553957; c=relaxed/simple;
+	bh=p2qqZXXTGG/OFaf/nwmEWhn5IAKDbgaKe73sZcMl9jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J+Nz6cje1a1Ay19c4f4I/tTNNxjqodWfFRBdGsPFMZPb70bjhUW+wUmso4wevl1qMnGuFcd9Zw3UIg94RU9IZUaO4uc1LfpNRFnWzlQlEAl3Y989ma0N3x1I88+sOEguXAYVKqj3sNjKhkVrjxYANlSBmmbet4X5oVAQD6eSUDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMd/yivZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6895CC4CEE3;
-	Thu,  3 Jul 2025 15:00:34 +0000 (UTC)
+	 MIME-Version; b=Fto509DAt4mEIW4+C+0dAjSXkciEoKct6tVrW7HlP/z1tOh+C/vR0hQqH5+wx1O/Ip92TTrfJhH5I9YELUryFeMWle3lRc+0PBueqEt3wa8BxCmiRtBee5EkhCxMOKzSqaeHCXzo81/AoxSs53rkJ/7iaJBWEa6qbPQDajvFw4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVGqd+Tx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DF8C4CEE3;
+	Thu,  3 Jul 2025 14:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554834;
-	bh=oknGgImAYoUPEMZkKwV985zpXkgrw/LAdP+eOS43GJU=;
+	s=korg; t=1751553957;
+	bh=p2qqZXXTGG/OFaf/nwmEWhn5IAKDbgaKe73sZcMl9jE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aMd/yivZY5CppjcMR5Gu7C2+nOhYn0ABUvem7DTl6H5Sn9A0vlcLEQZ3DbGG02kxD
-	 U+JRe6AWxTymiFon/CI6gtrpioPvOyN53Xq3s7Q7883tF+MwbRQ6QhveizHAnMEPNM
-	 VFwxkGt3Qt+uiPpn2G6fXt0+fexCql+UBqTGv0AU=
+	b=xVGqd+TxbwgIxVkQciglQFEUAtmycdqfaoV4GbxuyC2zrxJOG4k/t28XXk6jIkO0p
+	 7JyLZN+3cZ5ebx6EN6BMaK9uH3wxGVu2PjTlFypKS+//yh3FQOG24bQztDbPIAd7bZ
+	 UD3xjCoYFWkljsQTxhoVNwgtAjQXsw/39m12Y8uA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jos Wang <joswang@lenovo.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Rengarajan S <rengarajan.s@microchip.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 063/263] usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode
-Date: Thu,  3 Jul 2025 16:39:43 +0200
-Message-ID: <20250703144006.832645269@linuxfoundation.org>
+Subject: [PATCH 6.12 036/218] 8250: microchip: pci1xxxx: Add PCIe Hot reset disable support for Rev C0 and later devices
+Date: Thu,  3 Jul 2025 16:39:44 +0200
+Message-ID: <20250703143957.393156603@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jos Wang <joswang@lenovo.com>
+From: Rengarajan S <rengarajan.s@microchip.com>
 
-[ Upstream commit b4b38ffb38c91afd4dc387608db26f6fc34ed40b ]
+[ Upstream commit c40b91e38eb8d4489def095d62ab476d45871323 ]
 
-Although some Type-C DRD devices that do not support the DP Sink
-function (such as Huawei Mate 40Pro), the Source Port initiates
-Enter Mode CMD, but the device responds to Enter Mode ACK, the
-Source port then initiates DP Status Update CMD, and the device
-responds to DP Status Update NAK.
+Systems that issue PCIe hot reset requests during a suspend/resume
+cycle cause PCI1XXXX device revisions prior to C0 to get its UART
+configuration registers reset to hardware default values. This results
+in device inaccessibility and data transfer failures. Starting with
+Revision C0, support was added in the device hardware (via the Hot
+Reset Disable Bit) to allow resetting only the PCIe interface and its
+associated logic, but preserving the UART configuration during a hot
+reset. This patch enables the hot reset disable feature during suspend/
+resume for C0 and later revisions of the device.
 
-As PD2.0 spec ("6.4.4.3.4 Enter Mode Command")，A DR_Swap Message
-Shall Not be sent during Modal Operation between the Port Partners.
-At this time, the source port initiates DR_Swap message through the
-"echo device > /sys/class/typec/port0/data_role" command to switch
-the data role from host to device. The device will initiate a Hard
-Reset for recovery, resulting in the failure of data role swap.
-
-Therefore, when DP Status Update NAK is received, Exit Mode CMD is
-initiated to exit the currently entered DP altmode.
-
-Signed-off-by: Jos Wang <joswang@lenovo.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250209071926.69625-1-joswang1221@gmail.com
+Signed-off-by: Rengarajan S <rengarajan.s@microchip.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20250425145500.29036-1-rengarajan.s@microchip.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/altmodes/displayport.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/tty/serial/8250/8250_pci1xxxx.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-index ac84a6d64c2fb..b09b58d7311de 100644
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -393,6 +393,10 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
- 		break;
- 	case CMDT_RSP_NAK:
- 		switch (cmd) {
-+		case DP_CMD_STATUS_UPDATE:
-+			if (typec_altmode_exit(alt))
-+				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
-+			break;
- 		case DP_CMD_CONFIGURE:
- 			dp->data.conf = 0;
- 			ret = dp_altmode_configured(dp);
+diff --git a/drivers/tty/serial/8250/8250_pci1xxxx.c b/drivers/tty/serial/8250/8250_pci1xxxx.c
+index f462b3d1c104c..d6b01e015a96b 100644
+--- a/drivers/tty/serial/8250/8250_pci1xxxx.c
++++ b/drivers/tty/serial/8250/8250_pci1xxxx.c
+@@ -115,6 +115,7 @@
+ 
+ #define UART_RESET_REG				0x94
+ #define UART_RESET_D3_RESET_DISABLE		BIT(16)
++#define UART_RESET_HOT_RESET_DISABLE		BIT(17)
+ 
+ #define UART_BURST_STATUS_REG			0x9C
+ #define UART_TX_BURST_FIFO			0xA0
+@@ -620,6 +621,10 @@ static int pci1xxxx_suspend(struct device *dev)
+ 	}
+ 
+ 	data = readl(p + UART_RESET_REG);
++
++	if (priv->dev_rev >= 0xC0)
++		data |= UART_RESET_HOT_RESET_DISABLE;
++
+ 	writel(data | UART_RESET_D3_RESET_DISABLE, p + UART_RESET_REG);
+ 
+ 	if (wakeup)
+@@ -647,7 +652,12 @@ static int pci1xxxx_resume(struct device *dev)
+ 	}
+ 
+ 	data = readl(p + UART_RESET_REG);
++
++	if (priv->dev_rev >= 0xC0)
++		data &= ~UART_RESET_HOT_RESET_DISABLE;
++
+ 	writel(data & ~UART_RESET_D3_RESET_DISABLE, p + UART_RESET_REG);
++
+ 	iounmap(p);
+ 
+ 	for (i = 0; i < priv->nr; i++) {
 -- 
 2.39.5
 
