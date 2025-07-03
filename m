@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-159847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19390AF7B06
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:20:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A336AF7BE2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70C061C85E36
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:14:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3643B4E42EE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572672EF64D;
-	Thu,  3 Jul 2025 15:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953C12E3B1A;
+	Thu,  3 Jul 2025 15:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tuuow9gL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSeHJMO1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134D52D9492;
-	Thu,  3 Jul 2025 15:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5354422258C;
+	Thu,  3 Jul 2025 15:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555545; cv=none; b=UuMn/et0YqMv/SjVj2Ik3ZszWykoHjgGMPcmOqOzYSjazHh6HVgEYfNOpmzW/lEViX58EOJsi+6SPWTBeicXISBVVife8Br+F4sa8UaybW4Mt5+RUnJ5w+vJp/LpxiNY7u4uPaP96S3+tNYWsW0pTWoShK4T4EiI37mWUlfw65w=
+	t=1751555929; cv=none; b=e5chNf58mYSuMzv1ALrxUDh7QioadDIXYTFeDCNs/l616nJawAsEed3PHgagN9d7GQLBTFnErmrUjbm4CdR/wGUrBLnF2z0w1JaKsEPoUN8/pU4rcHdzBcuizcu+egA25M6CS+UDGHvt7+0LQd8hlWqqAsq/SBhdM9P7xivheno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555545; c=relaxed/simple;
-	bh=bf0NeK+bvkNa6x/xuRzjRzfw19ktJggPUc7iyq7tnsM=;
+	s=arc-20240116; t=1751555929; c=relaxed/simple;
+	bh=CuqrrYKpf09BAl+r1W9nGcwYrdYguGeaHy3DPgdCgaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSoQdxHtHn6eTlIbbmMIlRI60Jfvq4msLhKrpegoLCZCAd9HBAvEFvZuXCjU6yXiSXgOM7HidsrQdcsarbz1p1xyFA5tJIvxicWQyC7sESX8WxkRAvhbACL1OQGoVSPHoRIrurFzprdqMC2osxEeNvWkAU9LSKSs1tzJ0tRA8nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tuuow9gL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75417C4CEE3;
-	Thu,  3 Jul 2025 15:12:24 +0000 (UTC)
+	 MIME-Version; b=twzwu81ifhRMCHwJbRY07gXhf13b9i5xoaiEJiO+UzAhyzasnnj13I0S0Lr639mL434Sw9CbUVmoHn7QNnTRpuHItAngo+6F93mPVoJNmfcHRBTw+YBvgVN4MW7rhodmnvmqWfDz2FARhJea6j+6jdRQD+fK+QM7TmXGMenFfXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSeHJMO1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1EEC4CEE3;
+	Thu,  3 Jul 2025 15:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555544;
-	bh=bf0NeK+bvkNa6x/xuRzjRzfw19ktJggPUc7iyq7tnsM=;
+	s=korg; t=1751555929;
+	bh=CuqrrYKpf09BAl+r1W9nGcwYrdYguGeaHy3DPgdCgaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tuuow9gLnJm/buXylgJgPr2oKslIZwKViq8Qe89SBtJRmsz0Lw8/qOMd+4bZPaAZP
-	 LCesQcdRRxjeZNxlNZG3yI8s3abyiij9XbP0KPdj1QYF4/56pZta+/O4NEQW5z++I6
-	 XGedcSYfelC66nzTuBVv5ws6MuaXk3NWeKBtc1hI=
+	b=CSeHJMO1Mn7shRJwwLNMptptICr82HGl+6/ptTNQjLe3sXxa1QhgyGdxKEEJm9X5O
+	 irjRn9YtVT/RnaLKM9zlO8+WHX9WjJkMXFch2vR8hjBcoVST3mtdGSsNOwCkM0xVPe
+	 2WzXblHElqXUSqRDzMkGdF2yaF6lQHqqOVPgXZaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/139] fs/jfs: consolidate sanity checking in dbMount
+Subject: [PATCH 6.1 021/132] coresight: Only check bottom two claim bits
 Date: Thu,  3 Jul 2025 16:41:50 +0200
-Message-ID: <20250703143943.012545353@linuxfoundation.org>
+Message-ID: <20250703143940.230176802@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Kleikamp <dave.kleikamp@oracle.com>
+From: James Clark <james.clark@linaro.org>
 
-[ Upstream commit 0d250b1c52484d489e31df2cf9118b7c4bd49d31 ]
+[ Upstream commit a4e65842e1142aa18ef36113fbd81d614eaefe5a ]
 
-Sanity checks have been added to dbMount as individual if clauses with
-identical error handling. Move these all into one clause.
+The use of the whole register and == could break the claim mechanism if
+any of the other bits are used in the future. The referenced doc "PSCI -
+ARM DEN 0022D" also says to only read and clear the bottom two bits.
 
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Stable-dep-of: 37bfb464ddca ("jfs: validate AG parameters in dbMount() to prevent crashes")
+Use FIELD_GET() to extract only the relevant part.
+
+Reviewed-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250325-james-coresight-claim-tags-v4-2-dfbd3822b2e5@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 37 +++++++++----------------------------
- 1 file changed, 9 insertions(+), 28 deletions(-)
+ drivers/hwtracing/coresight/coresight-core.c |    3 ++-
+ drivers/hwtracing/coresight/coresight-priv.h |    2 ++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 0e1019382cf51..26e89d0c69b61 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -178,45 +178,26 @@ int dbMount(struct inode *ipbmap)
- 	dbmp_le = (struct dbmap_disk *) mp->data;
- 	bmp->db_mapsize = le64_to_cpu(dbmp_le->dn_mapsize);
- 	bmp->db_nfree = le64_to_cpu(dbmp_le->dn_nfree);
--
- 	bmp->db_l2nbperpage = le32_to_cpu(dbmp_le->dn_l2nbperpage);
--	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE ||
--		bmp->db_l2nbperpage < 0) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
--
- 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
--	if (!bmp->db_numag || bmp->db_numag > MAXAG) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
--
- 	bmp->db_maxlevel = le32_to_cpu(dbmp_le->dn_maxlevel);
- 	bmp->db_maxag = le32_to_cpu(dbmp_le->dn_maxag);
- 	bmp->db_agpref = le32_to_cpu(dbmp_le->dn_agpref);
--	if (bmp->db_maxag >= MAXAG || bmp->db_maxag < 0 ||
--		bmp->db_agpref >= MAXAG || bmp->db_agpref < 0) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
--
- 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
- 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
- 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
--	if (!bmp->db_agwidth) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
- 	bmp->db_agstart = le32_to_cpu(dbmp_le->dn_agstart);
- 	bmp->db_agl2size = le32_to_cpu(dbmp_le->dn_agl2size);
--	if (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG ||
--	    bmp->db_agl2size < 0) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
+--- a/drivers/hwtracing/coresight/coresight-core.c
++++ b/drivers/hwtracing/coresight/coresight-core.c
+@@ -189,7 +189,8 @@ static int coresight_find_link_outport(s
  
--	if (((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
-+	if ((bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE) ||
-+	    (bmp->db_l2nbperpage < 0) ||
-+	    !bmp->db_numag || (bmp->db_numag > MAXAG) ||
-+	    (bmp->db_maxag >= MAXAG) || (bmp->db_maxag < 0) ||
-+	    (bmp->db_agpref >= MAXAG) || (bmp->db_agpref < 0) ||
-+	    !bmp->db_agwidth ||
-+	    (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG) ||
-+	    (bmp->db_agl2size < 0) ||
-+	    ((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
- 		err = -EINVAL;
- 		goto err_release_metapage;
- 	}
--- 
-2.39.5
-
+ static inline u32 coresight_read_claim_tags(struct coresight_device *csdev)
+ {
+-	return csdev_access_relaxed_read32(&csdev->access, CORESIGHT_CLAIMCLR);
++	return FIELD_GET(CORESIGHT_CLAIM_MASK,
++			 csdev_access_relaxed_read32(&csdev->access, CORESIGHT_CLAIMCLR));
+ }
+ 
+ static inline bool coresight_is_claimed_self_hosted(struct coresight_device *csdev)
+--- a/drivers/hwtracing/coresight/coresight-priv.h
++++ b/drivers/hwtracing/coresight/coresight-priv.h
+@@ -8,6 +8,7 @@
+ 
+ #include <linux/amba/bus.h>
+ #include <linux/bitops.h>
++#include <linux/bitfield.h>
+ #include <linux/io.h>
+ #include <linux/coresight.h>
+ #include <linux/pm_runtime.h>
+@@ -32,6 +33,7 @@
+  * Coresight device CLAIM protocol.
+  * See PSCI - ARM DEN 0022D, Section: 6.8.1 Debug and Trace save and restore.
+  */
++#define CORESIGHT_CLAIM_MASK		GENMASK(1, 0)
+ #define CORESIGHT_CLAIM_SELF_HOSTED	BIT(1)
+ 
+ #define TIMEOUT_US		100
 
 
 
