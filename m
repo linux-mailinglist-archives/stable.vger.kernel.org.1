@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E255EAF79C8
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3550AF7807
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8C891894B89
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 642035434BB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B16272EF2B0;
-	Thu,  3 Jul 2025 15:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34D5126BFF;
+	Thu,  3 Jul 2025 14:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4GRtMxO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDZSRAqf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703166F53E;
-	Thu,  3 Jul 2025 15:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F362EAB95;
+	Thu,  3 Jul 2025 14:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554841; cv=none; b=T2n9YDy7KuaPno9iBMRtIV9sE2hWeFuI5jt9hJZOJuZ8ZyBcqYS2Dz0HelrvbSHstVqJr7rdduXJXkQjTR+hK1gTLuHq0eYOcyv8Irv7JTkK65FHMjHCUruLcMeUwxAnv+EGFttbvdnDgypEJGftQjvkGQ+cpKial9wAnxsz0GQ=
+	t=1751553960; cv=none; b=PncdoKmUMCr5bM/L6d/c7tU0rnzH6/2hfejBH9oMwb5KtuNLLK9AYwbzVKrM/HLWoI+uKJ62atuUHCH/pkmFao2FK0TG1Rluoq54Qyi+HFvmgMhPXMdVK5Mm9GABKj0tDsKfdzS36qpWIbC0OfJj8MZ9przwYrGUuWZznlZ8pxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554841; c=relaxed/simple;
-	bh=8QR/xSIPTsj7RMnid529MVivfTFCPXlXFOMNaDZikBQ=;
+	s=arc-20240116; t=1751553960; c=relaxed/simple;
+	bh=gkF0yz8HWNTb+fjk4SeQWqdXUWGRq9lCNd9B2Pdv6Ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kieAl1uSlRBPXxGw3EJ5+cnw6b5YULk+DIYptLmLrJ4XHKstZIXSKNPh0ry6d7TrsY6RU4kY/izpaLXvQb7I3D89m8cq22DVv1ZS+6kc81J7o5evEbISE7vuSu5/ZKI8W3lBWMLGuCUi77WoMFT94YvyPyJZM18qcrzJLzy5nhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4GRtMxO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F8FC4CEE3;
-	Thu,  3 Jul 2025 15:00:40 +0000 (UTC)
+	 MIME-Version; b=JPryQL7wvitOG/ZTAIIG95w6maDu8XRpNQV4RsZ+wTw66CPBhCt4VF6EeF7L7kZh6k5nMUkvh67ue4TC7s9x8pixvRv3OSWM8ZFkXGoQlY1g138VnqXJgR8PUeimrNSHsx8EJ4lMGCQXah9vOdiMmgIlkpipw891auyTiX0x+8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDZSRAqf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5327C4CEE3;
+	Thu,  3 Jul 2025 14:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554841;
-	bh=8QR/xSIPTsj7RMnid529MVivfTFCPXlXFOMNaDZikBQ=;
+	s=korg; t=1751553960;
+	bh=gkF0yz8HWNTb+fjk4SeQWqdXUWGRq9lCNd9B2Pdv6Ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4GRtMxO6GppiWTNp1zrgb45xJcQ9oYYB2nE3VNwVMAmVv5Go1m8pC7FE8gww2JJT
-	 9yOKDzLenNp1LSWso3lpdXY1VlRvOToX+DtzItXUJkC0jk6cSjLECq5dc6+Wxf3CKR
-	 mXZ2DKbl69HDoWrk5ZvrVebQnSptYjIxGIbmdRj0=
+	b=pDZSRAqfjQOu/9RBvf6kJpGHEZCuB+Tx5faOCy+EGqRI3LbR8SPbgjw9wETCGbmtm
+	 KJ2lppcy2NsyblmnRJfSGjXCrXrpQAqOMCn9WZ7JMkil+AzF/QBiI6QiOBgP2gAX/I
+	 tk6xA0H23fEqh13EofZkwTt7CDgo8iTcsz4REDWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 065/263] usb: typec: tipd: Fix wakeup source leaks on device unbind
+Subject: [PATCH 6.12 037/218] coresight: Only check bottom two claim bits
 Date: Thu,  3 Jul 2025 16:39:45 +0200
-Message-ID: <20250703144006.909889623@linuxfoundation.org>
+Message-ID: <20250703143957.432091154@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: James Clark <james.clark@linaro.org>
 
-[ Upstream commit aaa8f2e959341fd4a3ccf111500eb1e6176678e0 ]
+[ Upstream commit a4e65842e1142aa18ef36113fbd81d614eaefe5a ]
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.
+The use of the whole register and == could break the claim mechanism if
+any of the other bits are used in the future. The referenced doc "PSCI -
+ARM DEN 0022D" also says to only read and clear the bottom two bits.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250406204051.63446-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use FIELD_GET() to extract only the relevant part.
+
+Reviewed-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250325-james-coresight-claim-tags-v4-2-dfbd3822b2e5@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tipd/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwtracing/coresight/coresight-core.c | 3 ++-
+ drivers/hwtracing/coresight/coresight-priv.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/tipd/core.c b/drivers/usb/typec/tipd/core.c
-index 7ee721a877c12..dcf141ada0781 100644
---- a/drivers/usb/typec/tipd/core.c
-+++ b/drivers/usb/typec/tipd/core.c
-@@ -1431,7 +1431,7 @@ static int tps6598x_probe(struct i2c_client *client)
+diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
+index c7e35a431ab00..b7941d8abbfe7 100644
+--- a/drivers/hwtracing/coresight/coresight-core.c
++++ b/drivers/hwtracing/coresight/coresight-core.c
+@@ -97,7 +97,8 @@ coresight_find_out_connection(struct coresight_device *src_dev,
  
- 	tps->wakeup = device_property_read_bool(tps->dev, "wakeup-source");
- 	if (tps->wakeup && client->irq) {
--		device_init_wakeup(&client->dev, true);
-+		devm_device_init_wakeup(&client->dev);
- 		enable_irq_wake(client->irq);
- 	}
+ static inline u32 coresight_read_claim_tags(struct coresight_device *csdev)
+ {
+-	return csdev_access_relaxed_read32(&csdev->access, CORESIGHT_CLAIMCLR);
++	return FIELD_GET(CORESIGHT_CLAIM_MASK,
++			 csdev_access_relaxed_read32(&csdev->access, CORESIGHT_CLAIMCLR));
+ }
  
+ static inline bool coresight_is_claimed_self_hosted(struct coresight_device *csdev)
+diff --git a/drivers/hwtracing/coresight/coresight-priv.h b/drivers/hwtracing/coresight/coresight-priv.h
+index 05f891ca6b5c9..cc7ff1e36ef42 100644
+--- a/drivers/hwtracing/coresight/coresight-priv.h
++++ b/drivers/hwtracing/coresight/coresight-priv.h
+@@ -35,6 +35,7 @@ extern const struct device_type coresight_dev_type[];
+  * Coresight device CLAIM protocol.
+  * See PSCI - ARM DEN 0022D, Section: 6.8.1 Debug and Trace save and restore.
+  */
++#define CORESIGHT_CLAIM_MASK		GENMASK(1, 0)
+ #define CORESIGHT_CLAIM_SELF_HOSTED	BIT(1)
+ 
+ #define TIMEOUT_US		100
 -- 
 2.39.5
 
