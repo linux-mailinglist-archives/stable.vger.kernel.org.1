@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-159983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56EFBAF7BB9
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:27:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF86AAF791E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:58:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55CE3162A4A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 291D9188A191
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D30F2EFD99;
-	Thu,  3 Jul 2025 15:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EC82EE98D;
+	Thu,  3 Jul 2025 14:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AivTGyPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0+lqOnK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199582EF66C;
-	Thu,  3 Jul 2025 15:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234772EA49E;
+	Thu,  3 Jul 2025 14:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555994; cv=none; b=WVn8J1NxZrkkQALWb0kiUgMkkCoXNVFca4vkT6wevJDID5fBQNQ1BQ8AnKHJFL0URuIkaJBAYCdA6ggwhMckGK2SpGRCc5jRjAMa7TqMnGSgCOGQs2a010jJ4pW1+MIbgBc9SNNCSIeP7WExQXLABMLcmuNBHjEWDPgYUIrMYzY=
+	t=1751554428; cv=none; b=OFWJq5w/Vnj9y78ox6xxfHWVtZl5idNbCppe8X+wZUX92DLfUipnsqJvuopRDETV+BDtm+ZypXLbOjyH4QjMLjqdF5cPPxXYaCfWWG8yqhLLHMYylzJ/lY7r0rwS6U4VMy9QtT+EmdYZ1ZYRUNRRn7UNeA64O6w1utnxgAxTMFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555994; c=relaxed/simple;
-	bh=8+i3+Mmm4t4gEeuMaamNaCb9cHGj3e60Ey/M0icLsw4=;
+	s=arc-20240116; t=1751554428; c=relaxed/simple;
+	bh=oUWmiUfmbd935qUgI3aA94tnGgk6dV1MY39EhyyO4tA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFquZ1Vej+xj4AQXZnEXccGva83vYT0OIvutxnjs9oOxKYOUIL+j8ZmECFGRaIHCT1FGmvr6IXvHJo3MQAOtEk0SOJFyO2nBEcQjWZy4WeM5G2KsaiBABaAdY74/jUEtYUCa300HW0SzDxjxsbZSm63aJULWpHM5wv8B2HBE80E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AivTGyPE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F8FC4CEE3;
-	Thu,  3 Jul 2025 15:19:53 +0000 (UTC)
+	 MIME-Version; b=Pm352eZNpXIJ54AqXm4aROfvmsiMh4RWg9Bs4Ba2cnomQQY85I6xnOPX1+h6MELIn1YhahW8nak9AgQHGYV3iacXKAcGMMaawQ5UVVa7I2D6L6Vj7ZPXF+qr9YX8MTbiqOdTr0ovf5EBK339ZkYrwm1hKeDEk0SzzW6qfpCSLOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0+lqOnK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B1E0C4CEED;
+	Thu,  3 Jul 2025 14:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555993;
-	bh=8+i3+Mmm4t4gEeuMaamNaCb9cHGj3e60Ey/M0icLsw4=;
+	s=korg; t=1751554427;
+	bh=oUWmiUfmbd935qUgI3aA94tnGgk6dV1MY39EhyyO4tA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AivTGyPE8V0yUuQz7BJaQnvXNXaG11cf8WZcoxc321orkYESuXEZj+O1gu2Uc5XVM
-	 3pVgv2Cyp2KwVXlt6hiFPspcELp11uh/IyCGDKCjR7SC6ctIu+A4Ml5nNKHSfD7spi
-	 VuaZfJn76Y+WuAIRtHBdug4axRSC9l460O3UUN5w=
+	b=Q0+lqOnKikkzFCtjCGTv2f32Djv0m6w97dEQ2y56wu78C+61+BhH52vqj8SHyTWCH
+	 8joZKdQMHkfIS2sP2OKJL5vMm0hUpaY6pGB+QncG52rDMGXJ1mjBXM8Ag75XKev+JF
+	 6Mh4g1fiZacAH212u5tFduvbvoyungRTq54WpKMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@nxp.com>,
-	Mirela Rabulea <mirela.rabulea@nxp.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/132] media: imx-jpeg: Add a timeout mechanism for each frame
-Date: Thu,  3 Jul 2025 16:42:11 +0200
-Message-ID: <20250703143941.079058802@linuxfoundation.org>
+	Norman Maurer <norman_maurer@apple.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 184/218] io_uring/net: improve recv bundles
+Date: Thu,  3 Jul 2025 16:42:12 +0200
+Message-ID: <20250703144003.540295586@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,153 +61,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@nxp.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit cfed9632ca8e8bdf0128745ae2400b72c4292886 ]
+Commit 7c71a0af81ba72de9b2c501065e4e718aba9a271 upstream.
 
-Add a timeout mechanism for each frame.
-If the frame can't be decoded or encoded,
-driver can cancel it to avoid hang.
+Current recv bundles are only supported for multishot receives, and
+additionally they also always post at least 2 CQEs if more data is
+available than what a buffer will hold. This happens because the initial
+bundle recv will do a single buffer, and then do the rest of what is in
+the socket as a followup receive. As shown in a test program, if 1k
+buffers are available and 32k is available to receive in the socket,
+you'd get the following completions:
 
-Fixes: 2db16c6ed72ce ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Reviewed-by: Mirela Rabulea <mirela.rabulea@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: 46e9c092f850 ("media: imx-jpeg: Move mxc_jpeg_free_slot_data() ahead")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+bundle=1, mshot=0
+cqe res 1024
+cqe res 1024
+[...]
+cqe res 1024
+
+bundle=1, mshot=1
+cqe res 1024
+cqe res 31744
+
+where bundle=1 && mshot=0 will post 32 1k completions, and bundle=1 &&
+mshot=1 will post a 1k completion and then a 31k completion.
+
+To support bundle recv without multishot, it's possible to simply retry
+the recv immediately and post a single completion, rather than split it
+into two completions. With the below patch, the same test looks as
+follows:
+
+bundle=1, mshot=0
+cqe res 32768
+
+bundle=1, mshot=1
+cqe res 32768
+
+where mshot=0 works fine for bundles, and both of them post just a
+single 32k completion rather than split it into separate completions.
+Posting fewer completions is always a nice win, and not needing
+multishot for proper bundle efficiency is nice for cases that can't
+necessarily use multishot.
+
+Reported-by: Norman Maurer <norman_maurer@apple.com>
+Link: https://lore.kernel.org/r/184f9f92-a682-4205-a15d-89e18f664502@kernel.dk
+Fixes: 2f9c9515bdfd ("io_uring/net: support bundles for recv")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 55 ++++++++++++++++---
- .../media/platform/nxp/imx-jpeg/mxc-jpeg.h    |  1 +
- 2 files changed, 49 insertions(+), 7 deletions(-)
+ io_uring/net.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-index c3655ab4511b4..5e897dda0ac63 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -330,6 +330,10 @@ static unsigned int debug;
- module_param(debug, int, 0644);
- MODULE_PARM_DESC(debug, "Debug level (0-3)");
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -76,6 +76,7 @@ struct io_sr_msg {
+ 	/* initialised and used only by !msg send variants */
+ 	u16				addr_len;
+ 	u16				buf_group;
++	bool				retry;
+ 	void __user			*addr;
+ 	void __user			*msg_control;
+ 	/* used only for send zerocopy */
+@@ -203,6 +204,7 @@ static inline void io_mshot_prep_retry(s
  
-+static unsigned int hw_timeout = 2000;
-+module_param(hw_timeout, int, 0644);
-+MODULE_PARM_DESC(hw_timeout, "MXC JPEG hw timeout, the number of milliseconds");
-+
- static void mxc_jpeg_bytesperline(struct mxc_jpeg_q_data *q, u32 precision);
- static void mxc_jpeg_sizeimage(struct mxc_jpeg_q_data *q);
+ 	req->flags &= ~REQ_F_BL_EMPTY;
+ 	sr->done_io = 0;
++	sr->retry = false;
+ 	sr->len = 0; /* get from the provided buffer */
+ 	req->buf_index = sr->buf_group;
+ }
+@@ -409,6 +411,7 @@ int io_sendmsg_prep(struct io_kiocb *req
+ 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
  
-@@ -569,6 +573,26 @@ static void mxc_jpeg_check_and_set_last_buffer(struct mxc_jpeg_ctx *ctx,
- 	}
+ 	sr->done_io = 0;
++	sr->retry = false;
+ 
+ 	if (req->opcode == IORING_OP_SEND) {
+ 		if (READ_ONCE(sqe->__pad3[0]))
+@@ -780,6 +783,7 @@ int io_recvmsg_prep(struct io_kiocb *req
+ 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
+ 
+ 	sr->done_io = 0;
++	sr->retry = false;
+ 
+ 	if (unlikely(sqe->file_index || sqe->addr2))
+ 		return -EINVAL;
+@@ -828,6 +832,9 @@ int io_recvmsg_prep(struct io_kiocb *req
+ 	return io_recvmsg_prep_setup(req);
  }
  
-+static void mxc_jpeg_job_finish(struct mxc_jpeg_ctx *ctx, enum vb2_buffer_state state, bool reset)
-+{
-+	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
-+	void __iomem *reg = jpeg->base_reg;
-+	struct vb2_v4l2_buffer *src_buf, *dst_buf;
++/* bits to clear in old and inherit in new cflags on bundle retry */
++#define CQE_F_MASK	(IORING_CQE_F_SOCK_NONEMPTY|IORING_CQE_F_MORE)
 +
-+	dst_buf = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
-+	src_buf = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
-+	mxc_jpeg_check_and_set_last_buffer(ctx, src_buf, dst_buf);
-+	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
-+	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
-+	v4l2_m2m_buf_done(src_buf, state);
-+	v4l2_m2m_buf_done(dst_buf, state);
-+
-+	mxc_jpeg_disable_irq(reg, ctx->slot);
-+	ctx->mxc_jpeg->slot_data[ctx->slot].used = false;
-+	if (reset)
-+		mxc_jpeg_sw_reset(reg);
-+}
-+
- static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
- {
- 	struct mxc_jpeg_dev *jpeg = priv;
-@@ -601,6 +625,9 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
- 		goto job_unlock;
+ /*
+  * Finishes io_recv and io_recvmsg.
+  *
+@@ -847,9 +854,19 @@ static inline bool io_recv_finish(struct
+ 	if (sr->flags & IORING_RECVSEND_BUNDLE) {
+ 		cflags |= io_put_kbufs(req, *ret, io_bundle_nbufs(kmsg, *ret),
+ 				      issue_flags);
++		if (sr->retry)
++			cflags = req->cqe.flags | (cflags & CQE_F_MASK);
+ 		/* bundle with no more immediate buffers, we're done */
+ 		if (req->flags & REQ_F_BL_EMPTY)
+ 			goto finish;
++		/* if more is available, retry and append to this one */
++		if (!sr->retry && kmsg->msg.msg_inq > 0 && *ret > 0) {
++			req->cqe.flags = cflags & ~CQE_F_MASK;
++			sr->len = kmsg->msg.msg_inq;
++			sr->done_io += *ret;
++			sr->retry = true;
++			return false;
++		}
+ 	} else {
+ 		cflags |= io_put_kbuf(req, *ret, issue_flags);
  	}
+@@ -1228,6 +1245,7 @@ int io_send_zc_prep(struct io_kiocb *req
+ 	struct io_kiocb *notif;
  
-+	if (!jpeg->slot_data[slot].used)
-+		goto job_unlock;
-+
- 	dec_ret = readl(reg + MXC_SLOT_OFFSET(slot, SLOT_STATUS));
- 	writel(dec_ret, reg + MXC_SLOT_OFFSET(slot, SLOT_STATUS)); /* w1c */
+ 	zc->done_io = 0;
++	zc->retry = false;
+ 	req->flags |= REQ_F_POLL_NO_LAZY;
  
-@@ -665,14 +692,9 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
- 	buf_state = VB2_BUF_STATE_DONE;
- 
- buffers_done:
--	mxc_jpeg_disable_irq(reg, ctx->slot);
--	jpeg->slot_data[slot].used = false; /* unused, but don't free */
--	mxc_jpeg_check_and_set_last_buffer(ctx, src_buf, dst_buf);
--	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
--	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
--	v4l2_m2m_buf_done(src_buf, buf_state);
--	v4l2_m2m_buf_done(dst_buf, buf_state);
-+	mxc_jpeg_job_finish(ctx, buf_state, false);
- 	spin_unlock(&jpeg->hw_lock);
-+	cancel_delayed_work(&ctx->task_timer);
- 	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
- 	return IRQ_HANDLED;
- job_unlock:
-@@ -1003,6 +1025,23 @@ static int mxc_jpeg_job_ready(void *priv)
- 	return ctx->source_change ? 0 : 1;
- }
- 
-+static void mxc_jpeg_device_run_timeout(struct work_struct *work)
-+{
-+	struct delayed_work *dwork = to_delayed_work(work);
-+	struct mxc_jpeg_ctx *ctx = container_of(dwork, struct mxc_jpeg_ctx, task_timer);
-+	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&ctx->mxc_jpeg->hw_lock, flags);
-+	if (ctx->slot < MXC_MAX_SLOTS && ctx->mxc_jpeg->slot_data[ctx->slot].used) {
-+		dev_warn(jpeg->dev, "%s timeout, cancel it\n",
-+			 ctx->mxc_jpeg->mode == MXC_JPEG_DECODE ? "decode" : "encode");
-+		mxc_jpeg_job_finish(ctx, VB2_BUF_STATE_ERROR, true);
-+		v4l2_m2m_job_finish(ctx->mxc_jpeg->m2m_dev, ctx->fh.m2m_ctx);
-+	}
-+	spin_unlock_irqrestore(&ctx->mxc_jpeg->hw_lock, flags);
-+}
-+
- static void mxc_jpeg_device_run(void *priv)
- {
- 	struct mxc_jpeg_ctx *ctx = priv;
-@@ -1088,6 +1127,7 @@ static void mxc_jpeg_device_run(void *priv)
- 					 &src_buf->vb2_buf, &dst_buf->vb2_buf);
- 		mxc_jpeg_dec_mode_go(dev, reg);
- 	}
-+	schedule_delayed_work(&ctx->task_timer, msecs_to_jiffies(hw_timeout));
- end:
- 	spin_unlock_irqrestore(&ctx->mxc_jpeg->hw_lock, flags);
- }
-@@ -1681,6 +1721,7 @@ static int mxc_jpeg_open(struct file *file)
- 	ctx->fh.ctrl_handler = &ctx->ctrl_handler;
- 	mxc_jpeg_set_default_params(ctx);
- 	ctx->slot = MXC_MAX_SLOTS; /* slot not allocated yet */
-+	INIT_DELAYED_WORK(&ctx->task_timer, mxc_jpeg_device_run_timeout);
- 
- 	if (mxc_jpeg->mode == MXC_JPEG_DECODE)
- 		dev_dbg(dev, "Opened JPEG decoder instance %p\n", ctx);
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
-index d742b638ddc93..a0dad86e40eab 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
-@@ -97,6 +97,7 @@ struct mxc_jpeg_ctx {
- 	bool				header_parsed;
- 	struct v4l2_ctrl_handler	ctrl_handler;
- 	u8				jpeg_quality;
-+	struct delayed_work		task_timer;
- };
- 
- struct mxc_jpeg_slot_data {
--- 
-2.39.5
-
+ 	if (unlikely(READ_ONCE(sqe->__pad2[0]) || READ_ONCE(sqe->addr3)))
 
 
 
