@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-159428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49AC1AF7868
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:50:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5477AF79D6
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94E597AE399
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C20D166102
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40167126BFF;
-	Thu,  3 Jul 2025 14:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833252E7BD6;
+	Thu,  3 Jul 2025 15:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GeolWIDh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="My4zS5+v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A1C19F43A;
-	Thu,  3 Jul 2025 14:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4084D2B9A6;
+	Thu,  3 Jul 2025 15:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554202; cv=none; b=KOBccs3xOHFU7vJEBLg54o6kv8i+ObWpAzlHXNNG7RNNo3U7CIJwUbbJdp1vr6VISGlt3+dbODQhfee4+y2K/tyhroSBpNnJ8onYGYTDnoSdhmJm7eMjIoc6PNKgSfiPJ7DB0Lc2+wmErSgV3B/IdlxQo3ujeH+5UdNg90nVEWg=
+	t=1751554986; cv=none; b=VpoTvrsT2vZHEbZDcshFVgcsRDRZbdWOxvkib/ARRfH4mYdBCiY/ZDaC6A9jNQa9FKQXCaV4eTrJ644iR0TQPke/qsiEwGKxcU7xaQ3/qjx4eX5Os/shS7SFOiAupOkImBc6haFu+0HNoHMwKew4/01mcnGgBfKBfWX798llanw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554202; c=relaxed/simple;
-	bh=OCsOAVy6TpF9mlGGLdIkh/QyQs0yW1znZkLPBfWUyZ4=;
+	s=arc-20240116; t=1751554986; c=relaxed/simple;
+	bh=N8+t25Sej0cKqkdDCF6iBnGlJRfLAanbQbP6lj4e95I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwEAAer6afAtm9J+tGCFJ2FClYsL4vh0VK/4ffVkH3rP5XTDD4Vyc9vARvX0AVfxfbmd0h5NVjOGA/B3214iiZW8c8LqwNnTirH2ArM4Wd4g7RZ1PkmCQbYte0+RPg1AmeXMYx1laR9aN9JLUaGZeKJISINYWqU5jcrZlWNk/Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GeolWIDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C36CC4CEE3;
-	Thu,  3 Jul 2025 14:50:01 +0000 (UTC)
+	 MIME-Version; b=Xg/kwVwBB9qi8bXj7dcvaj1BsZCNi5eM8mj9u5wIN6+rjMS1/mxt1ixJF+v0Bc1d5ijieVjsJ6XSVDDP4kT3JwyPZunKfgE6vTTamDw7lYh/4pjB5eAVjbxa+bBlTNVph6G9j4+Rs/uMNYFoLBdtEuFvzaf0I1Ap6uIbMdNBXbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=My4zS5+v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DCAC4CEE3;
+	Thu,  3 Jul 2025 15:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554201;
-	bh=OCsOAVy6TpF9mlGGLdIkh/QyQs0yW1znZkLPBfWUyZ4=;
+	s=korg; t=1751554986;
+	bh=N8+t25Sej0cKqkdDCF6iBnGlJRfLAanbQbP6lj4e95I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GeolWIDhNtpY4J1vNr1qKMZmGUdsukZOYgKUKuQ7tHpSvkSwF+wnlpL91jr2kHxTB
-	 5z9Z/F++ioQOir2E0ypkFoxPQBRSiCg2dBq5UQcwkZUfYBEWPx/M8JeWZOZduQ5PcP
-	 znkgwkqcR+e7r5TJ9d656TVDgtaGITFtCis+keFM=
+	b=My4zS5+vimAg3IhxGRBQHP/gtWArBicC3uR/sNRlZcjVwHVkZB5xAifUv8YNsExre
+	 mmwN0yoArTYO7wGwFzyzs9c2XLfvkYRjYp04CesENYy4jtNEov6kftgF6OVUjUe51n
+	 K5Rp/VmPcggzva3L+QPuQeKxDXMFYwnwam5qvlHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Marcus Seyfarth <m.seyfarth@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 112/218] drm/amd: Adjust output for discovery error handling
-Date: Thu,  3 Jul 2025 16:41:00 +0200
-Message-ID: <20250703144000.418183441@linuxfoundation.org>
+Subject: [PATCH 6.15 141/263] net: netpoll: Initialize UDP checksum field before checksumming
+Date: Thu,  3 Jul 2025 16:41:01 +0200
+Message-ID: <20250703144010.012174046@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 73eab78721f7b85216f1ca8c7b732f13213b5b32 ]
+[ Upstream commit f5990207026987a353d5a95204c4d9cb725637fd ]
 
-commit 017fbb6690c2 ("drm/amdgpu/discovery: check ip_discovery fw file
-available") added support for reading an amdgpu IP discovery bin file
-for some specific products. If it's not found then it will fallback to
-hardcoded values. However if it's not found there is also a lot of noise
-about missing files and errors.
+commit f1fce08e63fe ("netpoll: Eliminate redundant assignment") removed
+the initialization of the UDP checksum, which was wrong and broke
+netpoll IPv6 transmission due to bad checksumming.
 
-Adjust the error handling to decrease most messages to DEBUG and to show
-users less about missing files.
+udph->check needs to be set before calling csum_ipv6_magic().
 
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4312
-Tested-by: Marcus Seyfarth <m.seyfarth@gmail.com>
-Fixes: 017fbb6690c2 ("drm/amdgpu/discovery: check ip_discovery fw file available")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20250617183052.1692059-1-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 49f1f9f6c3c9febf8ba93f94a8d9c8d03e1ea0a1)
+Fixes: f1fce08e63fe ("netpoll: Eliminate redundant assignment")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250620-netpoll_fix-v1-1-f9f0b82bc059@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 28 +++++++++----------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ net/core/netpoll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-index 8929478a8f45c..34d41e3ce3474 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -301,10 +301,12 @@ static int amdgpu_discovery_read_binary_from_file(struct amdgpu_device *adev,
- 	const struct firmware *fw;
- 	int r;
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 4ddb7490df4b8..6ad84d4a2b464 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -432,6 +432,7 @@ int netpoll_send_udp(struct netpoll *np, const char *msg, int len)
+ 	udph->dest = htons(np->remote_port);
+ 	udph->len = htons(udp_len);
  
--	r = request_firmware(&fw, fw_name, adev->dev);
-+	r = firmware_request_nowarn(&fw, fw_name, adev->dev);
- 	if (r) {
--		dev_err(adev->dev, "can't load firmware \"%s\"\n",
--			fw_name);
-+		if (amdgpu_discovery == 2)
-+			dev_err(adev->dev, "can't load firmware \"%s\"\n", fw_name);
-+		else
-+			drm_info(&adev->ddev, "Optional firmware \"%s\" was not found\n", fw_name);
- 		return r;
- 	}
- 
-@@ -419,16 +421,12 @@ static int amdgpu_discovery_init(struct amdgpu_device *adev)
- 	/* Read from file if it is the preferred option */
- 	fw_name = amdgpu_discovery_get_fw_name(adev);
- 	if (fw_name != NULL) {
--		dev_info(adev->dev, "use ip discovery information from file");
-+		drm_dbg(&adev->ddev, "use ip discovery information from file");
- 		r = amdgpu_discovery_read_binary_from_file(adev, adev->mman.discovery_bin, fw_name);
--
--		if (r) {
--			dev_err(adev->dev, "failed to read ip discovery binary from file\n");
--			r = -EINVAL;
-+		if (r)
- 			goto out;
--		}
--
++	udph->check = 0;
+ 	if (np->ipv6) {
+ 		udph->check = csum_ipv6_magic(&np->local_ip.in6,
+ 					      &np->remote_ip.in6,
+@@ -460,7 +461,6 @@ int netpoll_send_udp(struct netpoll *np, const char *msg, int len)
+ 		skb_reset_mac_header(skb);
+ 		skb->protocol = eth->h_proto = htons(ETH_P_IPV6);
  	} else {
-+		drm_dbg(&adev->ddev, "use ip discovery information from memory");
- 		r = amdgpu_discovery_read_binary_from_mem(
- 			adev, adev->mman.discovery_bin);
- 		if (r)
-@@ -1286,10 +1284,8 @@ static int amdgpu_discovery_reg_base_init(struct amdgpu_device *adev)
- 	int r;
- 
- 	r = amdgpu_discovery_init(adev);
--	if (r) {
--		DRM_ERROR("amdgpu_discovery_init failed\n");
-+	if (r)
- 		return r;
--	}
- 
- 	adev->gfx.xcc_mask = 0;
- 	adev->sdma.sdma_mask = 0;
-@@ -2451,8 +2447,10 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
- 		break;
- 	default:
- 		r = amdgpu_discovery_reg_base_init(adev);
--		if (r)
--			return -EINVAL;
-+		if (r) {
-+			drm_err(&adev->ddev, "discovery failed: %d\n", r);
-+			return r;
-+		}
- 
- 		amdgpu_discovery_harvest_ip(adev);
- 		amdgpu_discovery_get_gfx_info(adev);
+-		udph->check = 0;
+ 		udph->check = csum_tcpudp_magic(np->local_ip.ip,
+ 						np->remote_ip.ip,
+ 						udp_len, IPPROTO_UDP,
 -- 
 2.39.5
 
