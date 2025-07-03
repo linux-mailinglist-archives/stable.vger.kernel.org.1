@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-159999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A2EAF7BFA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:30:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96BEAF7AC0
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 261DA6E0F68
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4352F7A3019
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1117E2E7BD3;
-	Thu,  3 Jul 2025 15:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C2B2F0024;
+	Thu,  3 Jul 2025 15:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWkqiocv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9YhV9FH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83892E3B1A;
-	Thu,  3 Jul 2025 15:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5746417332C;
+	Thu,  3 Jul 2025 15:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556045; cv=none; b=Xbnvq7rtRtOz6rTherEdPewDJsAByxuZUpSt5BUQLvEHJUkVTDR0xEA/atlFJ+MyIhXtctqsCrFQ0/YKLHj3yCme+Po6/BQef3ZtNSBPhkMOeqxbkbW3scEGyNwPfKQHOg3Tl0SSEx0Lp8CQh+Hje4O0TVWjOlF9AnbwH5dO+68=
+	t=1751555660; cv=none; b=Vu4bAjqITAbXcsDjFzJNMpClMraSAfg85cFqUXrKNoN/sYyY9ZiAhH8IX+BmAiuE5UAsM21mYx2ioO2luu89l0SOAlSx8eTKNmku8LLZOg6Dyj3bg7t11hH8XgSDt58M+uUylCTTn9QqgTJrunOIK+2GQLMl4D1RE61nRE5z6Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556045; c=relaxed/simple;
-	bh=rTc4g/wkR7LGHBfwH8Dg0T05O+HFBvsY1px8C98jDyk=;
+	s=arc-20240116; t=1751555660; c=relaxed/simple;
+	bh=FS9uKkLAeLJcB38mo9vg0JgDDR2gbwBxrozYuubxLFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+Q1q5SEoQHyBoDyVy0fiz/msqwbQTiBziCCqqvDGzcLFR8hMAs0WN4/LHX22n8agui3Nx4MPaprSfapM3nEcT5c+XXmaFFvcOeyOBZvgZ+Vmcm/IhXWkae/mM/130iRoL+aUErI2N2A9Nwd9yxElgZCfXnshBJ1bch8L+LRYhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWkqiocv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D871C4CEED;
-	Thu,  3 Jul 2025 15:20:44 +0000 (UTC)
+	 MIME-Version; b=XHSTBhhQmoF02Ln0AchzgpXG0DbrE3K16iH1UQAGf9LJXdPHzKtwc7Ijndpq1zp54N9i17oScu5k2kYLOANt3UWgWldMhatSLj1x7WlnhRCi0H6JMvW22RoWLHRueJwTrdhuPSN15CkKZUXdeSvr1NQe1yrTDZQiZMc+/H/v4lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9YhV9FH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA83C4CEE3;
+	Thu,  3 Jul 2025 15:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556045;
-	bh=rTc4g/wkR7LGHBfwH8Dg0T05O+HFBvsY1px8C98jDyk=;
+	s=korg; t=1751555660;
+	bh=FS9uKkLAeLJcB38mo9vg0JgDDR2gbwBxrozYuubxLFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TWkqiocv07JY0hn3G6PVYF9nBG+JyBBFZE+989LCH/U4JoZW69diSEL7Km6RlODA8
-	 Ykv6VLIggPNKFC8BgvlyOgYULi6NKjI05uWKhCcEsh5AdpGw55rZq3mHnJ1F+9IQz+
-	 g6y+Ahl7IMexJZfiBiwVo5RCMoQCD+A1CJ5D3gC4=
+	b=d9YhV9FHPp9ruygi9TVubtAWZayVPM5Br1Ct9BuRK//MkwS8SrJNw/rtfRaWXTbvs
+	 i4weHzP9yX4bl9+b5v43xEY+PndAOqhukFMQUoNzR1PXHXoG5PlGSJdcU8r2c4U3t8
+	 /gKvUBVHKkKso72ZcMdxGeHE9batTNmOXxkRcptA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/132] Drivers: hv: vmbus: Leak pages if set_memory_encrypted() fails
+Subject: [PATCH 6.6 082/139] wifi: mac80211: fix beacon interval calculation overflow
 Date: Thu,  3 Jul 2025 16:42:25 +0200
-Message-ID: <20250703143941.622681705@linuxfoundation.org>
+Message-ID: <20250703143944.367504813@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 
-[ Upstream commit 03f5a999adba062456c8c818a683beb1b498983a ]
+[ Upstream commit 7a3750ff0f2e8fee338a9c168f429f6c37f0e820 ]
 
-In CoCo VMs it is possible for the untrusted host to cause
-set_memory_encrypted() or set_memory_decrypted() to fail such that an
-error is returned and the resulting memory is shared. Callers need to
-take care to handle these errors to avoid returning decrypted (shared)
-memory to the page allocator, which could lead to functional or security
-issues.
+As we are converting from TU to usecs, a beacon interval of
+100*1024 usecs will lead to integer wrapping. To fix change
+to use a u32.
 
-VMBus code could free decrypted pages if set_memory_encrypted()/decrypted()
-fails. Leak the pages if this happens.
-
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/r/20240311161558.1310-2-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240311161558.1310-2-mhklinux@outlook.com>
-Stable-dep-of: 09eea7ad0b8e ("Drivers: hv: Allocate interrupt and monitor pages aligned to system page boundary")
+Fixes: 057d5f4ba1e4 ("mac80211: sync dtim_count to TSF")
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Link: https://patch.msgid.link/20250621123209.511796-1-lachlan.hodges@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/connection.c | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ net/mac80211/util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hv/connection.c b/drivers/hv/connection.c
-index ebf15f31d97e3..744d2809acc3f 100644
---- a/drivers/hv/connection.c
-+++ b/drivers/hv/connection.c
-@@ -236,8 +236,17 @@ int vmbus_connect(void)
- 				vmbus_connection.monitor_pages[0], 1);
- 	ret |= set_memory_decrypted((unsigned long)
- 				vmbus_connection.monitor_pages[1], 1);
--	if (ret)
-+	if (ret) {
-+		/*
-+		 * If set_memory_decrypted() fails, the encryption state
-+		 * of the memory is unknown. So leak the memory instead
-+		 * of risking returning decrypted memory to the free list.
-+		 * For simplicity, always handle both pages the same.
-+		 */
-+		vmbus_connection.monitor_pages[0] = NULL;
-+		vmbus_connection.monitor_pages[1] = NULL;
- 		goto cleanup;
-+	}
- 
- 	/*
- 	 * Set_memory_decrypted() will change the memory contents if
-@@ -336,13 +345,19 @@ void vmbus_disconnect(void)
- 		vmbus_connection.int_page = NULL;
- 	}
- 
--	set_memory_encrypted((unsigned long)vmbus_connection.monitor_pages[0], 1);
--	set_memory_encrypted((unsigned long)vmbus_connection.monitor_pages[1], 1);
-+	if (vmbus_connection.monitor_pages[0]) {
-+		if (!set_memory_encrypted(
-+			(unsigned long)vmbus_connection.monitor_pages[0], 1))
-+			hv_free_hyperv_page(vmbus_connection.monitor_pages[0]);
-+		vmbus_connection.monitor_pages[0] = NULL;
-+	}
- 
--	hv_free_hyperv_page(vmbus_connection.monitor_pages[0]);
--	hv_free_hyperv_page(vmbus_connection.monitor_pages[1]);
--	vmbus_connection.monitor_pages[0] = NULL;
--	vmbus_connection.monitor_pages[1] = NULL;
-+	if (vmbus_connection.monitor_pages[1]) {
-+		if (!set_memory_encrypted(
-+			(unsigned long)vmbus_connection.monitor_pages[1], 1))
-+			hv_free_hyperv_page(vmbus_connection.monitor_pages[1]);
-+		vmbus_connection.monitor_pages[1] = NULL;
-+	}
- }
- 
- /*
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 154b41af4157d..3a3cd09bdab65 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -4753,7 +4753,7 @@ void ieee80211_recalc_dtim(struct ieee80211_local *local,
+ {
+ 	u64 tsf = drv_get_tsf(local, sdata);
+ 	u64 dtim_count = 0;
+-	u16 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
++	u32 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
+ 	u8 dtim_period = sdata->vif.bss_conf.dtim_period;
+ 	struct ps_data *ps;
+ 	u8 bcns_from_dtim;
 -- 
 2.39.5
 
