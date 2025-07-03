@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-159468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FE6AF78C5
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:54:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF12AF7B22
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:22:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2758170B7C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C90B01CA738E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B74F2EFD9F;
-	Thu,  3 Jul 2025 14:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674FC2F2354;
+	Thu,  3 Jul 2025 15:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fsmlBy3s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yymrhi78"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B9A2EFD94;
-	Thu,  3 Jul 2025 14:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244912F19AD;
+	Thu,  3 Jul 2025 15:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554327; cv=none; b=u6b4p8Y3E2A1wn5R5Ihux/K/7GvCzBjx7Wp3SUb/uIEFs74RMtg/UtltxWUG+9rmnzvBOQW8hoh62xdJ1tFOK+LSB1kQiI+/ZBzfLBmyANcDQTaGXtFgFxR4aKu1bugQbM2F0MR2agm2QkCGpaOA1OSHJHnrbwkfoZcm4B5Ypdg=
+	t=1751555604; cv=none; b=p9rYlnC2Lwu+MY8u+pGH16b2NM7XWZB7Zdk7GSUDI4lkH+imPxvX2GjlS6CWxiV9jgfyIcTgzHf68qzX9ZlM4YaItgutcB4zAt3M69AJScPVg8qiQ4f68gaW7Avj5o8hoG8wB6kLPiqXxT1GJt93Fjx88sCtpksfWYvOcu9Z2mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554327; c=relaxed/simple;
-	bh=jr32VKFARZiDUktzfKYJVQP2q/vMN6SgYDKLaEc2l9w=;
+	s=arc-20240116; t=1751555604; c=relaxed/simple;
+	bh=omI2RQz+7ecdotxcaXvS6P93SU3cC8yUyRTuiHe1RtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ss54YuePrLFVSBn0ZaPCJKLm96JrqpdBGH9NefyMY5EEO3bXkjk6zfq9FVRoCbZzZkIhrqAuCeKClGdScpoTmvqb+no6aTnwVgjQPUUqDAODEdUyw758XqSn17E5w06Mx0hZg/yOdUmonKSfqfmm18+dW8yHg+/8ohLYrANrfGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fsmlBy3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66039C4CEEE;
-	Thu,  3 Jul 2025 14:52:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J2QCa1VuvpqQ7gQcpOhFhFMVDC+HGpmy+tmeiYb9OGoX1nENPnlXGF4w0kklA8gvNUWgpPkJUZ3ESEIRI9gD6U4DWplv7SD5aKWxqBVxgxesRWMWrW1o1/tZlU/1q5MgewZZb0kMhgdmJpcdMN0YMaZuO19XG4OLAJo1ulQoiAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yymrhi78; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10BCC4CEED;
+	Thu,  3 Jul 2025 15:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554326;
-	bh=jr32VKFARZiDUktzfKYJVQP2q/vMN6SgYDKLaEc2l9w=;
+	s=korg; t=1751555604;
+	bh=omI2RQz+7ecdotxcaXvS6P93SU3cC8yUyRTuiHe1RtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fsmlBy3se0R+QFckDXAGPfz4xMUSpYpw1rBFr433gBWG+QEBWJQ0uziUgPgjWBl5C
-	 GXrAAdW5NOK0KtPtFaUEL+rZ6daFNULzZN1KBdmL5/Jg6ebF8KEZA0wFD4QtO0CTfl
-	 M18Zc12XtKMbn0tXSGWroKVmgZbfi4VfZAFNZvao=
+	b=Yymrhi78sibJwVygrSPUv36jdFZ/05JA+WatJz/Z4d1WukmbdPGAQlJkD0IhlHO1n
+	 /Ut3yXkPbHlttutendXuQkqgF3pubqi9rw1bx9147KsT93oJ85TKEEq6K2szW+cR9i
+	 AgC2QvcC8GPY5Fw5IApmHkdXY+ITgaXbd3suN2kM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.12 151/218] drm/tegra: Assign plane type before registration
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 036/139] usb: Add checks for snprintf() calls in usb_alloc_dev()
 Date: Thu,  3 Jul 2025 16:41:39 +0200
-Message-ID: <20250703144002.187412849@linuxfoundation.org>
+Message-ID: <20250703143942.592733626@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,94 +59,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thierry Reding <treding@nvidia.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 9ff4fdf4f44b69237c0afc1d3a8dac916ce66f3e upstream.
+[ Upstream commit 82fe5107fa3d21d6c3fba091c9dbc50495588630 ]
 
-Changes to a plane's type after it has been registered aren't propagated
-to userspace automatically. This could possibly be achieved by updating
-the property, but since we can already determine which type this should
-be before the registration, passing in the right type from the start is
-a much better solution.
+When creating a device path in the driver the snprintf() takes
+up to 16 characters long argument along with the additional up to
+12 characters for the signed integer (as it can't see the actual limits)
+and tries to pack this into 16 bytes array. GCC complains about that
+when build with `make W=1`:
 
-Suggested-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Cc: stable@vger.kernel.org
-Fixes: 473079549f27 ("drm/tegra: dc: Add Tegra186 support")
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250421-tegra-drm-primary-v2-1-7f740c4c2121@gmail.com
+  drivers/usb/core/usb.c:705:25: note: ‘snprintf’ output between 3 and 28 bytes into a destination of size 16
+
+Since everything works until now, let's just check for the potential
+buffer overflow and bail out. It is most likely a never happen situation,
+but at least it makes GCC happy.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250321164949.423957-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/dc.c  |   12 ++++++++----
- drivers/gpu/drm/tegra/hub.c |    4 ++--
- drivers/gpu/drm/tegra/hub.h |    3 ++-
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/usb/core/usb.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/tegra/dc.c
-+++ b/drivers/gpu/drm/tegra/dc.c
-@@ -1320,10 +1320,16 @@ static struct drm_plane *tegra_dc_add_sh
- 		if (wgrp->dc == dc->pipe) {
- 			for (j = 0; j < wgrp->num_windows; j++) {
- 				unsigned int index = wgrp->windows[j];
-+				enum drm_plane_type type;
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 2a938cf47ccd6..da6d5e5f79e7a 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -695,15 +695,16 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
+ 		device_set_of_node_from_dev(&dev->dev, bus->sysdev);
+ 		dev_set_name(&dev->dev, "usb%d", bus->busnum);
+ 	} else {
++		int n;
 +
-+				if (primary)
-+					type = DRM_PLANE_TYPE_OVERLAY;
-+				else
-+					type = DRM_PLANE_TYPE_PRIMARY;
- 
- 				plane = tegra_shared_plane_create(drm, dc,
- 								  wgrp->index,
--								  index);
-+								  index, type);
- 				if (IS_ERR(plane))
- 					return plane;
- 
-@@ -1331,10 +1337,8 @@ static struct drm_plane *tegra_dc_add_sh
- 				 * Choose the first shared plane owned by this
- 				 * head as the primary plane.
- 				 */
--				if (!primary) {
--					plane->type = DRM_PLANE_TYPE_PRIMARY;
-+				if (!primary)
- 					primary = plane;
--				}
- 			}
+ 		/* match any labeling on the hubs; it's one-based */
+ 		if (parent->devpath[0] == '0') {
+-			snprintf(dev->devpath, sizeof dev->devpath,
+-				"%d", port1);
++			n = snprintf(dev->devpath, sizeof(dev->devpath), "%d", port1);
+ 			/* Root ports are not counted in route string */
+ 			dev->route = 0;
+ 		} else {
+-			snprintf(dev->devpath, sizeof dev->devpath,
+-				"%s.%d", parent->devpath, port1);
++			n = snprintf(dev->devpath, sizeof(dev->devpath), "%s.%d",
++				     parent->devpath, port1);
+ 			/* Route string assumes hubs have less than 16 ports */
+ 			if (port1 < 15)
+ 				dev->route = parent->route +
+@@ -712,6 +713,11 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
+ 				dev->route = parent->route +
+ 					(15 << ((parent->level - 1)*4));
  		}
- 	}
---- a/drivers/gpu/drm/tegra/hub.c
-+++ b/drivers/gpu/drm/tegra/hub.c
-@@ -755,9 +755,9 @@ static const struct drm_plane_helper_fun
- struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
- 					    struct tegra_dc *dc,
- 					    unsigned int wgrp,
--					    unsigned int index)
-+					    unsigned int index,
-+					    enum drm_plane_type type)
- {
--	enum drm_plane_type type = DRM_PLANE_TYPE_OVERLAY;
- 	struct tegra_drm *tegra = drm->dev_private;
- 	struct tegra_display_hub *hub = tegra->hub;
- 	struct tegra_shared_plane *plane;
---- a/drivers/gpu/drm/tegra/hub.h
-+++ b/drivers/gpu/drm/tegra/hub.h
-@@ -80,7 +80,8 @@ void tegra_display_hub_cleanup(struct te
- struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
- 					    struct tegra_dc *dc,
- 					    unsigned int wgrp,
--					    unsigned int index);
-+					    unsigned int index,
-+					    enum drm_plane_type type);
++		if (n >= sizeof(dev->devpath)) {
++			usb_put_hcd(bus_to_hcd(bus));
++			usb_put_dev(dev);
++			return NULL;
++		}
  
- int tegra_display_hub_atomic_check(struct drm_device *drm,
- 				   struct drm_atomic_state *state);
+ 		dev->dev.parent = &parent->dev;
+ 		dev_set_name(&dev->dev, "%d-%s", bus->busnum, dev->devpath);
+-- 
+2.39.5
+
 
 
 
