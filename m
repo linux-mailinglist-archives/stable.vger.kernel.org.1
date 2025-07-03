@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B36AF797E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:02:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B8FAF7806
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 139BD1BC516B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:57:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0788D581A65
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8262EE98D;
-	Thu,  3 Jul 2025 14:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14902EF656;
+	Thu,  3 Jul 2025 14:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="do7lCqJr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGUrvbSY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9A12EE96D;
-	Thu,  3 Jul 2025 14:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FF12EF2B3;
+	Thu,  3 Jul 2025 14:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554642; cv=none; b=mS1iWMjaGckjajSKxtx5T9dtw8uIfh2N7kkGAohgq8anwwuQbAks+px1QMNSIPtKyffD5tVug18p7w4uiuS1O9lyJoFyOHbKqaA8W8e1OBe8FT7yfU6kIeG4BHbt94uF3iS57jQQl5ONgzrb5nFMbKpfc6OnsIiuTBipOIW4x/4=
+	t=1751553935; cv=none; b=i0SbAKSnvtVi15v4gleWgcHkhxKoZdezFZDamgz90a6go3nRPGDqvhk3t2aY1Exiutcj1snTNI2g4Ae5LzLajV1+Kh4dOo2Uq+hv4rMJM706QQtHgxqN9QgmMDNwsu6td4ayAW/x9DIajk1Si/49ekqpCT6tDMpO4idTTvSjspY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554642; c=relaxed/simple;
-	bh=DI4JjvV3nkFi1sAwyQElZBv+GfomhD08oBhOHL0YGuk=;
+	s=arc-20240116; t=1751553935; c=relaxed/simple;
+	bh=REhjrUiMYeXu9FkTT4OPQf8W+ebHTTLxx1gweNmagC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QzbZoJEB5cGCM0vjGwqb+rcIt+QS96Sa2ZXb8A9ApBTqb2qn1MdnPrE518U7abZT/W2D26Ktrmjd2y7OS34/+5IAzYjOcavPL9udg9DXm9hLHywC2CYGYBRhmSG2r0As69Y5xoqu2tp6Z50A5Zm0sINOtjNprrLhOdr6UP4+RIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=do7lCqJr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF233C4CEE3;
-	Thu,  3 Jul 2025 14:57:21 +0000 (UTC)
+	 MIME-Version; b=bgiA30ORxCS5TuW26AeyQN2hg9GyPn6WMJ199ujZ7wEfcPcqDED/AXmgNMe+kX3RDd51AupbqXabwkWX7SXsvRWcM3rIAU2Dnbk8CJatUEXYHnIRoT0ITSP9wNbAsNqlT1N4hAQwEoso75UB1BazC4Hhwc6agtn81gkCXqokEWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGUrvbSY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD5EC4CEE3;
+	Thu,  3 Jul 2025 14:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554642;
-	bh=DI4JjvV3nkFi1sAwyQElZBv+GfomhD08oBhOHL0YGuk=;
+	s=korg; t=1751553935;
+	bh=REhjrUiMYeXu9FkTT4OPQf8W+ebHTTLxx1gweNmagC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=do7lCqJrN0eyHx0gyMo8xZ6QGRxvssML1R6MOOLMm7XQOCkw6dKtDtW1D/l3r3+R0
-	 lxi24hd6sVDd+KzYiDGL6KZpM9tW+LIegmym+YsA8hu4uGxZCjuD7jQXx8N+5AE9lT
-	 aAf1PN7895l6Wh2x83ZwBby6YigOorUTp8MYkAa4=
+	b=wGUrvbSYGYq5/wuBGaUSOYR1akgjyvEB7PBKS24E3ceRii34I8kMOGeWhwhBYIWwK
+	 HQ9abSZFcFwZkrJlsCJqtaRGs/lRm/Z5z8KsLmyh5Qn3AP/Ufvt/zic+a7EN2ZyZZi
+	 wI3Slthuf0WXZ3Fq2G/3T4+v+yApBWchEnlCCygE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 035/263] md/md-bitmap: fix dm-raid max_write_behind setting
-Date: Thu,  3 Jul 2025 16:39:15 +0200
-Message-ID: <20250703144005.704353181@linuxfoundation.org>
+Subject: [PATCH 6.12 008/218] mfd: max14577: Fix wakeup source leaks on device unbind
+Date: Thu,  3 Jul 2025 16:39:16 +0200
+Message-ID: <20250703143956.290503111@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 2afe17794cfed5f80295b1b9facd66e6f65e5002 ]
+[ Upstream commit d905d06e64b0eb3da43af6186c132f5282197998 ]
 
-It's supposed to be COUNTER_MAX / 2, not COUNTER_MAX.
+Device can be unbound, so driver must also release memory for the wakeup
+source.
 
-Link: https://lore.kernel.org/linux-raid/20250524061320.370630-14-yukuai1@huaweicloud.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250406-mfd-device-wakekup-leak-v1-3-318e14bdba0a@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/max14577.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 37b08f26c62f5..45dd3d9f01a8e 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -789,7 +789,7 @@ static int md_bitmap_new_disk_sb(struct bitmap *bitmap)
- 	 * is a good choice?  We choose COUNTER_MAX / 2 arbitrarily.
- 	 */
- 	write_behind = bitmap->mddev->bitmap_info.max_write_behind;
--	if (write_behind > COUNTER_MAX)
-+	if (write_behind > COUNTER_MAX / 2)
- 		write_behind = COUNTER_MAX / 2;
- 	sb->write_behind = cpu_to_le32(write_behind);
- 	bitmap->mddev->bitmap_info.max_write_behind = write_behind;
+diff --git a/drivers/mfd/max14577.c b/drivers/mfd/max14577.c
+index 6fce79ec2dc64..7e7e8af9af224 100644
+--- a/drivers/mfd/max14577.c
++++ b/drivers/mfd/max14577.c
+@@ -456,6 +456,7 @@ static void max14577_i2c_remove(struct i2c_client *i2c)
+ {
+ 	struct max14577 *max14577 = i2c_get_clientdata(i2c);
+ 
++	device_init_wakeup(max14577->dev, false);
+ 	mfd_remove_devices(max14577->dev);
+ 	regmap_del_irq_chip(max14577->irq, max14577->irq_data);
+ 	if (max14577->dev_type == MAXIM_DEVICE_TYPE_MAX77836)
 -- 
 2.39.5
 
