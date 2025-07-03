@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65164AF78F1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E05BAF7B5C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7DBC541F28
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9F896E43D4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D5D2EE982;
-	Thu,  3 Jul 2025 14:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4502F237C;
+	Thu,  3 Jul 2025 15:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDeEhnYJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPm3eFuV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7762EF9BF;
-	Thu,  3 Jul 2025 14:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6A215442C;
+	Thu,  3 Jul 2025 15:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554415; cv=none; b=u8DwoC+5LF3ol3A5TOfKORBU9G6yVqz7wsd0GwbpBOVNmo1bX9v9vibX6/FzyxFkgx/E1HshbG//rjV0zy6MgmoyH6StjOEm4VQUo6pouuhWxMzXHvmUGo/SCW2MdcsRkU4XCse+QTyVBLGKuF1jfL5Qwo+PtAR/g6+S7YY9VMw=
+	t=1751555667; cv=none; b=pHXa1Xrx8j+/zcCaMdIwd6VqazeuRjRQvMthhvdFJx7lrxi+Auf75DTzRHTv4Roijt4/a2z2ATs7rZfW2xPZBXkAhtHWQNhTvg6mc25BpsM9z2Tgte6PjzjErZJ3Pk0RVR9GVNiCAOK+3z3TYdd0w2k89qpWDykh2UrSBcPOlLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554415; c=relaxed/simple;
-	bh=jKaZFqlooAiKlO9oK3Fd/D/x1ntfQvhGkybi8yeUtls=;
+	s=arc-20240116; t=1751555667; c=relaxed/simple;
+	bh=y2EglgTEmPgKPUh2kQAt22WrZH+fE383Qn1bPLH9bwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LLy9oI/dWjFB9qkqyhlNH1RYPs6DCF0XmGdtQsQarvFJ5xLejbIulMXn8QH05GTHApfgofuvh18NFcqjPQRYFsd7EY0GgxSyNv6f554uoDkkBAs3KUMfKcwZGGaNk54PQbxRJN3aE8w2F5a5ER78iEbh03f6ZIIbuH6oTrBmRiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDeEhnYJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F6BC4CEE3;
-	Thu,  3 Jul 2025 14:53:35 +0000 (UTC)
+	 MIME-Version; b=PexvBOYJUhaRQ7L5D/N0hlXZ7Zd3oltumjZil3t8OP9kA3aNH73OMUao+nNiWfK2uK6gGwv1C5n/FbcrTJt/csxqDXm5H7p6/2ixvOoHkrW5nzW9/YBEf3wlO4uuuIHWDei6nnmypyaIQVTl/rnHRW/Z5Acswu53sYKWx/iLQvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPm3eFuV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3FCBC4CEE3;
+	Thu,  3 Jul 2025 15:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554415;
-	bh=jKaZFqlooAiKlO9oK3Fd/D/x1ntfQvhGkybi8yeUtls=;
+	s=korg; t=1751555667;
+	bh=y2EglgTEmPgKPUh2kQAt22WrZH+fE383Qn1bPLH9bwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SDeEhnYJiO8GWuRW9AUHIfzYvXJxbBrqowrgTSfYUQvxHfl3V7F0LxnQECVFYwLSw
-	 YAT5cWwqUAAu7RVJ+NsMRF/pvUDS6Mo74Yd2R+cduJ5ppNH4gVy526lksCsEJcPRuO
-	 Zzo6Ynw+zK1YicH72EECnLhS+eU5cWPLwuz1h4zw=
+	b=ZPm3eFuVszsbbQqbOV9gFaLnql3vvYTPuUmpGS8vuYAzF5hZUNSDskjoom7Xouj3D
+	 65lQvYXUm0+kGwsHaR7Fh71V+CHYp9fJ1eCovfJB4T+5jFYOOm+C+1pHEI9Ozow5Em
+	 WPtWK9d29NeRUAcw49YvwW0EIqx7vDdhjaSOf9hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.12 180/218] net: libwx: fix Tx L4 checksum
-Date: Thu,  3 Jul 2025 16:42:08 +0200
-Message-ID: <20250703144003.371017154@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 066/139] af_unix: Define locking order for unix_table_double_lock().
+Date: Thu,  3 Jul 2025 16:42:09 +0200
+Message-ID: <20250703143943.748803452@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit c7d82913d5f9e97860772ee4051eaa66b56a6273 upstream.
+[ Upstream commit 3955802f160b5c61ac00d7e54da8d746f2e4a2d5 ]
 
-The hardware only supports L4 checksum offload for TCP/UDP/SCTP protocol.
-There was a bug to set Tx checksum flag for the other protocol that results
-in Tx ring hang. Fix to compute software checksum for these packets.
+When created, AF_UNIX socket is put into net->unx.table.buckets[],
+and the hash is stored in sk->sk_hash.
 
-Fixes: 3403960cdf86 ("net: wangxun: libwx add tx offload functions")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/20250324103235.823096-2-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  * unbound socket  : 0 <= sk_hash <= UNIX_HASH_MOD
+
+When bind() is called, the socket could be moved to another bucket.
+
+  * pathname socket : 0 <= sk_hash <= UNIX_HASH_MOD
+  * abstract socket : UNIX_HASH_MOD + 1 <= sk_hash <= UNIX_HASH_MOD * 2 + 1
+
+Then, we call unix_table_double_lock() which locks a single bucket
+or two.
+
+Let's define the order as unix_table_lock_cmp_fn() instead of using
+spin_lock_nested().
+
+The locking is always done in ascending order of sk->sk_hash, which
+is the index of buckets/locks array allocated by kvmalloc_array().
+
+  sk_hash_A < sk_hash_B
+  <=> &locks[sk_hash_A].dep_map < &locks[sk_hash_B].dep_map
+
+So, the relation of two sk->sk_hash can be derived from the addresses
+of dep_map in the array of locks.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Kent Overstreet <kent.overstreet@linux.dev>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 32ca245464e1 ("af_unix: Don't leave consecutive consumed OOB skbs.")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_lib.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/unix/af_unix.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -1336,6 +1336,7 @@ static void wx_tx_csum(struct wx_ring *t
- 	u8 tun_prot = 0;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 236a2cd2bc93d..4f839d687c1e4 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -125,6 +125,15 @@ static spinlock_t bsd_socket_locks[UNIX_HASH_SIZE / 2];
+  *    hash table is protected with spinlock.
+  *    each socket state is protected by separate spinlock.
+  */
++#ifdef CONFIG_PROVE_LOCKING
++#define cmp_ptr(l, r)	(((l) > (r)) - ((l) < (r)))
++
++static int unix_table_lock_cmp_fn(const struct lockdep_map *a,
++				  const struct lockdep_map *b)
++{
++	return cmp_ptr(a, b);
++}
++#endif
  
- 	if (skb->ip_summed != CHECKSUM_PARTIAL) {
-+csum_failed:
- 		if (!(first->tx_flags & WX_TX_FLAGS_HW_VLAN) &&
- 		    !(first->tx_flags & WX_TX_FLAGS_CC))
- 			return;
-@@ -1429,7 +1430,8 @@ static void wx_tx_csum(struct wx_ring *t
- 					WX_TXD_L4LEN_SHIFT;
- 			break;
- 		default:
--			break;
-+			skb_checksum_help(skb);
-+			goto csum_failed;
- 		}
+ static unsigned int unix_unbound_hash(struct sock *sk)
+ {
+@@ -167,7 +176,7 @@ static void unix_table_double_lock(struct net *net,
+ 		swap(hash1, hash2);
  
- 		/* update TX checksum flag */
+ 	spin_lock(&net->unx.table.locks[hash1]);
+-	spin_lock_nested(&net->unx.table.locks[hash2], SINGLE_DEPTH_NESTING);
++	spin_lock(&net->unx.table.locks[hash2]);
+ }
+ 
+ static void unix_table_double_unlock(struct net *net,
+@@ -3598,6 +3607,7 @@ static int __net_init unix_net_init(struct net *net)
+ 
+ 	for (i = 0; i < UNIX_HASH_SIZE; i++) {
+ 		spin_lock_init(&net->unx.table.locks[i]);
++		lock_set_cmp_fn(&net->unx.table.locks[i], unix_table_lock_cmp_fn, NULL);
+ 		INIT_HLIST_HEAD(&net->unx.table.buckets[i]);
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
