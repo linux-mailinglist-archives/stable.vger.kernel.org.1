@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-159872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB481AF7B2D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:22:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3863EAF78D3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:54:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 968DD1CA74CA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 055814A1AA7
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335412EF9CA;
-	Thu,  3 Jul 2025 15:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE792EE28F;
+	Thu,  3 Jul 2025 14:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDlsj2vp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQxm81Yv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFAAC2EE281;
-	Thu,  3 Jul 2025 15:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4C62EE99C;
+	Thu,  3 Jul 2025 14:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555620; cv=none; b=JhTGXQ7yJV6LCN6eUuBoaDio3SCGs2+0RauKUdTTjQQFKLhqOl/ShRPqqnhmlC0QKFUZcl6ONqWEYkL5XXh0tDKp+xTjDccaA5YR/hUvdNP2v20NDQl7HD64OBSlGnRbk3ex0dH8kgwZzucgews6KMX4Tp9YW0mM2bD13K2fxtA=
+	t=1751554368; cv=none; b=EK9JXML2hbEL/WRTKaHIjd74vYcdZLT2sl6hVJHIZ35fZDz1j8byLFg+EjKee5gMwMPHhCwcraj2ITxSUcL57tw0/gckBriippHmd8n74y9HNr01SNJEJuotzonvPbld8RjHeHunDFRd5IedNgfm4Fv/bqEK/FVjGdoFcMdUZN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555620; c=relaxed/simple;
-	bh=kSfbm0AK4e6y4S9dsOBYovxIHiDbr9O8U7oQOyajiPc=;
+	s=arc-20240116; t=1751554368; c=relaxed/simple;
+	bh=g8JQYJmEEp689Azks5dHpOLLHvG2WKJk3+N+HSQhuzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MsOnMndyhJXTuvaOlctQvekroy9AJhhbA+OVV+CyOUaTwX637xRrU5f5JENYwFzyIAp8I4En9GGLAwD7/PFhhEGK1FpH24XZaHRvRFpx92QJoT0UgCFosNz/k9sUgjZfeeLtPVbqSQ5NXbMAhjGYpvqlbFyBqsKkjH3DiShY+eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDlsj2vp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6879DC4CEE3;
-	Thu,  3 Jul 2025 15:13:39 +0000 (UTC)
+	 MIME-Version; b=QfpqzuRBfgFijAb+hlZcCfPBTAgHJwxMmz07MuT1s1r7F/WUfPc0YF4Z7ekBYdtwbqOcgztyxW7noVBqKLLLlOePbGmK0qGz8z5b6uVfZaaJKkoKZz4LrXVyAhCWsVmA6wonUFF6pCQmImMIxWbRsi4GvNUoQ0wzr/D+7BD/AGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQxm81Yv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E97EC4CEE3;
+	Thu,  3 Jul 2025 14:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555619;
-	bh=kSfbm0AK4e6y4S9dsOBYovxIHiDbr9O8U7oQOyajiPc=;
+	s=korg; t=1751554368;
+	bh=g8JQYJmEEp689Azks5dHpOLLHvG2WKJk3+N+HSQhuzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDlsj2vp9npagOkFmOKAaWMkuEBiwXaFOhsVk4Rp61GEAS56L6KcK2lf7lkUqLgEs
-	 777d1GIqaVZ/HF49lecKyF4DIVR2c7uOrtnNH6dCH3zf3XCXP7/lvRgbCqhdUt6Xwg
-	 UTEmy7OyQlUGtgatBZIw9rFETUbUkPACPAGDMphE=
+	b=VQxm81YvfRmSY4Rf4NxNvBtzODkEHsmT6hxu8U/0K6l0R/t5RFjx6U2LYqSZwPNQt
+	 Lk6DOAtmJGTnvTCtcXocyNVA9XdjPFECYShK+wmUGW+gydsUixZSzy/pi9clQroiP6
+	 wWEGXgc1xc1V3bDntbPzkdMrYXLrk1O/YWxj++Sk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/139] ALSA: hda: Add new pci id for AMD GPU display HD audio controller
-Date: Thu,  3 Jul 2025 16:41:44 +0200
-Message-ID: <20250703143942.783925456@linuxfoundation.org>
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 6.12 157/218] drm/bridge: cdns-dsi: Fix phy de-init and flag it so
+Date: Thu,  3 Jul 2025 16:41:45 +0200
+Message-ID: <20250703144002.428082137@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Aradhya Bhatia <a-bhatia1@ti.com>
 
-[ Upstream commit ab72bfce7647522e01a181e3600c3d14ff5c143e ]
+commit fd2611c13f69cbbc6b81d9fc7502abf4f7031d21 upstream.
 
-Add new pci id for AMD GPU display HD audio controller(device id- 0xab40).
+The driver code doesn't have a Phy de-initialization path as yet, and so
+it does not clear the phy_initialized flag while suspending. This is a
+problem because after resume the driver looks at this flag to determine
+if a Phy re-initialization is required or not. It is in fact required
+because the hardware is resuming from a suspend, but the driver does not
+carry out any re-initialization causing the D-Phy to not work at all.
 
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://patch.msgid.link/20250529053838.2350071-1-Vijendar.Mukunda@amd.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Call the counterparts of phy_init() and phy_power_on(), that are
+phy_exit() and phy_power_off(), from _bridge_post_disable(), and clear
+the flags so that the Phy can be initialized again when required.
+
+Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
+Cc: stable@vger.kernel.org
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Link: https://lore.kernel.org/r/20250329113925.68204-3-aradhya.bhatia@linux.dev
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/hda_intel.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index 3cd5b7da8e152..059693e03fd96 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2727,6 +2727,9 @@ static const struct pci_device_id azx_ids[] = {
- 	{ PCI_VDEVICE(ATI, 0xab38),
- 	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
- 	  AZX_DCAPS_PM_RUNTIME },
-+	{ PCI_VDEVICE(ATI, 0xab40),
-+	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
-+	  AZX_DCAPS_PM_RUNTIME },
- 	/* GLENFLY */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_GLENFLY, PCI_ANY_ID),
- 	  .class = PCI_CLASS_MULTIMEDIA_HD_AUDIO << 8,
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+@@ -681,6 +681,11 @@ static void cdns_dsi_bridge_post_disable
+ 	struct cdns_dsi_input *input = bridge_to_cdns_dsi_input(bridge);
+ 	struct cdns_dsi *dsi = input_to_dsi(input);
+ 
++	dsi->phy_initialized = false;
++	dsi->link_initialized = false;
++	phy_power_off(dsi->dphy);
++	phy_exit(dsi->dphy);
++
+ 	pm_runtime_put(dsi->base.dev);
+ }
+ 
+@@ -1153,7 +1158,6 @@ static int __maybe_unused cdns_dsi_suspe
+ 	clk_disable_unprepare(dsi->dsi_sys_clk);
+ 	clk_disable_unprepare(dsi->dsi_p_clk);
+ 	reset_control_assert(dsi->dsi_p_rst);
+-	dsi->link_initialized = false;
+ 	return 0;
+ }
+ 
 
 
 
