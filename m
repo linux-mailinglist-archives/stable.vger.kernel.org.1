@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-159759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B3CAF7A57
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:12:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12178AF7B44
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:23:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7753C18997BB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24DBB6E4156
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D786115442C;
-	Thu,  3 Jul 2025 15:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624182F3C30;
+	Thu,  3 Jul 2025 15:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ub0Qu/B2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5JXTwyv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A581E9B3D;
-	Thu,  3 Jul 2025 15:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2085A29827E;
+	Thu,  3 Jul 2025 15:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555254; cv=none; b=uMLj3cx07eQk5WUoJvhyZLrlRZo1lLcvJV/QTczmDSZ3I8PAa/nTkGzXQc6WIEwlxM1LUlbCxykT4MXukbiTLy82qOGBM/2k+4BK4d8gW0+smHFSn4ap+iDz90k3GXiJiF0tImSltjE0SjryggIfzcact+W4F6mcEKv6aSgxMyg=
+	t=1751555646; cv=none; b=JKJZr5w4rR+BQGTrwWhfR+rmM2zgF3UHsnk+Mpkj0qVV0T6FNVsZ3TxTzmDUtYQeTfW9j3AZOg8y/xgIqvdx3PD7J1xdD77dTdP3RR4QF/bfQDmVolptPHf68vqnYENcbpRmNw+rmhNTUx1TN0+0VBVMZ02RvE1/qiqJ8eeI0V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555254; c=relaxed/simple;
-	bh=jeMqdrtJA2RULzCFYzEv8G72RM9/F0ZgmT5tofxT8ko=;
+	s=arc-20240116; t=1751555646; c=relaxed/simple;
+	bh=yHUBFFIXyrzNd+DbCkKcjffbBNqEgGl6LUcAAkPl6rQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khb3mQtOmmRsSEOuN70uoW5Rq1P+s26jhTJkMu1D4d5U+SqM45WHN4tK7cRxPmG8vkZMsoQKevkYaJUN69DlsxoMs8kPEVSzs8US50qM6Mcmqz3Isn0VOdMgp6W+mmSXgHAr5HRDiG3n4AXMNqubAEuwA2tSwGwg/wBTI2Irp0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ub0Qu/B2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2464BC4CEE3;
-	Thu,  3 Jul 2025 15:07:32 +0000 (UTC)
+	 MIME-Version; b=XS3nWAcF2kiEtsMLJWRs8U4eGoz+kqVOGewUtsVYgWZuqlhNWD3a9Rsbj0POgvgliDXLvAXU5skDcg3ZyxoBQCcKrmTSHqzR0QwlvCi+7ICv9JZZ8J1YEx5SH2I79KTWrvsdtj5DoDQKRyTNhUSjr3wzxPqy5fJD7dJwfC9zdz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5JXTwyv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3FDC4CEE3;
+	Thu,  3 Jul 2025 15:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555254;
-	bh=jeMqdrtJA2RULzCFYzEv8G72RM9/F0ZgmT5tofxT8ko=;
+	s=korg; t=1751555645;
+	bh=yHUBFFIXyrzNd+DbCkKcjffbBNqEgGl6LUcAAkPl6rQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ub0Qu/B2+l7vMJrocHmhHB5Ahrbj3HJMRp8mDa1LDA6EPiw1lB7SD/OWAvUvm85JX
-	 zA7PQ/hKpMIOIii/Sj4qTMWV/dXyW4Wh7o7IXPmMqt5dGHr+GYgUZ0HgjQK5ATzxYU
-	 uP2csMwiud8ceUzQ7ew7PfBkB4X/OPf1ym2Jfki8=
+	b=q5JXTwyvoQuM0goohCBZpmHxR3v4J3C2vBaechOpDUJdiG5l2GMUnjrNhkAQDc2Ai
+	 jFf9v8cgzA4XlSUQjpl0MgHQKQIs7HCSxxqsaDtMmBUFf3uLbwUtEN8rFVOFyQxJUM
+	 uCEGXEqcoIfknOT+0L4EYDbL2wfqZ17Gc6DRGraE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.15 221/263] drm/amdgpu: disable workload profile switching when OD is enabled
+	syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Gengming Liu <l.dmxcsnsbh@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 078/139] atm: clip: prevent NULL deref in clip_push()
 Date: Thu,  3 Jul 2025 16:42:21 +0200
-Message-ID: <20250703144013.243580562@linuxfoundation.org>
+Message-ID: <20250703143944.214139431@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +66,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 5cccf10f652122a17b40df9d672ccf2ed69cd82f upstream.
+[ Upstream commit b993ea46b3b601915ceaaf3c802adf11e7d6bac6 ]
 
-Users have reported that they have to reduce the level of undervolting
-to acheive stability when dynamic workload profiles are enabled on
-GC 10.3.x. Disable dynamic workload profiles if the user has enabled
-OD.
+Blamed commit missed that vcc_destroy_socket() calls
+clip_push() with a NULL skb.
 
-Fixes: b9467983b774 ("drm/amdgpu: add dynamic workload profile switching for gfx10")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4262
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.15.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If clip_devs is NULL, clip_push() then crashes when reading
+skb->truesize.
+
+Fixes: 93a2014afbac ("atm: fix a UAF in lec_arp_clear_vccs()")
+Reported-by: syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68556f59.a00a0220.137b3.004e.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: Gengming Liu <l.dmxcsnsbh@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c |    8 ++++++++
- drivers/gpu/drm/amd/pm/amdgpu_dpm.c     |   22 ++++++++++++++++++++++
- drivers/gpu/drm/amd/pm/inc/amdgpu_dpm.h |    1 +
- 3 files changed, 31 insertions(+)
+ net/atm/clip.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-@@ -2192,6 +2192,9 @@ void amdgpu_gfx_profile_ring_begin_use(s
- 	enum PP_SMC_POWER_PROFILE profile;
- 	int r;
+diff --git a/net/atm/clip.c b/net/atm/clip.c
+index 294cb9efe3d38..511467bb7fe40 100644
+--- a/net/atm/clip.c
++++ b/net/atm/clip.c
+@@ -193,12 +193,6 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
  
-+	if (amdgpu_dpm_is_overdrive_enabled(adev))
-+		return;
-+
- 	if (adev->gfx.num_gfx_rings)
- 		profile = PP_SMC_POWER_PROFILE_FULLSCREEN3D;
- 	else
-@@ -2222,6 +2225,11 @@ void amdgpu_gfx_profile_ring_begin_use(s
+ 	pr_debug("\n");
  
- void amdgpu_gfx_profile_ring_end_use(struct amdgpu_ring *ring)
- {
-+	struct amdgpu_device *adev = ring->adev;
-+
-+	if (amdgpu_dpm_is_overdrive_enabled(adev))
-+		return;
-+
- 	atomic_dec(&ring->adev->gfx.total_submission_cnt);
- 
- 	schedule_delayed_work(&ring->adev->gfx.idle_work, GFX_PROFILE_IDLE_TIMEOUT);
---- a/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
-@@ -1654,6 +1654,28 @@ int amdgpu_dpm_is_overdrive_supported(st
+-	if (!clip_devs) {
+-		atm_return(vcc, skb->truesize);
+-		kfree_skb(skb);
+-		return;
+-	}
+-
+ 	if (!skb) {
+ 		pr_debug("removing VCC %p\n", clip_vcc);
+ 		if (clip_vcc->entry)
+@@ -208,6 +202,11 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
+ 		return;
  	}
- }
- 
-+int amdgpu_dpm_is_overdrive_enabled(struct amdgpu_device *adev)
-+{
-+	if (is_support_sw_smu(adev)) {
-+		struct smu_context *smu = adev->powerplay.pp_handle;
-+
-+		return smu->od_enabled;
-+	} else {
-+		struct pp_hwmgr *hwmgr;
-+
-+		/*
-+		 * dpm on some legacy asics don't carry od_enabled member
-+		 * as its pp_handle is casted directly from adev.
-+		 */
-+		if (amdgpu_dpm_is_legacy_dpm(adev))
-+			return false;
-+
-+		hwmgr = (struct pp_hwmgr *)adev->powerplay.pp_handle;
-+
-+		return hwmgr->od_enabled;
+ 	atm_return(vcc, skb->truesize);
++	if (!clip_devs) {
++		kfree_skb(skb);
++		return;
 +	}
-+}
 +
- int amdgpu_dpm_set_pp_table(struct amdgpu_device *adev,
- 			    const char *buf,
- 			    size_t size)
---- a/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm.h
-+++ b/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm.h
-@@ -559,6 +559,7 @@ int amdgpu_dpm_get_smu_prv_buf_details(s
- 				       void **addr,
- 				       size_t *size);
- int amdgpu_dpm_is_overdrive_supported(struct amdgpu_device *adev);
-+int amdgpu_dpm_is_overdrive_enabled(struct amdgpu_device *adev);
- int amdgpu_dpm_set_pp_table(struct amdgpu_device *adev,
- 			    const char *buf,
- 			    size_t size);
+ 	skb->dev = clip_vcc->entry ? clip_vcc->entry->neigh->dev : clip_devs;
+ 	/* clip_vcc->entry == NULL if we don't have an IP address yet */
+ 	if (!skb->dev) {
+-- 
+2.39.5
+
 
 
 
