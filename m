@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A289AF7A83
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:14:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CA2AF7C04
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E01011C45006
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 872EF1C45075
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC032EE98F;
-	Thu,  3 Jul 2025 15:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF2BEEBA;
+	Thu,  3 Jul 2025 15:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmjIfari"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDlruePk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8D815442C;
-	Thu,  3 Jul 2025 15:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09852DE6F1;
+	Thu,  3 Jul 2025 15:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555328; cv=none; b=pdKmbuO4mVZmQnPqsiYkceyG5ckjIHWk+RF0bERb+oeFagLBSeIS5eCQqU1zruYICNPbdmWuqXsO4aJAEEH675neq2XQ0CNBqljRrv2RoAeFRTQv6a9ThXTk0oIYujFSY42UxsLjMz+NNc8d/ua8muTHHFwDxyskeim543zZsrI=
+	t=1751556101; cv=none; b=Z06hPOuq/MBkoyNkVS/NP5ydXfzh2CaVMfJM6J+BaLdoo/2YDmrHsbzNwgDTniBassJsk5taiuKoRr7j3+OL/Zwx2BEMB1PcfsZCRPqXdEBzovOo2TwYDapvxLub79BoQCf6bgOhnDfUbzcaaZaL8DO0JD6WcHpHi2SEZ7WSUR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555328; c=relaxed/simple;
-	bh=PtVuJok8uHKE6gFX92WyYklDlUbtgVl5aL3u1drfqec=;
+	s=arc-20240116; t=1751556101; c=relaxed/simple;
+	bh=q5sCbzYhOrILQeS+2GEhFrSDBqipHM084yGGxjIxI0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQrLo18dbpBpqa1Bbnx7gNl0K8wQrNpFRRPpS9GxxE+w5253heyGYX2q7s2YT27LLbR6PEspuQ9KskQeYx7+ICDkoBSOH9Bge/CsCe/wOufvCh65RZLXsZqixpIhTWTjnT+5e8m7pud2pJ/UhhKF5PjrhonYzMJprmkCwC1c7yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmjIfari; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02439C4CEE3;
-	Thu,  3 Jul 2025 15:08:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ba5hMghjRqCCVsJ7ZocIe9dSqjF6aglaGG3gxKmQZ1zqHGwZvYK7DGbhfn0iJ6de7MKvVv56EG0IUezmrwEFosS54UVghR5eSOOgEFwzutakgChBH8F88IVkN6Jx9AzR9NZMpVZkzl8rDNyn89ql+5RePjrnZ+OG3LZXt9ipzlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDlruePk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC420C4CEE3;
+	Thu,  3 Jul 2025 15:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555328;
-	bh=PtVuJok8uHKE6gFX92WyYklDlUbtgVl5aL3u1drfqec=;
+	s=korg; t=1751556100;
+	bh=q5sCbzYhOrILQeS+2GEhFrSDBqipHM084yGGxjIxI0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hmjIfarif2YJPkxjC0qEEvMEVjiQJmbYaGBZyNhmlgWx6qqTse1FhgJW7+YPz7OOB
-	 jqp0kDyvzZMWZhjuO9kCFnRuO2h9gD8M4/Oy98Fq8w0ohIRbfNVQIqrQjKW9784vcJ
-	 IDoEn5vhJLkKKY08HtboWabIhcPthscjd+NPh5T8=
+	b=vDlruePkOypgR1BNpuHZCKn+GCvufl6VrQyHeb+3A9/5+J1HvEDq8AtrxZ1Aq5kuI
+	 4kxNlOEOUXja02IMI39FhlTK9Xk4A/POUWVn6zbtUKoFe6AWof/NUidHeR2xwNbl4z
+	 yLUdRf+pu4U19PeQS1LB65JWB/o7sbFGvKJuQ48g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 244/263] crypto: powerpc/poly1305 - add depends on BROKEN for now
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.1 075/132] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
 Date: Thu,  3 Jul 2025 16:42:44 +0200
-Message-ID: <20250703144014.199811202@linuxfoundation.org>
+Message-ID: <20250703143942.360601573@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit bc8169003b41e89fe7052e408cf9fdbecb4017fe ]
+commit a3ef3c2da675a8a564c8bea1a511cdd0a2a9aa49 upstream.
 
-As discussed in the thread containing
-https://lore.kernel.org/linux-crypto/20250510053308.GB505731@sol/, the
-Power10-optimized Poly1305 code is currently not safe to call in softirq
-context.  Disable it for now.  It can be re-enabled once it is fixed.
+Reading DPCD registers has side-effects in general. In particular
+accessing registers outside of the link training register range
+(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
+forbidden by the DP v2.1 Standard, see
 
-Fixes: ba8f8624fde2 ("crypto: poly1305-p10 - Glue code for optmized Poly1305 implementation for ppc64le")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+3.6.5.1 DPTX AUX Transaction Handling Mandates
+3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
+
+Based on my tests, accessing the DPCD_REV register during the link
+training of an UHBR TBT DP tunnel sink leads to link training failures.
+
+Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
+DPCD register access quirk.
+
+Cc: <stable@vger.kernel.org>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
+(cherry picked from commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/crypto/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/display/drm_dp_helper.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
-index 370db8192ce62..7b785c8664f5d 100644
---- a/arch/powerpc/crypto/Kconfig
-+++ b/arch/powerpc/crypto/Kconfig
-@@ -110,6 +110,7 @@ config CRYPTO_CHACHA20_P10
- config CRYPTO_POLY1305_P10
- 	tristate "Hash functions: Poly1305 (P10 or later)"
- 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
-+	depends on BROKEN # Needs to be fixed to work in softirq context
- 	select CRYPTO_HASH
- 	select CRYPTO_LIB_POLY1305_GENERIC
- 	help
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/display/drm_dp_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_helper.c
+@@ -663,7 +663,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
+ 	 * monitor doesn't power down exactly after the throw away read.
+ 	 */
+ 	if (!aux->is_remote) {
+-		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
++		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
 
 
 
