@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-159450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD27AF78AE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:53:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8935AAF7AA6
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 041CC170AB9
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4778E175A1D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F7F2EE29E;
-	Thu,  3 Jul 2025 14:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7813F2EF66B;
+	Thu,  3 Jul 2025 15:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihfCaXeK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdj/JCZa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44128126BFF;
-	Thu,  3 Jul 2025 14:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA7F2EF64D;
+	Thu,  3 Jul 2025 15:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554274; cv=none; b=BB4x1q0jsp87ZoTLT1dO0Hdw/9ly5kMzR5EJ6npuJbdQ8Bnb8ZkxRWL6mJ+n9eQ+mRusarXd/0SmyU2cb24B9HGGdfq2ToTLXj0JExA7FMof+ds7ThuwQzWhAtNBFXZshlw94WznGOo2pIiC2vrctg/FWepEPS48D2o2Saz0rwc=
+	t=1751555460; cv=none; b=hKVs7GV+5LkPVUPmwlBSktgQGzSjKVGvX0HWftpnKvvE0vlm/rDhFT9P7e32DJ1EDaPCDgwfSAOubLVE2W8eSUKzMTo5bxwuvA3wewge4tSqTbJdC0XCi9nzIlXSgyxXXayIT8F+pfWM0gukcQidEFB86zJrmwBSWq3Zthkaass=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554274; c=relaxed/simple;
-	bh=RR5se6mT2E7UBZmFLfUzGkdds1U0nne6CKyc0cQzQ8Y=;
+	s=arc-20240116; t=1751555460; c=relaxed/simple;
+	bh=2/oY69DD1faRayEo5qLLTdXf/U4lGNOb0fDkrS9hM8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGUIgWekFPhYe7/RHiw5TP2KvP4JgggMSur8S3R+7wE5Ij3vsWINk6uiu/VDXrvJT3bl10OS0Q9X2GnAyzPylevoc+8BO7m5YHxH62351wveYGjwROBRuj/6KSsmVo1YudyiPzNo07hniLFjlEjw8aGkltzrm7d+cl8OkoLgJwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihfCaXeK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E4DC4CEE3;
-	Thu,  3 Jul 2025 14:51:13 +0000 (UTC)
+	 MIME-Version; b=rPzDj9CNCUUft/Qe1XOK4f/3ZLFDTaZfVUKp0BYgKLcqGjPOFzNs7HyzjU1NNGmxIyjftWjE4T2VV1gvq5kNqnvpmFHyMyAzIbT0XKNU6OrudTFAdxT+3wLHDSl6cz9BfB2HJ9DbtUwNEij9Rv8YE6aXBRW+sMiBoUW4wWGo69o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdj/JCZa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA0DC4CEE3;
+	Thu,  3 Jul 2025 15:10:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554274;
-	bh=RR5se6mT2E7UBZmFLfUzGkdds1U0nne6CKyc0cQzQ8Y=;
+	s=korg; t=1751555460;
+	bh=2/oY69DD1faRayEo5qLLTdXf/U4lGNOb0fDkrS9hM8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ihfCaXeKaIqWL43DNuhsSMcJCMAyDcplc+aNyIoaDMCJ2KTAHlf/foIlywe9m2vJY
-	 dARtA/+d1VMH0Zjdt4GafLYB9LWkbGht5N2eq25lirt9qzGJPG6OK/eRCk0OPdUNek
-	 38C654fizUmiSQTaThJECsxGp7TuiJn4ks5MGszE=
+	b=rdj/JCZaB7EyZbkXVRIRgBeywI7vcoEX0th57GfoYkDOX2ws/nSYZsumAbqjIBZoc
+	 uUgOIUxna8Omb8LcOevNdeWXRxRnj4V8sq6mBi4b9giWe54MduG9b5MwZpoq10aDlM
+	 HIBFkU9L9u38Viu4BTsTPQF1r/sCZuI4VJusIHtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 135/218] btrfs: fix a race between renames and directory logging
+	Qiang Yu <quic_qianyu@quicinc.com>,
+	Wenbin Yao <quic_wenbyao@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 020/139] PCI: dwc: Make link training more robust by setting PORT_LOGIC_LINK_WIDTH to one lane
 Date: Thu,  3 Jul 2025 16:41:23 +0200
-Message-ID: <20250703144001.511050455@linuxfoundation.org>
+Message-ID: <20250703143941.965173397@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,251 +65,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Wenbin Yao <quic_wenbyao@quicinc.com>
 
-commit 3ca864de852bc91007b32d2a0d48993724f4abad upstream.
+[ Upstream commit af3c6eacce0c464f28fe0e3d365b3860aba07931 ]
 
-We have a race between a rename and directory inode logging that if it
-happens and we crash/power fail before the rename completes, the next time
-the filesystem is mounted, the log replay code will end up deleting the
-file that was being renamed.
+As per DWC PCIe registers description 4.30a, section 1.13.43, NUM_OF_LANES
+named as PORT_LOGIC_LINK_WIDTH in PCIe DWC driver, is referred to as the
+"Predetermined Number of Lanes" in PCIe r6.0, sec 4.2.7.2.1, which explains
+the conditions required to enter Polling.Configuration:
 
-This is best explained following a step by step analysis of an interleaving
-of steps that lead into this situation.
+  Next state is Polling.Configuration after at least 1024 TS1 Ordered Sets
+  were transmitted, and all Lanes that detected a Receiver during Detect
+  receive eight consecutive training sequences ...
 
-Consider the initial conditions:
+  Otherwise, after a 24 ms timeout the next state is:
 
-1) We are at transaction N;
+    Polling.Configuration if,
 
-2) We have directories A and B created in a past transaction (< N);
+      (i) Any Lane, which detected a Receiver during Detect, received eight
+      consecutive training sequences ... and a minimum of 1024 TS1 Ordered
+      Sets are transmitted after receiving one TS1 or TS2 Ordered Set.
 
-3) We have inode X corresponding to a file that has 2 hardlinks, one in
-   directory A and the other in directory B, so we'll name them as
-   "A/foo_link1" and "B/foo_link2". Both hard links were persisted in a
-   past transaction (< N);
+      And
 
-4) We have inode Y corresponding to a file that as a single hard link and
-   is located in directory A, we'll name it as "A/bar". This file was also
-   persisted in a past transaction (< N).
+      (ii) At least a predetermined set of Lanes that detected a Receiver
+      during Detect have detected an exit from Electrical Idle at least
+      once since entering Polling.Active.
 
-The steps leading to a file loss are the following and for all of them we
-are under transaction N:
+	Note: This may prevent one or more bad Receivers or Transmitters
+	from holding up a valid Link from being configured, and allow for
+	additional training in Polling.Configuration. The exact set of
+	predetermined Lanes is implementation specific.
 
- 1) Link "A/foo_link1" is removed, so inode's X last_unlink_trans field
-    is updated to N, through btrfs_unlink() -> btrfs_record_unlink_dir();
+	Note: Any Lane that receives eight consecutive TS1 or TS2 Ordered
+	Sets should have detected an exit from Electrical Idle at least
+	once since entering Polling.Active.
 
- 2) Task A starts a rename for inode Y, with the goal of renaming from
-    "A/bar" to "A/baz", so we enter btrfs_rename();
+In a PCIe link supporting multiple lanes, if PORT_LOGIC_LINK_WIDTH is set
+to lane width the hardware supports, all lanes that detect a receiver
+during the Detect phase must receive eight consecutive training sequences.
+Otherwise, LTSSM will not enter Polling.Configuration and link training
+will fail.
 
- 3) Task A inserts the new BTRFS_INODE_REF_KEY for inode Y by calling
-    btrfs_insert_inode_ref();
+Therefore, always set PORT_LOGIC_LINK_WIDTH to 1, regardless of the number
+of lanes the port actually supports, to make link up more robust. This
+setting will not affect the intended link width if all lanes are
+functional. Additionally, the link can still be established with at least
+one lane if other lanes are faulty.
 
- 4) Because the rename happens in the same directory, we don't set the
-    last_unlink_trans field of directoty A's inode to the current
-    transaction id, that is, we don't cal btrfs_record_unlink_dir();
-
- 5) Task A then removes the entries from directory A (BTRFS_DIR_ITEM_KEY
-    and BTRFS_DIR_INDEX_KEY items) when calling __btrfs_unlink_inode()
-    (actually the dir index item is added as a delayed item, but the
-    effect is the same);
-
- 6) Now before task A adds the new entry "A/baz" to directory A by
-    calling btrfs_add_link(), another task, task B is logging inode X;
-
- 7) Task B starts a fsync of inode X and after logging inode X, at
-    btrfs_log_inode_parent() it calls btrfs_log_all_parents(), since
-    inode X has a last_unlink_trans value of N, set at in step 1;
-
- 8) At btrfs_log_all_parents() we search for all parent directories of
-    inode X using the commit root, so we find directories A and B and log
-    them. Bu when logging direct A, we don't have a dir index item for
-    inode Y anymore, neither the old name "A/bar" nor for the new name
-    "A/baz" since the rename has deleted the old name but has not yet
-    inserted the new name - task A hasn't called yet btrfs_add_link() to
-    do that.
-
-    Note that logging directory A doesn't fallback to a transaction
-    commit because its last_unlink_trans has a lower value than the
-    current transaction's id (see step 4);
-
- 9) Task B finishes logging directories A and B and gets back to
-    btrfs_sync_file() where it calls btrfs_sync_log() to persist the log
-    tree;
-
-10) Task B successfully persisted the log tree, btrfs_sync_log() completed
-    with success, and a power failure happened.
-
-    We have a log tree without any directory entry for inode Y, so the
-    log replay code deletes the entry for inode Y, name "A/bar", from the
-    subvolume tree since it doesn't exist in the log tree and the log
-    tree is authorative for its index (we logged a BTRFS_DIR_LOG_INDEX_KEY
-    item that covers the index range for the dentry that corresponds to
-    "A/bar").
-
-    Since there's no other hard link for inode Y and the log replay code
-    deletes the name "A/bar", the file is lost.
-
-The issue wouldn't happen if task B synced the log only after task A
-called btrfs_log_new_name(), which would update the log with the new name
-for inode Y ("A/bar").
-
-Fix this by pinning the log root during renames before removing the old
-directory entry, and unpinning after btrfs_log_new_name() is called.
-
-Fixes: 259c4b96d78d ("btrfs: stop doing unnecessary log updates during a rename")
-CC: stable@vger.kernel.org # 5.18+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Co-developed-by: Qiang Yu <quic_qianyu@quicinc.com>
+Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
+Signed-off-by: Wenbin Yao <quic_wenbyao@quicinc.com>
+[mani: subject change]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+[bhelgaas: update PCIe spec citation, format quote]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Niklas Cassel <cassel@kernel.org>
+Link: https://patch.msgid.link/20250422103623.462277-1-quic_wenbyao@quicinc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c |   81 +++++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 64 insertions(+), 17 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -7997,6 +7997,7 @@ static int btrfs_rename_exchange(struct
- 	int ret;
- 	int ret2;
- 	bool need_abort = false;
-+	bool logs_pinned = false;
- 	struct fscrypt_name old_fname, new_fname;
- 	struct fscrypt_str *old_name, *new_name;
- 
-@@ -8120,6 +8121,31 @@ static int btrfs_rename_exchange(struct
- 	inode_inc_iversion(new_inode);
- 	simple_rename_timestamp(old_dir, old_dentry, new_dir, new_dentry);
- 
-+	if (old_ino != BTRFS_FIRST_FREE_OBJECTID &&
-+	    new_ino != BTRFS_FIRST_FREE_OBJECTID) {
-+		/*
-+		 * If we are renaming in the same directory (and it's not for
-+		 * root entries) pin the log early to prevent any concurrent
-+		 * task from logging the directory after we removed the old
-+		 * entries and before we add the new entries, otherwise that
-+		 * task can sync a log without any entry for the inodes we are
-+		 * renaming and therefore replaying that log, if a power failure
-+		 * happens after syncing the log, would result in deleting the
-+		 * inodes.
-+		 *
-+		 * If the rename affects two different directories, we want to
-+		 * make sure the that there's no log commit that contains
-+		 * updates for only one of the directories but not for the
-+		 * other.
-+		 *
-+		 * If we are renaming an entry for a root, we don't care about
-+		 * log updates since we called btrfs_set_log_full_commit().
-+		 */
-+		btrfs_pin_log_trans(root);
-+		btrfs_pin_log_trans(dest);
-+		logs_pinned = true;
-+	}
-+
- 	if (old_dentry->d_parent != new_dentry->d_parent) {
- 		btrfs_record_unlink_dir(trans, BTRFS_I(old_dir),
- 					BTRFS_I(old_inode), true);
-@@ -8177,30 +8203,23 @@ static int btrfs_rename_exchange(struct
- 		BTRFS_I(new_inode)->dir_index = new_idx;
- 
- 	/*
--	 * Now pin the logs of the roots. We do it to ensure that no other task
--	 * can sync the logs while we are in progress with the rename, because
--	 * that could result in an inconsistency in case any of the inodes that
--	 * are part of this rename operation were logged before.
-+	 * Do the log updates for all inodes.
-+	 *
-+	 * If either entry is for a root we don't need to update the logs since
-+	 * we've called btrfs_set_log_full_commit() before.
- 	 */
--	if (old_ino != BTRFS_FIRST_FREE_OBJECTID)
--		btrfs_pin_log_trans(root);
--	if (new_ino != BTRFS_FIRST_FREE_OBJECTID)
--		btrfs_pin_log_trans(dest);
--
--	/* Do the log updates for all inodes. */
--	if (old_ino != BTRFS_FIRST_FREE_OBJECTID)
-+	if (logs_pinned) {
- 		btrfs_log_new_name(trans, old_dentry, BTRFS_I(old_dir),
- 				   old_rename_ctx.index, new_dentry->d_parent);
--	if (new_ino != BTRFS_FIRST_FREE_OBJECTID)
- 		btrfs_log_new_name(trans, new_dentry, BTRFS_I(new_dir),
- 				   new_rename_ctx.index, old_dentry->d_parent);
-+	}
- 
--	/* Now unpin the logs. */
--	if (old_ino != BTRFS_FIRST_FREE_OBJECTID)
-+out_fail:
-+	if (logs_pinned) {
- 		btrfs_end_log_trans(root);
--	if (new_ino != BTRFS_FIRST_FREE_OBJECTID)
- 		btrfs_end_log_trans(dest);
--out_fail:
-+	}
- 	ret2 = btrfs_end_transaction(trans);
- 	ret = ret ? ret : ret2;
- out_notrans:
-@@ -8250,6 +8269,7 @@ static int btrfs_rename(struct mnt_idmap
- 	int ret2;
- 	u64 old_ino = btrfs_ino(BTRFS_I(old_inode));
- 	struct fscrypt_name old_fname, new_fname;
-+	bool logs_pinned = false;
- 
- 	if (btrfs_ino(BTRFS_I(new_dir)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)
- 		return -EPERM;
-@@ -8384,6 +8404,29 @@ static int btrfs_rename(struct mnt_idmap
- 	inode_inc_iversion(old_inode);
- 	simple_rename_timestamp(old_dir, old_dentry, new_dir, new_dentry);
- 
-+	if (old_ino != BTRFS_FIRST_FREE_OBJECTID) {
-+		/*
-+		 * If we are renaming in the same directory (and it's not a
-+		 * root entry) pin the log to prevent any concurrent task from
-+		 * logging the directory after we removed the old entry and
-+		 * before we add the new entry, otherwise that task can sync
-+		 * a log without any entry for the inode we are renaming and
-+		 * therefore replaying that log, if a power failure happens
-+		 * after syncing the log, would result in deleting the inode.
-+		 *
-+		 * If the rename affects two different directories, we want to
-+		 * make sure the that there's no log commit that contains
-+		 * updates for only one of the directories but not for the
-+		 * other.
-+		 *
-+		 * If we are renaming an entry for a root, we don't care about
-+		 * log updates since we called btrfs_set_log_full_commit().
-+		 */
-+		btrfs_pin_log_trans(root);
-+		btrfs_pin_log_trans(dest);
-+		logs_pinned = true;
-+	}
-+
- 	if (old_dentry->d_parent != new_dentry->d_parent)
- 		btrfs_record_unlink_dir(trans, BTRFS_I(old_dir),
- 					BTRFS_I(old_inode), true);
-@@ -8432,7 +8475,7 @@ static int btrfs_rename(struct mnt_idmap
- 	if (old_inode->i_nlink == 1)
- 		BTRFS_I(old_inode)->dir_index = index;
- 
--	if (old_ino != BTRFS_FIRST_FREE_OBJECTID)
-+	if (logs_pinned)
- 		btrfs_log_new_name(trans, old_dentry, BTRFS_I(old_dir),
- 				   rename_ctx.index, new_dentry->d_parent);
- 
-@@ -8448,6 +8491,10 @@ static int btrfs_rename(struct mnt_idmap
- 		}
- 	}
- out_fail:
-+	if (logs_pinned) {
-+		btrfs_end_log_trans(root);
-+		btrfs_end_log_trans(dest);
-+	}
- 	ret2 = btrfs_end_transaction(trans);
- 	ret = ret ? ret : ret2;
- out_notrans:
+diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+index 2b60d20dfdf59..717af1b757f0a 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.c
++++ b/drivers/pci/controller/dwc/pcie-designware.c
+@@ -748,22 +748,19 @@ static void dw_pcie_link_set_max_link_width(struct dw_pcie *pci, u32 num_lanes)
+ 	/* Set link width speed control register */
+ 	lwsc = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
+ 	lwsc &= ~PORT_LOGIC_LINK_WIDTH_MASK;
++	lwsc |= PORT_LOGIC_LINK_WIDTH_1_LANES;
+ 	switch (num_lanes) {
+ 	case 1:
+ 		plc |= PORT_LINK_MODE_1_LANES;
+-		lwsc |= PORT_LOGIC_LINK_WIDTH_1_LANES;
+ 		break;
+ 	case 2:
+ 		plc |= PORT_LINK_MODE_2_LANES;
+-		lwsc |= PORT_LOGIC_LINK_WIDTH_2_LANES;
+ 		break;
+ 	case 4:
+ 		plc |= PORT_LINK_MODE_4_LANES;
+-		lwsc |= PORT_LOGIC_LINK_WIDTH_4_LANES;
+ 		break;
+ 	case 8:
+ 		plc |= PORT_LINK_MODE_8_LANES;
+-		lwsc |= PORT_LOGIC_LINK_WIDTH_8_LANES;
+ 		break;
+ 	default:
+ 		dev_err(pci->dev, "num-lanes %u: invalid value\n", num_lanes);
+-- 
+2.39.5
+
 
 
 
