@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-159437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2183AF787F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:51:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A8AAF7A72
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:13:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBBDE7AF973
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:49:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5759C7B431E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E352EE994;
-	Thu,  3 Jul 2025 14:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61162EF67A;
+	Thu,  3 Jul 2025 15:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbLBtIDm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwqWqrWM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFC1126BFF;
-	Thu,  3 Jul 2025 14:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E162ED143;
+	Thu,  3 Jul 2025 15:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554230; cv=none; b=O7ColpR3z5NjtjS7y3oouStYjAH035GbqxXwl4vIwpeGFZSgyJkfw0TN4cTWrmaj7Vicc8CsNVsuMuJ33/ceCHbZJdOfcfT2wPURuvxmgW8fV0IkX/5rJlURt0GzCWvnjmKBw2Wf9DcxwEk3SZ9WlqWpvV1/j2RfQ7ZzmVeLAew=
+	t=1751555509; cv=none; b=SPcfdsKmIJzDKRJ2pzBIDLwp+Ys665jANCyd28CzX65RgCI8SE2/AnNnw49SdNEkggvpHiuiBqYV79AWcrxLF6TsHMXpAHtNTo2dmfikY9yjqA2WC1BrfrnpQUsc75XXZs0GTis7+nd66Xvp3HYOBDUkVuUjLQ+cJqHSy0vVkuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554230; c=relaxed/simple;
-	bh=bo2Ozl750lniw1wkD05Mf3+OLwdhfu+2TglVATeQj6Q=;
+	s=arc-20240116; t=1751555509; c=relaxed/simple;
+	bh=Rco2mw0jU5iwLsv6N/BocmTnW1DOQbM4HunamHDOVQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TzBCH87BXwa3qVdLhA+3F7Qw7033oJE5ypgFFq2AFADag3Aw7ltzHe8XEFqyMEFb/nkbjzEZ9KhRarOf9iaNy5hzLyDwDLc17T5BuKKgogLPJ/1d/0siAfLeewF+iw7FAFGk0wkZ8LfPJP0icZ2yLPn7UxDLCPr+3bbkLCov4DE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbLBtIDm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521BFC4CEE3;
-	Thu,  3 Jul 2025 14:50:29 +0000 (UTC)
+	 MIME-Version; b=PrGww1r/dVqWc1/MV9jiPyytOWoc4A+OicKxc4as9nV6QVLeD/LiKvJWv+trZ+l1R6jYokC29Nyc/YUHv0qfMIOt+p0D1HrJBN/yYYFqMG3L1CYvBurYPUIjNwBG9hts85RCwleipXrmpsPkPWkY/aiTEgdPd5b5lqz4RiN1lS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwqWqrWM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE169C4CEE3;
+	Thu,  3 Jul 2025 15:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554229;
-	bh=bo2Ozl750lniw1wkD05Mf3+OLwdhfu+2TglVATeQj6Q=;
+	s=korg; t=1751555509;
+	bh=Rco2mw0jU5iwLsv6N/BocmTnW1DOQbM4HunamHDOVQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dbLBtIDmTOVUOrhh0SnMVFEOuHD2hBEbeOE72QASziF5/uM3AjxhxOHj6Om4l5fMf
-	 C40QvkkkPjfeewV+V1x8Yn9HxTH3oiQFRhr+DdWewjcGC/eEq4A1JqRqHHjGIKE01E
-	 22OAooQMZBc9Bjp3Lcq19DnPKW3XHjKUii/D86to=
+	b=JwqWqrWMoi3/goD/i2+r/MbOSwnF2Xh7RsX7cCiW0RdAr3LKoogcjmKX/bMXu7zTK
+	 Z4oQAv4Zk0aElb+TsdJdwoR/YuTjWEbMuesEisiTuUcrLBk1dI/Sngg8I1S9U2yPiP
+	 EvoXZHLxFYH06JbWVkb0lgDWO3rUQI1T19Rejcy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Meetakshi Setiya <meetakshisetiyaoss@gmail.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 120/218] smb: smbdirect: add smbdirect.h with public structures
-Date: Thu,  3 Jul 2025 16:41:08 +0200
-Message-ID: <20250703144000.736053719@linuxfoundation.org>
+Subject: [PATCH 6.6 006/139] mailbox: Not protect module_put with spin_lock_irqsave
+Date: Thu,  3 Jul 2025 16:41:09 +0200
+Message-ID: <20250703143941.429695460@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,56 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 7e136a718633b2c54764e185f3bfccf0763fc1dd ]
+[ Upstream commit dddbd233e67e792bb0a3f9694a4707e6be29b2c6 ]
 
-Will be used in client and server in the next commits.
+&chan->lock is not supposed to protect 'chan->mbox'.
+And in __mbox_bind_client, try_module_get is also not protected
+by &chan->lock. So move module_put out of the lock protected
+region.
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Hyunchul Lee <hyc.lee@gmail.com>
-CC: Meetakshi Setiya <meetakshisetiyaoss@gmail.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 43e7e284fc77 ("cifs: Fix the smbd_response slab to allow usercopy")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/common/smbdirect/smbdirect.h | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
- create mode 100644 fs/smb/common/smbdirect/smbdirect.h
+ drivers/mailbox/mailbox.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/common/smbdirect/smbdirect.h b/fs/smb/common/smbdirect/smbdirect.h
-new file mode 100644
-index 0000000000000..eedbdf0d04337
---- /dev/null
-+++ b/fs/smb/common/smbdirect/smbdirect.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ *   Copyright (C) 2017, Microsoft Corporation.
-+ *   Copyright (C) 2018, LG Electronics.
-+ */
-+
-+#ifndef __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_H__
-+#define __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_H__
-+
-+/* SMB-DIRECT buffer descriptor V1 structure [MS-SMBD] 2.2.3.1 */
-+struct smbdirect_buffer_descriptor_v1 {
-+	__le64 offset;
-+	__le32 token;
-+	__le32 length;
-+} __packed;
-+
-+#endif /* __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_H__ */
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index f13d705f7861a..cb59b4dbad626 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -500,8 +500,8 @@ void mbox_free_channel(struct mbox_chan *chan)
+ 	if (chan->txdone_method == TXDONE_BY_ACK)
+ 		chan->txdone_method = TXDONE_BY_POLL;
+ 
+-	module_put(chan->mbox->dev->driver->owner);
+ 	spin_unlock_irqrestore(&chan->lock, flags);
++	module_put(chan->mbox->dev->driver->owner);
+ }
+ EXPORT_SYMBOL_GPL(mbox_free_channel);
+ 
 -- 
 2.39.5
 
