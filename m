@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6BA5AF7970
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:01:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD21AF7804
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B53F43A8D45
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:58:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43941581921
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5091F2EAD1B;
-	Thu,  3 Jul 2025 14:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C229B2EBB8F;
+	Thu,  3 Jul 2025 14:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjIx/cuf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V84rF5GC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D55F2EA730;
-	Thu,  3 Jul 2025 14:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA5C13A258;
+	Thu,  3 Jul 2025 14:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554740; cv=none; b=uX5HyH04zisgVAR9gg4KRYKgUWroni5104v8rskRXkp6Azr9nOMXyK3bWkmNPQ3z+W21uWvB3UFwj14eFLgYOycW+fESMCnjaFP1yB5grAq9KFVWGje1ObxYMcwfzb+NzVCILYHPZ5TgkQza//Z13Frs1Yqp5DtZZhltJrX2RcE=
+	t=1751553926; cv=none; b=r3TctXfxWpbZf42w7rxWAAKQXa6xfF/CWwDcLG6tVuxbo4j+cwq8YP+6WXOCLKHQxfeZX96/zW58RMrqpQOd7EF+sXxEw19VZWwluvoV/8Mez4U3Qe1+4NG0kLZf857rqjw2TaVFm26ZiMdY5R18TQFV221PQ0TOx8pjYZLE2TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554740; c=relaxed/simple;
-	bh=v4fQIofaMohXzAqqcQgCBPe8l4uPqonybAMojSPjwww=;
+	s=arc-20240116; t=1751553926; c=relaxed/simple;
+	bh=mCuvNauRXR6Xzu5a4QX+F/t7XHFXVn59wOYRXWnG9gY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sI1tI4IAJ9dQWPfhyKnj8DkLmfKWEILod92clSOwfX3I/+WvV48Hkjxvq6F9ujCa3laP0/UDJ2NIny//llWMRoapAS2tsDhZCWJRXH9SXkeCObwywy6NHrXqGU+1rpJFYeLqaOrlu9seEkR359jwRLXYFqaQR2GuPCt9kNrutO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjIx/cuf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92958C4CEE3;
-	Thu,  3 Jul 2025 14:58:59 +0000 (UTC)
+	 MIME-Version; b=GZBXqKQ/oxdrtj8pWrQo4uAxfpuImDtLvVJM4+FkQZLra4HQa1CTjJSXsYPBO3LYfR59U/DtCd8iYHaNFtUlduEYzHmHztoeVUa8SOWgOQ3APiWNvkMAE504kWOkq/G9Ehc56VnBE5YHlta1De6kgpY2IK4uujg0qS1pfhwGvrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V84rF5GC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8C9C4CEE3;
+	Thu,  3 Jul 2025 14:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554739;
-	bh=v4fQIofaMohXzAqqcQgCBPe8l4uPqonybAMojSPjwww=;
+	s=korg; t=1751553926;
+	bh=mCuvNauRXR6Xzu5a4QX+F/t7XHFXVn59wOYRXWnG9gY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UjIx/cufbbW8S3GGoxActLSw9/tLN1nFypDprgO3Ukvztc8pU5BnI6jpkaqxEVGQs
-	 FcoWunl93XJ/vG9osxjLVpRtCA/F/9lLxu/VFduzRfNg+mi9AwfeYGNJf7aJWy6o9e
-	 lB7i8xc7LVLzt9PSjp/fRe6tof9Q1wEzy4y4hDoQ=
+	b=V84rF5GCppEixf0OTDQUETkS0vWODdvWe7/+doHbz9XbHCDndpaLB/lrMpREuX/CF
+	 cUqTekgdZmGQ8di15XFEM78AZmQx9/JILPt8bWf2fCXB09nbqTAwgVC8Q4VzJYtTGj
+	 or+E6C+kS7IsjOkPhbUlI/oaiFKSbaZ+JdP47riw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Chris Leech <cleech@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 033/263] nvme-tcp: fix I/O stalls on congested sockets
+Subject: [PATCH 6.12 005/218] NFSv4.2: fix listxattr to return selinux security label
 Date: Thu,  3 Jul 2025 16:39:13 +0200
-Message-ID: <20250703144005.625740301@linuxfoundation.org>
+Message-ID: <20250703143956.173967545@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit f42d4796ee100fade86086d1cf98537fb4d326c8 ]
+[ Upstream commit 243fea134633ba3d64aceb4c16129c59541ea2c6 ]
 
-When the socket is busy processing nvme_tcp_try_recv() might return
--EAGAIN, but this doesn't automatically imply that the sending side is
-blocked, too.  So check if there are pending requests once
-nvme_tcp_try_recv() returns -EAGAIN and continue with the sending loop
-to avoid I/O stalls.
+Currently, when NFS is queried for all the labels present on the
+file via a command example "getfattr -d -m . /mnt/testfile", it
+does not return the security label. Yet when asked specifically for
+the label (getfattr -n security.selinux) it will be returned.
+Include the security label when all attributes are queried.
 
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Acked-by: Chris Leech <cleech@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 947fac9128b30..9f4f6464dee04 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1348,7 +1348,7 @@ static int nvme_tcp_try_recv(struct nvme_tcp_queue *queue)
- 	queue->nr_cqe = 0;
- 	consumed = sock->ops->read_sock(sk, &rd_desc, nvme_tcp_recv_skb);
- 	release_sock(sk);
--	return consumed;
-+	return consumed == -EAGAIN ? 0 : consumed;
- }
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 57d49e874f51f..9832e27b5d29b 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -10814,7 +10814,7 @@ const struct nfs4_minor_version_ops *nfs_v4_minor_ops[] = {
  
- static void nvme_tcp_io_work(struct work_struct *w)
-@@ -1376,6 +1376,11 @@ static void nvme_tcp_io_work(struct work_struct *w)
- 		else if (unlikely(result < 0))
- 			return;
+ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
+ {
+-	ssize_t error, error2, error3;
++	ssize_t error, error2, error3, error4;
+ 	size_t left = size;
  
-+		/* did we get some space after spending time in recv? */
-+		if (nvme_tcp_queue_has_pending(queue) &&
-+		    sk_stream_is_writeable(queue->sock->sk))
-+			pending = true;
+ 	error = generic_listxattr(dentry, list, left);
+@@ -10837,8 +10837,16 @@ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
+ 	error3 = nfs4_listxattr_nfs4_user(d_inode(dentry), list, left);
+ 	if (error3 < 0)
+ 		return error3;
++	if (list) {
++		list += error3;
++		left -= error3;
++	}
 +
- 		if (!pending || !queue->rd_enabled)
- 			return;
++	error4 = security_inode_listsecurity(d_inode(dentry), list, left);
++	if (error4 < 0)
++		return error4;
  
+-	error += error2 + error3;
++	error += error2 + error3 + error4;
+ 	if (size && error > size)
+ 		return -ERANGE;
+ 	return error;
 -- 
 2.39.5
 
