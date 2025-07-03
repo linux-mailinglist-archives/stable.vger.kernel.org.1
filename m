@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8EEAAF7BCB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60DCCAF79E4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:07:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4A466E0673
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A038A7A2046
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8CA2222B2;
-	Thu,  3 Jul 2025 15:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986AC1E9B3D;
+	Thu,  3 Jul 2025 15:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5L45IC/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="go9YUxQQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD69199920;
-	Thu,  3 Jul 2025 15:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A2F15442C;
+	Thu,  3 Jul 2025 15:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556013; cv=none; b=i91iEk12TF1Arqp2FHRmCrfAIj9n/bVR55xaSBxPwa4FqoEoYNi1HiLGvYOWhwgGWqY43dRyYBED44gpxyG0U29HTdUIr1Nmeq0OcZpr8zgKemaaqL73+EGp8l3sk5GybXBA4+VjFJtCLbu0WySj3J9nW8wM5mLDHPFjmhUEkBw=
+	t=1751555232; cv=none; b=XfHQ1yAG8v6B3YjErzfv1ciY6cVbUGBhTzH98EQ0L8qXlFoI4ijSu1+aD+z8XQ5LENSb9eAWTTq5+ZBU+Ao4GhpSIlyHDase6TuZeGh6w8YDMZUylRkBfq7n0iEsIFespktyiu254w8h2epYYtOObMs6ueWCZWmLzeloInChk3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556013; c=relaxed/simple;
-	bh=kP0T/v0s9pHa/UAEZUFFA8xDGIWWMf6dqsciYZ4Q1UM=;
+	s=arc-20240116; t=1751555232; c=relaxed/simple;
+	bh=knde+VEcxS1NxzUOaqlrpOMygIp5TS2QtdCOaqah0NY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XdZlc9cyh2Kv6G86o0NipVjnMNBWvL6IR7yzAo9BUTnQwXFlRFLe7LluGxeYcOKITETwywOZipP/gF2DCkVlwsJyrzM8kX6+BfqsF+PqnebT0QQAdk4Ioa45eh6vvJedpErT+TDJqw0XoyCHD+REHOOhABn5nYNZOgUoBiwDIjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5L45IC/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E92C4CEE3;
-	Thu,  3 Jul 2025 15:20:12 +0000 (UTC)
+	 MIME-Version; b=J0s444MPnL7riyvl53PknVZfPDe+MunOMdkUF13rEE5NiKBao/2fIFK/N+vtU0rrSvb+vaDcC5g0lEB59Jjxv9J8+QP5XwYfSOpSK8jY6ooZpf4dqQ4REGOxygSOeefpqpF7BEzvncSJerza9aTYeE0n6xz6qX1D4oABx03bvco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=go9YUxQQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EADC4CEE3;
+	Thu,  3 Jul 2025 15:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556013;
-	bh=kP0T/v0s9pHa/UAEZUFFA8xDGIWWMf6dqsciYZ4Q1UM=;
+	s=korg; t=1751555232;
+	bh=knde+VEcxS1NxzUOaqlrpOMygIp5TS2QtdCOaqah0NY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5L45IC/qA+3w0q4zLxI6PqJQWSG0N0/Exlea8/63UZAuvvZdU/ExVSySHUQK87pt
-	 n+k7U4H9vZigkx+fCcgpzMFUMO0ANzUfkDmiCHWx1WWb66dVpJAiwC54m2QJSM8bkI
-	 JjY2ym47ksUpzwc6O3yCpImd8bwvIoxt/TX7Tv/c=
+	b=go9YUxQQVFnGzZdOxpCA11aOodzbJNlnRNL5Y932u98PzKpe4+ErkYGHv0CHNWuVS
+	 q/btHXSlUlk0UBFAc21xNioCuR2BYX3e0kcxlsAWKCVWfDwsZUoXZd65aDUp26Rehe
+	 a/OlWazPYvzuaCBPC2uwSyvqs+b0mgEMYfaiNA8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/132] ASoC: codecs: wcd9335: Handle nicer probe deferral and simplify with dev_err_probe()
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 6.15 216/263] drm/bridge: cdns-dsi: Fix connecting to next bridge
 Date: Thu,  3 Jul 2025 16:42:16 +0200
-Message-ID: <20250703143941.271485571@linuxfoundation.org>
+Message-ID: <20250703144013.046158132@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Aradhya Bhatia <a-bhatia1@ti.com>
 
-[ Upstream commit 4a03b5dbad466c902d522f3405daa4e5d80578c5 ]
+commit 688eb4d465484bc2a3471a6a6f06f833b58c7867 upstream.
 
-wcd9335_parse_dt() function is called only from probe(), so printing
-errors on resource acquisition is discouraged, because it can pollute
-dmesg.  Use dev_err_probe() to fix this and also make the code a bit
-simpler.
+Fix the OF node pointer passed to the of_drm_find_bridge() call to find
+the next bridge in the display chain.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://msgid.link/r/20240612-asoc-wcd9xxx-wide-cleanups-v1-4-0d15885b2a06@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 9079db287fc3 ("ASoC: codecs: wcd9335: Fix missing free of regulator supplies")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The code to find the next panel (and create its panel-bridge) works
+fine, but to find the next (non-panel) bridge does not.
+
+To find the next bridge in the pipeline, we need to pass "np" - the OF
+node pointer of the next entity in the devicetree chain. Passing
+"of_node" to of_drm_find_bridge (which is what the code does currently)
+will fetch the bridge for the cdns-dsi which is not what's required.
+
+Fix that.
+
+Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Link: https://lore.kernel.org/r/20250329113925.68204-2-aradhya.bhatia@linux.dev
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wcd9335.c | 28 +++++++++-------------------
- 1 file changed, 9 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
-index d2548fdf9ae56..23f3c0253d9eb 100644
---- a/sound/soc/codecs/wcd9335.c
-+++ b/sound/soc/codecs/wcd9335.c
-@@ -5036,22 +5036,16 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
- 	int ret;
- 
- 	wcd->reset_gpio = of_get_named_gpio(np,	"reset-gpios", 0);
--	if (wcd->reset_gpio < 0) {
--		dev_err(dev, "Reset GPIO missing from DT\n");
--		return wcd->reset_gpio;
--	}
-+	if (wcd->reset_gpio < 0)
-+		return dev_err_probe(dev, wcd->reset_gpio, "Reset GPIO missing from DT\n");
- 
- 	wcd->mclk = devm_clk_get(dev, "mclk");
--	if (IS_ERR(wcd->mclk)) {
--		dev_err(dev, "mclk not found\n");
--		return PTR_ERR(wcd->mclk);
--	}
-+	if (IS_ERR(wcd->mclk))
-+		return dev_err_probe(dev, PTR_ERR(wcd->mclk), "mclk not found\n");
- 
- 	wcd->native_clk = devm_clk_get(dev, "slimbus");
--	if (IS_ERR(wcd->native_clk)) {
--		dev_err(dev, "slimbus clock not found\n");
--		return PTR_ERR(wcd->native_clk);
--	}
-+	if (IS_ERR(wcd->native_clk))
-+		return dev_err_probe(dev, PTR_ERR(wcd->native_clk), "slimbus clock not found\n");
- 
- 	wcd->supplies[0].supply = "vdd-buck";
- 	wcd->supplies[1].supply = "vdd-buck-sido";
-@@ -5060,10 +5054,8 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
- 	wcd->supplies[4].supply = "vdd-io";
- 
- 	ret = regulator_bulk_get(dev, WCD9335_MAX_SUPPLY, wcd->supplies);
--	if (ret) {
--		dev_err(dev, "Failed to get supplies: err = %d\n", ret);
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to get supplies\n");
- 
- 	return 0;
- }
-@@ -5166,10 +5158,8 @@ static int wcd9335_slim_probe(struct slim_device *slim)
- 
- 	wcd->dev = dev;
- 	ret = wcd9335_parse_dt(wcd);
--	if (ret) {
--		dev_err(dev, "Error parsing DT: %d\n", ret);
-+	if (ret)
- 		return ret;
--	}
- 
- 	ret = wcd9335_power_on_reset(wcd);
- 	if (ret)
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+@@ -958,7 +958,7 @@ static int cdns_dsi_attach(struct mipi_d
+ 		bridge = drm_panel_bridge_add_typed(panel,
+ 						    DRM_MODE_CONNECTOR_DSI);
+ 	} else {
+-		bridge = of_drm_find_bridge(dev->dev.of_node);
++		bridge = of_drm_find_bridge(np);
+ 		if (!bridge)
+ 			bridge = ERR_PTR(-EINVAL);
+ 	}
 
 
 
