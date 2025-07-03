@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-160026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97A1AF7B59
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:24:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 332F6AF7A98
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:15:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A1517B55BB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:22:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9809587959
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3441DDC1B;
-	Thu,  3 Jul 2025 15:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD7D2EF9B0;
+	Thu,  3 Jul 2025 15:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18CZqzFX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rEIOG9Xp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3810D14B092;
-	Thu,  3 Jul 2025 15:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9C82EE286;
+	Thu,  3 Jul 2025 15:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556132; cv=none; b=SLrGRJKiNoWuMZogsxMPIHKM10G9+C9ht2hIPNLLpWpCK9COgPx0sWoF5s7kP0BSy5Rcxm9WSXcbw3W26EDmeNom3hhMk9+154dT9n2rpbExqEbgWD/A8xFJBm6u70COhqBYLKOoXnFmjhGAL8JmpwlvhwtSNUM1xUWfqUf2NkI=
+	t=1751555419; cv=none; b=pMWt4Ncz+fTLtqUetES5mHz4rG8p5QilNMhdCTnvX+XVsX5n2m1z4RdHdk3vp5zRA24c83DKuKtPNpNh6gYn5wfXzYNl9zSeQ3tA/9pt8+6ohKJE21A8mYNm72If87xwh3iaAWtK8MVWcjnCT5ummfkEwQVoVcoWMI6iiNWM0fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556132; c=relaxed/simple;
-	bh=nwrkF8Zj7hZwnHpJljSfDTWLJBaF7gJnhJzLfaiW7AM=;
+	s=arc-20240116; t=1751555419; c=relaxed/simple;
+	bh=tmCZopcRxJnqw79Ey0tgO7XW7wObyljoXIHyzXZkg6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0IH1VhTd5RGBaoARHsP24TTUP2xvuhyMtJMJtnHhV13k50NzuKUjcD2OQCIMgFQLueUvG/aAbSkQw9Z1AOvp/FPvCQ7zxwL6pPgTGwmFcVOVY7WssiJgBJxh6J4sx28MyobntWZsBiY1fbNQdaYLK7hs3TNPzbONn73IRSi6Nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18CZqzFX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEEF1C4CEE3;
-	Thu,  3 Jul 2025 15:22:11 +0000 (UTC)
+	 MIME-Version; b=XXo/cukvh3rtE/3IKyOH7SkLVFtTa1LuD0IYEfxBTItKUZufZxiGype+Kv3CU9rBZvCITfTbOhiRhKesaEfGNdpwcE3maolki5OIyK1l4z4I08KTLRJg78Mq77J1rN1/GcRgwCb1RG2eNNO5GkQ/ToaHl+IfXAjAaKhEJnRMj08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rEIOG9Xp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039C3C4CEE3;
+	Thu,  3 Jul 2025 15:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556132;
-	bh=nwrkF8Zj7hZwnHpJljSfDTWLJBaF7gJnhJzLfaiW7AM=;
+	s=korg; t=1751555418;
+	bh=tmCZopcRxJnqw79Ey0tgO7XW7wObyljoXIHyzXZkg6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18CZqzFX+cs8wyaWmfYSyxWSMoSKMW40w2U+0In0bXdH3/E2EcoM/idh/IUIfTH9G
-	 VjzqcnbIrECmOXhE7rUe0uH+SXH8Ig7Sd1cA8L9iOKbF6N/WRxnna6URftuwoL3bZk
-	 Bqei7ODmkTVTLn9dDgSb914p6PBi3UC0E8P7/5jA=
+	b=rEIOG9XpDUQnC+EO5GTnAzbpK+oBA7AfzCr0snMUjTXeDn3Xa6fo4S4d6REa9DBAe
+	 OMIrYDt2GG4xBDITahDpw4EvZ9gPusnaV6QqE7HtFxw6159Om3U8vwcVu4eyLsO8m7
+	 KVHs1QV30kNrkJABB6dMLaBGqQdRS1fvAgvoC6pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/132] net: enetc: Correct endianness handling in _enetc_rd_reg64
-Date: Thu,  3 Jul 2025 16:42:53 +0200
-Message-ID: <20250703143942.702234164@linuxfoundation.org>
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.15 254/263] rust: completion: implement initial abstraction
+Date: Thu,  3 Jul 2025 16:42:54 +0200
+Message-ID: <20250703144014.596129841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +73,211 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 7b515f35a911fdc31fbde6531828dcd6ae9803d3 ]
+commit 1b56e765bf8990f1f60e124926c11fc4ac63d752 upstream.
 
-enetc_hw.h provides two versions of _enetc_rd_reg64.
-One which simply calls ioread64() when available.
-And another that composes the 64-bit result from ioread32() calls.
+Implement a minimal abstraction for the completion synchronization
+primitive.
 
-In the second case the code appears to assume that each ioread32() call
-returns a little-endian value. However both the shift and logical or
-used to compose the return value would not work correctly on big endian
-systems if this were the case. Moreover, this is inconsistent with the
-first case where the return value of ioread64() is assumed to be in host
-byte order.
+This initial abstraction only adds complete_all() and
+wait_for_completion(), since that is what is required for the subsequent
+Devres patch.
 
-It appears that the correct approach is for both versions to treat the
-return value of ioread*() functions as being in host byte order. And
-this patch corrects the ioread32()-based version to do so.
-
-This is a bug but would only manifest on big endian systems
-that make use of the ioread32-based implementation of _enetc_rd_reg64.
-While all in-tree users of this driver are little endian and
-make use of the ioread64-based implementation of _enetc_rd_reg64.
-Thus, no in-tree user of this driver is affected by this bug.
-
-Flagged by Sparse.
-Compile tested only.
-
-Fixes: 16eb4c85c964 ("enetc: Add ethtool statistics")
-Closes: https://lore.kernel.org/all/AM9PR04MB850500D3FC24FE23DEFCEA158879A@AM9PR04MB8505.eurprd04.prod.outlook.com/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250624-etnetc-le-v1-1-a73a95d96e4e@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lore.kernel.org/r/20250612121817.1621-2-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_hw.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/bindings/bindings_helper.h |    1 
+ rust/helpers/completion.c       |    8 ++
+ rust/helpers/helpers.c          |    1 
+ rust/kernel/sync.rs             |    2 
+ rust/kernel/sync/completion.rs  |  112 ++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 124 insertions(+)
+ create mode 100644 rust/helpers/completion.c
+ create mode 100644 rust/kernel/sync/completion.rs
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-index 18ca1f42b1f75..04d3e0dedc963 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-@@ -461,7 +461,7 @@ static inline u64 _enetc_rd_reg64(void __iomem *reg)
- 		tmp = ioread32(reg + 4);
- 	} while (high != tmp);
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -10,6 +10,7 @@
+ #include <linux/blk-mq.h>
+ #include <linux/blk_types.h>
+ #include <linux/blkdev.h>
++#include <linux/completion.h>
+ #include <linux/cpumask.h>
+ #include <linux/cred.h>
+ #include <linux/device/faux.h>
+--- /dev/null
++++ b/rust/helpers/completion.c
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/completion.h>
++
++void rust_helper_init_completion(struct completion *x)
++{
++	init_completion(x);
++}
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -11,6 +11,7 @@
+ #include "bug.c"
+ #include "build_assert.c"
+ #include "build_bug.c"
++#include "completion.c"
+ #include "cpumask.c"
+ #include "cred.c"
+ #include "device.c"
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -10,6 +10,7 @@ use crate::types::Opaque;
+ use pin_init;
  
--	return le64_to_cpu((__le64)high << 32 | low);
-+	return (u64)high << 32 | low;
- }
- #endif
+ mod arc;
++pub mod completion;
+ mod condvar;
+ pub mod lock;
+ mod locked_by;
+@@ -17,6 +18,7 @@ pub mod poll;
+ pub mod rcu;
  
--- 
-2.39.5
-
+ pub use arc::{Arc, ArcBorrow, UniqueArc};
++pub use completion::Completion;
+ pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
+ pub use lock::global::{global_lock, GlobalGuard, GlobalLock, GlobalLockBackend, GlobalLockedBy};
+ pub use lock::mutex::{new_mutex, Mutex, MutexGuard};
+--- /dev/null
++++ b/rust/kernel/sync/completion.rs
+@@ -0,0 +1,112 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Completion support.
++//!
++//! Reference: <https://docs.kernel.org/scheduler/completion.html>
++//!
++//! C header: [`include/linux/completion.h`](srctree/include/linux/completion.h)
++
++use crate::{bindings, prelude::*, types::Opaque};
++
++/// Synchronization primitive to signal when a certain task has been completed.
++///
++/// The [`Completion`] synchronization primitive signals when a certain task has been completed by
++/// waking up other tasks that have been queued up to wait for the [`Completion`] to be completed.
++///
++/// # Examples
++///
++/// ```
++/// use kernel::sync::{Arc, Completion};
++/// use kernel::workqueue::{self, impl_has_work, new_work, Work, WorkItem};
++///
++/// #[pin_data]
++/// struct MyTask {
++///     #[pin]
++///     work: Work<MyTask>,
++///     #[pin]
++///     done: Completion,
++/// }
++///
++/// impl_has_work! {
++///     impl HasWork<Self> for MyTask { self.work }
++/// }
++///
++/// impl MyTask {
++///     fn new() -> Result<Arc<Self>> {
++///         let this = Arc::pin_init(pin_init!(MyTask {
++///             work <- new_work!("MyTask::work"),
++///             done <- Completion::new(),
++///         }), GFP_KERNEL)?;
++///
++///         let _ = workqueue::system().enqueue(this.clone());
++///
++///         Ok(this)
++///     }
++///
++///     fn wait_for_completion(&self) {
++///         self.done.wait_for_completion();
++///
++///         pr_info!("Completion: task complete\n");
++///     }
++/// }
++///
++/// impl WorkItem for MyTask {
++///     type Pointer = Arc<MyTask>;
++///
++///     fn run(this: Arc<MyTask>) {
++///         // process this task
++///         this.done.complete_all();
++///     }
++/// }
++///
++/// let task = MyTask::new()?;
++/// task.wait_for_completion();
++/// # Ok::<(), Error>(())
++/// ```
++#[pin_data]
++pub struct Completion {
++    #[pin]
++    inner: Opaque<bindings::completion>,
++}
++
++// SAFETY: `Completion` is safe to be send to any task.
++unsafe impl Send for Completion {}
++
++// SAFETY: `Completion` is safe to be accessed concurrently.
++unsafe impl Sync for Completion {}
++
++impl Completion {
++    /// Create an initializer for a new [`Completion`].
++    pub fn new() -> impl PinInit<Self> {
++        pin_init!(Self {
++            inner <- Opaque::ffi_init(|slot: *mut bindings::completion| {
++                // SAFETY: `slot` is a valid pointer to an uninitialized `struct completion`.
++                unsafe { bindings::init_completion(slot) };
++            }),
++        })
++    }
++
++    fn as_raw(&self) -> *mut bindings::completion {
++        self.inner.get()
++    }
++
++    /// Signal all tasks waiting on this completion.
++    ///
++    /// This method wakes up all tasks waiting on this completion; after this operation the
++    /// completion is permanently done, i.e. signals all current and future waiters.
++    pub fn complete_all(&self) {
++        // SAFETY: `self.as_raw()` is a pointer to a valid `struct completion`.
++        unsafe { bindings::complete_all(self.as_raw()) };
++    }
++
++    /// Wait for completion of a task.
++    ///
++    /// This method waits for the completion of a task; it is not interruptible and there is no
++    /// timeout.
++    ///
++    /// See also [`Completion::complete_all`].
++    pub fn wait_for_completion(&self) {
++        // SAFETY: `self.as_raw()` is a pointer to a valid `struct completion`.
++        unsafe { bindings::wait_for_completion(self.as_raw()) };
++    }
++}
 
 
 
