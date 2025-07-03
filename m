@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-159943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8A0AF7B7D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3945AF7C26
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:32:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AC31583710
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ECD51CA498B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86F82EF671;
-	Thu,  3 Jul 2025 15:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33632EF67F;
+	Thu,  3 Jul 2025 15:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDGbeHvV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwbvzG6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D7B15442C;
-	Thu,  3 Jul 2025 15:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B962EF285;
+	Thu,  3 Jul 2025 15:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555865; cv=none; b=J74xYmJzl23QCwvXV3TVtV9BYUVygEqweHIlLTM0l03RXBHe6JR0N4TTPMxpYJJVSloGIBDYNSKazBiVWZFSrWHKZAVcA29PurDS7WN7jENlebmVUV8nD/k+vAKOZt0ptmQLlnCsp916birVlXy8YAkuzSJwIo7Cb3pMLAwedlU=
+	t=1751556206; cv=none; b=KSsljrIiKpDU/BXLdmXbt5rESRKpkzEIOiJcXaxc/P92cGjiLvEnXlko0NoCWOlxv918Yy429+2coUSyz5qKYgMiZtdGDlz2lrEduyAasu3gn1G4+5LZ+WkpLDb0q1Mlp9pVCRZMmIgc1vgXxdTcuLTP1/atzc2q0aYhWYWyqP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555865; c=relaxed/simple;
-	bh=213+wsTzL7GM0x5pMK92cGqumECGjS3COPg5bKcVjls=;
+	s=arc-20240116; t=1751556206; c=relaxed/simple;
+	bh=OIzitvXx9cdGNV6K4G127XTCrraY/uwgFrSETti6+qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OImORUeR/D4lEaIxLurEKEeDa3b84rsXt1S4DcWgv9qxxQSLoCKmEdrckqk/r1sMRju0loOW/APtqsF1rjf7pUJqlLunXNZVj6OAzCt8ToCA8Cm5bOXKrJu37trUI4vgOLI0TAAaB8TP7/BfjYEJicAVafF4u1hO7LRbUvBDqCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDGbeHvV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304AFC4CEEE;
-	Thu,  3 Jul 2025 15:17:44 +0000 (UTC)
+	 MIME-Version; b=UZFRBuamWyBT21PA1wU3AMcgSHZbsl37phuPTpEWUSkfrsuArvNtG046QqydRgmL6FSnK3Z82wO9OglvKQ0X+DSyzR6nfgaGzw6Fpx+iGDmcS4Nrz/Dw+nFwCMEtEsw9DAcsiktBoRtLXFp0I0kRD6tIM4isfk5CIyoEC1PZePk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwbvzG6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7639BC4CEE3;
+	Thu,  3 Jul 2025 15:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555865;
-	bh=213+wsTzL7GM0x5pMK92cGqumECGjS3COPg5bKcVjls=;
+	s=korg; t=1751556205;
+	bh=OIzitvXx9cdGNV6K4G127XTCrraY/uwgFrSETti6+qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mDGbeHvVLTW/b+oQ0z1mnTFmM2nRis56R8ya98eO/Rnu1eZTZ8DzvGEQlmvJd4Sw9
-	 la69wCrSQMAMoNE7kTbgxeuzZHbh33YZ7HEsjBHLHM8X8V0tVBVfHDeCzrNmnOVcpI
-	 z1+s5wuDmD4qDfaZYPWaHVTV88iewh4OGgtuWlN4=
+	b=WwbvzG6zbVTdLxKl0uTrlZWQc8fqo9LDUNAxPSEpIMKoh0Yf0v7razitkEZMM0m8S
+	 iKttY4t9xstVGi6ZLDAMJcYIebvLC/2kh5Duq5nAS26cpNC2r69sob0CNgKs8X3LxP
+	 RO46GPI/1aDKY2gbowkzNxY/GDPN8mQdPpj3+5lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Rae Moar <rmoar@google.com>,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <shuah@kernel.org>
-Subject: [PATCH 6.6 133/139] Kunit to check the longest symbol length
-Date: Thu,  3 Jul 2025 16:43:16 +0200
-Message-ID: <20250703143946.380088231@linuxfoundation.org>
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 6.1 108/132] drm/bridge: cdns-dsi: Fix the clock variable for mode_valid()
+Date: Thu,  3 Jul 2025 16:43:17 +0200
+Message-ID: <20250703143943.628341161@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,188 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergio González Collado <sergio.collado@gmail.com>
+From: Aradhya Bhatia <a-bhatia1@ti.com>
 
-commit c104c16073b7fdb3e4eae18f66f4009f6b073d6f upstream.
+commit 132bdcec399be6ae947582249a134b38cf56731c upstream.
 
-The longest length of a symbol (KSYM_NAME_LEN) was increased to 512
-in the reference [1]. This patch adds kunit test suite to check the longest
-symbol length. These tests verify that the longest symbol length defined
-is supported.
+The crtc_* mode parameters do not get generated (duplicated in this
+case) from the regular parameters before the mode validation phase
+begins.
 
-This test can also help other efforts for longer symbol length,
-like [2].
+The rest of the code conditionally uses the crtc_* parameters only
+during the bridge enable phase, but sticks to the regular parameters
+for mode validation. In this singular instance, however, the driver
+tries to use the crtc_clock parameter even during the mode validation,
+causing the validation to fail.
 
-The test suite defines one symbol with the longest possible length.
+Allow the D-Phy config checks to use mode->clock instead of
+mode->crtc_clock during mode_valid checks, like everywhere else in the
+driver.
 
-The first test verify that functions with names of the created
-symbol, can be called or not.
-
-The second test, verify that the symbols are created (or
-not) in the kernel symbol table.
-
-[1] https://lore.kernel.org/lkml/20220802015052.10452-6-ojeda@kernel.org/
-[2] https://lore.kernel.org/lkml/20240605032120.3179157-1-song@kernel.org/
-
-Link: https://lore.kernel.org/r/20250302221518.76874-1-sergio.collado@gmail.com
-Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Reviewed-by: Rae Moar <rmoar@google.com>
-Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
-Link: https://github.com/Rust-for-Linux/linux/issues/504
-Reviewed-by: Rae Moar <rmoar@google.com>
-Acked-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Shuah Khan <shuah@kernel.org>
+Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
+Cc: stable@vger.kernel.org
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Link: https://lore.kernel.org/r/20250329113925.68204-4-aradhya.bhatia@linux.dev
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/tools/insn_decoder_test.c |    3 -
- lib/Kconfig.debug                  |    9 ++++
- lib/Makefile                       |    2 
- lib/longest_symbol_kunit.c         |   82 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 95 insertions(+), 1 deletion(-)
- create mode 100644 lib/longest_symbol_kunit.c
+ drivers/gpu/drm/bridge/cdns-dsi.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/tools/insn_decoder_test.c
-+++ b/arch/x86/tools/insn_decoder_test.c
-@@ -10,6 +10,7 @@
- #include <assert.h>
- #include <unistd.h>
- #include <stdarg.h>
-+#include <linux/kallsyms.h>
+--- a/drivers/gpu/drm/bridge/cdns-dsi.c
++++ b/drivers/gpu/drm/bridge/cdns-dsi.c
+@@ -609,13 +609,14 @@ static int cdns_dsi_check_conf(struct cd
+ 	struct phy_configure_opts_mipi_dphy *phy_cfg = &output->phy_opts.mipi_dphy;
+ 	unsigned long dsi_hss_hsa_hse_hbp;
+ 	unsigned int nlanes = output->dev->lanes;
++	int mode_clock = (mode_valid_check ? mode->clock : mode->crtc_clock);
+ 	int ret;
  
- #define unlikely(cond) (cond)
+ 	ret = cdns_dsi_mode2cfg(dsi, mode, dsi_cfg, mode_valid_check);
+ 	if (ret)
+ 		return ret;
  
-@@ -106,7 +107,7 @@ static void parse_args(int argc, char **
- 	}
- }
+-	phy_mipi_dphy_get_default_config(mode->crtc_clock * 1000,
++	phy_mipi_dphy_get_default_config(mode_clock * 1000,
+ 					 mipi_dsi_pixel_format_to_bpp(output->dev->format),
+ 					 nlanes, phy_cfg);
  
--#define BUFSIZE 256
-+#define BUFSIZE (256 + KSYM_NAME_LEN)
- 
- int main(int argc, char **argv)
- {
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2747,6 +2747,15 @@ config FORTIFY_KUNIT_TEST
- 	  by the str*() and mem*() family of functions. For testing runtime
- 	  traps of FORTIFY_SOURCE, see LKDTM's "FORTIFY_*" tests.
- 
-+config LONGEST_SYM_KUNIT_TEST
-+	tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
-+	depends on KUNIT && KPROBES
-+	default KUNIT_ALL_TESTS
-+	help
-+	  Tests the longest symbol possible
-+
-+	  If unsure, say N.
-+
- config HW_BREAKPOINT_KUNIT_TEST
- 	bool "Test hw_breakpoint constraints accounting" if !KUNIT_ALL_TESTS
- 	depends on HAVE_HW_BREAKPOINT
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -402,6 +402,8 @@ obj-$(CONFIG_FORTIFY_KUNIT_TEST) += fort
- obj-$(CONFIG_STRCAT_KUNIT_TEST) += strcat_kunit.o
- obj-$(CONFIG_STRSCPY_KUNIT_TEST) += strscpy_kunit.o
- obj-$(CONFIG_SIPHASH_KUNIT_TEST) += siphash_kunit.o
-+obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) += longest_symbol_kunit.o
-+CFLAGS_longest_symbol_kunit.o += $(call cc-disable-warning, missing-prototypes)
- 
- obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) += devmem_is_allowed.o
- 
---- /dev/null
-+++ b/lib/longest_symbol_kunit.c
-@@ -0,0 +1,82 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Test the longest symbol length. Execute with:
-+ *  ./tools/testing/kunit/kunit.py run longest-symbol
-+ *  --arch=x86_64 --kconfig_add CONFIG_KPROBES=y --kconfig_add CONFIG_MODULES=y
-+ *  --kconfig_add CONFIG_RETPOLINE=n --kconfig_add CONFIG_CFI_CLANG=n
-+ *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=n
-+ */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <kunit/test.h>
-+#include <linux/stringify.h>
-+#include <linux/kprobes.h>
-+#include <linux/kallsyms.h>
-+
-+#define DI(name) s##name##name
-+#define DDI(name) DI(n##name##name)
-+#define DDDI(name) DDI(n##name##name)
-+#define DDDDI(name) DDDI(n##name##name)
-+#define DDDDDI(name) DDDDI(n##name##name)
-+
-+/*Generate a symbol whose name length is 511 */
-+#define LONGEST_SYM_NAME  DDDDDI(g1h2i3j4k5l6m7n)
-+
-+#define RETURN_LONGEST_SYM 0xAAAAA
-+
-+noinline int LONGEST_SYM_NAME(void);
-+noinline int LONGEST_SYM_NAME(void)
-+{
-+	return RETURN_LONGEST_SYM;
-+}
-+
-+_Static_assert(sizeof(__stringify(LONGEST_SYM_NAME)) == KSYM_NAME_LEN,
-+"Incorrect symbol length found. Expected KSYM_NAME_LEN: "
-+__stringify(KSYM_NAME_LEN) ", but found: "
-+__stringify(sizeof(LONGEST_SYM_NAME)));
-+
-+static void test_longest_symbol(struct kunit *test)
-+{
-+	KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, LONGEST_SYM_NAME());
-+};
-+
-+static void test_longest_symbol_kallsyms(struct kunit *test)
-+{
-+	unsigned long (*kallsyms_lookup_name)(const char *name);
-+	static int (*longest_sym)(void);
-+
-+	struct kprobe kp = {
-+		.symbol_name = "kallsyms_lookup_name",
-+	};
-+
-+	if (register_kprobe(&kp) < 0) {
-+		pr_info("%s: kprobe not registered", __func__);
-+		KUNIT_FAIL(test, "test_longest_symbol kallsyms: kprobe not registered\n");
-+		return;
-+	}
-+
-+	kunit_warn(test, "test_longest_symbol kallsyms: kprobe registered\n");
-+	kallsyms_lookup_name = (unsigned long (*)(const char *name))kp.addr;
-+	unregister_kprobe(&kp);
-+
-+	longest_sym =
-+		(void *) kallsyms_lookup_name(__stringify(LONGEST_SYM_NAME));
-+	KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, longest_sym());
-+};
-+
-+static struct kunit_case longest_symbol_test_cases[] = {
-+	KUNIT_CASE(test_longest_symbol),
-+	KUNIT_CASE(test_longest_symbol_kallsyms),
-+	{}
-+};
-+
-+static struct kunit_suite longest_symbol_test_suite = {
-+	.name = "longest-symbol",
-+	.test_cases = longest_symbol_test_cases,
-+};
-+kunit_test_suite(longest_symbol_test_suite);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Test the longest symbol length");
-+MODULE_AUTHOR("Sergio GonzÃ¡lez Collado");
 
 
 
