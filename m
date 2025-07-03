@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C68AF7A24
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E3BAF7BE8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:29:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14CF93A68EC
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:06:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F12516E8BB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99912ED86E;
-	Thu,  3 Jul 2025 15:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B432F2373;
+	Thu,  3 Jul 2025 15:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkMmJ9TW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qn58ykE6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FB12E7649;
-	Thu,  3 Jul 2025 15:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59702F0C45;
+	Thu,  3 Jul 2025 15:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555176; cv=none; b=cSZT6iBtMhEtTgw1j3sPGR2fnr4EHOgVYEuiiGn763GlHkOCjmRGXAyWSDCuN3rVVFigVt/LgUDRwyXdKNSt39d2/t1P02EaEG85Ci8DZyAnoc6YZCdw7XN0SaLo/BMYF8iVJF+kjIUF0eMiE0Apbsvir0Kt5XznV4Qp6DKXzL4=
+	t=1751556059; cv=none; b=JsBpHbxzYh8tcGInOXey3fuEyToIQFo9B11wE78m5U+Ce4VXJ+jXTJpLrm1HWMVCo3NpDmxXqb2xvXh76p/yN0N0kbRSiqJbAMzB0jf/98yNJADdQAr/SM7eZYwVhIYCfQlatnqCQ3m7swO7EVckXL75cABmd4H81xXwuudACZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555176; c=relaxed/simple;
-	bh=ZA4FcLIILStwVDKsvYfjb2Z7r+IXLU5LN3Uxf42etM8=;
+	s=arc-20240116; t=1751556059; c=relaxed/simple;
+	bh=UgfzTPa9/62oLlxV57tcz3euklnU5i2sRoarUfAsza4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bGRbmRqGZ32hweqnwI/+TqopaOdswkCNNQzcJRR9F4x3wpQ5ybVbDnJjDv4ReWii3LEGwJiwjV5ZjbaB4THjTykZa823tSaCcFo4MLLmTxyi+mflbPYazqBe/+swp5XGBNRWAJpGMBH6tpp8MaJc3kTPpCxnoIIq0OV9WVS2Epo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkMmJ9TW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE0EC4CEEE;
-	Thu,  3 Jul 2025 15:06:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UwUD9/x6jRsFM5NU1L7O2lBOTJvvsJ81aNAdv7u19XpknAMN3vANvYJDdwU0CyOowug3JJpTFV0O5LZ+jWyEAi0oS0vTVlZztkL+/8XCJcXh4vTwA6zxuXfzR/S+U33t8BSBEhqpMImElxyO24QnaOpUN9kS66976lOyvInK0zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qn58ykE6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065C2C4CEE3;
+	Thu,  3 Jul 2025 15:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555175;
-	bh=ZA4FcLIILStwVDKsvYfjb2Z7r+IXLU5LN3Uxf42etM8=;
+	s=korg; t=1751556058;
+	bh=UgfzTPa9/62oLlxV57tcz3euklnU5i2sRoarUfAsza4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AkMmJ9TWnrckM8iyl6v+rod3B4kaPmLfkx3urFHmXph6GVsN8awYZiojofFER1Lf0
-	 UrXwz6cibubmKM3jY9pQ4eGjj3p3HuLSPGEl166zEuH6h1rsAq8V9If6gZa60bzvqz
-	 sPdRhp9txoTqOhYXWpCeUa7dochQToVp84vRR0uM=
+	b=Qn58ykE64FKwYBj46tHVQN7TU5XLB4z8SX3ROzxaVPO90zQ8dP0FZYxijnklTufUu
+	 GKNqHoIKE2+77xmEaXYTptX6p3GPS7Q/sQHLXq26m8ThlkMNbs1gdwsMbn8zkJWplD
+	 eRmEc0KsZbN+BeZklRT3TQC3ivDXBnnQSCmgX+Ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	anvithdosapati <anvithdosapati@google.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.15 199/263] scsi: ufs: core: Fix clk scaling to be conditional in reset and restore
-Date: Thu,  3 Jul 2025 16:41:59 +0200
-Message-ID: <20250703144012.347327827@linuxfoundation.org>
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 031/132] ALSA: hda: Ignore unsol events for cards being shut down
+Date: Thu,  3 Jul 2025 16:42:00 +0200
+Message-ID: <20250703143940.632940161@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: anvithdosapati <anvithdosapati@google.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-commit 2e083cd802294693a5414e4557a183dd7e442e71 upstream.
+[ Upstream commit 3f100f524e75586537e337b34d18c8d604b398e7 ]
 
-In ufshcd_host_reset_and_restore(), scale up clocks only when clock
-scaling is supported. Without this change CPU latency is voted for 0
-(ufshcd_pm_qos_update) during resume unconditionally.
+For the classic snd_hda_intel driver, codec->card and bus->card point to
+the exact same thing. When snd_card_diconnect() fires, bus->shutdown is
+set thanks to azx_dev_disconnect(). card->shutdown is already set when
+that happens but both provide basically the same functionality.
 
-Signed-off-by: anvithdosapati <anvithdosapati@google.com>
-Link: https://lore.kernel.org/r/20250616085734.2133581-1-anvithdosapati@google.com
-Fixes: a3cd5ec55f6c ("scsi: ufs: add load based scaling of UFS gear")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For the DSP snd_soc_avs driver where multiple codecs are located on
+multiple cards, bus->shutdown 'shortcut' is not sufficient. One codec
+card may be unregistered while other codecs are still operational.
+Proper check in form of card->shutdown must be used to verify whether
+the codec's card is being shut down.
+
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250530141309.2943404-1-cezary.rojewski@intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/hda/hda_bind.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -7753,7 +7753,8 @@ static int ufshcd_host_reset_and_restore
- 	hba->silence_err_logs = false;
+diff --git a/sound/pci/hda/hda_bind.c b/sound/pci/hda/hda_bind.c
+index 890c2f7c33fc2..4c7355a0814d1 100644
+--- a/sound/pci/hda/hda_bind.c
++++ b/sound/pci/hda/hda_bind.c
+@@ -45,7 +45,7 @@ static void hda_codec_unsol_event(struct hdac_device *dev, unsigned int ev)
+ 	struct hda_codec *codec = container_of(dev, struct hda_codec, core);
  
- 	/* scale up clocks to max frequency before full reinitialization */
--	ufshcd_scale_clks(hba, ULONG_MAX, true);
-+	if (ufshcd_is_clkscaling_supported(hba))
-+		ufshcd_scale_clks(hba, ULONG_MAX, true);
+ 	/* ignore unsol events during shutdown */
+-	if (codec->bus->shutdown)
++	if (codec->card->shutdown || codec->bus->shutdown)
+ 		return;
  
- 	err = ufshcd_hba_enable(hba);
- 
+ 	/* ignore unsol events during system suspend/resume */
+-- 
+2.39.5
+
 
 
 
