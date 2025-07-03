@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF55AF77EC
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:45:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08FE5AF794E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C469E4A2869
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:45:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C953216C613
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A092ED86C;
-	Thu,  3 Jul 2025 14:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02F82ECEBA;
+	Thu,  3 Jul 2025 14:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pFIiGKR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmOCWngt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DB82E4242;
-	Thu,  3 Jul 2025 14:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD582126C02;
+	Thu,  3 Jul 2025 14:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751553897; cv=none; b=YIO0rascKHMQPESR9skVmho3LmFCeGzp42BfyrrClq/wh7fofyQbrVjV9yDIN6c6vVP1K8PzB4RCqp+liFPGs5BjP57raR3WpMKVau2Nh/q9mRj4QxnIk/H7cl8Yq0r20tDj8XmAet8VnhQKzYIlWNOxbI+Pyl25qRcjzYPRRHY=
+	t=1751554676; cv=none; b=nrAxeJdHfobnBUxLl8G9xYqGAJQu3D445Dt86teLZIwXNsocGRzTaZVO02qg9ceV04Z3WyKmkqv5MYu2Bbhis6pzTU301Yd6D82qKiZG8SJvsyEMlpq1kSMvTpJhZn96c+g0Q59Gp2JrzlV8fceUejl6nXfbFtuc8f8iV6GZxYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751553897; c=relaxed/simple;
-	bh=q9/VgZCsaAEq3EoHBVgBOcyle9DcD/Q3Bh8DQlEEg0s=;
+	s=arc-20240116; t=1751554676; c=relaxed/simple;
+	bh=xjXvomkQggPgyLT6OPOQr1AzUICbOm1O2PW0kvPPSeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y3V3ZnjA0ZZAYS8dvRa2MyXmy3Bii4F3+wyw+fz3hGOdB+NViDzRcutQyUojFDpBGQOATxe7C2YNwxlC3xG0Y+D9Yv9eixn72S2C8+W9+HnXf4RwttCIAMk9pEIC4BnD1KfWOpPoHUAyHlBSxY5EbaWoevhi5QtNxrCXsxiaoqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pFIiGKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CBAC4CEED;
-	Thu,  3 Jul 2025 14:44:56 +0000 (UTC)
+	 MIME-Version; b=hPnJ6ssNNKAToR2HPXtl3kDvXtEpqWzccq97RZDC+zE23WRDxxPweRqAgbv6WhpJ6P8bE0byW/cH/Ly2435Da+/LYHllJMxE67jnI1xvt1A2WQmwysid6Gd0EYeby5oNOFhbs9uSf+TdGiih1KkVSAY1aWAbX/rFClGtfxyfWzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmOCWngt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C91BC4CEE3;
+	Thu,  3 Jul 2025 14:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751553897;
-	bh=q9/VgZCsaAEq3EoHBVgBOcyle9DcD/Q3Bh8DQlEEg0s=;
+	s=korg; t=1751554676;
+	bh=xjXvomkQggPgyLT6OPOQr1AzUICbOm1O2PW0kvPPSeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2pFIiGKRU2QSPnWoD86xdnuRySNjU9R3vSOr20TvMGHVpP15Gdei3oEu4SgHbSpVg
-	 UuAjD4ZQIeTJUcd8v+SG0vkaHuK1gO6O6+/7tA8wZO6iAdaY7u0m3SGM3hpvUyt88r
-	 hjWqmO21C7gJT9jpS8O1n96Wmbp0gVM/mHhCIzR8=
+	b=fmOCWngtwgEQRypJnzjbboF1AXfb5O8QlRLZ6JZrWIdtlRgYe7awUQ/DLc9H5C+ZH
+	 4lDYA0H/qsLYbIsfZnL6Y1+1gyCA1jaEBI92UYJ3uc5FdVATCdh38J7uI5Hf2qJ4ae
+	 L1OtlhkX9udNMVr/wr6Wlvt6zXw/qH3ymDtCUIho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Turner Arthur <justinarthur@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Daniele Palmas <dnlplm@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/218] ksmbd: provide zero as a unique ID to the Mac client
+Subject: [PATCH 6.15 045/263] bus: mhi: host: pci_generic: Add Telit FN920C04 modem support
 Date: Thu,  3 Jul 2025 16:39:25 +0200
-Message-ID: <20250703143956.647967374@linuxfoundation.org>
+Message-ID: <20250703144006.112366134@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit 571781eb7ffefa65b0e922c8031e42b4411a40d4 ]
+[ Upstream commit 6348f62ef7ecc5855b710a7d4ea682425c38bb80 ]
 
-The Mac SMB client code seems to expect the on-disk file identifier
-to have the semantics of HFS+ Catalog Node Identifier (CNID).
-ksmbd provides the inode number as a unique ID to the client,
-but in the case of subvolumes of btrfs, there are cases where different
-files have the same inode number, so the mac smb client treats it
-as an error. There is a report that a similar problem occurs
-when the share is ZFS.
-Returning UniqueId of zero will make the Mac client to stop using and
-trusting the file id returned from the server.
+Add SDX35 based modem Telit FN920C04.
 
-Reported-by: Justin Turner Arthur <justinarthur@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+$ lspci -vv
+01:00.0 Unassigned class [ff00]: Qualcomm Device 011a
+        Subsystem: Device 1c5d:2020
+
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://patch.msgid.link/20250401093458.2953872-1-dnlplm@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/connection.h |  1 +
- fs/smb/server/smb2pdu.c    | 19 +++++++++++++++++--
- fs/smb/server/smb2pdu.h    |  3 +++
- 3 files changed, 21 insertions(+), 2 deletions(-)
+ drivers/bus/mhi/host/pci_generic.c | 39 ++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/fs/smb/server/connection.h b/fs/smb/server/connection.h
-index 572102098c108..dd3e0e3f7bf04 100644
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -108,6 +108,7 @@ struct ksmbd_conn {
- 	__le16				signing_algorithm;
- 	bool				binding;
- 	atomic_t			refcnt;
-+	bool				is_aapl;
+diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
+index 03aa887952098..059cfd77382f0 100644
+--- a/drivers/bus/mhi/host/pci_generic.c
++++ b/drivers/bus/mhi/host/pci_generic.c
+@@ -782,6 +782,42 @@ static const struct mhi_pci_dev_info mhi_telit_fe990a_info = {
+ 	.mru_default = 32768,
  };
  
- struct ksmbd_conn_ops {
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index ef921a370cb98..5d2324c09a070 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3535,6 +3535,15 @@ int smb2_open(struct ksmbd_work *work)
- 			ksmbd_debug(SMB, "get query on disk id context\n");
- 			query_disk_id = 1;
- 		}
++static const struct mhi_channel_config mhi_telit_fn920c04_channels[] = {
++	MHI_CHANNEL_CONFIG_UL_SBL(2, "SAHARA", 32, 0),
++	MHI_CHANNEL_CONFIG_DL_SBL(3, "SAHARA", 32, 0),
++	MHI_CHANNEL_CONFIG_UL(4, "DIAG", 64, 1),
++	MHI_CHANNEL_CONFIG_DL(5, "DIAG", 64, 1),
++	MHI_CHANNEL_CONFIG_UL(14, "QMI", 32, 0),
++	MHI_CHANNEL_CONFIG_DL(15, "QMI", 32, 0),
++	MHI_CHANNEL_CONFIG_UL(32, "DUN", 32, 0),
++	MHI_CHANNEL_CONFIG_DL(33, "DUN", 32, 0),
++	MHI_CHANNEL_CONFIG_UL_FP(34, "FIREHOSE", 32, 0),
++	MHI_CHANNEL_CONFIG_DL_FP(35, "FIREHOSE", 32, 0),
++	MHI_CHANNEL_CONFIG_UL(92, "DUN2", 32, 1),
++	MHI_CHANNEL_CONFIG_DL(93, "DUN2", 32, 1),
++	MHI_CHANNEL_CONFIG_HW_UL(100, "IP_HW0", 128, 2),
++	MHI_CHANNEL_CONFIG_HW_DL(101, "IP_HW0", 128, 3),
++};
 +
-+		if (conn->is_aapl == false) {
-+			context = smb2_find_context_vals(req, SMB2_CREATE_AAPL, 4);
-+			if (IS_ERR(context)) {
-+				rc = PTR_ERR(context);
-+				goto err_out1;
-+			} else if (context)
-+				conn->is_aapl = true;
-+		}
- 	}
- 
- 	rc = ksmbd_vfs_getattr(&path, &stat);
-@@ -3974,7 +3983,10 @@ static int smb2_populate_readdir_entry(struct ksmbd_conn *conn, int info_level,
- 		if (dinfo->EaSize)
- 			dinfo->ExtFileAttributes = FILE_ATTRIBUTE_REPARSE_POINT_LE;
- 		dinfo->Reserved = 0;
--		dinfo->UniqueId = cpu_to_le64(ksmbd_kstat->kstat->ino);
-+		if (conn->is_aapl)
-+			dinfo->UniqueId = 0;
-+		else
-+			dinfo->UniqueId = cpu_to_le64(ksmbd_kstat->kstat->ino);
- 		if (d_info->hide_dot_file && d_info->name[0] == '.')
- 			dinfo->ExtFileAttributes |= FILE_ATTRIBUTE_HIDDEN_LE;
- 		memcpy(dinfo->FileName, conv_name, conv_len);
-@@ -3991,7 +4003,10 @@ static int smb2_populate_readdir_entry(struct ksmbd_conn *conn, int info_level,
- 			smb2_get_reparse_tag_special_file(ksmbd_kstat->kstat->mode);
- 		if (fibdinfo->EaSize)
- 			fibdinfo->ExtFileAttributes = FILE_ATTRIBUTE_REPARSE_POINT_LE;
--		fibdinfo->UniqueId = cpu_to_le64(ksmbd_kstat->kstat->ino);
-+		if (conn->is_aapl)
-+			fibdinfo->UniqueId = 0;
-+		else
-+			fibdinfo->UniqueId = cpu_to_le64(ksmbd_kstat->kstat->ino);
- 		fibdinfo->ShortNameLength = 0;
- 		fibdinfo->Reserved = 0;
- 		fibdinfo->Reserved2 = cpu_to_le16(0);
-diff --git a/fs/smb/server/smb2pdu.h b/fs/smb/server/smb2pdu.h
-index 17a0b18a8406b..16ae8a10490be 100644
---- a/fs/smb/server/smb2pdu.h
-+++ b/fs/smb/server/smb2pdu.h
-@@ -63,6 +63,9 @@ struct preauth_integrity_info {
- 
- #define SMB2_SESSION_TIMEOUT		(10 * HZ)
- 
-+/* Apple Defined Contexts */
-+#define SMB2_CREATE_AAPL		"AAPL"
++static const struct mhi_controller_config modem_telit_fn920c04_config = {
++	.max_channels = 128,
++	.timeout_ms = 50000,
++	.num_channels = ARRAY_SIZE(mhi_telit_fn920c04_channels),
++	.ch_cfg = mhi_telit_fn920c04_channels,
++	.num_events = ARRAY_SIZE(mhi_telit_fn990_events),
++	.event_cfg = mhi_telit_fn990_events,
++};
 +
- struct create_durable_req_v2 {
- 	struct create_context_hdr ccontext;
- 	__u8   Name[8];
++static const struct mhi_pci_dev_info mhi_telit_fn920c04_info = {
++	.name = "telit-fn920c04",
++	.config = &modem_telit_fn920c04_config,
++	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
++	.dma_data_width = 32,
++	.sideband_wake = false,
++	.mru_default = 32768,
++	.edl_trigger = true,
++};
++
+ static const struct mhi_pci_dev_info mhi_netprisma_lcur57_info = {
+ 	.name = "netprisma-lcur57",
+ 	.edl = "qcom/prog_firehose_sdx24.mbn",
+@@ -806,6 +842,9 @@ static const struct mhi_pci_dev_info mhi_netprisma_fcun69_info = {
+ static const struct pci_device_id mhi_pci_id_table[] = {
+ 	{PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0116),
+ 		.driver_data = (kernel_ulong_t) &mhi_qcom_sa8775p_info },
++	/* Telit FN920C04 (sdx35) */
++	{PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x011a, 0x1c5d, 0x2020),
++		.driver_data = (kernel_ulong_t) &mhi_telit_fn920c04_info },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0304),
+ 		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx24_info },
+ 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0306, PCI_VENDOR_ID_QCOM, 0x010c),
 -- 
 2.39.5
 
