@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DF1AF78A8
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DBB0AF7A54
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:12:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC0CD162DA9
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33AC97B40F1
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74EED2EE983;
-	Thu,  3 Jul 2025 14:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D7C2E54BF;
+	Thu,  3 Jul 2025 15:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWSlGMzB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgx2sXeY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3055E23AB86;
-	Thu,  3 Jul 2025 14:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F40F2F0020;
+	Thu,  3 Jul 2025 15:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554264; cv=none; b=eBJ/Z5zTZYRAuubgoB1KCCoRZLFjg4bK3H19b+9d4Ei9HD6PyoF/RbUZMnP8RA2ToJm7CxIWfm6Ud3RSMVt2BDproUPRZMgJr5BDUI2b3G19DtNy5PBVYAVPISimSwke8HAdpy01W+7Gw3ETY5sox0hGkfFnsUkHpIk2XJmaEFg=
+	t=1751555450; cv=none; b=JWQ3UNlk2uqsyQamAFuY140y6qH7G2uZL0gW/ZbT4kohxlmTGQyFmNlFDuNCsZvuyW95/tkvkYDaPcA9nPctm0klwiIzu9s3geksWiuPezRiFVksTOBJaS4ftRD+RyKE6rAdZvK9Kkj52NOhZ2Wg4NMppqGRKiGURxoCI8p7jlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554264; c=relaxed/simple;
-	bh=SZhik5qzQZ4UC2KvSfpsJc3vZPJ/j0Fhb0+GhopkIO4=;
+	s=arc-20240116; t=1751555450; c=relaxed/simple;
+	bh=qQ9Tiq1zSg4qtsyP/XKe3IqAcQXiQKd+x5qkCc3sWxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/lVi7bsPFu1bRVzU3/grYLywCZanoyQya9bSh1/KbE2oOZBdqiqrK5ePu8+M183OIyQt3q8dryq6hMYOK2iYRMeayv4IhLf21hU0EdrXD9Dp407GeNMimpZbQgB+tew7r0agMIBVMGguI9DrErp4JxeLglebhuGbNEjdkpp+K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWSlGMzB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B072C4CEE3;
-	Thu,  3 Jul 2025 14:51:03 +0000 (UTC)
+	 MIME-Version; b=thj6ky9wYrHDg4gtsY0A3srrh6BLED8LDpE3jAoXJ2BfMsKLir84sY7QBBf0u2LjHXaGUlsHupc6yjcipWqtZTxNylkFBDqlXm505G+nSyYd72dQ0ZRgG9vzQNrHoktNe6uqUV9I2vWveXbSW2+HgM/nI/NyoaAqnEdZtx0ymO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgx2sXeY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A28C4CEE3;
+	Thu,  3 Jul 2025 15:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554264;
-	bh=SZhik5qzQZ4UC2KvSfpsJc3vZPJ/j0Fhb0+GhopkIO4=;
+	s=korg; t=1751555450;
+	bh=qQ9Tiq1zSg4qtsyP/XKe3IqAcQXiQKd+x5qkCc3sWxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wWSlGMzBsSSYpY6rD9IX1CM8vzhjFDAb8np4hawMHzWXnF+gfegFMES+cjC0uE/JL
-	 CYiCCFFIPfOqvWLu+mGxBMuSbqHNlaAwST7TnNh7Q0pN/FdE1VQe1Fx4l+mowuxgq6
-	 EZNdq1c3dmORMP9LDyt51BX3TJFF0XIgghMPnyB8=
+	b=mgx2sXeYldhqCPE5yPb7vxZAS+sCArUF07lCAnHm3zrst/Wz9RBV7cOibvGMyOTLo
+	 I+PmqBAFbWxcsYoy0IPIqV0vNUVO803MzZNygeWLouYcVowKlAuOaDcZgn3cnItiFc
+	 n/8NI6McEnxlepI5Exmf8GjsR8jFJKaFPbSKOAH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 6.12 132/218] serial: imx: Restore original RXTL for console to fix data loss
-Date: Thu,  3 Jul 2025 16:41:20 +0200
-Message-ID: <20250703144001.393971809@linuxfoundation.org>
+	Yi Sun <yi.sun@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 018/139] dmaengine: idxd: Check availability of workqueue allocated by idxd wq driver before using
+Date: Thu,  3 Jul 2025 16:41:21 +0200
+Message-ID: <20250703143941.888185923@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@gmail.com>
+From: Yi Sun <yi.sun@intel.com>
 
-commit f23c52aafb1675ab1d1f46914556d8e29cbbf7b3 upstream.
+[ Upstream commit 17502e7d7b7113346296f6758324798d536c31fd ]
 
-Commit 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
-introduced a regression on the i.MX6UL EVK board. The issue can be
-reproduced with the following steps:
+Running IDXD workloads in a container with the /dev directory mounted can
+trigger a call trace or even a kernel panic when the parent process of the
+container is terminated.
 
-- Open vi on the board.
-- Paste a text file (~150 characters).
-- Save the file, then repeat the process.
-- Compare the sha256sum of the saved files.
+This issue occurs because, under certain configurations, Docker does not
+properly propagate the mount replica back to the original mount point.
 
-The checksums do not match due to missing characters or entire lines.
+In this case, when the user driver detaches, the WQ is destroyed but it
+still calls destroy_workqueue() attempting to completes all pending work.
+It's necessary to check wq->wq and skip the drain if it no longer exists.
 
-Fix this by restoring the RXTL value to 1 when the UART is used as a
-console.
+Signed-off-by: Yi Sun <yi.sun@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
 
-This ensures timely RX interrupts and reliable data reception in console
-mode.
-
-With this change, pasted content is saved correctly, and checksums are
-always consistent.
-
-Cc: stable <stable@kernel.org>
-Fixes: 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20250619114617.2791939-1-festevam@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250509000304.1402863-1-yi.sun@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/dma/idxd/cdev.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -233,6 +233,7 @@ struct imx_port {
- 	enum imx_tx_state	tx_state;
- 	struct hrtimer		trigger_start_tx;
- 	struct hrtimer		trigger_stop_tx;
-+	unsigned int		rxtl;
- };
- 
- struct imx_port_ucrs {
-@@ -1328,6 +1329,7 @@ static void imx_uart_clear_rx_errors(str
- 
- #define TXTL_DEFAULT 8
- #define RXTL_DEFAULT 8 /* 8 characters or aging timer */
-+#define RXTL_CONSOLE_DEFAULT 1
- #define TXTL_DMA 8 /* DMA burst setting */
- #define RXTL_DMA 9 /* DMA burst setting */
- 
-@@ -1445,7 +1447,7 @@ static void imx_uart_disable_dma(struct
- 	ucr1 &= ~(UCR1_RXDMAEN | UCR1_TXDMAEN | UCR1_ATDMAEN);
- 	imx_uart_writel(sport, ucr1, UCR1);
- 
--	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 
- 	sport->dma_is_enabled = 0;
- }
-@@ -1470,7 +1472,12 @@ static int imx_uart_startup(struct uart_
- 		return retval;
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index 7e3a67f9f0a65..aa39fcd389a94 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -354,7 +354,9 @@ static void idxd_cdev_evl_drain_pasid(struct idxd_wq *wq, u32 pasid)
+ 			set_bit(h, evl->bmap);
+ 		h = (h + 1) % size;
  	}
- 
--	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+	if (uart_console(&sport->port))
-+		sport->rxtl = RXTL_CONSOLE_DEFAULT;
-+	else
-+		sport->rxtl = RXTL_DEFAULT;
+-	drain_workqueue(wq->wq);
++	if (wq->wq)
++		drain_workqueue(wq->wq);
 +
-+	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
+ 	mutex_unlock(&evl->lock);
+ }
  
- 	/* disable the DREN bit (Data Ready interrupt enable) before
- 	 * requesting IRQs
-@@ -1936,7 +1943,7 @@ static int imx_uart_poll_init(struct uar
- 	if (retval)
- 		clk_disable_unprepare(sport->clk_ipg);
- 
--	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 
- 	uart_port_lock_irqsave(&sport->port, &flags);
- 
-@@ -2028,7 +2035,7 @@ static int imx_uart_rs485_config(struct
- 		/* If the receiver trigger is 0, set it to a default value */
- 		ufcr = imx_uart_readl(sport, UFCR);
- 		if ((ufcr & UFCR_RXTL_MASK) == 0)
--			imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+			imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 		imx_uart_start_rx(port);
- 	}
- 
-@@ -2213,7 +2220,7 @@ imx_uart_console_setup(struct console *c
- 	else
- 		imx_uart_console_get_options(sport, &baud, &parity, &bits);
- 
--	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 
- 	retval = uart_set_options(&sport->port, co, baud, parity, bits, flow);
- 
+-- 
+2.39.5
+
 
 
 
