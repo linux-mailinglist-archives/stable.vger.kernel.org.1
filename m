@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-159678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC69AF79DB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C45AF7890
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA271678DE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4592516FC79
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174A02E7BBF;
-	Thu,  3 Jul 2025 15:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47FB2ED871;
+	Thu,  3 Jul 2025 14:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LfsubLe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tl70wr/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91FB4414;
-	Thu,  3 Jul 2025 15:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20B2231853;
+	Thu,  3 Jul 2025 14:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554992; cv=none; b=g3K1vQ3iow5pt+ZLYErVGEk+C5EzDkVdhVXYlIhT1A+y1hxApwQaTPNgxA6rzkQ3xQfo2Zc7AreobY2nCryiNoY7vX7BULjDhsMKJ1ufRwwwp72qtdPoH2v9wTgBUYLn3Pf2y8teGdH/uGnj9PaCwYQC3akOHsO5uPo1of0KqNM=
+	t=1751554246; cv=none; b=WzdfBgWKcYkQGqsIgZWEYvUSwmPgycyAJVX7ySc61bAXqqvDS67Fg9I3WqJL9WHBtiIGq7KJJaFISBQjERAa3FfvYPAjgGkxftC2rC52m4WX1ryGO/ARQR8jzD6xIVXoRADqyULlyVXum8Dyuq48KL60tauWDRQRUtqvraX94hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554992; c=relaxed/simple;
-	bh=xDvHmN0qQEjD3sE3ED6bcqyfgPVp8inPGkASmCDCXEM=;
+	s=arc-20240116; t=1751554246; c=relaxed/simple;
+	bh=wweRQkhXbqWGWzx+mKJ4kZaiMRbn7k3of98POqxJrGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LiX5m/xpUhZnZqe1aejKVo46N44PBWUElG3/lvdkoKzHc5+TnZ/5v0oanpv4ITGFNZGx94f5teFOgCrWsmvXZpe3ufbohYXt4+gNvwir1kvpMKSvDp+tGJMsgitysKdvA1JfHqNByDhu+DXyntjsmtuZIejDrNaR6b3QrgTz7KM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LfsubLe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E32C4CEE3;
-	Thu,  3 Jul 2025 15:03:11 +0000 (UTC)
+	 MIME-Version; b=MbJEkkCdfWq2aZKXx6chcRyxEiMLAZr0NbrLef3nsi0ERQ2jzHEEQrrWlF/P1m7wWDcAYWLYi80qHe6DQZ880ayzlsWNA8uoIUfV1EDpNBW/zRmf4+9/0F2usEVAeN1z9Hzklq9bqJFZ1hHIy8FqRXrnxyMv56lq1bCXTJU6DrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tl70wr/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00B3C4CEE3;
+	Thu,  3 Jul 2025 14:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554992;
-	bh=xDvHmN0qQEjD3sE3ED6bcqyfgPVp8inPGkASmCDCXEM=;
+	s=korg; t=1751554246;
+	bh=wweRQkhXbqWGWzx+mKJ4kZaiMRbn7k3of98POqxJrGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0LfsubLeW1CLvpaZJkRsEHFe/PahEuoX8sMtlTP2CVALofDKK7DMzf9D6toEOxLE0
-	 cvzCjkKN7cSyH94Suk4QWuCEGJqi8D1IcxCw8lRRjkE1IAXChVGE4iaeM7s6lL7S8h
-	 xf/nIuCbHo+/0ACUy0VKShT3NBT0OWW4i1wfPb4M=
+	b=1tl70wr/Zs4VTtl5zZyZgkChqF2jGSDj4aVgFL5hN/1TY4zMUJhRkEUOa7NBAb3of
+	 /8xpMgCivQITewoaj3VK0XVf9kOY2K+7uJhfCx5C4T/G8zGwu51mM933c0YbdB9J4S
+	 U19Eqj5INYfMXmCoadLvxM91ksorr+SsmTPLqvVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.15 125/263] drm/amd/display: Add sanity checks for drm_edid_raw()
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 097/218] wifi: mac80211: fix beacon interval calculation overflow
 Date: Thu,  3 Jul 2025 16:40:45 +0200
-Message-ID: <20250703144009.367200581@linuxfoundation.org>
+Message-ID: <20250703143959.813430829@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 
-commit 6847b3b6e84ef37451c074e6a8db3fbd250c8dbf upstream.
+[ Upstream commit 7a3750ff0f2e8fee338a9c168f429f6c37f0e820 ]
 
-When EDID is retrieved via drm_edid_raw(), it doesn't guarantee to
-return proper EDID bytes the caller wants: it may be either NULL (that
-leads to an Oops) or with too long bytes over the fixed size raw_edid
-array (that may lead to memory corruption).  The latter was reported
-actually when connected with a bad adapter.
+As we are converting from TU to usecs, a beacon interval of
+100*1024 usecs will lead to integer wrapping. To fix change
+to use a u32.
 
-Add sanity checks for drm_edid_raw() to address the above corner
-cases, and return EDID_BAD_INPUT accordingly.
-
-Fixes: 48edb2a4256e ("drm/amd/display: switch amdgpu_dm_connector to use struct drm_edid")
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1236415
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 648d3f4d209725d51900d6a3ed46b7b600140cdf)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 057d5f4ba1e4 ("mac80211: sync dtim_count to TSF")
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Link: https://patch.msgid.link/20250621123209.511796-1-lachlan.hodges@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/mac80211/util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-@@ -1016,6 +1016,10 @@ enum dc_edid_status dm_helpers_read_loca
- 			return EDID_NO_RESPONSE;
- 
- 		edid = drm_edid_raw(drm_edid); // FIXME: Get rid of drm_edid_raw()
-+		if (!edid ||
-+		    edid->extensions >= sizeof(sink->dc_edid.raw_edid) / EDID_LENGTH)
-+			return EDID_BAD_INPUT;
-+
- 		sink->dc_edid.length = EDID_LENGTH * (edid->extensions + 1);
- 		memmove(sink->dc_edid.raw_edid, (uint8_t *)edid, sink->dc_edid.length);
- 
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index a98ae563613c0..77638e965726c 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -3908,7 +3908,7 @@ void ieee80211_recalc_dtim(struct ieee80211_local *local,
+ {
+ 	u64 tsf = drv_get_tsf(local, sdata);
+ 	u64 dtim_count = 0;
+-	u16 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
++	u32 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
+ 	u8 dtim_period = sdata->vif.bss_conf.dtim_period;
+ 	struct ps_data *ps;
+ 	u8 bcns_from_dtim;
+-- 
+2.39.5
+
 
 
 
