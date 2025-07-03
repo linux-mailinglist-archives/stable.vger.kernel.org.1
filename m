@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-159493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A2BAAF78E9
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD11EAF7B01
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:20:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 850683AFA20
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4284C5863C7
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5507E19F43A;
-	Thu,  3 Jul 2025 14:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA4F2F2C5B;
+	Thu,  3 Jul 2025 15:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVDnTzh4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eN51xFTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114EB126BFF;
-	Thu,  3 Jul 2025 14:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BA12EE97A;
+	Thu,  3 Jul 2025 15:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554404; cv=none; b=Z+MQ3hTcNHDAt2raRo8DWZ6PBKz+X5zqttVhES8WTjHCUtIfK9GPWTPPD1K7cs2f3g8iVKABEsb9jx6wDoaG8Qo9z2fLHsd9DZK77qgu5YH2v8B8rcUaKBo915L+JjAaxR43I85rlFgzNEwZRg5O9XwCeDJwR9+/zcp9rSxeQRg=
+	t=1751555598; cv=none; b=UBF4Bb5A4riLDl6XJ/bguwY5OKUcwU+7hlPFRN4V/+Yu87PKayedcA6bVerQd5mIIHqNAEZUXogS6q8ZYmAmqPq8Xm7BKV2K62O2+BoAX+VrYoyd6IJJncqNJwRcC3j0i10si5WjV637zxWlHMxPj6E1tklloapyr6EftCasxEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554404; c=relaxed/simple;
-	bh=1+Gd7yZsNBidR2BvOb4gWHiHgK2yQZHfao2Q40+qQ5g=;
+	s=arc-20240116; t=1751555598; c=relaxed/simple;
+	bh=Sb/mvuPivGY/unYhybt+7fb9TSzV2PL7sp0+x1fHm3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dUec3pFyhNOmz9NUlDIys5XKaJbLrm5XsEE2HTAPf3Xu9ufJMsNCNBUWf7F3NTL/NQXkl3uzg+JzaCsd6VgFSrzYN1wBVOwxojVgQoK3Yh9SQbJHzgttzGonu67UJETzfwoaSVUJolBTAvssxCZyFG1JsVhKvciyONekw17xPOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVDnTzh4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9594EC4CEE3;
-	Thu,  3 Jul 2025 14:53:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=As0yDTK4L9k+odvlcVazRxf4kjTBptGcP8jRcNWdyOvr085hieXsRuX2H5GWdbgu0u1PAMUyI3kG4jSOsANpczBOvZ2pZHrYvby3WBXjdzjiZc6C8+a0rybuJiz850EcxzfD2RJ6RR1xy2Szr1RBDTNKL8uTFHJuJu8Ao7x8aWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eN51xFTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65428C4CEE3;
+	Thu,  3 Jul 2025 15:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554403;
-	bh=1+Gd7yZsNBidR2BvOb4gWHiHgK2yQZHfao2Q40+qQ5g=;
+	s=korg; t=1751555597;
+	bh=Sb/mvuPivGY/unYhybt+7fb9TSzV2PL7sp0+x1fHm3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVDnTzh4YwavL6zLGDmZS8eyw+9LkY5npnk8rLkw+ECWhlc14Txb9/L9UXvyULKUl
-	 xX/Ph+NboVaVOI1uRnQ8nyfQ99EWO1QRlxyLCaEToyJgBtBzJcv5ySXPNYWjflJ+1C
-	 oJpXMGF1QTmeo2MRowe6zuIrtjlzQ31EEXIuqsag=
+	b=eN51xFTGBbz2Qcw6rc0vvZFJ47TJdUnqDTBTwsISfVhicTdEhUn/UMMZE2XirkTfa
+	 +PouJCTVtO2kBHGZmTV1LYJyVSh23z3CHAEPuJF11I0rhLw+MqYX0qEOmoA/WUPQ9Y
+	 TTWIiMN86S6pt/pi06IBCKZfwogH2pxv+NHfl+3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Austin Zheng <austin.zheng@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.12 176/218] drm/amd/display: Fix mpv playback corruption on weston
-Date: Thu,  3 Jul 2025 16:42:04 +0200
-Message-ID: <20250703144003.216713847@linuxfoundation.org>
+	Gergo Koteles <soyer@irl.hu>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 062/139] platform/x86: ideapad-laptop: introduce a generic notification chain
+Date: Thu,  3 Jul 2025 16:42:05 +0200
+Message-ID: <20250703143943.593695575@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +60,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-commit 8724a5380c4390eed81e271d22f34ff06453ded9 upstream.
+[ Upstream commit 613e3900c24bb1379d994f44d75d31c3223cc263 ]
 
-[WHAT]
-Severe video playback corruption is observed in the following setup:
+There are several cases where a notification chain can simplify Lenovo
+WMI drivers.
 
-weston 14.0.90 (built from source) + mpv v0.40.0 with command:
-mpv bbb_sunflower_1080p_60fps_normal.mp4 --vo=gpu
+Add a generic notification chain into ideapad-laptop.
 
-[HOW]
-ABGR16161616 needs to be included in dml2/2.1 translation.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Reviewed-by: Austin Zheng <austin.zheng@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d023de809f85307ca819a9dbbceee6ae1f50e2ad)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Link: https://lore.kernel.org/r/c5a43efae8a32bd034c3d19c0a686941347575a7.1721898747.git.soyer@irl.hu
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 5808c3421695 ("platform/x86: ideapad-laptop: use usleep_range() for EC polling")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c |    1 +
- drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c        |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/platform/x86/ideapad-laptop.c | 37 +++++++++++++++++++++++++++
+ drivers/platform/x86/ideapad-laptop.h |  5 ++++
+ 2 files changed, 42 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
-@@ -762,6 +762,7 @@ static void populate_dml21_plane_config_
- 		plane->pixel_format = dml2_420_10;
- 		break;
- 	case SURFACE_PIXEL_FORMAT_GRPH_ARGB16161616:
-+	case SURFACE_PIXEL_FORMAT_GRPH_ABGR16161616:
- 	case SURFACE_PIXEL_FORMAT_GRPH_ARGB16161616F:
- 	case SURFACE_PIXEL_FORMAT_GRPH_ABGR16161616F:
- 		plane->pixel_format = dml2_444_64;
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-@@ -909,6 +909,7 @@ static void populate_dml_surface_cfg_fro
- 		out->SourcePixelFormat[location] = dml_420_10;
- 		break;
- 	case SURFACE_PIXEL_FORMAT_GRPH_ARGB16161616:
-+	case SURFACE_PIXEL_FORMAT_GRPH_ABGR16161616:
- 	case SURFACE_PIXEL_FORMAT_GRPH_ARGB16161616F:
- 	case SURFACE_PIXEL_FORMAT_GRPH_ABGR16161616F:
- 		out->SourcePixelFormat[location] = dml_444_64;
+diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+index 50013af0537c3..e21b4dcfe1ddd 100644
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -1501,6 +1501,39 @@ static void ideapad_sync_touchpad_state(struct ideapad_private *priv, bool send_
+ 	priv->r_touchpad_val = value;
+ }
+ 
++static int ideapad_laptop_nb_notify(struct notifier_block *nb,
++				    unsigned long action, void *data)
++{
++	switch (action) {
++	}
++
++	return 0;
++}
++
++static struct notifier_block ideapad_laptop_notifier = {
++	.notifier_call = ideapad_laptop_nb_notify,
++};
++
++static BLOCKING_NOTIFIER_HEAD(ideapad_laptop_chain_head);
++
++int ideapad_laptop_register_notifier(struct notifier_block *nb)
++{
++	return blocking_notifier_chain_register(&ideapad_laptop_chain_head, nb);
++}
++EXPORT_SYMBOL_NS_GPL(ideapad_laptop_register_notifier, IDEAPAD_LAPTOP);
++
++int ideapad_laptop_unregister_notifier(struct notifier_block *nb)
++{
++	return blocking_notifier_chain_unregister(&ideapad_laptop_chain_head, nb);
++}
++EXPORT_SYMBOL_NS_GPL(ideapad_laptop_unregister_notifier, IDEAPAD_LAPTOP);
++
++void ideapad_laptop_call_notifier(unsigned long action, void *data)
++{
++	blocking_notifier_call_chain(&ideapad_laptop_chain_head, action, data);
++}
++EXPORT_SYMBOL_NS_GPL(ideapad_laptop_call_notifier, IDEAPAD_LAPTOP);
++
+ static void ideapad_acpi_notify(acpi_handle handle, u32 event, void *data)
+ {
+ 	struct ideapad_private *priv = data;
+@@ -1872,6 +1905,8 @@ static int ideapad_acpi_add(struct platform_device *pdev)
+ 	if (err)
+ 		goto shared_init_failed;
+ 
++	ideapad_laptop_register_notifier(&ideapad_laptop_notifier);
++
+ 	return 0;
+ 
+ shared_init_failed:
+@@ -1903,6 +1938,8 @@ static void ideapad_acpi_remove(struct platform_device *pdev)
+ 	struct ideapad_private *priv = dev_get_drvdata(&pdev->dev);
+ 	int i;
+ 
++	ideapad_laptop_unregister_notifier(&ideapad_laptop_notifier);
++
+ 	ideapad_shared_exit(priv);
+ 
+ 	acpi_remove_notify_handler(priv->adev->handle,
+diff --git a/drivers/platform/x86/ideapad-laptop.h b/drivers/platform/x86/ideapad-laptop.h
+index 4498a96de5976..3eb0dcd6bf7ba 100644
+--- a/drivers/platform/x86/ideapad-laptop.h
++++ b/drivers/platform/x86/ideapad-laptop.h
+@@ -12,6 +12,11 @@
+ #include <linux/acpi.h>
+ #include <linux/jiffies.h>
+ #include <linux/errno.h>
++#include <linux/notifier.h>
++
++int ideapad_laptop_register_notifier(struct notifier_block *nb);
++int ideapad_laptop_unregister_notifier(struct notifier_block *nb);
++void ideapad_laptop_call_notifier(unsigned long action, void *data);
+ 
+ enum {
+ 	VPCCMD_R_VPC1 = 0x10,
+-- 
+2.39.5
+
 
 
 
