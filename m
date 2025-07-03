@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-160014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A9FAF7BF3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:30:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E682AF7A6C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:13:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FD1C5A3FF7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5381486FD7
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:08:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352522EF9A7;
-	Thu,  3 Jul 2025 15:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0172D6622;
+	Thu,  3 Jul 2025 15:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwV3RHo4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8JCEVar"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E681C1E51EB;
-	Thu,  3 Jul 2025 15:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBE515442C;
+	Thu,  3 Jul 2025 15:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556094; cv=none; b=Rt4iVN9b+YiP0qf8yHmR+M3vNDH8NJlYLPWDJ/cV58yKEdUbe8s3Hxe2xmaWk35gOQ3o/lz2XyHIbxM6rJPLf7Vi69vlNOlJJkBpYSjtKjdjtTSMAqeGnfl0LqRVb7m2ATfj7xMRyAMi55COWBdQkqJ0N6GqL8+DzWbmF8aPCfo=
+	t=1751555322; cv=none; b=gmbyqi+/YLxMycWHbWWoUkTlaIQZTkor2WgOxWi6WH9SD0k7FgHKkPDJpYeod8dsowJFGNDxFt2J9mIuQex2eendkrIuiTgh9IXqxwRPElFrCkU5HGDQxBekLWg4nGCJVtGP0SVZTwjCSzOyNdGm9JxAHk9TH0LrsBh7XkLVgdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556094; c=relaxed/simple;
-	bh=gYGg1WXG78plSRjSQ2+uuwBOkF+7XV8lsmdoUixXTeI=;
+	s=arc-20240116; t=1751555322; c=relaxed/simple;
+	bh=i+LcOSndsaIjbmiky2Dl+zNRPs5wY8M0e9SpovhASn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STw7pLXTqd41RhmPNizzhBja5K/dwUPgp9+xXswjXGNAjptO/dcUp9bXw7Zem9gucHDg8yzCAIrZjffAmW2Fd/1b0kp6pbCHBb8BULYeMUL4VtSPhhfZ4IFwcWxwQGnSs0vizBl/2lDu8mmI0Yq0cfnsjq57lAZaNVHNLtTGjLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwV3RHo4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DCF9C4CEEE;
-	Thu,  3 Jul 2025 15:21:33 +0000 (UTC)
+	 MIME-Version; b=Omt9ZdwWbFXfxboxcvwsJ6Ns76QkIfQW9x0x+aZqNwtBiWbitjZ4tCup617Ucd5K5n0OmEYMZKmMkALoJ2R4o9TXOE2XDpna1It5Ej0ExUBgrSZwdSwzOkYu3uMlinC0S6IC5WxgZd8Eaa57aurLt4YV3qCDPLdPiN2jiQBApXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8JCEVar; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F79EC4CEE3;
+	Thu,  3 Jul 2025 15:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556093;
-	bh=gYGg1WXG78plSRjSQ2+uuwBOkF+7XV8lsmdoUixXTeI=;
+	s=korg; t=1751555321;
+	bh=i+LcOSndsaIjbmiky2Dl+zNRPs5wY8M0e9SpovhASn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OwV3RHo4pT2E28+5PLuLuYW5ezWPrt4al6/d0HZ3eg+vhaaEqQsNg3bh6eLx151s0
-	 vZ3asRIMqcRL60O/0AZh6Elf4yWLjPnofTJ3KXYP5Egw2BqGA57QFjvxEzNk1v1kS9
-	 D77f9B/exy1T/NW/XvxfmqjRKaKOmKYc4mI9pVRo=
+	b=L8JCEVar5CcMb8V7lZN1eJddUNS9nGSWRGlx1pgZpeCZZLaSpU0b0gqrCB2g2K08b
+	 rgZNRU9e6ntHJAM9y6U9L0CXndNLofIe6oPnqmLjt1zd0eE5+LpBnGvtD62c8gx3V1
+	 yiqERIh8k/MpD2u0YXqKdiufF1L6+mJZrEORBDyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Schramm <oliver.schramm97@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 073/132] ASoC: amd: yc: Add DMI quirk for Lenovo IdeaPad Slim 5 15
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 242/263] arm64: dts: qcom: x1e78100-t14s: mark l12b and l15b always-on
 Date: Thu,  3 Jul 2025 16:42:42 +0200
-Message-ID: <20250703143942.285465044@linuxfoundation.org>
+Message-ID: <20250703144014.113238338@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Schramm <oliver.schramm97@gmail.com>
+[ Upstream commit 673fa129e558c5f1196adb27d97ac90ddfe4f19c ]
 
-commit bf39286adc5e10ce3e32eb86ad316ae56f3b52a0 upstream.
+The l12b and l15b supplies are used by components that are not (fully)
+described (and some never will be) and must never be disabled.
 
-It's smaller brother has already received the patch to enable the microphone,
-now add it too to the DMI quirk table.
+Mark the regulators as always-on to prevent them from being disabled,
+for example, when consumers probe defer or suspend.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Schramm <oliver.schramm97@gmail.com>
-Link: https://patch.msgid.link/20250621223000.11817-2-oliver.schramm97@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7d1cbe2f4985 ("arm64: dts: qcom: Add X1E78100 ThinkPad T14s Gen 6")
+Cc: stable@vger.kernel.org	# 6.12
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20250314145440.11371-3-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -370,6 +370,13 @@ static const struct dmi_system_id yc_acp
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83J3"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "Alienware"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m17 R5 AMD"),
- 		}
+diff --git a/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts b/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts
+index b2c2347f54fa6..7f756ce48d2f6 100644
+--- a/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts
++++ b/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts
+@@ -344,6 +344,7 @@ vreg_l12b_1p2: ldo12 {
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
+ 		};
+ 
+ 		vreg_l13b_3p0: ldo13 {
+@@ -365,6 +366,7 @@ vreg_l15b_1p8: ldo15 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
+ 		};
+ 
+ 		vreg_l17b_2p5: ldo17 {
+-- 
+2.39.5
+
 
 
 
