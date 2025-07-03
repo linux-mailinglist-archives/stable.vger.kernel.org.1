@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 338A2AF7B20
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:22:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F63BAF7A06
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 026443A51F6
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:15:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0541C540DC8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF892EF67A;
-	Thu,  3 Jul 2025 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CD92ED86E;
+	Thu,  3 Jul 2025 15:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6yvE91l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tFW4e3vK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B402F3620;
-	Thu,  3 Jul 2025 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540122E7BD6;
+	Thu,  3 Jul 2025 15:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555607; cv=none; b=Dq1wfRI/bzWvzud7ZtdqveoVZNc4jiKb7QDxXp+TwrYYe3QlTvxvPQgf0JAJl3Y9+w20B+CM/qF3v0TVsVBTLm29dV1GoA04hbAfE9fY8A2SHbZ4zm2jSnkVzLpuD3KVnOF6bnrEpII0wrBOquai94ZLGPxB3kpIe6si6xqXIhA=
+	t=1751555120; cv=none; b=Km1+XNschn+XLE7NHavPjzhIBNrQdGrctnGneor2XpKRpmImu0vqL/6Z6HZm7EU2CYNe2e+LTaRvWEB/jrpdgV7HjE3bjgU1tTlByCWSqN41a6anfkJlilyYiE2UMp2rSmCDOtlKDUhGWuQM5yCOJOTFvIvbOuset5sd7s61H5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555607; c=relaxed/simple;
-	bh=tkt3UkS9Az6SZzAAMJtooR8SENdManq4nqt4FmF9SXU=;
+	s=arc-20240116; t=1751555120; c=relaxed/simple;
+	bh=Lm5wg43UrS6yfSVvtmlfvyEJKv3/X+iKmE+38BGwvpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RC3DGYfYNn9q8vwmMn4S5FyvpRfrKTc7Z0AVjGUQIiuDqmXlEoWnu2zluY7ScxZ/71/YP3av1cLIgWwkAOqEAMPFzsETsEE8baFQjmz6qyyC8Jwd/qHoNBeB5Wi/LfODLatt8URCXnsDmQx8ArUJlZIZOlb1GuGoyF7edxmJkJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6yvE91l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD94C4CEE3;
-	Thu,  3 Jul 2025 15:13:26 +0000 (UTC)
+	 MIME-Version; b=gKNYxSnbU+gRMEIHnpByEac6fG0OTLwVYqu2aWspWVG84ZQ6Dq24KwQwQfuuAlVknTwRULSieeEk8b8Bxn10azVfdTc2jB0MSf66qgqKtMIv07gEZX83qgmSvPT7TstpUjfxXQ63rp1GFvjCvY59u3BaHVITqfeGC7ELev5TzBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tFW4e3vK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF67CC4CEED;
+	Thu,  3 Jul 2025 15:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555607;
-	bh=tkt3UkS9Az6SZzAAMJtooR8SENdManq4nqt4FmF9SXU=;
+	s=korg; t=1751555120;
+	bh=Lm5wg43UrS6yfSVvtmlfvyEJKv3/X+iKmE+38BGwvpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x6yvE91lmLC5hBePcT2Hogy7jM+YCUd5Ck/MM5WK9CrCdtpetnLAoqcj382FvrUtf
-	 q2OGXSDoi+xXIDvlYvmmpCtKRNBX9aNPRqkOk+LniPzZc+x+ERuqGkm0HiV9rsBmU/
-	 0T7iukqvRieCHcU4wA++wUhAG+cGJlQaCSo8WDSE=
+	b=tFW4e3vK0NfGCjkD255w/L6X/3xjdCnU7KrzXsrKSq/0RFbVOoIf2l5ZT8tO5GFRn
+	 Anh0YiG07rR2iDFzSMwfp+H+3LWlst/oucHaOhu/L5AXXjoq5M/VO5NxzPVtTLkj6y
+	 EN5xTdORT5iHjQyRTqVMtfZ+8yP0UBDsuQa63Lm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Hodaszi <robert.hodaszi@digi.com>,
-	Oliver Neukum <oneukum@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/139] usb: cdc-wdm: avoid setting WDM_READ for ZLP-s
-Date: Thu,  3 Jul 2025 16:41:40 +0200
-Message-ID: <20250703143942.631371456@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Mark Harmstone <maharmstone@fb.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.15 181/263] btrfs: update superblocks device bytes_used when dropping chunk
+Date: Thu,  3 Jul 2025 16:41:41 +0200
+Message-ID: <20250703144011.601432580@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Hodaszi <robert.hodaszi@digi.com>
+From: Mark Harmstone <maharmstone@fb.com>
 
-[ Upstream commit 387602d8a75574fafb451b7a8215e78dfd67ee63 ]
+commit ae4477f937569d097ca5dbce92a89ba384b49bc6 upstream.
 
-Don't set WDM_READ flag in wdm_in_callback() for ZLP-s, otherwise when
-userspace tries to poll for available data, it might - incorrectly -
-believe there is something available, and when it tries to non-blocking
-read it, it might get stuck in the read loop.
+Each superblock contains a copy of the device item for that device. In a
+transaction which drops a chunk but doesn't create any new ones, we were
+correctly updating the device item in the chunk tree but not copying
+over the new bytes_used value to the superblock.
 
-For example this is what glib does for non-blocking read (briefly):
+This can be seen by doing the following:
 
-  1. poll()
-  2. if poll returns with non-zero, starts a read data loop:
-    a. loop on poll() (EINTR disabled)
-    b. if revents was set, reads data
-      I. if read returns with EINTR or EAGAIN, goto 2.a.
-      II. otherwise return with data
+  # dd if=/dev/zero of=test bs=4096 count=2621440
+  # mkfs.btrfs test
+  # mount test /root/temp
 
-So if ZLP sets WDM_READ (#1), we expect data, and try to read it (#2).
-But as that was a ZLP, and we are doing non-blocking read, wdm_read()
-returns with EAGAIN (#2.b.I), so loop again, and try to read again
-(#2.a.).
+  # cd /root/temp
+  # for i in {00..10}; do dd if=/dev/zero of=$i bs=4096 count=32768; done
+  # sync
+  # rm *
+  # sync
+  # btrfs balance start -dusage=0 .
+  # sync
 
-With glib, we might stuck in this loop forever, as EINTR is disabled
-(#2.a).
+  # cd
+  # umount /root/temp
+  # btrfs check test
 
-Signed-off-by: Robert Hodaszi <robert.hodaszi@digi.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250403144004.3889125-1-robert.hodaszi@digi.com
+For btrfs-check to detect this, you will also need my patch at
+https://github.com/kdave/btrfs-progs/pull/991.
+
+Change btrfs_remove_dev_extents() so that it adds the devices to the
+fs_info->post_commit_list if they're not there already. This causes
+btrfs_commit_device_sizes() to be called, which updates the bytes_used
+value in the superblock.
+
+Fixes: bbbf7243d62d ("btrfs: combine device update operations during transaction commit")
+CC: stable@vger.kernel.org # 5.10+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Mark Harmstone <maharmstone@fb.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-wdm.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ fs/btrfs/volumes.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/usb/class/cdc-wdm.c b/drivers/usb/class/cdc-wdm.c
-index 559c121f09230..600ad9412c146 100644
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -92,7 +92,6 @@ struct wdm_device {
- 	u16			wMaxCommand;
- 	u16			wMaxPacketSize;
- 	__le16			inum;
--	int			reslength;
- 	int			length;
- 	int			read;
- 	int			count;
-@@ -214,6 +213,11 @@ static void wdm_in_callback(struct urb *urb)
- 	if (desc->rerr == 0 && status != -EPIPE)
- 		desc->rerr = status;
- 
-+	if (length == 0) {
-+		dev_dbg(&desc->intf->dev, "received ZLP\n");
-+		goto skip_zlp;
-+	}
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -3281,6 +3281,12 @@ int btrfs_remove_chunk(struct btrfs_tran
+ 					device->bytes_used - dev_extent_len);
+ 			atomic64_add(dev_extent_len, &fs_info->free_chunk_space);
+ 			btrfs_clear_space_info_full(fs_info);
 +
- 	if (length + desc->length > desc->wMaxCommand) {
- 		/* The buffer would overflow */
- 		set_bit(WDM_OVERFLOW, &desc->flags);
-@@ -222,18 +226,18 @@ static void wdm_in_callback(struct urb *urb)
- 		if (!test_bit(WDM_OVERFLOW, &desc->flags)) {
- 			memmove(desc->ubuf + desc->length, desc->inbuf, length);
- 			desc->length += length;
--			desc->reslength = length;
++			if (list_empty(&device->post_commit_list)) {
++				list_add_tail(&device->post_commit_list,
++					      &trans->transaction->dev_update_list);
++			}
++
+ 			mutex_unlock(&fs_info->chunk_mutex);
  		}
  	}
- skip_error:
- 
- 	if (desc->rerr) {
- 		/*
--		 * Since there was an error, userspace may decide to not read
--		 * any data after poll'ing.
-+		 * If there was a ZLP or an error, userspace may decide to not
-+		 * read any data after poll'ing.
- 		 * We should respond to further attempts from the device to send
- 		 * data, so that we can get unstuck.
- 		 */
-+skip_zlp:
- 		schedule_work(&desc->service_outs_intr);
- 	} else {
- 		set_bit(WDM_READ, &desc->flags);
-@@ -585,15 +589,6 @@ static ssize_t wdm_read
- 			goto retry;
- 		}
- 
--		if (!desc->reslength) { /* zero length read */
--			dev_dbg(&desc->intf->dev, "zero length - clearing WDM_READ\n");
--			clear_bit(WDM_READ, &desc->flags);
--			rv = service_outstanding_interrupt(desc);
--			spin_unlock_irq(&desc->iuspin);
--			if (rv < 0)
--				goto err;
--			goto retry;
--		}
- 		cntr = desc->length;
- 		spin_unlock_irq(&desc->iuspin);
- 	}
-@@ -1016,7 +1011,7 @@ static void service_interrupt_work(struct work_struct *work)
- 
- 	spin_lock_irq(&desc->iuspin);
- 	service_outstanding_interrupt(desc);
--	if (!desc->resp_count) {
-+	if (!desc->resp_count && (desc->length || desc->rerr)) {
- 		set_bit(WDM_READ, &desc->flags);
- 		wake_up(&desc->wait);
- 	}
--- 
-2.39.5
-
 
 
 
