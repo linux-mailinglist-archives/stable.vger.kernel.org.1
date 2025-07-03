@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-159806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 432BCAF7ACD
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D85AF7B9A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B967B1CA402D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ACF46E4EA5
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6F62F19AD;
-	Thu,  3 Jul 2025 15:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184B619CC3D;
+	Thu,  3 Jul 2025 15:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YumWkAzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YiZn77l1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D342EF9B0;
-	Thu,  3 Jul 2025 15:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC77E2EF67F;
+	Thu,  3 Jul 2025 15:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555412; cv=none; b=E8GhPZ8GDAQXPRIhTxq5bBJXM7NZOv+xD6WUe+YzUgc6W0phXal4beVD0EdbRgQ0zf+2x6/XDHL9JEf29fwQt+AMHYB6pT3FnLWyF2PtG3GSGm/AvcDB/1nhQzxS210phz0ROY5VzkMWxItVNxrkmqauToc/+8QmY0JyLw1Lpic=
+	t=1751555779; cv=none; b=cS0dgcVrW+OlRcC6CmcPFvL/eIB4SceZZAc5xzTj6i/gqe67Z1feYNvMNN6z86b3ZITtYnym66VsmKM8qF5uSqNIqnET22zhRhWReQOXKJbYW2cDeo84j8ZsetrWWCIvbEPwaenEnmUQso6uqV5zE3lP3pPWzXKZw4grsVuUO7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555412; c=relaxed/simple;
-	bh=2+7W0VY0eFLCdWYePtk+NLlQat+z6ZZIeTE1JhNO+V8=;
+	s=arc-20240116; t=1751555779; c=relaxed/simple;
+	bh=3DOQVmKnslT8eJxkgS4YsRWrzv+AXauEdU9MJBeuGo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OArdJ1HweB7eoZC2pXF4epNSqre3HZzuXEHZrN7fkR5g6HW0AH8VYbpYka6EDuI99Y2dVBPabYDsZ6v1+2y5iPGRXzp+45YamwUtli7qXkdrNVuMiOnBdcFv1sTscUA3I7re+oeSzJhHdsUBC1TzFsWxitNCtVQvbImDgJOpziE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YumWkAzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA76DC4CEE3;
-	Thu,  3 Jul 2025 15:10:11 +0000 (UTC)
+	 MIME-Version; b=LyI1i/W5g4k2LO2WA93v3VAe6iJoGcFIpDa/8w1iT6xI3FmB+uZSqDp63KIr9y2VLFC0gMMVfDczMzrCxblQkCXE10CJdD478+55hhrWbV1E6bXkFekZZGcyEHTDNuFGypWfXoDbYENgWF6qQsDOTLxpATi5pFzYAYfiwdNg/t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YiZn77l1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C56C4CEE3;
+	Thu,  3 Jul 2025 15:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555412;
-	bh=2+7W0VY0eFLCdWYePtk+NLlQat+z6ZZIeTE1JhNO+V8=;
+	s=korg; t=1751555779;
+	bh=3DOQVmKnslT8eJxkgS4YsRWrzv+AXauEdU9MJBeuGo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YumWkAzQtz2NvrUTx3bLl2g+awfd1C96aKxv1eCjvjt2rWbLw1QsswFTJtxykW0to
-	 kjvKYbZaGurA7YUU2l6Ldw46X+613J5/VVB2wJzqxmLOtbGdz7LmHyDar7M7EEiePh
-	 0VcKKUy+5z258GTPjg4gXc3gcUwGEHyVDMPEAu/c=
+	b=YiZn77l1V6uUKErY073G0Wrln4QDEkVWamdV/y/Vr5E9/QpOAFsxTVu2bkLfXbzeT
+	 5HUe84sarUWUER82IMWXIdiiAynaRKvpDAiGDtgf3kmzEtjUuslhASwT8K+QeCQaSl
+	 AX6DzmWwx0D84s5UjVoTXcWCUE+WXtjwy6xPDMl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.15 262/263] io_uring: gate REQ_F_ISREG on !S_ANON_INODE as well
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 6.6 119/139] drm/bridge: cdns-dsi: Fix connecting to next bridge
 Date: Thu,  3 Jul 2025 16:43:02 +0200
-Message-ID: <20250703144014.917642322@linuxfoundation.org>
+Message-ID: <20250703143945.839671570@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Aradhya Bhatia <a-bhatia1@ti.com>
 
-commit 6f11adcc6f36ffd8f33dbdf5f5ce073368975bc3 upstream.
+commit 688eb4d465484bc2a3471a6a6f06f833b58c7867 upstream.
 
-io_uring marks a request as dealing with a regular file on S_ISREG. This
-drives things like retries on short reads or writes, which is generally
-not expected on a regular file (or bdev). Applications tend to not
-expect that, so io_uring tries hard to ensure it doesn't deliver short
-IO on regular files.
+Fix the OF node pointer passed to the of_drm_find_bridge() call to find
+the next bridge in the display chain.
 
-However, a recent commit added S_IFREG to anonymous inodes. When
-io_uring is used to read from various things that are backed by anon
-inodes, like eventfd, timerfd, etc, then it'll now all of a sudden wait
-for more data when rather than deliver what was read or written in a
-single operation. This breaks applications that issue reads on anon
-inodes, if they ask for more data than a single read delivers.
+The code to find the next panel (and create its panel-bridge) works
+fine, but to find the next (non-panel) bridge does not.
 
-Add a check for !S_ANON_INODE as well before setting REQ_F_ISREG to
-prevent that.
+To find the next bridge in the pipeline, we need to pass "np" - the OF
+node pointer of the next entity in the devicetree chain. Passing
+"of_node" to of_drm_find_bridge (which is what the code does currently)
+will fetch the bridge for the cdns-dsi which is not what's required.
 
-Cc: Christian Brauner <brauner@kernel.org>
+Fix that.
+
+Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
 Cc: stable@vger.kernel.org
-Link: https://github.com/ghostty-org/ghostty/discussions/7720
-Fixes: cfd86ef7e8e7 ("anon_inode: use a proper mode internally")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Link: https://lore.kernel.org/r/20250329113925.68204-2-aradhya.bhatia@linux.dev
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1647,11 +1647,12 @@ static void io_iopoll_req_issued(struct
- 
- io_req_flags_t io_file_get_flags(struct file *file)
- {
-+	struct inode *inode = file_inode(file);
- 	io_req_flags_t res = 0;
- 
- 	BUILD_BUG_ON(REQ_F_ISREG_BIT != REQ_F_SUPPORT_NOWAIT_BIT + 1);
- 
--	if (S_ISREG(file_inode(file)->i_mode))
-+	if (S_ISREG(inode->i_mode) && !(inode->i_flags & S_ANON_INODE))
- 		res |= REQ_F_ISREG;
- 	if ((file->f_flags & O_NONBLOCK) || (file->f_mode & FMODE_NOWAIT))
- 		res |= REQ_F_SUPPORT_NOWAIT;
+--- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+@@ -958,7 +958,7 @@ static int cdns_dsi_attach(struct mipi_d
+ 		bridge = drm_panel_bridge_add_typed(panel,
+ 						    DRM_MODE_CONNECTOR_DSI);
+ 	} else {
+-		bridge = of_drm_find_bridge(dev->dev.of_node);
++		bridge = of_drm_find_bridge(np);
+ 		if (!bridge)
+ 			bridge = ERR_PTR(-EINVAL);
+ 	}
 
 
 
