@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-159898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53ACFAF7B78
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F254AF793C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:59:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27F191CA7E23
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:18:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E306188A4BF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE5B1FC104;
-	Thu,  3 Jul 2025 15:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1072EAD1B;
+	Thu,  3 Jul 2025 14:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1FVgFIG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOO3a+Kx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D761A8412;
-	Thu,  3 Jul 2025 15:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162462EF661;
+	Thu,  3 Jul 2025 14:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555709; cv=none; b=gPLmqDlIhD3OO1DW3YiGeMCUghPNetp3GdV0XyE/nQZmcM9f3a3MmIkn54z1UBayysRYN8tlk3BWN6KS2lXlAI5/IeiLXVjWjPUcNtzjpD8asfFXAY4FNMdXQf2qE3hUlgIxi3KcS36zg5uL26opRyuxcFuW3rMODqD9bzl+p08=
+	t=1751554511; cv=none; b=W6wjQ9umoewXxiO08lGdbEfVs1ZVkxIZlmGChmnyziucgGPB7RUsj145Ow6LCuvFB6M+qxunY8LsN1t3Wwqf+unUpAu2G3+ZcQAIEtclS37k+ECj6ZtDBfA/ai6UG+qe8A3IH9yj02+G9rGTm6Gp1pONqWE1mrJFqYDHcGQIwjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555709; c=relaxed/simple;
-	bh=+Q73dMwF6X6+G8mwUKOhIS1ZJcf62H9UqVoT6ubVym0=;
+	s=arc-20240116; t=1751554511; c=relaxed/simple;
+	bh=wi3Z/hmzmG4yoxDpU5QBBSqX3lJ5bbebZuTUcynxJ+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NC28Qbv/fetR9nbUkK0FYEZgLDPSNFBajIaykdbrCqUuv/PgrEv2sHpJ6+ubBhiSaDAYFimc8T+70Ia9HFix29ptwSMe8dcHL1Qb4vfOvVwoLHYXW46U/iYBiERJ/x/OKLjHugAPaEhC/1EYjxdilGFRdw2l+Bi6Gm7rya9d7rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1FVgFIG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0FF6C4CEE3;
-	Thu,  3 Jul 2025 15:15:08 +0000 (UTC)
+	 MIME-Version; b=SU7rIO3LDXDj0k1nxQX2wCM1aFqhLh2RqPUMZowcR5lMw2P8iXsn9W6vwfxSwMyCWzr16dtEG7Cc6gUMeW5M5RT7atGNjQyRKxxu2h5SZl0UyAFycE2DUX75XXrhW1c+SrormnoqTzlx78UIttYFzWrjghqt4c7dnR3yERFG+qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOO3a+Kx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE510C4CEE3;
+	Thu,  3 Jul 2025 14:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555709;
-	bh=+Q73dMwF6X6+G8mwUKOhIS1ZJcf62H9UqVoT6ubVym0=;
+	s=korg; t=1751554510;
+	bh=wi3Z/hmzmG4yoxDpU5QBBSqX3lJ5bbebZuTUcynxJ+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u1FVgFIGq0+eToAEXSg7QRbuLIt/cjIrvhOvdr4bifC9zIBPet/q5FAccUn/x7KeV
-	 nhdawuqYArfWSjrXijSZD5slR73HAFlKK4HGQpSBREobNrE396257ddjN5xZAM96OT
-	 8u9Pe8y9YjFiM13XdrWNOrNUL0ErDvQ1TP11ZN0I=
+	b=hOO3a+KxVgs6fKjAZX4eQpSVvJJrycKjO3DqTleWIkkhJ3Rr1h/scVhYNlco35o1k
+	 HSXcXs9SFP/QQFdCKuShECRhXMWUVhyYEPRkwoVm2Vv3dqqqKxqvX41R/XkBo9oljo
+	 ceqIWLS1AjQ7SLSwUYs88rBoY36+8X+U6QKrN5+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C5=BDilvinas=20=C5=BDaltiena?= <zilvinas@natrix.lt>,
-	Avadhut Naik <avadhut.naik@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Yazen Ghannam <yazen.ghannam@amd.com>
-Subject: [PATCH 6.6 095/139] EDAC/amd64: Fix size calculation for Non-Power-of-Two DIMMs
+	Jay Cornwall <jay.cornwall@amd.com>,
+	Lancelot Six <lancelot.six@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 210/218] drm/amdkfd: Fix instruction hazard in gfx12 trap handler
 Date: Thu,  3 Jul 2025 16:42:38 +0200
-Message-ID: <20250703143944.873553899@linuxfoundation.org>
+Message-ID: <20250703144004.612817762@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,166 +61,939 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avadhut Naik <avadhut.naik@amd.com>
+From: Jay Cornwall <jay.cornwall@amd.com>
 
-commit a3f3040657417aeadb9622c629d4a0c2693a0f93 upstream.
+[ Upstream commit 424648c3838133f93a34fdfe4f9d5597551e7b3b ]
 
-Each Chip-Select (CS) of a Unified Memory Controller (UMC) on AMD Zen-based
-SOCs has an Address Mask and a Secondary Address Mask register associated with
-it. The amd64_edac module logs DIMM sizes on a per-UMC per-CS granularity
-during init using these two registers.
+VALU instructions with SGPR source need wait states to avoid hazard
+with SALU using different SGPR.
 
-Currently, the module primarily considers only the Address Mask register for
-computing DIMM sizes. The Secondary Address Mask register is only considered
-for odd CS. Additionally, if it has been considered, the Address Mask register
-is ignored altogether for that CS. For power-of-two DIMMs i.e. DIMMs whose
-total capacity is a power of two (32GB, 64GB, etc), this is not an issue
-since only the Address Mask register is used.
+v2: Eliminate some hazards to reduce code explosion
 
-For non-power-of-two DIMMs i.e., DIMMs whose total capacity is not a power of
-two (48GB, 96GB, etc), however, the Secondary Address Mask register is used
-in conjunction with the Address Mask register. However, since the module only
-considers either of the two registers for a CS, the size computed by the
-module is incorrect. The Secondary Address Mask register is not considered for
-even CS, and the Address Mask register is not considered for odd CS.
-
-Introduce a new helper function so that both Address Mask and Secondary
-Address Mask registers are considered, when valid, for computing DIMM sizes.
-Furthermore, also rename some variables for greater clarity.
-
-Fixes: 81f5090db843 ("EDAC/amd64: Support asymmetric dual-rank DIMMs")
-Closes: https://lore.kernel.org/dbec22b6-00f2-498b-b70d-ab6f8a5ec87e@natrix.lt
-Reported-by: Žilvinas Žaltiena <zilvinas@natrix.lt>
-Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Tested-by: Žilvinas Žaltiena <zilvinas@natrix.lt>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250529205013.403450-1-avadhut.naik@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jay Cornwall <jay.cornwall@amd.com>
+Reviewed-by: Lancelot Six <lancelot.six@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7e0459d453b911435673edd7a86eadc600c63238)
+Cc: stable@vger.kernel.org # 6.12.x
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/amd64_edac.c |   57 +++++++++++++++++++++++++++++-----------------
- 1 file changed, 36 insertions(+), 21 deletions(-)
+ .../gpu/drm/amd/amdkfd/cwsr_trap_handler.h    | 677 ++++++++++--------
+ .../amd/amdkfd/cwsr_trap_handler_gfx12.asm    |  82 ++-
+ 2 files changed, 404 insertions(+), 355 deletions(-)
 
---- a/drivers/edac/amd64_edac.c
-+++ b/drivers/edac/amd64_edac.c
-@@ -1475,7 +1475,9 @@ static int umc_get_cs_mode(int dimm, u8
- 	if (csrow_enabled(2 * dimm + 1, ctrl, pvt))
- 		cs_mode |= CS_ODD_PRIMARY;
+diff --git a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
+index 7062f12b5b751..6c8c9935a0f2e 100644
+--- a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
++++ b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
+@@ -3640,7 +3640,7 @@ static const uint32_t cwsr_trap_gfx9_4_3_hex[] = {
+ };
  
--	/* Asymmetric dual-rank DIMM support. */
-+	if (csrow_sec_enabled(2 * dimm, ctrl, pvt))
-+		cs_mode |= CS_EVEN_SECONDARY;
+ static const uint32_t cwsr_trap_gfx12_hex[] = {
+-	0xbfa00001, 0xbfa0024b,
++	0xbfa00001, 0xbfa002a2,
+ 	0xb0804009, 0xb8f8f804,
+ 	0x9178ff78, 0x00008c00,
+ 	0xb8fbf811, 0x8b6eff78,
+@@ -3714,7 +3714,15 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
+ 	0x00011677, 0xd7610000,
+ 	0x00011a79, 0xd7610000,
+ 	0x00011c7e, 0xd7610000,
+-	0x00011e7f, 0xbefe00ff,
++	0x00011e7f, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xbefe00ff,
+ 	0x00003fff, 0xbeff0080,
+ 	0xee0a407a, 0x000c0000,
+ 	0x00004000, 0xd760007a,
+@@ -3751,38 +3759,46 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
+ 	0x00000200, 0xbef600ff,
+ 	0x01000000, 0x7e000280,
+ 	0x7e020280, 0x7e040280,
+-	0xbefd0080, 0xbe804ec2,
+-	0xbf94fffe, 0xb8faf804,
+-	0x8b7a847a, 0x91788478,
+-	0x8c787a78, 0xd7610002,
+-	0x0000fa71, 0x807d817d,
+-	0xd7610002, 0x0000fa6c,
+-	0x807d817d, 0x917aff6d,
+-	0x80000000, 0xd7610002,
+-	0x0000fa7a, 0x807d817d,
+-	0xd7610002, 0x0000fa6e,
+-	0x807d817d, 0xd7610002,
+-	0x0000fa6f, 0x807d817d,
+-	0xd7610002, 0x0000fa78,
+-	0x807d817d, 0xb8faf811,
+-	0xd7610002, 0x0000fa7a,
+-	0x807d817d, 0xd7610002,
+-	0x0000fa7b, 0x807d817d,
+-	0xb8f1f801, 0xd7610002,
+-	0x0000fa71, 0x807d817d,
+-	0xb8f1f814, 0xd7610002,
+-	0x0000fa71, 0x807d817d,
+-	0xb8f1f815, 0xd7610002,
+-	0x0000fa71, 0x807d817d,
+-	0xb8f1f812, 0xd7610002,
+-	0x0000fa71, 0x807d817d,
+-	0xb8f1f813, 0xd7610002,
+-	0x0000fa71, 0x807d817d,
++	0xbe804ec2, 0xbf94fffe,
++	0xb8faf804, 0x8b7a847a,
++	0x91788478, 0x8c787a78,
++	0x917aff6d, 0x80000000,
++	0xd7610002, 0x00010071,
++	0xd7610002, 0x0001026c,
++	0xd7610002, 0x0001047a,
++	0xd7610002, 0x0001066e,
++	0xd7610002, 0x0001086f,
++	0xd7610002, 0x00010a78,
++	0xd7610002, 0x00010e7b,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xb8faf811, 0xd7610002,
++	0x00010c7a, 0xb8faf801,
++	0xd7610002, 0x0001107a,
++	0xb8faf814, 0xd7610002,
++	0x0001127a, 0xb8faf815,
++	0xd7610002, 0x0001147a,
++	0xb8faf812, 0xd7610002,
++	0x0001167a, 0xb8faf813,
++	0xd7610002, 0x0001187a,
+ 	0xb8faf802, 0xd7610002,
+-	0x0000fa7a, 0x807d817d,
+-	0xbefa50c1, 0xbfc70000,
+-	0xd7610002, 0x0000fa7a,
+-	0x807d817d, 0xbefe00ff,
++	0x00011a7a, 0xbefa50c1,
++	0xbfc70000, 0xd7610002,
++	0x00011c7a, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xbefe00ff,
+ 	0x0000ffff, 0xbeff0080,
+ 	0xc4068070, 0x008ce802,
+ 	0x00000000, 0xbefe00c1,
+@@ -3797,329 +3813,356 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
+ 	0xbe824102, 0xbe844104,
+ 	0xbe864106, 0xbe884108,
+ 	0xbe8a410a, 0xbe8c410c,
+-	0xbe8e410e, 0xd7610002,
+-	0x0000f200, 0x80798179,
+-	0xd7610002, 0x0000f201,
+-	0x80798179, 0xd7610002,
+-	0x0000f202, 0x80798179,
+-	0xd7610002, 0x0000f203,
+-	0x80798179, 0xd7610002,
+-	0x0000f204, 0x80798179,
+-	0xd7610002, 0x0000f205,
+-	0x80798179, 0xd7610002,
+-	0x0000f206, 0x80798179,
+-	0xd7610002, 0x0000f207,
+-	0x80798179, 0xd7610002,
+-	0x0000f208, 0x80798179,
+-	0xd7610002, 0x0000f209,
+-	0x80798179, 0xd7610002,
+-	0x0000f20a, 0x80798179,
+-	0xd7610002, 0x0000f20b,
+-	0x80798179, 0xd7610002,
+-	0x0000f20c, 0x80798179,
+-	0xd7610002, 0x0000f20d,
+-	0x80798179, 0xd7610002,
+-	0x0000f20e, 0x80798179,
+-	0xd7610002, 0x0000f20f,
+-	0x80798179, 0xbf06a079,
+-	0xbfa10007, 0xc4068070,
++	0xbe8e410e, 0xbf068079,
++	0xbfa10032, 0xd7610002,
++	0x00010000, 0xd7610002,
++	0x00010201, 0xd7610002,
++	0x00010402, 0xd7610002,
++	0x00010603, 0xd7610002,
++	0x00010804, 0xd7610002,
++	0x00010a05, 0xd7610002,
++	0x00010c06, 0xd7610002,
++	0x00010e07, 0xd7610002,
++	0x00011008, 0xd7610002,
++	0x00011209, 0xd7610002,
++	0x0001140a, 0xd7610002,
++	0x0001160b, 0xd7610002,
++	0x0001180c, 0xd7610002,
++	0x00011a0d, 0xd7610002,
++	0x00011c0e, 0xd7610002,
++	0x00011e0f, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0x80799079,
++	0xbfa00038, 0xd7610002,
++	0x00012000, 0xd7610002,
++	0x00012201, 0xd7610002,
++	0x00012402, 0xd7610002,
++	0x00012603, 0xd7610002,
++	0x00012804, 0xd7610002,
++	0x00012a05, 0xd7610002,
++	0x00012c06, 0xd7610002,
++	0x00012e07, 0xd7610002,
++	0x00013008, 0xd7610002,
++	0x00013209, 0xd7610002,
++	0x0001340a, 0xd7610002,
++	0x0001360b, 0xd7610002,
++	0x0001380c, 0xd7610002,
++	0x00013a0d, 0xd7610002,
++	0x00013c0e, 0xd7610002,
++	0x00013e0f, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0x80799079,
++	0xc4068070, 0x008ce802,
++	0x00000000, 0x8070ff70,
++	0x00000080, 0xbef90080,
++	0x7e040280, 0x807d907d,
++	0xbf0aff7d, 0x00000060,
++	0xbfa2ff88, 0xbe804100,
++	0xbe824102, 0xbe844104,
++	0xbe864106, 0xbe884108,
++	0xbe8a410a, 0xd7610002,
++	0x00010000, 0xd7610002,
++	0x00010201, 0xd7610002,
++	0x00010402, 0xd7610002,
++	0x00010603, 0xd7610002,
++	0x00010804, 0xd7610002,
++	0x00010a05, 0xd7610002,
++	0x00010c06, 0xd7610002,
++	0x00010e07, 0xd7610002,
++	0x00011008, 0xd7610002,
++	0x00011209, 0xd7610002,
++	0x0001140a, 0xd7610002,
++	0x0001160b, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xc4068070,
+ 	0x008ce802, 0x00000000,
++	0xbefe00c1, 0x857d9973,
++	0x8b7d817d, 0xbf06817d,
++	0xbfa20002, 0xbeff0080,
++	0xbfa00001, 0xbeff00c1,
++	0xb8fb4306, 0x8b7bc17b,
++	0xbfa10044, 0x8b7aff6d,
++	0x80000000, 0xbfa10041,
++	0x847b897b, 0xbef6007b,
++	0xb8f03b05, 0x80708170,
++	0xbf0d9973, 0xbfa20002,
++	0x84708970, 0xbfa00001,
++	0x84708a70, 0xb8fa1e06,
++	0x847a8a7a, 0x80707a70,
++	0x8070ff70, 0x00000200,
+ 	0x8070ff70, 0x00000080,
+-	0xbef90080, 0x7e040280,
+-	0x807d907d, 0xbf0aff7d,
+-	0x00000060, 0xbfa2ffbb,
+-	0xbe804100, 0xbe824102,
+-	0xbe844104, 0xbe864106,
+-	0xbe884108, 0xbe8a410a,
+-	0xd7610002, 0x0000f200,
+-	0x80798179, 0xd7610002,
+-	0x0000f201, 0x80798179,
+-	0xd7610002, 0x0000f202,
+-	0x80798179, 0xd7610002,
+-	0x0000f203, 0x80798179,
+-	0xd7610002, 0x0000f204,
+-	0x80798179, 0xd7610002,
+-	0x0000f205, 0x80798179,
+-	0xd7610002, 0x0000f206,
+-	0x80798179, 0xd7610002,
+-	0x0000f207, 0x80798179,
+-	0xd7610002, 0x0000f208,
+-	0x80798179, 0xd7610002,
+-	0x0000f209, 0x80798179,
+-	0xd7610002, 0x0000f20a,
+-	0x80798179, 0xd7610002,
+-	0x0000f20b, 0x80798179,
+-	0xc4068070, 0x008ce802,
+-	0x00000000, 0xbefe00c1,
+-	0x857d9973, 0x8b7d817d,
+-	0xbf06817d, 0xbfa20002,
+-	0xbeff0080, 0xbfa00001,
+-	0xbeff00c1, 0xb8fb4306,
+-	0x8b7bc17b, 0xbfa10044,
+-	0x8b7aff6d, 0x80000000,
+-	0xbfa10041, 0x847b897b,
+-	0xbef6007b, 0xb8f03b05,
+-	0x80708170, 0xbf0d9973,
+-	0xbfa20002, 0x84708970,
+-	0xbfa00001, 0x84708a70,
+-	0xb8fa1e06, 0x847a8a7a,
+-	0x80707a70, 0x8070ff70,
+-	0x00000200, 0x8070ff70,
+-	0x00000080, 0xbef600ff,
+-	0x01000000, 0xd71f0000,
+-	0x000100c1, 0xd7200000,
+-	0x000200c1, 0x16000084,
+-	0x857d9973, 0x8b7d817d,
+-	0xbf06817d, 0xbefd0080,
+-	0xbfa20013, 0xbe8300ff,
+-	0x00000080, 0xbf800000,
+-	0xbf800000, 0xbf800000,
+-	0xd8d80000, 0x01000000,
+-	0xbf8a0000, 0xc4068070,
+-	0x008ce801, 0x00000000,
+-	0x807d037d, 0x80700370,
+-	0xd5250000, 0x0001ff00,
+-	0x00000080, 0xbf0a7b7d,
+-	0xbfa2fff3, 0xbfa00012,
+-	0xbe8300ff, 0x00000100,
++	0xbef600ff, 0x01000000,
++	0xd71f0000, 0x000100c1,
++	0xd7200000, 0x000200c1,
++	0x16000084, 0x857d9973,
++	0x8b7d817d, 0xbf06817d,
++	0xbefd0080, 0xbfa20013,
++	0xbe8300ff, 0x00000080,
+ 	0xbf800000, 0xbf800000,
+ 	0xbf800000, 0xd8d80000,
+ 	0x01000000, 0xbf8a0000,
+ 	0xc4068070, 0x008ce801,
+ 	0x00000000, 0x807d037d,
+ 	0x80700370, 0xd5250000,
+-	0x0001ff00, 0x00000100,
++	0x0001ff00, 0x00000080,
+ 	0xbf0a7b7d, 0xbfa2fff3,
+-	0xbefe00c1, 0x857d9973,
+-	0x8b7d817d, 0xbf06817d,
+-	0xbfa20004, 0xbef000ff,
+-	0x00000200, 0xbeff0080,
+-	0xbfa00003, 0xbef000ff,
+-	0x00000400, 0xbeff00c1,
+-	0xb8fb3b05, 0x807b817b,
+-	0x847b827b, 0x857d9973,
+-	0x8b7d817d, 0xbf06817d,
+-	0xbfa2001b, 0xbef600ff,
+-	0x01000000, 0xbefd0084,
+-	0xbf0a7b7d, 0xbfa10040,
+-	0x7e008700, 0x7e028701,
+-	0x7e048702, 0x7e068703,
+-	0xc4068070, 0x008ce800,
+-	0x00000000, 0xc4068070,
+-	0x008ce801, 0x00008000,
+-	0xc4068070, 0x008ce802,
+-	0x00010000, 0xc4068070,
+-	0x008ce803, 0x00018000,
+-	0x807d847d, 0x8070ff70,
+-	0x00000200, 0xbf0a7b7d,
+-	0xbfa2ffeb, 0xbfa0002a,
++	0xbfa00012, 0xbe8300ff,
++	0x00000100, 0xbf800000,
++	0xbf800000, 0xbf800000,
++	0xd8d80000, 0x01000000,
++	0xbf8a0000, 0xc4068070,
++	0x008ce801, 0x00000000,
++	0x807d037d, 0x80700370,
++	0xd5250000, 0x0001ff00,
++	0x00000100, 0xbf0a7b7d,
++	0xbfa2fff3, 0xbefe00c1,
++	0x857d9973, 0x8b7d817d,
++	0xbf06817d, 0xbfa20004,
++	0xbef000ff, 0x00000200,
++	0xbeff0080, 0xbfa00003,
++	0xbef000ff, 0x00000400,
++	0xbeff00c1, 0xb8fb3b05,
++	0x807b817b, 0x847b827b,
++	0x857d9973, 0x8b7d817d,
++	0xbf06817d, 0xbfa2001b,
+ 	0xbef600ff, 0x01000000,
+ 	0xbefd0084, 0xbf0a7b7d,
+-	0xbfa10015, 0x7e008700,
++	0xbfa10040, 0x7e008700,
+ 	0x7e028701, 0x7e048702,
+ 	0x7e068703, 0xc4068070,
+ 	0x008ce800, 0x00000000,
+ 	0xc4068070, 0x008ce801,
+-	0x00010000, 0xc4068070,
+-	0x008ce802, 0x00020000,
++	0x00008000, 0xc4068070,
++	0x008ce802, 0x00010000,
+ 	0xc4068070, 0x008ce803,
+-	0x00030000, 0x807d847d,
+-	0x8070ff70, 0x00000400,
++	0x00018000, 0x807d847d,
++	0x8070ff70, 0x00000200,
+ 	0xbf0a7b7d, 0xbfa2ffeb,
+-	0xb8fb1e06, 0x8b7bc17b,
+-	0xbfa1000d, 0x847b837b,
+-	0x807b7d7b, 0xbefe00c1,
+-	0xbeff0080, 0x7e008700,
++	0xbfa0002a, 0xbef600ff,
++	0x01000000, 0xbefd0084,
++	0xbf0a7b7d, 0xbfa10015,
++	0x7e008700, 0x7e028701,
++	0x7e048702, 0x7e068703,
+ 	0xc4068070, 0x008ce800,
+-	0x00000000, 0x807d817d,
+-	0x8070ff70, 0x00000080,
+-	0xbf0a7b7d, 0xbfa2fff7,
+-	0xbfa0016e, 0xbef4007e,
+-	0x8b75ff7f, 0x0000ffff,
+-	0x8c75ff75, 0x00040000,
+-	0xbef60080, 0xbef700ff,
+-	0x10807fac, 0xbef1007f,
+-	0xb8f20742, 0x84729972,
+-	0x8b6eff7f, 0x04000000,
+-	0xbfa1003b, 0xbefe00c1,
+-	0x857d9972, 0x8b7d817d,
+-	0xbf06817d, 0xbfa20002,
+-	0xbeff0080, 0xbfa00001,
+-	0xbeff00c1, 0xb8ef4306,
+-	0x8b6fc16f, 0xbfa10030,
+-	0x846f896f, 0xbef6006f,
++	0x00000000, 0xc4068070,
++	0x008ce801, 0x00010000,
++	0xc4068070, 0x008ce802,
++	0x00020000, 0xc4068070,
++	0x008ce803, 0x00030000,
++	0x807d847d, 0x8070ff70,
++	0x00000400, 0xbf0a7b7d,
++	0xbfa2ffeb, 0xb8fb1e06,
++	0x8b7bc17b, 0xbfa1000d,
++	0x847b837b, 0x807b7d7b,
++	0xbefe00c1, 0xbeff0080,
++	0x7e008700, 0xc4068070,
++	0x008ce800, 0x00000000,
++	0x807d817d, 0x8070ff70,
++	0x00000080, 0xbf0a7b7d,
++	0xbfa2fff7, 0xbfa0016e,
++	0xbef4007e, 0x8b75ff7f,
++	0x0000ffff, 0x8c75ff75,
++	0x00040000, 0xbef60080,
++	0xbef700ff, 0x10807fac,
++	0xbef1007f, 0xb8f20742,
++	0x84729972, 0x8b6eff7f,
++	0x04000000, 0xbfa1003b,
++	0xbefe00c1, 0x857d9972,
++	0x8b7d817d, 0xbf06817d,
++	0xbfa20002, 0xbeff0080,
++	0xbfa00001, 0xbeff00c1,
++	0xb8ef4306, 0x8b6fc16f,
++	0xbfa10030, 0x846f896f,
++	0xbef6006f, 0xb8f83b05,
++	0x80788178, 0xbf0d9972,
++	0xbfa20002, 0x84788978,
++	0xbfa00001, 0x84788a78,
++	0xb8ee1e06, 0x846e8a6e,
++	0x80786e78, 0x8078ff78,
++	0x00000200, 0x8078ff78,
++	0x00000080, 0xbef600ff,
++	0x01000000, 0x857d9972,
++	0x8b7d817d, 0xbf06817d,
++	0xbefd0080, 0xbfa2000d,
++	0xc4050078, 0x0080e800,
++	0x00000000, 0xbf8a0000,
++	0xdac00000, 0x00000000,
++	0x807dff7d, 0x00000080,
++	0x8078ff78, 0x00000080,
++	0xbf0a6f7d, 0xbfa2fff4,
++	0xbfa0000c, 0xc4050078,
++	0x0080e800, 0x00000000,
++	0xbf8a0000, 0xdac00000,
++	0x00000000, 0x807dff7d,
++	0x00000100, 0x8078ff78,
++	0x00000100, 0xbf0a6f7d,
++	0xbfa2fff4, 0xbef80080,
++	0xbefe00c1, 0x857d9972,
++	0x8b7d817d, 0xbf06817d,
++	0xbfa20002, 0xbeff0080,
++	0xbfa00001, 0xbeff00c1,
++	0xb8ef3b05, 0x806f816f,
++	0x846f826f, 0x857d9972,
++	0x8b7d817d, 0xbf06817d,
++	0xbfa2002c, 0xbef600ff,
++	0x01000000, 0xbeee0078,
++	0x8078ff78, 0x00000200,
++	0xbefd0084, 0xbf0a6f7d,
++	0xbfa10061, 0xc4050078,
++	0x008ce800, 0x00000000,
++	0xc4050078, 0x008ce801,
++	0x00008000, 0xc4050078,
++	0x008ce802, 0x00010000,
++	0xc4050078, 0x008ce803,
++	0x00018000, 0xbf8a0000,
++	0x7e008500, 0x7e028501,
++	0x7e048502, 0x7e068503,
++	0x807d847d, 0x8078ff78,
++	0x00000200, 0xbf0a6f7d,
++	0xbfa2ffea, 0xc405006e,
++	0x008ce800, 0x00000000,
++	0xc405006e, 0x008ce801,
++	0x00008000, 0xc405006e,
++	0x008ce802, 0x00010000,
++	0xc405006e, 0x008ce803,
++	0x00018000, 0xbf8a0000,
++	0xbfa0003d, 0xbef600ff,
++	0x01000000, 0xbeee0078,
++	0x8078ff78, 0x00000400,
++	0xbefd0084, 0xbf0a6f7d,
++	0xbfa10016, 0xc4050078,
++	0x008ce800, 0x00000000,
++	0xc4050078, 0x008ce801,
++	0x00010000, 0xc4050078,
++	0x008ce802, 0x00020000,
++	0xc4050078, 0x008ce803,
++	0x00030000, 0xbf8a0000,
++	0x7e008500, 0x7e028501,
++	0x7e048502, 0x7e068503,
++	0x807d847d, 0x8078ff78,
++	0x00000400, 0xbf0a6f7d,
++	0xbfa2ffea, 0xb8ef1e06,
++	0x8b6fc16f, 0xbfa1000f,
++	0x846f836f, 0x806f7d6f,
++	0xbefe00c1, 0xbeff0080,
++	0xc4050078, 0x008ce800,
++	0x00000000, 0xbf8a0000,
++	0x7e008500, 0x807d817d,
++	0x8078ff78, 0x00000080,
++	0xbf0a6f7d, 0xbfa2fff6,
++	0xbeff00c1, 0xc405006e,
++	0x008ce800, 0x00000000,
++	0xc405006e, 0x008ce801,
++	0x00010000, 0xc405006e,
++	0x008ce802, 0x00020000,
++	0xc405006e, 0x008ce803,
++	0x00030000, 0xbf8a0000,
+ 	0xb8f83b05, 0x80788178,
+ 	0xbf0d9972, 0xbfa20002,
+ 	0x84788978, 0xbfa00001,
+ 	0x84788a78, 0xb8ee1e06,
+ 	0x846e8a6e, 0x80786e78,
+ 	0x8078ff78, 0x00000200,
+-	0x8078ff78, 0x00000080,
+-	0xbef600ff, 0x01000000,
+-	0x857d9972, 0x8b7d817d,
+-	0xbf06817d, 0xbefd0080,
+-	0xbfa2000d, 0xc4050078,
+-	0x0080e800, 0x00000000,
+-	0xbf8a0000, 0xdac00000,
+-	0x00000000, 0x807dff7d,
+-	0x00000080, 0x8078ff78,
+-	0x00000080, 0xbf0a6f7d,
+-	0xbfa2fff4, 0xbfa0000c,
+-	0xc4050078, 0x0080e800,
+-	0x00000000, 0xbf8a0000,
+-	0xdac00000, 0x00000000,
+-	0x807dff7d, 0x00000100,
+-	0x8078ff78, 0x00000100,
+-	0xbf0a6f7d, 0xbfa2fff4,
+-	0xbef80080, 0xbefe00c1,
+-	0x857d9972, 0x8b7d817d,
+-	0xbf06817d, 0xbfa20002,
+-	0xbeff0080, 0xbfa00001,
+-	0xbeff00c1, 0xb8ef3b05,
+-	0x806f816f, 0x846f826f,
+-	0x857d9972, 0x8b7d817d,
+-	0xbf06817d, 0xbfa2002c,
++	0x80f8ff78, 0x00000050,
+ 	0xbef600ff, 0x01000000,
+-	0xbeee0078, 0x8078ff78,
+-	0x00000200, 0xbefd0084,
+-	0xbf0a6f7d, 0xbfa10061,
+-	0xc4050078, 0x008ce800,
+-	0x00000000, 0xc4050078,
+-	0x008ce801, 0x00008000,
+-	0xc4050078, 0x008ce802,
+-	0x00010000, 0xc4050078,
+-	0x008ce803, 0x00018000,
+-	0xbf8a0000, 0x7e008500,
+-	0x7e028501, 0x7e048502,
+-	0x7e068503, 0x807d847d,
++	0xbefd00ff, 0x0000006c,
++	0x80f89078, 0xf462403a,
++	0xf0000000, 0xbf8a0000,
++	0x80fd847d, 0xbf800000,
++	0xbe804300, 0xbe824302,
++	0x80f8a078, 0xf462603a,
++	0xf0000000, 0xbf8a0000,
++	0x80fd887d, 0xbf800000,
++	0xbe804300, 0xbe824302,
++	0xbe844304, 0xbe864306,
++	0x80f8c078, 0xf462803a,
++	0xf0000000, 0xbf8a0000,
++	0x80fd907d, 0xbf800000,
++	0xbe804300, 0xbe824302,
++	0xbe844304, 0xbe864306,
++	0xbe884308, 0xbe8a430a,
++	0xbe8c430c, 0xbe8e430e,
++	0xbf06807d, 0xbfa1fff0,
++	0xb980f801, 0x00000000,
++	0xb8f83b05, 0x80788178,
++	0xbf0d9972, 0xbfa20002,
++	0x84788978, 0xbfa00001,
++	0x84788a78, 0xb8ee1e06,
++	0x846e8a6e, 0x80786e78,
+ 	0x8078ff78, 0x00000200,
+-	0xbf0a6f7d, 0xbfa2ffea,
+-	0xc405006e, 0x008ce800,
+-	0x00000000, 0xc405006e,
+-	0x008ce801, 0x00008000,
+-	0xc405006e, 0x008ce802,
+-	0x00010000, 0xc405006e,
+-	0x008ce803, 0x00018000,
+-	0xbf8a0000, 0xbfa0003d,
+ 	0xbef600ff, 0x01000000,
+-	0xbeee0078, 0x8078ff78,
+-	0x00000400, 0xbefd0084,
+-	0xbf0a6f7d, 0xbfa10016,
+-	0xc4050078, 0x008ce800,
+-	0x00000000, 0xc4050078,
+-	0x008ce801, 0x00010000,
+-	0xc4050078, 0x008ce802,
+-	0x00020000, 0xc4050078,
+-	0x008ce803, 0x00030000,
+-	0xbf8a0000, 0x7e008500,
+-	0x7e028501, 0x7e048502,
+-	0x7e068503, 0x807d847d,
+-	0x8078ff78, 0x00000400,
+-	0xbf0a6f7d, 0xbfa2ffea,
+-	0xb8ef1e06, 0x8b6fc16f,
+-	0xbfa1000f, 0x846f836f,
+-	0x806f7d6f, 0xbefe00c1,
+-	0xbeff0080, 0xc4050078,
+-	0x008ce800, 0x00000000,
+-	0xbf8a0000, 0x7e008500,
+-	0x807d817d, 0x8078ff78,
+-	0x00000080, 0xbf0a6f7d,
+-	0xbfa2fff6, 0xbeff00c1,
+-	0xc405006e, 0x008ce800,
+-	0x00000000, 0xc405006e,
+-	0x008ce801, 0x00010000,
+-	0xc405006e, 0x008ce802,
+-	0x00020000, 0xc405006e,
+-	0x008ce803, 0x00030000,
+-	0xbf8a0000, 0xb8f83b05,
+-	0x80788178, 0xbf0d9972,
+-	0xbfa20002, 0x84788978,
+-	0xbfa00001, 0x84788a78,
+-	0xb8ee1e06, 0x846e8a6e,
+-	0x80786e78, 0x8078ff78,
+-	0x00000200, 0x80f8ff78,
+-	0x00000050, 0xbef600ff,
+-	0x01000000, 0xbefd00ff,
+-	0x0000006c, 0x80f89078,
+-	0xf462403a, 0xf0000000,
+-	0xbf8a0000, 0x80fd847d,
+-	0xbf800000, 0xbe804300,
+-	0xbe824302, 0x80f8a078,
+-	0xf462603a, 0xf0000000,
+-	0xbf8a0000, 0x80fd887d,
+-	0xbf800000, 0xbe804300,
+-	0xbe824302, 0xbe844304,
+-	0xbe864306, 0x80f8c078,
+-	0xf462803a, 0xf0000000,
+-	0xbf8a0000, 0x80fd907d,
+-	0xbf800000, 0xbe804300,
+-	0xbe824302, 0xbe844304,
+-	0xbe864306, 0xbe884308,
+-	0xbe8a430a, 0xbe8c430c,
+-	0xbe8e430e, 0xbf06807d,
+-	0xbfa1fff0, 0xb980f801,
+-	0x00000000, 0xb8f83b05,
+-	0x80788178, 0xbf0d9972,
+-	0xbfa20002, 0x84788978,
+-	0xbfa00001, 0x84788a78,
+-	0xb8ee1e06, 0x846e8a6e,
+-	0x80786e78, 0x8078ff78,
+-	0x00000200, 0xbef600ff,
+-	0x01000000, 0xbeff0071,
+-	0xf4621bfa, 0xf0000000,
+-	0x80788478, 0xf4621b3a,
++	0xbeff0071, 0xf4621bfa,
+ 	0xf0000000, 0x80788478,
+-	0xf4621b7a, 0xf0000000,
+-	0x80788478, 0xf4621c3a,
++	0xf4621b3a, 0xf0000000,
++	0x80788478, 0xf4621b7a,
+ 	0xf0000000, 0x80788478,
+-	0xf4621c7a, 0xf0000000,
+-	0x80788478, 0xf4621eba,
++	0xf4621c3a, 0xf0000000,
++	0x80788478, 0xf4621c7a,
+ 	0xf0000000, 0x80788478,
+-	0xf4621efa, 0xf0000000,
+-	0x80788478, 0xf4621e7a,
++	0xf4621eba, 0xf0000000,
++	0x80788478, 0xf4621efa,
+ 	0xf0000000, 0x80788478,
+-	0xf4621cfa, 0xf0000000,
+-	0x80788478, 0xf4621bba,
++	0xf4621e7a, 0xf0000000,
++	0x80788478, 0xf4621cfa,
+ 	0xf0000000, 0x80788478,
+-	0xbf8a0000, 0xb96ef814,
+ 	0xf4621bba, 0xf0000000,
+ 	0x80788478, 0xbf8a0000,
+-	0xb96ef815, 0xf4621bba,
++	0xb96ef814, 0xf4621bba,
+ 	0xf0000000, 0x80788478,
+-	0xbf8a0000, 0xb96ef812,
++	0xbf8a0000, 0xb96ef815,
+ 	0xf4621bba, 0xf0000000,
+ 	0x80788478, 0xbf8a0000,
+-	0xb96ef813, 0x8b6eff7f,
+-	0x04000000, 0xbfa1000d,
+-	0x80788478, 0xf4621bba,
++	0xb96ef812, 0xf4621bba,
+ 	0xf0000000, 0x80788478,
+-	0xbf8a0000, 0xbf0d806e,
+-	0xbfa10006, 0x856e906e,
+-	0x8b6e6e6e, 0xbfa10003,
+-	0xbe804ec1, 0x816ec16e,
+-	0xbfa0fffb, 0xbefd006f,
+-	0xbefe0070, 0xbeff0071,
+-	0xb97b2011, 0x857b867b,
+-	0xb97b0191, 0x857b827b,
+-	0xb97bba11, 0xb973f801,
+-	0xb8ee3b05, 0x806e816e,
+-	0xbf0d9972, 0xbfa20002,
+-	0x846e896e, 0xbfa00001,
+-	0x846e8a6e, 0xb8ef1e06,
+-	0x846f8a6f, 0x806e6f6e,
+-	0x806eff6e, 0x00000200,
+-	0x806e746e, 0x826f8075,
+-	0x8b6fff6f, 0x0000ffff,
+-	0xf4605c37, 0xf8000050,
+-	0xf4605d37, 0xf8000060,
+-	0xf4601e77, 0xf8000074,
+-	0xbf8a0000, 0x8b6dff6d,
+-	0x0000ffff, 0x8bfe7e7e,
+-	0x8bea6a6a, 0xb97af804,
++	0xbf8a0000, 0xb96ef813,
++	0x8b6eff7f, 0x04000000,
++	0xbfa1000d, 0x80788478,
++	0xf4621bba, 0xf0000000,
++	0x80788478, 0xbf8a0000,
++	0xbf0d806e, 0xbfa10006,
++	0x856e906e, 0x8b6e6e6e,
++	0xbfa10003, 0xbe804ec1,
++	0x816ec16e, 0xbfa0fffb,
++	0xbefd006f, 0xbefe0070,
++	0xbeff0071, 0xb97b2011,
++	0x857b867b, 0xb97b0191,
++	0x857b827b, 0xb97bba11,
++	0xb973f801, 0xb8ee3b05,
++	0x806e816e, 0xbf0d9972,
++	0xbfa20002, 0x846e896e,
++	0xbfa00001, 0x846e8a6e,
++	0xb8ef1e06, 0x846f8a6f,
++	0x806e6f6e, 0x806eff6e,
++	0x00000200, 0x806e746e,
++	0x826f8075, 0x8b6fff6f,
++	0x0000ffff, 0xf4605c37,
++	0xf8000050, 0xf4605d37,
++	0xf8000060, 0xf4601e77,
++	0xf8000074, 0xbf8a0000,
++	0x8b6dff6d, 0x0000ffff,
++	0x8bfe7e7e, 0x8bea6a6a,
++	0xb97af804, 0xbe804ec2,
++	0xbf94fffe, 0xbe804a6c,
+ 	0xbe804ec2, 0xbf94fffe,
+-	0xbe804a6c, 0xbe804ec2,
+-	0xbf94fffe, 0xbfb10000,
++	0xbfb10000, 0xbf9f0000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0xbf9f0000,
+-	0xbf9f0000, 0x00000000,
+ };
+diff --git a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm
+index 7b9d36e5fa437..5a1a1b1f897fe 100644
+--- a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm
++++ b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm
+@@ -30,6 +30,7 @@
+ #define CHIP_GFX12 37
+ 
+ #define SINGLE_STEP_MISSED_WORKAROUND 1	//workaround for lost TRAP_AFTER_INST exception when SAVECTX raised
++#define HAVE_VALU_SGPR_HAZARD (ASIC_FAMILY == CHIP_GFX12)
+ 
+ var SQ_WAVE_STATE_PRIV_BARRIER_COMPLETE_MASK	= 0x4
+ var SQ_WAVE_STATE_PRIV_SCC_SHIFT		= 9
+@@ -351,6 +352,7 @@ L_HAVE_VGPRS:
+ 	v_writelane_b32	v0, ttmp13, 0xD
+ 	v_writelane_b32	v0, exec_lo, 0xE
+ 	v_writelane_b32	v0, exec_hi, 0xF
++	valu_sgpr_hazard()
+ 
+ 	s_mov_b32	exec_lo, 0x3FFF
+ 	s_mov_b32	exec_hi, 0x0
+@@ -417,7 +419,6 @@ L_SAVE_HWREG:
+ 	v_mov_b32	v0, 0x0							//Offset[31:0] from buffer resource
+ 	v_mov_b32	v1, 0x0							//Offset[63:32] from buffer resource
+ 	v_mov_b32	v2, 0x0							//Set of SGPRs for TCP store
+-	s_mov_b32	m0, 0x0							//Next lane of v2 to write to
+ 
+ 	// Ensure no further changes to barrier or LDS state.
+ 	// STATE_PRIV.BARRIER_COMPLETE may change up to this point.
+@@ -430,40 +431,41 @@ L_SAVE_HWREG:
+ 	s_andn2_b32	s_save_state_priv, s_save_state_priv, SQ_WAVE_STATE_PRIV_BARRIER_COMPLETE_MASK
+ 	s_or_b32	s_save_state_priv, s_save_state_priv, s_save_tmp
+ 
+-	write_hwreg_to_v2(s_save_m0)
+-	write_hwreg_to_v2(s_save_pc_lo)
+ 	s_andn2_b32	s_save_tmp, s_save_pc_hi, S_SAVE_PC_HI_FIRST_WAVE_MASK
+-	write_hwreg_to_v2(s_save_tmp)
+-	write_hwreg_to_v2(s_save_exec_lo)
+-	write_hwreg_to_v2(s_save_exec_hi)
+-	write_hwreg_to_v2(s_save_state_priv)
++	v_writelane_b32	v2, s_save_m0, 0x0
++	v_writelane_b32	v2, s_save_pc_lo, 0x1
++	v_writelane_b32	v2, s_save_tmp, 0x2
++	v_writelane_b32	v2, s_save_exec_lo, 0x3
++	v_writelane_b32	v2, s_save_exec_hi, 0x4
++	v_writelane_b32	v2, s_save_state_priv, 0x5
++	v_writelane_b32	v2, s_save_xnack_mask, 0x7
++	valu_sgpr_hazard()
+ 
+ 	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_EXCP_FLAG_PRIV)
+-	write_hwreg_to_v2(s_save_tmp)
++	v_writelane_b32	v2, s_save_tmp, 0x6
+ 
+-	write_hwreg_to_v2(s_save_xnack_mask)
++	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_MODE)
++	v_writelane_b32	v2, s_save_tmp, 0x8
+ 
+-	s_getreg_b32	s_save_m0, hwreg(HW_REG_WAVE_MODE)
+-	write_hwreg_to_v2(s_save_m0)
++	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_SCRATCH_BASE_LO)
++	v_writelane_b32	v2, s_save_tmp, 0x9
+ 
+-	s_getreg_b32	s_save_m0, hwreg(HW_REG_WAVE_SCRATCH_BASE_LO)
+-	write_hwreg_to_v2(s_save_m0)
++	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_SCRATCH_BASE_HI)
++	v_writelane_b32	v2, s_save_tmp, 0xA
+ 
+-	s_getreg_b32	s_save_m0, hwreg(HW_REG_WAVE_SCRATCH_BASE_HI)
+-	write_hwreg_to_v2(s_save_m0)
++	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_EXCP_FLAG_USER)
++	v_writelane_b32	v2, s_save_tmp, 0xB
+ 
+-	s_getreg_b32	s_save_m0, hwreg(HW_REG_WAVE_EXCP_FLAG_USER)
+-	write_hwreg_to_v2(s_save_m0)
+-
+-	s_getreg_b32	s_save_m0, hwreg(HW_REG_WAVE_TRAP_CTRL)
+-	write_hwreg_to_v2(s_save_m0)
++	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_TRAP_CTRL)
++	v_writelane_b32	v2, s_save_tmp, 0xC
+ 
+ 	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_STATUS)
+-	write_hwreg_to_v2(s_save_tmp)
++	v_writelane_b32	v2, s_save_tmp, 0xD
+ 
+ 	s_get_barrier_state s_save_tmp, -1
+ 	s_wait_kmcnt (0)
+-	write_hwreg_to_v2(s_save_tmp)
++	v_writelane_b32	v2, s_save_tmp, 0xE
++	valu_sgpr_hazard()
+ 
+ 	// Write HWREGs with 16 VGPR lanes. TTMPs occupy space after this.
+ 	s_mov_b32       exec_lo, 0xFFFF
+@@ -497,10 +499,12 @@ L_SAVE_SGPR_LOOP:
+ 	s_movrels_b64	s12, s12						//s12 = s[12+m0], s13 = s[13+m0]
+ 	s_movrels_b64	s14, s14						//s14 = s[14+m0], s15 = s[15+m0]
+ 
+-	write_16sgpr_to_v2(s0)
+-
+-	s_cmp_eq_u32	ttmp13, 0x20						//have 32 VGPR lanes filled?
+-	s_cbranch_scc0	L_SAVE_SGPR_SKIP_TCP_STORE
++	s_cmp_eq_u32	ttmp13, 0x0
++	s_cbranch_scc0	L_WRITE_V2_SECOND_HALF
++	write_16sgpr_to_v2(s0, 0x0)
++	s_branch	L_SAVE_SGPR_SKIP_TCP_STORE
++L_WRITE_V2_SECOND_HALF:
++	write_16sgpr_to_v2(s0, 0x10)
+ 
+ 	buffer_store_dword	v2, v0, s_save_buf_rsrc0, s_save_mem_offset scope:SCOPE_SYS
+ 	s_add_u32	s_save_mem_offset, s_save_mem_offset, 0x80
+@@ -1056,27 +1060,21 @@ L_END_PGM:
+ 	s_endpgm_saved
+ end
+ 
+-function write_hwreg_to_v2(s)
+-	// Copy into VGPR for later TCP store.
+-	v_writelane_b32	v2, s, m0
+-	s_add_u32	m0, m0, 0x1
+-end
+-
+-
+-function write_16sgpr_to_v2(s)
++function write_16sgpr_to_v2(s, lane_offset)
+ 	// Copy into VGPR for later TCP store.
+ 	for var sgpr_idx = 0; sgpr_idx < 16; sgpr_idx ++
+-		v_writelane_b32	v2, s[sgpr_idx], ttmp13
+-		s_add_u32	ttmp13, ttmp13, 0x1
++		v_writelane_b32	v2, s[sgpr_idx], sgpr_idx + lane_offset
+ 	end
++	valu_sgpr_hazard()
++	s_add_u32	ttmp13, ttmp13, 0x10
+ end
+ 
+ function write_12sgpr_to_v2(s)
+ 	// Copy into VGPR for later TCP store.
+ 	for var sgpr_idx = 0; sgpr_idx < 12; sgpr_idx ++
+-		v_writelane_b32	v2, s[sgpr_idx], ttmp13
+-		s_add_u32	ttmp13, ttmp13, 0x1
++		v_writelane_b32	v2, s[sgpr_idx], sgpr_idx
+ 	end
++	valu_sgpr_hazard()
+ end
+ 
+ function read_hwreg_from_mem(s, s_rsrc, s_mem_offset)
+@@ -1128,3 +1126,11 @@ function get_wave_size2(s_reg)
+ 	s_getreg_b32	s_reg, hwreg(HW_REG_WAVE_STATUS,SQ_WAVE_STATUS_WAVE64_SHIFT,SQ_WAVE_STATUS_WAVE64_SIZE)
+ 	s_lshl_b32	s_reg, s_reg, S_WAVE_SIZE
+ end
 +
- 	if (csrow_sec_enabled(2 * dimm + 1, ctrl, pvt))
- 		cs_mode |= CS_ODD_SECONDARY;
- 
-@@ -1496,12 +1498,13 @@ static int umc_get_cs_mode(int dimm, u8
- 	return cs_mode;
- }
- 
--static int __addr_mask_to_cs_size(u32 addr_mask_orig, unsigned int cs_mode,
--				  int csrow_nr, int dimm)
-+static int calculate_cs_size(u32 mask, unsigned int cs_mode)
- {
--	u32 msb, weight, num_zero_bits;
--	u32 addr_mask_deinterleaved;
--	int size = 0;
-+	int msb, weight, num_zero_bits;
-+	u32 deinterleaved_mask;
-+
-+	if (!mask)
-+		return 0;
- 
- 	/*
- 	 * The number of zero bits in the mask is equal to the number of bits
-@@ -1514,19 +1517,30 @@ static int __addr_mask_to_cs_size(u32 ad
- 	 * without swapping with the most significant bit. This can be handled
- 	 * by keeping the MSB where it is and ignoring the single zero bit.
- 	 */
--	msb = fls(addr_mask_orig) - 1;
--	weight = hweight_long(addr_mask_orig);
-+	msb = fls(mask) - 1;
-+	weight = hweight_long(mask);
- 	num_zero_bits = msb - weight - !!(cs_mode & CS_3R_INTERLEAVE);
- 
- 	/* Take the number of zero bits off from the top of the mask. */
--	addr_mask_deinterleaved = GENMASK_ULL(msb - num_zero_bits, 1);
-+	deinterleaved_mask = GENMASK(msb - num_zero_bits, 1);
-+	edac_dbg(1, "  Deinterleaved AddrMask: 0x%x\n", deinterleaved_mask);
-+
-+	return (deinterleaved_mask >> 2) + 1;
-+}
-+
-+static int __addr_mask_to_cs_size(u32 addr_mask, u32 addr_mask_sec,
-+				  unsigned int cs_mode, int csrow_nr, int dimm)
-+{
-+	int size;
- 
- 	edac_dbg(1, "CS%d DIMM%d AddrMasks:\n", csrow_nr, dimm);
--	edac_dbg(1, "  Original AddrMask: 0x%x\n", addr_mask_orig);
--	edac_dbg(1, "  Deinterleaved AddrMask: 0x%x\n", addr_mask_deinterleaved);
-+	edac_dbg(1, "  Primary AddrMask: 0x%x\n", addr_mask);
- 
- 	/* Register [31:1] = Address [39:9]. Size is in kBs here. */
--	size = (addr_mask_deinterleaved >> 2) + 1;
-+	size = calculate_cs_size(addr_mask, cs_mode);
-+
-+	edac_dbg(1, "  Secondary AddrMask: 0x%x\n", addr_mask_sec);
-+	size += calculate_cs_size(addr_mask_sec, cs_mode);
- 
- 	/* Return size in MBs. */
- 	return size >> 10;
-@@ -1535,8 +1549,8 @@ static int __addr_mask_to_cs_size(u32 ad
- static int umc_addr_mask_to_cs_size(struct amd64_pvt *pvt, u8 umc,
- 				    unsigned int cs_mode, int csrow_nr)
- {
-+	u32 addr_mask = 0, addr_mask_sec = 0;
- 	int cs_mask_nr = csrow_nr;
--	u32 addr_mask_orig;
- 	int dimm, size = 0;
- 
- 	/* No Chip Selects are enabled. */
-@@ -1574,13 +1588,13 @@ static int umc_addr_mask_to_cs_size(stru
- 	if (!pvt->flags.zn_regs_v2)
- 		cs_mask_nr >>= 1;
- 
--	/* Asymmetric dual-rank DIMM support. */
--	if ((csrow_nr & 1) && (cs_mode & CS_ODD_SECONDARY))
--		addr_mask_orig = pvt->csels[umc].csmasks_sec[cs_mask_nr];
--	else
--		addr_mask_orig = pvt->csels[umc].csmasks[cs_mask_nr];
-+	if (cs_mode & (CS_EVEN_PRIMARY | CS_ODD_PRIMARY))
-+		addr_mask = pvt->csels[umc].csmasks[cs_mask_nr];
-+
-+	if (cs_mode & (CS_EVEN_SECONDARY | CS_ODD_SECONDARY))
-+		addr_mask_sec = pvt->csels[umc].csmasks_sec[cs_mask_nr];
- 
--	return __addr_mask_to_cs_size(addr_mask_orig, cs_mode, csrow_nr, dimm);
-+	return __addr_mask_to_cs_size(addr_mask, addr_mask_sec, cs_mode, csrow_nr, dimm);
- }
- 
- static void umc_debug_display_dimm_sizes(struct amd64_pvt *pvt, u8 ctrl)
-@@ -3773,9 +3787,10 @@ static void gpu_get_err_info(struct mce
- static int gpu_addr_mask_to_cs_size(struct amd64_pvt *pvt, u8 umc,
- 				    unsigned int cs_mode, int csrow_nr)
- {
--	u32 addr_mask_orig = pvt->csels[umc].csmasks[csrow_nr];
-+	u32 addr_mask		= pvt->csels[umc].csmasks[csrow_nr];
-+	u32 addr_mask_sec	= pvt->csels[umc].csmasks_sec[csrow_nr];
- 
--	return __addr_mask_to_cs_size(addr_mask_orig, cs_mode, csrow_nr, csrow_nr >> 1);
-+	return __addr_mask_to_cs_size(addr_mask, addr_mask_sec, cs_mode, csrow_nr, csrow_nr >> 1);
- }
- 
- static void gpu_debug_display_dimm_sizes(struct amd64_pvt *pvt, u8 ctrl)
++function valu_sgpr_hazard
++#if HAVE_VALU_SGPR_HAZARD
++	for var rep = 0; rep < 8; rep ++
++		ds_nop
++	end
++#endif
++end
+-- 
+2.39.5
+
 
 
 
