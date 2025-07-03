@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-159592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9027DAF7962
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8CE5AF783D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:48:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DB68166204
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:58:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8796A581B5D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5466A2ECEBA;
-	Thu,  3 Jul 2025 14:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E922EACE1;
+	Thu,  3 Jul 2025 14:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KoCjM45z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mM1mjI2d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B6A2E7F1A;
-	Thu,  3 Jul 2025 14:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9770B1DB124;
+	Thu,  3 Jul 2025 14:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554718; cv=none; b=Zx/vLAtYDjlk/U5fLh7A1Ivu2gbu6tcKtFSXXLDRnmD+YrLyENQsfqHL2kAMzIvpP+12ULoZ14FB/kDz6qqoj5/KpDV7mJ8apQZt2CxFP1rk5zJH4wWh60lakSIQLXWmD4kFg5Ibx6ntDK7soruJO6psb7eD9sJrMaqJJsbypKI=
+	t=1751554029; cv=none; b=ufmGPhMwT+MAjuCSmcH+g07EKf/wMG7aKR9NG39qtcsVf2T6ydKPz2mvFE4uForJpP3GMh/Y6LLcAYigPqfkfTTXnTzaRomx3MBnTc/VUsHmYLsjwm40U8SZxRvPAwYLK49Ow9OOaFJOOferKc1BO8I1zTixt8Xf+acuJvlO50Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554718; c=relaxed/simple;
-	bh=Lg3V8+PPXxaACr1oTKnbYgyeSRgP9VbK7vwJnqWhiZQ=;
+	s=arc-20240116; t=1751554029; c=relaxed/simple;
+	bh=YQ3dTYpn/gd0Ud4yPdsV4bj7AFfXq2NOa2CbURC2zRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqHoN/faBB4qs1AYoctFDbe+48o7gCQ5f0lh+l7HIyYCfyC+aVFwmF9rLxfhIUntOqSgB+jyAAphGGb5BYESX3k0TWK439oymJK6zLfgeCaOBX6Z6kAAXFzqcxPaj2a9dOkn8Sq6F/HLXj7RZBliw+wp115nsjlymxYTGEcHlnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KoCjM45z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76AB2C4CEE3;
-	Thu,  3 Jul 2025 14:58:37 +0000 (UTC)
+	 MIME-Version; b=JdROvvKGi/BN7/e3R0EinR/RJC0i0DZ8qP1oE/WXQVUWBy31YzRdi5qMqnV5vRZt2Sqt7Evpv2YVZO1gj9JKxe8bW8CnTXL2Tm675wUEaDpAEzFKO+kI4GFsB1gzgVwWSi/mRYaq37naW275WknpxkOEYrEqabyXriY5iZuo/lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mM1mjI2d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC72C4CEE3;
+	Thu,  3 Jul 2025 14:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554717;
-	bh=Lg3V8+PPXxaACr1oTKnbYgyeSRgP9VbK7vwJnqWhiZQ=;
+	s=korg; t=1751554029;
+	bh=YQ3dTYpn/gd0Ud4yPdsV4bj7AFfXq2NOa2CbURC2zRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KoCjM45zRPM6THt+syFdlhpwdJnNH0MFO9dPUG80cencfTJS99kOd5Xw+t4+f5t+f
-	 fwij4lxaxsoMcFAYV5qz9vNQAw0VKruJkoqJawr/VAeFIx2fk1sCPKkPgWYct+GJNc
-	 fWe0AAt+6XeSyn5FbxfSGhXU8d1eQHyfzPs5dglU=
+	b=mM1mjI2d2OShrczK2cvKm459b0mNYjWRK+PgBoBT3DGASIxu4Pza/1/UMxFM+55gn
+	 ejJFqlR4Vq2eiQP5XVQIYV9/uQadoK4YPKUPpOWx0DP+OQwpinZRAORJA5XHy/388w
+	 rWAqlOPvbbvpDhZCtrx5tItU7qhXhHeQdbKkpPqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Hannes Reinecke <hare@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 055/263] iio: hid-sensor-prox: Add support for 16-bit report size
+Subject: [PATCH 6.12 027/218] nvme-tcp: sanitize request list handling
 Date: Thu,  3 Jul 2025 16:39:35 +0200
-Message-ID: <20250703144006.514224390@linuxfoundation.org>
+Message-ID: <20250703143957.048721018@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Hannes Reinecke <hare@kernel.org>
 
-[ Upstream commit ad02ca57e44e9936fca5095840fad9d4b47c5559 ]
+[ Upstream commit 0bf04c874fcb1ae46a863034296e4b33d8fbd66c ]
 
-On Intel platforms, the HID_USAGE_SENSOR_HUMAN_PROXIMITY report size is 16
-bits. This patch adds support for handling 16-bit report sizes for the
-HID_USAGE_SENSOR_HUMAN_PROXIMITY usage in the HID sensor proximity driver.
+Validate the request in nvme_tcp_handle_r2t() to ensure it's not part of
+any list, otherwise a malicious R2T PDU might inject a loop in request
+list processing.
 
-Previously, the driver only supported 8-bit and 32-bit report sizes. With
-this change, the driver can now correctly process 16-bit proximity data,
-ensuring accurate human presence detection on platforms where this report
-size is used.
-
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20250317013634.4117399-1-lixu.zhang@intel.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/hid-sensor-prox.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvme/host/tcp.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-sensor-prox.c
-index 4c65b32d34ce4..46f788b0bc3e2 100644
---- a/drivers/iio/light/hid-sensor-prox.c
-+++ b/drivers/iio/light/hid-sensor-prox.c
-@@ -215,6 +215,9 @@ static int prox_capture_sample(struct hid_sensor_hub_device *hsdev,
- 	case 1:
- 		prox_state->human_presence[chan] = *(u8 *)raw_data * multiplier;
- 		return 0;
-+	case 2:
-+		prox_state->human_presence[chan] = *(u16 *)raw_data * multiplier;
-+		return 0;
- 	case 4:
- 		prox_state->human_presence[chan] = *(u32 *)raw_data * multiplier;
- 		return 0;
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 13ede6e309092..25e486e6e8054 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -453,7 +453,8 @@ nvme_tcp_fetch_request(struct nvme_tcp_queue *queue)
+ 			return NULL;
+ 	}
+ 
+-	list_del(&req->entry);
++	list_del_init(&req->entry);
++	init_llist_node(&req->lentry);
+ 	return req;
+ }
+ 
+@@ -561,6 +562,8 @@ static int nvme_tcp_init_request(struct blk_mq_tag_set *set,
+ 	req->queue = queue;
+ 	nvme_req(rq)->ctrl = &ctrl->ctrl;
+ 	nvme_req(rq)->cmd = &pdu->cmd;
++	init_llist_node(&req->lentry);
++	INIT_LIST_HEAD(&req->entry);
+ 
+ 	return 0;
+ }
+@@ -765,6 +768,14 @@ static int nvme_tcp_handle_r2t(struct nvme_tcp_queue *queue,
+ 		return -EPROTO;
+ 	}
+ 
++	if (llist_on_list(&req->lentry) ||
++	    !list_empty(&req->entry)) {
++		dev_err(queue->ctrl->ctrl.device,
++			"req %d unexpected r2t while processing request\n",
++			rq->tag);
++		return -EPROTO;
++	}
++
+ 	req->pdu_len = 0;
+ 	req->h2cdata_left = r2t_length;
+ 	req->h2cdata_offset = r2t_offset;
+@@ -2599,6 +2610,8 @@ static void nvme_tcp_submit_async_event(struct nvme_ctrl *arg)
+ 	ctrl->async_req.offset = 0;
+ 	ctrl->async_req.curr_bio = NULL;
+ 	ctrl->async_req.data_len = 0;
++	init_llist_node(&ctrl->async_req.lentry);
++	INIT_LIST_HEAD(&ctrl->async_req.entry);
+ 
+ 	nvme_tcp_queue_request(&ctrl->async_req, true, true);
+ }
 -- 
 2.39.5
 
