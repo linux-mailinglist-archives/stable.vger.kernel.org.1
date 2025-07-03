@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-159612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566B1AF797D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:02:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F6FAF782D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9AB84A02CE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:59:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC7C13BA4BC
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C172EF286;
-	Thu,  3 Jul 2025 14:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD322E7649;
+	Thu,  3 Jul 2025 14:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NBT8+Sp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2MPrb7u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45F22EE98F;
-	Thu,  3 Jul 2025 14:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF962101DE;
+	Thu,  3 Jul 2025 14:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554780; cv=none; b=mlhhcgwOqO+l663d/XIN1GuIGalQyUmGO1jf55JQI4xo8c3uJ84DroBu6uB2lRFhkv1WGzg7PHAVJLrnHTCYdXDsAyAfYSV2AFNDa5dLM2ILFEJkzjZIL05Tt+jdQWKO41rmc9FwcMtokm7OBl7NswwqbFsgF4QeASxSGf2U0ME=
+	t=1751554042; cv=none; b=jIRAT7c5z3fvho3xGUV2cFyzj2A88UUapzMFiPRR4lzqLrXVZbQiCmQEZDhyZY77RXS8YUGBu8JDrxGdeGhfqa+5N/wzs4xAyRNypXSATct/FKA6IKz9ww10U2AbHsaXmQm43LSrVKjA2fQwBJpKi30HcXhGZUIDIQ9U+9KIkDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554780; c=relaxed/simple;
-	bh=PqWRC6VjcwAE9q9eOnjVXe0AKzgFevOFj2nxhDNs9ZU=;
+	s=arc-20240116; t=1751554042; c=relaxed/simple;
+	bh=AhpqKxojo+Tq1JKoCNOScdKBi0zX6RibN8tjlnHV3DY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GkFl4GHxlPrPLcHR+UE5I19SPjfGNWTirPDF/hzBilDuDFjjYP/E2VX+8cOHLC+oC3MJs6ZCmjcjzA4txVuhL5mGvN3oAqgPYs43QwsdDy5b7/AtuXEHqnl0qt5Y6C342soHnCu9A/j8LqnwJw98ZJzSHub6tEXPiN1O7EGqxUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NBT8+Sp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC92C4CEED;
-	Thu,  3 Jul 2025 14:59:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qNckUVZVZj4LnGqBy/adcz6cT6+P0Ee8RhSAPFAxupuuOKN8m4jLu/mpNW/zbeRSlIoV+IjE1JJxADDx+1VRWUao72lKaaRtcb4L5aJPGVKak/R+fBYV4w9fxGigpzrFqktERHJCua3Akcf8ISdOc2YYgUpn/94Sk9G9KwAEbAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2MPrb7u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A29BC4CEF3;
+	Thu,  3 Jul 2025 14:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554780;
-	bh=PqWRC6VjcwAE9q9eOnjVXe0AKzgFevOFj2nxhDNs9ZU=;
+	s=korg; t=1751554041;
+	bh=AhpqKxojo+Tq1JKoCNOScdKBi0zX6RibN8tjlnHV3DY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2NBT8+SpO84hAOtibohtDabZ/5ELEo1RbG4i0Vod3tf9K0wINHK9cjwyZt/kXs61K
-	 yk+/i+jUnWZ4+zYT4lSyQFd+/8FjW8U5ExnCx8VyhWdRghVYQiccc4T6fdRaIHiWm1
-	 UlP5gIM6VIiivD1DwMOBpx8KE6VBUqj1l+9WL3AA=
+	b=J2MPrb7uq+618qDNXHJJB0Y+q4la8d719XxR+qErDjiRoO+VrGZmUQ/8CLkLbxFzh
+	 czBeBxH7kEFzcbh0rBhZwhjhTePTOg3iT/NpdVG2t5hj/K2FFDddPjj3YKk/NrgFZS
+	 LjDuyj9vrxYaSTT328cGsbD7dP6B2srMQ43igFNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chance Yang <chance.yang@kneron.us>,
+	Philip Yang <Philip.Yang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 059/263] usb: common: usb-conn-gpio: use a unique name for usb connector device
+Subject: [PATCH 6.12 031/218] drm/amdgpu: seq64 memory unmap uses uninterruptible lock
 Date: Thu,  3 Jul 2025 16:39:39 +0200
-Message-ID: <20250703144006.674213886@linuxfoundation.org>
+Message-ID: <20250703143957.200088421@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,96 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chance Yang <chance.yang@kneron.us>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit d4e5b10c55627e2f3fc9e5b337a28b4e2f02a55e ]
+[ Upstream commit a359288ccb4dd8edb086e7de8fdf6e36f544c922 ]
 
-The current implementation of the usb-conn-gpio driver uses a fixed
-"usb-charger" name for all USB connector devices. This causes conflicts
-in the power supply subsystem when multiple USB connectors are present,
-as duplicate names are not allowed.
+To unmap and free seq64 memory when drm node close to free vm, if there
+is signal accepted, then taking vm lock failed and leaking seq64 va
+mapping, and then dmesg has error log "still active bo inside vm".
 
-Use IDA to manage unique IDs for naming usb connectors (e.g.,
-usb-charger-0, usb-charger-1).
+Change to use uninterruptible lock fix the mapping leaking and no dmesg
+error log.
 
-Signed-off-by: Chance Yang <chance.yang@kneron.us>
-Link: https://lore.kernel.org/r/20250411-work-next-v3-1-7cd9aa80190c@kneron.us
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/common/usb-conn-gpio.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_seq64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/common/usb-conn-gpio.c b/drivers/usb/common/usb-conn-gpio.c
-index 1e36be2a28fd5..421c3af38e069 100644
---- a/drivers/usb/common/usb-conn-gpio.c
-+++ b/drivers/usb/common/usb-conn-gpio.c
-@@ -21,6 +21,9 @@
- #include <linux/regulator/consumer.h>
- #include <linux/string_choices.h>
- #include <linux/usb/role.h>
-+#include <linux/idr.h>
-+
-+static DEFINE_IDA(usb_conn_ida);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_seq64.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_seq64.c
+index e22cb2b5cd926..dba8051b8c14b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_seq64.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_seq64.c
+@@ -133,7 +133,7 @@ void amdgpu_seq64_unmap(struct amdgpu_device *adev, struct amdgpu_fpriv *fpriv)
  
- #define USB_GPIO_DEB_MS		20	/* ms */
- #define USB_GPIO_DEB_US		((USB_GPIO_DEB_MS) * 1000)	/* us */
-@@ -30,6 +33,7 @@
+ 	vm = &fpriv->vm;
  
- struct usb_conn_info {
- 	struct device *dev;
-+	int conn_id; /* store the IDA-allocated ID */
- 	struct usb_role_switch *role_sw;
- 	enum usb_role last_role;
- 	struct regulator *vbus;
-@@ -161,7 +165,17 @@ static int usb_conn_psy_register(struct usb_conn_info *info)
- 		.fwnode = dev_fwnode(dev),
- 	};
- 
--	desc->name = "usb-charger";
-+	info->conn_id = ida_alloc(&usb_conn_ida, GFP_KERNEL);
-+	if (info->conn_id < 0)
-+		return info->conn_id;
-+
-+	desc->name = devm_kasprintf(dev, GFP_KERNEL, "usb-charger-%d",
-+				    info->conn_id);
-+	if (!desc->name) {
-+		ida_free(&usb_conn_ida, info->conn_id);
-+		return -ENOMEM;
-+	}
-+
- 	desc->properties = usb_charger_properties;
- 	desc->num_properties = ARRAY_SIZE(usb_charger_properties);
- 	desc->get_property = usb_charger_get_property;
-@@ -169,8 +183,10 @@ static int usb_conn_psy_register(struct usb_conn_info *info)
- 	cfg.drv_data = info;
- 
- 	info->charger = devm_power_supply_register(dev, desc, &cfg);
--	if (IS_ERR(info->charger))
--		dev_err(dev, "Unable to register charger\n");
-+	if (IS_ERR(info->charger)) {
-+		dev_err(dev, "Unable to register charger %d\n", info->conn_id);
-+		ida_free(&usb_conn_ida, info->conn_id);
-+	}
- 
- 	return PTR_ERR_OR_ZERO(info->charger);
- }
-@@ -278,6 +294,9 @@ static void usb_conn_remove(struct platform_device *pdev)
- 
- 	cancel_delayed_work_sync(&info->dw_det);
- 
-+	if (info->charger)
-+		ida_free(&usb_conn_ida, info->conn_id);
-+
- 	if (info->last_role == USB_ROLE_HOST && info->vbus)
- 		regulator_disable(info->vbus);
- 
+-	drm_exec_init(&exec, DRM_EXEC_INTERRUPTIBLE_WAIT, 0);
++	drm_exec_init(&exec, 0, 0);
+ 	drm_exec_until_all_locked(&exec) {
+ 		r = amdgpu_vm_lock_pd(vm, &exec, 0);
+ 		if (likely(!r))
 -- 
 2.39.5
 
