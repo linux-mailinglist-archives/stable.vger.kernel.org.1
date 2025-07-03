@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56EAEAF7BFF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:30:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FB49AF7A7F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:14:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 810F617DF96
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1AF44E3FF1
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139CD22259F;
-	Thu,  3 Jul 2025 15:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF83E2ED168;
+	Thu,  3 Jul 2025 15:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S88lR40Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vkL7Gl3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C145114B092;
-	Thu,  3 Jul 2025 15:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0472D6622;
+	Thu,  3 Jul 2025 15:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556138; cv=none; b=aJYn9bsTzcoNHLka6gJJtqNhA647QZESRPpRGKvcdsvbQ3j+Iiy/R57eS3oMB3xEcqBT8Ysqi+vrNSQLjOWjlvi4oIXsima7lvrpQxvAe5CahRPJ4flfom4lLRggj6b89Ww7MNUuteN6QLpHo05zfviNeai5TFmkl9qrdCmKBP4=
+	t=1751555390; cv=none; b=VtTX8mdTZ2Blpgp9lCHKOTcKbq3R/8rdFOz/gpHdnUiMszu5ZZwD5l8VoDHcxjqCB1y70KJigsg9OqFQfH5YEyIXbLT0jjEMZt8vggw2G7ou/qkNQ4SgcULgJZgSUq1j4tR5v5sEwMdl84Pyq+XdSXivgEo6pLGyLMGNWh0/6B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556138; c=relaxed/simple;
-	bh=w1Wlkk2xp6pfYNJl4AyXLpudE6gEcK5MuJ3245PkaME=;
+	s=arc-20240116; t=1751555390; c=relaxed/simple;
+	bh=Qi6edpjNhie9eEFmtV2GlAj8yBsYfr1roMZkE3gJCJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5LeFuFkQ/RkkwDijFd9xXjS3Enbh1UiC/c/Rac1Zf0C0emBCgYG0HXASmFKpaQ6z5rARiQsMjrA0qbbYTLxna87b7ktWKTHzefC3v1sXeTCIca7paHp3jLr4BeHYiQfnx9rcMaml9aI5KzzLIkuaJL58obww5Fz3Wp8Ke4K8a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S88lR40Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E76C4CEE3;
-	Thu,  3 Jul 2025 15:22:17 +0000 (UTC)
+	 MIME-Version; b=HbckIyubK4qrEC5YiHsL4JpPi7YLS/uv9sevebsExDKfY8C0BvSZxq+FWz3GSbYGCE/DOi+9RQgvkdoneBZ5xIeOCiIyVMMXibvCaHhj+d4wrDPM4SP5IejDZJqL8U+L1qKmrI41tOMugnbHOt1ZWutUj87+9ZmLLo0plURAFOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vkL7Gl3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8C3C4CEE3;
+	Thu,  3 Jul 2025 15:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556138;
-	bh=w1Wlkk2xp6pfYNJl4AyXLpudE6gEcK5MuJ3245PkaME=;
+	s=korg; t=1751555390;
+	bh=Qi6edpjNhie9eEFmtV2GlAj8yBsYfr1roMZkE3gJCJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S88lR40Yh9wGFQ6q1Ebi+oTqbmNn1E0FMUM0FeWwAnDfvnlj19SLymxeIrJfnOyMM
-	 XuvvmzqWbEH4f7BfIhEEWuS2sv94alT2tZ+ipXxOuLTRCqpCmrzL56worCi2tEWcTx
-	 uULbbaWaOHkGOL+kxg631SDjpLStsfVzmZE/dk/w=
+	b=vkL7Gl3eERRo4rXOwpZ/asecgn6yWk3ujaDnBhGzTZ6SGwTlnfmAaPyu2bZZZXKuf
+	 iJIHjH8vS24u74g2Nc1bGmRyspYWfo2bPJPHws7xj8TINWQ8Hn8qQBMLI225WZXyKe
+	 GSidFuG2IQCa9xspl00QHew5LDxM6JZL1O6gEo3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Tamara <igor.tamara@gmail.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/132] ALSA: hda/realtek: Fix built-in mic on ASUS VivoBook X507UAR
+	Benno Lossin <lossin@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.15 255/263] rust: revocable: indicate whether `data` has been revoked already
 Date: Thu,  3 Jul 2025 16:42:55 +0200
-Message-ID: <20250703143942.780721109@linuxfoundation.org>
+Message-ID: <20250703144014.634269087@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salvatore Bonaccorso <carnil@debian.org>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 7ab6847a03229e73bb7c58ca397630f699e79b53 ]
+commit 4b76fafb20dd4a2becb94949d78e86bc88006509 upstream.
 
-The built-in mic of ASUS VivoBook X507UAR is broken recently by the fix
-of the pin sort. The fixup ALC256_FIXUP_ASUS_MIC_NO_PRESENCE is working
-for addressing the regression, too.
+Return a boolean from Revocable::revoke() and Revocable::revoke_nosync()
+to indicate whether the data has been revoked already.
 
-Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
-Reported-by: Igor Tamara <igor.tamara@gmail.com>
-Closes: https://bugs.debian.org/1108069
-Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
-Link: https://lore.kernel.org/CADdHDco7_o=4h_epjEAb92Dj-vUz_PoTC2-W9g5ncT2E0NzfeQ@mail.gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Return true if the data hasn't been revoked yet (i.e. this call revoked
+the data), false otherwise.
+
+This is required by Devres in order to synchronize the completion of the
+revoke process.
+
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lore.kernel.org/r/20250612121817.1621-3-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ rust/kernel/revocable.rs |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 3cacdbcb0d3ea..13b3ec78010a0 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10154,6 +10154,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1d4e, "ASUS TM420", ALC256_FIXUP_ASUS_HPE),
- 	SND_PCI_QUIRK(0x1043, 0x1da2, "ASUS UP6502ZA/ZD", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x1e10, "ASUS VivoBook X507UAR", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
- 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
--- 
-2.39.5
-
+--- a/rust/kernel/revocable.rs
++++ b/rust/kernel/revocable.rs
+@@ -126,8 +126,10 @@ impl<T> Revocable<T> {
+     /// # Safety
+     ///
+     /// Callers must ensure that there are no more concurrent users of the revocable object.
+-    unsafe fn revoke_internal<const SYNC: bool>(&self) {
+-        if self.is_available.swap(false, Ordering::Relaxed) {
++    unsafe fn revoke_internal<const SYNC: bool>(&self) -> bool {
++        let revoke = self.is_available.swap(false, Ordering::Relaxed);
++
++        if revoke {
+             if SYNC {
+                 // SAFETY: Just an FFI call, there are no further requirements.
+                 unsafe { bindings::synchronize_rcu() };
+@@ -137,6 +139,8 @@ impl<T> Revocable<T> {
+             // `compare_exchange` above that takes `is_available` from `true` to `false`.
+             unsafe { drop_in_place(self.data.get()) };
+         }
++
++        revoke
+     }
+ 
+     /// Revokes access to and drops the wrapped object.
+@@ -144,10 +148,13 @@ impl<T> Revocable<T> {
+     /// Access to the object is revoked immediately to new callers of [`Revocable::try_access`],
+     /// expecting that there are no concurrent users of the object.
+     ///
++    /// Returns `true` if `&self` has been revoked with this call, `false` if it was revoked
++    /// already.
++    ///
+     /// # Safety
+     ///
+     /// Callers must ensure that there are no more concurrent users of the revocable object.
+-    pub unsafe fn revoke_nosync(&self) {
++    pub unsafe fn revoke_nosync(&self) -> bool {
+         // SAFETY: By the safety requirement of this function, the caller ensures that nobody is
+         // accessing the data anymore and hence we don't have to wait for the grace period to
+         // finish.
+@@ -161,7 +168,10 @@ impl<T> Revocable<T> {
+     /// If there are concurrent users of the object (i.e., ones that called
+     /// [`Revocable::try_access`] beforehand and still haven't dropped the returned guard), this
+     /// function waits for the concurrent access to complete before dropping the wrapped object.
+-    pub fn revoke(&self) {
++    ///
++    /// Returns `true` if `&self` has been revoked with this call, `false` if it was revoked
++    /// already.
++    pub fn revoke(&self) -> bool {
+         // SAFETY: By passing `true` we ask `revoke_internal` to wait for the grace period to
+         // finish.
+         unsafe { self.revoke_internal::<true>() }
 
 
 
