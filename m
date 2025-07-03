@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-159745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0293CAF79D8
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0BA7AF7B34
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:22:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4744C7A262D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EC231891695
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B170D2ED86E;
-	Thu,  3 Jul 2025 15:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E30B2F3C1F;
+	Thu,  3 Jul 2025 15:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AO7qOxDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbmN/M+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA1D1E9B3D;
-	Thu,  3 Jul 2025 15:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B512F3C0E;
+	Thu,  3 Jul 2025 15:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555207; cv=none; b=gATm0BicmIrxiDygTD6tM6AevLTh9zFpd7VZoOZWR//FrK0I5AwtgyphYZjA5Wl+6dOQr59N+fYRGnmxTyt0lMySTkmiyneY3eB1YSZ0H4VkQzmZD6pMnoWF+Jac6vEpbJrU7a2ohfLb2oT1KvlMQ4WyvLojqsiruH4vN8eus3U=
+	t=1751555630; cv=none; b=C8atNSknR6nYyCTw5XaEVKPhr8Kb+Bs4r9BCPIiqnpr31Rih6XSMTac+4x6QkMjmhxLM/F6J1/4/mqgxwdKOP59l/tE31BVblpGrAFDFiirIg3emgmnooV8zGilG0WzzERdR3rEEiOxDSO1RfTjmBNEBfsvfBSQJrSO8EYD0MJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555207; c=relaxed/simple;
-	bh=QRg0vNDGVIS/NgUMKmTD7FDbBuhJUiMhUkKBjZMx1uY=;
+	s=arc-20240116; t=1751555630; c=relaxed/simple;
+	bh=pxhMN8YVaeGHLPehtOXOr3AIecSnVVIqPb83IkRXcaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSKtPEyjwKLAbIoB1bS59+JhPuBHLyoGIDZCZzslt0KVtWWnGgsWrWq0qVOyAZiPcfLQhD3Fx1lB9n1LMjv5UpwupJiAR4aSFnyT3PgPGFIHGLxw5Kn0WrQDmjZifE3EqKlg0GEFzGTqprIg4CdBL40YITMZggS847ncIx5MgbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AO7qOxDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA497C4CEE3;
-	Thu,  3 Jul 2025 15:06:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M4iwgNv53bUZWf9mZYxkvYj6wC6QENtu2fxEyqwPWTpuEj1Sl+DjO4wqAu4Tr5xnw7yq6XF94hxH4pAerwQE9uhIHTf4oZQxqtbWEDSyh1dbjGGxHSqAqKdeDSKmA4mw5bBQbnlYbPJNwNLh6XSpppLSpg9Iufsias7hVbh3VfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbmN/M+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A920C4CEE3;
+	Thu,  3 Jul 2025 15:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555207;
-	bh=QRg0vNDGVIS/NgUMKmTD7FDbBuhJUiMhUkKBjZMx1uY=;
+	s=korg; t=1751555629;
+	bh=pxhMN8YVaeGHLPehtOXOr3AIecSnVVIqPb83IkRXcaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AO7qOxDJLShO1xeA2xpjCByX5VQPsotVj16uc9pyb6uFASYHoPRN6e91Iw/W8PWGw
-	 g5svfZIC+NA2Gpuqm94/E9JMZGrXiQXvTX27ssnZEoPX8OpQHJMT+g5I/zuMoLzCRO
-	 tHMI0Q3N1TpjYe5RlYsquvXoj63Dq2/RKIsDYyhk=
+	b=MbmN/M+BfGG709qq3orcKZ/+Og3rTMLxNrrrJKRJTJu4hmL76Re9EZlJxf08PSn8C
+	 HCPOPMctpSAdvNMTosb6UzxO3zVhMSiaGXgBx7NV5aArBhpUY2FvvkU65Y2EHp8k/6
+	 uNIsPwadWf8JWhNpDnVcMLRHsndYRVFlXuM0WLkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.15 208/263] drm/tegra: Fix a possible null pointer dereference
+	Felix Yan <felixonmars@archlinux.org>,
+	Eric Long <i@hack3r.moe>,
+	Jianfei Zhang <zhangjianfei3@gmail.com>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Minh Le <minhld139@gmail.com>,
+	Sicheng Zhu <Emmet_Z@outlook.com>,
+	Rong Zhang <i@rong.moe>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 065/139] platform/x86: ideapad-laptop: use usleep_range() for EC polling
 Date: Thu,  3 Jul 2025 16:42:08 +0200
-Message-ID: <20250703144012.716960018@linuxfoundation.org>
+Message-ID: <20250703143943.709711944@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +66,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Rong Zhang <i@rong.moe>
 
-commit 780351a5f61416ed2ba1199cc57e4a076fca644d upstream.
+[ Upstream commit 5808c34216954cd832bd4b8bc52dfa287049122b ]
 
-In tegra_crtc_reset(), new memory is allocated with kzalloc(), but
-no check is performed. Before calling __drm_atomic_helper_crtc_reset,
-state should be checked to prevent possible null pointer dereference.
+It was reported that ideapad-laptop sometimes causes some recent (since
+2024) Lenovo ThinkBook models shut down when:
+ - suspending/resuming
+ - closing/opening the lid
+ - (dis)connecting a charger
+ - reading/writing some sysfs properties, e.g., fan_mode, touchpad
+ - pressing down some Fn keys, e.g., Brightness Up/Down (Fn+F5/F6)
+ - (seldom) loading the kmod
 
-Fixes: b7e0b04ae450 ("drm/tegra: Convert to using __drm_atomic_helper_crtc_reset() for reset.")
+The issue has existed since the launch day of such models, and there
+have been some out-of-tree workarounds (see Link:) for the issue. One
+disables some functionalities, while another one simply shortens
+IDEAPAD_EC_TIMEOUT. The disabled functionalities have read_ec_data() in
+their call chains, which calls schedule() between each poll.
+
+It turns out that these models suffer from the indeterminacy of
+schedule() because of their low tolerance for being polled too
+frequently. Sometimes schedule() returns too soon due to the lack of
+ready tasks, causing the margin between two polls to be too short.
+In this case, the command is somehow aborted, and too many subsequent
+polls (they poll for "nothing!") may eventually break the state machine
+in the EC, resulting in a hard shutdown. This explains why shortening
+IDEAPAD_EC_TIMEOUT works around the issue - it reduces the total number
+of polls sent to the EC.
+
+Even when it doesn't lead to a shutdown, frequent polls may also disturb
+the ongoing operation and notably delay (+ 10-20ms) the availability of
+EC response. This phenomenon is unlikely to be exclusive to the models
+mentioned above, so dropping the schedule() manner should also slightly
+improve the responsiveness of various models.
+
+Fix these issues by migrating to usleep_range(150, 300). The interval is
+chosen to add some margin to the minimal 50us and considering EC
+responses are usually available after 150-2500us based on my test. It
+should be enough to fix these issues on all models subject to the EC bug
+without introducing latency on other models.
+
+Tested on ThinkBook 14 G7+ ASP and solved both issues. No regression was
+introduced in the test on a model without the EC bug (ThinkBook X IMH,
+thanks Eric).
+
+Link: https://github.com/ty2/ideapad-laptop-tb2024g6plus/commit/6c5db18c9e8109873c2c90a7d2d7f552148f7ad4
+Link: https://github.com/ferstar/ideapad-laptop-tb/commit/42d1e68e5009529d31bd23f978f636f79c023e80
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218771
+Fixes: 6a09f21dd1e2 ("ideapad: add ACPI helpers")
 Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20241106095906.15247-1-chenqiuji666@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Felix Yan <felixonmars@archlinux.org>
+Tested-by: Eric Long <i@hack3r.moe>
+Tested-by: Jianfei Zhang <zhangjianfei3@gmail.com>
+Tested-by: Mingcong Bai <jeffbai@aosc.io>
+Tested-by: Minh Le <minhld139@gmail.com>
+Tested-by: Sicheng Zhu <Emmet_Z@outlook.com>
+Signed-off-by: Rong Zhang <i@rong.moe>
+Link: https://lore.kernel.org/r/20250525201833.37939-1-i@rong.moe
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/dc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/platform/x86/ideapad-laptop.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/tegra/dc.c
-+++ b/drivers/gpu/drm/tegra/dc.c
-@@ -1393,7 +1393,10 @@ static void tegra_crtc_reset(struct drm_
- 	if (crtc->state)
- 		tegra_crtc_atomic_destroy_state(crtc, crtc->state);
+diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+index db8256cde34aa..e84fcb444d872 100644
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -14,6 +14,7 @@
+ #include <linux/bitops.h>
+ #include <linux/bug.h>
+ #include <linux/debugfs.h>
++#include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/dmi.h>
+ #include <linux/fb.h>
+@@ -265,6 +266,20 @@ static void ideapad_shared_exit(struct ideapad_private *priv)
+  */
+ #define IDEAPAD_EC_TIMEOUT 200 /* in ms */
  
--	__drm_atomic_helper_crtc_reset(crtc, &state->base);
-+	if (state)
-+		__drm_atomic_helper_crtc_reset(crtc, &state->base);
-+	else
-+		__drm_atomic_helper_crtc_reset(crtc, NULL);
- }
++/*
++ * Some models (e.g., ThinkBook since 2024) have a low tolerance for being
++ * polled too frequently. Doing so may break the state machine in the EC,
++ * resulting in a hard shutdown.
++ *
++ * It is also observed that frequent polls may disturb the ongoing operation
++ * and notably delay the availability of EC response.
++ *
++ * These values are used as the delay before the first poll and the interval
++ * between subsequent polls to solve the above issues.
++ */
++#define IDEAPAD_EC_POLL_MIN_US 150
++#define IDEAPAD_EC_POLL_MAX_US 300
++
+ static int eval_int(acpi_handle handle, const char *name, unsigned long *res)
+ {
+ 	unsigned long long result;
+@@ -381,7 +396,7 @@ static int read_ec_data(acpi_handle handle, unsigned long cmd, unsigned long *da
+ 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
  
- static struct drm_crtc_state *
+ 	while (time_before(jiffies, end_jiffies)) {
+-		schedule();
++		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
+ 
+ 		err = eval_vpcr(handle, 1, &val);
+ 		if (err)
+@@ -412,7 +427,7 @@ static int write_ec_cmd(acpi_handle handle, unsigned long cmd, unsigned long dat
+ 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
+ 
+ 	while (time_before(jiffies, end_jiffies)) {
+-		schedule();
++		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
+ 
+ 		err = eval_vpcr(handle, 1, &val);
+ 		if (err)
+-- 
+2.39.5
+
 
 
 
