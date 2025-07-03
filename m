@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51477AF79A7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:04:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77C89AF7827
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64906188B4EA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:59:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14AE65683EF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14C62EE973;
-	Thu,  3 Jul 2025 14:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4A32E62CD;
+	Thu,  3 Jul 2025 14:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5jKIrT5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWAY43cg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A4B2EA730;
-	Thu,  3 Jul 2025 14:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE9813A258;
+	Thu,  3 Jul 2025 14:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554774; cv=none; b=iGfGjHcaTm4MIWoIF6gnbGJbLljhz9yb7KXizrZecOCayJnYmU+H4hXrGKj8sMe6Y5p0XHFNEbnpav17HmXNoo7eRzUq2AXoJNkLGk/7CNRGKHIcKkTF8TTd5eIPUSYxYnp7xwl8YJ3lX/V/GjGAZ5CqWH3hK/tH8f3w6tLgQCo=
+	t=1751553994; cv=none; b=ElBE1HqMDvgcGT61+sgGx29f/56YcjHL1uVskR7IcreWQNoa/kNJDHi81w04TVHVD7TRp1MvGnuMBSubj5oT/LSqfyFan12xW0/4iCi0ihI/XT2vsIw1BfbqLE5pLw3BLHCknE7OekmaVYD64s6ghzlEhofQPgdtBftbBTxKq20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554774; c=relaxed/simple;
-	bh=7pYSgAQHFmEkt5pvYb+2SLSQlufp32+eARxTuKjwXZ4=;
+	s=arc-20240116; t=1751553994; c=relaxed/simple;
+	bh=ahL82fnekKioLZw/k24U3oVDOrTwMcpg+9ujcU2kCKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lGjX1W+74dsRaBA4zBKgtSRV8I4AKGdV2ScZgRM4Omgo+pWkCTDFo08cf1ORhJEzgxJpuy4yBG10F2kVK0Rocto6qBfYpHSMjJmu7FXmqV5h/dnEdz/eyktuHWddcfVjvMHHRgwL9mIu7czqxpAsKK3zS9kVfo0V/z357h5swxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5jKIrT5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4814C4CEE3;
-	Thu,  3 Jul 2025 14:59:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SR0/u6eTsN2c40+AOhoSbYbVTS2GBPo00bImCIZ5P0nR3xv20RQ8ZVEHKV6ZBVY8MfKWkkpqbgtabSE9eod3yjPEnXPcKkM6Mpm8hKYsP3E/8AUWgckq9oVuMLj55/huSynVsXVu7tOYx65dkRrOiqNEXaQ+95MiA9s8z7df4cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWAY43cg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0CEC4CEF0;
+	Thu,  3 Jul 2025 14:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554774;
-	bh=7pYSgAQHFmEkt5pvYb+2SLSQlufp32+eARxTuKjwXZ4=;
+	s=korg; t=1751553994;
+	bh=ahL82fnekKioLZw/k24U3oVDOrTwMcpg+9ujcU2kCKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5jKIrT5XhXSUv6hQNPKxCmd3o3leMZYL6xW3Pe1bZ5t/etWXbN4zn7Izm1NxRtrI
-	 NtiMho/jKj954DnEnqk3gysRVRZb/Ugkpu5Yjqrf1iUyIZ+F6m58D5KmOpZheFLd+G
-	 P465aKf1y0JrSTtEQTzcBdGFCC1comk80ep2Nj8w=
+	b=PWAY43cgyY2dJcopi/ZnB2lfgnLrEIV1NJmMdlPdzauZA7vZADjJwPYVhCCl902PH
+	 MZbgILdiWFShHhIHsaUxDw+YTAjK49rbBao4aigTbjYVE7c43H69GVkyKUI2S6z0tL
+	 3AeJ9LTVmLc52ACiR9b6kNb6JSurBnKDp0NgZJzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Can Guo <quic_cang@quicinc.com>,
-	Ziqi Chen <quic_ziqichen@quicinc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jos Wang <joswang@lenovo.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 075/263] scsi: ufs: core: Dont perform UFS clkscaling during host async scan
+Subject: [PATCH 6.12 047/218] usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode
 Date: Thu,  3 Jul 2025 16:39:55 +0200
-Message-ID: <20250703144007.313339108@linuxfoundation.org>
+Message-ID: <20250703143957.818865475@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziqi Chen <quic_ziqichen@quicinc.com>
+From: Jos Wang <joswang@lenovo.com>
 
-[ Upstream commit e97633492f5a3eca7b3ff03b4ef6f993017f7955 ]
+[ Upstream commit b4b38ffb38c91afd4dc387608db26f6fc34ed40b ]
 
-When preparing for UFS clock scaling, the UFS driver will quiesce all
-sdevs queues in the UFS SCSI host tagset list and then unquiesce them in
-ufshcd_clock_scaling_unprepare(). If the UFS SCSI host async scan is in
-progress at this time, some LUs may be added to the tagset list between
-UFS clkscale prepare and unprepare. This can cause two issues:
+Although some Type-C DRD devices that do not support the DP Sink
+function (such as Huawei Mate 40Pro), the Source Port initiates
+Enter Mode CMD, but the device responds to Enter Mode ACK, the
+Source port then initiates DP Status Update CMD, and the device
+responds to DP Status Update NAK.
 
-1. During clock scaling, there may be I/O requests issued through new
-added queues that have not been quiesced, leading to task abort issue.
+As PD2.0 spec ("6.4.4.3.4 Enter Mode Command")，A DR_Swap Message
+Shall Not be sent during Modal Operation between the Port Partners.
+At this time, the source port initiates DR_Swap message through the
+"echo device > /sys/class/typec/port0/data_role" command to switch
+the data role from host to device. The device will initiate a Hard
+Reset for recovery, resulting in the failure of data role swap.
 
-2. These new added queues that have not been quiesced will be unquiesced
-as well when UFS clkscale is unprepared, resulting in warning prints.
+Therefore, when DP Status Update NAK is received, Exit Mode CMD is
+initiated to exit the currently entered DP altmode.
 
-Therefore, use the mutex lock scan_mutex in
-ufshcd_clock_scaling_prepare() and ufshcd_clock_scaling_unprepare() to
-protect it.
-
-Co-developed-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Ziqi Chen <quic_ziqichen@quicinc.com>
-Link: https://lore.kernel.org/r/20250522081233.2358565-1-quic_ziqichen@quicinc.com
-Suggested-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jos Wang <joswang@lenovo.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250209071926.69625-1-joswang1221@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/typec/altmodes/displayport.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 04f769d907a44..ea24080c26e89 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -1379,6 +1379,7 @@ static int ufshcd_clock_scaling_prepare(struct ufs_hba *hba, u64 timeout_us)
- 	 * make sure that there are no outstanding requests when
- 	 * clock scaling is in progress
- 	 */
-+	mutex_lock(&hba->host->scan_mutex);
- 	blk_mq_quiesce_tagset(&hba->host->tag_set);
- 	mutex_lock(&hba->wb_mutex);
- 	down_write(&hba->clk_scaling_lock);
-@@ -1389,6 +1390,7 @@ static int ufshcd_clock_scaling_prepare(struct ufs_hba *hba, u64 timeout_us)
- 		up_write(&hba->clk_scaling_lock);
- 		mutex_unlock(&hba->wb_mutex);
- 		blk_mq_unquiesce_tagset(&hba->host->tag_set);
-+		mutex_unlock(&hba->host->scan_mutex);
- 		goto out;
- 	}
- 
-@@ -1410,6 +1412,7 @@ static void ufshcd_clock_scaling_unprepare(struct ufs_hba *hba, int err)
- 	mutex_unlock(&hba->wb_mutex);
- 
- 	blk_mq_unquiesce_tagset(&hba->host->tag_set);
-+	mutex_unlock(&hba->host->scan_mutex);
- 	ufshcd_release(hba);
- }
- 
+diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+index 92cc1b1361208..4976a7238b287 100644
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -393,6 +393,10 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
+ 		break;
+ 	case CMDT_RSP_NAK:
+ 		switch (cmd) {
++		case DP_CMD_STATUS_UPDATE:
++			if (typec_altmode_exit(alt))
++				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
++			break;
+ 		case DP_CMD_CONFIGURE:
+ 			dp->data.conf = 0;
+ 			ret = dp_altmode_configured(dp);
 -- 
 2.39.5
 
