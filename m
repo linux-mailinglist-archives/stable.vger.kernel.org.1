@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-159412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB8FAF7871
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:50:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37DAFAF784D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97A374A0156
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:49:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B660582257
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9ABB2D948F;
-	Thu,  3 Jul 2025 14:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1A82EF295;
+	Thu,  3 Jul 2025 14:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hev32Faz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Cwjl5oe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73831126BFF;
-	Thu,  3 Jul 2025 14:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0B62EE99C;
+	Thu,  3 Jul 2025 14:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554151; cv=none; b=tFL7+qipAJ9oRf9Ra9mR5rc4yjue4P2P90nnp/3ThpHPOumLhBBFl8owP53iojbu7kftiWBHrmomhyaTMY6l033ldZbP1g+yvCD+zqGu5OXeWX4qSljydasDYBtg53R5vIPGfaDU/B2n8/hYqzoZsejd8g9JILY9PqWv5K1W7ks=
+	t=1751554055; cv=none; b=aLBsddUkZyC+uG30HLnKh/DPFezhx8rYLQg40fXQDv5VuWDvNZ6boeMct8lYrGInjz+uxlr3BnOwXXlRCG8eaQbniRd87MsR8ypRkQDM+JYVYbnsc7zrbxlxqXyScNhFNWqLsXB1XabQTzABwAv31T+GjqYjPDrYUrGqSe+o/NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554151; c=relaxed/simple;
-	bh=gc9tdhgwYTKw8E2/hShM//1O9HqFgieL5lXeA5a/AgY=;
+	s=arc-20240116; t=1751554055; c=relaxed/simple;
+	bh=38YzwgjK4uVRyWp7AviH+ZINo/0ZLMn586BhcLxGtiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QA2PdCBBSUhaw3+y1HOZDYInN+7ynSfxzKaqWTr83Nap+Cq1VVyQZVIHPZ+f5YDFxfsXEUnzApUpl3pRMMaWGDtKYVq0UC050RPo0xNdwHHVQGEwMJzo/20dicZfJXisdna3ZKeu5DNCFPO4eBc5eKAZAcH4MmXrWqxvdwBYQbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hev32Faz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA81C4CEE3;
-	Thu,  3 Jul 2025 14:49:10 +0000 (UTC)
+	 MIME-Version; b=Y1BFMPd8K+TIcrlKdTqmYn2JyC77Zy2kKL130EfUqaZHgdCDlPSoIp6lAEplItR8Jt7p/Dk5RzBDfrAHsNvJpiL09NCDmpdS2oWtEZL+REdj/DrvwQbfGyA8YNnSQ3pBdkYS5F4HShLos/XZXQjnQUuGj67RxtZ9VQUT3mtJXO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Cwjl5oe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50AA4C4CEED;
+	Thu,  3 Jul 2025 14:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554151;
-	bh=gc9tdhgwYTKw8E2/hShM//1O9HqFgieL5lXeA5a/AgY=;
+	s=korg; t=1751554054;
+	bh=38YzwgjK4uVRyWp7AviH+ZINo/0ZLMn586BhcLxGtiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hev32FazaDcgyV/uoT7P0UPLyoyhsQqQzmEqNy82qRhrOoR63XfHFktFH40B8XHup
-	 XTWzHz+DrxBGCs8kJUYJpp29GA6uLBYHxZNvyTEyCklGPg341SztRbyp7icIaiQ7e5
-	 MJA3zDYl9+9YBp4VjeHO9NOsFCeF3UqNOaxjMcg4=
+	b=2Cwjl5oeAasiSAqag+GVmTnXkoHyt6zBy4eP65YItT3FeMe5tbouljgwDoasOVDch
+	 o0fO+1YX+3ZP4urdv/KJvI9Y0LrxaWQJZUdJVD9czpLF34yuySqS9hqpoV6mTwSE4i
+	 Zshx8BShj5JS6Tn85a3ir7ajyABO/wmmZFO/OwAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	stable@kernel.org,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/218] ASoC: codecs: wcd9335: Fix missing free of regulator supplies
-Date: Thu,  3 Jul 2025 16:40:14 +0200
-Message-ID: <20250703143958.582010274@linuxfoundation.org>
+Subject: [PATCH 6.12 067/218] f2fs: dont over-report free space or inodes in statvfs
+Date: Thu,  3 Jul 2025 16:40:15 +0200
+Message-ID: <20250703143958.620656105@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
 References: <20250703143955.956569535@linuxfoundation.org>
@@ -66,86 +67,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 9079db287fc3e38e040b0edeb0a25770bb679c8e ]
+[ Upstream commit a9201960623287927bf5776de3f70fb2fbde7e02 ]
 
-Driver gets and enables all regulator supplies in probe path
-(wcd9335_parse_dt() and wcd9335_power_on_reset()), but does not cleanup
-in final error paths and in unbind (missing remove() callback).  This
-leads to leaked memory and unbalanced regulator enable count during
-probe errors or unbind.
+This fixes an analogus bug that was fixed in modern filesystems:
+a) xfs in commit 4b8d867ca6e2 ("xfs: don't over-report free space or
+inodes in statvfs")
+b) ext4 in commit f87d3af74193 ("ext4: don't over-report free space
+or inodes in statvfs")
+where statfs can report misleading / incorrect information where
+project quota is enabled, and the free space is less than the
+remaining quota.
 
-Fix this by converting entire code into devm_regulator_bulk_get_enable()
-which also greatly simplifies the code.
+This commit will resolve a test failure in generic/762 which tests
+for this bug.
 
-Fixes: 20aedafdf492 ("ASoC: wcd9335: add support to wcd9335 codec")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-1-0b8a2993b7d3@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+generic/762       - output mismatch (see /share/git/fstests/results//generic/762.out.bad)
+#    --- tests/generic/762.out   2025-04-15 10:21:53.371067071 +0800
+#    +++ /share/git/fstests/results//generic/762.out.bad 2025-05-13 16:13:37.000000000 +0800
+#    @@ -6,8 +6,10 @@
+#     root blocks2 is in range
+#     dir blocks2 is in range
+#     root bavail2 is in range
+#    -dir bavail2 is in range
+#    +dir bavail2 has value of 1539066
+#    +dir bavail2 is NOT in range 304734.87 .. 310891.13
+#     root blocks3 is in range
+#    ...
+#    (Run 'diff -u /share/git/fstests/tests/generic/762.out /share/git/fstests/results//generic/762.out.bad'  to see the entire diff)
+
+HINT: You _MAY_ be missing kernel fix:
+      XXXXXXXXXXXXXX xfs: don't over-report free space or inodes in statvfs
+
+Cc: stable@kernel.org
+Fixes: ddc34e328d06 ("f2fs: introduce f2fs_statfs_project")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd9335.c | 25 +++++++------------------
- 1 file changed, 7 insertions(+), 18 deletions(-)
+ fs/f2fs/super.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
-index db6a1facf8a92..1375ac571fbf3 100644
---- a/sound/soc/codecs/wcd9335.c
-+++ b/sound/soc/codecs/wcd9335.c
-@@ -330,7 +330,6 @@ struct wcd9335_codec {
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 330f89ddb5c8f..f0e83ea56e38c 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1787,26 +1787,32 @@ static int f2fs_statfs_project(struct super_block *sb,
  
- 	int intr1;
- 	struct gpio_desc *reset_gpio;
--	struct regulator_bulk_data supplies[WCD9335_MAX_SUPPLY];
- 
- 	unsigned int rx_port_value[WCD9335_RX_MAX];
- 	unsigned int tx_port_value[WCD9335_TX_MAX];
-@@ -353,6 +352,10 @@ struct wcd9335_irq {
- 	char *name;
- };
- 
-+static const char * const wcd9335_supplies[] = {
-+	"vdd-buck", "vdd-buck-sido", "vdd-tx", "vdd-rx", "vdd-io",
-+};
+ 	limit = min_not_zero(dquot->dq_dqb.dqb_bsoftlimit,
+ 					dquot->dq_dqb.dqb_bhardlimit);
+-	if (limit)
+-		limit >>= sb->s_blocksize_bits;
++	limit >>= sb->s_blocksize_bits;
 +
- static const struct wcd9335_slim_ch wcd9335_tx_chs[WCD9335_TX_MAX] = {
- 	WCD9335_SLIM_TX_CH(0),
- 	WCD9335_SLIM_TX_CH(1),
-@@ -4987,30 +4990,16 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
- 	if (IS_ERR(wcd->native_clk))
- 		return dev_err_probe(dev, PTR_ERR(wcd->native_clk), "slimbus clock not found\n");
++	if (limit) {
++		uint64_t remaining = 0;
  
--	wcd->supplies[0].supply = "vdd-buck";
--	wcd->supplies[1].supply = "vdd-buck-sido";
--	wcd->supplies[2].supply = "vdd-tx";
--	wcd->supplies[3].supply = "vdd-rx";
--	wcd->supplies[4].supply = "vdd-io";
--
--	ret = regulator_bulk_get(dev, WCD9335_MAX_SUPPLY, wcd->supplies);
-+	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(wcd9335_supplies),
-+					     wcd9335_supplies);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to get supplies\n");
-+		return dev_err_probe(dev, ret, "Failed to get and enable supplies\n");
+-	if (limit && buf->f_blocks > limit) {
+ 		curblock = (dquot->dq_dqb.dqb_curspace +
+ 			    dquot->dq_dqb.dqb_rsvspace) >> sb->s_blocksize_bits;
+-		buf->f_blocks = limit;
+-		buf->f_bfree = buf->f_bavail =
+-			(buf->f_blocks > curblock) ?
+-			 (buf->f_blocks - curblock) : 0;
++		if (limit > curblock)
++			remaining = limit - curblock;
++
++		buf->f_blocks = min(buf->f_blocks, limit);
++		buf->f_bfree = min(buf->f_bfree, remaining);
++		buf->f_bavail = min(buf->f_bavail, remaining);
+ 	}
  
- 	return 0;
- }
+ 	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
+ 					dquot->dq_dqb.dqb_ihardlimit);
  
- static int wcd9335_power_on_reset(struct wcd9335_codec *wcd)
- {
--	struct device *dev = wcd->dev;
--	int ret;
--
--	ret = regulator_bulk_enable(WCD9335_MAX_SUPPLY, wcd->supplies);
--	if (ret) {
--		dev_err(dev, "Failed to get supplies: err = %d\n", ret);
--		return ret;
--	}
--
- 	/*
- 	 * For WCD9335, it takes about 600us for the Vout_A and
- 	 * Vout_D to be ready after BUCK_SIDO is powered up.
+-	if (limit && buf->f_files > limit) {
+-		buf->f_files = limit;
+-		buf->f_ffree =
+-			(buf->f_files > dquot->dq_dqb.dqb_curinodes) ?
+-			 (buf->f_files - dquot->dq_dqb.dqb_curinodes) : 0;
++	if (limit) {
++		uint64_t remaining = 0;
++
++		if (limit > dquot->dq_dqb.dqb_curinodes)
++			remaining = limit - dquot->dq_dqb.dqb_curinodes;
++
++		buf->f_files = min(buf->f_files, limit);
++		buf->f_ffree = min(buf->f_ffree, remaining);
+ 	}
+ 
+ 	spin_unlock(&dquot->dq_dqb_lock);
 -- 
 2.39.5
 
