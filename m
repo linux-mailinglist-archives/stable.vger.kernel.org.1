@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F366AF79AD
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C88D0AF7B9F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B3A03ABA7B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4A456E54B4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9482EFDAE;
-	Thu,  3 Jul 2025 14:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4452EE5F7;
+	Thu,  3 Jul 2025 15:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yc0nWBM1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTgPIkiz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684FF2EFDA2;
-	Thu,  3 Jul 2025 14:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE2022258C;
+	Thu,  3 Jul 2025 15:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554459; cv=none; b=eCwQWVw2tbAqK0hZ22bRJNv1QMTrvnMFAZ/xkH+FJkoU7tgZB6hzfQ5m/bOlgNWc8znEyJiZaDSnlFujS6Fv/88pEW+Km1iywFDdpPGTAkqooWm6+B8Qrp+rvT6kfqZg18ClglSEe8BjOsr1cP553XhzNmo4f0kEkCdOhT0syQw=
+	t=1751555936; cv=none; b=lz5//vwNS0tN43K2okQtKxFVsbBmTDKyBcxtbH4BA29ODomOKmY4MXxWNhiZ74UrBGhTYFDSnLlP6wGYdPnLi5wSd+4uF0LjQ5YQFJmWxlsOWCy8uCtQefAB+PO8aDG/96YAmkCDnDftM+sAZY3YZ+P76J0JLXNBg4QdYSqTa0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554459; c=relaxed/simple;
-	bh=07zrUXu/0D3mQq4uPfaQQhRF4O5+Ds9XsixFMP+WNrE=;
+	s=arc-20240116; t=1751555936; c=relaxed/simple;
+	bh=5YGjLGxDvaNPZWfWNwduBr7JQZifbakclCNLKzM+iAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HD4/zAKb2AO/pDGDQcBj+bCLzZKFUP4qhVTo9XEIxYrmUB2E2/hFwAr3oe0zKCvjVO7kW1ehpHMcmKbn6kH36C0gjaaITEAAciK2NWihPPgtzivo2uxFPcG6GJg+75W2qWfnis221j+cd9a5KGgj0h+Vo+CR4aPf6Y+a5xXqqMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yc0nWBM1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E86C4CEED;
-	Thu,  3 Jul 2025 14:54:18 +0000 (UTC)
+	 MIME-Version; b=qtkcM5MHp6JYVidtfhLRoZjyzqhiA52ltbwc1KIo0GMLVzAuO6S5Q4B0QS6XQFOkFLhC1PWyolMXRXFuZ0y6Zf4rZSlxwWuRDUkEuSMJiojK8qhg66vc5VOizJQ8FL0xR+V6MGweWprP7CQc2s+LaYj7JDDzZCdq/JLkNa3iEZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTgPIkiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D327C4CEE3;
+	Thu,  3 Jul 2025 15:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554459;
-	bh=07zrUXu/0D3mQq4uPfaQQhRF4O5+Ds9XsixFMP+WNrE=;
+	s=korg; t=1751555935;
+	bh=5YGjLGxDvaNPZWfWNwduBr7JQZifbakclCNLKzM+iAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yc0nWBM1tvhrFKQo15rI0w9IwAdpyxHZkGKg5/t22PAQy5MT1v2khlHO1/N6EGUXd
-	 2gjStcDG0xK7bmINYpJHdjkDDqbTRngp3WtF7nYVfj92Bfm0+3xNqwsFkt/mSAGyf0
-	 jDd2/eMceUx1aErM1m2neoTg0v9/Dlg0o6b4HUbA=
+	b=TTgPIkizbKxR1omwqWDiXf7DmhMhM0GFNoA18g0WEmqGvJLnXQoF/+UtGwcJC6awv
+	 j473gbcfga/36taLk6HXn2mdh3wJyHuBf18QwzsibwZbfPsjKTn0WSNnALRLajRUQE
+	 kNBdPizQgQSVBTHMLsIBs/BaqeClcghpam4Pu8Ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.12 164/218] drm/xe/vm: move rebind_work init earlier
+	Purva Yeshi <purvayeshi550@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 023/132] iio: adc: ad_sigma_delta: Fix use of uninitialized status_pos
 Date: Thu,  3 Jul 2025 16:41:52 +0200
-Message-ID: <20250703144002.712437844@linuxfoundation.org>
+Message-ID: <20250703143940.310212395@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Purva Yeshi <purvayeshi550@gmail.com>
 
-commit a63e99b4d6d3a0353ef47146dd5bd562f08e1786 upstream.
+[ Upstream commit e5cdb098a3cb165d52282ffc3a6448642953ea13 ]
 
-In xe_vm_close_and_put() we need to be able to call
-flush_work(rebind_work), however during vm creation we can call this on
-the error path, before having actually set up the worker, leading to a
-splat from flush_work().
+Fix Smatch-detected issue:
+drivers/iio/adc/ad_sigma_delta.c:604 ad_sd_trigger_handler() error:
+uninitialized symbol 'status_pos'.
 
-It looks like we can simply move the worker init step earlier to fix
-this.
+The variable `status_pos` was only initialized in specific switch cases
+(1, 2, 3, 4), which could leave it uninitialized if `reg_size` had an
+unexpected value.
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250514152424.149591-3-matthew.auld@intel.com
-(cherry picked from commit 96af397aa1a2d1032a6e28ff3f4bc0ab4be40e1d)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by adding a default case to the switch block to catch unexpected
+values of `reg_size`. Use `dev_err_ratelimited()` for error logging and
+`goto irq_handled` instead of returning early.
+
+Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
+Link: https://patch.msgid.link/20250410170408.8585-1-purvayeshi550@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_vm.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iio/adc/ad_sigma_delta.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -1477,8 +1477,10 @@ struct xe_vm *xe_vm_create(struct xe_dev
- 	 * scheduler drops all the references of it, hence protecting the VM
- 	 * for this case is necessary.
- 	 */
--	if (flags & XE_VM_FLAG_LR_MODE)
-+	if (flags & XE_VM_FLAG_LR_MODE) {
-+		INIT_WORK(&vm->preempt.rebind_work, preempt_rebind_work_func);
- 		xe_pm_runtime_get_noresume(xe);
-+	}
- 
- 	vm_resv_obj = drm_gpuvm_resv_object_alloc(&xe->drm);
- 	if (!vm_resv_obj) {
-@@ -1523,10 +1525,8 @@ struct xe_vm *xe_vm_create(struct xe_dev
- 		vm->batch_invalidate_tlb = true;
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index 7e21928707437..533667eefe419 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -476,6 +476,10 @@ static irqreturn_t ad_sd_trigger_handler(int irq, void *p)
+ 		 * byte set to zero. */
+ 		ad_sd_read_reg_raw(sigma_delta, data_reg, transfer_size, &data[1]);
+ 		break;
++
++	default:
++		dev_err_ratelimited(&indio_dev->dev, "Unsupported reg_size: %u\n", reg_size);
++		goto irq_handled;
  	}
  
--	if (vm->flags & XE_VM_FLAG_LR_MODE) {
--		INIT_WORK(&vm->preempt.rebind_work, preempt_rebind_work_func);
-+	if (vm->flags & XE_VM_FLAG_LR_MODE)
- 		vm->batch_invalidate_tlb = false;
--	}
- 
- 	/* Fill pt_root after allocating scratch tables */
- 	for_each_tile(tile, xe, id) {
+ 	/*
+-- 
+2.39.5
+
 
 
 
