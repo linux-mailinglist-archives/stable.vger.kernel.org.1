@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-159980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A6FAF7BAB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65164AF78F1
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 759791654E4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7DBC541F28
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3527D2EACE1;
-	Thu,  3 Jul 2025 15:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D5D2EE982;
+	Thu,  3 Jul 2025 14:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fq7UXCSh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDeEhnYJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E711D22069F;
-	Thu,  3 Jul 2025 15:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7762EF9BF;
+	Thu,  3 Jul 2025 14:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555984; cv=none; b=SSdc2a2P1mRpNcjntk3JXzU0z+oJTmG3LGJeOiSyGjnMq6HPF4qLci4+IuSTH7huL0/K5hJ1QZOCSYee4yzykf4sf+EAO0d8ehAqqXQwU9EFgLU1obGLIcShdTqNWPN/23a9AXCHaI4cu76mZ6E+hhS35ukqYz22DU0ihhyFnnM=
+	t=1751554415; cv=none; b=u8DwoC+5LF3ol3A5TOfKORBU9G6yVqz7wsd0GwbpBOVNmo1bX9v9vibX6/FzyxFkgx/E1HshbG//rjV0zy6MgmoyH6StjOEm4VQUo6pouuhWxMzXHvmUGo/SCW2MdcsRkU4XCse+QTyVBLGKuF1jfL5Qwo+PtAR/g6+S7YY9VMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555984; c=relaxed/simple;
-	bh=A+fpRMKbp8mQ8gyUnPS+Zir3OyJWlSSR7iT2AFtesIM=;
+	s=arc-20240116; t=1751554415; c=relaxed/simple;
+	bh=jKaZFqlooAiKlO9oK3Fd/D/x1ntfQvhGkybi8yeUtls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J6Rs8uPFkolJ1e6QU8sXI4xCZXfsrSmP7E15FAf4pnE07el2OwSyCE61UV3KHafNlFc+wQZAPzdvhrnI7jX2l3t/JPkgsMQK8lgx1OYwHZvruF7AUIRUkHHafp88BsiOoI58gwr4CLnWULphqvQyPNMCuamXMcbxVRCSTvnEIqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fq7UXCSh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 725F8C4CEE3;
-	Thu,  3 Jul 2025 15:19:43 +0000 (UTC)
+	 MIME-Version; b=LLy9oI/dWjFB9qkqyhlNH1RYPs6DCF0XmGdtQsQarvFJ5xLejbIulMXn8QH05GTHApfgofuvh18NFcqjPQRYFsd7EY0GgxSyNv6f554uoDkkBAs3KUMfKcwZGGaNk54PQbxRJN3aE8w2F5a5ER78iEbh03f6ZIIbuH6oTrBmRiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDeEhnYJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F6BC4CEE3;
+	Thu,  3 Jul 2025 14:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555983;
-	bh=A+fpRMKbp8mQ8gyUnPS+Zir3OyJWlSSR7iT2AFtesIM=;
+	s=korg; t=1751554415;
+	bh=jKaZFqlooAiKlO9oK3Fd/D/x1ntfQvhGkybi8yeUtls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fq7UXCShcVJ6VegLzb6WmTPqfUgCmvCNwYjJXTKnKmbM5iTETF4HsKWHP/d13wUfx
-	 fcTH/LpsaeesoSHQdweARH8kn+6YGVdh7XUGKXBU1spVynEwrcOszjKEKUzcHfGRRR
-	 0gqJ/yDWGfSdIi4galm1tjcbVfl2TWIVaOb8Krxs=
+	b=SDeEhnYJiO8GWuRW9AUHIfzYvXJxbBrqowrgTSfYUQvxHfl3V7F0LxnQECVFYwLSw
+	 YAT5cWwqUAAu7RVJ+NsMRF/pvUDS6Mo74Yd2R+cduJ5ppNH4gVy526lksCsEJcPRuO
+	 Zzo6Ynw+zK1YicH72EECnLhS+eU5cWPLwuz1h4zw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/132] fs/jfs: consolidate sanity checking in dbMount
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 6.12 180/218] net: libwx: fix Tx L4 checksum
 Date: Thu,  3 Jul 2025 16:42:08 +0200
-Message-ID: <20250703143940.960724428@linuxfoundation.org>
+Message-ID: <20250703144003.371017154@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Kleikamp <dave.kleikamp@oracle.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 0d250b1c52484d489e31df2cf9118b7c4bd49d31 ]
+commit c7d82913d5f9e97860772ee4051eaa66b56a6273 upstream.
 
-Sanity checks have been added to dbMount as individual if clauses with
-identical error handling. Move these all into one clause.
+The hardware only supports L4 checksum offload for TCP/UDP/SCTP protocol.
+There was a bug to set Tx checksum flag for the other protocol that results
+in Tx ring hang. Fix to compute software checksum for these packets.
 
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Stable-dep-of: 37bfb464ddca ("jfs: validate AG parameters in dbMount() to prevent crashes")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3403960cdf86 ("net: wangxun: libwx add tx offload functions")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Link: https://patch.msgid.link/20250324103235.823096-2-jiawenwu@trustnetic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 37 +++++++++----------------------------
- 1 file changed, 9 insertions(+), 28 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 5e32526174e88..621f0d871af67 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -178,45 +178,26 @@ int dbMount(struct inode *ipbmap)
- 	dbmp_le = (struct dbmap_disk *) mp->data;
- 	bmp->db_mapsize = le64_to_cpu(dbmp_le->dn_mapsize);
- 	bmp->db_nfree = le64_to_cpu(dbmp_le->dn_nfree);
--
- 	bmp->db_l2nbperpage = le32_to_cpu(dbmp_le->dn_l2nbperpage);
--	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE ||
--		bmp->db_l2nbperpage < 0) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
--
- 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
--	if (!bmp->db_numag || bmp->db_numag > MAXAG) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
--
- 	bmp->db_maxlevel = le32_to_cpu(dbmp_le->dn_maxlevel);
- 	bmp->db_maxag = le32_to_cpu(dbmp_le->dn_maxag);
- 	bmp->db_agpref = le32_to_cpu(dbmp_le->dn_agpref);
--	if (bmp->db_maxag >= MAXAG || bmp->db_maxag < 0 ||
--		bmp->db_agpref >= MAXAG || bmp->db_agpref < 0) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
--
- 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
- 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
- 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
--	if (!bmp->db_agwidth) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
- 	bmp->db_agstart = le32_to_cpu(dbmp_le->dn_agstart);
- 	bmp->db_agl2size = le32_to_cpu(dbmp_le->dn_agl2size);
--	if (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG ||
--	    bmp->db_agl2size < 0) {
--		err = -EINVAL;
--		goto err_release_metapage;
--	}
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -1336,6 +1336,7 @@ static void wx_tx_csum(struct wx_ring *t
+ 	u8 tun_prot = 0;
  
--	if (((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
-+	if ((bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE) ||
-+	    (bmp->db_l2nbperpage < 0) ||
-+	    !bmp->db_numag || (bmp->db_numag > MAXAG) ||
-+	    (bmp->db_maxag >= MAXAG) || (bmp->db_maxag < 0) ||
-+	    (bmp->db_agpref >= MAXAG) || (bmp->db_agpref < 0) ||
-+	    !bmp->db_agwidth ||
-+	    (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG) ||
-+	    (bmp->db_agl2size < 0) ||
-+	    ((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
- 		err = -EINVAL;
- 		goto err_release_metapage;
- 	}
--- 
-2.39.5
-
+ 	if (skb->ip_summed != CHECKSUM_PARTIAL) {
++csum_failed:
+ 		if (!(first->tx_flags & WX_TX_FLAGS_HW_VLAN) &&
+ 		    !(first->tx_flags & WX_TX_FLAGS_CC))
+ 			return;
+@@ -1429,7 +1430,8 @@ static void wx_tx_csum(struct wx_ring *t
+ 					WX_TXD_L4LEN_SHIFT;
+ 			break;
+ 		default:
+-			break;
++			skb_checksum_help(skb);
++			goto csum_failed;
+ 		}
+ 
+ 		/* update TX checksum flag */
 
 
 
