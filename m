@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-159763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9441EAF7A5E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:12:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E9BAF78D6
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6785189AAFB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:08:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEF363BD90E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D122D6622;
-	Thu,  3 Jul 2025 15:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E052EFD89;
+	Thu,  3 Jul 2025 14:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqBEJAt2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1v2frQe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AE315442C;
-	Thu,  3 Jul 2025 15:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91172EE96D;
+	Thu,  3 Jul 2025 14:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555269; cv=none; b=j7rC1AWeHRTyM/t0O5hxp0GjZL49099zfK95Nn8sEih+VzQuqKukEbzOqwJwMKwXbVugCKTyjVCu9Ti3YE4nFr9qnvsr+5JR/5qU6/PI4FddMm+x6nTyM6hysw/pB60VstPwfC1+8KbrNsDqmsLhRgZ6uk7G+vC0pYgsrCoamQk=
+	t=1751554374; cv=none; b=h/mwOsw5MRy8jNEbmy0vz6rzDQdTqmXGLEgRAk/ZvnHDc8Goeik5Gwb03Glzrila/sTlw7yeDN+V0T8aIWJxr3MkaRcym2R1lsDaPT76D7oP4tUAaVg/Z3eFrkSBVe/2zNLx+3rwOeDb5HZkKSMTFTE7ZCwUlXoyPrnGRKcV6CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555269; c=relaxed/simple;
-	bh=WivRzcDGzKCtrV+QKKV4v2jKbhQ6p33MMXyqCI8b8K8=;
+	s=arc-20240116; t=1751554374; c=relaxed/simple;
+	bh=PHv0qYv7utuS1J7yDPCJxuslr5MzFCOxN5puuDFoVCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ini0rpbgkdCXSU2fdKevTTgjbcpgqlnlet3TaBxj6mZDQiOVrrTRmHOM/g3IHdpj/0XR3Lo8dvkaLGpwrgfAZ61UzJ0Al5PNnnVgsUBmeOx2pO7g3EOOGMFmcu0Wer/flBYk/8QX8a8uXRijR4Nr86wSKes3oLHaMWKUENr+FTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqBEJAt2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62016C4CEE3;
-	Thu,  3 Jul 2025 15:07:48 +0000 (UTC)
+	 MIME-Version; b=QVd1IrG4FImqCFFpSa2caHCvcVLGIoMHrfIVryMMW3K1CVQjkLoOtj2GQ9qXqcu262S3nvEURQJ3KQLQ8+XbJu9yZMcEhWv/SBA4hBl35ENzyVcuMwOGECSJhATh4a8s5EfwZ4ntxKoDCGm2UWZJ2S/n4bPcz4er8j6lLsOiuWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1v2frQe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88F2C4CEE3;
+	Thu,  3 Jul 2025 14:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555268;
-	bh=WivRzcDGzKCtrV+QKKV4v2jKbhQ6p33MMXyqCI8b8K8=;
+	s=korg; t=1751554374;
+	bh=PHv0qYv7utuS1J7yDPCJxuslr5MzFCOxN5puuDFoVCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqBEJAt2H0/tDxVkguPARSsjT777xNLIJh0StX1ioolWbDAXG2xGFFc+fIC6yOUt1
-	 AyMoPJ8RV8p2BkztXSY3XHKVVWp7T5rdqJ8PQeTukns87C7CE8DJ/oFsyRo5LxEKCo
-	 AbS9JIdf7sjNgHKe5x3GQ/59m6ktaz0QfgdV7+yE=
+	b=c1v2frQekQNZD6tTeJ3yCADbQsJnCneiDqqtLFOtBJ5Xa5JSQ8pxPaERvVcrGAchY
+	 xselxOvTR8RD9s2lBEy/DnWtErASSz14TJppNUvkOLuQ5n/C7CE9FgodV+4X4ooNV8
+	 o4J3YCMXRzuSIjPjuC9gSV19hcY9rxfnz5h1kgu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.15 195/263] HID: wacom: fix memory leak on kobject creation failure
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>,
+	Yihan Zhu <Yihan.Zhu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.12 167/218] drm/amd/display: Fix RMCM programming seq errors
 Date: Thu,  3 Jul 2025 16:41:55 +0200
-Message-ID: <20250703144012.176856621@linuxfoundation.org>
+Message-ID: <20250703144002.836774196@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Yihan Zhu <Yihan.Zhu@amd.com>
 
-commit 5ae416c5b1e2e816aee7b3fc8347adf70afabb4c upstream.
+commit 158f9944ac05dafd2d3a23d0688e6cf40ef68b90 upstream.
 
-During wacom_initialize_remotes() a fifo buffer is allocated
-with kfifo_alloc() and later a cleanup action is registered
-during devm_add_action_or_reset() to clean it up.
+[WHY & HOW]
+Fix RMCM programming sequence errors and mapping issues to pass the RMCM
+test.
 
-However if the code fails to create a kobject and register it
-with sysfs the code simply returns -ENOMEM before the cleanup
-action is registered leading to a memory leak.
-
-Fix this by ensuring the fifo is freed when the kobject creation
-and registration process fails.
-
-Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
+Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 11baa4975025033547f45f5894087a0dda6efbb8)
 Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_sys.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2048,8 +2048,10 @@ static int wacom_initialize_remotes(stru
- 
- 	remote->remote_dir = kobject_create_and_add("wacom_remote",
- 						    &wacom->hdev->dev.kobj);
--	if (!remote->remote_dir)
-+	if (!remote->remote_dir) {
-+		kfifo_free(&remote->remote_fifo);
- 		return -ENOMEM;
-+	}
- 
- 	error = sysfs_create_files(remote->remote_dir, remote_unpair_attrs);
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
+@@ -4651,7 +4651,10 @@ static void calculate_tdlut_setting(
+ 	//the tdlut is fetched during the 2 row times of prefetch.
+ 	if (p->setup_for_tdlut) {
+ 		*p->tdlut_groups_per_2row_ub = (unsigned int)math_ceil2((double) *p->tdlut_bytes_per_frame / *p->tdlut_bytes_per_group, 1);
+-		*p->tdlut_opt_time = (*p->tdlut_bytes_per_frame - p->cursor_buffer_size * 1024) / tdlut_drain_rate;
++		if (*p->tdlut_bytes_per_frame > p->cursor_buffer_size * 1024)
++			*p->tdlut_opt_time = (*p->tdlut_bytes_per_frame - p->cursor_buffer_size * 1024) / tdlut_drain_rate;
++		else
++			*p->tdlut_opt_time = 0;
+ 		*p->tdlut_drain_time = p->cursor_buffer_size * 1024 / tdlut_drain_rate;
+ 	}
  
 
 
