@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-159996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C21AF7BD2
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E55B1AF794D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:00:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FE341CA71E0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:22:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F01C18975D2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3A2226CF1;
-	Thu,  3 Jul 2025 15:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205C82ED857;
+	Thu,  3 Jul 2025 14:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzxG815/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwVZ4+2j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECA986348;
-	Thu,  3 Jul 2025 15:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F8C19F43A;
+	Thu,  3 Jul 2025 14:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556036; cv=none; b=JPdaIE10/C5pbs2kmqZo2rTvNJeEA+tb7A09B3inpZax2EUI58XElMIEHNax8WR76K1LBSTJ0xotIGSFMj6pBcN5acl6fN1/mL5qdCFfUBPgz7mC1HC5ZucIU9rkkkdgvyMzigcXFqxu2TrhACYLIFwXS/oVI0tP8n5U6OfoFdk=
+	t=1751554547; cv=none; b=ZMghMB5g/oqajmi5yx/dYQQGNHgY9GdTavHrBkuofKLTy+L+PhH7vnWf20DPZ3QgFW6kYuxfLhJZ1zgyvabveybN/4229uChv2xTyn1oV/BrI9CcpKURAe07UD1rzCW+DaFkUyS1cCW6YPaHUhQJg/mX6JXB/WLjYEPKPGueOu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556036; c=relaxed/simple;
-	bh=k3NwctpvR1u+UwZqpLfYiUuACApWF97+wjp9WnL+VhU=;
+	s=arc-20240116; t=1751554547; c=relaxed/simple;
+	bh=ey7tr8u1JwxM24yLbz1JnQm1pQiSQzRq05h+UDbuvGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QnyYLQvhjcV4G34EtbnaRYw5JAYoR4gY3U1C/zpjnfa7C97Xk3fGpOuSAeI8gJ9HU5HHa1QHdXAin5q5+cQYbTwqo+Vcf0BdCJq9lXWVYkEwGzDElyTjOkoAKeavA8RR8eq5Q9UtYTFxLBz7lpyk4C6hw3WjCAGxAbja0/J7JQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzxG815/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E84DC4CEE3;
-	Thu,  3 Jul 2025 15:20:35 +0000 (UTC)
+	 MIME-Version; b=eNNvA9CKXkcPAN1RCxAohCQ1X3w57aSHPcDo0Yc3JJteyfw87X9dXcXKoiuZoOcYiprW79Fg/GK4y0KmRjJ5qXhWx8jUhMq1HlI3KXbxTFvKi8DDz4lHCgvJ8aayNwu77HbpSYnnQd/AtXnVZJmPUpUj8VFau+g0gF74xTc1j68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwVZ4+2j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B4FC4CEE3;
+	Thu,  3 Jul 2025 14:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556035;
-	bh=k3NwctpvR1u+UwZqpLfYiUuACApWF97+wjp9WnL+VhU=;
+	s=korg; t=1751554547;
+	bh=ey7tr8u1JwxM24yLbz1JnQm1pQiSQzRq05h+UDbuvGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZzxG815/sO3HlKYCa5hGl9EPPIeyXaB+Cz9KrPIgNSxMmJZtfn6VbK02v/oQ7Qy8D
-	 l//k92EcinnCoQ7dqAllgTVQonthHm9TDUV+i/+50PwWpApeddz9tCgQUlKMjeu7A/
-	 opvGpLZ4i6J5XX6nCBHFSKKpQPg5Ud8B/qTg1S3I=
+	b=fwVZ4+2jKIVC55ocQFolpepWbTbmt22atf0/u5DAq8Qem63yU6iq+E80IV8JjQPgc
+	 CHlPqCs1PWe5acNBtQyOtdu2M/0szMwOWhMoyGigwrMdZHPWQdbiznXKtPiC3yBmYJ
+	 K0qvGThQtS+hEHzUmA2ymgfYOZfj/3L0xXP2eeCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/132] Drivers: hv: move panic report code from vmbus to hv early init code
+Subject: [PATCH 6.12 195/218] iio: dac: ad3552r: changes to use FIELD_PREP
 Date: Thu,  3 Jul 2025 16:42:23 +0200
-Message-ID: <20250703143941.537153668@linuxfoundation.org>
+Message-ID: <20250703144004.002303742@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,627 +63,312 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-[ Upstream commit 9c318a1d9b5000c77527011f158a75c5483510f5 ]
+[ Upstream commit d5ac6cb1c8f3e14d93e2a50d9357a8acdbc5c166 ]
 
-The panic reporting code was added in commit 81b18bce48af
-("Drivers: HV: Send one page worth of kmsg dump over Hyper-V during panic")
+Changes to use FIELD_PREP, so that driver-specific ad3552r_field_prep
+is removed. Variables (arrays) that was used to call ad3552r_field_prep
+are removed too.
 
-It was added to the vmbus driver. The panic reporting has no dependence
-on vmbus, and can be enabled at an earlier boot time when Hyper-V is
-initialized.
-
-This patch moves the panic reporting code out of vmbus. There is no
-functionality changes. During moving, also refactored some cleanup
-functions into hv_kmsg_dump_unregister().
-
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/1682030946-6372-1-git-send-email-longli@linuxonhyperv.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Stable-dep-of: 09eea7ad0b8e ("Drivers: hv: Allocate interrupt and monitor pages aligned to system page boundary")
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20241028-wip-bl-ad3552r-axi-v0-iio-testing-v9-5-f6960b4f9719@kernel-space.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/hv.c        |  36 -------
- drivers/hv/hv_common.c | 231 +++++++++++++++++++++++++++++++++++++++++
- drivers/hv/vmbus_drv.c | 199 -----------------------------------
- 3 files changed, 231 insertions(+), 235 deletions(-)
+ drivers/iio/dac/ad3552r.c | 167 ++++++++++++--------------------------
+ 1 file changed, 50 insertions(+), 117 deletions(-)
 
-diff --git a/drivers/hv/hv.c b/drivers/hv/hv.c
-index 4d6480d57546d..d1a3be24396f0 100644
---- a/drivers/hv/hv.c
-+++ b/drivers/hv/hv.c
-@@ -38,42 +38,6 @@ int hv_init(void)
+diff --git a/drivers/iio/dac/ad3552r.c b/drivers/iio/dac/ad3552r.c
+index 390d3fab21478..aa453d3de5e1c 100644
+--- a/drivers/iio/dac/ad3552r.c
++++ b/drivers/iio/dac/ad3552r.c
+@@ -6,6 +6,7 @@
+  * Copyright 2021 Analog Devices Inc.
+  */
+ #include <linux/unaligned.h>
++#include <linux/bitfield.h>
+ #include <linux/device.h>
+ #include <linux/iio/triggered_buffer.h>
+ #include <linux/iio/trigger_consumer.h>
+@@ -210,46 +211,6 @@ static const s32 gains_scaling_table[] = {
+ 	[AD3552R_CH_GAIN_SCALING_0_125]		= 125
+ };
+ 
+-enum ad3552r_dev_attributes {
+-	/* - Direct register values */
+-	/* From 0-3 */
+-	AD3552R_SDO_DRIVE_STRENGTH,
+-	/*
+-	 * 0 -> Internal Vref, vref_io pin floating (default)
+-	 * 1 -> Internal Vref, vref_io driven by internal vref
+-	 * 2 or 3 -> External Vref
+-	 */
+-	AD3552R_VREF_SELECT,
+-	/* Read registers in ascending order if set. Else descending */
+-	AD3552R_ADDR_ASCENSION,
+-};
+-
+-enum ad3552r_ch_attributes {
+-	/* DAC powerdown */
+-	AD3552R_CH_DAC_POWERDOWN,
+-	/* DAC amplifier powerdown */
+-	AD3552R_CH_AMPLIFIER_POWERDOWN,
+-	/* Select the output range. Select from enum ad3552r_ch_output_range */
+-	AD3552R_CH_OUTPUT_RANGE_SEL,
+-	/*
+-	 * Over-rider the range selector in order to manually set the output
+-	 * voltage range
+-	 */
+-	AD3552R_CH_RANGE_OVERRIDE,
+-	/* Manually set the offset voltage */
+-	AD3552R_CH_GAIN_OFFSET,
+-	/* Sets the polarity of the offset. */
+-	AD3552R_CH_GAIN_OFFSET_POLARITY,
+-	/* PDAC gain scaling */
+-	AD3552R_CH_GAIN_SCALING_P,
+-	/* NDAC gain scaling */
+-	AD3552R_CH_GAIN_SCALING_N,
+-	/* Rfb value */
+-	AD3552R_CH_RFB,
+-	/* Channel select. When set allow Input -> DAC and Mask -> DAC */
+-	AD3552R_CH_SELECT,
+-};
+-
+ struct ad3552r_ch_data {
+ 	s32	scale_int;
+ 	s32	scale_dec;
+@@ -285,45 +246,6 @@ struct ad3552r_desc {
+ 	unsigned int		num_ch;
+ };
+ 
+-static const u16 addr_mask_map[][2] = {
+-	[AD3552R_ADDR_ASCENSION] = {
+-			AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
+-			AD3552R_MASK_ADDR_ASCENSION
+-	},
+-	[AD3552R_SDO_DRIVE_STRENGTH] = {
+-			AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
+-			AD3552R_MASK_SDO_DRIVE_STRENGTH
+-	},
+-	[AD3552R_VREF_SELECT] = {
+-			AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
+-			AD3552R_MASK_REFERENCE_VOLTAGE_SEL
+-	},
+-};
+-
+-/* 0 -> reg addr, 1->ch0 mask, 2->ch1 mask */
+-static const u16 addr_mask_map_ch[][3] = {
+-	[AD3552R_CH_DAC_POWERDOWN] = {
+-			AD3552R_REG_ADDR_POWERDOWN_CONFIG,
+-			AD3552R_MASK_CH_DAC_POWERDOWN(0),
+-			AD3552R_MASK_CH_DAC_POWERDOWN(1)
+-	},
+-	[AD3552R_CH_AMPLIFIER_POWERDOWN] = {
+-			AD3552R_REG_ADDR_POWERDOWN_CONFIG,
+-			AD3552R_MASK_CH_AMPLIFIER_POWERDOWN(0),
+-			AD3552R_MASK_CH_AMPLIFIER_POWERDOWN(1)
+-	},
+-	[AD3552R_CH_OUTPUT_RANGE_SEL] = {
+-			AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE,
+-			AD3552R_MASK_CH_OUTPUT_RANGE_SEL(0),
+-			AD3552R_MASK_CH_OUTPUT_RANGE_SEL(1)
+-	},
+-	[AD3552R_CH_SELECT] = {
+-			AD3552R_REG_ADDR_CH_SELECT_16B,
+-			AD3552R_MASK_CH(0),
+-			AD3552R_MASK_CH(1)
+-	}
+-};
+-
+ static u8 _ad3552r_reg_len(u8 addr)
+ {
+ 	switch (addr) {
+@@ -399,11 +321,6 @@ static int ad3552r_read_reg(struct ad3552r_desc *dac, u8 addr, u16 *val)
  	return 0;
  }
  
--/*
-- * Functions for allocating and freeing memory with size and
-- * alignment HV_HYP_PAGE_SIZE. These functions are needed because
-- * the guest page size may not be the same as the Hyper-V page
-- * size. We depend upon kmalloc() aligning power-of-two size
-- * allocations to the allocation size boundary, so that the
-- * allocated memory appears to Hyper-V as a page of the size
-- * it expects.
-- */
--
--void *hv_alloc_hyperv_page(void)
+-static u16 ad3552r_field_prep(u16 val, u16 mask)
 -{
--	BUILD_BUG_ON(PAGE_SIZE <  HV_HYP_PAGE_SIZE);
--
--	if (PAGE_SIZE == HV_HYP_PAGE_SIZE)
--		return (void *)__get_free_page(GFP_KERNEL);
--	else
--		return kmalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
+-	return (val << __ffs(mask)) & mask;
 -}
 -
--void *hv_alloc_hyperv_zeroed_page(void)
--{
--	if (PAGE_SIZE == HV_HYP_PAGE_SIZE)
--		return (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
--	else
--		return kzalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
--}
--
--void hv_free_hyperv_page(unsigned long addr)
--{
--	if (PAGE_SIZE == HV_HYP_PAGE_SIZE)
--		free_page(addr);
--	else
--		kfree((void *)addr);
--}
--
- /*
-  * hv_post_message - Post a message using the hypervisor message IPC.
-  *
-diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
-index ae68298c0dcac..07338f6ec1e2c 100644
---- a/drivers/hv/hv_common.c
-+++ b/drivers/hv/hv_common.c
-@@ -17,8 +17,11 @@
- #include <linux/export.h>
- #include <linux/bitfield.h>
- #include <linux/cpumask.h>
-+#include <linux/sched/task_stack.h>
- #include <linux/panic_notifier.h>
- #include <linux/ptrace.h>
-+#include <linux/kdebug.h>
-+#include <linux/kmsg_dump.h>
- #include <linux/slab.h>
- #include <linux/dma-map-ops.h>
- #include <asm/hyperv-tlfs.h>
-@@ -51,6 +54,10 @@ EXPORT_SYMBOL_GPL(hyperv_pcpu_input_arg);
- void * __percpu *hyperv_pcpu_output_arg;
- EXPORT_SYMBOL_GPL(hyperv_pcpu_output_arg);
+ /* Update field of a register, shift val if needed */
+ static int ad3552r_update_reg_field(struct ad3552r_desc *dac, u8 addr, u16 mask,
+ 				    u16 val)
+@@ -416,21 +333,11 @@ static int ad3552r_update_reg_field(struct ad3552r_desc *dac, u8 addr, u16 mask,
+ 		return ret;
  
-+static void hv_kmsg_dump_unregister(void);
-+
-+static struct ctl_table_header *hv_ctl_table_hdr;
-+
- /*
-  * Hyper-V specific initialization and shutdown code that is
-  * common across all architectures.  Called from architecture
-@@ -59,6 +66,12 @@ EXPORT_SYMBOL_GPL(hyperv_pcpu_output_arg);
+ 	reg &= ~mask;
+-	reg |= ad3552r_field_prep(val, mask);
++	reg |= val;
  
- void __init hv_common_free(void)
- {
-+	unregister_sysctl_table(hv_ctl_table_hdr);
-+	hv_ctl_table_hdr = NULL;
-+
-+	if (ms_hyperv.misc_features & HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE)
-+		hv_kmsg_dump_unregister();
-+
- 	kfree(hv_vp_index);
- 	hv_vp_index = NULL;
- 
-@@ -69,10 +82,203 @@ void __init hv_common_free(void)
- 	hyperv_pcpu_input_arg = NULL;
+ 	return ad3552r_write_reg(dac, addr, reg);
  }
  
-+/*
-+ * Functions for allocating and freeing memory with size and
-+ * alignment HV_HYP_PAGE_SIZE. These functions are needed because
-+ * the guest page size may not be the same as the Hyper-V page
-+ * size. We depend upon kmalloc() aligning power-of-two size
-+ * allocations to the allocation size boundary, so that the
-+ * allocated memory appears to Hyper-V as a page of the size
-+ * it expects.
-+ */
+-static int ad3552r_set_ch_value(struct ad3552r_desc *dac,
+-				enum ad3552r_ch_attributes attr,
+-				u8 ch,
+-				u16 val)
+-{
+-	/* Update register related to attributes in chip */
+-	return ad3552r_update_reg_field(dac, addr_mask_map_ch[attr][0],
+-				       addr_mask_map_ch[attr][ch + 1], val);
+-}
+-
+ #define AD3552R_CH_DAC(_idx) ((struct iio_chan_spec) {		\
+ 	.type = IIO_VOLTAGE,					\
+ 	.output = true,						\
+@@ -510,8 +417,14 @@ static int ad3552r_write_raw(struct iio_dev *indio_dev,
+ 					val);
+ 		break;
+ 	case IIO_CHAN_INFO_ENABLE:
+-		err = ad3552r_set_ch_value(dac, AD3552R_CH_DAC_POWERDOWN,
+-					   chan->channel, !val);
++		if (chan->channel == 0)
++			val = FIELD_PREP(AD3552R_MASK_CH_DAC_POWERDOWN(0), !val);
++		else
++			val = FIELD_PREP(AD3552R_MASK_CH_DAC_POWERDOWN(1), !val);
 +
-+void *hv_alloc_hyperv_page(void)
-+{
-+	BUILD_BUG_ON(PAGE_SIZE <  HV_HYP_PAGE_SIZE);
-+
-+	if (PAGE_SIZE == HV_HYP_PAGE_SIZE)
-+		return (void *)__get_free_page(GFP_KERNEL);
-+	else
-+		return kmalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
-+}
-+EXPORT_SYMBOL_GPL(hv_alloc_hyperv_page);
-+
-+void *hv_alloc_hyperv_zeroed_page(void)
-+{
-+	if (PAGE_SIZE == HV_HYP_PAGE_SIZE)
-+		return (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-+	else
-+		return kzalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
-+}
-+EXPORT_SYMBOL_GPL(hv_alloc_hyperv_zeroed_page);
-+
-+void hv_free_hyperv_page(unsigned long addr)
-+{
-+	if (PAGE_SIZE == HV_HYP_PAGE_SIZE)
-+		free_page(addr);
-+	else
-+		kfree((void *)addr);
-+}
-+EXPORT_SYMBOL_GPL(hv_free_hyperv_page);
-+
-+static void *hv_panic_page;
-+
-+/*
-+ * Boolean to control whether to report panic messages over Hyper-V.
-+ *
-+ * It can be set via /proc/sys/kernel/hyperv_record_panic_msg
-+ */
-+static int sysctl_record_panic_msg = 1;
-+
-+/*
-+ * sysctl option to allow the user to control whether kmsg data should be
-+ * reported to Hyper-V on panic.
-+ */
-+static struct ctl_table hv_ctl_table[] = {
-+	{
-+		.procname	= "hyperv_record_panic_msg",
-+		.data		= &sysctl_record_panic_msg,
-+		.maxlen		= sizeof(int),
-+		.mode		= 0644,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_ONE
-+	},
-+	{}
-+};
-+
-+static int hv_die_panic_notify_crash(struct notifier_block *self,
-+				     unsigned long val, void *args);
-+
-+static struct notifier_block hyperv_die_report_block = {
-+	.notifier_call = hv_die_panic_notify_crash,
-+};
-+
-+static struct notifier_block hyperv_panic_report_block = {
-+	.notifier_call = hv_die_panic_notify_crash,
-+};
-+
-+/*
-+ * The following callback works both as die and panic notifier; its
-+ * goal is to provide panic information to the hypervisor unless the
-+ * kmsg dumper is used [see hv_kmsg_dump()], which provides more
-+ * information but isn't always available.
-+ *
-+ * Notice that both the panic/die report notifiers are registered only
-+ * if we have the capability HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE set.
-+ */
-+static int hv_die_panic_notify_crash(struct notifier_block *self,
-+				     unsigned long val, void *args)
-+{
-+	struct pt_regs *regs;
-+	bool is_die;
-+
-+	/* Don't notify Hyper-V unless we have a die oops event or panic. */
-+	if (self == &hyperv_panic_report_block) {
-+		is_die = false;
-+		regs = current_pt_regs();
-+	} else { /* die event */
-+		if (val != DIE_OOPS)
-+			return NOTIFY_DONE;
-+
-+		is_die = true;
-+		regs = ((struct die_args *)args)->regs;
-+	}
-+
-+	/*
-+	 * Hyper-V should be notified only once about a panic/die. If we will
-+	 * be calling hv_kmsg_dump() later with kmsg data, don't do the
-+	 * notification here.
-+	 */
-+	if (!sysctl_record_panic_msg || !hv_panic_page)
-+		hyperv_report_panic(regs, val, is_die);
-+
-+	return NOTIFY_DONE;
-+}
-+
-+/*
-+ * Callback from kmsg_dump. Grab as much as possible from the end of the kmsg
-+ * buffer and call into Hyper-V to transfer the data.
-+ */
-+static void hv_kmsg_dump(struct kmsg_dumper *dumper,
-+			 enum kmsg_dump_reason reason)
-+{
-+	struct kmsg_dump_iter iter;
-+	size_t bytes_written;
-+
-+	/* We are only interested in panics. */
-+	if (reason != KMSG_DUMP_PANIC || !sysctl_record_panic_msg)
-+		return;
-+
-+	/*
-+	 * Write dump contents to the page. No need to synchronize; panic should
-+	 * be single-threaded.
-+	 */
-+	kmsg_dump_rewind(&iter);
-+	kmsg_dump_get_buffer(&iter, false, hv_panic_page, HV_HYP_PAGE_SIZE,
-+			     &bytes_written);
-+	if (!bytes_written)
-+		return;
-+	/*
-+	 * P3 to contain the physical address of the panic page & P4 to
-+	 * contain the size of the panic data in that page. Rest of the
-+	 * registers are no-op when the NOTIFY_MSG flag is set.
-+	 */
-+	hv_set_register(HV_REGISTER_CRASH_P0, 0);
-+	hv_set_register(HV_REGISTER_CRASH_P1, 0);
-+	hv_set_register(HV_REGISTER_CRASH_P2, 0);
-+	hv_set_register(HV_REGISTER_CRASH_P3, virt_to_phys(hv_panic_page));
-+	hv_set_register(HV_REGISTER_CRASH_P4, bytes_written);
-+
-+	/*
-+	 * Let Hyper-V know there is crash data available along with
-+	 * the panic message.
-+	 */
-+	hv_set_register(HV_REGISTER_CRASH_CTL,
-+			(HV_CRASH_CTL_CRASH_NOTIFY |
-+			 HV_CRASH_CTL_CRASH_NOTIFY_MSG));
-+}
-+
-+static struct kmsg_dumper hv_kmsg_dumper = {
-+	.dump = hv_kmsg_dump,
-+};
-+
-+static void hv_kmsg_dump_unregister(void)
-+{
-+	kmsg_dump_unregister(&hv_kmsg_dumper);
-+	unregister_die_notifier(&hyperv_die_report_block);
-+	atomic_notifier_chain_unregister(&panic_notifier_list,
-+					 &hyperv_panic_report_block);
-+
-+	hv_free_hyperv_page((unsigned long)hv_panic_page);
-+	hv_panic_page = NULL;
-+}
-+
-+static void hv_kmsg_dump_register(void)
-+{
-+	int ret;
-+
-+	hv_panic_page = hv_alloc_hyperv_zeroed_page();
-+	if (!hv_panic_page) {
-+		pr_err("Hyper-V: panic message page memory allocation failed\n");
-+		return;
-+	}
-+
-+	ret = kmsg_dump_register(&hv_kmsg_dumper);
-+	if (ret) {
-+		pr_err("Hyper-V: kmsg dump register error 0x%x\n", ret);
-+		hv_free_hyperv_page((unsigned long)hv_panic_page);
-+		hv_panic_page = NULL;
-+	}
-+}
-+
- int __init hv_common_init(void)
- {
- 	int i;
++		err = ad3552r_update_reg_field(dac, AD3552R_REG_ADDR_POWERDOWN_CONFIG,
++					       AD3552R_MASK_CH_DAC_POWERDOWN(chan->channel),
++					       val);
+ 		break;
+ 	default:
+ 		err = -EINVAL;
+@@ -721,9 +634,9 @@ static int ad3552r_reset(struct ad3552r_desc *dac)
+ 		return ret;
  
-+	if (hv_is_isolation_supported())
-+		sysctl_record_panic_msg = 0;
-+
- 	/*
- 	 * Hyper-V expects to get crash register data or kmsg when
- 	 * crash enlightment is available and system crashes. Set
-@@ -81,8 +287,33 @@ int __init hv_common_init(void)
- 	 * kernel.
- 	 */
- 	if (ms_hyperv.misc_features & HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE) {
-+		u64 hyperv_crash_ctl;
-+
- 		crash_kexec_post_notifiers = true;
- 		pr_info("Hyper-V: enabling crash_kexec_post_notifiers\n");
-+
-+		/*
-+		 * Panic message recording (sysctl_record_panic_msg)
-+		 * is enabled by default in non-isolated guests and
-+		 * disabled by default in isolated guests; the panic
-+		 * message recording won't be available in isolated
-+		 * guests should the following registration fail.
-+		 */
-+		hv_ctl_table_hdr = register_sysctl("kernel", hv_ctl_table);
-+		if (!hv_ctl_table_hdr)
-+			pr_err("Hyper-V: sysctl table register error");
-+
-+		/*
-+		 * Register for panic kmsg callback only if the right
-+		 * capability is supported by the hypervisor.
-+		 */
-+		hyperv_crash_ctl = hv_get_register(HV_REGISTER_CRASH_CTL);
-+		if (hyperv_crash_ctl & HV_CRASH_CTL_CRASH_NOTIFY_MSG)
-+			hv_kmsg_dump_register();
-+
-+		register_die_notifier(&hyperv_die_report_block);
-+		atomic_notifier_chain_register(&panic_notifier_list,
-+					       &hyperv_panic_report_block);
+ 	return ad3552r_update_reg_field(dac,
+-					addr_mask_map[AD3552R_ADDR_ASCENSION][0],
+-					addr_mask_map[AD3552R_ADDR_ASCENSION][1],
+-					val);
++					AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
++					AD3552R_MASK_ADDR_ASCENSION,
++					FIELD_PREP(AD3552R_MASK_ADDR_ASCENSION, val));
+ }
+ 
+ static void ad3552r_get_custom_range(struct ad3552r_desc *dac, s32 i, s32 *v_min,
+@@ -818,20 +731,20 @@ static int ad3552r_configure_custom_gain(struct ad3552r_desc *dac,
+ 				     "mandatory custom-output-range-config property missing\n");
+ 
+ 	dac->ch_data[ch].range_override = 1;
+-	reg |= ad3552r_field_prep(1, AD3552R_MASK_CH_RANGE_OVERRIDE);
++	reg |= FIELD_PREP(AD3552R_MASK_CH_RANGE_OVERRIDE, 1);
+ 
+ 	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-p", &val);
+ 	if (err)
+ 		return dev_err_probe(dev, err,
+ 				     "mandatory adi,gain-scaling-p property missing\n");
+-	reg |= ad3552r_field_prep(val, AD3552R_MASK_CH_GAIN_SCALING_P);
++	reg |= FIELD_PREP(AD3552R_MASK_CH_GAIN_SCALING_P, val);
+ 	dac->ch_data[ch].p = val;
+ 
+ 	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-n", &val);
+ 	if (err)
+ 		return dev_err_probe(dev, err,
+ 				     "mandatory adi,gain-scaling-n property missing\n");
+-	reg |= ad3552r_field_prep(val, AD3552R_MASK_CH_GAIN_SCALING_N);
++	reg |= FIELD_PREP(AD3552R_MASK_CH_GAIN_SCALING_N, val);
+ 	dac->ch_data[ch].n = val;
+ 
+ 	err = fwnode_property_read_u32(gain_child, "adi,rfb-ohms", &val);
+@@ -847,9 +760,9 @@ static int ad3552r_configure_custom_gain(struct ad3552r_desc *dac,
+ 	dac->ch_data[ch].gain_offset = val;
+ 
+ 	offset = abs((s32)val);
+-	reg |= ad3552r_field_prep((offset >> 8), AD3552R_MASK_CH_OFFSET_BIT_8);
++	reg |= FIELD_PREP(AD3552R_MASK_CH_OFFSET_BIT_8, (offset >> 8));
+ 
+-	reg |= ad3552r_field_prep((s32)val < 0, AD3552R_MASK_CH_OFFSET_POLARITY);
++	reg |= FIELD_PREP(AD3552R_MASK_CH_OFFSET_POLARITY, (s32)val < 0);
+ 	addr = AD3552R_REG_ADDR_CH_GAIN(ch);
+ 	err = ad3552r_write_reg(dac, addr,
+ 				offset & AD3552R_MASK_CH_OFFSET_BITS_0_7);
+@@ -892,9 +805,9 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
  	}
  
- 	/*
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index 5f6415214a1e4..074168f34afd7 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -28,7 +28,6 @@
- #include <linux/panic_notifier.h>
- #include <linux/ptrace.h>
- #include <linux/screen_info.h>
--#include <linux/kdebug.h>
- #include <linux/efi.h>
- #include <linux/random.h>
- #include <linux/kernel.h>
-@@ -47,26 +46,12 @@ static struct acpi_device  *hv_acpi_dev;
+ 	err = ad3552r_update_reg_field(dac,
+-				       addr_mask_map[AD3552R_VREF_SELECT][0],
+-				       addr_mask_map[AD3552R_VREF_SELECT][1],
+-				       val);
++				       AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
++				       AD3552R_MASK_REFERENCE_VOLTAGE_SEL,
++				       FIELD_PREP(AD3552R_MASK_REFERENCE_VOLTAGE_SEL, val));
+ 	if (err)
+ 		return err;
  
- static int hyperv_cpuhp_online;
+@@ -906,9 +819,9 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
+ 		}
  
--static void *hv_panic_page;
--
- static long __percpu *vmbus_evt;
- 
- /* Values parsed from ACPI DSDT */
- int vmbus_irq;
- int vmbus_interrupt;
- 
--/*
-- * Boolean to control whether to report panic messages over Hyper-V.
-- *
-- * It can be set via /proc/sys/kernel/hyperv_record_panic_msg
-- */
--static int sysctl_record_panic_msg = 1;
--
--static int hyperv_report_reg(void)
--{
--	return !sysctl_record_panic_msg || !hv_panic_page;
--}
--
- /*
-  * The panic notifier below is responsible solely for unloading the
-  * vmbus connection, which is necessary in a panic event.
-@@ -87,54 +72,6 @@ static struct notifier_block hyperv_panic_vmbus_unload_block = {
- 	.priority	= INT_MIN + 1, /* almost the latest one to execute */
- };
- 
--static int hv_die_panic_notify_crash(struct notifier_block *self,
--				     unsigned long val, void *args);
--
--static struct notifier_block hyperv_die_report_block = {
--	.notifier_call = hv_die_panic_notify_crash,
--};
--static struct notifier_block hyperv_panic_report_block = {
--	.notifier_call = hv_die_panic_notify_crash,
--};
--
--/*
-- * The following callback works both as die and panic notifier; its
-- * goal is to provide panic information to the hypervisor unless the
-- * kmsg dumper is used [see hv_kmsg_dump()], which provides more
-- * information but isn't always available.
-- *
-- * Notice that both the panic/die report notifiers are registered only
-- * if we have the capability HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE set.
-- */
--static int hv_die_panic_notify_crash(struct notifier_block *self,
--				     unsigned long val, void *args)
--{
--	struct pt_regs *regs;
--	bool is_die;
--
--	/* Don't notify Hyper-V unless we have a die oops event or panic. */
--	if (self == &hyperv_panic_report_block) {
--		is_die = false;
--		regs = current_pt_regs();
--	} else { /* die event */
--		if (val != DIE_OOPS)
--			return NOTIFY_DONE;
--
--		is_die = true;
--		regs = ((struct die_args *)args)->regs;
--	}
--
--	/*
--	 * Hyper-V should be notified only once about a panic/die. If we will
--	 * be calling hv_kmsg_dump() later with kmsg data, don't do the
--	 * notification here.
--	 */
--	if (hyperv_report_reg())
--		hyperv_report_panic(regs, val, is_die);
--
--	return NOTIFY_DONE;
--}
--
- static const char *fb_mmio_name = "fb_range";
- static struct resource *fb_mmio;
- static struct resource *hyperv_mmio;
-@@ -1376,98 +1313,6 @@ static irqreturn_t vmbus_percpu_isr(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--/*
-- * Callback from kmsg_dump. Grab as much as possible from the end of the kmsg
-- * buffer and call into Hyper-V to transfer the data.
-- */
--static void hv_kmsg_dump(struct kmsg_dumper *dumper,
--			 enum kmsg_dump_reason reason)
--{
--	struct kmsg_dump_iter iter;
--	size_t bytes_written;
--
--	/* We are only interested in panics. */
--	if ((reason != KMSG_DUMP_PANIC) || (!sysctl_record_panic_msg))
--		return;
--
--	/*
--	 * Write dump contents to the page. No need to synchronize; panic should
--	 * be single-threaded.
--	 */
--	kmsg_dump_rewind(&iter);
--	kmsg_dump_get_buffer(&iter, false, hv_panic_page, HV_HYP_PAGE_SIZE,
--			     &bytes_written);
--	if (!bytes_written)
--		return;
--	/*
--	 * P3 to contain the physical address of the panic page & P4 to
--	 * contain the size of the panic data in that page. Rest of the
--	 * registers are no-op when the NOTIFY_MSG flag is set.
--	 */
--	hv_set_register(HV_REGISTER_CRASH_P0, 0);
--	hv_set_register(HV_REGISTER_CRASH_P1, 0);
--	hv_set_register(HV_REGISTER_CRASH_P2, 0);
--	hv_set_register(HV_REGISTER_CRASH_P3, virt_to_phys(hv_panic_page));
--	hv_set_register(HV_REGISTER_CRASH_P4, bytes_written);
--
--	/*
--	 * Let Hyper-V know there is crash data available along with
--	 * the panic message.
--	 */
--	hv_set_register(HV_REGISTER_CRASH_CTL,
--	       (HV_CRASH_CTL_CRASH_NOTIFY | HV_CRASH_CTL_CRASH_NOTIFY_MSG));
--}
--
--static struct kmsg_dumper hv_kmsg_dumper = {
--	.dump = hv_kmsg_dump,
--};
--
--static void hv_kmsg_dump_register(void)
--{
--	int ret;
--
--	hv_panic_page = hv_alloc_hyperv_zeroed_page();
--	if (!hv_panic_page) {
--		pr_err("Hyper-V: panic message page memory allocation failed\n");
--		return;
--	}
--
--	ret = kmsg_dump_register(&hv_kmsg_dumper);
--	if (ret) {
--		pr_err("Hyper-V: kmsg dump register error 0x%x\n", ret);
--		hv_free_hyperv_page((unsigned long)hv_panic_page);
--		hv_panic_page = NULL;
--	}
--}
--
--static struct ctl_table_header *hv_ctl_table_hdr;
--
--/*
-- * sysctl option to allow the user to control whether kmsg data should be
-- * reported to Hyper-V on panic.
-- */
--static struct ctl_table hv_ctl_table[] = {
--	{
--		.procname       = "hyperv_record_panic_msg",
--		.data           = &sysctl_record_panic_msg,
--		.maxlen         = sizeof(int),
--		.mode           = 0644,
--		.proc_handler   = proc_dointvec_minmax,
--		.extra1		= SYSCTL_ZERO,
--		.extra2		= SYSCTL_ONE
--	},
--	{}
--};
--
--static struct ctl_table hv_root_table[] = {
--	{
--		.procname	= "kernel",
--		.mode		= 0555,
--		.child		= hv_ctl_table
--	},
--	{}
--};
--
- /*
-  * vmbus_bus_init -Main vmbus driver initialization routine.
-  *
-@@ -1531,38 +1376,6 @@ static int vmbus_bus_init(void)
- 	if (ret)
- 		goto err_connect;
- 
--	if (hv_is_isolation_supported())
--		sysctl_record_panic_msg = 0;
--
--	/*
--	 * Only register if the crash MSRs are available
--	 */
--	if (ms_hyperv.misc_features & HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE) {
--		u64 hyperv_crash_ctl;
--		/*
--		 * Panic message recording (sysctl_record_panic_msg)
--		 * is enabled by default in non-isolated guests and
--		 * disabled by default in isolated guests; the panic
--		 * message recording won't be available in isolated
--		 * guests should the following registration fail.
--		 */
--		hv_ctl_table_hdr = register_sysctl_table(hv_root_table);
--		if (!hv_ctl_table_hdr)
--			pr_err("Hyper-V: sysctl table register error");
--
--		/*
--		 * Register for panic kmsg callback only if the right
--		 * capability is supported by the hypervisor.
--		 */
--		hyperv_crash_ctl = hv_get_register(HV_REGISTER_CRASH_CTL);
--		if (hyperv_crash_ctl & HV_CRASH_CTL_CRASH_NOTIFY_MSG)
--			hv_kmsg_dump_register();
--
--		register_die_notifier(&hyperv_die_report_block);
--		atomic_notifier_chain_register(&panic_notifier_list,
--						&hyperv_panic_report_block);
--	}
--
- 	/*
- 	 * Always register the vmbus unload panic notifier because we
- 	 * need to shut the VMbus channel connection on panic.
-@@ -1586,8 +1399,6 @@ static int vmbus_bus_init(void)
+ 		err = ad3552r_update_reg_field(dac,
+-					       addr_mask_map[AD3552R_SDO_DRIVE_STRENGTH][0],
+-					       addr_mask_map[AD3552R_SDO_DRIVE_STRENGTH][1],
+-					       val);
++					       AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
++					       AD3552R_MASK_SDO_DRIVE_STRENGTH,
++					       FIELD_PREP(AD3552R_MASK_SDO_DRIVE_STRENGTH, val));
+ 		if (err)
+ 			return err;
  	}
- err_setup:
- 	bus_unregister(&hv_bus);
--	unregister_sysctl_table(hv_ctl_table_hdr);
--	hv_ctl_table_hdr = NULL;
- 	return ret;
- }
+@@ -944,9 +857,15 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
+ 						     "Invalid adi,output-range-microvolt value\n");
  
-@@ -2833,13 +2644,6 @@ static void __exit vmbus_exit(void)
- 	vmbus_free_channels();
- 	kfree(vmbus_connection.channels);
+ 			val = err;
+-			err = ad3552r_set_ch_value(dac,
+-						   AD3552R_CH_OUTPUT_RANGE_SEL,
+-						   ch, val);
++			if (ch == 0)
++				val = FIELD_PREP(AD3552R_MASK_CH_OUTPUT_RANGE_SEL(0), val);
++			else
++				val = FIELD_PREP(AD3552R_MASK_CH_OUTPUT_RANGE_SEL(1), val);
++
++			err = ad3552r_update_reg_field(dac,
++						       AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE,
++						       AD3552R_MASK_CH_OUTPUT_RANGE_SEL(ch),
++						       val);
+ 			if (err)
+ 				return err;
  
--	if (ms_hyperv.misc_features & HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE) {
--		kmsg_dump_unregister(&hv_kmsg_dumper);
--		unregister_die_notifier(&hyperv_die_report_block);
--		atomic_notifier_chain_unregister(&panic_notifier_list,
--						&hyperv_panic_report_block);
--	}
--
- 	/*
- 	 * The vmbus panic notifier is always registered, hence we should
- 	 * also unconditionally unregister it here as well.
-@@ -2847,9 +2651,6 @@ static void __exit vmbus_exit(void)
- 	atomic_notifier_chain_unregister(&panic_notifier_list,
- 					&hyperv_panic_vmbus_unload_block);
+@@ -964,7 +883,14 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
+ 		ad3552r_calc_gain_and_offset(dac, ch);
+ 		dac->enabled_ch |= BIT(ch);
  
--	free_page((unsigned long)hv_panic_page);
--	unregister_sysctl_table(hv_ctl_table_hdr);
--	hv_ctl_table_hdr = NULL;
- 	bus_unregister(&hv_bus);
+-		err = ad3552r_set_ch_value(dac, AD3552R_CH_SELECT, ch, 1);
++		if (ch == 0)
++			val = FIELD_PREP(AD3552R_MASK_CH(0), 1);
++		else
++			val = FIELD_PREP(AD3552R_MASK_CH(1), 1);
++
++		err = ad3552r_update_reg_field(dac,
++					       AD3552R_REG_ADDR_CH_SELECT_16B,
++					       AD3552R_MASK_CH(ch), val);
+ 		if (err < 0)
+ 			return err;
  
- 	cpuhp_remove_state(hyperv_cpuhp_online);
+@@ -976,8 +902,15 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
+ 	/* Disable unused channels */
+ 	for_each_clear_bit(ch, &dac->enabled_ch,
+ 			   dac->model_data->num_hw_channels) {
+-		err = ad3552r_set_ch_value(dac, AD3552R_CH_AMPLIFIER_POWERDOWN,
+-					   ch, 1);
++		if (ch == 0)
++			val = FIELD_PREP(AD3552R_MASK_CH_AMPLIFIER_POWERDOWN(0), 1);
++		else
++			val = FIELD_PREP(AD3552R_MASK_CH_AMPLIFIER_POWERDOWN(1), 1);
++
++		err = ad3552r_update_reg_field(dac,
++					       AD3552R_REG_ADDR_POWERDOWN_CONFIG,
++					       AD3552R_MASK_CH_AMPLIFIER_POWERDOWN(ch),
++					       val);
+ 		if (err)
+ 			return err;
+ 	}
 -- 
 2.39.5
 
