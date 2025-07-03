@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-159600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA7F0AF796F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:01:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03AE2AF7975
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43772169A59
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:59:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D8091C21C23
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ADB32EE5E4;
-	Thu,  3 Jul 2025 14:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CAE2ED85E;
+	Thu,  3 Jul 2025 14:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Atdx30Gr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ektF8JN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278B72E7F1A;
-	Thu,  3 Jul 2025 14:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372BB126C02;
+	Thu,  3 Jul 2025 14:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554743; cv=none; b=r0UiWOvwoQuMvPkb+k3TxYCBzl35aUrWNfthapwDovofNHRZ1OKmOJn0IfRaP9MBh9IEXZ8pyCSgh35xR+Zpk7TsLmPDJU3MMaaz7QsrM2CqrRNSJIysvUInYMZ/JdKZDdfv5ouJ3/AYAVylrgrH6EW93QJydi9FTCo9foRcbyo=
+	t=1751554636; cv=none; b=Wn6+u18ODTS9AIxXxE5QGln6urVE2vyWqSjuORl+DLKrov6MkxyJDJ2w0sQyBnW6QLWgEdLyZy2/Z3qoEQ4qop/NN5lqokrpFHV7WwYTgGzp6mP98ENMhm5PKpz3geyRANSGK4Z/x7Zr7wlqT/NH0XdjywUfq16iiOr3Cb2ObcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554743; c=relaxed/simple;
-	bh=1k2B70EIaR42mW41WA6gsD+6Chdxbq5LcPe4Xqe40DI=;
+	s=arc-20240116; t=1751554636; c=relaxed/simple;
+	bh=f2jffTGvJbPIUBY9RYXlv0SX7Qt4NLej76MB0S+MdBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TxcY0TkVQNrHDxo+1Leq2z3veEub50qVMW8u7GebH2VBdLBmMX/dEhIN+abRdkHO2MLdSiwAsQ0Wvwmkjbszw+a1LTf8Bi8OhLNDcdrYIDKAwhZiFPnhwlX9uhlHFnImDLNN1MhKzHRuj5xoW+UL3N1ZdOYrTLx9AEGO6KFMD6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Atdx30Gr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710E7C4CEE3;
-	Thu,  3 Jul 2025 14:59:02 +0000 (UTC)
+	 MIME-Version; b=K2M+NdZyMtdYVU3mbnI1p/HoIeMg5iyIvJZfTBO2sSybww6pBO0V+8C0T9HekugWaX5ovXt0EqeUcw/qxjvNU30RVkktfjld4PWv5zNgFbKTKdIdxgbyrPkuXbMfLW/gpaBD/zx1IQOmsG0KMVWtt3KlxOn0rXKcwZy1oQR00ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ektF8JN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D1CC4CEEE;
+	Thu,  3 Jul 2025 14:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554743;
-	bh=1k2B70EIaR42mW41WA6gsD+6Chdxbq5LcPe4Xqe40DI=;
+	s=korg; t=1751554636;
+	bh=f2jffTGvJbPIUBY9RYXlv0SX7Qt4NLej76MB0S+MdBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Atdx30GrstoNHZk7oa3555IKmjrPdnhxoi4DFmONg1xDDifZz20sUp681+ZY9YpeT
-	 GlZ00QrUrn66mAPGesqBbaPSgIoyTYTfHVII2ZnOJISCpfj2nUoK6kf63+6u+xxTxS
-	 qP8zvkSehONZqfzlOPjrhssrJqjymjKdjqJ9zFlY=
+	b=ektF8JN3As42vh1qjSd89tvjhbEUXybMj6arfbmRxCGQROYtmAkgDZe+047EN25OL
+	 m3/9VGjBVvjH6aSySUF9P0yIKX4RjV1CCVFhY9P7C7JDhUJOFF5w6RhWEIgsXDgifq
+	 L5S41Avj6bYqkGEAKY9DweAKBwIzHdrIEMLHJQxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Rudraksha Gupta <guptarud@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 024/263] rust: module: place cleanup_module() in .exit.text section
-Date: Thu,  3 Jul 2025 16:39:04 +0200
-Message-ID: <20250703144005.270458622@linuxfoundation.org>
+Subject: [PATCH 6.15 025/263] rust: arm: fix unknown (to Clang) argument -mno-fdpic
+Date: Thu,  3 Jul 2025 16:39:05 +0200
+Message-ID: <20250703144005.310290625@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
 References: <20250703144004.276210867@linuxfoundation.org>
@@ -67,59 +68,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: Rudraksha Gupta <guptarud@gmail.com>
 
-[ Upstream commit 249c3a0e53acefc2b06d3b3e1fc28fb2081f878d ]
+[ Upstream commit 977c4308ee4270cf46e2c66b37de8e04670daa0c ]
 
-Place cleanup_module() in .exit.text section. Currently,
-cleanup_module() is likely placed in the .text section. It's
-inconsistent with the layout of C modules, where cleanup_module() is
-placed in .exit.text.
+Currently rust on arm fails to compile due to '-mno-fdpic'. This flag
+disables a GCC feature that we don't want for kernel builds, so let's
+skip it as it doesn't apply to Clang.
 
-[ Boqun asked for an example of how the section changed to be
-  put in the log. Tomonori provided the following examples:
+    UPD     include/generated/asm-offsets.h
+    CALL    scripts/checksyscalls.sh
+    RUSTC L rust/core.o
+    BINDGEN rust/bindings/bindings_generated.rs
+    BINDGEN rust/bindings/bindings_helpers_generated.rs
+    CC      rust/helpers/helpers.o
+    Unable to generate bindings: clang diagnosed error: error: unknown argument: '-mno-fdpic'
+    make[2]: *** [rust/Makefile:369: rust/bindings/bindings_helpers_generated.rs] Error 1
+    make[2]: *** Deleting file 'rust/bindings/bindings_helpers_generated.rs'
+    make[2]: *** Waiting for unfinished jobs....
+    Unable to generate bindings: clang diagnosed error: error: unknown argument: '-mno-fdpic'
+    make[2]: *** [rust/Makefile:349: rust/bindings/bindings_generated.rs] Error 1
+    make[2]: *** Deleting file 'rust/bindings/bindings_generated.rs'
+    make[1]: *** [/home/pmos/build/src/linux-next-next-20250521/Makefile:1285: prepare] Error 2
+    make: *** [Makefile:248: __sub-make] Error 2
 
-    C module:
+[ Naresh provided the draft diff [1].
 
-      $ objdump -t ~/build/x86/drivers/block/loop.o|grep clean
-      0000000000000000 l     O .exit.data    0000000000000008 __UNIQUE_ID___addressable_cleanup_module412
-      0000000000000000 g     F .exit.text    000000000000009c cleanup_module
+  Ben explained [2]:
 
-    Rust module without this patch:
+    FDPIC is only relevant with no-MMU targets, and then only for userspace.
+    When configured for the arm-*-uclinuxfdpiceabi target, GCC enables FDPIC
+    by default to facilitate compiling userspace programs. FDPIC is never
+    used for the kernel, and we pass -mno-fdpic when building the kernel to
+    override the default and make sure FDPIC is disabled.
 
-      $ objdump -t ~/build/x86/samples/rust/rust_minimal.o|grep clean
-      00000000000002b0 g     F .text         00000000000000c6 cleanup_module
-      0000000000000000 g     O .exit.data    0000000000000008 _R...___UNIQUE_ID___addressable_cleanup_module
+  and [3]:
 
-    Rust module with this patch:
+    -mno-fdpic disables a GCC feature that we don't want for kernel builds.
+    clang does not support this feature, so it always behaves as though
+    -mno-fdpic is passed. Therefore, it should be fine to mix the two, at
+    least as far as FDPIC is concerned.
 
-      $ objdump -t ~/build/x86/samples/rust/rust_minimal.o|grep clean
-      0000000000000000 g     F .exit.text    00000000000000c6 cleanup_module
-      0000000000000000 g     O .exit.data    0000000000000008 _R...___UNIQUE_ID___addressable_cleanup_module
+  [1] https://lore.kernel.org/rust-for-linux/CA+G9fYt4otQK4pHv8pJBW9e28yHSGCDncKquwuJiJ_1ou0pq0w@mail.gmail.com/
+  [2] https://lore.kernel.org/rust-for-linux/aAKrq2InExQk7f_k@dell-precision-5540/
+  [3] https://lore.kernel.org/rust-for-linux/aAo_F_UP1Gd4jHlZ@dell-precision-5540/
 
-  - Miguel ]
+    - Miguel ]
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lore.kernel.org/r/20250308044506.14458-1-fujita.tomonori@gmail.com
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/all/CA+G9fYvOanQBYXKSg7C6EU30k8sTRC0JRPJXYu7wWK51w38QUQ@mail.gmail.com/
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Acked-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
+Link: https://lore.kernel.org/r/20250522-rust-mno-fdpic-arm-fix-v2-1-a6f691d9c198@gmail.com
+[ Reworded title. - Miguel ]
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/macros/module.rs | 1 +
- 1 file changed, 1 insertion(+)
+ rust/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 2f66107847f78..44e5cb108cea7 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -278,6 +278,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-                     #[cfg(MODULE)]
-                     #[doc(hidden)]
-                     #[no_mangle]
-+                    #[link_section = \".exit.text\"]
-                     pub extern \"C\" fn cleanup_module() {{
-                         // SAFETY:
-                         // - This function is inaccessible to the outside due to the double
+diff --git a/rust/Makefile b/rust/Makefile
+index 313a200112ce1..d62b58d0a55cc 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -275,7 +275,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+ 	-fzero-call-used-regs=% -fno-stack-clash-protection \
+ 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
+ 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
+-	-fzero-init-padding-bits=% \
++	-fzero-init-padding-bits=% -mno-fdpic \
+ 	--param=% --param asan-%
+ 
+ # Derived from `scripts/Makefile.clang`.
 -- 
 2.39.5
 
