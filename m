@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-160015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CF26AF7C1B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3989BAF791C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B1976E149A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DADC75478BE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F7D2EF9CA;
-	Thu,  3 Jul 2025 15:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605DE2EE973;
+	Thu,  3 Jul 2025 14:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcGWwQLy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEqzUNMI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E161E51EB;
-	Thu,  3 Jul 2025 15:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1340C126BFF;
+	Thu,  3 Jul 2025 14:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556097; cv=none; b=MU0mM7WHAgb3gBf4Ivks9M0t2LI4BdS2GmImwnAtR75Ayez85K9CZD5Cu+LouaPKQzlvhvsCnkEm6M5L1KZmUeqN9/uV2KXzXeMK0W9WLEmLLjeTrjkV/C1IFr+WEJ/s6E5cRDO6+EY5ChC2SntlRnuuLoP/jB5nGFaOHrFGa/M=
+	t=1751554526; cv=none; b=L97NqL7t8zYDhZqzYtW5OwEWlwCdEkgwV1n1dRNUfv2BqmN9RFfP/YaLShTYDXeOn6oZX3Sf9EQQyatpJAz+XuCYxpxYPkkPbupkk3YeA0qCsjsNJOZXfPPyXzI4nVam2GkiZzdM3atRVODP1j1/lKHxOe7XnL5XvukMWKUh2Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556097; c=relaxed/simple;
-	bh=yxnNhnj+uh5SYaTo+Szt7D7VBJPX6kK7h8WtT3YW5ww=;
+	s=arc-20240116; t=1751554526; c=relaxed/simple;
+	bh=afVwmdCmkWrXWpkavnunVRlvNGEf5EjK7G72MaiWVjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqG4mGovxUmWnfOx4Y4oS/EBtFo6S1YZW93bC1gf78Tb9PrUR9roQilQVXQRgih42La61fwLwpVNQt3/1Au2aIjZx6/QJWU0drli9rBfnc23D8bSZ8yEz3WUJFEY9UGKoNLKER7NyzNlrVMuIjRww/zb2YM1JHp/H8pDjgk+j74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcGWwQLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98702C4CEE3;
-	Thu,  3 Jul 2025 15:21:36 +0000 (UTC)
+	 MIME-Version; b=BSaKR9lToN2X1fClEVeHcEslNGSufZMYbjnrko4xuLdBMpomoaeK09gxWBFFQDXowkmzPEaOr2jjnGzkthlyvH2AFQhiMAbkOJE478Z4VZstBIJOgIo7Cyhx4CwEgbQonm55OWV+zijrs/1BpuWVfzbGWiLrZyDngOfH65JwEIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEqzUNMI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D006C4CEF4;
+	Thu,  3 Jul 2025 14:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556097;
-	bh=yxnNhnj+uh5SYaTo+Szt7D7VBJPX6kK7h8WtT3YW5ww=;
+	s=korg; t=1751554525;
+	bh=afVwmdCmkWrXWpkavnunVRlvNGEf5EjK7G72MaiWVjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XcGWwQLyfV76bQn04PzbPxztkG+PBaM79oOCQim5ZV63JlfV0zro0BR7++XjRmHPs
-	 Pho2eN2CA/p2qaCoQXFacH11EThBhvPHLv9C0bE3iLQfYyfjvI8DPpZdAYGX9TFMEt
-	 pVszqb2miC1ruofJokJbEqC6XM3axqYPuT23mbmk=
+	b=uEqzUNMImNggoHlBe7P/zsq+jV2Cc4OB7kepWyRlfI0yBN0Z7YOihqhyq4dcy+IYl
+	 7FOw05bQOv1Ycie+Hf4OvvCmBhlCga0N3sb7zd7n2zFoT92ckRniwm8ra7rmtOraxQ
+	 FuDEkwVIOiqYCMr0SSnA71wnJ2xiXkZ9hw02HUak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.1 074/132] s390/pkey: Prevent overflow in size calculation for memdup_user()
+	Kevin Hao <haokexin@gmail.com>,
+	Han Xu <han.xu@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 215/218] spi: fsl-qspi: use devm function instead of driver remove
 Date: Thu,  3 Jul 2025 16:42:43 +0200
-Message-ID: <20250703143942.323562487@linuxfoundation.org>
+Message-ID: <20250703144004.808517525@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Han Xu <han.xu@nxp.com>
 
-commit 7360ee47599af91a1d5f4e74d635d9408a54e489 upstream.
+[ Upstream commit 40369bfe717e96e26650eeecfa5a6363563df6e4 ]
 
-Number of apqn target list entries contained in 'nr_apqns' variable is
-determined by userspace via an ioctl call so the result of the product in
-calculation of size passed to memdup_user() may overflow.
+Driver use devm APIs to manage clk/irq/resources and register the spi
+controller, but the legacy remove function will be called first during
+device detach and trigger kernel panic. Drop the remove function and use
+devm_add_action_or_reset() for driver cleanup to ensure the release
+sequence.
 
-In this case the actual size of the allocated area and the value
-describing it won't be in sync leading to various types of unpredictable
-behaviour later.
+Trigger kernel panic on i.MX8MQ by
+echo 30bb0000.spi >/sys/bus/platform/drivers/fsl-quadspi/unbind
 
-Use a proper memdup_array_user() helper which returns an error if an
-overflow is detected. Note that it is different from when nr_apqns is
-initially zero - that case is considered valid and should be handled in
-subsequent pkey_handler implementations.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: f2bbc96e7cfa ("s390/pkey: add CCA AES cipher key support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250611192011.206057-1-pchelkin@ispras.ru
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8fcb830a00f0 ("spi: spi-fsl-qspi: use devm_spi_register_controller")
+Reported-by: Kevin Hao <haokexin@gmail.com>
+Signed-off-by: Han Xu <han.xu@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250326224152.2147099-1-han.xu@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/pkey_api.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-fsl-qspi.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
---- a/drivers/s390/crypto/pkey_api.c
-+++ b/drivers/s390/crypto/pkey_api.c
-@@ -1155,7 +1155,7 @@ static void *_copy_apqns_from_user(void
- 	if (!uapqns || nr_apqns == 0)
- 		return NULL;
+diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+index ce86f44b0e93f..5c59fddb32c1b 100644
+--- a/drivers/spi/spi-fsl-qspi.c
++++ b/drivers/spi/spi-fsl-qspi.c
+@@ -844,6 +844,19 @@ static const struct spi_controller_mem_caps fsl_qspi_mem_caps = {
+ 	.per_op_freq = true,
+ };
  
--	return memdup_user(uapqns, nr_apqns * sizeof(struct pkey_apqn));
-+	return memdup_array_user(uapqns, nr_apqns, sizeof(struct pkey_apqn));
++static void fsl_qspi_cleanup(void *data)
++{
++	struct fsl_qspi *q = data;
++
++	/* disable the hardware */
++	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
++	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
++
++	fsl_qspi_clk_disable_unprep(q);
++
++	mutex_destroy(&q->lock);
++}
++
+ static int fsl_qspi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_controller *ctlr;
+@@ -934,6 +947,10 @@ static int fsl_qspi_probe(struct platform_device *pdev)
+ 
+ 	ctlr->dev.of_node = np;
+ 
++	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
++	if (ret)
++		goto err_destroy_mutex;
++
+ 	ret = devm_spi_register_controller(dev, ctlr);
+ 	if (ret)
+ 		goto err_destroy_mutex;
+@@ -953,19 +970,6 @@ static int fsl_qspi_probe(struct platform_device *pdev)
+ 	return ret;
  }
  
- static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+-static void fsl_qspi_remove(struct platform_device *pdev)
+-{
+-	struct fsl_qspi *q = platform_get_drvdata(pdev);
+-
+-	/* disable the hardware */
+-	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
+-	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
+-
+-	fsl_qspi_clk_disable_unprep(q);
+-
+-	mutex_destroy(&q->lock);
+-}
+-
+ static int fsl_qspi_suspend(struct device *dev)
+ {
+ 	return 0;
+@@ -1003,7 +1007,6 @@ static struct platform_driver fsl_qspi_driver = {
+ 		.pm =   &fsl_qspi_pm_ops,
+ 	},
+ 	.probe          = fsl_qspi_probe,
+-	.remove_new	= fsl_qspi_remove,
+ };
+ module_platform_driver(fsl_qspi_driver);
+ 
+-- 
+2.39.5
+
 
 
 
