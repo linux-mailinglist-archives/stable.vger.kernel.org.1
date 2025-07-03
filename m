@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F020DAF7A65
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:13:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26E3DAF7B3A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:23:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B88B018892FC
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:08:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F40116CE4D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744AF2E7197;
-	Thu,  3 Jul 2025 15:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37992F0C68;
+	Thu,  3 Jul 2025 15:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgGyKc3m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiDc1OJ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3161D15442C;
-	Thu,  3 Jul 2025 15:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8232F2F0C6A;
+	Thu,  3 Jul 2025 15:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555299; cv=none; b=fwgCJ46cvFSMGKvdUuDZA20aK6IIkYkojRUnwe12B2tz/9/o/nU9BBq2QLLrrqpbUso8g6w7ds6xgNyth/fVUMs9N2izVQeDyRcFXDlh+bjlaaJi+Ugh17JslEk6TiqE91+aqvxEu6p8nyweUXA6lAvfLIZed5uJcVXwGC+DSfw=
+	t=1751555699; cv=none; b=Tkci10UuZPd6UVtVPRvDzsKTlI01cpkH9zh1v7dTxcq+KAO7K0UOVZ0xFPoeUFCtD/3Og0D7yNchLvB1aIM9ATlscfLgazaC84vADJ+CskEFvx2s4naJZeZvZbknyQfdM/M/jAEQ9eT0QZqW2aBWau+d2xnFP2lCBE4wN9VJizI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555299; c=relaxed/simple;
-	bh=VafeRBccrZTP7zhGrRMVdWgoYWH3eZ3wQ9NMID4jUbk=;
+	s=arc-20240116; t=1751555699; c=relaxed/simple;
+	bh=X6Ba+HiI70GXUuWd3PWnqWxKyRA8mpmejyxzEw+6ZnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GOsKsK+RgDLhrIynRYclqG0ZQwO7i6wtcMPdBOc4pF6h1rtUv1uD57HGfR0QQ0Evcr5dumrMcOSyKyztnO0pVzUfgpWE7b3evr2wSkJ62zy+5zVxTaZKzTZlezkeAzSAqJTloC//B142fGRItP2QeLIR+UhJ0mHgl4FA4CNfqhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgGyKc3m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96367C4CEE3;
-	Thu,  3 Jul 2025 15:08:18 +0000 (UTC)
+	 MIME-Version; b=X3T0ZbeDqGRjeGJrnj5f8lWgHLwL6Kfx/V5q7VXH+8Qi0nqSVDPmlKKz8x4zUoWHtYqspcVrIB9Sduc21QrmMarft20P8hoMYFnxMLczqr02aoDinCgwKHr3G07lxvGIDbybetSS8CKUoj0ULY63sZSBp74/xjwsYWoNvHbLn5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiDc1OJ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19711C4CEED;
+	Thu,  3 Jul 2025 15:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555299;
-	bh=VafeRBccrZTP7zhGrRMVdWgoYWH3eZ3wQ9NMID4jUbk=;
+	s=korg; t=1751555699;
+	bh=X6Ba+HiI70GXUuWd3PWnqWxKyRA8mpmejyxzEw+6ZnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XgGyKc3mJ/opFxiq50/HEF3XMcg2PfU+X9KTkVIvappfmzl+ZLFGRaiirZMWxjhUP
-	 dL2IKBx6xqtiGdzFE4XOcsY65NvPcSInZQzFnSxkE54DzQYy7rSbhzykYbTCzVcdhI
-	 j7+9VF1UjXkSAl0oZc3jBIWTp6riyIe80fsSATPY=
+	b=OiDc1OJ3KU/E5yxTKzbDtYFzJBrBrclawlvYaLkwdl4xbkL1zarM4VWusyJvK4x8q
+	 8xZiUJiMr1atKjqp2bwvujDcc/78AqmZ5D5yfMcNZH2eCiNOg+/paZyGCdS60Oobb0
+	 Fro7dE1yR8s+LGz6Daoy8SmyUV6zYzjJQ/cFPA/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Min <Frank.Min@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.15 236/263] drm/amdgpu: add kicker fws loading for gfx11/smu13/psp13
+	Max Krummenacher <max.krummenacher@toradex.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 093/139] drm/bridge: ti-sn65dsi86: Add HPD for DisplayPort connector type
 Date: Thu,  3 Jul 2025 16:42:36 +0200
-Message-ID: <20250703144013.861124459@linuxfoundation.org>
+Message-ID: <20250703143944.794524588@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,161 +64,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Min <Frank.Min@amd.com>
+From: Jayesh Choudhary <j-choudhary@ti.com>
 
-commit 854171405e7f093532b33d8ed0875b9e34fc55b4 upstream.
+[ Upstream commit 55e8ff842051b1150461d7595d8f1d033c69d66b ]
 
-1. Add kicker firmwares loading for gfx11/smu13/psp13
-2. Register additional MODULE_FIRMWARE entries for kicker fws
-   - gc_11_0_0_rlc_kicker.bin
-   - gc_11_0_0_imu_kicker.bin
-   - psp_13_0_0_sos_kicker.bin
-   - psp_13_0_0_ta_kicker.bin
-   - smu_13_0_0_kicker.bin
+By default, HPD was disabled on SN65DSI86 bridge. When the driver was
+added (commit "a095f15c00e27"), the HPD_DISABLE bit was set in pre-enable
+call which was moved to other function calls subsequently.
+Later on, commit "c312b0df3b13" added detect utility for DP mode. But with
+HPD_DISABLE bit set, all the HPD events are disabled[0] and the debounced
+state always return 1 (always connected state).
 
-Signed-off-by: Frank Min <Frank.Min@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit fb5ec2174d70a8989bc207d257db90ffeca3b163)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Set HPD_DISABLE bit conditionally based on display sink's connector type.
+Since the HPD_STATE is reflected correctly only after waiting for debounce
+time (~100-400ms) and adding this delay in detect() is not feasible
+owing to the performace impact (glitches and frame drop), remove runtime
+calls in detect() and add hpd_enable()/disable() bridge hooks with runtime
+calls, to detect hpd properly without any delay.
+
+[0]: <https://www.ti.com/lit/gpn/SN65DSI86> (Pg. 32)
+
+Fixes: c312b0df3b13 ("drm/bridge: ti-sn65dsi86: Implement bridge connector operations for DP")
+Cc: Max Krummenacher <max.krummenacher@toradex.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20250624044835.165708-1-j-choudhary@ti.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c        |   16 ++++++++++++----
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c         |    5 +++++
- drivers/gpu/drm/amd/amdgpu/imu_v11_0.c         |    9 +++++++--
- drivers/gpu/drm/amd/amdgpu/psp_v13_0.c         |    2 ++
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c |   12 +++++++++---
- 5 files changed, 35 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c | 69 +++++++++++++++++++++++----
+ 1 file changed, 60 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -3521,8 +3521,12 @@ int psp_init_sos_microcode(struct psp_co
- 	uint8_t *ucode_array_start_addr;
- 	int err = 0;
- 
--	err = amdgpu_ucode_request(adev, &adev->psp.sos_fw, AMDGPU_UCODE_REQUIRED,
--				   "amdgpu/%s_sos.bin", chip_name);
-+	if (amdgpu_is_kicker_fw(adev))
-+		err = amdgpu_ucode_request(adev, &adev->psp.sos_fw, AMDGPU_UCODE_REQUIRED,
-+					   "amdgpu/%s_sos_kicker.bin", chip_name);
-+	else
-+		err = amdgpu_ucode_request(adev, &adev->psp.sos_fw, AMDGPU_UCODE_REQUIRED,
-+					   "amdgpu/%s_sos.bin", chip_name);
- 	if (err)
- 		goto out;
- 
-@@ -3798,8 +3802,12 @@ int psp_init_ta_microcode(struct psp_con
- 	struct amdgpu_device *adev = psp->adev;
- 	int err;
- 
--	err = amdgpu_ucode_request(adev, &adev->psp.ta_fw, AMDGPU_UCODE_REQUIRED,
--				   "amdgpu/%s_ta.bin", chip_name);
-+	if (amdgpu_is_kicker_fw(adev))
-+		err = amdgpu_ucode_request(adev, &adev->psp.ta_fw, AMDGPU_UCODE_REQUIRED,
-+					   "amdgpu/%s_ta_kicker.bin", chip_name);
-+	else
-+		err = amdgpu_ucode_request(adev, &adev->psp.ta_fw, AMDGPU_UCODE_REQUIRED,
-+					   "amdgpu/%s_ta.bin", chip_name);
- 	if (err)
- 		return err;
- 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -83,6 +83,7 @@ MODULE_FIRMWARE("amdgpu/gc_11_0_0_pfp.bi
- MODULE_FIRMWARE("amdgpu/gc_11_0_0_me.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_0_mec.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_0_rlc.bin");
-+MODULE_FIRMWARE("amdgpu/gc_11_0_0_rlc_kicker.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_0_rlc_1.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_0_toc.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_1_pfp.bin");
-@@ -744,6 +745,10 @@ static int gfx_v11_0_init_microcode(stru
- 			err = amdgpu_ucode_request(adev, &adev->gfx.rlc_fw,
- 						   AMDGPU_UCODE_REQUIRED,
- 						   "amdgpu/gc_11_0_0_rlc_1.bin");
-+		else if (amdgpu_is_kicker_fw(adev))
-+			err = amdgpu_ucode_request(adev, &adev->gfx.rlc_fw,
-+						   AMDGPU_UCODE_REQUIRED,
-+						   "amdgpu/%s_rlc_kicker.bin", ucode_prefix);
- 		else
- 			err = amdgpu_ucode_request(adev, &adev->gfx.rlc_fw,
- 						   AMDGPU_UCODE_REQUIRED,
---- a/drivers/gpu/drm/amd/amdgpu/imu_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/imu_v11_0.c
-@@ -32,6 +32,7 @@
- #include "gc/gc_11_0_0_sh_mask.h"
- 
- MODULE_FIRMWARE("amdgpu/gc_11_0_0_imu.bin");
-+MODULE_FIRMWARE("amdgpu/gc_11_0_0_imu_kicker.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_1_imu.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_2_imu.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_3_imu.bin");
-@@ -51,8 +52,12 @@ static int imu_v11_0_init_microcode(stru
- 	DRM_DEBUG("\n");
- 
- 	amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix, sizeof(ucode_prefix));
--	err = amdgpu_ucode_request(adev, &adev->gfx.imu_fw, AMDGPU_UCODE_REQUIRED,
--				   "amdgpu/%s_imu.bin", ucode_prefix);
-+	if (amdgpu_is_kicker_fw(adev))
-+		err = amdgpu_ucode_request(adev, &adev->gfx.imu_fw, AMDGPU_UCODE_REQUIRED,
-+					   "amdgpu/%s_imu_kicker.bin", ucode_prefix);
-+	else
-+		err = amdgpu_ucode_request(adev, &adev->gfx.imu_fw, AMDGPU_UCODE_REQUIRED,
-+					   "amdgpu/%s_imu.bin", ucode_prefix);
- 	if (err)
- 		goto out;
- 
---- a/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
-@@ -42,7 +42,9 @@ MODULE_FIRMWARE("amdgpu/psp_13_0_5_ta.bi
- MODULE_FIRMWARE("amdgpu/psp_13_0_8_toc.bin");
- MODULE_FIRMWARE("amdgpu/psp_13_0_8_ta.bin");
- MODULE_FIRMWARE("amdgpu/psp_13_0_0_sos.bin");
-+MODULE_FIRMWARE("amdgpu/psp_13_0_0_sos_kicker.bin");
- MODULE_FIRMWARE("amdgpu/psp_13_0_0_ta.bin");
-+MODULE_FIRMWARE("amdgpu/psp_13_0_0_ta_kicker.bin");
- MODULE_FIRMWARE("amdgpu/psp_13_0_7_sos.bin");
- MODULE_FIRMWARE("amdgpu/psp_13_0_7_ta.bin");
- MODULE_FIRMWARE("amdgpu/psp_13_0_10_sos.bin");
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-@@ -58,6 +58,7 @@
- 
- MODULE_FIRMWARE("amdgpu/aldebaran_smc.bin");
- MODULE_FIRMWARE("amdgpu/smu_13_0_0.bin");
-+MODULE_FIRMWARE("amdgpu/smu_13_0_0_kicker.bin");
- MODULE_FIRMWARE("amdgpu/smu_13_0_7.bin");
- MODULE_FIRMWARE("amdgpu/smu_13_0_10.bin");
- 
-@@ -92,7 +93,7 @@ const int pmfw_decoded_link_width[7] = {
- int smu_v13_0_init_microcode(struct smu_context *smu)
- {
- 	struct amdgpu_device *adev = smu->adev;
--	char ucode_prefix[15];
-+	char ucode_prefix[30];
- 	int err = 0;
- 	const struct smc_firmware_header_v1_0 *hdr;
- 	const struct common_firmware_header *header;
-@@ -103,8 +104,13 @@ int smu_v13_0_init_microcode(struct smu_
- 		return 0;
- 
- 	amdgpu_ucode_ip_version_decode(adev, MP1_HWIP, ucode_prefix, sizeof(ucode_prefix));
--	err = amdgpu_ucode_request(adev, &adev->pm.fw, AMDGPU_UCODE_REQUIRED,
--				   "amdgpu/%s.bin", ucode_prefix);
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+index 3e31a0c5a6d25..002f8aaa509bc 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -331,12 +331,18 @@ static void ti_sn65dsi86_enable_comms(struct ti_sn65dsi86 *pdata)
+ 	 * 200 ms.  We'll assume that the panel driver will have the hardcoded
+ 	 * delay in its prepare and always disable HPD.
+ 	 *
+-	 * If HPD somehow makes sense on some future panel we'll have to
+-	 * change this to be conditional on someone specifying that HPD should
+-	 * be used.
++	 * For DisplayPort bridge type, we need HPD. So we use the bridge type
++	 * to conditionally disable HPD.
++	 * NOTE: The bridge type is set in ti_sn_bridge_probe() but enable_comms()
++	 * can be called before. So for DisplayPort, HPD will be enabled once
++	 * bridge type is set. We are using bridge type instead of "no-hpd"
++	 * property because it is not used properly in devicetree description
++	 * and hence is unreliable.
+ 	 */
+-	regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG, HPD_DISABLE,
+-			   HPD_DISABLE);
 +
-+	if (amdgpu_is_kicker_fw(adev))
-+		err = amdgpu_ucode_request(adev, &adev->pm.fw, AMDGPU_UCODE_REQUIRED,
-+					   "amdgpu/%s_kicker.bin", ucode_prefix);
-+	else
-+		err = amdgpu_ucode_request(adev, &adev->pm.fw, AMDGPU_UCODE_REQUIRED,
-+					   "amdgpu/%s.bin", ucode_prefix);
- 	if (err)
- 		goto out;
++	if (pdata->bridge.type != DRM_MODE_CONNECTOR_DisplayPort)
++		regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG, HPD_DISABLE,
++				   HPD_DISABLE);
  
+ 	pdata->comms_enabled = true;
+ 
+@@ -1173,9 +1179,14 @@ static enum drm_connector_status ti_sn_bridge_detect(struct drm_bridge *bridge)
+ 	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
+ 	int val = 0;
+ 
+-	pm_runtime_get_sync(pdata->dev);
++	/*
++	 * Runtime reference is grabbed in ti_sn_bridge_hpd_enable()
++	 * as the chip won't report HPD just after being powered on.
++	 * HPD_DEBOUNCED_STATE reflects correct state only after the
++	 * debounce time (~100-400 ms).
++	 */
++
+ 	regmap_read(pdata->regmap, SN_HPD_DISABLE_REG, &val);
+-	pm_runtime_put_autosuspend(pdata->dev);
+ 
+ 	return val & HPD_DEBOUNCED_STATE ? connector_status_connected
+ 					 : connector_status_disconnected;
+@@ -1198,6 +1209,26 @@ static void ti_sn65dsi86_debugfs_init(struct drm_bridge *bridge, struct dentry *
+ 	debugfs_create_file("status", 0600, debugfs, pdata, &status_fops);
+ }
+ 
++static void ti_sn_bridge_hpd_enable(struct drm_bridge *bridge)
++{
++	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++
++	/*
++	 * Device needs to be powered on before reading the HPD state
++	 * for reliable hpd detection in ti_sn_bridge_detect() due to
++	 * the high debounce time.
++	 */
++
++	pm_runtime_get_sync(pdata->dev);
++}
++
++static void ti_sn_bridge_hpd_disable(struct drm_bridge *bridge)
++{
++	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++
++	pm_runtime_put_autosuspend(pdata->dev);
++}
++
+ static const struct drm_bridge_funcs ti_sn_bridge_funcs = {
+ 	.attach = ti_sn_bridge_attach,
+ 	.detach = ti_sn_bridge_detach,
+@@ -1212,6 +1243,8 @@ static const struct drm_bridge_funcs ti_sn_bridge_funcs = {
+ 	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
+ 	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
+ 	.debugfs_init = ti_sn65dsi86_debugfs_init,
++	.hpd_enable = ti_sn_bridge_hpd_enable,
++	.hpd_disable = ti_sn_bridge_hpd_disable,
+ };
+ 
+ static void ti_sn_bridge_parse_lanes(struct ti_sn65dsi86 *pdata,
+@@ -1300,8 +1333,26 @@ static int ti_sn_bridge_probe(struct auxiliary_device *adev,
+ 	pdata->bridge.type = pdata->next_bridge->type == DRM_MODE_CONNECTOR_DisplayPort
+ 			   ? DRM_MODE_CONNECTOR_DisplayPort : DRM_MODE_CONNECTOR_eDP;
+ 
+-	if (pdata->bridge.type == DRM_MODE_CONNECTOR_DisplayPort)
+-		pdata->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
++	if (pdata->bridge.type == DRM_MODE_CONNECTOR_DisplayPort) {
++		pdata->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT |
++				    DRM_BRIDGE_OP_HPD;
++		/*
++		 * If comms were already enabled they would have been enabled
++		 * with the wrong value of HPD_DISABLE. Update it now. Comms
++		 * could be enabled if anyone is holding a pm_runtime reference
++		 * (like if a GPIO is in use). Note that in most cases nobody
++		 * is doing AUX channel xfers before the bridge is added so
++		 * HPD doesn't _really_ matter then. The only exception is in
++		 * the eDP case where the panel wants to read the EDID before
++		 * the bridge is added. We always consistently have HPD disabled
++		 * for eDP.
++		 */
++		mutex_lock(&pdata->comms_mutex);
++		if (pdata->comms_enabled)
++			regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG,
++					   HPD_DISABLE, 0);
++		mutex_unlock(&pdata->comms_mutex);
++	};
+ 
+ 	drm_bridge_add(&pdata->bridge);
+ 
+-- 
+2.39.5
+
 
 
 
