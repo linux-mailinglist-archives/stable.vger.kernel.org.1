@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-159435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1669CAF7878
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:50:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BCFAF7ACE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 883537B5C6D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:49:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C2AB16B6D8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7AF2EE5F3;
-	Thu,  3 Jul 2025 14:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A672F235F;
+	Thu,  3 Jul 2025 15:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4bRhUhY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seF0uELU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14C42EE281;
-	Thu,  3 Jul 2025 14:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AE92F235B;
+	Thu,  3 Jul 2025 15:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554223; cv=none; b=Q0bV8m5/W3nRhyUtS81DNWFeSE78s5A2SGQJJfPk06skReQGtP6gge4JS9MTJN9kaAljOrt+NgFNEH/23QSyw5Ha4XiU5UhCWQS5hAY784DhQwUP1rilzptdPcGwQFsfWy2VnNbmavqHogc9xS09BZYZ62Xa5DuCIxH04OICubc=
+	t=1751555506; cv=none; b=QT1k6jDI/MHayRAtd2ah0swTGcVz45NoHg85oLimM/rze6TvhLxny71ZkuupsoPBfRqO3SCovzy54yPhOmD6NEjixG7dXVKwN90isRZD2VYQxrRJJN/FGtKe2zJ0BUeNbYep+U4JfyF6migdi327qAg31PJBJzUiKOtVsE3DcgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554223; c=relaxed/simple;
-	bh=86yCD1BacEn7P5GjwB1XMH/yH113F1WwUpPFBFawj9E=;
+	s=arc-20240116; t=1751555506; c=relaxed/simple;
+	bh=pJfEMZFqEcsy0Kfr7O0xcpoIOhbFZwYAvaDBH7yneus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifjm1IsaiNODLR8FZ3pk0LkdpKBpHmMr7B6zspzzppQghoMlRbJA0Jyqum9gLmF2oOF9+u4oTCPh1jUnjJlIzWKdESGYEW4I9bFjskUivPfoZjoajOY/9Z8vOG2SxFzAwqvDohEqAM16nQ9WV9HClBRQA1SbtAp6aeawUQgut28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4bRhUhY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0851C4CEE3;
-	Thu,  3 Jul 2025 14:50:22 +0000 (UTC)
+	 MIME-Version; b=Tiv1nvO9FHC4aGg9EkHp/3WR4+md84ScaUV+Plwctq9oImWs0BMtMIuRETyRYgAX9DwdhTsltXoAfPuZkUJOSzWHzthqrr8pi3a3++xca2iDNF2TkHepJbNWBlY9VtcdK72HDZ9uot9+3nlTXnrZTe/ffDXcd8BJEWoc2WZwM1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seF0uELU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A244EC4CEF4;
+	Thu,  3 Jul 2025 15:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554223;
-	bh=86yCD1BacEn7P5GjwB1XMH/yH113F1WwUpPFBFawj9E=;
+	s=korg; t=1751555506;
+	bh=pJfEMZFqEcsy0Kfr7O0xcpoIOhbFZwYAvaDBH7yneus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4bRhUhYjjJwk4llEWXQ4lUMg0C5W1rkrQxznP3vU4rmuE82tut2Sw4gtTMn/r+0j
-	 QJbHxk5pgR3+v8Yxc8yYrb2iY1ocMNHWXpeKFAqqHDjow4cB+4wC14KvmrT+PnYGP0
-	 WNdQirzXn0y631G6muU1Q1Whu05KJ0vv6n7TMvtA=
+	b=seF0uELUQ6vIGC1h6GssOIAnve39MWrV+w/DMsAlzsW5FU3scBeYkB6d/5yhHqNEL
+	 Uq2eRQIhth0czXIxG0QiNd2luEr17/FZGFcYnMblk74SHgIZ+mBIj9wAO0Y/1UacOw
+	 3pv5PBLP8i8xS8LOC5zIhKo33qlojGTnUv9ePb4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Meetakshi Setiya <meetakshisetiyaoss@gmail.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 119/218] smb: client: make use of common smbdirect_pdu.h
-Date: Thu,  3 Jul 2025 16:41:07 +0200
-Message-ID: <20250703144000.697564497@linuxfoundation.org>
+Subject: [PATCH 6.6 005/139] NFSv4.2: fix listxattr to return selinux security label
+Date: Thu,  3 Jul 2025 16:41:08 +0200
+Message-ID: <20250703143941.392619173@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,242 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit 64946d5be665ddac6b5bf11f5b5ff319aae0f4c6 ]
+[ Upstream commit 243fea134633ba3d64aceb4c16129c59541ea2c6 ]
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Hyunchul Lee <hyc.lee@gmail.com>
-Cc: Meetakshi Setiya <meetakshisetiyaoss@gmail.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 43e7e284fc77 ("cifs: Fix the smbd_response slab to allow usercopy")
+Currently, when NFS is queried for all the labels present on the
+file via a command example "getfattr -d -m . /mnt/testfile", it
+does not return the security label. Yet when asked specifically for
+the label (getfattr -n security.selinux) it will be returned.
+Include the security label when all attributes are queried.
+
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smbdirect.c | 40 ++++++++++++++++++--------------------
- fs/smb/client/smbdirect.h | 41 ---------------------------------------
- 2 files changed, 19 insertions(+), 62 deletions(-)
+ fs/nfs/nfs4proc.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index 9d8be034f103f..d506ab259e082 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -7,6 +7,7 @@
- #include <linux/module.h>
- #include <linux/highmem.h>
- #include <linux/folio_queue.h>
-+#include "../common/smbdirect/smbdirect_pdu.h"
- #include "smbdirect.h"
- #include "cifs_debug.h"
- #include "cifsproto.h"
-@@ -50,9 +51,6 @@ struct smb_extract_to_rdma {
- static ssize_t smb_extract_iter_to_rdma(struct iov_iter *iter, size_t len,
- 					struct smb_extract_to_rdma *rdma);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 1b94a55215e7d..97a009e007f95 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -10625,7 +10625,7 @@ const struct nfs4_minor_version_ops *nfs_v4_minor_ops[] = {
  
--/* SMBD version number */
--#define SMBD_V1	0x0100
--
- /* Port numbers for SMBD transport */
- #define SMB_PORT	445
- #define SMBD_PORT	5445
-@@ -299,7 +297,7 @@ static void send_done(struct ib_cq *cq, struct ib_wc *wc)
- 	mempool_free(request, request->info->request_mempool);
- }
- 
--static void dump_smbd_negotiate_resp(struct smbd_negotiate_resp *resp)
-+static void dump_smbdirect_negotiate_resp(struct smbdirect_negotiate_resp *resp)
+ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
  {
- 	log_rdma_event(INFO, "resp message min_version %u max_version %u negotiated_version %u credits_requested %u credits_granted %u status %u max_readwrite_size %u preferred_send_size %u max_receive_size %u max_fragmented_size %u\n",
- 		       resp->min_version, resp->max_version,
-@@ -318,15 +316,15 @@ static bool process_negotiation_response(
- 		struct smbd_response *response, int packet_length)
- {
- 	struct smbd_connection *info = response->info;
--	struct smbd_negotiate_resp *packet = smbd_response_payload(response);
-+	struct smbdirect_negotiate_resp *packet = smbd_response_payload(response);
+-	ssize_t error, error2, error3;
++	ssize_t error, error2, error3, error4;
+ 	size_t left = size;
  
--	if (packet_length < sizeof(struct smbd_negotiate_resp)) {
-+	if (packet_length < sizeof(struct smbdirect_negotiate_resp)) {
- 		log_rdma_event(ERR,
- 			"error: packet_length=%d\n", packet_length);
- 		return false;
- 	}
+ 	error = generic_listxattr(dentry, list, left);
+@@ -10648,8 +10648,16 @@ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
+ 	error3 = nfs4_listxattr_nfs4_user(d_inode(dentry), list, left);
+ 	if (error3 < 0)
+ 		return error3;
++	if (list) {
++		list += error3;
++		left -= error3;
++	}
++
++	error4 = security_inode_listsecurity(d_inode(dentry), list, left);
++	if (error4 < 0)
++		return error4;
  
--	if (le16_to_cpu(packet->negotiated_version) != SMBD_V1) {
-+	if (le16_to_cpu(packet->negotiated_version) != SMBDIRECT_V1) {
- 		log_rdma_event(ERR, "error: negotiated_version=%x\n",
- 			le16_to_cpu(packet->negotiated_version));
- 		return false;
-@@ -448,7 +446,7 @@ static void smbd_post_send_credits(struct work_struct *work)
- /* Called from softirq, when recv is done */
- static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- {
--	struct smbd_data_transfer *data_transfer;
-+	struct smbdirect_data_transfer *data_transfer;
- 	struct smbd_response *response =
- 		container_of(wc->wr_cqe, struct smbd_response, cqe);
- 	struct smbd_connection *info = response->info;
-@@ -474,7 +472,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	switch (response->type) {
- 	/* SMBD negotiation response */
- 	case SMBD_NEGOTIATE_RESP:
--		dump_smbd_negotiate_resp(smbd_response_payload(response));
-+		dump_smbdirect_negotiate_resp(smbd_response_payload(response));
- 		info->full_packet_received = true;
- 		info->negotiate_done =
- 			process_negotiation_response(response, wc->byte_len);
-@@ -531,7 +529,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		/* Send a KEEP_ALIVE response right away if requested */
- 		info->keep_alive_requested = KEEP_ALIVE_NONE;
- 		if (le16_to_cpu(data_transfer->flags) &
--				SMB_DIRECT_RESPONSE_REQUESTED) {
-+				SMBDIRECT_FLAG_RESPONSE_REQUESTED) {
- 			info->keep_alive_requested = KEEP_ALIVE_PENDING;
- 		}
- 
-@@ -686,7 +684,7 @@ static int smbd_post_send_negotiate_req(struct smbd_connection *info)
- 	struct ib_send_wr send_wr;
- 	int rc = -ENOMEM;
- 	struct smbd_request *request;
--	struct smbd_negotiate_req *packet;
-+	struct smbdirect_negotiate_req *packet;
- 
- 	request = mempool_alloc(info->request_mempool, GFP_KERNEL);
- 	if (!request)
-@@ -695,8 +693,8 @@ static int smbd_post_send_negotiate_req(struct smbd_connection *info)
- 	request->info = info;
- 
- 	packet = smbd_request_payload(request);
--	packet->min_version = cpu_to_le16(SMBD_V1);
--	packet->max_version = cpu_to_le16(SMBD_V1);
-+	packet->min_version = cpu_to_le16(SMBDIRECT_V1);
-+	packet->max_version = cpu_to_le16(SMBDIRECT_V1);
- 	packet->reserved = 0;
- 	packet->credits_requested = cpu_to_le16(info->send_credit_target);
- 	packet->preferred_send_size = cpu_to_le32(info->max_send_size);
-@@ -774,10 +772,10 @@ static int manage_credits_prior_sending(struct smbd_connection *info)
- /*
-  * Check if we need to send a KEEP_ALIVE message
-  * The idle connection timer triggers a KEEP_ALIVE message when expires
-- * SMB_DIRECT_RESPONSE_REQUESTED is set in the message flag to have peer send
-+ * SMBDIRECT_FLAG_RESPONSE_REQUESTED is set in the message flag to have peer send
-  * back a response.
-  * return value:
-- * 1 if SMB_DIRECT_RESPONSE_REQUESTED needs to be set
-+ * 1 if SMBDIRECT_FLAG_RESPONSE_REQUESTED needs to be set
-  * 0: otherwise
-  */
- static int manage_keep_alive_before_sending(struct smbd_connection *info)
-@@ -837,7 +835,7 @@ static int smbd_post_send_iter(struct smbd_connection *info,
- 	int header_length;
- 	int data_length;
- 	struct smbd_request *request;
--	struct smbd_data_transfer *packet;
-+	struct smbdirect_data_transfer *packet;
- 	int new_credits = 0;
- 
- wait_credit:
-@@ -919,7 +917,7 @@ static int smbd_post_send_iter(struct smbd_connection *info,
- 
- 	packet->flags = 0;
- 	if (manage_keep_alive_before_sending(info))
--		packet->flags |= cpu_to_le16(SMB_DIRECT_RESPONSE_REQUESTED);
-+		packet->flags |= cpu_to_le16(SMBDIRECT_FLAG_RESPONSE_REQUESTED);
- 
- 	packet->reserved = 0;
- 	if (!data_length)
-@@ -938,10 +936,10 @@ static int smbd_post_send_iter(struct smbd_connection *info,
- 		     le32_to_cpu(packet->remaining_data_length));
- 
- 	/* Map the packet to DMA */
--	header_length = sizeof(struct smbd_data_transfer);
-+	header_length = sizeof(struct smbdirect_data_transfer);
- 	/* If this is a packet without payload, don't send padding */
- 	if (!data_length)
--		header_length = offsetof(struct smbd_data_transfer, padding);
-+		header_length = offsetof(struct smbdirect_data_transfer, padding);
- 
- 	request->sge[0].addr = ib_dma_map_single(info->id->device,
- 						 (void *)packet,
-@@ -1432,7 +1430,7 @@ static int allocate_caches_and_workqueue(struct smbd_connection *info)
- 		kmem_cache_create(
- 			name,
- 			sizeof(struct smbd_request) +
--				sizeof(struct smbd_data_transfer),
-+				sizeof(struct smbdirect_data_transfer),
- 			0, SLAB_HWCACHE_ALIGN, NULL);
- 	if (!info->request_cache)
- 		return -ENOMEM;
-@@ -1735,7 +1733,7 @@ static int smbd_recv_buf(struct smbd_connection *info, char *buf,
- 		unsigned int size)
- {
- 	struct smbd_response *response;
--	struct smbd_data_transfer *data_transfer;
-+	struct smbdirect_data_transfer *data_transfer;
- 	int to_copy, to_read, data_read, offset;
- 	u32 data_length, remaining_data_length, data_offset;
- 	int rc;
-diff --git a/fs/smb/client/smbdirect.h b/fs/smb/client/smbdirect.h
-index c08e3665150d7..4da0974ce7305 100644
---- a/fs/smb/client/smbdirect.h
-+++ b/fs/smb/client/smbdirect.h
-@@ -177,47 +177,6 @@ enum smbd_message_type {
- 	SMBD_TRANSFER_DATA,
- };
- 
--#define SMB_DIRECT_RESPONSE_REQUESTED 0x0001
--
--/* SMBD negotiation request packet [MS-SMBD] 2.2.1 */
--struct smbd_negotiate_req {
--	__le16 min_version;
--	__le16 max_version;
--	__le16 reserved;
--	__le16 credits_requested;
--	__le32 preferred_send_size;
--	__le32 max_receive_size;
--	__le32 max_fragmented_size;
--} __packed;
--
--/* SMBD negotiation response packet [MS-SMBD] 2.2.2 */
--struct smbd_negotiate_resp {
--	__le16 min_version;
--	__le16 max_version;
--	__le16 negotiated_version;
--	__le16 reserved;
--	__le16 credits_requested;
--	__le16 credits_granted;
--	__le32 status;
--	__le32 max_readwrite_size;
--	__le32 preferred_send_size;
--	__le32 max_receive_size;
--	__le32 max_fragmented_size;
--} __packed;
--
--/* SMBD data transfer packet with payload [MS-SMBD] 2.2.3 */
--struct smbd_data_transfer {
--	__le16 credits_requested;
--	__le16 credits_granted;
--	__le16 flags;
--	__le16 reserved;
--	__le32 remaining_data_length;
--	__le32 data_offset;
--	__le32 data_length;
--	__le32 padding;
--	__u8 buffer[];
--} __packed;
--
- /* The packet fields for a registered RDMA buffer */
- struct smbd_buffer_descriptor_v1 {
- 	__le64 offset;
+-	error += error2 + error3;
++	error += error2 + error3 + error4;
+ 	if (size && error > size)
+ 		return -ERANGE;
+ 	return error;
 -- 
 2.39.5
 
