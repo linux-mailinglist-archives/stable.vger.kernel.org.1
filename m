@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-159862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77621AF7AFF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:20:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2BAAF78E9
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 631CE5855D1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:15:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 850683AFA20
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A602F2345;
-	Thu,  3 Jul 2025 15:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5507E19F43A;
+	Thu,  3 Jul 2025 14:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OW9YnW2J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVDnTzh4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FBA2C3266;
-	Thu,  3 Jul 2025 15:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114EB126BFF;
+	Thu,  3 Jul 2025 14:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555591; cv=none; b=L6y3+2vPvz9wkFFZeGRYfeVwmKIZovsoGqrtqthV3GBLmd+9VSav9gqavDxaD2+/GdTt5GBVUP8Z3eCpNzRqT2cv3YG+FW5lnevxmlWZC5Y5yMIOk8AQjeNRiZ77Bd+Do9v8pfx56eS0DNqavaQ/AHPsjNsLqNCZKNYFnydiAWw=
+	t=1751554404; cv=none; b=Z+MQ3hTcNHDAt2raRo8DWZ6PBKz+X5zqttVhES8WTjHCUtIfK9GPWTPPD1K7cs2f3g8iVKABEsb9jx6wDoaG8Qo9z2fLHsd9DZK77qgu5YH2v8B8rcUaKBo915L+JjAaxR43I85rlFgzNEwZRg5O9XwCeDJwR9+/zcp9rSxeQRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555591; c=relaxed/simple;
-	bh=kPRRQIdajowrvuWvSfLhZYiUYr95/9iEWlCK9lgEiMk=;
+	s=arc-20240116; t=1751554404; c=relaxed/simple;
+	bh=1+Gd7yZsNBidR2BvOb4gWHiHgK2yQZHfao2Q40+qQ5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OFwoIZmaFyh1xLAMyd7l1Ify4bwcfuba4gjdHzTVSVXU2cisNlYE5vns4SVQBRceFbKHoZlUphTyyZy4Vj7MYew/12U1z3j4mCpHBgg4+H54Lq1I9/9SwKvRxMiOeaYlITTlqTofyz/ny9FeuJNATF6LexSUbfAodQrO3bzmJW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OW9YnW2J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4206AC4CEE3;
-	Thu,  3 Jul 2025 15:13:11 +0000 (UTC)
+	 MIME-Version; b=dUec3pFyhNOmz9NUlDIys5XKaJbLrm5XsEE2HTAPf3Xu9ufJMsNCNBUWf7F3NTL/NQXkl3uzg+JzaCsd6VgFSrzYN1wBVOwxojVgQoK3Yh9SQbJHzgttzGonu67UJETzfwoaSVUJolBTAvssxCZyFG1JsVhKvciyONekw17xPOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVDnTzh4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9594EC4CEE3;
+	Thu,  3 Jul 2025 14:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555591;
-	bh=kPRRQIdajowrvuWvSfLhZYiUYr95/9iEWlCK9lgEiMk=;
+	s=korg; t=1751554403;
+	bh=1+Gd7yZsNBidR2BvOb4gWHiHgK2yQZHfao2Q40+qQ5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OW9YnW2JQuVXEoj632+yixv4wSot7Taq6qwK920p5zkNajOmwPQ2s/DmCB+twNkee
-	 8aMXhgl+K+zChk0Yera9SMajZInygRcjjGeVMODYZjiKbGRO+dA83TTzNKbh9wlI0P
-	 kPTVUi59WNESKJ+RPEk4Da3tFXZw86dmG1qch4CI=
+	b=SVDnTzh4YwavL6zLGDmZS8eyw+9LkY5npnk8rLkw+ECWhlc14Txb9/L9UXvyULKUl
+	 xX/Ph+NboVaVOI1uRnQ8nyfQ99EWO1QRlxyLCaEToyJgBtBzJcv5ySXPNYWjflJ+1C
+	 oJpXMGF1QTmeo2MRowe6zuIrtjlzQ31EEXIuqsag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Andrei Borzenkov <arvidjaar@gmail.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/139] dummycon: Trigger redraw when switching consoles with deferred takeover
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Austin Zheng <austin.zheng@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.12 176/218] drm/amd/display: Fix mpv playback corruption on weston
 Date: Thu,  3 Jul 2025 16:42:04 +0200
-Message-ID: <20250703143943.553875999@linuxfoundation.org>
+Message-ID: <20250703144003.216713847@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 03bcbbb3995ba5df43af9aba45334e35f2dfe27b ]
+commit 8724a5380c4390eed81e271d22f34ff06453ded9 upstream.
 
-Signal vt subsystem to redraw console when switching to dummycon
-with deferred takeover enabled. Makes the console switch to fbcon
-and displays the available output.
+[WHAT]
+Severe video playback corruption is observed in the following setup:
 
-With deferred takeover enabled, dummycon acts as the placeholder
-until the first output to the console happens. At that point, fbcon
-takes over. If the output happens while dummycon is not active, it
-cannot inform fbcon. This is the case if the vt subsystem runs in
-graphics mode.
+weston 14.0.90 (built from source) + mpv v0.40.0 with command:
+mpv bbb_sunflower_1080p_60fps_normal.mp4 --vo=gpu
 
-A typical graphical boot starts plymouth, a display manager and a
-compositor; all while leaving out dummycon. Switching to a text-mode
-console leaves the console with dummycon even if a getty terminal
-has been started.
+[HOW]
+ABGR16161616 needs to be included in dml2/2.1 translation.
 
-Returning true from dummycon's con_switch helper signals the vt
-subsystem to redraw the screen. If there's output available dummycon's
-con_putc{s} helpers trigger deferred takeover of fbcon, which sets a
-display mode and displays the output. If no output is available,
-dummycon remains active.
-
-v2:
-- make the comment slightly more verbose (Javier)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: Andrei Borzenkov <arvidjaar@gmail.com>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1242191
-Tested-by: Andrei Borzenkov <arvidjaar@gmail.com>
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-Fixes: 83d83bebf401 ("console/fbcon: Add support for deferred console takeover")
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.19+
-Link: https://lore.kernel.org/r/20250520071418.8462-1-tzimmermann@suse.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Austin Zheng <austin.zheng@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d023de809f85307ca819a9dbbceee6ae1f50e2ad)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/console/dummycon.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c |    1 +
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c        |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
-index d701f2b51f5b1..d99e1b3e4e5c1 100644
---- a/drivers/video/console/dummycon.c
-+++ b/drivers/video/console/dummycon.c
-@@ -82,6 +82,15 @@ static int dummycon_blank(struct vc_data *vc, int blank, int mode_switch)
- 	/* Redraw, so that we get putc(s) for output done while blanked */
- 	return 1;
- }
-+
-+static bool dummycon_switch(struct vc_data *vc)
-+{
-+	/*
-+	 * Redraw, so that we get putc(s) for output done while switched
-+	 * away. Informs deferred consoles to take over the display.
-+	 */
-+	return true;
-+}
- #else
- static void dummycon_putc(struct vc_data *vc, int c, int ypos, int xpos) { }
- static void dummycon_putcs(struct vc_data *vc, const unsigned short *s,
-@@ -90,6 +99,10 @@ static int dummycon_blank(struct vc_data *vc, int blank, int mode_switch)
- {
- 	return 0;
- }
-+static bool dummycon_switch(struct vc_data *vc)
-+{
-+	return false;
-+}
- #endif
- 
- static const char *dummycon_startup(void)
-@@ -119,11 +132,6 @@ static bool dummycon_scroll(struct vc_data *vc, unsigned int top,
- 	return false;
- }
- 
--static bool dummycon_switch(struct vc_data *vc)
--{
--	return false;
--}
--
- /*
-  *  The console `switch' structure for the dummy console
-  *
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
+@@ -762,6 +762,7 @@ static void populate_dml21_plane_config_
+ 		plane->pixel_format = dml2_420_10;
+ 		break;
+ 	case SURFACE_PIXEL_FORMAT_GRPH_ARGB16161616:
++	case SURFACE_PIXEL_FORMAT_GRPH_ABGR16161616:
+ 	case SURFACE_PIXEL_FORMAT_GRPH_ARGB16161616F:
+ 	case SURFACE_PIXEL_FORMAT_GRPH_ABGR16161616F:
+ 		plane->pixel_format = dml2_444_64;
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+@@ -909,6 +909,7 @@ static void populate_dml_surface_cfg_fro
+ 		out->SourcePixelFormat[location] = dml_420_10;
+ 		break;
+ 	case SURFACE_PIXEL_FORMAT_GRPH_ARGB16161616:
++	case SURFACE_PIXEL_FORMAT_GRPH_ABGR16161616:
+ 	case SURFACE_PIXEL_FORMAT_GRPH_ARGB16161616F:
+ 	case SURFACE_PIXEL_FORMAT_GRPH_ABGR16161616F:
+ 		out->SourcePixelFormat[location] = dml_444_64;
 
 
 
