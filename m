@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62629AF798C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:03:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8640FAF781B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:47:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 979BD18835C1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:58:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A40173B0CD6
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC452EAD1B;
-	Thu,  3 Jul 2025 14:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B736A2D9EEA;
+	Thu,  3 Jul 2025 14:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfdVjnNb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2+U7znf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C182EA49E;
-	Thu,  3 Jul 2025 14:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F9A126BFF;
+	Thu,  3 Jul 2025 14:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554708; cv=none; b=kvPezvDWHEO3jYE3uEx5Vql0aUxcbawNOzI/rxN4waZm4rssYT7ab+vRsmRPFJTA0O4XPq6+/SkxqroNs/6SOovvJjeP65K2QILOW+8HR2MuZlwvsIUqS21YRrVkwNW5JaFCcKCC95zWHevd3yAlc6/Z66jJzOW7t6Lws1lmd8g=
+	t=1751554013; cv=none; b=tDiVzMpRSEsgDEGEf3Ap6jTXdUBi5G1i6I6vMqG1B6P0mxTpg+GBGiUAf2Gm1e6DMYs6Z9jc6aQ11hYwTR7leiZypqiodeQ/FNVkf3ol1p7xIBYzAOaGaHAWQF/3k5HsNHG70Aab6ViRDRcM2a0wJypUn+el1tatJHPufe2m0RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554708; c=relaxed/simple;
-	bh=203bzRHtAdotDUrRZx8I0y/ZfObkMA5Ggnf9iaLC8Vg=;
+	s=arc-20240116; t=1751554013; c=relaxed/simple;
+	bh=Uxjpmhq2KWjblnDYGOR6Fuclf5nF1bHy0W9wDVV4T/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vn4F4QWLf660vDEWihsTeHoIRapWl3EdeVOMU3DJ21rh49r0KpMwF2Ezhr8DnVIcU0iM/L1v5uZ+rHzclQU1ei2ZIlEG/WBnKG6x2uZUNtXp5Uj23JUBDUcDIaB1Z7p1OhPMMqNM4ifRroiHzOA1b5L+qXswRCA/xn8srne9eeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfdVjnNb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541B4C4CEE3;
-	Thu,  3 Jul 2025 14:58:27 +0000 (UTC)
+	 MIME-Version; b=WldUJYB4/dJAcJeL4T07xAm6ecziE8IsgvH5c3J0vp2PuEzePLebro8cmIhJUZQHsGqnO2CeKC95ANWN8E1zZYQ6bf9hfg5ppAIW4spQHwEQqlRAPtYwpQieeC0sw1cpnePensapfUW2bs1FYEQrJB2E21fkrB8t2rbKDjm3Z80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2+U7znf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10B9C4CEED;
+	Thu,  3 Jul 2025 14:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554707;
-	bh=203bzRHtAdotDUrRZx8I0y/ZfObkMA5Ggnf9iaLC8Vg=;
+	s=korg; t=1751554013;
+	bh=Uxjpmhq2KWjblnDYGOR6Fuclf5nF1bHy0W9wDVV4T/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JfdVjnNbUCIQTyLlleWO3uCvXHcFSkVKjBZIbhLhydgE2rq4xhrR9CXlFc0SCnG4G
-	 Zcb4UjQZ27mysNZsU4drnwf1aZOALfBQn/1P4RGEy3pZTWwpipdBIkYExgKNyqN1MM
-	 LlLhGJRRqsqAYTHjf0+EUVRMfVeQ5JICLRm4r6NQ=
+	b=f2+U7znfV8fp8cGWpR9rVwVtu1tFW7hSrkrxGOpiLph2V9enmrbO7mAqHHjnu9g44
+	 IkZVL9oFjcvVPaoqrgxiyXyKICWWoQwp/sf5dssO/C0U/bDlihT7SLsoi/guGwgkmP
+	 pstzURZItZIFjbilaaJgwjFwfmUx+hikn10lXw6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Heidelberg <david@ixit.cz>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Hannes Reinecke <hare@kernel.org>,
+	Chris Leech <cleech@redhat.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 053/263] iio: light: al3000a: Fix an error handling path in al3000a_probe()
-Date: Thu,  3 Jul 2025 16:39:33 +0200
-Message-ID: <20250703144006.434391656@linuxfoundation.org>
+Subject: [PATCH 6.12 026/218] nvme-tcp: fix I/O stalls on congested sockets
+Date: Thu,  3 Jul 2025 16:39:34 +0200
+Message-ID: <20250703143957.009582788@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Heidelberg <david@ixit.cz>
+From: Hannes Reinecke <hare@kernel.org>
 
-[ Upstream commit c0461f8e842495041c18b2c67647501d55c17441 ]
+[ Upstream commit f42d4796ee100fade86086d1cf98537fb4d326c8 ]
 
-If regmap_write() fails in al3000a_init(), al3000a_set_pwr_off is
-not called.
+When the socket is busy processing nvme_tcp_try_recv() might return
+-EAGAIN, but this doesn't automatically imply that the sending side is
+blocked, too.  So check if there are pending requests once
+nvme_tcp_try_recv() returns -EAGAIN and continue with the sending loop
+to avoid I/O stalls.
 
-In order to avoid such a situation, move the devm_add_action_or_reset()
-which calls al3000a_set_pwr_off right after a successful
-al3000a_set_pwr_on.
-
-Signed-off-by: David Heidelberg <david@ixit.cz>
-Link: https://patch.msgid.link/20250402-al3010-iio-regmap-v4-2-d189bea87261@ixit.cz
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Acked-by: Chris Leech <cleech@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/al3000a.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/nvme/host/tcp.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/light/al3000a.c b/drivers/iio/light/al3000a.c
-index e2fbb1270040f..6d5115b2a06c5 100644
---- a/drivers/iio/light/al3000a.c
-+++ b/drivers/iio/light/al3000a.c
-@@ -85,12 +85,17 @@ static void al3000a_set_pwr_off(void *_data)
- 
- static int al3000a_init(struct al3000a_data *data)
- {
-+	struct device *dev = regmap_get_device(data->regmap);
- 	int ret;
- 
- 	ret = al3000a_set_pwr_on(data);
- 	if (ret)
- 		return ret;
- 
-+	ret = devm_add_action_or_reset(dev, al3000a_set_pwr_off, data);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to add action\n");
-+
- 	ret = regmap_write(data->regmap, AL3000A_REG_SYSTEM, AL3000A_CONFIG_RESET);
- 	if (ret)
- 		return ret;
-@@ -157,10 +162,6 @@ static int al3000a_probe(struct i2c_client *client)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "failed to init ALS\n");
- 
--	ret = devm_add_action_or_reset(dev, al3000a_set_pwr_off, data);
--	if (ret)
--		return dev_err_probe(dev, ret, "failed to add action\n");
--
- 	return devm_iio_device_register(dev, indio_dev);
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 4cc72be28c731..13ede6e309092 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1349,7 +1349,7 @@ static int nvme_tcp_try_recv(struct nvme_tcp_queue *queue)
+ 	queue->nr_cqe = 0;
+ 	consumed = sock->ops->read_sock(sk, &rd_desc, nvme_tcp_recv_skb);
+ 	release_sock(sk);
+-	return consumed;
++	return consumed == -EAGAIN ? 0 : consumed;
  }
+ 
+ static void nvme_tcp_io_work(struct work_struct *w)
+@@ -1377,6 +1377,11 @@ static void nvme_tcp_io_work(struct work_struct *w)
+ 		else if (unlikely(result < 0))
+ 			return;
+ 
++		/* did we get some space after spending time in recv? */
++		if (nvme_tcp_queue_has_pending(queue) &&
++		    sk_stream_is_writeable(queue->sock->sk))
++			pending = true;
++
+ 		if (!pending || !queue->rd_enabled)
+ 			return;
  
 -- 
 2.39.5
