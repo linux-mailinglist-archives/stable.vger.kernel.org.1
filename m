@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE38AF7953
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:00:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93487AF7BC4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B9FE1895BAA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:56:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6AC8548469
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEF52EACE1;
-	Thu,  3 Jul 2025 14:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48EF224882;
+	Thu,  3 Jul 2025 15:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mp1Hgcc/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPsPK9+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BB72E7F0B;
-	Thu,  3 Jul 2025 14:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8195619DF4A;
+	Thu,  3 Jul 2025 15:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554539; cv=none; b=YjUH73n1jdNwYuT4TImDZj8hJGBSxHAqdTsCwu/z+9PMO8SZ6GYcr0YPb6Eu0n4+j1Rx+nyD9FrjftMLLMFpXn8TLlnOFnmdREoITlkagEcHWm98UVPOAPuxAHgw5bjOZAAUFUHsHeJKVGrmHykOrmNNGMHbpDHhBVhIPSiJAQw=
+	t=1751556026; cv=none; b=acnOoWumdwNomRBn3IkaT7t5aGxRGwBj2/5+GunGQyDd3jG+AjgoZFXOYMPoBdqJj9OUOQ6CQgQgDcAPtTpVsWImsOZhZhlWZQabUEOkGL2A1FT18jP9OXHsP9VQWyomNsx7iXj33I/Gy4fKdHvIHCn5BRyllzbLEYQ0UCfAAmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554539; c=relaxed/simple;
-	bh=Z5ZRNcbB+bOeaIK5qhr+sPv4b2Kt5lhFYKergde2/LQ=;
+	s=arc-20240116; t=1751556026; c=relaxed/simple;
+	bh=2RqOaF/T7MMrY/XYgnyHdZB7hQ4Euh576YsEcPM2znk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ngsgkji2odvdhGQoNjKWe3tuaGimvrzd8+6Ejtl2vbtCL0nwvI3XPKxOFCPLjCz3xK1xTBJI3iQatDOwIdmrlsK5SR6VAKS+wNQj8M0+35/+1Q9Z+qs/UbLgX7XceUMntM4SjHh0Hjs54SeF0bYk07LeXKtZpPRHzaBG9gCnEGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mp1Hgcc/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E010C4CEE3;
-	Thu,  3 Jul 2025 14:55:38 +0000 (UTC)
+	 MIME-Version; b=PhiynksaCqoFbOL31Jd8g0pgnn5AiDsFEHLi+wS/cqBskFp2u/eEZgvOw4oBFsdexIJkgDHEPaam1bojH0x1K1cYGY6w4J1/ZwMmnUu1K4H6EpoAJIlpmrb0IO826N1N8VqWb1S/nZX+r6EfRkNHjGSs8Pm7WnQV/ydL+qVCfuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPsPK9+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37A0C4CEE3;
+	Thu,  3 Jul 2025 15:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554538;
-	bh=Z5ZRNcbB+bOeaIK5qhr+sPv4b2Kt5lhFYKergde2/LQ=;
+	s=korg; t=1751556026;
+	bh=2RqOaF/T7MMrY/XYgnyHdZB7hQ4Euh576YsEcPM2znk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mp1Hgcc/DThT+ef+/gQlSZ9luBYdhy4P909VvNB5RPUmJMdgQ7BZG1e89Zynoy11N
-	 ZTKlR3BbtRY+HY6wfNxfQT3XC1ZbA6tF/nE9YtKOd2kX0wSOMaBu0RAkLta+Sc7ySS
-	 nrm+qsDAaxie2xpL9nM0pS6RsrqF8Vt3PGNYtP0Y=
+	b=KPsPK9+GT7WjsNfjvW53gkQBsKcXsD+SmpqHSdb6g9P+Gg3+JBO1AptQsc9+r22xk
+	 yOb8UoI1Rrssxm8G9selqCs2BF/q69rNepN+sZusfKGGhCels8l8jg4ZZsQ6sEbnho
+	 wgjSRAHtp8EJHIi3pDsIYQ+af+QJoSSJccqciCtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mathieu Tortuyaux <mtortuyaux@microsoft.com>
-Subject: [PATCH 6.12 192/218] net: phy: realtek: merge the drivers for internal NBase-T PHYs
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 051/132] fbdev: Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var
 Date: Thu,  3 Jul 2025 16:42:20 +0200
-Message-ID: <20250703144003.882708500@linuxfoundation.org>
+Message-ID: <20250703143941.423327326@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,146 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit f87a17ed3b51fba4dfdd8f8b643b5423a85fc551 upstream.
+[ Upstream commit 17186f1f90d34fa701e4f14e6818305151637b9e ]
 
-The Realtek RTL8125/RTL8126 NBase-T MAC/PHY chips have internal PHY's
-which are register-compatible, at least for the registers we use here.
-So let's use just one PHY driver to support all of them.
-These internal PHY's exist also as external C45 PHY's, but on the
-internal PHY's no access to MMD registers is possible. This can be
-used to differentiate between the internal and external version.
+If fb_add_videomode() in do_register_framebuffer() fails to allocate
+memory for fb_videomode, it will later lead to a null-ptr dereference in
+fb_videomode_to_var(), as the fb_info is registered while not having the
+mode in modelist that is expected to be there, i.e. the one that is
+described in fb_info->var.
 
-As a side effect the drivers for two now external-only drivers don't
-require read_mmd/write_mmd hooks any longer.
+================================================================
+general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 1 PID: 30371 Comm: syz-executor.1 Not tainted 5.10.226-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:fb_videomode_to_var+0x24/0x610 drivers/video/fbdev/core/modedb.c:901
+Call Trace:
+ display_to_var+0x3a/0x7c0 drivers/video/fbdev/core/fbcon.c:929
+ fbcon_resize+0x3e2/0x8f0 drivers/video/fbdev/core/fbcon.c:2071
+ resize_screen drivers/tty/vt/vt.c:1176 [inline]
+ vc_do_resize+0x53a/0x1170 drivers/tty/vt/vt.c:1263
+ fbcon_modechanged+0x3ac/0x6e0 drivers/video/fbdev/core/fbcon.c:2720
+ fbcon_update_vcs+0x43/0x60 drivers/video/fbdev/core/fbcon.c:2776
+ do_fb_ioctl+0x6d2/0x740 drivers/video/fbdev/core/fbmem.c:1128
+ fb_ioctl+0xe7/0x150 drivers/video/fbdev/core/fbmem.c:1203
+ vfs_ioctl fs/ioctl.c:48 [inline]
+ __do_sys_ioctl fs/ioctl.c:753 [inline]
+ __se_sys_ioctl fs/ioctl.c:739 [inline]
+ __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:739
+ do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x67/0xd1
+================================================================
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://patch.msgid.link/c57081a6-811f-4571-ab35-34f4ca6de9af@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Even though fbcon_init() checks beforehand if fb_match_mode() in
+var_to_display() fails, it can not prevent the panic because fbcon_init()
+does not return error code. Considering this and the comment in the code
+about fb_match_mode() returning NULL - "This should not happen" - it is
+better to prevent registering the fb_info if its mode was not set
+successfully. Also move fb_add_videomode() closer to the beginning of
+do_register_framebuffer() to avoid having to do the cleanup on fail.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/realtek.c |   53 +++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 43 insertions(+), 10 deletions(-)
+ drivers/video/fbdev/core/fbmem.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
---- a/drivers/net/phy/realtek.c
-+++ b/drivers/net/phy/realtek.c
-@@ -92,6 +92,7 @@
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index 7355a299cdb5f..f8c32c58b5b2c 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -1536,7 +1536,7 @@ static int fb_check_foreignness(struct fb_info *fi)
  
- #define RTL_GENERIC_PHYID			0x001cc800
- #define RTL_8211FVD_PHYID			0x001cc878
-+#define RTL_8221B				0x001cc840
- #define RTL_8221B_VB_CG				0x001cc849
- #define RTL_8221B_VN_CG				0x001cc84a
- #define RTL_8251B				0x001cc862
-@@ -1040,6 +1041,23 @@ static bool rtlgen_supports_2_5gbps(stru
- 	return val >= 0 && val & MDIO_PMA_SPEED_2_5G;
- }
- 
-+/* On internal PHY's MMD reads over C22 always return 0.
-+ * Check a MMD register which is known to be non-zero.
-+ */
-+static bool rtlgen_supports_mmd(struct phy_device *phydev)
-+{
-+	int val;
-+
-+	phy_lock_mdio_bus(phydev);
-+	__phy_write(phydev, MII_MMD_CTRL, MDIO_MMD_PCS);
-+	__phy_write(phydev, MII_MMD_DATA, MDIO_PCS_EEE_ABLE);
-+	__phy_write(phydev, MII_MMD_CTRL, MDIO_MMD_PCS | MII_MMD_CTRL_NOINCR);
-+	val = __phy_read(phydev, MII_MMD_DATA);
-+	phy_unlock_mdio_bus(phydev);
-+
-+	return val > 0;
-+}
-+
- static int rtlgen_match_phy_device(struct phy_device *phydev)
+ static int do_register_framebuffer(struct fb_info *fb_info)
  {
- 	return phydev->phy_id == RTL_GENERIC_PHYID &&
-@@ -1049,7 +1067,8 @@ static int rtlgen_match_phy_device(struc
- static int rtl8226_match_phy_device(struct phy_device *phydev)
- {
- 	return phydev->phy_id == RTL_GENERIC_PHYID &&
--	       rtlgen_supports_2_5gbps(phydev);
-+	       rtlgen_supports_2_5gbps(phydev) &&
-+	       rtlgen_supports_mmd(phydev);
- }
+-	int i;
++	int i, err = 0;
+ 	struct fb_videomode mode;
  
- static int rtlgen_is_c45_match(struct phy_device *phydev, unsigned int id,
-@@ -1061,6 +1080,11 @@ static int rtlgen_is_c45_match(struct ph
- 		return !is_c45 && (id == phydev->phy_id);
- }
+ 	if (fb_check_foreignness(fb_info))
+@@ -1545,10 +1545,18 @@ static int do_register_framebuffer(struct fb_info *fb_info)
+ 	if (num_registered_fb == FB_MAX)
+ 		return -ENXIO;
  
-+static int rtl8221b_match_phy_device(struct phy_device *phydev)
-+{
-+	return phydev->phy_id == RTL_8221B && rtlgen_supports_mmd(phydev);
-+}
+-	num_registered_fb++;
+ 	for (i = 0 ; i < FB_MAX; i++)
+ 		if (!registered_fb[i])
+ 			break;
 +
- static int rtl8221b_vb_cg_c22_match_phy_device(struct phy_device *phydev)
- {
- 	return rtlgen_is_c45_match(phydev, RTL_8221B_VB_CG, false);
-@@ -1081,9 +1105,21 @@ static int rtl8221b_vn_cg_c45_match_phy_
- 	return rtlgen_is_c45_match(phydev, RTL_8221B_VN_CG, true);
- }
- 
--static int rtl8251b_c22_match_phy_device(struct phy_device *phydev)
-+static int rtl_internal_nbaset_match_phy_device(struct phy_device *phydev)
- {
--	return rtlgen_is_c45_match(phydev, RTL_8251B, false);
-+	if (phydev->is_c45)
-+		return false;
++	if (!fb_info->modelist.prev || !fb_info->modelist.next)
++		INIT_LIST_HEAD(&fb_info->modelist);
 +
-+	switch (phydev->phy_id) {
-+	case RTL_GENERIC_PHYID:
-+	case RTL_8221B:
-+	case RTL_8251B:
-+		break;
-+	default:
-+		return false;
-+	}
++	fb_var_to_videomode(&mode, &fb_info->var);
++	err = fb_add_videomode(&mode, &fb_info->modelist);
++	if (err < 0)
++		return err;
 +
-+	return rtlgen_supports_2_5gbps(phydev) && !rtlgen_supports_mmd(phydev);
- }
+ 	fb_info->node = i;
+ 	refcount_set(&fb_info->count, 1);
+ 	mutex_init(&fb_info->lock);
+@@ -1581,16 +1589,12 @@ static int do_register_framebuffer(struct fb_info *fb_info)
+ 	if (!fb_info->pixmap.blit_y)
+ 		fb_info->pixmap.blit_y = ~(u32)0;
  
- static int rtl8251b_c45_match_phy_device(struct phy_device *phydev)
-@@ -1345,10 +1381,8 @@ static struct phy_driver realtek_drvs[]
- 		.resume		= rtlgen_resume,
- 		.read_page	= rtl821x_read_page,
- 		.write_page	= rtl821x_write_page,
--		.read_mmd	= rtl822x_read_mmd,
--		.write_mmd	= rtl822x_write_mmd,
- 	}, {
--		PHY_ID_MATCH_EXACT(0x001cc840),
-+		.match_phy_device = rtl8221b_match_phy_device,
- 		.name		= "RTL8226B_RTL8221B 2.5Gbps PHY",
- 		.get_features	= rtl822x_get_features,
- 		.config_aneg	= rtl822x_config_aneg,
-@@ -1359,8 +1393,6 @@ static struct phy_driver realtek_drvs[]
- 		.resume		= rtlgen_resume,
- 		.read_page	= rtl821x_read_page,
- 		.write_page	= rtl821x_write_page,
--		.read_mmd	= rtl822x_read_mmd,
--		.write_mmd	= rtl822x_write_mmd,
- 	}, {
- 		PHY_ID_MATCH_EXACT(0x001cc838),
- 		.name           = "RTL8226-CG 2.5Gbps PHY",
-@@ -1438,8 +1470,9 @@ static struct phy_driver realtek_drvs[]
- 		.read_page      = rtl821x_read_page,
- 		.write_page     = rtl821x_write_page,
- 	}, {
--		.match_phy_device = rtl8251b_c22_match_phy_device,
--		.name           = "RTL8126A-internal 5Gbps PHY",
-+		.match_phy_device = rtl_internal_nbaset_match_phy_device,
-+		.name           = "Realtek Internal NBASE-T PHY",
-+		.flags		= PHY_IS_INTERNAL,
- 		.get_features   = rtl822x_get_features,
- 		.config_aneg    = rtl822x_config_aneg,
- 		.read_status    = rtl822x_read_status,
+-	if (!fb_info->modelist.prev || !fb_info->modelist.next)
+-		INIT_LIST_HEAD(&fb_info->modelist);
+-
+ 	if (fb_info->skip_vt_switch)
+ 		pm_vt_switch_required(fb_info->dev, false);
+ 	else
+ 		pm_vt_switch_required(fb_info->dev, true);
+ 
+-	fb_var_to_videomode(&mode, &fb_info->var);
+-	fb_add_videomode(&mode, &fb_info->modelist);
++	num_registered_fb++;
+ 	registered_fb[i] = fb_info;
+ 
+ #ifdef CONFIG_GUMSTIX_AM200EPD
+-- 
+2.39.5
+
 
 
 
