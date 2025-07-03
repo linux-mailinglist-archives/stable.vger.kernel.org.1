@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-159784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF91AF7A5F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:12:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACA88AF7B75
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08B035606EB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93D7D1CA5EFB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6190B2EF65A;
-	Thu,  3 Jul 2025 15:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32DE2EF66B;
+	Thu,  3 Jul 2025 15:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiRlR4in"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUwGWF1Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5232EF299;
-	Thu,  3 Jul 2025 15:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16472EACE1;
+	Thu,  3 Jul 2025 15:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555338; cv=none; b=LcVCORvg9MPU0x/vx268gIMY2UT3PqPqidSsmsAU4lZERb617sbN0QTBc5jPdEqhfP5StkN/Emr6RdF0xPwVODexc1WiL+7dbHrOvfNGgfZaAxJx9nKAc4ytWjlI52L0xJsHtmfCgDle6re4sN4+Li2hmChTaVn0OZP+B2KM9yc=
+	t=1751555834; cv=none; b=AyEbijAhq4AyIr2/IGPa0BObsb9h/4M0mi3XX5sBYcY57T87Ahurq0ZKvHKQOuIdbVQvwJ53UhR7OYDVH7lCxK+GoHJcKysGrTyUlT8JT54BaA/r07BS7nbjKOWYtVYuX5EfODqIiwvkNSn0rx/HlB7Uo/XQqABGP1xi31vUEBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555338; c=relaxed/simple;
-	bh=XpRFKb49J0G+iJ91watV7H0gVDdekBuNJ2J2KrABarg=;
+	s=arc-20240116; t=1751555834; c=relaxed/simple;
+	bh=iTuPAW9G3aKemG+LEcHshYs1ztx/IKtYQsknlr/ZWSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o45Q6bEcgi0/jytWJ/PPKR+q74NlONjI61CcLALa7Za9RdRtvgyoc7YjPXvPhak/8c2bqUxoVjauTWUxyOKnOlnEjwk0SZuDDOFTbz0fQBK1Y9X1LY4+fgdo4BHpMwszbqxJi97H6a3LIbUCKgjKEZWKxOXwByapmH9atB9gZIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiRlR4in; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D49C4CEE3;
-	Thu,  3 Jul 2025 15:08:57 +0000 (UTC)
+	 MIME-Version; b=KV5niaJcoepjkCHmk2Z9cPOxtyuIdOCb12Moc+KASko/O+4TtLhBbRFrPhoER2OR/qQQxlxCs5W6Oi5zynNq+iFmMyF2otVL+BIz+YGf9hH0/HxdClTQaju4PqYjgJWQD6e4K0lDHTMD6DcwAHvnG9Za70jW5zB3DAuDaQ7pPH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUwGWF1Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202E2C4CEE3;
+	Thu,  3 Jul 2025 15:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555338;
-	bh=XpRFKb49J0G+iJ91watV7H0gVDdekBuNJ2J2KrABarg=;
+	s=korg; t=1751555834;
+	bh=iTuPAW9G3aKemG+LEcHshYs1ztx/IKtYQsknlr/ZWSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jiRlR4iniMr7wjAdYyawkao5wmHkueIcyX3nG7NUltW4ItxvxDXQoIsnd4gOMdSGw
-	 ncLTwW0L3WBU2p4r8tIt/TaWCSQxJqqjeX9wfvew5eRGNk0Zpr+3Ocysxf5+vHyyWi
-	 5gH0m0okK7odf4fqkB2+QAcB6CEV8ybvQMC7Op+8=
+	b=DUwGWF1Q+FScd9WV5g+5Usa9fXTSqRoSP2kq3nYsHZmxZ+1gs1R6mOxWVjut+BQkH
+	 svwZcAbnUw4sgHqVIK9sddTJg+fBDCyCaQKZm6jUMyZvkcVX53sfyyAy1QC96OCrhs
+	 u+cx1RBqNM+deQTBbFxJSQg3uOHUGvhiIqzHhLx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 247/263] sched_ext: Make scx_group_set_weight() always update tg->scx.weight
+	Iusico Maxim <iusico.maxim@libero.it>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.6 104/139] HID: lenovo: Restrict F7/9/11 mode to compact keyboards only
 Date: Thu,  3 Jul 2025 16:42:47 +0200
-Message-ID: <20250703144014.321089259@linuxfoundation.org>
+Message-ID: <20250703143945.245334220@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-[ Upstream commit c50784e99f0e7199cdb12dbddf02229b102744ef ]
+From: Iusico Maxim <iusico.maxim@libero.it>
 
-Otherwise, tg->scx.weight can go out of sync while scx_cgroup is not enabled
-and ops.cgroup_init() may be called with a stale weight value.
+commit 9327e3ee5b077c4ab4495a09b67624f670ed88b6 upstream.
 
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Fixes: 819513666966 ("sched_ext: Add cgroup support")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit 2f2bd7cbd1d1 ("hid: lenovo: Resend all settings on reset_resume
+for compact keyboards") introduced a regression for ThinkPad TrackPoint
+Keyboard II by removing the conditional check for enabling F7/9/11 mode
+needed for compact keyboards only. As a result, the non-compact
+keyboards can no longer toggle Fn-lock via Fn+Esc, although it can be
+controlled via sysfs knob that directly sends raw commands.
+
+This patch restores the previous conditional check without any
+additions.
+
+Cc: stable@vger.kernel.org
+Fixes: 2f2bd7cbd1d1 ("hid: lenovo: Resend all settings on reset_resume for compact keyboards")
+Signed-off-by: Iusico Maxim <iusico.maxim@libero.it>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/hid/hid-lenovo.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index afaf49e5ecb97..86ce43fa36693 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -4074,12 +4074,12 @@ void scx_group_set_weight(struct task_group *tg, unsigned long weight)
- {
- 	percpu_down_read(&scx_cgroup_rwsem);
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -529,11 +529,14 @@ static void lenovo_features_set_cptkbd(s
  
--	if (scx_cgroup_enabled && tg->scx_weight != weight) {
--		if (SCX_HAS_OP(cgroup_set_weight))
--			SCX_CALL_OP(SCX_KF_UNLOCKED, cgroup_set_weight, NULL,
--				    tg_cgrp(tg), weight);
--		tg->scx_weight = weight;
--	}
-+	if (scx_cgroup_enabled && SCX_HAS_OP(cgroup_set_weight) &&
-+	    tg->scx_weight != weight)
-+		SCX_CALL_OP(SCX_KF_UNLOCKED, cgroup_set_weight, NULL,
-+			    tg_cgrp(tg), weight);
-+
-+	tg->scx_weight = weight;
+ 	/*
+ 	 * Tell the keyboard a driver understands it, and turn F7, F9, F11 into
+-	 * regular keys
++	 * regular keys (Compact only)
+ 	 */
+-	ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
+-	if (ret)
+-		hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
++	if (hdev->product == USB_DEVICE_ID_LENOVO_CUSBKBD ||
++	    hdev->product == USB_DEVICE_ID_LENOVO_CBTKBD) {
++		ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
++		if (ret)
++			hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
++	}
  
- 	percpu_up_read(&scx_cgroup_rwsem);
- }
--- 
-2.39.5
-
+ 	/* Switch middle button to native mode */
+ 	ret = lenovo_send_cmd_cptkbd(hdev, 0x09, 0x01);
 
 
 
