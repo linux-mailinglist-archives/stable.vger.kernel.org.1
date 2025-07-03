@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 763ABAF7A16
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:09:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD27AF78AE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:53:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B53863BFA08
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 041CC170AB9
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34E82E7649;
-	Thu,  3 Jul 2025 15:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F7F2EE29E;
+	Thu,  3 Jul 2025 14:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2ROFHB2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihfCaXeK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE8B15442C;
-	Thu,  3 Jul 2025 15:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44128126BFF;
+	Thu,  3 Jul 2025 14:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555156; cv=none; b=ldN74p6O3LUY7tHFKPgw8EFlrs5dqzHMK2lvdwum1Bx40TO8NSLTJqestL1V/T1ygAPU1sCG4Cyaum6o9outvOC0bGCOFk5ihZimu+eo6kSfOjmLXCAuNU5p4xD+k35MPw8UlTzZl7FMYLyRIzVM7ySuYNAEopMDbpKK6D+iIvM=
+	t=1751554274; cv=none; b=BB4x1q0jsp87ZoTLT1dO0Hdw/9ly5kMzR5EJ6npuJbdQ8Bnb8ZkxRWL6mJ+n9eQ+mRusarXd/0SmyU2cb24B9HGGdfq2ToTLXj0JExA7FMof+ds7ThuwQzWhAtNBFXZshlw94WznGOo2pIiC2vrctg/FWepEPS48D2o2Saz0rwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555156; c=relaxed/simple;
-	bh=V+ty9Lv6qW92+wcxNcjYOaaRia7WjKJ0XzFGBD4h22A=;
+	s=arc-20240116; t=1751554274; c=relaxed/simple;
+	bh=RR5se6mT2E7UBZmFLfUzGkdds1U0nne6CKyc0cQzQ8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KSv/t1khVCRwxaoGuFcw2BE/0IJ6XBXAbtP5AKstUnaCp00imFIWnC7oQUlmZlwi7NtAGORivys5J0h+PE0Y4q1k5jym7F2Bw+6+gJDuGLAIjT/yzj/PguoWnLpx66YAhepch6u6f3nf3kd+JOaYwUWinZXEuZKk9jis/YRcQEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2ROFHB2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCB5C4CEE3;
-	Thu,  3 Jul 2025 15:05:55 +0000 (UTC)
+	 MIME-Version; b=PGUIgWekFPhYe7/RHiw5TP2KvP4JgggMSur8S3R+7wE5Ij3vsWINk6uiu/VDXrvJT3bl10OS0Q9X2GnAyzPylevoc+8BO7m5YHxH62351wveYGjwROBRuj/6KSsmVo1YudyiPzNo07hniLFjlEjw8aGkltzrm7d+cl8OkoLgJwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihfCaXeK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E4DC4CEE3;
+	Thu,  3 Jul 2025 14:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555155;
-	bh=V+ty9Lv6qW92+wcxNcjYOaaRia7WjKJ0XzFGBD4h22A=;
+	s=korg; t=1751554274;
+	bh=RR5se6mT2E7UBZmFLfUzGkdds1U0nne6CKyc0cQzQ8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2ROFHB2rAu+VzE1uyNF9jeADgNYo71GlwJFhS6ODSTLsxGtXfBlwZEkS1mR54uJl
-	 x3qLc79QWtggQz8NrNI6gHLfsMor6wXju8JTjfoCfMas9jGZg0OX+qeCNn1Fq3OtDz
-	 CMSaJOxjHpF7MAddAkOQFGRScPsQbZLzhnvR/u8A=
+	b=ihfCaXeKaIqWL43DNuhsSMcJCMAyDcplc+aNyIoaDMCJ2KTAHlf/foIlywe9m2vJY
+	 dARtA/+d1VMH0Zjdt4GafLYB9LWkbGht5N2eq25lirt9qzGJPG6OK/eRCk0OPdUNek
+	 38C654fizUmiSQTaThJECsxGp7TuiJn4ks5MGszE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Yacoub <markyacoub@google.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 163/263] drm: writeback: Fix drm_writeback_connector_cleanup signature
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 135/218] btrfs: fix a race between renames and directory logging
 Date: Thu,  3 Jul 2025 16:41:23 +0200
-Message-ID: <20250703144010.899615408@linuxfoundation.org>
+Message-ID: <20250703144001.511050455@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +60,253 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Louis Chauvet <louis.chauvet@bootlin.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit fb721b2c35b1829b8ecf62e3adb41cf30260316a ]
+commit 3ca864de852bc91007b32d2a0d48993724f4abad upstream.
 
-The drm_writeback_connector_cleanup have the signature:
+We have a race between a rename and directory inode logging that if it
+happens and we crash/power fail before the rename completes, the next time
+the filesystem is mounted, the log replay code will end up deleting the
+file that was being renamed.
 
-     static void drm_writeback_connector_cleanup(
-		struct drm_device *dev,
-		struct drm_writeback_connector *wb_connector)
+This is best explained following a step by step analysis of an interleaving
+of steps that lead into this situation.
 
-But it is stored and used as a drmres_release_t
+Consider the initial conditions:
 
-    typedef void (*drmres_release_t)(struct drm_device *dev, void *res);
+1) We are at transaction N;
 
-While the current code is valid and does not produce any warning, the
-CFI runtime check (CONFIG_CFI_CLANG) can fail because the function
-signature is not the same as drmres_release_t.
+2) We have directories A and B created in a past transaction (< N);
 
-In order to fix this, change the function signature to match what is
-expected by drmres_release_t.
+3) We have inode X corresponding to a file that has 2 hardlinks, one in
+   directory A and the other in directory B, so we'll name them as
+   "A/foo_link1" and "B/foo_link2". Both hard links were persisted in a
+   past transaction (< N);
 
-Fixes: 1914ba2b91ea ("drm: writeback: Create drmm variants for drm_writeback_connector initialization")
+4) We have inode Y corresponding to a file that as a single hard link and
+   is located in directory A, we'll name it as "A/bar". This file was also
+   persisted in a past transaction (< N).
 
-Suggested-by: Mark Yacoub <markyacoub@google.com>
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Link: https://lore.kernel.org/r/20250429-drm-fix-writeback-cleanup-v2-1-548ff3a4e284@bootlin.com
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The steps leading to a file loss are the following and for all of them we
+are under transaction N:
+
+ 1) Link "A/foo_link1" is removed, so inode's X last_unlink_trans field
+    is updated to N, through btrfs_unlink() -> btrfs_record_unlink_dir();
+
+ 2) Task A starts a rename for inode Y, with the goal of renaming from
+    "A/bar" to "A/baz", so we enter btrfs_rename();
+
+ 3) Task A inserts the new BTRFS_INODE_REF_KEY for inode Y by calling
+    btrfs_insert_inode_ref();
+
+ 4) Because the rename happens in the same directory, we don't set the
+    last_unlink_trans field of directoty A's inode to the current
+    transaction id, that is, we don't cal btrfs_record_unlink_dir();
+
+ 5) Task A then removes the entries from directory A (BTRFS_DIR_ITEM_KEY
+    and BTRFS_DIR_INDEX_KEY items) when calling __btrfs_unlink_inode()
+    (actually the dir index item is added as a delayed item, but the
+    effect is the same);
+
+ 6) Now before task A adds the new entry "A/baz" to directory A by
+    calling btrfs_add_link(), another task, task B is logging inode X;
+
+ 7) Task B starts a fsync of inode X and after logging inode X, at
+    btrfs_log_inode_parent() it calls btrfs_log_all_parents(), since
+    inode X has a last_unlink_trans value of N, set at in step 1;
+
+ 8) At btrfs_log_all_parents() we search for all parent directories of
+    inode X using the commit root, so we find directories A and B and log
+    them. Bu when logging direct A, we don't have a dir index item for
+    inode Y anymore, neither the old name "A/bar" nor for the new name
+    "A/baz" since the rename has deleted the old name but has not yet
+    inserted the new name - task A hasn't called yet btrfs_add_link() to
+    do that.
+
+    Note that logging directory A doesn't fallback to a transaction
+    commit because its last_unlink_trans has a lower value than the
+    current transaction's id (see step 4);
+
+ 9) Task B finishes logging directories A and B and gets back to
+    btrfs_sync_file() where it calls btrfs_sync_log() to persist the log
+    tree;
+
+10) Task B successfully persisted the log tree, btrfs_sync_log() completed
+    with success, and a power failure happened.
+
+    We have a log tree without any directory entry for inode Y, so the
+    log replay code deletes the entry for inode Y, name "A/bar", from the
+    subvolume tree since it doesn't exist in the log tree and the log
+    tree is authorative for its index (we logged a BTRFS_DIR_LOG_INDEX_KEY
+    item that covers the index range for the dentry that corresponds to
+    "A/bar").
+
+    Since there's no other hard link for inode Y and the log replay code
+    deletes the name "A/bar", the file is lost.
+
+The issue wouldn't happen if task B synced the log only after task A
+called btrfs_log_new_name(), which would update the log with the new name
+for inode Y ("A/bar").
+
+Fix this by pinning the log root during renames before removing the old
+directory entry, and unpinning after btrfs_log_new_name() is called.
+
+Fixes: 259c4b96d78d ("btrfs: stop doing unnecessary log updates during a rename")
+CC: stable@vger.kernel.org # 5.18+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_writeback.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/btrfs/inode.c |   81 +++++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 64 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_writeback.c b/drivers/gpu/drm/drm_writeback.c
-index edbeab88ff2b6..d983ee85cf134 100644
---- a/drivers/gpu/drm/drm_writeback.c
-+++ b/drivers/gpu/drm/drm_writeback.c
-@@ -343,17 +343,18 @@ EXPORT_SYMBOL(drm_writeback_connector_init_with_encoder);
- /**
-  * drm_writeback_connector_cleanup - Cleanup the writeback connector
-  * @dev: DRM device
-- * @wb_connector: Pointer to the writeback connector to clean up
-+ * @data: Pointer to the writeback connector to clean up
-  *
-  * This will decrement the reference counter of blobs and destroy properties. It
-  * will also clean the remaining jobs in this writeback connector. Caution: This helper will not
-  * clean up the attached encoder and the drm_connector.
-  */
- static void drm_writeback_connector_cleanup(struct drm_device *dev,
--					    struct drm_writeback_connector *wb_connector)
-+					    void *data)
- {
- 	unsigned long flags;
- 	struct drm_writeback_job *pos, *n;
-+	struct drm_writeback_connector *wb_connector = data;
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -7997,6 +7997,7 @@ static int btrfs_rename_exchange(struct
+ 	int ret;
+ 	int ret2;
+ 	bool need_abort = false;
++	bool logs_pinned = false;
+ 	struct fscrypt_name old_fname, new_fname;
+ 	struct fscrypt_str *old_name, *new_name;
  
- 	delete_writeback_properties(dev);
- 	drm_property_blob_put(wb_connector->pixel_formats_blob_ptr);
-@@ -405,7 +406,7 @@ int drmm_writeback_connector_init(struct drm_device *dev,
- 	if (ret)
- 		return ret;
+@@ -8120,6 +8121,31 @@ static int btrfs_rename_exchange(struct
+ 	inode_inc_iversion(new_inode);
+ 	simple_rename_timestamp(old_dir, old_dentry, new_dir, new_dentry);
  
--	ret = drmm_add_action_or_reset(dev, (void *)drm_writeback_connector_cleanup,
-+	ret = drmm_add_action_or_reset(dev, drm_writeback_connector_cleanup,
- 				       wb_connector);
- 	if (ret)
- 		return ret;
--- 
-2.39.5
-
++	if (old_ino != BTRFS_FIRST_FREE_OBJECTID &&
++	    new_ino != BTRFS_FIRST_FREE_OBJECTID) {
++		/*
++		 * If we are renaming in the same directory (and it's not for
++		 * root entries) pin the log early to prevent any concurrent
++		 * task from logging the directory after we removed the old
++		 * entries and before we add the new entries, otherwise that
++		 * task can sync a log without any entry for the inodes we are
++		 * renaming and therefore replaying that log, if a power failure
++		 * happens after syncing the log, would result in deleting the
++		 * inodes.
++		 *
++		 * If the rename affects two different directories, we want to
++		 * make sure the that there's no log commit that contains
++		 * updates for only one of the directories but not for the
++		 * other.
++		 *
++		 * If we are renaming an entry for a root, we don't care about
++		 * log updates since we called btrfs_set_log_full_commit().
++		 */
++		btrfs_pin_log_trans(root);
++		btrfs_pin_log_trans(dest);
++		logs_pinned = true;
++	}
++
+ 	if (old_dentry->d_parent != new_dentry->d_parent) {
+ 		btrfs_record_unlink_dir(trans, BTRFS_I(old_dir),
+ 					BTRFS_I(old_inode), true);
+@@ -8177,30 +8203,23 @@ static int btrfs_rename_exchange(struct
+ 		BTRFS_I(new_inode)->dir_index = new_idx;
+ 
+ 	/*
+-	 * Now pin the logs of the roots. We do it to ensure that no other task
+-	 * can sync the logs while we are in progress with the rename, because
+-	 * that could result in an inconsistency in case any of the inodes that
+-	 * are part of this rename operation were logged before.
++	 * Do the log updates for all inodes.
++	 *
++	 * If either entry is for a root we don't need to update the logs since
++	 * we've called btrfs_set_log_full_commit() before.
+ 	 */
+-	if (old_ino != BTRFS_FIRST_FREE_OBJECTID)
+-		btrfs_pin_log_trans(root);
+-	if (new_ino != BTRFS_FIRST_FREE_OBJECTID)
+-		btrfs_pin_log_trans(dest);
+-
+-	/* Do the log updates for all inodes. */
+-	if (old_ino != BTRFS_FIRST_FREE_OBJECTID)
++	if (logs_pinned) {
+ 		btrfs_log_new_name(trans, old_dentry, BTRFS_I(old_dir),
+ 				   old_rename_ctx.index, new_dentry->d_parent);
+-	if (new_ino != BTRFS_FIRST_FREE_OBJECTID)
+ 		btrfs_log_new_name(trans, new_dentry, BTRFS_I(new_dir),
+ 				   new_rename_ctx.index, old_dentry->d_parent);
++	}
+ 
+-	/* Now unpin the logs. */
+-	if (old_ino != BTRFS_FIRST_FREE_OBJECTID)
++out_fail:
++	if (logs_pinned) {
+ 		btrfs_end_log_trans(root);
+-	if (new_ino != BTRFS_FIRST_FREE_OBJECTID)
+ 		btrfs_end_log_trans(dest);
+-out_fail:
++	}
+ 	ret2 = btrfs_end_transaction(trans);
+ 	ret = ret ? ret : ret2;
+ out_notrans:
+@@ -8250,6 +8269,7 @@ static int btrfs_rename(struct mnt_idmap
+ 	int ret2;
+ 	u64 old_ino = btrfs_ino(BTRFS_I(old_inode));
+ 	struct fscrypt_name old_fname, new_fname;
++	bool logs_pinned = false;
+ 
+ 	if (btrfs_ino(BTRFS_I(new_dir)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)
+ 		return -EPERM;
+@@ -8384,6 +8404,29 @@ static int btrfs_rename(struct mnt_idmap
+ 	inode_inc_iversion(old_inode);
+ 	simple_rename_timestamp(old_dir, old_dentry, new_dir, new_dentry);
+ 
++	if (old_ino != BTRFS_FIRST_FREE_OBJECTID) {
++		/*
++		 * If we are renaming in the same directory (and it's not a
++		 * root entry) pin the log to prevent any concurrent task from
++		 * logging the directory after we removed the old entry and
++		 * before we add the new entry, otherwise that task can sync
++		 * a log without any entry for the inode we are renaming and
++		 * therefore replaying that log, if a power failure happens
++		 * after syncing the log, would result in deleting the inode.
++		 *
++		 * If the rename affects two different directories, we want to
++		 * make sure the that there's no log commit that contains
++		 * updates for only one of the directories but not for the
++		 * other.
++		 *
++		 * If we are renaming an entry for a root, we don't care about
++		 * log updates since we called btrfs_set_log_full_commit().
++		 */
++		btrfs_pin_log_trans(root);
++		btrfs_pin_log_trans(dest);
++		logs_pinned = true;
++	}
++
+ 	if (old_dentry->d_parent != new_dentry->d_parent)
+ 		btrfs_record_unlink_dir(trans, BTRFS_I(old_dir),
+ 					BTRFS_I(old_inode), true);
+@@ -8432,7 +8475,7 @@ static int btrfs_rename(struct mnt_idmap
+ 	if (old_inode->i_nlink == 1)
+ 		BTRFS_I(old_inode)->dir_index = index;
+ 
+-	if (old_ino != BTRFS_FIRST_FREE_OBJECTID)
++	if (logs_pinned)
+ 		btrfs_log_new_name(trans, old_dentry, BTRFS_I(old_dir),
+ 				   rename_ctx.index, new_dentry->d_parent);
+ 
+@@ -8448,6 +8491,10 @@ static int btrfs_rename(struct mnt_idmap
+ 		}
+ 	}
+ out_fail:
++	if (logs_pinned) {
++		btrfs_end_log_trans(root);
++		btrfs_end_log_trans(dest);
++	}
+ 	ret2 = btrfs_end_transaction(trans);
+ 	ret = ret ? ret : ret2;
+ out_notrans:
 
 
 
