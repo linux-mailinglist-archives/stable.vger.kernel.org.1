@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-159501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF86AAF791E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:58:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B44CDAF7A35
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 291D9188A191
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 432E53A7F24
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EC82EE98D;
-	Thu,  3 Jul 2025 14:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD9A72EA149;
+	Thu,  3 Jul 2025 15:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0+lqOnK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Etg7/Ggk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234772EA49E;
-	Thu,  3 Jul 2025 14:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7F315442C;
+	Thu,  3 Jul 2025 15:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554428; cv=none; b=OFWJq5w/Vnj9y78ox6xxfHWVtZl5idNbCppe8X+wZUX92DLfUipnsqJvuopRDETV+BDtm+ZypXLbOjyH4QjMLjqdF5cPPxXYaCfWWG8yqhLLHMYylzJ/lY7r0rwS6U4VMy9QtT+EmdYZ1ZYRUNRRn7UNeA64O6w1utnxgAxTMFM=
+	t=1751555219; cv=none; b=dc8J10r7IPpMBTNAd5RJLLczjRtIWC7/d6ovlUNWuq9tygZwvWpF7aB5+9W8nHF68aLAZizpsqxilsv1YWWFoMjlfusruG0DGemj6X5E2FLph1ugtBPEyN2/sKtsUcVfW88QlJH2XVc+/wtPXkeIcyQH7Wh136rtNnftrXJSfeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554428; c=relaxed/simple;
-	bh=oUWmiUfmbd935qUgI3aA94tnGgk6dV1MY39EhyyO4tA=;
+	s=arc-20240116; t=1751555219; c=relaxed/simple;
+	bh=VLRdgpLacrprFmVlrM0/VeEI94SBPYVGLgS5lv0WPf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pm352eZNpXIJ54AqXm4aROfvmsiMh4RWg9Bs4Ba2cnomQQY85I6xnOPX1+h6MELIn1YhahW8nak9AgQHGYV3iacXKAcGMMaawQ5UVVa7I2D6L6Vj7ZPXF+qr9YX8MTbiqOdTr0ovf5EBK339ZkYrwm1hKeDEk0SzzW6qfpCSLOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0+lqOnK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B1E0C4CEED;
-	Thu,  3 Jul 2025 14:53:46 +0000 (UTC)
+	 MIME-Version; b=T4Xm0mOemQMaIIKy42UbW4WFNP0sdWgrSDw0r7X3kulq2YVEqcx7NWU7hzzgfMQp30M5Wftql0EFBWPp0HOHDHIpRbeE756JK2NOJUrXi7Nr0Y4JVJ69KHJ8PtWNbzExXhP+LTmriBg3+a55yJND+5ywNb/RtqN+Yy+xd0+KRc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Etg7/Ggk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126BAC4CEE3;
+	Thu,  3 Jul 2025 15:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554427;
-	bh=oUWmiUfmbd935qUgI3aA94tnGgk6dV1MY39EhyyO4tA=;
+	s=korg; t=1751555219;
+	bh=VLRdgpLacrprFmVlrM0/VeEI94SBPYVGLgS5lv0WPf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q0+lqOnKikkzFCtjCGTv2f32Djv0m6w97dEQ2y56wu78C+61+BhH52vqj8SHyTWCH
-	 8joZKdQMHkfIS2sP2OKJL5vMm0hUpaY6pGB+QncG52rDMGXJ1mjBXM8Ag75XKev+JF
-	 6Mh4g1fiZacAH212u5tFduvbvoyungRTq54WpKMk=
+	b=Etg7/GgkMBYgJm7N6qBiXKSLZvznGOiDRDHSO752tzk4Cm0qzQOb5YPAkpuNJ0mL0
+	 lz6NDDBHDZyVEx+btHo5Ah2ktFlq31+V58y0N0EP3ZlclJKscJjGnGUrrW4a1Flzhu
+	 BPq6wF/nyP6W4nRasSlnl5k+S0Kvsp8O3vvlhfno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norman Maurer <norman_maurer@apple.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 184/218] io_uring/net: improve recv bundles
+	Mika Kahola <mika.kahola@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.15 212/263] drm/i915/ptl: Use everywhere the correct DDI port clock select mask
 Date: Thu,  3 Jul 2025 16:42:12 +0200
-Message-ID: <20250703144003.540295586@linuxfoundation.org>
+Message-ID: <20250703144012.891141557@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +62,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Imre Deak <imre.deak@intel.com>
 
-Commit 7c71a0af81ba72de9b2c501065e4e718aba9a271 upstream.
+commit a38b3232d618653155032a51208e974511c151e4 upstream.
 
-Current recv bundles are only supported for multishot receives, and
-additionally they also always post at least 2 CQEs if more data is
-available than what a buffer will hold. This happens because the initial
-bundle recv will do a single buffer, and then do the rest of what is in
-the socket as a followup receive. As shown in a test program, if 1k
-buffers are available and 32k is available to receive in the socket,
-you'd get the following completions:
+The PTL XELPDP_PORT_CLOCK_CTL register XELPDP_DDI_CLOCK_SELECT field's
+size is 5 bits vs. the earlier platforms where its size is 4 bits. Make
+sure the field is read-out/programmed everywhere correctly, according to
+the above.
 
-bundle=1, mshot=0
-cqe res 1024
-cqe res 1024
-[...]
-cqe res 1024
-
-bundle=1, mshot=1
-cqe res 1024
-cqe res 31744
-
-where bundle=1 && mshot=0 will post 32 1k completions, and bundle=1 &&
-mshot=1 will post a 1k completion and then a 31k completion.
-
-To support bundle recv without multishot, it's possible to simply retry
-the recv immediately and post a single completion, rather than split it
-into two completions. With the below patch, the same test looks as
-follows:
-
-bundle=1, mshot=0
-cqe res 32768
-
-bundle=1, mshot=1
-cqe res 32768
-
-where mshot=0 works fine for bundles, and both of them post just a
-single 32k completion rather than split it into separate completions.
-Posting fewer completions is always a nice win, and not needing
-multishot for proper bundle efficiency is nice for cases that can't
-necessarily use multishot.
-
-Reported-by: Norman Maurer <norman_maurer@apple.com>
-Link: https://lore.kernel.org/r/184f9f92-a682-4205-a15d-89e18f664502@kernel.dk
-Fixes: 2f9c9515bdfd ("io_uring/net: support bundles for recv")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: Mika Kahola <mika.kahola@intel.com>
+Cc: stable@vger.kernel.org # v6.13+
+Tested-by: Mika Kahola <mika.kahola@intel.com>
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250512142600.824347-1-imre.deak@intel.com
+(cherry picked from commit d0bf684bd42db22e7d131a038f8f78927fa6a72a)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/gpu/drm/i915/display/intel_cx0_phy.c      |   27 ++++++++--------------
+ drivers/gpu/drm/i915/display/intel_cx0_phy_regs.h |   15 ++++++++----
+ 2 files changed, 21 insertions(+), 21 deletions(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -76,6 +76,7 @@ struct io_sr_msg {
- 	/* initialised and used only by !msg send variants */
- 	u16				addr_len;
- 	u16				buf_group;
-+	bool				retry;
- 	void __user			*addr;
- 	void __user			*msg_control;
- 	/* used only for send zerocopy */
-@@ -203,6 +204,7 @@ static inline void io_mshot_prep_retry(s
+--- a/drivers/gpu/drm/i915/display/intel_cx0_phy.c
++++ b/drivers/gpu/drm/i915/display/intel_cx0_phy.c
+@@ -2761,9 +2761,9 @@ static void intel_program_port_clock_ctl
+ 	val |= XELPDP_FORWARD_CLOCK_UNGATE;
  
- 	req->flags &= ~REQ_F_BL_EMPTY;
- 	sr->done_io = 0;
-+	sr->retry = false;
- 	sr->len = 0; /* get from the provided buffer */
- 	req->buf_index = sr->buf_group;
- }
-@@ -409,6 +411,7 @@ int io_sendmsg_prep(struct io_kiocb *req
- 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
+ 	if (!is_dp && is_hdmi_frl(port_clock))
+-		val |= XELPDP_DDI_CLOCK_SELECT(XELPDP_DDI_CLOCK_SELECT_DIV18CLK);
++		val |= XELPDP_DDI_CLOCK_SELECT_PREP(display, XELPDP_DDI_CLOCK_SELECT_DIV18CLK);
+ 	else
+-		val |= XELPDP_DDI_CLOCK_SELECT(XELPDP_DDI_CLOCK_SELECT_MAXPCLK);
++		val |= XELPDP_DDI_CLOCK_SELECT_PREP(display, XELPDP_DDI_CLOCK_SELECT_MAXPCLK);
  
- 	sr->done_io = 0;
-+	sr->retry = false;
+ 	/* TODO: HDMI FRL */
+ 	/* DP2.0 10G and 20G rates enable MPLLA*/
+@@ -2774,7 +2774,7 @@ static void intel_program_port_clock_ctl
  
- 	if (req->opcode == IORING_OP_SEND) {
- 		if (READ_ONCE(sqe->__pad3[0]))
-@@ -780,6 +783,7 @@ int io_recvmsg_prep(struct io_kiocb *req
- 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
- 
- 	sr->done_io = 0;
-+	sr->retry = false;
- 
- 	if (unlikely(sqe->file_index || sqe->addr2))
- 		return -EINVAL;
-@@ -828,6 +832,9 @@ int io_recvmsg_prep(struct io_kiocb *req
- 	return io_recvmsg_prep_setup(req);
+ 	intel_de_rmw(display, XELPDP_PORT_CLOCK_CTL(display, encoder->port),
+ 		     XELPDP_LANE1_PHY_CLOCK_SELECT | XELPDP_FORWARD_CLOCK_UNGATE |
+-		     XELPDP_DDI_CLOCK_SELECT_MASK | XELPDP_SSC_ENABLE_PLLA |
++		     XELPDP_DDI_CLOCK_SELECT_MASK(display) | XELPDP_SSC_ENABLE_PLLA |
+ 		     XELPDP_SSC_ENABLE_PLLB, val);
  }
  
-+/* bits to clear in old and inherit in new cflags on bundle retry */
-+#define CQE_F_MASK	(IORING_CQE_F_SOCK_NONEMPTY|IORING_CQE_F_MORE)
+@@ -3097,10 +3097,7 @@ int intel_mtl_tbt_calc_port_clock(struct
+ 
+ 	val = intel_de_read(display, XELPDP_PORT_CLOCK_CTL(display, encoder->port));
+ 
+-	if (DISPLAY_VER(display) >= 30)
+-		clock = REG_FIELD_GET(XE3_DDI_CLOCK_SELECT_MASK, val);
+-	else
+-		clock = REG_FIELD_GET(XELPDP_DDI_CLOCK_SELECT_MASK, val);
++	clock = XELPDP_DDI_CLOCK_SELECT_GET(display, val);
+ 
+ 	drm_WARN_ON(display->drm, !(val & XELPDP_FORWARD_CLOCK_UNGATE));
+ 	drm_WARN_ON(display->drm, !(val & XELPDP_TBT_CLOCK_REQUEST));
+@@ -3168,13 +3165,9 @@ static void intel_mtl_tbt_pll_enable(str
+ 	 * clock muxes, gating and SSC
+ 	 */
+ 
+-	if (DISPLAY_VER(display) >= 30) {
+-		mask = XE3_DDI_CLOCK_SELECT_MASK;
+-		val |= XE3_DDI_CLOCK_SELECT(intel_mtl_tbt_clock_select(display, crtc_state->port_clock));
+-	} else {
+-		mask = XELPDP_DDI_CLOCK_SELECT_MASK;
+-		val |= XELPDP_DDI_CLOCK_SELECT(intel_mtl_tbt_clock_select(display, crtc_state->port_clock));
+-	}
++	mask = XELPDP_DDI_CLOCK_SELECT_MASK(display);
++	val |= XELPDP_DDI_CLOCK_SELECT_PREP(display,
++					    intel_mtl_tbt_clock_select(display, crtc_state->port_clock));
+ 
+ 	mask |= XELPDP_FORWARD_CLOCK_UNGATE;
+ 	val |= XELPDP_FORWARD_CLOCK_UNGATE;
+@@ -3287,7 +3280,7 @@ static void intel_cx0pll_disable(struct
+ 
+ 	/* 7. Program PORT_CLOCK_CTL register to disable and gate clocks. */
+ 	intel_de_rmw(display, XELPDP_PORT_CLOCK_CTL(display, encoder->port),
+-		     XELPDP_DDI_CLOCK_SELECT_MASK, 0);
++		     XELPDP_DDI_CLOCK_SELECT_MASK(display), 0);
+ 	intel_de_rmw(display, XELPDP_PORT_CLOCK_CTL(display, encoder->port),
+ 		     XELPDP_FORWARD_CLOCK_UNGATE, 0);
+ 
+@@ -3336,7 +3329,7 @@ static void intel_mtl_tbt_pll_disable(st
+ 	 * 5. Program PORT CLOCK CTRL register to disable and gate clocks
+ 	 */
+ 	intel_de_rmw(display, XELPDP_PORT_CLOCK_CTL(display, encoder->port),
+-		     XELPDP_DDI_CLOCK_SELECT_MASK |
++		     XELPDP_DDI_CLOCK_SELECT_MASK(display) |
+ 		     XELPDP_FORWARD_CLOCK_UNGATE, 0);
+ 
+ 	/* 6. Program DDI_CLK_VALFREQ to 0. */
+@@ -3365,7 +3358,7 @@ intel_mtl_port_pll_type(struct intel_enc
+ 	 * handling is done via the standard shared DPLL framework.
+ 	 */
+ 	val = intel_de_read(display, XELPDP_PORT_CLOCK_CTL(display, encoder->port));
+-	clock = REG_FIELD_GET(XELPDP_DDI_CLOCK_SELECT_MASK, val);
++	clock = XELPDP_DDI_CLOCK_SELECT_GET(display, val);
+ 
+ 	if (clock == XELPDP_DDI_CLOCK_SELECT_MAXPCLK ||
+ 	    clock == XELPDP_DDI_CLOCK_SELECT_DIV18CLK)
+--- a/drivers/gpu/drm/i915/display/intel_cx0_phy_regs.h
++++ b/drivers/gpu/drm/i915/display/intel_cx0_phy_regs.h
+@@ -192,10 +192,17 @@
+ 
+ #define   XELPDP_TBT_CLOCK_REQUEST			REG_BIT(19)
+ #define   XELPDP_TBT_CLOCK_ACK				REG_BIT(18)
+-#define   XELPDP_DDI_CLOCK_SELECT_MASK			REG_GENMASK(15, 12)
+-#define   XE3_DDI_CLOCK_SELECT_MASK			REG_GENMASK(16, 12)
+-#define   XELPDP_DDI_CLOCK_SELECT(val)			REG_FIELD_PREP(XELPDP_DDI_CLOCK_SELECT_MASK, val)
+-#define   XE3_DDI_CLOCK_SELECT(val)			REG_FIELD_PREP(XE3_DDI_CLOCK_SELECT_MASK, val)
++#define   _XELPDP_DDI_CLOCK_SELECT_MASK			REG_GENMASK(15, 12)
++#define   _XE3_DDI_CLOCK_SELECT_MASK			REG_GENMASK(16, 12)
++#define   XELPDP_DDI_CLOCK_SELECT_MASK(display)		(DISPLAY_VER(display) >= 30 ? \
++							 _XE3_DDI_CLOCK_SELECT_MASK : _XELPDP_DDI_CLOCK_SELECT_MASK)
++#define   XELPDP_DDI_CLOCK_SELECT_PREP(display, val)	(DISPLAY_VER(display) >= 30 ? \
++							 REG_FIELD_PREP(_XE3_DDI_CLOCK_SELECT_MASK, (val)) : \
++							 REG_FIELD_PREP(_XELPDP_DDI_CLOCK_SELECT_MASK, (val)))
++#define   XELPDP_DDI_CLOCK_SELECT_GET(display, val)	(DISPLAY_VER(display) >= 30 ? \
++							 REG_FIELD_GET(_XE3_DDI_CLOCK_SELECT_MASK, (val)) : \
++							 REG_FIELD_GET(_XELPDP_DDI_CLOCK_SELECT_MASK, (val)))
 +
- /*
-  * Finishes io_recv and io_recvmsg.
-  *
-@@ -847,9 +854,19 @@ static inline bool io_recv_finish(struct
- 	if (sr->flags & IORING_RECVSEND_BUNDLE) {
- 		cflags |= io_put_kbufs(req, *ret, io_bundle_nbufs(kmsg, *ret),
- 				      issue_flags);
-+		if (sr->retry)
-+			cflags = req->cqe.flags | (cflags & CQE_F_MASK);
- 		/* bundle with no more immediate buffers, we're done */
- 		if (req->flags & REQ_F_BL_EMPTY)
- 			goto finish;
-+		/* if more is available, retry and append to this one */
-+		if (!sr->retry && kmsg->msg.msg_inq > 0 && *ret > 0) {
-+			req->cqe.flags = cflags & ~CQE_F_MASK;
-+			sr->len = kmsg->msg.msg_inq;
-+			sr->done_io += *ret;
-+			sr->retry = true;
-+			return false;
-+		}
- 	} else {
- 		cflags |= io_put_kbuf(req, *ret, issue_flags);
- 	}
-@@ -1228,6 +1245,7 @@ int io_send_zc_prep(struct io_kiocb *req
- 	struct io_kiocb *notif;
- 
- 	zc->done_io = 0;
-+	zc->retry = false;
- 	req->flags |= REQ_F_POLL_NO_LAZY;
- 
- 	if (unlikely(READ_ONCE(sqe->__pad2[0]) || READ_ONCE(sqe->addr3)))
+ #define   XELPDP_DDI_CLOCK_SELECT_NONE			0x0
+ #define   XELPDP_DDI_CLOCK_SELECT_MAXPCLK		0x8
+ #define   XELPDP_DDI_CLOCK_SELECT_DIV18CLK		0x9
 
 
 
