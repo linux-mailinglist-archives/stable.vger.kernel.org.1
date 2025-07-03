@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-159441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02293AF788F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC69AF79DB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1464516E2D8
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA271678DE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E282E7649;
-	Thu,  3 Jul 2025 14:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174A02E7BBF;
+	Thu,  3 Jul 2025 15:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgPodupH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LfsubLe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6641B231853;
-	Thu,  3 Jul 2025 14:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91FB4414;
+	Thu,  3 Jul 2025 15:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554242; cv=none; b=mBgQIYZNibQvVRzYYAmvmmBGGXfCFPWmYfa6BVHAizAWbNrLR/ujAcRhXQK7C0WUeZc/jPKX1QkWwR3ZoWRGRwNtls5swKIQKsGW855w+LEqko6xJp8JSQ65fYhvEBsayM+sZ7ug+sGlotMEMJgCHYc4wOdekiBqIr9HnW4l21w=
+	t=1751554992; cv=none; b=g3K1vQ3iow5pt+ZLYErVGEk+C5EzDkVdhVXYlIhT1A+y1hxApwQaTPNgxA6rzkQ3xQfo2Zc7AreobY2nCryiNoY7vX7BULjDhsMKJ1ufRwwwp72qtdPoH2v9wTgBUYLn3Pf2y8teGdH/uGnj9PaCwYQC3akOHsO5uPo1of0KqNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554242; c=relaxed/simple;
-	bh=bl3mVllg0152T3SiKFvSgnT20KHEaMbtT3WAD3YPpAk=;
+	s=arc-20240116; t=1751554992; c=relaxed/simple;
+	bh=xDvHmN0qQEjD3sE3ED6bcqyfgPVp8inPGkASmCDCXEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IiELflEMSRLGBi9tOIV32LIAh0rdP6BeOHLLGqdYfTTLNpiaDYGFujQ/GZfb0OmOZRevPdgnATZCflA3SsofHCZq5q8H2zA28eayrHcFAR8QndTJAZ/uQ2wd5RpgoJ7ck4TNviG4ZeXlGNHSXQ90nUM5tZgrIU6MXHe9WKHEUDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgPodupH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E658FC4CEF3;
-	Thu,  3 Jul 2025 14:50:41 +0000 (UTC)
+	 MIME-Version; b=LiX5m/xpUhZnZqe1aejKVo46N44PBWUElG3/lvdkoKzHc5+TnZ/5v0oanpv4ITGFNZGx94f5teFOgCrWsmvXZpe3ufbohYXt4+gNvwir1kvpMKSvDp+tGJMsgitysKdvA1JfHqNByDhu+DXyntjsmtuZIejDrNaR6b3QrgTz7KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LfsubLe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E32C4CEE3;
+	Thu,  3 Jul 2025 15:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554242;
-	bh=bl3mVllg0152T3SiKFvSgnT20KHEaMbtT3WAD3YPpAk=;
+	s=korg; t=1751554992;
+	bh=xDvHmN0qQEjD3sE3ED6bcqyfgPVp8inPGkASmCDCXEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MgPodupHCjShNE9N9FAWsuj35py1I4HnhKEZtUEdbHuX2aVCmLxGsWeSbr7QLldd9
-	 3pdgrT4JgwKqRqR8hrWNGAukhnFbZ7uD2EuJ6Z5XqruNCIhDVST1zjDq95qxPpRPk2
-	 O3hDf/zASKxHsyNWoPMwC0iGD/xhnEuzimgNNM4w=
+	b=0LfsubLeW1CLvpaZJkRsEHFe/PahEuoX8sMtlTP2CVALofDKK7DMzf9D6toEOxLE0
+	 cvzCjkKN7cSyH94Suk4QWuCEGJqi8D1IcxCw8lRRjkE1IAXChVGE4iaeM7s6lL7S8h
+	 xf/nIuCbHo+/0ACUy0VKShT3NBT0OWW4i1wfPb4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/218] ethernet: ionic: Fix DMA mapping tests
-Date: Thu,  3 Jul 2025 16:40:44 +0200
-Message-ID: <20250703143959.774604679@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.15 125/263] drm/amd/display: Add sanity checks for drm_edid_raw()
+Date: Thu,  3 Jul 2025 16:40:45 +0200
+Message-ID: <20250703144009.367200581@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit d5e3241c5a386a2425823c8c7afb77a465bd040f ]
+commit 6847b3b6e84ef37451c074e6a8db3fbd250c8dbf upstream.
 
-Change error values of `ionic_tx_map_single()` and `ionic_tx_map_frag()`
-from 0 to `DMA_MAPPING_ERROR` to prevent collision with 0 as a valid
-address.
+When EDID is retrieved via drm_edid_raw(), it doesn't guarantee to
+return proper EDID bytes the caller wants: it may be either NULL (that
+leads to an Oops) or with too long bytes over the fixed size raw_edid
+array (that may lead to memory corruption).  The latter was reported
+actually when connected with a bad adapter.
 
-This also fixes the use of `dma_mapping_error()` to test against 0 in
-`ionic_xdp_post_frame()`
+Add sanity checks for drm_edid_raw() to address the above corner
+cases, and return EDID_BAD_INPUT accordingly.
 
-Fixes: 0f3154e6bcb3 ("ionic: Add Tx and Rx handling")
-Fixes: 56e41ee12d2d ("ionic: better dma-map error handling")
-Fixes: ac8813c0ab7d ("ionic: convert Rx queue buffers to use page_pool")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Link: https://patch.msgid.link/20250619094538.283723-2-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 48edb2a4256e ("drm/amd/display: switch amdgpu_dm_connector to use struct drm_edid")
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1236415
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 648d3f4d209725d51900d6a3ed46b7b600140cdf)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_txrx.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-index 0eeda7e502db2..0f5758c273c22 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-@@ -321,7 +321,7 @@ static int ionic_xdp_post_frame(struct ionic_queue *q, struct xdp_frame *frame,
- 					   len, DMA_TO_DEVICE);
- 	} else /* XDP_REDIRECT */ {
- 		dma_addr = ionic_tx_map_single(q, frame->data, len);
--		if (!dma_addr)
-+		if (dma_addr == DMA_MAPPING_ERROR)
- 			return -EIO;
- 	}
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+@@ -1016,6 +1016,10 @@ enum dc_edid_status dm_helpers_read_loca
+ 			return EDID_NO_RESPONSE;
  
-@@ -357,7 +357,7 @@ static int ionic_xdp_post_frame(struct ionic_queue *q, struct xdp_frame *frame,
- 			} else {
- 				dma_addr = ionic_tx_map_frag(q, frag, 0,
- 							     skb_frag_size(frag));
--				if (dma_mapping_error(q->dev, dma_addr)) {
-+				if (dma_addr == DMA_MAPPING_ERROR) {
- 					ionic_tx_desc_unmap_bufs(q, desc_info);
- 					return -EIO;
- 				}
-@@ -1083,7 +1083,7 @@ static dma_addr_t ionic_tx_map_single(struct ionic_queue *q,
- 		net_warn_ratelimited("%s: DMA single map failed on %s!\n",
- 				     dev_name(dev), q->name);
- 		q_to_tx_stats(q)->dma_map_err++;
--		return 0;
-+		return DMA_MAPPING_ERROR;
- 	}
- 	return dma_addr;
- }
-@@ -1100,7 +1100,7 @@ static dma_addr_t ionic_tx_map_frag(struct ionic_queue *q,
- 		net_warn_ratelimited("%s: DMA frag map failed on %s!\n",
- 				     dev_name(dev), q->name);
- 		q_to_tx_stats(q)->dma_map_err++;
--		return 0;
-+		return DMA_MAPPING_ERROR;
- 	}
- 	return dma_addr;
- }
-@@ -1116,7 +1116,7 @@ static int ionic_tx_map_skb(struct ionic_queue *q, struct sk_buff *skb,
- 	int frag_idx;
+ 		edid = drm_edid_raw(drm_edid); // FIXME: Get rid of drm_edid_raw()
++		if (!edid ||
++		    edid->extensions >= sizeof(sink->dc_edid.raw_edid) / EDID_LENGTH)
++			return EDID_BAD_INPUT;
++
+ 		sink->dc_edid.length = EDID_LENGTH * (edid->extensions + 1);
+ 		memmove(sink->dc_edid.raw_edid, (uint8_t *)edid, sink->dc_edid.length);
  
- 	dma_addr = ionic_tx_map_single(q, skb->data, skb_headlen(skb));
--	if (!dma_addr)
-+	if (dma_addr == DMA_MAPPING_ERROR)
- 		return -EIO;
- 	buf_info->dma_addr = dma_addr;
- 	buf_info->len = skb_headlen(skb);
-@@ -1126,7 +1126,7 @@ static int ionic_tx_map_skb(struct ionic_queue *q, struct sk_buff *skb,
- 	nfrags = skb_shinfo(skb)->nr_frags;
- 	for (frag_idx = 0; frag_idx < nfrags; frag_idx++, frag++) {
- 		dma_addr = ionic_tx_map_frag(q, frag, 0, skb_frag_size(frag));
--		if (!dma_addr)
-+		if (dma_addr == DMA_MAPPING_ERROR)
- 			goto dma_fail;
- 		buf_info->dma_addr = dma_addr;
- 		buf_info->len = skb_frag_size(frag);
--- 
-2.39.5
-
 
 
 
