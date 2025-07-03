@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88B0AF790F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3160AF79F9
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1BD9546D7A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47A7E7A771A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9462EE5F3;
-	Thu,  3 Jul 2025 14:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02612E7197;
+	Thu,  3 Jul 2025 15:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ei/sLT9e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCrKkoHb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8691E2ED168;
-	Thu,  3 Jul 2025 14:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2C71E9B3D;
+	Thu,  3 Jul 2025 15:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554495; cv=none; b=IGoXyperGB+zV9rVJF85eqxypF1NtXOR8YVscTUYH+5fuFbcEHDm93bNF9emUTM2oN7HFssQKeszXmlGqdL61Q3iTgwFnUehiwmdNzPq7QxuJ9ctQpmCooZE3K9scHD1r4Po0KZD+GSjif733UwhGCvRAqKfzBBp4WhmkYU7ivg=
+	t=1751555292; cv=none; b=mO1qaGXkOQwFGmoH5DDLnbmRzpq4NnX5/h7D/eKyEJnBRodciEFEhdl+PUC6CwKKBxIcTu37KQ/XGCEradhW1pQxWeezXEl2YrKbh+eVWFX8kjRmIHmE5sFbyNF70mKK1ruzOmTaD6OnmrVPHQW2sQ8mdteLrryKubnT6pjT0ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554495; c=relaxed/simple;
-	bh=ArhFnrChxQDwvSlRvD+sJCPhe1tDG5d/vXrhCZ5QJsM=;
+	s=arc-20240116; t=1751555292; c=relaxed/simple;
+	bh=iEMyHPLh4u9tWyADiEPq2nFEVgEMyvKMIUl6MssXU00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LVc8JYIMJ6bDJBzhHsJHP9fipkeAxR6YaxcdMsyIAEujbB5/URvSPHlOIYgq82IFFxnbSBXX/JKmol1vx4HWVELtG6W3cOn87ieBXczhYyOP5z5U1oJZiv/ku4I9th05EG/M7nBtKenct3uut0buzwatmJArMxT3fWU0dgJJzR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ei/sLT9e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A795C4CEE3;
-	Thu,  3 Jul 2025 14:54:53 +0000 (UTC)
+	 MIME-Version; b=Fi2K87/pk99d5JOKRL4eAAlYHXlajPQ2sp4hahbhnAUEyGdZm6zWSaT6CsUvfte09SX/XKFL8nAZNNsSD2i/OYY0NNEHTHXZIJW69EzSjKDfKUwxGw0XqAdRjlQWP0DLvMwOVHY67/ODG7I44ygWiFr6gElUChb9f+9epjv/qPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCrKkoHb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE1FC4CEE3;
+	Thu,  3 Jul 2025 15:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554494;
-	bh=ArhFnrChxQDwvSlRvD+sJCPhe1tDG5d/vXrhCZ5QJsM=;
+	s=korg; t=1751555292;
+	bh=iEMyHPLh4u9tWyADiEPq2nFEVgEMyvKMIUl6MssXU00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ei/sLT9eC2t+kBCToyhZfki/SYWlNoiog8+UXGRjU/vSkpq/s9kAp5HMVDT2pWynm
-	 GTej5KHYFFPnU5YcWUQ0D8GOiCBYMJkniOYUL4AbYFbqTHNld2h7ePeEXlUXn0uOM6
-	 hHINJtRuiiQP4AEqh9hzOwiZtRw9jREhyrX83aWQ=
+	b=nCrKkoHbzE9nxF1HcD/JBChe0gtP6TwFeEH56OAWc9NnMVJQ7zXQWHTIhfysb+296
+	 a0BoHDTQcbCAiBjh7RcCbe1M3M+gpHNcQL6nJGP2GV5He/Dof+C0wkKvpQreRj1vx0
+	 riYhGkNqn8pZEdtdW996BtVk7/UtGriyycfSuf8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 206/218] LoongArch: Set hugetlb mmap base address aligned with pmd size
+	Jonathan Kim <jonathan.kim@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.15 234/263] drm/amdgpu: Fix SDMA UTC_L1 handling during start/stop sequences
 Date: Thu,  3 Jul 2025 16:42:34 +0200
-Message-ID: <20250703144004.457285463@linuxfoundation.org>
+Message-ID: <20250703144013.786096041@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit 3109d5ff484b7bc7b955f166974c6776d91f247b ]
+commit 7f3b16f3f229e37cc3e02e9e4e7106c523b119e9 upstream.
 
-With ltp test case "testcases/bin/hugefork02", there is a dmesg error
-report message such as:
+This commit makes two key fixes to SDMA v4.4.2 handling:
 
- kernel BUG at mm/hugetlb.c:5550!
- Oops - BUG[#1]:
- CPU: 0 UID: 0 PID: 1517 Comm: hugefork02 Not tainted 6.14.0-rc2+ #241
- Hardware name: QEMU QEMU Virtual Machine, BIOS unknown 2/2/2022
- pc 90000000004eaf1c ra 9000000000485538 tp 900000010edbc000 sp 900000010edbf940
- a0 900000010edbfb00 a1 9000000108d20280 a2 00007fffe9474000 a3 00007ffff3474000
- a4 0000000000000000 a5 0000000000000003 a6 00000000003cadd3 a7 0000000000000000
- t0 0000000001ffffff t1 0000000001474000 t2 900000010ecd7900 t3 00007fffe9474000
- t4 00007fffe9474000 t5 0000000000000040 t6 900000010edbfb00 t7 0000000000000001
- t8 0000000000000005 u0 90000000004849d0 s9 900000010edbfa00 s0 9000000108d20280
- s1 00007fffe9474000 s2 0000000002000000 s3 9000000108d20280 s4 9000000002b38b10
- s5 900000010edbfb00 s6 00007ffff3474000 s7 0000000000000406 s8 900000010edbfa08
-    ra: 9000000000485538 unmap_vmas+0x130/0x218
-   ERA: 90000000004eaf1c __unmap_hugepage_range+0x6f4/0x7d0
-  PRMD: 00000004 (PPLV0 +PIE -PWE)
-  EUEN: 00000007 (+FPE +SXE +ASXE -BTE)
-  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
- ESTAT: 000c0000 [BRK] (IS= ECode=12 EsubCode=0)
- PRID: 0014c010 (Loongson-64bit, Loongson-3A5000)
- Process hugefork02 (pid: 1517, threadinfo=00000000a670eaf4, task=000000007a95fc64)
- Call Trace:
- [<90000000004eaf1c>] __unmap_hugepage_range+0x6f4/0x7d0
- [<9000000000485534>] unmap_vmas+0x12c/0x218
- [<9000000000494068>] exit_mmap+0xe0/0x308
- [<900000000025fdc4>] mmput+0x74/0x180
- [<900000000026a284>] do_exit+0x294/0x898
- [<900000000026aa30>] do_group_exit+0x30/0x98
- [<900000000027bed4>] get_signal+0x83c/0x868
- [<90000000002457b4>] arch_do_signal_or_restart+0x54/0xfa0
- [<90000000015795e8>] irqentry_exit_to_user_mode+0xb8/0x138
- [<90000000002572d0>] tlb_do_page_fault_1+0x114/0x1b4
+1. disable UTC_L1 in sdma_cntl register when stopping SDMA engines
+   by reading the current value before modifying UTC_L1_ENABLE bit.
 
-The problem is that base address allocated from hugetlbfs is not aligned
-with pmd size. Here add a checking for hugetlbfs and align base address
-with pmd size. After this patch the test case "testcases/bin/hugefork02"
-passes to run.
+2. Ensure UTC_L1_ENABLE is consistently managed by:
+   - Adding the missing register write when enabling UTC_L1 during start
+   - Keeping UTC_L1 enabled by default as per hardware requirements
 
-This is similar to the commit 7f24cbc9c4d42db8a3c8484d1 ("mm/mmap: teach
-generic_get_unmapped_area{_topdown} to handle hugetlb mappings").
+v2: Correct SDMA_CNTL setting (Philip)
 
-Cc: stable@vger.kernel.org  # 6.13+
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Jonathan Kim <jonathan.kim@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 375bf564654e85a7b1b0657b191645b3edca1bda)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/mm/mmap.c | 6 +++++-
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c |    6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/mm/mmap.c b/arch/loongarch/mm/mmap.c
-index 914e82ff3f656..1df9e99582cc6 100644
---- a/arch/loongarch/mm/mmap.c
-+++ b/arch/loongarch/mm/mmap.c
-@@ -3,6 +3,7 @@
-  * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
-  */
- #include <linux/export.h>
-+#include <linux/hugetlb.h>
- #include <linux/io.h>
- #include <linux/kfence.h>
- #include <linux/memblock.h>
-@@ -63,8 +64,11 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
+@@ -489,7 +489,7 @@ static void sdma_v4_4_2_inst_gfx_stop(st
+ {
+ 	struct amdgpu_ring *sdma[AMDGPU_MAX_SDMA_INSTANCES];
+ 	u32 doorbell_offset, doorbell;
+-	u32 rb_cntl, ib_cntl;
++	u32 rb_cntl, ib_cntl, sdma_cntl;
+ 	int i;
  
- 	info.length = len;
--	info.align_mask = do_color_align ? (PAGE_MASK & SHM_ALIGN_MASK) : 0;
- 	info.align_offset = pgoff << PAGE_SHIFT;
-+	if (filp && is_file_hugepages(filp))
-+		info.align_mask = huge_page_mask_align(filp);
-+	else
-+		info.align_mask = do_color_align ? (PAGE_MASK & SHM_ALIGN_MASK) : 0;
+ 	for_each_inst(i, inst_mask) {
+@@ -501,6 +501,9 @@ static void sdma_v4_4_2_inst_gfx_stop(st
+ 		ib_cntl = RREG32_SDMA(i, regSDMA_GFX_IB_CNTL);
+ 		ib_cntl = REG_SET_FIELD(ib_cntl, SDMA_GFX_IB_CNTL, IB_ENABLE, 0);
+ 		WREG32_SDMA(i, regSDMA_GFX_IB_CNTL, ib_cntl);
++		sdma_cntl = RREG32_SDMA(i, regSDMA_CNTL);
++		sdma_cntl = REG_SET_FIELD(sdma_cntl, SDMA_CNTL, UTC_L1_ENABLE, 0);
++		WREG32_SDMA(i, regSDMA_CNTL, sdma_cntl);
  
- 	if (dir == DOWN) {
- 		info.flags = VM_UNMAPPED_AREA_TOPDOWN;
--- 
-2.39.5
-
+ 		if (sdma[i]->use_doorbell) {
+ 			doorbell = RREG32_SDMA(i, regSDMA_GFX_DOORBELL);
+@@ -994,6 +997,7 @@ static int sdma_v4_4_2_inst_start(struct
+ 		/* set utc l1 enable flag always to 1 */
+ 		temp = RREG32_SDMA(i, regSDMA_CNTL);
+ 		temp = REG_SET_FIELD(temp, SDMA_CNTL, UTC_L1_ENABLE, 1);
++		WREG32_SDMA(i, regSDMA_CNTL, temp);
+ 
+ 		if (amdgpu_ip_version(adev, SDMA0_HWIP, 0) < IP_VERSION(4, 4, 5)) {
+ 			/* enable context empty interrupt during initialization */
 
 
 
