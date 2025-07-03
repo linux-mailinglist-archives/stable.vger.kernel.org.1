@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-159521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E166AF7917
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:58:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C86AF7C06
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F402D16C466
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC1AC4A3659
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E3A2E7F1A;
-	Thu,  3 Jul 2025 14:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A362E7BD3;
+	Thu,  3 Jul 2025 15:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/DgW6m8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hd7JibnY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2745E126BFF;
-	Thu,  3 Jul 2025 14:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F26E22B8AB;
+	Thu,  3 Jul 2025 15:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554491; cv=none; b=nfXi0XE/rpfaIXYjJExBXFfa2/gaNhutXxE6FjoikqOHTJeg/MWiSjJ59/lNQqdSNVDojePfP0hD41YegoOf7aJcLqqzZzSbrWZaYHZpFh7rzRBL9WzcpJiPLJ7qvwZ1gFrFaPhtnroJRI+aEXFj0rHZPyddUVkRzYhuXAeCKPg=
+	t=1751556161; cv=none; b=Elc4XQOMTMh/GfjYKPQ4Pi02mUroHBVmWAS5g90MDcR4Mue2BwSMH1GBA5237KDdh6BI3k0F+JLzyL5wMCdAB93EmufzacuBN4U3ZgFJtjunZGvb5sLlq/4JRSzlKrZ8Wy4gh23QZxc5uencMEK5Tu6OpzWA9ANBRG2zOuS9U/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554491; c=relaxed/simple;
-	bh=ZpMLf2c3EED1Kf8ZwmYk7cv0sH7nYKyG1Tz9r2pJKwo=;
+	s=arc-20240116; t=1751556161; c=relaxed/simple;
+	bh=cK7JSSFkhgi9iigpTKVr/Ejq5glbrnlzWQz9Yf1SmDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmF09mD2idTY3o2xh7438OzNtUvp4GiI4DKZGFmb9mGNdAUM1qjGI7GHA8A4rf29hLYQxhAIvfRVhtbkIt7K2qO7RNMZdcVpKbZVrbHxVyG4DTK63H9PI5F6DG3AaETLhaoZi88TLk54Zkh5Imle0lekUKtO73FHaHeDtjx4psU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/DgW6m8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A05CDC4CEE3;
-	Thu,  3 Jul 2025 14:54:50 +0000 (UTC)
+	 MIME-Version; b=XR6Yf4OPo8aDVgFFxEXGlbAq5rXZjsOvPKUdExFR4G+U4huyIQAAUIigBVuCLLBj+okeOyDRNnpOcTH6Bt+GifLL/Yd/UG4TvB9RTFWaWb1EsoOqtFzurqLNOJ6/hGzCfrSayD3abHRPFUDLnc6vTMAe7lnkrWuCvIde21qe7CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hd7JibnY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C3CC4CEE3;
+	Thu,  3 Jul 2025 15:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554491;
-	bh=ZpMLf2c3EED1Kf8ZwmYk7cv0sH7nYKyG1Tz9r2pJKwo=;
+	s=korg; t=1751556161;
+	bh=cK7JSSFkhgi9iigpTKVr/Ejq5glbrnlzWQz9Yf1SmDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g/DgW6m8xkjwrwiJ5LY75Ib3vFyE+WeWr7bF0sHdZCe7SZlfsDTx3XczACS4//3fC
-	 mZpQYbDONWMfmw06lDKvWA5u8fQnlNorD/R1R/fZb4v0addlOZUwiU3z0TiQCk/wFY
-	 GE8G6faEY66hZabihmPykyGuIds9Ny8tlJDjiwgg=
+	b=Hd7JibnY2CpxEEzSUzTvXJBQXCRdmrxt8adMQdUGb5KsX6NBhSPNdkZ+aSWgM+JER
+	 JX2B9YuUwmrnLyYWXJhbRAIOZcJCFogh/fJMh7ms+Eb5VDMaqkMlx/ENcZE9QYPGor
+	 NmQRF0PPEL9qXHs7NHWPJxP4PGsxCo4mLozmAOrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Schwab <schwab@suse.de>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 205/218] riscv/atomic: Do proper sign extension also for unsigned in arch_cmpxchg
+Subject: [PATCH 6.1 064/132] vgacon: remove unneeded forward declarations
 Date: Thu,  3 Jul 2025 16:42:33 +0200
-Message-ID: <20250703144004.418576365@linuxfoundation.org>
+Message-ID: <20250703143941.926661906@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-[ Upstream commit 1898300abf3508bca152e65b36cce5bf93d7e63e ]
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-Sign extend also an unsigned compare value to match what lr.w is doing.
-Otherwise try_cmpxchg may spuriously return true when used on a u32 value
-that has the sign bit set, as it happens often in inode_set_ctime_current.
+[ Upstream commit 6ceed69cde8fe4a78fe50d62d7a88a5c1eed4709 ]
 
-Do this in three conversion steps.  The first conversion to long is needed
-to avoid a -Wpointer-to-int-cast warning when arch_cmpxchg is used with a
-pointer type.  Then convert to int and back to long to always sign extend
-the 32-bit value to 64-bit.
+Most of the forward declarations in vgacon are not needed. Drop them.
 
-Fixes: 6c58f25e6938 ("riscv/atomic: Fix sign extension for RV64I")
-Signed-off-by: Andreas Schwab <schwab@suse.de>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Tested-by: Xi Ruoyao <xry111@xry111.site>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/mvmed0k4prh.fsf@suse.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Stable-dep-of: 03bcbbb3995b ("dummycon: Trigger redraw when switching consoles with deferred takeover")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/cmpxchg.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/console/vgacon.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/arch/riscv/include/asm/cmpxchg.h b/arch/riscv/include/asm/cmpxchg.h
-index ebbce134917cc..6efa95ad033ab 100644
---- a/arch/riscv/include/asm/cmpxchg.h
-+++ b/arch/riscv/include/asm/cmpxchg.h
-@@ -169,7 +169,7 @@
- 		break;							\
- 	case 4:								\
- 		__arch_cmpxchg(".w", ".w" sc_sfx, prepend, append,	\
--				__ret, __ptr, (long), __old, __new);	\
-+				__ret, __ptr, (long)(int)(long), __old, __new);	\
- 		break;							\
- 	case 8:								\
- 		__arch_cmpxchg(".d", ".d" sc_sfx, prepend, append,	\
+diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
+index 065da55f20d89..e0d340f5c2dd5 100644
+--- a/drivers/video/console/vgacon.c
++++ b/drivers/video/console/vgacon.c
+@@ -65,16 +65,8 @@ static struct vgastate vgastate;
+  *  Interface used by the world
+  */
+ 
+-static const char *vgacon_startup(void);
+-static void vgacon_init(struct vc_data *c, int init);
+-static void vgacon_deinit(struct vc_data *c);
+-static void vgacon_cursor(struct vc_data *c, int mode);
+-static int vgacon_switch(struct vc_data *c);
+-static int vgacon_blank(struct vc_data *c, int blank, int mode_switch);
+-static void vgacon_scrolldelta(struct vc_data *c, int lines);
+ static int vgacon_set_origin(struct vc_data *c);
+-static void vgacon_save_screen(struct vc_data *c);
+-static void vgacon_invert_region(struct vc_data *c, u16 * p, int count);
++
+ static struct uni_pagedict *vgacon_uni_pagedir;
+ static int vgacon_refcount;
+ 
 -- 
 2.39.5
 
