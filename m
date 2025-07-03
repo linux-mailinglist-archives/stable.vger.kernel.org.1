@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-159751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE3E7AF7A31
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A685AF78D0
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:54:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 229E44E015D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EC387BC8C7
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478D92D6622;
-	Thu,  3 Jul 2025 15:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF072ECE92;
+	Thu,  3 Jul 2025 14:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPeAtKUp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gL2y2GlQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5DE15442C;
-	Thu,  3 Jul 2025 15:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAE82EF64C;
+	Thu,  3 Jul 2025 14:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555225; cv=none; b=LfmfS4Rx3tQ20BUQMDojojtkUJiGXlM3p//KLmYd1S84eIT9Un3dV5bK7BOzjEkAnrWRMcwFmcRBcmgT4hHdfGIRes9YnrsJN67P6RcCLQyXAI0zCY/W/d7T8Z/wQs4YQHintJCnWgKovIvVZjMvOs1Kj/Be744wwLCTDMAcF4o=
+	t=1751554436; cv=none; b=d79HTyzDSQ0UbUr5Wi9BQ19P9znEdxhUcjegoGWlFQqJQbSJ/bsPx7qrhLU2FfsaE9CYiiyRNYeTUsNVyPTIm8WI35efTYONKvUpWsCjuPUi8WS8mnkF7gmzyyd71wf0CWG8OjtvD+EFc2k6mkhP28ISAn+iY+UtUiWhrPihi+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555225; c=relaxed/simple;
-	bh=OU9u9emYTArwJaJonid0RixZwwF8pJ+iyaI45jCcrZE=;
+	s=arc-20240116; t=1751554436; c=relaxed/simple;
+	bh=mnF4vinGGcNxWAs7UXV8JkUen41YPjBruYmShuw0FKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVFBMpFCu6sF3QD0+l05jvLVD3eIdkN+qGUUOFOKGUqHChKYIXJ4YjuJfea1JNHKuuc6b9MoqW6ikm+F1mzzjbt5ttM3vPIPl5yvCLmcapriNV5GCfh/LanxfCQR5T0CuqrRyaJn4gF+UwP1sAJRcPbN6R5zhmwSN2DomStmS8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPeAtKUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE94C4CEE3;
-	Thu,  3 Jul 2025 15:07:04 +0000 (UTC)
+	 MIME-Version; b=LtSAMAKDojyauUxQP68VHo6KQV+d/gPyQTfFCqolBVOJ1q7AcT1JdkcyQELFEpQiP6cFOTSHJ+7PDF0p+H/QcROUqGnzotnSA5Dwk7sDtcPOyNSWStoryFA3APY7rxWs2nnFuilSINS3yQGe57ZVVN75hf+IHJVNIGqnk0wj3XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gL2y2GlQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48096C4CEED;
+	Thu,  3 Jul 2025 14:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555224;
-	bh=OU9u9emYTArwJaJonid0RixZwwF8pJ+iyaI45jCcrZE=;
+	s=korg; t=1751554436;
+	bh=mnF4vinGGcNxWAs7UXV8JkUen41YPjBruYmShuw0FKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NPeAtKUpMKWHuB6Y6Awdt3Z/ohWJ3KfynBpJ74uzFXDYDm9sPHIhMxTqQeRPjfihQ
-	 QWHl/YUldkeAFdfxa6mXAKDEsNK7L22CNopQjFnjSva/xltzHwVp7Islg1Vwt+PJxN
-	 h2Sza7XZhvtmI4REhCa1soygohNarM3IKePWOy0c=
+	b=gL2y2GlQ7dButEcziGGymuoTJP/kAXFLfCuNVHYABNTBRK4WBJDCODeVrxnGn++vO
+	 naP5OJ3whNobg8K5s6diB7cHMWXlLrQWa9rYUhrnI9CwXiIugDz/qDBiFShOPdT4wa
+	 Ge9TVZCYldT765LUVaAoqHuHMn0PEJFP2Xmma1os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.15 214/263] drm/bridge: cdns-dsi: Fix the clock variable for mode_valid()
+	Christian Mazakas <christian.mazakas@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 186/218] io_uring/net: only consider msg_inq if larger than 1
 Date: Thu,  3 Jul 2025 16:42:14 +0200
-Message-ID: <20250703144012.969476171@linuxfoundation.org>
+Message-ID: <20250703144003.625878908@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 132bdcec399be6ae947582249a134b38cf56731c upstream.
+Commit 2c7f023219966777be0687e15b57689894304cd3 upstream.
 
-The crtc_* mode parameters do not get generated (duplicated in this
-case) from the regular parameters before the mode validation phase
-begins.
+Currently retry and general validity of msg_inq is gated on it being
+larger than zero, but it's entirely possible for this to be slightly
+inaccurate. In particular, if FIN is received, it'll return 1.
 
-The rest of the code conditionally uses the crtc_* parameters only
-during the bridge enable phase, but sticks to the regular parameters
-for mode validation. In this singular instance, however, the driver
-tries to use the crtc_clock parameter even during the mode validation,
-causing the validation to fail.
+Just use larger than 1 as the check. This covers both the FIN case, and
+at the same time, it doesn't make much sense to retry a recv immediately
+if there's even just a single 1 byte of valid data in the socket.
 
-Allow the D-Phy config checks to use mode->clock instead of
-mode->crtc_clock during mode_valid checks, like everywhere else in the
-driver.
+Leave the SOCK_NONEMPTY flagging when larger than 0 still, as an app may
+use that for the final receive.
 
-Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
 Cc: stable@vger.kernel.org
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Link: https://lore.kernel.org/r/20250329113925.68204-4-aradhya.bhatia@linux.dev
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reported-by: Christian Mazakas <christian.mazakas@gmail.com>
+Fixes: 7c71a0af81ba ("io_uring/net: improve recv bundles")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ io_uring/net.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-@@ -568,13 +568,14 @@ static int cdns_dsi_check_conf(struct cd
- 	struct phy_configure_opts_mipi_dphy *phy_cfg = &output->phy_opts.mipi_dphy;
- 	unsigned long dsi_hss_hsa_hse_hbp;
- 	unsigned int nlanes = output->dev->lanes;
-+	int mode_clock = (mode_valid_check ? mode->clock : mode->crtc_clock);
- 	int ret;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -865,7 +865,7 @@ static inline bool io_recv_finish(struct
+ 		 * If more is available AND it was a full transfer, retry and
+ 		 * append to this one
+ 		 */
+-		if (!sr->retry && kmsg->msg.msg_inq > 0 && this_ret > 0 &&
++		if (!sr->retry && kmsg->msg.msg_inq > 1 && this_ret > 0 &&
+ 		    !iov_iter_count(&kmsg->msg.msg_iter)) {
+ 			req->cqe.flags = cflags & ~CQE_F_MASK;
+ 			sr->len = kmsg->msg.msg_inq;
+@@ -1111,7 +1111,7 @@ static int io_recv_buf_select(struct io_
+ 			arg.mode |= KBUF_MODE_FREE;
+ 		}
  
- 	ret = cdns_dsi_mode2cfg(dsi, mode, dsi_cfg, mode_valid_check);
- 	if (ret)
- 		return ret;
+-		if (kmsg->msg.msg_inq > 0)
++		if (kmsg->msg.msg_inq > 1)
+ 			arg.max_len = min_not_zero(sr->len, kmsg->msg.msg_inq);
  
--	phy_mipi_dphy_get_default_config(mode->crtc_clock * 1000,
-+	phy_mipi_dphy_get_default_config(mode_clock * 1000,
- 					 mipi_dsi_pixel_format_to_bpp(output->dev->format),
- 					 nlanes, phy_cfg);
- 
+ 		ret = io_buffers_peek(req, &arg);
 
 
 
