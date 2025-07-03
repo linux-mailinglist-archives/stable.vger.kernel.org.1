@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-159302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B1FAF7276
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 13:35:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60169AF7281
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 13:37:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABA4854004B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 11:34:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC2421C847EA
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 11:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1914D2E2EE9;
-	Thu,  3 Jul 2025 11:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF102E49AC;
+	Thu,  3 Jul 2025 11:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aladdin.ru header.i=@aladdin.ru header.b="vRMO+IMi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QvzzNWAj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-out.aladdin-rd.ru (mail-out.aladdin-rd.ru [91.199.251.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0152E426A;
-	Thu,  3 Jul 2025 11:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.199.251.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687B42E4998;
+	Thu,  3 Jul 2025 11:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751542390; cv=none; b=t3d01PSMqkDHr+gU4fWqGi6k5qLEMeD/xhy+6duKvpFcmEpwsZb4icROyAaE8zXo2y6eNnLxQozn1LcHb45EN5NIZ4tlMolhhDkkDMkQ9VBRiQUPw6qPrzxI33aHa79V3E7gJ82IYloCTJt7ytidJW8HeRs4C9f1bh5+xCFGXaU=
+	t=1751542523; cv=none; b=fRZFmaBUVcG9ESMmLIW7BxYzT4ZOfc0h40PrIsjrgvKdPI9IhDnAWus9PCZoMampPVxGi6srWnTGe09z4IoP13vpaihKJCEFLqv7oehUDI5WUqlr+PWzCHe07bvo8kGE/p00PvBXkSyOy6AofK7V2aTlc8gx5tng08Ax5YR1O/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751542390; c=relaxed/simple;
-	bh=CyQhUnN9yDUDBFRVhw4ghu3ibqesztbBUa/txXVxbe4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gKcZxuSL8FILhGNERsm8pZ5l/200iBcekF8HW6RhJMXoWHfseIN4vjWjdtMQorDMf2mi1bDSXYL61+mQXxoN7tLjpVoOMdQ6EOnnlAHl4keQuW4ruGiGwTjDhVe6rJnVeUm2QHuJf+kWo0G/wZ6oRF7bpN89d6xXSD5tw9x/D7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru; spf=pass smtp.mailfrom=aladdin.ru; dkim=pass (2048-bit key) header.d=aladdin.ru header.i=@aladdin.ru header.b=vRMO+IMi; arc=none smtp.client-ip=91.199.251.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aladdin.ru
-DKIM-Signature: v=1; a=rsa-sha256; d=aladdin.ru; s=mail; c=simple/simple;
-	t=1751542376; h=from:subject:to:date:message-id;
-	bh=CyQhUnN9yDUDBFRVhw4ghu3ibqesztbBUa/txXVxbe4=;
-	b=vRMO+IMi3XxKo7NY4fxaOR+3ZJOosaJy8ibaMkoyuHLol/Rk3cByQ014tIZ8nBqpgbbOToQKqDs
-	rKrUV4tVMfmBG46XmuM15ABi/F5IHuREwdI1od0yDpM1C5qaCWA39tXh2cvIrudnRMolo5uuQMU/X
-	pbXTHtO0nvSvqL8dnxIb1ocveOTJuwN0Y/aKFyAcRjGrvSbJQL0//qw2DSchc0uICWfgzQ/DQWz4f
-	BSuTGiKWisAPZkeSINEOLG9yWPK+EbDLBDkWiH+dY751Hd4q2FeuRTp//+TPy/4fGhiB2A61v5EQ2
-	Baz8zdnooeWM36KOxfEWctAh8gk/cFFpVK3g==
-From: Daniil Dulov <d.dulov@aladdin.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Daniil Dulov <d.dulov@aladdin.ru>, Song Liu <song@kernel.org>, "Vishal
- Verma" <vverma@digitalocean.com>, Jens Axboe <axboe@kernel.dk>,
-	<linux-raid@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, Xiao Ni <xni@redhat.com>, Coly Li
-	<colyli@kernel.org>, Yu Kuai <yukuai3@huawei.com>
-Subject: [PATCH 5.15/6.1/6.6/6.12] md/raid10: wait barrier before returning discard request with REQ_NOWAIT
-Date: Thu, 3 Jul 2025 14:32:33 +0300
-Message-ID: <20250703113233.51484-1-d.dulov@aladdin.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1751542523; c=relaxed/simple;
+	bh=A4riHgWjqMWmrsxRmZWfbxDqGgfiBe8zxNDdKPjS3ns=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XhixNSaSo/WpvV86NggpehaetjnrKs3JxepySp3+jBUVihiAX3IE6BIBHCwOHgZYM8mCuIJM/J57QCjBnIMQskBZo5wiN7eypTlt5BVN+fWpbo2w4b/IX5CcBFdGyBGSQjflcZfmw9vKxoJm/bv9C3DAi3oiF0G9vnbSDgf9imU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QvzzNWAj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F508C4CEF2;
+	Thu,  3 Jul 2025 11:35:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751542523;
+	bh=A4riHgWjqMWmrsxRmZWfbxDqGgfiBe8zxNDdKPjS3ns=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QvzzNWAjIQsNmBPZMrqC+Cew/UzBEgbcwlcI15Bud0rQ/vm1oFU3P2H2RJXDs3avx
+	 9IrhpocLkoewSwZITh9RNCdRsF2+5SP7DEmhE8CP3284QPdYgp6PNZ0evDd05MsEwM
+	 bSpxvUM2NcbSqOhLJWE9XykLH4JxEbiDBoLpwdvQmxNJNLbErmYh9zDqBSKKWrPHXr
+	 ugfOkZOGM0vsIleT8ovpi59HCprBHJLtCWYAgQIS5SmDRAT+8Zvdfc8NRyFAyv0jwJ
+	 qLTEWLHtRzi7DSlGicXqfIEKnwdCs/wibWaDr/DtqcSx+xZ+XeFRDRZZfc68neMBam
+	 Ipk6/q3EjhvUA==
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+To: bleung@chromium.org
+Cc: chrome-platform@lists.linux.dev,
+	tzungbi@kernel.org,
+	dawidn@google.com,
+	stable@vger.kernel.org
+Subject: [PATCH 2/2] platform/chrome: cros_ec_chardev: Fix UAF of ec_dev
+Date: Thu,  3 Jul 2025 11:35:09 +0000
+Message-ID: <20250703113509.2511758-3-tzungbi@kernel.org>
+X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
+In-Reply-To: <20250703113509.2511758-1-tzungbi@kernel.org>
+References: <20250703113509.2511758-1-tzungbi@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,49 +60,187 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EXCH-2016-02.aladdin.ru (192.168.1.102) To
- EXCH-2016-01.aladdin.ru (192.168.1.101)
 
-From: Xiao Ni <xni@redhat.com>
+The lifecycle of misc device and `ec_dev` are independent. It is
+possible that the `ec_dev` is used after free.
 
-commit 3db4404435397a345431b45f57876a3df133f3b4 upstream.
+The following script shows the concept:
+: import fcntl
+: import os
+: import struct
+: import time
+:
+: EC_CMD_HELLO = 0x1
+:
+: fd = os.open('/dev/cros_fp', os.O_RDONLY)
+: s = struct.pack('IIIIII', 0, EC_CMD_HELLO, 4, 4, 0, 0)
+: fcntl.ioctl(fd, 0xc014ec00, s)
+:
+: time.sleep(1)
+: open('/sys/bus/spi/drivers/cros-ec-spi/unbind', 'w').write('spi10.0')
+: time.sleep(1)
+: open('/sys/bus/spi/drivers/cros-ec-spi/bind', 'w').write('spi10.0')
+:
+: time.sleep(3)
+: fcntl.ioctl(fd, 0xc014ec00, s)     <--- The UAF happens here.
+:
+: os.close(fd)
 
-raid10_handle_discard should wait barrier before returning a discard bio
-which has REQ_NOWAIT. And there is no need to print warning calltrace
-if a discard bio has REQ_NOWAIT flag. Quality engineer usually checks
-dmesg and reports error if dmesg has warning/error calltrace.
+Set `ec_dev` to NULL to let the misc device know the underlying
+protocol device is gone.
 
-Fixes: c9aa889b035f ("md: raid10 add nowait support")
-Signed-off-by: Xiao Ni <xni@redhat.com>
-Acked-by: Coly Li <colyli@kernel.org>
-Link: https://lore.kernel.org/linux-raid/20250306094938.48952-1-xni@redhat.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Fixes: eda2e30c6684 ("mfd / platform: cros_ec: Miscellaneous character device to talk with the EC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 ---
-Backport fix for CVE-2025-40325.
+ drivers/platform/chrome/cros_ec_chardev.c | 65 +++++++++++++++++++----
+ 1 file changed, 56 insertions(+), 9 deletions(-)
 
- drivers/md/raid10.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index cc194f6ec18d..a02c02684237 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1585,11 +1585,10 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
- 	if (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery))
- 		return -EAGAIN;
+diff --git a/drivers/platform/chrome/cros_ec_chardev.c b/drivers/platform/chrome/cros_ec_chardev.c
+index 5c858d30dd52..87c800c30f31 100644
+--- a/drivers/platform/chrome/cros_ec_chardev.c
++++ b/drivers/platform/chrome/cros_ec_chardev.c
+@@ -11,11 +11,14 @@
+  */
  
--	if (WARN_ON_ONCE(bio->bi_opf & REQ_NOWAIT)) {
-+	if (!wait_barrier(conf, bio->bi_opf & REQ_NOWAIT)) {
- 		bio_wouldblock_error(bio);
- 		return 0;
+ #include <linux/init.h>
++#include <linux/cleanup.h>
+ #include <linux/device.h>
+ #include <linux/fs.h>
++#include <linux/list.h>
+ #include <linux/miscdevice.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
++#include <linux/mutex.h>
+ #include <linux/notifier.h>
+ #include <linux/platform_data/cros_ec_chardev.h>
+ #include <linux/platform_data/cros_ec_commands.h>
+@@ -31,7 +34,14 @@
+ /* Arbitrary bounded size for the event queue */
+ #define CROS_MAX_EVENT_LEN	PAGE_SIZE
+ 
++/* This protects 'chardev_list' */
++static DEFINE_MUTEX(chardev_lock);
++static LIST_HEAD(chardev_list);
++
+ struct chardev_priv {
++	struct list_head list;
++	/* This protects 'ec_dev' */
++	struct mutex lock;
+ 	struct cros_ec_dev *ec_dev;
+ 	struct notifier_block notifier;
+ 	wait_queue_head_t wait_event;
+@@ -176,9 +186,14 @@ static int cros_ec_chardev_open(struct inode *inode, struct file *filp)
+ 	if (ret) {
+ 		dev_err(ec_dev->dev, "failed to register event notifier\n");
+ 		kfree(priv);
++		return ret;
  	}
--	wait_barrier(conf, false);
  
- 	/*
- 	 * Check reshape again to avoid reshape happens after checking
+-	return ret;
++	mutex_init(&priv->lock);
++	INIT_LIST_HEAD(&priv->list);
++	scoped_guard(mutex, &chardev_lock)
++		list_add_tail(&priv->list, &chardev_list);
++	return 0;
+ }
+ 
+ static __poll_t cros_ec_chardev_poll(struct file *filp, poll_table *wait)
+@@ -199,7 +214,6 @@ static ssize_t cros_ec_chardev_read(struct file *filp, char __user *buffer,
+ 	char msg[sizeof(struct ec_response_get_version) +
+ 		 sizeof(CROS_EC_DEV_VERSION)];
+ 	struct chardev_priv *priv = filp->private_data;
+-	struct cros_ec_dev *ec_dev = priv->ec_dev;
+ 	size_t count;
+ 	int ret;
+ 
+@@ -233,7 +247,12 @@ static ssize_t cros_ec_chardev_read(struct file *filp, char __user *buffer,
+ 	if (*offset != 0)
+ 		return 0;
+ 
+-	ret = ec_get_version(ec_dev, msg, sizeof(msg));
++	scoped_guard(mutex, &priv->lock) {
++		if (!priv->ec_dev)
++			return -ENODEV;
++	}
++
++	ret = ec_get_version(priv->ec_dev, msg, sizeof(msg));
+ 	if (ret)
+ 		return ret;
+ 
+@@ -249,11 +268,15 @@ static ssize_t cros_ec_chardev_read(struct file *filp, char __user *buffer,
+ static int cros_ec_chardev_release(struct inode *inode, struct file *filp)
+ {
+ 	struct chardev_priv *priv = filp->private_data;
+-	struct cros_ec_dev *ec_dev = priv->ec_dev;
+ 	struct ec_event *event, *e;
+ 
+-	blocking_notifier_chain_unregister(&ec_dev->ec_dev->event_notifier,
+-					   &priv->notifier);
++	scoped_guard(mutex, &priv->lock) {
++		if (priv->ec_dev)
++			blocking_notifier_chain_unregister(&priv->ec_dev->ec_dev->event_notifier,
++							   &priv->notifier);
++	}
++	scoped_guard(mutex, &chardev_lock)
++		list_del(&priv->list);
+ 
+ 	list_for_each_entry_safe(event, e, &priv->events, node) {
+ 		list_del(&event->node);
+@@ -341,16 +364,20 @@ static long cros_ec_chardev_ioctl(struct file *filp, unsigned int cmd,
+ 				   unsigned long arg)
+ {
+ 	struct chardev_priv *priv = filp->private_data;
+-	struct cros_ec_dev *ec = priv->ec_dev;
+ 
+ 	if (_IOC_TYPE(cmd) != CROS_EC_DEV_IOC)
+ 		return -ENOTTY;
+ 
++	scoped_guard(mutex, &priv->lock) {
++		if (!priv->ec_dev)
++			return -ENODEV;
++	}
++
+ 	switch (cmd) {
+ 	case CROS_EC_DEV_IOCXCMD:
+-		return cros_ec_chardev_ioctl_xcmd(ec, (void __user *)arg);
++		return cros_ec_chardev_ioctl_xcmd(priv->ec_dev, (void __user *)arg);
+ 	case CROS_EC_DEV_IOCRDMEM:
+-		return cros_ec_chardev_ioctl_readmem(ec, (void __user *)arg);
++		return cros_ec_chardev_ioctl_readmem(priv->ec_dev, (void __user *)arg);
+ 	case CROS_EC_DEV_IOCEVENTMASK:
+ 		priv->event_mask = arg;
+ 		return 0;
+@@ -394,8 +421,28 @@ static int cros_ec_chardev_probe(struct platform_device *pdev)
+ static void cros_ec_chardev_remove(struct platform_device *pdev)
+ {
+ 	struct miscdevice *misc = dev_get_drvdata(&pdev->dev);
++	struct chardev_priv *priv;
+ 
++	/*
++	 * Must deregister the misc device first so that the following
++	 * open fops get handled correctly.
++	 *
++	 * misc device is serialized by `misc_mtx`.
++	 * 1) If misc_deregister() gets the lock earlier than misc_open(),
++	 *    the open fops won't be called as the corresponding misc
++	 *    device is already destroyed.
++	 * 2) If misc_open() gets the lock earlier than misc_deregister(),
++	 *    the following code block resets the `ec_dev` to prevent
++	 *    the rest of fops from accessing the obsolete `ec_dev`.
++	 */
+ 	misc_deregister(misc);
++
++	scoped_guard(mutex, &chardev_lock) {
++		list_for_each_entry(priv, &chardev_list, list) {
++			scoped_guard(mutex, &priv->lock)
++				priv->ec_dev = NULL;
++		}
++	}
+ }
+ 
+ static const struct platform_device_id cros_ec_chardev_id[] = {
 -- 
-2.34.1
+2.50.0.727.gbf7dc18ff4-goog
 
 
