@@ -1,116 +1,79 @@
-Return-Path: <stable+bounces-159387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE13AF783C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:48:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C8E7AF78CB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8D7E4E14F3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E5501CA0682
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DD32EE96D;
-	Thu,  3 Jul 2025 14:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cgZTtq3I"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B172E7BD6;
+	Thu,  3 Jul 2025 14:51:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3582EE287;
-	Thu,  3 Jul 2025 14:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC53C126BFF
+	for <stable@vger.kernel.org>; Thu,  3 Jul 2025 14:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554071; cv=none; b=EispTaWYD8swMAqsXXnnpbP2/ORKPZ7+P6ftlsVZxnwOmtRSQXvWaus5KsP1ZtTvRhwdoOS3Dfy5uFcGRmegIPlFuCkkcoS6CZy7Sw2psFew7SZC1Jl3tTosvwxg3T7EoZDJFGaLVNl2y60IbGNxC25UaRxRiTfg/3Nw7nlvp14=
+	t=1751554284; cv=none; b=tvTmGV+afqh0v4fwfq0jTiv/oM8CgLlhNC58N37FcI3j62FoP9wZI7tdjxARtWxxAFHM72bAWn7+SNExw65jO9et5CXyQ7wg9fu7f5wMUyqJ7EPEp+5FxjFp0xiHmx3QjyXMNslmdHiDp5es3X1tEfYrVbXido3GROUm4yxf9j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554071; c=relaxed/simple;
-	bh=RafIvVbiUyoUQKQHbRbqnjeFOB2hcSEJLccEvZ3+n+c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fZiYNbO/rXERazWZp1wQyRp7X7HLBoFfu1bxY+nw3JaI+6Bpj4mnAlCLauT3O000kF+vLTwOnbMbttn6k7SwS6D0ihAlsYSPFe18GOmPOj1jvT3MPaH1D+Dnl3BCze8339tsYwfnvQj4it4hdU99/OHxpfhb54BgQjUMrEXt2ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgZTtq3I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77903C4CEE3;
-	Thu,  3 Jul 2025 14:47:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751554071;
-	bh=RafIvVbiUyoUQKQHbRbqnjeFOB2hcSEJLccEvZ3+n+c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cgZTtq3IIlgui7JvyJN4aIixV24ZPVNX3mE2iFY2Geduz1t23gCzZfBxH11sZsxxU
-	 0XI6riDdtTsSOHSVKlp84rU9NekMRKyHT4ZxxLDoZ6k6ELlpgDTWesSu7r5C1WFkxj
-	 KxaQcRxFGj7/RrRhnrkhiFOMDxWeUUjA93aTxwchmLdyFufOu/Gk/zYusEo2W9Yw1o
-	 8sHO6a0yNfXBmr1ASbw4ys+YlOg70nj+WGdtzbwPLzjk6xZFUtZxOipqjX3mOZ40A+
-	 /7/aX2Z0O0s5iP4R3GmMXpWQ7FyllGbXRp9uS01Baohlo5YjOSNwXYEMdNoZx8Trh8
-	 RNl4I20EQUQOg==
-Message-ID: <84dfa466-d201-4a51-8794-6c64568bec95@kernel.org>
-Date: Thu, 3 Jul 2025 16:47:47 +0200
+	s=arc-20240116; t=1751554284; c=relaxed/simple;
+	bh=kye+yW/PGf4a1wyFawF/Y4gnEDEx7bXSNkEIwJYshNM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uwDeIsZ+Lop8ZGamUAoUhrjVP3+4oGO5ttjNjEf9Wb2x0w7DRxzmNDk9US9adpYSbUeIfDCU76xJYJoN5EpMJZvcCi5GdOoCbjh2JKy1jFdqPX28pVuQuMgJmiz0XqthlQRUxgDL7EbfiABi29onmZsozgsQCByx1L5rjZL2WfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 8EFB42C0665E;
+	Thu,  3 Jul 2025 16:51:13 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 8824C404CCF; Thu,  3 Jul 2025 16:51:13 +0200 (CEST)
+Date: Thu, 3 Jul 2025 16:51:13 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof Wilczy??ski <kwilczynski@kernel.org>,
+	Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 020/218] Revert "iommu/amd: Prevent binding other
+ PCI drivers to IOMMU PCI devices"
+Message-ID: <aGaY4Y9trrnMlxO-@wunner.de>
+References: <20250703143955.956569535@linuxfoundation.org>
+ <20250703143956.766086832@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] - Multiple userspace implementations of battery
- estimate broken after "ACPI: battery: negate current when discharging"
-To: Matthew Schwartz <matthew.schwartz@linux.dev>, pmarheine@chromium.org,
- Sebastian Reichel <sre@kernel.org>
-Cc: regressions@lists.linux.dev, stable@vger.kernel.org,
- rafael.j.wysocki@intel.com, linux-acpi@vger.kernel.org
-References: <87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev>
-Content-Language: en-US, nl
-From: Hans de Goede <hansg@kernel.org>
-In-Reply-To: <87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250703143956.766086832@linuxfoundation.org>
 
-Hi Matthew,
-
-On 3-Jul-25 3:54 AM, Matthew Schwartz wrote:
-> Hello,
+On Thu, Jul 03, 2025 at 04:39:28PM +0200, Greg Kroah-Hartman wrote:
+> 6.12-stable review patch.  If anyone has any objections, please let me know.
 > 
-> I installed kernel 6.15.4 to find that my battery estimate on my handheld gaming device was completely inaccurate, instead giving negative values and an unknown estimated battery life in multiple places. 
-> 
-> After bisecting, I landed on "ACPI: battery: negate current when discharging” as the bad commit. This commit breaks not one but several userspace implementations of battery monitoring: Steam and MangoHud. Perhaps it breaks more, but those are the two I have noticed so far. 
+> [ Upstream commit 3be5fa236649da6404f1bca1491bf02d4b0d5cce ]
 
-Thank you for reporting this.
+This should not be backported to stable kernels.  It does not fix
+any known issues, but conversely it is known to cause an error
+message on boot, for which there's a fix pending here:
 
-As Rafael already indicated this patch will need to be reverted to
-unbreak userspace.
+https://lore.kernel.org/r/b29e7fbfc6d146f947603d0ebaef44cbd2f0d754.1751468802.git.lukas@wunner.de/
 
-But, the patch was actually doing the right thing, according to:
+Long story short, please unqueue this one. :)
 
-Documentation/ABI/testing/sysfs-class-power
+Thanks!
 
-What:           /sys/class/power_supply/<supply_name>/current_avg
-Date:           May 2007
-Contact:        linux-pm@vger.kernel.org
-Description:
-                Battery:
-...
-                Access: Read
-
-                Valid values: Represented in microamps. Negative values are
-                used for discharging batteries, positive values for charging
-                batteries and for USB IBUS current.
-
-(and the same for current_now)
-
-and there are many power_supply fuel-gauge drivers (1) under
-drivers/power/supply/ which do adhere to this specification
-and report a negative current for discharging.
-
-So if any of the userspace consumers of this API you mention
-were to run on hw with these drivers the same problem will
-be hit. Can you please file bugs against these userspace
-projects so that they can fix this?
-
-Regards,
-
-Hans
-
-
-
-1) For directly accessing fuel-gauge chips on devices where these
-are directly accessible instead of being exposed through ACPI
-
+Lukas
 
