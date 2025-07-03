@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-159494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02DBEAF78CA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:54:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C265AF7A2A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 904817BC787
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3574C3AE115
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8752ED157;
-	Thu,  3 Jul 2025 14:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4A52ED17E;
+	Thu,  3 Jul 2025 15:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N40yjrWN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0Z02ftz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFDF2E7F0B;
-	Thu,  3 Jul 2025 14:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3A12ED168;
+	Thu,  3 Jul 2025 15:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554406; cv=none; b=jQewHiG59EfXRKAWVH85ux/IVFcP04WJibzoQu2IYZt7ro8mSlb5vcUPDbV/W13T4JrzRbK6DVjjo3ghR/A7weIsxDCwxR9NBFacJicJFsuHqHNsuO+5OrgMOBJ6bSa78cI/HBKiERkhqQy3YZidpYETJHHk9w3jYd9s4ArLvlw=
+	t=1751555194; cv=none; b=m/MR32y8M7N8Phtm/dOMOJ3pEptV+ZufeLPpTGw2rtfz9eRZsCDRpvr4zcvig5S4gJK02gwwnfr2vv3YbP5WhwaYc61jFtx/Jy6Ae1TNV4rgAqG+igrug4YR76bl7fWUO6aaliD09p6p4lgJGlpNaU80/WRNwNMoxzpN/q07NM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554406; c=relaxed/simple;
-	bh=UttUDwjPr0Qu3nNsPanIJFT6hzw8Eaybv2++PAkxHKc=;
+	s=arc-20240116; t=1751555194; c=relaxed/simple;
+	bh=dOxeDfG5q9iwBpMm85ONnheAteuPg4TNcpfg4CwnKdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gnTfajtU9UPC/Ji1bxLGGzGbmdbgaV6cLIZUf07WvooGdW/9ZIQ9FpShmtMx2RO+AZzXvXMhCHQrP08Ly3XkE0heWFjPyD5hZ1TW0ugzUCtDKnnGiZqQUa2GN4UcLTf4/hrzXj+yHtmOMg0q9D8Y3NWdjjnYx2dbN/oXDDYEv6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N40yjrWN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437F7C4CEE3;
-	Thu,  3 Jul 2025 14:53:26 +0000 (UTC)
+	 MIME-Version; b=mAfOWHbWt0bho2jZPQZ8n3CqihZHOkxiH5rdFy1JUTNeTCT0568agKTgcg3kTtF2LAr9BGuSeVv70FlY8lPpBw3yaxzyC1Zp3Meix9jiNBhzlBwJB0ID6N1UcNKoFRmSAas/kpSfUZZAH4XWy0ZUM1GaFor5Y7pVJno+sTO1GbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0Z02ftz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E176C4CEE3;
+	Thu,  3 Jul 2025 15:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554406;
-	bh=UttUDwjPr0Qu3nNsPanIJFT6hzw8Eaybv2++PAkxHKc=;
+	s=korg; t=1751555194;
+	bh=dOxeDfG5q9iwBpMm85ONnheAteuPg4TNcpfg4CwnKdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N40yjrWN7j22FHS2vWx6vO+KBtaHHzy4Rdj5vBWhBxl2icC91Hd4PCD3T/MpUPFgE
-	 nSADPJh+3UKs4t6kBWJ5seFZ+xVeXFl/8N/I2qqrG8sC/JhRi3Z1/ZogHiPr9N94mc
-	 MUwhEpNTbHgfoCcaHsbcvxot4oPIB8y+Q4Wepn7A=
+	b=x0Z02ftz/wyYZ2d8ImX0Doe43c99f43PQmFqDiS5bGL9dcc7iHOl29ULyeQ2I453r
+	 8xmOOEx2pEWUZuqo/CEvEsfzfgkca4jIWpxUJFQPdXDRwhdfjJjnAHlqqvjBYUHFXP
+	 dWR3drLYY1SiEtACrVh+9R5GYKqeven4bOcdv310=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 177/218] media: uvcvideo: Rollback non processed entities on error
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.15 205/263] drm/panel: simple: Tianma TM070JDHG34-00: add delays
 Date: Thu,  3 Jul 2025 16:42:05 +0200
-Message-ID: <20250703144003.254767479@linuxfoundation.org>
+Message-ID: <20250703144012.588133563@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-commit a70705d3c020d0d5c3ab6a5cc93e011ac35e7d48 upstream.
+commit 716c75afd83c837f14042309126e838de040658b upstream.
 
-If we fail to commit an entity, we need to restore the
-UVC_CTRL_DATA_BACKUP for the other uncommitted entities. Otherwise the
-control cache and the device would be out of sync.
+Add power on/off delays for the Tianma TM070JDHG34-00.
 
-Cc: stable@kernel.org
-Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Closes: https://lore.kernel.org/linux-media/fe845e04-9fde-46ee-9763-a6f00867929a@redhat.com/
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250224-uvc-data-backup-v2-3-de993ed9823b@chromium.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Fixes: bf6daaa281f7 ("drm/panel: simple: Add Tianma TM070JDHG34-00 panel support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250411-tianma-p0700wxf1mbaa-v3-2-acbefe9ea669@bootlin.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250411-tianma-p0700wxf1mbaa-v3-2-acbefe9ea669@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |   34 +++++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1848,7 +1848,7 @@ static int uvc_ctrl_commit_entity(struct
- 	unsigned int processed_ctrls = 0;
- 	struct uvc_control *ctrl;
- 	unsigned int i;
--	int ret;
-+	int ret = 0;
- 
- 	if (entity == NULL)
- 		return 0;
-@@ -1877,8 +1877,6 @@ static int uvc_ctrl_commit_entity(struct
- 				dev->intfnum, ctrl->info.selector,
- 				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
- 				ctrl->info.size);
--		else
--			ret = 0;
- 
- 		if (!ret)
- 			processed_ctrls++;
-@@ -1890,17 +1888,24 @@ static int uvc_ctrl_commit_entity(struct
- 
- 		ctrl->dirty = 0;
- 
--		if (ret < 0) {
-+		if (ret < 0 && !rollback) {
- 			if (err_ctrl)
- 				*err_ctrl = ctrl;
--			return ret;
-+			/*
-+			 * If we fail to set a control, we need to rollback
-+			 * the next ones.
-+			 */
-+			rollback = 1;
- 		}
- 
--		if (!rollback && handle &&
-+		if (!rollback && handle && !ret &&
- 		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
- 			uvc_ctrl_set_handle(handle, ctrl, handle);
- 	}
- 
-+	if (ret)
-+		return ret;
-+
- 	return processed_ctrls;
- }
- 
-@@ -1931,7 +1936,8 @@ int __uvc_ctrl_commit(struct uvc_fh *han
- 	struct uvc_video_chain *chain = handle->chain;
- 	struct uvc_control *err_ctrl;
- 	struct uvc_entity *entity;
--	int ret = 0;
-+	int ret_out = 0;
-+	int ret;
- 
- 	/* Find the control. */
- 	list_for_each_entry(entity, &chain->entities, chain) {
-@@ -1942,17 +1948,23 @@ int __uvc_ctrl_commit(struct uvc_fh *han
- 				ctrls->error_idx =
- 					uvc_ctrl_find_ctrl_idx(entity, ctrls,
- 							       err_ctrl);
--			goto done;
-+			/*
-+			 * When we fail to commit an entity, we need to
-+			 * restore the UVC_CTRL_DATA_BACKUP for all the
-+			 * controls in the other entities, otherwise our cache
-+			 * and the hardware will be out of sync.
-+			 */
-+			rollback = 1;
-+
-+			ret_out = ret;
- 		} else if (ret > 0 && !rollback) {
- 			uvc_ctrl_send_events(handle, entity,
- 					     ctrls->controls, ctrls->count);
- 		}
- 	}
- 
--	ret = 0;
--done:
- 	mutex_unlock(&chain->ctrl_mutex);
--	return ret;
-+	return ret_out;
- }
- 
- int uvc_ctrl_get(struct uvc_video_chain *chain,
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -4455,6 +4455,12 @@ static const struct panel_desc tianma_tm
+ 		.width = 150, /* 149.76 */
+ 		.height = 94, /* 93.60 */
+ 	},
++	.delay = {
++		.prepare = 15,		/* Tp1 */
++		.enable = 150,		/* Tp2 */
++		.disable = 150,		/* Tp4 */
++		.unprepare = 120,	/* Tp3 */
++	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+ 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+ };
 
 
 
