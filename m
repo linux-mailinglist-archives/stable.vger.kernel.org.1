@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-160010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE766AF7C2E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:32:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E45DAF7A4B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42D941891161
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 670AE16ED4F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5D22EFD94;
-	Thu,  3 Jul 2025 15:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1EF2ED168;
+	Thu,  3 Jul 2025 15:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lo25iyHf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiiITPgf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220FA2EF9DD;
-	Thu,  3 Jul 2025 15:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC832D6622;
+	Thu,  3 Jul 2025 15:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556081; cv=none; b=Av9soT665n8B1FzWiYXvaTkap0CNYMeFIjGo0M9GZT+QlA+B3p6ZT9O/D4PCVLSVswJsY9n+9JOSWech43ub0dNLYrkVOR5Vt8F5kc7mZvcDNvAIHimd8yaR2Hpv+MJrE1ZKjrPj7yESTk4tLr5e6770S6GLCvXWYaI7MFSSAr4=
+	t=1751555308; cv=none; b=VXcqq6P9UzDhR2eogTbjujZPGh/2/ZZVMb+BHAsZYPxA1yzTEKOqDkdBweFx/VjR/ephW1k2vG2jKkerSbegK2RNN0C+RrSdv/FDF6srIIOA8jWHEvqeyvpuwnfOTLyWHxoihZu9Lxc5Wr58KtGCJFxiqh4YT3t6hoOoxP0rwoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556081; c=relaxed/simple;
-	bh=m+rFs8uRVgMigpoF1LOEUCtCHQgizi1LVIeyOz/pBk8=;
+	s=arc-20240116; t=1751555308; c=relaxed/simple;
+	bh=trsU+wI57Bo7wBal9hYM4aqvoIxRfjbKImfyUwvGyX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fP43tcqFSvKCC6W54xYx3Sc8yUvtjUOdhlAIVHTTC+IGDq+LkWr78wpMmqvtoy/C0pNI6RJy/UVxF6JURptrhR+xTd0rioXTObi6qu23FFQjx1ljs/YXtA5a+YrCDMAkM6WRqDtB0kN20/OB0Jc/6yNa6Xby3JSBKiEfwDXq/tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lo25iyHf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C84C4CEED;
-	Thu,  3 Jul 2025 15:21:20 +0000 (UTC)
+	 MIME-Version; b=jMEla0dPl1zX5E1TFL//IOalnCqZ+mK4eP8O+FY3rexzxTj1oq4OwEpqnb4Ug0/P0QiIkC9xn3OhrIeyfeQG5xKDNNIQPFEyG7erG9B14SadYzItwWaCms978OD1ZPRlAiICxxeyNClwaaY3VKjDwId9bfndfLJxz1jsBgLKQQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiiITPgf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7B0C4CEE3;
+	Thu,  3 Jul 2025 15:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556081;
-	bh=m+rFs8uRVgMigpoF1LOEUCtCHQgizi1LVIeyOz/pBk8=;
+	s=korg; t=1751555308;
+	bh=trsU+wI57Bo7wBal9hYM4aqvoIxRfjbKImfyUwvGyX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lo25iyHfvvgzFRRLagwh0MkYgMT3RL73CqcVVjvFkJpmRxdK9MAYFIs8wqUyL5+g0
-	 1EerW/spuKfBmcDhOP4wT6DzNas/G1L64fWRiDusilTYKclyM5yMquwE68y9WwW/aM
-	 quqde0UcL793a+TgeSN8IYPvz4gQeWykaAANI2oo=
+	b=iiiITPgffiOnX+ohB5j3iwatfFGZ1ARYCN+NGj4dJa66HAyvZASZT2JFacU4+Wwfk
+	 D7ehi0uW/W5Q0vjizJrEOHtUiBG3r/VdAax6zZI7wvMcud3eK08BGcFlqrfyb7/E6R
+	 RlBw2UjeVyHMLEUeFXO0KP+xjnAmeibo1/y/y6VA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/132] af_unix: Dont call skb_get() for OOB skb.
-Date: Thu,  3 Jul 2025 16:42:38 +0200
-Message-ID: <20250703143942.130031306@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Austin Zheng <austin.zheng@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.15 239/263] drm/amd/display: Fix mpv playback corruption on weston
+Date: Thu,  3 Jul 2025 16:42:39 +0200
+Message-ID: <20250703144013.992886309@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,168 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 8594d9b85c07f05e431bd07e895c2a3ad9b85d6f ]
+commit 8724a5380c4390eed81e271d22f34ff06453ded9 upstream.
 
-Since introduced, OOB skb holds an additional reference count with no
-special reason and caused many issues.
+[WHAT]
+Severe video playback corruption is observed in the following setup:
 
-Also, kfree_skb() and consume_skb() are used to decrement the count,
-which is confusing.
+weston 14.0.90 (built from source) + mpv v0.40.0 with command:
+mpv bbb_sunflower_1080p_60fps_normal.mp4 --vo=gpu
 
-Let's drop the unnecessary skb_get() in queue_oob() and corresponding
-kfree_skb(), consume_skb(), and skb_unref().
+[HOW]
+ABGR16161616 needs to be included in dml2/2.1 translation.
 
-Now unix_sk(sk)->oob_skb is just a pointer to skb in the receive queue,
-so special handing is no longer needed in GC.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20240816233921.57800-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 32ca245464e1 ("af_unix: Don't leave consecutive consumed OOB skbs.")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Austin Zheng <austin.zheng@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d023de809f85307ca819a9dbbceee6ae1f50e2ad)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 27 +++++----------------------
- net/unix/garbage.c | 24 +++---------------------
- 2 files changed, 8 insertions(+), 43 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c |    1 +
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c        |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 79b783a70c87d..9ef6011a055b1 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -604,10 +604,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
- 	unix_state_unlock(sk);
- 
- #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
--	if (u->oob_skb) {
--		kfree_skb(u->oob_skb);
--		u->oob_skb = NULL;
--	}
-+	u->oob_skb = NULL;
- #endif
- 
- 	wake_up_interruptible_all(&u->peer_wait);
-@@ -2133,13 +2130,9 @@ static int queue_oob(struct socket *sock, struct msghdr *msg, struct sock *other
- 	}
- 
- 	maybe_add_creds(skb, sock, other);
--	skb_get(skb);
--
- 	scm_stat_add(other, skb);
- 
- 	spin_lock(&other->sk_receive_queue.lock);
--	if (ousk->oob_skb)
--		consume_skb(ousk->oob_skb);
- 	WRITE_ONCE(ousk->oob_skb, skb);
- 	__skb_queue_tail(&other->sk_receive_queue, skb);
- 	spin_unlock(&other->sk_receive_queue.lock);
-@@ -2640,8 +2633,6 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
- 
- 	if (!(state->flags & MSG_PEEK))
- 		WRITE_ONCE(u->oob_skb, NULL);
--	else
--		skb_get(oob_skb);
- 
- 	spin_unlock(&sk->sk_receive_queue.lock);
- 	unix_state_unlock(sk);
-@@ -2651,8 +2642,6 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
- 	if (!(state->flags & MSG_PEEK))
- 		UNIXCB(oob_skb).consumed += 1;
- 
--	consume_skb(oob_skb);
--
- 	mutex_unlock(&u->iolock);
- 
- 	if (chunk < 0)
-@@ -2680,12 +2669,10 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
- 			if (copied) {
- 				skb = NULL;
- 			} else if (!(flags & MSG_PEEK)) {
--				if (sock_flag(sk, SOCK_URGINLINE)) {
--					WRITE_ONCE(u->oob_skb, NULL);
--					consume_skb(skb);
--				} else {
-+				WRITE_ONCE(u->oob_skb, NULL);
-+
-+				if (!sock_flag(sk, SOCK_URGINLINE)) {
- 					__skb_unlink(skb, &sk->sk_receive_queue);
--					WRITE_ONCE(u->oob_skb, NULL);
- 					unlinked_skb = skb;
- 					skb = skb_peek(&sk->sk_receive_queue);
- 				}
-@@ -2696,10 +2683,7 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
- 
- 		spin_unlock(&sk->sk_receive_queue.lock);
- 
--		if (unlinked_skb) {
--			WARN_ON_ONCE(skb_unref(unlinked_skb));
--			kfree_skb(unlinked_skb);
--		}
-+		kfree_skb(unlinked_skb);
- 	}
- 	return skb;
- }
-@@ -2742,7 +2726,6 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
- 		unix_state_unlock(sk);
- 
- 		if (drop) {
--			WARN_ON_ONCE(skb_unref(skb));
- 			kfree_skb(skb);
- 			return -EAGAIN;
- 		}
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 23efb78fe9ef4..0068e758be4dd 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -337,23 +337,6 @@ static bool unix_vertex_dead(struct unix_vertex *vertex)
- 	return true;
- }
- 
--enum unix_recv_queue_lock_class {
--	U_RECVQ_LOCK_NORMAL,
--	U_RECVQ_LOCK_EMBRYO,
--};
--
--static void unix_collect_queue(struct unix_sock *u, struct sk_buff_head *hitlist)
--{
--	skb_queue_splice_init(&u->sk.sk_receive_queue, hitlist);
--
--#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
--	if (u->oob_skb) {
--		WARN_ON_ONCE(skb_unref(u->oob_skb));
--		u->oob_skb = NULL;
--	}
--#endif
--}
--
- static void unix_collect_skb(struct list_head *scc, struct sk_buff_head *hitlist)
- {
- 	struct unix_vertex *vertex;
-@@ -375,13 +358,12 @@ static void unix_collect_skb(struct list_head *scc, struct sk_buff_head *hitlist
- 			skb_queue_walk(queue, skb) {
- 				struct sk_buff_head *embryo_queue = &skb->sk->sk_receive_queue;
- 
--				/* listener -> embryo order, the inversion never happens. */
--				spin_lock_nested(&embryo_queue->lock, U_RECVQ_LOCK_EMBRYO);
--				unix_collect_queue(unix_sk(skb->sk), hitlist);
-+				spin_lock(&embryo_queue->lock);
-+				skb_queue_splice_init(embryo_queue, hitlist);
- 				spin_unlock(&embryo_queue->lock);
- 			}
- 		} else {
--			unix_collect_queue(u, hitlist);
-+			skb_queue_splice_init(queue, hitlist);
- 		}
- 
- 		spin_unlock(&queue->lock);
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
+@@ -785,6 +785,7 @@ static void populate_dml21_plane_config_
+ 		plane->pixel_format = dml2_420_10;
+ 		break;
+ 	case SURFACE_PIXEL_FORMAT_GRPH_ARGB16161616:
++	case SURFACE_PIXEL_FORMAT_GRPH_ABGR16161616:
+ 	case SURFACE_PIXEL_FORMAT_GRPH_ARGB16161616F:
+ 	case SURFACE_PIXEL_FORMAT_GRPH_ABGR16161616F:
+ 		plane->pixel_format = dml2_444_64;
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+@@ -953,6 +953,7 @@ static void populate_dml_surface_cfg_fro
+ 		out->SourcePixelFormat[location] = dml_420_10;
+ 		break;
+ 	case SURFACE_PIXEL_FORMAT_GRPH_ARGB16161616:
++	case SURFACE_PIXEL_FORMAT_GRPH_ABGR16161616:
+ 	case SURFACE_PIXEL_FORMAT_GRPH_ARGB16161616F:
+ 	case SURFACE_PIXEL_FORMAT_GRPH_ABGR16161616F:
+ 		out->SourcePixelFormat[location] = dml_444_64;
 
 
 
