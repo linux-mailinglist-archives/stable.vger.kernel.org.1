@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-160051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A341AF7C3F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:33:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 079F1AF7B72
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C22AA4834A9
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 201115838E8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34A72EFDAF;
-	Thu,  3 Jul 2025 15:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F9D19F43A;
+	Thu,  3 Jul 2025 15:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZYjIt/m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4pS9D0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7972EFD8E;
-	Thu,  3 Jul 2025 15:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290012F0035;
+	Thu,  3 Jul 2025 15:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556212; cv=none; b=uS/7ixsGbtSP5QdsY66MU+LKXeqXjX7rL+tRp6yw1MpStxXw6u/QWjftIzIBiNcRmd1Ma39RFitqZQEHzsBbxUjnVYM6q9UWoh3BB5Qh39/jZNarxYbQULzZneJwqXUfrhQppRvDeezrIc+TClfZxSR13EdHVihTJDg3HbxPzj4=
+	t=1751555875; cv=none; b=a74oI1U4+ETz/lUvUGKKYERzcfPg6q6ltz14NodyVIGHwq0BxQnwr0MTTf+18gLVo9+kD9+Kk+jM+b7ZddxVkS9lnO78Jx77mW+iWjbDOHoJkATvnD5FMFocz1fBcOv2nIlhUA9oDnibk+KcxAb0byTRMSxehYG86pPgtMZ/JKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556212; c=relaxed/simple;
-	bh=fN1IkS37/yWBUrLrvZcBAAzdZohcWUDuyI57jAjwzGE=;
+	s=arc-20240116; t=1751555875; c=relaxed/simple;
+	bh=iMJAQPLfPaygTyuWUgTXA73r/ILGpNzFXSSUtRqvtI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HLeMKLBcisYj4AAvTKHKIQEwoaYMmAq8MKl7Ove5mhdQTYnX+/uAG1x2vardrphH3OAxGwHMtcTX8806UyKQgl1xsHo9GJn55/SMM81xcOn31CsNoEFgDzWWqBSM9h5JWd4tvUEvYlPQRGwi9btdSYqplXOFroeRpiUUoiYMwF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZYjIt/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E454AC4CEE3;
-	Thu,  3 Jul 2025 15:23:31 +0000 (UTC)
+	 MIME-Version; b=VmGzf4qoo1Jolp5/HTOuPXUkoiQDyBISiGoxrPlXUzwJHWJlrq6JJFfMjpBGWyRC623jRJPDuhP1HHwHQ1n4YscD9CgLZjR29/MTYMl6dHfQgmPyVaLu30CoRFg7DZHH3lyz+X+l8jVj9LbXK2LHiuPa/e5GNxPMSYyNuX2Pvek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4pS9D0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE614C4CEE3;
+	Thu,  3 Jul 2025 15:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556212;
-	bh=fN1IkS37/yWBUrLrvZcBAAzdZohcWUDuyI57jAjwzGE=;
+	s=korg; t=1751555875;
+	bh=iMJAQPLfPaygTyuWUgTXA73r/ILGpNzFXSSUtRqvtI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CZYjIt/mlc4kpM02IAJ8zCLBT5j47WkfzORIC6sISWQmUJe8i44MTq+5q3MRkXP/p
-	 b5mJY3/WivmrB+6+FiJ5tFH26YIUzQ9724inAY9/TcHsg3n/ISn1yD5WrMruG6TEB+
-	 FDc5rHp+ML9aglvNyOgCUyoYpdWmyoE6PKU0tqao=
+	b=R4pS9D0h9U740J9wy7nIDzxNDMwHRXQLSl2KcV4dBKkP3z8N3Ga2MAOcF3T3vXIBf
+	 uTy6w8geN6H+no2tzGAmOlkqxcFzyEAzDYvfsxEbZEuHoSQdBDKnyey02u3tWyVSSS
+	 2jas25HXd0qnDznO+DgSpsn6QFyV9eiZ85hALLww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.1 110/132] drm/bridge: cdns-dsi: Fix connecting to next bridge
+	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 136/139] spi: spi-cadence-quadspi: Fix pm runtime unbalance
 Date: Thu,  3 Jul 2025 16:43:19 +0200
-Message-ID: <20250703143943.710064562@linuxfoundation.org>
+Message-ID: <20250703143946.496631282@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
 
-commit 688eb4d465484bc2a3471a6a6f06f833b58c7867 upstream.
+commit b07f349d1864abe29436f45e3047da2bdd476462 upstream.
 
-Fix the OF node pointer passed to the of_drm_find_bridge() call to find
-the next bridge in the display chain.
+Having PM put sync in remove function is causing PM underflow during
+remove operation. This is caused by the function, runtime_pm_get_sync,
+not being called anywhere during the op. Ensure that calls to
+pm_runtime_enable()/pm_runtime_disable() and
+pm_runtime_get_sync()/pm_runtime_put_sync() match.
 
-The code to find the next panel (and create its panel-bridge) works
-fine, but to find the next (non-panel) bridge does not.
+echo 108d2000.spi > /sys/bus/platform/drivers/cadence-qspi/unbind
+[   49.644256] Deleting MTD partitions on "108d2000.spi.0":
+[   49.649575] Deleting u-boot MTD partition
+[   49.684087] Deleting root MTD partition
+[   49.724188] cadence-qspi 108d2000.spi: Runtime PM usage count underflow!
 
-To find the next bridge in the pipeline, we need to pass "np" - the OF
-node pointer of the next entity in the devicetree chain. Passing
-"of_node" to of_drm_find_bridge (which is what the code does currently)
-will fetch the bridge for the cdns-dsi which is not what's required.
+Continuous bind/unbind will result in an "Unbalanced pm_runtime_enable" error.
+Subsequent unbind attempts will return a "No such device" error, while bind
+attempts will return a "Resource temporarily unavailable" error.
 
-Fix that.
+[   47.592434] cadence-qspi 108d2000.spi: Runtime PM usage count underflow!
+[   49.592233] cadence-qspi 108d2000.spi: detected FIFO depth (1024) different from config (128)
+[   53.232309] cadence-qspi 108d2000.spi: Runtime PM usage count underflow!
+[   55.828550] cadence-qspi 108d2000.spi: detected FIFO depth (1024) different from config (128)
+[   57.940627] cadence-qspi 108d2000.spi: Runtime PM usage count underflow!
+[   59.912490] cadence-qspi 108d2000.spi: detected FIFO depth (1024) different from config (128)
+[   61.876243] cadence-qspi 108d2000.spi: Runtime PM usage count underflow!
+[   61.883000] platform 108d2000.spi: Unbalanced pm_runtime_enable!
+[  532.012270] cadence-qspi 108d2000.spi: probe with driver cadence-qspi failed1
 
-Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Link: https://lore.kernel.org/r/20250329113925.68204-2-aradhya.bhatia@linux.dev
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Also, change clk_disable_unprepare() to clk_disable() since continuous
+bind and unbind operations will trigger a warning indicating that the clock is
+already unprepared.
+
+Fixes: 4892b374c9b7 ("mtd: spi-nor: cadence-quadspi: Add runtime PM support")
+cc: stable@vger.kernel.org # 6.6+
+Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Link: https://patch.msgid.link/4e7a4b8aba300e629b45a04f90bddf665fbdb335.1749601877.git.khairul.anuar.romli@altera.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/cdns-dsi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/bridge/cdns-dsi.c
-+++ b/drivers/gpu/drm/bridge/cdns-dsi.c
-@@ -992,7 +992,7 @@ static int cdns_dsi_attach(struct mipi_d
- 		bridge = drm_panel_bridge_add_typed(panel,
- 						    DRM_MODE_CONNECTOR_DSI);
- 	} else {
--		bridge = of_drm_find_bridge(dev->dev.of_node);
-+		bridge = of_drm_find_bridge(np);
- 		if (!bridge)
- 			bridge = ERR_PTR(-EINVAL);
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1868,6 +1868,13 @@ static int cqspi_probe(struct platform_d
+ 			goto probe_setup_failed;
  	}
+ 
++	pm_runtime_enable(dev);
++
++	if (cqspi->rx_chan) {
++		dma_release_channel(cqspi->rx_chan);
++		goto probe_setup_failed;
++	}
++
+ 	ret = spi_register_controller(host);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
+@@ -1877,6 +1884,7 @@ static int cqspi_probe(struct platform_d
+ 	return 0;
+ probe_setup_failed:
+ 	cqspi_controller_enable(cqspi, 0);
++	pm_runtime_disable(dev);
+ probe_reset_failed:
+ 	if (cqspi->is_jh7110)
+ 		cqspi_jh7110_disable_clk(pdev, cqspi);
+@@ -1898,7 +1906,8 @@ static void cqspi_remove(struct platform
+ 	if (cqspi->rx_chan)
+ 		dma_release_channel(cqspi->rx_chan);
+ 
+-	clk_disable_unprepare(cqspi->clk);
++	if (pm_runtime_get_sync(&pdev->dev) >= 0)
++		clk_disable(cqspi->clk);
+ 
+ 	if (cqspi->is_jh7110)
+ 		cqspi_jh7110_disable_clk(pdev, cqspi);
 
 
 
