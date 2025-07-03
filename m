@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-159906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD1DAF7B98
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC750AF78FF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DD971CA81A2
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:18:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB0D95831A0
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EBF322B5A3;
-	Thu,  3 Jul 2025 15:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242072EF9DD;
+	Thu,  3 Jul 2025 14:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1o4SINYl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcryNDaA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE5522B8AB;
-	Thu,  3 Jul 2025 15:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A8E2EF672;
+	Thu,  3 Jul 2025 14:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555733; cv=none; b=J74/q8sfQQH5begaFIIjfG5kDdySruffI4eJooAravgA60F23eJogMJQiNLxt22KWTsKWkUjcpRN57DJx60b+EN8Jh6Wkr30qejbS3xtskAo0quP6qhTlWiJwigpZurtvXz9P9rkmvsQQ5Ils6epJYD5yYYYVDQ8KlqhqqX+nEo=
+	t=1751554412; cv=none; b=guFQy3gZqHwNWpCYLZNPCT5v4NUtF4HAuwas61nktpcTYm2wdQ94MKkm6fOAGU6YvkVw4/8VO9pZy7lIct1JG7ilcyQq2CTiIoIrkkeHN7Ew7rPC1tP52OQx0Vy091I4/1FPWL/S13CqZ9xFW1tJq7pjvF0/0bhts3Yk3lkuJKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555733; c=relaxed/simple;
-	bh=K/n8zeHwSccs13NNe7qQ5fOtdApmfKGnqca4sIzbFu4=;
+	s=arc-20240116; t=1751554412; c=relaxed/simple;
+	bh=qM5SEuJqLgRzw5uI1Lq2hnBeRryy70oRgSETfad44Jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hD7IVZe4sniNIIsmO/KvCrxGU3gd12dmXFMd2FggcH8rs9dY0lqZsg6Z+P5o+IOjlXhXLAXUvip9y8VQKc6BD7tae7iWWuq3DY7y7KynmzfmG9+S2Rwc+8tj5wGEsBiWIVYu4Rt+amWGysxbd533c3M+Qmf2izto9RUomaqng4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1o4SINYl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA828C4CEE3;
-	Thu,  3 Jul 2025 15:15:32 +0000 (UTC)
+	 MIME-Version; b=Jloxu1RRg33JtB9H7GKJs3RCLqGMFIL61akv4owDGakgiX13vp8OphhmTMbwgM4YTzK3LqH6Yu/ZQLUz9majW9teOX2guxMEJnqni8zarjrSqAIpXCviwGex+ouVe5grDUDcyIhQ79ZnjZ/xFqjtV22HKNx3NnRSbIdy/1BIm34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcryNDaA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2D7C4CEE3;
+	Thu,  3 Jul 2025 14:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555733;
-	bh=K/n8zeHwSccs13NNe7qQ5fOtdApmfKGnqca4sIzbFu4=;
+	s=korg; t=1751554412;
+	bh=qM5SEuJqLgRzw5uI1Lq2hnBeRryy70oRgSETfad44Jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1o4SINYlLXwDl7Gq2F/I1SCqj5Xeb2Wv3LGJ++G22GEKPN9K1DFcGCY9Y2i4uYR5G
-	 rXVrAxQsKwVFk4VaFJJ5WUOUPmrJ9b+7bUeWPhqCvgMoXuYCg4TyHPNKMsYc9Olcjw
-	 5ZPmEEC+jax4XymMWXJhwz4U8UAjPwp4mGt/oYQs=
+	b=dcryNDaA4vGNPmPvVOlHDYoTz3lcbXP45VxMlpQx9bXH25An/4cn9i/f0/NBISXNY
+	 JOkO6HTsj2GkWFSBIhCvgSaitlC2hZnqSYqSYrUjdivM+1aiSURDeXPG91ryaOXJOE
+	 eTUhdIlKnqUCXaDNsA6jWB1izwVy/6qZCUlNd7Gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/139] platform/x86: ideapad-laptop: move ACPI helpers from header to source file
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Aruna Ramakrishna <aruna.ramakrishna@oracle.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ben Hutchings <ben@decadent.org.uk>
+Subject: [PATCH 6.12 179/218] x86/pkeys: Simplify PKRU update in signal frame
 Date: Thu,  3 Jul 2025 16:42:07 +0200
-Message-ID: <20250703143943.668727834@linuxfoundation.org>
+Message-ID: <20250703144003.331961227@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,366 +67,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Chang S. Bae <chang.seok.bae@intel.com>
 
-[ Upstream commit 6c1fa8edfef815a97db57f30216265bfa152792d ]
+commit d1e420772cd1eb0afe5858619c73ce36f3e781a1 upstream.
 
-Since moving ymc_trigger_ec from lenovo-ymc to ideapad-laptop, only the
-latter uses these definitions and functions.
+The signal delivery logic was modified to always set the PKRU bit in
+xregs_state->header->xfeatures by this commit:
 
-Move them back to source file.
+    ae6012d72fa6 ("x86/pkeys: Ensure updated PKRU value is XRSTOR'd")
 
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/57a48d2582b567f6c6fbcd3b379e17aee0fb5a94.1721898747.git.soyer@irl.hu
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Stable-dep-of: 5808c3421695 ("platform/x86: ideapad-laptop: use usleep_range() for EC polling")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, the change derives the bitmask value using XGETBV(1), rather
+than simply updating the buffer that already holds the value. Thus, this
+approach induces an unnecessary dependency on XGETBV1 for PKRU handling.
+
+Eliminate the dependency by using the established helper function.
+Subsequently, remove the now-unused 'mask' argument.
+
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/r/20250416021720.12305-9-chang.seok.bae@intel.com
+Cc: Ben Hutchings <ben@decadent.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/ideapad-laptop.c | 136 +++++++++++++++++++++++++
- drivers/platform/x86/ideapad-laptop.h | 139 --------------------------
- 2 files changed, 136 insertions(+), 139 deletions(-)
+ arch/x86/kernel/fpu/xstate.h |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
-index 3d23c4f908426..db8256cde34aa 100644
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -21,6 +21,7 @@
- #include <linux/init.h>
- #include <linux/input.h>
- #include <linux/input/sparse-keymap.h>
-+#include <linux/jiffies.h>
- #include <linux/kernel.h>
- #include <linux/leds.h>
- #include <linux/module.h>
-@@ -86,6 +87,34 @@ enum {
- 	SALS_FNLOCK_OFF       = 0xf,
- };
- 
-+enum {
-+	VPCCMD_R_VPC1 = 0x10,
-+	VPCCMD_R_BL_MAX,
-+	VPCCMD_R_BL,
-+	VPCCMD_W_BL,
-+	VPCCMD_R_WIFI,
-+	VPCCMD_W_WIFI,
-+	VPCCMD_R_BT,
-+	VPCCMD_W_BT,
-+	VPCCMD_R_BL_POWER,
-+	VPCCMD_R_NOVO,
-+	VPCCMD_R_VPC2,
-+	VPCCMD_R_TOUCHPAD,
-+	VPCCMD_W_TOUCHPAD,
-+	VPCCMD_R_CAMERA,
-+	VPCCMD_W_CAMERA,
-+	VPCCMD_R_3G,
-+	VPCCMD_W_3G,
-+	VPCCMD_R_ODD, /* 0x21 */
-+	VPCCMD_W_FAN,
-+	VPCCMD_R_RF,
-+	VPCCMD_W_RF,
-+	VPCCMD_W_YMC = 0x2A,
-+	VPCCMD_R_FAN = 0x2B,
-+	VPCCMD_R_SPECIAL_BUTTONS = 0x31,
-+	VPCCMD_W_BL_POWER = 0x33,
-+};
-+
+--- a/arch/x86/kernel/fpu/xstate.h
++++ b/arch/x86/kernel/fpu/xstate.h
+@@ -85,18 +85,15 @@ static inline int set_xfeature_in_sigfra
  /*
-  * These correspond to the number of supported states - 1
-  * Future keyboard types may need a new system, if there's a collision
-@@ -234,6 +263,7 @@ static void ideapad_shared_exit(struct ideapad_private *priv)
- /*
-  * ACPI Helpers
+  * Update the value of PKRU register that was already pushed onto the signal frame.
   */
-+#define IDEAPAD_EC_TIMEOUT 200 /* in ms */
- 
- static int eval_int(acpi_handle handle, const char *name, unsigned long *res)
+-static inline int update_pkru_in_sigframe(struct xregs_state __user *buf, u64 mask, u32 pkru)
++static inline int update_pkru_in_sigframe(struct xregs_state __user *buf, u32 pkru)
  {
-@@ -249,6 +279,29 @@ static int eval_int(acpi_handle handle, const char *name, unsigned long *res)
- 	return 0;
+-	u64 xstate_bv;
+ 	int err;
+ 
+ 	if (unlikely(!cpu_feature_enabled(X86_FEATURE_OSPKE)))
+ 		return 0;
+ 
+ 	/* Mark PKRU as in-use so that it is restored correctly. */
+-	xstate_bv = (mask & xfeatures_in_use()) | XFEATURE_MASK_PKRU;
+-
+-	err =  __put_user(xstate_bv, &buf->header.xfeatures);
++	err = set_xfeature_in_sigframe(buf, XFEATURE_MASK_PKRU);
+ 	if (err)
+ 		return err;
+ 
+@@ -317,7 +314,7 @@ static inline int xsave_to_user_sigframe
+ 	clac();
+ 
+ 	if (!err)
+-		err = update_pkru_in_sigframe(buf, mask, pkru);
++		err = update_pkru_in_sigframe(buf, pkru);
+ 
+ 	return err;
  }
- 
-+static int eval_int_with_arg(acpi_handle handle, const char *name, unsigned long arg,
-+			     unsigned long *res)
-+{
-+	struct acpi_object_list params;
-+	unsigned long long result;
-+	union acpi_object in_obj;
-+	acpi_status status;
-+
-+	params.count = 1;
-+	params.pointer = &in_obj;
-+	in_obj.type = ACPI_TYPE_INTEGER;
-+	in_obj.integer.value = arg;
-+
-+	status = acpi_evaluate_integer(handle, (char *)name, &params, &result);
-+	if (ACPI_FAILURE(status))
-+		return -EIO;
-+
-+	if (res)
-+		*res = result;
-+
-+	return 0;
-+}
-+
- static int exec_simple_method(acpi_handle handle, const char *name, unsigned long arg)
- {
- 	acpi_status status = acpi_execute_simple_method(handle, (char *)name, arg);
-@@ -291,6 +344,89 @@ static int eval_dytc(acpi_handle handle, unsigned long cmd, unsigned long *res)
- 	return eval_int_with_arg(handle, "DYTC", cmd, res);
- }
- 
-+static int eval_vpcr(acpi_handle handle, unsigned long cmd, unsigned long *res)
-+{
-+	return eval_int_with_arg(handle, "VPCR", cmd, res);
-+}
-+
-+static int eval_vpcw(acpi_handle handle, unsigned long cmd, unsigned long data)
-+{
-+	struct acpi_object_list params;
-+	union acpi_object in_obj[2];
-+	acpi_status status;
-+
-+	params.count = 2;
-+	params.pointer = in_obj;
-+	in_obj[0].type = ACPI_TYPE_INTEGER;
-+	in_obj[0].integer.value = cmd;
-+	in_obj[1].type = ACPI_TYPE_INTEGER;
-+	in_obj[1].integer.value = data;
-+
-+	status = acpi_evaluate_object(handle, "VPCW", &params, NULL);
-+	if (ACPI_FAILURE(status))
-+		return -EIO;
-+
-+	return 0;
-+}
-+
-+static int read_ec_data(acpi_handle handle, unsigned long cmd, unsigned long *data)
-+{
-+	unsigned long end_jiffies, val;
-+	int err;
-+
-+	err = eval_vpcw(handle, 1, cmd);
-+	if (err)
-+		return err;
-+
-+	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
-+
-+	while (time_before(jiffies, end_jiffies)) {
-+		schedule();
-+
-+		err = eval_vpcr(handle, 1, &val);
-+		if (err)
-+			return err;
-+
-+		if (val == 0)
-+			return eval_vpcr(handle, 0, data);
-+	}
-+
-+	acpi_handle_err(handle, "timeout in %s\n", __func__);
-+
-+	return -ETIMEDOUT;
-+}
-+
-+static int write_ec_cmd(acpi_handle handle, unsigned long cmd, unsigned long data)
-+{
-+	unsigned long end_jiffies, val;
-+	int err;
-+
-+	err = eval_vpcw(handle, 0, data);
-+	if (err)
-+		return err;
-+
-+	err = eval_vpcw(handle, 1, cmd);
-+	if (err)
-+		return err;
-+
-+	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
-+
-+	while (time_before(jiffies, end_jiffies)) {
-+		schedule();
-+
-+		err = eval_vpcr(handle, 1, &val);
-+		if (err)
-+			return err;
-+
-+		if (val == 0)
-+			return 0;
-+	}
-+
-+	acpi_handle_err(handle, "timeout in %s\n", __func__);
-+
-+	return -ETIMEDOUT;
-+}
-+
- /*
-  * debugfs
-  */
-diff --git a/drivers/platform/x86/ideapad-laptop.h b/drivers/platform/x86/ideapad-laptop.h
-index 948cc61800a95..1e52f2aa0aac3 100644
---- a/drivers/platform/x86/ideapad-laptop.h
-+++ b/drivers/platform/x86/ideapad-laptop.h
-@@ -9,9 +9,6 @@
- #ifndef _IDEAPAD_LAPTOP_H_
- #define _IDEAPAD_LAPTOP_H_
- 
--#include <linux/acpi.h>
--#include <linux/jiffies.h>
--#include <linux/errno.h>
- #include <linux/notifier.h>
- 
- enum ideapad_laptop_notifier_actions {
-@@ -22,140 +19,4 @@ int ideapad_laptop_register_notifier(struct notifier_block *nb);
- int ideapad_laptop_unregister_notifier(struct notifier_block *nb);
- void ideapad_laptop_call_notifier(unsigned long action, void *data);
- 
--enum {
--	VPCCMD_R_VPC1 = 0x10,
--	VPCCMD_R_BL_MAX,
--	VPCCMD_R_BL,
--	VPCCMD_W_BL,
--	VPCCMD_R_WIFI,
--	VPCCMD_W_WIFI,
--	VPCCMD_R_BT,
--	VPCCMD_W_BT,
--	VPCCMD_R_BL_POWER,
--	VPCCMD_R_NOVO,
--	VPCCMD_R_VPC2,
--	VPCCMD_R_TOUCHPAD,
--	VPCCMD_W_TOUCHPAD,
--	VPCCMD_R_CAMERA,
--	VPCCMD_W_CAMERA,
--	VPCCMD_R_3G,
--	VPCCMD_W_3G,
--	VPCCMD_R_ODD, /* 0x21 */
--	VPCCMD_W_FAN,
--	VPCCMD_R_RF,
--	VPCCMD_W_RF,
--	VPCCMD_W_YMC = 0x2A,
--	VPCCMD_R_FAN = 0x2B,
--	VPCCMD_R_SPECIAL_BUTTONS = 0x31,
--	VPCCMD_W_BL_POWER = 0x33,
--};
--
--static inline int eval_int_with_arg(acpi_handle handle, const char *name, unsigned long arg, unsigned long *res)
--{
--	struct acpi_object_list params;
--	unsigned long long result;
--	union acpi_object in_obj;
--	acpi_status status;
--
--	params.count = 1;
--	params.pointer = &in_obj;
--	in_obj.type = ACPI_TYPE_INTEGER;
--	in_obj.integer.value = arg;
--
--	status = acpi_evaluate_integer(handle, (char *)name, &params, &result);
--	if (ACPI_FAILURE(status))
--		return -EIO;
--
--	if (res)
--		*res = result;
--
--	return 0;
--}
--
--static inline int eval_vpcr(acpi_handle handle, unsigned long cmd, unsigned long *res)
--{
--	return eval_int_with_arg(handle, "VPCR", cmd, res);
--}
--
--static inline int eval_vpcw(acpi_handle handle, unsigned long cmd, unsigned long data)
--{
--	struct acpi_object_list params;
--	union acpi_object in_obj[2];
--	acpi_status status;
--
--	params.count = 2;
--	params.pointer = in_obj;
--	in_obj[0].type = ACPI_TYPE_INTEGER;
--	in_obj[0].integer.value = cmd;
--	in_obj[1].type = ACPI_TYPE_INTEGER;
--	in_obj[1].integer.value = data;
--
--	status = acpi_evaluate_object(handle, "VPCW", &params, NULL);
--	if (ACPI_FAILURE(status))
--		return -EIO;
--
--	return 0;
--}
--
--#define IDEAPAD_EC_TIMEOUT 200 /* in ms */
--
--static inline int read_ec_data(acpi_handle handle, unsigned long cmd, unsigned long *data)
--{
--	unsigned long end_jiffies, val;
--	int err;
--
--	err = eval_vpcw(handle, 1, cmd);
--	if (err)
--		return err;
--
--	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
--
--	while (time_before(jiffies, end_jiffies)) {
--		schedule();
--
--		err = eval_vpcr(handle, 1, &val);
--		if (err)
--			return err;
--
--		if (val == 0)
--			return eval_vpcr(handle, 0, data);
--	}
--
--	acpi_handle_err(handle, "timeout in %s\n", __func__);
--
--	return -ETIMEDOUT;
--}
--
--static inline int write_ec_cmd(acpi_handle handle, unsigned long cmd, unsigned long data)
--{
--	unsigned long end_jiffies, val;
--	int err;
--
--	err = eval_vpcw(handle, 0, data);
--	if (err)
--		return err;
--
--	err = eval_vpcw(handle, 1, cmd);
--	if (err)
--		return err;
--
--	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
--
--	while (time_before(jiffies, end_jiffies)) {
--		schedule();
--
--		err = eval_vpcr(handle, 1, &val);
--		if (err)
--			return err;
--
--		if (val == 0)
--			return 0;
--	}
--
--	acpi_handle_err(handle, "timeout in %s\n", __func__);
--
--	return -ETIMEDOUT;
--}
--
--#undef IDEAPAD_EC_TIMEOUT
- #endif /* !_IDEAPAD_LAPTOP_H_ */
--- 
-2.39.5
-
 
 
 
