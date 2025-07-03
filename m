@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-159593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1682AF798E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:03:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08EA2AF782B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:47:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14FBF1884E86
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:59:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5031D3B6FE9
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982432ED857;
-	Thu,  3 Jul 2025 14:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326AB2ED871;
+	Thu,  3 Jul 2025 14:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWAdgkeF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0vvxnR5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556AB2E7F1A;
-	Thu,  3 Jul 2025 14:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E135213A258;
+	Thu,  3 Jul 2025 14:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554721; cv=none; b=uLMw/ylGsXeJ53585fCULNMXYuezxlmaLRuerZ5IN7X++CHDgRszIJ8/+dcuU4kr1CsJ2lNX2I+AT7sYv5RNXGLOPJRW0eKpMEbrTogFn0bhdKuFLS+6G90Bjg6CIlA2jh3rsYcO0t70nx1wlV1TWn5ENCDer/x1Ja1Oz+dPQY0=
+	t=1751554033; cv=none; b=TJF8YfRp8HBcZ4e469TnENqo3O5qmUzefXXPsUCxX2DiXAkIllfZ3Va/DJRg4wdhxcl75KQRflve3IILqUVaIn7an0dKlle9+pcSSeAj8u3ZnY60483k9dsqM+609adAtYvpP+vrDq03jDwx2QRw3oL6kvwNwd18bp5C8tUUKfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554721; c=relaxed/simple;
-	bh=hQBiNbQ3znnqDMQHdr05F4+5oO0ncKBpc6lYaRZOtHY=;
+	s=arc-20240116; t=1751554033; c=relaxed/simple;
+	bh=0aSlaV3xrqzXIbqEtxuqO2dyVDqWIZwTIc90T8UIMQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rhStDT2OfgN23I5C/ZFct0igX4NJxrdGT/j72XfoLEGvS+Qdk88zJqys7FnWATbs1x12y+xRQn1vKRYu0B7XxiDQSLf74obHIOF6qTYhU4a2ENlX5yiAHY43rHB53vFY4tpWVbla9A5OGkySa+b4Y0v87FNMZdDVKG9RU0MSm+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWAdgkeF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA448C4CEE3;
-	Thu,  3 Jul 2025 14:58:40 +0000 (UTC)
+	 MIME-Version; b=u7A5Sf3PxLWt6zyWuQd52R1sptRwEVk8xDI+4+j0tSLLW8DAB5B4pFTxdkHSyMn6hi9PNB3ACNyuUTegvwM05HTQzhuT9l0CthrRh8U0/qZIQBlm9Z+VjALoVLttzz8KRcBEIKNWxmTuPJKiF+47YXUoEsrgcT79QsO4s97RpIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0vvxnR5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C4F5C4CEF0;
+	Thu,  3 Jul 2025 14:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554721;
-	bh=hQBiNbQ3znnqDMQHdr05F4+5oO0ncKBpc6lYaRZOtHY=;
+	s=korg; t=1751554032;
+	bh=0aSlaV3xrqzXIbqEtxuqO2dyVDqWIZwTIc90T8UIMQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cWAdgkeF2Ba8oSsWHaQQSDKry5uSiYehHAfS8x3bC+85GuXP+SSgjEc1T/jBw8aDJ
-	 6KaISM5y/9ygNv4KzNu+z3RHHYuLauyQQyPKKJpLhsLXYcnHbX7tiOo/Kv8xsokG9G
-	 gUDHHJJKzTwROKXNgI8n5DKZvm9WGn+2maPApMZs=
+	b=d0vvxnR53RdIdC+Be30jRkBQRS9NiuSN9scF922ySTNmPG2i4BvUXQLdIULN07c1Q
+	 BD+ZB58zUIZp/FbzHvzEgMcSnuM8RROt41sFMDnIKFLCunJoUEEPlATNfzffODHx2e
+	 MKmg5L8ZR1VOBUhakNRQAgR4qYsk0hSG5FIBOMds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 056/263] misc: tps6594-pfsm: Add NULL pointer check in tps6594_pfsm_probe()
+Subject: [PATCH 6.12 028/218] md/md-bitmap: fix dm-raid max_write_behind setting
 Date: Thu,  3 Jul 2025 16:39:36 +0200
-Message-ID: <20250703144006.559881066@linuxfoundation.org>
+Message-ID: <20250703143957.085773508@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit a99b598d836c9c6411110c70a2da134c78d96e67 ]
+[ Upstream commit 2afe17794cfed5f80295b1b9facd66e6f65e5002 ]
 
-The returned value, pfsm->miscdev.name, from devm_kasprintf()
-could be NULL.
-A pointer check is added to prevent potential NULL pointer dereference.
-This is similar to the fix in commit 3027e7b15b02
-("ice: Fix some null pointer dereference issues in ice_ptp.c").
+It's supposed to be COUNTER_MAX / 2, not COUNTER_MAX.
 
-This issue is found by our static analysis tool.
-
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250311010511.1028269-1-chenyuan0y@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-raid/20250524061320.370630-14-yukuai1@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/tps6594-pfsm.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/md/md-bitmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/tps6594-pfsm.c b/drivers/misc/tps6594-pfsm.c
-index 0a24ce44cc37c..6db1c9d48f8fc 100644
---- a/drivers/misc/tps6594-pfsm.c
-+++ b/drivers/misc/tps6594-pfsm.c
-@@ -281,6 +281,9 @@ static int tps6594_pfsm_probe(struct platform_device *pdev)
- 	pfsm->miscdev.minor = MISC_DYNAMIC_MINOR;
- 	pfsm->miscdev.name = devm_kasprintf(dev, GFP_KERNEL, "pfsm-%ld-0x%02x",
- 					    tps->chip_id, tps->reg);
-+	if (!pfsm->miscdev.name)
-+		return -ENOMEM;
-+
- 	pfsm->miscdev.fops = &tps6594_pfsm_fops;
- 	pfsm->miscdev.parent = dev->parent;
- 	pfsm->chip_id = tps->chip_id;
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index fbb4f57010da6..c12359fd3a420 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -787,7 +787,7 @@ static int md_bitmap_new_disk_sb(struct bitmap *bitmap)
+ 	 * is a good choice?  We choose COUNTER_MAX / 2 arbitrarily.
+ 	 */
+ 	write_behind = bitmap->mddev->bitmap_info.max_write_behind;
+-	if (write_behind > COUNTER_MAX)
++	if (write_behind > COUNTER_MAX / 2)
+ 		write_behind = COUNTER_MAX / 2;
+ 	sb->write_behind = cpu_to_le32(write_behind);
+ 	bitmap->mddev->bitmap_info.max_write_behind = write_behind;
 -- 
 2.39.5
 
