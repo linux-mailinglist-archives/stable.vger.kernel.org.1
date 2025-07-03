@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F63BAF7A06
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 742BBAF7B36
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0541C540DC8
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:04:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91C331CA747D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CD92ED86E;
-	Thu,  3 Jul 2025 15:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F532EE973;
+	Thu,  3 Jul 2025 15:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tFW4e3vK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0GYR/ug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540122E7BD6;
-	Thu,  3 Jul 2025 15:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935902EBB8D;
+	Thu,  3 Jul 2025 15:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555120; cv=none; b=Km1+XNschn+XLE7NHavPjzhIBNrQdGrctnGneor2XpKRpmImu0vqL/6Z6HZm7EU2CYNe2e+LTaRvWEB/jrpdgV7HjE3bjgU1tTlByCWSqN41a6anfkJlilyYiE2UMp2rSmCDOtlKDUhGWuQM5yCOJOTFvIvbOuset5sd7s61H5o=
+	t=1751555610; cv=none; b=YJ/z4dUbs/SErcSpSqIrwqNezmsF2SQbb+30c6bUSZ4wO0+qPRNRsoho3iJbeaK8DHIhIRXmelmf8kB7pj2VpcbcQlp2O4cO4sZ8Y4OKSVACuGxJ/OsW0ZZVmy7zzjM5vrpjov56Mw1Bww2FipABC9vtMbTNS4u70sQ0EhHu6oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555120; c=relaxed/simple;
-	bh=Lm5wg43UrS6yfSVvtmlfvyEJKv3/X+iKmE+38BGwvpc=;
+	s=arc-20240116; t=1751555610; c=relaxed/simple;
+	bh=3iz7ti98M0KgQrGxBGt4BEIzmLw+4PUCNnkwN8DBPwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKNYxSnbU+gRMEIHnpByEac6fG0OTLwVYqu2aWspWVG84ZQ6Dq24KwQwQfuuAlVknTwRULSieeEk8b8Bxn10azVfdTc2jB0MSf66qgqKtMIv07gEZX83qgmSvPT7TstpUjfxXQ63rp1GFvjCvY59u3BaHVITqfeGC7ELev5TzBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tFW4e3vK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF67CC4CEED;
-	Thu,  3 Jul 2025 15:05:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Il/a5iLqGYW27V7/VAjIe0Gzl6oPh3adw8ZkFQkXnl3qAKZQQBot+epSdYkjSIQ1Q9KK9jILIqi/uLgKpTPeJjMoZYmWuDgnSEPDKFviZULSil3GP4PCUHfFGn00gg5lh+IC1cHvJMKU1MokW6n9i/l18heAiWll1GADZNaYkEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0GYR/ug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05970C4CEE3;
+	Thu,  3 Jul 2025 15:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555120;
-	bh=Lm5wg43UrS6yfSVvtmlfvyEJKv3/X+iKmE+38BGwvpc=;
+	s=korg; t=1751555610;
+	bh=3iz7ti98M0KgQrGxBGt4BEIzmLw+4PUCNnkwN8DBPwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tFW4e3vK0NfGCjkD255w/L6X/3xjdCnU7KrzXsrKSq/0RFbVOoIf2l5ZT8tO5GFRn
-	 Anh0YiG07rR2iDFzSMwfp+H+3LWlst/oucHaOhu/L5AXXjoq5M/VO5NxzPVtTLkj6y
-	 EN5xTdORT5iHjQyRTqVMtfZ+8yP0UBDsuQa63Lm0=
+	b=P0GYR/ugBoti/TCf1NVPzx0NBgjyslBbrwdbeud7IWRiSS/c5BNSXAqbvH0QaTSOp
+	 lpoT6GH3CGLBkouhZDRMyoKW/pg3X4ODOAwnrfSqkWdXH1VGEfwDLaaHTAocoH81et
+	 eI8kp0ZeLu/7wlGLa1TkCAQIVfsoR7yW5lYOc/V4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Mark Harmstone <maharmstone@fb.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.15 181/263] btrfs: update superblocks device bytes_used when dropping chunk
+	Jos Wang <joswang@lenovo.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 038/139] usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode
 Date: Thu,  3 Jul 2025 16:41:41 +0200
-Message-ID: <20250703144011.601432580@linuxfoundation.org>
+Message-ID: <20250703143942.669718788@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <maharmstone@fb.com>
+From: Jos Wang <joswang@lenovo.com>
 
-commit ae4477f937569d097ca5dbce92a89ba384b49bc6 upstream.
+[ Upstream commit b4b38ffb38c91afd4dc387608db26f6fc34ed40b ]
 
-Each superblock contains a copy of the device item for that device. In a
-transaction which drops a chunk but doesn't create any new ones, we were
-correctly updating the device item in the chunk tree but not copying
-over the new bytes_used value to the superblock.
+Although some Type-C DRD devices that do not support the DP Sink
+function (such as Huawei Mate 40Pro), the Source Port initiates
+Enter Mode CMD, but the device responds to Enter Mode ACK, the
+Source port then initiates DP Status Update CMD, and the device
+responds to DP Status Update NAK.
 
-This can be seen by doing the following:
+As PD2.0 spec ("6.4.4.3.4 Enter Mode Command")，A DR_Swap Message
+Shall Not be sent during Modal Operation between the Port Partners.
+At this time, the source port initiates DR_Swap message through the
+"echo device > /sys/class/typec/port0/data_role" command to switch
+the data role from host to device. The device will initiate a Hard
+Reset for recovery, resulting in the failure of data role swap.
 
-  # dd if=/dev/zero of=test bs=4096 count=2621440
-  # mkfs.btrfs test
-  # mount test /root/temp
+Therefore, when DP Status Update NAK is received, Exit Mode CMD is
+initiated to exit the currently entered DP altmode.
 
-  # cd /root/temp
-  # for i in {00..10}; do dd if=/dev/zero of=$i bs=4096 count=32768; done
-  # sync
-  # rm *
-  # sync
-  # btrfs balance start -dusage=0 .
-  # sync
-
-  # cd
-  # umount /root/temp
-  # btrfs check test
-
-For btrfs-check to detect this, you will also need my patch at
-https://github.com/kdave/btrfs-progs/pull/991.
-
-Change btrfs_remove_dev_extents() so that it adds the devices to the
-fs_info->post_commit_list if they're not there already. This causes
-btrfs_commit_device_sizes() to be called, which updates the bytes_used
-value in the superblock.
-
-Fixes: bbbf7243d62d ("btrfs: combine device update operations during transaction commit")
-CC: stable@vger.kernel.org # 5.10+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mark Harmstone <maharmstone@fb.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Jos Wang <joswang@lenovo.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250209071926.69625-1-joswang1221@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/typec/altmodes/displayport.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3281,6 +3281,12 @@ int btrfs_remove_chunk(struct btrfs_tran
- 					device->bytes_used - dev_extent_len);
- 			atomic64_add(dev_extent_len, &fs_info->free_chunk_space);
- 			btrfs_clear_space_info_full(fs_info);
-+
-+			if (list_empty(&device->post_commit_list)) {
-+				list_add_tail(&device->post_commit_list,
-+					      &trans->transaction->dev_update_list);
-+			}
-+
- 			mutex_unlock(&fs_info->chunk_mutex);
- 		}
- 	}
+diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+index ccff838ab89e1..5f6fc5b79212e 100644
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -323,6 +323,10 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
+ 		break;
+ 	case CMDT_RSP_NAK:
+ 		switch (cmd) {
++		case DP_CMD_STATUS_UPDATE:
++			if (typec_altmode_exit(alt))
++				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
++			break;
+ 		case DP_CMD_CONFIGURE:
+ 			dp->data.conf = 0;
+ 			ret = dp_altmode_configured(dp);
+-- 
+2.39.5
+
 
 
 
