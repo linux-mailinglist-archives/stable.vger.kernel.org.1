@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-160072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A07CAAF7C27
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:32:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35676AF7B5A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:24:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 573F45A44A7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:25:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3837E562047
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671752253EA;
-	Thu,  3 Jul 2025 15:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E782EF9CF;
+	Thu,  3 Jul 2025 15:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSaIFdCK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4W26aoz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC07224B1F;
-	Thu,  3 Jul 2025 15:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076192EF9CC;
+	Thu,  3 Jul 2025 15:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556280; cv=none; b=FucITASZrPG8kCZAqUEO5MbumoXrnRZWvLBRzWG4gUrDbhRP8iI6ZQqSNc05G+KePe8NQ881AISHyyDEPQFgfUGVhSq2TSmI8j6aOVNEqQrI6+J1wvPb/lnByY9vbruiYqIul7FnTGRdbyAm7QEObyesG73+et9c1tTsQxAVBkI=
+	t=1751555774; cv=none; b=Q/AJmVJ7x51090RHPAN62e8N7fPUIZx7h/zfzI8i/hPcMLFgnAhwL9VUID5T7mL9wL5EcZdocThX4J6bsmoozD9veV95oZdjKd7OtbCdBHgliU09cwbMMVL6k9bsLhmRbukU+zkLsh6sQ/Hay4rrNboP6xNRuhpe4cWeF+Zl/nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556280; c=relaxed/simple;
-	bh=7m92Zb7Ml09aI5JnSzne1gOS7/BajGdtOzQO8yuQhB8=;
+	s=arc-20240116; t=1751555774; c=relaxed/simple;
+	bh=+DkDReQGcV12+PPUNfX9dexzDfqWZVhhBfJfwyH6RU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=alDKco6VlzmQ+BgKfGxQnjHGYewfs9HY1/cbxidJj4NsnZhHvAV/cheOWAVnuw+8e0fPJhwNO3d+sd12Kw/Vj8uCgeYEp10rLsKw8xewrltL76nOj3oZYR5upmIQ1n9gRFFbNbbSdEvh+IVxs4/9GyyyK3AF+RzdqrFal97EM+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSaIFdCK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E419C4CEED;
-	Thu,  3 Jul 2025 15:24:39 +0000 (UTC)
+	 MIME-Version; b=ILvqRjoPjZsUCsjSFh5jL7SdF97b8XwMH46CGwETD9YcBNQln0UKB4lUeoeB02djlVlm9x7y4WcpElSkhM5tkny2i1ATcOi4HQ5HD4iNRB/lcuE+rROZ8ndNRMujV3e+anbck27tWeqKqnPIQg+9bZxHeAlVEWs7WwRtGnpuiY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4W26aoz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D283C4CEE3;
+	Thu,  3 Jul 2025 15:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556280;
-	bh=7m92Zb7Ml09aI5JnSzne1gOS7/BajGdtOzQO8yuQhB8=;
+	s=korg; t=1751555773;
+	bh=+DkDReQGcV12+PPUNfX9dexzDfqWZVhhBfJfwyH6RU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tSaIFdCKdbvAkwJ9uRkgmBjpWZfdQLZp4x2SyRDXmO0hbSk8vltZa7jZPXFpj+9ky
-	 HbLfDzh8O9s+cd7dPKayjG3BwG0XkzRlqTibqhmWWXPyGX7jPnPCmLP7UBNTxnaQKm
-	 wadyuazWsneqgU/HlZDXTXwgUwkGjq2uMeSB1yN4=
+	b=L4W26aozSA/M++PVPKgmFyH4weHkI3jH7CVtB2bcyNdQ9IArM733r62mUXNS9FXQ+
+	 JuBwpVFXa/tmsuRjbRPRFgA50uJURfVqhFoGXcg01T17xW7N7/IccDVSDw2k0clYU0
+	 D1iZtNive67J6dfXyJ3JwG2v2HFgdlpXEh0Iu1ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yao Zi <ziyao@disroot.org>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH 6.1 091/132] dt-bindings: serial: 8250: Make clocks and clock-frequency exclusive
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 6.6 117/139] drm/bridge: cdns-dsi: Fix the clock variable for mode_valid()
 Date: Thu,  3 Jul 2025 16:43:00 +0200
-Message-ID: <20250703143942.974352320@linuxfoundation.org>
+Message-ID: <20250703143945.762199744@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Aradhya Bhatia <a-bhatia1@ti.com>
 
-commit 09812134071b3941fb81def30b61ed36d3a5dfb5 upstream.
+commit 132bdcec399be6ae947582249a134b38cf56731c upstream.
 
-The 8250 binding before converting to json-schema states,
+The crtc_* mode parameters do not get generated (duplicated in this
+case) from the regular parameters before the mode validation phase
+begins.
 
-  - clock-frequency : the input clock frequency for the UART
-  	or
-  - clocks phandle to refer to the clk used as per Documentation/devicetree
+The rest of the code conditionally uses the crtc_* parameters only
+during the bridge enable phase, but sticks to the regular parameters
+for mode validation. In this singular instance, however, the driver
+tries to use the crtc_clock parameter even during the mode validation,
+causing the validation to fail.
 
-for clock-related properties, where "or" indicates these properties
-shouldn't exist at the same time.
+Allow the D-Phy config checks to use mode->clock instead of
+mode->crtc_clock during mode_valid checks, like everywhere else in the
+driver.
 
-Additionally, the behavior of Linux's driver is strange when both clocks
-and clock-frequency are specified: it ignores clocks and obtains the
-frequency from clock-frequency, left the specified clocks unclaimed. It
-may even be disabled, which is undesired most of the time.
-
-But "anyOf" doesn't prevent these two properties from coexisting, as it
-considers the object valid as long as there's at LEAST one match.
-
-Let's switch to "oneOf" and disallows the other property if one exists,
-precisely matching the original binding and avoiding future confusion on
-the driver's behavior.
-
-Fixes: e69f5dc623f9 ("dt-bindings: serial: Convert 8250 to json-schema")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20250623093445.62327-1-ziyao@disroot.org
+Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
+Cc: stable@vger.kernel.org
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Link: https://lore.kernel.org/r/20250329113925.68204-4-aradhya.bhatia@linux.dev
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/serial/8250.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/serial/8250.yaml
-+++ b/Documentation/devicetree/bindings/serial/8250.yaml
-@@ -44,7 +44,7 @@ allOf:
-                   - ns16550
-                   - ns16550a
-     then:
--      anyOf:
-+      oneOf:
-         - required: [ clock-frequency ]
-         - required: [ clocks ]
+--- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+@@ -568,13 +568,14 @@ static int cdns_dsi_check_conf(struct cd
+ 	struct phy_configure_opts_mipi_dphy *phy_cfg = &output->phy_opts.mipi_dphy;
+ 	unsigned long dsi_hss_hsa_hse_hbp;
+ 	unsigned int nlanes = output->dev->lanes;
++	int mode_clock = (mode_valid_check ? mode->clock : mode->crtc_clock);
+ 	int ret;
+ 
+ 	ret = cdns_dsi_mode2cfg(dsi, mode, dsi_cfg, mode_valid_check);
+ 	if (ret)
+ 		return ret;
+ 
+-	phy_mipi_dphy_get_default_config(mode->crtc_clock * 1000,
++	phy_mipi_dphy_get_default_config(mode_clock * 1000,
+ 					 mipi_dsi_pixel_format_to_bpp(output->dev->format),
+ 					 nlanes, phy_cfg);
  
 
 
