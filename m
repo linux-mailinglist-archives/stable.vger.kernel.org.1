@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-159903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A19BAF7B86
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6304AF7BEA
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5072E482081
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:18:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BC02543500
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6882EAD03;
-	Thu,  3 Jul 2025 15:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD262D6622;
+	Thu,  3 Jul 2025 15:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeuPQm+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANwNz2hL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2926B22B8AB;
-	Thu,  3 Jul 2025 15:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677F315442C;
+	Thu,  3 Jul 2025 15:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555724; cv=none; b=sqkiu6X/OvaTrB44cGedDuXr/kWaLYrdq+WI6mf0/C/hTdeLinNzOpY4scxaujnZ7OEcZ7kyRxaJLkS+RviIWKzi2E152f267+zQikE/K+gXzKV3pySVv+3j/PU3iYuyht0y+XA0LIrzq4FGunzEsB4WBSNjWfzhtHg8YtShNjs=
+	t=1751556003; cv=none; b=RdVtsaPdmbZEIia5/G1knA6rePcK096eaDMiU6PR4p/18LnQMLAWxA8H+340+Tq7Xbug4LuIKBO64ybhyQHpAIZle0VjE0XQMeegI87Wu66RVq6FaTHEpXIMG1zDfp+5wCElkK/tTAe/uS8vxKNBwYiwKBhiF1t3weAk7UP+5L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555724; c=relaxed/simple;
-	bh=SzNGxaeP8K9II1wOsRr1FqE0TSJwxefxd4fQXnOAd4Y=;
+	s=arc-20240116; t=1751556003; c=relaxed/simple;
+	bh=N6a6dQwtF2MB1NfDqpXcKl61IHWm4KDJju5om5L8sXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gofcUxB9M6Ookb5yhhVBJZrHX0QnUi8B8esyczKGPLRytFlGHYjryc0ojd+dbw8ybqDMNlgs75ns9OPEMN0c0xpf8Mz3uNqOTidBSO2h0S2RpddDY2FGbKZD7UnaVSn5NAp2hhs5q3fqmPcLoMDK6u8Wm7VL0DMjNHjCSfGnG8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeuPQm+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA2CC4CEE3;
-	Thu,  3 Jul 2025 15:15:23 +0000 (UTC)
+	 MIME-Version; b=nOwIIAJwT2tGD6OjRNZwHsKCwTrRlV6MGwVaChXVmDLZ5CKmnR6HYc6VQgGO9K1a7xrK79Z8CVeYbHfTvBhJWou/Gp1j7kZwLqYoIEvOMmPSkybteXl8PbeDFBcEU92U9Kqh2MLhVp7xT5oauZlvxmw6EJ0itZ0KX+9f2AdmZTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANwNz2hL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99FAC4CEF2;
+	Thu,  3 Jul 2025 15:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555724;
-	bh=SzNGxaeP8K9II1wOsRr1FqE0TSJwxefxd4fQXnOAd4Y=;
+	s=korg; t=1751556003;
+	bh=N6a6dQwtF2MB1NfDqpXcKl61IHWm4KDJju5om5L8sXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HeuPQm+eSHwFe0KGrdO2vfbDhI6szWEg/5EjO2oWuUbqqDdZ1NvvKd6UbQL1Q5CJE
-	 o7VCnjCiyeeOx0ViRz/FyA5dwAtHmkAWLc08PrgCYyw3xaMEL9ipCxIWvny3ctkEly
-	 Q3BJgftLTtb6gM1zorYs5SvzYm3int+cyka6wz/8=
+	b=ANwNz2hL7xi/ILg1B/qA9elFDExQFk7OZBv9H/ZmgrcX5XOUUqoV64bUzDRJZxEu5
+	 KfePHtKAAvoTTTcnk1NvMwu8pOS01fZ2jmV+DczMkahVM5Qwj4Q+sY6bGgWS5sWQZ4
+	 C6agZcsMkx7iFP0+JqeDwM9BMr0yoq3yZaN0faKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.6 071/139] i2c: tiny-usb: disable zero-length read messages
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 045/132] media: imx-jpeg: Reset slot data pointers when freed
 Date: Thu,  3 Jul 2025 16:42:14 +0200
-Message-ID: <20250703143943.944171332@linuxfoundation.org>
+Message-ID: <20250703143941.194401457@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-commit cbdb25ccf7566eee0c2b945e35cb98baf9ed0aa6 upstream.
+[ Upstream commit faa8051b128f4b34277ea8a026d02d83826f8122 ]
 
-This driver passes the length of an i2c_msg directly to
-usb_control_msg(). If the message is now a read and of length 0, it
-violates the USB protocol and a warning will be printed. Enable the
-I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
-read messages altogether.
+Ensure that the slot data pointers are reset to NULL and handles are
+set to 0 after freeing the coherent memory. This makes he function
+mxc_jpeg_alloc_slot_data() and mxc_jpeg_free_slot_data() safe to be
+called multiple times.
 
-Fixes: e8c76eed2ecd ("i2c: New i2c-tiny-usb bus driver")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: <stable@vger.kernel.org> # v2.6.22+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250522064349.3823-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-tiny-usb.c |    6 ++++++
+ drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
---- a/drivers/i2c/busses/i2c-tiny-usb.c
-+++ b/drivers/i2c/busses/i2c-tiny-usb.c
-@@ -140,6 +140,11 @@ out:
- 	return ret;
- }
+diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+index bfab38eec3e64..3602324b254a6 100644
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -491,16 +491,22 @@ static void mxc_jpeg_free_slot_data(struct mxc_jpeg_dev *jpeg)
+ 	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
+ 			  jpeg->slot_data.desc,
+ 			  jpeg->slot_data.desc_handle);
++	jpeg->slot_data.desc = NULL;
++	jpeg->slot_data.desc_handle = 0;
  
-+/* prevent invalid 0-length usb_control_msg */
-+static const struct i2c_adapter_quirks usb_quirks = {
-+	.flags = I2C_AQ_NO_ZERO_LEN_READ,
-+};
-+
- /* This is the actual algorithm we define */
- static const struct i2c_algorithm usb_algorithm = {
- 	.master_xfer	= usb_xfer,
-@@ -248,6 +253,7 @@ static int i2c_tiny_usb_probe(struct usb
- 	/* setup i2c adapter description */
- 	dev->adapter.owner = THIS_MODULE;
- 	dev->adapter.class = I2C_CLASS_HWMON;
-+	dev->adapter.quirks = &usb_quirks;
- 	dev->adapter.algo = &usb_algorithm;
- 	dev->adapter.algo_data = dev;
- 	snprintf(dev->adapter.name, sizeof(dev->adapter.name),
+ 	/* free descriptor for encoder configuration phase / decoder DHT */
+ 	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
+ 			  jpeg->slot_data.cfg_desc,
+ 			  jpeg->slot_data.cfg_desc_handle);
++	jpeg->slot_data.cfg_desc_handle = 0;
++	jpeg->slot_data.cfg_desc = NULL;
+ 
+ 	/* free configuration stream */
+ 	dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
+ 			  jpeg->slot_data.cfg_stream_vaddr,
+ 			  jpeg->slot_data.cfg_stream_handle);
++	jpeg->slot_data.cfg_stream_vaddr = NULL;
++	jpeg->slot_data.cfg_stream_handle = 0;
+ 
+ 	jpeg->slot_data.used = false;
+ }
+-- 
+2.39.5
+
 
 
 
