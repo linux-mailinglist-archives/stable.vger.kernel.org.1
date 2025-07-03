@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08FE5AF794E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:00:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF53CAF77EE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:45:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C953216C613
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:57:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 469791C83D60
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02F82ECEBA;
-	Thu,  3 Jul 2025 14:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B632ED87C;
+	Thu,  3 Jul 2025 14:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmOCWngt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CH4CKn1y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD582126C02;
-	Thu,  3 Jul 2025 14:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2292DE6E5;
+	Thu,  3 Jul 2025 14:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554676; cv=none; b=nrAxeJdHfobnBUxLl8G9xYqGAJQu3D445Dt86teLZIwXNsocGRzTaZVO02qg9ceV04Z3WyKmkqv5MYu2Bbhis6pzTU301Yd6D82qKiZG8SJvsyEMlpq1kSMvTpJhZn96c+g0Q59Gp2JrzlV8fceUejl6nXfbFtuc8f8iV6GZxYs=
+	t=1751553900; cv=none; b=qfFvgDrAsrjuNL2n8sM6lYqEun/AT83kfxykGFqT4kL5MTRjJJWGjqVxwfbVCA9Nlb1lcKCDhbh2CizHz9HWbD3huOOnsv/zwHVpeVyNMp0QLcBGjhQN9WTRZ21h+Nw0+sW1ftolGrdWp1Olb12JpiF6DjmiXE1MTizJypJtmPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554676; c=relaxed/simple;
-	bh=xjXvomkQggPgyLT6OPOQr1AzUICbOm1O2PW0kvPPSeg=;
+	s=arc-20240116; t=1751553900; c=relaxed/simple;
+	bh=tjiWpyhHx7nQovMVg9ZlCCCrsEQnloepywU3zHoDHg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPnJ6ssNNKAToR2HPXtl3kDvXtEpqWzccq97RZDC+zE23WRDxxPweRqAgbv6WhpJ6P8bE0byW/cH/Ly2435Da+/LYHllJMxE67jnI1xvt1A2WQmwysid6Gd0EYeby5oNOFhbs9uSf+TdGiih1KkVSAY1aWAbX/rFClGtfxyfWzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmOCWngt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C91BC4CEE3;
-	Thu,  3 Jul 2025 14:57:55 +0000 (UTC)
+	 MIME-Version; b=fWsfuDENbW0hnqJnqyURuyG0jLV7SuTBHgDSiagOysOVivX79LkbEba+qxjEkMn1aUwQID+jx7J0dK4F/VdHWKcQ0+jtLzqG2gVDyswlFHBO8XJeB6zfv+3+EGsB5gy0Lv5mpwoqT06zih1h3nQu1F/SO/o2gLm0ofoG1L1EOYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CH4CKn1y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD212C4CEF0;
+	Thu,  3 Jul 2025 14:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554676;
-	bh=xjXvomkQggPgyLT6OPOQr1AzUICbOm1O2PW0kvPPSeg=;
+	s=korg; t=1751553900;
+	bh=tjiWpyhHx7nQovMVg9ZlCCCrsEQnloepywU3zHoDHg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fmOCWngtwgEQRypJnzjbboF1AXfb5O8QlRLZ6JZrWIdtlRgYe7awUQ/DLc9H5C+ZH
-	 4lDYA0H/qsLYbIsfZnL6Y1+1gyCA1jaEBI92UYJ3uc5FdVATCdh38J7uI5Hf2qJ4ae
-	 L1OtlhkX9udNMVr/wr6Wlvt6zXw/qH3ymDtCUIho=
+	b=CH4CKn1y6C4AtdDc8EKczCm1pmnd7uVLHB2OQ3js6VGRgcuEiFqAHKHJIICiryQ3v
+	 o69p1gH06csnKLXjaB3G+YFaz9qQpJhFyFs0Su/df1440w0Kune3LrU/tWzUBLRmhC
+	 A48YWK4+Ulj3dWMNIuSBYj2jU0TtcIcVANUwRqP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 045/263] bus: mhi: host: pci_generic: Add Telit FN920C04 modem support
-Date: Thu,  3 Jul 2025 16:39:25 +0200
-Message-ID: <20250703144006.112366134@linuxfoundation.org>
+Subject: [PATCH 6.12 018/218] rust: module: place cleanup_module() in .exit.text section
+Date: Thu,  3 Jul 2025 16:39:26 +0200
+Message-ID: <20250703143956.687940881@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-[ Upstream commit 6348f62ef7ecc5855b710a7d4ea682425c38bb80 ]
+[ Upstream commit 249c3a0e53acefc2b06d3b3e1fc28fb2081f878d ]
 
-Add SDX35 based modem Telit FN920C04.
+Place cleanup_module() in .exit.text section. Currently,
+cleanup_module() is likely placed in the .text section. It's
+inconsistent with the layout of C modules, where cleanup_module() is
+placed in .exit.text.
 
-$ lspci -vv
-01:00.0 Unassigned class [ff00]: Qualcomm Device 011a
-        Subsystem: Device 1c5d:2020
+[ Boqun asked for an example of how the section changed to be
+  put in the log. Tomonori provided the following examples:
 
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://patch.msgid.link/20250401093458.2953872-1-dnlplm@gmail.com
+    C module:
+
+      $ objdump -t ~/build/x86/drivers/block/loop.o|grep clean
+      0000000000000000 l     O .exit.data    0000000000000008 __UNIQUE_ID___addressable_cleanup_module412
+      0000000000000000 g     F .exit.text    000000000000009c cleanup_module
+
+    Rust module without this patch:
+
+      $ objdump -t ~/build/x86/samples/rust/rust_minimal.o|grep clean
+      00000000000002b0 g     F .text         00000000000000c6 cleanup_module
+      0000000000000000 g     O .exit.data    0000000000000008 _R...___UNIQUE_ID___addressable_cleanup_module
+
+    Rust module with this patch:
+
+      $ objdump -t ~/build/x86/samples/rust/rust_minimal.o|grep clean
+      0000000000000000 g     F .exit.text    00000000000000c6 cleanup_module
+      0000000000000000 g     O .exit.data    0000000000000008 _R...___UNIQUE_ID___addressable_cleanup_module
+
+  - Miguel ]
+
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/r/20250308044506.14458-1-fujita.tomonori@gmail.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/pci_generic.c | 39 ++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ rust/macros/module.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
-index 03aa887952098..059cfd77382f0 100644
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -782,6 +782,42 @@ static const struct mhi_pci_dev_info mhi_telit_fe990a_info = {
- 	.mru_default = 32768,
- };
- 
-+static const struct mhi_channel_config mhi_telit_fn920c04_channels[] = {
-+	MHI_CHANNEL_CONFIG_UL_SBL(2, "SAHARA", 32, 0),
-+	MHI_CHANNEL_CONFIG_DL_SBL(3, "SAHARA", 32, 0),
-+	MHI_CHANNEL_CONFIG_UL(4, "DIAG", 64, 1),
-+	MHI_CHANNEL_CONFIG_DL(5, "DIAG", 64, 1),
-+	MHI_CHANNEL_CONFIG_UL(14, "QMI", 32, 0),
-+	MHI_CHANNEL_CONFIG_DL(15, "QMI", 32, 0),
-+	MHI_CHANNEL_CONFIG_UL(32, "DUN", 32, 0),
-+	MHI_CHANNEL_CONFIG_DL(33, "DUN", 32, 0),
-+	MHI_CHANNEL_CONFIG_UL_FP(34, "FIREHOSE", 32, 0),
-+	MHI_CHANNEL_CONFIG_DL_FP(35, "FIREHOSE", 32, 0),
-+	MHI_CHANNEL_CONFIG_UL(92, "DUN2", 32, 1),
-+	MHI_CHANNEL_CONFIG_DL(93, "DUN2", 32, 1),
-+	MHI_CHANNEL_CONFIG_HW_UL(100, "IP_HW0", 128, 2),
-+	MHI_CHANNEL_CONFIG_HW_DL(101, "IP_HW0", 128, 3),
-+};
-+
-+static const struct mhi_controller_config modem_telit_fn920c04_config = {
-+	.max_channels = 128,
-+	.timeout_ms = 50000,
-+	.num_channels = ARRAY_SIZE(mhi_telit_fn920c04_channels),
-+	.ch_cfg = mhi_telit_fn920c04_channels,
-+	.num_events = ARRAY_SIZE(mhi_telit_fn990_events),
-+	.event_cfg = mhi_telit_fn990_events,
-+};
-+
-+static const struct mhi_pci_dev_info mhi_telit_fn920c04_info = {
-+	.name = "telit-fn920c04",
-+	.config = &modem_telit_fn920c04_config,
-+	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
-+	.dma_data_width = 32,
-+	.sideband_wake = false,
-+	.mru_default = 32768,
-+	.edl_trigger = true,
-+};
-+
- static const struct mhi_pci_dev_info mhi_netprisma_lcur57_info = {
- 	.name = "netprisma-lcur57",
- 	.edl = "qcom/prog_firehose_sdx24.mbn",
-@@ -806,6 +842,9 @@ static const struct mhi_pci_dev_info mhi_netprisma_fcun69_info = {
- static const struct pci_device_id mhi_pci_id_table[] = {
- 	{PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0116),
- 		.driver_data = (kernel_ulong_t) &mhi_qcom_sa8775p_info },
-+	/* Telit FN920C04 (sdx35) */
-+	{PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x011a, 0x1c5d, 0x2020),
-+		.driver_data = (kernel_ulong_t) &mhi_telit_fn920c04_info },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0304),
- 		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx24_info },
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0306, PCI_VENDOR_ID_QCOM, 0x010c),
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index da2a18b276e0b..a5ea5850e307a 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -260,6 +260,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+                     #[cfg(MODULE)]
+                     #[doc(hidden)]
+                     #[no_mangle]
++                    #[link_section = \".exit.text\"]
+                     pub extern \"C\" fn cleanup_module() {{
+                         // SAFETY:
+                         // - This function is inaccessible to the outside due to the double
 -- 
 2.39.5
 
