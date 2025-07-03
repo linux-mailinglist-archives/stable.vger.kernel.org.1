@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-159381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DAFAF784D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:48:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57632AF79C3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B660582257
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EF3F3B8F97
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1A82EF295;
-	Thu,  3 Jul 2025 14:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA912EF652;
+	Thu,  3 Jul 2025 15:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Cwjl5oe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERBhWDct"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0B62EE99C;
-	Thu,  3 Jul 2025 14:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC452EE993;
+	Thu,  3 Jul 2025 15:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554055; cv=none; b=aLBsddUkZyC+uG30HLnKh/DPFezhx8rYLQg40fXQDv5VuWDvNZ6boeMct8lYrGInjz+uxlr3BnOwXXlRCG8eaQbniRd87MsR8ypRkQDM+JYVYbnsc7zrbxlxqXyScNhFNWqLsXB1XabQTzABwAv31T+GjqYjPDrYUrGqSe+o/NE=
+	t=1751554938; cv=none; b=lhT1rRL0011xfOvGG6yR80rWXuUOtjQIzEUZxPwIvZKZY8rSg4RToAu8bg8KJOx7nH51cWwsaW1Ua3Myo3XqLklD8TlcDLz5ADY868qTlDPgty5RoT5XedjQ8EHxnRDtKqGXfcsmVlH2Kqy8wTQEiYQByo+KLUNCNOg+tw44Pak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554055; c=relaxed/simple;
-	bh=38YzwgjK4uVRyWp7AviH+ZINo/0ZLMn586BhcLxGtiQ=;
+	s=arc-20240116; t=1751554938; c=relaxed/simple;
+	bh=chye80sJ54C4R8VSr9sl9HBCKGy7qaXa2QZp/7NQBFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1BFMPd8K+TIcrlKdTqmYn2JyC77Zy2kKL130EfUqaZHgdCDlPSoIp6lAEplItR8Jt7p/Dk5RzBDfrAHsNvJpiL09NCDmpdS2oWtEZL+REdj/DrvwQbfGyA8YNnSQ3pBdkYS5F4HShLos/XZXQjnQUuGj67RxtZ9VQUT3mtJXO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Cwjl5oe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50AA4C4CEED;
-	Thu,  3 Jul 2025 14:47:34 +0000 (UTC)
+	 MIME-Version; b=lIxrqYoGVlojvm7avctE85Ks/ICuJnI2h3gNWKbi/n4c9j0WNt8b3Nes+55kfnYv8AXdVlhhHeNHQpBow9Xao2KbOQPsRRgh4L/QsXxKaSFB3zYLHI/v9HIqSwC462B17iT99Nb1P9oKVxnceg7QzqUAfEU6XaiSbdAGCv2Qsog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERBhWDct; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53304C4CEF2;
+	Thu,  3 Jul 2025 15:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554054;
-	bh=38YzwgjK4uVRyWp7AviH+ZINo/0ZLMn586BhcLxGtiQ=;
+	s=korg; t=1751554937;
+	bh=chye80sJ54C4R8VSr9sl9HBCKGy7qaXa2QZp/7NQBFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Cwjl5oeAasiSAqag+GVmTnXkoHyt6zBy4eP65YItT3FeMe5tbouljgwDoasOVDch
-	 o0fO+1YX+3ZP4urdv/KJvI9Y0LrxaWQJZUdJVD9czpLF34yuySqS9hqpoV6mTwSE4i
-	 Zshx8BShj5JS6Tn85a3ir7ajyABO/wmmZFO/OwAw=
+	b=ERBhWDctucbJVvq2wOl/7UgcZsKMZHxZojS3oAsVnQCo54ybXyvzzbIgexqk9rfiH
+	 fKMp+/CSw1JxE8q5zYqCm0UMiUmkOsgGbUm19KxCHzaZ5tWtNWIkTMotogQVwICqUv
+	 r4iQZe/zM8VsvgTa4ziHHaddmDxJczQSnufaGLXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 067/218] f2fs: dont over-report free space or inodes in statvfs
+Subject: [PATCH 6.15 095/263] drm/i915/display: Add check for alloc_ordered_workqueue() and alloc_workqueue()
 Date: Thu,  3 Jul 2025 16:40:15 +0200
-Message-ID: <20250703143958.620656105@linuxfoundation.org>
+Message-ID: <20250703144008.102859492@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit a9201960623287927bf5776de3f70fb2fbde7e02 ]
+[ Upstream commit f4c7baa0699b69edb6887a992283b389761e0e81 ]
 
-This fixes an analogus bug that was fixed in modern filesystems:
-a) xfs in commit 4b8d867ca6e2 ("xfs: don't over-report free space or
-inodes in statvfs")
-b) ext4 in commit f87d3af74193 ("ext4: don't over-report free space
-or inodes in statvfs")
-where statfs can report misleading / incorrect information where
-project quota is enabled, and the free space is less than the
-remaining quota.
+Add check for the return value of alloc_ordered_workqueue()
+and alloc_workqueue(). Furthermore, if some allocations fail,
+cleanup works are added to avoid potential memory leak problem.
 
-This commit will resolve a test failure in generic/762 which tests
-for this bug.
-
-generic/762       - output mismatch (see /share/git/fstests/results//generic/762.out.bad)
-#    --- tests/generic/762.out   2025-04-15 10:21:53.371067071 +0800
-#    +++ /share/git/fstests/results//generic/762.out.bad 2025-05-13 16:13:37.000000000 +0800
-#    @@ -6,8 +6,10 @@
-#     root blocks2 is in range
-#     dir blocks2 is in range
-#     root bavail2 is in range
-#    -dir bavail2 is in range
-#    +dir bavail2 has value of 1539066
-#    +dir bavail2 is NOT in range 304734.87 .. 310891.13
-#     root blocks3 is in range
-#    ...
-#    (Run 'diff -u /share/git/fstests/tests/generic/762.out /share/git/fstests/results//generic/762.out.bad'  to see the entire diff)
-
-HINT: You _MAY_ be missing kernel fix:
-      XXXXXXXXXXXXXX xfs: don't over-report free space or inodes in statvfs
-
-Cc: stable@kernel.org
-Fixes: ddc34e328d06 ("f2fs: introduce f2fs_statfs_project")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 40053823baad ("drm/i915/display: move modeset probe/remove functions to intel_display_driver.c")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://lore.kernel.org/r/20d3d096c6a4907636f8a1389b3b4dd753ca356e.1747397638.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit dcab7a228f4ea9cda3f5b0a1f0679e046d23d7f7)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ .../drm/i915/display/intel_display_driver.c   | 30 +++++++++++++++----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 330f89ddb5c8f..f0e83ea56e38c 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1787,26 +1787,32 @@ static int f2fs_statfs_project(struct super_block *sb,
+diff --git a/drivers/gpu/drm/i915/display/intel_display_driver.c b/drivers/gpu/drm/i915/display/intel_display_driver.c
+index 31740a677dd80..14c8b3259bbf5 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_driver.c
++++ b/drivers/gpu/drm/i915/display/intel_display_driver.c
+@@ -241,31 +241,45 @@ int intel_display_driver_probe_noirq(struct intel_display *display)
+ 	intel_dmc_init(display);
  
- 	limit = min_not_zero(dquot->dq_dqb.dqb_bsoftlimit,
- 					dquot->dq_dqb.dqb_bhardlimit);
--	if (limit)
--		limit >>= sb->s_blocksize_bits;
-+	limit >>= sb->s_blocksize_bits;
+ 	display->wq.modeset = alloc_ordered_workqueue("i915_modeset", 0);
++	if (!display->wq.modeset) {
++		ret = -ENOMEM;
++		goto cleanup_vga_client_pw_domain_dmc;
++	}
 +
-+	if (limit) {
-+		uint64_t remaining = 0;
- 
--	if (limit && buf->f_blocks > limit) {
- 		curblock = (dquot->dq_dqb.dqb_curspace +
- 			    dquot->dq_dqb.dqb_rsvspace) >> sb->s_blocksize_bits;
--		buf->f_blocks = limit;
--		buf->f_bfree = buf->f_bavail =
--			(buf->f_blocks > curblock) ?
--			 (buf->f_blocks - curblock) : 0;
-+		if (limit > curblock)
-+			remaining = limit - curblock;
+ 	display->wq.flip = alloc_workqueue("i915_flip", WQ_HIGHPRI |
+ 						WQ_UNBOUND, WQ_UNBOUND_MAX_ACTIVE);
++	if (!display->wq.flip) {
++		ret = -ENOMEM;
++		goto cleanup_wq_modeset;
++	}
 +
-+		buf->f_blocks = min(buf->f_blocks, limit);
-+		buf->f_bfree = min(buf->f_bfree, remaining);
-+		buf->f_bavail = min(buf->f_bavail, remaining);
- 	}
+ 	display->wq.cleanup = alloc_workqueue("i915_cleanup", WQ_HIGHPRI, 0);
++	if (!display->wq.cleanup) {
++		ret = -ENOMEM;
++		goto cleanup_wq_flip;
++	}
  
- 	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
- 					dquot->dq_dqb.dqb_ihardlimit);
+ 	intel_mode_config_init(display);
  
--	if (limit && buf->f_files > limit) {
--		buf->f_files = limit;
--		buf->f_ffree =
--			(buf->f_files > dquot->dq_dqb.dqb_curinodes) ?
--			 (buf->f_files - dquot->dq_dqb.dqb_curinodes) : 0;
-+	if (limit) {
-+		uint64_t remaining = 0;
-+
-+		if (limit > dquot->dq_dqb.dqb_curinodes)
-+			remaining = limit - dquot->dq_dqb.dqb_curinodes;
-+
-+		buf->f_files = min(buf->f_files, limit);
-+		buf->f_ffree = min(buf->f_ffree, remaining);
- 	}
+ 	ret = intel_cdclk_init(display);
+ 	if (ret)
+-		goto cleanup_vga_client_pw_domain_dmc;
++		goto cleanup_wq_cleanup;
  
- 	spin_unlock(&dquot->dq_dqb_lock);
+ 	ret = intel_color_init(display);
+ 	if (ret)
+-		goto cleanup_vga_client_pw_domain_dmc;
++		goto cleanup_wq_cleanup;
+ 
+ 	ret = intel_dbuf_init(i915);
+ 	if (ret)
+-		goto cleanup_vga_client_pw_domain_dmc;
++		goto cleanup_wq_cleanup;
+ 
+ 	ret = intel_bw_init(i915);
+ 	if (ret)
+-		goto cleanup_vga_client_pw_domain_dmc;
++		goto cleanup_wq_cleanup;
+ 
+ 	ret = intel_pmdemand_init(display);
+ 	if (ret)
+-		goto cleanup_vga_client_pw_domain_dmc;
++		goto cleanup_wq_cleanup;
+ 
+ 	intel_init_quirks(display);
+ 
+@@ -273,6 +287,12 @@ int intel_display_driver_probe_noirq(struct intel_display *display)
+ 
+ 	return 0;
+ 
++cleanup_wq_cleanup:
++	destroy_workqueue(display->wq.cleanup);
++cleanup_wq_flip:
++	destroy_workqueue(display->wq.flip);
++cleanup_wq_modeset:
++	destroy_workqueue(display->wq.modeset);
+ cleanup_vga_client_pw_domain_dmc:
+ 	intel_dmc_fini(display);
+ 	intel_power_domains_driver_remove(display);
 -- 
 2.39.5
 
