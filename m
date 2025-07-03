@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-159841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9217BAF7AEE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:19:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AFDDAF78BC
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E3266E2692
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:13:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB0A35651D2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B350B2EFD87;
-	Thu,  3 Jul 2025 15:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322E82EAB70;
+	Thu,  3 Jul 2025 14:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bw3J0W1/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uC6UZPRd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A052EF9DB;
-	Thu,  3 Jul 2025 15:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E203819F43A;
+	Thu,  3 Jul 2025 14:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555525; cv=none; b=ERSj7M2bcININnXWTywJs5lyEwTZ7PNOxICsvzCeGynzT08D69skadZSVHvEq6HJU7PLh318N7gA6QXVDWHl2t3rAnNPP8JaMgYVpXzZKfvk79Agl/14GScmQSt+VcW4+VUISZUH02cOpyx8mY/Gv+oEiupT1f14tCJWZPBwMkA=
+	t=1751554318; cv=none; b=auw+WuN0qwAjKWO3TV71mZCcGc/dr6o76fSkt30UEeZqxUNUuSdUo4YQ55HCy31fZgHmAm+E4WlDH5WiOuDPiIi8xzKi1cM4+ONyNIdWWlqhj/gdMkxl0Of2hu2hqaMDFv4O6exni0G2g+zDGy5d9AVpu1gpyQAP0k32noc+vc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555525; c=relaxed/simple;
-	bh=Bf6sAakgD0KzudoacidBezUDFCLQrkAqPvq/UaFgceI=;
+	s=arc-20240116; t=1751554318; c=relaxed/simple;
+	bh=6lgh4b0rr5pqpOWKdnkeRkdXMdBwVrgwFtbkk3fP1m4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hw9SWM6Me1ZkqOaUGFjs3pZaXZbbnk+KuLmdpclTkCQe69s659goKvWvhZ5NvduPGFFVruN+5HWmrAQzhsdIJhetTs33YVjblyZfFubLYcIjR59eGhyDvF/aqU83cWwmDqn8ntsmjOBYZwqUYoe1ZHKCd9Pn5o1dpKx1P0VTLgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bw3J0W1/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C62C4CEE3;
-	Thu,  3 Jul 2025 15:12:04 +0000 (UTC)
+	 MIME-Version; b=thtuI5UEc1d0R5d5jrVwxntxUMwpeE/7E1ET4WQHzrbj/yBBSDZmhPCsBC9nkHdDfATXarwYE+P0oDqoNii2oll05A4gKkn/rDZ26Aj8uMcHspMJmIFKy//HdS7IGe1XMjFNVNOcazcHGuqsRIAksUuKvIgr1fguY9aYr1/amZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uC6UZPRd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D11C4CEE3;
+	Thu,  3 Jul 2025 14:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555525;
-	bh=Bf6sAakgD0KzudoacidBezUDFCLQrkAqPvq/UaFgceI=;
+	s=korg; t=1751554317;
+	bh=6lgh4b0rr5pqpOWKdnkeRkdXMdBwVrgwFtbkk3fP1m4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bw3J0W1/8a2SEGavudyGQCFlv3e4QXZSTPL/X9NZkQKPggNetzS9rTR454O/7QP/P
-	 0ExPFmN1rkroOLycee2yB8Jj4vmvL2J44vw/PQNaTAuUxMdavBcsd5JQtzWs+8hk4U
-	 IWyDDZSipCQAh+UtIQUwp7ZXAsIBIoNACiFLTPfg=
+	b=uC6UZPRdb8qPDk/Nu9Wu72DxPOcgfvFUf7tW+4a/AZ7cf1JvO9Nj/gux2VLAhjhkx
+	 QEGvzVpQEWa5IM/W3YC8/qC184JsTGMKwzhds5J9zsyTIg8SAlfpgR0hGlnE76aB+l
+	 ybsBHhjQLXvKdNCdDyM+unU4bUprdh4l+4KITOW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yufeng <chenyufeng@iie.ac.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/139] usb: potential integer overflow in usbg_make_tpg()
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 6.12 148/218] drm/ast: Fix comment on modeset lock
 Date: Thu,  3 Jul 2025 16:41:36 +0200
-Message-ID: <20250703143942.480111560@linuxfoundation.org>
+Message-ID: <20250703144002.059245614@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 153874010354d050f62f8ae25cbb960c17633dc5 ]
+commit 7cce65f3789e04c0f7668a66563e680d81d54493 upstream.
 
-The variable tpgt in usbg_make_tpg() is defined as unsigned long and is
-assigned to tpgt->tport_tpgt, which is defined as u16. This may cause an
-integer overflow when tpgt is greater than USHRT_MAX (65535). I
-haven't tried to trigger it myself, but it is possible to trigger it
-by calling usbg_make_tpg() with a large value for tpgt.
+The ast driver protects the commit tail against concurrent reads
+of the display modes by acquiring a lock. The comment is misleading
+as the lock is not released in atomic_flush, but at the end of the
+commit-tail helper. Rewrite the comment.
 
-I modified the type of tpgt to match tpgt->tport_tpgt and adjusted the
-relevant code accordingly.
-
-This patch is similar to commit 59c816c1f24d ("vhost/scsi: potential
-memory corruption").
-
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
-Link: https://lore.kernel.org/r/20250415065857.1619-1-chenyufeng@iie.ac.cn
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 1fe182154984 ("drm/ast: Acquire I/O-register lock in atomic_commit_tail function")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.2+
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://lore.kernel.org/r/20250324094520.192974-2-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_tcm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/ast/ast_mode.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_tcm.c b/drivers/usb/gadget/function/f_tcm.c
-index a7cd0a06879e6..5d0d894953953 100644
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -1297,14 +1297,14 @@ static struct se_portal_group *usbg_make_tpg(struct se_wwn *wwn,
- 	struct usbg_tport *tport = container_of(wwn, struct usbg_tport,
- 			tport_wwn);
- 	struct usbg_tpg *tpg;
--	unsigned long tpgt;
-+	u16 tpgt;
- 	int ret;
- 	struct f_tcm_opts *opts;
- 	unsigned i;
+--- a/drivers/gpu/drm/ast/ast_mode.c
++++ b/drivers/gpu/drm/ast/ast_mode.c
+@@ -1319,9 +1319,9 @@ static void ast_mode_config_helper_atomi
  
- 	if (strstr(name, "tpgt_") != name)
- 		return ERR_PTR(-EINVAL);
--	if (kstrtoul(name + 5, 0, &tpgt) || tpgt > UINT_MAX)
-+	if (kstrtou16(name + 5, 0, &tpgt))
- 		return ERR_PTR(-EINVAL);
- 	ret = -ENODEV;
- 	mutex_lock(&tpg_instances_lock);
--- 
-2.39.5
-
+ 	/*
+ 	 * Concurrent operations could possibly trigger a call to
+-	 * drm_connector_helper_funcs.get_modes by trying to read the
+-	 * display modes. Protect access to I/O registers by acquiring
+-	 * the I/O-register lock. Released in atomic_flush().
++	 * drm_connector_helper_funcs.get_modes by reading the display
++	 * modes. Protect access to registers by acquiring the modeset
++	 * lock.
+ 	 */
+ 	mutex_lock(&ast->modeset_lock);
+ 	drm_atomic_helper_commit_tail(state);
 
 
 
