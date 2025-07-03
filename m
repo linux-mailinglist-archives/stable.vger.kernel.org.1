@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-159928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69633AF7B80
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2AFBAF7B85
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A1871CA5D30
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D142E1CC02B0
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1E02F003B;
-	Thu,  3 Jul 2025 15:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BE22EFD95;
+	Thu,  3 Jul 2025 15:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pH9pDmrA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sQRUCmA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D402EFD9C;
-	Thu,  3 Jul 2025 15:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4495C2D6639;
+	Thu,  3 Jul 2025 15:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555804; cv=none; b=cacq2Ferd0w5IKyM/ggrSaUEwLPxlABP77IBe/QNwPwoW0Z+CWiVpwx1S81qLxpLVKgMeI2+wXszL+zWqu17ovHwbvIxy/igm6jv6yzZWw4v7ge8ZawUn4rioOd6dJlvTvTwswd1YFD2n4wnewLrlLjIW4eqNacx4awsvL5iL1c=
+	t=1751555810; cv=none; b=sjvrhJwOkOwVvkRwNGs0m1fx3ipfnd4rAFXgY7GjZ9WHfOq1nuSVg1ENICFSSzCRyGF9Pb8rz+YZ0G8uEbWuFW1aFz4l7t6lnfpALoOqSmVnEh0p/T/ytzQm+hqPCtoKHF2KVVaUmSiw/U1EILe7GkdVrlqNYjpYebpSJ29Gv8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555804; c=relaxed/simple;
-	bh=OeXsCq7ZMX3QN4zrbfHS1akuDD4+gNS03Q2LweBrvb0=;
+	s=arc-20240116; t=1751555810; c=relaxed/simple;
+	bh=KBP4b0eLPYhVfL1pBOAw4//rF8ZpbO+Lz03N5IaHifY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o3Jy7MtS2YR5fTAOaSGD46kDwlae+rCUbygXX8NMgIzSB17DY2W/k5jDJdPnU512fKkyh8w8IuSoperuzwy7ljVf8POM1QFLr3XMtJ55kEKuMV/GVLJpzTPAkpFCeRHu/25dElX5o7lDggIYbPq3jZYjjRKhrGnGlEKXvllqTX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pH9pDmrA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC98C4CEE3;
-	Thu,  3 Jul 2025 15:16:43 +0000 (UTC)
+	 MIME-Version; b=f1dNsMMaYU1muVv/HXUDFbTZHIO/rpFByI9+8ect7MIu3hd+3PsKZ5bgoRd7Ffe8RpuK32XjpdpEfNixY0W6KgP5D7RorvfA0JPWgaw/U0K3u4Vtlaym1SV02jkvUeHfxdWD8v6kwXLiIkKRbWh+NlcOg6xAixk1C9zzrX56PNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sQRUCmA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB11C4CEE3;
+	Thu,  3 Jul 2025 15:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555804;
-	bh=OeXsCq7ZMX3QN4zrbfHS1akuDD4+gNS03Q2LweBrvb0=;
+	s=korg; t=1751555810;
+	bh=KBP4b0eLPYhVfL1pBOAw4//rF8ZpbO+Lz03N5IaHifY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pH9pDmrAW6i0fqkTLmWtP0s2NJOUlCaKnJylMv3pUlZdvdFkCpz/RWj0F8vzmfYVt
-	 Mqj4+CAekbvYlODySQF6aeB8kkTiI2tSzWt/YTPTxYHAiXt/QYvoNP0fBT1h82DfSS
-	 uNKo8Pb81sLuETLewrdG8p1RK4J3Nxp3hBsXvK6M=
+	b=2sQRUCmAIitsJYDto/okYW6lIdsmQOODHyo1DPjrn7WMinJ++S80nCPFg9fNvVoQ7
+	 Bj8BNx6QxM0fRmEw7Y0pg8OpDj+XxaQAkjUCz/IpPnshm+2CQg5Tan4G3dTA1TBNs8
+	 FD3Xf4AH8+S2lWWOGeI2qFytNWtCdPim9xUUIZlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 126/139] drm/amdgpu: switch job hw_fence to amdgpu_fence
-Date: Thu,  3 Jul 2025 16:43:09 +0200
-Message-ID: <20250703143946.114527662@linuxfoundation.org>
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 127/139] ksmbd: Use unsafe_memcpy() for ntlm_negotiate
+Date: Thu,  3 Jul 2025 16:43:10 +0200
+Message-ID: <20250703143946.152085626@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
 References: <20250703143941.182414597@linuxfoundation.org>
@@ -59,211 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit ebe43542702c3d15d1a1d95e8e13b1b54076f05a upstream.
+commit dfd046d0ced19b6ff5f11ec4ceab0a83de924771 upstream.
 
-Use the amdgpu fence container so we can store additional
-data in the fence.  This also fixes the start_time handling
-for MCBP since we were casting the fence to an amdgpu_fence
-and it wasn't.
+rsp buffer is allocated larger than spnego_blob from
+smb2_allocate_rsp_buf().
 
-Fixes: 3f4c175d62d8 ("drm/amdgpu: MCBP based on DRM scheduler (v9)")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit bf1cd14f9e2e1fdf981eed273ddd595863f5288c)
-Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c |    2 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c  |    2 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c   |   30 ++++++----------------------
- drivers/gpu/drm/amd/amdgpu/amdgpu_job.c     |   12 +++++------
- drivers/gpu/drm/amd/amdgpu/amdgpu_job.h     |    2 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_ring.h    |   16 ++++++++++++++
- 6 files changed, 32 insertions(+), 32 deletions(-)
+ fs/smb/server/smb2pdu.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-@@ -1890,7 +1890,7 @@ no_preempt:
- 			continue;
- 		}
- 		job = to_amdgpu_job(s_job);
--		if (preempted && (&job->hw_fence) == fence)
-+		if (preempted && (&job->hw_fence.base) == fence)
- 			/* mark the job as preempted */
- 			job->preemption_status |= AMDGPU_IB_PREEMPTED;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1380,7 +1380,8 @@ static int ntlm_negotiate(struct ksmbd_w
  	}
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5367,7 +5367,7 @@ int amdgpu_device_gpu_recover(struct amd
- 	 *
- 	 * job->base holds a reference to parent fence
- 	 */
--	if (job && dma_fence_is_signaled(&job->hw_fence)) {
-+	if (job && dma_fence_is_signaled(&job->hw_fence.base)) {
- 		job_signaled = true;
- 		dev_info(adev->dev, "Guilty job already signaled, skipping HW reset");
- 		goto skip_hw_reset;
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-@@ -41,22 +41,6 @@
- #include "amdgpu_trace.h"
- #include "amdgpu_reset.h"
  
--/*
-- * Fences mark an event in the GPUs pipeline and are used
-- * for GPU/CPU synchronization.  When the fence is written,
-- * it is expected that all buffers associated with that fence
-- * are no longer in use by the associated ring on the GPU and
-- * that the relevant GPU caches have been flushed.
-- */
--
--struct amdgpu_fence {
--	struct dma_fence base;
--
--	/* RB, DMA, etc. */
--	struct amdgpu_ring		*ring;
--	ktime_t				start_timestamp;
--};
--
- static struct kmem_cache *amdgpu_fence_slab;
+ 	sz = le16_to_cpu(rsp->SecurityBufferOffset);
+-	memcpy((char *)&rsp->hdr.ProtocolId + sz, spnego_blob, spnego_blob_len);
++	unsafe_memcpy((char *)&rsp->hdr.ProtocolId + sz, spnego_blob, spnego_blob_len,
++			/* alloc is larger than blob, see smb2_allocate_rsp_buf() */);
+ 	rsp->SecurityBufferLength = cpu_to_le16(spnego_blob_len);
  
- int amdgpu_fence_slab_init(void)
-@@ -153,12 +137,12 @@ int amdgpu_fence_emit(struct amdgpu_ring
- 		am_fence = kmem_cache_alloc(amdgpu_fence_slab, GFP_ATOMIC);
- 		if (am_fence == NULL)
+ out:
+@@ -1463,7 +1464,9 @@ static int ntlm_authenticate(struct ksmb
  			return -ENOMEM;
--		fence = &am_fence->base;
--		am_fence->ring = ring;
- 	} else {
- 		/* take use of job-embedded fence */
--		fence = &job->hw_fence;
-+		am_fence = &job->hw_fence;
+ 
+ 		sz = le16_to_cpu(rsp->SecurityBufferOffset);
+-		memcpy((char *)&rsp->hdr.ProtocolId + sz, spnego_blob, spnego_blob_len);
++		unsafe_memcpy((char *)&rsp->hdr.ProtocolId + sz, spnego_blob,
++				spnego_blob_len,
++				/* alloc is larger than blob, see smb2_allocate_rsp_buf() */);
+ 		rsp->SecurityBufferLength = cpu_to_le16(spnego_blob_len);
+ 		kfree(spnego_blob);
  	}
-+	fence = &am_fence->base;
-+	am_fence->ring = ring;
- 
- 	seq = ++ring->fence_drv.sync_seq;
- 	if (job && job->job_run_counter) {
-@@ -719,7 +703,7 @@ void amdgpu_fence_driver_clear_job_fence
- 			 * it right here or we won't be able to track them in fence_drv
- 			 * and they will remain unsignaled during sa_bo free.
- 			 */
--			job = container_of(old, struct amdgpu_job, hw_fence);
-+			job = container_of(old, struct amdgpu_job, hw_fence.base);
- 			if (!job->base.s_fence && !dma_fence_is_signaled(old))
- 				dma_fence_signal(old);
- 			RCU_INIT_POINTER(*ptr, NULL);
-@@ -781,7 +765,7 @@ static const char *amdgpu_fence_get_time
- 
- static const char *amdgpu_job_fence_get_timeline_name(struct dma_fence *f)
- {
--	struct amdgpu_job *job = container_of(f, struct amdgpu_job, hw_fence);
-+	struct amdgpu_job *job = container_of(f, struct amdgpu_job, hw_fence.base);
- 
- 	return (const char *)to_amdgpu_ring(job->base.sched)->name;
- }
-@@ -811,7 +795,7 @@ static bool amdgpu_fence_enable_signalin
-  */
- static bool amdgpu_job_fence_enable_signaling(struct dma_fence *f)
- {
--	struct amdgpu_job *job = container_of(f, struct amdgpu_job, hw_fence);
-+	struct amdgpu_job *job = container_of(f, struct amdgpu_job, hw_fence.base);
- 
- 	if (!timer_pending(&to_amdgpu_ring(job->base.sched)->fence_drv.fallback_timer))
- 		amdgpu_fence_schedule_fallback(to_amdgpu_ring(job->base.sched));
-@@ -846,7 +830,7 @@ static void amdgpu_job_fence_free(struct
- 	struct dma_fence *f = container_of(rcu, struct dma_fence, rcu);
- 
- 	/* free job if fence has a parent job */
--	kfree(container_of(f, struct amdgpu_job, hw_fence));
-+	kfree(container_of(f, struct amdgpu_job, hw_fence.base));
- }
- 
- /**
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-@@ -165,8 +165,8 @@ void amdgpu_job_free_resources(struct am
- 	/* Check if any fences where initialized */
- 	if (job->base.s_fence && job->base.s_fence->finished.ops)
- 		f = &job->base.s_fence->finished;
--	else if (job->hw_fence.ops)
--		f = &job->hw_fence;
-+	else if (job->hw_fence.base.ops)
-+		f = &job->hw_fence.base;
- 	else
- 		f = NULL;
- 
-@@ -183,10 +183,10 @@ static void amdgpu_job_free_cb(struct dr
- 	amdgpu_sync_free(&job->explicit_sync);
- 
- 	/* only put the hw fence if has embedded fence */
--	if (!job->hw_fence.ops)
-+	if (!job->hw_fence.base.ops)
- 		kfree(job);
- 	else
--		dma_fence_put(&job->hw_fence);
-+		dma_fence_put(&job->hw_fence.base);
- }
- 
- void amdgpu_job_set_gang_leader(struct amdgpu_job *job,
-@@ -215,10 +215,10 @@ void amdgpu_job_free(struct amdgpu_job *
- 	if (job->gang_submit != &job->base.s_fence->scheduled)
- 		dma_fence_put(job->gang_submit);
- 
--	if (!job->hw_fence.ops)
-+	if (!job->hw_fence.base.ops)
- 		kfree(job);
- 	else
--		dma_fence_put(&job->hw_fence);
-+		dma_fence_put(&job->hw_fence.base);
- }
- 
- struct dma_fence *amdgpu_job_submit(struct amdgpu_job *job)
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.h
-@@ -48,7 +48,7 @@ struct amdgpu_job {
- 	struct drm_sched_job    base;
- 	struct amdgpu_vm	*vm;
- 	struct amdgpu_sync	explicit_sync;
--	struct dma_fence	hw_fence;
-+	struct amdgpu_fence	hw_fence;
- 	struct dma_fence	*gang_submit;
- 	uint32_t		preamble_status;
- 	uint32_t                preemption_status;
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.h
-@@ -123,6 +123,22 @@ struct amdgpu_fence_driver {
- 	struct dma_fence		**fences;
- };
- 
-+/*
-+ * Fences mark an event in the GPUs pipeline and are used
-+ * for GPU/CPU synchronization.  When the fence is written,
-+ * it is expected that all buffers associated with that fence
-+ * are no longer in use by the associated ring on the GPU and
-+ * that the relevant GPU caches have been flushed.
-+ */
-+
-+struct amdgpu_fence {
-+	struct dma_fence base;
-+
-+	/* RB, DMA, etc. */
-+	struct amdgpu_ring		*ring;
-+	ktime_t				start_timestamp;
-+};
-+
- extern const struct drm_sched_backend_ops amdgpu_sched_ops;
- 
- void amdgpu_fence_driver_clear_job_fences(struct amdgpu_ring *ring);
 
 
 
