@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-159624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9273CAF79BF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02496AF786F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CFB418901AE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:00:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02AC8175D70
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D142EE5EB;
-	Thu,  3 Jul 2025 15:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F7C72610;
+	Thu,  3 Jul 2025 14:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdxTfK96"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t14cXiln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F10B6F53E;
-	Thu,  3 Jul 2025 15:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A5219F43A;
+	Thu,  3 Jul 2025 14:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554820; cv=none; b=C8kJ9XA/2CGS7z3LjGz8FXQpSGhsVM3MSh4l3tcPMs4lfHVpaMb06vW1rrR/dxGNy0YU92KZYiTyXAiV00UD7dw93n8200cHb0MQbqPIzaLQFrUJHfQ3g0dGJv+WYeQg06yUDuERYMn69E9A/hkaXP7zTi/1YhhxZo4jhrFZ5iE=
+	t=1751554122; cv=none; b=alEbjgai6+tVV9I55TtdbB4rgvey5oyDUZ4tnBFzHdM1uZW65KDa/F2KplpiVRKAL4zh2loEwqP7aiEVUt5VmgGdXq4DNehwQItmu9CNMdlehiJJVdE+9k0DpMgyNEmH78pMEtIccP98KCxxvh9fJRylIX5jWZ0mi3byHzfM4Vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554820; c=relaxed/simple;
-	bh=WSZxIENh+rpNYtpyFMqektCrYwZaNcH7NgFjQHhJgOQ=;
+	s=arc-20240116; t=1751554122; c=relaxed/simple;
+	bh=UXlIQHWsl50hh5KnJYUbtE/E+qIGLUxIEdk7BiN5Ctk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPclOynskoLPmSSzOGIfvW0RWeYqXauNV6VeCHTpZmJQiBLAgnURCIe9O2LEOLkezqWxiykfwimC/A/nHKEv+On6kamMxyXFN4uwADugEKbV832KggP0fsA9/zT1zhRz7zbw/xvX+30OzeGmLnGBxhscFyjzn7aXpgJOYOan9AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdxTfK96; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D7EC4CEE3;
-	Thu,  3 Jul 2025 15:00:18 +0000 (UTC)
+	 MIME-Version; b=WEKly08EXfPRjSBjzJsIrZY4JOV0Ry3pNN4zOTSuW0dSRp0oLkDLB1D65UE6h4EIDHKU1cRCDHR+gPuFXGiRPJz7OXhT7d9mmPHn2FMe9ZP5UdjdkfIIBlEdjOvDSGSknb9AmyrzMIKm5gJH7LMaCtVDoKq/3/cSkDeHjr8NOdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t14cXiln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B708C4CEE3;
+	Thu,  3 Jul 2025 14:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554818;
-	bh=WSZxIENh+rpNYtpyFMqektCrYwZaNcH7NgFjQHhJgOQ=;
+	s=korg; t=1751554121;
+	bh=UXlIQHWsl50hh5KnJYUbtE/E+qIGLUxIEdk7BiN5Ctk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sdxTfK967CitQsup/ZUzD6f81xZVthQS+1aQHvGNq6smDDD0tH630ScH9XLQizuVu
-	 H3E/4LnVpg8kQ0Ai7ExDOHjw+UPCyIBXEKfg7lMdn2zh4gbZIp5Cuz7l140YnmmyLm
-	 +/Jv/PrMmlb/HvYPFsILANcFVVoPy+urJ5r8J+5g=
+	b=t14cXilnYG4O4UTZPqwB4CF0kAM5aOLwzTgjRPLZ03g2fB/1gVUrYIhu5XXH6NrIB
+	 3PB+2MQxZU+SxQxPX5X7bMPpcHzvOm4LYv1MHIZd8AykUMWTHIs5KY3bU/kneqFov/
+	 whQKevfa4v8K7ccdRpVBVc+uuwr+4uqodyyI8zXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 087/263] media: uvcvideo: Rollback non processed entities on error
-Date: Thu,  3 Jul 2025 16:40:07 +0200
-Message-ID: <20250703144007.792391733@linuxfoundation.org>
+Subject: [PATCH 6.12 060/218] btrfs: factor out nocow ordered extent and extent map generation into a helper
+Date: Thu,  3 Jul 2025 16:40:08 +0200
+Message-ID: <20250703143958.344019730@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +63,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit a70705d3c020d0d5c3ab6a5cc93e011ac35e7d48 ]
+[ Upstream commit 10326fdcb3ace2f2dcbc8b9fc50b87e5cab93345 ]
 
-If we fail to commit an entity, we need to restore the
-UVC_CTRL_DATA_BACKUP for the other uncommitted entities. Otherwise the
-control cache and the device would be out of sync.
+Currently we're doing all the ordered extent and extent map generation
+inside a while() loop of run_delalloc_nocow().  This makes it pretty
+hard to read, nor doing proper error handling.
 
-Cc: stable@kernel.org
-Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Closes: https://lore.kernel.org/linux-media/fe845e04-9fde-46ee-9763-a6f00867929a@redhat.com/
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250224-uvc-data-backup-v2-3-de993ed9823b@chromium.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+So move that part of code into a helper, nocow_one_range().
+
+This should not change anything, but there is a tiny timing change where
+btrfs_dec_nocow_writers() is only called after nocow_one_range() helper
+exits.
+
+This timing change is small, and makes error handling easier, thus
+should be fine.
+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 1f2889f5594a ("btrfs: fix qgroup reservation leak on failure to allocate ordered extent")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c | 32 ++++++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 10 deletions(-)
+ fs/btrfs/inode.c | 122 +++++++++++++++++++++++------------------------
+ 1 file changed, 61 insertions(+), 61 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index 636ce1eb2a6bf..44b6513c52642 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -2119,7 +2119,7 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 	unsigned int processed_ctrls = 0;
- 	struct uvc_control *ctrl;
- 	unsigned int i;
--	int ret;
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 1ab5b0c1b9b76..65517efd3433e 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -2055,6 +2055,63 @@ static void cleanup_dirty_folios(struct btrfs_inode *inode,
+ 	mapping_set_error(mapping, error);
+ }
+ 
++static int nocow_one_range(struct btrfs_inode *inode, struct folio *locked_folio,
++			   struct extent_state **cached,
++			   struct can_nocow_file_extent_args *nocow_args,
++			   u64 file_pos, bool is_prealloc)
++{
++	struct btrfs_ordered_extent *ordered;
++	u64 len = nocow_args->file_extent.num_bytes;
++	u64 end = file_pos + len - 1;
 +	int ret = 0;
- 
- 	if (entity == NULL)
- 		return 0;
-@@ -2148,8 +2148,6 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 				dev->intfnum, ctrl->info.selector,
- 				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
- 				ctrl->info.size);
--		else
--			ret = 0;
- 
- 		if (!ret)
- 			processed_ctrls++;
-@@ -2165,13 +2163,20 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
- 			ret = uvc_ctrl_set_handle(handle, ctrl, handle);
- 
--		if (ret < 0) {
-+		if (ret < 0 && !rollback) {
- 			if (err_ctrl)
- 				*err_ctrl = ctrl;
--			return ret;
-+			/*
-+			 * If we fail to set a control, we need to rollback
-+			 * the next ones.
-+			 */
-+			rollback = 1;
- 		}
- 	}
- 
-+	if (ret)
-+		return ret;
 +
- 	return processed_ctrls;
- }
- 
-@@ -2202,7 +2207,8 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
- 	struct uvc_video_chain *chain = handle->chain;
- 	struct uvc_control *err_ctrl;
- 	struct uvc_entity *entity;
--	int ret = 0;
-+	int ret_out = 0;
-+	int ret;
- 
- 	/* Find the control. */
- 	list_for_each_entry(entity, &chain->entities, chain) {
-@@ -2213,17 +2219,23 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
- 				ctrls->error_idx =
- 					uvc_ctrl_find_ctrl_idx(entity, ctrls,
- 							       err_ctrl);
--			goto done;
-+			/*
-+			 * When we fail to commit an entity, we need to
-+			 * restore the UVC_CTRL_DATA_BACKUP for all the
-+			 * controls in the other entities, otherwise our cache
-+			 * and the hardware will be out of sync.
-+			 */
-+			rollback = 1;
++	lock_extent(&inode->io_tree, file_pos, end, cached);
 +
-+			ret_out = ret;
- 		} else if (ret > 0 && !rollback) {
- 			uvc_ctrl_send_events(handle, entity,
- 					     ctrls->controls, ctrls->count);
++	if (is_prealloc) {
++		struct extent_map *em;
++
++		em = btrfs_create_io_em(inode, file_pos, &nocow_args->file_extent,
++					BTRFS_ORDERED_PREALLOC);
++		if (IS_ERR(em)) {
++			unlock_extent(&inode->io_tree, file_pos, end, cached);
++			return PTR_ERR(em);
++		}
++		free_extent_map(em);
++	}
++
++	ordered = btrfs_alloc_ordered_extent(inode, file_pos, &nocow_args->file_extent,
++					     is_prealloc
++					     ? (1 << BTRFS_ORDERED_PREALLOC)
++					     : (1 << BTRFS_ORDERED_NOCOW));
++	if (IS_ERR(ordered)) {
++		if (is_prealloc)
++			btrfs_drop_extent_map_range(inode, file_pos, end, false);
++		unlock_extent(&inode->io_tree, file_pos, end, cached);
++		return PTR_ERR(ordered);
++	}
++
++	if (btrfs_is_data_reloc_root(inode->root))
++		/*
++		 * Errors are handled later, as we must prevent
++		 * extent_clear_unlock_delalloc() in error handler from freeing
++		 * metadata of the created ordered extent.
++		 */
++		ret = btrfs_reloc_clone_csums(ordered);
++	btrfs_put_ordered_extent(ordered);
++
++	extent_clear_unlock_delalloc(inode, file_pos, end, locked_folio, cached,
++				     EXTENT_LOCKED | EXTENT_DELALLOC |
++				     EXTENT_CLEAR_DATA_RESV,
++				     PAGE_UNLOCK | PAGE_SET_ORDERED);
++
++	/*
++	 * btrfs_reloc_clone_csums() error, now we're OK to call error handler,
++	 * as metadata for created ordered extent will only be freed by
++	 * btrfs_finish_ordered_io().
++	 */
++	return ret;
++}
++
+ /*
+  * when nowcow writeback call back.  This checks for snapshots or COW copies
+  * of the extents that exist in the file, and COWs the file as required.
+@@ -2099,15 +2156,12 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
+ 
+ 	while (cur_offset <= end) {
+ 		struct btrfs_block_group *nocow_bg = NULL;
+-		struct btrfs_ordered_extent *ordered;
+ 		struct btrfs_key found_key;
+ 		struct btrfs_file_extent_item *fi;
+ 		struct extent_buffer *leaf;
+ 		struct extent_state *cached_state = NULL;
+ 		u64 extent_end;
+-		u64 nocow_end;
+ 		int extent_type;
+-		bool is_prealloc;
+ 
+ 		ret = btrfs_lookup_file_extent(NULL, root, path, ino,
+ 					       cur_offset, 0);
+@@ -2242,67 +2296,13 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
+ 			}
  		}
+ 
+-		nocow_end = cur_offset + nocow_args.file_extent.num_bytes - 1;
+-		lock_extent(&inode->io_tree, cur_offset, nocow_end, &cached_state);
+-
+-		is_prealloc = extent_type == BTRFS_FILE_EXTENT_PREALLOC;
+-		if (is_prealloc) {
+-			struct extent_map *em;
+-
+-			em = btrfs_create_io_em(inode, cur_offset,
+-						&nocow_args.file_extent,
+-						BTRFS_ORDERED_PREALLOC);
+-			if (IS_ERR(em)) {
+-				unlock_extent(&inode->io_tree, cur_offset,
+-					      nocow_end, &cached_state);
+-				btrfs_dec_nocow_writers(nocow_bg);
+-				ret = PTR_ERR(em);
+-				goto error;
+-			}
+-			free_extent_map(em);
+-		}
+-
+-		ordered = btrfs_alloc_ordered_extent(inode, cur_offset,
+-				&nocow_args.file_extent,
+-				is_prealloc
+-				? (1 << BTRFS_ORDERED_PREALLOC)
+-				: (1 << BTRFS_ORDERED_NOCOW));
++		ret = nocow_one_range(inode, locked_folio, &cached_state,
++				      &nocow_args, cur_offset,
++				      extent_type == BTRFS_FILE_EXTENT_PREALLOC);
+ 		btrfs_dec_nocow_writers(nocow_bg);
+-		if (IS_ERR(ordered)) {
+-			if (is_prealloc) {
+-				btrfs_drop_extent_map_range(inode, cur_offset,
+-							    nocow_end, false);
+-			}
+-			unlock_extent(&inode->io_tree, cur_offset,
+-				      nocow_end, &cached_state);
+-			ret = PTR_ERR(ordered);
++		if (ret < 0)
+ 			goto error;
+-		}
+-
+-		if (btrfs_is_data_reloc_root(root))
+-			/*
+-			 * Error handled later, as we must prevent
+-			 * extent_clear_unlock_delalloc() in error handler
+-			 * from freeing metadata of created ordered extent.
+-			 */
+-			ret = btrfs_reloc_clone_csums(ordered);
+-		btrfs_put_ordered_extent(ordered);
+-
+-		extent_clear_unlock_delalloc(inode, cur_offset, nocow_end,
+-					     locked_folio, &cached_state,
+-					     EXTENT_LOCKED | EXTENT_DELALLOC |
+-					     EXTENT_CLEAR_DATA_RESV,
+-					     PAGE_UNLOCK | PAGE_SET_ORDERED);
+-
+ 		cur_offset = extent_end;
+-
+-		/*
+-		 * btrfs_reloc_clone_csums() error, now we're OK to call error
+-		 * handler, as metadata for created ordered extent will only
+-		 * be freed by btrfs_finish_ordered_io().
+-		 */
+-		if (ret)
+-			goto error;
  	}
+ 	btrfs_release_path(path);
  
--	ret = 0;
--done:
- 	mutex_unlock(&chain->ctrl_mutex);
--	return ret;
-+	return ret_out;
- }
- 
- static int uvc_mapping_get_xctrl_compound(struct uvc_video_chain *chain,
 -- 
 2.39.5
 
