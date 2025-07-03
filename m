@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-159907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F828AF7B7B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD0B3AF7A4E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:11:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B45C06E4A85
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:18:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FD221701C2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE66A22B8AB;
-	Thu,  3 Jul 2025 15:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99321E9B3D;
+	Thu,  3 Jul 2025 15:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIBWnBzn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wo3hQRYp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD0723A99E;
-	Thu,  3 Jul 2025 15:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8557F15442C;
+	Thu,  3 Jul 2025 15:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555736; cv=none; b=spNP/5QwwJUr3hB8L/QwlSfQK292Oh3pmVeiqPYjI/y+z7dQ010P+kSTZvfODqPHru+53TzZZooBdkZelozxLD5ZpPf14fwENKWH/SSf01pSjM8tnWV3zcn+2OXCBU7lzoDYzUAe8diw6I88BxCEdeOBQ9lkjk7i36MQKRD/NxI=
+	t=1751555315; cv=none; b=KLB2pq3WM8IILl7gJk+80ZSX+4dby+0kckYZw4T6vXqXIuJ7X9/J23KcFYkUX6gbY1Px7I5WLOAh5jdea37zhqBO54n99tHzOsuAPgW5GC+UqHxoZCkbVNIyDHjswe51qBlUbCXDRnrW4vW80qq+vC6PKLMKrFV8NJAoN9yfBG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555736; c=relaxed/simple;
-	bh=pqW5Nb9Jibmiijznop8vyldFimYL0AxBXzWIACIaLFQ=;
+	s=arc-20240116; t=1751555315; c=relaxed/simple;
+	bh=Zpfa0c5LOaSVWtY0AOAPJOgs5mAke1u9EOpc57alUaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I6pUGZnrVu5cReEZOQX9OwfukjbUObW71R3JpSy/llw8mY8OleUurtMtiL9yyCT1prIqaHWo5c1dJMFYVTGwOq2SECEV3ihW9azmNfnGpVI8IENsB3LRa2IApehCCeRH62+uVM/kWROEGjPuV6xXV03buheNYU6dMF/bUzkQ7G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIBWnBzn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB196C4CEE3;
-	Thu,  3 Jul 2025 15:15:35 +0000 (UTC)
+	 MIME-Version; b=RUg/SE+ZY9wSVocHsCnyYAKIQ94xmyqiY04ober2xnB2xzdWBmWHGtdkpIROeznt2lYkvl6nhLqVccxKdxgWRdZX1STYIKHIeGkSZc7co7HgpKlHRaCz4qqKUE2a/m9tYNbvt+H9k6lkyROFTXvrGcvtZZJcWPl/OaeuGDQVFtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wo3hQRYp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37D0C4CEE3;
+	Thu,  3 Jul 2025 15:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555736;
-	bh=pqW5Nb9Jibmiijznop8vyldFimYL0AxBXzWIACIaLFQ=;
+	s=korg; t=1751555315;
+	bh=Zpfa0c5LOaSVWtY0AOAPJOgs5mAke1u9EOpc57alUaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EIBWnBznam0ahssdKY4SIyoEnON5tZTsCdZi82Z5dgHgH24KW1DvSJwAuI+P0IjEV
-	 5Kvk5Xb42WP9/GDkdCVNppbKuG1Rm1y9O4oTOR3HH8sk4Ob0eFifL8DFYRF2TBMoy2
-	 xO5bGhi6ZcrqIV5Nuig3V8MaG5MN2rHpgjyXCfXU=
+	b=Wo3hQRYpnwxVzSduPJ+PGbowFWaoroR8PH9b5sOIcvC0jgeZ/UUSXDq1nDA2oKxfL
+	 YjEhsDSDJc93cs4uJ1J2VDVAZMDSzo40djTciQJjQDLEthaFDSR2SeieGQr5Ia9epq
+	 Sd1PY3f8ETvj4QKguNV0pgD44u/KEiyiB2bbsWZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 6.6 098/139] serial: imx: Restore original RXTL for console to fix data loss
+	Abel Vesa <abel.vesa@linaro.org>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Sibi Sankar <quic_sibis@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 241/263] arm64: dts: qcom: x1e80100-crd: mark l12b and l15b always-on
 Date: Thu,  3 Jul 2025 16:42:41 +0200
-Message-ID: <20250703143945.001958275@linuxfoundation.org>
+Message-ID: <20250703144014.071604398@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit f23c52aafb1675ab1d1f46914556d8e29cbbf7b3 upstream.
+[ Upstream commit abf89bc4bb09c16a53d693b09ea85225cf57ff39 ]
 
-Commit 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
-introduced a regression on the i.MX6UL EVK board. The issue can be
-reproduced with the following steps:
+The l12b and l15b supplies are used by components that are not (fully)
+described (and some never will be) and must never be disabled.
 
-- Open vi on the board.
-- Paste a text file (~150 characters).
-- Save the file, then repeat the process.
-- Compare the sha256sum of the saved files.
+Mark the regulators as always-on to prevent them from being disabled,
+for example, when consumers probe defer or suspend.
 
-The checksums do not match due to missing characters or entire lines.
-
-Fix this by restoring the RXTL value to 1 when the UART is used as a
-console.
-
-This ensures timely RX interrupts and reliable data reception in console
-mode.
-
-With this change, pasted content is saved correctly, and checksums are
-always consistent.
-
-Cc: stable <stable@kernel.org>
-Fixes: 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20250619114617.2791939-1-festevam@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bd50b1f5b6f3 ("arm64: dts: qcom: x1e80100: Add Compute Reference Device")
+Cc: stable@vger.kernel.org	# 6.8
+Cc: Abel Vesa <abel.vesa@linaro.org>
+Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
+Cc: Sibi Sankar <quic_sibis@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20250314145440.11371-2-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/qcom/x1-crd.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -234,6 +234,7 @@ struct imx_port {
- 	enum imx_tx_state	tx_state;
- 	struct hrtimer		trigger_start_tx;
- 	struct hrtimer		trigger_stop_tx;
-+	unsigned int		rxtl;
- };
+diff --git a/arch/arm64/boot/dts/qcom/x1-crd.dtsi b/arch/arm64/boot/dts/qcom/x1-crd.dtsi
+index 296b41409ad17..780852fb87360 100644
+--- a/arch/arm64/boot/dts/qcom/x1-crd.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1-crd.dtsi
+@@ -434,6 +434,7 @@ vreg_l12b_1p2: ldo12 {
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
+ 		};
  
- struct imx_port_ucrs {
-@@ -1337,6 +1338,7 @@ static void imx_uart_clear_rx_errors(str
+ 		vreg_l13b_3p0: ldo13 {
+@@ -455,6 +456,7 @@ vreg_l15b_1p8: ldo15 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
+ 		};
  
- #define TXTL_DEFAULT 8
- #define RXTL_DEFAULT 8 /* 8 characters or aging timer */
-+#define RXTL_CONSOLE_DEFAULT 1
- #define TXTL_DMA 8 /* DMA burst setting */
- #define RXTL_DMA 9 /* DMA burst setting */
- 
-@@ -1449,7 +1451,7 @@ static void imx_uart_disable_dma(struct
- 	ucr1 &= ~(UCR1_RXDMAEN | UCR1_TXDMAEN | UCR1_ATDMAEN);
- 	imx_uart_writel(sport, ucr1, UCR1);
- 
--	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 
- 	sport->dma_is_enabled = 0;
- }
-@@ -1474,7 +1476,12 @@ static int imx_uart_startup(struct uart_
- 		return retval;
- 	}
- 
--	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+	if (uart_console(&sport->port))
-+		sport->rxtl = RXTL_CONSOLE_DEFAULT;
-+	else
-+		sport->rxtl = RXTL_DEFAULT;
-+
-+	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 
- 	/* disable the DREN bit (Data Ready interrupt enable) before
- 	 * requesting IRQs
-@@ -1887,7 +1894,7 @@ static int imx_uart_poll_init(struct uar
- 	if (retval)
- 		clk_disable_unprepare(sport->clk_ipg);
- 
--	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 
- 	spin_lock_irqsave(&sport->port.lock, flags);
- 
-@@ -1979,7 +1986,7 @@ static int imx_uart_rs485_config(struct
- 		/* If the receiver trigger is 0, set it to a default value */
- 		ufcr = imx_uart_readl(sport, UFCR);
- 		if ((ufcr & UFCR_RXTL_MASK) == 0)
--			imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+			imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 		imx_uart_start_rx(port);
- 	}
- 
-@@ -2164,7 +2171,7 @@ imx_uart_console_setup(struct console *c
- 	else
- 		imx_uart_console_get_options(sport, &baud, &parity, &bits);
- 
--	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 
- 	retval = uart_set_options(&sport->port, co, baud, parity, bits, flow);
- 
+ 		vreg_l16b_2p9: ldo16 {
+-- 
+2.39.5
+
 
 
 
