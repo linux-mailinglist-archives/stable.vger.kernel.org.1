@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-159939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F41FAF7B8F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1845EAF7B73
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C38A6E503C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DA747B591F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D052EFDBE;
-	Thu,  3 Jul 2025 15:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95CC2F0024;
+	Thu,  3 Jul 2025 15:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRUxBKn7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFx+En58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3142C2EF676;
-	Thu,  3 Jul 2025 15:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F5F2EFDBE;
+	Thu,  3 Jul 2025 15:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555853; cv=none; b=F39iZ97hL7rS1ku4XYxTvXNT5Fu5B7tPHQwEF7hPRcA6GE2OwuvH+mfIiIAF7I0FhY6fWwGvhlV4avTeLIlJQZZCU3WwwCprMvieIqheVxZE3K/iIVA6A5RcVQVY8N36VJAJsxYfGUvNE/ZLXjoRTYWzCSagE+HFtULWMHY6oa0=
+	t=1751556193; cv=none; b=pvdfjyCPQdzaeBZF5CKjLBYBwEAHZEUYB/2th6Dn8EpIiFQFuLDr2757t1owiMB0RoaQ0DGKEtw3Yk6Np87CwN02841ii8dsAIQcCWCtrv9DpsArwepNhDZ2bhWkA8bjKcrJwa2I58mD4VMSPUWo1LKVUHAHcLqAxRVnNmCInos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555853; c=relaxed/simple;
-	bh=K3W1X4QD06D+5lTfnW++bBvGmHDfcK75vqqvpzod9qI=;
+	s=arc-20240116; t=1751556193; c=relaxed/simple;
+	bh=70ymnXdB+LaNjkX1JK0hKq9AcCePcS3MfIlrWjK7uWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mX0JEqyy6dc4YyvYvt5DT5RX2NrDHaU53Z2MBlbTLvXXGoUZ5Zc0/IUIK7JFSlp4Fw6t0lb8Y8w0KCGM2/ILietMPg4QKZka1Xowp+kk26KJS35QPhrTJjJv98i/4mMjO9gTXTUDmoQMOWzOdDCnwK6FDGJ6zXECRMfaBLuaV64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRUxBKn7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F58C4CEE3;
-	Thu,  3 Jul 2025 15:17:32 +0000 (UTC)
+	 MIME-Version; b=Q8C+jhDAoBcfPF7oeoXtYbKfjDQSP1WYJA0z2fUJAA+uHb2QwU7uZ4AP7Iu17U8tpmO5bBBX1ob2BjqaWR3JrPPvqU9YSwi/jIFViz6V3Is0qU97W9t6JQSDvXSxVpOlIlZNAXfXiJh0ZWFUDF/esNp1HQmMYDNPDzf7CyJ4w0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFx+En58; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE193C4CEED;
+	Thu,  3 Jul 2025 15:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555853;
-	bh=K3W1X4QD06D+5lTfnW++bBvGmHDfcK75vqqvpzod9qI=;
+	s=korg; t=1751556193;
+	bh=70ymnXdB+LaNjkX1JK0hKq9AcCePcS3MfIlrWjK7uWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KRUxBKn7hW7ZhUVyTcR8CMsYw5FNsawSLOuNYpsenORK7EkjwQlm3xAe1m2qybLy2
-	 nQtBG4t6jfDIygB/yjaRSC2pGshX5J9KyRWVoyj115SrdrcxSPY+ttz/9ZGhNe6KHc
-	 zJpap6GHBJ4BhEi8tE+pJIdnAnJFF4AteNg9QWX4=
+	b=vFx+En586tGBigJzM1168K4lE1lhqBZHYhkaef3dyA5J6+HRFwRSapblTCzpQJOKl
+	 xp/TlUcYKWfuPnZZEJ/4BwliEjTLHiM2tTy5opBzn2aofIpaif1dpJObVU+aAG6FIF
+	 fhYRrCfBrnQPDaWZQAKNoa2fOS4DYhybVDZgvhFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Davide Cavalca <dcavalca@meta.com>
-Subject: [PATCH 6.6 130/139] kbuild: rpm-pkg: simplify installkernel %post
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.1 104/132] drm/tegra: Fix a possible null pointer dereference
 Date: Thu,  3 Jul 2025 16:43:13 +0200
-Message-ID: <20250703143946.267002094@linuxfoundation.org>
+Message-ID: <20250703143943.473463683@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-commit 358de8b4f201bc05712484b15f0109b1ae3516a8 upstream.
+commit 780351a5f61416ed2ba1199cc57e4a076fca644d upstream.
 
-The new installkernel application that is now included in systemd-udev
-package allows installation although destination files are already present
-in the boot directory of the kernel package, but is failing with the
-implemented workaround for the old installkernel application from grubby
-package.
+In tegra_crtc_reset(), new memory is allocated with kzalloc(), but
+no check is performed. Before calling __drm_atomic_helper_crtc_reset,
+state should be checked to prevent possible null pointer dereference.
 
-For the new installkernel application, as Davide says:
-<<The %post currently does a shuffling dance before calling installkernel.
-This isn't actually necessary afaict, and the current implementation
-ends up triggering downstream issues such as
-https://github.com/systemd/systemd/issues/29568
-This commit simplifies the logic to remove the shuffling. For reference,
-the original logic was added in commit 3c9c7a14b627("rpm-pkg: add %post
-section to create initramfs and grub hooks").>>
-
-But we need to keep the old behavior as well, because the old installkernel
-application from grubby package, does not allow this simplification and
-we need to be backward compatible to avoid issues with the different
-packages.
-
-Mimic Fedora shipping process and store vmlinuz, config amd System.map
-in the module directory instead of the boot directory. In this way, we will
-avoid the commented problem for all the cases, because the new destination
-files are not going to exist in the boot directory of the kernel package.
-
-Replace installkernel tool with kernel-install tool, because the latter is
-more complete.
-
-Besides, after installkernel tool execution, check to complete if the
-correct package files vmlinuz, System.map and config files are present
-in /boot directory, and if necessary, copy manually for install operation.
-In this way, take into account if  files were not previously copied from
-/usr/lib/kernel/install.d/* scripts and if the suitable files for the
-requested package are present (it could be others if the rpm files were
-replace with a new pacakge with the same release and a different build).
-
-Tested with Fedora 38, Fedora 39, RHEL 9, Oracle Linux 9.3,
-openSUSE Tumbleweed and openMandrive ROME, using dnf/zypper and rpm tools.
-
-cc: stable@vger.kernel.org
-Co-Developed-by: Davide Cavalca <dcavalca@meta.com>
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: b7e0b04ae450 ("drm/tegra: Convert to using __drm_atomic_helper_crtc_reset() for reset.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20241106095906.15247-1-chenqiuji666@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/package/kernel.spec |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/tegra/dc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/scripts/package/kernel.spec
-+++ b/scripts/package/kernel.spec
-@@ -55,12 +55,12 @@ patch -p1 < %{SOURCE2}
- %{make} %{makeflags} KERNELRELEASE=%{KERNELRELEASE} KBUILD_BUILD_VERSION=%{release}
+--- a/drivers/gpu/drm/tegra/dc.c
++++ b/drivers/gpu/drm/tegra/dc.c
+@@ -1391,7 +1391,10 @@ static void tegra_crtc_reset(struct drm_
+ 	if (crtc->state)
+ 		tegra_crtc_atomic_destroy_state(crtc, crtc->state);
  
- %install
--mkdir -p %{buildroot}/boot
--cp $(%{make} %{makeflags} -s image_name) %{buildroot}/boot/vmlinuz-%{KERNELRELEASE}
-+mkdir -p %{buildroot}/lib/modules/%{KERNELRELEASE}
-+cp $(%{make} %{makeflags} -s image_name) %{buildroot}/lib/modules/%{KERNELRELEASE}/vmlinuz
- %{make} %{makeflags} INSTALL_MOD_PATH=%{buildroot} modules_install
- %{make} %{makeflags} INSTALL_HDR_PATH=%{buildroot}/usr headers_install
--cp System.map %{buildroot}/boot/System.map-%{KERNELRELEASE}
--cp .config %{buildroot}/boot/config-%{KERNELRELEASE}
-+cp System.map %{buildroot}/lib/modules/%{KERNELRELEASE}
-+cp .config %{buildroot}/lib/modules/%{KERNELRELEASE}/config
- ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEASE}/build
- %if %{with_devel}
- %{make} %{makeflags} run-command KBUILD_RUN_COMMAND='${srctree}/scripts/package/install-extmod-build %{buildroot}/usr/src/kernels/%{KERNELRELEASE}'
-@@ -70,13 +70,14 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE
- rm -rf %{buildroot}
+-	__drm_atomic_helper_crtc_reset(crtc, &state->base);
++	if (state)
++		__drm_atomic_helper_crtc_reset(crtc, &state->base);
++	else
++		__drm_atomic_helper_crtc_reset(crtc, NULL);
+ }
  
- %post
--if [ -x /sbin/installkernel -a -r /boot/vmlinuz-%{KERNELRELEASE} -a -r /boot/System.map-%{KERNELRELEASE} ]; then
--cp /boot/vmlinuz-%{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm
--cp /boot/System.map-%{KERNELRELEASE} /boot/.System.map-%{KERNELRELEASE}-rpm
--rm -f /boot/vmlinuz-%{KERNELRELEASE} /boot/System.map-%{KERNELRELEASE}
--/sbin/installkernel %{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
--rm -f /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
-+if [ -x /usr/bin/kernel-install ]; then
-+	/usr/bin/kernel-install add %{KERNELRELEASE} /lib/modules/%{KERNELRELEASE}/vmlinuz
- fi
-+for file in vmlinuz System.map config; do
-+	if ! cmp --silent "/lib/modules/%{KERNELRELEASE}/${file}" "/boot/${file}-%{KERNELRELEASE}"; then
-+		cp "/lib/modules/%{KERNELRELEASE}/${file}" "/boot/${file}-%{KERNELRELEASE}"
-+	fi
-+done
- 
- %preun
- if [ -x /sbin/new-kernel-pkg ]; then
-@@ -94,7 +95,6 @@ fi
- %defattr (-, root, root)
- /lib/modules/%{KERNELRELEASE}
- %exclude /lib/modules/%{KERNELRELEASE}/build
--/boot/*
- 
- %files headers
- %defattr (-, root, root)
+ static struct drm_crtc_state *
 
 
 
