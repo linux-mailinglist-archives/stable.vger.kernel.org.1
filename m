@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-159667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F9FBAF79C6
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02293AF788F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5009175A79
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:02:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1464516E2D8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A152ED871;
-	Thu,  3 Jul 2025 15:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E282E7649;
+	Thu,  3 Jul 2025 14:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0nSbxEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgPodupH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2A02E7BBF;
-	Thu,  3 Jul 2025 15:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6641B231853;
+	Thu,  3 Jul 2025 14:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554957; cv=none; b=kRaLFQmJXMfk5pbuwHMhxfkzThk5qaNuFjTqSE86pM86DjqZmYG7hnFJK4SBmoF3dtup9YvXKI8UBoynflAvE6ZwjU6bBaZRSXBn7PUZrTdiO6ncgVNFzurmMfQ1Y5n35aShZO4VVEEyR+09c1NW+riubxpj3SKTQvlndg7EtAY=
+	t=1751554242; cv=none; b=mBgQIYZNibQvVRzYYAmvmmBGGXfCFPWmYfa6BVHAizAWbNrLR/ujAcRhXQK7C0WUeZc/jPKX1QkWwR3ZoWRGRwNtls5swKIQKsGW855w+LEqko6xJp8JSQ65fYhvEBsayM+sZ7ug+sGlotMEMJgCHYc4wOdekiBqIr9HnW4l21w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554957; c=relaxed/simple;
-	bh=JldWJHydv/9FSB0KnhTd8wlLhQHxiQipRHNBf6567K0=;
+	s=arc-20240116; t=1751554242; c=relaxed/simple;
+	bh=bl3mVllg0152T3SiKFvSgnT20KHEaMbtT3WAD3YPpAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fKUAZx3zBO0eQdcU9Ixwc6nV8M6PTyY0b1ZSnjCg4+fZZvNDGo6mqwlZMUPNjZaZ1xbVNWAP2tkH2zIQhazmu63AW4Ld9jwTdFTULhF0CGOkWQ0gW/ezSx/0XmsfwAwmxKf7TgAl4IhSJgbgA4b3bMFDJZn0m8s0LrP4pYMhZ3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0nSbxEM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1037C4CEE3;
-	Thu,  3 Jul 2025 15:02:36 +0000 (UTC)
+	 MIME-Version; b=IiELflEMSRLGBi9tOIV32LIAh0rdP6BeOHLLGqdYfTTLNpiaDYGFujQ/GZfb0OmOZRevPdgnATZCflA3SsofHCZq5q8H2zA28eayrHcFAR8QndTJAZ/uQ2wd5RpgoJ7ck4TNviG4ZeXlGNHSXQ90nUM5tZgrIU6MXHe9WKHEUDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgPodupH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E658FC4CEF3;
+	Thu,  3 Jul 2025 14:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554957;
-	bh=JldWJHydv/9FSB0KnhTd8wlLhQHxiQipRHNBf6567K0=;
+	s=korg; t=1751554242;
+	bh=bl3mVllg0152T3SiKFvSgnT20KHEaMbtT3WAD3YPpAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q0nSbxEMAnsI8/EuQ5m/2HrjVrTBsujDBActF8M3rTeJJ5trtPXbOBg8b26iqwYC3
-	 +2UA9H8paUYY60tSoLo2le9fBNOsa3HP886AgKQnHMbl1hY/9OtXp+9W79381lgXTq
-	 ceoQZNqYZAFuD82pQ3NZR6zchUGNL13+cbSGDNh8=
+	b=MgPodupHCjShNE9N9FAWsuj35py1I4HnhKEZtUEdbHuX2aVCmLxGsWeSbr7QLldd9
+	 3pdgrT4JgwKqRqR8hrWNGAukhnFbZ7uD2EuJ6Z5XqruNCIhDVST1zjDq95qxPpRPk2
+	 O3hDf/zASKxHsyNWoPMwC0iGD/xhnEuzimgNNM4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.15 124/263] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 096/218] ethernet: ionic: Fix DMA mapping tests
 Date: Thu,  3 Jul 2025 16:40:44 +0200
-Message-ID: <20250703144009.328001957@linuxfoundation.org>
+Message-ID: <20250703143959.774604679@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit a3ef3c2da675a8a564c8bea1a511cdd0a2a9aa49 upstream.
+[ Upstream commit d5e3241c5a386a2425823c8c7afb77a465bd040f ]
 
-Reading DPCD registers has side-effects in general. In particular
-accessing registers outside of the link training register range
-(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
-forbidden by the DP v2.1 Standard, see
+Change error values of `ionic_tx_map_single()` and `ionic_tx_map_frag()`
+from 0 to `DMA_MAPPING_ERROR` to prevent collision with 0 as a valid
+address.
 
-3.6.5.1 DPTX AUX Transaction Handling Mandates
-3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
+This also fixes the use of `dma_mapping_error()` to test against 0 in
+`ionic_xdp_post_frame()`
 
-Based on my tests, accessing the DPCD_REV register during the link
-training of an UHBR TBT DP tunnel sink leads to link training failures.
-
-Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
-DPCD register access quirk.
-
-Cc: <stable@vger.kernel.org>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
-(cherry picked from commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0f3154e6bcb3 ("ionic: Add Tx and Rx handling")
+Fixes: 56e41ee12d2d ("ionic: better dma-map error handling")
+Fixes: ac8813c0ab7d ("ionic: convert Rx queue buffers to use page_pool")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Link: https://patch.msgid.link/20250619094538.283723-2-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_helper.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/pensando/ionic/ionic_txrx.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/display/drm_dp_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -723,7 +723,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
- 	 * monitor doesn't power down exactly after the throw away read.
- 	 */
- 	if (!aux->is_remote) {
--		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
-+		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
- 		if (ret < 0)
- 			return ret;
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
+index 0eeda7e502db2..0f5758c273c22 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
+@@ -321,7 +321,7 @@ static int ionic_xdp_post_frame(struct ionic_queue *q, struct xdp_frame *frame,
+ 					   len, DMA_TO_DEVICE);
+ 	} else /* XDP_REDIRECT */ {
+ 		dma_addr = ionic_tx_map_single(q, frame->data, len);
+-		if (!dma_addr)
++		if (dma_addr == DMA_MAPPING_ERROR)
+ 			return -EIO;
  	}
+ 
+@@ -357,7 +357,7 @@ static int ionic_xdp_post_frame(struct ionic_queue *q, struct xdp_frame *frame,
+ 			} else {
+ 				dma_addr = ionic_tx_map_frag(q, frag, 0,
+ 							     skb_frag_size(frag));
+-				if (dma_mapping_error(q->dev, dma_addr)) {
++				if (dma_addr == DMA_MAPPING_ERROR) {
+ 					ionic_tx_desc_unmap_bufs(q, desc_info);
+ 					return -EIO;
+ 				}
+@@ -1083,7 +1083,7 @@ static dma_addr_t ionic_tx_map_single(struct ionic_queue *q,
+ 		net_warn_ratelimited("%s: DMA single map failed on %s!\n",
+ 				     dev_name(dev), q->name);
+ 		q_to_tx_stats(q)->dma_map_err++;
+-		return 0;
++		return DMA_MAPPING_ERROR;
+ 	}
+ 	return dma_addr;
+ }
+@@ -1100,7 +1100,7 @@ static dma_addr_t ionic_tx_map_frag(struct ionic_queue *q,
+ 		net_warn_ratelimited("%s: DMA frag map failed on %s!\n",
+ 				     dev_name(dev), q->name);
+ 		q_to_tx_stats(q)->dma_map_err++;
+-		return 0;
++		return DMA_MAPPING_ERROR;
+ 	}
+ 	return dma_addr;
+ }
+@@ -1116,7 +1116,7 @@ static int ionic_tx_map_skb(struct ionic_queue *q, struct sk_buff *skb,
+ 	int frag_idx;
+ 
+ 	dma_addr = ionic_tx_map_single(q, skb->data, skb_headlen(skb));
+-	if (!dma_addr)
++	if (dma_addr == DMA_MAPPING_ERROR)
+ 		return -EIO;
+ 	buf_info->dma_addr = dma_addr;
+ 	buf_info->len = skb_headlen(skb);
+@@ -1126,7 +1126,7 @@ static int ionic_tx_map_skb(struct ionic_queue *q, struct sk_buff *skb,
+ 	nfrags = skb_shinfo(skb)->nr_frags;
+ 	for (frag_idx = 0; frag_idx < nfrags; frag_idx++, frag++) {
+ 		dma_addr = ionic_tx_map_frag(q, frag, 0, skb_frag_size(frag));
+-		if (!dma_addr)
++		if (dma_addr == DMA_MAPPING_ERROR)
+ 			goto dma_fail;
+ 		buf_info->dma_addr = dma_addr;
+ 		buf_info->len = skb_frag_size(frag);
+-- 
+2.39.5
+
 
 
 
