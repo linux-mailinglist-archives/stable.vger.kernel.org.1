@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-159685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B33EAF7A0B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E4FAF78A7
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FEC21C40884
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C76CB1CA0C95
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A632E339E;
-	Thu,  3 Jul 2025 15:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D942EF2B0;
+	Thu,  3 Jul 2025 14:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvq+TzLS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGzKQkuI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526DC2B9A6;
-	Thu,  3 Jul 2025 15:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3258E2EE99C;
+	Thu,  3 Jul 2025 14:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555017; cv=none; b=fSWawmg1Cjnr3Xl8Wkkgf2OpNj6GwuVag8re3Sl6ynRHaNuf/vEZpM+Rq8Iv5p5d1ZxHg8uYwvavMYJ+ETY8daKW6DsLS7QtKPdoNNV1ffYCGHZK702ANcK1fA+jkzXBJY7uPnSxdBYtHhNG2vO8h+sy8z2CjUzEROcUODk16aA=
+	t=1751554233; cv=none; b=Jca5oI6Zhtz7V6RMZWikwUOkNqsLxabGMGGL5+bu/MssGClLVY0GRUGr1K8o4pspiuoX17kFWIRuqxY7s0/BiCnPfw4yhTZgrxkyyGK9VAl8O8ulwDay66dIGpycsO/VZLSjcMC5ITy4QeAcbcRjsApPFwFjH3AoN/fNtgCuEOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555017; c=relaxed/simple;
-	bh=Cp+NOPeDSJgIxfx1R8w+/gFo3/qCuMRVigegpwmdapo=;
+	s=arc-20240116; t=1751554233; c=relaxed/simple;
+	bh=Wz/UHFMKLhlswTESC90CzmPM2fdNvMk8fiFo0jWttuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rkVsGwIUS5zX8NtnC1bXr6wseqCjhgQ9pBLBK/1qUKJn782aHUJW5qkOpxFZpfjJ+hb06vySkXk6gx+kyeYSDncg9g3GEFy0noIIMrWPwfRJMViy5hTurr6mfHgZKOQEOj+MJjCZxN2lX1RwLI8zYhcba+H3x4QOMsYpMd0h93w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvq+TzLS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55EFFC4CEE3;
-	Thu,  3 Jul 2025 15:03:34 +0000 (UTC)
+	 MIME-Version; b=SPnvuHmejU9cYlhlrrz6pCRkmINKqroZGyt2l7y6jhPkZBr/ytvgO825OEc/flogigz7waxGV5mcz09FCqvDTd+0yr4yapgcTZFEZs3jeackdNfyOPIMBsYUS8tJjrDwOEXsOsN6m5TKGEDT9EQNpozIWH913zn5+SuIbpstF9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGzKQkuI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6CCC4CEE3;
+	Thu,  3 Jul 2025 14:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555014;
-	bh=Cp+NOPeDSJgIxfx1R8w+/gFo3/qCuMRVigegpwmdapo=;
+	s=korg; t=1751554233;
+	bh=Wz/UHFMKLhlswTESC90CzmPM2fdNvMk8fiFo0jWttuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rvq+TzLSxeKKcb2pgC7P2UMRpzTM6TxF8qhjzj+Ewft+5j+DJcdCwsruVHJNw8eS2
-	 E1GMzb+MjlO7H7Hm0gPqTF1Hx+5RgaA4+wSXZohdQ3S9QiXdOQMCZ6f5WKbE8eVYZM
-	 nC7Q0meUqptniGOf/YvQhUmGsO7l19bT+Lb9lvBg=
+	b=BGzKQkuIW4IlmKyqJrCHqlQ9sl7qtdEcb4YlCs9NFjE5vBe1AVNJ2c1GL8F7L4795
+	 B8sOzlzMiAQdYmDpMd/xMXFtzq2aQxJk4VX7ggbvnqitqSGGibqUiaC7GBwS7gyZ8m
+	 4jvZQLpJ1pEUqhQdFOYhy6Icd+Vh+QKw7oyHI9wU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Hyunchul Lee <hyc.lee@gmail.com>,
+	Meetakshi Setiya <meetakshisetiyaoss@gmail.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 149/263] userns and mnt_idmap leak in open_tree_attr(2)
+Subject: [PATCH 6.12 121/218] smb: smbdirect: add smbdirect_socket.h
 Date: Thu,  3 Jul 2025 16:41:09 +0200
-Message-ID: <20250703144010.329083535@linuxfoundation.org>
+Message-ID: <20250703144000.775347106@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +70,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 0748e553df0225754c316a92af3a77fdc057b358 ]
+[ Upstream commit 22234e37d7e97652cb53133009da5e14793d3c10 ]
 
-Once want_mount_setattr() has returned a positive, it does require
-finish_mount_kattr() to release ->mnt_userns.  Failing do_mount_setattr()
-does not change that.
+This abstracts the common smbdirect layer.
 
-As the result, we can end up leaking userns and possibly mnt_idmap as
-well.
+Currently with just a few things in it,
+but that will change over time until everything is
+in common.
 
-Fixes: c4a16820d901 ("fs: add open_tree_attr()")
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Will be used in client and server in the next commits
+
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Hyunchul Lee <hyc.lee@gmail.com>
+Cc: Meetakshi Setiya <meetakshisetiyaoss@gmail.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 43e7e284fc77 ("cifs: Fix the smbd_response slab to allow usercopy")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ fs/smb/common/smbdirect/smbdirect_socket.h | 41 ++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+ create mode 100644 fs/smb/common/smbdirect/smbdirect_socket.h
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 24b087ba88159..dfb72f827d4a7 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -5307,16 +5307,12 @@ SYSCALL_DEFINE5(open_tree_attr, int, dfd, const char __user *, filename,
- 			kattr.kflags |= MOUNT_KATTR_RECURSE;
- 
- 		ret = wants_mount_setattr(uattr, usize, &kattr);
--		if (ret < 0)
--			return ret;
--
--		if (ret) {
-+		if (ret > 0) {
- 			ret = do_mount_setattr(&file->f_path, &kattr);
--			if (ret)
--				return ret;
--
- 			finish_mount_kattr(&kattr);
- 		}
-+		if (ret)
-+			return ret;
- 	}
- 
- 	fd = get_unused_fd_flags(flags & O_CLOEXEC);
+diff --git a/fs/smb/common/smbdirect/smbdirect_socket.h b/fs/smb/common/smbdirect/smbdirect_socket.h
+new file mode 100644
+index 0000000000000..69a55561f91ae
+--- /dev/null
++++ b/fs/smb/common/smbdirect/smbdirect_socket.h
+@@ -0,0 +1,41 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ *   Copyright (c) 2025 Stefan Metzmacher
++ */
++
++#ifndef __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_SOCKET_H__
++#define __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_SOCKET_H__
++
++enum smbdirect_socket_status {
++	SMBDIRECT_SOCKET_CREATED,
++	SMBDIRECT_SOCKET_CONNECTING,
++	SMBDIRECT_SOCKET_CONNECTED,
++	SMBDIRECT_SOCKET_NEGOTIATE_FAILED,
++	SMBDIRECT_SOCKET_DISCONNECTING,
++	SMBDIRECT_SOCKET_DISCONNECTED,
++	SMBDIRECT_SOCKET_DESTROYED
++};
++
++struct smbdirect_socket {
++	enum smbdirect_socket_status status;
++
++	/* RDMA related */
++	struct {
++		struct rdma_cm_id *cm_id;
++	} rdma;
++
++	/* IB verbs related */
++	struct {
++		struct ib_pd *pd;
++		struct ib_cq *send_cq;
++		struct ib_cq *recv_cq;
++
++		/*
++		 * shortcuts for rdma.cm_id->{qp,device};
++		 */
++		struct ib_qp *qp;
++		struct ib_device *dev;
++	} ib;
++};
++
++#endif /* __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_SOCKET_H__ */
 -- 
 2.39.5
 
