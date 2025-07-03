@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-159487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD43AF78FE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C68AF7A24
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB8091CA2554
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14CF93A68EC
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC002EF64D;
-	Thu,  3 Jul 2025 14:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99912ED86E;
+	Thu,  3 Jul 2025 15:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/6Tv1iY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkMmJ9TW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394742E7BB6;
-	Thu,  3 Jul 2025 14:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FB12E7649;
+	Thu,  3 Jul 2025 15:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554387; cv=none; b=n6ava10WHAQif9Gsw6VXXd6EQEDdEOf0wFLqdVNA6Sc2K7UVpmaQ9bpzEs6kv7wY64ozmfMLCgG2tXM6PiO7393wGaMFrfs3E4iUAOoO4pk6wVa5+6PSb5pzQMZv4INg9HSXfwoow2/MWsT8ytuUpZ9fgK0JNRSQbAVz/BM3tuI=
+	t=1751555176; cv=none; b=cSZT6iBtMhEtTgw1j3sPGR2fnr4EHOgVYEuiiGn763GlHkOCjmRGXAyWSDCuN3rVVFigVt/LgUDRwyXdKNSt39d2/t1P02EaEG85Ci8DZyAnoc6YZCdw7XN0SaLo/BMYF8iVJF+kjIUF0eMiE0Apbsvir0Kt5XznV4Qp6DKXzL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554387; c=relaxed/simple;
-	bh=L8VR7rEtbvrxmkU8ZlKvY9KI+Tei6hx3/RK3wX7EM+k=;
+	s=arc-20240116; t=1751555176; c=relaxed/simple;
+	bh=ZA4FcLIILStwVDKsvYfjb2Z7r+IXLU5LN3Uxf42etM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UOWtyZ0Y6qoSqvswjm3CBMtx9EEtXdkgiTVH98yE/BwRw2G51gYtXgNK+8tG/6+XquJLRKSxxCHqBb/G5c1nJFwsZfmAU+70pWx+wd1D0uyehtVEgM8R9oobPPBxeDBaFiuv9WHDlUSIM83+c2NziXHxs16+AqWDFyrzS7KCsx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/6Tv1iY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798B0C4CEE3;
-	Thu,  3 Jul 2025 14:53:06 +0000 (UTC)
+	 MIME-Version; b=bGRbmRqGZ32hweqnwI/+TqopaOdswkCNNQzcJRR9F4x3wpQ5ybVbDnJjDv4ReWii3LEGwJiwjV5ZjbaB4THjTykZa823tSaCcFo4MLLmTxyi+mflbPYazqBe/+swp5XGBNRWAJpGMBH6tpp8MaJc3kTPpCxnoIIq0OV9WVS2Epo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkMmJ9TW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE0EC4CEEE;
+	Thu,  3 Jul 2025 15:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554386;
-	bh=L8VR7rEtbvrxmkU8ZlKvY9KI+Tei6hx3/RK3wX7EM+k=;
+	s=korg; t=1751555175;
+	bh=ZA4FcLIILStwVDKsvYfjb2Z7r+IXLU5LN3Uxf42etM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q/6Tv1iY+lDlfUorWnONy9Z5xXdzbAIDfQuSd5V3ZZIj2RVy045VoadvU6PXF3ngm
-	 IBm6afK1COOkKz0nbVtPDFB+R/5fYYcUL62sDrk/X1j85PMwNO/szt05UBBSKNdga8
-	 GfFTAcFSPrOlIvFbMFp9ievAYDqCDTT8UHHLDM9w=
+	b=AkMmJ9TWnrckM8iyl6v+rod3B4kaPmLfkx3urFHmXph6GVsN8awYZiojofFER1Lf0
+	 UrXwz6cibubmKM3jY9pQ4eGjj3p3HuLSPGEl166zEuH6h1rsAq8V9If6gZa60bzvqz
+	 sPdRhp9txoTqOhYXWpCeUa7dochQToVp84vRR0uM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.12 171/218] drm/xe: Fix taking invalid lock on wedge
+	anvithdosapati <anvithdosapati@google.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.15 199/263] scsi: ufs: core: Fix clk scaling to be conditional in reset and restore
 Date: Thu,  3 Jul 2025 16:41:59 +0200
-Message-ID: <20250703144003.010119691@linuxfoundation.org>
+Message-ID: <20250703144012.347327827@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: anvithdosapati <anvithdosapati@google.com>
 
-commit 1e1981b16bb1bbe2fafa57ed439b45cb5b34e32d upstream.
+commit 2e083cd802294693a5414e4557a183dd7e442e71 upstream.
 
-If device wedges on e.g. GuC upload, the submission is not yet enabled
-and the state is not even initialized. Protect the wedge call so it does
-nothing in this case. It fixes the following splat:
+In ufshcd_host_reset_and_restore(), scale up clocks only when clock
+scaling is supported. Without this change CPU latency is voted for 0
+(ufshcd_pm_qos_update) during resume unconditionally.
 
-	[] xe 0000:bf:00.0: [drm] device wedged, needs recovery
-	[] ------------[ cut here ]------------
-	[] DEBUG_LOCKS_WARN_ON(lock->magic != lock)
-	[] WARNING: CPU: 48 PID: 312 at kernel/locking/mutex.c:564 __mutex_lock+0x8a1/0xe60
-	...
-	[] RIP: 0010:__mutex_lock+0x8a1/0xe60
-	[]  mutex_lock_nested+0x1b/0x30
-	[]  xe_guc_submit_wedge+0x80/0x2b0 [xe]
-
-Reviewed-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-Link: https://lore.kernel.org/r/20250402-warn-after-wedge-v1-1-93e971511fa5@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: anvithdosapati <anvithdosapati@google.com>
+Link: https://lore.kernel.org/r/20250616085734.2133581-1-anvithdosapati@google.com
+Fixes: a3cd5ec55f6c ("scsi: ufs: add load based scaling of UFS gear")
+Cc: stable@vger.kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c |    9 +++++++++
- drivers/gpu/drm/xe/xe_guc_types.h  |    5 +++++
- 2 files changed, 14 insertions(+)
+ drivers/ufs/core/ufshcd.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -309,6 +309,8 @@ int xe_guc_submit_init(struct xe_guc *gu
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -7753,7 +7753,8 @@ static int ufshcd_host_reset_and_restore
+ 	hba->silence_err_logs = false;
  
- 	primelockdep(guc);
+ 	/* scale up clocks to max frequency before full reinitialization */
+-	ufshcd_scale_clks(hba, ULONG_MAX, true);
++	if (ufshcd_is_clkscaling_supported(hba))
++		ufshcd_scale_clks(hba, ULONG_MAX, true);
  
-+	guc->submission_state.initialized = true;
-+
- 	return drmm_add_action_or_reset(&xe->drm, guc_submit_fini, guc);
- }
+ 	err = ufshcd_hba_enable(hba);
  
-@@ -837,6 +839,13 @@ void xe_guc_submit_wedge(struct xe_guc *
- 
- 	xe_gt_assert(guc_to_gt(guc), guc_to_xe(guc)->wedged.mode);
- 
-+	/*
-+	 * If device is being wedged even before submission_state is
-+	 * initialized, there's nothing to do here.
-+	 */
-+	if (!guc->submission_state.initialized)
-+		return;
-+
- 	err = devm_add_action_or_reset(guc_to_xe(guc)->drm.dev,
- 				       guc_submit_wedged_fini, guc);
- 	if (err) {
---- a/drivers/gpu/drm/xe/xe_guc_types.h
-+++ b/drivers/gpu/drm/xe/xe_guc_types.h
-@@ -74,6 +74,11 @@ struct xe_guc {
- 		struct mutex lock;
- 		/** @submission_state.enabled: submission is enabled */
- 		bool enabled;
-+		/**
-+		 * @submission_state.initialized: mark when submission state is
-+		 * even initialized - before that not even the lock is valid
-+		 */
-+		bool initialized;
- 		/** @submission_state.fini_wq: submit fini wait queue */
- 		wait_queue_head_t fini_wq;
- 	} submission_state;
 
 
 
