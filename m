@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-159805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C224AAF7AAB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:16:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51EBFAF7C34
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 954F14A10F4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:11:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D6D91CA3F33
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477832F1988;
-	Thu,  3 Jul 2025 15:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2B32EF9B3;
+	Thu,  3 Jul 2025 15:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNqzDPLB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jf15oCXg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A122F19AE;
-	Thu,  3 Jul 2025 15:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFEC2EF656;
+	Thu,  3 Jul 2025 15:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555409; cv=none; b=Gxp6HulyjinPRDpuhotiUqqwkvbtM6MW2NZWcT5/n9fGc5NzOHr2+DKOOF18Q1bv9NeePIzoIRUaJomDvKEbQWHUviyJUPhuvfTbv3Ya1P/OpUnB+jyn7F3jpfgvHnubTggizRl+p4YZ3C1EPl6GjOMV4qiB7On49S9IlcnBUxg=
+	t=1751556180; cv=none; b=P5XBFJquQyotfx6DhHFWMf63hxtfakfvAEgkfoDNuztpvH8LDIUzKkBJRfAEOoX6Z21OtobC4bcdDQh7jqODPLpYdogiknsOtmkdtbmbUPZ4WGbjEbrpQMeQhkvIlbPUcQpFZSE7aWSK9p4WFGUewOiFkXyKK5/Si3DLPb2kWq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555409; c=relaxed/simple;
-	bh=XIVHsuoes5Gf0juoYdFciX8hGrAAcA740uQ2Cpw5z+E=;
+	s=arc-20240116; t=1751556180; c=relaxed/simple;
+	bh=2LPxBqQo3d6XMiXcKrt5a0bHqIlnOW9q5xcbn45L6ZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j/kh2xeOwUdDtZPn9XoS85RuzmA8ejdLJvlyy4GVA6dBxI5EACuWPQqOxsb2RGjDUTa4Bd7/JDds9sClOVO7TJaCgpKv8WxEtFzgxJqCxm4Z4otsgm6liq8ZWNSr3EOFEs8P8PtzuoOcJ0coYEI2IaUGwxdMf4/G5unSSoh4Ly8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNqzDPLB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECA1C4CEE3;
-	Thu,  3 Jul 2025 15:10:08 +0000 (UTC)
+	 MIME-Version; b=ojhvAtMbKgNwVNUpl5OAjLbVVydWwT0nsw1ZZp0DeqqJn+lFno6Z9R/W5QYeNLEebW3l6C2U92uO1yRPc/EBZ3WZ3ko73tekiqaS4+2ST2GWyBFl9olVIiH3SYllECoT3T5mFC2dq6yBTrD44SOAbZesDyiTjRB5q1LdeE36fHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jf15oCXg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1DDC4CEE3;
+	Thu,  3 Jul 2025 15:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555408;
-	bh=XIVHsuoes5Gf0juoYdFciX8hGrAAcA740uQ2Cpw5z+E=;
+	s=korg; t=1751556180;
+	bh=2LPxBqQo3d6XMiXcKrt5a0bHqIlnOW9q5xcbn45L6ZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qNqzDPLBTenXt94GKK1RnHrfWEcve1ZxpE110tGoHKlXYqLl2Wmg2KZxZmH73yVfc
-	 4QDRu8JAWncSYbheDmkZEDI0y5aqDYzTqHsI7ZeQUqzoQZwkgyf2wTFksToki30T7A
-	 OPEkNJ/3IBAygrvfMYGPQv6Q37kkT3JrI4eds7uA=
+	b=jf15oCXgWxZ9Y1pK2mGXmNSrPUZryRSiMgMYSTW+MLB0izPqv4IBwk1/zmOYSOskj
+	 00zZM3eCVrfQBepuZn9vdjA5eRBbQK//EMHb/qL95cvRgft03/EtUKHOrMv9RljA0R
+	 K/6uLyZyDi14mSuaar7bdctCTTxFXLdWedrRofLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.15 261/263] io_uring/kbuf: flag partial buffer mappings
+	stable <stable@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH 6.1 092/132] serial: imx: Restore original RXTL for console to fix data loss
 Date: Thu,  3 Jul 2025 16:43:01 +0200
-Message-ID: <20250703144014.879353678@linuxfoundation.org>
+Message-ID: <20250703143943.013794097@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,147 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Fabio Estevam <festevam@gmail.com>
 
-Commit 178b8ff66ff827c41b4fa105e9aabb99a0b5c537 upstream.
+commit f23c52aafb1675ab1d1f46914556d8e29cbbf7b3 upstream.
 
-A previous commit aborted mapping more for a non-incremental ring for
-bundle peeking, but depending on where in the process this peeking
-happened, it would not necessarily prevent a retry by the user. That can
-create gaps in the received/read data.
+Commit 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
+introduced a regression on the i.MX6UL EVK board. The issue can be
+reproduced with the following steps:
 
-Add struct buf_sel_arg->partial_map, which can pass this information
-back. The networking side can then map that to internal state and use it
-to gate retry as well.
+- Open vi on the board.
+- Paste a text file (~150 characters).
+- Save the file, then repeat the process.
+- Compare the sha256sum of the saved files.
 
-Since this necessitates a new flag, change io_sr_msg->retry to a
-retry_flags member, and store both the retry and partial map condition
-in there.
+The checksums do not match due to missing characters or entire lines.
 
-Cc: stable@vger.kernel.org
-Fixes: 26ec15e4b0c1 ("io_uring/kbuf: don't truncate end buffer for multiple buffer peeks")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fix this by restoring the RXTL value to 1 when the UART is used as a
+console.
+
+This ensures timely RX interrupts and reliable data reception in console
+mode.
+
+With this change, pasted content is saved correctly, and checksums are
+always consistent.
+
+Cc: stable <stable@kernel.org>
+Fixes: 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250619114617.2791939-1-festevam@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/kbuf.c |    1 +
- io_uring/kbuf.h |    1 +
- io_uring/net.c  |   23 +++++++++++++++--------
- 3 files changed, 17 insertions(+), 8 deletions(-)
+ drivers/tty/serial/imx.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -271,6 +271,7 @@ static int io_ring_buffers_peek(struct i
- 		if (len > arg->max_len) {
- 			len = arg->max_len;
- 			if (!(bl->flags & IOBL_INC)) {
-+				arg->partial_map = 1;
- 				if (iov != arg->iovs)
- 					break;
- 				buf->len = len;
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -55,6 +55,7 @@ struct buf_sel_arg {
- 	size_t max_len;
- 	unsigned short nr_iovs;
- 	unsigned short mode;
-+	unsigned short partial_map;
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -239,6 +239,7 @@ struct imx_port {
+ 	enum imx_tx_state	tx_state;
+ 	struct hrtimer		trigger_start_tx;
+ 	struct hrtimer		trigger_stop_tx;
++	unsigned int		rxtl;
  };
  
- void __user *io_buffer_select(struct io_kiocb *req, size_t *len,
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -76,12 +76,17 @@ struct io_sr_msg {
- 	u16				flags;
- 	/* initialised and used only by !msg send variants */
- 	u16				buf_group;
--	bool				retry;
-+	unsigned short			retry_flags;
- 	void __user			*msg_control;
- 	/* used only for send zerocopy */
- 	struct io_kiocb 		*notif;
- };
+ struct imx_port_ucrs {
+@@ -1320,6 +1321,7 @@ static void imx_uart_clear_rx_errors(str
  
-+enum sr_retry_flags {
-+	IO_SR_MSG_RETRY		= 1,
-+	IO_SR_MSG_PARTIAL_MAP	= 2,
-+};
-+
- /*
-  * Number of times we'll try and do receives if there's more data. If we
-  * exceed this limit, then add us to the back of the queue and retry from
-@@ -188,7 +193,7 @@ static inline void io_mshot_prep_retry(s
+ #define TXTL_DEFAULT 8
+ #define RXTL_DEFAULT 8 /* 8 characters or aging timer */
++#define RXTL_CONSOLE_DEFAULT 1
+ #define TXTL_DMA 8 /* DMA burst setting */
+ #define RXTL_DMA 9 /* DMA burst setting */
  
- 	req->flags &= ~REQ_F_BL_EMPTY;
- 	sr->done_io = 0;
--	sr->retry = false;
-+	sr->retry_flags = 0;
- 	sr->len = 0; /* get from the provided buffer */
- 	req->buf_index = sr->buf_group;
+@@ -1432,7 +1434,7 @@ static void imx_uart_disable_dma(struct
+ 	ucr1 &= ~(UCR1_RXDMAEN | UCR1_TXDMAEN | UCR1_ATDMAEN);
+ 	imx_uart_writel(sport, ucr1, UCR1);
+ 
+-	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
+ 
+ 	sport->dma_is_enabled = 0;
  }
-@@ -401,7 +406,7 @@ int io_sendmsg_prep(struct io_kiocb *req
- 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
+@@ -1457,7 +1459,12 @@ static int imx_uart_startup(struct uart_
+ 		return retval;
+ 	}
  
- 	sr->done_io = 0;
--	sr->retry = false;
-+	sr->retry_flags = 0;
- 	sr->len = READ_ONCE(sqe->len);
- 	sr->flags = READ_ONCE(sqe->ioprio);
- 	if (sr->flags & ~SENDMSG_FLAGS)
-@@ -759,7 +764,7 @@ int io_recvmsg_prep(struct io_kiocb *req
- 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
+-	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++	if (uart_console(&sport->port))
++		sport->rxtl = RXTL_CONSOLE_DEFAULT;
++	else
++		sport->rxtl = RXTL_DEFAULT;
++
++	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
  
- 	sr->done_io = 0;
--	sr->retry = false;
-+	sr->retry_flags = 0;
+ 	/* disable the DREN bit (Data Ready interrupt enable) before
+ 	 * requesting IRQs
+@@ -1906,7 +1913,7 @@ static int imx_uart_poll_init(struct uar
+ 	if (retval)
+ 		clk_disable_unprepare(sport->clk_ipg);
  
- 	if (unlikely(sqe->file_index || sqe->addr2))
- 		return -EINVAL;
-@@ -831,7 +836,7 @@ static inline bool io_recv_finish(struct
+-	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
  
- 		cflags |= io_put_kbufs(req, this_ret, io_bundle_nbufs(kmsg, this_ret),
- 				      issue_flags);
--		if (sr->retry)
-+		if (sr->retry_flags & IO_SR_MSG_RETRY)
- 			cflags = req->cqe.flags | (cflags & CQE_F_MASK);
- 		/* bundle with no more immediate buffers, we're done */
- 		if (req->flags & REQ_F_BL_EMPTY)
-@@ -840,12 +845,12 @@ static inline bool io_recv_finish(struct
- 		 * If more is available AND it was a full transfer, retry and
- 		 * append to this one
- 		 */
--		if (!sr->retry && kmsg->msg.msg_inq > 1 && this_ret > 0 &&
-+		if (!sr->retry_flags && kmsg->msg.msg_inq > 1 && this_ret > 0 &&
- 		    !iov_iter_count(&kmsg->msg.msg_iter)) {
- 			req->cqe.flags = cflags & ~CQE_F_MASK;
- 			sr->len = kmsg->msg.msg_inq;
- 			sr->done_io += this_ret;
--			sr->retry = true;
-+			sr->retry_flags |= IO_SR_MSG_RETRY;
- 			return false;
- 		}
- 	} else {
-@@ -1089,6 +1094,8 @@ static int io_recv_buf_select(struct io_
- 			kmsg->vec.iovec = arg.iovs;
- 			req->flags |= REQ_F_NEED_CLEANUP;
- 		}
-+		if (arg.partial_map)
-+			sr->retry_flags |= IO_SR_MSG_PARTIAL_MAP;
+ 	spin_lock_irqsave(&sport->port.lock, flags);
  
- 		/* special case 1 vec, can be a fast path */
- 		if (ret == 1) {
-@@ -1285,7 +1292,7 @@ int io_send_zc_prep(struct io_kiocb *req
- 	int ret;
+@@ -1998,7 +2005,7 @@ static int imx_uart_rs485_config(struct
+ 		/* If the receiver trigger is 0, set it to a default value */
+ 		ufcr = imx_uart_readl(sport, UFCR);
+ 		if ((ufcr & UFCR_RXTL_MASK) == 0)
+-			imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++			imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
+ 		imx_uart_start_rx(port);
+ 	}
  
- 	zc->done_io = 0;
--	zc->retry = false;
-+	zc->retry_flags = 0;
+@@ -2183,7 +2190,7 @@ imx_uart_console_setup(struct console *c
+ 	else
+ 		imx_uart_console_get_options(sport, &baud, &parity, &bits);
  
- 	if (unlikely(READ_ONCE(sqe->__pad2[0]) || READ_ONCE(sqe->addr3)))
- 		return -EINVAL;
+-	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
+ 
+ 	retval = uart_set_options(&sport->port, co, baud, parity, bits, flow);
+ 
 
 
 
