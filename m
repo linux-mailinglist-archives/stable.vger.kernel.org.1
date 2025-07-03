@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-159743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25DABAF7A46
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:11:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD1DAF7B98
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4638B1CA3217
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DD971CA81A2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C052ED143;
-	Thu,  3 Jul 2025 15:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EBF322B5A3;
+	Thu,  3 Jul 2025 15:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JR9Mnr8A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1o4SINYl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D48A1E9B3D;
-	Thu,  3 Jul 2025 15:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE5522B8AB;
+	Thu,  3 Jul 2025 15:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555201; cv=none; b=ry12eNQIP8Ic25T+cVRadVJIRmvtlz4xJlHQ0hh5cOKmGpFJtaHEKrzNbciDhnInW35oKXd0lnKAUdHTzHVm5Peiz6JIAnY2Gy8rvOMepXwMzohWpHWG7AgjpI926FDDoMex5CVmr7NMyr+Q4KesWqkFl+tp+PYBTsfSCZlUbSU=
+	t=1751555733; cv=none; b=J74/q8sfQQH5begaFIIjfG5kDdySruffI4eJooAravgA60F23eJogMJQiNLxt22KWTsKWkUjcpRN57DJx60b+EN8Jh6Wkr30qejbS3xtskAo0quP6qhTlWiJwigpZurtvXz9P9rkmvsQQ5Ils6epJYD5yYYYVDQ8KlqhqqX+nEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555201; c=relaxed/simple;
-	bh=8JEEHqKHA6ZiUVRvBFB42k96gKwobuRK4c4t773sxgk=;
+	s=arc-20240116; t=1751555733; c=relaxed/simple;
+	bh=K/n8zeHwSccs13NNe7qQ5fOtdApmfKGnqca4sIzbFu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPUj9lXgeRtbccIVLdJptx4WnS8UImblxf0rDpmrGvMXjbgWxbi+gtGpTpkwUuZoPyTOeIpEAM1z5hQudJnc0DIHdCcCqiyA8t0CaW2ImXfS3ErWRdCvnukJClECUIY/XhOXGVceJB7lJhSoL3kQ2HOAgoghe4SHrDlszNA2NhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JR9Mnr8A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF09FC4CEE3;
-	Thu,  3 Jul 2025 15:06:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hD7IVZe4sniNIIsmO/KvCrxGU3gd12dmXFMd2FggcH8rs9dY0lqZsg6Z+P5o+IOjlXhXLAXUvip9y8VQKc6BD7tae7iWWuq3DY7y7KynmzfmG9+S2Rwc+8tj5wGEsBiWIVYu4Rt+amWGysxbd533c3M+Qmf2izto9RUomaqng4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1o4SINYl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA828C4CEE3;
+	Thu,  3 Jul 2025 15:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555201;
-	bh=8JEEHqKHA6ZiUVRvBFB42k96gKwobuRK4c4t773sxgk=;
+	s=korg; t=1751555733;
+	bh=K/n8zeHwSccs13NNe7qQ5fOtdApmfKGnqca4sIzbFu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JR9Mnr8AGJryqetWP0vAEAbVu5qEoTuEIL53jmiofB46Qsy/dO7ON6rhq9JweSASa
-	 LApAnEL+FTbHPynkSEpQOnx9RagBPuLsceVFpUuxAV48zK9yY2ykVC9r2b2p4xD8U8
-	 PFFe5JvXtHoDOa7Z8ZAwQvsu3gV/hciApEVP/ytQ=
+	b=1o4SINYlLXwDl7Gq2F/I1SCqj5Xeb2Wv3LGJ++G22GEKPN9K1DFcGCY9Y2i4uYR5G
+	 rXVrAxQsKwVFk4VaFJJ5WUOUPmrJ9b+7bUeWPhqCvgMoXuYCg4TyHPNKMsYc9Olcjw
+	 5ZPmEEC+jax4XymMWXJhwz4U8UAjPwp4mGt/oYQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.15 207/263] drm/tegra: Assign plane type before registration
+	Gergo Koteles <soyer@irl.hu>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 064/139] platform/x86: ideapad-laptop: move ACPI helpers from header to source file
 Date: Thu,  3 Jul 2025 16:42:07 +0200
-Message-ID: <20250703144012.678946520@linuxfoundation.org>
+Message-ID: <20250703143943.668727834@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,94 +61,366 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thierry Reding <treding@nvidia.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-commit 9ff4fdf4f44b69237c0afc1d3a8dac916ce66f3e upstream.
+[ Upstream commit 6c1fa8edfef815a97db57f30216265bfa152792d ]
 
-Changes to a plane's type after it has been registered aren't propagated
-to userspace automatically. This could possibly be achieved by updating
-the property, but since we can already determine which type this should
-be before the registration, passing in the right type from the start is
-a much better solution.
+Since moving ymc_trigger_ec from lenovo-ymc to ideapad-laptop, only the
+latter uses these definitions and functions.
 
-Suggested-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Cc: stable@vger.kernel.org
-Fixes: 473079549f27 ("drm/tegra: dc: Add Tegra186 support")
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250421-tegra-drm-primary-v2-1-7f740c4c2121@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Move them back to source file.
+
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/57a48d2582b567f6c6fbcd3b379e17aee0fb5a94.1721898747.git.soyer@irl.hu
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Stable-dep-of: 5808c3421695 ("platform/x86: ideapad-laptop: use usleep_range() for EC polling")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/dc.c  |   12 ++++++++----
- drivers/gpu/drm/tegra/hub.c |    4 ++--
- drivers/gpu/drm/tegra/hub.h |    3 ++-
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/platform/x86/ideapad-laptop.c | 136 +++++++++++++++++++++++++
+ drivers/platform/x86/ideapad-laptop.h | 139 --------------------------
+ 2 files changed, 136 insertions(+), 139 deletions(-)
 
---- a/drivers/gpu/drm/tegra/dc.c
-+++ b/drivers/gpu/drm/tegra/dc.c
-@@ -1321,10 +1321,16 @@ static struct drm_plane *tegra_dc_add_sh
- 		if (wgrp->dc == dc->pipe) {
- 			for (j = 0; j < wgrp->num_windows; j++) {
- 				unsigned int index = wgrp->windows[j];
-+				enum drm_plane_type type;
+diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+index 3d23c4f908426..db8256cde34aa 100644
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -21,6 +21,7 @@
+ #include <linux/init.h>
+ #include <linux/input.h>
+ #include <linux/input/sparse-keymap.h>
++#include <linux/jiffies.h>
+ #include <linux/kernel.h>
+ #include <linux/leds.h>
+ #include <linux/module.h>
+@@ -86,6 +87,34 @@ enum {
+ 	SALS_FNLOCK_OFF       = 0xf,
+ };
+ 
++enum {
++	VPCCMD_R_VPC1 = 0x10,
++	VPCCMD_R_BL_MAX,
++	VPCCMD_R_BL,
++	VPCCMD_W_BL,
++	VPCCMD_R_WIFI,
++	VPCCMD_W_WIFI,
++	VPCCMD_R_BT,
++	VPCCMD_W_BT,
++	VPCCMD_R_BL_POWER,
++	VPCCMD_R_NOVO,
++	VPCCMD_R_VPC2,
++	VPCCMD_R_TOUCHPAD,
++	VPCCMD_W_TOUCHPAD,
++	VPCCMD_R_CAMERA,
++	VPCCMD_W_CAMERA,
++	VPCCMD_R_3G,
++	VPCCMD_W_3G,
++	VPCCMD_R_ODD, /* 0x21 */
++	VPCCMD_W_FAN,
++	VPCCMD_R_RF,
++	VPCCMD_W_RF,
++	VPCCMD_W_YMC = 0x2A,
++	VPCCMD_R_FAN = 0x2B,
++	VPCCMD_R_SPECIAL_BUTTONS = 0x31,
++	VPCCMD_W_BL_POWER = 0x33,
++};
 +
-+				if (primary)
-+					type = DRM_PLANE_TYPE_OVERLAY;
-+				else
-+					type = DRM_PLANE_TYPE_PRIMARY;
+ /*
+  * These correspond to the number of supported states - 1
+  * Future keyboard types may need a new system, if there's a collision
+@@ -234,6 +263,7 @@ static void ideapad_shared_exit(struct ideapad_private *priv)
+ /*
+  * ACPI Helpers
+  */
++#define IDEAPAD_EC_TIMEOUT 200 /* in ms */
  
- 				plane = tegra_shared_plane_create(drm, dc,
- 								  wgrp->index,
--								  index);
-+								  index, type);
- 				if (IS_ERR(plane))
- 					return plane;
- 
-@@ -1332,10 +1338,8 @@ static struct drm_plane *tegra_dc_add_sh
- 				 * Choose the first shared plane owned by this
- 				 * head as the primary plane.
- 				 */
--				if (!primary) {
--					plane->type = DRM_PLANE_TYPE_PRIMARY;
-+				if (!primary)
- 					primary = plane;
--				}
- 			}
- 		}
- 	}
---- a/drivers/gpu/drm/tegra/hub.c
-+++ b/drivers/gpu/drm/tegra/hub.c
-@@ -755,9 +755,9 @@ static const struct drm_plane_helper_fun
- struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
- 					    struct tegra_dc *dc,
- 					    unsigned int wgrp,
--					    unsigned int index)
-+					    unsigned int index,
-+					    enum drm_plane_type type)
+ static int eval_int(acpi_handle handle, const char *name, unsigned long *res)
  {
--	enum drm_plane_type type = DRM_PLANE_TYPE_OVERLAY;
- 	struct tegra_drm *tegra = drm->dev_private;
- 	struct tegra_display_hub *hub = tegra->hub;
- 	struct tegra_shared_plane *plane;
---- a/drivers/gpu/drm/tegra/hub.h
-+++ b/drivers/gpu/drm/tegra/hub.h
-@@ -80,7 +80,8 @@ void tegra_display_hub_cleanup(struct te
- struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
- 					    struct tegra_dc *dc,
- 					    unsigned int wgrp,
--					    unsigned int index);
-+					    unsigned int index,
-+					    enum drm_plane_type type);
+@@ -249,6 +279,29 @@ static int eval_int(acpi_handle handle, const char *name, unsigned long *res)
+ 	return 0;
+ }
  
- int tegra_display_hub_atomic_check(struct drm_device *drm,
- 				   struct drm_atomic_state *state);
++static int eval_int_with_arg(acpi_handle handle, const char *name, unsigned long arg,
++			     unsigned long *res)
++{
++	struct acpi_object_list params;
++	unsigned long long result;
++	union acpi_object in_obj;
++	acpi_status status;
++
++	params.count = 1;
++	params.pointer = &in_obj;
++	in_obj.type = ACPI_TYPE_INTEGER;
++	in_obj.integer.value = arg;
++
++	status = acpi_evaluate_integer(handle, (char *)name, &params, &result);
++	if (ACPI_FAILURE(status))
++		return -EIO;
++
++	if (res)
++		*res = result;
++
++	return 0;
++}
++
+ static int exec_simple_method(acpi_handle handle, const char *name, unsigned long arg)
+ {
+ 	acpi_status status = acpi_execute_simple_method(handle, (char *)name, arg);
+@@ -291,6 +344,89 @@ static int eval_dytc(acpi_handle handle, unsigned long cmd, unsigned long *res)
+ 	return eval_int_with_arg(handle, "DYTC", cmd, res);
+ }
+ 
++static int eval_vpcr(acpi_handle handle, unsigned long cmd, unsigned long *res)
++{
++	return eval_int_with_arg(handle, "VPCR", cmd, res);
++}
++
++static int eval_vpcw(acpi_handle handle, unsigned long cmd, unsigned long data)
++{
++	struct acpi_object_list params;
++	union acpi_object in_obj[2];
++	acpi_status status;
++
++	params.count = 2;
++	params.pointer = in_obj;
++	in_obj[0].type = ACPI_TYPE_INTEGER;
++	in_obj[0].integer.value = cmd;
++	in_obj[1].type = ACPI_TYPE_INTEGER;
++	in_obj[1].integer.value = data;
++
++	status = acpi_evaluate_object(handle, "VPCW", &params, NULL);
++	if (ACPI_FAILURE(status))
++		return -EIO;
++
++	return 0;
++}
++
++static int read_ec_data(acpi_handle handle, unsigned long cmd, unsigned long *data)
++{
++	unsigned long end_jiffies, val;
++	int err;
++
++	err = eval_vpcw(handle, 1, cmd);
++	if (err)
++		return err;
++
++	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
++
++	while (time_before(jiffies, end_jiffies)) {
++		schedule();
++
++		err = eval_vpcr(handle, 1, &val);
++		if (err)
++			return err;
++
++		if (val == 0)
++			return eval_vpcr(handle, 0, data);
++	}
++
++	acpi_handle_err(handle, "timeout in %s\n", __func__);
++
++	return -ETIMEDOUT;
++}
++
++static int write_ec_cmd(acpi_handle handle, unsigned long cmd, unsigned long data)
++{
++	unsigned long end_jiffies, val;
++	int err;
++
++	err = eval_vpcw(handle, 0, data);
++	if (err)
++		return err;
++
++	err = eval_vpcw(handle, 1, cmd);
++	if (err)
++		return err;
++
++	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
++
++	while (time_before(jiffies, end_jiffies)) {
++		schedule();
++
++		err = eval_vpcr(handle, 1, &val);
++		if (err)
++			return err;
++
++		if (val == 0)
++			return 0;
++	}
++
++	acpi_handle_err(handle, "timeout in %s\n", __func__);
++
++	return -ETIMEDOUT;
++}
++
+ /*
+  * debugfs
+  */
+diff --git a/drivers/platform/x86/ideapad-laptop.h b/drivers/platform/x86/ideapad-laptop.h
+index 948cc61800a95..1e52f2aa0aac3 100644
+--- a/drivers/platform/x86/ideapad-laptop.h
++++ b/drivers/platform/x86/ideapad-laptop.h
+@@ -9,9 +9,6 @@
+ #ifndef _IDEAPAD_LAPTOP_H_
+ #define _IDEAPAD_LAPTOP_H_
+ 
+-#include <linux/acpi.h>
+-#include <linux/jiffies.h>
+-#include <linux/errno.h>
+ #include <linux/notifier.h>
+ 
+ enum ideapad_laptop_notifier_actions {
+@@ -22,140 +19,4 @@ int ideapad_laptop_register_notifier(struct notifier_block *nb);
+ int ideapad_laptop_unregister_notifier(struct notifier_block *nb);
+ void ideapad_laptop_call_notifier(unsigned long action, void *data);
+ 
+-enum {
+-	VPCCMD_R_VPC1 = 0x10,
+-	VPCCMD_R_BL_MAX,
+-	VPCCMD_R_BL,
+-	VPCCMD_W_BL,
+-	VPCCMD_R_WIFI,
+-	VPCCMD_W_WIFI,
+-	VPCCMD_R_BT,
+-	VPCCMD_W_BT,
+-	VPCCMD_R_BL_POWER,
+-	VPCCMD_R_NOVO,
+-	VPCCMD_R_VPC2,
+-	VPCCMD_R_TOUCHPAD,
+-	VPCCMD_W_TOUCHPAD,
+-	VPCCMD_R_CAMERA,
+-	VPCCMD_W_CAMERA,
+-	VPCCMD_R_3G,
+-	VPCCMD_W_3G,
+-	VPCCMD_R_ODD, /* 0x21 */
+-	VPCCMD_W_FAN,
+-	VPCCMD_R_RF,
+-	VPCCMD_W_RF,
+-	VPCCMD_W_YMC = 0x2A,
+-	VPCCMD_R_FAN = 0x2B,
+-	VPCCMD_R_SPECIAL_BUTTONS = 0x31,
+-	VPCCMD_W_BL_POWER = 0x33,
+-};
+-
+-static inline int eval_int_with_arg(acpi_handle handle, const char *name, unsigned long arg, unsigned long *res)
+-{
+-	struct acpi_object_list params;
+-	unsigned long long result;
+-	union acpi_object in_obj;
+-	acpi_status status;
+-
+-	params.count = 1;
+-	params.pointer = &in_obj;
+-	in_obj.type = ACPI_TYPE_INTEGER;
+-	in_obj.integer.value = arg;
+-
+-	status = acpi_evaluate_integer(handle, (char *)name, &params, &result);
+-	if (ACPI_FAILURE(status))
+-		return -EIO;
+-
+-	if (res)
+-		*res = result;
+-
+-	return 0;
+-}
+-
+-static inline int eval_vpcr(acpi_handle handle, unsigned long cmd, unsigned long *res)
+-{
+-	return eval_int_with_arg(handle, "VPCR", cmd, res);
+-}
+-
+-static inline int eval_vpcw(acpi_handle handle, unsigned long cmd, unsigned long data)
+-{
+-	struct acpi_object_list params;
+-	union acpi_object in_obj[2];
+-	acpi_status status;
+-
+-	params.count = 2;
+-	params.pointer = in_obj;
+-	in_obj[0].type = ACPI_TYPE_INTEGER;
+-	in_obj[0].integer.value = cmd;
+-	in_obj[1].type = ACPI_TYPE_INTEGER;
+-	in_obj[1].integer.value = data;
+-
+-	status = acpi_evaluate_object(handle, "VPCW", &params, NULL);
+-	if (ACPI_FAILURE(status))
+-		return -EIO;
+-
+-	return 0;
+-}
+-
+-#define IDEAPAD_EC_TIMEOUT 200 /* in ms */
+-
+-static inline int read_ec_data(acpi_handle handle, unsigned long cmd, unsigned long *data)
+-{
+-	unsigned long end_jiffies, val;
+-	int err;
+-
+-	err = eval_vpcw(handle, 1, cmd);
+-	if (err)
+-		return err;
+-
+-	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
+-
+-	while (time_before(jiffies, end_jiffies)) {
+-		schedule();
+-
+-		err = eval_vpcr(handle, 1, &val);
+-		if (err)
+-			return err;
+-
+-		if (val == 0)
+-			return eval_vpcr(handle, 0, data);
+-	}
+-
+-	acpi_handle_err(handle, "timeout in %s\n", __func__);
+-
+-	return -ETIMEDOUT;
+-}
+-
+-static inline int write_ec_cmd(acpi_handle handle, unsigned long cmd, unsigned long data)
+-{
+-	unsigned long end_jiffies, val;
+-	int err;
+-
+-	err = eval_vpcw(handle, 0, data);
+-	if (err)
+-		return err;
+-
+-	err = eval_vpcw(handle, 1, cmd);
+-	if (err)
+-		return err;
+-
+-	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
+-
+-	while (time_before(jiffies, end_jiffies)) {
+-		schedule();
+-
+-		err = eval_vpcr(handle, 1, &val);
+-		if (err)
+-			return err;
+-
+-		if (val == 0)
+-			return 0;
+-	}
+-
+-	acpi_handle_err(handle, "timeout in %s\n", __func__);
+-
+-	return -ETIMEDOUT;
+-}
+-
+-#undef IDEAPAD_EC_TIMEOUT
+ #endif /* !_IDEAPAD_LAPTOP_H_ */
+-- 
+2.39.5
+
 
 
 
