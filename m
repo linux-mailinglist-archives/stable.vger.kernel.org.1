@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3550AF7807
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6167BAF7995
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:03:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 642035434BB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:45:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F5A64E4C08
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34D5126BFF;
-	Thu,  3 Jul 2025 14:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F222EE5EB;
+	Thu,  3 Jul 2025 15:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDZSRAqf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZQo87+c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F362EAB95;
-	Thu,  3 Jul 2025 14:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B0957C9F;
+	Thu,  3 Jul 2025 15:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751553960; cv=none; b=PncdoKmUMCr5bM/L6d/c7tU0rnzH6/2hfejBH9oMwb5KtuNLLK9AYwbzVKrM/HLWoI+uKJ62atuUHCH/pkmFao2FK0TG1Rluoq54Qyi+HFvmgMhPXMdVK5Mm9GABKj0tDsKfdzS36qpWIbC0OfJj8MZ9przwYrGUuWZznlZ8pxQ=
+	t=1751554844; cv=none; b=bY+M3mq4n5FK73kpsXqh+IeA9BoY97xT52qMOpXF8YiG5OOn8FezVcwBGJEjWaAUI6pUHDa/B/lGlUjku05Ngf53Fj7SfzFPwo+INAVGnMe6TNMYpuAsGLhnHvuZ3M4BURftgJzulegOG61DdjAs6K5GE0hhLar+nVqNYR3N11Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751553960; c=relaxed/simple;
-	bh=gkF0yz8HWNTb+fjk4SeQWqdXUWGRq9lCNd9B2Pdv6Ic=;
+	s=arc-20240116; t=1751554844; c=relaxed/simple;
+	bh=aU3ifmTY+R2wuwQKFrS44KF3nqRTu6uaMnAR3TOFmig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPryQL7wvitOG/ZTAIIG95w6maDu8XRpNQV4RsZ+wTw66CPBhCt4VF6EeF7L7kZh6k5nMUkvh67ue4TC7s9x8pixvRv3OSWM8ZFkXGoQlY1g138VnqXJgR8PUeimrNSHsx8EJ4lMGCQXah9vOdiMmgIlkpipw891auyTiX0x+8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDZSRAqf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5327C4CEE3;
-	Thu,  3 Jul 2025 14:45:59 +0000 (UTC)
+	 MIME-Version; b=brmr7OihZG10lDLS+0Y/PKRP1X9xyMtYwPEjgmFBeL3BLg4sp17HlfPh8ylBMa24LHuPu4QYcWqjma+tpMvhfyw+Ike6fyQQYcJSYsbpyxUgb9IqGWLEo6IGhEfxv+QNnYa972zWbgMobZn+regGgum3N6DiRJiaizV5Qh89I1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZQo87+c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E620EC4CEE3;
+	Thu,  3 Jul 2025 15:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751553960;
-	bh=gkF0yz8HWNTb+fjk4SeQWqdXUWGRq9lCNd9B2Pdv6Ic=;
+	s=korg; t=1751554844;
+	bh=aU3ifmTY+R2wuwQKFrS44KF3nqRTu6uaMnAR3TOFmig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pDZSRAqfjQOu/9RBvf6kJpGHEZCuB+Tx5faOCy+EGqRI3LbR8SPbgjw9wETCGbmtm
-	 KJ2lppcy2NsyblmnRJfSGjXCrXrpQAqOMCn9WZ7JMkil+AzF/QBiI6QiOBgP2gAX/I
-	 tk6xA0H23fEqh13EofZkwTt7CDgo8iTcsz4REDWw=
+	b=pZQo87+cCY/7SAtSFOveoFqzjRgCSnejgaAfUzs3yv4shtBHRb6H9Y0dg/sxvAcj4
+	 lxxuvehSsHp3jhvb4Yz9XZ2w2Lb8T7FS+mtAE/g55HWAC2lSBJ6UbBTuZgQ3AqTqz3
+	 zDIFEo1nxHqT7qferDz4UZmMzynEvLfcQA24Fg3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/218] coresight: Only check bottom two claim bits
-Date: Thu,  3 Jul 2025 16:39:45 +0200
-Message-ID: <20250703143957.432091154@linuxfoundation.org>
+Subject: [PATCH 6.15 066/263] usb: typec: mux: do not return on EOPNOTSUPP in {mux, switch}_set
+Date: Thu,  3 Jul 2025 16:39:46 +0200
+Message-ID: <20250703144006.953220000@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-[ Upstream commit a4e65842e1142aa18ef36113fbd81d614eaefe5a ]
+[ Upstream commit 0f7bbef1794dc87141897f804e5871a293aa174b ]
 
-The use of the whole register and == could break the claim mechanism if
-any of the other bits are used in the future. The referenced doc "PSCI -
-ARM DEN 0022D" also says to only read and clear the bottom two bits.
+Since the typec connectors can have many muxes or switches for different
+lanes (sbu, usb2, usb3) going into different modal states (usb2, usb3,
+audio, debug) all of them will be called on typec_switch_set and
+typec_mux_set. But not all of them will be handling the expected mode.
 
-Use FIELD_GET() to extract only the relevant part.
+If one of the mux or switch will come back with EOPTNOSUPP this is no
+reason to stop running through the next ones. Therefor we skip this
+particular error value and continue calling the next.
 
-Reviewed-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250325-james-coresight-claim-tags-v4-2-dfbd3822b2e5@linaro.org
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250404-ml-topic-typec-mux-v1-1-22c0526381ba@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-core.c | 3 ++-
- drivers/hwtracing/coresight/coresight-priv.h | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/typec/mux.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
-index c7e35a431ab00..b7941d8abbfe7 100644
---- a/drivers/hwtracing/coresight/coresight-core.c
-+++ b/drivers/hwtracing/coresight/coresight-core.c
-@@ -97,7 +97,8 @@ coresight_find_out_connection(struct coresight_device *src_dev,
+diff --git a/drivers/usb/typec/mux.c b/drivers/usb/typec/mux.c
+index 49926d6e72c71..182c902c42f61 100644
+--- a/drivers/usb/typec/mux.c
++++ b/drivers/usb/typec/mux.c
+@@ -214,7 +214,7 @@ int typec_switch_set(struct typec_switch *sw,
+ 		sw_dev = sw->sw_devs[i];
  
- static inline u32 coresight_read_claim_tags(struct coresight_device *csdev)
- {
--	return csdev_access_relaxed_read32(&csdev->access, CORESIGHT_CLAIMCLR);
-+	return FIELD_GET(CORESIGHT_CLAIM_MASK,
-+			 csdev_access_relaxed_read32(&csdev->access, CORESIGHT_CLAIMCLR));
- }
+ 		ret = sw_dev->set(sw_dev, orientation);
+-		if (ret)
++		if (ret && ret != -EOPNOTSUPP)
+ 			return ret;
+ 	}
  
- static inline bool coresight_is_claimed_self_hosted(struct coresight_device *csdev)
-diff --git a/drivers/hwtracing/coresight/coresight-priv.h b/drivers/hwtracing/coresight/coresight-priv.h
-index 05f891ca6b5c9..cc7ff1e36ef42 100644
---- a/drivers/hwtracing/coresight/coresight-priv.h
-+++ b/drivers/hwtracing/coresight/coresight-priv.h
-@@ -35,6 +35,7 @@ extern const struct device_type coresight_dev_type[];
-  * Coresight device CLAIM protocol.
-  * See PSCI - ARM DEN 0022D, Section: 6.8.1 Debug and Trace save and restore.
-  */
-+#define CORESIGHT_CLAIM_MASK		GENMASK(1, 0)
- #define CORESIGHT_CLAIM_SELF_HOSTED	BIT(1)
+@@ -378,7 +378,7 @@ int typec_mux_set(struct typec_mux *mux, struct typec_mux_state *state)
+ 		mux_dev = mux->mux_devs[i];
  
- #define TIMEOUT_US		100
+ 		ret = mux_dev->set(mux_dev, state);
+-		if (ret)
++		if (ret && ret != -EOPNOTSUPP)
+ 			return ret;
+ 	}
+ 
 -- 
 2.39.5
 
