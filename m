@@ -1,89 +1,91 @@
-Return-Path: <stable+bounces-160120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C2D0AF81BF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 22:07:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2700AF81C4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 22:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A43C458544B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 20:07:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FACA5650C8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 20:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D129029B20D;
-	Thu,  3 Jul 2025 20:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405E929B782;
+	Thu,  3 Jul 2025 20:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nIXl5Wqh"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ls7eTFKZ"
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED72F29346E;
-	Thu,  3 Jul 2025 20:07:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0787629AB05;
+	Thu,  3 Jul 2025 20:12:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751573230; cv=none; b=uZBkP7spMx1H6/O5e5GsV5Ne/8hJ8MxGQV4bQGeDJ/cFDM6xuZiReh/Z03JgKEoTXf12cRMZa9dn6O6Ab2EhpOIcyCeGAj0mnNQa+o5ZF2Xb/q5IPkggGt/ixu1B7H3atQX1Q85mhQnOv9xOjvhcsprilN4fa+IeebX6Ktd7ReY=
+	t=1751573553; cv=none; b=P0wexDCyTlmCsNVri5aldfDHDwQY4Fw2UF9MeJt3D1cJUgAqwbfx1CIxdLfMsWSJ69bXXcgPyVDn0hwz02ZRYQ1WpxCFiBRg/gEqB8/32pB8mAfeflGzI3D9sPgSFDE+p/fHdR5LYU6oGPED6zOPiQg0qvzQUgHixlqu+/Fsne0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751573230; c=relaxed/simple;
-	bh=P8X9lUX6YXwb4ldvN8doG8ZPZ/TXdmcB5s+r7njzT+k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KpF6yEnHSM63LE6jndp4kK3E43AQPDfhNdDD4x6TGR9TKHPAW07//Nxmeg3U8qnW8xYCVqj4VNADKKBVZxuEQg6tbKW4rvuz3PWz1Ir9rFD8SBO7yYAj9W1R6BpuCIbyzGdA+CVmEeUPBywdzp0KAsqy3jkQITOHSKrVQT6j0H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nIXl5Wqh; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1751573226;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=SlVMuoxK+UaJh1Cl0Sk2GerD7Dh9W8QH+OqcnTRuvpU=;
-	b=nIXl5Wqhm2RDeHwATLWjn55F8ANSq8FfIjWEzGLFA1aKwdqNzBLqtgJSglDMQaNTfYgXgl
-	2CXhfNykc3r+2xXiXOf+S57b3jg9C8fWqeVLP9xlWm2xrjnFLIqgIgwUiQ3bL1NIfZcIRz
-	lPI0RUjjLCtuHuS7+A5YPRRzqW4Wn2g=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	s=arc-20240116; t=1751573553; c=relaxed/simple;
+	bh=gmh5ZoAgGsJKG8haTIpWu74Cwifbp8iS4hmC9GfBIAI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=hNiYP+Z0bYITDSaVM0bmIN+m/GZiZGXw1ifpeqxxM6R9A8Pg3rciVnIul/Tv+Y9LgE78xIpq3JYNeRXbACg7Vmp8EOWHuPdSwTcu81AjYTh3tOtuNQHiH1Dzh3YKZtoFjqE7/rH+3qX+kKAMEtEhEqGmMlvLXuwBQ1kF8UtOaeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ls7eTFKZ; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1158)
+	id 8D6F3201B1B1; Thu,  3 Jul 2025 13:12:30 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8D6F3201B1B1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1751573550;
+	bh=fXBcnpF5wIVxCrRcCZEh0GIQXdpGV1Dnj7t4XrnX4c4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ls7eTFKZsvKQoWNUQapIL/zkupcDpzjxGfr7c1sN7smhoClWtQu99/wGy7wBisfWu
+	 rozp01tvzgZmxExhvPH5k532LdMzj8zUf7+pC0KrohrXMBy+gHbU5aB1GKuhxJi+Od
+	 6QepbLaA+tnxDTYTSLGBBj84EBkFbnTaNH1KvgXU=
+From: Hardik Garg <hargar@linux.microsoft.com>
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	srw@sladewatkins.net,
 	stable@vger.kernel.org,
-	Takashi Iwai <tiwai@suse.de>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ALSA: ad1816a: Fix potential NULL pointer deref in snd_card_ad1816a_pnp()
-Date: Thu,  3 Jul 2025 22:06:13 +0200
-Message-ID: <20250703200616.304309-2-thorsten.blum@linux.dev>
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org
+Subject: Re: [PATCH 6.15 000/263] 6.15.5-rc1 review
+Date: Thu,  3 Jul 2025 13:12:30 -0700
+Message-Id: <1751573550-30344-1-git-send-email-hargar@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Use pr_warn() instead of dev_warn() when 'pdev' is NULL to avoid a
-potential NULL pointer dereference.
+The kernel, bpf tool, and perf tool builds fine for v6.15.5-rc1 on x86 and arm64 Azure VM.
 
-Cc: stable@vger.kernel.org
-Fixes: 20869176d7a7 ("ALSA: ad1816a: Use standard print API")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- sound/isa/ad1816a/ad1816a.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Kernel binary size for x86 build:
+text      data      bss      dec       hex      filename
+31999332  14279706  6250496  52529534  321897e  vmlinux
 
-diff --git a/sound/isa/ad1816a/ad1816a.c b/sound/isa/ad1816a/ad1816a.c
-index 99006dc4777e..5c9e2d41d900 100644
---- a/sound/isa/ad1816a/ad1816a.c
-+++ b/sound/isa/ad1816a/ad1816a.c
-@@ -98,7 +98,7 @@ static int snd_card_ad1816a_pnp(int dev, struct pnp_card_link *card,
- 	pdev = pnp_request_card_device(card, id->devs[1].id, NULL);
- 	if (pdev == NULL) {
- 		mpu_port[dev] = -1;
--		dev_warn(&pdev->dev, "MPU401 device busy, skipping.\n");
-+		pr_warn("MPU401 device busy, skipping.\n");
- 		return 0;
- 	}
- 
--- 
-2.50.0
+Kernel binary size for arm64 build:
+text      data      bss      dec       hex      filename
+37335764  15435073  1038480  53809317  33510a5  vmlinux
 
+
+Tested-by: Hardik Garg <hargar@linux.microsoft.com>
+
+
+
+
+Thanks,
+Hardik
 
