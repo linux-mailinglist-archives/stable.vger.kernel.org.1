@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CDBAF78D7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C266AF7B0C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:21:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA4214A3736
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 370173B248D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F33D2ED85E;
-	Thu,  3 Jul 2025 14:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DBB2F2727;
+	Thu,  3 Jul 2025 15:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmZvnUi+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6FGG8o9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D502EFD8B;
-	Thu,  3 Jul 2025 14:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75D42F0C69;
+	Thu,  3 Jul 2025 15:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554377; cv=none; b=q2Gzv+BnCpvKAFq78pDQHXkiWV5U8PmJrtw2LF8owrZvwitV0QSBwzU478pbCOxEwqJq8DH9fjKThW/wQW5qHzkHZgt3JlHq3wHUydIYJXKm0mW5HA+jHzx/YyOlfPeOLy2YoFn6BsS/JTdVDHH1EqqjP9m20NeDxfzj0qOJSGw=
+	t=1751555566; cv=none; b=IZ293agvcvIOPUa15muzhuDkIS1U+zaR7szKwISETyVHttY/bDRVejx6pZhhvw44mCcSih0Xz/J8LUKnIb3bL7UIoskFVCpRhkrCz8ZefQsLZZ2vMckiKmcuagsaecVy9viOjqwKOKVsqaPcZe5Mk2D8L2QGIBhCyn5OtjMWtOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554377; c=relaxed/simple;
-	bh=0722p8CYsgoKBA7ung+bJdvksBWRoFSOSa17msQOkyE=;
+	s=arc-20240116; t=1751555566; c=relaxed/simple;
+	bh=jy7BmY6YCxdDhudWTbP+9nCsn9/spcZNddz3lxHCTKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mAYsFBqiZaB+TVfs0/w6SBwwR05NH6SEeLh2ocIhn8XrZiLIpBIhFYeYf6atVl4X/5IMTWT8PIlEf2SWGyQmxI0Tw2ps0355sWFfM400NvxmN+rt/fIGOxcXfoqctae9W1lV9TNNwCAD/m4x8kA2BIeTvmgmVQUuQF+koQA4qvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmZvnUi+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DE5C4CEE3;
-	Thu,  3 Jul 2025 14:52:56 +0000 (UTC)
+	 MIME-Version; b=Ym54RNkqXxl2/C4IErd3wpevhDQFmJqZKebRHV1OsCP5j7tC1gM82HVh82Bpqsutc5QxLKxKsFeMygy+BqHP9bKCJdxQACyZizo/Guaz31F+wwCS9BI6ZUNu6vaAwqpyYGQc2FmSrjqJTVXRRJjzhrKQdZvTaZCDjWjxo75hh9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6FGG8o9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF25C4CEE3;
+	Thu,  3 Jul 2025 15:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554377;
-	bh=0722p8CYsgoKBA7ung+bJdvksBWRoFSOSa17msQOkyE=;
+	s=korg; t=1751555566;
+	bh=jy7BmY6YCxdDhudWTbP+9nCsn9/spcZNddz3lxHCTKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kmZvnUi+PR0rwwS45Ax6e5MmlM2VajF6zZPOADeCv/ghdi4E7/xSKmo+JRUpPwb+l
-	 99OPt/nLRHEijHyK5HGXKarZjoegnq4fgigP33zGXZChFHU0/+wQEb6JcfIozgxkcB
-	 wqHiMlmTovZd2pZPVZV9kFlDuQuOVQmCZM0PiKNs=
+	b=W6FGG8o9DVR5hrqq7YrsrOVqB45gZNYQFz0SSsnmOpOXsJpkWOluCQEu04SXr/X0c
+	 P71TYiJl/KteYqcUGZCWUSPaa+i2s3N0FudofUHuKbM/MIXjyWA5Y4rgWC7CjOnT8C
+	 8F9ZkEMG/Syoj2CnjrrkATb803JOvAblG/cCUvUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Min <Frank.Min@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 168/218] drm/amdgpu: Add kicker device detection
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 053/139] Drivers: hv: vmbus: Add utility function for querying ring size
 Date: Thu,  3 Jul 2025 16:41:56 +0200
-Message-ID: <20250703144002.875838393@linuxfoundation.org>
+Message-ID: <20250703143943.240786977@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Min <Frank.Min@amd.com>
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-commit 0bbf5fd86c585d437b75003f11365b324360a5d6 upstream.
+[ Upstream commit e8c4bd6c6e6b7e7b416c42806981c2a81370001e ]
 
-1. add kicker device list
-2. add kicker device checking helper function
+Add a function to query for the preferred ring buffer size of VMBus
+device. This will allow the drivers (eg. UIO) to allocate the most
+optimized ring buffer size for devices.
 
-Signed-off-by: Frank Min <Frank.Min@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 09aa2b408f4ab689c3541d22b0968de0392ee406)
-Cc: stable@vger.kernel.org
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Link: https://lore.kernel.org/r/1711788723-8593-2-git-send-email-ssengar@linux.microsoft.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c |   17 +++++++++++++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h |    6 ++++++
- 2 files changed, 23 insertions(+)
+ drivers/hv/channel_mgmt.c | 15 ++++++++++++---
+ drivers/hv/hyperv_vmbus.h |  5 +++++
+ include/linux/hyperv.h    |  2 ++
+ 3 files changed, 19 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
-@@ -30,6 +30,10 @@
+diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
+index 2f4d09ce027a3..3c6011a48dabe 100644
+--- a/drivers/hv/channel_mgmt.c
++++ b/drivers/hv/channel_mgmt.c
+@@ -120,7 +120,9 @@ const struct vmbus_device vmbus_devs[] = {
+ 	},
  
- #define AMDGPU_UCODE_NAME_MAX		(128)
+ 	/* File copy */
+-	{ .dev_type = HV_FCOPY,
++	/* fcopy always uses 16KB ring buffer size and is working well for last many years */
++	{ .pref_ring_size = 0x4000,
++	  .dev_type = HV_FCOPY,
+ 	  HV_FCOPY_GUID,
+ 	  .perf_device = false,
+ 	  .allowed_in_isolated = false,
+@@ -140,12 +142,19 @@ const struct vmbus_device vmbus_devs[] = {
+ 	  .allowed_in_isolated = false,
+ 	},
  
-+static const struct kicker_device kicker_device_list[] = {
-+	{0x744B, 0x00},
-+};
-+
- static void amdgpu_ucode_print_common_hdr(const struct common_firmware_header *hdr)
- {
- 	DRM_DEBUG("size_bytes: %u\n", le32_to_cpu(hdr->size_bytes));
-@@ -1383,6 +1387,19 @@ static const char *amdgpu_ucode_legacy_n
- 	return NULL;
+-	/* Unknown GUID */
+-	{ .dev_type = HV_UNKNOWN,
++	/*
++	 * Unknown GUID
++	 * 64 KB ring buffer + 4 KB header should be sufficient size for any Hyper-V device apart
++	 * from HV_NIC and HV_SCSI. This case avoid the fallback for unknown devices to allocate
++	 * much bigger (2 MB) of ring size.
++	 */
++	{ .pref_ring_size = 0x11000,
++	  .dev_type = HV_UNKNOWN,
+ 	  .perf_device = false,
+ 	  .allowed_in_isolated = false,
+ 	},
+ };
++EXPORT_SYMBOL_GPL(vmbus_devs);
+ 
+ static const struct {
+ 	guid_t guid;
+diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
+index 787b150686418..34b60009114a6 100644
+--- a/drivers/hv/hyperv_vmbus.h
++++ b/drivers/hv/hyperv_vmbus.h
+@@ -419,6 +419,11 @@ static inline bool hv_is_perf_channel(struct vmbus_channel *channel)
+ 	return vmbus_devs[channel->device_id].perf_device;
  }
  
-+bool amdgpu_is_kicker_fw(struct amdgpu_device *adev)
++static inline size_t hv_dev_ring_size(struct vmbus_channel *channel)
 +{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(kicker_device_list); i++) {
-+		if (adev->pdev->device == kicker_device_list[i].device &&
-+			adev->pdev->revision == kicker_device_list[i].revision)
-+		return true;
-+	}
-+
-+	return false;
++	return vmbus_devs[channel->device_id].pref_ring_size;
 +}
 +
- void amdgpu_ucode_ip_version_decode(struct amdgpu_device *adev, int block_type, char *ucode_prefix, int len)
+ static inline bool hv_is_allocated_cpu(unsigned int cpu)
  {
- 	int maj, min, rev;
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h
-@@ -595,6 +595,11 @@ struct amdgpu_firmware {
- 	uint64_t fw_buf_mc;
- };
+ 	struct vmbus_channel *channel, *sc;
+diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
+index b5bf5315ca8c1..e4ad9760774e1 100644
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -820,6 +820,8 @@ struct vmbus_requestor {
+ #define VMBUS_RQST_RESET (U64_MAX - 3)
  
-+struct kicker_device{
-+	unsigned short device;
-+	u8 revision;
-+};
-+
- void amdgpu_ucode_print_mc_hdr(const struct common_firmware_header *hdr);
- void amdgpu_ucode_print_smc_hdr(const struct common_firmware_header *hdr);
- void amdgpu_ucode_print_imu_hdr(const struct common_firmware_header *hdr);
-@@ -622,5 +627,6 @@ amdgpu_ucode_get_load_type(struct amdgpu
- const char *amdgpu_ucode_name(enum AMDGPU_UCODE_ID ucode_id);
- 
- void amdgpu_ucode_ip_version_decode(struct amdgpu_device *adev, int block_type, char *ucode_prefix, int len);
-+bool amdgpu_is_kicker_fw(struct amdgpu_device *adev);
- 
- #endif
+ struct vmbus_device {
++	/* preferred ring buffer size in KB, 0 means no preferred size for this device */
++	size_t pref_ring_size;
+ 	u16  dev_type;
+ 	guid_t guid;
+ 	bool perf_device;
+-- 
+2.39.5
+
 
 
 
