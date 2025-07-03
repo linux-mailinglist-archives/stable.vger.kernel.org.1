@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-159434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B0BAF789C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E906AF7ADB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 670561883B90
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:50:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3854B4835F5
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013652EBB8F;
-	Thu,  3 Jul 2025 14:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE6E2F1989;
+	Thu,  3 Jul 2025 15:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xy3GxlZq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciU4nixE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD85E126BFF;
-	Thu,  3 Jul 2025 14:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAEA2EE97A;
+	Thu,  3 Jul 2025 15:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554220; cv=none; b=gIBo/wyX38JWm04/kTwQB7XYZH4UncDQmLk9tyeKH/e0KRue0+FCR5mfc388RrURQZRvnRI5j10kQMceYsrNh1a5/Tk4lUunnumgOrbUWANfrTP35jgatEejf7g3SVFfD6239rhzQEJt4ASzf7K27I87bGOhCWHnKxofar5A85M=
+	t=1751555493; cv=none; b=elAokwa0OJ8KbKJT9SyN2WOQdeWQ1SJxkHfF03Icbl7sZxysB3TydI8a/YaXwS04QKQPmrXZgToOAvVrw8ikwFFZtvGa/5HEzRtwO5AmqMhBPTgHQDt12BJdEVYcOCULzobiwoM1R88u6XmsoQYe5Ww+kQ4rSCNqoHlDFCCGIPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554220; c=relaxed/simple;
-	bh=2n+AKnp0746EWkbHGtxyq1yMV4U7H6CaUoTPNdNZTXU=;
+	s=arc-20240116; t=1751555493; c=relaxed/simple;
+	bh=r2jIh7U2mRvNPdIDNp7I18PD0NWTUZMpWpM0/a+L/es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oOUZI9UKX6ysh1TNeSqQlHOQwBU60LPK1M2wvZ2zLK3E8jHA+m9LrUFObvqYltNnR6iKj48go8+yclQN+/hD+C1FnN2uoyO8/XMTgBWNpxWPNOPH8GY/n0IJgdBl+ZVnqdlxK5v4XvaR/KeUWf+5VgH5eht99Q2Kq9CCFDgaK5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xy3GxlZq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DAEC4CEE3;
-	Thu,  3 Jul 2025 14:50:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XvSOKZjc9qChxaH2JKzlc6qZ8/ScjhYGZ5RI3a8r9Ixkosb5UtfSinZKsrc0GAp5Bpx76ZMf5GoaHEtpvmruyANvId+yVaq/r99mpSI3icdJKBalVkFbCSlYkkFFpmCKvdMQuTXejZJgvozzazUY57ldaJa//9VPsGgtcUV7hOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciU4nixE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F967C4CEEE;
+	Thu,  3 Jul 2025 15:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554220;
-	bh=2n+AKnp0746EWkbHGtxyq1yMV4U7H6CaUoTPNdNZTXU=;
+	s=korg; t=1751555493;
+	bh=r2jIh7U2mRvNPdIDNp7I18PD0NWTUZMpWpM0/a+L/es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xy3GxlZqw6kgGojNSIeeunfSXFdGHccIGQqACAioTlg/cCSQaZ645fmXcTHZLhm3H
-	 YJhNqPaC3MXsf8ZPm709/r01bBPsuYd6KRbG3O6LJE8Hyz8muGnOPcGpcjqDX07qmJ
-	 L45KNatZAaiQylB4qFGXI6r/955YBq+YMb/yUoEk=
+	b=ciU4nixEl2LqhwJxO2GILQtnGBXPQ0luypE0sIe1yMqBeOoMMjBfxpniyMK0Za5+J
+	 VMOF5FnIUaB5mmR97jqQvoGUeMIPkQU/qGgFrMjdvyf6ZPwl5LGBX3iBYY/ADUBZvj
+	 0Thfzb//DWGy/tl78h+g2p04Vrr6LSQohE9fFtnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Meetakshi Setiya <meetakshisetiyaoss@gmail.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 118/218] smb: smbdirect: add smbdirect_pdu.h with protocol definitions
+Subject: [PATCH 6.6 003/139] cifs: Fix encoding of SMB1 Session Setup NTLMSSP Request in non-UNICODE mode
 Date: Thu,  3 Jul 2025 16:41:06 +0200
-Message-ID: <20250703144000.660120631@linuxfoundation.org>
+Message-ID: <20250703143941.317070443@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,98 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 00fab6cf323fa5850e6cbe283b23e605e6e97912 ]
+[ Upstream commit 6510ef4230b68c960309e0c1d6eb3e32eb785142 ]
 
-This is just a start moving into a common smbdirect layer.
+SMB1 Session Setup NTLMSSP Request in non-UNICODE mode is similar to
+UNICODE mode, just strings are encoded in ASCII and not in UTF-16.
 
-It will be used in the next commits...
+With this change it is possible to setup SMB1 session with NTLM
+authentication in non-UNICODE mode with Windows SMB server.
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Hyunchul Lee <hyc.lee@gmail.com>
-Cc: Meetakshi Setiya <meetakshisetiyaoss@gmail.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
+This change fixes mounting SMB1 servers with -o nounicode mount option
+together with -o sec=ntlmssp mount option (which is the default sec=).
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 43e7e284fc77 ("cifs: Fix the smbd_response slab to allow usercopy")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/common/smbdirect/smbdirect_pdu.h | 55 +++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
- create mode 100644 fs/smb/common/smbdirect/smbdirect_pdu.h
+ fs/smb/client/sess.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/fs/smb/common/smbdirect/smbdirect_pdu.h b/fs/smb/common/smbdirect/smbdirect_pdu.h
-new file mode 100644
-index 0000000000000..ae9fdb05ce231
---- /dev/null
-+++ b/fs/smb/common/smbdirect/smbdirect_pdu.h
-@@ -0,0 +1,55 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ *   Copyright (c) 2017 Stefan Metzmacher
-+ */
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index 81ac4196bb743..c351da8c3e2ea 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -1740,22 +1740,22 @@ _sess_auth_rawntlmssp_assemble_req(struct sess_data *sess_data)
+ 	pSMB = (SESSION_SETUP_ANDX *)sess_data->iov[0].iov_base;
+ 
+ 	capabilities = cifs_ssetup_hdr(ses, server, pSMB);
+-	if ((pSMB->req.hdr.Flags2 & SMBFLG2_UNICODE) == 0) {
+-		cifs_dbg(VFS, "NTLMSSP requires Unicode support\n");
+-		return -ENOSYS;
+-	}
+-
+ 	pSMB->req.hdr.Flags2 |= SMBFLG2_EXT_SEC;
+ 	capabilities |= CAP_EXTENDED_SECURITY;
+ 	pSMB->req.Capabilities |= cpu_to_le32(capabilities);
+ 
+ 	bcc_ptr = sess_data->iov[2].iov_base;
+-	/* unicode strings must be word aligned */
+-	if (!IS_ALIGNED(sess_data->iov[0].iov_len + sess_data->iov[1].iov_len, 2)) {
+-		*bcc_ptr = 0;
+-		bcc_ptr++;
 +
-+#ifndef __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_PDU_H__
-+#define __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_PDU_H__
-+
-+#define SMBDIRECT_V1 0x0100
-+
-+/* SMBD negotiation request packet [MS-SMBD] 2.2.1 */
-+struct smbdirect_negotiate_req {
-+	__le16 min_version;
-+	__le16 max_version;
-+	__le16 reserved;
-+	__le16 credits_requested;
-+	__le32 preferred_send_size;
-+	__le32 max_receive_size;
-+	__le32 max_fragmented_size;
-+} __packed;
-+
-+/* SMBD negotiation response packet [MS-SMBD] 2.2.2 */
-+struct smbdirect_negotiate_resp {
-+	__le16 min_version;
-+	__le16 max_version;
-+	__le16 negotiated_version;
-+	__le16 reserved;
-+	__le16 credits_requested;
-+	__le16 credits_granted;
-+	__le32 status;
-+	__le32 max_readwrite_size;
-+	__le32 preferred_send_size;
-+	__le32 max_receive_size;
-+	__le32 max_fragmented_size;
-+} __packed;
-+
-+#define SMBDIRECT_DATA_MIN_HDR_SIZE 0x14
-+#define SMBDIRECT_DATA_OFFSET       0x18
-+
-+#define SMBDIRECT_FLAG_RESPONSE_REQUESTED 0x0001
-+
-+/* SMBD data transfer packet with payload [MS-SMBD] 2.2.3 */
-+struct smbdirect_data_transfer {
-+	__le16 credits_requested;
-+	__le16 credits_granted;
-+	__le16 flags;
-+	__le16 reserved;
-+	__le32 remaining_data_length;
-+	__le32 data_offset;
-+	__le32 data_length;
-+	__le32 padding;
-+	__u8 buffer[];
-+} __packed;
-+
-+#endif /* __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_PDU_H__ */
++	if (pSMB->req.hdr.Flags2 & SMBFLG2_UNICODE) {
++		/* unicode strings must be word aligned */
++		if (!IS_ALIGNED(sess_data->iov[0].iov_len + sess_data->iov[1].iov_len, 2)) {
++			*bcc_ptr = 0;
++			bcc_ptr++;
++		}
++		unicode_oslm_strings(&bcc_ptr, sess_data->nls_cp);
++	} else {
++		ascii_oslm_strings(&bcc_ptr, sess_data->nls_cp);
+ 	}
+-	unicode_oslm_strings(&bcc_ptr, sess_data->nls_cp);
+ 
+ 	sess_data->iov[2].iov_len = (long) bcc_ptr -
+ 					(long) sess_data->iov[2].iov_base;
 -- 
 2.39.5
 
