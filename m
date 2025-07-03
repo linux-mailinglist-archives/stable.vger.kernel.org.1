@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-160020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D716AF7B4F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:24:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB37AF7B45
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:23:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B03D37B5210
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:22:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D57FB1890117
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122B72EFDAE;
-	Thu,  3 Jul 2025 15:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BA42EF9A7;
+	Thu,  3 Jul 2025 15:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FI4TQqvo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjEAPlrc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C210D2DE6F1;
-	Thu,  3 Jul 2025 15:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3232D6622;
+	Thu,  3 Jul 2025 15:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556113; cv=none; b=N00KUvmt1euQkOiwm8QNG0gW2Yt/kNV48ESETcsVQQP43v4tyJqc3JrrrQo1hzQo4S7WgrFrGcamOKDJJQv2p2X/6WtGEFN5524DUim10Dnb1PnzRXmn9ffQGPvc81WUcG+8f5dAblxEGdx8TZgiw0GeHR+5HHDr+X9LjugVEts=
+	t=1751555679; cv=none; b=rreiNwVdPB6pvncDTYP94n1b37Q/7rggcfjVjymMG0zyzIGRvzhfyvArO4tptQi6DYNQFs1v/TCCogR3F96id2AUSn19CHr12X5QsEuN6FSsPODXKpScsxV3uHYa3m/e/t3rpLLdVwzuJX6bGamKvb8IJA2WqhzmlDMI9mP1ikg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556113; c=relaxed/simple;
-	bh=VqriyrAv1yGIRTUoKxili9LxC2iCDn1dKtnAa+5bx74=;
+	s=arc-20240116; t=1751555679; c=relaxed/simple;
+	bh=kAOwhzWgcb2zH08QDws2u6PaE5ShFqSbp/aZwgZMCz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tCDEGTlkGvCzR3AvWb/T6dcUq016yGdO/BxB9V6Xif6SqETxXKACH6+Zi9mDn8qvto48WKY/MiEpzrn3lFuDgM51GqAefIo9MXOsrOX8zrU+qTtQjQthza4IGwwTl1+mlJn67pTKEVbw0+4w5eK6p1aV+i18DD8YEhnbQGDDU7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FI4TQqvo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BF0C4CEE3;
-	Thu,  3 Jul 2025 15:21:52 +0000 (UTC)
+	 MIME-Version; b=OlvOllcPukKyWWz240SbWHhM0AyWsiy8xbZOEqJUT+wdLX/7fpwFJXM3SbGnMzHYOeuVSukDyPcSnxseukyzGSmgmJ5vZbCSs+I2AY+H4I+diPEfWEVvNMeCTRXqjPvX453hELi7R2OvXIJ1m4Iay3+OpoLX2BaC5pv//YVl8KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjEAPlrc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB582C4CEE3;
+	Thu,  3 Jul 2025 15:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556113;
-	bh=VqriyrAv1yGIRTUoKxili9LxC2iCDn1dKtnAa+5bx74=;
+	s=korg; t=1751555679;
+	bh=kAOwhzWgcb2zH08QDws2u6PaE5ShFqSbp/aZwgZMCz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FI4TQqvoNYbpEJBsp8AUEkpRHD/6nVY2TqaCq9rTKONQrgDqcA/XWzLK9TuTdzJ5C
-	 srNFSG+MgiQTIcMGzee7V4ebDO3XbGne160IAU2VXCIwD33+MrQ4vU0Nbflv9oU0Pu
-	 AUuU+hX58nKPKZM4n6eRXu+zrosEw8SpqnjGViMQ=
+	b=DjEAPlrc65V+uLyBMVlhLGC4RmaRONVHC5V93nEqZyubLUVfwWOdYf3NwaiwEEzt1
+	 Ls4evPLmpTnOtaA2wtPXql/0P45KP8zT4ORNGjXOlxn7N0K1FqT36wkzkOeYgrCcIE
+	 tVCMi+X/g/eM7GYEm/9zSm/i5bPkGXwPfWyHf5Rg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Zekun <zhangzekun11@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/132] PCI: apple: Use helper function for_each_child_of_node_scoped()
+Subject: [PATCH 6.6 087/139] net: enetc: Correct endianness handling in _enetc_rd_reg64
 Date: Thu,  3 Jul 2025 16:42:30 +0200
-Message-ID: <20250703143941.811500259@linuxfoundation.org>
+Message-ID: <20250703143944.563607898@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Zekun <zhangzekun11@huawei.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit f60b4e06a945f25d463ae065c6e41c6e24faee0a ]
+[ Upstream commit 7b515f35a911fdc31fbde6531828dcd6ae9803d3 ]
 
-The for_each_available_child_of_node_scoped() helper provides
-a scope-based clean-up functionality to put the device_node
-automatically, and as such, there is no need to call of_node_put()
-directly.
+enetc_hw.h provides two versions of _enetc_rd_reg64.
+One which simply calls ioread64() when available.
+And another that composes the 64-bit result from ioread32() calls.
 
-Thus, use this helper to simplify the code.
+In the second case the code appears to assume that each ioread32() call
+returns a little-endian value. However both the shift and logical or
+used to compose the return value would not work correctly on big endian
+systems if this were the case. Moreover, this is inconsistent with the
+first case where the return value of ioread64() is assumed to be in host
+byte order.
 
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240831040413.126417-6-zhangzekun11@huawei.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Stable-dep-of: 751bec089c4e ("PCI: apple: Set only available ports up")
+It appears that the correct approach is for both versions to treat the
+return value of ioread*() functions as being in host byte order. And
+this patch corrects the ioread32()-based version to do so.
+
+This is a bug but would only manifest on big endian systems
+that make use of the ioread32-based implementation of _enetc_rd_reg64.
+While all in-tree users of this driver are little endian and
+make use of the ioread64-based implementation of _enetc_rd_reg64.
+Thus, no in-tree user of this driver is affected by this bug.
+
+Flagged by Sparse.
+Compile tested only.
+
+Fixes: 16eb4c85c964 ("enetc: Add ethtool statistics")
+Closes: https://lore.kernel.org/all/AM9PR04MB850500D3FC24FE23DEFCEA158879A@AM9PR04MB8505.eurprd04.prod.outlook.com/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250624-etnetc-le-v1-1-a73a95d96e4e@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-apple.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc_hw.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-apple.c b/drivers/pci/controller/pcie-apple.c
-index fbe59139ab8fb..b1f32e4c65989 100644
---- a/drivers/pci/controller/pcie-apple.c
-+++ b/drivers/pci/controller/pcie-apple.c
-@@ -767,7 +767,6 @@ static int apple_pcie_init(struct pci_config_window *cfg)
- {
- 	struct device *dev = cfg->parent;
- 	struct platform_device *platform = to_platform_device(dev);
--	struct device_node *of_port;
- 	struct apple_pcie *pcie;
- 	int ret;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+index 1619943fb2637..4e8881b479e48 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+@@ -485,7 +485,7 @@ static inline u64 _enetc_rd_reg64(void __iomem *reg)
+ 		tmp = ioread32(reg + 4);
+ 	} while (high != tmp);
  
-@@ -790,11 +789,10 @@ static int apple_pcie_init(struct pci_config_window *cfg)
- 	if (ret)
- 		return ret;
+-	return le64_to_cpu((__le64)high << 32 | low);
++	return (u64)high << 32 | low;
+ }
+ #endif
  
--	for_each_child_of_node(dev->of_node, of_port) {
-+	for_each_child_of_node_scoped(dev->of_node, of_port) {
- 		ret = apple_pcie_setup_port(pcie, of_port);
- 		if (ret) {
- 			dev_err(pcie->dev, "Port %pOF setup fail: %d\n", of_port, ret);
--			of_node_put(of_port);
- 			return ret;
- 		}
- 	}
 -- 
 2.39.5
 
