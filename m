@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-159628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643DDAF7996
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 682E6AF7814
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 114C7562EF7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:00:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E5154E0CDB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E622EF9C2;
-	Thu,  3 Jul 2025 15:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD602D948F;
+	Thu,  3 Jul 2025 14:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRM6djUi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VeoAAdAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBD52EF9BC;
-	Thu,  3 Jul 2025 15:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249472EBBAA;
+	Thu,  3 Jul 2025 14:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554831; cv=none; b=ugW1MkXsK6U/wPYVTwiqdgdYlVcCHmkzOTE6PPN2EhXp0h55JUCpBCibddhdgkYcEVZq1MmHPoq1QrC/mrdgXdaBBq44RlZvGtPWD/q9JWbi67Cijm9gKKTqutYL+Ld03JiCu2P6f2vmoSn5dERamhxw8m+bPp4icAMWInVu1UE=
+	t=1751553954; cv=none; b=dWBw7TE1ZwDLwPtxVPVMph7O7kkktbANN+U7XlilClf9RQ7kwujl4LxRd5tNYAGBuf3k52SpLwV+UUYpeMX24ttNHgtlBpwu76Vcj+3zDjUpNauCGvbEtDnkgVERjjXLf+Yud2DQwAgHbRYT1p4fO69+FUXl1tfqXY6v/oyRpE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554831; c=relaxed/simple;
-	bh=dES3D7HfvDVdMW5xeXm3w2biPcVktBlfCNSH4HhZWjY=;
+	s=arc-20240116; t=1751553954; c=relaxed/simple;
+	bh=TwiBEQaPLOxUhU4FbtkUIkh/BufI73sbwrwAKxJrwXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6TdOlOZxbwzPXdL6Cyo9dn9xd5M0zPbVamkAXv6WeSyuBTDiGqdiMQkUhR+eGkdonjLMqwfCNlWIC1YUBvoC40P023LHKbrCdVr3ugQUWMR/ZB0bbBM/oOUvJffvPCtBVXLSg82X9YMTXu7b0bwI5Nbwf5SoMyQDJpjONdVr1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRM6djUi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D137C4CEED;
-	Thu,  3 Jul 2025 15:00:30 +0000 (UTC)
+	 MIME-Version; b=H+xdrGS/R8JDs+ls9Xe/Yi9cbBeOzXXuPESHSyjPoVt4fFxSJMk73m/0BnUSJE5byrrP28Yew52Nm802ocfKVMVcrw5lE1HyJK+CG6QgoAPZ92bZNlE/UQDDHezah6bdKSMimfruPqk8Ew/sN4Vo3H6Y7ZIGBspTGaOU1Q9QeTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VeoAAdAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720D2C4CEE3;
+	Thu,  3 Jul 2025 14:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554831;
-	bh=dES3D7HfvDVdMW5xeXm3w2biPcVktBlfCNSH4HhZWjY=;
+	s=korg; t=1751553953;
+	bh=TwiBEQaPLOxUhU4FbtkUIkh/BufI73sbwrwAKxJrwXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VRM6djUimZYH6v4Gw9xgEVa0lfpNa9T4ga2JMHSGaFfrZvs62dcddRop6XMAUB9xn
-	 lv3jvEabmv3wctcsom06IJ3L/twoghlKBR0Ad8N8/y9WaG8NmZmwFY4MjjmUXn7A4L
-	 gtXSM4jYtmkClvaGJTX6kz9h2osgOQMKDqA03ME4=
+	b=VeoAAdAPH2CF6AliU4TEjw6cLB3ZA8BcZg3AT5ogaTB2wNisB1FPcxwR/G6FS7kTu
+	 pKUT7o0e4TWzGHGUPw5pJvi/GBele14eRqMBe0zsH1ETSBpPNE0LK5Sh1+Z+C+BOkm
+	 5xBkSPnjaT5qyX4wnFEqUuAHDAPv10+wWhMEskTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Korsgaard <peter@korsgaard.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 062/263] usb: gadget: f_hid: wake up readers on disable/unbind
-Date: Thu,  3 Jul 2025 16:39:42 +0200
-Message-ID: <20250703144006.793166064@linuxfoundation.org>
+Subject: [PATCH 6.12 035/218] um: use proper care when taking mmap lock during segfault
+Date: Thu,  3 Jul 2025 16:39:43 +0200
+Message-ID: <20250703143957.354971169@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +62,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Korsgaard <peter@korsgaard.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 937a8a3a8d46a3377b4195cd8f2aa656666ebc8b ]
+[ Upstream commit 6767e8784cd2e8b386a62330ea6864949d983a3e ]
 
-Similar to how it is done in the write path.
+Segfaults can occur at times where the mmap lock cannot be taken. If
+that happens the segfault handler may not be able to take the mmap lock.
 
-Add a disabled flag to track the function state and use it to exit the read
-loops to ensure no readers get stuck when the function is disabled/unbound,
-protecting against corruption when the waitq and spinlocks are reinitialized
-in hidg_bind().
+Fix the code to use the same approach as most other architectures.
+Unfortunately, this requires copying code from mm/memory.c and modifying
+it slightly as UML does not have exception tables.
 
-Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
-Link: https://lore.kernel.org/r/20250318152207.330997-1-peter@korsgaard.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Link: https://patch.msgid.link/20250408074524.300153-2-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_hid.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ arch/um/kernel/trap.c | 129 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 117 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
-index c7a05f842745b..d8bd2d82e9ec6 100644
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -75,6 +75,7 @@ struct f_hidg {
- 	/* recv report */
- 	spinlock_t			read_spinlock;
- 	wait_queue_head_t		read_queue;
-+	bool				disabled;
- 	/* recv report - interrupt out only (use_out_ep == 1) */
- 	struct list_head		completed_out_req;
- 	unsigned int			qlen;
-@@ -329,7 +330,7 @@ static ssize_t f_hidg_intout_read(struct file *file, char __user *buffer,
+diff --git a/arch/um/kernel/trap.c b/arch/um/kernel/trap.c
+index 97c8df9c44017..9077bdb26cc35 100644
+--- a/arch/um/kernel/trap.c
++++ b/arch/um/kernel/trap.c
+@@ -17,6 +17,122 @@
+ #include <os.h>
+ #include <skas.h>
  
- 	spin_lock_irqsave(&hidg->read_spinlock, flags);
- 
--#define READ_COND_INTOUT (!list_empty(&hidg->completed_out_req))
-+#define READ_COND_INTOUT (!list_empty(&hidg->completed_out_req) || hidg->disabled)
- 
- 	/* wait for at least one buffer to complete */
- 	while (!READ_COND_INTOUT) {
-@@ -343,6 +344,11 @@ static ssize_t f_hidg_intout_read(struct file *file, char __user *buffer,
- 		spin_lock_irqsave(&hidg->read_spinlock, flags);
- 	}
- 
-+	if (hidg->disabled) {
-+		spin_unlock_irqrestore(&hidg->read_spinlock, flags);
-+		return -ESHUTDOWN;
++/*
++ * NOTE: UML does not have exception tables. As such, this is almost a copy
++ * of the code in mm/memory.c, only adjusting the logic to simply check whether
++ * we are coming from the kernel instead of doing an additional lookup in the
++ * exception table.
++ * We can do this simplification because we never get here if the exception was
++ * fixable.
++ */
++static inline bool get_mmap_lock_carefully(struct mm_struct *mm, bool is_user)
++{
++	if (likely(mmap_read_trylock(mm)))
++		return true;
++
++	if (!is_user)
++		return false;
++
++	return !mmap_read_lock_killable(mm);
++}
++
++static inline bool mmap_upgrade_trylock(struct mm_struct *mm)
++{
++	/*
++	 * We don't have this operation yet.
++	 *
++	 * It should be easy enough to do: it's basically a
++	 *    atomic_long_try_cmpxchg_acquire()
++	 * from RWSEM_READER_BIAS -> RWSEM_WRITER_LOCKED, but
++	 * it also needs the proper lockdep magic etc.
++	 */
++	return false;
++}
++
++static inline bool upgrade_mmap_lock_carefully(struct mm_struct *mm, bool is_user)
++{
++	mmap_read_unlock(mm);
++	if (!is_user)
++		return false;
++
++	return !mmap_write_lock_killable(mm);
++}
++
++/*
++ * Helper for page fault handling.
++ *
++ * This is kind of equivalend to "mmap_read_lock()" followed
++ * by "find_extend_vma()", except it's a lot more careful about
++ * the locking (and will drop the lock on failure).
++ *
++ * For example, if we have a kernel bug that causes a page
++ * fault, we don't want to just use mmap_read_lock() to get
++ * the mm lock, because that would deadlock if the bug were
++ * to happen while we're holding the mm lock for writing.
++ *
++ * So this checks the exception tables on kernel faults in
++ * order to only do this all for instructions that are actually
++ * expected to fault.
++ *
++ * We can also actually take the mm lock for writing if we
++ * need to extend the vma, which helps the VM layer a lot.
++ */
++static struct vm_area_struct *
++um_lock_mm_and_find_vma(struct mm_struct *mm,
++			unsigned long addr, bool is_user)
++{
++	struct vm_area_struct *vma;
++
++	if (!get_mmap_lock_carefully(mm, is_user))
++		return NULL;
++
++	vma = find_vma(mm, addr);
++	if (likely(vma && (vma->vm_start <= addr)))
++		return vma;
++
++	/*
++	 * Well, dang. We might still be successful, but only
++	 * if we can extend a vma to do so.
++	 */
++	if (!vma || !(vma->vm_flags & VM_GROWSDOWN)) {
++		mmap_read_unlock(mm);
++		return NULL;
 +	}
 +
- 	/* pick the first one */
- 	list = list_first_entry(&hidg->completed_out_req,
- 				struct f_hidg_req_list, list);
-@@ -387,7 +393,7 @@ static ssize_t f_hidg_intout_read(struct file *file, char __user *buffer,
- 	return count;
- }
- 
--#define READ_COND_SSREPORT (hidg->set_report_buf != NULL)
-+#define READ_COND_SSREPORT (hidg->set_report_buf != NULL || hidg->disabled)
- 
- static ssize_t f_hidg_ssreport_read(struct file *file, char __user *buffer,
- 				    size_t count, loff_t *ptr)
-@@ -1012,6 +1018,11 @@ static void hidg_disable(struct usb_function *f)
- 	}
- 	spin_unlock_irqrestore(&hidg->get_report_spinlock, flags);
- 
-+	spin_lock_irqsave(&hidg->read_spinlock, flags);
-+	hidg->disabled = true;
-+	spin_unlock_irqrestore(&hidg->read_spinlock, flags);
-+	wake_up(&hidg->read_queue);
++	/*
++	 * We can try to upgrade the mmap lock atomically,
++	 * in which case we can continue to use the vma
++	 * we already looked up.
++	 *
++	 * Otherwise we'll have to drop the mmap lock and
++	 * re-take it, and also look up the vma again,
++	 * re-checking it.
++	 */
++	if (!mmap_upgrade_trylock(mm)) {
++		if (!upgrade_mmap_lock_carefully(mm, is_user))
++			return NULL;
 +
- 	spin_lock_irqsave(&hidg->write_spinlock, flags);
- 	if (!hidg->write_pending) {
- 		free_ep_req(hidg->in_ep, hidg->req);
-@@ -1097,6 +1108,10 @@ static int hidg_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
- 		}
- 	}
- 
-+	spin_lock_irqsave(&hidg->read_spinlock, flags);
-+	hidg->disabled = false;
-+	spin_unlock_irqrestore(&hidg->read_spinlock, flags);
++		vma = find_vma(mm, addr);
++		if (!vma)
++			goto fail;
++		if (vma->vm_start <= addr)
++			goto success;
++		if (!(vma->vm_flags & VM_GROWSDOWN))
++			goto fail;
++	}
 +
- 	if (hidg->in_ep != NULL) {
- 		spin_lock_irqsave(&hidg->write_spinlock, flags);
- 		hidg->req = req_in;
++	if (expand_stack_locked(vma, addr))
++		goto fail;
++
++success:
++	mmap_write_downgrade(mm);
++	return vma;
++
++fail:
++	mmap_write_unlock(mm);
++	return NULL;
++}
++
+ /*
+  * Note this is constrained to return 0, -EFAULT, -EACCES, -ENOMEM by
+  * segv().
+@@ -43,21 +159,10 @@ int handle_page_fault(unsigned long address, unsigned long ip,
+ 	if (is_user)
+ 		flags |= FAULT_FLAG_USER;
+ retry:
+-	mmap_read_lock(mm);
+-	vma = find_vma(mm, address);
+-	if (!vma)
+-		goto out;
+-	if (vma->vm_start <= address)
+-		goto good_area;
+-	if (!(vma->vm_flags & VM_GROWSDOWN))
+-		goto out;
+-	if (is_user && !ARCH_IS_STACKGROW(address))
+-		goto out;
+-	vma = expand_stack(mm, address);
++	vma = um_lock_mm_and_find_vma(mm, address, is_user);
+ 	if (!vma)
+ 		goto out_nosemaphore;
+ 
+-good_area:
+ 	*code_out = SEGV_ACCERR;
+ 	if (is_write) {
+ 		if (!(vma->vm_flags & VM_WRITE))
 -- 
 2.39.5
 
