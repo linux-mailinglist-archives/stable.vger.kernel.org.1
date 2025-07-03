@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8899AF7815
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DCEAF79CA
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 681654E1036
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0800189449F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FC61DC98B;
-	Thu,  3 Jul 2025 14:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDC12EE993;
+	Thu,  3 Jul 2025 15:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVGqd+Tx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plAJX6ct"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDF82E62CD;
-	Thu,  3 Jul 2025 14:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F422D23A8;
+	Thu,  3 Jul 2025 15:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751553957; cv=none; b=K60rotmzWposdLEJ3gV9cx059lYgm/tsZYG2k3feNmI6vttdrOWdCbSNeVYKSByxBEO6296Hob0nNaPQYUG1Poyi1EpjAF28mLiT0qaGCAOZMU+xSeouzDW6lw1uR2m6ocrONREI1g1d3MypRCOfZJl0PTlQOZlFvKc77TzWJ/o=
+	t=1751554838; cv=none; b=JTLgWaYaoFO3OlUtUItXM0SyvvRHzgmad6kjGqJgp9c9viYfIcoBUMZNl9tMfeLOB2yuhJSlhIKaVuZhamzCoJcMVLUVgcsIfTvZrBYi/T2xst0PtdxeNL5mv9hw+/mVztjm61EKE+pDDAMIMesbctoPbaDaM7Y9pvuctjsPbyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751553957; c=relaxed/simple;
-	bh=p2qqZXXTGG/OFaf/nwmEWhn5IAKDbgaKe73sZcMl9jE=;
+	s=arc-20240116; t=1751554838; c=relaxed/simple;
+	bh=getv5wjWe5J1m00DQ2OKezrdaL1DCW1revHFu+yP3ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fto509DAt4mEIW4+C+0dAjSXkciEoKct6tVrW7HlP/z1tOh+C/vR0hQqH5+wx1O/Ip92TTrfJhH5I9YELUryFeMWle3lRc+0PBueqEt3wa8BxCmiRtBee5EkhCxMOKzSqaeHCXzo81/AoxSs53rkJ/7iaJBWEa6qbPQDajvFw4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVGqd+Tx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DF8C4CEE3;
-	Thu,  3 Jul 2025 14:45:56 +0000 (UTC)
+	 MIME-Version; b=hHRpH+f4Q0eYfilBZvgSSLHirhN0EXDkJw7ZH9tdOeo1QWc1gFPM3zxqSI3vVCTmpO/jhqfoDQPEMnzTAHXa5sT75/tGCc/6Hgb9eGxh7BESWCC3579IlWn8TUqu4poG7QxiqwNvrtzG1dJs4sVSMjr+dKNkS++vlFC1lK29hoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plAJX6ct; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC40CC4CEE3;
+	Thu,  3 Jul 2025 15:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751553957;
-	bh=p2qqZXXTGG/OFaf/nwmEWhn5IAKDbgaKe73sZcMl9jE=;
+	s=korg; t=1751554838;
+	bh=getv5wjWe5J1m00DQ2OKezrdaL1DCW1revHFu+yP3ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xVGqd+TxbwgIxVkQciglQFEUAtmycdqfaoV4GbxuyC2zrxJOG4k/t28XXk6jIkO0p
-	 7JyLZN+3cZ5ebx6EN6BMaK9uH3wxGVu2PjTlFypKS+//yh3FQOG24bQztDbPIAd7bZ
-	 UD3xjCoYFWkljsQTxhoVNwgtAjQXsw/39m12Y8uA=
+	b=plAJX6ct8GgoE6GO4BXI7ZL7yaiTq90ghc3Q2Mx7h2CLsSaTOmZvjeYNL1yojtv4g
+	 cXNdWQTY+w3NTi1AhRALAGh46u3nJccln8lEJNzb32bX04E23ZF1l376lL/1qg3V/h
+	 FPZrOmS1rx7nFJZPQI0KpjmvJDa4jHs+d63w2vfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rengarajan S <rengarajan.s@microchip.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 036/218] 8250: microchip: pci1xxxx: Add PCIe Hot reset disable support for Rev C0 and later devices
+Subject: [PATCH 6.15 064/263] usb: typec: tcpci: Fix wakeup source leaks on device unbind
 Date: Thu,  3 Jul 2025 16:39:44 +0200
-Message-ID: <20250703143957.393156603@linuxfoundation.org>
+Message-ID: <20250703144006.871702304@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rengarajan S <rengarajan.s@microchip.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit c40b91e38eb8d4489def095d62ab476d45871323 ]
+[ Upstream commit 9fc5986fbcd7e1e63afb04be94cd4e8a536a4b04 ]
 
-Systems that issue PCIe hot reset requests during a suspend/resume
-cycle cause PCI1XXXX device revisions prior to C0 to get its UART
-configuration registers reset to hardware default values. This results
-in device inaccessibility and data transfer failures. Starting with
-Revision C0, support was added in the device hardware (via the Hot
-Reset Disable Bit) to allow resetting only the PCIe interface and its
-associated logic, but preserving the UART configuration during a hot
-reset. This patch enables the hot reset disable feature during suspend/
-resume for C0 and later revisions of the device.
+Device can be unbound, so driver must also release memory for the wakeup
+source.
 
-Signed-off-by: Rengarajan S <rengarajan.s@microchip.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20250425145500.29036-1-rengarajan.s@microchip.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250406204051.63446-1-krzysztof.kozlowski@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_pci1xxxx.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/usb/typec/tcpm/tcpci_maxim_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_pci1xxxx.c b/drivers/tty/serial/8250/8250_pci1xxxx.c
-index f462b3d1c104c..d6b01e015a96b 100644
---- a/drivers/tty/serial/8250/8250_pci1xxxx.c
-+++ b/drivers/tty/serial/8250/8250_pci1xxxx.c
-@@ -115,6 +115,7 @@
+diff --git a/drivers/usb/typec/tcpm/tcpci_maxim_core.c b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
+index 648311f5e3cf1..b5a5ed40faea9 100644
+--- a/drivers/usb/typec/tcpm/tcpci_maxim_core.c
++++ b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
+@@ -537,7 +537,10 @@ static int max_tcpci_probe(struct i2c_client *client)
+ 		return dev_err_probe(&client->dev, ret,
+ 				     "IRQ initialization failed\n");
  
- #define UART_RESET_REG				0x94
- #define UART_RESET_D3_RESET_DISABLE		BIT(16)
-+#define UART_RESET_HOT_RESET_DISABLE		BIT(17)
- 
- #define UART_BURST_STATUS_REG			0x9C
- #define UART_TX_BURST_FIFO			0xA0
-@@ -620,6 +621,10 @@ static int pci1xxxx_suspend(struct device *dev)
- 	}
- 
- 	data = readl(p + UART_RESET_REG);
+-	device_init_wakeup(chip->dev, true);
++	ret = devm_device_init_wakeup(chip->dev);
++	if (ret)
++		return dev_err_probe(chip->dev, ret, "Failed to init wakeup\n");
 +
-+	if (priv->dev_rev >= 0xC0)
-+		data |= UART_RESET_HOT_RESET_DISABLE;
-+
- 	writel(data | UART_RESET_D3_RESET_DISABLE, p + UART_RESET_REG);
+ 	return 0;
+ }
  
- 	if (wakeup)
-@@ -647,7 +652,12 @@ static int pci1xxxx_resume(struct device *dev)
- 	}
- 
- 	data = readl(p + UART_RESET_REG);
-+
-+	if (priv->dev_rev >= 0xC0)
-+		data &= ~UART_RESET_HOT_RESET_DISABLE;
-+
- 	writel(data & ~UART_RESET_D3_RESET_DISABLE, p + UART_RESET_REG);
-+
- 	iounmap(p);
- 
- 	for (i = 0; i < priv->nr; i++) {
 -- 
 2.39.5
 
