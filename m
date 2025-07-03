@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-159866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA30AF7B24
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:22:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 689B3AF7BDE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88211188CB39
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A317B6E0262
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9692EF9BF;
-	Thu,  3 Jul 2025 15:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A232EF9DD;
+	Thu,  3 Jul 2025 15:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zn45tYjY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSQQ4qVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C3B2F2352;
-	Thu,  3 Jul 2025 15:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E5017FAC2;
+	Thu,  3 Jul 2025 15:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555601; cv=none; b=OejgfGCo5L6CgMc3B5if34CtmXkWZsHSkoo9SDjD689Z8B27Vsz+P9hMhGnAOiXbxiirKeSRn1ZXCC5fAjXklSmZB9DZIO1x0DcsYLMirk2f9sxGttsg/ODdB8XNMA8FgfX2e4VVK3vNhLxrfy3lBTrvYog7SKnu/VnRG4gnrgo=
+	t=1751555980; cv=none; b=SuxJnmql0uFy4j465qsK1ztcIkkFczZQx2EHND9nIBz3RycZPs0nvAJNI0dSa5wJwEl29G/hB1r6r0Co1jVG8nhuJV+FqasfQ4fBP9oIZcUgPQXY60II4we+9tH3f7J39fOl62O3MYfGrxoJyPHWh6zIMlyvBpAitWLHSO/MVGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555601; c=relaxed/simple;
-	bh=iYiYxbpneT0/Rh77Noan+ormlrz7fX8dtxMWp9RjSFI=;
+	s=arc-20240116; t=1751555980; c=relaxed/simple;
+	bh=iiOGRGYatcqoxJMlo1lzksMm6rY9ccIWdQfz9Ml9xBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QcwJiPmhAqNBkQyFUjEHmCmwxYmrm2xmxWVujkJ/TPJK16w0hLNr798WkRev7dSwKnR9rp9oSqJwqpWJ6hDpU/ZiRoG3S21eajwziMAS61wAvprfrmDiQzB3SMqh2r9y9c/+Pvfp+B/s7qYjnEvsR1bxA7Co7YK1OBmTwq5b59A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zn45tYjY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC17EC4CEE3;
-	Thu,  3 Jul 2025 15:13:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dcCcRfLveyxkQslr5P9anka+7ioG+zwsuKoAr2fZioWksEebku49Abeu/qv8zXsgtrbzKJFGC8yF4DEssnK/6Cce1cAJnGNr036qL8/q4Uya7I5B7EWEG01zW2v3MaT3jjaSKhuHUDMJajbwGgkO8O2Mjtbsq8ieKNwvx5R6faY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSQQ4qVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCFDC4CEEE;
+	Thu,  3 Jul 2025 15:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555601;
-	bh=iYiYxbpneT0/Rh77Noan+ormlrz7fX8dtxMWp9RjSFI=;
+	s=korg; t=1751555980;
+	bh=iiOGRGYatcqoxJMlo1lzksMm6rY9ccIWdQfz9Ml9xBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zn45tYjY/KutkWqmSJPDhhYBC1mbv44jIKjlde7KfYVBAxBI0z9A6iIrrCuRhxdg8
-	 o6oVo3hS0wzdH3Exvc/kY6lHgVvYd6vBVeHVbMdwed/5SOKr9jkaw5hlgHldl2BG+D
-	 ktCWLXFgSm5+M1gPRIl7DvFsM0A8MuXrdye/rTf0=
+	b=WSQQ4qVY/i3JnjzvxKbW1J93Mq0RqMyG1QwnxjYsULAjRUq8GQXodaQv7tFUmCouW
+	 hvxlhhg4zZ7lZ30njQ6oZjYhtL+l3Z5uRsNNrZ7oo9XHbFTbvG4dmk22/CoEiusDz5
+	 jfs97NbmaTAWwnQG3uB8G1jnZvmfQ/w0Vmsacm8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/139] platform/x86: ideapad-laptop: move ymc_trigger_ec from lenovo-ymc
-Date: Thu,  3 Jul 2025 16:42:06 +0200
-Message-ID: <20250703143943.631085780@linuxfoundation.org>
+Subject: [PATCH 6.1 038/132] Revert "drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1"
+Date: Thu,  3 Jul 2025 16:42:07 +0200
+Message-ID: <20250703143940.920964291@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,269 +68,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 
-[ Upstream commit cde7886b35176d56e72bfc68dc104fa08e7b072c ]
+[ Upstream commit ed5915cfce2abb9a553c3737badebd4a11d6c9c7 ]
 
-Some models need to trigger the EC after each YMC event for the yoga
-mode control to work properly. EC triggering consist of a VPC call from
-the lenovo-ymc module. Except for this, all VPC calls are in the
-ideapad-laptop module.
+This reverts commit d6e020819612a4a06207af858e0978be4d3e3140.
 
-Since ideapad-laptop has a notification chain, a new YMC_EVENT action
-can be added and triggered from the lenovo-ymc module. Then the
-ideapad-laptop can trigger the EC.
+The IS_DGFX check was put in place because error capture of buffer
+objects is expected to be broken on devices with VRAM.
 
-If the triggering is in the ideapad-laptop module, then the ec_trigger
-module parameter should be there as well.
+Userspace fix[1] to the impacted media driver has been submitted, merged
+and a new driver release is out as 25.2.3 where the capture flag is
+dropped on DG1 thus unblocking the usage of media driver on DG1.
 
-Move the ymc_trigger_ec functionality and the ec_trigger module
-parameter to the ideapad-laptop module.
+[1] https://github.com/intel/media-driver/commit/93c07d9b4b96a78bab21f6acd4eb863f4313ea4a
 
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/d980ab3ac32b5e554f456b0ff17279bfdbe2a203.1721898747.git.soyer@irl.hu
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Stable-dep-of: 5808c3421695 ("platform/x86: ideapad-laptop: use usleep_range() for EC polling")
+Cc: stable@vger.kernel.org # v6.0+
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/20250522064127.24293-1-joonas.lahtinen@linux.intel.com
+[Joonas: Update message to point out the merged userspace fix]
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+(cherry picked from commit d2dc30e0aa252830f908c8e793d3139d51321370)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/Kconfig          |  1 +
- drivers/platform/x86/ideapad-laptop.c | 49 ++++++++++++++++++++++
- drivers/platform/x86/ideapad-laptop.h |  4 ++
- drivers/platform/x86/lenovo-ymc.c     | 60 +--------------------------
- 4 files changed, 56 insertions(+), 58 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
-index 07eea525091b0..1fd57eb867662 100644
---- a/drivers/platform/x86/Kconfig
-+++ b/drivers/platform/x86/Kconfig
-@@ -466,6 +466,7 @@ config LENOVO_YMC
- 	tristate "Lenovo Yoga Tablet Mode Control"
- 	depends on ACPI_WMI
- 	depends on INPUT
-+	depends on IDEAPAD_LAPTOP
- 	select INPUT_SPARSEKMAP
- 	help
- 	  This driver maps the Tablet Mode Control switch to SW_TABLET_MODE input
-diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
-index e21b4dcfe1ddd..3d23c4f908426 100644
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -145,6 +145,7 @@ struct ideapad_private {
- 		bool touchpad_ctrl_via_ec : 1;
- 		bool ctrl_ps2_aux_port    : 1;
- 		bool usb_charging         : 1;
-+		bool ymc_ec_trigger       : 1;
- 	} features;
- 	struct {
- 		bool initialized;
-@@ -188,6 +189,12 @@ MODULE_PARM_DESC(touchpad_ctrl_via_ec,
- 	"Enable registering a 'touchpad' sysfs-attribute which can be used to manually "
- 	"tell the EC to enable/disable the touchpad. This may not work on all models.");
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+index 9424606710a10..0a123bb44c9fb 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+@@ -2001,7 +2001,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
+ 			continue;
  
-+static bool ymc_ec_trigger __read_mostly;
-+module_param(ymc_ec_trigger, bool, 0444);
-+MODULE_PARM_DESC(ymc_ec_trigger,
-+	"Enable EC triggering work-around to force emitting tablet mode events. "
-+	"If you need this please report this to: platform-driver-x86@vger.kernel.org");
-+
- /*
-  * shared data
-  */
-@@ -1501,10 +1508,50 @@ static void ideapad_sync_touchpad_state(struct ideapad_private *priv, bool send_
- 	priv->r_touchpad_val = value;
- }
+ 		if (i915_gem_context_is_recoverable(eb->gem_context) &&
+-		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
++		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
+ 			return -EINVAL;
  
-+static const struct dmi_system_id ymc_ec_trigger_quirk_dmi_table[] = {
-+	{
-+		/* Lenovo Yoga 7 14ARB7 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "82QF"),
-+		},
-+	},
-+	{
-+		/* Lenovo Yoga 7 14ACN6 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "82N7"),
-+		},
-+	},
-+	{ }
-+};
-+
-+static void ideapad_laptop_trigger_ec(void)
-+{
-+	struct ideapad_private *priv;
-+	int ret;
-+
-+	guard(mutex)(&ideapad_shared_mutex);
-+
-+	priv = ideapad_shared;
-+	if (!priv)
-+		return;
-+
-+	if (!priv->features.ymc_ec_trigger)
-+		return;
-+
-+	ret = write_ec_cmd(priv->adev->handle, VPCCMD_W_YMC, 1);
-+	if (ret)
-+		dev_warn(&priv->platform_device->dev, "Could not write YMC: %d\n", ret);
-+}
-+
- static int ideapad_laptop_nb_notify(struct notifier_block *nb,
- 				    unsigned long action, void *data)
- {
- 	switch (action) {
-+	case IDEAPAD_LAPTOP_YMC_EVENT:
-+		ideapad_laptop_trigger_ec();
-+		break;
- 	}
- 
- 	return 0;
-@@ -1670,6 +1717,8 @@ static void ideapad_check_features(struct ideapad_private *priv)
- 	priv->features.ctrl_ps2_aux_port =
- 		ctrl_ps2_aux_port || dmi_check_system(ctrl_ps2_aux_port_list);
- 	priv->features.touchpad_ctrl_via_ec = touchpad_ctrl_via_ec;
-+	priv->features.ymc_ec_trigger =
-+		ymc_ec_trigger || dmi_check_system(ymc_ec_trigger_quirk_dmi_table);
- 
- 	if (!read_ec_data(handle, VPCCMD_R_FAN, &val))
- 		priv->features.fan_mode = true;
-diff --git a/drivers/platform/x86/ideapad-laptop.h b/drivers/platform/x86/ideapad-laptop.h
-index 3eb0dcd6bf7ba..948cc61800a95 100644
---- a/drivers/platform/x86/ideapad-laptop.h
-+++ b/drivers/platform/x86/ideapad-laptop.h
-@@ -14,6 +14,10 @@
- #include <linux/errno.h>
- #include <linux/notifier.h>
- 
-+enum ideapad_laptop_notifier_actions {
-+	IDEAPAD_LAPTOP_YMC_EVENT,
-+};
-+
- int ideapad_laptop_register_notifier(struct notifier_block *nb);
- int ideapad_laptop_unregister_notifier(struct notifier_block *nb);
- void ideapad_laptop_call_notifier(unsigned long action, void *data);
-diff --git a/drivers/platform/x86/lenovo-ymc.c b/drivers/platform/x86/lenovo-ymc.c
-index ef2c267ab485c..bd9f95404c7cb 100644
---- a/drivers/platform/x86/lenovo-ymc.c
-+++ b/drivers/platform/x86/lenovo-ymc.c
-@@ -20,32 +20,10 @@
- #define LENOVO_YMC_QUERY_INSTANCE 0
- #define LENOVO_YMC_QUERY_METHOD 0x01
- 
--static bool ec_trigger __read_mostly;
--module_param(ec_trigger, bool, 0444);
--MODULE_PARM_DESC(ec_trigger, "Enable EC triggering work-around to force emitting tablet mode events");
--
- static bool force;
- module_param(force, bool, 0444);
- MODULE_PARM_DESC(force, "Force loading on boards without a convertible DMI chassis-type");
- 
--static const struct dmi_system_id ec_trigger_quirk_dmi_table[] = {
--	{
--		/* Lenovo Yoga 7 14ARB7 */
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "82QF"),
--		},
--	},
--	{
--		/* Lenovo Yoga 7 14ACN6 */
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "82N7"),
--		},
--	},
--	{ }
--};
--
- static const struct dmi_system_id allowed_chasis_types_dmi_table[] = {
- 	{
- 		.matches = {
-@@ -62,21 +40,8 @@ static const struct dmi_system_id allowed_chasis_types_dmi_table[] = {
- 
- struct lenovo_ymc_private {
- 	struct input_dev *input_dev;
--	struct acpi_device *ec_acpi_dev;
- };
- 
--static void lenovo_ymc_trigger_ec(struct wmi_device *wdev, struct lenovo_ymc_private *priv)
--{
--	int err;
--
--	if (!priv->ec_acpi_dev)
--		return;
--
--	err = write_ec_cmd(priv->ec_acpi_dev->handle, VPCCMD_W_YMC, 1);
--	if (err)
--		dev_warn(&wdev->dev, "Could not write YMC: %d\n", err);
--}
--
- static const struct key_entry lenovo_ymc_keymap[] = {
- 	/* Ignore the uninitialized state */
- 	{ KE_IGNORE, 0x00 },
-@@ -127,11 +92,9 @@ static void lenovo_ymc_notify(struct wmi_device *wdev, union acpi_object *data)
- 
- free_obj:
- 	kfree(obj);
--	lenovo_ymc_trigger_ec(wdev, priv);
-+	ideapad_laptop_call_notifier(IDEAPAD_LAPTOP_YMC_EVENT, &code);
- }
- 
--static void acpi_dev_put_helper(void *p) { acpi_dev_put(p); }
--
- static int lenovo_ymc_probe(struct wmi_device *wdev, const void *ctx)
- {
- 	struct lenovo_ymc_private *priv;
-@@ -145,29 +108,10 @@ static int lenovo_ymc_probe(struct wmi_device *wdev, const void *ctx)
- 			return -ENODEV;
- 	}
- 
--	ec_trigger |= dmi_check_system(ec_trigger_quirk_dmi_table);
--
- 	priv = devm_kzalloc(&wdev->dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
- 
--	if (ec_trigger) {
--		pr_debug("Lenovo YMC enable EC triggering.\n");
--		priv->ec_acpi_dev = acpi_dev_get_first_match_dev("VPC2004", NULL, -1);
--
--		if (!priv->ec_acpi_dev) {
--			dev_err(&wdev->dev, "Could not find EC ACPI device.\n");
--			return -ENODEV;
--		}
--		err = devm_add_action_or_reset(&wdev->dev,
--				acpi_dev_put_helper, priv->ec_acpi_dev);
--		if (err) {
--			dev_err(&wdev->dev,
--				"Could not clean up EC ACPI device: %d\n", err);
--			return err;
--		}
--	}
--
- 	input_dev = devm_input_allocate_device(&wdev->dev);
- 	if (!input_dev)
- 		return -ENOMEM;
-@@ -194,7 +138,6 @@ static int lenovo_ymc_probe(struct wmi_device *wdev, const void *ctx)
- 	dev_set_drvdata(&wdev->dev, priv);
- 
- 	/* Report the state for the first time on probe */
--	lenovo_ymc_trigger_ec(wdev, priv);
- 	lenovo_ymc_notify(wdev, NULL);
- 	return 0;
- }
-@@ -219,3 +162,4 @@ module_wmi_driver(lenovo_ymc_driver);
- MODULE_AUTHOR("Gergo Koteles <soyer@irl.hu>");
- MODULE_DESCRIPTION("Lenovo Yoga Mode Control driver");
- MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(IDEAPAD_LAPTOP);
+ 		for_each_batch_create_order(eb, j) {
 -- 
 2.39.5
 
