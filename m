@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-159757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34917AF7A37
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C182AF7B12
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9FCE560835
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E608A5A04A1
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119132E7197;
-	Thu,  3 Jul 2025 15:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD6A2F2362;
+	Thu,  3 Jul 2025 15:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJEreTEp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w32T5q4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50EC15442C;
-	Thu,  3 Jul 2025 15:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079852F235E;
+	Thu,  3 Jul 2025 15:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555244; cv=none; b=pc4U4R7AUc4i0WnKy3kcabYfV/jh+OwHfa/4UAnIwDrqd2u6VO2P1J0I6U91sy9p9ECTkVwzhfGgMTr9+FNuCpdmRQILkj2eGjxkkA6lQxalLNYXRoKy7jGzypb/obrFopTM9CUQCypKn+pNdyN9/T2gLCpnQIaX3MHo95LI9wg=
+	t=1751555639; cv=none; b=hcegztRgdoDh1m92Q1okZO1UTLmIWAi2Jd93b8BNxyq20NfSOE1+NrJ254lGrEh2ifdVGCinGVWelTm9VrsGjQDhlslFoY7/kutCgwDuqkkzdUUbE9VRdp0qHCbzU7J+xb+9E2a0KnQOY6hpSzSXuXNX/canEeRu07AfJ9M6COw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555244; c=relaxed/simple;
-	bh=PB3Tg3zJ7mI4LAPel6VpQ80jZLrExtRIEyeW6Czi3XA=;
+	s=arc-20240116; t=1751555639; c=relaxed/simple;
+	bh=raF2Q6BfDGIlraJEgMgRPRV25WDmD0u7VVkdblm92xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q94eiNMPtrecDWkx/SbbLKBIriQUaPJiAJqoOjhWkpoKxhmB+pdZIRmElsTVFUKo9R3xVpluc/s05dACh0H33YZWzNgUF6BEqU/gNwWdHKZbnQabop3hlwI8+u6UvU6zjtvD+cOeLLW+lyDI3Ez1sL0owUGuywdcAibFLGB3qMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJEreTEp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADAAC4CEE3;
-	Thu,  3 Jul 2025 15:07:24 +0000 (UTC)
+	 MIME-Version; b=uPppWdC+2dg9yS/KpbN9EU12qjfevydv3o3ThDLS19QPKucqdDt61tm9hwGajxGc0I/CC6KI6DMSrjmVcMGhyQgRyPNPBRlWRfAWod6Em6dDqZElmll21xHvXG62A+8G1TY9+gHbYpbw3d10FDeoWWN4lGHfBJlfHhDzESZPrgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w32T5q4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF24C4CEEE;
+	Thu,  3 Jul 2025 15:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555244;
-	bh=PB3Tg3zJ7mI4LAPel6VpQ80jZLrExtRIEyeW6Czi3XA=;
+	s=korg; t=1751555638;
+	bh=raF2Q6BfDGIlraJEgMgRPRV25WDmD0u7VVkdblm92xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TJEreTEpj5FokDiWJ0jZY35Psx2qBbC1W+qsgOdbv6mHke/H4a82O+bHosULrjBUv
-	 RcD7L+x5CMjaxEMLUUp2zNTPIk2UQc1mePaAGIrgCgFi5HHC3YFANNrKttXu9Jyr0C
-	 9TLvsEWmb9Wsmu1Q2d5lZaFVUDGB515pc4BTqsgs=
+	b=w32T5q4HLQmdOnhVslP9Gm7utGgWcWK/bJUYPhMDjP7LWmdMjo6YSn0OGKBo5NGfC
+	 L+kXwFeh04oBBJBdiX/bR4mVEbuEsat85B2lIw0QLZTEtfHqUyVfPlC0obvsnInXdw
+	 IDJEj/QqSDe/ReqfuQBzsCzldndGCyI3issNJnN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.15 219/263] drm/amd/display: Add null pointer check for get_first_active_display()
+	Yu Kuai <yukuai3@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	ErKun Yang <yangerkun@huawei.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	"zhangyi (F)" <yi.zhang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 076/139] lib/group_cpus: fix NULL pointer dereference from group_cpus_evenly()
 Date: Thu,  3 Jul 2025 16:42:19 +0200
-Message-ID: <20250703144013.165073261@linuxfoundation.org>
+Message-ID: <20250703143944.139816089@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +67,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit c3e9826a22027a21d998d3e64882fa377b613006 upstream.
+commit df831e97739405ecbaddb85516bc7d4d1c933d6b upstream.
 
-The function mod_hdcp_hdcp1_enable_encryption() calls the function
-get_first_active_display(), but does not check its return value.
-The return value is a null pointer if the display list is empty.
-This will lead to a null pointer dereference in
-mod_hdcp_hdcp2_enable_encryption().
+While testing null_blk with configfs, echo 0 > poll_queues will trigger
+following panic:
 
-Add a null pointer check for get_first_active_display() and return
-MOD_HDCP_STATUS_DISPLAY_NOT_FOUND if the function return null.
+BUG: kernel NULL pointer dereference, address: 0000000000000010
+Oops: Oops: 0000 [#1] SMP NOPTI
+CPU: 27 UID: 0 PID: 920 Comm: bash Not tainted 6.15.0-02023-gadbdb95c8696-dirty #1238 PREEMPT(undef)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
+RIP: 0010:__bitmap_or+0x48/0x70
+Call Trace:
+ <TASK>
+ __group_cpus_evenly+0x822/0x8c0
+ group_cpus_evenly+0x2d9/0x490
+ blk_mq_map_queues+0x1e/0x110
+ null_map_queues+0xc9/0x170 [null_blk]
+ blk_mq_update_queue_map+0xdb/0x160
+ blk_mq_update_nr_hw_queues+0x22b/0x560
+ nullb_update_nr_hw_queues+0x71/0xf0 [null_blk]
+ nullb_device_poll_queues_store+0xa4/0x130 [null_blk]
+ configfs_write_iter+0x109/0x1d0
+ vfs_write+0x26e/0x6f0
+ ksys_write+0x79/0x180
+ __x64_sys_write+0x1d/0x30
+ x64_sys_call+0x45c4/0x45f0
+ do_syscall_64+0xa5/0x240
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: 2deade5ede56 ("drm/amd/display: Remove hdcp display state with mst fix")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # v5.8
+Root cause is that numgrps is set to 0, and ZERO_SIZE_PTR is returned from
+kcalloc(), and later ZERO_SIZE_PTR will be deferenced.
+
+Fix the problem by checking numgrps first in group_cpus_evenly(), and
+return NULL directly if numgrps is zero.
+
+[yukuai3@huawei.com: also fix the non-SMP version]
+  Link: https://lkml.kernel.org/r/20250620010958.1265984-1-yukuai1@huaweicloud.com
+Link: https://lkml.kernel.org/r/20250619132655.3318883-1-yukuai1@huaweicloud.com
+Fixes: 6a6dcae8f486 ("blk-mq: Build default queue map via group_cpus_evenly()")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Cc: ErKun Yang <yangerkun@huawei.com>
+Cc: John Garry <john.g.garry@oracle.com>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: "zhangyi (F)" <yi.zhang@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c |    3 +++
- 1 file changed, 3 insertions(+)
+ lib/group_cpus.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-@@ -368,6 +368,9 @@ enum mod_hdcp_status mod_hdcp_hdcp1_enab
- 	struct mod_hdcp_display *display = get_first_active_display(hdcp);
- 	enum mod_hdcp_status status = MOD_HDCP_STATUS_SUCCESS;
+diff --git a/lib/group_cpus.c b/lib/group_cpus.c
+index ee272c4cefcc..18d43a406114 100644
+--- a/lib/group_cpus.c
++++ b/lib/group_cpus.c
+@@ -352,6 +352,9 @@ struct cpumask *group_cpus_evenly(unsigned int numgrps)
+ 	int ret = -ENOMEM;
+ 	struct cpumask *masks = NULL;
  
-+	if (!display)
-+		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
++	if (numgrps == 0)
++		return NULL;
 +
- 	mutex_lock(&psp->hdcp_context.mutex);
- 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
- 	memset(hdcp_cmd, 0, sizeof(struct ta_hdcp_shared_memory));
+ 	if (!zalloc_cpumask_var(&nmsk, GFP_KERNEL))
+ 		return NULL;
+ 
+@@ -426,8 +429,12 @@ struct cpumask *group_cpus_evenly(unsigned int numgrps)
+ #else /* CONFIG_SMP */
+ struct cpumask *group_cpus_evenly(unsigned int numgrps)
+ {
+-	struct cpumask *masks = kcalloc(numgrps, sizeof(*masks), GFP_KERNEL);
++	struct cpumask *masks;
+ 
++	if (numgrps == 0)
++		return NULL;
++
++	masks = kcalloc(numgrps, sizeof(*masks), GFP_KERNEL);
+ 	if (!masks)
+ 		return NULL;
+ 
+-- 
+2.50.0
+
 
 
 
