@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-159726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457E4AF7A15
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:09:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB3A9AF7AC2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDDED179E41
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18D7F6E1983
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856D32ED871;
-	Thu,  3 Jul 2025 15:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E912F0022;
+	Thu,  3 Jul 2025 15:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9jfOi/Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YN3+5WP8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420A52ED143;
-	Thu,  3 Jul 2025 15:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1462EFDB0;
+	Thu,  3 Jul 2025 15:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555146; cv=none; b=PaFDpsWrue1r85XRhELoRVxCmFkq6IuP1Qcb7cFR0HuUHqxGqBgoqzmNzOTZfJHjZgj6SHRgOB5FUWYam/1X30Gocqv30WnxzAbwcWaScGBApJ/elNZ4fBHdlfjYe+6fTPz044ADuuqGg1I1XYsJpDjTimkgN56lYtfLwonvpHc=
+	t=1751555447; cv=none; b=NdYxp5T8UQm3ZEqiG5grsXomDzDAyC/mh7V7UJKMC2WMkmpluN7aaHMNN5SEFqWoGmao/xKWvhfLmNmjOKE647SqG5GlpDG3iyrCFe10DbNMYl/skhFszR8yGtimzjJuKn9ztCOURckPcvkHo0NRP+p2zBMcAbp+C61otcVR30s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555146; c=relaxed/simple;
-	bh=kU1I7uJs761zqxDX2P+sXWh6j5XVB7EwSrsWHahGzt0=;
+	s=arc-20240116; t=1751555447; c=relaxed/simple;
+	bh=hnEVQTXQYV8xxmb2STIZER7B1XopycvTJLc9Wak3N7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SzYVYpEkza7qOjirun41Bc/b80pTsCsJCqFECmBeHZaYqmcVvj3emxAWBPXRAuSEXryNFsgJeyMekXMoNGkxo6XnHNkXDJeDyy4g39mPXeOdHQQ4uXyK84kaXU8T4TewtPbPhd/pbIhuUyQUqalMFXqQsJTqtjovf2wvLsiiddw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9jfOi/Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F07C4CEE3;
-	Thu,  3 Jul 2025 15:05:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hj5MO+502uleUy7qGwbvZfjfD0EZjr/9wzYUKc0atzWRHu37nkB9vF1PB3qoGz3D8EV3kK01MH4T2tUqThqmlHXsT+1rUHnS5chvRMpakCjfJ/jtk9OxQTVaKas52n5eHQpe2tqEvTyu42kCl65K0cuOpk5XnKpH/Pam+siVj80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YN3+5WP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74BDC4CEE3;
+	Thu,  3 Jul 2025 15:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555146;
-	bh=kU1I7uJs761zqxDX2P+sXWh6j5XVB7EwSrsWHahGzt0=;
+	s=korg; t=1751555447;
+	bh=hnEVQTXQYV8xxmb2STIZER7B1XopycvTJLc9Wak3N7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9jfOi/ZatOdL4qj15rBqHoDxm2HuMDBJ8qYqgyfexd/cNxbWx1gNZ5tVoZhNykLs
-	 FMHycBD8rGgyHSUDjN75RiPbPLlG2VVCa19KMDobXHIkvZ+WzM+r79Mkiuv2BCiIwM
-	 5NmLRp1uB2+ktjhfP6nT8hl3xrq3cHK48LTjZRRk=
+	b=YN3+5WP8jCBb4Kp93QRPdVePQRfftOWgDUJo/biS7nbWEZ7Hktq0NRag/H75KSLYA
+	 ByvuGrgLjXg27qZtGPl+0OA5VVLMUkxa2+KOViczTTQQ5TopQCWIXI/ENRHR04HDE6
+	 3XyaKhlzv2IT926sUKH7/kN3bwI4SXQ4/RmUzbVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 160/263] nvme: refactor the atomic write unit detection
+Subject: [PATCH 6.6 017/139] Revert "iommu/amd: Prevent binding other PCI drivers to IOMMU PCI devices"
 Date: Thu,  3 Jul 2025 16:41:20 +0200
-Message-ID: <20250703144010.777447980@linuxfoundation.org>
+Message-ID: <20250703143941.850863107@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,127 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit b2e607fecac15e07f50269c080e2e71b5049dfa2 ]
+[ Upstream commit 3be5fa236649da6404f1bca1491bf02d4b0d5cce ]
 
-Move all the code out of nvme_update_disk_info into the helper, and
-rename the helper to have a somewhat less clumsy name.
+Commit 991de2e59090 ("PCI, x86: Implement pcibios_alloc_irq() and
+pcibios_free_irq()") changed IRQ handling on PCI driver probing.
+It inadvertently broke resume from system sleep on AMD platforms:
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Stable-dep-of: f46d273449ba ("nvme: fix atomic write size validation")
+  https://lore.kernel.org/r/20150926164651.GA3640@pd.tnic/
+
+This was fixed by two independent commits:
+
+* 8affb487d4a4 ("x86/PCI: Don't alloc pcibios-irq when MSI is enabled")
+* cbbc00be2ce3 ("iommu/amd: Prevent binding other PCI drivers to IOMMU PCI devices")
+
+The breaking change and one of these two fixes were subsequently reverted:
+
+* fe25d078874f ("Revert "x86/PCI: Don't alloc pcibios-irq when MSI is enabled"")
+* 6c777e8799a9 ("Revert "PCI, x86: Implement pcibios_alloc_irq() and pcibios_free_irq()"")
+
+This rendered the second fix unnecessary, so revert it as well.  It used
+the match_driver flag in struct pci_dev, which is internal to the PCI core
+and not supposed to be touched by arbitrary drivers.
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Acked-by: Joerg Roedel <jroedel@suse.de>
+Link: https://patch.msgid.link/9a3ddff5cc49512044f963ba0904347bd404094d.1745572340.git.lukas@wunner.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 72 +++++++++++++++++++++-------------------
- 1 file changed, 38 insertions(+), 34 deletions(-)
+ drivers/iommu/amd/init.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 93a8119ad5ca6..1c853c5b8169b 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -1996,21 +1996,51 @@ static void nvme_configure_metadata(struct nvme_ctrl *ctrl,
- }
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index 2e7a12f306510..7296e02e2b849 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -2090,9 +2090,6 @@ static int __init iommu_init_pci(struct amd_iommu *iommu)
+ 	if (!iommu->dev)
+ 		return -ENODEV;
  
- 
--static void nvme_update_atomic_write_disk_info(struct nvme_ns *ns,
--			struct nvme_id_ns *id, struct queue_limits *lim,
--			u32 bs, u32 atomic_bs)
-+static u32 nvme_configure_atomic_write(struct nvme_ns *ns,
-+		struct nvme_id_ns *id, struct queue_limits *lim, u32 bs)
- {
--	unsigned int boundary = 0;
-+	u32 atomic_bs, boundary = 0;
- 
--	if (id->nsfeat & NVME_NS_FEAT_ATOMICS && id->nawupf) {
--		if (le16_to_cpu(id->nabspf))
-+	/*
-+	 * We do not support an offset for the atomic boundaries.
-+	 */
-+	if (id->nabo)
-+		return bs;
-+
-+	if ((id->nsfeat & NVME_NS_FEAT_ATOMICS) && id->nawupf) {
-+		/*
-+		 * Use the per-namespace atomic write unit when available.
-+		 */
-+		atomic_bs = (1 + le16_to_cpu(id->nawupf)) * bs;
-+		if (id->nabspf)
- 			boundary = (le16_to_cpu(id->nabspf) + 1) * bs;
-+	} else {
-+		/*
-+		 * Use the controller wide atomic write unit.  This sucks
-+		 * because the limit is defined in terms of logical blocks while
-+		 * namespaces can have different formats, and because there is
-+		 * no clear language in the specification prohibiting different
-+		 * values for different controllers in the subsystem.
-+		 */
-+		atomic_bs = (1 + ns->ctrl->awupf) * bs;
-+	}
-+
-+	if (!ns->ctrl->subsys->atomic_bs) {
-+		ns->ctrl->subsys->atomic_bs = atomic_bs;
-+	} else if (ns->ctrl->subsys->atomic_bs != atomic_bs) {
-+		dev_err_ratelimited(ns->ctrl->device,
-+			"%s: Inconsistent Atomic Write Size, Namespace will not be added: Subsystem=%d bytes, Controller/Namespace=%d bytes\n",
-+			ns->disk ? ns->disk->disk_name : "?",
-+			ns->ctrl->subsys->atomic_bs,
-+			atomic_bs);
- 	}
-+
- 	lim->atomic_write_hw_max = atomic_bs;
- 	lim->atomic_write_hw_boundary = boundary;
- 	lim->atomic_write_hw_unit_min = bs;
- 	lim->atomic_write_hw_unit_max = rounddown_pow_of_two(atomic_bs);
- 	lim->features |= BLK_FEAT_ATOMIC_WRITES;
-+	return atomic_bs;
- }
- 
- static u32 nvme_max_drv_segments(struct nvme_ctrl *ctrl)
-@@ -2048,34 +2078,8 @@ static bool nvme_update_disk_info(struct nvme_ns *ns, struct nvme_id_ns *id,
- 		valid = false;
- 	}
- 
--	atomic_bs = phys_bs = bs;
--	if (id->nabo == 0) {
--		/*
--		 * Bit 1 indicates whether NAWUPF is defined for this namespace
--		 * and whether it should be used instead of AWUPF. If NAWUPF ==
--		 * 0 then AWUPF must be used instead.
--		 */
--		if (id->nsfeat & NVME_NS_FEAT_ATOMICS && id->nawupf)
--			atomic_bs = (1 + le16_to_cpu(id->nawupf)) * bs;
--		else
--			atomic_bs = (1 + ns->ctrl->awupf) * bs;
+-	/* Prevent binding other PCI device drivers to IOMMU devices */
+-	iommu->dev->match_driver = false;
 -
--		/*
--		 * Set subsystem atomic bs.
--		 */
--		if (ns->ctrl->subsys->atomic_bs) {
--			if (atomic_bs != ns->ctrl->subsys->atomic_bs) {
--				dev_err_ratelimited(ns->ctrl->device,
--					"%s: Inconsistent Atomic Write Size, Namespace will not be added: Subsystem=%d bytes, Controller/Namespace=%d bytes\n",
--					ns->disk ? ns->disk->disk_name : "?",
--					ns->ctrl->subsys->atomic_bs,
--					atomic_bs);
--			}
--		} else
--			ns->ctrl->subsys->atomic_bs = atomic_bs;
--
--		nvme_update_atomic_write_disk_info(ns, id, lim, bs, atomic_bs);
--	}
-+	phys_bs = bs;
-+	atomic_bs = nvme_configure_atomic_write(ns, id, lim, bs);
+ 	/* ACPI _PRT won't have an IRQ for IOMMU */
+ 	iommu->dev->irq_managed = 1;
  
- 	if (id->nsfeat & NVME_NS_FEAT_IO_OPT) {
- 		/* NPWG = Namespace Preferred Write Granularity */
 -- 
 2.39.5
 
