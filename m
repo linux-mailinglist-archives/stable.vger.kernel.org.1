@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-159730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC7AAF7A17
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:09:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C0AAF7AC4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E9F64A8209
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 015C46E1BA5
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC1B2ED168;
-	Thu,  3 Jul 2025 15:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19F72F002A;
+	Thu,  3 Jul 2025 15:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEN37Uzs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovvgWdCT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE6E101DE;
-	Thu,  3 Jul 2025 15:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1C52EE5F3;
+	Thu,  3 Jul 2025 15:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555159; cv=none; b=pBqvSe2J5slHFXtmJFm8M1zb/Rg22/HTkCABMzu027k8/m3Fmrf37jN34Z45HQNwn2SsaVJ7c8lPMHzARoU5JjhkXN6zqkZGsLFzmBg3E0ynNFlWQWCEFn/fVSPsUNxF32IgJwaEq8GIk0wFBLKk4pwi/Jm5RGVr0RDAP8UfDbQ=
+	t=1751555463; cv=none; b=OtfTtG108/5JZCSCeGS5rl7K15ojN/OiKYKa/2+XL1E7nbNK9gbhU6yQW9X63pcmfcAczKjvJDnnn7pAF6UyzaEfj5zCByXuH4ng0Rbaga676A1+d+QXhe//+NL7RG854Sfzim6D4ttHinPmtliM4G4ZBi5fRpTuH0nCvlk2cuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555159; c=relaxed/simple;
-	bh=fYYU+VNm/EEfwoYLsVdP3K25ubPQANkDix70YT1FEcw=;
+	s=arc-20240116; t=1751555463; c=relaxed/simple;
+	bh=Kwil/olzvlZexSM1/5MxbMVPeBCE9hPQWxZA+vzi/OI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQfJiVoId/O5S2Ni8dI30OVu0riI6AUeUNqLzFPXxJ27Aw2VhtmIzX9wrLkec+cxEllSfS7S12PBbH+w6DPneHOBRQJZGBQJE10GhLJrii49zy2LhTOdTc4mceOoGMlwP3lxFXtSf/lCWSIZE0YqMzjFXMRnJzghA7hxeckimYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEN37Uzs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 910F4C4CEE3;
-	Thu,  3 Jul 2025 15:05:58 +0000 (UTC)
+	 MIME-Version; b=mssPA1jkqKvLwLfPaDxS6P/KefKzDmFQD0OWtGL2mJd9gZmZU3Y+zxCon8VSBwSS54rFE0fthDcJR8x4VZeFgy0bhoi71Ctmaox3MPCxiPLPlWt5ws3lhpwb3GhjK37+TA+OIkAUr845GFgUlXds+u5f319JScxJNcCE5gn5u4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovvgWdCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF71C4CEE3;
+	Thu,  3 Jul 2025 15:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555159;
-	bh=fYYU+VNm/EEfwoYLsVdP3K25ubPQANkDix70YT1FEcw=;
+	s=korg; t=1751555463;
+	bh=Kwil/olzvlZexSM1/5MxbMVPeBCE9hPQWxZA+vzi/OI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dEN37Uzs3CYurhP8C9m+lG1XBJISt0lKCAyTLRmudRuo2lNFJ129B+56BsJR50iIn
-	 g6dB3gm1roFX3loKQW5ywWbwk1l+bH/aqPwcTCx1MJ1OrKsaBoP6bTF/LvJlvb+7+J
-	 VcAMYZ5pA8OOeNYOclEhRxeWF9+oFmkv4HgbFI+0=
+	b=ovvgWdCTzr1jZrM4/0ijcJPwh67wDmT39lqrBiPeQrwO7xNFKM6TaIMq0m8w1o2+R
+	 GkbO+0ZP3BvPxF9VnjgH8VbWk2XVZcpFUXWcopiHmGkr3jLn9erI6uOZL0yFTmeQq2
+	 H9S8evDTi0sbZDUDFEj9E8mx/thYvanBLX3DlZDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Marcus Seyfarth <m.seyfarth@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Hector Martin <marcan@marcan.st>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Marc Zyngier <maz@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Janne Grunau <j@jannau.net>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 164/263] drm/amd: Adjust output for discovery error handling
+Subject: [PATCH 6.6 021/139] PCI: apple: Fix missing OF node reference in apple_pcie_setup_port
 Date: Thu,  3 Jul 2025 16:41:24 +0200
-Message-ID: <20250703144010.938320683@linuxfoundation.org>
+Message-ID: <20250703143942.011504084@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +66,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 73eab78721f7b85216f1ca8c7b732f13213b5b32 ]
+[ Upstream commit 7fa9fbf39116b061f8a41cd84f1884c545f322c4 ]
 
-commit 017fbb6690c2 ("drm/amdgpu/discovery: check ip_discovery fw file
-available") added support for reading an amdgpu IP discovery bin file
-for some specific products. If it's not found then it will fallback to
-hardcoded values. However if it's not found there is also a lot of noise
-about missing files and errors.
+In the success path, we hang onto a reference to the node, so make sure
+to grab one. The caller iterator puts our borrowed reference when we
+return.
 
-Adjust the error handling to decrease most messages to DEBUG and to show
-users less about missing files.
-
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4312
-Tested-by: Marcus Seyfarth <m.seyfarth@gmail.com>
-Fixes: 017fbb6690c2 ("drm/amdgpu/discovery: check ip_discovery fw file available")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20250617183052.1692059-1-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 49f1f9f6c3c9febf8ba93f94a8d9c8d03e1ea0a1)
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Tested-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Acked-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Link: https://patch.msgid.link/20250401091713.2765724-9-maz@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 28 +++++++++----------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ drivers/pci/controller/pcie-apple.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-index 9e738fae2b74f..6d34eac0539d4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -311,10 +311,12 @@ static int amdgpu_discovery_read_binary_from_file(struct amdgpu_device *adev,
- 	const struct firmware *fw;
- 	int r;
+diff --git a/drivers/pci/controller/pcie-apple.c b/drivers/pci/controller/pcie-apple.c
+index 7e6bd63a6425e..08b7070f05d82 100644
+--- a/drivers/pci/controller/pcie-apple.c
++++ b/drivers/pci/controller/pcie-apple.c
+@@ -585,6 +585,9 @@ static int apple_pcie_setup_port(struct apple_pcie *pcie,
+ 	list_add_tail(&port->entry, &pcie->ports);
+ 	init_completion(&pcie->event);
  
--	r = request_firmware(&fw, fw_name, adev->dev);
-+	r = firmware_request_nowarn(&fw, fw_name, adev->dev);
- 	if (r) {
--		dev_err(adev->dev, "can't load firmware \"%s\"\n",
--			fw_name);
-+		if (amdgpu_discovery == 2)
-+			dev_err(adev->dev, "can't load firmware \"%s\"\n", fw_name);
-+		else
-+			drm_info(&adev->ddev, "Optional firmware \"%s\" was not found\n", fw_name);
- 		return r;
- 	}
++	/* In the success path, we keep a reference to np around */
++	of_node_get(np);
++
+ 	ret = apple_pcie_port_register_irqs(port);
+ 	WARN_ON(ret);
  
-@@ -449,16 +451,12 @@ static int amdgpu_discovery_init(struct amdgpu_device *adev)
- 	/* Read from file if it is the preferred option */
- 	fw_name = amdgpu_discovery_get_fw_name(adev);
- 	if (fw_name != NULL) {
--		dev_info(adev->dev, "use ip discovery information from file");
-+		drm_dbg(&adev->ddev, "use ip discovery information from file");
- 		r = amdgpu_discovery_read_binary_from_file(adev, adev->mman.discovery_bin, fw_name);
--
--		if (r) {
--			dev_err(adev->dev, "failed to read ip discovery binary from file\n");
--			r = -EINVAL;
-+		if (r)
- 			goto out;
--		}
--
- 	} else {
-+		drm_dbg(&adev->ddev, "use ip discovery information from memory");
- 		r = amdgpu_discovery_read_binary_from_mem(
- 			adev, adev->mman.discovery_bin);
- 		if (r)
-@@ -1328,10 +1326,8 @@ static int amdgpu_discovery_reg_base_init(struct amdgpu_device *adev)
- 	int r;
- 
- 	r = amdgpu_discovery_init(adev);
--	if (r) {
--		DRM_ERROR("amdgpu_discovery_init failed\n");
-+	if (r)
- 		return r;
--	}
- 
- 	wafl_ver = 0;
- 	adev->gfx.xcc_mask = 0;
-@@ -2569,8 +2565,10 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
- 		break;
- 	default:
- 		r = amdgpu_discovery_reg_base_init(adev);
--		if (r)
--			return -EINVAL;
-+		if (r) {
-+			drm_err(&adev->ddev, "discovery failed: %d\n", r);
-+			return r;
-+		}
- 
- 		amdgpu_discovery_harvest_ip(adev);
- 		amdgpu_discovery_get_gfx_info(adev);
 -- 
 2.39.5
 
