@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682E6AF7814
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93145AF7999
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E5154E0CDB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 287C3565642
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD602D948F;
-	Thu,  3 Jul 2025 14:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA162EE98F;
+	Thu,  3 Jul 2025 15:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VeoAAdAP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMd/yivZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249472EBBAA;
-	Thu,  3 Jul 2025 14:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B062EE97A;
+	Thu,  3 Jul 2025 15:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751553954; cv=none; b=dWBw7TE1ZwDLwPtxVPVMph7O7kkktbANN+U7XlilClf9RQ7kwujl4LxRd5tNYAGBuf3k52SpLwV+UUYpeMX24ttNHgtlBpwu76Vcj+3zDjUpNauCGvbEtDnkgVERjjXLf+Yud2DQwAgHbRYT1p4fO69+FUXl1tfqXY6v/oyRpE0=
+	t=1751554835; cv=none; b=mpWjNYFe6XfSdU6hKOQ42ckxjDAbtWb/x64403BnEzE5jE258468rETqdY7EH7Czhx8uMpcraR8YtcrSEoChW45lpK3rIQ87XrA1i9gUlmJn2W/EcXkqhI4/8VId6UMtbHnPawsEav2MdzIxmVYXGaDyrJ5s4L6k2sTf4CSZN6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751553954; c=relaxed/simple;
-	bh=TwiBEQaPLOxUhU4FbtkUIkh/BufI73sbwrwAKxJrwXM=;
+	s=arc-20240116; t=1751554835; c=relaxed/simple;
+	bh=oknGgImAYoUPEMZkKwV985zpXkgrw/LAdP+eOS43GJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H+xdrGS/R8JDs+ls9Xe/Yi9cbBeOzXXuPESHSyjPoVt4fFxSJMk73m/0BnUSJE5byrrP28Yew52Nm802ocfKVMVcrw5lE1HyJK+CG6QgoAPZ92bZNlE/UQDDHezah6bdKSMimfruPqk8Ew/sN4Vo3H6Y7ZIGBspTGaOU1Q9QeTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VeoAAdAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720D2C4CEE3;
-	Thu,  3 Jul 2025 14:45:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J+Nz6cje1a1Ay19c4f4I/tTNNxjqodWfFRBdGsPFMZPb70bjhUW+wUmso4wevl1qMnGuFcd9Zw3UIg94RU9IZUaO4uc1LfpNRFnWzlQlEAl3Y989ma0N3x1I88+sOEguXAYVKqj3sNjKhkVrjxYANlSBmmbet4X5oVAQD6eSUDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMd/yivZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6895CC4CEE3;
+	Thu,  3 Jul 2025 15:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751553953;
-	bh=TwiBEQaPLOxUhU4FbtkUIkh/BufI73sbwrwAKxJrwXM=;
+	s=korg; t=1751554834;
+	bh=oknGgImAYoUPEMZkKwV985zpXkgrw/LAdP+eOS43GJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VeoAAdAPH2CF6AliU4TEjw6cLB3ZA8BcZg3AT5ogaTB2wNisB1FPcxwR/G6FS7kTu
-	 pKUT7o0e4TWzGHGUPw5pJvi/GBele14eRqMBe0zsH1ETSBpPNE0LK5Sh1+Z+C+BOkm
-	 5xBkSPnjaT5qyX4wnFEqUuAHDAPv10+wWhMEskTI=
+	b=aMd/yivZY5CppjcMR5Gu7C2+nOhYn0ABUvem7DTl6H5Sn9A0vlcLEQZ3DbGG02kxD
+	 U+JRe6AWxTymiFon/CI6gtrpioPvOyN53Xq3s7Q7883tF+MwbRQ6QhveizHAnMEPNM
+	 VFwxkGt3Qt+uiPpn2G6fXt0+fexCql+UBqTGv0AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jos Wang <joswang@lenovo.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/218] um: use proper care when taking mmap lock during segfault
+Subject: [PATCH 6.15 063/263] usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode
 Date: Thu,  3 Jul 2025 16:39:43 +0200
-Message-ID: <20250703143957.354971169@linuxfoundation.org>
+Message-ID: <20250703144006.832645269@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,181 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Jos Wang <joswang@lenovo.com>
 
-[ Upstream commit 6767e8784cd2e8b386a62330ea6864949d983a3e ]
+[ Upstream commit b4b38ffb38c91afd4dc387608db26f6fc34ed40b ]
 
-Segfaults can occur at times where the mmap lock cannot be taken. If
-that happens the segfault handler may not be able to take the mmap lock.
+Although some Type-C DRD devices that do not support the DP Sink
+function (such as Huawei Mate 40Pro), the Source Port initiates
+Enter Mode CMD, but the device responds to Enter Mode ACK, the
+Source port then initiates DP Status Update CMD, and the device
+responds to DP Status Update NAK.
 
-Fix the code to use the same approach as most other architectures.
-Unfortunately, this requires copying code from mm/memory.c and modifying
-it slightly as UML does not have exception tables.
+As PD2.0 spec ("6.4.4.3.4 Enter Mode Command")，A DR_Swap Message
+Shall Not be sent during Modal Operation between the Port Partners.
+At this time, the source port initiates DR_Swap message through the
+"echo device > /sys/class/typec/port0/data_role" command to switch
+the data role from host to device. The device will initiate a Hard
+Reset for recovery, resulting in the failure of data role swap.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Link: https://patch.msgid.link/20250408074524.300153-2-benjamin@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Therefore, when DP Status Update NAK is received, Exit Mode CMD is
+initiated to exit the currently entered DP altmode.
+
+Signed-off-by: Jos Wang <joswang@lenovo.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250209071926.69625-1-joswang1221@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/trap.c | 129 ++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 117 insertions(+), 12 deletions(-)
+ drivers/usb/typec/altmodes/displayport.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/um/kernel/trap.c b/arch/um/kernel/trap.c
-index 97c8df9c44017..9077bdb26cc35 100644
---- a/arch/um/kernel/trap.c
-+++ b/arch/um/kernel/trap.c
-@@ -17,6 +17,122 @@
- #include <os.h>
- #include <skas.h>
- 
-+/*
-+ * NOTE: UML does not have exception tables. As such, this is almost a copy
-+ * of the code in mm/memory.c, only adjusting the logic to simply check whether
-+ * we are coming from the kernel instead of doing an additional lookup in the
-+ * exception table.
-+ * We can do this simplification because we never get here if the exception was
-+ * fixable.
-+ */
-+static inline bool get_mmap_lock_carefully(struct mm_struct *mm, bool is_user)
-+{
-+	if (likely(mmap_read_trylock(mm)))
-+		return true;
-+
-+	if (!is_user)
-+		return false;
-+
-+	return !mmap_read_lock_killable(mm);
-+}
-+
-+static inline bool mmap_upgrade_trylock(struct mm_struct *mm)
-+{
-+	/*
-+	 * We don't have this operation yet.
-+	 *
-+	 * It should be easy enough to do: it's basically a
-+	 *    atomic_long_try_cmpxchg_acquire()
-+	 * from RWSEM_READER_BIAS -> RWSEM_WRITER_LOCKED, but
-+	 * it also needs the proper lockdep magic etc.
-+	 */
-+	return false;
-+}
-+
-+static inline bool upgrade_mmap_lock_carefully(struct mm_struct *mm, bool is_user)
-+{
-+	mmap_read_unlock(mm);
-+	if (!is_user)
-+		return false;
-+
-+	return !mmap_write_lock_killable(mm);
-+}
-+
-+/*
-+ * Helper for page fault handling.
-+ *
-+ * This is kind of equivalend to "mmap_read_lock()" followed
-+ * by "find_extend_vma()", except it's a lot more careful about
-+ * the locking (and will drop the lock on failure).
-+ *
-+ * For example, if we have a kernel bug that causes a page
-+ * fault, we don't want to just use mmap_read_lock() to get
-+ * the mm lock, because that would deadlock if the bug were
-+ * to happen while we're holding the mm lock for writing.
-+ *
-+ * So this checks the exception tables on kernel faults in
-+ * order to only do this all for instructions that are actually
-+ * expected to fault.
-+ *
-+ * We can also actually take the mm lock for writing if we
-+ * need to extend the vma, which helps the VM layer a lot.
-+ */
-+static struct vm_area_struct *
-+um_lock_mm_and_find_vma(struct mm_struct *mm,
-+			unsigned long addr, bool is_user)
-+{
-+	struct vm_area_struct *vma;
-+
-+	if (!get_mmap_lock_carefully(mm, is_user))
-+		return NULL;
-+
-+	vma = find_vma(mm, addr);
-+	if (likely(vma && (vma->vm_start <= addr)))
-+		return vma;
-+
-+	/*
-+	 * Well, dang. We might still be successful, but only
-+	 * if we can extend a vma to do so.
-+	 */
-+	if (!vma || !(vma->vm_flags & VM_GROWSDOWN)) {
-+		mmap_read_unlock(mm);
-+		return NULL;
-+	}
-+
-+	/*
-+	 * We can try to upgrade the mmap lock atomically,
-+	 * in which case we can continue to use the vma
-+	 * we already looked up.
-+	 *
-+	 * Otherwise we'll have to drop the mmap lock and
-+	 * re-take it, and also look up the vma again,
-+	 * re-checking it.
-+	 */
-+	if (!mmap_upgrade_trylock(mm)) {
-+		if (!upgrade_mmap_lock_carefully(mm, is_user))
-+			return NULL;
-+
-+		vma = find_vma(mm, addr);
-+		if (!vma)
-+			goto fail;
-+		if (vma->vm_start <= addr)
-+			goto success;
-+		if (!(vma->vm_flags & VM_GROWSDOWN))
-+			goto fail;
-+	}
-+
-+	if (expand_stack_locked(vma, addr))
-+		goto fail;
-+
-+success:
-+	mmap_write_downgrade(mm);
-+	return vma;
-+
-+fail:
-+	mmap_write_unlock(mm);
-+	return NULL;
-+}
-+
- /*
-  * Note this is constrained to return 0, -EFAULT, -EACCES, -ENOMEM by
-  * segv().
-@@ -43,21 +159,10 @@ int handle_page_fault(unsigned long address, unsigned long ip,
- 	if (is_user)
- 		flags |= FAULT_FLAG_USER;
- retry:
--	mmap_read_lock(mm);
--	vma = find_vma(mm, address);
--	if (!vma)
--		goto out;
--	if (vma->vm_start <= address)
--		goto good_area;
--	if (!(vma->vm_flags & VM_GROWSDOWN))
--		goto out;
--	if (is_user && !ARCH_IS_STACKGROW(address))
--		goto out;
--	vma = expand_stack(mm, address);
-+	vma = um_lock_mm_and_find_vma(mm, address, is_user);
- 	if (!vma)
- 		goto out_nosemaphore;
- 
--good_area:
- 	*code_out = SEGV_ACCERR;
- 	if (is_write) {
- 		if (!(vma->vm_flags & VM_WRITE))
+diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+index ac84a6d64c2fb..b09b58d7311de 100644
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -393,6 +393,10 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
+ 		break;
+ 	case CMDT_RSP_NAK:
+ 		switch (cmd) {
++		case DP_CMD_STATUS_UPDATE:
++			if (typec_altmode_exit(alt))
++				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
++			break;
+ 		case DP_CMD_CONFIGURE:
+ 			dp->data.conf = 0;
+ 			ret = dp_altmode_configured(dp);
 -- 
 2.39.5
 
