@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-159754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F25AF79E5
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:07:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF9F1AF7BE3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7A227A6330
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 176783B3705
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61BB42E7649;
-	Thu,  3 Jul 2025 15:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F5D224B1F;
+	Thu,  3 Jul 2025 15:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTpvBlpH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6fJbJHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD0D15442C;
-	Thu,  3 Jul 2025 15:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA94722333B;
+	Thu,  3 Jul 2025 15:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555236; cv=none; b=CvnHNuFIapIswm/OXrvYkRONuRo27uQIyLEx8K7dbJpjJm8SpTDjfOncWzf6Ab/R6Z4bczyTJDV+35mRHdYjil+f7xaSuG6btTGDXJ5tg2KDfC4nDdpUDCZ7HrJ3wgShGg2jYl017pXjHP/TGk1QqspTDc/fjZ9ODOneSxUJq08=
+	t=1751556018; cv=none; b=UdOOvBFZbvz2lcRVltjPt9UkT+1jMwC0WfJxE0vbm43ngz5eagsHLkOYn3AafErwBRjQJdFXASYHT0si1q9UA4nSbnEYduTAZy40Vko3ung3L6I+veV2aHi+AgWpTI84n8+v1rkNrIenkJNrTOb1WswouQkZE7JiZxLUIA0M2EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555236; c=relaxed/simple;
-	bh=UQf4AtCEAkdPGf/w2713fYO0Vd0Gb9qBgqM5YbhLqMQ=;
+	s=arc-20240116; t=1751556018; c=relaxed/simple;
+	bh=/U5mfXU/qIaQGQbX4PUCRS9QKq5kqIfT7m9Lkvw1tFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AwxDTauhj5bJqplfyffqYCnLJdXRPOSpEDl86FSfXKkYZEQEDijuM+1ktcePwCokZlvMOEmYBGy2t+7PVGmhCmExUNwh7kntQfp0zj5m/GpQpr2PbOZhuZcg9Ne0XGyNF+BowDbua0WCpPVWfclyYLaap+dQyUMXSXM1/poSdSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTpvBlpH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2D2C4CEE3;
-	Thu,  3 Jul 2025 15:07:15 +0000 (UTC)
+	 MIME-Version; b=LgoiE6SHlr3kC7YXP6JJgqBP0sjITLOWUghtJqrwjpwgIg8mPOioKCn+Os+oF4a11U1ofBvR93848SSnydBRQAPkqYN9U/BGhXkLj3M8foiO3Gmq1jyOMD3fkA4DuKScsZfFjTtVjiOXYcNuoQSinyHqy1SnzAH8+8UOU5QkgSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6fJbJHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44C5C4CEE3;
+	Thu,  3 Jul 2025 15:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555236;
-	bh=UQf4AtCEAkdPGf/w2713fYO0Vd0Gb9qBgqM5YbhLqMQ=;
+	s=korg; t=1751556016;
+	bh=/U5mfXU/qIaQGQbX4PUCRS9QKq5kqIfT7m9Lkvw1tFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CTpvBlpHIIjkzOCaN5AVSTmfS1uPDQlNzALMGHhjf0bXydN8O+KdB1jxsaMKPjsu/
-	 yyap2opdSQcQaVfYvmBafvNWdzvis5GFiMvJbgFPgw7JOXyZwC6dD+zP+NBDxox9v4
-	 dZZqb7gb+50hB/xts8DVjzuEdl0HpUqCWXMe6Gyw=
+	b=O6fJbJHHsN2SqbY5XEF27XkP+Uk7X2iBzKs84L/9gYhJITY4aG1LklEIHdCuLGZQY
+	 6UGuFFNg501iKvF2W3QtVN4cNZNGiQ5dpsL8R6NMftZoGN9D2laYaGC3eWaNi1FKh8
+	 US6A9io1uBl/7dQkLcSNg5JecPC3L3UfubBj5PhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.15 217/263] drm/bridge: cdns-dsi: Check return value when getting default PHY config
+	Linus Walleij <linus.walleij@linaro.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 048/132] ASoC: codec: wcd9335: Convert to GPIO descriptors
 Date: Thu,  3 Jul 2025 16:42:17 +0200
-Message-ID: <20250703144013.085893381@linuxfoundation.org>
+Message-ID: <20250703143941.309931402@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit c6a7ef0d4856b9629df390e9935d7fd67fe39f81 upstream.
+[ Upstream commit d5099bc1b56417733f4cccf10c61ee74dadd5562 ]
 
-Check for the return value of the phy_mipi_dphy_get_default_config()
-call, and in case of an error, return back the same.
+of_gpio.h is deprecated, update the driver to use GPIO descriptors.
+- Use dev_gpiod_get to get GPIO descriptor.
+- Use gpiod_set_value to configure output value.
 
-Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
-Cc: stable@vger.kernel.org
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Link: https://lore.kernel.org/r/20250329113925.68204-5-aradhya.bhatia@linux.dev
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+With legacy of_gpio API, the driver set gpio value 0 to assert reset,
+and 1 to deassert reset. And the reset-gpios use GPIO_ACTIVE_LOW flag in
+DTS, so set GPIOD_OUT_LOW when get GPIO descriptors, and set value 1 means
+output low, set value 0 means output high with gpiod API.
+
+The in-tree DTS files have the right polarity set up already so we can
+expect this to "just work"
+
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://patch.msgid.link/20250324-wcd-gpiod-v2-3-773f67ce3b56@nxp.com
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 9079db287fc3 ("ASoC: codecs: wcd9335: Fix missing free of regulator supplies")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/soc/codecs/wcd9335.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-@@ -575,9 +575,11 @@ static int cdns_dsi_check_conf(struct cd
- 	if (ret)
- 		return ret;
+diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
+index 23f3c0253d9eb..7817dff99b6c6 100644
+--- a/sound/soc/codecs/wcd9335.c
++++ b/sound/soc/codecs/wcd9335.c
+@@ -16,7 +16,7 @@
+ #include <sound/soc.h>
+ #include <sound/pcm_params.h>
+ #include <sound/soc-dapm.h>
+-#include <linux/of_gpio.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/of.h>
+ #include <linux/of_irq.h>
+ #include <sound/tlv.h>
+@@ -329,7 +329,7 @@ struct wcd9335_codec {
+ 	int comp_enabled[COMPANDER_MAX];
  
--	phy_mipi_dphy_get_default_config(mode_clock * 1000,
--					 mipi_dsi_pixel_format_to_bpp(output->dev->format),
--					 nlanes, phy_cfg);
-+	ret = phy_mipi_dphy_get_default_config(mode_clock * 1000,
-+					       mipi_dsi_pixel_format_to_bpp(output->dev->format),
-+					       nlanes, phy_cfg);
-+	if (ret)
-+		return ret;
+ 	int intr1;
+-	int reset_gpio;
++	struct gpio_desc *reset_gpio;
+ 	struct regulator_bulk_data supplies[WCD9335_MAX_SUPPLY];
  
- 	ret = cdns_dsi_adjust_phy_config(dsi, dsi_cfg, phy_cfg, mode, mode_valid_check);
- 	if (ret)
+ 	unsigned int rx_port_value[WCD9335_RX_MAX];
+@@ -5032,12 +5032,11 @@ static const struct regmap_irq_chip wcd9335_regmap_irq1_chip = {
+ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
+ {
+ 	struct device *dev = wcd->dev;
+-	struct device_node *np = dev->of_node;
+ 	int ret;
+ 
+-	wcd->reset_gpio = of_get_named_gpio(np,	"reset-gpios", 0);
+-	if (wcd->reset_gpio < 0)
+-		return dev_err_probe(dev, wcd->reset_gpio, "Reset GPIO missing from DT\n");
++	wcd->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
++	if (IS_ERR(wcd->reset_gpio))
++		return dev_err_probe(dev, PTR_ERR(wcd->reset_gpio), "Reset GPIO missing from DT\n");
+ 
+ 	wcd->mclk = devm_clk_get(dev, "mclk");
+ 	if (IS_ERR(wcd->mclk))
+@@ -5080,9 +5079,9 @@ static int wcd9335_power_on_reset(struct wcd9335_codec *wcd)
+ 	 */
+ 	usleep_range(600, 650);
+ 
+-	gpio_direction_output(wcd->reset_gpio, 0);
++	gpiod_set_value(wcd->reset_gpio, 1);
+ 	msleep(20);
+-	gpio_set_value(wcd->reset_gpio, 1);
++	gpiod_set_value(wcd->reset_gpio, 0);
+ 	msleep(20);
+ 
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
