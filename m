@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22C0AF7BAF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:27:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F45AF7C45
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:33:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 662364A36B3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB7051CA3198
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECE92EE5F3;
-	Thu,  3 Jul 2025 15:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C906F2EFDB8;
+	Thu,  3 Jul 2025 15:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIgBc/0k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q740dLVR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8D02EF66C;
-	Thu,  3 Jul 2025 15:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853652DE6F8;
+	Thu,  3 Jul 2025 15:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555841; cv=none; b=TNWqa/NmuN2gO/BOps5OoR+94EI3FmK0U/7cBOIvnwkm92AQn8cWnMuyLTyOCOzcVKbYwBRyAeq+CoFlTcf08wExFX0keSvKSV+jwUgC0ZXGiSqnj5KlQ3mPMGX4hPlKN/bulZvOHl4Dj0b9vsb1g7y7pAA/c9aDIqg1EXmRbb8=
+	t=1751556119; cv=none; b=G5p0ICbx0LzcUIKNvNTLJKYYn4ntZDqGljdEe4M8WXws7EyCVjVBktn2gGzdkUIHUe4hcLTu2YFbuhfkatpng9ZA1WZd7VT9Fpy5DkFMM+FgymYRO2Yh+TM1DMhSUNO/1vp1McDZiHNbCsiV+fyVDfucUQO/hVVq7x9Ine1K54o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555841; c=relaxed/simple;
-	bh=FOQgfTWBu16Y7JDXb1Kx3gO91xBkFkWJtqnpSG0LS6k=;
+	s=arc-20240116; t=1751556119; c=relaxed/simple;
+	bh=WYY5JNWiRKVLqTjhZqxfvOlECWuLWFYvUf5VIBOL/24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vBbKL4itjrM3Z6mDOSb/gQ73hr1ZjRcEtEOdw4zXi4UQxHQsLWS3G4fccBZ/is0OFhXv6uuqJghfJB8v1q6TkAp9V2by53gNVh+mx8atTQtDxZ6KkmUBslKTS6NzcEcm6kQwHIjYt5ifhUe/AfExL3ggiMEu+m4OvSk2r8qhnDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIgBc/0k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9FFC4CEE3;
-	Thu,  3 Jul 2025 15:17:20 +0000 (UTC)
+	 MIME-Version; b=M1U9rPNMnPZ1XhzdKb3+iDJpiomxOF+0A7x2dey/CxnBM7KThbuLKBEFqSqC12HpUGcL2JU5i+Rzo1HVirbM/L94uewSLeRUVd+mcZtz9clZ1KEWTxBHGKeWtrWJosw85pRsv2BvXy4dBI2QjWRGnPpA2QsUOHzmGTDMspAjXmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q740dLVR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3155C4CEED;
+	Thu,  3 Jul 2025 15:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555840;
-	bh=FOQgfTWBu16Y7JDXb1Kx3gO91xBkFkWJtqnpSG0LS6k=;
+	s=korg; t=1751556119;
+	bh=WYY5JNWiRKVLqTjhZqxfvOlECWuLWFYvUf5VIBOL/24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CIgBc/0kjZbw9aWupewhdLdQjOwjo3yw8EcXp4YxUTguU86EjqKG7cYlHfQv9XY1q
-	 8vq3OhltLmWfu9YgDONunY1ydsKcOnE+o5LpVJxwhuyZw1AMDeRBQ8Sc6ufkT8dpU5
-	 2s55PEdnkc9gW+knnl77LSZ8Cav9/47JOAExOLck=
+	b=q740dLVRNrRgRmh4yfMA5eZS3avyOMmjH5PnywBnaZE7oGEanh7PwBufuzoMARob7
+	 yHCvnvG2fjWl9VGIsoyoMKOwGSMiI/ekT4dYlJMRhM1vWlMH1Buz1AI1FdKin/lJHJ
+	 /M//adwEAsTeM8HseTAWJEtFJM+RgUOrtCITbww4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.6 106/139] HID: wacom: fix memory leak on sysfs attribute creation failure
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 080/132] wifi: mac80211: fix beacon interval calculation overflow
 Date: Thu,  3 Jul 2025 16:42:49 +0200
-Message-ID: <20250703143945.321770322@linuxfoundation.org>
+Message-ID: <20250703143942.551158217@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 
-commit 1a19ae437ca5d5c7d9ec2678946fb339b1c706bf upstream.
+[ Upstream commit 7a3750ff0f2e8fee338a9c168f429f6c37f0e820 ]
 
-When sysfs_create_files() fails during wacom_initialize_remotes() the
-fifo buffer is not freed leading to a memory leak.
+As we are converting from TU to usecs, a beacon interval of
+100*1024 usecs will lead to integer wrapping. To fix change
+to use a u32.
 
-Fix this by calling kfifo_free() before returning.
-
-Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 057d5f4ba1e4 ("mac80211: sync dtim_count to TSF")
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Link: https://patch.msgid.link/20250621123209.511796-1-lachlan.hodges@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_sys.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2022,6 +2022,7 @@ static int wacom_initialize_remotes(stru
- 	if (error) {
- 		hid_err(wacom->hdev,
- 			"cannot create sysfs group err: %d\n", error);
-+		kfifo_free(&remote->remote_fifo);
- 		return error;
- 	}
- 
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index e8326e09d1b37..e60c8607e4b64 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -4452,7 +4452,7 @@ void ieee80211_recalc_dtim(struct ieee80211_local *local,
+ {
+ 	u64 tsf = drv_get_tsf(local, sdata);
+ 	u64 dtim_count = 0;
+-	u16 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
++	u32 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
+ 	u8 dtim_period = sdata->vif.bss_conf.dtim_period;
+ 	struct ps_data *ps;
+ 	u8 bcns_from_dtim;
+-- 
+2.39.5
+
 
 
 
