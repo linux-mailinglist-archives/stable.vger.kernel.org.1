@@ -1,91 +1,187 @@
-Return-Path: <stable+bounces-160121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2700AF81C4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 22:12:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB867AF81F8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 22:36:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FACA5650C8
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 20:12:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C21C1894632
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 20:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405E929B782;
-	Thu,  3 Jul 2025 20:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8342989B3;
+	Thu,  3 Jul 2025 20:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ls7eTFKZ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xsU4PSTh"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0787629AB05;
-	Thu,  3 Jul 2025 20:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1571025A333;
+	Thu,  3 Jul 2025 20:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751573553; cv=none; b=P0wexDCyTlmCsNVri5aldfDHDwQY4Fw2UF9MeJt3D1cJUgAqwbfx1CIxdLfMsWSJ69bXXcgPyVDn0hwz02ZRYQ1WpxCFiBRg/gEqB8/32pB8mAfeflGzI3D9sPgSFDE+p/fHdR5LYU6oGPED6zOPiQg0qvzQUgHixlqu+/Fsne0=
+	t=1751574951; cv=none; b=KxT2tyd8sVWqt/GpT3mX15Rv5Fkoa7+Nb+IEos2sPWnLNfXLSoEkVUQ8HFhphlsLynMm18na3BF3VmWMMBk5ix1GZtLN04R/PofHnnUEEuD8YrzluYr2+6+1+4UBlxMPrS0n9ETE8O7ayhtTCEMwYRlNkv7YxJdHPYQJu23rwk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751573553; c=relaxed/simple;
-	bh=gmh5ZoAgGsJKG8haTIpWu74Cwifbp8iS4hmC9GfBIAI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=hNiYP+Z0bYITDSaVM0bmIN+m/GZiZGXw1ifpeqxxM6R9A8Pg3rciVnIul/Tv+Y9LgE78xIpq3JYNeRXbACg7Vmp8EOWHuPdSwTcu81AjYTh3tOtuNQHiH1Dzh3YKZtoFjqE7/rH+3qX+kKAMEtEhEqGmMlvLXuwBQ1kF8UtOaeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ls7eTFKZ; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1158)
-	id 8D6F3201B1B1; Thu,  3 Jul 2025 13:12:30 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8D6F3201B1B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1751573550;
-	bh=fXBcnpF5wIVxCrRcCZEh0GIQXdpGV1Dnj7t4XrnX4c4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ls7eTFKZsvKQoWNUQapIL/zkupcDpzjxGfr7c1sN7smhoClWtQu99/wGy7wBisfWu
-	 rozp01tvzgZmxExhvPH5k532LdMzj8zUf7+pC0KrohrXMBy+gHbU5aB1GKuhxJi+Od
-	 6QepbLaA+tnxDTYTSLGBBj84EBkFbnTaNH1KvgXU=
-From: Hardik Garg <hargar@linux.microsoft.com>
-To: gregkh@linuxfoundation.org
-Cc: akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	srw@sladewatkins.net,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org
-Subject: Re: [PATCH 6.15 000/263] 6.15.5-rc1 review
-Date: Thu,  3 Jul 2025 13:12:30 -0700
-Message-Id: <1751573550-30344-1-git-send-email-hargar@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+	s=arc-20240116; t=1751574951; c=relaxed/simple;
+	bh=wcCeWL9cnkFn3jH/2S0OjNOIlT2v4H09COjmuUme2cg=;
+	h=Date:To:From:Subject:Message-Id; b=VZJvRk38+OPSxr5TmQfR1L3VPB/Es8r5eZVBUj9rXXDnXQTy12eG4RnGNxGHRfbLMPHYJPrLsUT9zqo1YO7oB0IMLvdEyHcD5PYBBzGOsMg4KCQnw0+4r7Zf4jGDBGJ9Rfu6CmyRSBFVnflxeIR0G0aDUHcZ7e2r0HsAoa9bgyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xsU4PSTh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7EAC4CEE3;
+	Thu,  3 Jul 2025 20:35:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1751574950;
+	bh=wcCeWL9cnkFn3jH/2S0OjNOIlT2v4H09COjmuUme2cg=;
+	h=Date:To:From:Subject:From;
+	b=xsU4PSTh3/vGcf+ui9Sxr0zMGbHG3vZsSahG5dRB/ndRoceHqWMrTLGxiaBAuv6GF
+	 rNRO7GlxMR+4BqxQ/2L0tWVU5lCEyu26NhC/spgJL5ZEL4mRDXy0zg3iHpcD3SqRHW
+	 oLtKhKSzL1eHc51OWoNrPP7C5eu44YbkOrVlSswQ=
+Date: Thu, 03 Jul 2025 13:35:49 -0700
+To: mm-commits@vger.kernel.org,ysk@kzalloc.com,vincenzo.frascino@arm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,rostedt@goodmis.org,glider@google.com,dvyukov@google.com,byungchul@sk.com,bigeasy@linutronix.de,andreyknvl@gmail.com,yeoreum.yun@arm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + kasan-remove-kasan_find_vm_area-to-prevent-possible-deadlock.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250703203550.8B7EAC4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-The kernel, bpf tool, and perf tool builds fine for v6.15.5-rc1 on x86 and arm64 Azure VM.
 
-Kernel binary size for x86 build:
-text      data      bss      dec       hex      filename
-31999332  14279706  6250496  52529534  321897e  vmlinux
+The patch titled
+     Subject: kasan: remove kasan_find_vm_area() to prevent possible deadlock
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     kasan-remove-kasan_find_vm_area-to-prevent-possible-deadlock.patch
 
-Kernel binary size for arm64 build:
-text      data      bss      dec       hex      filename
-37335764  15435073  1038480  53809317  33510a5  vmlinux
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kasan-remove-kasan_find_vm_area-to-prevent-possible-deadlock.patch
 
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Tested-by: Hardik Garg <hargar@linux.microsoft.com>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
+------------------------------------------------------
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: kasan: remove kasan_find_vm_area() to prevent possible deadlock
+Date: Thu, 3 Jul 2025 19:10:18 +0100
 
-Thanks,
-Hardik
+find_vm_area() couldn't be called in atomic_context.  If find_vm_area() is
+called to reports vm area information, kasan can trigger deadlock like:
+
+CPU0                                CPU1
+vmalloc();
+ alloc_vmap_area();
+  spin_lock(&vn->busy.lock)
+                                    spin_lock_bh(&some_lock);
+   <interrupt occurs>
+   <in softirq>
+   spin_lock(&some_lock);
+                                    <access invalid address>
+                                    kasan_report();
+                                     print_report();
+                                      print_address_description();
+                                       kasan_find_vm_area();
+                                        find_vm_area();
+                                         spin_lock(&vn->busy.lock) // deadlock!
+
+To prevent possible deadlock while kasan reports, remove kasan_find_vm_area().
+
+Link: https://lkml.kernel.org/r/20250703181018.580833-1-yeoreum.yun@arm.com
+Fixes: c056a364e954 ("kasan: print virtual mapping info in reports")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Reported-by: Yunseong Kim <ysk@kzalloc.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/kasan/report.c |   45 +-------------------------------------------
+ 1 file changed, 2 insertions(+), 43 deletions(-)
+
+--- a/mm/kasan/report.c~kasan-remove-kasan_find_vm_area-to-prevent-possible-deadlock
++++ a/mm/kasan/report.c
+@@ -370,36 +370,6 @@ static inline bool init_task_stack_addr(
+ 			sizeof(init_thread_union.stack));
+ }
+ 
+-/*
+- * This function is invoked with report_lock (a raw_spinlock) held. A
+- * PREEMPT_RT kernel cannot call find_vm_area() as it will acquire a sleeping
+- * rt_spinlock.
+- *
+- * For !RT kernel, the PROVE_RAW_LOCK_NESTING config option will print a
+- * lockdep warning for this raw_spinlock -> spinlock dependency. This config
+- * option is enabled by default to ensure better test coverage to expose this
+- * kind of RT kernel problem. This lockdep splat, however, can be suppressed
+- * by using DEFINE_WAIT_OVERRIDE_MAP() if it serves a useful purpose and the
+- * invalid PREEMPT_RT case has been taken care of.
+- */
+-static inline struct vm_struct *kasan_find_vm_area(void *addr)
+-{
+-	static DEFINE_WAIT_OVERRIDE_MAP(vmalloc_map, LD_WAIT_SLEEP);
+-	struct vm_struct *va;
+-
+-	if (IS_ENABLED(CONFIG_PREEMPT_RT))
+-		return NULL;
+-
+-	/*
+-	 * Suppress lockdep warning and fetch vmalloc area of the
+-	 * offending address.
+-	 */
+-	lock_map_acquire_try(&vmalloc_map);
+-	va = find_vm_area(addr);
+-	lock_map_release(&vmalloc_map);
+-	return va;
+-}
+-
+ static void print_address_description(void *addr, u8 tag,
+ 				      struct kasan_report_info *info)
+ {
+@@ -429,19 +399,8 @@ static void print_address_description(vo
+ 	}
+ 
+ 	if (is_vmalloc_addr(addr)) {
+-		struct vm_struct *va = kasan_find_vm_area(addr);
+-
+-		if (va) {
+-			pr_err("The buggy address belongs to the virtual mapping at\n"
+-			       " [%px, %px) created by:\n"
+-			       " %pS\n",
+-			       va->addr, va->addr + va->size, va->caller);
+-			pr_err("\n");
+-
+-			page = vmalloc_to_page(addr);
+-		} else {
+-			pr_err("The buggy address %px belongs to a vmalloc virtual mapping\n", addr);
+-		}
++		pr_err("The buggy address %px belongs to a vmalloc virtual mapping\n", addr);
++		page = vmalloc_to_page(addr);
+ 	}
+ 
+ 	if (page) {
+_
+
+Patches currently in -mm which might be from yeoreum.yun@arm.com are
+
+kasan-remove-kasan_find_vm_area-to-prevent-possible-deadlock.patch
+
 
