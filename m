@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-159464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A4B6AF78B1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:53:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D3FAF7BD7
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 476573AB3E0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D5CB1C23D0C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA532EBB8F;
-	Thu,  3 Jul 2025 14:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6E02EF661;
+	Thu,  3 Jul 2025 15:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrBPKP05"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GRvlyDc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1302E62CD;
-	Thu,  3 Jul 2025 14:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16562ED857;
+	Thu,  3 Jul 2025 15:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554315; cv=none; b=CWB5Y4eC98iyHFiK/a4k8YUvDdrPqajrBfI/R78Uuo+Wiw5TkH0JdNpw1A+xyMPzZWXOHIGXYbyEy6UaWuiD9UAbRcRn22AWkDj5l7k6GN9oQyLAx8nenNqyyoxFB2XJo9fGenxc+y1p8vi9GxpaiO11sHachjRwkqdwkq0sag8=
+	t=1751555958; cv=none; b=J1z/NkpIq5ba9yD91YrDnkNiMKIgzN83n2do0MCdMFfPQy8RtGV0MRem27CFdZ7cMUU9sjYk+2MnQSbRgnlcT95f/HP+18VHOw7nYHpAhRtTwNeq5/MjtzmuE/1aaBaQw5VXPeV3MCzgODvARRBivmUrNLjDCwIszSh9RoLFFxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554315; c=relaxed/simple;
-	bh=QvgI1PLeXZpimtuek8/clhrGq8w4+r5gM27VVJYhWBY=;
+	s=arc-20240116; t=1751555958; c=relaxed/simple;
+	bh=+9kl+foAqgh4fbcODcXfXS62tTOj2DUfen0Nz46EeGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCIbBRrBgBWbduuRVHJJF4HHLfxA1LIFIcxfhVCo5LdsJi5dImJObTxwGobcvmR9wDzcqafCL6TIMmbKjmEVX3njafGRQ51NfGIMz5sXz8I/GMAQGQFWatTw04ZvUre1Kw+1tpyJy8QMj64RL/FAbNmti6+8LD1dR3E99a6Q/V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrBPKP05; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF5BC4CEE3;
-	Thu,  3 Jul 2025 14:51:53 +0000 (UTC)
+	 MIME-Version; b=i+Hot6CHLdtzWT2h7vYIPQnDXUfGueUkedrnUbjEecLiGsl43N6m/1z+TN5Uh+0zmS//Kc1FVtH/Oc39hA/Yol6Ms/O8+Rx2FtSSkjScg5S2eLbY+A9tu/YVjmYlaA4HwNyBts2l3uEmpwo57fz2KVD9DsU6PO2KiiqUguJopBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GRvlyDc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8F8C4CEED;
+	Thu,  3 Jul 2025 15:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554314;
-	bh=QvgI1PLeXZpimtuek8/clhrGq8w4+r5gM27VVJYhWBY=;
+	s=korg; t=1751555958;
+	bh=+9kl+foAqgh4fbcODcXfXS62tTOj2DUfen0Nz46EeGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RrBPKP05opsOtFby3NOEt8pduDPA9BtZyFErESltWos03VEnSmgI3gyX/50+tpkZM
-	 Hg7Zi7vfLGYvM+8qzWrGp4V3gTTYj2K5WiYzDp4wGErzp9Dq8nGo3jKF0evNIJRQaQ
-	 Owa4dGzq4In8gbE6ANTYJrDFPKtTiGZ2FW26V7Tg=
+	b=1GRvlyDcAHJu4HlUD6Rwrtf2darOyNvu1uMaWgZhiGXxoepkp7ty3UqApMFoGcVBz
+	 EbYji9SVoxdTfBBxjK3NdqOqZVnY8idqHkxXUfp3eLk4u1ACkaIDtEmoqh0yNKwS6s
+	 Tax9gdS9mqrGbx8mMDu0s+YS/XbFX3ZXNqHBfzf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	anvithdosapati <anvithdosapati@google.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 147/218] scsi: ufs: core: Fix clk scaling to be conditional in reset and restore
-Date: Thu,  3 Jul 2025 16:41:35 +0200
-Message-ID: <20250703144002.007473973@linuxfoundation.org>
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Pavel Machek <pavel@ucw.cz>,
+	Tobias Deiminger <tobias.deiminger@linutronix.de>,
+	Sven Schuchmann <schuchmann@schleissheimer.de>,
+	Sven Schwermer <sven.schwermer@disruptive-technologies.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 007/132] leds: multicolor: Fix intensity setting while SW blinking
+Date: Thu,  3 Jul 2025 16:41:36 +0200
+Message-ID: <20250703143939.681590816@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +66,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: anvithdosapati <anvithdosapati@google.com>
+From: Sven Schwermer <sven.schwermer@disruptive-technologies.com>
 
-commit 2e083cd802294693a5414e4557a183dd7e442e71 upstream.
+[ Upstream commit e35ca991a777ef513040cbb36bc8245a031a2633 ]
 
-In ufshcd_host_reset_and_restore(), scale up clocks only when clock
-scaling is supported. Without this change CPU latency is voted for 0
-(ufshcd_pm_qos_update) during resume unconditionally.
+When writing to the multi_intensity file, don't unconditionally call
+led_set_brightness. By only doing this if blinking is inactive we
+prevent blinking from stopping if the blinking is in its off phase while
+the file is written.
 
-Signed-off-by: anvithdosapati <anvithdosapati@google.com>
-Link: https://lore.kernel.org/r/20250616085734.2133581-1-anvithdosapati@google.com
-Fixes: a3cd5ec55f6c ("scsi: ufs: add load based scaling of UFS gear")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead, if blinking is active, the changed intensity values are applied
+upon the next blink. This is consistent with changing the brightness on
+monochrome LEDs with active blinking.
+
+Suggested-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Acked-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Acked-by: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Tobias Deiminger <tobias.deiminger@linutronix.de>
+Tested-by: Sven Schuchmann <schuchmann@schleissheimer.de>
+Signed-off-by: Sven Schwermer <sven.schwermer@disruptive-technologies.com>
+Link: https://lore.kernel.org/r/20250404184043.227116-1-sven@svenschwermer.de
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c |    3 ++-
+ drivers/leds/led-class-multicolor.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -7743,7 +7743,8 @@ static int ufshcd_host_reset_and_restore
- 	hba->silence_err_logs = false;
+diff --git a/drivers/leds/led-class-multicolor.c b/drivers/leds/led-class-multicolor.c
+index ec62a48116135..e0785935f4ba6 100644
+--- a/drivers/leds/led-class-multicolor.c
++++ b/drivers/leds/led-class-multicolor.c
+@@ -61,7 +61,8 @@ static ssize_t multi_intensity_store(struct device *dev,
+ 	for (i = 0; i < mcled_cdev->num_colors; i++)
+ 		mcled_cdev->subled_info[i].intensity = intensity_value[i];
  
- 	/* scale up clocks to max frequency before full reinitialization */
--	ufshcd_scale_clks(hba, ULONG_MAX, true);
-+	if (ufshcd_is_clkscaling_supported(hba))
-+		ufshcd_scale_clks(hba, ULONG_MAX, true);
- 
- 	err = ufshcd_hba_enable(hba);
- 
+-	led_set_brightness(led_cdev, led_cdev->brightness);
++	if (!test_bit(LED_BLINK_SW, &led_cdev->work_flags))
++		led_set_brightness(led_cdev, led_cdev->brightness);
+ 	ret = size;
+ err_out:
+ 	mutex_unlock(&led_cdev->led_access);
+-- 
+2.39.5
+
 
 
 
