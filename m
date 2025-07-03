@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-159681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6A9AF79E0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:07:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E68AF7899
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7401D169433
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4E7D1CA03BD
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D7B2B9A6;
-	Thu,  3 Jul 2025 15:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86D42E7F0B;
+	Thu,  3 Jul 2025 14:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQDA26rj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXo3JPLi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5443A4414;
-	Thu,  3 Jul 2025 15:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827F4126BFF;
+	Thu,  3 Jul 2025 14:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555002; cv=none; b=C2Ioly6qbrpNAF+sTwvuWOCdADu63TdUmvA2kDZX2jR9O8Ig4F5XTt64hiCzv3vNBnUuJHxZa7kZcHc9Fq0186QqEDPHVRrkSE/kg5nMN94JX//snPF7xJxFiFtpkBy/kIkrEk8AznMGE55zO9luwdnNgw0s6Pq1K2htfacKtXk=
+	t=1751554217; cv=none; b=WyE0mvYkTKErmZFU+E4zfC2OhyxMyjpvNeAYNqjLok2duoMHG1NXLei0EsIZcdQaOMnjK2eFxUuM3Gv2H52W48p2WL1m3jMoPyN33+k2O9Qdy0a91PDH15Cpga2UdNfQS5R25GvsDzIVmtemnWNuoBiLijuFQz7/0ZqIHQNQuSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555002; c=relaxed/simple;
-	bh=ssBR4HCDhHRq1Cu9a0HlZyNMBH1RTtPajxXKK1VuibQ=;
+	s=arc-20240116; t=1751554217; c=relaxed/simple;
+	bh=JcKraXMAZdiFw024r8BzLPKuvgspYtNdRks9Mr87JVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y7gMbnOL6dyEt7O/H5nFpAFuhd/ka8/rn2SSPDMPcSbO65I1mWoupVDXtROizwLXHpIPeD+VEfwp5iTT1g6JsCJYthiDTdrLS9AnMgdRqpfSnxjjgoDSe35W9BtZ/lYzGeSUoyY+iknV23F5LzKhgiZliCshFkrzaDm9eMHQjFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQDA26rj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5660C4CEE3;
-	Thu,  3 Jul 2025 15:03:21 +0000 (UTC)
+	 MIME-Version; b=kM9qzgr5qJ3+l8EZr+BzA+EJunjtoq/L9h9bVG3jTiK2ShJJW05lSRk6bQBUKU0iDRNoapmXNOWdmVlqBvfUvYPN3jdOy548bhwD0UnTh6xKV5Ovb1NS6e/e7ysbEYijVBSg5Eir7haK2eL7/C/FLWCDcrHPkHG2l4R8maac850=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXo3JPLi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CDCC4CEED;
+	Thu,  3 Jul 2025 14:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555002;
-	bh=ssBR4HCDhHRq1Cu9a0HlZyNMBH1RTtPajxXKK1VuibQ=;
+	s=korg; t=1751554217;
+	bh=JcKraXMAZdiFw024r8BzLPKuvgspYtNdRks9Mr87JVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eQDA26rjaJfZrIjL0Bxm6XG0RCg5HgfD+r9VJHiizbrdHk6jM58S4rDE5hrmBWy2n
-	 jtGt+WQdpe6odFPyY91qatO4gjrBc5KHZ0DQwptivkONGIn9SN5Pwb7xqseDQMollP
-	 klJUHUvU6x59rlh40YbHXICthhQR/zTHmOCDQG44=
+	b=IXo3JPLiv+OR/uIQ87KPfhBgSOt7w3FMAcski08Uln2UfjXCX1QnHRQcYhFGsGx93
+	 MovbFDKwl41WC8o6LJ3lcadyrzoUWBn37BohEDin/aVIC39iMh/KyWqyEDmo2R/PsG
+	 G54CBGu+lhIg0WYMCYzpl1n+cSBa3so5XjNK0N9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	linux-cifs@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 145/263] af_unix: Dont set -ECONNRESET for consumed OOB skb.
+Subject: [PATCH 6.12 117/218] smb: client: fix potential deadlock when reconnecting channels
 Date: Thu,  3 Jul 2025 16:41:05 +0200
-Message-ID: <20250703144010.169752144@linuxfoundation.org>
+Message-ID: <20250703144000.621526951@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +64,216 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit 2a5a4841846b079b5fca5752fe94e59346fbda40 ]
+[ Upstream commit 711741f94ac3cf9f4e3aa73aa171e76d188c0819 ]
 
-Christian Brauner reported that even after MSG_OOB data is consumed,
-calling close() on the receiver socket causes the peer's recv() to
-return -ECONNRESET:
+Fix cifs_signal_cifsd_for_reconnect() to take the correct lock order
+and prevent the following deadlock from happening
 
-  1. send() and recv() an OOB data.
+======================================================
+WARNING: possible circular locking dependency detected
+6.16.0-rc3-build2+ #1301 Tainted: G S      W
+------------------------------------------------------
+cifsd/6055 is trying to acquire lock:
+ffff88810ad56038 (&tcp_ses->srv_lock){+.+.}-{3:3}, at: cifs_signal_cifsd_for_reconnect+0x134/0x200
 
-    >>> from socket import *
-    >>> s1, s2 = socketpair(AF_UNIX, SOCK_STREAM)
-    >>> s1.send(b'x', MSG_OOB)
-    1
-    >>> s2.recv(1, MSG_OOB)
-    b'x'
+but task is already holding lock:
+ffff888119c64330 (&ret_buf->chan_lock){+.+.}-{3:3}, at: cifs_signal_cifsd_for_reconnect+0xcf/0x200
 
-  2. close() for s2 sets ECONNRESET to s1->sk_err even though
-     s2 consumed the OOB data
+which lock already depends on the new lock.
 
-    >>> s2.close()
-    >>> s1.recv(10, MSG_DONTWAIT)
-    ...
-    ConnectionResetError: [Errno 104] Connection reset by peer
+the existing dependency chain (in reverse order) is:
 
-Even after being consumed, the skb holding the OOB 1-byte data stays in
-the recv queue to mark the OOB boundary and break recv() at that point.
+-> #2 (&ret_buf->chan_lock){+.+.}-{3:3}:
+       validate_chain+0x1cf/0x270
+       __lock_acquire+0x60e/0x780
+       lock_acquire.part.0+0xb4/0x1f0
+       _raw_spin_lock+0x2f/0x40
+       cifs_setup_session+0x81/0x4b0
+       cifs_get_smb_ses+0x771/0x900
+       cifs_mount_get_session+0x7e/0x170
+       cifs_mount+0x92/0x2d0
+       cifs_smb3_do_mount+0x161/0x460
+       smb3_get_tree+0x55/0x90
+       vfs_get_tree+0x46/0x180
+       do_new_mount+0x1b0/0x2e0
+       path_mount+0x6ee/0x740
+       do_mount+0x98/0xe0
+       __do_sys_mount+0x148/0x180
+       do_syscall_64+0xa4/0x260
+       entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-This must be considered while close()ing a socket.
+-> #1 (&ret_buf->ses_lock){+.+.}-{3:3}:
+       validate_chain+0x1cf/0x270
+       __lock_acquire+0x60e/0x780
+       lock_acquire.part.0+0xb4/0x1f0
+       _raw_spin_lock+0x2f/0x40
+       cifs_match_super+0x101/0x320
+       sget+0xab/0x270
+       cifs_smb3_do_mount+0x1e0/0x460
+       smb3_get_tree+0x55/0x90
+       vfs_get_tree+0x46/0x180
+       do_new_mount+0x1b0/0x2e0
+       path_mount+0x6ee/0x740
+       do_mount+0x98/0xe0
+       __do_sys_mount+0x148/0x180
+       do_syscall_64+0xa4/0x260
+       entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Let's skip the leading consumed OOB skb while checking the -ECONNRESET
-condition in unix_release_sock().
+-> #0 (&tcp_ses->srv_lock){+.+.}-{3:3}:
+       check_noncircular+0x95/0xc0
+       check_prev_add+0x115/0x2f0
+       validate_chain+0x1cf/0x270
+       __lock_acquire+0x60e/0x780
+       lock_acquire.part.0+0xb4/0x1f0
+       _raw_spin_lock+0x2f/0x40
+       cifs_signal_cifsd_for_reconnect+0x134/0x200
+       __cifs_reconnect+0x8f/0x500
+       cifs_handle_standard+0x112/0x280
+       cifs_demultiplex_thread+0x64d/0xbc0
+       kthread+0x2f7/0x310
+       ret_from_fork+0x2a/0x230
+       ret_from_fork_asm+0x1a/0x30
 
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Reported-by: Christian Brauner <brauner@kernel.org>
-Closes: https://lore.kernel.org/netdev/20250529-sinkt-abfeuern-e7b08200c6b0@brauner/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Christian Brauner <brauner@kernel.org>
-Link: https://patch.msgid.link/20250619041457.1132791-4-kuni1840@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+other info that might help us debug this:
+
+Chain exists of:
+  &tcp_ses->srv_lock --> &ret_buf->ses_lock --> &ret_buf->chan_lock
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&ret_buf->chan_lock);
+                               lock(&ret_buf->ses_lock);
+                               lock(&ret_buf->chan_lock);
+  lock(&tcp_ses->srv_lock);
+
+ *** DEADLOCK ***
+
+3 locks held by cifsd/6055:
+ #0: ffffffff857de398 (&cifs_tcp_ses_lock){+.+.}-{3:3}, at: cifs_signal_cifsd_for_reconnect+0x7b/0x200
+ #1: ffff888119c64060 (&ret_buf->ses_lock){+.+.}-{3:3}, at: cifs_signal_cifsd_for_reconnect+0x9c/0x200
+ #2: ffff888119c64330 (&ret_buf->chan_lock){+.+.}-{3:3}, at: cifs_signal_cifsd_for_reconnect+0xcf/0x200
+
+Cc: linux-cifs@vger.kernel.org
+Reported-by: David Howells <dhowells@redhat.com>
+Fixes: d7d7a66aacd6 ("cifs: avoid use of global locks for high contention data")
+Reviewed-by: David Howells <dhowells@redhat.com>
+Tested-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ fs/smb/client/cifsglob.h |  1 +
+ fs/smb/client/connect.c  | 58 +++++++++++++++++++++++++---------------
+ 2 files changed, 37 insertions(+), 22 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index af003831f4c67..52f2812d2fa5b 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -654,6 +654,11 @@ static void unix_sock_destructor(struct sock *sk)
- #endif
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index d573740e54a1a..c66655adecb2c 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -677,6 +677,7 @@ inc_rfc1001_len(void *buf, int count)
+ struct TCP_Server_Info {
+ 	struct list_head tcp_ses_list;
+ 	struct list_head smb_ses_list;
++	struct list_head rlist; /* reconnect list */
+ 	spinlock_t srv_lock;  /* protect anything here that is not protected */
+ 	__u64 conn_id; /* connection identifier (useful for debugging) */
+ 	int srv_count; /* reference counter */
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 91f5fd818cbf4..9275e0d1e2f64 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -140,6 +140,14 @@ static void smb2_query_server_interfaces(struct work_struct *work)
+ 			   (SMB_INTERFACE_POLL_INTERVAL * HZ));
  }
  
-+static unsigned int unix_skb_len(const struct sk_buff *skb)
-+{
-+	return skb->len - UNIXCB(skb).consumed;
-+}
++#define set_need_reco(server) \
++do { \
++	spin_lock(&server->srv_lock); \
++	if (server->tcpStatus != CifsExiting) \
++		server->tcpStatus = CifsNeedReconnect; \
++	spin_unlock(&server->srv_lock); \
++} while (0)
 +
- static void unix_release_sock(struct sock *sk, int embrion)
+ /*
+  * Update the tcpStatus for the server.
+  * This is used to signal the cifsd thread to call cifs_reconnect
+@@ -153,39 +161,45 @@ void
+ cifs_signal_cifsd_for_reconnect(struct TCP_Server_Info *server,
+ 				bool all_channels)
  {
- 	struct unix_sock *u = unix_sk(sk);
-@@ -688,10 +693,16 @@ static void unix_release_sock(struct sock *sk, int embrion)
+-	struct TCP_Server_Info *pserver;
++	struct TCP_Server_Info *nserver;
+ 	struct cifs_ses *ses;
++	LIST_HEAD(reco);
+ 	int i;
  
- 	if (skpair != NULL) {
- 		if (sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET) {
-+			struct sk_buff *skb = skb_peek(&sk->sk_receive_queue);
+-	/* If server is a channel, select the primary channel */
+-	pserver = SERVER_IS_CHAN(server) ? server->primary_server : server;
+-
+ 	/* if we need to signal just this channel */
+ 	if (!all_channels) {
+-		spin_lock(&server->srv_lock);
+-		if (server->tcpStatus != CifsExiting)
+-			server->tcpStatus = CifsNeedReconnect;
+-		spin_unlock(&server->srv_lock);
++		set_need_reco(server);
+ 		return;
+ 	}
+ 
+-	spin_lock(&cifs_tcp_ses_lock);
+-	list_for_each_entry(ses, &pserver->smb_ses_list, smb_ses_list) {
+-		if (cifs_ses_exiting(ses))
+-			continue;
+-		spin_lock(&ses->chan_lock);
+-		for (i = 0; i < ses->chan_count; i++) {
+-			if (!ses->chans[i].server)
++	if (SERVER_IS_CHAN(server))
++		server = server->primary_server;
++	scoped_guard(spinlock, &cifs_tcp_ses_lock) {
++		set_need_reco(server);
++		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
++			spin_lock(&ses->ses_lock);
++			if (ses->ses_status == SES_EXITING) {
++				spin_unlock(&ses->ses_lock);
+ 				continue;
+-
+-			spin_lock(&ses->chans[i].server->srv_lock);
+-			if (ses->chans[i].server->tcpStatus != CifsExiting)
+-				ses->chans[i].server->tcpStatus = CifsNeedReconnect;
+-			spin_unlock(&ses->chans[i].server->srv_lock);
++			}
++			spin_lock(&ses->chan_lock);
++			for (i = 1; i < ses->chan_count; i++) {
++				nserver = ses->chans[i].server;
++				if (!nserver)
++					continue;
++				nserver->srv_count++;
++				list_add(&nserver->rlist, &reco);
++			}
++			spin_unlock(&ses->chan_lock);
++			spin_unlock(&ses->ses_lock);
+ 		}
+-		spin_unlock(&ses->chan_lock);
+ 	}
+-	spin_unlock(&cifs_tcp_ses_lock);
 +
-+#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
-+			if (skb && !unix_skb_len(skb))
-+				skb = skb_peek_next(skb, &sk->sk_receive_queue);
-+#endif
- 			unix_state_lock(skpair);
- 			/* No more writes */
- 			WRITE_ONCE(skpair->sk_shutdown, SHUTDOWN_MASK);
--			if (!skb_queue_empty_lockless(&sk->sk_receive_queue) || embrion)
-+			if (skb || embrion)
- 				WRITE_ONCE(skpair->sk_err, ECONNRESET);
- 			unix_state_unlock(skpair);
- 			skpair->sk_state_change(skpair);
-@@ -2578,11 +2589,6 @@ static long unix_stream_data_wait(struct sock *sk, long timeo,
- 	return timeo;
++	list_for_each_entry_safe(server, nserver, &reco, rlist) {
++		list_del_init(&server->rlist);
++		set_need_reco(server);
++		cifs_put_tcp_session(server, 0);
++	}
  }
  
--static unsigned int unix_skb_len(const struct sk_buff *skb)
--{
--	return skb->len - UNIXCB(skb).consumed;
--}
--
- struct unix_stream_read_state {
- 	int (*recv_actor)(struct sk_buff *, int, int,
- 			  struct unix_stream_read_state *);
+ /*
 -- 
 2.39.5
 
