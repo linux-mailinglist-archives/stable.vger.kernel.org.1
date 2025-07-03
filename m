@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-159643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00D9AF79A1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:04:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2C4AF7860
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:49:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F47B54640F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:00:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91E321C859BF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CC82EF656;
-	Thu,  3 Jul 2025 15:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671F02EE29D;
+	Thu,  3 Jul 2025 14:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqMfdyZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9JhnyIv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A1B2EE299;
-	Thu,  3 Jul 2025 15:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24430126BFF;
+	Thu,  3 Jul 2025 14:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554880; cv=none; b=fWaADs2uDYxGJ1V76i4+O/UNRIl5z4/YufIlwNScYuiqwDSHHnCuQNBk1s1igVE5g5W1iGaIbKe7K3D06gT0fC+iW/SbNSXsCbhjG8o4+UrDicLSvnGzyyPbtWvwqdhum6nbGheBLgFJZTtuteZAFM137gJSwndt7nFlT2HhXT8=
+	t=1751554103; cv=none; b=JY+q6grfvf10cmNm57atray8aUgUJHa83S3DjXANAcL14fU0tycZQm/m4M+WxrEgnEfu622PlQYy0GqxnhEDV3BOPkxvCXEhoYNNlKqGv780aq88T+vai6/Mt5BPPxTUVMChQNJIU3TDLfSg0IDizw1ogtxXcMQzDYLpjVmxL4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554880; c=relaxed/simple;
-	bh=d/vzMHPA8xL1hOVTWGeJF3ePmhv/rioNzSEy53VTx8s=;
+	s=arc-20240116; t=1751554103; c=relaxed/simple;
+	bh=0VSxlXCaAJqlAnTg7z44lAvqQmVGdWjsMHmio2vFeOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DbaF9YsFo8zb8iuuLRk83nyNn8KHu9D6VCEumxZ9qeDS1NRWAjmoCQ724Lay5QNY7QheXEosHyoioInqQByzOJUE6OQu7JAi6dV8LC/QhEXh0A4WvqiRY5WkvEq+7bYdDDnuUy1pzpPPlKvGWd7v3cKqbgBGA7Q4DPSN4dh6Puo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqMfdyZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4353DC4CEE3;
-	Thu,  3 Jul 2025 15:01:19 +0000 (UTC)
+	 MIME-Version; b=j133KDG1Mf6as1oUrbK/kDnyyUth4jR4XF8OswolKC6SJapVpnokp1+tMWUSe5EfyS4pOIJ4bQg2jwvbXXrwJc9aUw121e6/xrb5LHUMWm+naOUnZqB2FuJe2lzxQwRl1I38Io3V1dt6g+bnmISjJ3qP/UKts/NIs1zW34daf/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9JhnyIv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892E4C4CEE3;
+	Thu,  3 Jul 2025 14:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554879;
-	bh=d/vzMHPA8xL1hOVTWGeJF3ePmhv/rioNzSEy53VTx8s=;
+	s=korg; t=1751554103;
+	bh=0VSxlXCaAJqlAnTg7z44lAvqQmVGdWjsMHmio2vFeOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FqMfdyZDkKf5m242dy5Y+m/SGLyp3jjA1/jsX5JSynYzlUEWvQRAqfaOJSI40a7Zb
-	 I2ZqXFk4WV0h9dT+jMoCt5inf5MJGnriG4l/4R0Vjuy8NapmcuISTlO8wAVMi5IiSk
-	 oU9n0IzjhtEUOhnPkK3gtcZ26B/YvJGgep3ufFLg=
+	b=N9JhnyIvPt9YKNQlu+27SPferjTdsQMq8TceYb/GoU809cK8pG4QVOw86sP/lziV+
+	 QGKZ+DJivm4mITqoj7cTlVkxY25fzlQSd2n7QUZ5KHFWBWIMrciU7Tg1wvfk9aI9yW
+	 j6dHpD2lBAVNkG147YRt3EkeLv+E3DupJz0pTHBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Kieran Bingham <kbingham@kernel.org>,
+	SeongJae Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 108/263] scripts/gdb: fix dentry_name() lookup
-Date: Thu,  3 Jul 2025 16:40:28 +0200
-Message-ID: <20250703144008.668404043@linuxfoundation.org>
+Subject: [PATCH 6.12 081/218] mm/damon/sysfs-schemes: free old damon_sysfs_scheme_filter->memcg_path on write
+Date: Thu,  3 Jul 2025 16:40:29 +0200
+Message-ID: <20250703143959.182375827@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 79300ac805b672a84b64d80d4cbc374d83411599 upstream.
+commit 4f489fe6afb395dbc79840efa3c05440b760d883 upstream.
 
-The "d_iname" member was replaced with "d_shortname.string" in the commit
-referenced in the Fixes tag.  This prevented the GDB script "lx-mount"
-command to properly function:
+memcg_path_store() assigns a newly allocated memory buffer to
+filter->memcg_path, without deallocating the previously allocated and
+assigned memory buffer.  As a result, users can leak kernel memory by
+continuously writing a data to memcg_path DAMOS sysfs file.  Fix the leak
+by deallocating the previously set memory buffer.
 
-(gdb) lx-mounts
-      mount          super_block     devname pathname fstype options
-0xff11000002d21180 0xff11000002d24800 rootfs / rootfs rw 0 0
-0xff11000002e18a80 0xff11000003713000 /dev/root / ext4 rw,relatime 0 0
-Python Exception <class 'gdb.error'>: There is no member named d_iname.
-Error occurred in Python: There is no member named d_iname.
-
-Link: https://lkml.kernel.org/r/20250619225105.320729-1-florian.fainelli@broadcom.com
-Fixes: 58cf9c383c5c ("dcache: back inline names with a struct-wrapped array of unsigned long")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Jeff Layton <jlayton@kernel.org>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20250619183608.6647-2-sj@kernel.org
+Fixes: 7ee161f18b5d ("mm/damon/sysfs-schemes: implement filter directory")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>		[6.3.x]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/gdb/linux/vfs.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/sysfs-schemes.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/gdb/linux/vfs.py b/scripts/gdb/linux/vfs.py
-index c77b9ce75f6d..b5fbb18ccb77 100644
---- a/scripts/gdb/linux/vfs.py
-+++ b/scripts/gdb/linux/vfs.py
-@@ -22,7 +22,7 @@ def dentry_name(d):
-     if parent == d or parent == 0:
-         return ""
-     p = dentry_name(d['d_parent']) + "/"
--    return p + d['d_iname'].string()
-+    return p + d['d_shortname']['string'].string()
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -423,6 +423,7 @@ static ssize_t memcg_path_store(struct k
+ 		return -ENOMEM;
  
- class DentryName(gdb.Function):
-     """Return string of the full path of a dentry.
--- 
-2.50.0
-
+ 	strscpy(path, buf, count + 1);
++	kfree(filter->memcg_path);
+ 	filter->memcg_path = path;
+ 	return count;
+ }
 
 
 
