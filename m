@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-159573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC0CAF7946
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:59:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14ECCAF77E5
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:44:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B46FF583482
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:57:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 906877ACA25
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49CA2EE299;
-	Thu,  3 Jul 2025 14:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF0A2ED85C;
+	Thu,  3 Jul 2025 14:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pDssVaE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6yw98gW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D372EAD1B;
-	Thu,  3 Jul 2025 14:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29FE2DE6E5;
+	Thu,  3 Jul 2025 14:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554651; cv=none; b=Ed5DJda89ffFfsNYVOTop5N+9GLK+LcDF8YIH0ev8XYyQdWe4GMEd1cOXaKGcUC14+CYdANbmTMbMYVMKHiDF+CH3TeL15K0E5fsx+IisyZ4MEATY7i1lQ9zo/brnohTKMPEANQwmp1UvE7zhqQQohhmu9o5V1HXtrIMgXlWRhw=
+	t=1751553878; cv=none; b=m250SsAxGSGRCA0r0lKV+YgJLfJdWyPewtF7gvk1EnaRNnxW/DKuZZ7Ju9rmPLjDmgd8FH+zpFttKVXortbCHwgT9eypcoXTRtAcLK+1KfYglZDjXrrE55id8Q3ROSOU5Yo6whangBiSnzGi+XVWgNxGz0E92DkYN9OIINNbddY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554651; c=relaxed/simple;
-	bh=ANuY7rM2Lj6txqy9ZgokSKZ/+51nuxmLhAREGAlqeWk=;
+	s=arc-20240116; t=1751553878; c=relaxed/simple;
+	bh=b9d6MzUGrFBdjytHRPj4Eb2J+lkoBwSoaLVOtbVQT+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=odqypsYLMpVulQ0AzNC/NnnxHbLAwXlv92krLCJh6XCssi2FRMHRn8U/HY/Lpd5Znq1OP32VZJhfJgLNfBob4wYalkWuIHTjVwORmy2YXvBAWe9hz+9tHx8+03lu1b2uEa0CJWiFu78NIaYMdW62uTPoCtCjBxYVQLYCDDl4q2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pDssVaE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D390C4CEE3;
-	Thu,  3 Jul 2025 14:57:30 +0000 (UTC)
+	 MIME-Version; b=h+ig4s/OmiFRG1f5BYmOBmQo0o1wbQrgepWEw3uA5fEf2frVCqyWIjJFoAHC8KMPvCMpwNHqg/SEJhN8oq/0xBoOF1N0F26VMjc5Ql28J5mhE8rJk41dksaHv32n5rrUzl2GLN2hZoY6MpH23w1iLcNYn0jDMw5Wnr54ppIJcxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6yw98gW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDAFEC4CEE3;
+	Thu,  3 Jul 2025 14:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554651;
-	bh=ANuY7rM2Lj6txqy9ZgokSKZ/+51nuxmLhAREGAlqeWk=;
+	s=korg; t=1751553877;
+	bh=b9d6MzUGrFBdjytHRPj4Eb2J+lkoBwSoaLVOtbVQT+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1pDssVaERuxw3UKAf6LC7dzgrX19ezC23NCibwq3yFtP0Z9yqh7VkIC3C3tcoviRd
-	 CV8N41IcKy8eCY0WIPi0HAYKvbvsulSmLtuLtDaM6zD1R9AYaQGJ+UxfeArSPpAqB5
-	 pKL5bRkCETqh/hJZCIxQjoLf6FT827kCacUNduLE=
+	b=c6yw98gWZgp6fI/J2T9FXqj8x7Xf6x2msP4IZmwwyI9JQTtipS+b/yr5yMTZ0d6bE
+	 jIkuZ9bQbOIMzlEmbP0P6KOjk8OVkn+G1pGDHecc5VOAlnahoaMAXji8skQXjzxZj1
+	 wgzSlh0vfVQkJenqWopiLivs60XZurSAibLmfLSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Pavel Machek <pavel@ucw.cz>,
+	Tobias Deiminger <tobias.deiminger@linutronix.de>,
+	Sven Schuchmann <schuchmann@schleissheimer.de>,
+	Sven Schwermer <sven.schwermer@disruptive-technologies.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 038/263] drm/amdgpu/vcn4: read back register after written
-Date: Thu,  3 Jul 2025 16:39:18 +0200
-Message-ID: <20250703144005.834115133@linuxfoundation.org>
+Subject: [PATCH 6.12 011/218] leds: multicolor: Fix intensity setting while SW blinking
+Date: Thu,  3 Jul 2025 16:39:19 +0200
+Message-ID: <20250703143956.411416747@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +66,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David (Ming Qiang) Wu <David.Wu3@amd.com>
+From: Sven Schwermer <sven.schwermer@disruptive-technologies.com>
 
-[ Upstream commit a3810a5e37c58329aa2c7992f3172a423f4ae194 ]
+[ Upstream commit e35ca991a777ef513040cbb36bc8245a031a2633 ]
 
-The addition of register read-back in VCN v4.0.0 is intended to prevent
-potential race conditions.
+When writing to the multi_intensity file, don't unconditionally call
+led_set_brightness. By only doing this if blinking is inactive we
+prevent blinking from stopping if the blinking is in its off phase while
+the file is written.
 
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Instead, if blinking is active, the changed intensity values are applied
+upon the next blink. This is consistent with changing the brightness on
+monochrome LEDs with active blinking.
+
+Suggested-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Acked-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Acked-by: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Tobias Deiminger <tobias.deiminger@linutronix.de>
+Tested-by: Sven Schuchmann <schuchmann@schleissheimer.de>
+Signed-off-by: Sven Schwermer <sven.schwermer@disruptive-technologies.com>
+Link: https://lore.kernel.org/r/20250404184043.227116-1-sven@svenschwermer.de
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/leds/led-class-multicolor.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-index 1f777c125b00d..4a88a4d37aeeb 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-@@ -1122,6 +1122,11 @@ static int vcn_v4_0_start_dpg_mode(struct amdgpu_vcn_inst *vinst, bool indirect)
- 			ring->doorbell_index << VCN_RB1_DB_CTRL__OFFSET__SHIFT |
- 			VCN_RB1_DB_CTRL__EN_MASK);
+diff --git a/drivers/leds/led-class-multicolor.c b/drivers/leds/led-class-multicolor.c
+index 30c1ecb5f361e..c707be97049b7 100644
+--- a/drivers/leds/led-class-multicolor.c
++++ b/drivers/leds/led-class-multicolor.c
+@@ -61,7 +61,8 @@ static ssize_t multi_intensity_store(struct device *dev,
+ 	for (i = 0; i < mcled_cdev->num_colors; i++)
+ 		mcled_cdev->subled_info[i].intensity = intensity_value[i];
  
-+	/* Keeping one read-back to ensure all register writes are done,
-+	 * otherwise it may introduce race conditions.
-+	 */
-+	RREG32_SOC15(VCN, inst_idx, regUVD_STATUS);
-+
- 	return 0;
- }
- 
-@@ -1303,6 +1308,11 @@ static int vcn_v4_0_start(struct amdgpu_vcn_inst *vinst)
- 	WREG32_SOC15(VCN, i, regVCN_RB_ENABLE, tmp);
- 	fw_shared->sq.queue_mode &= ~(FW_QUEUE_RING_RESET | FW_QUEUE_DPG_HOLD_OFF);
- 
-+	/* Keeping one read-back to ensure all register writes are done,
-+	 * otherwise it may introduce race conditions.
-+	 */
-+	RREG32_SOC15(VCN, i, regUVD_STATUS);
-+
- 	return 0;
- }
- 
-@@ -1583,6 +1593,11 @@ static void vcn_v4_0_stop_dpg_mode(struct amdgpu_vcn_inst *vinst)
- 	/* disable dynamic power gating mode */
- 	WREG32_P(SOC15_REG_OFFSET(VCN, inst_idx, regUVD_POWER_STATUS), 0,
- 		~UVD_POWER_STATUS__UVD_PG_MODE_MASK);
-+
-+	/* Keeping one read-back to ensure all register writes are done,
-+	 * otherwise it may introduce race conditions.
-+	 */
-+	RREG32_SOC15(VCN, inst_idx, regUVD_STATUS);
- }
- 
- /**
-@@ -1666,6 +1681,11 @@ static int vcn_v4_0_stop(struct amdgpu_vcn_inst *vinst)
- 	/* enable VCN power gating */
- 	vcn_v4_0_enable_static_power_gating(vinst);
- 
-+	/* Keeping one read-back to ensure all register writes are done,
-+	 * otherwise it may introduce race conditions.
-+	 */
-+	RREG32_SOC15(VCN, i, regUVD_STATUS);
-+
- done:
- 	if (adev->pm.dpm_enabled)
- 		amdgpu_dpm_enable_vcn(adev, false, i);
+-	led_set_brightness(led_cdev, led_cdev->brightness);
++	if (!test_bit(LED_BLINK_SW, &led_cdev->work_flags))
++		led_set_brightness(led_cdev, led_cdev->brightness);
+ 	ret = size;
+ err_out:
+ 	mutex_unlock(&led_cdev->led_access);
 -- 
 2.39.5
 
