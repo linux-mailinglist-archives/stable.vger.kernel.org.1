@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F217BAF7B11
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:21:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F83AF7A39
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2084A5A051B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6948356097C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF9F2F2347;
-	Thu,  3 Jul 2025 15:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904CC22069F;
+	Thu,  3 Jul 2025 15:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwPPmaH+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0Le9aAy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30E92EFDB4;
-	Thu,  3 Jul 2025 15:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C33A15442C;
+	Thu,  3 Jul 2025 15:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555642; cv=none; b=Mys6O/S6b/bB/UEi8CTp7zeiYRPBaKSOCNuP4qJ1WAGfX5c1M0iu9PTRdtLaXSdjz6uTUXSDjA6YwcvNrdlz7ZckI8gfr4oK25m1ttyu6UuKStgW23aXulhMoekyPPzFm7nBaRj1SFroTqKPxhno+82FMeY7fWsSUnhJJNdlwOY=
+	t=1751555248; cv=none; b=YYvKgiyG7MupoWfVUM3k0jZUruSOibTJje+/iLasphQpm7e0e6NFUmAi/23F107Knb0eM3fwhfXtCle638D/zKvTJPntbwOyPfka75K/dvJZZm38TSzJQO8yowhOLdqU8JNFu3VtHG4iWnfbQusNa5Jg6fNkYVjLDU9ZIRmomco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555642; c=relaxed/simple;
-	bh=AjDHE67LMjMFiPmUyuBEg1jLldjsksaQ3kqmSEwWNnA=;
+	s=arc-20240116; t=1751555248; c=relaxed/simple;
+	bh=ItRMOX/l/tbuo8nvKCWZBowG9Rlb4ozv2zsOokGmdjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fc5emPGaIF1JyBEenUBZcaNIRrrqzkcZa85fRTXVrSqWlq1x2Zz4Y4HeB2KQesjaNw0+jWx1twu9tXC4fHAtNrjqRdVlCoXNWs25XmfulgKfm7CXl44k9NRd2a2Owhpzei46tX+dR/fNsdOpOs7zGAk2EuhmbljWpC2knmgciKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwPPmaH+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B938C4CEE3;
-	Thu,  3 Jul 2025 15:14:02 +0000 (UTC)
+	 MIME-Version; b=K+lTVJEPPePh+nc9jAxPG9wYjjMUGgOS8Fag4JrymJdK5La4gdjvE1coOB1AAtwV7WbTDPJQDAVIviNH9hizxyp9m1AwYugmKQzzoG3S9RIvy7n/C2tutnzKjPHCmYZqP52bGMjqJL6869zd2Zuy4PDUgLOv8ahCW48BMxRevWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0Le9aAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77987C4CEE3;
+	Thu,  3 Jul 2025 15:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555642;
-	bh=AjDHE67LMjMFiPmUyuBEg1jLldjsksaQ3kqmSEwWNnA=;
+	s=korg; t=1751555247;
+	bh=ItRMOX/l/tbuo8nvKCWZBowG9Rlb4ozv2zsOokGmdjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QwPPmaH+WAMQ8PZCQPnodQ0u9XNsN963ndznu4K38auddObTJVLUXhhFkJ0KPgWN7
-	 KzbTV46Po6qst6VnpBkhEmOzONtYSLTcetz1ta2UMDyhOFECF7QBGB3qkP+bnHrb5/
-	 XSAUB0v/UiA4u9GCOSC+9wEtbzjW06uPEcBK7Z0c=
+	b=f0Le9aAyI7K2QnuKvzaybTI/kksXiGQ6maZwfrXkAJlnR95MRC8Irj7QOL/WWY3pM
+	 Fitdz/bONrpFesk0kR/iHJSk6co/o+AAZ42GCv6asdlrS0SELpBWMQuYWjZ3OXQiSt
+	 OOYOgDSQIb7bTpSReNJ+71Y9qFXFrp1Ygiq9dPtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.6 077/139] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
+	John Olender <john.olender@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Subject: [PATCH 6.15 220/263] drm/amdgpu: amdgpu_vram_mgr_new(): Clamp lpfn to total vram
 Date: Thu,  3 Jul 2025 16:42:20 +0200
-Message-ID: <20250703143944.176604348@linuxfoundation.org>
+Message-ID: <20250703144013.204382951@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: John Olender <john.olender@gmail.com>
 
-commit a3ef3c2da675a8a564c8bea1a511cdd0a2a9aa49 upstream.
+commit 4d2f6b4e4c7ed32e7fa39fcea37344a9eab99094 upstream.
 
-Reading DPCD registers has side-effects in general. In particular
-accessing registers outside of the link training register range
-(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
-forbidden by the DP v2.1 Standard, see
+The drm_mm allocator tolerated being passed end > mm->size, but the
+drm_buddy allocator does not.
 
-3.6.5.1 DPTX AUX Transaction Handling Mandates
-3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
+Restore the pre-buddy-allocator behavior of allowing such placements.
 
-Based on my tests, accessing the DPCD_REV register during the link
-training of an UHBR TBT DP tunnel sink leads to link training failures.
-
-Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
-DPCD register access quirk.
-
-Cc: <stable@vger.kernel.org>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
-(cherry picked from commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3448
+Signed-off-by: John Olender <john.olender@gmail.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/display/drm_dp_helper.c |    2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/display/drm_dp_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -663,7 +663,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
- 	 * monitor doesn't power down exactly after the throw away read.
- 	 */
- 	if (!aux->is_remote) {
--		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
-+		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
- 		if (ret < 0)
- 			return ret;
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -463,7 +463,7 @@ static int amdgpu_vram_mgr_new(struct tt
+ 	int r;
+ 
+ 	lpfn = (u64)place->lpfn << PAGE_SHIFT;
+-	if (!lpfn)
++	if (!lpfn || lpfn > man->size)
+ 		lpfn = man->size;
+ 
+ 	fpfn = (u64)place->fpfn << PAGE_SHIFT;
 
 
 
