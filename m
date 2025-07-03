@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FCF8AF7A19
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E8DAF7AB9
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 573FE547670
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40E0E6E14F5
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85252ED143;
-	Thu,  3 Jul 2025 15:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3C22EFD89;
+	Thu,  3 Jul 2025 15:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMgpP+Da"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypJxiUR2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57E615442C;
-	Thu,  3 Jul 2025 15:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA06C2EA149;
+	Thu,  3 Jul 2025 15:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555165; cv=none; b=GEOPCQncaKTY38H31raHF6rFq6ubXSIdKPITdrqfceQ5ofvdkR6AKJKToioztzzG3BkRfrQZ3gBG2QgG/wcHkCgrZQaKHErHWwD3LQmizm+GgAX9WoBYkow0BnyeGfqB+X2FVJv6tB+SnUzvu3rVDuhW8ftKenu7gWouFZMGHk0=
+	t=1751555438; cv=none; b=EYh/huCvOLlYNbEyGChmU1y5OX5VzwtT0HL93kPXBW5zpMbYpzJYgJiqc6Wpn2dlgwlImj4DVZy04WJwHteixFYYLcq9cSzQmHnjqTXSFQhndbl7/JJMXoD5C2cH2ddZyeIJHDa9S9Ry6XABcMypQ9XetMtQEWDH33U18+6EDZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555165; c=relaxed/simple;
-	bh=s6nRi7MQrKWX9IU+z7DzB6ixT+QwuVfmh5oenphuiXk=;
+	s=arc-20240116; t=1751555438; c=relaxed/simple;
+	bh=MsYewEeBV0DULp6hQn9WAtdkA+NtLTlvQdwms95hP24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DUsjGm/XfV+fwCO59K4ynUGxYsnTJOcVmWNnDfj3iOa+OmeiyOV5g7AsYPT7YABi6hDLstFhQXHTkN41zPqwYTlyN4zTn43Zsr7ekPbNxetbWTxw+W3XJPLm6Q/Q+HI+j9TVRCC5Joe7jrtzn/Jx2h+4djByZn+WFCOzPVF17oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMgpP+Da; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E22C4CEE3;
-	Thu,  3 Jul 2025 15:06:04 +0000 (UTC)
+	 MIME-Version; b=EFksUzxRprkLoIGqHr1qWlt90OJ7TNjhxhrsq9LGiUNfKfKn5NNrr7qDQoYxseo5Yx5Zu+V2TokXSImr3MLFVZcOTH7skI/D7zDKILOVzYaQg0LCXEYQzFiKPoLMkKrdjL6xdA6WKn2359nPKzOTTljgwrLx5OCV2Mf7dw5nq1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ypJxiUR2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CF0C4CEE3;
+	Thu,  3 Jul 2025 15:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555165;
-	bh=s6nRi7MQrKWX9IU+z7DzB6ixT+QwuVfmh5oenphuiXk=;
+	s=korg; t=1751555437;
+	bh=MsYewEeBV0DULp6hQn9WAtdkA+NtLTlvQdwms95hP24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PMgpP+Daivkucenp5WRvljnsPqIKo7nD5gVhaxJPcMv6yQEH0xAr4DnIB+R84w6CD
-	 Np7cp4I9fyANLR3fZWmF63wMfCws88q2yb4tX9dI+ZEejtKWyFbHyUu7aSc0Vz1XXf
-	 kAdAznqwaekv6XAr5vMpv1Ah/MeyCn3xYTAkkL8k=
+	b=ypJxiUR2++/G6gwX+4YKo/tdcHv8VfF2uDVXJNIYy/bCtPO1SGdKILkq+t+FtgeV6
+	 qFmRBkv5VIZzoLi6VW7R0mjUOY/8NyLHzUuUdo1LIyI5vHFWIvlRsD4+xkApRBVqRG
+	 sBRPTJHSbPzI/DlvIQd1fwHuOAm9AR2PC42r24FM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Philipp Kerling <pkerling@casix.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 156/263] netlink: specs: tc: replace underscores with dashes in names
-Date: Thu,  3 Jul 2025 16:41:16 +0200
-Message-ID: <20250703144010.617751490@linuxfoundation.org>
+Subject: [PATCH 6.6 014/139] ksmbd: allow a filename to contain special characters on SMB3.1.1 posix extension
+Date: Thu,  3 Jul 2025 16:41:17 +0200
+Message-ID: <20250703143941.732666563@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit eef0eaeca7fa8e358a31e89802f564451b797718 ]
+[ Upstream commit dc3e0f17f74558e8a2fce00608855f050de10230 ]
 
-We're trying to add a strict regexp for the name format in the spec.
-Underscores will not be allowed, dashes should be used instead.
-This makes no difference to C (codegen, if used, replaces special
-chars in names) but it gives more uniform naming in Python.
+If client send SMB2_CREATE_POSIX_CONTEXT to ksmbd, Allow a filename
+to contain special characters.
 
-Fixes: a1bcfde83669 ("doc/netlink/specs: Add a spec for tc")
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Link: https://patch.msgid.link/20250624211002.3475021-10-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Philipp Kerling <pkerling@casix.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/tc.yaml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2pdu.c | 53 +++++++++++++++++++++--------------------
+ 1 file changed, 27 insertions(+), 26 deletions(-)
 
-diff --git a/Documentation/netlink/specs/tc.yaml b/Documentation/netlink/specs/tc.yaml
-index 953aa837958b3..5702a6d21038c 100644
---- a/Documentation/netlink/specs/tc.yaml
-+++ b/Documentation/netlink/specs/tc.yaml
-@@ -227,7 +227,7 @@ definitions:
-         type: u8
-         doc: log(P_max / (qth-max - qth-min))
-       -
--        name: Scell_log
-+        name: Scell-log
-         type: u8
-         doc: cell size for idle damping
-       -
-@@ -248,7 +248,7 @@ definitions:
-         name: DPs
-         type: u32
-       -
--        name: def_DP
-+        name: def-DP
-         type: u32
-       -
-         name: grio
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index d8325504a1624..b851cd7d19b48 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2862,7 +2862,7 @@ int smb2_open(struct ksmbd_work *work)
+ 	int req_op_level = 0, open_flags = 0, may_flags = 0, file_info = 0;
+ 	int rc = 0;
+ 	int contxt_cnt = 0, query_disk_id = 0;
+-	int maximal_access_ctxt = 0, posix_ctxt = 0;
++	bool maximal_access_ctxt = false, posix_ctxt = false;
+ 	int s_type = 0;
+ 	int next_off = 0;
+ 	char *name = NULL;
+@@ -2889,6 +2889,27 @@ int smb2_open(struct ksmbd_work *work)
+ 		return create_smb2_pipe(work);
+ 	}
+ 
++	if (req->CreateContextsOffset && tcon->posix_extensions) {
++		context = smb2_find_context_vals(req, SMB2_CREATE_TAG_POSIX, 16);
++		if (IS_ERR(context)) {
++			rc = PTR_ERR(context);
++			goto err_out2;
++		} else if (context) {
++			struct create_posix *posix = (struct create_posix *)context;
++
++			if (le16_to_cpu(context->DataOffset) +
++				le32_to_cpu(context->DataLength) <
++			    sizeof(struct create_posix) - 4) {
++				rc = -EINVAL;
++				goto err_out2;
++			}
++			ksmbd_debug(SMB, "get posix context\n");
++
++			posix_mode = le32_to_cpu(posix->Mode);
++			posix_ctxt = true;
++		}
++	}
++
+ 	if (req->NameLength) {
+ 		name = smb2_get_name((char *)req + le16_to_cpu(req->NameOffset),
+ 				     le16_to_cpu(req->NameLength),
+@@ -2911,9 +2932,11 @@ int smb2_open(struct ksmbd_work *work)
+ 				goto err_out2;
+ 		}
+ 
+-		rc = ksmbd_validate_filename(name);
+-		if (rc < 0)
+-			goto err_out2;
++		if (posix_ctxt == false) {
++			rc = ksmbd_validate_filename(name);
++			if (rc < 0)
++				goto err_out2;
++		}
+ 
+ 		if (ksmbd_share_veto_filename(share, name)) {
+ 			rc = -ENOENT;
+@@ -3071,28 +3094,6 @@ int smb2_open(struct ksmbd_work *work)
+ 			rc = -EBADF;
+ 			goto err_out2;
+ 		}
+-
+-		if (tcon->posix_extensions) {
+-			context = smb2_find_context_vals(req,
+-							 SMB2_CREATE_TAG_POSIX, 16);
+-			if (IS_ERR(context)) {
+-				rc = PTR_ERR(context);
+-				goto err_out2;
+-			} else if (context) {
+-				struct create_posix *posix =
+-					(struct create_posix *)context;
+-				if (le16_to_cpu(context->DataOffset) +
+-				    le32_to_cpu(context->DataLength) <
+-				    sizeof(struct create_posix) - 4) {
+-					rc = -EINVAL;
+-					goto err_out2;
+-				}
+-				ksmbd_debug(SMB, "get posix context\n");
+-
+-				posix_mode = le32_to_cpu(posix->Mode);
+-				posix_ctxt = 1;
+-			}
+-		}
+ 	}
+ 
+ 	if (ksmbd_override_fsids(work)) {
 -- 
 2.39.5
 
