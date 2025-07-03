@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F09AF7949
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:00:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34917AF7A37
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22376188E536
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9FCE560835
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA262EF652;
-	Thu,  3 Jul 2025 14:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119132E7197;
+	Thu,  3 Jul 2025 15:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U92sV2eE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJEreTEp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8F62EE978;
-	Thu,  3 Jul 2025 14:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50EC15442C;
+	Thu,  3 Jul 2025 15:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554504; cv=none; b=UND0gK7B270gXeN061lLDp5yFvbUc38kjHLF3MU3WiJ4BP5/d6qiFN4RPitRvSU9DxWta7eXnpe+BvW0VKDwPVfm2H0mNzCNYlkNca7H7yV8SoEdEuYHlarWyl7i738ZLjVewC0tsHybV5CxJKcq/J1VtBnL3plloCLL9B2QgMU=
+	t=1751555244; cv=none; b=pc4U4R7AUc4i0WnKy3kcabYfV/jh+OwHfa/4UAnIwDrqd2u6VO2P1J0I6U91sy9p9ECTkVwzhfGgMTr9+FNuCpdmRQILkj2eGjxkkA6lQxalLNYXRoKy7jGzypb/obrFopTM9CUQCypKn+pNdyN9/T2gLCpnQIaX3MHo95LI9wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554504; c=relaxed/simple;
-	bh=TBxzDXQRpKPYuFGwlo72tsaDeKy9NUG26r/xDxS19HE=;
+	s=arc-20240116; t=1751555244; c=relaxed/simple;
+	bh=PB3Tg3zJ7mI4LAPel6VpQ80jZLrExtRIEyeW6Czi3XA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6ZKzxc5+LekpN+mUeRAkfhev5s6imYfb+KVYLwMtC6k/Hj2nxQBQFwzHtFvne3XvCtRc4VtsR54KI59aJ6qUdNsnWJN3oYFRX0O9nyN900LwEdZI2OS6KElGX3GwfeRZb/ltpIFrxxBjZpwDMQk6lbErTKxz+yZq/2391U4hvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U92sV2eE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709EDC4CEE3;
-	Thu,  3 Jul 2025 14:55:03 +0000 (UTC)
+	 MIME-Version; b=q94eiNMPtrecDWkx/SbbLKBIriQUaPJiAJqoOjhWkpoKxhmB+pdZIRmElsTVFUKo9R3xVpluc/s05dACh0H33YZWzNgUF6BEqU/gNwWdHKZbnQabop3hlwI8+u6UvU6zjtvD+cOeLLW+lyDI3Ez1sL0owUGuywdcAibFLGB3qMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJEreTEp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADAAC4CEE3;
+	Thu,  3 Jul 2025 15:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554503;
-	bh=TBxzDXQRpKPYuFGwlo72tsaDeKy9NUG26r/xDxS19HE=;
+	s=korg; t=1751555244;
+	bh=PB3Tg3zJ7mI4LAPel6VpQ80jZLrExtRIEyeW6Czi3XA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U92sV2eEVrprf2xBtKmS6fOQxAM+0A7gEGiSpMrtPHuxllknGo+p9KStGrsGkXjw5
-	 RSykqD1CxJg37ED6sSwQ5e5UcDm0euYjQ1NIK2vyOiapU4bCbcddW+JLvvbqvOLUfF
-	 0GFN5mwHTwb6UVvyUu7Z13hdHm/jEFGvgFpwOdhE=
+	b=TJEreTEpj5FokDiWJ0jZY35Psx2qBbC1W+qsgOdbv6mHke/H4a82O+bHosULrjBUv
+	 RcD7L+x5CMjaxEMLUUp2zNTPIk2UQc1mePaAGIrgCgFi5HHC3YFANNrKttXu9Jyr0C
+	 9TLvsEWmb9Wsmu1Q2d5lZaFVUDGB515pc4BTqsgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Mathieu Tortuyaux <mtortuyaux@microsoft.com>
-Subject: [PATCH 6.12 191/218] r8169: add support for RTL8125D
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.15 219/263] drm/amd/display: Add null pointer check for get_first_active_display()
 Date: Thu,  3 Jul 2025 16:42:19 +0200
-Message-ID: <20250703144003.843116537@linuxfoundation.org>
+Message-ID: <20250703144013.165073261@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,154 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit f75d1fbe7809bc5ed134204b920fd9e2fc5db1df upstream.
+commit c3e9826a22027a21d998d3e64882fa377b613006 upstream.
 
-This adds support for new chip version RTL8125D, which can be found on
-boards like Gigabyte X870E AORUS ELITE WIFI7. Firmware rtl8125d-1.fw
-for this chip version is available in linux-firmware already.
+The function mod_hdcp_hdcp1_enable_encryption() calls the function
+get_first_active_display(), but does not check its return value.
+The return value is a null pointer if the display list is empty.
+This will lead to a null pointer dereference in
+mod_hdcp_hdcp2_enable_encryption().
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/d0306912-e88e-4c25-8b5d-545ae8834c0c@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+Add a null pointer check for get_first_active_display() and return
+MOD_HDCP_STATUS_DISPLAY_NOT_FOUND if the function return null.
+
+Fixes: 2deade5ede56 ("drm/amd/display: Remove hdcp display state with mst fix")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # v5.8
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169.h            |    1 +
- drivers/net/ethernet/realtek/r8169_main.c       |   23 ++++++++++++++++-------
- drivers/net/ethernet/realtek/r8169_phy_config.c |   10 ++++++++++
- 3 files changed, 27 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/realtek/r8169.h
-+++ b/drivers/net/ethernet/realtek/r8169.h
-@@ -68,6 +68,7 @@ enum mac_version {
- 	/* support for RTL_GIGA_MAC_VER_60 has been removed */
- 	RTL_GIGA_MAC_VER_61,
- 	RTL_GIGA_MAC_VER_63,
-+	RTL_GIGA_MAC_VER_64,
- 	RTL_GIGA_MAC_VER_65,
- 	RTL_GIGA_MAC_VER_66,
- 	RTL_GIGA_MAC_NONE
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -55,6 +55,7 @@
- #define FIRMWARE_8107E_2	"rtl_nic/rtl8107e-2.fw"
- #define FIRMWARE_8125A_3	"rtl_nic/rtl8125a-3.fw"
- #define FIRMWARE_8125B_2	"rtl_nic/rtl8125b-2.fw"
-+#define FIRMWARE_8125D_1	"rtl_nic/rtl8125d-1.fw"
- #define FIRMWARE_8126A_2	"rtl_nic/rtl8126a-2.fw"
- #define FIRMWARE_8126A_3	"rtl_nic/rtl8126a-3.fw"
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+@@ -368,6 +368,9 @@ enum mod_hdcp_status mod_hdcp_hdcp1_enab
+ 	struct mod_hdcp_display *display = get_first_active_display(hdcp);
+ 	enum mod_hdcp_status status = MOD_HDCP_STATUS_SUCCESS;
  
-@@ -138,6 +139,7 @@ static const struct {
- 	[RTL_GIGA_MAC_VER_61] = {"RTL8125A",		FIRMWARE_8125A_3},
- 	/* reserve 62 for CFG_METHOD_4 in the vendor driver */
- 	[RTL_GIGA_MAC_VER_63] = {"RTL8125B",		FIRMWARE_8125B_2},
-+	[RTL_GIGA_MAC_VER_64] = {"RTL8125D",		FIRMWARE_8125D_1},
- 	[RTL_GIGA_MAC_VER_65] = {"RTL8126A",		FIRMWARE_8126A_2},
- 	[RTL_GIGA_MAC_VER_66] = {"RTL8126A",		FIRMWARE_8126A_3},
- };
-@@ -707,6 +709,7 @@ MODULE_FIRMWARE(FIRMWARE_8168FP_3);
- MODULE_FIRMWARE(FIRMWARE_8107E_2);
- MODULE_FIRMWARE(FIRMWARE_8125A_3);
- MODULE_FIRMWARE(FIRMWARE_8125B_2);
-+MODULE_FIRMWARE(FIRMWARE_8125D_1);
- MODULE_FIRMWARE(FIRMWARE_8126A_2);
- MODULE_FIRMWARE(FIRMWARE_8126A_3);
- 
-@@ -2098,10 +2101,7 @@ static void rtl_set_eee_txidle_timer(str
- 		tp->tx_lpi_timer = timer_val;
- 		r8168_mac_ocp_write(tp, 0xe048, timer_val);
- 		break;
--	case RTL_GIGA_MAC_VER_61:
--	case RTL_GIGA_MAC_VER_63:
--	case RTL_GIGA_MAC_VER_65:
--	case RTL_GIGA_MAC_VER_66:
-+	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_66:
- 		tp->tx_lpi_timer = timer_val;
- 		RTL_W16(tp, EEE_TXIDLE_TIMER_8125, timer_val);
- 		break;
-@@ -2233,6 +2233,9 @@ static enum mac_version rtl8169_get_mac_
- 		{ 0x7cf, 0x64a,	RTL_GIGA_MAC_VER_66 },
- 		{ 0x7cf, 0x649,	RTL_GIGA_MAC_VER_65 },
- 
-+		/* 8125D family. */
-+		{ 0x7cf, 0x688,	RTL_GIGA_MAC_VER_64 },
++	if (!display)
++		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
 +
- 		/* 8125B family. */
- 		{ 0x7cf, 0x641,	RTL_GIGA_MAC_VER_63 },
- 
-@@ -2500,9 +2503,7 @@ static void rtl_init_rxcfg(struct rtl816
- 	case RTL_GIGA_MAC_VER_61:
- 		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST);
- 		break;
--	case RTL_GIGA_MAC_VER_63:
--	case RTL_GIGA_MAC_VER_65:
--	case RTL_GIGA_MAC_VER_66:
-+	case RTL_GIGA_MAC_VER_63 ... RTL_GIGA_MAC_VER_66:
- 		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST |
- 			RX_PAUSE_SLOT_ON);
- 		break;
-@@ -3840,6 +3841,12 @@ static void rtl_hw_start_8125b(struct rt
- 	rtl_hw_start_8125_common(tp);
- }
- 
-+static void rtl_hw_start_8125d(struct rtl8169_private *tp)
-+{
-+	rtl_set_def_aspm_entry_latency(tp);
-+	rtl_hw_start_8125_common(tp);
-+}
-+
- static void rtl_hw_start_8126a(struct rtl8169_private *tp)
- {
- 	rtl_disable_zrxdc_timeout(tp);
-@@ -3889,6 +3896,7 @@ static void rtl_hw_config(struct rtl8169
- 		[RTL_GIGA_MAC_VER_53] = rtl_hw_start_8117,
- 		[RTL_GIGA_MAC_VER_61] = rtl_hw_start_8125a_2,
- 		[RTL_GIGA_MAC_VER_63] = rtl_hw_start_8125b,
-+		[RTL_GIGA_MAC_VER_64] = rtl_hw_start_8125d,
- 		[RTL_GIGA_MAC_VER_65] = rtl_hw_start_8126a,
- 		[RTL_GIGA_MAC_VER_66] = rtl_hw_start_8126a,
- 	};
-@@ -3906,6 +3914,7 @@ static void rtl_hw_start_8125(struct rtl
- 	/* disable interrupt coalescing */
- 	switch (tp->mac_version) {
- 	case RTL_GIGA_MAC_VER_61:
-+	case RTL_GIGA_MAC_VER_64:
- 		for (i = 0xa00; i < 0xb00; i += 4)
- 			RTL_W32(tp, i, 0);
- 		break;
---- a/drivers/net/ethernet/realtek/r8169_phy_config.c
-+++ b/drivers/net/ethernet/realtek/r8169_phy_config.c
-@@ -1104,6 +1104,15 @@ static void rtl8125b_hw_phy_config(struc
- 	rtl8125b_config_eee_phy(phydev);
- }
- 
-+static void rtl8125d_hw_phy_config(struct rtl8169_private *tp,
-+				   struct phy_device *phydev)
-+{
-+	r8169_apply_firmware(tp);
-+	rtl8125_legacy_force_mode(phydev);
-+	rtl8168g_disable_aldps(phydev);
-+	rtl8125b_config_eee_phy(phydev);
-+}
-+
- static void rtl8126a_hw_phy_config(struct rtl8169_private *tp,
- 				   struct phy_device *phydev)
- {
-@@ -1160,6 +1169,7 @@ void r8169_hw_phy_config(struct rtl8169_
- 		[RTL_GIGA_MAC_VER_53] = rtl8117_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_61] = rtl8125a_2_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_63] = rtl8125b_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_64] = rtl8125d_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_65] = rtl8126a_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_66] = rtl8126a_hw_phy_config,
- 	};
+ 	mutex_lock(&psp->hdcp_context.mutex);
+ 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
+ 	memset(hdcp_cmd, 0, sizeof(struct ta_hdcp_shared_memory));
 
 
 
