@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-159964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F1BAF7BB3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:27:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2BA7AF790B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76D081C23BAF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6928584765
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB6B2EACE5;
-	Thu,  3 Jul 2025 15:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4215B2EF9C7;
+	Thu,  3 Jul 2025 14:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4UgI9Cj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ufia+7/6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E25A1DA23;
-	Thu,  3 Jul 2025 15:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18D22E7BD6;
+	Thu,  3 Jul 2025 14:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555932; cv=none; b=Kpf/mgSdZFbGWfWtatwrik5RIqW3SSunb3RPYXoCy6EPbPKKlAjoN4p5z7U03kuWlFo83ywIjEXG0AUt5J4+roea4i3ekoZhmK4Viers/RIzS4zMbBNf+42KZgaBvLBRgdAXBVlvHReKyUTqniNcXubc42J3Trr7xd+7TXDeqX4=
+	t=1751554458; cv=none; b=syCtJXYXJuAsg2xpaN7r0mTi7tXPywLN5emeB2IUPmQhoHkVlcQf18l3Bpp6epjlvEBbRtrmJM9Vyf2CiMjCvdZe8xYPbsgCYX3t01RY7TN9BtgrDFxnx5el6yvlfeYCOcvofbT6Io3QAeGIuIjnRVZvrd5COuf0wXLivAtOPfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555932; c=relaxed/simple;
-	bh=viqDd5Co+1x913oPCqfiSmzbE1zkwmEEcrwK25lDR0Q=;
+	s=arc-20240116; t=1751554458; c=relaxed/simple;
+	bh=YHKbfGJzI/02sMPU/Dfr67hqrR2Fio1ApPxOhM5mb5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UNtYTvps3cjOA57KQJ/Qj4YaRtY4uF+qw7FpEw5UNH+6654idlrGluYX+//xWLOj1p9Usf5VQppq+6e9o+YRSg9aWGIimNA/BC0kdp0/ff3DG4pmGFDpRQNHoN9VXLU5GszE6dVdz4P4xzx5oTAsyx6n1fuFhtUEvlEP1z0lqWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4UgI9Cj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1130C4CEED;
-	Thu,  3 Jul 2025 15:18:51 +0000 (UTC)
+	 MIME-Version; b=fVJUwWuDk4bsgsoRZB3sTCsncHJgZm03mVWTvLKRjG4Hm3o3xtYLz8m5k+wVfAPt+4kaik09DsoQJv8dFqghZBOnbO4y9gOYwIgJ47MgTa7U3LIdMjSPC5+1LNwSC41cIJPI30iEQ4fq91RLF5M6X2iRu1t21E5EI+UE+HtCvxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ufia+7/6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD20C4CEE3;
+	Thu,  3 Jul 2025 14:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555932;
-	bh=viqDd5Co+1x913oPCqfiSmzbE1zkwmEEcrwK25lDR0Q=;
+	s=korg; t=1751554455;
+	bh=YHKbfGJzI/02sMPU/Dfr67hqrR2Fio1ApPxOhM5mb5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T4UgI9CjOEC2c7jJIloANkkRFAKTlKsze9sdwNig1zWnATot9LZahK8UfYqJFH1Wy
-	 nJPXwB9cTpzdwS+p3AcC2fkQK155XbzpJcYjlQXETnN8fPTszFwAFJzz5SBsZAawPy
-	 6zq2qLAyL+QNFNhf+LubyBaZR4GqxmEEzf8W6Sqs=
+	b=Ufia+7/6sPoHTpOB3kZUdw7/Ghh3ywOQpo21JTgKsUNZk6lCnfeZSNB9goKD9YFtw
+	 4wb+2HjHk4GNKsp/tn2pUr8PzOlUectRTAtcT8tp0rz5G4aZXNchRwUbSnlKgPGbDS
+	 N+yK2dhgo4ZbY8c3kBEMsmbYbOe/VACp1VNTLWCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Minas Harutyunyan <hminas@synopsys.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/132] usb: dwc2: also exit clock_gating when stopping udc while suspended
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Zhongwei Zhang <Zhongwei.Zhang@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.12 163/218] drm/amd/display: Correct non-OLED pre_T11_delay.
 Date: Thu,  3 Jul 2025 16:41:51 +0200
-Message-ID: <20250703143940.271621373@linuxfoundation.org>
+Message-ID: <20250703144002.674951939@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Zhongwei Zhang <Zhongwei.Zhang@amd.com>
 
-[ Upstream commit af076a41f8a28faf9ceb9dd2d88aef2c202ef39a ]
+commit 893f07452bca56ff146a6be02b3294a9ea23d18a upstream.
 
-It is possible that the gadget will be disabled, while the udc is
-suspended. When enabling the udc in that case, the clock gating
-will not be enabled again. Leaving the phy unclocked. Even when the
-udc is not enabled, connecting this powered but not clocked phy leads
-to enumeration errors on the host side.
+[Why]
+Only OLED panels require non-zero pre_T11_delay defaultly.
+Others should be controlled by power sequence.
 
-To ensure that the clock gating will be in an valid state, we ensure
-that the clock gating will be enabled before stopping the udc.
+[How]
+For non OLED, pre_T11_delay delay in code should be zero.
+Also post_T7_delay.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Acked-by: Minas Harutyunyan <hminas@synopsys.com>
-Link: https://lore.kernel.org/r/20250417-dwc2_clock_gating-v1-1-8ea7c4d53d73@pengutronix.de
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Signed-off-by: Zhongwei Zhang <Zhongwei.Zhang@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/gadget.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
-index cea6c4fc79956..d4ca1677ad234 100644
---- a/drivers/usb/dwc2/gadget.c
-+++ b/drivers/usb/dwc2/gadget.c
-@@ -4602,6 +4602,12 @@ static int dwc2_hsotg_udc_stop(struct usb_gadget *gadget)
- 	if (!hsotg)
- 		return -ENODEV;
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -951,8 +951,8 @@ void dce110_edp_backlight_control(
+ 	struct dc_context *ctx = link->ctx;
+ 	struct bp_transmitter_control cntl = { 0 };
+ 	uint8_t pwrseq_instance = 0;
+-	unsigned int pre_T11_delay = OLED_PRE_T11_DELAY;
+-	unsigned int post_T7_delay = OLED_POST_T7_DELAY;
++	unsigned int pre_T11_delay = (link->dpcd_sink_ext_caps.bits.oled ? OLED_PRE_T11_DELAY : 0);
++	unsigned int post_T7_delay = (link->dpcd_sink_ext_caps.bits.oled ? OLED_POST_T7_DELAY : 0);
  
-+	/* Exit clock gating when driver is stopped. */
-+	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
-+	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
-+		dwc2_gadget_exit_clock_gating(hsotg, 0);
-+	}
-+
- 	/* all endpoints should be shutdown */
- 	for (ep = 1; ep < hsotg->num_of_eps; ep++) {
- 		if (hsotg->eps_in[ep])
--- 
-2.39.5
-
+ 	if (dal_graphics_object_id_get_connector_id(link->link_enc->connector)
+ 		!= CONNECTOR_ID_EDP) {
+@@ -1067,7 +1067,8 @@ void dce110_edp_backlight_control(
+ 	if (!enable) {
+ 		/*follow oem panel config's requirement*/
+ 		pre_T11_delay += link->panel_config.pps.extra_pre_t11_ms;
+-		msleep(pre_T11_delay);
++		if (pre_T11_delay)
++			msleep(pre_T11_delay);
+ 	}
+ }
+ 
 
 
 
