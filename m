@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9854FAF7ADF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:18:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDC5AF7BBF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:27:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3204483827
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2E041C44CF1
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DB02F19A9;
-	Thu,  3 Jul 2025 15:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983872EF9B8;
+	Thu,  3 Jul 2025 15:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSugO5GI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZAS6VLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D6A2F199C;
-	Thu,  3 Jul 2025 15:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5569D2EE286;
+	Thu,  3 Jul 2025 15:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555500; cv=none; b=tKRpdQ+YOHLzWFIZgNuZoIDtVFyN0Frh9Bwe4WR+dmedsD8JnN96HKQetqTYX3w3PwHt1FQf1zqOa2pIZxNNMDuUPKoyK9Yodg/dUKqguZ0cKmRVkMz0KHusSBLFHiABvFB1qgDmDWqZigPyYvTqrhFbdvvl0BPbKHeZGCkVLMQ=
+	t=1751555955; cv=none; b=fvk8UzchTgJwSG0RYuUXld54YRlY4V7NlXMpsmTx8mcxp758n8+3QiQyLYnWs4e1Q4HtNPuu+B3wkR6PDsuM/FawaEm/dsAppkIFped6O0iii3TPdcyu8Lt0gA5AE6U+o+Q0ySTjY1ns7plN+JaGHbcBMidFpaxgOyVeeGNyxfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555500; c=relaxed/simple;
-	bh=6485hifaYaet7WeyrprFwBeuWYnf3JjYJoK/ZarxNGc=;
+	s=arc-20240116; t=1751555955; c=relaxed/simple;
+	bh=ts9LY2EZe23ERyTbUiltZQHvt1DtBrVI7fPvNV23yMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPC7gEsTQ1wgHPDkk0M1G877lWwjbrhceKjycTlltc+fDDac/m/iJiC0UrhaTjdXSNZxC3KR2IVTyVEl7wrc5GOxRMeRtHKN7TPKcQCarQ092J76kWhkI7i6nzlddEumn5VCNQo94A9sh3I9VO7IDJZx9I2qeHFKdYoODdedBmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSugO5GI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7C8C4CEF1;
-	Thu,  3 Jul 2025 15:11:38 +0000 (UTC)
+	 MIME-Version; b=DNJrSeUO2IalYj2xTWXJU9JjB3G1MQDTi1HcPdUyX5k+QF6yXWJmKTwhF+9zTM6TKMW1iE0zdqXVFTO+6KytpxjWe2IH9LucMX8jf1oHUZF7iMC0Hlno3lSXA9yyfpfWoMCX9WqL5Mkh268uMpT6xOkBhr4jopyvWBZUnOvPiNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZAS6VLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC098C4CEEE;
+	Thu,  3 Jul 2025 15:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555499;
-	bh=6485hifaYaet7WeyrprFwBeuWYnf3JjYJoK/ZarxNGc=;
+	s=korg; t=1751555955;
+	bh=ts9LY2EZe23ERyTbUiltZQHvt1DtBrVI7fPvNV23yMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSugO5GIikB5rxchw2Lu7+UuKP5YDcwPbu5O/TDe9fPGLfjHjbOHyzxd9Rh1AP1FJ
-	 57REYrzT8uqqC7WPS3nnBNo1lRnHHflO+gLjTOgvWnmjafL+LLvScg0aH+BGpnZhLv
-	 SWEH5oQUsg8Nn3D9LX0tiCLx5/obfhuBTV8Z9B8Q=
+	b=wZAS6VLIq/Qz8H69ma2XV3gEGzN0+wrPqDQV81epsC3Yj/oPuOSFYGvMf5FHfn/bJ
+	 padQ/Khx2TPEnJd3MGhiFh7RekAljqEE988rYO4J8M+SVhMfkk+H/gZzy7HeqBLWOj
+	 tYU+qZbEGf7m1DEUralOnjbWuXsyaXC1Wwcn0+L0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Purva Yeshi <purvayeshi550@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/139] iio: adc: ad_sigma_delta: Fix use of uninitialized status_pos
-Date: Thu,  3 Jul 2025 16:41:34 +0200
-Message-ID: <20250703143942.402631800@linuxfoundation.org>
+Subject: [PATCH 6.1 006/132] mfd: max14577: Fix wakeup source leaks on device unbind
+Date: Thu,  3 Jul 2025 16:41:35 +0200
+Message-ID: <20250703143939.634906027@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Purva Yeshi <purvayeshi550@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit e5cdb098a3cb165d52282ffc3a6448642953ea13 ]
+[ Upstream commit d905d06e64b0eb3da43af6186c132f5282197998 ]
 
-Fix Smatch-detected issue:
-drivers/iio/adc/ad_sigma_delta.c:604 ad_sd_trigger_handler() error:
-uninitialized symbol 'status_pos'.
+Device can be unbound, so driver must also release memory for the wakeup
+source.
 
-The variable `status_pos` was only initialized in specific switch cases
-(1, 2, 3, 4), which could leave it uninitialized if `reg_size` had an
-unexpected value.
-
-Fix by adding a default case to the switch block to catch unexpected
-values of `reg_size`. Use `dev_err_ratelimited()` for error logging and
-`goto irq_handled` instead of returning early.
-
-Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
-Link: https://patch.msgid.link/20250410170408.8585-1-purvayeshi550@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250406-mfd-device-wakekup-leak-v1-3-318e14bdba0a@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad_sigma_delta.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mfd/max14577.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 7e21928707437..533667eefe419 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -476,6 +476,10 @@ static irqreturn_t ad_sd_trigger_handler(int irq, void *p)
- 		 * byte set to zero. */
- 		ad_sd_read_reg_raw(sigma_delta, data_reg, transfer_size, &data[1]);
- 		break;
-+
-+	default:
-+		dev_err_ratelimited(&indio_dev->dev, "Unsupported reg_size: %u\n", reg_size);
-+		goto irq_handled;
- 	}
+diff --git a/drivers/mfd/max14577.c b/drivers/mfd/max14577.c
+index d44ad6f337425..61a5ccafa18e0 100644
+--- a/drivers/mfd/max14577.c
++++ b/drivers/mfd/max14577.c
+@@ -467,6 +467,7 @@ static void max14577_i2c_remove(struct i2c_client *i2c)
+ {
+ 	struct max14577 *max14577 = i2c_get_clientdata(i2c);
  
- 	/*
++	device_init_wakeup(max14577->dev, false);
+ 	mfd_remove_devices(max14577->dev);
+ 	regmap_del_irq_chip(max14577->irq, max14577->irq_data);
+ 	if (max14577->dev_type == MAXIM_DEVICE_TYPE_MAX77836)
 -- 
 2.39.5
 
