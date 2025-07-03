@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-159695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C03AF79EF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:07:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3E11AF785C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E10B94A429F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D5A87AB2BE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E621C2EE299;
-	Thu,  3 Jul 2025 15:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AACE5209F43;
+	Thu,  3 Jul 2025 14:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odRgno7A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krhVg6Yt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BCC2B9A6;
-	Thu,  3 Jul 2025 15:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69817126BFF;
+	Thu,  3 Jul 2025 14:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555046; cv=none; b=gt2l7nok54HcN6UVX/ajJ7M0mKqDc1AorEFzHyEhtT9VDW//GU8XazJw50wjPQkohMqSFRpi4pIU1ObjMpfa9iMO0TpSewdAE1B9Y3As/0uzVoGDjL7UzawYK+TIveuar+s8+k18cCb/lFz+U27Wc5/FF2mzTOUBIZ5B02G8IHw=
+	t=1751554164; cv=none; b=PVEIKhN+Gdr/nHPlRPFIV8r5DYWFb+Iqhl4u9OuxjBnYz9EJ7MMDbprQZmWXK5QmBNHehyTPdKHDvUS+PDFCuTzZMupr17VPYSoLmPxL7ePCnYWg/CK6TWJ7cHSd5fGQcryRPoxPj2QpyVbkvacqDlLdCrqZoeS4sc02Q0AWspU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555046; c=relaxed/simple;
-	bh=zlV02ZBjBEDJnH+Q//eXTSipMx0Id8QlcqeiDK2X+Kw=;
+	s=arc-20240116; t=1751554164; c=relaxed/simple;
+	bh=sGW7PdNdXuc/NhITC097AhFXIwrpw15mPiMA1wSpyFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eR+SVM+vvKh2EgI8jDgipE48WNao+iR43II0bO12ALm2uJhyZYtHHhGJQRo0x+imbmHaag8lWvzewHB98ZYzIjn4+o4z2nvWiXN6KmD7aFvpODDVdFmipW+eOTiMEH7erFQ6Ue5fB7NYmkhkwpTKX05cWxAsSn/HN9f4pFr0Bzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odRgno7A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363BDC4CEE3;
-	Thu,  3 Jul 2025 15:04:06 +0000 (UTC)
+	 MIME-Version; b=Jg74yq1E8qhCwcIimtGP6/nUB15XtdxIbnf/7pD8rxhD9OwO1rBH+72woeEhKl2BpxidoZZc7yfS9UrZ3yUOD5fIueSRKdT8qBjyE+hFIQgLp9H0hDBeqyZgZ+FOW0+mbQJjFJvBPRm7qIyw6fhDAVIWoeMXiHxES0kfs0k0/Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krhVg6Yt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3962C4CEE3;
+	Thu,  3 Jul 2025 14:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555046;
-	bh=zlV02ZBjBEDJnH+Q//eXTSipMx0Id8QlcqeiDK2X+Kw=;
+	s=korg; t=1751554164;
+	bh=sGW7PdNdXuc/NhITC097AhFXIwrpw15mPiMA1wSpyFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=odRgno7AqJa6Fu9Axz6QN6WqFOUm1KOAQ9tsHsuuUb6w9AhlmU1JEoVn1flV3CilO
-	 DF2dobvMDjEMoea0xN3AQI4Gcr6kHjbxcemwI+jev30ppbWyZNg4BAzd553WJqaBUU
-	 bfw50u6V19AW2DhooRAHu15pcVP3pE7aaabq2J7g=
+	b=krhVg6YtQxegpZo1nPmFzCMBETtby2RmdbEEgj+jeeuktN7vIZIt9JRcGahu/S7hw
+	 GgEZrHSJRqFII8wdm15m9zyScdQ7kD4MF5CfTkkYWUvsX/jh7nNWG8zTRwdB0MAHgj
+	 zKCHvDAdmfh9knUGGX/vbhosocFBWvEJQgB/U9FY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.15 129/263] drm/xe: Move DSB l2 flush to a more sensible place
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 101/218] wifi: mac80211: finish link init before RCU publish
 Date: Thu,  3 Jul 2025 16:40:49 +0200
-Message-ID: <20250703144009.528175416@linuxfoundation.org>
+Message-ID: <20250703143959.980630849@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit a4b1b51ae132ac199412028a2df7b6c267888190 upstream.
+[ Upstream commit d87c3ca0f8f1ca4c25f2ed819e954952f4d8d709 ]
 
-Flushing l2 is only needed after all data has been written.
+Since the link/conf pointers can be accessed without any
+protection other than RCU, make sure the data is actually
+set up before publishing the structures.
 
-Fixes: 01570b446939 ("drm/xe/bmg: implement Wa_16023588340")
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: stable@vger.kernel.org # v6.12+
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://lore.kernel.org/r/20250606104546.1996818-3-matthew.auld@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 0dd2dd0182bc444a62652e89d08c7f0e4fde15ba)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b2e8434f1829 ("wifi: mac80211: set up/tear down client vif links properly")
+Link: https://patch.msgid.link/20250624130749.9a308b713c74.I4a80f5eead112a38730939ea591d2e275c721256@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/display/xe_dsb_buffer.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ net/mac80211/link.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
-+++ b/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
-@@ -17,10 +17,7 @@ u32 intel_dsb_buffer_ggtt_offset(struct
+diff --git a/net/mac80211/link.c b/net/mac80211/link.c
+index 0525f9e44c37b..9484449d6a347 100644
+--- a/net/mac80211/link.c
++++ b/net/mac80211/link.c
+@@ -93,9 +93,6 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
+ 	if (link_id < 0)
+ 		link_id = 0;
  
- void intel_dsb_buffer_write(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val)
- {
--	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
+-	rcu_assign_pointer(sdata->vif.link_conf[link_id], link_conf);
+-	rcu_assign_pointer(sdata->link[link_id], link);
 -
- 	iosys_map_wr(&dsb_buf->vma->bo->vmap, idx * 4, u32, val);
--	xe_device_l2_flush(xe);
- }
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN) {
+ 		struct ieee80211_sub_if_data *ap_bss;
+ 		struct ieee80211_bss_conf *ap_bss_conf;
+@@ -142,6 +139,9 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
  
- u32 intel_dsb_buffer_read(struct intel_dsb_buffer *dsb_buf, u32 idx)
-@@ -30,12 +27,9 @@ u32 intel_dsb_buffer_read(struct intel_d
- 
- void intel_dsb_buffer_memset(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val, size_t size)
- {
--	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
--
- 	WARN_ON(idx > (dsb_buf->buf_size - size) / sizeof(*dsb_buf->cmd_buf));
- 
- 	iosys_map_memset(&dsb_buf->vma->bo->vmap, idx * 4, val, size);
--	xe_device_l2_flush(xe);
- }
- 
- bool intel_dsb_buffer_create(struct intel_crtc *crtc, struct intel_dsb_buffer *dsb_buf, size_t size)
-@@ -74,9 +68,12 @@ void intel_dsb_buffer_cleanup(struct int
- 
- void intel_dsb_buffer_flush_map(struct intel_dsb_buffer *dsb_buf)
- {
-+	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
+ 		ieee80211_link_debugfs_add(link);
+ 	}
 +
- 	/*
- 	 * The memory barrier here is to ensure coherency of DSB vs MMIO,
- 	 * both for weak ordering archs and discrete cards.
- 	 */
--	xe_device_wmb(dsb_buf->vma->bo->tile->xe);
-+	xe_device_wmb(xe);
-+	xe_device_l2_flush(xe);
++	rcu_assign_pointer(sdata->vif.link_conf[link_id], link_conf);
++	rcu_assign_pointer(sdata->link[link_id], link);
  }
+ 
+ void ieee80211_link_stop(struct ieee80211_link_data *link)
+-- 
+2.39.5
+
 
 
 
