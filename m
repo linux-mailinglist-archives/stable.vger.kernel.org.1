@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D73AF7A9B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:15:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE94AF78ED
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2D3F587FF8
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:11:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FBEA1CA2116
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2D52EFD8E;
-	Thu,  3 Jul 2025 15:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3831D2ED852;
+	Thu,  3 Jul 2025 14:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCS6epYH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gb6W/crm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276A12EFD8A;
-	Thu,  3 Jul 2025 15:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACFA2E7F0B;
+	Thu,  3 Jul 2025 14:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555441; cv=none; b=tFknzTjkucgNKN3ATwu2YP0mAJldiuz8NrfmT1Eto9m73uYhQffeYPT/MZGrkGhrOMniE9Ei3f20tefCJk0UjYSCYxPL5repqgfmtlhwBnUiC8uginX2HBwPzZ0k2FIdxmTbUc+sVSlhMU+ZJcqQkZq9WKjLMTc88HbboPtyrz0=
+	t=1751554359; cv=none; b=s5z/+ghdAu0eVnJ5j/eVgJDsbEOIYlhsI5RESQoxir4EZRXf5dQG2/xN6vI8OUDwLfPtwZTMEz0/Wf3KgUtAuBAangpJhThW2vtN5e6vhQVBOz5sEnQHBQWeIxuYEa8oAcKigXaZj/7z0qH8oJpcK244YyZJp7eFGZ4m+TpOVWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555441; c=relaxed/simple;
-	bh=grkgfNIGIhrLmY6+StATeo+ufF+Krxw2NVWqf+dqgLQ=;
+	s=arc-20240116; t=1751554359; c=relaxed/simple;
+	bh=a6LejNzVC0cqQQEoQguF2Rmz+IXkvBc6UoHZGD3XBQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7jyYSkoICfbQ81gl+u2VBCs/N23/gcfLqsm4Qx2QhTAefOtYihR2yt1mAUGejHzu4M8Cxp5CJp1nDWEC5OQ1O/C/dWj3iQ5EMrBK3URUgGP9MGZ5AmXEagkydR58zmEY4CRtv/6veIrz02Hz7wt1fsl/eIzH/S4GTTm12wyW1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCS6epYH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83492C4CEF4;
-	Thu,  3 Jul 2025 15:10:40 +0000 (UTC)
+	 MIME-Version; b=lHuEufxhk7d6520UEVBp1s7cTLOPiUGSi0nIDXBk7Y02/42QQklINe1WPw7tJw+qSPi6djta6ASsR5BmlBfRQjKAi5lYeLMO3UOWndZ0m2TlAwLskilgdfaZGgcvz/EUWEPP8ApwbuF/YqBTXSE2UpbTuBd0r5//unwMsdt0PuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gb6W/crm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B100C4CEED;
+	Thu,  3 Jul 2025 14:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555441;
-	bh=grkgfNIGIhrLmY6+StATeo+ufF+Krxw2NVWqf+dqgLQ=;
+	s=korg; t=1751554358;
+	bh=a6LejNzVC0cqQQEoQguF2Rmz+IXkvBc6UoHZGD3XBQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MCS6epYHkEScfDnXv/izwk9WAgnXdxSdqmCt7rmEI3Ks/eJXhvNTpNPrr6CV3Rvkn
-	 caGDAR1JHRQXJ1myp7lN4c769v+E8d5gx/em43R5u1B4tgmk/VbCtgUbPsiTWRBInX
-	 I6yx+uSihB87rfCYFbBmxPoxij+q4j/wwh5wp848=
+	b=Gb6W/crmM1euYHBa2jp3ccKqgVBaR5sD8raBAaParAHJ0rY1TjaY45/n+OzX44InK
+	 QsrVSXTEbRmEJfl9nxcPrMR0HjKqYrSihoNOqUFVEwYNlYqa2ZP8ndz5iNkqUxwCwE
+	 uWu8XHFFFyv9PdZvNBYPYtUngUHIhjZGZqUiKEzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Turner Arthur <justinarthur@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/139] ksmbd: provide zero as a unique ID to the Mac client
+	stable <stable@kernel.org>,
+	Yao Zi <ziyao@disroot.org>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 6.12 130/218] dt-bindings: serial: 8250: Make clocks and clock-frequency exclusive
 Date: Thu,  3 Jul 2025 16:41:18 +0200
-Message-ID: <20250703143941.774026114@linuxfoundation.org>
+Message-ID: <20250703144001.308153817@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Yao Zi <ziyao@disroot.org>
 
-[ Upstream commit 571781eb7ffefa65b0e922c8031e42b4411a40d4 ]
+commit 09812134071b3941fb81def30b61ed36d3a5dfb5 upstream.
 
-The Mac SMB client code seems to expect the on-disk file identifier
-to have the semantics of HFS+ Catalog Node Identifier (CNID).
-ksmbd provides the inode number as a unique ID to the client,
-but in the case of subvolumes of btrfs, there are cases where different
-files have the same inode number, so the mac smb client treats it
-as an error. There is a report that a similar problem occurs
-when the share is ZFS.
-Returning UniqueId of zero will make the Mac client to stop using and
-trusting the file id returned from the server.
+The 8250 binding before converting to json-schema states,
 
-Reported-by: Justin Turner Arthur <justinarthur@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  - clock-frequency : the input clock frequency for the UART
+  	or
+  - clocks phandle to refer to the clk used as per Documentation/devicetree
+
+for clock-related properties, where "or" indicates these properties
+shouldn't exist at the same time.
+
+Additionally, the behavior of Linux's driver is strange when both clocks
+and clock-frequency are specified: it ignores clocks and obtains the
+frequency from clock-frequency, left the specified clocks unclaimed. It
+may even be disabled, which is undesired most of the time.
+
+But "anyOf" doesn't prevent these two properties from coexisting, as it
+considers the object valid as long as there's at LEAST one match.
+
+Let's switch to "oneOf" and disallows the other property if one exists,
+precisely matching the original binding and avoiding future confusion on
+the driver's behavior.
+
+Fixes: e69f5dc623f9 ("dt-bindings: serial: Convert 8250 to json-schema")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20250623093445.62327-1-ziyao@disroot.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.h |  1 +
- fs/smb/server/smb2pdu.c    | 19 +++++++++++++++++--
- fs/smb/server/smb2pdu.h    |  3 +++
- 3 files changed, 21 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/serial/8250.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/connection.h b/fs/smb/server/connection.h
-index 4fdd76ce53b90..dc07c6eb8c192 100644
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -107,6 +107,7 @@ struct ksmbd_conn {
- 	__le16				signing_algorithm;
- 	bool				binding;
- 	atomic_t			refcnt;
-+	bool				is_aapl;
- };
+--- a/Documentation/devicetree/bindings/serial/8250.yaml
++++ b/Documentation/devicetree/bindings/serial/8250.yaml
+@@ -45,7 +45,7 @@ allOf:
+                   - ns16550
+                   - ns16550a
+     then:
+-      anyOf:
++      oneOf:
+         - required: [ clock-frequency ]
+         - required: [ clocks ]
  
- struct ksmbd_conn_ops {
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index b851cd7d19b48..185f7e0744f8a 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3527,6 +3527,15 @@ int smb2_open(struct ksmbd_work *work)
- 			ksmbd_debug(SMB, "get query on disk id context\n");
- 			query_disk_id = 1;
- 		}
-+
-+		if (conn->is_aapl == false) {
-+			context = smb2_find_context_vals(req, SMB2_CREATE_AAPL, 4);
-+			if (IS_ERR(context)) {
-+				rc = PTR_ERR(context);
-+				goto err_out1;
-+			} else if (context)
-+				conn->is_aapl = true;
-+		}
- 	}
- 
- 	rc = ksmbd_vfs_getattr(&path, &stat);
-@@ -3965,7 +3974,10 @@ static int smb2_populate_readdir_entry(struct ksmbd_conn *conn, int info_level,
- 		if (dinfo->EaSize)
- 			dinfo->ExtFileAttributes = FILE_ATTRIBUTE_REPARSE_POINT_LE;
- 		dinfo->Reserved = 0;
--		dinfo->UniqueId = cpu_to_le64(ksmbd_kstat->kstat->ino);
-+		if (conn->is_aapl)
-+			dinfo->UniqueId = 0;
-+		else
-+			dinfo->UniqueId = cpu_to_le64(ksmbd_kstat->kstat->ino);
- 		if (d_info->hide_dot_file && d_info->name[0] == '.')
- 			dinfo->ExtFileAttributes |= FILE_ATTRIBUTE_HIDDEN_LE;
- 		memcpy(dinfo->FileName, conv_name, conv_len);
-@@ -3982,7 +3994,10 @@ static int smb2_populate_readdir_entry(struct ksmbd_conn *conn, int info_level,
- 			smb2_get_reparse_tag_special_file(ksmbd_kstat->kstat->mode);
- 		if (fibdinfo->EaSize)
- 			fibdinfo->ExtFileAttributes = FILE_ATTRIBUTE_REPARSE_POINT_LE;
--		fibdinfo->UniqueId = cpu_to_le64(ksmbd_kstat->kstat->ino);
-+		if (conn->is_aapl)
-+			fibdinfo->UniqueId = 0;
-+		else
-+			fibdinfo->UniqueId = cpu_to_le64(ksmbd_kstat->kstat->ino);
- 		fibdinfo->ShortNameLength = 0;
- 		fibdinfo->Reserved = 0;
- 		fibdinfo->Reserved2 = cpu_to_le16(0);
-diff --git a/fs/smb/server/smb2pdu.h b/fs/smb/server/smb2pdu.h
-index 25cc81aac350f..2821e6c8298f4 100644
---- a/fs/smb/server/smb2pdu.h
-+++ b/fs/smb/server/smb2pdu.h
-@@ -63,6 +63,9 @@ struct preauth_integrity_info {
- 
- #define SMB2_SESSION_TIMEOUT		(10 * HZ)
- 
-+/* Apple Defined Contexts */
-+#define SMB2_CREATE_AAPL		"AAPL"
-+
- struct create_durable_req_v2 {
- 	struct create_context_hdr ccontext;
- 	__u8   Name[8];
--- 
-2.39.5
-
 
 
 
