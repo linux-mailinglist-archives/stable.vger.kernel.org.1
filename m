@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-159634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606C4AF79CB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C730BAF79DC
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74ABB18951C4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B31B3189FCAA
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280AE2EE98F;
-	Thu,  3 Jul 2025 15:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7833F38F91;
+	Thu,  3 Jul 2025 15:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vglv3/32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eITiMBV0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD162D23A8;
-	Thu,  3 Jul 2025 15:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342FB2EE299;
+	Thu,  3 Jul 2025 15:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554850; cv=none; b=tNSOZY7R4jzoPwOqWs84PjaahKtWGK+WUF0clrATLpCHiChYoYlTP4lEiw5CTq7l+8A28NGDwLvK5+3xjP7DX3MjuiGvl/OQifXSGgYBC6/f3vpqF0azBJC6elOu5R5cgxNvtDRQ7xc5ZEW/l6EgSk8JpXFlb3VLu2nX1zBDzmE=
+	t=1751554886; cv=none; b=HT1DpmJcV1ZIFYWGPKp2YpB7iRSzKiUeMTHykqdYHF/ZxCBOf86KMxqvggzRPuKmrnJWAmvRSeOT0A1YMEd7zW8EAfh/3yt0EtzR1+5sLny5V0CssGnQODV7FDbMn8VgdGgDazd2Yk0YbiJm9KTCqYyWnP37r0D2ftvE20sFFOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554850; c=relaxed/simple;
-	bh=gvlppTiMeI75EWrl05zS8uBqDGXUto9UERVIr173lk8=;
+	s=arc-20240116; t=1751554886; c=relaxed/simple;
+	bh=zDiY1dJmBbkdMgCvkK4WhP0prqEQgybr6k/WuLrnwbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S9tdwmaVvTQ/hOc7qMW7JkkfOV7r5tEb8azx7lB00CoWpUOHGjsFJUeNnPE5t5lbgEyY84p4lFZTYVzaARBKMYxaxmDE0ivgVYgPerOoKNSRPm1L7MDAiak25hH+gKuizCmurW73c8NbD/jr1GTt4m2+14mQhKBKCQsYbE9Tq0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vglv3/32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49658C4CEE3;
-	Thu,  3 Jul 2025 15:00:50 +0000 (UTC)
+	 MIME-Version; b=SvryxYGE27IQNnMqqyy8L3C5z0t68Pciuddy3gKBP7DziATmtAh1lCB/jVfeTl7EtWwzgdJrwufr9w9XiYyZQ+BuWDbkxjxxJ6Nzp2uBM90vDrcUVyHgQQOFRN/d8hq2v8BajAqNJqw9+InVy8QCm/AVbdLMbg7OqpXB5bDMdRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eITiMBV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFEF4C4CEF3;
+	Thu,  3 Jul 2025 15:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554850;
-	bh=gvlppTiMeI75EWrl05zS8uBqDGXUto9UERVIr173lk8=;
+	s=korg; t=1751554886;
+	bh=zDiY1dJmBbkdMgCvkK4WhP0prqEQgybr6k/WuLrnwbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vglv3/32GuEMkY+u/dMat1YGd4912FnplMwe+RmVGulz99iLMFTlM9FJlUjIFJpFa
-	 UTZzU3I2w39tvRhTCK2vr9UuqV8ZHiMquWY99rn8+ca4B1ddPWia+//GG0WF9+rhYj
-	 DpZ6mbHV5qcOat1bxe9p1imXWsQG6jPOs/tVwAyI=
+	b=eITiMBV0FtGDOCx5713S/Kl4QdZtUcq65FBSYM6Dsd5TzWirH+qMp6Tnru5rb4ue6
+	 CaCwKtUaDcuyLW0Ap5b4uJbJPY3K3xrKumVxQF90usReBl3IUuDzEfcHSq+F56/mtW
+	 G3AX+L0XUI7i/igE+ysuHzxs88v15kFizZKzblHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wei <dw@davidwei.uk>,
 	Pavel Begunkov <asml.silence@gmail.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 091/263] io_uring/zcrx: move io_zcrx_iov_page
-Date: Thu,  3 Jul 2025 16:40:11 +0200
-Message-ID: <20250703144007.947772249@linuxfoundation.org>
+Subject: [PATCH 6.15 092/263] io_uring/zcrx: improve area validation
+Date: Thu,  3 Jul 2025 16:40:12 +0200
+Message-ID: <20250703144007.986197276@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
 References: <20250703144004.276210867@linuxfoundation.org>
@@ -69,74 +68,112 @@ Content-Transfer-Encoding: 8bit
 
 From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit a79154ae5df9e21dbacb1eb77fad984fd4c45cca ]
+[ Upstream commit d760d3f59f0d8d0df2895db30d36cf23106d6b05 ]
 
-We'll need io_zcrx_iov_page at the top to keep offset calculations
-closer together, move it there.
+dmabuf backed area will be taking an offset instead of addresses, and
+io_buffer_validate() is not flexible enough to facilitate it. It also
+takes an iovec, which may truncate the u64 length zcrx takes. Add a new
+helper function for validation.
 
-Reviewed-by: David Wei <dw@davidwei.uk>
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/575617033a8b84a5985c7eb760b7121efdbe7e56.1745141261.git.asml.silence@gmail.com
+Link: https://lore.kernel.org/r/0b3b735391a0a8f8971bf0121c19765131fddd3b.1746097431.git.asml.silence@gmail.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Stable-dep-of: 0ec33c81d9c7 ("io_uring/zcrx: fix area release on registration failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/zcrx.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ io_uring/rsrc.c | 27 +++++++++++++++------------
+ io_uring/rsrc.h |  2 +-
+ io_uring/zcrx.c |  7 +++----
+ 3 files changed, 19 insertions(+), 17 deletions(-)
 
+diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
+index 794d4ae6f0bc8..6d61683223870 100644
+--- a/io_uring/rsrc.c
++++ b/io_uring/rsrc.c
+@@ -80,10 +80,21 @@ static int io_account_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
+ 	return 0;
+ }
+ 
+-int io_buffer_validate(struct iovec *iov)
++int io_validate_user_buf_range(u64 uaddr, u64 ulen)
+ {
+-	unsigned long tmp, acct_len = iov->iov_len + (PAGE_SIZE - 1);
++	unsigned long tmp, base = (unsigned long)uaddr;
++	unsigned long acct_len = (unsigned long)PAGE_ALIGN(ulen);
+ 
++	/* arbitrary limit, but we need something */
++	if (ulen > SZ_1G || !ulen)
++		return -EFAULT;
++	if (check_add_overflow(base, acct_len, &tmp))
++		return -EOVERFLOW;
++	return 0;
++}
++
++static int io_buffer_validate(struct iovec *iov)
++{
+ 	/*
+ 	 * Don't impose further limits on the size and buffer
+ 	 * constraints here, we'll -EINVAL later when IO is
+@@ -91,17 +102,9 @@ int io_buffer_validate(struct iovec *iov)
+ 	 */
+ 	if (!iov->iov_base)
+ 		return iov->iov_len ? -EFAULT : 0;
+-	if (!iov->iov_len)
+-		return -EFAULT;
+-
+-	/* arbitrary limit, but we need something */
+-	if (iov->iov_len > SZ_1G)
+-		return -EFAULT;
+ 
+-	if (check_add_overflow((unsigned long)iov->iov_base, acct_len, &tmp))
+-		return -EOVERFLOW;
+-
+-	return 0;
++	return io_validate_user_buf_range((unsigned long)iov->iov_base,
++					  iov->iov_len);
+ }
+ 
+ static void io_release_ubuf(void *priv)
+diff --git a/io_uring/rsrc.h b/io_uring/rsrc.h
+index b52242852ff34..4373524f993c7 100644
+--- a/io_uring/rsrc.h
++++ b/io_uring/rsrc.h
+@@ -83,7 +83,7 @@ int io_register_rsrc_update(struct io_ring_ctx *ctx, void __user *arg,
+ 			    unsigned size, unsigned type);
+ int io_register_rsrc(struct io_ring_ctx *ctx, void __user *arg,
+ 			unsigned int size, unsigned int type);
+-int io_buffer_validate(struct iovec *iov);
++int io_validate_user_buf_range(u64 uaddr, u64 ulen);
+ 
+ bool io_check_coalesce_buffer(struct page **page_array, int nr_pages,
+ 			      struct io_imu_folio_data *data);
 diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index fe86606b9f304..ecb59182d9b2c 100644
+index ecb59182d9b2c..0771a57d81a5b 100644
 --- a/io_uring/zcrx.c
 +++ b/io_uring/zcrx.c
-@@ -31,6 +31,20 @@ static inline struct io_zcrx_ifq *io_pp_to_ifq(struct page_pool *pp)
- 	return pp->mp_priv;
- }
- 
-+static inline struct io_zcrx_area *io_zcrx_iov_to_area(const struct net_iov *niov)
-+{
-+	struct net_iov_area *owner = net_iov_owner(niov);
-+
-+	return container_of(owner, struct io_zcrx_area, nia);
-+}
-+
-+static inline struct page *io_zcrx_iov_page(const struct net_iov *niov)
-+{
-+	struct io_zcrx_area *area = io_zcrx_iov_to_area(niov);
-+
-+	return area->pages[net_iov_idx(niov)];
-+}
-+
- #define IO_DMA_ATTR (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING)
- 
- static void __io_zcrx_unmap_area(struct io_zcrx_ifq *ifq,
-@@ -118,13 +132,6 @@ struct io_zcrx_args {
- 
- static const struct memory_provider_ops io_uring_pp_zc_ops;
- 
--static inline struct io_zcrx_area *io_zcrx_iov_to_area(const struct net_iov *niov)
--{
--	struct net_iov_area *owner = net_iov_owner(niov);
--
--	return container_of(owner, struct io_zcrx_area, nia);
--}
--
- static inline atomic_t *io_get_user_counter(struct net_iov *niov)
+@@ -205,7 +205,6 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
  {
- 	struct io_zcrx_area *area = io_zcrx_iov_to_area(niov);
-@@ -147,13 +154,6 @@ static void io_zcrx_get_niov_uref(struct net_iov *niov)
- 	atomic_inc(io_get_user_counter(niov));
- }
+ 	struct io_zcrx_area *area;
+ 	int i, ret, nr_pages, nr_iovs;
+-	struct iovec iov;
  
--static inline struct page *io_zcrx_iov_page(const struct net_iov *niov)
--{
--	struct io_zcrx_area *area = io_zcrx_iov_to_area(niov);
--
--	return area->pages[net_iov_idx(niov)];
--}
--
- static int io_allocate_rbuf_ring(struct io_zcrx_ifq *ifq,
- 				 struct io_uring_zcrx_ifq_reg *reg,
- 				 struct io_uring_region_desc *rd)
+ 	if (area_reg->flags || area_reg->rq_area_token)
+ 		return -EINVAL;
+@@ -214,11 +213,11 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
+ 	if (area_reg->addr & ~PAGE_MASK || area_reg->len & ~PAGE_MASK)
+ 		return -EINVAL;
+ 
+-	iov.iov_base = u64_to_user_ptr(area_reg->addr);
+-	iov.iov_len = area_reg->len;
+-	ret = io_buffer_validate(&iov);
++	ret = io_validate_user_buf_range(area_reg->addr, area_reg->len);
+ 	if (ret)
+ 		return ret;
++	if (!area_reg->addr)
++		return -EFAULT;
+ 
+ 	ret = -ENOMEM;
+ 	area = kzalloc(sizeof(*area), GFP_KERNEL);
 -- 
 2.39.5
 
