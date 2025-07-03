@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-160103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702F1AF8039
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 20:37:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35541AF8035
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 20:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C9103A15FC
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 18:36:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 978BD584180
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 18:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBB12F531A;
-	Thu,  3 Jul 2025 18:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113802F2726;
+	Thu,  3 Jul 2025 18:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UmpesC/3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qqkvnzyr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34672F272F
-	for <stable@vger.kernel.org>; Thu,  3 Jul 2025 18:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69A92F272C
+	for <stable@vger.kernel.org>; Thu,  3 Jul 2025 18:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751567685; cv=none; b=WIZn69xFIPPp5EAtX4h4Xr5lUB90OX7ltOYJlTu9zUH1mdvuHnSv4IxhqLPSfU0j3L7egorjtZqC9UTHYvJuFPpRVv/JoM/PuXAHQyp1yvYglMWRSbPQoapDL+6NfJ7aBdCIHAAmeasHL9MSoanWoV+VqmpzPxIuAebEFX13WQ4=
+	t=1751567686; cv=none; b=Pz+prgtnSVOEWf/WbO86ylxS6SesVzxckPGYDltHYsRmZ1yGNg0t6sKlQWhHob7Qkw+fkIZ5z6eWHrc84clYelHON2kS7+f0NKILOiksQ0EeXPiQtpHX/GRJ10qSL2jKyGuj14meZ90mXdanRTZSLXnt3ES/L+BM7RCxHfo04TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751567685; c=relaxed/simple;
-	bh=UVp/F5J/5TYmbwu15wosk7xWVJeyw9xHb0Zv/y/xOsY=;
+	s=arc-20240116; t=1751567686; c=relaxed/simple;
+	bh=V5+dObnmeh1LIkck8geWwcVvuw1HDeRHLKrVLTYI/j4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qZKVzHQ+MvmFgZmMHTgnnBV/40KDzNJh1P1sGhG4j354i0Q3vLd1V9MHhWfVV8bDoJ29LelZ6pNNBQDMVJF+iSBAKy1cVOkm0kRE9FB9JdCNTBAle3XjxitFlrK0+FJJUf38Ntt+09embp/1ZW9NLc//BQ48CtNlhJz2rhwsleI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UmpesC/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3342BC4CEF1;
-	Thu,  3 Jul 2025 18:34:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ArD9PG+qSz7lY9wVEuJyF0hWPebifsu2BPVA7TltOl4XapT/cgH4xmfSmGwlQ06mMSqYDOJJueumqbspQHKGjrkS9yY0czf4wuCaEYdJ0/WOEoEOTnHblmIlFMwTl2uKYYCkfktZt8/znSK7rwiLMcZQB6sRXkdR/CqDJW0QjPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qqkvnzyr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9D9C4CEE3;
+	Thu,  3 Jul 2025 18:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751567684;
-	bh=UVp/F5J/5TYmbwu15wosk7xWVJeyw9xHb0Zv/y/xOsY=;
+	s=k20201202; t=1751567686;
+	bh=V5+dObnmeh1LIkck8geWwcVvuw1HDeRHLKrVLTYI/j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UmpesC/3D6xEgl8gbtwBkSEKksVaAk7bcblRsKFY4AG6OGwqVaWVkM0/+Nkpqk1ro
-	 jw8VUfyFXfSLV92fcbCypjeBCyr4TUURl+fnbaBwovZw2zuk6XAaEZdukRXUQeC2d6
-	 fBDFoD0e4etHAKyjJgjcqMmk57pOhKemz5jKub9rW1gA/zCeJACALaFPkFWEq50sn4
-	 M5LtGln2uMjJB9nP75WIi4LM6R2sJSA+hRBV4CaQUjS7UDKZRdfz3e/KHV8qhxHsme
-	 p103qk+pYj+zeXVleO3zri/vugg+/KEn6G15FFIJBLTrFjQNfU0wmqz2qXLfvOtFvI
-	 oXqePUlbZVfig==
+	b=QqkvnzyrQnRu5L1gcFeO7fyY0ze2EnLnqRBHpYY5be+/Fjm0tIYwzeKGF7GD4mt2f
+	 eEfv8j3UUKzbh0RdL5ki0wne+FRanO9wDiQs6tzvDM7tqGR2tXjEeLOxo10xacqb1E
+	 IwQgeK3FvXooyHNQ1tBvkbZ/Qd1XM+iLwqCXuHBaInwUKfzQB7nr+WajBODt/1bttd
+	 ky0UIbKAhk8Nmsy8Ab3Do7eaUbZJgUnZtcIRA0zqbABVU+JSWz35nX9I5yhZ8YbDxS
+	 5gXuQ/EgyYCoQF6w5Ocz9epeonCQGdB6CcVGCxvCNbbhki7DRLhs5B2eI+9XxNLKiT
+	 3jMKm3Q5myGhg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Xinyu Zheng <zhengxinyu6@huawei.com>,
+Cc: mathieu.tortuyaux@gmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v5.10] vhost-scsi: protect vq->log_used with vq->mutex
-Date: Thu,  3 Jul 2025 14:34:43 -0400
-Message-Id: <20250703112547-6bc1d2921101421a@stable.kernel.org>
+Subject: Re: [PATCH 6.12.y v2 1/3] r8169: add support for RTL8125D
+Date: Thu,  3 Jul 2025 14:34:45 -0400
+Message-Id: <20250703114005-f7e405804919c955@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250702082945.4164475-1-zhengxinyu6@huawei.com>
+In-Reply-To:  <20250702102807.29282-2-mathieu.tortuyaux@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,28 +67,49 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: f591cf9fce724e5075cc67488c43c6e39e8cbe27
+The upstream commit SHA1 provided is correct: f75d1fbe7809bc5ed134204b920fd9e2fc5db1df
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Xinyu Zheng<zhengxinyu6@huawei.com>
-Commit author: Dongli Zhang<dongli.zhang@oracle.com>
+Backport author: mathieu.tortuyaux@gmail.com
+Commit author: Heiner Kallweit<hkallweit1@gmail.com>
 
 Status in newer kernel trees:
 6.15.y | Present (exact SHA1)
-6.12.y | Present (different SHA1: bd8c9404e44a)
-6.6.y | Present (different SHA1: ca85c2d0db5f)
-6.1.y | Not found
-5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f591cf9fce724 < -:  ------------- vhost-scsi: protect vq->log_used with vq->mutex
--:  ------------- > 1:  4cd7a98212613 vhost-scsi: protect vq->log_used with vq->mutex
+1:  f75d1fbe7809b ! 1:  ad11b51351b91 r8169: add support for RTL8125D
+    @@ Metadata
+      ## Commit message ##
+         r8169: add support for RTL8125D
+     
+    +    commit f75d1fbe7809bc5ed134204b920fd9e2fc5db1df upstream.
+    +
+         This adds support for new chip version RTL8125D, which can be found on
+         boards like Gigabyte X870E AORUS ELITE WIFI7. Firmware rtl8125d-1.fw
+         for this chip version is available in linux-firmware already.
+    @@ Commit message
+         Reviewed-by: Simon Horman <horms@kernel.org>
+         Link: https://patch.msgid.link/d0306912-e88e-4c25-8b5d-545ae8834c0c@gmail.com
+         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    +    Signed-off-by: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+     
+      ## drivers/net/ethernet/realtek/r8169.h ##
+     @@ drivers/net/ethernet/realtek/r8169.h: enum mac_version {
+    @@ drivers/net/ethernet/realtek/r8169_main.c: static void rtl_hw_start_8125b(struct
+     +
+      static void rtl_hw_start_8126a(struct rtl8169_private *tp)
+      {
+    - 	rtl_set_def_aspm_entry_latency(tp);
+    + 	rtl_disable_zrxdc_timeout(tp);
+     @@ drivers/net/ethernet/realtek/r8169_main.c: static void rtl_hw_config(struct rtl8169_private *tp)
+      		[RTL_GIGA_MAC_VER_53] = rtl_hw_start_8117,
+      		[RTL_GIGA_MAC_VER_61] = rtl_hw_start_8125a_2,
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
