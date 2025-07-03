@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7940AF7AC5
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C6A9AF79E0
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A81F66E1B1B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:11:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7401D169433
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DA82F002D;
-	Thu,  3 Jul 2025 15:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D7B2B9A6;
+	Thu,  3 Jul 2025 15:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIIhm74C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQDA26rj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5151C2F0027;
-	Thu,  3 Jul 2025 15:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5443A4414;
+	Thu,  3 Jul 2025 15:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555457; cv=none; b=l2Hi2h6AnogG+eCvPxAU3U2LJKoXgLgUF/zxehSbR/IHm2nJgihDEMKLPk2gmh92YvsXru/owoJibpFLhvCdjVrnphAhq7lJrce0Mgqw3CO0zKMYUFV67jayzCkkAZ9KuY1FJ4uRDldilQQEqHoObRstPPFPJMZSUE2vBS+7eKI=
+	t=1751555002; cv=none; b=C2Ioly6qbrpNAF+sTwvuWOCdADu63TdUmvA2kDZX2jR9O8Ig4F5XTt64hiCzv3vNBnUuJHxZa7kZcHc9Fq0186QqEDPHVRrkSE/kg5nMN94JX//snPF7xJxFiFtpkBy/kIkrEk8AznMGE55zO9luwdnNgw0s6Pq1K2htfacKtXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555457; c=relaxed/simple;
-	bh=S14XEFq2T83V/sqrWH65uJtFDfVfS25vchRJn0YUVb8=;
+	s=arc-20240116; t=1751555002; c=relaxed/simple;
+	bh=ssBR4HCDhHRq1Cu9a0HlZyNMBH1RTtPajxXKK1VuibQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ut84AO1G71F1hhgyHL+WmAxtzVKJ2DQqu/Sw/665P15NYEHGA1wkqbYlr1e8rCRphWsSwtYS4ULhKt8ZzTOKgk/DQ+WjKTSWIjgdWP46hWcCAxpW6QhqlOliDvDVvgtlyGr66ZcwJALrNc4txzDWDH6hLnsHfVtaodyOxttNyY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIIhm74C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C8AC4CEE3;
-	Thu,  3 Jul 2025 15:10:56 +0000 (UTC)
+	 MIME-Version; b=Y7gMbnOL6dyEt7O/H5nFpAFuhd/ka8/rn2SSPDMPcSbO65I1mWoupVDXtROizwLXHpIPeD+VEfwp5iTT1g6JsCJYthiDTdrLS9AnMgdRqpfSnxjjgoDSe35W9BtZ/lYzGeSUoyY+iknV23F5LzKhgiZliCshFkrzaDm9eMHQjFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQDA26rj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5660C4CEE3;
+	Thu,  3 Jul 2025 15:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555456;
-	bh=S14XEFq2T83V/sqrWH65uJtFDfVfS25vchRJn0YUVb8=;
+	s=korg; t=1751555002;
+	bh=ssBR4HCDhHRq1Cu9a0HlZyNMBH1RTtPajxXKK1VuibQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MIIhm74C47uU2WGpZLmXQuBZXYbhznwGPQFN8JjWXNeNAgpyCstlgrw2SKffVsD+a
-	 k+UDtwYMf1mu+j9CJAVKd/qY3sCgc5ziAGQ1Zz5ueAdNDKz6J0M63R/Jk/7ov46pHa
-	 O2jJJ16sibWmbnqcv/vfgPGa239Qd2PW6PNUTHnU=
+	b=eQDA26rjaJfZrIjL0Bxm6XG0RCg5HgfD+r9VJHiizbrdHk6jM58S4rDE5hrmBWy2n
+	 jtGt+WQdpe6odFPyY91qatO4gjrBc5KHZ0DQwptivkONGIn9SN5Pwb7xqseDQMollP
+	 klJUHUvU6x59rlh40YbHXICthhQR/zTHmOCDQG44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 002/139] cifs: Fix cifs_query_path_info() for Windows NT servers
+Subject: [PATCH 6.15 145/263] af_unix: Dont set -ECONNRESET for consumed OOB skb.
 Date: Thu,  3 Jul 2025 16:41:05 +0200
-Message-ID: <20250703143941.278484252@linuxfoundation.org>
+Message-ID: <20250703144010.169752144@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit a3e771afbb3bce91c8296828304903e7348003fe ]
+[ Upstream commit 2a5a4841846b079b5fca5752fe94e59346fbda40 ]
 
-For TRANS2 QUERY_PATH_INFO request when the path does not exist, the
-Windows NT SMB server returns error response STATUS_OBJECT_NAME_NOT_FOUND
-or ERRDOS/ERRbadfile without the SMBFLG_RESPONSE flag set. Similarly it
-returns STATUS_DELETE_PENDING when the file is being deleted. And looks
-like that any error response from TRANS2 QUERY_PATH_INFO does not have
-SMBFLG_RESPONSE flag set.
+Christian Brauner reported that even after MSG_OOB data is consumed,
+calling close() on the receiver socket causes the peer's recv() to
+return -ECONNRESET:
 
-So relax check in check_smb_hdr() for detecting if the packet is response
-for this special case.
+  1. send() and recv() an OOB data.
 
-This change fixes stat() operation against Windows NT SMB servers and also
-all operations which depends on -ENOENT result from stat like creat() or
-mkdir().
+    >>> from socket import *
+    >>> s1, s2 = socketpair(AF_UNIX, SOCK_STREAM)
+    >>> s1.send(b'x', MSG_OOB)
+    1
+    >>> s2.recv(1, MSG_OOB)
+    b'x'
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+  2. close() for s2 sets ECONNRESET to s1->sk_err even though
+     s2 consumed the OOB data
+
+    >>> s2.close()
+    >>> s1.recv(10, MSG_DONTWAIT)
+    ...
+    ConnectionResetError: [Errno 104] Connection reset by peer
+
+Even after being consumed, the skb holding the OOB 1-byte data stays in
+the recv queue to mark the OOB boundary and break recv() at that point.
+
+This must be considered while close()ing a socket.
+
+Let's skip the leading consumed OOB skb while checking the -ECONNRESET
+condition in unix_release_sock().
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Reported-by: Christian Brauner <brauner@kernel.org>
+Closes: https://lore.kernel.org/netdev/20250529-sinkt-abfeuern-e7b08200c6b0@brauner/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Acked-by: Christian Brauner <brauner@kernel.org>
+Link: https://patch.msgid.link/20250619041457.1132791-4-kuni1840@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/misc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/unix/af_unix.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
-index 65d4b72b4d51a..9e8e0a01ae8eb 100644
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -320,6 +320,14 @@ check_smb_hdr(struct smb_hdr *smb)
- 	if (smb->Command == SMB_COM_LOCKING_ANDX)
- 		return 0;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index af003831f4c67..52f2812d2fa5b 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -654,6 +654,11 @@ static void unix_sock_destructor(struct sock *sk)
+ #endif
+ }
  
-+	/*
-+	 * Windows NT server returns error resposne (e.g. STATUS_DELETE_PENDING
-+	 * or STATUS_OBJECT_NAME_NOT_FOUND or ERRDOS/ERRbadfile or any other)
-+	 * for some TRANS2 requests without the RESPONSE flag set in header.
-+	 */
-+	if (smb->Command == SMB_COM_TRANSACTION2 && smb->Status.CifsError != 0)
-+		return 0;
++static unsigned int unix_skb_len(const struct sk_buff *skb)
++{
++	return skb->len - UNIXCB(skb).consumed;
++}
 +
- 	cifs_dbg(VFS, "Server sent request, not response. mid=%u\n",
- 		 get_mid(smb));
- 	return 1;
+ static void unix_release_sock(struct sock *sk, int embrion)
+ {
+ 	struct unix_sock *u = unix_sk(sk);
+@@ -688,10 +693,16 @@ static void unix_release_sock(struct sock *sk, int embrion)
+ 
+ 	if (skpair != NULL) {
+ 		if (sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET) {
++			struct sk_buff *skb = skb_peek(&sk->sk_receive_queue);
++
++#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
++			if (skb && !unix_skb_len(skb))
++				skb = skb_peek_next(skb, &sk->sk_receive_queue);
++#endif
+ 			unix_state_lock(skpair);
+ 			/* No more writes */
+ 			WRITE_ONCE(skpair->sk_shutdown, SHUTDOWN_MASK);
+-			if (!skb_queue_empty_lockless(&sk->sk_receive_queue) || embrion)
++			if (skb || embrion)
+ 				WRITE_ONCE(skpair->sk_err, ECONNRESET);
+ 			unix_state_unlock(skpair);
+ 			skpair->sk_state_change(skpair);
+@@ -2578,11 +2589,6 @@ static long unix_stream_data_wait(struct sock *sk, long timeo,
+ 	return timeo;
+ }
+ 
+-static unsigned int unix_skb_len(const struct sk_buff *skb)
+-{
+-	return skb->len - UNIXCB(skb).consumed;
+-}
+-
+ struct unix_stream_read_state {
+ 	int (*recv_actor)(struct sk_buff *, int, int,
+ 			  struct unix_stream_read_state *);
 -- 
 2.39.5
 
