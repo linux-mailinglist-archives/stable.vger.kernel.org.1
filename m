@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-159455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E3E5AF78D2
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:54:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDB9AF7A20
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:09:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 210521CA17F7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26A14188B519
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A255D2EF9B8;
-	Thu,  3 Jul 2025 14:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B808F2ED86E;
+	Thu,  3 Jul 2025 15:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reiFu03U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFKNmKOu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560EC2EF9AB;
-	Thu,  3 Jul 2025 14:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BD92E7649;
+	Thu,  3 Jul 2025 15:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554286; cv=none; b=eBv2RYOEI6diidZ5SoEjbDYeEMG85GNj7HVOPv0KRkeM6QwJTqTgxIPSGC1AF6tRFuviQGXbmBERcRI6yw2xoa367R5ql1d28bekpTDdzHuL6EhrC+92Lbfw+83t6fGivaf2AD/x5WZetimAplGdpab6gZuOp7w7QDCx5R3Be3w=
+	t=1751555070; cv=none; b=TZZAzvUJaZTHostUxX4GNOTKc5+GqHN3NyX1xVK7atL0cL6HshMPf2/E7VABWxQK+f/tlfBm12V5nKCUkL3+PSTVLNWarYFp+TH0NxY9i4r9qZh+BaIcwgDI2FJ9QPZV4G/mCI2PHwAPVrkkFqjwBld4KkKINMKXqwV5+Wlmnv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554286; c=relaxed/simple;
-	bh=cavueHo695vvV5Lbw9p+prlZUEa2xlI/BiQ2VGLDFnA=;
+	s=arc-20240116; t=1751555070; c=relaxed/simple;
+	bh=ZDU3BzaVfCeCaCVDdlhT4XegTSaf+5yDrY/bUvv0698=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fhzkJWA+0tleKgAADxHO6fVFmsknSX0H9aPtP/I6YXezFSHfswIcFgTbG+obmz23WMz+6NL9FkzRbxlMUTtYDPdgmEQ1O2Dqf7kFxfnJwmE5x70vSNRJuJ0bCO3btPudVPtYa0/CdYV1AMiB/9qtlh5NSZAAK72YbjvXykXC64g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reiFu03U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D60C4CEE3;
-	Thu,  3 Jul 2025 14:51:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bwvia6dLp5DDx/+aYwx4mKje5TX/pEqn4rF9KB+V80KJmxfPSoDzwHT7C/UfOdOjIPGOKOIacz6q7vagFIPVpAixJ8cAFH7hzJpWWvRDi1KlC+zmBC+s/RSrn4GYTySJw6MinnYrQkAGtpPir8K/aXbR2Gcnlu6nPSAkqc+PgdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFKNmKOu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7565C4CEE3;
+	Thu,  3 Jul 2025 15:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554286;
-	bh=cavueHo695vvV5Lbw9p+prlZUEa2xlI/BiQ2VGLDFnA=;
+	s=korg; t=1751555070;
+	bh=ZDU3BzaVfCeCaCVDdlhT4XegTSaf+5yDrY/bUvv0698=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=reiFu03UY/L2JRRNClr3JHqCsBZPp7Quv9pV5kCU7teW3JxQYbcFKn1bfrN02ep0A
-	 chaJmBMuz9szWSCVNa5beyOtoIvVFrezcsovZy5MWG+O8L53MDVjJl0QY3sStpQf/I
-	 htM+JvMAIZ6rMeQZqHBpihXyP2gvHzUm57Nq94LE=
+	b=CFKNmKOupH78WNgFzDk37axYEoBTtQd17mj7HcEsUNEjkhfCdtkGiFHiQc24rhB3j
+	 U18r2sRpD49EI9kjCxfSIbo7eWrJNbS6ThJO3OoFh3qYwtCIxONntmbcGLSrf/LA4h
+	 RGIBm9okkWxoL2WDOu/A1771oWUyYhuB56AJldic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
-	Hailong Liu <hailong.liu@oppo.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"zhangpeng.00@bytedance.com" <zhangpeng.00@bytedance.com>,
-	Steve Kang <Steve.Kang@unisoc.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 139/218] maple_tree: fix MA_STATE_PREALLOC flag in mas_preallocate()
-Date: Thu,  3 Jul 2025 16:41:27 +0200
-Message-ID: <20250703144001.687154991@linuxfoundation.org>
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 168/263] drm/xe/guc: Explicitly exit CT safe mode on unwind
+Date: Thu,  3 Jul 2025 16:41:28 +0200
+Message-ID: <20250703144011.093120752@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,75 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-commit fba46a5d83ca8decb338722fb4899026d8d9ead2 upstream.
+[ Upstream commit ad40098da5c3b43114d860a5b5740e7204158534 ]
 
-Temporarily clear the preallocation flag when explicitly requesting
-allocations.  Pre-existing allocations are already counted against the
-request through mas_node_count_gfp(), but the allocations will not happen
-if the MA_STATE_PREALLOC flag is set.  This flag is meant to avoid
-re-allocating in bulk allocation mode, and to detect issues with
-preallocation calculations.
+During driver probe we might be briefly using CT safe mode, which
+is based on a delayed work, but usually we are able to stop this
+once we have IRQ fully operational.  However, if we abort the probe
+quite early then during unwind we might try to destroy the workqueue
+while there is still a pending delayed work that attempts to restart
+itself which triggers a WARN.
 
-The MA_STATE_PREALLOC flag should also always be set on zero allocations
-so that detection of underflow allocations will print a WARN_ON() during
-consumption.
+This was recently observed during unsuccessful VF initialization:
 
-User visible effect of this flaw is a WARN_ON() followed by a null pointer
-dereference when subsequent requests for larger number of nodes is
-ignored, such as the vma merge retry in mmap_region() caused by drivers
-altering the vma flags (which happens in v6.6, at least)
+ [ ] xe 0000:00:02.1: probe with driver xe failed with error -62
+ [ ] ------------[ cut here ]------------
+ [ ] workqueue: cannot queue safe_mode_worker_func [xe] on wq xe-g2h-wq
+ [ ] WARNING: CPU: 9 PID: 0 at kernel/workqueue.c:2257 __queue_work+0x287/0x710
+ [ ] RIP: 0010:__queue_work+0x287/0x710
+ [ ] Call Trace:
+ [ ]  delayed_work_timer_fn+0x19/0x30
+ [ ]  call_timer_fn+0xa1/0x2a0
 
-Link: https://lkml.kernel.org/r/20250616184521.3382795-3-Liam.Howlett@oracle.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reported-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-Reported-by: Hailong Liu <hailong.liu@oppo.com>
-Link: https://lore.kernel.org/all/1652f7eb-a51b-4fee-8058-c73af63bacd1@oppo.com/
-Link: https://lore.kernel.org/all/20250428184058.1416274-1-Liam.Howlett@oracle.com/
-Link: https://lore.kernel.org/all/20250429014754.1479118-1-Liam.Howlett@oracle.com/
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Hailong Liu <hailong.liu@oppo.com>
-Cc: zhangpeng.00@bytedance.com <zhangpeng.00@bytedance.com>
-Cc: Steve Kang <Steve.Kang@unisoc.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Exit the CT safe mode on unwind to avoid that warning.
+
+Fixes: 09b286950f29 ("drm/xe/guc: Allow CTB G2H processing without G2H IRQ")
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://lore.kernel.org/r/20250612220937.857-3-michal.wajdeczko@intel.com
+(cherry picked from commit 2ddbb73ec20b98e70a5200cb85deade22ccea2ec)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/maple_tree.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_guc_ct.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -5542,8 +5542,9 @@ int mas_preallocate(struct ma_state *mas
- 	mas_wr_store_type(&wr_mas);
- 	request = mas_prealloc_calc(mas, entry);
- 	if (!request)
--		return ret;
-+		goto set_flag;
+diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
+index 72ad576fc18eb..c9abca63998b1 100644
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -34,6 +34,11 @@
+ #include "xe_pm.h"
+ #include "xe_trace_guc.h"
  
-+	mas->mas_flags &= ~MA_STATE_PREALLOC;
- 	mas_node_count_gfp(mas, request, gfp);
- 	if (mas_is_err(mas)) {
- 		mas_set_alloc_req(mas, 0);
-@@ -5553,6 +5554,7 @@ int mas_preallocate(struct ma_state *mas
- 		return ret;
- 	}
++static void receive_g2h(struct xe_guc_ct *ct);
++static void g2h_worker_func(struct work_struct *w);
++static void safe_mode_worker_func(struct work_struct *w);
++static void ct_exit_safe_mode(struct xe_guc_ct *ct);
++
+ #if IS_ENABLED(CONFIG_DRM_XE_DEBUG)
+ enum {
+ 	/* Internal states, not error conditions */
+@@ -186,14 +191,11 @@ static void guc_ct_fini(struct drm_device *drm, void *arg)
+ {
+ 	struct xe_guc_ct *ct = arg;
  
-+set_flag:
- 	mas->mas_flags |= MA_STATE_PREALLOC;
- 	return ret;
++	ct_exit_safe_mode(ct);
+ 	destroy_workqueue(ct->g2h_wq);
+ 	xa_destroy(&ct->fence_lookup);
  }
+ 
+-static void receive_g2h(struct xe_guc_ct *ct);
+-static void g2h_worker_func(struct work_struct *w);
+-static void safe_mode_worker_func(struct work_struct *w);
+-
+ static void primelockdep(struct xe_guc_ct *ct)
+ {
+ 	if (!IS_ENABLED(CONFIG_LOCKDEP))
+-- 
+2.39.5
+
 
 
 
