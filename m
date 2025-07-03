@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-159380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6CBBAF7844
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:48:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E3EAF7863
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:49:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EEFE581E3F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C24316F7BC
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12C42E7F0B;
-	Thu,  3 Jul 2025 14:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3362EE276;
+	Thu,  3 Jul 2025 14:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNn3P/8W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJDu61Ze"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D66F1DB124;
-	Thu,  3 Jul 2025 14:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA1472610;
+	Thu,  3 Jul 2025 14:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554051; cv=none; b=Xr844fFYDp/z6GS/WPBpLMzdjhZLQwU8GMMT7/sdcDpzSS5He4vr5+2VfDzR+z07nFDs9CEY40UApmelcAC/tLSDNekhs3FcM59s9yUgYidSrZGJ4AQ2sXr32ErTJp/a03mX9iM9A+FUN1g/YjYpIDofDF5hmR04xFSXMcjl7lM=
+	t=1751554087; cv=none; b=NorZRo8vHAI6+k1LlFbmcOhw6PVzeduvlWo73wPL/6mEN5waRutEkeipqJNaC6z+W0W//i/T/vpvsiaPY3pQh/mhH66ppMqEI5EptkjkvP/nKMZXOIOnCTKsUFGfigHMiEl3dqQ8tuxod6Fmp5kCn2QtLk3+62JbhX+bD4jQHPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554051; c=relaxed/simple;
-	bh=zUdKABbyqhMCd8pWMtDBHsqKmkk9P+3gL3+wkRJTx84=;
+	s=arc-20240116; t=1751554087; c=relaxed/simple;
+	bh=eDHxOLUn6KWcpKw5VJbTS0+dj42du5Pmam/1uX89iis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UBopUsMT7xfSkMp2DAUZ9XMOR1cS9/mZjy9Wzpmkuhn/MzPQ4WLOnGIkGxZq1fNDYbWWdv2fjzLwDp2t4tIMLGSVhU9pZT7+JHRn5Ix1+rDK4bq3JIILLXBwvqr/astSyBvJXUXLVwOwdUiw/96tqqfk6OpRM/ZtUN4CbReyiwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNn3P/8W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2B4C4CEED;
-	Thu,  3 Jul 2025 14:47:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YCGSjXwDJjeOS9cj6Ns7rKd9+hKlCk8p0+mT9DcToRgcDm1fIltKnvXxo0G3L/9N/iVfQlAo4BPzttIoqnivrMY/Z1LXO7xLnZzwtIRxRfKd0DYficA5rr6Dzf/lqSGr4Fa4GW7c2WuwujU1dFI+CS66BkwkoqN5jYI7eKH8Pyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJDu61Ze; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10F8C4CEE3;
+	Thu,  3 Jul 2025 14:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554051;
-	bh=zUdKABbyqhMCd8pWMtDBHsqKmkk9P+3gL3+wkRJTx84=;
+	s=korg; t=1751554087;
+	bh=eDHxOLUn6KWcpKw5VJbTS0+dj42du5Pmam/1uX89iis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mNn3P/8W8CDS3KKH+eWf9CIQ5+szieMv74THZRtMfQx+AbNe71u5Rh//Sw8flDety
-	 PA+huEu9q5pIdv9MRrs+6R9NqJa2fuqd00a10cV/B+tK6zRWpoEx5jQ/ZPtu72DgGx
-	 YQEUCKXuwxVDxk63cWNeN3WgtN7Vq/aY0ssadPRw=
+	b=dJDu61Zevw67ayOkAaVGsv96vsG+h4GQ4jJjJKJnHrkpFGnOjkjnv2PCO3+vYQang
+	 dEzAEKVVjDmDDdNJli5yEZP3roZt13+JpGMVuSgFuzBfxBcWyqAs3bGr7nbya51t+h
+	 GIRHGw3j84K25XLff5bbkXng6tKPzLJlfwTSetZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
 	Matthew Auld <matthew.auld@intel.com>,
 	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
 	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/218] drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1
-Date: Thu,  3 Jul 2025 16:40:06 +0200
-Message-ID: <20250703143958.264616116@linuxfoundation.org>
+Subject: [PATCH 6.12 059/218] Revert "drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1"
+Date: Thu,  3 Jul 2025 16:40:07 +0200
+Message-ID: <20250703143958.304605702@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
 References: <20250703143955.956569535@linuxfoundation.org>
@@ -71,44 +72,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 
-[ Upstream commit 25eeba495b2fc16037647c1a51bcdf6fc157af5c ]
+[ Upstream commit ed5915cfce2abb9a553c3737badebd4a11d6c9c7 ]
 
-The intel-media-driver is currently broken on DG1 because
-it uses EXEC_CAPTURE with recovarable contexts. Relax the
-check to allow that.
+This reverts commit d6e020819612a4a06207af858e0978be4d3e3140.
 
-I've also submitted a fix for the intel-media-driver:
-https://github.com/intel/media-driver/pull/1920
+The IS_DGFX check was put in place because error capture of buffer
+objects is expected to be broken on devices with VRAM.
+
+Userspace fix[1] to the impacted media driver has been submitted, merged
+and a new driver release is out as 25.2.3 where the capture flag is
+dropped on DG1 thus unblocking the usage of media driver on DG1.
+
+[1] https://github.com/intel/media-driver/commit/93c07d9b4b96a78bab21f6acd4eb863f4313ea4a
 
 Cc: stable@vger.kernel.org # v6.0+
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
 Cc: Matthew Auld <matthew.auld@intel.com>
 Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Testcase: igt/gem_exec_capture/capture-invisible
-Fixes: 71b1669ea9bd ("drm/i915/uapi: tweak error capture on recoverable contexts")
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250411144313.11660-2-ville.syrjala@linux.intel.com
-(cherry picked from commit d6e020819612a4a06207af858e0978be4d3e3140)
+Link: https://lore.kernel.org/r/20250522064127.24293-1-joonas.lahtinen@linux.intel.com
+[Joonas: Update message to point out the merged userspace fix]
 Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Stable-dep-of: ed5915cfce2a ("Revert "drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1"")
+(cherry picked from commit d2dc30e0aa252830f908c8e793d3139d51321370)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-index a3b83cfe17267..841438301d802 100644
+index 841438301d802..a3b83cfe17267 100644
 --- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
 +++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
 @@ -2014,7 +2014,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
  			continue;
  
  		if (i915_gem_context_is_recoverable(eb->gem_context) &&
--		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
-+		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
+-		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
++		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
  			return -EINVAL;
  
  		for_each_batch_create_order(eb, j) {
