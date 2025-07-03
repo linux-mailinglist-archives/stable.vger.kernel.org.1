@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-159413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF9BAF7874
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:50:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F034AAF79BB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CC251885968
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:49:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11C75188F8CD
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3279A126BFF;
-	Thu,  3 Jul 2025 14:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA972EF67D;
+	Thu,  3 Jul 2025 15:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgfS9ve9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RTYy2L+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49C372610;
-	Thu,  3 Jul 2025 14:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD252EF66B;
+	Thu,  3 Jul 2025 15:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554155; cv=none; b=cM7ZKq3RWz6DxacfBi90bZH+maWDmEmXPfARdPX6G3g8fa4H/lfuJJ/W9udvocE+tSzJtwnxdVd1xD0hWKYsK+wXhVW7N5jSeFTLUHaT6tXEoNRZtmRfQtCRhBV/6k2dQAG8Uo5T1DZUHrnKHPqgW3zqY3qh9rpDfa24JCwYDJ4=
+	t=1751554812; cv=none; b=dTwdeC9CLLfQxpJynsIupIUA42xQxZJ1c2X4W5dvLu32Hv3ociNo205G3QfjyJnbGfXfMNwAiG8wuRwlemu64qu4vLikvUqXAlegKMT5iTRjLwJuJyz39/heNn2Gg5iYR/xdmXOYk6WMinY2sHvLKBfwXOi6X17H72cBGg+Shxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554155; c=relaxed/simple;
-	bh=Wy+LzNdjo/Xg6g02vm6ph+CfXw0yluBBIXyJBQKsnms=;
+	s=arc-20240116; t=1751554812; c=relaxed/simple;
+	bh=apBJtU6D0KgXbpBbFIEmxL85GuW1VIXgyHcIHd3+RrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+BSQ666luqAB2+d4HfiMuxgmpmoNltjEJSpo544G8QQDBZ90QUnxjN07fnREfs4Cvv3xv9/9+Dp92gUXsrEvlrRaOHrPM2VG4iyxdzF1W2P2GmfEZZXV1hziFo4+7+tCZLhvgoFBsYbxbrd4HCcvxV3gdlXa84xz8/rx5ETN/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgfS9ve9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE52C4CEE3;
-	Thu,  3 Jul 2025 14:49:13 +0000 (UTC)
+	 MIME-Version; b=PMP7f2v3tNE2jCUQhii/nhIw6q7bKQ5d3K+/nXB9ddWd0MC2adb7dsd7HURMb+2C4Yy5ArSMlWGnvY0heOpttSA6oYyx/wC6gCZKHL0Stwl+Oh59MNg0P8n6Ydwh/TF183w5mepFbC2FO6JbFIGG27kEXrpohrSMpWuO6NePUyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RTYy2L+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C090BC4CEE3;
+	Thu,  3 Jul 2025 15:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554154;
-	bh=Wy+LzNdjo/Xg6g02vm6ph+CfXw0yluBBIXyJBQKsnms=;
+	s=korg; t=1751554812;
+	bh=apBJtU6D0KgXbpBbFIEmxL85GuW1VIXgyHcIHd3+RrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgfS9ve9QGLldxre32U7uYBJ0uMIPHK1uuWYdnqyn/19y7P5Pby5gb6GP/U7Zs1SJ
-	 0YjPhVxh/ozBzddS+Ljs5MTeLcLHa7sZ9FewgjNYAbM7WkZTlHN0M+4GrZBHhwFvGm
-	 ZGS/ANEC2cMsr7w8omBp1bdiT/HGGVqOljxwtjBg=
+	b=2RTYy2L+yg+zQiMY5QUYBG6Ho/O/4N0mQmRF3oEGJ+96qHg1jCO5ppmFqzfNoRuQ9
+	 P8NQwOcT4ti5NMDEYTKS9UssMyEmBWbwxcSX2C7S2+EhoqjJ77yDEb6Ubhmh8R71fE
+	 RY5myMJUUtm7L9H5pQXF3YjKO9zh01ZWcRXrIR3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiyu Zhang <zhiyuzhang999@gmail.com>,
-	Longxing Li <coregee2000@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/218] btrfs: handle csum tree error with rescue=ibadroots correctly
-Date: Thu,  3 Jul 2025 16:40:05 +0200
-Message-ID: <20250703143958.219666142@linuxfoundation.org>
+Subject: [PATCH 6.15 086/263] media: uvcvideo: Increase/decrease the PM counter per IOCTL
+Date: Thu,  3 Jul 2025 16:40:06 +0200
+Message-ID: <20250703144007.752903371@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +63,233 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 547e836661554dcfa15c212a3821664e85b4191a ]
+[ Upstream commit 10acb9101355484c3e4f2625003cd1b6c203cfe4 ]
 
-[BUG]
-There is syzbot based reproducer that can crash the kernel, with the
-following call trace: (With some debug output added)
+Now we call uvc_pm_get/put from the device open/close. This low
+level of granularity might leave the camera powered on in situations
+where it is not needed.
 
- DEBUG: rescue=ibadroots parsed
- BTRFS: device fsid 14d642db-7b15-43e4-81e6-4b8fac6a25f8 devid 1 transid 8 /dev/loop0 (7:0) scanned by repro (1010)
- BTRFS info (device loop0): first mount of filesystem 14d642db-7b15-43e4-81e6-4b8fac6a25f8
- BTRFS info (device loop0): using blake2b (blake2b-256-generic) checksum algorithm
- BTRFS info (device loop0): using free-space-tree
- BTRFS warning (device loop0): checksum verify failed on logical 5312512 mirror 1 wanted 0xb043382657aede36608fd3386d6b001692ff406164733d94e2d9a180412c6003 found 0x810ceb2bacb7f0f9eb2bf3b2b15c02af867cb35ad450898169f3b1f0bd818651 level 0
- DEBUG: read tree root path failed for tree csum, ret=-5
- BTRFS warning (device loop0): checksum verify failed on logical 5328896 mirror 1 wanted 0x51be4e8b303da58e6340226815b70e3a93592dac3f30dd510c7517454de8567a found 0x51be4e8b303da58e634022a315b70e3a93592dac3f30dd510c7517454de8567a level 0
- BTRFS warning (device loop0): checksum verify failed on logical 5292032 mirror 1 wanted 0x1924ccd683be9efc2fa98582ef58760e3848e9043db8649ee382681e220cdee4 found 0x0cb6184f6e8799d9f8cb335dccd1d1832da1071d12290dab3b85b587ecacca6e level 0
- process 'repro' launched './file2' with NULL argv: empty string added
- DEBUG: no csum root, idatacsums=0 ibadroots=134217728
- Oops: general protection fault, probably for non-canonical address 0xdffffc0000000041: 0000 [#1] SMP KASAN NOPTI
- KASAN: null-ptr-deref in range [0x0000000000000208-0x000000000000020f]
- CPU: 5 UID: 0 PID: 1010 Comm: repro Tainted: G           OE       6.15.0-custom+ #249 PREEMPT(full)
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
- RIP: 0010:btrfs_lookup_csum+0x93/0x3d0 [btrfs]
- Call Trace:
-  <TASK>
-  btrfs_lookup_bio_sums+0x47a/0xdf0 [btrfs]
-  btrfs_submit_bbio+0x43e/0x1a80 [btrfs]
-  submit_one_bio+0xde/0x160 [btrfs]
-  btrfs_readahead+0x498/0x6a0 [btrfs]
-  read_pages+0x1c3/0xb20
-  page_cache_ra_order+0x4b5/0xc20
-  filemap_get_pages+0x2d3/0x19e0
-  filemap_read+0x314/0xde0
-  __kernel_read+0x35b/0x900
-  bprm_execve+0x62e/0x1140
-  do_execveat_common.isra.0+0x3fc/0x520
-  __x64_sys_execveat+0xdc/0x130
-  do_syscall_64+0x54/0x1d0
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- ---[ end trace 0000000000000000 ]---
+Increase the granularity by increasing and decreasing the Power
+Management counter per ioctl. There are two special cases where the
+power management outlives the ioctl: async controls and streamon. Handle
+those cases as well.
 
-[CAUSE]
-Firstly the fs has a corrupted csum tree root, thus to mount the fs we
-have to go "ro,rescue=ibadroots" mount option.
+In a future patch, we will remove the uvc_pm_get/put from open/close.
 
-Normally with that mount option, a bad csum tree root should set
-BTRFS_FS_STATE_NO_DATA_CSUMS flag, so that any future data read will
-ignore csum search.
-
-But in this particular case, we have the following call trace that
-caused NULL csum root, but not setting BTRFS_FS_STATE_NO_DATA_CSUMS:
-
-load_global_roots_objectid():
-
-		ret = btrfs_search_slot();
-		/* Succeeded */
-		btrfs_item_key_to_cpu()
-		found = true;
-		/* We found the root item for csum tree. */
-		root = read_tree_root_path();
-		if (IS_ERR(root)) {
-			if (!btrfs_test_opt(fs_info, IGNOREBADROOTS))
-			/*
-			 * Since we have rescue=ibadroots mount option,
-			 * @ret is still 0.
-			 */
-			break;
-	if (!found || ret) {
-		/* @found is true, @ret is 0, error handling for csum
-		 * tree is skipped.
-		 */
-	}
-
-This means we completely skipped to set BTRFS_FS_STATE_NO_DATA_CSUMS if
-the csum tree is corrupted, which results unexpected later csum lookup.
-
-[FIX]
-If read_tree_root_path() failed, always populate @ret to the error
-number.
-
-As at the end of the function, we need @ret to determine if we need to
-do the extra error handling for csum tree.
-
-Fixes: abed4aaae4f7 ("btrfs: track the csum, extent, and free space trees in a rb tree")
-Reported-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
-Reported-by: Longxing Li <coregee2000@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-ID: <20250327-uvc-granpower-ng-v6-3-35a2357ff348@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Stable-dep-of: a70705d3c020 ("media: uvcvideo: Rollback non processed entities on error")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_ctrl.c | 38 ++++++++++++++++++++++---------
+ drivers/media/usb/uvc/uvc_v4l2.c | 39 ++++++++++++++++++++++++++++++--
+ 2 files changed, 64 insertions(+), 13 deletions(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 147c50ef912ac..96282bf28b19c 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2168,8 +2168,7 @@ static int load_global_roots_objectid(struct btrfs_root *tree_root,
- 		found = true;
- 		root = read_tree_root_path(tree_root, path, &key);
- 		if (IS_ERR(root)) {
--			if (!btrfs_test_opt(fs_info, IGNOREBADROOTS))
--				ret = PTR_ERR(root);
-+			ret = PTR_ERR(root);
- 			break;
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index bc7e2005fc6c7..636ce1eb2a6bf 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1812,38 +1812,49 @@ static void uvc_ctrl_send_slave_event(struct uvc_video_chain *chain,
+ 	uvc_ctrl_send_event(chain, handle, ctrl, mapping, val, changes);
+ }
+ 
+-static void uvc_ctrl_set_handle(struct uvc_fh *handle, struct uvc_control *ctrl,
+-				struct uvc_fh *new_handle)
++static int uvc_ctrl_set_handle(struct uvc_fh *handle, struct uvc_control *ctrl,
++			       struct uvc_fh *new_handle)
+ {
+ 	lockdep_assert_held(&handle->chain->ctrl_mutex);
+ 
+ 	if (new_handle) {
++		int ret;
++
+ 		if (ctrl->handle)
+ 			dev_warn_ratelimited(&handle->stream->dev->udev->dev,
+ 					     "UVC non compliance: Setting an async control with a pending operation.");
+ 
+ 		if (new_handle == ctrl->handle)
+-			return;
++			return 0;
+ 
+ 		if (ctrl->handle) {
+ 			WARN_ON(!ctrl->handle->pending_async_ctrls);
+ 			if (ctrl->handle->pending_async_ctrls)
+ 				ctrl->handle->pending_async_ctrls--;
++			ctrl->handle = new_handle;
++			handle->pending_async_ctrls++;
++			return 0;
  		}
- 		set_bit(BTRFS_ROOT_TRACK_DIRTY, &root->state);
+ 
++		ret = uvc_pm_get(handle->chain->dev);
++		if (ret)
++			return ret;
++
+ 		ctrl->handle = new_handle;
+ 		handle->pending_async_ctrls++;
+-		return;
++		return 0;
+ 	}
+ 
+ 	/* Cannot clear the handle for a control not owned by us.*/
+ 	if (WARN_ON(ctrl->handle != handle))
+-		return;
++		return -EINVAL;
+ 
+ 	ctrl->handle = NULL;
+ 	if (WARN_ON(!handle->pending_async_ctrls))
+-		return;
++		return -EINVAL;
+ 	handle->pending_async_ctrls--;
++	uvc_pm_put(handle->chain->dev);
++	return 0;
+ }
+ 
+ void uvc_ctrl_status_event(struct uvc_video_chain *chain,
+@@ -2150,15 +2161,15 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+ 
+ 		ctrl->dirty = 0;
+ 
++		if (!rollback && handle && !ret &&
++		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
++			ret = uvc_ctrl_set_handle(handle, ctrl, handle);
++
+ 		if (ret < 0) {
+ 			if (err_ctrl)
+ 				*err_ctrl = ctrl;
+ 			return ret;
+ 		}
+-
+-		if (!rollback && handle &&
+-		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+-			uvc_ctrl_set_handle(handle, ctrl, handle);
+ 	}
+ 
+ 	return processed_ctrls;
+@@ -3237,6 +3248,7 @@ int uvc_ctrl_init_device(struct uvc_device *dev)
+ void uvc_ctrl_cleanup_fh(struct uvc_fh *handle)
+ {
+ 	struct uvc_entity *entity;
++	int i;
+ 
+ 	guard(mutex)(&handle->chain->ctrl_mutex);
+ 
+@@ -3251,7 +3263,11 @@ void uvc_ctrl_cleanup_fh(struct uvc_fh *handle)
+ 		}
+ 	}
+ 
+-	WARN_ON(handle->pending_async_ctrls);
++	if (!WARN_ON(handle->pending_async_ctrls))
++		return;
++
++	for (i = 0; i < handle->pending_async_ctrls; i++)
++		uvc_pm_put(handle->stream->dev);
+ }
+ 
+ /*
+diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
+index 1d5be045d04ec..8bccf7e17528b 100644
+--- a/drivers/media/usb/uvc/uvc_v4l2.c
++++ b/drivers/media/usb/uvc/uvc_v4l2.c
+@@ -697,6 +697,9 @@ static int uvc_v4l2_release(struct file *file)
+ 	if (uvc_has_privileges(handle))
+ 		uvc_queue_release(&stream->queue);
+ 
++	if (handle->is_streaming)
++		uvc_pm_put(stream->dev);
++
+ 	/* Release the file handle. */
+ 	uvc_dismiss_privileges(handle);
+ 	v4l2_fh_del(&handle->vfh);
+@@ -862,6 +865,11 @@ static int uvc_ioctl_streamon(struct file *file, void *fh,
+ 	if (ret)
+ 		return ret;
+ 
++	ret = uvc_pm_get(stream->dev);
++	if (ret) {
++		uvc_queue_streamoff(&stream->queue, type);
++		return ret;
++	}
+ 	handle->is_streaming = true;
+ 
+ 	return 0;
+@@ -879,7 +887,10 @@ static int uvc_ioctl_streamoff(struct file *file, void *fh,
+ 	guard(mutex)(&stream->mutex);
+ 
+ 	uvc_queue_streamoff(&stream->queue, type);
+-	handle->is_streaming = false;
++	if (handle->is_streaming) {
++		handle->is_streaming = false;
++		uvc_pm_put(stream->dev);
++	}
+ 
+ 	return 0;
+ }
+@@ -1378,9 +1389,11 @@ static int uvc_v4l2_put_xu_query(const struct uvc_xu_control_query *kp,
+ #define UVCIOC_CTRL_MAP32	_IOWR('u', 0x20, struct uvc_xu_control_mapping32)
+ #define UVCIOC_CTRL_QUERY32	_IOWR('u', 0x21, struct uvc_xu_control_query32)
+ 
++DEFINE_FREE(uvc_pm_put, struct uvc_device *, if (_T) uvc_pm_put(_T))
+ static long uvc_v4l2_compat_ioctl32(struct file *file,
+ 		     unsigned int cmd, unsigned long arg)
+ {
++	struct uvc_device *uvc_device __free(uvc_pm_put) = NULL;
+ 	struct uvc_fh *handle = file->private_data;
+ 	union {
+ 		struct uvc_xu_control_mapping xmap;
+@@ -1389,6 +1402,12 @@ static long uvc_v4l2_compat_ioctl32(struct file *file,
+ 	void __user *up = compat_ptr(arg);
+ 	long ret;
+ 
++	ret = uvc_pm_get(handle->stream->dev);
++	if (ret)
++		return ret;
++
++	uvc_device = handle->stream->dev;
++
+ 	switch (cmd) {
+ 	case UVCIOC_CTRL_MAP32:
+ 		ret = uvc_v4l2_get_xu_mapping(&karg.xmap, up);
+@@ -1423,6 +1442,22 @@ static long uvc_v4l2_compat_ioctl32(struct file *file,
+ }
+ #endif
+ 
++static long uvc_v4l2_unlocked_ioctl(struct file *file,
++				    unsigned int cmd, unsigned long arg)
++{
++	struct uvc_fh *handle = file->private_data;
++	int ret;
++
++	ret = uvc_pm_get(handle->stream->dev);
++	if (ret)
++		return ret;
++
++	ret = video_ioctl2(file, cmd, arg);
++
++	uvc_pm_put(handle->stream->dev);
++	return ret;
++}
++
+ static ssize_t uvc_v4l2_read(struct file *file, char __user *data,
+ 		    size_t count, loff_t *ppos)
+ {
+@@ -1507,7 +1542,7 @@ const struct v4l2_file_operations uvc_fops = {
+ 	.owner		= THIS_MODULE,
+ 	.open		= uvc_v4l2_open,
+ 	.release	= uvc_v4l2_release,
+-	.unlocked_ioctl	= video_ioctl2,
++	.unlocked_ioctl	= uvc_v4l2_unlocked_ioctl,
+ #ifdef CONFIG_COMPAT
+ 	.compat_ioctl32	= uvc_v4l2_compat_ioctl32,
+ #endif
 -- 
 2.39.5
 
