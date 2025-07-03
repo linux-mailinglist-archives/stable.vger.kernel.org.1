@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-159911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3EB1AF7B63
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:24:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E97A1AF7B59
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:24:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 713D448451D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:18:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A1517B55BB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3782EE994;
-	Thu,  3 Jul 2025 15:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3441DDC1B;
+	Thu,  3 Jul 2025 15:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1hlEi2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18CZqzFX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D010B2EAD10;
-	Thu,  3 Jul 2025 15:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3810D14B092;
+	Thu,  3 Jul 2025 15:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555748; cv=none; b=LiKdMYsps5P408g7mbqSeDIIlgsXsFtYW9Fh5BS6CiNb7KClFm1hz4WRA0uluzmITYKuvoYtnclTtbBUpeDEIq4g8fL70pW9A+uufmaXb7OUcyU9NZb/ytTdz1w43vP/zXPDY2pgwwoNKWpPRgsF6j0bVSPicbd9FEDfB6n2l6k=
+	t=1751556132; cv=none; b=SLrGRJKiNoWuMZogsxMPIHKM10G9+C9ht2hIPNLLpWpCK9COgPx0sWoF5s7kP0BSy5Rcxm9WSXcbw3W26EDmeNom3hhMk9+154dT9n2rpbExqEbgWD/A8xFJBm6u70COhqBYLKOoXnFmjhGAL8JmpwlvhwtSNUM1xUWfqUf2NkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555748; c=relaxed/simple;
-	bh=CpcqJx/RR9hRW/Q8IA7osVO6UqFfdyy50kF6M1h3juI=;
+	s=arc-20240116; t=1751556132; c=relaxed/simple;
+	bh=nwrkF8Zj7hZwnHpJljSfDTWLJBaF7gJnhJzLfaiW7AM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fjn8Uc8uiuKo11mPcUJ2UZCddblcy1tYvX5zVnoGXJjy7Kii1DUX+zY9lNlZqzH9+f708o1S8nPoHyfagDgZYW7GOH22iTIbsLW273ILjMXib3QujceRIOnaYW3RQ6VflS3iLpCRqRBwzem4jGTTAR19z9pd+eaIdvwwK2C7XRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1hlEi2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1E5C4CEE3;
-	Thu,  3 Jul 2025 15:15:47 +0000 (UTC)
+	 MIME-Version; b=l0IH1VhTd5RGBaoARHsP24TTUP2xvuhyMtJMJtnHhV13k50NzuKUjcD2OQCIMgFQLueUvG/aAbSkQw9Z1AOvp/FPvCQ7zxwL6pPgTGwmFcVOVY7WssiJgBJxh6J4sx28MyobntWZsBiY1fbNQdaYLK7hs3TNPzbONn73IRSi6Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18CZqzFX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEEF1C4CEE3;
+	Thu,  3 Jul 2025 15:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555748;
-	bh=CpcqJx/RR9hRW/Q8IA7osVO6UqFfdyy50kF6M1h3juI=;
+	s=korg; t=1751556132;
+	bh=nwrkF8Zj7hZwnHpJljSfDTWLJBaF7gJnhJzLfaiW7AM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v1hlEi2z4PVJPh9FaDdstVxXj84GVgU/7XFfouEzGsiJYB1QUqTi0gd49AEeghcIw
-	 CPrfXVmH9yyiuzpj+RMqTrO7VuzpJnHX+0eXTMyXkFDZTuJl9mPM1SBah1tK/MQevY
-	 6mx+D7DETE9RJO/SNhnfLUkSfKnZUf8w5MLbwK2U=
+	b=18CZqzFX+cs8wyaWmfYSyxWSMoSKMW40w2U+0In0bXdH3/E2EcoM/idh/IUIfTH9G
+	 VjzqcnbIrECmOXhE7rUe0uH+SXH8Ig7Sd1cA8L9iOKbF6N/WRxnna6URftuwoL3bZk
+	 Bqei7ODmkTVTLn9dDgSb914p6PBi3UC0E8P7/5jA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Adam Jackson <ajax@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>
-Subject: [PATCH 6.6 110/139] drm/cirrus-qemu: Fix pitch programming
+	Simon Horman <horms@kernel.org>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 084/132] net: enetc: Correct endianness handling in _enetc_rd_reg64
 Date: Thu,  3 Jul 2025 16:42:53 +0200
-Message-ID: <20250703143945.477877310@linuxfoundation.org>
+Message-ID: <20250703143942.702234164@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Simon Horman <horms@kernel.org>
 
-commit 4bfb389a0136a13f0802eeb5e97a0e76d88f77ae upstream.
+[ Upstream commit 7b515f35a911fdc31fbde6531828dcd6ae9803d3 ]
 
-Do not set CR1B[6] when programming the pitch. The bit effects VGA
-text mode and is not interpreted by qemu. [1] It has no affect on
-the scanline pitch.
+enetc_hw.h provides two versions of _enetc_rd_reg64.
+One which simply calls ioread64() when available.
+And another that composes the 64-bit result from ioread32() calls.
 
-The scanline bit that is set into CR1B[6] belongs into CR13[7], which
-the driver sets up correctly.
+In the second case the code appears to assume that each ioread32() call
+returns a little-endian value. However both the shift and logical or
+used to compose the return value would not work correctly on big endian
+systems if this were the case. Moreover, this is inconsistent with the
+first case where the return value of ioread64() is assumed to be in host
+byte order.
 
-This bug goes back to the driver's initial commit.
+It appears that the correct approach is for both versions to treat the
+return value of ioread*() functions as being in host byte order. And
+this patch corrects the ioread32()-based version to do so.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-Link: https://gitlab.com/qemu-project/qemu/-/blob/stable-9.2/hw/display/cirrus_vga.c?ref_type=heads#L1112 # 1
-Fixes: f9aa76a85248 ("drm/kms: driver for virtual cirrus under qemu")
-Cc: Adam Jackson <ajax@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: <stable@vger.kernel.org> # v3.5+
-Link: https://lore.kernel.org/r/20250328091821.195061-2-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is a bug but would only manifest on big endian systems
+that make use of the ioread32-based implementation of _enetc_rd_reg64.
+While all in-tree users of this driver are little endian and
+make use of the ioread64-based implementation of _enetc_rd_reg64.
+Thus, no in-tree user of this driver is affected by this bug.
+
+Flagged by Sparse.
+Compile tested only.
+
+Fixes: 16eb4c85c964 ("enetc: Add ethtool statistics")
+Closes: https://lore.kernel.org/all/AM9PR04MB850500D3FC24FE23DEFCEA158879A@AM9PR04MB8505.eurprd04.prod.outlook.com/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250624-etnetc-le-v1-1-a73a95d96e4e@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tiny/cirrus.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/freescale/enetc/enetc_hw.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/tiny/cirrus.c
-+++ b/drivers/gpu/drm/tiny/cirrus.c
-@@ -318,7 +318,6 @@ static void cirrus_pitch_set(struct cirr
- 	/* Enable extended blanking and pitch bits, and enable full memory */
- 	cr1b = 0x22;
- 	cr1b |= (pitch >> 7) & 0x10;
--	cr1b |= (pitch >> 6) & 0x40;
- 	wreg_crt(cirrus, 0x1b, cr1b);
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+index 18ca1f42b1f75..04d3e0dedc963 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+@@ -461,7 +461,7 @@ static inline u64 _enetc_rd_reg64(void __iomem *reg)
+ 		tmp = ioread32(reg + 4);
+ 	} while (high != tmp);
  
- 	cirrus_set_start_address(cirrus, 0);
+-	return le64_to_cpu((__le64)high << 32 | low);
++	return (u64)high << 32 | low;
+ }
+ #endif
+ 
+-- 
+2.39.5
+
 
 
 
