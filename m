@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-159867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF12AF7B22
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:22:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05CB3AF7A29
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C90B01CA738E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45AD1188D3FF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674FC2F2354;
-	Thu,  3 Jul 2025 15:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF892ED143;
+	Thu,  3 Jul 2025 15:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yymrhi78"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFELMcOQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244912F19AD;
-	Thu,  3 Jul 2025 15:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B63F23AB86;
+	Thu,  3 Jul 2025 15:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555604; cv=none; b=p9rYlnC2Lwu+MY8u+pGH16b2NM7XWZB7Zdk7GSUDI4lkH+imPxvX2GjlS6CWxiV9jgfyIcTgzHf68qzX9ZlM4YaItgutcB4zAt3M69AJScPVg8qiQ4f68gaW7Avj5o8hoG8wB6kLPiqXxT1GJt93Fjx88sCtpksfWYvOcu9Z2mQ=
+	t=1751555113; cv=none; b=s73BUvqAfZsevGQO/+KZ3Pd8NXER6glrPX4UMYLHTmG84QAvGa/91gzoUAYjI8LJ6DWOp7R0hmQdXwMA8mDGfrw4j9Fuo4uB8IywCDQywDVh9kJkNHvEdsaLmUFvsCy9jh8QuPm6QuXQrMQy0mypim2+lhDoGvPPsMaRbp63jaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555604; c=relaxed/simple;
-	bh=omI2RQz+7ecdotxcaXvS6P93SU3cC8yUyRTuiHe1RtQ=;
+	s=arc-20240116; t=1751555113; c=relaxed/simple;
+	bh=vly1ByKcexcVFZ5TE+prqGIL3Nwp2vQ8lo8dCt5Q3Ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J2QCa1VuvpqQ7gQcpOhFhFMVDC+HGpmy+tmeiYb9OGoX1nENPnlXGF4w0kklA8gvNUWgpPkJUZ3ESEIRI9gD6U4DWplv7SD5aKWxqBVxgxesRWMWrW1o1/tZlU/1q5MgewZZb0kMhgdmJpcdMN0YMaZuO19XG4OLAJo1ulQoiAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yymrhi78; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10BCC4CEED;
-	Thu,  3 Jul 2025 15:13:23 +0000 (UTC)
+	 MIME-Version; b=XVY5PQXDFnCTXvN1/JDYGrFL5iEgcOkJRMtVxjziUSdZxbZEDSYcaBswBKwVskJBeBfwLAScQtsa/BVny5X+bWQh1U6+eJReA4Oe+9QpH/Q4AfIuqrnR13KlsNFdJOhWS8LlCS44/U9rEPrtjKW9Fh7I18h55H+ytbNlK1xFNJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFELMcOQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8E4C4CEE3;
+	Thu,  3 Jul 2025 15:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555604;
-	bh=omI2RQz+7ecdotxcaXvS6P93SU3cC8yUyRTuiHe1RtQ=;
+	s=korg; t=1751555113;
+	bh=vly1ByKcexcVFZ5TE+prqGIL3Nwp2vQ8lo8dCt5Q3Ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yymrhi78sibJwVygrSPUv36jdFZ/05JA+WatJz/Z4d1WukmbdPGAQlJkD0IhlHO1n
-	 /Ut3yXkPbHlttutendXuQkqgF3pubqi9rw1bx9147KsT93oJ85TKEEq6K2szW+cR9i
-	 AgC2QvcC8GPY5Fw5IApmHkdXY+ITgaXbd3suN2kM=
+	b=rFELMcOQzFIs+7WEg+vdigvpKntt9FQnM5U23ypQ4pBpn4AxZ2cbatrD+khWRuzN8
+	 LYLrLHPz4Cg1oiwQfHCqN7qMNXX0Twuv6I82xfTXwfZcDgoISRYlyHoCePQ/AgzaXG
+	 sWrA5+B+oJ42VuoKpH7thpJxaps4dRo/IbqarXS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/139] usb: Add checks for snprintf() calls in usb_alloc_dev()
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Robert Pang <robertpang@google.com>,
+	Coly Li <colyli@kernel.org>,
+	"Ching-Chun (Jim) Huang" <jserv@ccns.ncku.edu.tw>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 179/263] bcache: remove unnecessary select MIN_HEAP
 Date: Thu,  3 Jul 2025 16:41:39 +0200
-Message-ID: <20250703143942.592733626@linuxfoundation.org>
+Message-ID: <20250703144011.522664477@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,77 +63,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit 82fe5107fa3d21d6c3fba091c9dbc50495588630 ]
+commit 95b2e31e1752494d477c5da89d6789f769b0d67b upstream.
 
-When creating a device path in the driver the snprintf() takes
-up to 16 characters long argument along with the additional up to
-12 characters for the signed integer (as it can't see the actual limits)
-and tries to pack this into 16 bytes array. GCC complains about that
-when build with `make W=1`:
+After reverting the transition to the generic min heap library, bcache no
+longer depends on MIN_HEAP.  The select entry can be removed to reduce
+code size and shrink the kernel's attack surface.
 
-  drivers/usb/core/usb.c:705:25: note: ‘snprintf’ output between 3 and 28 bytes into a destination of size 16
+This change effectively reverts the bcache-related part of commit
+92a8b224b833 ("lib/min_heap: introduce non-inline versions of min heap API
+functions").
 
-Since everything works until now, let's just check for the potential
-buffer overflow and bail out. It is most likely a never happen situation,
-but at least it makes GCC happy.
+This is part of a series of changes to address a performance regression
+caused by the use of the generic min_heap implementation.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250321164949.423957-1-andriy.shevchenko@linux.intel.com
+As reported by Robert, bcache now suffers from latency spikes, with P100
+(max) latency increasing from 600 ms to 2.4 seconds every 5 minutes.
+These regressions degrade bcache's effectiveness as a low-latency cache
+layer and lead to frequent timeouts and application stalls in production
+environments.
+
+Link: https://lore.kernel.org/lkml/CAJhEC05+0S69z+3+FB2Cd0hD+pCRyWTKLEOsc8BOmH73p1m+KQ@mail.gmail.com
+Link: https://lkml.kernel.org/r/20250614202353.1632957-4-visitorckw@gmail.com
+Fixes: 866898efbb25 ("bcache: remove heap-related macros and switch to generic min_heap")
+Fixes: 92a8b224b833 ("lib/min_heap: introduce non-inline versions of min heap API functions")
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Reported-by: Robert Pang <robertpang@google.com>
+Closes: https://lore.kernel.org/linux-bcache/CAJhEC06F_AtrPgw2-7CvCqZgeStgCtitbD-ryuPpXQA-JG5XXw@mail.gmail.com
+Acked-by: Coly Li <colyli@kernel.org>
+Cc: Ching-Chun (Jim) Huang <jserv@ccns.ncku.edu.tw>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/usb.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/md/bcache/Kconfig |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 2a938cf47ccd6..da6d5e5f79e7a 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -695,15 +695,16 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
- 		device_set_of_node_from_dev(&dev->dev, bus->sysdev);
- 		dev_set_name(&dev->dev, "usb%d", bus->busnum);
- 	} else {
-+		int n;
-+
- 		/* match any labeling on the hubs; it's one-based */
- 		if (parent->devpath[0] == '0') {
--			snprintf(dev->devpath, sizeof dev->devpath,
--				"%d", port1);
-+			n = snprintf(dev->devpath, sizeof(dev->devpath), "%d", port1);
- 			/* Root ports are not counted in route string */
- 			dev->route = 0;
- 		} else {
--			snprintf(dev->devpath, sizeof dev->devpath,
--				"%s.%d", parent->devpath, port1);
-+			n = snprintf(dev->devpath, sizeof(dev->devpath), "%s.%d",
-+				     parent->devpath, port1);
- 			/* Route string assumes hubs have less than 16 ports */
- 			if (port1 < 15)
- 				dev->route = parent->route +
-@@ -712,6 +713,11 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
- 				dev->route = parent->route +
- 					(15 << ((parent->level - 1)*4));
- 		}
-+		if (n >= sizeof(dev->devpath)) {
-+			usb_put_hcd(bus_to_hcd(bus));
-+			usb_put_dev(dev);
-+			return NULL;
-+		}
- 
- 		dev->dev.parent = &parent->dev;
- 		dev_set_name(&dev->dev, "%d-%s", bus->busnum, dev->devpath);
--- 
-2.39.5
-
+--- a/drivers/md/bcache/Kconfig
++++ b/drivers/md/bcache/Kconfig
+@@ -5,7 +5,6 @@ config BCACHE
+ 	select BLOCK_HOLDER_DEPRECATED if SYSFS
+ 	select CRC64
+ 	select CLOSURES
+-	select MIN_HEAP
+ 	help
+ 	Allows a block device to be used as cache for other devices; uses
+ 	a btree for indexing and the layout is optimized for SSDs.
 
 
 
