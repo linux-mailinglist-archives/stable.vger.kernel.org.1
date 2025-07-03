@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB31CAF794A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:00:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F45AF7A5D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 011361895A96
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:56:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD1354A7252
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D492EAD1B;
-	Thu,  3 Jul 2025 14:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366662BDC1B;
+	Thu,  3 Jul 2025 15:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLVXdPxW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCdSSjNt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E352EE299;
-	Thu,  3 Jul 2025 14:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61EC2EF299;
+	Thu,  3 Jul 2025 15:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554535; cv=none; b=CEf5dJZnlV8Q6igZ03LpMJePFJYv4dpUKJfeEQ3Wym3graWDcMzYIYwUnnNiBF82I4z2zOx1CUBxMOV1UQcggkDDAYMQ+nbPTjNnSjG3K4nYTJRAiUsOi0IOUnEM/WDdm0qr54p/gbwq+zc/ptEqoK+R/N4OaWiSO/wVieMlzlg=
+	t=1751555335; cv=none; b=l6+oTAbrbN9nShzOgb/TapDDQnX6L0nxgCuuBw3OyC0r6tRchGRZMXseI8LG7Mh7k36/eISvDuwCwOYkdRP/H1qDl+cyZcZeU0kyhUZoMDnJwfEQYo1h6+gq8+Rvb3JReRp9CNdCH0Lk4ANYApoDmTiWtaDvTh0SHqcWnXhvOIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554535; c=relaxed/simple;
-	bh=xEa2onxehLLm1lSEbpCWYj+cCqA015sF32T99m1ex+A=;
+	s=arc-20240116; t=1751555335; c=relaxed/simple;
+	bh=TLLjnFaWosKEU430HZ3ID1o3OUYVpu0C9d+m3Mzymgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBfcl5gAIIVEnGNVblo5IX4/C+EwFj+jL1r/ELMPVaJvV90EGgoM1lW6WcH+7Td1FooklrqnPzz2oKgWdlSoy2z32SCdO8CUNzT0ywdnf0mWUpj/P7mXCNNY1eXfhpcVUB7C0ENnYIJD1HhpW+E28p06XvimCXQKw25LTwiIMfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLVXdPxW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B441C4CEE3;
-	Thu,  3 Jul 2025 14:55:35 +0000 (UTC)
+	 MIME-Version; b=WQn1Ki0f8106aC5bfx+oNiW3Vnq1exEnm1Nu7/ppVcEe9WVwHCEDIuDsT4/8xXbXyk/LpMgP9KakWkFh10/DsuvTF5Ytr25ZVWku1sQD6dfHOAdiU90o8VXekm7Y6IFM16tMWmscHFNXJPhmkWfeqBvnyKDz4I+HKDvUkQ4QzWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCdSSjNt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DB7C4CEE3;
+	Thu,  3 Jul 2025 15:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554535;
-	bh=xEa2onxehLLm1lSEbpCWYj+cCqA015sF32T99m1ex+A=;
+	s=korg; t=1751555334;
+	bh=TLLjnFaWosKEU430HZ3ID1o3OUYVpu0C9d+m3Mzymgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iLVXdPxW9vQZ+2Sd2ZZfCAJj8VHy6RAeZLoeZxIKRFjBE4CQvNasQTIxyw9kAp9+n
-	 pgopEfR0vkUQhIIMbJ9xlD/q36TBq+F5EL+HjszH6LbIL2LGdtH0EFmYBzJ9z7U2n5
-	 RRyB2txvESt3udCg2bjljAZVfqkomFGx2n6KTT0U=
+	b=fCdSSjNtR+IYN14ebBnwfDwAt39ZOXAEU5FqzvjOnBFgo8ZgP9EHsaybhZaQpjxkz
+	 ESqI86veQK4x8D9Tt37VH+zd/pWa5wDQr8vuzgWdZAY8mpLwx9+IEdtlNeync/UXUO
+	 iYCIso2g5xWFG24AAVDg0eJWj6NwFkQ+CkG+Te9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Hao <haokexin@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 218/218] spi: fsl-qspi: Fix double cleanup in probe error path
+Subject: [PATCH 6.15 246/263] arm64: dts: qcom: x1e78100-t14s: fix missing HID supplies
 Date: Thu,  3 Jul 2025 16:42:46 +0200
-Message-ID: <20250703144004.932689395@linuxfoundation.org>
+Message-ID: <20250703144014.277905066@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Hao <haokexin@gmail.com>
+[ Upstream commit 55e52d055393f11ba0193975d3db87af36f4b273 ]
 
-[ Upstream commit 5d07ab2a7fa1305e429d9221716582f290b58078 ]
+Add the missing HID supplies to avoid relying on other consumers to keep
+them on.
 
-Commit 40369bfe717e ("spi: fsl-qspi: use devm function instead of driver
-remove") introduced managed cleanup via fsl_qspi_cleanup(), but
-incorrectly retain manual cleanup in two scenarios:
+This also avoids the following warnings on boot:
 
-- On devm_add_action_or_reset() failure, the function automatically call
-  fsl_qspi_cleanup(). However, the current code still jumps to
-  err_destroy_mutex, repeating cleanup.
+	i2c_hid_of 0-0010: supply vdd not found, using dummy regulator
+	i2c_hid_of 0-0010: supply vddl not found, using dummy regulator
+	i2c_hid_of 1-0015: supply vdd not found, using dummy regulator
+	i2c_hid_of 1-002c: supply vdd not found, using dummy regulator
+	i2c_hid_of 1-0015: supply vddl not found, using dummy regulator
+	i2c_hid_of 1-002c: supply vddl not found, using dummy regulator
+	i2c_hid_of 1-003a: supply vdd not found, using dummy regulator
+	i2c_hid_of 1-003a: supply vddl not found, using dummy regulator
 
-- After the fsl_qspi_cleanup() action is added successfully, there is no
-  need to manually perform the cleanup in the subsequent error path.
-  However, the current code still jumps to err_destroy_mutex on spi
-  controller failure, repeating cleanup.
+Note that VCC3B is also used for things like the modem which are not yet
+described so mark the regulator as always-on for now.
 
-Skip redundant manual cleanup calls to fix these issues.
-
-Cc: stable@vger.kernel.org
-Fixes: 40369bfe717e ("spi: fsl-qspi: use devm function instead of driver remove")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Link: https://patch.msgid.link/20250410-spi-v1-1-56e867cc19cf@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7d1cbe2f4985 ("arm64: dts: qcom: Add X1E78100 ThinkPad T14s Gen 6")
+Cc: stable@vger.kernel.org	# 6.12
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20250314145440.11371-9-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-qspi.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ .../qcom/x1e78100-lenovo-thinkpad-t14s.dts    | 43 +++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index 5c59fddb32c1b..2f54dc09d11b1 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -949,17 +949,14 @@ static int fsl_qspi_probe(struct platform_device *pdev)
+diff --git a/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts b/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts
+index 7f756ce48d2f6..999d966b44869 100644
+--- a/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts
++++ b/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts
+@@ -9,6 +9,7 @@
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/input/gpio-keys.h>
+ #include <dt-bindings/input/input.h>
++#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
  
- 	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
- 	if (ret)
--		goto err_destroy_mutex;
-+		goto err_put_ctrl;
+ #include "x1e80100.dtsi"
+@@ -153,6 +154,23 @@ vreg_edp_3p3: regulator-edp-3p3 {
+ 		regulator-boot-on;
+ 	};
  
- 	ret = devm_spi_register_controller(dev, ctlr);
- 	if (ret)
--		goto err_destroy_mutex;
-+		goto err_put_ctrl;
++	vreg_misc_3p3: regulator-misc-3p3 {
++		compatible = "regulator-fixed";
++
++		regulator-name = "VCC3B";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++
++		gpio = <&pm8550ve_8_gpios 6 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++
++		pinctrl-0 = <&misc_3p3_reg_en>;
++		pinctrl-names = "default";
++
++		regulator-boot-on;
++		regulator-always-on;
++	};
++
+ 	vreg_nvme: regulator-nvme {
+ 		compatible = "regulator-fixed";
  
- 	return 0;
+@@ -580,6 +598,9 @@ touchpad@15 {
+ 		hid-descr-addr = <0x1>;
+ 		interrupts-extended = <&tlmm 3 IRQ_TYPE_LEVEL_LOW>;
  
--err_destroy_mutex:
--	mutex_destroy(&q->lock);
--
- err_disable_clk:
- 	fsl_qspi_clk_disable_unprep(q);
++		vdd-supply = <&vreg_misc_3p3>;
++		vddl-supply = <&vreg_l12b_1p2>;
++
+ 		wakeup-source;
+ 	};
  
+@@ -591,6 +612,9 @@ touchpad@2c {
+ 		hid-descr-addr = <0x20>;
+ 		interrupts-extended = <&tlmm 3 IRQ_TYPE_LEVEL_LOW>;
+ 
++		vdd-supply = <&vreg_misc_3p3>;
++		vddl-supply = <&vreg_l12b_1p2>;
++
+ 		wakeup-source;
+ 	};
+ 
+@@ -602,6 +626,9 @@ keyboard@3a {
+ 		hid-descr-addr = <0x1>;
+ 		interrupts-extended = <&tlmm 67 IRQ_TYPE_LEVEL_LOW>;
+ 
++		vdd-supply = <&vreg_misc_3p3>;
++		vddl-supply = <&vreg_l15b_1p8>;
++
+ 		pinctrl-0 = <&kybd_default>;
+ 		pinctrl-names = "default";
+ 
+@@ -670,6 +697,9 @@ touchscreen@10 {
+ 		hid-descr-addr = <0x1>;
+ 		interrupts-extended = <&tlmm 51 IRQ_TYPE_LEVEL_LOW>;
+ 
++		vdd-supply = <&vreg_misc_3p3>;
++		vddl-supply = <&vreg_l15b_1p8>;
++
+ 		pinctrl-0 = <&ts0_default>;
+ 		pinctrl-names = "default";
+ 	};
+@@ -789,6 +819,19 @@ edp_bl_en: edp-bl-en-state {
+ 	};
+ };
+ 
++&pm8550ve_8_gpios {
++	misc_3p3_reg_en: misc-3p3-reg-en-state {
++		pins = "gpio6";
++		function = "normal";
++		bias-disable;
++		drive-push-pull;
++		input-disable;
++		output-enable;
++		power-source = <1>; /* 1.8 V */
++		qcom,drive-strength = <PMIC_GPIO_STRENGTH_LOW>;
++	};
++};
++
+ &qupv3_0 {
+ 	status = "okay";
+ };
 -- 
 2.39.5
 
