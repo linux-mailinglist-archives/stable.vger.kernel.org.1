@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E01CAF7B15
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:21:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D813AF7C0A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03D2C6E2D7D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:14:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3953D1CA37DF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5779D2F0E2D;
-	Thu,  3 Jul 2025 15:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9537E2F2376;
+	Thu,  3 Jul 2025 15:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="morTexrv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJzhz1vW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137FD2F0C55;
-	Thu,  3 Jul 2025 15:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5442F2F2370;
+	Thu,  3 Jul 2025 15:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555576; cv=none; b=fGmAgMO9ESFjwOKTp/EjCGO1MKbxW0TGKKnkg+KELrsQYTSjCcOzfDKOlb+335qciAPi6dc0fcZkd1MpXTpAPKObsJu4oLIrxO3AOrDiZMcLyFv2s2TvidCt+P4ZObu9QJy6goY2goESkiu4jGJYcF41qj5DrcI8WYOCcuv6NLo=
+	t=1751556055; cv=none; b=b/d4pfdKW9DDxaKQxwRUXZIxZ1UBBZGvrFLtR3PU4KwyfkN+lrBfoRY7trZZ7koSeI895f/yESGgYI2KqLd1V7uDSRhFV60pbdgt77sWAswGxXvdE/qaISjU3a8kH93HWroKjTSwSrGMf5PMdZn2LOmwkBsw2QkOnu8pvUr/NNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555576; c=relaxed/simple;
-	bh=71GHc9DFBFDbuTKhIH/AFf4nu9esJx1if0qjou4VIZA=;
+	s=arc-20240116; t=1751556055; c=relaxed/simple;
+	bh=9Vjnu34MEhf81t8P7A88O7sUCbhfkKPYWXBCaGdpmj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jCyJMjq9DQtryHOarFxzC9e+ZEay5Gf0N3EbslC0lUBs+21uLw1kUjj20HoejV2iO+1/66lWlk6D/FD1IEXrVmndJMmhcbVlmpmS5+Y6sdmu4conYzaBCvHo0sUct5crmHPih7DFggtvEh8JnuJc/+zRXq5VO9NjML8zECXVU7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=morTexrv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1880AC4CEE3;
-	Thu,  3 Jul 2025 15:12:54 +0000 (UTC)
+	 MIME-Version; b=WcJdPUvpycpnxtj0/15N8j5uXt/xpQ2jPJdCUxApYkHimm8ANz4ew/qAOZ2jdYelR2/BLqh5/Ps0vjB16D9MT0xoUqWN0Z4Mqh9/B7c8Nrdf0QfmrkpvaU5SCvo+rYCrpl83wvrPWshRO9GVfNESED6VlG2CNvBXfen4aNlArpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJzhz1vW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5FB1C4CEED;
+	Thu,  3 Jul 2025 15:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555575;
-	bh=71GHc9DFBFDbuTKhIH/AFf4nu9esJx1if0qjou4VIZA=;
+	s=korg; t=1751556055;
+	bh=9Vjnu34MEhf81t8P7A88O7sUCbhfkKPYWXBCaGdpmj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=morTexrvG4VMepFV+FNFEWzZM8bO1T+THapQqMoMcsnRIe+95P+KTHTAa3Ckk2V3P
-	 QpFUtRNAkCk30wX2WubUuElPLJKY+EuxI8ao/axMJoRlgv36tmieFC8ap8UqVWqGli
-	 rzDSWBQjRpX6aH/xCs3Y4r944fTWhnmiBSvp6N/s=
+	b=fJzhz1vWixcE8y+gq8BcFYBjqMyWyH66PoyElnfIYMlgBRovsb6KwIXF5vAwQBYXr
+	 1FYMTBKN9h0iVevx7Dx0lsqmEr626JM8qZ8ttJfIfpLskXOCknX16iVVCZPZe91kfH
+	 ki+U0IXU1qmpJ3ma/5t5Gc0G2CiKGS7HwKVJZ2TU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Zekun <zhangzekun11@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/139] PCI: apple: Use helper function for_each_child_of_node_scoped()
+Subject: [PATCH 6.1 030/132] usb: typec: mux: do not return on EOPNOTSUPP in {mux, switch}_set
 Date: Thu,  3 Jul 2025 16:41:59 +0200
-Message-ID: <20250703143943.353107862@linuxfoundation.org>
+Message-ID: <20250703143940.591629362@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Zekun <zhangzekun11@huawei.com>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-[ Upstream commit f60b4e06a945f25d463ae065c6e41c6e24faee0a ]
+[ Upstream commit 0f7bbef1794dc87141897f804e5871a293aa174b ]
 
-The for_each_available_child_of_node_scoped() helper provides
-a scope-based clean-up functionality to put the device_node
-automatically, and as such, there is no need to call of_node_put()
-directly.
+Since the typec connectors can have many muxes or switches for different
+lanes (sbu, usb2, usb3) going into different modal states (usb2, usb3,
+audio, debug) all of them will be called on typec_switch_set and
+typec_mux_set. But not all of them will be handling the expected mode.
 
-Thus, use this helper to simplify the code.
+If one of the mux or switch will come back with EOPTNOSUPP this is no
+reason to stop running through the next ones. Therefor we skip this
+particular error value and continue calling the next.
 
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240831040413.126417-6-zhangzekun11@huawei.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Stable-dep-of: 751bec089c4e ("PCI: apple: Set only available ports up")
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250404-ml-topic-typec-mux-v1-1-22c0526381ba@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-apple.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/usb/typec/mux.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-apple.c b/drivers/pci/controller/pcie-apple.c
-index 08b7070f05d82..66f8854fc3410 100644
---- a/drivers/pci/controller/pcie-apple.c
-+++ b/drivers/pci/controller/pcie-apple.c
-@@ -767,7 +767,6 @@ static int apple_pcie_init(struct pci_config_window *cfg)
- {
- 	struct device *dev = cfg->parent;
- 	struct platform_device *platform = to_platform_device(dev);
--	struct device_node *of_port;
- 	struct apple_pcie *pcie;
- 	int ret;
+diff --git a/drivers/usb/typec/mux.c b/drivers/usb/typec/mux.c
+index 941735c731619..a74f8e1a28c21 100644
+--- a/drivers/usb/typec/mux.c
++++ b/drivers/usb/typec/mux.c
+@@ -214,7 +214,7 @@ int typec_switch_set(struct typec_switch *sw,
+ 		sw_dev = sw->sw_devs[i];
  
-@@ -790,11 +789,10 @@ static int apple_pcie_init(struct pci_config_window *cfg)
- 	if (ret)
- 		return ret;
- 
--	for_each_child_of_node(dev->of_node, of_port) {
-+	for_each_child_of_node_scoped(dev->of_node, of_port) {
- 		ret = apple_pcie_setup_port(pcie, of_port);
- 		if (ret) {
- 			dev_err(pcie->dev, "Port %pOF setup fail: %d\n", of_port, ret);
--			of_node_put(of_port);
+ 		ret = sw_dev->set(sw_dev, orientation);
+-		if (ret)
++		if (ret && ret != -EOPNOTSUPP)
  			return ret;
- 		}
  	}
+ 
+@@ -421,7 +421,7 @@ int typec_mux_set(struct typec_mux *mux, struct typec_mux_state *state)
+ 		mux_dev = mux->mux_devs[i];
+ 
+ 		ret = mux_dev->set(mux_dev, state);
+-		if (ret)
++		if (ret && ret != -EOPNOTSUPP)
+ 			return ret;
+ 	}
+ 
 -- 
 2.39.5
 
