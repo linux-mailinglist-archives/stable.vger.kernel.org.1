@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-159969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624B0AF7B97
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E0CAF78A3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A806540987
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DCEB7AFECF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDAD22258C;
-	Thu,  3 Jul 2025 15:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5322E7BBF;
+	Thu,  3 Jul 2025 14:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taQiBtE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4NNgZ0D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC1D2EA46B;
-	Thu,  3 Jul 2025 15:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5CC2E7649;
+	Thu,  3 Jul 2025 14:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555949; cv=none; b=g9t6Tgn9N0Vdbn9Qpbdgihov+cwAaxR1cPSdEwknoEVsIJ0PTmxIj8EiVwW2TuN9TmyXmaAf5Uleaoz+SnKklt01yMZz0/qHbz5xlT3PGutMRLJiItX047jQ6Zi7dgYP+WyY2If1mtPGLBE5DzlUe1JzVebUmpLvvtDRGpz5FnI=
+	t=1751554311; cv=none; b=Wm0z550X00Jak6jUK209QldD93Np/uBM6jMH+hDH54jdzeWGZiqTED03lI2jMLtmc9ZHLnJ3NRD1s4LPAmGa76vmEYNB8Or3SClWgj/4KGZAaMMwZOTYXwvBqrMEZ+JUMm0oXSO3tOsZhRoQ7OlWcT1BU4GjELc5vSIcQfQzW1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555949; c=relaxed/simple;
-	bh=QIvewqaeZp18IOrM8WgISCIuB39S95FMd5gD0/h66XM=;
+	s=arc-20240116; t=1751554311; c=relaxed/simple;
+	bh=TSVTSSGFULwsJxRT7HzxqweysG18FozcJYw/v2SThsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XlabezAlrcfRgO9Gba6xV0QaDiIi+McHI2tAXoyAXIRJ2MW654kdd1o8xfmRLDsAS/i+iZ5cV54DSzi/0zrFrwpkouh9d4e3oPlZ/A1E44+IyR4OfJn8Ldu4dTQt/8twfM+aSFbP29I0wdEm3jiz/AotK0AU5wm9IQlG48mLv54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taQiBtE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F07C4CEE3;
-	Thu,  3 Jul 2025 15:19:07 +0000 (UTC)
+	 MIME-Version; b=sni6mtrNd3pEO3266S6IsryhAM/ZNnG0P0qziYitSYldUu6eGzbhR0u6aKaCff1+anwDkULszZVXJNDqeL+bGpEtqe51e5g8EGBW+RXGBHzFj/UaL9GTM+BGIYqFJuAVlotPP/rHt8vxy/ZolAntuDGq9cY8v+BcWbO/m8dIWsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4NNgZ0D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0A5C4CEE3;
+	Thu,  3 Jul 2025 14:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555948;
-	bh=QIvewqaeZp18IOrM8WgISCIuB39S95FMd5gD0/h66XM=;
+	s=korg; t=1751554311;
+	bh=TSVTSSGFULwsJxRT7HzxqweysG18FozcJYw/v2SThsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=taQiBtE6cJouqMi9eYZzUFtw+1cK4YzMYjdbnVutuMDv/R7sEjnF4eX5nUJlDfhtQ
-	 pFDNB7hVFrcOnHBHssyiQbmJKjObiFeM0HDjbj9yWkRWnr3lAYUL54fhJqVwibv3mQ
-	 frjHIINbcvcsI2sGldgkBBJzZ6Pvaat0Ue4L6qRk=
+	b=V4NNgZ0DIoBYXxj3sJC3P4CwiP7TS2JoH0xZ+4FlVdihdjca1wSVH10FqEVjFaYDd
+	 zVuWPznoiQTfYQk5LnzQtX0IQCVud0eAvUm3kRses1ajpSThoQiJ5beR3fufguhFD6
+	 91CIwTPyWtzFZf0hmVa5Ms6KUq1O+negCWDCvNAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/132] NFSv4.2: fix listxattr to return selinux security label
-Date: Thu,  3 Jul 2025 16:41:33 +0200
-Message-ID: <20250703143939.557103925@linuxfoundation.org>
+	Chen Yu <yu.c.chen@intel.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 146/218] scsi: megaraid_sas: Fix invalid node index
+Date: Thu,  3 Jul 2025 16:41:34 +0200
+Message-ID: <20250703144001.959426643@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Chen Yu <yu.c.chen@intel.com>
 
-[ Upstream commit 243fea134633ba3d64aceb4c16129c59541ea2c6 ]
+commit 752eb816b55adb0673727ba0ed96609a17895654 upstream.
 
-Currently, when NFS is queried for all the labels present on the
-file via a command example "getfattr -d -m . /mnt/testfile", it
-does not return the security label. Yet when asked specifically for
-the label (getfattr -n security.selinux) it will be returned.
-Include the security label when all attributes are queried.
+On a system with DRAM interleave enabled, out-of-bound access is
+detected:
 
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+megaraid_sas 0000:3f:00.0: requested/available msix 128/128 poll_queue 0
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in ./arch/x86/include/asm/topology.h:72:28
+index -1 is out of range for type 'cpumask *[1024]'
+dump_stack_lvl+0x5d/0x80
+ubsan_epilogue+0x5/0x2b
+__ubsan_handle_out_of_bounds.cold+0x46/0x4b
+megasas_alloc_irq_vectors+0x149/0x190 [megaraid_sas]
+megasas_probe_one.cold+0xa4d/0x189c [megaraid_sas]
+local_pci_probe+0x42/0x90
+pci_device_probe+0xdc/0x290
+really_probe+0xdb/0x340
+__driver_probe_device+0x78/0x110
+driver_probe_device+0x1f/0xa0
+__driver_attach+0xba/0x1c0
+bus_for_each_dev+0x8b/0xe0
+bus_add_driver+0x142/0x220
+driver_register+0x72/0xd0
+megasas_init+0xdf/0xff0 [megaraid_sas]
+do_one_initcall+0x57/0x310
+do_init_module+0x90/0x250
+init_module_from_file+0x85/0xc0
+idempotent_init_module+0x114/0x310
+__x64_sys_finit_module+0x65/0xc0
+do_syscall_64+0x82/0x170
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fix it accordingly.
+
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Link: https://lore.kernel.org/r/20250604042556.3731059-1-yu.c.chen@intel.com
+Fixes: 8049da6f3943 ("scsi: megaraid_sas: Use irq_set_affinity_and_hint()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/scsi/megaraid/megaraid_sas_base.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 0f28607c57473..2d94d1d7b0c62 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -10630,7 +10630,7 @@ const struct nfs4_minor_version_ops *nfs_v4_minor_ops[] = {
+--- a/drivers/scsi/megaraid/megaraid_sas_base.c
++++ b/drivers/scsi/megaraid/megaraid_sas_base.c
+@@ -5910,7 +5910,11 @@ megasas_set_high_iops_queue_affinity_and
+ 	const struct cpumask *mask;
  
- static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
- {
--	ssize_t error, error2, error3;
-+	ssize_t error, error2, error3, error4;
- 	size_t left = size;
- 
- 	error = generic_listxattr(dentry, list, left);
-@@ -10653,8 +10653,16 @@ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
- 	error3 = nfs4_listxattr_nfs4_user(d_inode(dentry), list, left);
- 	if (error3 < 0)
- 		return error3;
-+	if (list) {
-+		list += error3;
-+		left -= error3;
-+	}
+ 	if (instance->perf_mode == MR_BALANCED_PERF_MODE) {
+-		mask = cpumask_of_node(dev_to_node(&instance->pdev->dev));
++		int nid = dev_to_node(&instance->pdev->dev);
 +
-+	error4 = security_inode_listsecurity(d_inode(dentry), list, left);
-+	if (error4 < 0)
-+		return error4;
++		if (nid == NUMA_NO_NODE)
++			nid = 0;
++		mask = cpumask_of_node(nid);
  
--	error += error2 + error3;
-+	error += error2 + error3 + error4;
- 	if (size && error > size)
- 		return -ERANGE;
- 	return error;
--- 
-2.39.5
-
+ 		for (i = 0; i < instance->low_latency_index_start; i++) {
+ 			irq = pci_irq_vector(instance->pdev, i);
 
 
 
