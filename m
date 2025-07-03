@@ -1,145 +1,95 @@
-Return-Path: <stable+bounces-159296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8768FAF6FAF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 12:06:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5ADAF6FB6
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 12:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E5E51C47A12
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 10:07:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A460D3A3B8E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 10:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5382E11DD;
-	Thu,  3 Jul 2025 10:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EBE2E1738;
+	Thu,  3 Jul 2025 10:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="bXnSup6a";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nSUOFKLK"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="YtOtvu6f"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECF31B95B;
-	Thu,  3 Jul 2025 10:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAE9233D88;
+	Thu,  3 Jul 2025 10:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751537196; cv=none; b=RMm86MahkTH30+YPsIpCWYIYVWfv0MioprKD4enAfVYKbwT+pxX7WSv+REnyJtpTF0ppMHjJ5Qj9e6ljZmFDMYigYy4ka4XeAZDNHdtD2Y0Vp3TUD8HEaw6ivrdNW2RkdJuDt+u//3TwwxOj9pY5CUZrTXExGM1s0FL/QZJOaP4=
+	t=1751537363; cv=none; b=eIwBHNMNzYY7rXB8t1lTAsS/ob+9c7/4IkOzzDSYXN07t8WoO31sQlFWOFK+7N+969KvCZoKglYLIypPs9siIAKO+4JUp2r6TuGM7X+hvAplDILu3QNmWBrrTrXj7ccMUTOsQBOb7adOWLMrnEoxKj07d9Eqye51LVAVPS9H14Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751537196; c=relaxed/simple;
-	bh=VLvsZbCMVCjlhFRnfBeprQJpihfEwzytG12xF52C9jY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XK2Dljn7bzp7/0YqKokPOTpsrGTjmmuFQxrO0e0fj4MwyUXB5dGlR3tsP1p6/N12aUoo7MiOBznkCMqEzWdM+/2QaE1ZhV/nEnvCvC7weOFSNatN8uWc811lvpMyTbaI63b9Wj4vhtVvMvTiXyuDAF1rJYW86+02tbi5Y9uWgzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=bXnSup6a; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nSUOFKLK; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 0F16F14000B9;
-	Thu,  3 Jul 2025 06:06:34 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Thu, 03 Jul 2025 06:06:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1751537194; x=1751623594; bh=9lrf5wzMoZ
-	6J/QpHfivU+gednLxgwZTZ/c4/OmLJKLo=; b=bXnSup6aQieDoOuvAIMgY5JcDz
-	LxThvKxitMaxLgrqGbilntah1YvrSP8RWMVLxvinNO8zo/xo9GZgbTkZv4QzCEdO
-	Jzgu0MDRjTG8L/64LDPBVzZHUjrF9fPPkR6fY9r1LT4xsMObR/T9hwwwoYQpJQ1f
-	38beKDam6zSnxoAfZsEwdksOnzrLiuDYwvRqH3MLLRyhH1j7Ug3yT36eqD43EZDD
-	Dufax9oXZHRL8nVJPyestwDu4OFenpf0KySOJEzSClZoBCUd3inssJq+U7eYW4TP
-	5nOCY0Kb7B1B54iwekU7bJz5HbtPx600Awiq5kziy5CJNL7Id4UqwjNxswcw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1751537194; x=1751623594; bh=9lrf5wzMoZ6J/QpHfivU+gednLxgwZTZ/c4
-	/OmLJKLo=; b=nSUOFKLKBUBSel8rm8kefj5N/uEAiplic4esh2Ri1yHOt1p2hxF
-	OGvQqL9m+marQ8ly3uW9RExA9B793bwlw7gTAGI3BwKzpvisDZJPyYUrdNtJNR2f
-	fqdB3V2IliQhOlDs87w89cmgbXkONy5LaLheF/g9Kmw1XWcEpqiUl4couezFOYPp
-	6KqqKZwx/jlvoTdtGlMV5wY9/WO7uq7x55gavQMwhBxOrb3H1YQ17XVMPwSH6qji
-	UXVW1U2BmPeBvx/xLY+pfLSJareJ/TOyTFCiQ71rkVQh/kBJq8mziUnpXErNGJE1
-	R0LJSezzFG8CyLDNn7HeOb78vhzk6qVucVQ==
-X-ME-Sender: <xms:KVZmaGqupRg-M6qJ-_8KEAsiELlwvpEa9SFJsTfja2S1G5K5MLXDQA>
-    <xme:KVZmaEqb7FZkS6DEfVL1RhtkqWOkUg64OfORzgjAZeqUtXmAyoHQ87MTHi1RQQjSH
-    frqRBalgqv9Pg>
-X-ME-Received: <xmr:KVZmaLPy2uGfuAdti_WIV8vQxw1sC_wH-dQa07Z6Yc-w-uHptvD1uPuLCyWGLcMVpXfFjr2ZYQvtwp4YByggqmjDIGn5l68>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduleellecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtredttd
-    dtvdenucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecu
-    ggftrfgrthhtvghrnhepgeehueehgfdtledutdelkeefgeejteegieekheefudeiffdvud
-    effeelvedttddvnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghr
-    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtg
-    homhdpnhgspghrtghpthhtohepudegpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pegrhhgrfedutdehuddtsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhtrggslhgvse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuhhrvgiikhhisehgmhgrihhl
-    rdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdroh
-    hrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthht
-    oheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheplhhinhhugidqkh
-    gvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:KVZmaF6ULRxKtCv43SwrThS4tf5az2060MbroCT_GlOZnwzhEHwnEQ>
-    <xmx:KVZmaF5koHkl5laVBkUVQklBHhcs6TxXzNLwdseVSas1XiLXYz7_7Q>
-    <xmx:KVZmaFjMBW-ji12BxIqtxOLChPKNHElkDmYcePmLFQSxV7JTh_QLfQ>
-    <xmx:KVZmaP6izJ50zmyiZmgbMvb0Tq1AakvbK0BAYVjBVff8OgDgIGHk0g>
-    <xmx:KlZmaCFHBW7XdzBvpybxPSbNQA0gvAuktj4EOi_vhXEvr_raSXyColYC>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 3 Jul 2025 06:06:33 -0400 (EDT)
-Date: Thu, 3 Jul 2025 12:06:32 +0200
-From: Greg KH <greg@kroah.com>
-To: Jeongjun Park <aha310510@gmail.com>
-Cc: stable@vger.kernel.org, urezki@gmail.com, akpm@linux-foundation.org,
-	edumazet@google.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.12.y] mm/vmalloc: fix data race in show_numa_info()
-Message-ID: <2025070315-breezy-bogged-75f3@gregkh>
-References: <20250702153428.352047-1-aha310510@gmail.com>
+	s=arc-20240116; t=1751537363; c=relaxed/simple;
+	bh=8oFnaDx8yWVXgMM76SE9vU05ZBgM/KqyVMU9quvFQu8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RvsaJCAck3OZw4DG3O29pHfzZC9u+hTQwH5eRW8Uuu+qM/Wj3xZCkK/74bM2+RPPGxzsMAuQDiIRmrK35tR2RISJcFjYOeN0ujQofXaQGLFZSeGngcRNpCXmD4/MQm0bbYqkhVt8ar5m48HhH/q9qb7VTXaZH6+/RgNgHXWvn4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=YtOtvu6f; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=We
+	qACTZgfJCdNsvenNHl/KCtlQOAdLai2F3zW9rTuY4=; b=YtOtvu6f1su/Vp0mcq
+	AWl9cuBDquXN85rS/vpg7sVG5BDVuuEurnYJ2LQnqxfi+zual8OrKmXKZhGTfgWR
+	kX0oSdAJvvNYNmcNqoGMaSgA7QVdAJv30Sxa3316Dkd9vaTuUf7nNIdTpvkVrgUN
+	kkYht8ULbfrF9iFhfxQmVT8BQ=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wBn3nOKVmZobwkoCQ--.29235S4;
+	Thu, 03 Jul 2025 18:08:12 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	haoxiang_li2024@163.com,
+	dan.j.williams@intel.com
+Cc: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] x86/pmem: Fix a null pointer dereference in register_e820_pmem()
+Date: Thu,  3 Jul 2025 18:08:09 +0800
+Message-Id: <20250703100809.2542430-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250702153428.352047-1-aha310510@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBn3nOKVmZobwkoCQ--.29235S4
+X-Coremail-Antispam: 1Uf129KBjvdXoWruw48urWkAr1Dur1DWrWkXrb_yoW3Awb_Kr
+	17K3yDurWFvr929F13Aw4fZr1fJwn7tFWF9r1UKFnavr90gr45X3yjqFWFyr43XrZ7KrWU
+	XasxCrZxGFy7CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRG0PfUUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbBkAl-bmhmVB1MfQAAs+
 
-On Thu, Jul 03, 2025 at 12:34:28AM +0900, Jeongjun Park wrote:
-> commit 5c5f0468d172ddec2e333d738d2a1f85402cf0bc upstream.
-> 
-> The following data-race was found in show_numa_info():
-> 
-> ==================================================================
-> BUG: KCSAN: data-race in vmalloc_info_show / vmalloc_info_show
-> 
-> read to 0xffff88800971fe30 of 4 bytes by task 8289 on cpu 0:
->  show_numa_info mm/vmalloc.c:4936 [inline]
->  vmalloc_info_show+0x5a8/0x7e0 mm/vmalloc.c:5016
->  seq_read_iter+0x373/0xb40 fs/seq_file.c:230
->  proc_reg_read_iter+0x11e/0x170 fs/proc/inode.c:299
-> ....
-> 
-> write to 0xffff88800971fe30 of 4 bytes by task 8287 on cpu 1:
->  show_numa_info mm/vmalloc.c:4934 [inline]
->  vmalloc_info_show+0x38f/0x7e0 mm/vmalloc.c:5016
->  seq_read_iter+0x373/0xb40 fs/seq_file.c:230
->  proc_reg_read_iter+0x11e/0x170 fs/proc/inode.c:299
-> ....
-> 
-> value changed: 0x0000008f -> 0x00000000
-> ==================================================================
-> 
-> According to this report,there is a read/write data-race because
-> m->private is accessible to multiple CPUs.  To fix this, instead of
-> allocating the heap in proc_vmalloc_init() and passing the heap address to
-> m->private, vmalloc_info_show() should allocate the heap.
-> 
-> Link: https://lkml.kernel.org/r/20250508165620.15321-1-aha310510@gmail.com
-> Fixes: 8e1d743 ("mm: vmalloc: support multiple nodes in vmallocinfo")
+Add check for the return value of platform_device_alloc()
+to prevent null pointer dereference.
 
-Same comments on the 6.15 version, why change this line?
+Fixes: 7a67832c7e44 ("libnvdimm, e820: make CONFIG_X86_PMEM_LEGACY a tristate option")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+---
+ arch/x86/kernel/pmem.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-thanks,
+diff --git a/arch/x86/kernel/pmem.c b/arch/x86/kernel/pmem.c
+index 23154d24b117..04fb221716ff 100644
+--- a/arch/x86/kernel/pmem.c
++++ b/arch/x86/kernel/pmem.c
+@@ -27,6 +27,8 @@ static __init int register_e820_pmem(void)
+ 	 * simply here to trigger the module to load on demand.
+ 	 */
+ 	pdev = platform_device_alloc("e820_pmem", -1);
++	if (!pdev)
++		return -ENOMEM;
+ 
+ 	rc = platform_device_add(pdev);
+ 	if (rc)
+-- 
+2.25.1
 
-greg k-h
 
