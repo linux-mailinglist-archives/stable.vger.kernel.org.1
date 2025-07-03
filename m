@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-159891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8AC9AF7B33
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:22:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7EA6AF7939
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:59:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBB8916A9F1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:17:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58B8F188D98F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1BE2F0C5A;
-	Thu,  3 Jul 2025 15:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87ED22E7BBF;
+	Thu,  3 Jul 2025 14:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6ERewvc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmtU2dP6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478DD2F4327;
-	Thu,  3 Jul 2025 15:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CC422578A;
+	Thu,  3 Jul 2025 14:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555686; cv=none; b=gg44bxCSmnmuBKjWfYy7BFzb0+iGrZ2T2nIetQwTRNi6oGFcWjBcCpXnEC8RoRcPBUYyzqTpGzOXwClolXkN05LuTVA+pqW0lN4x99l1fF2atnAzMphNhGGiGqFczHppDsjwwFScWC06xSZhDyov8DCtpZjF9Z3431h7dgBh6F4=
+	t=1751554488; cv=none; b=AFtQ6RJVFE7KshHs24iwr9Ua3ObZE8rL1Zvh0nuzUdC8jlhM6AAVBWe/KVDUkYJgngiLiE7K5yXqwedm8SQOwen5IGdjpjSIMWQfHcrTTRrixDBndiYcq4QAJdgC9T3YoreqINTZiuvaJysORdCnDKzbwv5fvHfaHO9QtJoeEi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555686; c=relaxed/simple;
-	bh=EEaqEVkwbBqab7MxfUPp7Joxfo7P32/eBh3q51A8850=;
+	s=arc-20240116; t=1751554488; c=relaxed/simple;
+	bh=qxoZ1HuXTRcx4N7vqh+YxTHlD6JvgklChiO+s/+kqVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ES89DYJvvLsR7jWOgb/J0xM3bWqIwEdDTwGP0w3SIVCXNTdoDzE9sRPS82xoJJtMju4Q5QNGohkYA+dg3bpiFkMBmJmBOWbRKp4F7XUb5u9MbvobijcHJdMLyaDX3Y1gssOOus85zJ47yTrypZoqK7xBvhSVf2N2UjsiKRam+dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6ERewvc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A18C4CEE3;
-	Thu,  3 Jul 2025 15:14:44 +0000 (UTC)
+	 MIME-Version; b=moh95PMoXfo7KcVZnUmduW92K5R7IDxaFSaKUyCUS6+NywUlKgdd/am3nd7bKTlcIKt49OaqwEDN/6WRnLXTffiBcg87B8g30Cdx7HRixtyb+CjASuZoW/Wikn6kFEbLve/VNyyKC55XQkJWOszkNwCOw2no9ll4SXdC2TI8h0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmtU2dP6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E18C4CEE3;
+	Thu,  3 Jul 2025 14:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555685;
-	bh=EEaqEVkwbBqab7MxfUPp7Joxfo7P32/eBh3q51A8850=;
+	s=korg; t=1751554488;
+	bh=qxoZ1HuXTRcx4N7vqh+YxTHlD6JvgklChiO+s/+kqVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6ERewvcLmnfNR+IFBROQUhy9M83K6G01dJjGQWLVUTVNZiXKcuXGVjnZf0zszPOZ
-	 cpy4n0AFAA7+d7y7DHblELxQOCQM4V6ZHlZebJY5J3L5RN9EzI5H/H34QxCBIO0KeT
-	 wQgQ4mo2pwmmZQRZ1uh1uSzZUdB2yZ0QZ+L0zp1E=
+	b=QmtU2dP6IEHBUK6pvPBA5sxv4XSskEA2mPpEVhUisbomgijKUa5MXgNz2E14e5YrG
+	 Jf0X++VadFo1YFIW2+D6E5gGmFUq4updaMJ6qqJrn4X6IOxRp9S8e3m68idYs+jHym
+	 +RT0P6JP2pLbgMug+5SqBKGbjwTQk76pbT6y/Izo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Tamara <igor.tamara@gmail.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Ivan Shapovalov <intelfx@intelfx.name>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/139] ALSA: hda/realtek: Fix built-in mic on ASUS VivoBook X507UAR
+Subject: [PATCH 6.12 204/218] btrfs: do regular iput instead of delayed iput during extent map shrinking
 Date: Thu,  3 Jul 2025 16:42:32 +0200
-Message-ID: <20250703143944.640672597@linuxfoundation.org>
+Message-ID: <20250703144004.379344109@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salvatore Bonaccorso <carnil@debian.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 7ab6847a03229e73bb7c58ca397630f699e79b53 ]
+[ Upstream commit 15b3b3254d1453a8db038b7d44b311a2d6c71f98 ]
 
-The built-in mic of ASUS VivoBook X507UAR is broken recently by the fix
-of the pin sort. The fixup ALC256_FIXUP_ASUS_MIC_NO_PRESENCE is working
-for addressing the regression, too.
+The extent map shrinker now runs in the system unbound workqueue and no
+longer in kswapd context so it can directly do an iput() on inodes even
+if that blocks or needs to acquire any lock (we aren't holding any locks
+when requesting the delayed iput from the shrinker). So we don't need to
+add a delayed iput, wake up the cleaner and delegate the iput() to the
+cleaner, which also adds extra contention on the spinlock that protects
+the delayed iputs list.
 
-Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
-Reported-by: Igor Tamara <igor.tamara@gmail.com>
-Closes: https://bugs.debian.org/1108069
-Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
-Link: https://lore.kernel.org/CADdHDco7_o=4h_epjEAb92Dj-vUz_PoTC2-W9g5ncT2E0NzfeQ@mail.gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Ivan Shapovalov <intelfx@intelfx.name>
+Tested-by: Ivan Shapovalov <intelfx@intelfx.name>
+Link: https://lore.kernel.org/linux-btrfs/0414d690ac5680d0d77dfc930606cdc36e42e12f.camel@intelfx.name/
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/extent_map.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 82210b1e3b978..0d367cec03ade 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10325,6 +10325,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1d4e, "ASUS TM420", ALC256_FIXUP_ASUS_HPE),
- 	SND_PCI_QUIRK(0x1043, 0x1da2, "ASUS UP6502ZA/ZD", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x1e10, "ASUS VivoBook X507UAR", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
- 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
+diff --git a/fs/btrfs/extent_map.c b/fs/btrfs/extent_map.c
+index 61477cb69a6fd..93043edc8ff93 100644
+--- a/fs/btrfs/extent_map.c
++++ b/fs/btrfs/extent_map.c
+@@ -1261,7 +1261,7 @@ static long btrfs_scan_root(struct btrfs_root *root, struct btrfs_em_shrink_ctx
+ 
+ 		min_ino = btrfs_ino(inode) + 1;
+ 		ctx->last_ino = btrfs_ino(inode);
+-		btrfs_add_delayed_iput(inode);
++		iput(&inode->vfs_inode);
+ 
+ 		if (ctx->scanned >= ctx->nr_to_scan ||
+ 		    btrfs_fs_closing(inode->root->fs_info))
 -- 
 2.39.5
 
