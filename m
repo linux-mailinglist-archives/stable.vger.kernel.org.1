@@ -1,115 +1,116 @@
-Return-Path: <stable+bounces-160081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B096AF7C33
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:32:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE13AF783C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:48:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B439E6E48AF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:25:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8D7E4E14F3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561A71AA1D5;
-	Thu,  3 Jul 2025 15:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DD32EE96D;
+	Thu,  3 Jul 2025 14:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igxeeWZg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cgZTtq3I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1359715442C;
-	Thu,  3 Jul 2025 15:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3582EE287;
+	Thu,  3 Jul 2025 14:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556309; cv=none; b=mNZeRkWIpLX2y/+HRqB0ex8Umwu4qXP2pPb6W0xYiqGU31Rov365/IxTrCo8UELPcXlLrcoR33mpBxwPt1xAsY22mQBQcTPn4jI5LeQYGvzdknEhlVKFL1M4d7gyW6mPG/bghdgbPc81nI7Y9w1/bcQ+V6S5Luu2CpQl0JGXHzg=
+	t=1751554071; cv=none; b=EispTaWYD8swMAqsXXnnpbP2/ORKPZ7+P6ftlsVZxnwOmtRSQXvWaus5KsP1ZtTvRhwdoOS3Dfy5uFcGRmegIPlFuCkkcoS6CZy7Sw2psFew7SZC1Jl3tTosvwxg3T7EoZDJFGaLVNl2y60IbGNxC25UaRxRiTfg/3Nw7nlvp14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556309; c=relaxed/simple;
-	bh=ROkcBbG8frlwnAFEjcHqozes5VWSbEsbMls1iCth7w4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JrjZxkOV2QqcgM4PlesBGP4BrLAwXLaKXLm5jziHUyQWqTDkrHPZpEGgMzUpDVm4ffC2BkKNC2V4jXcAMqrgqtvFWl3SIge8ksDc14o2C/q64NziHsgvKItjc4IWTZ0ySTVg4HND5LzBpxwb4nibAQZIoEdxzXLqZtTqv9V01Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igxeeWZg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9243CC4CEE3;
-	Thu,  3 Jul 2025 15:25:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556309;
-	bh=ROkcBbG8frlwnAFEjcHqozes5VWSbEsbMls1iCth7w4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igxeeWZgIjs9NK4WMzoI3dGJ1LE2JPTyx/XggqcMnC7g4oxCxrvv6/mtbAsGdGRiH
-	 JbFJjIpzOlCyrtLGAh4oZU9HZUfPaINWmi4+jvam8YiwZ4KUqm2DlEpkJasoZjRZlk
-	 ky4SEbU65Xq0tFJ+KS3LussUFgnwJE6ZdBX4gEmg=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 132/132] arm64: Restrict pagetable teardown to avoid false warning
-Date: Thu,  3 Jul 2025 16:43:41 +0200
-Message-ID: <20250703143944.565513090@linuxfoundation.org>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1751554071; c=relaxed/simple;
+	bh=RafIvVbiUyoUQKQHbRbqnjeFOB2hcSEJLccEvZ3+n+c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fZiYNbO/rXERazWZp1wQyRp7X7HLBoFfu1bxY+nw3JaI+6Bpj4mnAlCLauT3O000kF+vLTwOnbMbttn6k7SwS6D0ihAlsYSPFe18GOmPOj1jvT3MPaH1D+Dnl3BCze8339tsYwfnvQj4it4hdU99/OHxpfhb54BgQjUMrEXt2ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgZTtq3I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77903C4CEE3;
+	Thu,  3 Jul 2025 14:47:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751554071;
+	bh=RafIvVbiUyoUQKQHbRbqnjeFOB2hcSEJLccEvZ3+n+c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cgZTtq3IIlgui7JvyJN4aIixV24ZPVNX3mE2iFY2Geduz1t23gCzZfBxH11sZsxxU
+	 0XI6riDdtTsSOHSVKlp84rU9NekMRKyHT4ZxxLDoZ6k6ELlpgDTWesSu7r5C1WFkxj
+	 KxaQcRxFGj7/RrRhnrkhiFOMDxWeUUjA93aTxwchmLdyFufOu/Gk/zYusEo2W9Yw1o
+	 8sHO6a0yNfXBmr1ASbw4ys+YlOg70nj+WGdtzbwPLzjk6xZFUtZxOipqjX3mOZ40A+
+	 /7/aX2Z0O0s5iP4R3GmMXpWQ7FyllGbXRp9uS01Baohlo5YjOSNwXYEMdNoZx8Trh8
+	 RNl4I20EQUQOg==
+Message-ID: <84dfa466-d201-4a51-8794-6c64568bec95@kernel.org>
+Date: Thu, 3 Jul 2025 16:47:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] - Multiple userspace implementations of battery
+ estimate broken after "ACPI: battery: negate current when discharging"
+To: Matthew Schwartz <matthew.schwartz@linux.dev>, pmarheine@chromium.org,
+ Sebastian Reichel <sre@kernel.org>
+Cc: regressions@lists.linux.dev, stable@vger.kernel.org,
+ rafael.j.wysocki@intel.com, linux-acpi@vger.kernel.org
+References: <87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev>
+Content-Language: en-US, nl
+From: Hans de Goede <hansg@kernel.org>
+In-Reply-To: <87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+Hi Matthew,
 
-------------------
+On 3-Jul-25 3:54 AM, Matthew Schwartz wrote:
+> Hello,
+> 
+> I installed kernel 6.15.4 to find that my battery estimate on my handheld gaming device was completely inaccurate, instead giving negative values and an unknown estimated battery life in multiple places. 
+> 
+> After bisecting, I landed on "ACPI: battery: negate current when discharging” as the bad commit. This commit breaks not one but several userspace implementations of battery monitoring: Steam and MangoHud. Perhaps it breaks more, but those are the two I have noticed so far. 
 
-From: Dev Jain <dev.jain@arm.com>
+Thank you for reporting this.
 
-commit 650768c512faba8070bf4cfbb28c95eb5cd203f3 upstream.
+As Rafael already indicated this patch will need to be reverted to
+unbreak userspace.
 
-Commit 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from
-pXd_free_pYd_table()") removes the pxd_present() checks because the
-caller checks pxd_present(). But, in case of vmap_try_huge_pud(), the
-caller only checks pud_present(); pud_free_pmd_page() recurses on each
-pmd through pmd_free_pte_page(), wherein the pmd may be none. Thus it is
-possible to hit a warning in the latter, since pmd_none => !pmd_table().
-Thus, add a pmd_present() check in pud_free_pmd_page().
+But, the patch was actually doing the right thing, according to:
 
-This problem was found by code inspection.
+Documentation/ABI/testing/sysfs-class-power
 
-Fixes: 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table()")
-Cc: stable@vger.kernel.org
-Reported-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Link: https://lore.kernel.org/r/20250527082633.61073-1-dev.jain@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/arm64/mm/mmu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+What:           /sys/class/power_supply/<supply_name>/current_avg
+Date:           May 2007
+Contact:        linux-pm@vger.kernel.org
+Description:
+                Battery:
+...
+                Access: Read
 
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1503,7 +1503,8 @@ int pud_free_pmd_page(pud_t *pudp, unsig
- 	next = addr;
- 	end = addr + PUD_SIZE;
- 	do {
--		pmd_free_pte_page(pmdp, next);
-+		if (pmd_present(READ_ONCE(*pmdp)))
-+			pmd_free_pte_page(pmdp, next);
- 	} while (pmdp++, next += PMD_SIZE, next != end);
- 
- 	pud_clear(pudp);
+                Valid values: Represented in microamps. Negative values are
+                used for discharging batteries, positive values for charging
+                batteries and for USB IBUS current.
 
+(and the same for current_now)
+
+and there are many power_supply fuel-gauge drivers (1) under
+drivers/power/supply/ which do adhere to this specification
+and report a negative current for discharging.
+
+So if any of the userspace consumers of this API you mention
+were to run on hw with these drivers the same problem will
+be hit. Can you please file bugs against these userspace
+projects so that they can fix this?
+
+Regards,
+
+Hans
+
+
+
+1) For directly accessing fuel-gauge chips on devices where these
+are directly accessible instead of being exposed through ACPI
 
 
