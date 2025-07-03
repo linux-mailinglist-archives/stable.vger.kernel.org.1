@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-159978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C715BAF7BD3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 543B8AF78EE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4733E1CA6BA3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6383E540301
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528A42EFD9F;
-	Thu,  3 Jul 2025 15:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D94E2EF9C1;
+	Thu,  3 Jul 2025 14:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXFIqU0M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGz+gSRK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107182EFD98;
-	Thu,  3 Jul 2025 15:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5352EF672;
+	Thu,  3 Jul 2025 14:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555978; cv=none; b=C9rCTTPrRvbwoLU6gMsCxqt/HoG81dHZyE9FczHi5P8V6UtSKoy/YyfVm5GzNPKU/TIjqQG2yzdKPsxW9/u68mUX4Frp7IcVvCkj/WjEDlshdPCVY79V47G27YFAhkX8DyU5qdhB24G5A5l8AQeobG7F2SfiiosNakMpyjqrjCU=
+	t=1751554409; cv=none; b=Fie4S/lSVtKEpNSFXdDUWu8kCZHMB+n4kt5fd92mZlGuXxnnqFOoZl5j4lV+Moiep2nEahwvkO6hiMZp+DNlBHucwgpcLetETCFDVCymQna1qPqQPjbTCsJcZP8YNSH1PUpPyAGe7Oh60sDgLE7km4X62BhjpNn4j7W+1xM7y94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555978; c=relaxed/simple;
-	bh=JuWBeY1yX5Opz/pVZRzVBVV+a1l2ahFOjXgT1Zk2iLs=;
+	s=arc-20240116; t=1751554409; c=relaxed/simple;
+	bh=rplAOk9FeIbzKJONL3+Sga+ZOFFcDlu16cCWW8M2b9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f8Ws9NSZICHVwH4NaOIX016cWAx4JxbGwPZAUMKSWdS5yVzKs2XCvklEFjclPkOVOPzzaOK9WH2Fw7V1vCzWJ8e1PAlf0LTLMiJJhhCkGOEw2i/X/favATr1I2XGurqN9R+bxRENiTRDAXp161Xz6jbFSnNK7SwYWQchPbmjoqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXFIqU0M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D31C4CEE3;
-	Thu,  3 Jul 2025 15:19:37 +0000 (UTC)
+	 MIME-Version; b=jW0EeBuPpRDDiHIAZJ7yuLv/vLhjskKlOdAkqF+KU1ZQn/F4Xl3QiLGCJulzqlYqcbuauOSbL4RHwyNEY+1MajcDToqWgQqkgP6gVx0IMOGVoJQPukqTWaX9jsoSmWTPKaSiydO9O56wlUAKssa0Lvuq9qOoKmx4yp0nJHQM7lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGz+gSRK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB5EC4CEE3;
+	Thu,  3 Jul 2025 14:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555977;
-	bh=JuWBeY1yX5Opz/pVZRzVBVV+a1l2ahFOjXgT1Zk2iLs=;
+	s=korg; t=1751554409;
+	bh=rplAOk9FeIbzKJONL3+Sga+ZOFFcDlu16cCWW8M2b9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXFIqU0MHe3GJoaCkm3nF15fGvXpAFfi5qS8MN6JbKFSM3djVARY9E2VnqZf8Ynu8
-	 QyuHFQlCns2alUDvoNH8q4vX8K8iJ3LpCXLzrZCZkZ9XJrh5JKQAdNUwyMcxNfmQP8
-	 kBFJ4n9lwXoir0Qe9l47OdRTIgbc25e6KPFzK8XY=
+	b=FGz+gSRKNXVRL1M7bPpQ25x1OlXWn50a3n2wSTx/IA4TqLviC5/pFTg3v+rLKg/X+
+	 iy78TtVyerXsVNQfiGx1OBw95hUXSlwTAJPaayQdp/CBIDbug3gwMUa78QRAlu09aT
+	 fZjp6CHZEalvuWMcx/aCJP+hAAvzBcgq3bjrs2HI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/132] drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Ben Hutchings <ben@decadent.org.uk>
+Subject: [PATCH 6.12 178/218] x86/fpu: Refactor xfeature bitmask update code for sigframe XSAVE
 Date: Thu,  3 Jul 2025 16:42:06 +0200
-Message-ID: <20250703143940.881401104@linuxfoundation.org>
+Message-ID: <20250703144003.293716786@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +64,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Chang S. Bae <chang.seok.bae@intel.com>
 
-[ Upstream commit 25eeba495b2fc16037647c1a51bcdf6fc157af5c ]
+commit 64e54461ab6e8524a8de4e63b7d1a3e4481b5cf3 upstream.
 
-The intel-media-driver is currently broken on DG1 because
-it uses EXEC_CAPTURE with recovarable contexts. Relax the
-check to allow that.
+Currently, saving register states in the signal frame, the legacy feature
+bits are always set in xregs_state->header->xfeatures. This code sequence
+can be generalized for reuse in similar cases.
 
-I've also submitted a fix for the intel-media-driver:
-https://github.com/intel/media-driver/pull/1920
+Refactor the logic to ensure a consistent approach across similar usages.
 
-Cc: stable@vger.kernel.org # v6.0+
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Testcase: igt/gem_exec_capture/capture-invisible
-Fixes: 71b1669ea9bd ("drm/i915/uapi: tweak error capture on recoverable contexts")
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250411144313.11660-2-ville.syrjala@linux.intel.com
-(cherry picked from commit d6e020819612a4a06207af858e0978be4d3e3140)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Stable-dep-of: ed5915cfce2a ("Revert "drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1"")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250416021720.12305-8-chang.seok.bae@intel.com
+Cc: Ben Hutchings <ben@decadent.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/fpu/signal.c |   11 +----------
+ arch/x86/kernel/fpu/xstate.h |   13 +++++++++++++
+ 2 files changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-index 0a123bb44c9fb..9424606710a10 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-@@ -2001,7 +2001,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
- 			continue;
+--- a/arch/x86/kernel/fpu/signal.c
++++ b/arch/x86/kernel/fpu/signal.c
+@@ -119,7 +119,6 @@ static inline bool save_xstate_epilog(vo
+ {
+ 	struct xregs_state __user *x = buf;
+ 	struct _fpx_sw_bytes sw_bytes = {};
+-	u32 xfeatures;
+ 	int err;
  
- 		if (i915_gem_context_is_recoverable(eb->gem_context) &&
--		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
-+		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
- 			return -EINVAL;
+ 	/* Setup the bytes not touched by the [f]xsave and reserved for SW. */
+@@ -133,12 +132,6 @@ static inline bool save_xstate_epilog(vo
+ 			  (__u32 __user *)(buf + fpstate->user_size));
  
- 		for_each_batch_create_order(eb, j) {
--- 
-2.39.5
-
+ 	/*
+-	 * Read the xfeatures which we copied (directly from the cpu or
+-	 * from the state in task struct) to the user buffers.
+-	 */
+-	err |= __get_user(xfeatures, (__u32 __user *)&x->header.xfeatures);
+-
+-	/*
+ 	 * For legacy compatible, we always set FP/SSE bits in the bit
+ 	 * vector while saving the state to the user context. This will
+ 	 * enable us capturing any changes(during sigreturn) to
+@@ -149,9 +142,7 @@ static inline bool save_xstate_epilog(vo
+ 	 * header as well as change any contents in the memory layout.
+ 	 * xrestore as part of sigreturn will capture all the changes.
+ 	 */
+-	xfeatures |= XFEATURE_MASK_FPSSE;
+-
+-	err |= __put_user(xfeatures, (__u32 __user *)&x->header.xfeatures);
++	err |= set_xfeature_in_sigframe(x, XFEATURE_MASK_FPSSE);
+ 
+ 	return !err;
+ }
+--- a/arch/x86/kernel/fpu/xstate.h
++++ b/arch/x86/kernel/fpu/xstate.h
+@@ -69,6 +69,19 @@ static inline u64 xfeatures_mask_indepen
+ 	return fpu_kernel_cfg.independent_features;
+ }
+ 
++static inline int set_xfeature_in_sigframe(struct xregs_state __user *xbuf, u64 mask)
++{
++	u64 xfeatures;
++	int err;
++
++	/* Read the xfeatures value already saved in the user buffer */
++	err  = __get_user(xfeatures, &xbuf->header.xfeatures);
++	xfeatures |= mask;
++	err |= __put_user(xfeatures, &xbuf->header.xfeatures);
++
++	return err;
++}
++
+ /*
+  * Update the value of PKRU register that was already pushed onto the signal frame.
+  */
 
 
 
