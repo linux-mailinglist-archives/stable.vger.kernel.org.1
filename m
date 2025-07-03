@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-159954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2CD0AF7B7E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D78EDAF78B2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:53:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF021583E60
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD2C07B7340
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E60C221DB7;
-	Thu,  3 Jul 2025 15:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113F52EF9B7;
+	Thu,  3 Jul 2025 14:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5LwY9rq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxls/EuT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FA51C68A6;
-	Thu,  3 Jul 2025 15:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38922EAB95;
+	Thu,  3 Jul 2025 14:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555901; cv=none; b=XALToEtT2Hat0G/qLJArOTf+YOsTr5en0m0gx49vjE7qgcDTrQ8LY1aE7NR8+Gv9Yp1xUj5HVTjvI10Qz8NsLpWWVG1QqaaTojLL+TVqJDa9IJxZeWdEOUYp+EqePrG+8Rn9w/gwXZmk2SG3D4vdBPMPmd23jcJqvXCTGLQQnB4=
+	t=1751554339; cv=none; b=nhOpQijba2Lf47HKmFiyzY35QWCCUabwifyKlMcnWWxbIbvqT8d+hCk/lBDshZzui6mvHRez/YS8pIPO1Hevi+YpGCM32RculIXmAJuuML5Uo7uQCmz+uE+XAnU/Ebh311tOjQ6N65ZpN/olXYeAjpJCPpRVDCcHTfofSXiGQpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555901; c=relaxed/simple;
-	bh=cXoxnBVpPPm+scZWH5ge5U4lDEYUZA5KReRpUDjNpS8=;
+	s=arc-20240116; t=1751554339; c=relaxed/simple;
+	bh=ORltWrBIjDCkjfEYOPIcTk0YWwWS8j9IPMyGzwbVpkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AUFTlZ6yvPkW0dy5+AedgofBF6DfJVB+Din/W9LxRQjgjtniegZrJVSJKSGRAcdmKEvZvsCmUNfrXz5yniMqPR4YtsK1ErbLnp2OySNqH+i0n/jW2VS8ywN2Om71oSVTZl7O6jqeqIMJFrvZ3JNbjn4J7iYwmGhEltk9tzjcwtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5LwY9rq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D696C4CEE3;
-	Thu,  3 Jul 2025 15:18:19 +0000 (UTC)
+	 MIME-Version; b=JQH+dcKW2lmYwLY6MbvRF8VS3Tcw0A1VJkyAroo1K5Ey649YVCsPiooAJ2aH1cn/4nX+qLLH2V9KIsEhPoVevulTEPgMjmwmMB879cNeGlF+LVsQqxkNcRPR3i5hpUNUYZF0n+ogkGE5DgTLbP+TGpDlf2Qo42oLy7HeunF5eUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxls/EuT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32DFBC4CEED;
+	Thu,  3 Jul 2025 14:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555900;
-	bh=cXoxnBVpPPm+scZWH5ge5U4lDEYUZA5KReRpUDjNpS8=;
+	s=korg; t=1751554339;
+	bh=ORltWrBIjDCkjfEYOPIcTk0YWwWS8j9IPMyGzwbVpkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5LwY9rqT/yEk4VWTi7wqzoF3e7xaXFC/xu/6nz3T43EHDw3ic8ZyDIjAMWKi3wgv
-	 Nyhr+i6A5Xt/I1FscK6+7VxfwyPAmrtzuDYihm+CCjIO8LtceZoFzl567tjo56mUTG
-	 zJ5CCCTY5tfWM6Meta6rdX2VS/oJEOSXr1r+tNoo=
+	b=fxls/EuTGfZgMgSHFvV4OwHv0qVN6yIk91SZpTSZ6oZgZwny5NkqYlAzkjrfhZYTU
+	 a6nmQ7ZvriFJ6xe2YRQlB4gNn4TDHn9w6i1Q7GCJDIKxS15LErN1wGT/qxavd3Hfl8
+	 VKKWHz7mebSbYzOcksy8esjAjoQmxdEGWYACSgzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>,
-	Suraj Gupta <suraj.gupta2@amd.com>,
-	Folker Schwesinger <dev@folker-schwesinger.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 013/132] dmaengine: xilinx_dma: Set dma_device directions
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Rob Clark <robdclark@chromium.org>
+Subject: [PATCH 6.12 154/218] drm/msm/gpu: Fix crash when throttling GPU immediately during boot
 Date: Thu,  3 Jul 2025 16:41:42 +0200
-Message-ID: <20250703143939.913873888@linuxfoundation.org>
+Message-ID: <20250703144002.309529691@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 7e01511443c30a55a5ae78d3debd46d4d872517e ]
+commit b71717735be48d7743a34897e9e44a0b53e30c0e upstream.
 
-Coalesce the direction bits from the enabled TX and/or RX channels into
-the directions bit mask of dma_device. Without this mask set,
-dma_get_slave_caps() in the DMAEngine fails, which prevents the driver
-from being used with an IIO DMAEngine buffer.
+There is a small chance that the GPU is already hot during boot. In that
+case, the call to of_devfreq_cooling_register() will immediately try to
+apply devfreq cooling, as seen in the following crash:
 
-Signed-off-by: Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>
-Reviewed-by: Suraj Gupta <suraj.gupta2@amd.com>
-Tested-by: Folker Schwesinger <dev@folker-schwesinger.de>
-Link: https://lore.kernel.org/r/20250507182101.909010-1-thomas.gessler@brueckmann-gmbh.de
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  Unable to handle kernel paging request at virtual address 0000000000014110
+  pc : a6xx_gpu_busy+0x1c/0x58 [msm]
+  lr : msm_devfreq_get_dev_status+0xbc/0x140 [msm]
+  Call trace:
+   a6xx_gpu_busy+0x1c/0x58 [msm] (P)
+   devfreq_simple_ondemand_func+0x3c/0x150
+   devfreq_update_target+0x44/0xd8
+   qos_max_notifier_call+0x30/0x84
+   blocking_notifier_call_chain+0x6c/0xa0
+   pm_qos_update_target+0xd0/0x110
+   freq_qos_apply+0x3c/0x74
+   apply_constraint+0x88/0x148
+   __dev_pm_qos_update_request+0x7c/0xcc
+   dev_pm_qos_update_request+0x38/0x5c
+   devfreq_cooling_set_cur_state+0x98/0xf0
+   __thermal_cdev_update+0x64/0xb4
+   thermal_cdev_update+0x4c/0x58
+   step_wise_manage+0x1f0/0x318
+   __thermal_zone_device_update+0x278/0x424
+   __thermal_cooling_device_register+0x2bc/0x308
+   thermal_of_cooling_device_register+0x10/0x1c
+   of_devfreq_cooling_register_power+0x240/0x2bc
+   of_devfreq_cooling_register+0x14/0x20
+   msm_devfreq_init+0xc4/0x1a0 [msm]
+   msm_gpu_init+0x304/0x574 [msm]
+   adreno_gpu_init+0x1c4/0x2e0 [msm]
+   a6xx_gpu_init+0x5c8/0x9c8 [msm]
+   adreno_bind+0x2a8/0x33c [msm]
+   ...
+
+At this point we haven't initialized the GMU at all yet, so we cannot read
+the GMU registers inside a6xx_gpu_busy(). A similar issue was fixed before
+in commit 6694482a70e9 ("drm/msm: Avoid unclocked GMU register access in
+6xx gpu_busy"): msm_devfreq_init() does call devfreq_suspend_device(), but
+unlike msm_devfreq_suspend(), it doesn't set the df->suspended flag
+accordingly. This means the df->suspended flag does not match the actual
+devfreq state after initialization and msm_devfreq_get_dev_status() will
+end up accessing GMU registers, causing the crash.
+
+Fix this by setting df->suspended correctly during initialization.
+
+Cc: stable@vger.kernel.org
+Fixes: 6694482a70e9 ("drm/msm: Avoid unclocked GMU register access in 6xx gpu_busy")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/650772/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/msm_gpu_devfreq.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index 7660175704883..e2175651f9795 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -2859,6 +2859,8 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
- 		return -EINVAL;
- 	}
+--- a/drivers/gpu/drm/msm/msm_gpu_devfreq.c
++++ b/drivers/gpu/drm/msm/msm_gpu_devfreq.c
+@@ -156,6 +156,7 @@ void msm_devfreq_init(struct msm_gpu *gp
+ 	priv->gpu_devfreq_config.downdifferential = 10;
  
-+	xdev->common.directions |= chan->direction;
-+
- 	/* Request the interrupt */
- 	chan->irq = of_irq_get(node, chan->tdest);
- 	if (chan->irq < 0)
--- 
-2.39.5
-
+ 	mutex_init(&df->lock);
++	df->suspended = true;
+ 
+ 	ret = dev_pm_qos_add_request(&gpu->pdev->dev, &df->boost_freq,
+ 				     DEV_PM_QOS_MIN_FREQUENCY, 0);
 
 
 
