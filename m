@@ -1,108 +1,72 @@
-Return-Path: <stable+bounces-159286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D46AF6D6B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 10:48:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC34AF6E2C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 11:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D36C17B600B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 08:46:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0542B18818A7
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 09:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1F32D0C94;
-	Thu,  3 Jul 2025 08:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qGhAV1XX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335352D46D4;
+	Thu,  3 Jul 2025 09:06:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA46B1CD1F;
-	Thu,  3 Jul 2025 08:48:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8C12D3A64;
+	Thu,  3 Jul 2025 09:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751532484; cv=none; b=m3E0B84dZibg4JAqbTuDlMOi8V3X02NruWoHVCDSFVOY/+CUWq54ogDIlGUevimGc/0zJDLcbz95lnxaM4b72tzKXMBdMU3FgTenkU9f/WMNcyVYOxn9zH976JXihPm7byoXhCYo+XO8ZvniUUpmZri5fj6eObOwafwBICFdRHw=
+	t=1751533612; cv=none; b=SuH5xhIlqUuTdvvRx1PoV+t906qmE6b9w/vyMCixR6wMGUwsxLsyp3gtWK4eS713EBmYBsEVT5Xjw+GlAS7f/lOTgB9YrPEHPjeJ5oBEJAHyAeSpW0hI2Tvv3agmdn9Ya5pYyRUj1hZd8RmiFbKpa5+j+1dt19Yd/lDJn56i8uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751532484; c=relaxed/simple;
-	bh=lTjN/T78K45dyw3gEcHGK9KZwnJk9ZsO4WHHVT6J4KU=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kUiYtJgTD740bnH0DzxLiOE24M0eHlrYzLOlZiQVRR/4q3Gp3oDyJdJ9VmOTCyG9HqI7z3NCvQZgs6GtomQXVmhRSK7mR74bZSD/scEaOv/AYeUppHSxWJS2gzIDlMkwGwZOJ08iu7zWfBWMmUQdN6onCxMr+j/OtlJHn+AoovE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qGhAV1XX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406A9C4CEE3;
-	Thu,  3 Jul 2025 08:48:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751532484;
-	bh=lTjN/T78K45dyw3gEcHGK9KZwnJk9ZsO4WHHVT6J4KU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qGhAV1XXpZWx5XYk4pIu2Kq2t5OtytNb+38/ac4oLfpoA7R2q4kOWN/XHnndNL2k+
-	 5wAPwpNs8huzFisCy8j+CXyn+NdsNlRJcnWWhylGKB9Nv2nVqyJHzjHbrdmi6qC39M
-	 xZLGzyq305u2yq8Sjjvfc7GxpRIuA6/emIhvgQxU5IgOKYSRzeEJGql1OzcbYydzld
-	 DGiIe6vroZFqI+M271Xk+ZFlVkf9ZSnRS/uS2qicrXcT+7yNbVHFFphXV+XOA9pnnY
-	 VjbgemGS0PQxlf/M0s+omaKEKLCiQ2nb3xGR1Y412D8Y/6d/mIKbKBQkPbKXOsLQTP
-	 8ezaf8wwO+9hw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1uXFbt-00CELB-Ut;
-	Thu, 03 Jul 2025 09:48:02 +0100
-Date: Thu, 03 Jul 2025 09:48:01 +0100
-Message-ID: <867c0pbqym.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org,
-	sashal@kernel.org,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: Patch "KVM: arm64: Set HCR_EL2.TID1 unconditionally" has been added to the 6.12-stable tree
-In-Reply-To: <20250703015257.2692314-1-sashal@kernel.org>
-References: <20250703015257.2692314-1-sashal@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1751533612; c=relaxed/simple;
+	bh=nJA4nqGXv0EWh5ojZuseHx0QT9uTGQ0YX/u7wtMxzrw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NksMyhz4d7+ZhkdzTU0yeckKUo7Qy9ZbcJn19nC4dnAm2SJRZRkvToqw0Hjf6Paf2ew80fWxniBNVtqqfZnowUlBMKz80hgKGSoV5ZjJDc/O46yZSRGpzhRtoIMm7oGJ31UxkZKYDafh3Jz8UHSIczADTtI6Xkcy8dWHvg0BdYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 31E2868B05; Thu,  3 Jul 2025 11:06:47 +0200 (CEST)
+Date: Thu, 3 Jul 2025 11:06:46 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Ming Lei <ming.lei@redhat.com>
+Cc: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+	Nilay Shroff <nilay@linux.ibm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] block: Remove queue freezing from several sysfs
+ store callbacks
+Message-ID: <20250703090646.GE4757@lst.de>
+References: <20250702182430.3764163-1-bvanassche@acm.org> <20250702182430.3764163-2-bvanassche@acm.org> <aGXmJg-ZIuFO9WnP@fedora>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: stable@vger.kernel.org, stable-commits@vger.kernel.org, sashal@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aGXmJg-ZIuFO9WnP@fedora>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-On Thu, 03 Jul 2025 02:52:57 +0100,
-Sasha Levin <sashal@kernel.org> wrote:
+On Thu, Jul 03, 2025 at 10:08:38AM +0800, Ming Lei wrote:
+> On Wed, Jul 02, 2025 at 11:24:28AM -0700, Bart Van Assche wrote:
+> > Freezing the request queue from inside sysfs store callbacks may cause a
+> > deadlock in combination with the dm-multipath driver and the
+> > queue_if_no_path option. Additionally, freezing the request queue slows
+> > down system boot on systems where sysfs attributes are set synchronously.
+> > 
+> > Fix this by removing the blk_mq_freeze_queue() / blk_mq_unfreeze_queue()
+> > calls from the store callbacks that do not strictly need these callbacks.
 > 
-> This is a note to let you know that I've just added the patch titled
-> 
->     KVM: arm64: Set HCR_EL2.TID1 unconditionally
-> 
-> to the 6.12-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      kvm-arm64-set-hcr_el2.tid1-unconditionally.patch
-> and it can be found in the queue-6.12 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
-> 
-> 
-> commit 0510d3297a23920caf74a63e3f38c0ede70d6555
-> Author: Sasha Levin <sashal@kernel.org>
+> Please add commit log why freeze isn't needed for these sysfs attributes
+> callbacks.
 
-Really?
+Yes.  I'm rather doubtful about some of them, but waiting for a full
+explanation.  The explanation might be easier to deliver by doing one
+patch per attribute.
 
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
 
