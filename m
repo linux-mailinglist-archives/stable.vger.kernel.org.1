@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2D3AF78BA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:53:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD92AF7BBE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:27:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F0401774B5
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:52:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8EFD1889BCE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2692EF9D0;
-	Thu,  3 Jul 2025 14:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98F42EE97A;
+	Thu,  3 Jul 2025 15:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7L4SWxV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="107lknPZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B92E19F43A;
-	Thu,  3 Jul 2025 14:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D2522258C;
+	Thu,  3 Jul 2025 15:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554305; cv=none; b=WFlZsbxQif0ecrCUFPoRtNs+bvNqVY1mefwEbSpDfSAZlAdLCxZhIc7B+20hjPbsF2a20qgJx2UK0ZzUMCw9BdCleRbb3IzDO1HJf7ZnOljAmSVyguR4Nrt1tIHdHQNT8uz/LUn4sMoCQOx51xlC3LbVE4ed/lFLM7ysy0A/FE4=
+	t=1751555945; cv=none; b=uB/mCvLJDu7106zc8IElw7C5v04gebiVVJ1JMUO3UO+OQ+9fGqFtMHGjceTThp6QTga1IoPIBBUW+qc7nsSPAIVLEfimXx0pJt9NcVPmX3n8ejvYispEG8LwEG9QmsM0oBYYcexlDNzpBBYzjBZoGCYq/PAHiXUhtDEFr6NQKuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554305; c=relaxed/simple;
-	bh=wto0AJmF7rkKQ8wrJN0kfDn2Mg7kU47i4tkz040i1lo=;
+	s=arc-20240116; t=1751555945; c=relaxed/simple;
+	bh=GdNBAFlcBylG2F/QPb2XqYyIWw9PchLCFucfdXojUvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qP0MxMY84dIQ71NVb/wGMYRBtsmafAqIV/4fr+P3y48RXMoFk3MfL1VpRDKIMTFVWEVKwMKkp8MxVSIWIrGDNf6YWMubaZ9DJboefaYddMyIPd/kkqypx7xAMl/3f0G+nD50Slk6pvbLLGkm+cjvOBu7i8WF4RUVu01FbRQLwTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7L4SWxV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1E1C4CEE3;
-	Thu,  3 Jul 2025 14:51:44 +0000 (UTC)
+	 MIME-Version; b=PaNyPPvRvpK79NB6cagvpNULLKeUiO5eS2p86OJtNqO2xzvcl/UPvAJjFQrey8+JSSj0vRXf28BraE5SSaBlfdt1Hwoww7NRU3enrV9zp1k7SX9306RZB7Ga0OTfGlkjT4RWXa8F20QSe9w7oAR8NIqpUjOOr4wCQ6g22UksKC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=107lknPZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D393CC4CEE3;
+	Thu,  3 Jul 2025 15:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554305;
-	bh=wto0AJmF7rkKQ8wrJN0kfDn2Mg7kU47i4tkz040i1lo=;
+	s=korg; t=1751555945;
+	bh=GdNBAFlcBylG2F/QPb2XqYyIWw9PchLCFucfdXojUvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A7L4SWxVx4qjK3QZkCC/nGkWERqpgl6fLMYXibGAsNSssvkMJUWQZlM285Pm6aaDy
-	 A1kBPWUahEacDLWhY+t7Bv3cxitIAzhvO0lD8mhC6y3vJ/E/hAxHyRerur3FIUcr6h
-	 u/KlJ2UcQvJXLlpkYXJj3En5qdi/cLiH8Zab5Faw=
+	b=107lknPZPXT5+WlNcqjpHP9zWyOq4NlM+ow49M1xNbkff0fxDwGzO860xwhA6KwKF
+	 gbfku88UYrkfg6WrQEvRVcxMo5alJaSxw8cTjnUklVPWedhTSVxxgG5MCdVCBtFvKJ
+	 2QFRnjYOSt+hb9sG8UY+kJPwN2SPLeggpdhsLgfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.12 144/218] HID: wacom: fix memory leak on sysfs attribute creation failure
+	Han Young <hanyang.tony@bytedance.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 003/132] NFSv4: Always set NLINK even if the server doesnt support it
 Date: Thu,  3 Jul 2025 16:41:32 +0200
-Message-ID: <20250703144001.882021243@linuxfoundation.org>
+Message-ID: <20250703143939.519377849@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Han Young <hanyang.tony@bytedance.com>
 
-commit 1a19ae437ca5d5c7d9ec2678946fb339b1c706bf upstream.
+[ Upstream commit 3a3065352f73381d3a1aa0ccab44aec3a5a9b365 ]
 
-When sysfs_create_files() fails during wacom_initialize_remotes() the
-fifo buffer is not freed leading to a memory leak.
+fattr4_numlinks is a recommended attribute, so the client should emulate
+it even if the server doesn't support it. In decode_attr_nlink function
+in nfs4xdr.c, nlink is initialized to 1. However, this default value
+isn't set to the inode due to the check in nfs_fhget.
 
-Fix this by calling kfifo_free() before returning.
+So if the server doesn't support numlinks, inode's nlink will be zero,
+the mount will fail with error "Stale file handle". Set the nlink to 1
+if the server doesn't support it.
 
-Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Han Young <hanyang.tony@bytedance.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_sys.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/inode.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2031,6 +2031,7 @@ static int wacom_initialize_remotes(stru
- 	if (error) {
- 		hid_err(wacom->hdev,
- 			"cannot create sysfs group err: %d\n", error);
-+		kfifo_free(&remote->remote_fifo);
- 		return error;
- 	}
- 
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index f2e66b946f4b4..e774cfc85eeed 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -555,6 +555,8 @@ nfs_fhget(struct super_block *sb, struct nfs_fh *fh, struct nfs_fattr *fattr)
+ 			set_nlink(inode, fattr->nlink);
+ 		else if (fattr_supported & NFS_ATTR_FATTR_NLINK)
+ 			nfs_set_cache_invalid(inode, NFS_INO_INVALID_NLINK);
++		else
++			set_nlink(inode, 1);
+ 		if (fattr->valid & NFS_ATTR_FATTR_OWNER)
+ 			inode->i_uid = fattr->uid;
+ 		else if (fattr_supported & NFS_ATTR_FATTR_OWNER)
+-- 
+2.39.5
+
 
 
 
