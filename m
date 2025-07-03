@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-159665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4455EAF79C7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C80AF7859
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:49:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 414113BF1EE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:02:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB88C1634F4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21EC42EE5F3;
-	Thu,  3 Jul 2025 15:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF24D2ED85E;
+	Thu,  3 Jul 2025 14:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2ddk5HC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NmzuavFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28F32E7BBF;
-	Thu,  3 Jul 2025 15:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF122E7F0B;
+	Thu,  3 Jul 2025 14:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554950; cv=none; b=Kmu4MYSpcxQRYfGOQlwjskBZgJCu/EUtkxaq0Kcp0giDjaHWzhhBHtADicq1oj6R3l7Hthc2KEvw8ITdjx9kNhAWitA3wxCPi0hwDYkB3UZgPZocZfPl2fHp5rzc2NvC5WFlIJ8dnYGNREdFDa2KbFfrOK1ze4kA+NMNSvAAsCg=
+	t=1751554067; cv=none; b=EKcAKu6NnYUHUqZ3jwrYRZKklb/0kuVl4ARAHCX7pWVAt0bdMKNt3hBbIv1bz+7aInIdSaPBxzf0swXkmJT1S62ajQo+kLMt6qFLliTHN59FDh84e1ec9aFUW8qbGmChHg/+0HHxxQzCByNeOOOXHKCOwczsIlMwUNb5jRkW8CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554950; c=relaxed/simple;
-	bh=1HVOWS5vMzCEXhMq7KAQ9uyA1mMPb5t/ny4n0SaWxag=;
+	s=arc-20240116; t=1751554067; c=relaxed/simple;
+	bh=4QoLjxOf/NxqbT8WWBjd5lnBh9Q9yqODhJNg5CGFKms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PudY3niT/VpLvUJEwpQDl8xyK2yJY0XP+qrQLZxZISm6ZaApnT4fzqWcKp8N5Dvjs922lfpisfiOktrK2xPv2/PLcWogSs//Iv0rwZ0YMaAapvgfafI1falkP5bkkZm6HyNSFCi3pYUIzBD30doUhpZCX3wrGiWTeH8SOOtXRzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2ddk5HC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1AFC4CEE3;
-	Thu,  3 Jul 2025 15:02:29 +0000 (UTC)
+	 MIME-Version; b=kHGr7LkEZ3rMULNTnBQniybw5wb4K9FsI6xF2Uy8y/LAfpHw5WW9BGahnDi4i2k26unbhzIxGU3JZKLFYFuNMXi8cdNENSJ5G9bf+MQeH4mxDytCmUArr0Rz6qUeCCfGy9nU04j0YIw1BfQuIHRSQk5RByCTXZy8KZmr46oIZy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NmzuavFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383B7C4CEE3;
+	Thu,  3 Jul 2025 14:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554950;
-	bh=1HVOWS5vMzCEXhMq7KAQ9uyA1mMPb5t/ny4n0SaWxag=;
+	s=korg; t=1751554067;
+	bh=4QoLjxOf/NxqbT8WWBjd5lnBh9Q9yqODhJNg5CGFKms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z2ddk5HCD0MpIGOPHc9YPRQKNgcJF2KnnrvA9cQiyqt7LPN2MRNXpkdO9sh2bs3dX
-	 XRJ7poJcWLlRvBFRlASPe8WnSpbpd/dixKuUGmoF8xCuR8PbVaBCqZcdjja+ffcGiS
-	 Lr0rs2Mj7PDBzMy4MrsKubhNQNi+XkcDsxIeOozk=
+	b=NmzuavFni9rRUK2Zbh1tZuZ2x0qmk5CndsO6WnVZOBfu2/9Z03/NMrxOS4LcO7v6T
+	 36rti6VIGMka3HG0R/vYlPU0XlnCHxgYj2g8w5jYL0v4baxD8QU/PAB/DezeiN60w8
+	 OShToPcuAiQpZVylnii9It0bx09isi1mkEKAqZsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.15 099/263] i2c: tiny-usb: disable zero-length read messages
+	Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 071/218] accel/ivpu: Remove copy engine support
 Date: Thu,  3 Jul 2025 16:40:19 +0200
-Message-ID: <20250703144008.270893198@linuxfoundation.org>
+Message-ID: <20250703143958.780400320@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,231 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
 
-commit cbdb25ccf7566eee0c2b945e35cb98baf9ed0aa6 upstream.
+[ Upstream commit 94b2a2c0e7cba3f163609dbd94120ee533ad2a07 ]
 
-This driver passes the length of an i2c_msg directly to
-usb_control_msg(). If the message is now a read and of length 0, it
-violates the USB protocol and a warning will be printed. Enable the
-I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
-read messages altogether.
+Copy engine was deprecated by the FW and is no longer supported.
+Compute engine includes all copy engine functionality and should be used
+instead.
 
-Fixes: e8c76eed2ecd ("i2c: New i2c-tiny-usb bus driver")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: <stable@vger.kernel.org> # v2.6.22+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250522064349.3823-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This change does not affect user space as the copy engine was never
+used outside of a couple of tests.
+
+Signed-off-by: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
+Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241017145817.121590-4-jacek.lawrynowicz@linux.intel.com
+Stable-dep-of: a47e36dc5d90 ("accel/ivpu: Trigger device recovery on engine reset/resume failure")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-tiny-usb.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/accel/ivpu/ivpu_drv.h     |  5 +---
+ drivers/accel/ivpu/ivpu_job.c     | 43 +++++++++++--------------------
+ drivers/accel/ivpu/ivpu_jsm_msg.c |  8 +++---
+ include/uapi/drm/ivpu_accel.h     |  6 +----
+ 4 files changed, 21 insertions(+), 41 deletions(-)
 
---- a/drivers/i2c/busses/i2c-tiny-usb.c
-+++ b/drivers/i2c/busses/i2c-tiny-usb.c
-@@ -138,6 +138,11 @@ out:
- 	return ret;
+diff --git a/drivers/accel/ivpu/ivpu_drv.h b/drivers/accel/ivpu/ivpu_drv.h
+index 1fe6a3bd4e36b..4519c93fb377c 100644
+--- a/drivers/accel/ivpu/ivpu_drv.h
++++ b/drivers/accel/ivpu/ivpu_drv.h
+@@ -50,11 +50,8 @@
+ #define IVPU_JOB_ID_JOB_MASK		GENMASK(7, 0)
+ #define IVPU_JOB_ID_CONTEXT_MASK	GENMASK(31, 8)
+ 
+-#define IVPU_NUM_ENGINES       2
+ #define IVPU_NUM_PRIORITIES    4
+-#define IVPU_NUM_CMDQS_PER_CTX (IVPU_NUM_ENGINES * IVPU_NUM_PRIORITIES)
+-
+-#define IVPU_CMDQ_INDEX(engine, priority) ((engine) * IVPU_NUM_PRIORITIES + (priority))
++#define IVPU_NUM_CMDQS_PER_CTX (IVPU_NUM_PRIORITIES)
+ 
+ #define IVPU_PLATFORM_SILICON 0
+ #define IVPU_PLATFORM_SIMICS  2
+diff --git a/drivers/accel/ivpu/ivpu_job.c b/drivers/accel/ivpu/ivpu_job.c
+index 58d64a221a1e0..ed3f60d809bc0 100644
+--- a/drivers/accel/ivpu/ivpu_job.c
++++ b/drivers/accel/ivpu/ivpu_job.c
+@@ -224,8 +224,7 @@ static int ivpu_cmdq_fini(struct ivpu_file_priv *file_priv, struct ivpu_cmdq *cm
+ static struct ivpu_cmdq *ivpu_cmdq_acquire(struct ivpu_file_priv *file_priv, u16 engine,
+ 					   u8 priority)
+ {
+-	int cmdq_idx = IVPU_CMDQ_INDEX(engine, priority);
+-	struct ivpu_cmdq *cmdq = file_priv->cmdq[cmdq_idx];
++	struct ivpu_cmdq *cmdq = file_priv->cmdq[priority];
+ 	int ret;
+ 
+ 	lockdep_assert_held(&file_priv->lock);
+@@ -234,7 +233,7 @@ static struct ivpu_cmdq *ivpu_cmdq_acquire(struct ivpu_file_priv *file_priv, u16
+ 		cmdq = ivpu_cmdq_alloc(file_priv);
+ 		if (!cmdq)
+ 			return NULL;
+-		file_priv->cmdq[cmdq_idx] = cmdq;
++		file_priv->cmdq[priority] = cmdq;
+ 	}
+ 
+ 	ret = ivpu_cmdq_init(file_priv, cmdq, engine, priority);
+@@ -244,15 +243,14 @@ static struct ivpu_cmdq *ivpu_cmdq_acquire(struct ivpu_file_priv *file_priv, u16
+ 	return cmdq;
  }
  
-+/* prevent invalid 0-length usb_control_msg */
-+static const struct i2c_adapter_quirks usb_quirks = {
-+	.flags = I2C_AQ_NO_ZERO_LEN_READ,
-+};
-+
- /* This is the actual algorithm we define */
- static const struct i2c_algorithm usb_algorithm = {
- 	.xfer = usb_xfer,
-@@ -246,6 +251,7 @@ static int i2c_tiny_usb_probe(struct usb
- 	/* setup i2c adapter description */
- 	dev->adapter.owner = THIS_MODULE;
- 	dev->adapter.class = I2C_CLASS_HWMON;
-+	dev->adapter.quirks = &usb_quirks;
- 	dev->adapter.algo = &usb_algorithm;
- 	dev->adapter.algo_data = dev;
- 	snprintf(dev->adapter.name, sizeof(dev->adapter.name),
+-static void ivpu_cmdq_release_locked(struct ivpu_file_priv *file_priv, u16 engine, u8 priority)
++static void ivpu_cmdq_release_locked(struct ivpu_file_priv *file_priv, u8 priority)
+ {
+-	int cmdq_idx = IVPU_CMDQ_INDEX(engine, priority);
+-	struct ivpu_cmdq *cmdq = file_priv->cmdq[cmdq_idx];
++	struct ivpu_cmdq *cmdq = file_priv->cmdq[priority];
+ 
+ 	lockdep_assert_held(&file_priv->lock);
+ 
+ 	if (cmdq) {
+-		file_priv->cmdq[cmdq_idx] = NULL;
++		file_priv->cmdq[priority] = NULL;
+ 		ivpu_cmdq_fini(file_priv, cmdq);
+ 		ivpu_cmdq_free(file_priv, cmdq);
+ 	}
+@@ -260,14 +258,12 @@ static void ivpu_cmdq_release_locked(struct ivpu_file_priv *file_priv, u16 engin
+ 
+ void ivpu_cmdq_release_all_locked(struct ivpu_file_priv *file_priv)
+ {
+-	u16 engine;
+ 	u8 priority;
+ 
+ 	lockdep_assert_held(&file_priv->lock);
+ 
+-	for (engine = 0; engine < IVPU_NUM_ENGINES; engine++)
+-		for (priority = 0; priority < IVPU_NUM_PRIORITIES; priority++)
+-			ivpu_cmdq_release_locked(file_priv, engine, priority);
++	for (priority = 0; priority < IVPU_NUM_PRIORITIES; priority++)
++		ivpu_cmdq_release_locked(file_priv, priority);
+ }
+ 
+ /*
+@@ -278,19 +274,15 @@ void ivpu_cmdq_release_all_locked(struct ivpu_file_priv *file_priv)
+  */
+ static void ivpu_cmdq_reset(struct ivpu_file_priv *file_priv)
+ {
+-	u16 engine;
+ 	u8 priority;
+ 
+ 	mutex_lock(&file_priv->lock);
+ 
+-	for (engine = 0; engine < IVPU_NUM_ENGINES; engine++) {
+-		for (priority = 0; priority < IVPU_NUM_PRIORITIES; priority++) {
+-			int cmdq_idx = IVPU_CMDQ_INDEX(engine, priority);
+-			struct ivpu_cmdq *cmdq = file_priv->cmdq[cmdq_idx];
++	for (priority = 0; priority < IVPU_NUM_PRIORITIES; priority++) {
++		struct ivpu_cmdq *cmdq = file_priv->cmdq[priority];
+ 
+-			if (cmdq)
+-				cmdq->db_registered = false;
+-		}
++		if (cmdq)
++			cmdq->db_registered = false;
+ 	}
+ 
+ 	mutex_unlock(&file_priv->lock);
+@@ -311,16 +303,11 @@ void ivpu_cmdq_reset_all_contexts(struct ivpu_device *vdev)
+ 
+ static void ivpu_cmdq_fini_all(struct ivpu_file_priv *file_priv)
+ {
+-	u16 engine;
+ 	u8 priority;
+ 
+-	for (engine = 0; engine < IVPU_NUM_ENGINES; engine++) {
+-		for (priority = 0; priority < IVPU_NUM_PRIORITIES; priority++) {
+-			int cmdq_idx = IVPU_CMDQ_INDEX(engine, priority);
+-
+-			if (file_priv->cmdq[cmdq_idx])
+-				ivpu_cmdq_fini(file_priv, file_priv->cmdq[cmdq_idx]);
+-		}
++	for (priority = 0; priority < IVPU_NUM_PRIORITIES; priority++) {
++		if (file_priv->cmdq[priority])
++			ivpu_cmdq_fini(file_priv, file_priv->cmdq[priority]);
+ 	}
+ }
+ 
+@@ -703,7 +690,7 @@ int ivpu_submit_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
+ 	int idx, ret;
+ 	u8 priority;
+ 
+-	if (params->engine > DRM_IVPU_ENGINE_COPY)
++	if (params->engine != DRM_IVPU_ENGINE_COMPUTE)
+ 		return -EINVAL;
+ 
+ 	if (params->priority > DRM_IVPU_JOB_PRIORITY_REALTIME)
+diff --git a/drivers/accel/ivpu/ivpu_jsm_msg.c b/drivers/accel/ivpu/ivpu_jsm_msg.c
+index ae91ad24d10d8..33d597b2a7f53 100644
+--- a/drivers/accel/ivpu/ivpu_jsm_msg.c
++++ b/drivers/accel/ivpu/ivpu_jsm_msg.c
+@@ -132,7 +132,7 @@ int ivpu_jsm_get_heartbeat(struct ivpu_device *vdev, u32 engine, u64 *heartbeat)
+ 	struct vpu_jsm_msg resp;
+ 	int ret;
+ 
+-	if (engine > VPU_ENGINE_COPY)
++	if (engine != VPU_ENGINE_COMPUTE)
+ 		return -EINVAL;
+ 
+ 	req.payload.query_engine_hb.engine_idx = engine;
+@@ -155,7 +155,7 @@ int ivpu_jsm_reset_engine(struct ivpu_device *vdev, u32 engine)
+ 	struct vpu_jsm_msg resp;
+ 	int ret;
+ 
+-	if (engine > VPU_ENGINE_COPY)
++	if (engine != VPU_ENGINE_COMPUTE)
+ 		return -EINVAL;
+ 
+ 	req.payload.engine_reset.engine_idx = engine;
+@@ -174,7 +174,7 @@ int ivpu_jsm_preempt_engine(struct ivpu_device *vdev, u32 engine, u32 preempt_id
+ 	struct vpu_jsm_msg resp;
+ 	int ret;
+ 
+-	if (engine > VPU_ENGINE_COPY)
++	if (engine != VPU_ENGINE_COMPUTE)
+ 		return -EINVAL;
+ 
+ 	req.payload.engine_preempt.engine_idx = engine;
+@@ -346,7 +346,7 @@ int ivpu_jsm_hws_resume_engine(struct ivpu_device *vdev, u32 engine)
+ 	struct vpu_jsm_msg resp;
+ 	int ret;
+ 
+-	if (engine >= VPU_ENGINE_NB)
++	if (engine != VPU_ENGINE_COMPUTE)
+ 		return -EINVAL;
+ 
+ 	req.payload.hws_resume_engine.engine_idx = engine;
+diff --git a/include/uapi/drm/ivpu_accel.h b/include/uapi/drm/ivpu_accel.h
+index 13001da141c33..4b261eb705bc0 100644
+--- a/include/uapi/drm/ivpu_accel.h
++++ b/include/uapi/drm/ivpu_accel.h
+@@ -261,7 +261,7 @@ struct drm_ivpu_bo_info {
+ 
+ /* drm_ivpu_submit engines */
+ #define DRM_IVPU_ENGINE_COMPUTE 0
+-#define DRM_IVPU_ENGINE_COPY    1
++#define DRM_IVPU_ENGINE_COPY    1 /* Deprecated */
+ 
+ /**
+  * struct drm_ivpu_submit - Submit commands to the VPU
+@@ -292,10 +292,6 @@ struct drm_ivpu_submit {
+ 	 * %DRM_IVPU_ENGINE_COMPUTE:
+ 	 *
+ 	 * Performs Deep Learning Neural Compute Inference Operations
+-	 *
+-	 * %DRM_IVPU_ENGINE_COPY:
+-	 *
+-	 * Performs memory copy operations to/from system memory allocated for VPU
+ 	 */
+ 	__u32 engine;
+ 
+-- 
+2.39.5
+
 
 
 
