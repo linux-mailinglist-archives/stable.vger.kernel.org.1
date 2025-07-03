@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-159773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32834AF7A52
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:12:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D51AAF7919
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:58:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F281D3A51F7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3F55171865
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D9015442C;
-	Thu,  3 Jul 2025 15:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947662EF66A;
+	Thu,  3 Jul 2025 14:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qg1jotK4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzkhA37Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5144122069F;
-	Thu,  3 Jul 2025 15:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510A62EAD1B;
+	Thu,  3 Jul 2025 14:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555302; cv=none; b=gQkvijceNqb2t9v/0z31q/IkdHzEGmpKnMfHzdoukhLciWRrT1Lu63uF87PVb491lJZc2jgTv1Y0Fhs91pGgvRcpg1M4pKUsnj9GxiJlt9cVSCf1D/zKHQ7+hdKDlfL3GIEWxkx5Z6vb8IfMTouVfcFQ/WwsFtrOguwvBUBSYas=
+	t=1751554507; cv=none; b=s4M0G6/S65U7O4H6f1429JZ6SBBkzfu8ln5p0f9/HZSIXefmzuceGTcmIyoSCu9j4eJxkqRpO1yDHag/8BSzYtvasgADzyu0K2p0IMzj4yJULcQclmTkG6fslNFq1rkFwQtQLguv9To/BTOub/ISijGByRKTLR6goWAYi3HFMYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555302; c=relaxed/simple;
-	bh=ZtP3xpM9qGQ/Z7cTGYjLsIf9GHgvGCg4ZspywRwf+E4=;
+	s=arc-20240116; t=1751554507; c=relaxed/simple;
+	bh=XiE8k8lAtwbyMT1yzasldmDtm8bRjqUBDmH6+RFLiHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ab9NJsTyspCwASAi6cuw0AI4P3XnFvq51hKJxHH/kmJGF+MrHdYEXRwpj8a968twBX4iqZVcw9O+Ql6tq2YhzBfMAE8MvjAJAOWPrH9FZ+bN0iid6rJo4Pt/SiQ7l/b4KXdmZ7meotUbLiaJWwLgzlkPKS4mBLUsCdWnvcL2JmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qg1jotK4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDA8C4CEED;
-	Thu,  3 Jul 2025 15:08:21 +0000 (UTC)
+	 MIME-Version; b=dwYOH4yZJO2SNREbX9bew9CbPjnBOOVIqgbV34cPM7phat3QDlx8fNSkE4oDDKT8YK4mLmyMb7FBYAKurVU2pevjG6Pa6djmwZEC9OoZxd/SxbncBWsJCMRBwndQ1Hga0+rUZlqEh1PP9iJ6cZ6LpgSrzlK1DIR6UbXu32ze6cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzkhA37Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B8FC4CEE3;
+	Thu,  3 Jul 2025 14:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555302;
-	bh=ZtP3xpM9qGQ/Z7cTGYjLsIf9GHgvGCg4ZspywRwf+E4=;
+	s=korg; t=1751554507;
+	bh=XiE8k8lAtwbyMT1yzasldmDtm8bRjqUBDmH6+RFLiHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qg1jotK4LD0sG7innYb8RV6EVYA4PzWJHhVOjLZhbniQq1Uy1IG2pBaTtxCKTJcjm
-	 czNqlIV5R6obpIRO7b6I3Iz9i+AephUTkjfUkZZYnsIt9VcHwm1zItndeCO8QuHcW7
-	 INT166Z+b5/8GW/ATYZ+4NjC11wWarj+KqVIqOXs=
+	b=BzkhA37ZAsQYxGuFPAVMmadAOHJ8Qj2lAwOTRgt79OTajfXo8KqkrizJgkN+ocPDo
+	 KGtzQTUWTtg1lr0JF5Dxbe0rhSklEa4MzYaS6G/iR81wayOt5U2JP0vadFT6vYEONP
+	 a5YN17haP+XUy+kOBF0pztpli/vcwROP8GZRzXUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Jonathan Kim <jonathan.kim@amd.com>,
+	David Belanger <david.belanger@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Duncan Ma <duncan.ma@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.15 237/263] drm/amd/display: Add more checks for DSC / HUBP ONO guarantees
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 209/218] drm/amdkfd: remove gfx 12 trap handler page size cap
 Date: Thu,  3 Jul 2025 16:42:37 +0200
-Message-ID: <20250703144013.901488136@linuxfoundation.org>
+Message-ID: <20250703144004.573344938@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Jonathan Kim <jonathan.kim@amd.com>
 
-commit 0d57dd1765d311111d9885346108c4deeae1deb4 upstream.
+[ Upstream commit cd82f29ec51b2e616289db7b258a936127c16efa ]
 
-[WHY]
-For non-zero DSC instances it's possible that the HUBP domain required
-to drive it for sequential ONO ASICs isn't met, potentially causing
-the logic to the tile to enter an undefined state leading to a system
-hang.
+GFX 12 does not require a page size cap for the trap handler because
+it does not require a CWSR work around like GFX 11 did.
 
-[HOW]
-Add more checks to ensure that the HUBP domain matching the DSC instance
-is appropriately powered.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Duncan Ma <duncan.ma@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Jonathan Kim <jonathan.kim@amd.com>
+Reviewed-by: David Belanger <david.belanger@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit da63df07112e5a9857a8d2aaa04255c4206754ec)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c |   28 ++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_device.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-@@ -1047,6 +1047,15 @@ void dcn35_calc_blocks_to_gate(struct dc
- 			if (dc->caps.sequential_ono) {
- 				update_state->pg_pipe_res_update[PG_HUBP][pipe_ctx->stream_res.dsc->inst] = false;
- 				update_state->pg_pipe_res_update[PG_DPP][pipe_ctx->stream_res.dsc->inst] = false;
-+
-+				/* All HUBP/DPP instances must be powered if the DSC inst != HUBP inst */
-+				if (!pipe_ctx->top_pipe && pipe_ctx->plane_res.hubp &&
-+				    pipe_ctx->plane_res.hubp->inst != pipe_ctx->stream_res.dsc->inst) {
-+					for (j = 0; j < dc->res_pool->pipe_count; ++j) {
-+						update_state->pg_pipe_res_update[PG_HUBP][j] = false;
-+						update_state->pg_pipe_res_update[PG_DPP][j] = false;
-+					}
-+				}
- 			}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+index 9186ef0bd2a32..07eadab4c1c4d 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -537,7 +537,8 @@ static void kfd_cwsr_init(struct kfd_dev *kfd)
+ 			kfd->cwsr_isa = cwsr_trap_gfx11_hex;
+ 			kfd->cwsr_isa_size = sizeof(cwsr_trap_gfx11_hex);
+ 		} else {
+-			BUILD_BUG_ON(sizeof(cwsr_trap_gfx12_hex) > PAGE_SIZE);
++			BUILD_BUG_ON(sizeof(cwsr_trap_gfx12_hex)
++					     > KFD_CWSR_TMA_OFFSET);
+ 			kfd->cwsr_isa = cwsr_trap_gfx12_hex;
+ 			kfd->cwsr_isa_size = sizeof(cwsr_trap_gfx12_hex);
  		}
- 
-@@ -1193,6 +1202,25 @@ void dcn35_calc_blocks_to_ungate(struct
- 		update_state->pg_pipe_res_update[PG_HDMISTREAM][0] = true;
- 
- 	if (dc->caps.sequential_ono) {
-+		for (i = 0; i < dc->res_pool->pipe_count; i++) {
-+			struct pipe_ctx *new_pipe = &context->res_ctx.pipe_ctx[i];
-+
-+			if (new_pipe->stream_res.dsc && !new_pipe->top_pipe &&
-+			    update_state->pg_pipe_res_update[PG_DSC][new_pipe->stream_res.dsc->inst]) {
-+				update_state->pg_pipe_res_update[PG_HUBP][new_pipe->stream_res.dsc->inst] = true;
-+				update_state->pg_pipe_res_update[PG_DPP][new_pipe->stream_res.dsc->inst] = true;
-+
-+				/* All HUBP/DPP instances must be powered if the DSC inst != HUBP inst */
-+				if (new_pipe->plane_res.hubp &&
-+				    new_pipe->plane_res.hubp->inst != new_pipe->stream_res.dsc->inst) {
-+					for (j = 0; j < dc->res_pool->pipe_count; ++j) {
-+						update_state->pg_pipe_res_update[PG_HUBP][j] = true;
-+						update_state->pg_pipe_res_update[PG_DPP][j] = true;
-+					}
-+				}
-+			}
-+		}
-+
- 		for (i = dc->res_pool->pipe_count - 1; i >= 0; i--) {
- 			if (update_state->pg_pipe_res_update[PG_HUBP][i] &&
- 			    update_state->pg_pipe_res_update[PG_DPP][i]) {
+-- 
+2.39.5
+
 
 
 
