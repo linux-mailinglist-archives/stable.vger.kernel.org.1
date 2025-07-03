@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF9B7AF7BFD
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:30:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3431AAF7B47
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7F5F4E0FF3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:22:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E920F3A2EE4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B142F234C;
-	Thu,  3 Jul 2025 15:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD78E2F005F;
+	Thu,  3 Jul 2025 15:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZdNOF+D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vL+as7uJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9A42F2341;
-	Thu,  3 Jul 2025 15:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6B52F237B;
+	Thu,  3 Jul 2025 15:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556052; cv=none; b=ARV3+aw8Mp85uBRreeRYSIvIddznjfpHJOoB/kJunobpvqeo4QJNrQshX1FdhpdZw1BkP3/S5EKbQdYU1BRyAtB4MiFuAv7ujNJK8sIpbudn7hyknn4TLG79H+QVqahAI3RsBxZ37jHVs8GdeD7zQN9cLJvMHB8s/0Q6lh2AbfM=
+	t=1751555670; cv=none; b=Ccmrb9Tunow44eReFr2e4rlqQDH+3I5uqnjSAnHFJ2T1EvRLByZ4FcqitiV86DKCJkxybp5F4t3ELpj2zjksn4mohynSZU5+pKc8zXvTSG/Kf+aPfd59ciXiy26qDZugyPxMT2lltJFo3HJM3rGAGu+cWylE7zYiCL+j7KpE+is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556052; c=relaxed/simple;
-	bh=WLo4my6rQIfmzg+eaIsVjMY/hL//WUQOj/CaqvkIZIg=;
+	s=arc-20240116; t=1751555670; c=relaxed/simple;
+	bh=K8T0L81kcUFoAYM7zsFsTfYTefi0slOFj9dZLdN5kyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOnHKERZO+1OE0E8JL5a4Z8ACI5dVoC3hMxO/w5CgH80/jvm6A1/nCRE6VjvFaI0d/FBNfdgnDbNIlHA8IV1VFyhu2Mz0iAhxm0KKNJW0j4lsWS/LrtmTOIU/3VYKRV6YmmK4eYrgyoTnKbEhWAg1v5tYeQwVPkg4kYVnbaGyBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZdNOF+D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B03C4CEF4;
-	Thu,  3 Jul 2025 15:20:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V5EOgy6sXKYXGWijX82KPa0bUrIzxlC7J61ykZQSQj4jZ6ooxEB1l7ZBWfWKclAdgNJ/GGbx2EJmF5lz9L06muVdzeI9q/tgDF8btTP8WSovrcG1hd0sKm/XHWwpFWHDKSyMmnEt2/IZsVF8u69/V8ftbdLhgANHWwASt50EDro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vL+as7uJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7796C4CEE3;
+	Thu,  3 Jul 2025 15:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556051;
-	bh=WLo4my6rQIfmzg+eaIsVjMY/hL//WUQOj/CaqvkIZIg=;
+	s=korg; t=1751555670;
+	bh=K8T0L81kcUFoAYM7zsFsTfYTefi0slOFj9dZLdN5kyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZdNOF+D2+fsc0MJe4bGHWVcqwR5YEs+T4tthnN6VwsLu/mzcYap/DIv2+tK0h8mI
-	 qF5MQXPTHU98vT6XXnLM/sgSYVFLCGeS0x2QehuIEwp9KRaelCzGCtjE8rx+mz9PPY
-	 X51rkQfJKRwhDXAkVjUkpapUmpXfCskrwYt3hd3Y=
+	b=vL+as7uJcdk0L1NQhvS8T04Jtaf4OZuailIKXNodi/Nnzmg5QDU/KOLxTyoZ/O9MZ
+	 +xkZjEXSnYmll2NO2pJi/md8T1bjQohid7ssKZzVK7kA38K5Y6BPr3dHSk2TTLY/9F
+	 DsTxagQy6gj5H8GVfZ66C4JMl6TN3UzxRNQ5mbjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Long Li <longli@microsoft.com>,
+	Daan De Meyer <daan.j.demeyer@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/132] Drivers: hv: vmbus: Add utility function for querying ring size
+Subject: [PATCH 6.6 084/139] vsock/uapi: fix linux/vm_sockets.h userspace compilation errors
 Date: Thu,  3 Jul 2025 16:42:27 +0200
-Message-ID: <20250703143941.698791703@linuxfoundation.org>
+Message-ID: <20250703143944.443226179@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,98 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit e8c4bd6c6e6b7e7b416c42806981c2a81370001e ]
+[ Upstream commit 22bbc1dcd0d6785fb390c41f0dd5b5e218d23bdd ]
 
-Add a function to query for the preferred ring buffer size of VMBus
-device. This will allow the drivers (eg. UIO) to allocate the most
-optimized ring buffer size for devices.
+If a userspace application just include <linux/vm_sockets.h> will fail
+to build with the following errors:
 
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Link: https://lore.kernel.org/r/1711788723-8593-2-git-send-email-ssengar@linux.microsoft.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
+    /usr/include/linux/vm_sockets.h:182:39: error: invalid application of ‘sizeof’ to incomplete type ‘struct sockaddr’
+      182 |         unsigned char svm_zero[sizeof(struct sockaddr) -
+          |                                       ^~~~~~
+    /usr/include/linux/vm_sockets.h:183:39: error: ‘sa_family_t’ undeclared here (not in a function)
+      183 |                                sizeof(sa_family_t) -
+          |
+
+Include <sys/socket.h> for userspace (guarded by ifndef __KERNEL__)
+where `struct sockaddr` and `sa_family_t` are defined.
+We already do something similar in <linux/mptcp.h> and <linux/if.h>.
+
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Reported-by: Daan De Meyer <daan.j.demeyer@gmail.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20250623100053.40979-1-sgarzare@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/channel_mgmt.c | 15 ++++++++++++---
- drivers/hv/hyperv_vmbus.h |  5 +++++
- include/linux/hyperv.h    |  2 ++
- 3 files changed, 19 insertions(+), 3 deletions(-)
+ include/uapi/linux/vm_sockets.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
-index d95e567a190d2..25e2958923af9 100644
---- a/drivers/hv/channel_mgmt.c
-+++ b/drivers/hv/channel_mgmt.c
-@@ -120,7 +120,9 @@ const struct vmbus_device vmbus_devs[] = {
- 	},
+diff --git a/include/uapi/linux/vm_sockets.h b/include/uapi/linux/vm_sockets.h
+index ed07181d4eff9..e05280e415228 100644
+--- a/include/uapi/linux/vm_sockets.h
++++ b/include/uapi/linux/vm_sockets.h
+@@ -17,6 +17,10 @@
+ #ifndef _UAPI_VM_SOCKETS_H
+ #define _UAPI_VM_SOCKETS_H
  
- 	/* File copy */
--	{ .dev_type = HV_FCOPY,
-+	/* fcopy always uses 16KB ring buffer size and is working well for last many years */
-+	{ .pref_ring_size = 0x4000,
-+	  .dev_type = HV_FCOPY,
- 	  HV_FCOPY_GUID,
- 	  .perf_device = false,
- 	  .allowed_in_isolated = false,
-@@ -140,12 +142,19 @@ const struct vmbus_device vmbus_devs[] = {
- 	  .allowed_in_isolated = false,
- 	},
- 
--	/* Unknown GUID */
--	{ .dev_type = HV_UNKNOWN,
-+	/*
-+	 * Unknown GUID
-+	 * 64 KB ring buffer + 4 KB header should be sufficient size for any Hyper-V device apart
-+	 * from HV_NIC and HV_SCSI. This case avoid the fallback for unknown devices to allocate
-+	 * much bigger (2 MB) of ring size.
-+	 */
-+	{ .pref_ring_size = 0x11000,
-+	  .dev_type = HV_UNKNOWN,
- 	  .perf_device = false,
- 	  .allowed_in_isolated = false,
- 	},
- };
-+EXPORT_SYMBOL_GPL(vmbus_devs);
- 
- static const struct {
- 	guid_t guid;
-diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
-index 4cff3997c3ccd..f039b110e98ce 100644
---- a/drivers/hv/hyperv_vmbus.h
-+++ b/drivers/hv/hyperv_vmbus.h
-@@ -412,6 +412,11 @@ static inline bool hv_is_perf_channel(struct vmbus_channel *channel)
- 	return vmbus_devs[channel->device_id].perf_device;
- }
- 
-+static inline size_t hv_dev_ring_size(struct vmbus_channel *channel)
-+{
-+	return vmbus_devs[channel->device_id].pref_ring_size;
-+}
++#ifndef __KERNEL__
++#include <sys/socket.h>        /* for struct sockaddr and sa_family_t */
++#endif
 +
- static inline bool hv_is_allocated_cpu(unsigned int cpu)
- {
- 	struct vmbus_channel *channel, *sc;
-diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
-index 80d876593caa9..43f778b6b9cda 100644
---- a/include/linux/hyperv.h
-+++ b/include/linux/hyperv.h
-@@ -820,6 +820,8 @@ struct vmbus_requestor {
- #define VMBUS_RQST_RESET (U64_MAX - 3)
+ #include <linux/socket.h>
+ #include <linux/types.h>
  
- struct vmbus_device {
-+	/* preferred ring buffer size in KB, 0 means no preferred size for this device */
-+	size_t pref_ring_size;
- 	u16  dev_type;
- 	guid_t guid;
- 	bool perf_device;
 -- 
 2.39.5
 
