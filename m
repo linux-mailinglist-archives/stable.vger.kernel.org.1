@@ -1,187 +1,158 @@
-Return-Path: <stable+bounces-160122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB867AF81F8
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 22:36:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04FEEAF8277
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 23:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C21C1894632
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 20:36:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B22A27AE398
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 21:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8342989B3;
-	Thu,  3 Jul 2025 20:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192FA2BEC52;
+	Thu,  3 Jul 2025 21:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xsU4PSTh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Aqlp4yzE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1571025A333;
-	Thu,  3 Jul 2025 20:35:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CF02BEC20;
+	Thu,  3 Jul 2025 21:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751574951; cv=none; b=KxT2tyd8sVWqt/GpT3mX15Rv5Fkoa7+Nb+IEos2sPWnLNfXLSoEkVUQ8HFhphlsLynMm18na3BF3VmWMMBk5ix1GZtLN04R/PofHnnUEEuD8YrzluYr2+6+1+4UBlxMPrS0n9ETE8O7ayhtTCEMwYRlNkv7YxJdHPYQJu23rwk0=
+	t=1751577132; cv=none; b=jDb59m0n3FWX5cdu1zjVefbzCEEZX2EwKxjYaXGdUyRRu+7jC4ID6/pfj5ryVys4YNQvdhgxeCIjos9p+v1wCzdt/fMjwUkNHrkD63T8zIjeOw60PHZjwFSOLsk1/VctPXlzpMu//tpqLh4ifgUwGN7MO5qpWAs2Qm7Xr4Bdg50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751574951; c=relaxed/simple;
-	bh=wcCeWL9cnkFn3jH/2S0OjNOIlT2v4H09COjmuUme2cg=;
-	h=Date:To:From:Subject:Message-Id; b=VZJvRk38+OPSxr5TmQfR1L3VPB/Es8r5eZVBUj9rXXDnXQTy12eG4RnGNxGHRfbLMPHYJPrLsUT9zqo1YO7oB0IMLvdEyHcD5PYBBzGOsMg4KCQnw0+4r7Zf4jGDBGJ9Rfu6CmyRSBFVnflxeIR0G0aDUHcZ7e2r0HsAoa9bgyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xsU4PSTh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7EAC4CEE3;
-	Thu,  3 Jul 2025 20:35:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1751574950;
-	bh=wcCeWL9cnkFn3jH/2S0OjNOIlT2v4H09COjmuUme2cg=;
-	h=Date:To:From:Subject:From;
-	b=xsU4PSTh3/vGcf+ui9Sxr0zMGbHG3vZsSahG5dRB/ndRoceHqWMrTLGxiaBAuv6GF
-	 rNRO7GlxMR+4BqxQ/2L0tWVU5lCEyu26NhC/spgJL5ZEL4mRDXy0zg3iHpcD3SqRHW
-	 oLtKhKSzL1eHc51OWoNrPP7C5eu44YbkOrVlSswQ=
-Date: Thu, 03 Jul 2025 13:35:49 -0700
-To: mm-commits@vger.kernel.org,ysk@kzalloc.com,vincenzo.frascino@arm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,rostedt@goodmis.org,glider@google.com,dvyukov@google.com,byungchul@sk.com,bigeasy@linutronix.de,andreyknvl@gmail.com,yeoreum.yun@arm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kasan-remove-kasan_find_vm_area-to-prevent-possible-deadlock.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250703203550.8B7EAC4CEE3@smtp.kernel.org>
+	s=arc-20240116; t=1751577132; c=relaxed/simple;
+	bh=B6doD9kOSPWFE/Y4BAsd3C6XEna4T0RpkGlNoqHZZLw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lfQHcfpoRwBRO0UPyKbl7z3TiO/ncyjYjMrQoVfj/Y9K5QbN/GsBh0GfOo9xdZj6N6WFDBfFZDQW40PXz3gBGwQXvrx4jSsdCvhPdUghVbW4xlXoinpoi/+zbfIyuDElipGdjsO6yieCExfC9YTcqQzrNtA4rTFL3ZlOWvtIL0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Aqlp4yzE; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751577131; x=1783113131;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=B6doD9kOSPWFE/Y4BAsd3C6XEna4T0RpkGlNoqHZZLw=;
+  b=Aqlp4yzExCi99183Pq+qkGcRCUQckmJWFD7JfXJmyMfW2rzI2HsyAhAS
+   Yf2eMFf30g/QCL5HPRfxxlJduXLYlswmlpkL4N/IgmHoU55+C5vYWyCCx
+   Y7e5CneClevywBgerSU6e2hwJ/AJR/up0SGIoOZYPO5duICcYQA+7766U
+   UYSZOZQPWWE5Z5TwOchAT7MRwlFQkGjPQGGyUQnVuOZM1f+g0yCL1AjJc
+   5cMLNWvMsIKrs7eq/HtZmBvDzir/xCxa1xUqZKz2iYHY+am8prApQ2UAU
+   Xj7755NPip36GNr+CxC6mvOAHNVV9SY5qVBvG8k5pwNfARiSch7oeEb0p
+   g==;
+X-CSE-ConnectionGUID: 36Fb/S9RR/KHKX0T1sMiZw==
+X-CSE-MsgGUID: IlpM8nnjSXC8oE1wAiXGkA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="79352995"
+X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; 
+   d="scan'208";a="79352995"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 14:12:11 -0700
+X-CSE-ConnectionGUID: lXpy82NlTA6aPWMZmq4m5Q==
+X-CSE-MsgGUID: l5VKW6JETBC+sv/39t6Xxg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; 
+   d="scan'208";a="154239995"
+Received: from mjruhl-desk.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.223.97])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 14:12:09 -0700
+From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
+To: platform-driver-x86@vger.kernel.org,
+	intel-xe@lists.freedesktop.org,
+	hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com,
+	lucas.demarchi@intel.com,
+	rodrigo.vivi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	david.e.box@linux.intel.com
+Cc: "Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v6 01/12] platform/x86/intel/pmt: fix a crashlog NULL pointer access
+Date: Thu,  3 Jul 2025 17:11:39 -0400
+Message-ID: <20250703211150.135320-2-michael.j.ruhl@intel.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250703211150.135320-1-michael.j.ruhl@intel.com>
+References: <20250703211150.135320-1-michael.j.ruhl@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+Usage of the intel_pmt_read() for binary sysfs, requires a pcidev. The
+current use of the endpoint value is only valid for telemetry endpoint
+usage.
 
-The patch titled
-     Subject: kasan: remove kasan_find_vm_area() to prevent possible deadlock
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kasan-remove-kasan_find_vm_area-to-prevent-possible-deadlock.patch
+Without the ep, the crashlog usage causes the following NULL pointer
+exception:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kasan-remove-kasan_find_vm_area-to-prevent-possible-deadlock.patch
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+Oops: Oops: 0000 [#1] SMP NOPTI
+RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
+Code:
+Call Trace:
+ <TASK>
+ ? sysfs_kf_bin_read+0xc0/0xe0
+ kernfs_fop_read_iter+0xac/0x1a0
+ vfs_read+0x26d/0x350
+ ksys_read+0x6b/0xe0
+ __x64_sys_read+0x1d/0x30
+ x64_sys_call+0x1bc8/0x1d70
+ do_syscall_64+0x6d/0x110
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Augment struct intel_pmt_entry with a pointer to the pcidev to avoid
+the NULL pointer exception.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: kasan: remove kasan_find_vm_area() to prevent possible deadlock
-Date: Thu, 3 Jul 2025 19:10:18 +0100
-
-find_vm_area() couldn't be called in atomic_context.  If find_vm_area() is
-called to reports vm area information, kasan can trigger deadlock like:
-
-CPU0                                CPU1
-vmalloc();
- alloc_vmap_area();
-  spin_lock(&vn->busy.lock)
-                                    spin_lock_bh(&some_lock);
-   <interrupt occurs>
-   <in softirq>
-   spin_lock(&some_lock);
-                                    <access invalid address>
-                                    kasan_report();
-                                     print_report();
-                                      print_address_description();
-                                       kasan_find_vm_area();
-                                        find_vm_area();
-                                         spin_lock(&vn->busy.lock) // deadlock!
-
-To prevent possible deadlock while kasan reports, remove kasan_find_vm_area().
-
-Link: https://lkml.kernel.org/r/20250703181018.580833-1-yeoreum.yun@arm.com
-Fixes: c056a364e954 ("kasan: print virtual mapping info in reports")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reported-by: Yunseong Kim <ysk@kzalloc.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Fixes: 045a513040cc ("platform/x86/intel/pmt: Use PMT callbacks")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
 ---
+ drivers/platform/x86/intel/pmt/class.c | 3 ++-
+ drivers/platform/x86/intel/pmt/class.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
- mm/kasan/report.c |   45 +-------------------------------------------
- 1 file changed, 2 insertions(+), 43 deletions(-)
-
---- a/mm/kasan/report.c~kasan-remove-kasan_find_vm_area-to-prevent-possible-deadlock
-+++ a/mm/kasan/report.c
-@@ -370,36 +370,6 @@ static inline bool init_task_stack_addr(
- 			sizeof(init_thread_union.stack));
- }
+diff --git a/drivers/platform/x86/intel/pmt/class.c b/drivers/platform/x86/intel/pmt/class.c
+index 7233b654bbad..d046e8752173 100644
+--- a/drivers/platform/x86/intel/pmt/class.c
++++ b/drivers/platform/x86/intel/pmt/class.c
+@@ -97,7 +97,7 @@ intel_pmt_read(struct file *filp, struct kobject *kobj,
+ 	if (count > entry->size - off)
+ 		count = entry->size - off;
  
--/*
-- * This function is invoked with report_lock (a raw_spinlock) held. A
-- * PREEMPT_RT kernel cannot call find_vm_area() as it will acquire a sleeping
-- * rt_spinlock.
-- *
-- * For !RT kernel, the PROVE_RAW_LOCK_NESTING config option will print a
-- * lockdep warning for this raw_spinlock -> spinlock dependency. This config
-- * option is enabled by default to ensure better test coverage to expose this
-- * kind of RT kernel problem. This lockdep splat, however, can be suppressed
-- * by using DEFINE_WAIT_OVERRIDE_MAP() if it serves a useful purpose and the
-- * invalid PREEMPT_RT case has been taken care of.
-- */
--static inline struct vm_struct *kasan_find_vm_area(void *addr)
--{
--	static DEFINE_WAIT_OVERRIDE_MAP(vmalloc_map, LD_WAIT_SLEEP);
--	struct vm_struct *va;
--
--	if (IS_ENABLED(CONFIG_PREEMPT_RT))
--		return NULL;
--
--	/*
--	 * Suppress lockdep warning and fetch vmalloc area of the
--	 * offending address.
--	 */
--	lock_map_acquire_try(&vmalloc_map);
--	va = find_vm_area(addr);
--	lock_map_release(&vmalloc_map);
--	return va;
--}
--
- static void print_address_description(void *addr, u8 tag,
- 				      struct kasan_report_info *info)
- {
-@@ -429,19 +399,8 @@ static void print_address_description(vo
+-	count = pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry->header.guid, buf,
++	count = pmt_telem_read_mmio(entry->pcidev, entry->cb, entry->header.guid, buf,
+ 				    entry->base, off, count);
+ 
+ 	return count;
+@@ -252,6 +252,7 @@ static int intel_pmt_populate_entry(struct intel_pmt_entry *entry,
+ 		return -EINVAL;
  	}
  
- 	if (is_vmalloc_addr(addr)) {
--		struct vm_struct *va = kasan_find_vm_area(addr);
--
--		if (va) {
--			pr_err("The buggy address belongs to the virtual mapping at\n"
--			       " [%px, %px) created by:\n"
--			       " %pS\n",
--			       va->addr, va->addr + va->size, va->caller);
--			pr_err("\n");
--
--			page = vmalloc_to_page(addr);
--		} else {
--			pr_err("The buggy address %px belongs to a vmalloc virtual mapping\n", addr);
--		}
-+		pr_err("The buggy address %px belongs to a vmalloc virtual mapping\n", addr);
-+		page = vmalloc_to_page(addr);
- 	}
++	entry->pcidev = pci_dev;
+ 	entry->guid = header->guid;
+ 	entry->size = header->size;
+ 	entry->cb = ivdev->priv_data;
+diff --git a/drivers/platform/x86/intel/pmt/class.h b/drivers/platform/x86/intel/pmt/class.h
+index b2006d57779d..f6ce80c4e051 100644
+--- a/drivers/platform/x86/intel/pmt/class.h
++++ b/drivers/platform/x86/intel/pmt/class.h
+@@ -39,6 +39,7 @@ struct intel_pmt_header {
  
- 	if (page) {
-_
-
-Patches currently in -mm which might be from yeoreum.yun@arm.com are
-
-kasan-remove-kasan_find_vm_area-to-prevent-possible-deadlock.patch
+ struct intel_pmt_entry {
+ 	struct telem_endpoint	*ep;
++	struct pci_dev		*pcidev;
+ 	struct intel_pmt_header	header;
+ 	struct bin_attribute	pmt_bin_attr;
+ 	struct kobject		*kobj;
+-- 
+2.49.0
 
 
