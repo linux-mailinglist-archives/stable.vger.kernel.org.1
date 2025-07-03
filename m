@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-159727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 292D8AF7A12
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:09:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B32B8AF78AA
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A456546F95
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71C885831E2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F432ED143;
-	Thu,  3 Jul 2025 15:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19522E62CD;
+	Thu,  3 Jul 2025 14:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XteK5rLX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2xzIuaX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C427B101DE;
-	Thu,  3 Jul 2025 15:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2082EAB70;
+	Thu,  3 Jul 2025 14:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555149; cv=none; b=uFWcusDzmGnHViYBhvmSBiSOp19ugkngYt1n++FAZSgE7WDydFExKLZNhl2T/+/9wrT91ox2FBak/puwtOGodm3i/iMTjSojwJA7eB8JMLegmHQqQC7e9qmLNL2I3GrOyZeFI236xcFmnvHxI+sSRa3nsypL2G/k36+MBgDyh+Q=
+	t=1751554267; cv=none; b=hXataVjBYHpNgmy2Nevk2TtWItEbGt47dlHg2Qe3Hnj+yFKku6ihEc0CietbvueND0xRfLB+8OqyJxzoYgCRefny/xnEJo4fLJTUDVV8TfllZATi+Zs+WJ5Pl1Ct+s9LnkZpWt53pAd5b11mJbdtT0EcxgXVJQiHIf4T+FFMf7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555149; c=relaxed/simple;
-	bh=/PLPHf3yLU8ly2EOwu86uHRs9xkeXSg+GU15seiPgnw=;
+	s=arc-20240116; t=1751554267; c=relaxed/simple;
+	bh=BdxUOP66rjobk59grVPDenC6ThOyNzxVIbUXdXUgsE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e03NLsWL46AsYl25rlH5vyA0kZWvZgxivi67trfOKpCEc6EQQRsK8Xg/Vmu/wFq7Z8+wBgncBYQzD4MqrjkLDSwimwm3qiDiLpEAYKSRDxgOT7quZvnmb958h8vLUUnDHaN0/YAqQyLx7ycp4FjiRItCQRHRe7Zfqo+lSGK17Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XteK5rLX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB19DC4CEE3;
-	Thu,  3 Jul 2025 15:05:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aHvQFR1lQQWw6x+KLINLClHqpHEeyVKQH7cxPnrKH10HOhzi85XLcXGZXzBTJ5T6tI6X8qLIiKNDxvTDo926hDsrkaht++PSvVYIQ2DPVfiDRaGKj+0xk2wpuV/TW4v2618cQtS73Vh2qeEdiIkWoPwyOQSfZEMCRNDYsCk3PiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2xzIuaX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2135C4CEE3;
+	Thu,  3 Jul 2025 14:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555149;
-	bh=/PLPHf3yLU8ly2EOwu86uHRs9xkeXSg+GU15seiPgnw=;
+	s=korg; t=1751554267;
+	bh=BdxUOP66rjobk59grVPDenC6ThOyNzxVIbUXdXUgsE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XteK5rLX8US8XeLRMHPjmluR/B1LPnI+7TPx5dycN1Kf/TkP5miyfRmXzOpLrffd8
-	 pc9pMd3SGBHA39nwupMAh6kA6tVzGdOdumEuBllk8VP7XzHRaX/so1/M+D5exvNHAd
-	 DJ423riD/dERvWE8fKphjZmZWcNsU6yE9GJMeSs4=
+	b=B2xzIuaXm1jU7I8bgAns9LIWr5+A1nP3N56BwkryQ0t1rg1HNDkTwDEJscX/1ulPR
+	 5a3qSN+8ysbhvrLGJwBTgBparZWf4l9tt8xH/pVTLI3iQXNgXpv5pWxrBbuvL+exAK
+	 Ie2yyduKOWke+s6YCwfzAC+J6dB47OQRAxQ9IEhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 161/263] nvme: fix atomic write size validation
+	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 133/218] Bluetooth: L2CAP: Fix L2CAP MTU negotiation
 Date: Thu,  3 Jul 2025 16:41:21 +0200
-Message-ID: <20250703144010.816387114@linuxfoundation.org>
+Message-ID: <20250703144001.432522821@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,137 +59,231 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Frédéric Danis <frederic.danis@collabora.com>
 
-[ Upstream commit f46d273449ba65afd53f3dd8fe0182c9df877e08 ]
+commit 042bb9603c44620dce98717a2d23235ca57a00d7 upstream.
 
-Don't mix the namespace and controller values, and validate the
-per-controller limit when probing the controller.  This avoid spurious
-failures for controllers with namespaces that have different namespaces
-with different logical block sizes, or report the per-namespace values
-only for some namespaces.
+OBEX download from iPhone is currently slow due to small packet size
+used to transfer data which doesn't follow the MTU negotiated during
+L2CAP connection, i.e. 672 bytes instead of 32767:
 
-It also fixes a missing queue_limits_cancel_update in an error path by
-removing that error path.
+  < ACL Data TX: Handle 11 flags 0x00 dlen 12
+      L2CAP: Connection Request (0x02) ident 18 len 4
+        PSM: 4103 (0x1007)
+        Source CID: 72
+  > ACL Data RX: Handle 11 flags 0x02 dlen 16
+      L2CAP: Connection Response (0x03) ident 18 len 8
+        Destination CID: 14608
+        Source CID: 72
+        Result: Connection successful (0x0000)
+        Status: No further information available (0x0000)
+  < ACL Data TX: Handle 11 flags 0x00 dlen 27
+      L2CAP: Configure Request (0x04) ident 20 len 19
+        Destination CID: 14608
+        Flags: 0x0000
+        Option: Maximum Transmission Unit (0x01) [mandatory]
+          MTU: 32767
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 63
+          Max transmit: 3
+          Retransmission timeout: 2000
+          Monitor timeout: 12000
+          Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 26
+      L2CAP: Configure Request (0x04) ident 72 len 18
+        Destination CID: 72
+        Flags: 0x0000
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 32
+          Max transmit: 255
+          Retransmission timeout: 0
+          Monitor timeout: 0
+          Maximum PDU size: 65527
+        Option: Frame Check Sequence (0x05) [mandatory]
+          FCS: 16-bit FCS (0x01)
+  < ACL Data TX: Handle 11 flags 0x00 dlen 29
+      L2CAP: Configure Response (0x05) ident 72 len 21
+        Source CID: 14608
+        Flags: 0x0000
+        Result: Success (0x0000)
+        Option: Maximum Transmission Unit (0x01) [mandatory]
+          MTU: 672
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 32
+          Max transmit: 255
+          Retransmission timeout: 2000
+          Monitor timeout: 12000
+          Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 32
+      L2CAP: Configure Response (0x05) ident 20 len 24
+        Source CID: 72
+        Flags: 0x0000
+        Result: Success (0x0000)
+        Option: Maximum Transmission Unit (0x01) [mandatory]
+          MTU: 32767
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 63
+          Max transmit: 3
+          Retransmission timeout: 2000
+          Monitor timeout: 12000
+          Maximum PDU size: 1009
+        Option: Frame Check Sequence (0x05) [mandatory]
+          FCS: 16-bit FCS (0x01)
+  ...
+  > ACL Data RX: Handle 11 flags 0x02 dlen 680
+      Channel: 72 len 676 ctrl 0x0202 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+      I-frame: Unsegmented TxSeq 1 ReqSeq 2
+  < ACL Data TX: Handle 11 flags 0x00 dlen 13
+      Channel: 14608 len 9 ctrl 0x0204 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+      I-frame: Unsegmented TxSeq 2 ReqSeq 2
+  > ACL Data RX: Handle 11 flags 0x02 dlen 680
+      Channel: 72 len 676 ctrl 0x0304 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+      I-frame: Unsegmented TxSeq 2 ReqSeq 3
 
-Fixes: 8695f060a029 ("nvme: all namespaces in a subsystem must adhere to a common atomic write size")
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Tested-by: Yi Zhang <yi.zhang@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The MTUs are negotiated for each direction. In this traces 32767 for
+iPhone->localhost and no MTU for localhost->iPhone, which based on
+'4.4 L2CAP_CONFIGURATION_REQ' (Core specification v5.4, Vol. 3, Part
+A):
+
+  The only parameters that should be included in the
+  L2CAP_CONFIGURATION_REQ packet are those that require different
+  values than the default or previously agreed values.
+  ...
+  Any missing configuration parameters are assumed to have their
+  most recently explicitly or implicitly accepted values.
+
+and '5.1 Maximum transmission unit (MTU)':
+
+  If the remote device sends a positive L2CAP_CONFIGURATION_RSP
+  packet it should include the actual MTU to be used on this channel
+  for traffic flowing into the local device.
+  ...
+  The default value is 672 octets.
+
+is set by BlueZ to 672 bytes.
+
+It seems that the iPhone used the lowest negotiated value to transfer
+data to the localhost instead of the negotiated one for the incoming
+direction.
+
+This could be fixed by using the MTU negotiated for the other
+direction, if exists, in the L2CAP_CONFIGURATION_RSP.
+This allows to use segmented packets as in the following traces:
+
+  < ACL Data TX: Handle 11 flags 0x00 dlen 12
+        L2CAP: Connection Request (0x02) ident 22 len 4
+          PSM: 4103 (0x1007)
+          Source CID: 72
+  < ACL Data TX: Handle 11 flags 0x00 dlen 27
+        L2CAP: Configure Request (0x04) ident 24 len 19
+          Destination CID: 2832
+          Flags: 0x0000
+          Option: Maximum Transmission Unit (0x01) [mandatory]
+            MTU: 32767
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 63
+            Max transmit: 3
+            Retransmission timeout: 2000
+            Monitor timeout: 12000
+            Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 26
+        L2CAP: Configure Request (0x04) ident 15 len 18
+          Destination CID: 72
+          Flags: 0x0000
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 32
+            Max transmit: 255
+            Retransmission timeout: 0
+            Monitor timeout: 0
+            Maximum PDU size: 65527
+          Option: Frame Check Sequence (0x05) [mandatory]
+            FCS: 16-bit FCS (0x01)
+  < ACL Data TX: Handle 11 flags 0x00 dlen 29
+        L2CAP: Configure Response (0x05) ident 15 len 21
+          Source CID: 2832
+          Flags: 0x0000
+          Result: Success (0x0000)
+          Option: Maximum Transmission Unit (0x01) [mandatory]
+            MTU: 32767
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 32
+            Max transmit: 255
+            Retransmission timeout: 2000
+            Monitor timeout: 12000
+            Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 32
+        L2CAP: Configure Response (0x05) ident 24 len 24
+          Source CID: 72
+          Flags: 0x0000
+          Result: Success (0x0000)
+          Option: Maximum Transmission Unit (0x01) [mandatory]
+            MTU: 32767
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 63
+            Max transmit: 3
+            Retransmission timeout: 2000
+            Monitor timeout: 12000
+            Maximum PDU size: 1009
+          Option: Frame Check Sequence (0x05) [mandatory]
+            FCS: 16-bit FCS (0x01)
+  ...
+  > ACL Data RX: Handle 11 flags 0x02 dlen 1009
+        Channel: 72 len 1005 ctrl 0x4202 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+        I-frame: Start (len 21884) TxSeq 1 ReqSeq 2
+  > ACL Data RX: Handle 11 flags 0x02 dlen 1009
+        Channel: 72 len 1005 ctrl 0xc204 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+        I-frame: Continuation TxSeq 2 ReqSeq 2
+
+This has been tested with kernel 5.4 and BlueZ 5.77.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c | 33 +++++++++++----------------------
- drivers/nvme/host/nvme.h |  3 +--
- 2 files changed, 12 insertions(+), 24 deletions(-)
+ net/bluetooth/l2cap_core.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 1c853c5b8169b..d253b82901110 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -2022,17 +2022,7 @@ static u32 nvme_configure_atomic_write(struct nvme_ns *ns,
- 		 * no clear language in the specification prohibiting different
- 		 * values for different controllers in the subsystem.
- 		 */
--		atomic_bs = (1 + ns->ctrl->awupf) * bs;
--	}
--
--	if (!ns->ctrl->subsys->atomic_bs) {
--		ns->ctrl->subsys->atomic_bs = atomic_bs;
--	} else if (ns->ctrl->subsys->atomic_bs != atomic_bs) {
--		dev_err_ratelimited(ns->ctrl->device,
--			"%s: Inconsistent Atomic Write Size, Namespace will not be added: Subsystem=%d bytes, Controller/Namespace=%d bytes\n",
--			ns->disk ? ns->disk->disk_name : "?",
--			ns->ctrl->subsys->atomic_bs,
--			atomic_bs);
-+		atomic_bs = (1 + ns->ctrl->subsys->awupf) * bs;
- 	}
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -3380,7 +3380,7 @@ static int l2cap_parse_conf_req(struct l
+ 	struct l2cap_conf_rfc rfc = { .mode = L2CAP_MODE_BASIC };
+ 	struct l2cap_conf_efs efs;
+ 	u8 remote_efs = 0;
+-	u16 mtu = L2CAP_DEFAULT_MTU;
++	u16 mtu = 0;
+ 	u16 result = L2CAP_CONF_SUCCESS;
+ 	u16 size;
  
- 	lim->atomic_write_hw_max = atomic_bs;
-@@ -2219,16 +2209,6 @@ static int nvme_update_ns_info_block(struct nvme_ns *ns,
- 	if (!nvme_update_disk_info(ns, id, &lim))
- 		capacity = 0;
+@@ -3485,6 +3485,13 @@ done:
+ 		/* Configure output options and let the other side know
+ 		 * which ones we don't like. */
  
--	/*
--	 * Validate the max atomic write size fits within the subsystem's
--	 * atomic write capabilities.
--	 */
--	if (lim.atomic_write_hw_max > ns->ctrl->subsys->atomic_bs) {
--		blk_mq_unfreeze_queue(ns->disk->queue, memflags);
--		ret = -ENXIO;
--		goto out;
--	}
--
- 	nvme_config_discard(ns, &lim);
- 	if (IS_ENABLED(CONFIG_BLK_DEV_ZONED) &&
- 	    ns->head->ids.csi == NVME_CSI_ZNS)
-@@ -3044,6 +3024,7 @@ static int nvme_init_subsystem(struct nvme_ctrl *ctrl, struct nvme_id_ctrl *id)
- 	memcpy(subsys->model, id->mn, sizeof(subsys->model));
- 	subsys->vendor_id = le16_to_cpu(id->vid);
- 	subsys->cmic = id->cmic;
-+	subsys->awupf = le16_to_cpu(id->awupf);
- 
- 	/* Versions prior to 1.4 don't necessarily report a valid type */
- 	if (id->cntrltype == NVME_CTRL_DISC ||
-@@ -3373,6 +3354,15 @@ static int nvme_init_identify(struct nvme_ctrl *ctrl)
- 		if (ret)
- 			goto out_free;
- 	}
++		/* If MTU is not provided in configure request, use the most recently
++		 * explicitly or implicitly accepted value for the other direction,
++		 * or the default value.
++		 */
++		if (mtu == 0)
++			mtu = chan->imtu ? chan->imtu : L2CAP_DEFAULT_MTU;
 +
-+	if (le16_to_cpu(id->awupf) != ctrl->subsys->awupf) {
-+		dev_err_ratelimited(ctrl->device,
-+			"inconsistent AWUPF, controller not added (%u/%u).\n",
-+			le16_to_cpu(id->awupf), ctrl->subsys->awupf);
-+		ret = -EINVAL;
-+		goto out_free;
-+	}
-+
- 	memcpy(ctrl->subsys->firmware_rev, id->fr,
- 	       sizeof(ctrl->subsys->firmware_rev));
- 
-@@ -3468,7 +3458,6 @@ static int nvme_init_identify(struct nvme_ctrl *ctrl)
- 		dev_pm_qos_expose_latency_tolerance(ctrl->device);
- 	else if (!ctrl->apst_enabled && prev_apst_enabled)
- 		dev_pm_qos_hide_latency_tolerance(ctrl->device);
--	ctrl->awupf = le16_to_cpu(id->awupf);
- out_free:
- 	kfree(id);
- 	return ret;
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index 8fc4683418a3a..d8c4e545f732c 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -410,7 +410,6 @@ struct nvme_ctrl {
- 
- 	enum nvme_ctrl_type cntrltype;
- 	enum nvme_dctype dctype;
--	u16 awupf; /* 0's based value. */
- };
- 
- static inline enum nvme_ctrl_state nvme_ctrl_state(struct nvme_ctrl *ctrl)
-@@ -443,11 +442,11 @@ struct nvme_subsystem {
- 	u8			cmic;
- 	enum nvme_subsys_type	subtype;
- 	u16			vendor_id;
-+	u16			awupf; /* 0's based value. */
- 	struct ida		ns_ida;
- #ifdef CONFIG_NVME_MULTIPATH
- 	enum nvme_iopolicy	iopolicy;
- #endif
--	u32			atomic_bs;
- };
- 
- /*
--- 
-2.39.5
-
+ 		if (mtu < L2CAP_DEFAULT_MIN_MTU)
+ 			result = L2CAP_CONF_UNACCEPT;
+ 		else {
 
 
 
