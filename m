@@ -1,106 +1,93 @@
-Return-Path: <stable+bounces-159299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBDD3AF7081
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 12:37:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F233AF7132
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 12:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1FCE163DC0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 10:37:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B271418861AC
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 10:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3A72E4985;
-	Thu,  3 Jul 2025 10:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B80D2E3AFB;
+	Thu,  3 Jul 2025 10:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oml0vLqe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UUMtqbQ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC102E2EFA;
-	Thu,  3 Jul 2025 10:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF282E3B14;
+	Thu,  3 Jul 2025 10:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751538964; cv=none; b=YaL4CG2JTkq0yf/RmfFIb5eVZQQDG3RSVtOjYk+jQmxmt0wtPbqfTKyhFhb8dy5tBzv/nLWNAfIHI2z8SiyLNPPVMn4hX0BQNuolUZgzFxpmsDXIAqbgh60PEIp45xUvrDJ7tTKfgHg9DPQroIoLLy4pLEJXrKNrnj2/gB7F+Jo=
+	t=1751540314; cv=none; b=NiQyZBO6gbBl54b4GvWvrb8T9VeS5Ao9whsvZXW5BH6RcQBFy/MyBid/f5KD0TOGYKDOBq8F/GXIK4wFFA+XMJvyMN3AiZ1KRiw9qqr9gDVklFJ4WHFL0nls2CtGRv0pEoPKDx55O1hePID7Q8nGDgk2mSjz/39zbJbqJ8nSFoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751538964; c=relaxed/simple;
-	bh=8GDeykpuAMrcvSeGKcpYVdb9vtGqvD8Aq5P8nLstucc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jejW/2uNtmoBRqzwCwLon+ZKqoN4NxUlYlb059b/4NjzGxe23YH3TJlB4LyTRW9Dh0eDGGEBv56fGJw3sQfTiUT++OHmvF6mlofb/ckbjIwMr51MdJihRMh1BG46VQNxfPl1DRaZWIk6gSVUMtAncRyOXHP4QhRKH7Qj8LKCOzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oml0vLqe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1081AC4CEEB;
-	Thu,  3 Jul 2025 10:36:01 +0000 (UTC)
+	s=arc-20240116; t=1751540314; c=relaxed/simple;
+	bh=QT+UMTSngX/Y5p2qhC+hFL6HSZRCai4FY0HH6/GPYOk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ofLTkQJ414y0tVUoFEoBcetdQo/f9z2KXWTVGhNqgTlFRov/cbpwGjurywylHwOpc060DT6owk3zz08MvrH44GPLwdp7ruN/RlaC9eR0T5mqvYtnu2Z9YC6AYI3CtRSpgXaeSVQHPdwdr4vnyidCAZsivxfr5vt/O3JRvk/C2Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UUMtqbQ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD2EC4CEED;
+	Thu,  3 Jul 2025 10:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751538964;
-	bh=8GDeykpuAMrcvSeGKcpYVdb9vtGqvD8Aq5P8nLstucc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Oml0vLqee0sOaYfvVwpdu1JoX8sV+JjlEV1788Wldot00I324HiY0X1m2RkxkIyV8
-	 1WZcUo8iojpuf9S9xwf8IgtN/L2Y6r0W0S1N2o7DRyHUH+tnkUOgq6t4qzNjcRaxHA
-	 kqhd0LyRg6BoIZZBaf51NZ+50iNjKyQ1ElrMmens/WYSfTatw5dzCCamXUxBpqFnq5
-	 vSlY/f5Azj3Nsl2jovjFDW4hzc7q9Enk7O7LT1765htH3G6eX1GEm3DrawMDH4pgc/
-	 xwqLNLrcuycVOBPvQNcs7I0WIcbBpF+ld7qS6lgZiLJO9Gm+ZM4mtBT6tVyaEFhK/8
-	 kG+++NJozxS6A==
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: lgirdwood@gmail.com,
-	broonie@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] regulator: gpio: Fix the out-of-bounds access to drvdata::gpiods
-Date: Thu,  3 Jul 2025 16:05:49 +0530
-Message-ID: <20250703103549.16558-1-mani@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	s=k20201202; t=1751540314;
+	bh=QT+UMTSngX/Y5p2qhC+hFL6HSZRCai4FY0HH6/GPYOk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=UUMtqbQ3Q2tLXlhwGDUdoan9xc3WM2AN2sZk09QhjdZ6ePqDJIHhw2cq7nV7JmXrZ
+	 cCFONrm9GtlYnZuMKwbylvB2YJ8e2rZnpJq6KrXJSOcdjrAshC08fsxWtq941XBUUZ
+	 llTQ17F5I/J6tD6LlzE7kHKyWm3+bRujictY3LQApyRwCuF8jA3LA9hWnQFWMJSIFF
+	 GckamwHVs3tKhXs5f0UGJ8KbM47CjtCJFPoCdXX4XUsTgx/wbsjPXq1Z5uIOO0+7eV
+	 CbdbpUVR4FVaPypIv53FNeuvVlR68qir/bXbLDvC+pqsQR6Z4gKHiI9DtVbm1CLobY
+	 TBwdynt5Uu7RQ==
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6119cd1a154so2556361eaf.0;
+        Thu, 03 Jul 2025 03:58:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVCFv0MZ3KB5m6viFDY3e0YXRTRFILG3O4Jw8T7Mq3TWx7OzkX639WwkyRGdp9AEXGvgPw1lOFd@vger.kernel.org, AJvYcCVOF60RdJJ8GcGXWcvVrQb1ToeCSDS8vIvt0uSeLH4R8GZRn6+FePzTsfc1BTg4PMstajCE2BJPvJLP@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxo/IKfY2xBB533F6DqlQLkz++Y7/9tzndW+XKIrMh0UgWS5eSF
+	w9FTbuGpBNja3wKQP23VnOSqwlMgte49vbLOMV1CSnHK6MTTPE2lgrr7SfUzQ5v37+pXqNii18f
+	Cr5usxQ9qaKU1YtUn5ZYWoQ+BdD5ejc0=
+X-Google-Smtp-Source: AGHT+IEkZIY74KxHtqE7rgWM1y5n2usPPPIJL/bq5hv2EkY0c5oJanY/D7gdAy71hBobfx5xsxXMvwili84lBtFf7Rw=
+X-Received: by 2002:a05:6820:2083:b0:612:be:496 with SMTP id
+ 006d021491bc7-61200f9ca09mr3829652eaf.2.1751540313630; Thu, 03 Jul 2025
+ 03:58:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev>
+In-Reply-To: <87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 3 Jul 2025 12:58:21 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hvPs2hSP+68+dAgtG-iJR8TBptt4ObTbB5iCf2=EXe=A@mail.gmail.com>
+X-Gm-Features: Ac12FXwk9R5RiEcUHk0ScgMN2y-X4qKTkjOo1EH-N_g8hmSYHRt3xtbFm79bzTc
+Message-ID: <CAJZ5v0hvPs2hSP+68+dAgtG-iJR8TBptt4ObTbB5iCf2=EXe=A@mail.gmail.com>
+Subject: Re: [REGRESSION] - Multiple userspace implementations of battery
+ estimate broken after "ACPI: battery: negate current when discharging"
+To: Matthew Schwartz <matthew.schwartz@linux.dev>
+Cc: pmarheine@chromium.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org, rafael.j.wysocki@intel.com, 
+	linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-drvdata::gpiods is supposed to hold an array of 'gpio_desc' pointers. But
-the memory is allocated for only one pointer. This will lead to
-out-of-bounds access later in the code if 'config::ngpios' is > 1. So
-fix the code to allocate enough memory to hold 'config::ngpios' of GPIO
-descriptors.
+Hi,
 
-While at it, also move the check for memory allocation failure to be below
-the allocation to make it more readable.
+On Thu, Jul 3, 2025 at 3:55=E2=80=AFAM Matthew Schwartz
+<matthew.schwartz@linux.dev> wrote:
+>
+> Hello,
+>
+> I installed kernel 6.15.4 to find that my battery estimate on my handheld=
+ gaming device was completely inaccurate, instead giving negative values an=
+d an unknown estimated battery life in multiple places.
+>
+> After bisecting, I landed on "ACPI: battery: negate current when discharg=
+ing=E2=80=9D as the bad commit. This commit breaks not one but several user=
+space implementations of battery monitoring: Steam and MangoHud. Perhaps it=
+ breaks more, but those are the two I have noticed so far.
 
-Cc: stable@vger.kernel.org # 5.0
-Fixes: d6cd33ad7102 ("regulator: gpio: Convert to use descriptors")
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
----
- drivers/regulator/gpio-regulator.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/regulator/gpio-regulator.c b/drivers/regulator/gpio-regulator.c
-index 75bd53445ba7..6351ceefdb3e 100644
---- a/drivers/regulator/gpio-regulator.c
-+++ b/drivers/regulator/gpio-regulator.c
-@@ -260,8 +260,10 @@ static int gpio_regulator_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	}
- 
--	drvdata->gpiods = devm_kzalloc(dev, sizeof(struct gpio_desc *),
--				       GFP_KERNEL);
-+	drvdata->gpiods = devm_kcalloc(dev, config->ngpios,
-+				       sizeof(struct gpio_desc *), GFP_KERNEL);
-+	if (!drvdata->gpiods)
-+		return -ENOMEM;
- 
- 	if (config->input_supply) {
- 		drvdata->desc.supply_name = devm_kstrdup(&pdev->dev,
-@@ -274,8 +276,6 @@ static int gpio_regulator_probe(struct platform_device *pdev)
- 		}
- 	}
- 
--	if (!drvdata->gpiods)
--		return -ENOMEM;
- 	for (i = 0; i < config->ngpios; i++) {
- 		drvdata->gpiods[i] = devm_gpiod_get_index(dev,
- 							  NULL,
--- 
-2.45.2
-
+Thanks for letting me know, I'm queuing up a revert of this one.
 
