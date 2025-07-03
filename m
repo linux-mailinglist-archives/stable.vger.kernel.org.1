@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-160007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BDBAF7BF5
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:30:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77621AF7AFF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:20:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 289331CA39A7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 631CE5855D1
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58332EF9D4;
-	Thu,  3 Jul 2025 15:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A602F2345;
+	Thu,  3 Jul 2025 15:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbFXhIyA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OW9YnW2J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6431C2EA46B;
-	Thu,  3 Jul 2025 15:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FBA2C3266;
+	Thu,  3 Jul 2025 15:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556071; cv=none; b=UibGsuCaLOcdnaTSjKWSDHgFvOnD64sRZKcpYuJigtnj8KGjXikvBJQNs65ndLVy8+QzCBV7qZ4ftL9Za0LkZdhBCtsvqlyr+4EyoDBduc2HmZ0RPJUa1YtIDaPCrwqJ28g45WLU9bD3hd5m7Aq50YuBqfWJcbnoNO53XZUUNLA=
+	t=1751555591; cv=none; b=L6y3+2vPvz9wkFFZeGRYfeVwmKIZovsoGqrtqthV3GBLmd+9VSav9gqavDxaD2+/GdTt5GBVUP8Z3eCpNzRqT2cv3YG+FW5lnevxmlWZC5Y5yMIOk8AQjeNRiZ77Bd+Do9v8pfx56eS0DNqavaQ/AHPsjNsLqNCZKNYFnydiAWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556071; c=relaxed/simple;
-	bh=KePHB/0gPb5PUU95KgurriBAG/VSSMPV2Kn98tyG+vM=;
+	s=arc-20240116; t=1751555591; c=relaxed/simple;
+	bh=kPRRQIdajowrvuWvSfLhZYiUYr95/9iEWlCK9lgEiMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bgXwxceCjAfb4/hh9Imhpx6/7qZ2JsIWq7KoGgT0mzry9xG7LrR/otrTUjeH0Gv0XCOcBmZVOwAOihDx1Ebzr2mG4Vujfuitjc3FMGUuspK/v8kdNlsLVv+E9IrMDxs82ArnhcS/pV4d8q7g2terkEl7FZep8UB3e19oy5vNCeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbFXhIyA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E002DC4CEE3;
-	Thu,  3 Jul 2025 15:21:10 +0000 (UTC)
+	 MIME-Version; b=OFwoIZmaFyh1xLAMyd7l1Ify4bwcfuba4gjdHzTVSVXU2cisNlYE5vns4SVQBRceFbKHoZlUphTyyZy4Vj7MYew/12U1z3j4mCpHBgg4+H54Lq1I9/9SwKvRxMiOeaYlITTlqTofyz/ny9FeuJNATF6LexSUbfAodQrO3bzmJW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OW9YnW2J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4206AC4CEE3;
+	Thu,  3 Jul 2025 15:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556071;
-	bh=KePHB/0gPb5PUU95KgurriBAG/VSSMPV2Kn98tyG+vM=;
+	s=korg; t=1751555591;
+	bh=kPRRQIdajowrvuWvSfLhZYiUYr95/9iEWlCK9lgEiMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qbFXhIyA4yVYgkwUk2QR8oVRD+rB6VbksOYJ/M89iUgPx5oKRbzwJqnCAb/P0az08
-	 0k/x3La4DXbFFw4JRNwWydYyzzS3gfRHdmMA7/90onQGUf365jXLaEdaeVb03wy2J8
-	 3jIOEv0KKwfo8fRHOs8V0xfy+Jbv87ko7JdXzQgo=
+	b=OW9YnW2JQuVXEoj632+yixv4wSot7Taq6qwK920p5zkNajOmwPQ2s/DmCB+twNkee
+	 8aMXhgl+K+zChk0Yera9SMajZInygRcjjGeVMODYZjiKbGRO+dA83TTzNKbh9wlI0P
+	 kPTVUi59WNESKJ+RPEk4Da3tFXZw86dmG1qch4CI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Andrei Borzenkov <arvidjaar@gmail.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/132] ovl: Check for NULL d_inode() in ovl_dentry_upper()
+Subject: [PATCH 6.6 061/139] dummycon: Trigger redraw when switching consoles with deferred takeover
 Date: Thu,  3 Jul 2025 16:42:04 +0200
-Message-ID: <20250703143940.801500631@linuxfoundation.org>
+Message-ID: <20250703143943.553875999@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +66,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 8a39f1c870e9d6fbac5638f3a42a6a6363829c49 ]
+[ Upstream commit 03bcbbb3995ba5df43af9aba45334e35f2dfe27b ]
 
-In ovl_path_type() and ovl_is_metacopy_dentry() GCC notices that it is
-possible for OVL_E() to return NULL (which implies that d_inode(dentry)
-may be NULL). This would result in out of bounds reads via container_of(),
-seen with GCC 15's -Warray-bounds -fdiagnostics-details. For example:
+Signal vt subsystem to redraw console when switching to dummycon
+with deferred takeover enabled. Makes the console switch to fbcon
+and displays the available output.
 
-In file included from arch/x86/include/generated/asm/rwonce.h:1,
-                 from include/linux/compiler.h:339,
-                 from include/linux/export.h:5,
-                 from include/linux/linkage.h:7,
-                 from include/linux/fs.h:5,
-                 from fs/overlayfs/util.c:7:
-In function 'ovl_upperdentry_dereference',
-    inlined from 'ovl_dentry_upper' at ../fs/overlayfs/util.c:305:9,
-    inlined from 'ovl_path_type' at ../fs/overlayfs/util.c:216:6:
-include/asm-generic/rwonce.h:44:26: error: array subscript 0 is outside array bounds of 'struct inode[7486503276667837]' [-Werror=array-bounds=]
-   44 | #define __READ_ONCE(x)  (*(const volatile __unqual_scalar_typeof(x) *)&(x))
-      |                         ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-include/asm-generic/rwonce.h:50:9: note: in expansion of macro '__READ_ONCE'
-   50 |         __READ_ONCE(x);                                                 \
-      |         ^~~~~~~~~~~
-fs/overlayfs/ovl_entry.h:195:16: note: in expansion of macro 'READ_ONCE'
-  195 |         return READ_ONCE(oi->__upperdentry);
-      |                ^~~~~~~~~
-  'ovl_path_type': event 1
-  185 |         return inode ? OVL_I(inode)->oe : NULL;
-  'ovl_path_type': event 2
+With deferred takeover enabled, dummycon acts as the placeholder
+until the first output to the console happens. At that point, fbcon
+takes over. If the output happens while dummycon is not active, it
+cannot inform fbcon. This is the case if the vt subsystem runs in
+graphics mode.
 
-Avoid this by allowing ovl_dentry_upper() to return NULL if d_inode() is
-NULL, as that means the problematic dereferencing can never be reached.
-Note that this fixes the over-eager compiler warning in an effort to
-being able to enable -Warray-bounds globally. There is no known
-behavioral bug here.
+A typical graphical boot starts plymouth, a display manager and a
+compositor; all while leaving out dummycon. Switching to a text-mode
+console leaves the console with dummycon even if a getty terminal
+has been started.
 
-Suggested-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Returning true from dummycon's con_switch helper signals the vt
+subsystem to redraw the screen. If there's output available dummycon's
+con_putc{s} helpers trigger deferred takeover of fbcon, which sets a
+display mode and displays the output. If no output is available,
+dummycon remains active.
+
+v2:
+- make the comment slightly more verbose (Javier)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reported-by: Andrei Borzenkov <arvidjaar@gmail.com>
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1242191
+Tested-by: Andrei Borzenkov <arvidjaar@gmail.com>
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Fixes: 83d83bebf401 ("console/fbcon: Add support for deferred console takeover")
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v4.19+
+Link: https://lore.kernel.org/r/20250520071418.8462-1-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/util.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/video/console/dummycon.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
-index 83cd20f79c5c2..6922d8d705cb3 100644
---- a/fs/overlayfs/util.c
-+++ b/fs/overlayfs/util.c
-@@ -229,7 +229,9 @@ enum ovl_path_type ovl_path_realdata(struct dentry *dentry, struct path *path)
- 
- struct dentry *ovl_dentry_upper(struct dentry *dentry)
- {
--	return ovl_upperdentry_dereference(OVL_I(d_inode(dentry)));
-+	struct inode *inode = d_inode(dentry);
+diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
+index d701f2b51f5b1..d99e1b3e4e5c1 100644
+--- a/drivers/video/console/dummycon.c
++++ b/drivers/video/console/dummycon.c
+@@ -82,6 +82,15 @@ static int dummycon_blank(struct vc_data *vc, int blank, int mode_switch)
+ 	/* Redraw, so that we get putc(s) for output done while blanked */
+ 	return 1;
+ }
 +
-+	return inode ? ovl_upperdentry_dereference(OVL_I(inode)) : NULL;
++static bool dummycon_switch(struct vc_data *vc)
++{
++	/*
++	 * Redraw, so that we get putc(s) for output done while switched
++	 * away. Informs deferred consoles to take over the display.
++	 */
++	return true;
++}
+ #else
+ static void dummycon_putc(struct vc_data *vc, int c, int ypos, int xpos) { }
+ static void dummycon_putcs(struct vc_data *vc, const unsigned short *s,
+@@ -90,6 +99,10 @@ static int dummycon_blank(struct vc_data *vc, int blank, int mode_switch)
+ {
+ 	return 0;
+ }
++static bool dummycon_switch(struct vc_data *vc)
++{
++	return false;
++}
+ #endif
+ 
+ static const char *dummycon_startup(void)
+@@ -119,11 +132,6 @@ static bool dummycon_scroll(struct vc_data *vc, unsigned int top,
+ 	return false;
  }
  
- struct dentry *ovl_dentry_lower(struct dentry *dentry)
+-static bool dummycon_switch(struct vc_data *vc)
+-{
+-	return false;
+-}
+-
+ /*
+  *  The console `switch' structure for the dummy console
+  *
 -- 
 2.39.5
 
