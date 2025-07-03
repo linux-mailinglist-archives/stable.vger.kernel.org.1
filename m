@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE10EAF789D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 065E3AF79F2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0394317626B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDA32171473
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8B52EF671;
-	Thu,  3 Jul 2025 14:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DE52ED86E;
+	Thu,  3 Jul 2025 15:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZzClF3K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BETy8CVt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885D519F43A;
-	Thu,  3 Jul 2025 14:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D592B9A6;
+	Thu,  3 Jul 2025 15:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554252; cv=none; b=uoxr6MXVXvKhNGlBmvRyG6SLmQ/FwNq67Lbc/NXqWb6Yy6BE3VCSQJ4kr3j1bZ28Y3YlTaqRfWfbizEkFMbvD1XNv2WZJON0BUhq9lciDrNltKdMFLilVeSB6iTUOiGjCS758G2n2h9m60crDfpeSSpXHROdhgmgAlIJZIfhakw=
+	t=1751555044; cv=none; b=bWUc4bRvaFvL050dKtBksRUJ/rxc4HpNZJiT69I9p5BQQK/3iMx6tGhKd1OF+EGAxrUeoL9+1b1kGvDyKZKNuqulklMWjy1BzBIZV8FsAwnWIrJWhpwk1s5UV0iZb9bDWfdpU9lGEi3+gNevL7y3hhMz4VXST8rxqbhbM0bKINw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554252; c=relaxed/simple;
-	bh=6BIweqKezPx4x7XgeEqJfwbWt0x2XFtYFBX17rl09QU=;
+	s=arc-20240116; t=1751555044; c=relaxed/simple;
+	bh=avWKnBlLTsaS4oAMPUhEISgI7fft+uOTiVY1ZxqkQVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tqbIvGqxlbMvGIkeFkNpDDrqIv+1WQyKE6vIB1TXLlDUmq48s3/PxY/Rq0JolcQYKk94Wh8tuHbIk5llG8OQ2BtLud77QOCbGlzfHscjTr4+QQyYgV7BstAWGS9qIVx7qKLLoFOd40Eb8jWmOgM0acP7P3erxwLEaR2vNNEpLoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZzClF3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAEFC4CEE3;
-	Thu,  3 Jul 2025 14:50:51 +0000 (UTC)
+	 MIME-Version; b=Aq4RY9EZzxFxfr2M/WGhsp1KzI76UhfVuv9v3AcykPB2f4AeCWS1+Z4V1DetAVyz9kRWSOi/YtaJmJ8eQhoQwv8VHrm6v4InivcmbKhUXr0jSnHR4S0ikiSg3imvuvSPG0LdIM56ngHDTLhtBCKcOwvlf7KhGp4zIAooYzIX7Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BETy8CVt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99385C4CEE3;
+	Thu,  3 Jul 2025 15:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554252;
-	bh=6BIweqKezPx4x7XgeEqJfwbWt0x2XFtYFBX17rl09QU=;
+	s=korg; t=1751555043;
+	bh=avWKnBlLTsaS4oAMPUhEISgI7fft+uOTiVY1ZxqkQVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PZzClF3Ku5mgnF9SqrUvGvUtryzptfDOuWtj++Ex2gwVTYptB80wQv6fHzvdbmPmA
-	 rz4I3LD2wBTtx0Lk9M2C3XPREIpH3p4wAZ9gKjNbPsPejSQZqj0e1BtzWAa5jr2yNm
-	 mfqaUIi9Ak1TK/OWFjAsGrl1AfEzCWCheNAuiEEs=
+	b=BETy8CVtiJftcQlGuzgiRZ4T/7Y2aGRfSBcRbCKgpN/ubB9mj4+V9Pn64z/hNfxcU
+	 CbXMyYker2xuWFi8F1IWePweNSm8W6WsZbcC/7YYLZBjys95t8uESngela0fmnV7nJ
+	 NJCLsmTiF8CwHABPiisEdO5qkM/mrVtxijdY3Q/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muna Sinada <muna.sinada@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/218] wifi: mac80211: Add link iteration macro for link data
-Date: Thu,  3 Jul 2025 16:40:47 +0200
-Message-ID: <20250703143959.895753859@linuxfoundation.org>
+	Vas Novikov <vasya.novikov@gmail.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.15 128/263] drm/i915/snps_hdmi_pll: Fix 64-bit divisor truncation by using div64_u64
+Date: Thu,  3 Jul 2025 16:40:48 +0200
+Message-ID: <20250703144009.488031117@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muna Sinada <muna.sinada@oss.qualcomm.com>
+From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-[ Upstream commit f61c7b3d442bef91dd432d468d08f72eadcc3209 ]
+commit 9205999e9f13a07cb29d5a8836c25afdca186007 upstream.
 
-Currently before iterating through valid links we are utilizing
-open-coding when checking if vif valid_links is a non-zero value.
+DIV_ROUND_CLOSEST_ULL uses do_div(), which expects a 32-bit divisor.
+When passing a 64-bit constant like CURVE2_MULTIPLIER, the value is
+silently truncated to u32, potentially leading to incorrect results
+on large divisors.
 
-Add new macro, for_each_link_data(), which iterates through link_id
-and checks if it is set on vif valid_links. If it is a valid link then
-access link data for that link id.
+Replace DIV_ROUND_CLOSEST_ULL with DIV64_U64_ROUND_CLOSEST which correctly
+handles full 64-bit division.
 
-Signed-off-by: Muna Sinada <muna.sinada@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250325213125.1509362-2-muna.sinada@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: d87c3ca0f8f1 ("wifi: mac80211: finish link init before RCU publish")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v2: Use DIV64_U64_ROUND_CLOSEST instead of div64_u64 macro. (Jani)
+
+Fixes: 5947642004bf ("drm/i915/display: Add support for SNPS PHY HDMI PLL algorithm for DG2")
+Reported-by: Vas Novikov <vasya.novikov@gmail.com>
+Closes: https://lore.kernel.org/all/8d7c7958-9558-4c8a-a81a-e9310f2d8852@gmail.com/
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: Suraj Kandpal <suraj.kandpal@intel.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Vas Novikov <vasya.novikov@gmail.com>
+Cc: stable@vger.kernel.org # v6.15+
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Link: https://lore.kernel.org/r/20250618130951.1596587-2-ankit.k.nautiyal@intel.com
+(cherry picked from commit b300a175a11e6a934d728317dc39787723cc7917)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/ieee80211_i.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/i915/display/intel_snps_hdmi_pll.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index bfe0514efca37..41e69e066b386 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1209,6 +1209,15 @@ struct ieee80211_sub_if_data *vif_to_sdata(struct ieee80211_vif *p)
- 	if ((_link = wiphy_dereference((local)->hw.wiphy,		\
- 				       ___sdata->link[___link_id])))
+diff --git a/drivers/gpu/drm/i915/display/intel_snps_hdmi_pll.c b/drivers/gpu/drm/i915/display/intel_snps_hdmi_pll.c
+index 74bb3bedf30f..5111bdc3075b 100644
+--- a/drivers/gpu/drm/i915/display/intel_snps_hdmi_pll.c
++++ b/drivers/gpu/drm/i915/display/intel_snps_hdmi_pll.c
+@@ -103,8 +103,8 @@ static void get_ana_cp_int_prop(u64 vco_clk,
+ 			    DIV_ROUND_DOWN_ULL(curve_1_interpolated, CURVE0_MULTIPLIER)));
  
-+#define for_each_link_data(sdata, __link)					\
-+	struct ieee80211_sub_if_data *__sdata = sdata;				\
-+	for (int __link_id = 0;							\
-+	     __link_id < ARRAY_SIZE((__sdata)->link); __link_id++)		\
-+		if ((!(__sdata)->vif.valid_links ||				\
-+		     (__sdata)->vif.valid_links & BIT(__link_id)) &&		\
-+		    ((__link) = sdata_dereference((__sdata)->link[__link_id],	\
-+						  (__sdata))))
-+
- static inline int
- ieee80211_get_mbssid_beacon_len(struct cfg80211_mbssid_elems *elems,
- 				struct cfg80211_rnr_elems *rnr_elems,
+ 	ana_cp_int_temp =
+-		DIV_ROUND_CLOSEST_ULL(DIV_ROUND_DOWN_ULL(adjusted_vco_clk1, curve_2_scaled1),
+-				      CURVE2_MULTIPLIER);
++		DIV64_U64_ROUND_CLOSEST(DIV_ROUND_DOWN_ULL(adjusted_vco_clk1, curve_2_scaled1),
++					CURVE2_MULTIPLIER);
+ 
+ 	*ana_cp_int = max(1, min(ana_cp_int_temp, 127));
+ 
 -- 
-2.39.5
+2.50.0
 
 
 
