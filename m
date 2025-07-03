@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-159499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A79AF78F3
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7385AAF7A30
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21A74543AAC
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C5A43A5F16
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF72A1AAA1C;
-	Thu,  3 Jul 2025 14:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA84E2ED17E;
+	Thu,  3 Jul 2025 15:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AaI/QaPU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="if9CZ3Ea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF4F2E62CD;
-	Thu,  3 Jul 2025 14:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9F31E9B3D;
+	Thu,  3 Jul 2025 15:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554421; cv=none; b=UgTFcGCrrBHj4ITDoBrEJJzK9AnHb6ijoYVSpDB48DfUF7vxnjB8vC0m1NQ7+JGwHpP9gxEhLH+gGS/yXmWr15MBmsumLaToH3uwmkjXvD4s1BxKNQgRjrm/99JLcna6pVcqgpIFwBU8Y3D5uKTCWgSEuJfP6WPXAWCCgbg47vk=
+	t=1751555213; cv=none; b=iI3UEoCXO0veGNHFEXv7lX62B/7JyIwpxp0izMy+KPsPebE4Dy+SC0bgUacEbmGogZ4YJvd7Lo44t8wAoJUIazZyaIjHjBVm4yjj+xkVXOI4rLwn2COOOXeGlZe2n7sD4VbiQcgKGrqcHvvmUH4ZrW41q7Peiizyj+kyKTKZ60U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554421; c=relaxed/simple;
-	bh=GVp8gRB+iV9NW7RTRdFIvuyIdmu7Go4AmO0jGJU3qps=;
+	s=arc-20240116; t=1751555213; c=relaxed/simple;
+	bh=PwBUs7aeQU6ZI+N4C5U9cZlcBKdX94it7KHFz1ZLYYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CoLHnbSCbZEgO6goOrmBkDChU9x9z282vMmOn4y0HTQ/7gK2KNeMcGpNLe4XLL37WIr9di5rTCx91K1EBzY3DaJkGsjYx/HNwZ+aYdB7kCE4G3wzyyTjm08KKmoakGs+BmJtOluGc7eXdFYZtATJvjejpo2+ZqsiPfTnQ5+qO98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AaI/QaPU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CA9C4CEE3;
-	Thu,  3 Jul 2025 14:53:40 +0000 (UTC)
+	 MIME-Version; b=KMNpwXBOIGltv/43Kov9mJ4j6FX43oSeHGY3x5wxsgjPKjp3nx44Pf93juJH6FTDAj6oQRmRm+WkzKfBPgZk8eya7o1qR3Lchl2q/edSkd3MTZ/jaIiJ6cPHRWvAHlUS7Lb1UuKkiDNBT5CG3tkOyAh1rhNQdUbVaDjJdILXMwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=if9CZ3Ea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB24AC4CEE3;
+	Thu,  3 Jul 2025 15:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554421;
-	bh=GVp8gRB+iV9NW7RTRdFIvuyIdmu7Go4AmO0jGJU3qps=;
+	s=korg; t=1751555213;
+	bh=PwBUs7aeQU6ZI+N4C5U9cZlcBKdX94it7KHFz1ZLYYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AaI/QaPUiZTBCM+Xub1ke5PC+bY1+tZOZAr2HopSRUMRV4kaPyUWxARWBscEp2RIs
-	 /57mtzeMVqI7GxyY61WohgmuKZ2gTOtCiAVXpFCY9yGKYuEBnUmoBr3pMxLr9cgPjB
-	 KRn2ukRYxRsVKvyANEjk2hAGT5rWoa0pZgBivOT4=
+	b=if9CZ3EaoTMkTfW9mNPf/DapYbEnaK1V81eVB4ZZXoJVuQFSxX8p3cCMovZqntTeh
+	 Fl2HX8uXxKxF+hW4+H/PqI2Ko0cc5nkGoqEIEJG1ywqoqj06WuyNgsM4qPrWor7dPB
+	 S3ymNkIUfFb3wPyyMKiBQnQFMRHe6vdH9x8FzwRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1d335893772467199ab6@syzkaller.appspotmail.com,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	David Hildenbrand <david@redhat.com>
-Subject: [PATCH 6.12 182/218] io_uring/rsrc: fix folio unpinning
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Rob Clark <robdclark@chromium.org>
+Subject: [PATCH 6.15 210/263] drm/msm/gpu: Fix crash when throttling GPU immediately during boot
 Date: Thu,  3 Jul 2025 16:42:10 +0200
-Message-ID: <20250703144003.457619541@linuxfoundation.org>
+Message-ID: <20250703144012.808209673@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-Commit 5afb4bf9fc62d828647647ec31745083637132e4 upstream.
+commit b71717735be48d7743a34897e9e44a0b53e30c0e upstream.
 
-syzbot complains about an unmapping failure:
+There is a small chance that the GPU is already hot during boot. In that
+case, the call to of_devfreq_cooling_register() will immediately try to
+apply devfreq cooling, as seen in the following crash:
 
-[  108.070381][   T14] kernel BUG at mm/gup.c:71!
-[  108.070502][   T14] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-[  108.123672][   T14] Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20250221-8.fc42 02/21/2025
-[  108.127458][   T14] Workqueue: iou_exit io_ring_exit_work
-[  108.174205][   T14] Call trace:
-[  108.175649][   T14]  sanity_check_pinned_pages+0x7cc/0x7d0 (P)
-[  108.178138][   T14]  unpin_user_page+0x80/0x10c
-[  108.180189][   T14]  io_release_ubuf+0x84/0xf8
-[  108.182196][   T14]  io_free_rsrc_node+0x250/0x57c
-[  108.184345][   T14]  io_rsrc_data_free+0x148/0x298
-[  108.186493][   T14]  io_sqe_buffers_unregister+0x84/0xa0
-[  108.188991][   T14]  io_ring_ctx_free+0x48/0x480
-[  108.191057][   T14]  io_ring_exit_work+0x764/0x7d8
-[  108.193207][   T14]  process_one_work+0x7e8/0x155c
-[  108.195431][   T14]  worker_thread+0x958/0xed8
-[  108.197561][   T14]  kthread+0x5fc/0x75c
-[  108.199362][   T14]  ret_from_fork+0x10/0x20
+  Unable to handle kernel paging request at virtual address 0000000000014110
+  pc : a6xx_gpu_busy+0x1c/0x58 [msm]
+  lr : msm_devfreq_get_dev_status+0xbc/0x140 [msm]
+  Call trace:
+   a6xx_gpu_busy+0x1c/0x58 [msm] (P)
+   devfreq_simple_ondemand_func+0x3c/0x150
+   devfreq_update_target+0x44/0xd8
+   qos_max_notifier_call+0x30/0x84
+   blocking_notifier_call_chain+0x6c/0xa0
+   pm_qos_update_target+0xd0/0x110
+   freq_qos_apply+0x3c/0x74
+   apply_constraint+0x88/0x148
+   __dev_pm_qos_update_request+0x7c/0xcc
+   dev_pm_qos_update_request+0x38/0x5c
+   devfreq_cooling_set_cur_state+0x98/0xf0
+   __thermal_cdev_update+0x64/0xb4
+   thermal_cdev_update+0x4c/0x58
+   step_wise_manage+0x1f0/0x318
+   __thermal_zone_device_update+0x278/0x424
+   __thermal_cooling_device_register+0x2bc/0x308
+   thermal_of_cooling_device_register+0x10/0x1c
+   of_devfreq_cooling_register_power+0x240/0x2bc
+   of_devfreq_cooling_register+0x14/0x20
+   msm_devfreq_init+0xc4/0x1a0 [msm]
+   msm_gpu_init+0x304/0x574 [msm]
+   adreno_gpu_init+0x1c4/0x2e0 [msm]
+   a6xx_gpu_init+0x5c8/0x9c8 [msm]
+   adreno_bind+0x2a8/0x33c [msm]
+   ...
 
-We can pin a tail page of a folio, but then io_uring will try to unpin
-the head page of the folio. While it should be fine in terms of keeping
-the page actually alive, mm folks say it's wrong and triggers a debug
-warning. Use unpin_user_folio() instead of unpin_user_page*.
+At this point we haven't initialized the GMU at all yet, so we cannot read
+the GMU registers inside a6xx_gpu_busy(). A similar issue was fixed before
+in commit 6694482a70e9 ("drm/msm: Avoid unclocked GMU register access in
+6xx gpu_busy"): msm_devfreq_init() does call devfreq_suspend_device(), but
+unlike msm_devfreq_suspend(), it doesn't set the df->suspended flag
+accordingly. This means the df->suspended flag does not match the actual
+devfreq state after initialization and msm_devfreq_get_dev_status() will
+end up accessing GMU registers, causing the crash.
+
+Fix this by setting df->suspended correctly during initialization.
 
 Cc: stable@vger.kernel.org
-Debugged-by: David Hildenbrand <david@redhat.com>
-Reported-by: syzbot+1d335893772467199ab6@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/683f1551.050a0220.55ceb.0017.GAE@google.com
-Fixes: a8edbb424b139 ("io_uring/rsrc: enable multi-hugepage buffer coalescing")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/io-uring/a28b0f87339ac2acf14a645dad1e95bbcbf18acd.1750771718.git.asml.silence@gmail.com/
-[axboe: adapt to current tree, massage commit message]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 6694482a70e9 ("drm/msm: Avoid unclocked GMU register access in 6xx gpu_busy")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/650772/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/rsrc.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/msm/msm_gpu_devfreq.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -119,8 +119,11 @@ static void io_buffer_unmap(struct io_ri
- 	if (imu != &dummy_ubuf) {
- 		if (!refcount_dec_and_test(&imu->refs))
- 			return;
--		for (i = 0; i < imu->nr_bvecs; i++)
--			unpin_user_page(imu->bvec[i].bv_page);
-+		for (i = 0; i < imu->nr_bvecs; i++) {
-+			struct folio *folio = page_folio(imu->bvec[i].bv_page);
-+
-+			unpin_user_folio(folio, 1);
-+		}
- 		if (imu->acct_pages)
- 			io_unaccount_mem(ctx, imu->acct_pages);
- 		kvfree(imu);
-@@ -1010,8 +1013,10 @@ static int io_sqe_buffer_register(struct
- done:
- 	if (ret) {
- 		kvfree(imu);
--		if (pages)
--			unpin_user_pages(pages, nr_pages);
-+		if (pages) {
-+			for (i = 0; i < nr_pages; i++)
-+				unpin_user_folio(page_folio(pages[i]), 1);
-+		}
- 	}
- 	kvfree(pages);
- 	return ret;
+--- a/drivers/gpu/drm/msm/msm_gpu_devfreq.c
++++ b/drivers/gpu/drm/msm/msm_gpu_devfreq.c
+@@ -156,6 +156,7 @@ void msm_devfreq_init(struct msm_gpu *gp
+ 	priv->gpu_devfreq_config.downdifferential = 10;
+ 
+ 	mutex_init(&df->lock);
++	df->suspended = true;
+ 
+ 	ret = dev_pm_qos_add_request(&gpu->pdev->dev, &df->boost_freq,
+ 				     DEV_PM_QOS_MIN_FREQUENCY, 0);
 
 
 
