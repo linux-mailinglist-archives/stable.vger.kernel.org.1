@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-159406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BCBAF7854
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:49:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A03EAF78A4
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 909F9541A20
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84C46583105
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1A01DC98B;
-	Thu,  3 Jul 2025 14:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A962EFD8B;
+	Thu,  3 Jul 2025 14:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7TMYy8r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKD1C+dz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D1F126BFF;
-	Thu,  3 Jul 2025 14:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF072EF9C1;
+	Thu,  3 Jul 2025 14:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554131; cv=none; b=VuwsGIVxrlc7vFhU6BZtibsvG2YOTMLROxN0lZyYzgfcCkvnFsqBxM1NP2xrETXNiEHC2uhwmNgwDMThtBfePEvrr4SQlYZ2+eoIC3h+KI5R8SKbQZGHfGKHOhUfVYcPuY55sX9zi2A7HynRXXBw+ejR/zY5Xba0bysBtfnkWsY=
+	t=1751554256; cv=none; b=C8sWA05zlnn57QyxiU7o3o6DL7HbLxYBxGKrc0SXZzxSsAy7RJKoc6TyeN9BsSvDv1OXCxhUXWmdne/J9bN6qQUEiwa1YQdNqK5lYBEYlAfXYXeyc0qcIytWQJfQVzsTBvi7C7UanAYs80ODYoO3HubiSEhzIM+mOovZbGu/w20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554131; c=relaxed/simple;
-	bh=aq8yRtfIwZL0g4D2JSb1y2q+dVn9pdIr6DDraTHJUqg=;
+	s=arc-20240116; t=1751554256; c=relaxed/simple;
+	bh=eJvx+2EFDiXD3JkpaV9HTI2u6cM2pTudbqiIcaZhUU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oOB8cBXBp0jfXvUNTXB4LMdmG7eTiO2CG3QXAQfFS6dSfl9sMoK+dXt4YGx7Qx0JRytgAhDzkMASTj0OOMw48Rj5xLxJ0El2tIWUyjAkco5TIeGzLEsvl6uxIv5sJoO+VCfMEzrVIjfpNR918JIDjdrR+1RPxiMBSmi4YhBatKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7TMYy8r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26D5C4CEE3;
-	Thu,  3 Jul 2025 14:48:50 +0000 (UTC)
+	 MIME-Version; b=JRyVbyIf2UyKV0TcLAH/4mHS7NMK3H4gFsmYMYOFwxD7aPWeeyWCQm1J5u8NcYlcFAM1SXUhDIBJrKB3px5NYnW8tt+09U7PzNxWyT+teMFxzz2nCiWkcXNeeSCyQ6lNLFmC9c6wHarOANboY2j+xcWEJrPA7RVD5sfFEgs7uWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKD1C+dz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E54C4CEE3;
+	Thu,  3 Jul 2025 14:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554131;
-	bh=aq8yRtfIwZL0g4D2JSb1y2q+dVn9pdIr6DDraTHJUqg=;
+	s=korg; t=1751554256;
+	bh=eJvx+2EFDiXD3JkpaV9HTI2u6cM2pTudbqiIcaZhUU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s7TMYy8rJPWG/k34WPyKxgT5XYJFNypnwhIyXvz4xoO7k2VQM7zt7vGpO/0k4wdA1
-	 RjU2PItZD/qcCsnqPdNvcP/4/UUquub1m/ZVX/34JmI00sEEEUHbD652THHW8DRzGD
-	 IG93azFa5+0QbopNDtg8ReMpzUIRkrdM7D+BzodE=
+	b=eKD1C+dzU+UNbnDcxAm0R2GLWYA/05LdaQ1mRKPWFFXUaubzYcgwpkRzrrHeXnJpd
+	 Vsc3Tw+9s02p3RqZRuSQofegg/8ttG/tqFqbk9hRD2FjrILP4h6Xq6zpDZjvD2NYbl
+	 YvzkUa/UuIOcLLupxeZTyT7P2yN+eXwuVLRGJusE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.12 089/218] drm/xe/display: Add check for alloc_ordered_workqueue()
-Date: Thu,  3 Jul 2025 16:40:37 +0200
-Message-ID: <20250703143959.503844912@linuxfoundation.org>
+	Thomas Zeitlhofer <thomas.zeitlhofer+lkml@ze-it.at>,
+	Ping Cheng <ping.cheng@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 090/218] HID: wacom: fix crash in wacom_aes_battery_handler()
+Date: Thu,  3 Jul 2025 16:40:38 +0200
+Message-ID: <20250703143959.541483988@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
 References: <20250703143955.956569535@linuxfoundation.org>
@@ -61,44 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Thomas Zeitlhofer <thomas.zeitlhofer+lkml@ze-it.at>
 
-commit 62207293479e6c03ef498a70f2914c51f4d31d2c upstream.
+[ Upstream commit f3054152c12e2eed1e72704aff47b0ea58229584 ]
 
-Add check for the return value of alloc_ordered_workqueue()
-in xe_display_create() to catch potential exception.
+Commit fd2a9b29dc9c ("HID: wacom: Remove AES power_supply after extended
+inactivity") introduced wacom_aes_battery_handler() which is scheduled
+as a delayed work (aes_battery_work).
 
-Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://lore.kernel.org/r/4ee1b0e5d1626ce1dde2e82af05c2edaed50c3aa.1747397638.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 5b62d63395d5b7d4094e7cd380bccae4b25415cb)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In wacom_remove(), aes_battery_work is not canceled. Consequently, if
+the device is removed while aes_battery_work is still pending, then hard
+crashes or "Oops: general protection fault..." are experienced when
+wacom_aes_battery_handler() is finally called. E.g., this happens with
+built-in USB devices after resume from hibernate when aes_battery_work
+was still pending at the time of hibernation.
+
+So, take care to cancel aes_battery_work in wacom_remove().
+
+Fixes: fd2a9b29dc9c ("HID: wacom: Remove AES power_supply after extended inactivity")
+Signed-off-by: Thomas Zeitlhofer <thomas.zeitlhofer+lkml@ze-it.at>
+Acked-by: Ping Cheng <ping.cheng@wacom.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/display/xe_display.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/wacom_sys.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/xe/display/xe_display.c
-+++ b/drivers/gpu/drm/xe/display/xe_display.c
-@@ -96,6 +96,8 @@ int xe_display_create(struct xe_device *
- 	spin_lock_init(&xe->display.fb_tracking.lock);
+diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
+index 34428349fa311..64afaa243942c 100644
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2874,6 +2874,7 @@ static void wacom_remove(struct hid_device *hdev)
+ 	hid_hw_stop(hdev);
  
- 	xe->display.hotplug.dp_wq = alloc_ordered_workqueue("xe-dp", 0);
-+	if (!xe->display.hotplug.dp_wq)
-+		return -ENOMEM;
- 
- 	return drmm_add_action_or_reset(&xe->drm, display_destroy, NULL);
- }
+ 	cancel_delayed_work_sync(&wacom->init_work);
++	cancel_delayed_work_sync(&wacom->aes_battery_work);
+ 	cancel_work_sync(&wacom->wireless_work);
+ 	cancel_work_sync(&wacom->battery_work);
+ 	cancel_work_sync(&wacom->remote_work);
+-- 
+2.39.5
+
 
 
 
