@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2AFDAF7BB4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:27:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D663AF7A32
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC1AE5A2DDC
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A5383A6555
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A772EF66B;
-	Thu,  3 Jul 2025 15:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B923D15442C;
+	Thu,  3 Jul 2025 15:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvoRie8V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmhDEcuy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E6217FAC2;
-	Thu,  3 Jul 2025 15:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78ECE2BDC1B;
+	Thu,  3 Jul 2025 15:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555987; cv=none; b=o3sUe+Km8NGBA6b8hPug1gHdqAsgzlQpKXrTN54KlQCBgk9qLoYS3IQP6hh08908NbIzRlCawkvGp6u7UnPNaSVXhyo4fxT78LLqz+4K2js4JJGf5aC2Q+VkaA/+SVIcc/agN+v00ZzAQbbceHW+OrLr/jp9PcQ8Y3WWXu+/q/E=
+	t=1751555210; cv=none; b=DY8NJgQ7VPn9262/gHs2uWucnVxU7otDBa5Rc61aAMIM2QewjL6s/IkECflukddsMFoEE5rdqjlQAWjSDWZstaEgQU6NBA2qBfZl5pCUWX4AYYppm8NLdXl2zC2IXyrM9yoV2reDwRs0z0Xd91Sg6IgOrUdqAn5Y+HazlzxbTBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555987; c=relaxed/simple;
-	bh=Ft2zKPVtMP57b9F2v5PoboF2gG9YLL+NPBEItVsBVpY=;
+	s=arc-20240116; t=1751555210; c=relaxed/simple;
+	bh=t7xVWJIxbTi70JR7Ljtu3JuQZLNjwVI1eoz65YDx5jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/8KPFUQENeqzjPKmWFWpwXz+CKUWCoQHwUuhRJCLfjHGpYaJgITxLxVaWNJa533q2Ir0MVH+KhDQYOqiCJIyma9Jft5TKWxzi6hCTZtIARmS6qbpJjgt0aFhpqte/GaBOxPjY9MV4C3vzV/JxJwsTX6R7sjAuNzDZJuIV4x5So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvoRie8V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D741C4CEEE;
-	Thu,  3 Jul 2025 15:19:46 +0000 (UTC)
+	 MIME-Version; b=fScaoKruthFx4RMrySC3ZqOx0yHBIbka6sznHP8QNSMtqrZiheMx3FmZsEgyikwCow9cr+c0S0QVr1gbMg3C4EYRbIyJnIQ08PmUJoZWj6T8WT8theoHGW7FFbAAzt9wfwOip096Wgl43w5e3d2sRAts7+yPQOPAE/n3KvWwXyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmhDEcuy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0844EC4CEE3;
+	Thu,  3 Jul 2025 15:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555987;
-	bh=Ft2zKPVtMP57b9F2v5PoboF2gG9YLL+NPBEItVsBVpY=;
+	s=korg; t=1751555210;
+	bh=t7xVWJIxbTi70JR7Ljtu3JuQZLNjwVI1eoz65YDx5jE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yvoRie8VC8eyWTXvYkHJgfYPs/u4t7mHEBcEyrLxAZ5gRoTfLjRUMh8aM4QcEfKxm
-	 gQXEr9mItt5P69cdlEtxWMJ2VQmGzVm5bbbluylTzMaTKDXOZqQmlOY1u9go1FR/k0
-	 DazysfKQOpjO/Zv5SbHu1qLb35bWqhpzxlcUVxg0=
+	b=XmhDEcuyqkUBg5SlZbp9rJiIeA34xdcaeRnmrCadfd469aPGYQxXfVgcKumvNlF9e
+	 p5lYv6J+/sy5K77ccmDyBGolM48jmHvGCGvh3supp4RCMck0lGAzXHayaG5hN2GsFJ
+	 tM/JYF3swhwRmCUkvYM+skKqv2uK1AsPNWboXJLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+fe8264911355151c487f@syzkaller.appspotmail.com,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/132] jfs: validate AG parameters in dbMount() to prevent crashes
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	dri-devel@lists.freedesktop.org,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Subject: [PATCH 6.15 209/263] drm/udl: Unregister device before cleaning up on disconnect
 Date: Thu,  3 Jul 2025 16:42:09 +0200
-Message-ID: <20250703143941.003518633@linuxfoundation.org>
+Message-ID: <20250703144012.766685352@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 37bfb464ddca87f203071b5bd562cd91ddc0b40a ]
+commit ff9cb6d2035c586ea7c8f1754d4409eec7a2d26d upstream.
 
-Validate db_agheight, db_agwidth, and db_agstart in dbMount to catch
-corrupted metadata early and avoid undefined behavior in dbAllocAG.
-Limits are derived from L2LPERCTL, LPERCTL/MAXAG, and CTLTREESIZE:
+Disconnecting a DisplayLink device results in the following kernel
+error messages
 
-- agheight: 0 to L2LPERCTL/2 (0 to 5) ensures shift
-  (L2LPERCTL - 2*agheight) >= 0.
-- agwidth: 1 to min(LPERCTL/MAXAG, 2^(L2LPERCTL - 2*agheight))
-  ensures agperlev >= 1.
-  - Ranges: 1-8 (agheight 0-3), 1-4 (agheight 4), 1 (agheight 5).
-  - LPERCTL/MAXAG = 1024/128 = 8 limits leaves per AG;
-    2^(10 - 2*agheight) prevents division to 0.
-- agstart: 0 to CTLTREESIZE-1 - agwidth*(MAXAG-1) keeps ti within
-  stree (size 1365).
-  - Ranges: 0-1237 (agwidth 1), 0-348 (agwidth 8).
+[   93.041748] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
+[   93.055299] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
+[   93.065363] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
+[   93.078207] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
 
-UBSAN: shift-out-of-bounds in fs/jfs/jfs_dmap.c:1400:9
-shift exponent -335544310 is negative
-CPU: 0 UID: 0 PID: 5822 Comm: syz-executor130 Not tainted 6.14.0-rc5-syzkaller #0
-Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_shift_out_of_bounds+0x3c8/0x420 lib/ubsan.c:468
- dbAllocAG+0x1087/0x10b0 fs/jfs/jfs_dmap.c:1400
- dbDiscardAG+0x352/0xa20 fs/jfs/jfs_dmap.c:1613
- jfs_ioc_trim+0x45a/0x6b0 fs/jfs/jfs_discard.c:105
- jfs_ioctl+0x2cd/0x3e0 fs/jfs/ioctl.c:131
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:906 [inline]
- __se_sys_ioctl+0xf5/0x170 fs/ioctl.c:892
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+coming from KMS poll helpers. Shutting down poll helpers runs them
+one final time when the USB device is already gone.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+Run drm_dev_unplug() first in udl's USB disconnect handler. Udl's
+polling code already handles disconnects gracefully if the device has
+been marked as unplugged.
 
-Cc: stable@vger.kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+fe8264911355151c487f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=fe8264911355151c487f
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: b1a981bd5576 ("drm/udl: drop drm_driver.release hook")
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250303145604.62962-2-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/udl/udl_drv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 621f0d871af67..32ae408ee6997 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -194,7 +194,11 @@ int dbMount(struct inode *ipbmap)
- 	    !bmp->db_numag || (bmp->db_numag > MAXAG) ||
- 	    (bmp->db_maxag >= MAXAG) || (bmp->db_maxag < 0) ||
- 	    (bmp->db_agpref >= MAXAG) || (bmp->db_agpref < 0) ||
--	    !bmp->db_agwidth ||
-+	    (bmp->db_agheight < 0) || (bmp->db_agheight > (L2LPERCTL >> 1)) ||
-+	    (bmp->db_agwidth < 1) || (bmp->db_agwidth > (LPERCTL / MAXAG)) ||
-+	    (bmp->db_agwidth > (1 << (L2LPERCTL - (bmp->db_agheight << 1)))) ||
-+	    (bmp->db_agstart < 0) ||
-+	    (bmp->db_agstart > (CTLTREESIZE - 1 - bmp->db_agwidth * (MAXAG - 1))) ||
- 	    (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG) ||
- 	    (bmp->db_agl2size < 0) ||
- 	    ((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/udl/udl_drv.c
++++ b/drivers/gpu/drm/udl/udl_drv.c
+@@ -127,9 +127,9 @@ static void udl_usb_disconnect(struct us
+ {
+ 	struct drm_device *dev = usb_get_intfdata(interface);
+ 
++	drm_dev_unplug(dev);
+ 	drm_kms_helper_poll_fini(dev);
+ 	udl_drop_usb(dev);
+-	drm_dev_unplug(dev);
+ }
+ 
+ /*
 
 
 
