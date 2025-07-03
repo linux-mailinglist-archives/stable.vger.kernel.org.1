@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F45AF7A5D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:12:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B35CFAF7BEE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:30:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD1354A7252
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 549816E1934
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366662BDC1B;
-	Thu,  3 Jul 2025 15:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510C022257B;
+	Thu,  3 Jul 2025 15:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCdSSjNt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlQyp7bR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61EC2EF299;
-	Thu,  3 Jul 2025 15:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFF2221DB3;
+	Thu,  3 Jul 2025 15:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555335; cv=none; b=l6+oTAbrbN9nShzOgb/TapDDQnX6L0nxgCuuBw3OyC0r6tRchGRZMXseI8LG7Mh7k36/eISvDuwCwOYkdRP/H1qDl+cyZcZeU0kyhUZoMDnJwfEQYo1h6+gq8+Rvb3JReRp9CNdCH0Lk4ANYApoDmTiWtaDvTh0SHqcWnXhvOIs=
+	t=1751556107; cv=none; b=XRRWPj/GebZUCrrpDQ9ceVqxexrVuTx75UbK2GjCk65IR+M3rFOBdjJpAgHK/SbwJGWoNV4XKpPUM4UEbf4bxR9JS3evuXPDDWilpufocJeJQT1QlMImFDnflAMdt1z+6VeQqxlvgjyR5oM8GF/QQshJAHPlJ9YIgYmDfriefkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555335; c=relaxed/simple;
-	bh=TLLjnFaWosKEU430HZ3ID1o3OUYVpu0C9d+m3Mzymgs=;
+	s=arc-20240116; t=1751556107; c=relaxed/simple;
+	bh=AD+GaJK1ku5AzmmocsSD4lwZVSX57nKy2lGs6Kc0TWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQn1Ki0f8106aC5bfx+oNiW3Vnq1exEnm1Nu7/ppVcEe9WVwHCEDIuDsT4/8xXbXyk/LpMgP9KakWkFh10/DsuvTF5Ytr25ZVWku1sQD6dfHOAdiU90o8VXekm7Y6IFM16tMWmscHFNXJPhmkWfeqBvnyKDz4I+HKDvUkQ4QzWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCdSSjNt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DB7C4CEE3;
-	Thu,  3 Jul 2025 15:08:53 +0000 (UTC)
+	 MIME-Version; b=ICY9+WdM5susqBsYHIUoLFQ3F+rrVyzx0X4PTgdBpZNRFjaSiIFwWTxLpesS1v2q7BQCDERCGrqHdd866XJLPImn1Ap3benKGwvM3xCXrJtD1vVqWMFtOoAYlOcvZR4d4KQlrELeNnjwkvmQGC9rZ89IdKsbeZbjF9ww+Gur8i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlQyp7bR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F519C4CEE3;
+	Thu,  3 Jul 2025 15:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555334;
-	bh=TLLjnFaWosKEU430HZ3ID1o3OUYVpu0C9d+m3Mzymgs=;
+	s=korg; t=1751556106;
+	bh=AD+GaJK1ku5AzmmocsSD4lwZVSX57nKy2lGs6Kc0TWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fCdSSjNtR+IYN14ebBnwfDwAt39ZOXAEU5FqzvjOnBFgo8ZgP9EHsaybhZaQpjxkz
-	 ESqI86veQK4x8D9Tt37VH+zd/pWa5wDQr8vuzgWdZAY8mpLwx9+IEdtlNeync/UXUO
-	 iYCIso2g5xWFG24AAVDg0eJWj6NwFkQ+CkG+Te9g=
+	b=TlQyp7bR+pRPsM/EyMaJ3PEwSiHjPBtiUkLbgnTmySZv6lO4um9KVKA+9bm8tozd4
+	 0/+WLPT6ccXa6baBbbgo0HpuGs/SqnWMtFOlA9ajshHR7dvHVXkoW/LXxbqBI5enhR
+	 MVsPs3pXGSnw2EzRQjPRXeqq8rmdfLBNEpoaiaWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Youngjun Lee <yjjuny.lee@samsung.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 246/263] arm64: dts: qcom: x1e78100-t14s: fix missing HID supplies
+Subject: [PATCH 6.1 077/132] ALSA: usb-audio: Fix out-of-bounds read in snd_usb_get_audioformat_uac3()
 Date: Thu,  3 Jul 2025 16:42:46 +0200
-Message-ID: <20250703144014.277905066@linuxfoundation.org>
+Message-ID: <20250703143942.437617405@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,136 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-[ Upstream commit 55e52d055393f11ba0193975d3db87af36f4b273 ]
+From: Youngjun Lee <yjjuny.lee@samsung.com>
 
-Add the missing HID supplies to avoid relying on other consumers to keep
-them on.
+[ Upstream commit fb4e2a6e8f28a3c0ad382e363aeb9cd822007b8a ]
 
-This also avoids the following warnings on boot:
+In snd_usb_get_audioformat_uac3(), the length value returned from
+snd_usb_ctl_msg() is used directly for memory allocation without
+validation. This length is controlled by the USB device.
 
-	i2c_hid_of 0-0010: supply vdd not found, using dummy regulator
-	i2c_hid_of 0-0010: supply vddl not found, using dummy regulator
-	i2c_hid_of 1-0015: supply vdd not found, using dummy regulator
-	i2c_hid_of 1-002c: supply vdd not found, using dummy regulator
-	i2c_hid_of 1-0015: supply vddl not found, using dummy regulator
-	i2c_hid_of 1-002c: supply vddl not found, using dummy regulator
-	i2c_hid_of 1-003a: supply vdd not found, using dummy regulator
-	i2c_hid_of 1-003a: supply vddl not found, using dummy regulator
+The allocated buffer is cast to a uac3_cluster_header_descriptor
+and its fields are accessed without verifying that the buffer
+is large enough. If the device returns a smaller than expected
+length, this leads to an out-of-bounds read.
 
-Note that VCC3B is also used for things like the modem which are not yet
-described so mark the regulator as always-on for now.
+Add a length check to ensure the buffer is large enough for
+uac3_cluster_header_descriptor.
 
-Fixes: 7d1cbe2f4985 ("arm64: dts: qcom: Add X1E78100 ThinkPad T14s Gen 6")
-Cc: stable@vger.kernel.org	# 6.12
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20250314145440.11371-9-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Fixes: 9a2fe9b801f5 ("ALSA: usb: initial USB Audio Device Class 3.0 support")
+Link: https://patch.msgid.link/20250623-uac3-oob-fix-v1-1-527303eaf40a@samsung.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../qcom/x1e78100-lenovo-thinkpad-t14s.dts    | 43 +++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ sound/usb/stream.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts b/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts
-index 7f756ce48d2f6..999d966b44869 100644
---- a/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts
-@@ -9,6 +9,7 @@
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/input/gpio-keys.h>
- #include <dt-bindings/input/input.h>
-+#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
- 
- #include "x1e80100.dtsi"
-@@ -153,6 +154,23 @@ vreg_edp_3p3: regulator-edp-3p3 {
- 		regulator-boot-on;
- 	};
- 
-+	vreg_misc_3p3: regulator-misc-3p3 {
-+		compatible = "regulator-fixed";
-+
-+		regulator-name = "VCC3B";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+
-+		gpio = <&pm8550ve_8_gpios 6 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+
-+		pinctrl-0 = <&misc_3p3_reg_en>;
-+		pinctrl-names = "default";
-+
-+		regulator-boot-on;
-+		regulator-always-on;
-+	};
-+
- 	vreg_nvme: regulator-nvme {
- 		compatible = "regulator-fixed";
- 
-@@ -580,6 +598,9 @@ touchpad@15 {
- 		hid-descr-addr = <0x1>;
- 		interrupts-extended = <&tlmm 3 IRQ_TYPE_LEVEL_LOW>;
- 
-+		vdd-supply = <&vreg_misc_3p3>;
-+		vddl-supply = <&vreg_l12b_1p2>;
-+
- 		wakeup-source;
- 	};
- 
-@@ -591,6 +612,9 @@ touchpad@2c {
- 		hid-descr-addr = <0x20>;
- 		interrupts-extended = <&tlmm 3 IRQ_TYPE_LEVEL_LOW>;
- 
-+		vdd-supply = <&vreg_misc_3p3>;
-+		vddl-supply = <&vreg_l12b_1p2>;
-+
- 		wakeup-source;
- 	};
- 
-@@ -602,6 +626,9 @@ keyboard@3a {
- 		hid-descr-addr = <0x1>;
- 		interrupts-extended = <&tlmm 67 IRQ_TYPE_LEVEL_LOW>;
- 
-+		vdd-supply = <&vreg_misc_3p3>;
-+		vddl-supply = <&vreg_l15b_1p8>;
-+
- 		pinctrl-0 = <&kybd_default>;
- 		pinctrl-names = "default";
- 
-@@ -670,6 +697,9 @@ touchscreen@10 {
- 		hid-descr-addr = <0x1>;
- 		interrupts-extended = <&tlmm 51 IRQ_TYPE_LEVEL_LOW>;
- 
-+		vdd-supply = <&vreg_misc_3p3>;
-+		vddl-supply = <&vreg_l15b_1p8>;
-+
- 		pinctrl-0 = <&ts0_default>;
- 		pinctrl-names = "default";
- 	};
-@@ -789,6 +819,19 @@ edp_bl_en: edp-bl-en-state {
- 	};
- };
- 
-+&pm8550ve_8_gpios {
-+	misc_3p3_reg_en: misc-3p3-reg-en-state {
-+		pins = "gpio6";
-+		function = "normal";
-+		bias-disable;
-+		drive-push-pull;
-+		input-disable;
-+		output-enable;
-+		power-source = <1>; /* 1.8 V */
-+		qcom,drive-strength = <PMIC_GPIO_STRENGTH_LOW>;
-+	};
-+};
-+
- &qupv3_0 {
- 	status = "okay";
- };
+diff --git a/sound/usb/stream.c b/sound/usb/stream.c
+index e14c725acebf2..0f1558ef85553 100644
+--- a/sound/usb/stream.c
++++ b/sound/usb/stream.c
+@@ -982,6 +982,8 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
+ 	 * and request Cluster Descriptor
+ 	 */
+ 	wLength = le16_to_cpu(hc_header.wLength);
++	if (wLength < sizeof(cluster))
++		return NULL;
+ 	cluster = kzalloc(wLength, GFP_KERNEL);
+ 	if (!cluster)
+ 		return ERR_PTR(-ENOMEM);
 -- 
 2.39.5
 
