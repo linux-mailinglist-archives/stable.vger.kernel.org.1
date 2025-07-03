@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-159509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607B4AF790A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19390AF7B06
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6FA35846B7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70C061C85E36
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C370B2EF9BD;
-	Thu,  3 Jul 2025 14:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572672EF64D;
+	Thu,  3 Jul 2025 15:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEBf1J26"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tuuow9gL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7782B2EF9B7;
-	Thu,  3 Jul 2025 14:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134D52D9492;
+	Thu,  3 Jul 2025 15:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554452; cv=none; b=PMMgJFjtwtrudLVgmOMR+C+DfyP6Wupb0cgd6gpL7HsdOrS1bZv1dLZtMfIIejS5YekWsnxjBZlI+kP29aiUhd/oRltQ3jZxnnpzWye5ZU1Fc9pLmNOM6rS2stPWT5aYvpRUODoWJ0ulnjVfNBvms/0/g0rxQi4cV63tZUhAal4=
+	t=1751555545; cv=none; b=UuMn/et0YqMv/SjVj2Ik3ZszWykoHjgGMPcmOqOzYSjazHh6HVgEYfNOpmzW/lEViX58EOJsi+6SPWTBeicXISBVVife8Br+F4sa8UaybW4Mt5+RUnJ5w+vJp/LpxiNY7u4uPaP96S3+tNYWsW0pTWoShK4T4EiI37mWUlfw65w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554452; c=relaxed/simple;
-	bh=XuLUelcPYOiiIJrQEcCEVmmTdfSQ8V2G1KwFlrGjI28=;
+	s=arc-20240116; t=1751555545; c=relaxed/simple;
+	bh=bf0NeK+bvkNa6x/xuRzjRzfw19ktJggPUc7iyq7tnsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZMd48yWuchkFTJoJ9/PW8vetzaWaIBk2Fv6CJ3UZijeWGy+/VWRoXldCfexApxGFBneXTZZj8JaraGKE/GP6VnIMAUz3sOqtqNDg4FrppRHMM/6uHIKJ3f2fig7N/uprRPE5JHaUj+8+Rj5tl+nDvWK7WYWW+wSN28Bc6mfnbzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEBf1J26; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD82C4CEE3;
-	Thu,  3 Jul 2025 14:54:11 +0000 (UTC)
+	 MIME-Version; b=QSoQdxHtHn6eTlIbbmMIlRI60Jfvq4msLhKrpegoLCZCAd9HBAvEFvZuXCjU6yXiSXgOM7HidsrQdcsarbz1p1xyFA5tJIvxicWQyC7sESX8WxkRAvhbACL1OQGoVSPHoRIrurFzprdqMC2osxEeNvWkAU9LSKSs1tzJ0tRA8nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tuuow9gL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75417C4CEE3;
+	Thu,  3 Jul 2025 15:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554452;
-	bh=XuLUelcPYOiiIJrQEcCEVmmTdfSQ8V2G1KwFlrGjI28=;
+	s=korg; t=1751555544;
+	bh=bf0NeK+bvkNa6x/xuRzjRzfw19ktJggPUc7iyq7tnsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OEBf1J26CvZ3yFPXpyyRf9zL0X47NRKWuvrM1UoNxjT4STSDZSm+BP2Y5ytAJ0YlK
-	 2yglV28eSGeYV0m1lkpLfF+w9HJrla25VRZv/y7n0/dVi3sCHBVEOZjRiJ/ukENL9h
-	 Uazru8z2PbSTiKkhFnDfFndXV8HcssQYhJefF6Oo=
+	b=Tuuow9gLnJm/buXylgJgPr2oKslIZwKViq8Qe89SBtJRmsz0Lw8/qOMd+4bZPaAZP
+	 LCesQcdRRxjeZNxlNZG3yI8s3abyiij9XbP0KPdj1QYF4/56pZta+/O4NEQW5z++I6
+	 XGedcSYfelC66nzTuBVv5ws6MuaXk3NWeKBtc1hI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Olender <john.olender@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-Subject: [PATCH 6.12 162/218] drm/amdgpu: amdgpu_vram_mgr_new(): Clamp lpfn to total vram
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 047/139] fs/jfs: consolidate sanity checking in dbMount
 Date: Thu,  3 Jul 2025 16:41:50 +0200
-Message-ID: <20250703144002.636030040@linuxfoundation.org>
+Message-ID: <20250703143943.012545353@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Olender <john.olender@gmail.com>
+From: Dave Kleikamp <dave.kleikamp@oracle.com>
 
-commit 4d2f6b4e4c7ed32e7fa39fcea37344a9eab99094 upstream.
+[ Upstream commit 0d250b1c52484d489e31df2cf9118b7c4bd49d31 ]
 
-The drm_mm allocator tolerated being passed end > mm->size, but the
-drm_buddy allocator does not.
+Sanity checks have been added to dbMount as individual if clauses with
+identical error handling. Move these all into one clause.
 
-Restore the pre-buddy-allocator behavior of allowing such placements.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3448
-Signed-off-by: John Olender <john.olender@gmail.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Stable-dep-of: 37bfb464ddca ("jfs: validate AG parameters in dbMount() to prevent crashes")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/jfs_dmap.c | 37 +++++++++----------------------------
+ 1 file changed, 9 insertions(+), 28 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-@@ -463,7 +463,7 @@ static int amdgpu_vram_mgr_new(struct tt
- 	int r;
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 0e1019382cf51..26e89d0c69b61 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -178,45 +178,26 @@ int dbMount(struct inode *ipbmap)
+ 	dbmp_le = (struct dbmap_disk *) mp->data;
+ 	bmp->db_mapsize = le64_to_cpu(dbmp_le->dn_mapsize);
+ 	bmp->db_nfree = le64_to_cpu(dbmp_le->dn_nfree);
+-
+ 	bmp->db_l2nbperpage = le32_to_cpu(dbmp_le->dn_l2nbperpage);
+-	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE ||
+-		bmp->db_l2nbperpage < 0) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
+-
+ 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
+-	if (!bmp->db_numag || bmp->db_numag > MAXAG) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
+-
+ 	bmp->db_maxlevel = le32_to_cpu(dbmp_le->dn_maxlevel);
+ 	bmp->db_maxag = le32_to_cpu(dbmp_le->dn_maxag);
+ 	bmp->db_agpref = le32_to_cpu(dbmp_le->dn_agpref);
+-	if (bmp->db_maxag >= MAXAG || bmp->db_maxag < 0 ||
+-		bmp->db_agpref >= MAXAG || bmp->db_agpref < 0) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
+-
+ 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
+ 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
+ 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
+-	if (!bmp->db_agwidth) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
+ 	bmp->db_agstart = le32_to_cpu(dbmp_le->dn_agstart);
+ 	bmp->db_agl2size = le32_to_cpu(dbmp_le->dn_agl2size);
+-	if (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG ||
+-	    bmp->db_agl2size < 0) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
  
- 	lpfn = (u64)place->lpfn << PAGE_SHIFT;
--	if (!lpfn)
-+	if (!lpfn || lpfn > man->size)
- 		lpfn = man->size;
- 
- 	fpfn = (u64)place->fpfn << PAGE_SHIFT;
+-	if (((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
++	if ((bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE) ||
++	    (bmp->db_l2nbperpage < 0) ||
++	    !bmp->db_numag || (bmp->db_numag > MAXAG) ||
++	    (bmp->db_maxag >= MAXAG) || (bmp->db_maxag < 0) ||
++	    (bmp->db_agpref >= MAXAG) || (bmp->db_agpref < 0) ||
++	    !bmp->db_agwidth ||
++	    (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG) ||
++	    (bmp->db_agl2size < 0) ||
++	    ((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
+ 		err = -EINVAL;
+ 		goto err_release_metapage;
+ 	}
+-- 
+2.39.5
+
 
 
 
