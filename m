@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73C0AF7BED
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:30:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9441EAF7A5E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 545815A3E60
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6785189AAFB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7B22F2710;
-	Thu,  3 Jul 2025 15:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D122D6622;
+	Thu,  3 Jul 2025 15:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xeda3q8t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqBEJAt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2D52F270C;
-	Thu,  3 Jul 2025 15:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AE315442C;
+	Thu,  3 Jul 2025 15:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556074; cv=none; b=PDydkXkTkqjSwpXijrxb5PAsOSlyoEFoArLMfNcVYKbBCCziWHeNdFNRaKmLvzxes9buxbrGiqT3gywKKTWxfp8Q9URCwQUXNH+4sCqO3XW61dJlSDc+7W0Dkrx0v2tNK+mcjGReTjRzTQkDenAUJiJmqkD4uLz6FbiI9wsGPMQ=
+	t=1751555269; cv=none; b=j7rC1AWeHRTyM/t0O5hxp0GjZL49099zfK95Nn8sEih+VzQuqKukEbzOqwJwMKwXbVugCKTyjVCu9Ti3YE4nFr9qnvsr+5JR/5qU6/PI4FddMm+x6nTyM6hysw/pB60VstPwfC1+8KbrNsDqmsLhRgZ6uk7G+vC0pYgsrCoamQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556074; c=relaxed/simple;
-	bh=4D1vBgMPwJXz+GeegKdtzuOvgQvBwVA4xRGlZaTtqxk=;
+	s=arc-20240116; t=1751555269; c=relaxed/simple;
+	bh=WivRzcDGzKCtrV+QKKV4v2jKbhQ6p33MMXyqCI8b8K8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0ZLs3fAotEoiewlkMi0zG5Iqrklu5URCI4VnR1lWtBG4FhQvi9YA5BOTmIAk4uED8wDYg+4nEb4txYLDnSrv9ldRKnlFB2oMxC6SiWIXlwswVeaWysqXr4UMNMvd6NvTlJM0D1T0bEpEPpFcmVRqTmT7ZhJJ4Bh0HUON/0IeWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xeda3q8t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F00C4CEED;
-	Thu,  3 Jul 2025 15:21:13 +0000 (UTC)
+	 MIME-Version; b=ini0rpbgkdCXSU2fdKevTTgjbcpgqlnlet3TaBxj6mZDQiOVrrTRmHOM/g3IHdpj/0XR3Lo8dvkaLGpwrgfAZ61UzJ0Al5PNnnVgsUBmeOx2pO7g3EOOGMFmcu0Wer/flBYk/8QX8a8uXRijR4Nr86wSKes3oLHaMWKUENr+FTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqBEJAt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62016C4CEE3;
+	Thu,  3 Jul 2025 15:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556074;
-	bh=4D1vBgMPwJXz+GeegKdtzuOvgQvBwVA4xRGlZaTtqxk=;
+	s=korg; t=1751555268;
+	bh=WivRzcDGzKCtrV+QKKV4v2jKbhQ6p33MMXyqCI8b8K8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xeda3q8tvmIr4VmjInD1cpGsoxYs7Mg9l1glXieXCiUX4GxEScM15yJNZI2SoI3Ra
-	 hXkyaC7RGkwd/K/Vzw2jVIqnYd3QgoVZblo8a9eqoUiYgOajVV5gjQ0GU/++5w9PZY
-	 UFeluZmIlCJE05sA5F68bJsg4qmmzIHEl9RR3dnY=
+	b=mqBEJAt2H0/tDxVkguPARSsjT777xNLIJh0StX1ioolWbDAXG2xGFFc+fIC6yOUt1
+	 AyMoPJ8RV8p2BkztXSY3XHKVVWp7T5rdqJ8PQeTukns87C7CE8DJ/oFsyRo5LxEKCo
+	 AbS9JIdf7sjNgHKe5x3GQ/59m6ktaz0QfgdV7+yE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chance Yang <chance.yang@kneron.us>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 026/132] usb: common: usb-conn-gpio: use a unique name for usb connector device
+	Ping Cheng <ping.cheng@wacom.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.15 195/263] HID: wacom: fix memory leak on kobject creation failure
 Date: Thu,  3 Jul 2025 16:41:55 +0200
-Message-ID: <20250703143940.426640498@linuxfoundation.org>
+Message-ID: <20250703144012.176856621@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chance Yang <chance.yang@kneron.us>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit d4e5b10c55627e2f3fc9e5b337a28b4e2f02a55e ]
+commit 5ae416c5b1e2e816aee7b3fc8347adf70afabb4c upstream.
 
-The current implementation of the usb-conn-gpio driver uses a fixed
-"usb-charger" name for all USB connector devices. This causes conflicts
-in the power supply subsystem when multiple USB connectors are present,
-as duplicate names are not allowed.
+During wacom_initialize_remotes() a fifo buffer is allocated
+with kfifo_alloc() and later a cleanup action is registered
+during devm_add_action_or_reset() to clean it up.
 
-Use IDA to manage unique IDs for naming usb connectors (e.g.,
-usb-charger-0, usb-charger-1).
+However if the code fails to create a kobject and register it
+with sysfs the code simply returns -ENOMEM before the cleanup
+action is registered leading to a memory leak.
 
-Signed-off-by: Chance Yang <chance.yang@kneron.us>
-Link: https://lore.kernel.org/r/20250411-work-next-v3-1-7cd9aa80190c@kneron.us
+Fix this by ensuring the fifo is freed when the kobject creation
+and registration process fails.
+
+Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/common/usb-conn-gpio.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ drivers/hid/wacom_sys.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/common/usb-conn-gpio.c b/drivers/usb/common/usb-conn-gpio.c
-index 3f5180d64931b..91461c744fcdd 100644
---- a/drivers/usb/common/usb-conn-gpio.c
-+++ b/drivers/usb/common/usb-conn-gpio.c
-@@ -20,6 +20,9 @@
- #include <linux/power_supply.h>
- #include <linux/regulator/consumer.h>
- #include <linux/usb/role.h>
-+#include <linux/idr.h>
-+
-+static DEFINE_IDA(usb_conn_ida);
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2048,8 +2048,10 @@ static int wacom_initialize_remotes(stru
  
- #define USB_GPIO_DEB_MS		20	/* ms */
- #define USB_GPIO_DEB_US		((USB_GPIO_DEB_MS) * 1000)	/* us */
-@@ -29,6 +32,7 @@
- 
- struct usb_conn_info {
- 	struct device *dev;
-+	int conn_id; /* store the IDA-allocated ID */
- 	struct usb_role_switch *role_sw;
- 	enum usb_role last_role;
- 	struct regulator *vbus;
-@@ -160,7 +164,17 @@ static int usb_conn_psy_register(struct usb_conn_info *info)
- 		.of_node = dev->of_node,
- 	};
- 
--	desc->name = "usb-charger";
-+	info->conn_id = ida_alloc(&usb_conn_ida, GFP_KERNEL);
-+	if (info->conn_id < 0)
-+		return info->conn_id;
-+
-+	desc->name = devm_kasprintf(dev, GFP_KERNEL, "usb-charger-%d",
-+				    info->conn_id);
-+	if (!desc->name) {
-+		ida_free(&usb_conn_ida, info->conn_id);
-+		return -ENOMEM;
-+	}
-+
- 	desc->properties = usb_charger_properties;
- 	desc->num_properties = ARRAY_SIZE(usb_charger_properties);
- 	desc->get_property = usb_charger_get_property;
-@@ -168,8 +182,10 @@ static int usb_conn_psy_register(struct usb_conn_info *info)
- 	cfg.drv_data = info;
- 
- 	info->charger = devm_power_supply_register(dev, desc, &cfg);
--	if (IS_ERR(info->charger))
--		dev_err(dev, "Unable to register charger\n");
-+	if (IS_ERR(info->charger)) {
-+		dev_err(dev, "Unable to register charger %d\n", info->conn_id);
-+		ida_free(&usb_conn_ida, info->conn_id);
+ 	remote->remote_dir = kobject_create_and_add("wacom_remote",
+ 						    &wacom->hdev->dev.kobj);
+-	if (!remote->remote_dir)
++	if (!remote->remote_dir) {
++		kfifo_free(&remote->remote_fifo);
+ 		return -ENOMEM;
 +	}
  
- 	return PTR_ERR_OR_ZERO(info->charger);
- }
-@@ -277,6 +293,9 @@ static int usb_conn_remove(struct platform_device *pdev)
+ 	error = sysfs_create_files(remote->remote_dir, remote_unpair_attrs);
  
- 	cancel_delayed_work_sync(&info->dw_det);
- 
-+	if (info->charger)
-+		ida_free(&usb_conn_ida, info->conn_id);
-+
- 	if (info->last_role == USB_ROLE_HOST && info->vbus)
- 		regulator_disable(info->vbus);
- 
--- 
-2.39.5
-
 
 
 
