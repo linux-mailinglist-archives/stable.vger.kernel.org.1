@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3A9AF7AC2
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77DF1AF78A8
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:52:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18D7F6E1983
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:11:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC0CD162DA9
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E912F0022;
-	Thu,  3 Jul 2025 15:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74EED2EE983;
+	Thu,  3 Jul 2025 14:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YN3+5WP8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWSlGMzB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1462EFDB0;
-	Thu,  3 Jul 2025 15:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3055E23AB86;
+	Thu,  3 Jul 2025 14:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555447; cv=none; b=NdYxp5T8UQm3ZEqiG5grsXomDzDAyC/mh7V7UJKMC2WMkmpluN7aaHMNN5SEFqWoGmao/xKWvhfLmNmjOKE647SqG5GlpDG3iyrCFe10DbNMYl/skhFszR8yGtimzjJuKn9ztCOURckPcvkHo0NRP+p2zBMcAbp+C61otcVR30s=
+	t=1751554264; cv=none; b=eBJ/Z5zTZYRAuubgoB1KCCoRZLFjg4bK3H19b+9d4Ei9HD6PyoF/RbUZMnP8RA2ToJm7CxIWfm6Ud3RSMVt2BDproUPRZMgJr5BDUI2b3G19DtNy5PBVYAVPISimSwke8HAdpy01W+7Gw3ETY5sox0hGkfFnsUkHpIk2XJmaEFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555447; c=relaxed/simple;
-	bh=hnEVQTXQYV8xxmb2STIZER7B1XopycvTJLc9Wak3N7U=;
+	s=arc-20240116; t=1751554264; c=relaxed/simple;
+	bh=SZhik5qzQZ4UC2KvSfpsJc3vZPJ/j0Fhb0+GhopkIO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hj5MO+502uleUy7qGwbvZfjfD0EZjr/9wzYUKc0atzWRHu37nkB9vF1PB3qoGz3D8EV3kK01MH4T2tUqThqmlHXsT+1rUHnS5chvRMpakCjfJ/jtk9OxQTVaKas52n5eHQpe2tqEvTyu42kCl65K0cuOpk5XnKpH/Pam+siVj80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YN3+5WP8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74BDC4CEE3;
-	Thu,  3 Jul 2025 15:10:46 +0000 (UTC)
+	 MIME-Version; b=k/lVi7bsPFu1bRVzU3/grYLywCZanoyQya9bSh1/KbE2oOZBdqiqrK5ePu8+M183OIyQt3q8dryq6hMYOK2iYRMeayv4IhLf21hU0EdrXD9Dp407GeNMimpZbQgB+tew7r0agMIBVMGguI9DrErp4JxeLglebhuGbNEjdkpp+K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWSlGMzB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B072C4CEE3;
+	Thu,  3 Jul 2025 14:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555447;
-	bh=hnEVQTXQYV8xxmb2STIZER7B1XopycvTJLc9Wak3N7U=;
+	s=korg; t=1751554264;
+	bh=SZhik5qzQZ4UC2KvSfpsJc3vZPJ/j0Fhb0+GhopkIO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YN3+5WP8jCBb4Kp93QRPdVePQRfftOWgDUJo/biS7nbWEZ7Hktq0NRag/H75KSLYA
-	 ByvuGrgLjXg27qZtGPl+0OA5VVLMUkxa2+KOViczTTQQ5TopQCWIXI/ENRHR04HDE6
-	 3XyaKhlzv2IT926sUKH7/kN3bwI4SXQ4/RmUzbVo=
+	b=wWSlGMzBsSSYpY6rD9IX1CM8vzhjFDAb8np4hawMHzWXnF+gfegFMES+cjC0uE/JL
+	 CYiCCFFIPfOqvWLu+mGxBMuSbqHNlaAwST7TnNh7Q0pN/FdE1VQe1Fx4l+mowuxgq6
+	 EZNdq1c3dmORMP9LDyt51BX3TJFF0XIgghMPnyB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Joerg Roedel <jroedel@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/139] Revert "iommu/amd: Prevent binding other PCI drivers to IOMMU PCI devices"
+	stable <stable@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH 6.12 132/218] serial: imx: Restore original RXTL for console to fix data loss
 Date: Thu,  3 Jul 2025 16:41:20 +0200
-Message-ID: <20250703143941.850863107@linuxfoundation.org>
+Message-ID: <20250703144001.393971809@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +60,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Fabio Estevam <festevam@gmail.com>
 
-[ Upstream commit 3be5fa236649da6404f1bca1491bf02d4b0d5cce ]
+commit f23c52aafb1675ab1d1f46914556d8e29cbbf7b3 upstream.
 
-Commit 991de2e59090 ("PCI, x86: Implement pcibios_alloc_irq() and
-pcibios_free_irq()") changed IRQ handling on PCI driver probing.
-It inadvertently broke resume from system sleep on AMD platforms:
+Commit 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
+introduced a regression on the i.MX6UL EVK board. The issue can be
+reproduced with the following steps:
 
-  https://lore.kernel.org/r/20150926164651.GA3640@pd.tnic/
+- Open vi on the board.
+- Paste a text file (~150 characters).
+- Save the file, then repeat the process.
+- Compare the sha256sum of the saved files.
 
-This was fixed by two independent commits:
+The checksums do not match due to missing characters or entire lines.
 
-* 8affb487d4a4 ("x86/PCI: Don't alloc pcibios-irq when MSI is enabled")
-* cbbc00be2ce3 ("iommu/amd: Prevent binding other PCI drivers to IOMMU PCI devices")
+Fix this by restoring the RXTL value to 1 when the UART is used as a
+console.
 
-The breaking change and one of these two fixes were subsequently reverted:
+This ensures timely RX interrupts and reliable data reception in console
+mode.
 
-* fe25d078874f ("Revert "x86/PCI: Don't alloc pcibios-irq when MSI is enabled"")
-* 6c777e8799a9 ("Revert "PCI, x86: Implement pcibios_alloc_irq() and pcibios_free_irq()"")
+With this change, pasted content is saved correctly, and checksums are
+always consistent.
 
-This rendered the second fix unnecessary, so revert it as well.  It used
-the match_driver flag in struct pci_dev, which is internal to the PCI core
-and not supposed to be touched by arbitrary drivers.
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Acked-by: Joerg Roedel <jroedel@suse.de>
-Link: https://patch.msgid.link/9a3ddff5cc49512044f963ba0904347bd404094d.1745572340.git.lukas@wunner.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250619114617.2791939-1-festevam@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/init.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/tty/serial/imx.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 2e7a12f306510..7296e02e2b849 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -2090,9 +2090,6 @@ static int __init iommu_init_pci(struct amd_iommu *iommu)
- 	if (!iommu->dev)
- 		return -ENODEV;
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -233,6 +233,7 @@ struct imx_port {
+ 	enum imx_tx_state	tx_state;
+ 	struct hrtimer		trigger_start_tx;
+ 	struct hrtimer		trigger_stop_tx;
++	unsigned int		rxtl;
+ };
  
--	/* Prevent binding other PCI device drivers to IOMMU devices */
--	iommu->dev->match_driver = false;
--
- 	/* ACPI _PRT won't have an IRQ for IOMMU */
- 	iommu->dev->irq_managed = 1;
+ struct imx_port_ucrs {
+@@ -1328,6 +1329,7 @@ static void imx_uart_clear_rx_errors(str
  
--- 
-2.39.5
-
+ #define TXTL_DEFAULT 8
+ #define RXTL_DEFAULT 8 /* 8 characters or aging timer */
++#define RXTL_CONSOLE_DEFAULT 1
+ #define TXTL_DMA 8 /* DMA burst setting */
+ #define RXTL_DMA 9 /* DMA burst setting */
+ 
+@@ -1445,7 +1447,7 @@ static void imx_uart_disable_dma(struct
+ 	ucr1 &= ~(UCR1_RXDMAEN | UCR1_TXDMAEN | UCR1_ATDMAEN);
+ 	imx_uart_writel(sport, ucr1, UCR1);
+ 
+-	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
+ 
+ 	sport->dma_is_enabled = 0;
+ }
+@@ -1470,7 +1472,12 @@ static int imx_uart_startup(struct uart_
+ 		return retval;
+ 	}
+ 
+-	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++	if (uart_console(&sport->port))
++		sport->rxtl = RXTL_CONSOLE_DEFAULT;
++	else
++		sport->rxtl = RXTL_DEFAULT;
++
++	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
+ 
+ 	/* disable the DREN bit (Data Ready interrupt enable) before
+ 	 * requesting IRQs
+@@ -1936,7 +1943,7 @@ static int imx_uart_poll_init(struct uar
+ 	if (retval)
+ 		clk_disable_unprepare(sport->clk_ipg);
+ 
+-	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
+ 
+ 	uart_port_lock_irqsave(&sport->port, &flags);
+ 
+@@ -2028,7 +2035,7 @@ static int imx_uart_rs485_config(struct
+ 		/* If the receiver trigger is 0, set it to a default value */
+ 		ufcr = imx_uart_readl(sport, UFCR);
+ 		if ((ufcr & UFCR_RXTL_MASK) == 0)
+-			imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++			imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
+ 		imx_uart_start_rx(port);
+ 	}
+ 
+@@ -2213,7 +2220,7 @@ imx_uart_console_setup(struct console *c
+ 	else
+ 		imx_uart_console_get_options(sport, &baud, &parity, &bits);
+ 
+-	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
++	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
+ 
+ 	retval = uart_set_options(&sport->port, co, baud, parity, bits, flow);
+ 
 
 
 
