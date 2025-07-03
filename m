@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-159991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5B2AF7BDD
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:29:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EFB7AF7915
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 555986E32FD
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D316916D8E2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BA22F0E5A;
-	Thu,  3 Jul 2025 15:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FC02F002A;
+	Thu,  3 Jul 2025 14:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2rlAg8q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LN7rJaYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B32222580;
-	Thu,  3 Jul 2025 15:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B41519F43A;
+	Thu,  3 Jul 2025 14:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556019; cv=none; b=Y8FUF98inkwG0lN/59YGA28jaec0Ro9L3UhjwtCQQvCkLvNIerTDdfNeT5Fbl43ItwdP255pgu0DUr3TWf9Zv8sHY8EgE2+K+lV1j8PA/WPxlkp804CFDjMUW8peTMhcXQ2SqmKoXpiEWCVjStlmOErqj24x0uo7qc3o7D7ScG4=
+	t=1751554469; cv=none; b=lVNFI8yPaDBu4V/RTfoRMAggzWB1Z8nLiC3IXq28JpKnpFTGmGyJMgmygvYs08yChNWIessrrKmK+mwxEd4FG6th7SH0zDDDVZLrWbNVahrMty3FmYCdFTE5v4LGfhHYCZJwgDPyKm4ioDOme8vgenilhMoVFvEd2plH0oRIhjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556019; c=relaxed/simple;
-	bh=3g2mdte+6YPZHDQcmxiJcx0BNpLpequ6+Qeu9a8efkc=;
+	s=arc-20240116; t=1751554469; c=relaxed/simple;
+	bh=edGEnBp5BzXMXMM7YBQL+8TpIKk77KJsGg1QEZm1cts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tN8LCMxOvMAyPzKc5OYeWLfRwNi9KQluitPSewfdIRY02v9DG5oY06NagsK+5onzFkfonenqAm14rJmsLNSD9UXGxrNPUFXGcRWvnyVRC/FAN6mKT7FbyG/qN/S0/J62YKqPcIah1430EPLXOeWhyOoMD6gmfk06vNxrfH3MAyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2rlAg8q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334E8C4CEE3;
-	Thu,  3 Jul 2025 15:20:19 +0000 (UTC)
+	 MIME-Version; b=r+TLA5zZPTrKY5S1fOBe9g1aL9gPNsBXCFS83wsqRkSh07UKpRl7SrLHbXgTpjAWvw4phfHjObLSz5vv8VIcwdIPfyzk69TCj0VZHjPSB69E7qT8kO6j5lwLRIOhnOZikcAuB6CBFdx/6I9Y6g8JQVNcbBVcPg0PfIuV1c3F4zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LN7rJaYQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55576C4CEE3;
+	Thu,  3 Jul 2025 14:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556019;
-	bh=3g2mdte+6YPZHDQcmxiJcx0BNpLpequ6+Qeu9a8efkc=;
+	s=korg; t=1751554468;
+	bh=edGEnBp5BzXMXMM7YBQL+8TpIKk77KJsGg1QEZm1cts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2rlAg8q7a8OLd5cdIH+8Lv+RdI/AiB8RdVSEOilPTG/jX4xwZeDw3mHAV8rdt+WG
-	 dYPneyOA1D6/ryj8h22GPzdhtgeD4ZjVw5VsxK3kCfb3BWA/+othznAv2jVU5Jjlrd
-	 yR+fxCZf1XDWKVFnkoRGyWM2VpZ/lBguJERQMYzI=
+	b=LN7rJaYQ5FkFAERMuga5U574Sy2a3mPoNIyAbagsyQsKQfeq4zcb535uf45QOxnKo
+	 zOoUbtOaQuw5IrI23jxvfE2UrjCBd83HfIZOm2N5IHx7seXPZI0MRxn4r+sEZk05e7
+	 53Sa0RZY6wHJFgTYuvxI9TxDvGC5aD9yre2bzAEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/132] ASoC: codecs: wcd9335: Fix missing free of regulator supplies
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	syzbot+d16409ea9ecc16ed261a@syzkaller.appspotmail.com,
+	Pedro Falcato <pfalcato@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Jann Horn <jannh@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 190/218] mm/vma: reset VMA iterator on commit_merge() OOM failure
 Date: Thu,  3 Jul 2025 16:42:18 +0200
-Message-ID: <20250703143941.348685852@linuxfoundation.org>
+Message-ID: <20250703144003.800884533@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +66,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-[ Upstream commit 9079db287fc3e38e040b0edeb0a25770bb679c8e ]
+commit 0cf4b1687a187ba9247c71721d8b064634eda1f7 upstream.
 
-Driver gets and enables all regulator supplies in probe path
-(wcd9335_parse_dt() and wcd9335_power_on_reset()), but does not cleanup
-in final error paths and in unbind (missing remove() callback).  This
-leads to leaked memory and unbalanced regulator enable count during
-probe errors or unbind.
+While an OOM failure in commit_merge() isn't really feasible due to the
+allocation which might fail (a maple tree pre-allocation) being 'too small
+to fail', we do need to handle this case correctly regardless.
 
-Fix this by converting entire code into devm_regulator_bulk_get_enable()
-which also greatly simplifies the code.
+In vma_merge_existing_range(), we can theoretically encounter failures
+which result in an OOM error in two ways - firstly dup_anon_vma() might
+fail with an OOM error, and secondly commit_merge() failing, ultimately,
+to pre-allocate a maple tree node.
 
-Fixes: 20aedafdf492 ("ASoC: wcd9335: add support to wcd9335 codec")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-1-0b8a2993b7d3@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The abort logic for dup_anon_vma() resets the VMA iterator to the initial
+range, ensuring that any logic looping on this iterator will correctly
+proceed to the next VMA.
+
+However the commit_merge() abort logic does not do the same thing.  This
+resulted in a syzbot report occurring because mlockall() iterates through
+VMAs, is tolerant of errors, but ended up with an incorrect previous VMA
+being specified due to incorrect iterator state.
+
+While making this change, it became apparent we are duplicating logic -
+the logic introduced in commit 41e6ddcaa0f1 ("mm/vma: add give_up_on_oom
+option on modify/merge, use in uffd release") duplicates the
+vmg->give_up_on_oom check in both abort branches.
+
+Additionally, we observe that we can perform the anon_dup check safely on
+dup_anon_vma() failure, as this will not be modified should this call
+fail.
+
+Finally, we need to reset the iterator in both cases, so now we can simply
+use the exact same code to abort for both.
+
+We remove the VM_WARN_ON(err != -ENOMEM) as it would be silly for this to
+be otherwise and it allows us to implement the abort check more neatly.
+
+Link: https://lkml.kernel.org/r/20250606125032.164249-1-lorenzo.stoakes@oracle.com
+Fixes: 47b16d0462a4 ("mm: abort vma_modify() on merge out of memory failure")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reported-by: syzbot+d16409ea9ecc16ed261a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-mm/6842cc67.a00a0220.29ac89.003b.GAE@google.com/
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wcd9335.c | 25 +++++++------------------
- 1 file changed, 7 insertions(+), 18 deletions(-)
+ mm/vma.c |   27 ++++++++-------------------
+ 1 file changed, 8 insertions(+), 19 deletions(-)
 
-diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
-index 7817dff99b6c6..99de81c489681 100644
---- a/sound/soc/codecs/wcd9335.c
-+++ b/sound/soc/codecs/wcd9335.c
-@@ -330,7 +330,6 @@ struct wcd9335_codec {
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -836,9 +836,6 @@ static struct vm_area_struct *vma_merge_
+ 		err = dup_anon_vma(next, vma, &anon_dup);
+ 	}
  
- 	int intr1;
- 	struct gpio_desc *reset_gpio;
--	struct regulator_bulk_data supplies[WCD9335_MAX_SUPPLY];
- 
- 	unsigned int rx_port_value[WCD9335_RX_MAX];
- 	unsigned int tx_port_value[WCD9335_TX_MAX];
-@@ -357,6 +356,10 @@ struct wcd9335_irq {
- 	char *name;
- };
- 
-+static const char * const wcd9335_supplies[] = {
-+	"vdd-buck", "vdd-buck-sido", "vdd-tx", "vdd-rx", "vdd-io",
-+};
-+
- static const struct wcd9335_slim_ch wcd9335_tx_chs[WCD9335_TX_MAX] = {
- 	WCD9335_SLIM_TX_CH(0),
- 	WCD9335_SLIM_TX_CH(1),
-@@ -5046,30 +5049,16 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
- 	if (IS_ERR(wcd->native_clk))
- 		return dev_err_probe(dev, PTR_ERR(wcd->native_clk), "slimbus clock not found\n");
- 
--	wcd->supplies[0].supply = "vdd-buck";
--	wcd->supplies[1].supply = "vdd-buck-sido";
--	wcd->supplies[2].supply = "vdd-tx";
--	wcd->supplies[3].supply = "vdd-rx";
--	wcd->supplies[4].supply = "vdd-io";
--
--	ret = regulator_bulk_get(dev, WCD9335_MAX_SUPPLY, wcd->supplies);
-+	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(wcd9335_supplies),
-+					     wcd9335_supplies);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to get supplies\n");
-+		return dev_err_probe(dev, ret, "Failed to get and enable supplies\n");
- 
- 	return 0;
- }
- 
- static int wcd9335_power_on_reset(struct wcd9335_codec *wcd)
- {
--	struct device *dev = wcd->dev;
--	int ret;
--
--	ret = regulator_bulk_enable(WCD9335_MAX_SUPPLY, wcd->supplies);
--	if (ret) {
--		dev_err(dev, "Failed to get supplies: err = %d\n", ret);
--		return ret;
--	}
+-	if (err)
+-		goto abort;
 -
  	/*
- 	 * For WCD9335, it takes about 600us for the Vout_A and
- 	 * Vout_D to be ready after BUCK_SIDO is powered up.
--- 
-2.39.5
-
+ 	 * In nearly all cases, we expand vmg->vma. There is one exception -
+ 	 * merge_right where we partially span the VMA. In this case we shrink
+@@ -846,22 +843,11 @@ static struct vm_area_struct *vma_merge_
+ 	 */
+ 	expanded = !merge_right || merge_will_delete_vma;
+ 
+-	if (commit_merge(vmg, adjust,
+-			 merge_will_delete_vma ? vma : NULL,
+-			 merge_will_delete_next ? next : NULL,
+-			 adj_start, expanded)) {
+-		if (anon_dup)
+-			unlink_anon_vmas(anon_dup);
+-
+-		/*
+-		 * We've cleaned up any cloned anon_vma's, no VMAs have been
+-		 * modified, no harm no foul if the user requests that we not
+-		 * report this and just give up, leaving the VMAs unmerged.
+-		 */
+-		if (!vmg->give_up_on_oom)
+-			vmg->state = VMA_MERGE_ERROR_NOMEM;
+-		return NULL;
+-	}
++	if (err || commit_merge(vmg, adjust,
++			merge_will_delete_vma ? vma : NULL,
++			merge_will_delete_next ? next : NULL,
++			adj_start, expanded))
++		goto abort;
+ 
+ 	res = merge_left ? prev : next;
+ 	khugepaged_enter_vma(res, vmg->flags);
+@@ -873,6 +859,9 @@ abort:
+ 	vma_iter_set(vmg->vmi, start);
+ 	vma_iter_load(vmg->vmi);
+ 
++	if (anon_dup)
++		unlink_anon_vmas(anon_dup);
++
+ 	/*
+ 	 * This means we have failed to clone anon_vma's correctly, but no
+ 	 * actual changes to VMAs have occurred, so no harm no foul - if the
 
 
 
