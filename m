@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-159622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F034AAF79BB
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CBBAF7844
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:48:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11C75188F8CD
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:00:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EEFE581E3F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA972EF67D;
-	Thu,  3 Jul 2025 15:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12C42E7F0B;
+	Thu,  3 Jul 2025 14:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RTYy2L+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNn3P/8W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD252EF66B;
-	Thu,  3 Jul 2025 15:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D66F1DB124;
+	Thu,  3 Jul 2025 14:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554812; cv=none; b=dTwdeC9CLLfQxpJynsIupIUA42xQxZJ1c2X4W5dvLu32Hv3ociNo205G3QfjyJnbGfXfMNwAiG8wuRwlemu64qu4vLikvUqXAlegKMT5iTRjLwJuJyz39/heNn2Gg5iYR/xdmXOYk6WMinY2sHvLKBfwXOi6X17H72cBGg+Shxs=
+	t=1751554051; cv=none; b=Xr844fFYDp/z6GS/WPBpLMzdjhZLQwU8GMMT7/sdcDpzSS5He4vr5+2VfDzR+z07nFDs9CEY40UApmelcAC/tLSDNekhs3FcM59s9yUgYidSrZGJ4AQ2sXr32ErTJp/a03mX9iM9A+FUN1g/YjYpIDofDF5hmR04xFSXMcjl7lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554812; c=relaxed/simple;
-	bh=apBJtU6D0KgXbpBbFIEmxL85GuW1VIXgyHcIHd3+RrA=;
+	s=arc-20240116; t=1751554051; c=relaxed/simple;
+	bh=zUdKABbyqhMCd8pWMtDBHsqKmkk9P+3gL3+wkRJTx84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PMP7f2v3tNE2jCUQhii/nhIw6q7bKQ5d3K+/nXB9ddWd0MC2adb7dsd7HURMb+2C4Yy5ArSMlWGnvY0heOpttSA6oYyx/wC6gCZKHL0Stwl+Oh59MNg0P8n6Ydwh/TF183w5mepFbC2FO6JbFIGG27kEXrpohrSMpWuO6NePUyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RTYy2L+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C090BC4CEE3;
-	Thu,  3 Jul 2025 15:00:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UBopUsMT7xfSkMp2DAUZ9XMOR1cS9/mZjy9Wzpmkuhn/MzPQ4WLOnGIkGxZq1fNDYbWWdv2fjzLwDp2t4tIMLGSVhU9pZT7+JHRn5Ix1+rDK4bq3JIILLXBwvqr/astSyBvJXUXLVwOwdUiw/96tqqfk6OpRM/ZtUN4CbReyiwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNn3P/8W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2B4C4CEED;
+	Thu,  3 Jul 2025 14:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554812;
-	bh=apBJtU6D0KgXbpBbFIEmxL85GuW1VIXgyHcIHd3+RrA=;
+	s=korg; t=1751554051;
+	bh=zUdKABbyqhMCd8pWMtDBHsqKmkk9P+3gL3+wkRJTx84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2RTYy2L+yg+zQiMY5QUYBG6Ho/O/4N0mQmRF3oEGJ+96qHg1jCO5ppmFqzfNoRuQ9
-	 P8NQwOcT4ti5NMDEYTKS9UssMyEmBWbwxcSX2C7S2+EhoqjJ77yDEb6Ubhmh8R71fE
-	 RY5myMJUUtm7L9H5pQXF3YjKO9zh01ZWcRXrIR3I=
+	b=mNn3P/8W8CDS3KKH+eWf9CIQ5+szieMv74THZRtMfQx+AbNe71u5Rh//Sw8flDety
+	 PA+huEu9q5pIdv9MRrs+6R9NqJa2fuqd00a10cV/B+tK6zRWpoEx5jQ/ZPtu72DgGx
+	 YQEUCKXuwxVDxk63cWNeN3WgtN7Vq/aY0ssadPRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 086/263] media: uvcvideo: Increase/decrease the PM counter per IOCTL
+Subject: [PATCH 6.12 058/218] drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1
 Date: Thu,  3 Jul 2025 16:40:06 +0200
-Message-ID: <20250703144007.752903371@linuxfoundation.org>
+Message-ID: <20250703143958.264616116@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,235 +64,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 10acb9101355484c3e4f2625003cd1b6c203cfe4 ]
+[ Upstream commit 25eeba495b2fc16037647c1a51bcdf6fc157af5c ]
 
-Now we call uvc_pm_get/put from the device open/close. This low
-level of granularity might leave the camera powered on in situations
-where it is not needed.
+The intel-media-driver is currently broken on DG1 because
+it uses EXEC_CAPTURE with recovarable contexts. Relax the
+check to allow that.
 
-Increase the granularity by increasing and decreasing the Power
-Management counter per ioctl. There are two special cases where the
-power management outlives the ioctl: async controls and streamon. Handle
-those cases as well.
+I've also submitted a fix for the intel-media-driver:
+https://github.com/intel/media-driver/pull/1920
 
-In a future patch, we will remove the uvc_pm_get/put from open/close.
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250327-uvc-granpower-ng-v6-3-35a2357ff348@chromium.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Stable-dep-of: a70705d3c020 ("media: uvcvideo: Rollback non processed entities on error")
+Cc: stable@vger.kernel.org # v6.0+
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Testcase: igt/gem_exec_capture/capture-invisible
+Fixes: 71b1669ea9bd ("drm/i915/uapi: tweak error capture on recoverable contexts")
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250411144313.11660-2-ville.syrjala@linux.intel.com
+(cherry picked from commit d6e020819612a4a06207af858e0978be4d3e3140)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Stable-dep-of: ed5915cfce2a ("Revert "drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c | 38 ++++++++++++++++++++++---------
- drivers/media/usb/uvc/uvc_v4l2.c | 39 ++++++++++++++++++++++++++++++--
- 2 files changed, 64 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index bc7e2005fc6c7..636ce1eb2a6bf 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1812,38 +1812,49 @@ static void uvc_ctrl_send_slave_event(struct uvc_video_chain *chain,
- 	uvc_ctrl_send_event(chain, handle, ctrl, mapping, val, changes);
- }
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+index a3b83cfe17267..841438301d802 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+@@ -2014,7 +2014,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
+ 			continue;
  
--static void uvc_ctrl_set_handle(struct uvc_fh *handle, struct uvc_control *ctrl,
--				struct uvc_fh *new_handle)
-+static int uvc_ctrl_set_handle(struct uvc_fh *handle, struct uvc_control *ctrl,
-+			       struct uvc_fh *new_handle)
- {
- 	lockdep_assert_held(&handle->chain->ctrl_mutex);
+ 		if (i915_gem_context_is_recoverable(eb->gem_context) &&
+-		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
++		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
+ 			return -EINVAL;
  
- 	if (new_handle) {
-+		int ret;
-+
- 		if (ctrl->handle)
- 			dev_warn_ratelimited(&handle->stream->dev->udev->dev,
- 					     "UVC non compliance: Setting an async control with a pending operation.");
- 
- 		if (new_handle == ctrl->handle)
--			return;
-+			return 0;
- 
- 		if (ctrl->handle) {
- 			WARN_ON(!ctrl->handle->pending_async_ctrls);
- 			if (ctrl->handle->pending_async_ctrls)
- 				ctrl->handle->pending_async_ctrls--;
-+			ctrl->handle = new_handle;
-+			handle->pending_async_ctrls++;
-+			return 0;
- 		}
- 
-+		ret = uvc_pm_get(handle->chain->dev);
-+		if (ret)
-+			return ret;
-+
- 		ctrl->handle = new_handle;
- 		handle->pending_async_ctrls++;
--		return;
-+		return 0;
- 	}
- 
- 	/* Cannot clear the handle for a control not owned by us.*/
- 	if (WARN_ON(ctrl->handle != handle))
--		return;
-+		return -EINVAL;
- 
- 	ctrl->handle = NULL;
- 	if (WARN_ON(!handle->pending_async_ctrls))
--		return;
-+		return -EINVAL;
- 	handle->pending_async_ctrls--;
-+	uvc_pm_put(handle->chain->dev);
-+	return 0;
- }
- 
- void uvc_ctrl_status_event(struct uvc_video_chain *chain,
-@@ -2150,15 +2161,15 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 
- 		ctrl->dirty = 0;
- 
-+		if (!rollback && handle && !ret &&
-+		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
-+			ret = uvc_ctrl_set_handle(handle, ctrl, handle);
-+
- 		if (ret < 0) {
- 			if (err_ctrl)
- 				*err_ctrl = ctrl;
- 			return ret;
- 		}
--
--		if (!rollback && handle &&
--		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
--			uvc_ctrl_set_handle(handle, ctrl, handle);
- 	}
- 
- 	return processed_ctrls;
-@@ -3237,6 +3248,7 @@ int uvc_ctrl_init_device(struct uvc_device *dev)
- void uvc_ctrl_cleanup_fh(struct uvc_fh *handle)
- {
- 	struct uvc_entity *entity;
-+	int i;
- 
- 	guard(mutex)(&handle->chain->ctrl_mutex);
- 
-@@ -3251,7 +3263,11 @@ void uvc_ctrl_cleanup_fh(struct uvc_fh *handle)
- 		}
- 	}
- 
--	WARN_ON(handle->pending_async_ctrls);
-+	if (!WARN_ON(handle->pending_async_ctrls))
-+		return;
-+
-+	for (i = 0; i < handle->pending_async_ctrls; i++)
-+		uvc_pm_put(handle->stream->dev);
- }
- 
- /*
-diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
-index 1d5be045d04ec..8bccf7e17528b 100644
---- a/drivers/media/usb/uvc/uvc_v4l2.c
-+++ b/drivers/media/usb/uvc/uvc_v4l2.c
-@@ -697,6 +697,9 @@ static int uvc_v4l2_release(struct file *file)
- 	if (uvc_has_privileges(handle))
- 		uvc_queue_release(&stream->queue);
- 
-+	if (handle->is_streaming)
-+		uvc_pm_put(stream->dev);
-+
- 	/* Release the file handle. */
- 	uvc_dismiss_privileges(handle);
- 	v4l2_fh_del(&handle->vfh);
-@@ -862,6 +865,11 @@ static int uvc_ioctl_streamon(struct file *file, void *fh,
- 	if (ret)
- 		return ret;
- 
-+	ret = uvc_pm_get(stream->dev);
-+	if (ret) {
-+		uvc_queue_streamoff(&stream->queue, type);
-+		return ret;
-+	}
- 	handle->is_streaming = true;
- 
- 	return 0;
-@@ -879,7 +887,10 @@ static int uvc_ioctl_streamoff(struct file *file, void *fh,
- 	guard(mutex)(&stream->mutex);
- 
- 	uvc_queue_streamoff(&stream->queue, type);
--	handle->is_streaming = false;
-+	if (handle->is_streaming) {
-+		handle->is_streaming = false;
-+		uvc_pm_put(stream->dev);
-+	}
- 
- 	return 0;
- }
-@@ -1378,9 +1389,11 @@ static int uvc_v4l2_put_xu_query(const struct uvc_xu_control_query *kp,
- #define UVCIOC_CTRL_MAP32	_IOWR('u', 0x20, struct uvc_xu_control_mapping32)
- #define UVCIOC_CTRL_QUERY32	_IOWR('u', 0x21, struct uvc_xu_control_query32)
- 
-+DEFINE_FREE(uvc_pm_put, struct uvc_device *, if (_T) uvc_pm_put(_T))
- static long uvc_v4l2_compat_ioctl32(struct file *file,
- 		     unsigned int cmd, unsigned long arg)
- {
-+	struct uvc_device *uvc_device __free(uvc_pm_put) = NULL;
- 	struct uvc_fh *handle = file->private_data;
- 	union {
- 		struct uvc_xu_control_mapping xmap;
-@@ -1389,6 +1402,12 @@ static long uvc_v4l2_compat_ioctl32(struct file *file,
- 	void __user *up = compat_ptr(arg);
- 	long ret;
- 
-+	ret = uvc_pm_get(handle->stream->dev);
-+	if (ret)
-+		return ret;
-+
-+	uvc_device = handle->stream->dev;
-+
- 	switch (cmd) {
- 	case UVCIOC_CTRL_MAP32:
- 		ret = uvc_v4l2_get_xu_mapping(&karg.xmap, up);
-@@ -1423,6 +1442,22 @@ static long uvc_v4l2_compat_ioctl32(struct file *file,
- }
- #endif
- 
-+static long uvc_v4l2_unlocked_ioctl(struct file *file,
-+				    unsigned int cmd, unsigned long arg)
-+{
-+	struct uvc_fh *handle = file->private_data;
-+	int ret;
-+
-+	ret = uvc_pm_get(handle->stream->dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = video_ioctl2(file, cmd, arg);
-+
-+	uvc_pm_put(handle->stream->dev);
-+	return ret;
-+}
-+
- static ssize_t uvc_v4l2_read(struct file *file, char __user *data,
- 		    size_t count, loff_t *ppos)
- {
-@@ -1507,7 +1542,7 @@ const struct v4l2_file_operations uvc_fops = {
- 	.owner		= THIS_MODULE,
- 	.open		= uvc_v4l2_open,
- 	.release	= uvc_v4l2_release,
--	.unlocked_ioctl	= video_ioctl2,
-+	.unlocked_ioctl	= uvc_v4l2_unlocked_ioctl,
- #ifdef CONFIG_COMPAT
- 	.compat_ioctl32	= uvc_v4l2_compat_ioctl32,
- #endif
+ 		for_each_batch_create_order(eb, j) {
 -- 
 2.39.5
 
