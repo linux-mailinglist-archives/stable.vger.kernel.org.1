@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-159718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0B1AF7A2C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C6AAF7B0A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:21:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB2B7188EEE7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:05:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B615D587278
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C762EE29D;
-	Thu,  3 Jul 2025 15:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DC72EF656;
+	Thu,  3 Jul 2025 15:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgVRPltd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oknbb+7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFE22EE281;
-	Thu,  3 Jul 2025 15:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50962EF67F;
+	Thu,  3 Jul 2025 15:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555123; cv=none; b=TscxxDsQcbDNTrvf18j/SUNJMOqgHcbA7XhkphBjy9ZmYi35gKZRpV6FY+7zeAl3gZNsYJxM7sQXHhNHkOVdru5wpcbwusiIl/5A0R+NRJM3sHoxZjtGxhqOi3o+AxjwHgdMG/BqX4zaOfH8r6QkKKKKzrUIlAqYvRfz4ju2bK8=
+	t=1751555613; cv=none; b=B6MLlE3a4h861ixgd/ibcfxjFEM3lAK3arzYmnxOJXB4FkOb0BSnZVg07WvCYa8M0cfOYOxyreaCuMmFwvLK3zv8o8BuE1OR+PQRqZj87Jn1Bz/5/VKwdMbaBjpZYhvP0esl3e9tInBOE7ZYYUwz5KgjhA7FglXbBLo6QAyz+Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555123; c=relaxed/simple;
-	bh=TpSl7HbIRGGQYgiNmW9zfT5BO5urNEkxeDC8aFikjE0=;
+	s=arc-20240116; t=1751555613; c=relaxed/simple;
+	bh=s3BXem6d4DcHUgbH93b6UJrvmVjbJDeNlj88yyJdrrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnWwSCNuoO/Y9PWMnm6c60lvGQeZzR3LkxOnEmaUiWJE/aK9iIhs6YWQ00awUO/uqVptpz3pF12fzjAKyX5zV33qloEyhHY2AkvWEoUb9CDskA0zMO8/D5z0ME9Ia0FGjc/qMGIqztTapYApDETJ/Nxf3CvQKrmQCSwxafC7Wn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgVRPltd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AD0C4CEE3;
-	Thu,  3 Jul 2025 15:05:22 +0000 (UTC)
+	 MIME-Version; b=PM4suE8Jlyr8McqslCgJ5lV9KbhTfWaO7qCvz7/t+yjEln3tAXv2tXvuIhcNohqDR/dd2HWBH2PlCbHMTOnGDMThjiA5N8493Tlvs6S6yy0LTpf0oTnnRtowkgODt3+oW0rDaPpH4bY/HGErQ4ks+O3i8uwelfSNJeBTrrtygCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oknbb+7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1510EC4CEE3;
+	Thu,  3 Jul 2025 15:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555123;
-	bh=TpSl7HbIRGGQYgiNmW9zfT5BO5urNEkxeDC8aFikjE0=;
+	s=korg; t=1751555613;
+	bh=s3BXem6d4DcHUgbH93b6UJrvmVjbJDeNlj88yyJdrrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MgVRPltdmKHHUOE1UOJH/ESCcd4/aEN+tn4zCK5styuWBsPhmdUT/v1PLuY2QvNdO
-	 f/uk20vysqtkGwaZb5bjL0+bsq6XecAtyYVKzxev1h77FIE4jb41PahNeOSDMm5Bw2
-	 cdqSLUSLw39Hxmc8QltYH5GfT9pv+F6RTiHfwa3Q=
+	b=oknbb+7HQzNvZAwl4Kd2WnJhk1EG8+65vipc6IJMnLVeKkq8Szb8+SyMDEpADo6tX
+	 OtowQd4Ygum++HNx4GblqRqUxkbS3NCMytvhyJI1+o3eq5gc19SenzmDgNnoNXqhdp
+	 zDTNE3altqHWs1Ztyjc6bR1/KItBb6dNtAz3y1DM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.15 182/263] btrfs: fix invalid inode pointer dereferences during log replay
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 039/139] usb: typec: mux: do not return on EOPNOTSUPP in {mux, switch}_set
 Date: Thu,  3 Jul 2025 16:41:42 +0200
-Message-ID: <20250703144011.642467134@linuxfoundation.org>
+Message-ID: <20250703143942.708580898@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-commit 2dcf838cf5c2f0f4501edaa1680fcad03618d760 upstream.
+[ Upstream commit 0f7bbef1794dc87141897f804e5871a293aa174b ]
 
-In a few places where we call read_one_inode(), if we get a NULL pointer
-we end up jumping into an error path, or fallthrough in case of
-__add_inode_ref(), where we then do something like this:
+Since the typec connectors can have many muxes or switches for different
+lanes (sbu, usb2, usb3) going into different modal states (usb2, usb3,
+audio, debug) all of them will be called on typec_switch_set and
+typec_mux_set. But not all of them will be handling the expected mode.
 
-   iput(&inode->vfs_inode);
+If one of the mux or switch will come back with EOPTNOSUPP this is no
+reason to stop running through the next ones. Therefor we skip this
+particular error value and continue calling the next.
 
-which results in an invalid inode pointer that triggers an invalid memory
-access, resulting in a crash.
-
-Fix this by making sure we don't do such dereferences.
-
-Fixes: b4c50cbb01a1 ("btrfs: return a btrfs_inode from read_one_inode()")
-CC: stable@vger.kernel.org # 6.15+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250404-ml-topic-typec-mux-v1-1-22c0526381ba@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/usb/typec/mux.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 97e933113b82..21d2f3dded51 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -668,15 +668,12 @@ static noinline int replay_one_extent(struct btrfs_trans_handle *trans,
- 		extent_end = ALIGN(start + size,
- 				   fs_info->sectorsize);
- 	} else {
--		ret = 0;
--		goto out;
-+		return 0;
+diff --git a/drivers/usb/typec/mux.c b/drivers/usb/typec/mux.c
+index 80dd91938d960..a5b2a6f9c5795 100644
+--- a/drivers/usb/typec/mux.c
++++ b/drivers/usb/typec/mux.c
+@@ -214,7 +214,7 @@ int typec_switch_set(struct typec_switch *sw,
+ 		sw_dev = sw->sw_devs[i];
+ 
+ 		ret = sw_dev->set(sw_dev, orientation);
+-		if (ret)
++		if (ret && ret != -EOPNOTSUPP)
+ 			return ret;
  	}
  
- 	inode = read_one_inode(root, key->objectid);
--	if (!inode) {
--		ret = -EIO;
--		goto out;
--	}
-+	if (!inode)
-+		return -EIO;
+@@ -378,7 +378,7 @@ int typec_mux_set(struct typec_mux *mux, struct typec_mux_state *state)
+ 		mux_dev = mux->mux_devs[i];
  
- 	/*
- 	 * first check to see if we already have this extent in the
-@@ -961,7 +958,8 @@ static noinline int drop_one_dir_item(struct btrfs_trans_handle *trans,
- 	ret = unlink_inode_for_log_replay(trans, dir, inode, &name);
- out:
- 	kfree(name.name);
--	iput(&inode->vfs_inode);
-+	if (inode)
-+		iput(&inode->vfs_inode);
- 	return ret;
- }
+ 		ret = mux_dev->set(mux_dev, state);
+-		if (ret)
++		if (ret && ret != -EOPNOTSUPP)
+ 			return ret;
+ 	}
  
-@@ -1176,8 +1174,8 @@ static inline int __add_inode_ref(struct btrfs_trans_handle *trans,
- 					ret = unlink_inode_for_log_replay(trans,
- 							victim_parent,
- 							inode, &victim_name);
-+					iput(&victim_parent->vfs_inode);
- 				}
--				iput(&victim_parent->vfs_inode);
- 				kfree(victim_name.name);
- 				if (ret)
- 					return ret;
 -- 
-2.50.0
+2.39.5
 
 
 
