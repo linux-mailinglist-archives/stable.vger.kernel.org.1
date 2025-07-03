@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9E1AF7AF2
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:19:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC9AAF7BCC
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23C37582723
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:15:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 713175A099B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFB82F0C44;
-	Thu,  3 Jul 2025 15:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F6522B5A3;
+	Thu,  3 Jul 2025 15:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/TCcxvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUKz26Yf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A89B2F0C55;
-	Thu,  3 Jul 2025 15:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD621DA23;
+	Thu,  3 Jul 2025 15:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555572; cv=none; b=rm2qIOtn3s23anu4wYUPuoSmVAAwNE2u0jbfqe0Q9qMr5d5IeecPhIaz/oHtG6jzDVq/XnAwhCsL1H9C05nlZtDiVZBKAOG+IJ+sgWTCMszzxFUNSQ+2n0aO3c1dVhz3M8TYr599dZ2d2Nl1CzuJzcrlSV4RGY10y72TWGDuPVw=
+	t=1751556042; cv=none; b=N7EjIefjxJoUAlgZtcJFYmLTOEcRU13X2fnhlv1gVfaE3RYVA5lsQ9p41Cc7FhJ+8xgosBZzNcJ2bITTqOROTzv6CXjY2d4F8pUDvba6SiunaAj9XTr/NTnuRQB0QYFmd9OOrALGyHo5mF4757IoD35wAXgc5EWu+Cm3Qt5H/aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555572; c=relaxed/simple;
-	bh=s7yl8GmhIA/45MVuZ467KKLxpBMplDgkP2HpvZexy6g=;
+	s=arc-20240116; t=1751556042; c=relaxed/simple;
+	bh=y5in2tjo4rWaS4LdE2XMxgjJ4TVGhLsGP3fc336G4QM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YAeMZkY+jSN/Zq3EFuR6lmPrMcxYWYODeyS4TW+QKu30PVVUzCp7Puaa0SnhKGu9ob4m8jIVCYBIVrQcKvM+SNtm/U0dwNF7UyTTDUb2/+rhUe8sP7I3ZaOqnqnrHzSGSFFwKw4Dda0HsbAG8khfqxvzCS3Wy63a36QJ//eTzPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/TCcxvy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15EBC4CEED;
-	Thu,  3 Jul 2025 15:12:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TqVlT6slddtMITWwmvKsDEWxwaNT5X2iMr3iYiRuo+Iv7ww9YkbIyXCusmD6BJ4DTQcC6wuhsRAcrjBNUnlGw4NouxJjydZJSBI6zivFnG59YsZh0VIkGPpAeH/8fwrhBUZ1BaQJoDCtcvu6JMe++tnAk1pec/nUtTnIqKya9JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUKz26Yf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF2AC4CEE3;
+	Thu,  3 Jul 2025 15:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555572;
-	bh=s7yl8GmhIA/45MVuZ467KKLxpBMplDgkP2HpvZexy6g=;
+	s=korg; t=1751556042;
+	bh=y5in2tjo4rWaS4LdE2XMxgjJ4TVGhLsGP3fc336G4QM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o/TCcxvyeSnR+MtGjxPLVXX2aHDQyyywp5n2szKln5z4ZtQwxPVhSQHfgohFDoRA4
-	 lcvEBW8xAGn5ytP592kB9hqpZt/0ZOBYZkQ9nu5X5ajr5mtB61nlJMG9WUlVdP+n/a
-	 p5KcJo0feRGoMZ/XHnTvwVnIEodN2Vrxik49GLrI=
+	b=CUKz26Yf7VZEOdP9TOxd38R4M+zRLVpZNz2Tzyzb9zAA5bWD4cST9l9sWum73DE/w
+	 5A/0W3bN0pt5WHWo8xqvCzudeTo5ylx0gq+JdUcuUIzU5x3Vd7PeU0rCg4CJDVOGXz
+	 nRuHLgj4MHOlcnvIViqzQiVkut3qh2hxFZ0iBBWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Jos Wang <joswang@lenovo.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/139] uio_hv_generic: Align ring size to system page
+Subject: [PATCH 6.1 029/132] usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode
 Date: Thu,  3 Jul 2025 16:41:58 +0200
-Message-ID: <20250703143943.315994235@linuxfoundation.org>
+Message-ID: <20250703143940.552574911@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Jos Wang <joswang@lenovo.com>
 
-[ Upstream commit 0315fef2aff9f251ddef8a4b53db9187429c3553 ]
+[ Upstream commit b4b38ffb38c91afd4dc387608db26f6fc34ed40b ]
 
-Following the ring header, the ring data should align to system page
-boundary. Adjust the size if necessary.
+Although some Type-C DRD devices that do not support the DP Sink
+function (such as Huawei Mate 40Pro), the Source Port initiates
+Enter Mode CMD, but the device responds to Enter Mode ACK, the
+Source port then initiates DP Status Update CMD, and the device
+responds to DP Status Update NAK.
 
-Cc: stable@vger.kernel.org
-Fixes: 95096f2fbd10 ("uio-hv-generic: new userspace i/o driver for VMBus")
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/1746492997-4599-4-git-send-email-longli@linuxonhyperv.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <1746492997-4599-4-git-send-email-longli@linuxonhyperv.com>
+As PD2.0 spec ("6.4.4.3.4 Enter Mode Command")，A DR_Swap Message
+Shall Not be sent during Modal Operation between the Port Partners.
+At this time, the source port initiates DR_Swap message through the
+"echo device > /sys/class/typec/port0/data_role" command to switch
+the data role from host to device. The device will initiate a Hard
+Reset for recovery, resulting in the failure of data role swap.
+
+Therefore, when DP Status Update NAK is received, Exit Mode CMD is
+initiated to exit the currently entered DP altmode.
+
+Signed-off-by: Jos Wang <joswang@lenovo.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250209071926.69625-1-joswang1221@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/uio/uio_hv_generic.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/typec/altmodes/displayport.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
-index 031f6a8f1ebb2..17c1f85f2b7ba 100644
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -260,6 +260,9 @@ hv_uio_probe(struct hv_device *dev,
- 	if (!ring_size)
- 		ring_size = HV_RING_SIZE * PAGE_SIZE;
- 
-+	/* Adjust ring size if necessary to have it page aligned */
-+	ring_size = VMBUS_RING_SIZE(ring_size);
-+
- 	pdata = devm_kzalloc(&dev->device, sizeof(*pdata), GFP_KERNEL);
- 	if (!pdata)
- 		return -ENOMEM;
+diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+index f80124102328c..26e0e72f4f166 100644
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -320,6 +320,10 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
+ 		break;
+ 	case CMDT_RSP_NAK:
+ 		switch (cmd) {
++		case DP_CMD_STATUS_UPDATE:
++			if (typec_altmode_exit(alt))
++				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
++			break;
+ 		case DP_CMD_CONFIGURE:
+ 			dp->data.conf = 0;
+ 			ret = dp_altmode_configured(dp);
 -- 
 2.39.5
 
