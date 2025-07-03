@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-159913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61494AF7BA5
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C55AF7A85
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:14:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B4BF1CA53B7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38CF34E6497
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4F02F0E30;
-	Thu,  3 Jul 2025 15:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE21C2EF9BA;
+	Thu,  3 Jul 2025 15:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gY0Lli3c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBoz40fy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FA42F0C6E;
-	Thu,  3 Jul 2025 15:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28DE2EF9B0;
+	Thu,  3 Jul 2025 15:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555755; cv=none; b=k8J6fiCRgyifULWlFGgjTXH0FBaA9Hdz+xoFHudjfNPmo4r80DN1oRaMgcxxWf+BbDg7PGXS6IORAzzYLqQrqb4csu1uGF4J76M6I1LWHuVm3sqoDFyigQ2pIcMq9OcncrgNC5JRcKqw5+IXcfIemKZgr04a2Z3HfFFpgZbB3ek=
+	t=1751555393; cv=none; b=F5UjeVGBRkY9BuC+S9+gxYKaXxD2CRgllOKbEhGcwIZsYDYogwJjWT0Yh8xaHErIbIBrQn5zmIvLirZdftlRoxirGyX28XJ0gqE5Du2Ein+0PXi4GFMQ8GlbM267EwmTSpozS3Tju0CyXYUglZCjRzaSQBuG/EwgkplMJm0Jj9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555755; c=relaxed/simple;
-	bh=Hafu+WAulb/J28NQh8k++2JtJHNxNERlJQMemlmWWqM=;
+	s=arc-20240116; t=1751555393; c=relaxed/simple;
+	bh=pc8G3qTRER0LgMh+ZYEVj1Q81+IeM2lVxtzXw82LFjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VOTYQ5jyLUMr3j06U1uxB1bygHz9HVg2Yh/2FIYDXW3QRjqTAPbYpdO5eJ5CXM0qGP00O2fFjUPkFobCJaN1phuShBYM0fPblfVlzzGNUujFtH6Q7XDQoA6jZkT+HMudmfPbtvbavvY5aEFtpKzg2WUI8tnPsj7NUn9InPdbics=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gY0Lli3c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79570C4CEE3;
-	Thu,  3 Jul 2025 15:15:54 +0000 (UTC)
+	 MIME-Version; b=NW07p51B8A33IsU9sIGfWND5YFgGF0tBXtMVMfYxwNU07AbZUBbC6hBzvfsPSToX1f/YJq57kYw4I0j/H9Z38krWml4JSZM55YBVoJujVGimlXo5emJYgBn0CpJJmkC1q0HbA05A75BLnf3BqqOon2RUjU++pIzgHnszN9vUkfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBoz40fy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D97BC4CEF6;
+	Thu,  3 Jul 2025 15:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555754;
-	bh=Hafu+WAulb/J28NQh8k++2JtJHNxNERlJQMemlmWWqM=;
+	s=korg; t=1751555393;
+	bh=pc8G3qTRER0LgMh+ZYEVj1Q81+IeM2lVxtzXw82LFjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gY0Lli3csv2N+WRqaqNsCfm6ABvYewEdNWyhFesDRY6xEqpW/7aGNQ8ktoa76v4jj
-	 RImvNwd6ql4HPuTkl+i56kCY+VjyJsUY3kctrDCS1ibPtIeYbMlO6/1aH2nNoijqH0
-	 lI6gnBrL/L8N4oeSpwW6imtQ4UWR67BmIqJito/U=
+	b=VBoz40fye+MBR9JrEL8AgYyzauTXk5bwf5zEbG+mRt/nh9YJcmvf1yXR9w8dq4lV2
+	 So9Awt6u/mR3BblhY21fomIMnlzz3D3Rci/Ef0aE8HaboZdaa9piGDbqEYPOoN14jV
+	 zZ+tLB/+GxPnNsCC/3UrNf9RQHz8ym4eEHkt6rqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.6 112/139] drm/tegra: Assign plane type before registration
-Date: Thu,  3 Jul 2025 16:42:55 +0200
-Message-ID: <20250703143945.556776001@linuxfoundation.org>
+	Alice Ryhl <aliceryhl@google.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.15 256/263] rust: devres: fix race in Devres::drop()
+Date: Thu,  3 Jul 2025 16:42:56 +0200
+Message-ID: <20250703144014.673855976@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +62,210 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thierry Reding <treding@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-commit 9ff4fdf4f44b69237c0afc1d3a8dac916ce66f3e upstream.
+commit f744201c6159fc7323c40936fd079525f7063598 upstream.
 
-Changes to a plane's type after it has been registered aren't propagated
-to userspace automatically. This could possibly be achieved by updating
-the property, but since we can already determine which type this should
-be before the registration, passing in the right type from the start is
-a much better solution.
+In Devres::drop() we first remove the devres action and then drop the
+wrapped device resource.
 
-Suggested-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Cc: stable@vger.kernel.org
-Fixes: 473079549f27 ("drm/tegra: dc: Add Tegra186 support")
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250421-tegra-drm-primary-v2-1-7f740c4c2121@gmail.com
+The design goal is to give the owner of a Devres object control over when
+the device resource is dropped, but limit the overall scope to the
+corresponding device being bound to a driver.
+
+However, there's a race that was introduced with commit 8ff656643d30
+("rust: devres: remove action in `Devres::drop`"), but also has been
+(partially) present from the initial version on.
+
+In Devres::drop(), the devres action is removed successfully and
+subsequently the destructor of the wrapped device resource runs.
+However, there is no guarantee that the destructor of the wrapped device
+resource completes before the driver core is done unbinding the
+corresponding device.
+
+If in Devres::drop(), the devres action can't be removed, it means that
+the devres callback has been executed already, or is still running
+concurrently. In case of the latter, either Devres::drop() wins revoking
+the Revocable or the devres callback wins revoking the Revocable. If
+Devres::drop() wins, we (again) have no guarantee that the destructor of
+the wrapped device resource completes before the driver core is done
+unbinding the corresponding device.
+
+CPU0					CPU1
+------------------------------------------------------------------------
+Devres::drop() {			Devres::devres_callback() {
+   self.data.revoke() {			   this.data.revoke() {
+      is_available.swap() == true
+					      is_available.swap == false
+					   }
+					}
+
+					// [...]
+					// device fully unbound
+      drop_in_place() {
+         // release device resource
+      }
+   }
+}
+
+Depending on the specific device resource, this can potentially lead to
+user-after-free bugs.
+
+In order to fix this, implement the following logic.
+
+In the devres callback, we're always good when we get to revoke the
+device resource ourselves, i.e. Revocable::revoke() returns true.
+
+If Revocable::revoke() returns false, it means that Devres::drop(),
+concurrently, already drops the device resource and we have to wait for
+Devres::drop() to signal that it finished dropping the device resource.
+
+Note that if we hit the case where we need to wait for the completion of
+Devres::drop() in the devres callback, it means that we're actually
+racing with a concurrent Devres::drop() call, which already started
+revoking the device resource for us. This is rather unlikely and means
+that the concurrent Devres::drop() already started doing our work and we
+just need to wait for it to complete it for us. Hence, there should not
+be any additional overhead from that.
+
+(Actually, for now it's even better if Devres::drop() does the work for
+us, since it can bypass the synchronize_rcu() call implied by
+Revocable::revoke(), but this goes away anyways once I get to implement
+the split devres callback approach, which allows us to first flip the
+atomics of all registered Devres objects of a certain device, execute a
+single synchronize_rcu() and then drop all revocable objects.)
+
+In Devres::drop() we try to revoke the device resource. If that is *not*
+successful, it means that the devres callback already did and we're good.
+
+Otherwise, we try to remove the devres action, which, if successful,
+means that we're good, since the device resource has just been revoked
+by us *before* we removed the devres action successfully.
+
+If the devres action could not be removed, it means that the devres
+callback must be running concurrently, hence we signal that the device
+resource has been revoked by us, using the completion.
+
+This makes it safe to drop a Devres object from any task and at any point
+of time, which is one of the design goals.
+
+Fixes: 76c01ded724b ("rust: add devres abstraction")
+Reported-by: Alice Ryhl <aliceryhl@google.com>
+Closes: https://lore.kernel.org/lkml/aD64YNuqbPPZHAa5@google.com/
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Link: https://lore.kernel.org/r/20250612121817.1621-4-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tegra/dc.c  |   12 ++++++++----
- drivers/gpu/drm/tegra/hub.c |    4 ++--
- drivers/gpu/drm/tegra/hub.h |    3 ++-
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ rust/kernel/devres.rs |   37 +++++++++++++++++++++++++++++--------
+ 1 file changed, 29 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/tegra/dc.c
-+++ b/drivers/gpu/drm/tegra/dc.c
-@@ -1320,10 +1320,16 @@ static struct drm_plane *tegra_dc_add_sh
- 		if (wgrp->dc == dc->pipe) {
- 			for (j = 0; j < wgrp->num_windows; j++) {
- 				unsigned int index = wgrp->windows[j];
-+				enum drm_plane_type type;
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -13,7 +13,7 @@ use crate::{
+     ffi::c_void,
+     prelude::*,
+     revocable::Revocable,
+-    sync::Arc,
++    sync::{Arc, Completion},
+     types::ARef,
+ };
+ 
+@@ -25,13 +25,17 @@ struct DevresInner<T> {
+     callback: unsafe extern "C" fn(*mut c_void),
+     #[pin]
+     data: Revocable<T>,
++    #[pin]
++    revoke: Completion,
+ }
+ 
+ /// This abstraction is meant to be used by subsystems to containerize [`Device`] bound resources to
+ /// manage their lifetime.
+ ///
+ /// [`Device`] bound resources should be freed when either the resource goes out of scope or the
+-/// [`Device`] is unbound respectively, depending on what happens first.
++/// [`Device`] is unbound respectively, depending on what happens first. In any case, it is always
++/// guaranteed that revoking the device resource is completed before the corresponding [`Device`]
++/// is unbound.
+ ///
+ /// To achieve that [`Devres`] registers a devres callback on creation, which is called once the
+ /// [`Device`] is unbound, revoking access to the encapsulated resource (see also [`Revocable`]).
+@@ -105,6 +109,7 @@ impl<T> DevresInner<T> {
+                 dev: dev.into(),
+                 callback: Self::devres_callback,
+                 data <- Revocable::new(data),
++                revoke <- Completion::new(),
+             }),
+             flags,
+         )?;
+@@ -133,26 +138,28 @@ impl<T> DevresInner<T> {
+         self as _
+     }
+ 
+-    fn remove_action(this: &Arc<Self>) {
++    fn remove_action(this: &Arc<Self>) -> bool {
+         // SAFETY:
+         // - `self.inner.dev` is a valid `Device`,
+         // - the `action` and `data` pointers are the exact same ones as given to devm_add_action()
+         //   previously,
+         // - `self` is always valid, even if the action has been released already.
+-        let ret = unsafe {
++        let success = unsafe {
+             bindings::devm_remove_action_nowarn(
+                 this.dev.as_raw(),
+                 Some(this.callback),
+                 this.as_ptr() as _,
+             )
+-        };
++        } == 0;
+ 
+-        if ret == 0 {
++        if success {
+             // SAFETY: We leaked an `Arc` reference to devm_add_action() in `DevresInner::new`; if
+             // devm_remove_action_nowarn() was successful we can (and have to) claim back ownership
+             // of this reference.
+             let _ = unsafe { Arc::from_raw(this.as_ptr()) };
+         }
 +
-+				if (primary)
-+					type = DRM_PLANE_TYPE_OVERLAY;
-+				else
-+					type = DRM_PLANE_TYPE_PRIMARY;
++        success
+     }
  
- 				plane = tegra_shared_plane_create(drm, dc,
- 								  wgrp->index,
--								  index);
-+								  index, type);
- 				if (IS_ERR(plane))
- 					return plane;
+     #[allow(clippy::missing_safety_doc)]
+@@ -164,7 +171,12 @@ impl<T> DevresInner<T> {
+         //         `DevresInner::new`.
+         let inner = unsafe { Arc::from_raw(ptr) };
  
-@@ -1331,10 +1337,8 @@ static struct drm_plane *tegra_dc_add_sh
- 				 * Choose the first shared plane owned by this
- 				 * head as the primary plane.
- 				 */
--				if (!primary) {
--					plane->type = DRM_PLANE_TYPE_PRIMARY;
-+				if (!primary)
- 					primary = plane;
--				}
- 			}
- 		}
- 	}
---- a/drivers/gpu/drm/tegra/hub.c
-+++ b/drivers/gpu/drm/tegra/hub.c
-@@ -756,9 +756,9 @@ static const struct drm_plane_helper_fun
- struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
- 					    struct tegra_dc *dc,
- 					    unsigned int wgrp,
--					    unsigned int index)
-+					    unsigned int index,
-+					    enum drm_plane_type type)
- {
--	enum drm_plane_type type = DRM_PLANE_TYPE_OVERLAY;
- 	struct tegra_drm *tegra = drm->dev_private;
- 	struct tegra_display_hub *hub = tegra->hub;
- 	struct tegra_shared_plane *plane;
---- a/drivers/gpu/drm/tegra/hub.h
-+++ b/drivers/gpu/drm/tegra/hub.h
-@@ -80,7 +80,8 @@ void tegra_display_hub_cleanup(struct te
- struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
- 					    struct tegra_dc *dc,
- 					    unsigned int wgrp,
--					    unsigned int index);
-+					    unsigned int index,
-+					    enum drm_plane_type type);
+-        inner.data.revoke();
++        if !inner.data.revoke() {
++            // If `revoke()` returns false, it means that `Devres::drop` already started revoking
++            // `inner.data` for us. Hence we have to wait until `Devres::drop()` signals that it
++            // completed revoking `inner.data`.
++            inner.revoke.wait_for_completion();
++        }
+     }
+ }
  
- int tegra_display_hub_atomic_check(struct drm_device *drm,
- 				   struct drm_atomic_state *state);
+@@ -196,6 +208,15 @@ impl<T> Deref for Devres<T> {
+ 
+ impl<T> Drop for Devres<T> {
+     fn drop(&mut self) {
+-        DevresInner::remove_action(&self.0);
++        // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
++        // anymore, hence it is safe not to wait for the grace period to finish.
++        if unsafe { self.revoke_nosync() } {
++            // We revoked `self.0.data` before the devres action did, hence try to remove it.
++            if !DevresInner::remove_action(&self.0) {
++                // We could not remove the devres action, which means that it now runs concurrently,
++                // hence signal that `self.0.data` has been revoked successfully.
++                self.0.revoke.complete_all();
++            }
++        }
+     }
+ }
 
 
 
