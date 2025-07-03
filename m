@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-159355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE097AF7812
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B6FAF799D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39A501C84335
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DAA71885D8C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE02E2EAB69;
-	Thu,  3 Jul 2025 14:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFA02ED857;
+	Thu,  3 Jul 2025 14:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avAqMrgi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qFxxWDRg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91332E7620;
-	Thu,  3 Jul 2025 14:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3132E7F1A;
+	Thu,  3 Jul 2025 14:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751553972; cv=none; b=nnDmrCkQFhCTaNe2EuTND01Nn6vg/5MUIkDFlM/57PwuvDijhFQGHfCyll/VcA36W+HuYuyehIZ2UZbPxyoeOwqFaWj+8cPSYZ9KtLyu9bk/MubS42USQ+mMtXC1vVzl0xEBPfzoaYiCaafioVQWgDKRw4zwFoYYJqjwJqnGkzc=
+	t=1751554756; cv=none; b=hJ5+zQu88c0ptJwvY1fOaDapDqc6eQz3cEtB/mAe6C/w/NYYsBQk0lW7if8IrhhJLnWMgxe5d+BS4B0SfjwUtRF2zc/lM+xukwYGXfy7yRjuUR0aOOWTzch0i/NKVYkPYOWTyEwxvG7PPZ9NZZIspihdYKho19++7+ImfPNSXxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751553972; c=relaxed/simple;
-	bh=iEYhz7eWAI1MuWsBF6+PxSflazvDxYHW9rrCfhqQc00=;
+	s=arc-20240116; t=1751554756; c=relaxed/simple;
+	bh=yFIFzg/deEsTqTFrO6+2G3F3hQ2/ho+RjIBVCSr4TVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZl/a9EjzZuP+gDQ/rTI831Wc+W9GK02e7KYOvZS72/oG6Zl8SvYh5BQfuP298dRjPBdmX07H/veAqDdd1VlYjz+ci9bw5xSe3nWR0nvWXIsbOUhQ9xApLjS+DWCLgWGB3NmCcc+tRZrkFArBVuMOaq2qFcSb8bB/XkywqJbjyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avAqMrgi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3071CC4CEE3;
-	Thu,  3 Jul 2025 14:46:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fCRkDWDSJ6Pd2a53jUB+Oe2gaJiYGUT9DFm6MJkYkEO+BZrUcr/3DhfoFLflops9bE3tPt315hkzr91TiWYreJVXHckeVXd3gcKIMawLikCua49s9NvIgji9g5FtN4C13MXBsZY9v/tO+rvW0Og2eM+faty9/3kCqaBakucD9OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qFxxWDRg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C55EC4CEE3;
+	Thu,  3 Jul 2025 14:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751553972;
-	bh=iEYhz7eWAI1MuWsBF6+PxSflazvDxYHW9rrCfhqQc00=;
+	s=korg; t=1751554756;
+	bh=yFIFzg/deEsTqTFrO6+2G3F3hQ2/ho+RjIBVCSr4TVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avAqMrgiyAAm4tesE44YusL/5dA+jjvYYY+jf9uM9bnxvnG2Bl57x6q2pipo5Lv/f
-	 IB41/om1oMwhOtPGkSHjXceRW2hzg4Ugwaha1avqNceplxRZbxSHQPMIzImdpEajot
-	 LYhgTqdSROOwEjIplYwLRzTdUQYNd6jvqxueLHGw=
+	b=qFxxWDRg8Zj4TDi1XT472PFpp29xotj7qjlmUZ+uBauB0XX40oQmF3UtJKJ55bf6k
+	 k6tP32Tn/FefeTkOXqTWpbEwQt1QyDOm+uir86yjppWo/iULGLKPvdJgw6lYBTOszi
+	 861/D942QNvti721cvbtcQSgS7eP5/AhxOdQqUuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yufeng <chenyufeng@iie.ac.cn>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/218] usb: potential integer overflow in usbg_make_tpg()
+Subject: [PATCH 6.15 069/263] riscv: misaligned: declare misaligned_access_speed under CONFIG_RISCV_MISALIGNED
 Date: Thu,  3 Jul 2025 16:39:49 +0200
-Message-ID: <20250703143957.585913756@linuxfoundation.org>
+Message-ID: <20250703144007.080669570@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +62,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
+From: Clément Léger <cleger@rivosinc.com>
 
-[ Upstream commit 153874010354d050f62f8ae25cbb960c17633dc5 ]
+[ Upstream commit 1317045a7d6f397904d105f6d40dc9787876a34b ]
 
-The variable tpgt in usbg_make_tpg() is defined as unsigned long and is
-assigned to tpgt->tport_tpgt, which is defined as u16. This may cause an
-integer overflow when tpgt is greater than USHRT_MAX (65535). I
-haven't tried to trigger it myself, but it is possible to trigger it
-by calling usbg_make_tpg() with a large value for tpgt.
+While misaligned_access_speed was defined in a file compile with
+CONFIG_RISCV_MISALIGNED, its definition was under
+CONFIG_RISCV_SCALAR_MISALIGNED. This resulted in compilation problems
+when using it in a file compiled with CONFIG_RISCV_MISALIGNED.
 
-I modified the type of tpgt to match tpgt->tport_tpgt and adjusted the
-relevant code accordingly.
+Move the declaration under CONFIG_RISCV_MISALIGNED so that it can be
+used unconditionnally when compiled with that config and remove the check
+for that variable in traps_misaligned.c.
 
-This patch is similar to commit 59c816c1f24d ("vhost/scsi: potential
-memory corruption").
-
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
-Link: https://lore.kernel.org/r/20250415065857.1619-1-chenyufeng@iie.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Tested-by: Charlie Jenkins <charlie@rivosinc.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250523101932.1594077-9-cleger@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_tcm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/include/asm/cpufeature.h  | 5 ++++-
+ arch/riscv/kernel/traps_misaligned.c | 2 --
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_tcm.c b/drivers/usb/gadget/function/f_tcm.c
-index 7b23631f47449..6ad205046032c 100644
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -1297,14 +1297,14 @@ static struct se_portal_group *usbg_make_tpg(struct se_wwn *wwn,
- 	struct usbg_tport *tport = container_of(wwn, struct usbg_tport,
- 			tport_wwn);
- 	struct usbg_tpg *tpg;
--	unsigned long tpgt;
-+	u16 tpgt;
- 	int ret;
- 	struct f_tcm_opts *opts;
- 	unsigned i;
+diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm/cpufeature.h
+index f56b409361fbe..7201da46694f7 100644
+--- a/arch/riscv/include/asm/cpufeature.h
++++ b/arch/riscv/include/asm/cpufeature.h
+@@ -71,7 +71,6 @@ bool __init check_unaligned_access_emulated_all_cpus(void);
+ void check_unaligned_access_emulated(struct work_struct *work __always_unused);
+ void unaligned_emulation_finish(void);
+ bool unaligned_ctl_available(void);
+-DECLARE_PER_CPU(long, misaligned_access_speed);
+ #else
+ static inline bool unaligned_ctl_available(void)
+ {
+@@ -79,6 +78,10 @@ static inline bool unaligned_ctl_available(void)
+ }
+ #endif
  
- 	if (strstr(name, "tpgt_") != name)
- 		return ERR_PTR(-EINVAL);
--	if (kstrtoul(name + 5, 0, &tpgt) || tpgt > UINT_MAX)
-+	if (kstrtou16(name + 5, 0, &tpgt))
- 		return ERR_PTR(-EINVAL);
- 	ret = -ENODEV;
- 	mutex_lock(&tpg_instances_lock);
++#if defined(CONFIG_RISCV_MISALIGNED)
++DECLARE_PER_CPU(long, misaligned_access_speed);
++#endif
++
+ bool __init check_vector_unaligned_access_emulated_all_cpus(void);
+ #if defined(CONFIG_RISCV_VECTOR_MISALIGNED)
+ void check_vector_unaligned_access_emulated(struct work_struct *work __always_unused);
+diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
+index 56f06a27d45fb..a6b6047693105 100644
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -368,9 +368,7 @@ static int handle_scalar_misaligned_load(struct pt_regs *regs)
+ 
+ 	perf_sw_event(PERF_COUNT_SW_ALIGNMENT_FAULTS, 1, regs, addr);
+ 
+-#ifdef CONFIG_RISCV_PROBE_UNALIGNED_ACCESS
+ 	*this_cpu_ptr(&misaligned_access_speed) = RISCV_HWPROBE_MISALIGNED_SCALAR_EMULATED;
+-#endif
+ 
+ 	if (!unaligned_enabled)
+ 		return -1;
 -- 
 2.39.5
 
