@@ -1,93 +1,98 @@
-Return-Path: <stable+bounces-159300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F233AF7132
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 12:59:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF92AF7154
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 13:01:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B271418861AC
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 10:59:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B290F4E68CD
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 11:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B80D2E3AFB;
-	Thu,  3 Jul 2025 10:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40892E5418;
+	Thu,  3 Jul 2025 10:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UUMtqbQ3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRjHPSCk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF282E3B14;
-	Thu,  3 Jul 2025 10:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DCF2E49AF;
+	Thu,  3 Jul 2025 10:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751540314; cv=none; b=NiQyZBO6gbBl54b4GvWvrb8T9VeS5Ao9whsvZXW5BH6RcQBFy/MyBid/f5KD0TOGYKDOBq8F/GXIK4wFFA+XMJvyMN3AiZ1KRiw9qqr9gDVklFJ4WHFL0nls2CtGRv0pEoPKDx55O1hePID7Q8nGDgk2mSjz/39zbJbqJ8nSFoA=
+	t=1751540385; cv=none; b=Pil0TLAPmL+z9J0Vri85TYagKVYPUDF5riMMbJ+xex3yUwqAyUgGkf+RY6sXIVqTvLCigf7/y52ZnGr930eY/TPzOWSHRvfXiyozbzYNo9fJMfxq1740jDZvHUPsuaOLqBv7GUN0KHpyHyDcAkXWr+GxvEXeoaYWcEnoH1mgt5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751540314; c=relaxed/simple;
-	bh=QT+UMTSngX/Y5p2qhC+hFL6HSZRCai4FY0HH6/GPYOk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ofLTkQJ414y0tVUoFEoBcetdQo/f9z2KXWTVGhNqgTlFRov/cbpwGjurywylHwOpc060DT6owk3zz08MvrH44GPLwdp7ruN/RlaC9eR0T5mqvYtnu2Z9YC6AYI3CtRSpgXaeSVQHPdwdr4vnyidCAZsivxfr5vt/O3JRvk/C2Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UUMtqbQ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD2EC4CEED;
-	Thu,  3 Jul 2025 10:58:34 +0000 (UTC)
+	s=arc-20240116; t=1751540385; c=relaxed/simple;
+	bh=5Wfu3BOvo6JOU2//k5Zq3JqFIi9e1V4gRH8NmL7fsD0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ehZtSO3yEgHccbAxi3E1vFHYGuEIJo5PgNYiHfWlSYAv1vySF3MHoY1vp0uPBUqsNLpp+58xKXiXzTkTSL4p4858X7lhYohFbn5Bjr9vGUaW80MuKYBXFmm5Wf3g0YUtHZMJUGPrZtLYexSPJyDsVOPjyYpf4CUPbAmc4fWstOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRjHPSCk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E22C4CEE3;
+	Thu,  3 Jul 2025 10:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751540314;
-	bh=QT+UMTSngX/Y5p2qhC+hFL6HSZRCai4FY0HH6/GPYOk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UUMtqbQ3Q2tLXlhwGDUdoan9xc3WM2AN2sZk09QhjdZ6ePqDJIHhw2cq7nV7JmXrZ
-	 cCFONrm9GtlYnZuMKwbylvB2YJ8e2rZnpJq6KrXJSOcdjrAshC08fsxWtq941XBUUZ
-	 llTQ17F5I/J6tD6LlzE7kHKyWm3+bRujictY3LQApyRwCuF8jA3LA9hWnQFWMJSIFF
-	 GckamwHVs3tKhXs5f0UGJ8KbM47CjtCJFPoCdXX4XUsTgx/wbsjPXq1Z5uIOO0+7eV
-	 CbdbpUVR4FVaPypIv53FNeuvVlR68qir/bXbLDvC+pqsQR6Z4gKHiI9DtVbm1CLobY
-	 TBwdynt5Uu7RQ==
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6119cd1a154so2556361eaf.0;
-        Thu, 03 Jul 2025 03:58:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVCFv0MZ3KB5m6viFDY3e0YXRTRFILG3O4Jw8T7Mq3TWx7OzkX639WwkyRGdp9AEXGvgPw1lOFd@vger.kernel.org, AJvYcCVOF60RdJJ8GcGXWcvVrQb1ToeCSDS8vIvt0uSeLH4R8GZRn6+FePzTsfc1BTg4PMstajCE2BJPvJLP@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxo/IKfY2xBB533F6DqlQLkz++Y7/9tzndW+XKIrMh0UgWS5eSF
-	w9FTbuGpBNja3wKQP23VnOSqwlMgte49vbLOMV1CSnHK6MTTPE2lgrr7SfUzQ5v37+pXqNii18f
-	Cr5usxQ9qaKU1YtUn5ZYWoQ+BdD5ejc0=
-X-Google-Smtp-Source: AGHT+IEkZIY74KxHtqE7rgWM1y5n2usPPPIJL/bq5hv2EkY0c5oJanY/D7gdAy71hBobfx5xsxXMvwili84lBtFf7Rw=
-X-Received: by 2002:a05:6820:2083:b0:612:be:496 with SMTP id
- 006d021491bc7-61200f9ca09mr3829652eaf.2.1751540313630; Thu, 03 Jul 2025
- 03:58:33 -0700 (PDT)
+	s=k20201202; t=1751540385;
+	bh=5Wfu3BOvo6JOU2//k5Zq3JqFIi9e1V4gRH8NmL7fsD0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=oRjHPSCk2Ehs7XgfW8EUvFjU1aHTAOW0sFsEX1FpOe8ck4oDoyJ1v2kYG2IfMSqpZ
+	 lTTlaCa66BWx7SvJzO8UmMWEztsfmgz9rDDAgebXt3a74c5GqpczqmgrCmvK+ngK80
+	 ryiqHtAvh2yqR+enjVPW0a/dFz3ZJP32rZEo1Sz8emihr8Mo3MbWBbc9Vl7i4/iHXk
+	 2KCgQNYCu8SxlSzU8SVdPxNiE8MQlfTRWlpKWrIYTHR2/1b08eLyN5ruvqVRAcDAuN
+	 rETvLuvaazPFvXDieGc/COmJJh12qx45jYgYL1EL5QSrwVaZc4xkhmmuqH9zSXbRw8
+	 8WNlk4yW2L3RQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE0B8383B273;
+	Thu,  3 Jul 2025 11:00:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev>
-In-Reply-To: <87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 3 Jul 2025 12:58:21 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hvPs2hSP+68+dAgtG-iJR8TBptt4ObTbB5iCf2=EXe=A@mail.gmail.com>
-X-Gm-Features: Ac12FXwk9R5RiEcUHk0ScgMN2y-X4qKTkjOo1EH-N_g8hmSYHRt3xtbFm79bzTc
-Message-ID: <CAJZ5v0hvPs2hSP+68+dAgtG-iJR8TBptt4ObTbB5iCf2=EXe=A@mail.gmail.com>
-Subject: Re: [REGRESSION] - Multiple userspace implementations of battery
- estimate broken after "ACPI: battery: negate current when discharging"
-To: Matthew Schwartz <matthew.schwartz@linux.dev>
-Cc: pmarheine@chromium.org, regressions@lists.linux.dev, 
-	stable@vger.kernel.org, rafael.j.wysocki@intel.com, 
-	linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] dt-bindings: net: sophgo,sg2044-dwmac: Drop status
+ from
+ the example
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175154040925.1407041.4796273578925200591.git-patchwork-notify@kernel.org>
+Date: Thu, 03 Jul 2025 11:00:09 +0000
+References: <20250701063621.23808-2-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250701063621.23808-2-krzysztof.kozlowski@linaro.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, unicorn_wang@outlook.com, inochiama@gmail.com,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org, sophgo@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-Hi,
+Hello:
 
-On Thu, Jul 3, 2025 at 3:55=E2=80=AFAM Matthew Schwartz
-<matthew.schwartz@linux.dev> wrote:
->
-> Hello,
->
-> I installed kernel 6.15.4 to find that my battery estimate on my handheld=
- gaming device was completely inaccurate, instead giving negative values an=
-d an unknown estimated battery life in multiple places.
->
-> After bisecting, I landed on "ACPI: battery: negate current when discharg=
-ing=E2=80=9D as the bad commit. This commit breaks not one but several user=
-space implementations of battery monitoring: Steam and MangoHud. Perhaps it=
- breaks more, but those are the two I have noticed so far.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Thanks for letting me know, I'm queuing up a revert of this one.
+On Tue,  1 Jul 2025 08:36:22 +0200 you wrote:
+> Examples should be complete and should not have a 'status' property,
+> especially a disabled one because this disables the dt_binding_check of
+> the example against the schema.  Dropping 'status' property shows
+> missing other properties - phy-mode and phy-handle.
+> 
+> Fixes: 114508a89ddc ("dt-bindings: net: Add support for Sophgo SG2044 dwmac")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] dt-bindings: net: sophgo,sg2044-dwmac: Drop status from the example
+    https://git.kernel.org/netdev/net/c/f030713e5abf
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
