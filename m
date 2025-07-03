@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4BDAF7916
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF9B7AF7BFD
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:30:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC18F584E5F
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7F5F4E0FF3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408A92EF9B8;
-	Thu,  3 Jul 2025 14:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B142F234C;
+	Thu,  3 Jul 2025 15:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7bisfzg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZdNOF+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6422EE996;
-	Thu,  3 Jul 2025 14:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9A42F2341;
+	Thu,  3 Jul 2025 15:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554472; cv=none; b=cTCM9jwqMC8HBseMoJuAygdy84wXCE9nxki443ymqfziUHsUETvIGY+j+9Z18WrLzWI+SD7BcJIHMMM9Y7pvENfQWTbATYgXGmZ454dkwFpIhRh8hZwGvvwvkFfawCo0AggVdSe8lHDXrwvSV80ZBVrHsvi5G42zdRJzkZO9sJ4=
+	t=1751556052; cv=none; b=ARV3+aw8Mp85uBRreeRYSIvIddznjfpHJOoB/kJunobpvqeo4QJNrQshX1FdhpdZw1BkP3/S5EKbQdYU1BRyAtB4MiFuAv7ujNJK8sIpbudn7hyknn4TLG79H+QVqahAI3RsBxZ37jHVs8GdeD7zQN9cLJvMHB8s/0Q6lh2AbfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554472; c=relaxed/simple;
-	bh=MwoFAKfIgAbpGto5ohT+pzZJ8qJPjXJtroI7jMy73eo=;
+	s=arc-20240116; t=1751556052; c=relaxed/simple;
+	bh=WLo4my6rQIfmzg+eaIsVjMY/hL//WUQOj/CaqvkIZIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ul8RCy40FnoN3LcDINpy47eU5n8p6zPL9bF5Y2tgBxWMb3pgaqdsHUxlp6bK9XFyBkiyAAkJfmOEMRly6rT8RUpy6YaqqhXy0prVsjwEdzNq0wG9pvCctWu6KQpGEVO9RtYz6PtvasL0iEbGTy1urpBZL1cMMwPX64LqNUjN5og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7bisfzg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650ECC4CEE3;
-	Thu,  3 Jul 2025 14:54:31 +0000 (UTC)
+	 MIME-Version; b=WOnHKERZO+1OE0E8JL5a4Z8ACI5dVoC3hMxO/w5CgH80/jvm6A1/nCRE6VjvFaI0d/FBNfdgnDbNIlHA8IV1VFyhu2Mz0iAhxm0KKNJW0j4lsWS/LrtmTOIU/3VYKRV6YmmK4eYrgyoTnKbEhWAg1v5tYeQwVPkg4kYVnbaGyBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZdNOF+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B03C4CEF4;
+	Thu,  3 Jul 2025 15:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554471;
-	bh=MwoFAKfIgAbpGto5ohT+pzZJ8qJPjXJtroI7jMy73eo=;
+	s=korg; t=1751556051;
+	bh=WLo4my6rQIfmzg+eaIsVjMY/hL//WUQOj/CaqvkIZIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7bisfzgFNC8NaiNJkLMSLLoF0Y+hKoRlEuhR6/uoeXuCX8zIPBTfXU86eOQCfr1L
-	 UngGv7kTZsFeoExhEvzdoCLRMgoXQ/8iJL2xelFBV46MMJRdgBu1Ld/samGjt/2eAf
-	 6ppo/2yMn/ZbzPG6gbsNZThnxbd7lxkZvnnwbMQM=
+	b=FZdNOF+D2+fsc0MJe4bGHWVcqwR5YEs+T4tthnN6VwsLu/mzcYap/DIv2+tK0h8mI
+	 qF5MQXPTHU98vT6XXnLM/sgSYVFLCGeS0x2QehuIEwp9KRaelCzGCtjE8rx+mz9PPY
+	 X51rkQfJKRwhDXAkVjUkpapUmpXfCskrwYt3hd3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jos Wang <joswang@lenovo.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Amit Sunil Dhamne <amitsd@google.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Long Li <longli@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 199/218] usb: typec: tcpm: PSSourceOffTimer timeout in PR_Swap enters ERROR_RECOVERY
+Subject: [PATCH 6.1 058/132] Drivers: hv: vmbus: Add utility function for querying ring size
 Date: Thu,  3 Jul 2025 16:42:27 +0200
-Message-ID: <20250703144004.172118009@linuxfoundation.org>
+Message-ID: <20250703143941.698791703@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-[ Upstream commit 659f5d55feb75782bd46cf130da3c1f240afe9ba ]
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-As PD2.0 spec ("6.5.6.2 PSSourceOffTimer")，the PSSourceOffTimer is
-used by the Policy Engine in Dual-Role Power device that is currently
-acting as a Sink to timeout on a PS_RDY Message during a Power Role
-Swap sequence. This condition leads to a Hard Reset for USB Type-A and
-Type-B Plugs and Error Recovery for Type-C plugs and return to USB
-Default Operation.
+[ Upstream commit e8c4bd6c6e6b7e7b416c42806981c2a81370001e ]
 
-Therefore, after PSSourceOffTimer timeout, the tcpm state machine should
-switch from PR_SWAP_SNK_SRC_SINK_OFF to ERROR_RECOVERY. This can also
-solve the test items in the USB power delivery compliance test:
-TEST.PD.PROT.SNK.12 PR_Swap – PSSourceOffTimer Timeout
+Add a function to query for the preferred ring buffer size of VMBus
+device. This will allow the drivers (eg. UIO) to allocate the most
+optimized ring buffer size for devices.
 
-[1] https://usb.org/document-library/usb-power-delivery-compliance-test-specification-0/USB_PD3_CTS_Q4_2025_OR.zip
-
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jos Wang <joswang@lenovo.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Amit Sunil Dhamne <amitsd@google.com>
-Link: https://lore.kernel.org/r/20250213134921.3798-1-joswang1221@gmail.com
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Link: https://lore.kernel.org/r/1711788723-8593-2-git-send-email-ssengar@linux.microsoft.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/hv/channel_mgmt.c | 15 ++++++++++++---
+ drivers/hv/hyperv_vmbus.h |  5 +++++
+ include/linux/hyperv.h    |  2 ++
+ 3 files changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 1d8e760df483c..9838a2c8c1b85 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -5566,8 +5566,7 @@ static void run_state_machine(struct tcpm_port *port)
- 		tcpm_set_auto_vbus_discharge_threshold(port, TYPEC_PWR_MODE_USB,
- 						       port->pps_data.active, 0);
- 		tcpm_set_charge(port, false);
--		tcpm_set_state(port, hard_reset_state(port),
--			       PD_T_PS_SOURCE_OFF);
-+		tcpm_set_state(port, ERROR_RECOVERY, PD_T_PS_SOURCE_OFF);
- 		break;
- 	case PR_SWAP_SNK_SRC_SOURCE_ON:
- 		tcpm_enable_auto_vbus_discharge(port, true);
+diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
+index d95e567a190d2..25e2958923af9 100644
+--- a/drivers/hv/channel_mgmt.c
++++ b/drivers/hv/channel_mgmt.c
+@@ -120,7 +120,9 @@ const struct vmbus_device vmbus_devs[] = {
+ 	},
+ 
+ 	/* File copy */
+-	{ .dev_type = HV_FCOPY,
++	/* fcopy always uses 16KB ring buffer size and is working well for last many years */
++	{ .pref_ring_size = 0x4000,
++	  .dev_type = HV_FCOPY,
+ 	  HV_FCOPY_GUID,
+ 	  .perf_device = false,
+ 	  .allowed_in_isolated = false,
+@@ -140,12 +142,19 @@ const struct vmbus_device vmbus_devs[] = {
+ 	  .allowed_in_isolated = false,
+ 	},
+ 
+-	/* Unknown GUID */
+-	{ .dev_type = HV_UNKNOWN,
++	/*
++	 * Unknown GUID
++	 * 64 KB ring buffer + 4 KB header should be sufficient size for any Hyper-V device apart
++	 * from HV_NIC and HV_SCSI. This case avoid the fallback for unknown devices to allocate
++	 * much bigger (2 MB) of ring size.
++	 */
++	{ .pref_ring_size = 0x11000,
++	  .dev_type = HV_UNKNOWN,
+ 	  .perf_device = false,
+ 	  .allowed_in_isolated = false,
+ 	},
+ };
++EXPORT_SYMBOL_GPL(vmbus_devs);
+ 
+ static const struct {
+ 	guid_t guid;
+diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
+index 4cff3997c3ccd..f039b110e98ce 100644
+--- a/drivers/hv/hyperv_vmbus.h
++++ b/drivers/hv/hyperv_vmbus.h
+@@ -412,6 +412,11 @@ static inline bool hv_is_perf_channel(struct vmbus_channel *channel)
+ 	return vmbus_devs[channel->device_id].perf_device;
+ }
+ 
++static inline size_t hv_dev_ring_size(struct vmbus_channel *channel)
++{
++	return vmbus_devs[channel->device_id].pref_ring_size;
++}
++
+ static inline bool hv_is_allocated_cpu(unsigned int cpu)
+ {
+ 	struct vmbus_channel *channel, *sc;
+diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
+index 80d876593caa9..43f778b6b9cda 100644
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -820,6 +820,8 @@ struct vmbus_requestor {
+ #define VMBUS_RQST_RESET (U64_MAX - 3)
+ 
+ struct vmbus_device {
++	/* preferred ring buffer size in KB, 0 means no preferred size for this device */
++	size_t pref_ring_size;
+ 	u16  dev_type;
+ 	guid_t guid;
+ 	bool perf_device;
 -- 
 2.39.5
 
