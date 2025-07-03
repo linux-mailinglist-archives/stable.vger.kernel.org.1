@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-160038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F11FAF7C07
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 903C1AF7B61
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B85166E498E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08E7B6E2255
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591202EE99E;
-	Thu,  3 Jul 2025 15:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18241C6FE9;
+	Thu,  3 Jul 2025 15:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkedZON1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7OIIP59"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3B122B8AB;
-	Thu,  3 Jul 2025 15:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9871624D5;
+	Thu,  3 Jul 2025 15:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556171; cv=none; b=e2CYRPRzycSpikIUMlrKzYMiY1KUthCSxFjWxuWBkx8uVy2wrrIa1T9gXbMusu81ToFYSmpqbldBbeRV80eBwk2laW63mGtPtpEJJ18uYYl13XEI4KRp+jI2pBl1aHGv5wvuMCImtqUc1oixv5+EL/x03nwuY26BewzsA/ExRZw=
+	t=1751555706; cv=none; b=XoFpOl2v4AqEOVtfYLw+S9XPsTChCrBdSiBkkhlC33d8rr/OwiOSapySPdwqAmpGdsLrA4zkjGDBJsqqBpd7t6Odzq5129qRSm5vyxXiSu2N5uEvG4B/lDaPfen3Zn3vSfP11Rk40SGlS0AcFKQ4UaESFtJQkqzerjAnNFWsgqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556171; c=relaxed/simple;
-	bh=G+d5zU5IK4v4xzlKuv/P65nXp+C3iKIWtkM/kXuegU4=;
+	s=arc-20240116; t=1751555706; c=relaxed/simple;
+	bh=rR8wrrPTey2g11zlNeru1bwM+SUNxabqiluy5LeRLsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aIldz6kk4bOwZrf9zb9f4wFbEtpNO7IWtRFJvwrEHxyXPoepUEGi3QXLxVc3kpUDyprZCIIbMqPq5QFKgCa+szeP0ucLvezKYy2V4abksHMSokI/1FBA3eBWb59I7oALkX5EJEQMGetzgAqWI9meOsZMOh5+rveeFYUajm7vjZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkedZON1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AA3C4CEE3;
-	Thu,  3 Jul 2025 15:22:50 +0000 (UTC)
+	 MIME-Version; b=V3cx1erH55om9Wy4ui/rwKy/fPffmR0HUYQF17P9mR1z/qjIvtFQX+Csakst5NSOHoEbnretZBu8Q+v3+PQbnacDaseG6Ci5Lz5p3iW3jYm0JOqMNCnF0APc5nPWzIAjuBB2TEHiFYVrFhDI/2wg7HkCS7+BlzMo2iqmmbh44uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7OIIP59; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038BCC4CEE3;
+	Thu,  3 Jul 2025 15:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556170;
-	bh=G+d5zU5IK4v4xzlKuv/P65nXp+C3iKIWtkM/kXuegU4=;
+	s=korg; t=1751555706;
+	bh=rR8wrrPTey2g11zlNeru1bwM+SUNxabqiluy5LeRLsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RkedZON16BHnf4mv+z6YsYVuW/y74ySPtSazqF/VFJoAFW+kxnn+IZ3C/bw1hhDVo
-	 EF9HCIZf6w5rnQuyhbzb4vHPCBwqjPrfd0X65NMK0JM0N0h129s1B2yKzV4te3uzCT
-	 CjELiXLoUCvEpuUJtxZz9xbeXYPhPVW4lS9Pi3eM=
+	b=x7OIIP59tfopK8lrkpfKCjoq6+unRDYdNv/zFlnSxtsASZ6/eR2lyBy8OM66btqHZ
+	 H3C0lrUZGqFhtc4pZTrB3HsikA+GDCnV8qxTN8LI0+MauBwLpWjTd4Dc0zcnBzm6wK
+	 PWjVfWFojoOUGevRbZpGyJE1uhGR06VtU1amTeRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Helge Deller <deller@gmx.de>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-parisc@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/132] tty: vt: make consw::con_switch() return a bool
-Date: Thu,  3 Jul 2025 16:42:36 +0200
-Message-ID: <20250703143942.044485578@linuxfoundation.org>
+Subject: [PATCH 6.6 094/139] smb: client: fix potential deadlock when reconnecting channels
+Date: Thu,  3 Jul 2025 16:42:37 +0200
+Message-ID: <20250703143944.832605810@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,195 +64,216 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit 8d5cc8eed738e3202379722295c626cba0849785 ]
+[ Upstream commit 711741f94ac3cf9f4e3aa73aa171e76d188c0819 ]
 
-The non-zero (true) return value from consw::con_switch() means a redraw
-is needed. So make this return type a bool explicitly instead of int.
-The latter might imply that -Eerrors are expected. They are not.
+Fix cifs_signal_cifsd_for_reconnect() to take the correct lock order
+and prevent the following deadlock from happening
 
-And document the hook.
+======================================================
+WARNING: possible circular locking dependency detected
+6.16.0-rc3-build2+ #1301 Tainted: G S      W
+------------------------------------------------------
+cifsd/6055 is trying to acquire lock:
+ffff88810ad56038 (&tcp_ses->srv_lock){+.+.}-{3:3}, at: cifs_signal_cifsd_for_reconnect+0x134/0x200
 
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-parisc@vger.kernel.org
-Tested-by: Helge Deller <deller@gmx.de> # parisc STI console
-Link: https://lore.kernel.org/r/20240122110401.7289-31-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 03bcbbb3995b ("dummycon: Trigger redraw when switching consoles with deferred takeover")
+but task is already holding lock:
+ffff888119c64330 (&ret_buf->chan_lock){+.+.}-{3:3}, at: cifs_signal_cifsd_for_reconnect+0xcf/0x200
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #2 (&ret_buf->chan_lock){+.+.}-{3:3}:
+       validate_chain+0x1cf/0x270
+       __lock_acquire+0x60e/0x780
+       lock_acquire.part.0+0xb4/0x1f0
+       _raw_spin_lock+0x2f/0x40
+       cifs_setup_session+0x81/0x4b0
+       cifs_get_smb_ses+0x771/0x900
+       cifs_mount_get_session+0x7e/0x170
+       cifs_mount+0x92/0x2d0
+       cifs_smb3_do_mount+0x161/0x460
+       smb3_get_tree+0x55/0x90
+       vfs_get_tree+0x46/0x180
+       do_new_mount+0x1b0/0x2e0
+       path_mount+0x6ee/0x740
+       do_mount+0x98/0xe0
+       __do_sys_mount+0x148/0x180
+       do_syscall_64+0xa4/0x260
+       entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+-> #1 (&ret_buf->ses_lock){+.+.}-{3:3}:
+       validate_chain+0x1cf/0x270
+       __lock_acquire+0x60e/0x780
+       lock_acquire.part.0+0xb4/0x1f0
+       _raw_spin_lock+0x2f/0x40
+       cifs_match_super+0x101/0x320
+       sget+0xab/0x270
+       cifs_smb3_do_mount+0x1e0/0x460
+       smb3_get_tree+0x55/0x90
+       vfs_get_tree+0x46/0x180
+       do_new_mount+0x1b0/0x2e0
+       path_mount+0x6ee/0x740
+       do_mount+0x98/0xe0
+       __do_sys_mount+0x148/0x180
+       do_syscall_64+0xa4/0x260
+       entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+-> #0 (&tcp_ses->srv_lock){+.+.}-{3:3}:
+       check_noncircular+0x95/0xc0
+       check_prev_add+0x115/0x2f0
+       validate_chain+0x1cf/0x270
+       __lock_acquire+0x60e/0x780
+       lock_acquire.part.0+0xb4/0x1f0
+       _raw_spin_lock+0x2f/0x40
+       cifs_signal_cifsd_for_reconnect+0x134/0x200
+       __cifs_reconnect+0x8f/0x500
+       cifs_handle_standard+0x112/0x280
+       cifs_demultiplex_thread+0x64d/0xbc0
+       kthread+0x2f7/0x310
+       ret_from_fork+0x2a/0x230
+       ret_from_fork_asm+0x1a/0x30
+
+other info that might help us debug this:
+
+Chain exists of:
+  &tcp_ses->srv_lock --> &ret_buf->ses_lock --> &ret_buf->chan_lock
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&ret_buf->chan_lock);
+                               lock(&ret_buf->ses_lock);
+                               lock(&ret_buf->chan_lock);
+  lock(&tcp_ses->srv_lock);
+
+ *** DEADLOCK ***
+
+3 locks held by cifsd/6055:
+ #0: ffffffff857de398 (&cifs_tcp_ses_lock){+.+.}-{3:3}, at: cifs_signal_cifsd_for_reconnect+0x7b/0x200
+ #1: ffff888119c64060 (&ret_buf->ses_lock){+.+.}-{3:3}, at: cifs_signal_cifsd_for_reconnect+0x9c/0x200
+ #2: ffff888119c64330 (&ret_buf->chan_lock){+.+.}-{3:3}, at: cifs_signal_cifsd_for_reconnect+0xcf/0x200
+
+Cc: linux-cifs@vger.kernel.org
+Reported-by: David Howells <dhowells@redhat.com>
+Fixes: d7d7a66aacd6 ("cifs: avoid use of global locks for high contention data")
+Reviewed-by: David Howells <dhowells@redhat.com>
+Tested-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vt/vt.c                 | 2 +-
- drivers/video/console/dummycon.c    | 4 ++--
- drivers/video/console/mdacon.c      | 4 ++--
- drivers/video/console/newport_con.c | 4 ++--
- drivers/video/console/sticon.c      | 4 ++--
- drivers/video/console/vgacon.c      | 4 ++--
- drivers/video/fbdev/core/fbcon.c    | 6 +++---
- include/linux/console.h             | 4 +++-
- 8 files changed, 17 insertions(+), 15 deletions(-)
+ fs/smb/client/cifsglob.h |  1 +
+ fs/smb/client/connect.c  | 58 +++++++++++++++++++++++++---------------
+ 2 files changed, 37 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index 609d2bac58d0b..ccfd9d93c10c5 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -1014,7 +1014,7 @@ void redraw_screen(struct vc_data *vc, int is_switch)
- 	}
- 
- 	if (redraw) {
--		int update;
-+		bool update;
- 		int old_was_color = vc->vc_can_do_color;
- 
- 		set_origin(vc);
-diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
-index 6918014b02408..d701f2b51f5b1 100644
---- a/drivers/video/console/dummycon.c
-+++ b/drivers/video/console/dummycon.c
-@@ -119,9 +119,9 @@ static bool dummycon_scroll(struct vc_data *vc, unsigned int top,
- 	return false;
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index c7da6bf2f44be..d776340ad91ce 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -677,6 +677,7 @@ inc_rfc1001_len(void *buf, int count)
+ struct TCP_Server_Info {
+ 	struct list_head tcp_ses_list;
+ 	struct list_head smb_ses_list;
++	struct list_head rlist; /* reconnect list */
+ 	spinlock_t srv_lock;  /* protect anything here that is not protected */
+ 	__u64 conn_id; /* connection identifier (useful for debugging) */
+ 	int srv_count; /* reference counter */
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 8fa5fe0a8c5c5..454420aa02220 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -140,6 +140,14 @@ static void smb2_query_server_interfaces(struct work_struct *work)
+ 			   (SMB_INTERFACE_POLL_INTERVAL * HZ));
  }
  
--static int dummycon_switch(struct vc_data *vc)
-+static bool dummycon_switch(struct vc_data *vc)
++#define set_need_reco(server) \
++do { \
++	spin_lock(&server->srv_lock); \
++	if (server->tcpStatus != CifsExiting) \
++		server->tcpStatus = CifsNeedReconnect; \
++	spin_unlock(&server->srv_lock); \
++} while (0)
++
+ /*
+  * Update the tcpStatus for the server.
+  * This is used to signal the cifsd thread to call cifs_reconnect
+@@ -153,39 +161,45 @@ void
+ cifs_signal_cifsd_for_reconnect(struct TCP_Server_Info *server,
+ 				bool all_channels)
  {
--	return 0;
-+	return false;
+-	struct TCP_Server_Info *pserver;
++	struct TCP_Server_Info *nserver;
+ 	struct cifs_ses *ses;
++	LIST_HEAD(reco);
+ 	int i;
+ 
+-	/* If server is a channel, select the primary channel */
+-	pserver = SERVER_IS_CHAN(server) ? server->primary_server : server;
+-
+ 	/* if we need to signal just this channel */
+ 	if (!all_channels) {
+-		spin_lock(&server->srv_lock);
+-		if (server->tcpStatus != CifsExiting)
+-			server->tcpStatus = CifsNeedReconnect;
+-		spin_unlock(&server->srv_lock);
++		set_need_reco(server);
+ 		return;
+ 	}
+ 
+-	spin_lock(&cifs_tcp_ses_lock);
+-	list_for_each_entry(ses, &pserver->smb_ses_list, smb_ses_list) {
+-		if (cifs_ses_exiting(ses))
+-			continue;
+-		spin_lock(&ses->chan_lock);
+-		for (i = 0; i < ses->chan_count; i++) {
+-			if (!ses->chans[i].server)
++	if (SERVER_IS_CHAN(server))
++		server = server->primary_server;
++	scoped_guard(spinlock, &cifs_tcp_ses_lock) {
++		set_need_reco(server);
++		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
++			spin_lock(&ses->ses_lock);
++			if (ses->ses_status == SES_EXITING) {
++				spin_unlock(&ses->ses_lock);
+ 				continue;
+-
+-			spin_lock(&ses->chans[i].server->srv_lock);
+-			if (ses->chans[i].server->tcpStatus != CifsExiting)
+-				ses->chans[i].server->tcpStatus = CifsNeedReconnect;
+-			spin_unlock(&ses->chans[i].server->srv_lock);
++			}
++			spin_lock(&ses->chan_lock);
++			for (i = 1; i < ses->chan_count; i++) {
++				nserver = ses->chans[i].server;
++				if (!nserver)
++					continue;
++				nserver->srv_count++;
++				list_add(&nserver->rlist, &reco);
++			}
++			spin_unlock(&ses->chan_lock);
++			spin_unlock(&ses->ses_lock);
+ 		}
+-		spin_unlock(&ses->chan_lock);
+ 	}
+-	spin_unlock(&cifs_tcp_ses_lock);
++
++	list_for_each_entry_safe(server, nserver, &reco, rlist) {
++		list_del_init(&server->rlist);
++		set_need_reco(server);
++		cifs_put_tcp_session(server, 0);
++	}
  }
  
  /*
-diff --git a/drivers/video/console/mdacon.c b/drivers/video/console/mdacon.c
-index 1ddbb6cd5b0ca..26b41a8f36c87 100644
---- a/drivers/video/console/mdacon.c
-+++ b/drivers/video/console/mdacon.c
-@@ -454,9 +454,9 @@ static void mdacon_clear(struct vc_data *c, unsigned int y, unsigned int x,
- 	scr_memsetw(dest, eattr, width * 2);
- }
- 
--static int mdacon_switch(struct vc_data *c)
-+static bool mdacon_switch(struct vc_data *c)
- {
--	return 1;	/* redrawing needed */
-+	return true;	/* redrawing needed */
- }
- 
- static int mdacon_blank(struct vc_data *c, int blank, int mode_switch)
-diff --git a/drivers/video/console/newport_con.c b/drivers/video/console/newport_con.c
-index 5dac00c825946..1ebb18bf10983 100644
---- a/drivers/video/console/newport_con.c
-+++ b/drivers/video/console/newport_con.c
-@@ -462,7 +462,7 @@ static void newport_cursor(struct vc_data *vc, int mode)
- 	}
- }
- 
--static int newport_switch(struct vc_data *vc)
-+static bool newport_switch(struct vc_data *vc)
- {
- 	static int logo_drawn = 0;
- 
-@@ -476,7 +476,7 @@ static int newport_switch(struct vc_data *vc)
- 		}
- 	}
- 
--	return 1;
-+	return true;
- }
- 
- static int newport_blank(struct vc_data *c, int blank, int mode_switch)
-diff --git a/drivers/video/console/sticon.c b/drivers/video/console/sticon.c
-index 58e983b18f1f4..6b82194a8ef36 100644
---- a/drivers/video/console/sticon.c
-+++ b/drivers/video/console/sticon.c
-@@ -309,9 +309,9 @@ static void sticon_clear(struct vc_data *conp, unsigned int sy, unsigned int sx,
- 	      conp->vc_video_erase_char, font_data[conp->vc_num]);
- }
- 
--static int sticon_switch(struct vc_data *conp)
-+static bool sticon_switch(struct vc_data *conp)
- {
--    return 1;	/* needs refreshing */
-+    return true;	/* needs refreshing */
- }
- 
- static int sticon_blank(struct vc_data *c, int blank, int mode_switch)
-diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
-index 6998e28441c97..81f27cd610271 100644
---- a/drivers/video/console/vgacon.c
-+++ b/drivers/video/console/vgacon.c
-@@ -595,7 +595,7 @@ static int vgacon_doresize(struct vc_data *c,
- 	return 0;
- }
- 
--static int vgacon_switch(struct vc_data *c)
-+static bool vgacon_switch(struct vc_data *c)
- {
- 	int x = c->vc_cols * VGA_FONTWIDTH;
- 	int y = c->vc_rows * c->vc_cell_height;
-@@ -624,7 +624,7 @@ static int vgacon_switch(struct vc_data *c)
- 			vgacon_doresize(c, c->vc_cols, c->vc_rows);
- 	}
- 
--	return 0;		/* Redrawing not needed */
-+	return false;		/* Redrawing not needed */
- }
- 
- static void vga_set_palette(struct vc_data *vc, const unsigned char *table)
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 3fd76dc6010b4..1a17274187112 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2073,7 +2073,7 @@ static int fbcon_resize(struct vc_data *vc, unsigned int width,
- 	return 0;
- }
- 
--static int fbcon_switch(struct vc_data *vc)
-+static bool fbcon_switch(struct vc_data *vc)
- {
- 	struct fb_info *info, *old_info = NULL;
- 	struct fbcon_ops *ops;
-@@ -2195,9 +2195,9 @@ static int fbcon_switch(struct vc_data *vc)
- 			      vc->vc_origin + vc->vc_size_row * vc->vc_top,
- 			      vc->vc_size_row * (vc->vc_bottom -
- 						 vc->vc_top) / 2);
--		return 0;
-+		return false;
- 	}
--	return 1;
-+	return true;
- }
- 
- static void fbcon_generic_blank(struct vc_data *vc, struct fb_info *info,
-diff --git a/include/linux/console.h b/include/linux/console.h
-index d7b45c60cf02f..ab8b19f6affab 100644
---- a/include/linux/console.h
-+++ b/include/linux/console.h
-@@ -40,6 +40,8 @@ enum vc_intensity;
-  * @con_scroll: move lines from @top to @bottom in direction @dir by @lines.
-  *		Return true if no generic handling should be done.
-  *		Invoked by csi_M and printing to the console.
-+ * @con_switch: notifier about the console switch; it is supposed to return
-+ *		true if a redraw is needed.
-  * @con_set_palette: sets the palette of the console to @table (optional)
-  * @con_scrolldelta: the contents of the console should be scrolled by @lines.
-  *		     Invoked by user. (optional)
-@@ -58,7 +60,7 @@ struct consw {
- 	bool	(*con_scroll)(struct vc_data *vc, unsigned int top,
- 			unsigned int bottom, enum con_scroll dir,
- 			unsigned int lines);
--	int	(*con_switch)(struct vc_data *vc);
-+	bool	(*con_switch)(struct vc_data *vc);
- 	int	(*con_blank)(struct vc_data *vc, int blank, int mode_switch);
- 	int	(*con_font_set)(struct vc_data *vc, struct console_font *font,
- 			unsigned int flags);
 -- 
 2.39.5
 
