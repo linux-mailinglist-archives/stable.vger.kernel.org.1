@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2C4AF7860
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:49:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5358BAF79A3
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91E321C859BF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 075B8169C21
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671F02EE29D;
-	Thu,  3 Jul 2025 14:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3DF2EF292;
+	Thu,  3 Jul 2025 15:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9JhnyIv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udTy/sL1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24430126BFF;
-	Thu,  3 Jul 2025 14:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1BF2EE97A;
+	Thu,  3 Jul 2025 15:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554103; cv=none; b=JY+q6grfvf10cmNm57atray8aUgUJHa83S3DjXANAcL14fU0tycZQm/m4M+WxrEgnEfu622PlQYy0GqxnhEDV3BOPkxvCXEhoYNNlKqGv780aq88T+vai6/Mt5BPPxTUVMChQNJIU3TDLfSg0IDizw1ogtxXcMQzDYLpjVmxL4I=
+	t=1751554883; cv=none; b=gTsJb+i4THeVsNg+9LkEaRkB6zhJ0lfZHWNwBIlzK3Dy0jmWOcTj2nd/JN74u4lK6fMyUO8+GzUkIFkehjcPFKtiNdH48HkenAQ2R+mSjwnzuvlfV7ZNIDdq1Tak1VLTYrYw/aJWVhZZBUwM0OUF3orgFhGKDim6ISd6QUY48eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554103; c=relaxed/simple;
-	bh=0VSxlXCaAJqlAnTg7z44lAvqQmVGdWjsMHmio2vFeOI=;
+	s=arc-20240116; t=1751554883; c=relaxed/simple;
+	bh=9+Csdcs2bpf6nTn5qi+CORergUYLA673fYpCrpwmoFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j133KDG1Mf6as1oUrbK/kDnyyUth4jR4XF8OswolKC6SJapVpnokp1+tMWUSe5EfyS4pOIJ4bQg2jwvbXXrwJc9aUw121e6/xrb5LHUMWm+naOUnZqB2FuJe2lzxQwRl1I38Io3V1dt6g+bnmISjJ3qP/UKts/NIs1zW34daf/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9JhnyIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892E4C4CEE3;
-	Thu,  3 Jul 2025 14:48:22 +0000 (UTC)
+	 MIME-Version; b=CpnBvlxvy5LvUbcwHYhW8bynNzsOFV3K5xph973oh5KVTMqgypNtV23cJPJKgY4aLroRZ9J/aZs925Xd77/AKiL+xyS/czqXrFU5judDkH8PsXxaA5UQvTYydtCZq8yrXE5liRoeCpv3no8IdrzViEBzTz6w2rh7fQvu8OrPUYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udTy/sL1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E095C4CEEE;
+	Thu,  3 Jul 2025 15:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554103;
-	bh=0VSxlXCaAJqlAnTg7z44lAvqQmVGdWjsMHmio2vFeOI=;
+	s=korg; t=1751554882;
+	bh=9+Csdcs2bpf6nTn5qi+CORergUYLA673fYpCrpwmoFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9JhnyIvPt9YKNQlu+27SPferjTdsQMq8TceYb/GoU809cK8pG4QVOw86sP/lziV+
-	 QGKZ+DJivm4mITqoj7cTlVkxY25fzlQSd2n7QUZ5KHFWBWIMrciU7Tg1wvfk9aI9yW
-	 j6dHpD2lBAVNkG147YRt3EkeLv+E3DupJz0pTHBg=
+	b=udTy/sL1nnFIdXON8yILcUtkEaoVg5lJ80AEsjiziX2+qCYezUMNuAVAtBr71nUt/
+	 pRsSfsZ+WcTAzlutX+DExf7KW01HXyybCW5aCebfsu7D6dsJbJkB8416TDV0boenSc
+	 0aFKvjKDoYxYafNUdWZDqf3XVLPjdd0mSlMmQzac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 081/218] mm/damon/sysfs-schemes: free old damon_sysfs_scheme_filter->memcg_path on write
+	Andy Yang <andyybtc79@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.15 109/263] ata: ahci: Use correct DMI identifier for ASUSPRO-D840SA LPM quirk
 Date: Thu,  3 Jul 2025 16:40:29 +0200
-Message-ID: <20250703143959.182375827@linuxfoundation.org>
+Message-ID: <20250703144008.706999200@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit 4f489fe6afb395dbc79840efa3c05440b760d883 upstream.
+commit 3e0809b1664b9dc650d9dbca9a2d3ac690d4f661 upstream.
 
-memcg_path_store() assigns a newly allocated memory buffer to
-filter->memcg_path, without deallocating the previously allocated and
-assigned memory buffer.  As a result, users can leak kernel memory by
-continuously writing a data to memcg_path DAMOS sysfs file.  Fix the leak
-by deallocating the previously set memory buffer.
+ASUS store the board name in DMI_PRODUCT_NAME rather than
+DMI_PRODUCT_VERSION. (Apparently it is only Lenovo that stores the
+model-name in DMI_PRODUCT_VERSION.)
 
-Link: https://lkml.kernel.org/r/20250619183608.6647-2-sj@kernel.org
-Fixes: 7ee161f18b5d ("mm/damon/sysfs-schemes: implement filter directory")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>		[6.3.x]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Use the correct DMI identifier, DMI_PRODUCT_NAME, to match the
+ASUSPRO-D840SA board, such that the quirk actually gets applied.
+
+Cc: stable@vger.kernel.org
+Reported-by: Andy Yang <andyybtc79@gmail.com>
+Tested-by: Andy Yang <andyybtc79@gmail.com>
+Closes: https://lore.kernel.org/linux-ide/aFb3wXAwJSSJUB7o@ryzen/
+Fixes: b5acc3628898 ("ata: ahci: Disallow LPM for ASUSPRO-D840SA motherboard")
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250624074029.963028-2-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs-schemes.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/ata/ahci.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -423,6 +423,7 @@ static ssize_t memcg_path_store(struct k
- 		return -ENOMEM;
- 
- 	strscpy(path, buf, count + 1);
-+	kfree(filter->memcg_path);
- 	filter->memcg_path = path;
- 	return count;
- }
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1456,7 +1456,7 @@ static bool ahci_broken_lpm(struct pci_d
+ 		{
+ 			.matches = {
+ 				DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-				DMI_MATCH(DMI_PRODUCT_VERSION, "ASUSPRO D840MB_M840SA"),
++				DMI_MATCH(DMI_PRODUCT_NAME, "ASUSPRO D840MB_M840SA"),
+ 			},
+ 			/* 320 is broken, there is no known good version. */
+ 		},
 
 
 
