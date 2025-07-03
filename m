@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-159774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6AEAF7A71
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:13:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE766AF7C2E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27E491888E85
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:08:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42D941891161
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4D62EA149;
-	Thu,  3 Jul 2025 15:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5D22EFD94;
+	Thu,  3 Jul 2025 15:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MO7he9l4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lo25iyHf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888042EE99C;
-	Thu,  3 Jul 2025 15:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220FA2EF9DD;
+	Thu,  3 Jul 2025 15:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555305; cv=none; b=FNG71hEydOfHPCIPLBYyRbTN77gOKHSk88Xtmrose3cutuEfAERpNT8mySJorTNdxLoUZgEmArcQ8JwGMRe/KihH44+hbM1Op/Pi1PslReV7lUGfOd0Xj1S5qCAVLgzn7oZq17NDBIhyeG7If9HkfTH10h6Lyg7PIFt1bpujarg=
+	t=1751556081; cv=none; b=Av9soT665n8B1FzWiYXvaTkap0CNYMeFIjGo0M9GZT+QlA+B3p6ZT9O/D4PCVLSVswJsY9n+9JOSWech43ub0dNLYrkVOR5Vt8F5kc7mZvcDNvAIHimd8yaR2Hpv+MJrE1ZKjrPj7yESTk4tLr5e6770S6GLCvXWYaI7MFSSAr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555305; c=relaxed/simple;
-	bh=+KfMDHUlOiJyFFc3Xa1Eb4UKlz5xucRAJVyMquro7I0=;
+	s=arc-20240116; t=1751556081; c=relaxed/simple;
+	bh=m+rFs8uRVgMigpoF1LOEUCtCHQgizi1LVIeyOz/pBk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BjbyWyRE2uNIuFAcoqLCrwy3qOjMEv24b0+6+rl8YMUtHeYWMCgyNDswCLv8iB8n5S5iMigjz8DQ5B2ImBtrcIA8I3cnTLWqsWnqKc+oHwuDr0Pnq9WnDjU25QC0SMUQZvEdN8/9sw4KNFOLbzVg516wE2mJFbcl+4RrKygyYW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MO7he9l4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB18BC4CEF2;
-	Thu,  3 Jul 2025 15:08:24 +0000 (UTC)
+	 MIME-Version; b=fP43tcqFSvKCC6W54xYx3Sc8yUvtjUOdhlAIVHTTC+IGDq+LkWr78wpMmqvtoy/C0pNI6RJy/UVxF6JURptrhR+xTd0rioXTObi6qu23FFQjx1ljs/YXtA5a+YrCDMAkM6WRqDtB0kN20/OB0Jc/6yNa6Xby3JSBKiEfwDXq/tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lo25iyHf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C84C4CEED;
+	Thu,  3 Jul 2025 15:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555305;
-	bh=+KfMDHUlOiJyFFc3Xa1Eb4UKlz5xucRAJVyMquro7I0=;
+	s=korg; t=1751556081;
+	bh=m+rFs8uRVgMigpoF1LOEUCtCHQgizi1LVIeyOz/pBk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MO7he9l4S4m7Ymg1jXp0WSgZF/jC52eCkZN5SSM0F0Pt4N3TZBRIC8Wz1OR0dI2/i
-	 34aSbPpsKapc5trVVYLS/PByK0GsN0Lbs22aAINc6dpYhQQij6/JKoIV58w6dBa69M
-	 fD5at/OwmqQX353OeszFI0R3Na/d7ngsXOy092zM=
+	b=lo25iyHfvvgzFRRLagwh0MkYgMT3RL73CqcVVjvFkJpmRxdK9MAYFIs8wqUyL5+g0
+	 1EerW/spuKfBmcDhOP4wT6DzNas/G1L64fWRiDusilTYKclyM5yMquwE68y9WwW/aM
+	 quqde0UcL793a+TgeSN8IYPvz4gQeWykaAANI2oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Cruise Hung <cruise.hung@amd.com>,
-	Peichen Huang <PeiChen.Huang@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.15 238/263] drm/amd/display: Add dc cap for dp tunneling
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 069/132] af_unix: Dont call skb_get() for OOB skb.
 Date: Thu,  3 Jul 2025 16:42:38 +0200
-Message-ID: <20250703144013.950995750@linuxfoundation.org>
+Message-ID: <20250703143942.130031306@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,192 +62,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peichen Huang <PeiChen.Huang@amd.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 3251b69b7efb82eba24c9e168a6142a3078de72f upstream.
+[ Upstream commit 8594d9b85c07f05e431bd07e895c2a3ad9b85d6f ]
 
-[WHAT]
-1. add dc cap for dp tunneling
-2. add function to get index of host router
+Since introduced, OOB skb holds an additional reference count with no
+special reason and caused many issues.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Cruise Hung <cruise.hung@amd.com>
-Signed-off-by: Peichen Huang <PeiChen.Huang@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 29e178d13979cf6fdb42c5fe2dfec2da2306c4ad)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also, kfree_skb() and consume_skb() are used to decrement the count,
+which is confusing.
+
+Let's drop the unnecessary skb_get() in queue_oob() and corresponding
+kfree_skb(), consume_skb(), and skb_unref().
+
+Now unix_sk(sk)->oob_skb is just a pointer to skb in the receive queue,
+so special handing is no longer needed in GC.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20240816233921.57800-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 32ca245464e1 ("af_unix: Don't leave consecutive consumed OOB skbs.")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c                         |   33 ++++++++++
- drivers/gpu/drm/amd/display/dc/dc.h                              |    8 ++
- drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c   |    3 
- drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c |    3 
- drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c   |    3 
- drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c |    3 
- drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c   |    3 
- 7 files changed, 55 insertions(+), 1 deletion(-)
+ net/unix/af_unix.c | 27 +++++----------------------
+ net/unix/garbage.c | 24 +++---------------------
+ 2 files changed, 8 insertions(+), 43 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -239,6 +239,7 @@ static bool create_links(
- 	DC_LOG_DC("BIOS object table - end");
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 79b783a70c87d..9ef6011a055b1 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -604,10 +604,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
+ 	unix_state_unlock(sk);
  
- 	/* Create a link for each usb4 dpia port */
-+	dc->lowest_dpia_link_index = MAX_LINKS;
- 	for (i = 0; i < dc->res_pool->usb4_dpia_count; i++) {
- 		struct link_init_data link_init_params = {0};
- 		struct dc_link *link;
-@@ -251,6 +252,9 @@ static bool create_links(
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+-	if (u->oob_skb) {
+-		kfree_skb(u->oob_skb);
+-		u->oob_skb = NULL;
+-	}
++	u->oob_skb = NULL;
+ #endif
  
- 		link = dc->link_srv->create_link(&link_init_params);
- 		if (link) {
-+			if (dc->lowest_dpia_link_index > dc->link_count)
-+				dc->lowest_dpia_link_index = dc->link_count;
+ 	wake_up_interruptible_all(&u->peer_wait);
+@@ -2133,13 +2130,9 @@ static int queue_oob(struct socket *sock, struct msghdr *msg, struct sock *other
+ 	}
+ 
+ 	maybe_add_creds(skb, sock, other);
+-	skb_get(skb);
+-
+ 	scm_stat_add(other, skb);
+ 
+ 	spin_lock(&other->sk_receive_queue.lock);
+-	if (ousk->oob_skb)
+-		consume_skb(ousk->oob_skb);
+ 	WRITE_ONCE(ousk->oob_skb, skb);
+ 	__skb_queue_tail(&other->sk_receive_queue, skb);
+ 	spin_unlock(&other->sk_receive_queue.lock);
+@@ -2640,8 +2633,6 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
+ 
+ 	if (!(state->flags & MSG_PEEK))
+ 		WRITE_ONCE(u->oob_skb, NULL);
+-	else
+-		skb_get(oob_skb);
+ 
+ 	spin_unlock(&sk->sk_receive_queue.lock);
+ 	unix_state_unlock(sk);
+@@ -2651,8 +2642,6 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
+ 	if (!(state->flags & MSG_PEEK))
+ 		UNIXCB(oob_skb).consumed += 1;
+ 
+-	consume_skb(oob_skb);
+-
+ 	mutex_unlock(&u->iolock);
+ 
+ 	if (chunk < 0)
+@@ -2680,12 +2669,10 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+ 			if (copied) {
+ 				skb = NULL;
+ 			} else if (!(flags & MSG_PEEK)) {
+-				if (sock_flag(sk, SOCK_URGINLINE)) {
+-					WRITE_ONCE(u->oob_skb, NULL);
+-					consume_skb(skb);
+-				} else {
++				WRITE_ONCE(u->oob_skb, NULL);
 +
- 			dc->links[dc->link_count] = link;
- 			link->dc = dc;
- 			++dc->link_count;
-@@ -6247,6 +6251,35 @@ struct dc_power_profile dc_get_power_pro
- 		profile.power_level = dc->res_pool->funcs->get_power_profile(context);
- 	return profile;
++				if (!sock_flag(sk, SOCK_URGINLINE)) {
+ 					__skb_unlink(skb, &sk->sk_receive_queue);
+-					WRITE_ONCE(u->oob_skb, NULL);
+ 					unlinked_skb = skb;
+ 					skb = skb_peek(&sk->sk_receive_queue);
+ 				}
+@@ -2696,10 +2683,7 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+ 
+ 		spin_unlock(&sk->sk_receive_queue.lock);
+ 
+-		if (unlinked_skb) {
+-			WARN_ON_ONCE(skb_unref(unlinked_skb));
+-			kfree_skb(unlinked_skb);
+-		}
++		kfree_skb(unlinked_skb);
+ 	}
+ 	return skb;
  }
-+/**
-+ ***********************************************************************************************
-+ * dc_get_host_router_index: Get index of host router from a dpia link
-+ *
-+ * This function return a host router index of the target link. If the target link is dpia link.
-+ *
-+ * @param [in] link: target link
-+ * @param [out] host_router_index: host router index of the target link
-+ *
-+ * @return: true if the host router index is found and valid.
-+ *
-+ ***********************************************************************************************
-+ */
-+bool dc_get_host_router_index(const struct dc_link *link, unsigned int *host_router_index)
-+{
-+	struct dc *dc = link->ctx->dc;
-+
-+	if (link->ep_type != DISPLAY_ENDPOINT_USB4_DPIA)
-+		return false;
-+
-+	if (link->link_index < dc->lowest_dpia_link_index)
-+		return false;
-+
-+	*host_router_index = (link->link_index - dc->lowest_dpia_link_index) / dc->caps.num_of_dpias_per_host_router;
-+	if (*host_router_index < dc->caps.num_of_host_routers)
-+		return true;
-+	else
-+		return false;
-+}
+@@ -2742,7 +2726,6 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ 		unix_state_unlock(sk);
  
- /*
-  **********************************************************************************
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -66,7 +66,8 @@ struct dmub_notification;
- #define MAX_STREAMS 6
- #define MIN_VIEWPORT_SIZE 12
- #define MAX_NUM_EDP 2
--#define MAX_HOST_ROUTERS_NUM 2
-+#define MAX_HOST_ROUTERS_NUM 3
-+#define MAX_DPIA_PER_HOST_ROUTER 2
+ 		if (drop) {
+-			WARN_ON_ONCE(skb_unref(skb));
+ 			kfree_skb(skb);
+ 			return -EAGAIN;
+ 		}
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index 23efb78fe9ef4..0068e758be4dd 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -337,23 +337,6 @@ static bool unix_vertex_dead(struct unix_vertex *vertex)
+ 	return true;
+ }
  
- /* Display Core Interfaces */
- struct dc_versions {
-@@ -303,6 +304,8 @@ struct dc_caps {
- 	/* Conservative limit for DCC cases which require ODM4:1 to support*/
- 	uint32_t dcc_plane_width_limit;
- 	struct dc_scl_caps scl_caps;
-+	uint8_t num_of_host_routers;
-+	uint8_t num_of_dpias_per_host_router;
- };
+-enum unix_recv_queue_lock_class {
+-	U_RECVQ_LOCK_NORMAL,
+-	U_RECVQ_LOCK_EMBRYO,
+-};
+-
+-static void unix_collect_queue(struct unix_sock *u, struct sk_buff_head *hitlist)
+-{
+-	skb_queue_splice_init(&u->sk.sk_receive_queue, hitlist);
+-
+-#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+-	if (u->oob_skb) {
+-		WARN_ON_ONCE(skb_unref(u->oob_skb));
+-		u->oob_skb = NULL;
+-	}
+-#endif
+-}
+-
+ static void unix_collect_skb(struct list_head *scc, struct sk_buff_head *hitlist)
+ {
+ 	struct unix_vertex *vertex;
+@@ -375,13 +358,12 @@ static void unix_collect_skb(struct list_head *scc, struct sk_buff_head *hitlist
+ 			skb_queue_walk(queue, skb) {
+ 				struct sk_buff_head *embryo_queue = &skb->sk->sk_receive_queue;
  
- struct dc_bug_wa {
-@@ -1431,6 +1434,7 @@ struct dc {
+-				/* listener -> embryo order, the inversion never happens. */
+-				spin_lock_nested(&embryo_queue->lock, U_RECVQ_LOCK_EMBRYO);
+-				unix_collect_queue(unix_sk(skb->sk), hitlist);
++				spin_lock(&embryo_queue->lock);
++				skb_queue_splice_init(embryo_queue, hitlist);
+ 				spin_unlock(&embryo_queue->lock);
+ 			}
+ 		} else {
+-			unix_collect_queue(u, hitlist);
++			skb_queue_splice_init(queue, hitlist);
+ 		}
  
- 	uint8_t link_count;
- 	struct dc_link *links[MAX_LINKS];
-+	uint8_t lowest_dpia_link_index;
- 	struct link_service *link_srv;
- 
- 	struct dc_state *current_state;
-@@ -2586,6 +2590,8 @@ struct dc_power_profile dc_get_power_pro
- 
- unsigned int dc_get_det_buffer_size_from_state(const struct dc_state *context);
- 
-+bool dc_get_host_router_index(const struct dc_link *link, unsigned int *host_router_index);
-+
- /* DSC Interfaces */
- #include "dc_dsc.h"
- 
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
-@@ -1954,6 +1954,9 @@ static bool dcn31_resource_construct(
- 	dc->caps.color.mpc.ogam_rom_caps.hlg = 0;
- 	dc->caps.color.mpc.ocsc = 1;
- 
-+	dc->caps.num_of_host_routers = 2;
-+	dc->caps.num_of_dpias_per_host_router = 2;
-+
- 	/* Use pipe context based otg sync logic */
- 	dc->config.use_pipe_ctx_sync_logic = true;
- 	dc->config.disable_hbr_audio_dp2 = true;
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-@@ -1885,6 +1885,9 @@ static bool dcn314_resource_construct(
- 
- 	dc->caps.max_disp_clock_khz_at_vmin = 650000;
- 
-+	dc->caps.num_of_host_routers = 2;
-+	dc->caps.num_of_dpias_per_host_router = 2;
-+
- 	/* Use pipe context based otg sync logic */
- 	dc->config.use_pipe_ctx_sync_logic = true;
- 
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-@@ -1894,6 +1894,9 @@ static bool dcn35_resource_construct(
- 	dc->caps.color.mpc.ogam_rom_caps.hlg = 0;
- 	dc->caps.color.mpc.ocsc = 1;
- 
-+	dc->caps.num_of_host_routers = 2;
-+	dc->caps.num_of_dpias_per_host_router = 2;
-+
- 	/* max_disp_clock_khz_at_vmin is slightly lower than the STA value in order
- 	 * to provide some margin.
- 	 * It's expected for furture ASIC to have equal or higher value, in order to
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-@@ -1866,6 +1866,9 @@ static bool dcn351_resource_construct(
- 	dc->caps.color.mpc.ogam_rom_caps.hlg = 0;
- 	dc->caps.color.mpc.ocsc = 1;
- 
-+	dc->caps.num_of_host_routers = 2;
-+	dc->caps.num_of_dpias_per_host_router = 2;
-+
- 	/* max_disp_clock_khz_at_vmin is slightly lower than the STA value in order
- 	 * to provide some margin.
- 	 * It's expected for furture ASIC to have equal or higher value, in order to
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
-@@ -1867,6 +1867,9 @@ static bool dcn36_resource_construct(
- 	dc->caps.color.mpc.ogam_rom_caps.hlg = 0;
- 	dc->caps.color.mpc.ocsc = 1;
- 
-+	dc->caps.num_of_host_routers = 2;
-+	dc->caps.num_of_dpias_per_host_router = 2;
-+
- 	/* max_disp_clock_khz_at_vmin is slightly lower than the STA value in order
- 	 * to provide some margin.
- 	 * It's expected for furture ASIC to have equal or higher value, in order to
+ 		spin_unlock(&queue->lock);
+-- 
+2.39.5
+
 
 
 
