@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-159958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC708AF7BB7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:27:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00AC3AF7AD6
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:18:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB6D24E5318
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A778317867A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A653C221FD4;
-	Thu,  3 Jul 2025 15:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CE02EFDB8;
+	Thu,  3 Jul 2025 15:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHsN5P/h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vudo9qDj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6465886348;
-	Thu,  3 Jul 2025 15:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536532F0022;
+	Thu,  3 Jul 2025 15:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555913; cv=none; b=bLuIGdB/z87TmxRSKlw7nXTHYuKzXMdNASugNJ7jP0I3Muhn045PbTUqWRKpYkTgiJKED7tfNDvw6THJXApij/cN5G6KOCWxrRt8Kmx0kIq5WJm1eBcodMXNbaPFsBK085Apq+YTLCUmsPkjT64Y7TTichVEyfMzrmqLZb78rOs=
+	t=1751555535; cv=none; b=bcL2o1Ughpasyx/NJqT20GgvoLbD1by5A/lDLOLyEC06v+OWxB5cZ8mWNlJ5yzi1OnVX6eMtgAsg0oyGaytrg8n6rDzg9tLJg6OyT+NcH/egM5Pg+65O7T/K8Xf2bN1Do4qrcvv/qrDVRaeYVG5K1mMrMKx7+4JOXR0anKigqEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555913; c=relaxed/simple;
-	bh=DIfDpGnW18A7WGSxhH+hyfwDEg2U5ZdenoZlzartHQQ=;
+	s=arc-20240116; t=1751555535; c=relaxed/simple;
+	bh=Gp6mEgD+g/e8vCOvwhR2GzZMWke07rBwJMLyUgwxkZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atzaoE/8KQGlwYNGAmHrN5RG9U+ChjxEGxE3cyT79ii0dGFoQJb3MkM7H3vNt14z3TrlrhBeGxdOhpFaH5bzq9AiqA7+VZV5P1v/POBZ5DJEO0PlrLiTjh6+eWOjs2wyYD8VtG+X9TXiOMiqGbmrMVvWyrudZQnSy7674QKCsW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHsN5P/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7764C4CEE3;
-	Thu,  3 Jul 2025 15:18:32 +0000 (UTC)
+	 MIME-Version; b=EvpjxBUGrd556SQMFTvt3w7XPXUZ6v7Xo7hC/OKhV0CiaeQ4m2evpTN2JP5AZ32T+w7HV6K8q8ArY89jLtxyNSbG6jDq38wxVyTA+AMAscr+DaqMsH6p1efbRMLjL6kelDKi4ZV+XMTRl3TN4U7f96Z668G+IXFSzYax/veWE1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vudo9qDj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84672C4CEEE;
+	Thu,  3 Jul 2025 15:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555913;
-	bh=DIfDpGnW18A7WGSxhH+hyfwDEg2U5ZdenoZlzartHQQ=;
+	s=korg; t=1751555535;
+	bh=Gp6mEgD+g/e8vCOvwhR2GzZMWke07rBwJMLyUgwxkZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lHsN5P/haGD3iIbM2XHDBx+S2rGO/2ixV06CrWrJPcrMhzW3oBHNTOQL2a0qVBJ5r
-	 t/XjitPBXAZZgjxcldxDs487w2QdPY3kWZ/b7puFXlj5Ln9+5Tcp6NK+G7k67V87vV
-	 /cPetnM7l/tj9DTSmxpLnEVMYXC5WLlfbZo7pAgk=
+	b=vudo9qDjZI8COr0y7JfbuxtQtxvERmNRLnLp+Bd0p4c1yfCYlTqMRGGxD8JjhEEkP
+	 eaf3BYQi8kabrPS7Ftq+wDkML9VKo7M41MYCqvY3E3vcVcBcubdxVy1PAYe1r/8Dhh
+	 C2j/58HrVXEW3kL+ezJxKiYgv/kNGuPOG/YZftjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linggang Zeng <linggang.zeng@easystack.cn>,
-	Mingzhe Zou <mingzhe.zou@easystack.cn>,
-	Coly Li <colyli@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Can Guo <quic_cang@quicinc.com>,
+	Ziqi Chen <quic_ziqichen@quicinc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/132] bcache: fix NULL pointer in cache_set_flush()
-Date: Thu,  3 Jul 2025 16:41:46 +0200
-Message-ID: <20250703143940.074911210@linuxfoundation.org>
+Subject: [PATCH 6.6 044/139] scsi: ufs: core: Dont perform UFS clkscaling during host async scan
+Date: Thu,  3 Jul 2025 16:41:47 +0200
+Message-ID: <20250703143942.896638131@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,153 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linggang Zeng <linggang.zeng@easystack.cn>
+From: Ziqi Chen <quic_ziqichen@quicinc.com>
 
-[ Upstream commit 1e46ed947ec658f89f1a910d880cd05e42d3763e ]
+[ Upstream commit e97633492f5a3eca7b3ff03b4ef6f993017f7955 ]
 
-1. LINE#1794 - LINE#1887 is some codes about function of
-   bch_cache_set_alloc().
-2. LINE#2078 - LINE#2142 is some codes about function of
-   register_cache_set().
-3. register_cache_set() will call bch_cache_set_alloc() in LINE#2098.
+When preparing for UFS clock scaling, the UFS driver will quiesce all
+sdevs queues in the UFS SCSI host tagset list and then unquiesce them in
+ufshcd_clock_scaling_unprepare(). If the UFS SCSI host async scan is in
+progress at this time, some LUs may be added to the tagset list between
+UFS clkscale prepare and unprepare. This can cause two issues:
 
- 1794 struct cache_set *bch_cache_set_alloc(struct cache_sb *sb)
- 1795 {
- ...
- 1860         if (!(c->devices = kcalloc(c->nr_uuids, sizeof(void *), GFP_KERNEL)) ||
- 1861             mempool_init_slab_pool(&c->search, 32, bch_search_cache) ||
- 1862             mempool_init_kmalloc_pool(&c->bio_meta, 2,
- 1863                                 sizeof(struct bbio) + sizeof(struct bio_vec) *
- 1864                                 bucket_pages(c)) ||
- 1865             mempool_init_kmalloc_pool(&c->fill_iter, 1, iter_size) ||
- 1866             bioset_init(&c->bio_split, 4, offsetof(struct bbio, bio),
- 1867                         BIOSET_NEED_BVECS|BIOSET_NEED_RESCUER) ||
- 1868             !(c->uuids = alloc_bucket_pages(GFP_KERNEL, c)) ||
- 1869             !(c->moving_gc_wq = alloc_workqueue("bcache_gc",
- 1870                                                 WQ_MEM_RECLAIM, 0)) ||
- 1871             bch_journal_alloc(c) ||
- 1872             bch_btree_cache_alloc(c) ||
- 1873             bch_open_buckets_alloc(c) ||
- 1874             bch_bset_sort_state_init(&c->sort, ilog2(c->btree_pages)))
- 1875                 goto err;
-                      ^^^^^^^^
- 1876
- ...
- 1883         return c;
- 1884 err:
- 1885         bch_cache_set_unregister(c);
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
- 1886         return NULL;
- 1887 }
- ...
- 2078 static const char *register_cache_set(struct cache *ca)
- 2079 {
- ...
- 2098         c = bch_cache_set_alloc(&ca->sb);
- 2099         if (!c)
- 2100                 return err;
-                      ^^^^^^^^^^
- ...
- 2128         ca->set = c;
- 2129         ca->set->cache[ca->sb.nr_this_dev] = ca;
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- ...
- 2138         return NULL;
- 2139 err:
- 2140         bch_cache_set_unregister(c);
- 2141         return err;
- 2142 }
+1. During clock scaling, there may be I/O requests issued through new
+added queues that have not been quiesced, leading to task abort issue.
 
-(1) If LINE#1860 - LINE#1874 is true, then do 'goto err'(LINE#1875) and
-    call bch_cache_set_unregister()(LINE#1885).
-(2) As (1) return NULL(LINE#1886), LINE#2098 - LINE#2100 would return.
-(3) As (2) has returned, LINE#2128 - LINE#2129 would do *not* give the
-    value to c->cache[], it means that c->cache[] is NULL.
+2. These new added queues that have not been quiesced will be unquiesced
+as well when UFS clkscale is unprepared, resulting in warning prints.
 
-LINE#1624 - LINE#1665 is some codes about function of cache_set_flush().
-As (1), in LINE#1885 call
-bch_cache_set_unregister()
----> bch_cache_set_stop()
-     ---> closure_queue()
-          -.-> cache_set_flush() (as below LINE#1624)
+Therefore, use the mutex lock scan_mutex in
+ufshcd_clock_scaling_prepare() and ufshcd_clock_scaling_unprepare() to
+protect it.
 
- 1624 static void cache_set_flush(struct closure *cl)
- 1625 {
- ...
- 1654         for_each_cache(ca, c, i)
- 1655                 if (ca->alloc_thread)
-                          ^^
- 1656                         kthread_stop(ca->alloc_thread);
- ...
- 1665 }
-
-(4) In LINE#1655 ca is NULL(see (3)) in cache_set_flush() then the
-    kernel crash occurred as below:
-[  846.712887] bcache: register_cache() error drbd6: cannot allocate memory
-[  846.713242] bcache: register_bcache() error : failed to register device
-[  846.713336] bcache: cache_set_free() Cache set 2f84bdc1-498a-4f2f-98a7-01946bf54287 unregistered
-[  846.713768] BUG: unable to handle kernel NULL pointer dereference at 00000000000009f8
-[  846.714790] PGD 0 P4D 0
-[  846.715129] Oops: 0000 [#1] SMP PTI
-[  846.715472] CPU: 19 PID: 5057 Comm: kworker/19:16 Kdump: loaded Tainted: G           OE    --------- -  - 4.18.0-147.5.1.el8_1.5es.3.x86_64 #1
-[  846.716082] Hardware name: ESPAN GI-25212/X11DPL-i, BIOS 2.1 06/15/2018
-[  846.716451] Workqueue: events cache_set_flush [bcache]
-[  846.716808] RIP: 0010:cache_set_flush+0xc9/0x1b0 [bcache]
-[  846.717155] Code: 00 4c 89 a5 b0 03 00 00 48 8b 85 68 f6 ff ff a8 08 0f 84 88 00 00 00 31 db 66 83 bd 3c f7 ff ff 00 48 8b 85 48 ff ff ff 74 28 <48> 8b b8 f8 09 00 00 48 85 ff 74 05 e8 b6 58 a2 e1 0f b7 95 3c f7
-[  846.718026] RSP: 0018:ffffb56dcf85fe70 EFLAGS: 00010202
-[  846.718372] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-[  846.718725] RDX: 0000000000000001 RSI: 0000000040000001 RDI: 0000000000000000
-[  846.719076] RBP: ffffa0ccc0f20df8 R08: ffffa0ce1fedb118 R09: 000073746e657665
-[  846.719428] R10: 8080808080808080 R11: 0000000000000000 R12: ffffa0ce1fee8700
-[  846.719779] R13: ffffa0ccc0f211a8 R14: ffffa0cd1b902840 R15: ffffa0ccc0f20e00
-[  846.720132] FS:  0000000000000000(0000) GS:ffffa0ce1fec0000(0000) knlGS:0000000000000000
-[  846.720726] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  846.721073] CR2: 00000000000009f8 CR3: 00000008ba00a005 CR4: 00000000007606e0
-[  846.721426] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[  846.721778] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[  846.722131] PKRU: 55555554
-[  846.722467] Call Trace:
-[  846.722814]  process_one_work+0x1a7/0x3b0
-[  846.723157]  worker_thread+0x30/0x390
-[  846.723501]  ? create_worker+0x1a0/0x1a0
-[  846.723844]  kthread+0x112/0x130
-[  846.724184]  ? kthread_flush_work_fn+0x10/0x10
-[  846.724535]  ret_from_fork+0x35/0x40
-
-Now, check whether that ca is NULL in LINE#1655 to fix the issue.
-
-Signed-off-by: Linggang Zeng <linggang.zeng@easystack.cn>
-Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-Signed-off-by: Coly Li <colyli@kernel.org>
-Link: https://lore.kernel.org/r/20250527051601.74407-2-colyli@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Co-developed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Ziqi Chen <quic_ziqichen@quicinc.com>
+Link: https://lore.kernel.org/r/20250522081233.2358565-1-quic_ziqichen@quicinc.com
+Suggested-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/super.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-index 1ddae5c972398..2c7b3c8673de2 100644
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -1741,7 +1741,12 @@ static void cache_set_flush(struct closure *cl)
- 			mutex_unlock(&b->write_lock);
- 		}
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 9dabc03675b00..412931cf240f6 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -1284,6 +1284,7 @@ static int ufshcd_clock_scaling_prepare(struct ufs_hba *hba, u64 timeout_us)
+ 	 * make sure that there are no outstanding requests when
+ 	 * clock scaling is in progress
+ 	 */
++	mutex_lock(&hba->host->scan_mutex);
+ 	blk_mq_quiesce_tagset(&hba->host->tag_set);
+ 	mutex_lock(&hba->wb_mutex);
+ 	down_write(&hba->clk_scaling_lock);
+@@ -1294,6 +1295,7 @@ static int ufshcd_clock_scaling_prepare(struct ufs_hba *hba, u64 timeout_us)
+ 		up_write(&hba->clk_scaling_lock);
+ 		mutex_unlock(&hba->wb_mutex);
+ 		blk_mq_unquiesce_tagset(&hba->host->tag_set);
++		mutex_unlock(&hba->host->scan_mutex);
+ 		goto out;
+ 	}
  
--	if (ca->alloc_thread)
-+	/*
-+	 * If the register_cache_set() call to bch_cache_set_alloc() failed,
-+	 * ca has not been assigned a value and return error.
-+	 * So we need check ca is not NULL during bch_cache_set_unregister().
-+	 */
-+	if (ca && ca->alloc_thread)
- 		kthread_stop(ca->alloc_thread);
+@@ -1315,6 +1317,7 @@ static void ufshcd_clock_scaling_unprepare(struct ufs_hba *hba, int err, bool sc
+ 	mutex_unlock(&hba->wb_mutex);
  
- 	if (c->journal.cur) {
+ 	blk_mq_unquiesce_tagset(&hba->host->tag_set);
++	mutex_unlock(&hba->host->scan_mutex);
+ 	ufshcd_release(hba);
+ }
+ 
 -- 
 2.39.5
 
