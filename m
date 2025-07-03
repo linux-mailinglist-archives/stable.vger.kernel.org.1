@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-159992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135D0AF7BCF
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F09AF7949
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:00:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF7D95A08F7
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:22:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22376188E536
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAA02253B0;
-	Thu,  3 Jul 2025 15:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA262EF652;
+	Thu,  3 Jul 2025 14:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2yT6agb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U92sV2eE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB5D86348;
-	Thu,  3 Jul 2025 15:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8F62EE978;
+	Thu,  3 Jul 2025 14:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556023; cv=none; b=BwxR6ZSP4ppmJI1P31k0oukqoLezudjwngMLMyLnGgKr5JdW1TLewe2O9YbpGPlnC13v6ECmCO84VWL/j+jz8AeyP3RQrG8wLFkO2aMXCWh9GDm5MRUj5J0HZv/K11Wlduxko8CuWp8wpxS0mkmtJY+arUJw1JtFvTFD6CNQTRo=
+	t=1751554504; cv=none; b=UND0gK7B270gXeN061lLDp5yFvbUc38kjHLF3MU3WiJ4BP5/d6qiFN4RPitRvSU9DxWta7eXnpe+BvW0VKDwPVfm2H0mNzCNYlkNca7H7yV8SoEdEuYHlarWyl7i738ZLjVewC0tsHybV5CxJKcq/J1VtBnL3plloCLL9B2QgMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556023; c=relaxed/simple;
-	bh=DXW1Y9VBT7Hpr9mpHQoFgIjGpXQttkpuCSHQcS0FSyU=;
+	s=arc-20240116; t=1751554504; c=relaxed/simple;
+	bh=TBxzDXQRpKPYuFGwlo72tsaDeKy9NUG26r/xDxS19HE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GmjBzz8J1qxwGQb2YovTi/sXuouGnMurqab0u49Ra9YAcR6/ce7wsAANVsXexaGwQoDBBK+vLdxlI4gFZdt2tisqSmlzoBrPMqByE+2bhdnWrzcn5sHk2itzUSWbFHeoQLY1DOXHfm1KmKbDKqifg4Z6BEuCCS/zoiL7mKukzoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2yT6agb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7018FC4CEE3;
-	Thu,  3 Jul 2025 15:20:22 +0000 (UTC)
+	 MIME-Version; b=f6ZKzxc5+LekpN+mUeRAkfhev5s6imYfb+KVYLwMtC6k/Hj2nxQBQFwzHtFvne3XvCtRc4VtsR54KI59aJ6qUdNsnWJN3oYFRX0O9nyN900LwEdZI2OS6KElGX3GwfeRZb/ltpIFrxxBjZpwDMQk6lbErTKxz+yZq/2391U4hvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U92sV2eE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709EDC4CEE3;
+	Thu,  3 Jul 2025 14:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556022;
-	bh=DXW1Y9VBT7Hpr9mpHQoFgIjGpXQttkpuCSHQcS0FSyU=;
+	s=korg; t=1751554503;
+	bh=TBxzDXQRpKPYuFGwlo72tsaDeKy9NUG26r/xDxS19HE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m2yT6agbsAhWoZFWRsqMQjxeyWdMQ7lAMc7RqIbGTzD467izG2I1d4aB5yfBWzRKb
-	 8nu5KIGmn0Q6NMqfmiwJ/yTZn4IhO045f1XLBxB80+zlVLVd8m/2VvtS86KlUcmp59
-	 w6PZ9KP+Kc6LJlb2bBWPUTCa9fjwKVex5BnseAcM=
+	b=U92sV2eEVrprf2xBtKmS6fOQxAM+0A7gEGiSpMrtPHuxllknGo+p9KStGrsGkXjw5
+	 RSykqD1CxJg37ED6sSwQ5e5UcDm0euYjQ1NIK2vyOiapU4bCbcddW+JLvvbqvOLUfF
+	 0GFN5mwHTwb6UVvyUu7Z13hdHm/jEFGvgFpwOdhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/132] f2fs: dont over-report free space or inodes in statvfs
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+Subject: [PATCH 6.12 191/218] r8169: add support for RTL8125D
 Date: Thu,  3 Jul 2025 16:42:19 +0200
-Message-ID: <20250703143941.386125759@linuxfoundation.org>
+Message-ID: <20250703144003.843116537@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +63,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit a9201960623287927bf5776de3f70fb2fbde7e02 ]
+commit f75d1fbe7809bc5ed134204b920fd9e2fc5db1df upstream.
 
-This fixes an analogus bug that was fixed in modern filesystems:
-a) xfs in commit 4b8d867ca6e2 ("xfs: don't over-report free space or
-inodes in statvfs")
-b) ext4 in commit f87d3af74193 ("ext4: don't over-report free space
-or inodes in statvfs")
-where statfs can report misleading / incorrect information where
-project quota is enabled, and the free space is less than the
-remaining quota.
+This adds support for new chip version RTL8125D, which can be found on
+boards like Gigabyte X870E AORUS ELITE WIFI7. Firmware rtl8125d-1.fw
+for this chip version is available in linux-firmware already.
 
-This commit will resolve a test failure in generic/762 which tests
-for this bug.
-
-generic/762       - output mismatch (see /share/git/fstests/results//generic/762.out.bad)
-#    --- tests/generic/762.out   2025-04-15 10:21:53.371067071 +0800
-#    +++ /share/git/fstests/results//generic/762.out.bad 2025-05-13 16:13:37.000000000 +0800
-#    @@ -6,8 +6,10 @@
-#     root blocks2 is in range
-#     dir blocks2 is in range
-#     root bavail2 is in range
-#    -dir bavail2 is in range
-#    +dir bavail2 has value of 1539066
-#    +dir bavail2 is NOT in range 304734.87 .. 310891.13
-#     root blocks3 is in range
-#    ...
-#    (Run 'diff -u /share/git/fstests/tests/generic/762.out /share/git/fstests/results//generic/762.out.bad'  to see the entire diff)
-
-HINT: You _MAY_ be missing kernel fix:
-      XXXXXXXXXXXXXX xfs: don't over-report free space or inodes in statvfs
-
-Cc: stable@kernel.org
-Fixes: ddc34e328d06 ("f2fs: introduce f2fs_statfs_project")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/d0306912-e88e-4c25-8b5d-545ae8834c0c@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/super.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/realtek/r8169.h            |    1 +
+ drivers/net/ethernet/realtek/r8169_main.c       |   23 ++++++++++++++++-------
+ drivers/net/ethernet/realtek/r8169_phy_config.c |   10 ++++++++++
+ 3 files changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index f415bc073bb52..84fc6591e3f98 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1753,26 +1753,32 @@ static int f2fs_statfs_project(struct super_block *sb,
+--- a/drivers/net/ethernet/realtek/r8169.h
++++ b/drivers/net/ethernet/realtek/r8169.h
+@@ -68,6 +68,7 @@ enum mac_version {
+ 	/* support for RTL_GIGA_MAC_VER_60 has been removed */
+ 	RTL_GIGA_MAC_VER_61,
+ 	RTL_GIGA_MAC_VER_63,
++	RTL_GIGA_MAC_VER_64,
+ 	RTL_GIGA_MAC_VER_65,
+ 	RTL_GIGA_MAC_VER_66,
+ 	RTL_GIGA_MAC_NONE
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -55,6 +55,7 @@
+ #define FIRMWARE_8107E_2	"rtl_nic/rtl8107e-2.fw"
+ #define FIRMWARE_8125A_3	"rtl_nic/rtl8125a-3.fw"
+ #define FIRMWARE_8125B_2	"rtl_nic/rtl8125b-2.fw"
++#define FIRMWARE_8125D_1	"rtl_nic/rtl8125d-1.fw"
+ #define FIRMWARE_8126A_2	"rtl_nic/rtl8126a-2.fw"
+ #define FIRMWARE_8126A_3	"rtl_nic/rtl8126a-3.fw"
  
- 	limit = min_not_zero(dquot->dq_dqb.dqb_bsoftlimit,
- 					dquot->dq_dqb.dqb_bhardlimit);
--	if (limit)
--		limit >>= sb->s_blocksize_bits;
-+	limit >>= sb->s_blocksize_bits;
+@@ -138,6 +139,7 @@ static const struct {
+ 	[RTL_GIGA_MAC_VER_61] = {"RTL8125A",		FIRMWARE_8125A_3},
+ 	/* reserve 62 for CFG_METHOD_4 in the vendor driver */
+ 	[RTL_GIGA_MAC_VER_63] = {"RTL8125B",		FIRMWARE_8125B_2},
++	[RTL_GIGA_MAC_VER_64] = {"RTL8125D",		FIRMWARE_8125D_1},
+ 	[RTL_GIGA_MAC_VER_65] = {"RTL8126A",		FIRMWARE_8126A_2},
+ 	[RTL_GIGA_MAC_VER_66] = {"RTL8126A",		FIRMWARE_8126A_3},
+ };
+@@ -707,6 +709,7 @@ MODULE_FIRMWARE(FIRMWARE_8168FP_3);
+ MODULE_FIRMWARE(FIRMWARE_8107E_2);
+ MODULE_FIRMWARE(FIRMWARE_8125A_3);
+ MODULE_FIRMWARE(FIRMWARE_8125B_2);
++MODULE_FIRMWARE(FIRMWARE_8125D_1);
+ MODULE_FIRMWARE(FIRMWARE_8126A_2);
+ MODULE_FIRMWARE(FIRMWARE_8126A_3);
+ 
+@@ -2098,10 +2101,7 @@ static void rtl_set_eee_txidle_timer(str
+ 		tp->tx_lpi_timer = timer_val;
+ 		r8168_mac_ocp_write(tp, 0xe048, timer_val);
+ 		break;
+-	case RTL_GIGA_MAC_VER_61:
+-	case RTL_GIGA_MAC_VER_63:
+-	case RTL_GIGA_MAC_VER_65:
+-	case RTL_GIGA_MAC_VER_66:
++	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_66:
+ 		tp->tx_lpi_timer = timer_val;
+ 		RTL_W16(tp, EEE_TXIDLE_TIMER_8125, timer_val);
+ 		break;
+@@ -2233,6 +2233,9 @@ static enum mac_version rtl8169_get_mac_
+ 		{ 0x7cf, 0x64a,	RTL_GIGA_MAC_VER_66 },
+ 		{ 0x7cf, 0x649,	RTL_GIGA_MAC_VER_65 },
+ 
++		/* 8125D family. */
++		{ 0x7cf, 0x688,	RTL_GIGA_MAC_VER_64 },
 +
-+	if (limit) {
-+		uint64_t remaining = 0;
+ 		/* 8125B family. */
+ 		{ 0x7cf, 0x641,	RTL_GIGA_MAC_VER_63 },
  
--	if (limit && buf->f_blocks > limit) {
- 		curblock = (dquot->dq_dqb.dqb_curspace +
- 			    dquot->dq_dqb.dqb_rsvspace) >> sb->s_blocksize_bits;
--		buf->f_blocks = limit;
--		buf->f_bfree = buf->f_bavail =
--			(buf->f_blocks > curblock) ?
--			 (buf->f_blocks - curblock) : 0;
-+		if (limit > curblock)
-+			remaining = limit - curblock;
+@@ -2500,9 +2503,7 @@ static void rtl_init_rxcfg(struct rtl816
+ 	case RTL_GIGA_MAC_VER_61:
+ 		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST);
+ 		break;
+-	case RTL_GIGA_MAC_VER_63:
+-	case RTL_GIGA_MAC_VER_65:
+-	case RTL_GIGA_MAC_VER_66:
++	case RTL_GIGA_MAC_VER_63 ... RTL_GIGA_MAC_VER_66:
+ 		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST |
+ 			RX_PAUSE_SLOT_ON);
+ 		break;
+@@ -3840,6 +3841,12 @@ static void rtl_hw_start_8125b(struct rt
+ 	rtl_hw_start_8125_common(tp);
+ }
+ 
++static void rtl_hw_start_8125d(struct rtl8169_private *tp)
++{
++	rtl_set_def_aspm_entry_latency(tp);
++	rtl_hw_start_8125_common(tp);
++}
 +
-+		buf->f_blocks = min(buf->f_blocks, limit);
-+		buf->f_bfree = min(buf->f_bfree, remaining);
-+		buf->f_bavail = min(buf->f_bavail, remaining);
- 	}
+ static void rtl_hw_start_8126a(struct rtl8169_private *tp)
+ {
+ 	rtl_disable_zrxdc_timeout(tp);
+@@ -3889,6 +3896,7 @@ static void rtl_hw_config(struct rtl8169
+ 		[RTL_GIGA_MAC_VER_53] = rtl_hw_start_8117,
+ 		[RTL_GIGA_MAC_VER_61] = rtl_hw_start_8125a_2,
+ 		[RTL_GIGA_MAC_VER_63] = rtl_hw_start_8125b,
++		[RTL_GIGA_MAC_VER_64] = rtl_hw_start_8125d,
+ 		[RTL_GIGA_MAC_VER_65] = rtl_hw_start_8126a,
+ 		[RTL_GIGA_MAC_VER_66] = rtl_hw_start_8126a,
+ 	};
+@@ -3906,6 +3914,7 @@ static void rtl_hw_start_8125(struct rtl
+ 	/* disable interrupt coalescing */
+ 	switch (tp->mac_version) {
+ 	case RTL_GIGA_MAC_VER_61:
++	case RTL_GIGA_MAC_VER_64:
+ 		for (i = 0xa00; i < 0xb00; i += 4)
+ 			RTL_W32(tp, i, 0);
+ 		break;
+--- a/drivers/net/ethernet/realtek/r8169_phy_config.c
++++ b/drivers/net/ethernet/realtek/r8169_phy_config.c
+@@ -1104,6 +1104,15 @@ static void rtl8125b_hw_phy_config(struc
+ 	rtl8125b_config_eee_phy(phydev);
+ }
  
- 	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
- 					dquot->dq_dqb.dqb_ihardlimit);
- 
--	if (limit && buf->f_files > limit) {
--		buf->f_files = limit;
--		buf->f_ffree =
--			(buf->f_files > dquot->dq_dqb.dqb_curinodes) ?
--			 (buf->f_files - dquot->dq_dqb.dqb_curinodes) : 0;
-+	if (limit) {
-+		uint64_t remaining = 0;
++static void rtl8125d_hw_phy_config(struct rtl8169_private *tp,
++				   struct phy_device *phydev)
++{
++	r8169_apply_firmware(tp);
++	rtl8125_legacy_force_mode(phydev);
++	rtl8168g_disable_aldps(phydev);
++	rtl8125b_config_eee_phy(phydev);
++}
 +
-+		if (limit > dquot->dq_dqb.dqb_curinodes)
-+			remaining = limit - dquot->dq_dqb.dqb_curinodes;
-+
-+		buf->f_files = min(buf->f_files, limit);
-+		buf->f_ffree = min(buf->f_ffree, remaining);
- 	}
- 
- 	spin_unlock(&dquot->dq_dqb_lock);
--- 
-2.39.5
-
+ static void rtl8126a_hw_phy_config(struct rtl8169_private *tp,
+ 				   struct phy_device *phydev)
+ {
+@@ -1160,6 +1169,7 @@ void r8169_hw_phy_config(struct rtl8169_
+ 		[RTL_GIGA_MAC_VER_53] = rtl8117_hw_phy_config,
+ 		[RTL_GIGA_MAC_VER_61] = rtl8125a_2_hw_phy_config,
+ 		[RTL_GIGA_MAC_VER_63] = rtl8125b_hw_phy_config,
++		[RTL_GIGA_MAC_VER_64] = rtl8125d_hw_phy_config,
+ 		[RTL_GIGA_MAC_VER_65] = rtl8126a_hw_phy_config,
+ 		[RTL_GIGA_MAC_VER_66] = rtl8126a_hw_phy_config,
+ 	};
 
 
 
