@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-160023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D3FEAF7C32
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:32:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC0BFAF7B4A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:23:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FACF6E4640
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2465917B04D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1732E2DE6F8;
-	Thu,  3 Jul 2025 15:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF652EE978;
+	Thu,  3 Jul 2025 15:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVWvfeX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8xgpECV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C984C199920;
-	Thu,  3 Jul 2025 15:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03522ED168;
+	Thu,  3 Jul 2025 15:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556122; cv=none; b=lVaJV36yOzVjzM264Sb/Vv1TJSk13e+VqFwbLO/LX2XiPLFZo9oC4iuqbs3PkEUeowJdzX8PR4admY3JHW7J6MH9zrpdmcm2RVArVHMCl6ck36t7T30DTje/tDxRXU3pWsyzEJdRK0D83dpGUrNz+uDmFQX6VSoDddb8m4gBzwo=
+	t=1751555742; cv=none; b=GOFvk8buVKq+fVF07vON0o6RI6TCxCFjmm27wnn8lA+3RmdOE8wpi59NrnlPi+z37q0wWRnKbC434DxVL1xABkqa9IKZnl6JghaIy82aTZN/gu1zcLe/1uQxT3UjeHUc1Er7XGAxhsC1XkCI6Qi4RkJLqq3XuQmD/MBjnoDm53M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556122; c=relaxed/simple;
-	bh=mNyNy1AoUd015ONEs6mBJnyqFZhUxgOyx6SOFPohQoY=;
+	s=arc-20240116; t=1751555742; c=relaxed/simple;
+	bh=Lp8KlqqR2nwcj5G0haJ4dsydZKdyCe5QGWNjCVfP7OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hfG7mRzEtfdGuDkLeCWf0Smp8wSB4rtrNxPhuI3MbLqHgghqRk/XPzPivzCNNHpMbDvAK2QCF2qfxja5UemRNSHjNDYVDDxwcmZMtu46KnVn+FYmJsgPhFCYSvMiA2FJe4/HvRR6mmj+coJbCAJvemXePn8pGIgvaUnTdM5etWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVWvfeX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D3AC4CEE3;
-	Thu,  3 Jul 2025 15:22:02 +0000 (UTC)
+	 MIME-Version; b=dAPiWLKjujy4MSBgSnX4uk3qsj650vkdErzPaBwTQ51mE6wIkDuTf5ym2+vF6W6RbFuhKTen3qi4gWyH+WpTHmv16ik7G+X7kN2aXLnR+7R75uZfN/EsiT+zmIiczIp5UEAJPg0s4V7jOkle2qZK7d+aZirvQnn1k98gIhGAGy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8xgpECV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF20EC4CEE3;
+	Thu,  3 Jul 2025 15:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556122;
-	bh=mNyNy1AoUd015ONEs6mBJnyqFZhUxgOyx6SOFPohQoY=;
+	s=korg; t=1751555742;
+	bh=Lp8KlqqR2nwcj5G0haJ4dsydZKdyCe5QGWNjCVfP7OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DVWvfeX5x7Yp/+pLDEzqeRHRY6gUvyW65NOkiTvCPw4p8qOi6LbHI7UA5A6HDlSW3
-	 T5T25m5IgWqUYTEj8IDNUAxnOHJpfSvk8cZQFFo2LcjrrNcg12VjbYAmVPngro9lSs
-	 /A93Lqkp5GMV+i+ZfPd2trthyb4aAeYgYELI2LT0=
+	b=U8xgpECVxZqWD/qZXsxSxGZ2ivWdGxntkPKGW3sbNwISCpx2ms85F8Y8Mqeuxj8b1
+	 KwIcMjtcPmLoaurYV/wTjdMVMb8HTm4w7lQVafncPAyV603uXzwqtVA571/SXbsOyY
+	 3IXOX/g0FwlbZHH1pvyDyQvNZjzYz7bxUGFFWQHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/132] af_unix: Dont set -ECONNRESET for consumed OOB skb.
-Date: Thu,  3 Jul 2025 16:42:50 +0200
-Message-ID: <20250703143942.588025665@linuxfoundation.org>
+	Chen Yu <yu.c.chen@intel.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 108/139] scsi: megaraid_sas: Fix invalid node index
+Date: Thu,  3 Jul 2025 16:42:51 +0200
+Message-ID: <20250703143945.400198994@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Chen Yu <yu.c.chen@intel.com>
 
-[ Upstream commit 2a5a4841846b079b5fca5752fe94e59346fbda40 ]
+commit 752eb816b55adb0673727ba0ed96609a17895654 upstream.
 
-Christian Brauner reported that even after MSG_OOB data is consumed,
-calling close() on the receiver socket causes the peer's recv() to
-return -ECONNRESET:
+On a system with DRAM interleave enabled, out-of-bound access is
+detected:
 
-  1. send() and recv() an OOB data.
+megaraid_sas 0000:3f:00.0: requested/available msix 128/128 poll_queue 0
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in ./arch/x86/include/asm/topology.h:72:28
+index -1 is out of range for type 'cpumask *[1024]'
+dump_stack_lvl+0x5d/0x80
+ubsan_epilogue+0x5/0x2b
+__ubsan_handle_out_of_bounds.cold+0x46/0x4b
+megasas_alloc_irq_vectors+0x149/0x190 [megaraid_sas]
+megasas_probe_one.cold+0xa4d/0x189c [megaraid_sas]
+local_pci_probe+0x42/0x90
+pci_device_probe+0xdc/0x290
+really_probe+0xdb/0x340
+__driver_probe_device+0x78/0x110
+driver_probe_device+0x1f/0xa0
+__driver_attach+0xba/0x1c0
+bus_for_each_dev+0x8b/0xe0
+bus_add_driver+0x142/0x220
+driver_register+0x72/0xd0
+megasas_init+0xdf/0xff0 [megaraid_sas]
+do_one_initcall+0x57/0x310
+do_init_module+0x90/0x250
+init_module_from_file+0x85/0xc0
+idempotent_init_module+0x114/0x310
+__x64_sys_finit_module+0x65/0xc0
+do_syscall_64+0x82/0x170
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-    >>> from socket import *
-    >>> s1, s2 = socketpair(AF_UNIX, SOCK_STREAM)
-    >>> s1.send(b'x', MSG_OOB)
-    1
-    >>> s2.recv(1, MSG_OOB)
-    b'x'
+Fix it accordingly.
 
-  2. close() for s2 sets ECONNRESET to s1->sk_err even though
-     s2 consumed the OOB data
-
-    >>> s2.close()
-    >>> s1.recv(10, MSG_DONTWAIT)
-    ...
-    ConnectionResetError: [Errno 104] Connection reset by peer
-
-Even after being consumed, the skb holding the OOB 1-byte data stays in
-the recv queue to mark the OOB boundary and break recv() at that point.
-
-This must be considered while close()ing a socket.
-
-Let's skip the leading consumed OOB skb while checking the -ECONNRESET
-condition in unix_release_sock().
-
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Reported-by: Christian Brauner <brauner@kernel.org>
-Closes: https://lore.kernel.org/netdev/20250529-sinkt-abfeuern-e7b08200c6b0@brauner/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Christian Brauner <brauner@kernel.org>
-Link: https://patch.msgid.link/20250619041457.1132791-4-kuni1840@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Link: https://lore.kernel.org/r/20250604042556.3731059-1-yu.c.chen@intel.com
+Fixes: 8049da6f3943 ("scsi: megaraid_sas: Use irq_set_affinity_and_hint()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/scsi/megaraid/megaraid_sas_base.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 01de31a0f22fe..2c33d787b860d 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -577,6 +577,11 @@ static void unix_sock_destructor(struct sock *sk)
- #endif
- }
+--- a/drivers/scsi/megaraid/megaraid_sas_base.c
++++ b/drivers/scsi/megaraid/megaraid_sas_base.c
+@@ -5908,7 +5908,11 @@ megasas_set_high_iops_queue_affinity_and
+ 	const struct cpumask *mask;
  
-+static unsigned int unix_skb_len(const struct sk_buff *skb)
-+{
-+	return skb->len - UNIXCB(skb).consumed;
-+}
+ 	if (instance->perf_mode == MR_BALANCED_PERF_MODE) {
+-		mask = cpumask_of_node(dev_to_node(&instance->pdev->dev));
++		int nid = dev_to_node(&instance->pdev->dev);
 +
- static void unix_release_sock(struct sock *sk, int embrion)
- {
- 	struct unix_sock *u = unix_sk(sk);
-@@ -611,10 +616,16 @@ static void unix_release_sock(struct sock *sk, int embrion)
++		if (nid == NUMA_NO_NODE)
++			nid = 0;
++		mask = cpumask_of_node(nid);
  
- 	if (skpair != NULL) {
- 		if (sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET) {
-+			struct sk_buff *skb = skb_peek(&sk->sk_receive_queue);
-+
-+#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
-+			if (skb && !unix_skb_len(skb))
-+				skb = skb_peek_next(skb, &sk->sk_receive_queue);
-+#endif
- 			unix_state_lock(skpair);
- 			/* No more writes */
- 			WRITE_ONCE(skpair->sk_shutdown, SHUTDOWN_MASK);
--			if (!skb_queue_empty_lockless(&sk->sk_receive_queue) || embrion)
-+			if (skb || embrion)
- 				WRITE_ONCE(skpair->sk_err, ECONNRESET);
- 			unix_state_unlock(skpair);
- 			skpair->sk_state_change(skpair);
-@@ -2593,11 +2604,6 @@ static long unix_stream_data_wait(struct sock *sk, long timeo,
- 	return timeo;
- }
- 
--static unsigned int unix_skb_len(const struct sk_buff *skb)
--{
--	return skb->len - UNIXCB(skb).consumed;
--}
--
- struct unix_stream_read_state {
- 	int (*recv_actor)(struct sk_buff *, int, int,
- 			  struct unix_stream_read_state *);
--- 
-2.39.5
-
+ 		for (i = 0; i < instance->low_latency_index_start; i++) {
+ 			irq = pci_irq_vector(instance->pdev, i);
 
 
 
