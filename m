@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-160041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51EBFAF7C34
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:32:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B93AF7C0E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D6D91CA3F33
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 909D156214F
 	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2B32EF9B3;
-	Thu,  3 Jul 2025 15:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD262EF285;
+	Thu,  3 Jul 2025 15:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jf15oCXg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Ezuez3w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFEC2EF656;
-	Thu,  3 Jul 2025 15:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB711D5CE5;
+	Thu,  3 Jul 2025 15:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556180; cv=none; b=P5XBFJquQyotfx6DhHFWMf63hxtfakfvAEgkfoDNuztpvH8LDIUzKkBJRfAEOoX6Z21OtobC4bcdDQh7jqODPLpYdogiknsOtmkdtbmbUPZ4WGbjEbrpQMeQhkvIlbPUcQpFZSE7aWSK9p4WFGUewOiFkXyKK5/Si3DLPb2kWq0=
+	t=1751556215; cv=none; b=CLUgcAUIbg8JYBclo4HlE14fL8t1PbJwPAgAwrmk6yVxnvXW7I6sRZmatyhH+xNByZnXKtIru7pajVtIuIxjTuiRsoW3K3ijguEAlbj0B6A1Bcx2nC9KqdvB117W1YPJSMYjdlFdK8mdAJUi8sTi38qzz+DhXi54Yge0kDGyqzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556180; c=relaxed/simple;
-	bh=2LPxBqQo3d6XMiXcKrt5a0bHqIlnOW9q5xcbn45L6ZI=;
+	s=arc-20240116; t=1751556215; c=relaxed/simple;
+	bh=r4gA33f7R9SN/WBXJxWScPO2uogmtozFwgXvtviEpCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ojhvAtMbKgNwVNUpl5OAjLbVVydWwT0nsw1ZZp0DeqqJn+lFno6Z9R/W5QYeNLEebW3l6C2U92uO1yRPc/EBZ3WZ3ko73tekiqaS4+2ST2GWyBFl9olVIiH3SYllECoT3T5mFC2dq6yBTrD44SOAbZesDyiTjRB5q1LdeE36fHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jf15oCXg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1DDC4CEE3;
-	Thu,  3 Jul 2025 15:22:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fcm8LV3pTBfdhFw5Ip/pB9TgolaIa7nHQwrr3faE68ozCiEt5CUt7bdozcz1ud93U6egEgViVW0e4noRyuNUbYHLFchGsArtRKQNdrohew+Ma6XspGP+RHBQsuqRT5tT44MjLfS3hYpVUX9/f5ASvJsa+bZIKpYRWYL9zPZ3q84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Ezuez3w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180C8C4CEE3;
+	Thu,  3 Jul 2025 15:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556180;
-	bh=2LPxBqQo3d6XMiXcKrt5a0bHqIlnOW9q5xcbn45L6ZI=;
+	s=korg; t=1751556215;
+	bh=r4gA33f7R9SN/WBXJxWScPO2uogmtozFwgXvtviEpCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jf15oCXgWxZ9Y1pK2mGXmNSrPUZryRSiMgMYSTW+MLB0izPqv4IBwk1/zmOYSOskj
-	 00zZM3eCVrfQBepuZn9vdjA5eRBbQK//EMHb/qL95cvRgft03/EtUKHOrMv9RljA0R
-	 K/6uLyZyDi14mSuaar7bdctCTTxFXLdWedrRofLY=
+	b=2Ezuez3wEyePgKfNICpEFp/D2QL0rgkGRBaDffTWsb73Lxx5+oU9rHHG+/H9A0YPG
+	 ocPI8s3bpCRSV4yZATj2/vnZMpYG25KXTSRu2A/Xjt+boqfTH0rwhM1X82H+d1nLuD
+	 5caxaoQTUuT/6wyPJn/E0MKrY0gSZhEriKmO17o4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 6.1 092/132] serial: imx: Restore original RXTL for console to fix data loss
-Date: Thu,  3 Jul 2025 16:43:01 +0200
-Message-ID: <20250703143943.013794097@linuxfoundation.org>
+	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 093/132] Bluetooth: L2CAP: Fix L2CAP MTU negotiation
+Date: Thu,  3 Jul 2025 16:43:02 +0200
+Message-ID: <20250703143943.050816663@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
 References: <20250703143939.370927276@linuxfoundation.org>
@@ -60,114 +59,231 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@gmail.com>
+From: Frédéric Danis <frederic.danis@collabora.com>
 
-commit f23c52aafb1675ab1d1f46914556d8e29cbbf7b3 upstream.
+commit 042bb9603c44620dce98717a2d23235ca57a00d7 upstream.
 
-Commit 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
-introduced a regression on the i.MX6UL EVK board. The issue can be
-reproduced with the following steps:
+OBEX download from iPhone is currently slow due to small packet size
+used to transfer data which doesn't follow the MTU negotiated during
+L2CAP connection, i.e. 672 bytes instead of 32767:
 
-- Open vi on the board.
-- Paste a text file (~150 characters).
-- Save the file, then repeat the process.
-- Compare the sha256sum of the saved files.
+  < ACL Data TX: Handle 11 flags 0x00 dlen 12
+      L2CAP: Connection Request (0x02) ident 18 len 4
+        PSM: 4103 (0x1007)
+        Source CID: 72
+  > ACL Data RX: Handle 11 flags 0x02 dlen 16
+      L2CAP: Connection Response (0x03) ident 18 len 8
+        Destination CID: 14608
+        Source CID: 72
+        Result: Connection successful (0x0000)
+        Status: No further information available (0x0000)
+  < ACL Data TX: Handle 11 flags 0x00 dlen 27
+      L2CAP: Configure Request (0x04) ident 20 len 19
+        Destination CID: 14608
+        Flags: 0x0000
+        Option: Maximum Transmission Unit (0x01) [mandatory]
+          MTU: 32767
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 63
+          Max transmit: 3
+          Retransmission timeout: 2000
+          Monitor timeout: 12000
+          Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 26
+      L2CAP: Configure Request (0x04) ident 72 len 18
+        Destination CID: 72
+        Flags: 0x0000
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 32
+          Max transmit: 255
+          Retransmission timeout: 0
+          Monitor timeout: 0
+          Maximum PDU size: 65527
+        Option: Frame Check Sequence (0x05) [mandatory]
+          FCS: 16-bit FCS (0x01)
+  < ACL Data TX: Handle 11 flags 0x00 dlen 29
+      L2CAP: Configure Response (0x05) ident 72 len 21
+        Source CID: 14608
+        Flags: 0x0000
+        Result: Success (0x0000)
+        Option: Maximum Transmission Unit (0x01) [mandatory]
+          MTU: 672
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 32
+          Max transmit: 255
+          Retransmission timeout: 2000
+          Monitor timeout: 12000
+          Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 32
+      L2CAP: Configure Response (0x05) ident 20 len 24
+        Source CID: 72
+        Flags: 0x0000
+        Result: Success (0x0000)
+        Option: Maximum Transmission Unit (0x01) [mandatory]
+          MTU: 32767
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 63
+          Max transmit: 3
+          Retransmission timeout: 2000
+          Monitor timeout: 12000
+          Maximum PDU size: 1009
+        Option: Frame Check Sequence (0x05) [mandatory]
+          FCS: 16-bit FCS (0x01)
+  ...
+  > ACL Data RX: Handle 11 flags 0x02 dlen 680
+      Channel: 72 len 676 ctrl 0x0202 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+      I-frame: Unsegmented TxSeq 1 ReqSeq 2
+  < ACL Data TX: Handle 11 flags 0x00 dlen 13
+      Channel: 14608 len 9 ctrl 0x0204 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+      I-frame: Unsegmented TxSeq 2 ReqSeq 2
+  > ACL Data RX: Handle 11 flags 0x02 dlen 680
+      Channel: 72 len 676 ctrl 0x0304 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+      I-frame: Unsegmented TxSeq 2 ReqSeq 3
 
-The checksums do not match due to missing characters or entire lines.
+The MTUs are negotiated for each direction. In this traces 32767 for
+iPhone->localhost and no MTU for localhost->iPhone, which based on
+'4.4 L2CAP_CONFIGURATION_REQ' (Core specification v5.4, Vol. 3, Part
+A):
 
-Fix this by restoring the RXTL value to 1 when the UART is used as a
-console.
+  The only parameters that should be included in the
+  L2CAP_CONFIGURATION_REQ packet are those that require different
+  values than the default or previously agreed values.
+  ...
+  Any missing configuration parameters are assumed to have their
+  most recently explicitly or implicitly accepted values.
 
-This ensures timely RX interrupts and reliable data reception in console
-mode.
+and '5.1 Maximum transmission unit (MTU)':
 
-With this change, pasted content is saved correctly, and checksums are
-always consistent.
+  If the remote device sends a positive L2CAP_CONFIGURATION_RSP
+  packet it should include the actual MTU to be used on this channel
+  for traffic flowing into the local device.
+  ...
+  The default value is 672 octets.
 
-Cc: stable <stable@kernel.org>
-Fixes: 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20250619114617.2791939-1-festevam@gmail.com
+is set by BlueZ to 672 bytes.
+
+It seems that the iPhone used the lowest negotiated value to transfer
+data to the localhost instead of the negotiated one for the incoming
+direction.
+
+This could be fixed by using the MTU negotiated for the other
+direction, if exists, in the L2CAP_CONFIGURATION_RSP.
+This allows to use segmented packets as in the following traces:
+
+  < ACL Data TX: Handle 11 flags 0x00 dlen 12
+        L2CAP: Connection Request (0x02) ident 22 len 4
+          PSM: 4103 (0x1007)
+          Source CID: 72
+  < ACL Data TX: Handle 11 flags 0x00 dlen 27
+        L2CAP: Configure Request (0x04) ident 24 len 19
+          Destination CID: 2832
+          Flags: 0x0000
+          Option: Maximum Transmission Unit (0x01) [mandatory]
+            MTU: 32767
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 63
+            Max transmit: 3
+            Retransmission timeout: 2000
+            Monitor timeout: 12000
+            Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 26
+        L2CAP: Configure Request (0x04) ident 15 len 18
+          Destination CID: 72
+          Flags: 0x0000
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 32
+            Max transmit: 255
+            Retransmission timeout: 0
+            Monitor timeout: 0
+            Maximum PDU size: 65527
+          Option: Frame Check Sequence (0x05) [mandatory]
+            FCS: 16-bit FCS (0x01)
+  < ACL Data TX: Handle 11 flags 0x00 dlen 29
+        L2CAP: Configure Response (0x05) ident 15 len 21
+          Source CID: 2832
+          Flags: 0x0000
+          Result: Success (0x0000)
+          Option: Maximum Transmission Unit (0x01) [mandatory]
+            MTU: 32767
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 32
+            Max transmit: 255
+            Retransmission timeout: 2000
+            Monitor timeout: 12000
+            Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 32
+        L2CAP: Configure Response (0x05) ident 24 len 24
+          Source CID: 72
+          Flags: 0x0000
+          Result: Success (0x0000)
+          Option: Maximum Transmission Unit (0x01) [mandatory]
+            MTU: 32767
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 63
+            Max transmit: 3
+            Retransmission timeout: 2000
+            Monitor timeout: 12000
+            Maximum PDU size: 1009
+          Option: Frame Check Sequence (0x05) [mandatory]
+            FCS: 16-bit FCS (0x01)
+  ...
+  > ACL Data RX: Handle 11 flags 0x02 dlen 1009
+        Channel: 72 len 1005 ctrl 0x4202 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+        I-frame: Start (len 21884) TxSeq 1 ReqSeq 2
+  > ACL Data RX: Handle 11 flags 0x02 dlen 1009
+        Channel: 72 len 1005 ctrl 0xc204 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+        I-frame: Continuation TxSeq 2 ReqSeq 2
+
+This has been tested with kernel 5.4 and BlueZ 5.77.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/imx.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ net/bluetooth/l2cap_core.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -239,6 +239,7 @@ struct imx_port {
- 	enum imx_tx_state	tx_state;
- 	struct hrtimer		trigger_start_tx;
- 	struct hrtimer		trigger_stop_tx;
-+	unsigned int		rxtl;
- };
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -3600,7 +3600,7 @@ static int l2cap_parse_conf_req(struct l
+ 	struct l2cap_conf_rfc rfc = { .mode = L2CAP_MODE_BASIC };
+ 	struct l2cap_conf_efs efs;
+ 	u8 remote_efs = 0;
+-	u16 mtu = L2CAP_DEFAULT_MTU;
++	u16 mtu = 0;
+ 	u16 result = L2CAP_CONF_SUCCESS;
+ 	u16 size;
  
- struct imx_port_ucrs {
-@@ -1320,6 +1321,7 @@ static void imx_uart_clear_rx_errors(str
+@@ -3711,6 +3711,13 @@ done:
+ 		/* Configure output options and let the other side know
+ 		 * which ones we don't like. */
  
- #define TXTL_DEFAULT 8
- #define RXTL_DEFAULT 8 /* 8 characters or aging timer */
-+#define RXTL_CONSOLE_DEFAULT 1
- #define TXTL_DMA 8 /* DMA burst setting */
- #define RXTL_DMA 9 /* DMA burst setting */
- 
-@@ -1432,7 +1434,7 @@ static void imx_uart_disable_dma(struct
- 	ucr1 &= ~(UCR1_RXDMAEN | UCR1_TXDMAEN | UCR1_ATDMAEN);
- 	imx_uart_writel(sport, ucr1, UCR1);
- 
--	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 
- 	sport->dma_is_enabled = 0;
- }
-@@ -1457,7 +1459,12 @@ static int imx_uart_startup(struct uart_
- 		return retval;
- 	}
- 
--	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+	if (uart_console(&sport->port))
-+		sport->rxtl = RXTL_CONSOLE_DEFAULT;
-+	else
-+		sport->rxtl = RXTL_DEFAULT;
++		/* If MTU is not provided in configure request, use the most recently
++		 * explicitly or implicitly accepted value for the other direction,
++		 * or the default value.
++		 */
++		if (mtu == 0)
++			mtu = chan->imtu ? chan->imtu : L2CAP_DEFAULT_MTU;
 +
-+	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 
- 	/* disable the DREN bit (Data Ready interrupt enable) before
- 	 * requesting IRQs
-@@ -1906,7 +1913,7 @@ static int imx_uart_poll_init(struct uar
- 	if (retval)
- 		clk_disable_unprepare(sport->clk_ipg);
- 
--	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 
- 	spin_lock_irqsave(&sport->port.lock, flags);
- 
-@@ -1998,7 +2005,7 @@ static int imx_uart_rs485_config(struct
- 		/* If the receiver trigger is 0, set it to a default value */
- 		ufcr = imx_uart_readl(sport, UFCR);
- 		if ((ufcr & UFCR_RXTL_MASK) == 0)
--			imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+			imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 		imx_uart_start_rx(port);
- 	}
- 
-@@ -2183,7 +2190,7 @@ imx_uart_console_setup(struct console *c
- 	else
- 		imx_uart_console_get_options(sport, &baud, &parity, &bits);
- 
--	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
-+	imx_uart_setup_ufcr(sport, TXTL_DEFAULT, sport->rxtl);
- 
- 	retval = uart_set_options(&sport->port, co, baud, parity, bits, flow);
- 
+ 		if (mtu < L2CAP_DEFAULT_MIN_MTU)
+ 			result = L2CAP_CONF_UNACCEPT;
+ 		else {
 
 
 
