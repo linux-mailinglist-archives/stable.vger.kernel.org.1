@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-159505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3D2AF78FA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:56:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74F49AF7B71
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:25:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FB36545A2B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:54:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D919248220F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CB22EF66A;
-	Thu,  3 Jul 2025 14:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CE02E7F39;
+	Thu,  3 Jul 2025 15:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvKdtIQz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTpW/uZz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA812EFD81;
-	Thu,  3 Jul 2025 14:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E6422B8AB;
+	Thu,  3 Jul 2025 15:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554439; cv=none; b=olJFnh9lUSIDRMM++BvV2XEoISPDy7dx5Nfz066RcrDHvAGNMOLfLyzyBtJVH3gqQiVjNqkqidbLWxoZ75iBRtThrjQehKuIsKHTrGp3ooLP9TMMtcxDcjs2kyIhmdwqOHI8vkBXW+xEPpG0PGwzzk/kZqUZXrzylFCes9TXHG8=
+	t=1751555730; cv=none; b=B+0GlnuQZHcYq9xbIvwLivP4mKNM2jZ63q7z5ZBf33YLa9/4qnWLrwLi7Sg9Q6jQnOgDCTC6F/nPFLTe66Immh5QL2H6rqqhaymoxcDuVdMiK32d/nDmp9FobbclGGPagRoyejMhMxQRs3Y/xZmPxOBszOw2JFUPXOReMs+Rokc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554439; c=relaxed/simple;
-	bh=3sY2zjUaBuVUaiRu+Az0IyREQAV8t6JB9y/hYyGtvkU=;
+	s=arc-20240116; t=1751555730; c=relaxed/simple;
+	bh=Z200mtckfcIF36U6e8NviYi9YuN3f398ZmA2HdkP05I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G55LJf8f3UOJctyd8aJdHH4ttfYB92eA1Yn5lw9UHrbNaXeekVe/vNu4BGZTKQApbz8nPRb13Mbo5+TIqI365VTsomigagF0Hf4iZp2ozNCIQ5QE+Gg9sSqeNDA90drubVJIaeEz+3UejQthEb/XEYNZWR6WNqwfmYp4n3+B/kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvKdtIQz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2419CC4CEE3;
-	Thu,  3 Jul 2025 14:53:58 +0000 (UTC)
+	 MIME-Version; b=YY9yzRln/6W52uC8rvfbQgCg8l9/MxK99UmiueYRekmmCiVZk5hFmUWM8Mc2aNI6RrpYs2gzIwrP5TFqRkxcila+7NbbRPVM734bJT72VxAK8/0j9fXSqiTZH3X1eK7g41GNb/giUoJ0aW2Tb3eoeqeJiTxpAwTR1U91keB7im8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTpW/uZz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1152C4CEE3;
+	Thu,  3 Jul 2025 15:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554439;
-	bh=3sY2zjUaBuVUaiRu+Az0IyREQAV8t6JB9y/hYyGtvkU=;
+	s=korg; t=1751555730;
+	bh=Z200mtckfcIF36U6e8NviYi9YuN3f398ZmA2HdkP05I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zvKdtIQz2kKv82cYGV94Ad9LCKdbETwQFo3vu1KDofNqznNBRsIEocw0vQAocCGbJ
-	 1UZ+CUHeHBIJx0Q0LQfSu8BfCNOgCQ6u9UIvE60BJ0P3WCl3TUMN9upwY5TPyta/MN
-	 p0jyHhNzBqbMzvHNNnrtTNYjycgKaWJRWdo5rIeY=
+	b=eTpW/uZzW5/dZ1COaPHGdjmzHCfXSQBz2OW1mCFmYR+Ow2zB8DIxK0h7utTIas7N4
+	 y5YTOlG06aPK6KJCR9q5ZPJ1SOokvAV6tqACc/R3npsHwhAmk7q6RhxZA23e1HfCQv
+	 Xk9GxY4M74+nrkQF3Mps0AyIACdDLNYKkp3VZF54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Roy Tang (ErgoniaTrading)" <royonia@ergonia.io>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 187/218] io_uring/net: always use current transfer count for buffer put
-Date: Thu,  3 Jul 2025 16:42:15 +0200
-Message-ID: <20250703144003.664260027@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 073/139] mm/damon/sysfs-schemes: free old damon_sysfs_scheme_filter->memcg_path on write
+Date: Thu,  3 Jul 2025 16:42:16 +0200
+Message-ID: <20250703143944.027583857@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: SeongJae Park <sj@kernel.org>
 
-A previous fix corrected the retry condition for when to continue a
-current bundle, but it missed that the current (not the total) transfer
-count also applies to the buffer put. If not, then for incrementally
-consumed buffer rings repeated completions on the same request may end
-up over consuming.
+commit 4f489fe6afb395dbc79840efa3c05440b760d883 upstream.
 
-Reported-by: Roy Tang (ErgoniaTrading) <royonia@ergonia.io>
-Cc: stable@vger.kernel.org
-Fixes: 3a08988123c8 ("io_uring/net: only retry recv bundle for a full transfer")
-Link: https://github.com/axboe/liburing/issues/1423
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-(cherry picked from commit 51a4598ad5d9eb6be4ec9ba65bbfdf0ac302eb2e)
+memcg_path_store() assigns a newly allocated memory buffer to
+filter->memcg_path, without deallocating the previously allocated and
+assigned memory buffer.  As a result, users can leak kernel memory by
+continuously writing a data to memcg_path DAMOS sysfs file.  Fix the leak
+by deallocating the previously set memory buffer.
+
+Link: https://lkml.kernel.org/r/20250619183608.6647-2-sj@kernel.org
+Fixes: 7ee161f18b5d ("mm/damon/sysfs-schemes: implement filter directory")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>		[6.3.x]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/sysfs-schemes.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -854,7 +854,7 @@ static inline bool io_recv_finish(struct
- 	if (sr->flags & IORING_RECVSEND_BUNDLE) {
- 		size_t this_ret = *ret - sr->done_io;
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -376,6 +376,7 @@ static ssize_t memcg_path_store(struct k
+ 		return -ENOMEM;
  
--		cflags |= io_put_kbufs(req, *ret, io_bundle_nbufs(kmsg, this_ret),
-+		cflags |= io_put_kbufs(req, this_ret, io_bundle_nbufs(kmsg, this_ret),
- 				      issue_flags);
- 		if (sr->retry)
- 			cflags = req->cqe.flags | (cflags & CQE_F_MASK);
+ 	strscpy(path, buf, count + 1);
++	kfree(filter->memcg_path);
+ 	filter->memcg_path = path;
+ 	return count;
+ }
 
 
 
