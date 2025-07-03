@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C730BAF79DC
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:06:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9B7AF7858
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:49:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B31B3189FCAA
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:01:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58ACD541F7C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7833F38F91;
-	Thu,  3 Jul 2025 15:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B8E19F43A;
+	Thu,  3 Jul 2025 14:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eITiMBV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMjDfPRi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342FB2EE299;
-	Thu,  3 Jul 2025 15:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803A5101DE;
+	Thu,  3 Jul 2025 14:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554886; cv=none; b=HT1DpmJcV1ZIFYWGPKp2YpB7iRSzKiUeMTHykqdYHF/ZxCBOf86KMxqvggzRPuKmrnJWAmvRSeOT0A1YMEd7zW8EAfh/3yt0EtzR1+5sLny5V0CssGnQODV7FDbMn8VgdGgDazd2Yk0YbiJm9KTCqYyWnP37r0D2ftvE20sFFOQ=
+	t=1751554144; cv=none; b=ruUglRA49Q71B6HEYqqJotM199NNF0sMdRZe6p/3Eae2yEtOS0hn+kZemOf2yfkv6HHLZGrboxOl6GOaBif//NzFhjkAiOYCwBWwhUMVuSLxfDBp5KsoJxGhwoD1SppIj6CqS8UyX0jcljJ5lP8MBMn8SM/Spe3kSblBi1DDkNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554886; c=relaxed/simple;
-	bh=zDiY1dJmBbkdMgCvkK4WhP0prqEQgybr6k/WuLrnwbg=;
+	s=arc-20240116; t=1751554144; c=relaxed/simple;
+	bh=Mk281EFW5Hg+THQa4eqg8xr7ofSDhnGhC2i1eyO4S30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SvryxYGE27IQNnMqqyy8L3C5z0t68Pciuddy3gKBP7DziATmtAh1lCB/jVfeTl7EtWwzgdJrwufr9w9XiYyZQ+BuWDbkxjxxJ6Nzp2uBM90vDrcUVyHgQQOFRN/d8hq2v8BajAqNJqw9+InVy8QCm/AVbdLMbg7OqpXB5bDMdRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eITiMBV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFEF4C4CEF3;
-	Thu,  3 Jul 2025 15:01:25 +0000 (UTC)
+	 MIME-Version; b=c6RbgKfdBp3x32s13J2W15pR3tq9kl0B1W+KsFEjr/LRfGhQEL/eYR/5suBLodpDSM5x1FOesC149paU2rl29Tjlf7jlQvS24EaRuR/wfBu4W+t6N5LRb956e37tHpk5U4TA7NuvJKJEtQXKlW5M89VWIG7VTtj/P6cGJi6oSsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMjDfPRi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61A9C4CEE3;
+	Thu,  3 Jul 2025 14:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554886;
-	bh=zDiY1dJmBbkdMgCvkK4WhP0prqEQgybr6k/WuLrnwbg=;
+	s=korg; t=1751554144;
+	bh=Mk281EFW5Hg+THQa4eqg8xr7ofSDhnGhC2i1eyO4S30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eITiMBV0FtGDOCx5713S/Kl4QdZtUcq65FBSYM6Dsd5TzWirH+qMp6Tnru5rb4ue6
-	 CaCwKtUaDcuyLW0Ap5b4uJbJPY3K3xrKumVxQF90usReBl3IUuDzEfcHSq+F56/mtW
-	 G3AX+L0XUI7i/igE+ysuHzxs88v15kFizZKzblHg=
+	b=pMjDfPRid/1DRtmTevDHyBTJTiK2/YByOfCEG0bRVfzwyWaSyBBg01B2Spux4A3mF
+	 GorJLLPPOBa8rG4Q/jcHTYgvXKLl+ZPDqA+x8MqE/JwRtcBIMtWdHlwM9KZt1Y12bK
+	 vnUBrqowXeCfgrEyM0tZTYeWzJ4Ado596RdQ2Vng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	syzbot+fe8264911355151c487f@syzkaller.appspotmail.com,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 092/263] io_uring/zcrx: improve area validation
+Subject: [PATCH 6.12 064/218] jfs: validate AG parameters in dbMount() to prevent crashes
 Date: Thu,  3 Jul 2025 16:40:12 +0200
-Message-ID: <20250703144007.986197276@linuxfoundation.org>
+Message-ID: <20250703143958.501488764@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit d760d3f59f0d8d0df2895db30d36cf23106d6b05 ]
+[ Upstream commit 37bfb464ddca87f203071b5bd562cd91ddc0b40a ]
 
-dmabuf backed area will be taking an offset instead of addresses, and
-io_buffer_validate() is not flexible enough to facilitate it. It also
-takes an iovec, which may truncate the u64 length zcrx takes. Add a new
-helper function for validation.
+Validate db_agheight, db_agwidth, and db_agstart in dbMount to catch
+corrupted metadata early and avoid undefined behavior in dbAllocAG.
+Limits are derived from L2LPERCTL, LPERCTL/MAXAG, and CTLTREESIZE:
 
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/0b3b735391a0a8f8971bf0121c19765131fddd3b.1746097431.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 0ec33c81d9c7 ("io_uring/zcrx: fix area release on registration failure")
+- agheight: 0 to L2LPERCTL/2 (0 to 5) ensures shift
+  (L2LPERCTL - 2*agheight) >= 0.
+- agwidth: 1 to min(LPERCTL/MAXAG, 2^(L2LPERCTL - 2*agheight))
+  ensures agperlev >= 1.
+  - Ranges: 1-8 (agheight 0-3), 1-4 (agheight 4), 1 (agheight 5).
+  - LPERCTL/MAXAG = 1024/128 = 8 limits leaves per AG;
+    2^(10 - 2*agheight) prevents division to 0.
+- agstart: 0 to CTLTREESIZE-1 - agwidth*(MAXAG-1) keeps ti within
+  stree (size 1365).
+  - Ranges: 0-1237 (agwidth 1), 0-348 (agwidth 8).
+
+UBSAN: shift-out-of-bounds in fs/jfs/jfs_dmap.c:1400:9
+shift exponent -335544310 is negative
+CPU: 0 UID: 0 PID: 5822 Comm: syz-executor130 Not tainted 6.14.0-rc5-syzkaller #0
+Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ ubsan_epilogue lib/ubsan.c:231 [inline]
+ __ubsan_handle_shift_out_of_bounds+0x3c8/0x420 lib/ubsan.c:468
+ dbAllocAG+0x1087/0x10b0 fs/jfs/jfs_dmap.c:1400
+ dbDiscardAG+0x352/0xa20 fs/jfs/jfs_dmap.c:1613
+ jfs_ioc_trim+0x45a/0x6b0 fs/jfs/jfs_discard.c:105
+ jfs_ioctl+0x2cd/0x3e0 fs/jfs/ioctl.c:131
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl+0xf5/0x170 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Cc: stable@vger.kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+fe8264911355151c487f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fe8264911355151c487f
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rsrc.c | 27 +++++++++++++++------------
- io_uring/rsrc.h |  2 +-
- io_uring/zcrx.c |  7 +++----
- 3 files changed, 19 insertions(+), 17 deletions(-)
+ fs/jfs/jfs_dmap.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index 794d4ae6f0bc8..6d61683223870 100644
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -80,10 +80,21 @@ static int io_account_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
- 	return 0;
- }
- 
--int io_buffer_validate(struct iovec *iov)
-+int io_validate_user_buf_range(u64 uaddr, u64 ulen)
- {
--	unsigned long tmp, acct_len = iov->iov_len + (PAGE_SIZE - 1);
-+	unsigned long tmp, base = (unsigned long)uaddr;
-+	unsigned long acct_len = (unsigned long)PAGE_ALIGN(ulen);
- 
-+	/* arbitrary limit, but we need something */
-+	if (ulen > SZ_1G || !ulen)
-+		return -EFAULT;
-+	if (check_add_overflow(base, acct_len, &tmp))
-+		return -EOVERFLOW;
-+	return 0;
-+}
-+
-+static int io_buffer_validate(struct iovec *iov)
-+{
- 	/*
- 	 * Don't impose further limits on the size and buffer
- 	 * constraints here, we'll -EINVAL later when IO is
-@@ -91,17 +102,9 @@ int io_buffer_validate(struct iovec *iov)
- 	 */
- 	if (!iov->iov_base)
- 		return iov->iov_len ? -EFAULT : 0;
--	if (!iov->iov_len)
--		return -EFAULT;
--
--	/* arbitrary limit, but we need something */
--	if (iov->iov_len > SZ_1G)
--		return -EFAULT;
- 
--	if (check_add_overflow((unsigned long)iov->iov_base, acct_len, &tmp))
--		return -EOVERFLOW;
--
--	return 0;
-+	return io_validate_user_buf_range((unsigned long)iov->iov_base,
-+					  iov->iov_len);
- }
- 
- static void io_release_ubuf(void *priv)
-diff --git a/io_uring/rsrc.h b/io_uring/rsrc.h
-index b52242852ff34..4373524f993c7 100644
---- a/io_uring/rsrc.h
-+++ b/io_uring/rsrc.h
-@@ -83,7 +83,7 @@ int io_register_rsrc_update(struct io_ring_ctx *ctx, void __user *arg,
- 			    unsigned size, unsigned type);
- int io_register_rsrc(struct io_ring_ctx *ctx, void __user *arg,
- 			unsigned int size, unsigned int type);
--int io_buffer_validate(struct iovec *iov);
-+int io_validate_user_buf_range(u64 uaddr, u64 ulen);
- 
- bool io_check_coalesce_buffer(struct page **page_array, int nr_pages,
- 			      struct io_imu_folio_data *data);
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index ecb59182d9b2c..0771a57d81a5b 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -205,7 +205,6 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
- {
- 	struct io_zcrx_area *area;
- 	int i, ret, nr_pages, nr_iovs;
--	struct iovec iov;
- 
- 	if (area_reg->flags || area_reg->rq_area_token)
- 		return -EINVAL;
-@@ -214,11 +213,11 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
- 	if (area_reg->addr & ~PAGE_MASK || area_reg->len & ~PAGE_MASK)
- 		return -EINVAL;
- 
--	iov.iov_base = u64_to_user_ptr(area_reg->addr);
--	iov.iov_len = area_reg->len;
--	ret = io_buffer_validate(&iov);
-+	ret = io_validate_user_buf_range(area_reg->addr, area_reg->len);
- 	if (ret)
- 		return ret;
-+	if (!area_reg->addr)
-+		return -EFAULT;
- 
- 	ret = -ENOMEM;
- 	area = kzalloc(sizeof(*area), GFP_KERNEL);
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 26e89d0c69b61..35e063c9f3a42 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -194,7 +194,11 @@ int dbMount(struct inode *ipbmap)
+ 	    !bmp->db_numag || (bmp->db_numag > MAXAG) ||
+ 	    (bmp->db_maxag >= MAXAG) || (bmp->db_maxag < 0) ||
+ 	    (bmp->db_agpref >= MAXAG) || (bmp->db_agpref < 0) ||
+-	    !bmp->db_agwidth ||
++	    (bmp->db_agheight < 0) || (bmp->db_agheight > (L2LPERCTL >> 1)) ||
++	    (bmp->db_agwidth < 1) || (bmp->db_agwidth > (LPERCTL / MAXAG)) ||
++	    (bmp->db_agwidth > (1 << (L2LPERCTL - (bmp->db_agheight << 1)))) ||
++	    (bmp->db_agstart < 0) ||
++	    (bmp->db_agstart > (CTLTREESIZE - 1 - bmp->db_agwidth * (MAXAG - 1))) ||
+ 	    (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG) ||
+ 	    (bmp->db_agl2size < 0) ||
+ 	    ((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
 -- 
 2.39.5
 
