@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-159673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184B8AF7A03
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFBCEAF7865
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9777C1888B8D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 816F3544BB9
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D42F2ED871;
-	Thu,  3 Jul 2025 15:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A722E54BF;
+	Thu,  3 Jul 2025 14:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iyr7UjmJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Giy6qV7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E4F2B9A6;
-	Thu,  3 Jul 2025 15:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A372D126BFF;
+	Thu,  3 Jul 2025 14:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554976; cv=none; b=Q7U+EwqOS4fZl+ksbjPQptFYJKPHT5BVYh8ptTZ+gtmdyztZ/3YPF9DFJWQe9f3wJTdegCMrQ13twRUcyRvMkGAoTAErQZ8abS3p1kL4v0b/0NdUAn/2h+MAxXUj60j0le7lYkafEv62OzabztZPZ6i3ecwfeuf3r5Oj9K48Vfs=
+	t=1751554195; cv=none; b=glrF1571ESyCKmcEy+N+vD+8n+6q0BupxvDCwhCNxvgKM1jz+ATGr1Sw8FEOqGokoHgHsqXbXYlhMes3JIRgoXyPS+AXy1eDZHOecX+L8zcVjhcTKWcfl5/wDXY1IKTYHYy3j/ljJBw2lFvq6LLIcdnoEf2Pb1kkBG+yt22/nuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554976; c=relaxed/simple;
-	bh=Gw80lKoGLSMmi4vR72rNesd/PYR2HWEDeQK33LpU4VM=;
+	s=arc-20240116; t=1751554195; c=relaxed/simple;
+	bh=kz0bYjSm9k7ppsidS59qzLS+whNDwDXVyfEgeRgp/BI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CrOpWYB6PjTDZnIrfd5KB/jM5NlbmIJflkPZe5xfdya7iKFvqnBg7iDMobwWx7TZfRvLEbVDOnaixVWyBbB6kUAejtp5TSykP5wTzcEdDZ3pTe+l7EepMP/pVYsQrFAXRRQ2l2GIMUoaTuA/mfdDS29hDtdGn2HjsJ8XKezYlXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iyr7UjmJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C086C4CEE3;
-	Thu,  3 Jul 2025 15:02:55 +0000 (UTC)
+	 MIME-Version; b=kb1Hkqf0tA2B2U0uvpvz9HWYL6WSkjtT7Vc1oYvheOQ4hE6EKstjFvT3CoY7y79cxk5RBMc3jCkGIVCBVysaHtzGqmQ1ScxssT1ifrz9PadBgvTldX7HKKBADk3Mr2BXqg3tUm6UuBgGIKqzZ5QCuaQC1n5gGdd7by2f7kXoTbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Giy6qV7F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBCAC4CEE3;
+	Thu,  3 Jul 2025 14:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554976;
-	bh=Gw80lKoGLSMmi4vR72rNesd/PYR2HWEDeQK33LpU4VM=;
+	s=korg; t=1751554195;
+	bh=kz0bYjSm9k7ppsidS59qzLS+whNDwDXVyfEgeRgp/BI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iyr7UjmJVL6LDD7mE1J3YDjjIK3SDdQNSUfOMJ9indaa22fHlYVbdEPmdWaeqhm/Z
-	 djxszhtWXsAMINj+TgpaX0/shPVGuPelVWR78esvpn9hX6TX13HOuig49iJhg5fTYX
-	 IwsygtuarI9rVwzRaGD+lTqlK0bB43V+iLjp6Rak=
+	b=Giy6qV7F5JTkwvPT1JsktI2440skz+Z5dnLghXVf1B2PzJuc4d9wz4oesuT+K7zdc
+	 N+KLSvqECqZ0MNayvUA0EqWrO9o+jqUVGLWnWDa/CBh2Gnov02dZyTT3zrTEihh3CB
+	 8wSIznRyGOi1QRlDwRfBaE7JEzjtMzF6PYMcqk+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youngjun Lee <yjjuny.lee@samsung.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 138/263] ALSA: usb-audio: Fix out-of-bounds read in snd_usb_get_audioformat_uac3()
+Subject: [PATCH 6.12 110/218] net: selftests: fix TCP packet checksum
 Date: Thu,  3 Jul 2025 16:40:58 +0200
-Message-ID: <20250703144009.892354266@linuxfoundation.org>
+Message-ID: <20250703144000.339982415@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youngjun Lee <yjjuny.lee@samsung.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit fb4e2a6e8f28a3c0ad382e363aeb9cd822007b8a ]
+[ Upstream commit 8d89661a36dd3bb8c9902cff36dc0c144dce3faf ]
 
-In snd_usb_get_audioformat_uac3(), the length value returned from
-snd_usb_ctl_msg() is used directly for memory allocation without
-validation. This length is controlled by the USB device.
+The length in the pseudo header should be the length of the L3 payload
+AKA the L4 header+payload. The selftest code builds the packet from
+the lower layers up, so all the headers are pushed already when it
+constructs L4. We need to subtract the lower layer headers from skb->len.
 
-The allocated buffer is cast to a uac3_cluster_header_descriptor
-and its fields are accessed without verifying that the buffer
-is large enough. If the device returns a smaller than expected
-length, this leads to an out-of-bounds read.
-
-Add a length check to ensure the buffer is large enough for
-uac3_cluster_header_descriptor.
-
-Signed-off-by: Youngjun Lee <yjjuny.lee@samsung.com>
-Fixes: 9a2fe9b801f5 ("ALSA: usb: initial USB Audio Device Class 3.0 support")
-Link: https://patch.msgid.link/20250623-uac3-oob-fix-v1-1-527303eaf40a@samsung.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 3e1e58d64c3d ("net: add generic selftest support")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Reported-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20250624183258.3377740-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/stream.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/core/selftests.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/stream.c b/sound/usb/stream.c
-index c1ea8844a46fc..aa91d63749f2c 100644
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -987,6 +987,8 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
- 	 * and request Cluster Descriptor
- 	 */
- 	wLength = le16_to_cpu(hc_header.wLength);
-+	if (wLength < sizeof(cluster))
-+		return NULL;
- 	cluster = kzalloc(wLength, GFP_KERNEL);
- 	if (!cluster)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/net/core/selftests.c b/net/core/selftests.c
+index 561653f9d71d4..ef27594d6a996 100644
+--- a/net/core/selftests.c
++++ b/net/core/selftests.c
+@@ -160,8 +160,9 @@ static struct sk_buff *net_test_get_skb(struct net_device *ndev,
+ 	skb->csum = 0;
+ 	skb->ip_summed = CHECKSUM_PARTIAL;
+ 	if (attr->tcp) {
+-		thdr->check = ~tcp_v4_check(skb->len, ihdr->saddr,
+-					    ihdr->daddr, 0);
++		int l4len = skb->len - skb_transport_offset(skb);
++
++		thdr->check = ~tcp_v4_check(l4len, ihdr->saddr, ihdr->daddr, 0);
+ 		skb->csum_start = skb_transport_header(skb) - skb->head;
+ 		skb->csum_offset = offsetof(struct tcphdr, check);
+ 	} else {
 -- 
 2.39.5
 
