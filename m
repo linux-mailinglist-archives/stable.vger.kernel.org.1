@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-159613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A0AAF79AC
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:05:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF174AF782A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1022188CA11
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:00:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A4C1568568
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DE72EF676;
-	Thu,  3 Jul 2025 14:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39AE02ED85E;
+	Thu,  3 Jul 2025 14:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAgnQKL7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qw3T6pyw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C344C2E7F1A;
-	Thu,  3 Jul 2025 14:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB343101DE;
+	Thu,  3 Jul 2025 14:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554783; cv=none; b=IfyIaMl646xBmjMD8TAqFbdQLzhzTkSduygx7ibuNcBMiB5MTrebRZwsCROaRL0lhou3v9i4mUCxrQmatVXPHrv36+w4BfoM7yRgjlK5aytAFuAinzAOmJJj8UDmDJXblgFlXnNTS0VputsUHyO9EG6xXypwKONEmxoQcR6+6dQ=
+	t=1751554001; cv=none; b=oyNHqABlMFhXBrun7loWBMa3KRuw4GkHXMSga+jsilKeG13rptMZrXTVCmtwx78VYXhVXUoB2RU5s3FFaA5Ru3GrK5oN1V0rJpdY9rrVkx1SFS8JQa3asGfT9ZDd4QD3aNtPTa3KBb03yg67tyC/VewesZEBj8sP3hCXbQKf4ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554783; c=relaxed/simple;
-	bh=zte5MaVjKED9hCIi04rS/Aq9f8uI3cHajhOOmEWV4S8=;
+	s=arc-20240116; t=1751554001; c=relaxed/simple;
+	bh=geAYmXh4GPQJedRYoGB9CEtYR28VjKUcdFU0H2hFYjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NpfnZ4hMsab6j9xCdxSktx1EIgNLooGqXQpVOLkpwVOCDQGZJln0ez4Zi/oLy6vZ1UAjadyvvYcKd2jqcJfkLM2fVvDmAfYLEzXCLpH0ZEye/GHhSpK8Hca7RGR4T1aTjsH+ERVxQQGslCX36lXHHlJBmqN4DZXmxpem357WsyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAgnQKL7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E200C4CEED;
-	Thu,  3 Jul 2025 14:59:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AI/euhJQ1N5gNjTehRhPgPE7XVEkQ14KdtzRxFh7IDFQywaDXNU+cHWqjg0uHPWDX6HwuJ9UYyqb10vUZGM5EOYzhxG+U9+jg9UhiNTEzsvQO84ShWDSQ+SRtU97Jz/s2QYE+Z+c0O1PeUUDlFJUoPL+gjyn+6D6t+DVxt+OxVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qw3T6pyw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B21C4CEE3;
+	Thu,  3 Jul 2025 14:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554783;
-	bh=zte5MaVjKED9hCIi04rS/Aq9f8uI3cHajhOOmEWV4S8=;
+	s=korg; t=1751554000;
+	bh=geAYmXh4GPQJedRYoGB9CEtYR28VjKUcdFU0H2hFYjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lAgnQKL72W/Wf905VmjyWyElnZr5y1ybca26fv2l8IKN+ka/cqK1/33h/Dpxqimpf
-	 rHC090M4rK7COTF9NXimnvUQ0WCnsLAbRMXQHO61cOsYmj2fU5qtlMJJ3ywOBIKXe6
-	 NL1W6wm0yNtKVCfKsaWxQoLBvWC+AGXo6QLvshII=
+	b=Qw3T6pyw4uEOml2sofzrhMDmHC1PAY2HU0GG4xyvtuYBCJuNg0s63sFTdj5lt4YfD
+	 SMbn/9z4H1BDZ//fJT7+GteKwhULAz1o2CWuoPCstNGGqYfrsYBOo8ik7Vug4OyoX3
+	 M8Nh8k5dixNwwkm+XU9zh+rhBljWbm27nFYNoOlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Andy Chiu <andybnac@gmail.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 077/263] ovl: Check for NULL d_inode() in ovl_dentry_upper()
+Subject: [PATCH 6.12 049/218] riscv: add a data fence for CMODX in the kernel mode
 Date: Thu,  3 Jul 2025 16:39:57 +0200
-Message-ID: <20250703144007.390886301@linuxfoundation.org>
+Message-ID: <20250703143957.896860886@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +62,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Andy Chiu <andybnac@gmail.com>
 
-[ Upstream commit 8a39f1c870e9d6fbac5638f3a42a6a6363829c49 ]
+[ Upstream commit ca358692de41b273468e625f96926fa53e13bd8c ]
 
-In ovl_path_type() and ovl_is_metacopy_dentry() GCC notices that it is
-possible for OVL_E() to return NULL (which implies that d_inode(dentry)
-may be NULL). This would result in out of bounds reads via container_of(),
-seen with GCC 15's -Warray-bounds -fdiagnostics-details. For example:
+RISC-V spec explicitly calls out that a local fence.i is not enough for
+the code modification to be visble from a remote hart. In fact, it
+states:
 
-In file included from arch/x86/include/generated/asm/rwonce.h:1,
-                 from include/linux/compiler.h:339,
-                 from include/linux/export.h:5,
-                 from include/linux/linkage.h:7,
-                 from include/linux/fs.h:5,
-                 from fs/overlayfs/util.c:7:
-In function 'ovl_upperdentry_dereference',
-    inlined from 'ovl_dentry_upper' at ../fs/overlayfs/util.c:305:9,
-    inlined from 'ovl_path_type' at ../fs/overlayfs/util.c:216:6:
-include/asm-generic/rwonce.h:44:26: error: array subscript 0 is outside array bounds of 'struct inode[7486503276667837]' [-Werror=array-bounds=]
-   44 | #define __READ_ONCE(x)  (*(const volatile __unqual_scalar_typeof(x) *)&(x))
-      |                         ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-include/asm-generic/rwonce.h:50:9: note: in expansion of macro '__READ_ONCE'
-   50 |         __READ_ONCE(x);                                                 \
-      |         ^~~~~~~~~~~
-fs/overlayfs/ovl_entry.h:195:16: note: in expansion of macro 'READ_ONCE'
-  195 |         return READ_ONCE(oi->__upperdentry);
-      |                ^~~~~~~~~
-  'ovl_path_type': event 1
-  185 |         return inode ? OVL_I(inode)->oe : NULL;
-  'ovl_path_type': event 2
+To make a store to instruction memory visible to all RISC-V harts, the
+writing hart also has to execute a data FENCE before requesting that all
+remote RISC-V harts execute a FENCE.I.
 
-Avoid this by allowing ovl_dentry_upper() to return NULL if d_inode() is
-NULL, as that means the problematic dereferencing can never be reached.
-Note that this fixes the over-eager compiler warning in an effort to
-being able to enable -Warray-bounds globally. There is no known
-behavioral bug here.
+Although current riscv drivers for IPI use ordered MMIO when sending IPIs
+in order to synchronize the action between previous csd writes, riscv
+does not restrict itself to any particular flavor of IPI. Any driver or
+firmware implementation that does not order data writes before the IPI
+may pose a risk for code-modifying race.
 
-Suggested-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Thus, add a fence here to order data writes before making the IPI.
+
+Signed-off-by: Andy Chiu <andybnac@gmail.com>
+Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20250407180838.42877-8-andybnac@gmail.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/util.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/riscv/mm/cacheflush.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
-index 0819c739cc2ff..5d6b60d56c275 100644
---- a/fs/overlayfs/util.c
-+++ b/fs/overlayfs/util.c
-@@ -305,7 +305,9 @@ enum ovl_path_type ovl_path_realdata(struct dentry *dentry, struct path *path)
+diff --git a/arch/riscv/mm/cacheflush.c b/arch/riscv/mm/cacheflush.c
+index b816727298872..b2e4b81763f88 100644
+--- a/arch/riscv/mm/cacheflush.c
++++ b/arch/riscv/mm/cacheflush.c
+@@ -24,7 +24,20 @@ void flush_icache_all(void)
  
- struct dentry *ovl_dentry_upper(struct dentry *dentry)
- {
--	return ovl_upperdentry_dereference(OVL_I(d_inode(dentry)));
-+	struct inode *inode = d_inode(dentry);
+ 	if (num_online_cpus() < 2)
+ 		return;
+-	else if (riscv_use_sbi_for_rfence())
 +
-+	return inode ? ovl_upperdentry_dereference(OVL_I(inode)) : NULL;
- }
- 
- struct dentry *ovl_dentry_lower(struct dentry *dentry)
++	/*
++	 * Make sure all previous writes to the D$ are ordered before making
++	 * the IPI. The RISC-V spec states that a hart must execute a data fence
++	 * before triggering a remote fence.i in order to make the modification
++	 * visable for remote harts.
++	 *
++	 * IPIs on RISC-V are triggered by MMIO writes to either CLINT or
++	 * S-IMSIC, so the fence ensures previous data writes "happen before"
++	 * the MMIO.
++	 */
++	RISCV_FENCE(w, o);
++
++	if (riscv_use_sbi_for_rfence())
+ 		sbi_remote_fence_i(NULL);
+ 	else
+ 		on_each_cpu(ipi_remote_fence_i, NULL, 1);
 -- 
 2.39.5
 
