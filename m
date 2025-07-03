@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-159530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E73AAF791B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:58:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2699FAF7C2F
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C5B7585182
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76C3E1897ADB
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0262EF669;
-	Thu,  3 Jul 2025 14:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82AD2D6622;
+	Thu,  3 Jul 2025 15:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1sKPZoI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yas3A1Yp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBDD2E7F0B;
-	Thu,  3 Jul 2025 14:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E152DE6F1;
+	Thu,  3 Jul 2025 15:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554520; cv=none; b=SvFRFFr43QIcXO/tWDrHpd2wZ0FijkjSUrD4bKV3sLydwcDpMvGTbr09d7n9+mnmgxWthvw18FjzeH2K4rfZf0cK/5D5lThTjCaZfDpR9eYb6gRtd82DLn3R0JSuF5QKKID9UGwZCh8mK1RceDcDYuB7cnLxxHLYIDGTvURyGvM=
+	t=1751556090; cv=none; b=gqL3UKuVScVw8LtO8ycDWhh4pfcJUDyfLwuOk6lvApRiqDEOYsn1vMXEKlV26Pm0ovBAVtE4rQ/7CUCyzravEXiMohSbhskyvlxU2D1ul7ZxbBUZhxCGy+xrERGAV0StDfpS8FQoOGzBK7DTBJ83k+oq1hBOFQjiFU8mr84l64E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554520; c=relaxed/simple;
-	bh=DC2Asas4pxn8y5n2w9BAE6XcBlMDUhhKdsQqWTsun/Y=;
+	s=arc-20240116; t=1751556090; c=relaxed/simple;
+	bh=IrP+r+A25sVOqcCFMgWJD6/ETb1Az5mH2pebFkDVJGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sDTWoMlR8SC9hDa1a5tUMwWa1epHcFTrE2vpcj/dDyq7LqF/OzHkRNRzK6gXTLXPc/l48aD+00KufWbvvaODMdQfSIZ9CEme7tLlQVL1tAowuLq9YYWihYKQ9gRm/C675obfuCq7cyl/0GyraxjGbCLFR5RfOwAcsuhjyNt3GRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1sKPZoI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0516C4CEE3;
-	Thu,  3 Jul 2025 14:55:19 +0000 (UTC)
+	 MIME-Version; b=It3u0Ta6ePtTMn7HDPX3pl1zio7ysrLAMEFnFx5tv7/8PkdJcVZ8t8F+urEnCAUE0UB06v/NBs/SkdEjV2wFLUj3jykE1EMmnqzFFmzuBmsiKwEFoCQFj+rFsmxCevq5PwcL/fdfnwBHIBYEZmdLcmBtGklWxAK9NCMXew8NIL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yas3A1Yp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B28CC4CEE3;
+	Thu,  3 Jul 2025 15:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554520;
-	bh=DC2Asas4pxn8y5n2w9BAE6XcBlMDUhhKdsQqWTsun/Y=;
+	s=korg; t=1751556090;
+	bh=IrP+r+A25sVOqcCFMgWJD6/ETb1Az5mH2pebFkDVJGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j1sKPZoIgapj8D5dAG86SClLrFwsSJ8rV+idwb1BhNhMdZDreDJvpw7xPq50ZUsD4
-	 negpRtZrz3At6MsfsomWGOG7xzZDeThd0CKFFd2NAgXiDaAqUmi1akKUW+M/wOWcPX
-	 IsX4RpUNJhMP3rNOBH+4RtzKGx7KcXsHXK9s/GTc=
+	b=yas3A1YpVmoZcGlvz1qW5wi0VvcTIVB+kVCMydkNUsn3gG2/TccesLGcS41lqMUjO
+	 5WhlItDTdJAxWnApgw5NMGxO3ESZIe1gKea3SZiUYJRhV0tDrfu769bxk8cZpxZKS6
+	 fMC1xH6EI/gMhSr9xyk8x95of7K0RxDGDBq5g4Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 213/218] spi: spi-mem: Add a new controller capability
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.1 072/132] i2c: robotfuzz-osif: disable zero-length read messages
 Date: Thu,  3 Jul 2025 16:42:41 +0200
-Message-ID: <20250703144004.731610136@linuxfoundation.org>
+Message-ID: <20250703143942.244891432@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 1248c9b8d54120950fda10fbeb98fb8932b4d45c ]
+commit 56ad91c1aa9c18064348edf69308080b03c9dc48 upstream.
 
-There are spi devices with multiple frequency limitations depending on
-the invoked command. We probably do not want to afford running at the
-lowest supported frequency all the time, so if we want to get the most
-of our hardware, we need to allow per-operation frequency limitations.
+This driver passes the length of an i2c_msg directly to
+usb_control_msg(). If the message is now a read and of length 0, it
+violates the USB protocol and a warning will be printed. Enable the
+I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
+read messages altogether.
 
-Among all the SPI memory controllers, I believe all are capable of
-changing the spi frequency on the fly. Some of the drivers do not make
-any frequency setup though. And some others will derive a per chip
-prescaler value which will be used forever.
-
-Actually changing the frequency on the fly is something new in Linux, so
-we need to carefully flag the drivers which do and do not support it. A
-controller capability is created for that, and the presence for this
-capability will always be checked before accepting such pattern.
-
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://patch.msgid.link/20241224-winbond-6-11-rc1-quad-support-v2-2-ad218dbc406f@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 83e53a8f120f ("i2c: Add bus driver for for OSIF USB i2c device.")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: <stable@vger.kernel.org> # v3.14+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250522064234.3721-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-mem.c       | 6 ++++++
- include/linux/spi/spi-mem.h | 2 ++
- 2 files changed, 8 insertions(+)
+ drivers/i2c/busses/i2c-robotfuzz-osif.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index f8b598ba962d9..d0ae20d433d61 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -188,6 +188,12 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 	    op->max_freq < mem->spi->controller->min_speed_hz)
- 		return false;
- 
-+	if (op->max_freq &&
-+	    op->max_freq < mem->spi->max_speed_hz) {
-+		if (!spi_mem_controller_is_capable(ctlr, per_op_freq))
-+			return false;
-+	}
-+
- 	return spi_mem_check_buswidth(mem, op);
+--- a/drivers/i2c/busses/i2c-robotfuzz-osif.c
++++ b/drivers/i2c/busses/i2c-robotfuzz-osif.c
+@@ -111,6 +111,11 @@ static u32 osif_func(struct i2c_adapter
+ 	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL;
  }
- EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 44b7ecee0e74c..0f00d74beb24c 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -306,10 +306,12 @@ struct spi_controller_mem_ops {
-  * struct spi_controller_mem_caps - SPI memory controller capabilities
-  * @dtr: Supports DTR operations
-  * @ecc: Supports operations with error correction
-+ * @per_op_freq: Supports per operation frequency switching
-  */
- struct spi_controller_mem_caps {
- 	bool dtr;
- 	bool ecc;
-+	bool per_op_freq;
- };
  
- #define spi_mem_controller_is_capable(ctlr, cap)	\
--- 
-2.39.5
-
++/* prevent invalid 0-length usb_control_msg */
++static const struct i2c_adapter_quirks osif_quirks = {
++	.flags = I2C_AQ_NO_ZERO_LEN_READ,
++};
++
+ static const struct i2c_algorithm osif_algorithm = {
+ 	.master_xfer	= osif_xfer,
+ 	.functionality	= osif_func,
+@@ -143,6 +148,7 @@ static int osif_probe(struct usb_interfa
+ 
+ 	priv->adapter.owner = THIS_MODULE;
+ 	priv->adapter.class = I2C_CLASS_HWMON;
++	priv->adapter.quirks = &osif_quirks;
+ 	priv->adapter.algo = &osif_algorithm;
+ 	priv->adapter.algo_data = priv;
+ 	snprintf(priv->adapter.name, sizeof(priv->adapter.name),
 
 
 
