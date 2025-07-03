@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-159825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEBC3AF7AD0
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CFCAF7A1E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4DF36E1FEE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98756188AAA2
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9662A2EFDB5;
-	Thu,  3 Jul 2025 15:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3F22ED168;
+	Thu,  3 Jul 2025 15:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jciT6ZZc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cawGWZUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0302F0C46;
-	Thu,  3 Jul 2025 15:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3822B9A6;
+	Thu,  3 Jul 2025 15:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555473; cv=none; b=o8lyqEP3bD2yVxK7WIPmUwjAcGFdVA3N+nSrejK9HHA3uH2vV1Zrm+JH3qXfCOlYcRhpsrYdCC4flRtqqMURSLEjn+DDC5avv08meeozb/Ai4RbxDpZUBwR3qvzxsnPGQSmkxGTtRXLqw1v7srVbvqnceEct53MFhNcs/vpPXrs=
+	t=1751555067; cv=none; b=mzrrfLWgLeIDoofvd2/DO8YVL2JkA639pGh1vSJmBf1cdMp2suQeRK79Ku1zMIdA6H6O120AFoOxllbIXyn5PqhIzyPawumEIcqdBbatnd5EW72qtHlJBbabjGcZln0DIO6xr5mJP1FrwzBBWuJHWlIAfyv4XCzCx2dIty5kfQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555473; c=relaxed/simple;
-	bh=lwxb1SYJeRInSPiX5u4/ZJE58jiIBpuDDC9NzWnTErI=;
+	s=arc-20240116; t=1751555067; c=relaxed/simple;
+	bh=+uu8CrKX2hOaP63MIg6wnGRGAdJOkT0CDLulLfCL82o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dqNUKLLkmXs8Gir2bSb/ehhPWvekwGLdjVhfl1TrDixyK9uKHvaS08jUXTu1BNiv6hQH6G+Qp+dkZMK6/rNon/zGOAsBqnRTmDJJ4jX1SF6JFN++FzKU2228DLROTkaU5aFC0CvQbF4Pt57BUj2/+S8LU9gLAWVjqFGM0DSUUS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jciT6ZZc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D40C4CEED;
-	Thu,  3 Jul 2025 15:11:12 +0000 (UTC)
+	 MIME-Version; b=F49BlY7IsSDd5sgSM1vw0mFzaGGFVkWBVFVcNihP+gHmyf6cSbTKY6rpphVzOAHENaIFNPJM05chv9yAad7ZJ5qiTvtM2sC5i5Hy65f/rvj4AYn0PrtAgoAe5Mx6WWawHxp8arthBmZtc5w5iSiHFDuQi3J22zvz57YbwLmILY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cawGWZUY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87459C4CEE3;
+	Thu,  3 Jul 2025 15:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555473;
-	bh=lwxb1SYJeRInSPiX5u4/ZJE58jiIBpuDDC9NzWnTErI=;
+	s=korg; t=1751555066;
+	bh=+uu8CrKX2hOaP63MIg6wnGRGAdJOkT0CDLulLfCL82o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jciT6ZZceAOD3G72SrR/iqQs76MnhVit/WLuSHJdrpjaibxnKN47JEwJh2fr9b1nM
-	 2Djk8+DsSIdx2GNiYD9T7byHJjE3Jg0T50CtwFqsdUtISr9CnVvH6azooHCAAnP+xU
-	 m1vn/A7oXhp9DS8E5rsvmZ86o8JUz5CoiW8/yPE0=
+	b=cawGWZUYfooV5c3qIOJEsTDfaYNkNtE41ZeAuBGXltR/Y+bmtIJUYqSowPOqs7qJ6
+	 QaL92EEHErS1U3gUMPWlE6VQROZO3DKkVI5cP8L9xmtvrnq2dQjxQeMj6vw3GhKiz4
+	 W/yGTmCyWO5jZxeScFCWCEWViZtz322KBHCb6b+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linggang Zeng <linggang.zeng@easystack.cn>,
-	Mingzhe Zou <mingzhe.zou@easystack.cn>,
-	Coly Li <colyli@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Max Krummenacher <max.krummenacher@toradex.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/139] bcache: fix NULL pointer in cache_set_flush()
+Subject: [PATCH 6.15 167/263] drm/bridge: ti-sn65dsi86: Add HPD for DisplayPort connector type
 Date: Thu,  3 Jul 2025 16:41:27 +0200
-Message-ID: <20250703143942.127822115@linuxfoundation.org>
+Message-ID: <20250703144011.054177279@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,153 +64,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linggang Zeng <linggang.zeng@easystack.cn>
+From: Jayesh Choudhary <j-choudhary@ti.com>
 
-[ Upstream commit 1e46ed947ec658f89f1a910d880cd05e42d3763e ]
+[ Upstream commit 55e8ff842051b1150461d7595d8f1d033c69d66b ]
 
-1. LINE#1794 - LINE#1887 is some codes about function of
-   bch_cache_set_alloc().
-2. LINE#2078 - LINE#2142 is some codes about function of
-   register_cache_set().
-3. register_cache_set() will call bch_cache_set_alloc() in LINE#2098.
+By default, HPD was disabled on SN65DSI86 bridge. When the driver was
+added (commit "a095f15c00e27"), the HPD_DISABLE bit was set in pre-enable
+call which was moved to other function calls subsequently.
+Later on, commit "c312b0df3b13" added detect utility for DP mode. But with
+HPD_DISABLE bit set, all the HPD events are disabled[0] and the debounced
+state always return 1 (always connected state).
 
- 1794 struct cache_set *bch_cache_set_alloc(struct cache_sb *sb)
- 1795 {
- ...
- 1860         if (!(c->devices = kcalloc(c->nr_uuids, sizeof(void *), GFP_KERNEL)) ||
- 1861             mempool_init_slab_pool(&c->search, 32, bch_search_cache) ||
- 1862             mempool_init_kmalloc_pool(&c->bio_meta, 2,
- 1863                                 sizeof(struct bbio) + sizeof(struct bio_vec) *
- 1864                                 bucket_pages(c)) ||
- 1865             mempool_init_kmalloc_pool(&c->fill_iter, 1, iter_size) ||
- 1866             bioset_init(&c->bio_split, 4, offsetof(struct bbio, bio),
- 1867                         BIOSET_NEED_BVECS|BIOSET_NEED_RESCUER) ||
- 1868             !(c->uuids = alloc_bucket_pages(GFP_KERNEL, c)) ||
- 1869             !(c->moving_gc_wq = alloc_workqueue("bcache_gc",
- 1870                                                 WQ_MEM_RECLAIM, 0)) ||
- 1871             bch_journal_alloc(c) ||
- 1872             bch_btree_cache_alloc(c) ||
- 1873             bch_open_buckets_alloc(c) ||
- 1874             bch_bset_sort_state_init(&c->sort, ilog2(c->btree_pages)))
- 1875                 goto err;
-                      ^^^^^^^^
- 1876
- ...
- 1883         return c;
- 1884 err:
- 1885         bch_cache_set_unregister(c);
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
- 1886         return NULL;
- 1887 }
- ...
- 2078 static const char *register_cache_set(struct cache *ca)
- 2079 {
- ...
- 2098         c = bch_cache_set_alloc(&ca->sb);
- 2099         if (!c)
- 2100                 return err;
-                      ^^^^^^^^^^
- ...
- 2128         ca->set = c;
- 2129         ca->set->cache[ca->sb.nr_this_dev] = ca;
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- ...
- 2138         return NULL;
- 2139 err:
- 2140         bch_cache_set_unregister(c);
- 2141         return err;
- 2142 }
+Set HPD_DISABLE bit conditionally based on display sink's connector type.
+Since the HPD_STATE is reflected correctly only after waiting for debounce
+time (~100-400ms) and adding this delay in detect() is not feasible
+owing to the performace impact (glitches and frame drop), remove runtime
+calls in detect() and add hpd_enable()/disable() bridge hooks with runtime
+calls, to detect hpd properly without any delay.
 
-(1) If LINE#1860 - LINE#1874 is true, then do 'goto err'(LINE#1875) and
-    call bch_cache_set_unregister()(LINE#1885).
-(2) As (1) return NULL(LINE#1886), LINE#2098 - LINE#2100 would return.
-(3) As (2) has returned, LINE#2128 - LINE#2129 would do *not* give the
-    value to c->cache[], it means that c->cache[] is NULL.
+[0]: <https://www.ti.com/lit/gpn/SN65DSI86> (Pg. 32)
 
-LINE#1624 - LINE#1665 is some codes about function of cache_set_flush().
-As (1), in LINE#1885 call
-bch_cache_set_unregister()
----> bch_cache_set_stop()
-     ---> closure_queue()
-          -.-> cache_set_flush() (as below LINE#1624)
-
- 1624 static void cache_set_flush(struct closure *cl)
- 1625 {
- ...
- 1654         for_each_cache(ca, c, i)
- 1655                 if (ca->alloc_thread)
-                          ^^
- 1656                         kthread_stop(ca->alloc_thread);
- ...
- 1665 }
-
-(4) In LINE#1655 ca is NULL(see (3)) in cache_set_flush() then the
-    kernel crash occurred as below:
-[  846.712887] bcache: register_cache() error drbd6: cannot allocate memory
-[  846.713242] bcache: register_bcache() error : failed to register device
-[  846.713336] bcache: cache_set_free() Cache set 2f84bdc1-498a-4f2f-98a7-01946bf54287 unregistered
-[  846.713768] BUG: unable to handle kernel NULL pointer dereference at 00000000000009f8
-[  846.714790] PGD 0 P4D 0
-[  846.715129] Oops: 0000 [#1] SMP PTI
-[  846.715472] CPU: 19 PID: 5057 Comm: kworker/19:16 Kdump: loaded Tainted: G           OE    --------- -  - 4.18.0-147.5.1.el8_1.5es.3.x86_64 #1
-[  846.716082] Hardware name: ESPAN GI-25212/X11DPL-i, BIOS 2.1 06/15/2018
-[  846.716451] Workqueue: events cache_set_flush [bcache]
-[  846.716808] RIP: 0010:cache_set_flush+0xc9/0x1b0 [bcache]
-[  846.717155] Code: 00 4c 89 a5 b0 03 00 00 48 8b 85 68 f6 ff ff a8 08 0f 84 88 00 00 00 31 db 66 83 bd 3c f7 ff ff 00 48 8b 85 48 ff ff ff 74 28 <48> 8b b8 f8 09 00 00 48 85 ff 74 05 e8 b6 58 a2 e1 0f b7 95 3c f7
-[  846.718026] RSP: 0018:ffffb56dcf85fe70 EFLAGS: 00010202
-[  846.718372] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-[  846.718725] RDX: 0000000000000001 RSI: 0000000040000001 RDI: 0000000000000000
-[  846.719076] RBP: ffffa0ccc0f20df8 R08: ffffa0ce1fedb118 R09: 000073746e657665
-[  846.719428] R10: 8080808080808080 R11: 0000000000000000 R12: ffffa0ce1fee8700
-[  846.719779] R13: ffffa0ccc0f211a8 R14: ffffa0cd1b902840 R15: ffffa0ccc0f20e00
-[  846.720132] FS:  0000000000000000(0000) GS:ffffa0ce1fec0000(0000) knlGS:0000000000000000
-[  846.720726] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  846.721073] CR2: 00000000000009f8 CR3: 00000008ba00a005 CR4: 00000000007606e0
-[  846.721426] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[  846.721778] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[  846.722131] PKRU: 55555554
-[  846.722467] Call Trace:
-[  846.722814]  process_one_work+0x1a7/0x3b0
-[  846.723157]  worker_thread+0x30/0x390
-[  846.723501]  ? create_worker+0x1a0/0x1a0
-[  846.723844]  kthread+0x112/0x130
-[  846.724184]  ? kthread_flush_work_fn+0x10/0x10
-[  846.724535]  ret_from_fork+0x35/0x40
-
-Now, check whether that ca is NULL in LINE#1655 to fix the issue.
-
-Signed-off-by: Linggang Zeng <linggang.zeng@easystack.cn>
-Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-Signed-off-by: Coly Li <colyli@kernel.org>
-Link: https://lore.kernel.org/r/20250527051601.74407-2-colyli@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: c312b0df3b13 ("drm/bridge: ti-sn65dsi86: Implement bridge connector operations for DP")
+Cc: Max Krummenacher <max.krummenacher@toradex.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20250624044835.165708-1-j-choudhary@ti.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/super.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c | 69 +++++++++++++++++++++++----
+ 1 file changed, 60 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-index 8440b56e385d5..b9dfebaa9eae5 100644
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -1739,7 +1739,12 @@ static void cache_set_flush(struct closure *cl)
- 			mutex_unlock(&b->write_lock);
- 		}
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+index c1ed1a3d68447..4ea13e5a3a54a 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -330,12 +330,18 @@ static void ti_sn65dsi86_enable_comms(struct ti_sn65dsi86 *pdata)
+ 	 * 200 ms.  We'll assume that the panel driver will have the hardcoded
+ 	 * delay in its prepare and always disable HPD.
+ 	 *
+-	 * If HPD somehow makes sense on some future panel we'll have to
+-	 * change this to be conditional on someone specifying that HPD should
+-	 * be used.
++	 * For DisplayPort bridge type, we need HPD. So we use the bridge type
++	 * to conditionally disable HPD.
++	 * NOTE: The bridge type is set in ti_sn_bridge_probe() but enable_comms()
++	 * can be called before. So for DisplayPort, HPD will be enabled once
++	 * bridge type is set. We are using bridge type instead of "no-hpd"
++	 * property because it is not used properly in devicetree description
++	 * and hence is unreliable.
+ 	 */
+-	regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG, HPD_DISABLE,
+-			   HPD_DISABLE);
++
++	if (pdata->bridge.type != DRM_MODE_CONNECTOR_DisplayPort)
++		regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG, HPD_DISABLE,
++				   HPD_DISABLE);
  
--	if (ca->alloc_thread)
+ 	pdata->comms_enabled = true;
+ 
+@@ -1172,9 +1178,14 @@ static enum drm_connector_status ti_sn_bridge_detect(struct drm_bridge *bridge)
+ 	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
+ 	int val = 0;
+ 
+-	pm_runtime_get_sync(pdata->dev);
 +	/*
-+	 * If the register_cache_set() call to bch_cache_set_alloc() failed,
-+	 * ca has not been assigned a value and return error.
-+	 * So we need check ca is not NULL during bch_cache_set_unregister().
++	 * Runtime reference is grabbed in ti_sn_bridge_hpd_enable()
++	 * as the chip won't report HPD just after being powered on.
++	 * HPD_DEBOUNCED_STATE reflects correct state only after the
++	 * debounce time (~100-400 ms).
 +	 */
-+	if (ca && ca->alloc_thread)
- 		kthread_stop(ca->alloc_thread);
++
+ 	regmap_read(pdata->regmap, SN_HPD_DISABLE_REG, &val);
+-	pm_runtime_put_autosuspend(pdata->dev);
  
- 	if (c->journal.cur) {
+ 	return val & HPD_DEBOUNCED_STATE ? connector_status_connected
+ 					 : connector_status_disconnected;
+@@ -1197,6 +1208,26 @@ static void ti_sn65dsi86_debugfs_init(struct drm_bridge *bridge, struct dentry *
+ 	debugfs_create_file("status", 0600, debugfs, pdata, &status_fops);
+ }
+ 
++static void ti_sn_bridge_hpd_enable(struct drm_bridge *bridge)
++{
++	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++
++	/*
++	 * Device needs to be powered on before reading the HPD state
++	 * for reliable hpd detection in ti_sn_bridge_detect() due to
++	 * the high debounce time.
++	 */
++
++	pm_runtime_get_sync(pdata->dev);
++}
++
++static void ti_sn_bridge_hpd_disable(struct drm_bridge *bridge)
++{
++	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++
++	pm_runtime_put_autosuspend(pdata->dev);
++}
++
+ static const struct drm_bridge_funcs ti_sn_bridge_funcs = {
+ 	.attach = ti_sn_bridge_attach,
+ 	.detach = ti_sn_bridge_detach,
+@@ -1211,6 +1242,8 @@ static const struct drm_bridge_funcs ti_sn_bridge_funcs = {
+ 	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
+ 	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
+ 	.debugfs_init = ti_sn65dsi86_debugfs_init,
++	.hpd_enable = ti_sn_bridge_hpd_enable,
++	.hpd_disable = ti_sn_bridge_hpd_disable,
+ };
+ 
+ static void ti_sn_bridge_parse_lanes(struct ti_sn65dsi86 *pdata,
+@@ -1299,8 +1332,26 @@ static int ti_sn_bridge_probe(struct auxiliary_device *adev,
+ 	pdata->bridge.type = pdata->next_bridge->type == DRM_MODE_CONNECTOR_DisplayPort
+ 			   ? DRM_MODE_CONNECTOR_DisplayPort : DRM_MODE_CONNECTOR_eDP;
+ 
+-	if (pdata->bridge.type == DRM_MODE_CONNECTOR_DisplayPort)
+-		pdata->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
++	if (pdata->bridge.type == DRM_MODE_CONNECTOR_DisplayPort) {
++		pdata->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT |
++				    DRM_BRIDGE_OP_HPD;
++		/*
++		 * If comms were already enabled they would have been enabled
++		 * with the wrong value of HPD_DISABLE. Update it now. Comms
++		 * could be enabled if anyone is holding a pm_runtime reference
++		 * (like if a GPIO is in use). Note that in most cases nobody
++		 * is doing AUX channel xfers before the bridge is added so
++		 * HPD doesn't _really_ matter then. The only exception is in
++		 * the eDP case where the panel wants to read the EDID before
++		 * the bridge is added. We always consistently have HPD disabled
++		 * for eDP.
++		 */
++		mutex_lock(&pdata->comms_mutex);
++		if (pdata->comms_enabled)
++			regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG,
++					   HPD_DISABLE, 0);
++		mutex_unlock(&pdata->comms_mutex);
++	};
+ 
+ 	drm_bridge_add(&pdata->bridge);
+ 
 -- 
 2.39.5
 
