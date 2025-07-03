@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-159585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1357FAF7988
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:02:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633C5AF77F5
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B7D21888B19
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:58:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2658A54224E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC2D2EA730;
-	Thu,  3 Jul 2025 14:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E38A2EE29D;
+	Thu,  3 Jul 2025 14:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07dsLncW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kaQrezaX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8202EAB95;
-	Thu,  3 Jul 2025 14:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1D42EE29E;
+	Thu,  3 Jul 2025 14:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554695; cv=none; b=T4MlFF/W1SVX9m1opmiJc5iroRSlgnNsEpIzDW2M+GCaxiAJIYamyRrVIiui/iF6D3wIlbJEmR6jFXLUh68H+/oydWSHzC9RuMQcX76n6Tro5NKKSGCe0dGkEvvJkv6/anGriAUTVH6t/5iSNdseMwHmJYU7o7IR6r1j8VrEDF8=
+	t=1751553914; cv=none; b=HRc0L7dqh/ONqRh9FfuE6Xtr4KmsDWEMrk3cXp0Qgm4bFIQAvx/tfwnl87B/UDHZD8lvTqRAWa/wvg+3rVXEqbTtT4CsgcKAZy1oBxQLaGMdE4896FPcNjwYtAAR6OGA8mOeXBPcboSF5PQJhHH45n62sFfjTB6q8zM0Dh1t230=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554695; c=relaxed/simple;
-	bh=hVetxFNP/Iz4tzDRudbYJwmH4XBbls6pKRdlLzVRO5w=;
+	s=arc-20240116; t=1751553914; c=relaxed/simple;
+	bh=BMcue9IOaRd/boDmKhVUzCAQEaRUT3DpLfgGiRcZjGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CO6a5d3Epo7bbklYeFUxGJWjAJLBUhV1kPT7xI9l2ysKI/oO8BSXfzDDHi4tnI/8vI+gZ7XZzBNkKzw9H4EnpVUjJQu4RZxioELAyojTrPhZPLHuhK3/rfZT7+yFxuQsVnrO812kiCDhGf7k7J/xumu8/qT76m3UuZCpOk70Juw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07dsLncW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D54BC4CEED;
-	Thu,  3 Jul 2025 14:58:14 +0000 (UTC)
+	 MIME-Version; b=dagPC4lRr0ehL4ApJ2qmP08Vq2m5wzUD4zjqyS3JLytABMPhna31hJs9q9hvElivjxD+xMq7ASBseVv41bImsJ85WA++smhwmY3fqPSCvJ+BH2tk5kSR/yHQxIBJiCCdGB+v1kJuqszg+p9wwQ4eS2Jz1TaBwRnzf1l/Ts3Pr8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kaQrezaX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA57C4CEE3;
+	Thu,  3 Jul 2025 14:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554695;
-	bh=hVetxFNP/Iz4tzDRudbYJwmH4XBbls6pKRdlLzVRO5w=;
+	s=korg; t=1751553913;
+	bh=BMcue9IOaRd/boDmKhVUzCAQEaRUT3DpLfgGiRcZjGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07dsLncWXUGKWV6OV+3nFCP9/qbFeloobB9+5dvBHSDxpsD7/kZXc+iVP7jKkqSpX
-	 s0mFSFbvlLsWgETY9sGFjQ3lC/0TtW9+HL5blIDNHK5HgEO0aVVS7mnxL/9viQKIRJ
-	 F/ZLfm2FLtnUzB20gEvayB3atO0HHypGtREP6Df8=
+	b=kaQrezaXAZInyMgC5W9qIqGBWP2LFcV2PQ0M6djfxcXoNAHjjH/Q7uPzYj0j6aCbR
+	 Eu56FVzJDsl8IjRU44LiLdNg/+i/NpUunZO/BcbsbzFL5rMXcpdQHWZlV0R3rdIZX7
+	 Dacp+SP14n8JrrUsT/uhooKmkeYi0ZX2utRqZfFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Yi Sun <yi.sun@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 049/263] coresight: Only check bottom two claim bits
+Subject: [PATCH 6.12 021/218] dmaengine: idxd: Check availability of workqueue allocated by idxd wq driver before using
 Date: Thu,  3 Jul 2025 16:39:29 +0200
-Message-ID: <20250703144006.271992001@linuxfoundation.org>
+Message-ID: <20250703143956.810827529@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Yi Sun <yi.sun@intel.com>
 
-[ Upstream commit a4e65842e1142aa18ef36113fbd81d614eaefe5a ]
+[ Upstream commit 17502e7d7b7113346296f6758324798d536c31fd ]
 
-The use of the whole register and == could break the claim mechanism if
-any of the other bits are used in the future. The referenced doc "PSCI -
-ARM DEN 0022D" also says to only read and clear the bottom two bits.
+Running IDXD workloads in a container with the /dev directory mounted can
+trigger a call trace or even a kernel panic when the parent process of the
+container is terminated.
 
-Use FIELD_GET() to extract only the relevant part.
+This issue occurs because, under certain configurations, Docker does not
+properly propagate the mount replica back to the original mount point.
 
-Reviewed-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250325-james-coresight-claim-tags-v4-2-dfbd3822b2e5@linaro.org
+In this case, when the user driver detaches, the WQ is destroyed but it
+still calls destroy_workqueue() attempting to completes all pending work.
+It's necessary to check wq->wq and skip the drain if it no longer exists.
+
+Signed-off-by: Yi Sun <yi.sun@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
+
+Link: https://lore.kernel.org/r/20250509000304.1402863-1-yi.sun@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-core.c | 3 ++-
- drivers/hwtracing/coresight/coresight-priv.h | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/dma/idxd/cdev.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
-index d3523f0262af8..dfcb30da2e20b 100644
---- a/drivers/hwtracing/coresight/coresight-core.c
-+++ b/drivers/hwtracing/coresight/coresight-core.c
-@@ -131,7 +131,8 @@ coresight_find_out_connection(struct coresight_device *csdev,
- 
- static inline u32 coresight_read_claim_tags(struct coresight_device *csdev)
- {
--	return csdev_access_relaxed_read32(&csdev->access, CORESIGHT_CLAIMCLR);
-+	return FIELD_GET(CORESIGHT_CLAIM_MASK,
-+			 csdev_access_relaxed_read32(&csdev->access, CORESIGHT_CLAIMCLR));
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index 19a58c4ecef3f..8b27bd545685a 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -354,7 +354,9 @@ static void idxd_cdev_evl_drain_pasid(struct idxd_wq *wq, u32 pasid)
+ 			set_bit(h, evl->bmap);
+ 		h = (h + 1) % size;
+ 	}
+-	drain_workqueue(wq->wq);
++	if (wq->wq)
++		drain_workqueue(wq->wq);
++
+ 	mutex_unlock(&evl->lock);
  }
  
- static inline bool coresight_is_claimed_self_hosted(struct coresight_device *csdev)
-diff --git a/drivers/hwtracing/coresight/coresight-priv.h b/drivers/hwtracing/coresight/coresight-priv.h
-index 82644aff8d2b7..38bb4e8b50ef6 100644
---- a/drivers/hwtracing/coresight/coresight-priv.h
-+++ b/drivers/hwtracing/coresight/coresight-priv.h
-@@ -35,6 +35,7 @@ extern const struct device_type coresight_dev_type[];
-  * Coresight device CLAIM protocol.
-  * See PSCI - ARM DEN 0022D, Section: 6.8.1 Debug and Trace save and restore.
-  */
-+#define CORESIGHT_CLAIM_MASK		GENMASK(1, 0)
- #define CORESIGHT_CLAIM_SELF_HOSTED	BIT(1)
- 
- #define TIMEOUT_US		100
 -- 
 2.39.5
 
