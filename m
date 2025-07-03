@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249FDAF7BD8
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:28:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9854FAF7ADF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CE1F1C82EE4
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3204483827
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFE62EF66F;
-	Thu,  3 Jul 2025 15:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DB02F19A9;
+	Thu,  3 Jul 2025 15:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="py1ilsAe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSugO5GI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496562EA46B;
-	Thu,  3 Jul 2025 15:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D6A2F199C;
+	Thu,  3 Jul 2025 15:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555952; cv=none; b=BKRitI6RiXTrplpry48lZCXSEHcfsXUANdBu5KTFwKSkMc4XIXlQpYAdjAXuBAtfjNYacRT1tIejSu9AXUy8JaEvNzDGuSvxcEtrM3v6l1IVogs1uLu5SN+5saml303R7a31rdVVk49iyYZVkTT0tqQ/2IBX1bWKGIjlNLsFlh4=
+	t=1751555500; cv=none; b=tKRpdQ+YOHLzWFIZgNuZoIDtVFyN0Frh9Bwe4WR+dmedsD8JnN96HKQetqTYX3w3PwHt1FQf1zqOa2pIZxNNMDuUPKoyK9Yodg/dUKqguZ0cKmRVkMz0KHusSBLFHiABvFB1qgDmDWqZigPyYvTqrhFbdvvl0BPbKHeZGCkVLMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555952; c=relaxed/simple;
-	bh=H+BP69rgNvMPCVQACW+y3Zpf3KystQs1L4BUgDGdXZc=;
+	s=arc-20240116; t=1751555500; c=relaxed/simple;
+	bh=6485hifaYaet7WeyrprFwBeuWYnf3JjYJoK/ZarxNGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JWtVLGpVsYa311efVTvqxZqUYNIiY19moKC84/B12iYbSiGyW0cNIaFXGKQ1P9oebnKfRwHbmjvVcJAQLh09shumqqc2T1GO5W0h81egDzcs1qXuslGxdo11hOSyQOUE/Bez7HG90RDwev2tF5Pyn3qO6RkRSxWROhy86O8WzjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=py1ilsAe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F7CC4CEE3;
-	Thu,  3 Jul 2025 15:19:11 +0000 (UTC)
+	 MIME-Version; b=HPC7gEsTQ1wgHPDkk0M1G877lWwjbrhceKjycTlltc+fDDac/m/iJiC0UrhaTjdXSNZxC3KR2IVTyVEl7wrc5GOxRMeRtHKN7TPKcQCarQ092J76kWhkI7i6nzlddEumn5VCNQo94A9sh3I9VO7IDJZx9I2qeHFKdYoODdedBmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSugO5GI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7C8C4CEF1;
+	Thu,  3 Jul 2025 15:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555951;
-	bh=H+BP69rgNvMPCVQACW+y3Zpf3KystQs1L4BUgDGdXZc=;
+	s=korg; t=1751555499;
+	bh=6485hifaYaet7WeyrprFwBeuWYnf3JjYJoK/ZarxNGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=py1ilsAeYMnrti9df5ptxVOd93y6FldYmMJQL7o/p0cBYOGrRKpmquFu1Llxb7gdb
-	 xO3Q5cGXT82x7oSr1gqO+qWQM7F9S7E9ozt/lQp9WnZ7zSOw9su1MFdFqi12lfX9LD
-	 P+b/LLT3QVeqHdPNV2nT+gy3aJOTEoE1NQGw/rj8=
+	b=HSugO5GIikB5rxchw2Lu7+UuKP5YDcwPbu5O/TDe9fPGLfjHjbOHyzxd9Rh1AP1FJ
+	 57REYrzT8uqqC7WPS3nnBNo1lRnHHflO+gLjTOgvWnmjafL+LLvScg0aH+BGpnZhLv
+	 SWEH5oQUsg8Nn3D9LX0tiCLx5/obfhuBTV8Z9B8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Purva Yeshi <purvayeshi550@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/132] mailbox: Not protect module_put with spin_lock_irqsave
+Subject: [PATCH 6.6 031/139] iio: adc: ad_sigma_delta: Fix use of uninitialized status_pos
 Date: Thu,  3 Jul 2025 16:41:34 +0200
-Message-ID: <20250703143939.596504104@linuxfoundation.org>
+Message-ID: <20250703143942.402631800@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Purva Yeshi <purvayeshi550@gmail.com>
 
-[ Upstream commit dddbd233e67e792bb0a3f9694a4707e6be29b2c6 ]
+[ Upstream commit e5cdb098a3cb165d52282ffc3a6448642953ea13 ]
 
-&chan->lock is not supposed to protect 'chan->mbox'.
-And in __mbox_bind_client, try_module_get is also not protected
-by &chan->lock. So move module_put out of the lock protected
-region.
+Fix Smatch-detected issue:
+drivers/iio/adc/ad_sigma_delta.c:604 ad_sd_trigger_handler() error:
+uninitialized symbol 'status_pos'.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+The variable `status_pos` was only initialized in specific switch cases
+(1, 2, 3, 4), which could leave it uninitialized if `reg_size` had an
+unexpected value.
+
+Fix by adding a default case to the switch block to catch unexpected
+values of `reg_size`. Use `dev_err_ratelimited()` for error logging and
+`goto irq_handled` instead of returning early.
+
+Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
+Link: https://patch.msgid.link/20250410170408.8585-1-purvayeshi550@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad_sigma_delta.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 6f54501dc7762..cb31ad917b352 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -459,8 +459,8 @@ void mbox_free_channel(struct mbox_chan *chan)
- 	if (chan->txdone_method == TXDONE_BY_ACK)
- 		chan->txdone_method = TXDONE_BY_POLL;
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index 7e21928707437..533667eefe419 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -476,6 +476,10 @@ static irqreturn_t ad_sd_trigger_handler(int irq, void *p)
+ 		 * byte set to zero. */
+ 		ad_sd_read_reg_raw(sigma_delta, data_reg, transfer_size, &data[1]);
+ 		break;
++
++	default:
++		dev_err_ratelimited(&indio_dev->dev, "Unsupported reg_size: %u\n", reg_size);
++		goto irq_handled;
+ 	}
  
--	module_put(chan->mbox->dev->driver->owner);
- 	spin_unlock_irqrestore(&chan->lock, flags);
-+	module_put(chan->mbox->dev->driver->owner);
- }
- EXPORT_SYMBOL_GPL(mbox_free_channel);
- 
+ 	/*
 -- 
 2.39.5
 
