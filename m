@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-159809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C01AF7AC6
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7940AF7AC5
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:17:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 996B9189D7B9
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:12:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A81F66E1B1B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDE72EF9A4;
-	Thu,  3 Jul 2025 15:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DA82F002D;
+	Thu,  3 Jul 2025 15:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QrRifO7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIIhm74C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF73E2D9492;
-	Thu,  3 Jul 2025 15:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5151C2F0027;
+	Thu,  3 Jul 2025 15:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555422; cv=none; b=k2/BdOAUTSGbnzvtiypZHQC/IhaKP+U/XtyTHYdxXvCVJjfX7sO6plPTwjjjvp9Oli7g8aGQHj5torYnUaWq/sWOYL4lqRAkIWaaEPh4ZJ5Hs4WFd1YnAdI2tfP4jc9HNnRe/uKyirUR7QBWGK4k1EdXDgu8WSv4VfMQxSt2pgE=
+	t=1751555457; cv=none; b=l2Hi2h6AnogG+eCvPxAU3U2LJKoXgLgUF/zxehSbR/IHm2nJgihDEMKLPk2gmh92YvsXru/owoJibpFLhvCdjVrnphAhq7lJrce0Mgqw3CO0zKMYUFV67jayzCkkAZ9KuY1FJ4uRDldilQQEqHoObRstPPFPJMZSUE2vBS+7eKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555422; c=relaxed/simple;
-	bh=l/cOQmtqTZUlRP8zV5DmUb94F2mkPBpS3Ru0ZrZrdt0=;
+	s=arc-20240116; t=1751555457; c=relaxed/simple;
+	bh=S14XEFq2T83V/sqrWH65uJtFDfVfS25vchRJn0YUVb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dmmwL5M6O/HhiXwQ7WgMTGRk5u9rUJlqMT3m5AHmzC4ADeE1xZPl9RDr787I3po80jpgdVyLDFmEDB3r9pv2GlxG4YJnP3oo7Xzeq3FrkSDbegLmKbmHkCtLqMIs7mWxT3zf/2eWXdtMbrf/TIiWwBBFF5fYVgxJJ9D1xcDhjAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QrRifO7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60232C4CEE3;
-	Thu,  3 Jul 2025 15:10:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ut84AO1G71F1hhgyHL+WmAxtzVKJ2DQqu/Sw/665P15NYEHGA1wkqbYlr1e8rCRphWsSwtYS4ULhKt8ZzTOKgk/DQ+WjKTSWIjgdWP46hWcCAxpW6QhqlOliDvDVvgtlyGr66ZcwJALrNc4txzDWDH6hLnsHfVtaodyOxttNyY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIIhm74C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C8AC4CEE3;
+	Thu,  3 Jul 2025 15:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555421;
-	bh=l/cOQmtqTZUlRP8zV5DmUb94F2mkPBpS3Ru0ZrZrdt0=;
+	s=korg; t=1751555456;
+	bh=S14XEFq2T83V/sqrWH65uJtFDfVfS25vchRJn0YUVb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1QrRifO7iMfTgc9Z/gKQWutu5ZSHPbJ7nIu4TP9PR8fpCIlsFv7NCCZ25itlAN/XK
-	 Weyh3tJSyknbzrjMtu4DPD85LsT59OzWHHbi6gWKojxyVncnRHZ7aaOT9WDH/bCIh1
-	 BQzZO13a+alHzNgsyKWOyF9L7W1Z8NJ5YC/8t8rw=
+	b=MIIhm74C47uU2WGpZLmXQuBZXYbhznwGPQFN8JjWXNeNAgpyCstlgrw2SKffVsD+a
+	 k+UDtwYMf1mu+j9CJAVKd/qY3sCgc5ziAGQ1Zz5ueAdNDKz6J0M63R/Jk/7ov46pHa
+	 O2jJJ16sibWmbnqcv/vfgPGa239Qd2PW6PNUTHnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/139] cifs: Correctly set SMB1 SessionKey field in Session Setup Request
-Date: Thu,  3 Jul 2025 16:41:04 +0200
-Message-ID: <20250703143941.242060472@linuxfoundation.org>
+Subject: [PATCH 6.6 002/139] cifs: Fix cifs_query_path_info() for Windows NT servers
+Date: Thu,  3 Jul 2025 16:41:05 +0200
+Message-ID: <20250703143941.278484252@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
 References: <20250703143941.182414597@linuxfoundation.org>
@@ -69,99 +69,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 89381c72d52094988e11d23ef24a00066a0fa458 ]
+[ Upstream commit a3e771afbb3bce91c8296828304903e7348003fe ]
 
-[MS-CIFS] specification in section 2.2.4.53.1 where is described
-SMB_COM_SESSION_SETUP_ANDX Request, for SessionKey field says:
+For TRANS2 QUERY_PATH_INFO request when the path does not exist, the
+Windows NT SMB server returns error response STATUS_OBJECT_NAME_NOT_FOUND
+or ERRDOS/ERRbadfile without the SMBFLG_RESPONSE flag set. Similarly it
+returns STATUS_DELETE_PENDING when the file is being deleted. And looks
+like that any error response from TRANS2 QUERY_PATH_INFO does not have
+SMBFLG_RESPONSE flag set.
 
-    The client MUST set this field to be equal to the SessionKey field in
-    the SMB_COM_NEGOTIATE Response for this SMB connection.
+So relax check in check_smb_hdr() for detecting if the packet is response
+for this special case.
 
-Linux SMB client currently set this field to zero. This is working fine
-against Windows NT SMB servers thanks to [MS-CIFS] product behavior <94>:
-
-    Windows NT Server ignores the client's SessionKey.
-
-For compatibility with [MS-CIFS], set this SessionKey field in Session
-Setup Request to value retrieved from Negotiate response.
+This change fixes stat() operation against Windows NT SMB servers and also
+all operations which depends on -ENOENT result from stat like creat() or
+mkdir().
 
 Signed-off-by: Pali Rohár <pali@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsglob.h | 1 +
- fs/smb/client/cifspdu.h  | 6 +++---
- fs/smb/client/cifssmb.c  | 1 +
- fs/smb/client/sess.c     | 1 +
- 4 files changed, 6 insertions(+), 3 deletions(-)
+ fs/smb/client/misc.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 6a4ed99e162c5..c7da6bf2f44be 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -739,6 +739,7 @@ struct TCP_Server_Info {
- 	char workstation_RFC1001_name[RFC1001_NAME_LEN_WITH_NULL];
- 	__u32 sequence_number; /* for signing, protected by srv_mutex */
- 	__u32 reconnect_instance; /* incremented on each reconnect */
-+	__le32 session_key_id; /* retrieved from negotiate response and send in session setup request */
- 	struct session_key session_key;
- 	unsigned long lstrp; /* when we got last response from this server */
- 	struct cifs_secmech secmech; /* crypto sec mech functs, descriptors */
-diff --git a/fs/smb/client/cifspdu.h b/fs/smb/client/cifspdu.h
-index ca33f6cd6a800..763178b774542 100644
---- a/fs/smb/client/cifspdu.h
-+++ b/fs/smb/client/cifspdu.h
-@@ -557,7 +557,7 @@ typedef union smb_com_session_setup_andx {
- 		__le16 MaxBufferSize;
- 		__le16 MaxMpxCount;
- 		__le16 VcNumber;
--		__u32 SessionKey;
-+		__le32 SessionKey;
- 		__le16 SecurityBlobLength;
- 		__u32 Reserved;
- 		__le32 Capabilities;	/* see below */
-@@ -576,7 +576,7 @@ typedef union smb_com_session_setup_andx {
- 		__le16 MaxBufferSize;
- 		__le16 MaxMpxCount;
- 		__le16 VcNumber;
--		__u32 SessionKey;
-+		__le32 SessionKey;
- 		__le16 CaseInsensitivePasswordLength; /* ASCII password len */
- 		__le16 CaseSensitivePasswordLength; /* Unicode password length*/
- 		__u32 Reserved;	/* see below */
-@@ -614,7 +614,7 @@ typedef union smb_com_session_setup_andx {
- 		__le16 MaxBufferSize;
- 		__le16 MaxMpxCount;
- 		__le16 VcNumber;
--		__u32 SessionKey;
-+		__le32 SessionKey;
- 		__le16 PasswordLength;
- 		__u32 Reserved; /* encrypt key len and offset */
- 		__le16 ByteCount;
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index c36ab20050c16..db35e68e8a583 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -479,6 +479,7 @@ CIFSSMBNegotiate(const unsigned int xid,
- 	server->max_rw = le32_to_cpu(pSMBr->MaxRawSize);
- 	cifs_dbg(NOISY, "Max buf = %d\n", ses->server->maxBuf);
- 	server->capabilities = le32_to_cpu(pSMBr->Capabilities);
-+	server->session_key_id = pSMBr->SessionKey;
- 	server->timeAdj = (int)(__s16)le16_to_cpu(pSMBr->ServerTimeZone);
- 	server->timeAdj *= 60;
+diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
+index 65d4b72b4d51a..9e8e0a01ae8eb 100644
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -320,6 +320,14 @@ check_smb_hdr(struct smb_hdr *smb)
+ 	if (smb->Command == SMB_COM_LOCKING_ANDX)
+ 		return 0;
  
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index 8959206a0353e..81ac4196bb743 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -683,6 +683,7 @@ static __u32 cifs_ssetup_hdr(struct cifs_ses *ses,
- 					USHRT_MAX));
- 	pSMB->req.MaxMpxCount = cpu_to_le16(server->maxReq);
- 	pSMB->req.VcNumber = cpu_to_le16(1);
-+	pSMB->req.SessionKey = server->session_key_id;
- 
- 	/* Now no need to set SMBFLG_CASELESS or obsolete CANONICAL PATH */
- 
++	/*
++	 * Windows NT server returns error resposne (e.g. STATUS_DELETE_PENDING
++	 * or STATUS_OBJECT_NAME_NOT_FOUND or ERRDOS/ERRbadfile or any other)
++	 * for some TRANS2 requests without the RESPONSE flag set in header.
++	 */
++	if (smb->Command == SMB_COM_TRANSACTION2 && smb->Status.CifsError != 0)
++		return 0;
++
+ 	cifs_dbg(VFS, "Server sent request, not response. mid=%u\n",
+ 		 get_mid(smb));
+ 	return 1;
 -- 
 2.39.5
 
