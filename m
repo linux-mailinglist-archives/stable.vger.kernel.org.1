@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-159571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0324AF7906
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FDA1AF7808
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F32C37B09A1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:56:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A1B7581ACF
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AE92E7BBE;
-	Thu,  3 Jul 2025 14:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341EE2EF661;
+	Thu,  3 Jul 2025 14:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ROeAzvD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4DSTnd3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78AC2EAD1B;
-	Thu,  3 Jul 2025 14:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1715126BFF;
+	Thu,  3 Jul 2025 14:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554645; cv=none; b=X9ExPAoUGpb81pEvaKUEUfSvS2vnci6qyYyLlThwYPZrEBfwULyA1HRY8IAoruCGyfhgmj7JpnUIJeWOnUwHaMOrd9ETo8AUj1DSKTly9lcg2u3F87DBCEnVa9ADO4hurViVwCG27444gOklJBanJ2oGhv6eEd05geDjEERQ8bY=
+	t=1751553940; cv=none; b=nfjJgpKId1B7cb+pEJqip03GVUDoiGIdTkpKK86DWUyujjtf63vuIhdHI/IoYJMwoQxJ98PBDt1qvWBu/pl8qBq9UmIQpnaxlXG2LVDTiiZcx1oZWLaxvIRXa0rwYxMVvDqtyXia2bYLQFk5w/ummgfu4Vn9O0hJgZ/iuvDiWi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554645; c=relaxed/simple;
-	bh=Psc32TIf+X58j4XYxRKYMZBHJhb7A867Piy+jx7dryA=;
+	s=arc-20240116; t=1751553940; c=relaxed/simple;
+	bh=EHgkoWigC64ksFKKmyYnWxMhvOHgIcZTuyLP4eXCqmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHGmOs9WvS8pPlfiX+oLkkFqSKHqL77RmuL48tfIaDqRfAJXllaCguQU8RIbC8LuDeLw2mRibs3h954VaUfKK+LoJ5ivys6QhDK9NgW3J/jntv+X4ieVEY1JVmEMFUJ+l9iV/3hHMoHvfyX58Y7qVTLmlPyuNuKxt/yWI+R1oLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ROeAzvD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E18FC4CEE3;
-	Thu,  3 Jul 2025 14:57:24 +0000 (UTC)
+	 MIME-Version; b=Jz3Zfo5NcHWJf5JKCSkdQrgAAp1C/R3MVZZbHl2PGy7cCk0u6ymeWrT+BEBjGEVguQpgKtCvmWxVFZUy5Vw4y2nQ9otpho91F1sijnzV7shbxpVlk+g3KFbZ8duhB71oC9aQTM0+yiUSZ0LHfgqH87pICeKEm3r07SeZRrh4y8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4DSTnd3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9AF6C4CEE3;
+	Thu,  3 Jul 2025 14:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554645;
-	bh=Psc32TIf+X58j4XYxRKYMZBHJhb7A867Piy+jx7dryA=;
+	s=korg; t=1751553938;
+	bh=EHgkoWigC64ksFKKmyYnWxMhvOHgIcZTuyLP4eXCqmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ROeAzvDUM7z300Ydp98xdYNGh2hhswAaxpCvBs1fA5ZpnzOzgWtBxakWZzdMeo+Z
-	 /wgw059u27uN2QyUUboDwQYKjWIQrVJ6F9YCJkl5LscTIsjwpD5oaVcr+yjkcZR5nt
-	 +jWD1Wgx7cJAp7ob3/nHmsWY88hlTBWiCvz+ahqc=
+	b=S4DSTnd3Cdbgspzj1B3AKt81WodHeJCfpfscKwiOZO9Kv4RgXA2xP+V609whs4BIO
+	 YcF9qxOvPy2O1vbu5ovwhPICXCZJdnX0OBsGaeufXB3wI1CWDkh4bMf0R57V5qKWiz
+	 VRmnifVZ6e6wNc+D9IRc2njsuXRkbCi8EhgOD/s0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Nikhil Jha <njha@janestreet.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 036/263] amd/amdkfd: fix a kfd_process ref leak
-Date: Thu,  3 Jul 2025 16:39:16 +0200
-Message-ID: <20250703144005.745167089@linuxfoundation.org>
+Subject: [PATCH 6.12 009/218] sunrpc: dont immediately retransmit on seqno miss
+Date: Thu,  3 Jul 2025 16:39:17 +0200
+Message-ID: <20250703143956.329733841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,36 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yifan Zhang <yifan1.zhang@amd.com>
+From: Nikhil Jha <njha@janestreet.com>
 
-[ Upstream commit 90237b16ec1d7afa16e2173cc9a664377214cdd9 ]
+[ Upstream commit fadc0f3bb2de8c570ced6d9c1f97222213d93140 ]
 
-This patch is to fix a kfd_prcess ref leak.
+RFC2203 requires that retransmitted messages use a new gss sequence
+number, but the same XID. This means that if the server is just slow
+(e.x. overloaded), the client might receive a response using an older
+seqno than the one it has recorded.
 
-Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
-Reviewed-by: Philip Yang <Philip.Yang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Currently, Linux's client immediately retransmits in this case. However,
+this leads to a lot of wasted retransmits until the server eventually
+responds faster than the client can resend.
+
+Client -> SEQ 1 -> Server
+Client -> SEQ 2 -> Server
+Client <- SEQ 1 <- Server (misses, expecting seqno = 2)
+Client -> SEQ 3 -> Server (immediate retransmission on miss)
+Client <- SEQ 2 <- Server (misses, expecting seqno = 3)
+Client -> SEQ 4 -> Server (immediate retransmission on miss)
+... and so on ...
+
+This commit makes it so that we ignore messages with bad checksums
+due to seqnum mismatch, and rely on the usual timeout behavior for
+retransmission instead of doing so immediately.
+
+Signed-off-by: Nikhil Jha <njha@janestreet.com>
+Acked-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_events.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sunrpc/clnt.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_events.c b/drivers/gpu/drm/amd/amdkfd/kfd_events.c
-index fecdb67940750..3a926eb82379b 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_events.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_events.c
-@@ -1331,6 +1331,7 @@ void kfd_signal_poison_consumed_event(struct kfd_node *dev, u32 pasid)
- 	user_gpu_id = kfd_process_get_user_gpu_id(p, dev->id);
- 	if (unlikely(user_gpu_id == -EINVAL)) {
- 		WARN_ONCE(1, "Could not get user_gpu_id from dev->id:%x\n", dev->id);
-+		kfd_unref_process(p);
- 		return;
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 17a4de75bfaf6..e492655cb2212 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -2749,8 +2749,13 @@ rpc_decode_header(struct rpc_task *task, struct xdr_stream *xdr)
+ 	case -EPROTONOSUPPORT:
+ 		goto out_err;
+ 	case -EACCES:
+-		/* Re-encode with a fresh cred */
+-		fallthrough;
++		/* possible RPCSEC_GSS out-of-sequence event (RFC2203),
++		 * reset recv state and keep waiting, don't retransmit
++		 */
++		task->tk_rqstp->rq_reply_bytes_recvd = 0;
++		task->tk_status = xprt_request_enqueue_receive(task);
++		task->tk_action = call_transmit_status;
++		return -EBADMSG;
+ 	default:
+ 		goto out_garbage;
  	}
- 
 -- 
 2.39.5
 
