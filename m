@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F94AAF7B5E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:24:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1413CAF7A4A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:11:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EC346E469E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:17:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BCBF3AE967
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265B12F0C5D;
-	Thu,  3 Jul 2025 15:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA93915442C;
+	Thu,  3 Jul 2025 15:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQhEkHPZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tl/R7SaK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B6F2EF9AA;
-	Thu,  3 Jul 2025 15:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76ABB1E9B3D;
+	Thu,  3 Jul 2025 15:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555690; cv=none; b=G0sAP96HGwFr4GobCgUE8OEFE8w4uHqMkntNPHluB/7myS3mp8+GEcE9vLrOi6zllyllv73rXQkF0V7G0x6HAbnVQ7lk4xA6kV8WM4vBMHhlzDCJRdYlL994XFaJXr2SXbhZhfnikpEjNUAXxCzlfx1Gq8+1rWKlBDsSx5U0rF8=
+	t=1751555289; cv=none; b=PeIUFHQwFEOLcT97W0NpSQjM/vuZMU8VFJb1bbMvWHXKTH2SkVfdwnlHOU5zwr4gb1ept1h65b5AVgToAjVbDLVYTsgO2hGhoPEZIH7p7kIAPee7Ee0s004icU8LTBABMsfSOnvAGCxZdy8nMp+vjSPhr4GEug3dlSGUkBqfzb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555690; c=relaxed/simple;
-	bh=/Era8LXx8HfSTYcxWnPxhJexpUrZ+1bTxSh2nJaSdMI=;
+	s=arc-20240116; t=1751555289; c=relaxed/simple;
+	bh=TOasPDQpglf5OwRsaq9DDAC+hEo7gVz0nn+l2fDUH1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnrgkjhvyuZeUdZuIP5dppzBjzXrlrvw0k+xbgoOTQk2KCyAsT0umR62WMp0n7jdrOi28+Akw50DvRaelI+U6v1mqwOsQE4XIj1JiEODbPdoBw5J8CuSPcMOlRqpT9YQ6wNDEh/A2aIMBBFkbYUdgpEuKnYVKi2VNlAeVAmFnAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQhEkHPZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61854C4CEE3;
-	Thu,  3 Jul 2025 15:14:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RDTNORsuK6ZN7sZSVOuSLAk6jO++DNvGh24xlq7TSOJA6EvaGDYvIhCRzoEtAHzMEkcRsbX4vP0J7ybzaPKKS2gQ9FMQkbZgN41wMUT5owzwHCDJPAl7cvA8hszsH7YKj22wTUybUUwkgmhmJeRWS1mykoQPRWPVf3ijVay+SKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tl/R7SaK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D804BC4CEED;
+	Thu,  3 Jul 2025 15:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555690;
-	bh=/Era8LXx8HfSTYcxWnPxhJexpUrZ+1bTxSh2nJaSdMI=;
+	s=korg; t=1751555289;
+	bh=TOasPDQpglf5OwRsaq9DDAC+hEo7gVz0nn+l2fDUH1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQhEkHPZcUeJDFqV1RMbKmokrdj4HhoI1hA2Q252krVZWwMP7TRuoG9elAN3gTpKC
-	 ZkJAdQAyzjrB0DeYWnY0RYmBXJo0ZMImb5dTVFFyk7VB67buJN/6+PinO/HsSk93zE
-	 I7MWhTfLGyGMC4kkiL7vWKDmWyUt9DMKmVImczJc=
+	b=tl/R7SaK0koitc11b6QO0jSkQNQYOKmp6G9WC0bjGK4jOq18U+tf16jzgYmexfvnr
+	 aJNyZnzzEcs7tDFIWS1yOM+p87fHyGM/SDN3pCiUahOIZvQPz2EwfbCuCcJQr8VkO4
+	 M72axmWaYACGNOVD8OC/kItcIQuP7ueE4GbU1KmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/139] net: selftests: fix TCP packet checksum
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.15 233/263] drm/i915/dsi: Fix off by one in BXT_MIPI_TRANS_VTOTAL
 Date: Thu,  3 Jul 2025 16:42:33 +0200
-Message-ID: <20250703143944.678940648@linuxfoundation.org>
+Message-ID: <20250703144013.738631596@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 8d89661a36dd3bb8c9902cff36dc0c144dce3faf ]
+commit c464ce6af332e7c802c36cd337cacf81db05400c upstream.
 
-The length in the pseudo header should be the length of the L3 payload
-AKA the L4 header+payload. The selftest code builds the packet from
-the lower layers up, so all the headers are pushed already when it
-constructs L4. We need to subtract the lower layer headers from skb->len.
+BXT_MIPI_TRANS_VTOTAL must be programmed with vtotal-1
+instead of vtotal. Make it so.
 
-Fixes: 3e1e58d64c3d ("net: add generic selftest support")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Reported-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20250624183258.3377740-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250314150136.22564-1-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 7b3685c9b38c3097f465efec8b24dbed63258cf6)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/selftests.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/vlv_dsi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/selftests.c b/net/core/selftests.c
-index 7af99d07762ea..946e92cca2111 100644
---- a/net/core/selftests.c
-+++ b/net/core/selftests.c
-@@ -160,8 +160,9 @@ static struct sk_buff *net_test_get_skb(struct net_device *ndev,
- 	skb->csum = 0;
- 	skb->ip_summed = CHECKSUM_PARTIAL;
- 	if (attr->tcp) {
--		thdr->check = ~tcp_v4_check(skb->len, ihdr->saddr,
--					    ihdr->daddr, 0);
-+		int l4len = skb->len - skb_transport_offset(skb);
-+
-+		thdr->check = ~tcp_v4_check(l4len, ihdr->saddr, ihdr->daddr, 0);
- 		skb->csum_start = skb_transport_header(skb) - skb->head;
- 		skb->csum_offset = offsetof(struct tcphdr, check);
- 	} else {
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/i915/display/vlv_dsi.c
++++ b/drivers/gpu/drm/i915/display/vlv_dsi.c
+@@ -1060,7 +1060,7 @@ static void bxt_dsi_get_pipe_config(stru
+ 				              BXT_MIPI_TRANS_VACTIVE(port));
+ 	adjusted_mode->crtc_vtotal =
+ 				intel_de_read(display,
+-				              BXT_MIPI_TRANS_VTOTAL(port));
++				              BXT_MIPI_TRANS_VTOTAL(port)) + 1;
+ 
+ 	hactive = adjusted_mode->crtc_hdisplay;
+ 	hfp = intel_de_read(display, MIPI_HFP_COUNT(display, port));
+@@ -1265,7 +1265,7 @@ static void set_dsi_timings(struct intel
+ 			intel_de_write(display, BXT_MIPI_TRANS_VACTIVE(port),
+ 				       adjusted_mode->crtc_vdisplay);
+ 			intel_de_write(display, BXT_MIPI_TRANS_VTOTAL(port),
+-				       adjusted_mode->crtc_vtotal);
++				       adjusted_mode->crtc_vtotal - 1);
+ 		}
+ 
+ 		intel_de_write(display, MIPI_HACTIVE_AREA_COUNT(display, port),
 
 
 
