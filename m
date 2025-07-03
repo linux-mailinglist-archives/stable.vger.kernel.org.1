@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-159941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1841DAF7B8B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D7FAF7C0B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:31:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57BAA189B952
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4710561FFA
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06182F0022;
-	Thu,  3 Jul 2025 15:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AFF2EF9CC;
+	Thu,  3 Jul 2025 15:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhrkF/xC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vb3z/WuU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0F72EF66C;
-	Thu,  3 Jul 2025 15:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8344A2EE993;
+	Thu,  3 Jul 2025 15:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555859; cv=none; b=TTDiufcmI6YFPsE+6BKj4H7RJ36I0tz8OF/+o1IcfWpxSxCQCSQBERy9YiBqFacTS3TJG9y7pfysWojcdmnT4n9kbKtxIDuuB3HN6COdh4vX6LmB3Snvd9RIJf4/vxohNP6ErWJapXT/VrGm1klub0PH4tbNW7Thlh+3GXGUfGU=
+	t=1751556196; cv=none; b=ijL8YdA+3Wm3pv1GHzTiqRz8InI6/hkAJwlIl1sgXVs31fnWK+tOb/t/36MyFSESFGNRAmZHeJ88GG3aBwcmSKJ9Lo846uXc9/ogu9enAfRMd35G47KG5Rf5nywRWVU4Ld3b5Dg7QUHTB/1K4ytAhBIbVb+hHd8lhp7PY/Yau2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555859; c=relaxed/simple;
-	bh=7XNXPkZTfd/Cohzlt2ejpA7BZt1agXVYIHcawM3UTu0=;
+	s=arc-20240116; t=1751556196; c=relaxed/simple;
+	bh=bo4JHpO+8H54Gh16GSwsQyZr4wWQhvoO3EF9S440kW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qNW20dCxKtqV48KW9jR6Wh8pdx03wYA5OL1poCN2Je7RctlHp7yMOrTPjzjFzl0qYOSU2cU2r7FwhxFuwrRB30hHKVnEuQxVVrTFvmAJzlFfiKkUyrhvyohYu49zr9UCeEp8dtBgY8BQEad/Lv5rRLMBhTWNytrG/WG40TUCpuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhrkF/xC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7215C4CEE3;
-	Thu,  3 Jul 2025 15:17:38 +0000 (UTC)
+	 MIME-Version; b=M5oRYxfKrDm6GLJ+R2+KPPy9v9/+ai1CZxQMdaq/j5wzmjPzOpAnFKur+pvRpKA2jkHZUmMuLTlqA9KNR4walgu8unC4hb8LQSItbnbBmLdNocUhRsi+1UpN4VAoZ52bQuelJCIYY/HTYX3hX11Nib/klu5NXOTD4+T8vzeFLcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vb3z/WuU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93CCC4CEE3;
+	Thu,  3 Jul 2025 15:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555859;
-	bh=7XNXPkZTfd/Cohzlt2ejpA7BZt1agXVYIHcawM3UTu0=;
+	s=korg; t=1751556196;
+	bh=bo4JHpO+8H54Gh16GSwsQyZr4wWQhvoO3EF9S440kW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nhrkF/xChxM51LXEDGIgeZw7Y/qo5VAlqpR5vb09/q7302JVkBsY986Gv1/sifZg8
-	 wwPaUCWR9jTJoJYapCjLHnLF/FHKXhMGz/eRrk3w1Fml5HdczA68OI1ios9kkmL6Zp
-	 tbzsdb/vqdeZDNmvGchVCPQhW6BHVGtGAyE6+TeY=
+	b=vb3z/WuUDna3BSrmtw/yTq+RI5geM05ic9DyPXntdRI/bmgrs3deu5Oq1KgQJFzBo
+	 08vdF0dCN9QvvecbDYVU3HzpyDjV8FgfPvmSnC+T5xGsHJfawEMhx6SyAg4o+61Zsp
+	 DoEs6XSbQd2LPLMMlGVexkeQc9IuBsEC6hjnn3Dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 131/139] media: uvcvideo: Rollback non processed entities on error
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	dri-devel@lists.freedesktop.org,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Subject: [PATCH 6.1 105/132] drm/udl: Unregister device before cleaning up on disconnect
 Date: Thu,  3 Jul 2025 16:43:14 +0200
-Message-ID: <20250703143946.304013719@linuxfoundation.org>
+Message-ID: <20250703143943.512999170@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit a70705d3c020d0d5c3ab6a5cc93e011ac35e7d48 upstream.
+commit ff9cb6d2035c586ea7c8f1754d4409eec7a2d26d upstream.
 
-If we fail to commit an entity, we need to restore the
-UVC_CTRL_DATA_BACKUP for the other uncommitted entities. Otherwise the
-control cache and the device would be out of sync.
+Disconnecting a DisplayLink device results in the following kernel
+error messages
 
-Cc: stable@kernel.org
-Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Closes: https://lore.kernel.org/linux-media/fe845e04-9fde-46ee-9763-a6f00867929a@redhat.com/
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250224-uvc-data-backup-v2-3-de993ed9823b@chromium.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+[   93.041748] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
+[   93.055299] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
+[   93.065363] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
+[   93.078207] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
+
+coming from KMS poll helpers. Shutting down poll helpers runs them
+one final time when the USB device is already gone.
+
+Run drm_dev_unplug() first in udl's USB disconnect handler. Udl's
+polling code already handles disconnects gracefully if the device has
+been marked as unplugged.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: b1a981bd5576 ("drm/udl: drop drm_driver.release hook")
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250303145604.62962-2-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |   39 ++++++++++++++++++++++++++-------------
- 1 file changed, 26 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/udl/udl_drv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1801,7 +1801,7 @@ static int uvc_ctrl_commit_entity(struct
- 	unsigned int processed_ctrls = 0;
- 	struct uvc_control *ctrl;
- 	unsigned int i;
--	int ret;
-+	int ret = 0;
+--- a/drivers/gpu/drm/udl/udl_drv.c
++++ b/drivers/gpu/drm/udl/udl_drv.c
+@@ -126,9 +126,9 @@ static void udl_usb_disconnect(struct us
+ {
+ 	struct drm_device *dev = usb_get_intfdata(interface);
  
- 	if (entity == NULL)
- 		return 0;
-@@ -1830,8 +1830,6 @@ static int uvc_ctrl_commit_entity(struct
- 				dev->intfnum, ctrl->info.selector,
- 				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
- 				ctrl->info.size);
--		else
--			ret = 0;
- 
- 		if (!ret)
- 			processed_ctrls++;
-@@ -1843,17 +1841,25 @@ static int uvc_ctrl_commit_entity(struct
- 
- 		ctrl->dirty = 0;
- 
--		if (ret < 0) {
-+		if (!rollback && handle &&
-+		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
-+			uvc_ctrl_set_handle(handle, ctrl, handle);
-+
-+		if (ret < 0 && !rollback) {
- 			if (err_ctrl)
- 				*err_ctrl = ctrl;
--			return ret;
-+			/*
-+			 * If we fail to set a control, we need to rollback
-+			 * the next ones.
-+			 */
-+			rollback = 1;
- 		}
- 
--		if (!rollback && handle &&
--		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
--			uvc_ctrl_set_handle(handle, ctrl, handle);
- 	}
- 
-+	if (ret)
-+		return ret;
-+
- 	return processed_ctrls;
++	drm_dev_unplug(dev);
+ 	drm_kms_helper_poll_fini(dev);
+ 	udl_drop_usb(dev);
+-	drm_dev_unplug(dev);
  }
  
-@@ -1884,7 +1890,8 @@ int __uvc_ctrl_commit(struct uvc_fh *han
- 	struct uvc_video_chain *chain = handle->chain;
- 	struct uvc_control *err_ctrl;
- 	struct uvc_entity *entity;
--	int ret = 0;
-+	int ret_out = 0;
-+	int ret;
- 
- 	/* Find the control. */
- 	list_for_each_entry(entity, &chain->entities, chain) {
-@@ -1895,17 +1902,23 @@ int __uvc_ctrl_commit(struct uvc_fh *han
- 				ctrls->error_idx =
- 					uvc_ctrl_find_ctrl_idx(entity, ctrls,
- 							       err_ctrl);
--			goto done;
-+			/*
-+			 * When we fail to commit an entity, we need to
-+			 * restore the UVC_CTRL_DATA_BACKUP for all the
-+			 * controls in the other entities, otherwise our cache
-+			 * and the hardware will be out of sync.
-+			 */
-+			rollback = 1;
-+
-+			ret_out = ret;
- 		} else if (ret > 0 && !rollback) {
- 			uvc_ctrl_send_events(handle, entity,
- 					     ctrls->controls, ctrls->count);
- 		}
- 	}
- 
--	ret = 0;
--done:
- 	mutex_unlock(&chain->ctrl_mutex);
--	return ret;
-+	return ret_out;
- }
- 
- int uvc_ctrl_get(struct uvc_video_chain *chain,
+ /*
 
 
 
