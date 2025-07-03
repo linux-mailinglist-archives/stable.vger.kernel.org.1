@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-159915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0823AF7B93
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BCD8AF7A7E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:14:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A7391CC005D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1559F58346A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5792F1983;
-	Thu,  3 Jul 2025 15:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC7F2EFD8A;
+	Thu,  3 Jul 2025 15:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VL1M5kEV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFlszCXq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5781E2F199C;
-	Thu,  3 Jul 2025 15:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1852E2EFD8B;
+	Thu,  3 Jul 2025 15:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555761; cv=none; b=h7SJzMY0Dvg/9NX2aJmX15bxi3yzBlc8xlyK1RFY2+OUQKAkk73eP6cH2agQ22O9pLBlb1vkA7Pmet2M+730+4d/AAR7PAwflDSpd+OLDvhqmrGaQYdnDAwbGSz95cS5Pp3ZQPT+9o3w++KyCbI2f8RQnyT+HGjkgyDSHLM3CVk=
+	t=1751555397; cv=none; b=YmQUc4KFxqhAB5l/jHgyXXzuAYQ15/V9JJTMpiozUT9AcQklLcVU6SB6CJQBY3IZCEINUzSNBIAj+FOccihINQUbfaBIrnEBVh8l83MubsZuofIi7kxX34ZCR4ihJsJX3tswe4PrCdTq+CBJFhIo0p99r9ghuJW3W9B4JewPSqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555761; c=relaxed/simple;
-	bh=ugTJAuzuUPUcRpiKoEjriPT2UuUbu0EbkCacvrGqAVs=;
+	s=arc-20240116; t=1751555397; c=relaxed/simple;
+	bh=32t3hHRiGOQlE6dUXlh+3Pvm2K+jrmMtoxfJcIdfuUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T1Bb5qJC55uuvmxMaJKi/xLc86iCenEOJyfAPttiL3NtQGGw7HC9OSZqChhcldItnHEH2HPQoT2oc5B16Uor3nakxKGRFZyhM+XM/AKeJtGBIDccQUrX1A65M1+V/mbcIi6Z+Nb5QIF5T7Wnvmmg8vseIF8SWhBa29hXonfWKbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VL1M5kEV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B13C4CEE3;
-	Thu,  3 Jul 2025 15:16:00 +0000 (UTC)
+	 MIME-Version; b=h3ACtJEeXi/8RMyr5+Bhkm0PLfuDgls4QdMmCO369Rzlft6grn8/7dnAiVVJMBuPIqyT3xb7pblzIVlm0sdSXcl9lepT90D9StHAYB/6DytdZ95tv4/hAe27EXbgsT80vp6UO5c1CPBKv1i3h0mN08XEt7T+sS1Q1YTz1DTosY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFlszCXq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE14C4CEF7;
+	Thu,  3 Jul 2025 15:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555761;
-	bh=ugTJAuzuUPUcRpiKoEjriPT2UuUbu0EbkCacvrGqAVs=;
+	s=korg; t=1751555396;
+	bh=32t3hHRiGOQlE6dUXlh+3Pvm2K+jrmMtoxfJcIdfuUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VL1M5kEVbYIsVdV63W2FAzwMELSFQVGJwrWRweUJOR9a0qimGBUVT/Z6asK0Q8DeS
-	 +5iBcI59B3LZ/HuHQnHe97CwLu0yG3tbfPQ4oPWn1eBejqmK1moWOxy3fZ8FCig6B7
-	 LCU4pkvtkvDNljVhUYW93mDauYM1LYKR4WkmRt+s=
+	b=iFlszCXqEsSZozNAuqM1tqcyPMyL0fYKQc1dEjSARDufsLfvUOfDRcnJNV2WKjw4R
+	 JTNpltrFnwpAhkD7JgtZ8V1W7MVvEVDqUZRjpLU8ArfliiHqnJ9J07hY2BCr+wsp4w
+	 Knkv26s1yj7NeB1G23rJaIoy14uPGDU4e3GqAmlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	dri-devel@lists.freedesktop.org,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Subject: [PATCH 6.6 114/139] drm/udl: Unregister device before cleaning up on disconnect
+	Benno Lossin <lossin@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.15 257/263] rust: devres: do not dereference to the internal Revocable
 Date: Thu,  3 Jul 2025 16:42:57 +0200
-Message-ID: <20250703143945.646153177@linuxfoundation.org>
+Message-ID: <20250703144014.712154982@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Danilo Krummrich <dakr@kernel.org>
 
-commit ff9cb6d2035c586ea7c8f1754d4409eec7a2d26d upstream.
+commit 20c96ed278e362ae4e324ed7d8c69fb48c508d3c upstream.
 
-Disconnecting a DisplayLink device results in the following kernel
-error messages
+We can't expose direct access to the internal Revocable, since this
+allows users to directly revoke the internal Revocable without Devres
+having the chance to synchronize with the devres callback -- we have to
+guarantee that the internal Revocable has been fully revoked before
+the device is fully unbound.
 
-[   93.041748] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
-[   93.055299] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
-[   93.065363] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
-[   93.078207] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
+Hence, remove the corresponding Deref implementation and, instead,
+provide indirect accessors for the internal Revocable.
 
-coming from KMS poll helpers. Shutting down poll helpers runs them
-one final time when the USB device is already gone.
+Note that we can still support Devres::revoke() by implementing the
+required synchronization (which would be almost identical to the
+synchronization in Devres::drop()).
 
-Run drm_dev_unplug() first in udl's USB disconnect handler. Udl's
-polling code already handles disconnects gracefully if the device has
-been marked as unplugged.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: b1a981bd5576 ("drm/udl: drop drm_driver.release hook")
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.8+
-Reviewed-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250303145604.62962-2-tzimmermann@suse.de
+Fixes: 76c01ded724b ("rust: add devres abstraction")
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Link: https://lore.kernel.org/r/20250611174827.380555-1-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/udl/udl_drv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/devres.rs |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/udl/udl_drv.c
-+++ b/drivers/gpu/drm/udl/udl_drv.c
-@@ -126,9 +126,9 @@ static void udl_usb_disconnect(struct us
- {
- 	struct drm_device *dev = usb_get_intfdata(interface);
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -12,13 +12,11 @@ use crate::{
+     error::{Error, Result},
+     ffi::c_void,
+     prelude::*,
+-    revocable::Revocable,
+-    sync::{Arc, Completion},
++    revocable::{Revocable, RevocableGuard},
++    sync::{rcu, Arc, Completion},
+     types::ARef,
+ };
  
-+	drm_dev_unplug(dev);
- 	drm_kms_helper_poll_fini(dev);
- 	udl_drop_usb(dev);
--	drm_dev_unplug(dev);
+-use core::ops::Deref;
+-
+ #[pin_data]
+ struct DevresInner<T> {
+     dev: ARef<Device>,
+@@ -196,13 +194,15 @@ impl<T> Devres<T> {
+ 
+         Ok(())
+     }
+-}
+ 
+-impl<T> Deref for Devres<T> {
+-    type Target = Revocable<T>;
++    /// [`Devres`] accessor for [`Revocable::try_access`].
++    pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
++        self.0.data.try_access()
++    }
+ 
+-    fn deref(&self) -> &Self::Target {
+-        &self.0.data
++    /// [`Devres`] accessor for [`Revocable::try_access_with_guard`].
++    pub fn try_access_with_guard<'a>(&'a self, guard: &'a rcu::Guard) -> Option<&'a T> {
++        self.0.data.try_access_with_guard(guard)
+     }
  }
  
- /*
+@@ -210,7 +210,7 @@ impl<T> Drop for Devres<T> {
+     fn drop(&mut self) {
+         // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
+         // anymore, hence it is safe not to wait for the grace period to finish.
+-        if unsafe { self.revoke_nosync() } {
++        if unsafe { self.0.data.revoke_nosync() } {
+             // We revoked `self.0.data` before the devres action did, hence try to remove it.
+             if !DevresInner::remove_action(&self.0) {
+                 // We could not remove the devres action, which means that it now runs concurrently,
 
 
 
