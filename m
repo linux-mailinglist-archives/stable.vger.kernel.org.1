@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51BE3AF7B56
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:24:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0823AF7B93
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC9F47B56FE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:22:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A7391CC005D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663FD223DDA;
-	Thu,  3 Jul 2025 15:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5792F1983;
+	Thu,  3 Jul 2025 15:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBL7/BT2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VL1M5kEV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C981DA23;
-	Thu,  3 Jul 2025 15:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5781E2F199C;
+	Thu,  3 Jul 2025 15:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556145; cv=none; b=lmrjyb96ynnydpwEnvppDogGw+99zmP91NQUXhB0rAineL1ncsJPLt7DrlJ/e34CbLL7H3bhB1CXAQ4Zpso8tbulFW9MwJSfYL80U8cE5jL+BKhGKjlXo6GMABcVvILDVvBZGdpH7KerCzsgEdLTCpWZT3GkT9u/n0orsL7PuN8=
+	t=1751555761; cv=none; b=h7SJzMY0Dvg/9NX2aJmX15bxi3yzBlc8xlyK1RFY2+OUQKAkk73eP6cH2agQ22O9pLBlb1vkA7Pmet2M+730+4d/AAR7PAwflDSpd+OLDvhqmrGaQYdnDAwbGSz95cS5Pp3ZQPT+9o3w++KyCbI2f8RQnyT+HGjkgyDSHLM3CVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556145; c=relaxed/simple;
-	bh=4c0UNVCpZ847QgBIZEiRBpFzrDilxgqkfDfYakk88jQ=;
+	s=arc-20240116; t=1751555761; c=relaxed/simple;
+	bh=ugTJAuzuUPUcRpiKoEjriPT2UuUbu0EbkCacvrGqAVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QoiGDCO2bmCgdlhAJQXrxLYHE4YQg5A/GbP4wr9LIW5OGz62vnTnTbLzQggPWdzcTSgd+FJDnZKPhTSoTzU92Wvu063ISOQg7VgU+WNcDUnN9CuKnu++dQQBzDlGFRpfVR6dOGsy6FrozHEmg6ABq1JcJtRVdKbppXMXHbBZdwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBL7/BT2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E0DC4CEE3;
-	Thu,  3 Jul 2025 15:22:24 +0000 (UTC)
+	 MIME-Version; b=T1Bb5qJC55uuvmxMaJKi/xLc86iCenEOJyfAPttiL3NtQGGw7HC9OSZqChhcldItnHEH2HPQoT2oc5B16Uor3nakxKGRFZyhM+XM/AKeJtGBIDccQUrX1A65M1+V/mbcIi6Z+Nb5QIF5T7Wnvmmg8vseIF8SWhBa29hXonfWKbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VL1M5kEV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B13C4CEE3;
+	Thu,  3 Jul 2025 15:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556145;
-	bh=4c0UNVCpZ847QgBIZEiRBpFzrDilxgqkfDfYakk88jQ=;
+	s=korg; t=1751555761;
+	bh=ugTJAuzuUPUcRpiKoEjriPT2UuUbu0EbkCacvrGqAVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xBL7/BT2DH0Ommp/hcBW7/7sNoBUKcWWFn5wRZ33YJcnTFmv5z0sxf3EI30XLvir0
-	 Qv7s0p/blKjVa42FvQsEqbu87dRskhMd0ZD8aPPdU5ikgC5nAE4SjPMgcdVDN2nHVj
-	 XLK1NtjZGrkYqpvtWd/9r6GAsYsEveGJjAWOdyYI=
+	b=VL1M5kEVbYIsVdV63W2FAzwMELSFQVGJwrWRweUJOR9a0qimGBUVT/Z6asK0Q8DeS
+	 +5iBcI59B3LZ/HuHQnHe97CwLu0yG3tbfPQ4oPWn1eBejqmK1moWOxy3fZ8FCig6B7
+	 LCU4pkvtkvDNljVhUYW93mDauYM1LYKR4WkmRt+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/132] drm/bridge: ti-sn65dsi86: make use of debugfs_init callback
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	dri-devel@lists.freedesktop.org,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Subject: [PATCH 6.6 114/139] drm/udl: Unregister device before cleaning up on disconnect
 Date: Thu,  3 Jul 2025 16:42:57 +0200
-Message-ID: <20250703143942.856603696@linuxfoundation.org>
+Message-ID: <20250703143945.646153177@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 1d1f7b15cb9c11974cebfd39da51dc69b8cb31ff ]
+commit ff9cb6d2035c586ea7c8f1754d4409eec7a2d26d upstream.
 
-Do not create a custom directory in debugfs-root, but use the
-debugfs_init callback to create a custom directory at the given place
-for the bridge. The new directory layout looks like this on a Renesas
-GrayHawk-Single with a R-Car V4M SoC:
+Disconnecting a DisplayLink device results in the following kernel
+error messages
 
-	/sys/kernel/debug/dri/feb00000.display/DP-1/1-002c
+[   93.041748] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
+[   93.055299] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
+[   93.065363] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
+[   93.078207] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250315201651.7339-2-wsa+renesas@sang-engineering.com
-Stable-dep-of: 55e8ff842051 ("drm/bridge: ti-sn65dsi86: Add HPD for DisplayPort connector type")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+coming from KMS poll helpers. Shutting down poll helpers runs them
+one final time when the USB device is already gone.
+
+Run drm_dev_unplug() first in udl's USB disconnect handler. Udl's
+polling code already handles disconnects gracefully if the device has
+been marked as unplugged.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: b1a981bd5576 ("drm/udl: drop drm_driver.release hook")
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250303145604.62962-2-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi86.c | 40 +++++++--------------------
- 1 file changed, 10 insertions(+), 30 deletions(-)
+ drivers/gpu/drm/udl/udl_drv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-index 3c8e33f416e70..2848aabe8f5b6 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-@@ -424,36 +424,8 @@ static int status_show(struct seq_file *s, void *data)
+--- a/drivers/gpu/drm/udl/udl_drv.c
++++ b/drivers/gpu/drm/udl/udl_drv.c
+@@ -126,9 +126,9 @@ static void udl_usb_disconnect(struct us
+ {
+ 	struct drm_device *dev = usb_get_intfdata(interface);
  
- 	return 0;
- }
--
- DEFINE_SHOW_ATTRIBUTE(status);
- 
--static void ti_sn65dsi86_debugfs_remove(void *data)
--{
--	debugfs_remove_recursive(data);
--}
--
--static void ti_sn65dsi86_debugfs_init(struct ti_sn65dsi86 *pdata)
--{
--	struct device *dev = pdata->dev;
--	struct dentry *debugfs;
--	int ret;
--
--	debugfs = debugfs_create_dir(dev_name(dev), NULL);
--
--	/*
--	 * We might get an error back if debugfs wasn't enabled in the kernel
--	 * so let's just silently return upon failure.
--	 */
--	if (IS_ERR_OR_NULL(debugfs))
--		return;
--
--	ret = devm_add_action_or_reset(dev, ti_sn65dsi86_debugfs_remove, debugfs);
--	if (ret)
--		return;
--
--	debugfs_create_file("status", 0600, debugfs, pdata, &status_fops);
--}
--
- /* -----------------------------------------------------------------------------
-  * Auxiliary Devices (*not* AUX)
-  */
-@@ -1198,6 +1170,15 @@ static struct edid *ti_sn_bridge_get_edid(struct drm_bridge *bridge,
- 	return drm_get_edid(connector, &pdata->aux.ddc);
++	drm_dev_unplug(dev);
+ 	drm_kms_helper_poll_fini(dev);
+ 	udl_drop_usb(dev);
+-	drm_dev_unplug(dev);
  }
  
-+static void ti_sn65dsi86_debugfs_init(struct drm_bridge *bridge, struct dentry *root)
-+{
-+	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
-+	struct dentry *debugfs;
-+
-+	debugfs = debugfs_create_dir(dev_name(pdata->dev), root);
-+	debugfs_create_file("status", 0600, debugfs, pdata, &status_fops);
-+}
-+
- static const struct drm_bridge_funcs ti_sn_bridge_funcs = {
- 	.attach = ti_sn_bridge_attach,
- 	.detach = ti_sn_bridge_detach,
-@@ -1211,6 +1192,7 @@ static const struct drm_bridge_funcs ti_sn_bridge_funcs = {
- 	.atomic_reset = drm_atomic_helper_bridge_reset,
- 	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
- 	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
-+	.debugfs_init = ti_sn65dsi86_debugfs_init,
- };
- 
- static void ti_sn_bridge_parse_lanes(struct ti_sn65dsi86 *pdata,
-@@ -1917,8 +1899,6 @@ static int ti_sn65dsi86_probe(struct i2c_client *client,
- 	if (ret)
- 		return ret;
- 
--	ti_sn65dsi86_debugfs_init(pdata);
--
- 	/*
- 	 * Break ourselves up into a collection of aux devices. The only real
- 	 * motiviation here is to solve the chicken-and-egg problem of probe
--- 
-2.39.5
-
+ /*
 
 
 
