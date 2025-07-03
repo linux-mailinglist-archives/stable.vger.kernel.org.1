@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6386DAF7800
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:46:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7970AF796D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:01:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E35567AFFC1
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:44:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E0F7168FAA
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8816A2EE98D;
-	Thu,  3 Jul 2025 14:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5272F2ED85E;
+	Thu,  3 Jul 2025 14:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCZoCLli"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LC7VKq6d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427B82EE272;
-	Thu,  3 Jul 2025 14:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091232EAD1B;
+	Thu,  3 Jul 2025 14:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751553923; cv=none; b=dGDBw59bfLteMnkctJdmTXva37ui+OlqQTmGbQd3L1WsP1TXUFOuTOgGsI6U5VqMnjN7KYYG2la4HNOPcSJeqqlxf9deEfVt2+gse+1xPjLz6cAhDRgrTtLylfDVW9Ui+8bMZn/0Cx2j3S0niTMP/hy8cL/zBvlToICYfEPT6Cg=
+	t=1751554737; cv=none; b=AOU/UX3Ol/w8PWTzx2NexIt9Kqwwe/78o3GlzgaYM27DUcS2cdb3gDGo/aP9r5AcjOkDjCjafuJx727necV+3adn3PZr73C5fgxq2GkxP/3H2uxHGjvc/pLVWMg633aO7STNaZ0yqCM72HDU/u8+WJ5SEF3P96EbOoPJU4O8FWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751553923; c=relaxed/simple;
-	bh=BudDPDJgOtHR8mYpLD+J4M2vdEyHMWdnExtzzwOd6lQ=;
+	s=arc-20240116; t=1751554737; c=relaxed/simple;
+	bh=13q2OSv3Zk8DDrCI6rvq950BybUQAhOBWnEHencwljs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMsO+3EDJYzDdLx2gsPxUaL2Ti4x4rMianGgRRcfLbyQFv79m0800MvHu83t63YV3wR0SvW5g2EPrdFwQyZ2nCV1gO5RofWzqLU340RidZR5jo3IZ7skdKj/eQHYAytHuauTicUsTSFhIFl0NexbpyXVD0xQ5rY1FxyX+yzzEmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCZoCLli; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4130C4CEF6;
-	Thu,  3 Jul 2025 14:45:22 +0000 (UTC)
+	 MIME-Version; b=Enh2ZJTDLb/YQ755KSO2MKnOo3zWYDLJ2zvvUgawtJjnPMAixrZKtPEEia3TIY0dA952zwnueX69RokrguHrLO8PwKPlFcVv5qPPv/2fKuXiu9DCyRYqYfD0coWYzAF+jt7a00hVNHy6STpr/fT7XHFLjJ9c8NUew8My1d3dyQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LC7VKq6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68974C4CEE3;
+	Thu,  3 Jul 2025 14:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751553923;
-	bh=BudDPDJgOtHR8mYpLD+J4M2vdEyHMWdnExtzzwOd6lQ=;
+	s=korg; t=1751554736;
+	bh=13q2OSv3Zk8DDrCI6rvq950BybUQAhOBWnEHencwljs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gCZoCLlixeQ7jix6O7Loid4RTTbrO3qrirrjHZUTwEqTFQnXoSETBRbV4Rw92N4C8
-	 mkNWPYejbxZsuURMbufnykJVrB/LwDRzjSA8Ig8xyB1eSMvOnxYWdAKiG+mw+9DQF+
-	 5Z1hCLOK39BHmS+SMImcAWD+CEpLOm1I/bhb1SW0=
+	b=LC7VKq6dcL+QAnK9eraQ4QM/2zQhHvjpCji6CEzZsQfxxdbIgbdKzP+hwxRJj/KeJ
+	 NMfyQCAgyiSE5z95OPWEO1Cero1FAcAU5dKvzuFBwFRG+IC8naZim+tGh97f8oBteh
+	 q3eiIQPJi7N1rCohXYVJZVQXxCWfk6m+X2Qib3TQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Han Young <hanyang.tony@bytedance.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 004/218] NFSv4: Always set NLINK even if the server doesnt support it
+Subject: [PATCH 6.15 032/263] wifi: iwlwifi: mld: Move regulatory domain initialization
 Date: Thu,  3 Jul 2025 16:39:12 +0200
-Message-ID: <20250703143956.135581301@linuxfoundation.org>
+Message-ID: <20250703144005.583877886@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Han Young <hanyang.tony@bytedance.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 3a3065352f73381d3a1aa0ccab44aec3a5a9b365 ]
+[ Upstream commit f81aa834bfa91c827f290b62a245e23c5ad2813c ]
 
-fattr4_numlinks is a recommended attribute, so the client should emulate
-it even if the server doesn't support it. In decode_attr_nlink function
-in nfs4xdr.c, nlink is initialized to 1. However, this default value
-isn't set to the inode due to the check in nfs_fhget.
+The regulatory domain information was initialized every time the
+FW was loaded and the device was restarted. This was unnecessary
+and useless as at this stage the wiphy channels information was
+not setup yet so while the regulatory domain was set to the wiphy,
+the channel information was not updated.
 
-So if the server doesn't support numlinks, inode's nlink will be zero,
-the mount will fail with error "Stale file handle". Set the nlink to 1
-if the server doesn't support it.
+In case that a specific MCC was configured during FW initialization
+then following updates with this MCC are ignored, and thus the
+wiphy channels information is left with information not matching
+the regulatory domain.
 
-Signed-off-by: Han Young <hanyang.tony@bytedance.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+This commit moves the regulatory domain initialization to after the
+operational firmware is started, i.e., after the wiphy channels were
+configured and the regulatory information is needed.
+
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250604061200.f138a7382093.I2fd8b3e99be13c2687da483e2cb1311ffb4fbfce@changeid
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/inode.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mld/fw.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 330273cf94531..9f10771331007 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -557,6 +557,8 @@ nfs_fhget(struct super_block *sb, struct nfs_fh *fh, struct nfs_fattr *fattr)
- 			set_nlink(inode, fattr->nlink);
- 		else if (fattr_supported & NFS_ATTR_FATTR_NLINK)
- 			nfs_set_cache_invalid(inode, NFS_INO_INVALID_NLINK);
-+		else
-+			set_nlink(inode, 1);
- 		if (fattr->valid & NFS_ATTR_FATTR_OWNER)
- 			inode->i_uid = fattr->uid;
- 		else if (fattr_supported & NFS_ATTR_FATTR_OWNER)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/fw.c b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
+index 4b083d447ee2f..6be9366bd4b14 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
+@@ -339,10 +339,6 @@ int iwl_mld_load_fw(struct iwl_mld *mld)
+ 	if (ret)
+ 		goto err;
+ 
+-	ret = iwl_mld_init_mcc(mld);
+-	if (ret)
+-		goto err;
+-
+ 	mld->fw_status.running = true;
+ 
+ 	return 0;
+@@ -535,6 +531,10 @@ int iwl_mld_start_fw(struct iwl_mld *mld)
+ 	if (ret)
+ 		goto error;
+ 
++	ret = iwl_mld_init_mcc(mld);
++	if (ret)
++		goto error;
++
+ 	return 0;
+ 
+ error:
 -- 
 2.39.5
 
