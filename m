@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-159555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2273FAF7930
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC6DAF7934
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCBCA4A066D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:56:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 695B94A2858
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36B22EAB95;
-	Thu,  3 Jul 2025 14:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9262F2ED857;
+	Thu,  3 Jul 2025 14:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfmEJs8m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Av6Z35DZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC522E62CD;
-	Thu,  3 Jul 2025 14:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A342ED85E;
+	Thu,  3 Jul 2025 14:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554597; cv=none; b=BBTPniR6KeCLJzIqtGiJ0Nxa6+Eiy7P9u9Y83YbMKs1LwU/0XZ62ez24CitqWcL30FHUW64kFRrl4Tj6SXjM2KsHSgEA62isFHD/23OXJGVlWerGPltm//NlamXzS5FydKdLhi2zBohXdTpip1/IzpJ1vAVL0ifqL7JMLAhkW+A=
+	t=1751554612; cv=none; b=FBt04WAn4/VkhfvO3Jf0WpKU+iK5aJEZDvlLh6rtDjlX6CtiPmHi6NvvMY0fzKO3Np1lHn+syl7S5HkkZslr0uzh8Xtor2nFZMkQec55oSymCpUAH+ajTWQQWaHI7+wMgFwunCkZmcOxUUxw2Uoq6vTyqwD33t9rFcO+EJkTeYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554597; c=relaxed/simple;
-	bh=8bcZQofDo4je4SF5yegmTKN/xYY/dIoAcfoBOBJFHq0=;
+	s=arc-20240116; t=1751554612; c=relaxed/simple;
+	bh=bN0UJ+d9hO2R2uoJrIS3WZ8XW6Zb53d4I7ZQsckqyMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AzTdcWGsIiDdfm0uDMLCJZVksSPiLgnYYBVEMD+ZYCNKTMO1JveBY3ZOG4qZTOSTPw4uQA8ZkwCdLAyGGy717y5T9+63mzZmUhkSuuzO18qHhpSKi4zSgoJZDlzrtQAVQRY055AEjG0ghbALJhsBzfdeHWRqZESDYo+87bUXK/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfmEJs8m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE29C4CEE3;
-	Thu,  3 Jul 2025 14:56:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bCVKEsmp3fF1TkMlKZkPFiwOMJXnfcVRITj9R819xrTID1z1k063KpxYZFeXh6zbOsjBDjEavvwp3oNQwFvF9EGtaINFsuVKniPf9QRE57XxSnyH+2NsWS0IKPUimKr9DnIPYyM9k1nKOCFM9Ujl2INIwkPdbFXiE1HqdNZ+VgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Av6Z35DZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C3AC4CEE3;
+	Thu,  3 Jul 2025 14:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554597;
-	bh=8bcZQofDo4je4SF5yegmTKN/xYY/dIoAcfoBOBJFHq0=;
+	s=korg; t=1751554612;
+	bh=bN0UJ+d9hO2R2uoJrIS3WZ8XW6Zb53d4I7ZQsckqyMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XfmEJs8mBnRXEyyw2KrKaC/jCDeYGpW8vs6UbNmhNLoSO58IoTUAGJIU7bUm0R4la
-	 rzxV9x+hVcENWJOpfB75JEGqx9PVGaiNdPqAWGQqph+lyqrq93oiDFB/aHlJCpZ5Ez
-	 pski+BGAmWl069hcqTwGNPkQKo0niVen5aCJpRYA=
+	b=Av6Z35DZCvF6gcxxwta1W1hrTM2n+8pY1Blo8HXI05PpPI3NLuQLA4rFRfY4NgfWj
+	 ayDi0DDGIq0rDHADTsGPewsKJkvfWeXvmQPD1dWoH+pkDQQIJrEKCbuthKx+mFsjsG
+	 wvOdJmyt4j+RDhlE+BtqM4/iW9dGHjeSdTE7P6v8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 002/263] cifs: Fix cifs_query_path_info() for Windows NT servers
-Date: Thu,  3 Jul 2025 16:38:42 +0200
-Message-ID: <20250703144004.378623862@linuxfoundation.org>
+Subject: [PATCH 6.15 003/263] cifs: Fix encoding of SMB1 Session Setup NTLMSSP Request in non-UNICODE mode
+Date: Thu,  3 Jul 2025 16:38:43 +0200
+Message-ID: <20250703144004.418006548@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
 References: <20250703144004.276210867@linuxfoundation.org>
@@ -69,48 +69,61 @@ Content-Transfer-Encoding: 8bit
 
 From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit a3e771afbb3bce91c8296828304903e7348003fe ]
+[ Upstream commit 6510ef4230b68c960309e0c1d6eb3e32eb785142 ]
 
-For TRANS2 QUERY_PATH_INFO request when the path does not exist, the
-Windows NT SMB server returns error response STATUS_OBJECT_NAME_NOT_FOUND
-or ERRDOS/ERRbadfile without the SMBFLG_RESPONSE flag set. Similarly it
-returns STATUS_DELETE_PENDING when the file is being deleted. And looks
-like that any error response from TRANS2 QUERY_PATH_INFO does not have
-SMBFLG_RESPONSE flag set.
+SMB1 Session Setup NTLMSSP Request in non-UNICODE mode is similar to
+UNICODE mode, just strings are encoded in ASCII and not in UTF-16.
 
-So relax check in check_smb_hdr() for detecting if the packet is response
-for this special case.
+With this change it is possible to setup SMB1 session with NTLM
+authentication in non-UNICODE mode with Windows SMB server.
 
-This change fixes stat() operation against Windows NT SMB servers and also
-all operations which depends on -ENOENT result from stat like creat() or
-mkdir().
+This change fixes mounting SMB1 servers with -o nounicode mount option
+together with -o sec=ntlmssp mount option (which is the default sec=).
 
 Signed-off-by: Pali Rohár <pali@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/misc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/smb/client/sess.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
-index 7b6ed9b23e713..e77017f470845 100644
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -326,6 +326,14 @@ check_smb_hdr(struct smb_hdr *smb)
- 	if (smb->Command == SMB_COM_LOCKING_ANDX)
- 		return 0;
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index 5a24b80dc146a..330bc3d25badd 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -1688,22 +1688,22 @@ _sess_auth_rawntlmssp_assemble_req(struct sess_data *sess_data)
+ 	pSMB = (SESSION_SETUP_ANDX *)sess_data->iov[0].iov_base;
  
-+	/*
-+	 * Windows NT server returns error resposne (e.g. STATUS_DELETE_PENDING
-+	 * or STATUS_OBJECT_NAME_NOT_FOUND or ERRDOS/ERRbadfile or any other)
-+	 * for some TRANS2 requests without the RESPONSE flag set in header.
-+	 */
-+	if (smb->Command == SMB_COM_TRANSACTION2 && smb->Status.CifsError != 0)
-+		return 0;
+ 	capabilities = cifs_ssetup_hdr(ses, server, pSMB);
+-	if ((pSMB->req.hdr.Flags2 & SMBFLG2_UNICODE) == 0) {
+-		cifs_dbg(VFS, "NTLMSSP requires Unicode support\n");
+-		return -ENOSYS;
+-	}
+-
+ 	pSMB->req.hdr.Flags2 |= SMBFLG2_EXT_SEC;
+ 	capabilities |= CAP_EXTENDED_SECURITY;
+ 	pSMB->req.Capabilities |= cpu_to_le32(capabilities);
+ 
+ 	bcc_ptr = sess_data->iov[2].iov_base;
+-	/* unicode strings must be word aligned */
+-	if (!IS_ALIGNED(sess_data->iov[0].iov_len + sess_data->iov[1].iov_len, 2)) {
+-		*bcc_ptr = 0;
+-		bcc_ptr++;
 +
- 	cifs_dbg(VFS, "Server sent request, not response. mid=%u\n",
- 		 get_mid(smb));
- 	return 1;
++	if (pSMB->req.hdr.Flags2 & SMBFLG2_UNICODE) {
++		/* unicode strings must be word aligned */
++		if (!IS_ALIGNED(sess_data->iov[0].iov_len + sess_data->iov[1].iov_len, 2)) {
++			*bcc_ptr = 0;
++			bcc_ptr++;
++		}
++		unicode_oslm_strings(&bcc_ptr, sess_data->nls_cp);
++	} else {
++		ascii_oslm_strings(&bcc_ptr, sess_data->nls_cp);
+ 	}
+-	unicode_oslm_strings(&bcc_ptr, sess_data->nls_cp);
+ 
+ 	sess_data->iov[2].iov_len = (long) bcc_ptr -
+ 					(long) sess_data->iov[2].iov_base;
 -- 
 2.39.5
 
