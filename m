@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D078AF7C4C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:33:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABA3EAF7B8C
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD7921CA7F57
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:25:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5282A6E26EE
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450A122069F;
-	Thu,  3 Jul 2025 15:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E8E2EBB8D;
+	Thu,  3 Jul 2025 15:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CecCLDJf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fi+E5gvU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF9CEEBA;
-	Thu,  3 Jul 2025 15:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154CA2D6639;
+	Thu,  3 Jul 2025 15:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556263; cv=none; b=V6iW1mYRAdosu0x5m7JD3Z5toD1C/jZHYxWEsBR1/7dNwu8u/V76kXRLM4RyisO7cDTmuU7bWNUgcMADMoqNXA7xBOQ8viBlGRlv/NnzdZSEecPy2t68un9spmWZZkXLuUriswo9dL4eU4lnrWXOhSohLP3kKgLvb3g5pCd5bhM=
+	t=1751555789; cv=none; b=gnZzB0nieM8VfYiMAoEIfDLZmJpuS/utNuk8wuZV73zf+MVUfFR0Ax6VYWoE7Z2JeWm61VwkJF2oLMZivThSq9mgtEtomc3rTmYmzoPAjpbUduRcCy+tXiybKd2AAYvb4fdLhIef7hSIIRerKz56H0aF8fVQh/Y7YC70e5D1RZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556263; c=relaxed/simple;
-	bh=gXgO5CO9fi0cWIm5ml1bgsovFuf1WLgKWZuwnOi+bc4=;
+	s=arc-20240116; t=1751555789; c=relaxed/simple;
+	bh=2sdy/QDlQ4bKAnlHmhRps/lpFGsugFJ01y4AxvlBbeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ht7SrVPYByhl1QXgBKskmmqslTcgI2G4QGuKw+FRGznwx/grwNcq3wYxdVxhjhNuTDP2qx/1yV40AnCke31KprECTnbekDiWIc1jZNe+wLsVgkWeZLTHcZ+6+LKTE8ZxZGxRaypekl9a+jzmjmaMpkZ8iHH0Bs70cdqvex1ex6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CecCLDJf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07577C4CEE3;
-	Thu,  3 Jul 2025 15:24:22 +0000 (UTC)
+	 MIME-Version; b=O32WL52Xaohm4HWE4J/mTZcsCDyeHurCLXclgj9hWo8ExJFXwyGCE5wZwy7Mvu2b0rIcbePb/II/K1LPaBZnH96fC4KMqUfTPSToDcjm7sPuOBCVvye7K1BJLAm6/GP3YbCsnklm6hxKcgnmGJZJ4EYPVXXKiKObblwROL3V3m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fi+E5gvU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79921C4CEE3;
+	Thu,  3 Jul 2025 15:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556263;
-	bh=gXgO5CO9fi0cWIm5ml1bgsovFuf1WLgKWZuwnOi+bc4=;
+	s=korg; t=1751555789;
+	bh=2sdy/QDlQ4bKAnlHmhRps/lpFGsugFJ01y4AxvlBbeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CecCLDJfDfC9ITuQd5ppvk16hclg6X1EAGst/d8VZJInD6eTXv4drn0oC85uZB4vz
-	 30Dxbs9soXVUuRH61tPm3/bhYY0kW+HgmNWHhll5IHb/xRfn4wmaYnUwJo28vQj/1Z
-	 dIq5rzl/P098pVfAr1cqNS3r3VWquS54ZVnMjf1A=
+	b=fi+E5gvUtXAGXEpndMJ8Br0Sgq7KIVxtLA3ubtWQPSQY3XlyGXXCvVHDq2IjaYMnI
+	 iOeumJIQWj+U29Z8RQWcLYZOJ223MbYrNlH6gOwyhWbifb5JnVxytG6eXeBE5ifrY2
+	 UWl4BVMWRfBtZAIp78qs7p5vitxw0NH6KRCJ/sXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Mark Harmstone <maharmstone@fb.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 096/132] btrfs: update superblocks device bytes_used when dropping chunk
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 122/139] drm/amd/display: Add null pointer check for get_first_active_display()
 Date: Thu,  3 Jul 2025 16:43:05 +0200
-Message-ID: <20250703143943.167655970@linuxfoundation.org>
+Message-ID: <20250703143945.954586951@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <maharmstone@fb.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit ae4477f937569d097ca5dbce92a89ba384b49bc6 upstream.
+commit c3e9826a22027a21d998d3e64882fa377b613006 upstream.
 
-Each superblock contains a copy of the device item for that device. In a
-transaction which drops a chunk but doesn't create any new ones, we were
-correctly updating the device item in the chunk tree but not copying
-over the new bytes_used value to the superblock.
+The function mod_hdcp_hdcp1_enable_encryption() calls the function
+get_first_active_display(), but does not check its return value.
+The return value is a null pointer if the display list is empty.
+This will lead to a null pointer dereference in
+mod_hdcp_hdcp2_enable_encryption().
 
-This can be seen by doing the following:
+Add a null pointer check for get_first_active_display() and return
+MOD_HDCP_STATUS_DISPLAY_NOT_FOUND if the function return null.
 
-  # dd if=/dev/zero of=test bs=4096 count=2621440
-  # mkfs.btrfs test
-  # mount test /root/temp
-
-  # cd /root/temp
-  # for i in {00..10}; do dd if=/dev/zero of=$i bs=4096 count=32768; done
-  # sync
-  # rm *
-  # sync
-  # btrfs balance start -dusage=0 .
-  # sync
-
-  # cd
-  # umount /root/temp
-  # btrfs check test
-
-For btrfs-check to detect this, you will also need my patch at
-https://github.com/kdave/btrfs-progs/pull/991.
-
-Change btrfs_remove_dev_extents() so that it adds the devices to the
-fs_info->post_commit_list if they're not there already. This causes
-btrfs_commit_device_sizes() to be called, which updates the bytes_used
-value in the superblock.
-
-Fixes: bbbf7243d62d ("btrfs: combine device update operations during transaction commit")
-CC: stable@vger.kernel.org # 5.10+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mark Harmstone <maharmstone@fb.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 2deade5ede56 ("drm/amd/display: Remove hdcp display state with mst fix")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # v5.8
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/volumes.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3203,6 +3203,12 @@ int btrfs_remove_chunk(struct btrfs_tran
- 					device->bytes_used - dev_extent_len);
- 			atomic64_add(dev_extent_len, &fs_info->free_chunk_space);
- 			btrfs_clear_space_info_full(fs_info);
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+@@ -368,6 +368,9 @@ enum mod_hdcp_status mod_hdcp_hdcp1_enab
+ 	struct mod_hdcp_display *display = get_first_active_display(hdcp);
+ 	enum mod_hdcp_status status = MOD_HDCP_STATUS_SUCCESS;
+ 
++	if (!display)
++		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
 +
-+			if (list_empty(&device->post_commit_list)) {
-+				list_add_tail(&device->post_commit_list,
-+					      &trans->transaction->dev_update_list);
-+			}
-+
- 			mutex_unlock(&fs_info->chunk_mutex);
- 		}
- 	}
+ 	mutex_lock(&psp->hdcp_context.mutex);
+ 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
+ 	memset(hdcp_cmd, 0, sizeof(struct ta_hdcp_shared_memory));
 
 
 
