@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7342AF788E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:51:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB73BAF79F6
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D93B616C34B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:51:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 707871729F5
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9802E7F0B;
-	Thu,  3 Jul 2025 14:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838852EE28F;
+	Thu,  3 Jul 2025 15:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtiP/9HO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZM/4dg2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376822E7F1A;
-	Thu,  3 Jul 2025 14:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402D02ED86E;
+	Thu,  3 Jul 2025 15:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554239; cv=none; b=l2cC9UPxAra0l5QRleJ3I3dx0pE+ZYnV6cRM2DNY4xEOSGb9g5Iy7gs2dyFZZAtWDL2k52IEw1xCHLwdD0sbgTuKa1LckExUF9CWsvvAA5SMFusVDLRXkR4RxszbAKCWs6VbwxLpY3ZuGeTxlY4ZEQZp7ttW8fLLsmvYIT4qx3E=
+	t=1751555058; cv=none; b=BnJxOL0PYrLXT4RN3TQgn3mpRgYR5Zzd7wZcYY4YKl48+2vIs4MhyDwbzdoy7t2XEOCaTTjXp4VnTowT9w8x/6FGbaKiVObdTamyd4syqNhxVMcqsSujwwU9Yl7urBIIZx9ILyf/p1cQPs6RZXPzH03fuIYiJiGA2+6hUazV41U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554239; c=relaxed/simple;
-	bh=EVljRyWrTiaVZQRNt7nT2eMllNxc75Gfdp/3pxgIwW8=;
+	s=arc-20240116; t=1751555058; c=relaxed/simple;
+	bh=uxmUyzRpzWFBJKwOhIoqx1az4Yf/2Q2Fem8rdAH+9qM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PexAy3/jtPLzVYI0dtX3g88cyNYVV2McQFim4KEHYJ2jzPqqIeZB8kR28dklDoLaV7qYwjJT591exc9g4pvVp2wIhnMP9PmZi/sbrzEVCoMA4QQKabYLLny0zXPYVpYGBNeHkrC5MdyndIh46WYPWEONKAet6PMP+bDymUlVWew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtiP/9HO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41D7C4CEE3;
-	Thu,  3 Jul 2025 14:50:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SS+C9lZRGGAJllXSEeJ/r+LUxnK1N4p8HVVlE6vDE3ytypNA8g8TEUHSemahLkBwiGiUKUOMumYrXm2ixozkSn01WbhDEeQlXzDR+sL2+49o56i6NaJJE7V7syO4lSSi/Pt4qvowPDcEFkro+0EAB4rI/4BUAGTYkimwzuoGTWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZM/4dg2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C313BC4CEE3;
+	Thu,  3 Jul 2025 15:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554239;
-	bh=EVljRyWrTiaVZQRNt7nT2eMllNxc75Gfdp/3pxgIwW8=;
+	s=korg; t=1751555058;
+	bh=uxmUyzRpzWFBJKwOhIoqx1az4Yf/2Q2Fem8rdAH+9qM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtiP/9HO8mNq9A83QYqegIH9jvJBh62KmmnsVFQIhUttIs3pi0vlYWgBDHjjs19gQ
-	 YIH1/7Va0f8+X3s6WaTpi+44dYzIF0FHVCDpMflayFIxL1J59yadI2T+PlT2J8tTql
-	 7Nc5J7i28g3tJchUpza7RRaF/pN/fr7oPqbCtdQ0=
+	b=DZM/4dg2BlrTOcpkSmkFAPMc8XxqW6oIrp3eSf8Favj5+X2hxDMubJLShwFmMcOp7
+	 ZNsgQnC/A0bAcadXYdb+hhcdKl5XuRdlvjxXvfatN1DGyZqt+LCj0klWG5me9TUXzV
+	 pDMtG0fycjOkwaOO3J5UthVc+l+LUCVcnKhY6BEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/218] libbpf: Fix null pointer dereference in btf_dump__free on allocation failure
+	Nam Cao <namcao@linutronix.de>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>
+Subject: [PATCH 6.15 123/263] Revert "riscv: misaligned: fix sleeping function called during misaligned access handling"
 Date: Thu,  3 Jul 2025 16:40:43 +0200
-Message-ID: <20250703143959.736430006@linuxfoundation.org>
+Message-ID: <20250703144009.288564225@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit aa485e8789d56a4573f7c8d000a182b749eaa64d ]
+commit 2f73c62d4e13df67380ff6faca39eec2bf08dd93 upstream.
 
-When btf_dump__new() fails to allocate memory for the internal hashmap
-(btf_dump->type_names), it returns an error code. However, the cleanup
-function btf_dump__free() does not check if btf_dump->type_names is NULL
-before attempting to free it. This leads to a null pointer dereference
-when btf_dump__free() is called on a btf_dump object.
+This reverts commit 61a74ad25462 ("riscv: misaligned: fix sleeping function
+called during misaligned access handling"). The commit addresses a sleeping
+in atomic context problem, but it is not the correct fix as explained by
+Clément:
 
-Fixes: 351131b51c7a ("libbpf: add btf_dump API for BTF-to-C conversion")
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250618011933.11423-1-chenyuan_fl@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+"Using nofault would lead to failure to read from user memory that is paged
+out for instance. This is not really acceptable, we should handle user
+misaligned access even at an address that would generate a page fault."
+
+This bug has been properly fixed by commit 453805f0a28f ("riscv:
+misaligned: enable IRQs while handling misaligned accesses").
+
+Revert this improper fix.
+
+Link: https://lore.kernel.org/linux-riscv/b779beed-e44e-4a5e-9551-4647682b0d21@rivosinc.com/
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: 61a74ad25462 ("riscv: misaligned: fix sleeping function called during misaligned access handling")
+Link: https://lore.kernel.org/r/20250620110939.1642735-1-namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/bpf/btf_dump.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/riscv/kernel/traps_misaligned.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/lib/bpf/btf_dump.c b/tools/lib/bpf/btf_dump.c
-index 46cce18c83086..12306b5de3efb 100644
---- a/tools/lib/bpf/btf_dump.c
-+++ b/tools/lib/bpf/btf_dump.c
-@@ -225,6 +225,9 @@ static void btf_dump_free_names(struct hashmap *map)
- 	size_t bkt;
- 	struct hashmap_entry *cur;
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -453,7 +453,7 @@ static int handle_scalar_misaligned_load
  
-+	if (!map)
-+		return;
-+
- 	hashmap__for_each_entry(map, cur, bkt)
- 		free((void *)cur->pkey);
+ 	val.data_u64 = 0;
+ 	if (user_mode(regs)) {
+-		if (copy_from_user_nofault(&val, (u8 __user *)addr, len))
++		if (copy_from_user(&val, (u8 __user *)addr, len))
+ 			return -1;
+ 	} else {
+ 		memcpy(&val, (u8 *)addr, len);
+@@ -554,7 +554,7 @@ static int handle_scalar_misaligned_stor
+ 		return -EOPNOTSUPP;
  
--- 
-2.39.5
-
+ 	if (user_mode(regs)) {
+-		if (copy_to_user_nofault((u8 __user *)addr, &val, len))
++		if (copy_to_user((u8 __user *)addr, &val, len))
+ 			return -1;
+ 	} else {
+ 		memcpy((u8 *)addr, &val, len);
 
 
 
