@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-159373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8CE5AF783D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:48:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1682AF798E
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:03:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8796A581B5D
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14FBF1884E86
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E922EACE1;
-	Thu,  3 Jul 2025 14:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982432ED857;
+	Thu,  3 Jul 2025 14:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mM1mjI2d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWAdgkeF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9770B1DB124;
-	Thu,  3 Jul 2025 14:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556AB2E7F1A;
+	Thu,  3 Jul 2025 14:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554029; cv=none; b=ufmGPhMwT+MAjuCSmcH+g07EKf/wMG7aKR9NG39qtcsVf2T6ydKPz2mvFE4uForJpP3GMh/Y6LLcAYigPqfkfTTXnTzaRomx3MBnTc/VUsHmYLsjwm40U8SZxRvPAwYLK49Ow9OOaFJOOferKc1BO8I1zTixt8Xf+acuJvlO50Q=
+	t=1751554721; cv=none; b=uLMw/ylGsXeJ53585fCULNMXYuezxlmaLRuerZ5IN7X++CHDgRszIJ8/+dcuU4kr1CsJ2lNX2I+AT7sYv5RNXGLOPJRW0eKpMEbrTogFn0bhdKuFLS+6G90Bjg6CIlA2jh3rsYcO0t70nx1wlV1TWn5ENCDer/x1Ja1Oz+dPQY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554029; c=relaxed/simple;
-	bh=YQ3dTYpn/gd0Ud4yPdsV4bj7AFfXq2NOa2CbURC2zRU=;
+	s=arc-20240116; t=1751554721; c=relaxed/simple;
+	bh=hQBiNbQ3znnqDMQHdr05F4+5oO0ncKBpc6lYaRZOtHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JdROvvKGi/BN7/e3R0EinR/RJC0i0DZ8qP1oE/WXQVUWBy31YzRdi5qMqnV5vRZt2Sqt7Evpv2YVZO1gj9JKxe8bW8CnTXL2Tm675wUEaDpAEzFKO+kI4GFsB1gzgVwWSi/mRYaq37naW275WknpxkOEYrEqabyXriY5iZuo/lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mM1mjI2d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC72C4CEE3;
-	Thu,  3 Jul 2025 14:47:08 +0000 (UTC)
+	 MIME-Version; b=rhStDT2OfgN23I5C/ZFct0igX4NJxrdGT/j72XfoLEGvS+Qdk88zJqys7FnWATbs1x12y+xRQn1vKRYu0B7XxiDQSLf74obHIOF6qTYhU4a2ENlX5yiAHY43rHB53vFY4tpWVbla9A5OGkySa+b4Y0v87FNMZdDVKG9RU0MSm+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWAdgkeF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA448C4CEE3;
+	Thu,  3 Jul 2025 14:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554029;
-	bh=YQ3dTYpn/gd0Ud4yPdsV4bj7AFfXq2NOa2CbURC2zRU=;
+	s=korg; t=1751554721;
+	bh=hQBiNbQ3znnqDMQHdr05F4+5oO0ncKBpc6lYaRZOtHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mM1mjI2d2OShrczK2cvKm459b0mNYjWRK+PgBoBT3DGASIxu4Pza/1/UMxFM+55gn
-	 ejJFqlR4Vq2eiQP5XVQIYV9/uQadoK4YPKUPpOWx0DP+OQwpinZRAORJA5XHy/388w
-	 rWAqlOPvbbvpDhZCtrx5tItU7qhXhHeQdbKkpPqY=
+	b=cWAdgkeF2Ba8oSsWHaQQSDKry5uSiYehHAfS8x3bC+85GuXP+SSgjEc1T/jBw8aDJ
+	 6KaISM5y/9ygNv4KzNu+z3RHHYuLauyQQyPKKJpLhsLXYcnHbX7tiOo/Kv8xsokG9G
+	 gUDHHJJKzTwROKXNgI8n5DKZvm9WGn+2maPApMZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/218] nvme-tcp: sanitize request list handling
-Date: Thu,  3 Jul 2025 16:39:35 +0200
-Message-ID: <20250703143957.048721018@linuxfoundation.org>
+Subject: [PATCH 6.15 056/263] misc: tps6594-pfsm: Add NULL pointer check in tps6594_pfsm_probe()
+Date: Thu,  3 Jul 2025 16:39:36 +0200
+Message-ID: <20250703144006.559881066@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 0bf04c874fcb1ae46a863034296e4b33d8fbd66c ]
+[ Upstream commit a99b598d836c9c6411110c70a2da134c78d96e67 ]
 
-Validate the request in nvme_tcp_handle_r2t() to ensure it's not part of
-any list, otherwise a malicious R2T PDU might inject a loop in request
-list processing.
+The returned value, pfsm->miscdev.name, from devm_kasprintf()
+could be NULL.
+A pointer check is added to prevent potential NULL pointer dereference.
+This is similar to the fix in commit 3027e7b15b02
+("ice: Fix some null pointer dereference issues in ice_ptp.c").
 
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+This issue is found by our static analysis tool.
+
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250311010511.1028269-1-chenyuan0y@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/misc/tps6594-pfsm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 13ede6e309092..25e486e6e8054 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -453,7 +453,8 @@ nvme_tcp_fetch_request(struct nvme_tcp_queue *queue)
- 			return NULL;
- 	}
- 
--	list_del(&req->entry);
-+	list_del_init(&req->entry);
-+	init_llist_node(&req->lentry);
- 	return req;
- }
- 
-@@ -561,6 +562,8 @@ static int nvme_tcp_init_request(struct blk_mq_tag_set *set,
- 	req->queue = queue;
- 	nvme_req(rq)->ctrl = &ctrl->ctrl;
- 	nvme_req(rq)->cmd = &pdu->cmd;
-+	init_llist_node(&req->lentry);
-+	INIT_LIST_HEAD(&req->entry);
- 
- 	return 0;
- }
-@@ -765,6 +768,14 @@ static int nvme_tcp_handle_r2t(struct nvme_tcp_queue *queue,
- 		return -EPROTO;
- 	}
- 
-+	if (llist_on_list(&req->lentry) ||
-+	    !list_empty(&req->entry)) {
-+		dev_err(queue->ctrl->ctrl.device,
-+			"req %d unexpected r2t while processing request\n",
-+			rq->tag);
-+		return -EPROTO;
-+	}
+diff --git a/drivers/misc/tps6594-pfsm.c b/drivers/misc/tps6594-pfsm.c
+index 0a24ce44cc37c..6db1c9d48f8fc 100644
+--- a/drivers/misc/tps6594-pfsm.c
++++ b/drivers/misc/tps6594-pfsm.c
+@@ -281,6 +281,9 @@ static int tps6594_pfsm_probe(struct platform_device *pdev)
+ 	pfsm->miscdev.minor = MISC_DYNAMIC_MINOR;
+ 	pfsm->miscdev.name = devm_kasprintf(dev, GFP_KERNEL, "pfsm-%ld-0x%02x",
+ 					    tps->chip_id, tps->reg);
++	if (!pfsm->miscdev.name)
++		return -ENOMEM;
 +
- 	req->pdu_len = 0;
- 	req->h2cdata_left = r2t_length;
- 	req->h2cdata_offset = r2t_offset;
-@@ -2599,6 +2610,8 @@ static void nvme_tcp_submit_async_event(struct nvme_ctrl *arg)
- 	ctrl->async_req.offset = 0;
- 	ctrl->async_req.curr_bio = NULL;
- 	ctrl->async_req.data_len = 0;
-+	init_llist_node(&ctrl->async_req.lentry);
-+	INIT_LIST_HEAD(&ctrl->async_req.entry);
- 
- 	nvme_tcp_queue_request(&ctrl->async_req, true, true);
- }
+ 	pfsm->miscdev.fops = &tps6594_pfsm_fops;
+ 	pfsm->miscdev.parent = dev->parent;
+ 	pfsm->chip_id = tps->chip_id;
 -- 
 2.39.5
 
