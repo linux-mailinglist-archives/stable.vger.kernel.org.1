@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-159855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8421FAF7B05
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:20:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56AD8AF7A61
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 112F43A227E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:14:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA273189AF8B
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:08:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8B02F0E22;
-	Thu,  3 Jul 2025 15:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA612E7649;
+	Thu,  3 Jul 2025 15:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4ZsWmyC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1q91qaHo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB3F2F2730;
-	Thu,  3 Jul 2025 15:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C5B15442C;
+	Thu,  3 Jul 2025 15:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555569; cv=none; b=s1oPr1wKe/fFt80WgTfHJmBl/Wn5yBygwBRBuRVK7Y+ImY0YlTIfj+G2Uc7DYV5GcnHbR2RT7xIIMS+M6NY3Gn0Lj4IocqsVo3xkiJs9GzzQzn7i+HhjoAN0GDOfBUfgQfa2DFx4We23SYMMqwvX4bsv83rUncO8WzaD7xIwm9M=
+	t=1751555276; cv=none; b=l1QhwDEUCHkfhEyOzcMKf6fdD70zzHI39M5YD4yDtei27cD4qUX5hYF7uVQ8QTq6/b7+ZZBJQx1Sc9gy5HJ+ASrkeQ3lAiv4ilUPJ2d+Tr6RDfr4K+zCajPjdB5Tm9I5uTGtYXvtRR9feSfoPrjpe5DLHOABDnv4xHtgOfDG8Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555569; c=relaxed/simple;
-	bh=IQH63ps8vYwrBDx6Mu5gYAiDxANy0Mziy7qRDram498=;
+	s=arc-20240116; t=1751555276; c=relaxed/simple;
+	bh=8RM3dYbanw0/aaLRvv2qquAqjfFLXm6VE5emir9CXlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rlk5kghkuAWPcC0I/aAWJuBiZoHDvqxdOUgtOqK9Bbt/9lYuknVE0sF6oU+WsK8w4UN9enb8LAD3mV4HQYgjMqZEEeaZucUp9zG9BvpkAhSNInaf6/JaJlOmvrZjassNELpt540WaxREu9VhRcef/7pmJei3dev371X+j7c1ph4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4ZsWmyC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D0CC4CEE3;
-	Thu,  3 Jul 2025 15:12:48 +0000 (UTC)
+	 MIME-Version; b=iVQHsb+ttHgZ++EfZUYHJC2dYZubvvTZIyg6Fxz7SEgME2zmzKvjFqFgKv8gNmZNtRrRScFUiJa43kerkhFvAPctToyqFVFR/53ExsucwRCTTNnW8ti2d5107voc5+3hRWrveVA5Q4qc27qcD22eO2/gHxWWWy9CAoQr7PDfyWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1q91qaHo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F0CC4CEE3;
+	Thu,  3 Jul 2025 15:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555569;
-	bh=IQH63ps8vYwrBDx6Mu5gYAiDxANy0Mziy7qRDram498=;
+	s=korg; t=1751555276;
+	bh=8RM3dYbanw0/aaLRvv2qquAqjfFLXm6VE5emir9CXlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J4ZsWmyCEKDX34nOQJdsStOjaEazr0gaJ8NFFMQaXwoXxS6mew/CPhlDN33FbwV/I
-	 PA097F54gM/L28SwQ1XukQh3SuhUiZitOtpoxEFKYqDOrg3TKjAIYBcmYleNW9QPPz
-	 kdtGnWl4c4M4AABNb0fSa0dbi96rDwV2vvOX2p3o=
+	b=1q91qaHougwUkACt60WxlThHKfIlEcdv3Ms3hGjK1zFag/enCY8p1m5LLMbDTyUtM
+	 fwWqLNL9JM08PHHhMxxIjetU2IXx2qoTP9fARObrWk6Er+KN0ZeKwtZBNtPPN+2iEs
+	 oB2ve4sWk5ygTBXD4S3QGlfmKVTW7k47vJvKlAhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/139] uio_hv_generic: Query the ringbuffer size for device
+	Ping Cheng <ping.cheng@wacom.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.15 197/263] HID: wacom: fix kobject reference count leak
 Date: Thu,  3 Jul 2025 16:41:57 +0200
-Message-ID: <20250703143943.279634325@linuxfoundation.org>
+Message-ID: <20250703144012.258766440@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
-References: <20250703143941.182414597@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit e566ed5b64177a0c07b677568f623ed31d23406d ]
+commit 85a720f4337f0ddf1603c8b75a8f1ffbbe022ef9 upstream.
 
-Query the ring buffer size from pre defined table per device
-and use that value for allocating the ring buffer for that
-device. Keep the size as current default which is 2 MB if
-the device doesn't have any preferred ring size.
+When sysfs_create_files() fails in wacom_initialize_remotes() the error
+is returned and the cleanup action will not have been registered yet.
 
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Link: https://lore.kernel.org/r/1711788723-8593-3-git-send-email-ssengar@linux.microsoft.com
+As a result the kobject???s refcount is never dropped, so the
+kobject can never be freed leading to a reference leak.
+
+Fix this by calling kobject_put() before returning.
+
+Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
+Acked-by: Ping Cheng <ping.cheng@wacom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/uio/uio_hv_generic.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/hid/wacom_sys.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
-index 2804a4f749750..031f6a8f1ebb2 100644
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -249,6 +249,7 @@ hv_uio_probe(struct hv_device *dev,
- 	struct hv_uio_private_data *pdata;
- 	void *ring_buffer;
- 	int ret;
-+	size_t ring_size = hv_dev_ring_size(channel);
- 
- 	/* Communicating with host has to be via shared memory not hypercall */
- 	if (!channel->offermsg.monitor_allocated) {
-@@ -256,12 +257,14 @@ hv_uio_probe(struct hv_device *dev,
- 		return -ENOTSUPP;
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2059,6 +2059,7 @@ static int wacom_initialize_remotes(stru
+ 		hid_err(wacom->hdev,
+ 			"cannot create sysfs group err: %d\n", error);
+ 		kfifo_free(&remote->remote_fifo);
++		kobject_put(remote->remote_dir);
+ 		return error;
  	}
  
-+	if (!ring_size)
-+		ring_size = HV_RING_SIZE * PAGE_SIZE;
-+
- 	pdata = devm_kzalloc(&dev->device, sizeof(*pdata), GFP_KERNEL);
- 	if (!pdata)
- 		return -ENOMEM;
- 
--	ret = vmbus_alloc_ring(channel, HV_RING_SIZE * PAGE_SIZE,
--			       HV_RING_SIZE * PAGE_SIZE);
-+	ret = vmbus_alloc_ring(channel, ring_size, ring_size);
- 	if (ret)
- 		return ret;
- 
--- 
-2.39.5
-
 
 
 
