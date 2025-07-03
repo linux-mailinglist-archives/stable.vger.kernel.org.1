@@ -1,83 +1,70 @@
-Return-Path: <stable+bounces-160123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04FEEAF8277
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 23:12:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31032AF829D
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 23:27:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B22A27AE398
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 21:11:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E94EB6E19C1
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 21:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192FA2BEC52;
-	Thu,  3 Jul 2025 21:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA57D2BD5A7;
+	Thu,  3 Jul 2025 21:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Aqlp4yzE"
+	dkim=permerror (0-bit key) header.d=aaront.org header.i=@aaront.org header.b="dqoXjpFe";
+	dkim=pass (2048-bit key) header.d=aaront.org header.i=@aaront.org header.b="v/BVgkC3"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp-out0.aaront.org (smtp-out0.aaront.org [52.10.12.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CF02BEC20;
-	Thu,  3 Jul 2025 21:12:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79A22BD595;
+	Thu,  3 Jul 2025 21:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.10.12.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751577132; cv=none; b=jDb59m0n3FWX5cdu1zjVefbzCEEZX2EwKxjYaXGdUyRRu+7jC4ID6/pfj5ryVys4YNQvdhgxeCIjos9p+v1wCzdt/fMjwUkNHrkD63T8zIjeOw60PHZjwFSOLsk1/VctPXlzpMu//tpqLh4ifgUwGN7MO5qpWAs2Qm7Xr4Bdg50=
+	t=1751578051; cv=none; b=M6/5cW4JFqktNcONxJiHmh7JpXNqZpyfmH0wkeL8zMMZXu/L0hPhgRBXKoBdTTHQwrsFb/RfQWhrMFwA8LI8TcVJ6+y+OgltDO4MpyGlIt391YXvTvuqHiVC2ol2TDdyNDRj78NTfPb/2fkX5mZglk3dSJlD4Ws7677FlXswD28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751577132; c=relaxed/simple;
-	bh=B6doD9kOSPWFE/Y4BAsd3C6XEna4T0RpkGlNoqHZZLw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfQHcfpoRwBRO0UPyKbl7z3TiO/ncyjYjMrQoVfj/Y9K5QbN/GsBh0GfOo9xdZj6N6WFDBfFZDQW40PXz3gBGwQXvrx4jSsdCvhPdUghVbW4xlXoinpoi/+zbfIyuDElipGdjsO6yieCExfC9YTcqQzrNtA4rTFL3ZlOWvtIL0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Aqlp4yzE; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751577131; x=1783113131;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=B6doD9kOSPWFE/Y4BAsd3C6XEna4T0RpkGlNoqHZZLw=;
-  b=Aqlp4yzExCi99183Pq+qkGcRCUQckmJWFD7JfXJmyMfW2rzI2HsyAhAS
-   Yf2eMFf30g/QCL5HPRfxxlJduXLYlswmlpkL4N/IgmHoU55+C5vYWyCCx
-   Y7e5CneClevywBgerSU6e2hwJ/AJR/up0SGIoOZYPO5duICcYQA+7766U
-   UYSZOZQPWWE5Z5TwOchAT7MRwlFQkGjPQGGyUQnVuOZM1f+g0yCL1AjJc
-   5cMLNWvMsIKrs7eq/HtZmBvDzir/xCxa1xUqZKz2iYHY+am8prApQ2UAU
-   Xj7755NPip36GNr+CxC6mvOAHNVV9SY5qVBvG8k5pwNfARiSch7oeEb0p
-   g==;
-X-CSE-ConnectionGUID: 36Fb/S9RR/KHKX0T1sMiZw==
-X-CSE-MsgGUID: IlpM8nnjSXC8oE1wAiXGkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="79352995"
-X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; 
-   d="scan'208";a="79352995"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 14:12:11 -0700
-X-CSE-ConnectionGUID: lXpy82NlTA6aPWMZmq4m5Q==
-X-CSE-MsgGUID: l5VKW6JETBC+sv/39t6Xxg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; 
-   d="scan'208";a="154239995"
-Received: from mjruhl-desk.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.223.97])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 14:12:09 -0700
-From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
-To: platform-driver-x86@vger.kernel.org,
-	intel-xe@lists.freedesktop.org,
-	hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com,
-	lucas.demarchi@intel.com,
-	rodrigo.vivi@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	david.e.box@linux.intel.com
-Cc: "Michael J. Ruhl" <michael.j.ruhl@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	s=arc-20240116; t=1751578051; c=relaxed/simple;
+	bh=/kZmNYWZNOTJQa4opCPhE9MeAHI82FTFippa+nVrA1o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BQlXIgFcTFb0mU38VV4BxDl4smCiZLGx79alQEj/kDw4VA3yJnu5gooGUwCZPscZC0Im6eB6qhjUA3lI2PjHYNQfnR1XS/I8pECI1i13EGgVLErp0X7WTnjKYH9hQBpcbkwNmsp0nkbLCxys3TO8jce3kde9xAud7N4EUD6AmGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aaront.org; spf=pass smtp.mailfrom=aaront.org; dkim=permerror (0-bit key) header.d=aaront.org header.i=@aaront.org header.b=dqoXjpFe; dkim=pass (2048-bit key) header.d=aaront.org header.i=@aaront.org header.b=v/BVgkC3; arc=none smtp.client-ip=52.10.12.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aaront.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aaront.org
+Received: from smtp-send0.aaront.org (localhost [IPv6:::1])
+	by smtp-out0.aaront.org (Postfix) with ESMTP id 4bY8mq5CtwzMY;
+	Thu,  3 Jul 2025 21:20:11 +0000 (UTC)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/simple; d=aaront.org;
+    h=from:to:cc:subject:date:message-id:mime-version
+    :content-transfer-encoding; s=3r7feyyp; bh=/kZmNYWZNOTJQa4opCPhE
+    9MeAHI82FTFippa+nVrA1o=; b=dqoXjpFePZxdEULpDnRSc1iIU4UTydj/TLfKH
+    HPMBaqlkHTLVMC3dGVYex9NVU6iBEYzQmXt8W7LxEMeYThhAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aaront.org; h=
+    from:to:cc:subject:date:message-id:mime-version
+    :content-transfer-encoding; s=4x7dsrm2; bh=/kZmNYWZNOTJQa4opCPhE
+    9MeAHI82FTFippa+nVrA1o=; b=v/BVgkC3yRTStqMBR2f8EZeF/HuMKVSqzUfqb
+    HxVf5nKI7XyG5CgmhaI4PA6+MoQIVykqJYaxMC4e9JYhTBMI8Oh9/3O1B3vQAJzA
+    yT2qo3NmNXZx/dWD34nULC8n6maD5SQR/xGNsh5iNgOJIrUxOV2McxS++VvkUKhq
+    dUDyj0q+yqm1NV4nNraI9k9HuU/OO/G1hgnJsho3gpx3WQRKYpNqNhP26Cf+J6UW
+    ZACEQtJm0eJV4qEn5NmRynCJAFU8SnrjpamGAqpqgz6HEktS8gABBh8nvkeNHtqe
+    icIBqKWKHm0g67l8+0EPGXIG9g2CgVUc+/O3lNR0i3LQ2J98w==
+Received: by smtp-send0.aaront.org (Postfix) id 4bY8mq323rzJm;
+	Thu,  3 Jul 2025 21:20:11 +0000 (UTC)
+From: Aaron Thompson <dev@aaront.org>
+To: nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	Lyude Paul <lyude@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Timur Tabi <ttabi@nvidia.com>
+Cc: linux-kernel@vger.kernel.org,
+	Aaron Thompson <dev@aaront.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v6 01/12] platform/x86/intel/pmt: fix a crashlog NULL pointer access
-Date: Thu,  3 Jul 2025 17:11:39 -0400
-Message-ID: <20250703211150.135320-2-michael.j.ruhl@intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250703211150.135320-1-michael.j.ruhl@intel.com>
-References: <20250703211150.135320-1-michael.j.ruhl@intel.com>
+Subject: [PATCH] drm/nouveau: Do not fail module init on debugfs errors
+Date: Thu,  3 Jul 2025 21:19:49 +0000
+Message-Id: <20250703211949.9916-1-dev@aaront.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,73 +73,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Usage of the intel_pmt_read() for binary sysfs, requires a pcidev. The
-current use of the endpoint value is only valid for telemetry endpoint
-usage.
+From: Aaron Thompson <dev@aaront.org>
 
-Without the ep, the crashlog usage causes the following NULL pointer
-exception:
+If CONFIG_DEBUG_FS is enabled, nouveau_drm_init() returns an error if it
+fails to create the "nouveau" directory in debugfs. One case where that
+will happen is when debugfs access is restricted by
+CONFIG_DEBUG_FS_ALLOW_NONE or by the boot parameter debugfs=off, which
+cause the debugfs APIs to return -EPERM.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-Oops: Oops: 0000 [#1] SMP NOPTI
-RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
-Code:
-Call Trace:
- <TASK>
- ? sysfs_kf_bin_read+0xc0/0xe0
- kernfs_fop_read_iter+0xac/0x1a0
- vfs_read+0x26d/0x350
- ksys_read+0x6b/0xe0
- __x64_sys_read+0x1d/0x30
- x64_sys_call+0x1bc8/0x1d70
- do_syscall_64+0x6d/0x110
+So just ignore errors from debugfs. Note that nouveau_debugfs_root may
+be an error now, but that is a standard pattern for debugfs. From
+include/linux/debugfs.h:
 
-Augment struct intel_pmt_entry with a pointer to the pcidev to avoid
-the NULL pointer exception.
+"NOTE: it's expected that most callers should _ignore_ the errors
+returned by this function. Other debugfs functions handle the fact that
+the "dentry" passed to them could be an error and they don't crash in
+that case. Drivers should generally work fine even if debugfs fails to
+init anyway."
 
-Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Fixes: 045a513040cc ("platform/x86/intel/pmt: Use PMT callbacks")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Fixes: 97118a1816d2 ("drm/nouveau: create module debugfs root")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aaron Thompson <dev@aaront.org>
 ---
- drivers/platform/x86/intel/pmt/class.c | 3 ++-
- drivers/platform/x86/intel/pmt/class.h | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_debugfs.c | 6 +-----
+ drivers/gpu/drm/nouveau/nouveau_debugfs.h | 5 ++---
+ drivers/gpu/drm/nouveau/nouveau_drm.c     | 4 +---
+ 3 files changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/pmt/class.c b/drivers/platform/x86/intel/pmt/class.c
-index 7233b654bbad..d046e8752173 100644
---- a/drivers/platform/x86/intel/pmt/class.c
-+++ b/drivers/platform/x86/intel/pmt/class.c
-@@ -97,7 +97,7 @@ intel_pmt_read(struct file *filp, struct kobject *kobj,
- 	if (count > entry->size - off)
- 		count = entry->size - off;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_debugfs.c b/drivers/gpu/drm/nouveau/nouveau_debugfs.c
+index 200e65a7cefc..c7869a639bef 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_debugfs.c
++++ b/drivers/gpu/drm/nouveau/nouveau_debugfs.c
+@@ -314,14 +314,10 @@ nouveau_debugfs_fini(struct nouveau_drm *drm)
+ 	drm->debugfs = NULL;
+ }
  
--	count = pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry->header.guid, buf,
-+	count = pmt_telem_read_mmio(entry->pcidev, entry->cb, entry->header.guid, buf,
- 				    entry->base, off, count);
+-int
++void
+ nouveau_module_debugfs_init(void)
+ {
+ 	nouveau_debugfs_root = debugfs_create_dir("nouveau", NULL);
+-	if (IS_ERR(nouveau_debugfs_root))
+-		return PTR_ERR(nouveau_debugfs_root);
+-
+-	return 0;
+ }
  
- 	return count;
-@@ -252,6 +252,7 @@ static int intel_pmt_populate_entry(struct intel_pmt_entry *entry,
- 		return -EINVAL;
- 	}
+ void
+diff --git a/drivers/gpu/drm/nouveau/nouveau_debugfs.h b/drivers/gpu/drm/nouveau/nouveau_debugfs.h
+index b7617b344ee2..d05ed0e641c4 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_debugfs.h
++++ b/drivers/gpu/drm/nouveau/nouveau_debugfs.h
+@@ -24,7 +24,7 @@ extern void nouveau_debugfs_fini(struct nouveau_drm *);
  
-+	entry->pcidev = pci_dev;
- 	entry->guid = header->guid;
- 	entry->size = header->size;
- 	entry->cb = ivdev->priv_data;
-diff --git a/drivers/platform/x86/intel/pmt/class.h b/drivers/platform/x86/intel/pmt/class.h
-index b2006d57779d..f6ce80c4e051 100644
---- a/drivers/platform/x86/intel/pmt/class.h
-+++ b/drivers/platform/x86/intel/pmt/class.h
-@@ -39,6 +39,7 @@ struct intel_pmt_header {
+ extern struct dentry *nouveau_debugfs_root;
  
- struct intel_pmt_entry {
- 	struct telem_endpoint	*ep;
-+	struct pci_dev		*pcidev;
- 	struct intel_pmt_header	header;
- 	struct bin_attribute	pmt_bin_attr;
- 	struct kobject		*kobj;
+-int  nouveau_module_debugfs_init(void);
++void nouveau_module_debugfs_init(void);
+ void nouveau_module_debugfs_fini(void);
+ #else
+ static inline void
+@@ -42,10 +42,9 @@ nouveau_debugfs_fini(struct nouveau_drm *drm)
+ {
+ }
+ 
+-static inline int
++static inline void
+ nouveau_module_debugfs_init(void)
+ {
+-	return 0;
+ }
+ 
+ static inline void
+diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
+index 0c82a63cd49d..1527b801f013 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_drm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
+@@ -1461,9 +1461,7 @@ nouveau_drm_init(void)
+ 	if (!nouveau_modeset)
+ 		return 0;
+ 
+-	ret = nouveau_module_debugfs_init();
+-	if (ret)
+-		return ret;
++	nouveau_module_debugfs_init();
+ 
+ #ifdef CONFIG_NOUVEAU_PLATFORM_DRIVER
+ 	platform_driver_register(&nouveau_platform_driver);
+
+base-commit: d0b3b7b22dfa1f4b515fd3a295b3fd958f9e81af
 -- 
-2.49.0
+2.39.5
 
 
