@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-159510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2BA7AF790B
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:57:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5851EAF7AE0
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:18:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6928584765
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2412F16A723
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4215B2EF9C7;
-	Thu,  3 Jul 2025 14:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2707E2F237F;
+	Thu,  3 Jul 2025 15:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ufia+7/6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0cBZfjK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18D22E7BD6;
-	Thu,  3 Jul 2025 14:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2D82D9492;
+	Thu,  3 Jul 2025 15:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554458; cv=none; b=syCtJXYXJuAsg2xpaN7r0mTi7tXPywLN5emeB2IUPmQhoHkVlcQf18l3Bpp6epjlvEBbRtrmJM9Vyf2CiMjCvdZe8xYPbsgCYX3t01RY7TN9BtgrDFxnx5el6yvlfeYCOcvofbT6Io3QAeGIuIjnRVZvrd5COuf0wXLivAtOPfo=
+	t=1751555551; cv=none; b=prsXnt4vk1VqvheMCK79yshd8ZamBrlnBsWa4nHcE1Lyk2TqfGjYCAvNYXbPXnNjsZ8SGdnG/9IYRJW98Et5Rt7UADm46WDx2ArXnOYNbkufXIijGYGjdPIhGokYL44R/t90PNZPCDCu2n6xThJ6sjQGflDwZOr+g8IBtQvDrpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554458; c=relaxed/simple;
-	bh=YHKbfGJzI/02sMPU/Dfr67hqrR2Fio1ApPxOhM5mb5Y=;
+	s=arc-20240116; t=1751555551; c=relaxed/simple;
+	bh=cX0KSZyTcOiRLCEYgicyzgv2AflSElmUOcBo4hDELP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVJUwWuDk4bsgsoRZB3sTCsncHJgZm03mVWTvLKRjG4Hm3o3xtYLz8m5k+wVfAPt+4kaik09DsoQJv8dFqghZBOnbO4y9gOYwIgJ47MgTa7U3LIdMjSPC5+1LNwSC41cIJPI30iEQ4fq91RLF5M6X2iRu1t21E5EI+UE+HtCvxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ufia+7/6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD20C4CEE3;
-	Thu,  3 Jul 2025 14:54:14 +0000 (UTC)
+	 MIME-Version; b=l5/V33q5cGIJjAQ4wdUW69ZwSSEKTikRkyaZDBw+LfOYrrTUC1Ic4k0rhDLsfepXNPl9AwWtiRSMUMszmjT2WG22E01JPRtxGFQ0W0oIVQyzZSx928mVa2TWN10jXvctJNSK4e0kj2az5S6twh+JmsrCR5Yq+Dw0k2pNfFpO20E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0cBZfjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E45C4CEE3;
+	Thu,  3 Jul 2025 15:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554455;
-	bh=YHKbfGJzI/02sMPU/Dfr67hqrR2Fio1ApPxOhM5mb5Y=;
+	s=korg; t=1751555551;
+	bh=cX0KSZyTcOiRLCEYgicyzgv2AflSElmUOcBo4hDELP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ufia+7/6sPoHTpOB3kZUdw7/Ghh3ywOQpo21JTgKsUNZk6lCnfeZSNB9goKD9YFtw
-	 4wb+2HjHk4GNKsp/tn2pUr8PzOlUectRTAtcT8tp0rz5G4aZXNchRwUbSnlKgPGbDS
-	 N+yK2dhgo4ZbY8c3kBEMsmbYbOe/VACp1VNTLWCA=
+	b=U0cBZfjK7J9gHNkP5p4x5zyaBLfvIgtLEKUXn3y83VnzwSoqkA0FGHxf3iIFpbUbb
+	 5UB5HvbkJMpE2jgZR6ZXjk7HEqE/jRz3ekXKmIR3cQn3GN5ZGbkZ9fo4PBUeb7MKu9
+	 YcLpPFnrZ2Mm7kEiJOg4Wp0IbmMeuLkNsNhIqQYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Zhongwei Zhang <Zhongwei.Zhang@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.12 163/218] drm/amd/display: Correct non-OLED pre_T11_delay.
-Date: Thu,  3 Jul 2025 16:41:51 +0200
-Message-ID: <20250703144002.674951939@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 049/139] ASoC: codecs: wcd9335: Handle nicer probe deferral and simplify with dev_err_probe()
+Date: Thu,  3 Jul 2025 16:41:52 +0200
+Message-ID: <20250703143943.088145209@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongwei Zhang <Zhongwei.Zhang@amd.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 893f07452bca56ff146a6be02b3294a9ea23d18a upstream.
+[ Upstream commit 4a03b5dbad466c902d522f3405daa4e5d80578c5 ]
 
-[Why]
-Only OLED panels require non-zero pre_T11_delay defaultly.
-Others should be controlled by power sequence.
+wcd9335_parse_dt() function is called only from probe(), so printing
+errors on resource acquisition is discouraged, because it can pollute
+dmesg.  Use dev_err_probe() to fix this and also make the code a bit
+simpler.
 
-[How]
-For non OLED, pre_T11_delay delay in code should be zero.
-Also post_T7_delay.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Zhongwei Zhang <Zhongwei.Zhang@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://msgid.link/r/20240612-asoc-wcd9xxx-wide-cleanups-v1-4-0d15885b2a06@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 9079db287fc3 ("ASoC: codecs: wcd9335: Fix missing free of regulator supplies")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/codecs/wcd9335.c | 28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-@@ -951,8 +951,8 @@ void dce110_edp_backlight_control(
- 	struct dc_context *ctx = link->ctx;
- 	struct bp_transmitter_control cntl = { 0 };
- 	uint8_t pwrseq_instance = 0;
--	unsigned int pre_T11_delay = OLED_PRE_T11_DELAY;
--	unsigned int post_T7_delay = OLED_POST_T7_DELAY;
-+	unsigned int pre_T11_delay = (link->dpcd_sink_ext_caps.bits.oled ? OLED_PRE_T11_DELAY : 0);
-+	unsigned int post_T7_delay = (link->dpcd_sink_ext_caps.bits.oled ? OLED_POST_T7_DELAY : 0);
+diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
+index a05b553e6472f..6e172be34ac91 100644
+--- a/sound/soc/codecs/wcd9335.c
++++ b/sound/soc/codecs/wcd9335.c
+@@ -5036,22 +5036,16 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
+ 	int ret;
  
- 	if (dal_graphics_object_id_get_connector_id(link->link_enc->connector)
- 		!= CONNECTOR_ID_EDP) {
-@@ -1067,7 +1067,8 @@ void dce110_edp_backlight_control(
- 	if (!enable) {
- 		/*follow oem panel config's requirement*/
- 		pre_T11_delay += link->panel_config.pps.extra_pre_t11_ms;
--		msleep(pre_T11_delay);
-+		if (pre_T11_delay)
-+			msleep(pre_T11_delay);
- 	}
+ 	wcd->reset_gpio = of_get_named_gpio(np,	"reset-gpios", 0);
+-	if (wcd->reset_gpio < 0) {
+-		dev_err(dev, "Reset GPIO missing from DT\n");
+-		return wcd->reset_gpio;
+-	}
++	if (wcd->reset_gpio < 0)
++		return dev_err_probe(dev, wcd->reset_gpio, "Reset GPIO missing from DT\n");
+ 
+ 	wcd->mclk = devm_clk_get(dev, "mclk");
+-	if (IS_ERR(wcd->mclk)) {
+-		dev_err(dev, "mclk not found\n");
+-		return PTR_ERR(wcd->mclk);
+-	}
++	if (IS_ERR(wcd->mclk))
++		return dev_err_probe(dev, PTR_ERR(wcd->mclk), "mclk not found\n");
+ 
+ 	wcd->native_clk = devm_clk_get(dev, "slimbus");
+-	if (IS_ERR(wcd->native_clk)) {
+-		dev_err(dev, "slimbus clock not found\n");
+-		return PTR_ERR(wcd->native_clk);
+-	}
++	if (IS_ERR(wcd->native_clk))
++		return dev_err_probe(dev, PTR_ERR(wcd->native_clk), "slimbus clock not found\n");
+ 
+ 	wcd->supplies[0].supply = "vdd-buck";
+ 	wcd->supplies[1].supply = "vdd-buck-sido";
+@@ -5060,10 +5054,8 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
+ 	wcd->supplies[4].supply = "vdd-io";
+ 
+ 	ret = regulator_bulk_get(dev, WCD9335_MAX_SUPPLY, wcd->supplies);
+-	if (ret) {
+-		dev_err(dev, "Failed to get supplies: err = %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to get supplies\n");
+ 
+ 	return 0;
  }
+@@ -5163,10 +5155,8 @@ static int wcd9335_slim_probe(struct slim_device *slim)
  
+ 	wcd->dev = dev;
+ 	ret = wcd9335_parse_dt(wcd);
+-	if (ret) {
+-		dev_err(dev, "Error parsing DT: %d\n", ret);
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	ret = wcd9335_power_on_reset(wcd);
+ 	if (ret)
+-- 
+2.39.5
+
 
 
 
