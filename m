@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-159688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7B5AF79E2
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:07:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7C0AF7A99
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:15:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 451FF48451A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:03:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 571C3587B11
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA722E7BBF;
-	Thu,  3 Jul 2025 15:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695342EF9A6;
+	Thu,  3 Jul 2025 15:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVqzVYF2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtgAsqjr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1394414;
-	Thu,  3 Jul 2025 15:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B1D2D9492;
+	Thu,  3 Jul 2025 15:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555024; cv=none; b=ZcnqKnoaTRXlsN2b1Nwk8RTdpKuI2CZxkdcg934hZYKv+V4uvbnw6k1kvP+G2NOaOCGmBEec3ctelFo37dMdCcs2jL7ALwbOWNEU3a0ll5zGDGTqgzD8E+B5Zeq1zwKuQHch3QmMiqIigky7im8vZB8/ZuYIXVlcW34DOS2yttg=
+	t=1751555425; cv=none; b=Ar6ed5GC0iHoFgfm4QReM9E6RPgjmw8A66SHVxDm+jQDb67aNIMxhTlPemWNmewNU535FO6P6dKullC+/fiaU7Jp9GW5/j7pGeU2a5F9W7mFWCMEdgN0uFwHMdkfDi1ZSbl8R407dDgl9z8NBGwdVxwEvga8C5ySYePaaOBvt3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555024; c=relaxed/simple;
-	bh=4uxrc+POXLDZv6te9l0xL4gXwcAiTugPfOdRU+wBm2A=;
+	s=arc-20240116; t=1751555425; c=relaxed/simple;
+	bh=ex9lhKvW9/1U5kp0cX+hsXxGssVKOh2J07vrL/WMArs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=akHlrCn0HNMs4jDTAtLH8BfhX/yfO09ZqsieeQw3VhO9MabEw81PZCIG9O7oWEyA20y9KwHk/hUGmMVRPfMvi4VU7JCdclI3eiOdvm6cxjMPdv1jev4A2nemtgabQF1HIPhf5NVZilhO3qsu//HdcusVJWeY5LSwb7kYpKe4t9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVqzVYF2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6B7C4CEEE;
-	Thu,  3 Jul 2025 15:03:43 +0000 (UTC)
+	 MIME-Version; b=QA3Eit1uJwjeElAI+uzYLp4qEUOS+QW8adUHeHUNNO6zVmIJPUOT5a1n15J8gxv0VsGIwV2P8CoaRzALvLeH6wf9KUvLsyP9ESJdTJ8Z0lhI8qzuj24iKGxDapDeUI/4kmaHFuTL3Qb+jf/MSr3f4Rnq5RTDytVZ+BbqOxUWtkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtgAsqjr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A408C4CEE3;
+	Thu,  3 Jul 2025 15:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555024;
-	bh=4uxrc+POXLDZv6te9l0xL4gXwcAiTugPfOdRU+wBm2A=;
+	s=korg; t=1751555425;
+	bh=ex9lhKvW9/1U5kp0cX+hsXxGssVKOh2J07vrL/WMArs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PVqzVYF2f7rCx/xWGRVA7G7sV4wid9c71OgU+MuZ7ni6dGZvfNgx8evs+FO3X6XXp
-	 xzJ+/nyMQJZE/zidTK4kl5AlPUZY6hABCTuxN4f2q9Nr+uCHO2IGMi+4yEJTwRUS4z
-	 83DqJ2smwtsHZrDOQ/m8GaKOMFKdSQdeK/+kUH0Q=
+	b=xtgAsqjrLCr5xAjdVLgrRFot9Q/hDAk2104+nY2pkP8+cXaDTC7MAIEWoaYj1vuue
+	 4QpZLyxjjgs29lkIVy4dvVhWDPlhSFleKiJr/dbB8Tad+S6wyHuZkrjcN9R5mggW5y
+	 ysfEbBAI7BYRrBVumMSU5FYRzTzFDMm1A5Ytx7/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Guang Yuan Wu <gwu@ddn.com>,
+	Bernd Schubert <bschubert@ddn.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 152/263] um: ubd: Add missing error check in start_io_thread()
-Date: Thu,  3 Jul 2025 16:41:12 +0200
-Message-ID: <20250703144010.450337947@linuxfoundation.org>
+Subject: [PATCH 6.6 010/139] fuse: fix race between concurrent setattrs from multiple nodes
+Date: Thu,  3 Jul 2025 16:41:13 +0200
+Message-ID: <20250703143941.579816012@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Guang Yuan Wu <gwu@ddn.com>
 
-[ Upstream commit c55c7a85e02a7bfee20a3ffebdff7cbeb41613ef ]
+[ Upstream commit 69efbff69f89c9b2b72c4d82ad8b59706add768a ]
 
-The subsequent call to os_set_fd_block() overwrites the previous
-return value. OR the two return values together to fix it.
+When mounting a user-space filesystem on multiple clients, after
+concurrent ->setattr() calls from different node, stale inode
+attributes may be cached in some node.
 
-Fixes: f88f0bdfc32f ("um: UBD Improvements")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20250606124428.148164-2-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This is caused by fuse_setattr() racing with
+fuse_reverse_inval_inode().
+
+When filesystem server receives setattr request, the client node
+with valid iattr cached will be required to update the fuse_inode's
+attr_version and invalidate the cache by fuse_reverse_inval_inode(),
+and at the next call to ->getattr() they will be fetched from user
+space.
+
+The race scenario is:
+1. client-1 sends setattr (iattr-1) request to server
+2. client-1 receives the reply from server
+3. before client-1 updates iattr-1 to the cached attributes by
+   fuse_change_attributes_common(), server receives another setattr
+   (iattr-2) request from client-2
+4. server requests client-1 to update the inode attr_version and
+   invalidate the cached iattr, and iattr-1 becomes staled
+5. client-2 receives the reply from server, and caches iattr-2
+6. continue with step 2, client-1 invokes
+   fuse_change_attributes_common(), and caches iattr-1
+
+The issue has been observed from concurrent of chmod, chown, or
+truncate, which all invoke ->setattr() call.
+
+The solution is to use fuse_inode's attr_version to check whether
+the attributes have been modified during the setattr request's
+lifetime.  If so, mark the attributes as invalid in the function
+fuse_change_attributes_common().
+
+Signed-off-by: Guang Yuan Wu <gwu@ddn.com>
+Reviewed-by: Bernd Schubert <bschubert@ddn.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/ubd_user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fuse/dir.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/um/drivers/ubd_user.c b/arch/um/drivers/ubd_user.c
-index c5e6545f6fcf6..8e8a8bf518b63 100644
---- a/arch/um/drivers/ubd_user.c
-+++ b/arch/um/drivers/ubd_user.c
-@@ -41,7 +41,7 @@ int start_io_thread(struct os_helper_thread **td_out, int *fd_out)
- 	*fd_out = fds[1];
+diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+index 82951a535d2d4..0b84284ece98f 100644
+--- a/fs/fuse/dir.c
++++ b/fs/fuse/dir.c
+@@ -1860,6 +1860,7 @@ int fuse_do_setattr(struct dentry *dentry, struct iattr *attr,
+ 	int err;
+ 	bool trust_local_cmtime = is_wb;
+ 	bool fault_blocked = false;
++	u64 attr_version;
  
- 	err = os_set_fd_block(*fd_out, 0);
--	err = os_set_fd_block(kernel_fd, 0);
-+	err |= os_set_fd_block(kernel_fd, 0);
+ 	if (!fc->default_permissions)
+ 		attr->ia_valid |= ATTR_FORCE;
+@@ -1944,6 +1945,8 @@ int fuse_do_setattr(struct dentry *dentry, struct iattr *attr,
+ 		if (fc->handle_killpriv_v2 && !capable(CAP_FSETID))
+ 			inarg.valid |= FATTR_KILL_SUIDGID;
+ 	}
++
++	attr_version = fuse_get_attr_version(fm->fc);
+ 	fuse_setattr_fill(fc, &args, inode, &inarg, &outarg);
+ 	err = fuse_simple_request(fm, &args);
  	if (err) {
- 		printk("start_io_thread - failed to set nonblocking I/O.\n");
- 		goto out_close;
+@@ -1969,6 +1972,14 @@ int fuse_do_setattr(struct dentry *dentry, struct iattr *attr,
+ 		/* FIXME: clear I_DIRTY_SYNC? */
+ 	}
+ 
++	if (fi->attr_version > attr_version) {
++		/*
++		 * Apply attributes, for example for fsnotify_change(), but set
++		 * attribute timeout to zero.
++		 */
++		outarg.attr_valid = outarg.attr_valid_nsec = 0;
++	}
++
+ 	fuse_change_attributes_common(inode, &outarg.attr, NULL,
+ 				      ATTR_TIMEOUT(&outarg),
+ 				      fuse_get_cache_mask(inode));
 -- 
 2.39.5
 
