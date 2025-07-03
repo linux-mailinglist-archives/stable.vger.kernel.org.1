@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-159361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 203B0AF781A
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:47:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51477AF79A7
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:04:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5F61C8468C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:47:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64906188B4EA
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE0C2D948F;
-	Thu,  3 Jul 2025 14:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14C62EE973;
+	Thu,  3 Jul 2025 14:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VritSUpQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5jKIrT5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EF7101DE;
-	Thu,  3 Jul 2025 14:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A4B2EA730;
+	Thu,  3 Jul 2025 14:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751553991; cv=none; b=reMa/yqMMAj0qXxqq8h40EkUrlEfuiPbsBIhbpwQ7dAa7sxSEbNRbzBykMcPB9KjKIc+gtTY51SPgXUUWBYzybRJ1lZQiUBd3M3lGs1l46qeKnmJ1TigQH9ZaL5cGLntd1tR/uT68c40xgC0f/kLOEIZ9zuVTt426Cj8uoyq1uE=
+	t=1751554774; cv=none; b=iGfGjHcaTm4MIWoIF6gnbGJbLljhz9yb7KXizrZecOCayJnYmU+H4hXrGKj8sMe6Y5p0XHFNEbnpav17HmXNoo7eRzUq2AXoJNkLGk/7CNRGKHIcKkTF8TTd5eIPUSYxYnp7xwl8YJ3lX/V/GjGAZ5CqWH3hK/tH8f3w6tLgQCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751553991; c=relaxed/simple;
-	bh=f2bqxqVmIGDd4ae9dbsdTdxje9Zr0evZaQlhQL/VG3c=;
+	s=arc-20240116; t=1751554774; c=relaxed/simple;
+	bh=7pYSgAQHFmEkt5pvYb+2SLSQlufp32+eARxTuKjwXZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OIF9ejLi7ODI6eLkmMGgMFx9wuMfibPOwBA9jnU6pbP9lZjKnbM3xxbcTAJwn713W5cgalJY/7XYkoZnwzpiC1rhb4mC+KgU/QC88UXEbSCHKdq7K8c6g712kDb3BWL9VVnJlkI2T8yDp0izXjlu2B4Lg/fp55+OZdjpwKw6fBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VritSUpQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C05DC4CEE3;
-	Thu,  3 Jul 2025 14:46:30 +0000 (UTC)
+	 MIME-Version; b=lGjX1W+74dsRaBA4zBKgtSRV8I4AKGdV2ScZgRM4Omgo+pWkCTDFo08cf1ORhJEzgxJpuy4yBG10F2kVK0Rocto6qBfYpHSMjJmu7FXmqV5h/dnEdz/eyktuHWddcfVjvMHHRgwL9mIu7czqxpAsKK3zS9kVfo0V/z357h5swxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5jKIrT5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4814C4CEE3;
+	Thu,  3 Jul 2025 14:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751553991;
-	bh=f2bqxqVmIGDd4ae9dbsdTdxje9Zr0evZaQlhQL/VG3c=;
+	s=korg; t=1751554774;
+	bh=7pYSgAQHFmEkt5pvYb+2SLSQlufp32+eARxTuKjwXZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VritSUpQ5j0MObfb2shcUjCGvJtRcMpC1/MnFE5b0TmhUu3FGnwRGx2bjy6KIVAdo
-	 Y5+n+Z7ICViwYr9fjGze7TsDzZOFrwC/5vPL+woUoi1gk13jJNWOQM9vyBCaB0YNJ5
-	 usC1vTtoIrZyzDauqkg8Ag67Y89ISKPESeGB3TXY=
+	b=m5jKIrT5XhXSUv6hQNPKxCmd3o3leMZYL6xW3Pe1bZ5t/etWXbN4zn7Izm1NxRtrI
+	 NtiMho/jKj954DnEnqk3gysRVRZb/Ugkpu5Yjqrf1iUyIZ+F6m58D5KmOpZheFLd+G
+	 P465aKf1y0JrSTtEQTzcBdGFCC1comk80ep2Nj8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Korsgaard <peter@korsgaard.com>,
+	Can Guo <quic_cang@quicinc.com>,
+	Ziqi Chen <quic_ziqichen@quicinc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/218] usb: gadget: f_hid: wake up readers on disable/unbind
-Date: Thu,  3 Jul 2025 16:39:54 +0200
-Message-ID: <20250703143957.780841110@linuxfoundation.org>
+Subject: [PATCH 6.15 075/263] scsi: ufs: core: Dont perform UFS clkscaling during host async scan
+Date: Thu,  3 Jul 2025 16:39:55 +0200
+Message-ID: <20250703144007.313339108@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Korsgaard <peter@korsgaard.com>
+From: Ziqi Chen <quic_ziqichen@quicinc.com>
 
-[ Upstream commit 937a8a3a8d46a3377b4195cd8f2aa656666ebc8b ]
+[ Upstream commit e97633492f5a3eca7b3ff03b4ef6f993017f7955 ]
 
-Similar to how it is done in the write path.
+When preparing for UFS clock scaling, the UFS driver will quiesce all
+sdevs queues in the UFS SCSI host tagset list and then unquiesce them in
+ufshcd_clock_scaling_unprepare(). If the UFS SCSI host async scan is in
+progress at this time, some LUs may be added to the tagset list between
+UFS clkscale prepare and unprepare. This can cause two issues:
 
-Add a disabled flag to track the function state and use it to exit the read
-loops to ensure no readers get stuck when the function is disabled/unbound,
-protecting against corruption when the waitq and spinlocks are reinitialized
-in hidg_bind().
+1. During clock scaling, there may be I/O requests issued through new
+added queues that have not been quiesced, leading to task abort issue.
 
-Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
-Link: https://lore.kernel.org/r/20250318152207.330997-1-peter@korsgaard.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+2. These new added queues that have not been quiesced will be unquiesced
+as well when UFS clkscale is unprepared, resulting in warning prints.
+
+Therefore, use the mutex lock scan_mutex in
+ufshcd_clock_scaling_prepare() and ufshcd_clock_scaling_unprepare() to
+protect it.
+
+Co-developed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Ziqi Chen <quic_ziqichen@quicinc.com>
+Link: https://lore.kernel.org/r/20250522081233.2358565-1-quic_ziqichen@quicinc.com
+Suggested-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_hid.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufshcd.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
-index c7a05f842745b..d8bd2d82e9ec6 100644
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -75,6 +75,7 @@ struct f_hidg {
- 	/* recv report */
- 	spinlock_t			read_spinlock;
- 	wait_queue_head_t		read_queue;
-+	bool				disabled;
- 	/* recv report - interrupt out only (use_out_ep == 1) */
- 	struct list_head		completed_out_req;
- 	unsigned int			qlen;
-@@ -329,7 +330,7 @@ static ssize_t f_hidg_intout_read(struct file *file, char __user *buffer,
- 
- 	spin_lock_irqsave(&hidg->read_spinlock, flags);
- 
--#define READ_COND_INTOUT (!list_empty(&hidg->completed_out_req))
-+#define READ_COND_INTOUT (!list_empty(&hidg->completed_out_req) || hidg->disabled)
- 
- 	/* wait for at least one buffer to complete */
- 	while (!READ_COND_INTOUT) {
-@@ -343,6 +344,11 @@ static ssize_t f_hidg_intout_read(struct file *file, char __user *buffer,
- 		spin_lock_irqsave(&hidg->read_spinlock, flags);
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 04f769d907a44..ea24080c26e89 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -1379,6 +1379,7 @@ static int ufshcd_clock_scaling_prepare(struct ufs_hba *hba, u64 timeout_us)
+ 	 * make sure that there are no outstanding requests when
+ 	 * clock scaling is in progress
+ 	 */
++	mutex_lock(&hba->host->scan_mutex);
+ 	blk_mq_quiesce_tagset(&hba->host->tag_set);
+ 	mutex_lock(&hba->wb_mutex);
+ 	down_write(&hba->clk_scaling_lock);
+@@ -1389,6 +1390,7 @@ static int ufshcd_clock_scaling_prepare(struct ufs_hba *hba, u64 timeout_us)
+ 		up_write(&hba->clk_scaling_lock);
+ 		mutex_unlock(&hba->wb_mutex);
+ 		blk_mq_unquiesce_tagset(&hba->host->tag_set);
++		mutex_unlock(&hba->host->scan_mutex);
+ 		goto out;
  	}
  
-+	if (hidg->disabled) {
-+		spin_unlock_irqrestore(&hidg->read_spinlock, flags);
-+		return -ESHUTDOWN;
-+	}
-+
- 	/* pick the first one */
- 	list = list_first_entry(&hidg->completed_out_req,
- 				struct f_hidg_req_list, list);
-@@ -387,7 +393,7 @@ static ssize_t f_hidg_intout_read(struct file *file, char __user *buffer,
- 	return count;
+@@ -1410,6 +1412,7 @@ static void ufshcd_clock_scaling_unprepare(struct ufs_hba *hba, int err)
+ 	mutex_unlock(&hba->wb_mutex);
+ 
+ 	blk_mq_unquiesce_tagset(&hba->host->tag_set);
++	mutex_unlock(&hba->host->scan_mutex);
+ 	ufshcd_release(hba);
  }
  
--#define READ_COND_SSREPORT (hidg->set_report_buf != NULL)
-+#define READ_COND_SSREPORT (hidg->set_report_buf != NULL || hidg->disabled)
- 
- static ssize_t f_hidg_ssreport_read(struct file *file, char __user *buffer,
- 				    size_t count, loff_t *ptr)
-@@ -1012,6 +1018,11 @@ static void hidg_disable(struct usb_function *f)
- 	}
- 	spin_unlock_irqrestore(&hidg->get_report_spinlock, flags);
- 
-+	spin_lock_irqsave(&hidg->read_spinlock, flags);
-+	hidg->disabled = true;
-+	spin_unlock_irqrestore(&hidg->read_spinlock, flags);
-+	wake_up(&hidg->read_queue);
-+
- 	spin_lock_irqsave(&hidg->write_spinlock, flags);
- 	if (!hidg->write_pending) {
- 		free_ep_req(hidg->in_ep, hidg->req);
-@@ -1097,6 +1108,10 @@ static int hidg_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
- 		}
- 	}
- 
-+	spin_lock_irqsave(&hidg->read_spinlock, flags);
-+	hidg->disabled = false;
-+	spin_unlock_irqrestore(&hidg->read_spinlock, flags);
-+
- 	if (hidg->in_ep != NULL) {
- 		spin_lock_irqsave(&hidg->write_spinlock, flags);
- 		hidg->req = req_in;
 -- 
 2.39.5
 
