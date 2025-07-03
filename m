@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-159756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B753AF7A36
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:10:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5B2AF7BDD
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2E7716B61E
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:07:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 555986E32FD
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C002ED143;
-	Thu,  3 Jul 2025 15:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BA22F0E5A;
+	Thu,  3 Jul 2025 15:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDK/4n6D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2rlAg8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870BE22069F;
-	Thu,  3 Jul 2025 15:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B32222580;
+	Thu,  3 Jul 2025 15:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751555241; cv=none; b=KesFH5lvjvOL+H8zITZTsKYEwB36ROsI6BGZT+LumvZwe9VhB2jr/KVYww0MS2Qfl2pjbFJQOdJx9baHbOlbi15ZDPh2vcNNRIPFTIVcjQCQzx2S0CUeS0CbuZqNcdNAlJuOfygyG3fruZ/IAqj/APcbnBeedbBeNh0b3R/Nv1I=
+	t=1751556019; cv=none; b=Y8FUF98inkwG0lN/59YGA28jaec0Ro9L3UhjwtCQQvCkLvNIerTDdfNeT5Fbl43ItwdP255pgu0DUr3TWf9Zv8sHY8EgE2+K+lV1j8PA/WPxlkp804CFDjMUW8peTMhcXQ2SqmKoXpiEWCVjStlmOErqj24x0uo7qc3o7D7ScG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751555241; c=relaxed/simple;
-	bh=LkzXgRLQCAXDxUP6aT+WtTi1i+PfKKCk6mo5HDJnXXs=;
+	s=arc-20240116; t=1751556019; c=relaxed/simple;
+	bh=3g2mdte+6YPZHDQcmxiJcx0BNpLpequ6+Qeu9a8efkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qPAjw98jUksGXfVgA0Di+yYaVfJ4kOSDgatHDYVGlWrgu6x0sZbhwlEM4F0Ytarv92bOhyG+jLJFyeyfuZJBZGzO3JbuRyjr004ZTGFG48Sov9Zbfaova+KCRxJ0XVfwpvXc8mm7ylOGwZm6H9DQD2ztI00iu3DSI2qC3ZludQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDK/4n6D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A58C4CEE3;
-	Thu,  3 Jul 2025 15:07:20 +0000 (UTC)
+	 MIME-Version; b=tN8LCMxOvMAyPzKc5OYeWLfRwNi9KQluitPSewfdIRY02v9DG5oY06NagsK+5onzFkfonenqAm14rJmsLNSD9UXGxrNPUFXGcRWvnyVRC/FAN6mKT7FbyG/qN/S0/J62YKqPcIah1430EPLXOeWhyOoMD6gmfk06vNxrfH3MAyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2rlAg8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334E8C4CEE3;
+	Thu,  3 Jul 2025 15:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751555241;
-	bh=LkzXgRLQCAXDxUP6aT+WtTi1i+PfKKCk6mo5HDJnXXs=;
+	s=korg; t=1751556019;
+	bh=3g2mdte+6YPZHDQcmxiJcx0BNpLpequ6+Qeu9a8efkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qDK/4n6DicArTAvkYVZaEQ/KqbMaqCLZa0zKZAxZQNqu7yYiDew+egRS46rwHBi/8
-	 YC2FjJfCTiso/q+8JNIhZH5OTJe6Uj166HRYYG5LLzf9jw9fj5MNA7rW7LFAzrg/M7
-	 7LpXySL28iFhkL4zkH2uiTjaU5pxHkhWhJRe+2n4=
+	b=s2rlAg8q7a8OLd5cdIH+8Lv+RdI/AiB8RdVSEOilPTG/jX4xwZeDw3mHAV8rdt+WG
+	 dYPneyOA1D6/ryj8h22GPzdhtgeD4ZjVw5VsxK3kCfb3BWA/+othznAv2jVU5Jjlrd
+	 yR+fxCZf1XDWKVFnkoRGyWM2VpZ/lBguJERQMYzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dominik Haller <d.haller@phytec.de>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.15 218/263] drm/bridge: cdns-dsi: Wait for Clk and Data Lanes to be ready
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 049/132] ASoC: codecs: wcd9335: Fix missing free of regulator supplies
 Date: Thu,  3 Jul 2025 16:42:18 +0200
-Message-ID: <20250703144013.125445340@linuxfoundation.org>
+Message-ID: <20250703143941.348685852@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
+In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
+References: <20250703143939.370927276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 47c03e6660e96cbba0239125b1d4a9db3c724b1d upstream.
+[ Upstream commit 9079db287fc3e38e040b0edeb0a25770bb679c8e ]
 
-Once the DSI Link and DSI Phy are initialized, the code needs to wait
-for Clk and Data Lanes to be ready, before continuing configuration.
-This is in accordance with the DSI Start-up procedure, found in the
-Technical Reference Manual of Texas Instrument's J721E SoC[0] which
-houses this DSI TX controller.
+Driver gets and enables all regulator supplies in probe path
+(wcd9335_parse_dt() and wcd9335_power_on_reset()), but does not cleanup
+in final error paths and in unbind (missing remove() callback).  This
+leads to leaked memory and unbalanced regulator enable count during
+probe errors or unbind.
 
-If the previous bridge (or crtc/encoder) are configured pre-maturely,
-the input signal FIFO gets corrupt. This introduces a color-shift on the
-display.
+Fix this by converting entire code into devm_regulator_bulk_get_enable()
+which also greatly simplifies the code.
 
-Allow the driver to wait for the clk and data lanes to get ready during
-DSI enable.
-
-[0]: See section 12.6.5.7.3 "Start-up Procedure" in J721E SoC TRM
-     TRM Link: http://www.ti.com/lit/pdf/spruil1
-
-Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
+Fixes: 20aedafdf492 ("ASoC: wcd9335: add support to wcd9335 codec")
 Cc: stable@vger.kernel.org
-Tested-by: Dominik Haller <d.haller@phytec.de>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Link: https://lore.kernel.org/r/20250329113925.68204-6-aradhya.bhatia@linux.dev
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-1-0b8a2993b7d3@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ sound/soc/codecs/wcd9335.c | 25 +++++++------------------
+ 1 file changed, 7 insertions(+), 18 deletions(-)
 
---- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-@@ -769,7 +769,7 @@ static void cdns_dsi_bridge_enable(struc
- 	struct phy_configure_opts_mipi_dphy *phy_cfg = &output->phy_opts.mipi_dphy;
- 	unsigned long tx_byte_period;
- 	struct cdns_dsi_cfg dsi_cfg;
--	u32 tmp, reg_wakeup, div;
-+	u32 tmp, reg_wakeup, div, status;
- 	int nlanes;
+diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
+index 7817dff99b6c6..99de81c489681 100644
+--- a/sound/soc/codecs/wcd9335.c
++++ b/sound/soc/codecs/wcd9335.c
+@@ -330,7 +330,6 @@ struct wcd9335_codec {
  
- 	if (WARN_ON(pm_runtime_get_sync(dsi->base.dev) < 0))
-@@ -786,6 +786,19 @@ static void cdns_dsi_bridge_enable(struc
- 	cdns_dsi_hs_init(dsi);
- 	cdns_dsi_init_link(dsi);
+ 	int intr1;
+ 	struct gpio_desc *reset_gpio;
+-	struct regulator_bulk_data supplies[WCD9335_MAX_SUPPLY];
  
-+	/*
-+	 * Now that the DSI Link and DSI Phy are initialized,
-+	 * wait for the CLK and Data Lanes to be ready.
-+	 */
-+	tmp = CLK_LANE_RDY;
-+	for (int i = 0; i < nlanes; i++)
-+		tmp |= DATA_LANE_RDY(i);
+ 	unsigned int rx_port_value[WCD9335_RX_MAX];
+ 	unsigned int tx_port_value[WCD9335_TX_MAX];
+@@ -357,6 +356,10 @@ struct wcd9335_irq {
+ 	char *name;
+ };
+ 
++static const char * const wcd9335_supplies[] = {
++	"vdd-buck", "vdd-buck-sido", "vdd-tx", "vdd-rx", "vdd-io",
++};
 +
-+	if (readl_poll_timeout(dsi->regs + MCTL_MAIN_STS, status,
-+			       (tmp == (status & tmp)), 100, 500000))
-+		dev_err(dsi->base.dev,
-+			"Timed Out: DSI-DPhy Clock and Data Lanes not ready.\n");
-+
- 	writel(HBP_LEN(dsi_cfg.hbp) | HSA_LEN(dsi_cfg.hsa),
- 	       dsi->regs + VID_HSIZE1);
- 	writel(HFP_LEN(dsi_cfg.hfp) | HACT_LEN(dsi_cfg.hact),
+ static const struct wcd9335_slim_ch wcd9335_tx_chs[WCD9335_TX_MAX] = {
+ 	WCD9335_SLIM_TX_CH(0),
+ 	WCD9335_SLIM_TX_CH(1),
+@@ -5046,30 +5049,16 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
+ 	if (IS_ERR(wcd->native_clk))
+ 		return dev_err_probe(dev, PTR_ERR(wcd->native_clk), "slimbus clock not found\n");
+ 
+-	wcd->supplies[0].supply = "vdd-buck";
+-	wcd->supplies[1].supply = "vdd-buck-sido";
+-	wcd->supplies[2].supply = "vdd-tx";
+-	wcd->supplies[3].supply = "vdd-rx";
+-	wcd->supplies[4].supply = "vdd-io";
+-
+-	ret = regulator_bulk_get(dev, WCD9335_MAX_SUPPLY, wcd->supplies);
++	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(wcd9335_supplies),
++					     wcd9335_supplies);
+ 	if (ret)
+-		return dev_err_probe(dev, ret, "Failed to get supplies\n");
++		return dev_err_probe(dev, ret, "Failed to get and enable supplies\n");
+ 
+ 	return 0;
+ }
+ 
+ static int wcd9335_power_on_reset(struct wcd9335_codec *wcd)
+ {
+-	struct device *dev = wcd->dev;
+-	int ret;
+-
+-	ret = regulator_bulk_enable(WCD9335_MAX_SUPPLY, wcd->supplies);
+-	if (ret) {
+-		dev_err(dev, "Failed to get supplies: err = %d\n", ret);
+-		return ret;
+-	}
+-
+ 	/*
+ 	 * For WCD9335, it takes about 600us for the Vout_A and
+ 	 * Vout_D to be ready after BUCK_SIDO is powered up.
+-- 
+2.39.5
+
 
 
 
