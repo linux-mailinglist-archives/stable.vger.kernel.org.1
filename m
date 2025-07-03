@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06277AF7C47
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:33:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80CA8AF7BBD
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:27:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A2416E63DE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:23:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03C441CA5F38
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD5D221DB3;
-	Thu,  3 Jul 2025 15:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317B22EFDA3;
+	Thu,  3 Jul 2025 15:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwxGkaku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mTxwt+Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C202DE6F1;
-	Thu,  3 Jul 2025 15:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26BB2E54BF;
+	Thu,  3 Jul 2025 15:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556116; cv=none; b=L+SEq/bnXzKJciOmVzPJuiIQJkky2fTJfIMInnX0xzIWXyJhcmDs7CLXIGaF5AtZr0pXs4jc4QbHjLLtBytch/15XSGMPW0QV9rt91dOB58J137u1OCDnSZjL4yTWa6Uovfg5HxbDIUpjadtmnlEdOPQEY492++0ulxLNoFU/5w=
+	t=1751555839; cv=none; b=jsOSwqwWZ3sfl8WvrG6mGy+dwTsHruJdCdxQUmMOuCXsKz9vl9kzK77Oe/oPNpphXlIJkQ+ayw9KU1tT3kCYVbhZrGFwf2qcZXd22DpKjj8OjUuNopllBuoeD2Sh+nu34MEXrRvKjApGTeDVUXXm7rrP7D/UBkgS25m2yqKfkfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556116; c=relaxed/simple;
-	bh=rlwGl8MYN6JYZXnnPFuRfGTYY3Md4mPs2uH8e0iCgnY=;
+	s=arc-20240116; t=1751555839; c=relaxed/simple;
+	bh=X/433jfgped8gGnnfhmuPwN7IBymV7Cspat2RVCAHHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oo2cUvEpxZcg3vr/Miqc/NRd2vcpVhBS6l3gVWJQZiPE7WHPNRqvhxQS6jJJ8Ihm+5Frxk5XBt075X84fLCL+IkaAfG41KEp6gPICCb9JsTaWnpiUmsSG3Y5Idz5NtzjJKcZn7ksWoQ0WSeijqa2anm4Dif0RHE0xiGshBLlngo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwxGkaku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C52C4CEE3;
-	Thu,  3 Jul 2025 15:21:55 +0000 (UTC)
+	 MIME-Version; b=sWFEEgwnrrP7479h9b/laGTtwF/t5GmeUSkZ8rAl2kNVoN0rByWS4UQb4pwV8dyxVHZXmIviwcJO2Wh9cWWA3pUI8z3R6tHxzywn5ESUMuMRLg5EBPhWrGsCimLAn8/8xaXhGSKcQh0rBtSwW54s0gqdouJyPOi60ttBgJAVM7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mTxwt+Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F798C4CEE3;
+	Thu,  3 Jul 2025 15:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556116;
-	bh=rlwGl8MYN6JYZXnnPFuRfGTYY3Md4mPs2uH8e0iCgnY=;
+	s=korg; t=1751555837;
+	bh=X/433jfgped8gGnnfhmuPwN7IBymV7Cspat2RVCAHHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pwxGkakuceUBSJNghc41No0EZEBtTPP99gcprNCSntLv8+73KibBcau6ZuUfbmXvJ
-	 lJQzaE4bo4jdq01Ngo1qaMjgopiQY6DxTSEr6M2tEFaTE5ptO5WbzqBfgcVGEM8GHx
-	 5LODhytKPGK/NTX1ti0fcjelO1Y8wBRp1A1pFadM=
+	b=2mTxwt+ZCRSie9kjpw5vLmOHZymS5fys2az8NjdYRTEYUvlwzjYQqpN8i1Yd0ADQ4
+	 cqfBQ3D2hvsLYd1iluWzN6jMqVbgI4RblwKfCXx9k8cr7hx9ZlVfz8UVE2JhFlB4JF
+	 poErOM5J94Ob1wmmyYaiGxqCLnOI2YzFETiIvC4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/132] libbpf: Fix null pointer dereference in btf_dump__free on allocation failure
+	Ping Cheng <ping.cheng@wacom.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.6 105/139] HID: wacom: fix memory leak on kobject creation failure
 Date: Thu,  3 Jul 2025 16:42:48 +0200
-Message-ID: <20250703143942.512388297@linuxfoundation.org>
+Message-ID: <20250703143945.283601381@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit aa485e8789d56a4573f7c8d000a182b749eaa64d ]
+commit 5ae416c5b1e2e816aee7b3fc8347adf70afabb4c upstream.
 
-When btf_dump__new() fails to allocate memory for the internal hashmap
-(btf_dump->type_names), it returns an error code. However, the cleanup
-function btf_dump__free() does not check if btf_dump->type_names is NULL
-before attempting to free it. This leads to a null pointer dereference
-when btf_dump__free() is called on a btf_dump object.
+During wacom_initialize_remotes() a fifo buffer is allocated
+with kfifo_alloc() and later a cleanup action is registered
+during devm_add_action_or_reset() to clean it up.
 
-Fixes: 351131b51c7a ("libbpf: add btf_dump API for BTF-to-C conversion")
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250618011933.11423-1-chenyuan_fl@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However if the code fails to create a kobject and register it
+with sysfs the code simply returns -ENOMEM before the cleanup
+action is registered leading to a memory leak.
+
+Fix this by ensuring the fifo is freed when the kobject creation
+and registration process fails.
+
+Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/bpf/btf_dump.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hid/wacom_sys.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/btf_dump.c b/tools/lib/bpf/btf_dump.c
-index cfdee656789b2..72334cc14d737 100644
---- a/tools/lib/bpf/btf_dump.c
-+++ b/tools/lib/bpf/btf_dump.c
-@@ -224,6 +224,9 @@ static void btf_dump_free_names(struct hashmap *map)
- 	size_t bkt;
- 	struct hashmap_entry *cur;
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2012,8 +2012,10 @@ static int wacom_initialize_remotes(stru
  
-+	if (!map)
-+		return;
-+
- 	hashmap__for_each_entry(map, cur, bkt)
- 		free((void *)cur->key);
+ 	remote->remote_dir = kobject_create_and_add("wacom_remote",
+ 						    &wacom->hdev->dev.kobj);
+-	if (!remote->remote_dir)
++	if (!remote->remote_dir) {
++		kfifo_free(&remote->remote_fifo);
+ 		return -ENOMEM;
++	}
  
--- 
-2.39.5
-
+ 	error = sysfs_create_files(remote->remote_dir, remote_unpair_attrs);
+ 
 
 
 
