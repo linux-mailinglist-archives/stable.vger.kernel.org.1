@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-159532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-159780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3989BAF791C
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 16:58:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E885EAF7A5A
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 17:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DADC75478BE
-	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 14:55:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 716A517FF75
+	for <lists+stable@lfdr.de>; Thu,  3 Jul 2025 15:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605DE2EE973;
-	Thu,  3 Jul 2025 14:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3972EE973;
+	Thu,  3 Jul 2025 15:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEqzUNMI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QADKw/8U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1340C126BFF;
-	Thu,  3 Jul 2025 14:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A91B15442C;
+	Thu,  3 Jul 2025 15:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554526; cv=none; b=L97NqL7t8zYDhZqzYtW5OwEWlwCdEkgwV1n1dRNUfv2BqmN9RFfP/YaLShTYDXeOn6oZX3Sf9EQQyatpJAz+XuCYxpxYPkkPbupkk3YeA0qCsjsNJOZXfPPyXzI4nVam2GkiZzdM3atRVODP1j1/lKHxOe7XnL5XvukMWKUh2Fw=
+	t=1751555325; cv=none; b=dP0I6kvd5aMc3wGmD1UpzNxVURAZXsyJXzFzs9/5XXnoOb/nlu+eKsRGLt5ufFep9QZqStKZRRPPCXxAB259PIW2fxmBn6tdvEsxT+1AN+0hAq21RQoC707gasFWJHtSijypsRbYS8VZ5Xf1Q7bwACwJMzm3VmL/4MIBH0LbPK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554526; c=relaxed/simple;
-	bh=afVwmdCmkWrXWpkavnunVRlvNGEf5EjK7G72MaiWVjU=;
+	s=arc-20240116; t=1751555325; c=relaxed/simple;
+	bh=XOJE+An7LTwRJWjdjFIAg4KArWnnL2nIeVeDdqfYZ1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSaKR9lToN2X1fClEVeHcEslNGSufZMYbjnrko4xuLdBMpomoaeK09gxWBFFQDXowkmzPEaOr2jjnGzkthlyvH2AFQhiMAbkOJE478Z4VZstBIJOgIo7Cyhx4CwEgbQonm55OWV+zijrs/1BpuWVfzbGWiLrZyDngOfH65JwEIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEqzUNMI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D006C4CEF4;
-	Thu,  3 Jul 2025 14:55:25 +0000 (UTC)
+	 MIME-Version; b=iWWWRayACawcte5PRbleMoaDe/MLIOLacwIZ99Pvwi6TBUK69tnwde33X/kIXQR6oZHdRd/waVQ5N6LNqPZxrQwr80tFIOd3nrG9r0jqFIY/lysEPdLbWmaYW6aqPIo8QQDWMqu9+s/UMJUngJYsuSzgK3PTJw+0AqEOMSWWmig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QADKw/8U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD96C4CEE3;
+	Thu,  3 Jul 2025 15:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554525;
-	bh=afVwmdCmkWrXWpkavnunVRlvNGEf5EjK7G72MaiWVjU=;
+	s=korg; t=1751555325;
+	bh=XOJE+An7LTwRJWjdjFIAg4KArWnnL2nIeVeDdqfYZ1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uEqzUNMImNggoHlBe7P/zsq+jV2Cc4OB7kepWyRlfI0yBN0Z7YOihqhyq4dcy+IYl
-	 7FOw05bQOv1Ycie+Hf4OvvCmBhlCga0N3sb7zd7n2zFoT92ckRniwm8ra7rmtOraxQ
-	 FuDEkwVIOiqYCMr0SSnA71wnJ2xiXkZ9hw02HUak=
+	b=QADKw/8U0GjNRlUMssCkPlZcisq9upwXnkli1Io068tYYDjo0q//JTm1Dv93ecorK
+	 c+diUblIKGAWJYippCP/eFDBxYaqp2UTudn0hnSHmJAsr123dlSGKbwYqaKQOPf2lJ
+	 pv/JHsPDXpr7RezVD1kTkGC36KOdm+iVruURc274=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Hao <haokexin@gmail.com>,
-	Han Xu <han.xu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 215/218] spi: fsl-qspi: use devm function instead of driver remove
+Subject: [PATCH 6.15 243/263] arm64: dts: qcom: x1-crd: Fix vreg_l2j_1p2 voltage
 Date: Thu,  3 Jul 2025 16:42:43 +0200
-Message-ID: <20250703144004.808517525@linuxfoundation.org>
+Message-ID: <20250703144014.153456454@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
+References: <20250703144004.276210867@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Han Xu <han.xu@nxp.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 40369bfe717e96e26650eeecfa5a6363563df6e4 ]
+[ Upstream commit 5ce920e6a8db40e4b094c0d863cbd19fdcfbbb7a ]
 
-Driver use devm APIs to manage clk/irq/resources and register the spi
-controller, but the legacy remove function will be called first during
-device detach and trigger kernel panic. Drop the remove function and use
-devm_add_action_or_reset() for driver cleanup to ensure the release
-sequence.
-
-Trigger kernel panic on i.MX8MQ by
-echo 30bb0000.spi >/sys/bus/platform/drivers/fsl-quadspi/unbind
+In the ACPI DSDT table, PPP_RESOURCE_ID_LDO2_J is configured with 1256000
+uV instead of the 1200000 uV we have currently in the device tree. Use the
+same for consistency and correctness.
 
 Cc: stable@vger.kernel.org
-Fixes: 8fcb830a00f0 ("spi: spi-fsl-qspi: use devm_spi_register_controller")
-Reported-by: Kevin Hao <haokexin@gmail.com>
-Signed-off-by: Han Xu <han.xu@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250326224152.2147099-1-han.xu@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: bd50b1f5b6f3 ("arm64: dts: qcom: x1e80100: Add Compute Reference Device")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250423-x1e-vreg-l2j-voltage-v1-1-24b6a2043025@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-qspi.c | 31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ arch/arm64/boot/dts/qcom/x1-crd.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index ce86f44b0e93f..5c59fddb32c1b 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -844,6 +844,19 @@ static const struct spi_controller_mem_caps fsl_qspi_mem_caps = {
- 	.per_op_freq = true,
- };
+diff --git a/arch/arm64/boot/dts/qcom/x1-crd.dtsi b/arch/arm64/boot/dts/qcom/x1-crd.dtsi
+index 780852fb87360..60f0b32baded3 100644
+--- a/arch/arm64/boot/dts/qcom/x1-crd.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1-crd.dtsi
+@@ -674,8 +674,8 @@ vreg_l1j_0p8: ldo1 {
  
-+static void fsl_qspi_cleanup(void *data)
-+{
-+	struct fsl_qspi *q = data;
-+
-+	/* disable the hardware */
-+	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
-+	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
-+
-+	fsl_qspi_clk_disable_unprep(q);
-+
-+	mutex_destroy(&q->lock);
-+}
-+
- static int fsl_qspi_probe(struct platform_device *pdev)
- {
- 	struct spi_controller *ctlr;
-@@ -934,6 +947,10 @@ static int fsl_qspi_probe(struct platform_device *pdev)
- 
- 	ctlr->dev.of_node = np;
- 
-+	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
-+	if (ret)
-+		goto err_destroy_mutex;
-+
- 	ret = devm_spi_register_controller(dev, ctlr);
- 	if (ret)
- 		goto err_destroy_mutex;
-@@ -953,19 +970,6 @@ static int fsl_qspi_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static void fsl_qspi_remove(struct platform_device *pdev)
--{
--	struct fsl_qspi *q = platform_get_drvdata(pdev);
--
--	/* disable the hardware */
--	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
--	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
--
--	fsl_qspi_clk_disable_unprep(q);
--
--	mutex_destroy(&q->lock);
--}
--
- static int fsl_qspi_suspend(struct device *dev)
- {
- 	return 0;
-@@ -1003,7 +1007,6 @@ static struct platform_driver fsl_qspi_driver = {
- 		.pm =   &fsl_qspi_pm_ops,
- 	},
- 	.probe          = fsl_qspi_probe,
--	.remove_new	= fsl_qspi_remove,
- };
- module_platform_driver(fsl_qspi_driver);
+ 		vreg_l2j_1p2: ldo2 {
+ 			regulator-name = "vreg_l2j_1p2";
+-			regulator-min-microvolt = <1200000>;
+-			regulator-max-microvolt = <1200000>;
++			regulator-min-microvolt = <1256000>;
++			regulator-max-microvolt = <1256000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+ 		};
  
 -- 
 2.39.5
