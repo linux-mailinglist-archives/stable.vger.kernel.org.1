@@ -1,244 +1,142 @@
-Return-Path: <stable+bounces-160182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB165AF91CC
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 13:48:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B48DAF91F0
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 13:56:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49426543F6F
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 11:47:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26BCC1C80B89
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 11:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78C62C3265;
-	Fri,  4 Jul 2025 11:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774B42D3A94;
+	Fri,  4 Jul 2025 11:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BlG1Vrf9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S9g7TkHQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358BA29D19
-	for <stable@vger.kernel.org>; Fri,  4 Jul 2025 11:48:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D712BFC80;
+	Fri,  4 Jul 2025 11:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751629695; cv=none; b=XywEaFJGMiLc42IPa4uR7YDDoK29Ds6ga0vHVdqXLV/iBlIk3hr7HKTf6YTOvtATNvtcYzN1tzg57FRBio+veMcknuOTWLtZ31fAzQz/Wr3qN68KqllgXr1dtQIv7VShHCqEUsVxvHEyM+u/w2zx76jeMIL6fNv5E5Yg4VlxVic=
+	t=1751630162; cv=none; b=CDkKL7Dlq3l+qKu/jeuGKHZqMV7Y/QDBqqSdiQytP6WpSZ1DJKvIgLrSFvx/ag1QbjnQ2Ao97MF3Cas/i0UneQfxMDKpR3goIKOhtRdTsl0BVg/CAcxs4FlR7QHWDFVQj/LrePSyF30PlqE8Xg5QX3pdxCqtfvTz4ruVHKhSFWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751629695; c=relaxed/simple;
-	bh=BLt2e4gYJDfFUIoqp0C1xUglnvplbIMHK+j3HeEZ7T4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VoDDG/WTldcAPSzoO3pUph9cM/JOOkfuSeOhPXonCTsBifuMoUQMHKin3mstAsAOT3zbwBlrKxJuCA258+k3Fv7AWIJV4AKLWGkd7muLq/73A67XrFzb6FddmyHJp+NrbrULamvMCQmQ8my6wWS/ZrZ06v84eyAZxEV2/65HpDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BlG1Vrf9; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-234b9dfb842so8514755ad.1
-        for <stable@vger.kernel.org>; Fri, 04 Jul 2025 04:48:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751629692; x=1752234492; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DUjN4QXidtuC9MgKWPzYZIK3wmGJF/NB5v4vy9SsyI4=;
-        b=BlG1Vrf9tGgk1tePNmN9bb4jCzj6fFSEmKSMelUb5FA1tQjuoNLaT5IDg0Hv1C5Fp8
-         sHUTZM80WWHFJIitWvMgC1Qc8fB0gH7PzQNDlmPykoq5Bx4y/aFdMtQZAES5zxuLhklY
-         /MFwu7Zh+WJVgtvHxXVzKiuqVNMSXzNmkz+OmUEacM6jMjLfZF5T7cq8AEvuSKz9Wjbs
-         vAdQUNVB5RpuaNWPCQDeSlhHj6c1dZoFhBr4XhxhMVkOg0Og9mHetwfzHBzwvzGCu6Lk
-         13NAZq5g+6HxPC2gLzW5Efm2h3KqlnjkK/NIRtgKKE4o17vGkgSJ8l6XEeCfk+PwNWFB
-         hd1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751629692; x=1752234492;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DUjN4QXidtuC9MgKWPzYZIK3wmGJF/NB5v4vy9SsyI4=;
-        b=HOMSA9G+FhtYPKhY0hWyLE/fajJJyFHV1lKDVB4aCGP5Nrt0ie5hOscWAhqKlKuvbP
-         LlSX279GerVcsmMFHYts/w1gP7oWRFPB4k9UG4ZZhzVLyQsGvMe9CLjAbqFnW7bNXtOT
-         q0z5+6kWjPgBAAG82o8NdnBYjjcEpTciSGhd2/N/kCoKN3hlBhNDD1v/olEwTvj2xpm1
-         aCVijF3p4L8F0DpyeRYy+moxcTYNPZBRIO93oF0fjItv39N1aXXyaEfwHyk4aB50HTR9
-         oMd5GLWfL08HBnsQvMVXNV+iS/UIcQkBO5a2TC+AIQOwoKHzrKqyjiYQ+XFztnkV/fNq
-         KO4w==
-X-Gm-Message-State: AOJu0YxVGzd7SFM8B8Xj9Y21xGvrJXjpwhtDhCAQHMg1M6WTZhBdtcAK
-	lOR0gBVDjBaFSBeYlnOXDvNgIqvaunuuM1tNBUyA/BJt4DhSiQOev3x7qxlZDhZ12pp7R8sckwa
-	DvhhlCK0WadZ26UPDpZfDwBlj62UQhnsQt0yOjZfh3w==
-X-Gm-Gg: ASbGncuZxFitYkpxbWPa4W57V9l3d+YBuGWvCgtl12St8jZbffVeD0ySI78RkRpZEe5
-	zGIthgFXYlSm/F34btjDe9JgKw0SLZ6ZoUeGfoccB8tN5ir5MgmEurepOVmeCuO99oJbTaY18TL
-	acdNBNKLmTJo3FQ2ljatEun7jbG3k3FNW4ASIY/JhLCYmgNe9fkyb7Gzy70pAN2vM1Rube0daL4
-	8Lg
-X-Google-Smtp-Source: AGHT+IEZP3iwLGUJFpqwoWWIOW6UVQ23gWdyxZYmObiHJnJt2wQd7+1nwt5UYR1/ti449dFIgpH/kWfqiz/Bd7UHlwQ=
-X-Received: by 2002:a17:903:3d0d:b0:234:dd3f:80fd with SMTP id
- d9443c01a7336-23c87465293mr33713885ad.2.1751629692416; Fri, 04 Jul 2025
- 04:48:12 -0700 (PDT)
+	s=arc-20240116; t=1751630162; c=relaxed/simple;
+	bh=rXWDCCMYAhLH+BgXTBRczuV5gMjcdVfTHrkH1Uy7EAk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=nwVH1LqzdDVWM1KgcpFxJ/3avuo9Wat+LrhqwhY2ZANzWbNqaJJZd10RWiLEGtPGqyqLaMdA+02OMfWKVpZBz8o6N8nMofKqSDlbFFp+t4ss+XUTXcxpaTSk5518r8z5VUbNKNaN+4YEtIkh+/OmGI/ohJ5vFlXU2I8e7HBBj+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S9g7TkHQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAF7C4CEEF;
+	Fri,  4 Jul 2025 11:56:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751630161;
+	bh=rXWDCCMYAhLH+BgXTBRczuV5gMjcdVfTHrkH1Uy7EAk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=S9g7TkHQMw3PhWfMkWN4q6aEkMM6m0I5mYhMMNYLoTTWTrg4nHh5ijwBjqt9Vv4CD
+	 VZwgu33QyGsTOA1NIIIO7ZSQKOWJej9uYqFLfbZg5vFFaS0Nwaa2cnTqJU/Aqot6Ju
+	 4TonSc/owwToLuGBt0/vJVXBcAbq+FA3/6ScUxIAmIU6clbYMuD4fpFnaDRkCBCPyH
+	 /xZ4+XJiAlhtnHuAF5Zzab2rXeorVGqNIj+8/EDaXb1TuYAw1fce2raztUksht0QVk
+	 dody9SPg5jp0/7HAC8NsmTwUivcPpHF5FzZ0HnHSkJfkDfBYBR1EvhdtWa9SE1BPtX
+	 VpJyMWBjsXOEQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,  patches@lists.linux.dev,  Pratyush Yadav
+ <pratyush@kernel.org>,  Miquel Raynal <miquel.raynal@bootlin.com>,  Mark
+ Brown <broonie@kernel.org>,  Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 212/218] spi: spi-mem: Extend spi-mem operations
+ with a per-operation maximum frequency
+In-Reply-To: <20250703144004.692234510@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
+	<20250703144004.692234510@linuxfoundation.org>
+Date: Fri, 04 Jul 2025 13:55:59 +0200
+Message-ID: <mafs04ivs186o.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250703144004.276210867@linuxfoundation.org>
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 4 Jul 2025 17:18:00 +0530
-X-Gm-Features: Ac12FXybOZIGHC5PyPBUj4nRBTvqSKaPmqw6NTEjvBZOrsk-eVQnQskIsVP5bTI
-Message-ID: <CA+G9fYuk8=yLbdUv7ngQ0b5_p2-w21D6JdOYDcsdx7XUK-aQ=A@mail.gmail.com>
-Subject: Re: [PATCH 6.15 000/263] 6.15.5-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thu, 3 Jul 2025 at 20:27, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+Hi Greg,
+
+On Thu, Jul 03 2025, Greg Kroah-Hartman wrote:
+
+> 6.12-stable review patch.  If anyone has any objections, please let me know.
+
+This and patches 213, 214, and 215 seem to be new features. So why are
+they being added to a stable release?
+
 >
-> This is the start of the stable review cycle for the 6.15.5 release.
-> There are 263 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> ------------------
 >
-> Responses should be made by Sat, 05 Jul 2025 14:39:10 +0000.
-> Anything received after that time might be too late.
+> From: Miquel Raynal <miquel.raynal@bootlin.com>
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.15.5-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.15.y
-> and the diffstat can be found below.
+> [ Upstream commit 0fefeade90e74bc8f40ab0e460f483565c492e28 ]
 >
-> thanks,
+> In the spi subsystem, the bus frequency is derived as follows:
+> - the controller may expose a minimum and maximum operating frequency
+> - the hardware description, through the spi peripheral properties,
+>   advise what is the maximum acceptable frequency from a device/wiring
+>   point of view.
+> Transfers must be observed at a frequency which fits both (so in
+> practice, the lowest maximum).
 >
-> greg k-h
+> Actually, this second point mixes two information and already takes the
+> lowest frequency among:
+> - what the spi device is capable of (what is written in the component
+>   datasheet)
+> - what the wiring allows (electromagnetic sensibility, crossovers,
+>   terminations, antenna effect, etc).
+>
+> This logic works until spi devices are no longer capable of sustaining
+> their highest frequency regardless of the operation. Spi memories are
+> typically subject to such variation. Some devices are capable of
+> spitting their internally stored data (essentially in read mode) at a
+> very fast rate, typically up to 166MHz on Winbond SPI-NAND chips, using
+> "fast" commands. However, some of the low-end operations, such as
+> regular page read-from-cache commands, are more limited and can only be
+> executed at 54MHz at most. This is currently a problem in the SPI-NAND
+> subsystem. Another situation, even if not yet supported, will be with
+> DTR commands, when the data is latched on both edges of the clock. The
+> same chips as mentioned previously are in this case limited to
+> 80MHz. Yet another example might be continuous reads, which, under
+> certain circumstances, can also run at most at 104 or 120MHz.
+>
+> As a matter of fact, the "one frequency per chip" policy is outdated and
+> more fine grain configuration is needed: we need to allow per-operation
+> frequency limitations. So far, all datasheets I encountered advertise a
+> maximum default frequency, which need to be lowered for certain specific
+> operations. So based on the current infrastructure, we can still expect
+> firmware (device trees in general) to continued advertising the same
+> maximum speed which is a mix between the PCB limitations and the chip
+> maximum capability, and expect per-operation lower frequencies when this
+> is relevant.
+>
+> Add a `struct spi_mem_op` member to carry this information. Not
+> providing this field explicitly from upper layers means that there is no
+> further constraint and the default spi device maximum speed will be
+> carried instead. The SPI_MEM_OP() macro is also expanded with an
+> optional frequency argument, because virtually all operations can be
+> subject to such a limitation, and this will allow for a smooth and
+> discrete transition.
+>
+> For controller drivers which do not implement the spi-mem interface, the
+> per-transfer speed is also set acordingly to a lower (than the maximum
+> default) speed when relevant.
+>
+> Acked-by: Pratyush Yadav <pratyush@kernel.org>
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> Link: https://patch.msgid.link/20241224-winbond-6-11-rc1-quad-support-v2-1-ad218dbc406f@bootlin.com
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+[...]
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
-
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 6.15.5-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: d5e6f0c9ca48c1efb86783db4a2b4e457118c27b
-* git describe: v6.15.4-264-gd5e6f0c9ca48
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.15.y/build/v6.15=
-.4-264-gd5e6f0c9ca48
-
-## Test Regressions (compared to v6.15.3-590-gd93bc5feded1)
-
-## Metric Regressions (compared to v6.15.3-590-gd93bc5feded1)
-
-## Test Fixes (compared to v6.15.3-590-gd93bc5feded1)
-
-## Metric Fixes (compared to v6.15.3-590-gd93bc5feded1)
-
-## Test result summary
-total: 261397, pass: 239055, fail: 6046, skip: 16296, xfail: 0
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 139 total, 136 passed, 1 failed, 2 skipped
-* arm64: 57 total, 49 passed, 0 failed, 8 skipped
-* i386: 18 total, 18 passed, 0 failed
-* mips: 34 total, 27 passed, 7 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 40 total, 39 passed, 1 failed
-* riscv: 25 total, 25 passed, 0 failed
-* s390: 22 total, 22 passed, 0 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 49 total, 48 passed, 0 failed, 1 skipped
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-rust
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* modules
-* perf
-* rcutorture
-* rt-tests-cyclicdeadline
-* rt-tests-pi-stress
-* rt-tests-pmqtest
-* rt-tests-rt-migrate-test
-* rt-tests-signaltest
-
---
-Linaro LKFT
-https://lkft.linaro.org
+-- 
+Regards,
+Pratyush Yadav
 
