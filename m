@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-160204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE53AF9586
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 16:30:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FF0AF9587
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 16:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8C933ACF7C
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 14:30:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44CEC3A17AD
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 14:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9936D1A5B8F;
-	Fri,  4 Jul 2025 14:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AF71A4F3C;
+	Fri,  4 Jul 2025 14:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="noEmGDbB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFE7PFuP"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A23672614
-	for <Stable@vger.kernel.org>; Fri,  4 Jul 2025 14:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8480919F115
+	for <Stable@vger.kernel.org>; Fri,  4 Jul 2025 14:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751639453; cv=none; b=k95Xojadk6+88jr6OQ3L9VQG5UfFDqs2X+FIySgNxL4dIoLZFNPkxmbSJHLe01gQ9zqH0HTuYxbmVV6hsyDoE1/xUcfRRii1e0etMwnc7/f/zWiDZW87PdHL2pjHj1bWuH0JcejHv5xF8lb/CElIDw+3RQsj99vCE5PXNtsTu/I=
+	t=1751639481; cv=none; b=Zl1Fv067biPT53QX2bcNeuQGjVSu6Xz0gSRwT7az2MZAJtQ4jyR5WATTiWC45vRkgr/FkGWqqZ7Lnwo5vo3aU3zdFJPxVMAglm9mvdnU6kGzi9g3bcWjl9cz1hNr/yMhi8MTAEuPTOCZnUYGa7X8b/W/3OJMgD2Fg/t3nnOQdgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751639453; c=relaxed/simple;
-	bh=JAAZxwBDfqhQ5qVMcGHWQgm1PcKQPnjZOdoJbp7Z4uk=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=Isr3oLBWEzZF7S6mBHlQyp8EPw/53oe3eqfj9q7lVwGqkQJxaNUCXSHiQhkOiWiJvUPyB9MgOth2VMN61OdaZSvHG8QGbJ+d9973yQg3GWBFGvh9cYk53UcUIFQJGi3KXQv7SNCQMp2Gqoj3t6KzqUq2sO9KWPagJJktE3wg6wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=noEmGDbB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810CEC4CEE3;
-	Fri,  4 Jul 2025 14:30:51 +0000 (UTC)
+	s=arc-20240116; t=1751639481; c=relaxed/simple;
+	bh=qdaqtqURyHNMppB9SWLM0VOmut5udll4t58+pZiOHeE=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=AJAo9iVv8LS8r9A5K0NNa7w0JO/DaImqY/Rripn+R7mZRDcAIHLKIjHBahjltSIrOK7gs7gAIM2B0ddgYhG+88e7HMduyiud4qvqqWUXQkoe5MyueX6pt/sMiy0mz3ZUuLeZfq7emtyBOhEUFJnOHiMasZWU3HL/XLQg/PCTklA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFE7PFuP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01CAC4CEE3;
+	Fri,  4 Jul 2025 14:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751639451;
-	bh=JAAZxwBDfqhQ5qVMcGHWQgm1PcKQPnjZOdoJbp7Z4uk=;
+	s=korg; t=1751639480;
+	bh=qdaqtqURyHNMppB9SWLM0VOmut5udll4t58+pZiOHeE=;
 	h=Subject:To:From:Date:From;
-	b=noEmGDbB2a2ZPlRAdCDVyH7pL/SJwL4qQ83c+/f+cRIKMxZoeDVSxvhBYYovYUp7u
-	 ITVEDKxGXjyFqcdulBohERPFZvC10eQUHO4SN6EWlXb5Ld2HFwHHX7pP8mOOLChhI5
-	 x17o5Quw9/B3PxcF4DJjIDjd4GaUN6c8yhHzYZD4=
-Subject: patch "iio: adc: stm32-adc: Fix race in installing chained IRQ handler" added to char-misc-linus
-To: nichen@iscas.ac.cn,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,fabrice.gasnier@foss.st.com,nuno.sa@analog.com
+	b=MFE7PFuPsN2apKnkn/is639WF7FRGIMH0l7w+0b5MEKLmUOGBHkBA6BvLtFCXvC1E
+	 ZsWTtnDJV+/4n5Z7tYTRBOOZLAtalkGtLRaj1EpZOzazHQqQ0ByWIfwjYv70sLmUkP
+	 0KKbrnV9Md4BovZETp7LQMVVV40y5EW9g9pO6JfM=
+Subject: patch "iio: adc: axp20x_adc: Add missing sentinel to AXP717 ADC channel maps" added to char-misc-linus
+To: wens@csie.org,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 04 Jul 2025 16:30:46 +0200
-Message-ID: <2025070446-valid-scavenger-110a@gregkh>
+Date: Fri, 04 Jul 2025 16:30:50 +0200
+Message-ID: <2025070450-canopy-monorail-6d26@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: stm32-adc: Fix race in installing chained IRQ handler
+    iio: adc: axp20x_adc: Add missing sentinel to AXP717 ADC channel maps
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,48 +69,37 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From e8ad595064f6ebd5d2d1a5d5d7ebe0efce623091 Mon Sep 17 00:00:00 2001
-From: Chen Ni <nichen@iscas.ac.cn>
-Date: Thu, 15 May 2025 16:31:01 +0800
-Subject: iio: adc: stm32-adc: Fix race in installing chained IRQ handler
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 3281ddcea6429f7bc1fdb39d407752dd1371aba9 Mon Sep 17 00:00:00 2001
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Sat, 7 Jun 2025 21:56:27 +0800
+Subject: iio: adc: axp20x_adc: Add missing sentinel to AXP717 ADC channel maps
 
-Fix a race where a pending interrupt could be received and the handler
-called before the handler's data has been setup, by converting to
-irq_set_chained_handler_and_data().
+The AXP717 ADC channel maps is missing a sentinel entry at the end. This
+causes a KASAN warning.
 
-Fixes: 1add69880240 ("iio: adc: Add support for STM32 ADC core")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://patch.msgid.link/20250515083101.3811350-1-nichen@iscas.ac.cn
+Add the missing sentinel entry.
+
+Fixes: 5ba0cb92584b ("iio: adc: axp20x_adc: add support for AXP717 ADC")
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Link: https://patch.msgid.link/20250607135627.2086850-1-wens@kernel.org
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/stm32-adc-core.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/iio/adc/axp20x_adc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-index bd3458965bff..21c04a98b3b6 100644
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -430,10 +430,9 @@ static int stm32_adc_irq_probe(struct platform_device *pdev,
- 		return -ENOMEM;
- 	}
+diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
+index 71584ffd3632..1b49325ec1ce 100644
+--- a/drivers/iio/adc/axp20x_adc.c
++++ b/drivers/iio/adc/axp20x_adc.c
+@@ -187,6 +187,7 @@ static struct iio_map axp717_maps[] = {
+ 		.consumer_channel = "batt_chrg_i",
+ 		.adc_channel_label = "batt_chrg_i",
+ 	},
++	{ }
+ };
  
--	for (i = 0; i < priv->cfg->num_irqs; i++) {
--		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
--		irq_set_handler_data(priv->irq[i], priv);
--	}
-+	for (i = 0; i < priv->cfg->num_irqs; i++)
-+		irq_set_chained_handler_and_data(priv->irq[i],
-+						 stm32_adc_irq_handler, priv);
- 
- 	return 0;
- }
+ /*
 -- 
 2.50.0
 
