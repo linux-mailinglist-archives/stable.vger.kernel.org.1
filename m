@@ -1,201 +1,188 @@
-Return-Path: <stable+bounces-160180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B393AF912A
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 13:14:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D6EAF913F
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 13:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 336FB3B4B70
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 11:14:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B52B31CA49CD
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 11:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2927C2F3653;
-	Fri,  4 Jul 2025 11:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D231228B407;
+	Fri,  4 Jul 2025 11:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uCnkGiF5"
+	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="SUOYCk86"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2073.outbound.protection.outlook.com [40.107.237.73])
+Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8172DE6E8;
-	Fri,  4 Jul 2025 11:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.73
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751627637; cv=fail; b=pUfXxsMz4xAlkRiHuLPtjPk/eEDIPAyRC7UdQ1SvuwOsrgHqGvqhBQzfzMivWym/yqFaHYyOUJQmCsNFdq3MoaUH+6mryKvlJjPx3lKZEQoI2GmbTlS477UTJKgA0bdGiO4sk+GHyTBc8G/k0vHg0jOGvsUjhLAsgEuacrDqOVE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751627637; c=relaxed/simple;
-	bh=sWIi9E+1IcPSn1IA5qgkYQd1WgdqwR4Zuck3IFbqBgk=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=h+pK9cDiwtxYOLtljcPRWPJOIdXUoVybbCRfQswDS4spKHVAonsrtEtBocdv/FufZaLJe4VJ7OFeTXFIyUNFcwrC0o5Ir0gijxhq2mBGk0tAyiCQHnz0sx7PRI59Hw4osBy+m/GU8JbOO3eRwn7xKo2FcemOi3EuAcmRuzpMd8w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uCnkGiF5; arc=fail smtp.client-ip=40.107.237.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BaxsGhzYMXC9hqwtS/rN6/bjtu38sBq96kPFfeoTZzN9UiagjD1wcRG2fzEOqzPNUMIEBtIGRWXQHQp444L60j4ZOqzSF9pyV6SqudCIdZu/TK6UtL/DPsJPFZh2L//obNLkiVxAzMVpyQqdVlleVsdW8InhbDFAbAn/M+bzskQG8avrGEf7/aC6yeqZBLg0y0BGDSQWISk2gziuWqITVkwypFGmzZCmqsaAr+gtAqMc5JzvNGqOkJuF61SXtBGWSONiQge7NoXWKQp0nQ+OUhcyMwzvMjBlVKrit+1QR27Q7vXPV/gpbZGVpMb6r3f2pjqAIs+MHg605mRngKGx4Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OREXOXWdjxxceqbZP9C7q56SOy/PXtYNy7looBnWQBk=;
- b=QO/bU4rKNEAg9dVRsU4kyraHQV2Uw4ost5toT0UGCQRx0t0jfEg3FR3QbgYNxNczlgFPj29gI6chz4wU2vAsBpsqN6ACYSx7SK3wfWMe+scK6jQdkp0KnFkLsyPjL3YsCfCbf2y3E5C6umTq6aCS2rV59fMDTqWTcRsFX8FmVfY0CmQu44CQwxkHZXHN7l9R6qGYmV5W5mCHJc6P47FmAea0PCitgde8/K1ZXLg359lgLII0JMWN21YkMwiOW65kurCfT5ecrPwLHdz6OKmTzoNQRij36v0vqBLM3AnzZI5YR03/f8ihViNpMOm6JAHL/i+Eu6h4aRn7EdS12rRY0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OREXOXWdjxxceqbZP9C7q56SOy/PXtYNy7looBnWQBk=;
- b=uCnkGiF5jpzKRJ0aR5ySH09W9XfmpNBM/adR7qj6yj6e/97UGYASTS3/Tc/L1jXr5EUc8sM4BlA/+Y9IRuuBlkPsi9nok6y9NoYT9gYWfPIttOp5NpbJbHl6KzpW3c1f3fPaR4nE/sK+1h5xyb7wH6o+gkNjDV7MK8PGcJMx8W1zJVCT7j73Z84wvpW/iY6JlS7JgRoEi4SC5cIYxL5j6LUe+rDZ7Q7bcTcNIptFidKzQmsZNKiq1dPjUoBEsLCKyw4AuQ033sbkApPMJxnm3HgVhbySbelduQesRuiJ/a/+WFAteoM7OsFjd05lwcAtRW8FuR6BfF3aQl0SBPx66g==
-Received: from SJ0PR03CA0006.namprd03.prod.outlook.com (2603:10b6:a03:33a::11)
- by SJ5PPF0AEDE5C3D.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::989) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.26; Fri, 4 Jul
- 2025 11:13:50 +0000
-Received: from SJ1PEPF000023D7.namprd21.prod.outlook.com
- (2603:10b6:a03:33a:cafe::65) by SJ0PR03CA0006.outlook.office365.com
- (2603:10b6:a03:33a::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8901.20 via Frontend Transport; Fri,
- 4 Jul 2025 11:13:50 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- SJ1PEPF000023D7.mail.protection.outlook.com (10.167.244.72) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8922.1 via Frontend Transport; Fri, 4 Jul 2025 11:13:50 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 4 Jul 2025
- 04:13:44 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Fri, 4 Jul 2025 04:13:43 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Fri, 4 Jul 2025 04:13:43 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
-	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.15 000/263] 6.15.5-rc1 review
-In-Reply-To: <20250703144004.276210867@linuxfoundation.org>
-References: <20250703144004.276210867@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A905285C9F;
+	Fri,  4 Jul 2025 11:16:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.188.205.243
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751627787; cv=none; b=OyNnTNFmrW/F1Lly383DAcdWrEeDEXY0QjrpySFGNIx0eDDJISC4dz83cxzM19W0l5O4vLEDoLbaddJN2qb4GWY9bNjxa4S/cnXSshXl6lf7A0nu5V3Xka+wb0yRtH1NqOscCKVlIt2o6fgR9o/k7Dt57irqNtJlSjv/eqg6auY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751627787; c=relaxed/simple;
+	bh=QkzF9v0JtK+J9zdf0mskE+qnDwEhUeZEuDR6yZ7/7bw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HbjgmgoDcWroETvxDEdS9L1xxElr+m4B0+Uvu2/V6h1rk1OqO0nlkQrulXGORSTXcF+enXGSZv+Y7wq9y8UkwBlIcsb3qvAFaTue14bI9rtCjsOjhuHg149wp1WaCbfBfPJXF51TzYTsxRKZI5Ill06jlp9bZxhfKLahmEFk9Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=SUOYCk86; arc=none smtp.client-ip=93.188.205.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1751627778;
+	bh=QkzF9v0JtK+J9zdf0mskE+qnDwEhUeZEuDR6yZ7/7bw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SUOYCk86TCIBqp9OXBNKVEMf08UiN7a2feyK37rbVIq3KuYP4/2Kj3If3+4oiLeLG
+	 Lv9HuWOrkSFFsViuQrJMtieb5SV2+Fv6hQNoz6JPnZzJV5kmulF9HfBQIAeskcBbbr
+	 QCG8sJW7M/RGRXkezuHGSPLBc7gmIpQ3bbW2lYzDOhhq5wnn5zk2DY4oY5kWbJRFk5
+	 wk3YQ3dMt9+jRjpLLMEEeMnpQ+xlyPz5YAiZbVY7zgHM/I4XPDY1F5l0tlVfAwcFJt
+	 /G0TcBCL4Rc78+cFUqk/ySOVhozlZR4SU8bPMUzUZmmGMOBLj8X5A5pzIk01Ad4AAW
+	 nB0bQF5Caqhvw==
+Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 169141F98F;
+	Fri,  4 Jul 2025 14:16:18 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.177.185.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
+	Fri,  4 Jul 2025 14:16:16 +0300 (MSK)
+Received: from localhost.localdomain (unknown [10.198.20.23])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4bYWJv6p1Vz16Hnq;
+	Fri,  4 Jul 2025 14:15:43 +0300 (MSK)
+From: Anastasia Belova <abelova@astralinux.ru>
+To: stable@vger.kernel.org,
+	"Greg Kroah-Hartman ." <gregkh@linuxfoundation.org>
+Cc: Anastasia Belova <abelova@astralinux.ru>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <kafai@fb.com>,
+	Song Liu <songliubraving@fb.com>,
+	Yonghong Song <yhs@fb.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Petar Penkov <ppenkov@google.com>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Hao Sun <sunhao.th@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10] bpf: Reject variable offset alu on PTR_TO_FLOW_KEYS
+Date: Fri,  4 Jul 2025 14:15:33 +0300
+Message-ID: <20250704111535.34760-1-abelova@astralinux.ru>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <94e8d435-650e-49f6-b957-ea60a0986024@drhqmail202.nvidia.com>
-Date: Fri, 4 Jul 2025 04:13:43 -0700
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D7:EE_|SJ5PPF0AEDE5C3D:EE_
-X-MS-Office365-Filtering-Correlation-Id: 49eea55c-7701-49d2-e771-08ddbaebda87
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014|7416014|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?czNaTG1vNUNENW10V1JWMEszUzVvdGx3VXZFZGJhZHZSa2NiYXJVY0FqZ3VL?=
- =?utf-8?B?bDZMVHlFRmZuL3lvRFBmcEJWMytkOFRtVjhUeTBsV3ZabFA0V2lFbDBPMytD?=
- =?utf-8?B?VWpXcVNkS1RKMFVEc1RFNGtlRkdPUGx6QWY4Wm1XYnBrd2tEcXBjL1ZKeG5v?=
- =?utf-8?B?QWREQTlCc3NVNU9iT3ZyelB1cEtIOFBub0tORDJuUnVvdEhFQWQwQ3ZLK0FM?=
- =?utf-8?B?TXNDeVhmNGVjcENUWXBKczI5RjFMcCs5OFVzRmIzUy9YRTN5Y2FkR0JsS211?=
- =?utf-8?B?QVFhWkdqMDFvbHhvNVFQSDdnb0NST3FXYkFreFp0S3NGU0FOaWNtVVlDejFL?=
- =?utf-8?B?N1ZXWGN6TXhoYjFlT01yM3pYc1R5bWVVMG0wZmpBdlpqZEFmWnBMY3hFZk8v?=
- =?utf-8?B?ZjAvd3ZEeGwyeGNPOUlGK1FtWmgrL1lhWTBnUENUMUFQNEJhUmtvcElPMnl5?=
- =?utf-8?B?eWE4NXJtcjV1S3R6STFLYzU1L1ZtREJuN2srOGR4NzFTWWtiZHhyQmt6R041?=
- =?utf-8?B?U01Bci9tbVhHbW5MS05mU2ZtY1RIWlVnSHFLMWVUZHAvZlIxNUkyK0NTUDBW?=
- =?utf-8?B?amt5b2ZWeStBS3huQ3h0NlhVZFpaN0phRVhMdjhtZ1ljRjk5dW5aWHVPWDdi?=
- =?utf-8?B?N2xaVDFyQXZlbm0vQkd0SHN3alV2SFMyV2xnRUdKZ3VBd0dML1huclQ2UndT?=
- =?utf-8?B?QSt3L0pKdS84aGJLWVp3WHpsWnRpeTZBUzBDU1g3elRHNDNMRG5iUExhRk5h?=
- =?utf-8?B?WVZCL2NienVQL0tSMFUwczRRTmFNT2QvcWV0N0pQTTFCU3NzM0dydTF1bnJ5?=
- =?utf-8?B?dk9uRWlsUDNiRnV3ZWU3UG83Zm5mWk9VQ3ZrWGV5dmRta2lmNzhVYmx0ZXZY?=
- =?utf-8?B?cldmci9RS3I5NHJDOHprTHNJdDJaUTA4RjRUUE4wdW5aSXZ2Yk9JalBBMTVJ?=
- =?utf-8?B?QWROeEJBTTUwZzdheGFjTFZyWGY3S2l3bG1Ic1U3QmM1bmsxM1g4RkNsalZi?=
- =?utf-8?B?SHlQaDd2Q3BxV0VHcllhZURwdFI4TTQ1S21vazFBWUVzb24xQ201SGRCb3Q2?=
- =?utf-8?B?eFJJVnJaMU0vdkVXK3RZNTl1cDI2alNJU3kwNmlVVm8yTVdEOE82aExGVUxJ?=
- =?utf-8?B?VFcwcEZsNDJkczFtbEVUTW10MTQrZzZyY2g2R3hQY0w4YkN0MXZib0hTV1ZV?=
- =?utf-8?B?RU9DSUx5c3E3VERGdG5zNlJ0YXZQdFphUkVPYXZpU3JrcTA2eXJsbGZYVnBG?=
- =?utf-8?B?OGFzK0Q4bHZXZ1p4K1ZTY0RhVWhUck1HVC9nUFFEUnlyWVRmZUtIUHRmSFgx?=
- =?utf-8?B?enFuNm9VT2lUWjIxSlFHZHRxaUVmSnR1VlcwVUNjbTluckFXYmgxNmhMbDBh?=
- =?utf-8?B?SmJoOEFhaHFkdGl6aFlCY3ZJZnFFTlF6Sk1GQ0QwQ3NJblFlNXl1V0g1V2tv?=
- =?utf-8?B?R3JJUHNpTjZBYVdQMkRDdXkvM3BPWU5ubDFKR0N6dEFtU1E0Rk9wQldtQ0U5?=
- =?utf-8?B?OFNpNWpYbWtZaGJNK1RJUDJ0NnN2TkxBSEJVWnpKdkxvYUgrQVg1RERrTGph?=
- =?utf-8?B?bFhXOUNQenlGMllFTkpMRGpyWGxUQ0UxZVVhY21TS0RSM2NYMHZxZVgyWUp0?=
- =?utf-8?B?UEFaRUFadEhudGhyUE56VnU1dUVEUGJnWWtmMDVlVHI0Mlc2aWNwRVYyR0Nh?=
- =?utf-8?B?RzRBcFNWbHJuTzNvSUFSR3hmSWd2RXpPRmdjVVFoM3JnNEVRTjdUaktJQWF0?=
- =?utf-8?B?UG5PbHZOWlA2SlRyeTVkUVBhcFBmTSs1WmkvZ0E5VU5xME0xc2h3OUFnZjNz?=
- =?utf-8?B?NE9OdTBjamJCYU5mV3Y0UHQrT2NiS2V1Sm5OVG1HNTArS29iYnAyYUllRDM4?=
- =?utf-8?B?YVJtS21nMHY5dWtMeHJUcXlmQ2lNdDBzSEMrdnZoODJZZW12OG9mWlBDQ2px?=
- =?utf-8?B?OXRnVGtTZlZkbW5zQmUxT1g4cmdjeXdvc1ZVUS80MEZLckl6d1ZIeU1ka2cx?=
- =?utf-8?B?K2JCQUVzR1I2SnJoNzM4R3JXSldVemkrdmFlK1YrOVBBWDI0RDV2TTV6U2Z4?=
- =?utf-8?B?YXhnekM4ZnR0TjFqNzcvMEFsS3EvdTg4ek52UT09?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(7416014)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2025 11:13:50.2546
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49eea55c-7701-49d2-e771-08ddbaebda87
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000023D7.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF0AEDE5C3D
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/07/04 10:48:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: abelova@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 63 0.3.63 9cc2b4b18bf16653fda093d2c494e542ac094a39, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, lore.kernel.org:7.1.1;new-mail.astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;astralinux.ru:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 194551 [Jul 03 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.11
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/07/04 07:50:00 #27617035
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/07/04 10:48:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 
-On Thu, 03 Jul 2025 16:38:40 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.15.5 release.
-> There are 263 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 05 Jul 2025 14:39:10 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.15.5-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From: Hao Sun <sunhao.th@gmail.com>
 
-All tests passing for Tegra ...
+[ Upstream commit 22c7fa171a02d310e3a3f6ed46a698ca8a0060ed ]
 
-Test results for stable-v6.15:
-    10 builds:	10 pass, 0 fail
-    28 boots:	28 pass, 0 fail
-    120 tests:	120 pass, 0 fail
+For PTR_TO_FLOW_KEYS, check_flow_keys_access() only uses fixed off
+for validation. However, variable offset ptr alu is not prohibited
+for this ptr kind. So the variable offset is not checked.
 
-Linux version:	6.15.5-rc1-gd5e6f0c9ca48
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
-                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
-                tegra210-p2371-2180, tegra210-p3450-0000,
-                tegra30-cardhu-a04
+The following prog is accepted:
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+  func#0 @0
+  0: R1=ctx() R10=fp0
+  0: (bf) r6 = r1                       ; R1=ctx() R6_w=ctx()
+  1: (79) r7 = *(u64 *)(r6 +144)        ; R6_w=ctx() R7_w=flow_keys()
+  2: (b7) r8 = 1024                     ; R8_w=1024
+  3: (37) r8 /= 1                       ; R8_w=scalar()
+  4: (57) r8 &= 1024                    ; R8_w=scalar(smin=smin32=0,
+  smax=umax=smax32=umax32=1024,var_off=(0x0; 0x400))
+  5: (0f) r7 += r8
+  mark_precise: frame0: last_idx 5 first_idx 0 subseq_idx -1
+  mark_precise: frame0: regs=r8 stack= before 4: (57) r8 &= 1024
+  mark_precise: frame0: regs=r8 stack= before 3: (37) r8 /= 1
+  mark_precise: frame0: regs=r8 stack= before 2: (b7) r8 = 1024
+  6: R7_w=flow_keys(smin=smin32=0,smax=umax=smax32=umax32=1024,var_off
+  =(0x0; 0x400)) R8_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=1024,
+  var_off=(0x0; 0x400))
+  6: (79) r0 = *(u64 *)(r7 +0)          ; R0_w=scalar()
+  7: (95) exit
 
-Jon
+This prog loads flow_keys to r7, and adds the variable offset r8
+to r7, and finally causes out-of-bounds access:
+
+  BUG: unable to handle page fault for address: ffffc90014c80038
+  [...]
+  Call Trace:
+   <TASK>
+   bpf_dispatcher_nop_func include/linux/bpf.h:1231 [inline]
+   __bpf_prog_run include/linux/filter.h:651 [inline]
+   bpf_prog_run include/linux/filter.h:658 [inline]
+   bpf_prog_run_pin_on_cpu include/linux/filter.h:675 [inline]
+   bpf_flow_dissect+0x15f/0x350 net/core/flow_dissector.c:991
+   bpf_prog_test_run_flow_dissector+0x39d/0x620 net/bpf/test_run.c:1359
+   bpf_prog_test_run kernel/bpf/syscall.c:4107 [inline]
+   __sys_bpf+0xf8f/0x4560 kernel/bpf/syscall.c:5475
+   __do_sys_bpf kernel/bpf/syscall.c:5561 [inline]
+   __se_sys_bpf kernel/bpf/syscall.c:5559 [inline]
+   __x64_sys_bpf+0x73/0xb0 kernel/bpf/syscall.c:5559
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0x3f/0x110 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Fix this by rejecting ptr alu with variable offset on flow_keys.
+Applying the patch rejects the program with "R7 pointer arithmetic
+on flow_keys prohibited".
+
+Fixes: d58e468b1112 ("flow_dissector: implements flow dissector BPF hook")
+Signed-off-by: Hao Sun <sunhao.th@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/bpf/20240115082028.9992-1-sunhao.th@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+---
+Backport fix for CVE-2024-26589
+ kernel/bpf/verifier.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 75251870430e..2a3b5e4276ba 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -6280,6 +6280,10 @@ static int adjust_ptr_min_max_vals(struct bpf_verifier_env *env,
+ 		verbose(env, "R%d pointer arithmetic on %s prohibited, null-check it first\n",
+ 			dst, reg_type_str[ptr_reg->type]);
+ 		return -EACCES;
++	case PTR_TO_FLOW_KEYS:
++		if (known)
++			break;
++		fallthrough;
+ 	case CONST_PTR_TO_MAP:
+ 		/* smin_val represents the known value */
+ 		if (known && smin_val == 0 && opcode == BPF_ADD)
+-- 
+2.43.0
+
 
