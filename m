@@ -1,134 +1,98 @@
-Return-Path: <stable+bounces-160228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F3E4AF9BC9
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 22:49:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B00BDAF9BEE
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 23:20:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA34D487DC0
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 20:49:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2032016EA09
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 21:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A841A83E4;
-	Fri,  4 Jul 2025 20:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746E21DC07D;
+	Fri,  4 Jul 2025 21:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sLtKEfBM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vCDlfm5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1332E371E;
-	Fri,  4 Jul 2025 20:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A87F2E3704;
+	Fri,  4 Jul 2025 21:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751662182; cv=none; b=e+eLr4MI6pZzqPqQmRejY2PTEklIu/jbHquXAInOM+GXno/pBBW2WHnQE2WZxCP42eIxxQJjZACm2qubdcO9Uh1apK5QIZqd/gvNIL1fOTim+chVvTn6Zj1f7+RYtuU3xoz4lE3GSV50Y6l43fTF0s6HEL45I+MeF9QepGjxWD8=
+	t=1751664054; cv=none; b=mc0swhsqtPcf4UW58fT2FaexUwXPo2ZhPfYo8FI1dusSu/gM7GBothQdIlVFTRSExLjtIE9caCbx3zfhjeixXLJteJOedLQ3DDMLM3ckZ9jl8CBxSGX8A0nG7eAmhB3ghsV7lcUUmRMh+FbN5IZfhgz/hQgWtTRNe5Axn9E82w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751662182; c=relaxed/simple;
-	bh=VDkQIuEYyfL+0b/2jLf/NgxzUs97PHZkUjWLE2AmEp8=;
-	h=Date:To:From:Subject:Message-Id; b=ujMqxyN+YT3EKd9906s7kM8TP+NNgWGgB453gDpHu4zM0AZ+fvzQN0FljEai+uqpYY5J+S6dMCAErfASX/PHaPvEsSsWDKW8YPbso+dG1zMSPR/IK8lq2qPTF2Qs3OG0YECY/McKqZunUjOz1qxLHqAHGl/c7LZNmYffPGNNrrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sLtKEfBM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65A3C4CEE3;
-	Fri,  4 Jul 2025 20:49:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1751662181;
-	bh=VDkQIuEYyfL+0b/2jLf/NgxzUs97PHZkUjWLE2AmEp8=;
-	h=Date:To:From:Subject:From;
-	b=sLtKEfBMV8tfPXGglpw8h0obDDJpXonlgF10nIE+9OZywc2G9BwJKzIt7AtKwRbiI
-	 lWuMk2SV9Tvus8TAwWapiXFRYix/3R7TaRxPZj3WrRefDPNzarF+idVbaAUagWmrDj
-	 Yqh9MToaEYfh/9KlHN68Bm1ZF17CKesw6OSfjNzk=
-Date: Fri, 04 Jul 2025 13:49:41 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,senozhatsky@chromium.org,minchan@kernel.org,david@redhat.com,harry.yoo@oracle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-zsmalloc-do-not-pass-__gfp_movable-if-config_compaction=n.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250704204941.D65A3C4CEE3@smtp.kernel.org>
+	s=arc-20240116; t=1751664054; c=relaxed/simple;
+	bh=tsVn3t3EzYNHIorHx9Hr5dDhvnUwb1yl2A92x/yZ7/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fR5FiSoL7kgdsCnPS5UCwqIrrYJUZWjPIeCzkwtSCGi+QHuvMzfF2BEVXoZQGYYiYEIjz3UGZhfhJjYb0LxjuEcOSSkcOI+btCpcusRyXX/gGj7Ai9nT/rZy46v9EIH79Hg0olW9wpUYCJHILqJQneb7GjQYorkp+g3FRMLiyyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vCDlfm5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C36C4CEE3;
+	Fri,  4 Jul 2025 21:20:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751664053;
+	bh=tsVn3t3EzYNHIorHx9Hr5dDhvnUwb1yl2A92x/yZ7/M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vCDlfm5y7TACiS8rAM0ELBl6lApeTBSUinH8LywnAWV4LPcs4eaYTpsIb12DgLV2a
+	 Hc+X3fvxglqIIfhl8Mdi3rxAvjtFrqUUYOzfMe7xgh3kQKltOPN05u1h2e4F6u1sLN
+	 ESCUxeko4hnTLUb2UBmF2Ajg4Avs9fIYOncHK5NuFerie4Qr4E7yIz99luj9jxOCak
+	 VBYW11Cgu4t5iFBT8G1qQWwrUGY/uy+So/sCTCQedATcCknwVt5S8iFA8qwdAHX/3J
+	 SokTQJj4t5J3fF/VPxeiZmvp/XPgHCG4qc4iG+2YpUyRM0CuosQzsTQgYgAzVAszRR
+	 r+aKpgBzZ+L6Q==
+Date: Fri, 4 Jul 2025 22:20:47 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.15 000/263] 6.15.5-rc2 review
+Message-ID: <7cc923fe-ee44-4bdd-9b1e-1fc227f36bf6@sirena.org.uk>
+References: <20250704125604.759558342@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="+55kRTNUle8/Vhsa"
+Content-Disposition: inline
+In-Reply-To: <20250704125604.759558342@linuxfoundation.org>
+X-Cookie: VMS must die!
 
 
-The patch titled
-     Subject: mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-zsmalloc-do-not-pass-__gfp_movable-if-config_compaction=n.patch
+--+55kRTNUle8/Vhsa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-zsmalloc-do-not-pass-__gfp_movable-if-config_compaction=n.patch
+On Fri, Jul 04, 2025 at 04:44:42PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.15.5 release.
+> There are 263 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+--+55kRTNUle8/Vhsa
+Content-Type: application/pgp-signature; name="signature.asc"
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+-----BEGIN PGP SIGNATURE-----
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmhoRa4ACgkQJNaLcl1U
+h9AXdAf9HvIQm9fDDBv7nhKHhSwxg7bXwivc8XZk+XFbCgogmdBmSj2Vd4Q4yiNp
+l8rWBkPHFkBpXhmFirqSvCOtKJ2J9ZDo9l8t81Ha/s9AXazxxi9csDPRtmmXBS7o
+zn7UbrXyJS+GN4uKg2wGd5QPTRCNbTddaVf+GhZ/2JHMvImnr+Yzd23UFPlXk6hD
+i4plI13M1HtiL5u+NdBOGdA4FD9pPwQlefGfTbdA36HWrfe6AVCFt4nwlGyijk9W
+yckvfV0x0E3/DKkyAqfltlg8UpEmIGCkKFmmaVp0PAlTZTy8vxl3Nb59M+uh0HvA
+EIQWsx634LRG3xpKbvCHyyaP3Q+5aQ==
+=rQ/e
+-----END PGP SIGNATURE-----
 
-------------------------------------------------------
-From: Harry Yoo <harry.yoo@oracle.com>
-Subject: mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n
-Date: Fri, 4 Jul 2025 19:30:53 +0900
-
-Commit 48b4800a1c6a ("zsmalloc: page migration support") added support for
-migrating zsmalloc pages using the movable_operations migration framework.
-However, the commit did not take into account that zsmalloc supports
-migration only when CONFIG_COMPACTION is enabled.  Tracing shows that
-zsmalloc was still passing the __GFP_MOVABLE flag even when compaction is
-not supported.
-
-This can result in unmovable pages being allocated from movable page
-blocks (even without stealing page blocks), ZONE_MOVABLE and CMA area.
-
-Possible user visible effects:
-- Some ZONE_MOVABLE memory can be not actually movable
-- CMA allocation can fail because of this
-- Increased memory fragmentation due to ignoring the page mobility
-  grouping feature  
-I'm not really sure who uses kernels without compaction support, though :(
-
-
-To fix this, clear the __GFP_MOVABLE flag when
-!IS_ENABLED(CONFIG_COMPACTION).
-
-Link: https://lkml.kernel.org/r/20250704103053.6913-1-harry.yoo@oracle.com
-Fixes: 48b4800a1c6a ("zsmalloc: page migration support")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/zsmalloc.c |    3 +++
- 1 file changed, 3 insertions(+)
-
---- a/mm/zsmalloc.c~mm-zsmalloc-do-not-pass-__gfp_movable-if-config_compaction=n
-+++ a/mm/zsmalloc.c
-@@ -1043,6 +1043,9 @@ static struct zspage *alloc_zspage(struc
- 	if (!zspage)
- 		return NULL;
- 
-+	if (!IS_ENABLED(CONFIG_COMPACTION))
-+		gfp &= ~__GFP_MOVABLE;
-+
- 	zspage->magic = ZSPAGE_MAGIC;
- 	zspage->pool = pool;
- 	zspage->class = class->index;
-_
-
-Patches currently in -mm which might be from harry.yoo@oracle.com are
-
-lib-alloc_tag-do-not-acquire-non-existent-lock-in-alloc_tag_top_users.patch
-lib-alloc_tag-do-not-acquire-non-existent-lock-in-alloc_tag_top_users-v3.patch
-mm-zsmalloc-do-not-pass-__gfp_movable-if-config_compaction=n.patch
-
+--+55kRTNUle8/Vhsa--
 
