@@ -1,179 +1,134 @@
-Return-Path: <stable+bounces-160227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD26BAF9BB8
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 22:35:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3E4AF9BC9
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 22:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74C5E3A47ED
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 20:35:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA34D487DC0
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 20:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF83246BB4;
-	Fri,  4 Jul 2025 20:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A841A83E4;
+	Fri,  4 Jul 2025 20:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="UXyu7DUn"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sLtKEfBM"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B511923E336;
-	Fri,  4 Jul 2025 20:35:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751661335; cv=pass; b=TqyxwNh37IdCLJ3A5K71eDdxcN6R9MbdWjAfdR6sqoRd/u2R/h6lqRIMDaEtKexDGD2Mu1w/ThyH2f6mLh2dg9VzIe1jOFFoVOoL1ftiNkGV/b1sQmoONbbk62S9UCnKuQSN0t3KJhjKigcDBqy4piNfH9WX9zOrKABPjzmsWuc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751661335; c=relaxed/simple;
-	bh=tGDhA6trtueapCTJZVqL3Ich/6m5S6c3emrgtXjYZfk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cI3U65irvEGJWfq7Q2lSC6UKW0eUGybpxFMeiLY4wGSVeVTQYgQ2HIVPUg0LYIp/j5UQ6yby7zKC3S8lGOpYWqCFhbDsojBr8ueSE/DyaPHH4W6XsWWxC5xW17jTfrN/5o+x++nCqu+FhEc0487bUPhxEqIdKuIs2AOOS8TZvMg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=UXyu7DUn; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1751661307; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=KJkC27XZSlJxaKuRavoNposgZnBJRG8I/1U+dz8MTzS0rg/awahbWC4zjYRksq6DZhS6t3TiO60dOnjrh/x1QoA2IDARCQx7oWHFsQrUM3krwPiBmMk+JT6TUkHiLCdc5zl2GEi91BSpV+rnnxNU1dRQC3f/bUco8EcIsVcIq6s=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1751661307; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=lWLh7zgOofOdzlksseZPXqSdJOoOzDwsXnYOSGf61Lw=; 
-	b=gmgGLA1X3mHt3BnNjhMyJjxQ3dCY7mw9CUdacbXBTazw5OtE7h6Y4z+DKSwWGOMjnDNCjWgsZPIQv+V3+lo+d9HzMn8sFvjPGuKXKemzJBKHxHid3bWqq6QQc1ov2K9XTW8Rc8PSJ0KpA1bs3o63OTHKnJz/wP5T5KrUpNbUHBs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
-	dmarc=pass header.from=<sebastian.reichel@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751661307;
-	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=lWLh7zgOofOdzlksseZPXqSdJOoOzDwsXnYOSGf61Lw=;
-	b=UXyu7DUn9+jB0s2NqIRNqOjLabqXjO4ZxvwxSU7m8+P0Rhbz8SCh3MWp+ehUNujq
-	rlq0nsP/76jAa+s0dc6WtbtVyDzblAPY62wQHhYg3ZYNo0FGVd/up/FxeWv140UqvEe
-	l9rxthRt8B9phhiFuLHAqslO6k4ysmNc0wG8XDUk=
-Received: by mx.zohomail.com with SMTPS id 1751661305093761.4754666334662;
-	Fri, 4 Jul 2025 13:35:05 -0700 (PDT)
-Received: by venus (Postfix, from userid 1000)
-	id 189271803D0; Fri, 04 Jul 2025 22:35:00 +0200 (CEST)
-Date: Fri, 4 Jul 2025 22:35:00 +0200
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>, 
-	Detlev Casanova <detlev.casanova@collabora.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCH net] net: phy: realtek: Reset after clock enable
-Message-ID: <5xjp2k3b4rggbmjgchg6vlusotoqoqmxi54zzer3ioxv274vtx@22tzjjcs7s3z>
-References: <20250704-phy-realtek-clock-fix-v1-1-63b33d204537@kernel.org>
- <0310186d-dfc5-406f-8cd1-c393a7c620e8@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1332E371E;
+	Fri,  4 Jul 2025 20:49:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751662182; cv=none; b=e+eLr4MI6pZzqPqQmRejY2PTEklIu/jbHquXAInOM+GXno/pBBW2WHnQE2WZxCP42eIxxQJjZACm2qubdcO9Uh1apK5QIZqd/gvNIL1fOTim+chVvTn6Zj1f7+RYtuU3xoz4lE3GSV50Y6l43fTF0s6HEL45I+MeF9QepGjxWD8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751662182; c=relaxed/simple;
+	bh=VDkQIuEYyfL+0b/2jLf/NgxzUs97PHZkUjWLE2AmEp8=;
+	h=Date:To:From:Subject:Message-Id; b=ujMqxyN+YT3EKd9906s7kM8TP+NNgWGgB453gDpHu4zM0AZ+fvzQN0FljEai+uqpYY5J+S6dMCAErfASX/PHaPvEsSsWDKW8YPbso+dG1zMSPR/IK8lq2qPTF2Qs3OG0YECY/McKqZunUjOz1qxLHqAHGl/c7LZNmYffPGNNrrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sLtKEfBM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65A3C4CEE3;
+	Fri,  4 Jul 2025 20:49:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1751662181;
+	bh=VDkQIuEYyfL+0b/2jLf/NgxzUs97PHZkUjWLE2AmEp8=;
+	h=Date:To:From:Subject:From;
+	b=sLtKEfBMV8tfPXGglpw8h0obDDJpXonlgF10nIE+9OZywc2G9BwJKzIt7AtKwRbiI
+	 lWuMk2SV9Tvus8TAwWapiXFRYix/3R7TaRxPZj3WrRefDPNzarF+idVbaAUagWmrDj
+	 Yqh9MToaEYfh/9KlHN68Bm1ZF17CKesw6OSfjNzk=
+Date: Fri, 04 Jul 2025 13:49:41 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,senozhatsky@chromium.org,minchan@kernel.org,david@redhat.com,harry.yoo@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-zsmalloc-do-not-pass-__gfp_movable-if-config_compaction=n.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250704204941.D65A3C4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rh6zjux5atjchmnj"
-Content-Disposition: inline
-In-Reply-To: <0310186d-dfc5-406f-8cd1-c393a7c620e8@gmail.com>
-X-Zoho-Virus-Status: 1
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-1.4.3/251.649.55
-X-ZohoMailClient: External
 
 
---rh6zjux5atjchmnj
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net] net: phy: realtek: Reset after clock enable
-MIME-Version: 1.0
+The patch titled
+     Subject: mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-zsmalloc-do-not-pass-__gfp_movable-if-config_compaction=n.patch
 
-Hi,
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-zsmalloc-do-not-pass-__gfp_movable-if-config_compaction=n.patch
 
-On Fri, Jul 04, 2025 at 10:18:29PM +0200, Heiner Kallweit wrote:
-> On 04.07.2025 19:48, Sebastian Reichel wrote:
-> > On Radxa ROCK 4D boards we are seeing some issues with PHY detection and
-> > stability (e.g. link loss, or not capable of transceiving packages)
-> > after new board revisions switched from a dedicated crystal to providing
-> > the 25 MHz PHY input clock from the SoC instead.
-> >=20
-> > This board is using a RTL8211F PHY, which is connected to an always-on
-> > regulator. Unfortunately the datasheet does not explicitly mention the
-> > power-up sequence regarding the clock, but it seems to assume that the
-> > clock is always-on (i.e. dedicated crystal).
-> >=20
-> > By doing an explicit reset after enabling the clock, the issue on the
-> > boards could no longer be observed.
-> >=20
-> Is the SoC clock always on after boot? Or may it be disabled e.g.
-> during system suspend? Then you would have to do the PHY reset also
-> on resume from suspend.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Upstream kernel does not yet support suspend/resume on Rockchip RK3576
-(the SoC used by the ROCK 4D) and I missed, that the clock is disabled
-in the PHY's suspend routine.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Detlev: You added the initial clock support to the driver. If I add
-the reset in the resume routine, can you do regression testing on
-the board you originally added the clock handling for?
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Greetings,
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
--- Sebastian
+------------------------------------------------------
+From: Harry Yoo <harry.yoo@oracle.com>
+Subject: mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n
+Date: Fri, 4 Jul 2025 19:30:53 +0900
 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 7300c9b574cc ("net: phy: realtek: Add optional external PHY cloc=
-k")
-> > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> > ---
-> >  drivers/net/phy/realtek/realtek_main.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >=20
-> > diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/r=
-ealtek/realtek_main.c
-> > index c3dcb62574303374666b46a454cd4e10de455d24..3a783f0c3b4f2a4f6aa63a1=
-6ad309e3471b0932a 100644
-> > --- a/drivers/net/phy/realtek/realtek_main.c
-> > +++ b/drivers/net/phy/realtek/realtek_main.c
-> > @@ -231,6 +231,10 @@ static int rtl821x_probe(struct phy_device *phydev)
-> >  		return dev_err_probe(dev, PTR_ERR(priv->clk),
-> >  				     "failed to get phy clock\n");
-> > =20
-> > +	/* enabling the clock might produce glitches, so hard-reset the PHY */
-> > +	phy_device_reset(phydev, 1);
-> > +	phy_device_reset(phydev, 0);
-> > +
-> >  	ret =3D phy_read_paged(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR1);
-> >  	if (ret < 0)
-> >  		return ret;
-> >=20
-> > ---
-> > base-commit: 4c06e63b92038fadb566b652ec3ec04e228931e8
-> > change-id: 20250704-phy-realtek-clock-fix-6cd393e8cb2a
-> >=20
-> > Best regards,
->=20
+Commit 48b4800a1c6a ("zsmalloc: page migration support") added support for
+migrating zsmalloc pages using the movable_operations migration framework.
+However, the commit did not take into account that zsmalloc supports
+migration only when CONFIG_COMPACTION is enabled.  Tracing shows that
+zsmalloc was still passing the __GFP_MOVABLE flag even when compaction is
+not supported.
 
---rh6zjux5atjchmnj
-Content-Type: application/pgp-signature; name="signature.asc"
+This can result in unmovable pages being allocated from movable page
+blocks (even without stealing page blocks), ZONE_MOVABLE and CMA area.
 
------BEGIN PGP SIGNATURE-----
+Possible user visible effects:
+- Some ZONE_MOVABLE memory can be not actually movable
+- CMA allocation can fail because of this
+- Increased memory fragmentation due to ignoring the page mobility
+  grouping feature  
+I'm not really sure who uses kernels without compaction support, though :(
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmhoOvAACgkQ2O7X88g7
-+posEA//SXz6ukkQ+k4ZKaQKCxpIXW1tYqCWcpKkffl6p0MR1HXt+n/V04xcAXlH
-2CSZyrXg7n54anYOxhLQ8coMyTPGRe4sA01z0ggfj1ChmAF4DxmE+yDjyUHdL6wW
-nUlSd9RWwrpfcDfDTab9mUfYUVq9b/FKG8REQa2RfA95/MXMmz7ZhtlmOca6xBq3
-3Zdylq/jzm20XoV9vDHysI2jIArDMxk+wFN1Fxw0DBpWREhEG7Cb4ypi2qP7En9d
-NnJ1oY29YEkMDXkrWal4gSgvALnI8QmiLNEyaSzuac025P5aS20mc7fc/48GUPFj
-+diVY3m4lnG277cJ4by44AYIv8j3qmssFkAiKk+Mt6RohtPmtbMmmf1ayPRoXq38
-rua/kR+ut//QS2wJoqqYQ0ng64MnkjW0aorhkcPQbkqeKWzdeyP7ZN/vPPsPLrqe
-Dcr4dIA81KsjWLFikYT+r9E1eX4xZibYpRiaHtkX2fwcqF4v2lDKuGXvHlZ5xPnt
-5MAEsgQ1g75DaDkttxiuybvVXcHyZp1W0fdKgo7tJss3+VA9oB/RJrBYFg/Yc9iW
-lThjwpml4hRmU7rAF4XVu8rHKpxF0EnoMuT1kOSoIUKHhikJ7Tu8CcXWB5lVmQ9u
-BYhzGseXFsQfpciDbXQ+1oW5yVOXFqA9Be0IOHQNI/QOAoFamyU=
-=bDSD
------END PGP SIGNATURE-----
 
---rh6zjux5atjchmnj--
+To fix this, clear the __GFP_MOVABLE flag when
+!IS_ENABLED(CONFIG_COMPACTION).
+
+Link: https://lkml.kernel.org/r/20250704103053.6913-1-harry.yoo@oracle.com
+Fixes: 48b4800a1c6a ("zsmalloc: page migration support")
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/zsmalloc.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+--- a/mm/zsmalloc.c~mm-zsmalloc-do-not-pass-__gfp_movable-if-config_compaction=n
++++ a/mm/zsmalloc.c
+@@ -1043,6 +1043,9 @@ static struct zspage *alloc_zspage(struc
+ 	if (!zspage)
+ 		return NULL;
+ 
++	if (!IS_ENABLED(CONFIG_COMPACTION))
++		gfp &= ~__GFP_MOVABLE;
++
+ 	zspage->magic = ZSPAGE_MAGIC;
+ 	zspage->pool = pool;
+ 	zspage->class = class->index;
+_
+
+Patches currently in -mm which might be from harry.yoo@oracle.com are
+
+lib-alloc_tag-do-not-acquire-non-existent-lock-in-alloc_tag_top_users.patch
+lib-alloc_tag-do-not-acquire-non-existent-lock-in-alloc_tag_top_users-v3.patch
+mm-zsmalloc-do-not-pass-__gfp_movable-if-config_compaction=n.patch
+
 
