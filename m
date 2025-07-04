@@ -1,137 +1,178 @@
-Return-Path: <stable+bounces-160213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610A6AF970D
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 17:38:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DDA5AF973E
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 17:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD7E8179EAE
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 15:38:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 356883A76CF
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 15:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B837F230BF8;
-	Fri,  4 Jul 2025 15:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79AA2140E34;
+	Fri,  4 Jul 2025 15:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="OX/WZ6nB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eyOPmbex"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436E933E1;
-	Fri,  4 Jul 2025 15:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3237A19F40A;
+	Fri,  4 Jul 2025 15:45:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751643503; cv=none; b=AgCD4FgqXR9necvBNlEJYm163nT+blVJvfFeRnV53RHpCk/vbvRiXb4dpk/YwShVcRBGO6nF+QtHLE7mqpglFojEDK3b25t0It+BywWbACEQO8Aqkg+ue1DLV717eKdKR5Fb8Ljq6Buvc/NKwuJEdpW7qc++8S4TFxdW3tYFuJk=
+	t=1751643945; cv=none; b=stL9ZdSprs+h8LV6hHyT8cKql1bdIGhg481aEMPsPHkbedUxEk8dGUdRkVKhrjFNqTClVPoHY+x5bFTWjvfFY1hKj5AncOuUj0DeUf2tkKNGaxH7pRIBZ09h0sKQwq5Np70s7rA02UqjRoyBbWhCLAKsIzTKmSkXq0ffV5K8864=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751643503; c=relaxed/simple;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tF6NX3TXZutyYqiZ1qc7OsTY2hWtOYwYuNGQab/z7GUswwDjdDECrkHfD3M0FYsvlurjvsbJG3RTmPY94h1kelt2rbZiw5m05+vlstHF2o9vgDIvFdrwSgWoB9k7/phHQlYACJVVztArEgiUu+hZ3T9FBMv4GMRpxrH74Afj8+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=OX/WZ6nB; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1751643461; x=1752248261; i=rwarsow@gmx.de;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=OX/WZ6nB+ODVApO9YyTaMZwGboGEf6UjWXHXqungujfwvye6yEtNfnwU1sAJQE4Z
-	 WFr3/g1v2bxFIGV4VNkwgj3u/2e90/Hr/4YPwFb4CJaQyoVFGq4te27eht3H+Qmji
-	 l5Uv06/ePZqxklYGYsj1vXEliu0Gx99e7HgDs4u2qZ3Y4M/KidM4VX6fj46rMGpYJ
-	 GTVG8sboxydl72c9mBVsGw/1pzYCIx466NV189oINrRac2qMytiU5Myx7MNy/fs2X
-	 7ZS+/gV2olameEvOjMXh1GcQoavT4eodZTaOXXOZV2BpW9laDmYWJb5p+I+rw0YMn
-	 oRVYbVBPY92bsLAXvA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.33.128]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M5fIW-1udlAE3Pic-004mST; Fri, 04
- Jul 2025 17:37:40 +0200
-Message-ID: <678fe368-326a-4d0d-860e-95e2f44a61c5@gmx.de>
-Date: Fri, 4 Jul 2025 17:37:39 +0200
+	s=arc-20240116; t=1751643945; c=relaxed/simple;
+	bh=9lm9zh+rY3R25ZONGP1EZ6ZiDrYnHo9tcgTDZ4Ofr5k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ort8FmM1w8JKzvJkA7qFc890UFp7Gd+bPfACkHiyVCTi7I1+46wu800lSLqqbJvwQZzzfcNITv6h8rccULgJzyDcTtQ1nc6CZtUPUqMGpmsrDxQYK6KLsboXWMeHtLLTIJfHnrwewEdChwE3agde8NzpX/COifrLukSBpxU5awc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eyOPmbex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612F6C4CEE3;
+	Fri,  4 Jul 2025 15:45:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751643943;
+	bh=9lm9zh+rY3R25ZONGP1EZ6ZiDrYnHo9tcgTDZ4Ofr5k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=eyOPmbexiptgTyQ0KyjgcW+VJXH6njYzNNYQ6Cu+I50j+cF+Qx67IQC5KovURYIOB
+	 kL7Y4X7r+XmKR3gm+5Esz7YQGrY0lM/VHETOQuyxt1oCstm6izsMu2JeE2xDxDjwgq
+	 pD/h0nARxBwX38aNI6zZOhj/226OjundB8coQzWQAG01Vpr6hgtBGQb8qZmbAwtZCB
+	 C/lNYHgj/MKlNvq7R8V0vwsA++Jb+p5p85bZWFE/xE1/XCGbomIMH/f8vr6dv4+SMK
+	 OtaApUoBS9l3ZtNZKIgKwCg042mbjAediFnRISCNfXqNcETCM+F0J/vkuHmlAV3kp8
+	 u7EAZaFhMmV2w==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  stable@vger.kernel.org,
+  patches@lists.linux.dev,  Miquel Raynal <miquel.raynal@bootlin.com>,
+  Mark Brown <broonie@kernel.org>,  Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 212/218] spi: spi-mem: Extend spi-mem operations
+ with a per-operation maximum frequency
+In-Reply-To: <2025070449-scruffy-difficult-5852@gregkh>
+References: <20250703143955.956569535@linuxfoundation.org>
+	<20250703144004.692234510@linuxfoundation.org>
+	<mafs04ivs186o.fsf@kernel.org> <2025070449-scruffy-difficult-5852@gregkh>
+Date: Fri, 04 Jul 2025 17:45:41 +0200
+Message-ID: <mafs0zfdkyn6i.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.15 000/263] 6.15.5-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250704125604.759558342@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20250704125604.759558342@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:Q4ueOPUJpt/njJqrbcBzvUGStjncSVN4382XVhGCRZ6DNOTAHV0
- JgDTpN/dSOW/XrOban2gMu6MJ3y+LZEy1f4vCn/DK2SMJpPsy7ou09niZMppyqwOWOYE1Na
- TcZuNvynKWdmS6yY/i8k2GHInGRTyGyUtk2NntcJT++mYA7MB7wvcLKFAGIgAw/az1ZsAEz
- NEFUPR6i8blO6FdPAtPHg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:hcqnhP9wrnk=;k2GRxpn1vx5Tn3LzOd2AQAFbcHP
- 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
- t9wKFjD
+Content-Type: text/plain
 
-Hi
+On Fri, Jul 04 2025, Greg Kroah-Hartman wrote:
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+> On Fri, Jul 04, 2025 at 01:55:59PM +0200, Pratyush Yadav wrote:
+>> Hi Greg,
+>> 
+>> On Thu, Jul 03 2025, Greg Kroah-Hartman wrote:
+>> 
+>> > 6.12-stable review patch.  If anyone has any objections, please let me know.
+>> 
+>> This and patches 213, 214, and 215 seem to be new features. So why are
+>> they being added to a stable release?
+>
+> It was to get commit 40369bfe717e ("spi: fsl-qspi: use devm function
+> instead of driver remove") to apply cleanly.  I'll try removing these to
+> see if that commit can still apply somehow...
 
-Thanks
+The conflict resolution seems simple. Perhaps the patch below? (**not
+even compile tested**):
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+--- 8< ---
+From 6edae14f9e968fbb5c566dda8055e92cd491a3a6 Mon Sep 17 00:00:00 2001
+From: Han Xu <han.xu@nxp.com>
+Date: Wed, 26 Mar 2025 17:41:51 -0500
+Subject: [PATCH] spi: fsl-qspi: use devm function instead of driver remove
 
+Driver use devm APIs to manage clk/irq/resources and register the spi
+controller, but the legacy remove function will be called first during
+device detach and trigger kernel panic. Drop the remove function and use
+devm_add_action_or_reset() for driver cleanup to ensure the release
+sequence.
+
+Trigger kernel panic on i.MX8MQ by
+echo 30bb0000.spi >/sys/bus/platform/drivers/fsl-quadspi/unbind
+
+Cc: stable@vger.kernel.org
+Fixes: 8fcb830a00f0 ("spi: spi-fsl-qspi: use devm_spi_register_controller")
+Reported-by: Kevin Hao <haokexin@gmail.com>
+Signed-off-by: Han Xu <han.xu@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250326224152.2147099-1-han.xu@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+---
+ drivers/spi/spi-fsl-qspi.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+index 79bac30e79af6..310350d2c5302 100644
+--- a/drivers/spi/spi-fsl-qspi.c
++++ b/drivers/spi/spi-fsl-qspi.c
+@@ -839,6 +839,19 @@ static const struct spi_controller_mem_ops fsl_qspi_mem_ops = {
+ 	.get_name = fsl_qspi_get_name,
+ };
+ 
++static void fsl_qspi_cleanup(void *data)
++{
++	struct fsl_qspi *q = data;
++
++	/* disable the hardware */
++	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
++	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
++
++	fsl_qspi_clk_disable_unprep(q);
++
++	mutex_destroy(&q->lock);
++}
++
+ static int fsl_qspi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_controller *ctlr;
+@@ -928,6 +941,10 @@ static int fsl_qspi_probe(struct platform_device *pdev)
+ 
+ 	ctlr->dev.of_node = np;
+ 
++	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
++	if (ret)
++		goto err_destroy_mutex;
++
+ 	ret = devm_spi_register_controller(dev, ctlr);
+ 	if (ret)
+ 		goto err_destroy_mutex;
+@@ -947,19 +964,6 @@ static int fsl_qspi_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-static void fsl_qspi_remove(struct platform_device *pdev)
+-{
+-	struct fsl_qspi *q = platform_get_drvdata(pdev);
+-
+-	/* disable the hardware */
+-	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
+-	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
+-
+-	fsl_qspi_clk_disable_unprep(q);
+-
+-	mutex_destroy(&q->lock);
+-}
+-
+ static int fsl_qspi_suspend(struct device *dev)
+ {
+ 	return 0;
+@@ -997,7 +1001,6 @@ static struct platform_driver fsl_qspi_driver = {
+ 		.pm =   &fsl_qspi_pm_ops,
+ 	},
+ 	.probe          = fsl_qspi_probe,
+-	.remove_new	= fsl_qspi_remove,
+ };
+ module_platform_driver(fsl_qspi_driver);
+ 
+-- 
+Regards,
+Pratyush Yadav
 
