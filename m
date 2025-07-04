@@ -1,125 +1,193 @@
-Return-Path: <stable+bounces-160224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D341AF9B22
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 21:30:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC41AF9BA2
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 22:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D9045A38D1
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 19:30:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CC7B3A6AAE
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 20:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F129E1F91C5;
-	Fri,  4 Jul 2025 19:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A508020B81B;
+	Fri,  4 Jul 2025 20:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PANiQnV/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bNqyguPl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684D372634;
-	Fri,  4 Jul 2025 19:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21BC145346;
+	Fri,  4 Jul 2025 20:17:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751657429; cv=none; b=iaTqUH0ReV11iRuorbAs/2uOmI0ffoTK/5Z/8tkZBAF63aDlSfKMk4WMSWCo3R3QRCDt25A7PV79Ny5dUFYKlsQOCqbnOuPYbMtlSUNnIbdGftUww0c6GUo2ODVz+38zL2K0JZDU5Oe99dMP2hm45t8UCSN3coasZ3IrR/t4aGU=
+	t=1751660264; cv=none; b=OtaLG2OqPA8GLXWAghyHhdlB/a0qqN7A4NVXmlPz3YOlCjOiggk+LrlOZQmcu+xxCNqlmOLEGhPotkQE7AeV/4FJNhHKX+mExmwYlj+Jfc/CZO1OQVk3Xl/ek6piukiqi2ZXIf6slUxtrb7HMUTBBugkhUOCA7ZShBMPx/J1giQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751657429; c=relaxed/simple;
-	bh=6YeMduycNr0ucx71qBoH/BU6xLYTkm+mYjA1vKxf/iU=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=Zm8AUmCJRvUA/Mnn/Ks9WWdA5IRAj5s9jMAGQhKU573x6e8qb3Rxth0+VXbOrw6yqH2Cw+A7Qn7g8B9nZkz7svjNFJB5qvAdai9xvSpDM7Olz1o+T1SXlcplCBtKrXWd4M6rYYfOiHGJTWfufUxcoUEyvttGFHTrPIONO/GrAh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PANiQnV/; arc=none smtp.client-ip=209.85.214.193
+	s=arc-20240116; t=1751660264; c=relaxed/simple;
+	bh=ToSSYeda+QvMFhFJXYbRjh6o30tOZEKbemwVCqAxu2s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nt/rH25hWz2TgPZVGrvLoslQ6tD5vLScMwpO1nhMvgyxvXIq3QoDQUCAzJtwqUo8bNUNHHbN1h3KuOwaVBLrI1CwAoPIEY/RHjVJq5TfkQterDZruDS4T+4OgUDrjnwfPx71vbDxNcVOgDIn2knI3NJ2ktEtfm/PwLuDAwcXSlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bNqyguPl; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-23526264386so12102955ad.2;
-        Fri, 04 Jul 2025 12:30:28 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-60c93c23b08so2342310a12.3;
+        Fri, 04 Jul 2025 13:17:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751657428; x=1752262228; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6YeMduycNr0ucx71qBoH/BU6xLYTkm+mYjA1vKxf/iU=;
-        b=PANiQnV/UgGf/yXtYj426M+SxFh7CdedL52RjTldB7HqEhPKCpAkefMiYIDnHW+1tl
-         xwvWU+SKT8kVdwa0A0DNcMojXFej5ywzMlzutjPw1ofhv8jPYGYJGS8/lzJgBPUTqWaw
-         ciNUkw9H9grC29jAf3c0VuxB+WthZCE5rPnT3iMIWVI5G6NbZ6Y9bDF5iMds9B3XBu6g
-         lkRhKPV3Pc8NJxntfdHOgNRiGnKCFqLLXgbQeYjQa07RE0o2PEvRVrnJvj2zJkShd+UC
-         2B0CZgm5gY0Eb/D2Vn4QGU7kbO5yMk2W6R7b+4/NyFTHDAijHK0IuWhqxQPAbXKsInsE
-         9T1g==
+        d=gmail.com; s=20230601; t=1751660261; x=1752265061; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=NcNlVgWf+PG2kdLWT+gkGkxQYjH5Ivc/a0PUOrXHeO8=;
+        b=bNqyguPl0xrE1jzVA7rq5YcxgyWlEQf2RtB+mjVSLcuqZB8QVzbfpL/fFoM7moqWaX
+         mw8hDQj9LlJzu9RLWTH3gOnNUxfJyBqWqg+hOPeSK84+zIakS7+ZxUlwa36m/ZkrSItT
+         3tfa0ezzUdR0Ip3zHg/dGhvCBDcdP2YpSJ8yPx3npfRY4C00yMSaDb4rOStnuY0dqdwr
+         3tvOdJO6m1Dt5eqSnB033i+ZnqxK4ZV7v/vrHrb6Ub/wjwko4Nx0DWHzW56q46yGWBlo
+         jzEf1HMRUv9LOUhpOK9bbaMoIgx0AOF9/52DhuiXs59PXo2Su6A+U4NgagQYypKIKQ0E
+         N2/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751657428; x=1752262228;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6YeMduycNr0ucx71qBoH/BU6xLYTkm+mYjA1vKxf/iU=;
-        b=O74e1eOrcPrQM7xuHxPGYMa/uLJf4IiIki3doB0YyY+hnFbAMaCVPUWUmeZpqTnaFt
-         TQyM7FQOBgXSKt+aCS/0ZAGS3m/LqL1wQBimvHQxyG8bI9vcmKDds4lx1zFcWkvDJvQO
-         AtgBO64nvI7uOE6tYMjeTWkYS758XaBZXQymbqWSG5zYQNtJivztkZvgEFXXGGkbtw7X
-         YN1lKiqlsOabHAvVrALuZulbmopNaCAizCoW6iQPyncgJoY3bCFX6O8O6FDWp9o6knZ4
-         d0v+T1BpWbRTvSxl5zSG+wYDfG2lv5jQew14q2d+KpdM7y3tjR++MWSFdlKzee7h2zR0
-         mQHg==
-X-Forwarded-Encrypted: i=1; AJvYcCVOZeugKWwT+OrVWIGuDL+o8pRYy1Du5kF7at8YfJxlmzTaXP7hWcRMb0yUg1KHGVPB5lM2kZIxTfWs@vger.kernel.org, AJvYcCVsJnMSp9DZIdW23DtNMeNjo1y8SvUybvyl5j/O+ksm1FEjxY4J2ZlROuBmsH3UGNJBHE4Q2y/S@vger.kernel.org, AJvYcCWDZM/Q/woxVvXBFvFByJHvD4SAFOc1AnMY9HxYYrEqQyL/l9kG0VuLcHJYrrjpsU/2YDj3gsElyqsEQEgOZSM=@vger.kernel.org, AJvYcCWTCEi3N+JPl0zXQJM4fzmfu7buAA/9+XlOrSBDxJpHdB3WTp2zeN/DKpTi7k1jI9ijnpWi2f2a9RQ7@vger.kernel.org
-X-Gm-Message-State: AOJu0YznPIkd6bk3Ta84tEL/T3j6gC91ptigO1LcHAnFmOsRWEV/5uLs
-	rbAGfY+nRxY/uUMfIzT6Qeo2NVhFdik3N4w+XbEni+/9h0HebimZWJPZ
-X-Gm-Gg: ASbGncumDzch3qVvat8rR4AEaGBtC4dOywTpAtOW549dsWIqz0a1sQUNKDovgIBgAl5
-	r0jNV2IZEZ9QyhjxJGUTm4T9RW/0TyxUgnief2ZRpxpbUx5Cy/GDyr2udNFNofYgPTWcBYaBGt/
-	99qWjG1yhn9d9hLZQqJOrrmL7ED43YXox5PvK9AM0Hu7xPVG9gOSgdVkwkDtJbYcPhTH6MUtKWC
-	Mp+GOtDXzBhMjG0e7HyqsPwddXdIOwA210dKBSh+b6lQp2zI7KrrKzuwIVDL/gCqigxvrr1eLeU
-	0kwgZlAELE5msiCTa+IRAZ93dLJ7OVNbX1NH9pORuwez+bf2gMJn5+UpjCLHYEcXs7E2GfSAyA1
-	cfJGYpXxDhdaeCQ==
-X-Google-Smtp-Source: AGHT+IFk6QKQkW35P7FONxRvG31BHVykVFqw4PTl1hx8QxKZED0AtutT4llwQsSg6/TFW1FvopSL5g==
-X-Received: by 2002:a17:902:d511:b0:237:ed38:a5b3 with SMTP id d9443c01a7336-23c8746d7eamr45141015ad.8.1751657427664;
-        Fri, 04 Jul 2025 12:30:27 -0700 (PDT)
-Received: from [127.0.0.1] ([116.206.223.154])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23c8419269dsm25587255ad.0.2025.07.04.12.30.26
+        d=1e100.net; s=20230601; t=1751660261; x=1752265061;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NcNlVgWf+PG2kdLWT+gkGkxQYjH5Ivc/a0PUOrXHeO8=;
+        b=vXBCx69gNrQJx7wTWtG7Mb09BE5mjz97PTcHkIIcEa9E4I3gziVgr9XQcVrunvDbL2
+         e5bQCxxdMWoI8g90i6L5vNlC2BHemI254WLBg2qguHJs2nj0pF2KitTDcd4YOHHZW6av
+         4CGnq1l/n2X5Nvtzs/yZowFPWoSDq42ZVGo1CAkr3WltbbQyUqOs/onAoXTLkBr2uyLw
+         En7GBdxFdSP7JoQui5cg6fgoOc7s0Fjq/N40Ud3bQQ3QENjyacAPEvfULxsPrAYKVVBT
+         7t+xwYrsatZ7sC5LX3JQgD8KF4DJszIpStKgbQbc+BdDwH3rSOMm7/UYOQIlJBTEO5M0
+         D3tw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKh+zR/XcwYYIb5Ju9tqD9hotTT9lYQEQJwTf7qs+EtEF1x4Q9HIbatF7eE4tessCZYl5E77hx@vger.kernel.org, AJvYcCUV4GME6p7yKyxLp0J9tIQtOotbrEJPKoxXdFQcP+L4eBP5bOJbUNSPpyIRGun4b1SzcoBHP+fQ+19vfxs=@vger.kernel.org, AJvYcCUmZ9d0SzoM8ytScq6zTsALBDmb/sStjB8kdFfcpbyhaTpjh8sIEveGgfp3EZ9ODx0wiogBOAV0@vger.kernel.org
+X-Gm-Message-State: AOJu0YznPwzc46byVTZBg+4Hj/NCpRMDXG7dYrIAgj7frzRe5ZEAuAeg
+	QqeJ7/9YVKPICGN9cpWMv11VY4O2qgT4tOK1cptEFM4CwPtdW4xu5kRo
+X-Gm-Gg: ASbGnctmQJGpDYQ9amilnkQH/DzSE8A5DDmo03bncRqyByvW1SHL3eRVH1Vu41/xo5m
+	hZAM5Ur0IgtOF0PQWcNdw658ReQFQuZHzF8FjYi2WDplaNSGqP7mYyaUc42j8K+9eFFYgQd+d9k
+	kdgrgEn6DVkYZavJEkroTqF9Il3l2nD9W2+fbf9bSOAeMJ68iXJcqoj8QUAguJ014Esa6JrU1b+
+	TvstyAeSvcgEpe/ewA6Z61jXbAHwStTLfTuSnIIMCxdPaV6zTIl98lGmDBqERs4x+/IRS5Vf+rH
+	/gxKx7FA+LGE9GQtHBp21inIUszMOpkpHP12BNVAiQIPge98Qp0OxIcws6hOQm2pmFBvKek3rNL
+	u+m460rpRSujlGrRyBee5CVclrCKFu+Vn7GjpsvC366vmQaZ+S+jlMhyWoMJaNpvjLdeiuYbmfc
+	L50Il8kDKY080fR/TDhrbiLccHsbYxQumWiJxf
+X-Google-Smtp-Source: AGHT+IFSIskvmIhHXw4zIijBIXv/T/NVh58YZFyd5CYdip6AxgaDFxcLpextRGQE/hA/eaElTXlVgQ==
+X-Received: by 2002:a05:6402:2354:b0:609:7e19:f10f with SMTP id 4fb4d7f45d1cf-60fd1f8af77mr3569937a12.0.1751660260953;
+        Fri, 04 Jul 2025 13:17:40 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f2f:7a00:656d:a8a8:c9d6:8d1d? (p200300ea8f2f7a00656da8a8c9d68d1d.dip0.t-ipconnect.de. [2003:ea:8f2f:7a00:656d:a8a8:c9d6:8d1d])
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-60fcb0c791bsm1809126a12.42.2025.07.04.13.17.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Jul 2025 12:30:27 -0700 (PDT)
-Date: Sat, 05 Jul 2025 01:00:23 +0530
-From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-CC: Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
- linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_Instability_in_ALL_stable_an?=
- =?US-ASCII?Q?d_LTS_distro_kernels_=28IRQ_=2316_be?=
- =?US-ASCII?Q?ing_disabled=2C_PCIe_bus_errors=2C_a?=
- =?US-ASCII?Q?th10k=5Fpci=29_in_Dell_Inspiron_5567?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <3214E8BE-0A5D-40E7-A4DC-C1027CD052EC@gmail.com>
-References: <CAEmM+Qi-Waxk5qcR+nfip-QGXaKk0-Kq7QSq890e9oYOPjW+bA@mail.gmail.com> <20250625202014.GA1585022@bhelgaas> <CAEmM+Qg+xxMfXb=704OfwYLou7Mh_BNaTevLaGfiG2peZotJoA@mail.gmail.com> <E8A26FD9-13E3-474A-87FF-ED8D27A1F27B@gmail.com> <3214E8BE-0A5D-40E7-A4DC-C1027CD052EC@gmail.com>
-Message-ID: <B0A6D9B4-086F-4D58-8284-485B9FF4B31A@gmail.com>
+        Fri, 04 Jul 2025 13:17:40 -0700 (PDT)
+Message-ID: <0310186d-dfc5-406f-8cd1-c393a7c620e8@gmail.com>
+Date: Fri, 4 Jul 2025 22:18:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: phy: realtek: Reset after clock enable
+To: Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Andrew Lunn <andrew@lunn.ch>, Russell King <linux@armlinux.org.uk>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Detlev Casanova <detlev.casanova@collabora.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250704-phy-realtek-clock-fix-v1-1-63b33d204537@kernel.org>
+Content-Language: en-US
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Autocrypt: addr=hkallweit1@gmail.com; keydata=
+ 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
+In-Reply-To: <20250704-phy-realtek-clock-fix-v1-1-63b33d204537@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi everyone,
+On 04.07.2025 19:48, Sebastian Reichel wrote:
+> On Radxa ROCK 4D boards we are seeing some issues with PHY detection and
+> stability (e.g. link loss, or not capable of transceiving packages)
+> after new board revisions switched from a dedicated crystal to providing
+> the 25 MHz PHY input clock from the SoC instead.
+> 
+> This board is using a RTL8211F PHY, which is connected to an always-on
+> regulator. Unfortunately the datasheet does not explicitly mention the
+> power-up sequence regarding the clock, but it seems to assume that the
+> clock is always-on (i.e. dedicated crystal).
+> 
+> By doing an explicit reset after enabling the clock, the issue on the
+> boards could no longer be observed.
+> 
+Is the SoC clock always on after boot? Or may it be disabled e.g.
+during system suspend? Then you would have to do the PHY reset also
+on resume from suspend.
 
-Here after a week=2E I did my research=2E
+> Cc: stable@vger.kernel.org
+> Fixes: 7300c9b574cc ("net: phy: realtek: Add optional external PHY clock")
+> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> ---
+>  drivers/net/phy/realtek/realtek_main.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+> index c3dcb62574303374666b46a454cd4e10de455d24..3a783f0c3b4f2a4f6aa63a16ad309e3471b0932a 100644
+> --- a/drivers/net/phy/realtek/realtek_main.c
+> +++ b/drivers/net/phy/realtek/realtek_main.c
+> @@ -231,6 +231,10 @@ static int rtl821x_probe(struct phy_device *phydev)
+>  		return dev_err_probe(dev, PTR_ERR(priv->clk),
+>  				     "failed to get phy clock\n");
+>  
+> +	/* enabling the clock might produce glitches, so hard-reset the PHY */
+> +	phy_device_reset(phydev, 1);
+> +	phy_device_reset(phydev, 0);
+> +
+>  	ret = phy_read_paged(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR1);
+>  	if (ret < 0)
+>  		return ret;
+> 
+> ---
+> base-commit: 4c06e63b92038fadb566b652ec3ec04e228931e8
+> change-id: 20250704-phy-realtek-clock-fix-6cd393e8cb2a
+> 
+> Best regards,
 
-I talked to some folks on IRC and the glaring issue was basically this:=20
-
-> [ 1146=2E810055] pcieport 0000:00:1c=2E0: AER: Uncorrectable (Fatal) err=
-or message received from 0000:01:00=2E0
-
-This basically means that the root port (that 1c thing written with colons=
-) of PCIe is the main problem here=2E=20
-
-One particular note: this issue can be reproduced on the models of this sa=
-me laptop=2E Therefore, this happens in most if not all of the laptops of t=
-he same model=2E
-
-For starters, the root port basically manages the communication between th=
-e CPU and the device=2E Now, this root port itself is reporting fatal error=
-s=2E
-
-This is not a Wi-Fi error, but something deeper=2E=20
-
-Any tips on what to do?
-
-Bandhan
 
