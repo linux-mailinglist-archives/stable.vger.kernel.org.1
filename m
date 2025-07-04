@@ -1,501 +1,223 @@
-Return-Path: <stable+bounces-160191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F165DAF92A7
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 14:31:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC448AF9318
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 14:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54A19588675
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 12:31:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4934D16979B
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 12:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917A82D8788;
-	Fri,  4 Jul 2025 12:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7662D63E5;
+	Fri,  4 Jul 2025 12:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Dgc/a1lZ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="NZw5n9wz";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Dgc/a1lZ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="NZw5n9wz"
+	dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b="S6WcYPIy";
+	dkim=pass (2048-bit key) header.d=vates.tech header.i=teddy.astie@vates.tech header.b="fxO9guWt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail135-23.atl141.mandrillapp.com (mail135-23.atl141.mandrillapp.com [198.2.135.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B352D6619
-	for <stable@vger.kernel.org>; Fri,  4 Jul 2025 12:31:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E362B2D7
+	for <stable@vger.kernel.org>; Fri,  4 Jul 2025 12:49:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.2.135.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751632284; cv=none; b=dJEIvNNtQsxA9j3AlI0tNCcz+KBC9N/65b785TuV+k8OZ7561NoK0cqPjlvAQf2IrT8T0cCWOJH/MZJCVhG/9WRmYThyEjrk4UYkosmGHo+yiRD+9D02LXnilYo5iII6/cZx+8VZ6dusB/N06kHQXCezbUfvtsfG8OIEc1dYEk0=
+	t=1751633363; cv=none; b=utWg28nVXUusW9lfg7dZsibsUCkRnWOBADPJBZoRl6XvuBpZT/D5AK24FrI/DUGgwShRof3LFVPPbVU+RcwhiRCywAddQnSC4p6KEq3kVF7jxbH4sgtacDLnSjSQhfSxrUQbU5e8BxGgi5K2AIBX22R+x8sloLzov5yibR71wUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751632284; c=relaxed/simple;
-	bh=NK5YTPjLqYtqz3lyIfC+j0u1ESJjVngCHa68TYOjuPw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RCPtFpsdWfhYIRbQVCa7S2ltsztI14N6cHnx4Pvc/CR4vNrBmZvTOJFv3LvWTeeMqoDr2iXsXwvMuJvQuIiv0PMvmEVyNkdnLgHrJbLartxmAME8B2g9bRhEPzuGeQik8j13fL2b5OOyW8RCSarkV+HyuAa6K95RRSNIVgscmO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Dgc/a1lZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=NZw5n9wz; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Dgc/a1lZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=NZw5n9wz; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5585E21172;
-	Fri,  4 Jul 2025 12:31:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1751632280; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=X9QbCr2bHk5aDZv/OKGH9Uvd6J29D96g17XlBrgClVE=;
-	b=Dgc/a1lZ1L0rayQiEfsAadt1JtmxEzMt4Kw19yk7tV1forJzJgmeMFogjZRGwwtWvj5gDS
-	watHBG64uzGqP1DpgJco6VAKadF0Ty/4z/yqo608GupyIO59/C+MrnILGK0au+XAHrSzH5
-	eOjBOlsG/R6ys+BPQMG5OlwfnCFWtZU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1751632280;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=X9QbCr2bHk5aDZv/OKGH9Uvd6J29D96g17XlBrgClVE=;
-	b=NZw5n9wzN+R9s13HrdBenO9iuNcqvrc/VBsuD3EmvrICp3lAo8EOxWOFYnzxG2J+5Qvdnv
-	/xFknqi/aM7xQQCQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1751632280; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=X9QbCr2bHk5aDZv/OKGH9Uvd6J29D96g17XlBrgClVE=;
-	b=Dgc/a1lZ1L0rayQiEfsAadt1JtmxEzMt4Kw19yk7tV1forJzJgmeMFogjZRGwwtWvj5gDS
-	watHBG64uzGqP1DpgJco6VAKadF0Ty/4z/yqo608GupyIO59/C+MrnILGK0au+XAHrSzH5
-	eOjBOlsG/R6ys+BPQMG5OlwfnCFWtZU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1751632280;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=X9QbCr2bHk5aDZv/OKGH9Uvd6J29D96g17XlBrgClVE=;
-	b=NZw5n9wzN+R9s13HrdBenO9iuNcqvrc/VBsuD3EmvrICp3lAo8EOxWOFYnzxG2J+5Qvdnv
-	/xFknqi/aM7xQQCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F205F13A71;
-	Fri,  4 Jul 2025 12:31:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id x9yvOZfJZ2hLVQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 04 Jul 2025 12:31:19 +0000
-Message-ID: <621b4efc-dd71-4eb1-b81a-f0551ef38257@suse.de>
-Date: Fri, 4 Jul 2025 14:31:19 +0200
+	s=arc-20240116; t=1751633363; c=relaxed/simple;
+	bh=+Ya70OlSJjMKluBLRmgXd00vMiKqrWVBE+J7svp14ss=;
+	h=From:Subject:To:Cc:Message-Id:Date:MIME-Version:Content-Type; b=GJuSirPv8ITbkLnZurqoR1xK935U8Wj8BJq/RAPI+hJVqM0XxdCb7mUJW6Gh3Uwa6XSk40eyX0P2REnr8P6rg0Ij0NNM9SyyQB1BcCfvnFnvydLjiL4oNJgsgIsYrJ+2nyVdx3DiWTKoV/HDqkeqnFjjCpMSnmmUbyRbCIkv9RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech; spf=pass smtp.mailfrom=bounce.vates.tech; dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b=S6WcYPIy; dkim=pass (2048-bit key) header.d=vates.tech header.i=teddy.astie@vates.tech header.b=fxO9guWt; arc=none smtp.client-ip=198.2.135.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounce.vates.tech
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
+	s=mte1; t=1751633360; x=1751903360;
+	bh=tt0oM0tqOxl3axHhNxXYGkg2bRs4dsH6dn0uDyBVvW8=;
+	h=From:Subject:To:Cc:Message-Id:Feedback-ID:Date:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:CC:Date:Subject:From;
+	b=S6WcYPIy9q1ln0ek+319hOcKAJam2AHDjMHOPSmvx/mGRxXRYwLsHUTcv9kJd77pH
+	 OiRpnrwCGAzfKD/uffJJHkCNxmEbhaHGN/av3koEJSsMQDmAqg3InN2luV/srf4qGx
+	 3r6ZG2K1lx/0Z3vRxGgjinBQiElu6wdB8IfmRoN237gWSJXuFLLzPHrOyl7IrveHfJ
+	 LUNyMcKxuJRXRrqRm14NLRBUBesQKuVH8jYgb7ea+CFHH2eAaNaBSJkAQ4b2CNnuXR
+	 7hRBHZb/VTHPy4CuS85OXGL5j0Gcxw9M2wMJ2ymyL7ZKWbQKb1CDxQAhFISqtLJRIu
+	 Zc253LvAH7OAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech; s=mte1;
+	t=1751633360; x=1751893860; i=teddy.astie@vates.tech;
+	bh=tt0oM0tqOxl3axHhNxXYGkg2bRs4dsH6dn0uDyBVvW8=;
+	h=From:Subject:To:Cc:Message-Id:Feedback-ID:Date:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:CC:Date:Subject:From;
+	b=fxO9guWteH+/sMfLW5pAmV/rk7AFexAN55vBplVuZZBwyUPLHaGxEnjVIVpvOLaet
+	 c3BxB8GaWvOoykooeXg6t/oVsGvn2Tq2TzF2W/o1cCUAJmHRHeb9vIp+uO3eghHp6b
+	 39+hUNIH3NzNhiLg+aYVwUIWTJQ2lIQwas9LQIU7otq2UBJSZWsWDUq5GtY+swkFc/
+	 1vUFUGLtzv3/KyHS0fyKT85Vixx19k34jIxMMx+oOYjPetUpVKyBaUall1MJ4YgK00
+	 s6z/Hzz68eU1HoAYaVvwUJXtGTgs9IFi4JLFdO9veZQedad9LJRyOm9QFGl8V751XW
+	 NEs8WqtX+3R/A==
+Received: from pmta14.mandrill.prod.atl01.rsglab.com (localhost [127.0.0.1])
+	by mail135-23.atl141.mandrillapp.com (Mailchimp) with ESMTP id 4bYYNv6wGFz35j3lf
+	for <stable@vger.kernel.org>; Fri,  4 Jul 2025 12:49:19 +0000 (GMT)
+From: "Teddy Astie" <teddy.astie@vates.tech>
+Subject: =?utf-8?Q?[PATCH=205.15.y=20v3]=20xen:=20replace=20xen=5Fremap()=20with=20memremap()?=
+Received: from [37.26.189.201] by mandrillapp.com id 4fa7227c4c0e400eacc6320bab59ede5; Fri, 04 Jul 2025 12:49:19 +0000
+X-Mailer: git-send-email 2.50.0
+X-Bm-Disclaimer: Yes
+X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
+X-Bm-Transport-Timestamp: 1751633357597
+To: linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org
+Cc: "Teddy Astie" <teddy.astie@vates.tech>, "Boris Ostrovsky" <boris.ostrovsky@oracle.com>, "Juergen Gross" <jgross@suse.com>, "Stefano Stabellini" <sstabellini@kernel.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Sasha Levin" <sashal@kernel.org>, "Jason Andryuk" <jason.andryuk@amd.com>, stable@vger.kernel.org, "kernel test robot" <lkp@intel.com>
+Message-Id: <ea4945df138527ed63e711cb77e3b333f7b3a4c9.1751633056.git.teddy.astie@vates.tech>
+X-Native-Encoded: 1
+X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,=20including=20all=20headers,=20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.4fa7227c4c0e400eacc6320bab59ede5?=
+X-Mandrill-User: md_30504962
+Feedback-ID: 30504962:30504962.20250704:md
+Date: Fri, 04 Jul 2025 12:49:19 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/framebuffer: Acquire internal references on GEM
- handles
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- asrivats@redhat.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- airlied@gmail.com, simona@ffwll.ch, patrik.r.jakobsson@gmail.com
-Cc: dri-devel@lists.freedesktop.org, Bert Karwatzki <spasswolf@web.de>,
- Sumit Semwal <sumit.semwal@linaro.org>, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, stable@vger.kernel.org
-References: <20250704085541.28165-1-tzimmermann@suse.de>
- <2be81e33-91f3-49f2-9293-231d48af381c@amd.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <2be81e33-91f3-49f2-9293-231d48af381c@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,web.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_TWO(0.00)[2];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,web.de,linaro.org,vger.kernel.org,lists.linaro.org];
-	FREEMAIL_TO(0.00)[amd.com,redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,linaro.org:email,intel.com:email]
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Hi
+From: Juergen Gross <jgross@suse.com>
 
-Am 04.07.25 um 14:06 schrieb Christian König:
-> On 04.07.25 10:53, Thomas Zimmermann wrote:
->> Acquire GEM handles in drm_framebuffer_init() and release them in
->> the corresponding drm_framebuffer_cleanup(). Ties the handle's
->> lifetime to the framebuffer. Not all GEM buffer objects have GEM
->> handles. If not set, no refcounting takes place. This is the case
->> for some fbdev emulation. This is not a problem as these GEM objects
->> do not use dma-bufs and drivers will not release them while fbdev
->> emulation is running.
->>
->> As all drivers use drm_framebuffer_init(), they will now all hold
->> dma-buf references as fixed in commit 5307dce878d4 ("drm/gem: Acquire
->> references on GEM handles for framebuffers").
->>
->> In the GEM framebuffer helpers, restore the original ref counting
->> on buffer objects. As the helpers for handle refcounting are now
->> no longer called from outside the DRM core, unexport the symbols.
->>
->> Gma500 (unnecessarily) clears the framebuffer's GEM-object pointer
->> before calling drm_framebuffer_cleanup(). Remove these lines to
->> make it consistent with the rest of the drivers. It's one of the
->> fbdev emulations with no GEM handle on their buffers. The change
->> to gma500 is therefore rather cosmetic.
-> Could we separate that change out? I mean we want to backport the patch.
+[ upstream commit 41925b105e345ebc84cedb64f59d20cb14a62613 ]
 
-Sure. gma500 doesn't use handles for its fbdev emulation. So nothing 
-changes.
+xen_remap() is used to establish mappings for frames not under direct
+control of the kernel: for Xenstore and console ring pages, and for
+grant pages of non-PV guests.
 
->
->> Tested on i915, amdgpu (by Bert) and gma500. Also tested on i915
->> plus udl for the original problem with dma-buf sharing.
->>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Fixes: 5307dce878d4 ("drm/gem: Acquire references on GEM handles for framebuffers")
->> Reported-by: Bert Karwatzki <spasswolf@web.de>
->> Closes: https://lore.kernel.org/dri-devel/20250703115915.3096-1-spasswolf@web.de/
->> Tested-by: Bert Karwatzki <spasswolf@web.de>
->> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: Anusha Srivatsa <asrivats@redhat.com>
->> Cc: Christian König <christian.koenig@amd.com>
->> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->> Cc: Maxime Ripard <mripard@kernel.org>
->> Cc: Sumit Semwal <sumit.semwal@linaro.org>
->> Cc: "Christian König" <christian.koenig@amd.com>
->> Cc: linux-media@vger.kernel.org
->> Cc: dri-devel@lists.freedesktop.org
->> Cc: linaro-mm-sig@lists.linaro.org
->> Cc: <stable@vger.kernel.org>
->> ---
->>   drivers/gpu/drm/drm_framebuffer.c            | 23 +++++++-
->>   drivers/gpu/drm/drm_gem.c                    | 59 +++++++++++++-------
->>   drivers/gpu/drm/drm_gem_framebuffer_helper.c | 16 +++---
->>   drivers/gpu/drm/drm_internal.h               |  4 +-
->>   drivers/gpu/drm/gma500/fbdev.c               |  2 -
->>   5 files changed, 69 insertions(+), 35 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_framebuffer.c b/drivers/gpu/drm/drm_framebuffer.c
->> index b781601946db..e4a10dd053fc 100644
->> --- a/drivers/gpu/drm/drm_framebuffer.c
->> +++ b/drivers/gpu/drm/drm_framebuffer.c
->> @@ -862,11 +862,17 @@ EXPORT_SYMBOL_FOR_TESTS_ONLY(drm_framebuffer_free);
->>   int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
->>   			 const struct drm_framebuffer_funcs *funcs)
->>   {
->> +	unsigned int i;
->>   	int ret;
->>   
->>   	if (WARN_ON_ONCE(fb->dev != dev || !fb->format))
->>   		return -EINVAL;
->>   
->> +	for (i = 0; i < fb->format->num_planes; i++) {
->> +		if (fb->obj[i])
->> +			drm_gem_object_handle_get_if_exists_unlocked(fb->obj[i]);
->> +	}
->> +
->>   	INIT_LIST_HEAD(&fb->filp_head);
->>   
->>   	fb->funcs = funcs;
->> @@ -875,7 +881,7 @@ int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
->>   	ret = __drm_mode_object_add(dev, &fb->base, DRM_MODE_OBJECT_FB,
->>   				    false, drm_framebuffer_free);
->>   	if (ret)
->> -		goto out;
->> +		goto err;
->>   
->>   	mutex_lock(&dev->mode_config.fb_lock);
->>   	dev->mode_config.num_fb++;
->> @@ -883,7 +889,14 @@ int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
->>   	mutex_unlock(&dev->mode_config.fb_lock);
->>   
->>   	drm_mode_object_register(dev, &fb->base);
->> -out:
->> +
->> +	return 0;
->> +
->> +err:
->> +	for (i = 0; i < fb->format->num_planes; i++) {
->> +		if (fb->obj[i])
->> +			drm_gem_object_handle_put_if_exists_unlocked(fb->obj[i]);
->> +	}
->>   	return ret;
->>   }
->>   EXPORT_SYMBOL(drm_framebuffer_init);
->> @@ -960,6 +973,12 @@ EXPORT_SYMBOL(drm_framebuffer_unregister_private);
->>   void drm_framebuffer_cleanup(struct drm_framebuffer *fb)
->>   {
->>   	struct drm_device *dev = fb->dev;
->> +	unsigned int i;
->> +
->> +	for (i = 0; i < fb->format->num_planes; i++) {
->> +		if (fb->obj[i])
->> +			drm_gem_object_handle_put_if_exists_unlocked(fb->obj[i]);
->> +	}
-> That goes boom as soon as somebody grabs a GEM handle for the FB used for fbdev emulation (which is perfectly possible with the UAPI but not done currently as far as I know).
+Today xen_remap() is defined to use ioremap() on x86 (doing uncached
+mappings), and ioremap_cache() on Arm (doing cached mappings).
 
-My uninformed question: how so? I thought userspace gets the handle from 
-allocating buffers (e.g., CREATE_DUMB or driver ioctl). That object 
-would be distinct from the fbdev object.
+Uncached mappings for those use cases are bad for performance, so they
+should be avoided if possible. As all use cases of xen_remap() don't
+require uncached mappings (the mapped area is always physical RAM),
+a mapping using the standard WB cache mode is fine.
 
->
-> It's probably ok for a bug fix we are going to backport, but a more robust long term solution is really desired here I think.
+As sparse is flagging some of the xen_remap() use cases to be not
+appropriate for iomem(), as the result is not annotated with the
+__iomem modifier, eliminate xen_remap() completely and replace all
+use cases with memremap() specifying the MEMREMAP_WB caching mode.
 
-There are only 4 GEM objects per framebuffer at most. So we could flag 
-each plane with a bit in struct drm_framebuffer.flags when we acquire 
-the handle in drm_framebuffer_init(). _cleanup() would then only unref 
-those with the flag set. Does that work?
+xen_unmap() can be replaced with memunmap().
 
-Best regards
-Thomas
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+Link: https://lore.kernel.org/r/20220530082634.6339-1-jgross@suse.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Teddy Astie <teddy.astie@vates.tech> [backport to 5.15.y]
+---
+v3:
+- add missing hvc_xen.c change
+v2:
+- also remove xen_remap/xen_unmap on ARM
+---
+ arch/x86/include/asm/xen/page.h   | 3 ---
+ drivers/tty/hvc/hvc_xen.c         | 2 +-
+ drivers/xen/grant-table.c         | 6 +++---
+ drivers/xen/xenbus/xenbus_probe.c | 3 +--
+ include/xen/arm/page.h            | 3 ---
+ 5 files changed, 5 insertions(+), 12 deletions(-)
 
->
-> Regards,
-> Christian.
->
->>   
->>   	mutex_lock(&dev->mode_config.fb_lock);
->>   	list_del(&fb->head);
->> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
->> index bc505d938b3e..9d8b9e6b7d25 100644
->> --- a/drivers/gpu/drm/drm_gem.c
->> +++ b/drivers/gpu/drm/drm_gem.c
->> @@ -224,23 +224,27 @@ static void drm_gem_object_handle_get(struct drm_gem_object *obj)
->>   }
->>   
->>   /**
->> - * drm_gem_object_handle_get_unlocked - acquire reference on user-space handles
->> + * drm_gem_object_handle_get_if_exists_unlocked - acquire reference on user-space handle, if any
->>    * @obj: GEM object
->>    *
->> - * Acquires a reference on the GEM buffer object's handle. Required
->> - * to keep the GEM object alive. Call drm_gem_object_handle_put_unlocked()
->> - * to release the reference.
->> + * Acquires a reference on the GEM buffer object's handle. Required to keep
->> + * the GEM object alive. Call drm_gem_object_handle_put_if_exists_unlocked()
->> + * to release the reference. Does nothing if the buffer object has no handle.
->>    */
->> -void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj)
->> +void drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj)
->>   {
->>   	struct drm_device *dev = obj->dev;
->>   
->>   	guard(mutex)(&dev->object_name_lock);
->>   
->> -	drm_WARN_ON(dev, !obj->handle_count); /* first ref taken in create-tail helper */
->> -	drm_gem_object_handle_get(obj);
->> +	/*
->> +	 * First ref taken during GEM object creation, if any. Some
->> +	 * drivers set up internal framebuffers with GEM objects that
->> +	 * do not have a GEM handle. Hence, this counter can be zero.
->> +	 */
->> +	if (obj->handle_count)
->> +		drm_gem_object_handle_get(obj);
->>   }
->> -EXPORT_SYMBOL(drm_gem_object_handle_get_unlocked);
->>   
->>   /**
->>    * drm_gem_object_handle_free - release resources bound to userspace handles
->> @@ -272,21 +276,11 @@ static void drm_gem_object_exported_dma_buf_free(struct drm_gem_object *obj)
->>   	}
->>   }
->>   
->> -/**
->> - * drm_gem_object_handle_put_unlocked - releases reference on user-space handles
->> - * @obj: GEM object
->> - *
->> - * Releases a reference on the GEM buffer object's handle. Possibly releases
->> - * the GEM buffer object and associated dma-buf objects.
->> - */
->> -void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
->> +static void drm_gem_object_handle_put_unlocked_tail(struct drm_gem_object *obj)
->>   {
->>   	struct drm_device *dev = obj->dev;
->>   	bool final = false;
->>   
->> -	if (WARN_ON(READ_ONCE(obj->handle_count) == 0))
->> -		return;
->> -
->>   	/*
->>   	* Must bump handle count first as this may be the last
->>   	* ref, in which case the object would disappear before we
->> @@ -304,7 +298,32 @@ void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
->>   	if (final)
->>   		drm_gem_object_put(obj);
->>   }
->> -EXPORT_SYMBOL(drm_gem_object_handle_put_unlocked);
->> +
->> +static void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
->> +{
->> +	struct drm_device *dev = obj->dev;
->> +
->> +	if (drm_WARN_ON(dev, READ_ONCE(obj->handle_count) == 0))
->> +		return;
->> +
->> +	drm_gem_object_handle_put_unlocked_tail(obj);
->> +}
->> +
->> +/**
->> + * drm_gem_object_handle_put_if_exists_unlocked - releases reference on user-space handle, if any
->> + * @obj: GEM object
->> + *
->> + * Releases a reference on the GEM buffer object's handle. Possibly releases
->> + * the GEM buffer object and associated dma-buf objects. Does nothing if the
->> + * buffer object has no handle.
->> + */
->> +void drm_gem_object_handle_put_if_exists_unlocked(struct drm_gem_object *obj)
->> +{
->> +	if (!obj->handle_count)
->> +		return;
->> +
->> +	drm_gem_object_handle_put_unlocked_tail(obj);
->> +}
->>   
->>   /*
->>    * Called at device or object close to release the file's
->> diff --git a/drivers/gpu/drm/drm_gem_framebuffer_helper.c b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
->> index c60d0044d036..618ce725cd75 100644
->> --- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
->> +++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
->> @@ -100,7 +100,7 @@ void drm_gem_fb_destroy(struct drm_framebuffer *fb)
->>   	unsigned int i;
->>   
->>   	for (i = 0; i < fb->format->num_planes; i++)
->> -		drm_gem_object_handle_put_unlocked(fb->obj[i]);
->> +		drm_gem_object_put(fb->obj[i]);
->>   
->>   	drm_framebuffer_cleanup(fb);
->>   	kfree(fb);
->> @@ -183,10 +183,8 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
->>   		if (!objs[i]) {
->>   			drm_dbg_kms(dev, "Failed to lookup GEM object\n");
->>   			ret = -ENOENT;
->> -			goto err_gem_object_handle_put_unlocked;
->> +			goto err_gem_object_put;
->>   		}
->> -		drm_gem_object_handle_get_unlocked(objs[i]);
->> -		drm_gem_object_put(objs[i]);
->>   
->>   		min_size = (height - 1) * mode_cmd->pitches[i]
->>   			 + drm_format_info_min_pitch(info, i, width)
->> @@ -196,22 +194,22 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
->>   			drm_dbg_kms(dev,
->>   				    "GEM object size (%zu) smaller than minimum size (%u) for plane %d\n",
->>   				    objs[i]->size, min_size, i);
->> -			drm_gem_object_handle_put_unlocked(objs[i]);
->> +			drm_gem_object_put(objs[i]);
->>   			ret = -EINVAL;
->> -			goto err_gem_object_handle_put_unlocked;
->> +			goto err_gem_object_put;
->>   		}
->>   	}
->>   
->>   	ret = drm_gem_fb_init(dev, fb, mode_cmd, objs, i, funcs);
->>   	if (ret)
->> -		goto err_gem_object_handle_put_unlocked;
->> +		goto err_gem_object_put;
->>   
->>   	return 0;
->>   
->> -err_gem_object_handle_put_unlocked:
->> +err_gem_object_put:
->>   	while (i > 0) {
->>   		--i;
->> -		drm_gem_object_handle_put_unlocked(objs[i]);
->> +		drm_gem_object_put(objs[i]);
->>   	}
->>   	return ret;
->>   }
->> diff --git a/drivers/gpu/drm/drm_internal.h b/drivers/gpu/drm/drm_internal.h
->> index f7b414a813ae..9233019f54a8 100644
->> --- a/drivers/gpu/drm/drm_internal.h
->> +++ b/drivers/gpu/drm/drm_internal.h
->> @@ -161,8 +161,8 @@ void drm_sysfs_lease_event(struct drm_device *dev);
->>   
->>   /* drm_gem.c */
->>   int drm_gem_init(struct drm_device *dev);
->> -void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj);
->> -void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj);
->> +void drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj);
->> +void drm_gem_object_handle_put_if_exists_unlocked(struct drm_gem_object *obj);
->>   int drm_gem_handle_create_tail(struct drm_file *file_priv,
->>   			       struct drm_gem_object *obj,
->>   			       u32 *handlep);
->> diff --git a/drivers/gpu/drm/gma500/fbdev.c b/drivers/gpu/drm/gma500/fbdev.c
->> index 8edefea2ef59..afd252108cfa 100644
->> --- a/drivers/gpu/drm/gma500/fbdev.c
->> +++ b/drivers/gpu/drm/gma500/fbdev.c
->> @@ -121,7 +121,6 @@ static void psb_fbdev_fb_destroy(struct fb_info *info)
->>   	drm_fb_helper_fini(fb_helper);
->>   
->>   	drm_framebuffer_unregister_private(fb);
->> -	fb->obj[0] = NULL;
->>   	drm_framebuffer_cleanup(fb);
->>   	kfree(fb);
->>   
->> @@ -243,7 +242,6 @@ int psb_fbdev_driver_fbdev_probe(struct drm_fb_helper *fb_helper,
->>   
->>   err_drm_framebuffer_unregister_private:
->>   	drm_framebuffer_unregister_private(fb);
->> -	fb->obj[0] = NULL;
->>   	drm_framebuffer_cleanup(fb);
->>   	kfree(fb);
->>   err_drm_gem_object_put:
-
+diff --git a/arch/x86/include/asm/xen/page.h b/arch/x86/include/asm/xen/page.h
+index 1a162e559753..c183b7f9efef 100644
+--- a/arch/x86/include/asm/xen/page.h
++++ b/arch/x86/include/asm/xen/page.h
+@@ -355,9 +355,6 @@ unsigned long arbitrary_virt_to_mfn(void *vaddr);
+ void make_lowmem_page_readonly(void *vaddr);
+ void make_lowmem_page_readwrite(void *vaddr);
+ 
+-#define xen_remap(cookie, size) ioremap((cookie), (size))
+-#define xen_unmap(cookie) iounmap((cookie))
+-
+ static inline bool xen_arch_need_swiotlb(struct device *dev,
+ 					 phys_addr_t phys,
+ 					 dma_addr_t dev_addr)
+diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
+index 141acc662eba..6a11a4177a16 100644
+--- a/drivers/tty/hvc/hvc_xen.c
++++ b/drivers/tty/hvc/hvc_xen.c
+@@ -270,7 +270,7 @@ static int xen_hvm_console_init(void)
+ 	if (r < 0 || v == 0)
+ 		goto err;
+ 	gfn = v;
+-	info->intf = xen_remap(gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE);
++	info->intf = memremap(gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE, MEMREMAP_WB);
+ 	if (info->intf == NULL)
+ 		goto err;
+ 	info->vtermno = HVC_COOKIE;
+diff --git a/drivers/xen/grant-table.c b/drivers/xen/grant-table.c
+index 0a2d24d6ac6f..a10e0741bec5 100644
+--- a/drivers/xen/grant-table.c
++++ b/drivers/xen/grant-table.c
+@@ -743,7 +743,7 @@ int gnttab_setup_auto_xlat_frames(phys_addr_t addr)
+ 	if (xen_auto_xlat_grant_frames.count)
+ 		return -EINVAL;
+ 
+-	vaddr = xen_remap(addr, XEN_PAGE_SIZE * max_nr_gframes);
++	vaddr = memremap(addr, XEN_PAGE_SIZE * max_nr_gframes, MEMREMAP_WB);
+ 	if (vaddr == NULL) {
+ 		pr_warn("Failed to ioremap gnttab share frames (addr=%pa)!\n",
+ 			&addr);
+@@ -751,7 +751,7 @@ int gnttab_setup_auto_xlat_frames(phys_addr_t addr)
+ 	}
+ 	pfn = kcalloc(max_nr_gframes, sizeof(pfn[0]), GFP_KERNEL);
+ 	if (!pfn) {
+-		xen_unmap(vaddr);
++		memunmap(vaddr);
+ 		return -ENOMEM;
+ 	}
+ 	for (i = 0; i < max_nr_gframes; i++)
+@@ -770,7 +770,7 @@ void gnttab_free_auto_xlat_frames(void)
+ 	if (!xen_auto_xlat_grant_frames.count)
+ 		return;
+ 	kfree(xen_auto_xlat_grant_frames.pfn);
+-	xen_unmap(xen_auto_xlat_grant_frames.vaddr);
++	memunmap(xen_auto_xlat_grant_frames.vaddr);
+ 
+ 	xen_auto_xlat_grant_frames.pfn = NULL;
+ 	xen_auto_xlat_grant_frames.count = 0;
+diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
+index 2068f83556b7..77ca24611293 100644
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -982,8 +982,7 @@ static int __init xenbus_init(void)
+ #endif
+ 		xen_store_gfn = (unsigned long)v;
+ 		xen_store_interface =
+-			xen_remap(xen_store_gfn << XEN_PAGE_SHIFT,
+-				  XEN_PAGE_SIZE);
++			memremap(xen_store_gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE, MEMREMAP_WB);
+ 		break;
+ 	default:
+ 		pr_warn("Xenstore state unknown\n");
+diff --git a/include/xen/arm/page.h b/include/xen/arm/page.h
+index ac1b65470563..f831cfeca000 100644
+--- a/include/xen/arm/page.h
++++ b/include/xen/arm/page.h
+@@ -109,9 +109,6 @@ static inline bool set_phys_to_machine(unsigned long pfn, unsigned long mfn)
+ 	return __set_phys_to_machine(pfn, mfn);
+ }
+ 
+-#define xen_remap(cookie, size) ioremap_cache((cookie), (size))
+-#define xen_unmap(cookie) iounmap((cookie))
+-
+ bool xen_arch_need_swiotlb(struct device *dev,
+ 			   phys_addr_t phys,
+ 			   dma_addr_t dev_addr);
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+2.50.0
+
+
+
+Teddy Astie | Vates XCP-ng Developer
+
+XCP-ng & Xen Orchestra - Vates solutions
+
+web: https://vates.tech
 
 
