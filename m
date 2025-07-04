@@ -1,223 +1,244 @@
-Return-Path: <stable+bounces-160192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC448AF9318
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 14:49:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F953AF9323
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 14:51:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4934D16979B
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 12:49:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC20D1CA5C49
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 12:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7662D63E5;
-	Fri,  4 Jul 2025 12:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04F42D949F;
+	Fri,  4 Jul 2025 12:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b="S6WcYPIy";
-	dkim=pass (2048-bit key) header.d=vates.tech header.i=teddy.astie@vates.tech header.b="fxO9guWt"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BOBHUPHo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail135-23.atl141.mandrillapp.com (mail135-23.atl141.mandrillapp.com [198.2.135.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E362B2D7
-	for <stable@vger.kernel.org>; Fri,  4 Jul 2025 12:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.2.135.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC0C2D8DB1
+	for <stable@vger.kernel.org>; Fri,  4 Jul 2025 12:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751633363; cv=none; b=utWg28nVXUusW9lfg7dZsibsUCkRnWOBADPJBZoRl6XvuBpZT/D5AK24FrI/DUGgwShRof3LFVPPbVU+RcwhiRCywAddQnSC4p6KEq3kVF7jxbH4sgtacDLnSjSQhfSxrUQbU5e8BxGgi5K2AIBX22R+x8sloLzov5yibR71wUc=
+	t=1751633491; cv=none; b=JV++ur4qwjybzNyka3vhJ9ZLDBGJkMlPRYrCl5eUaWg2puRTCnLsoiyHH/p8ZWYmwZU9vmfHAWe6iIchJB6CSbskfjiPbzm/o3qXj83ONCUVn8SsxMaqt3ijCi3CVD9wbUq9YQP+fQX6FzgoJrLOKyXi4Jgy7Ab4FyDjFNFDtKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751633363; c=relaxed/simple;
-	bh=+Ya70OlSJjMKluBLRmgXd00vMiKqrWVBE+J7svp14ss=;
-	h=From:Subject:To:Cc:Message-Id:Date:MIME-Version:Content-Type; b=GJuSirPv8ITbkLnZurqoR1xK935U8Wj8BJq/RAPI+hJVqM0XxdCb7mUJW6Gh3Uwa6XSk40eyX0P2REnr8P6rg0Ij0NNM9SyyQB1BcCfvnFnvydLjiL4oNJgsgIsYrJ+2nyVdx3DiWTKoV/HDqkeqnFjjCpMSnmmUbyRbCIkv9RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech; spf=pass smtp.mailfrom=bounce.vates.tech; dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b=S6WcYPIy; dkim=pass (2048-bit key) header.d=vates.tech header.i=teddy.astie@vates.tech header.b=fxO9guWt; arc=none smtp.client-ip=198.2.135.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounce.vates.tech
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
-	s=mte1; t=1751633360; x=1751903360;
-	bh=tt0oM0tqOxl3axHhNxXYGkg2bRs4dsH6dn0uDyBVvW8=;
-	h=From:Subject:To:Cc:Message-Id:Feedback-ID:Date:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:CC:Date:Subject:From;
-	b=S6WcYPIy9q1ln0ek+319hOcKAJam2AHDjMHOPSmvx/mGRxXRYwLsHUTcv9kJd77pH
-	 OiRpnrwCGAzfKD/uffJJHkCNxmEbhaHGN/av3koEJSsMQDmAqg3InN2luV/srf4qGx
-	 3r6ZG2K1lx/0Z3vRxGgjinBQiElu6wdB8IfmRoN237gWSJXuFLLzPHrOyl7IrveHfJ
-	 LUNyMcKxuJRXRrqRm14NLRBUBesQKuVH8jYgb7ea+CFHH2eAaNaBSJkAQ4b2CNnuXR
-	 7hRBHZb/VTHPy4CuS85OXGL5j0Gcxw9M2wMJ2ymyL7ZKWbQKb1CDxQAhFISqtLJRIu
-	 Zc253LvAH7OAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech; s=mte1;
-	t=1751633360; x=1751893860; i=teddy.astie@vates.tech;
-	bh=tt0oM0tqOxl3axHhNxXYGkg2bRs4dsH6dn0uDyBVvW8=;
-	h=From:Subject:To:Cc:Message-Id:Feedback-ID:Date:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:CC:Date:Subject:From;
-	b=fxO9guWteH+/sMfLW5pAmV/rk7AFexAN55vBplVuZZBwyUPLHaGxEnjVIVpvOLaet
-	 c3BxB8GaWvOoykooeXg6t/oVsGvn2Tq2TzF2W/o1cCUAJmHRHeb9vIp+uO3eghHp6b
-	 39+hUNIH3NzNhiLg+aYVwUIWTJQ2lIQwas9LQIU7otq2UBJSZWsWDUq5GtY+swkFc/
-	 1vUFUGLtzv3/KyHS0fyKT85Vixx19k34jIxMMx+oOYjPetUpVKyBaUall1MJ4YgK00
-	 s6z/Hzz68eU1HoAYaVvwUJXtGTgs9IFi4JLFdO9veZQedad9LJRyOm9QFGl8V751XW
-	 NEs8WqtX+3R/A==
-Received: from pmta14.mandrill.prod.atl01.rsglab.com (localhost [127.0.0.1])
-	by mail135-23.atl141.mandrillapp.com (Mailchimp) with ESMTP id 4bYYNv6wGFz35j3lf
-	for <stable@vger.kernel.org>; Fri,  4 Jul 2025 12:49:19 +0000 (GMT)
-From: "Teddy Astie" <teddy.astie@vates.tech>
-Subject: =?utf-8?Q?[PATCH=205.15.y=20v3]=20xen:=20replace=20xen=5Fremap()=20with=20memremap()?=
-Received: from [37.26.189.201] by mandrillapp.com id 4fa7227c4c0e400eacc6320bab59ede5; Fri, 04 Jul 2025 12:49:19 +0000
-X-Mailer: git-send-email 2.50.0
-X-Bm-Disclaimer: Yes
-X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
-X-Bm-Transport-Timestamp: 1751633357597
-To: linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org
-Cc: "Teddy Astie" <teddy.astie@vates.tech>, "Boris Ostrovsky" <boris.ostrovsky@oracle.com>, "Juergen Gross" <jgross@suse.com>, "Stefano Stabellini" <sstabellini@kernel.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Sasha Levin" <sashal@kernel.org>, "Jason Andryuk" <jason.andryuk@amd.com>, stable@vger.kernel.org, "kernel test robot" <lkp@intel.com>
-Message-Id: <ea4945df138527ed63e711cb77e3b333f7b3a4c9.1751633056.git.teddy.astie@vates.tech>
-X-Native-Encoded: 1
-X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,=20including=20all=20headers,=20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.4fa7227c4c0e400eacc6320bab59ede5?=
-X-Mandrill-User: md_30504962
-Feedback-ID: 30504962:30504962.20250704:md
-Date: Fri, 04 Jul 2025 12:49:19 +0000
+	s=arc-20240116; t=1751633491; c=relaxed/simple;
+	bh=y/kbYTbXwrVINRik7S+tkYYYL4C0iQ3Fnbn38ah7j78=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ogo7wwJ+LHe/1LTussBZ+06hYVS7F26Dd2fIGhHJOJILG9c3KQUjvBamF9HLP5d/pFNOU4gvOtTcnkOiaem3XGWfVGtQU292/laxRHR4hwsvyzDumHgUpKVDLt0wYsUzO3+UP16owda/Oa+Os+4w1IzR44bmAU6zdV/Whc8Ruqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BOBHUPHo; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-313a188174fso1768600a91.1
+        for <stable@vger.kernel.org>; Fri, 04 Jul 2025 05:51:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1751633489; x=1752238289; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WzewkNlMN96GiZVrIk9GUqEzXm0VfOX3d4MoVRPtoWg=;
+        b=BOBHUPHohcOmwqD3lpL91IFHXZq9BRR6/A7AwFtIBuJFkHnK9AFZxWwvG/6FVNOW6g
+         JD1aUrwBZmJpXralxYdmH211XNqQSvKHPc0bIhawO6PUWfJYVR52X/c5kiNHMu2ktoCo
+         xtnr3h/Rx4Uuj1sQzsuK9h35rtH/hD82eDRuORadtLOvXV1HrE2kP5JXxvCM8lbG5h8V
+         FNTyVQjNexFjFVpPfYNmTLQxTKZR5GbEhLXc+a3nQVNVDg7D5Qa9kwdqHUHP4ysgjCWC
+         xYv5x8XG2oMtNLKU1BJxHJCYgN0nx3RHGywcZ6tf4Tpa45e4cXv1UgQpLtBUiHlNUhBR
+         SffQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751633489; x=1752238289;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WzewkNlMN96GiZVrIk9GUqEzXm0VfOX3d4MoVRPtoWg=;
+        b=R+aHLyGPpQWh9sMaJv5GAoeL5ZryBkA+D5A8tGx5AxUGe17Lj75gjk2DAbCHiNG1I7
+         OMvAp+L3T5/HXzZGayZ+wJfgbTjpWFlfXG/c3/LWVFkaZYJp6CgggBdYiQ8sBebEHXgM
+         GG2X+TXrbueGf9p1re5uTPE+LY8fWkuL5dXdj3XsPjKmChJ2IyQ3mZ++JSO6RiaGchWY
+         UEiVv+keoaCu1v9IY5YzIBzA+CuMGGUmG5M8zKTYaNCASyTEv9DfsftjAmCYmHCBUqgJ
+         aQf1jwLfd+TNZKqGRSU6JltcdeqKyFUX4X3UDAVmGGi6XJJgrOpBBciEQqDcIMghS7oG
+         EOWA==
+X-Gm-Message-State: AOJu0YwryqwXqinh66uAK32/tIPbgYt5VumbQjnq32Hc3ij2PXUZhr1u
+	jlIEznAEIUyA8rioVqx+Bp/a9NRJ1QriuVfwDiRwS1fKVpf0s31VJBsODnht5dIKfqbdDFeeTSi
+	DlpbHGq9UfxUhV28Ko4eBQ48bnh8lQYaU54I9WIyhwQ==
+X-Gm-Gg: ASbGnctboqY2oAjdz7jcvzNb0iSF3FMAmCbzTjKI6MKQP3+hwHjAWW73+HuY+9aeF+E
+	V5KSDWzY6QMwz/t4UE9dU8XNh1XERC3tPrhb5cBO73LWHPDMLSctHJ/GdWeUo+lb2Bd1j2KhD0j
+	tbkN0KJ1p8AJjKD7/iN6iRLWYRiC5/7kEfswvEMxyveJsnC+xNt4VJ35o0r8cM+ljjQfYvtYbvf
+	sAS
+X-Google-Smtp-Source: AGHT+IE+dot2yMfM7G74tn6pBGrGMaT/wjPZVf/oo+P5hOer7D8qLs0cW1oLs4J2BeGO40uaVcVvqD1O9Z/H7hvNNJA=
+X-Received: by 2002:a17:90b:3a05:b0:311:b5ac:6f7d with SMTP id
+ 98e67ed59e1d1-31aab854e04mr3898911a91.6.1751633489174; Fri, 04 Jul 2025
+ 05:51:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+References: <20250703143955.956569535@linuxfoundation.org>
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 4 Jul 2025 18:21:16 +0530
+X-Gm-Features: Ac12FXxkoI9c359mtmkiGWYxMRrw6eIFnOiBA7xCFWZuNBOvGtFp14r2FRTFehc
+Message-ID: <CA+G9fYv2CYDZGm_MC0F3pr8ia2E93epOoLOAoLn724YL6R8YCw@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/218] 6.12.36-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Juergen Gross <jgross@suse.com>
-
-[ upstream commit 41925b105e345ebc84cedb64f59d20cb14a62613 ]
-
-xen_remap() is used to establish mappings for frames not under direct
-control of the kernel: for Xenstore and console ring pages, and for
-grant pages of non-PV guests.
-
-Today xen_remap() is defined to use ioremap() on x86 (doing uncached
-mappings), and ioremap_cache() on Arm (doing cached mappings).
-
-Uncached mappings for those use cases are bad for performance, so they
-should be avoided if possible. As all use cases of xen_remap() don't
-require uncached mappings (the mapped area is always physical RAM),
-a mapping using the standard WB cache mode is fine.
-
-As sparse is flagging some of the xen_remap() use cases to be not
-appropriate for iomem(), as the result is not annotated with the
-__iomem modifier, eliminate xen_remap() completely and replace all
-use cases with memremap() specifying the MEMREMAP_WB caching mode.
-
-xen_unmap() can be replaced with memunmap().
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Acked-by: Stefano Stabellini <sstabellini@kernel.org>
-Link: https://lore.kernel.org/r/20220530082634.6339-1-jgross@suse.com
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Teddy Astie <teddy.astie@vates.tech> [backport to 5.15.y]
----
-v3:
-- add missing hvc_xen.c change
-v2:
-- also remove xen_remap/xen_unmap on ARM
----
- arch/x86/include/asm/xen/page.h   | 3 ---
- drivers/tty/hvc/hvc_xen.c         | 2 +-
- drivers/xen/grant-table.c         | 6 +++---
- drivers/xen/xenbus/xenbus_probe.c | 3 +--
- include/xen/arm/page.h            | 3 ---
- 5 files changed, 5 insertions(+), 12 deletions(-)
-
-diff --git a/arch/x86/include/asm/xen/page.h b/arch/x86/include/asm/xen/page.h
-index 1a162e559753..c183b7f9efef 100644
---- a/arch/x86/include/asm/xen/page.h
-+++ b/arch/x86/include/asm/xen/page.h
-@@ -355,9 +355,6 @@ unsigned long arbitrary_virt_to_mfn(void *vaddr);
- void make_lowmem_page_readonly(void *vaddr);
- void make_lowmem_page_readwrite(void *vaddr);
- 
--#define xen_remap(cookie, size) ioremap((cookie), (size))
--#define xen_unmap(cookie) iounmap((cookie))
--
- static inline bool xen_arch_need_swiotlb(struct device *dev,
- 					 phys_addr_t phys,
- 					 dma_addr_t dev_addr)
-diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
-index 141acc662eba..6a11a4177a16 100644
---- a/drivers/tty/hvc/hvc_xen.c
-+++ b/drivers/tty/hvc/hvc_xen.c
-@@ -270,7 +270,7 @@ static int xen_hvm_console_init(void)
- 	if (r < 0 || v == 0)
- 		goto err;
- 	gfn = v;
--	info->intf = xen_remap(gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE);
-+	info->intf = memremap(gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE, MEMREMAP_WB);
- 	if (info->intf == NULL)
- 		goto err;
- 	info->vtermno = HVC_COOKIE;
-diff --git a/drivers/xen/grant-table.c b/drivers/xen/grant-table.c
-index 0a2d24d6ac6f..a10e0741bec5 100644
---- a/drivers/xen/grant-table.c
-+++ b/drivers/xen/grant-table.c
-@@ -743,7 +743,7 @@ int gnttab_setup_auto_xlat_frames(phys_addr_t addr)
- 	if (xen_auto_xlat_grant_frames.count)
- 		return -EINVAL;
- 
--	vaddr = xen_remap(addr, XEN_PAGE_SIZE * max_nr_gframes);
-+	vaddr = memremap(addr, XEN_PAGE_SIZE * max_nr_gframes, MEMREMAP_WB);
- 	if (vaddr == NULL) {
- 		pr_warn("Failed to ioremap gnttab share frames (addr=%pa)!\n",
- 			&addr);
-@@ -751,7 +751,7 @@ int gnttab_setup_auto_xlat_frames(phys_addr_t addr)
- 	}
- 	pfn = kcalloc(max_nr_gframes, sizeof(pfn[0]), GFP_KERNEL);
- 	if (!pfn) {
--		xen_unmap(vaddr);
-+		memunmap(vaddr);
- 		return -ENOMEM;
- 	}
- 	for (i = 0; i < max_nr_gframes; i++)
-@@ -770,7 +770,7 @@ void gnttab_free_auto_xlat_frames(void)
- 	if (!xen_auto_xlat_grant_frames.count)
- 		return;
- 	kfree(xen_auto_xlat_grant_frames.pfn);
--	xen_unmap(xen_auto_xlat_grant_frames.vaddr);
-+	memunmap(xen_auto_xlat_grant_frames.vaddr);
- 
- 	xen_auto_xlat_grant_frames.pfn = NULL;
- 	xen_auto_xlat_grant_frames.count = 0;
-diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
-index 2068f83556b7..77ca24611293 100644
---- a/drivers/xen/xenbus/xenbus_probe.c
-+++ b/drivers/xen/xenbus/xenbus_probe.c
-@@ -982,8 +982,7 @@ static int __init xenbus_init(void)
- #endif
- 		xen_store_gfn = (unsigned long)v;
- 		xen_store_interface =
--			xen_remap(xen_store_gfn << XEN_PAGE_SHIFT,
--				  XEN_PAGE_SIZE);
-+			memremap(xen_store_gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE, MEMREMAP_WB);
- 		break;
- 	default:
- 		pr_warn("Xenstore state unknown\n");
-diff --git a/include/xen/arm/page.h b/include/xen/arm/page.h
-index ac1b65470563..f831cfeca000 100644
---- a/include/xen/arm/page.h
-+++ b/include/xen/arm/page.h
-@@ -109,9 +109,6 @@ static inline bool set_phys_to_machine(unsigned long pfn, unsigned long mfn)
- 	return __set_phys_to_machine(pfn, mfn);
- }
- 
--#define xen_remap(cookie, size) ioremap_cache((cookie), (size))
--#define xen_unmap(cookie) iounmap((cookie))
--
- bool xen_arch_need_swiotlb(struct device *dev,
- 			   phys_addr_t phys,
- 			   dma_addr_t dev_addr);
--- 
-2.50.0
+On Thu, 3 Jul 2025 at 20:15, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.36 release.
+> There are 218 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 05 Jul 2025 14:39:10 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.36-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
 
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Teddy Astie | Vates XCP-ng Developer
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-XCP-ng & Xen Orchestra - Vates solutions
+## Build
+* kernel: 6.12.36-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 08de5e8741606608ca5489679ec1604bb7f3d777
+* git describe: v6.12.35-219-g08de5e874160
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
+.35-219-g08de5e874160
 
-web: https://vates.tech
+## Test Regressions (compared to v6.12.34-414-g7ea56ae300ce)
 
+## Metric Regressions (compared to v6.12.34-414-g7ea56ae300ce)
+
+## Test Fixes (compared to v6.12.34-414-g7ea56ae300ce)
+
+## Metric Fixes (compared to v6.12.34-414-g7ea56ae300ce)
+
+## Test result summary
+total: 254325, pass: 232385, fail: 5932, skip: 15566, xfail: 442
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 139 total, 137 passed, 2 failed
+* arm64: 57 total, 55 passed, 0 failed, 2 skipped
+* i386: 18 total, 18 passed, 0 failed
+* mips: 34 total, 33 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 40 total, 40 passed, 0 failed
+* riscv: 25 total, 23 passed, 2 failed
+* s390: 22 total, 21 passed, 1 failed
+* sh: 5 total, 5 passed, 0 failed
+* sparc: 4 total, 3 passed, 1 failed
+* x86_64: 49 total, 48 passed, 0 failed, 1 skipped
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* modules
+* perf
+* rcutorture
+* rt-tests-cyclicdeadline
+* rt-tests-pi-stress
+* rt-tests-pmqtest
+* rt-tests-rt-migrate-test
+* rt-tests-signaltest
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
