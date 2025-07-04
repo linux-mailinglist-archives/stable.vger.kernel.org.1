@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-160229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00BDAF9BEE
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 23:20:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 034FFAF9C40
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 00:08:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2032016EA09
-	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 21:20:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EE7A1C87046
+	for <lists+stable@lfdr.de>; Fri,  4 Jul 2025 22:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746E21DC07D;
-	Fri,  4 Jul 2025 21:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC28628937F;
+	Fri,  4 Jul 2025 22:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vCDlfm5y"
+	dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b="HZZAfPWx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A87F2E3704;
-	Fri,  4 Jul 2025 21:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4117289379;
+	Fri,  4 Jul 2025 22:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.227.220.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751664054; cv=none; b=mc0swhsqtPcf4UW58fT2FaexUwXPo2ZhPfYo8FI1dusSu/gM7GBothQdIlVFTRSExLjtIE9caCbx3zfhjeixXLJteJOedLQ3DDMLM3ckZ9jl8CBxSGX8A0nG7eAmhB3ghsV7lcUUmRMh+FbN5IZfhgz/hQgWtTRNe5Axn9E82w4=
+	t=1751666902; cv=none; b=vAf8RRzbDUjZO9x1JuLqc3Mp85pFpKJHnMIDdcATOMz3Ij9y9xjWfguP0xkxi756m7o6S++Cl3Vnb74oBt9Nt2F8e3sguW+f4DbnvsHR8Ki4L0kYRDf769K3/4N10OhN7iHK5yXaYywHTdXIjaunOJ5nZ1QgSEP3ahVlmo49xnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751664054; c=relaxed/simple;
-	bh=tsVn3t3EzYNHIorHx9Hr5dDhvnUwb1yl2A92x/yZ7/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fR5FiSoL7kgdsCnPS5UCwqIrrYJUZWjPIeCzkwtSCGi+QHuvMzfF2BEVXoZQGYYiYEIjz3UGZhfhJjYb0LxjuEcOSSkcOI+btCpcusRyXX/gGj7Ai9nT/rZy46v9EIH79Hg0olW9wpUYCJHILqJQneb7GjQYorkp+g3FRMLiyyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vCDlfm5y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C36C4CEE3;
-	Fri,  4 Jul 2025 21:20:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751664053;
-	bh=tsVn3t3EzYNHIorHx9Hr5dDhvnUwb1yl2A92x/yZ7/M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vCDlfm5y7TACiS8rAM0ELBl6lApeTBSUinH8LywnAWV4LPcs4eaYTpsIb12DgLV2a
-	 Hc+X3fvxglqIIfhl8Mdi3rxAvjtFrqUUYOzfMe7xgh3kQKltOPN05u1h2e4F6u1sLN
-	 ESCUxeko4hnTLUb2UBmF2Ajg4Avs9fIYOncHK5NuFerie4Qr4E7yIz99luj9jxOCak
-	 VBYW11Cgu4t5iFBT8G1qQWwrUGY/uy+So/sCTCQedATcCknwVt5S8iFA8qwdAHX/3J
-	 SokTQJj4t5J3fF/VPxeiZmvp/XPgHCG4qc4iG+2YpUyRM0CuosQzsTQgYgAzVAszRR
-	 r+aKpgBzZ+L6Q==
-Date: Fri, 4 Jul 2025 22:20:47 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
+	s=arc-20240116; t=1751666902; c=relaxed/simple;
+	bh=jgufuOdJL8p5gukIbwKyLhiiTnvh4r3xS+pRM81NgX0=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bCZJjMyBSwva1XvOiNo4ilzfVlAnMkU3qWsReLi/w7Wr8MvuvqP3ShOWWYsAnTmUtX+7NJVxenKSeTd0TLycFm9/Vd4Yry1MHw1SRM9HQOOqSas/3MFucsGIrJVt9g9mzzulw44gdHDagecDl6shHC/u/d6BTNoM6cHX8fymajs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com; spf=pass smtp.mailfrom=mareichelt.com; dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b=HZZAfPWx; arc=none smtp.client-ip=91.227.220.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mareichelt.com
+Date: Sat, 5 Jul 2025 00:08:18 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
+	s=202107; t=1751666899;
+	bh=jgufuOdJL8p5gukIbwKyLhiiTnvh4r3xS+pRM81NgX0=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
+	 From:from:in-reply-to:in-reply-to:message-id:mime-version:
+	 mime-version:references:reply-to:Sender:Subject:Subject:To:To;
+	b=HZZAfPWxqH5Y1MxmwYizFgeKLyx39oseJorzdUt/XhkeC+u/rWU93HLttLJADHmhN
+	 LVzECSPy3nRkxDbJQSjWT22ZbrEpGgAcugxSVopFg/Ywiapvfz88vIpml8j03phIN2
+	 ihYUN1nK+spAGaodgWOM5unZN3KZjFKOntW1E/3jMo6T8kbiFm691AWKED6pnnws4t
+	 merE359CRDfewhoOqIw0rDl9cqo2RDt0IhI0aG48CEc3Ue5muUwRrqeOuiiCYqZg1s
+	 QkzBC/0cvSyW0Zwce+kQmvK6Oiao9LaLPLaCoJ/RZ7QKwka15J9VTdOp93a3fBoWZH
+	 LkAlIq6OrWOlQ==
+From: Markus Reichelt <lkt+2023@mareichelt.com>
+To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 6.15 000/263] 6.15.5-rc2 review
-Message-ID: <7cc923fe-ee44-4bdd-9b1e-1fc227f36bf6@sirena.org.uk>
+Message-ID: <20250704220818.GB3473@pc21.mareichelt.com>
+Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250704125604.759558342@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -60,39 +57,29 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+55kRTNUle8/Vhsa"
-Content-Disposition: inline
-In-Reply-To: <20250704125604.759558342@linuxfoundation.org>
-X-Cookie: VMS must die!
-
-
---+55kRTNUle8/Vhsa
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20250704125604.759558342@linuxfoundation.org>
 
-On Fri, Jul 04, 2025 at 04:44:42PM +0200, Greg Kroah-Hartman wrote:
+* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+
 > This is the start of the stable review cycle for the 6.15.5 release.
 > There are 263 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Hi Greg
 
---+55kRTNUle8/Vhsa
-Content-Type: application/pgp-signature; name="signature.asc"
+6.15.5-rc2 compiles on x86_64 (Xeon E5-1620 v2, Slackware64-15.0),
+and boots on x86_64 (AMD Ryzen 5 7520U, Slackware64-current),
+no dmesg regressions observed.
 
------BEGIN PGP SIGNATURE-----
+The difference in /sys/class/backlight/amdgpu_bl0/brightness value
+compaired to kernel 6.15.4 and reported for -rc1 is still present.
+Changing brightness with function keys in X works as before.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmhoRa4ACgkQJNaLcl1U
-h9AXdAf9HvIQm9fDDBv7nhKHhSwxg7bXwivc8XZk+XFbCgogmdBmSj2Vd4Q4yiNp
-l8rWBkPHFkBpXhmFirqSvCOtKJ2J9ZDo9l8t81Ha/s9AXazxxi9csDPRtmmXBS7o
-zn7UbrXyJS+GN4uKg2wGd5QPTRCNbTddaVf+GhZ/2JHMvImnr+Yzd23UFPlXk6hD
-i4plI13M1HtiL5u+NdBOGdA4FD9pPwQlefGfTbdA36HWrfe6AVCFt4nwlGyijk9W
-yckvfV0x0E3/DKkyAqfltlg8UpEmIGCkKFmmaVp0PAlTZTy8vxl3Nb59M+uh0HvA
-EIQWsx634LRG3xpKbvCHyyaP3Q+5aQ==
-=rQ/e
------END PGP SIGNATURE-----
+Not a problem, just a heads up for those of us who like to keep their
+scripts simple.
 
---+55kRTNUle8/Vhsa--
+Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
 
