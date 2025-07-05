@@ -1,154 +1,176 @@
-Return-Path: <stable+bounces-160262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38214AFA175
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 21:38:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3868AFA1A4
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 21:58:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD4861BC5BCD
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 19:38:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F2091BC1871
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 19:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30ED4215F7C;
-	Sat,  5 Jul 2025 19:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC4D229B28;
+	Sat,  5 Jul 2025 19:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HEwSVDeQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKlcUgtR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8F018786A;
-	Sat,  5 Jul 2025 19:37:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ADD16DEB3;
+	Sat,  5 Jul 2025 19:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751744276; cv=none; b=KUodFjBJrtMwEk18eN/OYETh+hyw/sd0jutN+eLv1OgjvHtymoCF1dp9DAuo4H7zLD8vV5vv+Dsj5xztVRgDosQu76VrO+seuCfFBp1c1uIcMqABWoWCCMeQgK55raBHQAFDotYXw+vWPqmI0szHDuhI8PZMyTQR5I6uJkMyzSo=
+	t=1751745528; cv=none; b=JxxkBM9AE/O65OfGQyjgNVA+66kN23vklqem5yvNq8lCeX60IS5ohww6zTFLmHxojbQvAnZNXaYxlAYNevPRwcv8v9OwrK2GwzdP/148O0FmWVzB2ZIhd8q9LNYd9v9734ARlO4HJ/lDdYr7QeUQRfvGGibj5UTw8/pE7mOhYIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751744276; c=relaxed/simple;
-	bh=rhkYdI0qaK2SWqPGukgpUJQl2Y1xf63RjS+xGlf+ENo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zt3BfkwK5MATSObZcjjh8UdVZ6NXEPbWecA8iRM08r5EZ4zSOelQ5Nl1Renk8X1fi2PjOL95uot/in96/qzDt4vzivN+R+7anUmzATuUrilQLNQ7b/UVllrSpZrDy1tfMQQq4n1Ia/dSXo3VfMPT+vPyRPhF46ZmtoIxj8xPWjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HEwSVDeQ; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b2c4331c50eso1845567a12.3;
-        Sat, 05 Jul 2025 12:37:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751744274; x=1752349074; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UdsPWIihv5HWhO3SsoK85fdkL/eyjqb/7Z3okGZnaXE=;
-        b=HEwSVDeQJ3Y5Nia+RPp1Fl+QzQhx0EY+lsmoXB5Zix1Y8U/28Dkry03T4qX5PB5kiB
-         jAaGnPoJtXKjWjyfVMnLZ17aI4u04zpJj3coYgS9biFEM+wiuyh1ufUUpz5pFzr4hLQr
-         DO7/c+XpnTCnm+gspMJA5FJndVeIRgiS48+1jMGz2YlKp/VF72bnBUp07hmpaaI1qC+o
-         G8vm4i8MeeiwKCxqX0jC2cj1FAQMWf4ktzLfXxcm8h5d3zuocYG5IhAmzhob2OknazsS
-         /DcSfeJ7238WagwPSK/UmJK11AJIpfCU89TeF62UECs8ANTW2WqOOLVWXTvyYPam8ZgO
-         XNfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751744274; x=1752349074;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UdsPWIihv5HWhO3SsoK85fdkL/eyjqb/7Z3okGZnaXE=;
-        b=NMrgMdODEc+keu22yDBGHZEQkIekjNJ0uGvbIUcn314C5b3eHd1QMXVpMCVZNiLx6h
-         ecrxw0xTEuCOLw+8vNV/Bo89qLZAYS/gZqEQ+mamK3Rf92g45sTltlfY2N7H/8U2l7dT
-         yWvvZiEUpVd81kpGbBs5SC7P6W0o2pAyb715av9Dvpp5zu9aDDWyPb/bmU8+9D8UtnxT
-         Cw716nvZUlr91kzDBHkO+8VWxxzV46mzV/ju+mh2w/ws6RfKFdR+uDRMzFnVgqeaiJ5d
-         J5wVr83EpfGIEEQExSPT7zCewC+T/mvZO8xxkZn96XuFuTZ+q8QVlYFOIHSyyVIxY6lo
-         iSBA==
-X-Forwarded-Encrypted: i=1; AJvYcCX5xX3ZZIvfmHBdT8LhljqtFCc3i1kzSUaVIHs9N5t9E57iIy/S4m4xrinfwlu6lz9PbPkImEvdYhuFFNs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwM3Sb6I/1UavimZZ7/FezG7cAI84YxISsw1jQ0+xGVAahn98I8
-	4Q0mxfdY/eHaf6FIOOZJbCTpams1wW15drB8yrPKMPXWbqUQ5yfTJOiU
-X-Gm-Gg: ASbGnct5GQrEQTHzrRF/YCvOGzQIoAxJfo2HGBNjrk5gAVwiIZiyNhIg8OrdZ5Xuj0L
-	mMgQb4hqHdIfs1ZRsO1jhT3gSVcsg5FI9lb3MyyH1ZLmIYOllAbN6ttd1EKH9T5Je9XvLtZx6AK
-	tf2Eoc/TGJATEzWvaCAapRMO2Zh5CSgxCZKfiJvhVJkw6hOD5PkH8psTEwsmrNvAdbIqt8Y8yyJ
-	LopkVmjX5DpPnxPeDIjpPxboXcL+2fKUvGJ3PIrWFRw+3VdNVMqIGJY6fKMsjP0bHFI2fAUsVuG
-	QYJL7g+87tHxOkpma7PUYf+X0Ydtf+92J60/Qk0LIzOBF7n9YnHMq92wjeeebZ3v3L6e3atfM7E
-	=
-X-Google-Smtp-Source: AGHT+IGfY3WUKLQ4Yk5uf0Fkrth6sHY9ow0rMP3Y/0jgNKH6keGdaw88vCvOFt9UHv0SUx6yzeFNuQ==
-X-Received: by 2002:a17:90a:fc4c:b0:315:b07a:ac12 with SMTP id 98e67ed59e1d1-31aba84b709mr5335559a91.14.1751744273648;
-        Sat, 05 Jul 2025 12:37:53 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31aaaf5ae08sm5305720a91.41.2025.07.05.12.37.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Jul 2025 12:37:53 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Sat, 5 Jul 2025 12:37:52 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.12 000/413] 6.12.35-rc2 review
-Message-ID: <3037c3e6-558b-4824-8c78-a36990f4e4d6@roeck-us.net>
-References: <20250624121426.466976226@linuxfoundation.org>
+	s=arc-20240116; t=1751745528; c=relaxed/simple;
+	bh=Xztashzz8S3rALHR7n+WkyY0p7wV1/pTuPU/AVjSB2M=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=G+3+h+7RF6zFZIIYSUIzrNmJeZm6k0JOSG88kAaCAew1fwG4GTgL0usoWPPrUdDe1fJJYTm4EFsFwBTi2Rkm8FmK4qSbl0xgg2Yhcl9gTdTOuggPyrLBcIeZygBahnkFM/Uif6es1m36LVHaeE2VfRiYxlEqeJd7poihkITI9UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKlcUgtR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF56AC4CEE7;
+	Sat,  5 Jul 2025 19:58:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751745528;
+	bh=Xztashzz8S3rALHR7n+WkyY0p7wV1/pTuPU/AVjSB2M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=FKlcUgtR8BPpPMDvBeSXGB2Ct5v8ELniZ9+JhPcv0Hb1o1OWTgBVLS2DyNUmFOqza
+	 Y5lv22XMc/zfJ94wwaLJ4zcioveFQSIXQkAeQkeVKxvhawKfd/0FdTI8bEQRjXERN+
+	 C5l/Q0DyVop2JqjR3w8b3sPyqT5iipwjWczVmqBcHLrwaiyMDLEcZpCZZDH/C4HnOj
+	 DolwZDLT96eFLEf4p6CGMhK3D3NVVMZtWib27BmwgJjb1jXsf+JcKJktZFA/DDYScM
+	 Inbq7BCi5+6jnCMNNl8C4Us9hm6SdXw+B6kurqjNjsGjU+62/m920s8831cq6oKCnn
+	 TT/f6BHgfi5qQ==
+Date: Sat, 5 Jul 2025 14:58:46 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
+Cc: Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
+	linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: Instability in ALL stable and LTS distro kernels (IRQ #16 being
+ disabled, PCIe bus errors, ath10k_pci) in Dell Inspiron 5567
+Message-ID: <20250705195846.GA2011829@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250624121426.466976226@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEmM+QjHnU0h3HtWH8AXP05k2dTYozu81eRxn45HVEUSRG8jLw@mail.gmail.com>
 
-Hi Greg,
-
-On Tue, Jun 24, 2025 at 01:29:53PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.35 release.
-> There are 413 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Sat, Jul 05, 2025 at 08:30:46PM +0530, Bandhan Pramanik wrote:
+> Hello,
 > 
-> Responses should be made by Thu, 26 Jun 2025 12:13:28 +0000.
-> Anything received after that time might be too late.
+> The dmesg log (the older one) is present here:
+
+[1]:
+> https://gist.githubusercontent.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/78460e6931a055b6776afe756a95d467913d5ebd/dmesg.log
 > 
-
-Some subsequent fixes are missing:
-
-> Tzung-Bi Shih <tzungbi@kernel.org>
->     drm/i915/pmu: Fix build error with GCOV and AutoFDO enabled
+> The newer dmesg log includes the first line and is not overwritten by
+> the ring buffer (used pci=noaer in this case):
+> https://gist.githubusercontent.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/78460e6931a055b6776afe756a95d467913d5ebd/updated-dmesg
+>  (The newer one doesn't have the error recorded).
 > 
-
-Fixed by commit d02b2103a08b ("drm/i915: fix build error some more").
-
-> Shyam Prasad N <sprasad@microsoft.com>
->     cifs: do not disable interface polling on failure
+> You should check out the older dmesg, the quoted line was taken from
+> there verbatim, including any additional details.
 > 
-
-Fixed by commit 3bbe46716092 ("smb: client: fix warning when reconnecting
-channel") in linux-next (not yet in mainline as of right now).
-
-> Jens Axboe <axboe@kernel.dk>
->     io_uring/kbuf: don't truncate end buffer for multiple buffer peeks
+> Bandhan
 > 
+> On Sat, Jul 5, 2025 at 7:20 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> >
+> > On Sat, Jul 05, 2025 at 01:00:23AM +0530, Bandhan Pramanik wrote:
+> > > Hi everyone,
+> > >
+> > > Here after a week. I did my research.
+> > >
+> > > I talked to some folks on IRC and the glaring issue was basically this:
+> > >
+> > > > [ 1146.810055] pcieport 0000:00:1c.0: AER: Uncorrectable (Fatal) error message received from 0000:01:00.0
 
-Fixed by commit 9a709b7e98e6 ("io_uring/net: mark iov as dynamically
-allocated even for single segments") and commit 178b8ff66ff8 ("io_uring/kbuf:
-flag partial buffer mappings").
+From [1]:
 
-> Yong Wang <yongwang@nvidia.com>
->     net: bridge: mcast: re-implement br_multicast_{enable, disable}_port functions
-> 
+  [ 1146.810055] pcieport 0000:00:1c.0: AER: Uncorrectable (Fatal) error message received from 0000:01:00.0
+  [ 1146.810069] ath10k_pci 0000:01:00.0: AER: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Inaccessible, (Unregistered Agent ID)
+  [ 1146.813130] ath10k_pci 0000:01:00.0: AER: can't recover (no error_detected callback)
+  [ 1146.948066] pcieport 0000:00:1c.0: AER: Root Port link has been reset (0)
+  [ 1146.948112] pcieport 0000:00:1c.0: AER: device recovery failed
+  [ 1146.949480] ath10k_pci 0000:01:00.0: failed to wake target for read32 at 0x0003a028: -110
 
-Fixed by commit 7544f3f5b0b5 ("bridge: mcast: Fix use-after-free during
-router port configuration").
+I think Linux is not doing a very good job of extracting error
+information.  I think is_error_source() read PCI_ERR_UNCOR_STATUS from
+01:00.0 and saw an error logged, but aer_get_device_error_info()
+declined to read PCI_ERR_UNCOR_STATUS again because we thought the
+link was unusable, so aer_print_error() didn't have any info to print,
+hence the "Inaccessible" message.
 
-> Niklas Cassel <cassel@kernel.org>
->     ata: ahci: Disallow LPM for ASUSPRO-D840SA motherboard
-> 
+Are you able to rebuild a kernel with the patch below?  This is based
+on v6.16-rc1 and likely wouldn't apply cleanly to your v6.14 kernel.
+But if you are able to build v6.16-rc1 with this patch, or adapt it to
+v6.14, I'd be interested in the output.
 
-Fixed by commit 3e0809b1664b ("ata: ahci: Use correct DMI identifier
-for ASUSPRO-D840SA LPM quirk").
-
-I assume the missing fixes will be queued in one of the next LTS releases.
-If not, please let me know.
-
-Thanks,
-Guenter
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 70ac66188367..99acb1e1946e 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -990,6 +990,8 @@ static bool is_error_source(struct pci_dev *dev, struct aer_err_info *e_info)
+ 	if ((PCI_BUS_NUM(e_info->id) != 0) &&
+ 	    !(dev->bus->bus_flags & PCI_BUS_FLAGS_NO_AERSID)) {
+ 		/* Device ID match? */
++		pci_info(dev, "%s: bus_flags %#x e_info->id %#04x\n",
++			 __func__, dev->bus->bus_flags, e_info->id);
+ 		if (e_info->id == pci_dev_id(dev))
+ 			return true;
+ 
+@@ -1025,6 +1027,10 @@ static bool is_error_source(struct pci_dev *dev, struct aer_err_info *e_info)
+ 		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, &status);
+ 		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK, &mask);
+ 	}
++	pci_info(dev, "%s: %s STATUS %#010x MASK %#010x\n",
++		 __func__,
++		 e_info->severity == AER_CORRECTABLE ? "COR" : "UNCOR",
++		 status, mask);
+ 	if (status & ~mask)
+ 		return true;
+ 
+@@ -1368,6 +1374,8 @@ int aer_get_device_error_info(struct aer_err_info *info, int i)
+ 	aer = dev->aer_cap;
+ 	type = pci_pcie_type(dev);
+ 
++	pci_info(dev, "%s: type %#x cap %#04x\n", __func__, type, aer);
++
+ 	/* Must reset in this function */
+ 	info->status = 0;
+ 	info->tlp_header_valid = 0;
+@@ -1383,16 +1391,14 @@ int aer_get_device_error_info(struct aer_err_info *info, int i)
+ 			&info->mask);
+ 		if (!(info->status & ~info->mask))
+ 			return 0;
+-	} else if (type == PCI_EXP_TYPE_ROOT_PORT ||
+-		   type == PCI_EXP_TYPE_RC_EC ||
+-		   type == PCI_EXP_TYPE_DOWNSTREAM ||
+-		   info->severity == AER_NONFATAL) {
+-
++	} else {
+ 		/* Link is still healthy for IO reads */
+ 		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
+ 			&info->status);
+ 		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK,
+ 			&info->mask);
++		pci_info(dev, "%s: UNCOR STATUS %#010x MASK %#010x\n",
++			 __func__, info->status, info->mask);
+ 		if (!(info->status & ~info->mask))
+ 			return 0;
+ 
+@@ -1471,6 +1477,8 @@ static void aer_isr_one_error(struct pci_dev *root,
+ {
+ 	u32 status = e_src->status;
+ 
++	pci_info(root, "%s: ROOT_STATUS %#010x ROOT_ERR_SRC %#010x\n",
++		 __func__, e_src->status, e_src->id);
+ 	pci_rootport_aer_stats_incr(root, e_src);
+ 
+ 	/*
 
