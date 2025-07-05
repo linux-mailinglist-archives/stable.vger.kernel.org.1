@@ -1,124 +1,181 @@
-Return-Path: <stable+bounces-160241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F94DAF9E08
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 05:05:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D323AF9E14
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 05:13:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CD947B6073
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 03:03:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA1B61C4662F
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 03:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0753927280B;
-	Sat,  5 Jul 2025 03:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4EF22AE7F;
+	Sat,  5 Jul 2025 03:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="ERRON1bJ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NK9Tq898"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9651C5D46;
-	Sat,  5 Jul 2025 03:05:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3706D5383
+	for <stable@vger.kernel.org>; Sat,  5 Jul 2025 03:13:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751684715; cv=none; b=QUgJBnB5QMV5fQqm/ASNK65mQlUd5rtyFMRKDrnpQ0y3NR5mM+dFAg2ffNhuOWEmMx8GL1ySEZAM0lWRY2WaizMNBQmGXIZjnTaFww5s3MifnlfbI7bQOY6BNzwPFkzwRddUR/P4ZSuY33c7ilCLjMtjBLx4HtPnLFyqm3OqfyQ=
+	t=1751685183; cv=none; b=TLmBuorbLA2gRzjEx2X7K/DId2K0PM4W/1IdWwNof67wv/1BtoV6n2TGrAWAwSISK1GxAVWPaSq7UwXtaViGpfJEVqhTp7zjlKzoZ/0TKfdG6nh4rO3i8sKM0dtd/YF40rHlVcHQP05tVBS/hOC5qjKPKZSepSFiuQGEfSzifi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751684715; c=relaxed/simple;
-	bh=Vlx2GvFm40wboNWyllqdf8cY0wBZ7D+Hm+a57/azXbw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZK+uOSDK3LBx00HWX47vLA96GHkRXZwEoTsrqRuMj8kZb2/kfl/SO7M6iS6EkVvrTs1PR3Lslv36v5Rhfw1oZTL4XA9q121m7ek9xZHjlVp8xoTphqy2z8ZL4hBYBhzdGpyPLjATWlYY6YItTn2zb6/H15mbIlybZIxiPs4L3IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=ERRON1bJ; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-451d7b50815so10595865e9.2;
-        Fri, 04 Jul 2025 20:05:13 -0700 (PDT)
+	s=arc-20240116; t=1751685183; c=relaxed/simple;
+	bh=DEgrMsqG6/81IQwcVT/EV/oJMUsYcrrAGjo5olWT+6g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T7KTo7HYqn0JfVz99GI2/SDYN052lSMWaLa9TqSvng40YpvZ2+dIcMn1HRSv4EjGDtm0dWTVHLZgTAsB8u0U/Rypg4q2IIJvdyUvgqzGVNcsP9MO72M5CbZ6m0tdbLP9N9C1ZqX0JJZwawehvpWt3PJrrULlHRDJlF//6TWda08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NK9Tq898; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-311ef4fb43dso1196866a91.3
+        for <stable@vger.kernel.org>; Fri, 04 Jul 2025 20:13:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1751684712; x=1752289512; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vqDgb6K91dMFZj8xNFjdBXiilDAaERulOXneKfNxeww=;
-        b=ERRON1bJ8oxwU6ceotb4Sz7UGW5JLW5HVUl5SrOdToetbZwVqi71Q2kA4PJ3jpqHrV
-         317BEqTvC/wLP2Nnz9JYXLCFthBiudzjDkURRbOhbbYwcFqqMKkXEXePcgfnTy3mRrDf
-         n6td676KUYGtwYE3cdlAJcRl8lC83fLbCuX61oqITkuqmw34JZdS6NIEwR+H8z0Jwjno
-         o8CsueJMU0YU2VjHjbLm0aNknQ6aCB4fItBp8z2/qhBtexzvbc4WmdblPKfqzO4lMW32
-         RI7ayFQnBnEUifW5NTIhTf3CmZsDafMXCyBYnvkgUGK38o6dKBbcFvOBqX+Nb3lK7cQE
-         OFIA==
+        d=linaro.org; s=google; t=1751685181; x=1752289981; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FY/r4k7To9wzgbUQkWyprZDjGaEv6yD5m4oe3Q+2M7c=;
+        b=NK9Tq898Yk6u23k4aLttYkK3tQ7S+GFBKMuttyLQYQYyKYO2J99BQ0w1Pw8EeqWFqO
+         p4wdi2ABZDWiHSBu/fDsK9rWwwvqlN1ppqHVs/3CbpucT3jOXmXPMDanVQkJTcChlKkX
+         YlHg92Bs+q8TxYBD6/pMO7K4qFG5PdHjo39gcUT1ZVthf2jesGxjlQ2D62x1Hiqd+Tnz
+         i4Fs5IFZBuZa7gNDN1kcYY3ME3K4jR2yl0jzsLqpqTytkRtDYeQBcpeWBnoGkt3vctHa
+         euWJie910ogTlvb0JWbB7IM6rd3cdoYGSd6WokGgkI2cBiz99ewuS3znqlpBepNqySED
+         pbjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751684712; x=1752289512;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vqDgb6K91dMFZj8xNFjdBXiilDAaERulOXneKfNxeww=;
-        b=ugpF82BJ9zffTwP3tb0TsfZaf1KNS7CaBxkdZzSc5Ob0HnyE29dJMOvpCQ//uhQJzV
-         mRxC4qKFcVygxjhKYJr5PbnYIeEEllcWrceWXLuewjy+f9aw6a56pftl4Kw4Iq458yV4
-         72/VtCu+iH0RoYUqQw4gpfQ6/5g/dFuB3/QRRqTK0t+czsEbD1oCl88MLhkd5eXblJeS
-         hvDojiukLl/NlX716dNYAtCxJpsBqDVdi1ysWyfbgtJ4FXl71MLgE82yq1s8w+FAw01/
-         h8Z4CyTlEjVWw7FKvKoQUwx1E+vvFCpIBG2qe5PRr4grp/DB1eqnQQxoBcHxouxJj4Nv
-         ADfw==
-X-Forwarded-Encrypted: i=1; AJvYcCVY2otdXlWru1uowNtIbf6S/wHshNPYUGbucPrIL/0REVcNcsgJye0F5XwLuuXhduCy+EJnJPMnWIYBwTE=@vger.kernel.org, AJvYcCWe9VY02i2I/vwhw26h8QlBs+L3a2X9FUmfzh9B9jdebBS3ZbIEtdNPALc3xcY7aAbdqJNEP369@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8/G/+ysSTAqsU2D9OA4tWvylmDnT9onV+I+4IxnrYblT5TX2X
-	j4GhX6ZJFpsHzOAmfdN0CwAMmom0go4vGeXDdtm/rKWizUTO3PkJP7jybuC5g3g=
-X-Gm-Gg: ASbGncsqP3HGNDJB4Fn487h6PjjRYwxYNvFSdRW1fp12vQzglooQyugkmkkTiUb06Kl
-	02Nf3Q5kCIn+RwdkP4FyzWKyfnrHjWXxcPOhL25Y25icgrvOBaWng+ViihxDEbRqCP7hGI0Bvqz
-	lZkQGezsseIuIS0D1h0Tst2AuesXLzutux0JrrqpJfJoWfMHiuWsKr55BV3BNGj13UlAu7xNcIm
-	VqUg/cJSnDGpVDrpvQ5P+W46g7kANcsS53IGXDKg+ql0V15yM+e5gMAn/ALpIK1p8j+i6OKQ46D
-	uSfh5uZImfoOXWfTB2C5fdrNZ7jSKEfS8sTp/0TySnmbiPv8W5l1NBDRf/4QbBPTfMrVW0KvuX0
-	mtid4RCCqw4iVRO7Im6mh8wcTSTKKUU+a/V2Q7HA=
-X-Google-Smtp-Source: AGHT+IFQud81K4EZdzm02dUULvNS2awoAwpf6hPFkMhnS2aLLE0I4C3SRdmCGLLVYb8WkdHV/QxdyA==
-X-Received: by 2002:a05:600c:3b01:b0:442:dc6f:2f11 with SMTP id 5b1f17b1804b1-454b3169103mr42806675e9.25.1751684712260;
-        Fri, 04 Jul 2025 20:05:12 -0700 (PDT)
-Received: from [192.168.1.3] (p5b0570c7.dip0.t-ipconnect.de. [91.5.112.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b47225a6fasm3828039f8f.81.2025.07.04.20.05.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Jul 2025 20:05:11 -0700 (PDT)
-Message-ID: <62e3fd86-f640-4d67-950c-791674cea5e2@googlemail.com>
-Date: Sat, 5 Jul 2025 05:05:10 +0200
+        d=1e100.net; s=20230601; t=1751685181; x=1752289981;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FY/r4k7To9wzgbUQkWyprZDjGaEv6yD5m4oe3Q+2M7c=;
+        b=CTXu/HDoWpZX6TxWwGOEzD01g+c0+kxumQLLN1NUHoGhMLG7AqvcmJ6xf72v0GpBF+
+         vU9hDU7HFdDeMRu68pHkeNZqfy1A/Z8wOWBQrsi5UnPt3KMW3WmYp5EuEUEPrEaTf5zZ
+         F1OiWqwPY2IA5Pd2t3TUY8JPe+eeDgiDOtFL/fZvb7dtAzdJmmdmERSDVlxF4vpSmh7S
+         r5eEvrbeKSiQ/WfH8bYIG2QFb4t9zZusEvOH+aMz+6Ucioxq3Z94uO7y/1dYPJO18FdM
+         EFMLAo3Gr8B0lHpMtQiAjh+w3YCbuKaZyGq0jQIqAoBPRS6/l0O2VsLfSmW2uQvbIN6V
+         cNmQ==
+X-Gm-Message-State: AOJu0YybumYD0I0jNB9PaDasqeHXcq+rM2Ls0EGuVHk4CSMb0XPndtlf
+	twOKyGlbEQuA4uCG+5t9mqfgxZkdKytMusyDB9LFjFkhsPNyXYc0ksuclqqEio3ltFbEjJvrUXm
+	N45kqWiSr9Ngr92tnji9EVzhte6GoWb2GsFw5PGRE5w==
+X-Gm-Gg: ASbGncvhJqaC1Ozbg7Xum4Cf29Qarumc36UAwJLgWrAhBEuCUY1xesq2ceK6thdJADG
+	HvngIrsmVao5vSXczPB2DPtrRXMstu67cXbbc+7aIco9pWLrVeddtqO9fz4+6zXvWFld7i5l6LG
+	mSnInb/NUZS5m6uGtg8odTU6rGPROytzCNWnHNjL8wVf5H273MMkljglVTsyYqTE4otWyhiVJPg
+	MRM
+X-Google-Smtp-Source: AGHT+IGflJd1JaTbpa/qzIA7n7sOZJ4lzJGI9r7FMuK2hOKRMEiMcWrwu7I3vhUYaLXYhtjFFgqeZkJRoJXRteTbCI0=
+X-Received: by 2002:a17:90b:3fcd:b0:312:959:dc49 with SMTP id
+ 98e67ed59e1d1-31aadcf7abemr5905357a91.13.1751685181476; Fri, 04 Jul 2025
+ 20:13:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 000/218] 6.12.36-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250703143955.956569535@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250703143941.182414597@linuxfoundation.org> <CA+G9fYu=JdHJdZo0aO+kK-TBNMv3dy-cLyO7KF4RMB20KyDuAg@mail.gmail.com>
+In-Reply-To: <CA+G9fYu=JdHJdZo0aO+kK-TBNMv3dy-cLyO7KF4RMB20KyDuAg@mail.gmail.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Sat, 5 Jul 2025 08:42:49 +0530
+X-Gm-Features: Ac12FXydE-DpGIZ-SmYQ24iTSR8CT1Qg6kyUB_tQ54bVVr8vDj-OLA5wJ2J8fr0
+Message-ID: <CA+G9fYv4UUmNpoJ77q7F5K20XGiNcO+ZfOzYNLQ=h7S3uTEc8g@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/139] 6.6.96-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>, 
+	Yeoreum Yun <yeoreum.yun@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Anders Roxell <anders.roxell@linaro.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 
-Am 03.07.2025 um 16:39 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.36 release.
-> There are 218 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Fri, 4 Jul 2025 at 18:55, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+>
+> On Thu, 3 Jul 2025 at 20:42, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.6.96 release.
+> > There are 139 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Sat, 05 Jul 2025 14:39:10 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.96-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>
+> The following build errors were noticed on arm with gcc-13 and clang-20 on
+> the stable-rc 6.6.96-rc1.
+>
+> Test environments:
+> - arm
+>
+> Regression Analysis:
+> - New regression? Yes
+> - Reproducibility? Yes
+>
+> Test regression: 6.6.96-rc1: coresight-core.c error implicit
+> declaration of function 'FIELD_GET'
+>
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+Bisection results pointing to,
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+    coresight: Only check bottom two claim bits
+     [ Upstream commit a4e65842e1142aa18ef36113fbd81d614eaefe5a ]
+
+The following patch needs to be back ported ?
+   b36e78b216e6 ("ARM: 9354/1: ptrace: Use bitfield helpers")
 
 
-Beste Grüße,
-Peter Schneider
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>
+> ## Test log
+> drivers/hwtracing/coresight/coresight-core.c: In function
+> 'coresight_read_claim_tags':
+> drivers/hwtracing/coresight/coresight-core.c:138:16: error: implicit
+> declaration of function 'FIELD_GET'
+> [-Werror=implicit-function-declaration]
+>   138 |         return FIELD_GET(CORESIGHT_CLAIM_MASK,
+>       |                ^~~~~~~~~
+> cc1: some warnings being treated as errors
+>
+> ## Build
+> * kernel: 6.6.96-rc1
+> * git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+> * git commit: e950145d456d01fa4e589d5e6183c2f8f0676743
+> * git describe: v6.6.95-140-ge950145d456d
+> * test details:
+> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.95-140-ge950145d456d
+>
+> ## Test Regressions (compared to v6.6.94-289-g33e06c71265b)
+> * arm, build
+>   - clang-20-lkftconfig
+>   - clang-20-u8500_defconfig
+>   - clang-nightly-lkftconfig
+>   - clang-nightly-u8500_defconfig
+>   - gcc-13-allmodconfig
+>   - gcc-13-lkftconfig
+>   - gcc-13-lkftconfig-debug
+>   - gcc-13-lkftconfig-kasan
+>   - gcc-13-lkftconfig-kunit
+>   - gcc-13-lkftconfig-libgpiod
+>   - gcc-13-lkftconfig-perf
+>   - gcc-13-lkftconfig-rcutorture
+>   - gcc-13-u8500_defconfig
+>   - gcc-8-u8500_defconfig
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+- Naresh
 
