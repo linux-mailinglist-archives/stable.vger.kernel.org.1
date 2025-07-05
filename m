@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-160270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C51AFA21E
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 23:41:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80AA4AFA21F
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 23:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 436451BC8A6C
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 21:42:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 856BF1BC864B
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 21:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF8126658F;
-	Sat,  5 Jul 2025 21:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95902267B19;
+	Sat,  5 Jul 2025 21:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MDQsdpDc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SL4GUnhn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD2E262FE4
-	for <stable@vger.kernel.org>; Sat,  5 Jul 2025 21:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5687126CE21
+	for <stable@vger.kernel.org>; Sat,  5 Jul 2025 21:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751751635; cv=none; b=HcWqNMvhkuhIshQy6L+xj1C9KbfbI8xavu5CX1CdPCbet1VpA/5PY2aXWRYYVxdi/TD0Dcy4C0g594pENG6xzbjJ0sZem7T8V/mOI8T9hcvxGHV/lMLwTDDLQrXRA2GT8oiBxevi8aOnl5oDL0JfnzrA6ew6jWoUUfoldiCXOBE=
+	t=1751751637; cv=none; b=nG1fVUkmYr6GUYSoVms6tZpUrVn4FVfxCdXfE9AEAyua1pHHlqqC606srMfeP+tvHZFdcNTHd+oTlzswJ3eVdwP5uVOZl8Avbxvo+2bo+YqzeLgOKQYOZFn82K4Fx/QrPHth0CB9WlKY70lBWQp+5pa4zXG4VCo4OJgjXsaOulw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751751635; c=relaxed/simple;
-	bh=Dv4AzDpk+VzMx+2zuOWfHWUXH4pNJaT8Ql/bgSeBOWY=;
+	s=arc-20240116; t=1751751637; c=relaxed/simple;
+	bh=/sD7XEr5dJ5kXKTxVMMvuBdH9UM1lU4pksWUFSvD6Bg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AS9SAb2tvbSfvOpYim8256eoDRKOSB1AaErux+MekGwVzys1DfjPQJyD7sfbslfnxWltKOgBfSOw93a4isIdSUhMRDt5C1t3dSY+M4/ub8q3+GigCCP4u0Z3U8NXZdMll+ZIXJe5P7euE2KRWF7hmZbfaurU1kbTV48j+YQrufc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MDQsdpDc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71266C4CEE7;
-	Sat,  5 Jul 2025 21:40:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SO3BGXA2EAesMyeVkOM6+LT9Q94LC5aRxN0XgKVZ6piAWaEa4hUEzJOHvZ+eixcaKoYv3ioJcHphVe+BKovO7aQfUwZBvnhxu2UkBfHiv+eCCShqt14l5ujDp+R3bfL5Mfa/20fnjpXQBlHvewHQmUankipky+ohtfNgb/xDvUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SL4GUnhn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82868C4CEED;
+	Sat,  5 Jul 2025 21:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751751634;
-	bh=Dv4AzDpk+VzMx+2zuOWfHWUXH4pNJaT8Ql/bgSeBOWY=;
+	s=k20201202; t=1751751637;
+	bh=/sD7XEr5dJ5kXKTxVMMvuBdH9UM1lU4pksWUFSvD6Bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MDQsdpDc1RrtJ5kcfd51nTEG+JZHFcnOqArPXzkrDx95wUh/WzYDmZYZh6CqyGymj
-	 xCnQFjcmaGeZqGBb8w+EKD3RfH3GF3yLoECrOGD4F4vJ2daFiQLhpw0DFL3pKkSvfO
-	 plQLj3Ga4vxRdRIsVgjV7zaNCwKKTnOB55NrBwDJJE41dpw4E2AZ7yDVITvuzxdwZl
-	 qE6xKcKq1V8E8PAxJSkgjLA0+zSzDCbuf9kj99Ew3/kIaLpCo1cPbkpIcbabOylT0H
-	 vO44JWAJ4zqeqRcwp+AO2kgrxZrGWoQsE6+UOSJJ+lqEfAlTWLQ8Uj37z1OGcT97Ml
-	 /DH02UJW+bOSg==
+	b=SL4GUnhnAEElRPxcjYpQ9uY1lFp+mMD0FM4W+743wbRxIbP9/wsmBz4XZEzEXFYsi
+	 qvoiE+zTIeqCSZi7Chor5+Aa8J6ANBlO5F/r36hJFIDJFVe9J4BD1caWP6AreYiFnK
+	 VZWhr0C78Sm0jEOLvUbTappIRB4OJlJmY1PotXzFYpvRYMUACggU5SxsLnqB3R5dqe
+	 cCBV1ICyGuLPSdGL8tYo5jf3WQnvnF0XfhkbjML2zunFKPc6juRbUzOcPaNxi/o9yM
+	 SxkfqW050kE6jBKFthatAJkW5Q3R905pk+PzdG63bYrhfgmrjF4B9B0eL1Xblq1uzl
+	 QNNguBEy9MTxA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	Liam.Howlett@oracle.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] maple_tree: fix MA_STATE_PREALLOC flag in mas_preallocate()
-Date: Sat,  5 Jul 2025 17:40:33 -0400
-Message-Id: <20250705112916-9d09937d9c6e6d22@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Jeongjun Park <aha310510@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.15.y v2] mm/vmalloc: fix data race in show_numa_info()
+Date: Sat,  5 Jul 2025 17:40:35 -0400
+Message-Id: <20250705110916-5cc63debc3bbe809@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250704152336.143063-1-Liam.Howlett@oracle.com>
+In-Reply-To:  <20250703130007.16755-1-aha310510@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,25 +64,48 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: fba46a5d83ca8decb338722fb4899026d8d9ead2
-
-Status in newer kernel trees:
-6.15.y | Present (different SHA1: 0c23ae32bfba)
-6.12.y | Present (different SHA1: 1d026fb05207)
-6.6.y | Not found
+The upstream commit SHA1 provided is correct: 5c5f0468d172ddec2e333d738d2a1f85402cf0bc
 
 Note: The patch differs from the upstream commit:
 ---
-1:  fba46a5d83ca8 < -:  ------------- maple_tree: fix MA_STATE_PREALLOC flag in mas_preallocate()
--:  ------------- > 1:  25bfd68644907 maple_tree: fix MA_STATE_PREALLOC flag in mas_preallocate()
+1:  5c5f0468d172d ! 1:  91d2e27d094a4 mm/vmalloc: fix data race in show_numa_info()
+    @@ Metadata
+      ## Commit message ##
+         mm/vmalloc: fix data race in show_numa_info()
+     
+    +    commit 5c5f0468d172ddec2e333d738d2a1f85402cf0bc upstream.
+    +
+         The following data-race was found in show_numa_info():
+     
+         ==================================================================
+    @@ mm/vmalloc.c: bool vmalloc_dump_obj(void *object)
+      
+      static void show_purge_info(struct seq_file *m)
+     @@ mm/vmalloc.c: static int vmalloc_info_show(struct seq_file *m, void *p)
+    - 	struct vmap_node *vn;
+      	struct vmap_area *va;
+      	struct vm_struct *v;
+    + 	int i;
+     +	unsigned int *counters;
+     +
+     +	if (IS_ENABLED(CONFIG_NUMA))
+     +		counters = kmalloc(nr_node_ids * sizeof(unsigned int), GFP_KERNEL);
+      
+    - 	for_each_vmap_node(vn) {
+    - 		spin_lock(&vn->busy.lock);
+    + 	for (i = 0; i < nr_vmap_nodes; i++) {
+    + 		vn = &vmap_nodes[i];
+     @@ mm/vmalloc.c: static int vmalloc_info_show(struct seq_file *m, void *p)
+      			}
+      
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.15.y       |  Success    |  Success   |
 
