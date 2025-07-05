@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-160265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9167AFA218
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 23:41:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC21AAFA21A
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 23:41:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7499C17DA67
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 21:41:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EBEF1BC8434
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 21:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1AE291C10;
-	Sat,  5 Jul 2025 21:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D798291C31;
+	Sat,  5 Jul 2025 21:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QGChQohr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ihLv7uSn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1573E2900A8
-	for <stable@vger.kernel.org>; Sat,  5 Jul 2025 21:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAC52641E3
+	for <stable@vger.kernel.org>; Sat,  5 Jul 2025 21:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751751625; cv=none; b=bqPsu3Wtzi7ce3C/5aFAt+XmiVKCvrsSHIcfCwmQBAfWDwjuvdH2qKYj4qgZF0h73j6X8LGKgYse6xib+oxNOZmsa6HxGRJ0UuTl/oNjepAgjtg1PG6wSAQzUupMESYj2ud4ekYLALhT/nfTyNRnaXSfl19S/Ba/I3FYQVb3fL8=
+	t=1751751627; cv=none; b=m5c1ox6M0qUEcBS9d7QEdJQ44FdRqWmT2lzloNp5XHcyRtEAPKVrvIu3/bUPAAiiKLrMX53qIMSKBmtBPoHAqM46nSSHVJzJ2ZU+GRgsOnnFWYr8z0iO1e7MkRIQU86/JVuoMpLLDVujjmRzo/3KhdWHjwJXOaiVghXftQai36w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751751625; c=relaxed/simple;
-	bh=FX9B5T5KlKe7RT6StbfLXrfw6HYo8Di0onuSM7Knzlo=;
+	s=arc-20240116; t=1751751627; c=relaxed/simple;
+	bh=ijtAeujOQytHTMEOZsD0eymoCoOIu2ycWHraqIP0YKI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uzdPwVDKkDGNidl0M+A7cL5o6dgc9pnyFdt8nJZuYk+jDgkBjKlM4MfJGJIzMOrvjtEPuGWHh4XP6cS4NMprF0Q0+ULbEwhNG5iIhy9yaKJH95niZ3j2zE5ZSOOWtRB0H8utLGUF0BR4egZUXXzGPaQpyjnOTcK+ym4nJEfwYRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QGChQohr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4410CC4CEE7;
-	Sat,  5 Jul 2025 21:40:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T2om/qwnr7YLgXoEuaMqWoAALFFj+nUqwFsCX/xyV9HmqoiXYXbqojNhXq34NStXf/D1N8Myddl+iVfqx3V1+zTJKsUgvVY8ICpn8foV37Bubx0MGFKVeSLVpzy2UxjHeZ9bUvnR+W7CaXZbemnLaz0ga9qjZAKconUTH4gSYD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ihLv7uSn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A19EC4CEE7;
+	Sat,  5 Jul 2025 21:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751751624;
-	bh=FX9B5T5KlKe7RT6StbfLXrfw6HYo8Di0onuSM7Knzlo=;
+	s=k20201202; t=1751751626;
+	bh=ijtAeujOQytHTMEOZsD0eymoCoOIu2ycWHraqIP0YKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QGChQohrTh1UyO4O44wqbljG7SOZLUHWcdrcMPgxL0EKrFkxZ1HG+SYfyknkc2zIC
-	 jzs2AAuVWRJoYhBhtIlXiCQRaZ3VypVLT9RSXOTKSoSdbFg2L0mvxt/rNBojXD7dDT
-	 vx5kFo/BoHKPdqKEq+rAlD/HaYObBABq/R641C8jcig6QgLR5TUtLCHZ7FBSeUKUQh
-	 +63bSgPhk6y1vRh7Qlu9gcbfZNVLmxwvuk8X83B/B4j7sxSJ4Ki9f9MHuv1UuGEkAF
-	 Ob0Q+uop4n9vkpmeJWjDz6baRKFTFtEQo3RwMA3UbMUMat4M8mqqadDZGHDeBbuPqf
-	 3061FmBaRjhHQ==
+	b=ihLv7uSn7+CkiVkBXYOE0oPkUIl1ZOaN1712wANnRpNOoVXZZB2nitOOQjiSEkmxH
+	 0xJ/2SdC1bd65SsxcbU3Z3fCnBYDvIrThuB+5vtWJhq2oVpMpAhHO60ZBlBfd/kM2W
+	 g8IOjH5CQAmIAEFttpEGmK+JsrRKpiT+EwnFElYVc9P7JOJiNECBlvkE3Du1xFuNrP
+	 G+lAUS1/JoKeFVZM3vq0AfdOPbJN9pmxpRzJVpFwd7ttexNBob+6hEulD/H2MsW/qi
+	 gNecZpitsL9jmkGqdtoyXodnypOwz4hF/VeNvku/X2UawXcmeQUL30C7hOr4HwDcHF
+	 cD0qBFSTHx47w==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15] ice: safer stats processing
-Date: Sat,  5 Jul 2025 17:40:22 -0400
-Message-Id: <20250705105956-b16337d72c8b1426@stable.kernel.org>
+To: stable@vger.kernel.org,
+	kees@kernel.org
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH] mod_devicetable: Enlarge the maximum platform_device_id name length
+Date: Sat,  5 Jul 2025 17:40:25 -0400
+Message-Id: <20250705153719-a8f20b3a61d3dd27@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250704131620.51803-1-przemyslaw.kitszel@intel.com>
+In-Reply-To:  <20250415231420.work.066-kees@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,78 +64,34 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: 1a0f25a52e08b1f67510cabbb44888d2b3c46359
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Przemek Kitszel<przemyslaw.kitszel@intel.com>
-Commit author: Jesse Brandeburg<jesse.brandeburg@intel.com>
-
-Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
+Found matching upstream commit: 655862865c97ff55e4f3f2aaa7708f42f0ea3bd8
 
 Note: The patch differs from the upstream commit:
 ---
-1:  1a0f25a52e08b ! 1:  c6c5671ad73f7 ice: safer stats processing
-    @@ Metadata
-      ## Commit message ##
-         ice: safer stats processing
-     
-    +    [ Upstream commit 1a0f25a52e08b1f67510cabbb44888d2b3c46359 ]
-    +
-    +    Fix an issue of stats growing indefinitely, minor conflict resolved:
-    +    struct ice_tx_ring replaced by struct ice_ring, as the split is not yet
-    +    present on 5.15 line. -Przemek
-    +
-    +    Original commit message:
-         The driver was zeroing live stats that could be fetched by
-         ndo_get_stats64 at any time. This could result in inconsistent
-         statistics, and the telltale sign was when reading stats frequently from
+1:  655862865c97f ! 1:  b545ae48a3db0 mod_devicetable: Enlarge the maximum platform_device_id name length
     @@ Commit message
-         Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-         Tested-by: Gurucharan G <gurucharanx.g@intel.com>
-         Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-    +    Reported-by: Masakazu Asama <masakazu.asama@gmail.com>
-    +    Closes: https://lore.kernel.org/intel-wired-lan/CAP8M2pGttT4JBjt+i4GJkxy7yERbqWJ5a8R14HzoonTLByc2Cw@mail.gmail.com
-    +    Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+                 /* last cacheline: 32 bytes */
+         };
      
-      ## drivers/net/ethernet/intel/ice/ice_main.c ##
-    -@@ drivers/net/ethernet/intel/ice/ice_main.c: ice_fetch_u64_stats_per_ring(struct u64_stats_sync *syncp, struct ice_q_stats st
-    +@@ drivers/net/ethernet/intel/ice/ice_main.c: ice_fetch_u64_stats_per_ring(struct ice_ring *ring, u64 *pkts, u64 *bytes)
-      /**
-       * ice_update_vsi_tx_ring_stats - Update VSI Tx ring stats counters
-       * @vsi: the VSI to be updated
-    @@ drivers/net/ethernet/intel/ice/ice_main.c: ice_fetch_u64_stats_per_ring(struct u
-       * @count: number of rings
-       */
-      static void
-    --ice_update_vsi_tx_ring_stats(struct ice_vsi *vsi, struct ice_tx_ring **rings,
-    +-ice_update_vsi_tx_ring_stats(struct ice_vsi *vsi, struct ice_ring **rings,
-     -			     u16 count)
-     +ice_update_vsi_tx_ring_stats(struct ice_vsi *vsi,
-     +			     struct rtnl_link_stats64 *vsi_stats,
-    -+			     struct ice_tx_ring **rings, u16 count)
-    ++			     struct ice_ring **rings, u16 count)
-      {
-     -	struct rtnl_link_stats64 *vsi_stats = &vsi->net_stats;
-      	u16 i;
-      
-      	for (i = 0; i < count; i++) {
-    -@@ drivers/net/ethernet/intel/ice/ice_main.c: ice_update_vsi_tx_ring_stats(struct ice_vsi *vsi, struct ice_tx_ring **rings,
-    +@@ drivers/net/ethernet/intel/ice/ice_main.c: ice_update_vsi_tx_ring_stats(struct ice_vsi *vsi, struct ice_ring **rings,
-       */
-      static void ice_update_vsi_ring_stats(struct ice_vsi *vsi)
-      {
+    -    Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+    -    Link: https://lore.kernel.org/r/20250415231420.work.066-kees@kernel.org
+         Signed-off-by: Kees Cook <kees@kernel.org>
+     
+      ## include/linux/mod_devicetable.h ##
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
+| stable/linux-6.15.y       |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 | stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
