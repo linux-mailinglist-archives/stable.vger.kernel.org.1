@@ -1,238 +1,153 @@
-Return-Path: <stable+bounces-160259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4FB9AFA0A4
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 17:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEA8AFA0F8
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 18:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37CA6189EB13
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 15:11:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BD411BC02AE
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 16:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97521898F8;
-	Sat,  5 Jul 2025 15:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1199207A2A;
+	Sat,  5 Jul 2025 16:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j77gGkpt"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FE561FCE
-	for <stable@vger.kernel.org>; Sat,  5 Jul 2025 15:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C4D140E34;
+	Sat,  5 Jul 2025 16:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751728262; cv=none; b=KvnBwzmdSiSjaUHYex03bR3+vnZp/JJAiYh8yAqyT2fYLfO2RPFaULd/pZJGqLx3piQotEvz5mJ+AbxbAEx1II8enugMAyK80F/kzk2Yg47ilaiYNRux4LjtkIi+n+/eHWZArhtz+FawUoNCwyWY2440bEmu2BlBsQSXf4ZPKT0=
+	t=1751734345; cv=none; b=QOqVwrnmFxKxs+qidMNdgXtRpeZAwYcVGCt2/YCxJzA4oqtqUOVVJAWOZC5wXwLviZ+treIMKgNfusdCwCaXUpUp4I57ghH08WnQaBin4k+2GRcvgwG2rl0P4DZM7yg1y1swvwTXOoKEaszTdOEGbkaFX7O5pyoofS7eqiNAGaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751728262; c=relaxed/simple;
-	bh=tPDtEea8WOojBqx49kMOzttcKfe+MrHSToUOUdEzVa8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b8DrJpyEpkVrjEuaaZky7KRCnuvA21WA+BU4jb01zC+nZoDgg9Kgf4FOCFYrgM7sa6OWjszGo4ey8I7E3q/bTFVPna4lKrY15HDfmFZjMdc9qRGos5MSBAnhLzBSAzuwXPBop11/7sHARKQ9xuJzynDFEA+M2txnNnVLP6aK4HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dev-suse (unknown [223.72.70.63])
-	by APP-01 (Coremail) with SMTP id qwCowAAXBqplQGlo3O5BAQ--.5908S2;
-	Sat, 05 Jul 2025 23:10:30 +0800 (CST)
-From: Jingwei Wang <wangjingwei@iscas.ac.cn>
-To: linux-riscv@lists.infradead.org
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Jesse Taube <jesse@rivosinc.com>,
-	Olof Johansson <olof@lixom.net>,
-	Yixun Lan <dlan@gentoo.org>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Tsukasa OI <research_trasio@irq.a4lg.com>,
-	stable@vger.kernel.org,
-	Jingwei Wang <wangjingwei@iscas.ac.cn>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH v5] riscv: hwprobe: Fix stale vDSO data for late-initialized keys at boot
-Date: Sat,  5 Jul 2025 23:08:28 +0800
-Message-ID: <20250705150952.29461-1-wangjingwei@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.0
+	s=arc-20240116; t=1751734345; c=relaxed/simple;
+	bh=e2wiSNs48ZBe2YT9oRIVY+jqqRRhnGkNdUsYu5WN1Lw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qKTipWn2x4NOLeicQ36VSCNzIRtf5/9yEfFXIzQ1uKZ8kulnlQvxBb0/tIaK/rvLTP8kXV09M4kTun3rjpbasNRJlIiiRPoc87J5VMwVfDlpO4nVMQziVrTjiUdic1PDcBqobQI4j+0GRYsTLbTm151/8m4FwcmeVcEtu6gSkNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j77gGkpt; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751734343; x=1783270343;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=e2wiSNs48ZBe2YT9oRIVY+jqqRRhnGkNdUsYu5WN1Lw=;
+  b=j77gGkptM3y8sdnvDS0es3aKICkNVYo3NlVXVO7pqLvf8BrHrCLTlERG
+   drNTLgLcu17/XvGT2P0DbagAJlk92l9BPMl7+vxzJW6fPDKymryW/yOl/
+   jpWiHIVYg7L7b5sI2KW0qRehh41cBIxkynqxrOajCIXCaYk6NCB0MOfk3
+   8p03oCOHspouZ4JPjdzzyH766tv1A1D3Ux1uyX2zXFea0JcWQDMt5Yua7
+   GrbzrGIrLXGRoRzyjPTik05s3JjMwnHUvrig2Hj1C3qYpbTXSpmgTG9JN
+   D51jUJNcqTjk/bHhcf+7zjJvO2K/II8tSxcGwms0BDH4kksmfh/hWreNb
+   w==;
+X-CSE-ConnectionGUID: gQsISBb4RKumtKX9kVEbbQ==
+X-CSE-MsgGUID: QiVMXGRRSOqV/ToHyl+cgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11485"; a="53238636"
+X-IronPort-AV: E=Sophos;i="6.16,290,1744095600"; 
+   d="scan'208";a="53238636"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2025 09:52:21 -0700
+X-CSE-ConnectionGUID: z2oItUR9ROmbiFGY0UomQA==
+X-CSE-MsgGUID: cOW1/8VqTWG0kX5QC4KFoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,290,1744095600"; 
+   d="scan'208";a="154263751"
+Received: from lkp-server01.sh.intel.com (HELO 0b2900756c14) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 05 Jul 2025 09:52:20 -0700
+Received: from kbuild by 0b2900756c14 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uY67c-0004ch-1x;
+	Sat, 05 Jul 2025 16:52:16 +0000
+Date: Sun, 6 Jul 2025 00:51:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: yangge1116@126.com, ardb@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, jarkko@kernel.org,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	ilias.apalodimas@linaro.org, jgg@ziepe.ca,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, liuzixing@hygon.cn,
+	Ge Yang <yangge1116@126.com>
+Subject: Re: [PATCH V2] efi/tpm: Fix the issue where the CC platforms event
+ log header can't be correctly identified
+Message-ID: <202507060016.n5ikMP6Q-lkp@intel.com>
+References: <1751710616-24464-1-git-send-email-yangge1116@126.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAAXBqplQGlo3O5BAQ--.5908S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3AF43ury8KFyfCrykuF4rZrb_yoWxGFWxpF
-	WqkrsYqFy5JF4xWa9rKw1kZF10g3Z5Gr43GFsFk345ZryfAr13Jr9aqrsxAr1DtrZYva40
-	vF45WFWYk3y2yrJanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
-	C2KfnxnUUI43ZEXa7sRE2Q6tUUUUU==
-X-CM-SenderInfo: pzdqwy5lqj4v3l6l2u1dvotugofq/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1751710616-24464-1-git-send-email-yangge1116@126.com>
 
-The hwprobe vDSO data for some keys, like MISALIGNED_VECTOR_PERF,
-is determined by an asynchronous kthread. This can create a race
-condition where the kthread finishes after the vDSO data has
-already been populated, causing userspace to read stale values.
+Hi,
 
-To fix this, a completion-based framework is introduced to robustly
-synchronize the async probes with the vDSO data population. The
-waiting function, init_hwprobe_vdso_data(), now blocks on
-wait_for_completion() until all probes signal they are done.
+kernel test robot noticed the following build errors:
 
-Furthermore, to prevent this potential blocking from impacting boot
-performance, the initialization is deferred to late_initcall. This
-is safe as the data is only required by userspace (which starts
-much later) and moves the synchronization delay off the critical
-boot path.
+[auto build test ERROR on efi/next]
+[also build test ERROR on char-misc/char-misc-testing char-misc/char-misc-next char-misc/char-misc-linus linus/master v6.16-rc4 next-20250704]
+[cannot apply to intel-tdx/guest-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Reported-by: Tsukasa OI <research_trasio@irq.a4lg.com>
-Closes: https://lore.kernel.org/linux-riscv/760d637b-b13b-4518-b6bf-883d55d44e7f@irq.a4lg.com/
-Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc: Olof Johansson <olof@lixom.net>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jingwei Wang <wangjingwei@iscas.ac.cn>
----
-Changes in v5:
-	- Reworked the synchronization logic to a robust "sentinel-count"
-	  pattern based on feedback from Alexandre.
-	- Fixed a "multiple definition" linker error for nommu builds by changing
-	  the header-file stub functions to `static inline`, as pointed out by Olof.
-	- Updated the commit message to better explain the rationale for moving
-	  the vDSO initialization to `late_initcall`.
+url:    https://github.com/intel-lab-lkp/linux/commits/yangge1116-126-com/efi-tpm-Fix-the-issue-where-the-CC-platforms-event-log-header-can-t-be-correctly-identified/20250705-182032
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+patch link:    https://lore.kernel.org/r/1751710616-24464-1-git-send-email-yangge1116%40126.com
+patch subject: [PATCH V2] efi/tpm: Fix the issue where the CC platforms event log header can't be correctly identified
+config: arc-randconfig-002-20250705 (https://download.01.org/0day-ci/archive/20250706/202507060016.n5ikMP6Q-lkp@intel.com/config)
+compiler: arc-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250706/202507060016.n5ikMP6Q-lkp@intel.com/reproduce)
 
-Changes in v4:
-	- Reworked the synchronization mechanism based on feedback from Palmer
-    	and Alexandre.
-	- Instead of a post-hoc refresh, this version introduces a robust
-	completion-based framework using an atomic counter to ensure async
-	probes are finished before populating the vDSO.
-	- Moved the vdso data initialization to a late_initcall to avoid
-	impacting boot time.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507060016.n5ikMP6Q-lkp@intel.com/
 
-Changes in v3:
-	- Retained existing blank line.
+All error/warnings (new ones prefixed by >>):
 
-Changes in v2:
-	- Addressed feedback from Yixun's regarding #ifdef CONFIG_MMU usage.
-	- Updated commit message to provide a high-level summary.
-	- Added Fixes tag for commit e7c9d66e313b.
+   drivers/char/tpm/eventlog/tpm2.c: In function 'calc_tpm2_event_size':
+>> drivers/char/tpm/eventlog/tpm2.c:40:25: error: implicit declaration of function 'cc_platform_has' [-Werror=implicit-function-declaration]
+      40 |                         cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
+         |                         ^~~~~~~~~~~~~~~
+>> drivers/char/tpm/eventlog/tpm2.c:40:41: error: 'CC_ATTR_GUEST_STATE_ENCRYPT' undeclared (first use in this function)
+      40 |                         cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
+         |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/char/tpm/eventlog/tpm2.c:40:41: note: each undeclared identifier is reported only once for each function it appears in
+>> drivers/char/tpm/eventlog/tpm2.c:41:1: warning: control reaches end of non-void function [-Wreturn-type]
+      41 | }
+         | ^
+   cc1: some warnings being treated as errors
 
-v1: https://lore.kernel.org/linux-riscv/20250521052754.185231-1-wangjingwei@iscas.ac.cn/T/#u
 
- arch/riscv/include/asm/hwprobe.h           |  8 +++++++-
- arch/riscv/kernel/sys_hwprobe.c            | 20 +++++++++++++++++++-
- arch/riscv/kernel/unaligned_access_speed.c |  9 +++++++--
- 3 files changed, 33 insertions(+), 4 deletions(-)
+vim +/cc_platform_has +40 drivers/char/tpm/eventlog/tpm2.c
 
-diff --git a/arch/riscv/include/asm/hwprobe.h b/arch/riscv/include/asm/hwprobe.h
-index 7fe0a379474ae2c6..3b2888126e659ea1 100644
---- a/arch/riscv/include/asm/hwprobe.h
-+++ b/arch/riscv/include/asm/hwprobe.h
-@@ -40,5 +40,11 @@ static inline bool riscv_hwprobe_pair_cmp(struct riscv_hwprobe *pair,
- 
- 	return pair->value == other_pair->value;
- }
--
-+#ifdef CONFIG_MMU
-+void riscv_hwprobe_register_async_probe(void);
-+void riscv_hwprobe_complete_async_probe(void);
-+#else
-+static inline void riscv_hwprobe_register_async_probe(void) {}
-+static inline void riscv_hwprobe_complete_async_probe(void) {}
-+#endif
- #endif
-diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
-index 0b170e18a2beba57..ee02aeb03e7bd3d8 100644
---- a/arch/riscv/kernel/sys_hwprobe.c
-+++ b/arch/riscv/kernel/sys_hwprobe.c
-@@ -5,6 +5,8 @@
-  * more details.
-  */
- #include <linux/syscalls.h>
-+#include <linux/completion.h>
-+#include <linux/atomic.h>
- #include <asm/cacheflush.h>
- #include <asm/cpufeature.h>
- #include <asm/hwprobe.h>
-@@ -467,6 +469,20 @@ static int do_riscv_hwprobe(struct riscv_hwprobe __user *pairs,
- 
- #ifdef CONFIG_MMU
- 
-+static DECLARE_COMPLETION(boot_probes_done);
-+static atomic_t pending_boot_probes = ATOMIC_INIT(1);
-+
-+void riscv_hwprobe_register_async_probe(void)
-+{
-+	atomic_inc(&pending_boot_probes);
-+}
-+
-+void riscv_hwprobe_complete_async_probe(void)
-+{
-+	if (atomic_dec_and_test(&pending_boot_probes))
-+		complete(&boot_probes_done);
-+}
-+
- static int __init init_hwprobe_vdso_data(void)
- {
- 	struct vdso_arch_data *avd = vdso_k_arch_data;
-@@ -474,6 +490,8 @@ static int __init init_hwprobe_vdso_data(void)
- 	struct riscv_hwprobe pair;
- 	int key;
- 
-+	if (unlikely(!atomic_dec_and_test(&pending_boot_probes)))
-+		wait_for_completion(&boot_probes_done);
- 	/*
- 	 * Initialize vDSO data with the answers for the "all CPUs" case, to
- 	 * save a syscall in the common case.
-@@ -504,7 +522,7 @@ static int __init init_hwprobe_vdso_data(void)
- 	return 0;
- }
- 
--arch_initcall_sync(init_hwprobe_vdso_data);
-+late_initcall(init_hwprobe_vdso_data);
- 
- #endif /* CONFIG_MMU */
- 
-diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
-index ae2068425fbcd207..4b8ad2673b0f7470 100644
---- a/arch/riscv/kernel/unaligned_access_speed.c
-+++ b/arch/riscv/kernel/unaligned_access_speed.c
-@@ -379,6 +379,7 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
- static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
- {
- 	schedule_on_each_cpu(check_vector_unaligned_access);
-+	riscv_hwprobe_complete_async_probe();
- 
- 	return 0;
- }
-@@ -473,8 +474,12 @@ static int __init check_unaligned_access_all_cpus(void)
- 			per_cpu(vector_misaligned_access, cpu) = unaligned_vector_speed_param;
- 	} else if (!check_vector_unaligned_access_emulated_all_cpus() &&
- 		   IS_ENABLED(CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS)) {
--		kthread_run(vec_check_unaligned_access_speed_all_cpus,
--			    NULL, "vec_check_unaligned_access_speed_all_cpus");
-+		riscv_hwprobe_register_async_probe();
-+		if (IS_ERR(kthread_run(vec_check_unaligned_access_speed_all_cpus,
-+				NULL, "vec_check_unaligned_access_speed_all_cpus"))) {
-+			pr_warn("Failed to create vec_unalign_check kthread\n");
-+			riscv_hwprobe_complete_async_probe();
-+		}
- 	}
- 
- 	/*
+    24	
+    25	/*
+    26	 * calc_tpm2_event_size() - calculate the event size, where event
+    27	 * is an entry in the TPM 2.0 event log. The event is of type Crypto
+    28	 * Agile Log Entry Format as defined in TCG EFI Protocol Specification
+    29	 * Family "2.0".
+    30	
+    31	 * @event: event whose size is to be calculated.
+    32	 * @event_header: the first event in the event log.
+    33	 *
+    34	 * Returns size of the event. If it is an invalid event, returns 0.
+    35	 */
+    36	static size_t calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+    37					   struct tcg_pcr_event *event_header)
+    38	{
+    39		return __calc_tpm2_event_size(event, event_header, false,
+  > 40				cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
+  > 41	}
+    42	
+
 -- 
-2.50.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
