@@ -1,80 +1,107 @@
-Return-Path: <stable+bounces-160260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDEA8AFA0F8
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 18:52:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2AFAFA164
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 21:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BD411BC02AE
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 16:52:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 788531BC1701
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 19:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1199207A2A;
-	Sat,  5 Jul 2025 16:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F6D20FA96;
+	Sat,  5 Jul 2025 19:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j77gGkpt"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Hg4m6If+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C4D140E34;
-	Sat,  5 Jul 2025 16:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD659205502
+	for <stable@vger.kernel.org>; Sat,  5 Jul 2025 19:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751734345; cv=none; b=QOqVwrnmFxKxs+qidMNdgXtRpeZAwYcVGCt2/YCxJzA4oqtqUOVVJAWOZC5wXwLviZ+treIMKgNfusdCwCaXUpUp4I57ghH08WnQaBin4k+2GRcvgwG2rl0P4DZM7yg1y1swvwTXOoKEaszTdOEGbkaFX7O5pyoofS7eqiNAGaM=
+	t=1751743193; cv=none; b=Qj52QSCDRJayYgXsjLJV0nzt/8xqA6nMiLtkmFLPlFfHWs/xqWuryEFHo9a/TuwS9Dwv51EFqa0nz5wcZklSm8OTWssAZQSbdxmJew99UsRAc8zUBhOExUT04WPC5NeH+ziDDKRDBP0AANEBlgA8E/TzAy7EnOYmoWf3A7hldRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751734345; c=relaxed/simple;
-	bh=e2wiSNs48ZBe2YT9oRIVY+jqqRRhnGkNdUsYu5WN1Lw=;
+	s=arc-20240116; t=1751743193; c=relaxed/simple;
+	bh=i4WxrmKI9aWJ6AEjMvCbpjm6UX1wknH9/ZWOyCQ9puI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qKTipWn2x4NOLeicQ36VSCNzIRtf5/9yEfFXIzQ1uKZ8kulnlQvxBb0/tIaK/rvLTP8kXV09M4kTun3rjpbasNRJlIiiRPoc87J5VMwVfDlpO4nVMQziVrTjiUdic1PDcBqobQI4j+0GRYsTLbTm151/8m4FwcmeVcEtu6gSkNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j77gGkpt; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751734343; x=1783270343;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=e2wiSNs48ZBe2YT9oRIVY+jqqRRhnGkNdUsYu5WN1Lw=;
-  b=j77gGkptM3y8sdnvDS0es3aKICkNVYo3NlVXVO7pqLvf8BrHrCLTlERG
-   drNTLgLcu17/XvGT2P0DbagAJlk92l9BPMl7+vxzJW6fPDKymryW/yOl/
-   jpWiHIVYg7L7b5sI2KW0qRehh41cBIxkynqxrOajCIXCaYk6NCB0MOfk3
-   8p03oCOHspouZ4JPjdzzyH766tv1A1D3Ux1uyX2zXFea0JcWQDMt5Yua7
-   GrbzrGIrLXGRoRzyjPTik05s3JjMwnHUvrig2Hj1C3qYpbTXSpmgTG9JN
-   D51jUJNcqTjk/bHhcf+7zjJvO2K/II8tSxcGwms0BDH4kksmfh/hWreNb
-   w==;
-X-CSE-ConnectionGUID: gQsISBb4RKumtKX9kVEbbQ==
-X-CSE-MsgGUID: QiVMXGRRSOqV/ToHyl+cgg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11485"; a="53238636"
-X-IronPort-AV: E=Sophos;i="6.16,290,1744095600"; 
-   d="scan'208";a="53238636"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2025 09:52:21 -0700
-X-CSE-ConnectionGUID: z2oItUR9ROmbiFGY0UomQA==
-X-CSE-MsgGUID: cOW1/8VqTWG0kX5QC4KFoQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,290,1744095600"; 
-   d="scan'208";a="154263751"
-Received: from lkp-server01.sh.intel.com (HELO 0b2900756c14) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 05 Jul 2025 09:52:20 -0700
-Received: from kbuild by 0b2900756c14 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uY67c-0004ch-1x;
-	Sat, 05 Jul 2025 16:52:16 +0000
-Date: Sun, 6 Jul 2025 00:51:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: yangge1116@126.com, ardb@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, jarkko@kernel.org,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	ilias.apalodimas@linaro.org, jgg@ziepe.ca,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, liuzixing@hygon.cn,
-	Ge Yang <yangge1116@126.com>
-Subject: Re: [PATCH V2] efi/tpm: Fix the issue where the CC platforms event
- log header can't be correctly identified
-Message-ID: <202507060016.n5ikMP6Q-lkp@intel.com>
-References: <1751710616-24464-1-git-send-email-yangge1116@126.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=OMUTPBA52sr6HrOBqP830O9f8evv5/f9ISZWFJXbXvyt02PayxjY+4XejgYA6NXkCC1ww6tuwEGjmE4GzWcYP34BVs6DacW2R2irI+SRCLUwM8cJ+Zsoi0kVaYwEA1nWGngdL1fmXh6gj+4Y6s2n7ExBq2GBZEbKy+H84w+t6Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Hg4m6If+; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 565IQwjG003696
+	for <stable@vger.kernel.org>; Sat, 5 Jul 2025 19:19:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=h0r+raSjr3qG0pDwi4k/j9K+
+	amUMQGQ1pbpuuZU5sz8=; b=Hg4m6If+4HXMvUgCd89eTqWygkAs5ZjYu7MAaC2N
+	umwQ0U4X9fdcF3B24dGZ8RySl4FRkfBgM+v2QTX2+aw3BgIflky9qEL9HkDDVGK+
+	jIUTsVSTYLCTS/AB//bqqSn/U2q8+iTSGUQwCtRSNVK2im98q56fqfc9kupmjsGP
+	Z7prLTlKUzkNkqHFejuTAUCh3/p7bgTZRui1bWSm0RTOh+QQnfbZY8FlR9JVxek3
+	/MzEj5TbRJOcYsHZL9JxPsdov4dsBjFL6koEgaQXZae64oTSSR0RVb0w2FZ/gPoL
+	gFlsl91FciN7fIEYgNriwIHDUKdV57CCgsRkxGilkRvG2A==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47pwbd1pre-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Sat, 05 Jul 2025 19:19:50 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7d09bc05b77so312645785a.1
+        for <stable@vger.kernel.org>; Sat, 05 Jul 2025 12:19:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751743189; x=1752347989;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h0r+raSjr3qG0pDwi4k/j9K+amUMQGQ1pbpuuZU5sz8=;
+        b=PDzs1DXU9hmo6P1iD1jN37NQtWZ9XT6kKDvErDjwmtZgNaU9Q8uxGMM/qcuSaNR2B9
+         RbxWXjfr7YCmzHB71nWyXLeRbDLd56wDkiYMrpIuVg1KkBH56Rmn7DJ+CXxhyX2mc/xD
+         Fb9rF4k+1Tj8d4+tUEClASCXMm/ZSghiivt4BdhkZDvuojlN1cIaGXBttZfBX5d60UJv
+         zopu4j8v5OWyb3jkHe9ObwJEjXY91LSy3RubBew4wdMNh7whaUz0gmHZa3rYMQc7C3vS
+         7QDTW6KRKXeJ7cTruXaa82/OIAjKig0TujHIcmk3JrAX4o1pcEGLPEBnwLAPB7Hiowxx
+         agFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbnAIGZ0P8+r2gyTy2XB/AQcjRzFdEtOHRgWrNwwQXeOhcqfKCTfS29UHfXZZ2krS6PdYgTGQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQZtJYhDe3aIhcQtWPVRWc1R9UrC0wP3CxPcZsXByW5IFqYA+9
+	NDfSMc+45O3wa4oPGvakPKbDgRV555dP32ALiqyX/XLuXkOx2lO+p4BZM17NiBkxnPB5PNAqdDc
+	H9nyvO2jTWipxTYYwpYJCJ+FoPo+d5FVlHSWCFb181wKQVu7GVSf/o/H4DzQ=
+X-Gm-Gg: ASbGncuURDxXcHp3lzpIC6oDbmuxDBv8W/O2W2Sk3UB4dOGNM9eHH9Ks3KAOLs4dGzu
+	KGbBwwu7lNrBAzfC3eOgKDWSwDiwi1N5HNPXmpADPA1KLIHClduOfOO5PTBk23JrrScJF1fru0p
+	bVtgD6U9kFoqwR3t/mMeVn4SpxH9q0HS2XFWkq7GWpkCnOInNKT2T4MW8NL9GfpyYydEwDmRfiu
+	+0MODTb16EKcKCoGKzfReZKMFdGrhyt/Dxk6pgnn/tLbjzM+iaAAF7nZuBskaOEsY79bBVCA5MU
+	vJR/DT8zBYr0xIOHCPkgHfE7gUdXfoUKTyP6MO13rjCVY/DlT5+/D311pURT2dAYt/eA7HMqQgg
+	H0bszWv7Bb2ddMN59DelqLJeraE5/9U/ky1c=
+X-Received: by 2002:a05:620a:2913:b0:7d3:d156:37d6 with SMTP id af79cd13be357-7d5df102b4amr936998685a.6.1751743189419;
+        Sat, 05 Jul 2025 12:19:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFAxmBHCJAc86I5mwaeJPv9D+3BoHZHqIdYljEW4zYDWfi2OGcqvLdGuYK+a57w2SLv7bRiaQ==
+X-Received: by 2002:a05:620a:2913:b0:7d3:d156:37d6 with SMTP id af79cd13be357-7d5df102b4amr936994885a.6.1751743188975;
+        Sat, 05 Jul 2025 12:19:48 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-556383bb16dsm669107e87.24.2025.07.05.12.19.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 05 Jul 2025 12:19:48 -0700 (PDT)
+Date: Sat, 5 Jul 2025 22:19:46 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: "Colin King (gmail)" <colin.i.king@gmail.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Hui Pu <Hui.Pu@gehealthcare.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] drm/bridge: tc358767: fix uninitialized variable
+ regression
+Message-ID: <m4bitkuvouisk6ebhnz6yzkmrojuocos4tvjjmxahjg2dp2kgm@sxjmymi445vy>
+References: <20250704-drm-bridge-alloc-fix-tc358767-regression-v2-1-ec0e511bedd0@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,71 +110,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1751710616-24464-1-git-send-email-yangge1116@126.com>
+In-Reply-To: <20250704-drm-bridge-alloc-fix-tc358767-regression-v2-1-ec0e511bedd0@bootlin.com>
+X-Proofpoint-GUID: lERERWLmPcvwIqH9SgYyLIdAG0D04kFB
+X-Proofpoint-ORIG-GUID: lERERWLmPcvwIqH9SgYyLIdAG0D04kFB
+X-Authority-Analysis: v=2.4 cv=e/kGSbp/ c=1 sm=1 tr=0 ts=68697ad6 cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=P-IC7800AAAA:8
+ a=EUspDBNiAAAA:8 a=Nrv5o8RMzHmR80szmAIA:9 a=CjuIK1q_8ugA:10
+ a=IoWCM6iH3mJn3m4BftBB:22 a=d3PnA9EDa4IxuAV0gXij:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA1MDEyNyBTYWx0ZWRfXxjUxVgLudgzo
+ zp93jwn3JkKfwcm75Gk193FAGxAzw2QtX3Ddnkk239USGv/LS1jIG+plVvs0FEwlE58YNR5UpBC
+ NJhL82RgcurPivk9gDmARY7loNmdclqeRj9QpLQgtr+RlBB6z1NoNQwa8gV4oFis2CEVjttBAvm
+ P4sXzEeE6fZUhS6JgexrVsblgJ8W4iKzX5RR4to1BcSVzU0nss5uzT4d18cPbmANDiJIXY3UoXe
+ Q5yK1HyXWvjtuUD1hJ3qj4a6zzd6OL9ql/BCDhGHHQ65lVfHR+Zl8r+4Ykidc/vTb6MhuROsPKw
+ 7EJmDC3dicb19ft4IgQMsVbwuO04lIvPDLcRQcU+aMT4h1P7was6HuW2ClPvXJKz4RaCRZEe9pq
+ W/r3pITS4ojzlvyJQGDI3DkxeGccgO+ebkEZQG05ycEa2XJqiBgcEmIkS4m26S92OkX10wG8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-04_07,2025-07-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 impostorscore=0 adultscore=0 mlxlogscore=999
+ lowpriorityscore=0 priorityscore=1501 suspectscore=0 mlxscore=0 phishscore=0
+ bulkscore=0 clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507050127
 
-Hi,
+On Fri, Jul 04, 2025 at 01:30:18AM +0200, Luca Ceresoli wrote:
+> Commit a59a27176914 ("drm/bridge: tc358767: convert to
+> devm_drm_bridge_alloc() API") split tc_probe_bridge_endpoint() in two
+> functions, thus duplicating the loop over the endpoints in each of those
+> functions. However it missed duplicating the of_graph_parse_endpoint() call
+> which initializes the struct of_endpoint, resulting in an uninitialized
+> read.
+> 
+> Fixes: a59a27176914 ("drm/bridge: tc358767: convert to devm_drm_bridge_alloc() API")
+> Cc: stable@vger.kernel.org
+> Reported-by: Colin King (gmail) <colin.i.king@gmail.com>
+> Closes: https://lore.kernel.org/all/056b34c3-c1ea-4b8c-9672-c98903ffd012@gmail.com/
+> Reviewed-by: Colin Ian King <colin.i.king@gmail.com>
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> ---
+> - Link to v1: https://lore.kernel.org/r/20250703-drm-bridge-alloc-fix-tc358767-regression-v1-1-8f224cd063c4@bootlin.com
+> ---
+> 
 
-kernel test robot noticed the following build errors:
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[auto build test ERROR on efi/next]
-[also build test ERROR on char-misc/char-misc-testing char-misc/char-misc-next char-misc/char-misc-linus linus/master v6.16-rc4 next-20250704]
-[cannot apply to intel-tdx/guest-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/yangge1116-126-com/efi-tpm-Fix-the-issue-where-the-CC-platforms-event-log-header-can-t-be-correctly-identified/20250705-182032
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-patch link:    https://lore.kernel.org/r/1751710616-24464-1-git-send-email-yangge1116%40126.com
-patch subject: [PATCH V2] efi/tpm: Fix the issue where the CC platforms event log header can't be correctly identified
-config: arc-randconfig-002-20250705 (https://download.01.org/0day-ci/archive/20250706/202507060016.n5ikMP6Q-lkp@intel.com/config)
-compiler: arc-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250706/202507060016.n5ikMP6Q-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507060016.n5ikMP6Q-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
-   drivers/char/tpm/eventlog/tpm2.c: In function 'calc_tpm2_event_size':
->> drivers/char/tpm/eventlog/tpm2.c:40:25: error: implicit declaration of function 'cc_platform_has' [-Werror=implicit-function-declaration]
-      40 |                         cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
-         |                         ^~~~~~~~~~~~~~~
->> drivers/char/tpm/eventlog/tpm2.c:40:41: error: 'CC_ATTR_GUEST_STATE_ENCRYPT' undeclared (first use in this function)
-      40 |                         cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
-         |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/char/tpm/eventlog/tpm2.c:40:41: note: each undeclared identifier is reported only once for each function it appears in
->> drivers/char/tpm/eventlog/tpm2.c:41:1: warning: control reaches end of non-void function [-Wreturn-type]
-      41 | }
-         | ^
-   cc1: some warnings being treated as errors
-
-
-vim +/cc_platform_has +40 drivers/char/tpm/eventlog/tpm2.c
-
-    24	
-    25	/*
-    26	 * calc_tpm2_event_size() - calculate the event size, where event
-    27	 * is an entry in the TPM 2.0 event log. The event is of type Crypto
-    28	 * Agile Log Entry Format as defined in TCG EFI Protocol Specification
-    29	 * Family "2.0".
-    30	
-    31	 * @event: event whose size is to be calculated.
-    32	 * @event_header: the first event in the event log.
-    33	 *
-    34	 * Returns size of the event. If it is an invalid event, returns 0.
-    35	 */
-    36	static size_t calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
-    37					   struct tcg_pcr_event *event_header)
-    38	{
-    39		return __calc_tpm2_event_size(event, event_header, false,
-  > 40				cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
-  > 41	}
-    42	
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+With best wishes
+Dmitry
 
