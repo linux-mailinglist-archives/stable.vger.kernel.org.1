@@ -1,124 +1,168 @@
-Return-Path: <stable+bounces-160244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207C3AF9E41
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 06:20:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90620AF9E86
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 08:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 844F84A7AEE
-	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 04:19:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEA4F5655CD
+	for <lists+stable@lfdr.de>; Sat,  5 Jul 2025 06:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C521C8621;
-	Sat,  5 Jul 2025 04:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3934211A35;
+	Sat,  5 Jul 2025 06:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="cL3fQmbe"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="NNImsWkx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3224717B50F;
-	Sat,  5 Jul 2025 04:20:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.9])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E5320330;
+	Sat,  5 Jul 2025 06:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751689217; cv=none; b=f5EQN5EtzRi6tC2EQZTKAD2IswvaoZLVG2uNifWSbsSvHiWmrlbqvwnxfWvCHz28YGYsBogS8jKfhJQGPH/VbMRcfqhFN+6eh9xMHdm8MRJBA9E+6f+u7m6ON43mIkN1BAJI0VLDUzSxfenK0Y/SmJ5qbQEGDV0EJ+i41t4qYpQ=
+	t=1751698744; cv=none; b=jQwaQip1Pct8lkjJzLQM0XAPk1fT0ILzJO+fZQTkan9IWvMhmp5WOnKatEwXcsu0ZHNyyw2FDM/8u3HzydFHlpF+DhUApMDt1eObDjVJStJtbT97yu2wXuWpckkxBu48R7dKuuFjc4vvEi5JbMD9mbcNyYsTqgIaZgxC+WSSs7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751689217; c=relaxed/simple;
-	bh=PP2tBK0K+j9zNRE3lMtMvzqQ+gaIJA85DfLOLawjxDw=;
+	s=arc-20240116; t=1751698744; c=relaxed/simple;
+	bh=/vI/pctqiLTX0hFAMIl1Ve6WG/lz+qFH6FCsLv3psFo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l0HTl85py2IdQ8aRA+tA0plXWyJMq1+aQoxWX813Pktj6SaSPptvK+o6bQ8YPO+ygxcksLBFBFWwTnzZPMSu7+c6H5b/6XUjzxonsAz85Jr0C9TsCsImHbnvNZTZp03xUJo0mag8f/215E1UEM8/7FRuX4xS0mexjt1k7i7ZgBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=cL3fQmbe; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-450cfb790f7so10864905e9.0;
-        Fri, 04 Jul 2025 21:20:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1751689212; x=1752294012; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4QX5ca/XQ9bTQip0jvg8XOVXm9dQiuDFX8AvyvylwPg=;
-        b=cL3fQmbeu9geNmjlc1zOpFBjhhdACjqztq8CdH5tPJL/2zoSR+XETNFF0jOfR331v/
-         hPnA0HmLqjFnAUClaQzr9UzjbEmV2go/Ya4g+odpEG8iDQil6vsUFFLi8wMvYL9Aorkr
-         TX9Ui91h7PoclHwrrld4pluyPJjTeItw/J8145EMqdVF2GfqLMXA5RXrXEefJhI3yumF
-         ylk8zyeuojzOywqX1Vgnf+lIhc2Wo7WrYkUfx/fpmUMHss1eba/znjcLOZx4cfBgaYzg
-         Ut71SF4yVcwzPVv3mbzHMP6KhUEZWUKyoP3VOi/HJGfjFOAr+KIqnQRHWnyG+mEWBuNE
-         fgwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751689212; x=1752294012;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4QX5ca/XQ9bTQip0jvg8XOVXm9dQiuDFX8AvyvylwPg=;
-        b=fEAlPqEVMU/koF5dy8kEuVNXJkifH4Wag9Ypq+zhZpq9Nxzs0i63n30ysTP0E4peMe
-         EK/f2F7GDoexaFJeXfWXVMN5Pow7Wrc6O0JhMWlPxTLUclfrwp8nkBthA9a0hZX/vQ02
-         qGkl4u6fdlYFu5+xDUXJjxVsMAW9s2hKrFOpstjcoRnOim/kvrsEhnhnrJC2WO/TUBLS
-         3mhTMlVd/P4ahTrtRO7Z9SzOzEconoD24wdmD2HHo00xlCvq9k2oppyl0QxBYBx+Ki2x
-         poxkENYHKUlaMrdgPZeF63/vr9VVnL5DtsrQkZ+2TkWIcVZyyzCE31VPKpo2Amv14gk7
-         Os/w==
-X-Forwarded-Encrypted: i=1; AJvYcCV0GiyA6/tz2O/IUgd/R3Y8MghsmrhrVBXflJS8zS3Xha5Pc51mWgSy30bi5cNr/85DLd3rMVGu@vger.kernel.org, AJvYcCX9Z0x2ntl0A24TBptpyaz+yAUtA5PBtbBtdCSwH8BPzixdN6uOwHpl1NkIaUb19B0AU17F8/twXgHxYfQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnqcrTF1CWbe0+Y7ea6z7Ajq5QV5zud1jd46jB+O+AXKBEqUzt
-	u2c4VJnuu9LUSdLFC/PzDVWbPymj/4BTHfoyVSh/SnA+KlPPvhSqkjs=
-X-Gm-Gg: ASbGncuUj08CgNPeTDm/dPej3GvOcO+cvzYNaeKKhwKgPsayS2pn/At+SBXMIONXvqP
-	CEqhDF7o8uWdJpFqZlBPTZFheZornjzTGzspC7eeCyJ4nhRB5aFFPL9ONLqCQxNLBLtBD1E1jIu
-	KWRK8jyywx3K70GQ08zjDYi/xjtlzH0y78R0UovBSrxAYHl1tAuiKF16BR0Q7oFsOSEm2ox8und
-	3a/45JdQmEn6tDe3SWSk9GuWZQtDCIqgzlpbqdVX1tsaXwAXYAlc6XtGjBRls6qHYbm7VRjPwrq
-	dUVbert8orP11nwtg4kddDYfPia47cvb85zF7+XW1sZR9USeo+r8HmdidDLhzB9RtaawclYnJgG
-	7Z0eJRNzfYdaDOtDPbxI7JjOMugcpvslxQ+xuuLQ=
-X-Google-Smtp-Source: AGHT+IGq05/HzqDo83u3mYS0XfXV4K75ereAbVKbsQQVAGhWGSGG68sBKWSKgTF80QzAXxQ6JMiXzA==
-X-Received: by 2002:a05:6000:481b:b0:3a5:8d0b:600c with SMTP id ffacd0b85a97d-3b49aa0e7d6mr505729f8f.3.1751689212270;
-        Fri, 04 Jul 2025 21:20:12 -0700 (PDT)
-Received: from [192.168.1.3] (p5b0570c7.dip0.t-ipconnect.de. [91.5.112.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b47030ba77sm4085736f8f.17.2025.07.04.21.20.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Jul 2025 21:20:11 -0700 (PDT)
-Message-ID: <e4d40799-f59a-4d3a-b103-6c3e6f330238@googlemail.com>
-Date: Sat, 5 Jul 2025 06:20:10 +0200
+	 In-Reply-To:Content-Type; b=ZER8OvMeABaTVezBYCOoXzIJNKUUtIHcaqV6M6KUPjcf7ziz2z1oEPBzzvtQ+6OyEvp/odtSgoIEeJ2z3p7O3WV0f1ZxeLQHVdwQgbQ1zfWXVPfHC3pD4BEoY+4apgmZNrVnWuiLYiHu6O2+qxE42uez6vg+V2vrqdVWR5D/cBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=NNImsWkx; arc=none smtp.client-ip=117.135.210.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=i9PdUsrSzxDvnGGck2LHjgNlbpovBPa7pmcE0HgHa3k=;
+	b=NNImsWkxBNXWemhn6DxDPD3UDQQR/oNQM0tqzF6bDmBktscq7LsM9R2vQBmHfn
+	060pGgukkqp355Na9dIKeYAx1/t2/XP9u3RPxDtgHsCg4AUvyeG6YZRr3SdD82cR
+	iSCJj3dt1Kg942GSFfOTb3vWzGXEb6FlwNYFqsuYqK/TA=
+Received: from [172.19.20.199] (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3D7sQzWhoEk+KAw--.56536S2;
+	Sat, 05 Jul 2025 14:58:25 +0800 (CST)
+Message-ID: <102fa362-35c9-46d2-853c-472a5c4cd5d9@126.com>
+Date: Sat, 5 Jul 2025 14:58:24 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.15 000/263] 6.15.5-rc2 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250704125604.759558342@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250704125604.759558342@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] efi/tpm: Fix the issue where the CC platforms event log
+ header can't be correctly identified
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: ardb@kernel.org, sathyanarayanan.kuppuswamy@linux.intel.com,
+ ilias.apalodimas@linaro.org, jgg@ziepe.ca, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, liuzixing@hygon.cn
+References: <1751510317-12152-1-git-send-email-yangge1116@126.com>
+ <aGczaEkhPuOqhRUv@kernel.org> <2ab4ebba-1f97-4686-9186-5bcaa3549f54@126.com>
+ <aGfvr2pBau6z9GLC@kernel.org>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <aGfvr2pBau6z9GLC@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-
-Am 04.07.2025 um 16:44 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.15.5 release.
-> There are 263 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
-
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+X-CM-TRANSID:_____wD3D7sQzWhoEk+KAw--.56536S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxArWDKrWrCr18uw48Wr1rZwb_yoWrJw47pF
+	1Ika1ftrs8Jw1S9wn2vw48Ca1jyws3AFZrXFykG340yrs0gr1xtF42k3Wjkas3Xr47W3ZY
+	qa4jqry3Aa4DuaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbHUDUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOhSBG2hoxidxiQAAst
 
 
-Beste Grüße,
-Peter Schneider
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+在 2025/7/4 23:13, Jarkko Sakkinen 写道:
+> On Fri, Jul 04, 2025 at 10:53:54AM +0800, Ge Yang wrote:
+>>
+>>
+>> 在 2025/7/4 9:50, Jarkko Sakkinen 写道:
+>>> On Thu, Jul 03, 2025 at 10:38:37AM +0800, yangge1116@126.com wrote:
+>>>> From: Ge Yang <yangge1116@126.com>
+>>>>
+>>>> Since commit d228814b1913 ("efi/libstub: Add get_event_log() support
+>>>> for CC platforms") reuses TPM2 support code for the CC platforms, when
+>>>> launching a TDX virtual machine with coco measurement enabled, the
+>>>> following error log is generated:
+>>>>
+>>>> [Firmware Bug]: Failed to parse event in TPM Final Events Log
+>>>>
+>>>> Call Trace:
+>>>> efi_config_parse_tables()
+>>>>     efi_tpm_eventlog_init()
+>>>>       tpm2_calc_event_log_size()
+>>>>         __calc_tpm2_event_size()
+>>>>
+>>>> The pcr_idx value in the Intel TDX log header is 1, causing the
+>>>> function __calc_tpm2_event_size() to fail to recognize the log header,
+>>>> ultimately leading to the "Failed to parse event in TPM Final Events
+>>>> Log" error.
+>>>>
+>>>> According to UEFI Spec 2.10 Section 38.4.1: For Tdx, TPM PCR 0 maps to
+>>>> MRTD, so the log header uses TPM PCR 1. To successfully parse the TDX
+>>>> event log header, the check for a pcr_idx value of 0 has been removed
+>>>> here, and it appears that this will not affect other functionalities.
+>>>
+>>> I'm not familiar with the original change but with a quick check it did
+>>> not change __calc_tpm2_event_size(). Your change is changing semantics
+>>> to two types of callers:
+>>>
+>>> 1. Those that caused the bug.
+>>> 2. Those that nothing to do with this bug.
+>>>
+>>> I'm not seeing anything explaining that your change is guaranteed not to
+>>> have any consequences to "innocent" callers, which have no relation to
+>>> the bug.
+>>>
+>>
+>> Thank you for your response.
+>>
+>> According to Section 10.2.1, Table 6 (TCG_PCClientPCREvent Structure) in the
+>> TCG PC Client Platform Firmware Profile Specification, determining whether
+>> an event is an event log header does not require checking the pcrIndex
+>> field. The identification can be made based on other fields alone.
+>> Therefore, removing the pcrIndex check here is considered safe
+>> for "innocent" callers.
+> 
+> Thanks for digging that out. Can you add something to the commit
+> message? That spec is common knowledge if you are "into the topic"
+> in the first palace so something along the lines of this would be
+> perfectly fine:
+> 
+> "The check can be safely removed, as ccording to table 6 at section
+> 10.2.1 of TCG PC client specification the index field does not require
+> fixing the PCR index to zero."
+> 
+Ok, thanks.
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+> But then: we still have that constraint there and we cannot predict the
+> side-effects of removing a constraint, even if it is incorrectly defined
+> constraint. For comparison, it's much less risky situation when adding
+> additional constraints, as possible side-effects in the worst case
+> scenarios can be even theoretically much lighter than in the opposite
+> situation.
+> 
+> For this reasons it would be perhaps better to limit the fix for the
+> CC only, and not change the semantics across the board.
+> 
+Ok, thanks.
+
+I originally intended to add a 
+cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT) check inside the 
+__calc_tpm2_event_size() function to limit the fix to Confidential 
+Computing (CC) platforms only. However, this function is also used 
+during the EFI stub phase, where the cc_platform_has() function is not 
+defined.
+
+Call Trace:
+efi_pe_entry()
+   efi_stub_entry()
+     efi_retrieve_eventlog()
+       efi_retrieve_tcg2_eventlog()
+         __calc_tpm2_event_size()
+
+Therefore, I plan to modify __calc_tpm2_event_size() to accept an 
+additional parameter indicating whether the event originates from a CC 
+platform.
+
+
+> BR, Jarkko
+
 
