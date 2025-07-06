@@ -1,171 +1,168 @@
-Return-Path: <stable+bounces-160326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4A4AFA79D
-	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 22:03:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041C6AFA826
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 00:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5689C3B8C0E
-	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 20:02:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 509433B8CC5
+	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 22:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B500F2C15A5;
-	Sun,  6 Jul 2025 20:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF711EB182;
+	Sun,  6 Jul 2025 22:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vtdzM+0U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KuJ9SQWQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670832BCF75;
-	Sun,  6 Jul 2025 20:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609B219DFB4;
+	Sun,  6 Jul 2025 22:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751832045; cv=none; b=u5oXyYOwSXFsFUQciDEVlJLyszXjEtAUDvVEsMA8y6cg7STRgBoOYL8Y9Y9q02GNOvlIRhAAkMfsmLFVFnIFv3P5vUvkpKEOUPlF1CSPtS0smAMttfSmlDVi72MMaNdJ9khaiBLS1QFF0x94Bvuw6gIIpvGAytXiWRG308PUunQ=
+	t=1751840858; cv=none; b=FzV2bkQOaYfB9z/jVDHBm+qVMSwTaMvNQQSHdDOTn/QAc6UM/y50Xw00WXoTHHnGHHD+3ZOvgNxsbeDh4xLSLsHw+sfp1Ej2P6Spt/bfQIajdmLt9s+U5v09bkrjnEtCK8l6xegfxdgvP32++RS5/9NylTjbh6dMBCm4rliDibI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751832045; c=relaxed/simple;
-	bh=hY/0MJQsza+izedSJJ03XLPYSzkvnobjs1JkQo0KpaY=;
-	h=Date:To:From:Subject:Message-Id; b=PuY1ap/ceQr3xxdyqlmnYqXmL50ZWZXje6Wk5W1iX27CUENSfvdiZrHv1HvRz+q4nfaif9DG1Awh6Bl/GgSSW9XGZTu2gO6a6ev1q7ER1f+Af1FiN0XT0UvltoL01k9Wr2gtcdb8qHfI0ukJXa/2MeK8MG8ictQL3wSIj49B1dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vtdzM+0U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11ECC4CEF1;
-	Sun,  6 Jul 2025 20:00:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1751832044;
-	bh=hY/0MJQsza+izedSJJ03XLPYSzkvnobjs1JkQo0KpaY=;
-	h=Date:To:From:Subject:From;
-	b=vtdzM+0UNgApJ6wgor4TeUE39JIKt+u9RRqGjkYa7SwG0WipPXQ7MhEwDc8H5p/qB
-	 6vt8CamktxSz7qW3CG8n1XbsWTiJzRZnnjUi4KF8VSvxlarzxBVplhndP5z8gKN464
-	 EShk6E0+tqzi9fcH3Sc3K/PyQxzJkesClQOhh6ik=
-Date: Sun, 06 Jul 2025 13:00:44 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + samples-damon-mtier-support-boot-time-enable-setup.patch added to mm-new branch
-Message-Id: <20250706200044.D11ECC4CEF1@smtp.kernel.org>
+	s=arc-20240116; t=1751840858; c=relaxed/simple;
+	bh=IZgg+2iD1yTKcHgBTsL+83GOuqI+j+Nd8t622NOqRJQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dUF4BYd/J0N/IfDd9oSW9+5r5ndCWxR+IOMz7aQOs0fLagGD77m7+c3bItiz1WV1LZW9/1f23/Pok37wVEMbBALPWQBnJYFkYesaQ757fBM2X6U2rHnU8wOqzADskKkYHqCrzguOoq3DJTQAge/zUdP42AGeFleRREoqd7wnJ0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KuJ9SQWQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60FE1C4CEED;
+	Sun,  6 Jul 2025 22:27:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751840856;
+	bh=IZgg+2iD1yTKcHgBTsL+83GOuqI+j+Nd8t622NOqRJQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KuJ9SQWQA/0FuWPzc0us58I4qzy9gfFKr5ChPJrM4CVLUbWMi391cCtCCAdx++pLL
+	 n8fF+EbxG0SpTmq3Uk2/CjrSE751IdH8169feuPcpxTW33owAVFE7IRVnUjOmv6PC6
+	 3OCzS8XqqlzUrwKheHbNLZK1V7hqwcetiOFJvz+w90UFx3l4rkgmLAh8gYYNukmLnK
+	 3NPr88K785bd57lvU7AxHkOreJOrlcYbcTx1d/aFF0rk1c7aFZjVK0DPSRDgtkaeyy
+	 G2vKCPF7AXxBZeT/IQzEttMGRSm7ZsvEsAJRVtZlepEkFh2NhHkDZ9gz7N31rp8Ib7
+	 vmRwq+VvG8OzA==
+Received: by venus (Postfix, from userid 1000)
+	id 0B5BC180F14; Mon, 07 Jul 2025 00:27:34 +0200 (CEST)
+Date: Mon, 7 Jul 2025 00:27:34 +0200
+From: Sebastian Reichel <sre@kernel.org>
+To: Matthew Schwartz <matthew.schwartz@linux.dev>
+Cc: Hans de Goede <hansg@kernel.org>, pmarheine@chromium.org, 
+	regressions@lists.linux.dev, stable@vger.kernel.org, rafael.j.wysocki@intel.com, 
+	linux-acpi@vger.kernel.org
+Subject: Re: [REGRESSION] - Multiple userspace implementations of battery
+ estimate broken after "ACPI: battery: negate current when discharging"
+Message-ID: <l7capl22ei2mc4ooalcyysmpfrtsik5hgbqqrud5orw4ukj5ob@l4ou3yvif6nc>
+References: <84dfa466-d201-4a51-8794-6c64568bec95@kernel.org>
+ <10A90071-DC0B-4860-845F-556A33FC79BC@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7bxvrtjfaytekrra"
+Content-Disposition: inline
+In-Reply-To: <10A90071-DC0B-4860-845F-556A33FC79BC@linux.dev>
 
 
-The patch titled
-     Subject: samples/damon/mtier: support boot time enable setup
-has been added to the -mm mm-new branch.  Its filename is
-     samples-damon-mtier-support-boot-time-enable-setup.patch
+--7bxvrtjfaytekrra
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [REGRESSION] - Multiple userspace implementations of battery
+ estimate broken after "ACPI: battery: negate current when discharging"
+MIME-Version: 1.0
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/samples-damon-mtier-support-boot-time-enable-setup.patch
+Hi,
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+On Thu, Jul 03, 2025 at 08:51:10AM -0700, Matthew Schwartz wrote:
+> > On Jul 3, 2025, at 7:47=E2=80=AFAM, Hans de Goede <hansg@kernel.org> wr=
+ote:
+> > Hi Matthew,
+> >=20
+> >> On 3-Jul-25 3:54 AM, Matthew Schwartz wrote:
+> >> Hello,
+> >>=20
+> >> I installed kernel 6.15.4 to find that my battery estimate on
+> >> my handheld gaming device was completely inaccurate, instead
+> >> giving negative values and an unknown estimated battery life in
+> >> multiple places.
+> >>=20
+> >> After bisecting, I landed on "ACPI: battery: negate current
+> >> when discharging=E2=80=9D as the bad commit. This commit breaks not one
+> >> but several userspace implementations of battery monitoring:
+> >> Steam and MangoHud. Perhaps it breaks more, but those are the
+> >> two I have noticed so far.
+> >=20
+> > Thank you for reporting this.
+> >=20
+> > As Rafael already indicated this patch will need to be reverted to
+> > unbreak userspace.
+> >=20
+> > But, the patch was actually doing the right thing, according to:
+> >=20
+> > Documentation/ABI/testing/sysfs-class-power
+> >=20
+> > What:           /sys/class/power_supply/<supply_name>/current_avg
+> > Date:           May 2007
+> > Contact:        linux-pm@vger.kernel.org
+> > Description:
+> >                Battery:
+> > ...
+> >                Access: Read
+> >=20
+> >                Valid values: Represented in microamps. Negative values =
+are
+> >                used for discharging batteries, positive values for char=
+ging
+> >                batteries and for USB IBUS current.
+> >=20
+> > (and the same for current_now)
+> >=20
+> > and there are many power_supply fuel-gauge drivers (1) under
+> > drivers/power/supply/ which do adhere to this specification
+> > and report a negative current for discharging.
+> >=20
+> > So if any of the userspace consumers of this API you mention
+> > were to run on hw with these drivers the same problem will
+> > be hit. Can you please file bugs against these userspace
+> > projects so that they can fix this?
+>=20
+> Sure, I filed a bug with MangoHud last night about the kernel
+> change breaking the current battery logic so I will mention this
+> concern when updating that issue, and I will also file a new bug
+> with Steam.
 
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
+I also asked the Collabora team supporting Valve with the Steamdeck
+to look into it. So I hope that it will be fixed soon :)
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Thanks for coordinating this Hans. I fully agree with your analysis
+and middle term plans to revert the revert :)
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Greetings,
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+-- Sebastian
 
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: samples/damon/mtier: support boot time enable setup
-Date: Sun, 6 Jul 2025 12:32:04 -0700
+--7bxvrtjfaytekrra
+Content-Type: application/pgp-signature; name="signature.asc"
 
-If 'enable' parameter of the 'mtier' DAMON sample module is set at boot
-time via the kernel command line, memory allocation is tried before the
-slab is initialized.  As a result kernel NULL pointer dereference BUG can
-happen.  Fix it by checking the initialization status.
+-----BEGIN PGP SIGNATURE-----
 
-Link: https://lkml.kernel.org/r/20250706193207.39810-4-sj@kernel.org
-Fixes: 82a08bde3cf7 ("samples/damon: implement a DAMON module for memory tiering")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmhq+FIACgkQ2O7X88g7
++poF6Q/+NW+5POUjFDRX1qZIQbdKLNd/QTTuOyDAr6x5T/0Cbb92B1Fzh7+nir1c
+GqKQahquvhAWtk5eY8IEn9dFdLnPaXyU4wojYHOJYgVkf3N/4gQAFcooRxzOQNzH
+6GUUxgeOszWpK0oltqm12RWubXt3Ft0vOUk1M+Uqg/MY9PuvrUCXMnTZzk8W7ROi
+2qtPpBfXXqEHanP2gKfgHcT46sDauzxVt/CUID5ep3yqhvvAU8Sd1f7+fNkTUWJL
+njpJhK6UFl5uK3HlAJiAnynGYcd8RLqWMpmA1pXp4ev56WV1OoJgPJJruTzZe9g1
+k6+3gw6y5lp0u9VYUD3bFqh0dwcnd4nEQwdOEea+/Wc7fpKy2vCL3mEmBE/ZDdl6
+OanVoOknVRMuUP4cTDr0bTDuKiNjXurJV8LLsf+Mn4WfrT8G/kdvk3MO3/Btf+Sd
+52/al98qe4nZ5KfsBYauw0Y4UXhAxubRnA8svSuVLR47/OECvR/yLpczJct8Omnz
+6o3RQV8+V7cUJzasc1wNNmuYkQhXBjOiwTafLKJ6xr2yu+706hVA6fE6qb792yMO
+G3VO8CG300RvSHWrkj3iXG1cT0k+N1HW/l4l4zp9ppTfPFR4XDlpil/nTmTugDBQ
+uLWdrZhsOYS7YrcqgrDVii0LC3Y2m8Uvc4nsGbWY0wp0B+ETmg0=
+=FdfW
+-----END PGP SIGNATURE-----
 
- samples/damon/mtier.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
---- a/samples/damon/mtier.c~samples-damon-mtier-support-boot-time-enable-setup
-+++ a/samples/damon/mtier.c
-@@ -157,6 +157,8 @@ static void damon_sample_mtier_stop(void
- 	damon_destroy_ctx(ctxs[1]);
- }
- 
-+static bool init_called;
-+
- static int damon_sample_mtier_enable_store(
- 		const char *val, const struct kernel_param *kp)
- {
-@@ -170,6 +172,9 @@ static int damon_sample_mtier_enable_sto
- 	if (enable == enabled)
- 		return 0;
- 
-+	if (!init_called)
-+		return 0;
-+
- 	if (enable) {
- 		err = damon_sample_mtier_start();
- 		if (err)
-@@ -182,6 +187,14 @@ static int damon_sample_mtier_enable_sto
- 
- static int __init damon_sample_mtier_init(void)
- {
-+	int err = 0;
-+
-+	init_called = true;
-+	if (enable) {
-+		err = damon_sample_mtier_start();
-+		if (err)
-+			enable = false;
-+	}
- 	return 0;
- }
- 
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-core-handle-damon_call_control-as-normal-under-kdmond-deactivation.patch
-mm-damon-introduce-damon_stat-module.patch
-mm-damon-introduce-damon_stat-module-fix.patch
-mm-damon-stat-calculate-and-expose-estimated-memory-bandwidth.patch
-mm-damon-stat-calculate-and-expose-idle-time-percentiles.patch
-docs-admin-guide-mm-damon-add-damon_stat-usage-document.patch
-mm-damon-paddr-use-alloc_migartion_target-with-no-migration-fallback-nodemask.patch
-revert-mm-rename-alloc_demote_folio-to-alloc_migrate_folio.patch
-revert-mm-make-alloc_demote_folio-externally-invokable-for-migration.patch
-selftets-damon-add-a-test-for-memcg_path-leak.patch
-mm-damon-sysfs-schemes-decouple-from-damos_quota_goal_metric.patch
-mm-damon-sysfs-schemes-decouple-from-damos_action.patch
-mm-damon-sysfs-schemes-decouple-from-damos_wmark_metric.patch
-mm-damon-sysfs-schemes-decouple-from-damos_filter_type.patch
-mm-damon-sysfs-decouple-from-damon_ops_id.patch
-selftests-damon-add-drgn-script-for-extracting-damon-status.patch
-selftests-damon-_damon_sysfs-set-kdamondpid-in-start.patch
-selftests-damon-add-python-and-drgn-based-damon-sysfs-test.patch
-selftests-damon-sysfspy-test-monitoring-attribute-parameters.patch
-selftests-damon-sysfspy-test-adaptive-targets-parameter.patch
-selftests-damon-sysfspy-test-damos-schemes-parameters-setup.patch
-mm-damon-add-trace-event-for-auto-tuned-monitoring-intervals.patch
-mm-damon-add-trace-event-for-effective-size-quota.patch
-samples-damon-wsse-fix-boot-time-enable-handling.patch
-samples-damon-prcl-fix-boot-time-enable-crash.patch
-samples-damon-mtier-support-boot-time-enable-setup.patch
-mm-damon-reclaim-reset-enabled-when-damon-start-failed.patch
-mm-damon-lru_sort-reset-enabled-when-damon-start-failed.patch
-mm-damon-reclaim-use-parameter-context-correctly.patch
-
+--7bxvrtjfaytekrra--
 
