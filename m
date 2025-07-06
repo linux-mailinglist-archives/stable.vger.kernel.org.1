@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-160297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC16AFA4E5
-	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 13:48:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F27ECAFA4EA
+	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 13:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3902F189F06B
-	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 11:48:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 457A63A83C8
+	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 11:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549C320A5F2;
-	Sun,  6 Jul 2025 11:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11731ACEAC;
+	Sun,  6 Jul 2025 11:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLZfFWvp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOeOuhH4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FB0202962
-	for <stable@vger.kernel.org>; Sun,  6 Jul 2025 11:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B217A14A0A8
+	for <stable@vger.kernel.org>; Sun,  6 Jul 2025 11:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751802454; cv=none; b=XKMbgx/oAP7bO1ak8jCeOERc1hzIGOlo9YKZQ/3vYwIQwaLB8eBfq9q0Jrr95C8y7vj6myRK3J2UfQvxH9vC209V32HjELhdxX6rheIDB6db1SrTlVVPeThIP3UyRs7Gnb9lrCKBFyTx/i1awOez7VUn3NxbW1E5CIiZEoSTYuY=
+	t=1751802563; cv=none; b=q/QjI/1/BCQHnwOVUv27DEIx+AQCfuga+ifjH7voMCbgQTdy22tOowOYnpWVMCJXe2kO+eBDQaSjc4bU3p8S9qWntQsGR6pwzQ7T9IC0O5zUgQ94EEvUwbWL14/Q7FDAR4TLInJLt1LxcWJWqIG8VRBb8s6krfujs49BEBxYu1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751802454; c=relaxed/simple;
-	bh=hdvfgYu2HeoKarpERb9RXcYnzi4ub/Ug/L7nTW3jzWo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Kln2WE3Y9OfaaBeIkMr8bWo2CzCnY+JyUFiz37uMNJ03NMuPzzwEsKDlyQD7N29tH6treQJdJWe9+oj36GzNloUTCr3vt3PEQWBaNVBbA/tJbYy1Nx6fdQS7LVNoQ3XGy1ptFv86cJAHK290xt4Qb94VvZJcOVX7X7Rx3kLhCEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLZfFWvp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DEFC4CEED;
-	Sun,  6 Jul 2025 11:47:33 +0000 (UTC)
+	s=arc-20240116; t=1751802563; c=relaxed/simple;
+	bh=UPMiM//0E0FVwzhVlKpwOtzS6oe/UlSW/bjyZ3nylJ4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AcCEpio8EB+sVaG5sdUv5agFe+g5oi5nMKScBhCQhRE7klA0Jp6jDOGw84T8MmaKWZ/NqLeX2ZXS14GZlig9O77W+Rcg4ckl8cY8rrt0zE/zTjZWyRmVw7vIAlLCI500QPB3fg82WHOd0dEX09w0EF5puWHgC9p+TXlMacG8jgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOeOuhH4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6ACC4CEED;
+	Sun,  6 Jul 2025 11:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751802453;
-	bh=hdvfgYu2HeoKarpERb9RXcYnzi4ub/Ug/L7nTW3jzWo=;
+	s=korg; t=1751802563;
+	bh=UPMiM//0E0FVwzhVlKpwOtzS6oe/UlSW/bjyZ3nylJ4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RLZfFWvpT/LloUoM37yWJxA2+qKLm0mzRaIm/YR+W0ZRxtzMvJ3zHs2yc46F6lUHd
-	 zz9FaKA4CpaCN9Bqsa4WB5mTFK0Cqk/B4NytsB8TNMHzcDdTvZqsqJhz8HD2aP9fSF
-	 OR7xjqcehazkksZ6xjNyh0x0Y6a1fI1sEWA00U3M=
-Subject: FAILED: patch "[PATCH] s390/pci: Fix stale function handles in error handling" failed to apply to 6.1-stable tree
-To: schnelle@linux.ibm.com,agordeev@linux.ibm.com,alifm@linux.ibm.com,gbayer@linux.ibm.com,julianr@linux.ibm.com
+	b=KOeOuhH4SXGQXV0j10M3//FAGGDR6iSnIlODi4o3zEMt73BW1RN7OfKyjHUpm3AWE
+	 TTOcv08cuNbdHRyeS/pC62DaXOQemL9NtRVhSIPLM/Wcd5Uck+z2v596/g8NO9xu9W
+	 6CSjivISg1lwnXEJldQQvso6r5uDDkNXSxw/yc6U=
+Subject: FAILED: patch "[PATCH] mmc: core: sd: Apply BROKEN_SD_DISCARD quirk earlier" failed to apply to 5.15-stable tree
+To: avri.altman@sandisk.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 06 Jul 2025 13:47:23 +0200
-Message-ID: <2025070623-pacific-brewery-7cd2@gregkh>
+Date: Sun, 06 Jul 2025 13:49:20 +0200
+Message-ID: <2025070620-seclusion-jarring-cacd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 45537926dd2aaa9190ac0fac5a0fbeefcadfea95
+git cherry-pick -x 009c3a4bc41e855fd76f92727f9fbae4e5917d7f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025070623-pacific-brewery-7cd2@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025070620-seclusion-jarring-cacd@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,57 +77,55 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 45537926dd2aaa9190ac0fac5a0fbeefcadfea95 Mon Sep 17 00:00:00 2001
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-Date: Wed, 25 Jun 2025 11:28:28 +0200
-Subject: [PATCH] s390/pci: Fix stale function handles in error handling
+From 009c3a4bc41e855fd76f92727f9fbae4e5917d7f Mon Sep 17 00:00:00 2001
+From: Avri Altman <avri.altman@sandisk.com>
+Date: Mon, 26 May 2025 14:44:45 +0300
+Subject: [PATCH] mmc: core: sd: Apply BROKEN_SD_DISCARD quirk earlier
 
-The error event information for PCI error events contains a function
-handle for the respective function. This handle is generally captured at
-the time the error event was recorded. Due to delays in processing or
-cascading issues, it may happen that during firmware recovery multiple
-events are generated. When processing these events in order Linux may
-already have recovered an affected function making the event information
-stale. Fix this by doing an unconditional CLP List PCI function
-retrieving the current function handle with the zdev->state_lock held
-and ignoring the event if its function handle is stale.
+Move the BROKEN_SD_DISCARD quirk for certain SanDisk SD cards from the
+`mmc_blk_fixups[]` to `mmc_sd_fixups[]`. This ensures the quirk is
+applied earlier in the device initialization process, aligning with the
+reasoning in [1]. Applying the quirk sooner prevents the kernel from
+incorrectly enabling discard support on affected cards during initial
+setup.
 
+[1] https://lore.kernel.org/all/20240820230631.GA436523@sony.com
+
+Fixes: 07d2872bf4c8 ("mmc: core: Add SD card quirk for broken discard")
+Signed-off-by: Avri Altman <avri.altman@sandisk.com>
 Cc: stable@vger.kernel.org
-Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
-Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
-Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
-Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250526114445.675548-1-avri.altman@sandisk.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/arch/s390/pci/pci_event.c b/arch/s390/pci/pci_event.c
-index 2fbee3887d13..82ee2578279a 100644
---- a/arch/s390/pci/pci_event.c
-+++ b/arch/s390/pci/pci_event.c
-@@ -273,6 +273,8 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
- 	struct zpci_dev *zdev = get_zdev_by_fid(ccdf->fid);
- 	struct pci_dev *pdev = NULL;
- 	pci_ers_result_t ers_res;
-+	u32 fh = 0;
-+	int rc;
+diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
+index 7f893bafaa60..c417ed34c057 100644
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -44,6 +44,12 @@ static const struct mmc_fixup __maybe_unused mmc_sd_fixups[] = {
+ 		   0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
+ 		   MMC_QUIRK_NO_UHS_DDR50_TUNING, EXT_CSD_REV_ANY),
  
- 	zpci_dbg(3, "err fid:%x, fh:%x, pec:%x\n",
- 		 ccdf->fid, ccdf->fh, ccdf->pec);
-@@ -281,6 +283,15 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
++	/*
++	 * Some SD cards reports discard support while they don't
++	 */
++	MMC_FIXUP(CID_NAME_ANY, CID_MANFID_SANDISK_SD, 0x5344, add_quirk_sd,
++		  MMC_QUIRK_BROKEN_SD_DISCARD),
++
+ 	END_FIXUP
+ };
  
- 	if (zdev) {
- 		mutex_lock(&zdev->state_lock);
-+		rc = clp_refresh_fh(zdev->fid, &fh);
-+		if (rc)
-+			goto no_pdev;
-+		if (!fh || ccdf->fh != fh) {
-+			/* Ignore events with stale handles */
-+			zpci_dbg(3, "err fid:%x, fh:%x (stale %x)\n",
-+				 ccdf->fid, fh, ccdf->fh);
-+			goto no_pdev;
-+		}
- 		zpci_update_fh(zdev, ccdf->fh);
- 		if (zdev->zbus->bus)
- 			pdev = pci_get_slot(zdev->zbus->bus, zdev->devfn);
+@@ -147,12 +153,6 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
+ 	MMC_FIXUP("M62704", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
+ 		  MMC_QUIRK_TRIM_BROKEN),
+ 
+-	/*
+-	 * Some SD cards reports discard support while they don't
+-	 */
+-	MMC_FIXUP(CID_NAME_ANY, CID_MANFID_SANDISK_SD, 0x5344, add_quirk_sd,
+-		  MMC_QUIRK_BROKEN_SD_DISCARD),
+-
+ 	END_FIXUP
+ };
+ 
 
 
