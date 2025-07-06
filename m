@@ -1,232 +1,134 @@
-Return-Path: <stable+bounces-160273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5556AFA336
-	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 07:42:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B65AFA34C
+	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 08:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE8597AF8A9
-	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 05:41:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EB903BFDA0
+	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 06:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F0E19D89B;
-	Sun,  6 Jul 2025 05:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B629C14A62B;
+	Sun,  6 Jul 2025 06:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PJc5HEx1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vR6oDqzw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816862E370C
-	for <stable@vger.kernel.org>; Sun,  6 Jul 2025 05:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC2911CA9;
+	Sun,  6 Jul 2025 06:04:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751780543; cv=none; b=XUHoirDIye4vc/jVLFHZk9OD8+9VKlSwZYc3R8vO9BawdRYzMsRHI+H9hiIv7HzfqoO8WqD6CE1ehxUafZ6UWcuzxch5t3esnLTxSQZmc1GwiPfsPPxDPETFZBYusftUe+iytlK8dwHvVChdtJnEwUHVuoggRgKgXwxacgUhrCs=
+	t=1751781863; cv=none; b=EUjVlUhVGbfsSsmr44jdYeqcvQ4Bqa9b5Ht1SrhZMEuYzWvkeOCYuoa8hXRyOvDNE9wXbQ8PtyizdhUbm20MTVrMmAEYUkLJbZRkg1CA0mq2i/h7gkXi+USenfP2ZW6vxVdPKiLiCS6pzYGRremmXGz75FvrCxwE/eqBtlHSWQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751780543; c=relaxed/simple;
-	bh=IGybDQSpiP5ojUMpWxcEQqVye2rNDs7UaR1JHJZEaWk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QLgCjNso+UJyw7qkeIY4zjUP5mKNit1rObswqCtjMHmV8aQl2ZgMZ9gfb+lXXRz/B60+6nSaz+wQbNC4f/ljqLAzWLAKotwX6Cnscw6Fs12LOpiq8ND0Q6skZ+5MOo8GBAPqZ4fPe+3jEEO9DMXI5ZKgAENpHZqVr3Rcs4kbG08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PJc5HEx1; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751780541; x=1783316541;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=IGybDQSpiP5ojUMpWxcEQqVye2rNDs7UaR1JHJZEaWk=;
-  b=PJc5HEx1pvbQcxBmtFQ8qo985tTxQIwv41a4kVWa9Wf0RO0fvfVbA3k5
-   IuOD0lp4ePdimMJltFAZxKJHLNzkntuAW9TW8AWRPFJb5+bpM2qp9zmss
-   lcPtMDUOMkFePKzbqBrM9vj1ftnVmr1WsHA00N/104pfm6JvQ0w7KCKYV
-   lNpif7UnSFt4hNyq1AsJqsIw0JCyrlAmXKV11CdaBVMHfYzoiNIHGgfEY
-   jB4mPX3vasHgb3C6Q5Z1cCk6SvyWRB1UX0E8nEEKqLlCGHObJLXIGT2ww
-   In25tGivqwBBMbaX0fPfa67i9fUrpIqdsJzxD3u34OFYd9xV8gl6UaWnV
-   Q==;
-X-CSE-ConnectionGUID: VlpF++V4Q6KjVLGfB3jLFw==
-X-CSE-MsgGUID: lMZxphK3RUqexSp3gEwuLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11485"; a="41657372"
-X-IronPort-AV: E=Sophos;i="6.16,291,1744095600"; 
-   d="scan'208";a="41657372"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2025 22:42:20 -0700
-X-CSE-ConnectionGUID: rSpY2oaIT7CVJh1Bi+Wo+g==
-X-CSE-MsgGUID: NMoSbrTpTRS7eydjE1NFAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,291,1744095600"; 
-   d="scan'208";a="192110520"
-Received: from srr4-3-linux-103-aknautiy.iind.intel.com ([10.223.34.160])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2025 22:42:18 -0700
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Cc: ville.syrjala@linux.intel.com,
-	jani.nikula@linux.intel.com,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	stable@vger.kernel.org
-Subject: [RESEND 1/1] drm/i915/dp: Refine TPS4-based HBR3 rejection and add quirk to limit eDP to HBR2
-Date: Sun,  6 Jul 2025 11:01:49 +0530
-Message-ID: <20250706053149.3997091-1-ankit.k.nautiyal@intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250627084059.2575794-2-ankit.k.nautiyal@intel.com>
-References: <20250627084059.2575794-2-ankit.k.nautiyal@intel.com>
+	s=arc-20240116; t=1751781863; c=relaxed/simple;
+	bh=85017Hw7iOU6sd49uX9LUWL+lcBDkGyDsLXJtVbX6NY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oAdcZJDTdjmdaDZAoI+wl480c+56xiV7hnEn7UVxkY9PM7DnF/zHV7mRvs1BEz7lid0palIfQN0elTNfYObnrLhpzOR3InDDQ5cyZNX9l0uwiRn3EyHebonccT5l9Nag6A63bT/Fuo6RvQmFYRettEGgbNumPE4+nbHZoKd7MTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vR6oDqzw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B935C4CEED;
+	Sun,  6 Jul 2025 06:04:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1751781862;
+	bh=85017Hw7iOU6sd49uX9LUWL+lcBDkGyDsLXJtVbX6NY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vR6oDqzwjcq13ag0MOn4K1NjuETVC188UugBhjYC2RGb5wu7kJ/f7j/ymzLTNQFOK
+	 P0fsF5bn2JKavvj3XKa6yM37JmGvmDo73HeYhh+/NjvjSE7kZZj5l5w7BQdpAkfeyz
+	 LFYQkxgu/lWuhag2NQL5g5DtI4MYAUoSoLKJrj9k=
+Date: Sun, 6 Jul 2025 08:03:56 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.12 000/413] 6.12.35-rc2 review
+Message-ID: <2025070613-escalate-action-761d@gregkh>
+References: <20250624121426.466976226@linuxfoundation.org>
+ <3037c3e6-558b-4824-8c78-a36990f4e4d6@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3037c3e6-558b-4824-8c78-a36990f4e4d6@roeck-us.net>
 
-Refine the logic introduced in commit 584cf613c24a ("drm/i915/dp: Reject
-HBR3 when sink doesn't support TPS4") to allow HBR3 on eDP panels that
-report DPCD revision 1.4, even if TPS4 is not supported. This aligns with
-the DisplayPort specification, which does not mandate TPS4 support for eDP
-with DPCD rev 1.4.
+On Sat, Jul 05, 2025 at 12:37:52PM -0700, Guenter Roeck wrote:
+> Hi Greg,
+> 
+> On Tue, Jun 24, 2025 at 01:29:53PM +0100, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.12.35 release.
+> > There are 413 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Thu, 26 Jun 2025 12:13:28 +0000.
+> > Anything received after that time might be too late.
+> > 
+> 
+> Some subsequent fixes are missing:
+> 
+> > Tzung-Bi Shih <tzungbi@kernel.org>
+> >     drm/i915/pmu: Fix build error with GCOV and AutoFDO enabled
+> > 
+> 
+> Fixed by commit d02b2103a08b ("drm/i915: fix build error some more").
 
-This change avoids regressions on panels that require HBR3 to operate at
-their native resolution but do not advertise TPS4 support.
+How did you check?  This is already in the queues for 6.6, 6.12, and
+6.15.
 
-Additionally, some ICL/TGL platforms with combo PHY ports suffer from
-signal integrity issues at HBR3. While certain systems include a
-Parade PS8461 mux to mitigate this, its presence cannot be reliably
-detected. Furthermore, broken or missing VBT entries make it unsafe to
-rely on VBT for enforcing link rate limits.
+> > Shyam Prasad N <sprasad@microsoft.com>
+> >     cifs: do not disable interface polling on failure
+> > 
+> 
+> Fixed by commit 3bbe46716092 ("smb: client: fix warning when reconnecting
+> channel") in linux-next (not yet in mainline as of right now).
 
-To address the HBR3-related issues on such platforms and eDP panels,
-introduce a device specific quirk to cap the eDP link rate to HBR2
-(540000 kHz). This will override any higher advertised rates from
-the sink or DPCD for specific devices.
+Not in a release yet.
 
-Currently, the quirk is added for Dell XPS 13 7390 2-in-1 which is
-reported in gitlab issue #5969 [1].
+> > Jens Axboe <axboe@kernel.dk>
+> >     io_uring/kbuf: don't truncate end buffer for multiple buffer peeks
+> > 
+> 
+> Fixed by commit 9a709b7e98e6 ("io_uring/net: mark iov as dynamically
+> allocated even for single segments") and commit 178b8ff66ff8 ("io_uring/kbuf:
+> flag partial buffer mappings").
 
-[1] https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5969
-[2] https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14517
+Both are alread in 6.12 and 6.15 queues
 
-Fixes: 584cf613c24a ("drm/i915/dp: Reject HBR3 when sink doesn't support TPS4")
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.15+
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5969
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14517
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- drivers/gpu/drm/i915/display/intel_dp.c     | 31 +++++++++++++++++++--
- drivers/gpu/drm/i915/display/intel_quirks.c |  9 ++++++
- drivers/gpu/drm/i915/display/intel_quirks.h |  1 +
- 3 files changed, 39 insertions(+), 2 deletions(-)
+> > Yong Wang <yongwang@nvidia.com>
+> >     net: bridge: mcast: re-implement br_multicast_{enable, disable}_port functions
+> > 
+> 
+> Fixed by commit 7544f3f5b0b5 ("bridge: mcast: Fix use-after-free during
+> router port configuration").
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index f48912f308df..362e376fca27 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -171,6 +171,15 @@ int intel_dp_link_symbol_clock(int rate)
- 	return DIV_ROUND_CLOSEST(rate * 10, intel_dp_link_symbol_size(rate));
- }
- 
-+static bool intel_dp_reject_hbr3_due_to_tps4(struct intel_dp *intel_dp)
-+{
-+	/* TPS4 is not mandatory for eDP with DPCD rev 1.4 */
-+	if (intel_dp_is_edp(intel_dp) && intel_dp->dpcd[DP_DPCD_REV] == 0x14)
-+		return false;
-+
-+	return !drm_dp_tps4_supported(intel_dp->dpcd);
-+}
-+
- static int max_dprx_rate(struct intel_dp *intel_dp)
- {
- 	struct intel_display *display = to_intel_display(intel_dp);
-@@ -187,13 +196,22 @@ static int max_dprx_rate(struct intel_dp *intel_dp)
- 	 * HBR3 without TPS4, and are unable to produce a stable
- 	 * output. Reject HBR3 when TPS4 is not available.
- 	 */
--	if (max_rate >= 810000 && !drm_dp_tps4_supported(intel_dp->dpcd)) {
-+	if (max_rate >= 810000 && intel_dp_reject_hbr3_due_to_tps4(intel_dp)) {
- 		drm_dbg_kms(display->drm,
- 			    "[ENCODER:%d:%s] Rejecting HBR3 due to missing TPS4 support\n",
- 			    encoder->base.base.id, encoder->base.name);
- 		max_rate = 540000;
- 	}
- 
-+	/*
-+	 * Some platforms + eDP panels may not reliably support HBR3
-+	 * due to signal integrity limitations, despite advertising it.
-+	 * Cap the link rate to HBR2 to avoid unstable configurations for the
-+	 * known machines.
-+	 */
-+	if (intel_dp_is_edp(intel_dp) && intel_has_quirk(display, QUIRK_EDP_LIMIT_RATE_HBR2))
-+		max_rate = min(max_rate, 540000);
-+
- 	return max_rate;
- }
- 
-@@ -4304,13 +4322,22 @@ intel_edp_set_sink_rates(struct intel_dp *intel_dp)
- 			 * HBR3 without TPS4, and are unable to produce a stable
- 			 * output. Reject HBR3 when TPS4 is not available.
- 			 */
--			if (rate >= 810000 && !drm_dp_tps4_supported(intel_dp->dpcd)) {
-+			if (rate >= 810000 && intel_dp_reject_hbr3_due_to_tps4(intel_dp)) {
- 				drm_dbg_kms(display->drm,
- 					    "[ENCODER:%d:%s] Rejecting HBR3 due to missing TPS4 support\n",
- 					    encoder->base.base.id, encoder->base.name);
- 				break;
- 			}
- 
-+			/*
-+			 * Some platforms cannot reliably drive HBR3 rates due to PHY limitations,
-+			 * even if the sink advertises support. Reject any sink rates above HBR2 on
-+			 * the known machines for stable output.
-+			 */
-+			if (rate >= 810000 &&
-+			    intel_has_quirk(display, QUIRK_EDP_LIMIT_RATE_HBR2))
-+				break;
-+
- 			intel_dp->sink_rates[i] = rate;
- 		}
- 		intel_dp->num_sink_rates = i;
-diff --git a/drivers/gpu/drm/i915/display/intel_quirks.c b/drivers/gpu/drm/i915/display/intel_quirks.c
-index a32fae510ed2..d2e16b79d6be 100644
---- a/drivers/gpu/drm/i915/display/intel_quirks.c
-+++ b/drivers/gpu/drm/i915/display/intel_quirks.c
-@@ -80,6 +80,12 @@ static void quirk_fw_sync_len(struct intel_dp *intel_dp)
- 	drm_info(display->drm, "Applying Fast Wake sync pulse count quirk\n");
- }
- 
-+static void quirk_edp_limit_rate_hbr2(struct intel_display *display)
-+{
-+	intel_set_quirk(display, QUIRK_EDP_LIMIT_RATE_HBR2);
-+	drm_info(display->drm, "Applying eDP Limit rate to HBR2 quirk\n");
-+}
-+
- struct intel_quirk {
- 	int device;
- 	int subsystem_vendor;
-@@ -231,6 +237,9 @@ static struct intel_quirk intel_quirks[] = {
- 	{ 0x3184, 0x1019, 0xa94d, quirk_increase_ddi_disabled_time },
- 	/* HP Notebook - 14-r206nv */
- 	{ 0x0f31, 0x103c, 0x220f, quirk_invert_brightness },
-+
-+	/* Dell XPS 13 7390 2-in-1 */
-+	{ 0x8a12, 0x1028, 0x08b0, quirk_edp_limit_rate_hbr2 },
- };
- 
- static const struct intel_dpcd_quirk intel_dpcd_quirks[] = {
-diff --git a/drivers/gpu/drm/i915/display/intel_quirks.h b/drivers/gpu/drm/i915/display/intel_quirks.h
-index cafdebda7535..06da0e286c67 100644
---- a/drivers/gpu/drm/i915/display/intel_quirks.h
-+++ b/drivers/gpu/drm/i915/display/intel_quirks.h
-@@ -20,6 +20,7 @@ enum intel_quirk_id {
- 	QUIRK_LVDS_SSC_DISABLE,
- 	QUIRK_NO_PPS_BACKLIGHT_POWER_HOOK,
- 	QUIRK_FW_SYNC_LEN,
-+	QUIRK_EDP_LIMIT_RATE_HBR2,
- };
- 
- void intel_init_quirks(struct intel_display *display);
--- 
-2.45.2
+Already in the 6.15 queue
 
+> > Niklas Cassel <cassel@kernel.org>
+> >     ata: ahci: Disallow LPM for ASUSPRO-D840SA motherboard
+> > 
+> 
+> Fixed by commit 3e0809b1664b ("ata: ahci: Use correct DMI identifier
+> for ASUSPRO-D840SA LPM quirk").
+
+Already in the 6.12 and 6.15 queues.
+
+> I assume the missing fixes will be queued in one of the next LTS releases.
+
+They are going to be in THIS release, with one exception as noted above.
+I think something went really wrong with your checking scripts :(
+
+thanks,
+
+greg k-h
 
