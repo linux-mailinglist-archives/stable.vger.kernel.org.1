@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C15A0AFA6D3
-	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 19:30:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F98AFA6DB
+	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 19:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28C761896695
-	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 17:30:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99F613B7A51
+	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 17:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3D229E0FA;
-	Sun,  6 Jul 2025 17:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035632882D6;
+	Sun,  6 Jul 2025 17:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="hNFbB9uc"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="H4fwtJFF"
 X-Original-To: stable@vger.kernel.org
 Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6BD29E0E1;
-	Sun,  6 Jul 2025 17:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C434C14A60D;
+	Sun,  6 Jul 2025 17:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751823006; cv=none; b=iLcQXwPxQZ729WKc7l55nVV4SoQsLi7OBOJ10G715hhNoVDLDOueiopY3LbYzkIyyzP/8AnMoKtLU06SDtaq9c5qU7QSZkjQmhgsZan9wcDZMi761fI+ttwbdHw8SEKshvSZtR8qrmlsOXalwZoPGnJY5REQCc9VgHPsw3+5ESo=
+	t=1751823022; cv=none; b=niwUQIvLAIlkLEnzMcH6Y7ZXW1L8UAdvjqwqZF7Ej3RHEyUnTSNlv9oe4SDRM8oLhsZ49ecmH/yfDKA2KRX+NmKMCEIH+4OszTYBfxiQSD6OYDqlHRJwZdSftzj7TfVGVZW4TdUzXfOmdpQjnzEwBKO7J6sSHyiS/Vw1arZy1ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751823006; c=relaxed/simple;
-	bh=4QixqbGy0XLMGNdgyiJE46+isoTboBCUR/vHxQlDSuw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tsL4Unw/vvgQ4SFPQ62gLgt4NJ23GEbGF07vd6hz86Y5UgmHSkN0dj7Xw0y7e3jGNsFUj4T4nnD8MnpmrKMI1wNKpfmRnsrZARDsU+sJhNHe9ezMcZ9gqgi1P5yP1bFkE5mtMwerD2hLqLvp+r6urdsr/u2SuPlgvY2Im/3r8XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=hNFbB9uc; arc=none smtp.client-ip=178.21.23.139
+	s=arc-20240116; t=1751823022; c=relaxed/simple;
+	bh=DioYZJuudIEnZFCcdVUCu0lCGFw1B0iwiwbXlsPE7K4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=BcM36J5Ck9NF7LlbYEqddhg5lrMsmrld6UmH3XxKjsqoqdPInDng/Q3G0DdpysP3OhHRCfL+1nEav9A6bG9TNKE6fAhA0s4uYXbwMK8PqU5LTW+4Z+zwpAkirvzPyi3GaRlTc+CAHp9nubtTtbJk5FFY6NPBhK5pbbSiVUyffpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=H4fwtJFF; arc=none smtp.client-ip=178.21.23.139
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
 Received: from mail01.disroot.lan (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id A90C225CC7;
-	Sun,  6 Jul 2025 19:30:01 +0200 (CEST)
+	by disroot.org (Postfix) with ESMTP id 513AC258A8;
+	Sun,  6 Jul 2025 19:30:19 +0200 (CEST)
 X-Virus-Scanned: SPAM Filter at disroot.org
 Received: from layka.disroot.org ([127.0.0.1])
  by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id G03BX57gX3CC; Sun,  6 Jul 2025 19:30:00 +0200 (CEST)
+ id nb1roEzouMSq; Sun,  6 Jul 2025 19:30:18 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1751823000; bh=4QixqbGy0XLMGNdgyiJE46+isoTboBCUR/vHxQlDSuw=;
-	h=From:Subject:Date:To:Cc;
-	b=hNFbB9ucboIruz1f9JcTIwVizc0IImZWxPrJPY5e7p3VRNiQ6KwEoFlGVlW3CZAMo
-	 pHQM/Ql2kuU+nBqkl/Y0ODugYT6fY+gu474Ybl2Aa/8Mf2ONOFrE/Y5sRUC9ZbXaxR
-	 DG4rdyn6q6XpxC0TSQoaH2T63zfgeVIPcV2QLZKWmCbZCmA+/KU47Exv8qFnkaPQeE
-	 2PMVdK6oaFja4fgjKeprdWoHPPoNIBaVrnuzo0gAOHxvECyzc/1iUvHxgknSVWqu/t
-	 8S+4X4QwwZdKWh6rhK12VCZC8hLitokiiCCjnXLl1EFUnZcSq+XY0TAUZJ8Tasi7ec
-	 LCLYbgP5TnZug==
+	t=1751823018; bh=DioYZJuudIEnZFCcdVUCu0lCGFw1B0iwiwbXlsPE7K4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=H4fwtJFF4gQ98tnRuXYDDiuQmfwNtaaiw8OOgU8wkSvsChIKvVx4DrgCr8GFj4JWX
+	 wDwhIFcnjlAaS72RYmhDld5mXuFXwDpx+3ReNFcLAysnzE0HijA3yGYy4Wy7uvvL9W
+	 t/LhcINYYjvukGL5bjDhlnMxe2AmIPjAepsczMvm9qFuTRJKxF+VkJZGwqB5gBBJPx
+	 +WnanBe51ABogg+k2P8UVpbNQNJLdvBMb539vtEMZnisupq6/hLv/vLAzFtYsoRdyl
+	 BNsiGkf+01csErEFQVBGHe7YcBDilqD/NmHq49pgZ4iyxrLC1oUiPBwv9L9QgcMKvM
+	 8+0q2Cux1+kLg==
 From: Kaustabh Chakraborty <kauschluss@disroot.org>
-Subject: [PATCH v4 0/2] Samsung Exynos 7870 DECON driver support
-Date: Sun, 06 Jul 2025 22:59:44 +0530
-Message-Id: <20250706-exynosdrm-decon-v4-0-735fd215f4b3@disroot.org>
+Date: Sun, 06 Jul 2025 22:59:46 +0530
+Subject: [PATCH v4 2/2] drm/exynos: exynos7_drm_decon: remove
+ ctx->suspended
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,11 +59,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIiyamgC/2XPQQ6DIBAF0Ks0rEsDIyB21Xs0XeiAyqLSgCEa4
- 92LJiZtXP5J5v2ZhUQbnI3kfllIsMlF54ccxPVCsK+HzlJncibAQLCKl9RO8+CjCW9qLPqBCgT
- QxnADTUvy1ifY1k27+Hzl3Ls4+jDvBYlv08OqTlbilFGFUiuOHBsmHsbF4P1486Ejm5bgECRTH
- M4CZMEozOdw1EyWZ6H4EeD8TyqyIBshVas1trb+F9Z1/QLJohzdNAEAAA==
-X-Change-ID: 20240917-exynosdrm-decon-4c228dd1d2bf
+Message-Id: <20250706-exynosdrm-decon-v4-2-735fd215f4b3@disroot.org>
+References: <20250706-exynosdrm-decon-v4-0-735fd215f4b3@disroot.org>
+In-Reply-To: <20250706-exynosdrm-decon-v4-0-735fd215f4b3@disroot.org>
 To: Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>, 
  Kyungmin Park <kyungmin.park@samsung.com>, David Airlie <airlied@gmail.com>, 
  Simona Vetter <simona@ffwll.ch>, Krzysztof Kozlowski <krzk@kernel.org>, 
@@ -77,56 +76,169 @@ Cc: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
  linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
  devicetree@vger.kernel.org, Kaustabh Chakraborty <kauschluss@disroot.org>, 
  stable@vger.kernel.org
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751822991; l=1775;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751822991; l=4780;
  i=kauschluss@disroot.org; s=20250202; h=from:subject:message-id;
- bh=4QixqbGy0XLMGNdgyiJE46+isoTboBCUR/vHxQlDSuw=;
- b=AHwu7q2UAAhZXbmj/8AYRvdQoa71glMdtoigvUtfOTaJ5nuJl/G+qwdu7tXKHV6miyJeLd8cX
- 1gsE+Zl8ld+AChxIZ4FzfrY556CKa5EjtE4jwIg/V+nZOPDbKjiwQ6Q
+ bh=DioYZJuudIEnZFCcdVUCu0lCGFw1B0iwiwbXlsPE7K4=;
+ b=A+JR7sEBtYpA44g/I8YpKl3gcTUMNfGPtctB3AkzhHS/FCDs49PZiTEH/xb5NIreQKr2JWtop
+ JcGlIUg1ElwB9A7GwFYsOcxOBdoAvS/X/Hpa/R6DXDLc85jLUG2en63
 X-Developer-Key: i=kauschluss@disroot.org; a=ed25519;
  pk=h2xeR+V2I1+GrfDPAhZa3M+NWA0Cnbdkkq1bH3ct1hE=
 
-This patch series aims at adding support for Exynos7870's DECON in the
-Exynos7 DECON driver. It introduces a driver data struct so that support
-for DECON on other SoCs can be added to it in the future.
+Condition guards are found to be redundant, as the call flow is properly
+managed now, as also observed in the Exynos5433 DECON driver. Since
+state checking is no longer necessary, remove it.
 
-It also fixes a few bugs in the driver, such as functions receiving bad
-pointers.
+This also fixes an issue which prevented decon_commit() from
+decon_atomic_enable() due to an incorrect state change setting.
 
-Tested on Samsung Galaxy J7 Prime (samsung-on7xelte), Samsung Galaxy A2
-Core (samsung-a2corelte), and Samsung Galaxy J6 (samsung-j6lte).
-
+Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
+Cc: stable@vger.kernel.org
+Suggested-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
 ---
-Changes in v4:
-- Drop applied patch [v2 3/3].
-- Correct documentation of port dt property.
-- Add documentation of memory-region.
-- Remove redundant ctx->suspended completely.
-- Link to v3: https://lore.kernel.org/r/20250627-exynosdrm-decon-v3-0-5b456f88cfea@disroot.org
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c | 36 ------------------------------
+ 1 file changed, 36 deletions(-)
 
-Changes in v3:
-- Add a new commit documenting iommus and ports dt properties.
-- Link to v2: https://lore.kernel.org/r/20250612-exynosdrm-decon-v2-0-d6c1d21c8057@disroot.org
+diff --git a/drivers/gpu/drm/exynos/exynos7_drm_decon.c b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+index f91daefa9d2bc5e314c279822047e60ee0d7ca99..aec6ed5ee356586865c266b0bb2becaa897a8e7c 100644
+--- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
++++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+@@ -69,7 +69,6 @@ struct decon_context {
+ 	void __iomem			*regs;
+ 	unsigned long			irq_flags;
+ 	bool				i80_if;
+-	bool				suspended;
+ 	wait_queue_head_t		wait_vsync_queue;
+ 	atomic_t			wait_vsync_event;
+ 
+@@ -132,9 +131,6 @@ static void decon_shadow_protect_win(struct decon_context *ctx,
+ 
+ static void decon_wait_for_vblank(struct decon_context *ctx)
+ {
+-	if (ctx->suspended)
+-		return;
+-
+ 	atomic_set(&ctx->wait_vsync_event, 1);
+ 
+ 	/*
+@@ -210,9 +206,6 @@ static void decon_commit(struct exynos_drm_crtc *crtc)
+ 	struct drm_display_mode *mode = &crtc->base.state->adjusted_mode;
+ 	u32 val, clkdiv;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/* nothing to do if we haven't set the mode yet */
+ 	if (mode->htotal == 0 || mode->vtotal == 0)
+ 		return;
+@@ -274,9 +267,6 @@ static int decon_enable_vblank(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return -EPERM;
+-
+ 	if (!test_and_set_bit(0, &ctx->irq_flags)) {
+ 		val = readl(ctx->regs + VIDINTCON0);
+ 
+@@ -299,9 +289,6 @@ static void decon_disable_vblank(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	if (test_and_clear_bit(0, &ctx->irq_flags)) {
+ 		val = readl(ctx->regs + VIDINTCON0);
+ 
+@@ -404,9 +391,6 @@ static void decon_atomic_begin(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	for (i = 0; i < WINDOWS_NR; i++)
+ 		decon_shadow_protect_win(ctx, i, true);
+ }
+@@ -427,9 +411,6 @@ static void decon_update_plane(struct exynos_drm_crtc *crtc,
+ 	unsigned int pitch = fb->pitches[0];
+ 	unsigned int vidw_addr0_base = ctx->data->vidw_buf_start_base;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/*
+ 	 * SHADOWCON/PRTCON register is used for enabling timing.
+ 	 *
+@@ -517,9 +498,6 @@ static void decon_disable_plane(struct exynos_drm_crtc *crtc,
+ 	unsigned int win = plane->index;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/* protect windows */
+ 	decon_shadow_protect_win(ctx, win, true);
+ 
+@@ -538,9 +516,6 @@ static void decon_atomic_flush(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	for (i = 0; i < WINDOWS_NR; i++)
+ 		decon_shadow_protect_win(ctx, i, false);
+ 	exynos_crtc_handle_event(crtc);
+@@ -568,9 +543,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int ret;
+ 
+-	if (!ctx->suspended)
+-		return;
+-
+ 	ret = pm_runtime_resume_and_get(ctx->dev);
+ 	if (ret < 0) {
+ 		DRM_DEV_ERROR(ctx->dev, "failed to enable DECON device.\n");
+@@ -584,8 +556,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
+ 		decon_enable_vblank(ctx->crtc);
+ 
+ 	decon_commit(ctx->crtc);
+-
+-	ctx->suspended = false;
+ }
+ 
+ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+@@ -593,9 +563,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/*
+ 	 * We need to make sure that all windows are disabled before we
+ 	 * suspend that connector. Otherwise we might try to scan from
+@@ -605,8 +572,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+ 		decon_disable_plane(crtc, &ctx->planes[i]);
+ 
+ 	pm_runtime_put_sync(ctx->dev);
+-
+-	ctx->suspended = true;
+ }
+ 
+ static const struct exynos_drm_crtc_ops decon_crtc_ops = {
+@@ -723,7 +688,6 @@ static int decon_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	ctx->dev = dev;
+-	ctx->suspended = true;
+ 	ctx->data = of_device_get_match_data(dev);
+ 
+ 	i80_if_timings = of_get_child_by_name(dev->of_node, "i80-if-timings");
 
-Changes in v2:
-- Add a new commit to prevent an occasional panic under circumstances.
-- Rewrite and redo [v1 2/6] to be a more sensible commit.
-- Link to v1: https://lore.kernel.org/r/20240919-exynosdrm-decon-v1-0-6c5861c1cb04@disroot.org
-
----
-Kaustabh Chakraborty (2):
-      dt-bindings: display: samsung,exynos7-decon: document iommus, memory-region, and ports
-      drm/exynos: exynos7_drm_decon: remove ctx->suspended
-
- .../display/samsung/samsung,exynos7-decon.yaml     | 21 +++++++++++++
- drivers/gpu/drm/exynos/exynos7_drm_decon.c         | 36 ----------------------
- 2 files changed, 21 insertions(+), 36 deletions(-)
----
-base-commit: 26ffb3d6f02cd0935fb9fa3db897767beee1cb2a
-change-id: 20240917-exynosdrm-decon-4c228dd1d2bf
-
-Best regards,
 -- 
-Kaustabh Chakraborty <kauschluss@disroot.org>
+2.49.0
 
 
