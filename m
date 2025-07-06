@@ -1,277 +1,378 @@
-Return-Path: <stable+bounces-160316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FB62AFA500
-	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 13:53:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E743BAFA533
+	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 15:21:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D22723BD375
-	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 11:53:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A62A189492C
+	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 13:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E9C1E8345;
-	Sun,  6 Jul 2025 11:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BCF21684A4;
+	Sun,  6 Jul 2025 13:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVb2gIXH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZzGC6MHn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8812B1A9B3D
-	for <stable@vger.kernel.org>; Sun,  6 Jul 2025 11:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9FE4C9D;
+	Sun,  6 Jul 2025 13:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751802810; cv=none; b=u6b9tBwCwpOJuZQDocY0BagsKn54ip8EJJhuHTWfz3B81odlh3NlMaiCSDX6Clqo7kpVMvRhXJ7J3/2B7cGslz5ANM4/tq2yBiG8dWk6hn4QZt2NM8V4TPS5/WdQye+qOwLbSA/Nv0zbTlAQyWmHnuPi/F5Db9i1ztSbA236IMA=
+	t=1751808109; cv=none; b=d1tHlQEX7rDC9Cfx96zcFT+RCVurD6HVh3uVobm0wfK4WYhtihfPjvYttyzToauuMfwWzaceqwWEG5vkZQRlmcu9YdPWe3VwA3+IpoI9ODdPYFaBCLrtiJoo65sHcBE5nErc5OnT+kkaaxiI36KolrhQUWDST498vx3YHtN/exs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751802810; c=relaxed/simple;
-	bh=htKmWNXJAtHadS3fiPObm/8+YZBWIx0MYOojRRb5wN8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qufu7GtkBHGE0DCNLWz4CWCvUPse3zhCkWirRGvjzB0D7iXIAZfH9eeg7M/Xrwu51o7jesGbGmHNcwpfFzqYA0cCKsnOmyUGhvLj1+3Q4xu7bsepyoLJw68Jf1lci74AXPBoQnlGhjjYp4sDNyhUW/XqFvZrpXCqZF1njsK4+4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVb2gIXH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB962C4CEED;
-	Sun,  6 Jul 2025 11:53:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751802810;
-	bh=htKmWNXJAtHadS3fiPObm/8+YZBWIx0MYOojRRb5wN8=;
-	h=Subject:To:Cc:From:Date:From;
-	b=KVb2gIXHvT0ozgKEUhXPGolG9oCbsVTGHa04laJ2aXPnlb5sa2vWmUZdsDI7ejLSk
-	 NKP1eLDa1tPXsyhWVzw1Kcxhr2KrdAXLi23wIdERr9E3GTsKWNc/cIKVr195LEYooe
-	 jYmM6jB6yLP++9c93UTE4RrPzIzjSkPFef/2POMk=
-Subject: FAILED: patch "[PATCH] drm/v3d: Disable interrupts before resetting the GPU" failed to apply to 5.4-stable tree
-To: mcanal@igalia.com,itoral@igalia.com,jasuarez@igalia.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 06 Jul 2025 13:53:19 +0200
-Message-ID: <2025070619-unblessed-antidote-17bd@gregkh>
+	s=arc-20240116; t=1751808109; c=relaxed/simple;
+	bh=rtd/ACfsAIc+de3WJ5vYRrflT9lyO/15kAn2renzT+M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bDRFF47MlcTrzuCcKmxJOfFloADjvvtjNY7TGNPNRbnkUe8+eD3x6g6JtIpl+q2TtbUNRsHkYCBYtGAqNnmb5ylE79mlmtlll+zAe2pwaJH9oYmXlVALgYNPZLEecgyDkjGcYWLWeizi62NN5PstOAgKxX/OTSyjxXTCiWTAJeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZzGC6MHn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE38C4CEED;
+	Sun,  6 Jul 2025 13:21:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751808108;
+	bh=rtd/ACfsAIc+de3WJ5vYRrflT9lyO/15kAn2renzT+M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZzGC6MHnygsWl6LZka+mxlfg+EUBX1TFY6NPIZlhRqwH1x7l5ht0f8aGhiHifzHix
+	 KCBuMUjgMw7dFYwasFockmtaod71ruy6F688xKKmDXTz1j2COWpV1HSNMKIH42sbjv
+	 H3kCSbt9enOnFy3hQw+6xpz21kxQEOnJl+AMGPzkHaIl1EBfJgrTrqWhIGZQP4dyq9
+	 mgeR+ztGIbTzD+ftxX3F6XQ+PSBzn0tllTOPoQSqC/urME8sRzRkroQuGflyytKw+a
+	 Q/fEfigOWBfady+Gb87Yn2MLV19bUipczWMfz5Aaawm3wAscdSnIIY/f7kv1j9//nT
+	 TvUkHbHnomiYg==
+Message-ID: <663110e1-3aa0-4f6f-8727-3a240bc96075@kernel.org>
+Date: Sun, 6 Jul 2025 09:21:41 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/framebuffer: Acquire internal references on GEM
+ handles
+To: Thomas Zimmermann <tzimmermann@suse.de>, christian.koenig@amd.com,
+ asrivats@redhat.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ airlied@gmail.com, simona@ffwll.ch, patrik.r.jakobsson@gmail.com
+Cc: dri-devel@lists.freedesktop.org, Bert Karwatzki <spasswolf@web.de>,
+ Sumit Semwal <sumit.semwal@linaro.org>, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, stable@vger.kernel.org
+References: <20250704085541.28165-1-tzimmermann@suse.de>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <20250704085541.28165-1-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On 7/4/25 04:53, Thomas Zimmermann wrote:
+> Acquire GEM handles in drm_framebuffer_init() and release them in
+> the corresponding drm_framebuffer_cleanup(). Ties the handle's
+> lifetime to the framebuffer. Not all GEM buffer objects have GEM
+> handles. If not set, no refcounting takes place. This is the case
+> for some fbdev emulation. This is not a problem as these GEM objects
+> do not use dma-bufs and drivers will not release them while fbdev
+> emulation is running.
+> 
+> As all drivers use drm_framebuffer_init(), they will now all hold
+> dma-buf references as fixed in commit 5307dce878d4 ("drm/gem: Acquire
+> references on GEM handles for framebuffers").
+> 
+> In the GEM framebuffer helpers, restore the original ref counting
+> on buffer objects. As the helpers for handle refcounting are now
+> no longer called from outside the DRM core, unexport the symbols.
+> 
+> Gma500 (unnecessarily) clears the framebuffer's GEM-object pointer
+> before calling drm_framebuffer_cleanup(). Remove these lines to
+> make it consistent with the rest of the drivers. It's one of the
+> fbdev emulations with no GEM handle on their buffers. The change
+> to gma500 is therefore rather cosmetic.
+> 
+> Tested on i915, amdgpu (by Bert) and gma500. Also tested on i915
+> plus udl for the original problem with dma-buf sharing.
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: 5307dce878d4 ("drm/gem: Acquire references on GEM handles for framebuffers")
+> Reported-by: Bert Karwatzki <spasswolf@web.de>
+> Closes: https://lore.kernel.org/dri-devel/20250703115915.3096-1-spasswolf@web.de/
+> Tested-by: Bert Karwatzki <spasswolf@web.de>
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 226862f50a7a88e4e4de9abbf36c64d19acd6fd0
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025070619-unblessed-antidote-17bd@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+(In what's probably no surprise) I reproduced the same issue Bert 
+reported and also confirmed this does fix it.
 
-Possible dependencies:
+Tested-by: Mario Limonciello <superm1@kernel.org>
+
+This was my HEAD:
+
+commit 1f988d0788f50 ("Merge tag 'hid-for-linus-2025070502' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/hid/hid")
 
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 226862f50a7a88e4e4de9abbf36c64d19acd6fd0 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Date: Sat, 28 Jun 2025 19:42:42 -0300
-Subject: [PATCH] drm/v3d: Disable interrupts before resetting the GPU
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Currently, an interrupt can be triggered during a GPU reset, which can
-lead to GPU hangs and NULL pointer dereference in an interrupt context
-as shown in the following trace:
-
- [  314.035040] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000c0
- [  314.043822] Mem abort info:
- [  314.046606]   ESR = 0x0000000096000005
- [  314.050347]   EC = 0x25: DABT (current EL), IL = 32 bits
- [  314.055651]   SET = 0, FnV = 0
- [  314.058695]   EA = 0, S1PTW = 0
- [  314.061826]   FSC = 0x05: level 1 translation fault
- [  314.066694] Data abort info:
- [  314.069564]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
- [  314.075039]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
- [  314.080080]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
- [  314.085382] user pgtable: 4k pages, 39-bit VAs, pgdp=0000000102728000
- [  314.091814] [00000000000000c0] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
- [  314.100511] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
- [  314.106770] Modules linked in: v3d i2c_brcmstb vc4 snd_soc_hdmi_codec gpu_sched drm_shmem_helper drm_display_helper cec drm_dma_helper drm_kms_helper drm drm_panel_orientation_quirks snd_soc_core snd_compress snd_pcm_dmaengine snd_pcm snd_timer snd backlight
- [  314.129654] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.25+rpt-rpi-v8 #1  Debian 1:6.12.25-1+rpt1
- [  314.139388] Hardware name: Raspberry Pi 4 Model B Rev 1.4 (DT)
- [  314.145211] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- [  314.152165] pc : v3d_irq+0xec/0x2e0 [v3d]
- [  314.156187] lr : v3d_irq+0xe0/0x2e0 [v3d]
- [  314.160198] sp : ffffffc080003ea0
- [  314.163502] x29: ffffffc080003ea0 x28: ffffffec1f184980 x27: 021202b000000000
- [  314.170633] x26: ffffffec1f17f630 x25: ffffff8101372000 x24: ffffffec1f17d9f0
- [  314.177764] x23: 000000000000002a x22: 000000000000002a x21: ffffff8103252000
- [  314.184895] x20: 0000000000000001 x19: 00000000deadbeef x18: 0000000000000000
- [  314.192026] x17: ffffff94e51d2000 x16: ffffffec1dac3cb0 x15: c306000000000000
- [  314.199156] x14: 0000000000000000 x13: b2fc982e03cc5168 x12: 0000000000000001
- [  314.206286] x11: ffffff8103f8bcc0 x10: ffffffec1f196868 x9 : ffffffec1dac3874
- [  314.213416] x8 : 0000000000000000 x7 : 0000000000042a3a x6 : ffffff810017a180
- [  314.220547] x5 : ffffffec1ebad400 x4 : ffffffec1ebad320 x3 : 00000000000bebeb
- [  314.227677] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
- [  314.234807] Call trace:
- [  314.237243]  v3d_irq+0xec/0x2e0 [v3d]
- [  314.240906]  __handle_irq_event_percpu+0x58/0x218
- [  314.245609]  handle_irq_event+0x54/0xb8
- [  314.249439]  handle_fasteoi_irq+0xac/0x240
- [  314.253527]  handle_irq_desc+0x48/0x68
- [  314.257269]  generic_handle_domain_irq+0x24/0x38
- [  314.261879]  gic_handle_irq+0x48/0xd8
- [  314.265533]  call_on_irq_stack+0x24/0x58
- [  314.269448]  do_interrupt_handler+0x88/0x98
- [  314.273624]  el1_interrupt+0x34/0x68
- [  314.277193]  el1h_64_irq_handler+0x18/0x28
- [  314.281281]  el1h_64_irq+0x64/0x68
- [  314.284673]  default_idle_call+0x3c/0x168
- [  314.288675]  do_idle+0x1fc/0x230
- [  314.291895]  cpu_startup_entry+0x3c/0x50
- [  314.295810]  rest_init+0xe4/0xf0
- [  314.299030]  start_kernel+0x5e8/0x790
- [  314.302684]  __primary_switched+0x80/0x90
- [  314.306691] Code: 940029eb 360ffc13 f9442ea0 52800001 (f9406017)
- [  314.312775] ---[ end trace 0000000000000000 ]---
- [  314.317384] Kernel panic - not syncing: Oops: Fatal exception in interrupt
- [  314.324249] SMP: stopping secondary CPUs
- [  314.328167] Kernel Offset: 0x2b9da00000 from 0xffffffc080000000
- [  314.334076] PHYS_OFFSET: 0x0
- [  314.336946] CPU features: 0x08,00002013,c0200000,0200421b
- [  314.342337] Memory Limit: none
- [  314.345382] ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
-
-Before resetting the GPU, it's necessary to disable all interrupts and
-deal with any interrupt handler still in-flight. Otherwise, the GPU might
-reset with jobs still running, or yet, an interrupt could be handled
-during the reset.
-
-Cc: stable@vger.kernel.org
-Fixes: 57692c94dcbe ("drm/v3d: Introduce a new DRM driver for Broadcom V3D V3.x+")
-Reviewed-by: Juan A. Suarez <jasuarez@igalia.com>
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://lore.kernel.org/r/20250628224243.47599-1-mcanal@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-
-diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
-index b51f0b648a08..411e47702f8a 100644
---- a/drivers/gpu/drm/v3d/v3d_drv.h
-+++ b/drivers/gpu/drm/v3d/v3d_drv.h
-@@ -101,6 +101,12 @@ enum v3d_gen {
- 	V3D_GEN_71 = 71,
- };
- 
-+enum v3d_irq {
-+	V3D_CORE_IRQ,
-+	V3D_HUB_IRQ,
-+	V3D_MAX_IRQS,
-+};
-+
- struct v3d_dev {
- 	struct drm_device drm;
- 
-@@ -112,6 +118,8 @@ struct v3d_dev {
- 
- 	bool single_irq_line;
- 
-+	int irq[V3D_MAX_IRQS];
-+
- 	struct v3d_perfmon_info perfmon_info;
- 
- 	void __iomem *hub_regs;
-diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
-index d7d16da78db3..37bf5eecdd2c 100644
---- a/drivers/gpu/drm/v3d/v3d_gem.c
-+++ b/drivers/gpu/drm/v3d/v3d_gem.c
-@@ -134,6 +134,8 @@ v3d_reset(struct v3d_dev *v3d)
- 	if (false)
- 		v3d_idle_axi(v3d, 0);
- 
-+	v3d_irq_disable(v3d);
-+
- 	v3d_idle_gca(v3d);
- 	v3d_reset_sms(v3d);
- 	v3d_reset_v3d(v3d);
-diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-index 2cca5d3a26a2..a515a301e480 100644
---- a/drivers/gpu/drm/v3d/v3d_irq.c
-+++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -260,7 +260,7 @@ v3d_hub_irq(int irq, void *arg)
- int
- v3d_irq_init(struct v3d_dev *v3d)
- {
--	int irq1, ret, core;
-+	int irq, ret, core;
- 
- 	INIT_WORK(&v3d->overflow_mem_work, v3d_overflow_mem_work);
- 
-@@ -271,17 +271,24 @@ v3d_irq_init(struct v3d_dev *v3d)
- 		V3D_CORE_WRITE(core, V3D_CTL_INT_CLR, V3D_CORE_IRQS(v3d->ver));
- 	V3D_WRITE(V3D_HUB_INT_CLR, V3D_HUB_IRQS(v3d->ver));
- 
--	irq1 = platform_get_irq_optional(v3d_to_pdev(v3d), 1);
--	if (irq1 == -EPROBE_DEFER)
--		return irq1;
--	if (irq1 > 0) {
--		ret = devm_request_irq(v3d->drm.dev, irq1,
-+	irq = platform_get_irq_optional(v3d_to_pdev(v3d), 1);
-+	if (irq == -EPROBE_DEFER)
-+		return irq;
-+	if (irq > 0) {
-+		v3d->irq[V3D_CORE_IRQ] = irq;
-+
-+		ret = devm_request_irq(v3d->drm.dev, v3d->irq[V3D_CORE_IRQ],
- 				       v3d_irq, IRQF_SHARED,
- 				       "v3d_core0", v3d);
- 		if (ret)
- 			goto fail;
--		ret = devm_request_irq(v3d->drm.dev,
--				       platform_get_irq(v3d_to_pdev(v3d), 0),
-+
-+		irq = platform_get_irq(v3d_to_pdev(v3d), 0);
-+		if (irq < 0)
-+			return irq;
-+		v3d->irq[V3D_HUB_IRQ] = irq;
-+
-+		ret = devm_request_irq(v3d->drm.dev, v3d->irq[V3D_HUB_IRQ],
- 				       v3d_hub_irq, IRQF_SHARED,
- 				       "v3d_hub", v3d);
- 		if (ret)
-@@ -289,8 +296,12 @@ v3d_irq_init(struct v3d_dev *v3d)
- 	} else {
- 		v3d->single_irq_line = true;
- 
--		ret = devm_request_irq(v3d->drm.dev,
--				       platform_get_irq(v3d_to_pdev(v3d), 0),
-+		irq = platform_get_irq(v3d_to_pdev(v3d), 0);
-+		if (irq < 0)
-+			return irq;
-+		v3d->irq[V3D_CORE_IRQ] = irq;
-+
-+		ret = devm_request_irq(v3d->drm.dev, v3d->irq[V3D_CORE_IRQ],
- 				       v3d_irq, IRQF_SHARED,
- 				       "v3d", v3d);
- 		if (ret)
-@@ -331,6 +342,12 @@ v3d_irq_disable(struct v3d_dev *v3d)
- 		V3D_CORE_WRITE(core, V3D_CTL_INT_MSK_SET, ~0);
- 	V3D_WRITE(V3D_HUB_INT_MSK_SET, ~0);
- 
-+	/* Finish any interrupt handler still in flight. */
-+	for (int i = 0; i < V3D_MAX_IRQS; i++) {
-+		if (v3d->irq[i])
-+			synchronize_irq(v3d->irq[i]);
-+	}
-+
- 	/* Clear any pending interrupts we might have left. */
- 	for (core = 0; core < v3d->cores; core++)
- 		V3D_CORE_WRITE(core, V3D_CTL_INT_CLR, V3D_CORE_IRQS(v3d->ver));
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Anusha Srivatsa <asrivats@redhat.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Sumit Semwal <sumit.semwal@linaro.org>
+> Cc: "Christian König" <christian.koenig@amd.com>
+> Cc: linux-media@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linaro-mm-sig@lists.linaro.org
+> Cc: <stable@vger.kernel.org>
+> ---
+>   drivers/gpu/drm/drm_framebuffer.c            | 23 +++++++-
+>   drivers/gpu/drm/drm_gem.c                    | 59 +++++++++++++-------
+>   drivers/gpu/drm/drm_gem_framebuffer_helper.c | 16 +++---
+>   drivers/gpu/drm/drm_internal.h               |  4 +-
+>   drivers/gpu/drm/gma500/fbdev.c               |  2 -
+>   5 files changed, 69 insertions(+), 35 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_framebuffer.c b/drivers/gpu/drm/drm_framebuffer.c
+> index b781601946db..e4a10dd053fc 100644
+> --- a/drivers/gpu/drm/drm_framebuffer.c
+> +++ b/drivers/gpu/drm/drm_framebuffer.c
+> @@ -862,11 +862,17 @@ EXPORT_SYMBOL_FOR_TESTS_ONLY(drm_framebuffer_free);
+>   int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
+>   			 const struct drm_framebuffer_funcs *funcs)
+>   {
+> +	unsigned int i;
+>   	int ret;
+>   
+>   	if (WARN_ON_ONCE(fb->dev != dev || !fb->format))
+>   		return -EINVAL;
+>   
+> +	for (i = 0; i < fb->format->num_planes; i++) {
+> +		if (fb->obj[i])
+> +			drm_gem_object_handle_get_if_exists_unlocked(fb->obj[i]);
+> +	}
+> +
+>   	INIT_LIST_HEAD(&fb->filp_head);
+>   
+>   	fb->funcs = funcs;
+> @@ -875,7 +881,7 @@ int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
+>   	ret = __drm_mode_object_add(dev, &fb->base, DRM_MODE_OBJECT_FB,
+>   				    false, drm_framebuffer_free);
+>   	if (ret)
+> -		goto out;
+> +		goto err;
+>   
+>   	mutex_lock(&dev->mode_config.fb_lock);
+>   	dev->mode_config.num_fb++;
+> @@ -883,7 +889,14 @@ int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
+>   	mutex_unlock(&dev->mode_config.fb_lock);
+>   
+>   	drm_mode_object_register(dev, &fb->base);
+> -out:
+> +
+> +	return 0;
+> +
+> +err:
+> +	for (i = 0; i < fb->format->num_planes; i++) {
+> +		if (fb->obj[i])
+> +			drm_gem_object_handle_put_if_exists_unlocked(fb->obj[i]);
+> +	}
+>   	return ret;
+>   }
+>   EXPORT_SYMBOL(drm_framebuffer_init);
+> @@ -960,6 +973,12 @@ EXPORT_SYMBOL(drm_framebuffer_unregister_private);
+>   void drm_framebuffer_cleanup(struct drm_framebuffer *fb)
+>   {
+>   	struct drm_device *dev = fb->dev;
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < fb->format->num_planes; i++) {
+> +		if (fb->obj[i])
+> +			drm_gem_object_handle_put_if_exists_unlocked(fb->obj[i]);
+> +	}
+>   
+>   	mutex_lock(&dev->mode_config.fb_lock);
+>   	list_del(&fb->head);
+> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+> index bc505d938b3e..9d8b9e6b7d25 100644
+> --- a/drivers/gpu/drm/drm_gem.c
+> +++ b/drivers/gpu/drm/drm_gem.c
+> @@ -224,23 +224,27 @@ static void drm_gem_object_handle_get(struct drm_gem_object *obj)
+>   }
+>   
+>   /**
+> - * drm_gem_object_handle_get_unlocked - acquire reference on user-space handles
+> + * drm_gem_object_handle_get_if_exists_unlocked - acquire reference on user-space handle, if any
+>    * @obj: GEM object
+>    *
+> - * Acquires a reference on the GEM buffer object's handle. Required
+> - * to keep the GEM object alive. Call drm_gem_object_handle_put_unlocked()
+> - * to release the reference.
+> + * Acquires a reference on the GEM buffer object's handle. Required to keep
+> + * the GEM object alive. Call drm_gem_object_handle_put_if_exists_unlocked()
+> + * to release the reference. Does nothing if the buffer object has no handle.
+>    */
+> -void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj)
+> +void drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj)
+>   {
+>   	struct drm_device *dev = obj->dev;
+>   
+>   	guard(mutex)(&dev->object_name_lock);
+>   
+> -	drm_WARN_ON(dev, !obj->handle_count); /* first ref taken in create-tail helper */
+> -	drm_gem_object_handle_get(obj);
+> +	/*
+> +	 * First ref taken during GEM object creation, if any. Some
+> +	 * drivers set up internal framebuffers with GEM objects that
+> +	 * do not have a GEM handle. Hence, this counter can be zero.
+> +	 */
+> +	if (obj->handle_count)
+> +		drm_gem_object_handle_get(obj);
+>   }
+> -EXPORT_SYMBOL(drm_gem_object_handle_get_unlocked);
+>   
+>   /**
+>    * drm_gem_object_handle_free - release resources bound to userspace handles
+> @@ -272,21 +276,11 @@ static void drm_gem_object_exported_dma_buf_free(struct drm_gem_object *obj)
+>   	}
+>   }
+>   
+> -/**
+> - * drm_gem_object_handle_put_unlocked - releases reference on user-space handles
+> - * @obj: GEM object
+> - *
+> - * Releases a reference on the GEM buffer object's handle. Possibly releases
+> - * the GEM buffer object and associated dma-buf objects.
+> - */
+> -void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
+> +static void drm_gem_object_handle_put_unlocked_tail(struct drm_gem_object *obj)
+>   {
+>   	struct drm_device *dev = obj->dev;
+>   	bool final = false;
+>   
+> -	if (WARN_ON(READ_ONCE(obj->handle_count) == 0))
+> -		return;
+> -
+>   	/*
+>   	* Must bump handle count first as this may be the last
+>   	* ref, in which case the object would disappear before we
+> @@ -304,7 +298,32 @@ void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
+>   	if (final)
+>   		drm_gem_object_put(obj);
+>   }
+> -EXPORT_SYMBOL(drm_gem_object_handle_put_unlocked);
+> +
+> +static void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
+> +{
+> +	struct drm_device *dev = obj->dev;
+> +
+> +	if (drm_WARN_ON(dev, READ_ONCE(obj->handle_count) == 0))
+> +		return;
+> +
+> +	drm_gem_object_handle_put_unlocked_tail(obj);
+> +}
+> +
+> +/**
+> + * drm_gem_object_handle_put_if_exists_unlocked - releases reference on user-space handle, if any
+> + * @obj: GEM object
+> + *
+> + * Releases a reference on the GEM buffer object's handle. Possibly releases
+> + * the GEM buffer object and associated dma-buf objects. Does nothing if the
+> + * buffer object has no handle.
+> + */
+> +void drm_gem_object_handle_put_if_exists_unlocked(struct drm_gem_object *obj)
+> +{
+> +	if (!obj->handle_count)
+> +		return;
+> +
+> +	drm_gem_object_handle_put_unlocked_tail(obj);
+> +}
+>   
+>   /*
+>    * Called at device or object close to release the file's
+> diff --git a/drivers/gpu/drm/drm_gem_framebuffer_helper.c b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+> index c60d0044d036..618ce725cd75 100644
+> --- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+> +++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+> @@ -100,7 +100,7 @@ void drm_gem_fb_destroy(struct drm_framebuffer *fb)
+>   	unsigned int i;
+>   
+>   	for (i = 0; i < fb->format->num_planes; i++)
+> -		drm_gem_object_handle_put_unlocked(fb->obj[i]);
+> +		drm_gem_object_put(fb->obj[i]);
+>   
+>   	drm_framebuffer_cleanup(fb);
+>   	kfree(fb);
+> @@ -183,10 +183,8 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
+>   		if (!objs[i]) {
+>   			drm_dbg_kms(dev, "Failed to lookup GEM object\n");
+>   			ret = -ENOENT;
+> -			goto err_gem_object_handle_put_unlocked;
+> +			goto err_gem_object_put;
+>   		}
+> -		drm_gem_object_handle_get_unlocked(objs[i]);
+> -		drm_gem_object_put(objs[i]);
+>   
+>   		min_size = (height - 1) * mode_cmd->pitches[i]
+>   			 + drm_format_info_min_pitch(info, i, width)
+> @@ -196,22 +194,22 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
+>   			drm_dbg_kms(dev,
+>   				    "GEM object size (%zu) smaller than minimum size (%u) for plane %d\n",
+>   				    objs[i]->size, min_size, i);
+> -			drm_gem_object_handle_put_unlocked(objs[i]);
+> +			drm_gem_object_put(objs[i]);
+>   			ret = -EINVAL;
+> -			goto err_gem_object_handle_put_unlocked;
+> +			goto err_gem_object_put;
+>   		}
+>   	}
+>   
+>   	ret = drm_gem_fb_init(dev, fb, mode_cmd, objs, i, funcs);
+>   	if (ret)
+> -		goto err_gem_object_handle_put_unlocked;
+> +		goto err_gem_object_put;
+>   
+>   	return 0;
+>   
+> -err_gem_object_handle_put_unlocked:
+> +err_gem_object_put:
+>   	while (i > 0) {
+>   		--i;
+> -		drm_gem_object_handle_put_unlocked(objs[i]);
+> +		drm_gem_object_put(objs[i]);
+>   	}
+>   	return ret;
+>   }
+> diff --git a/drivers/gpu/drm/drm_internal.h b/drivers/gpu/drm/drm_internal.h
+> index f7b414a813ae..9233019f54a8 100644
+> --- a/drivers/gpu/drm/drm_internal.h
+> +++ b/drivers/gpu/drm/drm_internal.h
+> @@ -161,8 +161,8 @@ void drm_sysfs_lease_event(struct drm_device *dev);
+>   
+>   /* drm_gem.c */
+>   int drm_gem_init(struct drm_device *dev);
+> -void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj);
+> -void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj);
+> +void drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj);
+> +void drm_gem_object_handle_put_if_exists_unlocked(struct drm_gem_object *obj);
+>   int drm_gem_handle_create_tail(struct drm_file *file_priv,
+>   			       struct drm_gem_object *obj,
+>   			       u32 *handlep);
+> diff --git a/drivers/gpu/drm/gma500/fbdev.c b/drivers/gpu/drm/gma500/fbdev.c
+> index 8edefea2ef59..afd252108cfa 100644
+> --- a/drivers/gpu/drm/gma500/fbdev.c
+> +++ b/drivers/gpu/drm/gma500/fbdev.c
+> @@ -121,7 +121,6 @@ static void psb_fbdev_fb_destroy(struct fb_info *info)
+>   	drm_fb_helper_fini(fb_helper);
+>   
+>   	drm_framebuffer_unregister_private(fb);
+> -	fb->obj[0] = NULL;
+>   	drm_framebuffer_cleanup(fb);
+>   	kfree(fb);
+>   
+> @@ -243,7 +242,6 @@ int psb_fbdev_driver_fbdev_probe(struct drm_fb_helper *fb_helper,
+>   
+>   err_drm_framebuffer_unregister_private:
+>   	drm_framebuffer_unregister_private(fb);
+> -	fb->obj[0] = NULL;
+>   	drm_framebuffer_cleanup(fb);
+>   	kfree(fb);
+>   err_drm_gem_object_put:
 
 
