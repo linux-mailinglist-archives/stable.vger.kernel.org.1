@@ -1,109 +1,118 @@
-Return-Path: <stable+bounces-160328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0121AFA839
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 01:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 048A5AFA849
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 01:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FE763A55EF
-	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 23:01:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AD253B3FAF
+	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 23:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 301151FDE01;
-	Sun,  6 Jul 2025 23:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267FD2BD00C;
+	Sun,  6 Jul 2025 23:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z5qYZ6di"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZw/74aY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f66.google.com (mail-pj1-f66.google.com [209.85.216.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949521311AC;
-	Sun,  6 Jul 2025 23:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BFE29E11F;
+	Sun,  6 Jul 2025 23:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751842888; cv=none; b=MV1NiZbOri/4Vrl0TUV2BKIG1EZnt7/ugN02K6gnSVlBs8RqL0RVrPJZlJ8N14mRm51yHYyQ2VJ/jxCg+mMN6dQ6rY4LNv4C6Zc6Hqt9rmH8Mt1QQt5+dTMuZLaweNhxPaDneizwpMxZlwKWerSRV0cI37A4TRgBbKmo3uv/3Qk=
+	t=1751843504; cv=none; b=CAIgK5fwZAXCyf7n1SruYGpi3Apzr5V890eoP39Jin/7G6/2Ca5wM/jvOmRdF9S4Q1CpYkHc8jfvOUR+8anWEeOU49fQqhsOAsILH2Kf76jOBeZyY3JrxNBJXgGy6tbV2TZjSaNdygIsGjnfmTm5+IQzAWQRbYfhOLqJ9OUwGHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751842888; c=relaxed/simple;
-	bh=zturyjfI2N9e2c/AG3k9CJQA3JKr2kQzkhiHb/r8Khs=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=squDh4mt7epzmptZHIzWYuIPlAI7qCAiRM/OCxvcVs5WjYCzxMQF6z+d9Jc9WGtwxj+TnFuwNUcvuUbOy9DN+uXooLml6OQ5/uuImXomQN2gcwpb9LgvrCjlbaELQBVhnoFJPmhgLOn3tnZCRYHJ9PY+TRT2jizNp9NmAa0OVw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z5qYZ6di; arc=none smtp.client-ip=209.85.216.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f66.google.com with SMTP id 98e67ed59e1d1-311bd8ce7e4so1928304a91.3;
-        Sun, 06 Jul 2025 16:01:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751842887; x=1752447687; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zturyjfI2N9e2c/AG3k9CJQA3JKr2kQzkhiHb/r8Khs=;
-        b=Z5qYZ6diSUDxsKgALtcCuflZNpLxK2c/Fl/8uJiocyWKYLq6wBmlkyHICXpcU+xpEW
-         y0VvrR1sc5LZwodW46Qig0gG/h4fm23NxYMN4fXkPauB2HAf+FnMm/re1jX6JK3PgT4D
-         7+EB99VBgyPP3Q8tW/dOzLOPchYUSvey6L0ySzWfSWEr3gm3rk8qaR3Gya3FVA/nW+aL
-         1XFlpKUo5n2pblBoQbA41qR26yOWYoK1H2b0FXuph/LVHYVlDPAmGwcojfr7KRbnJESR
-         LFIeQ/jM71vDtP3RSAn08UH1EsWLJkssi8RTqCwCSGg51JFOrkN0Or7wAoA+tSJWtXQj
-         4mhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751842887; x=1752447687;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zturyjfI2N9e2c/AG3k9CJQA3JKr2kQzkhiHb/r8Khs=;
-        b=ssnysp+NOfxptx6bDaCqcXr41I5sZMx+9q5dJi7PS18XSHa8MCRKJUuvCWwjdQRHa7
-         h2yzLjTx35CqpXlOHXuWe7uKpoalnuotDND+EBYHB/+UPKdUxmvFEmAOWxTfAY6HK6Mo
-         oTfm2WahdW0MSpfTDcDyAZvM5KxLilN491kK7TNjv6W4tVGD6MZ3cQJ8XKRPWPmEayw/
-         g8lWH2deRkOK4w5nWpb7HqF0DvsoIhxmt8DtbOW2MT9VIdeXV48knJ0wO3re9Sg468FV
-         BNbL6J7cx7B5hHIC/BsxfCsXr7itAeDFpnyM6AHpAJZzu1SeXhFqJXDZ4ISYXNFeDen6
-         dSGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVhtRM5V8Z2CIplnweKlpCycpoYHjbdg4CN/3h84bYfttpxcaH2m04UzakPASPrWEosNpD/nlvs@vger.kernel.org, AJvYcCWFp/yZqABGTBUj2q2/UJ1kYcqw6dRgNTYAAyQ+m+vXPYJRCbKvqLSWjPWWSeZJCGPWyfLEU+v6olnP/7oFYKU=@vger.kernel.org, AJvYcCWpmJvRiSkUpcyMMuJ3ZIo0QNcFKsUEM6eQ8UrKIiMZKy+uIWkhWS3GJmsRSKNdKHQHs3d1l7W/0JYs@vger.kernel.org, AJvYcCXwBBxmeV67uUMP5JtRdSCgbWARx0g9fRMekNVUwDtkC3xA/dy6S4RUye94pTwly2Qh5L372TXk9JG+@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdMGKFxoZB+3KIOqGR+XY8IrIS51kEMepkIOaUY8ApZl33bFF4
-	wrolJlhFQKAn1gNh0tlPYQ3GiHbhiXIhuy/tNVkm10q4Ont02Xp4e/a1
-X-Gm-Gg: ASbGnctdZcbaazlmtF0e/4llA3DrfQSunPF2ECA56EUrOUmqgELLNoFFUF0GPj+1cdl
-	ivJ7JvB6MFIYy+KubqbhbM2XQZkQbqkiZTP36Hs9VksoWLhGVPF6/1/9Cow0GjR8qe4Gz0unKhl
-	QUscEE9AMn1L91j+PFbd8gXi3rBpNa2g9dyr6Nx/No8wg9GY2yp3ti3S98iy2AXwFY5fJ16SyYl
-	pZDiJIk50BTrVz01cgNCUPaWj3UVB+Q5nom9RRF71aZUkNpnXuo9gLDaO2ndGgjIeitPHIdEuKj
-	pfmAV+gDJrODmZKNKt1V72iI6LTDykmftjNkM+77xIUHfzHLryT1rnp8NIhf/Uw1rG+P3gk/x1X
-	pWGw=
-X-Google-Smtp-Source: AGHT+IGAJIAPUxPwiRpQD8RGqbgSJ3Srthut5cwID5L28xg/vABhqLkk3Ayb4sm+d6UnVkJoYDakGQ==
-X-Received: by 2002:a17:90b:3ece:b0:311:c1ec:7cfd with SMTP id 98e67ed59e1d1-31aba8d323amr7588550a91.26.1751842886617;
-        Sun, 06 Jul 2025 16:01:26 -0700 (PDT)
-Received: from [127.0.0.1] ([116.206.223.154])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23c8431e1b0sm70869455ad.44.2025.07.06.16.01.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 06 Jul 2025 16:01:26 -0700 (PDT)
-Date: Mon, 07 Jul 2025 04:31:22 +0530
-From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-CC: Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
- linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_Instability_in_ALL_stable_an?=
- =?US-ASCII?Q?d_LTS_distro_kernels_=28IRQ_=2316_be?=
- =?US-ASCII?Q?ing_disabled=2C_PCIe_bus_errors=2C_a?=
- =?US-ASCII?Q?th10k=5Fpci=29_in_Dell_Inspiron_5567?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20250705195846.GA2011829@bhelgaas>
-References: <20250705195846.GA2011829@bhelgaas>
-Message-ID: <9D9D9375-1BD0-46EA-9E85-47A2D8325F98@gmail.com>
+	s=arc-20240116; t=1751843504; c=relaxed/simple;
+	bh=XWfjXYT5FJgcE1mXz/f5qW91oQVmDL2Rc7vpGHvJHCk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=j7RM/qkUK366Z98/WYmqJZyQmx/d7eyRAOS5NA6Fq6KEamFciYvBmIWz86FCGKmr1Q2Os3vE3wSF2jhNU1hb0LtCSru5yosTRP+WFYNusszCTQKC2sx0B8CsfE4qyeJ4+jAtyL66qFPTuCRLP04loXODm0HQASPcgVfj9Yi00mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZw/74aY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF17FC4CEF2;
+	Sun,  6 Jul 2025 23:11:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751843504;
+	bh=XWfjXYT5FJgcE1mXz/f5qW91oQVmDL2Rc7vpGHvJHCk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VZw/74aYNyJCvF/E+Jw7X4nCvVoF1NKvNTDjDkO+pFKvp8sd1Hz2oEKygRlE9SNKD
+	 kZ6an3PCWsh5GWm4eMc0X8yp39Cjrm1ZDbhlNAHXcL7A2Hj3wQt94iyJgg1j3YllVj
+	 LxG3tdal1EGEqgsswwdZlSoWFhiD993bVunTZl5qv22vTFOfJTiKotnaUjdeT6OXIC
+	 WaE5LyvYbTUdDj6xTB49htkSUrkp6/8JHXjo7OS4mMbxaYsF5dUu9nY1urWz8hF1yv
+	 /iReSS8SiAP6BNraPAb3kD7t4mi6PAgY3hiAddznUaDRLWYDpS+nqW+r75G3sHJXR7
+	 UwsKKa0LsJ0Rw==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	linux-arm-kernel@lists.infradead.org,
+	x86@kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/5] lib/crypto: arm/poly1305: Fix register corruption in no-SIMD contexts
+Date: Sun,  6 Jul 2025 16:10:57 -0700
+Message-ID: <20250706231100.176113-3-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250706231100.176113-1-ebiggers@kernel.org>
+References: <20250706231100.176113-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Bjorn,
+Restore the SIMD usability check that was removed by commit 773426f4771b
+("crypto: arm/poly1305 - Add block-only interface").
 
-I have downloaded 6=2E16-rc4, and I have a bootable pendrive having the ar=
-ch iso, but I really don't know how to rebuild the kernel on a bootable dri=
-ve=2E
+This safety check is cheap and is well worth eliminating a footgun.
+While the Poly1305 functions *should* be called only where SIMD
+registers are usable, if they are anyway, they should just do the right
+thing instead of corrupting random tasks' registers and/or computing
+incorrect MACs.  Fixing this is also needed for poly1305_kunit to pass.
 
-Any tips on how to do that?
+Just use may_use_simd() instead of the original crypto_simd_usable(),
+since poly1305_kunit won't rely on crypto_simd_disabled_for_test.
 
-Bandhan
+Fixes: 773426f4771b ("crypto: arm/poly1305 - Add block-only interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
+ lib/crypto/arm/poly1305-glue.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/lib/crypto/arm/poly1305-glue.c b/lib/crypto/arm/poly1305-glue.c
+index 5b65b840c166..2d86c78af883 100644
+--- a/lib/crypto/arm/poly1305-glue.c
++++ b/lib/crypto/arm/poly1305-glue.c
+@@ -5,10 +5,11 @@
+  * Copyright (C) 2019 Linaro Ltd. <ard.biesheuvel@linaro.org>
+  */
+ 
+ #include <asm/hwcap.h>
+ #include <asm/neon.h>
++#include <asm/simd.h>
+ #include <crypto/internal/poly1305.h>
+ #include <linux/cpufeature.h>
+ #include <linux/jump_label.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -32,11 +33,11 @@ static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_neon);
+ void poly1305_blocks_arch(struct poly1305_block_state *state, const u8 *src,
+ 			  unsigned int len, u32 padbit)
+ {
+ 	len = round_down(len, POLY1305_BLOCK_SIZE);
+ 	if (IS_ENABLED(CONFIG_KERNEL_MODE_NEON) &&
+-	    static_branch_likely(&have_neon)) {
++	    static_branch_likely(&have_neon) && likely(may_use_simd())) {
+ 		do {
+ 			unsigned int todo = min_t(unsigned int, len, SZ_4K);
+ 
+ 			kernel_neon_begin();
+ 			poly1305_blocks_neon(state, src, todo, padbit);
+-- 
+2.50.0
+
 
