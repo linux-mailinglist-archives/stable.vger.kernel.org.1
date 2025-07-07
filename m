@@ -1,130 +1,257 @@
-Return-Path: <stable+bounces-160332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2F3AFA84B
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 01:12:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF63AFAA3B
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 05:31:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91820189AD7E
-	for <lists+stable@lfdr.de>; Sun,  6 Jul 2025 23:12:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D90B177FF1
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 03:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C79E2BE03B;
-	Sun,  6 Jul 2025 23:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A7425A33E;
+	Mon,  7 Jul 2025 03:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BLw6kDkr"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="iO2AS+Bt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D522BE02E;
-	Sun,  6 Jul 2025 23:11:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B8B12B94;
+	Mon,  7 Jul 2025 03:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751843507; cv=none; b=mcI+/udLC0Pe9e38xet3HJnLX9oX5du2mNHDgJTe8oEx0P0YhoFIUXErqxAnaFNyInE84rCvH5k2M3AbEuQcp5lNjLHepLQbM8ydHsmnxtbngTJyBhV+lQivAdiLe9V3obBbbsFdPCg4UV7hjMU4oyZKcJRnbo0oaDySIp81AmY=
+	t=1751859047; cv=none; b=df5aZIkn52NIvwG1bJ3eu1eGsNFEpJZInhA/yaQt6kqO4mXOh450BNBXlb30wmlCraBqevZ4X+lh0zD+9LVwqzcMEvZhmuhl/q/XTfVjbp+WcgZAyiFVl5337y0Yg1SoZXkTPHTdQDHsIWFU5i8BFaSZ5IJG7TldsflBAG0vUDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751843507; c=relaxed/simple;
-	bh=Szsb85EsQ+Zh1w4jNZz/88qNbUj4Tj26HrAtW7FyjqU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AMqU+gKKT26W0QvwEQa0BbC8EcN3k7ZfZF5vw7x/8Ww3Buy5C8NQd5W1wX9luwO3eypTcgyZwpeybapLF0Fpc4QXgfRlcO9iN90R+rjd4edaun2i3uiS2rZy54XnMBgv7Xr87IRbjMHxDrrLFnPSRawQhdpotm70ahYDK0DsaGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BLw6kDkr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489D6C4CEED;
-	Sun,  6 Jul 2025 23:11:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751843506;
-	bh=Szsb85EsQ+Zh1w4jNZz/88qNbUj4Tj26HrAtW7FyjqU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BLw6kDkrizdxub9fjMWAZyiLgAQCIRS02Qtjf8aBUsmv08tcyRIpytwlj6zVajjSx
-	 A7gFOuwgrjL+9yKxrWrIi3ND3tl0UGiRNQPz5q2gRrfFMHt1YvASf4ssJfSo4nXqKc
-	 /33jxZCkDvHL93ZJGVywgCZdV7QkLSBkjZvmXZvdv/KuDakTidmefdfshG55iLCOZ1
-	 9gDLNdYzbhTlCxHYF0+CyeHRoGGkaLBeTqQ6p/0CJ839Vrva+HomoBhwSGAC60vnb7
-	 oAIEx4RUFtj1kMA0eLGt5ERxEXxrxjKQv0uci+8sRz4TeJL1SG7XG9IRfuS//mkmpX
-	 Ux/qgcMUvcIEw==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	linux-arm-kernel@lists.infradead.org,
-	x86@kernel.org,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 5/5] lib/crypto: x86/poly1305: Fix performance regression on short messages
-Date: Sun,  6 Jul 2025 16:11:00 -0700
-Message-ID: <20250706231100.176113-6-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250706231100.176113-1-ebiggers@kernel.org>
-References: <20250706231100.176113-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1751859047; c=relaxed/simple;
+	bh=kxBDgCOSz0tq1MaLRMuxn7XrqsVVSATXO/ynrjrJbd0=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=dbN/bd3RaaebwIbS8un1mtquzB9sI7mz2OHSvEJetWC9kAa9oWfA+ioKt0j/RD6W/mgWLcTzM5FyA22rZ+mHJK7hCer2BpS1BUTMBuZma2FNjV2t1+edssbQlyvQePHNIHlKo6EPfMrB9K6MnVap8e1G7FnNKeV1isPVJu9cFaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=iO2AS+Bt; arc=none smtp.client-ip=220.197.31.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id; bh=HP8tZujBjcSHGre
+	MG32sL06BiLfrv9CiKF8NSKgD8CQ=; b=iO2AS+Bt7g1bJfHsadCJ/avBYWhlivM
+	hGDlFCw4gJZjPqnyyWWxzbnXbPeR1Fb4HaeMAUw8+XRjaWGvzvIzb7whz7S7AQnA
+	i/ePZUoox4I+ZaUytryt2THzbQRet/GLEjglDFLc7B6UnGqQwBw6i9u5ZTU6956x
+	1DjdcyXLrzeQ=
+Received: from hg-OptiPlex-7040.hygon.cn (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDnr9uoO2tor4cpBA--.25530S2;
+	Mon, 07 Jul 2025 11:14:49 +0800 (CST)
+From: yangge1116@126.com
+To: ardb@kernel.org
+Cc: jarkko@kernel.org,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	ilias.apalodimas@linaro.org,
+	jgg@ziepe.ca,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	liuzixing@hygon.cn,
+	Ge Yang <yangge1116@126.com>
+Subject: [PATCH V3] efi/tpm: Fix the issue where the CC platforms event log header can't be correctly identified
+Date: Mon,  7 Jul 2025 11:14:47 +0800
+Message-Id: <1751858087-10366-1-git-send-email-yangge1116@126.com>
+X-Mailer: git-send-email 2.7.4
+X-CM-TRANSID:_____wDnr9uoO2tor4cpBA--.25530S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxtryxtrW3CF4DXrW3Xr13Jwb_yoW3JF4DpF
+	48Jr9Yyr45ta1Igw1fAw1UCwsxXw4ktrZrGFyDK34jyrnxWFyIgFWUGFy5GF93trs7J3Z0
+	qa4Utr17Ca4UuaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRoKZXUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOhGDG2hrOMlJZwAAsv
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Restore the len >= 288 condition on using the AVX implementation, which
-was incidentally removed by commit 318c53ae02f2 ("crypto: x86/poly1305 -
-Add block-only interface").  This check took into account the overhead
-in key power computation, kernel-mode "FPU", and tail handling
-associated with the AVX code.  Indeed, restoring this check slightly
-improves performance for len < 256 as measured using poly1305_kunit on
-an "AMD Ryzen AI 9 365" (Zen 5) CPU:
+From: Ge Yang <yangge1116@126.com>
 
-    Length      Before       After
-    ======  ==========  ==========
-         1     30 MB/s     36 MB/s
-        16    516 MB/s    598 MB/s
-        64   1700 MB/s   1882 MB/s
-       127   2265 MB/s   2651 MB/s
-       128   2457 MB/s   2827 MB/s
-       200   2702 MB/s   3238 MB/s
-       256   3841 MB/s   3768 MB/s
-       511   4580 MB/s   4585 MB/s
-       512   5430 MB/s   5398 MB/s
-      1024   7268 MB/s   7305 MB/s
-      3173   8999 MB/s   8948 MB/s
-      4096   9942 MB/s   9921 MB/s
-     16384  10557 MB/s  10545 MB/s
+Since commit d228814b1913 ("efi/libstub: Add get_event_log() support
+for CC platforms") reuses TPM2 support code for the CC platforms, when
+launching a TDX virtual machine with coco measurement enabled, the
+following error log is generated:
 
-While the optimal threshold for this CPU might be slightly lower than
-288 (see the len == 256 case), other CPUs would need to be tested too,
-and these sorts of benchmarks can underestimate the true cost of
-kernel-mode "FPU".  Therefore, for now just restore the 288 threshold.
+[Firmware Bug]: Failed to parse event in TPM Final Events Log
 
-Fixes: 318c53ae02f2 ("crypto: x86/poly1305 - Add block-only interface")
+Call Trace:
+efi_config_parse_tables()
+  efi_tpm_eventlog_init()
+    tpm2_calc_event_log_size()
+      __calc_tpm2_event_size()
+
+The pcr_idx value in the Intel TDX log header is 1, causing the function
+__calc_tpm2_event_size() to fail to recognize the log header, ultimately
+leading to the "Failed to parse event in TPM Final Events Log" error.
+
+According to UEFI Specification 2.10, Section 38.4.1: For TDX, TPM PCR
+0 maps to MRTD, so the log header uses TPM PCR 1 instead. To successfully
+parse the TDX event log header, the check for a pcr_idx value of 0
+must be skipped.
+
+According to Table 6 in Section 10.2.1 of the TCG PC Client
+Specification, the index field does not require the PCR index to be
+fixed at zero. Therefore, skipping the check for a pcr_idx value of
+0 for CC platforms is safe.
+
+Link: https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#intel-trust-domain-extension
+Link: https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClient_PFP_r1p05_v23_pub.pdf
+Fixes: d228814b1913 ("efi/libstub: Add get_event_log() support for CC platforms")
+Signed-off-by: Ge Yang <yangge1116@126.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- lib/crypto/x86/poly1305_glue.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
 
-diff --git a/lib/crypto/x86/poly1305_glue.c b/lib/crypto/x86/poly1305_glue.c
-index 968d84677631..856d48fd422b 100644
---- a/lib/crypto/x86/poly1305_glue.c
-+++ b/lib/crypto/x86/poly1305_glue.c
-@@ -96,11 +96,19 @@ void poly1305_blocks_arch(struct poly1305_block_state *state, const u8 *inp,
+V3:
+- fix build error
+
+V2:
+- limit the fix for CC only suggested by Jarkko and Sathyanarayanan
+
+ drivers/char/tpm/eventlog/tpm2.c   |  4 +++-
+ drivers/firmware/efi/libstub/tpm.c | 13 +++++++++----
+ drivers/firmware/efi/tpm.c         |  4 +++-
+ include/linux/tpm_eventlog.h       | 14 +++++++++++---
+ 4 files changed, 26 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/char/tpm/eventlog/tpm2.c b/drivers/char/tpm/eventlog/tpm2.c
+index 37a0580..30ef47c 100644
+--- a/drivers/char/tpm/eventlog/tpm2.c
++++ b/drivers/char/tpm/eventlog/tpm2.c
+@@ -18,6 +18,7 @@
+ #include <linux/module.h>
+ #include <linux/slab.h>
+ #include <linux/tpm_eventlog.h>
++#include <linux/cc_platform.h>
  
- 	/* SIMD disables preemption, so relax after processing each page. */
- 	BUILD_BUG_ON(SZ_4K < POLY1305_BLOCK_SIZE ||
- 		     SZ_4K % POLY1305_BLOCK_SIZE);
+ #include "../tpm.h"
+ #include "common.h"
+@@ -36,7 +37,8 @@
+ static size_t calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+ 				   struct tcg_pcr_event *event_header)
+ {
+-	return __calc_tpm2_event_size(event, event_header, false);
++	return __calc_tpm2_event_size(event, event_header, false,
++			cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
+ }
  
-+	/*
-+	 * The AVX implementations have significant setup overhead (e.g. key
-+	 * power computation, kernel FPU enabling) which makes them slower for
-+	 * short messages.  Fall back to the scalar implementation for messages
-+	 * shorter than 288 bytes, unless the AVX-specific key setup has already
-+	 * been performed (indicated by ctx->is_base2_26).
-+	 */
- 	if (!static_branch_likely(&poly1305_use_avx) ||
-+	    (len < POLY1305_BLOCK_SIZE * 18 && !ctx->is_base2_26) ||
- 	    unlikely(!irq_fpu_usable())) {
- 		convert_to_base2_64(ctx);
- 		poly1305_blocks_x86_64(ctx, inp, len, padbit);
- 		return;
+ static void *tpm2_bios_measurements_start(struct seq_file *m, loff_t *pos)
+diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
+index a5c6c4f..9728060 100644
+--- a/drivers/firmware/efi/libstub/tpm.c
++++ b/drivers/firmware/efi/libstub/tpm.c
+@@ -50,7 +50,8 @@ void efi_enable_reset_attack_mitigation(void)
+ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_location,
+ 				       efi_physical_addr_t log_last_entry,
+ 				       efi_bool_t truncated,
+-				       struct efi_tcg2_final_events_table *final_events_table)
++				       struct efi_tcg2_final_events_table *final_events_table,
++				       bool is_cc_event)
+ {
+ 	efi_guid_t linux_eventlog_guid = LINUX_EFI_TPM_EVENT_LOG_GUID;
+ 	efi_status_t status;
+@@ -87,7 +88,8 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
+ 			last_entry_size =
+ 				__calc_tpm2_event_size((void *)last_entry_addr,
+ 						    (void *)(long)log_location,
+-						    false);
++						    false,
++						    is_cc_event);
+ 		} else {
+ 			last_entry_size = sizeof(struct tcpa_event) +
+ 			   ((struct tcpa_event *) last_entry_addr)->event_size;
+@@ -123,7 +125,8 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
+ 			header = data + offset + final_events_size;
+ 			event_size = __calc_tpm2_event_size(header,
+ 						   (void *)(long)log_location,
+-						   false);
++						   false,
++						   is_cc_event);
+ 			/* If calc fails this is a malformed log */
+ 			if (!event_size)
+ 				break;
+@@ -157,6 +160,7 @@ void efi_retrieve_eventlog(void)
+ 	efi_tcg2_protocol_t *tpm2 = NULL;
+ 	efi_bool_t truncated;
+ 	efi_status_t status;
++	bool is_cc_event = false;
+ 
+ 	status = efi_bs_call(locate_protocol, &tpm2_guid, NULL, (void **)&tpm2);
+ 	if (status == EFI_SUCCESS) {
+@@ -186,11 +190,12 @@ void efi_retrieve_eventlog(void)
+ 
+ 		final_events_table =
+ 			get_efi_config_table(EFI_CC_FINAL_EVENTS_TABLE_GUID);
++		is_cc_event = true;
  	}
+ 
+ 	if (status != EFI_SUCCESS || !log_location)
+ 		return;
+ 
+ 	efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
+-				   truncated, final_events_table);
++				   truncated, final_events_table, is_cc_event);
+ }
+diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+index cdd4310..ca8535d 100644
+--- a/drivers/firmware/efi/tpm.c
++++ b/drivers/firmware/efi/tpm.c
+@@ -12,6 +12,7 @@
+ #include <linux/init.h>
+ #include <linux/memblock.h>
+ #include <linux/tpm_eventlog.h>
++#include <linux/cc_platform.h>
+ 
+ int efi_tpm_final_log_size;
+ EXPORT_SYMBOL(efi_tpm_final_log_size);
+@@ -23,7 +24,8 @@ static int __init tpm2_calc_event_log_size(void *data, int count, void *size_inf
+ 
+ 	while (count > 0) {
+ 		header = data + size;
+-		event_size = __calc_tpm2_event_size(header, size_info, true);
++		event_size = __calc_tpm2_event_size(header, size_info, true,
++				     cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
+ 		if (event_size == 0)
+ 			return -1;
+ 		size += event_size;
+diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+index 891368e..b3380c9 100644
+--- a/include/linux/tpm_eventlog.h
++++ b/include/linux/tpm_eventlog.h
+@@ -143,6 +143,7 @@ struct tcg_algorithm_info {
+  * @event:        Pointer to the event whose size should be calculated
+  * @event_header: Pointer to the initial event containing the digest lengths
+  * @do_mapping:   Whether or not the event needs to be mapped
++ * @is_cc_event:  Whether or not the event is from a CC platform
+  *
+  * The TPM2 event log format can contain multiple digests corresponding to
+  * separate PCR banks, and also contains a variable length of the data that
+@@ -159,7 +160,8 @@ struct tcg_algorithm_info {
+ 
+ static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+ 					 struct tcg_pcr_event *event_header,
+-					 bool do_mapping)
++					 bool do_mapping,
++					 bool is_cc_event)
+ {
+ 	struct tcg_efi_specid_event_head *efispecid;
+ 	struct tcg_event_field *event_field;
+@@ -201,8 +203,14 @@ static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *ev
+ 	count = event->count;
+ 	event_type = event->event_type;
+ 
+-	/* Verify that it's the log header */
+-	if (event_header->pcr_idx != 0 ||
++	/*
++	 * Verify that it's the log header. According to the TCG PC Client
++	 * Specification, when identifying a log header, the check for a
++	 * pcr_idx value of 0 is not required. For CC platforms, skipping
++	 * this check during log header is necessary; otherwise, the CC
++	 * platform's log header may fail to be recognized.
++	 */
++	if ((!is_cc_event && event_header->pcr_idx != 0) ||
+ 	    event_header->event_type != NO_ACTION ||
+ 	    memcmp(event_header->digest, zero_digest, sizeof(zero_digest))) {
+ 		size = 0;
 -- 
-2.50.0
+2.7.4
 
 
