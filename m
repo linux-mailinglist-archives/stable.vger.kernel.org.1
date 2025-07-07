@@ -1,99 +1,158 @@
-Return-Path: <stable+bounces-160374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB210AFB5C2
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 16:22:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 086FDAFB5A9
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 16:16:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 153F17A682C
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 14:20:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27E447A3764
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 14:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE862D8379;
-	Mon,  7 Jul 2025 14:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C462D8379;
+	Mon,  7 Jul 2025 14:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="yxvvacCK"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=detlev.casanova@collabora.com header.b="McipYCfc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp115.iad3b.emailsrvr.com (smtp115.iad3b.emailsrvr.com [146.20.161.115])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1021E22FC
-	for <stable@vger.kernel.org>; Mon,  7 Jul 2025 14:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=146.20.161.115
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751898119; cv=none; b=TPvp1U9mQ9XxGl5PYihvM3PvzSu2qoZ450jQi+U6kPJCCyLq1Wg8IgdafHQlkj9MDUUSLSbD0St5BGrOycG/G+uUIjFa+TFVJh4IIpbF7/keA0ftdyMpDRSKtw7VAiwfkqUMKcWJRJMuPbjxhlxwJm+dfV1P+dpjr6vZhtccmho=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751898119; c=relaxed/simple;
-	bh=kQUEkoO0e3HKWclSzP5sW8URv+gkDAlxxdhOQOzAwYM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X0IEuYlM0+otRWWfzt6u09RLJtrwcthLRqB8Fc7hsqHboHFr09D//PIRNRtSY4UkBpNIOx8zPzV4uWa4bi8oBRBlBPjKxwZ7VmhPgqhLJZT80/XGiJ5N+Gq3E9M78P8p7H1mgxS1FCshA63FfnshE0UYx84DW3iqVa55LDG4xwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=yxvvacCK; arc=none smtp.client-ip=146.20.161.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-	s=20221208-6x11dpa4; t=1751895996;
-	bh=kQUEkoO0e3HKWclSzP5sW8URv+gkDAlxxdhOQOzAwYM=;
-	h=From:To:Subject:Date:From;
-	b=yxvvacCKNbKEA8pH0T8wtpaQTGv9iSUhUU4QYh3s2FosU4h/Qo6G8AY76dbiCugK/
-	 bhQxPFkLngexJhEp4DbDWrb4edGhutM1uSCpg9sz51KmgzWSUcFcdP7NbbSH/Z1K44
-	 0LOOb4MqknzTImh/FSDLZlu/r2vHa2V/Vl04I3So=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp23.relay.iad3b.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 70136A01EF;
-	Mon,  7 Jul 2025 09:46:35 -0400 (EDT)
-From: Ian Abbott <abbotti@mev.co.uk>
-To: linux-kernel@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] comedi: aio_iiro_16: Fix bit shift out of bounds
-Date: Mon,  7 Jul 2025 14:46:22 +0100
-Message-ID: <20250707134622.75403-1-abbotti@mev.co.uk>
-X-Mailer: git-send-email 2.47.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354372BE04A;
+	Mon,  7 Jul 2025 14:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751897799; cv=pass; b=P+iuMJJHzK8F1t2k/+n30oR0uqC75BOWq/ForWnzs6lVZbFsF8K3wbSp+gsyFS0W/EUt9uKfIakNoaDLZj0UUeM84PJwJDPHFGVnyXkqtCNtWw8j5bXbLOh4vh90fAKTybZh3lR0BYXzc7KxFUYgsqJ7fxQyt5GM+qqg1C7KIcc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751897799; c=relaxed/simple;
+	bh=HcEEtqzs0J9vcZHnd/EnWkrk4jMkCBGtgE6WuEhiDRY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eq5PScUdfft5MBz8FYDzQLUDtCkqLzuf11UnEp3uc52Wf0yCuSdJLM0n+LjBIiQ6aUdj+2kPbnzgYu5rQn3jl2w+fQeiT9bznGxoUHNYVT19ReAc6rucCG1GAza1iuBU0t3wc3qDDDzfJ5oSke65tOwO+f+nQ4NJBuGGkvL0gTE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=detlev.casanova@collabora.com header.b=McipYCfc; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1751897762; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=J2jG+zTdhJ8/5GEz+wjzqoR2q7qvi5wWHpZpDNhgtqx4dt1zSUcnJIadlWbinzGzxAkQkKzY2ASlxmYh6cUlE8MlcBNJRdzJmkstMxELUTAENjZRvpBZd7APRf4syRDSAdd8J+lyORg7JuQzrHEhl18VIJYbFsv8bQ7mb4PuyA8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1751897762; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=dCDf+69VVJbWwI60MQY/tACqoX7jn/Ra0BXrlDPz350=; 
+	b=LLp+sgF86fInUrVtQBoOSSwneLI9klvjyH7k36AqjWrwjpbKH4HC67sNhFUMnYobiuHVc/cWWH2UYmO+9yR+czKoeQlzZBN/LMXQ57TEf0SyEkZZM6teSlJT7hFnMatvc4KGKXIh7xbMx4LVxa4n8Kk4IEvhUDTmLV9x/IACzg8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=detlev.casanova@collabora.com;
+	dmarc=pass header.from=<detlev.casanova@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751897762;
+	s=zohomail; d=collabora.com; i=detlev.casanova@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
+	bh=dCDf+69VVJbWwI60MQY/tACqoX7jn/Ra0BXrlDPz350=;
+	b=McipYCfcY5qa+hK0qeBb+BGseJ0429upHDFTaRQliWM1mfF7/sD2EsWap8yDCus9
+	16y722EeboxrZhX7P1RX1hfgjZP+R/6+Y9OF1h7Qp0mkpcqL+/0w6OIq/OQHA2PcENX
+	X4OI94CQ948+9bEBC2+pkAKx5J4z069oKe0fH6TM=
+Received: by mx.zohomail.com with SMTPS id 1751897759190607.3834386194047;
+	Mon, 7 Jul 2025 07:15:59 -0700 (PDT)
+From: Detlev Casanova <detlev.casanova@collabora.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Russell King <linux@armlinux.org.uk>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH net] net: phy: realtek: Reset after clock enable
+Date: Mon, 07 Jul 2025 10:15:57 -0400
+Message-ID: <12698483.O9o76ZdvQC@earth>
+In-Reply-To: <5xjp2k3b4rggbmjgchg6vlusotoqoqmxi54zzer3ioxv274vtx@22tzjjcs7s3z>
+References:
+ <20250704-phy-realtek-clock-fix-v1-1-63b33d204537@kernel.org>
+ <0310186d-dfc5-406f-8cd1-c393a7c620e8@gmail.com>
+ <5xjp2k3b4rggbmjgchg6vlusotoqoqmxi54zzer3ioxv274vtx@22tzjjcs7s3z>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Classification-ID: 70b25bd4-aed2-4281-9999-a00560739e81-1-1
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+X-ZohoMailClient: External
 
-When checking for a supported IRQ number, the following test is used:
+Hi Sebastian,
 
-	if ((1 << it->options[1]) & 0xdcfc) {
+On Friday, 4 July 2025 16:35:00 EDT Sebastian Reichel wrote:
+> Hi,
+> 
+> On Fri, Jul 04, 2025 at 10:18:29PM +0200, Heiner Kallweit wrote:
+> > On 04.07.2025 19:48, Sebastian Reichel wrote:
+> > > On Radxa ROCK 4D boards we are seeing some issues with PHY detection and
+> > > stability (e.g. link loss, or not capable of transceiving packages)
+> > > after new board revisions switched from a dedicated crystal to providing
+> > > the 25 MHz PHY input clock from the SoC instead.
+> > > 
+> > > This board is using a RTL8211F PHY, which is connected to an always-on
+> > > regulator. Unfortunately the datasheet does not explicitly mention the
+> > > power-up sequence regarding the clock, but it seems to assume that the
+> > > clock is always-on (i.e. dedicated crystal).
+> > > 
+> > > By doing an explicit reset after enabling the clock, the issue on the
+> > > boards could no longer be observed.
+> > 
+> > Is the SoC clock always on after boot? Or may it be disabled e.g.
+> > during system suspend? Then you would have to do the PHY reset also
+> > on resume from suspend.
+> 
+> Upstream kernel does not yet support suspend/resume on Rockchip RK3576
+> (the SoC used by the ROCK 4D) and I missed, that the clock is disabled
+> in the PHY's suspend routine.
+> 
+> Detlev: You added the initial clock support to the driver. If I add
+> the reset in the resume routine, can you do regression testing on
+> the board you originally added the clock handling for?
 
-However, `it->options[i]` is an unchecked `int` value from userspace, so
-the shift amount could be negative or out of bounds.  Fix the test by
-requiring `it->options[1]` to be within bounds before proceeding with
-the original test.  Valid `it->options[1]` values that select the IRQ
-will be in the range [1,15]. The value 0 explicitly disables the use of
-interrupts.
+No regression for me on the pre-release board. I can't really give you a 
+Tested-by as this is a fix for a board I don't have.
 
-Fixes: ad7a370c8be4 ("staging: comedi: aio_iiro_16: add command support for change of state detection")
-Cc: <stable@vger.kernel.org> # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
----
-Patch does not apply cleanly to longterm kernels 5.4.x and 5.10.x.
----
- drivers/comedi/drivers/aio_iiro_16.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Regards,
+Detlev
 
-diff --git a/drivers/comedi/drivers/aio_iiro_16.c b/drivers/comedi/drivers/aio_iiro_16.c
-index b00fab0b89d4..739cc4db52ac 100644
---- a/drivers/comedi/drivers/aio_iiro_16.c
-+++ b/drivers/comedi/drivers/aio_iiro_16.c
-@@ -177,7 +177,8 @@ static int aio_iiro_16_attach(struct comedi_device *dev,
- 	 * Digital input change of state interrupts are optionally supported
- 	 * using IRQ 2-7, 10-12, 14, or 15.
- 	 */
--	if ((1 << it->options[1]) & 0xdcfc) {
-+	if (it->options[1] > 0 && it->options[1] < 16 &&
-+	    (1 << it->options[1]) & 0xdcfc) {
- 		ret = request_irq(it->options[1], aio_iiro_16_cos, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0)
--- 
-2.47.2
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: 7300c9b574cc ("net: phy: realtek: Add optional external PHY
+> > > clock")
+> > > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> > > ---
+> > > 
+> > >  drivers/net/phy/realtek/realtek_main.c | 4 ++++
+> > >  1 file changed, 4 insertions(+)
+> > > 
+> > > diff --git a/drivers/net/phy/realtek/realtek_main.c
+> > > b/drivers/net/phy/realtek/realtek_main.c index
+> > > c3dcb62574303374666b46a454cd4e10de455d24..3a783f0c3b4f2a4f6aa63a16ad309
+> > > e3471b0932a 100644 --- a/drivers/net/phy/realtek/realtek_main.c
+> > > +++ b/drivers/net/phy/realtek/realtek_main.c
+> > > @@ -231,6 +231,10 @@ static int rtl821x_probe(struct phy_device *phydev)
+> > > 
+> > >  		return dev_err_probe(dev, PTR_ERR(priv->clk),
+> > >  		
+> > >  				     "failed to get phy clock\n");
+> > > 
+> > > +	/* enabling the clock might produce glitches, so hard-reset the PHY 
+*/
+> > > +	phy_device_reset(phydev, 1);
+> > > +	phy_device_reset(phydev, 0);
+> > > +
+> > > 
+> > >  	ret = phy_read_paged(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR1);
+> > >  	if (ret < 0)
+> > >  	
+> > >  		return ret;
+> > > 
+> > > ---
+> > > base-commit: 4c06e63b92038fadb566b652ec3ec04e228931e8
+> > > change-id: 20250704-phy-realtek-clock-fix-6cd393e8cb2a
+> > > 
+> > > Best regards,
+
+
+
 
 
