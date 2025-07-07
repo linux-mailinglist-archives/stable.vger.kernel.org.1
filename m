@@ -1,136 +1,111 @@
-Return-Path: <stable+bounces-160388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C92AFB9D6
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 19:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C15AFB9E8
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 19:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 491661AA6E54
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 17:24:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A98AB1898D95
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 17:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20472E8899;
-	Mon,  7 Jul 2025 17:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA2A2957C1;
+	Mon,  7 Jul 2025 17:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="B0le2tee"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qjupirAr"
 X-Original-To: stable@vger.kernel.org
-Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7585B2135CE;
-	Mon,  7 Jul 2025 17:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC788225A4F;
+	Mon,  7 Jul 2025 17:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751909067; cv=none; b=eqh8Kw8IFjBJOaSp+KRyy/FHtOigd+vrMRIvBmlIEDeTyebcyTMdthMgoFhwFiuNKH/S4ijhplpkGpzkN2cvfSYlf+BnDYJHgjhc/jDY6707yqhdJbjurnIFqKdL4SwJ4VJhDlNyfdU0spFDiVsDrgt0jFzKSXNnf3I8upMnpO4=
+	t=1751909387; cv=none; b=fDpGALGInzxfPSInYsE0Tkrrwk5bjAThs1Bn8wxDJBlbeF73iM9BQ58GOQg3OJIEP1zlYaSqShR7ahY/fUdr6D4t0jY1tjSN45xV9WCHGdNgFs0JL0hbkXYxIkxUlA6PWxdWlwuxEn3veMZxGWZtfeIezb4m+YpNwyalas9Dins=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751909067; c=relaxed/simple;
-	bh=LE5lOnV1r6sEYCrRLSbv+JwAGegUabn8yUwH1H/NhFg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i/BmhiHweptdiyEHBR/XD7VuYUt1H0xOu/Sd9fyEildJaiyup3sAd7WZms9bYx95HiBkd5ACF0s+dwaIVySENsMD+NkNFDAR6XX3E/7Jz1o4fvkjXlaqVZL2wHfZ31V83uMV9bWU/7zLxJuTzCMhSN3eiPRL5mO922/PMJei41M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=B0le2tee; arc=none smtp.client-ip=199.89.3.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 004.mia.mailroute.net (Postfix) with ESMTP id 4bbWLw2f9Xzm0ySS;
-	Mon,  7 Jul 2025 17:24:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1751909061; x=1754501062; bh=69KTYEFmtifFl6F+XwfdQSIS
-	iwSApdb5o2AdPYlIDQM=; b=B0le2teessx03Mvotp6H2wWDVBfklJXHzPY2eRtu
-	2Kt6d89ZTST2ezD6vD14RsTtINUAq0oSWMMDI3XtQB4V0iUWUj1KTwSYrHUtpwkD
-	NJj89Hq3l8epZx91bp8ToczxTUi7k4EWGcC5WXjQVM2YxPM56nFSWSQeOjU/A6b6
-	ohV2h3a9MBLu0x9LYFV+cLXhdBjfLXIPpzb+fyEpibUTlWyW+CezVff+2u+nYSM4
-	z2Ec+QP8UoOoGWkRbAOyG0bHv2ay6JjwjR2UpBsXkODD1t7PoaEV4JxdBDCk7Vyy
-	HwKsIDXKBbezJ4wzpP/TwVFkHpBEjQUmEYfTzrPtMb2Thw==
-X-Virus-Scanned: by MailRoute
-Received: from 004.mia.mailroute.net ([127.0.0.1])
- by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id vZUE9ek8VnuB; Mon,  7 Jul 2025 17:24:21 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4bbWLc6BJ0zm0yTF;
-	Mon,  7 Jul 2025 17:24:08 +0000 (UTC)
-Message-ID: <970182d5-6b67-4b02-aa05-0485d0f801d6@acm.org>
-Date: Mon, 7 Jul 2025 10:24:06 -0700
+	s=arc-20240116; t=1751909387; c=relaxed/simple;
+	bh=FCDs/HMbZ2C4wZrpxx8SA6xLTwwkneYiBf2oUoIPIH0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RESlgZrLnue+5WGzee6jvOg/D+IcaICRNIrj9pHlLvR4a7M7FMTxFq4bjvgWj45vZvj3HNcEgAS5qP3abjcAg0zQfar4ITagD03Hn764FZ2gwcRgqCylDdpf3BHNmXoDZrJLGz/AQFiNiq0+SO89fvEN2zMPUaVuNKYmfEpPePQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qjupirAr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B38C4CEE3;
+	Mon,  7 Jul 2025 17:29:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751909387;
+	bh=FCDs/HMbZ2C4wZrpxx8SA6xLTwwkneYiBf2oUoIPIH0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qjupirArFMF+8B8j4j4snd/X3ZveqjsYKGvwzq2TI3U9+HEeHKhi+8n1I637dAKqn
+	 c5N3qaA1u7nb/AcDEQKW3lqBtrAIPlOpNup7yVuwwrXMfAgR0OuN37SWigUPPABHCg
+	 6NHwmGggm/YoFhqZN0xUeP2Fj8ChnseByFO1d6RJnntCV9p3p0soagGzyMtHwc1Pjs
+	 d3Xz+SXV3qgaTCEXTtYbASkaoSBgbaV1vZWSsKZAoZsTTkq3sa5koNY7D64AZIHFVp
+	 eMR4821BHPJYwuyXHO8dXQOXTcSnQGaZbBQqdfNWzdH5mFuv1MPf+xrX4l+ew5WD3t
+	 nCZS/WciPCWuQ==
+Date: Mon, 7 Jul 2025 17:29:44 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: Patch "crypto: powerpc/poly1305 - add depends on BROKEN for now"
+ has been added to the 6.12-stable tree
+Message-ID: <20250707172944.GA3116681@google.com>
+References: <20250707043445.484247-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] scsi: ufs: exynos: fix programming of HCI_UTRL_NEXUS_TYPE
-To: =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>,
- Peter Griffin <peter.griffin@linaro.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Seungwon Jeon <essuuj@gmail.com>,
- Avri Altman <avri.altman@wdc.com>, Kiwoong Kim <kwmad.kim@samsung.com>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
- Will McVicker <willmcvicker@google.com>, kernel-team@android.com,
- linux-scsi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250707043445.484247-1-sashal@kernel.org>
 
-On 7/7/25 10:05 AM, Andr=C3=A9 Draszik wrote:
-> On Google gs101, the number of UTP transfer request slots (nutrs) is
-> 32, and in this case the driver ends up programming the UTRL_NEXUS_TYPE
-> incorrectly as 0.
->=20
-> This is because the left hand side of the shift is 1, which is of type
-> int, i.e. 31 bits wide. Shifting by more than that width results in
-> undefined behaviour.
->=20
-> Fix this by switching to the BIT() macro, which applies correct type
-> casting as required. This ensures the correct value is written to
-> UTRL_NEXUS_TYPE (0xffffffff on gs101), and it also fixes a UBSAN shift
-> warning:
->      UBSAN: shift-out-of-bounds in drivers/ufs/host/ufs-exynos.c:1113:2=
-1
->      shift exponent 32 is too large for 32-bit type 'int'
->=20
-> For consistency, apply the same change to the nutmrs / UTMRL_NEXUS_TYPE
-> write.
->=20
-> Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for E=
-xynos SoCs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org>
-> ---
->   drivers/ufs/host/ufs-exynos.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exyno=
-s.c
-> index 3e545af536e53e06b66c624ed0dc6dc7de13549f..f0adcd9dd553d2e630c75e8=
-c3220e21bc5f7c8d8 100644
-> --- a/drivers/ufs/host/ufs-exynos.c
-> +++ b/drivers/ufs/host/ufs-exynos.c
-> @@ -1110,8 +1110,8 @@ static int exynos_ufs_post_link(struct ufs_hba *h=
-ba)
->   	hci_writel(ufs, val, HCI_TXPRDT_ENTRY_SIZE);
->  =20
->   	hci_writel(ufs, ilog2(DATA_UNIT_SIZE), HCI_RXPRDT_ENTRY_SIZE);
-> -	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
-> -	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
-> +	hci_writel(ufs, BIT(hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
-> +	hci_writel(ufs, BIT(hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
->   	hci_writel(ufs, 0xf, HCI_AXIDMA_RWDATA_BURST_LEN);
->  =20
->   	if (ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB)
+On Mon, Jul 07, 2025 at 12:34:45AM -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>     crypto: powerpc/poly1305 - add depends on BROKEN for now
+> 
+> to the 6.12-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+You forgot to Cc the relevant mailing lists.
+
+> diff --git a/arch/powerpc/lib/crypto/Kconfig b/arch/powerpc/lib/crypto/Kconfig
+> new file mode 100644
+> index 0000000000000..3f9e1bbd9905b
+> --- /dev/null
+> +++ b/arch/powerpc/lib/crypto/Kconfig
+> @@ -0,0 +1,22 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +
+> +config CRYPTO_CHACHA20_P10
+> +	tristate
+> +	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+> +	default CRYPTO_LIB_CHACHA
+> +	select CRYPTO_LIB_CHACHA_GENERIC
+> +	select CRYPTO_ARCH_HAVE_LIB_CHACHA
+> +
+> +config CRYPTO_POLY1305_P10
+> +	tristate
+> +	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+> +	depends on BROKEN # Needs to be fixed to work in softirq context
+> +	default CRYPTO_LIB_POLY1305
+> +	select CRYPTO_ARCH_HAVE_LIB_POLY1305
+> +	select CRYPTO_LIB_POLY1305_GENERIC
+> +
+> +config CRYPTO_SHA256_PPC_SPE
+> +	tristate
+> +	depends on SPE
+> +	default CRYPTO_LIB_SHA256
+> +	select CRYPTO_ARCH_HAVE_LIB_SHA256
+
+Really?
+
+- Eric
 
