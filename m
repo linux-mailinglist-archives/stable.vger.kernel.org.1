@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-160342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4562BAFAD80
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 09:45:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E342CAFADCA
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 09:57:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 959817A6E21
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 07:43:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1F2B188945C
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 07:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1598228A3EC;
-	Mon,  7 Jul 2025 07:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C24279DD7;
+	Mon,  7 Jul 2025 07:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPY7yf/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pWZxct4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD04628A3EF
-	for <stable@vger.kernel.org>; Mon,  7 Jul 2025 07:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED0B1A0BF1;
+	Mon,  7 Jul 2025 07:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751874302; cv=none; b=pz2dh7YssGl7unXiZ6eNEJbjdOA5tjUPlM/sx00wilmMdQ9o8SFQuiMS3wPxPZClQ1ZoDdwWSdkMzDu47wmo34rvpXj4X/Jcn+TUIJxSK1G+l6cIp77n6+cTntJewCbhc8sPRnoCK1oig/ckRnljEvEEJ7YVF9e++/+n1ty/OwM=
+	t=1751875038; cv=none; b=bUbk1FC8IXCTfzq5/xyQI88RtNBJlHLr55ggz+U2dLZlDVg+88syp8KehrFtkDAfUzE1t9inL8Ua8+aWn8bRpSOEVkkfv++2ExrXaykZGR047QFDnL4ZGcwygnH+NMmMEtMLuFFm4wBJht1QV4mUq37CmzR2KwH6fMbwiQiANQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751874302; c=relaxed/simple;
-	bh=U9+c9fK6nQQQzn0TKZzSvNEs5TgJOId0FpxZXrz6fuI=;
+	s=arc-20240116; t=1751875038; c=relaxed/simple;
+	bh=clixo0WX7xiieK6BB2BUIJIDIXXL6gQ+H7kdA9xRXJ8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kcf0CMFTZStsq6ARSqhZK9GugYTz28MGJZ2UTKoSjy1k9L8rfMzJ/m0787n1pO0723s9CzqlwjicIiii4Ft9wbdHT9KZU+vgwQ3EnWwPbw4n6zhwFWn0rTVh/wWb0Hs8RCmdTuFi+O4XyybiMPwEjMwtpBRbNt2U2y0szt2Jwhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPY7yf/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB80C4CEF6;
-	Mon,  7 Jul 2025 07:45:01 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=cVq2+wYTCST6HlJq+Qge5qd/FNZS64nTJhWQ1556KvLek/vU6qMEk2jESOXXHiCRmfjBnqrvDvdXPPz/1B3SZiOzJcE+P6MLwfIQdm+zcbbtpOrUlp3KxqkFJREwh1u3LYWqz02PurN8IqKaOwmlWW1sw8MFVeMdcU09IKt45zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pWZxct4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB6DC4CEE3;
+	Mon,  7 Jul 2025 07:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751874302;
-	bh=U9+c9fK6nQQQzn0TKZzSvNEs5TgJOId0FpxZXrz6fuI=;
+	s=korg; t=1751875037;
+	bh=clixo0WX7xiieK6BB2BUIJIDIXXL6gQ+H7kdA9xRXJ8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TPY7yf/nboCLKye7y85zYnbuAD1oxKvE1PcsCCkOAbEw2WQLQBx7URgyMM7e/MbPo
-	 IrrIW3Fd0S1sV6019n0FDe0ENz4CXZOGZXoeSMZ+GD4fBbtECmwR5p2b7jiWLBlbL/
-	 pKhOkF2y1rM+r0EJ2ESO+H2tr8OD2zwCUbhA+D+k=
-Date: Mon, 7 Jul 2025 09:44:58 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Naik, Avadhut" <avadnaik@amd.com>
-Cc: stable@vger.kernel.org,
-	=?utf-8?Q?=C5=BDilvinas_=C5=BDaltiena?= <zilvinas@natrix.lt>,
-	Borislav Petkov <bp@alien8.de>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	Avadhut Naik <avadhut.naik@amd.com>
-Subject: Re: [PATCH 6.1.y] EDAC/amd64: Fix size calculation for
- Non-Power-of-Two DIMMs
-Message-ID: <2025070750-lapel-bunkmate-672f@gregkh>
-References: <2025063022-frail-ceremony-f06e@gregkh>
- <20250701171032.2470518-1-avadhut.naik@amd.com>
- <2025070258-panic-unaligned-0dee@gregkh>
- <8b274e68-29e4-436a-9bb1-457653edaa2e@amd.com>
- <2025070319-oyster-unpinned-ec29@gregkh>
- <3d2a2121-4a5d-445f-8db0-8f1850a72769@amd.com>
+	b=1pWZxct43kpoiYEX6qfUlU+4ZrJQntDmlyhs7OfKYvtMFuXRh5zesOQpq/9z3jNqm
+	 bxOd1moerKqEQ6zr6T5w1vOC3AUxMM4/IH5nXP075cXSxUFSDKCZvs5sBm6/Y+kLmQ
+	 3cyVHoO6k5NtdS5vfBFe4shpB1ru0qmOcBGtVnQM=
+Date: Mon, 7 Jul 2025 09:57:13 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mario Limonciello <superm1@kernel.org>
+Cc: mario.limonciello@amd.com, andreas.noever@gmail.com,
+	michael.jamet@intel.com, westeri@kernel.org, YehezkelShB@gmail.com,
+	rajat.khandelwal@intel.com, mika.westerberg@linux.intel.com,
+	linux-usb@vger.kernel.org, kim.lindberger@gmail.com, linux@lunaa.ch,
+	Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Alyssa Ross <hi@alyssa.is>, regressions@lists.linux.dev
+Subject: Re: [REGRESSION] thunderbolt: Fix a logic error in wake on connect
+Message-ID: <2025070737-charbroil-imply-7b5e@gregkh>
+References: <20250411151446.4121877-1-superm1@kernel.org>
+ <cavyeum32dd7kxj65argtem6xh2575oq3gcv3svd3ubnvdc6cr@6nv7ieimfc5e>
+ <87v7odo46s.fsf@alyssa.is>
+ <51d5393c-d0e1-4f35-bed0-16c7ce40a8a8@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,77 +62,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3d2a2121-4a5d-445f-8db0-8f1850a72769@amd.com>
+In-Reply-To: <51d5393c-d0e1-4f35-bed0-16c7ce40a8a8@kernel.org>
 
-On Mon, Jul 07, 2025 at 02:00:24AM -0500, Naik, Avadhut wrote:
-> 
-> 
-> On 7/3/2025 00:28, Greg KH wrote:
-> > On Wed, Jul 02, 2025 at 12:19:41PM -0500, Naik, Avadhut wrote:
-> >> Hi,
-> >>
-> >> On 7/2/2025 09:31, Greg KH wrote:
-> >>> On Tue, Jul 01, 2025 at 05:10:32PM +0000, Avadhut Naik wrote:
-> >>>> Each Chip-Select (CS) of a Unified Memory Controller (UMC) on AMD Zen-based
-> >>>> SOCs has an Address Mask and a Secondary Address Mask register associated with
-> >>>> it. The amd64_edac module logs DIMM sizes on a per-UMC per-CS granularity
-> >>>> during init using these two registers.
-> >>>>
-> >>>> Currently, the module primarily considers only the Address Mask register for
-> >>>> computing DIMM sizes. The Secondary Address Mask register is only considered
-> >>>> for odd CS. Additionally, if it has been considered, the Address Mask register
-> >>>> is ignored altogether for that CS. For power-of-two DIMMs i.e. DIMMs whose
-> >>>> total capacity is a power of two (32GB, 64GB, etc), this is not an issue
-> >>>> since only the Address Mask register is used.
-> >>>>
-> >>>> For non-power-of-two DIMMs i.e., DIMMs whose total capacity is not a power of
-> >>>> two (48GB, 96GB, etc), however, the Secondary Address Mask register is used
-> >>>> in conjunction with the Address Mask register. However, since the module only
-> >>>> considers either of the two registers for a CS, the size computed by the
-> >>>> module is incorrect. The Secondary Address Mask register is not considered for
-> >>>> even CS, and the Address Mask register is not considered for odd CS.
-> >>>>
-> >>>> Introduce a new helper function so that both Address Mask and Secondary
-> >>>> Address Mask registers are considered, when valid, for computing DIMM sizes.
-> >>>> Furthermore, also rename some variables for greater clarity.
-> >>>>
-> >>>> Fixes: 81f5090db843 ("EDAC/amd64: Support asymmetric dual-rank DIMMs")
-> >>>> Closes: https://lore.kernel.org/dbec22b6-00f2-498b-b70d-ab6f8a5ec87e@natrix.lt
-> >>>> Reported-by: Žilvinas Žaltiena <zilvinas@natrix.lt>
-> >>>> Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-> >>>> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> >>>> Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-> >>>> Tested-by: Žilvinas Žaltiena <zilvinas@natrix.lt>
-> >>>> Cc: stable@vger.kernel.org
-> >>>> Link: https://lore.kernel.org/20250529205013.403450-1-avadhut.naik@amd.com
-> >>>> (cherry picked from commit a3f3040657417aeadb9622c629d4a0c2693a0f93)
-> >>>> Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-> >>>
-> >>> This was not a clean cherry-pick at all.  Please document what you did
-> >>> differently from the original commit please.
-> >>>
-> >>> thanks,
-> >>>
-> >>> greg k-h
-> >>
-> >> Yes, the cherry-pick was not clean, but the core logic of changes between
-> >> the original commit and the cherry-picked commit remains the same.
-> >>
-> >> The amd64_edac module has been reworked quite a lot in the last year or
-> >> two. Support has also been introduced for new SOC families and models.
-> >> This rework and support, predominantly undertaken through the below
-> >> commits, is missing in 6.1 kernel.
-> >>
-> >> 9c42edd571aa EDAC/amd64: Add support for AMD heterogeneous Family 19h Model 30h-3Fh
-> >> ed623d55eef4 EDAC/amd64: Merge struct amd64_family_type into struct amd64_pvt
-> >> a2e59ab8e933 EDAC/amd64: Drop dbam_to_cs() for Family 17h and later
+On Sun, Jul 06, 2025 at 10:46:53AM -0400, Mario Limonciello wrote:
+> On 6/30/25 07:32, Alyssa Ross wrote:
+> > Alyssa Ross <hi@alyssa.is> writes:
 > > 
-> > Why not take these as prerequisite changes?  Taking changes that are
-> > radically different from what is upstream is almost always wrong, it
-> > makes future backports impossible, and usually is buggy.
+> > > On Fri, Apr 11, 2025 at 10:14:44AM -0500, Mario Limonciello wrote:
+> > > > From: Mario Limonciello <mario.limonciello@amd.com>
+> > > > 
+> > > > commit a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect
+> > > > on USB4 ports") introduced a sysfs file to control wake up policy
+> > > > for a given USB4 port that defaulted to disabled.
+> > > > 
+> > > > However when testing commit 4bfeea6ec1c02 ("thunderbolt: Use wake
+> > > > on connect and disconnect over suspend") I found that it was working
+> > > > even without making changes to the power/wakeup file (which defaults
+> > > > to disabled). This is because of a logic error doing a bitwise or
+> > > > of the wake-on-connect flag with device_may_wakeup() which should
+> > > > have been a logical AND.
+> > > > 
+> > > > Adjust the logic so that policy is only applied when wakeup is
+> > > > actually enabled.
+> > > > 
+> > > > Fixes: a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect on USB4 ports")
+> > > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> > > 
+> > > Hi! There have been a couple of reports of a Thunderbolt regression in
+> > > recent stable kernels, and one reporter has now bisected it to this
+> > > change:
+> > > 
+> > >   • https://bugzilla.kernel.org/show_bug.cgi?id=220284
+> > >   • https://github.com/NixOS/nixpkgs/issues/420730
+> > > 
+> > > Both reporters are CCed, and say it starts working after the module is
+> > > reloaded.
+> > > 
+> > > Link: https://lore.kernel.org/r/bug-220284-208809@https.bugzilla.kernel.org%2F/
+> > > (for regzbot)
 > > 
-> Just to ensure that I have understood correctly, are you suggesting
-> that we backport the above three commits to 6.1 too?
+> > Apparently[1] fixed by the first linked patch below, which is currently in
+> > the Thunderbolt tree waiting to be pulled into the USB tree.
+> > 
+> > #regzbot monitor: https://lore.kernel.org/linux-usb/20250619213840.2388646-1-superm1@kernel.org/
+> > #regzbot monitor: https://lore.kernel.org/linux-usb/20250626154009.GK2824380@black.fi.intel.com/
+> > 
+> > [1]: https://github.com/NixOS/nixpkgs/issues/420730#issuecomment-3018563631
+> 
+> Hey Greg,
+> 
+> Can you pick up the pull request from Mika from a week and a half ago with
+> this fix for the next 6.16-rc?
+> 
+> https://lore.kernel.org/linux-usb/20250626154009.GK2824380@black.fi.intel.com/
 
-Yes, why not?
+Yes, I was waiting for this last round to go to Linus as the pull
+request was made against a newer version of Linus's tree than I
+currently had in my "for linus" branch.  I'll go get to that later
+today.
+
+thanks,
+
+greg k-h
 
