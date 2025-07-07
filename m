@@ -1,53 +1,61 @@
-Return-Path: <stable+bounces-160350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3F6AFAF16
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 11:01:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70228AFAF2D
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 11:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44F0C17CE20
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 09:01:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 852133BFA18
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 09:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81E828A40B;
-	Mon,  7 Jul 2025 09:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tb+NA/Cg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6CE28B4E0;
+	Mon,  7 Jul 2025 09:03:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9F228541F;
-	Mon,  7 Jul 2025 09:01:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA470944F;
+	Mon,  7 Jul 2025 09:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751878880; cv=none; b=qO6etwVIqMQZCRj7bOx+mZTO8kzLY2U+BGwkoSAHy+ZZ3SWyvn1474wjZptZ9lXYOYAKrNl2FyQYnU5hXEod16I6pLNqxi6MyCEnu24qIagtx7cmf070CpnNbVb8rRVfUcwFg2Iwp4P4qHfHPh2UrnqUmVZu2T5gXnQa5ipxFuc=
+	t=1751878993; cv=none; b=XIvn5IbBPJEpnVLg1Hp8s5SSI9QKfGyrDp6qi8k3X6C8TnGfkZGoo742emcXh8MxYD2nPYyrbN0XD0mInIAnp9ydDh5pSIIU/dmEBsqlvzvRwUn6FPplCgy9LDTd+Mi9y9l0aIaa21oJURSOQYS8gnFVGxzbS2U8Lb3QYtBjNeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751878880; c=relaxed/simple;
-	bh=owQYen0A3np2AWFZAuOj7mXVLYDF5MLfrCckdRW4AhQ=;
+	s=arc-20240116; t=1751878993; c=relaxed/simple;
+	bh=JoUNvgk0Indgh9IQjsCN1n80NHUme0ZNNFbwUw6oGJU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I56PY5/kmCjlCzlIZnMBIXTvCiH+shZnup840Pq5zCTnqMVjK9XL5UoDkc7+CWAM8Tmw4OwtWTHzMjT+bwzyC3sVuOXNVzzoSFkBcp/GAxhykPkkKJIdz6OMNFGUQJkqY5+P82VE4Ott3WXh7V02Vwg/Q2mSkJx0rp/7nPL+3OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tb+NA/Cg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A49C4CEE3;
-	Mon,  7 Jul 2025 09:01:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751878878;
-	bh=owQYen0A3np2AWFZAuOj7mXVLYDF5MLfrCckdRW4AhQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Tb+NA/CgtxMr9uv74ndmI5dKqRBCbAMAJ8mwusqjA27rfKwBFnY52//0VC2Mbh4bz
-	 QAfsvfP7ChRTRKqtaxXNbi7QoqJ7A/Ma1iQH8kQk73X+2QLw6sapCBQF68ZGme+sHf
-	 osAfzDZVqEjh74uIW4D0nwK43fGzvjkmRmGilO5E=
-Date: Mon, 7 Jul 2025 11:01:15 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Cc: John Youn <John.Youn@synopsys.com>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v 6] usb: dwc2: gadget: Fix enter to hibernation for
- UTMI+ PHY
-Message-ID: <2025070736-concierge-tumble-c7d9@gregkh>
-References: <692110d3c3d9bb2a91cedf24528a7710adc55452.1751458314.git.Minas.Harutyunyan@synopsys.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=AMNIjNzCbuRAFItQSsAExaTEv0tfJe0Sp8QtPOrbtdLtXsKttSlvTzhaZvCSLB1aUZ6/etpDd5jeqPDREAd8Trsx8W8/Yt2oNIo6TrkFZTQPsV0tJKpOm4dFtak2jAnUTZgmDoWfyUUisPJylO2xnFAduTNFwrXv1FpLOC0q5+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6EC8A168F;
+	Mon,  7 Jul 2025 02:02:58 -0700 (PDT)
+Received: from localhost (e132581.arm.com [10.1.196.87])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A8E2B3F694;
+	Mon,  7 Jul 2025 02:03:10 -0700 (PDT)
+Date: Mon, 7 Jul 2025 10:03:08 +0100
+From: Leo Yan <leo.yan@arm.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org,
+	James Clark <james.clark@linaro.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 6.6 000/139] 6.6.96-rc1 review
+Message-ID: <20250707090308.GA2182465@e132581.arm.com>
+References: <20250703143941.182414597@linuxfoundation.org>
+ <CA+G9fYu=JdHJdZo0aO+kK-TBNMv3dy-cLyO7KF4RMB20KyDuAg@mail.gmail.com>
+ <CA+G9fYv4UUmNpoJ77q7F5K20XGiNcO+ZfOzYNLQ=h7S3uTEc8g@mail.gmail.com>
+ <2025070605-stuffy-pointy-fd64@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,62 +64,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <692110d3c3d9bb2a91cedf24528a7710adc55452.1751458314.git.Minas.Harutyunyan@synopsys.com>
+In-Reply-To: <2025070605-stuffy-pointy-fd64@gregkh>
 
-On Wed, Jul 02, 2025 at 12:21:22PM +0000, Minas Harutyunyan wrote:
-> For UTMI+ PHY, according to programming guide, first should be set
-> PMUACTV bit then STOPPCLK bit. Otherwise, when the device issues
-> Remote Wakeup, then host notices disconnect instead.
-> For ULPI PHY, above mentioned bits must be set in reversed order:
-> STOPPCLK then PMUACTV.
+On Sun, Jul 06, 2025 at 08:55:32AM +0200, Greg Kroah-Hartman wrote:
+
+[...]
+
+> > Bisection results pointing to,
+> > 
+> >     coresight: Only check bottom two claim bits
+> >      [ Upstream commit a4e65842e1142aa18ef36113fbd81d614eaefe5a ]
+> > 
+> > The following patch needs to be back ported ?
+> >    b36e78b216e6 ("ARM: 9354/1: ptrace: Use bitfield helpers")
 > 
-> Fixes: 4483ef3c1685 ("usb: dwc2: Add hibernation updates for ULPI PHY")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-> ---
-> Changes in v6:
->  - Rabased on usb-next branch over commit 7481a97c5f49
-> Changes in v5:
->  - Rebased on top of Linux 6.16-rc2
-> Changes in v4:
->  - Rebased on top of Linux 6.15-rc6
-> Changes in v3:
->  - Rebased on top of Linux 6.15-rc4
-> Changes in v2:
->  - Added Cc: stable@vger.kernel.org
-
-This constant rebasing is just not working, as this _STILL_ does not
-apply to either of my branches.  Are you sure you are doing this
-properly?  No other changes in your tree?
-
-Ah, I see the issue:
-
+> Thanks, that makes sense, and is easier than me fixing this up by hand
+> like I had tried to in one of the branches :)
 > 
->  drivers/usb/dwc2/gadget.c | 38 ++++++++++++++++++++++++++------------
->  1 file changed, 26 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
-> index d5b622f78cf3..0637bfbc054e 100644
-> --- a/drivers/usb/dwc2/gadget.c
-> +++ b/drivers/usb/dwc2/gadget.c
-> @@ -5389,20 +5389,34 @@ int dwc2_gadget_enter_hibernation(struct dwc2_hsotg *hsotg)
->         if (gusbcfg & GUSBCFG_ULPI_UTMI_SEL) {
->                 /* ULPI interface */
->                 gpwrdn |= GPWRDN_ULPI_LATCH_EN_DURING_HIB_ENTRY;
-> -       }
-> -       dwc2_writel(hsotg, gpwrdn, GPWRDN);
-> -       udelay(10);
-> +               dwc2_writel(hsotg, gpwrdn, GPWRDN);
-> +               udelay(10);
+> Now queued up.
 
-Your email client ate all the tabs and spit out spaces, making this
-impossible to apply to any branch anywhere.  Please fix your email
-client to be able to send patches out properly.
+I built for the Arm target in my local environment and confirmed that
+the build failure has been fixed on the linux-6.6.y branch.
 
-Try sending one to yourself, and seeing if that can apply properly
-afterward.  If so, then try sending it out to the world again.
+Thanks for reporting and resolving the issue.
 
-thanks,
-
-greg k-h
+Leo
 
