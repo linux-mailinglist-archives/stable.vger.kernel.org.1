@@ -1,101 +1,128 @@
-Return-Path: <stable+bounces-160363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D47AFB267
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 13:38:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC96AFB31B
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 14:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9881F3B6A66
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 11:37:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E13F03AC440
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 12:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03444299A85;
-	Mon,  7 Jul 2025 11:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1CE275AF8;
+	Mon,  7 Jul 2025 12:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oEYN/3TO"
+	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="k2MUdrXk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp114.ord1d.emailsrvr.com (smtp114.ord1d.emailsrvr.com [184.106.54.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B005619D880;
-	Mon,  7 Jul 2025 11:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D98202965
+	for <stable@vger.kernel.org>; Mon,  7 Jul 2025 12:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=184.106.54.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751888298; cv=none; b=FOtXENjgwoe/Zl7dy4th34dX5ZLB+2F5aOoeZ8khJ76JDNuhL0fm989Y/0NRix/2dJvleFxFunic+65CvO3Ljx4N0HIE2JulVyVHh3mFFAU5vt4TaWfV6C9lEa+KMnUIfrQKuxiKAvcHes+g7fisAkjlKhDxicY+0yN6sRxYxyg=
+	t=1751890905; cv=none; b=VOqEGH5fvbkI9xevbF3y5/xYlNPg704c0BXcJkf+HRPiz5e3+OhhPvvFz4tvWTd8m7PSYHP1N0SQFNQwFGRJ0OnbFh+L8gEse7t9mI0FrrjIqeg8vvkCPbSH54AfjoZQahJP+p65ssgsZlg6cLyp0RG6NIRA1QrXUUFlX0BsFBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751888298; c=relaxed/simple;
-	bh=bDGBshhWVEbKiUmgUMYBXO4823TBNdoRisTLs43p5UM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gFvPpHJ3yTS/PZ3Q1hbV3zJ7XWj03Pc3W4DTwK6MPDoABgXt4VBocdDwKlUcJ0PMzWqvRGsC1/a1kU/RlTzNyGhE2bRZm2ClIf5sSiXHHPhX74j7SKbnuWHSBFAKLYbCCkRunvk67ppT7+BwlEkLtBHN9/M+sN/lrVaj/2Yl/JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oEYN/3TO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D99C4CEE3;
-	Mon,  7 Jul 2025 11:38:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751888297;
-	bh=bDGBshhWVEbKiUmgUMYBXO4823TBNdoRisTLs43p5UM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oEYN/3TO4BgYGcUczM5YqLT7kVqpLIHfNLwcqYbjSRp2muBNf7+GqaTilzZy6Q6s3
-	 A6zl2hZMcakBRi47FIXAMokeOzrAdf8Uoi7G+WeiXGEsvNzK1588XXsx9cxAma73HC
-	 5dySzDErMvwv36VlsOwm4Zt8LjwFF2MaPj7Za8AN5Jz4+OlgYKd2XRHfCneRsdjRma
-	 MqjuAxfcStkQfuX/zAF7PO1NZ38VayNmO+kEyFC8W3f4nzrZ4HBmpDsOnW4DPGjjyI
-	 AM5xgXNsTWvg86qEX1J/7KhqP5opb0qmqOpEkfNAXQnpuiNDl0gMM3vIFOkewFOHID
-	 TFulluCACs1MA==
-Message-ID: <6912ca9f-c633-4a37-b917-b1522f406f07@kernel.org>
-Date: Mon, 7 Jul 2025 13:38:12 +0200
+	s=arc-20240116; t=1751890905; c=relaxed/simple;
+	bh=3iScXbxYofXSm0B2ulbFEyNLXMiq9RavLL9F//9h/bM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H7I2dLtxwwucEMwAsNVZIUjyyWjf49IknruqMC0GQ6sz+oOaWEeYtBCQd58+G0xkJpBnBlYoAzvci42NJsukSwPdAUWs7LH11M5JLAHTUkFRbHrmlxHFEMhbmdr7u93pr1p66ItmI8CYsm4S+UJe6ftanPYTHNUOfUQtWN5DdJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=k2MUdrXk; arc=none smtp.client-ip=184.106.54.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20221208-6x11dpa4; t=1751890570;
+	bh=3iScXbxYofXSm0B2ulbFEyNLXMiq9RavLL9F//9h/bM=;
+	h=From:To:Subject:Date:From;
+	b=k2MUdrXkaTgLxx0mqUI3GP5k+/3rVhjUPNi8xpchxqYqGtVLeBqAog2d0kqcdWcBm
+	 YnJaBdvv/LGpduub8W8gYKiaU8+o4Yk9T84hbj2/VEdCdMYcQBYb0qq8ww5jqU4O13
+	 aMkI8GlZm4ARHb73X3CA6cjw2Ixui1nHE0juGBRA=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp7.relay.ord1d.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id C54DF201B3;
+	Mon,  7 Jul 2025 08:16:09 -0400 (EDT)
+From: Ian Abbott <abbotti@mev.co.uk>
+To: linux-kernel@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] comedi: Fix some signed shift left operations
+Date: Mon,  7 Jul 2025 13:15:55 +0100
+Message-ID: <20250707121555.65424-1-abbotti@mev.co.uk>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] platform/x86: alienware-wmi-wmax: Fix `dmi_system_id`
- array
-To: Kurt Borja <kuurtb@gmail.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Armin Wolf <W_Armin@gmx.de>, Mario Limonciello <mario.limonciello@amd.com>
-Cc: platform-driver-x86@vger.kernel.org, Dell.Client.Kernel@dell.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250707-dmi-fix-v1-1-6730835d824d@gmail.com>
-Content-Language: en-US, nl
-From: Hans de Goede <hansg@kernel.org>
-In-Reply-To: <20250707-dmi-fix-v1-1-6730835d824d@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Classification-ID: cf8e6bf8-4b84-4e0a-a6ee-31907b6702d4-1-1
 
-Hi,
+Correct some left shifts of the signed integer constant 1 by some
+unsigned number less than 32.  Change the constant to 1U to avoid
+shifting a 1 into the sign bit.
 
-On 7-Jul-25 08:24, Kurt Borja wrote:
-> Add missing empty member to `awcc_dmi_table`.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 6d7f1b1a5db6 ("platform/x86: alienware-wmi: Split DMI table")
-> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-> ---
->  drivers/platform/x86/dell/alienware-wmi-wmax.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/platform/x86/dell/alienware-wmi-wmax.c b/drivers/platform/x86/dell/alienware-wmi-wmax.c
-> index 20ec122a9fe0571a1ecd2ccf630615564ab30481..1c21be25dba54699b9ba21f53e3845df166396e1 100644
-> --- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
-> +++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
-> @@ -233,6 +233,7 @@ static const struct dmi_system_id awcc_dmi_table[] __initconst = {
->  		},
->  		.driver_data = &g_series_quirks,
->  	},
-> +	{}
->  };
->  
->  enum AWCC_GET_FAN_SENSORS_OPERATIONS {
-> 
+The corrected functions are comedi_dio_insn_config(),
+comedi_dio_update_state(), and __comedi_device_postconfig().
 
-Thank you for catching this, patch looks good to me:
+Fixes: e523c6c86232 ("staging: comedi: drivers: introduce comedi_dio_insn_config()")
+Fixes: 05e60b13a36b ("staging: comedi: drivers: introduce comedi_dio_update_state()")
+Fixes: 09567cb4373e ("staging: comedi: initialize subdevice s->io_bits in postconfig")
+Cc: <stable@vger.kernel.org> # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+---
+ drivers/comedi/drivers.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-
-Regards,
-
-Hans
+diff --git a/drivers/comedi/drivers.c b/drivers/comedi/drivers.c
+index 376130bfba8a..922fe20738ef 100644
+--- a/drivers/comedi/drivers.c
++++ b/drivers/comedi/drivers.c
+@@ -339,10 +339,10 @@ int comedi_dio_insn_config(struct comedi_device *dev,
+ 			   unsigned int *data,
+ 			   unsigned int mask)
+ {
+-	unsigned int chan_mask = 1 << CR_CHAN(insn->chanspec);
++	unsigned int chan = CR_CHAN(insn->chanspec);
+ 
+-	if (!mask)
+-		mask = chan_mask;
++	if (!mask && chan < 32)
++		mask = 1U << chan;
+ 
+ 	switch (data[0]) {
+ 	case INSN_CONFIG_DIO_INPUT:
+@@ -382,7 +382,7 @@ EXPORT_SYMBOL_GPL(comedi_dio_insn_config);
+ unsigned int comedi_dio_update_state(struct comedi_subdevice *s,
+ 				     unsigned int *data)
+ {
+-	unsigned int chanmask = (s->n_chan < 32) ? ((1 << s->n_chan) - 1)
++	unsigned int chanmask = (s->n_chan < 32) ? ((1U << s->n_chan) - 1)
+ 						 : 0xffffffff;
+ 	unsigned int mask = data[0] & chanmask;
+ 	unsigned int bits = data[1];
+@@ -625,8 +625,8 @@ static int insn_rw_emulate_bits(struct comedi_device *dev,
+ 	if (insn->insn == INSN_WRITE) {
+ 		if (!(s->subdev_flags & SDF_WRITABLE))
+ 			return -EINVAL;
+-		_data[0] = 1 << (chan - base_chan);		    /* mask */
+-		_data[1] = data[0] ? (1 << (chan - base_chan)) : 0; /* bits */
++		_data[0] = 1U << (chan - base_chan);		     /* mask */
++		_data[1] = data[0] ? (1U << (chan - base_chan)) : 0; /* bits */
+ 	}
+ 
+ 	ret = s->insn_bits(dev, s, &_insn, _data);
+@@ -709,7 +709,7 @@ static int __comedi_device_postconfig(struct comedi_device *dev)
+ 
+ 		if (s->type == COMEDI_SUBD_DO) {
+ 			if (s->n_chan < 32)
+-				s->io_bits = (1 << s->n_chan) - 1;
++				s->io_bits = (1U << s->n_chan) - 1;
+ 			else
+ 				s->io_bits = 0xffffffff;
+ 		}
+-- 
+2.47.2
 
 
