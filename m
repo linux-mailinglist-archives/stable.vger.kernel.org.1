@@ -1,100 +1,154 @@
-Return-Path: <stable+bounces-160406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3B9AFBCF4
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 22:55:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA079AFBD00
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 23:00:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9F37189B0FC
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 20:55:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F37C4427F9A
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 21:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116E626E71E;
-	Mon,  7 Jul 2025 20:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E4A27F4E7;
+	Mon,  7 Jul 2025 21:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UsXjEJ1m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bCS4dlVm"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AD126E16E
-	for <stable@vger.kernel.org>; Mon,  7 Jul 2025 20:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3886E27E04F;
+	Mon,  7 Jul 2025 21:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751921731; cv=none; b=RdZ64ngqHY29ilmd9Gts5hI57GnfHh5nN6MIVlZRILgFdbEx1xc8+xW0iAIRz/0tBh8YZ3G8u6XM/4T9q6HN9lfMSi7tBdACQ+Rom4xlm262mISRYGFXY3uMjH+G9ChpazmASib/NHqvi3pej9Skb8zC0eXgZADiJtzcqSvch64=
+	t=1751922040; cv=none; b=T4LrJQJuLF75DF984Z7gFGxkLeeOdxpnqPYG5gW9LR+aLvnAjOpscSJmJj9nqAhUDwk58PQZwrQLk9aEbrdhmew5s49aDAtkMvvbKZbKa8Q4KeFJ5UIqiiPhqEXpvD8f21XpH7xnFmUkvBrMuppmSOeanh421wEXa7vACLmUrTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751921731; c=relaxed/simple;
-	bh=jvLODnZxAn6R1SNlBBAUCcDEkMmPv1mB/aIBchHxrso=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=IWmk1glOO/4kZhc4Fxv0cERsqgihHDdQDQmRCfur/HjFIj8U6vSkbMQ+dd8iHLUBcQhPdH43guLoH7g8zvjNTi6Hjpnm/Yvc5UVozIzfgXqSTcnIETOJx/ppgpLy8YZou7O+8DFteS67DsySg8iafvSAwOLf4Xtfk9mygFj0Rs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UsXjEJ1m; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751921729; x=1783457729;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=jvLODnZxAn6R1SNlBBAUCcDEkMmPv1mB/aIBchHxrso=;
-  b=UsXjEJ1m/k1en+KNE7lpwrcKBsJTC7lyom5rxB1Y6yJzcQ0yJZ0sV4Tq
-   6ymbuhQjYarlSmA1cDWljD5Zts4j/wV/l5oUPdcVxeNcEGavyR702JaCu
-   hlsd/NzSGA/9UrYGPCaqrKydvYPvy5anXDrfRp88GyS+n8NMNohLmmgHt
-   EXVGq+akLtfUJwmcooxj91qdtB/vhFu0c773cBC7ww8+0jNCbDds5RzhF
-   SLVYU+LPQ9dpUXhvcZyUSQtA1acJAOY0NrmnrbPvHc4SAv3CxtjOP/7v0
-   iT+QNIoYX9WVjM7keJHi0HbWTmumP0WD902brZt4e72gyC63ROw6QZACL
-   A==;
-X-CSE-ConnectionGUID: eyO9yPB9QQ+xOaXiXq+uAw==
-X-CSE-MsgGUID: MP7S/j/iQGSg4VjZv7nR2Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="64399292"
-X-IronPort-AV: E=Sophos;i="6.16,295,1744095600"; 
-   d="scan'208";a="64399292"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 13:55:29 -0700
-X-CSE-ConnectionGUID: 7BhoYMBKQnyvU5JkCwfOIQ==
-X-CSE-MsgGUID: Gs/NRC/ETfy5LOzVySz5xQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,295,1744095600"; 
-   d="scan'208";a="186265823"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 07 Jul 2025 13:55:27 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uYss1-0000kB-1F;
-	Mon, 07 Jul 2025 20:55:25 +0000
-Date: Tue, 8 Jul 2025 04:54:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Tim Harvey <tharvey@gateworks.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 3/7] arm64: dts: imx8mm-venice-gw7901: Increase HS400
- USDHC clock speed
-Message-ID: <aGw0BwGfTEDO8kOG@319465d791e2>
+	s=arc-20240116; t=1751922040; c=relaxed/simple;
+	bh=ly/B021ynYzPCz1B63mrRbLIIKOdCMkQUxYcm0H81YE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Bu5v1HR72U8avCRHuHd7gudPkT9nXLRJQdJ+TUHcXxDEFQKpXPxsxdpnzuddeAb96ip8SCq21+touL4jXfMtZ0uqLqUPIWqsMTeYFDY94+RLZXtSl1bhsuctbKG3okCQBdTeWnEnsZEnmQ2XejUAXEchQPQNrdX7OtnOGHQHXQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bCS4dlVm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01C2C4CEE3;
+	Mon,  7 Jul 2025 21:00:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751922039;
+	bh=ly/B021ynYzPCz1B63mrRbLIIKOdCMkQUxYcm0H81YE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bCS4dlVmb6G0eHO6gwM5KgLApXv+p1pvwi3tE8cLIzARq+1MaJZueScgTDRlYcKox
+	 zyKGQU6239B8KB7wr9wlfoAYbfzN8jxl7L5jHmwjk0XLIK7zko5+LLcPe0TG6NerME
+	 Bd+xw0KWwETD68YqKtNwnGITXWdoIX1y5ga7EZzVIZyUXi7MjodUcsAta15Kyafu6l
+	 luTscLqYgBJ3WwZAJPwvzfptMsgc4yQAen2oFlqn94BJVGX5DZKnxdJ68vb/YRJTly
+	 MqEzv/wggfp3NTFcU8QyTY3KY6rj8Vr4n6TLdaE1WHORP93dyDAZD7sxiUhzTth/HT
+	 tPA7H9IOGYPjQ==
+Message-ID: <54f9d2ee-5c04-4756-8695-54a9176ddac6@kernel.org>
+Date: Mon, 7 Jul 2025 23:00:36 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250707201702.2930066-3-tharvey@gateworks.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/5] media: uvcvideo: Introduce
+ V4L2_META_FMT_UVC_MSXU_1_5 + other meta fixes
+To: Ricardo Ribalda <ribalda@chromium.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, stable@vger.kernel.org
+References: <20250707-uvc-meta-v8-0-ed17f8b1218b@chromium.org>
+Content-Language: en-US, nl
+From: Hans de Goede <hansg@kernel.org>
+In-Reply-To: <20250707-uvc-meta-v8-0-ed17f8b1218b@chromium.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+Hi Ricardo,
 
-Thanks for your patch.
+On 7-Jul-25 8:34 PM, Ricardo Ribalda wrote:
+> This series introduces a new metadata format for UVC cameras and adds a
+> couple of improvements to the UVC metadata handling.
+> 
+> The new metadata format can be enabled in runtime with quirks.
+> 
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+> Changes in v8:
+> - Dynamically fill dev->meta_formats instead of be const.
+> - Link to v7: https://lore.kernel.org/r/20250617-uvc-meta-v7-0-9c50623e2286@chromium.org
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Thank you for the new version. I've merged this series
+and pushed this to uvc/for-next now.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Regards,
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 3/7] arm64: dts: imx8mm-venice-gw7901: Increase HS400 USDHC clock speed
-Link: https://lore.kernel.org/stable/20250707201702.2930066-3-tharvey%40gateworks.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Hans
 
 
+
+
+> Changes in v7:
+> - Add patch: Introduce dev->meta_formats
+> - Link to v6: https://lore.kernel.org/r/20250604-uvc-meta-v6-0-7141d48c322c@chromium.org
+> 
+> Changes in v6 (Thanks Laurent):
+> - Fix typo in metafmt-uvc.rst
+> - Improve metafmt-uvc-msxu-1-5.rst
+> - uvc_meta_v4l2_try_format() block MSXU format unless the quirk is
+>   active
+> - Refactor uvc_enable_msxu
+> - Document uvc_meta_detect_msxu
+> - Rebase series
+> - Add R-b
+> - Link to v5: https://lore.kernel.org/r/20250404-uvc-meta-v5-0-f79974fc2d20@chromium.org
+> 
+> Changes in v5:
+> - Fix codestyle and kerneldoc warnings reported by media-ci
+> - Link to v4: https://lore.kernel.org/r/20250403-uvc-meta-v4-0-877aa6475975@chromium.org
+> 
+> Changes in v4:
+> - Rename format to V4L2_META_FMT_UVC_MSXU_1_5 (Thanks Mauro)
+> - Flag the new format with a quirk.
+> - Autodetect MSXU devices.
+> - Link to v3: https://lore.kernel.org/linux-media/20250313-uvc-metadata-v3-0-c467af869c60@chromium.org/
+> 
+> Changes in v3:
+> - Fix doc syntax errors.
+> - Link to v2: https://lore.kernel.org/r/20250306-uvc-metadata-v2-0-7e939857cad5@chromium.org
+> 
+> Changes in v2:
+> - Add metadata invalid fix
+> - Move doc note to a separate patch
+> - Introduce V4L2_META_FMT_UVC_CUSTOM (thanks HdG!).
+> - Link to v1: https://lore.kernel.org/r/20250226-uvc-metadata-v1-1-6cd6fe5ec2cb@chromium.org
+> 
+> ---
+> Ricardo Ribalda (5):
+>       media: uvcvideo: Do not mark valid metadata as invalid
+>       media: Documentation: Add note about UVCH length field
+>       media: uvcvideo: Introduce dev->meta_formats
+>       media: uvcvideo: Introduce V4L2_META_FMT_UVC_MSXU_1_5
+>       media: uvcvideo: Auto-set UVC_QUIRK_MSXU_META
+> 
+>  .../userspace-api/media/v4l/meta-formats.rst       |   1 +
+>  .../media/v4l/metafmt-uvc-msxu-1-5.rst             |  23 +++++
+>  .../userspace-api/media/v4l/metafmt-uvc.rst        |   4 +-
+>  MAINTAINERS                                        |   1 +
+>  drivers/media/usb/uvc/uvc_driver.c                 |   7 ++
+>  drivers/media/usb/uvc/uvc_metadata.c               | 115 +++++++++++++++++++--
+>  drivers/media/usb/uvc/uvc_video.c                  |  12 +--
+>  drivers/media/usb/uvc/uvcvideo.h                   |   7 ++
+>  drivers/media/v4l2-core/v4l2-ioctl.c               |   1 +
+>  include/linux/usb/uvc.h                            |   3 +
+>  include/uapi/linux/videodev2.h                     |   1 +
+>  11 files changed, 161 insertions(+), 14 deletions(-)
+> ---
+> base-commit: a8598c7de1bcd94461ca54c972efa9b4ea501fb9
+> change-id: 20250403-uvc-meta-e556773d12ae
+> 
+> Best regards,
 
 
