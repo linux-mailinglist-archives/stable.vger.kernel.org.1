@@ -1,158 +1,231 @@
-Return-Path: <stable+bounces-160373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086FDAFB5A9
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 16:16:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16038AFB717
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 17:18:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27E447A3764
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 14:15:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4811C3B986B
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 15:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C462D8379;
-	Mon,  7 Jul 2025 14:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DB82E1C7C;
+	Mon,  7 Jul 2025 15:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=detlev.casanova@collabora.com header.b="McipYCfc"
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="bdCnkURk"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354372BE04A;
-	Mon,  7 Jul 2025 14:16:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751897799; cv=pass; b=P+iuMJJHzK8F1t2k/+n30oR0uqC75BOWq/ForWnzs6lVZbFsF8K3wbSp+gsyFS0W/EUt9uKfIakNoaDLZj0UUeM84PJwJDPHFGVnyXkqtCNtWw8j5bXbLOh4vh90fAKTybZh3lR0BYXzc7KxFUYgsqJ7fxQyt5GM+qqg1C7KIcc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751897799; c=relaxed/simple;
-	bh=HcEEtqzs0J9vcZHnd/EnWkrk4jMkCBGtgE6WuEhiDRY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eq5PScUdfft5MBz8FYDzQLUDtCkqLzuf11UnEp3uc52Wf0yCuSdJLM0n+LjBIiQ6aUdj+2kPbnzgYu5rQn3jl2w+fQeiT9bznGxoUHNYVT19ReAc6rucCG1GAza1iuBU0t3wc3qDDDzfJ5oSke65tOwO+f+nQ4NJBuGGkvL0gTE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=detlev.casanova@collabora.com header.b=McipYCfc; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1751897762; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=J2jG+zTdhJ8/5GEz+wjzqoR2q7qvi5wWHpZpDNhgtqx4dt1zSUcnJIadlWbinzGzxAkQkKzY2ASlxmYh6cUlE8MlcBNJRdzJmkstMxELUTAENjZRvpBZd7APRf4syRDSAdd8J+lyORg7JuQzrHEhl18VIJYbFsv8bQ7mb4PuyA8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1751897762; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=dCDf+69VVJbWwI60MQY/tACqoX7jn/Ra0BXrlDPz350=; 
-	b=LLp+sgF86fInUrVtQBoOSSwneLI9klvjyH7k36AqjWrwjpbKH4HC67sNhFUMnYobiuHVc/cWWH2UYmO+9yR+czKoeQlzZBN/LMXQ57TEf0SyEkZZM6teSlJT7hFnMatvc4KGKXIh7xbMx4LVxa4n8Kk4IEvhUDTmLV9x/IACzg8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=detlev.casanova@collabora.com;
-	dmarc=pass header.from=<detlev.casanova@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751897762;
-	s=zohomail; d=collabora.com; i=detlev.casanova@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-	bh=dCDf+69VVJbWwI60MQY/tACqoX7jn/Ra0BXrlDPz350=;
-	b=McipYCfcY5qa+hK0qeBb+BGseJ0429upHDFTaRQliWM1mfF7/sD2EsWap8yDCus9
-	16y722EeboxrZhX7P1RX1hfgjZP+R/6+Y9OF1h7Qp0mkpcqL+/0w6OIq/OQHA2PcENX
-	X4OI94CQ948+9bEBC2+pkAKx5J4z069oKe0fH6TM=
-Received: by mx.zohomail.com with SMTPS id 1751897759190607.3834386194047;
-	Mon, 7 Jul 2025 07:15:59 -0700 (PDT)
-From: Detlev Casanova <detlev.casanova@collabora.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>,
- Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Russell King <linux@armlinux.org.uk>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCH net] net: phy: realtek: Reset after clock enable
-Date: Mon, 07 Jul 2025 10:15:57 -0400
-Message-ID: <12698483.O9o76ZdvQC@earth>
-In-Reply-To: <5xjp2k3b4rggbmjgchg6vlusotoqoqmxi54zzer3ioxv274vtx@22tzjjcs7s3z>
-References:
- <20250704-phy-realtek-clock-fix-v1-1-63b33d204537@kernel.org>
- <0310186d-dfc5-406f-8cd1-c393a7c620e8@gmail.com>
- <5xjp2k3b4rggbmjgchg6vlusotoqoqmxi54zzer3ioxv274vtx@22tzjjcs7s3z>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178A428ECF2
+	for <stable@vger.kernel.org>; Mon,  7 Jul 2025 15:18:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751901509; cv=none; b=B5UeVw20JOFHNn2oMtm3GNqjZsGodApXCoxdD/oHh10kLljXkgCpZNaoO1fL5G6+6iGae6PkjmVH/wguipwgBoZVzDO6M7ZZzZTJthcBdhP8WEXbS9b+4EEzNQgPK2ohYKEk0ltWbQZlmsExTwLDJlYOJMZ9tMYpUvMCFNzXFko=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751901509; c=relaxed/simple;
+	bh=nhX3ytbPbkZSJUv/tvzuXtN2kNn2AvgOd1XC1S4xyDI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nB5c1lu3HXHBgdxOaFXEz1fGhsXkblIMMZi7DQf+QUeihV0ojR0qRjw/rUQlsOXGUa3gEcHAsDUpdmdaUodoaxjXqjukizJRHdl/v9pqSbZmR23R73IIZ5RjGLXmlY5AFA18DYOZXFlYK3YC4/3lVxcXFrMDzFeE7lSLfedz094=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=bdCnkURk; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a50fc7ac4dso1464398f8f.0
+        for <stable@vger.kernel.org>; Mon, 07 Jul 2025 08:18:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1751901506; x=1752506306; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dDyUvZNv5CDa5hocwZakQH5cNmENDMsfcPjRy3ud2is=;
+        b=bdCnkURke4VYXJRDMUFz3eN7VlRWsv+IGFrGMshckcZud8jojO+bKWLvsWnE2Nh8ou
+         aty7qGWSeb0x03J1GGzIp1lQkyX/LKwsrjPgW1AHCZr9yK9ldgRk99nTI9hZSRtlKuo+
+         EE/PdAMZ/5flOZQTHlkuADTPeIkxbUnjHxR0Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751901506; x=1752506306;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dDyUvZNv5CDa5hocwZakQH5cNmENDMsfcPjRy3ud2is=;
+        b=BH7vhKlr87iR93QSyEM9lyKvsvq7h0mT/PqMBMZq0LtjtKzqIdoMBCbc4RCymSBM9/
+         DSmfK5hIr/JW3+aqkg0CJJN0PXKOjMqQNdSeXteqSqIcl/vRfiZY9O39dQ96cHfs8WR0
+         fC+zRlQZwEyGa3EuUyuZQnXyprVyTqSItoLv8vmwunFm0lN0+D8cQaDiQA7xrFjMECAq
+         8F1JYKACD8XGbsK2pFlbfgfua8Vg1M1pY468Kksyocluuac4vaxIqZFsBVmTIY23jO04
+         Y5R0MBIM3RXsUvAyoI5vllKAczmTXDfjbIAszhYAwtPo5Jzzs0CSGyEcxFVkS7fwhGjQ
+         naag==
+X-Forwarded-Encrypted: i=1; AJvYcCWeaDq1WuKwW2AMRULDkdfBwfLodiFahdN4+N46NOLHlHR+Ro4s8Pr9itpK9HOsagdwoEKN+Qc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTp8mAz2Uz2AKOqfktmMsZ46QdEnqzBcKlHITM5P3ov0j0SlaW
+	tsFr82WN26QMyIzZdSZ6D2jk6hK9/t2EHT3fVhr20fYd2ljxGWDSn44H37FoQ4lswDA=
+X-Gm-Gg: ASbGncuqQyQjInA0/A0t+ihytonech4MVlY/UBLk+XZgimNyIL/UonsYv6O3MSMUu1Q
+	4cs+faVbjzHNcKNBzUShE1taKaCYRvmNA4Nyk3hlC6WJqwOvcg4Oi7V7t9Vgg/ou5tlTP3S0BMB
+	6wVnjsaKf6PhBNWDyYy7ySqqxtCUzPUtSBhTyWUfNZxfb8FUn6w8juMH/RIwo7MPF65M92LzzDa
+	dqkUH9dbr/CLcaDbFKgGBaCErezmGG6XzPfGkrrqZPm978s5AfFcKkjc5C+yc01uniXcmX7H7Py
+	NrPKGDa5u+p3KTQ4UdUpHEFWK5/lhbVE/l9zt8D+uXjAzQJ1iMYrwfHZiNXQgyNF3v6UWmj5Ig=
+	=
+X-Google-Smtp-Source: AGHT+IHkcWwX9LDmtC86uNJtoHdD49oLmsozTA8OJxJjZUo33P5D+GyfKtm4tZh+OpBnEJdv54iyJA==
+X-Received: by 2002:a05:6000:41e4:b0:3a4:d53d:be20 with SMTP id ffacd0b85a97d-3b49aa60651mr5656442f8f.18.1751901506040;
+        Mon, 07 Jul 2025 08:18:26 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b46d4c8619sm10369057f8f.0.2025.07.07.08.18.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Jul 2025 08:18:25 -0700 (PDT)
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: DRI Development <dri-devel@lists.freedesktop.org>
+Cc: Intel Xe Development <intel-xe@lists.freedesktop.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	stable@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Simona Vetter <simona.vetter@intel.com>
+Subject: [PATCH 1/2] drm/gem: Fix race in drm_gem_handle_create_tail()
+Date: Mon,  7 Jul 2025 17:18:13 +0200
+Message-ID: <20250707151814.603897-1-simona.vetter@ffwll.ch>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
 
-Hi Sebastian,
+Object creation is a careful dance where we must guarantee that the
+object is fully constructed before it is visible to other threads, and
+GEM buffer objects are no difference.
 
-On Friday, 4 July 2025 16:35:00 EDT Sebastian Reichel wrote:
-> Hi,
-> 
-> On Fri, Jul 04, 2025 at 10:18:29PM +0200, Heiner Kallweit wrote:
-> > On 04.07.2025 19:48, Sebastian Reichel wrote:
-> > > On Radxa ROCK 4D boards we are seeing some issues with PHY detection and
-> > > stability (e.g. link loss, or not capable of transceiving packages)
-> > > after new board revisions switched from a dedicated crystal to providing
-> > > the 25 MHz PHY input clock from the SoC instead.
-> > > 
-> > > This board is using a RTL8211F PHY, which is connected to an always-on
-> > > regulator. Unfortunately the datasheet does not explicitly mention the
-> > > power-up sequence regarding the clock, but it seems to assume that the
-> > > clock is always-on (i.e. dedicated crystal).
-> > > 
-> > > By doing an explicit reset after enabling the clock, the issue on the
-> > > boards could no longer be observed.
-> > 
-> > Is the SoC clock always on after boot? Or may it be disabled e.g.
-> > during system suspend? Then you would have to do the PHY reset also
-> > on resume from suspend.
-> 
-> Upstream kernel does not yet support suspend/resume on Rockchip RK3576
-> (the SoC used by the ROCK 4D) and I missed, that the clock is disabled
-> in the PHY's suspend routine.
-> 
-> Detlev: You added the initial clock support to the driver. If I add
-> the reset in the resume routine, can you do regression testing on
-> the board you originally added the clock handling for?
+Final publishing happens by calling drm_gem_handle_create(). After
+that the only allowed thing to do is call drm_gem_object_put() because
+a concurrent call to the GEM_CLOSE ioctl with a correctly guessed id
+(which is trivial since we have a linear allocator) can already tear
+down the object again.
 
-No regression for me on the pre-release board. I can't really give you a 
-Tested-by as this is a fix for a board I don't have.
+Luckily most drivers get this right, the very few exceptions I've
+pinged the relevant maintainers for. Unfortunately we also need
+drm_gem_handle_create() when creating additional handles for an
+already existing object (e.g. GETFB ioctl or the various bo import
+ioctl), and hence we cannot have a drm_gem_handle_create_and_put() as
+the only exported function to stop these issues from happening.
 
-Regards,
-Detlev
+Now unfortunately the implementation of drm_gem_handle_create() isn't
+living up to standards: It does correctly finishe object
+initialization at the global level, and hence is safe against a
+concurrent tear down. But it also sets up the file-private aspects of
+the handle, and that part goes wrong: We fully register the object in
+the drm_file.object_idr before calling drm_vma_node_allow() or
+obj->funcs->open, which opens up races against concurrent removal of
+that handle in drm_gem_handle_delete().
 
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 7300c9b574cc ("net: phy: realtek: Add optional external PHY
-> > > clock")
-> > > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> > > ---
-> > > 
-> > >  drivers/net/phy/realtek/realtek_main.c | 4 ++++
-> > >  1 file changed, 4 insertions(+)
-> > > 
-> > > diff --git a/drivers/net/phy/realtek/realtek_main.c
-> > > b/drivers/net/phy/realtek/realtek_main.c index
-> > > c3dcb62574303374666b46a454cd4e10de455d24..3a783f0c3b4f2a4f6aa63a16ad309
-> > > e3471b0932a 100644 --- a/drivers/net/phy/realtek/realtek_main.c
-> > > +++ b/drivers/net/phy/realtek/realtek_main.c
-> > > @@ -231,6 +231,10 @@ static int rtl821x_probe(struct phy_device *phydev)
-> > > 
-> > >  		return dev_err_probe(dev, PTR_ERR(priv->clk),
-> > >  		
-> > >  				     "failed to get phy clock\n");
-> > > 
-> > > +	/* enabling the clock might produce glitches, so hard-reset the PHY 
-*/
-> > > +	phy_device_reset(phydev, 1);
-> > > +	phy_device_reset(phydev, 0);
-> > > +
-> > > 
-> > >  	ret = phy_read_paged(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR1);
-> > >  	if (ret < 0)
-> > >  	
-> > >  		return ret;
-> > > 
-> > > ---
-> > > base-commit: 4c06e63b92038fadb566b652ec3ec04e228931e8
-> > > change-id: 20250704-phy-realtek-clock-fix-6cd393e8cb2a
-> > > 
-> > > Best regards,
+Fix this with the usual two-stage approach of first reserving the
+handle id, and then only registering the object after we've completed
+the file-private setup.
 
+Jacek reported this with a testcase of concurrently calling GEM_CLOSE
+on a freshly-created object (which also destroys the object), but it
+should be possible to hit this with just additional handles created
+through import or GETFB without completed destroying the underlying
+object with the concurrent GEM_CLOSE ioctl calls.
 
+Note that the close-side of this race was fixed in f6cd7daecff5 ("drm:
+Release driver references to handle before making it available
+again"), which means a cool 9 years have passed until someone noticed
+that we need to make this symmetry or there's still gaps left :-/
+Without the 2-stage close approach we'd still have a race, therefore
+that's an integral part of this bugfix.
 
+More importantly, this means we can have NULL pointers behind
+allocated id in our drm_file.object_idr. We need to check for that
+now:
+
+- drm_gem_handle_delete() checks for ERR_OR_NULL already
+
+- drm_gem.c:object_lookup() also chekcs for NULL
+
+- drm_gem_release() should never be called if there's another thread
+  still existing that could call into an IOCTL that creates a new
+  handle, so cannot race. For paranoia I added a NULL check to
+  drm_gem_object_release_handle() though.
+
+- most drivers (etnaviv, i915, msm) are find because they use
+  idr_find(), which maps both ENOENT and NULL to NULL.
+
+- drivers using idr_for_each_entry() should also be fine, because
+  idr_get_next does filter out NULL entries and continues the
+  iteration.
+
+- The same holds for drm_show_memory_stats().
+
+v2: Use drm_WARN_ON (Thomas)
+
+Reported-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Tested-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: stable@vger.kernel.org
+Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Signed-off-by: Simona Vetter <simona.vetter@intel.com>
+Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
+---
+ drivers/gpu/drm/drm_gem.c | 10 +++++++++-
+ include/drm/drm_file.h    |  3 +++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+index bc505d938b3e..1aa9192c4cc6 100644
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -316,6 +316,9 @@ drm_gem_object_release_handle(int id, void *ptr, void *data)
+ 	struct drm_file *file_priv = data;
+ 	struct drm_gem_object *obj = ptr;
+ 
++	if (drm_WARN_ON(obj->dev, !data))
++		return 0;
++
+ 	if (obj->funcs->close)
+ 		obj->funcs->close(obj, file_priv);
+ 
+@@ -436,7 +439,7 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
+ 	idr_preload(GFP_KERNEL);
+ 	spin_lock(&file_priv->table_lock);
+ 
+-	ret = idr_alloc(&file_priv->object_idr, obj, 1, 0, GFP_NOWAIT);
++	ret = idr_alloc(&file_priv->object_idr, NULL, 1, 0, GFP_NOWAIT);
+ 
+ 	spin_unlock(&file_priv->table_lock);
+ 	idr_preload_end();
+@@ -457,6 +460,11 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
+ 			goto err_revoke;
+ 	}
+ 
++	/* mirrors drm_gem_handle_delete to avoid races */
++	spin_lock(&file_priv->table_lock);
++	obj = idr_replace(&file_priv->object_idr, obj, handle);
++	WARN_ON(obj != NULL);
++	spin_unlock(&file_priv->table_lock);
+ 	*handlep = handle;
+ 	return 0;
+ 
+diff --git a/include/drm/drm_file.h b/include/drm/drm_file.h
+index eab7546aad79..115763799625 100644
+--- a/include/drm/drm_file.h
++++ b/include/drm/drm_file.h
+@@ -300,6 +300,9 @@ struct drm_file {
+ 	 *
+ 	 * Mapping of mm object handles to object pointers. Used by the GEM
+ 	 * subsystem. Protected by @table_lock.
++	 *
++	 * Note that allocated entries might be NULL as a transient state when
++	 * creating or deleting a handle.
+ 	 */
+ 	struct idr object_idr;
+ 
+-- 
+2.49.0
 
 
