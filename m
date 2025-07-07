@@ -1,399 +1,160 @@
-Return-Path: <stable+bounces-160361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7716AFB19B
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 12:48:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C83C7AFB172
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 12:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E6BE1AA2406
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 10:48:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C640D4A10FE
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 10:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A9F289356;
-	Mon,  7 Jul 2025 10:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAEBF275AF8;
+	Mon,  7 Jul 2025 10:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="c/Il0r8t"
+	dkim=pass (2048-bit key) header.d=web.de header.i=jvpeetz@web.de header.b="ukDGK6na"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DB72877ED
-	for <stable@vger.kernel.org>; Mon,  7 Jul 2025 10:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FD01C5F14;
+	Mon,  7 Jul 2025 10:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751885307; cv=none; b=IACZxQ6Mp6mt7zxM24iyzDEN+6sy7I8Z8oBWn3aInDY1xGB9mRhfmy0AAAvStMqxOEzhAmY8gdrWn+lYajwRDqfgE7/1LCErYrfSMkyMYu4ba/VcCgYbLp+xdrtalKWx3F/2Z1FYjm1+5EIhFns7cihKmyaAP4k8A5Zt8J6w4wI=
+	t=1751884918; cv=none; b=o42Jjv7xm2RMU182n0rUH3wU1vwOH8CKki6SahhqoYqsEnQ3B1nhbovWbFd8Ae7GdqC5aJ6sMwy2Zd6lk8fUVc6VNbf2Ur3y8lte2EKTbB7iJh4VJeJAPthjf6yAPnqoSu3aUEhXYLKRlwK0eaVz0J9YxtO+Eyd+l0987Fnmp6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751885307; c=relaxed/simple;
-	bh=kR3xNNG2KN+LbMnlkeC5sGzvQ2no9nRvODckc2N7Ig0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=e0WmQsz3Vo6vz6rhLtGVDTmSTnT9vze8LlZMecRanzGj/5gku9aZ0pnFn/GaXo263diP9P199HjABxxe22ZY2Hf1AUdCYT3gzA/ZvShgfdLroxn+L5cjceDGQaAejuWOpxd4wZEhB7/Z5bvNLhnXGSpofzZeopFOO/b+059PJ9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=c/Il0r8t; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost (unknown [10.10.165.11])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 9CFAE552F54A;
-	Mon,  7 Jul 2025 10:39:56 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 9CFAE552F54A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1751884796;
-	bh=b3G+9wGgX6F0Vj1F8AdVmDCByLR5pDMbFneWnktvG0w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=c/Il0r8t/U2LMQiCmqK+qbP54q2JzdveaY8v81eyQe3aUd3KS17xHj8f3gZLl1/5J
-	 JS0K2A1VkULS1V00QwwJrhVPK1P7EIXCh1MeaWY0Pzrn8lYpUkCdRcKs0flCG1fWz+
-	 7wxPTPOcr0Q+/SUDHXQ4GI0sZdJeEStubfkbVpHA=
-Date: Mon, 7 Jul 2025 13:39:56 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Jann Horn <jannh@google.com>
-Cc: stable@vger.kernel.org, lvc-project@linuxtesting.org
-Subject: Re: [PATCH 6.1.y 1/3] mm/hugetlb: unshare page tables during VMA
- split, not before
-Message-ID: <evfvb2d7jgglzgp66hvwu7pwdzbdbbcitym5574vxkno3ff6vt@jg7nfsgded5w>
+	s=arc-20240116; t=1751884918; c=relaxed/simple;
+	bh=bQJ9BKTilV63YT01fASPJVcROrhut3eHE0ruotsWn00=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GA6R2M2Bq5bK1HkIHzPPyYHgBqMMEt38jHTgeOyewT+zpmZ+RLxuu1rqYXIhB9acrGxqp74JN7OyyaDoAXwuYY2b9rj7KjBP8RK3s8WyLgW+1DPksgwqbCHZgU9S/fohl/RXeEaDONk4Na+YSv4BxPlf/etSjtt2EfHHujFYMx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=jvpeetz@web.de header.b=ukDGK6na; arc=none smtp.client-ip=212.227.15.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1751884909; x=1752489709; i=jvpeetz@web.de;
+	bh=bQJ9BKTilV63YT01fASPJVcROrhut3eHE0ruotsWn00=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=ukDGK6naciFddw9wAQvrPRx0IlXwe/1DcFAfW0GDyX8jutXW/I5tBQrVrZ11x6B0
+	 ugo13D5LH1jqJ8JhUqyw+3SVuMRzA8GfDHIdmJeMCy/Rc/P7w9ZYYgF9x8NKQ+WnA
+	 /B/b+2XZ9Gzy4sdZm2wRpc7nEmOZ5n3TrBFFJoTiM0CGAJmy2g1x05g0IxwwsEQAv
+	 DaR5I9tNP2VdWs0aMvo4jq4IEu1W10E9ls14NImoHE/E934AL3mcVaekXF3KHO3vX
+	 FVWlNa1oMVn871AYTWr2+w8ERrtbg7dPnCkexalcXFhzZrIrZ4o+1mpgNTgPYcUDo
+	 DxsWF1P3y7hSb00sEw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from uruz.dynato.kyma ([84.132.145.192]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MqIFD-1v2YGN3dsR-00cWsk; Mon, 07
+ Jul 2025 12:41:48 +0200
+Received: from [127.0.0.1]
+	by uruz.dynato.kyma with esmtp (Exim 4.98.2)
+	(envelope-from <jvpeetz@web.de>)
+	id 1uYjIC-000000004aq-0cJv;
+	Mon, 07 Jul 2025 12:41:48 +0200
+Message-ID: <d7527ee9-fba1-49ad-9a71-6d955eeddc3e@web.de>
+Date: Mon, 7 Jul 2025 12:41:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250620213334.158850-1-jannh@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Linux 6.15.5
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ torvalds@linux-foundation.org, stable@vger.kernel.org,
+ mario.limonciello@amd.com, gautham.shenoy@amd.com,
+ dhananjay.ugwekar@amd.com, ray.huang@amd.com, perry.yuan@amd.com,
+ rafael@kernel.org, viresh.kumar@linaro.org
+Cc: lwn@lwn.net, jslaby@suse.cz
+Newsgroups: gmane.linux.kernel,gmane.linux.kernel.stable
+References: <2025070646-unopposed-nutrient-8e1c@gregkh>
+Content-Language: en-US
+From: =?UTF-8?Q?J=C3=B6rg-Volker_Peetz?= <jvpeetz@web.de>
+In-Reply-To: <2025070646-unopposed-nutrient-8e1c@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:zjNvKukOX4V8lLjO2G02+fp+R4qnKtmtxs8YjECJthn+2waOcfY
+ vt4LpKZKG/NpmfDKkGXu2nCYpr9pe8Yazyq7KTN7nSuapgqK0QYQQ4LG91fyZm76nYO3CUF
+ bbVyB0y4tV4fOHCRRs9U5uwWLNxO0kLJ0riiNn4hcmJb9WGg64Z3IhFrvXfA0a2a/K33350
+ rC0FyPobtSW8oefCDnVPw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:E+9h6GIniuY=;bhQxbqa2UT6ob3aP1WOsV6lD+vf
+ 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
 
-Hello Jann,
+Hi,
 
-On Fri, 20 Jun 2025 23:33:31 +0200, Jann Horn wrote:
-> Currently, __split_vma() triggers hugetlb page table unsharing through
-> vm_ops->may_split().  This happens before the VMA lock and rmap locks are
-> taken - which is too early, it allows racing VMA-locked page faults in our
-> process and racing rmap walks from other processes to cause page tables to
-> be shared again before we actually perform the split.
-> 
-> Fix it by explicitly calling into the hugetlb unshare logic from
-> __split_vma() in the same place where THP splitting also happens.  At that
-> point, both the VMA and the rmap(s) are write-locked.
-> 
-> An annoying detail is that we can now call into the helper
-> hugetlb_unshare_pmds() from two different locking contexts:
-> 
-> 1. from hugetlb_split(), holding:
->     - mmap lock (exclusively)
->     - VMA lock
->     - file rmap lock (exclusively)
-> 2. hugetlb_unshare_all_pmds(), which I think is designed to be able to
->    call us with only the mmap lock held (in shared mode), but currently
->    only runs while holding mmap lock (exclusively) and VMA lock
-> 
-> Backporting note:
-> This commit fixes a racy protection that was introduced in commit
-> b30c14cd6102 ("hugetlb: unshare some PMDs when splitting VMAs"); that
-> commit claimed to fix an issue introduced in 5.13, but it should actually
-> also go all the way back.
-> 
-> [jannh@google.com: v2]
->   Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-1-1329349bad1a@google.com
-> Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-0-1329349bad1a@google.com
-> Link: https://lkml.kernel.org/r/20250527-hugetlb-fixes-splitrace-v1-1-f4136f5ec58a@google.com
-> Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
-> Signed-off-by: Jann Horn <jannh@google.com>
-> Cc: Liam Howlett <liam.howlett@oracle.com>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: <stable@vger.kernel.org>	[b30c14cd6102: hugetlb: unshare some PMDs when splitting VMAs]
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> [stable backport: code got moved around, VMA splitting is in
-> __vma_adjust]
-> Signed-off-by: Jann Horn <jannh@google.com>
-> ---
->  include/linux/hugetlb.h |  3 +++
->  mm/hugetlb.c            | 60 ++++++++++++++++++++++++++++++-----------
->  mm/mmap.c               |  8 ++++++
->  3 files changed, 55 insertions(+), 16 deletions(-)
-> 
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index cc555072940f..26f2947c399d 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -239,6 +239,7 @@ unsigned long hugetlb_change_protection(struct vm_area_struct *vma,
->  
->  bool is_hugetlb_entry_migration(pte_t pte);
->  void hugetlb_unshare_all_pmds(struct vm_area_struct *vma);
-> +void hugetlb_split(struct vm_area_struct *vma, unsigned long addr);
->  
->  #else /* !CONFIG_HUGETLB_PAGE */
->  
-> @@ -472,6 +473,8 @@ static inline vm_fault_t hugetlb_fault(struct mm_struct *mm,
->  
->  static inline void hugetlb_unshare_all_pmds(struct vm_area_struct *vma) { }
->  
-> +static inline void hugetlb_split(struct vm_area_struct *vma, unsigned long addr) {}
-> +
->  #endif /* !CONFIG_HUGETLB_PAGE */
->  /*
->   * hugepages at page global directory. If arch support
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 14b9494c58ed..fc5d3d665266 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -95,7 +95,7 @@ static void hugetlb_vma_lock_free(struct vm_area_struct *vma);
->  static void hugetlb_vma_lock_alloc(struct vm_area_struct *vma);
->  static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma);
->  static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
-> -		unsigned long start, unsigned long end);
-> +		unsigned long start, unsigned long end, bool take_locks);
->  static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
->  
->  static inline bool subpool_is_free(struct hugepage_subpool *spool)
-> @@ -4900,26 +4900,40 @@ static int hugetlb_vm_op_split(struct vm_area_struct *vma, unsigned long addr)
->  {
->  	if (addr & ~(huge_page_mask(hstate_vma(vma))))
->  		return -EINVAL;
-> +	return 0;
-> +}
->  
-> +void hugetlb_split(struct vm_area_struct *vma, unsigned long addr)
-> +{
->  	/*
->  	 * PMD sharing is only possible for PUD_SIZE-aligned address ranges
->  	 * in HugeTLB VMAs. If we will lose PUD_SIZE alignment due to this
->  	 * split, unshare PMDs in the PUD_SIZE interval surrounding addr now.
-> +	 * This function is called in the middle of a VMA split operation, with
-> +	 * MM, VMA and rmap all write-locked to prevent concurrent page table
-> +	 * walks (except hardware and gup_fast()).
->  	 */
-> +	mmap_assert_write_locked(vma->vm_mm);
-> +	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+upgrading from linux kernel 6.14.9 to 6.15.2 and also now with 6.15.5 I no=
+ticed=20
+that on my system with cpufreq scaling driver amd-pstate the frequencies=
+=20
+cpuinfo_min_freq and cpuinfo_max_freq increased, the min from 400 to 422.3=
+34=20
+MHz, the max from 4,673 to 4,673.823 MHz. The CPU is an AMD Ryzen 7 5700G.
+This in turn increases other values (scaling_min_freq, scaling_max_freq,=
+=20
+amd_pstate_lowest_nonlinear_freq, etc.).
 
+Bisecting this leads to
 
-The above i_mmap lock assertion is firing on stable kernels from 5.10 to 6.1
-included.
+commit a9b9b4c2a4cdd00428d14914e3c18be3856aba71
+From: Mario Limonciello <mario.limonciello@amd.com>
+Date: Thu, 23 Jan 2025 16:16:01 -0600
+Subject: [PATCH] cpufreq/amd-pstate: Drop min and max cached frequencies
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 11489 at include/linux/fs.h:503 i_mmap_assert_write_locked include/linux/fs.h:503 [inline]
-WARNING: CPU: 0 PID: 11489 at include/linux/fs.h:503 hugetlb_split+0x267/0x300 mm/hugetlb.c:4917
-Modules linked in:
-CPU: 0 PID: 11489 Comm: syz-executor.4 Not tainted 6.1.142-syzkaller-00296-gfd0df5221577 #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:i_mmap_assert_write_locked include/linux/fs.h:503 [inline]
-RIP: 0010:hugetlb_split+0x267/0x300 mm/hugetlb.c:4917
-Call Trace:
- <TASK>
- __vma_adjust+0xd73/0x1c10 mm/mmap.c:736
- vma_adjust include/linux/mm.h:2745 [inline]
- __split_vma+0x459/0x540 mm/mmap.c:2385
- do_mas_align_munmap+0x5f2/0xf10 mm/mmap.c:2497
- do_mas_munmap+0x26c/0x2c0 mm/mmap.c:2646
- __mmap_region mm/mmap.c:2694 [inline]
- mmap_region+0x19f/0x1770 mm/mmap.c:2912
- do_mmap+0x84b/0xf20 mm/mmap.c:1432
- vm_mmap_pgoff+0x1af/0x280 mm/util.c:520
- ksys_mmap_pgoff+0x41f/0x5a0 mm/mmap.c:1478
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-RIP: 0033:0x46a269
- </TASK>
+Did you notice the increase at AMD? Is it intended?
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-
-The main reason is that those branches lack the following
-
-  commit ccf1d78d8b86e28502fa1b575a459a402177def4
-  Author: Suren Baghdasaryan <surenb@google.com>
-  Date:   Mon Feb 27 09:36:13 2023 -0800
-  
-      mm/mmap: move vma_prepare before vma_adjust_trans_huge
-      
-      vma_prepare() acquires all locks required before VMA modifications.  Move
-      vma_prepare() before vma_adjust_trans_huge() so that VMA is locked before
-      any modification.
-      
-      Link: https://lkml.kernel.org/r/20230227173632.3292573-15-surenb@google.com
-      Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-      Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-thus the needed lock is acquired just after vma_adjust_trans_huge() and
-the newly added hugetlb_split().
-
-Please have a look at a straightforward write-up which comes to my mind.
-It does something like the ccf1d78d8b86 ("mm/mmap: move vma_prepare before
-vma_adjust_trans_huge"), but in context of an old stable branch.
-
-If looks okay, I'll be glad to prepare it as a formal patch and send it
-out for the 5.10-5.15, too.
-
-against 6.1.y
--------------
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 0f303dc8425a..941880ed62d7 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -543,8 +543,6 @@ inline int vma_expand(struct ma_state *mas, struct vm_area_struct *vma,
-        if (mas_preallocate(mas, vma, GFP_KERNEL))
-                goto nomem;
- 
--       vma_adjust_trans_huge(vma, start, end, 0);
--
-        if (file) {
-                mapping = file->f_mapping;
-                root = &mapping->i_mmap;
-@@ -562,6 +560,8 @@ inline int vma_expand(struct ma_state *mas, struct vm_area_struct *vma,
-                vma_interval_tree_remove(vma, root);
-        }
- 
-+       vma_adjust_trans_huge(vma, start, end, 0);
-+
-        vma->vm_start = start;
-        vma->vm_end = end;
-        vma->vm_pgoff = pgoff;
-@@ -727,15 +727,6 @@ int __vma_adjust(struct vm_area_struct *vma, unsigned long start,
-                return -ENOMEM;
-        }
- 
--       /*
--        * Get rid of huge pages and shared page tables straddling the split
--        * boundary.
--        */
--       vma_adjust_trans_huge(orig_vma, start, end, adjust_next);
--       if (is_vm_hugetlb_page(orig_vma)) {
--               hugetlb_split(orig_vma, start);
--               hugetlb_split(orig_vma, end);
--       }
-        if (file) {
-                mapping = file->f_mapping;
-                root = &mapping->i_mmap;
-@@ -775,6 +766,16 @@ int __vma_adjust(struct vm_area_struct *vma, unsigned long start,
-                        vma_interval_tree_remove(next, root);
-        }
- 
-+       /*
-+        * Get rid of huge pages and shared page tables straddling the split
-+        * boundary.
-+        */
-+       vma_adjust_trans_huge(orig_vma, start, end, adjust_next);
-+       if (is_vm_hugetlb_page(orig_vma)) {
-+               hugetlb_split(orig_vma, start);
-+               hugetlb_split(orig_vma, end);
-+       }
-+
-        if (start != vma->vm_start) {
-                if ((vma->vm_start < start) &&
-                    (!insert || (insert->vm_end != start))) {
-
-
---
-Fedor
-
-> +
->  	if (addr & ~PUD_MASK) {
-> -		/*
-> -		 * hugetlb_vm_op_split is called right before we attempt to
-> -		 * split the VMA. We will need to unshare PMDs in the old and
-> -		 * new VMAs, so let's unshare before we split.
-> -		 */
->  		unsigned long floor = addr & PUD_MASK;
->  		unsigned long ceil = floor + PUD_SIZE;
->  
-> -		if (floor >= vma->vm_start && ceil <= vma->vm_end)
-> -			hugetlb_unshare_pmds(vma, floor, ceil);
-> +		if (floor >= vma->vm_start && ceil <= vma->vm_end) {
-> +			/*
-> +			 * Locking:
-> +			 * Use take_locks=false here.
-> +			 * The file rmap lock is already held.
-> +			 * The hugetlb VMA lock can't be taken when we already
-> +			 * hold the file rmap lock, and we don't need it because
-> +			 * its purpose is to synchronize against concurrent page
-> +			 * table walks, which are not possible thanks to the
-> +			 * locks held by our caller.
-> +			 */
-> +			hugetlb_unshare_pmds(vma, floor, ceil, /* take_locks = */ false);
-> +		}
->  	}
-> -
-> -	return 0;
->  }
->  
->  static unsigned long hugetlb_vm_op_pagesize(struct vm_area_struct *vma)
-> @@ -7495,9 +7509,16 @@ void move_hugetlb_state(struct page *oldpage, struct page *newpage, int reason)
->  	}
->  }
->  
-> +/*
-> + * If @take_locks is false, the caller must ensure that no concurrent page table
-> + * access can happen (except for gup_fast() and hardware page walks).
-> + * If @take_locks is true, we take the hugetlb VMA lock (to lock out things like
-> + * concurrent page fault handling) and the file rmap lock.
-> + */
->  static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
->  				   unsigned long start,
-> -				   unsigned long end)
-> +				   unsigned long end,
-> +				   bool take_locks)
->  {
->  	struct hstate *h = hstate_vma(vma);
->  	unsigned long sz = huge_page_size(h);
-> @@ -7521,8 +7542,12 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
->  	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma, mm,
->  				start, end);
->  	mmu_notifier_invalidate_range_start(&range);
-> -	hugetlb_vma_lock_write(vma);
-> -	i_mmap_lock_write(vma->vm_file->f_mapping);
-> +	if (take_locks) {
-> +		hugetlb_vma_lock_write(vma);
-> +		i_mmap_lock_write(vma->vm_file->f_mapping);
-> +	} else {
-> +		i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-> +	}
->  	for (address = start; address < end; address += PUD_SIZE) {
->  		ptep = huge_pte_offset(mm, address, sz);
->  		if (!ptep)
-> @@ -7532,8 +7557,10 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
->  		spin_unlock(ptl);
->  	}
->  	flush_hugetlb_tlb_range(vma, start, end);
-> -	i_mmap_unlock_write(vma->vm_file->f_mapping);
-> -	hugetlb_vma_unlock_write(vma);
-> +	if (take_locks) {
-> +		i_mmap_unlock_write(vma->vm_file->f_mapping);
-> +		hugetlb_vma_unlock_write(vma);
-> +	}
->  	/*
->  	 * No need to call mmu_notifier_invalidate_range(), see
->  	 * Documentation/mm/mmu_notifier.rst.
-> @@ -7548,7 +7575,8 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
->  void hugetlb_unshare_all_pmds(struct vm_area_struct *vma)
->  {
->  	hugetlb_unshare_pmds(vma, ALIGN(vma->vm_start, PUD_SIZE),
-> -			ALIGN_DOWN(vma->vm_end, PUD_SIZE));
-> +			ALIGN_DOWN(vma->vm_end, PUD_SIZE),
-> +			/* take_locks = */ true);
->  }
->  
->  #ifdef CONFIG_CMA
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index ebc3583fa612..0f303dc8425a 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -727,7 +727,15 @@ int __vma_adjust(struct vm_area_struct *vma, unsigned long start,
->  		return -ENOMEM;
->  	}
->  
-> +	/*
-> +	 * Get rid of huge pages and shared page tables straddling the split
-> +	 * boundary.
-> +	 */
->  	vma_adjust_trans_huge(orig_vma, start, end, adjust_next);
-> +	if (is_vm_hugetlb_page(orig_vma)) {
-> +		hugetlb_split(orig_vma, start);
-> +		hugetlb_split(orig_vma, end);
-> +	}
->  	if (file) {
->  		mapping = file->f_mapping;
->  		root = &mapping->i_mmap;
-> -- 
-> 2.50.0.rc2.701.gf1e915cc24-goog
+Thanks,
+J=C3=B6rg.
 
