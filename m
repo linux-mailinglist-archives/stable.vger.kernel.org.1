@@ -1,160 +1,142 @@
-Return-Path: <stable+bounces-160352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E85AFAF52
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 11:14:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36997AFAF68
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 11:16:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B757C3AFEBB
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 09:13:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D37A1AA370C
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 09:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED822A1BA;
-	Mon,  7 Jul 2025 09:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6292728D8CA;
+	Mon,  7 Jul 2025 09:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZfLbEP/v"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wKz4l6Bi"
 X-Original-To: stable@vger.kernel.org
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A55428CF41
-	for <stable@vger.kernel.org>; Mon,  7 Jul 2025 09:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7790435949
+	for <stable@vger.kernel.org>; Mon,  7 Jul 2025 09:16:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751879640; cv=none; b=k6zf8UhcVdTfyxQVHm7B7NXueVafgirc4pSMCeI3vKMfLS3EqpZyWL01XVSTO9JcVhjN9UBOVsKFwoKHPfn0LNjB+2pgn1wUkUoBXLzeEiVCdZHWxhVr8a1wLTCR8sA825Fe9KcOGWFICRuY7Rfn8KRSv4c3/mIDmAoG/KlNL6M=
+	t=1751879776; cv=none; b=psATxBCTRsOHC6n4C2dDmjU4RxO/DuzKRhprV+aYfZqLB8E0TIb5xFRbISaa0K7PPJNpJMCIw9kN8e3njRLC3SWFFK00LRaDF3Q12xal5iah0wuCMFyBdZIRqKDHSkd07g3NODiC1CixGjqslI7UMOFcJ9P/kenyxfj2eC8TscY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751879640; c=relaxed/simple;
-	bh=1QLjQcEr8pINe9brC2KlEBgSw99MZ6AV9to49+sZsrU=;
+	s=arc-20240116; t=1751879776; c=relaxed/simple;
+	bh=2N0U1EDqI/jQKzqP2h1Jsj1CKcBZm2BCirQSwgH6hIc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A7S6NFPUUm8YoJWob4AV9LypHffQLhv5m6o+W3tE4BpufvB43lkIAAWoeLd74kFjimIxraquOR1VWJl6Q3tK1xz2+3ivr6AauzDXPHpArfMow9gLX0Mp7WGiECpkOpmDPe8j1voiJhxSmH2lO+TpkZ++7TsfuV6uprsr43iNyfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZfLbEP/v; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <072268ae-3dea-46f8-8c9e-203d062eab82@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1751879626;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CgyqmMgmj4RoHL2MEMeBZbWgZV9nUOOsFAtiV0PoOpY=;
-	b=ZfLbEP/vZq2o4+akgW+lc4Afrvl/00HiSK0NwhRm0A7WUXvct0BrON8rtglHmdzeq5KYSC
-	Xv/RTbWP+ZfT7gszBHH2OFBdN1XVATLskmoyuwGiwM4ktvtQnzZuftIU1kgvxkqx71qwzm
-	jpzJevRaDNfnRPuYyjDh/EXfDo5znqo=
-Date: Mon, 7 Jul 2025 17:13:24 +0800
+	 In-Reply-To:Content-Type; b=Uj7hvtJjLeUthLv8G3F75N7qg4N1bEgt5bN8YL5AgexnsVFD5nw7DSPOBVr5nJi7BzO3yJeHFewuSeRcwpirZ7B4x7BM1hrUK8tA9FkYX0TEZKO+enlKSDJ/WWv2rTkXnfrGNpCSj/I51srBVXOKE8yMjSh4RmQWfpa/k6q0f1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wKz4l6Bi; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a548a73ff2so2797756f8f.0
+        for <stable@vger.kernel.org>; Mon, 07 Jul 2025 02:16:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1751879773; x=1752484573; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PSMRH5QDvCqW5KnIuvKRJN2G/mVFdVuXbgUbVefRVkM=;
+        b=wKz4l6BicRPAH8Tcx9JEwTsy7t2f2Dhfub5lrK+q6mJmzwinjf3PHwigni2zfviSpk
+         oBoQ1QQfgHHzmSZDazPEHpvWSQ5dDsmfez9xFDfoPQDdjMffkhncJGiXVRml3qjUR24M
+         NFucxuvIhmqKYR/lmz69dvvyakmi0xlr6WI6WguFKAW5/EO2RN9264c7ZwMvejQCeG0r
+         4mswesWiNMnU2U6D2Qddfpc9Zie07tNFZhFzCOte3xaK6xkOWEl0FV0OgaNSOIQED3VQ
+         1AzBmMaNq0APaXUc+TBz1B0MLCRwwC6MrCTypZ1+ZMehIY0pr6iiMdAIJ2kDhYtOrRkz
+         K43g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751879773; x=1752484573;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PSMRH5QDvCqW5KnIuvKRJN2G/mVFdVuXbgUbVefRVkM=;
+        b=m9uNKk6O6DW5Zp+zc1Aef0C8nrwKkjSTFJtqWZe7gPtptzUoSQiFqQfipDIMxOWjso
+         RJKidlcBMFkRssJPyo+2dv6Pim9psrOifaWMePiRChSmydM4zR835Ay8PgIJZZVdD6+K
+         klEKFUrF7Pz+OerIvdDI85z7ZCoI+EiKViW9NpmjCQ3bxcNPmgNAzQStkIDTxvgndmwd
+         7JyVzyH1X/RA+VFC/pCuikJvfMUAapXYI/j04SvJDodyEr6RdfZnjPrt0l8gdw3yW54I
+         hX/mp50A0Su2dWtQ8ZM/XOc9cefXtSZwFiXCtEUVGHyWgEgU8JM6VYakiIAfisZpqT9T
+         qx1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWF9wpoHv9sHNIX6LL7dINC/Do0jAD+YhU6H0sbe+KpSElbNEe6eday3WAcmYL+EPA/tjDmANQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUKstAM8hUNwVjMEKtrd7DHAoromp5H3dhFV5fEQSX0/TQhsEE
+	UmRZdVqdb86OVMhae7p6JbLJSPtCSlU04VbQVzD8iNx7hK9b2MbU/sZxsskU2RhIFrs=
+X-Gm-Gg: ASbGncuQ7rO7EZPpBVk6xdN7omQsgHMMrpo7piCzcZuf4VWI/pUYgaV9ueG0Jl5odoP
+	qlNydE9mtVvLc1jQtykRudJ08K7uYEbpgCldLbFQsNniykfjSR3rrB5ExD66mFblZyHMC/X21he
+	n5CcjFlFW0E47/Km/T4EoktwDgHWRq435XNYzbqhl7cCpOZgzzJeNVWtUrbvOCk7k+ivpnvp5yk
+	btusIcJcKlt2D0pEWbSc5H3URmpM8cJjhkQlC/ekfd8anFHVxCUvtRcWRIZL7S26AKQzvFW3rww
+	ofqhv/gwkyuqZnzz9hg8kVX+4MW1RTHcdR9473vR5f/cizz/nJg+2JzWnWoBvbdI4/U=
+X-Google-Smtp-Source: AGHT+IGGCWZfAUj4VNzkhRD8HfhSu3KCxQFzzdO1XpeV+D2rkMvRTzngh9EBKomoGoCaM7fN+nIbCA==
+X-Received: by 2002:a5d:6f1c:0:b0:3a5:527b:64c6 with SMTP id ffacd0b85a97d-3b49aa0e8e8mr6353994f8f.1.1751879772702;
+        Mon, 07 Jul 2025 02:16:12 -0700 (PDT)
+Received: from [192.168.1.3] ([37.18.136.128])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b471b9671asm9687980f8f.53.2025.07.07.02.16.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Jul 2025 02:16:12 -0700 (PDT)
+Message-ID: <207d1f3a-60f6-4a8d-8adc-e03e95f198e7@linaro.org>
+Date: Mon, 7 Jul 2025 10:16:10 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 1/1] mm/rmap: fix potential out-of-bounds page table
- access during batched unmap
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/139] 6.6.96-rc1 review
+To: Leo Yan <leo.yan@arm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
+ patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ Yeoreum Yun <yeoreum.yun@arm.com>, Suzuki K Poulose
+ <suzuki.poulose@arm.com>, Anders Roxell <anders.roxell@linaro.org>,
+ Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>
+References: <20250703143941.182414597@linuxfoundation.org>
+ <CA+G9fYu=JdHJdZo0aO+kK-TBNMv3dy-cLyO7KF4RMB20KyDuAg@mail.gmail.com>
+ <CA+G9fYv4UUmNpoJ77q7F5K20XGiNcO+ZfOzYNLQ=h7S3uTEc8g@mail.gmail.com>
+ <2025070605-stuffy-pointy-fd64@gregkh>
+ <20250707090308.GA2182465@e132581.arm.com>
 Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, 21cnbao@gmail.com,
- baolin.wang@linux.alibaba.com, chrisl@kernel.org, kasong@tencent.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-riscv@lists.infradead.org,
- lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, v-songbaohua@oppo.com,
- x86@kernel.org, huang.ying.caritas@gmail.com, zhengtangquan@oppo.com,
- riel@surriel.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- mingzhe.yang@ly.com, stable@vger.kernel.org, Barry Song <baohua@kernel.org>,
- Lance Yang <ioworker0@gmail.com>
-References: <20250701143100.6970-1-lance.yang@linux.dev>
- <aGtdwn0bLlO2FzZ6@harry>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <aGtdwn0bLlO2FzZ6@harry>
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <20250707090308.GA2182465@e132581.arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
 
 
-On 2025/7/7 13:40, Harry Yoo wrote:
-> On Tue, Jul 01, 2025 at 10:31:00PM +0800, Lance Yang wrote:
->> From: Lance Yang <lance.yang@linux.dev>
+On 07/07/2025 10:03 am, Leo Yan wrote:
+> On Sun, Jul 06, 2025 at 08:55:32AM +0200, Greg Kroah-Hartman wrote:
+> 
+> [...]
+> 
+>>> Bisection results pointing to,
+>>>
+>>>      coresight: Only check bottom two claim bits
+>>>       [ Upstream commit a4e65842e1142aa18ef36113fbd81d614eaefe5a ]
+>>>
+>>> The following patch needs to be back ported ?
+>>>     b36e78b216e6 ("ARM: 9354/1: ptrace: Use bitfield helpers")
 >>
->> As pointed out by David[1], the batched unmap logic in try_to_unmap_one()
->> may read past the end of a PTE table when a large folio's PTE mappings
->> are not fully contained within a single page table.
+>> Thanks, that makes sense, and is easier than me fixing this up by hand
+>> like I had tried to in one of the branches :)
 >>
->> While this scenario might be rare, an issue triggerable from userspace must
->> be fixed regardless of its likelihood. This patch fixes the out-of-bounds
->> access by refactoring the logic into a new helper, folio_unmap_pte_batch().
->>
->> The new helper correctly calculates the safe batch size by capping the scan
->> at both the VMA and PMD boundaries. To simplify the code, it also supports
->> partial batching (i.e., any number of pages from 1 up to the calculated
->> safe maximum), as there is no strong reason to special-case for fully
->> mapped folios.
->>
->> [1] https://lore.kernel.org/linux-mm/a694398c-9f03-4737-81b9-7e49c857fcbe@redhat.com
->>
->> Cc: <stable@vger.kernel.org>
->> Reported-by: David Hildenbrand <david@redhat.com>
->> Closes: https://lore.kernel.org/linux-mm/a694398c-9f03-4737-81b9-7e49c857fcbe@redhat.com
->> Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
->> Suggested-by: Barry Song <baohua@kernel.org>
->> Acked-by: Barry Song <baohua@kernel.org>
->> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Acked-by: David Hildenbrand <david@redhat.com>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
+>> Now queued up.
 > 
-> LGTM,
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-
-Hi Harry,
-
-Thanks for taking time to review!
-
+> I built for the Arm target in my local environment and confirmed that
+> the build failure has been fixed on the linux-6.6.y branch.
 > 
-> With a minor comment below.
+> Thanks for reporting and resolving the issue.
 > 
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index fb63d9256f09..1320b88fab74 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2206,13 +2213,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>   			hugetlb_remove_rmap(folio);
->>   		} else {
->>   			folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
->> -			folio_ref_sub(folio, nr_pages - 1);
->>   		}
->>   		if (vma->vm_flags & VM_LOCKED)
->>   			mlock_drain_local();
->> -		folio_put(folio);
->> -		/* We have already batched the entire folio */
->> -		if (nr_pages > 1)
->> +		folio_put_refs(folio, nr_pages);
->> +
->> +		/*
->> +		 * If we are sure that we batched the entire folio and cleared
->> +		 * all PTEs, we can just optimize and stop right here.
->> +		 */
->> +		if (nr_pages == folio_nr_pages(folio))
->>   			goto walk_done;
-> 
-> Just a minor comment.
-> 
-> We should probably teach page_vma_mapped_walk() to skip nr_pages pages,
-> or just rely on next_pte: do { ... } while (pte_none(ptep_get(pvmw->pte)))
-> loop in page_vma_mapped_walk() to skip those ptes?
+> Leo
 
-Good point. We handle partially-mapped folios by relying on the "next_pte"
-loop to skip those ptes. The common case we expect to handle is fully-mapped
-folios.
+That commit only fixes it by transitively including the header though. 
+I'll send a proper fix to include it in coresight-core.c so it doesn't 
+break again in the future.
 
-> 
-> Taking different paths depending on (nr_pages == folio_nr_pages(folio))
-> doesn't seem sensible.
+Thanks
+James
 
-Adding more logic to page_vma_mapped_walk() for the rare partial-folio
-case seems like an over-optimization that would complicate the walker.
-
-So, I'd prefer to keep it as is for now ;)
 
 
