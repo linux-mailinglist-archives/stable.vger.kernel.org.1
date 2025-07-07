@@ -1,104 +1,451 @@
-Return-Path: <stable+bounces-160367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6F1AFB430
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 15:17:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E62CAFB428
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 15:15:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADC353A912F
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 13:16:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08B2F188ECD8
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 13:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C1829DB6C;
-	Mon,  7 Jul 2025 13:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725C229DB77;
+	Mon,  7 Jul 2025 13:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="hjHI+TV1"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gk7LV8Oz";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SufhylUm";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gk7LV8Oz";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SufhylUm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp79.ord1d.emailsrvr.com (smtp79.ord1d.emailsrvr.com [184.106.54.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E842957DE
-	for <stable@vger.kernel.org>; Mon,  7 Jul 2025 13:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=184.106.54.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E007729C35A
+	for <stable@vger.kernel.org>; Mon,  7 Jul 2025 13:15:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751894206; cv=none; b=sCYb/G2Yoot+HCE/pnhH1dEHCzD/DcOv77tQUlLPEZ6ff4RVT+59acG0eeySJK28caHmkIpxJsORnPGsF8QrB6Cu0m647ekLgBw6y+Co3OEuBHALDvDLHZbY4Zjhw2lZKdG04LlNMR2h9h5OGScpSdbboI7KNTTQd89ASJDPIow=
+	t=1751894129; cv=none; b=aiJpkk5w8nGHCT/yWdTC1xOa1ri3p2GiyrFsgYi+paPYsWwye9pT3w/QuLYKnrY2le0zGvf17zXgYAWyFxIuRnOl5SeIKXA9LLtcsbj/Z9WAEq2GibEEFb8osWZQS+aXSNRdzVSPWQz+OFUfCy4v5JKayvqcAD5F9k2Azi9yND0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751894206; c=relaxed/simple;
-	bh=+MQNrRajYzgRvJT9hs9COOwWego2BbwUc1ZTW5K/jsc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ufSQSnAUvHLH0IgOOLKvixgOR7wCZ/pncW4vzFEi8uwekIljy4p76mNhbTu+2m+xf3D9rNudQFJpanjnUa3aTIvP1f3lxo7BDmPaV9vSPU9rdDobQA+vdUYypgpZASXpYdsvXJikK+1VYkDLwpNobDhrvab/qhv7my7McfZen4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=hjHI+TV1; arc=none smtp.client-ip=184.106.54.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-	s=20221208-6x11dpa4; t=1751893769;
-	bh=+MQNrRajYzgRvJT9hs9COOwWego2BbwUc1ZTW5K/jsc=;
-	h=From:To:Subject:Date:From;
-	b=hjHI+TV16vJ28lA73bl0OFuRRqePNCgVDLiDuZP/HJJZg87fNC0Ojta2iE8khUHPE
-	 gCJMNhj7OKHyet9Ojt85ak7bv/7IXbZZ0+Rsy1heGDMBfRXU1NaepvAlycdkSa42uu
-	 sFc00qaOazzoqCRMzqbBaBLCqcg2P6BV5+H/qHeU=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp10.relay.ord1d.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 5C9C4A0219;
-	Mon,  7 Jul 2025 09:09:28 -0400 (EDT)
-From: Ian Abbott <abbotti@mev.co.uk>
-To: linux-kernel@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com,
-	"Enju, Kohei" <enjuk@amazon.co.jp>,
+	s=arc-20240116; t=1751894129; c=relaxed/simple;
+	bh=NC7EQG32JWQ2+/5mFP+KCEjaXl9Nw34EJ104XDI3v1s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QenrM69O4PDKZ4DhMV10NBjZL2bAXtLLXokBrQRtycGgCDmUkC3up0UZi+MD6HDkMm6KbiPMIBJjbumANZVE6GvnpY2JV12V3Hcb7uo/c0ugbZh+MwMrRX+2pbByyLUdsjnn3LondnNtu0s+dsngwgwklxjucr9v19bI1VHnTYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gk7LV8Oz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SufhylUm; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gk7LV8Oz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SufhylUm; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EB7C51F390;
+	Mon,  7 Jul 2025 13:15:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1751894124; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=C1Dhfr+8pCD1IYHBaTcTmQM8ZHAUNKPJlBoJluMTmOM=;
+	b=gk7LV8OzXH0xQwoYIU01XxQQwayccpL/ryS42+1w++X1XaLujOmtL9/NgK7XqCQYJtI/PQ
+	yoMGOxcvrBUu+STibWUO1e+savkgMYHIoEzzlrIXUo+Gx7ehY66fUK2+pqyWizGNm/eooU
+	bpENS39t5dgrJDVUehMxbgXYh72Q7eA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1751894124;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=C1Dhfr+8pCD1IYHBaTcTmQM8ZHAUNKPJlBoJluMTmOM=;
+	b=SufhylUm15tiX0SS4fZ5lnTwN4UyYrOtjrqQJQtsTsiB1111iwPhgck9Q4FK5TGasuC9ZI
+	JxI0fs76hdhz+ECg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gk7LV8Oz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SufhylUm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1751894124; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=C1Dhfr+8pCD1IYHBaTcTmQM8ZHAUNKPJlBoJluMTmOM=;
+	b=gk7LV8OzXH0xQwoYIU01XxQQwayccpL/ryS42+1w++X1XaLujOmtL9/NgK7XqCQYJtI/PQ
+	yoMGOxcvrBUu+STibWUO1e+savkgMYHIoEzzlrIXUo+Gx7ehY66fUK2+pqyWizGNm/eooU
+	bpENS39t5dgrJDVUehMxbgXYh72Q7eA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1751894124;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=C1Dhfr+8pCD1IYHBaTcTmQM8ZHAUNKPJlBoJluMTmOM=;
+	b=SufhylUm15tiX0SS4fZ5lnTwN4UyYrOtjrqQJQtsTsiB1111iwPhgck9Q4FK5TGasuC9ZI
+	JxI0fs76hdhz+ECg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 737EF13757;
+	Mon,  7 Jul 2025 13:15:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id nrjKGmvIa2hgFgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 07 Jul 2025 13:15:23 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: christian.koenig@amd.com,
+	asrivats@redhat.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	jean-christophe@guillain.net,
+	superm1@kernel.org,
+	satadru@gmail.com,
+	bp@alien8.de
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Bert Karwatzki <spasswolf@web.de>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
 	stable@vger.kernel.org
-Subject: [PATCH] comedi: das16m1: Fix bit shift out of bounds
-Date: Mon,  7 Jul 2025 14:09:08 +0100
-Message-ID: <20250707130908.70758-1-abbotti@mev.co.uk>
-X-Mailer: git-send-email 2.47.2
+Subject: [PATCH v3] drm/framebuffer: Acquire internal references on GEM handles
+Date: Mon,  7 Jul 2025 15:11:55 +0200
+Message-ID: <20250707131224.249496-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Classification-ID: c1dbfb42-cac4-4372-8215-e9f6cc597d88-1-1
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FREEMAIL_TO(0.00)[amd.com,redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,guillain.net,alien8.de];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,web.de];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,vger.kernel.org,suse.de,web.de,linaro.org,lists.linaro.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,linaro.org:email,suse.de:mid,suse.de:dkim,suse.de:email,intel.com:email];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Rspamd-Queue-Id: EB7C51F390
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.51
 
-When checking for a supported IRQ number, the following test is used:
+Acquire GEM handles in drm_framebuffer_init() and release them in
+the corresponding drm_framebuffer_cleanup(). Ties the handle's
+lifetime to the framebuffer. Not all GEM buffer objects have GEM
+handles. If not set, no refcounting takes place. This is the case
+for some fbdev emulation. This is not a problem as these GEM objects
+do not use dma-bufs and drivers will not release them while fbdev
+emulation is running. Framebuffer flags keep a bit per color plane
+of which the framebuffer holds a GEM handle reference.
 
-	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
-	if ((1 << it->options[1]) & 0xdcfc) {
+As all drivers use drm_framebuffer_init(), they will now all hold
+dma-buf references as fixed in commit 5307dce878d4 ("drm/gem: Acquire
+references on GEM handles for framebuffers").
 
-However, `it->options[i]` is an unchecked `int` value from userspace, so
-the shift amount could be negative or out of bounds.  Fix the test by
-requiring `it->options[1]` to be within bounds before proceeding with
-the original test.
+In the GEM framebuffer helpers, restore the original ref counting
+on buffer objects. As the helpers for handle refcounting are now
+no longer called from outside the DRM core, unexport the symbols.
 
-Reported-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c52293513298e0fd9a94
-Fixes: 729988507680 ("staging: comedi: das16m1: tidy up the irq support in das16m1_attach()")
-Tested-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
-Suggested-by: "Enju, Kohei" <enjuk@amazon.co.jp>
-Cc: <stable@vger.kernel.org> # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+v3:
+- don't mix internal flags with mode flags (Christian)
+v2:
+- track framebuffer handle refs by flag
+- drop gma500 cleanup (Christian)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 5307dce878d4 ("drm/gem: Acquire references on GEM handles for framebuffers")
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Closes: https://lore.kernel.org/dri-devel/20250703115915.3096-1-spasswolf@web.de/
+Tested-by: Bert Karwatzki <spasswolf@web.de>
+Tested-by: Mario Limonciello <superm1@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Anusha Srivatsa <asrivats@redhat.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: linux-media@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linaro-mm-sig@lists.linaro.org
+Cc: <stable@vger.kernel.org>
 ---
-Patch does not apply cleanly to longterm kernels 5.4.x and 5.10.x.
----
- drivers/comedi/drivers/das16m1.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_framebuffer.c            | 31 ++++++++++++++--
+ drivers/gpu/drm/drm_gem.c                    | 38 ++++++++++++--------
+ drivers/gpu/drm/drm_gem_framebuffer_helper.c | 16 ++++-----
+ drivers/gpu/drm/drm_internal.h               |  2 +-
+ include/drm/drm_framebuffer.h                |  7 ++++
+ 5 files changed, 68 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/comedi/drivers/das16m1.c b/drivers/comedi/drivers/das16m1.c
-index b8ea737ad3d1..1b638f5b5a4f 100644
---- a/drivers/comedi/drivers/das16m1.c
-+++ b/drivers/comedi/drivers/das16m1.c
-@@ -522,7 +522,8 @@ static int das16m1_attach(struct comedi_device *dev,
- 	devpriv->extra_iobase = dev->iobase + DAS16M1_8255_IOBASE;
+diff --git a/drivers/gpu/drm/drm_framebuffer.c b/drivers/gpu/drm/drm_framebuffer.c
+index b781601946db..63a70f285cce 100644
+--- a/drivers/gpu/drm/drm_framebuffer.c
++++ b/drivers/gpu/drm/drm_framebuffer.c
+@@ -862,11 +862,23 @@ EXPORT_SYMBOL_FOR_TESTS_ONLY(drm_framebuffer_free);
+ int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
+ 			 const struct drm_framebuffer_funcs *funcs)
+ {
++	unsigned int i;
+ 	int ret;
++	bool exists;
  
- 	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
--	if ((1 << it->options[1]) & 0xdcfc) {
-+	if (it->options[1] >= 2 && it->options[1] <= 15 &&
-+	    (1 << it->options[1]) & 0xdcfc) {
- 		ret = request_irq(it->options[1], das16m1_interrupt, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0)
+ 	if (WARN_ON_ONCE(fb->dev != dev || !fb->format))
+ 		return -EINVAL;
+ 
++	for (i = 0; i < fb->format->num_planes; i++) {
++		if (drm_WARN_ON_ONCE(dev, fb->internal_flags & DRM_FRAMEBUFFER_HAS_HANDLE_REF(i)))
++			fb->internal_flags &= ~DRM_FRAMEBUFFER_HAS_HANDLE_REF(i);
++		if (fb->obj[i]) {
++			exists = drm_gem_object_handle_get_if_exists_unlocked(fb->obj[i]);
++			if (exists)
++				fb->internal_flags |= DRM_FRAMEBUFFER_HAS_HANDLE_REF(i);
++		}
++	}
++
+ 	INIT_LIST_HEAD(&fb->filp_head);
+ 
+ 	fb->funcs = funcs;
+@@ -875,7 +887,7 @@ int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
+ 	ret = __drm_mode_object_add(dev, &fb->base, DRM_MODE_OBJECT_FB,
+ 				    false, drm_framebuffer_free);
+ 	if (ret)
+-		goto out;
++		goto err;
+ 
+ 	mutex_lock(&dev->mode_config.fb_lock);
+ 	dev->mode_config.num_fb++;
+@@ -883,7 +895,16 @@ int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
+ 	mutex_unlock(&dev->mode_config.fb_lock);
+ 
+ 	drm_mode_object_register(dev, &fb->base);
+-out:
++
++	return 0;
++
++err:
++	for (i = 0; i < fb->format->num_planes; i++) {
++		if (fb->internal_flags & DRM_FRAMEBUFFER_HAS_HANDLE_REF(i)) {
++			drm_gem_object_handle_put_unlocked(fb->obj[i]);
++			fb->internal_flags &= ~DRM_FRAMEBUFFER_HAS_HANDLE_REF(i);
++		}
++	}
+ 	return ret;
+ }
+ EXPORT_SYMBOL(drm_framebuffer_init);
+@@ -960,6 +981,12 @@ EXPORT_SYMBOL(drm_framebuffer_unregister_private);
+ void drm_framebuffer_cleanup(struct drm_framebuffer *fb)
+ {
+ 	struct drm_device *dev = fb->dev;
++	unsigned int i;
++
++	for (i = 0; i < fb->format->num_planes; i++) {
++		if (fb->internal_flags & DRM_FRAMEBUFFER_HAS_HANDLE_REF(i))
++			drm_gem_object_handle_put_unlocked(fb->obj[i]);
++	}
+ 
+ 	mutex_lock(&dev->mode_config.fb_lock);
+ 	list_del(&fb->head);
+diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+index bc505d938b3e..41cdab6088ae 100644
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -224,23 +224,34 @@ static void drm_gem_object_handle_get(struct drm_gem_object *obj)
+ }
+ 
+ /**
+- * drm_gem_object_handle_get_unlocked - acquire reference on user-space handles
++ * drm_gem_object_handle_get_if_exists_unlocked - acquire reference on user-space handle, if any
+  * @obj: GEM object
+  *
+- * Acquires a reference on the GEM buffer object's handle. Required
+- * to keep the GEM object alive. Call drm_gem_object_handle_put_unlocked()
+- * to release the reference.
++ * Acquires a reference on the GEM buffer object's handle. Required to keep
++ * the GEM object alive. Call drm_gem_object_handle_put_if_exists_unlocked()
++ * to release the reference. Does nothing if the buffer object has no handle.
++ *
++ * Returns:
++ * True if a handle exists, or false otherwise
+  */
+-void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj)
++bool drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj)
+ {
+ 	struct drm_device *dev = obj->dev;
+ 
+ 	guard(mutex)(&dev->object_name_lock);
+ 
+-	drm_WARN_ON(dev, !obj->handle_count); /* first ref taken in create-tail helper */
++	/*
++	 * First ref taken during GEM object creation, if any. Some
++	 * drivers set up internal framebuffers with GEM objects that
++	 * do not have a GEM handle. Hence, this counter can be zero.
++	 */
++	if (!obj->handle_count)
++		return false;
++
+ 	drm_gem_object_handle_get(obj);
++
++	return true;
+ }
+-EXPORT_SYMBOL(drm_gem_object_handle_get_unlocked);
+ 
+ /**
+  * drm_gem_object_handle_free - release resources bound to userspace handles
+@@ -273,7 +284,7 @@ static void drm_gem_object_exported_dma_buf_free(struct drm_gem_object *obj)
+ }
+ 
+ /**
+- * drm_gem_object_handle_put_unlocked - releases reference on user-space handles
++ * drm_gem_object_handle_put_unlocked - releases reference on user-space handle
+  * @obj: GEM object
+  *
+  * Releases a reference on the GEM buffer object's handle. Possibly releases
+@@ -284,14 +295,14 @@ void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
+ 	struct drm_device *dev = obj->dev;
+ 	bool final = false;
+ 
+-	if (WARN_ON(READ_ONCE(obj->handle_count) == 0))
++	if (drm_WARN_ON(dev, READ_ONCE(obj->handle_count) == 0))
+ 		return;
+ 
+ 	/*
+-	* Must bump handle count first as this may be the last
+-	* ref, in which case the object would disappear before we
+-	* checked for a name
+-	*/
++	 * Must bump handle count first as this may be the last
++	 * ref, in which case the object would disappear before
++	 * we checked for a name.
++	 */
+ 
+ 	mutex_lock(&dev->object_name_lock);
+ 	if (--obj->handle_count == 0) {
+@@ -304,7 +315,6 @@ void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
+ 	if (final)
+ 		drm_gem_object_put(obj);
+ }
+-EXPORT_SYMBOL(drm_gem_object_handle_put_unlocked);
+ 
+ /*
+  * Called at device or object close to release the file's
+diff --git a/drivers/gpu/drm/drm_gem_framebuffer_helper.c b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+index c60d0044d036..618ce725cd75 100644
+--- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
++++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+@@ -100,7 +100,7 @@ void drm_gem_fb_destroy(struct drm_framebuffer *fb)
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < fb->format->num_planes; i++)
+-		drm_gem_object_handle_put_unlocked(fb->obj[i]);
++		drm_gem_object_put(fb->obj[i]);
+ 
+ 	drm_framebuffer_cleanup(fb);
+ 	kfree(fb);
+@@ -183,10 +183,8 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
+ 		if (!objs[i]) {
+ 			drm_dbg_kms(dev, "Failed to lookup GEM object\n");
+ 			ret = -ENOENT;
+-			goto err_gem_object_handle_put_unlocked;
++			goto err_gem_object_put;
+ 		}
+-		drm_gem_object_handle_get_unlocked(objs[i]);
+-		drm_gem_object_put(objs[i]);
+ 
+ 		min_size = (height - 1) * mode_cmd->pitches[i]
+ 			 + drm_format_info_min_pitch(info, i, width)
+@@ -196,22 +194,22 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
+ 			drm_dbg_kms(dev,
+ 				    "GEM object size (%zu) smaller than minimum size (%u) for plane %d\n",
+ 				    objs[i]->size, min_size, i);
+-			drm_gem_object_handle_put_unlocked(objs[i]);
++			drm_gem_object_put(objs[i]);
+ 			ret = -EINVAL;
+-			goto err_gem_object_handle_put_unlocked;
++			goto err_gem_object_put;
+ 		}
+ 	}
+ 
+ 	ret = drm_gem_fb_init(dev, fb, mode_cmd, objs, i, funcs);
+ 	if (ret)
+-		goto err_gem_object_handle_put_unlocked;
++		goto err_gem_object_put;
+ 
+ 	return 0;
+ 
+-err_gem_object_handle_put_unlocked:
++err_gem_object_put:
+ 	while (i > 0) {
+ 		--i;
+-		drm_gem_object_handle_put_unlocked(objs[i]);
++		drm_gem_object_put(objs[i]);
+ 	}
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/drm_internal.h b/drivers/gpu/drm/drm_internal.h
+index f921cc73f8b8..e79c3c623c9a 100644
+--- a/drivers/gpu/drm/drm_internal.h
++++ b/drivers/gpu/drm/drm_internal.h
+@@ -161,7 +161,7 @@ void drm_sysfs_lease_event(struct drm_device *dev);
+ 
+ /* drm_gem.c */
+ int drm_gem_init(struct drm_device *dev);
+-void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj);
++bool drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj);
+ void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj);
+ int drm_gem_handle_create_tail(struct drm_file *file_priv,
+ 			       struct drm_gem_object *obj,
+diff --git a/include/drm/drm_framebuffer.h b/include/drm/drm_framebuffer.h
+index 668077009fce..38b24fc8978d 100644
+--- a/include/drm/drm_framebuffer.h
++++ b/include/drm/drm_framebuffer.h
+@@ -23,6 +23,7 @@
+ #ifndef __DRM_FRAMEBUFFER_H__
+ #define __DRM_FRAMEBUFFER_H__
+ 
++#include <linux/bits.h>
+ #include <linux/ctype.h>
+ #include <linux/list.h>
+ #include <linux/sched.h>
+@@ -100,6 +101,8 @@ struct drm_framebuffer_funcs {
+ 		     unsigned num_clips);
+ };
+ 
++#define DRM_FRAMEBUFFER_HAS_HANDLE_REF(_i)	BIT(0u + (_i))
++
+ /**
+  * struct drm_framebuffer - frame buffer object
+  *
+@@ -188,6 +191,10 @@ struct drm_framebuffer {
+ 	 * DRM_MODE_FB_MODIFIERS.
+ 	 */
+ 	int flags;
++	/**
++	 * @internal_flags: Framebuffer flags like DRM_FRAMEBUFFER_HAS_HANDLE_REF.
++	 */
++	unsigned int internal_flags;
+ 	/**
+ 	 * @filp_head: Placed on &drm_file.fbs, protected by &drm_file.fbs_lock.
+ 	 */
 -- 
-2.47.2
+2.50.0
 
 
