@@ -1,451 +1,361 @@
-Return-Path: <stable+bounces-160366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E62CAFB428
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 15:15:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC935AFB44B
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 15:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08B2F188ECD8
-	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 13:15:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45A477AB5FE
+	for <lists+stable@lfdr.de>; Mon,  7 Jul 2025 13:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725C229DB77;
-	Mon,  7 Jul 2025 13:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B6C29CB31;
+	Mon,  7 Jul 2025 13:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gk7LV8Oz";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SufhylUm";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gk7LV8Oz";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SufhylUm"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UlzJBavN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E007729C35A
-	for <stable@vger.kernel.org>; Mon,  7 Jul 2025 13:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB72529AB11
+	for <stable@vger.kernel.org>; Mon,  7 Jul 2025 13:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751894129; cv=none; b=aiJpkk5w8nGHCT/yWdTC1xOa1ri3p2GiyrFsgYi+paPYsWwye9pT3w/QuLYKnrY2le0zGvf17zXgYAWyFxIuRnOl5SeIKXA9LLtcsbj/Z9WAEq2GibEEFb8osWZQS+aXSNRdzVSPWQz+OFUfCy4v5JKayvqcAD5F9k2Azi9yND0=
+	t=1751894404; cv=none; b=bYkmkaOo73yvhYXanoWgyZA1cgx54L47E1UGsUG1f0OFSyfX6QvyMJHkkaCZgIwvKAgqC2xHUyBkVyZqG08ImoRKC93+ikiKyrkvdQq+OUJzSl8gj/nzZQ0C0DbYNHgfEoCEj+tfPqQwGFslwpyttTw/8dw/VvSdeYHUxckXsFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751894129; c=relaxed/simple;
-	bh=NC7EQG32JWQ2+/5mFP+KCEjaXl9Nw34EJ104XDI3v1s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QenrM69O4PDKZ4DhMV10NBjZL2bAXtLLXokBrQRtycGgCDmUkC3up0UZi+MD6HDkMm6KbiPMIBJjbumANZVE6GvnpY2JV12V3Hcb7uo/c0ugbZh+MwMrRX+2pbByyLUdsjnn3LondnNtu0s+dsngwgwklxjucr9v19bI1VHnTYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gk7LV8Oz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SufhylUm; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gk7LV8Oz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SufhylUm; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EB7C51F390;
-	Mon,  7 Jul 2025 13:15:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1751894124; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=C1Dhfr+8pCD1IYHBaTcTmQM8ZHAUNKPJlBoJluMTmOM=;
-	b=gk7LV8OzXH0xQwoYIU01XxQQwayccpL/ryS42+1w++X1XaLujOmtL9/NgK7XqCQYJtI/PQ
-	yoMGOxcvrBUu+STibWUO1e+savkgMYHIoEzzlrIXUo+Gx7ehY66fUK2+pqyWizGNm/eooU
-	bpENS39t5dgrJDVUehMxbgXYh72Q7eA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1751894124;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=C1Dhfr+8pCD1IYHBaTcTmQM8ZHAUNKPJlBoJluMTmOM=;
-	b=SufhylUm15tiX0SS4fZ5lnTwN4UyYrOtjrqQJQtsTsiB1111iwPhgck9Q4FK5TGasuC9ZI
-	JxI0fs76hdhz+ECg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gk7LV8Oz;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SufhylUm
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1751894124; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=C1Dhfr+8pCD1IYHBaTcTmQM8ZHAUNKPJlBoJluMTmOM=;
-	b=gk7LV8OzXH0xQwoYIU01XxQQwayccpL/ryS42+1w++X1XaLujOmtL9/NgK7XqCQYJtI/PQ
-	yoMGOxcvrBUu+STibWUO1e+savkgMYHIoEzzlrIXUo+Gx7ehY66fUK2+pqyWizGNm/eooU
-	bpENS39t5dgrJDVUehMxbgXYh72Q7eA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1751894124;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=C1Dhfr+8pCD1IYHBaTcTmQM8ZHAUNKPJlBoJluMTmOM=;
-	b=SufhylUm15tiX0SS4fZ5lnTwN4UyYrOtjrqQJQtsTsiB1111iwPhgck9Q4FK5TGasuC9ZI
-	JxI0fs76hdhz+ECg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 737EF13757;
-	Mon,  7 Jul 2025 13:15:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nrjKGmvIa2hgFgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 07 Jul 2025 13:15:23 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: christian.koenig@amd.com,
-	asrivats@redhat.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	jean-christophe@guillain.net,
-	superm1@kernel.org,
-	satadru@gmail.com,
-	bp@alien8.de
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Bert Karwatzki <spasswolf@web.de>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	stable@vger.kernel.org
-Subject: [PATCH v3] drm/framebuffer: Acquire internal references on GEM handles
-Date: Mon,  7 Jul 2025 15:11:55 +0200
-Message-ID: <20250707131224.249496-1-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.50.0
+	s=arc-20240116; t=1751894404; c=relaxed/simple;
+	bh=tgoWUv2gu2Q7lA3ntEI4yHtLfGxqekhsrVNBv7XAbeQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=psEAGOWgcbZ6/Q1esU/zMMshZX67Jhtd0WhHD38PbeO5bN4jOmGhn/K4CuZ63TNhlrBFCEo99p7h7aAumJ4wuZzFeGI1xpJaTXq7oUUfpj4BpuevlR4SYt9/Ik63CF+dJg0tKKAgoUH611ouO+wkY4pIUvEQddjkJypCDlHKb2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UlzJBavN; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6098ef283f0so39697a12.0
+        for <stable@vger.kernel.org>; Mon, 07 Jul 2025 06:20:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1751894400; x=1752499200; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bCxuqWCuJ4JJm0v+Q9MXGmDIyevW5a3jro9m7bKDgvk=;
+        b=UlzJBavNL4jyR3EOPKmqiBAOxq97ZoKIdtOCtjGrZ00Z6JdzoXM+2AmIV3TM+M4w60
+         7tTtNYgGEwlFXzuxwm3TIcRJRN3JSAF/XJlKFgW93+HU5MOwUxySCh9ubNEIQn9z9dJI
+         Sm+S1n1H6jqmRwpCiH6fH52l+t5CRb9MOPk05I804uu7yIxUPVBPXA7avEtSQG5dI/3Q
+         sQHxX5zhht4BhYygZSTztMyCUCEroriWg5I5lH7raOF6FiHO8Lptxj+lQcM49p/k5yfe
+         nzvV+ojYPm9q30DQaFceVLKlNX4mJCteGUIfdqzyDm7GIbNOdHuAIj5aczJFnOfs5jZi
+         HkDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751894400; x=1752499200;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bCxuqWCuJ4JJm0v+Q9MXGmDIyevW5a3jro9m7bKDgvk=;
+        b=jHPZcrSguY2RgaGtEYdeQcAtQaKnj78/RA/+LZyDYQV8XWvQMHsOHCImRrkFcDDtpE
+         PPIOBOrcf+5BqKRqfcFiCt7ABoOcLh+8KHJqGpLSC7eowEIKKxapJhrfslM5gEPcDwYM
+         1017WZ2SvHm6wBpN7pCcqGzASGXoGiKkFcDbYWgGES3W52/rNGlmr6QqWqUsGvCiUgBv
+         oHuRMBErSyuVf5/8GJbstFohQCa7Jozgj7OQrroRmz7nz5/z18D3VUo1VBoSTbSSfQkf
+         DYPHiqekIbY1+riSlsD4TtHykt4EYZMjhjasJph9Bsv/Cxu/z02OMAsxX1/VhYOhHa0W
+         nUZg==
+X-Gm-Message-State: AOJu0Yyp4vbSPjYd4cg5ZMEhboq08m3b1HGuIY/lJWUbImyaaWgsoI6O
+	UQ3fOhvO6bEDXZvf776lGt9ss9NqNVKcxqalgikmoVRzGQ/9ofBaFnhng23b9SjH12HEok3p1fC
+	ZLmrzETqiG15EWUenADEqReTLhPIL/aDwYCBAlOqI
+X-Gm-Gg: ASbGncthPvnAeSXGdbu3alcQfb0WHICTAcOmk3tVIxl0fbvN//LlFZbNeSs0ATfD44g
+	o/I1YVq1eYTZbLLhYyCNJIMB3gGDL0WBXsEv/wcOD+O4ptSVSbUuL6d0sS7hHsdzQYUteSSNo0n
+	ZgVnxup0hvRsvFYC41yd1vlqTn4iuBg7Q5LH2f7nug456FrzRKp0Lweyi9XqwVSiD8gahJCdO8J
+	537s4YoGFA=
+X-Google-Smtp-Source: AGHT+IFIijnmLgCqgtnBp3naqYQnjARtzzL3/3Aq2YXZWZvf4HkZ9MoCb+E5T2iFrvBd2MfuoAdWlLTNrd5L/Twen6Y=
+X-Received: by 2002:a50:bb0e:0:b0:606:f77b:7943 with SMTP id
+ 4fb4d7f45d1cf-60e70791543mr237652a12.0.1751894399669; Mon, 07 Jul 2025
+ 06:19:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FREEMAIL_TO(0.00)[amd.com,redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,guillain.net,alien8.de];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,web.de];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,vger.kernel.org,suse.de,web.de,linaro.org,lists.linaro.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,linaro.org:email,suse.de:mid,suse.de:dkim,suse.de:email,intel.com:email];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Rspamd-Queue-Id: EB7C51F390
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.51
+References: <20250620213334.158850-1-jannh@google.com> <evfvb2d7jgglzgp66hvwu7pwdzbdbbcitym5574vxkno3ff6vt@jg7nfsgded5w>
+In-Reply-To: <evfvb2d7jgglzgp66hvwu7pwdzbdbbcitym5574vxkno3ff6vt@jg7nfsgded5w>
+From: Jann Horn <jannh@google.com>
+Date: Mon, 7 Jul 2025 15:19:23 +0200
+X-Gm-Features: Ac12FXwG1aCFHqwxFq4ht3-q0UgJ21VTvOOK4OJNStbS29EfDIJBkngaEJJ5iH4
+Message-ID: <CAG48ez3LqUwXxhRY56tqQCpfGJsJ-GeXFG9FCcTZEBo2bWOK8Q@mail.gmail.com>
+Subject: Re: [PATCH 6.1.y 1/3] mm/hugetlb: unshare page tables during VMA
+ split, not before
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: stable@vger.kernel.org, lvc-project@linuxtesting.org, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Pedro Falcato <pfalcato@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Acquire GEM handles in drm_framebuffer_init() and release them in
-the corresponding drm_framebuffer_cleanup(). Ties the handle's
-lifetime to the framebuffer. Not all GEM buffer objects have GEM
-handles. If not set, no refcounting takes place. This is the case
-for some fbdev emulation. This is not a problem as these GEM objects
-do not use dma-bufs and drivers will not release them while fbdev
-emulation is running. Framebuffer flags keep a bit per color plane
-of which the framebuffer holds a GEM handle reference.
++cc relevant maintainers for the relevant upstream code so they're
+aware of how I broke stable with my backports of hugetlb fixes. Looks
+like I wasn't being careful enough...
 
-As all drivers use drm_framebuffer_init(), they will now all hold
-dma-buf references as fixed in commit 5307dce878d4 ("drm/gem: Acquire
-references on GEM handles for framebuffers").
+On Mon, Jul 7, 2025 at 12:39=E2=80=AFPM Fedor Pchelkin <pchelkin@ispras.ru>=
+ wrote:
+> On Fri, 20 Jun 2025 23:33:31 +0200, Jann Horn wrote:
+> > Currently, __split_vma() triggers hugetlb page table unsharing through
+> > vm_ops->may_split().  This happens before the VMA lock and rmap locks a=
+re
+> > taken - which is too early, it allows racing VMA-locked page faults in =
+our
+> > process and racing rmap walks from other processes to cause page tables=
+ to
+> > be shared again before we actually perform the split.
+> >
+> > Fix it by explicitly calling into the hugetlb unshare logic from
+> > __split_vma() in the same place where THP splitting also happens.  At t=
+hat
+> > point, both the VMA and the rmap(s) are write-locked.
+> >
+> > An annoying detail is that we can now call into the helper
+> > hugetlb_unshare_pmds() from two different locking contexts:
+> >
+> > 1. from hugetlb_split(), holding:
+> >     - mmap lock (exclusively)
+> >     - VMA lock
+> >     - file rmap lock (exclusively)
+> > 2. hugetlb_unshare_all_pmds(), which I think is designed to be able to
+> >    call us with only the mmap lock held (in shared mode), but currently
+> >    only runs while holding mmap lock (exclusively) and VMA lock
+> >
+> > Backporting note:
+> > This commit fixes a racy protection that was introduced in commit
+> > b30c14cd6102 ("hugetlb: unshare some PMDs when splitting VMAs"); that
+> > commit claimed to fix an issue introduced in 5.13, but it should actual=
+ly
+> > also go all the way back.
+> >
+> > [jannh@google.com: v2]
+> >   Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-1=
+-1329349bad1a@google.com
+> > Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-0-1=
+329349bad1a@google.com
+> > Link: https://lkml.kernel.org/r/20250527-hugetlb-fixes-splitrace-v1-1-f=
+4136f5ec58a@google.com
+> > Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
+> > Signed-off-by: Jann Horn <jannh@google.com>
+> > Cc: Liam Howlett <liam.howlett@oracle.com>
+> > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Cc: Vlastimil Babka <vbabka@suse.cz>
+> > Cc: <stable@vger.kernel.org>  [b30c14cd6102: hugetlb: unshare some PMDs=
+ when splitting VMAs]
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> > [stable backport: code got moved around, VMA splitting is in
+> > __vma_adjust]
+> > Signed-off-by: Jann Horn <jannh@google.com>
+> > ---
+> >  include/linux/hugetlb.h |  3 +++
+> >  mm/hugetlb.c            | 60 ++++++++++++++++++++++++++++++-----------
+> >  mm/mmap.c               |  8 ++++++
+> >  3 files changed, 55 insertions(+), 16 deletions(-)
+> >
+> > diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> > index cc555072940f..26f2947c399d 100644
+> > --- a/include/linux/hugetlb.h
+> > +++ b/include/linux/hugetlb.h
+> > @@ -239,6 +239,7 @@ unsigned long hugetlb_change_protection(struct vm_a=
+rea_struct *vma,
+> >
+> >  bool is_hugetlb_entry_migration(pte_t pte);
+> >  void hugetlb_unshare_all_pmds(struct vm_area_struct *vma);
+> > +void hugetlb_split(struct vm_area_struct *vma, unsigned long addr);
+> >
+> >  #else /* !CONFIG_HUGETLB_PAGE */
+> >
+> > @@ -472,6 +473,8 @@ static inline vm_fault_t hugetlb_fault(struct mm_st=
+ruct *mm,
+> >
+> >  static inline void hugetlb_unshare_all_pmds(struct vm_area_struct *vma=
+) { }
+> >
+> > +static inline void hugetlb_split(struct vm_area_struct *vma, unsigned =
+long addr) {}
+> > +
+> >  #endif /* !CONFIG_HUGETLB_PAGE */
+> >  /*
+> >   * hugepages at page global directory. If arch support
+> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> > index 14b9494c58ed..fc5d3d665266 100644
+> > --- a/mm/hugetlb.c
+> > +++ b/mm/hugetlb.c
+> > @@ -95,7 +95,7 @@ static void hugetlb_vma_lock_free(struct vm_area_stru=
+ct *vma);
+> >  static void hugetlb_vma_lock_alloc(struct vm_area_struct *vma);
+> >  static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma=
+);
+> >  static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+> > -             unsigned long start, unsigned long end);
+> > +             unsigned long start, unsigned long end, bool take_locks);
+> >  static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
+> >
+> >  static inline bool subpool_is_free(struct hugepage_subpool *spool)
+> > @@ -4900,26 +4900,40 @@ static int hugetlb_vm_op_split(struct vm_area_s=
+truct *vma, unsigned long addr)
+> >  {
+> >       if (addr & ~(huge_page_mask(hstate_vma(vma))))
+> >               return -EINVAL;
+> > +     return 0;
+> > +}
+> >
+> > +void hugetlb_split(struct vm_area_struct *vma, unsigned long addr)
+> > +{
+> >       /*
+> >        * PMD sharing is only possible for PUD_SIZE-aligned address rang=
+es
+> >        * in HugeTLB VMAs. If we will lose PUD_SIZE alignment due to thi=
+s
+> >        * split, unshare PMDs in the PUD_SIZE interval surrounding addr =
+now.
+> > +      * This function is called in the middle of a VMA split operation=
+, with
+> > +      * MM, VMA and rmap all write-locked to prevent concurrent page t=
+able
+> > +      * walks (except hardware and gup_fast()).
+> >        */
+> > +     mmap_assert_write_locked(vma->vm_mm);
+> > +     i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+>
+>
+> The above i_mmap lock assertion is firing on stable kernels from 5.10 to =
+6.1
+> included.
+>
+> ------------[ cut here ]------------
+> WARNING: CPU: 0 PID: 11489 at include/linux/fs.h:503 i_mmap_assert_write_=
+locked include/linux/fs.h:503 [inline]
+> WARNING: CPU: 0 PID: 11489 at include/linux/fs.h:503 hugetlb_split+0x267/=
+0x300 mm/hugetlb.c:4917
+> Modules linked in:
+> CPU: 0 PID: 11489 Comm: syz-executor.4 Not tainted 6.1.142-syzkaller-0029=
+6-gfd0df5221577 #0
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/0=
+1/2014
+> RIP: 0010:i_mmap_assert_write_locked include/linux/fs.h:503 [inline]
+> RIP: 0010:hugetlb_split+0x267/0x300 mm/hugetlb.c:4917
+> Call Trace:
+>  <TASK>
+>  __vma_adjust+0xd73/0x1c10 mm/mmap.c:736
+>  vma_adjust include/linux/mm.h:2745 [inline]
+>  __split_vma+0x459/0x540 mm/mmap.c:2385
+>  do_mas_align_munmap+0x5f2/0xf10 mm/mmap.c:2497
+>  do_mas_munmap+0x26c/0x2c0 mm/mmap.c:2646
+>  __mmap_region mm/mmap.c:2694 [inline]
+>  mmap_region+0x19f/0x1770 mm/mmap.c:2912
+>  do_mmap+0x84b/0xf20 mm/mmap.c:1432
+>  vm_mmap_pgoff+0x1af/0x280 mm/util.c:520
+>  ksys_mmap_pgoff+0x41f/0x5a0 mm/mmap.c:1478
+>  do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+>  do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
+>  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+> RIP: 0033:0x46a269
+>  </TASK>
+>
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+>
+>
+> The main reason is that those branches lack the following
+>
+>   commit ccf1d78d8b86e28502fa1b575a459a402177def4
+>   Author: Suren Baghdasaryan <surenb@google.com>
+>   Date:   Mon Feb 27 09:36:13 2023 -0800
+>
+>       mm/mmap: move vma_prepare before vma_adjust_trans_huge
+>
+>       vma_prepare() acquires all locks required before VMA modifications.=
+  Move
+>       vma_prepare() before vma_adjust_trans_huge() so that VMA is locked =
+before
+>       any modification.
+>
+>       Link: https://lkml.kernel.org/r/20230227173632.3292573-15-surenb@go=
+ogle.com
+>       Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+>       Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>
+> thus the needed lock is acquired just after vma_adjust_trans_huge() and
+> the newly added hugetlb_split().
 
-In the GEM framebuffer helpers, restore the original ref counting
-on buffer objects. As the helpers for handle refcounting are now
-no longer called from outside the DRM core, unexport the symbols.
+Oh, yuck. Indeed. Thanks for finding this.
 
-v3:
-- don't mix internal flags with mode flags (Christian)
-v2:
-- track framebuffer handle refs by flag
-- drop gma500 cleanup (Christian)
+> Please have a look at a straightforward write-up which comes to my mind.
+> It does something like the ccf1d78d8b86 ("mm/mmap: move vma_prepare befor=
+e
+> vma_adjust_trans_huge"), but in context of an old stable branch.
+>
+> If looks okay, I'll be glad to prepare it as a formal patch and send it
+> out for the 5.10-5.15, too.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 5307dce878d4 ("drm/gem: Acquire references on GEM handles for framebuffers")
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Closes: https://lore.kernel.org/dri-devel/20250703115915.3096-1-spasswolf@web.de/
-Tested-by: Bert Karwatzki <spasswolf@web.de>
-Tested-by: Mario Limonciello <superm1@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Anusha Srivatsa <asrivats@redhat.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: linux-media@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linaro-mm-sig@lists.linaro.org
-Cc: <stable@vger.kernel.org>
----
- drivers/gpu/drm/drm_framebuffer.c            | 31 ++++++++++++++--
- drivers/gpu/drm/drm_gem.c                    | 38 ++++++++++++--------
- drivers/gpu/drm/drm_gem_framebuffer_helper.c | 16 ++++-----
- drivers/gpu/drm/drm_internal.h               |  2 +-
- include/drm/drm_framebuffer.h                |  7 ++++
- 5 files changed, 68 insertions(+), 26 deletions(-)
+Thanks, that looks good to me.
 
-diff --git a/drivers/gpu/drm/drm_framebuffer.c b/drivers/gpu/drm/drm_framebuffer.c
-index b781601946db..63a70f285cce 100644
---- a/drivers/gpu/drm/drm_framebuffer.c
-+++ b/drivers/gpu/drm/drm_framebuffer.c
-@@ -862,11 +862,23 @@ EXPORT_SYMBOL_FOR_TESTS_ONLY(drm_framebuffer_free);
- int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
- 			 const struct drm_framebuffer_funcs *funcs)
- {
-+	unsigned int i;
- 	int ret;
-+	bool exists;
- 
- 	if (WARN_ON_ONCE(fb->dev != dev || !fb->format))
- 		return -EINVAL;
- 
-+	for (i = 0; i < fb->format->num_planes; i++) {
-+		if (drm_WARN_ON_ONCE(dev, fb->internal_flags & DRM_FRAMEBUFFER_HAS_HANDLE_REF(i)))
-+			fb->internal_flags &= ~DRM_FRAMEBUFFER_HAS_HANDLE_REF(i);
-+		if (fb->obj[i]) {
-+			exists = drm_gem_object_handle_get_if_exists_unlocked(fb->obj[i]);
-+			if (exists)
-+				fb->internal_flags |= DRM_FRAMEBUFFER_HAS_HANDLE_REF(i);
-+		}
-+	}
-+
- 	INIT_LIST_HEAD(&fb->filp_head);
- 
- 	fb->funcs = funcs;
-@@ -875,7 +887,7 @@ int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
- 	ret = __drm_mode_object_add(dev, &fb->base, DRM_MODE_OBJECT_FB,
- 				    false, drm_framebuffer_free);
- 	if (ret)
--		goto out;
-+		goto err;
- 
- 	mutex_lock(&dev->mode_config.fb_lock);
- 	dev->mode_config.num_fb++;
-@@ -883,7 +895,16 @@ int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
- 	mutex_unlock(&dev->mode_config.fb_lock);
- 
- 	drm_mode_object_register(dev, &fb->base);
--out:
-+
-+	return 0;
-+
-+err:
-+	for (i = 0; i < fb->format->num_planes; i++) {
-+		if (fb->internal_flags & DRM_FRAMEBUFFER_HAS_HANDLE_REF(i)) {
-+			drm_gem_object_handle_put_unlocked(fb->obj[i]);
-+			fb->internal_flags &= ~DRM_FRAMEBUFFER_HAS_HANDLE_REF(i);
-+		}
-+	}
- 	return ret;
- }
- EXPORT_SYMBOL(drm_framebuffer_init);
-@@ -960,6 +981,12 @@ EXPORT_SYMBOL(drm_framebuffer_unregister_private);
- void drm_framebuffer_cleanup(struct drm_framebuffer *fb)
- {
- 	struct drm_device *dev = fb->dev;
-+	unsigned int i;
-+
-+	for (i = 0; i < fb->format->num_planes; i++) {
-+		if (fb->internal_flags & DRM_FRAMEBUFFER_HAS_HANDLE_REF(i))
-+			drm_gem_object_handle_put_unlocked(fb->obj[i]);
-+	}
- 
- 	mutex_lock(&dev->mode_config.fb_lock);
- 	list_del(&fb->head);
-diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-index bc505d938b3e..41cdab6088ae 100644
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -224,23 +224,34 @@ static void drm_gem_object_handle_get(struct drm_gem_object *obj)
- }
- 
- /**
-- * drm_gem_object_handle_get_unlocked - acquire reference on user-space handles
-+ * drm_gem_object_handle_get_if_exists_unlocked - acquire reference on user-space handle, if any
-  * @obj: GEM object
-  *
-- * Acquires a reference on the GEM buffer object's handle. Required
-- * to keep the GEM object alive. Call drm_gem_object_handle_put_unlocked()
-- * to release the reference.
-+ * Acquires a reference on the GEM buffer object's handle. Required to keep
-+ * the GEM object alive. Call drm_gem_object_handle_put_if_exists_unlocked()
-+ * to release the reference. Does nothing if the buffer object has no handle.
-+ *
-+ * Returns:
-+ * True if a handle exists, or false otherwise
-  */
--void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj)
-+bool drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj)
- {
- 	struct drm_device *dev = obj->dev;
- 
- 	guard(mutex)(&dev->object_name_lock);
- 
--	drm_WARN_ON(dev, !obj->handle_count); /* first ref taken in create-tail helper */
-+	/*
-+	 * First ref taken during GEM object creation, if any. Some
-+	 * drivers set up internal framebuffers with GEM objects that
-+	 * do not have a GEM handle. Hence, this counter can be zero.
-+	 */
-+	if (!obj->handle_count)
-+		return false;
-+
- 	drm_gem_object_handle_get(obj);
-+
-+	return true;
- }
--EXPORT_SYMBOL(drm_gem_object_handle_get_unlocked);
- 
- /**
-  * drm_gem_object_handle_free - release resources bound to userspace handles
-@@ -273,7 +284,7 @@ static void drm_gem_object_exported_dma_buf_free(struct drm_gem_object *obj)
- }
- 
- /**
-- * drm_gem_object_handle_put_unlocked - releases reference on user-space handles
-+ * drm_gem_object_handle_put_unlocked - releases reference on user-space handle
-  * @obj: GEM object
-  *
-  * Releases a reference on the GEM buffer object's handle. Possibly releases
-@@ -284,14 +295,14 @@ void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
- 	struct drm_device *dev = obj->dev;
- 	bool final = false;
- 
--	if (WARN_ON(READ_ONCE(obj->handle_count) == 0))
-+	if (drm_WARN_ON(dev, READ_ONCE(obj->handle_count) == 0))
- 		return;
- 
- 	/*
--	* Must bump handle count first as this may be the last
--	* ref, in which case the object would disappear before we
--	* checked for a name
--	*/
-+	 * Must bump handle count first as this may be the last
-+	 * ref, in which case the object would disappear before
-+	 * we checked for a name.
-+	 */
- 
- 	mutex_lock(&dev->object_name_lock);
- 	if (--obj->handle_count == 0) {
-@@ -304,7 +315,6 @@ void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
- 	if (final)
- 		drm_gem_object_put(obj);
- }
--EXPORT_SYMBOL(drm_gem_object_handle_put_unlocked);
- 
- /*
-  * Called at device or object close to release the file's
-diff --git a/drivers/gpu/drm/drm_gem_framebuffer_helper.c b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
-index c60d0044d036..618ce725cd75 100644
---- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
-+++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
-@@ -100,7 +100,7 @@ void drm_gem_fb_destroy(struct drm_framebuffer *fb)
- 	unsigned int i;
- 
- 	for (i = 0; i < fb->format->num_planes; i++)
--		drm_gem_object_handle_put_unlocked(fb->obj[i]);
-+		drm_gem_object_put(fb->obj[i]);
- 
- 	drm_framebuffer_cleanup(fb);
- 	kfree(fb);
-@@ -183,10 +183,8 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
- 		if (!objs[i]) {
- 			drm_dbg_kms(dev, "Failed to lookup GEM object\n");
- 			ret = -ENOENT;
--			goto err_gem_object_handle_put_unlocked;
-+			goto err_gem_object_put;
- 		}
--		drm_gem_object_handle_get_unlocked(objs[i]);
--		drm_gem_object_put(objs[i]);
- 
- 		min_size = (height - 1) * mode_cmd->pitches[i]
- 			 + drm_format_info_min_pitch(info, i, width)
-@@ -196,22 +194,22 @@ int drm_gem_fb_init_with_funcs(struct drm_device *dev,
- 			drm_dbg_kms(dev,
- 				    "GEM object size (%zu) smaller than minimum size (%u) for plane %d\n",
- 				    objs[i]->size, min_size, i);
--			drm_gem_object_handle_put_unlocked(objs[i]);
-+			drm_gem_object_put(objs[i]);
- 			ret = -EINVAL;
--			goto err_gem_object_handle_put_unlocked;
-+			goto err_gem_object_put;
- 		}
- 	}
- 
- 	ret = drm_gem_fb_init(dev, fb, mode_cmd, objs, i, funcs);
- 	if (ret)
--		goto err_gem_object_handle_put_unlocked;
-+		goto err_gem_object_put;
- 
- 	return 0;
- 
--err_gem_object_handle_put_unlocked:
-+err_gem_object_put:
- 	while (i > 0) {
- 		--i;
--		drm_gem_object_handle_put_unlocked(objs[i]);
-+		drm_gem_object_put(objs[i]);
- 	}
- 	return ret;
- }
-diff --git a/drivers/gpu/drm/drm_internal.h b/drivers/gpu/drm/drm_internal.h
-index f921cc73f8b8..e79c3c623c9a 100644
---- a/drivers/gpu/drm/drm_internal.h
-+++ b/drivers/gpu/drm/drm_internal.h
-@@ -161,7 +161,7 @@ void drm_sysfs_lease_event(struct drm_device *dev);
- 
- /* drm_gem.c */
- int drm_gem_init(struct drm_device *dev);
--void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj);
-+bool drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj);
- void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj);
- int drm_gem_handle_create_tail(struct drm_file *file_priv,
- 			       struct drm_gem_object *obj,
-diff --git a/include/drm/drm_framebuffer.h b/include/drm/drm_framebuffer.h
-index 668077009fce..38b24fc8978d 100644
---- a/include/drm/drm_framebuffer.h
-+++ b/include/drm/drm_framebuffer.h
-@@ -23,6 +23,7 @@
- #ifndef __DRM_FRAMEBUFFER_H__
- #define __DRM_FRAMEBUFFER_H__
- 
-+#include <linux/bits.h>
- #include <linux/ctype.h>
- #include <linux/list.h>
- #include <linux/sched.h>
-@@ -100,6 +101,8 @@ struct drm_framebuffer_funcs {
- 		     unsigned num_clips);
- };
- 
-+#define DRM_FRAMEBUFFER_HAS_HANDLE_REF(_i)	BIT(0u + (_i))
-+
- /**
-  * struct drm_framebuffer - frame buffer object
-  *
-@@ -188,6 +191,10 @@ struct drm_framebuffer {
- 	 * DRM_MODE_FB_MODIFIERS.
- 	 */
- 	int flags;
-+	/**
-+	 * @internal_flags: Framebuffer flags like DRM_FRAMEBUFFER_HAS_HANDLE_REF.
-+	 */
-+	unsigned int internal_flags;
- 	/**
- 	 * @filp_head: Placed on &drm_file.fbs, protected by &drm_file.fbs_lock.
- 	 */
--- 
-2.50.0
-
+> against 6.1.y
+> -------------
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 0f303dc8425a..941880ed62d7 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -543,8 +543,6 @@ inline int vma_expand(struct ma_state *mas, struct vm=
+_area_struct *vma,
+>         if (mas_preallocate(mas, vma, GFP_KERNEL))
+>                 goto nomem;
+>
+> -       vma_adjust_trans_huge(vma, start, end, 0);
+> -
+>         if (file) {
+>                 mapping =3D file->f_mapping;
+>                 root =3D &mapping->i_mmap;
+> @@ -562,6 +560,8 @@ inline int vma_expand(struct ma_state *mas, struct vm=
+_area_struct *vma,
+>                 vma_interval_tree_remove(vma, root);
+>         }
+>
+> +       vma_adjust_trans_huge(vma, start, end, 0);
+> +
+>         vma->vm_start =3D start;
+>         vma->vm_end =3D end;
+>         vma->vm_pgoff =3D pgoff;
+> @@ -727,15 +727,6 @@ int __vma_adjust(struct vm_area_struct *vma, unsigne=
+d long start,
+>                 return -ENOMEM;
+>         }
+>
+> -       /*
+> -        * Get rid of huge pages and shared page tables straddling the sp=
+lit
+> -        * boundary.
+> -        */
+> -       vma_adjust_trans_huge(orig_vma, start, end, adjust_next);
+> -       if (is_vm_hugetlb_page(orig_vma)) {
+> -               hugetlb_split(orig_vma, start);
+> -               hugetlb_split(orig_vma, end);
+> -       }
+>         if (file) {
+>                 mapping =3D file->f_mapping;
+>                 root =3D &mapping->i_mmap;
+> @@ -775,6 +766,16 @@ int __vma_adjust(struct vm_area_struct *vma, unsigne=
+d long start,
+>                         vma_interval_tree_remove(next, root);
+>         }
+>
+> +       /*
+> +        * Get rid of huge pages and shared page tables straddling the sp=
+lit
+> +        * boundary.
+> +        */
+> +       vma_adjust_trans_huge(orig_vma, start, end, adjust_next);
+> +       if (is_vm_hugetlb_page(orig_vma)) {
+> +               hugetlb_split(orig_vma, start);
+> +               hugetlb_split(orig_vma, end);
+> +       }
+> +
+>         if (start !=3D vma->vm_start) {
+>                 if ((vma->vm_start < start) &&
+>                     (!insert || (insert->vm_end !=3D start))) {
 
