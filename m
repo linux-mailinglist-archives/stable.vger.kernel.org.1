@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-160981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C959AFD2D7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B709CAFD1DD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF7C04241FD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0A484879F8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:37:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA66A1DF74F;
-	Tue,  8 Jul 2025 16:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70ECF2E4985;
+	Tue,  8 Jul 2025 16:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTIRh4z5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmWXu8y+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EFEBE46;
-	Tue,  8 Jul 2025 16:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECEA23A98D;
+	Tue,  8 Jul 2025 16:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993253; cv=none; b=TMIt7C17pMUQ5pHvNihkMwp+3SVCyMvS5YVOhKByl0SGXBK4cLKf1JeAQ42+VLrHzyGObgwezSQK3BCgd8bwDoxUvqZZFIBjTAw5NO9prn2yVL909ThLdpoOToxvYj354mE2bH/KvdsxtkkXw7PhL2IAEprHsK3MEesW02MCaLo=
+	t=1751992680; cv=none; b=BnBbRg6rsGPl/4CSnw//1NeWdZ4mMpf7ECUc0eD6S2PwII/8IVL7wNx51X8AUL1fKTwEm9wkAnyG4xPT8LNZQGJ0ZRyQ0HZjKKbHyxLi8obd37vj2z3O6Q9vKGQB/Op3K1Z1FkdYUGGm5uvIrCzJ+YKyAshPZrAjFcsVVa39Cvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993253; c=relaxed/simple;
-	bh=7dcIg69mT+pimR9UP8IYm1M/kthISxlV668KpKGQ7gk=;
+	s=arc-20240116; t=1751992680; c=relaxed/simple;
+	bh=1gzgBq5UH7IZbIWr9wom04cDVwT2VEWa1KAnqIMwFPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C9Q82BK0ezF8ea+TyOUd5n+5DYPWqCMySK0ueNngvON8m1cJMatG5s8YygAePGx73VteTcvdT0sRXGUo8x8wcnIMwpXE2RTOH/w3KG1r/d+G3npvoBgvzEK3JhIhbGcpTKb+/s0J1oiNvFtUwMSVqpKKRnSOCOKBAIaauuTMPJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTIRh4z5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD970C4CEED;
-	Tue,  8 Jul 2025 16:47:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dlFvFVySsBX0aC2VGz7HDyqmDMlkpVCY93XHbbdLSfoao7mZB264rgig+HvRHBpnzY4inE/zZ1ldenqMYHZEjts2t3d8pXn0h0uyOUUWOLhSxRr9/5UvP96KRipRMDcoaVGjseK461dRpdxmKDgAXO+PQZPjBDLP6uG20UXAijk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmWXu8y+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D36AC4CEED;
+	Tue,  8 Jul 2025 16:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993253;
-	bh=7dcIg69mT+pimR9UP8IYm1M/kthISxlV668KpKGQ7gk=;
+	s=korg; t=1751992679;
+	bh=1gzgBq5UH7IZbIWr9wom04cDVwT2VEWa1KAnqIMwFPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oTIRh4z53i5O6Nt+s8YSUgLm+VS9JSwsksFjcRA3T524Wb1iFzJTJJYQ2IL5gfsvL
-	 Gf1oBG4GExTWTDfIwJyAafSyHd4RL0/r6+AZHZXO8NhAI+TC6/J4oiTQhtCmUaRNRr
-	 2R9D0R0M32YBGqvEtFXtmkRz+Jjot4RqvCzRaGoQ=
+	b=jmWXu8y+NZ1VZFtZFnizxcqczHfhlcuJ5NACKFVpJ6GF3G5qTQvyvu23Fjepa7xrn
+	 CP3KWjDfVF+TLEY0z9HRcxEwrjuHhjNK3Wms14CXkRdeI4dogeNKXH0gRw8g/RrvCV
+	 YznW7Kw81DDf5TgVWptri0NHql0cFSLoYDGF4v9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.15 003/178] rtc: cmos: use spin_lock_irqsave in cmos_interrupt
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	David Thompson <davthompson@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 044/232] platform/mellanox: mlxbf-pmc: Fix duplicate event ID for CACHE_DATA1
 Date: Tue,  8 Jul 2025 18:20:40 +0200
-Message-ID: <20250708162236.642714888@linuxfoundation.org>
+Message-ID: <20250708162242.615823145@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +64,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Jończyk <mat.jonczyk@o2.pl>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 00a39d8652ff9088de07a6fe6e9e1893452fe0dd upstream.
+[ Upstream commit 173bbec6693f3f3f00dac144f3aa0cd62fb60d33 ]
 
-cmos_interrupt() can be called in a non-interrupt context, such as in
-an ACPI event handler (which runs in an interrupt thread). Therefore,
-usage of spin_lock(&rtc_lock) is insecure. Use spin_lock_irqsave() /
-spin_unlock_irqrestore() instead.
+same ID (103) was assigned to both GDC_BANK0_G_RSE_PIPE_CACHE_DATA0
+and GDC_BANK0_G_RSE_PIPE_CACHE_DATA1. This could lead to incorrect
+event mapping.
+Updated the ID to 104 to ensure uniqueness.
 
-Before a misguided
-commit 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
-the cmos_interrupt() function used spin_lock_irqsave(). That commit
-changed it to spin_lock() and broke locking, which was partially fixed in
-commit 13be2efc390a ("rtc: cmos: Disable irq around direct invocation of cmos_interrupt()")
-
-That second commit did not take account of the ACPI fixed event handler
-pathway, however. It introduced local_irq_disable() workarounds in
-cmos_check_wkalrm(), which can cause problems on PREEMPT_RT kernels
-and are now unnecessary.
-
-Add an explicit comment so that this change will not be reverted by
-mistake.
-
-Cc: stable@vger.kernel.org
-Fixes: 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
-Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Closes: https://lore.kernel.org/all/aDtJ92foPUYmGheF@debian.local/
-Link: https://lore.kernel.org/r/20250607210608.14835-1-mat.jonczyk@o2.pl
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 423c3361855c ("platform/mellanox: mlxbf-pmc: Add support for BlueField-3")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/20250619060502.3594350-1-alok.a.tiwari@oracle.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-cmos.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/platform/mellanox/mlxbf-pmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -692,8 +692,12 @@ static irqreturn_t cmos_interrupt(int ir
- {
- 	u8		irqstat;
- 	u8		rtc_control;
-+	unsigned long	flags;
- 
--	spin_lock(&rtc_lock);
-+	/* We cannot use spin_lock() here, as cmos_interrupt() is also called
-+	 * in a non-irq context.
-+	 */
-+	spin_lock_irqsave(&rtc_lock, flags);
- 
- 	/* When the HPET interrupt handler calls us, the interrupt
- 	 * status is passed as arg1 instead of the irq number.  But
-@@ -727,7 +731,7 @@ static irqreturn_t cmos_interrupt(int ir
- 			hpet_mask_rtc_irq_bit(RTC_AIE);
- 		CMOS_READ(RTC_INTR_FLAGS);
- 	}
--	spin_unlock(&rtc_lock);
-+	spin_unlock_irqrestore(&rtc_lock, flags);
- 
- 	if (is_intr(irqstat)) {
- 		rtc_update_irq(p, 1, irqstat);
-@@ -1295,9 +1299,7 @@ static void cmos_check_wkalrm(struct dev
- 	 * ACK the rtc irq here
- 	 */
- 	if (t_now >= cmos->alarm_expires && cmos_use_acpi_alarm()) {
--		local_irq_disable();
- 		cmos_interrupt(0, (void *)cmos->rtc);
--		local_irq_enable();
- 		return;
- 	}
- 
+diff --git a/drivers/platform/mellanox/mlxbf-pmc.c b/drivers/platform/mellanox/mlxbf-pmc.c
+index 9ff7b487dc489..fbb8128d19de4 100644
+--- a/drivers/platform/mellanox/mlxbf-pmc.c
++++ b/drivers/platform/mellanox/mlxbf-pmc.c
+@@ -710,7 +710,7 @@ static const struct mlxbf_pmc_events mlxbf_pmc_llt_events[] = {
+ 	{101, "GDC_BANK0_HIT_DCL_PARTIAL"},
+ 	{102, "GDC_BANK0_EVICT_DCL"},
+ 	{103, "GDC_BANK0_G_RSE_PIPE_CACHE_DATA0"},
+-	{103, "GDC_BANK0_G_RSE_PIPE_CACHE_DATA1"},
++	{104, "GDC_BANK0_G_RSE_PIPE_CACHE_DATA1"},
+ 	{105, "GDC_BANK0_ARB_STRB"},
+ 	{106, "GDC_BANK0_ARB_WAIT"},
+ 	{107, "GDC_BANK0_GGA_STRB"},
+-- 
+2.39.5
+
 
 
 
