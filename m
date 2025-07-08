@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-161282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AEDAAFD46F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1BBCAFD142
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E181565E1D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82185487B7C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFA52E610C;
-	Tue,  8 Jul 2025 17:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320162E3B03;
+	Tue,  8 Jul 2025 16:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLZbcCEL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAbZ2SZC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902772E49AF;
-	Tue,  8 Jul 2025 17:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E251D2E0B45;
+	Tue,  8 Jul 2025 16:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994125; cv=none; b=epUFY3d5xgJUQOnRHTqRejOaAQit12vHk3HccreFzN8C06vmZ8DDZMYfGaxHYuYGq5il4rPrFT0CBh4Ni5AKvLTZgObID8Re+10wAGZ18TJKz8oUry4rUON4PeB+rgox7XwyT4YqRjLr0+9PX8hNx+DyqY5X9vEBCqX7SbFBd6w=
+	t=1751992338; cv=none; b=P751MpqMP3EmzuJLVwa9HLXD1eUCRpX5w7HSDDpSrmyuSh5lxI2DMiFLDemxtIuouwgzaCyccafkwdhgtLGnn5toktoDFpWvblxtK24oLVzWZdDqaeJaA7WZOwbN3j2sBK9LgXi/ZIP42/yCPgTd7d3ekL8pU9xnKuWhZEB9SoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994125; c=relaxed/simple;
-	bh=qvZmaN+jD/kcPfMLTFtPBm2MAH92EYjRxxkArfIN2uk=;
+	s=arc-20240116; t=1751992338; c=relaxed/simple;
+	bh=b8jsxxUKARn0FsnFk0PC8LLao3VhGIgcZNE4M7Cf+fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fGEMnAXml+T87Amh7lhaqixXysRP8NjxQUcZ2YMhGFR3Z3OThdpxi9GM0UQxoVG9JDCYTJ26I1UZBOnJf7M9aVtMMrVPLjkgtC1OF3g42bq3tF5UTNok5jA6ofjsNpJ6Ay5h5nOEweNcYH8Mgm/8ZRYWWchIYvAexwZIZ1yr910=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLZbcCEL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D130C4CEED;
-	Tue,  8 Jul 2025 17:02:04 +0000 (UTC)
+	 MIME-Version; b=gPPy2an36Ux06TCKR75uUoJN+z8AKhhyYnO+2mIVlfVwm+LH8TTXLKVxBQvXA8PFCL4dEVrwJhGfN/Gfbe4tH2PGeVyjum2/J+kAxQQIU0AN20Tel3X3CI8X2a3pv/OAL0eE2/P6PyL/Bf7dCTekliskIhGfktYu9KdHXkavlp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAbZ2SZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6900DC4CEED;
+	Tue,  8 Jul 2025 16:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994125;
-	bh=qvZmaN+jD/kcPfMLTFtPBm2MAH92EYjRxxkArfIN2uk=;
+	s=korg; t=1751992337;
+	bh=b8jsxxUKARn0FsnFk0PC8LLao3VhGIgcZNE4M7Cf+fc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GLZbcCELESdeY2zxYM/5lq/81NWwPLNcEPDZYuUuJubyTiftJAoEgbjvSt+Wb0a1k
-	 GFxjEoFkqJlSdpldNqZiJdLLdAZmBMlsk7S+9ehxtE82dt810ULtSwrE8SQ20JdpDp
-	 OV1s1ceibtY3qFcOCE9/5kuV5dPUIY+UwhcbmflQ=
+	b=VAbZ2SZCLyr/xi3sp6zhu16Z8hZpPYbadHOOPFI8yYIHVf+t6WlW8co6pHcNl+P19
+	 ERIrSlNUsHt5ZdQUVvm2WkfbXb9vO18lz9IWodtNV6pvpuc4JGQ+aCSXlEzSBXeIkw
+	 fsbApuikoQIXC62GUR3yC4vT6JD1yaadTXRWkKbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	John Daley <johndale@cisco.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 132/160] wifi: mac80211: drop invalid source address OCB frames
+Subject: [PATCH 6.6 058/132] enic: fix incorrect MTU comparison in enic_change_mtu()
 Date: Tue,  8 Jul 2025 18:22:49 +0200
-Message-ID: <20250708162235.057989099@linuxfoundation.org>
+Message-ID: <20250708162232.355934160@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit d1b1a5eb27c4948e8811cf4dbb05aaf3eb10700c ]
+[ Upstream commit aaf2b2480375099c022a82023e1cd772bf1c6a5d ]
 
-In OCB, don't accept frames from invalid source addresses
-(and in particular don't try to create stations for them),
-drop the frames instead.
+The comparison in enic_change_mtu() incorrectly used the current
+netdev->mtu instead of the new new_mtu value when warning about
+an MTU exceeding the port MTU. This could suppress valid warnings
+or issue incorrect ones.
 
-Reported-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/6788d2d9.050a0220.20d369.0028.GAE@google.com/
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Tested-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/20250616171838.7433379cab5d.I47444d63c72a0bd58d2e2b67bb99e1fea37eec6f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix the condition and log to properly reflect the new_mtu.
+
+Fixes: ab123fe071c9 ("enic: handle mtu change for vf properly")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Acked-by: John Daley <johndale@cisco.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250628145612.476096-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/cisco/enic/enic_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 26943c93f14c4..6c160ff2aab90 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4168,6 +4168,10 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
- 		if (!multicast &&
- 		    !ether_addr_equal(sdata->dev->dev_addr, hdr->addr1))
- 			return false;
-+		/* reject invalid/our STA address */
-+		if (!is_valid_ether_addr(hdr->addr2) ||
-+		    ether_addr_equal(sdata->dev->dev_addr, hdr->addr2))
-+			return false;
- 		if (!rx->sta) {
- 			int rate_idx;
- 			if (status->encoding != RX_ENC_LEGACY)
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index cccf0db2fb4e5..48701032c20c5 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -2057,10 +2057,10 @@ static int enic_change_mtu(struct net_device *netdev, int new_mtu)
+ 	if (enic_is_dynamic(enic) || enic_is_sriov_vf(enic))
+ 		return -EOPNOTSUPP;
+ 
+-	if (netdev->mtu > enic->port_mtu)
++	if (new_mtu > enic->port_mtu)
+ 		netdev_warn(netdev,
+ 			    "interface MTU (%d) set higher than port MTU (%d)\n",
+-			    netdev->mtu, enic->port_mtu);
++			    new_mtu, enic->port_mtu);
+ 
+ 	return _enic_change_mtu(netdev, new_mtu);
+ }
 -- 
 2.39.5
 
