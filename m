@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE819AFD1D5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:40:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2BEAFD08E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 218A1188752D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A981E3B858D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448652E0411;
-	Tue,  8 Jul 2025 16:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8DE2E540B;
+	Tue,  8 Jul 2025 16:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6emaWeO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIy5aElr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C9F2E041C;
-	Tue,  8 Jul 2025 16:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6727D2E5402;
+	Tue,  8 Jul 2025 16:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992674; cv=none; b=RQq4Ujj5mAJAinDIY72lG3F/21Ua4yvL4kC5qgIUdWB0lzBKPy/E4/zLH3tqlceS1FCb9rEoEv/RC2m5JVT/QC1yRCBn5SkO1cjwlg+R7KhJ8XKgM8MTPT5pDnCse/I6K+Da22erDPKuHZDeuucPmFF0aujxsCNIsW/5Pi4FlvQ=
+	t=1751991816; cv=none; b=oUgvM4AieM6pEoHTJ79QPMVNo4yWg+vcnAd2RbiAntHjkJmEqT+Ma7Z86m6tKiYdpprnSvZbQdrO0Yg/8sIMsPzUd448QE1jyAr8ZkzEVQG+NK9Iil1AQP+VF97N48t9eVAnqXKi0BGm6Q5eXlt3hK9uoRIpFCv87mg+ToslkEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992674; c=relaxed/simple;
-	bh=F6hGe9seLl6QziEXPQ+D4nEpWxY7ttxIK1JSfu9pTxc=;
+	s=arc-20240116; t=1751991816; c=relaxed/simple;
+	bh=+ARDM9Q4KtLUK6crXAwDlt883u5NGOA4Foezbbv8Wrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hSXSdMmSQfyeTtegj6kC9GW579oH965vGNi+X3zxy3ZiYsZt/0JzDclRN0P/tSE4QdW3q1WpCprOHhkSr6W1kYX+LN2geMdJXxcKUcqgXhmLhnSi63QiW+ifERya9ZbF6uBZnBGNgpXJNPoN/5OJ1gExfHlnaRCnpurrVRNUeZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6emaWeO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6C1C4CEED;
-	Tue,  8 Jul 2025 16:37:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CMu3qNWgPlOcQ6i+0ZLxaUA2pv1p+00+siySOd9mA3lfaPdeN3d3du8HlCFyMalqh2Z53CZPt8pEmYQzMsmqNSYGUdOUhNQ50Z/QrCIf9n6b3YHSZIhUsEkOh6+e3KUOQ8Zi4v6uYN0qjRuJllPaQzRTI2Jqz4lwWgHztgQNWbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIy5aElr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8498C4CEED;
+	Tue,  8 Jul 2025 16:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992673;
-	bh=F6hGe9seLl6QziEXPQ+D4nEpWxY7ttxIK1JSfu9pTxc=;
+	s=korg; t=1751991816;
+	bh=+ARDM9Q4KtLUK6crXAwDlt883u5NGOA4Foezbbv8Wrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6emaWeOEqijvDHcQophkrHdRvOTwc05gO+UB9BIRZ0kbo8sttCHj2hrceHKYbbIw
-	 EKIRI6WmwDmuoPmOw2VJ8OXNlWPPZhCA7aUzyqt2FeRTPFqAOi+20K6A3Aqy/+MH1L
-	 3b4Ldl4oUDx6tlE7kLW+R7vpSs5xYqEOEZ3+GJ1Y=
+	b=RIy5aElrO15FxnQkGtnn96Ia5WteB6QWabC1rBysN/IBhUyPEMc0cPHr4u8rCbfcj
+	 pTQuPE04H4MF6FJ5dd+Fz/UU5T9Ymy/rVHmU8zVau3TqBMr6kMc185+KCqGBGBVo3V
+	 wl6iO7Xj3b7QK18gqrsdIM08YqnWxHi8iR85BOxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/232] RDMA/mlx5: Fix CC counters query for MPV
+Subject: [PATCH 5.15 001/160] cifs: Fix cifs_query_path_info() for Windows NT servers
 Date: Tue,  8 Jul 2025 18:20:38 +0200
-Message-ID: <20250708162242.536327297@linuxfoundation.org>
+Message-ID: <20250708162231.546525086@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit acd245b1e33fc4b9d0f2e3372021d632f7ee0652 ]
+[ Upstream commit a3e771afbb3bce91c8296828304903e7348003fe ]
 
-In case, CC counters are querying for the second port use the correct
-core device for the query instead of always using the master core device.
+For TRANS2 QUERY_PATH_INFO request when the path does not exist, the
+Windows NT SMB server returns error response STATUS_OBJECT_NAME_NOT_FOUND
+or ERRDOS/ERRbadfile without the SMBFLG_RESPONSE flag set. Similarly it
+returns STATUS_DELETE_PENDING when the file is being deleted. And looks
+like that any error response from TRANS2 QUERY_PATH_INFO does not have
+SMBFLG_RESPONSE flag set.
 
-Fixes: aac4492ef23a ("IB/mlx5: Update counter implementation for dual port RoCE")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://patch.msgid.link/9cace74dcf106116118bebfa9146d40d4166c6b0.1750064969.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+So relax check in check_smb_hdr() for detecting if the packet is response
+for this special case.
+
+This change fixes stat() operation against Windows NT SMB servers and also
+all operations which depends on -ENOENT result from stat like creat() or
+mkdir().
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/counters.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/cifs/misc.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mlx5/counters.c b/drivers/infiniband/hw/mlx5/counters.c
-index fbabc5ac9ef27..ad6c195d077bb 100644
---- a/drivers/infiniband/hw/mlx5/counters.c
-+++ b/drivers/infiniband/hw/mlx5/counters.c
-@@ -411,7 +411,7 @@ static int do_get_hw_stats(struct ib_device *ibdev,
- 			 */
- 			goto done;
- 		}
--		ret = mlx5_lag_query_cong_counters(dev->mdev,
-+		ret = mlx5_lag_query_cong_counters(mdev,
- 						   stats->value +
- 						   cnts->num_q_counters,
- 						   cnts->num_cong_counters,
+diff --git a/fs/cifs/misc.c b/fs/cifs/misc.c
+index 33328eae03d7a..a3d37e7769e61 100644
+--- a/fs/cifs/misc.c
++++ b/fs/cifs/misc.c
+@@ -297,6 +297,14 @@ check_smb_hdr(struct smb_hdr *smb)
+ 	if (smb->Command == SMB_COM_LOCKING_ANDX)
+ 		return 0;
+ 
++	/*
++	 * Windows NT server returns error resposne (e.g. STATUS_DELETE_PENDING
++	 * or STATUS_OBJECT_NAME_NOT_FOUND or ERRDOS/ERRbadfile or any other)
++	 * for some TRANS2 requests without the RESPONSE flag set in header.
++	 */
++	if (smb->Command == SMB_COM_TRANSACTION2 && smb->Status.CifsError != 0)
++		return 0;
++
+ 	cifs_dbg(VFS, "Server sent request, not response. mid=%u\n",
+ 		 get_mid(smb));
+ 	return 1;
 -- 
 2.39.5
 
