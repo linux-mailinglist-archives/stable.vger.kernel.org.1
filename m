@@ -1,67 +1,59 @@
-Return-Path: <stable+bounces-161221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5175CAFD40D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC21AFD21C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:43:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51E3E545788
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:59:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E7DB1894B69
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D862E5B19;
-	Tue,  8 Jul 2025 16:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9785D2E54C3;
+	Tue,  8 Jul 2025 16:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1tenqwf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p02itcJy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6032E49A8;
-	Tue,  8 Jul 2025 16:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C9F2E041C;
+	Tue,  8 Jul 2025 16:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993947; cv=none; b=XhQLMOHnMNlT0L8FJ8z7hCKu7dDihEO8AzDR8J4I5PExHh4KG2PFBPoaI08VuOztrQ6Vm/8voeEhv/OGgQDv7tX3KBBl/MHrHEQkTV+QltY9heQE9/X/VztEeSCI7YWZvO6p5f6wFvblaS1lxycZOemAukL14Pl4iqtKQlXQHEM=
+	t=1751992802; cv=none; b=KSuqHIws3Ojq0Er5Cya2azThNtODqvx6dM1izkW8CiYRxts2aBW9u9zeMTKzGW2bfWrhoWAgVUpfQ7E4p7MDXd13PmuMRThCcC3k+G2DPtBA4FQvwM/KjRQA1zCDLCiz63hoUmDPr1pdsHi5op55l5YlDusmRv/B28ZDl8sIS14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993947; c=relaxed/simple;
-	bh=a+3Jvg/TyOGvoStqcLwGJPiuHAx6L7hoKQKDdbXlKF0=;
+	s=arc-20240116; t=1751992802; c=relaxed/simple;
+	bh=7KRki01a4UABBUTRxv8mNCVL4JlwHR5boIS/sPfrCSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDrKF0SwilM0FD1wWo+7JErUr1R6XK0TrEknG7lCFoqxPJSo3ef6LLckmPgza9B7vkSvjRZUepY1v3Vb58gk1oz3NjXu2cUDKbLIQHb5xRHwt+yjth7hfW2D4Rvoma3UHmAHPo3Lh8kRQKd+vcizeqchUjxDM+x+zzHXTdl9Xhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1tenqwf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59722C4CEED;
-	Tue,  8 Jul 2025 16:59:06 +0000 (UTC)
+	 MIME-Version; b=K2NTkbmikLq+huqEW6gSQZrZix22pDdaThEFcLptt2FLsVDc2JQzuil+8Utj+N8InoX6TvQJwc16siOzOW1VnuKpKNDXgQ94+ctrWUUL1pjtJXPj0eaBQq+mD23RwyO8B9KF6TMVlAg++yfsKZq67hQcfxSGgT1p1gNEDdnIjKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p02itcJy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CF7C4CEF6;
+	Tue,  8 Jul 2025 16:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993946;
-	bh=a+3Jvg/TyOGvoStqcLwGJPiuHAx6L7hoKQKDdbXlKF0=;
+	s=korg; t=1751992801;
+	bh=7KRki01a4UABBUTRxv8mNCVL4JlwHR5boIS/sPfrCSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1tenqwfXwVHavGnsDF5w8MylfYO6cb0x/pRmMtp+jnSwHcCfzxFiVbOGuodU9e/p
-	 S+bVqvVsgI9cgDh8YUFFGkTqQtmJfOcec8tgf8xlLb8xt9XgGpbF4+sD4A+Q0h+d8P
-	 9D/w9WacXWDeWBffLewM8A4NW0ME0OoKg7hAbNm4=
+	b=p02itcJyMQGqJwKrvqA1t+IIeAF7hWO7Lj65mMCMRIC/Pfnq/QV12nDR+5G4y2PL3
+	 pQK1YsvLu6941WYJq3W4pcQbXS01ZeCRYLkgtNm7kQZIeTW71aV1l/kEXy0dCyRXde
+	 iZjBqKRBnkNFKgoDdEasjuBXqIbqj12PWv4yJwyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Daniel Vetter <daniel.vetter@intel.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Du Cheng <ducheng2@gmail.com>,
-	Claudio Suarez <cssk@net-c.es>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Matthew Wilcox <willy@infradead.org>,
-	Zheyu Ma <zheyuma97@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Xiyu Yang <xiyuyang19@fudan.edu.cn>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 043/160] fbcon: Move console_lock for register/unlink/unregister
-Date: Tue,  8 Jul 2025 18:21:20 +0200
-Message-ID: <20250708162232.732361864@linuxfoundation.org>
+Subject: [PATCH 6.12 085/232] lib: test_objagg: Set error message in check_expect_hints_stats()
+Date: Tue,  8 Jul 2025 18:21:21 +0200
+Message-ID: <20250708162243.673640360@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,197 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 6e7da3af008b72520f5318507f455f344b27f022 ]
+[ Upstream commit e6ed134a4ef592fe1fd0cafac9683813b3c8f3e8 ]
 
-Ideally console_lock becomes an implementation detail of fbcon.c and
-doesn't show up anywhere in fbmem.c. We're still pretty far from that,
-but at least the register/unregister code is there now.
+Smatch complains that the error message isn't set in the caller:
 
-With this the do_fb_ioctl() handler is the only code in fbmem.c still
-calling console_lock().
+    lib/test_objagg.c:923 test_hints_case2()
+    error: uninitialized symbol 'errmsg'.
 
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Du Cheng <ducheng2@gmail.com>
-Cc: Claudio Suarez <cssk@net-c.es>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Zheyu Ma <zheyuma97@gmail.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Zhen Lei <thunder.leizhen@huawei.com>
-Cc: Xiyu Yang <xiyuyang19@fudan.edu.cn>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220405210335.3434130-15-daniel.vetter@ffwll.ch
-Stable-dep-of: 17186f1f90d3 ("fbdev: Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var")
+This static checker warning only showed up after a recent refactoring
+but the bug dates back to when the code was originally added.  This
+likely doesn't affect anything in real life.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202506281403.DsuyHFTZ-lkp@intel.com/
+Fixes: 0a020d416d0a ("lib: introduce initial implementation of object aggregation manager")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/8548f423-2e3b-4bb7-b816-5041de2762aa@sabinyo.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 33 ++++++++++++++++++++++++++------
- drivers/video/fbdev/core/fbmem.c | 23 ++--------------------
- 2 files changed, 29 insertions(+), 27 deletions(-)
+ lib/test_objagg.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 072a264ae380b..a67f982fe2ec0 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2823,10 +2823,12 @@ void fbcon_fb_unbind(struct fb_info *info)
- 	int i, new_idx = -1, ret = 0;
- 	int idx = info->node;
+diff --git a/lib/test_objagg.c b/lib/test_objagg.c
+index d34df4306b874..222b39fc2629e 100644
+--- a/lib/test_objagg.c
++++ b/lib/test_objagg.c
+@@ -899,8 +899,10 @@ static int check_expect_hints_stats(struct objagg_hints *objagg_hints,
+ 	int err;
  
--	WARN_CONSOLE_UNLOCKED();
-+	console_lock();
- 
--	if (!fbcon_has_console_bind)
-+	if (!fbcon_has_console_bind) {
-+		console_unlock();
- 		return;
+ 	stats = objagg_hints_stats_get(objagg_hints);
+-	if (IS_ERR(stats))
++	if (IS_ERR(stats)) {
++		*errmsg = "objagg_hints_stats_get() failed.";
+ 		return PTR_ERR(stats);
 +	}
- 
- 	for (i = first_fb_vc; i <= last_fb_vc; i++) {
- 		if (con2fb_map[i] != idx &&
-@@ -2866,6 +2868,8 @@ void fbcon_fb_unbind(struct fb_info *info)
- 		}
- 		fbcon_unbind();
- 	}
-+
-+	console_unlock();
- }
- 
- /* called with console_lock held */
-@@ -2873,10 +2877,12 @@ void fbcon_fb_unregistered(struct fb_info *info)
- {
- 	int i, idx;
- 
--	WARN_CONSOLE_UNLOCKED();
-+	console_lock();
- 
--	if (deferred_takeover)
-+	if (deferred_takeover) {
-+		console_unlock();
- 		return;
-+	}
- 
- 	idx = info->node;
- 	for (i = first_fb_vc; i <= last_fb_vc; i++) {
-@@ -2905,6 +2911,7 @@ void fbcon_fb_unregistered(struct fb_info *info)
- 
- 	if (!num_registered_fb)
- 		do_unregister_con_driver(&fb_con);
-+	console_unlock();
- }
- 
- void fbcon_remap_all(struct fb_info *info)
-@@ -2962,19 +2969,27 @@ static inline void fbcon_select_primary(struct fb_info *info)
- }
- #endif /* CONFIG_FRAMEBUFFER_DETECT_PRIMARY */
- 
-+static bool lockless_register_fb;
-+module_param_named_unsafe(lockless_register_fb, lockless_register_fb, bool, 0400);
-+MODULE_PARM_DESC(lockless_register_fb,
-+	"Lockless framebuffer registration for debugging [default=off]");
-+
- /* called with console_lock held */
- int fbcon_fb_registered(struct fb_info *info)
- {
- 	int ret = 0, i, idx;
- 
--	WARN_CONSOLE_UNLOCKED();
-+	if (!lockless_register_fb)
-+		console_lock();
-+	else
-+		atomic_inc(&ignore_console_lock_warning);
- 
- 	idx = info->node;
- 	fbcon_select_primary(info);
- 
- 	if (deferred_takeover) {
- 		pr_info("fbcon: Deferring console take-over\n");
--		return 0;
-+		goto out;
- 	}
- 
- 	if (info_idx == -1) {
-@@ -2994,6 +3009,12 @@ int fbcon_fb_registered(struct fb_info *info)
- 		}
- 	}
- 
-+out:
-+	if (!lockless_register_fb)
-+		console_unlock();
-+	else
-+		atomic_dec(&ignore_console_lock_warning);
-+
- 	return ret;
- }
- 
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index f4253ec8a6409..5e8ee360f6ba2 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1620,14 +1620,9 @@ static void do_remove_conflicting_framebuffers(struct apertures_struct *a,
- 	}
- }
- 
--static bool lockless_register_fb;
--module_param_named_unsafe(lockless_register_fb, lockless_register_fb, bool, 0400);
--MODULE_PARM_DESC(lockless_register_fb,
--	"Lockless framebuffer registration for debugging [default=off]");
--
- static int do_register_framebuffer(struct fb_info *fb_info)
- {
--	int i, ret;
-+	int i;
- 	struct fb_videomode mode;
- 
- 	if (fb_check_foreignness(fb_info))
-@@ -1696,17 +1691,7 @@ static int do_register_framebuffer(struct fb_info *fb_info)
- 	}
- #endif
- 
--	if (!lockless_register_fb)
--		console_lock();
--	else
--		atomic_inc(&ignore_console_lock_warning);
--	ret = fbcon_fb_registered(fb_info);
--
--	if (!lockless_register_fb)
--		console_unlock();
--	else
--		atomic_dec(&ignore_console_lock_warning);
--	return ret;
-+	return fbcon_fb_registered(fb_info);
- }
- 
- static void unbind_console(struct fb_info *fb_info)
-@@ -1716,9 +1701,7 @@ static void unbind_console(struct fb_info *fb_info)
- 	if (WARN_ON(i < 0 || i >= FB_MAX || registered_fb[i] != fb_info))
- 		return;
- 
--	console_lock();
- 	fbcon_fb_unbind(fb_info);
--	console_unlock();
- }
- 
- static void unlink_framebuffer(struct fb_info *fb_info)
-@@ -1758,9 +1741,7 @@ static void do_unregister_framebuffer(struct fb_info *fb_info)
- 		fb_notifier_call_chain(FB_EVENT_FB_UNREGISTERED, &event);
- 	}
- #endif
--	console_lock();
- 	fbcon_fb_unregistered(fb_info);
--	console_unlock();
- 
- 	/* this may free fb info */
- 	put_fb_info(fb_info);
+ 	err = __check_expect_stats(stats, expect_stats, errmsg);
+ 	objagg_stats_put(stats);
+ 	return err;
 -- 
 2.39.5
 
