@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6260BAFD121
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB4CAFD4A5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:07:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85E03179015
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:31:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F33581C41718
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D051D5AC0;
-	Tue,  8 Jul 2025 16:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D1B2E6122;
+	Tue,  8 Jul 2025 17:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8eEcYLa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rh1qrsWY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8110A1548C;
-	Tue,  8 Jul 2025 16:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C4B2E49BD;
+	Tue,  8 Jul 2025 17:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992268; cv=none; b=cse+fQ2gWonLAOwkgfpiCJyQh3KVIPBayE+Rv7swG4PtCbr+ZuuqgW+jVQ7eR70vvTaS4Xz6kslQjjCAN+TT+2gmZoN53MJDjaJImtdx4PMAvUWtRu+2dlj1AtzsJygiBT2cAAP1EFuWlLw65qfcKJRIxMlQCBBdX3Y7hwkmb4Q=
+	t=1751994139; cv=none; b=pAnayHiDcSgwMLJXrxW8Sv+FfnBBKu0gsWDk9hlj3z1vjXIC7/RZwJz4lJFwV79Dex7/EVb3wlmQIRu73wigfG5sNe9iYH8N6R/RFmxEzd3u+KYW9mRArtGeE8vZIhBfpMebruAGd+lgqt6K9Iy6h/JUrSjEUg9xQzjgmHiSK1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992268; c=relaxed/simple;
-	bh=VuzVjdJSMKcgYDJ8i8bdum2F+43P+xwZl0qSQgO3pYc=;
+	s=arc-20240116; t=1751994139; c=relaxed/simple;
+	bh=mqWJ8wAeSEC9NkFV/r99Go2c4ly0xMb8H240P3e7NnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s+ncBFAR7uXilscr89wZ+sH0prH0HzvkPC/ICSjFMLjCPWGbE/u8d09VgvFEu8VAQKAb6UemZk0LwP/DX7YAuaSP3IVLoi0iqdBf5zQE+G+qsF6/8Xij7BBycBOdrpnRcXshBpJqQantf+ZA6RUZwBtxzhW1YniibFW6m8xnJVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8eEcYLa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082BDC4CEED;
-	Tue,  8 Jul 2025 16:31:07 +0000 (UTC)
+	 MIME-Version; b=mn5mLq5giMigiscrv3rfyKdxtqS6+Xbn1+nJ9SzYDw9pjxQoqWgxNyeuG7Gkh8EGMp+z4GyLl8c3OCRrS8DKVArQDncZPg2nXaG36Ap4MpBcY4pd7UOFzt9UWzqHgmQUGldjaGFLTz0ITlnA/LrEeQaIdI5qMc5Df1R8ipaiYDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rh1qrsWY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AB9C4CEED;
+	Tue,  8 Jul 2025 17:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992268;
-	bh=VuzVjdJSMKcgYDJ8i8bdum2F+43P+xwZl0qSQgO3pYc=;
+	s=korg; t=1751994139;
+	bh=mqWJ8wAeSEC9NkFV/r99Go2c4ly0xMb8H240P3e7NnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8eEcYLaWtpwJJQEmhfHpDM9KwHjkZm3nJgtI6L4al06ulhlj7Ea/CHE3RqfWiBhx
-	 zRSQC/rOikanA/6yxyc4W1tqdzU/FEg9NGd4re5mwr/vU7CUZEONTDBJYaPLSxDVNb
-	 587HtkYXAHrUdgdRbzz4o4d3oafGXPmFCqgYWT2Y=
+	b=rh1qrsWYLLUG15P1j//KkFvKiSBRyaEmJzkHt2m1C6pDp/D15V0545znQ8CVAbCwE
+	 /2bTalM4ltswdgHzYtqLWtqvXOJAxzrB43GG3aNWt5Kvb4lVEHmQc+FnE5JWXACGmP
+	 a4s96JvpU+1HxW8K9lRI/DB4SGMoDWGgV3+FfP2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/132] btrfs: propagate last_unlink_trans earlier when doing a rmdir
+Subject: [PATCH 5.15 108/160] NFSv4/pNFS: Fix a race to wake on NFS_LAYOUT_DRAIN
 Date: Tue,  8 Jul 2025 18:22:25 +0200
-Message-ID: <20250708162231.700229666@linuxfoundation.org>
+Message-ID: <20250708162234.470956944@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit c466e33e729a0ee017d10d919cba18f503853c60 ]
+[ Upstream commit c01776287414ca43412d1319d2877cbad65444ac ]
 
-In case the removed directory had a snapshot that was deleted, we are
-propagating its inode's last_unlink_trans to the parent directory after
-we removed the entry from the parent directory. This leaves a small race
-window where someone can log the parent directory after we removed the
-entry and before we updated last_unlink_trans, and as a result if we ever
-try to replay such a log tree, we will fail since we will attempt to
-remove a snapshot during log replay, which is currently not possible and
-results in the log replay (and mount) to fail. This is the type of failure
-described in commit 1ec9a1ae1e30 ("Btrfs: fix unreplayable log after
-snapshot delete + parent dir fsync").
+We found a few different systems hung up in writeback waiting on the same
+page lock, and one task waiting on the NFS_LAYOUT_DRAIN bit in
+pnfs_update_layout(), however the pnfs_layout_hdr's plh_outstanding count
+was zero.
 
-So fix this by propagating the last_unlink_trans to the parent directory
-before we remove the entry from it.
+It seems most likely that this is another race between the waiter and waker
+similar to commit ed0172af5d6f ("SUNRPC: Fix a race to wake a sync task").
+Fix it up by applying the advised barrier.
 
-Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 880265c77ac4 ("pNFS: Avoid a live lock condition in pnfs_update_layout()")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ fs/nfs/pnfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index c2c07ad194c0d..cee1a11959c51 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4617,7 +4617,6 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	struct btrfs_fs_info *fs_info = BTRFS_I(inode)->root->fs_info;
- 	int ret = 0;
- 	struct btrfs_trans_handle *trans;
--	u64 last_unlink_trans;
- 	struct fscrypt_name fname;
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index 83935bb1719ad..b41c6fced75ac 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -1927,8 +1927,10 @@ static void nfs_layoutget_begin(struct pnfs_layout_hdr *lo)
+ static void nfs_layoutget_end(struct pnfs_layout_hdr *lo)
+ {
+ 	if (atomic_dec_and_test(&lo->plh_outstanding) &&
+-	    test_and_clear_bit(NFS_LAYOUT_DRAIN, &lo->plh_flags))
++	    test_and_clear_bit(NFS_LAYOUT_DRAIN, &lo->plh_flags)) {
++		smp_mb__after_atomic();
+ 		wake_up_bit(&lo->plh_flags, NFS_LAYOUT_DRAIN);
++	}
+ }
  
- 	if (inode->i_size > BTRFS_EMPTY_DIR_SIZE)
-@@ -4643,6 +4642,23 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 		goto out_notrans;
- 	}
- 
-+	/*
-+	 * Propagate the last_unlink_trans value of the deleted dir to its
-+	 * parent directory. This is to prevent an unrecoverable log tree in the
-+	 * case we do something like this:
-+	 * 1) create dir foo
-+	 * 2) create snapshot under dir foo
-+	 * 3) delete the snapshot
-+	 * 4) rmdir foo
-+	 * 5) mkdir foo
-+	 * 6) fsync foo or some file inside foo
-+	 *
-+	 * This is because we can't unlink other roots when replaying the dir
-+	 * deletes for directory foo.
-+	 */
-+	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
-+		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
-+
- 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
- 		ret = btrfs_unlink_subvol(trans, BTRFS_I(dir), dentry);
- 		goto out;
-@@ -4652,27 +4668,11 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	if (ret)
- 		goto out;
- 
--	last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
--
- 	/* now the directory is empty */
- 	ret = btrfs_unlink_inode(trans, BTRFS_I(dir), BTRFS_I(d_inode(dentry)),
- 				 &fname.disk_name);
--	if (!ret) {
-+	if (!ret)
- 		btrfs_i_size_write(BTRFS_I(inode), 0);
--		/*
--		 * Propagate the last_unlink_trans value of the deleted dir to
--		 * its parent directory. This is to prevent an unrecoverable
--		 * log tree in the case we do something like this:
--		 * 1) create dir foo
--		 * 2) create snapshot under dir foo
--		 * 3) delete the snapshot
--		 * 4) rmdir foo
--		 * 5) mkdir foo
--		 * 6) fsync foo or some file inside foo
--		 */
--		if (last_unlink_trans >= trans->transid)
--			BTRFS_I(dir)->last_unlink_trans = last_unlink_trans;
--	}
- out:
- 	btrfs_end_transaction(trans);
- out_notrans:
+ static bool pnfs_is_first_layoutget(struct pnfs_layout_hdr *lo)
 -- 
 2.39.5
 
