@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-160847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A7BAFD230
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:43:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEBAAAFD306
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:52:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A036487FBA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B44F3AEFFC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4789C2E49A8;
-	Tue,  8 Jul 2025 16:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C801B2DD5EF;
+	Tue,  8 Jul 2025 16:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kysFVVAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQBeRDoY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057D4F9E8;
-	Tue,  8 Jul 2025 16:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8582B1DB127;
+	Tue,  8 Jul 2025 16:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992863; cv=none; b=Byvc+afMCGgaK7Y1Hhco9J/2+LeuytZP2pOPye+WynzJ47zWGjsAeO4GwkWu4ESY2/WoDMLlHXiRY8YHVwD1hLJ5ks3uaxFvEqqaI/uj6NoyzM79t2rEaTUqweEy1NrSgc6BduJFgbxRgs8qzfxVhon5VVxlMMJN1csVQbM7pMY=
+	t=1751993416; cv=none; b=Mqwo4TGibAgKy5uSAtnBhwVLYQdkd2FUUCRv2EJr7b+0MM3bPl5l0C+6WcKiJ8W5xTwgCpcPa5gAlMxYUx78Bee3BIm/lf2bhIHV3+5SPXtc+XHfKc4/8ubSL/EnV4iBKWftux5wlk1U5zeWlGGaCSYxboN4AiVmqZJTObvc1ZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992863; c=relaxed/simple;
-	bh=WMIIGcE1tpQW8o5cSLFlT+4qCveyIkUnXEF5XlY9uwI=;
+	s=arc-20240116; t=1751993416; c=relaxed/simple;
+	bh=nJRe5hDeWO/J/Z2tn34FHuHk7htNtFZFTvMjS4fWWFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKGcmzvOV1qyPoA0BDZ25tdzkD6wv/vcqT3j2vamop1bAAGDY+mstKznkj/Y8rNliLhkI5FRiJlBTtOCZDuwwUg4XKnFCD0r4Jr28yUv33OBYmfRK6hCEf7dac8ivp65dimlUpChBMcAnKHdKvvQ1BX+bb/zg3iUST9vVmxLmY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kysFVVAq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850FEC4CEED;
-	Tue,  8 Jul 2025 16:41:02 +0000 (UTC)
+	 MIME-Version; b=aIS0tuxFFEWKkNVSqxqb+Nuo0HdlkHKFKg2UVhbT9E/cK8+4jMVdi3SWogFCbIpmWvErXxXPSopf/nEDakV273vFaG3mk1BwcxUXibjucwgSaj2EfdExiLTdo9frI5NrmYw5mSS4BKsVHq0bUlI431EbLcWQQlMrKpMnAd/wXkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQBeRDoY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE7EC4CEED;
+	Tue,  8 Jul 2025 16:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992862;
-	bh=WMIIGcE1tpQW8o5cSLFlT+4qCveyIkUnXEF5XlY9uwI=;
+	s=korg; t=1751993416;
+	bh=nJRe5hDeWO/J/Z2tn34FHuHk7htNtFZFTvMjS4fWWFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kysFVVAqQJov7GoeeI+afU1fgZmFtvGgucuQA02XmE/Y66GajQx+BGLw8NJDWtcPA
-	 xteJw7yvdwzQ64DI7Qa1XC6QzvU3x7zNrhQnsTwyOb4CSbG5k0ZzWYxlhqvVxK62tR
-	 oXsNvfnYAyhIoa2BSMIk6LDUeUC6Oqit6WSfVn9I=
+	b=AQBeRDoY19T4X9iWFhsOmAMnKH5m+LGUpKkDr7eN+o0Q2KG1ecxPjLch0IFh3XiHu
+	 WNyk1EVU0MRkFn1r21HagtVrWjaYcAXomu68EIUUqCpqv0qc8SIOAtSFC26C09jEKr
+	 hRLeVcG+PQ0e9QD+c8dIKgf9hulXu0Si+tkn/WnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/232] gfs2: Replace GIF_DEFER_DELETE with GLF_DEFER_DELETE
+Subject: [PATCH 6.15 066/178] btrfs: fix iteration of extrefs during log replay
 Date: Tue,  8 Jul 2025 18:21:43 +0200
-Message-ID: <20250708162244.239701983@linuxfoundation.org>
+Message-ID: <20250708162238.398478099@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 3774f53d7f0b30a996eab4a1264611489b48f14c ]
+[ Upstream commit 54a7081ed168b72a8a2d6ef4ba3a1259705a2926 ]
 
-Having this flag attached to the iopen glock instead of the inode is
-much simpler; it eliminates a protential weird race in gfs2_try_evict().
+At __inode_add_ref() when processing extrefs, if we jump into the next
+label we have an undefined value of victim_name.len, since we haven't
+initialized it before we did the goto. This results in an invalid memory
+access in the next iteration of the loop since victim_name.len was not
+initialized to the length of the name of the current extref.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Stable-dep-of: 2c63986dd35f ("gfs2: deallocate inodes in gfs2_create_inode")
+Fix this by initializing victim_name.len with the current extref's name
+length.
+
+Fixes: e43eec81c516 ("btrfs: use struct qstr instead of name and namelen pairs")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c      | 6 ++++--
- fs/gfs2/incore.h     | 2 +-
- fs/gfs2/super.c      | 3 ++-
- fs/gfs2/trace_gfs2.h | 3 ++-
- 4 files changed, 9 insertions(+), 5 deletions(-)
+ fs/btrfs/tree-log.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index ec043aa71de8c..161fc76ed5b0e 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -994,15 +994,15 @@ static bool gfs2_try_evict(struct gfs2_glock *gl)
- 		}
- 	}
- 	if (ip) {
--		set_bit(GIF_DEFER_DELETE, &ip->i_flags);
-+		set_bit(GLF_DEFER_DELETE, &gl->gl_flags);
- 		d_prune_aliases(&ip->i_inode);
- 		iput(&ip->i_inode);
-+		clear_bit(GLF_DEFER_DELETE, &gl->gl_flags);
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index cc223c3b39c10..118db10464207 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -1145,13 +1145,13 @@ static inline int __add_inode_ref(struct btrfs_trans_handle *trans,
+ 			struct fscrypt_str victim_name;
  
- 		/* If the inode was evicted, gl->gl_object will now be NULL. */
- 		spin_lock(&gl->gl_lockref.lock);
- 		ip = gl->gl_object;
- 		if (ip) {
--			clear_bit(GIF_DEFER_DELETE, &ip->i_flags);
- 			if (!igrab(&ip->i_inode))
- 				ip = NULL;
- 		}
-@@ -2389,6 +2389,8 @@ static const char *gflags2str(char *buf, const struct gfs2_glock *gl)
- 		*p++ = 'e';
- 	if (test_bit(GLF_VERIFY_DELETE, gflags))
- 		*p++ = 'E';
-+	if (test_bit(GLF_DEFER_DELETE, gflags))
-+		*p++ = 's';
- 	*p = 0;
- 	return buf;
- }
-diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
-index f6aee2c9b9118..142f61228d15e 100644
---- a/fs/gfs2/incore.h
-+++ b/fs/gfs2/incore.h
-@@ -331,6 +331,7 @@ enum {
- 	GLF_TRY_TO_EVICT		= 17, /* iopen glocks only */
- 	GLF_VERIFY_DELETE		= 18, /* iopen glocks only */
- 	GLF_PENDING_REPLY		= 19,
-+	GLF_DEFER_DELETE		= 20, /* iopen glocks only */
- };
+ 			extref = (struct btrfs_inode_extref *)(base + cur_offset);
++			victim_name.len = btrfs_inode_extref_name_len(leaf, extref);
  
- struct gfs2_glock {
-@@ -377,7 +378,6 @@ enum {
- 	GIF_SW_PAGED		= 3,
- 	GIF_FREE_VFS_INODE      = 5,
- 	GIF_GLOP_PENDING	= 6,
--	GIF_DEFER_DELETE	= 7,
- };
+ 			if (btrfs_inode_extref_parent(leaf, extref) != parent_objectid)
+ 				goto next;
  
- struct gfs2_inode {
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 6a0c0f3780b4c..d982db129b2b4 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -1326,7 +1326,8 @@ static enum evict_behavior evict_should_delete(struct inode *inode,
- 	if (unlikely(test_bit(GIF_ALLOC_FAILED, &ip->i_flags)))
- 		goto should_delete;
+ 			ret = read_alloc_one_name(leaf, &extref->name,
+-				 btrfs_inode_extref_name_len(leaf, extref),
+-				 &victim_name);
++						  victim_name.len, &victim_name);
+ 			if (ret)
+ 				return ret;
  
--	if (test_bit(GIF_DEFER_DELETE, &ip->i_flags))
-+	if (gfs2_holder_initialized(&ip->i_iopen_gh) &&
-+	    test_bit(GLF_DEFER_DELETE, &ip->i_iopen_gh.gh_gl->gl_flags))
- 		return EVICT_SHOULD_DEFER_DELETE;
- 
- 	/* Deletes should never happen under memory pressure anymore.  */
-diff --git a/fs/gfs2/trace_gfs2.h b/fs/gfs2/trace_gfs2.h
-index 09121c2c198ba..43de603ab347e 100644
---- a/fs/gfs2/trace_gfs2.h
-+++ b/fs/gfs2/trace_gfs2.h
-@@ -64,7 +64,8 @@
- 	{(1UL << GLF_INSTANTIATE_NEEDED),	"n" },		\
- 	{(1UL << GLF_INSTANTIATE_IN_PROG),	"N" },		\
- 	{(1UL << GLF_TRY_TO_EVICT),		"e" },		\
--	{(1UL << GLF_VERIFY_DELETE),		"E" })
-+	{(1UL << GLF_VERIFY_DELETE),		"E" },		\
-+	{(1UL << GLF_DEFER_DELETE),		"s" })
- 
- #ifndef NUMPTY
- #define NUMPTY
 -- 
 2.39.5
 
