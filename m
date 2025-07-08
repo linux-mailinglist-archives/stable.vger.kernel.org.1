@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-160640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C149AFD11D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C71AFD27C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DC4816F1CC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB0FC166B74
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C681D5AC0;
-	Tue,  8 Jul 2025 16:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BAD02E0910;
+	Tue,  8 Jul 2025 16:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KuEh4BVn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aelo45Hw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446F5881E;
-	Tue,  8 Jul 2025 16:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6F3289E2C;
+	Tue,  8 Jul 2025 16:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992256; cv=none; b=sPtw4aajo2Y4evjTAfBCdZ3IR+mJM4nkaWTTkMET2YZarG3vCpXRRGP6AtrAkTOc985E6hOofQ2ykCJIKmjFg4CG323YQ2+2k3RniNs97UX7glVB3Ix4zdOShPEuoVkIho67yeA4jf7RrdTHjNX2lHajC1l1k9TZOi8WyIZiSPU=
+	t=1751993045; cv=none; b=s9eAaN1qELTDX2CANmMKL4PIlfeyAhzEI7+/oNdyhxC5XvvejhC/JJujkD5gWcA+8CpITEmSOeY7RJ3FIFANW7EBFqrMvljS9j4oQ0VtusFhrYMmFh3lM3ATxP/spKLzxQQkFc+2lbvQ5ieL+nLp4uAf4/jO9ETSi7TIbOlpMjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992256; c=relaxed/simple;
-	bh=wTbi3bEfoorzezTPww3DydNKMLa1iBcasl8H/wPuLHY=;
+	s=arc-20240116; t=1751993045; c=relaxed/simple;
+	bh=e5f6HMkk3vdKdBxWRi/GAGbF3F6OtojJMUNcGPZqTU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lqGmIniT6Hd2hAzD+ZZwsAuNsCppjVEdjA9DqnpehqP3VwYZ/XaheCHXX/4V6ynLdv/w1mlyjj0cValqMl0xYb2+biKy6k7bAY67VDlZeRt8dshKWyduQBll0eiWBNbndnjd27fP2Pr6TRMz1+nK0MUt70gAJLA/Gg43nIC1Ovg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KuEh4BVn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AAFC4CEED;
-	Tue,  8 Jul 2025 16:30:55 +0000 (UTC)
+	 MIME-Version; b=KfkttqODI3/lv7V+0603YIVKCVTw2jrF3rWpZxXltKfzBg2JHeTBGOx9jlM+d2DauvDld8TrIDyyF36TS3DfUuAr6aMmHDcD0tsbtZFgq5iKmRsihMUHF40biX3mLNuZPzFS6U7oPBk/YFOsnTsp3GC4PacYuUW7yERoDY5fVco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aelo45Hw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA42C4CEED;
+	Tue,  8 Jul 2025 16:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992256;
-	bh=wTbi3bEfoorzezTPww3DydNKMLa1iBcasl8H/wPuLHY=;
+	s=korg; t=1751993044;
+	bh=e5f6HMkk3vdKdBxWRi/GAGbF3F6OtojJMUNcGPZqTU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KuEh4BVn5poxG4gDyJ+wHagVPkGncBBo3pINiLURSbecv5frDzQAFiCxkA9wnU8yd
-	 4lGud2Vjy9BqUsN7k47qhAXKjST1bj0AUtxXlDUuKVabL8qr0F4CtO93lhUqzrfHTR
-	 TTBb3whglLqlqKLNQ5PmZl56BrAEM4ATFuyyv1GA=
+	b=Aelo45HwLwewWMmjKkInBaEZ7GXQcbu9xYDBDCwp6NlmYsfhDWSAg4rmZadxUfE3d
+	 fxW3QkQoJxwpT2vgS8ZoE9PgL9dlzksxUxCnoZ8YrX3Olljzilgtb6dhpTzBl5d0yf
+	 eZFH2u8Mtu+wXDCktqF+X9cq/iOOgsf5CnREMS7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 013/132] regulator: gpio: Fix the out-of-bounds access to drvdata::gpiods
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 128/232] f2fs: decrease spare area for pinned files for zoned devices
 Date: Tue,  8 Jul 2025 18:22:04 +0200
-Message-ID: <20250708162231.125472327@linuxfoundation.org>
+Message-ID: <20250708162244.791951864@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <mani@kernel.org>
+From: Daeho Jeong <daehojeong@google.com>
 
-commit c9764fd88bc744592b0604ccb6b6fc1a5f76b4e3 upstream.
+[ Upstream commit fa08972bcb7baaf5f1f4fdf251dc08bdd3ab1cf0 ]
 
-drvdata::gpiods is supposed to hold an array of 'gpio_desc' pointers. But
-the memory is allocated for only one pointer. This will lead to
-out-of-bounds access later in the code if 'config::ngpios' is > 1. So
-fix the code to allocate enough memory to hold 'config::ngpios' of GPIO
-descriptors.
+Now we reclaim too much space before allocating pinned space for zoned
+devices.
 
-While at it, also move the check for memory allocation failure to be below
-the allocation to make it more readable.
-
-Cc: stable@vger.kernel.org # 5.0
-Fixes: d6cd33ad7102 ("regulator: gpio: Convert to use descriptors")
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20250703103549.16558-1-mani@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: dc6d9ef57fcf ("f2fs: zone: fix to calculate first_zoned_segno correctly")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/gpio-regulator.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/f2fs/file.c    | 3 ++-
+ fs/f2fs/gc.h      | 1 +
+ fs/f2fs/segment.c | 3 ++-
+ 3 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/regulator/gpio-regulator.c
-+++ b/drivers/regulator/gpio-regulator.c
-@@ -260,8 +260,10 @@ static int gpio_regulator_probe(struct p
- 		return -ENOMEM;
- 	}
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 02f438cd6bfaf..d9037e74631c0 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1828,7 +1828,8 @@ static int f2fs_expand_inode_data(struct inode *inode, loff_t offset,
  
--	drvdata->gpiods = devm_kzalloc(dev, sizeof(struct gpio_desc *),
--				       GFP_KERNEL);
-+	drvdata->gpiods = devm_kcalloc(dev, config->ngpios,
-+				       sizeof(struct gpio_desc *), GFP_KERNEL);
-+	if (!drvdata->gpiods)
-+		return -ENOMEM;
+ 		map.m_len = sec_blks;
+ next_alloc:
+-		if (has_not_enough_free_secs(sbi, 0,
++		if (has_not_enough_free_secs(sbi, 0, f2fs_sb_has_blkzoned(sbi) ?
++			ZONED_PIN_SEC_REQUIRED_COUNT :
+ 			GET_SEC_FROM_SEG(sbi, overprovision_segments(sbi)))) {
+ 			f2fs_down_write(&sbi->gc_lock);
+ 			stat_inc_gc_call_count(sbi, FOREGROUND);
+diff --git a/fs/f2fs/gc.h b/fs/f2fs/gc.h
+index 2914b678bf8fb..5c1eaf55e1277 100644
+--- a/fs/f2fs/gc.h
++++ b/fs/f2fs/gc.h
+@@ -35,6 +35,7 @@
+ #define LIMIT_BOOST_ZONED_GC	25 /* percentage over total user space of boosted gc for zoned devices */
+ #define DEF_MIGRATION_WINDOW_GRANULARITY_ZONED	3
+ #define BOOST_GC_MULTIPLE	5
++#define ZONED_PIN_SEC_REQUIRED_COUNT	1
  
- 	if (config->input_supply) {
- 		drvdata->desc.supply_name = devm_kstrdup(&pdev->dev,
-@@ -274,8 +276,6 @@ static int gpio_regulator_probe(struct p
- 		}
- 	}
+ #define DEF_GC_FAILED_PINNED_FILES	2048
+ #define MAX_GC_FAILED_PINNED_FILES	USHRT_MAX
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 449c0acbfabc0..3db89becdbfcd 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -3250,7 +3250,8 @@ int f2fs_allocate_pinning_section(struct f2fs_sb_info *sbi)
  
--	if (!drvdata->gpiods)
--		return -ENOMEM;
- 	for (i = 0; i < config->ngpios; i++) {
- 		drvdata->gpiods[i] = devm_gpiod_get_index(dev,
- 							  NULL,
+ 	if (f2fs_sb_has_blkzoned(sbi) && err == -EAGAIN && gc_required) {
+ 		f2fs_down_write(&sbi->gc_lock);
+-		err = f2fs_gc_range(sbi, 0, GET_SEGNO(sbi, FDEV(0).end_blk), true, 1);
++		err = f2fs_gc_range(sbi, 0, GET_SEGNO(sbi, FDEV(0).end_blk),
++				true, ZONED_PIN_SEC_REQUIRED_COUNT);
+ 		f2fs_up_write(&sbi->gc_lock);
+ 
+ 		gc_required = false;
+-- 
+2.39.5
+
 
 
 
