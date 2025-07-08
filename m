@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-160704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 069AFAFD170
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:35:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 164A8AFD278
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0671A541630
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:33:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD39B7AE651
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3052D2E2F0E;
-	Tue,  8 Jul 2025 16:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D731DD0EF;
+	Tue,  8 Jul 2025 16:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFJ8MoNO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGEZ0YeD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09572A1BA;
-	Tue,  8 Jul 2025 16:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F8C2E62B8;
+	Tue,  8 Jul 2025 16:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992449; cv=none; b=XF7ZUL6oxU0SKCgERLZTtlGCCBOGlQXInaitHEb0ITi+Z3jcoxhY+7DAh/WfX8E5tSago78m4cLnyRhOajKGMMAIR+vYBl4Aacb82UAqInYaJ+qxXaeXI6OJ6OSw5P1K2jEHkKP4XZGRbWdaNljDrNKuuQdKn3V4+QoSjMP7rsw=
+	t=1751993163; cv=none; b=eVr4t8rgOz4H/M1EmqQF798t36oP0S399sQ5tiuTAGv5fVPf274mvCMG0Wv8tzcPAwwe7RznWE7H9vOXuygUIUlOrmwA+pVd/wJQFn8O6JvwD94gk3AJZ7tETM/VRSiq68xMbol0XW11vRPd1/D8VU+XTYoAa7bhnIxnrLAZXdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992449; c=relaxed/simple;
-	bh=vxktG16dM5cLJPMSja3YDtkwgR2wcI3Mfgp0BphAf1w=;
+	s=arc-20240116; t=1751993163; c=relaxed/simple;
+	bh=M0OBjhbiPgiCbA0K7yZq3XMB6tIbK2MUN2VcpaCqjYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ue+soAL60srchXfEEKqOSjPu2yu9KYDx7i/Z5k3j2Z1E6+l7Z1ajqRwt6EWrdyKUpcTuGFAmJrywrAvNhnDjJ57WNbos8HGup7rdxVn5Lq5kcGS5WMxjkgEod+l13Gg5wzD3w1vxKd5lNX+/cml5rjZ69ChXNpSdsCvRAhh+xyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFJ8MoNO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291D9C4CEED;
-	Tue,  8 Jul 2025 16:34:07 +0000 (UTC)
+	 MIME-Version; b=Q6oQwQjxt1c0XOAABxWgkgoJUsLwkSz/rjpiX5IZFNwizROqQu1pDIIKoHZh39BSjKyMcRQyqoCYJuSw+VBYKtsY70gO1TnjdbGlkshaL+FHkVXcvBfqBAKDjU58xra0VHpbuHbQ3WmhC1EJI8pGge3U6/FZBF7CvAEGv16XFwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGEZ0YeD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63648C4CEED;
+	Tue,  8 Jul 2025 16:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992448;
-	bh=vxktG16dM5cLJPMSja3YDtkwgR2wcI3Mfgp0BphAf1w=;
+	s=korg; t=1751993163;
+	bh=M0OBjhbiPgiCbA0K7yZq3XMB6tIbK2MUN2VcpaCqjYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xFJ8MoNOX10rZYvidC0Iyg5KTieaf1rAc3EDgV5Z/Ht8jmHAMiPjBKhgYT/twYY7w
-	 a9+9e5zd7RsjLWBBfpp2yTlcFBjaaEiYDCzN0jbJhGkSvXE+28qq/mmhHY8SmYr2sL
-	 M8mtd9X5hY3hLjEs0kSwqx9jFA2aT9RZdiPC1hNg=
+	b=nGEZ0YeDOnNiIUL0JPEWpOGIu2YEHWo59cExcguLe+tfXLtDTtibo/KmvAQ0qym/w
+	 UGd6WaRwN5ePLjdUX4Jt4oulODsP795eSvXC3Q6YqrQz9QDxzFAqoVyaiIEZoXmw1j
+	 gzcs+XfCJ6PAy8vmfozql1rd/yrgl9HwLnHS3SlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/132] wifi: mac80211: drop invalid source address OCB frames
+	Shawn Guo <shawnguo@kernel.org>,
+	John Ernberg <john.ernberg@actia.se>,
+	stable <stable@kernel.org>,
+	Jun Li <jun.li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.12 210/232] usb: chipidea: udc: disconnect/reconnect from host when do suspend/resume
 Date: Tue,  8 Jul 2025 18:23:26 +0200
-Message-ID: <20250708162233.394446411@linuxfoundation.org>
+Message-ID: <20250708162246.937389345@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +65,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit d1b1a5eb27c4948e8811cf4dbb05aaf3eb10700c ]
+commit 31a6afbe86e8e9deba9ab53876ec49eafc7fd901 upstream.
 
-In OCB, don't accept frames from invalid source addresses
-(and in particular don't try to create stations for them),
-drop the frames instead.
+Shawn and John reported a hang issue during system suspend as below:
 
-Reported-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/6788d2d9.050a0220.20d369.0028.GAE@google.com/
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Tested-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/20250616171838.7433379cab5d.I47444d63c72a0bd58d2e2b67bb99e1fea37eec6f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ - USB gadget is enabled as Ethernet
+ - There is data transfer over USB Ethernet (scp a big file between host
+                                             and device)
+ - Device is going in/out suspend (echo mem > /sys/power/state)
+
+The root cause is the USB device controller is suspended but the USB bus
+is still active which caused the USB host continues to transfer data with
+device and the device continues to queue USB requests (in this case, a
+delayed TCP ACK packet trigger the issue) after controller is suspended,
+however the USB controller clock is already gated off. Then if udc driver
+access registers after that point, the system will hang.
+
+The correct way to avoid such issue is to disconnect device from host when
+the USB bus is not at suspend state. Then the host will receive disconnect
+event and stop data transfer in time. To continue make USB gadget device
+work after system resume, this will reconnect device automatically.
+
+To make usb wakeup work if USB bus is already at suspend state, this will
+keep connection for it only when USB device controller has enabled wakeup
+capability.
+
+Reported-by: Shawn Guo <shawnguo@kernel.org>
+Reported-by: John Ernberg <john.ernberg@actia.se>
+Closes: https://lore.kernel.org/linux-usb/aEZxmlHmjeWcXiF3@dragon/
+Tested-by: John Ernberg <john.ernberg@actia.se> # iMX8QXP
+Fixes: 235ffc17d014 ("usb: chipidea: udc: add suspend/resume support for device controller")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20250614124914.207540-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/rx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/chipidea/udc.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 5eb233f619817..58665b6ae6354 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4419,6 +4419,10 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
- 		if (!multicast &&
- 		    !ether_addr_equal(sdata->dev->dev_addr, hdr->addr1))
- 			return false;
-+		/* reject invalid/our STA address */
-+		if (!is_valid_ether_addr(hdr->addr2) ||
-+		    ether_addr_equal(sdata->dev->dev_addr, hdr->addr2))
-+			return false;
- 		if (!rx->sta) {
- 			int rate_idx;
- 			if (status->encoding != RX_ENC_LEGACY)
--- 
-2.39.5
-
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -2362,6 +2362,10 @@ static void udc_suspend(struct ci_hdrc *
+ 	 */
+ 	if (hw_read(ci, OP_ENDPTLISTADDR, ~0) == 0)
+ 		hw_write(ci, OP_ENDPTLISTADDR, ~0, ~0);
++
++	if (ci->gadget.connected &&
++	    (!ci->suspended || !device_may_wakeup(ci->dev)))
++		usb_gadget_disconnect(&ci->gadget);
+ }
+ 
+ static void udc_resume(struct ci_hdrc *ci, bool power_lost)
+@@ -2372,6 +2376,9 @@ static void udc_resume(struct ci_hdrc *c
+ 					OTGSC_BSVIS | OTGSC_BSVIE);
+ 		if (ci->vbus_active)
+ 			usb_gadget_vbus_disconnect(&ci->gadget);
++	} else if (ci->vbus_active && ci->driver &&
++		   !ci->gadget.connected) {
++		usb_gadget_connect(&ci->gadget);
+ 	}
+ 
+ 	/* Restore value 0 if it was set for power lost check */
 
 
 
