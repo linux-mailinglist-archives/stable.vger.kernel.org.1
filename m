@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-161133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57BC3AFD392
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84776AFD419
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D626B188DA4D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 903C37A4EC0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362832DCF48;
-	Tue,  8 Jul 2025 16:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900DE2E540C;
+	Tue,  8 Jul 2025 17:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NWYeYfRc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLAvOyMg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D82BE46;
-	Tue,  8 Jul 2025 16:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7512E1C74;
+	Tue,  8 Jul 2025 17:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993691; cv=none; b=l3TbLMTJSKLjrnBuV55KTpStJq6/C2r1c/VaqICUepj3EDOfanACn4Fh5eIbM30+cPXkod3rS6lGh1NImXiAQP62dK5K4sFm43G3QJ62m8s8yECZY+e9NhSDNu42XzBH/wzFaiC4BPN9r+c66XiX138uqovlWNI3tF+VMgM2yCo=
+	t=1751994204; cv=none; b=s8UZ2VOcBxtbZE1wCA6uGqy/ut1OMuL7DC20InDR/8SMAfm8SqoIHfLj/oXrQf/jMw01jclnxg3UD7PtDk4Gc2ZMfpjiRg+ixcUqW/fmd8xQt91Yr7hgBj+I7np5BEKuyXuTM+mt+DwynDh0Yd0Y2gU2Iix7qzhPClGvpnZlD8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993691; c=relaxed/simple;
-	bh=T9EX4YHnjY+buTC5Bg+JpfC3AfTTQQApCm5ubhMwXLU=;
+	s=arc-20240116; t=1751994204; c=relaxed/simple;
+	bh=YPL6KQcH+qOaCSAbBpy9vqFFBbBg4fYMv5w+FJ65UCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZWGgHhhsZcLaNBsvsRpApRvhba28Bj2C7Pn3ub9FvcU7lVFy0ya31JArLZ7s7X/Z/ibzoBAlcM0eFQ3UapdSGujtXHhnN1o0wmCCMo7XRZkwc3BKhfGs6ov3m8y+sKrOn1KGL6QR2RyzOVjuje2vqVA2/mdIykc6/XpGXt1uNJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NWYeYfRc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7303AC4CEED;
-	Tue,  8 Jul 2025 16:54:50 +0000 (UTC)
+	 MIME-Version; b=bQ4qy/CVaqWuS9z1eXL2o2l63RNpsFq6rYcZs58diYbUvr6DFyM/bght9zXulRFPGI0kK3H9jKNK54SNi3rsU9UOpuziYJIVZ7H3Bggt9aw4jojlX+lE0ZCnjz3Vda96rc7BQ0+ebH1Z4/J6AWkVrRgDufzrNXM4RrKsKkyi5Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLAvOyMg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1AAC4CEED;
+	Tue,  8 Jul 2025 17:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993690;
-	bh=T9EX4YHnjY+buTC5Bg+JpfC3AfTTQQApCm5ubhMwXLU=;
+	s=korg; t=1751994204;
+	bh=YPL6KQcH+qOaCSAbBpy9vqFFBbBg4fYMv5w+FJ65UCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NWYeYfRcD1TD60yVDqcjPoeWPI8kbYlA14ODo0mFsTSY013RJNZjUX8bO8IroVe5Z
-	 eCbnurIUbeT3dM68rokpMYduUaDM8Gtq4qeCLnNRtNbgbYLf1uirgb51DGkp4db5OI
-	 IrWvsmPd9W8TGo4c8m1+d29jLQd7yswy7UAxCkUU=
+	b=iLAvOyMgg/skC3Hwgik4ggOvUhtjIniDr1eE+d+U2s8tOY9yUeELGzRcn/gjh8nw2
+	 JwiOSQUID8JHBb6lvYxJzYWNB6HeqSiajylR8GZ1l0tTkyeP2rsuKe1kFpzo/oFAIJ
+	 83VqKCGFT3GhNBLC6KuJ4u4yjCpuUhk1r8gXvQ8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.15 160/178] dt-bindings: i2c: realtek,rtl9301: Fix missing reg constraint
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 160/160] x86/process: Move the buffer clearing before MONITOR
 Date: Tue,  8 Jul 2025 18:23:17 +0200
-Message-ID: <20250708162240.666164788@linuxfoundation.org>
+Message-ID: <20250708162235.716750984@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit 5f05fc6e2218db7ecc52c60eb34b707fe69262c2 upstream.
+Commit 8e786a85c0a3c0fffae6244733fb576eeabd9dec upstream.
 
-Lists should have fixed amount if items, so add missing constraint to
-the 'reg' property (only one address space entry).
+Move the VERW clearing before the MONITOR so that VERW doesn't disarm it
+and the machine never enters C1.
 
-Fixes: c5eda0333076 ("dt-bindings: i2c: Add Realtek RTL I2C Controller")
-Cc: <stable@vger.kernel.org> # v6.13+
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250702061530.6940-2-krzysztof.kozlowski@linaro.org
+Original idea by Kim Phillips <kim.phillips@amd.com>.
+
+Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/i2c/realtek,rtl9301-i2c.yaml |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/mwait.h |   16 +++++++++++-----
+ arch/x86/kernel/process.c    |   15 ++++++++++++---
+ 2 files changed, 23 insertions(+), 8 deletions(-)
 
---- a/Documentation/devicetree/bindings/i2c/realtek,rtl9301-i2c.yaml
-+++ b/Documentation/devicetree/bindings/i2c/realtek,rtl9301-i2c.yaml
-@@ -26,7 +26,8 @@ properties:
-       - const: realtek,rtl9301-i2c
+--- a/arch/x86/include/asm/mwait.h
++++ b/arch/x86/include/asm/mwait.h
+@@ -43,8 +43,6 @@ static inline void __monitorx(const void
  
-   reg:
--    description: Register offset and size this I2C controller.
-+    items:
-+      - description: Register offset and size this I2C controller.
+ static inline void __mwait(unsigned long eax, unsigned long ecx)
+ {
+-	x86_idle_clear_cpu_buffers();
+-
+ 	/* "mwait %eax, %ecx;" */
+ 	asm volatile(".byte 0x0f, 0x01, 0xc9;"
+ 		     :: "a" (eax), "c" (ecx));
+@@ -88,7 +86,6 @@ static inline void __mwaitx(unsigned lon
  
-   "#address-cells":
-     const: 1
+ static inline void __sti_mwait(unsigned long eax, unsigned long ecx)
+ {
+-	x86_idle_clear_cpu_buffers();
+ 
+ 	/* "mwait %eax, %ecx;" */
+ 	asm volatile("sti; .byte 0x0f, 0x01, 0xc9;"
+@@ -107,6 +104,11 @@ static inline void __sti_mwait(unsigned
+  */
+ static inline void mwait_idle_with_hints(unsigned long eax, unsigned long ecx)
+ {
++	if (need_resched())
++		return;
++
++	x86_idle_clear_cpu_buffers();
++
+ 	if (static_cpu_has_bug(X86_BUG_MONITOR) || !current_set_polling_and_test()) {
+ 		if (static_cpu_has_bug(X86_BUG_CLFLUSH_MONITOR)) {
+ 			mb();
+@@ -115,9 +117,13 @@ static inline void mwait_idle_with_hints
+ 		}
+ 
+ 		__monitor((void *)&current_thread_info()->flags, 0, 0);
+-		if (!need_resched())
+-			__mwait(eax, ecx);
++		if (need_resched())
++			goto out;
++
++		__mwait(eax, ecx);
+ 	}
++
++out:
+ 	current_clr_polling();
+ }
+ 
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -836,6 +836,11 @@ static int prefer_mwait_c1_over_halt(con
+  */
+ static __cpuidle void mwait_idle(void)
+ {
++	if (need_resched())
++		return;
++
++	x86_idle_clear_cpu_buffers();
++
+ 	if (!current_set_polling_and_test()) {
+ 		if (this_cpu_has(X86_BUG_CLFLUSH_MONITOR)) {
+ 			mb(); /* quirk */
+@@ -844,13 +849,17 @@ static __cpuidle void mwait_idle(void)
+ 		}
+ 
+ 		__monitor((void *)&current_thread_info()->flags, 0, 0);
+-		if (!need_resched())
+-			__sti_mwait(0, 0);
+-		else
++		if (need_resched()) {
+ 			raw_local_irq_enable();
++			goto out;
++		}
++
++		__sti_mwait(0, 0);
+ 	} else {
+ 		raw_local_irq_enable();
+ 	}
++
++out:
+ 	__current_clr_polling();
+ }
+ 
 
 
 
