@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-161074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8089AFD33B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:55:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41AB4AFD11A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B74E3BDA37
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:51:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 789DC16A07E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1320F2E541E;
-	Tue,  8 Jul 2025 16:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807901548C;
+	Tue,  8 Jul 2025 16:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ii/MD5CA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7b7GCNY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EB621C190;
-	Tue,  8 Jul 2025 16:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E917881E;
+	Tue,  8 Jul 2025 16:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993521; cv=none; b=NDTPux7AdDXQojQQZQBWCNQPDe/j9YsQH6nt9O3Qud7DRqcQCAjdhmYqt6wGFg62CvSb/fXc0Qm+/eTXcL+CZfmHvzdk3KD1Gmq+atfdFsP67/LuTc2Tw42hWrwbhWkATCIdF/JOpJm8QZlcFJ6TNap/QKKZtaC1P7eYtRs4oXI=
+	t=1751992247; cv=none; b=UoqIKD1yPPvMjM3az7/H//nnCzmL9vmefUq0lixTwGj/BcYcrRGzl+cGfa7p8OKOhcdClyxHPIOl6taaLcdlb4SiL4b+D6fA1pnfR5q5RgUircfGBVDD/3kIosxw219h3ig3qq/vIq9B3N7kzgT/eBR140VH5VydY56hysk0bjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993521; c=relaxed/simple;
-	bh=FEgjMhaEwM3sWKyCXp63yzvZj7n5Z6otil2ujghYUAk=;
+	s=arc-20240116; t=1751992247; c=relaxed/simple;
+	bh=qBxXnA3lLMjns3Lc90lpYjT7+hkNv95PXP4pzSUOd8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EbDEPqrvygj9r/gb5gjGHrQ7l0959Pd7tYGBL7/fSYRC8Rv5ujyzwm9nokgHO64thIV/KPOiy6U9DaNXTlxQibnMDUaCTHyDv2l6ie+DFZrWuhlZ1eJq6mvXEq4N+bqgL31YTd9kOjuFSpziX0sFMCZ45AUOIEYk1NdTSdKqi9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ii/MD5CA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0FFC4CEED;
-	Tue,  8 Jul 2025 16:52:01 +0000 (UTC)
+	 MIME-Version; b=ABgwFWeemcyn+aOSzAJhb+ozNiNhTbCcF2yukLvhQ63MWBNdCPkMTTXtRIJLVmVmfMTdzb3mZtjemz1ECfZpWTEcSuVDuqtiKgnTol1VUYMKjvB0jXJ3kZUh2wmH0WoP2WrECFzBn6jV6gFdMxw3la8TAVuKLlE6BUApJjBCdbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7b7GCNY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8166CC4CEED;
+	Tue,  8 Jul 2025 16:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993521;
-	bh=FEgjMhaEwM3sWKyCXp63yzvZj7n5Z6otil2ujghYUAk=;
+	s=korg; t=1751992246;
+	bh=qBxXnA3lLMjns3Lc90lpYjT7+hkNv95PXP4pzSUOd8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ii/MD5CAapWKd1cXHcJPVVm+UqnzxSodeVyxXeHazWV9YX8ncvAEG2WsOb0z9ZyHc
-	 WqjN/o9VvZoUnuWTO+mO1P7d19tm7B1AnU65F6KjDODTXaBHVbmZcryr+D+pPWvjyd
-	 2aAhwj4rUc6oPSqeNZeyqlrmNR2bhbGnmXD4YJsU=
+	b=o7b7GCNYxGojPpJzsDehJphRn6miu6dKjBAwQjNblnsW157wdvx8n7FJeY66buose
+	 O/Ot/+G3iF3m9+V1D9r+N/90l7Vy93cAP/MoYrJu6IGnLnu1uXHP0dpagQRwPVDtuM
+	 5TccZsTqGLCwqrvHfBsk98U43YcUkS8kcMNUOWNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Steve French <sfrench@samba.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 101/178] smb: client: set missing retry flag in cifs_readv_callback()
-Date: Tue,  8 Jul 2025 18:22:18 +0200
-Message-ID: <20250708162239.286276606@linuxfoundation.org>
+Subject: [PATCH 6.6 028/132] RDMA/mlx5: Fix vport loopback for MPV device
+Date: Tue,  8 Jul 2025 18:22:19 +0200
+Message-ID: <20250708162231.534403803@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,42 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit 0e60bae24ad28ab06a485698077d3c626f1e54ab ]
+[ Upstream commit a9a9e68954f29b1e197663f76289db4879fd51bb ]
 
-Set NETFS_SREQ_NEED_RETRY flag to tell netfslib that the subreq needs
-to be retried.
+Always enable vport loopback for both MPV devices on driver start.
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/20250701163852.2171681-8-dhowells@redhat.com
-Tested-by: Steve French <sfrench@samba.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: netfs@lists.linux.dev
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Previously in some cases related to MPV RoCE, packets weren't correctly
+executing loopback check at vport in FW, since it was disabled.
+Due to complexity of identifying such cases for MPV always enable vport
+loopback for both GVMIs when binding the slave to the master port.
+
+Fixes: 0042f9e458a5 ("RDMA/mlx5: Enable vport loopback when user context or QP mandate")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/d4298f5ebb2197459e9e7221c51ecd6a34699847.1750064969.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifssmb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/mlx5/main.c | 33 +++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index 7216fcec79e8b..f9ccae5de5b88 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -1335,6 +1335,7 @@ cifs_readv_callback(struct mid_q_entry *mid)
- 		break;
- 	case MID_REQUEST_SUBMITTED:
- 	case MID_RETRY_NEEDED:
-+		__set_bit(NETFS_SREQ_NEED_RETRY, &rdata->subreq.flags);
- 		rdata->result = -EAGAIN;
- 		if (server->sign && rdata->got_bytes)
- 			/* reset bytes number since we can not check a sign */
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index ada7dbf8eb1cf..e922fb8728654 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -1690,6 +1690,33 @@ static void deallocate_uars(struct mlx5_ib_dev *dev,
+ 					     context->devx_uid);
+ }
+ 
++static int mlx5_ib_enable_lb_mp(struct mlx5_core_dev *master,
++				struct mlx5_core_dev *slave)
++{
++	int err;
++
++	err = mlx5_nic_vport_update_local_lb(master, true);
++	if (err)
++		return err;
++
++	err = mlx5_nic_vport_update_local_lb(slave, true);
++	if (err)
++		goto out;
++
++	return 0;
++
++out:
++	mlx5_nic_vport_update_local_lb(master, false);
++	return err;
++}
++
++static void mlx5_ib_disable_lb_mp(struct mlx5_core_dev *master,
++				  struct mlx5_core_dev *slave)
++{
++	mlx5_nic_vport_update_local_lb(slave, false);
++	mlx5_nic_vport_update_local_lb(master, false);
++}
++
+ int mlx5_ib_enable_lb(struct mlx5_ib_dev *dev, bool td, bool qp)
+ {
+ 	int err = 0;
+@@ -3224,6 +3251,8 @@ static void mlx5_ib_unbind_slave_port(struct mlx5_ib_dev *ibdev,
+ 
+ 	lockdep_assert_held(&mlx5_ib_multiport_mutex);
+ 
++	mlx5_ib_disable_lb_mp(ibdev->mdev, mpi->mdev);
++
+ 	mlx5_core_mp_event_replay(ibdev->mdev,
+ 				  MLX5_DRIVER_EVENT_AFFILIATION_REMOVED,
+ 				  NULL);
+@@ -3319,6 +3348,10 @@ static bool mlx5_ib_bind_slave_port(struct mlx5_ib_dev *ibdev,
+ 				  MLX5_DRIVER_EVENT_AFFILIATION_DONE,
+ 				  &key);
+ 
++	err = mlx5_ib_enable_lb_mp(ibdev->mdev, mpi->mdev);
++	if (err)
++		goto unbind;
++
+ 	return true;
+ 
+ unbind:
 -- 
 2.39.5
 
