@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-160629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF6CAFD100
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AACCAFD1FA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80F9F4869B0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:29:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0CFC7A94A2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F181CAA85;
-	Tue,  8 Jul 2025 16:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0027B2DD5EF;
+	Tue,  8 Jul 2025 16:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+83FPSG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6A0DtVm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5706A1548C;
-	Tue,  8 Jul 2025 16:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EF78F5B;
+	Tue,  8 Jul 2025 16:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992221; cv=none; b=VJgU6p0+LUmtu2vE/8J6QUGCSTCggjbHTu8o5zW/uGnQeOJQfqigNWqOBeBiwmtaOpPZd9S1ZXfayEK8gFQ5hRKZ0Gxjecg8AihG8ucbfxCH8fGMn/+UKWi35ejVJJBBGazo0gv1WUv7zePFzcvCxqpXpw+kpoU4HiNKdfK87No=
+	t=1751992926; cv=none; b=gvUzL7LQFvAbWPEZoCpboR6Rj9JeDZNWvBTvccBwibmFFCdhwkeQjUNNFShRzZBCC89pOngicNcrHHG/1U2c+HQU4Mk6ACw7flAT+Z3g1OKVJGqFIsYwE//XiMIkd3qYHNea7CXPGPAobGGh/6UxuU156ri2aupDglVq9U/iTd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992221; c=relaxed/simple;
-	bh=Vsd56XY36b8bcByMo/GUq0wtd68Fg20UpytZcpLNwOQ=;
+	s=arc-20240116; t=1751992926; c=relaxed/simple;
+	bh=509NGWDV0CNv0luMW+xJKzP5f1PN3ycPgoMSXVSLwoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDofLdPPzoQdaSbFoR7Ap03EAr4wVmF0/+VJBcXrYVNdh84aK0iT9eJ1mZ4iikUS358aYu722OnYozU+SNwO/vooH2K5++LqT2A+fLJa5x3MKai3SuycqlfYQbEBBlzWpBLbaBBLl0fwmPo4fkerB/4rptI3OZ7UniV70j8np3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+83FPSG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F55C4CEED;
-	Tue,  8 Jul 2025 16:30:20 +0000 (UTC)
+	 MIME-Version; b=OgSnKuKlBHfO4TSYU+/RtIMHwy7BH97hbYxHefixlRog1FsxLWZrH0Cc2eKmmXUZKp5bIeDGCnWFT11sPzzwMncym88FsDoOQg/lKdUNG9cTwHhpEks5I0VcN6e8Tx1oBruPwgWOE/OUsYdwi1zjc//4D5T5NSZYsy8aUx+GQf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6A0DtVm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D00C4CEED;
+	Tue,  8 Jul 2025 16:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992221;
-	bh=Vsd56XY36b8bcByMo/GUq0wtd68Fg20UpytZcpLNwOQ=;
+	s=korg; t=1751992926;
+	bh=509NGWDV0CNv0luMW+xJKzP5f1PN3ycPgoMSXVSLwoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X+83FPSGANMfTZ1zvoL6RImkEOoIw0HvkX+O9vIjyTkpEF5tIWjl4R14UfQQT/8Ye
-	 nQwD2vgpq/ryInK+KPFN/KxZgMhxIuleQHYIvDqysB+Oi9ZVAdfmzUfmOqfXQQMBVE
-	 vWLHlWQZrQPqc8Zk5gzAkNV9NQk3L4EbwDJFm6/w=
+	b=x6A0DtVmz4qzs1+QxEehFO84QG5k1ZuM28A7e8ZA0Wu9eOXUsFmpxoOfy+BT1QUnj
+	 7Wwy9kUWpJN9lOlpDcSUV9LSEyhMp9mEiLSNb+yoboSNIJaknWayPPp4taHRuUVZtZ
+	 smigZRFRGYfT8n71IjtYazJc33fH5wZCUTzMQohE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 012/132] Bluetooth: MGMT: mesh_send: check instances prior disabling advertising
+	Arnd Bergmann <arnd@arndb.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 127/232] iommu: ipmmu-vmsa: avoid Wformat-security warning
 Date: Tue,  8 Jul 2025 18:22:03 +0200
-Message-ID: <20250708162231.100623378@linuxfoundation.org>
+Message-ID: <20250708162244.766153955@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit f3cb5676e5c11c896ba647ee309a993e73531588 upstream.
+[ Upstream commit 33647d0be323f9e2f27cd1e86de5cfd965cec654 ]
 
-The unconditional call of hci_disable_advertising_sync() in
-mesh_send_done_sync() also disables other LE advertisings (non mesh
-related).
+iommu_device_sysfs_add() requires a constant format string, otherwise
+a W=1 build produces a warning:
 
-I am not sure whether this call is required at all, but checking the
-adv_instances list (like done at other places) seems to solve the
-problem.
+drivers/iommu/ipmmu-vmsa.c:1093:62: error: format string is not a string literal (potentially insecure) [-Werror,-Wformat-security]
+ 1093 |         ret = iommu_device_sysfs_add(&mmu->iommu, &pdev->dev, NULL, dev_name(&pdev->dev));
+      |                                                                     ^~~~~~~~~~~~~~~~~~~~
+drivers/iommu/ipmmu-vmsa.c:1093:62: note: treat the string as an argument to avoid this
+ 1093 |         ret = iommu_device_sysfs_add(&mmu->iommu, &pdev->dev, NULL, dev_name(&pdev->dev));
+      |                                                                     ^
+      |                                                                     "%s",
 
-Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This was an old bug but I saw it now because the code was changed as part
+of commit d9d3cede4167 ("iommu/ipmmu-vmsa: Register in a sensible order").
+
+Fixes: 7af9a5fdb9e0 ("iommu/ipmmu-vmsa: Use iommu_device_sysfs_add()/remove()")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250423164006.2661372-1-arnd@kernel.org
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iommu/ipmmu-vmsa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -1074,7 +1074,8 @@ static int mesh_send_done_sync(struct hc
- 	struct mgmt_mesh_tx *mesh_tx;
- 
- 	hci_dev_clear_flag(hdev, HCI_MESH_SENDING);
--	hci_disable_advertising_sync(hdev);
-+	if (list_empty(&hdev->adv_instances))
-+		hci_disable_advertising_sync(hdev);
- 	mesh_tx = mgmt_mesh_next(hdev, NULL);
- 
- 	if (mesh_tx)
+diff --git a/drivers/iommu/ipmmu-vmsa.c b/drivers/iommu/ipmmu-vmsa.c
+index ff55b8c307126..ae69691471e9f 100644
+--- a/drivers/iommu/ipmmu-vmsa.c
++++ b/drivers/iommu/ipmmu-vmsa.c
+@@ -1087,7 +1087,7 @@ static int ipmmu_probe(struct platform_device *pdev)
+ 	 * - R-Car Gen3 IPMMU (leaf devices only - skip root IPMMU-MM device)
+ 	 */
+ 	if (!mmu->features->has_cache_leaf_nodes || !ipmmu_is_root(mmu)) {
+-		ret = iommu_device_sysfs_add(&mmu->iommu, &pdev->dev, NULL,
++		ret = iommu_device_sysfs_add(&mmu->iommu, &pdev->dev, NULL, "%s",
+ 					     dev_name(&pdev->dev));
+ 		if (ret)
+ 			return ret;
+-- 
+2.39.5
+
 
 
 
