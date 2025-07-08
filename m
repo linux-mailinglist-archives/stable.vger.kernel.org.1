@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-160584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824A6AFD0CA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA9DAFD2C5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D1C0484C2C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39A0117BBC4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90D72DF3F8;
-	Tue,  8 Jul 2025 16:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4088257459;
+	Tue,  8 Jul 2025 16:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gjq4rOoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQuUOfQ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AD62E659;
-	Tue,  8 Jul 2025 16:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721E723DE;
+	Tue,  8 Jul 2025 16:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992078; cv=none; b=jZImIqMR6040XFwXp6WHMhdFWv8G4YHw30S/A6FYLUKf0BE5YB1td5vuhmUfDhKlwQc3/jetEQVa5Kyr6Gbnv75odoWBdDe2Sb/FuPxU1kITJVqSlA53jKwUvYXAYxWv637QhemVKp2scf+SxmiO170LFeGl/zvsZWunDzxqTRQ=
+	t=1751993207; cv=none; b=s+/M/5iUP0O+Uxp56SYEtHRb36O/iWoXDYLnQR9N//6UrWTBzuqBd9pTjOcA5+8UZm/7FiPGKeNdFXZKmwSWylCHgDmNKgEe1Oi8jO11ampBsFfC5g4D/2DmSOCPRsU/ThSTeqNktfkld6/QRaF0BvNIdO4L6UsJOMl3RKSyo8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992078; c=relaxed/simple;
-	bh=ThudXU7Hr55bc3ROAT9iB0UHvnMjPkswgC8enjlxttc=;
+	s=arc-20240116; t=1751993207; c=relaxed/simple;
+	bh=uYIb/PSY/7grtTzN+s1tQ1Z1S0TH8HyP4nuA0EHNyQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSYE2rZecpymaoJcHXzHQcYDbpX865aqTMWRhncLtW8zh3txa3DBFFiLX78TnTm01vaxYpJoBZXylpnhMPeVR4Vl6DgnYig9nTeT+hb87A/qD3MOQvK8fznn2Fq+q232JpdCEm/xWeIFlqflidwpTTqk5U0Fp/PWDanjHDeemEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gjq4rOoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E326C4CEED;
-	Tue,  8 Jul 2025 16:27:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yw+AsjNk0nRoPoaMvSg44+rNinzpq5vpCOqBbGzQWDzXW8ktOeNNRj/WvjfFLQWmPVY+vJQ9Dhrhk3hz8+cFrG6RnguUxQ0hzAWGJCFHPzqW5lzTiOfCRbc7D7Kn/NEj+Km2W6lYAFxaq8xlDDoKve1xSfekGd9WSgX2Rq9ym1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQuUOfQ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA97C4CEED;
+	Tue,  8 Jul 2025 16:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992078;
-	bh=ThudXU7Hr55bc3ROAT9iB0UHvnMjPkswgC8enjlxttc=;
+	s=korg; t=1751993207;
+	bh=uYIb/PSY/7grtTzN+s1tQ1Z1S0TH8HyP4nuA0EHNyQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gjq4rOoLIjUsBYN9EjVyesf0RbYWjvnYCiG650I0189HwdVsuC0XL37tVUwOjl/Gh
-	 b+CAwULQz9UHsaq7z+ueX2OhVL7BGO3h6C9CfW6kuGmEHk9viLcoTdWIK1LTV6U8GC
-	 JK2iPZtq3et5Tnzo8DXObkUsVo00ad6a2EJfHqpg=
+	b=WQuUOfQ31Yg0vgxcw9vYq0oCHi536OYC9En6Tisk39ImkECyCk2PssBhnDdo015GS
+	 2ErB0LDHC40n0505V7qVeS9+aKZgI6wwCCNEYscS74w+FpcDOyvDZJpcD1zKXmmm9m
+	 Kd2x84228HcmYTZp0maasOgTHsrZOu6wde8K2qwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Harry Austen <hpausten@protonmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 21/81] scsi: qla4xxx: Fix missing DMA mapping error in qla4xxx_alloc_pdu()
+Subject: [PATCH 6.12 197/232] drm/xe: Allow dropping kunit dependency as built-in
 Date: Tue,  8 Jul 2025 18:23:13 +0200
-Message-ID: <20250708162225.601673430@linuxfoundation.org>
+Message-ID: <20250708162246.592155200@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +64,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Harry Austen <hpausten@protonmail.com>
 
-[ Upstream commit 00f452a1b084efbe8dcb60a29860527944a002a1 ]
+[ Upstream commit aa18d5769fcafe645a3ba01a9a69dde4f8dc8cc3 ]
 
-dma_map_XXX() can fail and should be tested for errors with
-dma_mapping_error().
+Fix Kconfig symbol dependency on KUNIT, which isn't actually required
+for XE to be built-in. However, if KUNIT is enabled, it must be built-in
+too.
 
-Fixes: b3a271a94d00 ("[SCSI] qla4xxx: support iscsiadm session mgmt")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250618071742.21822-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 08987a8b6820 ("drm/xe: Fix build with KUNIT=m")
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Signed-off-by: Harry Austen <hpausten@protonmail.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20250627-xe-kunit-v2-2-756fe5cd56cf@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit a559434880b320b83733d739733250815aecf1b0)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla4xxx/ql4_os.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/xe/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
-index 3f2f9734ee42e..2925823a494a6 100644
---- a/drivers/scsi/qla4xxx/ql4_os.c
-+++ b/drivers/scsi/qla4xxx/ql4_os.c
-@@ -3420,6 +3420,8 @@ static int qla4xxx_alloc_pdu(struct iscsi_task *task, uint8_t opcode)
- 		task_data->data_dma = dma_map_single(&ha->pdev->dev, task->data,
- 						     task->data_count,
- 						     DMA_TO_DEVICE);
-+		if (dma_mapping_error(&ha->pdev->dev, task_data->data_dma))
-+			return -ENOMEM;
- 	}
- 
- 	DEBUG2(ql4_printk(KERN_INFO, ha, "%s: MaxRecvLen %u, iscsi hrd %d\n",
+diff --git a/drivers/gpu/drm/xe/Kconfig b/drivers/gpu/drm/xe/Kconfig
+index 7bbe46a98ff1f..93e742c1f21e7 100644
+--- a/drivers/gpu/drm/xe/Kconfig
++++ b/drivers/gpu/drm/xe/Kconfig
+@@ -1,7 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ config DRM_XE
+ 	tristate "Intel Xe Graphics"
+-	depends on DRM && PCI && MMU && (m || (y && KUNIT=y))
++	depends on DRM && PCI && MMU
++	depends on KUNIT || !KUNIT
+ 	select INTERVAL_TREE
+ 	# we need shmfs for the swappable backing store, and in particular
+ 	# the shmem_readpage() which depends upon tmpfs
 -- 
 2.39.5
 
