@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-160561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D041AAFD0B9
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D349AFD169
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04D463B1147
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D59B1887EC3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2DF92D877F;
-	Tue,  8 Jul 2025 16:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC762E3AE8;
+	Tue,  8 Jul 2025 16:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSnRQ+bZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYH6t/6C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AC02E659;
-	Tue,  8 Jul 2025 16:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E432E2EE4;
+	Tue,  8 Jul 2025 16:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992004; cv=none; b=pdng17cY70EBuhYqKFAJwU2Yieoqo/bp/5KoSM7xPBt1r5v0pleIFWqLrMRW3dkLw9vK0tt/UM3DlPb9Ngd2b4SG/VvlNi0n4j8StsUu2AYIsqkrMzd+7KIiRdjzUlduPDW3PBmY4tq96BZ8Ss8mEyKsBw7J9PKG7iFa0Mzq7IQ=
+	t=1751992433; cv=none; b=sAJ6675Twze+ISciKT3XWHSxHkqWea25HRZ0Ll0arZeeeWYqgkFOZpAcRUNvqW+oiYaftkTrwtV+gFXntmxME4Nn3bDhS1bjSbQn1G95DDQvWcJsdkBaEAilYJusoeChAWrqtgpNvE/6aieB2dCl+SxzdyNuUCBUUJ7xU+Enk6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992004; c=relaxed/simple;
-	bh=3FDB5FCdqpP4n/slqYxn4oZDOGdxQ+H6YyJWOgyJu6U=;
+	s=arc-20240116; t=1751992433; c=relaxed/simple;
+	bh=VJjMoUIHMxS1zB22pihIH33CVMWIhtTj5SU84X91Aww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDOZxDHjL1CggrI+EPQWsGgpwT1T1ADEZafrRL7RzZ8SjGrkhgaYj4OHmzVkjmUbDSKHZ6E0gczGpLyOwnlp414am5QC8j58gtHQU+FGkPHsKzUog15kc0RhRT496XLZp4uz/qa1sLdxLulF7+CmVXVGpIBl+yH8gD4qVrEzWsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSnRQ+bZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3941EC4CEED;
-	Tue,  8 Jul 2025 16:26:44 +0000 (UTC)
+	 MIME-Version; b=tzoT6RbU1rQGK8BLSxxCObPLe5fw8Bv9WGHPE8kA5i7wAw0Q6O/Jrwn1BkCOfGslYm/TW4h4oq1KhEz1GvCeZNzWvGq+h2bvKZcByEzQ91KRJuPr9vMIxrc9+/zOFmwhhJTFxJ+nyyKg6tm94wGVaV49/mxwUNvdxBY65vyNof4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYH6t/6C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D70BC4CEED;
+	Tue,  8 Jul 2025 16:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992004;
-	bh=3FDB5FCdqpP4n/slqYxn4oZDOGdxQ+H6YyJWOgyJu6U=;
+	s=korg; t=1751992432;
+	bh=VJjMoUIHMxS1zB22pihIH33CVMWIhtTj5SU84X91Aww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iSnRQ+bZZXFNNS9DIaIqrYCc3vS9KoXgCDWdbLOEtHzmiLGnNNFbD2o3kelc/BcmT
-	 l5+or02zcyQmTdsioim3rpMBsndWC9xBMZSv+EWs/xfugdZsXFrGdCpz3hc9mvf7uJ
-	 EVIdOY11biB8Q8HVxyutnWwvGiUZIxkH02G15ibQ=
+	b=vYH6t/6CPC6+p68Q0fOL2wruKiSKlXHQw2/CseAhO6oitDLkkv0REHa7RssT4hWUs
+	 0Lgd5mEbG4rfa9eb9ShXEvkPFQNooe4ySEgc+b9jXpPaEu2twVtgVF3ZxlVAB5rCpm
+	 LhJM6W5hPLEkZB7RtxNHpJUaRd5z5uYrxEmIIPEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Inki Dae <inki.dae@samsung.com>,
+	Tulio Magno <tuliom@ascii.art.br>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Justin M. Forbes" <jforbes@fedoraproject.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 29/81] drm/exynos: fimd: Guard display clock control with runtime PM calls
+Subject: [PATCH 6.6 090/132] powerpc: Fix struct termio related ioctl macros
 Date: Tue,  8 Jul 2025 18:23:21 +0200
-Message-ID: <20250708162225.866836027@linuxfoundation.org>
+Message-ID: <20250708162233.258036356@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
 
-[ Upstream commit 5d91394f236167ac624b823820faf4aa928b889e ]
+[ Upstream commit ab107276607af90b13a5994997e19b7b9731e251 ]
 
-Commit c9b1150a68d9 ("drm/atomic-helper: Re-order bridge chain pre-enable
-and post-disable") changed the call sequence to the CRTC enable/disable
-and bridge pre_enable/post_disable methods, so those bridge methods are
-now called when CRTC is not yet enabled.
+Since termio interface is now obsolete, include/uapi/asm/ioctls.h
+has some constant macros referring to "struct termio", this caused
+build failure at userspace.
 
-This causes a lockup observed on Samsung Peach-Pit/Pi Chromebooks. The
-source of this lockup is a call to fimd_dp_clock_enable() function, when
-FIMD device is not yet runtime resumed. It worked before the mentioned
-commit only because the CRTC implemented by the FIMD driver was always
-enabled what guaranteed the FIMD device to be runtime resumed.
+In file included from /usr/include/asm/ioctl.h:12,
+                 from /usr/include/asm/ioctls.h:5,
+                 from tst-ioctls.c:3:
+tst-ioctls.c: In function 'get_TCGETA':
+tst-ioctls.c:12:10: error: invalid application of 'sizeof' to incomplete type 'struct termio'
+   12 |   return TCGETA;
+      |          ^~~~~~
 
-This patch adds runtime PM guards to the fimd_dp_clock_enable() function
-to enable its proper operation also when the CRTC implemented by FIMD is
-not yet enabled.
+Even though termios.h provides "struct termio", trying to juggle definitions around to
+make it compile could introduce regressions. So better to open code it.
 
-Fixes: 196e059a8a6a ("drm/exynos: convert clock_enable crtc callback to pipeline clock")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Reported-by: Tulio Magno <tuliom@ascii.art.br>
+Suggested-by: Nicholas Piggin <npiggin@gmail.com>
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
+Closes: https://lore.kernel.org/linuxppc-dev/8734dji5wl.fsf@ascii.art.br/
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250517142237.156665-1-maddy@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_fimd.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/powerpc/include/uapi/asm/ioctls.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_fimd.c b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-index 529033b980b20..0816714b1e581 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-@@ -188,6 +188,7 @@ struct fimd_context {
- 	u32				i80ifcon;
- 	bool				i80_if;
- 	bool				suspended;
-+	bool				dp_clk_enabled;
- 	wait_queue_head_t		wait_vsync_queue;
- 	atomic_t			wait_vsync_event;
- 	atomic_t			win_updated;
-@@ -1048,7 +1049,18 @@ static void fimd_dp_clock_enable(struct exynos_drm_clk *clk, bool enable)
- 	struct fimd_context *ctx = container_of(clk, struct fimd_context,
- 						dp_clk);
- 	u32 val = enable ? DP_MIE_CLK_DP_ENABLE : DP_MIE_CLK_DISABLE;
-+
-+	if (enable == ctx->dp_clk_enabled)
-+		return;
-+
-+	if (enable)
-+		pm_runtime_resume_and_get(ctx->dev);
-+
-+	ctx->dp_clk_enabled = enable;
- 	writel(val, ctx->regs + DP_MIE_CLKCON);
-+
-+	if (!enable)
-+		pm_runtime_put(ctx->dev);
- }
+diff --git a/arch/powerpc/include/uapi/asm/ioctls.h b/arch/powerpc/include/uapi/asm/ioctls.h
+index 2c145da3b774a..b5211e413829a 100644
+--- a/arch/powerpc/include/uapi/asm/ioctls.h
++++ b/arch/powerpc/include/uapi/asm/ioctls.h
+@@ -23,10 +23,10 @@
+ #define TCSETSW		_IOW('t', 21, struct termios)
+ #define TCSETSF		_IOW('t', 22, struct termios)
  
- static const struct exynos_drm_crtc_ops fimd_crtc_ops = {
+-#define TCGETA		_IOR('t', 23, struct termio)
+-#define TCSETA		_IOW('t', 24, struct termio)
+-#define TCSETAW		_IOW('t', 25, struct termio)
+-#define TCSETAF		_IOW('t', 28, struct termio)
++#define TCGETA		0x40147417 /* _IOR('t', 23, struct termio) */
++#define TCSETA		0x80147418 /* _IOW('t', 24, struct termio) */
++#define TCSETAW		0x80147419 /* _IOW('t', 25, struct termio) */
++#define TCSETAF		0x8014741c /* _IOW('t', 28, struct termio) */
+ 
+ #define TCSBRK		_IO('t', 29)
+ #define TCXONC		_IO('t', 30)
 -- 
 2.39.5
 
