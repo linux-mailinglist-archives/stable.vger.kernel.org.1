@@ -1,177 +1,239 @@
-Return-Path: <stable+bounces-160468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE82AFC647
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 10:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 279C1AFC671
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 11:00:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09B0D1AA4115
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 08:55:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93F0518933E0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 09:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF93A2BE654;
-	Tue,  8 Jul 2025 08:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC1829E11F;
+	Tue,  8 Jul 2025 09:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnnBuaU1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BS1l/Q+A"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0D82BDC06
-	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 08:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9656221554
+	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 09:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751964885; cv=none; b=NGKVEfM5pfwKWPFG2pZ0MDW/HtO8oAJk8K8HDuDogwNGvcPmIx7g6zp7lJXQhxpUm9ngTlb7GwbMdg8JJwRFiIDuZUqPtsty2N6ohT6T1Wr/N95pR2G/jnk453N1TBF8HphSsXIhGLw2bq8xKyb+YuTx0QmRig8WiXq1J/WmEl0=
+	t=1751965222; cv=none; b=K+hq26mVb7U/yvW289/LrG5UuAobxHmoiOzeh8f/8Da/ktEUkkZhrUx5sdmpyWq8fkuKNWk8BnuGhY9PS4u3uRTc9b/22JGcEz8jRrbLaYcuv9KOhbaXDCN24rPFEaLj+atfihfYVrlxQDGrXeL2TFYhDK0WR0iL3T+fBrHojvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751964885; c=relaxed/simple;
-	bh=PGiBbuWIqvkmetJ65v7E4lDT9yg3YJkDuZAcV9n5KKw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pYlKlfQzFmWD5zA1oUbPaZNYI5CAkaltBom+UB4ShqgxtT7gx1+1YX/yXPMEk8/s0CpKz2lRDYvKBwh/65uJLvDXKs6KoeI/s1Yj2P8e4zbJEKpM9loKLK3bu6jipXxBB/IJnGR9M5xgH4aN0WzIqr8bjqpzQOE9URdONypvOP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnnBuaU1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C11C4CEED;
-	Tue,  8 Jul 2025 08:54:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751964884;
-	bh=PGiBbuWIqvkmetJ65v7E4lDT9yg3YJkDuZAcV9n5KKw=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ZnnBuaU1v8t+CfnaCsoEjoZJxbf7J+18bD2h7R9iQJyQ8J9Uso4ELAD9XaqSlczwl
-	 OHejX5mM0w8HsqiB4eWi7y9Bmyd9/7VyHHzYRxpsd+AIWRBE+TdKBngZkZ9bix7oNR
-	 67e2W+PIFqDBPE8DQ0fyAU3aY+ctJN/SHuS1PIzQ=
-Subject: FAILED: patch "[PATCH] usb: dwc3: Abort suspend on soft disconnect failure" failed to apply to 5.10-stable tree
-To: khtsai@google.com,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 08 Jul 2025 10:54:42 +0200
-Message-ID: <2025070842-boondocks-tint-f86c@gregkh>
+	s=arc-20240116; t=1751965222; c=relaxed/simple;
+	bh=oT3rdEuHI+Q9zpqSzlynFnMBHIYbzjNLa3frXjecsNQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BwSKbBaEwMwqYkAhF7p5Ab0iQHywGB9VIFtTqCPSgOJEDUibGIaLpIJ6YOmnwDobfml3iwPj/hGFovW6ozD0wUd0onhhmvI2zdPYjX33gXlS/zoYDmd80GwG5GL3VZifJVNepDkFY1qwSSk7P6fj3qYTXQAtPT6Uy4tmjU3N7eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BS1l/Q+A; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751965221; x=1783501221;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=oT3rdEuHI+Q9zpqSzlynFnMBHIYbzjNLa3frXjecsNQ=;
+  b=BS1l/Q+AedIS88AFbkER3OwtL6EZ+5yYUI72qEe2/iGySIR6u2IFTRJg
+   ZjjoTqC54uzaZT5IY+0yh3vJwby676Qt+Dpevy3IfrJOX/lDvfgAtjngE
+   1LjNPd/NNYW4agR6x+BJCAue8mjfrLJVhujbcA41n4YJbNDD1q4qe1nfO
+   MmFiN60Usp+uB9xMQnBsL0DnWlDXT0t46g6OLGL6JZ8xNzkz6uQw23mkM
+   qoM05v+LYLo5qUaGDjAX6CvjaZbzqx0roHG53QiL6ZiZ8vdc5rjyHrjYA
+   e67lBqc8FAPSoezuNnbWzcoJw3C9I4DgDqpee77s0rj5eusAcX94hQPgN
+   Q==;
+X-CSE-ConnectionGUID: eej56NjDSvaJ0KNeAon40Q==
+X-CSE-MsgGUID: pGwW4Jn3Qh6scDH4OB5B5g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="65258356"
+X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; 
+   d="scan'208";a="65258356"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 02:00:18 -0700
+X-CSE-ConnectionGUID: HNMl4sViT3iVwerUS22gUQ==
+X-CSE-MsgGUID: CHKd0QWmTLe7pYJe0rQLlg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; 
+   d="scan'208";a="156187514"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO [10.245.245.6]) ([10.245.245.6])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 02:00:16 -0700
+Message-ID: <f5386d20-326f-40ba-834f-953a0d7d18e1@intel.com>
+Date: Tue, 8 Jul 2025 10:00:14 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] drm/amdgpu: Reset the clear flag in buddy during
+ resume
+To: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+ dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+ christian.koenig@amd.com, matthew.brost@intel.com
+Cc: alexander.deucher@amd.com, stable@vger.kernel.org
+References: <20250708065404.4185-1-Arunpravin.PaneerSelvam@amd.com>
+ <20250708065404.4185-2-Arunpravin.PaneerSelvam@amd.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20250708065404.4185-2-Arunpravin.PaneerSelvam@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+On 08/07/2025 07:54, Arunpravin Paneer Selvam wrote:
+> - Added a handler in DRM buddy manager to reset the cleared
+>    flag for the blocks in the freelist.
+> 
+> - This is necessary because, upon resuming, the VRAM becomes
+>    cluttered with BIOS data, yet the VRAM backend manager
+>    believes that everything has been cleared.
+> 
+> v2:
+>    - Add lock before accessing drm_buddy_clear_reset_blocks()(Matthew Auld)
+>    - Force merge the two dirty blocks.(Matthew Auld)
+>    - Add a new unit test case for this issue.(Matthew Auld)
+>    - Having this function being able to flip the state either way would be
+>      good. (Matthew Brost)
+> 
+> v3(Matthew Auld):
+>    - Do merge step first to avoid the use of extra reset flag.
+> 
+> Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+> Suggested-by: Christian König <christian.koenig@amd.com>
+> Cc: stable@vger.kernel.org
+> Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
+> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3812
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 630a1dec3b0eba2a695b9063f1c205d585cbfec9
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025070842-boondocks-tint-f86c@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 630a1dec3b0eba2a695b9063f1c205d585cbfec9 Mon Sep 17 00:00:00 2001
-From: Kuen-Han Tsai <khtsai@google.com>
-Date: Wed, 28 May 2025 18:03:11 +0800
-Subject: [PATCH] usb: dwc3: Abort suspend on soft disconnect failure
-
-When dwc3_gadget_soft_disconnect() fails, dwc3_suspend_common() keeps
-going with the suspend, resulting in a period where the power domain is
-off, but the gadget driver remains connected.  Within this time frame,
-invoking vbus_event_work() will cause an error as it attempts to access
-DWC3 registers for endpoint disabling after the power domain has been
-completely shut down.
-
-Abort the suspend sequence when dwc3_gadget_suspend() cannot halt the
-controller and proceeds with a soft connect.
-
-Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
-Cc: stable <stable@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250528100315.2162699-1-khtsai@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 2bc775a747f2..8002c23a5a02 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -2422,6 +2422,7 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
- {
- 	u32 reg;
- 	int i;
-+	int ret;
- 
- 	if (!pm_runtime_suspended(dwc->dev) && !PMSG_IS_AUTO(msg)) {
- 		dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
-@@ -2440,7 +2441,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
- 	case DWC3_GCTL_PRTCAP_DEVICE:
- 		if (pm_runtime_suspended(dwc->dev))
- 			break;
--		dwc3_gadget_suspend(dwc);
-+		ret = dwc3_gadget_suspend(dwc);
-+		if (ret)
-+			return ret;
- 		synchronize_irq(dwc->irq_gadget);
- 		dwc3_core_exit(dwc);
- 		break;
-@@ -2475,7 +2478,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
- 			break;
- 
- 		if (dwc->current_otg_role == DWC3_OTG_ROLE_DEVICE) {
--			dwc3_gadget_suspend(dwc);
-+			ret = dwc3_gadget_suspend(dwc);
-+			if (ret)
-+				return ret;
- 			synchronize_irq(dwc->irq_gadget);
- 		}
- 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 321361288935..b6b63b530148 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4821,8 +4821,15 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
- 	int ret;
- 
- 	ret = dwc3_gadget_soft_disconnect(dwc);
--	if (ret)
--		goto err;
-+	/*
-+	 * Attempt to reset the controller's state. Likely no
-+	 * communication can be established until the host
-+	 * performs a port reset.
-+	 */
-+	if (ret && dwc->softconnect) {
-+		dwc3_gadget_soft_connect(dwc);
-+		return -EAGAIN;
-+	}
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	if (dwc->gadget_driver)
-@@ -4830,17 +4837,6 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
- 	return 0;
--
--err:
--	/*
--	 * Attempt to reset the controller's state. Likely no
--	 * communication can be established until the host
--	 * performs a port reset.
--	 */
--	if (dwc->softconnect)
--		dwc3_gadget_soft_connect(dwc);
--
--	return ret;
- }
- 
- int dwc3_gadget_resume(struct dwc3 *dwc)
+> ---
+>   drivers/gpu/drm/amd/amdgpu/amdgpu_device.c   |  2 +
+>   drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h      |  1 +
+>   drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 17 ++++++++
+>   drivers/gpu/drm/drm_buddy.c                  | 43 ++++++++++++++++++++
+>   include/drm/drm_buddy.h                      |  2 +
+>   5 files changed, 65 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+> index a59f194e3360..b89e46f29b51 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+> @@ -5193,6 +5193,8 @@ int amdgpu_device_resume(struct drm_device *dev, bool notify_clients)
+>   		dev->dev->power.disable_depth--;
+>   #endif
+>   	}
+> +
+> +	amdgpu_vram_mgr_clear_reset_blocks(adev);
+>   	adev->in_suspend = false;
+>   
+>   	if (amdgpu_acpi_smart_shift_update(dev, AMDGPU_SS_DEV_D0))
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
+> index 208b7d1d8a27..450e4bf093b7 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
+> @@ -154,6 +154,7 @@ int amdgpu_vram_mgr_reserve_range(struct amdgpu_vram_mgr *mgr,
+>   				  uint64_t start, uint64_t size);
+>   int amdgpu_vram_mgr_query_page_status(struct amdgpu_vram_mgr *mgr,
+>   				      uint64_t start);
+> +void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev);
+>   
+>   bool amdgpu_res_cpu_visible(struct amdgpu_device *adev,
+>   			    struct ttm_resource *res);
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+> index abdc52b0895a..07c936e90d8e 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+> @@ -782,6 +782,23 @@ uint64_t amdgpu_vram_mgr_vis_usage(struct amdgpu_vram_mgr *mgr)
+>   	return atomic64_read(&mgr->vis_usage);
+>   }
+>   
+> +/**
+> + * amdgpu_vram_mgr_clear_reset_blocks - reset clear blocks
+> + *
+> + * @adev: amdgpu device pointer
+> + *
+> + * Reset the cleared drm buddy blocks.
+> + */
+> +void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev)
+> +{
+> +	struct amdgpu_vram_mgr *mgr = &adev->mman.vram_mgr;
+> +	struct drm_buddy *mm = &mgr->mm;
+> +
+> +	mutex_lock(&mgr->lock);
+> +	drm_buddy_reset_clear(mm, false);
+> +	mutex_unlock(&mgr->lock);
+> +}
+> +
+>   /**
+>    * amdgpu_vram_mgr_intersects - test each drm buddy block for intersection
+>    *
+> diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
+> index a1e652b7631d..a94061f373de 100644
+> --- a/drivers/gpu/drm/drm_buddy.c
+> +++ b/drivers/gpu/drm/drm_buddy.c
+> @@ -405,6 +405,49 @@ drm_get_buddy(struct drm_buddy_block *block)
+>   }
+>   EXPORT_SYMBOL(drm_get_buddy);
+>   
+> +/**
+> + * drm_buddy_reset_clear - reset blocks clear state
+> + *
+> + * @mm: DRM buddy manager
+> + * @is_clear: blocks clear state
+> + *
+> + * Reset the clear state based on @is_clear value for each block
+> + * in the freelist.
+> + */
+> +void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
+> +{
+> +	u64 root_size, size, start;
+> +	unsigned int order;
+> +	int i;
+> +
+> +	size = mm->size;
+> +	for (i = 0; i < mm->n_roots; ++i) {
+> +		order = ilog2(size) - ilog2(mm->chunk_size);
+> +		start = drm_buddy_block_offset(mm->roots[i]);
+> +		__force_merge(mm, start, start + size, order);
+> +
+> +		root_size = mm->chunk_size << order;
+> +		size -= root_size;
+> +	}
+> +
+> +	for (i = 0; i <= mm->max_order; ++i) {
+> +		struct drm_buddy_block *block;
+> +
+> +		list_for_each_entry_reverse(block, &mm->free_list[i], link) {
+> +			if (is_clear != drm_buddy_block_is_clear(block)) {
+> +				if (is_clear) {
+> +					mark_cleared(block);
+> +					mm->clear_avail += drm_buddy_block_size(mm, block);
+> +				} else {
+> +					clear_reset(block);
+> +					mm->clear_avail -= drm_buddy_block_size(mm, block);
+> +				}
+> +			}
+> +		}
+> +	}
+> +}
+> +EXPORT_SYMBOL(drm_buddy_reset_clear);
+> +
+>   /**
+>    * drm_buddy_free_block - free a block
+>    *
+> diff --git a/include/drm/drm_buddy.h b/include/drm/drm_buddy.h
+> index 9689a7c5dd36..513837632b7d 100644
+> --- a/include/drm/drm_buddy.h
+> +++ b/include/drm/drm_buddy.h
+> @@ -160,6 +160,8 @@ int drm_buddy_block_trim(struct drm_buddy *mm,
+>   			 u64 new_size,
+>   			 struct list_head *blocks);
+>   
+> +void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear);
+> +
+>   void drm_buddy_free_block(struct drm_buddy *mm, struct drm_buddy_block *block);
+>   
+>   void drm_buddy_free_list(struct drm_buddy *mm,
 
 
