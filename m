@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-161254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B922CAFD483
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7527AFD095
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:24:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 430271AA0748
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 329F448283D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFAB92E6D14;
-	Tue,  8 Jul 2025 17:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C562B2E091E;
+	Tue,  8 Jul 2025 16:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYsx6V6P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8c29Vwx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839ED2E6D0B;
-	Tue,  8 Jul 2025 17:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825C42E543D;
+	Tue,  8 Jul 2025 16:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994042; cv=none; b=tjaC7Q1YnyPCsah+FUR2Yhnekj+CVJx0H/QoGv83JApMp3Q9RQjxFjfXBnY2Ju2Rn1VeX48xcm7VVYsATjy6lP1KLxEMMXkkWaFduQQCtUTauKjXdfiJ/nOiVko/ucVqSC5WZ/7c8/hGC1yAdS1ZBXlOxL4IbGOV6NR4ZOYN6eg=
+	t=1751991854; cv=none; b=l9fd0e1XkAPrd6ImQz/MnHIOYa65cdpV7Sc8WxXNOFP5o0tU5lZ1rpfrOJ0oGPUIIpHTaQy6GffGeYxd9mSgbqY4XEP5pHAwrASrv4HrMRRmmVH4LydPQlalgm8DASufZ/LHBHHULZfHPZInfmvih8rRBWJ9ZDYg9DMp37++yhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994042; c=relaxed/simple;
-	bh=6skdJ+K/YqLPqkF6/CU+LdDDu2W6S+tPo40cisEvOlM=;
+	s=arc-20240116; t=1751991854; c=relaxed/simple;
+	bh=S9aByOSOY92AJlpxzbwGllzyNY92HL9l9En3wG/2ifg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eUlfzp/xVBGSKj7BsDx75io6iM3tvbArBKXoOJLvjA/3T0bVOM4AbXbGCrNtSLkEVNyndVsIwmd3CmVNPB6VaD9ERfILQiBg0utUhSb1LgeWeFVcxFT6NDoK9VGMh985TwRFtwcVqHgN+CxaJ91+jl4p97olJ2LcYI3IQPmEMOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYsx6V6P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0643CC4CEED;
-	Tue,  8 Jul 2025 17:00:41 +0000 (UTC)
+	 MIME-Version; b=E3gZANiZ9AknXBzINw2R7oeCfxAsceKxRwH2JyViajPqHPwm+cmOIDsQ1A00ofmtNIZCGx2wyejBI91r4jomn1FioIL5yg6CAGh7Sxwr5x5gcJQC/qey5gKdYBFy0D7sx7K+8r9vaDBSo57jzILs7bYKhrLFqcXrIoYS8RRoy2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8c29Vwx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86BEC4CEF0;
+	Tue,  8 Jul 2025 16:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994042;
-	bh=6skdJ+K/YqLPqkF6/CU+LdDDu2W6S+tPo40cisEvOlM=;
+	s=korg; t=1751991854;
+	bh=S9aByOSOY92AJlpxzbwGllzyNY92HL9l9En3wG/2ifg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xYsx6V6PEtSiHFrZDPWlaidB4Jn1n38QUJQUiRXfWJgX1H7+wEmcY3MwlUTXkAuJl
-	 cdDUMn8D9ZBK5ZUYIFbNZ6gmawRnNVQunuAhcaoOfW/0/F/1D+n4SC+EwDXypG0PMo
-	 MLCLTj2M5wgL7sJweNXoZGAMswKpYFU3cJcuHMmg=
+	b=R8c29VwxM2XguBxRRtbOheUZuZc+T2SMaPOV62XQrbddfO3aY8cyn4JxKtoLhsbXz
+	 SezMGgqbE8upmRkTRik/gxcuR0QgYl9uVvCfkecRVcQC/1YJ2lDwvyxY3y8Xi/jOQY
+	 05ZcJoE9bbPSYYF2Xlsr2DsaE7kLPusZUdHkAqCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Mark Harmstone <maharmstone@fb.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 076/160] btrfs: update superblocks device bytes_used when dropping chunk
+	Elena Popa <elena.popa@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.6 002/132] rtc: pcf2127: fix SPI command byte for PCF2131
 Date: Tue,  8 Jul 2025 18:21:53 +0200
-Message-ID: <20250708162233.649903655@linuxfoundation.org>
+Message-ID: <20250708162230.836575145@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <maharmstone@fb.com>
+From: Elena Popa <elena.popa@nxp.com>
 
-commit ae4477f937569d097ca5dbce92a89ba384b49bc6 upstream.
+commit fa78e9b606a472495ef5b6b3d8b45c37f7727f9d upstream.
 
-Each superblock contains a copy of the device item for that device. In a
-transaction which drops a chunk but doesn't create any new ones, we were
-correctly updating the device item in the chunk tree but not copying
-over the new bytes_used value to the superblock.
+PCF2131 was not responding to read/write operations using SPI. PCF2131
+has a different command byte definition, compared to PCF2127/29. Added
+the new command byte definition when PCF2131 is detected.
 
-This can be seen by doing the following:
-
-  # dd if=/dev/zero of=test bs=4096 count=2621440
-  # mkfs.btrfs test
-  # mount test /root/temp
-
-  # cd /root/temp
-  # for i in {00..10}; do dd if=/dev/zero of=$i bs=4096 count=32768; done
-  # sync
-  # rm *
-  # sync
-  # btrfs balance start -dusage=0 .
-  # sync
-
-  # cd
-  # umount /root/temp
-  # btrfs check test
-
-For btrfs-check to detect this, you will also need my patch at
-https://github.com/kdave/btrfs-progs/pull/991.
-
-Change btrfs_remove_dev_extents() so that it adds the devices to the
-fs_info->post_commit_list if they're not there already. This causes
-btrfs_commit_device_sizes() to be called, which updates the bytes_used
-value in the superblock.
-
-Fixes: bbbf7243d62d ("btrfs: combine device update operations during transaction commit")
-CC: stable@vger.kernel.org # 5.10+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mark Harmstone <maharmstone@fb.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: afc505bf9039 ("rtc: pcf2127: add support for PCF2131 RTC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Elena Popa <elena.popa@nxp.com>
+Acked-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20250530104001.957977-1-elena.popa@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/volumes.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/rtc/rtc-pcf2127.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3197,6 +3197,12 @@ int btrfs_remove_chunk(struct btrfs_tran
- 					device->bytes_used - dev_extent_len);
- 			atomic64_add(dev_extent_len, &fs_info->free_chunk_space);
- 			btrfs_clear_space_info_full(fs_info);
-+
-+			if (list_empty(&device->post_commit_list)) {
-+				list_add_tail(&device->post_commit_list,
-+					      &trans->transaction->dev_update_list);
-+			}
-+
- 			mutex_unlock(&fs_info->chunk_mutex);
- 		}
+--- a/drivers/rtc/rtc-pcf2127.c
++++ b/drivers/rtc/rtc-pcf2127.c
+@@ -1383,6 +1383,11 @@ static int pcf2127_i2c_probe(struct i2c_
+ 		variant = &pcf21xx_cfg[type];
  	}
+ 
++	if (variant->type == PCF2131) {
++		config.read_flag_mask = 0x0;
++		config.write_flag_mask = 0x0;
++	}
++
+ 	config.max_register = variant->max_register,
+ 
+ 	regmap = devm_regmap_init(&client->dev, &pcf2127_i2c_regmap,
 
 
 
