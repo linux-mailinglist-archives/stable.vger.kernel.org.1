@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18F0AFD271
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF84AFD3A5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2DF57AE12E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 096F01718D6
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495B72E6114;
-	Tue,  8 Jul 2025 16:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8CB61DB127;
+	Tue,  8 Jul 2025 16:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSkr8NqW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U73B6v6M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0629A2DAFA3;
-	Tue,  8 Jul 2025 16:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9563B8F5E;
+	Tue,  8 Jul 2025 16:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993161; cv=none; b=i+5Vl/W2DRW1+HNiX6Z6eQza4rLkYumi4kKJ8BUfG3w0H90GJi24MTZAkGWCq3O81Ewgl/BXPmEf9BPrKWuOwVDZQMKGmqw83myIvFX3XKccXCqu/UX3mE4W8n9grrtWC9w+KjY1JSu3kobngchG2SZ7CqsZspGC71oML3c4T/g=
+	t=1751993766; cv=none; b=KllxGt8KogCFsZuwXA4Wr10iB3NnYI9BknP+NU5rllGXzT+6zQHcgsBSI91wUnk5e3pjz1DrctvgsYLC0fB3TgwXEshImxD7GrfxGFtvXUnioD8DNqCWJ8iL59T0qnal1gJ1d3xYGaeoXrXpiHzCrhOX4o/ii3RdDuBJq9xwDhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993161; c=relaxed/simple;
-	bh=Sj2s6Ijfe27O/khGGm0bW5r0F5AXmZcpvZ/I2mLXIbQ=;
+	s=arc-20240116; t=1751993766; c=relaxed/simple;
+	bh=wGn4Mn5b+WI7ebGVxHqfSObUhtM47nfVnwfGjBQZtB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=erMF8TAbvmj4j16FP95i+hIPJN/Dz2aEtmOrkmsoKwSg+X5MC582N/hZrJIL0GqijoQgwsct2+E5zHXigCntLg64C1SeGeeJ4CTrG9mw2wCBP5ynqJb1N82FmrnvWxf8vxPxwzMfqaeUiRxpg3ED6/cN110uxnkTLmKewUPTlhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSkr8NqW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEB1C4CEF7;
-	Tue,  8 Jul 2025 16:46:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OuSSCv8l/S9rpLRXSwPhAsRnJXvqkW2CaHvhUTUqd4G4qaezC4k6jDmMdra+M0Hlgsai+XSlcFbxCg8YIvms4e7XlXLKljOohRcGdF46AqlcPQCqHvLXR98SBMRrwwkt69hPPXEHR+T/oUByleuhaU9sWbqOqLM2JK9gzKcsdk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U73B6v6M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DEB7C4CEED;
+	Tue,  8 Jul 2025 16:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993160;
-	bh=Sj2s6Ijfe27O/khGGm0bW5r0F5AXmZcpvZ/I2mLXIbQ=;
+	s=korg; t=1751993766;
+	bh=wGn4Mn5b+WI7ebGVxHqfSObUhtM47nfVnwfGjBQZtB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DSkr8NqWtBWibje0d0k9rMG+bMr1W19QNI79HuTaVmK3LxE722wx2tpK/aFZVjAvb
-	 GL+jNA7ki++/J99Imcr5PoSzcBmYhsFgJRujeZ7E58cLuJwcM8H9w1L5cOUzdbMxvA
-	 /43ixXPj4H1qwfjk9AXmiLGiqjgEsScqlVxg66/o=
+	b=U73B6v6M67XG0wYA6VQhYaiKSVNYfJc/lwYEXcyhLI/d8AzJsL1tA+7BDz0WDK2RA
+	 xLhxrFws7WVTD3UncCBVKFQXeCSu6XvRiJutpl7OREA2RK91uTI9CpXxZP4pyUsH2E
+	 qLWgelC7dJR1Qf9TQeToXWk+lftWPkoClNL1HmGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.12 209/232] usb: dwc3: Abort suspend on soft disconnect failure
-Date: Tue,  8 Jul 2025 18:23:25 +0200
-Message-ID: <20250708162246.907835259@linuxfoundation.org>
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Kurt Borja <kuurtb@gmail.com>
+Subject: [PATCH 6.15 169/178] platform/x86: think-lmi: Fix kobject cleanup
+Date: Tue,  8 Jul 2025 18:23:26 +0200
+Message-ID: <20250708162240.877290230@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,107 +60,165 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Kurt Borja <kuurtb@gmail.com>
 
-commit 630a1dec3b0eba2a695b9063f1c205d585cbfec9 upstream.
+commit 9110056fe10b0519529bdbbac37311a5037ea0c2 upstream.
 
-When dwc3_gadget_soft_disconnect() fails, dwc3_suspend_common() keeps
-going with the suspend, resulting in a period where the power domain is
-off, but the gadget driver remains connected.  Within this time frame,
-invoking vbus_event_work() will cause an error as it attempts to access
-DWC3 registers for endpoint disabling after the power domain has been
-completely shut down.
+In tlmi_analyze(), allocated structs with an embedded kobject are freed
+in error paths after the they were already initialized.
 
-Abort the suspend sequence when dwc3_gadget_suspend() cannot halt the
-controller and proceeds with a soft connect.
+Fix this by first by avoiding the initialization of kobjects in
+tlmi_analyze() and then by correctly cleaning them up in
+tlmi_release_attr() using their kset's kobject list.
 
-Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
-Cc: stable <stable@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250528100315.2162699-1-khtsai@google.com
+Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
+Fixes: 30e78435d3bf ("platform/x86: think-lmi: Split kobject_init() and kobject_add() calls")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250630-lmi-fix-v3-2-ce4f81c9c481@gmail.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c   |    9 +++++++--
- drivers/usb/dwc3/gadget.c |   22 +++++++++-------------
- 2 files changed, 16 insertions(+), 15 deletions(-)
+ drivers/platform/x86/think-lmi.c |   35 +++++++++++++++++++----------------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -2364,6 +2364,7 @@ static int dwc3_suspend_common(struct dw
+--- a/drivers/platform/x86/think-lmi.c
++++ b/drivers/platform/x86/think-lmi.c
+@@ -1380,13 +1380,13 @@ static struct kobj_attribute debug_cmd =
+ /* ---- Initialisation --------------------------------------------------------- */
+ static void tlmi_release_attr(void)
  {
- 	u32 reg;
++	struct kobject *pos, *n;
  	int i;
-+	int ret;
  
- 	if (!pm_runtime_suspended(dwc->dev) && !PMSG_IS_AUTO(msg)) {
- 		dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
-@@ -2382,7 +2383,9 @@ static int dwc3_suspend_common(struct dw
- 	case DWC3_GCTL_PRTCAP_DEVICE:
- 		if (pm_runtime_suspended(dwc->dev))
- 			break;
--		dwc3_gadget_suspend(dwc);
-+		ret = dwc3_gadget_suspend(dwc);
-+		if (ret)
-+			return ret;
- 		synchronize_irq(dwc->irq_gadget);
- 		dwc3_core_exit(dwc);
- 		break;
-@@ -2417,7 +2420,9 @@ static int dwc3_suspend_common(struct dw
- 			break;
- 
- 		if (dwc->current_otg_role == DWC3_OTG_ROLE_DEVICE) {
--			dwc3_gadget_suspend(dwc);
-+			ret = dwc3_gadget_suspend(dwc);
-+			if (ret)
-+				return ret;
- 			synchronize_irq(dwc->irq_gadget);
+ 	/* Attribute structures */
+ 	for (i = 0; i < TLMI_SETTINGS_COUNT; i++) {
+ 		if (tlmi_priv.setting[i]) {
+ 			sysfs_remove_group(&tlmi_priv.setting[i]->kobj, &tlmi_attr_group);
+-			kobject_put(&tlmi_priv.setting[i]->kobj);
  		}
+ 	}
+ 	sysfs_remove_file(&tlmi_priv.attribute_kset->kobj, &pending_reboot.attr);
+@@ -1395,6 +1395,9 @@ static void tlmi_release_attr(void)
+ 	if (tlmi_priv.can_debug_cmd && debug_support)
+ 		sysfs_remove_file(&tlmi_priv.attribute_kset->kobj, &debug_cmd.attr);
  
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4788,26 +4788,22 @@ int dwc3_gadget_suspend(struct dwc3 *dwc
- 	int ret;
- 
- 	ret = dwc3_gadget_soft_disconnect(dwc);
--	if (ret)
--		goto err;
--
--	spin_lock_irqsave(&dwc->lock, flags);
--	if (dwc->gadget_driver)
--		dwc3_disconnect_gadget(dwc);
--	spin_unlock_irqrestore(&dwc->lock, flags);
--
--	return 0;
--
--err:
- 	/*
- 	 * Attempt to reset the controller's state. Likely no
- 	 * communication can be established until the host
- 	 * performs a port reset.
- 	 */
--	if (dwc->softconnect)
-+	if (ret && dwc->softconnect) {
- 		dwc3_gadget_soft_connect(dwc);
-+		return -EAGAIN;
-+	}
- 
--	return ret;
-+	spin_lock_irqsave(&dwc->lock, flags);
-+	if (dwc->gadget_driver)
-+		dwc3_disconnect_gadget(dwc);
-+	spin_unlock_irqrestore(&dwc->lock, flags);
++	list_for_each_entry_safe(pos, n, &tlmi_priv.attribute_kset->list, entry)
++		kobject_put(pos);
 +
-+	return 0;
+ 	kset_unregister(tlmi_priv.attribute_kset);
+ 
+ 	/* Free up any saved signatures */
+@@ -1403,19 +1406,17 @@ static void tlmi_release_attr(void)
+ 
+ 	/* Authentication structures */
+ 	sysfs_remove_group(&tlmi_priv.pwd_admin->kobj, &auth_attr_group);
+-	kobject_put(&tlmi_priv.pwd_admin->kobj);
+ 	sysfs_remove_group(&tlmi_priv.pwd_power->kobj, &auth_attr_group);
+-	kobject_put(&tlmi_priv.pwd_power->kobj);
+ 
+ 	if (tlmi_priv.opcode_support) {
+ 		sysfs_remove_group(&tlmi_priv.pwd_system->kobj, &auth_attr_group);
+-		kobject_put(&tlmi_priv.pwd_system->kobj);
+ 		sysfs_remove_group(&tlmi_priv.pwd_hdd->kobj, &auth_attr_group);
+-		kobject_put(&tlmi_priv.pwd_hdd->kobj);
+ 		sysfs_remove_group(&tlmi_priv.pwd_nvme->kobj, &auth_attr_group);
+-		kobject_put(&tlmi_priv.pwd_nvme->kobj);
+ 	}
+ 
++	list_for_each_entry_safe(pos, n, &tlmi_priv.authentication_kset->list, entry)
++		kobject_put(pos);
++
+ 	kset_unregister(tlmi_priv.authentication_kset);
  }
  
- int dwc3_gadget_resume(struct dwc3 *dwc)
+@@ -1479,8 +1480,8 @@ static int tlmi_sysfs_init(void)
+ 
+ 		/* Build attribute */
+ 		tlmi_priv.setting[i]->kobj.kset = tlmi_priv.attribute_kset;
+-		ret = kobject_add(&tlmi_priv.setting[i]->kobj, NULL,
+-				  "%s", tlmi_priv.setting[i]->display_name);
++		ret = kobject_init_and_add(&tlmi_priv.setting[i]->kobj, &tlmi_attr_setting_ktype,
++					   NULL, "%s", tlmi_priv.setting[i]->display_name);
+ 		if (ret)
+ 			goto fail_create_attr;
+ 
+@@ -1505,7 +1506,8 @@ static int tlmi_sysfs_init(void)
+ 
+ 	/* Create authentication entries */
+ 	tlmi_priv.pwd_admin->kobj.kset = tlmi_priv.authentication_kset;
+-	ret = kobject_add(&tlmi_priv.pwd_admin->kobj, NULL, "%s", "Admin");
++	ret = kobject_init_and_add(&tlmi_priv.pwd_admin->kobj, &tlmi_pwd_setting_ktype,
++				   NULL, "%s", "Admin");
+ 	if (ret)
+ 		goto fail_create_attr;
+ 
+@@ -1514,7 +1516,8 @@ static int tlmi_sysfs_init(void)
+ 		goto fail_create_attr;
+ 
+ 	tlmi_priv.pwd_power->kobj.kset = tlmi_priv.authentication_kset;
+-	ret = kobject_add(&tlmi_priv.pwd_power->kobj, NULL, "%s", "Power-on");
++	ret = kobject_init_and_add(&tlmi_priv.pwd_power->kobj, &tlmi_pwd_setting_ktype,
++				   NULL, "%s", "Power-on");
+ 	if (ret)
+ 		goto fail_create_attr;
+ 
+@@ -1524,7 +1527,8 @@ static int tlmi_sysfs_init(void)
+ 
+ 	if (tlmi_priv.opcode_support) {
+ 		tlmi_priv.pwd_system->kobj.kset = tlmi_priv.authentication_kset;
+-		ret = kobject_add(&tlmi_priv.pwd_system->kobj, NULL, "%s", "System");
++		ret = kobject_init_and_add(&tlmi_priv.pwd_system->kobj, &tlmi_pwd_setting_ktype,
++					   NULL, "%s", "System");
+ 		if (ret)
+ 			goto fail_create_attr;
+ 
+@@ -1533,7 +1537,8 @@ static int tlmi_sysfs_init(void)
+ 			goto fail_create_attr;
+ 
+ 		tlmi_priv.pwd_hdd->kobj.kset = tlmi_priv.authentication_kset;
+-		ret = kobject_add(&tlmi_priv.pwd_hdd->kobj, NULL, "%s", "HDD");
++		ret = kobject_init_and_add(&tlmi_priv.pwd_hdd->kobj, &tlmi_pwd_setting_ktype,
++					   NULL, "%s", "HDD");
+ 		if (ret)
+ 			goto fail_create_attr;
+ 
+@@ -1542,7 +1547,8 @@ static int tlmi_sysfs_init(void)
+ 			goto fail_create_attr;
+ 
+ 		tlmi_priv.pwd_nvme->kobj.kset = tlmi_priv.authentication_kset;
+-		ret = kobject_add(&tlmi_priv.pwd_nvme->kobj, NULL, "%s", "NVMe");
++		ret = kobject_init_and_add(&tlmi_priv.pwd_nvme->kobj, &tlmi_pwd_setting_ktype,
++					   NULL, "%s", "NVMe");
+ 		if (ret)
+ 			goto fail_create_attr;
+ 
+@@ -1579,8 +1585,6 @@ static struct tlmi_pwd_setting *tlmi_cre
+ 	new_pwd->maxlen = tlmi_priv.pwdcfg.core.max_length;
+ 	new_pwd->index = 0;
+ 
+-	kobject_init(&new_pwd->kobj, &tlmi_pwd_setting_ktype);
+-
+ 	return new_pwd;
+ }
+ 
+@@ -1685,7 +1689,6 @@ static int tlmi_analyze(struct wmi_devic
+ 		if (setting->possible_values)
+ 			strreplace(setting->possible_values, ',', ';');
+ 
+-		kobject_init(&setting->kobj, &tlmi_attr_setting_ktype);
+ 		tlmi_priv.setting[i] = setting;
+ 		kfree(item);
+ 	}
 
 
 
