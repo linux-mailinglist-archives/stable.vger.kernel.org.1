@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321B0AFD2E2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB778AFD215
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3DC7421192
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26AF018916CE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8942DAFA3;
-	Tue,  8 Jul 2025 16:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32312E5414;
+	Tue,  8 Jul 2025 16:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPuWU8/j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1V4Z+z/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358A01754B;
-	Tue,  8 Jul 2025 16:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09E61DF74F;
+	Tue,  8 Jul 2025 16:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993287; cv=none; b=FM/giEvzFuQKZWF2hJdyyQOOVcK1ZkiDC1xpqmy4UNCL5jdsf/w8jFEeVQJ9PQELkZ2MuNvh+8J6a3ZSCZ/Y1fpz3CF1QcGz2zJTZFJSYoIdcBkREuU4Eu0tqVwqy7m/3awzDC88SmaJfRMppJNDTQlxY7kF1B/Uc9N9dA77R/I=
+	t=1751992793; cv=none; b=ibFBINkI/nfhbHcVfB4CiEwC8t+oIpS0REswPSJ+LCEFCLxjKD5etCG3JJKpXDZHWGWbwtW0hkwvpNkIKbNxi0uE9r7ZE/lW3Pg3M0xvlzUA7aSrlTahUaDc52bQBwb45sAEg8tfa9OxmDBfIZEDyOObKwIBAfLwwomPjFnC4K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993287; c=relaxed/simple;
-	bh=BpA0vFAAufnuUnk9J906FRSr8JSlMtlp765eEY/mpMM=;
+	s=arc-20240116; t=1751992793; c=relaxed/simple;
+	bh=e0NBTJMQ0PnwVoAyefk6xHUEF/OSdHxD59faEit9gRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bqq8ay9/asP2RwdFSpnhYoe2TvKcnub+rsXTFsEgUWMKepORinM0uqjNrMVu8qHifIFpB9hWhLauZegAQ6xgC/dnfMX7UI4oHSIkKj+rgp2tosQQjSkr1yuqA5xQCTTufSn7JIZo0rRKQGGsPOCf7vMaBLz5KdQgkIaR+REmUD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPuWU8/j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F76C4CEF0;
-	Tue,  8 Jul 2025 16:48:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MKx1xs9vnEvsqOHhRSqRd/TKxLZTq/R5lb2Py83lpI8beUXIt9uV3hBxHlm58McgYCXRlPThyqUZgOeynCzImF+UQJQWN93FP08KY3LIlnAM66ntVPQFxM2+IHy9TfpuJ6i5G90fYqCeDMLDIep0aAmJsFQI0z/j8A9E79Qt/v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1V4Z+z/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 276C9C4CEF7;
+	Tue,  8 Jul 2025 16:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993287;
-	bh=BpA0vFAAufnuUnk9J906FRSr8JSlMtlp765eEY/mpMM=;
+	s=korg; t=1751992793;
+	bh=e0NBTJMQ0PnwVoAyefk6xHUEF/OSdHxD59faEit9gRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GPuWU8/jDVpRXdnXDyKr1hCvvAT7i//IqkSh/2sXmuhkHo4bDtggzorIGY8HHGcDQ
-	 zDWuUysIszoJdCjXRpgIpNZ0pie8W6wIcqwfCF6b6wQGtp/fuNb7qo2mxFjBZTMpOB
-	 uLfNCnfhiYtD5EJo6TZP6th9sTzluuL6qCg+aPhc=
+	b=V1V4Z+z/KCXtx22uT/Gtq9BjWJ18Kvo4iOnHAdsguYDriW3tiaeLuPHfBC4DHBlM5
+	 7K1TktDnX4/g1NiBnOelIl2qRgiafYvf+/mRiXug4p77p5atEKMjwiU3DrT/+WykyM
+	 GgS8JwRt2i0BnFpPR8+gSQNgBblb6vWn3taMsp8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.15 023/178] Bluetooth: MGMT: mesh_send: check instances prior disabling advertising
-Date: Tue,  8 Jul 2025 18:21:00 +0200
-Message-ID: <20250708162237.154036821@linuxfoundation.org>
+	Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 065/232] platform/x86: hp-bioscfg: Fix class device unregistration
+Date: Tue,  8 Jul 2025 18:21:01 +0200
+Message-ID: <20250708162243.164662954@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,45 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Kurt Borja <kuurtb@gmail.com>
 
-commit f3cb5676e5c11c896ba647ee309a993e73531588 upstream.
+[ Upstream commit 11cba4793b95df3bc192149a6eb044f69aa0b99e ]
 
-The unconditional call of hci_disable_advertising_sync() in
-mesh_send_done_sync() also disables other LE advertisings (non mesh
-related).
+Devices under the firmware_attributes_class do not have unique a dev_t.
+Therefore, device_unregister() should be used instead of
+device_destroy(), since the latter may match any device with a given
+dev_t.
 
-I am not sure whether this call is required at all, but checking the
-adv_instances list (like done at other places) seems to solve the
-problem.
-
-Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a34fc329b189 ("platform/x86: hp-bioscfg: bioscfg")
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250625-dest-fix-v1-1-3a0f342312bb@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/hp/hp-bioscfg/bioscfg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -1080,7 +1080,8 @@ static int mesh_send_done_sync(struct hc
- 	struct mgmt_mesh_tx *mesh_tx;
+diff --git a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+index 0b277b7e37dd6..00b04adb4f191 100644
+--- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
++++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+@@ -1037,7 +1037,7 @@ static int __init hp_init(void)
+ 	release_attributes_data();
  
- 	hci_dev_clear_flag(hdev, HCI_MESH_SENDING);
--	hci_disable_advertising_sync(hdev);
-+	if (list_empty(&hdev->adv_instances))
-+		hci_disable_advertising_sync(hdev);
- 	mesh_tx = mgmt_mesh_next(hdev, NULL);
+ err_destroy_classdev:
+-	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
++	device_unregister(bioscfg_drv.class_dev);
  
- 	if (mesh_tx)
+ err_unregister_class:
+ 	hp_exit_attr_set_interface();
+@@ -1048,7 +1048,7 @@ static int __init hp_init(void)
+ static void __exit hp_exit(void)
+ {
+ 	release_attributes_data();
+-	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
++	device_unregister(bioscfg_drv.class_dev);
+ 
+ 	hp_exit_attr_set_interface();
+ }
+-- 
+2.39.5
+
 
 
 
