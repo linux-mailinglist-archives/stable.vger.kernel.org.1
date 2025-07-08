@@ -1,55 +1,65 @@
-Return-Path: <stable+bounces-161228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C3CAFD41C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:04:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C776AFD10F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59CED188E2BD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:00:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC85A1747D5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F4C2E5B3E;
-	Tue,  8 Jul 2025 16:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894302E49A8;
+	Tue,  8 Jul 2025 16:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktcCRXUB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTmIym+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6372E5B25;
-	Tue,  8 Jul 2025 16:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FB21C6FEC;
+	Tue,  8 Jul 2025 16:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993967; cv=none; b=CBMPt8OlN5j+ShWdryZa9bErW/xrJ0hK5aN/so+agvo9QewBOIg4iVdAMRS2c7TNOuGUYK07VNobBDaNnHXmhpqPvQnLM4C0EaqLZIMoVeapcDu1JtRVyK9mHnn/AS2PaZzGmhVGBNUhu59oc/OwbfBC48p7h2FlCPXoB+pjCo4=
+	t=1751992202; cv=none; b=Asn/5vzJ5QxhyUS2Cw02A70JSrV029INI/Zz4IO7qEzkeRcp6dUu9+EA019w3siGxmTC358qFhbNt7dTJur/Bwsjycd4IdPJTtw5n7huZViPA8mxFuV2UsNEwYXnuAKI3DvbmuDzmAUxQv+kDjVvT87NTIdRbIKA86qPFKPqN1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993967; c=relaxed/simple;
-	bh=LlOMqGVtLuCTuRp9lhiuQtHHj6LEA21IY7mLoQkBd/o=;
+	s=arc-20240116; t=1751992202; c=relaxed/simple;
+	bh=un9sD9x7n5QQzIwLfSUYN/9O4+kXaOErfTahqv0rHAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FkJx8Rvec84d6o/GeUOG08E9vo/1BNHtvLeRcfmO/zc6lFyY3H8cxrfCRZQBZ8DCR7p+lVkwK1wQ7SrmiVfnR2KPxy9oa9TBXKeIAKIhQssYuozaqVz9e+PFY4iGO2X/oM5XihIxFhjNDAnEF3NU3R9SbgVXG/F30v2dfvkC1/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktcCRXUB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2D3C4CEF0;
-	Tue,  8 Jul 2025 16:59:26 +0000 (UTC)
+	 MIME-Version; b=YAr8DgXfWb0j80eeMngMnzdn+rCC+ft5AukaDKmAzOd0rfWfoc0p9Jip1xtBxhkH8pUuOubSUpq6nKpmoa7MVP97xB3CBVtPJhGLjBsxnG4R3bBHKoVMXy1P9LT81fnGwRpb9DAwzecRdXKUeob1y9S5z72uTA9w25IYBXC2Wck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTmIym+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF85C4CEED;
+	Tue,  8 Jul 2025 16:30:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993967;
-	bh=LlOMqGVtLuCTuRp9lhiuQtHHj6LEA21IY7mLoQkBd/o=;
+	s=korg; t=1751992202;
+	bh=un9sD9x7n5QQzIwLfSUYN/9O4+kXaOErfTahqv0rHAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ktcCRXUBmngH7fO9AeUOLLRWTDRtjwb/ZFvZ/TrmB/pq4wIPdVUuOe1pv/AwTkMrG
-	 Xdcmrfmtn0g3t5hboyvb6AmrI+zRGmeolruZKtzn51HWm44Ij9Nt8mym4Vd5gJmffq
-	 RRELJHtRs9Dc+9sOW0rkKRtooP+WwgUeNns0lpCc=
+	b=xTmIym+BoZCzuQZZ1OlLMkBF/Qcvave7I8EhZkXVqas0Bl2YU57UfV0FhsUCu4srX
+	 01miA3+zeuMLuD5XQltrBAp9qQukXnF9EtZezHDEjaqnxb+jcQrPlYxMmze2nYNgG4
+	 EmTevgauSBr6d6LX/nm+LCFP9E2h6XlpNaLgoCAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 5.15 080/160] drm/tegra: Assign plane type before registration
+	Bryan Tan <bryan-bt.tan@broadcom.com>,
+	Vishnu Dasa <vishnu.dasa@broadcom.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	stable <stable@kernel.org>,
+	HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+Subject: [PATCH 6.6 006/132] vsock/vmci: Clear the vmci transport packet properly when initializing it
 Date: Tue,  8 Jul 2025 18:21:57 +0200
-Message-ID: <20250708162233.754565465@linuxfoundation.org>
+Message-ID: <20250708162230.951045547@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +71,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thierry Reding <treding@nvidia.com>
+From: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
 
-commit 9ff4fdf4f44b69237c0afc1d3a8dac916ce66f3e upstream.
+commit 223e2288f4b8c262a864e2c03964ffac91744cd5 upstream.
 
-Changes to a plane's type after it has been registered aren't propagated
-to userspace automatically. This could possibly be achieved by updating
-the property, but since we can already determine which type this should
-be before the registration, passing in the right type from the start is
-a much better solution.
+In vmci_transport_packet_init memset the vmci_transport_packet before
+populating the fields to avoid any uninitialised data being left in the
+structure.
 
-Suggested-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Cc: stable@vger.kernel.org
-Fixes: 473079549f27 ("drm/tegra: dc: Add Tegra186 support")
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250421-tegra-drm-primary-v2-1-7f740c4c2121@gmail.com
+Cc: Bryan Tan <bryan-bt.tan@broadcom.com>
+Cc: Vishnu Dasa <vishnu.dasa@broadcom.com>
+Cc: Broadcom internal kernel review list
+Cc: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: virtualization@lists.linux.dev
+Cc: netdev@vger.kernel.org
+Cc: stable <stable@kernel.org>
+Signed-off-by: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20250701122254.2397440-1-gregkh@linuxfoundation.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tegra/dc.c  |   12 ++++++++----
- drivers/gpu/drm/tegra/hub.c |    4 ++--
- drivers/gpu/drm/tegra/hub.h |    3 ++-
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ net/vmw_vsock/vmci_transport.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/tegra/dc.c
-+++ b/drivers/gpu/drm/tegra/dc.c
-@@ -1221,10 +1221,16 @@ static struct drm_plane *tegra_dc_add_sh
- 		if (wgrp->dc == dc->pipe) {
- 			for (j = 0; j < wgrp->num_windows; j++) {
- 				unsigned int index = wgrp->windows[j];
-+				enum drm_plane_type type;
-+
-+				if (primary)
-+					type = DRM_PLANE_TYPE_OVERLAY;
-+				else
-+					type = DRM_PLANE_TYPE_PRIMARY;
- 
- 				plane = tegra_shared_plane_create(drm, dc,
- 								  wgrp->index,
--								  index);
-+								  index, type);
- 				if (IS_ERR(plane))
- 					return plane;
- 
-@@ -1232,10 +1238,8 @@ static struct drm_plane *tegra_dc_add_sh
- 				 * Choose the first shared plane owned by this
- 				 * head as the primary plane.
- 				 */
--				if (!primary) {
--					plane->type = DRM_PLANE_TYPE_PRIMARY;
-+				if (!primary)
- 					primary = plane;
--				}
- 			}
- 		}
- 	}
---- a/drivers/gpu/drm/tegra/hub.c
-+++ b/drivers/gpu/drm/tegra/hub.c
-@@ -747,9 +747,9 @@ static const struct drm_plane_helper_fun
- struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
- 					    struct tegra_dc *dc,
- 					    unsigned int wgrp,
--					    unsigned int index)
-+					    unsigned int index,
-+					    enum drm_plane_type type)
+--- a/net/vmw_vsock/vmci_transport.c
++++ b/net/vmw_vsock/vmci_transport.c
+@@ -119,6 +119,8 @@ vmci_transport_packet_init(struct vmci_t
+ 			   u16 proto,
+ 			   struct vmci_handle handle)
  {
--	enum drm_plane_type type = DRM_PLANE_TYPE_OVERLAY;
- 	struct tegra_drm *tegra = drm->dev_private;
- 	struct tegra_display_hub *hub = tegra->hub;
- 	struct tegra_shared_plane *plane;
---- a/drivers/gpu/drm/tegra/hub.h
-+++ b/drivers/gpu/drm/tegra/hub.h
-@@ -81,7 +81,8 @@ void tegra_display_hub_cleanup(struct te
- struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
- 					    struct tegra_dc *dc,
- 					    unsigned int wgrp,
--					    unsigned int index);
-+					    unsigned int index,
-+					    enum drm_plane_type type);
++	memset(pkt, 0, sizeof(*pkt));
++
+ 	/* We register the stream control handler as an any cid handle so we
+ 	 * must always send from a source address of VMADDR_CID_ANY
+ 	 */
+@@ -131,8 +133,6 @@ vmci_transport_packet_init(struct vmci_t
+ 	pkt->type = type;
+ 	pkt->src_port = src->svm_port;
+ 	pkt->dst_port = dst->svm_port;
+-	memset(&pkt->proto, 0, sizeof(pkt->proto));
+-	memset(&pkt->_reserved2, 0, sizeof(pkt->_reserved2));
  
- int tegra_display_hub_atomic_check(struct drm_device *drm,
- 				   struct drm_atomic_state *state);
+ 	switch (pkt->type) {
+ 	case VMCI_TRANSPORT_PACKET_TYPE_INVALID:
 
 
 
