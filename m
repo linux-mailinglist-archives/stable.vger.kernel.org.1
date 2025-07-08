@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-160549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F8CAFD0C2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37663AFD298
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:48:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AF391C219AD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA9D21AA104D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A052E540B;
-	Tue,  8 Jul 2025 16:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6761E2E54B2;
+	Tue,  8 Jul 2025 16:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKazwaJ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rllLBF12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66FF2D9790;
-	Tue,  8 Jul 2025 16:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D10B2E337A;
+	Tue,  8 Jul 2025 16:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991965; cv=none; b=g48qGqJOHNdlMLCm54AKs6MEGP/nmFOTFd+UW0Alabp0xCLlrYCbc3NVjuZ+bh9pSew3Plt5bUewxnYq3ssVskdhGUhYMqqzMXK2N0WPpl4EnE5x+JrhXkI7qG17ZgYHvPeJQbfu34gNomvzEkrGgkqmvrP2GtH6rhtUDGF+keo=
+	t=1751993091; cv=none; b=VDnBJwz5SAFu50AwZJLJFi6E1eAJvruxsq2Em+uAdz7UQ2z2yQa5pmtfXeTY6CIsDBv7XR3LqIfKmFTQ+4tfgSvQGn+5UAyrSXS8Aful9vdR5qie1K0pjW0CKapnW1NYEPuacZfk8FsuiVgus2c7xyK3RQpZTlKgTKUU3YgFvtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991965; c=relaxed/simple;
-	bh=S6AzXoyZgujXvPA3BAe+U+WTs74bBi4ZPgHE7rSWxCo=;
+	s=arc-20240116; t=1751993091; c=relaxed/simple;
+	bh=UyPhUM4ck0LiN412zXah1jhr7+8MswJIHgKfQig5Fjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pliqdUssM2IRrmMllg56AAGNoGNTDbA2XfjhGAPwztsKDqPjpKWyriy6BsagxmCbGNQJh+DpgydtAYPy3u0tWre2ogTkDYB+OKKFLYfuxSzwABIiIDba7M0HdCuGSejaDNalB1pkQK6DRhCIGGinNhEZgy3BFcA4UqIVQdmqiho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKazwaJ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D2DC4CEED;
-	Tue,  8 Jul 2025 16:26:05 +0000 (UTC)
+	 MIME-Version; b=OzxqNPevDIDCUJxs9hIa5XSpHZ2cKe4KMG4yPdLY+t9H5fKVy8DYPKjciqBJ+JiYEEj6MlMNRvfQJ0w/+EPyQ85ISTTfiIRekrsMj7cXvnDpScczAYn+xsD31nXfFDrS9J9DVOiXphc4OglBw85Ij8yj419hS9Bqx0MKNXr6zBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rllLBF12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BDAC4CEED;
+	Tue,  8 Jul 2025 16:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751991965;
-	bh=S6AzXoyZgujXvPA3BAe+U+WTs74bBi4ZPgHE7rSWxCo=;
+	s=korg; t=1751993091;
+	bh=UyPhUM4ck0LiN412zXah1jhr7+8MswJIHgKfQig5Fjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OKazwaJ9ILV3qxPbbTvDU/xngQoylh21AgFHCAoBsA2k9Wx7yFqJdMxJFf5zdUlie
-	 HROq2ZfJv8EFR7LZEtRO6zyOgJt5fTPA1r7Kj7U86blH/0zdjNL5+vnhQEeyIwKxTH
-	 zlcVCNiNPxDZs37QQA8F/DcnFRsFcpbZ7FZMmeWE=
+	b=rllLBF12jFwPuXhXH1Sutxpfxv/KrvYJ5JYzP34+3LOQ4tfpK4DBVb2U1mr3l5MTe
+	 uF1/ZyK7nhCL+FpOe2WwMtPZlqt+xBvfcqpiX1Ak5ZsszaKVQSlNTw6iCoEROkyotL
+	 W7pNQSSJSVQytg+ln9j+UF0kG/b3OpqzskOwPl+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 08/81] Bluetooth: MGMT: set_mesh: update LE scan interval and window
+	Justin Sanders <jsanders.devel@gmail.com>,
+	Valentin Kleibel <valentin@vrvis.at>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 184/232] aoe: defer rexmit timer downdev work to workqueue
 Date: Tue,  8 Jul 2025 18:23:00 +0200
-Message-ID: <20250708162225.110703336@linuxfoundation.org>
+Message-ID: <20250708162246.249255272@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Justin Sanders <jsanders.devel@gmail.com>
 
-commit e5af67a870f738bb8a4594b6c60c2caf4c87a3c9 upstream.
+[ Upstream commit cffc873d68ab09a0432b8212008c5613f8a70a2c ]
 
-According to the message of commit b338d91703fa ("Bluetooth: Implement
-support for Mesh"), MGMT_OP_SET_MESH_RECEIVER should set the passive scan
-parameters.  Currently the scan interval and window parameters are
-silently ignored, although user space (bluetooth-meshd) expects that
-they can be used [1]
+When aoe's rexmit_timer() notices that an aoe target fails to respond to
+commands for more than aoe_deadsecs, it calls aoedev_downdev() which
+cleans the outstanding aoe and block queues. This can involve sleeping,
+such as in blk_mq_freeze_queue(), which should not occur in irq context.
 
-[1] https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/mesh/mesh-io-mgmt.c#n344
-Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch defers that aoedev_downdev() call to the aoe device's
+workqueue.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=212665
+Signed-off-by: Justin Sanders <jsanders.devel@gmail.com>
+Link: https://lore.kernel.org/r/20250610170600.869-2-jsanders.devel@gmail.com
+Tested-By: Valentin Kleibel <valentin@vrvis.at>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/block/aoe/aoe.h    | 1 +
+ drivers/block/aoe/aoecmd.c | 8 ++++++--
+ drivers/block/aoe/aoedev.c | 5 ++++-
+ 3 files changed, 11 insertions(+), 3 deletions(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -2223,6 +2223,9 @@ static int set_mesh_sync(struct hci_dev
- 	else
- 		hci_dev_clear_flag(hdev, HCI_MESH);
+diff --git a/drivers/block/aoe/aoe.h b/drivers/block/aoe/aoe.h
+index 749ae1246f4cf..d35caa3c69e15 100644
+--- a/drivers/block/aoe/aoe.h
++++ b/drivers/block/aoe/aoe.h
+@@ -80,6 +80,7 @@ enum {
+ 	DEVFL_NEWSIZE = (1<<6),	/* need to update dev size in block layer */
+ 	DEVFL_FREEING = (1<<7),	/* set when device is being cleaned up */
+ 	DEVFL_FREED = (1<<8),	/* device has been cleaned up */
++	DEVFL_DEAD = (1<<9),	/* device has timed out of aoe_deadsecs */
+ };
  
-+	hdev->le_scan_interval = __le16_to_cpu(cp->period);
-+	hdev->le_scan_window = __le16_to_cpu(cp->window);
-+
- 	len -= sizeof(*cp);
+ enum {
+diff --git a/drivers/block/aoe/aoecmd.c b/drivers/block/aoe/aoecmd.c
+index 92b06d1de4cc7..6c94cfd1c480e 100644
+--- a/drivers/block/aoe/aoecmd.c
++++ b/drivers/block/aoe/aoecmd.c
+@@ -754,7 +754,7 @@ rexmit_timer(struct timer_list *timer)
  
- 	/* If filters don't fit, forward all adv pkts */
-@@ -2237,6 +2240,7 @@ static int set_mesh(struct sock *sk, str
+ 	utgts = count_targets(d, NULL);
+ 
+-	if (d->flags & DEVFL_TKILL) {
++	if (d->flags & (DEVFL_TKILL | DEVFL_DEAD)) {
+ 		spin_unlock_irqrestore(&d->lock, flags);
+ 		return;
+ 	}
+@@ -786,7 +786,8 @@ rexmit_timer(struct timer_list *timer)
+ 			 * to clean up.
+ 			 */
+ 			list_splice(&flist, &d->factive[0]);
+-			aoedev_downdev(d);
++			d->flags |= DEVFL_DEAD;
++			queue_work(aoe_wq, &d->work);
+ 			goto out;
+ 		}
+ 
+@@ -898,6 +899,9 @@ aoecmd_sleepwork(struct work_struct *work)
  {
- 	struct mgmt_cp_set_mesh *cp = data;
- 	struct mgmt_pending_cmd *cmd;
-+	__u16 period, window;
- 	int err = 0;
+ 	struct aoedev *d = container_of(work, struct aoedev, work);
  
- 	bt_dev_dbg(hdev, "sock %p", sk);
-@@ -2250,6 +2254,23 @@ static int set_mesh(struct sock *sk, str
- 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
- 				       MGMT_STATUS_INVALID_PARAMS);
++	if (d->flags & DEVFL_DEAD)
++		aoedev_downdev(d);
++
+ 	if (d->flags & DEVFL_GDALLOC)
+ 		aoeblk_gdalloc(d);
  
-+	/* Keep allowed ranges in sync with set_scan_params() */
-+	period = __le16_to_cpu(cp->period);
-+
-+	if (period < 0x0004 || period > 0x4000)
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
-+				       MGMT_STATUS_INVALID_PARAMS);
-+
-+	window = __le16_to_cpu(cp->window);
-+
-+	if (window < 0x0004 || window > 0x4000)
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
-+				       MGMT_STATUS_INVALID_PARAMS);
-+
-+	if (window > period)
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
-+				       MGMT_STATUS_INVALID_PARAMS);
-+
- 	hci_dev_lock(hdev);
+diff --git a/drivers/block/aoe/aoedev.c b/drivers/block/aoe/aoedev.c
+index 280679bde3a50..4240e11adfb76 100644
+--- a/drivers/block/aoe/aoedev.c
++++ b/drivers/block/aoe/aoedev.c
+@@ -200,8 +200,11 @@ aoedev_downdev(struct aoedev *d)
+ 	struct list_head *head, *pos, *nx;
+ 	struct request *rq, *rqnext;
+ 	int i;
++	unsigned long flags;
  
- 	cmd = mgmt_pending_add(sk, MGMT_OP_SET_MESH_RECEIVER, hdev, data, len);
-@@ -6607,6 +6628,7 @@ static int set_scan_params(struct sock *
- 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_SCAN_PARAMS,
- 				       MGMT_STATUS_NOT_SUPPORTED);
+-	d->flags &= ~DEVFL_UP;
++	spin_lock_irqsave(&d->lock, flags);
++	d->flags &= ~(DEVFL_UP | DEVFL_DEAD);
++	spin_unlock_irqrestore(&d->lock, flags);
  
-+	/* Keep allowed ranges in sync with set_mesh() */
- 	interval = __le16_to_cpu(cp->interval);
- 
- 	if (interval < 0x0004 || interval > 0x4000)
+ 	/* clean out active and to-be-retransmitted buffers */
+ 	for (i = 0; i < NFACTIVE; i++) {
+-- 
+2.39.5
+
 
 
 
