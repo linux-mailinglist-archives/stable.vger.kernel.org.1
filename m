@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13D8AFD189
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:37:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC4EAFD4BB
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:08:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BCA04879F8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8C84E008B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C61614A60D;
-	Tue,  8 Jul 2025 16:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECD52E5B15;
+	Tue,  8 Jul 2025 17:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbJuUlDO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vogndQdx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED04C1548C;
-	Tue,  8 Jul 2025 16:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8112E2F0D;
+	Tue,  8 Jul 2025 17:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992498; cv=none; b=SLEBf6qahuI0LpQ4WQy4wAB8w3yoUWBjgV3iNd/Q0VWP5wEJidetR/1pxhVMOBsHNN2sT2wDlQ9w2c8RPe45fygFlS4T5RmwFLCOO/VRPx8MhMuBEHYnLGyIHOJe3EPre9sEFgsdEkXFx9uWU4ddq4bUDAXfPws9oqtAEgq6XyY=
+	t=1751994189; cv=none; b=ZU5wSYXkFBMv9Dd1+kO8ijM5bwKNpaOnYJtk+0EgsDqGS/Xtymt644gUSd9Bz783T5CL+dWHlub8lE0jyttKMWZ4BLP086Ks7ZJlJea5l3TvJzJjhc+3jmNQs4GaL6nLrcmOCR4408qhazVO0FOtRIYq4vUARjyxstfOF0ciWTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992498; c=relaxed/simple;
-	bh=kcIFitZO8C81v/lWUGIldg1QGutfV185fnRvkBW2Arw=;
+	s=arc-20240116; t=1751994189; c=relaxed/simple;
+	bh=Vhpp7M5Mh6cRSlMnFW4AIl/tJ5mV5CBfhIpS84hcZx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=if/VoUDQINEGnJ16qZHY6ktS3HHwqtzQQHk/i/PdRiuvu00QU9O53/m/IPi6NMgOcf/20qm2vSNkLYiYMfTZT3DW/fBritqcI04+cQ57i+RixRXDvtW+om9khxrx3l35GHDQAgKZun5Ub5q7LHMQGzotbx1P4JfGGTbBEokV9n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbJuUlDO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E8AC4CEED;
-	Tue,  8 Jul 2025 16:34:57 +0000 (UTC)
+	 MIME-Version; b=YKLM/kBoDs99K+NJ4OHS4+D0wNaGqCQAEVnl1OYRQRCFZJRMRVQd9aImU8gRk+nUGyklLnIN4ZOWLBiAIlfzhpQmq+zyv5s+674d55G49MmhLZi8KcOO8Xrofa4aTU00o8qvrJ7ADePzzfQS7kn/7pmyOC+uPs6kOtbTbuBTkRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vogndQdx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8358BC4CEF5;
+	Tue,  8 Jul 2025 17:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992497;
-	bh=kcIFitZO8C81v/lWUGIldg1QGutfV185fnRvkBW2Arw=;
+	s=korg; t=1751994188;
+	bh=Vhpp7M5Mh6cRSlMnFW4AIl/tJ5mV5CBfhIpS84hcZx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbJuUlDOEywEzuCDbiB8/gx6K3V0qAKVEz+DDVTw2rF0qBSkkNjrQE6N5G1XiSId8
-	 vZIOoBiON94ZybdFWv6PftP0GSg3/0DRtximxlh2fS6yoVgGeGXIlGtrijm00Cd/Tx
-	 od2SdCvHp8nAsLeP6BovkbZkWnIoGQNM1VlnGQmI=
+	b=vogndQdxM4/bgDdIszNRh+7zKqjw6LpQ3WaO8J970768IoxPKIaIvZGdZ4PyEK1oB
+	 AYp6pVg3yllZ/xT3s5JY1/fTcm360Hdn0QfhktOhL3ow+IDLVeHXm9Fn+liTw2lqwL
+	 NZwYdpokDtN528P04P1bGV0IOAJ9Zd14PRdHwINM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/132] drm/i915/dp_mst: Work around Thunderbolt sink disconnect after SINK_COUNT_ESI read
+	stable <stable@kernel.org>,
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 155/160] usb: typec: displayport: Fix potential deadlock
 Date: Tue,  8 Jul 2025 18:23:12 +0200
-Message-ID: <20250708162233.004888582@linuxfoundation.org>
+Message-ID: <20250708162235.598200962@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Li (Intel) <xin@zytor.com>
+From: Andrei Kuchynski <akuchynski@chromium.org>
 
-[ Upstream commit 9cb15478916e849d62a6ec44b10c593b9663328c ]
+commit 099cf1fbb8afc3771f408109f62bdec66f85160e upstream.
 
-Due to a problem in the iTBT DP-in adapter's firmware the sink on a TBT
-link may get disconnected inadvertently if the SINK_COUNT_ESI and the
-DP_LINK_SERVICE_IRQ_VECTOR_ESI0 registers are read in a single AUX
-transaction. Work around the issue by reading these registers in
-separate transactions.
+The deadlock can occur due to a recursive lock acquisition of
+`cros_typec_altmode_data::mutex`.
+The call chain is as follows:
+1. cros_typec_altmode_work() acquires the mutex
+2. typec_altmode_vdm() -> dp_altmode_vdm() ->
+3. typec_altmode_exit() -> cros_typec_altmode_exit()
+4. cros_typec_altmode_exit() attempts to acquire the mutex again
 
-The issue affects MTL+ platforms and will be fixed in the DP-in adapter
-firmware, however releasing that firmware fix may take some time and is
-not guaranteed to be available for all systems. Based on this apply the
-workaround on affected platforms.
+To prevent this, defer the `typec_altmode_exit()` call by scheduling
+it rather than calling it directly from within the mutex-protected
+context.
 
-See HSD #13013007775.
-
-v2: Cc'ing Mika Westerberg.
-
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13760
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14147
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250519133417.1469181-1-imre.deak@intel.com
-(cherry picked from commit c3a48363cf1f76147088b1adb518136ac5df86a0)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: b4b38ffb38c9 ("usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250624133246.3936737-1-akuchynski@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/common.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/usb/typec/altmodes/displayport.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 3390814de0a54..cc1bbf70477b0 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2215,9 +2215,6 @@ EXPORT_PER_CPU_SYMBOL(__stack_chk_guard);
- 
- #endif	/* CONFIG_X86_64 */
- 
--/*
-- * Clear all 6 debug registers:
-- */
- static void initialize_debug_regs(void)
- {
- 	/* Control register first -- to make sure everything is disabled. */
--- 
-2.39.5
-
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -299,8 +299,7 @@ static int dp_altmode_vdm(struct typec_a
+ 	case CMDT_RSP_NAK:
+ 		switch (cmd) {
+ 		case DP_CMD_STATUS_UPDATE:
+-			if (typec_altmode_exit(alt))
+-				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
++			dp->state = DP_STATE_EXIT;
+ 			break;
+ 		case DP_CMD_CONFIGURE:
+ 			dp->data.conf = 0;
 
 
 
