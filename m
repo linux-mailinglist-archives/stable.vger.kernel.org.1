@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862EEAFD30B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:52:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68418AFD218
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D3411720C2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 557E54818EE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387D32E49AF;
-	Tue,  8 Jul 2025 16:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E391D2E542E;
+	Tue,  8 Jul 2025 16:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYtSuMzg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQXaxFd/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53DF214A9B;
-	Tue,  8 Jul 2025 16:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18E0F9E8;
+	Tue,  8 Jul 2025 16:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993362; cv=none; b=loDkjaZ6NCREZUXQYwkR/N8h56nNSlnPvG2EZ+beJ3ELaOgmy+/G9e0F5YDwVC4dC/8DJriraztVdEndGTLkIRzhX2vk6+atUmpjftYMNyjR6Y8Euu+WdOvurzLJNInE8cgh/2f1laBbFUfej1jhJwFfV3VlS1aHmE4W4OHuE2g=
+	t=1751992813; cv=none; b=hjTOpCxf8UmKo0cW/u8GAQU8DRYFHTM1QhERZlk+hm/8eYZYVgo+YgrsvhneyE29HMXlLRyBmzQ4dXF59iTaICX+pZHIj1J2pzT4FQ158bWYPbsGwpZ2jkuM3OvZ4FNEQ3zObgd3mf9H/54o12bN820TDwv5kOsDRPQd6xOJ35s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993362; c=relaxed/simple;
-	bh=3toTYYyqMO3UUuBE5k4NnA86CeJkXXqTMs8tc0F7mAY=;
+	s=arc-20240116; t=1751992813; c=relaxed/simple;
+	bh=/RkGmR47aBmKhBJdAFvfrEHF0VtbxYM6wfKsmItgsvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JzfDBXrN4lsMamWV/F14FInioDh0HomlKhxsGJJxC3kDVPtYok/phHIATF5E5Uhq0CVeV0lM8rKj134pWFGzgBb8qG4mj3eNpBnhOFtO7a6NmymT2Z+MiNR3LQdD4JJESXAUlQ3c5NlIHRET+XD+Bm7npkxVK9/DXK0hxO6r3FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYtSuMzg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3432AC4CEED;
-	Tue,  8 Jul 2025 16:49:21 +0000 (UTC)
+	 MIME-Version; b=jfoFzZpTgEeZrC/bO2mNY4tvnMxshOKk6yIe8dCH4/h+h52P5KIsbnZq2I2UWQAoWjRCxWsgsuctnCf/lHuD5ksmRuxhb7cz+d8b30GEAr+S2+o2srovjdl3MtS5FWt9ymYp0zN3rjRQysQRQdpc4bX5gVIkyaurJSJFzC2C++w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQXaxFd/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D7CDC4CEED;
+	Tue,  8 Jul 2025 16:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993361;
-	bh=3toTYYyqMO3UUuBE5k4NnA86CeJkXXqTMs8tc0F7mAY=;
+	s=korg; t=1751992813;
+	bh=/RkGmR47aBmKhBJdAFvfrEHF0VtbxYM6wfKsmItgsvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sYtSuMzggekomzu8lLj5VxVevaHC7+ZzzubQiZgX8GqXcf1D4CuBz4EHvspF3Pb8n
-	 w+h3cITMEWmD8FQ1hWv1pJMFVNc9ciTkeORi1CYDmigB6I6ZsMhL8LX5xpweMcquIp
-	 on2nDx/2QNKGdHDbbEKooWbey8ln6y+aGl3YYnuo=
+	b=hQXaxFd/wBYgJu13AU3+F/P/6THnPqDCcweFl0MmCHao/aV6Z7PAtsvRcWTmipnIq
+	 yJs4IGMk3tvEUw4f8ieSQN7RtxwBKkINoIdSWqktatRWPT/34ygqvID2w38z9jQSaL
+	 5YvoskMSqMnnHPDEQv3TDIy3Ss/wCRSWNAkWUOqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 048/178] NFSv4/pNFS: Fix a race to wake on NFS_LAYOUT_DRAIN
+Subject: [PATCH 6.12 089/232] nui: Fix dma_mapping_error() check
 Date: Tue,  8 Jul 2025 18:21:25 +0200
-Message-ID: <20250708162237.939443141@linuxfoundation.org>
+Message-ID: <20250708162243.779945429@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit c01776287414ca43412d1319d2877cbad65444ac ]
+[ Upstream commit 561aa0e22b70a5e7246b73d62a824b3aef3fc375 ]
 
-We found a few different systems hung up in writeback waiting on the same
-page lock, and one task waiting on the NFS_LAYOUT_DRAIN bit in
-pnfs_update_layout(), however the pnfs_layout_hdr's plh_outstanding count
-was zero.
+dma_map_XXX() functions return values DMA_MAPPING_ERROR as error values
+which is often ~0.  The error value should be tested with
+dma_mapping_error().
 
-It seems most likely that this is another race between the waiter and waker
-similar to commit ed0172af5d6f ("SUNRPC: Fix a race to wake a sync task").
-Fix it up by applying the advised barrier.
+This patch creates a new function in niu_ops to test if the mapping
+failed.  The test is fixed in niu_rbr_add_page(), added in
+niu_start_xmit() and the successfully mapped pages are unmaped upon error.
 
-Fixes: 880265c77ac4 ("pNFS: Avoid a live lock condition in pnfs_update_layout()")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: ec2deec1f352 ("niu: Fix to check for dma mapping errors.")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/sun/niu.c | 31 ++++++++++++++++++++++++++++++-
+ drivers/net/ethernet/sun/niu.h |  4 ++++
+ 2 files changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 3adb7d0dbec7a..1a7ec68bde153 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -2059,8 +2059,10 @@ static void nfs_layoutget_begin(struct pnfs_layout_hdr *lo)
- static void nfs_layoutget_end(struct pnfs_layout_hdr *lo)
- {
- 	if (atomic_dec_and_test(&lo->plh_outstanding) &&
--	    test_and_clear_bit(NFS_LAYOUT_DRAIN, &lo->plh_flags))
-+	    test_and_clear_bit(NFS_LAYOUT_DRAIN, &lo->plh_flags)) {
-+		smp_mb__after_atomic();
- 		wake_up_bit(&lo->plh_flags, NFS_LAYOUT_DRAIN);
+diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
+index f5449b73b9a76..1e4cf89bd79ad 100644
+--- a/drivers/net/ethernet/sun/niu.c
++++ b/drivers/net/ethernet/sun/niu.c
+@@ -3336,7 +3336,7 @@ static int niu_rbr_add_page(struct niu *np, struct rx_ring_info *rp,
+ 
+ 	addr = np->ops->map_page(np->device, page, 0,
+ 				 PAGE_SIZE, DMA_FROM_DEVICE);
+-	if (!addr) {
++	if (np->ops->mapping_error(np->device, addr)) {
+ 		__free_page(page);
+ 		return -ENOMEM;
+ 	}
+@@ -6672,6 +6672,8 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ 	len = skb_headlen(skb);
+ 	mapping = np->ops->map_single(np->device, skb->data,
+ 				      len, DMA_TO_DEVICE);
++	if (np->ops->mapping_error(np->device, mapping))
++		goto out_drop;
+ 
+ 	prod = rp->prod;
+ 
+@@ -6713,6 +6715,8 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ 		mapping = np->ops->map_page(np->device, skb_frag_page(frag),
+ 					    skb_frag_off(frag), len,
+ 					    DMA_TO_DEVICE);
++		if (np->ops->mapping_error(np->device, mapping))
++			goto out_unmap;
+ 
+ 		rp->tx_buffs[prod].skb = NULL;
+ 		rp->tx_buffs[prod].mapping = mapping;
+@@ -6737,6 +6741,19 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ out:
+ 	return NETDEV_TX_OK;
+ 
++out_unmap:
++	while (i--) {
++		const skb_frag_t *frag;
++
++		prod = PREVIOUS_TX(rp, prod);
++		frag = &skb_shinfo(skb)->frags[i];
++		np->ops->unmap_page(np->device, rp->tx_buffs[prod].mapping,
++				    skb_frag_size(frag), DMA_TO_DEVICE);
 +	}
++
++	np->ops->unmap_single(np->device, rp->tx_buffs[rp->prod].mapping,
++			      skb_headlen(skb), DMA_TO_DEVICE);
++
+ out_drop:
+ 	rp->tx_errors++;
+ 	kfree_skb(skb);
+@@ -9638,6 +9655,11 @@ static void niu_pci_unmap_single(struct device *dev, u64 dma_address,
+ 	dma_unmap_single(dev, dma_address, size, direction);
  }
  
- static bool pnfs_is_first_layoutget(struct pnfs_layout_hdr *lo)
++static int niu_pci_mapping_error(struct device *dev, u64 addr)
++{
++	return dma_mapping_error(dev, addr);
++}
++
+ static const struct niu_ops niu_pci_ops = {
+ 	.alloc_coherent	= niu_pci_alloc_coherent,
+ 	.free_coherent	= niu_pci_free_coherent,
+@@ -9645,6 +9667,7 @@ static const struct niu_ops niu_pci_ops = {
+ 	.unmap_page	= niu_pci_unmap_page,
+ 	.map_single	= niu_pci_map_single,
+ 	.unmap_single	= niu_pci_unmap_single,
++	.mapping_error	= niu_pci_mapping_error,
+ };
+ 
+ static void niu_driver_version(void)
+@@ -10011,6 +10034,11 @@ static void niu_phys_unmap_single(struct device *dev, u64 dma_address,
+ 	/* Nothing to do.  */
+ }
+ 
++static int niu_phys_mapping_error(struct device *dev, u64 dma_address)
++{
++	return false;
++}
++
+ static const struct niu_ops niu_phys_ops = {
+ 	.alloc_coherent	= niu_phys_alloc_coherent,
+ 	.free_coherent	= niu_phys_free_coherent,
+@@ -10018,6 +10046,7 @@ static const struct niu_ops niu_phys_ops = {
+ 	.unmap_page	= niu_phys_unmap_page,
+ 	.map_single	= niu_phys_map_single,
+ 	.unmap_single	= niu_phys_unmap_single,
++	.mapping_error	= niu_phys_mapping_error,
+ };
+ 
+ static int niu_of_probe(struct platform_device *op)
+diff --git a/drivers/net/ethernet/sun/niu.h b/drivers/net/ethernet/sun/niu.h
+index 04c215f91fc08..0b169c08b0f2d 100644
+--- a/drivers/net/ethernet/sun/niu.h
++++ b/drivers/net/ethernet/sun/niu.h
+@@ -2879,6 +2879,9 @@ struct tx_ring_info {
+ #define NEXT_TX(tp, index) \
+ 	(((index) + 1) < (tp)->pending ? ((index) + 1) : 0)
+ 
++#define PREVIOUS_TX(tp, index) \
++	(((index) - 1) >= 0 ? ((index) - 1) : (((tp)->pending) - 1))
++
+ static inline u32 niu_tx_avail(struct tx_ring_info *tp)
+ {
+ 	return (tp->pending -
+@@ -3140,6 +3143,7 @@ struct niu_ops {
+ 			  enum dma_data_direction direction);
+ 	void (*unmap_single)(struct device *dev, u64 dma_address,
+ 			     size_t size, enum dma_data_direction direction);
++	int (*mapping_error)(struct device *dev, u64 dma_address);
+ };
+ 
+ struct niu_link_config {
 -- 
 2.39.5
 
