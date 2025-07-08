@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-160854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDF4AFD23C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D75AFD486
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19D6C585669
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70677189F97C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B702E54A7;
-	Tue,  8 Jul 2025 16:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B702E5B20;
+	Tue,  8 Jul 2025 17:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKVF0U8Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sALP8r+g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF62289E2C;
-	Tue,  8 Jul 2025 16:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0F62E5B09;
+	Tue,  8 Jul 2025 17:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992883; cv=none; b=Bbm1F1aQ1ZEP60mbCd1yJ82G8N3huBzS9DNjGCh7KG9RNbWdwHdY092COGIhO8WmXgP4OVTi/kYnJ6g6Sr7aBnVePkiM7AZBUf8NQugV2Ip+HQZcDMTxNagLB6sDPTrTQvvN895NFHApicm7ha9m+dBrI7j2EeyphGJgQNN4fps=
+	t=1751994037; cv=none; b=CwH4NK0hk/im+tw9bUZ9crsmHnAs8gTbSci7q1j376WSFJ1xTCgbxOYA7YX7J1/LkO3dmkX3qbxMgyfuxP9tWFx8TMpbFdYYW1eOjwf30KvkkEH1pBtY4WaOwuXAJHiqoJS3CqzI84p3Xx/qtEQ1kEmp5otnhmgR6ZH5lFL7F08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992883; c=relaxed/simple;
-	bh=NayUoOfdM0tLCbH52YgVb+N1lGVIDZC0CXXHlPNxTVY=;
+	s=arc-20240116; t=1751994037; c=relaxed/simple;
+	bh=O1g+dkzjuseR12NaNOEdZozrH+UiIFodcjUUs1+eWLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qIMw8TjDsAUIeCQmCI/5e/9kGwvAV+6rNJ/vbksoxO7Eq/LQkfHgA4oQV5WoY7uu9ZkHzPaIlLfZs/oxEIQOG9yXe0WsVrlJKt7ZOQoa+tmg+1cYRCGboQl9YZ4U9bncCBT3mt8Z7kDPIyX6bfsNYGfTej3R0sC8pWeBLcYbRFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKVF0U8Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6BAC4CEED;
-	Tue,  8 Jul 2025 16:41:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OyhWazlOtr8KrFsxYOO34zHBSrXi0ZRuZsmxge0YlZLxragD+zU6q3wtsnwlHFHRu2W2fTK2aC+qATpRfPg+gv1z618UPn7VhMrVLkeEh90vqWFK8agwNEDE72pHWHFTu4hx6UwMq2nXoD7NF65XaEyIcPaIkNe7QlJqUtRyQKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sALP8r+g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42421C4CEED;
+	Tue,  8 Jul 2025 17:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992883;
-	bh=NayUoOfdM0tLCbH52YgVb+N1lGVIDZC0CXXHlPNxTVY=;
+	s=korg; t=1751994036;
+	bh=O1g+dkzjuseR12NaNOEdZozrH+UiIFodcjUUs1+eWLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKVF0U8QzxJ67io3QG9UybZFV0qH0GsPG5TuxQYldWjt/dsKo6ino2531/nXSj2dc
-	 1/akFRroH0q4IiGEIe7eZeczZHd1eix+9Barv+l3cym07xoO7jV66RBBMSLRAwy8KQ
-	 MXBAycZ/S4FT5lVxS7ybyY8sJ+OQG5sh9fFSQKtQ=
+	b=sALP8r+gnz+ujBsXn3dO8FwO84j3rS/gNbP+JHK/a9t4ONwk4CwX7nbNLimNqY+B2
+	 fI8H3Mt4oPxEsCFNS/99RiVpwQO1bqjjX1mWqDLUeTr37XLOPcKvgiF6nLFQQu4c2V
+	 AXus9Y0K7Gg75Kx+M0mDq2EJPUvubrh3IL+3FoYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 114/232] sched/fair: Add new cfs_rq.h_nr_runnable
-Date: Tue,  8 Jul 2025 18:21:50 +0200
-Message-ID: <20250708162244.422660506@linuxfoundation.org>
+	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 074/160] Bluetooth: L2CAP: Fix L2CAP MTU negotiation
+Date: Tue,  8 Jul 2025 18:21:51 +0200
+Message-ID: <20250708162233.597617023@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,184 +59,231 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Frédéric Danis <frederic.danis@collabora.com>
 
-[ Upstream commit c2a295bffeaf9461ecba76dc9e4780c898c94f03 ]
+commit 042bb9603c44620dce98717a2d23235ca57a00d7 upstream.
 
-With delayed dequeued feature, a sleeping sched_entity remains queued in
-the rq until its lag has elapsed. As a result, it stays also visible
-in the statistics that are used to balance the system and in particular
-the field cfs.h_nr_queued when the sched_entity is associated to a task.
+OBEX download from iPhone is currently slow due to small packet size
+used to transfer data which doesn't follow the MTU negotiated during
+L2CAP connection, i.e. 672 bytes instead of 32767:
 
-Create a new h_nr_runnable that tracks only queued and runnable tasks.
+  < ACL Data TX: Handle 11 flags 0x00 dlen 12
+      L2CAP: Connection Request (0x02) ident 18 len 4
+        PSM: 4103 (0x1007)
+        Source CID: 72
+  > ACL Data RX: Handle 11 flags 0x02 dlen 16
+      L2CAP: Connection Response (0x03) ident 18 len 8
+        Destination CID: 14608
+        Source CID: 72
+        Result: Connection successful (0x0000)
+        Status: No further information available (0x0000)
+  < ACL Data TX: Handle 11 flags 0x00 dlen 27
+      L2CAP: Configure Request (0x04) ident 20 len 19
+        Destination CID: 14608
+        Flags: 0x0000
+        Option: Maximum Transmission Unit (0x01) [mandatory]
+          MTU: 32767
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 63
+          Max transmit: 3
+          Retransmission timeout: 2000
+          Monitor timeout: 12000
+          Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 26
+      L2CAP: Configure Request (0x04) ident 72 len 18
+        Destination CID: 72
+        Flags: 0x0000
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 32
+          Max transmit: 255
+          Retransmission timeout: 0
+          Monitor timeout: 0
+          Maximum PDU size: 65527
+        Option: Frame Check Sequence (0x05) [mandatory]
+          FCS: 16-bit FCS (0x01)
+  < ACL Data TX: Handle 11 flags 0x00 dlen 29
+      L2CAP: Configure Response (0x05) ident 72 len 21
+        Source CID: 14608
+        Flags: 0x0000
+        Result: Success (0x0000)
+        Option: Maximum Transmission Unit (0x01) [mandatory]
+          MTU: 672
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 32
+          Max transmit: 255
+          Retransmission timeout: 2000
+          Monitor timeout: 12000
+          Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 32
+      L2CAP: Configure Response (0x05) ident 20 len 24
+        Source CID: 72
+        Flags: 0x0000
+        Result: Success (0x0000)
+        Option: Maximum Transmission Unit (0x01) [mandatory]
+          MTU: 32767
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 63
+          Max transmit: 3
+          Retransmission timeout: 2000
+          Monitor timeout: 12000
+          Maximum PDU size: 1009
+        Option: Frame Check Sequence (0x05) [mandatory]
+          FCS: 16-bit FCS (0x01)
+  ...
+  > ACL Data RX: Handle 11 flags 0x02 dlen 680
+      Channel: 72 len 676 ctrl 0x0202 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+      I-frame: Unsegmented TxSeq 1 ReqSeq 2
+  < ACL Data TX: Handle 11 flags 0x00 dlen 13
+      Channel: 14608 len 9 ctrl 0x0204 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+      I-frame: Unsegmented TxSeq 2 ReqSeq 2
+  > ACL Data RX: Handle 11 flags 0x02 dlen 680
+      Channel: 72 len 676 ctrl 0x0304 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+      I-frame: Unsegmented TxSeq 2 ReqSeq 3
 
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Link: https://lore.kernel.org/r/20241202174606.4074512-5-vincent.guittot@linaro.org
-Stable-dep-of: aa3ee4f0b754 ("sched/fair: Fixup wake_up_sync() vs DELAYED_DEQUEUE")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The MTUs are negotiated for each direction. In this traces 32767 for
+iPhone->localhost and no MTU for localhost->iPhone, which based on
+'4.4 L2CAP_CONFIGURATION_REQ' (Core specification v5.4, Vol. 3, Part
+A):
+
+  The only parameters that should be included in the
+  L2CAP_CONFIGURATION_REQ packet are those that require different
+  values than the default or previously agreed values.
+  ...
+  Any missing configuration parameters are assumed to have their
+  most recently explicitly or implicitly accepted values.
+
+and '5.1 Maximum transmission unit (MTU)':
+
+  If the remote device sends a positive L2CAP_CONFIGURATION_RSP
+  packet it should include the actual MTU to be used on this channel
+  for traffic flowing into the local device.
+  ...
+  The default value is 672 octets.
+
+is set by BlueZ to 672 bytes.
+
+It seems that the iPhone used the lowest negotiated value to transfer
+data to the localhost instead of the negotiated one for the incoming
+direction.
+
+This could be fixed by using the MTU negotiated for the other
+direction, if exists, in the L2CAP_CONFIGURATION_RSP.
+This allows to use segmented packets as in the following traces:
+
+  < ACL Data TX: Handle 11 flags 0x00 dlen 12
+        L2CAP: Connection Request (0x02) ident 22 len 4
+          PSM: 4103 (0x1007)
+          Source CID: 72
+  < ACL Data TX: Handle 11 flags 0x00 dlen 27
+        L2CAP: Configure Request (0x04) ident 24 len 19
+          Destination CID: 2832
+          Flags: 0x0000
+          Option: Maximum Transmission Unit (0x01) [mandatory]
+            MTU: 32767
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 63
+            Max transmit: 3
+            Retransmission timeout: 2000
+            Monitor timeout: 12000
+            Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 26
+        L2CAP: Configure Request (0x04) ident 15 len 18
+          Destination CID: 72
+          Flags: 0x0000
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 32
+            Max transmit: 255
+            Retransmission timeout: 0
+            Monitor timeout: 0
+            Maximum PDU size: 65527
+          Option: Frame Check Sequence (0x05) [mandatory]
+            FCS: 16-bit FCS (0x01)
+  < ACL Data TX: Handle 11 flags 0x00 dlen 29
+        L2CAP: Configure Response (0x05) ident 15 len 21
+          Source CID: 2832
+          Flags: 0x0000
+          Result: Success (0x0000)
+          Option: Maximum Transmission Unit (0x01) [mandatory]
+            MTU: 32767
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 32
+            Max transmit: 255
+            Retransmission timeout: 2000
+            Monitor timeout: 12000
+            Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 32
+        L2CAP: Configure Response (0x05) ident 24 len 24
+          Source CID: 72
+          Flags: 0x0000
+          Result: Success (0x0000)
+          Option: Maximum Transmission Unit (0x01) [mandatory]
+            MTU: 32767
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 63
+            Max transmit: 3
+            Retransmission timeout: 2000
+            Monitor timeout: 12000
+            Maximum PDU size: 1009
+          Option: Frame Check Sequence (0x05) [mandatory]
+            FCS: 16-bit FCS (0x01)
+  ...
+  > ACL Data RX: Handle 11 flags 0x02 dlen 1009
+        Channel: 72 len 1005 ctrl 0x4202 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+        I-frame: Start (len 21884) TxSeq 1 ReqSeq 2
+  > ACL Data RX: Handle 11 flags 0x02 dlen 1009
+        Channel: 72 len 1005 ctrl 0xc204 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+        I-frame: Continuation TxSeq 2 ReqSeq 2
+
+This has been tested with kernel 5.4 and BlueZ 5.77.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/debug.c |  1 +
- kernel/sched/fair.c  | 20 ++++++++++++++++++--
- kernel/sched/sched.h |  1 +
- 3 files changed, 20 insertions(+), 2 deletions(-)
+ net/bluetooth/l2cap_core.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 7cf0c138c78e5..9815f9a0cd592 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -843,6 +843,7 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
- 	spread = right_vruntime - left_vruntime;
- 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "spread", SPLIT_NS(spread));
- 	SEQ_printf(m, "  .%-30s: %d\n", "nr_running", cfs_rq->nr_running);
-+	SEQ_printf(m, "  .%-30s: %d\n", "h_nr_runnable", cfs_rq->h_nr_runnable);
- 	SEQ_printf(m, "  .%-30s: %d\n", "h_nr_queued", cfs_rq->h_nr_queued);
- 	SEQ_printf(m, "  .%-30s: %d\n", "h_nr_delayed", cfs_rq->h_nr_delayed);
- 	SEQ_printf(m, "  .%-30s: %d\n", "idle_nr_running",
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 33438b6c35478..47ff4856561ea 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -5511,6 +5511,7 @@ static void set_delayed(struct sched_entity *se)
- 	for_each_sched_entity(se) {
- 		struct cfs_rq *cfs_rq = cfs_rq_of(se);
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -3576,7 +3576,7 @@ static int l2cap_parse_conf_req(struct l
+ 	struct l2cap_conf_rfc rfc = { .mode = L2CAP_MODE_BASIC };
+ 	struct l2cap_conf_efs efs;
+ 	u8 remote_efs = 0;
+-	u16 mtu = L2CAP_DEFAULT_MTU;
++	u16 mtu = 0;
+ 	u16 result = L2CAP_CONF_SUCCESS;
+ 	u16 size;
  
-+		cfs_rq->h_nr_runnable--;
- 		cfs_rq->h_nr_delayed++;
- 		if (cfs_rq_throttled(cfs_rq))
- 			break;
-@@ -5533,6 +5534,7 @@ static void clear_delayed(struct sched_entity *se)
- 	for_each_sched_entity(se) {
- 		struct cfs_rq *cfs_rq = cfs_rq_of(se);
+@@ -3687,6 +3687,13 @@ done:
+ 		/* Configure output options and let the other side know
+ 		 * which ones we don't like. */
  
-+		cfs_rq->h_nr_runnable++;
- 		cfs_rq->h_nr_delayed--;
- 		if (cfs_rq_throttled(cfs_rq))
- 			break;
-@@ -5985,7 +5987,7 @@ static bool throttle_cfs_rq(struct cfs_rq *cfs_rq)
- 	struct rq *rq = rq_of(cfs_rq);
- 	struct cfs_bandwidth *cfs_b = tg_cfs_bandwidth(cfs_rq->tg);
- 	struct sched_entity *se;
--	long queued_delta, idle_task_delta, delayed_delta, dequeue = 1;
-+	long queued_delta, runnable_delta, idle_task_delta, delayed_delta, dequeue = 1;
- 	long rq_h_nr_queued = rq->cfs.h_nr_queued;
- 
- 	raw_spin_lock(&cfs_b->lock);
-@@ -6017,6 +6019,7 @@ static bool throttle_cfs_rq(struct cfs_rq *cfs_rq)
- 	rcu_read_unlock();
- 
- 	queued_delta = cfs_rq->h_nr_queued;
-+	runnable_delta = cfs_rq->h_nr_runnable;
- 	idle_task_delta = cfs_rq->idle_h_nr_running;
- 	delayed_delta = cfs_rq->h_nr_delayed;
- 	for_each_sched_entity(se) {
-@@ -6041,6 +6044,7 @@ static bool throttle_cfs_rq(struct cfs_rq *cfs_rq)
- 			idle_task_delta = cfs_rq->h_nr_queued;
- 
- 		qcfs_rq->h_nr_queued -= queued_delta;
-+		qcfs_rq->h_nr_runnable -= runnable_delta;
- 		qcfs_rq->idle_h_nr_running -= idle_task_delta;
- 		qcfs_rq->h_nr_delayed -= delayed_delta;
- 
-@@ -6064,6 +6068,7 @@ static bool throttle_cfs_rq(struct cfs_rq *cfs_rq)
- 			idle_task_delta = cfs_rq->h_nr_queued;
- 
- 		qcfs_rq->h_nr_queued -= queued_delta;
-+		qcfs_rq->h_nr_runnable -= runnable_delta;
- 		qcfs_rq->idle_h_nr_running -= idle_task_delta;
- 		qcfs_rq->h_nr_delayed -= delayed_delta;
- 	}
-@@ -6091,7 +6096,7 @@ void unthrottle_cfs_rq(struct cfs_rq *cfs_rq)
- 	struct rq *rq = rq_of(cfs_rq);
- 	struct cfs_bandwidth *cfs_b = tg_cfs_bandwidth(cfs_rq->tg);
- 	struct sched_entity *se;
--	long queued_delta, idle_task_delta, delayed_delta;
-+	long queued_delta, runnable_delta, idle_task_delta, delayed_delta;
- 	long rq_h_nr_queued = rq->cfs.h_nr_queued;
- 
- 	se = cfs_rq->tg->se[cpu_of(rq)];
-@@ -6126,6 +6131,7 @@ void unthrottle_cfs_rq(struct cfs_rq *cfs_rq)
- 	}
- 
- 	queued_delta = cfs_rq->h_nr_queued;
-+	runnable_delta = cfs_rq->h_nr_runnable;
- 	idle_task_delta = cfs_rq->idle_h_nr_running;
- 	delayed_delta = cfs_rq->h_nr_delayed;
- 	for_each_sched_entity(se) {
-@@ -6144,6 +6150,7 @@ void unthrottle_cfs_rq(struct cfs_rq *cfs_rq)
- 			idle_task_delta = cfs_rq->h_nr_queued;
- 
- 		qcfs_rq->h_nr_queued += queued_delta;
-+		qcfs_rq->h_nr_runnable += runnable_delta;
- 		qcfs_rq->idle_h_nr_running += idle_task_delta;
- 		qcfs_rq->h_nr_delayed += delayed_delta;
- 
-@@ -6162,6 +6169,7 @@ void unthrottle_cfs_rq(struct cfs_rq *cfs_rq)
- 			idle_task_delta = cfs_rq->h_nr_queued;
- 
- 		qcfs_rq->h_nr_queued += queued_delta;
-+		qcfs_rq->h_nr_runnable += runnable_delta;
- 		qcfs_rq->idle_h_nr_running += idle_task_delta;
- 		qcfs_rq->h_nr_delayed += delayed_delta;
- 
-@@ -7081,6 +7089,8 @@ enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
- 		enqueue_entity(cfs_rq, se, flags);
- 		slice = cfs_rq_min_slice(cfs_rq);
- 
-+		if (!h_nr_delayed)
-+			cfs_rq->h_nr_runnable++;
- 		cfs_rq->h_nr_queued++;
- 		cfs_rq->idle_h_nr_running += idle_h_nr_running;
- 		cfs_rq->h_nr_delayed += h_nr_delayed;
-@@ -7107,6 +7117,8 @@ enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
- 			min_vruntime_cb_propagate(&se->run_node, NULL);
- 		slice = cfs_rq_min_slice(cfs_rq);
- 
-+		if (!h_nr_delayed)
-+			cfs_rq->h_nr_runnable++;
- 		cfs_rq->h_nr_queued++;
- 		cfs_rq->idle_h_nr_running += idle_h_nr_running;
- 		cfs_rq->h_nr_delayed += h_nr_delayed;
-@@ -7195,6 +7207,8 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- 			break;
- 		}
- 
-+		if (!h_nr_delayed)
-+			cfs_rq->h_nr_runnable -= h_nr_queued;
- 		cfs_rq->h_nr_queued -= h_nr_queued;
- 		cfs_rq->idle_h_nr_running -= idle_h_nr_running;
- 		cfs_rq->h_nr_delayed -= h_nr_delayed;
-@@ -7236,6 +7250,8 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- 			min_vruntime_cb_propagate(&se->run_node, NULL);
- 		slice = cfs_rq_min_slice(cfs_rq);
- 
-+		if (!h_nr_delayed)
-+			cfs_rq->h_nr_runnable -= h_nr_queued;
- 		cfs_rq->h_nr_queued -= h_nr_queued;
- 		cfs_rq->idle_h_nr_running -= idle_h_nr_running;
- 		cfs_rq->h_nr_delayed -= h_nr_delayed;
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index dc338f4f911dd..e7f5ab21221c4 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -652,6 +652,7 @@ struct cfs_rq {
- 	struct load_weight	load;
- 	unsigned int		nr_running;
- 	unsigned int		h_nr_queued;       /* SCHED_{NORMAL,BATCH,IDLE} */
-+	unsigned int		h_nr_runnable;     /* SCHED_{NORMAL,BATCH,IDLE} */
- 	unsigned int		idle_nr_running;   /* SCHED_IDLE */
- 	unsigned int		idle_h_nr_running; /* SCHED_IDLE */
- 	unsigned int		h_nr_delayed;
--- 
-2.39.5
-
++		/* If MTU is not provided in configure request, use the most recently
++		 * explicitly or implicitly accepted value for the other direction,
++		 * or the default value.
++		 */
++		if (mtu == 0)
++			mtu = chan->imtu ? chan->imtu : L2CAP_DEFAULT_MTU;
++
+ 		if (mtu < L2CAP_DEFAULT_MIN_MTU)
+ 			result = L2CAP_CONF_UNACCEPT;
+ 		else {
 
 
 
