@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-161061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D20AFD330
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:54:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67463AFD12E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68233561B6B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:51:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0ADA1C22695
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8828B2E5413;
-	Tue,  8 Jul 2025 16:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899B22E49AF;
+	Tue,  8 Jul 2025 16:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzDuLg8C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jk1jwnkj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4232C14A60D;
-	Tue,  8 Jul 2025 16:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D0E2E49A4;
+	Tue,  8 Jul 2025 16:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993484; cv=none; b=r/XQkWcBPAKX+/6ZCglkrIZdB+CklNfNVaedwbn1wN2vKFebYbaS09kX3mMEGJwiG8EYG2JEL6gR7vzTrp8+/u7fAbyLc8ZMiW5z+j0mE6lafMuPBg9KfA8qWlucAqLumBiHk51a2lnipP7I8dtY+8MJi7/IrIyPB5QI5wPhHt8=
+	t=1751992301; cv=none; b=D5lov84FdUK5PQu+eHtPc+oHLtrVX9MQhfoqOC8WESuTeGBovjPv30AW8KC4tSatVCj9HuWE9aUwZSNF09q49CHl2YEFHl5A9uT9wUuHooG9hhut8KGh8c50uLpJJZ2YAxF7r5J9496A02uDoSHO2DxPGTQByahcHp4dmdHeJLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993484; c=relaxed/simple;
-	bh=Xlshf4eh0oyeLBG7AF06sAzwceONPKp9PoD1423Vfqg=;
+	s=arc-20240116; t=1751992301; c=relaxed/simple;
+	bh=iJAeyZB/ymMEPBJj1sO6C235UClQ6qb3rmvsMIq72KY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2Az2MzxMDm6e7yjvxQElcS36muMDr/Jyka8a/bvQaVEa/bT9KeKP1E42prqUHUhLhVwQI41gJmKfrlIGWdb3YgGf8MVXxCJzK+WOIq7e63facLp+mUGfKhi6EwrQRs+jLBLthVF1HBAyuOei36cXnZz+xriY7OddXhNfdJ/5Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzDuLg8C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF55C4CEED;
-	Tue,  8 Jul 2025 16:51:23 +0000 (UTC)
+	 MIME-Version; b=fuUJQQUg43fWOqRHN1urj/U32rX5RaEaLuwJkUP44ES6eJRj6XmoSPvJtm5ckw5aFsZ9TMwIb+SiiSzAQh2IGlWQBmccboFhcKpiC8HA/RnUQOG6eNCZJ3I6rnh1UKAD9MRc1Qe/3Lhn/C9IEpBCq1OnFsKf+0mp6C4SEX5LkDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jk1jwnkj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFAB8C4CEED;
+	Tue,  8 Jul 2025 16:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993484;
-	bh=Xlshf4eh0oyeLBG7AF06sAzwceONPKp9PoD1423Vfqg=;
+	s=korg; t=1751992301;
+	bh=iJAeyZB/ymMEPBJj1sO6C235UClQ6qb3rmvsMIq72KY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EzDuLg8CqSwInGO91+TGnAnk9NzuSH5BPtq4mxEUaaJf6C/vGQMS2Lq5RQaGXIg6m
-	 0WQliyh28h+82e4DCrdIFAPmoVB/8pViHzvMQx40dmtsSqfhTTsuj0WP4zD5vIlp/d
-	 HIVKA6dL8+5aH7lu7XYEc5U0Meb/NuGhumWWhQAU=
+	b=Jk1jwnkjkvRz0ow/LNchwFHRq+9jx4oFA5Oam9a2/+qmwVKja4EQMAgAQdhiDfYXS
+	 m6myQUja/+sbt20Ho7f2baZ7j3GeRIOM2jw2wgEI+yDG0DM/WSS3ua0hEy52bwDIZJ
+	 W4ZZyuxkFIO8tUGcKaugeZS/pYy97dGtrZXbOnYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marko Kiiskila <marko.kiiskila@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 089/178] drm/vmwgfx: Fix guests running with TDX/SEV
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 015/132] mtk-sd: Fix a pagefault in dma_unmap_sg() for not prepared data
 Date: Tue,  8 Jul 2025 18:22:06 +0200
-Message-ID: <20250708162238.995085588@linuxfoundation.org>
+Message-ID: <20250708162231.177180155@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,58 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marko Kiiskila <marko.kiiskila@broadcom.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 7dfede7d7edd18c0c91ca854cde8eaaf4ccf97ea ]
+commit 539d80575b810c7a5987c7ac8915e3bc99c03695 upstream.
 
-Commit 81256a50aa0f ("x86/mm: Make memremap(MEMREMAP_WB) map memory as
-encrypted by default") changed the default behavior of
-memremap(MEMREMAP_WB) and started mapping memory as encrypted.
-The driver requires the fifo memory to be decrypted to communicate with
-the host but was relaying on the old default behavior of
-memremap(MEMREMAP_WB) and thus broke.
+When swiotlb buffer is full, the dma_map_sg() returns 0 to
+msdc_prepare_data(), but it does not check it and sets the
+MSDC_PREPARE_FLAG.
 
-Fix it by explicitly specifying the desired behavior and passing
-MEMREMAP_DEC to memremap.
+swiotlb_tbl_map_single() /* prints "swiotlb buffer is full" */
+  <-swiotlb_map()
+    <-dma_direct_map_page()
+      <-dma_direct_map_sg()
+        <-__dma_map_sg_attrs()
+          <-dma_map_sg_attrs()
+            <-dma_map_sg()  /* returns 0 (pages mapped) */
+              <-msdc_prepare_data()
 
-Fixes: 81256a50aa0f ("x86/mm: Make memremap(MEMREMAP_WB) map memory as encrypted by default")
-Signed-off-by: Marko Kiiskila <marko.kiiskila@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/r/20250618192926.1092450-1-zack.rusin@broadcom.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Then, the msdc_unprepare_data() checks MSDC_PREPARE_FLAG and calls
+dma_unmap_sg() with unmapped pages. It causes a page fault.
+
+To fix this problem, Do not set MSDC_PREPARE_FLAG if dma_map_sg()
+fails because this is not prepared.
+
+Fixes: 208489032bdd ("mmc: mediatek: Add Mediatek MMC driver")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/174908565814.4056588.769599127120955383.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/mtk-sd.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-index 0f32471c85332..55c822a61b9ad 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-@@ -769,7 +769,7 @@ static int vmw_setup_pci_resources(struct vmw_private *dev,
- 		dev->fifo_mem = devm_memremap(dev->drm.dev,
- 					      fifo_start,
- 					      fifo_size,
--					      MEMREMAP_WB);
-+					      MEMREMAP_WB | MEMREMAP_DEC);
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -770,9 +770,10 @@ static inline void msdc_dma_setup(struct
+ static void msdc_prepare_data(struct msdc_host *host, struct mmc_data *data)
+ {
+ 	if (!(data->host_cookie & MSDC_PREPARE_FLAG)) {
+-		data->host_cookie |= MSDC_PREPARE_FLAG;
+ 		data->sg_count = dma_map_sg(host->dev, data->sg, data->sg_len,
+ 					    mmc_get_dma_dir(data));
++		if (data->sg_count)
++			data->host_cookie |= MSDC_PREPARE_FLAG;
+ 	}
+ }
  
- 		if (IS_ERR(dev->fifo_mem)) {
- 			drm_err(&dev->drm,
--- 
-2.39.5
-
 
 
 
