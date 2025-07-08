@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-161242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3E1AFD475
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2208AAFD280
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F28801897D5C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B888421657
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C13F2E62DA;
-	Tue,  8 Jul 2025 17:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39BDF2E5418;
+	Tue,  8 Jul 2025 16:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pp+GFEun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFtzM97f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143A32E6126;
-	Tue,  8 Jul 2025 17:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFAAE2E542E;
+	Tue,  8 Jul 2025 16:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994008; cv=none; b=PHzSTSLod6A9CXYunyaRGTtBoAGA1nzhiz5En0OkEUTWEjf1N1DR9UW/Fj1LfIDuVPi/WkipwIe7BRDqCv2ldCOGa00AXaeo7De7aXhu11wlMvKu84Tp0PLPqArKBbvKFXYwRYvQ7ajxTAr4mkqLRcjYOuxqlKDD2IjHG1REpfM=
+	t=1751993034; cv=none; b=dTATt/IPNr1IAZfMiPMgmll10ZgbfKW7zDrWhPhDxlGt/2n/ulJIwEmXNsZoDIk7eY1w/9VHgrPZQjEYAwzrVgzxdOTWfSqBFgv2q+uImUKxd2VBeIgZKPHVTA9PyHNIc6KVWdlSOh1I3SJsZryXZegKH5Jl3LEQZFvnU4QoxV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994008; c=relaxed/simple;
-	bh=ajK7nli8DVbI9bA4/pu+jokdoHPz/tkNH4HzLKD7oN8=;
+	s=arc-20240116; t=1751993034; c=relaxed/simple;
+	bh=t1edlcN3cNrhfvn8rgNBL48ov+/ChVIbUofr+vTxCxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rr0hgtzx3tQhADHbtDgLYrvGg1TQ87VqRo/ys1YHKMY5jTKGW4HNZrJ8bsLv81eP3lIpVUMC7XMVioiHOH/WuOIk/N/Qj3lwz/w2ZpJPDqENPVRsZMpKZewp15r/1a3fO6/KV4HNmDksxwGPTfB2XKYCOBeqX3ATGKcTDyMr/RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pp+GFEun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4425EC4CEED;
-	Tue,  8 Jul 2025 17:00:07 +0000 (UTC)
+	 MIME-Version; b=XIKA0YxB2L9DjK3Bv18UZSnmIgKOncMmo58UcX69i5bBz5tI/BXZ4pkeThkp9K4q8hgO/Q30/L7jFQ0BiGKoZNI5dCAKT4rnRK5osSHVXgkwbbGwY7upTUq26YS4WKCTVV4Bao/Bz1XGTtaGdUdSDiWBUfnSHzWu9BHGQKG78hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFtzM97f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6650EC4CEED;
+	Tue,  8 Jul 2025 16:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994007;
-	bh=ajK7nli8DVbI9bA4/pu+jokdoHPz/tkNH4HzLKD7oN8=;
+	s=korg; t=1751993033;
+	bh=t1edlcN3cNrhfvn8rgNBL48ov+/ChVIbUofr+vTxCxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pp+GFEunCBXIQ07N4Bb7FUUSIoSZl4ZG8EWJ3TmJPUJN9CuuqU99dIpC3IpyxuBaz
-	 L5l+ffZzwaf0lV6xKQLckB06ybqK2okDLJeVxYNpcv6IbtBvoH5fWgmTgrzMtxQPLI
-	 l6StiPXgQQOnmazHSYUXmV9PqmSGOTYl/+xGuMCU=
+	b=UFtzM97f3rlszLd430/7yJpAdZ4F6JabcjrTlD0xhad22FzkGwUq1fU7Xa/IhxWTl
+	 j/TmPSwNWEcrfqumxPoClm1k1oxQ1I0daP9UTe/9mhwN5qLDXMhaRIdy0NbkgaoKMy
+	 qZCzDn6hhl1z9A/h9bZUxpLMnyMRyICiBcl/wuLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"regressions@lists.linux.dev, stable@vger.kernel.org, willemb@google.com, Brett A C Sheffield" <bacs@librecast.net>,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: [PATCH 5.15 093/160] Revert "ipv6: save dontfrag in cork"
+	Longfang Liu <liulongfang@huawei.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 134/232] hisi_acc_vfio_pci: bugfix cache write-back issue
 Date: Tue,  8 Jul 2025 18:22:10 +0200
-Message-ID: <20250708162234.082387238@linuxfoundation.org>
+Message-ID: <20250708162244.950986133@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
+From: Longfang Liu <liulongfang@huawei.com>
 
-From: Brett A C Sheffield (Librecast) <bacs@librecast.net>
+[ Upstream commit e63c466398731bb7867f42f44b76fa984de59db2 ]
 
-This reverts commit 2b572c40981138349c04b3f69220ac878a36c561 which is
-commit a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a upstream.
+At present, cache write-back is placed in the device data
+copy stage after stopping the device operation.
+Writing back to the cache at this stage will cause the data
+obtained by the cache to be written back to be empty.
 
-A regression was introduced when backporting this to the stable kernels
-without applying previous commits in this series.
+In order to ensure that the cache data is written back
+successfully, the data needs to be written back into the
+stop device stage.
 
-When sending IPv6 UDP packets larger than MTU, EMSGSIZE was returned
-instead of fragmenting the packets as expected.
-
-As there is no compelling reason for this commit to be present in the
-stable kernels it should be reverted.
-
-Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
+Signed-off-by: Longfang Liu <liulongfang@huawei.com>
+Reviewed-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Link: https://lore.kernel.org/r/20250510081155.55840-4-liulongfang@huawei.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ipv6.h  |    1 -
- net/ipv6/ip6_output.c |    9 ++++-----
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/include/linux/ipv6.h
-+++ b/include/linux/ipv6.h
-@@ -195,7 +195,6 @@ struct inet6_cork {
- 	struct ipv6_txoptions *opt;
- 	u8 hop_limit;
- 	u8 tclass;
--	u8 dontfrag:1;
- };
+diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+index 68300fcd3c41b..e37699fc03707 100644
+--- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
++++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+@@ -554,12 +554,6 @@ static int vf_qm_state_save(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+ 	vf_data->vf_qm_state = QM_READY;
+ 	hisi_acc_vdev->vf_qm_state = vf_data->vf_qm_state;
  
- /**
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1428,7 +1428,6 @@ static int ip6_setup_cork(struct sock *s
- 	cork->fl.u.ip6 = *fl6;
- 	v6_cork->hop_limit = ipc6->hlimit;
- 	v6_cork->tclass = ipc6->tclass;
--	v6_cork->dontfrag = ipc6->dontfrag;
- 	if (rt->dst.flags & DST_XFRM_TUNNEL)
- 		mtu = np->pmtudisc >= IPV6_PMTUDISC_PROBE ?
- 		      READ_ONCE(rt->dst.dev->mtu) : dst_mtu(&rt->dst);
-@@ -1463,7 +1462,7 @@ static int __ip6_append_data(struct sock
- 			     int getfrag(void *from, char *to, int offset,
- 					 int len, int odd, struct sk_buff *skb),
- 			     void *from, size_t length, int transhdrlen,
--			     unsigned int flags)
-+			     unsigned int flags, struct ipcm6_cookie *ipc6)
- {
- 	struct sk_buff *skb, *skb_prev = NULL;
- 	unsigned int maxfraglen, fragheaderlen, mtu, orig_mtu, pmtu;
-@@ -1520,7 +1519,7 @@ static int __ip6_append_data(struct sock
- 	if (headersize + transhdrlen > mtu)
- 		goto emsgsize;
- 
--	if (cork->length + length > mtu - headersize && v6_cork->dontfrag &&
-+	if (cork->length + length > mtu - headersize && ipc6->dontfrag &&
- 	    (sk->sk_protocol == IPPROTO_UDP ||
- 	     sk->sk_protocol == IPPROTO_RAW)) {
- 		ipv6_local_rxpmtu(sk, fl6, mtu - headersize +
-@@ -1837,7 +1836,7 @@ int ip6_append_data(struct sock *sk,
- 
- 	return __ip6_append_data(sk, fl6, &sk->sk_write_queue, &inet->cork.base,
- 				 &np->cork, sk_page_frag(sk), getfrag,
--				 from, length, transhdrlen, flags);
-+				 from, length, transhdrlen, flags, ipc6);
+-	ret = vf_qm_cache_wb(vf_qm);
+-	if (ret) {
+-		dev_err(dev, "failed to writeback QM Cache!\n");
+-		return ret;
+-	}
+-
+ 	ret = qm_get_regs(vf_qm, vf_data);
+ 	if (ret)
+ 		return -EINVAL;
+@@ -985,6 +979,13 @@ static int hisi_acc_vf_stop_device(struct hisi_acc_vf_core_device *hisi_acc_vdev
+ 		dev_err(dev, "failed to check QM INT state!\n");
+ 		return ret;
+ 	}
++
++	ret = vf_qm_cache_wb(vf_qm);
++	if (ret) {
++		dev_err(dev, "failed to writeback QM cache!\n");
++		return ret;
++	}
++
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(ip6_append_data);
  
-@@ -2032,7 +2031,7 @@ struct sk_buff *ip6_make_skb(struct sock
- 	err = __ip6_append_data(sk, fl6, &queue, &cork->base, &v6_cork,
- 				&current->task_frag, getfrag, from,
- 				length + exthdrlen, transhdrlen + exthdrlen,
--				flags);
-+				flags, ipc6);
- 	if (err) {
- 		__ip6_flush_pending_frames(sk, &queue, cork, &v6_cork);
- 		return ERR_PTR(err);
+-- 
+2.39.5
+
 
 
 
