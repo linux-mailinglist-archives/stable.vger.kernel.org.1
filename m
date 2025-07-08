@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5236CAFD2B6
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88950AFD176
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:36:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B769586D5C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:46:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1680170F95
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6B92E54B2;
-	Tue,  8 Jul 2025 16:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C52742E3AE8;
+	Tue,  8 Jul 2025 16:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+KzoLgw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwLwLmEr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D5F2045B5;
-	Tue,  8 Jul 2025 16:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8329E14A60D;
+	Tue,  8 Jul 2025 16:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993167; cv=none; b=LAePnmeqdedpaotQbVKuSQYoMeSofdV/KxBlmUJlD7ymsj0ZxMz9SirH44mO10itMLu+DB174riJZgIeC6XcIO4zRW5UBUL4MF7jtUPoTzDfbXltTUzrTkHHeoDvkOKo99xpWUzc1zqc3Bdtrq1/lAkzZFZK54nv1WMRRWjRjuE=
+	t=1751992454; cv=none; b=kLvJqegE/iuyDhJna0RiZVFOqRUkQPkx4c1nTV5ODEdxWK9+VmZdKc44YSmoSpWaKzlq7TtIl0WavGWTHo1l35P0Jphu9b/6Vj+wQvL8+RzgZEeU4sJYdi/bMhs8b9pbYaumrKkcxTlSyjm4bcdq67tP9IWUH0KLE5Znq9mEnNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993167; c=relaxed/simple;
-	bh=h19ytu2aCJHZPHqjWvnaXrpn4zXLLm1GccvkP9j+mkw=;
+	s=arc-20240116; t=1751992454; c=relaxed/simple;
+	bh=rlNQDgofp/mrdbe6ojFd/SP1k+jhINGh1AGFcjbVrIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TlmcagtH745QDWr52VXAjtskfisuxZkEFSxvu4Azybdpc6CRbL9XuOn3/+Tpwi+9S/ygod1r5bPFfl6ca7tobVhTbClNfImf5tNdY2S3n/w367KS/gnTeBfEwKLu/lKkEmkxBMaUUNsRzv3OW6I/vtl4wOzXdzXCDdfTB9PblHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+KzoLgw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C384C4CEED;
-	Tue,  8 Jul 2025 16:46:06 +0000 (UTC)
+	 MIME-Version; b=kvkVte7Mv5p/9AMhk0MJjeGq5JsOhhg+9YLY0mYOFF0wniX2oref+ZIi8pBPy9wkXNhDQCmoY6uuem8Yq5hyaXnowz/K45UOXIuabYHO03g66M7ooThHlCqReLI++mVBQkB3qYGCEQh1vyNDXctKykltG+/uaxD4xpXcqJ2J8Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwLwLmEr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30E1C4CEF5;
+	Tue,  8 Jul 2025 16:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993166;
-	bh=h19ytu2aCJHZPHqjWvnaXrpn4zXLLm1GccvkP9j+mkw=;
+	s=korg; t=1751992454;
+	bh=rlNQDgofp/mrdbe6ojFd/SP1k+jhINGh1AGFcjbVrIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+KzoLgwgMOZjP6qzssK5dsWfN9l6yfDUOYpnw8v69x6OKcrXdOgxs667E7O1gehM
-	 dbr9I3mWwq7fmJVHBZWNHYjGoiJxH1HW4sxtoQq29t0kzHNFC4aM1230Mj2FQZzRTo
-	 KERDSf7XG8NTdw515rp/VBzI3cPQO20o+WgzzymU=
+	b=dwLwLmEr5B0LvYUOAvlzJb188nLoKw+R+W9c7q2QPJfD3enUKvAbXbB3GpmIuD9kp
+	 s/tks52q5Xy78Prp0jROGvbNEF1Y37v4Ml3Unjn9DAt1DXd30wvc2K8yJoAi9NMhon
+	 u94QkIzp+2cCHgIIJXODNm/xgjvg6Cs+mlJaL3sU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.12 211/232] usb: acpi: fix device link removal
+	syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 096/132] wifi: ath6kl: remove WARN on bad firmware input
 Date: Tue,  8 Jul 2025 18:23:27 +0200
-Message-ID: <20250708162246.962402747@linuxfoundation.org>
+Message-ID: <20250708162233.421001022@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 3b18405763c1ebb1efc15feef5563c9cdb2cc3a7 upstream.
+[ Upstream commit e7417421d89358da071fd2930f91e67c7128fbff ]
 
-The device link to the USB4 host interface has to be removed
-manually since it's no longer auto removed.
+If the firmware gives bad input, that's nothing to do with
+the driver's stack at this point etc., so the WARN_ON()
+doesn't add any value. Additionally, this is one of the
+top syzbot reports now. Just print a message, and as an
+added bonus, print the sizes too.
 
-Fixes: 623dae3e7084 ("usb: acpi: fix boot hang due to early incorrect 'tunneled' USB3 device links")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://lore.kernel.org/r/20250611111415.2707865-1-heikki.krogerus@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
+Tested-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
+Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250617114529.031a677a348e.I58bf1eb4ac16a82c546725ff010f3f0d2b0cca49@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c      |    3 +++
- drivers/usb/core/usb-acpi.c |    4 +++-
- include/linux/usb.h         |    2 ++
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath6kl/bmi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2336,6 +2336,9 @@ void usb_disconnect(struct usb_device **
- 	usb_remove_ep_devs(&udev->ep0);
- 	usb_unlock_device(udev);
+diff --git a/drivers/net/wireless/ath/ath6kl/bmi.c b/drivers/net/wireless/ath/ath6kl/bmi.c
+index af98e871199d3..5a9e93fd1ef42 100644
+--- a/drivers/net/wireless/ath/ath6kl/bmi.c
++++ b/drivers/net/wireless/ath/ath6kl/bmi.c
+@@ -87,7 +87,9 @@ int ath6kl_bmi_get_target_info(struct ath6kl *ar,
+ 		 * We need to do some backwards compatibility to make this work.
+ 		 */
+ 		if (le32_to_cpu(targ_info->byte_count) != sizeof(*targ_info)) {
+-			WARN_ON(1);
++			ath6kl_err("mismatched byte count %d vs. expected %zd\n",
++				   le32_to_cpu(targ_info->byte_count),
++				   sizeof(*targ_info));
+ 			return -EINVAL;
+ 		}
  
-+	if (udev->usb4_link)
-+		device_link_del(udev->usb4_link);
-+
- 	/* Unregister the device.  The device driver is responsible
- 	 * for de-configuring the device and invoking the remove-device
- 	 * notifier chain (used by usbfs and possibly others).
---- a/drivers/usb/core/usb-acpi.c
-+++ b/drivers/usb/core/usb-acpi.c
-@@ -157,7 +157,7 @@ EXPORT_SYMBOL_GPL(usb_acpi_set_power_sta
-  */
- static int usb_acpi_add_usb4_devlink(struct usb_device *udev)
- {
--	const struct device_link *link;
-+	struct device_link *link;
- 	struct usb_port *port_dev;
- 	struct usb_hub *hub;
- 
-@@ -188,6 +188,8 @@ static int usb_acpi_add_usb4_devlink(str
- 	dev_dbg(&port_dev->dev, "Created device link from %s to %s\n",
- 		dev_name(&port_dev->child->dev), dev_name(nhi_fwnode->dev));
- 
-+	udev->usb4_link = link;
-+
- 	return 0;
- }
- 
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -612,6 +612,7 @@ struct usb3_lpm_parameters {
-  *	FIXME -- complete doc
-  * @authenticated: Crypto authentication passed
-  * @tunnel_mode: Connection native or tunneled over USB4
-+ * @usb4_link: device link to the USB4 host interface
-  * @lpm_capable: device supports LPM
-  * @lpm_devinit_allow: Allow USB3 device initiated LPM, exit latency is in range
-  * @usb2_hw_lpm_capable: device can perform USB2 hardware LPM
-@@ -722,6 +723,7 @@ struct usb_device {
- 	unsigned reset_resume:1;
- 	unsigned port_is_suspended:1;
- 	enum usb_link_tunnel_mode tunnel_mode;
-+	struct device_link *usb4_link;
- 
- 	int slot_id;
- 	struct usb2_lpm_parameters l1_params;
+-- 
+2.39.5
+
 
 
 
