@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-161151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEFCEAFD391
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0ECAFD2B7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D3763AA525
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7273C3B9986
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1073E2E0B4B;
-	Tue,  8 Jul 2025 16:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0B02E5B0E;
+	Tue,  8 Jul 2025 16:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3mm5Oru"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10Uj2QS2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21F52DAFAE;
-	Tue,  8 Jul 2025 16:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2402E5411;
+	Tue,  8 Jul 2025 16:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993741; cv=none; b=VCZcwiibhf6/enudKEK0xO8G8asVM/aPonutyTLtiwVxmM4AmEycQrh6XCGuYWEeXOEtiKhE61zQxLABK6Rksm3qEIiVSOyuo67iYOiHgswQ/b/QcLFbSflXdM4EH/bwXsWA7gNohsSyNZGdMElZvVvphDzwrwfNKr8gRdxN2aU=
+	t=1751993172; cv=none; b=p2VW4uyeWbT4h+PbKDld25u3RVmsoDdHDyeCBlsF1rkTMIfJlqverjbcIiqGjLsaPhGUKoW8eFy1Wv9InHMZrt1yrFiCiSeGNain5oeFBuKtZ5SkjW8yCr+5N7kiVngfXHsLKjG0dpPvxZc4bRXYVcMTqPkwoVz3FQ3Hk4yuL6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993741; c=relaxed/simple;
-	bh=2dQ3qGTMFcpAmQNcgpaPH5lHt1Nm0Ni1HeXXUryjnW4=;
+	s=arc-20240116; t=1751993172; c=relaxed/simple;
+	bh=M5i6ftJqg1+Eb3PfOk59uG4ACFFqjb2EbMijWZb4duU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XTF9MT0OT2TwgDrE2qovpmX6RKoLFlmZNLveeAFXNbAZpULAF/986gW25NKsBD5VwhYTmXujgRtHWV73IGa7M7Tfh7IT8q+/iJ8LUlMNXHWzFYmwVdevFw7nIqwPEQLeeCt8lHygP1/iMEZuHbTcHrfVX6OMdk+YnOYCSm+y9Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3mm5Oru; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A02C4CEED;
-	Tue,  8 Jul 2025 16:55:41 +0000 (UTC)
+	 MIME-Version; b=VCWqQNDCUrQ0h+SwZlkuYKOg1/DzuSNia/BVeR8hqhCTNhtbL+8H2zgEevMloqt4KUD1Tt8aeFUvu5jvG3EvQzisOFPgl361MYfvld4DkSs4I3MFl8/rmsOkos08ayOQ51uoul/V1ZB0Hc940zJHN0lOpMyooCRR/nw6kVdY2OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10Uj2QS2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3502C4CEF0;
+	Tue,  8 Jul 2025 16:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993741;
-	bh=2dQ3qGTMFcpAmQNcgpaPH5lHt1Nm0Ni1HeXXUryjnW4=;
+	s=korg; t=1751993172;
+	bh=M5i6ftJqg1+Eb3PfOk59uG4ACFFqjb2EbMijWZb4duU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h3mm5OruAwqwb6rc4UtRQg9F3DnEgAu7fW6SPcjrq/hq646yzUYv7NtiRD7JBH7Ko
-	 quJpkoVXyi2wbOYvhzJiv8SCR9E495l632ftYZz1ielp63yt4ynB71o5hztZcYptMa
-	 MTzNsNN1jf5vRT+AM+ap+s9TvMJMyfEoxNrBW7Ks=
+	b=10Uj2QS21w1mtJ/eJ/NXPebmIsiXkB81820Mv2yl1v2ktexKuKbYSTMDCubPHD3Mq
+	 uIfa8diRnNAEjskMRMFyxtKa5PWAJsckV5HuM1QoEeRVAduMWylC340R7u/WR3+/IH
+	 WlEqW67/0j4s8r7N/m506zY3iXeoSPTynXdg5PW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andrei Kuchynski <akuchynski@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.15 171/178] usb: typec: displayport: Fix potential deadlock
-Date: Tue,  8 Jul 2025 18:23:28 +0200
-Message-ID: <20250708162240.923808607@linuxfoundation.org>
+	Shyam Prasad N <sprasad@microsoft.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 213/232] cifs: all initializations for tcon should happen in tcon_info_alloc
+Date: Tue,  8 Jul 2025 18:23:29 +0200
+Message-ID: <20250708162247.013046646@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Kuchynski <akuchynski@chromium.org>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 099cf1fbb8afc3771f408109f62bdec66f85160e upstream.
+commit 74ebd02163fde05baa23129e06dde4b8f0f2377a upstream.
 
-The deadlock can occur due to a recursive lock acquisition of
-`cros_typec_altmode_data::mutex`.
-The call chain is as follows:
-1. cros_typec_altmode_work() acquires the mutex
-2. typec_altmode_vdm() -> dp_altmode_vdm() ->
-3. typec_altmode_exit() -> cros_typec_altmode_exit()
-4. cros_typec_altmode_exit() attempts to acquire the mutex again
+Today, a few work structs inside tcon are initialized inside
+cifs_get_tcon and not in tcon_info_alloc. As a result, if a tcon
+is obtained from tcon_info_alloc, but not called as a part of
+cifs_get_tcon, we may trip over.
 
-To prevent this, defer the `typec_altmode_exit()` call by scheduling
-it rather than calling it directly from within the mutex-protected
-context.
-
-Cc: stable <stable@kernel.org>
-Fixes: b4b38ffb38c9 ("usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode")
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250624133246.3936737-1-akuchynski@chromium.org
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/smb/client/cifsproto.h |    1 +
+ fs/smb/client/connect.c   |    8 +-------
+ fs/smb/client/misc.c      |    6 ++++++
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -394,8 +394,7 @@ static int dp_altmode_vdm(struct typec_a
- 	case CMDT_RSP_NAK:
- 		switch (cmd) {
- 		case DP_CMD_STATUS_UPDATE:
--			if (typec_altmode_exit(alt))
--				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
-+			dp->state = DP_STATE_EXIT;
- 			break;
- 		case DP_CMD_CONFIGURE:
- 			dp->data.conf = 0;
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -136,6 +136,7 @@ extern int SendReceiveBlockingLock(const
+ 			struct smb_hdr *out_buf,
+ 			int *bytes_returned);
+ 
++void smb2_query_server_interfaces(struct work_struct *work);
+ void
+ cifs_signal_cifsd_for_reconnect(struct TCP_Server_Info *server,
+ 				      bool all_channels);
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -113,7 +113,7 @@ static int reconn_set_ipaddr_from_hostna
+ 	return rc;
+ }
+ 
+-static void smb2_query_server_interfaces(struct work_struct *work)
++void smb2_query_server_interfaces(struct work_struct *work)
+ {
+ 	int rc;
+ 	int xid;
+@@ -2819,20 +2819,14 @@ cifs_get_tcon(struct cifs_ses *ses, stru
+ 	tcon->max_cached_dirs = ctx->max_cached_dirs;
+ 	tcon->nodelete = ctx->nodelete;
+ 	tcon->local_lease = ctx->local_lease;
+-	INIT_LIST_HEAD(&tcon->pending_opens);
+ 	tcon->status = TID_GOOD;
+ 
+-	INIT_DELAYED_WORK(&tcon->query_interfaces,
+-			  smb2_query_server_interfaces);
+ 	if (ses->server->dialect >= SMB30_PROT_ID &&
+ 	    (ses->server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
+ 		/* schedule query interfaces poll */
+ 		queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
+ 				   (SMB_INTERFACE_POLL_INTERVAL * HZ));
+ 	}
+-#ifdef CONFIG_CIFS_DFS_UPCALL
+-	INIT_DELAYED_WORK(&tcon->dfs_cache_work, dfs_cache_refresh);
+-#endif
+ 	spin_lock(&cifs_tcp_ses_lock);
+ 	list_add(&tcon->tcon_list, &ses->tcon_list);
+ 	spin_unlock(&cifs_tcp_ses_lock);
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -148,6 +148,12 @@ tcon_info_alloc(bool dir_leases_enabled,
+ #ifdef CONFIG_CIFS_DFS_UPCALL
+ 	INIT_LIST_HEAD(&ret_buf->dfs_ses_list);
+ #endif
++	INIT_LIST_HEAD(&ret_buf->pending_opens);
++	INIT_DELAYED_WORK(&ret_buf->query_interfaces,
++			  smb2_query_server_interfaces);
++#ifdef CONFIG_CIFS_DFS_UPCALL
++	INIT_DELAYED_WORK(&ret_buf->dfs_cache_work, dfs_cache_refresh);
++#endif
+ 
+ 	return ret_buf;
+ }
 
 
 
