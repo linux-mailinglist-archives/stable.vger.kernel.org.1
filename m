@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-161121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 141A8AFD37C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF22AFD2A0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9177916A444
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C15705816E4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE88D21C190;
-	Tue,  8 Jul 2025 16:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340742E5B02;
+	Tue,  8 Jul 2025 16:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXsHxNqi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NietAweJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6202DA77B;
-	Tue,  8 Jul 2025 16:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D7F2DAFA3;
+	Tue,  8 Jul 2025 16:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993656; cv=none; b=tJ9UMpEmExLDI5H18MtZgxGJ/PfephYukAZExmwO69QYMnZkUYkB/lPX3ZJVq0RwY7z+Be+n8BPg4DvPRt62QW66RzEWbqI/zABWERi6vsHdGh9NDaT8gVapiuvg/V0lLF4DGqiMuXz1+xria6D8kyYPrlvdZ1XJHZEsiu7Gipc=
+	t=1751993109; cv=none; b=UibGb6lY0IzlyvoYiMRy3EsqAn4voEENwF2T9xVqNjx23q1tQVFYNFVs1Ag83RXylMfyIKspAGnxWp9nLcUNPrBK5i/DWtkgGg2Q4xjnOYdp5e/KIaFfXfRXotRKJ9Je+OTBZY4j7SWerbIIrq6KX8ZFRxZ/cXhbl5u3VIJGpN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993656; c=relaxed/simple;
-	bh=F9bgNYZyDgqm6e00rOKTkdbmSXVikw7D9ujuZI8+udw=;
+	s=arc-20240116; t=1751993109; c=relaxed/simple;
+	bh=geqfrem5UMC6eiID6OxathzIWsmrqkHWXMx8U4f4WVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtSvEj1yGZx7Fr3vNEIBpcoVVbUMAhaMxDTz18IQlKbqmj7pzg8aBljflRLJl8vl+X5c6XAjnMRQpc4uieC74zi4VxyNaCZpJgb3LcYJT5NuHTx6MAdTKowQbUn0PGlFu5gU6f8uhoqmoR8wtJZMCf+/79qsADVly4VS7pieJRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXsHxNqi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C5BC4CEED;
-	Tue,  8 Jul 2025 16:54:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UWrBAFb00qLi+9l6xFkLzSZ9WXloWjlh7JIR/ohD2226ojmwszIBmXp3ofXwXh+wX0j+D7Y0NOYrjR7ZLEFKcr7drdPZ5e6FKmk6fMoPiUnLqe2J7lgPAX8N2RSDgzLZZYb6gVMdPYG/EMTNJ3i+cTbx3TPKUCgAruvJBUOztxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NietAweJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B065C4CEF7;
+	Tue,  8 Jul 2025 16:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993656;
-	bh=F9bgNYZyDgqm6e00rOKTkdbmSXVikw7D9ujuZI8+udw=;
+	s=korg; t=1751993108;
+	bh=geqfrem5UMC6eiID6OxathzIWsmrqkHWXMx8U4f4WVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXsHxNqirfxkyXakUTXaEUcSlxSWFCXcAI+g99F+wHB8m9bsU/wCgruY2ecZvdYIN
-	 PF/GK/NpzW8HMpr+9ITq4V3Y/mQUBSpYIMGeQjayNihU1UZDe1cgZ4KH0jDU80zc9V
-	 Yx3LJIO5q9SlcFhQ6qFoV8TXdeb1lyHVGIyeJueI=
+	b=NietAweJSIEHHd7GoONpsMONJlBiOeEJwQw2BRb5uvPrtBXE6zvkt44elELWR8Otg
+	 EylNoUKC4y4ouILEydmPK3eAW9yKX1xL7YTTYdRZCkcRn5QTcYI1/nN6zmAp9MZZeM
+	 mM3MLlEYr5Q2JaIpBwdX11l+TbNPoulcsESkB55w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff LaBundy <jeff@labundy.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.15 149/178] Input: iqs7222 - explicitly define number of external channels
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Forissier?= <jerome.forissier@linaro.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 190/232] firmware: arm_ffa: Replace mutex with rwlock to avoid sleep in atomic context
 Date: Tue,  8 Jul 2025 18:23:06 +0200
-Message-ID: <20250708162240.409134487@linuxfoundation.org>
+Message-ID: <20250708162246.407675887@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,78 +61,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff LaBundy <jeff@labundy.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-commit 63f4970a1219b5256e8ea952096c86dab666d312 upstream.
+[ Upstream commit 9ca7a421229bbdfbe2e1e628cff5cfa782720a10 ]
 
-The number of external channels is assumed to be a multiple of 10,
-but this is not the case for IQS7222D. As a result, some CRx pins
-are wrongly prevented from being assigned to some channels.
+The current use of a mutex to protect the notifier hashtable accesses
+can lead to issues in the atomic context. It results in the below
+kernel warnings:
 
-Address this problem by explicitly defining the number of external
-channels for cases in which the number of external channels is not
-equal to the total number of available channels.
+  |  BUG: sleeping function called from invalid context at kernel/locking/mutex.c:258
+  |  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 9, name: kworker/0:0
+  |  preempt_count: 1, expected: 0
+  |  RCU nest depth: 0, expected: 0
+  |  CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not tainted 6.14.0 #4
+  |  Workqueue: ffa_pcpu_irq_notification notif_pcpu_irq_work_fn
+  |  Call trace:
+  |   show_stack+0x18/0x24 (C)
+  |   dump_stack_lvl+0x78/0x90
+  |   dump_stack+0x18/0x24
+  |   __might_resched+0x114/0x170
+  |   __might_sleep+0x48/0x98
+  |   mutex_lock+0x24/0x80
+  |   handle_notif_callbacks+0x54/0xe0
+  |   notif_get_and_handle+0x40/0x88
+  |   generic_exec_single+0x80/0xc0
+  |   smp_call_function_single+0xfc/0x1a0
+  |   notif_pcpu_irq_work_fn+0x2c/0x38
+  |   process_one_work+0x14c/0x2b4
+  |   worker_thread+0x2e4/0x3e0
+  |   kthread+0x13c/0x210
+  |   ret_from_fork+0x10/0x20
 
-Fixes: dd24e202ac72 ("Input: iqs7222 - add support for Azoteq IQS7222D")
-Signed-off-by: Jeff LaBundy <jeff@labundy.com>
-Link: https://lore.kernel.org/r/aGHVf6HkyFZrzTPy@nixie71
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To address this, replace the mutex with an rwlock to protect the notifier
+hashtable accesses. This ensures that read-side locking does not sleep and
+multiple readers can acquire the lock concurrently, avoiding unnecessary
+contention and potential deadlocks. Writer access remains exclusive,
+preserving correctness.
+
+This change resolves warnings from lockdep about potential sleep in
+atomic context.
+
+Cc: Jens Wiklander <jens.wiklander@linaro.org>
+Reported-by: Jérôme Forissier <jerome.forissier@linaro.org>
+Closes: https://github.com/OP-TEE/optee_os/issues/7394
+Fixes: e0573444edbf ("firmware: arm_ffa: Add interfaces to request notification callbacks")
+Message-Id: <20250528-ffa_notif_fix-v1-3-5ed7bc7f8437@arm.com>
+Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
+Tested-by: Jens Wiklander <jens.wiklander@linaro.org>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/iqs7222.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/input/misc/iqs7222.c
-+++ b/drivers/input/misc/iqs7222.c
-@@ -301,6 +301,7 @@ struct iqs7222_dev_desc {
- 	int allow_offset;
- 	int event_offset;
- 	int comms_offset;
-+	int ext_chan;
- 	bool legacy_gesture;
- 	struct iqs7222_reg_grp_desc reg_grps[IQS7222_NUM_REG_GRPS];
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 33f7bdb5c86dd..134e77a646cc1 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -110,7 +110,7 @@ struct ffa_drv_info {
+ 	struct work_struct sched_recv_irq_work;
+ 	struct xarray partition_info;
+ 	DECLARE_HASHTABLE(notifier_hash, ilog2(FFA_MAX_NOTIFICATIONS));
+-	struct mutex notify_lock; /* lock to protect notifier hashtable  */
++	rwlock_t notify_lock; /* lock to protect notifier hashtable  */
  };
-@@ -315,6 +316,7 @@ static const struct iqs7222_dev_desc iqs
- 		.allow_offset = 9,
- 		.event_offset = 10,
- 		.comms_offset = 12,
-+		.ext_chan = 10,
- 		.reg_grps = {
- 			[IQS7222_REG_GRP_STAT] = {
- 				.base = IQS7222_SYS_STATUS,
-@@ -373,6 +375,7 @@ static const struct iqs7222_dev_desc iqs
- 		.allow_offset = 9,
- 		.event_offset = 10,
- 		.comms_offset = 12,
-+		.ext_chan = 10,
- 		.legacy_gesture = true,
- 		.reg_grps = {
- 			[IQS7222_REG_GRP_STAT] = {
-@@ -2244,7 +2247,7 @@ static int iqs7222_parse_chan(struct iqs
- 	const struct iqs7222_dev_desc *dev_desc = iqs7222->dev_desc;
- 	struct i2c_client *client = iqs7222->client;
- 	int num_chan = dev_desc->reg_grps[IQS7222_REG_GRP_CHAN].num_row;
--	int ext_chan = rounddown(num_chan, 10);
-+	int ext_chan = dev_desc->ext_chan ? : num_chan;
- 	int error, i;
- 	u16 *chan_setup = iqs7222->chan_setup[chan_index];
- 	u16 *sys_setup = iqs7222->sys_setup;
-@@ -2445,7 +2448,7 @@ static int iqs7222_parse_sldr(struct iqs
- 	const struct iqs7222_dev_desc *dev_desc = iqs7222->dev_desc;
- 	struct i2c_client *client = iqs7222->client;
- 	int num_chan = dev_desc->reg_grps[IQS7222_REG_GRP_CHAN].num_row;
--	int ext_chan = rounddown(num_chan, 10);
-+	int ext_chan = dev_desc->ext_chan ? : num_chan;
- 	int count, error, reg_offset, i;
- 	u16 *event_mask = &iqs7222->sys_setup[dev_desc->event_offset];
- 	u16 *sldr_setup = iqs7222->sldr_setup[sldr_index];
+ 
+ static struct ffa_drv_info *drv_info;
+@@ -1223,19 +1223,19 @@ static int __ffa_notify_relinquish(struct ffa_device *dev, int notify_id,
+ 	if (notify_id >= FFA_MAX_NOTIFICATIONS)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&drv_info->notify_lock);
++	write_lock(&drv_info->notify_lock);
+ 
+ 	rc = update_notifier_cb(dev, notify_id, NULL, is_framework);
+ 	if (rc) {
+ 		pr_err("Could not unregister notification callback\n");
+-		mutex_unlock(&drv_info->notify_lock);
++		write_unlock(&drv_info->notify_lock);
+ 		return rc;
+ 	}
+ 
+ 	if (!is_framework)
+ 		rc = ffa_notification_unbind(dev->vm_id, BIT(notify_id));
+ 
+-	mutex_unlock(&drv_info->notify_lock);
++	write_unlock(&drv_info->notify_lock);
+ 
+ 	return rc;
+ }
+@@ -1275,7 +1275,7 @@ static int __ffa_notify_request(struct ffa_device *dev, bool is_per_vcpu,
+ 	else
+ 		cb_info->cb = cb;
+ 
+-	mutex_lock(&drv_info->notify_lock);
++	write_lock(&drv_info->notify_lock);
+ 
+ 	if (!is_framework) {
+ 		if (is_per_vcpu)
+@@ -1295,7 +1295,7 @@ static int __ffa_notify_request(struct ffa_device *dev, bool is_per_vcpu,
+ 	}
+ 
+ out_unlock_free:
+-	mutex_unlock(&drv_info->notify_lock);
++	write_unlock(&drv_info->notify_lock);
+ 	if (rc)
+ 		kfree(cb_info);
+ 
+@@ -1344,16 +1344,16 @@ static void handle_notif_callbacks(u64 bitmap, enum notify_type type)
+ 		if (!(bitmap & 1))
+ 			continue;
+ 
+-		mutex_lock(&drv_info->notify_lock);
++		read_lock(&drv_info->notify_lock);
+ 		cb_info = notifier_hnode_get_by_type(notify_id, type);
+-		mutex_unlock(&drv_info->notify_lock);
++		read_unlock(&drv_info->notify_lock);
+ 
+ 		if (cb_info && cb_info->cb)
+ 			cb_info->cb(notify_id, cb_info->cb_data);
+ 	}
+ }
+ 
+-static void notif_get_and_handle(void *unused)
++static void notif_get_and_handle(void *cb_data)
+ {
+ 	int rc;
+ 	struct ffa_notify_bitmaps bitmaps;
+@@ -1800,7 +1800,7 @@ static void ffa_notifications_setup(void)
+ 		goto cleanup;
+ 
+ 	hash_init(drv_info->notifier_hash);
+-	mutex_init(&drv_info->notify_lock);
++	rwlock_init(&drv_info->notify_lock);
+ 
+ 	drv_info->notif_enabled = true;
+ 	return;
+-- 
+2.39.5
+
 
 
 
