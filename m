@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-160570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017BAAFD0D5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A575AFD39E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA6D01673E5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E26A9545774
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380582DAFC1;
-	Tue,  8 Jul 2025 16:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7122E5B04;
+	Tue,  8 Jul 2025 16:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVL1G80r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H413k3Cv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD142E659;
-	Tue,  8 Jul 2025 16:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB972E2F0D;
+	Tue,  8 Jul 2025 16:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992033; cv=none; b=P6F3AWc/n6gsyzDbzh/W0QZs42dXOEO0Pt33j3EpR8GNULZxwcMN3ltbtIIT7+IL7iNUvfFQZJ7I97+HzgqOm9ZU7e/nJCZQoRtTTMX9Xg8ofWGdvpHPU7zGlcL7/B7ntQo2yV5H8ui5dFReZ0bj03+ryo1lhAzxC2MvgcTRF/I=
+	t=1751993746; cv=none; b=WQJ7rFYrjr43bmmP5LON6l8EO+BSqCnvBDiZiA1Ethx9IsSvSpCUuFPkvd+q90vEhm7uy+Q/edZQAVrIH0pzUd252MBttwZxQJD4CM7q69M6dVgkGW2cfFUNO3GhkieZuAxaLH/c/moY/5nnmrCDqBVsPBPA14Gz26SdrUAf/KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992033; c=relaxed/simple;
-	bh=LF0Awvfm+GPsf6flEAS8VGPcLOAhMLhisu5iOCd6itw=;
+	s=arc-20240116; t=1751993746; c=relaxed/simple;
+	bh=IlIohNjIY9eD8ep4Zh4wME0mh6oKJ24XSgC3N+uoTGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sop/bOkmBsUxdhWfLx4Ya3zRvszbbgH42+yZyGIT2mmGYBUSFp8dlbsYP3lotSclcT8MxPIJUWvoz8rhrz7mLgBX3K3sfWlLJC2I6CKMOnrrgGgbeJqQyouJmVcm+ybB8uGU1ixSPA6hV410eqSNZFwROEGgQakZyfvajvbNpWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVL1G80r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FEEC4CEED;
-	Tue,  8 Jul 2025 16:27:12 +0000 (UTC)
+	 MIME-Version; b=fV9KgdjLaeXESBHTCTbZX7SAz9jVn97/xYAxoAnrFvV0slTkPkXvE4L6UgRRTbxZDxqeXRjxZULuO7j9mhI/5Yuj9caO81W1F3pMiL50T3hgdS6JkMpo2HhcUgGcrJYthH32H1FFE52gu4DGW8kdPaUhoYPzqhlUYT7zNapGzxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H413k3Cv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C0AC4CEED;
+	Tue,  8 Jul 2025 16:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992032;
-	bh=LF0Awvfm+GPsf6flEAS8VGPcLOAhMLhisu5iOCd6itw=;
+	s=korg; t=1751993745;
+	bh=IlIohNjIY9eD8ep4Zh4wME0mh6oKJ24XSgC3N+uoTGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kVL1G80rWpkXiVpTKn5ZozW+5iLl0l9xMpvENYwCzWEtipZykybmh2IN6X514tXRF
-	 Ck0eVntN54wvroCVZ8FZQ8TXAiXpzk3fJDruHBlTp+stG4xNHOl8JPkWPpSsfsrEXM
-	 J6C/FqZHUyOwJsL45tQicwx2G6d8lDGxyAMI5Oeo=
+	b=H413k3Cvl7eUPOgMmVYCJAl8OiEaaZiT6/a1whjXQ6u5Bw+KQHh76XcwbI3/MifaP
+	 97Jlg5ZgGSUf9mnGVGDlx72VL3zHCjtDGY/y+lUtM5VFQBZrUg5I8uRQhLLSGppiZz
+	 yXMT7UqnnvHD3sEIRUXnRVeJy10Ue8YAWcWNLhvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 37/81] lib: test_objagg: Set error message in check_expect_hints_stats()
+	Jeongjun Park <aha310510@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Subject: [PATCH 6.15 172/178] mm/vmalloc: fix data race in show_numa_info()
 Date: Tue,  8 Jul 2025 18:23:29 +0200
-Message-ID: <20250708162226.154288237@linuxfoundation.org>
+Message-ID: <20250708162240.946538446@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +63,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit e6ed134a4ef592fe1fd0cafac9683813b3c8f3e8 ]
+commit 5c5f0468d172ddec2e333d738d2a1f85402cf0bc upstream.
 
-Smatch complains that the error message isn't set in the caller:
+The following data-race was found in show_numa_info():
 
-    lib/test_objagg.c:923 test_hints_case2()
-    error: uninitialized symbol 'errmsg'.
+==================================================================
+BUG: KCSAN: data-race in vmalloc_info_show / vmalloc_info_show
 
-This static checker warning only showed up after a recent refactoring
-but the bug dates back to when the code was originally added.  This
-likely doesn't affect anything in real life.
+read to 0xffff88800971fe30 of 4 bytes by task 8289 on cpu 0:
+ show_numa_info mm/vmalloc.c:4936 [inline]
+ vmalloc_info_show+0x5a8/0x7e0 mm/vmalloc.c:5016
+ seq_read_iter+0x373/0xb40 fs/seq_file.c:230
+ proc_reg_read_iter+0x11e/0x170 fs/proc/inode.c:299
+....
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202506281403.DsuyHFTZ-lkp@intel.com/
-Fixes: 0a020d416d0a ("lib: introduce initial implementation of object aggregation manager")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/8548f423-2e3b-4bb7-b816-5041de2762aa@sabinyo.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+write to 0xffff88800971fe30 of 4 bytes by task 8287 on cpu 1:
+ show_numa_info mm/vmalloc.c:4934 [inline]
+ vmalloc_info_show+0x38f/0x7e0 mm/vmalloc.c:5016
+ seq_read_iter+0x373/0xb40 fs/seq_file.c:230
+ proc_reg_read_iter+0x11e/0x170 fs/proc/inode.c:299
+....
+
+value changed: 0x0000008f -> 0x00000000
+==================================================================
+
+According to this report,there is a read/write data-race because
+m->private is accessible to multiple CPUs.  To fix this, instead of
+allocating the heap in proc_vmalloc_init() and passing the heap address to
+m->private, vmalloc_info_show() should allocate the heap.
+
+Link: https://lkml.kernel.org/r/20250508165620.15321-1-aha310510@gmail.com
+Fixes: 8e1d743f2c26 ("mm: vmalloc: support multiple nodes in vmallocinfo")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/test_objagg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/vmalloc.c |   63 ++++++++++++++++++++++++++++++++---------------------------
+ 1 file changed, 35 insertions(+), 28 deletions(-)
 
-diff --git a/lib/test_objagg.c b/lib/test_objagg.c
-index c0c957c506354..c0f7bb53db8d5 100644
---- a/lib/test_objagg.c
-+++ b/lib/test_objagg.c
-@@ -899,8 +899,10 @@ static int check_expect_hints_stats(struct objagg_hints *objagg_hints,
- 	int err;
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3100,7 +3100,7 @@ static void clear_vm_uninitialized_flag(
+ 	/*
+ 	 * Before removing VM_UNINITIALIZED,
+ 	 * we should make sure that vm has proper values.
+-	 * Pair with smp_rmb() in show_numa_info().
++	 * Pair with smp_rmb() in vread_iter() and vmalloc_info_show().
+ 	 */
+ 	smp_wmb();
+ 	vm->flags &= ~VM_UNINITIALIZED;
+@@ -4934,28 +4934,29 @@ bool vmalloc_dump_obj(void *object)
+ #endif
  
- 	stats = objagg_hints_stats_get(objagg_hints);
--	if (IS_ERR(stats))
-+	if (IS_ERR(stats)) {
-+		*errmsg = "objagg_hints_stats_get() failed.";
- 		return PTR_ERR(stats);
-+	}
- 	err = __check_expect_stats(stats, expect_stats, errmsg);
- 	objagg_stats_put(stats);
- 	return err;
--- 
-2.39.5
-
+ #ifdef CONFIG_PROC_FS
+-static void show_numa_info(struct seq_file *m, struct vm_struct *v)
+-{
+-	if (IS_ENABLED(CONFIG_NUMA)) {
+-		unsigned int nr, *counters = m->private;
+-		unsigned int step = 1U << vm_area_page_order(v);
+ 
+-		if (!counters)
+-			return;
++/*
++ * Print number of pages allocated on each memory node.
++ *
++ * This function can only be called if CONFIG_NUMA is enabled
++ * and VM_UNINITIALIZED bit in v->flags is disabled.
++ */
++static void show_numa_info(struct seq_file *m, struct vm_struct *v,
++				 unsigned int *counters)
++{
++	unsigned int nr;
++	unsigned int step = 1U << vm_area_page_order(v);
+ 
+-		if (v->flags & VM_UNINITIALIZED)
+-			return;
+-		/* Pair with smp_wmb() in clear_vm_uninitialized_flag() */
+-		smp_rmb();
++	if (!counters)
++		return;
+ 
+-		memset(counters, 0, nr_node_ids * sizeof(unsigned int));
++	memset(counters, 0, nr_node_ids * sizeof(unsigned int));
+ 
+-		for (nr = 0; nr < v->nr_pages; nr += step)
+-			counters[page_to_nid(v->pages[nr])] += step;
+-		for_each_node_state(nr, N_HIGH_MEMORY)
+-			if (counters[nr])
+-				seq_printf(m, " N%u=%u", nr, counters[nr]);
+-	}
++	for (nr = 0; nr < v->nr_pages; nr += step)
++		counters[page_to_nid(v->pages[nr])] += step;
++	for_each_node_state(nr, N_HIGH_MEMORY)
++		if (counters[nr])
++			seq_printf(m, " N%u=%u", nr, counters[nr]);
+ }
+ 
+ static void show_purge_info(struct seq_file *m)
+@@ -4983,6 +4984,10 @@ static int vmalloc_info_show(struct seq_
+ 	struct vmap_area *va;
+ 	struct vm_struct *v;
+ 	int i;
++	unsigned int *counters;
++
++	if (IS_ENABLED(CONFIG_NUMA))
++		counters = kmalloc(nr_node_ids * sizeof(unsigned int), GFP_KERNEL);
+ 
+ 	for (i = 0; i < nr_vmap_nodes; i++) {
+ 		vn = &vmap_nodes[i];
+@@ -4999,6 +5004,11 @@ static int vmalloc_info_show(struct seq_
+ 			}
+ 
+ 			v = va->vm;
++			if (v->flags & VM_UNINITIALIZED)
++				continue;
++
++			/* Pair with smp_wmb() in clear_vm_uninitialized_flag() */
++			smp_rmb();
+ 
+ 			seq_printf(m, "0x%pK-0x%pK %7ld",
+ 				v->addr, v->addr + v->size, v->size);
+@@ -5033,7 +5043,9 @@ static int vmalloc_info_show(struct seq_
+ 			if (is_vmalloc_addr(v->pages))
+ 				seq_puts(m, " vpages");
+ 
+-			show_numa_info(m, v);
++			if (IS_ENABLED(CONFIG_NUMA))
++				show_numa_info(m, v, counters);
++
+ 			seq_putc(m, '\n');
+ 		}
+ 		spin_unlock(&vn->busy.lock);
+@@ -5043,19 +5055,14 @@ static int vmalloc_info_show(struct seq_
+ 	 * As a final step, dump "unpurged" areas.
+ 	 */
+ 	show_purge_info(m);
++	if (IS_ENABLED(CONFIG_NUMA))
++		kfree(counters);
+ 	return 0;
+ }
+ 
+ static int __init proc_vmalloc_init(void)
+ {
+-	void *priv_data = NULL;
+-
+-	if (IS_ENABLED(CONFIG_NUMA))
+-		priv_data = kmalloc(nr_node_ids * sizeof(unsigned int), GFP_KERNEL);
+-
+-	proc_create_single_data("vmallocinfo",
+-		0400, NULL, vmalloc_info_show, priv_data);
+-
++	proc_create_single("vmallocinfo", 0400, NULL, vmalloc_info_show);
+ 	return 0;
+ }
+ module_init(proc_vmalloc_init);
 
 
 
