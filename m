@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-160548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C113AFD0AC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62151AFD297
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:48:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 320CE483210
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:25:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83F971AA0674
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D682E5402;
-	Tue,  8 Jul 2025 16:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2C72E54AF;
+	Tue,  8 Jul 2025 16:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d78bcCf2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pbj5Ktlv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161AF2D9790;
-	Tue,  8 Jul 2025 16:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7D52E540B;
+	Tue,  8 Jul 2025 16:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991963; cv=none; b=gCxLbMcRiC23hAzx21oYyR5K37T2wJzv94jMFiVjLBYILJZlfxzyr89OxrpXxeUsAz+aEtJGz3AzF0oufpRnsW4YwHyrcyDd+rNVH7hnDXlqh4BrlD+ToPfynLuiltSiVzv+BrJU1DWLm95xR9rToDLSNqX3KuRinGggiKpqlQ0=
+	t=1751993088; cv=none; b=Oi4cNmZ7MWhcUCHjp//dxbd4yYiB1R21SbOFA1BOeFx9OUCiEzGTMCXadeBrvcFwYQ5RWw1s+MlTz0SKUal12ASKLSmXNpVPkYLxjpgag2bgGipY2K17gB8RaEglU5s6+CImmCxYhtFuTIn95Iae7xWeUjHb+LZBmT4R+eEZik8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991963; c=relaxed/simple;
-	bh=j9Cxl2Z1TX+3G6WT1xMDEpSqmz/ByIpf37dKDUcThNg=;
+	s=arc-20240116; t=1751993088; c=relaxed/simple;
+	bh=c+5M6J3dYrPJBMwulX0EfU2IueSqtCVxA8lfgziWJWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jijp37+R+ld6ArsrtgtiEKPTsu2yXfCM6HB635cg592z1Yt/vZeZl9Q5fQitSPjv8Ya3drmKPx1gaHdrlhvx0CCy6nbEUXbKCGGT8YtwUjZ2BnCcn7inHoKbxWpRwdajYGXzw9hj+5xEd75WdkhsccmnCETNWQP8k44asHD+1T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d78bcCf2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46109C4CEED;
-	Tue,  8 Jul 2025 16:26:02 +0000 (UTC)
+	 MIME-Version; b=frdqoIM3LtoENMjCECna4OL55OjC064uER7NoU2/pD2Aa9+s9sLEbdRJRB+7sioecuMlb8YGuSBs1ATrg7f42Q0J/faDWxGi7QIRr/sRknihic5jwtLhItb4wdXOI6/4ankh/ZnsvY8TNhs1yjsNKYYckGdxH57RSNedBt13VqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pbj5Ktlv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98F5C4CEED;
+	Tue,  8 Jul 2025 16:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751991962;
-	bh=j9Cxl2Z1TX+3G6WT1xMDEpSqmz/ByIpf37dKDUcThNg=;
+	s=korg; t=1751993088;
+	bh=c+5M6J3dYrPJBMwulX0EfU2IueSqtCVxA8lfgziWJWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d78bcCf2oxvWlAwLxFtQ/tVlHwIqgl8Yi4AVIYR5YB2b4c6j/lqyQvaMp/ckdABw3
-	 zWpRl8yqVD9uQefoX5YAE7g0zuAMHgCI86PmwRXYgRK+9tbpDyUbBt0jh+n0PtWi18
-	 UW4QPl/Uyii5NVH/EYRPoBU3R4Hk9HduDMXUb7R0=
+	b=Pbj5KtlvL5KoDpaagPvOFSU/uXwetPn4ruM6uJ+w7+xilO5RaAzMpB+nHFgyVYyop
+	 XHsa9ztob6KUU11KwJsNNaT2C8kebcGNzEd0n5nevJEiSxqakzXqjOjAZsQSPm6DkU
+	 nyVu10MRkUuQcI7LQGkL9NgF6W0ojIq0wPWejXeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 07/81] Bluetooth: hci_sync: revert some mesh modifications
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 183/232] scsi: target: Fix NULL pointer dereference in core_scsi3_decode_spec_i_port()
 Date: Tue,  8 Jul 2025 18:22:59 +0200
-Message-ID: <20250708162225.080329164@linuxfoundation.org>
+Message-ID: <20250708162246.223029712@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-commit 46c0d947b64ac8efcf89dd754213dab5d1bd00aa upstream.
+[ Upstream commit d8ab68bdb294b09a761e967dad374f2965e1913f ]
 
-This reverts minor parts of the changes made in commit b338d91703fa
-("Bluetooth: Implement support for Mesh"). It looks like these changes
-were only made for development purposes but shouldn't have been part of
-the commit.
+The function core_scsi3_decode_spec_i_port(), in its error code path,
+unconditionally calls core_scsi3_lunacl_undepend_item() passing the
+dest_se_deve pointer, which may be NULL.
 
-Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This can lead to a NULL pointer dereference if dest_se_deve remains
+unset.
+
+SPC-3 PR SPEC_I_PT: Unable to locate dest_tpg
+Unable to handle kernel paging request at virtual address dfff800000000012
+Call trace:
+  core_scsi3_lunacl_undepend_item+0x2c/0xf0 [target_core_mod] (P)
+  core_scsi3_decode_spec_i_port+0x120c/0x1c30 [target_core_mod]
+  core_scsi3_emulate_pro_register+0x6b8/0xcd8 [target_core_mod]
+  target_scsi3_emulate_pr_out+0x56c/0x840 [target_core_mod]
+
+Fix this by adding a NULL check before calling
+core_scsi3_lunacl_undepend_item()
+
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Link: https://lore.kernel.org/r/20250612101556.24829-1-mlombard@redhat.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c |   16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/target/target_core_pr.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -1966,13 +1966,10 @@ static int hci_clear_adv_sets_sync(struc
- static int hci_clear_adv_sync(struct hci_dev *hdev, struct sock *sk, bool force)
- {
- 	struct adv_info *adv, *n;
--	int err = 0;
+diff --git a/drivers/target/target_core_pr.c b/drivers/target/target_core_pr.c
+index 4f4ad6af416c8..47fe50b80c229 100644
+--- a/drivers/target/target_core_pr.c
++++ b/drivers/target/target_core_pr.c
+@@ -1842,7 +1842,9 @@ core_scsi3_decode_spec_i_port(
+ 		}
  
- 	if (ext_adv_capable(hdev))
- 		/* Remove all existing sets */
--		err = hci_clear_adv_sets_sync(hdev, sk);
--	if (ext_adv_capable(hdev))
--		return err;
-+		return hci_clear_adv_sets_sync(hdev, sk);
+ 		kmem_cache_free(t10_pr_reg_cache, dest_pr_reg);
+-		core_scsi3_lunacl_undepend_item(dest_se_deve);
++
++		if (dest_se_deve)
++			core_scsi3_lunacl_undepend_item(dest_se_deve);
  
- 	/* This is safe as long as there is no command send while the lock is
- 	 * held.
-@@ -2000,13 +1997,11 @@ static int hci_clear_adv_sync(struct hci
- static int hci_remove_adv_sync(struct hci_dev *hdev, u8 instance,
- 			       struct sock *sk)
- {
--	int err = 0;
-+	int err;
- 
- 	/* If we use extended advertising, instance has to be removed first. */
- 	if (ext_adv_capable(hdev))
--		err = hci_remove_ext_adv_instance_sync(hdev, instance, sk);
--	if (ext_adv_capable(hdev))
--		return err;
-+		return hci_remove_ext_adv_instance_sync(hdev, instance, sk);
- 
- 	/* This is safe as long as there is no command send while the lock is
- 	 * held.
-@@ -2105,16 +2100,13 @@ int hci_read_tx_power_sync(struct hci_de
- int hci_disable_advertising_sync(struct hci_dev *hdev)
- {
- 	u8 enable = 0x00;
--	int err = 0;
- 
- 	/* If controller is not advertising we are done. */
- 	if (!hci_dev_test_flag(hdev, HCI_LE_ADV))
- 		return 0;
- 
- 	if (ext_adv_capable(hdev))
--		err = hci_disable_ext_adv_instance_sync(hdev, 0x00);
--	if (ext_adv_capable(hdev))
--		return err;
-+		return hci_disable_ext_adv_instance_sync(hdev, 0x00);
- 
- 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_ENABLE,
- 				     sizeof(enable), &enable, HCI_CMD_TIMEOUT);
+ 		if (is_local)
+ 			continue;
+-- 
+2.39.5
+
 
 
 
