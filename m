@@ -1,93 +1,133 @@
-Return-Path: <stable+bounces-161347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12C8AFD727
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 21:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FAE5AFD747
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 21:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D9B57A2182
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:32:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28BBA7B660A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F171521C9F4;
-	Tue,  8 Jul 2025 19:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A16122A7F9;
+	Tue,  8 Jul 2025 19:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZTgLjD/C"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6256021ABA3
-	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 19:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA682264A3;
+	Tue,  8 Jul 2025 19:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752003252; cv=none; b=VwlgBCsdT+RF/J4Db4EY+a14YOyQ/m8BmAQtcEC+r4JweKOLhghlygGjCu7gRJeyDcTVJr89iEA4ILM67yxLtpx2YIJvXn87QVCwbwD3J7hjGW8G+PXwBcXW/xNPAAxe4DymWTyC/nRXFArBxTRG/9hM5X1bbs+eH4R1UMJlj0Y=
+	t=1752003711; cv=none; b=TW1H67VC7vL+bcD/Uo0QpTC+6VYszf5Wz/cFstL3YTaX2dxnpZKXFAtX+V5hFiTDZwThxMtJGVxKSH3naKiBnuDG+D2vYuv0xaqNzfsOqR/xotin3jmii/B1RMWn2UpQpGVI1+9nFfRsrjTPiePeUODwv9joJOGErG1WUp2P8FE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752003252; c=relaxed/simple;
-	bh=AQfKFFSCMJAWtmBuZ+9fLxNHqJT04PXBw4n0+6KL4+o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O0f+r9D0ZtnBwm26B1QPWhobf7IEXGA5qGrXS14bwLA34h5UZ0OoKxP5AWish3wvhGa2B4XW/05Uu/W9SsvRNodCfvi+sRe47hTAIanZ07W2y4oVi7yN/JZLzWMGSll9nPA2QnwtdDG7j6bcSZxFot7IsEGMJeiFWJl0od6fok8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C6443152B;
-	Tue,  8 Jul 2025 12:33:58 -0700 (PDT)
-Received: from bogus (unknown [10.57.51.18])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5D49D3F66E;
-	Tue,  8 Jul 2025 12:34:08 -0700 (PDT)
-Date: Tue, 8 Jul 2025 20:34:00 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 029/232] firmware: arm_ffa: Add support for
- {un,}registration of framework notifications
-Message-ID: <20250708-jumping-strange-lemming-1bfc92@sudeepholla>
-References: <20250708162241.426806072@linuxfoundation.org>
- <20250708162242.198209294@linuxfoundation.org>
+	s=arc-20240116; t=1752003711; c=relaxed/simple;
+	bh=/eyHeUuBtfo2FwFId2SbeAJqAbp9dDd6FKzb90cHbsI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bTDXj8tRQCCIGcYkNZdIGBwrqNxlU3k8FFcHMNigqe1yJl1N7zsbZFuFWuza3sFZ3gD5KsFice2aGM+k4kuVuIWL2j/q/x3dgh4GdAK8qxU9FqbpuLvDQMclyeqQerNn7yNSZ4jSK5QYxVRgt1rjtI9Jayxi9Jl3auogd/bICpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZTgLjD/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36D0C4CEED;
+	Tue,  8 Jul 2025 19:41:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752003711;
+	bh=/eyHeUuBtfo2FwFId2SbeAJqAbp9dDd6FKzb90cHbsI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZTgLjD/CRAj6wPjhdiRlKm5CmuAtMyQf4+yISJmYyzKQHtWERjwOKHM2aKYw63Bt/
+	 SCfwKx1teyJxRAP4u4qAW2oc/4WhGfouHJ9D/SdDRlF5FGKFxhUtZoY3RXOtjuPXGR
+	 Ms3eMIyQhal8dyfHeW4If1gsFVuy8PmFdsAMkDEFnFugxo+1tYhF+hvoC3t8CS6zST
+	 pGKUL828mH1sQNAUdCgXct6qhx/AbMI1k49gnRL/MFgUUid5zZ2cQBzkQT3F6XPTrC
+	 eZAQXil4mUHIKHpJtWiAiJlhC+SP5JdpsKKosj13/DOICsgLZQ/pAW5PewcburvY84
+	 WzaqyN6XSxkBg==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] crypto: x86/aegis - Fix sleeping when disallowed on PREEMPT_RT
+Date: Tue,  8 Jul 2025 12:38:28 -0700
+Message-ID: <20250708193829.656988-2-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250708193829.656988-1-ebiggers@kernel.org>
+References: <20250708193829.656988-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250708162242.198209294@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 08, 2025 at 06:20:25PM +0200, Greg Kroah-Hartman wrote:
-> 6.12-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Sudeep Holla <sudeep.holla@arm.com>
-> 
-> [ Upstream commit c10debfe7f028c11f7a501a0f8e937c9be9e5327 ]
-> 
-> Framework notifications are doorbells that are rung by the partition
-> managers to signal common events to an endpoint. These doorbells cannot
-> be rung by an endpoint directly. A partition manager can signal a
-> Framework notification in response to an FF-A ABI invocation by an
-> endpoint.
-> 
-> Two additional notify_ops interface is being added for any FF-A device/
-> driver to register and unregister for such a framework notifications.
-> 
-> Tested-by: Viresh Kumar <viresh.kumar@linaro.org>
-> Message-Id: <20250217-ffa_updates-v3-16-bd1d9de615e7@arm.com>
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> Stable-dep-of: 27e850c88df0 ("firmware: arm_ffa: Move memory allocation outside the mutex locking")
+skcipher_walk_done() can call kfree(), which takes a spinlock, which
+makes it incorrect to call while preemption is disabled on PREEMPT_RT.
+Therefore, end the kernel-mode FPU section before calling
+skcipher_walk_done(), and restart it afterwards.
 
-I understand these are being added in order to resolve the dependency
-from 27e850c88df0, but this patch adds new feature. I would like to
-drop 027/232, 028/232 and 029/232 from the queue. I already knew this and
-had backports ready for
+Moreover, pass atomic=false to skcipher_walk_aead_encrypt() instead of
+atomic=true.  The point of atomic=true was to make skcipher_walk_done()
+safe to call while in a kernel-mode FPU section, but that does not
+actually work.  So just use the usual atomic=false.
 
-Upstream commit 27e850c88df0e25474a8caeb2903e2e90b62c1dc - 030/232 here
-Upstream commit 9ca7a421229bbdfbe2e1e628cff5cfa782720a10 - 190/232 here
+Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
+ arch/x86/crypto/aegis128-aesni-glue.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-I will send then now.
-
+diff --git a/arch/x86/crypto/aegis128-aesni-glue.c b/arch/x86/crypto/aegis128-aesni-glue.c
+index f1b6d40154e35..3cb5c193038bb 100644
+--- a/arch/x86/crypto/aegis128-aesni-glue.c
++++ b/arch/x86/crypto/aegis128-aesni-glue.c
+@@ -117,11 +117,13 @@ crypto_aegis128_aesni_process_crypt(struct aegis_state *state,
+ 		else
+ 			aegis128_aesni_dec(state, walk->src.virt.addr,
+ 					   walk->dst.virt.addr,
+ 					   round_down(walk->nbytes,
+ 						      AEGIS128_BLOCK_SIZE));
++		kernel_fpu_end();
+ 		skcipher_walk_done(walk, walk->nbytes % AEGIS128_BLOCK_SIZE);
++		kernel_fpu_begin();
+ 	}
+ 
+ 	if (walk->nbytes) {
+ 		if (enc)
+ 			aegis128_aesni_enc_tail(state, walk->src.virt.addr,
+@@ -129,11 +131,13 @@ crypto_aegis128_aesni_process_crypt(struct aegis_state *state,
+ 						walk->nbytes);
+ 		else
+ 			aegis128_aesni_dec_tail(state, walk->src.virt.addr,
+ 						walk->dst.virt.addr,
+ 						walk->nbytes);
++		kernel_fpu_end();
+ 		skcipher_walk_done(walk, 0);
++		kernel_fpu_begin();
+ 	}
+ }
+ 
+ static struct aegis_ctx *crypto_aegis128_aesni_ctx(struct crypto_aead *aead)
+ {
+@@ -174,13 +178,13 @@ crypto_aegis128_aesni_crypt(struct aead_request *req,
+ 	struct aegis_ctx *ctx = crypto_aegis128_aesni_ctx(tfm);
+ 	struct skcipher_walk walk;
+ 	struct aegis_state state;
+ 
+ 	if (enc)
+-		skcipher_walk_aead_encrypt(&walk, req, true);
++		skcipher_walk_aead_encrypt(&walk, req, false);
+ 	else
+-		skcipher_walk_aead_decrypt(&walk, req, true);
++		skcipher_walk_aead_decrypt(&walk, req, false);
+ 
+ 	kernel_fpu_begin();
+ 
+ 	aegis128_aesni_init(&state, &ctx->key, req->iv);
+ 	crypto_aegis128_aesni_process_ad(&state, req->src, req->assoclen);
 -- 
-Regards,
-Sudeep
+2.50.0
+
 
