@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-160866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3201EAFD25B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4BA2AFD1FC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B68D3B089C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96F417A9222
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDF32E3385;
-	Tue,  8 Jul 2025 16:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51EE921773D;
+	Tue,  8 Jul 2025 16:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXY0wDnk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/+v5Vtk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF89B5464F;
-	Tue,  8 Jul 2025 16:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AB25464F;
+	Tue,  8 Jul 2025 16:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992918; cv=none; b=Ajum2DN/Rz9OLc9RsSZTfB/3GxRsb5muiaOBsL9Y74SaE8O3OMQhal9HcJSkWnfptoceY4AqG2+paC0KjXN7cg4MIFVy/7cKJ1SJ3/i5lobbgWC5d6cZinUCcs7otbTgj5NB7lMJO5CGV6zaC7LgseiDqjUE3DpAI55RXxP5+SU=
+	t=1751992930; cv=none; b=sgJUcpr0twRIp1dHQDdzlCeKfppGZs1oCzqiUhvtx4Ftf42eKMKZ+rO3djVoxz2tNBYdbMIoAP2L134a+A0tht+1ZR2mrheHpgIqQFvN1SvnL+gkTsdH1g0Ed2vLwlLRACxvD4avPaTLyANKvEyhKLejVsZ1h5PmbFvo8sJq9E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992918; c=relaxed/simple;
-	bh=ZI3lWCEbwHCPa0yi67TkP8eAI7cZRB39mMm8bmEyOwo=;
+	s=arc-20240116; t=1751992930; c=relaxed/simple;
+	bh=yh3Eqss4pl1JDtvPw/KL4FBhSEhjnA8rSaEOOPTlW4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bbw/ZFdzQwuPEUdeGA0hvUGpI0BXMfrqCZ9/LuBRKEKODLq2m32b/xWJ8KpTDtuB7oQYVtxfHHzZvzSeFGkKa7JYowV18XWCl4wIIgTZzu6o/dUIFKGrC6CQC65wTFPF9KuGCHB3i5d6S3pbFIugi0o2sr251NhR+dqONSZ37go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXY0wDnk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C72C4CEED;
-	Tue,  8 Jul 2025 16:41:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LPNojslWWOZmR7+Mgj8m2/d8xQ8FQIUsNhwQkS4IOhAk0KBUsIGuCeYhezoHZoj8jtI+1aUh3Ebi5eZLKG28bPTGHJvv07QdN99lR2ALHDuzdUA7yNmyYhFjecqzO4eMuVuIULL8xBsKEP96KMfujhk9+47Mi1IMeYrjSYshxak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/+v5Vtk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47502C4CEED;
+	Tue,  8 Jul 2025 16:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992917;
-	bh=ZI3lWCEbwHCPa0yi67TkP8eAI7cZRB39mMm8bmEyOwo=;
+	s=korg; t=1751992929;
+	bh=yh3Eqss4pl1JDtvPw/KL4FBhSEhjnA8rSaEOOPTlW4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LXY0wDnklbf70qJ4u49O2NYOXvAy5YVzV5CTznKsaiurpHeyL5pHGW48gRdSkMcZs
-	 xxL6RV+C/q2TORZMSjo5mpznB6dpDFF5MKUUSLJwbJJG6p2H+Su/HQjgQoQq/+PyWQ
-	 C+TwQRbAUSz0ceUI0T5Z4fhSzU3Ds4jAVwLvoy68=
+	b=l/+v5Vtkbg3e+Ievf+QeuyKASqeNm5F7UGSwaI4XmxcTIW5GYNF1C4jPiirJiZjq1
+	 QdmRJ53A65W1SMlj2mJxi5deQaZw8EnhVYBKGZjIzPiOAFpFC/9YgphZB2XZJrZc7+
+	 X2CsHukWIsfPmyE1aw6AsT9kBSaqXExL9DXqzZ0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Gow <davidgow@google.com>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/232] kunit: qemu_configs: sparc: use Zilog console
-Date: Tue,  8 Jul 2025 18:21:34 +0200
-Message-ID: <20250708162244.011240720@linuxfoundation.org>
+Subject: [PATCH 6.12 099/232] kunit: qemu_configs: sparc: Explicitly enable CONFIG_SPARC32=y
+Date: Tue,  8 Jul 2025 18:21:35 +0200
+Message-ID: <20250708162244.036805363@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
 References: <20250708162241.426806072@linuxfoundation.org>
@@ -70,48 +70,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit e275f44e0a187b9d76830847976072f1c17b4b7b ]
+[ Upstream commit d16b3d0fb43cb0f9eb21b35c2d2c870b3f38ab1d ]
 
-The driver for the 8250 console is not used, as no port is found.
-Instead the prom0 bootconsole is used the whole time.
-The prom driver translates '\n' to '\r\n' before handing of the message
-off to the firmware. The firmware performs the same translation again.
-In the final output produced by QEMU each line ends with '\r\r\n'.
-This breaks the kunit parser, which can only handle '\r\n' and '\n'.
+The configuration generated by kunit ends up with a 32bit configuration.
+A new kunit configuration for 64bit is to be added.
+To make the difference clearer spell out the variant in the kunit
+reference config.
 
-Use the Zilog console instead. It works correctly, is the one documented
-by the QEMU manual and also saves a bit of codesize:
-Before=4051011, After=4023326, chg -0.68%
-
-Observed on QEMU 9.2.0.
-
-Link: https://lore.kernel.org/r/20250214-kunit-qemu-sparc-console-v1-1-ba1dfdf8f0b1@linutronix.de
-Fixes: 87c9c1631788 ("kunit: tool: add support for QEMU")
+Link: https://lore.kernel.org/r/20250415-kunit-qemu-sparc64-v1-1-253906f61102@linutronix.de
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 Reviewed-by: David Gow <davidgow@google.com>
 Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Stable-dep-of: 1d31d536871f ("kunit: qemu_configs: Disable faulting tests on 32-bit SPARC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/kunit/qemu_configs/sparc.py | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/testing/kunit/qemu_configs/sparc.py | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tools/testing/kunit/qemu_configs/sparc.py b/tools/testing/kunit/qemu_configs/sparc.py
-index e975c4331a7c2..256d9573b4464 100644
+index 256d9573b4464..3131dd299a6e3 100644
 --- a/tools/testing/kunit/qemu_configs/sparc.py
 +++ b/tools/testing/kunit/qemu_configs/sparc.py
-@@ -2,8 +2,9 @@ from ..qemu_config import QemuArchParams
+@@ -2,6 +2,7 @@ from ..qemu_config import QemuArchParams
  
  QEMU_ARCH = QemuArchParams(linux_arch='sparc',
  			   kconfig='''
--CONFIG_SERIAL_8250=y
--CONFIG_SERIAL_8250_CONSOLE=y''',
-+CONFIG_SERIAL_SUNZILOG=y
-+CONFIG_SERIAL_SUNZILOG_CONSOLE=y
-+''',
- 			   qemu_arch='sparc',
- 			   kernel_path='arch/sparc/boot/zImage',
- 			   kernel_command_line='console=ttyS0 mem=256M',
++CONFIG_SPARC32=y
+ CONFIG_SERIAL_SUNZILOG=y
+ CONFIG_SERIAL_SUNZILOG_CONSOLE=y
+ ''',
 -- 
 2.39.5
 
