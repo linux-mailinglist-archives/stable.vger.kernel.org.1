@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8684AAFD299
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:48:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392F5AFD38F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 104021AA1F55
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30C3716B09A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E13C264F9C;
-	Tue,  8 Jul 2025 16:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698D42DE1FA;
+	Tue,  8 Jul 2025 16:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FiGmnkBi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6x5XdUf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0442E3385;
-	Tue,  8 Jul 2025 16:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283D32045B5;
+	Tue,  8 Jul 2025 16:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993094; cv=none; b=R0/evvpa50Vmw2FH3uC8MkjaIaQTdbflCUHZAtNxDFv37pzhnXzqPZrXF4EF+TQQUHPJubq6RRhtiT3LJj98Mrd/j9OBJoJyrToeklDjuNLgxvYsULAvsawYbeOXtg7OiRhmPhSl6JGHeJ1BNk7K4uAazszl2++q38F4OilR6Xg=
+	t=1751993733; cv=none; b=bry7yU2MTPNOhfNC7QTZlCNqArbqaMpmNdRITYLdgSC3iesR7WS2Y99H8HPhi4vkSW9OFMsZqcDF4PSH8S4HpYi89zNLQ1VL5lleQjYuWARGe3H78Fbn1EvBcD2JYAShuyWegYHC8U3Q8Ce7X5GBPJyw3kGvbIJTuCjAZ6+pyys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993094; c=relaxed/simple;
-	bh=hJJmX2JMA23wX8SfBqwxKzFnY1pkllDR4MtMV2mZPpI=;
+	s=arc-20240116; t=1751993733; c=relaxed/simple;
+	bh=yelTn73FbOGsyS+nZhk376o2/FDkzC4BhvP/y5rr1sk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WzJVz0sOLanUijVO74DuTr1ckTRQPKjT21JMvoGzvB5xiSh3zOs90BSRMPnZ+Rbcgzr+wxweEJNM+FiYaZu3ggaFIZXp9wLFrdYwMXXBnZwqwfdahs1KDp5LUn+pI6p1uXYgqnum/vDRj88FQPEsJOVHT7tNkLiuHExANsiDpmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FiGmnkBi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7928FC4CEED;
-	Tue,  8 Jul 2025 16:44:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YV9DH3nQPHpeKYMCSTFpcut2vlY6moB5QwLDj+IoaQJtwG5+deW5RnykN/WaaYE18Di8ktsqXqsbe5ApurNu0CWAXLSGsI+QeR64Dtjm35jIMfMlKjtIT2IFiRkr4ZqeFM2omz0cjjXqPSSm2uBH3QuI+WH1LYgTEQx4jVcl/Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6x5XdUf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A237DC4CEED;
+	Tue,  8 Jul 2025 16:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993093;
-	bh=hJJmX2JMA23wX8SfBqwxKzFnY1pkllDR4MtMV2mZPpI=;
+	s=korg; t=1751993733;
+	bh=yelTn73FbOGsyS+nZhk376o2/FDkzC4BhvP/y5rr1sk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FiGmnkBiJZ4+UMOvmKyMs67vc2MMDerQL9VQTjiq/6lH7Rxu7/C1L4BQ1ldPB4c7Q
-	 mxKvrEGyl6sZG5CcYavfqAFoZrTbROhRLrumRAm4x5C5QyhHwY8Tqwkfs3Ainy58FT
-	 3Q/GPuU3kO27kyaExsEBLeFAx2rFBbaihzOOZx/Y=
+	b=z6x5XdUfuGB3jD4cPN5qzw5mf0cVwtisleUxDs0MhvtrS3VGGfM9RXod+UwLJ207+
+	 MaxLmVbGImUKAq8HdcSNP4/WaPEPAKqYLqkEKKn3WqmMZTCTCm1qFSALn5BdwVQnTx
+	 1fKr10fm7rrx+37LDb8vwwG6rGhfbJaBp3kV7D80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 185/232] wifi: mac80211: drop invalid source address OCB frames
+	stable <stable@kernel.org>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.15 144/178] xhci: dbctty: disable ECHO flag by default
 Date: Tue,  8 Jul 2025 18:23:01 +0200
-Message-ID: <20250708162246.273997246@linuxfoundation.org>
+Message-ID: <20250708162240.293055970@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Łukasz Bartosik <ukaszb@chromium.org>
 
-[ Upstream commit d1b1a5eb27c4948e8811cf4dbb05aaf3eb10700c ]
+commit 2b857d69a5e116150639a0c6c39c86cc329939ee upstream.
 
-In OCB, don't accept frames from invalid source addresses
-(and in particular don't try to create stations for them),
-drop the frames instead.
+When /dev/ttyDBC0 device is created then by default ECHO flag
+is set for the terminal device. However if data arrives from
+a peer before application using /dev/ttyDBC0 applies its set
+of terminal flags then the arriving data will be echoed which
+might not be desired behavior.
 
-Reported-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/6788d2d9.050a0220.20d369.0028.GAE@google.com/
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Tested-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/20250616171838.7433379cab5d.I47444d63c72a0bd58d2e2b67bb99e1fea37eec6f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4521f1613940 ("xhci: dbctty: split dbc tty driver registration and unregistration functions.")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/stable/20250610111802.18742-1-ukaszb%40chromium.org
+Link: https://lore.kernel.org/r/20250627144127.3889714-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/rx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/host/xhci-dbgtty.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 8e1fbdd3bff10..8e1d00efa62e5 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4481,6 +4481,10 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
- 		if (!multicast &&
- 		    !ether_addr_equal(sdata->dev->dev_addr, hdr->addr1))
- 			return false;
-+		/* reject invalid/our STA address */
-+		if (!is_valid_ether_addr(hdr->addr2) ||
-+		    ether_addr_equal(sdata->dev->dev_addr, hdr->addr2))
-+			return false;
- 		if (!rx->sta) {
- 			int rate_idx;
- 			if (status->encoding != RX_ENC_LEGACY)
--- 
-2.39.5
-
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -617,6 +617,7 @@ int dbc_tty_init(void)
+ 	dbc_tty_driver->type = TTY_DRIVER_TYPE_SERIAL;
+ 	dbc_tty_driver->subtype = SERIAL_TYPE_NORMAL;
+ 	dbc_tty_driver->init_termios = tty_std_termios;
++	dbc_tty_driver->init_termios.c_lflag &= ~ECHO;
+ 	dbc_tty_driver->init_termios.c_cflag =
+ 			B9600 | CS8 | CREAD | HUPCL | CLOCAL;
+ 	dbc_tty_driver->init_termios.c_ispeed = 9600;
 
 
 
