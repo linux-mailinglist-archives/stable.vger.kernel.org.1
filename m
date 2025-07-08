@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006A6AFD290
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:48:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EDD2AFD39C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC24616FA4A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:44:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9D13188F46D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB032E54C8;
-	Tue,  8 Jul 2025 16:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438C32DFA22;
+	Tue,  8 Jul 2025 16:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6qyip4P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKhg4ny/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7752E540C;
-	Tue,  8 Jul 2025 16:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C08BE46;
+	Tue,  8 Jul 2025 16:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993073; cv=none; b=KmyKL50W2lp55zyMAIqfPejP1hcQUnEBlTQ6uNuqJZrIqOy0jIXGE3N6wdgTfz2EcLC3dVe+8jjwdBlkVqAOhpL+veyjThDS7Yk0QsRnQoXtI0P/7qMlnRHUH//xZUdv/6J+qwrZyL/o+tVgXLlTFZfe2kYBwPAMZ5GWFzwvKGo=
+	t=1751993705; cv=none; b=DBnDv31Re1Z0EGSpvvFNz3nB2slC1n31gWfzWkziVYxz5U+QTvcE7rJnTscx2rtR0Czv2TavL6a8BU008H6QLOSJ+OZ31G36FK5HhzQUhIFdPuogINoAca6/gykys26joGZxSyBJ/MeBySpaM5BSXpb7OpnH9xbfxh2Lyz10sG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993073; c=relaxed/simple;
-	bh=fLcKDY/BEiwve4Tztw8Z/GOBz1x7O0KG1r8HNte80E8=;
+	s=arc-20240116; t=1751993705; c=relaxed/simple;
+	bh=vYKU5/F3QcilwL5E0uxwh9As+pWoCuML8CYM8jjC70k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIsWm+2bfpn4ouo0Py0f8bJQh/lFHe+HM/qE4ZeNiVO1xNj6M5BHlTC7Ab/K7158vO/2MsTxsRBxUWvs+eIpxiXR/kENO6PX//yiY1sGWuB4YwVG5niYSwjroSMWCUTi1hFzwYmvPw2akxage0OtnyxycT9UUE5eZdXLmMTpJ9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6qyip4P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EA9C4CEED;
-	Tue,  8 Jul 2025 16:44:33 +0000 (UTC)
+	 MIME-Version; b=ovD1r3LlB+zOdU5KCLsAEo0McB2q91xTpEqA6CQR9NAR8DHm14UHOLmoKvzJ4qG475Rt4CXFKIP7cN1157yRKgpDcjCvKL/x3hldqx5/2wsS6DPXyjKtdCZVIxH3V3/+Xx+H/Jc8RGKpc3pMNi/WloQc0xVHJjNLEU76TCMER5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKhg4ny/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C304C4CEED;
+	Tue,  8 Jul 2025 16:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993073;
-	bh=fLcKDY/BEiwve4Tztw8Z/GOBz1x7O0KG1r8HNte80E8=;
+	s=korg; t=1751993704;
+	bh=vYKU5/F3QcilwL5E0uxwh9As+pWoCuML8CYM8jjC70k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M6qyip4P8Nxtnlfln3U0bDFrkgdCwkworMiuhRmpysCGgpSVnKZ07PtzlwXMeYiR0
-	 S9zfJchkJT6LBPvVKcQP7znDZGg8MVpP6JM/G403ZEx6W+U2XRva073lI3/K/nB86O
-	 oaUvpjlqVMm0JzY6fh9dOIW83NKZUYwXC5hA+fMQ=
+	b=jKhg4ny/kbouroqCccV0Jn8GheP8+AVH3sURfd938Za5H+YMOSQhgpRXgYB3QbAiv
+	 rK1ARDd2EdlkngoV+cg1w9PLXNBI2huAkUSwWiqC7IfsTGdJJeg0EGcBv2Emlz55CK
+	 ttkmmE4hxV1MZZ8JWydmgL1GnfRCjwTiYRHGZDOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gyeyoung Baek <gye976@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Williams <peter@newton.cx>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Hans de Goede <hansg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 179/232] genirq/irq_sim: Initialize work context pointers properly
+Subject: [PATCH 6.15 138/178] ACPICA: Refuse to evaluate a method if arguments are missing
 Date: Tue,  8 Jul 2025 18:22:55 +0200
-Message-ID: <20250708162246.123564254@linuxfoundation.org>
+Message-ID: <20250708162240.156255931@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gyeyoung Baek <gye976@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 8a2277a3c9e4cc5398f80821afe7ecbe9bdf2819 ]
+[ Upstream commit 6fcab2791543924d438e7fa49276d0998b0a069f ]
 
-Initialize `ops` member's pointers properly by using kzalloc() instead of
-kmalloc() when allocating the simulation work context. Otherwise the
-pointers contain random content leading to invalid dereferencing.
+As reported in [1], a platform firmware update that increased the number
+of method parameters and forgot to update a least one of its callers,
+caused ACPICA to crash due to use-after-free.
 
-Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250612124827.63259-1-gye976@gmail.com
+Since this a result of a clear AML issue that arguably cannot be fixed
+up by the interpreter (it cannot produce missing data out of thin air),
+address it by making ACPICA refuse to evaluate a method if the caller
+attempts to pass fewer arguments than expected to it.
+
+Closes: https://github.com/acpica/acpica/issues/1027 [1]
+Reported-by: Peter Williams <peter@newton.cx>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Tested-by: Hans de Goede <hansg@kernel.org> # Dell XPS 9640 with BIOS 1.12.0
+Link: https://patch.msgid.link/5909446.DvuYhMxLoT@rjwysocki.net
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/irq/irq_sim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/dsmethod.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/irq/irq_sim.c b/kernel/irq/irq_sim.c
-index 1a3d483548e2f..ae4c9cbd1b4b9 100644
---- a/kernel/irq/irq_sim.c
-+++ b/kernel/irq/irq_sim.c
-@@ -202,7 +202,7 @@ struct irq_domain *irq_domain_create_sim_full(struct fwnode_handle *fwnode,
- 					      void *data)
- {
- 	struct irq_sim_work_ctx *work_ctx __free(kfree) =
--				kmalloc(sizeof(*work_ctx), GFP_KERNEL);
-+				kzalloc(sizeof(*work_ctx), GFP_KERNEL);
+diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
+index e809c2aed78ae..a232746d150a7 100644
+--- a/drivers/acpi/acpica/dsmethod.c
++++ b/drivers/acpi/acpica/dsmethod.c
+@@ -483,6 +483,13 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
+ 		return_ACPI_STATUS(AE_NULL_OBJECT);
+ 	}
  
- 	if (!work_ctx)
- 		return ERR_PTR(-ENOMEM);
++	if (this_walk_state->num_operands < obj_desc->method.param_count) {
++		ACPI_ERROR((AE_INFO, "Missing argument for method [%4.4s]",
++			    acpi_ut_get_node_name(method_node)));
++
++		return_ACPI_STATUS(AE_AML_UNINITIALIZED_ARG);
++	}
++
+ 	/* Init for new method, possibly wait on method mutex */
+ 
+ 	status =
 -- 
 2.39.5
 
