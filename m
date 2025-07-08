@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-160811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6942AFD1FB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6B7AFD1CD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 420FC1888BD5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:39:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B35F3584A2D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491C82E3B03;
-	Tue,  8 Jul 2025 16:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D27A2E49B0;
+	Tue,  8 Jul 2025 16:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oh5Gh8EM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdeiB6kF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A8B289E2C;
-	Tue,  8 Jul 2025 16:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393C82E2F0D;
+	Tue,  8 Jul 2025 16:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992759; cv=none; b=NsnxWCco9Z+4oOtXWijNakWmAZA0Hj85VMXIgoaArou3sE+mpcY/95DNhBrrLBoEamCMaFPO9UP6cwwR7CYLU67NdUt4HhTp7nj80lr0qmn++n3derlCblMEAMDYwEgCTziqcD8ODxCUAGdl5EUTeYwWBtfDUgXEQuzj59iFyaU=
+	t=1751992665; cv=none; b=K/pzytW7evJA8i2Uy446wCT09Cl9dlmgjS9IIAkE+T+HRWUNoi/ScpMT4Hz9v9t+joenK9rSKQU1T/TD1ZM4acaAFUL3qd2TDAt5SjDhvz1vuyKJSSkToDvkMSuB8GbbisWwfATUJMiqTj5YXOZr8z6uSNuIBe+UvuEl3IEnE0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992759; c=relaxed/simple;
-	bh=ob+Sf0QB8E3Es39mNkgNbbcW0qsB2AkCXhtObDCSAnI=;
+	s=arc-20240116; t=1751992665; c=relaxed/simple;
+	bh=SxNBcCZechgbOe/s8pHlvD5M5WB0OHYdwwvVFCMdvwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lj/pOU8OsV7vH3B/C+SSUtvWskxpsfC8V5XoOlyZAp6MmeGSpHCJuQ6vk+D7iPFFuinfvcdgoS6k0NTRXljxm5r15vxtJT8yBUWK2WBluC4XA4zv0jgQG0C2ERUr5pvFXJlHXufOC4z+04GrGuxh608SoMZ4FeJUE2+YSYtB8Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oh5Gh8EM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B7EC4CEED;
-	Tue,  8 Jul 2025 16:39:18 +0000 (UTC)
+	 MIME-Version; b=nIADTVQUywmTYxBMy8dRlkxItt43s6d9R5fatb/oGP7ofkmQ3owaTRL5DR+07NM4mZ1AsB4vLJUh0s84AmBwYsZghKku81p1q2TX6EXfA7a5unmRBwVVPwRf7YPNGqxKr1QhewMQDPK6cdxNaKgBQDHcIxUK6Ug+nuCDBmfbMH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdeiB6kF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD586C4CEED;
+	Tue,  8 Jul 2025 16:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992758;
-	bh=ob+Sf0QB8E3Es39mNkgNbbcW0qsB2AkCXhtObDCSAnI=;
+	s=korg; t=1751992665;
+	bh=SxNBcCZechgbOe/s8pHlvD5M5WB0OHYdwwvVFCMdvwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oh5Gh8EMxu4e3pcjZlH00kFjwsxCz9WbToj3LoP/8Z15fWVyjU5qYOdWmRnwHUAJa
-	 jeoK+HRS8MLJpqTjLWXUSNcmLeKwRfCeSWs0p3uZTr14uhWburZjK+y0crzeEneJbr
-	 s4jDM3Z7ocPFqoAFTwjzCVHfyTTCIIU1IE1s9naw=
+	b=EdeiB6kFqYme4mbakLH/6n0/1+hA8LU/XvTpwcz3xAlG9S4oPlSLtfQxG2tO9WofB
+	 gofwFvbpxPB06ijfZSImkoKT88f/kBakz2PuhOkurLVL+67rdiYwgv7oIz1KJ1nc1B
+	 ouiS8bLzAXkzTYwdRDHgLhqXw9gslojHKgDQGnuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Janne Grunau <j@jannau.net>,
+	Sven Peter <sven@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 030/232] firmware: arm_ffa: Move memory allocation outside the mutex locking
-Date: Tue,  8 Jul 2025 18:20:26 +0200
-Message-ID: <20250708162242.223562540@linuxfoundation.org>
+Subject: [PATCH 6.12 031/232] arm64: dts: apple: t8103: Fix PCIe BCM4377 nodename
+Date: Tue,  8 Jul 2025 18:20:27 +0200
+Message-ID: <20250708162242.248570140@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
 References: <20250708162241.426806072@linuxfoundation.org>
@@ -66,133 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Janne Grunau <j@jannau.net>
 
-[ Upstream commit 27e850c88df0e25474a8caeb2903e2e90b62c1dc ]
+[ Upstream commit ac1daa91e9370e3b88ef7826a73d62a4d09e2717 ]
 
-The notifier callback node allocation is currently done while holding
-the notify_lock mutex. While this is safe even if memory allocation may
-sleep, we need to move the allocation outside the locked region in
-preparation to move from using muxtes to rwlocks.
+Fix the following `make dtbs_check` warnings for all t8103 based devices:
 
-Move the memory allocation to avoid potential sleeping in atomic context
-once the locks are moved from mutex to rwlocks.
+arch/arm64/boot/dts/apple/t8103-j274.dtb: network@0,0: $nodename:0: 'network@0,0' does not match '^wifi(@.*)?$'
+        from schema $id: http://devicetree.org/schemas/net/wireless/brcm,bcm4329-fmac.yaml#
+arch/arm64/boot/dts/apple/t8103-j274.dtb: network@0,0: Unevaluated properties are not allowed ('local-mac-address' was unexpected)
+        from schema $id: http://devicetree.org/schemas/net/wireless/brcm,bcm4329-fmac.yaml#
 
-Fixes: e0573444edbf ("firmware: arm_ffa: Add interfaces to request notification callbacks")
-Message-Id: <20250528-ffa_notif_fix-v1-2-5ed7bc7f8437@arm.com>
-Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: bf2c05b619ff ("arm64: dts: apple: t8103: Expose PCI node for the WiFi MAC address")
+Signed-off-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Sven Peter <sven@kernel.org>
+Link: https://lore.kernel.org/r/20250611-arm64_dts_apple_wifi-v1-1-fb959d8e1eb4@jannau.net
+Signed-off-by: Sven Peter <sven@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 48 +++++++++++++++----------------
- 1 file changed, 24 insertions(+), 24 deletions(-)
+ arch/arm64/boot/dts/apple/t8103-jxxx.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index f19b142645cc5..33f7bdb5c86dd 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -1184,13 +1184,12 @@ notifier_hnode_get_by_type(u16 notify_id, enum notify_type type)
- 	return NULL;
- }
- 
--static int
--update_notifier_cb(struct ffa_device *dev, int notify_id, void *cb,
--		   void *cb_data, bool is_registration, bool is_framework)
-+static int update_notifier_cb(struct ffa_device *dev, int notify_id,
-+			      struct notifier_cb_info *cb, bool is_framework)
- {
- 	struct notifier_cb_info *cb_info = NULL;
- 	enum notify_type type = ffa_notify_type_get(dev->vm_id);
--	bool cb_found;
-+	bool cb_found, is_registration = !!cb;
- 
- 	if (is_framework)
- 		cb_info = notifier_hnode_get_by_vmid_uuid(notify_id, dev->vm_id,
-@@ -1204,18 +1203,7 @@ update_notifier_cb(struct ffa_device *dev, int notify_id, void *cb,
- 		return -EINVAL;
- 
- 	if (is_registration) {
--		cb_info = kzalloc(sizeof(*cb_info), GFP_KERNEL);
--		if (!cb_info)
--			return -ENOMEM;
--
--		cb_info->dev = dev;
--		cb_info->cb_data = cb_data;
--		if (is_framework)
--			cb_info->fwk_cb = cb;
--		else
--			cb_info->cb = cb;
--
--		hash_add(drv_info->notifier_hash, &cb_info->hnode, notify_id);
-+		hash_add(drv_info->notifier_hash, &cb->hnode, notify_id);
- 	} else {
- 		hash_del(&cb_info->hnode);
- 		kfree(cb_info);
-@@ -1237,8 +1225,7 @@ static int __ffa_notify_relinquish(struct ffa_device *dev, int notify_id,
- 
- 	mutex_lock(&drv_info->notify_lock);
- 
--	rc = update_notifier_cb(dev, notify_id, NULL, NULL, false,
--				is_framework);
-+	rc = update_notifier_cb(dev, notify_id, NULL, is_framework);
- 	if (rc) {
- 		pr_err("Could not unregister notification callback\n");
- 		mutex_unlock(&drv_info->notify_lock);
-@@ -1269,6 +1256,7 @@ static int __ffa_notify_request(struct ffa_device *dev, bool is_per_vcpu,
- {
- 	int rc;
- 	u32 flags = 0;
-+	struct notifier_cb_info *cb_info = NULL;
- 
- 	if (ffa_notifications_disabled())
- 		return -EOPNOTSUPP;
-@@ -1276,6 +1264,17 @@ static int __ffa_notify_request(struct ffa_device *dev, bool is_per_vcpu,
- 	if (notify_id >= FFA_MAX_NOTIFICATIONS)
- 		return -EINVAL;
- 
-+	cb_info = kzalloc(sizeof(*cb_info), GFP_KERNEL);
-+	if (!cb_info)
-+		return -ENOMEM;
-+
-+	cb_info->dev = dev;
-+	cb_info->cb_data = cb_data;
-+	if (is_framework)
-+		cb_info->fwk_cb = cb;
-+	else
-+		cb_info->cb = cb;
-+
- 	mutex_lock(&drv_info->notify_lock);
- 
- 	if (!is_framework) {
-@@ -1283,21 +1282,22 @@ static int __ffa_notify_request(struct ffa_device *dev, bool is_per_vcpu,
- 			flags = PER_VCPU_NOTIFICATION_FLAG;
- 
- 		rc = ffa_notification_bind(dev->vm_id, BIT(notify_id), flags);
--		if (rc) {
--			mutex_unlock(&drv_info->notify_lock);
--			return rc;
--		}
-+		if (rc)
-+			goto out_unlock_free;
- 	}
- 
--	rc = update_notifier_cb(dev, notify_id, cb, cb_data, true,
--				is_framework);
-+	rc = update_notifier_cb(dev, notify_id, cb_info, is_framework);
- 	if (rc) {
- 		pr_err("Failed to register callback for %d - %d\n",
- 		       notify_id, rc);
- 		if (!is_framework)
- 			ffa_notification_unbind(dev->vm_id, BIT(notify_id));
- 	}
-+
-+out_unlock_free:
- 	mutex_unlock(&drv_info->notify_lock);
-+	if (rc)
-+		kfree(cb_info);
- 
- 	return rc;
- }
+diff --git a/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi b/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
+index 5988a4eb6efaa..cb78ce7af0b38 100644
+--- a/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
++++ b/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
+@@ -71,7 +71,7 @@ hpm1: usb-pd@3f {
+  */
+ &port00 {
+ 	bus-range = <1 1>;
+-	wifi0: network@0,0 {
++	wifi0: wifi@0,0 {
+ 		compatible = "pci14e4,4425";
+ 		reg = <0x10000 0x0 0x0 0x0 0x0>;
+ 		/* To be filled by the loader */
 -- 
 2.39.5
 
