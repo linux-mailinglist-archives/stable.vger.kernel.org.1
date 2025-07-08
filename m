@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-160859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E125AFD24B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA2BAFD0A8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EC103A7159
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D49C3173F38
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CACA2E540C;
-	Tue,  8 Jul 2025 16:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C90E2E540A;
+	Tue,  8 Jul 2025 16:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtMPmA6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TwZbxZlW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEACA2DC34C;
-	Tue,  8 Jul 2025 16:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A0C2E5B25;
+	Tue,  8 Jul 2025 16:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992898; cv=none; b=tDxP27SnquNPi4WB21n9uI2YQ6rHgCeb7EeFZ9d8DaPPHogJY/A5s2wbgNEZwvAXpl8ANAPxfSJNCp0O7pYZ/vBOza69BNEnmaRc6/CfNpG4nCX2iqxuIz9PqTRPmJvz2VY1W7Qzt/wopolspwVJKNDByXBn6CT46SoTdqafzeo=
+	t=1751991858; cv=none; b=TVwE+O0B+z13MT+Rw52lww4C13/ilI/KaFdLpZfIVXQfveTtTx9S+J0q10mHn5OZfasnABvgDgEnZ4WXEHi581OG5FKsGVoR/y0d602jGUHI+HIovZnwcCep1qiqUZuyGsNi2fl1vzvnKok9KN8T3UQjGbM83SKYkDDrvXbn3Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992898; c=relaxed/simple;
-	bh=ctcuUiYQc5GDd4B+RvNZ8nCk7zIoH6bT02oiVDd8ApE=;
+	s=arc-20240116; t=1751991858; c=relaxed/simple;
+	bh=lUfp7HI4vmRxEkH0zrN2Af+SIrNjNUYfMbSG5vO1yj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JKvW+jf16be/H0bhlaB6+RrQfUB5exGDKgNmLVO1Y/fSzF+a4SBqhB+C4nib/EJA/OXpA5k+vbYonlMLhfohU4vGYKinUkuh8NgRTfGGCBMx4p21C5rqzYoTWgyVk8RAmR9o6WsyI1nUPhIoC4pNmRuRH83OkvAb9C+twmyP8Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtMPmA6N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4550BC4CEED;
-	Tue,  8 Jul 2025 16:41:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c5+8JeDWZPbdFRC/vrdDIVpqsQxbl6M5AkrkvACwGJac12HiD+wF9YDAJc1CVxsg9efOaFFf1+IT0aao1Bh5nchE7j8xi/MgOPwMIqxoejVppU+qNDSW9jK82LhGYxP+IAFPolFbUoOHavyV3t4Zr3f2orp3cMKe5uviNmGFbHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TwZbxZlW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83689C4CEF5;
+	Tue,  8 Jul 2025 16:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992897;
-	bh=ctcuUiYQc5GDd4B+RvNZ8nCk7zIoH6bT02oiVDd8ApE=;
+	s=korg; t=1751991857;
+	bh=lUfp7HI4vmRxEkH0zrN2Af+SIrNjNUYfMbSG5vO1yj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtMPmA6N/197meso2FVdwjOxF5DUiZt+YbRvcf++mOLeftP259irUMBwXH9vAB6kk
-	 I4GXrvSUlo7+vJ1fVtiw+AacqKtGO78myquhBIDeqUUVlUS8Uvz1fzeLe/pyD1O1QL
-	 De2TZ0nzvK8VsAr5mu+0OMKvNL4X7C2njuT6S9e8=
+	b=TwZbxZlWQzxkLgUmugULjfohCOX4ZBV/2nEU38Mu+DTVKlW5h6qMlEu+P+2A+s2Nt
+	 +TxrqYK21pEfddJuBCVMzlcYiCkp+gmVqAbI+d/idmyuY20ADWXCxJuJvHWmWV61d6
+	 bm7JWhzDUCLX/OGs2TYplZXl5A2ljRrXW9vIQz4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Gompa <neal@gompa.dev>,
-	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
-	James Calligeros <jcalligeros99@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 118/232] ASoC: tas2764: Extend driver to SN012776
+	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.6 003/132] rtc: cmos: use spin_lock_irqsave in cmos_interrupt
 Date: Tue,  8 Jul 2025 18:21:54 +0200
-Message-ID: <20250708162244.528147466@linuxfoundation.org>
+Message-ID: <20250708162230.864458880@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,152 +64,82 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Povišer <povik+lin@cutebit.org>
+From: Mateusz Jończyk <mat.jonczyk@o2.pl>
 
-[ Upstream commit ad18392962df46a858432839cc6bcaf2ede7cc86 ]
+commit 00a39d8652ff9088de07a6fe6e9e1893452fe0dd upstream.
 
-SN012776 is a speaker amp chip found in Apple's 2021 laptops. It appears
-similar and more-or-less compatible to TAS2764. Extend the TAS2764
-driver with some SN012776 specifics and configure the chip assuming
-it's in one of the Apple machines.
+cmos_interrupt() can be called in a non-interrupt context, such as in
+an ACPI event handler (which runs in an interrupt thread). Therefore,
+usage of spin_lock(&rtc_lock) is insecure. Use spin_lock_irqsave() /
+spin_unlock_irqrestore() instead.
 
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20250227-apple-codec-changes-v3-3-cbb130030acf@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 592ab3936b09 ("ASoC: tas2764: Reinit cache on part reset")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Before a misguided
+commit 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
+the cmos_interrupt() function used spin_lock_irqsave(). That commit
+changed it to spin_lock() and broke locking, which was partially fixed in
+commit 13be2efc390a ("rtc: cmos: Disable irq around direct invocation of cmos_interrupt()")
+
+That second commit did not take account of the ACPI fixed event handler
+pathway, however. It introduced local_irq_disable() workarounds in
+cmos_check_wkalrm(), which can cause problems on PREEMPT_RT kernels
+and are now unnecessary.
+
+Add an explicit comment so that this change will not be reverted by
+mistake.
+
+Cc: stable@vger.kernel.org
+Fixes: 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
+Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Closes: https://lore.kernel.org/all/aDtJ92foPUYmGheF@debian.local/
+Link: https://lore.kernel.org/r/20250607210608.14835-1-mat.jonczyk@o2.pl
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/tas2764.c | 43 +++++++++++++++++++++++++++++++++++---
- sound/soc/codecs/tas2764.h |  3 +++
- 2 files changed, 43 insertions(+), 3 deletions(-)
+ drivers/rtc/rtc-cmos.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index 4326555aac032..fb34d029f7a6d 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -14,6 +14,7 @@
- #include <linux/regulator/consumer.h>
- #include <linux/regmap.h>
- #include <linux/of.h>
-+#include <linux/of_device.h>
- #include <linux/slab.h>
- #include <sound/soc.h>
- #include <sound/pcm.h>
-@@ -23,6 +24,11 @@
- 
- #include "tas2764.h"
- 
-+enum tas2764_devid {
-+	DEVID_TAS2764  = 0,
-+	DEVID_SN012776 = 1
-+};
-+
- struct tas2764_priv {
- 	struct snd_soc_component *component;
- 	struct gpio_desc *reset_gpio;
-@@ -30,7 +36,8 @@ struct tas2764_priv {
- 	struct regmap *regmap;
- 	struct device *dev;
- 	int irq;
--	
-+	enum tas2764_devid devid;
-+
- 	int v_sense_slot;
- 	int i_sense_slot;
- 
-@@ -525,10 +532,16 @@ static struct snd_soc_dai_driver tas2764_dai_driver[] = {
- 	},
- };
- 
-+static uint8_t sn012776_bop_presets[] = {
-+	0x01, 0x32, 0x02, 0x22, 0x83, 0x2d, 0x80, 0x02, 0x06,
-+	0x32, 0x46, 0x30, 0x02, 0x06, 0x38, 0x40, 0x30, 0x02,
-+	0x06, 0x3e, 0x37, 0x30, 0xff, 0xe6
-+};
-+
- static int tas2764_codec_probe(struct snd_soc_component *component)
+--- a/drivers/rtc/rtc-cmos.c
++++ b/drivers/rtc/rtc-cmos.c
+@@ -697,8 +697,12 @@ static irqreturn_t cmos_interrupt(int ir
  {
- 	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
--	int ret;
-+	int ret, i;
+ 	u8		irqstat;
+ 	u8		rtc_control;
++	unsigned long	flags;
  
- 	tas2764->component = component;
+-	spin_lock(&rtc_lock);
++	/* We cannot use spin_lock() here, as cmos_interrupt() is also called
++	 * in a non-irq context.
++	 */
++	spin_lock_irqsave(&rtc_lock, flags);
  
-@@ -577,6 +590,27 @@ static int tas2764_codec_probe(struct snd_soc_component *component)
- 	if (ret < 0)
- 		return ret;
+ 	/* When the HPET interrupt handler calls us, the interrupt
+ 	 * status is passed as arg1 instead of the irq number.  But
+@@ -732,7 +736,7 @@ static irqreturn_t cmos_interrupt(int ir
+ 			hpet_mask_rtc_irq_bit(RTC_AIE);
+ 		CMOS_READ(RTC_INTR_FLAGS);
+ 	}
+-	spin_unlock(&rtc_lock);
++	spin_unlock_irqrestore(&rtc_lock, flags);
  
-+	switch (tas2764->devid) {
-+	case DEVID_SN012776:
-+		ret = snd_soc_component_update_bits(component, TAS2764_PWR_CTRL,
-+					TAS2764_PWR_CTRL_BOP_SRC,
-+					TAS2764_PWR_CTRL_BOP_SRC);
-+		if (ret < 0)
-+			return ret;
-+
-+		for (i = 0; i < ARRAY_SIZE(sn012776_bop_presets); i++) {
-+			ret = snd_soc_component_write(component,
-+						TAS2764_BOP_CFG0 + i,
-+						sn012776_bop_presets[i]);
-+
-+			if (ret < 0)
-+				return ret;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
-+
- 	return 0;
- }
+ 	if (is_intr(irqstat)) {
+ 		rtc_update_irq(p, 1, irqstat);
+@@ -1300,9 +1304,7 @@ static void cmos_check_wkalrm(struct dev
+ 	 * ACK the rtc irq here
+ 	 */
+ 	if (t_now >= cmos->alarm_expires && cmos_use_acpi_alarm()) {
+-		local_irq_disable();
+ 		cmos_interrupt(0, (void *)cmos->rtc);
+-		local_irq_enable();
+ 		return;
+ 	}
  
-@@ -708,6 +742,8 @@ static int tas2764_i2c_probe(struct i2c_client *client)
- 	if (!tas2764)
- 		return -ENOMEM;
- 
-+	tas2764->devid = (enum tas2764_devid)of_device_get_match_data(&client->dev);
-+
- 	tas2764->dev = &client->dev;
- 	tas2764->irq = client->irq;
- 	i2c_set_clientdata(client, tas2764);
-@@ -744,7 +780,8 @@ MODULE_DEVICE_TABLE(i2c, tas2764_i2c_id);
- 
- #if defined(CONFIG_OF)
- static const struct of_device_id tas2764_of_match[] = {
--	{ .compatible = "ti,tas2764" },
-+	{ .compatible = "ti,tas2764",  .data = (void *)DEVID_TAS2764 },
-+	{ .compatible = "ti,sn012776", .data = (void *)DEVID_SN012776 },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, tas2764_of_match);
-diff --git a/sound/soc/codecs/tas2764.h b/sound/soc/codecs/tas2764.h
-index 9490f2686e389..69c0f91cb4239 100644
---- a/sound/soc/codecs/tas2764.h
-+++ b/sound/soc/codecs/tas2764.h
-@@ -29,6 +29,7 @@
- #define TAS2764_PWR_CTRL_ACTIVE		0x0
- #define TAS2764_PWR_CTRL_MUTE		BIT(0)
- #define TAS2764_PWR_CTRL_SHUTDOWN	BIT(1)
-+#define TAS2764_PWR_CTRL_BOP_SRC	BIT(7)
- 
- #define TAS2764_VSENSE_POWER_EN		3
- #define TAS2764_ISENSE_POWER_EN		4
-@@ -116,4 +117,6 @@
- #define TAS2764_INT_CLK_CFG             TAS2764_REG(0x0, 0x5c)
- #define TAS2764_INT_CLK_CFG_IRQZ_CLR    BIT(2)
- 
-+#define TAS2764_BOP_CFG0                TAS2764_REG(0X0, 0x1d)
-+
- #endif /* __TAS2764__ */
--- 
-2.39.5
-
 
 
 
