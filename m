@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B383AFD0DB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A13AFD187
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:37:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10245188B0FE
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:28:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6702A541DBF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626632D9790;
-	Tue,  8 Jul 2025 16:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8460317A2E0;
+	Tue,  8 Jul 2025 16:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLTs5diG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tY22MjqN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211DA2A1BA;
-	Tue,  8 Jul 2025 16:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E2E2E427E;
+	Tue,  8 Jul 2025 16:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992072; cv=none; b=a4+nqkJRmtuj6p9lN+tBFKoQzaKtromNOO7U3IbmatQ4sa4YXscK/z/atI2NmxnoHwAk/UP3EJE8Xb/L1T8EICLxl/oEkPA40jamyUZN6F7AYyu3PuGP5b704An4FIHpnWg2HspL2tiBFvOwUpDS3gfLznHkqOV9vrWbzlOz47A=
+	t=1751992495; cv=none; b=Vu+zQYvgjPIs3G12U3KhualzG84RsFSNiKiTV2AGWuK/8i1uVGIkKqRO96ZXEdGCy/Di/JQYUAwugHbcdmGJH0x5p3DZvRS9vbExPC1hOxBX6WCSEnQqitl4TY/33ItgDU6TBerFC+5ZwyiYSexXksVQMiOWKJcsHWpjLe0OeQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992072; c=relaxed/simple;
-	bh=e7FZ7yYrAY0mWCesh2Jwc+euQ1MDJonlPK5deKtx0ZM=;
+	s=arc-20240116; t=1751992495; c=relaxed/simple;
+	bh=sWEWJmuDss8a0DwqZFnqtEZ82cNZZCNVjM1NAzL3nTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S6MPUySGVEpm+GbyV8jR5kY/WNYxAMKfwdd19NmFyBQxB2UtHir16K7KwvyqI6J7FCRckgvTbQcasDM1G2l1dRo8eEjR4/RB91omQBRix0WX3SZl9Md570/uMBuZ5EAzSe0FX6okr1h3/+W75+fHtWrvpzPLWHTxBXHCe2Ab+DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLTs5diG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DDCFC4CEED;
-	Tue,  8 Jul 2025 16:27:51 +0000 (UTC)
+	 MIME-Version; b=PXRr+SIcI0Q/2HsY+4l9ZYfDvi+fjFJ0vCpUWdsC/SvIHQfzcipmh0NEJv5mW/orOGigt/2zYHpjW3z3y1JHv7tU7U6mu3gXGKybbtAxskrky0nAmiMFdMkMmy3dimG74wQw1U7ghEy4K68ckg5ZJw5Iv46GTzyNSlWgxZNabz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tY22MjqN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBDDFC4CEF0;
+	Tue,  8 Jul 2025 16:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992072;
-	bh=e7FZ7yYrAY0mWCesh2Jwc+euQ1MDJonlPK5deKtx0ZM=;
+	s=korg; t=1751992495;
+	bh=sWEWJmuDss8a0DwqZFnqtEZ82cNZZCNVjM1NAzL3nTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLTs5diG/TVI83kmYbbFC7C3Sm+pPKuP3Cs1ZIoqNZKu8z/Bn+c+9s0o9JPBjF1Vj
-	 kjbEhbkVoZjJ6eglsHFPm9fpi3gPCFgJGR6vyahGm6mIYwbe3M0feRj81V4CZqrE4o
-	 YTCj91qk3V3zJDRmpW4smCp5pyR1ywfhAlyBCT0I=
+	b=tY22MjqNNgIO4LLwB/arEy8JDEfT4psF36zo/cWAl7q6kAlvlZIHu42zqnwlrAe8n
+	 mOvW3kjPIDIbZOVRpFWjZcVcllQ7q1HjLzvriyTln1rMw8Uv5DjYa9M0WMKUJO98EZ
+	 Kbx4kJ8AWGkNA/A3xzPl/wej/4qKAOvbuy5/WJXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 19/81] NFSv4/pNFS: Fix a race to wake on NFS_LAYOUT_DRAIN
+Subject: [PATCH 6.6 080/132] drm/simpledrm: Do not upcast in release helpers
 Date: Tue,  8 Jul 2025 18:23:11 +0200
-Message-ID: <20250708162225.537674968@linuxfoundation.org>
+Message-ID: <20250708162232.975489001@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit c01776287414ca43412d1319d2877cbad65444ac ]
+[ Upstream commit d231cde7c84359fb18fb268cf6cff03b5bce48ff ]
 
-We found a few different systems hung up in writeback waiting on the same
-page lock, and one task waiting on the NFS_LAYOUT_DRAIN bit in
-pnfs_update_layout(), however the pnfs_layout_hdr's plh_outstanding count
-was zero.
+The res pointer passed to simpledrm_device_release_clocks() and
+simpledrm_device_release_regulators() points to an instance of
+struct simpledrm_device. No need to upcast from struct drm_device.
+The upcast is harmless, as DRM device is the first field in struct
+simpledrm_device.
 
-It seems most likely that this is another race between the waiter and waker
-similar to commit ed0172af5d6f ("SUNRPC: Fix a race to wake a sync task").
-Fix it up by applying the advised barrier.
-
-Fixes: 880265c77ac4 ("pNFS: Avoid a live lock condition in pnfs_update_layout()")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 11e8f5fd223b ("drm: Add simpledrm driver")
+Cc: <stable@vger.kernel.org> # v5.14+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://lore.kernel.org/r/20250407134753.985925-2-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tiny/simpledrm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index fe0ddbce3bcb2..7f48e0d870bdb 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -1930,8 +1930,10 @@ static void nfs_layoutget_begin(struct pnfs_layout_hdr *lo)
- static void nfs_layoutget_end(struct pnfs_layout_hdr *lo)
- {
- 	if (atomic_dec_and_test(&lo->plh_outstanding) &&
--	    test_and_clear_bit(NFS_LAYOUT_DRAIN, &lo->plh_flags))
-+	    test_and_clear_bit(NFS_LAYOUT_DRAIN, &lo->plh_flags)) {
-+		smp_mb__after_atomic();
- 		wake_up_bit(&lo->plh_flags, NFS_LAYOUT_DRAIN);
-+	}
- }
+diff --git a/drivers/gpu/drm/tiny/simpledrm.c b/drivers/gpu/drm/tiny/simpledrm.c
+index 8ea120eb8674b..30676b1073034 100644
+--- a/drivers/gpu/drm/tiny/simpledrm.c
++++ b/drivers/gpu/drm/tiny/simpledrm.c
+@@ -276,7 +276,7 @@ static struct simpledrm_device *simpledrm_device_of_dev(struct drm_device *dev)
  
- static bool pnfs_is_first_layoutget(struct pnfs_layout_hdr *lo)
+ static void simpledrm_device_release_clocks(void *res)
+ {
+-	struct simpledrm_device *sdev = simpledrm_device_of_dev(res);
++	struct simpledrm_device *sdev = res;
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < sdev->clk_count; ++i) {
+@@ -374,7 +374,7 @@ static int simpledrm_device_init_clocks(struct simpledrm_device *sdev)
+ 
+ static void simpledrm_device_release_regulators(void *res)
+ {
+-	struct simpledrm_device *sdev = simpledrm_device_of_dev(res);
++	struct simpledrm_device *sdev = res;
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < sdev->regulator_count; ++i) {
 -- 
 2.39.5
 
