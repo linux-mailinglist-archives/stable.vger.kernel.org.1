@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-160956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ADC4AFD27E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5D2AFD3AD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BEFB7A9A5A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E75631894C40
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D352F37;
-	Tue,  8 Jul 2025 16:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902C42DAFAE;
+	Tue,  8 Jul 2025 16:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HW0710Lp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIYvh+4c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAC42E1C74;
-	Tue,  8 Jul 2025 16:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2AF8F5E;
+	Tue,  8 Jul 2025 16:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993181; cv=none; b=JD4Uhq6g1FJorQrcGdZE2oPSkUO5k15vUer22+zOrSAYXSY+o18pQ2SgNJO8lEV/14arRfcEKGKiWDFtnC2VZRnBbYtNYyvOVBF/Kh+t2GNfhcEDsU7f+xZ4QR7cOfXCJHzQ5YQYY2S7mpg2rJYFWKGRnuRJb9hk/v/hJb/+xHc=
+	t=1751993754; cv=none; b=HfooRXSlyrw70xnEznomo2f9RaFALf7o/+b9h6mdnNbcn1egsFwinJWmTbSzvzF3PFH7iTl3UMJOv2wIINZRWeDxK9jWKRSBy8G9EGMIRUZjpCTgYs47b0VFsA2HjfVd6gJHfPUS5wHLGRqy2BHcSGYLHynePFxcaR+jMAznnxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993181; c=relaxed/simple;
-	bh=jycD0HqVVKvJlUayjpCTqUgo24Fehg/8vDLY+HxLA3E=;
+	s=arc-20240116; t=1751993754; c=relaxed/simple;
+	bh=Nzh70/mlDp1qxqr/GnnH2nVxISXvFqcaxO7/xkj8ZFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dr2ub/SHB9qVs7g1vCayChB23NHahaZvgyk6QMJNLXnav3igqIz6vKqOZr9f5C3wMrzXrhh+iWKygxGSjBvysooq3aXIdKIaT2uDYXUJWhoiHTGomnr1+bgXZtKz4HXcAzXhBWLqDguIokhKTyCKeElnYHm327rZCYnRHTBKRdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HW0710Lp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CCFC4CEED;
-	Tue,  8 Jul 2025 16:46:20 +0000 (UTC)
+	 MIME-Version; b=nj5l6bqH7bsmqc6DaiwZUSpf/2lzK9+/cXgFcmvbSdz42xvhfYK5JcqknM0ao10+oByB5SVfHACXR6AY/wP0pvXaPS6g7YQbXBraEbBpOdnJiD9+v1rkwTmfo5K4RXwKnysPLeg21mcVlSpHl1t5YISKMDw9G27nyvQlclZhezo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIYvh+4c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA663C4CEED;
+	Tue,  8 Jul 2025 16:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993181;
-	bh=jycD0HqVVKvJlUayjpCTqUgo24Fehg/8vDLY+HxLA3E=;
+	s=korg; t=1751993754;
+	bh=Nzh70/mlDp1qxqr/GnnH2nVxISXvFqcaxO7/xkj8ZFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HW0710LpaLyN9fJaDre9OnwTOR+K5QiCUt7NfgbU9fEZHQ0l5ZMmPpOfFcMVguMnL
-	 Nzcrb7mIyLcReEHOzPXupNh7DJM1nkLwkpvFhrogaYRxXCyhjeTbhZzUr7cusdCj04
-	 wPXJopiBZfHZcQoQ3K5VCgMRWRx7pyKOH52xNhpk=
+	b=IIYvh+4cXVkFf9HPGUukkbfpw1SK9IKpJHOAEQBy3Zyfi4hbfV9/aIjrC806CZ11N
+	 xI4Do/el9KdhPHxV0vRH/Ct2qCaIC1XB70+FDskuKUu3wSYWtEphzNhZmhVkucuf6U
+	 QuubI9QlLY1hEBX/WR2wro3bj2vK/KhdWG9+RUo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.12 215/232] i2c/designware: Fix an initialization issue
-Date: Tue,  8 Jul 2025 18:23:31 +0200
-Message-ID: <20250708162247.063547138@linuxfoundation.org>
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.15 175/178] KVM: x86: Sort CPUID_8000_0021_EAX leaf bits properly
+Date: Tue,  8 Jul 2025 18:23:32 +0200
+Message-ID: <20250708162241.018040438@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael J. Ruhl <michael.j.ruhl@intel.com>
+From: Borislav Petkov <bp@alien8.de>
 
-commit 3d30048958e0d43425f6d4e76565e6249fa71050 upstream.
+Commit 49c140d5af127ef4faf19f06a89a0714edf0316f upstream.
 
-The i2c_dw_xfer_init() function requires msgs and msg_write_idx from the
-dev context to be initialized.
+WRMSR_XX_BASE_NS is bit 1 so put it there, add some new bits as
+comments only.
 
-amd_i2c_dw_xfer_quirk() inits msgs and msgs_num, but not msg_write_idx.
-
-This could allow an out of bounds access (of msgs).
-
-Initialize msg_write_idx before calling i2c_dw_xfer_init().
-
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Fixes: 17631e8ca2d3 ("i2c: designware: Add driver support for AMD NAVI GPU")
-Cc: <stable@vger.kernel.org> # v5.13+
-Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250627143511.489570-1-michael.j.ruhl@intel.com
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20250324160617.15379-1-bp@kernel.org
+[sean: skip the FSRS/FSRC placeholders to avoid confusion]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-designware-master.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kvm/cpuid.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-designware-master.c
-+++ b/drivers/i2c/busses/i2c-designware-master.c
-@@ -346,6 +346,7 @@ static int amd_i2c_dw_xfer_quirk(struct
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1164,6 +1164,7 @@ void kvm_set_cpu_caps(void)
  
- 	dev->msgs = msgs;
- 	dev->msgs_num = num_msgs;
-+	dev->msg_write_idx = 0;
- 	i2c_dw_xfer_init(dev);
- 
- 	/* Initiate messages read/write transaction */
+ 	kvm_cpu_cap_init(CPUID_8000_0021_EAX,
+ 		F(NO_NESTED_DATA_BP),
++		F(WRMSR_XX_BASE_NS),
+ 		/*
+ 		 * Synthesize "LFENCE is serializing" into the AMD-defined entry
+ 		 * in KVM's supported CPUID, i.e. if the feature is reported as
+@@ -1177,10 +1178,12 @@ void kvm_set_cpu_caps(void)
+ 		SYNTHESIZED_F(LFENCE_RDTSC),
+ 		/* SmmPgCfgLock */
+ 		F(NULL_SEL_CLR_BASE),
++		/* UpperAddressIgnore */
+ 		F(AUTOIBRS),
+ 		EMULATED_F(NO_SMM_CTL_MSR),
+ 		/* PrefetchCtlMsr */
+-		F(WRMSR_XX_BASE_NS),
++		/* GpOnUserCpuid */
++		/* EPSF */
+ 		SYNTHESIZED_F(SBPB),
+ 		SYNTHESIZED_F(IBPB_BRTYPE),
+ 		SYNTHESIZED_F(SRSO_NO),
 
 
 
