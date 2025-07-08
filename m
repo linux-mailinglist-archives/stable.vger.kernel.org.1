@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-161164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40206AFD3B3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B43CAFD1E5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19546188BD68
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC4A0166DED
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4801DB127;
-	Tue,  8 Jul 2025 16:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E4C2E3B03;
+	Tue,  8 Jul 2025 16:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usuZTLDu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RM6AsNee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2B6202F70;
-	Tue,  8 Jul 2025 16:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57822E2F0D;
+	Tue,  8 Jul 2025 16:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993781; cv=none; b=nnHTXppaIyVevLAs9HiEFiRPsPd4YNRnlH9ho9zyQSbo81c+sUqSnuuIrm/orluRK1GOT/nfjPKnAj767rEh/qUNlYzSS4g6zMnM7PF/ZcCoMmMKq2VL0xiin7G50R9bT4xLdzYsYjbBAkBOFKuHXp0I4i1nL5jQEk6n06sLv5M=
+	t=1751992724; cv=none; b=DooGV/K5jY9tMem+LJimqrFf2y+Uh4/qs4eQMdslOLIxy/3tCOMrk1LQ28Vb6hCXyVw0p1n8vwB1AAz2bSFw0oCw2NP2UUcPAgDYVB3a/xilfa/+trGuNMuf0nJyaFup3YZlpdeQuWhD2pwkghsEVBGHxKz2ubDchndj7GBqwTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993781; c=relaxed/simple;
-	bh=dEGKn04sl7WyPRSIk2F3GyRiLpOwqT1qa9pfnvqv8uE=;
+	s=arc-20240116; t=1751992724; c=relaxed/simple;
+	bh=Xe/Q9d3xqNJRibeHi0BmQnpBeM/OFQoPW64ugspSzXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3eo/RbKZeA8ViiS1A0WvR5gnYwHkZHh1D9qEYOWsHKObujrFP1Q+ACG6uqSncvmzX6bBWp9v143JrnHvxA1AX7PcQZL8r+nnM02KpV08YMmcN4XqhXjQHE94Df0EaQ8kFxIYD6t0MZ8owFS2tWypE5T4MXOh8XIqdBTFDBWUyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usuZTLDu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B37C4CEED;
-	Tue,  8 Jul 2025 16:56:20 +0000 (UTC)
+	 MIME-Version; b=tZS2M6k5my+CsNBZ49YIY0Lr2uDo+Sqiei419DKRGrIYsdwAHWUTeOd0pKhvGg8Wp4mljkVKURcNOkxt5v+8EADhWBAVqeskg2Ic2FsZR2IItumCf9m5RALDNzw+7E1BE6c/+Gir47Pbvp0PhknYmD5Li7CBBxgNnryQuKTYtew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RM6AsNee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96CFC4CEED;
+	Tue,  8 Jul 2025 16:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993780;
-	bh=dEGKn04sl7WyPRSIk2F3GyRiLpOwqT1qa9pfnvqv8uE=;
+	s=korg; t=1751992724;
+	bh=Xe/Q9d3xqNJRibeHi0BmQnpBeM/OFQoPW64ugspSzXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=usuZTLDuQKUm0gIPOx0I4Obi2vNliToadUPNa47kKTYNHnA1+BG7cDTGkq/Y0dmWz
-	 dqxeNuZ8tcsnmK6HJep2t5y9wQot/NEqlcXCWaiMud2G2gsTbz47zkN9GrFSfChIIA
-	 9HFx2aFiSHafUPjECnXZdZYKlZY5aa1Pk9GoztD4=
+	b=RM6AsNee+yuMWuf01cDEevo2x/wrvTib418mgSm2Ly9Vc3hb4sGwBh84N26tgaIOA
+	 cJ5kfu/kzAX7xPM6hFvGld3klvJW3dKiXpEs69QxTHJGY94k43Un0L2Nf/y1R7/Jvv
+	 ReqvDtTtl0J37T0/C55EXXpLsVIMsXWLQS5S5LIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yufeng <chenyufeng@iie.ac.cn>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 016/160] usb: potential integer overflow in usbg_make_tpg()
-Date: Tue,  8 Jul 2025 18:20:53 +0200
-Message-ID: <20250708162231.955493210@linuxfoundation.org>
+Subject: [PATCH 6.12 058/232] drm/exynos: fimd: Guard display clock control with runtime PM calls
+Date: Tue,  8 Jul 2025 18:20:54 +0200
+Message-ID: <20250708162242.983925178@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 153874010354d050f62f8ae25cbb960c17633dc5 ]
+[ Upstream commit 5d91394f236167ac624b823820faf4aa928b889e ]
 
-The variable tpgt in usbg_make_tpg() is defined as unsigned long and is
-assigned to tpgt->tport_tpgt, which is defined as u16. This may cause an
-integer overflow when tpgt is greater than USHRT_MAX (65535). I
-haven't tried to trigger it myself, but it is possible to trigger it
-by calling usbg_make_tpg() with a large value for tpgt.
+Commit c9b1150a68d9 ("drm/atomic-helper: Re-order bridge chain pre-enable
+and post-disable") changed the call sequence to the CRTC enable/disable
+and bridge pre_enable/post_disable methods, so those bridge methods are
+now called when CRTC is not yet enabled.
 
-I modified the type of tpgt to match tpgt->tport_tpgt and adjusted the
-relevant code accordingly.
+This causes a lockup observed on Samsung Peach-Pit/Pi Chromebooks. The
+source of this lockup is a call to fimd_dp_clock_enable() function, when
+FIMD device is not yet runtime resumed. It worked before the mentioned
+commit only because the CRTC implemented by the FIMD driver was always
+enabled what guaranteed the FIMD device to be runtime resumed.
 
-This patch is similar to commit 59c816c1f24d ("vhost/scsi: potential
-memory corruption").
+This patch adds runtime PM guards to the fimd_dp_clock_enable() function
+to enable its proper operation also when the CRTC implemented by FIMD is
+not yet enabled.
 
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
-Link: https://lore.kernel.org/r/20250415065857.1619-1-chenyufeng@iie.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 196e059a8a6a ("drm/exynos: convert clock_enable crtc callback to pipeline clock")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_tcm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_fimd.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/usb/gadget/function/f_tcm.c b/drivers/usb/gadget/function/f_tcm.c
-index 934e4b2a049ff..de54b0143894f 100644
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -1321,14 +1321,14 @@ static struct se_portal_group *usbg_make_tpg(struct se_wwn *wwn,
- 	struct usbg_tport *tport = container_of(wwn, struct usbg_tport,
- 			tport_wwn);
- 	struct usbg_tpg *tpg;
--	unsigned long tpgt;
-+	u16 tpgt;
- 	int ret;
- 	struct f_tcm_opts *opts;
- 	unsigned i;
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_fimd.c b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
+index f57df8c481391..05e4a5a63f5d8 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_fimd.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
+@@ -187,6 +187,7 @@ struct fimd_context {
+ 	u32				i80ifcon;
+ 	bool				i80_if;
+ 	bool				suspended;
++	bool				dp_clk_enabled;
+ 	wait_queue_head_t		wait_vsync_queue;
+ 	atomic_t			wait_vsync_event;
+ 	atomic_t			win_updated;
+@@ -1047,7 +1048,18 @@ static void fimd_dp_clock_enable(struct exynos_drm_clk *clk, bool enable)
+ 	struct fimd_context *ctx = container_of(clk, struct fimd_context,
+ 						dp_clk);
+ 	u32 val = enable ? DP_MIE_CLK_DP_ENABLE : DP_MIE_CLK_DISABLE;
++
++	if (enable == ctx->dp_clk_enabled)
++		return;
++
++	if (enable)
++		pm_runtime_resume_and_get(ctx->dev);
++
++	ctx->dp_clk_enabled = enable;
+ 	writel(val, ctx->regs + DP_MIE_CLKCON);
++
++	if (!enable)
++		pm_runtime_put(ctx->dev);
+ }
  
- 	if (strstr(name, "tpgt_") != name)
- 		return ERR_PTR(-EINVAL);
--	if (kstrtoul(name + 5, 0, &tpgt) || tpgt > UINT_MAX)
-+	if (kstrtou16(name + 5, 0, &tpgt))
- 		return ERR_PTR(-EINVAL);
- 	ret = -ENODEV;
- 	mutex_lock(&tpg_instances_lock);
+ static const struct exynos_drm_crtc_ops fimd_crtc_ops = {
 -- 
 2.39.5
 
