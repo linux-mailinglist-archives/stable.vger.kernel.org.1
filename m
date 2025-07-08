@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-160693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD4BAFD166
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:35:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD7FAFD358
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DFDC5413A1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:33:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17BF2188C885
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE36E2E5423;
-	Tue,  8 Jul 2025 16:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC012E54AF;
+	Tue,  8 Jul 2025 16:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gv8Zdlr0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ic5m8yJA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA091548C;
-	Tue,  8 Jul 2025 16:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253F52DCF48;
+	Tue,  8 Jul 2025 16:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992414; cv=none; b=IhJGpNB2XlNoG8EH8WYbxUid7tN66JM4yquUaoPmGSb+lfvh8MHMr3aJLfN+FBOdolAOqYnzG93b7rVA4RhNWIrLMcdP/LTOrbatmY5ihTGdv4XnyTa/s3UQ2N6FxR2tgwk2IJmZVJoXOHQDHPWDYGkdnRbxVipzlMpx2TGsi4U=
+	t=1751993564; cv=none; b=cSr2dNJVb4HYIS+PWVh9NQBwdKxJSL3CZpL0icgyeKQSEDcF0pqiC9Z1X6F50kXV3iwrVpaV1VzEfQMyVKjOlUTKwqbN9FFcaCpfbFC7/tSEkra4VCWWDRGRRXfPBuaGFTcqJUIJvaDq9jixxbzQSEcNOAALE+gF/JRFaDye06Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992414; c=relaxed/simple;
-	bh=0IXJ6JKxAXkwUtmgHj19FzryRFSjhv/miaA5dyypql4=;
+	s=arc-20240116; t=1751993564; c=relaxed/simple;
+	bh=eHJGnG0/PaC9Hg9EfcapPEOHFouI/LNkX9rFpNUDsmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cJdATxbDRKzkzIMsnwQuSPZw/95fI7NU3ySfHUTUhH7b0mH/67679leQdiuusOmt47kMPlP8rw1qGQ7M3hGCY7i5thrWdrd86GPR/h7uJKuTi/AS5WIbnOeHGH0KuZ+dNU34j+Takz9DmlipiIMvUl1zZ/sK6b8kbJn55YnuOgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gv8Zdlr0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF5CC4CEED;
-	Tue,  8 Jul 2025 16:33:33 +0000 (UTC)
+	 MIME-Version; b=O30MK535K0eML9DKW9PsstcOCjJ4hjNgE5X5cKFcdrjilRsL7np3ISntJZ+2289dM0zigQQ0yhXQrPCSb6OgQ7oXHRUCbazbL3d79CuAjTtGqQgWamm+aEI9it6UMD6mVAWoaFpXfBydk/NHf7jJmQagFmQ+8TGyT2f08bdOxZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ic5m8yJA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A073EC4CEED;
+	Tue,  8 Jul 2025 16:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992414;
-	bh=0IXJ6JKxAXkwUtmgHj19FzryRFSjhv/miaA5dyypql4=;
+	s=korg; t=1751993564;
+	bh=eHJGnG0/PaC9Hg9EfcapPEOHFouI/LNkX9rFpNUDsmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gv8Zdlr0QlOEtU8gxAPXqH3faGq1OaiSp9l1QFRqOs6BLRbUzXrr1CZtrukOTRg7+
-	 pK9h7f4U8Z0HCuWAClZ60dfzhPqHYD8BgWS6byRuKxW+wyWg4GL4dGSt4KNwReqJ9V
-	 STN4xxm60JcEcEf6EgQ9EWsiVHiAB3CMlbbZdbG0=
+	b=Ic5m8yJAOaJAXzi4aD9zu63JtuHyc5wCSU2rwv2Dv6/WnkCPG3CRfqskdin88+eHr
+	 cBnv7WJXJtwFulmtQlNz3su4ehRNVY54By1H0Co0Skq+UQlF5AS7L9vjNMmgV3+Est
+	 gj7xKwGK/QBDv/mACi97LZcEk34fdT1xuCIO8oxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	linux-cifs@vger.kernel.org,
+	Pierguido Lambri <plambri@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/132] platform/x86: firmware_attributes_class: Move include linux/device/class.h
+Subject: [PATCH 6.15 118/178] smb: client: fix native SMB symlink traversal
 Date: Tue,  8 Jul 2025 18:22:35 +0200
-Message-ID: <20250708162231.963027072@linuxfoundation.org>
+Message-ID: <20250708162239.691314084@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,179 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit d0eee1be379204d2ee6cdb09bd98b3fd0165b6d3 ]
+[ Upstream commit 3363da82e02f1bddc54faa92ea430c6532e2cd2e ]
 
-The header firmware_attributes_class.h uses 'struct class'. It should
-also include the necessary dependency header.
+We've seen customers having shares mounted in paths like /??/C:/ or
+/??/UNC/foo.example.com/share in order to get their native SMB
+symlinks successfully followed from different mounts.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://lore.kernel.org/r/20250104-firmware-attributes-simplify-v1-1-949f9709e405@weissschuh.net
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Stable-dep-of: 5ff1fbb30597 ("platform/x86: think-lmi: Fix class device unregistration")
+After commit 12b466eb52d9 ("cifs: Fix creating and resolving absolute NT-style symlinks"),
+the client would then convert absolute paths from "/??/C:/" to "/mnt/c/"
+by default.  The absolute paths would vary depending on the value of
+symlinkroot= mount option.
+
+Fix this by restoring old behavior of not trying to convert absolute
+paths by default.  Only do this if symlinkroot= was _explicitly_ set.
+
+Before patch:
+
+  $ mount.cifs //w22-fs0/test2 /mnt/1 -o vers=3.1.1,username=xxx,password=yyy
+  $ ls -l /mnt/1/symlink2
+  lrwxr-xr-x 1 root root 15 Jun 20 14:22 /mnt/1/symlink2 -> /mnt/c/testfile
+  $ mkdir -p /??/C:; echo foo > //??/C:/testfile
+  $ cat /mnt/1/symlink2
+  cat: /mnt/1/symlink2: No such file or directory
+
+After patch:
+
+  $ mount.cifs //w22-fs0/test2 /mnt/1 -o vers=3.1.1,username=xxx,password=yyy
+  $ ls -l /mnt/1/symlink2
+  lrwxr-xr-x 1 root root 15 Jun 20 14:22 /mnt/1/symlink2 -> '/??/C:/testfile'
+  $ mkdir -p /??/C:; echo foo > //??/C:/testfile
+  $ cat /mnt/1/symlink2
+  foo
+
+Cc: linux-cifs@vger.kernel.org
+Reported-by: Pierguido Lambri <plambri@redhat.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Stefan Metzmacher <metze@samba.org>
+Fixes: 12b466eb52d9 ("cifs: Fix creating and resolving absolute NT-style symlinks")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/firmware_attributes_class.c | 1 -
- drivers/platform/x86/firmware_attributes_class.h | 2 ++
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/client/fs_context.c | 17 +++++++----------
+ fs/smb/client/reparse.c    | 22 +++++++++++++---------
+ 2 files changed, 20 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/platform/x86/firmware_attributes_class.c b/drivers/platform/x86/firmware_attributes_class.c
-index dd8240009565d..4801f9f44aaa6 100644
---- a/drivers/platform/x86/firmware_attributes_class.c
-+++ b/drivers/platform/x86/firmware_attributes_class.c
-@@ -3,7 +3,6 @@
- /* Firmware attributes class helper module */
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index a634a34d4086a..59ccc2229ab30 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1824,10 +1824,14 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 			cifs_errorf(fc, "symlinkroot mount options must be absolute path\n");
+ 			goto cifs_parse_mount_err;
+ 		}
+-		kfree(ctx->symlinkroot);
+-		ctx->symlinkroot = kstrdup(param->string, GFP_KERNEL);
+-		if (!ctx->symlinkroot)
++		if (strnlen(param->string, PATH_MAX) == PATH_MAX) {
++			cifs_errorf(fc, "symlinkroot path too long (max path length: %u)\n",
++				    PATH_MAX - 1);
+ 			goto cifs_parse_mount_err;
++		}
++		kfree(ctx->symlinkroot);
++		ctx->symlinkroot = param->string;
++		param->string = NULL;
+ 		break;
+ 	}
+ 	/* case Opt_ignore: - is ignored as expected ... */
+@@ -1837,13 +1841,6 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 		goto cifs_parse_mount_err;
+ 	}
  
- #include <linux/mutex.h>
--#include <linux/device/class.h>
- #include <linux/module.h>
- #include "firmware_attributes_class.h"
+-	/*
+-	 * By default resolve all native absolute symlinks relative to "/mnt/".
+-	 * Same default has drvfs driver running in WSL for resolving SMB shares.
+-	 */
+-	if (!ctx->symlinkroot)
+-		ctx->symlinkroot = kstrdup("/mnt/", GFP_KERNEL);
+-
+ 	return 0;
  
-diff --git a/drivers/platform/x86/firmware_attributes_class.h b/drivers/platform/x86/firmware_attributes_class.h
-index 363c75f1ac1b8..8e0f47cfdf92e 100644
---- a/drivers/platform/x86/firmware_attributes_class.h
-+++ b/drivers/platform/x86/firmware_attributes_class.h
-@@ -5,6 +5,8 @@
- #ifndef FW_ATTR_CLASS_H
- #define FW_ATTR_CLASS_H
+  cifs_parse_mount_err:
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index 1c40e42e4d897..5fa29a97ac154 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -57,6 +57,7 @@ static int create_native_symlink(const unsigned int xid, struct inode *inode,
+ 	struct reparse_symlink_data_buffer *buf = NULL;
+ 	struct cifs_open_info_data data = {};
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
++	const char *symroot = cifs_sb->ctx->symlinkroot;
+ 	struct inode *new;
+ 	struct kvec iov;
+ 	__le16 *path = NULL;
+@@ -82,7 +83,8 @@ static int create_native_symlink(const unsigned int xid, struct inode *inode,
+ 		.symlink_target = symlink_target,
+ 	};
  
-+#include <linux/device/class.h>
-+
- int fw_attributes_class_get(const struct class **fw_attr_class);
- int fw_attributes_class_put(void);
+-	if (!(cifs_sb->mnt_cifs_flags & CIFS_MOUNT_POSIX_PATHS) && symname[0] == '/') {
++	if (!(cifs_sb->mnt_cifs_flags & CIFS_MOUNT_POSIX_PATHS) &&
++	    symroot && symname[0] == '/') {
+ 		/*
+ 		 * This is a request to create an absolute symlink on the server
+ 		 * which does not support POSIX paths, and expects symlink in
+@@ -92,7 +94,7 @@ static int create_native_symlink(const unsigned int xid, struct inode *inode,
+ 		 * ensure compatibility of this symlink stored in absolute form
+ 		 * on the SMB server.
+ 		 */
+-		if (!strstarts(symname, cifs_sb->ctx->symlinkroot)) {
++		if (!strstarts(symname, symroot)) {
+ 			/*
+ 			 * If the absolute Linux symlink target path is not
+ 			 * inside "symlinkroot" location then there is no way
+@@ -101,12 +103,12 @@ static int create_native_symlink(const unsigned int xid, struct inode *inode,
+ 			cifs_dbg(VFS,
+ 				 "absolute symlink '%s' cannot be converted to NT format "
+ 				 "because it is outside of symlinkroot='%s'\n",
+-				 symname, cifs_sb->ctx->symlinkroot);
++				 symname, symroot);
+ 			rc = -EINVAL;
+ 			goto out;
+ 		}
+-		len = strlen(cifs_sb->ctx->symlinkroot);
+-		if (cifs_sb->ctx->symlinkroot[len-1] != '/')
++		len = strlen(symroot);
++		if (symroot[len - 1] != '/')
+ 			len++;
+ 		if (symname[len] >= 'a' && symname[len] <= 'z' &&
+ 		    (symname[len+1] == '/' || symname[len+1] == '\0')) {
+@@ -782,6 +784,7 @@ int smb2_parse_native_symlink(char **target, const char *buf, unsigned int len,
+ 			      const char *full_path,
+ 			      struct cifs_sb_info *cifs_sb)
+ {
++	const char *symroot = cifs_sb->ctx->symlinkroot;
+ 	char sep = CIFS_DIR_SEP(cifs_sb);
+ 	char *linux_target = NULL;
+ 	char *smb_target = NULL;
+@@ -815,7 +818,8 @@ int smb2_parse_native_symlink(char **target, const char *buf, unsigned int len,
+ 		goto out;
+ 	}
  
+-	if (!(cifs_sb->mnt_cifs_flags & CIFS_MOUNT_POSIX_PATHS) && !relative) {
++	if (!(cifs_sb->mnt_cifs_flags & CIFS_MOUNT_POSIX_PATHS) &&
++	    symroot && !relative) {
+ 		/*
+ 		 * This is an absolute symlink from the server which does not
+ 		 * support POSIX paths, so the symlink is in NT-style path.
+@@ -907,15 +911,15 @@ int smb2_parse_native_symlink(char **target, const char *buf, unsigned int len,
+ 		}
+ 
+ 		abs_path_len = strlen(abs_path)+1;
+-		symlinkroot_len = strlen(cifs_sb->ctx->symlinkroot);
+-		if (cifs_sb->ctx->symlinkroot[symlinkroot_len-1] == '/')
++		symlinkroot_len = strlen(symroot);
++		if (symroot[symlinkroot_len - 1] == '/')
+ 			symlinkroot_len--;
+ 		linux_target = kmalloc(symlinkroot_len + 1 + abs_path_len, GFP_KERNEL);
+ 		if (!linux_target) {
+ 			rc = -ENOMEM;
+ 			goto out;
+ 		}
+-		memcpy(linux_target, cifs_sb->ctx->symlinkroot, symlinkroot_len);
++		memcpy(linux_target, symroot, symlinkroot_len);
+ 		linux_target[symlinkroot_len] = '/';
+ 		memcpy(linux_target + symlinkroot_len + 1, abs_path, abs_path_len);
+ 	} else if (smb_target[0] == sep && relative) {
 -- 
 2.39.5
 
