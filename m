@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-160978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B889AFD2D6
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14CD0AFD1A9
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:38:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B76CA422C0A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E01F541A92
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C713C2DC34C;
-	Tue,  8 Jul 2025 16:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF662E1C65;
+	Tue,  8 Jul 2025 16:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4ANaPB1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElWMExXA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836BD257459;
-	Tue,  8 Jul 2025 16:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02D61548C;
+	Tue,  8 Jul 2025 16:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993244; cv=none; b=kfP8mmj4N4GnMPvLdg3ezOIA5DqdH3y8OQBMB906HvWp3qrNIV8uNxCKiv6E1Gy9mAi5nQZtUZ07l48sufs+daUMqKouY/cOCmMo2Fx7nh3U1srIYM5o5BPFV/2sqx563LGrOv5HxTbEgi6DVpBFyzZh9vyngjUhREOyLXUK17s=
+	t=1751992572; cv=none; b=qGYvuzRmvzgDguxzGwAtzlIWWbpjnIByDxct0ei+WXPj8q40FeP25zl/4+CDGmbdjc45tACtU7M6PdfjlHFpC+iaTJUBi19j+BhR3S+gZoRQGDPz1hMYemQ8p9gEwOgm60n+2+AhDGd5rnBtIPvlA4U3kBnDJqSOGSBzrAgLwz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993244; c=relaxed/simple;
-	bh=iNa3AHfTAjn3ZXlQ+1O0KinpylzpJT/t3vOv/mcgYu0=;
+	s=arc-20240116; t=1751992572; c=relaxed/simple;
+	bh=RSxZ+ZFeYE+ZSD/c3zPqYdWxzC6KUuf5klcbqzeiHik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Opek62ia519nVR2G7Eg5wTNUztFsMaXo7hIII7Nou0KAWctPeqUnQvoSlYnhcudQm7vwGbrUZFtsxJNTT2F5A5j21KBfr5QNmNW3MXXSEO7jw7niARd895fSomwhSCkXx6QZehalQymT+zRSgwJeBPfWubW5yvOGXJJPMhiqqcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4ANaPB1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CCC9C4CEED;
-	Tue,  8 Jul 2025 16:47:23 +0000 (UTC)
+	 MIME-Version; b=UpaPeVsL191uhHS1VvXZ6wNnX5GHZxyOkSxZ3ZF4mtzQ600HJ1EbTV/Xi6SpRtWNOCvLCYi0lF7JUTNR3q7NaWIpd6UnGXPkcPHN6uPNXKIgmOL6emF/5m5NAXJpOUzofBwGCtEyyAumjuOQm6WHz7t4nCdT3k6B0CKMMtAMJNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElWMExXA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FFEC4CEED;
+	Tue,  8 Jul 2025 16:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993244;
-	bh=iNa3AHfTAjn3ZXlQ+1O0KinpylzpJT/t3vOv/mcgYu0=;
+	s=korg; t=1751992572;
+	bh=RSxZ+ZFeYE+ZSD/c3zPqYdWxzC6KUuf5klcbqzeiHik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4ANaPB1aiauV/KtgH3C7lK2hkdDOqpTQtnRhR8sEw7Pt+JJXuJCda1XMju1wMTmJ
-	 kD+cPc65UuJco+M+PJ2ZOZNkf/FIeV5aidCCjO0IxEkf4tWp+JPi0S8EAWJ2TkrKqD
-	 3B0s+eEccnJ12NNKG/X/NzyhPQu1s8Jj6+om1dmc=
+	b=ElWMExXAmkAFtPVBTpVfiGEKzlSHOGkSfiqFUpVJescuZ1h4Y7ZFWq1t9Yu8nFxxU
+	 HWQl2/pz3gYTs57k4DM5pP7K6abDtOEnuTodJtippC65CEsxybK3nezi9FH6qCo04h
+	 Vj58igwD0pHu7F1+BIJ+fPGgtonN9UxCtSDr/zmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.12 230/232] KVM: SVM: Advertise TSA CPUID bits to guests
+	stable <stable@kernel.org>,
+	Hongliang Yang <hongliang.yang@cixtech.com>,
+	Fugang Duan <fugang.duan@cixtech.com>,
+	Peter Chen <peter.chen@cixtech.com>
+Subject: [PATCH 6.6 115/132] usb: cdnsp: do not disable slot for disabled slot
 Date: Tue,  8 Jul 2025 18:23:46 +0200
-Message-ID: <20250708162247.445340779@linuxfoundation.org>
+Message-ID: <20250708162233.928833204@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Peter Chen <peter.chen@cixtech.com>
 
-Commit 31272abd5974b38ba312e9cf2ec2f09f9dd7dcba upstream.
+commit 7e2c421ef88e9da9c39e01496b7f5b0b354b42bc upstream.
 
-Synthesize the TSA CPUID feature bits for guests. Set TSA_{SQ,L1}_NO on
-unaffected machines.
+It doesn't need to do it, and the related command event returns
+'Slot Not Enabled Error' status.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Cc: stable <stable@kernel.org>
+Suggested-by: Hongliang Yang <hongliang.yang@cixtech.com>
+Reviewed-by: Fugang Duan <fugang.duan@cixtech.com>
+Signed-off-by: Peter Chen <peter.chen@cixtech.com>
+Link: https://lore.kernel.org/r/20250619013413.35817-1-peter.chen@cixtech.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/cpuid.c         |    8 +++++++-
- arch/x86/kvm/reverse_cpuid.h |    8 ++++++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/cdnsp-ring.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -814,6 +814,7 @@ void kvm_set_cpu_caps(void)
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -772,7 +772,9 @@ static int cdnsp_update_port_id(struct c
+ 	}
  
- 	kvm_cpu_cap_mask(CPUID_8000_0021_EAX,
- 		F(NO_NESTED_DATA_BP) | F(LFENCE_RDTSC) | 0 /* SmmPgCfgLock */ |
-+		F(VERW_CLEAR) |
- 		F(NULL_SEL_CLR_BASE) | F(AUTOIBRS) | 0 /* PrefetchCtlMsr */ |
- 		F(WRMSR_XX_BASE_NS)
- 	);
-@@ -826,6 +827,10 @@ void kvm_set_cpu_caps(void)
- 		F(PERFMON_V2)
- 	);
- 
-+	kvm_cpu_cap_init_kvm_defined(CPUID_8000_0021_ECX,
-+		F(TSA_SQ_NO) | F(TSA_L1_NO)
-+	);
+ 	if (port_id != old_port) {
+-		cdnsp_disable_slot(pdev);
++		if (pdev->slot_id)
++			cdnsp_disable_slot(pdev);
 +
- 	/*
- 	 * Synthesize "LFENCE is serializing" into the AMD-defined entry in
- 	 * KVM's supported CPUID if the feature is reported as supported by the
-@@ -1376,8 +1381,9 @@ static inline int __do_cpuid_func(struct
- 		entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
- 		break;
- 	case 0x80000021:
--		entry->ebx = entry->ecx = entry->edx = 0;
-+		entry->ebx = entry->edx = 0;
- 		cpuid_entry_override(entry, CPUID_8000_0021_EAX);
-+		cpuid_entry_override(entry, CPUID_8000_0021_ECX);
- 		break;
- 	/* AMD Extended Performance Monitoring and Debug */
- 	case 0x80000022: {
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -18,6 +18,7 @@ enum kvm_only_cpuid_leafs {
- 	CPUID_8000_0022_EAX,
- 	CPUID_7_2_EDX,
- 	CPUID_24_0_EBX,
-+	CPUID_8000_0021_ECX,
- 	NR_KVM_CPU_CAPS,
- 
- 	NKVMCAPINTS = NR_KVM_CPU_CAPS - NCAPINTS,
-@@ -68,6 +69,10 @@ enum kvm_only_cpuid_leafs {
- /* CPUID level 0x80000022 (EAX) */
- #define KVM_X86_FEATURE_PERFMON_V2	KVM_X86_FEATURE(CPUID_8000_0022_EAX, 0)
- 
-+/* CPUID level 0x80000021 (ECX) */
-+#define KVM_X86_FEATURE_TSA_SQ_NO	KVM_X86_FEATURE(CPUID_8000_0021_ECX, 1)
-+#define KVM_X86_FEATURE_TSA_L1_NO	KVM_X86_FEATURE(CPUID_8000_0021_ECX, 2)
-+
- struct cpuid_reg {
- 	u32 function;
- 	u32 index;
-@@ -98,6 +103,7 @@ static const struct cpuid_reg reverse_cp
- 	[CPUID_8000_0022_EAX] = {0x80000022, 0, CPUID_EAX},
- 	[CPUID_7_2_EDX]       = {         7, 2, CPUID_EDX},
- 	[CPUID_24_0_EBX]      = {      0x24, 0, CPUID_EBX},
-+	[CPUID_8000_0021_ECX] = {0x80000021, 0, CPUID_ECX},
- };
- 
- /*
-@@ -137,6 +143,8 @@ static __always_inline u32 __feature_tra
- 	KVM_X86_TRANSLATE_FEATURE(PERFMON_V2);
- 	KVM_X86_TRANSLATE_FEATURE(RRSBA_CTRL);
- 	KVM_X86_TRANSLATE_FEATURE(BHI_CTRL);
-+	KVM_X86_TRANSLATE_FEATURE(TSA_SQ_NO);
-+	KVM_X86_TRANSLATE_FEATURE(TSA_L1_NO);
- 	default:
- 		return x86_feature;
+ 		pdev->active_port = port;
+ 		cdnsp_enable_slot(pdev);
  	}
 
 
