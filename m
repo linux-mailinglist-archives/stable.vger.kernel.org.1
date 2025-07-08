@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-161026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DEEBAFD310
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5966AFD400
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33208188D508
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:50:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BFA148510E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BC7214A9B;
-	Tue,  8 Jul 2025 16:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4638F5E;
+	Tue,  8 Jul 2025 16:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKVDR9Jj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkq32UR2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E83A8F5E;
-	Tue,  8 Jul 2025 16:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9757F20296E;
+	Tue,  8 Jul 2025 16:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993384; cv=none; b=Jzhj7rtmqVkQtEa1hKCRP7aVO5mMZOYkxmSqCx5cN1e5Ff3BY5HHOhij8nHgIQFzAW5iYu/yPznkHDqCheLIY+se2BvX/guVRjR9vQDCtsi+mI3Ua8iGvQ6MgsVDJam8Zx/Unlz2PmnMzPg8lz9/rJPq3faFn6jwAPMxin4C11U=
+	t=1751993899; cv=none; b=ZJv2A6vkHkZaLckcEvebbwaqc/wsDEhjQHkty6kZgFd8rmIwDysZX2yGZRA7En0wARLws6irklnGwlMeIwlnL5rVrqD7xHpbATxIwjG6qSPqPO/JQJEIqiZXUyI5J+x5f0WOooIks/G5WGIf+eWaFzstO4RTk3uxW8/6fGD3Qn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993384; c=relaxed/simple;
-	bh=0AWgBvnSU1PYyRjtzl6g63vweO+4ro9ryGrqkw2SMh0=;
+	s=arc-20240116; t=1751993899; c=relaxed/simple;
+	bh=EsGUECeuU262/9k6MF8D/Bzo9ox1cy3zkxiJjfjyNhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NdxQ0aLShV8EA8vZ4KNUBGSc455PckRzSeVlfHzW/jyLX7onK/6DsC5j6tQrad/aFUyXBDHj39wQ0HLapffvd2phUbPFveDZPyDEHLAToFYm7UfM929MtwTSTAQu6MgWIKN9B4gPQBl4PUJbIVZAaHRLU68iEUS2kHZzIXgYnYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKVDR9Jj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2E9C4CEED;
-	Tue,  8 Jul 2025 16:49:43 +0000 (UTC)
+	 MIME-Version; b=mMFpm1OuC2rFwkAYwjB63kFE1ZGZjfTXYpgB9tfwBShgylLgpvJX4lsLGHo9LSMtH9f2xLb1ybVztYmKgxE8kwC7VSrilpK7TB8mpTT/7kXgJeyxZnTYn//GijzCgg8gYqCpBmhtZhxxEf++XxpMPE0yVqlK3b/o4grykXnalSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkq32UR2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A18C4CEED;
+	Tue,  8 Jul 2025 16:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993384;
-	bh=0AWgBvnSU1PYyRjtzl6g63vweO+4ro9ryGrqkw2SMh0=;
+	s=korg; t=1751993899;
+	bh=EsGUECeuU262/9k6MF8D/Bzo9ox1cy3zkxiJjfjyNhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kKVDR9JjY4ZSJRifwmut3yKmmifUaj3DH/Gpbqk2P6uU6tNBpKRfqJZFpgHTz+ROx
-	 z2ypMexObiYSv0erBMLFyMnWQq3YmkYGvkiJJ7ICek1jamxoXDF5l69IXrgBXxsMNr
-	 dI3+RMluRyzOiwJ8eHbXWqRedP8Jq8VlCRB0O6ac=
+	b=hkq32UR253YQgjKzaMPRq7aAOauO65j+cocnXrhOfZvLVejXz1DFKxXcql+zhN3oq
+	 VwJDPLQoG+9K79ROsA95xFqzZp9UcYeJJTSXJWoVMGyjeVj59gh1l7CCv4P86+P0AH
+	 MFpwgmJ4/mRHTFwIGXzInz/ccMU5jiMTHW/SADxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Andrei Borzenkov <arvidjaar@gmail.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 056/178] RDMA/mlx5: Fix CC counters query for MPV
+Subject: [PATCH 5.15 056/160] dummycon: Trigger redraw when switching consoles with deferred takeover
 Date: Tue,  8 Jul 2025 18:21:33 +0200
-Message-ID: <20250708162238.145321040@linuxfoundation.org>
+Message-ID: <20250708162233.099847543@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +66,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit acd245b1e33fc4b9d0f2e3372021d632f7ee0652 ]
+[ Upstream commit 03bcbbb3995ba5df43af9aba45334e35f2dfe27b ]
 
-In case, CC counters are querying for the second port use the correct
-core device for the query instead of always using the master core device.
+Signal vt subsystem to redraw console when switching to dummycon
+with deferred takeover enabled. Makes the console switch to fbcon
+and displays the available output.
 
-Fixes: aac4492ef23a ("IB/mlx5: Update counter implementation for dual port RoCE")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://patch.msgid.link/9cace74dcf106116118bebfa9146d40d4166c6b0.1750064969.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+With deferred takeover enabled, dummycon acts as the placeholder
+until the first output to the console happens. At that point, fbcon
+takes over. If the output happens while dummycon is not active, it
+cannot inform fbcon. This is the case if the vt subsystem runs in
+graphics mode.
+
+A typical graphical boot starts plymouth, a display manager and a
+compositor; all while leaving out dummycon. Switching to a text-mode
+console leaves the console with dummycon even if a getty terminal
+has been started.
+
+Returning true from dummycon's con_switch helper signals the vt
+subsystem to redraw the screen. If there's output available dummycon's
+con_putc{s} helpers trigger deferred takeover of fbcon, which sets a
+display mode and displays the output. If no output is available,
+dummycon remains active.
+
+v2:
+- make the comment slightly more verbose (Javier)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reported-by: Andrei Borzenkov <arvidjaar@gmail.com>
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1242191
+Tested-by: Andrei Borzenkov <arvidjaar@gmail.com>
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Fixes: 83d83bebf401 ("console/fbcon: Add support for deferred console takeover")
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v4.19+
+Link: https://lore.kernel.org/r/20250520071418.8462-1-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/counters.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/console/dummycon.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/counters.c b/drivers/infiniband/hw/mlx5/counters.c
-index 943e9eb2ad20d..a506fafd2b151 100644
---- a/drivers/infiniband/hw/mlx5/counters.c
-+++ b/drivers/infiniband/hw/mlx5/counters.c
-@@ -418,7 +418,7 @@ static int do_get_hw_stats(struct ib_device *ibdev,
- 			 */
- 			goto done;
- 		}
--		ret = mlx5_lag_query_cong_counters(dev->mdev,
-+		ret = mlx5_lag_query_cong_counters(mdev,
- 						   stats->value +
- 						   cnts->num_q_counters,
- 						   cnts->num_cong_counters,
+diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
+index d701f2b51f5b1..d99e1b3e4e5c1 100644
+--- a/drivers/video/console/dummycon.c
++++ b/drivers/video/console/dummycon.c
+@@ -82,6 +82,15 @@ static int dummycon_blank(struct vc_data *vc, int blank, int mode_switch)
+ 	/* Redraw, so that we get putc(s) for output done while blanked */
+ 	return 1;
+ }
++
++static bool dummycon_switch(struct vc_data *vc)
++{
++	/*
++	 * Redraw, so that we get putc(s) for output done while switched
++	 * away. Informs deferred consoles to take over the display.
++	 */
++	return true;
++}
+ #else
+ static void dummycon_putc(struct vc_data *vc, int c, int ypos, int xpos) { }
+ static void dummycon_putcs(struct vc_data *vc, const unsigned short *s,
+@@ -90,6 +99,10 @@ static int dummycon_blank(struct vc_data *vc, int blank, int mode_switch)
+ {
+ 	return 0;
+ }
++static bool dummycon_switch(struct vc_data *vc)
++{
++	return false;
++}
+ #endif
+ 
+ static const char *dummycon_startup(void)
+@@ -119,11 +132,6 @@ static bool dummycon_scroll(struct vc_data *vc, unsigned int top,
+ 	return false;
+ }
+ 
+-static bool dummycon_switch(struct vc_data *vc)
+-{
+-	return false;
+-}
+-
+ /*
+  *  The console `switch' structure for the dummy console
+  *
 -- 
 2.39.5
 
