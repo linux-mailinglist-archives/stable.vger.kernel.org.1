@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-161286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDA59AFD4A3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:07:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB65AFD36D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F88D1C4167E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E41318917CA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA592E6118;
-	Tue,  8 Jul 2025 17:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B922DC34C;
+	Tue,  8 Jul 2025 16:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRx2vtEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUd1GnL7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397CC1548C;
-	Tue,  8 Jul 2025 17:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A0D2F37;
+	Tue,  8 Jul 2025 16:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994137; cv=none; b=CwuX2ykrZ6iotgZT2t3p/+SMpGbrzkE9DChehnNvy3YndMOULbI10il1WS8OQwPiZCP2kgLYzlEoiBrpXuX2dVj5EnSUq3Ors42rABEgozXwvX9iMWvAp3EabF/J85AopyNWlMzJiabQZ88rpGFw/cBnnBzTOhRe4l1ZIpOSBq0=
+	t=1751993623; cv=none; b=ATJI08PJGZhGctMcRQMB8haCsNJLCAUnEYAONXPluygnA31h43g6CLTG2fwL4vd9oln260cgrEv/K55dbL9DkmVXHQ1AmuABZOrf8vQoVaZxl97WutfSDkHc0ODPSsswaYWr5FqINgdLB43fV/mqOJzYbHlbNdHHunWFxmGiq3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994137; c=relaxed/simple;
-	bh=RZ3fhRxwbYJNcFPDnmUz8koAOmZSZrWNpdXwwKHArvs=;
+	s=arc-20240116; t=1751993623; c=relaxed/simple;
+	bh=enYWOeOaAMgAlF5f16BHlPxogv/S33LQq65mKlXWlQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=feZMwKO4LpzzkJNtN2wkB5zXrUJCKd3VI+0PNYaKg/XrNE9dFC2zX/OivFRF8jqizSJP96vfryYnoV6gsG7W4S4zorCCYtdZNHIy/T86TrU/8XphLqTMCAg0YXRFuxW50WXyHCljNO0pkIh/kUoJm/e0nfyFjBn15SWx3ntlWU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRx2vtEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D9BC4CEED;
-	Tue,  8 Jul 2025 17:02:16 +0000 (UTC)
+	 MIME-Version; b=o6rRVpI3hsY72KpU3a4ZuRzrzmfLVp/RZ8wE9FbVVOYGHnr4kDPOCrtUE12KLE2xOh8PgqGE5NGDLhTUlzIP6oBRXwa2F797p5gjDuF+aQmh3RIZuszDvY9bWabFGD98Kw47ecMzG65LrqN1Ode46nbvhXYRwa7eCv8pjCUp3h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUd1GnL7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF48C4CEED;
+	Tue,  8 Jul 2025 16:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994137;
-	bh=RZ3fhRxwbYJNcFPDnmUz8koAOmZSZrWNpdXwwKHArvs=;
+	s=korg; t=1751993623;
+	bh=enYWOeOaAMgAlF5f16BHlPxogv/S33LQq65mKlXWlQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aRx2vtEgd4l5RB2s0/sI4399o1urwOfzohhBpAjmb5JvHKoVHpexET0ExSc3IJqVq
-	 WBtdE3JgNKmwzlK8YC+T/KNWiVTqjAcU/KuanbMRB8sT4MI3d6mkKATZs+5I5UMH11
-	 aeizTk6VSDuTXrsHx4lcQ0wG4j8POQHnhBbM0yUA=
+	b=GUd1GnL7CAa+YhZMIjyd1+KyolejrnxGAfXbbIlB2xFKRtPIK0c0b4ix6TPoUE2i1
+	 6IvQod0L0bgmIioFvBcFlDpYggbZy5KJymnSNzHC5tJoBsdhXDggNeE3McpPDlvvIx
+	 //qnnPD9//SqiHJrydF2EDeznnLiFbo1CwfQ9mJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 107/160] nfs: Clean up /proc/net/rpc/nfs when nfs_fs_proc_net_init() fails.
+Subject: [PATCH 6.15 107/178] drm/xe/bmg: Update Wa_14022085890
 Date: Tue,  8 Jul 2025 18:22:24 +0200
-Message-ID: <20250708162234.443607737@linuxfoundation.org>
+Message-ID: <20250708162239.427122791@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,141 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 
-[ Upstream commit e8d6f3ab59468e230f3253efe5cb63efa35289f7 ]
+[ Upstream commit a5c7dcdd969f2248cc91d65e5ac852859fc8dac2 ]
 
-syzbot reported a warning below [1] following a fault injection in
-nfs_fs_proc_net_init(). [0]
+Set GT min frequency to 1200Mhz once driver load is complete.
 
-When nfs_fs_proc_net_init() fails, /proc/net/rpc/nfs is not removed.
+v2: Review comments (Rodrigo)
+v3: Apply Wa earlier so user_req_min is not clobbered.
+v4: Apply to all GTs (Lucas)
 
-Later, rpc_proc_exit() tries to remove /proc/net/rpc, and the warning
-is logged as the directory is not empty.
-
-Let's handle the error of nfs_fs_proc_net_init() properly.
-
-[0]:
-FAULT_INJECTION: forcing a failure.
-name failslab, interval 1, probability 0, space 0, times 0
-CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
-  dump_stack_lvl (lib/dump_stack.c:123)
- should_fail_ex (lib/fault-inject.c:73 lib/fault-inject.c:174)
- should_failslab (mm/failslab.c:46)
- kmem_cache_alloc_noprof (mm/slub.c:4178 mm/slub.c:4204)
- __proc_create (fs/proc/generic.c:427)
- proc_create_reg (fs/proc/generic.c:554)
- proc_create_net_data (fs/proc/proc_net.c:120)
- nfs_fs_proc_net_init (fs/nfs/client.c:1409)
- nfs_net_init (fs/nfs/inode.c:2600)
- ops_init (net/core/net_namespace.c:138)
- setup_net (net/core/net_namespace.c:443)
- copy_net_ns (net/core/net_namespace.c:576)
- create_new_namespaces (kernel/nsproxy.c:110)
- unshare_nsproxy_namespaces (kernel/nsproxy.c:218 (discriminator 4))
- ksys_unshare (kernel/fork.c:3123)
- __x64_sys_unshare (kernel/fork.c:3190)
- do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
- entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
- </TASK>
-
-[1]:
-remove_proc_entry: removing non-empty directory 'net/rpc', leaking at least 'nfs'
- WARNING: CPU: 1 PID: 6120 at fs/proc/generic.c:727 remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
-Modules linked in:
-CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
- RIP: 0010:remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
-Code: 3c 02 00 0f 85 85 00 00 00 48 8b 93 d8 00 00 00 4d 89 f0 4c 89 e9 48 c7 c6 40 ba a2 8b 48 c7 c7 60 b9 a2 8b e8 33 81 1d ff 90 <0f> 0b 90 90 e9 5f fe ff ff e8 04 69 5e ff 90 48 b8 00 00 00 00 00
-RSP: 0018:ffffc90003637b08 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff88805f534140 RCX: ffffffff817a92c8
-RDX: ffff88807da99e00 RSI: ffffffff817a92d5 RDI: 0000000000000001
-RBP: ffff888033431ac0 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffff888033431a00
-R13: ffff888033431ae4 R14: ffff888033184724 R15: dffffc0000000000
-FS:  0000555580328500(0000) GS:ffff888124a62000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f71733743e0 CR3: 000000007f618000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  sunrpc_exit_net+0x46/0x90 net/sunrpc/sunrpc_syms.c:76
-  ops_exit_list net/core/net_namespace.c:200 [inline]
-  ops_undo_list+0x2eb/0xab0 net/core/net_namespace.c:253
-  setup_net+0x2e1/0x510 net/core/net_namespace.c:457
-  copy_net_ns+0x2a6/0x5f0 net/core/net_namespace.c:574
-  create_new_namespaces+0x3ea/0xa90 kernel/nsproxy.c:110
-  unshare_nsproxy_namespaces+0xc0/0x1f0 kernel/nsproxy.c:218
-  ksys_unshare+0x45b/0xa40 kernel/fork.c:3121
-  __do_sys_unshare kernel/fork.c:3192 [inline]
-  __se_sys_unshare kernel/fork.c:3190 [inline]
-  __x64_sys_unshare+0x31/0x40 kernel/fork.c:3190
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xcd/0x490 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa1a6b8e929
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff3a090368 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 00007fa1a6db5fa0 RCX: 00007fa1a6b8e929
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000040000080
-RBP: 00007fa1a6c10b39 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa1a6db5fa0 R14: 00007fa1a6db5fa0 R15: 0000000000000001
- </TASK>
-
-Fixes: d47151b79e32 ("nfs: expose /proc/net/sunrpc/nfs in net namespaces")
-Reported-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a4cc4ac22daa4a71b87c
-Tested-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Link: https://lore.kernel.org/r/20250612-wa-14022085890-v4-3-94ba5dcc1e30@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit bdde16c9ac5cb56ad2ee19792222fa1853577af7)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Stable-dep-of: 84c0b4a00610 ("drm/xe/bmg: Update Wa_22019338487")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/inode.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_pc.c     | 5 +++++
+ drivers/gpu/drm/xe/xe_wa_oob.rules | 4 ++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 28c24079c57a8..a8ac939edcf7e 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2457,15 +2457,26 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
- static int nfs_net_init(struct net *net)
+diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
+index 23a4c525c03bf..28b97a2c14e3b 100644
+--- a/drivers/gpu/drm/xe/xe_guc_pc.c
++++ b/drivers/gpu/drm/xe/xe_guc_pc.c
+@@ -52,6 +52,7 @@
+ 
+ #define LNL_MERT_FREQ_CAP	800
+ #define BMG_MERT_FREQ_CAP	2133
++#define BMG_MIN_FREQ		1200
+ 
+ #define SLPC_RESET_TIMEOUT_MS 5 /* roughly 5ms, but no need for precision */
+ #define SLPC_RESET_EXTENDED_TIMEOUT_MS 1000 /* To be used only at pc_start */
+@@ -817,6 +818,7 @@ void xe_guc_pc_init_early(struct xe_guc_pc *pc)
+ 
+ static int pc_adjust_freq_bounds(struct xe_guc_pc *pc)
  {
- 	struct nfs_net *nn = net_generic(net, nfs_net_id);
-+	int err;
++	struct xe_tile *tile = gt_to_tile(pc_to_gt(pc));
+ 	int ret;
  
- 	nfs_clients_init(net);
+ 	lockdep_assert_held(&pc->freq_lock);
+@@ -843,6 +845,9 @@ static int pc_adjust_freq_bounds(struct xe_guc_pc *pc)
+ 	if (pc_get_min_freq(pc) > pc->rp0_freq)
+ 		ret = pc_set_min_freq(pc, pc->rp0_freq);
  
- 	if (!rpc_proc_register(net, &nn->rpcstats)) {
--		nfs_clients_exit(net);
--		return -ENOMEM;
-+		err = -ENOMEM;
-+		goto err_proc_rpc;
- 	}
- 
--	return nfs_fs_proc_net_init(net);
-+	err = nfs_fs_proc_net_init(net);
-+	if (err)
-+		goto err_proc_nfs;
++	if (XE_WA(tile->primary_gt, 14022085890))
++		ret = pc_set_min_freq(pc, max(BMG_MIN_FREQ, pc_get_min_freq(pc)));
 +
-+	return 0;
-+
-+err_proc_nfs:
-+	rpc_proc_unregister(net, "nfs");
-+err_proc_rpc:
-+	nfs_clients_exit(net);
-+	return err;
+ out:
+ 	return ret;
  }
- 
- static void nfs_net_exit(struct net *net)
+diff --git a/drivers/gpu/drm/xe/xe_wa_oob.rules b/drivers/gpu/drm/xe/xe_wa_oob.rules
+index 9efc5accd43d1..320766f6c5dff 100644
+--- a/drivers/gpu/drm/xe/xe_wa_oob.rules
++++ b/drivers/gpu/drm/xe/xe_wa_oob.rules
+@@ -59,3 +59,7 @@ no_media_l3	MEDIA_VERSION(3000)
+ 		MEDIA_VERSION_RANGE(1301, 3000)
+ 16026508708	GRAPHICS_VERSION_RANGE(1200, 3001)
+ 		MEDIA_VERSION_RANGE(1300, 3000)
++
++# SoC workaround - currently applies to all platforms with the following
++# primary GT GMDID
++14022085890	GRAPHICS_VERSION(2001)
 -- 
 2.39.5
 
