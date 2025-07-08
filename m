@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-160625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29DD0AFD0FB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B38AFD327
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 465E9486567
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:29:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 481BB16D2E2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79EF217F56;
-	Tue,  8 Jul 2025 16:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949E22E266B;
+	Tue,  8 Jul 2025 16:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iclpobVk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LU23Pm34"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8367C2DF3DA;
-	Tue,  8 Jul 2025 16:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537EE8F5E;
+	Tue,  8 Jul 2025 16:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992208; cv=none; b=ayXrKGDnGkWFsv53V0VvLTEfBVDnGJcoWMePol1iECAAMW6MVhY6LJ4Z8tQJ9R9PBdBx+6K72RY2norSLSKex8Bijgv531aDrkWL0PN7PAYZZwRGygQ8zZ7kRG26v/RaOXYlPiL06Nogvk9YxFQ99DRrEcc2LaN8VYgYmMw2Or8=
+	t=1751993460; cv=none; b=reRZIwi2YnS66AVWyD6d3Tb10PGkaN5ClKhYHQd2Fka09X5ZmehIoMWy+tYLoi88yM08Zkw/OQL8NRs/8umxJuf3tdbTYIg59zjMVR+9uKwh6clnzFwYwH8Vshfn52Zbqn+H0g7xv+x3p2WrF7WJ9hvlCLqmZGZ/DfbP/MPzChw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992208; c=relaxed/simple;
-	bh=zQ3m4GEle6MQldJtvBdKY2QoCnW8bYkB1RF1DvlA69M=;
+	s=arc-20240116; t=1751993460; c=relaxed/simple;
+	bh=++aSUM91gXIxqUG1gIBCRJwxNY1JagS84WKIfP9PWvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mWF/Ik8sIATKXCsATSBbSSkTLouYLUrZyBpM6C0Z00xeGPNBehTQW+tnUB7igaTlFwUz6O7pOd8S8j5+Nxf+0KD6Tt6LO59X9OQVJZd7Y/hyQZoglNCMxkfrVBNW6keNRrAkG73TqApskxaJ9CnF4KLVUMZPC2hshr6f48jbYUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iclpobVk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F54C4CEED;
-	Tue,  8 Jul 2025 16:30:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HxnTVsmlZoM1IjaRDQJi8WdNxcZOZIc7MdWCmWuAcCzZpSIBRYp/+k9g8bPRDvTcS+tr02suqPyZ0pEWVaT+A7cOm9+xqcBrLQbmGM1t3+9DhPa7MW/1I573P5sdJiDbSli2GttbTS8rPB2xjlMz61u5ly3xpdAWNhdgFlH3tXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LU23Pm34; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF819C4CEED;
+	Tue,  8 Jul 2025 16:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992208;
-	bh=zQ3m4GEle6MQldJtvBdKY2QoCnW8bYkB1RF1DvlA69M=;
+	s=korg; t=1751993460;
+	bh=++aSUM91gXIxqUG1gIBCRJwxNY1JagS84WKIfP9PWvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iclpobVkYYOPJn54/cAcK0qHGkKuFp8PEdGxqpG1w9aICC0AaRPPjeKnaZXA6G4Cw
-	 1Q9Yks/UUnEM3BXq15geaaFghibwrzdQWmB9bl6XBqjtkR4lTNUAGvYesuuggRz7fa
-	 g1YjrSK4ki1PM9fRLZ2eblmvXmncPAA2GMDHBojQ=
+	b=LU23Pm343MDz+H1E7oiI+1EXLVez4OYSPQEezBRCWj483wK5hmq9wTaMLOnCfT7gX
+	 piHezPUCCK23B2tptpnLSy6cUKgSJUyH7icf+Ygla9D0qJAc96K7WqfwfTcoL9X/lu
+	 V40aDYlF/gwleTkP9qTRcEgifvgDowu0ez2X66W4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erick Shepherd <erick.shepherd@ni.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jonathan Liu <net147@gmail.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 008/132] Revert "mmc: sdhci: Disable SD card clock before changing parameters"
+	Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 082/178] platform/x86: think-lmi: Fix class device unregistration
 Date: Tue,  8 Jul 2025 18:21:59 +0200
-Message-ID: <20250708162231.002292733@linuxfoundation.org>
+Message-ID: <20250708162238.822498841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Kurt Borja <kuurtb@gmail.com>
 
-commit dcc3bcfc5b50c625b475dcc25d167b6b947a6637 upstream.
+[ Upstream commit 5ff1fbb3059730700b4823f43999fc1315984632 ]
 
-It has turned out the trying to strictly conform to the SDHCI specification
-is causing problems. Let's revert and start over.
+Devices under the firmware_attributes_class do not have unique a dev_t.
+Therefore, device_unregister() should be used instead of
+device_destroy(), since the latter may match any device with a given
+dev_t.
 
-This reverts commit fb3bbc46c94f261b6156ee863c1b06c84cf157dc.
-
-Cc: Erick Shepherd <erick.shepherd@ni.com>
-Cc: stable@vger.kernel.org
-Fixes: fb3bbc46c94f ("mmc: sdhci: Disable SD card clock before changing parameters")
-Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
-Reported-by: Jonathan Liu <net147@gmail.com>
-Reported-by: Salvatore Bonaccorso <carnil@debian.org>
-Closes: https://bugs.debian.org/1108065
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20250624110932.176925-1-ulf.hansson@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250625-dest-fix-v1-2-3a0f342312bb@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/platform/x86/think-lmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -2035,15 +2035,10 @@ void sdhci_set_clock(struct sdhci_host *
+diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
+index 00b1e7c79a3d1..28ce475f6c377 100644
+--- a/drivers/platform/x86/think-lmi.c
++++ b/drivers/platform/x86/think-lmi.c
+@@ -1554,7 +1554,7 @@ static int tlmi_sysfs_init(void)
+ fail_create_attr:
+ 	tlmi_release_attr();
+ fail_device_created:
+-	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
++	device_unregister(tlmi_priv.class_dev);
+ fail_class_created:
+ 	return ret;
+ }
+@@ -1781,7 +1781,7 @@ static int tlmi_analyze(struct wmi_device *wdev)
+ static void tlmi_remove(struct wmi_device *wdev)
+ {
+ 	tlmi_release_attr();
+-	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
++	device_unregister(tlmi_priv.class_dev);
+ }
  
- 	host->mmc->actual_clock = 0;
- 
--	clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
--	if (clk & SDHCI_CLOCK_CARD_EN)
--		sdhci_writew(host, clk & ~SDHCI_CLOCK_CARD_EN,
--			SDHCI_CLOCK_CONTROL);
-+	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
- 
--	if (clock == 0) {
--		sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
-+	if (clock == 0)
- 		return;
--	}
- 
- 	clk = sdhci_calc_clk(host, clock, &host->mmc->actual_clock);
- 	sdhci_enable_clk(host, clk);
+ static int tlmi_probe(struct wmi_device *wdev, const void *context)
+-- 
+2.39.5
+
 
 
 
