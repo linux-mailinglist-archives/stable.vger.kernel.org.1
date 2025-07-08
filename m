@@ -1,208 +1,128 @@
-Return-Path: <stable+bounces-160476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0A2AFC807
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 12:12:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDA9AFC874
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 12:29:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40A9E166275
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 10:12:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C3B77A28C6
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 10:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F0272610;
-	Tue,  8 Jul 2025 10:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0802853EB;
+	Tue,  8 Jul 2025 10:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=innosonix.de header.i=@innosonix.de header.b="c8aOyglP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NEkRfZLO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B05522DFB8
-	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 10:12:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B022322F74D;
+	Tue,  8 Jul 2025 10:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751969560; cv=none; b=ahOtiwvvnnb1h87dxlafxxh1ZFeG8NtMsNzsogygDWX9nX9ocRViK6es+cvBSzp0IfnvlPgNK0+fztS/jMz5dbhKn7xKg0fHqrGX5QaqAy/BaiR9WD4sf1i1AzO2/+spHxKupilZv/+7aIiktIPtZTiGj/1hfZP2pa4ridkYDO0=
+	t=1751970533; cv=none; b=GsUTcOUmi9k2SyPougg+5T1igKElvteoot07Kxq2Rdv0w3K5DxaWe4Sts/WwaixZSVpPFAy6yQbcH9KP11yfXBkXeRevvQ3g+BiNy9YkBtywCsht3uEYzQ2x+ojzlcxE0zyjbxyKWFHlAmnYT8Iz9opztGh4+BLGzJFRx1AUBiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751969560; c=relaxed/simple;
-	bh=lIdIuh0O/t3n7LtVB2cUksJC30jNSXA/jpebYB6unRI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mHTgzBd1bOpX0/8KFvEXWJNkowXPSriav/33kj5gPbwAIMu3KvM34GMO33UyIWELRvZLkXrqBPejMz2oZTgoT5Lo2oshmmNInSN1x0NbFENKtStTxUoi32RzhH7tPKeBe7fNpkYnMD1HP2kkowrfpl/np7Gy6nq9a5h/Y3uRvQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innosonix.de; spf=pass smtp.mailfrom=innosonix.de; dkim=pass (2048-bit key) header.d=innosonix.de header.i=@innosonix.de header.b=c8aOyglP; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innosonix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=innosonix.de
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3a524caf77eso582060f8f.3
-        for <stable@vger.kernel.org>; Tue, 08 Jul 2025 03:12:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=innosonix.de; s=google; t=1751969557; x=1752574357; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gmX1zBN33lB4gzLUkNPqUBTAn0Dd9jMDbw1KtlNeu0A=;
-        b=c8aOyglPhAN3DKMubS+9WQx54KbgiTKrwdmw8nHaXx52FM8pgsiVQ1UmP9WPPXInl4
-         jcFdNP3pV6Sy8/MWJSBQznMMUk2WpiA6buMg5+kTgRiFyqLH4czVn1eRdS2bkCY2mTr6
-         ZaGou8XAC6o/xiAWnOYIuu834v6yWbLdSyHLnT9HkgSOHRkyKnh5Dgw0qIoiOy+l1KcL
-         4q/xI2oSc4D8+2WeJw80J9LN+UNTWmAV+AuQ4ZZqKBuliHIn4uheXP5N+aKaMPNHsgug
-         qeoQMoQUG3Yrgkbui+H3sbcBw3KirpVZZJ4zccbXeh+PJhEI1n/1yz9qyxmxThGChJN+
-         d2rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751969557; x=1752574357;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gmX1zBN33lB4gzLUkNPqUBTAn0Dd9jMDbw1KtlNeu0A=;
-        b=AmhZc8a+Ov/sbfjYUOAFKVjtabcIO3JvlaWh/Rb8YdZGY5xlazmTy5xefK+EMDI6lN
-         j1lbhm2C+rw76h42jNkvJaOZDZeVFJcKrdVHQs2yB8fUab2x349orhCxlMFZy1xH+fY/
-         eYJQu1iDGLrcwcns5J1uy4KvQOduPlqMN6HX/s4f+hT25dLAA5Fpv1nc4rg27AW5UeY+
-         P+i5PbHpA6Olrz2ZO9SVqcpIlVWpadhuvjBZvYgt44wMMk6soziinJ8OWvszpIMpBU8Q
-         51/FvL31H3T4xViUCQ4uV1x8Nb/yIxfbMP3+6X++eOIjWFNCI8oxVXMMGUWN29Og8ONL
-         5JGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWw8Qf+Epczgpm/BBeBTe5rstcyBE9nELPXub29G13rc0EIDRN8r7lMBCAnuAgmQ9WeeIlg08Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSf5uTA178tNWJewzoqvO7Uzf5r8A8l8DezjLhJzhQY5YgUBbI
-	QHfDne1mUq5F/7iVgFwSmyzagU0IWH4QVh4QVhAvOeTehjRoM3Cfby8ilheLE3uC5NY5aak0R5b
-	UhiEaI7IrDzh56vQSWPS9NTiVEUNggrP/CiN9zj4K5mMnP9n7EDM=
-X-Gm-Gg: ASbGncvHGQ/buU/kPdo3BqjrGGivLe03yLjijsmC4p0xrsoAnvTF+wWKajr9Ty3kKDa
-	pzU8kUIrF75PHmZaTcXqys0xBE/4Ab4k/VUvDEOUseB+XWi3upk4Hkpih1HhJ5keHupj0/a3CzO
-	rTvPQrtmAId7rArawESvbNBKCxHn9/D1clNB+BHpOLcwT2zmXGHdOnXM3OKPKsibYdUeZKGfl3A
-	MICqqzr5MlBG3gE48VNMnObNAAkuxIviGViGVk8HLjiiuKxNc8rucCiVn6FZnOsUA2bqXSroVjU
-	PHidWZMKhoq5tIEQp8RBue73jjeraBlW9UodD+GQjfHF3rzq0JOYdzFQVkRRMbkPKLjeUIa9Adl
-	joNuWFPHuoUaCicEG66BFkg==
-X-Google-Smtp-Source: AGHT+IED26y+n9j+5pBqdocpELjkLG6eOq39ZrvJ+qRhatVN4TQ5wRzgtBzDH16tDXGPwRZX5wMJRA==
-X-Received: by 2002:a05:6000:310a:b0:3a6:d30e:6fd3 with SMTP id ffacd0b85a97d-3b4965ffca6mr4118923f8f.10.1751969556510;
-        Tue, 08 Jul 2025 03:12:36 -0700 (PDT)
-Received: from steffen-linux.. (p57b79c3d.dip0.t-ipconnect.de. [87.183.156.61])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b47225a2e8sm12558121f8f.75.2025.07.08.03.12.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jul 2025 03:12:35 -0700 (PDT)
-From: =?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>
-To: 
-Cc: =?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>,
-	stable@vger.kernel.org,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4] nvmem: imx-ocotp: fix MAC address byte length
-Date: Tue,  8 Jul 2025 12:12:00 +0200
-Message-ID: <20250708101206.70793-1-steffen@innosonix.de>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1751970533; c=relaxed/simple;
+	bh=WAjiCvboyp+3JyFm44Np/epMYeJ/HardsZ0LS2Z1FaY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jAIbmCIJJW0nPVs2fdMrNdGvh8PEFQrmeZm/FAsU8KnGKLvl4+L0nL8j+leIJFg3dxJqEgJhuSgcRTuDOiL18X0aLa7ZHz4M8uLPg+cPGa5O8aWwGHrKIMnr2ew2KJN1eZn0lzgLr21gC1L8Cw3kl04Xf6AF7w23lI4e2zXTIx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NEkRfZLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C7CC4CEED;
+	Tue,  8 Jul 2025 10:28:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751970533;
+	bh=WAjiCvboyp+3JyFm44Np/epMYeJ/HardsZ0LS2Z1FaY=;
+	h=From:Date:Subject:To:Cc:From;
+	b=NEkRfZLOPxhCjjMTDs8ZHV3gmcJafeh2WdtkBBvzZEVT4MvSr4I9SAd/h/a+V6g37
+	 25hvhcbH4Odt9MxHh+k/vvTBXX+178i9JxYES2bpglRgkujAKoksZJnMxfuhZQ1nWQ
+	 gG333jF6dYbqivGAnjEnh/LMWgm+8N3ZpQqXbZHBcC6wwSd3+beMv+9Ba//5d8WKk7
+	 4OI/hGyTgvVizz5zkuoTNt8TYca9HkqnO4n05IuvMig5NWBTjbAkJ80wDyIMMlfpJ1
+	 RyvKvViZ++FE07Ydg4TgMS5DHb3+3VFEEpOTUXJErNCoEHTLkyKkYRNJ6lIY3pSQ/x
+	 K2PgijR6KBjOQ==
+From: Konrad Dybcio <konradybcio@kernel.org>
+Date: Tue, 08 Jul 2025 12:28:42 +0200
+Subject: [PATCH] arm64: dts: qcom: qcm2290: Disable USB SS bus instances in
+ park mode
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250708-topic-2290_usb-v1-1-661e70a63339@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIANnybGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDcwML3ZL8gsxkXSMjS4P40uIkXTMzY6M0Q6NU0+QUMyWgpoKi1LTMCrC
+ B0bG1tQDWBXmpYAAAAA==
+X-Change-ID: 20250708-topic-2290_usb-6632f12e5cd6
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Marijn Suijten <marijn.suijten@somainline.org>, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, stable@vger.kernel.org, 
+ Rob Clark <robin.clark@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751970529; l=1791;
+ i=konrad.dybcio@oss.qualcomm.com; s=20230215; h=from:subject:message-id;
+ bh=dTNWeKPTeQhzcHl+gyzKi31A+qFWu41fN7Ysr/rjASs=;
+ b=2Dz+5LpI5nzETphYdZE0zKLuRf5X9t0/IaCe1hpevfHWf/KuCoSXrTMZAkaaTN+k857naO4TU
+ ObpB+5GrOEbA7efJQ/AqckivKm2P/72GQZoMYtKxTkmARqc/NnxvVEO
+X-Developer-Key: i=konrad.dybcio@oss.qualcomm.com; a=ed25519;
+ pk=iclgkYvtl2w05SSXO5EjjSYlhFKsJ+5OSZBjOkQuEms=
 
-The commit "13bcd440f2ff nvmem: core: verify cell's raw_len" caused an
-extension of the "mac-address" cell from 6 to 8 bytes due to word_size
-of 4 bytes. This led to a required byte swap of the full buffer length,
-which caused truncation of the mac-address when read.
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-Previously, the mac-address was incorrectly truncated from=20
-70:B3:D5:14:E9:0E to 00:00:70:B3:D5:14.
+2290 was found in the field to also require this quirk, as long &
+high-bandwidth workloads (e.g. USB ethernet) are consistently able to
+crash the controller otherwise.
 
-Fix the issue by swapping only the first 6 bytes to correctly pass the
-mac-address to the upper layers.
+The same change has been made for a number of SoCs in [1], but QCM2290
+somehow escaped the list (even though the very closely related SM6115
+was there).
 
-Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
+Upon a controller crash, the log would read:
+
+xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+xhci-hcd.12.auto: HC died; cleaning up
+
+Add snps,parkmode-disable-ss-quirk to the DWC3 instance in order to
+prevent the aforementioned breakage.
+
+[1] https://lore.kernel.org/all/20240704152848.3380602-1-quic_kriskura@quicinc.com/
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Steffen B=C3=A4tz <steffen@innosonix.de>
-Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reported-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: a64a0192b70c ("arm64: dts: qcom: Add initial QCM2290 device tree")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 ---
-v4:
-- Adopted the commit message wording recommended by=20
-Frank.li@nxp.com to improve clarity.
-- Simplified byte count determination by using min() instead of an=20
-explicit conditional statement.
-- Kept the Tested-by tag from the previous patch as the change=20
-remains trivial but tested.
-v3:
-- replace magic number 6 with ETH_ALEN
-- Fix misleading indentation and properly group 'mac-address' statements
-v2:
-- Add Cc: stable@vger.kernel.org as requested by Greg KH's patch bot
- drivers/nvmem/imx-ocotp-ele.c | 5 ++++-
- drivers/nvmem/imx-ocotp.c     | 5 ++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/qcm2290.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
-index ca6dd71d8a2e..7807ec0e2d18 100644
---- a/drivers/nvmem/imx-ocotp-ele.c
-+++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -12,6 +12,7 @@
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
-+#include <linux/if_ether.h>	/* ETH_ALEN */
-=20
- enum fuse_type {
- 	FUSE_FSB =3D BIT(0),
-@@ -118,9 +119,11 @@ static int imx_ocotp_cell_pp(void *context, const char=
- *id, int index,
- 	int i;
-=20
- 	/* Deal with some post processing of nvmem cell data */
--	if (id && !strcmp(id, "mac-address"))
-+	if (id && !strcmp(id, "mac-address")) {
-+		bytes =3D min(bytes, ETH_ALEN);
- 		for (i =3D 0; i < bytes / 2; i++)
- 			swap(buf[i], buf[bytes - i - 1]);
-+	}
-=20
- 	return 0;
- }
-diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
-index 79dd4fda0329..7bf7656d4f96 100644
---- a/drivers/nvmem/imx-ocotp.c
-+++ b/drivers/nvmem/imx-ocotp.c
-@@ -23,6 +23,7 @@
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/delay.h>
-+#include <linux/if_ether.h>	/* ETH_ALEN */
-=20
- #define IMX_OCOTP_OFFSET_B0W0		0x400 /* Offset from base address of the
- 					       * OTP Bank0 Word0
-@@ -227,9 +228,11 @@ static int imx_ocotp_cell_pp(void *context, const char=
- *id, int index,
- 	int i;
-=20
- 	/* Deal with some post processing of nvmem cell data */
--	if (id && !strcmp(id, "mac-address"))
-+	if (id && !strcmp(id, "mac-address")) {
-+		bytes =3D min(bytes, ETH_ALEN);
- 		for (i =3D 0; i < bytes / 2; i++)
- 			swap(buf[i], buf[bytes - i - 1]);
-+	}
-=20
- 	return 0;
- }
---=20
-2.43.0
+diff --git a/arch/arm64/boot/dts/qcom/qcm2290.dtsi b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
+index fa24b77a31a7504020390522fabb0b783d897366..6b7070dad3df946649660eac1d087c0e8b6fe26d 100644
+--- a/arch/arm64/boot/dts/qcom/qcm2290.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
+@@ -1454,6 +1454,7 @@ usb_dwc3: usb@4e00000 {
+ 				snps,has-lpm-erratum;
+ 				snps,hird-threshold = /bits/ 8 <0x10>;
+ 				snps,usb3_lpm_capable;
++				snps,parkmode-disable-ss-quirk;
+ 				maximum-speed = "super-speed";
+ 				dr_mode = "otg";
+ 				usb-role-switch;
 
+---
+base-commit: 26ffb3d6f02cd0935fb9fa3db897767beee1cb2a
+change-id: 20250708-topic-2290_usb-6632f12e5cd6
 
---=20
+Best regards,
+-- 
+Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-
-*innosonix GmbH*
-Hauptstr. 35
-96482 Ahorn
-central: +49 9561 7459980
-www.innosonix.de <http://www.innosonix.de>
-
-innosonix GmbH
-Gesch=C3=A4ftsf=C3=BChrer:=20
-Markus B=C3=A4tz, Steffen B=C3=A4tz
-USt.-IdNr / VAT-Nr.: DE266020313
-EORI-Nr.:=20
-DE240121536680271
-HRB 5192 Coburg
-WEEE-Reg.-Nr. DE88021242
 
