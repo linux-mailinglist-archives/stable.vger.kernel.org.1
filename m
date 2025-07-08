@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-160836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA7CAFD234
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE3CAFD30E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56712189EEB3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCB8016361F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A255A2E5413;
-	Tue,  8 Jul 2025 16:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D46F217722;
+	Tue,  8 Jul 2025 16:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImrHY9HE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYqWh6M1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB8A2E540C;
-	Tue,  8 Jul 2025 16:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E112045B5;
+	Tue,  8 Jul 2025 16:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992831; cv=none; b=fBiXGtJeUeAE5Urf3zsamhgmNynA/rxo1Pi6hkEiglLSMfqHgz4sjPD3cKo0afOevuN0NvgX0HFzk6I63ewtCTWOHcY1afVrVixUEwh4C15L1SB7CS2bHSJhAK5+dgrLmSA/mtGQaJri1YhMsxrqtNPP1DudULDWnXYHDu1uKvc=
+	t=1751993376; cv=none; b=SbPyrkOImMiToicFP46AaXri6WJj0rHnd2vQHkpTa/Xr5JQYusafKtOM+TLpFuyV4HFM396YgUx+n5doAUYAoQmo31zGbaw/vdUkZyN/68J2CcIoyaNU+tgYbW87GRq+ochzQ0KRw4cOy0nQ7a/6M7hXJl7eTik1vvuLwolWytQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992831; c=relaxed/simple;
-	bh=ZB6G23KGTDbiwlwDJTWlW08ZzYgg++FXHeJVXEeTw44=;
+	s=arc-20240116; t=1751993376; c=relaxed/simple;
+	bh=5mjJHZKI6onLlVtqCdErGNDNPfGhOgI+la4krlVY4pA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sPFs22lVleitNPi+dePFfpH/LPnAtPldgm8mZz4V/SFZzTqRdLwkKBXoOpiFFw78RFAVMk5ZQTmKW31pCXC0ya+JxeZ284bNOvpJxsXK5AjdvPVlUllzvBk0OfYeanMx0/KDKKoAY8xpXi7r78q18fCNvLvMdYS/ISL1pAgaeMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImrHY9HE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7EDC4CEED;
-	Tue,  8 Jul 2025 16:40:30 +0000 (UTC)
+	 MIME-Version; b=VsLU/bKD7H1/+umPc4KsKKabnYrzxen8PJG+08KsUBD7UxcoJcyifytSzqy5Y216KicJyCTqmKYnk/csUwZCqx+ntAMSNviXVDtF1q4az8SRWyenynKm2pK1I7RwOomx5xwrq3RIWoFOSqJ9PtVb0AyF1igFjVbnLiXgL4EYuDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYqWh6M1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E542C4CEF0;
+	Tue,  8 Jul 2025 16:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992831;
-	bh=ZB6G23KGTDbiwlwDJTWlW08ZzYgg++FXHeJVXEeTw44=;
+	s=korg; t=1751993375;
+	bh=5mjJHZKI6onLlVtqCdErGNDNPfGhOgI+la4krlVY4pA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImrHY9HEk/waMuEKaCWggMiyqgT08HUBKiZpClL7UyZhNd9nMsBkMeudj9jpFMIAl
-	 mTeL7SHUrAPWgEUDdGWpcd7s2Kt3t5xBZXZeYnITKmwq4WNgU9GdsMZXH/LJvF1fbu
-	 8Lo0h0s+osqNr+n46JYsSKOtbNs514zH+S1VUrZw=
+	b=cYqWh6M1WqmItQGDwBAj8jyMbvJNc65YV3OvZOzwcHr40QUSAX2PTaPL9Yb0/wBA5
+	 SWB3DWNqzNrWFiJHV03SuStHSFjhTriFuBTrjcsgCkmJXC1I+zGny8/OwDRaK8LQaE
+	 s/B2bWjAwBKhk16xO8cLEd2kz57Fs6tmJjDs3HEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Avri Altman <avri.altman@sandisk.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 094/232] crypto: iaa - Remove dst_null support
+Subject: [PATCH 6.15 053/178] scsi: ufs: core: Fix spelling of a sysfs attribute name
 Date: Tue,  8 Jul 2025 18:21:30 +0200
-Message-ID: <20250708162243.908772419@linuxfoundation.org>
+Message-ID: <20250708162238.068089112@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,249 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 02c974294c740bfb747ec64933e12148eb3d99e1 ]
+[ Upstream commit 021f243627ead17eb6500170256d3d9be787dad8 ]
 
-Remove the unused dst_null support.
+Change "resourse" into "resource" in the name of a sysfs attribute.
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: cc98d8ce934b ("crypto: iaa - Do not clobber req->base.data")
+Fixes: d829fc8a1058 ("scsi: ufs: sysfs: unit descriptor")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20250624181658.336035-1-bvanassche@acm.org
+Reviewed-by: Avri Altman <avri.altman@sandisk.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/iaa/iaa_crypto_main.c | 136 +--------------------
- 1 file changed, 6 insertions(+), 130 deletions(-)
+ Documentation/ABI/testing/sysfs-driver-ufs | 2 +-
+ drivers/ufs/core/ufs-sysfs.c               | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index e1f60f0f507c9..711c6e8914978 100644
---- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
-+++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -1126,8 +1126,7 @@ static int iaa_compress(struct crypto_tfm *tfm,	struct acomp_req *req,
- 			struct idxd_wq *wq,
- 			dma_addr_t src_addr, unsigned int slen,
- 			dma_addr_t dst_addr, unsigned int *dlen,
--			u32 *compression_crc,
--			bool disable_async)
-+			u32 *compression_crc)
- {
- 	struct iaa_device_compression_mode *active_compression_mode;
- 	struct iaa_compression_ctx *ctx = crypto_tfm_ctx(tfm);
-@@ -1170,7 +1169,7 @@ static int iaa_compress(struct crypto_tfm *tfm,	struct acomp_req *req,
- 	desc->src2_size = sizeof(struct aecs_comp_table_record);
- 	desc->completion_addr = idxd_desc->compl_dma;
+diff --git a/Documentation/ABI/testing/sysfs-driver-ufs b/Documentation/ABI/testing/sysfs-driver-ufs
+index e36d2de16cbda..0397664e869a0 100644
+--- a/Documentation/ABI/testing/sysfs-driver-ufs
++++ b/Documentation/ABI/testing/sysfs-driver-ufs
+@@ -711,7 +711,7 @@ Description:	This file shows the thin provisioning type. This is one of
  
--	if (ctx->use_irq && !disable_async) {
-+	if (ctx->use_irq) {
- 		desc->flags |= IDXD_OP_FLAG_RCI;
+ 		The file is read only.
  
- 		idxd_desc->crypto.req = req;
-@@ -1183,7 +1182,7 @@ static int iaa_compress(struct crypto_tfm *tfm,	struct acomp_req *req,
- 			" src_addr %llx, dst_addr %llx\n", __func__,
- 			active_compression_mode->name,
- 			src_addr, dst_addr);
--	} else if (ctx->async_mode && !disable_async)
-+	} else if (ctx->async_mode)
- 		req->base.data = idxd_desc;
- 
- 	dev_dbg(dev, "%s: compression mode %s,"
-@@ -1204,7 +1203,7 @@ static int iaa_compress(struct crypto_tfm *tfm,	struct acomp_req *req,
- 	update_total_comp_calls();
- 	update_wq_comp_calls(wq);
- 
--	if (ctx->async_mode && !disable_async) {
-+	if (ctx->async_mode) {
- 		ret = -EINPROGRESS;
- 		dev_dbg(dev, "%s: returning -EINPROGRESS\n", __func__);
- 		goto out;
-@@ -1224,7 +1223,7 @@ static int iaa_compress(struct crypto_tfm *tfm,	struct acomp_req *req,
- 
- 	*compression_crc = idxd_desc->iax_completion->crc;
- 
--	if (!ctx->async_mode || disable_async)
-+	if (!ctx->async_mode)
- 		idxd_free_desc(wq, idxd_desc);
- out:
- 	return ret;
-@@ -1490,13 +1489,11 @@ static int iaa_comp_acompress(struct acomp_req *req)
- 	struct iaa_compression_ctx *compression_ctx;
- 	struct crypto_tfm *tfm = req->base.tfm;
- 	dma_addr_t src_addr, dst_addr;
--	bool disable_async = false;
- 	int nr_sgs, cpu, ret = 0;
- 	struct iaa_wq *iaa_wq;
- 	u32 compression_crc;
- 	struct idxd_wq *wq;
- 	struct device *dev;
--	int order = -1;
- 
- 	compression_ctx = crypto_tfm_ctx(tfm);
- 
-@@ -1526,21 +1523,6 @@ static int iaa_comp_acompress(struct acomp_req *req)
- 
- 	iaa_wq = idxd_wq_get_private(wq);
- 
--	if (!req->dst) {
--		gfp_t flags = req->base.flags & CRYPTO_TFM_REQ_MAY_SLEEP ? GFP_KERNEL : GFP_ATOMIC;
--
--		/* incompressible data will always be < 2 * slen */
--		req->dlen = 2 * req->slen;
--		order = order_base_2(round_up(req->dlen, PAGE_SIZE) / PAGE_SIZE);
--		req->dst = sgl_alloc_order(req->dlen, order, false, flags, NULL);
--		if (!req->dst) {
--			ret = -ENOMEM;
--			order = -1;
--			goto out;
--		}
--		disable_async = true;
--	}
--
- 	dev = &wq->idxd->pdev->dev;
- 
- 	nr_sgs = dma_map_sg(dev, req->src, sg_nents(req->src), DMA_TO_DEVICE);
-@@ -1570,7 +1552,7 @@ static int iaa_comp_acompress(struct acomp_req *req)
- 		req->dst, req->dlen, sg_dma_len(req->dst));
- 
- 	ret = iaa_compress(tfm, req, wq, src_addr, req->slen, dst_addr,
--			   &req->dlen, &compression_crc, disable_async);
-+			   &req->dlen, &compression_crc);
- 	if (ret == -EINPROGRESS)
- 		return ret;
- 
-@@ -1601,100 +1583,6 @@ static int iaa_comp_acompress(struct acomp_req *req)
- out:
- 	iaa_wq_put(wq);
- 
--	if (order >= 0)
--		sgl_free_order(req->dst, order);
--
--	return ret;
--}
--
--static int iaa_comp_adecompress_alloc_dest(struct acomp_req *req)
--{
--	gfp_t flags = req->base.flags & CRYPTO_TFM_REQ_MAY_SLEEP ?
--		GFP_KERNEL : GFP_ATOMIC;
--	struct crypto_tfm *tfm = req->base.tfm;
--	dma_addr_t src_addr, dst_addr;
--	int nr_sgs, cpu, ret = 0;
--	struct iaa_wq *iaa_wq;
--	struct device *dev;
--	struct idxd_wq *wq;
--	int order = -1;
--
--	cpu = get_cpu();
--	wq = wq_table_next_wq(cpu);
--	put_cpu();
--	if (!wq) {
--		pr_debug("no wq configured for cpu=%d\n", cpu);
--		return -ENODEV;
--	}
--
--	ret = iaa_wq_get(wq);
--	if (ret) {
--		pr_debug("no wq available for cpu=%d\n", cpu);
--		return -ENODEV;
--	}
--
--	iaa_wq = idxd_wq_get_private(wq);
--
--	dev = &wq->idxd->pdev->dev;
--
--	nr_sgs = dma_map_sg(dev, req->src, sg_nents(req->src), DMA_TO_DEVICE);
--	if (nr_sgs <= 0 || nr_sgs > 1) {
--		dev_dbg(dev, "couldn't map src sg for iaa device %d,"
--			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
--			iaa_wq->wq->id, ret);
--		ret = -EIO;
--		goto out;
--	}
--	src_addr = sg_dma_address(req->src);
--	dev_dbg(dev, "dma_map_sg, src_addr %llx, nr_sgs %d, req->src %p,"
--		" req->slen %d, sg_dma_len(sg) %d\n", src_addr, nr_sgs,
--		req->src, req->slen, sg_dma_len(req->src));
--
--	req->dlen = 4 * req->slen; /* start with ~avg comp rato */
--alloc_dest:
--	order = order_base_2(round_up(req->dlen, PAGE_SIZE) / PAGE_SIZE);
--	req->dst = sgl_alloc_order(req->dlen, order, false, flags, NULL);
--	if (!req->dst) {
--		ret = -ENOMEM;
--		order = -1;
--		goto out;
--	}
--
--	nr_sgs = dma_map_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
--	if (nr_sgs <= 0 || nr_sgs > 1) {
--		dev_dbg(dev, "couldn't map dst sg for iaa device %d,"
--			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
--			iaa_wq->wq->id, ret);
--		ret = -EIO;
--		goto err_map_dst;
--	}
--
--	dst_addr = sg_dma_address(req->dst);
--	dev_dbg(dev, "dma_map_sg, dst_addr %llx, nr_sgs %d, req->dst %p,"
--		" req->dlen %d, sg_dma_len(sg) %d\n", dst_addr, nr_sgs,
--		req->dst, req->dlen, sg_dma_len(req->dst));
--	ret = iaa_decompress(tfm, req, wq, src_addr, req->slen,
--			     dst_addr, &req->dlen, true);
--	if (ret == -EOVERFLOW) {
--		dma_unmap_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
--		req->dlen *= 2;
--		if (req->dlen > CRYPTO_ACOMP_DST_MAX)
--			goto err_map_dst;
--		goto alloc_dest;
--	}
--
--	if (ret != 0)
--		dev_dbg(dev, "asynchronous decompress failed ret=%d\n", ret);
--
--	dma_unmap_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
--err_map_dst:
--	dma_unmap_sg(dev, req->src, sg_nents(req->src), DMA_TO_DEVICE);
--out:
--	iaa_wq_put(wq);
--
--	if (order >= 0)
--		sgl_free_order(req->dst, order);
--
- 	return ret;
- }
- 
-@@ -1717,9 +1605,6 @@ static int iaa_comp_adecompress(struct acomp_req *req)
- 		return -EINVAL;
- 	}
- 
--	if (!req->dst)
--		return iaa_comp_adecompress_alloc_dest(req);
--
- 	cpu = get_cpu();
- 	wq = wq_table_next_wq(cpu);
- 	put_cpu();
-@@ -1800,19 +1685,10 @@ static int iaa_comp_init_fixed(struct crypto_acomp *acomp_tfm)
- 	return 0;
- }
- 
--static void dst_free(struct scatterlist *sgl)
--{
--	/*
--	 * Called for req->dst = NULL cases but we free elsewhere
--	 * using sgl_free_order().
--	 */
--}
--
- static struct acomp_alg iaa_acomp_fixed_deflate = {
- 	.init			= iaa_comp_init_fixed,
- 	.compress		= iaa_comp_acompress,
- 	.decompress		= iaa_comp_adecompress,
--	.dst_free               = dst_free,
- 	.base			= {
- 		.cra_name		= "deflate",
- 		.cra_driver_name	= "deflate-iaa",
+-What:		/sys/class/scsi_device/*/device/unit_descriptor/physical_memory_resourse_count
++What:		/sys/class/scsi_device/*/device/unit_descriptor/physical_memory_resource_count
+ Date:		February 2018
+ Contact:	Stanislav Nijnikov <stanislav.nijnikov@wdc.com>
+ Description:	This file shows the total physical memory resources. This is
+diff --git a/drivers/ufs/core/ufs-sysfs.c b/drivers/ufs/core/ufs-sysfs.c
+index 634cf163f4cb1..c53f924f7fa83 100644
+--- a/drivers/ufs/core/ufs-sysfs.c
++++ b/drivers/ufs/core/ufs-sysfs.c
+@@ -1675,7 +1675,7 @@ UFS_UNIT_DESC_PARAM(logical_block_size, _LOGICAL_BLK_SIZE, 1);
+ UFS_UNIT_DESC_PARAM(logical_block_count, _LOGICAL_BLK_COUNT, 8);
+ UFS_UNIT_DESC_PARAM(erase_block_size, _ERASE_BLK_SIZE, 4);
+ UFS_UNIT_DESC_PARAM(provisioning_type, _PROVISIONING_TYPE, 1);
+-UFS_UNIT_DESC_PARAM(physical_memory_resourse_count, _PHY_MEM_RSRC_CNT, 8);
++UFS_UNIT_DESC_PARAM(physical_memory_resource_count, _PHY_MEM_RSRC_CNT, 8);
+ UFS_UNIT_DESC_PARAM(context_capabilities, _CTX_CAPABILITIES, 2);
+ UFS_UNIT_DESC_PARAM(large_unit_granularity, _LARGE_UNIT_SIZE_M1, 1);
+ UFS_UNIT_DESC_PARAM(wb_buf_alloc_units, _WB_BUF_ALLOC_UNITS, 4);
+@@ -1692,7 +1692,7 @@ static struct attribute *ufs_sysfs_unit_descriptor[] = {
+ 	&dev_attr_logical_block_count.attr,
+ 	&dev_attr_erase_block_size.attr,
+ 	&dev_attr_provisioning_type.attr,
+-	&dev_attr_physical_memory_resourse_count.attr,
++	&dev_attr_physical_memory_resource_count.attr,
+ 	&dev_attr_context_capabilities.attr,
+ 	&dev_attr_large_unit_granularity.attr,
+ 	&dev_attr_wb_buf_alloc_units.attr,
 -- 
 2.39.5
 
