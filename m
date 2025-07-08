@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-160630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8775AFD104
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D286AFD281
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86A067A1CDD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:29:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8A22422082
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3961714B7;
-	Tue,  8 Jul 2025 16:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B9E2E3385;
+	Tue,  8 Jul 2025 16:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sx1vTDsY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWD/xDu1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D051D8F5B;
-	Tue,  8 Jul 2025 16:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616AD215F5C;
+	Tue,  8 Jul 2025 16:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992224; cv=none; b=NSRe8Fl6l+GhUVLjYQQr/2r10kCbisTKwNMelMx150KtEDXZ06qkVA6FAnZHebGjdJWjrDGTaB2VcLQp1MxydjLQmS3m+d98xW3DE2TmOgmkO5pJdciY4xvBHYh5JLqwiuYLmk3rP80eOkLoPOfP/AvRxdrIln4ohzz2lFnjvGo=
+	t=1751993039; cv=none; b=DfxC7CVJKArF9em7AJa6WABFu/EqgnEzLEDjoiuVyQ6PYbL4jh/Uba0DJNSSYSMh74iLXHmdQJKwLbdPUdwmZX/AiEtD198dlmeowJXCQjbzdZ/WX3jvcJ2gWUwD7WTdZpsEA5Q/I0N58fFJwOB+3AyW2qT7sxOQ7uydj9VPry0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992224; c=relaxed/simple;
-	bh=B6M/bJgKgSaqT7FT4hFVcgc8BDrLhFk6ClSFvukuOw4=;
+	s=arc-20240116; t=1751993039; c=relaxed/simple;
+	bh=UF+kX+BCoEmkkerPMWZG/U5IKgMIsu3/7iGLMDkfAR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skt+fOG8lU4BC7aplkLtxbEyml8dQT/8ooFFz68deCQm9pgsiIN5XvrQEF3DbyPPvvz/kul15MXYCdLmXpWWCkulm4Tk+e/vHEQPv6XiUvoAKCmITurkx9DdfJ24CtDjF612XTkCALwkbcW69MPwj0NkK19vhJxXc1cHuaOwkT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sx1vTDsY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED78FC4CEED;
-	Tue,  8 Jul 2025 16:30:23 +0000 (UTC)
+	 MIME-Version; b=OfYOl2AlT76CVypek7CmuYSTkR1JuKtMDqd8uoauXSGy8mwnCiwhchRzOsYibHyz7cKxjTSPEoAJs1m5iCVgg4U4vTXWuHba9IiL2Yu+UHi51Jn5cAVBqSKQVKDgvuPHBghmXHAfYtwVKgwPtDKgMwCa4YnBCoRLyUge5rR8kBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWD/xDu1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E773CC4CEED;
+	Tue,  8 Jul 2025 16:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992224;
-	bh=B6M/bJgKgSaqT7FT4hFVcgc8BDrLhFk6ClSFvukuOw4=;
+	s=korg; t=1751993039;
+	bh=UF+kX+BCoEmkkerPMWZG/U5IKgMIsu3/7iGLMDkfAR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sx1vTDsY87/C4zYOLHbjWQfhWd+UMyb/2gBWShlC14Gc1pENDcU4cgvA2SzXnxGvp
-	 5HvcTIOzLo0/9tJKnAT/hEDFTTQbMkbY/OD1lOw6dTwG3I2FVnr0qtQxX4pWp7Gpsf
-	 qUhxGGwQjwkBv+B7oscXibM/u/A24nAshTUEm8xM=
+	b=BWD/xDu11y/QM/Hiij0JlgAUhZe6/wW5s7oHpJwOCUYEr7MIvDdaJZVMH5lm9e3no
+	 1unPFxnvLKjhbBbvkYr9H3Teo70JXTq4rTXbJKBkyZ0GDW/zl4MUKRanODv5yxTks2
+	 3ESgb4XmwHF6cT3dynWQIY55g1QseOzyB4FEk47M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/132] nfs: Clean up /proc/net/rpc/nfs when nfs_fs_proc_net_init() fails.
+Subject: [PATCH 6.12 136/232] bpf: use common instruction history across all states
 Date: Tue,  8 Jul 2025 18:22:12 +0200
-Message-ID: <20250708162231.344866027@linuxfoundation.org>
+Message-ID: <20250708162244.999607366@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,141 +63,423 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit e8d6f3ab59468e230f3253efe5cb63efa35289f7 ]
+[ Upstream commit 96a30e469ca1d2b8cc7811b40911f8614b558241 ]
 
-syzbot reported a warning below [1] following a fault injection in
-nfs_fs_proc_net_init(). [0]
+Instead of allocating and copying instruction history each time we
+enqueue child verifier state, switch to a model where we use one common
+dynamically sized array of instruction history entries across all states.
 
-When nfs_fs_proc_net_init() fails, /proc/net/rpc/nfs is not removed.
+The key observation for proving this is correct is that instruction
+history is only relevant while state is active, which means it either is
+a current state (and thus we are actively modifying instruction history
+and no other state can interfere with us) or we are checkpointed state
+with some children still active (either enqueued or being current).
 
-Later, rpc_proc_exit() tries to remove /proc/net/rpc, and the warning
-is logged as the directory is not empty.
+In the latter case our portion of instruction history is finalized and
+won't change or grow, so as long as we keep it immutable until the state
+is finalized, we are good.
 
-Let's handle the error of nfs_fs_proc_net_init() properly.
+Now, when state is finalized and is put into state hash for potentially
+future pruning lookups, instruction history is not used anymore. This is
+because instruction history is only used by precision marking logic, and
+we never modify precision markings for finalized states.
 
-[0]:
-FAULT_INJECTION: forcing a failure.
-name failslab, interval 1, probability 0, space 0, times 0
-CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
-  dump_stack_lvl (lib/dump_stack.c:123)
- should_fail_ex (lib/fault-inject.c:73 lib/fault-inject.c:174)
- should_failslab (mm/failslab.c:46)
- kmem_cache_alloc_noprof (mm/slub.c:4178 mm/slub.c:4204)
- __proc_create (fs/proc/generic.c:427)
- proc_create_reg (fs/proc/generic.c:554)
- proc_create_net_data (fs/proc/proc_net.c:120)
- nfs_fs_proc_net_init (fs/nfs/client.c:1409)
- nfs_net_init (fs/nfs/inode.c:2600)
- ops_init (net/core/net_namespace.c:138)
- setup_net (net/core/net_namespace.c:443)
- copy_net_ns (net/core/net_namespace.c:576)
- create_new_namespaces (kernel/nsproxy.c:110)
- unshare_nsproxy_namespaces (kernel/nsproxy.c:218 (discriminator 4))
- ksys_unshare (kernel/fork.c:3123)
- __x64_sys_unshare (kernel/fork.c:3190)
- do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
- entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
- </TASK>
+So, instead of each state having its own small instruction history, we
+keep a global dynamically-sized instruction history, where each state in
+current DFS path from root to active state remembers its portion of
+instruction history. Current state can append to this history, but
+cannot modify any of its parent histories.
 
-[1]:
-remove_proc_entry: removing non-empty directory 'net/rpc', leaking at least 'nfs'
- WARNING: CPU: 1 PID: 6120 at fs/proc/generic.c:727 remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
-Modules linked in:
-CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
- RIP: 0010:remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
-Code: 3c 02 00 0f 85 85 00 00 00 48 8b 93 d8 00 00 00 4d 89 f0 4c 89 e9 48 c7 c6 40 ba a2 8b 48 c7 c7 60 b9 a2 8b e8 33 81 1d ff 90 <0f> 0b 90 90 e9 5f fe ff ff e8 04 69 5e ff 90 48 b8 00 00 00 00 00
-RSP: 0018:ffffc90003637b08 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff88805f534140 RCX: ffffffff817a92c8
-RDX: ffff88807da99e00 RSI: ffffffff817a92d5 RDI: 0000000000000001
-RBP: ffff888033431ac0 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffff888033431a00
-R13: ffff888033431ae4 R14: ffff888033184724 R15: dffffc0000000000
-FS:  0000555580328500(0000) GS:ffff888124a62000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f71733743e0 CR3: 000000007f618000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  sunrpc_exit_net+0x46/0x90 net/sunrpc/sunrpc_syms.c:76
-  ops_exit_list net/core/net_namespace.c:200 [inline]
-  ops_undo_list+0x2eb/0xab0 net/core/net_namespace.c:253
-  setup_net+0x2e1/0x510 net/core/net_namespace.c:457
-  copy_net_ns+0x2a6/0x5f0 net/core/net_namespace.c:574
-  create_new_namespaces+0x3ea/0xa90 kernel/nsproxy.c:110
-  unshare_nsproxy_namespaces+0xc0/0x1f0 kernel/nsproxy.c:218
-  ksys_unshare+0x45b/0xa40 kernel/fork.c:3121
-  __do_sys_unshare kernel/fork.c:3192 [inline]
-  __se_sys_unshare kernel/fork.c:3190 [inline]
-  __x64_sys_unshare+0x31/0x40 kernel/fork.c:3190
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xcd/0x490 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa1a6b8e929
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff3a090368 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 00007fa1a6db5fa0 RCX: 00007fa1a6b8e929
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000040000080
-RBP: 00007fa1a6c10b39 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa1a6db5fa0 R14: 00007fa1a6db5fa0 R15: 0000000000000001
- </TASK>
+Async callback state enqueueing, while logically detached from parent
+state, still is part of verification backtracking tree, so has to follow
+the same schema as normal state checkpoints.
 
-Fixes: d47151b79e32 ("nfs: expose /proc/net/sunrpc/nfs in net namespaces")
-Reported-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a4cc4ac22daa4a71b87c
-Tested-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Because the insn_hist array can be grown through realloc, states don't
+keep pointers, they instead maintain two indices, [start, end), into
+global instruction history array. End is exclusive index, so
+`start == end` means there is no relevant instruction history.
+
+This eliminates a lot of allocations and minimizes overall memory usage.
+
+For instance, running a worst-case test from [0] (but without the
+heuristics-based fix [1]), it took 12.5 minutes until we get -ENOMEM.
+With the changes in this patch the whole test succeeds in 10 minutes
+(very slow, so heuristics from [1] is important, of course).
+
+To further validate correctness, veristat-based comparison was performed for
+Meta production BPF objects and BPF selftests objects. In both cases there
+were no differences *at all* in terms of verdict or instruction and state
+counts, providing a good confidence in the change.
+
+Having this low-memory-overhead solution of keeping dynamic
+per-instruction history cheaply opens up some new possibilities, like
+keeping extra information for literally every single validated
+instruction. This will be used for simplifying precision backpropagation
+logic in follow up patches.
+
+  [0] https://lore.kernel.org/bpf/20241029172641.1042523-2-eddyz87@gmail.com/
+  [1] https://lore.kernel.org/bpf/20241029172641.1042523-1-eddyz87@gmail.com/
+
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20241115001303.277272-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: e2d2115e56c4 ("bpf: Do not include stack ptr register in precision backtracking bookkeeping")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/inode.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ include/linux/bpf_verifier.h |  19 ++++---
+ kernel/bpf/verifier.c        | 107 +++++++++++++++++------------------
+ 2 files changed, 63 insertions(+), 63 deletions(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 419d98cf9e29f..7e7dd2aab449d 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2442,15 +2442,26 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
- static int nfs_net_init(struct net *net)
- {
- 	struct nfs_net *nn = net_generic(net, nfs_net_id);
-+	int err;
+diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
+index 50eeb5b86ed70..b82ff91916e42 100644
+--- a/include/linux/bpf_verifier.h
++++ b/include/linux/bpf_verifier.h
+@@ -349,7 +349,7 @@ struct bpf_func_state {
  
- 	nfs_clients_init(net);
+ #define MAX_CALL_FRAMES 8
  
- 	if (!rpc_proc_register(net, &nn->rpcstats)) {
--		nfs_clients_exit(net);
--		return -ENOMEM;
-+		err = -ENOMEM;
-+		goto err_proc_rpc;
- 	}
+-/* instruction history flags, used in bpf_jmp_history_entry.flags field */
++/* instruction history flags, used in bpf_insn_hist_entry.flags field */
+ enum {
+ 	/* instruction references stack slot through PTR_TO_STACK register;
+ 	 * we also store stack's frame number in lower 3 bits (MAX_CALL_FRAMES is 8)
+@@ -367,7 +367,7 @@ enum {
+ static_assert(INSN_F_FRAMENO_MASK + 1 >= MAX_CALL_FRAMES);
+ static_assert(INSN_F_SPI_MASK + 1 >= MAX_BPF_STACK / 8);
  
--	return nfs_fs_proc_net_init(net);
-+	err = nfs_fs_proc_net_init(net);
-+	if (err)
-+		goto err_proc_nfs;
-+
-+	return 0;
-+
-+err_proc_nfs:
-+	rpc_proc_unregister(net, "nfs");
-+err_proc_rpc:
-+	nfs_clients_exit(net);
-+	return err;
+-struct bpf_jmp_history_entry {
++struct bpf_insn_hist_entry {
+ 	u32 idx;
+ 	/* insn idx can't be bigger than 1 million */
+ 	u32 prev_idx : 22;
+@@ -458,13 +458,14 @@ struct bpf_verifier_state {
+ 	 * See get_loop_entry() for more information.
+ 	 */
+ 	struct bpf_verifier_state *loop_entry;
+-	/* jmp history recorded from first to last.
+-	 * backtracking is using it to go from last to first.
+-	 * For most states jmp_history_cnt is [0-3].
++	/* Sub-range of env->insn_hist[] corresponding to this state's
++	 * instruction history.
++	 * Backtracking is using it to go from last to first.
++	 * For most states instruction history is short, 0-3 instructions.
+ 	 * For loops can go up to ~40.
+ 	 */
+-	struct bpf_jmp_history_entry *jmp_history;
+-	u32 jmp_history_cnt;
++	u32 insn_hist_start;
++	u32 insn_hist_end;
+ 	u32 dfs_depth;
+ 	u32 callback_unroll_depth;
+ 	u32 may_goto_depth;
+@@ -748,7 +749,9 @@ struct bpf_verifier_env {
+ 		int cur_stack;
+ 	} cfg;
+ 	struct backtrack_state bt;
+-	struct bpf_jmp_history_entry *cur_hist_ent;
++	struct bpf_insn_hist_entry *insn_hist;
++	struct bpf_insn_hist_entry *cur_hist_ent;
++	u32 insn_hist_cap;
+ 	u32 pass_cnt; /* number of times do_check() was called */
+ 	u32 subprog_cnt;
+ 	/* number of instructions analyzed by the verifier */
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 39a3d750f2ff9..7f00dc993041b 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -1376,13 +1376,6 @@ static void free_func_state(struct bpf_func_state *state)
+ 	kfree(state);
  }
  
- static void nfs_net_exit(struct net *net)
+-static void clear_jmp_history(struct bpf_verifier_state *state)
+-{
+-	kfree(state->jmp_history);
+-	state->jmp_history = NULL;
+-	state->jmp_history_cnt = 0;
+-}
+-
+ static void free_verifier_state(struct bpf_verifier_state *state,
+ 				bool free_self)
+ {
+@@ -1392,7 +1385,6 @@ static void free_verifier_state(struct bpf_verifier_state *state,
+ 		free_func_state(state->frame[i]);
+ 		state->frame[i] = NULL;
+ 	}
+-	clear_jmp_history(state);
+ 	if (free_self)
+ 		kfree(state);
+ }
+@@ -1418,13 +1410,6 @@ static int copy_verifier_state(struct bpf_verifier_state *dst_state,
+ 	struct bpf_func_state *dst;
+ 	int i, err;
+ 
+-	dst_state->jmp_history = copy_array(dst_state->jmp_history, src->jmp_history,
+-					  src->jmp_history_cnt, sizeof(*dst_state->jmp_history),
+-					  GFP_USER);
+-	if (!dst_state->jmp_history)
+-		return -ENOMEM;
+-	dst_state->jmp_history_cnt = src->jmp_history_cnt;
+-
+ 	/* if dst has more stack frames then src frame, free them, this is also
+ 	 * necessary in case of exceptional exits using bpf_throw.
+ 	 */
+@@ -1443,6 +1428,8 @@ static int copy_verifier_state(struct bpf_verifier_state *dst_state,
+ 	dst_state->parent = src->parent;
+ 	dst_state->first_insn_idx = src->first_insn_idx;
+ 	dst_state->last_insn_idx = src->last_insn_idx;
++	dst_state->insn_hist_start = src->insn_hist_start;
++	dst_state->insn_hist_end = src->insn_hist_end;
+ 	dst_state->dfs_depth = src->dfs_depth;
+ 	dst_state->callback_unroll_depth = src->callback_unroll_depth;
+ 	dst_state->used_as_loop_entry = src->used_as_loop_entry;
+@@ -2496,9 +2483,14 @@ static struct bpf_verifier_state *push_async_cb(struct bpf_verifier_env *env,
+ 	 * The caller state doesn't matter.
+ 	 * This is async callback. It starts in a fresh stack.
+ 	 * Initialize it similar to do_check_common().
++	 * But we do need to make sure to not clobber insn_hist, so we keep
++	 * chaining insn_hist_start/insn_hist_end indices as for a normal
++	 * child state.
+ 	 */
+ 	elem->st.branches = 1;
+ 	elem->st.in_sleepable = is_sleepable;
++	elem->st.insn_hist_start = env->cur_state->insn_hist_end;
++	elem->st.insn_hist_end = elem->st.insn_hist_start;
+ 	frame = kzalloc(sizeof(*frame), GFP_KERNEL);
+ 	if (!frame)
+ 		goto err;
+@@ -3513,11 +3505,10 @@ static void linked_regs_unpack(u64 val, struct linked_regs *s)
+ }
+ 
+ /* for any branch, call, exit record the history of jmps in the given state */
+-static int push_jmp_history(struct bpf_verifier_env *env, struct bpf_verifier_state *cur,
+-			    int insn_flags, u64 linked_regs)
++static int push_insn_history(struct bpf_verifier_env *env, struct bpf_verifier_state *cur,
++			     int insn_flags, u64 linked_regs)
+ {
+-	u32 cnt = cur->jmp_history_cnt;
+-	struct bpf_jmp_history_entry *p;
++	struct bpf_insn_hist_entry *p;
+ 	size_t alloc_size;
+ 
+ 	/* combine instruction flags if we already recorded this instruction */
+@@ -3537,29 +3528,32 @@ static int push_jmp_history(struct bpf_verifier_env *env, struct bpf_verifier_st
+ 		return 0;
+ 	}
+ 
+-	cnt++;
+-	alloc_size = kmalloc_size_roundup(size_mul(cnt, sizeof(*p)));
+-	p = krealloc(cur->jmp_history, alloc_size, GFP_USER);
+-	if (!p)
+-		return -ENOMEM;
+-	cur->jmp_history = p;
++	if (cur->insn_hist_end + 1 > env->insn_hist_cap) {
++		alloc_size = size_mul(cur->insn_hist_end + 1, sizeof(*p));
++		p = kvrealloc(env->insn_hist, alloc_size, GFP_USER);
++		if (!p)
++			return -ENOMEM;
++		env->insn_hist = p;
++		env->insn_hist_cap = alloc_size / sizeof(*p);
++	}
+ 
+-	p = &cur->jmp_history[cnt - 1];
++	p = &env->insn_hist[cur->insn_hist_end];
+ 	p->idx = env->insn_idx;
+ 	p->prev_idx = env->prev_insn_idx;
+ 	p->flags = insn_flags;
+ 	p->linked_regs = linked_regs;
+-	cur->jmp_history_cnt = cnt;
++
++	cur->insn_hist_end++;
+ 	env->cur_hist_ent = p;
+ 
+ 	return 0;
+ }
+ 
+-static struct bpf_jmp_history_entry *get_jmp_hist_entry(struct bpf_verifier_state *st,
+-						        u32 hist_end, int insn_idx)
++static struct bpf_insn_hist_entry *get_insn_hist_entry(struct bpf_verifier_env *env,
++						       u32 hist_start, u32 hist_end, int insn_idx)
+ {
+-	if (hist_end > 0 && st->jmp_history[hist_end - 1].idx == insn_idx)
+-		return &st->jmp_history[hist_end - 1];
++	if (hist_end > hist_start && env->insn_hist[hist_end - 1].idx == insn_idx)
++		return &env->insn_hist[hist_end - 1];
+ 	return NULL;
+ }
+ 
+@@ -3576,25 +3570,26 @@ static struct bpf_jmp_history_entry *get_jmp_hist_entry(struct bpf_verifier_stat
+  * history entry recording a jump from last instruction of parent state and
+  * first instruction of given state.
+  */
+-static int get_prev_insn_idx(struct bpf_verifier_state *st, int i,
+-			     u32 *history)
++static int get_prev_insn_idx(const struct bpf_verifier_env *env,
++			     struct bpf_verifier_state *st,
++			     int insn_idx, u32 hist_start, u32 *hist_endp)
+ {
+-	u32 cnt = *history;
++	u32 hist_end = *hist_endp;
++	u32 cnt = hist_end - hist_start;
+ 
+-	if (i == st->first_insn_idx) {
++	if (insn_idx == st->first_insn_idx) {
+ 		if (cnt == 0)
+ 			return -ENOENT;
+-		if (cnt == 1 && st->jmp_history[0].idx == i)
++		if (cnt == 1 && env->insn_hist[hist_start].idx == insn_idx)
+ 			return -ENOENT;
+ 	}
+ 
+-	if (cnt && st->jmp_history[cnt - 1].idx == i) {
+-		i = st->jmp_history[cnt - 1].prev_idx;
+-		(*history)--;
++	if (cnt && env->insn_hist[hist_end - 1].idx == insn_idx) {
++		(*hist_endp)--;
++		return env->insn_hist[hist_end - 1].prev_idx;
+ 	} else {
+-		i--;
++		return insn_idx - 1;
+ 	}
+-	return i;
+ }
+ 
+ static const char *disasm_kfunc_name(void *data, const struct bpf_insn *insn)
+@@ -3766,7 +3761,7 @@ static void fmt_stack_mask(char *buf, ssize_t buf_sz, u64 stack_mask)
+ /* If any register R in hist->linked_regs is marked as precise in bt,
+  * do bt_set_frame_{reg,slot}(bt, R) for all registers in hist->linked_regs.
+  */
+-static void bt_sync_linked_regs(struct backtrack_state *bt, struct bpf_jmp_history_entry *hist)
++static void bt_sync_linked_regs(struct backtrack_state *bt, struct bpf_insn_hist_entry *hist)
+ {
+ 	struct linked_regs linked_regs;
+ 	bool some_precise = false;
+@@ -3811,7 +3806,7 @@ static bool calls_callback(struct bpf_verifier_env *env, int insn_idx);
+  *   - *was* processed previously during backtracking.
+  */
+ static int backtrack_insn(struct bpf_verifier_env *env, int idx, int subseq_idx,
+-			  struct bpf_jmp_history_entry *hist, struct backtrack_state *bt)
++			  struct bpf_insn_hist_entry *hist, struct backtrack_state *bt)
+ {
+ 	const struct bpf_insn_cbs cbs = {
+ 		.cb_call	= disasm_kfunc_name,
+@@ -4230,7 +4225,7 @@ static void mark_all_scalars_imprecise(struct bpf_verifier_env *env, struct bpf_
+  * SCALARS, as well as any other registers and slots that contribute to
+  * a tracked state of given registers/stack slots, depending on specific BPF
+  * assembly instructions (see backtrack_insns() for exact instruction handling
+- * logic). This backtracking relies on recorded jmp_history and is able to
++ * logic). This backtracking relies on recorded insn_hist and is able to
+  * traverse entire chain of parent states. This process ends only when all the
+  * necessary registers/slots and their transitive dependencies are marked as
+  * precise.
+@@ -4347,8 +4342,9 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int regno)
+ 
+ 	for (;;) {
+ 		DECLARE_BITMAP(mask, 64);
+-		u32 history = st->jmp_history_cnt;
+-		struct bpf_jmp_history_entry *hist;
++		u32 hist_start = st->insn_hist_start;
++		u32 hist_end = st->insn_hist_end;
++		struct bpf_insn_hist_entry *hist;
+ 
+ 		if (env->log.level & BPF_LOG_LEVEL2) {
+ 			verbose(env, "mark_precise: frame%d: last_idx %d first_idx %d subseq_idx %d \n",
+@@ -4387,7 +4383,7 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int regno)
+ 				err = 0;
+ 				skip_first = false;
+ 			} else {
+-				hist = get_jmp_hist_entry(st, history, i);
++				hist = get_insn_hist_entry(env, hist_start, hist_end, i);
+ 				err = backtrack_insn(env, i, subseq_idx, hist, bt);
+ 			}
+ 			if (err == -ENOTSUPP) {
+@@ -4404,7 +4400,7 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int regno)
+ 				 */
+ 				return 0;
+ 			subseq_idx = i;
+-			i = get_prev_insn_idx(st, i, &history);
++			i = get_prev_insn_idx(env, st, i, hist_start, &hist_end);
+ 			if (i == -ENOENT)
+ 				break;
+ 			if (i >= env->prog->len) {
+@@ -4771,7 +4767,7 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
+ 	}
+ 
+ 	if (insn_flags)
+-		return push_jmp_history(env, env->cur_state, insn_flags, 0);
++		return push_insn_history(env, env->cur_state, insn_flags, 0);
+ 	return 0;
+ }
+ 
+@@ -5078,7 +5074,7 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
+ 		insn_flags = 0; /* we are not restoring spilled register */
+ 	}
+ 	if (insn_flags)
+-		return push_jmp_history(env, env->cur_state, insn_flags, 0);
++		return push_insn_history(env, env->cur_state, insn_flags, 0);
+ 	return 0;
+ }
+ 
+@@ -15542,7 +15538,7 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
+ 	if (dst_reg->type == SCALAR_VALUE && dst_reg->id)
+ 		collect_linked_regs(this_branch, dst_reg->id, &linked_regs);
+ 	if (linked_regs.cnt > 1) {
+-		err = push_jmp_history(env, this_branch, 0, linked_regs_pack(&linked_regs));
++		err = push_insn_history(env, this_branch, 0, linked_regs_pack(&linked_regs));
+ 		if (err)
+ 			return err;
+ 	}
+@@ -17984,7 +17980,7 @@ static int is_state_visited(struct bpf_verifier_env *env, int insn_idx)
+ 
+ 	force_new_state = env->test_state_freq || is_force_checkpoint(env, insn_idx) ||
+ 			  /* Avoid accumulating infinitely long jmp history */
+-			  cur->jmp_history_cnt > 40;
++			  cur->insn_hist_end - cur->insn_hist_start > 40;
+ 
+ 	/* bpf progs typically have pruning point every 4 instructions
+ 	 * http://vger.kernel.org/bpfconf2019.html#session-1
+@@ -18182,7 +18178,7 @@ static int is_state_visited(struct bpf_verifier_env *env, int insn_idx)
+ 			 * the current state.
+ 			 */
+ 			if (is_jmp_point(env, env->insn_idx))
+-				err = err ? : push_jmp_history(env, cur, 0, 0);
++				err = err ? : push_insn_history(env, cur, 0, 0);
+ 			err = err ? : propagate_precision(env, &sl->state);
+ 			if (err)
+ 				return err;
+@@ -18281,8 +18277,8 @@ static int is_state_visited(struct bpf_verifier_env *env, int insn_idx)
+ 
+ 	cur->parent = new;
+ 	cur->first_insn_idx = insn_idx;
++	cur->insn_hist_start = cur->insn_hist_end;
+ 	cur->dfs_depth = new->dfs_depth + 1;
+-	clear_jmp_history(cur);
+ 	new_sl->next = *explored_state(env, insn_idx);
+ 	*explored_state(env, insn_idx) = new_sl;
+ 	/* connect new state to parentage chain. Current frame needs all
+@@ -18450,7 +18446,7 @@ static int do_check(struct bpf_verifier_env *env)
+ 		}
+ 
+ 		if (is_jmp_point(env, env->insn_idx)) {
+-			err = push_jmp_history(env, state, 0, 0);
++			err = push_insn_history(env, state, 0, 0);
+ 			if (err)
+ 				return err;
+ 		}
+@@ -22716,6 +22712,7 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr, bpfptr_t uattr, __u3
+ 	if (!is_priv)
+ 		mutex_unlock(&bpf_verifier_lock);
+ 	vfree(env->insn_aux_data);
++	kvfree(env->insn_hist);
+ err_free_env:
+ 	kvfree(env);
+ 	return ret;
 -- 
 2.39.5
 
