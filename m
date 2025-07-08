@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B54AFD482
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68604AFD29A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CAA5164C98
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B2A91AA2AD1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227272E5B2C;
-	Tue,  8 Jul 2025 17:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C1E2E54C4;
+	Tue,  8 Jul 2025 16:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQz4GZxH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQbuusxk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37DA2DCF48;
-	Tue,  8 Jul 2025 17:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564EF2E266B;
+	Tue,  8 Jul 2025 16:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994156; cv=none; b=ZQz785XMPWUcVtHlsy/JKsclbtOcN1WS3f51R2n8zzTb7rXKSNiC597zm83+hWX8IEzG+km+KNQzvnmDGv03SPJA9qZ8wGqbI5EVpKu96yQNNoNmETFlDFbfWNKJl/8qQJ106vcL6mtDVS7C2F2fJ6cpBrsw0/Ofu5+wNSOX9Bc=
+	t=1751993097; cv=none; b=nIwLQpTShXgVonNiW7LGszdowAusX02oLIoTowqOuNw0GjRxX8lUSSc1O9VLDwgx2mZN4MV5X2SRtRVAMCT7HdaypLE1SCdLdABgC5nfevnJ1EnU28ko/RUPX1SLKwtzi0r34CuYgvpRHVLUQ1wQamLise3BPELOctSoxf/3T3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994156; c=relaxed/simple;
-	bh=KzGj0fw+HmAYXXh0I/DtbMGyOqz/7f+qAWgLmSApOZI=;
+	s=arc-20240116; t=1751993097; c=relaxed/simple;
+	bh=rYhDtxQp2q+IjFwjrfai2gC94AW7ioDv+Df0Igo8nAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uPs/k+PCVd5wgK2S2ivu7aSZ0d7LnCtTItyWvYYuHIePKL2LZp7yeMjz0a4xPZm343wgv2YJ763pS/buxD8D6Z7kvcrscWcXZwSqKWPtxbRp7eLElytbOrTCF5UbUq3BIUILqrGZFdE6kSz3bqJA74L1OJp9VP912gXGDici2Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQz4GZxH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F993C4CEED;
-	Tue,  8 Jul 2025 17:02:36 +0000 (UTC)
+	 MIME-Version; b=ry+Fjr5lctMWKTeV2jbVwNHELgyC77Iord+ka6tjZ+TM0MM552jZZNyBW04w3+SyqGCOCCVqxKXWxqvbUdEE4ph/YOVXiTdjNlb9Yxjwts/rjEsSsnvFp3YZ11V2P6anLvRhbmvhGx3fUxxp3A3cnJtjDWQ1GtT4iFYgEKz9rgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQbuusxk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE6CC4CEED;
+	Tue,  8 Jul 2025 16:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994156;
-	bh=KzGj0fw+HmAYXXh0I/DtbMGyOqz/7f+qAWgLmSApOZI=;
+	s=korg; t=1751993097;
+	bh=rYhDtxQp2q+IjFwjrfai2gC94AW7ioDv+Df0Igo8nAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQz4GZxH6rl72Hn+afJulrmuom3qfHj67AYGv1ezXmKKRwSLnXhDH6ggd0eB8SBfr
-	 eIFfZGzmARfiT5zpqzQuGgMt4ghXyYqdlAhpdoCf99zwhEY/KnGs14ov/FrwydEEjk
-	 FOpwy5H5z3XgAJDnG84zoyGn6fttvel7W9O3zBlw=
+	b=TQbuusxk0Qbfv1sOMuhLLo5FbzjiB+LGjl0kllIZ4G04SPipk2ickVCwfw8s0flhq
+	 XFJalTJVnq5HRnEJ7zIu35ueMMiF5xvUSJ5TtPlEE64wqrGJAwvEpTtWgkjroxCC4v
+	 2K7F1RGr3H+GJUKZbGPEWvj2Y4QMB5IKGfDgshgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 145/160] net: dpaa2-eth: rearrange variable in dpaa2_eth_get_ethtool_stats
+Subject: [PATCH 6.12 186/232] wifi: ath6kl: remove WARN on bad firmware input
 Date: Tue,  8 Jul 2025 18:23:02 +0200
-Message-ID: <20250708162235.361637804@linuxfoundation.org>
+Message-ID: <20250708162246.299891226@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 3313206827678f6f036eca601a51f6c4524b559a ]
+[ Upstream commit e7417421d89358da071fd2930f91e67c7128fbff ]
 
-Rearrange the variables in the dpaa2_eth_get_ethtool_stats() function so
-that we adhere to the reverse Christmas tree rule.
-Also, in the next patch we are adding more variables and I didn't know
-where to place them with the current ordering.
+If the firmware gives bad input, that's nothing to do with
+the driver's stack at this point etc., so the WARN_ON()
+doesn't add any value. Additionally, this is one of the
+top syzbot reports now. Just print a message, and as an
+added bonus, print the sizes too.
 
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 2def09ead4ad ("dpaa2-eth: fix xdp_rxq_info leak")
+Reported-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
+Tested-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
+Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250617114529.031a677a348e.I58bf1eb4ac16a82c546725ff010f3f0d2b0cca49@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/freescale/dpaa2/dpaa2-ethtool.c   | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/net/wireless/ath/ath6kl/bmi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
-index 2da5f881f6302..3a310d92ef2f7 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
-@@ -225,17 +225,8 @@ static void dpaa2_eth_get_ethtool_stats(struct net_device *net_dev,
- 					struct ethtool_stats *stats,
- 					u64 *data)
- {
--	int i = 0;
--	int j, k, err;
--	int num_cnt;
--	union dpni_statistics dpni_stats;
--	u32 fcnt, bcnt;
--	u32 fcnt_rx_total = 0, fcnt_tx_total = 0;
--	u32 bcnt_rx_total = 0, bcnt_tx_total = 0;
--	u32 buf_cnt;
- 	struct dpaa2_eth_priv *priv = netdev_priv(net_dev);
--	struct dpaa2_eth_drv_stats *extras;
--	struct dpaa2_eth_ch_stats *ch_stats;
-+	union dpni_statistics dpni_stats;
- 	int dpni_stats_page_size[DPNI_STATISTICS_CNT] = {
- 		sizeof(dpni_stats.page_0),
- 		sizeof(dpni_stats.page_1),
-@@ -245,6 +236,13 @@ static void dpaa2_eth_get_ethtool_stats(struct net_device *net_dev,
- 		sizeof(dpni_stats.page_5),
- 		sizeof(dpni_stats.page_6),
- 	};
-+	u32 fcnt_rx_total = 0, fcnt_tx_total = 0;
-+	u32 bcnt_rx_total = 0, bcnt_tx_total = 0;
-+	struct dpaa2_eth_ch_stats *ch_stats;
-+	struct dpaa2_eth_drv_stats *extras;
-+	int j, k, err, num_cnt, i = 0;
-+	u32 fcnt, bcnt;
-+	u32 buf_cnt;
+diff --git a/drivers/net/wireless/ath/ath6kl/bmi.c b/drivers/net/wireless/ath/ath6kl/bmi.c
+index af98e871199d3..5a9e93fd1ef42 100644
+--- a/drivers/net/wireless/ath/ath6kl/bmi.c
++++ b/drivers/net/wireless/ath/ath6kl/bmi.c
+@@ -87,7 +87,9 @@ int ath6kl_bmi_get_target_info(struct ath6kl *ar,
+ 		 * We need to do some backwards compatibility to make this work.
+ 		 */
+ 		if (le32_to_cpu(targ_info->byte_count) != sizeof(*targ_info)) {
+-			WARN_ON(1);
++			ath6kl_err("mismatched byte count %d vs. expected %zd\n",
++				   le32_to_cpu(targ_info->byte_count),
++				   sizeof(*targ_info));
+ 			return -EINVAL;
+ 		}
  
- 	memset(data, 0,
- 	       sizeof(u64) * (DPAA2_ETH_NUM_STATS + DPAA2_ETH_NUM_EXTRA_STATS));
 -- 
 2.39.5
 
