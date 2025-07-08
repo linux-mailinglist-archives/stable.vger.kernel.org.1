@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-161147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C689CAFD38D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F8CAFD0C2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:27:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 941EB16FDCF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AF391C219AD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18B32DE1FA;
-	Tue,  8 Jul 2025 16:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A052E540B;
+	Tue,  8 Jul 2025 16:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2Kivp08"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKazwaJ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEFA202F70;
-	Tue,  8 Jul 2025 16:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66FF2D9790;
+	Tue,  8 Jul 2025 16:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993730; cv=none; b=msqRe0d/onZHQsID0dBJUkTK61TMRyODlO65wZy9Q8vFpMESsqGyB0RojY8YM3/8cpz8WQlwpHZf20yY/iYKjFCBZpYmWxmLWvLE03RXHlXbMgWxByenbD+Fx4NCGH6xCFEH0wX+mAAr6irBGPXAV4ysbtdhDzSqzvuYqQeX8xI=
+	t=1751991965; cv=none; b=g48qGqJOHNdlMLCm54AKs6MEGP/nmFOTFd+UW0Alabp0xCLlrYCbc3NVjuZ+bh9pSew3Plt5bUewxnYq3ssVskdhGUhYMqqzMXK2N0WPpl4EnE5x+JrhXkI7qG17ZgYHvPeJQbfu34gNomvzEkrGgkqmvrP2GtH6rhtUDGF+keo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993730; c=relaxed/simple;
-	bh=XxRgIK/QP1opY7A++TVOt+Oi1Z0Ka9BT3w/sxsYxjHo=;
+	s=arc-20240116; t=1751991965; c=relaxed/simple;
+	bh=S6AzXoyZgujXvPA3BAe+U+WTs74bBi4ZPgHE7rSWxCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsMzhKugMZePwrxOicNF392wbnc+2fkr2ksBo6HcxxTEHu1mwmJ3LhQEU4AslLMs/HH4qCnN1BM4IWO+7EJ1s0RIA0Khp63dvzqnVaNoTOdh5koCphm7b6wJyD9sW4sGjCNHHHak95Uw3r304AGdb9kUnOkVWLtz+ZXdDExoL6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2Kivp08; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC583C4CEED;
-	Tue,  8 Jul 2025 16:55:29 +0000 (UTC)
+	 MIME-Version; b=pliqdUssM2IRrmMllg56AAGNoGNTDbA2XfjhGAPwztsKDqPjpKWyriy6BsagxmCbGNQJh+DpgydtAYPy3u0tWre2ogTkDYB+OKKFLYfuxSzwABIiIDba7M0HdCuGSejaDNalB1pkQK6DRhCIGGinNhEZgy3BFcA4UqIVQdmqiho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKazwaJ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D2DC4CEED;
+	Tue,  8 Jul 2025 16:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993730;
-	bh=XxRgIK/QP1opY7A++TVOt+Oi1Z0Ka9BT3w/sxsYxjHo=;
+	s=korg; t=1751991965;
+	bh=S6AzXoyZgujXvPA3BAe+U+WTs74bBi4ZPgHE7rSWxCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2Kivp08jEyo+X++o/t8xFJBFJyfZb95MfqQjWXpM9eRIaPYTnWHnDY91RWB84/Lg
-	 0Aa1EY2VEx428BhaYsYERpqsvlC5+bECnAytQo2UVgruQyXrcvJlQfPdhPF/ywCG0f
-	 Rt3wXIl/FZcMSfWqIE90juG2ZGxz3e0TYSpWQTOI=
+	b=OKazwaJ9ILV3qxPbbTvDU/xngQoylh21AgFHCAoBsA2k9Wx7yFqJdMxJFf5zdUlie
+	 HROq2ZfJv8EFR7LZEtRO6zyOgJt5fTPA1r7Kj7U86blH/0zdjNL5+vnhQEeyIwKxTH
+	 zlcVCNiNPxDZs37QQA8F/DcnFRsFcpbZ7FZMmeWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.15 143/178] usb: xhci: quirk for data loss in ISOC transfers
+	Christian Eggers <ceggers@arri.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 08/81] Bluetooth: MGMT: set_mesh: update LE scan interval and window
 Date: Tue,  8 Jul 2025 18:23:00 +0200
-Message-ID: <20250708162240.269411811@linuxfoundation.org>
+Message-ID: <20250708162225.110703336@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Christian Eggers <ceggers@arri.de>
 
-commit cbc889ab0122366f6cdbe3c28d477c683ebcebc2 upstream.
+commit e5af67a870f738bb8a4594b6c60c2caf4c87a3c9 upstream.
 
-During the High-Speed Isochronous Audio transfers, xHCI
-controller on certain AMD platforms experiences momentary data
-loss. This results in Missed Service Errors (MSE) being
-generated by the xHCI.
+According to the message of commit b338d91703fa ("Bluetooth: Implement
+support for Mesh"), MGMT_OP_SET_MESH_RECEIVER should set the passive scan
+parameters.  Currently the scan interval and window parameters are
+silently ignored, although user space (bluetooth-meshd) expects that
+they can be used [1]
 
-The root cause of the MSE is attributed to the ISOC OUT endpoint
-being omitted from scheduling. This can happen when an IN
-endpoint with a 64ms service interval either is pre-scheduled
-prior to the ISOC OUT endpoint or the interval of the ISOC OUT
-endpoint is shorter than that of the IN endpoint. Consequently,
-the OUT service is neglected when an IN endpoint with a service
-interval exceeding 32ms is scheduled concurrently (every 64ms in
-this scenario).
-
-This issue is particularly seen on certain older AMD platforms.
-To mitigate this problem, it is recommended to adjust the service
-interval of the IN endpoint to not exceed 32ms (interval 8). This
-adjustment ensures that the OUT endpoint will not be bypassed,
-even if a smaller interval value is utilized.
-
-Cc: stable <stable@kernel.org>
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250627144127.3889714-2-mathias.nyman@linux.intel.com
+[1] https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/mesh/mesh-io-mgmt.c#n344
+Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-mem.c |    4 ++++
- drivers/usb/host/xhci-pci.c |   25 +++++++++++++++++++++++++
- drivers/usb/host/xhci.h     |    1 +
- 3 files changed, 30 insertions(+)
+ net/bluetooth/mgmt.c |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -1420,6 +1420,10 @@ int xhci_endpoint_init(struct xhci_hcd *
- 	/* Periodic endpoint bInterval limit quirk */
- 	if (usb_endpoint_xfer_int(&ep->desc) ||
- 	    usb_endpoint_xfer_isoc(&ep->desc)) {
-+		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
-+		    interval >= 9) {
-+			interval = 8;
-+		}
- 		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_7) &&
- 		    udev->speed >= USB_SPEED_HIGH &&
- 		    interval >= 7) {
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -71,12 +71,22 @@
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_XHCI		0x15ec
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_XHCI		0x15f0
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2223,6 +2223,9 @@ static int set_mesh_sync(struct hci_dev
+ 	else
+ 		hci_dev_clear_flag(hdev, HCI_MESH);
  
-+#define PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI		0x13ed
-+#define PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI		0x13ee
-+#define PCI_DEVICE_ID_AMD_STARSHIP_XHCI			0x148c
-+#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI		0x15d4
-+#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI		0x15d5
-+#define PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI		0x15e0
-+#define PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI		0x15e1
-+#define PCI_DEVICE_ID_AMD_RAVEN2_XHCI			0x15e5
- #define PCI_DEVICE_ID_AMD_RENOIR_XHCI			0x1639
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_4			0x43b9
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_3			0x43ba
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_2			0x43bb
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_1			0x43bc
- 
-+#define PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI		0x7316
++	hdev->le_scan_interval = __le16_to_cpu(cp->period);
++	hdev->le_scan_window = __le16_to_cpu(cp->window);
 +
- #define PCI_DEVICE_ID_ASMEDIA_1042_XHCI			0x1042
- #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
- #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
-@@ -280,6 +290,21 @@ static void xhci_pci_quirks(struct devic
- 	if (pdev->vendor == PCI_VENDOR_ID_NEC)
- 		xhci->quirks |= XHCI_NEC_HOST;
+ 	len -= sizeof(*cp);
  
-+	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
-+	    (pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_STARSHIP_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN2_XHCI))
-+		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
+ 	/* If filters don't fit, forward all adv pkts */
+@@ -2237,6 +2240,7 @@ static int set_mesh(struct sock *sk, str
+ {
+ 	struct mgmt_cp_set_mesh *cp = data;
+ 	struct mgmt_pending_cmd *cmd;
++	__u16 period, window;
+ 	int err = 0;
+ 
+ 	bt_dev_dbg(hdev, "sock %p", sk);
+@@ -2250,6 +2254,23 @@ static int set_mesh(struct sock *sk, str
+ 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
+ 				       MGMT_STATUS_INVALID_PARAMS);
+ 
++	/* Keep allowed ranges in sync with set_scan_params() */
++	period = __le16_to_cpu(cp->period);
 +
-+	if (pdev->vendor == PCI_VENDOR_ID_ATI &&
-+	    pdev->device == PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI)
-+		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
++	if (period < 0x0004 || period > 0x4000)
++		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
++				       MGMT_STATUS_INVALID_PARAMS);
 +
- 	if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version == 0x96)
- 		xhci->quirks |= XHCI_AMD_0x96_HOST;
++	window = __le16_to_cpu(cp->window);
++
++	if (window < 0x0004 || window > 0x4000)
++		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
++				       MGMT_STATUS_INVALID_PARAMS);
++
++	if (window > period)
++		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
++				       MGMT_STATUS_INVALID_PARAMS);
++
+ 	hci_dev_lock(hdev);
  
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1637,6 +1637,7 @@ struct xhci_hcd {
- #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
- #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
- #define XHCI_ETRON_HOST	BIT_ULL(49)
-+#define XHCI_LIMIT_ENDPOINT_INTERVAL_9 BIT_ULL(50)
+ 	cmd = mgmt_pending_add(sk, MGMT_OP_SET_MESH_RECEIVER, hdev, data, len);
+@@ -6607,6 +6628,7 @@ static int set_scan_params(struct sock *
+ 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_SCAN_PARAMS,
+ 				       MGMT_STATUS_NOT_SUPPORTED);
  
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
++	/* Keep allowed ranges in sync with set_mesh() */
+ 	interval = __le16_to_cpu(cp->interval);
+ 
+ 	if (interval < 0x0004 || interval > 0x4000)
 
 
 
