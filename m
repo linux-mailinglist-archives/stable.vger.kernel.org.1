@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-161274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847C8AFD496
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2ADEAFD2A4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04D941C2774A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C817F583931
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980AD2E5B09;
-	Tue,  8 Jul 2025 17:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398462E5B07;
+	Tue,  8 Jul 2025 16:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8HQJ/NZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17fhAY3U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5622A2DD5EF;
-	Tue,  8 Jul 2025 17:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BD32E2F0D;
+	Tue,  8 Jul 2025 16:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994101; cv=none; b=HrptvRkm46uW/SY7oCRfqKmaMG+2OvKaG6CY1rsEwzPcZTwQ5KAE5NG8k8rAd4vzzkw8bZTvK631uV2kFYH/tqgSa/kxinPlMYH59UESmChcD+Tu8K5riqjkUVjc7ZGYI9XR+u6OhleOtM8WUShex7D5cbhEODiS+7tcrHzUmps=
+	t=1751993126; cv=none; b=M7Dsdw1CCFqL9XzPIEeyXu/Meg9fsmXYPibwY+VUboCQ/CdSzCCb0oTXxqRlXo1RYR3K9r8jPr6MZ7i2Cz4U7QLqBrqso+W/oYmyNBEz5jarXFOOCnSqYYcPh2KNl609GmO7oO0De7Cjm5taXpM6OJbtroOWvPIj2DcC/WP4ZgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994101; c=relaxed/simple;
-	bh=THb4lH6pxW8NTYy+Pb69RX08CIhq3q5fM4vqDGPayHY=;
+	s=arc-20240116; t=1751993126; c=relaxed/simple;
+	bh=KErBfbcQ1e+l2uNFRCW+b3VQuf84gO8USsZR9D4WWVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YqgeFa01tYxOB/RehdBuPCnWCAYSNLUpqE3DPWzCO55DDx5vj4mlAJfSw442i4+hI3KPFh5agl8PPy3gVYnv/1bPU9u09zlIJqNWAAuG4ULdVPK/uJAGNY4VukUjOE8jwq4lSonhu4Tu3S/cKAuhhY2udIfX1HiJB6+AcocGEOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8HQJ/NZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D556DC4CEED;
-	Tue,  8 Jul 2025 17:01:40 +0000 (UTC)
+	 MIME-Version; b=fzgU0QzVnqSxLbq9gnjucdh/IphW/KBLNnSsRWJtNxWWFsZRA8j+JnKI/WrqeOQNeoMdPbK/A/cH8PbqMX+GbPl+SyzBxZE1BmnU4cakgACD8WDYj+U6XxPdsCujcW+LeeYUslR8F21yRpUuDzF4tPaoGRNY1exES8TMMbi7r7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17fhAY3U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7857BC4CEED;
+	Tue,  8 Jul 2025 16:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994101;
-	bh=THb4lH6pxW8NTYy+Pb69RX08CIhq3q5fM4vqDGPayHY=;
+	s=korg; t=1751993125;
+	bh=KErBfbcQ1e+l2uNFRCW+b3VQuf84gO8USsZR9D4WWVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8HQJ/NZ2RnuxiyEcLYdsK/RddMksCl9iyPfGP+KbuaIl4QJ51U69YnqThEFY+Ts3
-	 /2DAUWZ6dN/TPVM10kJf4QSZTjuzOEXaLtfj/giozxsmcJGDMXV49x5/9UtUqpgzfc
-	 B1XwTaJOWiINq51zqJ2eQyGKf/nGr98aNN0smfsc=
+	b=17fhAY3UlvjJsqMvEKbtdiZITsE+VIOCeDNXF4mGh6CNOwmklVPmHB2g4Ca3t3IQ0
+	 Jwf3IMcaHqPKphm738AwW4+5kQYNn+nTqFgjzGJhMs550SC9UVqUhc9NyuhUupn69c
+	 NttGZJAvyrDe5XM6n6c6nLGEp5V8EZxAuTE2ljCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lion Ackermann <nnamrec@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Duncan Ma <duncan.ma@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 125/160] net/sched: Always pass notifications when child class becomes empty
+Subject: [PATCH 6.12 166/232] drm/amd/display: Add more checks for DSC / HUBP ONO guarantees
 Date: Tue,  8 Jul 2025 18:22:42 +0200
-Message-ID: <20250708162234.889868325@linuxfoundation.org>
+Message-ID: <20250708162245.780612251@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,111 +66,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lion Ackermann <nnamrec@gmail.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit 103406b38c600fec1fe375a77b27d87e314aea09 ]
+[ Upstream commit 0d57dd1765d311111d9885346108c4deeae1deb4 ]
 
-Certain classful qdiscs may invoke their classes' dequeue handler on an
-enqueue operation. This may unexpectedly empty the child qdisc and thus
-make an in-flight class passive via qlen_notify(). Most qdiscs do not
-expect such behaviour at this point in time and may re-activate the
-class eventually anyways which will lead to a use-after-free.
+[WHY]
+For non-zero DSC instances it's possible that the HUBP domain required
+to drive it for sequential ONO ASICs isn't met, potentially causing
+the logic to the tile to enter an undefined state leading to a system
+hang.
 
-The referenced fix commit attempted to fix this behavior for the HFSC
-case by moving the backlog accounting around, though this turned out to
-be incomplete since the parent's parent may run into the issue too.
-The following reproducer demonstrates this use-after-free:
+[HOW]
+Add more checks to ensure that the HUBP domain matching the DSC instance
+is appropriately powered.
 
-    tc qdisc add dev lo root handle 1: drr
-    tc filter add dev lo parent 1: basic classid 1:1
-    tc class add dev lo parent 1: classid 1:1 drr
-    tc qdisc add dev lo parent 1:1 handle 2: hfsc def 1
-    tc class add dev lo parent 2: classid 2:1 hfsc rt m1 8 d 1 m2 0
-    tc qdisc add dev lo parent 2:1 handle 3: netem
-    tc qdisc add dev lo parent 3:1 handle 4: blackhole
-
-    echo 1 | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888
-    tc class delete dev lo classid 1:1
-    echo 1 | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888
-
-Since backlog accounting issues leading to a use-after-frees on stale
-class pointers is a recurring pattern at this point, this patch takes
-a different approach. Instead of trying to fix the accounting, the patch
-ensures that qdisc_tree_reduce_backlog always calls qlen_notify when
-the child qdisc is empty. This solves the problem because deletion of
-qdiscs always involves a call to qdisc_reset() and / or
-qdisc_purge_queue() which ultimately resets its qlen to 0 thus causing
-the following qdisc_tree_reduce_backlog() to report to the parent. Note
-that this may call qlen_notify on passive classes multiple times. This
-is not a problem after the recent patch series that made all the
-classful qdiscs qlen_notify() handlers idempotent.
-
-Fixes: 3f981138109f ("sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue()")
-Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Duncan Ma <duncan.ma@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit da63df07112e5a9857a8d2aaa04255c4206754ec)
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_api.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ .../amd/display/dc/hwss/dcn35/dcn35_hwseq.c   | 35 ++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index d9ce273ba43d8..222921b4751f3 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -768,15 +768,12 @@ static u32 qdisc_alloc_handle(struct net_device *dev)
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+index ca446e08f6a27..21aff7fa6375d 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+@@ -1019,8 +1019,22 @@ void dcn35_calc_blocks_to_gate(struct dc *dc, struct dc_state *context,
+ 		if (pipe_ctx->plane_res.dpp || pipe_ctx->stream_res.opp)
+ 			update_state->pg_pipe_res_update[PG_MPCC][pipe_ctx->plane_res.mpcc_inst] = false;
  
- void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
- {
--	bool qdisc_is_offloaded = sch->flags & TCQ_F_OFFLOADED;
- 	const struct Qdisc_class_ops *cops;
- 	unsigned long cl;
- 	u32 parentid;
- 	bool notify;
- 	int drops;
+-		if (pipe_ctx->stream_res.dsc)
++		if (pipe_ctx->stream_res.dsc) {
+ 			update_state->pg_pipe_res_update[PG_DSC][pipe_ctx->stream_res.dsc->inst] = false;
++			if (dc->caps.sequential_ono) {
++				update_state->pg_pipe_res_update[PG_HUBP][pipe_ctx->stream_res.dsc->inst] = false;
++				update_state->pg_pipe_res_update[PG_DPP][pipe_ctx->stream_res.dsc->inst] = false;
++
++				/* All HUBP/DPP instances must be powered if the DSC inst != HUBP inst */
++				if (!pipe_ctx->top_pipe && pipe_ctx->plane_res.hubp &&
++				    pipe_ctx->plane_res.hubp->inst != pipe_ctx->stream_res.dsc->inst) {
++					for (j = 0; j < dc->res_pool->pipe_count; ++j) {
++						update_state->pg_pipe_res_update[PG_HUBP][j] = false;
++						update_state->pg_pipe_res_update[PG_DPP][j] = false;
++					}
++				}
++			}
++		}
  
--	if (n == 0 && len == 0)
--		return;
- 	drops = max_t(int, n, 0);
- 	rcu_read_lock();
- 	while ((parentid = sch->parent)) {
-@@ -785,17 +782,8 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
+ 		if (pipe_ctx->stream_res.opp)
+ 			update_state->pg_pipe_res_update[PG_OPP][pipe_ctx->stream_res.opp->inst] = false;
+@@ -1165,6 +1179,25 @@ void dcn35_calc_blocks_to_ungate(struct dc *dc, struct dc_state *context,
+ 		update_state->pg_pipe_res_update[PG_HDMISTREAM][0] = true;
  
- 		if (sch->flags & TCQ_F_NOPARENT)
- 			break;
--		/* Notify parent qdisc only if child qdisc becomes empty.
--		 *
--		 * If child was empty even before update then backlog
--		 * counter is screwed and we skip notification because
--		 * parent class is already passive.
--		 *
--		 * If the original child was offloaded then it is allowed
--		 * to be seem as empty, so the parent is notified anyway.
--		 */
--		notify = !sch->q.qlen && !WARN_ON_ONCE(!n &&
--						       !qdisc_is_offloaded);
-+		/* Notify parent qdisc only if child qdisc becomes empty. */
-+		notify = !sch->q.qlen;
- 		/* TODO: perform the search on a per txq basis */
- 		sch = qdisc_lookup(qdisc_dev(sch), TC_H_MAJ(parentid));
- 		if (sch == NULL) {
-@@ -804,6 +792,9 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
- 		}
- 		cops = sch->ops->cl_ops;
- 		if (notify && cops->qlen_notify) {
-+			/* Note that qlen_notify must be idempotent as it may get called
-+			 * multiple times.
-+			 */
- 			cl = cops->find(sch, parentid);
- 			cops->qlen_notify(sch, cl);
- 		}
+ 	if (dc->caps.sequential_ono) {
++		for (i = 0; i < dc->res_pool->pipe_count; i++) {
++			struct pipe_ctx *new_pipe = &context->res_ctx.pipe_ctx[i];
++
++			if (new_pipe->stream_res.dsc && !new_pipe->top_pipe &&
++			    update_state->pg_pipe_res_update[PG_DSC][new_pipe->stream_res.dsc->inst]) {
++				update_state->pg_pipe_res_update[PG_HUBP][new_pipe->stream_res.dsc->inst] = true;
++				update_state->pg_pipe_res_update[PG_DPP][new_pipe->stream_res.dsc->inst] = true;
++
++				/* All HUBP/DPP instances must be powered if the DSC inst != HUBP inst */
++				if (new_pipe->plane_res.hubp &&
++				    new_pipe->plane_res.hubp->inst != new_pipe->stream_res.dsc->inst) {
++					for (j = 0; j < dc->res_pool->pipe_count; ++j) {
++						update_state->pg_pipe_res_update[PG_HUBP][j] = true;
++						update_state->pg_pipe_res_update[PG_DPP][j] = true;
++					}
++				}
++			}
++		}
++
+ 		for (i = dc->res_pool->pipe_count - 1; i >= 0; i--) {
+ 			if (update_state->pg_pipe_res_update[PG_HUBP][i] &&
+ 			    update_state->pg_pipe_res_update[PG_DPP][i]) {
 -- 
 2.39.5
 
