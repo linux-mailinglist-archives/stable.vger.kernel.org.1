@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-161128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0FACAFD37A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6756AAFD0DD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CD4C5440DD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 976221C21896
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9846621C190;
-	Tue,  8 Jul 2025 16:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE82E29B797;
+	Tue,  8 Jul 2025 16:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+YDCjF4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFAxB+vF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D102F37;
-	Tue,  8 Jul 2025 16:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BD72E659;
+	Tue,  8 Jul 2025 16:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993676; cv=none; b=FXd99z6qutULVNhiwr2TdMFNp/6pPCrpOK1VHUjkY4YOdLHnyhVcwXXx+OJQ6GCgj5gFZqR2P8tvi9GIqYbVQKrprcRl4V0uiBSTCC0Fx2PsdUsNm9cZ1NhQizFf8ItA4oH24XBx0JUs1ZHrh9jVVfqjjzMjOf0sigPX64NT99g=
+	t=1751992075; cv=none; b=R4G5s4XnRb0769GlAVrip0VBTFKQTR1Om04Lu1LwE+bAfyMg6Wuf7KJNPUtggEaBwO9KN94C+3Pt+J9eNHUtkzcAhHSCxtp4Kz0Vde9bXI6YY97ZC58o/3dtt39Um4xVBv8oD6jdMUc2rVJ69mI2/pUpmF1q7G9GAusIqus5fZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993676; c=relaxed/simple;
-	bh=eVQKyz4ZVRxe/M+yW2YXepiUxw1N58Bw5QOBd/NqD+I=;
+	s=arc-20240116; t=1751992075; c=relaxed/simple;
+	bh=qMyNat2auF9nuvMTFJJhFiLFjEH5d3sP01x82p6cPEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgucLRXbYiHtaIK5oA7fmCT4uAElK6sxMt/hTpzqGjdq1OVtFeUz2OrfxjC6nb1nojGm2QXOVaVR6acvSfue753E1cxbROB+3jUSftA87uwrKib79ty89hIcF+a8Per8zwmK46a7LRgOnY61cAa5qbVUeUsDwemBEqpbciOvFtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+YDCjF4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0EBDC4CEED;
-	Tue,  8 Jul 2025 16:54:35 +0000 (UTC)
+	 MIME-Version; b=WMycuNEG3Jguln3b5ejCkAA/P8Cui/s3KmdJwmKDpZ7xyAsnEDoMLJJwobDJUuyLjXBJb7+Mrri8WhfL721L+pIzBSi8Pd1vh3+WWU+KqEFupn+DNV415Sdw+AgtwcapLLzDDABRFf68pUEwv/5sPzh6ulu18PbTKyQSQNrLT+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFAxB+vF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA70C4CEED;
+	Tue,  8 Jul 2025 16:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993676;
-	bh=eVQKyz4ZVRxe/M+yW2YXepiUxw1N58Bw5QOBd/NqD+I=;
+	s=korg; t=1751992075;
+	bh=qMyNat2auF9nuvMTFJJhFiLFjEH5d3sP01x82p6cPEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+YDCjF4LPboDVSN5GXcabMmd0fxEG+kMmVmKVRWtohjoMlni40riV1lkvp+rpJTL
-	 dbqc0Gsv9ZBJkp0YyaTXf39fsAeQLXMwPI0ZzKrKcNfLh8g50/PIT0xkUZk5zlgmrL
-	 TF3/L7iy5Gllx9k3oKxGovcRv3giLZQ/Xwacmam4=
+	b=AFAxB+vFZiognvAncq+Pcqj2MlhZWAbfvexKu2ZmPIKzs6Nrq0wjJ+8ZYT5ZYyoGZ
+	 tf2UpPZdhLNlZZZ0+mdRx0tOLHJG7FL8BHhAq6LTbDEpy5rq3NncKz06KdY4Q9DeMf
+	 Sq/XEratcIQQKJIZ+IH9qy6bh4Hw7rS3bZIHdwpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.15 155/178] usb: acpi: fix device link removal
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 20/81] scsi: qla2xxx: Fix DMA mapping test in qla24xx_get_port_database()
 Date: Tue,  8 Jul 2025 18:23:12 +0200
-Message-ID: <20250708162240.548808090@linuxfoundation.org>
+Message-ID: <20250708162225.569186447@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 3b18405763c1ebb1efc15feef5563c9cdb2cc3a7 upstream.
+[ Upstream commit c3b214719a87735d4f67333a8ef3c0e31a34837c ]
 
-The device link to the USB4 host interface has to be removed
-manually since it's no longer auto removed.
+dma_map_XXX() functions return as error values DMA_MAPPING_ERROR which is
+often ~0.  The error value should be tested with dma_mapping_error() like
+it was done in qla26xx_dport_diagnostics().
 
-Fixes: 623dae3e7084 ("usb: acpi: fix boot hang due to early incorrect 'tunneled' USB3 device links")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://lore.kernel.org/r/20250611111415.2707865-1-heikki.krogerus@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 818c7f87a177 ("scsi: qla2xxx: Add changes in preparation for vendor extended FDMI/RDP")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250617161115.39888-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c      |    3 +++
- drivers/usb/core/usb-acpi.c |    4 +++-
- include/linux/usb.h         |    2 ++
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_mbx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2337,6 +2337,9 @@ void usb_disconnect(struct usb_device **
- 	usb_remove_ep_devs(&udev->ep0);
- 	usb_unlock_device(udev);
+diff --git a/drivers/scsi/qla2xxx/qla_mbx.c b/drivers/scsi/qla2xxx/qla_mbx.c
+index 1fd9485985f2e..77b23d9dcb3c6 100644
+--- a/drivers/scsi/qla2xxx/qla_mbx.c
++++ b/drivers/scsi/qla2xxx/qla_mbx.c
+@@ -2147,7 +2147,7 @@ qla24xx_get_port_database(scsi_qla_host_t *vha, u16 nport_handle,
  
-+	if (udev->usb4_link)
-+		device_link_del(udev->usb4_link);
-+
- 	/* Unregister the device.  The device driver is responsible
- 	 * for de-configuring the device and invoking the remove-device
- 	 * notifier chain (used by usbfs and possibly others).
---- a/drivers/usb/core/usb-acpi.c
-+++ b/drivers/usb/core/usb-acpi.c
-@@ -157,7 +157,7 @@ EXPORT_SYMBOL_GPL(usb_acpi_set_power_sta
-  */
- static int usb_acpi_add_usb4_devlink(struct usb_device *udev)
- {
--	const struct device_link *link;
-+	struct device_link *link;
- 	struct usb_port *port_dev;
- 	struct usb_hub *hub;
- 
-@@ -188,6 +188,8 @@ static int usb_acpi_add_usb4_devlink(str
- 	dev_dbg(&port_dev->dev, "Created device link from %s to %s\n",
- 		dev_name(&port_dev->child->dev), dev_name(nhi_fwnode->dev));
- 
-+	udev->usb4_link = link;
-+
- 	return 0;
- }
- 
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -614,6 +614,7 @@ struct usb3_lpm_parameters {
-  *	FIXME -- complete doc
-  * @authenticated: Crypto authentication passed
-  * @tunnel_mode: Connection native or tunneled over USB4
-+ * @usb4_link: device link to the USB4 host interface
-  * @lpm_capable: device supports LPM
-  * @lpm_devinit_allow: Allow USB3 device initiated LPM, exit latency is in range
-  * @usb2_hw_lpm_capable: device can perform USB2 hardware LPM
-@@ -724,6 +725,7 @@ struct usb_device {
- 	unsigned reset_resume:1;
- 	unsigned port_is_suspended:1;
- 	enum usb_link_tunnel_mode tunnel_mode;
-+	struct device_link *usb4_link;
- 
- 	int slot_id;
- 	struct usb2_lpm_parameters l1_params;
+ 	pdb_dma = dma_map_single(&vha->hw->pdev->dev, pdb,
+ 	    sizeof(*pdb), DMA_FROM_DEVICE);
+-	if (!pdb_dma) {
++	if (dma_mapping_error(&vha->hw->pdev->dev, pdb_dma)) {
+ 		ql_log(ql_log_warn, vha, 0x1116, "Failed to map dma buffer.\n");
+ 		return QLA_MEMORY_ALLOC_FAILED;
+ 	}
+-- 
+2.39.5
+
 
 
 
