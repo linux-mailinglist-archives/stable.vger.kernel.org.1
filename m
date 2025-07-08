@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-161185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F04AFD3C7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:00:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86165AFD1FE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 821D416869F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E27217187F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312572DAFA3;
-	Tue,  8 Jul 2025 16:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869522E5402;
+	Tue,  8 Jul 2025 16:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jq0aeucC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uN7QY+DT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2075258CF7;
-	Tue,  8 Jul 2025 16:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A08289E2C;
+	Tue,  8 Jul 2025 16:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993841; cv=none; b=OCtWArV1ai9i3AsLY9h/EKm1LVCaU5YLtL7Yu/8zb8sec/FRSbcbEc3U1h4mGCPu7Buoaxn0zph5V/tnTCYTQlrbcWisgGsZkacaK07uFPlXRpdci7YalkAoA5aD/AaVpqFGHBgDPthtum4RhdImpewIIVW+C6PO9qtNbRTB89c=
+	t=1751992776; cv=none; b=dm07ffTpJGG34u9DhjCjhYLVd9kyXYAKZvA3z7uPp16oCVQ2jJEJY/z83DQRIPNtXj8PncsCiP1R76hv7b7XqTPJlFtKAwl2q2sbikmbMro4mPjqA6LfRmNVxyIGPuH62W1+rFHa0MgJ/zc07aUKrnjLVZxgKJms32+Fdx6z7AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993841; c=relaxed/simple;
-	bh=rtQ1wFpOvGXGtmt5//L473Y877xaMgzS9RZHrUOY3jM=;
+	s=arc-20240116; t=1751992776; c=relaxed/simple;
+	bh=TEspSTppyO+fmvD3G6mEAfBFtYEeCi8Eoi66xMBfs80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oIqcNKKY1EfndlL6Uj6gMKgdk1ZceSr67DDUxUtHFqi107jLn1vHo6tl0A9RKtC4o5jva3W0MuaIx1eF9P/QjDYOWaC/x8KSQViFa6+8oWK//ZPVcntZ3udaLRJSm/GhN5ynoB9M3AijYAtCHi2O9a5WwcHQrYnzEd2bQfemDVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jq0aeucC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B77DC4CEED;
-	Tue,  8 Jul 2025 16:57:20 +0000 (UTC)
+	 MIME-Version; b=aMj8PzjpK26oHTUWSEmMGpEkt4gTvRDiiPVOPf1/RxPob1ZevK17vvkK/d1NuUiVG8W1cFP0XS510U8QhtSIqMRAjkagXcOc53iij7XpTwwaBich08RqqHEQ//ZTXo66xELo2re3oMPcJIshITTOt9RoczCQIDqUGCGnWaBW7Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uN7QY+DT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C62C4CEED;
+	Tue,  8 Jul 2025 16:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993840;
-	bh=rtQ1wFpOvGXGtmt5//L473Y877xaMgzS9RZHrUOY3jM=;
+	s=korg; t=1751992776;
+	bh=TEspSTppyO+fmvD3G6mEAfBFtYEeCi8Eoi66xMBfs80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jq0aeucCF6kBbPMvLFhzJY/4H+nIv3S/Zgv6nT7t3YIU2F+Lcc2q2wwxwCZ2zIcjU
-	 PqMESDDbBnbQSuXzYr6LDyMgbqD0FknWf2kMxRYI2up/tReExCWRdc3NYZj3TnniXj
-	 WKHhAEv2pi9VrccAFyPPaLPddm4NaPFA+s8asgfU=
+	b=uN7QY+DTlfqo72jPY6rnWViJoyB3vAmuXL4aukyXUUJc2Z9xZoyGJ7pnDoxzLqNjY
+	 GRfdtlTOmQR74E0Bw7LiSfGw5UJfd44eGeT4mP5FY/FbAE7X7UMSzatnSm9i1M7QSj
+	 Uj2gGpHmLDZJZ3Oi/Itpz8clqeXttqgap28SOJsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Furong Zhou <furong.zhou@intel.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Junxiao Chang <junxiao.chang@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 035/160] ASoC: codecs: wcd9335: Handle nicer probe deferral and simplify with dev_err_probe()
-Date: Tue,  8 Jul 2025 18:21:12 +0200
-Message-ID: <20250708162232.500413467@linuxfoundation.org>
+Subject: [PATCH 6.12 077/232] drm/i915/gsc: mei interrupt top half should be in irq disabled context
+Date: Tue,  8 Jul 2025 18:21:13 +0200
+Message-ID: <20250708162243.466655174@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Junxiao Chang <junxiao.chang@intel.com>
 
-[ Upstream commit 4a03b5dbad466c902d522f3405daa4e5d80578c5 ]
+[ Upstream commit 8cadce97bf264ed478669c6f32d5603b34608335 ]
 
-wcd9335_parse_dt() function is called only from probe(), so printing
-errors on resource acquisition is discouraged, because it can pollute
-dmesg.  Use dev_err_probe() to fix this and also make the code a bit
-simpler.
+MEI GSC interrupt comes from i915. It has top half and bottom half.
+Top half is called from i915 interrupt handler. It should be in
+irq disabled context.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://msgid.link/r/20240612-asoc-wcd9xxx-wide-cleanups-v1-4-0d15885b2a06@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 9079db287fc3 ("ASoC: codecs: wcd9335: Fix missing free of regulator supplies")
+With RT kernel, by default i915 IRQ handler is in threaded IRQ. MEI GSC
+top half might be in threaded IRQ context. generic_handle_irq_safe API
+could be called from either IRQ or process context, it disables local
+IRQ then calls MEI GSC interrupt top half.
+
+This change fixes A380/A770 GPU boot hang issue with RT kernel.
+
+Fixes: 1e3dc1d8622b ("drm/i915/gsc: add gsc as a mei auxiliary device")
+Tested-by: Furong Zhou <furong.zhou@intel.com>
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Junxiao Chang <junxiao.chang@intel.com>
+Link: https://lore.kernel.org/r/20250425151108.643649-1-junxiao.chang@intel.com
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit dccf655f69002d496a527ba441b4f008aa5bebbf)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd9335.c | 28 +++++++++-------------------
- 1 file changed, 9 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_gsc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
-index 075ed20e9fad8..dc4ce2c3f2188 100644
---- a/sound/soc/codecs/wcd9335.c
-+++ b/sound/soc/codecs/wcd9335.c
-@@ -5028,22 +5028,16 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
- 	int ret;
+diff --git a/drivers/gpu/drm/i915/gt/intel_gsc.c b/drivers/gpu/drm/i915/gt/intel_gsc.c
+index 1e925c75fb080..c43febc862dc3 100644
+--- a/drivers/gpu/drm/i915/gt/intel_gsc.c
++++ b/drivers/gpu/drm/i915/gt/intel_gsc.c
+@@ -284,7 +284,7 @@ static void gsc_irq_handler(struct intel_gt *gt, unsigned int intf_id)
+ 	if (gt->gsc.intf[intf_id].irq < 0)
+ 		return;
  
- 	wcd->reset_gpio = of_get_named_gpio(np,	"reset-gpios", 0);
--	if (wcd->reset_gpio < 0) {
--		dev_err(dev, "Reset GPIO missing from DT\n");
--		return wcd->reset_gpio;
--	}
-+	if (wcd->reset_gpio < 0)
-+		return dev_err_probe(dev, wcd->reset_gpio, "Reset GPIO missing from DT\n");
- 
- 	wcd->mclk = devm_clk_get(dev, "mclk");
--	if (IS_ERR(wcd->mclk)) {
--		dev_err(dev, "mclk not found\n");
--		return PTR_ERR(wcd->mclk);
--	}
-+	if (IS_ERR(wcd->mclk))
-+		return dev_err_probe(dev, PTR_ERR(wcd->mclk), "mclk not found\n");
- 
- 	wcd->native_clk = devm_clk_get(dev, "slimbus");
--	if (IS_ERR(wcd->native_clk)) {
--		dev_err(dev, "slimbus clock not found\n");
--		return PTR_ERR(wcd->native_clk);
--	}
-+	if (IS_ERR(wcd->native_clk))
-+		return dev_err_probe(dev, PTR_ERR(wcd->native_clk), "slimbus clock not found\n");
- 
- 	wcd->supplies[0].supply = "vdd-buck";
- 	wcd->supplies[1].supply = "vdd-buck-sido";
-@@ -5052,10 +5046,8 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
- 	wcd->supplies[4].supply = "vdd-io";
- 
- 	ret = regulator_bulk_get(dev, WCD9335_MAX_SUPPLY, wcd->supplies);
--	if (ret) {
--		dev_err(dev, "Failed to get supplies: err = %d\n", ret);
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to get supplies\n");
- 
- 	return 0;
- }
-@@ -5158,10 +5150,8 @@ static int wcd9335_slim_probe(struct slim_device *slim)
- 
- 	wcd->dev = dev;
- 	ret = wcd9335_parse_dt(wcd);
--	if (ret) {
--		dev_err(dev, "Error parsing DT: %d\n", ret);
-+	if (ret)
- 		return ret;
--	}
- 
- 	ret = wcd9335_power_on_reset(wcd);
+-	ret = generic_handle_irq(gt->gsc.intf[intf_id].irq);
++	ret = generic_handle_irq_safe(gt->gsc.intf[intf_id].irq);
  	if (ret)
+ 		gt_err_ratelimited(gt, "error handling GSC irq: %d\n", ret);
+ }
 -- 
 2.39.5
 
