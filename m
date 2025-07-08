@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-160843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE707AFD229
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:43:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6628AFD2E1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FAF4583B84
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81C17420DD5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F267C2E54C3;
-	Tue,  8 Jul 2025 16:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDAA18EAB;
+	Tue,  8 Jul 2025 16:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="suDmTIFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMBnNczH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4CA2E2F0D;
-	Tue,  8 Jul 2025 16:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAFFB672;
+	Tue,  8 Jul 2025 16:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992851; cv=none; b=eZ9l2GdgqsqO04NoHY1NfniDfTAtEFF+F6aEPyvav0+XcEvRB/CAENba9vqhf0LWRRP7ux29ucZ4uZPeiM3QarDxGx5DCFCB6nAI4zuNDnBHDnvXrRKv9P96264q92e9+HA+sna/uHH5U8BwOR8UzZsdxJyHzn/KpTGNRggZiVI=
+	t=1751993284; cv=none; b=e4aiA5kPnqwl9bgWTy6xx8AYIpgbY8UGEE1TnhMMQatCzupfUNm8bga8qF1FRsEWGqHjRaBvdaK445wBigYZudMzZpIX36Irj2atjWyUJ2/yUCpbge1Qk04xw1tk3hqoI/xH3RphH89B55g+VTUi+TQwd0n7unsHBUKEPmfgEIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992851; c=relaxed/simple;
-	bh=8FqWodATZeij6Xm5nnnqkP4PJizcRO294axsaC/5Aj0=;
+	s=arc-20240116; t=1751993284; c=relaxed/simple;
+	bh=F1XNIMmqQ0CJwYRHV5OLj65uR2TO+V5jA82jQ2CTq90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jt7ldD9YcQ7D4c0tEyIL4vrsuyahXu5wdXshMk6fvBLhCFinXpdmUA5czywr2A7Zfd8efaaub+iKdFF+yTmb4onuWvzOHou4WBPHup+LOGjlCYb6nPsZIJ/MaepcEj6CDXUjcyV3AHVe91dJGP+AVZOdf4gF9e6trpdc63JB/5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=suDmTIFa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38EFFC4CEED;
-	Tue,  8 Jul 2025 16:40:51 +0000 (UTC)
+	 MIME-Version; b=NhpDsybzHiNaaSimOjJqI/t2vap7rfjZqJjBOyd7RDvtWYDam49YNEiAHtJD1tOOjyRrV+PERH/xYRvFmHk1fZP46fe7th7pgBOnmm9On1KjpRrksByj+mdJWLWUWngt1nkny1CVRquSi2ZevCEcaa8r25UIX6+ik9hAnzqGedQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMBnNczH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8E6C4CEED;
+	Tue,  8 Jul 2025 16:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992851;
-	bh=8FqWodATZeij6Xm5nnnqkP4PJizcRO294axsaC/5Aj0=;
+	s=korg; t=1751993284;
+	bh=F1XNIMmqQ0CJwYRHV5OLj65uR2TO+V5jA82jQ2CTq90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=suDmTIFajCHi3SVBGafdfDOOStTilhWKo3/l7YAgDTEulVWtAy959GD3tpKfCYHL6
-	 x9InnRlsIr2FAlWokudH0nRTJ8HW/oPp+QMh9LTXOYJy7O1GRCj+UHCYhLUuTRLyrR
-	 qv2Tmds6qEZ1e+1iQbyHWYNhIkdDkmVIyROTic8U=
+	b=QMBnNczH+DLwsBiD3Rua4rXBNms9xQ/71pbvnfBWGZ7311FfqaOsuG3ALTTZv8FNO
+	 epNS8URHhW+r5W7BDWjLKdkgzo8sj+5USWAcCPDYeeM9oi6BIAkrWs8j3Gy9TyPTFg
+	 mDWJS+cEbUaPxVaZFHDAWCkekIODga3+BJoZTKsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Graczyk <jangraczyk@yahoo.ca>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/232] platform/x86: dell-wmi-sysman: Fix WMI data block retrieval in sysfs callbacks
+	Christian Eggers <ceggers@arri.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.15 022/178] Bluetooth: MGMT: set_mesh: update LE scan interval and window
 Date: Tue,  8 Jul 2025 18:20:59 +0200
-Message-ID: <20250708162243.111270767@linuxfoundation.org>
+Message-ID: <20250708162237.128764267@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,145 +59,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Christian Eggers <ceggers@arri.de>
 
-[ Upstream commit eb617dd25ca176f3fee24f873f0fd60010773d67 ]
+commit e5af67a870f738bb8a4594b6c60c2caf4c87a3c9 upstream.
 
-After retrieving WMI data blocks in sysfs callbacks, check for the
-validity of them before dereferencing their content.
+According to the message of commit b338d91703fa ("Bluetooth: Implement
+support for Mesh"), MGMT_OP_SET_MESH_RECEIVER should set the passive scan
+parameters.  Currently the scan interval and window parameters are
+silently ignored, although user space (bluetooth-meshd) expects that
+they can be used [1]
 
-Reported-by: Jan Graczyk <jangraczyk@yahoo.ca>
-Closes: https://lore.kernel.org/r/CAHk-=wgMiSKXf7SvQrfEnxVtmT=QVQPjJdNjfm3aXS7wc=rzTw@mail.gmail.com/
-Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250630-sysman-fix-v2-1-d185674d0a30@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/mesh/mesh-io-mgmt.c#n344
+Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h   | 5 +++++
- .../platform/x86/dell/dell-wmi-sysman/enum-attributes.c   | 5 +++--
- .../platform/x86/dell/dell-wmi-sysman/int-attributes.c    | 5 +++--
- .../x86/dell/dell-wmi-sysman/passobj-attributes.c         | 5 +++--
- .../platform/x86/dell/dell-wmi-sysman/string-attributes.c | 5 +++--
- drivers/platform/x86/dell/dell-wmi-sysman/sysman.c        | 8 ++++----
- 6 files changed, 21 insertions(+), 12 deletions(-)
+ net/bluetooth/mgmt.c |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h b/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h
-index 3ad33a094588c..817ee7ba07ca0 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h
-@@ -89,6 +89,11 @@ extern struct wmi_sysman_priv wmi_priv;
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2153,6 +2153,9 @@ static int set_mesh_sync(struct hci_dev
+ 	else
+ 		hci_dev_clear_flag(hdev, HCI_MESH);
  
- enum { ENUM, INT, STR, PO };
- 
-+#define ENUM_MIN_ELEMENTS		8
-+#define INT_MIN_ELEMENTS		9
-+#define STR_MIN_ELEMENTS		8
-+#define PO_MIN_ELEMENTS			4
++	hdev->le_scan_interval = __le16_to_cpu(cp->period);
++	hdev->le_scan_window = __le16_to_cpu(cp->window);
 +
- enum {
- 	ATTR_NAME,
- 	DISPL_NAME_LANG_CODE,
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
-index 8cc212c852668..fc2f58b4cbc6e 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
-@@ -23,9 +23,10 @@ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *a
- 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_ENUMERATION_ATTRIBUTE_GUID);
- 	if (!obj)
- 		return -EIO;
--	if (obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
-+	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < ENUM_MIN_ELEMENTS ||
-+	    obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
- 		kfree(obj);
--		return -EINVAL;
-+		return -EIO;
- 	}
- 	ret = snprintf(buf, PAGE_SIZE, "%s\n", obj->package.elements[CURRENT_VAL].string.pointer);
- 	kfree(obj);
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c
-index 951e75b538fad..7352480642391 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c
-@@ -25,9 +25,10 @@ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *a
- 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_INTEGER_ATTRIBUTE_GUID);
- 	if (!obj)
- 		return -EIO;
--	if (obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_INTEGER) {
-+	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < INT_MIN_ELEMENTS ||
-+	    obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_INTEGER) {
- 		kfree(obj);
--		return -EINVAL;
-+		return -EIO;
- 	}
- 	ret = snprintf(buf, PAGE_SIZE, "%lld\n", obj->package.elements[CURRENT_VAL].integer.value);
- 	kfree(obj);
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
-index d8f1bf5e58a0f..3167e06d416ed 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
-@@ -26,9 +26,10 @@ static ssize_t is_enabled_show(struct kobject *kobj, struct kobj_attribute *attr
- 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_PASSOBJ_ATTRIBUTE_GUID);
- 	if (!obj)
- 		return -EIO;
--	if (obj->package.elements[IS_PASS_SET].type != ACPI_TYPE_INTEGER) {
-+	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < PO_MIN_ELEMENTS ||
-+	    obj->package.elements[IS_PASS_SET].type != ACPI_TYPE_INTEGER) {
- 		kfree(obj);
--		return -EINVAL;
-+		return -EIO;
- 	}
- 	ret = snprintf(buf, PAGE_SIZE, "%lld\n", obj->package.elements[IS_PASS_SET].integer.value);
- 	kfree(obj);
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c
-index c392f0ecf8b55..0d2c74f8d1aad 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c
-@@ -25,9 +25,10 @@ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *a
- 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_STRING_ATTRIBUTE_GUID);
- 	if (!obj)
- 		return -EIO;
--	if (obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
-+	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < STR_MIN_ELEMENTS ||
-+	    obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
- 		kfree(obj);
--		return -EINVAL;
-+		return -EIO;
- 	}
- 	ret = snprintf(buf, PAGE_SIZE, "%s\n", obj->package.elements[CURRENT_VAL].string.pointer);
- 	kfree(obj);
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-index 40ddc6eb75624..decb3b997d86a 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-@@ -408,10 +408,10 @@ static int init_bios_attributes(int attr_type, const char *guid)
- 		return retval;
+ 	len -= sizeof(*cp);
  
- 	switch (attr_type) {
--	case ENUM:	min_elements = 8;	break;
--	case INT:	min_elements = 9;	break;
--	case STR:	min_elements = 8;	break;
--	case PO:	min_elements = 4;	break;
-+	case ENUM:	min_elements = ENUM_MIN_ELEMENTS;	break;
-+	case INT:	min_elements = INT_MIN_ELEMENTS;	break;
-+	case STR:	min_elements = STR_MIN_ELEMENTS;	break;
-+	case PO:	min_elements = PO_MIN_ELEMENTS;		break;
- 	default:
- 		pr_err("Error: Unknown attr_type: %d\n", attr_type);
- 		return -EINVAL;
--- 
-2.39.5
-
+ 	/* If filters don't fit, forward all adv pkts */
+@@ -2167,6 +2170,7 @@ static int set_mesh(struct sock *sk, str
+ {
+ 	struct mgmt_cp_set_mesh *cp = data;
+ 	struct mgmt_pending_cmd *cmd;
++	__u16 period, window;
+ 	int err = 0;
+ 
+ 	bt_dev_dbg(hdev, "sock %p", sk);
+@@ -2180,6 +2184,23 @@ static int set_mesh(struct sock *sk, str
+ 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
+ 				       MGMT_STATUS_INVALID_PARAMS);
+ 
++	/* Keep allowed ranges in sync with set_scan_params() */
++	period = __le16_to_cpu(cp->period);
++
++	if (period < 0x0004 || period > 0x4000)
++		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
++				       MGMT_STATUS_INVALID_PARAMS);
++
++	window = __le16_to_cpu(cp->window);
++
++	if (window < 0x0004 || window > 0x4000)
++		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
++				       MGMT_STATUS_INVALID_PARAMS);
++
++	if (window > period)
++		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
++				       MGMT_STATUS_INVALID_PARAMS);
++
+ 	hci_dev_lock(hdev);
+ 
+ 	cmd = mgmt_pending_add(sk, MGMT_OP_SET_MESH_RECEIVER, hdev, data, len);
+@@ -6432,6 +6453,7 @@ static int set_scan_params(struct sock *
+ 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_SCAN_PARAMS,
+ 				       MGMT_STATUS_NOT_SUPPORTED);
+ 
++	/* Keep allowed ranges in sync with set_mesh() */
+ 	interval = __le16_to_cpu(cp->interval);
+ 
+ 	if (interval < 0x0004 || interval > 0x4000)
 
 
 
