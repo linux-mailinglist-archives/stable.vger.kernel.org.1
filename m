@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-160778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7DDAFD1D2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:40:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D87AFD1B4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E3F81C242AA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 144291C24EBB
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E511023A98D;
-	Tue,  8 Jul 2025 16:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034A72E54D6;
+	Tue,  8 Jul 2025 16:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyxcDFB2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmITmKVU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCE62E542E;
-	Tue,  8 Jul 2025 16:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36A72E54C3;
+	Tue,  8 Jul 2025 16:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992662; cv=none; b=YeLl1K1GpzTa3pWVvMFBO79299/BoFNpN3gGIqXy+Xr9U4clCIt5LFyXal6DgdKPgMnQX7gG1nsp1CGFF3M+sZTwYR7p5k9ZdjfaQpgMaCakNWhaaJJESdr//NKUZ2H8SXPUQfPjZpXF0vuQC+WcOl7+IMbitVYZqO3RZmhWOVk=
+	t=1751992588; cv=none; b=MOph3iFY9IVFF+iJa/4WowL0TY8yHOkMvAqP3j87hoOTdTJYbhy4DKqhoYNn1VyPv2Jzr0ESL3Yw+FW4hEN8zr7lRG6bW+85qu+ZLIfxapUi4SZyyPGw/Bo6UNreqcE+eGv8SlYA7/FAxZbQySpEtW06zQCLBZ12q8Km9dO3K4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992662; c=relaxed/simple;
-	bh=ThqnESc1CQOtOl0unqWCouQtxyXPl5kJMInw2ylRFuw=;
+	s=arc-20240116; t=1751992588; c=relaxed/simple;
+	bh=n1tkC4GaGGVg9bLOg7LX5NlGjqS/XutsYkiXn5xLEh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDJv6vg7hdr22A/Pwh2sTGoKQPQYXQ318Bhq8c2FbSl0fbNGI6QIXwdWZc/PXa+bX5Ac9LItJGqswUc9R6qR6lAm+FU28bByGEjUDScOtBAC5hKf/HuCXWEhXaYzAAePc2PE5uKWIIzHTuwzLwVpiCMkN7c8fnxYqnCvj9cMaFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyxcDFB2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF9A5C4CEED;
-	Tue,  8 Jul 2025 16:37:41 +0000 (UTC)
+	 MIME-Version; b=bkUQ7iFMVo7f8RkNwe/jtmv9XqaW5rs50F25fEIk2SMAbtBwB0FJUDYfBq8G04hPZee57OH1COaMq2p/JTzShKBebe3TWjLh82CXDAcYwBuATkxE/IdzVkZldhSFLyn995W+21SaWfqSnnzyOngMOv+Nx+Zdq3Rx/ISdkv7cyb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmITmKVU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EFEC4CEED;
+	Tue,  8 Jul 2025 16:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992662;
-	bh=ThqnESc1CQOtOl0unqWCouQtxyXPl5kJMInw2ylRFuw=;
+	s=korg; t=1751992588;
+	bh=n1tkC4GaGGVg9bLOg7LX5NlGjqS/XutsYkiXn5xLEh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pyxcDFB2x/5c8UTUX064+g0no5qTK39ll9oe8k1iNFQkCod5MkFbvGZDo/F+wZwf8
-	 MjjAVtHsfVRMa+vL4X004DvozxwEUJdPHIPwWM1SclhxTJR0HBLTvwQrF9e6a5BoHf
-	 bZ5zG7U/oMDplb022A1+KlFEDRSExiwcrc3MM7DE=
+	b=XmITmKVUxZT0dh57DfZs75iK3SCugqGcG5n+Ycy/aKOWFZr/UG2sjL9Q1fT+EhJV7
+	 CWbYNkIvlKhVDkIWBOB2SRxEkR9MqQDypV36/OLvcfIA902EaWZO3volGnTQ6DtU3I
+	 0dwEkncGrHSrZ0R5vz3kEufqzUmV6ELbMEI5ZCsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Jason Wang <jasowang@redhat.com>,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 004/232] virtio-net: xsk: rx: fix the frames length check
-Date: Tue,  8 Jul 2025 18:20:00 +0200
-Message-ID: <20250708162241.546760891@linuxfoundation.org>
+Subject: [PATCH 6.12 005/232] virtio-net: ensure the received length does not exceed allocated size
+Date: Tue,  8 Jul 2025 18:20:01 +0200
+Message-ID: <20250708162241.572921978@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
 References: <20250708162241.426806072@linuxfoundation.org>
@@ -68,98 +68,109 @@ Content-Transfer-Encoding: 8bit
 
 From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-commit 5177373c31318c3c6a190383bfd232e6cf565c36 upstream.
+commit 315dbdd7cdf6aa533829774caaf4d25f1fd20e73 upstream.
 
-When calling buf_to_xdp, the len argument is the frame data's length
-without virtio header's length (vi->hdr_len). We check that len with
+In xdp_linearize_page, when reading the following buffers from the ring,
+we forget to check the received length with the true allocate size. This
+can lead to an out-of-bound read. This commit adds that missing check.
 
-	xsk_pool_get_rx_frame_size() + vi->hdr_len
-
-to ensure the provided len does not larger than the allocated chunk
-size. The additional vi->hdr_len is because in virtnet_add_recvbuf_xsk,
-we use part of XDP_PACKET_HEADROOM for virtio header and ask the vhost
-to start placing data from
-
-	hard_start + XDP_PACKET_HEADROOM - vi->hdr_len
-not
-	hard_start + XDP_PACKET_HEADROOM
-
-But the first buffer has virtio_header, so the maximum frame's length in
-the first buffer can only be
-
-	xsk_pool_get_rx_frame_size()
-not
-	xsk_pool_get_rx_frame_size() + vi->hdr_len
-
-like in the current check.
-
-This commit adds an additional argument to buf_to_xdp differentiate
-between the first buffer and other ones to correctly calculate the maximum
-frame's length.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Fixes: a4e7ba702701 ("virtio_net: xsk: rx: support recv small mode")
+Cc: <stable@vger.kernel.org>
+Fixes: 4941d472bf95 ("virtio-net: do not reset during XDP set")
 Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://patch.msgid.link/20250630151315.86722-2-minhquangbui99@gmail.com
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://patch.msgid.link/20250630144212.48471-2-minhquangbui99@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c |   22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ drivers/net/virtio_net.c |   38 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
 
 --- a/drivers/net/virtio_net.c
 +++ b/drivers/net/virtio_net.c
-@@ -1098,15 +1098,29 @@ static void sg_fill_dma(struct scatterli
- 	sg->length = len;
+@@ -765,6 +765,26 @@ static unsigned int mergeable_ctx_to_tru
+ 	return (unsigned long)mrg_ctx & ((1 << MRG_CTX_HEADER_SHIFT) - 1);
  }
  
-+/* Note that @len is the length of received data without virtio header */
- static struct xdp_buff *buf_to_xdp(struct virtnet_info *vi,
--				   struct receive_queue *rq, void *buf, u32 len)
-+				   struct receive_queue *rq, void *buf,
-+				   u32 len, bool first_buf)
- {
- 	struct xdp_buff *xdp;
- 	u32 bufsize;
++static int check_mergeable_len(struct net_device *dev, void *mrg_ctx,
++			       unsigned int len)
++{
++	unsigned int headroom, tailroom, room, truesize;
++
++	truesize = mergeable_ctx_to_truesize(mrg_ctx);
++	headroom = mergeable_ctx_to_headroom(mrg_ctx);
++	tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
++	room = SKB_DATA_ALIGN(headroom + tailroom);
++
++	if (len > truesize - room) {
++		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
++			 dev->name, len, (unsigned long)(truesize - room));
++		DEV_STATS_INC(dev, rx_length_errors);
++		return -1;
++	}
++
++	return 0;
++}
++
+ static struct sk_buff *virtnet_build_skb(void *buf, unsigned int buflen,
+ 					 unsigned int headroom,
+ 					 unsigned int len)
+@@ -1663,7 +1683,8 @@ static unsigned int virtnet_get_headroom
+  * across multiple buffers (num_buf > 1), and we make sure buffers
+  * have enough headroom.
+  */
+-static struct page *xdp_linearize_page(struct receive_queue *rq,
++static struct page *xdp_linearize_page(struct net_device *dev,
++				       struct receive_queue *rq,
+ 				       int *num_buf,
+ 				       struct page *p,
+ 				       int offset,
+@@ -1683,18 +1704,27 @@ static struct page *xdp_linearize_page(s
+ 	memcpy(page_address(page) + page_off, page_address(p) + offset, *len);
+ 	page_off += *len;
  
- 	xdp = (struct xdp_buff *)buf;
- 
--	bufsize = xsk_pool_get_rx_frame_size(rq->xsk_pool) + vi->hdr_len;
-+	/* In virtnet_add_recvbuf_xsk, we use part of XDP_PACKET_HEADROOM for
-+	 * virtio header and ask the vhost to fill data from
-+	 *         hard_start + XDP_PACKET_HEADROOM - vi->hdr_len
-+	 * The first buffer has virtio header so the remaining region for frame
-+	 * data is
-+	 *         xsk_pool_get_rx_frame_size()
-+	 * While other buffers than the first one do not have virtio header, so
-+	 * the maximum frame data's length can be
-+	 *         xsk_pool_get_rx_frame_size() + vi->hdr_len
++	/* Only mergeable mode can go inside this while loop. In small mode,
++	 * *num_buf == 1, so it cannot go inside.
 +	 */
-+	bufsize = xsk_pool_get_rx_frame_size(rq->xsk_pool);
-+	if (!first_buf)
-+		bufsize += vi->hdr_len;
+ 	while (--*num_buf) {
+ 		unsigned int buflen;
+ 		void *buf;
++		void *ctx;
+ 		int off;
  
- 	if (unlikely(len > bufsize)) {
- 		pr_debug("%s: rx error: len %u exceeds truesize %u\n",
-@@ -1231,7 +1245,7 @@ static int xsk_append_merge_buffer(struc
+-		buf = virtnet_rq_get_buf(rq, &buflen, NULL);
++		buf = virtnet_rq_get_buf(rq, &buflen, &ctx);
+ 		if (unlikely(!buf))
+ 			goto err_buf;
  
- 		u64_stats_add(&stats->bytes, len);
+ 		p = virt_to_head_page(buf);
+ 		off = buf - page_address(p);
  
--		xdp = buf_to_xdp(vi, rq, buf, len);
-+		xdp = buf_to_xdp(vi, rq, buf, len, false);
- 		if (!xdp)
- 			goto err;
- 
-@@ -1329,7 +1343,7 @@ static void virtnet_receive_xsk_buf(stru
- 
- 	u64_stats_add(&stats->bytes, len);
- 
--	xdp = buf_to_xdp(vi, rq, buf, len);
-+	xdp = buf_to_xdp(vi, rq, buf, len, true);
- 	if (!xdp)
- 		return;
- 
++		if (check_mergeable_len(dev, ctx, buflen)) {
++			put_page(p);
++			goto err_buf;
++		}
++
+ 		/* guard against a misconfigured or uncooperative backend that
+ 		 * is sending packet larger than the MTU.
+ 		 */
+@@ -1783,7 +1813,7 @@ static struct sk_buff *receive_small_xdp
+ 		headroom = vi->hdr_len + header_offset;
+ 		buflen = SKB_DATA_ALIGN(GOOD_PACKET_LEN + headroom) +
+ 			SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+-		xdp_page = xdp_linearize_page(rq, &num_buf, page,
++		xdp_page = xdp_linearize_page(dev, rq, &num_buf, page,
+ 					      offset, header_offset,
+ 					      &tlen);
+ 		if (!xdp_page)
+@@ -2118,7 +2148,7 @@ static void *mergeable_xdp_get_buf(struc
+ 	 */
+ 	if (!xdp_prog->aux->xdp_has_frags) {
+ 		/* linearize data for XDP */
+-		xdp_page = xdp_linearize_page(rq, num_buf,
++		xdp_page = xdp_linearize_page(vi->dev, rq, num_buf,
+ 					      *page, offset,
+ 					      XDP_PACKET_HEADROOM,
+ 					      len);
 
 
 
