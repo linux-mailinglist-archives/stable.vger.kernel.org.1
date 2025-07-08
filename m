@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-160840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D04AFD228
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:43:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19168AFD2E7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49B35486E58
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B375189EEB8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F222E542E;
-	Tue,  8 Jul 2025 16:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE312045B5;
+	Tue,  8 Jul 2025 16:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSCF1ivf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4Hw73I+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0355E264F9C;
-	Tue,  8 Jul 2025 16:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0A1B672;
+	Tue,  8 Jul 2025 16:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992843; cv=none; b=Hz/vjeyIdRUcdnLo3PG571rLWxIojn+3y2Sv2VfteCEz1bwVZNes3BmcVWiNCbbgTwW2yL3V4u1CZc4kZhTGqDipCVVxnObcLbyGyD9vc7bbWNdcs4h6JRfdn2Ll4f87eymnULJjIxKC+vJ/9Cp8SFpeMVJxTjlp6YE8eT++mlM=
+	t=1751993309; cv=none; b=FA5MK7wy07B2uQ4Ir7PwdIqDWvVVsikLd/aYDR1k93uhV9Co8kBNBhT/sbgt4peKsD1q9Hj5p4bKU/t5aHQUFe2uisz9n2frUlQNP/a0BPxA4ty7XRI33SL1objdLtRTqIjOgJ2KNtsVBwFfg8AvaKhcHDmX6jts29O+//Ug8Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992843; c=relaxed/simple;
-	bh=B46FW1EjBhbj4mMaIXLQw62sVNCP8MfD4RRmf0hlHmE=;
+	s=arc-20240116; t=1751993309; c=relaxed/simple;
+	bh=Zp6/JGm4yAa34jSTpxyx1Xyo2Xu4k7nmJxR9L7g3jJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BzZNC0isQxm3FjwF0hdyIrhX1ulxThKiM7L7F8o93zF3OEcLhh7XxYLPm3RtoukMz1vPe8fEaC+C9faRQ7ZBwKB5rrMl5Kpf6YLm6TrwKOqjHGnwpAJHCjK89QVR6lFDn8DwhpGbfDwofWCB159yDoyBhKB3zwvpzNp4jRM9jZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSCF1ivf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8DFC4CEED;
-	Tue,  8 Jul 2025 16:40:42 +0000 (UTC)
+	 MIME-Version; b=S0HnGJ4pkeNgnc8x/hA3ROJqArv8AQ5X6c5dmBO/9GY8YRTdexd+e41X7vGdkERpbSqv+NCxJVg89y/S4TWT8HpPH3kifRkiDQtwEA4fxkH35+rB7uz4vTv7BdqRMN2dtdgIZCBZeceq6ZY25aOuvC5FPMdqMLGw0reZfEkO2jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4Hw73I+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F25EC4CEED;
+	Tue,  8 Jul 2025 16:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992842;
-	bh=B46FW1EjBhbj4mMaIXLQw62sVNCP8MfD4RRmf0hlHmE=;
+	s=korg; t=1751993309;
+	bh=Zp6/JGm4yAa34jSTpxyx1Xyo2Xu4k7nmJxR9L7g3jJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zSCF1ivftdd5IGEmdvZ3tQapf7kp/dS+BmtS66QUlTT0/+n5MyxC8sSehqEdC1lox
-	 Lue6NF8UBJRdJrFGrnLMSeWx2/f0DY4Beb1g5i6qAArL+hCSVL8PJcEJZXj3jiMuLc
-	 k6OmVOg0O4C3EM5cvje6sttfrFHidw7P2CZBEMwI=
+	b=c4Hw73I+iM7ewli7rtlwyyOY+hF+QrfRoz9v6HeNGFPB5vnzlB2Wkt2DCBPpHypW0
+	 RtxA5iSnpuH7fxAb5KmI11fkgsO7Z9ffvYILPXfGYkAiIbMmVyFhi+uKlKTYn/nNQs
+	 m00hGLDPO5JgW8UbjX0kKU8nvk8g71JQtaJMewdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/232] platform/x86: dell-sysman: Directly use firmware_attributes_class
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.15 029/178] mtk-sd: Fix a pagefault in dma_unmap_sg() for not prepared data
 Date: Tue,  8 Jul 2025 18:21:06 +0200
-Message-ID: <20250708162243.295239206@linuxfoundation.org>
+Message-ID: <20250708162237.311228858@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 501d2f0e78951b9a933bbff73404b25aec45f389 ]
+commit 539d80575b810c7a5987c7ac8915e3bc99c03695 upstream.
 
-The usage of the lifecycle functions is not necessary anymore.
+When swiotlb buffer is full, the dma_map_sg() returns 0 to
+msdc_prepare_data(), but it does not check it and sets the
+MSDC_PREPARE_FLAG.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://lore.kernel.org/r/20250104-firmware-attributes-simplify-v1-5-949f9709e405@weissschuh.net
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Stable-dep-of: 314e5ad4782d ("platform/x86: dell-wmi-sysman: Fix class device unregistration")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+swiotlb_tbl_map_single() /* prints "swiotlb buffer is full" */
+  <-swiotlb_map()
+    <-dma_direct_map_page()
+      <-dma_direct_map_sg()
+        <-__dma_map_sg_attrs()
+          <-dma_map_sg_attrs()
+            <-dma_map_sg()  /* returns 0 (pages mapped) */
+              <-msdc_prepare_data()
+
+Then, the msdc_unprepare_data() checks MSDC_PREPARE_FLAG and calls
+dma_unmap_sg() with unmapped pages. It causes a page fault.
+
+To fix this problem, Do not set MSDC_PREPARE_FLAG if dma_map_sg()
+fails because this is not prepared.
+
+Fixes: 208489032bdd ("mmc: mediatek: Add Mediatek MMC driver")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/174908565814.4056588.769599127120955383.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../platform/x86/dell/dell-wmi-sysman/sysman.c  | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+ drivers/mmc/host/mtk-sd.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-index decb3b997d86a..3c74d5e8350a4 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-@@ -25,7 +25,6 @@ struct wmi_sysman_priv wmi_priv = {
- /* reset bios to defaults */
- static const char * const reset_types[] = {"builtinsafe", "lastknowngood", "factory", "custom"};
- static int reset_option = -1;
--static const struct class *fw_attr_class;
- 
- 
- /**
-@@ -541,15 +540,11 @@ static int __init sysman_init(void)
- 		goto err_exit_bios_attr_pass_interface;
- 	}
- 
--	ret = fw_attributes_class_get(&fw_attr_class);
--	if (ret)
--		goto err_exit_bios_attr_pass_interface;
--
--	wmi_priv.class_dev = device_create(fw_attr_class, NULL, MKDEV(0, 0),
-+	wmi_priv.class_dev = device_create(&firmware_attributes_class, NULL, MKDEV(0, 0),
- 				  NULL, "%s", DRIVER_NAME);
- 	if (IS_ERR(wmi_priv.class_dev)) {
- 		ret = PTR_ERR(wmi_priv.class_dev);
--		goto err_unregister_class;
-+		goto err_exit_bios_attr_pass_interface;
- 	}
- 
- 	wmi_priv.main_dir_kset = kset_create_and_add("attributes", NULL,
-@@ -602,10 +597,7 @@ static int __init sysman_init(void)
- 	release_attributes_data();
- 
- err_destroy_classdev:
--	device_destroy(fw_attr_class, MKDEV(0, 0));
--
--err_unregister_class:
--	fw_attributes_class_put();
-+	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
- 
- err_exit_bios_attr_pass_interface:
- 	exit_bios_attr_pass_interface();
-@@ -619,8 +611,7 @@ static int __init sysman_init(void)
- static void __exit sysman_exit(void)
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -827,9 +827,10 @@ static inline void msdc_dma_setup(struct
+ static void msdc_prepare_data(struct msdc_host *host, struct mmc_data *data)
  {
- 	release_attributes_data();
--	device_destroy(fw_attr_class, MKDEV(0, 0));
--	fw_attributes_class_put();
-+	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
- 	exit_bios_attr_set_interface();
- 	exit_bios_attr_pass_interface();
+ 	if (!(data->host_cookie & MSDC_PREPARE_FLAG)) {
+-		data->host_cookie |= MSDC_PREPARE_FLAG;
+ 		data->sg_count = dma_map_sg(host->dev, data->sg, data->sg_len,
+ 					    mmc_get_dma_dir(data));
++		if (data->sg_count)
++			data->host_cookie |= MSDC_PREPARE_FLAG;
+ 	}
  }
--- 
-2.39.5
-
+ 
 
 
 
