@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-161223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A2EAFD3F1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FA6AFD320
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D744E16C035
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:59:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37B4A176941
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2B72E5B1A;
-	Tue,  8 Jul 2025 16:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4A38F5E;
+	Tue,  8 Jul 2025 16:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umCP/InD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KABz33j8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8C22E49AF;
-	Tue,  8 Jul 2025 16:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278D22DFA22;
+	Tue,  8 Jul 2025 16:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993952; cv=none; b=FOeHdmV02E3Vrgh4vtYqCtMTnWZ+2ojjhxhQKl68hxf794xjMXIUSqnNthEz9OTclS3CtNQSUamFqpnUvHXTohsLxYFLwyS4s8ry/80X/Ura9CPZ7VE+FeHNdPbB3e4bHg5mO4H33pFvxUlKPME3TTHx8k/v/ZsG+Qnw/7J9qlE=
+	t=1751993443; cv=none; b=N2oETJs6lCGzArFxJIP0z1lM2KCnWmYW7rNc9nynfAOkDVO2zJOPXG9U5tMEYmlNwMknLrscEoTshomuf1cx/HokjcoF0N1HklTWx/R5Md73cFijUCb7xqJU8Xel//AkHaFPtVRvsQXQshB65rHTkfzN4ZnFm9t5maYGRCUktbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993952; c=relaxed/simple;
-	bh=j9qk0kAN8cMApbJrN7Qt9c1WUgBrhgLbp7Ujz3U3JR4=;
+	s=arc-20240116; t=1751993443; c=relaxed/simple;
+	bh=tV+mMAAWlvRD/3fESGFsOqpiTy09Oo2JwT4McET0OoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MYeqabtldrFz2yOyPLlQsK1yfHyW8kFkUMEmdirO8cW9aJGsXOnicrPNsOgRQwEqry+uxO/3VyBdaLBLqNYk02q2bmaRgMDyykmpYZAlhY0Lsdnow5nhqZnFbFZwqJgOVK+gP+ZcC7zYCMP/+pNp2zf0/yrAuFRySf7eU0dDX54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umCP/InD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D19C4CEED;
-	Tue,  8 Jul 2025 16:59:12 +0000 (UTC)
+	 MIME-Version; b=NAoB5CqjIgO0mEY73C9j9RDIRIVkYdoPj7+Ziih9YLI70i0TQdytbhQDkVtR3FiRdKcLO8TQ+7JMmYCbb6a4Wuu4P/3BN4zFN1usqViSVjHpx2xDeVmcVICKnrOS5ftL4xh/+aFz8nOn5A4RXHnJFcn+74PIS6nwFgFSBqzi44A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KABz33j8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F66C4CEED;
+	Tue,  8 Jul 2025 16:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993952;
-	bh=j9qk0kAN8cMApbJrN7Qt9c1WUgBrhgLbp7Ujz3U3JR4=;
+	s=korg; t=1751993443;
+	bh=tV+mMAAWlvRD/3fESGFsOqpiTy09Oo2JwT4McET0OoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umCP/InDQIEH2p5A8tB4mLCkOgXkhNZ5B/OdcTEpHADmOGccNTpJzLCJ7Smuhn5L/
-	 JwHYPPoNzu5KIvd8200SwR5AS6cJSeMYEzm8Q6GdqcbZ6gNfSFZoirfVeFqEEvDc6g
-	 Foe80x66zMkav2ZTX6exVosehNPjo5tf4oxTFKlI=
+	b=KABz33j8qcjdAP+d3Tvs1UDpCFuI9X5npgzrKxHLHf7dUEtNqpSrUML4r0gm5ywdY
+	 WtEQ85cdiaJKcYOu3F9+KpfXQCkk6Bel+ioaruHvBGwsJPG+pnRW9SAEMYvaZrSfUt
+	 glmHAjOBrFWBof3fFPXMVfDs5saIZOQAYli+E1ME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shivank Garg <shivankg@amd.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 045/160] Drivers: hv: Rename alloced to allocated
-Date: Tue,  8 Jul 2025 18:21:22 +0200
-Message-ID: <20250708162232.788600818@linuxfoundation.org>
+Subject: [PATCH 6.15 046/178] fs: export anon_inode_make_secure_inode() and fix secretmem LSM bypass
+Date: Tue,  8 Jul 2025 18:21:23 +0200
+Message-ID: <20250708162237.889805541@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,147 +64,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
+From: Shivank Garg <shivankg@amd.com>
 
-[ Upstream commit de96e8a09889b35dd8d1cb6d19ef2bb123b05be1 ]
+[ Upstream commit cbe4134ea4bc493239786220bd69cb8a13493190 ]
 
-'Alloced' is not a real word and only saves us two letters, let's
-use 'allocated' instead.
+Export anon_inode_make_secure_inode() to allow KVM guest_memfd to create
+anonymous inodes with proper security context. This replaces the current
+pattern of calling alloc_anon_inode() followed by
+inode_init_security_anon() for creating security context manually.
 
-No functional change intended.
+This change also fixes a security regression in secretmem where the
+S_PRIVATE flag was not cleared after alloc_anon_inode(), causing
+LSM/SELinux checks to be bypassed for secretmem file descriptors.
 
-Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/20220128103412.3033736-2-vkuznets@redhat.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Stable-dep-of: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
+As guest_memfd currently resides in the KVM module, we need to export this
+symbol for use outside the core kernel. In the future, guest_memfd might be
+moved to core-mm, at which point the symbols no longer would have to be
+exported. When/if that happens is still unclear.
+
+Fixes: 2bfe15c52612 ("mm: create security context for memfd_secret inodes")
+Suggested-by: David Hildenbrand <david@redhat.com>
+Suggested-by: Mike Rapoport <rppt@kernel.org>
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+Link: https://lore.kernel.org/20250620070328.803704-3-shivankg@amd.com
+Acked-by: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/channel_mgmt.c | 18 +++++++++---------
- drivers/hv/hyperv_vmbus.h | 14 +++++++-------
- drivers/hv/vmbus_drv.c    |  2 +-
- 3 files changed, 17 insertions(+), 17 deletions(-)
+ fs/anon_inodes.c   | 23 ++++++++++++++++++-----
+ include/linux/fs.h |  2 ++
+ mm/secretmem.c     |  9 +--------
+ 3 files changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
-index 62c864f8d991b..029f8269ad15d 100644
---- a/drivers/hv/channel_mgmt.c
-+++ b/drivers/hv/channel_mgmt.c
-@@ -459,7 +459,7 @@ void hv_process_channel_removal(struct vmbus_channel *channel)
- 	 * init_vp_index() can (re-)use the CPU.
- 	 */
- 	if (hv_is_perf_channel(channel))
--		hv_clear_alloced_cpu(channel->target_cpu);
-+		hv_clear_allocated_cpu(channel->target_cpu);
+diff --git a/fs/anon_inodes.c b/fs/anon_inodes.c
+index e51e7d88980a2..1d847a939f29a 100644
+--- a/fs/anon_inodes.c
++++ b/fs/anon_inodes.c
+@@ -98,14 +98,25 @@ static struct file_system_type anon_inode_fs_type = {
+ 	.kill_sb	= kill_anon_super,
+ };
  
- 	/*
- 	 * Upon suspend, an in-use hv_sock channel is marked as "rescinded" and
-@@ -733,7 +733,7 @@ static void init_vp_index(struct vmbus_channel *channel)
- 	bool perf_chn = hv_is_perf_channel(channel);
- 	u32 i, ncpu = num_online_cpus();
- 	cpumask_var_t available_mask;
--	struct cpumask *alloced_mask;
-+	struct cpumask *allocated_mask;
- 	u32 target_cpu;
- 	int numa_node;
+-static struct inode *anon_inode_make_secure_inode(
+-	const char *name,
+-	const struct inode *context_inode)
++/**
++ * anon_inode_make_secure_inode - allocate an anonymous inode with security context
++ * @sb:		[in]	Superblock to allocate from
++ * @name:	[in]	Name of the class of the newfile (e.g., "secretmem")
++ * @context_inode:
++ *		[in]	Optional parent inode for security inheritance
++ *
++ * The function ensures proper security initialization through the LSM hook
++ * security_inode_init_security_anon().
++ *
++ * Return:	Pointer to new inode on success, ERR_PTR on failure.
++ */
++struct inode *anon_inode_make_secure_inode(struct super_block *sb, const char *name,
++					   const struct inode *context_inode)
+ {
+ 	struct inode *inode;
+ 	int error;
  
-@@ -750,7 +750,7 @@ static void init_vp_index(struct vmbus_channel *channel)
- 		 */
- 		channel->target_cpu = VMBUS_CONNECT_CPU;
- 		if (perf_chn)
--			hv_set_alloced_cpu(VMBUS_CONNECT_CPU);
-+			hv_set_allocated_cpu(VMBUS_CONNECT_CPU);
- 		return;
+-	inode = alloc_anon_inode(anon_inode_mnt->mnt_sb);
++	inode = alloc_anon_inode(sb);
+ 	if (IS_ERR(inode))
+ 		return inode;
+ 	inode->i_flags &= ~S_PRIVATE;
+@@ -118,6 +129,7 @@ static struct inode *anon_inode_make_secure_inode(
  	}
- 
-@@ -765,22 +765,22 @@ static void init_vp_index(struct vmbus_channel *channel)
- 				continue;
- 			break;
- 		}
--		alloced_mask = &hv_context.hv_numa_map[numa_node];
-+		allocated_mask = &hv_context.hv_numa_map[numa_node];
- 
--		if (cpumask_weight(alloced_mask) ==
-+		if (cpumask_weight(allocated_mask) ==
- 		    cpumask_weight(cpumask_of_node(numa_node))) {
- 			/*
- 			 * We have cycled through all the CPUs in the node;
--			 * reset the alloced map.
-+			 * reset the allocated map.
- 			 */
--			cpumask_clear(alloced_mask);
-+			cpumask_clear(allocated_mask);
- 		}
- 
--		cpumask_xor(available_mask, alloced_mask,
-+		cpumask_xor(available_mask, allocated_mask,
- 			    cpumask_of_node(numa_node));
- 
- 		target_cpu = cpumask_first(available_mask);
--		cpumask_set_cpu(target_cpu, alloced_mask);
-+		cpumask_set_cpu(target_cpu, allocated_mask);
- 
- 		if (channel->offermsg.offer.sub_channel_index >= ncpu ||
- 		    i > ncpu || !hv_cpuself_used(target_cpu, channel))
-diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
-index 631f0a138c2b9..6a0ae815a198e 100644
---- a/drivers/hv/hyperv_vmbus.h
-+++ b/drivers/hv/hyperv_vmbus.h
-@@ -405,7 +405,7 @@ static inline bool hv_is_perf_channel(struct vmbus_channel *channel)
- 	return vmbus_devs[channel->device_id].perf_device;
+ 	return inode;
  }
++EXPORT_SYMBOL_GPL_FOR_MODULES(anon_inode_make_secure_inode, "kvm");
  
--static inline bool hv_is_alloced_cpu(unsigned int cpu)
-+static inline bool hv_is_allocated_cpu(unsigned int cpu)
- {
- 	struct vmbus_channel *channel, *sc;
+ static struct file *__anon_inode_getfile(const char *name,
+ 					 const struct file_operations *fops,
+@@ -132,7 +144,8 @@ static struct file *__anon_inode_getfile(const char *name,
+ 		return ERR_PTR(-ENOENT);
  
-@@ -427,23 +427,23 @@ static inline bool hv_is_alloced_cpu(unsigned int cpu)
- 	return false;
- }
+ 	if (make_inode) {
+-		inode =	anon_inode_make_secure_inode(name, context_inode);
++		inode =	anon_inode_make_secure_inode(anon_inode_mnt->mnt_sb,
++						     name, context_inode);
+ 		if (IS_ERR(inode)) {
+ 			file = ERR_CAST(inode);
+ 			goto err;
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index ef41a8213a6fa..1fe7bf10d442c 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -3552,6 +3552,8 @@ extern int simple_write_begin(struct file *file, struct address_space *mapping,
+ extern const struct address_space_operations ram_aops;
+ extern int always_delete_dentry(const struct dentry *);
+ extern struct inode *alloc_anon_inode(struct super_block *);
++struct inode *anon_inode_make_secure_inode(struct super_block *sb, const char *name,
++					   const struct inode *context_inode);
+ extern int simple_nosetlease(struct file *, int, struct file_lease **, void **);
+ extern const struct dentry_operations simple_dentry_operations;
  
--static inline void hv_set_alloced_cpu(unsigned int cpu)
-+static inline void hv_set_allocated_cpu(unsigned int cpu)
- {
- 	cpumask_set_cpu(cpu, &hv_context.hv_numa_map[cpu_to_node(cpu)]);
- }
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index 1b0a214ee5580..4662f2510ae5f 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -195,18 +195,11 @@ static struct file *secretmem_file_create(unsigned long flags)
+ 	struct file *file;
+ 	struct inode *inode;
+ 	const char *anon_name = "[secretmem]";
+-	int err;
  
--static inline void hv_clear_alloced_cpu(unsigned int cpu)
-+static inline void hv_clear_allocated_cpu(unsigned int cpu)
- {
--	if (hv_is_alloced_cpu(cpu))
-+	if (hv_is_allocated_cpu(cpu))
- 		return;
- 	cpumask_clear_cpu(cpu, &hv_context.hv_numa_map[cpu_to_node(cpu)]);
- }
+-	inode = alloc_anon_inode(secretmem_mnt->mnt_sb);
++	inode = anon_inode_make_secure_inode(secretmem_mnt->mnt_sb, anon_name, NULL);
+ 	if (IS_ERR(inode))
+ 		return ERR_CAST(inode);
  
--static inline void hv_update_alloced_cpus(unsigned int old_cpu,
-+static inline void hv_update_allocated_cpus(unsigned int old_cpu,
- 					  unsigned int new_cpu)
- {
--	hv_set_alloced_cpu(new_cpu);
--	hv_clear_alloced_cpu(old_cpu);
-+	hv_set_allocated_cpu(new_cpu);
-+	hv_clear_allocated_cpu(old_cpu);
- }
- 
- #ifdef CONFIG_HYPERV_TESTING
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index cb3a5b13c3ec2..f42c3cb3cc0aa 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -1878,7 +1878,7 @@ static ssize_t target_cpu_store(struct vmbus_channel *channel,
- 
- 	/* See init_vp_index(). */
- 	if (hv_is_perf_channel(channel))
--		hv_update_alloced_cpus(origin_cpu, target_cpu);
-+		hv_update_allocated_cpus(origin_cpu, target_cpu);
- 
- 	/* Currently set only for storvsc channels. */
- 	if (channel->change_target_cpu_callback) {
+-	err = security_inode_init_security_anon(inode, &QSTR(anon_name), NULL);
+-	if (err) {
+-		file = ERR_PTR(err);
+-		goto err_free_inode;
+-	}
+-
+ 	file = alloc_file_pseudo(inode, secretmem_mnt, "secretmem",
+ 				 O_RDWR, &secretmem_fops);
+ 	if (IS_ERR(file))
 -- 
 2.39.5
 
