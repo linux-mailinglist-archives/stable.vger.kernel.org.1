@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7183AFD117
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E8EAFD250
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB3DF580C40
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73AA41734B7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1B41BEF7E;
-	Tue,  8 Jul 2025 16:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22B62E337A;
+	Tue,  8 Jul 2025 16:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zxw9LtdU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5TfALXk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2945881E;
-	Tue,  8 Jul 2025 16:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAE42DFF04;
+	Tue,  8 Jul 2025 16:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992231; cv=none; b=bjemKnydv2mncXD221dAI92GdJT0Z1fZo0fGm4HPGKHd/Ji91FHXzvUWBk54WSK+D264uWrVF7Q0dqlw4dVR9CDJUbdHlR13pZadOy31wpGmnI/o/rYTGPNTVjvCLeIKEc1K1tQUZdrQLb4b1qTy2kAi2Yqt3c7BCMIsORi7/EI=
+	t=1751992958; cv=none; b=eRoFyl7ZaCsQHj5Re/zFhfe4XW6zXcB9R8dfvYBj642gRaJ0P+pWkHcBIwhxphQaEVbPKNR/gyJH4Pf+hmKZtdy+y7ocb4qem5RbYIyykQ7DWtteHGbqyPFXEqIaK31nb+OE6gxOpekAevHR9ESwssxkk8J5UYuARQzf0BJL4jM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992231; c=relaxed/simple;
-	bh=mODEdIfVXH/wYA/VllQKJuyFdRHxJdiiTkeFv7rDcjw=;
+	s=arc-20240116; t=1751992958; c=relaxed/simple;
+	bh=cDb4JFr4wmx8MO0h6kV03BIMZ1LpH60IP54LaFRsxgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxe07mL2xhLCgpmSrYT+k7E7wwSOikznp7E5QbgR1he+xwT4Tg1cbT5QSIyhXKe5JKxDeb/ZJVpql5C8LD2QREiyEnVn23hLhSrWzrK1My6lCUuDVbPVIb10B8UuR8Wn8E7JG2qO2CesPOMKUv63B+aoTbqAQmQMdok10OuhtMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zxw9LtdU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC33C4CEED;
-	Tue,  8 Jul 2025 16:30:30 +0000 (UTC)
+	 MIME-Version; b=Jb8v3+lJT6iICHmGZWgAaEH06IMVpHVjH3lfHaknbdzbx8JZ4UgtSXbkBXOiKAySLn0Kp5huj2CBFbCKVAu7iXApLhSkKXXfmusGqVTDxZAz/bu3uv8lHt5jjewej3REodhq6+eu7n9uE34HkLoxGWwQ5VuP/QVFTEWq86VnrVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5TfALXk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EAB5C4CEF0;
+	Tue,  8 Jul 2025 16:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992231;
-	bh=mODEdIfVXH/wYA/VllQKJuyFdRHxJdiiTkeFv7rDcjw=;
+	s=korg; t=1751992955;
+	bh=cDb4JFr4wmx8MO0h6kV03BIMZ1LpH60IP54LaFRsxgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zxw9LtdUrZPJvNVLCTNJSXHisPzRl5yDYV7nxtZqmyixAKNjWDEOD2T/ll+ly7J6i
-	 65m+lHmiGm4NHt5q+3N9xir2UbmxJCoBGiSroXHryr8x3SZ9MVZVn0NyGRGJD9N4aD
-	 cHGOwsve1ULxKwatm8U1DZewMjDr56BRzJLH3AAE=
+	b=N5TfALXktL26TNK2R+0VK3Hoevbzdg6y7+Ct6NJYdjZyOqKpfctrWobkMw5TEqj3g
+	 BVlvPOPX9UIYdBAMiwNMf3/fIGmtPGirXAF3jBzS99PSavdCbTxR9aNqtFIom2O2X+
+	 wivT2mZ7YBG2gdUF0ubN72z4R7VfGjdCpR2YzbZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/132] scsi: qla2xxx: Fix DMA mapping test in qla24xx_get_port_database()
-Date: Tue,  8 Jul 2025 18:22:14 +0200
-Message-ID: <20250708162231.400783059@linuxfoundation.org>
+Subject: [PATCH 6.12 139/232] arm64: dts: qcom: sm8650: Fix domain-idle-state for CPU2
+Date: Tue,  8 Jul 2025 18:22:15 +0200
+Message-ID: <20250708162245.079292562@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit c3b214719a87735d4f67333a8ef3c0e31a34837c ]
+[ Upstream commit 9bb5ca464100e7c8f2d740148088f60e04fed8ed ]
 
-dma_map_XXX() functions return as error values DMA_MAPPING_ERROR which is
-often ~0.  The error value should be tested with dma_mapping_error() like
-it was done in qla26xx_dport_diagnostics().
+On SM8650 the CPUs 0-1 are "silver" (Cortex-A520), CPU 2-6 are "gold"
+(Cortex-A720) and CPU 7 is "gold-plus" (Cortex-X4).
 
-Fixes: 818c7f87a177 ("scsi: qla2xxx: Add changes in preparation for vendor extended FDMI/RDP")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250617161115.39888-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+So reference the correct "gold" idle-state for CPU core 2.
+
+Fixes: d2350377997f ("arm64: dts: qcom: add initial SM8650 dtsi")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250314-sm8650-cpu2-sleep-v1-1-31d5c7c87a5d@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_mbx.c | 2 +-
+ arch/arm64/boot/dts/qcom/sm8650.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_mbx.c b/drivers/scsi/qla2xxx/qla_mbx.c
-index 0cd6f3e148824..13b6cb1b93acd 100644
---- a/drivers/scsi/qla2xxx/qla_mbx.c
-+++ b/drivers/scsi/qla2xxx/qla_mbx.c
-@@ -2147,7 +2147,7 @@ qla24xx_get_port_database(scsi_qla_host_t *vha, u16 nport_handle,
+diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+index 3a7daeb2c12e3..72e3dcd495c3b 100644
+--- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+@@ -426,7 +426,7 @@ cpu_pd1: power-domain-cpu1 {
+ 		cpu_pd2: power-domain-cpu2 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+-			domain-idle-states = <&silver_cpu_sleep_0>;
++			domain-idle-states = <&gold_cpu_sleep_0>;
+ 		};
  
- 	pdb_dma = dma_map_single(&vha->hw->pdev->dev, pdb,
- 	    sizeof(*pdb), DMA_FROM_DEVICE);
--	if (!pdb_dma) {
-+	if (dma_mapping_error(&vha->hw->pdev->dev, pdb_dma)) {
- 		ql_log(ql_log_warn, vha, 0x1116, "Failed to map dma buffer.\n");
- 		return QLA_MEMORY_ALLOC_FAILED;
- 	}
+ 		cpu_pd3: power-domain-cpu3 {
 -- 
 2.39.5
 
