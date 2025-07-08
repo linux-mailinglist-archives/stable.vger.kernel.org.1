@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C0FAFD39D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5C1AFD0CB
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0A741890594
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2775D18926AC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD6F2E1C74;
-	Tue,  8 Jul 2025 16:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2072367CE;
+	Tue,  8 Jul 2025 16:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nedKLoud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k133Q6mc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AE32E266B;
-	Tue,  8 Jul 2025 16:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074052D9790;
+	Tue,  8 Jul 2025 16:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993710; cv=none; b=EDKbmJ3Btr/y1hmLgK1IXX0+4ArVH6p/8k95kh3Uvmc6qAPwmMbQUHo/ismFC5Tg5w6FG9lKCpNi1KgwcKC0XqI1ktALpnJP7aNfAf8KDoiIeMYkP3cnbQaTqla91hozsPq9+R+i1rwGabnHTWQ2RxRvImuOdw8AN0sGGNyBKJ0=
+	t=1751992011; cv=none; b=WC3tux19O6YouQM/Qt7arUr2BZD5ccDSYD9BIt4HVNc8rQ4pG/vggpSVGL/40H/V1ulbY190gLgrhvaK1d40N9dmN9sWmqf5TufvPlMfhpjLgYUQngnigrIoKYr8t4wd2HPMzHHn0nUfgdBIu4kfBW1h9K0IqSIY4G2l5Pyahkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993710; c=relaxed/simple;
-	bh=7CG2DOnBnST9mIVrUT5mFEsNr4RpdWj3pzmpsG3wcOY=;
+	s=arc-20240116; t=1751992011; c=relaxed/simple;
+	bh=LaS5g8lKlCUp2xLptAjK3A3rYyRcYy3iTcXypa5DWPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HC+wtiazCqtldopaQi2s49AAXbOM8wWfqVHQQwv3969Z8r4ap1z4uxcoQbo8x+to/tAe0wRGtfL/l2iRBhJbrvN3v0R9qRI46j6ZlVguTL1P6hHLtHQn+Wp8UnVJmjyCI1QrRqSk/M7tPI/JudIfJKntGqoEmBHAxASNCTFeOa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nedKLoud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC97C4CEED;
-	Tue,  8 Jul 2025 16:55:10 +0000 (UTC)
+	 MIME-Version; b=ggVlgFoqguA/YldwrXN4NdttMevBkiexoVLzqp/VwBMuu5RZdpTGdOg4hSZNDpbLtLsyIPkl1WZhWlmZ56cJTyFAz/hVVnA1cZXkBnBwechJFAyTahSAzSX5pS2NWTpmN6hQ6ZcEk1KXmfR5NAArtugRkiOnFhC0ZRC7/rivSW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k133Q6mc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CFEC4CEED;
+	Tue,  8 Jul 2025 16:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993710;
-	bh=7CG2DOnBnST9mIVrUT5mFEsNr4RpdWj3pzmpsG3wcOY=;
+	s=korg; t=1751992010;
+	bh=LaS5g8lKlCUp2xLptAjK3A3rYyRcYy3iTcXypa5DWPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nedKLoudRNR/2UGUGDbxPV+BHlcMCgyE71nhaJzCmCwQAvCf7VEPkQSGwJrH/Vztc
-	 7CZNUzPKQ6/y80ekLgpxfRin3T+19xgwVT6rwjmP9lEqEU92YQxY50wlos5qlydyhE
-	 f59WFFmbq6wJpsJ09bim3tSKMPIikNZKeED+cPng=
+	b=k133Q6mcvjo8fw1lRWRONXR3Dd/qsU55W8WXIYm08U3W9xHhRvVjB5ecfx8Hbku7n
+	 kzeBQkAT+jSJ2WAX9NF8J2SoyGivydPc8tvRc2HoNw4YRqIOddFsMguLhqG27KmRN9
+	 XBkHYhbKYaqP7mVRYI0vBweOjVAFlZIMacOT7/9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.15 166/178] powercap: intel_rapl: Do not change CLAMPING bit if ENABLE bit cannot be changed
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 31/81] drm/i915/selftests: Change mock_request() to return error pointers
 Date: Tue,  8 Jul 2025 18:23:23 +0200
-Message-ID: <20250708162240.808278005@linuxfoundation.org>
+Message-ID: <20250708162225.939607548@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 964209202ebe1569c858337441e87ef0f9d71416 upstream.
+[ Upstream commit caa7c7a76b78ce41d347003f84975125383e6b59 ]
 
-PL1 cannot be disabled on some platforms. The ENABLE bit is still set
-after software clears it. This behavior leads to a scenario where, upon
-user request to disable the Power Limit through the powercap sysfs, the
-ENABLE bit remains set while the CLAMPING bit is inadvertently cleared.
+There was an error pointer vs NULL bug in __igt_breadcrumbs_smoketest().
+The __mock_request_alloc() function implements the
+smoketest->request_alloc() function pointer.  It was supposed to return
+error pointers, but it propogates the NULL return from mock_request()
+so in the event of a failure, it would lead to a NULL pointer
+dereference.
 
-According to the Intel Software Developer's Manual, the CLAMPING bit,
-"When set, allows the processor to go below the OS requested P states in
-order to maintain the power below specified Platform Power Limit value."
+To fix this, change the mock_request() function to return error pointers
+and update all the callers to expect that.
 
-Thus this means the system may operate at higher power levels than
-intended on such platforms.
-
-Enhance the code to check ENABLE bit after writing to it, and stop
-further processing if ENABLE bit cannot be changed.
-
-Reported-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Fixes: 2d281d8196e3 ("PowerCap: Introduce Intel RAPL power capping driver")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://patch.msgid.link/20250619071340.384782-1-rui.zhang@intel.com
-[ rjw: Use str_enabled_disabled() instead of open-coded equivalent ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 52c0fdb25c7c ("drm/i915: Replace global breadcrumbs with per-context interrupt tracking")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://lore.kernel.org/r/685c1417.050a0220.696f5.5c05@mx.google.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 778fa8ad5f0f23397d045c7ebca048ce8def1c43)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/intel_rapl_common.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/selftests/i915_request.c | 20 +++++++++----------
+ drivers/gpu/drm/i915/selftests/mock_request.c |  2 +-
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -340,12 +340,28 @@ static int set_domain_enable(struct powe
- {
- 	struct rapl_domain *rd = power_zone_to_rapl_domain(power_zone);
- 	struct rapl_defaults *defaults = get_defaults(rd->rp);
-+	u64 val;
- 	int ret;
+diff --git a/drivers/gpu/drm/i915/selftests/i915_request.c b/drivers/gpu/drm/i915/selftests/i915_request.c
+index a46350c37e9d4..a088fbca97e0c 100644
+--- a/drivers/gpu/drm/i915/selftests/i915_request.c
++++ b/drivers/gpu/drm/i915/selftests/i915_request.c
+@@ -73,8 +73,8 @@ static int igt_add_request(void *arg)
+ 	/* Basic preliminary test to create a request and let it loose! */
  
- 	cpus_read_lock();
- 	ret = rapl_write_pl_data(rd, POWER_LIMIT1, PL_ENABLE, mode);
--	if (!ret && defaults->set_floor_freq)
-+	if (ret)
-+		goto end;
-+
-+	ret = rapl_read_pl_data(rd, POWER_LIMIT1, PL_ENABLE, false, &val);
-+	if (ret)
-+		goto end;
-+
-+	if (mode != val) {
-+		pr_debug("%s cannot be %s\n", power_zone->name,
-+			 str_enabled_disabled(mode));
-+		goto end;
-+	}
-+
-+	if (defaults->set_floor_freq)
- 		defaults->set_floor_freq(rd, mode);
-+
-+end:
- 	cpus_read_unlock();
+ 	request = mock_request(rcs0(i915)->kernel_context, HZ / 10);
+-	if (!request)
+-		return -ENOMEM;
++	if (IS_ERR(request))
++		return PTR_ERR(request);
  
- 	return ret;
+ 	i915_request_add(request);
+ 
+@@ -91,8 +91,8 @@ static int igt_wait_request(void *arg)
+ 	/* Submit a request, then wait upon it */
+ 
+ 	request = mock_request(rcs0(i915)->kernel_context, T);
+-	if (!request)
+-		return -ENOMEM;
++	if (IS_ERR(request))
++		return PTR_ERR(request);
+ 
+ 	i915_request_get(request);
+ 
+@@ -160,8 +160,8 @@ static int igt_fence_wait(void *arg)
+ 	/* Submit a request, treat it as a fence and wait upon it */
+ 
+ 	request = mock_request(rcs0(i915)->kernel_context, T);
+-	if (!request)
+-		return -ENOMEM;
++	if (IS_ERR(request))
++		return PTR_ERR(request);
+ 
+ 	if (dma_fence_wait_timeout(&request->fence, false, T) != -ETIME) {
+ 		pr_err("fence wait success before submit (expected timeout)!\n");
+@@ -219,8 +219,8 @@ static int igt_request_rewind(void *arg)
+ 	GEM_BUG_ON(IS_ERR(ce));
+ 	request = mock_request(ce, 2 * HZ);
+ 	intel_context_put(ce);
+-	if (!request) {
+-		err = -ENOMEM;
++	if (IS_ERR(request)) {
++		err = PTR_ERR(request);
+ 		goto err_context_0;
+ 	}
+ 
+@@ -237,8 +237,8 @@ static int igt_request_rewind(void *arg)
+ 	GEM_BUG_ON(IS_ERR(ce));
+ 	vip = mock_request(ce, 0);
+ 	intel_context_put(ce);
+-	if (!vip) {
+-		err = -ENOMEM;
++	if (IS_ERR(vip)) {
++		err = PTR_ERR(vip);
+ 		goto err_context_1;
+ 	}
+ 
+diff --git a/drivers/gpu/drm/i915/selftests/mock_request.c b/drivers/gpu/drm/i915/selftests/mock_request.c
+index 09f747228dff5..1b0cf073e9643 100644
+--- a/drivers/gpu/drm/i915/selftests/mock_request.c
++++ b/drivers/gpu/drm/i915/selftests/mock_request.c
+@@ -35,7 +35,7 @@ mock_request(struct intel_context *ce, unsigned long delay)
+ 	/* NB the i915->requests slab cache is enlarged to fit mock_request */
+ 	request = intel_context_create_request(ce);
+ 	if (IS_ERR(request))
+-		return NULL;
++		return request;
+ 
+ 	request->mock.delay = delay;
+ 	return request;
+-- 
+2.39.5
+
 
 
 
