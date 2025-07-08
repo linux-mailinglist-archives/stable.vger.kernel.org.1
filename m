@@ -1,199 +1,208 @@
-Return-Path: <stable+bounces-160475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E7A2AFC6CD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 11:13:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0A2AFC807
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 12:12:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B21FA3ADFC7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 09:12:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40A9E166275
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 10:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9504B2C15BE;
-	Tue,  8 Jul 2025 09:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F0272610;
+	Tue,  8 Jul 2025 10:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jSRafsAc"
+	dkim=pass (2048-bit key) header.d=innosonix.de header.i=@innosonix.de header.b="c8aOyglP"
 X-Original-To: stable@vger.kernel.org
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010016.outbound.protection.outlook.com [52.101.69.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA582C15B3;
-	Tue,  8 Jul 2025 09:12:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751965969; cv=fail; b=O35FV5+bqcDNvHPiTbNPpaLpg9lri9JJtsSxbejMVv9BNvKY+nonsuo3mRHJV6zhW4WxtLkC19ocjV9rvH/ohxv63MKWtkwCu1faPOPKdNPIi7MCRDwn0tCRNrPvEy/AFZSB+pvIJjObTIGmeq1GYMFW1XZmCN7Ej2yvpKcyBB0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751965969; c=relaxed/simple;
-	bh=SKL+vwNsJg1pokdHCmVjDyl7Y4ruTKU/CHEevHW2vYo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Lbs8C8p4SEj5cSxf1eUqqtJ0ZeWTm7uHD+R7GXH0w+U6Djp4wUyxUIXJj9sGzt5vnVrbYAM90CGVaMMIfro/qaiBcqSGFqzPqhhiR4RnUefgowbFWDZCXRPvPSKrAlMqyWMUlRC1rHUJ2ypiJiu7L7l5KHM1LphghNB8uDBwuPs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jSRafsAc; arc=fail smtp.client-ip=52.101.69.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W/Vy/G41VCyIr8qPfZf56oOgXjHp66jmuntZwCWn/yK7h0qLqvrWR8VyqrTYMeMyG/5u358d70jgIqB/TWmpViZpJXASCD9kagITjB65Mr1EtCPbA4G4EheEHwnOBLD0VYT2D2prn6EhrETb84Zfn4cjiV0ROC85Au+WOYJBBjkKkxxXhp6kFNpCxNbOQAW9p0xOlVdyqh+vPrDbJzA0slZchFLFBC+A3b3jcxnB9wsgYpiwNSsqKzX9Ubu4Og9JSsfwx5pWL8EODYBKlchxR3rvuCCF1x3nfsqC++2BVBfvQ3n2AcZ7Vv0qdnRxrEEgR41kKamaEOCM/GsZyf64nA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x7ViVnYm7qDRNCwxzKRunHV91pnJPg1KJ8Q8P/09Yyw=;
- b=vxrIEUKDtu5AebTA+17efR6RojDL4hMkdNk8KVJ6/sQ/7/QZvNdpYj47GbTzMuyvzrN16trkyOua4wiP7QdYZrcrqko4cmm27KhN/Zp9AgPWBWjxbskwUlWOgzsrxKWeJrhP55qAEkcsuDl8JKdcMPyhmveHRo4hQFAAZR4KAWnjFvxQOgFcErofd1PtMNc48J3kbwyCW9X667VqDxlzK54faUIxXe70IzQmu+Rav2fCz8WlNwrgyN8rMa/XG9jnP4ySPhd1esQED6ED+FTT8qCZxJHCkaEOKC3urBQVRInIvLdCKARm5SssSVVJMYSWBGgeQttrCFRLnHWFw5CodA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x7ViVnYm7qDRNCwxzKRunHV91pnJPg1KJ8Q8P/09Yyw=;
- b=jSRafsAcsDaK9WrPgEMvf6PkLdqBGmA4HODV2Cs9jrS0ysgs6YDQ8C2RELVFI2mUQ4/bJYuAYGmSvfva2n2zqpsTwxl0N7vlYXQfL3Zv4HwidECw7kUdkx+c9JxnO1DIa7bUDmtjP0cmEXrNLoY14OCtAS2WZENdV47MbOdwVKVwrcMr1RcTo7bLXkeGjaX1erH9M1crJgtiBB5/cst1vHNeCX/J5OiCNGCyIqzcKzN11Ur9BnhSp0pQUxF2YKsHjpMbTF9XftvjDbQnSJ9NUsTeG71WvRCjWNtRJv/Qns3RCFumY5SO0K/kEAshs16oLcNOsg69vyR5CGYkpeyJUA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8676.eurprd04.prod.outlook.com (2603:10a6:20b:42b::10)
- by DUZPR04MB9984.eurprd04.prod.outlook.com (2603:10a6:10:4dd::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.23; Tue, 8 Jul
- 2025 09:12:45 +0000
-Received: from AS8PR04MB8676.eurprd04.prod.outlook.com
- ([fe80::28b2:de72:ad25:5d93]) by AS8PR04MB8676.eurprd04.prod.outlook.com
- ([fe80::28b2:de72:ad25:5d93%4]) with mapi id 15.20.8901.024; Tue, 8 Jul 2025
- 09:12:45 +0000
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: frank.li@nxp.com,
-	l.stach@pengutronix.de,
-	lpieralisi@kernel.org,
-	kwilczynski@kernel.org,
-	mani@kernel.org,
-	robh@kernel.org,
-	bhelgaas@google.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Richard Zhu <hongxing.zhu@nxp.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B05522DFB8
+	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 10:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751969560; cv=none; b=ahOtiwvvnnb1h87dxlafxxh1ZFeG8NtMsNzsogygDWX9nX9ocRViK6es+cvBSzp0IfnvlPgNK0+fztS/jMz5dbhKn7xKg0fHqrGX5QaqAy/BaiR9WD4sf1i1AzO2/+spHxKupilZv/+7aIiktIPtZTiGj/1hfZP2pa4ridkYDO0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751969560; c=relaxed/simple;
+	bh=lIdIuh0O/t3n7LtVB2cUksJC30jNSXA/jpebYB6unRI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mHTgzBd1bOpX0/8KFvEXWJNkowXPSriav/33kj5gPbwAIMu3KvM34GMO33UyIWELRvZLkXrqBPejMz2oZTgoT5Lo2oshmmNInSN1x0NbFENKtStTxUoi32RzhH7tPKeBe7fNpkYnMD1HP2kkowrfpl/np7Gy6nq9a5h/Y3uRvQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innosonix.de; spf=pass smtp.mailfrom=innosonix.de; dkim=pass (2048-bit key) header.d=innosonix.de header.i=@innosonix.de header.b=c8aOyglP; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innosonix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=innosonix.de
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3a524caf77eso582060f8f.3
+        for <stable@vger.kernel.org>; Tue, 08 Jul 2025 03:12:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=innosonix.de; s=google; t=1751969557; x=1752574357; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gmX1zBN33lB4gzLUkNPqUBTAn0Dd9jMDbw1KtlNeu0A=;
+        b=c8aOyglPhAN3DKMubS+9WQx54KbgiTKrwdmw8nHaXx52FM8pgsiVQ1UmP9WPPXInl4
+         jcFdNP3pV6Sy8/MWJSBQznMMUk2WpiA6buMg5+kTgRiFyqLH4czVn1eRdS2bkCY2mTr6
+         ZaGou8XAC6o/xiAWnOYIuu834v6yWbLdSyHLnT9HkgSOHRkyKnh5Dgw0qIoiOy+l1KcL
+         4q/xI2oSc4D8+2WeJw80J9LN+UNTWmAV+AuQ4ZZqKBuliHIn4uheXP5N+aKaMPNHsgug
+         qeoQMoQUG3Yrgkbui+H3sbcBw3KirpVZZJ4zccbXeh+PJhEI1n/1yz9qyxmxThGChJN+
+         d2rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751969557; x=1752574357;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gmX1zBN33lB4gzLUkNPqUBTAn0Dd9jMDbw1KtlNeu0A=;
+        b=AmhZc8a+Ov/sbfjYUOAFKVjtabcIO3JvlaWh/Rb8YdZGY5xlazmTy5xefK+EMDI6lN
+         j1lbhm2C+rw76h42jNkvJaOZDZeVFJcKrdVHQs2yB8fUab2x349orhCxlMFZy1xH+fY/
+         eYJQu1iDGLrcwcns5J1uy4KvQOduPlqMN6HX/s4f+hT25dLAA5Fpv1nc4rg27AW5UeY+
+         P+i5PbHpA6Olrz2ZO9SVqcpIlVWpadhuvjBZvYgt44wMMk6soziinJ8OWvszpIMpBU8Q
+         51/FvL31H3T4xViUCQ4uV1x8Nb/yIxfbMP3+6X++eOIjWFNCI8oxVXMMGUWN29Og8ONL
+         5JGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWw8Qf+Epczgpm/BBeBTe5rstcyBE9nELPXub29G13rc0EIDRN8r7lMBCAnuAgmQ9WeeIlg08Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSf5uTA178tNWJewzoqvO7Uzf5r8A8l8DezjLhJzhQY5YgUBbI
+	QHfDne1mUq5F/7iVgFwSmyzagU0IWH4QVh4QVhAvOeTehjRoM3Cfby8ilheLE3uC5NY5aak0R5b
+	UhiEaI7IrDzh56vQSWPS9NTiVEUNggrP/CiN9zj4K5mMnP9n7EDM=
+X-Gm-Gg: ASbGncvHGQ/buU/kPdo3BqjrGGivLe03yLjijsmC4p0xrsoAnvTF+wWKajr9Ty3kKDa
+	pzU8kUIrF75PHmZaTcXqys0xBE/4Ab4k/VUvDEOUseB+XWi3upk4Hkpih1HhJ5keHupj0/a3CzO
+	rTvPQrtmAId7rArawESvbNBKCxHn9/D1clNB+BHpOLcwT2zmXGHdOnXM3OKPKsibYdUeZKGfl3A
+	MICqqzr5MlBG3gE48VNMnObNAAkuxIviGViGVk8HLjiiuKxNc8rucCiVn6FZnOsUA2bqXSroVjU
+	PHidWZMKhoq5tIEQp8RBue73jjeraBlW9UodD+GQjfHF3rzq0JOYdzFQVkRRMbkPKLjeUIa9Adl
+	joNuWFPHuoUaCicEG66BFkg==
+X-Google-Smtp-Source: AGHT+IED26y+n9j+5pBqdocpELjkLG6eOq39ZrvJ+qRhatVN4TQ5wRzgtBzDH16tDXGPwRZX5wMJRA==
+X-Received: by 2002:a05:6000:310a:b0:3a6:d30e:6fd3 with SMTP id ffacd0b85a97d-3b4965ffca6mr4118923f8f.10.1751969556510;
+        Tue, 08 Jul 2025 03:12:36 -0700 (PDT)
+Received: from steffen-linux.. (p57b79c3d.dip0.t-ipconnect.de. [87.183.156.61])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b47225a2e8sm12558121f8f.75.2025.07.08.03.12.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Jul 2025 03:12:35 -0700 (PDT)
+From: =?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>
+To: 
+Cc: =?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>,
 	stable@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH v3 2/2] PCI: imx6: Correct the epc_features of IMX8MM_EP and IMX8MP_EP
-Date: Tue,  8 Jul 2025 17:10:03 +0800
-Message-Id: <20250708091003.2582846-3-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20250708091003.2582846-1-hongxing.zhu@nxp.com>
-References: <20250708091003.2582846-1-hongxing.zhu@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MAXP287CA0005.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a00:49::16) To AS8PR04MB8676.eurprd04.prod.outlook.com
- (2603:10a6:20b:42b::10)
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4] nvmem: imx-ocotp: fix MAC address byte length
+Date: Tue,  8 Jul 2025 12:12:00 +0200
+Message-ID: <20250708101206.70793-1-steffen@innosonix.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8676:EE_|DUZPR04MB9984:EE_
-X-MS-Office365-Filtering-Correlation-Id: e5011eb6-d924-4983-5a90-08ddbdff99a2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|7416014|19092799006|1800799024|376014|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?m+xKMkWUpNfpAAArIzSJ5HDdqCPBq6ZrzCrQmFX31GyH3xXAqfM4OvU66/jQ?=
- =?us-ascii?Q?/xr6twQSuRhY99XSoYLffd7BVwDNdpIOAKxkDQkDFYQbhgHFUYi8/eq4haUn?=
- =?us-ascii?Q?J9G6//gWU+ySTW4wvaK7B0yAgMaRe2fPuAaJFPrIELrvRB3DyTzl3Hh8gDY8?=
- =?us-ascii?Q?YoplzDL6OOBxveVxAGPAPK5gzD+/+ocMi6YwGHPlx/stJmq4J1SK7UevXBgy?=
- =?us-ascii?Q?UuOzB4E3x36We4hx1zmGGg3f4l8R/ChV3GIb5Ryvq/iKYnE4gj2D5V/KYu26?=
- =?us-ascii?Q?SXsLWxRReav+HmUtiIWrii/XNtbhMQ/HI4VBLGEJltHkmEwgusZvkOSZbkFy?=
- =?us-ascii?Q?6ooCZJ2GGsAK9xn2ie3iO/vR/aIzqbf67QreWdxSIkZNIOdQpSQj3rUyr/Z+?=
- =?us-ascii?Q?fhiLwQ+AInpcV1n2PGTscEZCvt9UYPToI4hmo631QQOk3dh+n112swPSpv9T?=
- =?us-ascii?Q?Ae+1hfLV6gIe3FIy3fbI9behi84lEd/uPH4KsuTcAIaKRiiDLQZZJ8mc98bm?=
- =?us-ascii?Q?32pQGIsoBJYj+1fHyvi/7Lesdvbt061cdYfGQ052Qf2REJybx5qw6v/4XvK+?=
- =?us-ascii?Q?kmTyQboSQcjhR7k6RlFH5ef5uBt3eo/1oYYIJWn88PDU2RVCbUz54giyVNKs?=
- =?us-ascii?Q?V3q1uJ9aQXNhANdCzOO5IA4mNVik9Jld2G0/UkZvDwSsxLEYmaaAtQjDdzIr?=
- =?us-ascii?Q?L6JRtaznKq2Lqq8u6ejcAXJzOQ6OSr8uITz9jMkVzTCV95rhThr37KbSzNIs?=
- =?us-ascii?Q?iz6gk6QtGWSZKI5gA+p8LeLtyUyGMIxbrNDkcxhhko7qsbp/zdNK00WdRs3N?=
- =?us-ascii?Q?kNDlez5WHGBLPtIxp+MfPD3BTdDp1BBqGNSa3HyhQvj3i0Ew9HpSfrnECaB3?=
- =?us-ascii?Q?QuaZEDhGswOQTzNxqACRX/itsodoitWU/EYn0tZ+SWIg8aGGGdSUAi97P534?=
- =?us-ascii?Q?Qxz0F2OnezTWQNA6t3pq8vbvhDLKkOmlVML+EMNZOY+PCppaNYBrNMcXovwo?=
- =?us-ascii?Q?/18H9Bn0itz0x3gJHJUiRCHpPXk42ZkkxRDPVtdO0qoSy1biFinfc6QutVMq?=
- =?us-ascii?Q?/dJ5Zwx5a663pyTpwixfEXYMi6IyN8LnGVfAo3w/iF6X+KGjFeiDFoJG2Sfh?=
- =?us-ascii?Q?t1cBCRqiWwqKbO19/3ftN+I3s2/q19WB8vOmmYPxalI9v7v1/Wu9yUCFcIdQ?=
- =?us-ascii?Q?xGxUMtXR1IMYEz9ASk3YNvu5I2abFNPlP1OuiRFE+cwbonr8CLtXQGYSiVM9?=
- =?us-ascii?Q?L/wXhrHGF2hNviabSd1OjkB5fWwoMcDmnkGKVqrE6ErPpHVaYcv419zWjYiW?=
- =?us-ascii?Q?UQx3O3aPNhUi5jtzw5zAxTCMN67EZvxYKX3tNRg4R+okBI8eJJO87uSQp342?=
- =?us-ascii?Q?FxRwBO2xFAR7oVUUCUs4bzbDl3XWWDoiNfSVegv3wQYe9Xn7/DTAFxJYFWZY?=
- =?us-ascii?Q?BbiEKHKA3xGQYXqMQeQpz5tbbYUnj1uv7Qc7YUqNUTlEdu2xpid03t0pmtcy?=
- =?us-ascii?Q?19gpK47HAjPAWWg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8676.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(19092799006)(1800799024)(376014)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9rodNuBwvBTXKCaiugUgNO6v2R8lu0q1ewBb2hPi5DXmDS1x/YmnwC19FF/k?=
- =?us-ascii?Q?P/sQ1+EV5TFVsi/Lo3/VWLB4sRtgreS/vhmkhyGgRKHAXEbewZq14YVivZop?=
- =?us-ascii?Q?jaZAklPgHQmliJ1W/I0EaClLzpdzNJW2ScbuKRypQ5f/+E53CGXluy1mrdLp?=
- =?us-ascii?Q?/yHdrsCLOYpFuybzVHcLDd0DdQInGmumBeyuIoEpMY2vX4ru3SnAUhtH8CTb?=
- =?us-ascii?Q?QEHCBLcBNXB8bABu6xxqG8/4nZ8PuwFmRIJ8yOnGiJ5HVjiWuKKXPe++RpSK?=
- =?us-ascii?Q?jq2+u64Ij2sFRZR+Or4+FsSlCiuY8pir7FBCRTYs+9f8VP0Ik/Xy+FcfUByT?=
- =?us-ascii?Q?ZozpriYnelKI8NNfl3UA4uRFy3CreuGn8krozLOxXqnXyjTL57pzXaKirezv?=
- =?us-ascii?Q?djDcUMuKVcdJz403tBfV8rd2IUlzw+GqWwuNPiELv+P1j7TFhJzCH2z5Es5u?=
- =?us-ascii?Q?whX0rzKhvqxlsKO6JraUyBg8O1WftDuIh/ZOu+xCmQKeO0WwM/OdtGZmVkxx?=
- =?us-ascii?Q?qVAs/1C1T3asic1shVa7ae6oWqYEHfQBv2/H/9W9pls3TjukMsPrmNeWiVNh?=
- =?us-ascii?Q?ybkfvnL/RsD8cip7ByJ1SeDhoW1x7Qcp0S8DAAzLw6ZhbuhOkeBowmzXIgM/?=
- =?us-ascii?Q?Ay9VQiE0cGFp5/LEsiOvmFSdt8xk64Il4QrgDS+/sfegwzKPTWbRKm6yE8lI?=
- =?us-ascii?Q?DrVuMk4QM/yvEjx1et3PnjoIGVklgHp6hX8TqTNQzE3Sd/OTw2Fn3KgWPVLj?=
- =?us-ascii?Q?aiIIipKZFm0m8z1nzHT9ezuH7hv/2xLK06iH7Nv9wFZNgDVYP6fbJAgtsc9I?=
- =?us-ascii?Q?qCKtn7+BGUuzSI/MYI0POHfqQH5ygAA5G2UMAaGbZ7reJLUNz4y0AsJ6y4SV?=
- =?us-ascii?Q?73P92gUozizyr+Ew+ZoZ7pN3ms5v3ThkHT3yVScfNnhyf1ZuXPKtFA0kQLjw?=
- =?us-ascii?Q?7XaekZ1pRyonpg2L91nG2jtOEtvJ3WDR4H9t4zmu6KMw1U1WSCQZ0qar/sDa?=
- =?us-ascii?Q?W24sH1If4NrfMmO80Puhhx24WovrCxa4VsDNq61W/Rn+XuIyp3pOq7wnMyPw?=
- =?us-ascii?Q?51o1qtonEYBblPEj2dGNDIPd6VOfz371iCsrWMg/gzo1xrfq/nOZTedmBuLi?=
- =?us-ascii?Q?t1gCbFnP90VTzWehr8jJGH8g/2Q17gzdjBlJJXJUwk4NmJ6uM4MGMUbQMNXN?=
- =?us-ascii?Q?MJyPZgPBjlWaZTdL/kWMuJbJbrAlC6KV7xiR3gecCkQWjcONjR8/ug0GEQ2s?=
- =?us-ascii?Q?FzkU50k5kO1gHn4ZHy5ByKRiUTyWxYHv4djNDWYlBVACpaJh+BMzJ1TTJ42D?=
- =?us-ascii?Q?4sPjSt1ungZnYbTDocm8aJl/+bazMTPOgcgv/pOsxdLNdwMklLT3LBt29ZZr?=
- =?us-ascii?Q?Ux7gVi0WRNRy9liDM8gArCr7i0nL0DcVmoWBY/WKr5o6eeSLXPiBUyyl0vmx?=
- =?us-ascii?Q?PjgdkaiyC9IzJTzu9gU1k9jOrnChzfEweDYyLz7Jp8n4R6ofIK92TJM32+f6?=
- =?us-ascii?Q?qW+JQdswONNnykCFxQrhWLPCET+wZbHbtglRTNOxgVS8dobpB2KmAMS5OIaN?=
- =?us-ascii?Q?+LTPd7src7E18cHogGgKkQHPR02zR1BomThPOqZu?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e5011eb6-d924-4983-5a90-08ddbdff99a2
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8676.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 09:12:45.1447
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y56IIL5a8GR41snlzgw6Tu3ADrM0+sIq1b/cswX0wnWW0fG/TdRUmlzzgfObklm9OkMtGaRfL6j32pKts1A73A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9984
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-For IMX8MM_EP and IMX8MP_EP, add fixed 256-byte BAR 4 and reserved BAR 5
-in imx8m_pcie_epc_features.
+The commit "13bcd440f2ff nvmem: core: verify cell's raw_len" caused an
+extension of the "mac-address" cell from 6 to 8 bytes due to word_size
+of 4 bytes. This led to a required byte swap of the full buffer length,
+which caused truncation of the mac-address when read.
 
-Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
+Previously, the mac-address was incorrectly truncated from=20
+70:B3:D5:14:E9:0E to 00:00:70:B3:D5:14.
+
+Fix the issue by swapping only the first 6 bytes to correctly pass the
+mac-address to the upper layers.
+
+Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
 Cc: stable@vger.kernel.org
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Steffen B=C3=A4tz <steffen@innosonix.de>
+Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 2 ++
- 1 file changed, 2 insertions(+)
+v4:
+- Adopted the commit message wording recommended by=20
+Frank.li@nxp.com to improve clarity.
+- Simplified byte count determination by using min() instead of an=20
+explicit conditional statement.
+- Kept the Tested-by tag from the previous patch as the change=20
+remains trivial but tested.
+v3:
+- replace magic number 6 with ETH_ALEN
+- Fix misleading indentation and properly group 'mac-address' statements
+v2:
+- Add Cc: stable@vger.kernel.org as requested by Greg KH's patch bot
+ drivers/nvmem/imx-ocotp-ele.c | 5 ++++-
+ drivers/nvmem/imx-ocotp.c     | 5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 7d15bcb7c107..9754cc6e09b9 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1385,6 +1385,8 @@ static const struct pci_epc_features imx8m_pcie_epc_features = {
- 	.msix_capable = false,
- 	.bar[BAR_1] = { .type = BAR_RESERVED, },
- 	.bar[BAR_3] = { .type = BAR_RESERVED, },
-+	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = SZ_256, },
-+	.bar[BAR_5] = { .type = BAR_RESERVED, },
- 	.align = SZ_64K,
- };
- 
--- 
-2.37.1
+diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
+index ca6dd71d8a2e..7807ec0e2d18 100644
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -12,6 +12,7 @@
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
++#include <linux/if_ether.h>	/* ETH_ALEN */
+=20
+ enum fuse_type {
+ 	FUSE_FSB =3D BIT(0),
+@@ -118,9 +119,11 @@ static int imx_ocotp_cell_pp(void *context, const char=
+ *id, int index,
+ 	int i;
+=20
+ 	/* Deal with some post processing of nvmem cell data */
+-	if (id && !strcmp(id, "mac-address"))
++	if (id && !strcmp(id, "mac-address")) {
++		bytes =3D min(bytes, ETH_ALEN);
+ 		for (i =3D 0; i < bytes / 2; i++)
+ 			swap(buf[i], buf[bytes - i - 1]);
++	}
+=20
+ 	return 0;
+ }
+diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
+index 79dd4fda0329..7bf7656d4f96 100644
+--- a/drivers/nvmem/imx-ocotp.c
++++ b/drivers/nvmem/imx-ocotp.c
+@@ -23,6 +23,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+ #include <linux/delay.h>
++#include <linux/if_ether.h>	/* ETH_ALEN */
+=20
+ #define IMX_OCOTP_OFFSET_B0W0		0x400 /* Offset from base address of the
+ 					       * OTP Bank0 Word0
+@@ -227,9 +228,11 @@ static int imx_ocotp_cell_pp(void *context, const char=
+ *id, int index,
+ 	int i;
+=20
+ 	/* Deal with some post processing of nvmem cell data */
+-	if (id && !strcmp(id, "mac-address"))
++	if (id && !strcmp(id, "mac-address")) {
++		bytes =3D min(bytes, ETH_ALEN);
+ 		for (i =3D 0; i < bytes / 2; i++)
+ 			swap(buf[i], buf[bytes - i - 1]);
++	}
+=20
+ 	return 0;
+ }
+--=20
+2.43.0
 
+
+--=20
+
+
+*innosonix GmbH*
+Hauptstr. 35
+96482 Ahorn
+central: +49 9561 7459980
+www.innosonix.de <http://www.innosonix.de>
+
+innosonix GmbH
+Gesch=C3=A4ftsf=C3=BChrer:=20
+Markus B=C3=A4tz, Steffen B=C3=A4tz
+USt.-IdNr / VAT-Nr.: DE266020313
+EORI-Nr.:=20
+DE240121536680271
+HRB 5192 Coburg
+WEEE-Reg.-Nr. DE88021242
 
