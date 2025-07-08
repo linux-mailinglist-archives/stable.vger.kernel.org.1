@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-161165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F213EAFD3B5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7217FAFD28D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B033F188C759
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34A417AF963
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699A52DAFAE;
-	Tue,  8 Jul 2025 16:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931041754B;
+	Tue,  8 Jul 2025 16:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lxh8NE8w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiNnY50u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C248F5E;
-	Tue,  8 Jul 2025 16:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E2F8F5B;
+	Tue,  8 Jul 2025 16:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993784; cv=none; b=MAfSe4KeiMwmrNryZs3jE68ovuCjpDYzr639sVG7Ux0hwAQUPaB+UoY/IqkxGHgb2WIo+T/VJfUDsv6cjthZuV4YmdRDj475LfpnW1dubVGt5Sk/zJ1mHFAbG+YwZZHBB0jnsKMm6kpxW7W8Kp26lSq4YkR3xkfP3rWjUMVrRSI=
+	t=1751993270; cv=none; b=nLSz2PkqDKa1hzYaRqiSJgGV/ICsBzMTUtYE3bLFajexTiUz02UGf36bOpAxs1nhB/th0e/gMrvcAY7Y7Nl46PtrL7OxrF0pI0GHCuHQodpWqMH43rgGD7g6IS0OreEexYTfkRhs5DnoW/L3rkOkVS0ikGFLZQniKT5n70rjCp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993784; c=relaxed/simple;
-	bh=wpH3g0F6YVNXEImPUMwygfGv8A+7eaH0C5qf6SD3V1g=;
+	s=arc-20240116; t=1751993270; c=relaxed/simple;
+	bh=HoKJMRI72N8N9EWNCaB6mH6YxBhXEPpAEHkbkHU8rP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkRm2XfmBx8B7MUFVMEdjZ307wX7nXlF0NXMED90AqEDB5UsPi2n7Vl8SaMuYkY1tDOk95YdlFOY/TLpx8+7HoYvGMdoqkFpwJB8PGRsfYtcNjns3q0QeTQ8jAxgn4ga9JtWlN9Jap3ckFQX4/QDX7Fxn7W9au1kFaGG3nwpO0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lxh8NE8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62219C4CEF0;
-	Tue,  8 Jul 2025 16:56:23 +0000 (UTC)
+	 MIME-Version; b=iuQ6JfOLcZEaY0PS+E+47f607fiXbgON8U6nu2NDMxm68X5/HYtz8aEfFExbxPhUP9VZGMJsOC2+DEmb0APIstHl4fqPIwMvgEhvDkOB1dASeq92FI4Yjz+N9/4Vw3mheCLKQMGSMd0cZ+egwFRE5ItFzH64Ur2IR6H5SvpecSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiNnY50u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC467C4CEED;
+	Tue,  8 Jul 2025 16:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993783;
-	bh=wpH3g0F6YVNXEImPUMwygfGv8A+7eaH0C5qf6SD3V1g=;
+	s=korg; t=1751993270;
+	bh=HoKJMRI72N8N9EWNCaB6mH6YxBhXEPpAEHkbkHU8rP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lxh8NE8wrv59qqey8ogaTdEeKOPumNlpg2l+Q2tm4/NJY4Kt4Lyvkwh2FB5xFtcaX
-	 VTLNiOrOfb4ezM+oJztPHyCikGPTBA9zX78MsVuXzySRZA5a5LIX2qOf0D6Tp/lYRH
-	 2BXBPRQkXu4RU+tB9suQWZ1PWNWAAuwYkzu31pdc=
+	b=LiNnY50ua9EnzIf4aRzhUJSTQwGwMU7RUZ8YxilD7MMSHwfJP2khR3xlLbtOiZMW7
+	 8Vp9UAJy3Avg0sgMEkLdV+wF3mlTOaKV/YujgNGyNgIp9QnkdWPyNLMsePTd0yZNGA
+	 rcpjfqw0UlZTQUWT9TpYCcMpUXuQY7N1EKtBFzRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Lewalski <jakub.lewalski@nokia.com>,
-	Elodie Decerle <elodie.decerle@nokia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 017/160] tty: serial: uartlite: register uart driver in init
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.15 017/178] mmc: sdhci-uhs2: Adjust some error messages and register dump for SD UHS-II card
 Date: Tue,  8 Jul 2025 18:20:54 +0200
-Message-ID: <20250708162231.985264456@linuxfoundation.org>
+Message-ID: <20250708162236.997897664@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Lewalski <jakub.lewalski@nokia.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-[ Upstream commit 6bd697b5fc39fd24e2aa418c7b7d14469f550a93 ]
+commit 49b14db035135341f6cf4de7af6ac2cbc8ad29b6 upstream.
 
-When two instances of uart devices are probing, a concurrency race can
-occur. If one thread calls uart_register_driver function, which first
-allocates and assigns memory to 'uart_state' member of uart_driver
-structure, the other instance can bypass uart driver registration and
-call ulite_assign. This calls uart_add_one_port, which expects the uart
-driver to be fully initialized. This leads to a kernel panic due to a
-null pointer dereference:
+Adjust some error messages to debug mode and register dump to dynamic
+debug mode to avoid causing misunderstanding it is an error.
 
-[    8.143581] BUG: kernel NULL pointer dereference, address: 00000000000002b8
-[    8.156982] #PF: supervisor write access in kernel mode
-[    8.156984] #PF: error_code(0x0002) - not-present page
-[    8.156986] PGD 0 P4D 0
-...
-[    8.180668] RIP: 0010:mutex_lock+0x19/0x30
-[    8.188624] Call Trace:
-[    8.188629]  ? __die_body.cold+0x1a/0x1f
-[    8.195260]  ? page_fault_oops+0x15c/0x290
-[    8.209183]  ? __irq_resolve_mapping+0x47/0x80
-[    8.209187]  ? exc_page_fault+0x64/0x140
-[    8.209190]  ? asm_exc_page_fault+0x22/0x30
-[    8.209196]  ? mutex_lock+0x19/0x30
-[    8.223116]  uart_add_one_port+0x60/0x440
-[    8.223122]  ? proc_tty_register_driver+0x43/0x50
-[    8.223126]  ? tty_register_driver+0x1ca/0x1e0
-[    8.246250]  ulite_probe+0x357/0x4b0 [uartlite]
-
-To prevent it, move uart driver registration in to init function. This
-will ensure that uart_driver is always registered when probe function
-is called.
-
-Signed-off-by: Jakub Lewalski <jakub.lewalski@nokia.com>
-Signed-off-by: Elodie Decerle <elodie.decerle@nokia.com>
-Link: https://lore.kernel.org/r/20250331160732.2042-1-elodie.decerle@nokia.com
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250606110121.96314-4-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/uartlite.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ drivers/mmc/host/sdhci-uhs2.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/tty/serial/uartlite.c b/drivers/tty/serial/uartlite.c
-index 36871cebd6a0f..0345eaf969630 100644
---- a/drivers/tty/serial/uartlite.c
-+++ b/drivers/tty/serial/uartlite.c
-@@ -808,16 +808,6 @@ static int ulite_probe(struct platform_device *pdev)
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
+--- a/drivers/mmc/host/sdhci-uhs2.c
++++ b/drivers/mmc/host/sdhci-uhs2.c
+@@ -99,8 +99,8 @@ void sdhci_uhs2_reset(struct sdhci_host
+ 	/* hw clears the bit when it's done */
+ 	if (read_poll_timeout_atomic(sdhci_readw, val, !(val & mask), 10,
+ 				     UHS2_RESET_TIMEOUT_100MS, true, host, SDHCI_UHS2_SW_RESET)) {
+-		pr_warn("%s: %s: Reset 0x%x never completed. %s: clean reset bit.\n", __func__,
+-			mmc_hostname(host->mmc), (int)mask, mmc_hostname(host->mmc));
++		pr_debug("%s: %s: Reset 0x%x never completed. %s: clean reset bit.\n", __func__,
++			 mmc_hostname(host->mmc), (int)mask, mmc_hostname(host->mmc));
+ 		sdhci_writeb(host, 0, SDHCI_UHS2_SW_RESET);
+ 		return;
+ 	}
+@@ -335,8 +335,8 @@ static int sdhci_uhs2_interface_detect(s
+ 	if (read_poll_timeout(sdhci_readl, val, (val & SDHCI_UHS2_IF_DETECT),
+ 			      100, UHS2_INTERFACE_DETECT_TIMEOUT_100MS, true,
+ 			      host, SDHCI_PRESENT_STATE)) {
+-		pr_warn("%s: not detect UHS2 interface in 100ms.\n", mmc_hostname(host->mmc));
+-		sdhci_dumpregs(host);
++		pr_debug("%s: not detect UHS2 interface in 100ms.\n", mmc_hostname(host->mmc));
++		sdhci_dbg_dumpregs(host, "UHS2 interface detect timeout in 100ms");
+ 		return -EIO;
+ 	}
  
--	if (!ulite_uart_driver.state) {
--		dev_dbg(&pdev->dev, "uartlite: calling uart_register_driver()\n");
--		ret = uart_register_driver(&ulite_uart_driver);
--		if (ret < 0) {
--			dev_err(&pdev->dev, "Failed to register driver\n");
--			clk_disable_unprepare(pdata->clk);
--			return ret;
--		}
--	}
--
- 	ret = ulite_assign(&pdev->dev, id, res->start, irq, pdata);
+@@ -345,8 +345,8 @@ static int sdhci_uhs2_interface_detect(s
  
- 	pm_runtime_mark_last_busy(&pdev->dev);
-@@ -859,16 +849,25 @@ static struct platform_driver ulite_platform_driver = {
+ 	if (read_poll_timeout(sdhci_readl, val, (val & SDHCI_UHS2_LANE_SYNC),
+ 			      100, UHS2_LANE_SYNC_TIMEOUT_150MS, true, host, SDHCI_PRESENT_STATE)) {
+-		pr_warn("%s: UHS2 Lane sync fail in 150ms.\n", mmc_hostname(host->mmc));
+-		sdhci_dumpregs(host);
++		pr_debug("%s: UHS2 Lane sync fail in 150ms.\n", mmc_hostname(host->mmc));
++		sdhci_dbg_dumpregs(host, "UHS2 Lane sync fail in 150ms");
+ 		return -EIO;
+ 	}
  
- static int __init ulite_init(void)
- {
-+	int ret;
-+
-+	pr_debug("uartlite: calling uart_register_driver()\n");
-+	ret = uart_register_driver(&ulite_uart_driver);
-+	if (ret)
-+		return ret;
+@@ -417,12 +417,12 @@ static int sdhci_uhs2_do_detect_init(str
+ 		host->ops->uhs2_pre_detect_init(host);
  
- 	pr_debug("uartlite: calling platform_driver_register()\n");
--	return platform_driver_register(&ulite_platform_driver);
-+	ret = platform_driver_register(&ulite_platform_driver);
-+	if (ret)
-+		uart_unregister_driver(&ulite_uart_driver);
-+
-+	return ret;
- }
+ 	if (sdhci_uhs2_interface_detect(host)) {
+-		pr_warn("%s: cannot detect UHS2 interface.\n", mmc_hostname(host->mmc));
++		pr_debug("%s: cannot detect UHS2 interface.\n", mmc_hostname(host->mmc));
+ 		return -EIO;
+ 	}
  
- static void __exit ulite_exit(void)
- {
- 	platform_driver_unregister(&ulite_platform_driver);
--	if (ulite_uart_driver.state)
--		uart_unregister_driver(&ulite_uart_driver);
-+	uart_unregister_driver(&ulite_uart_driver);
- }
+ 	if (sdhci_uhs2_init(host)) {
+-		pr_warn("%s: UHS2 init fail.\n", mmc_hostname(host->mmc));
++		pr_debug("%s: UHS2 init fail.\n", mmc_hostname(host->mmc));
+ 		return -EIO;
+ 	}
  
- module_init(ulite_init);
--- 
-2.39.5
-
+@@ -504,8 +504,8 @@ static int sdhci_uhs2_check_dormant(stru
+ 	if (read_poll_timeout(sdhci_readl, val, (val & SDHCI_UHS2_IN_DORMANT_STATE),
+ 			      100, UHS2_CHECK_DORMANT_TIMEOUT_100MS, true, host,
+ 			      SDHCI_PRESENT_STATE)) {
+-		pr_warn("%s: UHS2 IN_DORMANT fail in 100ms.\n", mmc_hostname(host->mmc));
+-		sdhci_dumpregs(host);
++		pr_debug("%s: UHS2 IN_DORMANT fail in 100ms.\n", mmc_hostname(host->mmc));
++		sdhci_dbg_dumpregs(host, "UHS2 IN_DORMANT fail in 100ms");
+ 		return -EIO;
+ 	}
+ 	return 0;
 
 
 
