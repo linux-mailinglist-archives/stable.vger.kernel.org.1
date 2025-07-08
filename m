@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-161314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60468AFD4B5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:08:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 525BDAFD0AA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06D09188221F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:04:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E90E4830E4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB6421C9E4;
-	Tue,  8 Jul 2025 17:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CA22E3AE3;
+	Tue,  8 Jul 2025 16:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edALqzIm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAx1QFFL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F151E492;
-	Tue,  8 Jul 2025 17:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D18217722;
+	Tue,  8 Jul 2025 16:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994216; cv=none; b=I3LgKa0TD+Nt9GXgA3/O3bEk2HR7PHNUIOAOBEGRYaqEeNfZvEOd4ZHxc1KE1C3iEMQoVyBGP+sqovfEnZWbnQ+9klf8Yv2N77/pTFsKQ1bBrFkcNOh288SIQ95O813HOLY4UaURedbUIWJhv7xSwayKg9+4rqkDts1VPMluYKE=
+	t=1751991954; cv=none; b=pDqMi0fQic5q4/3334a3PFPjBUiFMcdBxVLyMnalAHI0CoJEDdsLnaMlukeMSOkG+n8HAzHaMJVjBRQaI4ZvJPnANYu5eKszpx3CreMOq2y/ORSTvXKkKK2ME+GiiZyNXQ+xrnSnUKgQA1HEQMoL/c7jV5w8LD/Ksb/8sAa5Ac8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994216; c=relaxed/simple;
-	bh=H0zmU7rQ9uw8AsfWWUN6DJfoczRG1eT9zqWrHU1UA/Y=;
+	s=arc-20240116; t=1751991954; c=relaxed/simple;
+	bh=onaoRAtrRn8AgGPGJJ8r9ufl1cCJZS17T2iBkUx4A9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=omGaKa+Onn1g7VH+2+9yN3L0jcyB0cmRpZwceMe4XQjwCA2GbAOWJ/JnAgOPwrZ+eLThHH+SuZ21MXkerSDEHo9G5TMz4yU0+y2EB/7UlySMs6f1mU92/dQj62p6dHfO/8w51xK+zU1i+M0zDBt8VLqhcxfTYuEVeY1D7IBW29c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edALqzIm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC15C4CEED;
-	Tue,  8 Jul 2025 17:03:35 +0000 (UTC)
+	 MIME-Version; b=ZL+Of1I+z/YKP6VZLebV1RyCnW0P3fjDaDdyQWTqFsCu+tY8EHYX0JEOX60hXXrKVJO8RDKxzvNApZUyNSpF/KIvPT7OnllRwtiG+/bteldiPTPvnndunf0Faas21u1JcN5b5xDkcXLH6GzfXoRXXbxKk8cflrg3c+VL5dXibwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAx1QFFL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A62AC4CEED;
+	Tue,  8 Jul 2025 16:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994215;
-	bh=H0zmU7rQ9uw8AsfWWUN6DJfoczRG1eT9zqWrHU1UA/Y=;
+	s=korg; t=1751991953;
+	bh=onaoRAtrRn8AgGPGJJ8r9ufl1cCJZS17T2iBkUx4A9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=edALqzImUwyXEqsYexVbupKgCyWlXKs1uW4qiDZpLZA6b1pZJSQ1aBVHD7xFYi4qQ
-	 4UbNdQzSoBVVlX5CDSA50cYM20KBboN5edBfDibx5B/yfoR1rgc/3Ho1ASIgaOCdp7
-	 MlnXDYX4H9cP+N+i3zmA7YuAX5dHKFSoIAOUNk70=
+	b=qAx1QFFL0JYsEfGaaS1iXXZrDvbCMvPdL4ZI2UQ6Dfky5WoSBXcTZUJlkZj0S5WVx
+	 QoXvLrwEomHY2rae2B+uFLJflI3tbVjENxtqTxzpbiycyU6BZwUT+6ZEKATraA+aa9
+	 UavL8Cm2GpiCKvwgMZ+RFwQsKSOpkmccIM/Fm608=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 139/160] regulator: gpio: Fix the out-of-bounds access to drvdata::gpiods
-Date: Tue,  8 Jul 2025 18:22:56 +0200
-Message-ID: <20250708162235.220634643@linuxfoundation.org>
+	Erick Shepherd <erick.shepherd@ni.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jonathan Liu <net147@gmail.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 05/81] Revert "mmc: sdhci: Disable SD card clock before changing parameters"
+Date: Tue,  8 Jul 2025 18:22:57 +0200
+Message-ID: <20250708162225.010420047@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <mani@kernel.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit c9764fd88bc744592b0604ccb6b6fc1a5f76b4e3 ]
+commit dcc3bcfc5b50c625b475dcc25d167b6b947a6637 upstream.
 
-drvdata::gpiods is supposed to hold an array of 'gpio_desc' pointers. But
-the memory is allocated for only one pointer. This will lead to
-out-of-bounds access later in the code if 'config::ngpios' is > 1. So
-fix the code to allocate enough memory to hold 'config::ngpios' of GPIO
-descriptors.
+It has turned out the trying to strictly conform to the SDHCI specification
+is causing problems. Let's revert and start over.
 
-While at it, also move the check for memory allocation failure to be below
-the allocation to make it more readable.
+This reverts commit fb3bbc46c94f261b6156ee863c1b06c84cf157dc.
 
-Cc: stable@vger.kernel.org # 5.0
-Fixes: d6cd33ad7102 ("regulator: gpio: Convert to use descriptors")
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20250703103549.16558-1-mani@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Erick Shepherd <erick.shepherd@ni.com>
+Cc: stable@vger.kernel.org
+Fixes: fb3bbc46c94f ("mmc: sdhci: Disable SD card clock before changing parameters")
+Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
+Reported-by: Jonathan Liu <net147@gmail.com>
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Closes: https://bugs.debian.org/1108065
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20250624110932.176925-1-ulf.hansson@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/gpio-regulator.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mmc/host/sdhci.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/regulator/gpio-regulator.c b/drivers/regulator/gpio-regulator.c
-index 95e61a2f43f5d..b34671eb49b52 100644
---- a/drivers/regulator/gpio-regulator.c
-+++ b/drivers/regulator/gpio-regulator.c
-@@ -260,8 +260,10 @@ static int gpio_regulator_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	}
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -2049,15 +2049,10 @@ void sdhci_set_clock(struct sdhci_host *
  
--	drvdata->gpiods = devm_kzalloc(dev, sizeof(struct gpio_desc *),
--				       GFP_KERNEL);
-+	drvdata->gpiods = devm_kcalloc(dev, config->ngpios,
-+				       sizeof(struct gpio_desc *), GFP_KERNEL);
-+	if (!drvdata->gpiods)
-+		return -ENOMEM;
+ 	host->mmc->actual_clock = 0;
  
- 	if (config->input_supply) {
- 		drvdata->desc.supply_name = devm_kstrdup(&pdev->dev,
-@@ -274,8 +276,6 @@ static int gpio_regulator_probe(struct platform_device *pdev)
- 		}
- 	}
+-	clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
+-	if (clk & SDHCI_CLOCK_CARD_EN)
+-		sdhci_writew(host, clk & ~SDHCI_CLOCK_CARD_EN,
+-			SDHCI_CLOCK_CONTROL);
++	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
  
--	if (!drvdata->gpiods)
--		return -ENOMEM;
- 	for (i = 0; i < config->ngpios; i++) {
- 		drvdata->gpiods[i] = devm_gpiod_get_index(dev,
- 							  NULL,
--- 
-2.39.5
-
+-	if (clock == 0) {
+-		sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
++	if (clock == 0)
+ 		return;
+-	}
+ 
+ 	clk = sdhci_calc_clk(host, clock, &host->mmc->actual_clock);
+ 	sdhci_enable_clk(host, clk);
 
 
 
