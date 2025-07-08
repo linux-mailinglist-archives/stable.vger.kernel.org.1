@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-161294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53D5BAFD4B1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:08:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF674AFD377
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECB16486A3A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91837169B49
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3793D2E5B30;
-	Tue,  8 Jul 2025 17:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0E121C190;
+	Tue,  8 Jul 2025 16:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDXEjIbm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYPy4A8V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8952DCC02;
-	Tue,  8 Jul 2025 17:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890502F37;
+	Tue,  8 Jul 2025 16:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994160; cv=none; b=i42MURls7tn262SIfh+KGm2396m4MNFGY/suuVgEOuwFHzNfL+bkT35sVbWGOFv4b1nVP8bF/S5NtZXv0rkMV7oLT9E4nSeBjgVLSCquzoAswp1o+Wxt+qT0oGr4hQWn8ItCtJc850YWj8dvg2MuNk5RCm1eddl1T5bWWyQdKVs=
+	t=1751993647; cv=none; b=VtPyKOJFcfrQ41ZHs7uXe/A/Huh+W+HV1gUIp1VhLmEriMN/vHShJdcH2+23feUdHsvUF9MdapPxpzSrRlcNuKOk4QOPoEoIU8dhSgiTzOn7xkYxGGvRJ4TPUDdvwWeazSNU84pbiEJhrFcqa8ARSLx3TwqD1L40sCdKTsf2AFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994160; c=relaxed/simple;
-	bh=2+XrFEaNo3AM8fLKVlPxAmrvS4eiSaaH6AgDDDXbMqY=;
+	s=arc-20240116; t=1751993647; c=relaxed/simple;
+	bh=doRDC2s0lEWH0P2lAHpIo1gNeEmZQ12wNnsGgYQFMG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WsuMbqsnwsw2ghrH0yZJ7tJvurSq/JXiStaVTj5brLOSICrUfMEsJ5NRGU11snttrwF7hRtZNuuowsonajZ9rnm8K1cvrBV3Ph0+85E0wcHFbAD/K4yVhDtsnOmnLDyjSxM9XBmOuVKdwWxWSlnnFG8WOhieAwW8gqD1sxo75Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDXEjIbm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B89FC4CEED;
-	Tue,  8 Jul 2025 17:02:39 +0000 (UTC)
+	 MIME-Version; b=eubP9/JGhk/08t1aMc8f7POeRaSj+gctwSavyE22XLN2jx2dwkJMdZbb5XspDEdaQaMSl1IeGADt/uuIpo2dT/GY7nEMQaveJ8kKEc6Miha36N3oAv+mn23NtSurdhgadfpbsCpdAFOVsJUok71Z7hAEJuZHPopDvt4NhOInT/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYPy4A8V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A989C4CEED;
+	Tue,  8 Jul 2025 16:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994159;
-	bh=2+XrFEaNo3AM8fLKVlPxAmrvS4eiSaaH6AgDDDXbMqY=;
+	s=korg; t=1751993647;
+	bh=doRDC2s0lEWH0P2lAHpIo1gNeEmZQ12wNnsGgYQFMG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDXEjIbm82Xop/n0r7Dryqhs/RaW3067/80FjWwoR+sV7hgbudzW23b6QFixL3yn2
-	 qsxn5c8r0PkvUFE136ChYAvJ95zFx2dw5zjaZneG+oVhoy4/5FwLuDxyFRYdVS+38w
-	 4EeNTleyFd8h2nJpn6fV070kO9uA25Xbq2f59l/Y=
+	b=qYPy4A8VZTVIhUlTpH7Ldq1ueenT0JTgLpOhvKgYtAknkrHPktrvdhwStnYbZj2z5
+	 gOqNYKlGHrkV3A2oBnfOwrJFQmgyTJX2bod4mhoJQ8l0W4RUsO3RnriKH0bliE5CH0
+	 uGtRi9BgVpMf6dR62fe6jC2YNiqiGi6wSj8h1RSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fushuai Wang <wangfushuai@baidu.com>,
-	Simon Horman <horms@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 146/160] dpaa2-eth: fix xdp_rxq_info leak
+	stable <stable@kernel.org>,
+	Hongyu Xie <xiehongyu1@kylinos.cn>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.15 146/178] xhci: Disable stream for xHC controller with XHCI_BROKEN_STREAMS
 Date: Tue,  8 Jul 2025 18:23:03 +0200
-Message-ID: <20250708162235.386236587@linuxfoundation.org>
+Message-ID: <20250708162240.340958887@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fushuai Wang <wangfushuai@baidu.com>
+From: Hongyu Xie <xiehongyu1@kylinos.cn>
 
-[ Upstream commit 2def09ead4ad5907988b655d1e1454003aaf8297 ]
+commit cd65ee81240e8bc3c3119b46db7f60c80864b90b upstream.
 
-The driver registered xdp_rxq_info structures via xdp_rxq_info_reg()
-but failed to properly unregister them in error paths and during
-removal.
+Disable stream for platform xHC controller with broken stream.
 
-Fixes: d678be1dc1ec ("dpaa2-eth: add XDP_REDIRECT support")
-Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://patch.msgid.link/20250626133003.80136-1-wangfushuai@baidu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 14aec589327a6 ("storage: accept some UAS devices if streams are unavailable")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250627144127.3889714-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/freescale/dpaa2/dpaa2-eth.c  | 26 +++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-plat.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-index acbb26cb2177e..07d8c9e41328e 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -3512,6 +3512,7 @@ static int dpaa2_eth_setup_rx_flow(struct dpaa2_eth_priv *priv,
- 					 MEM_TYPE_PAGE_ORDER0, NULL);
- 	if (err) {
- 		dev_err(dev, "xdp_rxq_info_reg_mem_model failed\n");
-+		xdp_rxq_info_unreg(&fq->channel->xdp_rxq);
- 		return err;
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -326,7 +326,8 @@ int xhci_plat_probe(struct platform_devi
  	}
  
-@@ -4004,17 +4005,25 @@ static int dpaa2_eth_bind_dpni(struct dpaa2_eth_priv *priv)
- 			return -EINVAL;
- 		}
- 		if (err)
--			return err;
-+			goto out;
- 	}
+ 	usb3_hcd = xhci_get_usb3_hcd(xhci);
+-	if (usb3_hcd && HCC_MAX_PSA(xhci->hcc_params) >= 4)
++	if (usb3_hcd && HCC_MAX_PSA(xhci->hcc_params) >= 4 &&
++	    !(xhci->quirks & XHCI_BROKEN_STREAMS))
+ 		usb3_hcd->can_do_streams = 1;
  
- 	err = dpni_get_qdid(priv->mc_io, 0, priv->mc_token,
- 			    DPNI_QUEUE_TX, &priv->tx_qdid);
- 	if (err) {
- 		dev_err(dev, "dpni_get_qdid() failed\n");
--		return err;
-+		goto out;
- 	}
- 
- 	return 0;
-+
-+out:
-+	while (i--) {
-+		if (priv->fq[i].type == DPAA2_RX_FQ &&
-+		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
-+			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
-+	}
-+	return err;
- }
- 
- /* Allocate rings for storing incoming frame descriptors */
-@@ -4371,6 +4380,17 @@ static void dpaa2_eth_del_ch_napi(struct dpaa2_eth_priv *priv)
- 	}
- }
- 
-+static void dpaa2_eth_free_rx_xdp_rxq(struct dpaa2_eth_priv *priv)
-+{
-+	int i;
-+
-+	for (i = 0; i < priv->num_fqs; i++) {
-+		if (priv->fq[i].type == DPAA2_RX_FQ &&
-+		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
-+			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
-+	}
-+}
-+
- static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
- {
- 	struct device *dev;
-@@ -4559,6 +4579,7 @@ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
- 	free_percpu(priv->percpu_stats);
- err_alloc_percpu_stats:
- 	dpaa2_eth_del_ch_napi(priv);
-+	dpaa2_eth_free_rx_xdp_rxq(priv);
- err_bind:
- 	dpaa2_eth_free_dpbp(priv);
- err_dpbp_setup:
-@@ -4610,6 +4631,7 @@ static int dpaa2_eth_remove(struct fsl_mc_device *ls_dev)
- 	free_percpu(priv->percpu_extras);
- 
- 	dpaa2_eth_del_ch_napi(priv);
-+	dpaa2_eth_free_rx_xdp_rxq(priv);
- 	dpaa2_eth_free_dpbp(priv);
- 	dpaa2_eth_free_dpio(priv);
- 	dpaa2_eth_free_dpni(priv);
--- 
-2.39.5
-
+ 	if (xhci->shared_hcd) {
 
 
 
