@@ -1,188 +1,419 @@
-Return-Path: <stable+bounces-160467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49693AFC644
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 10:55:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7EFAFC63F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 10:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFC53177FB3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 08:55:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A0D4189F767
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 08:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF152C08A6;
-	Tue,  8 Jul 2025 08:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC332BEC30;
+	Tue,  8 Jul 2025 08:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTIU0+/7"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="w7DaIhBw";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hXmytn9B";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="w7DaIhBw";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hXmytn9B"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8932C033E
-	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 08:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C691E231E
+	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 08:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751964870; cv=none; b=OVH3Jb9s1xyRpanoFZ1kjWJ9EYLxViYQgHO7h1JbAV8jNlxJoDWc339wqn9HZhj6lmNeTxXA3KyS7o4vPPpq/lhQT9Hx5fghv+f7WR5zU8GhM+LPmToNLwT8faNPPcrD6ciFj5lzXlG3vroPsvhkJWiwQdcQ6wiMAJ0mLJIUias=
+	t=1751964864; cv=none; b=RZTbmQyIMjAcTRPRtjm95maMZ+Orf0RAg/G96mAxRnZikKP8/Vdp194yOwzMjI2FQsaKnu02WAOvkdHRKyiqXHgw8TIWaVtvhZHibwprGUJ3Rwghd9VgaEFec0QoGjN7qhsd6pHlZGDV5AKSkb9Tce/+6MZQ16MWF72vDH7AhH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751964870; c=relaxed/simple;
-	bh=1B/hIS6XTPb2IjK9e+D8xUh5a2S1RDKWTuxka/NS0xc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bNmoRzjNUgbjy6hyI33wI5ItBCCSHyX3d91n/M5672cmq2xTlSYhMiht7/jyQmB9wzIvZ9a1Wf6TGrCG5YnB2JxH6sDO0hDy9gTG1d1XV13w7pWETeWnbwhKIsCkP64wzdCVCUO05nEWtpPqMnQEoJLv9wSTvJkw4AiCKpw6+FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTIU0+/7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA171C4CEF0;
-	Tue,  8 Jul 2025 08:54:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751964870;
-	bh=1B/hIS6XTPb2IjK9e+D8xUh5a2S1RDKWTuxka/NS0xc=;
-	h=Subject:To:Cc:From:Date:From;
-	b=YTIU0+/72pa+bP/FfbrPZMxWtOi31e03P8TbdPgUKmRFufrrnZaPaFVzCtLOHM/p3
-	 XDAgzwZbLhVg8iBZM4grNcxBnoy0Flzvvx25w9C3lQ7q+S99UvFwoY0aboAUuJfipU
-	 2yDC8mNdf03GObT0tQcFPcFe2clj59MAnUBC5sw4=
-Subject: FAILED: patch "[PATCH] usb: cdnsp: Fix issue with CV Bad Descriptor test" failed to apply to 5.15-stable tree
-To: pawell@cadence.com,gregkh@linuxfoundation.org,peter.chen@kernel.org,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 08 Jul 2025 10:54:17 +0200
-Message-ID: <2025070817-spongy-unlinked-9fe7@gregkh>
+	s=arc-20240116; t=1751964864; c=relaxed/simple;
+	bh=O1J5164GRZX3C3L3/oZcPhL2fxdhGXIDUGXzkOzE9/8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tVCpFCi4L0OWjZhgpCzA9GK256q9sqnFBWf4+IhYMiTGx1Zof6YyiNgYGSYKpCKo5gTvofvqWo2bYUZlP0tgGuTwc49tqhjt9tS2msrCGiWKxbFAp5PBpqjFFIW/QZVonKqA+rJdANrw7gzDLN79JZ3c9Ww1saB89DXZQoH2FsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=w7DaIhBw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hXmytn9B; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=w7DaIhBw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hXmytn9B; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 248822117C;
+	Tue,  8 Jul 2025 08:54:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1751964860; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3DQLyyno1Vtj5Qcrm9Ui7niuTGMfPg+TxwX22SQW9X0=;
+	b=w7DaIhBwQXlUPZ8D3yVdvNGhU+bA8SdiyzjTyXV08JqTQPfZRJw8qahIzFCa4Ms0EyuP4r
+	r/hEw0AeVPdX8SYyNBOQCXYn8OIosb5QvZnTsWwDKBmD4lljD0KnTh6AqlZ3vvbbJcSKHw
+	AbdBjWPocpECMYAVFE+w+6D+YfTft7o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1751964860;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3DQLyyno1Vtj5Qcrm9Ui7niuTGMfPg+TxwX22SQW9X0=;
+	b=hXmytn9BcZeOntHu4uAtezPOLx5ZTdq96m0ap/CsOK+zxVM+ON+fGgGhX4mAYtccbTxaBD
+	9DusXAUPz8YMGfDQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=w7DaIhBw;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hXmytn9B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1751964860; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3DQLyyno1Vtj5Qcrm9Ui7niuTGMfPg+TxwX22SQW9X0=;
+	b=w7DaIhBwQXlUPZ8D3yVdvNGhU+bA8SdiyzjTyXV08JqTQPfZRJw8qahIzFCa4Ms0EyuP4r
+	r/hEw0AeVPdX8SYyNBOQCXYn8OIosb5QvZnTsWwDKBmD4lljD0KnTh6AqlZ3vvbbJcSKHw
+	AbdBjWPocpECMYAVFE+w+6D+YfTft7o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1751964860;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3DQLyyno1Vtj5Qcrm9Ui7niuTGMfPg+TxwX22SQW9X0=;
+	b=hXmytn9BcZeOntHu4uAtezPOLx5ZTdq96m0ap/CsOK+zxVM+ON+fGgGhX4mAYtccbTxaBD
+	9DusXAUPz8YMGfDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DD0C913A68;
+	Tue,  8 Jul 2025 08:54:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id LRMzNbvcbGhOXwAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 08 Jul 2025 08:54:19 +0000
+Message-ID: <42943746-771e-432e-b5e0-98267987ed65@suse.de>
+Date: Tue, 8 Jul 2025 10:54:19 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/4] scsi: fnic: Fix crash in fnic_wq_cmpl_handler when
+ FDMI times out
+To: Karan Tilak Kumar <kartilak@cisco.com>, sebaddel@cisco.com
+Cc: arulponn@cisco.com, djhawar@cisco.com, gcboffa@cisco.com,
+ mkai2@cisco.com, satishkh@cisco.com, aeasi@cisco.com, jejb@linux.ibm.com,
+ martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, jmeneghi@redhat.com, revers@redhat.com,
+ dan.carpenter@linaro.org, stable@vger.kernel.org
+References: <20250616162632.4835-1-kartilak@cisco.com>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20250616162632.4835-1-kartilak@cisco.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 248822117C
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Score: -4.51
 
+On 6/16/25 18:26, Karan Tilak Kumar wrote:
+> When both the RHBA and RPA FDMI requests time out, fnic reuses a frame
+> to send ABTS for each of them. On send completion, this causes an
+> attempt to free the same frame twice that leads to a crash.
+> 
+> Fix crash by allocating separate frames for RHBA and RPA,
+> and modify ABTS logic accordingly.
+> 
+> Tested by checking MDS for FDMI information.
+> Tested by using instrumented driver to:
+> Drop PLOGI response
+> Drop RHBA response
+> Drop RPA response
+> Drop RHBA and RPA response
+> Drop PLOGI response + ABTS response
+> Drop RHBA response + ABTS response
+> Drop RPA response + ABTS response
+> Drop RHBA and RPA response + ABTS response for both of them
+> 
+> Fixes: 09c1e6ab4ab2 ("scsi: fnic: Add and integrate support for FDMI")
+> Reviewed-by: Sesidhar Baddela <sebaddel@cisco.com>
+> Reviewed-by: Arulprabhu Ponnusamy <arulponn@cisco.com>
+> Reviewed-by: Gian Carlo Boffa <gcboffa@cisco.com>
+> Tested-by: Arun Easi <aeasi@cisco.com>
+> Co-developed-by: Arun Easi <aeasi@cisco.com>
+> Signed-off-by: Arun Easi <aeasi@cisco.com>
+> Tested-by: Karan Tilak Kumar <kartilak@cisco.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Karan Tilak Kumar <kartilak@cisco.com>
+> ---
+> Changes between v4 and v5:
+>      - Incorporate review comments from John:
+> 	- Refactor patches
+> 
+> Changes between v3 and v4:
+>      - Incorporate review comments from Dan:
+> 	- Remove comments from Cc tag
+> 
+> Changes between v2 and v3:
+>      - Incorporate review comments from Dan:
+> 	- Add Cc to stable
+> 
+> Changes between v1 and v2:
+>      - Incorporate review comments from Dan:
+>          - Add Fixes tag
+> ---
+>   drivers/scsi/fnic/fdls_disc.c | 113 +++++++++++++++++++++++++---------
+>   drivers/scsi/fnic/fnic.h      |   2 +-
+>   drivers/scsi/fnic/fnic_fdls.h |   1 +
+>   3 files changed, 87 insertions(+), 29 deletions(-)
+> 
+> diff --git a/drivers/scsi/fnic/fdls_disc.c b/drivers/scsi/fnic/fdls_disc.c
+> index c2b6f4eb338e..0ee1b74967b9 100644
+> --- a/drivers/scsi/fnic/fdls_disc.c
+> +++ b/drivers/scsi/fnic/fdls_disc.c
+> @@ -763,47 +763,69 @@ static void fdls_send_fabric_abts(struct fnic_iport_s *iport)
+>   	iport->fabric.timer_pending = 1;
+>   }
+>   
+> -static void fdls_send_fdmi_abts(struct fnic_iport_s *iport)
+> +static uint8_t *fdls_alloc_init_fdmi_abts_frame(struct fnic_iport_s *iport,
+> +		uint16_t oxid)
+>   {
+> -	uint8_t *frame;
+> +	struct fc_frame_header *pfdmi_abts;
+>   	uint8_t d_id[3];
+> +	uint8_t *frame;
+>   	struct fnic *fnic = iport->fnic;
+> -	struct fc_frame_header *pfabric_abts;
+> -	unsigned long fdmi_tov;
+> -	uint16_t oxid;
+> -	uint16_t frame_size = FNIC_ETH_FCOE_HDRS_OFFSET +
+> -			sizeof(struct fc_frame_header);
+>   
+>   	frame = fdls_alloc_frame(iport);
+>   	if (frame == NULL) {
+>   		FNIC_FCS_DBG(KERN_ERR, fnic->host, fnic->fnic_num,
+>   				"Failed to allocate frame to send FDMI ABTS");
+> -		return;
+> +		return NULL;
+>   	}
+>   
+> -	pfabric_abts = (struct fc_frame_header *) (frame + FNIC_ETH_FCOE_HDRS_OFFSET);
+> +	pfdmi_abts = (struct fc_frame_header *) (frame + FNIC_ETH_FCOE_HDRS_OFFSET);
+>   	fdls_init_fabric_abts_frame(frame, iport);
+>   
+>   	hton24(d_id, FC_FID_MGMT_SERV);
+> -	FNIC_STD_SET_D_ID(*pfabric_abts, d_id);
+> +	FNIC_STD_SET_D_ID(*pfdmi_abts, d_id);
+> +	FNIC_STD_SET_OX_ID(*pfdmi_abts, oxid);
+> +
+> +	return frame;
+> +}
+> +
+> +static void fdls_send_fdmi_abts(struct fnic_iport_s *iport)
+> +{
+> +	uint8_t *frame;
+> +	unsigned long fdmi_tov;
+> +	uint16_t frame_size = FNIC_ETH_FCOE_HDRS_OFFSET +
+> +			sizeof(struct fc_frame_header);
+>   
+>   	if (iport->fabric.fdmi_pending & FDLS_FDMI_PLOGI_PENDING) {
+> -		oxid = iport->active_oxid_fdmi_plogi;
+> -		FNIC_STD_SET_OX_ID(*pfabric_abts, oxid);
+> +		frame = fdls_alloc_init_fdmi_abts_frame(iport,
+> +						iport->active_oxid_fdmi_plogi);
+> +		if (frame == NULL)
+> +			return;
+> +
+>   		fnic_send_fcoe_frame(iport, frame, frame_size);
+>   	} else {
+>   		if (iport->fabric.fdmi_pending & FDLS_FDMI_REG_HBA_PENDING) {
+> -			oxid = iport->active_oxid_fdmi_rhba;
+> -			FNIC_STD_SET_OX_ID(*pfabric_abts, oxid);
+> +			frame = fdls_alloc_init_fdmi_abts_frame(iport,
+> +						iport->active_oxid_fdmi_rhba);
+> +			if (frame == NULL)
+> +				return;
+> +
+>   			fnic_send_fcoe_frame(iport, frame, frame_size);
+>   		}
+>   		if (iport->fabric.fdmi_pending & FDLS_FDMI_RPA_PENDING) {
+> -			oxid = iport->active_oxid_fdmi_rpa;
+> -			FNIC_STD_SET_OX_ID(*pfabric_abts, oxid);
+> +			frame = fdls_alloc_init_fdmi_abts_frame(iport,
+> +						iport->active_oxid_fdmi_rpa);
+> +			if (frame == NULL) {
+> +				if (iport->fabric.fdmi_pending & FDLS_FDMI_REG_HBA_PENDING)
+> +					goto arm_timer;
+> +				else
+> +					return;
+> +			}
+> +
+>   			fnic_send_fcoe_frame(iport, frame, frame_size);
+>   		}
+>   	}
+>   
+> +arm_timer:
+>   	fdmi_tov = jiffies + msecs_to_jiffies(2 * iport->e_d_tov);
+>   	mod_timer(&iport->fabric.fdmi_timer, round_jiffies(fdmi_tov));
+>   	iport->fabric.fdmi_pending |= FDLS_FDMI_ABORT_PENDING;
+> @@ -2244,6 +2266,21 @@ void fdls_fabric_timer_callback(struct timer_list *t)
+>   	spin_unlock_irqrestore(&fnic->fnic_lock, flags);
+>   }
+>   
+> +void fdls_fdmi_retry_plogi(struct fnic_iport_s *iport)
+> +{
+> +	struct fnic *fnic = iport->fnic;
+> +
+> +	iport->fabric.fdmi_pending = 0;
+> +	/* If max retries not exhausted, start over from fdmi plogi */
+> +	if (iport->fabric.fdmi_retry < FDLS_FDMI_MAX_RETRY) {
+> +		iport->fabric.fdmi_retry++;
+> +		FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
+> +					 "Retry FDMI PLOGI. FDMI retry: %d",
+> +					 iport->fabric.fdmi_retry);
+> +		fdls_send_fdmi_plogi(iport);
+> +	}
+> +}
+> +
+>   void fdls_fdmi_timer_callback(struct timer_list *t)
+>   {
+>   	struct fnic_fdls_fabric_s *fabric = from_timer(fabric, t, fdmi_timer);
+> @@ -2289,14 +2326,7 @@ void fdls_fdmi_timer_callback(struct timer_list *t)
+>   	FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
+>   		"fdmi timer callback : 0x%x\n", iport->fabric.fdmi_pending);
+>   
+> -	iport->fabric.fdmi_pending = 0;
+> -	/* If max retries not exhaused, start over from fdmi plogi */
+> -	if (iport->fabric.fdmi_retry < FDLS_FDMI_MAX_RETRY) {
+> -		iport->fabric.fdmi_retry++;
+> -		FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
+> -					 "retry fdmi timer %d", iport->fabric.fdmi_retry);
+> -		fdls_send_fdmi_plogi(iport);
+> -	}
+> +	fdls_fdmi_retry_plogi(iport);
+>   	FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
+>   		"fdmi timer callback : 0x%x\n", iport->fabric.fdmi_pending);
+>   	spin_unlock_irqrestore(&fnic->fnic_lock, flags);
+> @@ -3714,11 +3744,32 @@ static void fdls_process_fdmi_abts_rsp(struct fnic_iport_s *iport,
+>   	switch (FNIC_FRAME_TYPE(oxid)) {
+>   	case FNIC_FRAME_TYPE_FDMI_PLOGI:
+>   		fdls_free_oxid(iport, oxid, &iport->active_oxid_fdmi_plogi);
+> +
+> +		iport->fabric.fdmi_pending &= ~FDLS_FDMI_PLOGI_PENDING;
+> +		iport->fabric.fdmi_pending &= ~FDLS_FDMI_ABORT_PENDING;
+>   		break;
+>   	case FNIC_FRAME_TYPE_FDMI_RHBA:
+> +		iport->fabric.fdmi_pending &= ~FDLS_FDMI_REG_HBA_PENDING;
+> +
+> +		/* If RPA is still pending, don't turn off ABORT PENDING.
+> +		 * We count on the timer to detect the ABTS timeout and take
+> +		 * corrective action.
+> +		 */
+> +		if (!(iport->fabric.fdmi_pending & FDLS_FDMI_RPA_PENDING))
+> +			iport->fabric.fdmi_pending &= ~FDLS_FDMI_ABORT_PENDING;
+> +
+>   		fdls_free_oxid(iport, oxid, &iport->active_oxid_fdmi_rhba);
+>   		break;
+>   	case FNIC_FRAME_TYPE_FDMI_RPA:
+> +		iport->fabric.fdmi_pending &= ~FDLS_FDMI_RPA_PENDING;
+> +
+> +		/* If RHBA is still pending, don't turn off ABORT PENDING.
+> +		 * We count on the timer to detect the ABTS timeout and take
+> +		 * corrective action.
+> +		 */
+> +		if (!(iport->fabric.fdmi_pending & FDLS_FDMI_REG_HBA_PENDING))
+> +			iport->fabric.fdmi_pending &= ~FDLS_FDMI_ABORT_PENDING;
+> +
+>   		fdls_free_oxid(iport, oxid, &iport->active_oxid_fdmi_rpa);
+>   		break;
+>   	default:
+> @@ -3728,10 +3779,16 @@ static void fdls_process_fdmi_abts_rsp(struct fnic_iport_s *iport,
+>   		break;
+>   	}
+>   
+> -	timer_delete_sync(&iport->fabric.fdmi_timer);
+> -	iport->fabric.fdmi_pending &= ~FDLS_FDMI_ABORT_PENDING;
+> -
+> -	fdls_send_fdmi_plogi(iport);
+> +	/*
+> +	 * Only if ABORT PENDING is off, delete the timer, and if no other
+> +	 * operations are pending, retry FDMI.
+> +	 * Otherwise, let the timer pop and take the appropriate action.
+> +	 */
+> +	if (!(iport->fabric.fdmi_pending & FDLS_FDMI_ABORT_PENDING)) {
+> +		timer_delete_sync(&iport->fabric.fdmi_timer);
+> +		if (!iport->fabric.fdmi_pending)
+> +			fdls_fdmi_retry_plogi(iport);
+> +	}
+>   }
+>   
+>   static void
+> diff --git a/drivers/scsi/fnic/fnic.h b/drivers/scsi/fnic/fnic.h
+> index 6c5f6046b1f5..86e293ce530d 100644
+> --- a/drivers/scsi/fnic/fnic.h
+> +++ b/drivers/scsi/fnic/fnic.h
+> @@ -30,7 +30,7 @@
+>   
+>   #define DRV_NAME		"fnic"
+>   #define DRV_DESCRIPTION		"Cisco FCoE HBA Driver"
+> -#define DRV_VERSION		"1.8.0.0"
+> +#define DRV_VERSION		"1.8.0.1"
+>   #define PFX			DRV_NAME ": "
+>   #define DFX                     DRV_NAME "%d: "
+>   
+> diff --git a/drivers/scsi/fnic/fnic_fdls.h b/drivers/scsi/fnic/fnic_fdls.h
+> index 8e610b65ad57..531d0b37e450 100644
+> --- a/drivers/scsi/fnic/fnic_fdls.h
+> +++ b/drivers/scsi/fnic/fnic_fdls.h
+> @@ -394,6 +394,7 @@ void fdls_send_tport_abts(struct fnic_iport_s *iport,
+>   bool fdls_delete_tport(struct fnic_iport_s *iport,
+>   		       struct fnic_tport_s *tport);
+>   void fdls_fdmi_timer_callback(struct timer_list *t);
+> +void fdls_fdmi_retry_plogi(struct fnic_iport_s *iport);
+>   
+>   /* fnic_fcs.c */
+>   void fnic_fdls_init(struct fnic *fnic, int usefip);
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Please make the version change a separate patch and add it as the last 
+patch in the series. That way you'll have better tracking if all patches
+from that series are applied.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Cheers,
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 2831a81077f5162f104ba5a97a7d886eb371c21c
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025070817-spongy-unlinked-9fe7@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 2831a81077f5162f104ba5a97a7d886eb371c21c Mon Sep 17 00:00:00 2001
-From: Pawel Laszczak <pawell@cadence.com>
-Date: Fri, 20 Jun 2025 08:23:12 +0000
-Subject: [PATCH] usb: cdnsp: Fix issue with CV Bad Descriptor test
-
-The SSP2 controller has extra endpoint state preserve bit (ESP) which
-setting causes that endpoint state will be preserved during
-Halt Endpoint command. It is used only for EP0.
-Without this bit the Command Verifier "TD 9.10 Bad Descriptor Test"
-failed.
-Setting this bit doesn't have any impact for SSP controller.
-
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/PH7PR07MB95382CCD50549DABAEFD6156DD7CA@PH7PR07MB9538.namprd07.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/cdns3/cdnsp-debug.h b/drivers/usb/cdns3/cdnsp-debug.h
-index cd138acdcce1..86860686d836 100644
---- a/drivers/usb/cdns3/cdnsp-debug.h
-+++ b/drivers/usb/cdns3/cdnsp-debug.h
-@@ -327,12 +327,13 @@ static inline const char *cdnsp_decode_trb(char *str, size_t size, u32 field0,
- 	case TRB_RESET_EP:
- 	case TRB_HALT_ENDPOINT:
- 		ret = scnprintf(str, size,
--				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c",
-+				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c %c",
- 				cdnsp_trb_type_string(type),
- 				ep_num, ep_id % 2 ? "out" : "in",
- 				TRB_TO_EP_INDEX(field3), field1, field0,
- 				TRB_TO_SLOT_ID(field3),
--				field3 & TRB_CYCLE ? 'C' : 'c');
-+				field3 & TRB_CYCLE ? 'C' : 'c',
-+				field3 & TRB_ESP ? 'P' : 'p');
- 		break;
- 	case TRB_STOP_RING:
- 		ret = scnprintf(str, size,
-diff --git a/drivers/usb/cdns3/cdnsp-ep0.c b/drivers/usb/cdns3/cdnsp-ep0.c
-index f317d3c84781..5cd9b898ce97 100644
---- a/drivers/usb/cdns3/cdnsp-ep0.c
-+++ b/drivers/usb/cdns3/cdnsp-ep0.c
-@@ -414,6 +414,7 @@ static int cdnsp_ep0_std_request(struct cdnsp_device *pdev,
- void cdnsp_setup_analyze(struct cdnsp_device *pdev)
- {
- 	struct usb_ctrlrequest *ctrl = &pdev->setup;
-+	struct cdnsp_ep *pep;
- 	int ret = -EINVAL;
- 	u16 len;
- 
-@@ -427,10 +428,21 @@ void cdnsp_setup_analyze(struct cdnsp_device *pdev)
- 		goto out;
- 	}
- 
-+	pep = &pdev->eps[0];
-+
- 	/* Restore the ep0 to Stopped/Running state. */
--	if (pdev->eps[0].ep_state & EP_HALTED) {
--		trace_cdnsp_ep0_halted("Restore to normal state");
--		cdnsp_halt_endpoint(pdev, &pdev->eps[0], 0);
-+	if (pep->ep_state & EP_HALTED) {
-+		if (GET_EP_CTX_STATE(pep->out_ctx) == EP_STATE_HALTED)
-+			cdnsp_halt_endpoint(pdev, pep, 0);
-+
-+		/*
-+		 * Halt Endpoint Command for SSP2 for ep0 preserve current
-+		 * endpoint state and driver has to synchronize the
-+		 * software endpoint state with endpoint output context
-+		 * state.
-+		 */
-+		pep->ep_state &= ~EP_HALTED;
-+		pep->ep_state |= EP_STOPPED;
- 	}
- 
- 	/*
-diff --git a/drivers/usb/cdns3/cdnsp-gadget.h b/drivers/usb/cdns3/cdnsp-gadget.h
-index 2afa3e558f85..a91cca509db0 100644
---- a/drivers/usb/cdns3/cdnsp-gadget.h
-+++ b/drivers/usb/cdns3/cdnsp-gadget.h
-@@ -987,6 +987,12 @@ enum cdnsp_setup_dev {
- #define STREAM_ID_FOR_TRB(p)		((((p)) << 16) & GENMASK(31, 16))
- #define SCT_FOR_TRB(p)			(((p) << 1) & 0x7)
- 
-+/*
-+ * Halt Endpoint Command TRB field.
-+ * The ESP bit only exists in the SSP2 controller.
-+ */
-+#define TRB_ESP				BIT(9)
-+
- /* Link TRB specific fields. */
- #define TRB_TC				BIT(1)
- 
-diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
-index 757fdd918286..0758f171f73e 100644
---- a/drivers/usb/cdns3/cdnsp-ring.c
-+++ b/drivers/usb/cdns3/cdnsp-ring.c
-@@ -2485,7 +2485,8 @@ void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev, unsigned int ep_index)
- {
- 	cdnsp_queue_command(pdev, 0, 0, 0, TRB_TYPE(TRB_HALT_ENDPOINT) |
- 			    SLOT_ID_FOR_TRB(pdev->slot_id) |
--			    EP_ID_FOR_TRB(ep_index));
-+			    EP_ID_FOR_TRB(ep_index) |
-+			    (!ep_index ? TRB_ESP : 0));
- }
- 
- void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num)
-
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
