@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EACFAFD4A2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:07:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1B5AFD35F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F99A1C20775
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D979A163A2C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC522E5B04;
-	Tue,  8 Jul 2025 17:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BBF1DB127;
+	Tue,  8 Jul 2025 16:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lS8IpZjE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZFnNfeR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3272DC34C;
-	Tue,  8 Jul 2025 17:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919122E540B;
+	Tue,  8 Jul 2025 16:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994128; cv=none; b=e+8+TwMmz0Jv9G6vQ1Em+OwzuvmD37GBvIQtM0n5kiMAFFzLCgraBSXTyexDUZ4zwtK+y+O6QW7Bstdh/fDtpP2gt8sI5mkdSb7mhqBz405gYpuf1KMqbK2TtEWrcQ1zumfnJ36AOO3qA3nqN2FSWdmftbWTQZJj8OiCnocqiGo=
+	t=1751993575; cv=none; b=rNueC3kZ521LzJAtz00pfjuTB96we4eY0gBNBZLk4UYNypH7CeIyVx7n+NkURC5l2WIIWkawV6mlorhcgF8gAN+qGomtXgYpEPo4eNFE5LgSeYlvL5DkF3+C4jt3Qlji/M3JXLu7rd/Kwqji3C+6ONhEw90kWhGngf7p9QZfOAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994128; c=relaxed/simple;
-	bh=dMPyQpBMiJcFI1ARTL+h+Ouxp7+1s9Ba8bV4qUfk3ag=;
+	s=arc-20240116; t=1751993575; c=relaxed/simple;
+	bh=MnrCui42+pUpBcVYtM6xHKtwRgEqUVUno61jvfZsaFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aUxZHo5jU16QLj2Sf5IxFjVyeqwaMrNkwtLBTRvXhRNIOASTMZM15F/w0r6b2NdvbkFZUo1TnBnAgDpl089yi7/UFhxCC7alWtbb8NRWyvG6J0MuneEZllkcPTyuYsfyiP87PpgKkuuaPNpYwu8VXcbkGY3fPGC3sG01frCr3Xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lS8IpZjE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F5DC4CEED;
-	Tue,  8 Jul 2025 17:02:07 +0000 (UTC)
+	 MIME-Version; b=ANYkRA1xTkC8v2gODreprR95xmu1pqmgrHhdIlVMCXZV1GlbhIE9gtU3Lhl9BBWlgZI3n5e/oHEsm0BmKhUSAfge+/zUUWAXsduT/UqHgSuaA7vY/9OoExVQkqv0Vn+DGN4yuZc+/O4Ge84m3Sgr+8PNeltzT2PNK2+FPOBxDYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZFnNfeR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A0BC4CEED;
+	Tue,  8 Jul 2025 16:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994128;
-	bh=dMPyQpBMiJcFI1ARTL+h+Ouxp7+1s9Ba8bV4qUfk3ag=;
+	s=korg; t=1751993575;
+	bh=MnrCui42+pUpBcVYtM6xHKtwRgEqUVUno61jvfZsaFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lS8IpZjEfherdZdDRmmuA7I8QDfAJG4I7aeaaxrhpN7jLr5nCpO2VE4nHb4zMLRy8
-	 jNc6y7Md9ZQXTtk680/74yg3zk723iy0hQmqeIqnYmpP917Iey/HXM8sTJpyq4gJe4
-	 tRbSjv8TxjR3vN+CPRm4V2iykQoxlv+maRE1FMBM=
+	b=JZFnNfeR2pk96BCEX26CXZ7sEWOgyYyX9rCFFicPOD30z6TmeVhUBcrgAS0hZWrUB
+	 c5mKudr7K2DwKCK++iDqsyyhAnHF1RqiKyG8AY7S/If1TicHU8kPndzTV/f/iqrMGT
+	 fXbUm702V4wT0deTqUQr/aOrnsWCudsGeY8IW/Kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 104/160] mtk-sd: reset host->mrq on prepare_data() error
+	John Harrison <John.C.Harrison@Intel.com>,
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 104/178] drm/xe/guc: Enable w/a 16026508708
 Date: Tue,  8 Jul 2025 18:22:21 +0200
-Message-ID: <20250708162234.366409216@linuxfoundation.org>
+Message-ID: <20250708162239.360196339@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: John Harrison <John.C.Harrison@Intel.com>
 
-commit ec54c0a20709ed6e56f40a8d59eee725c31a916b upstream.
+[ Upstream commit d3e8349edf7ed9eaf076ab3d9973331ccc20e26c ]
 
-Do not leave host with dangling ->mrq pointer if we hit
-the msdc_prepare_data() error out path.
+The workaround is only relevant to SRIOV but does affect all platforms.
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Fixes: f5de469990f1 ("mtk-sd: Prevent memory corruption from DMA map failure")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250625052106.584905-1-senozhatsky@chromium.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Link: https://lore.kernel.org/r/20250403185619.1555853-2-John.C.Harrison@Intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Stable-dep-of: 84c0b4a00610 ("drm/xe/bmg: Update Wa_22019338487")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mtk-sd.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/xe/abi/guc_klvs_abi.h | 1 +
+ drivers/gpu/drm/xe/xe_guc_ads.c       | 5 +++++
+ drivers/gpu/drm/xe/xe_wa_oob.rules    | 2 ++
+ 3 files changed, 8 insertions(+)
 
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -1314,6 +1314,7 @@ static void msdc_ops_request(struct mmc_
- 	if (mrq->data) {
- 		msdc_prepare_data(host, mrq->data);
- 		if (!msdc_data_prepared(mrq->data)) {
-+			host->mrq = NULL;
- 			/*
- 			 * Failed to prepare DMA area, fail fast before
- 			 * starting any commands.
+diff --git a/drivers/gpu/drm/xe/abi/guc_klvs_abi.h b/drivers/gpu/drm/xe/abi/guc_klvs_abi.h
+index d633f1c739e43..7de8f827281fc 100644
+--- a/drivers/gpu/drm/xe/abi/guc_klvs_abi.h
++++ b/drivers/gpu/drm/xe/abi/guc_klvs_abi.h
+@@ -367,6 +367,7 @@ enum xe_guc_klv_ids {
+ 	GUC_WA_KLV_NP_RD_WRITE_TO_CLEAR_RCSM_AT_CGP_LATE_RESTORE			= 0x9008,
+ 	GUC_WORKAROUND_KLV_ID_BACK_TO_BACK_RCS_ENGINE_RESET				= 0x9009,
+ 	GUC_WA_KLV_WAKE_POWER_DOMAINS_FOR_OUTBOUND_MMIO					= 0x900a,
++	GUC_WA_KLV_RESET_BB_STACK_PTR_ON_VF_SWITCH					= 0x900b,
+ };
+ 
+ #endif
+diff --git a/drivers/gpu/drm/xe/xe_guc_ads.c b/drivers/gpu/drm/xe/xe_guc_ads.c
+index 7031542a70ceb..1fccdef9e532e 100644
+--- a/drivers/gpu/drm/xe/xe_guc_ads.c
++++ b/drivers/gpu/drm/xe/xe_guc_ads.c
+@@ -376,6 +376,11 @@ static void guc_waklv_init(struct xe_guc_ads *ads)
+ 					GUC_WORKAROUND_KLV_ID_BACK_TO_BACK_RCS_ENGINE_RESET,
+ 					&offset, &remain);
+ 
++	if (GUC_FIRMWARE_VER(&gt->uc.guc) >= MAKE_GUC_VER(70, 44, 0) && XE_WA(gt, 16026508708))
++		guc_waklv_enable_simple(ads,
++					GUC_WA_KLV_RESET_BB_STACK_PTR_ON_VF_SWITCH,
++					&offset, &remain);
++
+ 	size = guc_ads_waklv_size(ads) - remain;
+ 	if (!size)
+ 		return;
+diff --git a/drivers/gpu/drm/xe/xe_wa_oob.rules b/drivers/gpu/drm/xe/xe_wa_oob.rules
+index 9b9e176992a83..9efc5accd43d1 100644
+--- a/drivers/gpu/drm/xe/xe_wa_oob.rules
++++ b/drivers/gpu/drm/xe/xe_wa_oob.rules
+@@ -57,3 +57,5 @@ no_media_l3	MEDIA_VERSION(3000)
+ 		GRAPHICS_VERSION(1260), GRAPHICS_STEP(A0, B0)
+ 16023105232	GRAPHICS_VERSION_RANGE(2001, 3001)
+ 		MEDIA_VERSION_RANGE(1301, 3000)
++16026508708	GRAPHICS_VERSION_RANGE(1200, 3001)
++		MEDIA_VERSION_RANGE(1300, 3000)
+-- 
+2.39.5
+
 
 
 
