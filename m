@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-160736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2E4AAFD199
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:37:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E9FAFD0F0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D2BE583E6A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C880165F48
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1E82E337A;
-	Tue,  8 Jul 2025 16:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D91E2E49A4;
+	Tue,  8 Jul 2025 16:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVDwZRHy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Viil+VrP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098372D9ECD;
-	Tue,  8 Jul 2025 16:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE472D9790;
+	Tue,  8 Jul 2025 16:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992535; cv=none; b=aYFSylKQGgiA5NjsSHweWNXOMeD3jeVwdHMLeJQUbHW2JmCgl7SQ767ohLtKTHx6o9RW3hncZYSicCZv5y/xcHkpvf9PsR4YbMth9xzQLy3rz/WZtfx1oDvNIlP8MSqJHB+3F93TCItebOSNSxuPlGQOccCMnVn1XIWF6fl7KvM=
+	t=1751992117; cv=none; b=Sl+8H5T0LySgeKTyn7JVI2zOobN3czJogntWchnWVTJe9OKXJR7Zv6TWesBdVGyX6d+hlAul/+eg5IfxLuxzHVgpSLV+8ex5dGHE6WlbAAWg71ZYT6aMO/2CEd40hTNF8HOGMFISK4/HVEbWO5EERaAIGm+AFHBFNw6ZA65TQgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992535; c=relaxed/simple;
-	bh=1bN7hXUmfwBxla0Ro1aCLqo3ZDdFrdp5Hgh9bb+zmaQ=;
+	s=arc-20240116; t=1751992117; c=relaxed/simple;
+	bh=XDG6N5TYx2B4X2QQFWD0jrgLUrRkE6HkQKqEnhvMe6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dnBVDZzXeGAZ87coiuiFzFTDp1MMnHYv0UKKW2+lcom79kx+Ljg68H4YHo3pRF2Qy7uyTZS5uCJoodQxtuk+/l1Q7CzZVH3USkn7BOnjEGdgdbPSxoobyuqTlYBbkDRDRXNt9j1IufTAVr9Id1h19Du5qYk/kxGKIIHy24zwERk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVDwZRHy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866D4C4CEF0;
-	Tue,  8 Jul 2025 16:35:34 +0000 (UTC)
+	 MIME-Version; b=J/R9rgABHY0Q1c/nxEUuf8ovQmZpX1lbHOcOdZEbEPuO9DyCL0qKRoHGqC6FkCS921jFoJDLLGzjupXBtfjKGdFayxHyQpqX5K9W6PGQ5yrj/CbWsPcJBc+oOQF+OV4Sjwoe769sLiGtMmOy1w5D+cEdDQSS3oTAp9lHOiPiS7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Viil+VrP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBB7C4CEF0;
+	Tue,  8 Jul 2025 16:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992534;
-	bh=1bN7hXUmfwBxla0Ro1aCLqo3ZDdFrdp5Hgh9bb+zmaQ=;
+	s=korg; t=1751992116;
+	bh=XDG6N5TYx2B4X2QQFWD0jrgLUrRkE6HkQKqEnhvMe6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVDwZRHyTNVAN7+RSsEO7zBQTpTAEMlAlkQpSaZT8UycgJs3N8Wtfo9r2Pl9YsFMV
-	 1AyPbDDijW76RqZW7QyIYOjbtDtwllMAdqVQjjYkttjSX27EinYC+Z/9g3xWpipb2N
-	 8vVRzrtMPR6VRG0alO83QynfOIw2gzZCIE1qx5Mc=
+	b=Viil+VrP6/GFO5yBRbJeW3QX1heo4lhpf85P3zoav+xJ+0FVQzmJSJlIrU+jfmL4U
+	 W/D05XZsWasZAUavLK4A3Jp6LYP9RDFYnA+cS9lBcU5rcSFpqjo7ZpAz5D2j8hl7qg
+	 rdN/sUSqjhttxQmG/RTaNJ1BnSRMOV48LWwni7GE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Kurt Borja <kuurtb@gmail.com>
-Subject: [PATCH 6.6 125/132] platform/x86: think-lmi: Fix sysfs group cleanup
+	Fushuai Wang <wangfushuai@baidu.com>,
+	Simon Horman <horms@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 64/81] dpaa2-eth: fix xdp_rxq_info leak
 Date: Tue,  8 Jul 2025 18:23:56 +0200
-Message-ID: <20250708162234.193107462@linuxfoundation.org>
+Message-ID: <20250708162227.006853217@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,160 +62,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Fushuai Wang <wangfushuai@baidu.com>
 
-commit 4f30f946f27b7f044cf8f3f1f353dee1dcd3517a upstream.
+[ Upstream commit 2def09ead4ad5907988b655d1e1454003aaf8297 ]
 
-Many error paths in tlmi_sysfs_init() lead to sysfs groups being removed
-when they were not even created.
+The driver registered xdp_rxq_info structures via xdp_rxq_info_reg()
+but failed to properly unregister them in error paths and during
+removal.
 
-Fix this by letting the kobject core manage these groups through their
-kobj_type's defult_groups.
-
-Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250630-lmi-fix-v3-3-ce4f81c9c481@gmail.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d678be1dc1ec ("dpaa2-eth: add XDP_REDIRECT support")
+Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://patch.msgid.link/20250626133003.80136-1-wangfushuai@baidu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/think-lmi.c |   43 +++------------------------------------
- 1 file changed, 4 insertions(+), 39 deletions(-)
+ .../net/ethernet/freescale/dpaa2/dpaa2-eth.c  | 26 +++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/think-lmi.c
-+++ b/drivers/platform/x86/think-lmi.c
-@@ -916,6 +916,7 @@ static const struct attribute_group auth
- 	.is_visible = auth_attr_is_visible,
- 	.attrs = auth_attrs,
- };
-+__ATTRIBUTE_GROUPS(auth_attr);
- 
- /* ---- Attributes sysfs --------------------------------------------------------- */
- static ssize_t display_name_show(struct kobject *kobj, struct kobj_attribute *attr,
-@@ -1119,6 +1120,7 @@ static const struct attribute_group tlmi
- 	.is_visible = attr_is_visible,
- 	.attrs = tlmi_attrs,
- };
-+__ATTRIBUTE_GROUPS(tlmi_attr);
- 
- static void tlmi_attr_setting_release(struct kobject *kobj)
- {
-@@ -1138,11 +1140,13 @@ static void tlmi_pwd_setting_release(str
- static const struct kobj_type tlmi_attr_setting_ktype = {
- 	.release        = &tlmi_attr_setting_release,
- 	.sysfs_ops	= &kobj_sysfs_ops,
-+	.default_groups = tlmi_attr_groups,
- };
- 
- static const struct kobj_type tlmi_pwd_setting_ktype = {
- 	.release        = &tlmi_pwd_setting_release,
- 	.sysfs_ops	= &kobj_sysfs_ops,
-+	.default_groups = auth_attr_groups,
- };
- 
- static ssize_t pending_reboot_show(struct kobject *kobj, struct kobj_attribute *attr,
-@@ -1213,14 +1217,8 @@ static struct kobj_attribute debug_cmd =
- static void tlmi_release_attr(void)
- {
- 	struct kobject *pos, *n;
--	int i;
- 
- 	/* Attribute structures */
--	for (i = 0; i < TLMI_SETTINGS_COUNT; i++) {
--		if (tlmi_priv.setting[i]) {
--			sysfs_remove_group(&tlmi_priv.setting[i]->kobj, &tlmi_attr_group);
--		}
--	}
- 	sysfs_remove_file(&tlmi_priv.attribute_kset->kobj, &pending_reboot.attr);
- 	if (tlmi_priv.can_debug_cmd && debug_support)
- 		sysfs_remove_file(&tlmi_priv.attribute_kset->kobj, &debug_cmd.attr);
-@@ -1235,15 +1233,6 @@ static void tlmi_release_attr(void)
- 	kfree(tlmi_priv.pwd_admin->save_signature);
- 
- 	/* Authentication structures */
--	sysfs_remove_group(&tlmi_priv.pwd_admin->kobj, &auth_attr_group);
--	sysfs_remove_group(&tlmi_priv.pwd_power->kobj, &auth_attr_group);
--
--	if (tlmi_priv.opcode_support) {
--		sysfs_remove_group(&tlmi_priv.pwd_system->kobj, &auth_attr_group);
--		sysfs_remove_group(&tlmi_priv.pwd_hdd->kobj, &auth_attr_group);
--		sysfs_remove_group(&tlmi_priv.pwd_nvme->kobj, &auth_attr_group);
--	}
--
- 	list_for_each_entry_safe(pos, n, &tlmi_priv.authentication_kset->list, entry)
- 		kobject_put(pos);
- 
-@@ -1314,10 +1303,6 @@ static int tlmi_sysfs_init(void)
- 					   NULL, "%s", tlmi_priv.setting[i]->display_name);
- 		if (ret)
- 			goto fail_create_attr;
--
--		ret = sysfs_create_group(&tlmi_priv.setting[i]->kobj, &tlmi_attr_group);
--		if (ret)
--			goto fail_create_attr;
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+index bbbe7c5b5d35a..5ef117c9d0eca 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -3729,6 +3729,7 @@ static int dpaa2_eth_setup_rx_flow(struct dpaa2_eth_priv *priv,
+ 					 MEM_TYPE_PAGE_ORDER0, NULL);
+ 	if (err) {
+ 		dev_err(dev, "xdp_rxq_info_reg_mem_model failed\n");
++		xdp_rxq_info_unreg(&fq->channel->xdp_rxq);
+ 		return err;
  	}
  
- 	ret = sysfs_create_file(&tlmi_priv.attribute_kset->kobj, &pending_reboot.attr);
-@@ -1337,20 +1322,12 @@ static int tlmi_sysfs_init(void)
- 	if (ret)
- 		goto fail_create_attr;
- 
--	ret = sysfs_create_group(&tlmi_priv.pwd_admin->kobj, &auth_attr_group);
--	if (ret)
--		goto fail_create_attr;
--
- 	tlmi_priv.pwd_power->kobj.kset = tlmi_priv.authentication_kset;
- 	ret = kobject_init_and_add(&tlmi_priv.pwd_power->kobj, &tlmi_pwd_setting_ktype,
- 				   NULL, "%s", "Power-on");
- 	if (ret)
- 		goto fail_create_attr;
- 
--	ret = sysfs_create_group(&tlmi_priv.pwd_power->kobj, &auth_attr_group);
--	if (ret)
--		goto fail_create_attr;
--
- 	if (tlmi_priv.opcode_support) {
- 		tlmi_priv.pwd_system->kobj.kset = tlmi_priv.authentication_kset;
- 		ret = kobject_init_and_add(&tlmi_priv.pwd_system->kobj, &tlmi_pwd_setting_ktype,
-@@ -1358,29 +1335,17 @@ static int tlmi_sysfs_init(void)
- 		if (ret)
- 			goto fail_create_attr;
- 
--		ret = sysfs_create_group(&tlmi_priv.pwd_system->kobj, &auth_attr_group);
--		if (ret)
--			goto fail_create_attr;
--
- 		tlmi_priv.pwd_hdd->kobj.kset = tlmi_priv.authentication_kset;
- 		ret = kobject_init_and_add(&tlmi_priv.pwd_hdd->kobj, &tlmi_pwd_setting_ktype,
- 					   NULL, "%s", "HDD");
- 		if (ret)
- 			goto fail_create_attr;
- 
--		ret = sysfs_create_group(&tlmi_priv.pwd_hdd->kobj, &auth_attr_group);
--		if (ret)
--			goto fail_create_attr;
--
- 		tlmi_priv.pwd_nvme->kobj.kset = tlmi_priv.authentication_kset;
- 		ret = kobject_init_and_add(&tlmi_priv.pwd_nvme->kobj, &tlmi_pwd_setting_ktype,
- 					   NULL, "%s", "NVMe");
- 		if (ret)
- 			goto fail_create_attr;
--
--		ret = sysfs_create_group(&tlmi_priv.pwd_nvme->kobj, &auth_attr_group);
--		if (ret)
--			goto fail_create_attr;
+@@ -4221,17 +4222,25 @@ static int dpaa2_eth_bind_dpni(struct dpaa2_eth_priv *priv)
+ 			return -EINVAL;
+ 		}
+ 		if (err)
+-			return err;
++			goto out;
  	}
  
- 	return ret;
+ 	err = dpni_get_qdid(priv->mc_io, 0, priv->mc_token,
+ 			    DPNI_QUEUE_TX, &priv->tx_qdid);
+ 	if (err) {
+ 		dev_err(dev, "dpni_get_qdid() failed\n");
+-		return err;
++		goto out;
+ 	}
+ 
+ 	return 0;
++
++out:
++	while (i--) {
++		if (priv->fq[i].type == DPAA2_RX_FQ &&
++		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
++			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
++	}
++	return err;
+ }
+ 
+ /* Allocate rings for storing incoming frame descriptors */
+@@ -4588,6 +4597,17 @@ static void dpaa2_eth_del_ch_napi(struct dpaa2_eth_priv *priv)
+ 	}
+ }
+ 
++static void dpaa2_eth_free_rx_xdp_rxq(struct dpaa2_eth_priv *priv)
++{
++	int i;
++
++	for (i = 0; i < priv->num_fqs; i++) {
++		if (priv->fq[i].type == DPAA2_RX_FQ &&
++		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
++			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
++	}
++}
++
+ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
+ {
+ 	struct device *dev;
+@@ -4786,6 +4806,7 @@ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
+ 	free_percpu(priv->percpu_stats);
+ err_alloc_percpu_stats:
+ 	dpaa2_eth_del_ch_napi(priv);
++	dpaa2_eth_free_rx_xdp_rxq(priv);
+ err_bind:
+ 	dpaa2_eth_free_dpbp(priv);
+ err_dpbp_setup:
+@@ -4840,6 +4861,7 @@ static int dpaa2_eth_remove(struct fsl_mc_device *ls_dev)
+ 	free_percpu(priv->percpu_extras);
+ 
+ 	dpaa2_eth_del_ch_napi(priv);
++	dpaa2_eth_free_rx_xdp_rxq(priv);
+ 	dpaa2_eth_free_dpbp(priv);
+ 	dpaa2_eth_free_dpio(priv);
+ 	dpaa2_eth_free_dpni(priv);
+-- 
+2.39.5
+
 
 
 
