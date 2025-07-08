@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-161112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1966AFD372
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70840AFD115
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B302168F41
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CD52486AF8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007462E041C;
-	Tue,  8 Jul 2025 16:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CB72E3701;
+	Tue,  8 Jul 2025 16:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAxcpOJV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISEitlNJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BD42DA77B;
-	Tue,  8 Jul 2025 16:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7586C881E;
+	Tue,  8 Jul 2025 16:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993629; cv=none; b=AQnDk5hP9mRO9zTu7jEtSBANUJISrjqu3QefCV/hQV79yPNq26UT2yFPWBG3sz8HuOXPS99iz2a14J9n0dxOCWaZ+5zuBACmzLsH4vCuUZRVb6F1za7uu9xqSPKCv8T7qksuJXsTu5tchcUJdiFE/h53kJsV7GnX9uiKKNIp7+s=
+	t=1751992271; cv=none; b=JZiucRKuzvsI1XOdz33PGLv+ihTuTCugMxPXvPH7ijyeSXbAzQPoxB50hw147FdY6JguOUz6V3p/kR6aG2CNSj1E+spmvcUt9jKH0giEIYomM/7WLf1sR8f7zzfsR1yj2gN/k1XRg+mChr7TjceFtJ0ZFUaALuOfKveab7QxmXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993629; c=relaxed/simple;
-	bh=9dBJ42AyEhaBfPFEJQTBb/y8P230tNANPNtEcbx44ck=;
+	s=arc-20240116; t=1751992271; c=relaxed/simple;
+	bh=/pp1hQQnJLyqaEy7Qy52neRWtlVE7bB0YycvzMnpe9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R9BoInMo8iFZWy6w7p4E1OBppqPkMVafW3TdEA8xMSEdD7OypQR0egl+8BEGpr4TLGoJ5rOJM8wSmRzyhNgyXCxVbhm//bhHdRec7BS0BXdmjEOfBoi60i8gC8GqJzcUYRSPh1RFPfuC6GL2gAsXbbJYaYi6tsmjBoSgn8xEbn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAxcpOJV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17ABC4CEED;
-	Tue,  8 Jul 2025 16:53:48 +0000 (UTC)
+	 MIME-Version; b=OVE7+fDkvgObfd1HitBm6PoqXhqHbMOZd/dSlHGAMhibC6c+/s7sNxGSd3mfk7EHDbvMnhF4vJ5U5pvNprc7PYOPT+VJGAJyj4yAseUxFeNOdxjZJfmaTHkJeUlV1sOkX3TlOQrpFH8M/Lc8dmj1Va126EMxM8YarOiY3Rmvhcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISEitlNJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C6FC4CEED;
+	Tue,  8 Jul 2025 16:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993629;
-	bh=9dBJ42AyEhaBfPFEJQTBb/y8P230tNANPNtEcbx44ck=;
+	s=korg; t=1751992271;
+	bh=/pp1hQQnJLyqaEy7Qy52neRWtlVE7bB0YycvzMnpe9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XAxcpOJVDuuanKh244zb3I5rwfxrdg6qz/WjiZ8VSw/0/ltMoSJ7Qx0AaY9ZY/Ie7
-	 5ZTxgE+TqO3QUgDKdzY3auF/6qLurffdZ+qNBMAVGRwlDUHmE/0f+V+falAutVlS7U
-	 t80x8bn6H6hmuj/LraHpgFqV967TKp60ZXj+MOvY=
+	b=ISEitlNJFTjJmD70HHj9FzpAb/SEKMeC8+Zqd/AVkcPOUs3CC8c3Qj6ZTnDQP5j0O
+	 MGX1QLg7oFHT9Mg96DSMONyPKshDT1DffR86wPMxGL98kjC3D0nCF+x7/AqG5HsFI+
+	 ChQaZmoFXP/bAim5O1OlCuusQvdDP5aMbYFzTGt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 109/178] lib: test_objagg: Set error message in check_expect_hints_stats()
+Subject: [PATCH 6.6 035/132] btrfs: use btrfs_record_snapshot_destroy() during rmdir
 Date: Tue,  8 Jul 2025 18:22:26 +0200
-Message-ID: <20250708162239.475270396@linuxfoundation.org>
+Message-ID: <20250708162231.726651878@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit e6ed134a4ef592fe1fd0cafac9683813b3c8f3e8 ]
+[ Upstream commit 157501b0469969fc1ba53add5049575aadd79d80 ]
 
-Smatch complains that the error message isn't set in the caller:
+We are setting the parent directory's last_unlink_trans directly which
+may result in a concurrent task starting to log the directory not see the
+update and therefore can log the directory after we removed a child
+directory which had a snapshot within instead of falling back to a
+transaction commit. Replaying such a log tree would result in a mount
+failure since we can't currently delete snapshots (and subvolumes) during
+log replay. This is the type of failure described in commit 1ec9a1ae1e30
+("Btrfs: fix unreplayable log after snapshot delete + parent dir fsync").
 
-    lib/test_objagg.c:923 test_hints_case2()
-    error: uninitialized symbol 'errmsg'.
+Fix this by using btrfs_record_snapshot_destroy() which updates the
+last_unlink_trans field while holding the inode's log_mutex lock.
 
-This static checker warning only showed up after a recent refactoring
-but the bug dates back to when the code was originally added.  This
-likely doesn't affect anything in real life.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202506281403.DsuyHFTZ-lkp@intel.com/
-Fixes: 0a020d416d0a ("lib: introduce initial implementation of object aggregation manager")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/8548f423-2e3b-4bb7-b816-5041de2762aa@sabinyo.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_objagg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/test_objagg.c b/lib/test_objagg.c
-index d34df4306b874..222b39fc2629e 100644
---- a/lib/test_objagg.c
-+++ b/lib/test_objagg.c
-@@ -899,8 +899,10 @@ static int check_expect_hints_stats(struct objagg_hints *objagg_hints,
- 	int err;
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index cee1a11959c51..e8e57abb032d7 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4657,7 +4657,7 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	 * deletes for directory foo.
+ 	 */
+ 	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
+-		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
++		btrfs_record_snapshot_destroy(trans, BTRFS_I(dir));
  
- 	stats = objagg_hints_stats_get(objagg_hints);
--	if (IS_ERR(stats))
-+	if (IS_ERR(stats)) {
-+		*errmsg = "objagg_hints_stats_get() failed.";
- 		return PTR_ERR(stats);
-+	}
- 	err = __check_expect_stats(stats, expect_stats, errmsg);
- 	objagg_stats_put(stats);
- 	return err;
+ 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
+ 		ret = btrfs_unlink_subvol(trans, BTRFS_I(dir), dentry);
 -- 
 2.39.5
 
