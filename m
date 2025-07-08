@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465FFAFD1E0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC01AFD2F3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3BD4487CAD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:37:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EEF61AA4E7B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACDF2E3B03;
-	Tue,  8 Jul 2025 16:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882592DAFA3;
+	Tue,  8 Jul 2025 16:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3x3TK9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YA6+77Yc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4241CD1E4;
-	Tue,  8 Jul 2025 16:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444481DD0EF;
+	Tue,  8 Jul 2025 16:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992695; cv=none; b=iQyr38qYZJzLJHmdsYYJ8Gdn5egAEtKvP30BWYUQ5pYNd5cG1c3sstEgiBsbr+CAbnVkb9muedjad7jFwBHJGVxdY9tTuPN37mr2BbXGx3Iz0as18OmgVe4LAVVBlALPxfQRGo94LOjZqpNamkfuVsG87dcuoeQ2vYdComz45GE=
+	t=1751993339; cv=none; b=PnfvYG8tFSkSL/jBdnjxpDw1WbDnNXpFEFgv0GtvSuZ228nvWRHCJaZaxOGMZkgbuBKR5kR2lKMLSJaQT17YtlM9oM5dku17IQIb6FUy7ZYqbKRYqmQABQoAiGtahX1CjHznv0Zyv3S8YRgwbdI4KFEduB5MtUGQxClwSoJsExw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992695; c=relaxed/simple;
-	bh=e9CUZDJJvIRsliUQeGh5enbu6DcNbmfJNyMSi6pbeoI=;
+	s=arc-20240116; t=1751993339; c=relaxed/simple;
+	bh=hBb2KBEEJvyy9hbnHnXVsw72VLoyjEvwyQRVZivrjac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r6HX3bMsb//FY8Pd/yl03I7/60Ac+jDEf8udZDS5t4pigMskWGecpLYmt35I5QI+8MvigUfyzKQuBYlKzIXxP38Tp2lCWVk81HOEijucdwrwAl/Sx409TRWa5bWzGV9/ILHx4P0dKVi9EuzoKukHBW/3Db53Lk6z5z6SAkue5A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3x3TK9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26776C4CEED;
-	Tue,  8 Jul 2025 16:38:14 +0000 (UTC)
+	 MIME-Version; b=Zls7X9JH6deDOmaUgm1nNSpDrrJtO9K/SpsjR/a6i8HxKueNwqFGzEHKg84oxm3zFVHvhjf1WZq64NcmyiWYMPK7LHFYHLFa2wrQcYY0bsCEhT0djyt+2t4ia/QcftVjPBdebECsY1bYqV8+e2P/rGErly8srl0nuxsrOHfkjEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YA6+77Yc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1480C4CEF0;
+	Tue,  8 Jul 2025 16:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992695;
-	bh=e9CUZDJJvIRsliUQeGh5enbu6DcNbmfJNyMSi6pbeoI=;
+	s=korg; t=1751993339;
+	bh=hBb2KBEEJvyy9hbnHnXVsw72VLoyjEvwyQRVZivrjac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3x3TK9HJIDx3FWM8xxS74+0WZsLiUVQ5haualPqMtpBiqOij8ZUsPVTLKMaywIEq
-	 IHYvEqJLx8SImvGft1WPQGqwsTfRCgUWq0WvvPPkKMJ6uTBQKQncuOn7x+S5ZWwaEB
-	 suDYaYeWeQ+P4Eb4pl3IaWArihyd0L66n1YFIiTI=
+	b=YA6+77YcplqPBBF04KZLCydOHRYb7DrFZbqivq7wPc0izZrHVi9Qpr43b/InLOzQU
+	 dVjDTmJYcvChA6PEZRyG5Ax+nPk3h4/QbdStw2LHIXXI4VHIxKzpiWD4v/vytlerjR
+	 VJp9Rk4pwtaqUU78acJ3ZBldC527uiAsO9dqyhfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/232] btrfs: return a btrfs_inode from btrfs_iget_logging()
-Date: Tue,  8 Jul 2025 18:20:45 +0200
-Message-ID: <20250708162242.748583851@linuxfoundation.org>
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.15 009/178] net: txgbe: request MISC IRQ in ndo_open
+Date: Tue,  8 Jul 2025 18:20:46 +0200
+Message-ID: <20250708162236.795871354@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,291 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit a488d8ac2c4d96ecc7da59bb35a573277204ac6b ]
+commit cc9f7f65cd2f31150b10e6956f1f0882e1bbae49 upstream.
 
-All callers of btrfs_iget_logging() are interested in the btrfs_inode
-structure rather than the VFS inode, so make btrfs_iget_logging() return
-the btrfs_inode instead, avoiding lots of BTRFS_I() calls.
+Move the creating of irq_domain for MISC IRQ from .probe to .ndo_open,
+and free it in .ndo_stop, to maintain consistency with the queue IRQs.
+This it for subsequent adjustments to the IRQ vectors.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 5f61b961599a ("btrfs: fix inode lookup error handling during log replay")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: aefd013624a1 ("net: txgbe: use irq_domain for interrupt controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250701063030.59340-2-jiawenwu@trustnetic.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c | 94 ++++++++++++++++++++++-----------------------
- 1 file changed, 45 insertions(+), 49 deletions(-)
+ drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c  |    2 +-
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c |   22 ++++++++++------------
+ 2 files changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 3ecab032907e7..262523cd80476 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -138,7 +138,7 @@ static void wait_log_commit(struct btrfs_root *root, int transid);
-  * and once to do all the other items.
-  */
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+@@ -68,7 +68,6 @@ free_queue_irqs:
+ 		free_irq(wx->msix_q_entries[vector].vector,
+ 			 wx->q_vector[vector]);
+ 	}
+-	wx_reset_interrupt_capability(wx);
+ 	return err;
+ }
  
--static struct inode *btrfs_iget_logging(u64 objectid, struct btrfs_root *root)
-+static struct btrfs_inode *btrfs_iget_logging(u64 objectid, struct btrfs_root *root)
- {
- 	unsigned int nofs_flag;
- 	struct inode *inode;
-@@ -154,7 +154,10 @@ static struct inode *btrfs_iget_logging(u64 objectid, struct btrfs_root *root)
- 	inode = btrfs_iget(objectid, root);
- 	memalloc_nofs_restore(nofs_flag);
+@@ -172,6 +171,7 @@ void txgbe_free_misc_irq(struct txgbe *t
+ 	free_irq(txgbe->link_irq, txgbe);
+ 	free_irq(txgbe->misc.irq, txgbe);
+ 	txgbe_del_irq_domain(txgbe);
++	txgbe->wx->misc_irq_domain = false;
+ }
  
--	return inode;
-+	if (IS_ERR(inode))
-+		return ERR_CAST(inode);
+ int txgbe_setup_misc_irq(struct txgbe *txgbe)
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -354,10 +354,14 @@ static int txgbe_open(struct net_device
+ 
+ 	wx_configure(wx);
+ 
+-	err = txgbe_request_queue_irqs(wx);
++	err = txgbe_setup_misc_irq(wx->priv);
+ 	if (err)
+ 		goto err_free_resources;
+ 
++	err = txgbe_request_queue_irqs(wx);
++	if (err)
++		goto err_free_misc_irq;
 +
-+	return BTRFS_I(inode);
- }
+ 	/* Notify the stack of the actual queue counts. */
+ 	err = netif_set_real_num_tx_queues(netdev, wx->num_tx_queues);
+ 	if (err)
+@@ -375,6 +379,9 @@ static int txgbe_open(struct net_device
  
- /*
-@@ -617,12 +620,12 @@ static int read_alloc_one_name(struct extent_buffer *eb, void *start, int len,
- static noinline struct inode *read_one_inode(struct btrfs_root *root,
- 					     u64 objectid)
+ err_free_irq:
+ 	wx_free_irq(wx);
++err_free_misc_irq:
++	txgbe_free_misc_irq(wx->priv);
++	wx_reset_interrupt_capability(wx);
+ err_free_resources:
+ 	wx_free_resources(wx);
+ err_reset:
+@@ -415,6 +422,7 @@ static int txgbe_close(struct net_device
+ 	wx_ptp_stop(wx);
+ 	txgbe_down(wx);
+ 	wx_free_irq(wx);
++	txgbe_free_misc_irq(wx->priv);
+ 	wx_free_resources(wx);
+ 	txgbe_fdir_filter_exit(wx);
+ 	wx_control_hw(wx, false);
+@@ -460,7 +468,6 @@ static void txgbe_shutdown(struct pci_de
+ int txgbe_setup_tc(struct net_device *dev, u8 tc)
  {
--	struct inode *inode;
-+	struct btrfs_inode *inode;
+ 	struct wx *wx = netdev_priv(dev);
+-	struct txgbe *txgbe = wx->priv;
  
- 	inode = btrfs_iget_logging(objectid, root);
- 	if (IS_ERR(inode))
--		inode = NULL;
--	return inode;
-+		return NULL;
-+	return &inode->vfs_inode;
- }
+ 	/* Hardware has to reinitialize queues and interrupts to
+ 	 * match packet buffer alignment. Unfortunately, the
+@@ -471,7 +478,6 @@ int txgbe_setup_tc(struct net_device *de
+ 	else
+ 		txgbe_reset(wx);
  
- /* replays a single extent in 'eb' at 'slot' with 'key' into the
-@@ -5487,7 +5490,6 @@ static int log_new_dir_dentries(struct btrfs_trans_handle *trans,
- 	ihold(&curr_inode->vfs_inode);
+-	txgbe_free_misc_irq(txgbe);
+ 	wx_clear_interrupt_scheme(wx);
  
- 	while (true) {
--		struct inode *vfs_inode;
- 		struct btrfs_key key;
- 		struct btrfs_key found_key;
- 		u64 next_index;
-@@ -5503,7 +5505,7 @@ static int log_new_dir_dentries(struct btrfs_trans_handle *trans,
- 			struct extent_buffer *leaf = path->nodes[0];
- 			struct btrfs_dir_item *di;
- 			struct btrfs_key di_key;
--			struct inode *di_inode;
-+			struct btrfs_inode *di_inode;
- 			int log_mode = LOG_INODE_EXISTS;
- 			int type;
+ 	if (tc)
+@@ -480,7 +486,6 @@ int txgbe_setup_tc(struct net_device *de
+ 		netdev_reset_tc(dev);
  
-@@ -5530,17 +5532,16 @@ static int log_new_dir_dentries(struct btrfs_trans_handle *trans,
- 				goto out;
- 			}
+ 	wx_init_interrupt_scheme(wx);
+-	txgbe_setup_misc_irq(txgbe);
  
--			if (!need_log_inode(trans, BTRFS_I(di_inode))) {
--				btrfs_add_delayed_iput(BTRFS_I(di_inode));
-+			if (!need_log_inode(trans, di_inode)) {
-+				btrfs_add_delayed_iput(di_inode);
- 				break;
- 			}
+ 	if (netif_running(dev))
+ 		txgbe_open(dev);
+@@ -729,13 +734,9 @@ static int txgbe_probe(struct pci_dev *p
  
- 			ctx->log_new_dentries = false;
- 			if (type == BTRFS_FT_DIR)
- 				log_mode = LOG_INODE_ALL;
--			ret = btrfs_log_inode(trans, BTRFS_I(di_inode),
--					      log_mode, ctx);
--			btrfs_add_delayed_iput(BTRFS_I(di_inode));
-+			ret = btrfs_log_inode(trans, di_inode, log_mode, ctx);
-+			btrfs_add_delayed_iput(di_inode);
- 			if (ret)
- 				goto out;
- 			if (ctx->log_new_dentries) {
-@@ -5582,14 +5583,13 @@ static int log_new_dir_dentries(struct btrfs_trans_handle *trans,
- 		kfree(dir_elem);
+ 	txgbe_init_fdir(txgbe);
  
- 		btrfs_add_delayed_iput(curr_inode);
--		curr_inode = NULL;
+-	err = txgbe_setup_misc_irq(txgbe);
+-	if (err)
+-		goto err_release_hw;
+-
+ 	err = txgbe_init_phy(txgbe);
+ 	if (err)
+-		goto err_free_misc_irq;
++		goto err_release_hw;
  
--		vfs_inode = btrfs_iget_logging(ino, root);
--		if (IS_ERR(vfs_inode)) {
--			ret = PTR_ERR(vfs_inode);
-+		curr_inode = btrfs_iget_logging(ino, root);
-+		if (IS_ERR(curr_inode)) {
-+			ret = PTR_ERR(curr_inode);
-+			curr_inode = NULL;
- 			break;
- 		}
--		curr_inode = BTRFS_I(vfs_inode);
- 	}
- out:
- 	btrfs_free_path(path);
-@@ -5667,7 +5667,7 @@ static int add_conflicting_inode(struct btrfs_trans_handle *trans,
- 				 struct btrfs_log_ctx *ctx)
- {
- 	struct btrfs_ino_list *ino_elem;
--	struct inode *inode;
-+	struct btrfs_inode *inode;
+ 	err = register_netdev(netdev);
+ 	if (err)
+@@ -763,8 +764,6 @@ static int txgbe_probe(struct pci_dev *p
  
- 	/*
- 	 * It's rare to have a lot of conflicting inodes, in practice it is not
-@@ -5758,12 +5758,12 @@ static int add_conflicting_inode(struct btrfs_trans_handle *trans,
- 	 * inode in LOG_INODE_EXISTS mode and rename operations update the log,
- 	 * so that the log ends up with the new name and without the old name.
- 	 */
--	if (!need_log_inode(trans, BTRFS_I(inode))) {
--		btrfs_add_delayed_iput(BTRFS_I(inode));
-+	if (!need_log_inode(trans, inode)) {
-+		btrfs_add_delayed_iput(inode);
- 		return 0;
- 	}
+ err_remove_phy:
+ 	txgbe_remove_phy(txgbe);
+-err_free_misc_irq:
+-	txgbe_free_misc_irq(txgbe);
+ err_release_hw:
+ 	wx_clear_interrupt_scheme(wx);
+ 	wx_control_hw(wx, false);
+@@ -798,7 +797,6 @@ static void txgbe_remove(struct pci_dev
+ 	unregister_netdev(netdev);
  
--	btrfs_add_delayed_iput(BTRFS_I(inode));
-+	btrfs_add_delayed_iput(inode);
+ 	txgbe_remove_phy(txgbe);
+-	txgbe_free_misc_irq(txgbe);
+ 	wx_free_isb_resources(wx);
  
- 	ino_elem = kmalloc(sizeof(*ino_elem), GFP_NOFS);
- 	if (!ino_elem)
-@@ -5799,7 +5799,7 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
- 	 */
- 	while (!list_empty(&ctx->conflict_inodes)) {
- 		struct btrfs_ino_list *curr;
--		struct inode *inode;
-+		struct btrfs_inode *inode;
- 		u64 ino;
- 		u64 parent;
- 
-@@ -5835,9 +5835,8 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
- 			 * dir index key range logged for the directory. So we
- 			 * must make sure the deletion is recorded.
- 			 */
--			ret = btrfs_log_inode(trans, BTRFS_I(inode),
--					      LOG_INODE_ALL, ctx);
--			btrfs_add_delayed_iput(BTRFS_I(inode));
-+			ret = btrfs_log_inode(trans, inode, LOG_INODE_ALL, ctx);
-+			btrfs_add_delayed_iput(inode);
- 			if (ret)
- 				break;
- 			continue;
-@@ -5853,8 +5852,8 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
- 		 * it again because if some other task logged the inode after
- 		 * that, we can avoid doing it again.
- 		 */
--		if (!need_log_inode(trans, BTRFS_I(inode))) {
--			btrfs_add_delayed_iput(BTRFS_I(inode));
-+		if (!need_log_inode(trans, inode)) {
-+			btrfs_add_delayed_iput(inode);
- 			continue;
- 		}
- 
-@@ -5865,8 +5864,8 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
- 		 * well because during a rename we pin the log and update the
- 		 * log with the new name before we unpin it.
- 		 */
--		ret = btrfs_log_inode(trans, BTRFS_I(inode), LOG_INODE_EXISTS, ctx);
--		btrfs_add_delayed_iput(BTRFS_I(inode));
-+		ret = btrfs_log_inode(trans, inode, LOG_INODE_EXISTS, ctx);
-+		btrfs_add_delayed_iput(inode);
- 		if (ret)
- 			break;
- 	}
-@@ -6358,7 +6357,7 @@ static int log_new_delayed_dentries(struct btrfs_trans_handle *trans,
- 
- 	list_for_each_entry(item, delayed_ins_list, log_list) {
- 		struct btrfs_dir_item *dir_item;
--		struct inode *di_inode;
-+		struct btrfs_inode *di_inode;
- 		struct btrfs_key key;
- 		int log_mode = LOG_INODE_EXISTS;
- 
-@@ -6374,8 +6373,8 @@ static int log_new_delayed_dentries(struct btrfs_trans_handle *trans,
- 			break;
- 		}
- 
--		if (!need_log_inode(trans, BTRFS_I(di_inode))) {
--			btrfs_add_delayed_iput(BTRFS_I(di_inode));
-+		if (!need_log_inode(trans, di_inode)) {
-+			btrfs_add_delayed_iput(di_inode);
- 			continue;
- 		}
- 
-@@ -6383,12 +6382,12 @@ static int log_new_delayed_dentries(struct btrfs_trans_handle *trans,
- 			log_mode = LOG_INODE_ALL;
- 
- 		ctx->log_new_dentries = false;
--		ret = btrfs_log_inode(trans, BTRFS_I(di_inode), log_mode, ctx);
-+		ret = btrfs_log_inode(trans, di_inode, log_mode, ctx);
- 
- 		if (!ret && ctx->log_new_dentries)
--			ret = log_new_dir_dentries(trans, BTRFS_I(di_inode), ctx);
-+			ret = log_new_dir_dentries(trans, di_inode, ctx);
- 
--		btrfs_add_delayed_iput(BTRFS_I(di_inode));
-+		btrfs_add_delayed_iput(di_inode);
- 
- 		if (ret)
- 			break;
-@@ -6796,7 +6795,7 @@ static int btrfs_log_all_parents(struct btrfs_trans_handle *trans,
- 		ptr = btrfs_item_ptr_offset(leaf, slot);
- 		while (cur_offset < item_size) {
- 			struct btrfs_key inode_key;
--			struct inode *dir_inode;
-+			struct btrfs_inode *dir_inode;
- 
- 			inode_key.type = BTRFS_INODE_ITEM_KEY;
- 			inode_key.offset = 0;
-@@ -6845,18 +6844,16 @@ static int btrfs_log_all_parents(struct btrfs_trans_handle *trans,
- 				goto out;
- 			}
- 
--			if (!need_log_inode(trans, BTRFS_I(dir_inode))) {
--				btrfs_add_delayed_iput(BTRFS_I(dir_inode));
-+			if (!need_log_inode(trans, dir_inode)) {
-+				btrfs_add_delayed_iput(dir_inode);
- 				continue;
- 			}
- 
- 			ctx->log_new_dentries = false;
--			ret = btrfs_log_inode(trans, BTRFS_I(dir_inode),
--					      LOG_INODE_ALL, ctx);
-+			ret = btrfs_log_inode(trans, dir_inode, LOG_INODE_ALL, ctx);
- 			if (!ret && ctx->log_new_dentries)
--				ret = log_new_dir_dentries(trans,
--						   BTRFS_I(dir_inode), ctx);
--			btrfs_add_delayed_iput(BTRFS_I(dir_inode));
-+				ret = log_new_dir_dentries(trans, dir_inode, ctx);
-+			btrfs_add_delayed_iput(dir_inode);
- 			if (ret)
- 				goto out;
- 		}
-@@ -6881,7 +6878,7 @@ static int log_new_ancestors(struct btrfs_trans_handle *trans,
- 		struct extent_buffer *leaf;
- 		int slot;
- 		struct btrfs_key search_key;
--		struct inode *inode;
-+		struct btrfs_inode *inode;
- 		u64 ino;
- 		int ret = 0;
- 
-@@ -6896,11 +6893,10 @@ static int log_new_ancestors(struct btrfs_trans_handle *trans,
- 		if (IS_ERR(inode))
- 			return PTR_ERR(inode);
- 
--		if (BTRFS_I(inode)->generation >= trans->transid &&
--		    need_log_inode(trans, BTRFS_I(inode)))
--			ret = btrfs_log_inode(trans, BTRFS_I(inode),
--					      LOG_INODE_EXISTS, ctx);
--		btrfs_add_delayed_iput(BTRFS_I(inode));
-+		if (inode->generation >= trans->transid &&
-+		    need_log_inode(trans, inode))
-+			ret = btrfs_log_inode(trans, inode, LOG_INODE_EXISTS, ctx);
-+		btrfs_add_delayed_iput(inode);
- 		if (ret)
- 			return ret;
- 
--- 
-2.39.5
-
+ 	pci_release_selected_regions(pdev,
 
 
 
