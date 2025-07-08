@@ -1,701 +1,189 @@
-Return-Path: <stable+bounces-160483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D1BAAFCA59
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 14:24:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CD0AFCA67
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 14:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3CBB17F1B1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 12:24:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9584E562794
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 12:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4D12DBF46;
-	Tue,  8 Jul 2025 12:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B323C2DC353;
+	Tue,  8 Jul 2025 12:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="p8i8C5J5"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SHqq25Ya"
 X-Original-To: stable@vger.kernel.org
-Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2078.outbound.protection.outlook.com [40.107.236.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA9935959;
-	Tue,  8 Jul 2025 12:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751977447; cv=none; b=JsX4eSr8sxjF65pNBKAASU2WvR/4xKgp0ll6dffn5aGFrRWgr93HcTYau5dh2UMsn5gUp1V9lackpC9fChIhr+q92g10RA36bN00vzZeJhf7CZTMM9+R561PjIozfWYiwfvvThJ6JzfeM5h9yrB7WVMiZ9K/1zIH58DNb6rv6NE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751977447; c=relaxed/simple;
-	bh=eZh8E0io+uJpxuKFtirtzNkGQTnZBvPj6SNMS1SGJQg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M9IRYSGz0vqrrQFHI+Bhm0IiPPKw/f8dDfN3iAefoV4TViSYvG5UPm5WhXVwuaeOh/FEJn7zkEntql6iQRZgxESmZOFBeim3tx9myMgixnXTTBjJ7Yci9QsxEd6W6JHU15+po2yHQx0S/QuiFKtTuNRkey6RJb5LrRDs1DdQTzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=p8i8C5J5; arc=none smtp.client-ip=144.76.82.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
-	s=42; h=From:Cc:To:Date:Message-ID;
-	bh=ONc2Ay7P2hGS6msRkms4xKV9k6E00iU/5ZhGZmlh0MI=; b=p8i8C5J5J0K8Iclbf/Ar7nkI2c
-	aDuW4/9s1uF1zrfxfHeCUnR1bDpFlABDh8ZbjFWi5O0vlMM/Eq9Idm4DVSElTtg5K2iRN6NTTDQ0H
-	Ebh2A5gZGG1+S1oillW1ZnN2sAhw33ZK+Z7gFiFFP0zB+Di3UpYzRuzcB+b1qj2K6HtWF+VZeS7do
-	G+MoSuR0QFnbHVIJeZg6bzebXe7gmlNdXjmJPoz+DgtRA5LWggCvPJVy5S6pYAIbXNzrWl+PNH49K
-	W3DBymIsZGa97vDZpxIRJtzC5c7kZtC7PwupZuZpwohGnFM3vYp8FSdUOFwoThUn1ymH9A6MFxQmC
-	zaDMamAbnAsP8B0cwEE5linPjG/jD0c7LmlYBGvevAfHLf8aT/78u7nVgSMpR+tnKzCvynnwsj0yH
-	zO4tEkZWAgx70Zdg7QrCdzmTRLiaVGEbiMveTYQLuMzs1VUErV5NzAzmnqVJ9cy7xZmcPiKUJOc48
-	s668P9S3q9QM9vJydWUOAI3I;
-Received: from [127.0.0.2] (localhost [127.0.0.1])
-	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__CHACHA20_POLY1305:256)
-	(Exim)
-	id 1uZ7MZ-00ETvK-0N;
-	Tue, 08 Jul 2025 12:23:55 +0000
-Message-ID: <73624e22-5421-492c-8725-88284f976dc9@samba.org>
-Date: Tue, 8 Jul 2025 14:23:53 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047B62DBF73;
+	Tue,  8 Jul 2025 12:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751977687; cv=fail; b=uqVIMjECYZBYgduKWU+QV/n+Z/VTCctyb15+xbs1tPTtHwtFcnn25Ph5Cg09Ruw3GIqfLq7X7SmsIzhyOjyftBFcyJhbcGRZkGYvfMBucq2blZ7db6kkoTN12X1WaGhMPidR37rWotAVSmw/grRxSQmRJPUXESb8cymtItJ22Xs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751977687; c=relaxed/simple;
+	bh=wKhzi/AsEySU6B26WfmXjGAoyW2/z60G1mTOHEsb7TE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GuZ5fV9wHUV9I5+Ov9SFmeTM9UCWkXhtQk1YRceJfMlOJX/6EOVSUV87ssyjN5HccIGcb13TnMy5n/ReYiktfyODAhQXEVT2BONBOQR6xPi750yBsuOekuPRN7xzJYzJXFAQ1zuXTaAPZq1fr6Zhz4b2ZAOoadVWwCxjZho+5BU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SHqq25Ya; arc=fail smtp.client-ip=40.107.236.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ehanl7q9Gxau2gZtEx6eucKTd3JjOQuStiSeJzkOsZz4goU5VdI7QYCfAOZAc+h+3ScYPZb/DMOiCs8fVH+fjXFOiz5H5DxMmdVdXRbs7hD0T2+nHefnMWJird/Fq0Af0zGBNV6eeCu6i5/fJdk+lJNowrS6XzKSd1AFk8yjCzEzQ0BB759T8jax9Y4fPvWnKw1q0xXCyOxX3XzOlXNuK/8F/ycL5ZQUchJlMJcKSxZ6eV/b+dvYdXcRzUJMTiuA9siotPqIvNlbXLRpNOPoBzP19JeskiB6Ye0l8pyEJ3x++db7Wkxf9hyKHusx+JSpix17t2SLJ4w3R00c76rf9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kgkZwzaesbHJ1vpfAMHERYRFQrbI/OqTO3SMC0INFUA=;
+ b=Bp+JrvPT4b2I7nFLZB9QX/5o+GIzn76goYnm2j7tp/EHHb+0wk/4JgFffwrY11kpFvYC7k9nEVfrIqy/5aTYbOC8LZZL8WrZUsAcqTOqjM3Pbm+hxS7/7esAWFH1E4/V17zxm2YPk+u6LxVMIUCD/ELx9IeRpS14COdzV+akTqDjZanrg9C0r4CCjJaebmQHOzWuxyt3iV4iUe4NgkF4V8aEMipYEKSPIUAgci/VFnPPtDuM9XAidqMFRv7fMiL8dkRUUafUUdpJyHnmnP8JSdoIkvhyqjz4DPGmVN/0r3WHjWXdGz9W4br6ydUXpP1R1lA7ajobEFAkGrhkdNdcZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kgkZwzaesbHJ1vpfAMHERYRFQrbI/OqTO3SMC0INFUA=;
+ b=SHqq25Yamg9JUF0qF83EzoQ5M1XYf2Dr9c+B9F2dV/FTHG7a0Ie1J+K9fhzGL6eOSfZjYkU0Z2xa34k83HouxpA6kN3WiIdRx9I5yNhFu77szpLw5Tvyj0YxgjfqUP0rAki8Zyd1omxs4ItdyTMEOr3uBF/q6l2C+zxPnZKtR0AJd43xrijwwrFxAQHJXF0PjeEHeKF+1cEtItvaNx9SwiIqSpnM+1Q0LfwIEZVO5XIOrJ1D9FqHO+xweuVUAiBbmXPLH3YHbEYV/AcYA6qC1zikFdgc6bPjdXy4YtkH68KXgalKLw0PTe/ofHHtUVPLzsu0yPess73BmCBFUf2YxA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by CH8PR12MB9837.namprd12.prod.outlook.com (2603:10b6:610:2b4::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.25; Tue, 8 Jul
+ 2025 12:28:03 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8901.024; Tue, 8 Jul 2025
+ 12:27:56 +0000
+Date: Tue, 8 Jul 2025 09:27:55 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>, Jann Horn <jannh@google.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+	iommu@lists.linux.dev, security@kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] iommu/sva: Invalidate KVA range on kernel TLB flush
+Message-ID: <20250708122755.GV1410929@nvidia.com>
+References: <20250704133056.4023816-1-baolu.lu@linux.intel.com>
+ <0c6f6b3e-d68d-4deb-963e-6074944afff7@linux.intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0c6f6b3e-d68d-4deb-963e-6074944afff7@linux.intel.com>
+X-ClientProxiedBy: MN0P222CA0012.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:208:531::20) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "smb: client: make use of common
- smbdirect_socket_parameters" has been added to the 6.12-stable tree
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>
-Cc: Stable <stable@vger.kernel.org>, stable-commits@vger.kernel.org,
- Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>,
- Ronnie Sahlberg <ronniesahlberg@gmail.com>,
- Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
- Bharath SM <bharathsm@microsoft.com>, Steve French <smfrench@gmail.com>
-References: <20250629142801.1093341-1-sashal@kernel.org>
- <e3d3d647-12a7-4e17-9206-25d03304ac65@samba.org>
- <CAH2r5muFzLct62LPL-1rE35X9Ps+ghxGk=J0FQPfLXwQeTXc6w@mail.gmail.com>
-Content-Language: en-US
-From: Stefan Metzmacher <metze@samba.org>
-In-Reply-To: <CAH2r5muFzLct62LPL-1rE35X9Ps+ghxGk=J0FQPfLXwQeTXc6w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|CH8PR12MB9837:EE_
+X-MS-Office365-Filtering-Correlation-Id: b6cbde5e-735c-44f6-a78c-08ddbe1ade48
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?fNElIlKQD8FKpZRiIXNuuxFcP7ND7q2kMfe0SK4E1uaw6tYlYP6USMBo1Czk?=
+ =?us-ascii?Q?b+Q7DFxCZ48Sj2xwI7EriCTUqjOjth/nNstFpVZt3wtmiRWdbHPcwLhWrMUP?=
+ =?us-ascii?Q?UeaZUJskHF0Ba2wZkAujP3jFJGGTXSHwA3YUkZhNrPQcKFI8RFiyJrfdXEcJ?=
+ =?us-ascii?Q?ukd/mmPsoxX/kRhkDejPKO1epWHoqaL1n02WnpdBfrm/bdrqjhtSx3R0EX2h?=
+ =?us-ascii?Q?H+mKI3RSpszxr+T5hUvGyPuTAfaROavDSINzPbXhT1MKI+GkjjJXYUUK3ocp?=
+ =?us-ascii?Q?yuTYQ457WGzqBkJY9hPrssncpkZdsf/veHSRDDz8PD4fpwixVLk/TciNyMi7?=
+ =?us-ascii?Q?dRtrQeJHGz17Z8N4yylq16mpGZo2Yzso0jL3uMMqoKZJx0XOi8BcpZNfvGr4?=
+ =?us-ascii?Q?Tf+rncimZo+JC4/fYvkFCUsByTYiFUPkYuILWfqiuOt/wyJdsWFG1dTzHMoh?=
+ =?us-ascii?Q?CKKTrvnU0ANnRqT0MyhQVy3PUpML/XT/H2xOqBBk/T0px6oVWSdJ0pZCY0sD?=
+ =?us-ascii?Q?djzjgS1JPRdsx9d0pzLSvKOsW9LFwSfWD2xrwh8ce1oGx8NAKfzk+/FxAMco?=
+ =?us-ascii?Q?LL/W+1kjDuZdCq1eHUK60iY/hlmhFY7X3pMxjRwBxK0YgutfBuEg6+pUJFzU?=
+ =?us-ascii?Q?ZJij3sSz2TDg8RllZxtSPok+blWcuB50lfPTmDNrdfhpGEYf8K1EiKDaLUqO?=
+ =?us-ascii?Q?VG88Nnj9/V1nbjTMRDNE3je2ERLcDR/ogoOXJkH49cxApiEAXu9j1gxYCt6b?=
+ =?us-ascii?Q?JyB5Q9c6nQ04joHYTsqrtQhK44QpNL/pZCyJzBNdQhlTi+eG2bb2bOOJhpV2?=
+ =?us-ascii?Q?KW3bS1sFeZh5J2B5g/IaFrJnbzckNt3e9Cad3n84r94JykQ5UF0Ef+/UHINV?=
+ =?us-ascii?Q?OKpv3l76eQUhyfcOEvycwIMOpMDxPdlQHDY6Tg9+HiMHxR648+sGY8cCbBu9?=
+ =?us-ascii?Q?81VZos7ZeJdG1wp1sSVh6hf5LWPvU+JufY4bBAaW9MFRTLMeByycmR8QUCE5?=
+ =?us-ascii?Q?PntWN1sYftJZnLFou61Xgpj0sN23ITl0dREVp9CkW0HytzANf3MNFC8jPOAk?=
+ =?us-ascii?Q?gCK5zrDQM23s4B1U3tPV0+sgJHeDIEp11H2U9/M4KJoUVRA0Nx3mn0easaaZ?=
+ =?us-ascii?Q?sknWqE3Zn2Xha1tFT+lerfX+8XPDXUdByRBd5uSVDeROCLOxzGFkvPSCVSa0?=
+ =?us-ascii?Q?jL9lGiaC9xSoAWon7yQMW8YVvby9JS1Xt2RFp7GKOy7EVeGunuHtIM0wHlpi?=
+ =?us-ascii?Q?GxUoKWARbGEQOtIONQWFuhe36AKiEGBCyZWz+3AtjQqaNFJ+N7rnuAXgLYHF?=
+ =?us-ascii?Q?VYC8HQcu0DjZtL/vATqLhveqkmjGnYN5bUSM9uVMSrh9/k0gdxHTguZBy72T?=
+ =?us-ascii?Q?KjIy5OKwYreOIAKxWzbF8E3l1AZDbgyqw6aoQdHcWeCRYRO2rZBwx4PK/KWr?=
+ =?us-ascii?Q?KSJ/ElJIbjI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Oi9oU0ujWDDtzLHfxm6j4bfCvZwcviamJjTibwGi14DngyTxU1sEgU4iIxIe?=
+ =?us-ascii?Q?6m1yUtH4U+LRxt3Qct/lUKqiLHLEhYi2KdISJRsQvIq/8FhOew4/cA0sEdB/?=
+ =?us-ascii?Q?C8pRdd4Mihke5ngqxZyHSNhm1ohjRmSotoaYnIMn7tFBeDb+46wIuHgncydy?=
+ =?us-ascii?Q?Qqm8kvvXzkP6ACHN68z+r9M69J1C3xI8WofOqbw/vIooAoKNAOzTUS7ToS9F?=
+ =?us-ascii?Q?3Fli/BVGpJFgfAeKHchAPz/rkIhszpIvw2FEaPjJjfyGpiWHXRQc842J3kCo?=
+ =?us-ascii?Q?uPn4CxhmUnGDegbZ/yz3HJK/WELrYvTPiphOX8ymXYG8nimFgKg0gGwxw5BX?=
+ =?us-ascii?Q?nEf35M4nj1cbGYP+fzA6oHA6eynkOK9pp+XP2CxGCGdSBr9m/0JAW9epAnnZ?=
+ =?us-ascii?Q?KuoOhO1vmlcSiZ06fyKn3QRK60nZYCT3iuflm4pbNw6W+XBM/Y50TRFg9O2S?=
+ =?us-ascii?Q?lICULKh1WCXfAD0Ki9kyh0hrsKuS28meSPpZIt7puDRoIQv68cPegS0hm62b?=
+ =?us-ascii?Q?nOMgwpFsCp/6I0q9M/9fHMnfY1xS+A3Jqn58zgVHdwohFYgAPkgvKzS/MZzF?=
+ =?us-ascii?Q?UB01czOUr5De+u5rCo0cvgug0XvhgL4JzrgtXDJheWceunx8zkhfwlIvwdR0?=
+ =?us-ascii?Q?jWaLbG4kTz0PChpke+XXbKk0MpWUpclQ829kX++EPn9i4nOwUxjzhQgYiBQP?=
+ =?us-ascii?Q?vZvfC4jIRrpSSyrVirWUufzwmM+NvzbughS+j9TMsPCjw4lol1HCUJ5hjrXY?=
+ =?us-ascii?Q?Jf+1QsbODyhsjevDdM5h2rRGX3smkeGaGr9H+zpxNwPBtrEtwBmOMJjV4MYr?=
+ =?us-ascii?Q?6YMcWlVisKjmkb4CPfKUmIV23WzLMU63aHf7Ob4eCKN5yZsqbevxVfaeDeHW?=
+ =?us-ascii?Q?C34ybb7HJSNyTpCsXdXMJP0KuIGmLjKcxLNQ+VZGMKY7Ng5SPIa0Wjladj3g?=
+ =?us-ascii?Q?WiqPSBNf1ZMmAuzsIzZGRpZQv0YglkMzYWHmNKL1sHzG5jkDERQq92YRxVl6?=
+ =?us-ascii?Q?3/Q6/G0x8fK6tJHQWZlYBEL0NigPJKeLAwg735F/fe4AVtZzKFgr2kRaC84H?=
+ =?us-ascii?Q?V38VIp/viCT+y6I/4RAWrkVdTpSnrcPVtGS1nDxEanXVCcsGvvPw0WEQ4EiO?=
+ =?us-ascii?Q?PzfMWkP/2qpVjMg2MwpNxnurkW/CTmLrEEcTZ2656gLoexnID39EM8E0bfqY?=
+ =?us-ascii?Q?/EPqbK5LmvItRm0D8jAHT8McGKSdIGz2P3u40LLmT/WUoSPIa02mZM1PumBe?=
+ =?us-ascii?Q?xcTZ0XxSrFhrheqwD1J1oYz2WFoHG3gGWC3U+clYLgcTPgfGwso+N1SaVOPd?=
+ =?us-ascii?Q?ke3qRtnIdKX5OE9z1x1oCUu7dD94YidpOLdK7wZGIaA4C8K75no5ksvFEStg?=
+ =?us-ascii?Q?cd6nIUUR8yQpLK0N49HK1pnWo6HAJhEUNy98J6dSCjIMu1x01/6GfdRQz0qm?=
+ =?us-ascii?Q?dgA3u7xZfHsMW3PXxOZs2UX6em9WqqJfRMWJf/npJulV16NrUBgTapgWzuGr?=
+ =?us-ascii?Q?o5bm+od4qc94aEnC5+wWWJVC6TyzeFD8tKh5tuUziInIHqbw+DaPfA7hajQS?=
+ =?us-ascii?Q?zCGYKUnnlEy2bI2aMcg=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6cbde5e-735c-44f6-a78c-08ddbe1ade48
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 12:27:56.6783
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EqmtdrVj2ELzxDZvPm6svb5fXXzTGcMgglnBUt1nL7ayEyJq03qmnIyj0tdZSj52
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH8PR12MB9837
 
-Hi,
-
-any reason why this is only backported to 6.12, but not 6.15?
-
-I'm looking at v6.15.5 and v6.12.36 and the following are missing
-from 6.15:
-
-bced02aca343 David Howells Wed Apr 2 20:27:26 2025 +0100 cifs: Fix reading into an ITER_FOLIOQ from the smbdirect code
-87dcc7e33fc3 David Howells Wed Jun 25 14:15:04 2025 +0100 cifs: Fix the smbd_response slab to allow usercopy
-b8ddcca4391e Stefan Metzmacher Wed May 28 18:01:40 2025 +0200 smb: client: make use of common smbdirect_socket_parameters
-69cafc413c2d Stefan Metzmacher Wed May 28 18:01:39 2025 +0200 smb: smbdirect: introduce smbdirect_socket_parameters
-c39639bc7723 Stefan Metzmacher Wed May 28 18:01:37 2025 +0200 smb: client: make use of common smbdirect_socket
-f4b05342c293 Stefan Metzmacher Wed May 28 18:01:36 2025 +0200 smb: smbdirect: add smbdirect_socket.h
-a6ec1fcafd41 Stefan Metzmacher Wed May 28 18:01:33 2025 +0200 smb: smbdirect: add smbdirect.h with public structures
-6509de31b1b6 Stefan Metzmacher Wed May 28 18:01:31 2025 +0200 smb: client: make use of common smbdirect_pdu.h
-a9bb4006c4f3 Stefan Metzmacher Wed May 28 18:01:30 2025 +0200 smb: smbdirect: add smbdirect_pdu.h with protocol definitions
-
-With these being backported to 6.15 too, the following is missing in
-both:
-
-commit 1944f6ab4967db7ad8d4db527dceae8c77de76e9
-Author:     Stefan Metzmacher <metze@samba.org>
-AuthorDate: Wed Jun 25 10:16:38 2025 +0200
-Commit:     Steve French <stfrench@microsoft.com>
-CommitDate: Wed Jun 25 11:12:54 2025 -0500
-
-     smb: client: let smbd_post_send_iter() respect the peers max_send_size and transmit all data
-
-As it was marked as
-Cc: <stable+noautosel@kernel.org> # sp->max_send_size should be info->max_send_size in backports
-
-But now that the patches up to b8ddcca4391e are backported it can be cherry-picked just
-fine to both branches.
-
-Thanks!
-metze
-
-Am 29.06.25 um 16:56 schrieb Steve French:
->> Steve: Do you agree?
+On Tue, Jul 08, 2025 at 01:42:53PM +0800, Baolu Lu wrote:
+> > +void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end)
+> > +{
+> > +	struct iommu_mm_data *iommu_mm;
+> > +
+> > +	might_sleep();
 > 
-> Yes
-> 
-> Thanks,
-> 
-> Steve
-> 
-> On Sun, Jun 29, 2025, 9:48 AM Stefan Metzmacher <metze@samba.org> wrote:
-> 
->> Hi,
->>
->> if these patches are backported to stable then
->> 1944f6ab4967db7ad8d4db527dceae8c77de76e9
->> "smb: client: let smbd_post_send_iter() respect the peers max_send_size
->> and transmit all data"
->> can also be backported as is.
->>
->> I just added the
->> "Cc: <stable+noautosel@kernel.org> # sp->max_send_size should be
->> info->max_send_size in backports"
->> because I thought they would not be backported.
->>
->> I'm fine with backporting the header changes...
->>
->> @Steve: Do you agree?
->>
->> Thanks!
->> metze
->>
->> Am 29.06.25 um 16:28 schrieb Sasha Levin:
->>> This is a note to let you know that I've just added the patch titled
->>>
->>>       smb: client: make use of common smbdirect_socket_parameters
->>>
->>> to the 6.12-stable tree which can be found at:
->>>
->> http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>>
->>> The filename of the patch is:
->>>        smb-client-make-use-of-common-smbdirect_socket_param.patch
->>> and it can be found in the queue-6.12 subdirectory.
->>>
->>> If you, or anyone else, feels it should not be added to the stable tree,
->>> please let <stable@vger.kernel.org> know about it.
->>>
->>>
->>>
->>> commit a1fa1698297356797d7a0379b7e056744fd133ac
->>> Author: Stefan Metzmacher <metze@samba.org>
->>> Date:   Wed May 28 18:01:40 2025 +0200
->>>
->>>       smb: client: make use of common smbdirect_socket_parameters
->>>
->>>       [ Upstream commit cc55f65dd352bdb7bdf8db1c36fb348c294c3b66 ]
->>>
->>>       Cc: Steve French <smfrench@gmail.com>
->>>       Cc: Tom Talpey <tom@talpey.com>
->>>       Cc: Long Li <longli@microsoft.com>
->>>       Cc: Namjae Jeon <linkinjeon@kernel.org>
->>>       Cc: Hyunchul Lee <hyc.lee@gmail.com>
->>>       Cc: Meetakshi Setiya <meetakshisetiyaoss@gmail.com>
->>>       Cc: linux-cifs@vger.kernel.org
->>>       Cc: samba-technical@lists.samba.org
->>>       Signed-off-by: Stefan Metzmacher <metze@samba.org>
->>>       Signed-off-by: Steve French <stfrench@microsoft.com>
->>>       Stable-dep-of: 43e7e284fc77 ("cifs: Fix the smbd_response slab to
->> allow usercopy")
->>>       Signed-off-by: Sasha Levin <sashal@kernel.org>
->>>
->>> diff --git a/fs/smb/client/cifs_debug.c b/fs/smb/client/cifs_debug.c
->>> index 56b0b5c82dd19..c0196be0e65fc 100644
->>> --- a/fs/smb/client/cifs_debug.c
->>> +++ b/fs/smb/client/cifs_debug.c
->>> @@ -362,6 +362,10 @@ static int cifs_debug_data_proc_show(struct
->> seq_file *m, void *v)
->>>        c = 0;
->>>        spin_lock(&cifs_tcp_ses_lock);
->>>        list_for_each_entry(server, &cifs_tcp_ses_list, tcp_ses_list) {
->>> +#ifdef CONFIG_CIFS_SMB_DIRECT
->>> +             struct smbdirect_socket_parameters *sp;
->>> +#endif
->>> +
->>>                /* channel info will be printed as a part of sessions
->> below */
->>>                if (SERVER_IS_CHAN(server))
->>>                        continue;
->>> @@ -383,6 +387,7 @@ static int cifs_debug_data_proc_show(struct seq_file
->> *m, void *v)
->>>                        seq_printf(m, "\nSMBDirect transport not
->> available");
->>>                        goto skip_rdma;
->>>                }
->>> +             sp = &server->smbd_conn->socket.parameters;
->>>
->>>                seq_printf(m, "\nSMBDirect (in hex) protocol version: %x "
->>>                        "transport status: %x",
->>> @@ -390,18 +395,18 @@ static int cifs_debug_data_proc_show(struct
->> seq_file *m, void *v)
->>>                        server->smbd_conn->socket.status);
->>>                seq_printf(m, "\nConn receive_credit_max: %x "
->>>                        "send_credit_target: %x max_send_size: %x",
->>> -                     server->smbd_conn->receive_credit_max,
->>> -                     server->smbd_conn->send_credit_target,
->>> -                     server->smbd_conn->max_send_size);
->>> +                     sp->recv_credit_max,
->>> +                     sp->send_credit_target,
->>> +                     sp->max_send_size);
->>>                seq_printf(m, "\nConn max_fragmented_recv_size: %x "
->>>                        "max_fragmented_send_size: %x max_receive_size:%x",
->>> -                     server->smbd_conn->max_fragmented_recv_size,
->>> -                     server->smbd_conn->max_fragmented_send_size,
->>> -                     server->smbd_conn->max_receive_size);
->>> +                     sp->max_fragmented_recv_size,
->>> +                     sp->max_fragmented_send_size,
->>> +                     sp->max_recv_size);
->>>                seq_printf(m, "\nConn keep_alive_interval: %x "
->>>                        "max_readwrite_size: %x rdma_readwrite_threshold:
->> %x",
->>> -                     server->smbd_conn->keep_alive_interval,
->>> -                     server->smbd_conn->max_readwrite_size,
->>> +                     sp->keepalive_interval_msec * 1000,
->>> +                     sp->max_read_write_size,
->>>                        server->smbd_conn->rdma_readwrite_threshold);
->>>                seq_printf(m, "\nDebug count_get_receive_buffer: %x "
->>>                        "count_put_receive_buffer: %x count_send_empty:
->> %x",
->>> diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
->>> index 74bcc51ccd32f..e596bc4837b68 100644
->>> --- a/fs/smb/client/smb2ops.c
->>> +++ b/fs/smb/client/smb2ops.c
->>> @@ -504,6 +504,9 @@ smb3_negotiate_wsize(struct cifs_tcon *tcon, struct
->> smb3_fs_context *ctx)
->>>        wsize = min_t(unsigned int, wsize, server->max_write);
->>>    #ifdef CONFIG_CIFS_SMB_DIRECT
->>>        if (server->rdma) {
->>> +             struct smbdirect_socket_parameters *sp =
->>> +                     &server->smbd_conn->socket.parameters;
->>> +
->>>                if (server->sign)
->>>                        /*
->>>                         * Account for SMB2 data transfer packet header and
->>> @@ -511,12 +514,12 @@ smb3_negotiate_wsize(struct cifs_tcon *tcon,
->> struct smb3_fs_context *ctx)
->>>                         */
->>>                        wsize = min_t(unsigned int,
->>>                                wsize,
->>> -
->>   server->smbd_conn->max_fragmented_send_size -
->>> +                             sp->max_fragmented_send_size -
->>>                                        SMB2_READWRITE_PDU_HEADER_SIZE -
->>>                                        sizeof(struct smb2_transform_hdr));
->>>                else
->>>                        wsize = min_t(unsigned int,
->>> -                             wsize,
->> server->smbd_conn->max_readwrite_size);
->>> +                             wsize, sp->max_read_write_size);
->>>        }
->>>    #endif
->>>        if (!(server->capabilities & SMB2_GLOBAL_CAP_LARGE_MTU))
->>> @@ -552,6 +555,9 @@ smb3_negotiate_rsize(struct cifs_tcon *tcon, struct
->> smb3_fs_context *ctx)
->>>        rsize = min_t(unsigned int, rsize, server->max_read);
->>>    #ifdef CONFIG_CIFS_SMB_DIRECT
->>>        if (server->rdma) {
->>> +             struct smbdirect_socket_parameters *sp =
->>> +                     &server->smbd_conn->socket.parameters;
->>> +
->>>                if (server->sign)
->>>                        /*
->>>                         * Account for SMB2 data transfer packet header and
->>> @@ -559,12 +565,12 @@ smb3_negotiate_rsize(struct cifs_tcon *tcon,
->> struct smb3_fs_context *ctx)
->>>                         */
->>>                        rsize = min_t(unsigned int,
->>>                                rsize,
->>> -
->>   server->smbd_conn->max_fragmented_recv_size -
->>> +                             sp->max_fragmented_recv_size -
->>>                                        SMB2_READWRITE_PDU_HEADER_SIZE -
->>>                                        sizeof(struct smb2_transform_hdr));
->>>                else
->>>                        rsize = min_t(unsigned int,
->>> -                             rsize,
->> server->smbd_conn->max_readwrite_size);
->>> +                             rsize, sp->max_read_write_size);
->>>        }
->>>    #endif
->>>
->>> diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
->>> index ac489df8151a1..cbc85bca006f7 100644
->>> --- a/fs/smb/client/smbdirect.c
->>> +++ b/fs/smb/client/smbdirect.c
->>> @@ -320,6 +320,8 @@ static bool process_negotiation_response(
->>>                struct smbd_response *response, int packet_length)
->>>    {
->>>        struct smbd_connection *info = response->info;
->>> +     struct smbdirect_socket *sc = &info->socket;
->>> +     struct smbdirect_socket_parameters *sp = &sc->parameters;
->>>        struct smbdirect_negotiate_resp *packet =
->> smbd_response_payload(response);
->>>
->>>        if (packet_length < sizeof(struct smbdirect_negotiate_resp)) {
->>> @@ -349,20 +351,20 @@ static bool process_negotiation_response(
->>>
->>>        atomic_set(&info->receive_credits, 0);
->>>
->>> -     if (le32_to_cpu(packet->preferred_send_size) >
->> info->max_receive_size) {
->>> +     if (le32_to_cpu(packet->preferred_send_size) > sp->max_recv_size) {
->>>                log_rdma_event(ERR, "error: preferred_send_size=%d\n",
->>>                        le32_to_cpu(packet->preferred_send_size));
->>>                return false;
->>>        }
->>> -     info->max_receive_size = le32_to_cpu(packet->preferred_send_size);
->>> +     sp->max_recv_size = le32_to_cpu(packet->preferred_send_size);
->>>
->>>        if (le32_to_cpu(packet->max_receive_size) < SMBD_MIN_RECEIVE_SIZE)
->> {
->>>                log_rdma_event(ERR, "error: max_receive_size=%d\n",
->>>                        le32_to_cpu(packet->max_receive_size));
->>>                return false;
->>>        }
->>> -     info->max_send_size = min_t(int, info->max_send_size,
->>> -
->>   le32_to_cpu(packet->max_receive_size));
->>> +     sp->max_send_size = min_t(u32, sp->max_send_size,
->>> +                               le32_to_cpu(packet->max_receive_size));
->>>
->>>        if (le32_to_cpu(packet->max_fragmented_size) <
->>>                        SMBD_MIN_FRAGMENTED_SIZE) {
->>> @@ -370,18 +372,18 @@ static bool process_negotiation_response(
->>>                        le32_to_cpu(packet->max_fragmented_size));
->>>                return false;
->>>        }
->>> -     info->max_fragmented_send_size =
->>> +     sp->max_fragmented_send_size =
->>>                le32_to_cpu(packet->max_fragmented_size);
->>>        info->rdma_readwrite_threshold =
->>> -             rdma_readwrite_threshold > info->max_fragmented_send_size ?
->>> -             info->max_fragmented_send_size :
->>> +             rdma_readwrite_threshold > sp->max_fragmented_send_size ?
->>> +             sp->max_fragmented_send_size :
->>>                rdma_readwrite_threshold;
->>>
->>>
->>> -     info->max_readwrite_size = min_t(u32,
->>> +     sp->max_read_write_size = min_t(u32,
->>>                        le32_to_cpu(packet->max_readwrite_size),
->>>                        info->max_frmr_depth * PAGE_SIZE);
->>> -     info->max_frmr_depth = info->max_readwrite_size / PAGE_SIZE;
->>> +     info->max_frmr_depth = sp->max_read_write_size / PAGE_SIZE;
->>>
->>>        return true;
->>>    }
->>> @@ -689,6 +691,7 @@ static int smbd_ia_open(
->>>    static int smbd_post_send_negotiate_req(struct smbd_connection *info)
->>>    {
->>>        struct smbdirect_socket *sc = &info->socket;
->>> +     struct smbdirect_socket_parameters *sp = &sc->parameters;
->>>        struct ib_send_wr send_wr;
->>>        int rc = -ENOMEM;
->>>        struct smbd_request *request;
->>> @@ -704,11 +707,11 @@ static int smbd_post_send_negotiate_req(struct
->> smbd_connection *info)
->>>        packet->min_version = cpu_to_le16(SMBDIRECT_V1);
->>>        packet->max_version = cpu_to_le16(SMBDIRECT_V1);
->>>        packet->reserved = 0;
->>> -     packet->credits_requested = cpu_to_le16(info->send_credit_target);
->>> -     packet->preferred_send_size = cpu_to_le32(info->max_send_size);
->>> -     packet->max_receive_size = cpu_to_le32(info->max_receive_size);
->>> +     packet->credits_requested = cpu_to_le16(sp->send_credit_target);
->>> +     packet->preferred_send_size = cpu_to_le32(sp->max_send_size);
->>> +     packet->max_receive_size = cpu_to_le32(sp->max_recv_size);
->>>        packet->max_fragmented_size =
->>> -             cpu_to_le32(info->max_fragmented_recv_size);
->>> +             cpu_to_le32(sp->max_fragmented_recv_size);
->>>
->>>        request->num_sge = 1;
->>>        request->sge[0].addr = ib_dma_map_single(
->>> @@ -800,6 +803,7 @@ static int smbd_post_send(struct smbd_connection
->> *info,
->>>                struct smbd_request *request)
->>>    {
->>>        struct smbdirect_socket *sc = &info->socket;
->>> +     struct smbdirect_socket_parameters *sp = &sc->parameters;
->>>        struct ib_send_wr send_wr;
->>>        int rc, i;
->>>
->>> @@ -831,7 +835,7 @@ static int smbd_post_send(struct smbd_connection
->> *info,
->>>        } else
->>>                /* Reset timer for idle connection after packet is sent */
->>>                mod_delayed_work(info->workqueue, &info->idle_timer_work,
->>> -                     info->keep_alive_interval*HZ);
->>> +                     msecs_to_jiffies(sp->keepalive_interval_msec));
->>>
->>>        return rc;
->>>    }
->>> @@ -841,6 +845,7 @@ static int smbd_post_send_iter(struct
->> smbd_connection *info,
->>>                               int *_remaining_data_length)
->>>    {
->>>        struct smbdirect_socket *sc = &info->socket;
->>> +     struct smbdirect_socket_parameters *sp = &sc->parameters;
->>>        int i, rc;
->>>        int header_length;
->>>        int data_length;
->>> @@ -868,7 +873,7 @@ static int smbd_post_send_iter(struct
->> smbd_connection *info,
->>>
->>>    wait_send_queue:
->>>        wait_event(info->wait_post_send,
->>> -             atomic_read(&info->send_pending) <
->> info->send_credit_target ||
->>> +             atomic_read(&info->send_pending) < sp->send_credit_target
->> ||
->>>                sc->status != SMBDIRECT_SOCKET_CONNECTED);
->>>
->>>        if (sc->status != SMBDIRECT_SOCKET_CONNECTED) {
->>> @@ -878,7 +883,7 @@ static int smbd_post_send_iter(struct
->> smbd_connection *info,
->>>        }
->>>
->>>        if (unlikely(atomic_inc_return(&info->send_pending) >
->>> -                             info->send_credit_target)) {
->>> +                             sp->send_credit_target)) {
->>>                atomic_dec(&info->send_pending);
->>>                goto wait_send_queue;
->>>        }
->>> @@ -917,7 +922,7 @@ static int smbd_post_send_iter(struct
->> smbd_connection *info,
->>>
->>>        /* Fill in the packet header */
->>>        packet = smbd_request_payload(request);
->>> -     packet->credits_requested = cpu_to_le16(info->send_credit_target);
->>> +     packet->credits_requested = cpu_to_le16(sp->send_credit_target);
->>>
->>>        new_credits = manage_credits_prior_sending(info);
->>>        atomic_add(new_credits, &info->receive_credits);
->>> @@ -1017,16 +1022,17 @@ static int smbd_post_recv(
->>>                struct smbd_connection *info, struct smbd_response
->> *response)
->>>    {
->>>        struct smbdirect_socket *sc = &info->socket;
->>> +     struct smbdirect_socket_parameters *sp = &sc->parameters;
->>>        struct ib_recv_wr recv_wr;
->>>        int rc = -EIO;
->>>
->>>        response->sge.addr = ib_dma_map_single(
->>>                                sc->ib.dev, response->packet,
->>> -                             info->max_receive_size, DMA_FROM_DEVICE);
->>> +                             sp->max_recv_size, DMA_FROM_DEVICE);
->>>        if (ib_dma_mapping_error(sc->ib.dev, response->sge.addr))
->>>                return rc;
->>>
->>> -     response->sge.length = info->max_receive_size;
->>> +     response->sge.length = sp->max_recv_size;
->>>        response->sge.lkey = sc->ib.pd->local_dma_lkey;
->>>
->>>        response->cqe.done = recv_done;
->>> @@ -1274,6 +1280,8 @@ static void idle_connection_timer(struct
->> work_struct *work)
->>>        struct smbd_connection *info = container_of(
->>>                                        work, struct smbd_connection,
->>>                                        idle_timer_work.work);
->>> +     struct smbdirect_socket *sc = &info->socket;
->>> +     struct smbdirect_socket_parameters *sp = &sc->parameters;
->>>
->>>        if (info->keep_alive_requested != KEEP_ALIVE_NONE) {
->>>                log_keep_alive(ERR,
->>> @@ -1288,7 +1296,7 @@ static void idle_connection_timer(struct
->> work_struct *work)
->>>
->>>        /* Setup the next idle timeout work */
->>>        queue_delayed_work(info->workqueue, &info->idle_timer_work,
->>> -                     info->keep_alive_interval*HZ);
->>> +                     msecs_to_jiffies(sp->keepalive_interval_msec));
->>>    }
->>>
->>>    /*
->>> @@ -1300,6 +1308,7 @@ void smbd_destroy(struct TCP_Server_Info *server)
->>>    {
->>>        struct smbd_connection *info = server->smbd_conn;
->>>        struct smbdirect_socket *sc;
->>> +     struct smbdirect_socket_parameters *sp;
->>>        struct smbd_response *response;
->>>        unsigned long flags;
->>>
->>> @@ -1308,6 +1317,7 @@ void smbd_destroy(struct TCP_Server_Info *server)
->>>                return;
->>>        }
->>>        sc = &info->socket;
->>> +     sp = &sc->parameters;
->>>
->>>        log_rdma_event(INFO, "destroying rdma session\n");
->>>        if (sc->status != SMBDIRECT_SOCKET_DISCONNECTED) {
->>> @@ -1349,7 +1359,7 @@ void smbd_destroy(struct TCP_Server_Info *server)
->>>        log_rdma_event(INFO, "free receive buffers\n");
->>>        wait_event(info->wait_receive_queues,
->>>                info->count_receive_queue + info->count_empty_packet_queue
->>> -                     == info->receive_credit_max);
->>> +                     == sp->recv_credit_max);
->>>        destroy_receive_buffers(info);
->>>
->>>        /*
->>> @@ -1437,6 +1447,8 @@ static void destroy_caches_and_workqueue(struct
->> smbd_connection *info)
->>>    #define MAX_NAME_LEN        80
->>>    static int allocate_caches_and_workqueue(struct smbd_connection *info)
->>>    {
->>> +     struct smbdirect_socket *sc = &info->socket;
->>> +     struct smbdirect_socket_parameters *sp = &sc->parameters;
->>>        char name[MAX_NAME_LEN];
->>>        int rc;
->>>
->>> @@ -1451,7 +1463,7 @@ static int allocate_caches_and_workqueue(struct
->> smbd_connection *info)
->>>                return -ENOMEM;
->>>
->>>        info->request_mempool =
->>> -             mempool_create(info->send_credit_target,
->> mempool_alloc_slab,
->>> +             mempool_create(sp->send_credit_target, mempool_alloc_slab,
->>>                        mempool_free_slab, info->request_cache);
->>>        if (!info->request_mempool)
->>>                goto out1;
->>> @@ -1461,13 +1473,13 @@ static int allocate_caches_and_workqueue(struct
->> smbd_connection *info)
->>>                kmem_cache_create(
->>>                        name,
->>>                        sizeof(struct smbd_response) +
->>> -                             info->max_receive_size,
->>> +                             sp->max_recv_size,
->>>                        0, SLAB_HWCACHE_ALIGN, NULL);
->>>        if (!info->response_cache)
->>>                goto out2;
->>>
->>>        info->response_mempool =
->>> -             mempool_create(info->receive_credit_max,
->> mempool_alloc_slab,
->>> +             mempool_create(sp->recv_credit_max, mempool_alloc_slab,
->>>                       mempool_free_slab, info->response_cache);
->>>        if (!info->response_mempool)
->>>                goto out3;
->>> @@ -1477,7 +1489,7 @@ static int allocate_caches_and_workqueue(struct
->> smbd_connection *info)
->>>        if (!info->workqueue)
->>>                goto out4;
->>>
->>> -     rc = allocate_receive_buffers(info, info->receive_credit_max);
->>> +     rc = allocate_receive_buffers(info, sp->recv_credit_max);
->>>        if (rc) {
->>>                log_rdma_event(ERR, "failed to allocate receive
->> buffers\n");
->>>                goto out5;
->>> @@ -1505,6 +1517,7 @@ static struct smbd_connection
->> *_smbd_get_connection(
->>>        int rc;
->>>        struct smbd_connection *info;
->>>        struct smbdirect_socket *sc;
->>> +     struct smbdirect_socket_parameters *sp;
->>>        struct rdma_conn_param conn_param;
->>>        struct ib_qp_init_attr qp_attr;
->>>        struct sockaddr_in *addr_in = (struct sockaddr_in *) dstaddr;
->>> @@ -1515,6 +1528,7 @@ static struct smbd_connection
->> *_smbd_get_connection(
->>>        if (!info)
->>>                return NULL;
->>>        sc = &info->socket;
->>> +     sp = &sc->parameters;
->>>
->>>        sc->status = SMBDIRECT_SOCKET_CONNECTING;
->>>        rc = smbd_ia_open(info, dstaddr, port);
->>> @@ -1541,12 +1555,12 @@ static struct smbd_connection
->> *_smbd_get_connection(
->>>                goto config_failed;
->>>        }
->>>
->>> -     info->receive_credit_max = smbd_receive_credit_max;
->>> -     info->send_credit_target = smbd_send_credit_target;
->>> -     info->max_send_size = smbd_max_send_size;
->>> -     info->max_fragmented_recv_size = smbd_max_fragmented_recv_size;
->>> -     info->max_receive_size = smbd_max_receive_size;
->>> -     info->keep_alive_interval = smbd_keep_alive_interval;
->>> +     sp->recv_credit_max = smbd_receive_credit_max;
->>> +     sp->send_credit_target = smbd_send_credit_target;
->>> +     sp->max_send_size = smbd_max_send_size;
->>> +     sp->max_fragmented_recv_size = smbd_max_fragmented_recv_size;
->>> +     sp->max_recv_size = smbd_max_receive_size;
->>> +     sp->keepalive_interval_msec = smbd_keep_alive_interval * 1000;
->>>
->>>        if (sc->ib.dev->attrs.max_send_sge < SMBDIRECT_MAX_SEND_SGE ||
->>>            sc->ib.dev->attrs.max_recv_sge < SMBDIRECT_MAX_RECV_SGE) {
->>> @@ -1561,7 +1575,7 @@ static struct smbd_connection
->> *_smbd_get_connection(
->>>
->>>        sc->ib.send_cq =
->>>                ib_alloc_cq_any(sc->ib.dev, info,
->>> -                             info->send_credit_target, IB_POLL_SOFTIRQ);
->>> +                             sp->send_credit_target, IB_POLL_SOFTIRQ);
->>>        if (IS_ERR(sc->ib.send_cq)) {
->>>                sc->ib.send_cq = NULL;
->>>                goto alloc_cq_failed;
->>> @@ -1569,7 +1583,7 @@ static struct smbd_connection
->> *_smbd_get_connection(
->>>
->>>        sc->ib.recv_cq =
->>>                ib_alloc_cq_any(sc->ib.dev, info,
->>> -                             info->receive_credit_max, IB_POLL_SOFTIRQ);
->>> +                             sp->recv_credit_max, IB_POLL_SOFTIRQ);
->>>        if (IS_ERR(sc->ib.recv_cq)) {
->>>                sc->ib.recv_cq = NULL;
->>>                goto alloc_cq_failed;
->>> @@ -1578,8 +1592,8 @@ static struct smbd_connection
->> *_smbd_get_connection(
->>>        memset(&qp_attr, 0, sizeof(qp_attr));
->>>        qp_attr.event_handler = smbd_qp_async_error_upcall;
->>>        qp_attr.qp_context = info;
->>> -     qp_attr.cap.max_send_wr = info->send_credit_target;
->>> -     qp_attr.cap.max_recv_wr = info->receive_credit_max;
->>> +     qp_attr.cap.max_send_wr = sp->send_credit_target;
->>> +     qp_attr.cap.max_recv_wr = sp->recv_credit_max;
->>>        qp_attr.cap.max_send_sge = SMBDIRECT_MAX_SEND_SGE;
->>>        qp_attr.cap.max_recv_sge = SMBDIRECT_MAX_RECV_SGE;
->>>        qp_attr.cap.max_inline_data = 0;
->>> @@ -1654,7 +1668,7 @@ static struct smbd_connection
->> *_smbd_get_connection(
->>>        init_waitqueue_head(&info->wait_send_queue);
->>>        INIT_DELAYED_WORK(&info->idle_timer_work, idle_connection_timer);
->>>        queue_delayed_work(info->workqueue, &info->idle_timer_work,
->>> -             info->keep_alive_interval*HZ);
->>> +             msecs_to_jiffies(sp->keepalive_interval_msec));
->>>
->>>        init_waitqueue_head(&info->wait_send_pending);
->>>        atomic_set(&info->send_pending, 0);
->>> @@ -1971,6 +1985,7 @@ int smbd_send(struct TCP_Server_Info *server,
->>>    {
->>>        struct smbd_connection *info = server->smbd_conn;
->>>        struct smbdirect_socket *sc = &info->socket;
->>> +     struct smbdirect_socket_parameters *sp = &sc->parameters;
->>>        struct smb_rqst *rqst;
->>>        struct iov_iter iter;
->>>        unsigned int remaining_data_length, klen;
->>> @@ -1988,10 +2003,10 @@ int smbd_send(struct TCP_Server_Info *server,
->>>        for (i = 0; i < num_rqst; i++)
->>>                remaining_data_length += smb_rqst_len(server,
->> &rqst_array[i]);
->>>
->>> -     if (unlikely(remaining_data_length >
->> info->max_fragmented_send_size)) {
->>> +     if (unlikely(remaining_data_length >
->> sp->max_fragmented_send_size)) {
->>>                /* assertion: payload never exceeds negotiated maximum */
->>>                log_write(ERR, "payload size %d > max size %d\n",
->>> -                     remaining_data_length,
->> info->max_fragmented_send_size);
->>> +                     remaining_data_length,
->> sp->max_fragmented_send_size);
->>>                return -EINVAL;
->>>        }
->>>
->>> diff --git a/fs/smb/client/smbdirect.h b/fs/smb/client/smbdirect.h
->>> index 4b559a4147af1..3d552ab27e0f3 100644
->>> --- a/fs/smb/client/smbdirect.h
->>> +++ b/fs/smb/client/smbdirect.h
->>> @@ -69,15 +69,7 @@ struct smbd_connection {
->>>        spinlock_t lock_new_credits_offered;
->>>        int new_credits_offered;
->>>
->>> -     /* Connection parameters defined in [MS-SMBD] 3.1.1.1 */
->>> -     int receive_credit_max;
->>> -     int send_credit_target;
->>> -     int max_send_size;
->>> -     int max_fragmented_recv_size;
->>> -     int max_fragmented_send_size;
->>> -     int max_receive_size;
->>> -     int keep_alive_interval;
->>> -     int max_readwrite_size;
->>> +     /* dynamic connection parameters defined in [MS-SMBD] 3.1.1.1 */
->>>        enum keep_alive_status keep_alive_requested;
->>>        int protocol;
->>>        atomic_t send_credits;
->>
->>
-> 
+> Yi Lai <yi1.lai@intel.com> reported an issue here. This interface could
+> potentially be called in a non-sleepable context.
 
+Oh thats really bad, the notifiers inside the iommu driver are not
+required to be called in a sleepable context either and I don't really
+want to change that requirement.
+
+Can you do something about how the notifier is called to not be inside
+an atomic context?
+
+Maybe we can push the kernel page table pages onto a list and free
+them from a work queue kind of like what the normal mm does?
+
+Back to the shadowing idea?
+
+Jason
 
