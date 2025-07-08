@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07F3AFD307
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:52:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B7DAFD1DF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E049E188B4F3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C47F188DD97
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0FE2DEA94;
-	Tue,  8 Jul 2025 16:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE242E3385;
+	Tue,  8 Jul 2025 16:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWyYsHVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fP8Bx29U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19A1214A9B;
-	Tue,  8 Jul 2025 16:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7CA289E2C;
+	Tue,  8 Jul 2025 16:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993350; cv=none; b=L5BdMc0F9v84/U2ajEyqj9ONnIHN+bsYMzgf5D2hqst5E44P87W+QsI3i++UmP0bz9zK2f+w+4bFJOJuINwhtO2YoKr+69K8RBTY9PCdVlvYGGdOoqNbYtIZCbi8woWLkrZl3vs9ksFZDWyn7klToBdBHOFTEVw1D0hP4hEOAe4=
+	t=1751992712; cv=none; b=Sv8M+NczZE+TIbuOZHYX5jUxSusUVjVtheZ7a4CzLK4KVw+pcgNbMR6Z6V6GXblOaEL+OfogweTnHTqU9SL8Ago5Q2+Wgph5oRq2lHiazwCdDMFk+zPeMJlb8b0M1fsCLPR4pCgPeL67pEkluMQMKJDR4rCfeE04Yr5kc3+h8a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993350; c=relaxed/simple;
-	bh=0PEapq4BZ+HnaqPbKqJQOJJ6RUnyWxSsCsOfTXgZYgs=;
+	s=arc-20240116; t=1751992712; c=relaxed/simple;
+	bh=+5dW3cJwGVonpxpyVyeB6aCjPRp8APp7DtZHYai+Fhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aM8sPiRARJT3FNNx63fIvc/yV6MPCcGR3RwSey9ALYtILIfbek6x7ejuP3YlXQvlfYMZ6YeSocvYJRuoBqF+yavfGkRnoKCXrnBxzHq3a1CLsYpPszXprpClNZNY4EDCyUDfN8yShG8kktQ+kJAgZnuAWEzl1uSuoQQeSSkP27c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWyYsHVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C1CC4CEED;
-	Tue,  8 Jul 2025 16:49:09 +0000 (UTC)
+	 MIME-Version; b=bR684TeQJbtR9vPte3HLv9Cut4vu2ll9rQOEMu1h9XaW9f0OqO3Bh81gKqsDYQlbEfyIyKy8731SvznNFDn5zc9OiH+laveVo7IcMH6wVtYAxxrP3o+/k3R+DYgVjmQkTPA3vvXFKaoG/8cLDBUMWcnFDDmbkEDWmp36inwUyq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fP8Bx29U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C69BC4CEED;
+	Tue,  8 Jul 2025 16:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993350;
-	bh=0PEapq4BZ+HnaqPbKqJQOJJ6RUnyWxSsCsOfTXgZYgs=;
+	s=korg; t=1751992712;
+	bh=+5dW3cJwGVonpxpyVyeB6aCjPRp8APp7DtZHYai+Fhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WWyYsHVFHL6rPJzMK6IkKvzRdVGCV0dYT5KnzQ3K1VQPyQfz5zwFsQZz1i8VfGFeW
-	 9J6rHfLGF25kM6AHoj1BO67y1HOwXVUROiX8qUJYQ8rZEdXekc7hSnfBWq6uaHeNh8
-	 xTLSqBw1/DhhtzAsgtCUCoJlMmUj4dCkHAEIF52Q=
+	b=fP8Bx29UpAuGZM7Lu+HDFAw4m4LNEkM4VKHClJgHfx3OTRNat9F0DpwuYv+f5qRxz
+	 HWbj1zV9SkqzFnDDvDIqv+yijMBl7Pp7EvUS94GNBqVSYzAL1ZufYi2ZS1AhNf0rk1
+	 o++oFJ9GkLToVpVnn4TV4TAjeHXMOs6i32AGte0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15 013/178] net: libwx: fix the incorrect display of the queue number
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 054/232] btrfs: propagate last_unlink_trans earlier when doing a rmdir
 Date: Tue,  8 Jul 2025 18:20:50 +0200
-Message-ID: <20250708162236.891929255@linuxfoundation.org>
+Message-ID: <20250708162242.877790118@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 5186ff7e1d0e26aaef998ba18b31c79c28d1441f upstream.
+[ Upstream commit c466e33e729a0ee017d10d919cba18f503853c60 ]
 
-When setting "ethtool -L eth0 combined 1", the number of RX/TX queue is
-changed to be 1. RSS is disabled at this moment, and the indices of FDIR
-have not be changed in wx_set_rss_queues(). So the combined count still
-shows the previous value. This issue was introduced when supporting
-FDIR. Fix it for those devices that support FDIR.
+In case the removed directory had a snapshot that was deleted, we are
+propagating its inode's last_unlink_trans to the parent directory after
+we removed the entry from the parent directory. This leaves a small race
+window where someone can log the parent directory after we removed the
+entry and before we updated last_unlink_trans, and as a result if we ever
+try to replay such a log tree, we will fail since we will attempt to
+remove a snapshot during log replay, which is currently not possible and
+results in the log replay (and mount) to fail. This is the type of failure
+described in commit 1ec9a1ae1e30 ("Btrfs: fix unreplayable log after
+snapshot delete + parent dir fsync").
 
-Fixes: 34744a7749b3 ("net: txgbe: add FDIR info to ethtool ops")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/A5C8FE56D6C04608+20250701070625.73680-1-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So fix this by propagating the last_unlink_trans to the parent directory
+before we remove the entry from it.
+
+Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_lib.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/inode.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -1641,6 +1641,7 @@ static void wx_set_rss_queues(struct wx
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 921ec3802648b..345e86fd844df 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4734,7 +4734,6 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	struct btrfs_fs_info *fs_info = BTRFS_I(inode)->root->fs_info;
+ 	int ret = 0;
+ 	struct btrfs_trans_handle *trans;
+-	u64 last_unlink_trans;
+ 	struct fscrypt_name fname;
  
- 	clear_bit(WX_FLAG_FDIR_HASH, wx->flags);
+ 	if (inode->i_size > BTRFS_EMPTY_DIR_SIZE)
+@@ -4760,6 +4759,23 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 		goto out_notrans;
+ 	}
  
-+	wx->ring_feature[RING_F_FDIR].indices = 1;
- 	/* Use Flow Director in addition to RSS to ensure the best
- 	 * distribution of flows across cores, even when an FDIR flow
- 	 * isn't matched.
++	/*
++	 * Propagate the last_unlink_trans value of the deleted dir to its
++	 * parent directory. This is to prevent an unrecoverable log tree in the
++	 * case we do something like this:
++	 * 1) create dir foo
++	 * 2) create snapshot under dir foo
++	 * 3) delete the snapshot
++	 * 4) rmdir foo
++	 * 5) mkdir foo
++	 * 6) fsync foo or some file inside foo
++	 *
++	 * This is because we can't unlink other roots when replaying the dir
++	 * deletes for directory foo.
++	 */
++	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
++		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
++
+ 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
+ 		ret = btrfs_unlink_subvol(trans, BTRFS_I(dir), dentry);
+ 		goto out;
+@@ -4769,27 +4785,11 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	if (ret)
+ 		goto out;
+ 
+-	last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
+-
+ 	/* now the directory is empty */
+ 	ret = btrfs_unlink_inode(trans, BTRFS_I(dir), BTRFS_I(d_inode(dentry)),
+ 				 &fname.disk_name);
+-	if (!ret) {
++	if (!ret)
+ 		btrfs_i_size_write(BTRFS_I(inode), 0);
+-		/*
+-		 * Propagate the last_unlink_trans value of the deleted dir to
+-		 * its parent directory. This is to prevent an unrecoverable
+-		 * log tree in the case we do something like this:
+-		 * 1) create dir foo
+-		 * 2) create snapshot under dir foo
+-		 * 3) delete the snapshot
+-		 * 4) rmdir foo
+-		 * 5) mkdir foo
+-		 * 6) fsync foo or some file inside foo
+-		 */
+-		if (last_unlink_trans >= trans->transid)
+-			BTRFS_I(dir)->last_unlink_trans = last_unlink_trans;
+-	}
+ out:
+ 	btrfs_end_transaction(trans);
+ out_notrans:
+-- 
+2.39.5
+
 
 
 
