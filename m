@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-160968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A054AFD2C8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4743EAFD0E6
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:29:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E635E58721F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9780B7AFECC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650312E49AF;
-	Tue,  8 Jul 2025 16:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0921B2E0910;
+	Tue,  8 Jul 2025 16:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfrB6pPp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chvoo4Vr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B5123DE;
-	Tue,  8 Jul 2025 16:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB292A1BA;
+	Tue,  8 Jul 2025 16:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993216; cv=none; b=Y/cVZjvFgA0JTOeoMejEg9lFSMqRddKcmyPURvxrb/VaRdQbD772FEXVXiAZWlesdKNBpcF7Z2RHt1zRomqVm6Lxn/4uGh9nH2edHAU4pXoH3MDbQVyeLT6HZuo1qwrxMzZGvDCEkPU9nqG06wwQDid5QOm4/A1ZpcXYnVzj6O4=
+	t=1751992129; cv=none; b=ll9Lq0/Tx17ekmLwBEVLR1MsawuJo7V0BvJR9Xxe+TRQey/w3i/El0wwQ+cGOSQWWHYcIsumzSIAXPIcbN+OvIxTW6zQk9WolBuf0i20eQo4rxHHwkARrakRmZbmL4qiGoibB1+jAfUfxZ/eOCEQd5frici9q0FlH6rMsR7eZrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993216; c=relaxed/simple;
-	bh=A3tRwjt1DW9ehh9vjVleZSt4A9y0vk2o/jlXR6PYlms=;
+	s=arc-20240116; t=1751992129; c=relaxed/simple;
+	bh=TNLO7LAjNeLheDeY4IN75pIzeHAcAH3kPlBI7kFM6YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/19jaUeq5ffGlusHqCaGKSb9cWgGcinWBq1v9JvN4mAXwdskiwSr/mU5YK9L4eI1V7mze+CghWqxZ82YPxbMAXVWaNeQRYzvwVlzyc0vXJW6CwjiQOu5R6GL0sFJgNB7QP3sVPxXFktP4HCAbUVCScuTHMGMP5l5xTLZ6Xq+FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfrB6pPp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4575C4CEED;
-	Tue,  8 Jul 2025 16:46:55 +0000 (UTC)
+	 MIME-Version; b=qyuvA1DkCnlFT0dL98gqtyl/VMICfNQ5M8z0Vrkcrc288ngYdtONYDJEfB9eW9nJT4tDd4BagXCkn4MMb03rJ/gNz3xYW0IWuw+8xyPMxtOpfTK7rin8oh2pEOh+aJd00IIQ58geTPDiOBNg+PHcZZ3+CTc/+FmctCf/8Fzm4Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chvoo4Vr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D55C4CEED;
+	Tue,  8 Jul 2025 16:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993216;
-	bh=A3tRwjt1DW9ehh9vjVleZSt4A9y0vk2o/jlXR6PYlms=;
+	s=korg; t=1751992129;
+	bh=TNLO7LAjNeLheDeY4IN75pIzeHAcAH3kPlBI7kFM6YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RfrB6pPpV3eYsEHruJ7VAudQvZ5UFFLMlDmoCINZ166m31u/cCkkWV6HMRNYjRAfx
-	 V3oOeG0lJxNiRKukkGQ8YTaV8GC/uI8SvCI/kH7ndmiXtEb2mkhU+vNg8+qhuQLgW2
-	 WOlmZwen9ZuKTcEixQYLQKC+QTO4vrBs1cjRQOn0=
+	b=chvoo4VrTVwGu2A2abR5d2RhZqnRKpxvO99uAjB2oYZ7bkx6z7zwY+C6xNWQ2pLub
+	 BmMgwCEucFRGlneEWOrSQPRg1ajscQRxa3DfTWZWKDCUN8/XS1RnDdvYcHnS8a8lzV
+	 F6vcVF0DiuGIf5id1InahYaSOKZcKLgEfcF9pQpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Subject: [PATCH 6.12 226/232] mm/vmalloc: fix data race in show_numa_info()
+	Tulio Magno <tuliom@ascii.art.br>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Justin M. Forbes" <jforbes@fedoraproject.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 50/81] powerpc: Fix struct termio related ioctl macros
 Date: Tue,  8 Jul 2025 18:23:42 +0200
-Message-ID: <20250708162247.340959402@linuxfoundation.org>
+Message-ID: <20250708162226.606034414@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,169 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
 
-commit 5c5f0468d172ddec2e333d738d2a1f85402cf0bc upstream.
+[ Upstream commit ab107276607af90b13a5994997e19b7b9731e251 ]
 
-The following data-race was found in show_numa_info():
+Since termio interface is now obsolete, include/uapi/asm/ioctls.h
+has some constant macros referring to "struct termio", this caused
+build failure at userspace.
 
-==================================================================
-BUG: KCSAN: data-race in vmalloc_info_show / vmalloc_info_show
+In file included from /usr/include/asm/ioctl.h:12,
+                 from /usr/include/asm/ioctls.h:5,
+                 from tst-ioctls.c:3:
+tst-ioctls.c: In function 'get_TCGETA':
+tst-ioctls.c:12:10: error: invalid application of 'sizeof' to incomplete type 'struct termio'
+   12 |   return TCGETA;
+      |          ^~~~~~
 
-read to 0xffff88800971fe30 of 4 bytes by task 8289 on cpu 0:
- show_numa_info mm/vmalloc.c:4936 [inline]
- vmalloc_info_show+0x5a8/0x7e0 mm/vmalloc.c:5016
- seq_read_iter+0x373/0xb40 fs/seq_file.c:230
- proc_reg_read_iter+0x11e/0x170 fs/proc/inode.c:299
-....
+Even though termios.h provides "struct termio", trying to juggle definitions around to
+make it compile could introduce regressions. So better to open code it.
 
-write to 0xffff88800971fe30 of 4 bytes by task 8287 on cpu 1:
- show_numa_info mm/vmalloc.c:4934 [inline]
- vmalloc_info_show+0x38f/0x7e0 mm/vmalloc.c:5016
- seq_read_iter+0x373/0xb40 fs/seq_file.c:230
- proc_reg_read_iter+0x11e/0x170 fs/proc/inode.c:299
-....
-
-value changed: 0x0000008f -> 0x00000000
-==================================================================
-
-According to this report,there is a read/write data-race because
-m->private is accessible to multiple CPUs.  To fix this, instead of
-allocating the heap in proc_vmalloc_init() and passing the heap address to
-m->private, vmalloc_info_show() should allocate the heap.
-
-Link: https://lkml.kernel.org/r/20250508165620.15321-1-aha310510@gmail.com
-Fixes: 8e1d743f2c26 ("mm: vmalloc: support multiple nodes in vmallocinfo")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-Reviewed-by: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Tulio Magno <tuliom@ascii.art.br>
+Suggested-by: Nicholas Piggin <npiggin@gmail.com>
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
+Closes: https://lore.kernel.org/linuxppc-dev/8734dji5wl.fsf@ascii.art.br/
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250517142237.156665-1-maddy@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmalloc.c |   63 ++++++++++++++++++++++++++++++++---------------------------
- 1 file changed, 35 insertions(+), 28 deletions(-)
+ arch/powerpc/include/uapi/asm/ioctls.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3095,7 +3095,7 @@ static void clear_vm_uninitialized_flag(
- 	/*
- 	 * Before removing VM_UNINITIALIZED,
- 	 * we should make sure that vm has proper values.
--	 * Pair with smp_rmb() in show_numa_info().
-+	 * Pair with smp_rmb() in vread_iter() and vmalloc_info_show().
- 	 */
- 	smp_wmb();
- 	vm->flags &= ~VM_UNINITIALIZED;
-@@ -4938,28 +4938,29 @@ bool vmalloc_dump_obj(void *object)
- #endif
+diff --git a/arch/powerpc/include/uapi/asm/ioctls.h b/arch/powerpc/include/uapi/asm/ioctls.h
+index 2c145da3b774a..b5211e413829a 100644
+--- a/arch/powerpc/include/uapi/asm/ioctls.h
++++ b/arch/powerpc/include/uapi/asm/ioctls.h
+@@ -23,10 +23,10 @@
+ #define TCSETSW		_IOW('t', 21, struct termios)
+ #define TCSETSF		_IOW('t', 22, struct termios)
  
- #ifdef CONFIG_PROC_FS
--static void show_numa_info(struct seq_file *m, struct vm_struct *v)
--{
--	if (IS_ENABLED(CONFIG_NUMA)) {
--		unsigned int nr, *counters = m->private;
--		unsigned int step = 1U << vm_area_page_order(v);
+-#define TCGETA		_IOR('t', 23, struct termio)
+-#define TCSETA		_IOW('t', 24, struct termio)
+-#define TCSETAW		_IOW('t', 25, struct termio)
+-#define TCSETAF		_IOW('t', 28, struct termio)
++#define TCGETA		0x40147417 /* _IOR('t', 23, struct termio) */
++#define TCSETA		0x80147418 /* _IOW('t', 24, struct termio) */
++#define TCSETAW		0x80147419 /* _IOW('t', 25, struct termio) */
++#define TCSETAF		0x8014741c /* _IOW('t', 28, struct termio) */
  
--		if (!counters)
--			return;
-+/*
-+ * Print number of pages allocated on each memory node.
-+ *
-+ * This function can only be called if CONFIG_NUMA is enabled
-+ * and VM_UNINITIALIZED bit in v->flags is disabled.
-+ */
-+static void show_numa_info(struct seq_file *m, struct vm_struct *v,
-+				 unsigned int *counters)
-+{
-+	unsigned int nr;
-+	unsigned int step = 1U << vm_area_page_order(v);
- 
--		if (v->flags & VM_UNINITIALIZED)
--			return;
--		/* Pair with smp_wmb() in clear_vm_uninitialized_flag() */
--		smp_rmb();
-+	if (!counters)
-+		return;
- 
--		memset(counters, 0, nr_node_ids * sizeof(unsigned int));
-+	memset(counters, 0, nr_node_ids * sizeof(unsigned int));
- 
--		for (nr = 0; nr < v->nr_pages; nr += step)
--			counters[page_to_nid(v->pages[nr])] += step;
--		for_each_node_state(nr, N_HIGH_MEMORY)
--			if (counters[nr])
--				seq_printf(m, " N%u=%u", nr, counters[nr]);
--	}
-+	for (nr = 0; nr < v->nr_pages; nr += step)
-+		counters[page_to_nid(v->pages[nr])] += step;
-+	for_each_node_state(nr, N_HIGH_MEMORY)
-+		if (counters[nr])
-+			seq_printf(m, " N%u=%u", nr, counters[nr]);
- }
- 
- static void show_purge_info(struct seq_file *m)
-@@ -4987,6 +4988,10 @@ static int vmalloc_info_show(struct seq_
- 	struct vmap_area *va;
- 	struct vm_struct *v;
- 	int i;
-+	unsigned int *counters;
-+
-+	if (IS_ENABLED(CONFIG_NUMA))
-+		counters = kmalloc(nr_node_ids * sizeof(unsigned int), GFP_KERNEL);
- 
- 	for (i = 0; i < nr_vmap_nodes; i++) {
- 		vn = &vmap_nodes[i];
-@@ -5003,6 +5008,11 @@ static int vmalloc_info_show(struct seq_
- 			}
- 
- 			v = va->vm;
-+			if (v->flags & VM_UNINITIALIZED)
-+				continue;
-+
-+			/* Pair with smp_wmb() in clear_vm_uninitialized_flag() */
-+			smp_rmb();
- 
- 			seq_printf(m, "0x%pK-0x%pK %7ld",
- 				v->addr, v->addr + v->size, v->size);
-@@ -5037,7 +5047,9 @@ static int vmalloc_info_show(struct seq_
- 			if (is_vmalloc_addr(v->pages))
- 				seq_puts(m, " vpages");
- 
--			show_numa_info(m, v);
-+			if (IS_ENABLED(CONFIG_NUMA))
-+				show_numa_info(m, v, counters);
-+
- 			seq_putc(m, '\n');
- 		}
- 		spin_unlock(&vn->busy.lock);
-@@ -5047,19 +5059,14 @@ static int vmalloc_info_show(struct seq_
- 	 * As a final step, dump "unpurged" areas.
- 	 */
- 	show_purge_info(m);
-+	if (IS_ENABLED(CONFIG_NUMA))
-+		kfree(counters);
- 	return 0;
- }
- 
- static int __init proc_vmalloc_init(void)
- {
--	void *priv_data = NULL;
--
--	if (IS_ENABLED(CONFIG_NUMA))
--		priv_data = kmalloc(nr_node_ids * sizeof(unsigned int), GFP_KERNEL);
--
--	proc_create_single_data("vmallocinfo",
--		0400, NULL, vmalloc_info_show, priv_data);
--
-+	proc_create_single("vmallocinfo", 0400, NULL, vmalloc_info_show);
- 	return 0;
- }
- module_init(proc_vmalloc_init);
+ #define TCSBRK		_IO('t', 29)
+ #define TCXONC		_IO('t', 30)
+-- 
+2.39.5
+
 
 
 
