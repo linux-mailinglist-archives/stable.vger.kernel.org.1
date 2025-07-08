@@ -1,177 +1,86 @@
-Return-Path: <stable+bounces-160480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6999FAFC8D4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 12:49:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A2FAFC9CE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 13:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC19816C974
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 10:48:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13CFC1BC0EA0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 11:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C140927054B;
-	Tue,  8 Jul 2025 10:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442EF2C3768;
+	Tue,  8 Jul 2025 11:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0grPy5Yd"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LE+38SLD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D92225A29
-	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 10:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A728779DA;
+	Tue,  8 Jul 2025 11:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751971710; cv=none; b=eAUpFwxi5BYJDIst4/51UGBSgzHLZ0U4BzoYTCbzbGpFp0LMGalQS1NSQFLFU2M1YcV0G6X+UVVadgDTKDwKvftUOhSwAlPzg7aPzlffkW8yo7LKPaPJ8OiKyWFNar/QCNtJpYtlrdOpyzCDrs+eLM+Y+tKV7zvJ976Y8ylPC8Y=
+	t=1751975108; cv=none; b=JywU/1WoKHZrjRxzdjsv1LO8fKpHdMehZkSjwXQiLRq5/TyHm1D8NRViMLozjzlMGH5z27gkTInB8hr1eMd06TW6rUBaK/PrJyeR7Yjul84k7/cFPv8xsC1KHX2IbIgNAZEQgml5JoHadefvBxRRFH6nVnBEfEJm97Io6T81U/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751971710; c=relaxed/simple;
-	bh=EO6vRUbLQNIiePG3TlF3LTrJRu3fyqjvQ3nXDAWzkCs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WWmmqlrLusiwwfcinT30iBd4KCZU3/iA3m/TeOZ7YE/wnghsL14ie4zbUV643ibQ3YCCEyoF+7Nmk61s/11x58BKhF2U3Z3lbbqvPQNIiwbnVXwkGeSVUQ39KqgYdUxVH7hnZ638WFb4iOkTVV5UAAo9l3cfLbULrQ6sCX9QllQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0grPy5Yd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CB5C4CEED;
-	Tue,  8 Jul 2025 10:48:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751971709;
-	bh=EO6vRUbLQNIiePG3TlF3LTrJRu3fyqjvQ3nXDAWzkCs=;
-	h=Subject:To:Cc:From:Date:From;
-	b=0grPy5Yd2O4IM68NBvFnN+CnQxkuDJxJk0B7x4OoQDSAUjWO0/3lDebbsuHFq7RXW
-	 p6yJSAEmo7cZ5lctJlU46Z9wZlq4ltjGuqJRFIoXdsCjNZZRrGF3+h6558btUrAdvI
-	 cS7mJTAfjZoahS913emVNGmYAROpxeiZRH2u0Hqk=
-Subject: FAILED: patch "[PATCH] usb: dwc3: Abort suspend on soft disconnect failure" failed to apply to 5.15-stable tree
-To: khtsai@google.com,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 08 Jul 2025 12:48:16 +0200
-Message-ID: <2025070816-untoasted-wooing-3f93@gregkh>
+	s=arc-20240116; t=1751975108; c=relaxed/simple;
+	bh=OUWXUObAAT6qENhLF7SHRJS/utQKQSNP4cfbJShIvow=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WOlvCl43k9SJ65qQGWPvoY7Fju0EOvhGlXRd11O/jFw4cwaiOtXMKD1+xNpRTVDrNkXN4fwz+0zhBDsb/YWzsjGkOm+c9Y4hCeleYWTBqOM2766P+M/r8P7iBl2aN4M9MpdxX8XL64tN9oYLsjlYAPZLdmRVSRU7lT3lCnht0w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LE+38SLD; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=OUWXUObAAT6qENhLF7SHRJS/utQKQSNP4cfbJShIvow=;
+	t=1751975106; x=1753184706; b=LE+38SLDThNgoSMq+G4aUaStvlaHHJzOMAmfmqcdlY9Og3+
+	zYPH4nV2YklKyv730kdWWgmwsWWO63jIBnxoEkimnebv7t3RrMc4MgunzXy6fRCtE3gGvITy2FILY
+	hzpo02ZyHZIDaYAL9TQarTa7Tb4OCwkE+k1qmWArsZAQatCQT4zHz/FK9UsH6TSiUJcHp1r3Yyu5a
+	7maai0gAamxsC1wEwkrYqmhrMAGSvztVw1EoUw2nGTBRA15HSt7AvGjw8gZ+2FY2qFboy2DYwvW4E
+	8KNgDlfIJPRFLcHIVSRLjAFknejtrDNUaBXTj26NdMgcRMLuJRB6BmJtB+T3AkGg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uZ6kx-0000000Br7X-0iK0;
+	Tue, 08 Jul 2025 13:45:03 +0200
+Message-ID: <b71db1e03da50e161b898a763bd01f6a1c8ce3e2.camel@sipsolutions.net>
+Subject: Re: [PATCH v3] wifi: wilc1000: Add error handling for
+ wilc_sdio_cmd52()
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Wentao Liang <vulab@iscas.ac.cn>, ajay.kathat@microchip.com, 
+	claudiu.beznea@tuxon.dev, kvalo@kernel.org
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Date: Tue, 08 Jul 2025 13:45:02 +0200
+In-Reply-To: <20250519084211.1752-1-vulab@iscas.ac.cn>
+References: <20250519084211.1752-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
+On Mon, 2025-05-19 at 16:42 +0800, Wentao Liang wrote:
+> The wilc_sdio_read_size() calls wilc_sdio_cmd52() but does not check the
+> return value. This could lead to execution with potentially invalid data
+> if wilc_sdio_cmd52() fails. A proper implementation can be found in
+> wilc_sdio_read_reg().
+>=20
+> Add error handling for wilc_sdio_cmd52(). If wilc_sdio_cmd52() fails,
+> log an error message via dev_err().
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+That's clearly hno longer true, please submit consistent patches.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Also, this change (at best!) addresses half the problem, please fix it
+fully if you want to bother us with it at all.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 630a1dec3b0eba2a695b9063f1c205d585cbfec9
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025070816-untoasted-wooing-3f93@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 630a1dec3b0eba2a695b9063f1c205d585cbfec9 Mon Sep 17 00:00:00 2001
-From: Kuen-Han Tsai <khtsai@google.com>
-Date: Wed, 28 May 2025 18:03:11 +0800
-Subject: [PATCH] usb: dwc3: Abort suspend on soft disconnect failure
-
-When dwc3_gadget_soft_disconnect() fails, dwc3_suspend_common() keeps
-going with the suspend, resulting in a period where the power domain is
-off, but the gadget driver remains connected.  Within this time frame,
-invoking vbus_event_work() will cause an error as it attempts to access
-DWC3 registers for endpoint disabling after the power domain has been
-completely shut down.
-
-Abort the suspend sequence when dwc3_gadget_suspend() cannot halt the
-controller and proceeds with a soft connect.
-
-Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
-Cc: stable <stable@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250528100315.2162699-1-khtsai@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 2bc775a747f2..8002c23a5a02 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -2422,6 +2422,7 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
- {
- 	u32 reg;
- 	int i;
-+	int ret;
- 
- 	if (!pm_runtime_suspended(dwc->dev) && !PMSG_IS_AUTO(msg)) {
- 		dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
-@@ -2440,7 +2441,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
- 	case DWC3_GCTL_PRTCAP_DEVICE:
- 		if (pm_runtime_suspended(dwc->dev))
- 			break;
--		dwc3_gadget_suspend(dwc);
-+		ret = dwc3_gadget_suspend(dwc);
-+		if (ret)
-+			return ret;
- 		synchronize_irq(dwc->irq_gadget);
- 		dwc3_core_exit(dwc);
- 		break;
-@@ -2475,7 +2478,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
- 			break;
- 
- 		if (dwc->current_otg_role == DWC3_OTG_ROLE_DEVICE) {
--			dwc3_gadget_suspend(dwc);
-+			ret = dwc3_gadget_suspend(dwc);
-+			if (ret)
-+				return ret;
- 			synchronize_irq(dwc->irq_gadget);
- 		}
- 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 321361288935..b6b63b530148 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4821,8 +4821,15 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
- 	int ret;
- 
- 	ret = dwc3_gadget_soft_disconnect(dwc);
--	if (ret)
--		goto err;
-+	/*
-+	 * Attempt to reset the controller's state. Likely no
-+	 * communication can be established until the host
-+	 * performs a port reset.
-+	 */
-+	if (ret && dwc->softconnect) {
-+		dwc3_gadget_soft_connect(dwc);
-+		return -EAGAIN;
-+	}
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	if (dwc->gadget_driver)
-@@ -4830,17 +4837,6 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
- 	return 0;
--
--err:
--	/*
--	 * Attempt to reset the controller's state. Likely no
--	 * communication can be established until the host
--	 * performs a port reset.
--	 */
--	if (dwc->softconnect)
--		dwc3_gadget_soft_connect(dwc);
--
--	return ret;
- }
- 
- int dwc3_gadget_resume(struct dwc3 *dwc)
-
+johannes
 
