@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-160802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B664AFD1E9
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0F6AFD35B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE98C16818E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 717477AFA94
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3181C2E540C;
-	Tue,  8 Jul 2025 16:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E072DC34C;
+	Tue,  8 Jul 2025 16:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzKatBd4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ykv4kG3J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FFE2E2F0D;
-	Tue,  8 Jul 2025 16:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDD91DB127;
+	Tue,  8 Jul 2025 16:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992733; cv=none; b=d9CibNtgw4icaaHc58LbKAf6dvqNExfYEQujORrgZlPShG9SdzT1tMk3XdJcWmJKaOkzJu0nCt96m6XB5zgBLn6Ungo52lLllpCkqsq0zZwvIr/hhTHlg4iOYK9qhxx/Z3E+6u3G284i72rz1+ibVcXHs5TpgPAkwjM9n/GlexI=
+	t=1751993789; cv=none; b=B0Cc1ZpYdxPKkEM56RDPzbeg1u8k3NACN1EyjZYdsOG8zXRZ85Rr0AuLtbkj9jyCF8a7aPZ8jV3Ou2lKeVHqV05VvCgbNnUs/KzQqgcimByw6Ve1x5Y7HIghpflHObb7Ha6U3Vw1WhGDtZtUNTfOAYpyY0fbC57OoRj6PhQ/nsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992733; c=relaxed/simple;
-	bh=e8+MB4kyCu7+Wjew1JSfAmFByHfFnJWrgSV3X0S2QIk=;
+	s=arc-20240116; t=1751993789; c=relaxed/simple;
+	bh=30tLtuxAjgQGAzN6ge92qXg9x24sW8lZuHEbD6AcSWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M7bw2sRIW1BEChHyp1yfl2dpdphIMbXK++sn+IZSYTRXKHhB2B/n/XkzhPJHFDFqbggKkmky5zFI7FFUe4pJJ+gPbaKmGo6MjkTqcTUeyHSAQqYEwAYzDQD5GPu4QI00Zt4V+wXK0KLLV6WN3yY3PpZaNRTVAVexk8s8/c5wDgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzKatBd4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677F2C4CEED;
-	Tue,  8 Jul 2025 16:38:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yoith+PaQZEdBCkcTNlEhKTrLV37e1RoCloBhPpgsViIWY+QeWVDKIPjnx5U+Uthjtl1gEtdgBCdfRr7hw6wkCJiE/c4Sgra5a5FPLWfZ/+0tND+Rz4moAqThNEfo1cQfxcbIBvVxM2LqUK47RvB1i+d9vCsXKVLXc6WFH7Ql0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ykv4kG3J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278A1C4CEF0;
+	Tue,  8 Jul 2025 16:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992732;
-	bh=e8+MB4kyCu7+Wjew1JSfAmFByHfFnJWrgSV3X0S2QIk=;
+	s=korg; t=1751993789;
+	bh=30tLtuxAjgQGAzN6ge92qXg9x24sW8lZuHEbD6AcSWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RzKatBd479ik0nMIPGEH8DCZQfSjc+ZdTYqdIZF/xptONfyGJ/DwqisFueOHAe/Ki
-	 aExBxxUK9cyTwAeGf2Fw1rMc7+TawEdT9VheivOySoUprWIZi/GKq8ix8u7/8qlOaO
-	 /ORvTQPZOYG4b9WeV8uxhznjjeRmldQjKVdh9p6s=
+	b=Ykv4kG3JUzErQS3mDBBTDpD5B0M7AFtKIgF5LPVOkPs9B/PiTmfGW1XDnQGTVNIMP
+	 HHK3r30kONqvRQnfcTTP4G/pRq2om0CB4Yz6MDvEsOr5gPsMldrphdkkPqxCh4yMC/
+	 Mz6MGll3G10pq0Y40mwMFA+441GyNc3srMqf6yEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 060/232] drm/i915/selftests: Change mock_request() to return error pointers
+Subject: [PATCH 5.15 019/160] usb: Add checks for snprintf() calls in usb_alloc_dev()
 Date: Tue,  8 Jul 2025 18:20:56 +0200
-Message-ID: <20250708162243.034021611@linuxfoundation.org>
+Message-ID: <20250708162232.039008474@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,111 +59,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit caa7c7a76b78ce41d347003f84975125383e6b59 ]
+[ Upstream commit 82fe5107fa3d21d6c3fba091c9dbc50495588630 ]
 
-There was an error pointer vs NULL bug in __igt_breadcrumbs_smoketest().
-The __mock_request_alloc() function implements the
-smoketest->request_alloc() function pointer.  It was supposed to return
-error pointers, but it propogates the NULL return from mock_request()
-so in the event of a failure, it would lead to a NULL pointer
-dereference.
+When creating a device path in the driver the snprintf() takes
+up to 16 characters long argument along with the additional up to
+12 characters for the signed integer (as it can't see the actual limits)
+and tries to pack this into 16 bytes array. GCC complains about that
+when build with `make W=1`:
 
-To fix this, change the mock_request() function to return error pointers
-and update all the callers to expect that.
+  drivers/usb/core/usb.c:705:25: note: ‘snprintf’ output between 3 and 28 bytes into a destination of size 16
 
-Fixes: 52c0fdb25c7c ("drm/i915: Replace global breadcrumbs with per-context interrupt tracking")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://lore.kernel.org/r/685c1417.050a0220.696f5.5c05@mx.google.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 778fa8ad5f0f23397d045c7ebca048ce8def1c43)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Since everything works until now, let's just check for the potential
+buffer overflow and bail out. It is most likely a never happen situation,
+but at least it makes GCC happy.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250321164949.423957-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/selftests/i915_request.c | 20 +++++++++----------
- drivers/gpu/drm/i915/selftests/mock_request.c |  2 +-
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/usb/core/usb.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/selftests/i915_request.c b/drivers/gpu/drm/i915/selftests/i915_request.c
-index acae30a04a947..0122719ee9218 100644
---- a/drivers/gpu/drm/i915/selftests/i915_request.c
-+++ b/drivers/gpu/drm/i915/selftests/i915_request.c
-@@ -73,8 +73,8 @@ static int igt_add_request(void *arg)
- 	/* Basic preliminary test to create a request and let it loose! */
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index ec8e003f59415..a16e7ebb7f953 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -750,15 +750,16 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
+ 		dev_set_name(&dev->dev, "usb%d", bus->busnum);
+ 		root_hub = 1;
+ 	} else {
++		int n;
++
+ 		/* match any labeling on the hubs; it's one-based */
+ 		if (parent->devpath[0] == '0') {
+-			snprintf(dev->devpath, sizeof dev->devpath,
+-				"%d", port1);
++			n = snprintf(dev->devpath, sizeof(dev->devpath), "%d", port1);
+ 			/* Root ports are not counted in route string */
+ 			dev->route = 0;
+ 		} else {
+-			snprintf(dev->devpath, sizeof dev->devpath,
+-				"%s.%d", parent->devpath, port1);
++			n = snprintf(dev->devpath, sizeof(dev->devpath), "%s.%d",
++				     parent->devpath, port1);
+ 			/* Route string assumes hubs have less than 16 ports */
+ 			if (port1 < 15)
+ 				dev->route = parent->route +
+@@ -767,6 +768,11 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
+ 				dev->route = parent->route +
+ 					(15 << ((parent->level - 1)*4));
+ 		}
++		if (n >= sizeof(dev->devpath)) {
++			usb_put_hcd(bus_to_hcd(bus));
++			usb_put_dev(dev);
++			return NULL;
++		}
  
- 	request = mock_request(rcs0(i915)->kernel_context, HZ / 10);
--	if (!request)
--		return -ENOMEM;
-+	if (IS_ERR(request))
-+		return PTR_ERR(request);
- 
- 	i915_request_add(request);
- 
-@@ -91,8 +91,8 @@ static int igt_wait_request(void *arg)
- 	/* Submit a request, then wait upon it */
- 
- 	request = mock_request(rcs0(i915)->kernel_context, T);
--	if (!request)
--		return -ENOMEM;
-+	if (IS_ERR(request))
-+		return PTR_ERR(request);
- 
- 	i915_request_get(request);
- 
-@@ -160,8 +160,8 @@ static int igt_fence_wait(void *arg)
- 	/* Submit a request, treat it as a fence and wait upon it */
- 
- 	request = mock_request(rcs0(i915)->kernel_context, T);
--	if (!request)
--		return -ENOMEM;
-+	if (IS_ERR(request))
-+		return PTR_ERR(request);
- 
- 	if (dma_fence_wait_timeout(&request->fence, false, T) != -ETIME) {
- 		pr_err("fence wait success before submit (expected timeout)!\n");
-@@ -219,8 +219,8 @@ static int igt_request_rewind(void *arg)
- 	GEM_BUG_ON(IS_ERR(ce));
- 	request = mock_request(ce, 2 * HZ);
- 	intel_context_put(ce);
--	if (!request) {
--		err = -ENOMEM;
-+	if (IS_ERR(request)) {
-+		err = PTR_ERR(request);
- 		goto err_context_0;
- 	}
- 
-@@ -237,8 +237,8 @@ static int igt_request_rewind(void *arg)
- 	GEM_BUG_ON(IS_ERR(ce));
- 	vip = mock_request(ce, 0);
- 	intel_context_put(ce);
--	if (!vip) {
--		err = -ENOMEM;
-+	if (IS_ERR(vip)) {
-+		err = PTR_ERR(vip);
- 		goto err_context_1;
- 	}
- 
-diff --git a/drivers/gpu/drm/i915/selftests/mock_request.c b/drivers/gpu/drm/i915/selftests/mock_request.c
-index 09f747228dff5..1b0cf073e9643 100644
---- a/drivers/gpu/drm/i915/selftests/mock_request.c
-+++ b/drivers/gpu/drm/i915/selftests/mock_request.c
-@@ -35,7 +35,7 @@ mock_request(struct intel_context *ce, unsigned long delay)
- 	/* NB the i915->requests slab cache is enlarged to fit mock_request */
- 	request = intel_context_create_request(ce);
- 	if (IS_ERR(request))
--		return NULL;
-+		return request;
- 
- 	request->mock.delay = delay;
- 	return request;
+ 		dev->dev.parent = &parent->dev;
+ 		dev_set_name(&dev->dev, "%d-%s", bus->busnum, dev->devpath);
 -- 
 2.39.5
 
