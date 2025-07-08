@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-160959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE89AFD2C3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B84C0AFD0D7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CE193A3C4A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:46:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8F591C215A8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705D92E5B0D;
-	Tue,  8 Jul 2025 16:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7545F2E11DA;
+	Tue,  8 Jul 2025 16:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTaaDE5m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZ4xEPTf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7F71754B;
-	Tue,  8 Jul 2025 16:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DA7217722;
+	Tue,  8 Jul 2025 16:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993190; cv=none; b=QlIMgzY7j5zF+Q8dqNdIKNLCANUN8ffkIgQ4cB+jP6IvRr9TRyYPASpvWycbbwfNKuBSU0hRqlfQVIljywvhtHPcYyuFzDbRm2ykHBUAzJ4cQpNEX2bhjgEH0ybmWXRhFolB6cRG8UUeLuIHAhQTawFt9Y8iD52gTpAdsogbzcE=
+	t=1751992049; cv=none; b=lOcxzzwCm3BjsyUZ0+4YupYloEk9YmbcCNMhuaFVUHpr0kseU9eO+hgtITkjMf8Zz2On//fO4NTErQmr5ofmVTu91oagi7O6boR0uNYWSBxaguf36pzXXsQI3sBiNUpy2ZMVUgdOpATR35YXiMYZaWQjt+kKDvkc4+AD181qsI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993190; c=relaxed/simple;
-	bh=nSGNYPRAUgyB0xTr6og+lGkjC4XAJbUhSVkUDcZ4TZ4=;
+	s=arc-20240116; t=1751992049; c=relaxed/simple;
+	bh=h+qDHtjuLc1ieNO2TA4NeRfwh0R7LDPJpM9iTGzMQXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IBr7/p8YWhhUlFZHh3fQyJIAUti+eHSGe8CYuVwMEcK2IgBlyMwPKXtVUUugErngkDpSIbOb49SkXJtaliYwFXGic6gXzXmILjPYfXzAkaJHPRJLmTnxDAQulPHhVJpI9m1NjW7dZDkLU2pzBkRE2pgaAiv696BRfdbpplXfu7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTaaDE5m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE01C4CEED;
-	Tue,  8 Jul 2025 16:46:29 +0000 (UTC)
+	 MIME-Version; b=Oc7FxU0tILuF9vo9McOqVFhOtKds183vbL2GWuv/p0chVrXBjnrwOwQg82qlNq/p8q61DLrTJoqB30pXn9J50xqdrQvudgVNP6QRbnwCcT9EWacuzGb4JSlZ+kvam0izW+iG3cG1/ZFgSlEbGIl+AclamWaSMOpJHdV5dPtd3L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZ4xEPTf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC23BC4CEED;
+	Tue,  8 Jul 2025 16:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993190;
-	bh=nSGNYPRAUgyB0xTr6og+lGkjC4XAJbUhSVkUDcZ4TZ4=;
+	s=korg; t=1751992049;
+	bh=h+qDHtjuLc1ieNO2TA4NeRfwh0R7LDPJpM9iTGzMQXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DTaaDE5mAbPwrDA0KL3OHXaQa82bWM8uFOkZ01uCt7AOnyZrnB5zn8D3PSqT0bOnf
-	 OfOsunbRPgKoskQSAVvzVcNTUSMMEAvXTV+XTTeJYT2/bcgcxaaAz4xzm6ngepm5BZ
-	 81q3K6B50dW2PB7qXA6+IxqudyYOlRoYmagBtGJ4=
+	b=NZ4xEPTf6t7MlcYSMmw3VDVk2mQY0xPSoO/LirPC2VAbjLPO/Lgeor/DfGKEI4W8k
+	 pV572s2QE/jQWLZzCoX68BUQYYEqbUOjYXzTi4pHxnQ8XjAppY2Y/Gos3Rsd0Gs6KY
+	 j2UvQZ3ba8idLaq1QN1SZQRJmlRHw939aWozFLXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Xue <xxm@rock-chips.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.12 218/232] iommu/rockchip: prevent iommus dead loop when two masters share one IOMMU
+	Lion Ackermann <nnamrec@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 42/81] net/sched: Always pass notifications when child class becomes empty
 Date: Tue,  8 Jul 2025 18:23:34 +0200
-Message-ID: <20250708162247.139879382@linuxfoundation.org>
+Message-ID: <20250708162226.337069241@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Xue <xxm@rock-chips.com>
+From: Lion Ackermann <nnamrec@gmail.com>
 
-commit 62e062a29ad5133f67c20b333ba0a952a99161ae upstream.
+[ Upstream commit 103406b38c600fec1fe375a77b27d87e314aea09 ]
 
-When two masters share an IOMMU, calling ops->of_xlate during
-the second master's driver init may overwrite iommu->domain set
-by the first. This causes the check if (iommu->domain == domain)
-in rk_iommu_attach_device() to fail, resulting in the same
-iommu->node being added twice to &rk_domain->iommus, which can
-lead to an infinite loop in subsequent &rk_domain->iommus operations.
+Certain classful qdiscs may invoke their classes' dequeue handler on an
+enqueue operation. This may unexpectedly empty the child qdisc and thus
+make an in-flight class passive via qlen_notify(). Most qdiscs do not
+expect such behaviour at this point in time and may re-activate the
+class eventually anyways which will lead to a use-after-free.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 25c2325575cc ("iommu/rockchip: Add missing set_platform_dma_ops callback")
-Signed-off-by: Simon Xue <xxm@rock-chips.com>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/20250623020018.584802-1-xxm@rock-chips.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The referenced fix commit attempted to fix this behavior for the HFSC
+case by moving the backlog accounting around, though this turned out to
+be incomplete since the parent's parent may run into the issue too.
+The following reproducer demonstrates this use-after-free:
+
+    tc qdisc add dev lo root handle 1: drr
+    tc filter add dev lo parent 1: basic classid 1:1
+    tc class add dev lo parent 1: classid 1:1 drr
+    tc qdisc add dev lo parent 1:1 handle 2: hfsc def 1
+    tc class add dev lo parent 2: classid 2:1 hfsc rt m1 8 d 1 m2 0
+    tc qdisc add dev lo parent 2:1 handle 3: netem
+    tc qdisc add dev lo parent 3:1 handle 4: blackhole
+
+    echo 1 | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888
+    tc class delete dev lo classid 1:1
+    echo 1 | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888
+
+Since backlog accounting issues leading to a use-after-frees on stale
+class pointers is a recurring pattern at this point, this patch takes
+a different approach. Instead of trying to fix the accounting, the patch
+ensures that qdisc_tree_reduce_backlog always calls qlen_notify when
+the child qdisc is empty. This solves the problem because deletion of
+qdiscs always involves a call to qdisc_reset() and / or
+qdisc_purge_queue() which ultimately resets its qlen to 0 thus causing
+the following qdisc_tree_reduce_backlog() to report to the parent. Note
+that this may call qlen_notify on passive classes multiple times. This
+is not a problem after the recent patch series that made all the
+classful qdiscs qlen_notify() handlers idempotent.
+
+Fixes: 3f981138109f ("sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue()")
+Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/rockchip-iommu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/sch_api.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
---- a/drivers/iommu/rockchip-iommu.c
-+++ b/drivers/iommu/rockchip-iommu.c
-@@ -1154,7 +1154,6 @@ static int rk_iommu_of_xlate(struct devi
- 	iommu_dev = of_find_device_by_node(args->np);
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index c395e7a98232d..7c5df62421bbd 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -776,15 +776,12 @@ static u32 qdisc_alloc_handle(struct net_device *dev)
  
- 	data->iommu = platform_get_drvdata(iommu_dev);
--	data->iommu->domain = &rk_identity_domain;
- 	dev_iommu_priv_set(dev, data);
+ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
+ {
+-	bool qdisc_is_offloaded = sch->flags & TCQ_F_OFFLOADED;
+ 	const struct Qdisc_class_ops *cops;
+ 	unsigned long cl;
+ 	u32 parentid;
+ 	bool notify;
+ 	int drops;
  
- 	platform_device_put(iommu_dev);
-@@ -1192,6 +1191,8 @@ static int rk_iommu_probe(struct platfor
- 	if (!iommu)
- 		return -ENOMEM;
+-	if (n == 0 && len == 0)
+-		return;
+ 	drops = max_t(int, n, 0);
+ 	rcu_read_lock();
+ 	while ((parentid = sch->parent)) {
+@@ -793,17 +790,8 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
  
-+	iommu->domain = &rk_identity_domain;
-+
- 	platform_set_drvdata(pdev, iommu);
- 	iommu->dev = dev;
- 	iommu->num_mmu = 0;
+ 		if (sch->flags & TCQ_F_NOPARENT)
+ 			break;
+-		/* Notify parent qdisc only if child qdisc becomes empty.
+-		 *
+-		 * If child was empty even before update then backlog
+-		 * counter is screwed and we skip notification because
+-		 * parent class is already passive.
+-		 *
+-		 * If the original child was offloaded then it is allowed
+-		 * to be seem as empty, so the parent is notified anyway.
+-		 */
+-		notify = !sch->q.qlen && !WARN_ON_ONCE(!n &&
+-						       !qdisc_is_offloaded);
++		/* Notify parent qdisc only if child qdisc becomes empty. */
++		notify = !sch->q.qlen;
+ 		/* TODO: perform the search on a per txq basis */
+ 		sch = qdisc_lookup_rcu(qdisc_dev(sch), TC_H_MAJ(parentid));
+ 		if (sch == NULL) {
+@@ -812,6 +800,9 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
+ 		}
+ 		cops = sch->ops->cl_ops;
+ 		if (notify && cops->qlen_notify) {
++			/* Note that qlen_notify must be idempotent as it may get called
++			 * multiple times.
++			 */
+ 			cl = cops->find(sch, parentid);
+ 			cops->qlen_notify(sch, cl);
+ 		}
+-- 
+2.39.5
+
 
 
 
