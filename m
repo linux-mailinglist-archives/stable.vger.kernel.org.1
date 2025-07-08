@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-161233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39311AFD459
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:04:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F64AFD31C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C93CA1895245
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:00:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB638543635
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0061C2E6D24;
-	Tue,  8 Jul 2025 16:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E922E1C74;
+	Tue,  8 Jul 2025 16:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZEhRio9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGlu/BQz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80752E6D14;
-	Tue,  8 Jul 2025 16:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD412DEA94;
+	Tue,  8 Jul 2025 16:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993981; cv=none; b=sMN9g1790OnVHG8/ZcJoyCsXTJcwDqiWHn78pPUp8LXQv7yrhVDwsMCEYWgaddIxORZ4UaLXZB8ZpmQLew4hQKQShDnaz76ZCtMMyFVjA8gxAeUpMY1XKg8QiFN6uExHXyS1hQKtoeGyTo0pEzvU3m7LItmSDm6WmvMtQ2zhKkw=
+	t=1751993469; cv=none; b=tE3lOvAOf32sbB6ySacgyw2uE9eop8zRT9tlcJC1VYN848VVqfE4p9uISK+K1hicvl7tULrKPIObNvBt5OFnkNORIA3tp/sFfgVjDDw1ZOcSK3C+0+u/rbi5OrNyxWBFiMBwQNzRatoiaxV4djzk8CriXL/NUVBOyZaLTDxXHBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993981; c=relaxed/simple;
-	bh=gPXPW+aOn2M/K1C0TY/arJd1gPb9TdmA2IBuzRh3Llk=;
+	s=arc-20240116; t=1751993469; c=relaxed/simple;
+	bh=9qgjqAprIoAfG31AJBjaC6zYuN644aESDmRKidbNsqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NYPZvyR3mXkT80W/otg90w9NawLC+CfOCCg783sPFSTMleXkWPlV20bBGkA7raHZhtlQ9KkM+c8y/FmjUYCXpU+8nqs1B4nhuw5gmGFneju9sSzMhRdee5qYfCweTRWX36GJkY5wAaqb/EJDLJaKb2XwLXSiOSakK8pEAznpz+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZEhRio9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD869C4AF09;
-	Tue,  8 Jul 2025 16:59:40 +0000 (UTC)
+	 MIME-Version; b=mTFxAqet2wOBk3/8lbCgp3lnqqdEHJUnHd5+3ZF/XEze1THs6aFIs7Gz53n4zbzZZBzQhhuIzdnN9zMF+M7s+5CPecVx97qrP7R0q1JIa05tljMW4ipDlmDI0mdyxsZdpoxSd/P+YQ6fG/29idnV1K8l0aZSRqEtMJH4quICCJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGlu/BQz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E758C4CEF0;
+	Tue,  8 Jul 2025 16:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993981;
-	bh=gPXPW+aOn2M/K1C0TY/arJd1gPb9TdmA2IBuzRh3Llk=;
+	s=korg; t=1751993469;
+	bh=9qgjqAprIoAfG31AJBjaC6zYuN644aESDmRKidbNsqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZEhRio9STXddenyWNNIhu5+/f3nRZn+5ix6TG0f0UgQU4ActjFAiO7TOJ1H/I6NG
-	 wfmTAL82kHufen6F1RSOREY0KDvfu3mFYqipUk0lLW8RdeY/K5anY3a/PGUEf8ivb1
-	 SLavaRCM/efprrsmkfbv4QTLlxwznTI6Lhp38e+c=
+	b=nGlu/BQz2xkXlA48tnKrBzpf+oZV0d6VWxoYxmvW4rVSa4zYyIq2ZsYsK25lW8+gy
+	 bBo/PWFwtiH71UKc5/xfYx9YEt5UFa0dIKfgwRD+ghITXi0XBYc0U/khIa8lFm9k1H
+	 lZ9a1JB2qYFgZV0SMBFAAOfKaGTFuwvFBZrdxQhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 5.15 085/160] drm/bridge: cdns-dsi: Fix connecting to next bridge
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 085/178] drm/bridge: panel: move prepare_prev_first handling to drm_panel_bridge_add_typed
 Date: Tue,  8 Jul 2025 18:22:02 +0200
-Message-ID: <20250708162233.877952171@linuxfoundation.org>
+Message-ID: <20250708162238.900375736@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 688eb4d465484bc2a3471a6a6f06f833b58c7867 upstream.
+[ Upstream commit eb028cd884e1b0976ff8c5944ee6650fe3ed0a6c ]
 
-Fix the OF node pointer passed to the of_drm_find_bridge() call to find
-the next bridge in the display chain.
+The commit 5ea6b1702781 ("drm/panel: Add prepare_prev_first flag to
+drm_panel") and commit 0974687a19c3 ("drm/bridge: panel: Set
+pre_enable_prev_first from drmm_panel_bridge_add") added handling of
+panel's prepare_prev_first to devm_panel_bridge_add() and
+drmm_panel_bridge_add(). However if the driver calls
+drm_panel_bridge_add_typed() directly, then the flag won't be handled
+and thus the drm_bridge.pre_enable_prev_first will not be set.
 
-The code to find the next panel (and create its panel-bridge) works
-fine, but to find the next (non-panel) bridge does not.
+Move prepare_prev_first handling to the drm_panel_bridge_add_typed() so
+that there is no way to miss the flag.
 
-To find the next bridge in the pipeline, we need to pass "np" - the OF
-node pointer of the next entity in the devicetree chain. Passing
-"of_node" to of_drm_find_bridge (which is what the code does currently)
-will fetch the bridge for the cdns-dsi which is not what's required.
-
-Fix that.
-
-Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Link: https://lore.kernel.org/r/20250329113925.68204-2-aradhya.bhatia@linux.dev
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5ea6b1702781 ("drm/panel: Add prepare_prev_first flag to drm_panel")
+Fixes: 0974687a19c3 ("drm/bridge: panel: Set pre_enable_prev_first from drmm_panel_bridge_add")
+Reported-by: Svyatoslav Ryhel <clamor95@gmail.com>
+Closes: https://lore.kernel.org/dri-devel/CAPVz0n3YZass3Bns1m0XrFxtAC0DKbEPiW6vXimQx97G243sXw@mail.gmail.com/
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250220-panel_prev_first-v1-1-b9e787825a1a@linaro.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/cdns-dsi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/panel.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/bridge/cdns-dsi.c
-+++ b/drivers/gpu/drm/bridge/cdns-dsi.c
-@@ -961,7 +961,7 @@ static int cdns_dsi_attach(struct mipi_d
- 		bridge = drm_panel_bridge_add_typed(panel,
- 						    DRM_MODE_CONNECTOR_DSI);
- 	} else {
--		bridge = of_drm_find_bridge(dev->dev.of_node);
-+		bridge = of_drm_find_bridge(np);
- 		if (!bridge)
- 			bridge = ERR_PTR(-EINVAL);
+diff --git a/drivers/gpu/drm/bridge/panel.c b/drivers/gpu/drm/bridge/panel.c
+index 258c85c83a283..6c58d0759f227 100644
+--- a/drivers/gpu/drm/bridge/panel.c
++++ b/drivers/gpu/drm/bridge/panel.c
+@@ -298,6 +298,7 @@ struct drm_bridge *drm_panel_bridge_add_typed(struct drm_panel *panel,
+ 	panel_bridge->bridge.of_node = panel->dev->of_node;
+ 	panel_bridge->bridge.ops = DRM_BRIDGE_OP_MODES;
+ 	panel_bridge->bridge.type = connector_type;
++	panel_bridge->bridge.pre_enable_prev_first = panel->prepare_prev_first;
+ 
+ 	drm_bridge_add(&panel_bridge->bridge);
+ 
+@@ -412,8 +413,6 @@ struct drm_bridge *devm_drm_panel_bridge_add_typed(struct device *dev,
+ 		return bridge;
  	}
+ 
+-	bridge->pre_enable_prev_first = panel->prepare_prev_first;
+-
+ 	*ptr = bridge;
+ 	devres_add(dev, ptr);
+ 
+@@ -455,8 +454,6 @@ struct drm_bridge *drmm_panel_bridge_add(struct drm_device *drm,
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
+-	bridge->pre_enable_prev_first = panel->prepare_prev_first;
+-
+ 	return bridge;
+ }
+ EXPORT_SYMBOL(drmm_panel_bridge_add);
+-- 
+2.39.5
+
 
 
 
