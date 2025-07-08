@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-160971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1ABAFD2D1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D99B0AFD4B3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:08:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B78F01886B6A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90382188CBE4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673282E54AF;
-	Tue,  8 Jul 2025 16:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F112E542F;
+	Tue,  8 Jul 2025 17:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fc7Iwi4a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bi+93dXI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256342DD5EF;
-	Tue,  8 Jul 2025 16:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CAC2DC34C;
+	Tue,  8 Jul 2025 17:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993225; cv=none; b=gnF00KiUTmKdKb7GBL6JnGNA33xKRfP0eNHA+7hbmoQ+oKgxdM8FPt2NnzkSBAibBuESKRE8INyEIhg9Vbkkp+fSib4IlQpvsDHTSi/p9l3pxlj8xQu9Gh9NkERcSECK6hLO4yG2VcGowHXVHCcl6urmj+9FcEYp11sMeZCYoZc=
+	t=1751994201; cv=none; b=Za+AboCNLKvcfe7kbXFH6sAxIku6DOPzsuwmnLAzTU7qF3M+KbcAt9SM0XlfPDUgQlzdEQ+M90pv/rOu3hVg27R8V6KMnHXrdh+d5nntFHU/0+RDZtWa6v4YUEeBTsf+fEcm2WD26QHkdaQiCJxk0Bo70G9WkU/mnnX8VcUunC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993225; c=relaxed/simple;
-	bh=NU6Vl4nlF1PfQfhjYKD2t/AAo9rlaBvuHFbU8Jwj9D8=;
+	s=arc-20240116; t=1751994201; c=relaxed/simple;
+	bh=9A6Z44vjYawAITmSWqKpWbN4ltzUqG01vBEzET9fgt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+OPmdv5Jt7l6VUPZQ57o7ovyrSQ19fjUE07oBDxnSrNMinPU3G4Eusoxm23V+5p6u8UpN+liVOeeabrylaGClGO/3kdUxkghsqk7DypXr2X3z1+z4tszGIH7OAI1SMdPiR3L78y0te2NGW6W2XLLVlPOxeNtjJ8IU/jW0IVa/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fc7Iwi4a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D05C4CEF5;
-	Tue,  8 Jul 2025 16:47:04 +0000 (UTC)
+	 MIME-Version; b=gHNYC01ZcN/08NS7avowvzeBEXRvfgXpDVzHyS5MbTWNUPlRVPtlc//94JcP2IkvgJTXHvo7Cur2VQJzwCFKXq5X2N1u89SbHe/kI/C7DN8tGTQVagtqYLoclGaTiPHZVT5L1dmfoXw6F3VetdXzUY4OMqAiFzlCmbGQq//1JOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bi+93dXI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37380C4CEED;
+	Tue,  8 Jul 2025 17:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993224;
-	bh=NU6Vl4nlF1PfQfhjYKD2t/AAo9rlaBvuHFbU8Jwj9D8=;
+	s=korg; t=1751994200;
+	bh=9A6Z44vjYawAITmSWqKpWbN4ltzUqG01vBEzET9fgt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fc7Iwi4a9yy7YEBNNA018EGTapuz2hivQCZvfpOxBI8s1dUvum5++t2GZmWMnW6Se
-	 6R0bFPPwcKXYDc1iq/S3hOEAS9XEaB+91RTx45KJrlPbGJe/dt+R7WYhOI2KJzpFl0
-	 gnYHzqlhSv+x3X4FxAWWON837zZNXNFUvVjeyhUk=
+	b=bi+93dXI1IL8W6v1HI1H+lHf3n4Ub5QtHzJvyDiqPf25hwGp7/luDhyqSv1/cDuXw
+	 16oVX8hBO1/pt9hgYFgLTxFm08GDJX9DXmJTG8OjLVy02i1kqHX1dVpkVbtGo9CGdQ
+	 bim+RHuvQe/IBxW78LPTwzyE7klCP8eTDy4y3Sss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Roy Luo <royluo@google.com>
-Subject: [PATCH 6.12 200/232] Revert "usb: xhci: Implement xhci_handshake_check_state() helper"
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 159/160] KVM: SVM: Advertise TSA CPUID bits to guests
 Date: Tue,  8 Jul 2025 18:23:16 +0200
-Message-ID: <20250708162246.671964308@linuxfoundation.org>
+Message-ID: <20250708162235.694118689@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,117 +60,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roy Luo <royluo@google.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit 7aed15379db9c6ec67999cdaf5c443b7be06ea73 upstream.
+Commit 31272abd5974b38ba312e9cf2ec2f09f9dd7dcba upstream.
 
-This reverts commit 6ccb83d6c4972ebe6ae49de5eba051de3638362c.
+Synthesize the TSA CPUID feature bits for guests. Set TSA_{SQ,L1}_NO on
+unaffected machines.
 
-Commit 6ccb83d6c497 ("usb: xhci: Implement xhci_handshake_check_state()
-helper") was introduced to workaround watchdog timeout issues on some
-platforms, allowing xhci_reset() to bail out early without waiting
-for the reset to complete.
-
-Skipping the xhci handshake during a reset is a dangerous move. The
-xhci specification explicitly states that certain registers cannot
-be accessed during reset in section 5.4.1 USB Command Register (USBCMD),
-Host Controller Reset (HCRST) field:
-"This bit is cleared to '0' by the Host Controller when the reset
-process is complete. Software cannot terminate the reset process
-early by writinga '0' to this bit and shall not write any xHC
-Operational or Runtime registers until while HCRST is '1'."
-
-This behavior causes a regression on SNPS DWC3 USB controller with
-dual-role capability. When the DWC3 controller exits host mode and
-removes xhci while a reset is still in progress, and then tries to
-configure its hardware for device mode, the ongoing reset leads to
-register access issues; specifically, all register reads returns 0.
-These issues extend beyond the xhci register space (which is expected
-during a reset) and affect the entire DWC3 IP block, causing the DWC3
-device mode to malfunction.
-
-Cc: stable <stable@kernel.org>
-Fixes: 6ccb83d6c497 ("usb: xhci: Implement xhci_handshake_check_state() helper")
-Signed-off-by: Roy Luo <royluo@google.com>
-Link: https://lore.kernel.org/r/20250522190912.457583-3-royluo@google.com
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |    5 ++---
- drivers/usb/host/xhci.c      |   26 +-------------------------
- drivers/usb/host/xhci.h      |    2 --
- 3 files changed, 3 insertions(+), 30 deletions(-)
+ arch/x86/kvm/cpuid.c         |    6 ++++++
+ arch/x86/kvm/reverse_cpuid.h |    8 ++++++++
+ 2 files changed, 14 insertions(+)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -461,9 +461,8 @@ static int xhci_abort_cmd_ring(struct xh
- 	 * In the future we should distinguish between -ENODEV and -ETIMEDOUT
- 	 * and try to recover a -ETIMEDOUT with a host controller reset.
- 	 */
--	ret = xhci_handshake_check_state(xhci, &xhci->op_regs->cmd_ring,
--			CMD_RING_RUNNING, 0, 5 * 1000 * 1000,
--			XHCI_STATE_REMOVING);
-+	ret = xhci_handshake(&xhci->op_regs->cmd_ring,
-+			CMD_RING_RUNNING, 0, 5 * 1000 * 1000);
- 	if (ret < 0) {
- 		xhci_err(xhci, "Abort failed to stop command ring: %d\n", ret);
- 		xhci_halt(xhci);
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -83,29 +83,6 @@ int xhci_handshake(void __iomem *ptr, u3
- }
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -553,6 +553,12 @@ void kvm_set_cpu_caps(void)
+ 	if (cpu_feature_enabled(X86_FEATURE_SRSO_NO))
+ 		kvm_cpu_cap_set(X86_FEATURE_SRSO_NO);
+ 
++	kvm_cpu_cap_mask(CPUID_8000_0021_EAX, F(VERW_CLEAR));
++
++	kvm_cpu_cap_init_kvm_defined(CPUID_8000_0021_ECX,
++		F(TSA_SQ_NO) | F(TSA_L1_NO)
++	);
++
+ 	/*
+ 	 * Hide RDTSCP and RDPID if either feature is reported as supported but
+ 	 * probing MSR_TSC_AUX failed.  This is purely a sanity check and
+--- a/arch/x86/kvm/reverse_cpuid.h
++++ b/arch/x86/kvm/reverse_cpuid.h
+@@ -14,6 +14,7 @@
+ enum kvm_only_cpuid_leafs {
+ 	CPUID_12_EAX	 = NCAPINTS,
+ 	CPUID_7_2_EDX,
++	CPUID_8000_0021_ECX,
+ 	NR_KVM_CPU_CAPS,
+ 
+ 	NKVMCAPINTS = NR_KVM_CPU_CAPS - NCAPINTS,
+@@ -45,6 +46,10 @@ enum kvm_only_cpuid_leafs {
+ #define KVM_X86_FEATURE_BHI_CTRL	KVM_X86_FEATURE(CPUID_7_2_EDX, 4)
+ #define X86_FEATURE_MCDT_NO		KVM_X86_FEATURE(CPUID_7_2_EDX, 5)
+ 
++/* CPUID level 0x80000021 (ECX) */
++#define KVM_X86_FEATURE_TSA_SQ_NO	KVM_X86_FEATURE(CPUID_8000_0021_ECX, 1)
++#define KVM_X86_FEATURE_TSA_L1_NO	KVM_X86_FEATURE(CPUID_8000_0021_ECX, 2)
++
+ struct cpuid_reg {
+ 	u32 function;
+ 	u32 index;
+@@ -71,6 +76,7 @@ static const struct cpuid_reg reverse_cp
+ 	[CPUID_8000_001F_EAX] = {0x8000001f, 0, CPUID_EAX},
+ 	[CPUID_8000_0021_EAX] = {0x80000021, 0, CPUID_EAX},
+ 	[CPUID_7_2_EDX]       = {         7, 2, CPUID_EDX},
++	[CPUID_8000_0021_ECX] = {0x80000021, 0, CPUID_ECX},
+ };
  
  /*
-- * xhci_handshake_check_state - same as xhci_handshake but takes an additional
-- * exit_state parameter, and bails out with an error immediately when xhc_state
-- * has exit_state flag set.
-- */
--int xhci_handshake_check_state(struct xhci_hcd *xhci, void __iomem *ptr,
--		u32 mask, u32 done, int usec, unsigned int exit_state)
--{
--	u32	result;
--	int	ret;
--
--	ret = readl_poll_timeout_atomic(ptr, result,
--				(result & mask) == done ||
--				result == U32_MAX ||
--				xhci->xhc_state & exit_state,
--				1, usec);
--
--	if (result == U32_MAX || xhci->xhc_state & exit_state)
--		return -ENODEV;
--
--	return ret;
--}
--
--/*
-  * Disable interrupts and begin the xHCI halting process.
-  */
- void xhci_quiesce(struct xhci_hcd *xhci)
-@@ -225,8 +202,7 @@ int xhci_reset(struct xhci_hcd *xhci, u6
- 	if (xhci->quirks & XHCI_INTEL_HOST)
- 		udelay(1000);
- 
--	ret = xhci_handshake_check_state(xhci, &xhci->op_regs->command,
--				CMD_RESET, 0, timeout_us, XHCI_STATE_REMOVING);
-+	ret = xhci_handshake(&xhci->op_regs->command, CMD_RESET, 0, timeout_us);
- 	if (ret)
- 		return ret;
- 
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1846,8 +1846,6 @@ void xhci_remove_secondary_interrupter(s
- /* xHCI host controller glue */
- typedef void (*xhci_get_quirks_t)(struct device *, struct xhci_hcd *);
- int xhci_handshake(void __iomem *ptr, u32 mask, u32 done, u64 timeout_us);
--int xhci_handshake_check_state(struct xhci_hcd *xhci, void __iomem *ptr,
--		u32 mask, u32 done, int usec, unsigned int exit_state);
- void xhci_quiesce(struct xhci_hcd *xhci);
- int xhci_halt(struct xhci_hcd *xhci);
- int xhci_start(struct xhci_hcd *xhci);
+@@ -107,6 +113,8 @@ static __always_inline u32 __feature_tra
+ 	KVM_X86_TRANSLATE_FEATURE(SGX2);
+ 	KVM_X86_TRANSLATE_FEATURE(RRSBA_CTRL);
+ 	KVM_X86_TRANSLATE_FEATURE(BHI_CTRL);
++	KVM_X86_TRANSLATE_FEATURE(TSA_SQ_NO);
++	KVM_X86_TRANSLATE_FEATURE(TSA_L1_NO);
+ 	default:
+ 		return x86_feature;
+ 	}
 
 
 
