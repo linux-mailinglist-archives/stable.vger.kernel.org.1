@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-160823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB778AFD215
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02265AFD2F0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26AF018916CE
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04288165848
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32312E5414;
-	Tue,  8 Jul 2025 16:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561B21754B;
+	Tue,  8 Jul 2025 16:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1V4Z+z/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbRGhxGF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09E61DF74F;
-	Tue,  8 Jul 2025 16:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0444C264F9C;
+	Tue,  8 Jul 2025 16:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992793; cv=none; b=ibFBINkI/nfhbHcVfB4CiEwC8t+oIpS0REswPSJ+LCEFCLxjKD5etCG3JJKpXDZHWGWbwtW0hkwvpNkIKbNxi0uE9r7ZE/lW3Pg3M0xvlzUA7aSrlTahUaDc52bQBwb45sAEg8tfa9OxmDBfIZEDyOObKwIBAfLwwomPjFnC4K8=
+	t=1751993293; cv=none; b=Z9+1osgwijCdyhQYIPwvC7QfONUQ2aE74BL75PkW9v+xw1z2HwpxeYlbNwMfl21nGA+DEb8rGTFklO4ISeDzxcIkSAZ83kGOQzvP4vwi2uoZbjiKYCzl25OGLbNQalxlQOJ3dLJgUm64RwbQ2b8E6JURT/0mhLkh47FL3BsoWyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992793; c=relaxed/simple;
-	bh=e0NBTJMQ0PnwVoAyefk6xHUEF/OSdHxD59faEit9gRs=;
+	s=arc-20240116; t=1751993293; c=relaxed/simple;
+	bh=owk8lXGYDE6h8NM3XBUIQsFjMi4bIjjUFDQP6oVBbSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MKx1xs9vnEvsqOHhRSqRd/TKxLZTq/R5lb2Py83lpI8beUXIt9uV3hBxHlm58McgYCXRlPThyqUZgOeynCzImF+UQJQWN93FP08KY3LIlnAM66ntVPQFxM2+IHy9TfpuJ6i5G90fYqCeDMLDIep0aAmJsFQI0z/j8A9E79Qt/v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1V4Z+z/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 276C9C4CEF7;
-	Tue,  8 Jul 2025 16:39:52 +0000 (UTC)
+	 MIME-Version; b=lS25JpKYupGaS1R//bcBgGFGU0qJzIDmrkFvQqI6cvjJWOmyjgcGRHXmTxK7Rbd3CTf5514vSjKknExxDHOMicdKFGYi0eP2Pn5aPqP188bVCLi7XxpG1b3hG09jOFLvEe9iItTliqYQgvPMqGc4iq3WzUPvP2f8eU0zdHFPJyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbRGhxGF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3B9C4CEED;
+	Tue,  8 Jul 2025 16:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992793;
-	bh=e0NBTJMQ0PnwVoAyefk6xHUEF/OSdHxD59faEit9gRs=;
+	s=korg; t=1751993292;
+	bh=owk8lXGYDE6h8NM3XBUIQsFjMi4bIjjUFDQP6oVBbSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V1V4Z+z/KCXtx22uT/Gtq9BjWJ18Kvo4iOnHAdsguYDriW3tiaeLuPHfBC4DHBlM5
-	 7K1TktDnX4/g1NiBnOelIl2qRgiafYvf+/mRiXug4p77p5atEKMjwiU3DrT/+WykyM
-	 GgS8JwRt2i0BnFpPR8+gSQNgBblb6vWn3taMsp8Q=
+	b=DbRGhxGF3EcSQSKg8B/eeewfrbBSY9Hdx+z5RsaE1PsBMbJa6KnHkV/qOtp+tHJY/
+	 9W0uW4z0F3XBXqL6mYyX4iVl/cgtyKhwtNLWXeQVOsfCNU0ETouvVdILi7mdby9Mzn
+	 hpO/tUjk+2bcvKXoD3cefJ72scOhVFU59Clwlszw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 065/232] platform/x86: hp-bioscfg: Fix class device unregistration
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>
+Subject: [PATCH 6.15 024/178] iommufd/selftest: Fix iommufd_dirty_tracking with large hugepage sizes
 Date: Tue,  8 Jul 2025 18:21:01 +0200
-Message-ID: <20250708162243.164662954@linuxfoundation.org>
+Message-ID: <20250708162237.179375328@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +59,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-[ Upstream commit 11cba4793b95df3bc192149a6eb044f69aa0b99e ]
+commit 818625570558cd91082c9bafd6f2b59b73241a69 upstream.
 
-Devices under the firmware_attributes_class do not have unique a dev_t.
-Therefore, device_unregister() should be used instead of
-device_destroy(), since the latter may match any device with a given
-dev_t.
+The hugepage test cases of iommufd_dirty_tracking have the 64MB and 128MB
+coverages. Both of them are smaller than the default hugepage size 512MB,
+when CONFIG_PAGE_SIZE_64KB=y. However, these test cases have a variant of
+using huge pages, which would mmap(MAP_HUGETLB) using these smaller sizes
+than the system hugepag size. This results in the kernel aligning up the
+smaller size to 512MB. If a memory was located between the upper 64/128MB
+size boundary and the hugepage 512MB boundary, it would get wiped out:
+https://lore.kernel.org/all/aEoUhPYIAizTLADq@nvidia.com/
 
-Fixes: a34fc329b189 ("platform/x86: hp-bioscfg: bioscfg")
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250625-dest-fix-v1-1-3a0f342312bb@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Given that this aligning up behavior is well documented, we have no choice
+but to allocate a hugepage aligned size to avoid this unintended wipe out.
+Instead of relying on the kernel's internal force alignment, pass the same
+size to posix_memalign() and map().
+
+Also, fix the FIXTURE_TEARDOWN() misusing munmap() to free the memory from
+posix_memalign(), as munmap() doesn't destroy the allocator meta data. So,
+call free() instead.
+
+Fixes: a9af47e382a4 ("iommufd/selftest: Test IOMMU_HWPT_GET_DIRTY_BITMAP")
+Link: https://patch.msgid.link/r/1ea8609ae6d523fdd4d8efb179ddee79c8582cb6.1750787928.git.nicolinc@nvidia.com
+Cc: stable@vger.kernel.org
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/hp/hp-bioscfg/bioscfg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/iommu/iommufd.c |   30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-index 0b277b7e37dd6..00b04adb4f191 100644
---- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-@@ -1037,7 +1037,7 @@ static int __init hp_init(void)
- 	release_attributes_data();
+--- a/tools/testing/selftests/iommu/iommufd.c
++++ b/tools/testing/selftests/iommu/iommufd.c
+@@ -2010,6 +2010,7 @@ FIXTURE_VARIANT(iommufd_dirty_tracking)
  
- err_destroy_classdev:
--	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
-+	device_unregister(bioscfg_drv.class_dev);
- 
- err_unregister_class:
- 	hp_exit_attr_set_interface();
-@@ -1048,7 +1048,7 @@ static int __init hp_init(void)
- static void __exit hp_exit(void)
+ FIXTURE_SETUP(iommufd_dirty_tracking)
  {
- 	release_attributes_data();
--	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
-+	device_unregister(bioscfg_drv.class_dev);
++	size_t mmap_buffer_size;
+ 	unsigned long size;
+ 	int mmap_flags;
+ 	void *vrc;
+@@ -2024,22 +2025,33 @@ FIXTURE_SETUP(iommufd_dirty_tracking)
+ 	self->fd = open("/dev/iommu", O_RDWR);
+ 	ASSERT_NE(-1, self->fd);
  
- 	hp_exit_attr_set_interface();
+-	rc = posix_memalign(&self->buffer, HUGEPAGE_SIZE, variant->buffer_size);
+-	if (rc || !self->buffer) {
+-		SKIP(return, "Skipping buffer_size=%lu due to errno=%d",
+-			   variant->buffer_size, rc);
+-	}
+-
+ 	mmap_flags = MAP_SHARED | MAP_ANONYMOUS | MAP_FIXED;
++	mmap_buffer_size = variant->buffer_size;
+ 	if (variant->hugepages) {
+ 		/*
+ 		 * MAP_POPULATE will cause the kernel to fail mmap if THPs are
+ 		 * not available.
+ 		 */
+ 		mmap_flags |= MAP_HUGETLB | MAP_POPULATE;
++
++		/*
++		 * Allocation must be aligned to the HUGEPAGE_SIZE, because the
++		 * following mmap() will automatically align the length to be a
++		 * multiple of the underlying huge page size. Failing to do the
++		 * same at this allocation will result in a memory overwrite by
++		 * the mmap().
++		 */
++		if (mmap_buffer_size < HUGEPAGE_SIZE)
++			mmap_buffer_size = HUGEPAGE_SIZE;
++	}
++
++	rc = posix_memalign(&self->buffer, HUGEPAGE_SIZE, mmap_buffer_size);
++	if (rc || !self->buffer) {
++		SKIP(return, "Skipping buffer_size=%lu due to errno=%d",
++			   mmap_buffer_size, rc);
+ 	}
+ 	assert((uintptr_t)self->buffer % HUGEPAGE_SIZE == 0);
+-	vrc = mmap(self->buffer, variant->buffer_size, PROT_READ | PROT_WRITE,
++	vrc = mmap(self->buffer, mmap_buffer_size, PROT_READ | PROT_WRITE,
+ 		   mmap_flags, -1, 0);
+ 	assert(vrc == self->buffer);
+ 
+@@ -2068,8 +2080,8 @@ FIXTURE_SETUP(iommufd_dirty_tracking)
+ 
+ FIXTURE_TEARDOWN(iommufd_dirty_tracking)
+ {
+-	munmap(self->buffer, variant->buffer_size);
+-	munmap(self->bitmap, DIV_ROUND_UP(self->bitmap_size, BITS_PER_BYTE));
++	free(self->buffer);
++	free(self->bitmap);
+ 	teardown_iommufd(self->fd, _metadata);
  }
--- 
-2.39.5
-
+ 
 
 
 
