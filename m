@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-160701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75870AFD16C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:35:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B4CAFD0CC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CAB85823FB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 666F31895E4D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D631C2E540C;
-	Tue,  8 Jul 2025 16:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F7C2D9790;
+	Tue,  8 Jul 2025 16:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XM11aW4G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4i51ouS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931432E0B45;
-	Tue,  8 Jul 2025 16:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A0E2E659;
+	Tue,  8 Jul 2025 16:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992438; cv=none; b=Ozi74PvDRjQq7znRYioM3zu/4cvpIoVSKqza+MKIk9AK5MjFTx5MbxZynwQ7jb3BGJdnZw091KjYmqw6m4r4d03hqgFDRyMfXQPh402helOmoyApl6hnNp+YPSlcQaX+oCglZM6Clh929st95iCrtIkczVMRwDn8tDtAKL0mxgo=
+	t=1751992014; cv=none; b=D4IHlT86zQ7HKNW2KGjWZS7j5av0i46PzJw19Q6nfAvvmJcrdjyJ/N+2+LRImG1c1mktvB5vUr07eVBtUAW5FfP8qoww/GTDosRh9eLOi4NvlkfOiNkyROdfg0lBgV+h45vpteKueTqUyU9LZdnh3fWDGx2P6zx7Es3CfESjYbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992438; c=relaxed/simple;
-	bh=v1IpYQQcswDUzwFVq0fsCQSuNjxvq45z9FjyN1v1oao=;
+	s=arc-20240116; t=1751992014; c=relaxed/simple;
+	bh=sKV3tEF4LNh89YZxNRE5U8MjtN1/TxHZFJB2jJsMWO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=de503SQYrvt2dfyahSqqCXMyX9eWkz+8xyzR6KZMfeX+tZNkaFXGRbF3vHk5/lqLgdB0aGqdDIGofgbCztjXFz83EkI524t0SMxVKBeZm2iB4cqEOnke+GAOftSbWinrh2/sfpMYHHRg3EoR1mlVPWyrv0ZKxaMWoweUwu/d7gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XM11aW4G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFD8C4CEED;
-	Tue,  8 Jul 2025 16:33:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Df32/cYR8sj3xvvM4wKaQ81n9sBoNNN2fFjDwpTRppdCXkwZxrMlZZUMnYxiaA5FTLjiNq0yCuYPA/HxcUBf5fHifD+9tUZcEeoF7dlywTJMQ18XXXs/BQEy7ZRiui8sVh0f7DYDlJZMkJK+pNZG56b+01+Z04wtHvrWK+xWDtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4i51ouS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5091C4CEED;
+	Tue,  8 Jul 2025 16:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992438;
-	bh=v1IpYQQcswDUzwFVq0fsCQSuNjxvq45z9FjyN1v1oao=;
+	s=korg; t=1751992014;
+	bh=sKV3tEF4LNh89YZxNRE5U8MjtN1/TxHZFJB2jJsMWO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XM11aW4GQCTPBq8HBaMej8LULRMztF9iN3PnFENESbbfZ6dlWu+dckJBz4WgezMIp
-	 VJi6I97EF07YX51gx0av0Xwa7qu17JCkztPo8giT3jZ2bwdtXIXz8DpvJWSm+Q75Su
-	 xh8IqP2s3NN+zhUDCD2OrfmZ9h0mlV1vUBlGRd0s=
+	b=S4i51ouSND08NmtIMw3J+sokHFC1hWLmgHvhO0FdQqsQhzMamynLY2uBmCmjoMI21
+	 qffurqceI5y+hJr/n8nGjTp4SVrOp9FkHk0FX10WpHovrLgofJOH/x5fYWEGTci8sE
+	 LZDdItZ6n72TJdJpB19khvHrANv0zW51Mw2jHNFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Mark Brown <broonie@kernel.org>,
+	Jan Graczyk <jangraczyk@yahoo.ca>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/132] regulator: fan53555: add enable_time support and soft-start times
-Date: Tue,  8 Jul 2025 18:23:23 +0200
-Message-ID: <20250708162233.313323641@linuxfoundation.org>
+Subject: [PATCH 6.1 32/81] platform/x86: dell-wmi-sysman: Fix WMI data block retrieval in sysfs callbacks
+Date: Tue,  8 Jul 2025 18:23:24 +0200
+Message-ID: <20250708162225.976803659@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,153 +63,142 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Kurt Borja <kuurtb@gmail.com>
 
-[ Upstream commit 8acfb165a492251a08a22a4fa6497a131e8c2609 ]
+[ Upstream commit eb617dd25ca176f3fee24f873f0fd60010773d67 ]
 
-The datasheets for all the fan53555 variants (and clones using the same
-interface) define so called soft start times, from enabling the regulator
-until at least some percentage of the output (i.e. 92% for the rk860x
-types) are available.
+After retrieving WMI data blocks in sysfs callbacks, check for the
+validity of them before dereferencing their content.
 
-The regulator framework supports this with the enable_time property
-but currently the fan53555 driver does not define enable_times for any
-variant.
-
-I ran into a problem with this while testing the new driver for the
-Rockchip NPUs (rocket), which does runtime-pm including disabling and
-enabling a rk8602 as needed. When reenabling the regulator while running
-a load, fatal hangs could be observed while enabling the associated
-power-domain, which the regulator supplies.
-
-Experimentally setting the regulator to always-on, made the issue
-disappear, leading to the missing delay to let power stabilize.
-And as expected, setting the enable-time to a non-zero value
-according to the datasheet also resolved the regulator-issue.
-
-The datasheets in nearly all cases only specify "typical" values,
-except for the fan53555 type 08. There both a typical and maximum
-value are listed - 40uS apart.
-
-For all typical values I've added 100uS to be on the safe side.
-Individual details for the relevant regulators below:
-
-- fan53526:
-  The datasheet for all variants lists a typical value of 150uS, so
-  make that 250uS with safety margin.
-- fan53555:
-  types 08 and 18 (unsupported) are given a typical enable time of 135uS
-  but also a maximum of 175uS so use that value. All the other types only
-  have a typical time in the datasheet of 300uS, so give a bit margin by
-  setting it to 400uS.
-- rk8600 + rk8602:
-  Datasheet reports a typical value of 260us, so use 360uS to be safe.
-- syr82x + syr83x:
-  All datasheets report typical soft-start values of 300uS for these
-  regulators, so use 400uS.
-- tcs452x:
-  Datasheet sadly does not report a soft-start time, so I've not set
-  an enable-time
-
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patch.msgid.link/20250606190418.478633-1-heiko@sntech.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Jan Graczyk <jangraczyk@yahoo.ca>
+Closes: https://lore.kernel.org/r/CAHk-=wgMiSKXf7SvQrfEnxVtmT=QVQPjJdNjfm3aXS7wc=rzTw@mail.gmail.com/
+Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250630-sysman-fix-v2-1-d185674d0a30@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/fan53555.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ .../platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h   | 5 +++++
+ .../platform/x86/dell/dell-wmi-sysman/enum-attributes.c   | 5 +++--
+ .../platform/x86/dell/dell-wmi-sysman/int-attributes.c    | 5 +++--
+ .../x86/dell/dell-wmi-sysman/passobj-attributes.c         | 5 +++--
+ .../platform/x86/dell/dell-wmi-sysman/string-attributes.c | 5 +++--
+ drivers/platform/x86/dell/dell-wmi-sysman/sysman.c        | 8 ++++----
+ 6 files changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/regulator/fan53555.c b/drivers/regulator/fan53555.c
-index 48f312167e535..8912f5be72707 100644
---- a/drivers/regulator/fan53555.c
-+++ b/drivers/regulator/fan53555.c
-@@ -147,6 +147,7 @@ struct fan53555_device_info {
- 	unsigned int slew_mask;
- 	const unsigned int *ramp_delay_table;
- 	unsigned int n_ramp_values;
-+	unsigned int enable_time;
- 	unsigned int slew_rate;
- };
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h b/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h
+index 3ad33a094588c..817ee7ba07ca0 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h
+@@ -89,6 +89,11 @@ extern struct wmi_sysman_priv wmi_priv;
  
-@@ -282,6 +283,7 @@ static int fan53526_voltages_setup_fairchild(struct fan53555_device_info *di)
- 	di->slew_mask = CTL_SLEW_MASK;
- 	di->ramp_delay_table = slew_rates;
- 	di->n_ramp_values = ARRAY_SIZE(slew_rates);
-+	di->enable_time = 250;
- 	di->vsel_count = FAN53526_NVOLTAGES;
+ enum { ENUM, INT, STR, PO };
  
- 	return 0;
-@@ -296,10 +298,12 @@ static int fan53555_voltages_setup_fairchild(struct fan53555_device_info *di)
- 		case FAN53555_CHIP_REV_00:
- 			di->vsel_min = 600000;
- 			di->vsel_step = 10000;
-+			di->enable_time = 400;
- 			break;
- 		case FAN53555_CHIP_REV_13:
- 			di->vsel_min = 800000;
- 			di->vsel_step = 10000;
-+			di->enable_time = 400;
- 			break;
- 		default:
- 			dev_err(di->dev,
-@@ -311,13 +315,19 @@ static int fan53555_voltages_setup_fairchild(struct fan53555_device_info *di)
- 	case FAN53555_CHIP_ID_01:
- 	case FAN53555_CHIP_ID_03:
- 	case FAN53555_CHIP_ID_05:
-+		di->vsel_min = 600000;
-+		di->vsel_step = 10000;
-+		di->enable_time = 400;
-+		break;
- 	case FAN53555_CHIP_ID_08:
- 		di->vsel_min = 600000;
- 		di->vsel_step = 10000;
-+		di->enable_time = 175;
- 		break;
- 	case FAN53555_CHIP_ID_04:
- 		di->vsel_min = 603000;
- 		di->vsel_step = 12826;
-+		di->enable_time = 400;
- 		break;
++#define ENUM_MIN_ELEMENTS		8
++#define INT_MIN_ELEMENTS		9
++#define STR_MIN_ELEMENTS		8
++#define PO_MIN_ELEMENTS			4
++
+ enum {
+ 	ATTR_NAME,
+ 	DISPL_NAME_LANG_CODE,
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
+index 8cc212c852668..fc2f58b4cbc6e 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
+@@ -23,9 +23,10 @@ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *a
+ 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_ENUMERATION_ATTRIBUTE_GUID);
+ 	if (!obj)
+ 		return -EIO;
+-	if (obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < ENUM_MIN_ELEMENTS ||
++	    obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
+ 		kfree(obj);
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 	ret = snprintf(buf, PAGE_SIZE, "%s\n", obj->package.elements[CURRENT_VAL].string.pointer);
+ 	kfree(obj);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c
+index 951e75b538fad..7352480642391 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c
+@@ -25,9 +25,10 @@ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *a
+ 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_INTEGER_ATTRIBUTE_GUID);
+ 	if (!obj)
+ 		return -EIO;
+-	if (obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_INTEGER) {
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < INT_MIN_ELEMENTS ||
++	    obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_INTEGER) {
+ 		kfree(obj);
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 	ret = snprintf(buf, PAGE_SIZE, "%lld\n", obj->package.elements[CURRENT_VAL].integer.value);
+ 	kfree(obj);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
+index d8f1bf5e58a0f..3167e06d416ed 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
+@@ -26,9 +26,10 @@ static ssize_t is_enabled_show(struct kobject *kobj, struct kobj_attribute *attr
+ 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_PASSOBJ_ATTRIBUTE_GUID);
+ 	if (!obj)
+ 		return -EIO;
+-	if (obj->package.elements[IS_PASS_SET].type != ACPI_TYPE_INTEGER) {
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < PO_MIN_ELEMENTS ||
++	    obj->package.elements[IS_PASS_SET].type != ACPI_TYPE_INTEGER) {
+ 		kfree(obj);
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 	ret = snprintf(buf, PAGE_SIZE, "%lld\n", obj->package.elements[IS_PASS_SET].integer.value);
+ 	kfree(obj);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c
+index c392f0ecf8b55..0d2c74f8d1aad 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c
+@@ -25,9 +25,10 @@ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *a
+ 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_STRING_ATTRIBUTE_GUID);
+ 	if (!obj)
+ 		return -EIO;
+-	if (obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < STR_MIN_ELEMENTS ||
++	    obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
+ 		kfree(obj);
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 	ret = snprintf(buf, PAGE_SIZE, "%s\n", obj->package.elements[CURRENT_VAL].string.pointer);
+ 	kfree(obj);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
+index 3ef90211c51a6..660f00173f2ea 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
+@@ -411,10 +411,10 @@ static int init_bios_attributes(int attr_type, const char *guid)
+ 		return retval;
+ 
+ 	switch (attr_type) {
+-	case ENUM:	min_elements = 8;	break;
+-	case INT:	min_elements = 9;	break;
+-	case STR:	min_elements = 8;	break;
+-	case PO:	min_elements = 4;	break;
++	case ENUM:	min_elements = ENUM_MIN_ELEMENTS;	break;
++	case INT:	min_elements = INT_MIN_ELEMENTS;	break;
++	case STR:	min_elements = STR_MIN_ELEMENTS;	break;
++	case PO:	min_elements = PO_MIN_ELEMENTS;		break;
  	default:
- 		dev_err(di->dev,
-@@ -350,6 +360,7 @@ static int fan53555_voltages_setup_rockchip(struct fan53555_device_info *di)
- 	di->slew_mask = CTL_SLEW_MASK;
- 	di->ramp_delay_table = slew_rates;
- 	di->n_ramp_values = ARRAY_SIZE(slew_rates);
-+	di->enable_time = 360;
- 	di->vsel_count = FAN53555_NVOLTAGES;
- 
- 	return 0;
-@@ -372,6 +383,7 @@ static int rk8602_voltages_setup_rockchip(struct fan53555_device_info *di)
- 	di->slew_mask = CTL_SLEW_MASK;
- 	di->ramp_delay_table = slew_rates;
- 	di->n_ramp_values = ARRAY_SIZE(slew_rates);
-+	di->enable_time = 360;
- 	di->vsel_count = RK8602_NVOLTAGES;
- 
- 	return 0;
-@@ -395,6 +407,7 @@ static int fan53555_voltages_setup_silergy(struct fan53555_device_info *di)
- 	di->slew_mask = CTL_SLEW_MASK;
- 	di->ramp_delay_table = slew_rates;
- 	di->n_ramp_values = ARRAY_SIZE(slew_rates);
-+	di->enable_time = 400;
- 	di->vsel_count = FAN53555_NVOLTAGES;
- 
- 	return 0;
-@@ -594,6 +607,7 @@ static int fan53555_regulator_register(struct fan53555_device_info *di,
- 	rdesc->ramp_mask = di->slew_mask;
- 	rdesc->ramp_delay_table = di->ramp_delay_table;
- 	rdesc->n_ramp_values = di->n_ramp_values;
-+	rdesc->enable_time = di->enable_time;
- 	rdesc->owner = THIS_MODULE;
- 
- 	rdev = devm_regulator_register(di->dev, &di->desc, config);
+ 		pr_err("Error: Unknown attr_type: %d\n", attr_type);
+ 		return -EINVAL;
 -- 
 2.39.5
 
