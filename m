@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-161032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45176AFD315
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A1FAFD40C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 155A6171145
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:50:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 857A41889A02
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD042DAFA3;
-	Tue,  8 Jul 2025 16:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD002E5411;
+	Tue,  8 Jul 2025 16:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdJN+DiK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akIMg+s2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7AE1DB127;
-	Tue,  8 Jul 2025 16:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2602DECBD;
+	Tue,  8 Jul 2025 16:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993402; cv=none; b=buVD/4E7GSvY7YoLx98q6WWbC/u6GfcyDQJo749cdndse+au0cxMnqHaxe+hTIvDBvYNFf14kpTCDRJwSGxEuexCrG7+sXNFN+ggrFFinX8jtwaTZ+kveUVf3WgJflFRDeFE5DfCNWJ9cM0BVQTsN5WU/f9MUpAGTuZM2ZxNniw=
+	t=1751993915; cv=none; b=MwaNyI6VRdUCX9i+Q30/Azm/fng0j5MP/NVhAdjUCqMh2wK1jJc/24dVB1wB6fdW+3CNzeykzILKlhxyoZT+p68XVvvNZEC16dgUSQWBQ5uixgUHT2zFaPohXOIS8p0vx7rN4Xtb3x2dKJGe60+WR0uhTK5jj9inXLuRRyn4my0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993402; c=relaxed/simple;
-	bh=x6lQwQXepsFbFwiqvjorencRsHV2ta7X1eofOHsOcDE=;
+	s=arc-20240116; t=1751993915; c=relaxed/simple;
+	bh=KAeayTl4JJYaIQH8WfmZ7I3Q2C53hm4cbjsOpE78NDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n9COnESQyAJM9tYi9g3H5i4If4YkfjXUdIDQ7O15F2HSyjc04vyaev1hY7JWSF3vxfVty+IdZGhg7UcwO1tSiAWpmafCdN6oRC0yR6gv6vxSElrO1yhWvUPRqeeJgQHMLuOfVcBVJcsPwU5M8MBI+2Q5g9xSD575GOquBNsj8HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdJN+DiK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85026C4CEED;
-	Tue,  8 Jul 2025 16:50:01 +0000 (UTC)
+	 MIME-Version; b=rc3uvmGOG+n8rG1cc7+D2YSr79kUo2JG870KH0KXj0X7Kiml8Z4YgWY8Rg8AbuQ32HKb01spqzjhr01Iwoq1G8SP1a4pHTTiQSlbscinBgRJ0PxAT/DbqHyUNTomX7EpdPasWHfwFy1ztatlNsZGB95mt4kirGCTZOUmEodb6p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akIMg+s2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699B6C4CEED;
+	Tue,  8 Jul 2025 16:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993401;
-	bh=x6lQwQXepsFbFwiqvjorencRsHV2ta7X1eofOHsOcDE=;
+	s=korg; t=1751993914;
+	bh=KAeayTl4JJYaIQH8WfmZ7I3Q2C53hm4cbjsOpE78NDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EdJN+DiKWgBQk1KuOqGJbFWlbZETBswlHkD1Onm/4tU8zdV0dCVdIg4md/j7fDTyr
-	 vLgeEXgg6pxd24ZonsVsLX5mKAN+ivblu+xalKWFqoS75dMiwjiGQkcahS8hENNtKL
-	 zCeDmi3/b5wOdcxpcXZrbiJanYqlJLl0DpL+pY5E=
+	b=akIMg+s2fC6RAFVcfX6goJsR5IOCvolyAmnYB6Oqctm6RMIn7eLYBxZvpsv48lenx
+	 2N0Ex+qiPQg06/WN6qmhQ1mjytlufJ5pjp0Mkh8nHA3s9Cejo+Y6k0yNkQtXGfJgkk
+	 5LlxcoZEvONNTckY1l0q8jcZd0IiHl4t6VR6di/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Gengming Liu <l.dmxcsnsbh@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 061/178] flexfiles/pNFS: update stats on NFS4ERR_DELAY for v4.1 DSes
+Subject: [PATCH 5.15 061/160] atm: clip: prevent NULL deref in clip_push()
 Date: Tue,  8 Jul 2025 18:21:38 +0200
-Message-ID: <20250708162238.273293702@linuxfoundation.org>
+Message-ID: <20250708162233.242323625@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e3e3775392f3f0f3e3044f8c162bf47858e01759 ]
+[ Upstream commit b993ea46b3b601915ceaaf3c802adf11e7d6bac6 ]
 
-On NFS4ERR_DELAY nfs slient updates its stats, but misses for
-flexfiles v4.1 DSes.
+Blamed commit missed that vcc_destroy_socket() calls
+clip_push() with a NULL skb.
 
-Signed-off-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Stable-dep-of: 38074de35b01 ("NFSv4/flexfiles: Fix handling of NFS level errors in I/O")
+If clip_devs is NULL, clip_push() then crashes when reading
+skb->truesize.
+
+Fixes: 93a2014afbac ("atm: fix a UAF in lec_arp_clear_vccs()")
+Reported-by: syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68556f59.a00a0220.137b3.004e.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: Gengming Liu <l.dmxcsnsbh@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/atm/clip.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index e6909cafab686..df48074605967 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -1129,6 +1129,8 @@ static int ff_layout_async_handle_error_v4(struct rpc_task *task,
- 		nfs4_schedule_session_recovery(clp->cl_session, task->tk_status);
- 		break;
- 	case -NFS4ERR_DELAY:
-+		nfs_inc_stats(lseg->pls_layout->plh_inode, NFSIOS_DELAY);
-+		fallthrough;
- 	case -NFS4ERR_GRACE:
- 		rpc_delay(task, FF_LAYOUT_POLL_RETRY_MAX);
- 		break;
+diff --git a/net/atm/clip.c b/net/atm/clip.c
+index 294cb9efe3d38..511467bb7fe40 100644
+--- a/net/atm/clip.c
++++ b/net/atm/clip.c
+@@ -193,12 +193,6 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
+ 
+ 	pr_debug("\n");
+ 
+-	if (!clip_devs) {
+-		atm_return(vcc, skb->truesize);
+-		kfree_skb(skb);
+-		return;
+-	}
+-
+ 	if (!skb) {
+ 		pr_debug("removing VCC %p\n", clip_vcc);
+ 		if (clip_vcc->entry)
+@@ -208,6 +202,11 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
+ 		return;
+ 	}
+ 	atm_return(vcc, skb->truesize);
++	if (!clip_devs) {
++		kfree_skb(skb);
++		return;
++	}
++
+ 	skb->dev = clip_vcc->entry ? clip_vcc->entry->neigh->dev : clip_devs;
+ 	/* clip_vcc->entry == NULL if we don't have an IP address yet */
+ 	if (!skb->dev) {
 -- 
 2.39.5
 
