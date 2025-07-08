@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-160816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B12AFD209
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F04AFD3C7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:00:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E42A0188C3AB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:39:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 821D416869F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EB22E543A;
-	Tue,  8 Jul 2025 16:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312572DAFA3;
+	Tue,  8 Jul 2025 16:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ct406OLI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jq0aeucC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A692E2F0E;
-	Tue,  8 Jul 2025 16:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2075258CF7;
+	Tue,  8 Jul 2025 16:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992773; cv=none; b=K3XBbPX2j4zOssbB42ol+4pHpSsm6bJF/C7yo7wrjMtaKQwAtHeH6hbn3s6gvSvDU7y3AYHUkAr7p+qNOZfRB6D3zzRhn+zZuWUyfzUsWuNTeRu3ExMfN0Msh1QQ6UWcvY5Zitv703/NvADV+vSFxaWZGM9vOu2Ic/jps0j+ElM=
+	t=1751993841; cv=none; b=OCtWArV1ai9i3AsLY9h/EKm1LVCaU5YLtL7Yu/8zb8sec/FRSbcbEc3U1h4mGCPu7Buoaxn0zph5V/tnTCYTQlrbcWisgGsZkacaK07uFPlXRpdci7YalkAoA5aD/AaVpqFGHBgDPthtum4RhdImpewIIVW+C6PO9qtNbRTB89c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992773; c=relaxed/simple;
-	bh=cYIf3lpBWq8P3oFx+Dz7A5vi5IRQ5PLfyrtngyP6gfs=;
+	s=arc-20240116; t=1751993841; c=relaxed/simple;
+	bh=rtQ1wFpOvGXGtmt5//L473Y877xaMgzS9RZHrUOY3jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=peaKvcu+NHrPzrI9r97ecZ8ldUxfYKcnttQ8RRw6xBbtcq2gglhWVJNtrcqX1rK9cfqJMI7TbiVni63tOHK8JYi15SROKwMYj+1yVfXarf+7Y853KFGOqXmrl7F86nzo2mCpvwQ5Ha4qPZEpc2ZqhjOYPWb2Zs8Vz2ROJTi8xOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ct406OLI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51FFC4CEF0;
-	Tue,  8 Jul 2025 16:39:32 +0000 (UTC)
+	 MIME-Version; b=oIqcNKKY1EfndlL6Uj6gMKgdk1ZceSr67DDUxUtHFqi107jLn1vHo6tl0A9RKtC4o5jva3W0MuaIx1eF9P/QjDYOWaC/x8KSQViFa6+8oWK//ZPVcntZ3udaLRJSm/GhN5ynoB9M3AijYAtCHi2O9a5WwcHQrYnzEd2bQfemDVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jq0aeucC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B77DC4CEED;
+	Tue,  8 Jul 2025 16:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992773;
-	bh=cYIf3lpBWq8P3oFx+Dz7A5vi5IRQ5PLfyrtngyP6gfs=;
+	s=korg; t=1751993840;
+	bh=rtQ1wFpOvGXGtmt5//L473Y877xaMgzS9RZHrUOY3jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ct406OLIjDmNw97PgeBpf+76PH753lgeMU4M2gDxHyHOSE15Emi5TY33hAn9NhTrp
-	 faEnpJjx/BGe6rqdkc0ZO94FwFqRj+dGyzih/++08SccxanTSxltS9AAMy6DhutP6p
-	 ZZpTXOUjLbNIyZuUNUAqIDqELve8rJ0qxrRYEr4M=
+	b=Jq0aeucCF6kBbPMvLFhzJY/4H+nIv3S/Zgv6nT7t3YIU2F+Lcc2q2wwxwCZ2zIcjU
+	 PqMESDDbBnbQSuXzYr6LDyMgbqD0FknWf2kMxRYI2up/tReExCWRdc3NYZj3TnniXj
+	 WKHhAEv2pi9VrccAFyPPaLPddm4NaPFA+s8asgfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
-	Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/232] drm/i915/gt: Fix timeline left held on VMA alloc error
+Subject: [PATCH 5.15 035/160] ASoC: codecs: wcd9335: Handle nicer probe deferral and simplify with dev_err_probe()
 Date: Tue,  8 Jul 2025 18:21:12 +0200
-Message-ID: <20250708162243.440251021@linuxfoundation.org>
+Message-ID: <20250708162232.500413467@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,130 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit a5aa7bc1fca78c7fa127d9e33aa94a0c9066c1d6 ]
+[ Upstream commit 4a03b5dbad466c902d522f3405daa4e5d80578c5 ]
 
-The following error has been reported sporadically by CI when a test
-unbinds the i915 driver on a ring submission platform:
+wcd9335_parse_dt() function is called only from probe(), so printing
+errors on resource acquisition is discouraged, because it can pollute
+dmesg.  Use dev_err_probe() to fix this and also make the code a bit
+simpler.
 
-<4> [239.330153] ------------[ cut here ]------------
-<4> [239.330166] i915 0000:00:02.0: [drm] drm_WARN_ON(dev_priv->mm.shrink_count)
-<4> [239.330196] WARNING: CPU: 1 PID: 18570 at drivers/gpu/drm/i915/i915_gem.c:1309 i915_gem_cleanup_early+0x13e/0x150 [i915]
-...
-<4> [239.330640] RIP: 0010:i915_gem_cleanup_early+0x13e/0x150 [i915]
-...
-<4> [239.330942] Call Trace:
-<4> [239.330944]  <TASK>
-<4> [239.330949]  i915_driver_late_release+0x2b/0xa0 [i915]
-<4> [239.331202]  i915_driver_release+0x86/0xa0 [i915]
-<4> [239.331482]  devm_drm_dev_init_release+0x61/0x90
-<4> [239.331494]  devm_action_release+0x15/0x30
-<4> [239.331504]  release_nodes+0x3d/0x120
-<4> [239.331517]  devres_release_all+0x96/0xd0
-<4> [239.331533]  device_unbind_cleanup+0x12/0x80
-<4> [239.331543]  device_release_driver_internal+0x23a/0x280
-<4> [239.331550]  ? bus_find_device+0xa5/0xe0
-<4> [239.331563]  device_driver_detach+0x14/0x20
-...
-<4> [357.719679] ---[ end trace 0000000000000000 ]---
-
-If the test also unloads the i915 module then that's followed with:
-
-<3> [357.787478] =============================================================================
-<3> [357.788006] BUG i915_vma (Tainted: G     U  W        N ): Objects remaining on __kmem_cache_shutdown()
-<3> [357.788031] -----------------------------------------------------------------------------
-<3> [357.788204] Object 0xffff888109e7f480 @offset=29824
-<3> [357.788670] Allocated in i915_vma_instance+0xee/0xc10 [i915] age=292729 cpu=4 pid=2244
-<4> [357.788994]  i915_vma_instance+0xee/0xc10 [i915]
-<4> [357.789290]  init_status_page+0x7b/0x420 [i915]
-<4> [357.789532]  intel_engines_init+0x1d8/0x980 [i915]
-<4> [357.789772]  intel_gt_init+0x175/0x450 [i915]
-<4> [357.790014]  i915_gem_init+0x113/0x340 [i915]
-<4> [357.790281]  i915_driver_probe+0x847/0xed0 [i915]
-<4> [357.790504]  i915_pci_probe+0xe6/0x220 [i915]
-...
-
-Closer analysis of CI results history has revealed a dependency of the
-error on a few IGT tests, namely:
-- igt@api_intel_allocator@fork-simple-stress-signal,
-- igt@api_intel_allocator@two-level-inception-interruptible,
-- igt@gem_linear_blits@interruptible,
-- igt@prime_mmap_coherency@ioctl-errors,
-which invisibly trigger the issue, then exhibited with first driver unbind
-attempt.
-
-All of the above tests perform actions which are actively interrupted with
-signals.  Further debugging has allowed to narrow that scope down to
-DRM_IOCTL_I915_GEM_EXECBUFFER2, and ring_context_alloc(), specific to ring
-submission, in particular.
-
-If successful then that function, or its execlists or GuC submission
-equivalent, is supposed to be called only once per GEM context engine,
-followed by raise of a flag that prevents the function from being called
-again.  The function is expected to unwind its internal errors itself, so
-it may be safely called once more after it returns an error.
-
-In case of ring submission, the function first gets a reference to the
-engine's legacy timeline and then allocates a VMA.  If the VMA allocation
-fails, e.g. when i915_vma_instance() called from inside is interrupted
-with a signal, then ring_context_alloc() fails, leaving the timeline held
-referenced.  On next I915_GEM_EXECBUFFER2 IOCTL, another reference to the
-timeline is got, and only that last one is put on successful completion.
-As a consequence, the legacy timeline, with its underlying engine status
-page's VMA object, is still held and not released on driver unbind.
-
-Get the legacy timeline only after successful allocation of the context
-engine's VMA.
-
-v2: Add a note on other submission methods (Krzysztof Karas):
-    Both execlists and GuC submission use lrc_alloc() which seems free
-    from a similar issue.
-
-Fixes: 75d0a7f31eec ("drm/i915: Lift timeline into intel_context")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-Reviewed-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Reviewed-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Reviewed-by: Nitin Gote <nitin.r.gote@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20250611104352.1014011-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit cc43422b3cc79eacff4c5a8ba0d224688ca9dd4f)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://msgid.link/r/20240612-asoc-wcd9xxx-wide-cleanups-v1-4-0d15885b2a06@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 9079db287fc3 ("ASoC: codecs: wcd9335: Fix missing free of regulator supplies")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_ring_submission.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/codecs/wcd9335.c | 28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_ring_submission.c b/drivers/gpu/drm/i915/gt/intel_ring_submission.c
-index 72277bc8322e8..f84fa09cdb339 100644
---- a/drivers/gpu/drm/i915/gt/intel_ring_submission.c
-+++ b/drivers/gpu/drm/i915/gt/intel_ring_submission.c
-@@ -575,7 +575,6 @@ static int ring_context_alloc(struct intel_context *ce)
- 	/* One ringbuffer to rule them all */
- 	GEM_BUG_ON(!engine->legacy.ring);
- 	ce->ring = engine->legacy.ring;
--	ce->timeline = intel_timeline_get(engine->legacy.timeline);
+diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
+index 075ed20e9fad8..dc4ce2c3f2188 100644
+--- a/sound/soc/codecs/wcd9335.c
++++ b/sound/soc/codecs/wcd9335.c
+@@ -5028,22 +5028,16 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
+ 	int ret;
  
- 	GEM_BUG_ON(ce->state);
- 	if (engine->context_size) {
-@@ -588,6 +587,8 @@ static int ring_context_alloc(struct intel_context *ce)
- 		ce->state = vma;
- 	}
+ 	wcd->reset_gpio = of_get_named_gpio(np,	"reset-gpios", 0);
+-	if (wcd->reset_gpio < 0) {
+-		dev_err(dev, "Reset GPIO missing from DT\n");
+-		return wcd->reset_gpio;
+-	}
++	if (wcd->reset_gpio < 0)
++		return dev_err_probe(dev, wcd->reset_gpio, "Reset GPIO missing from DT\n");
  
-+	ce->timeline = intel_timeline_get(engine->legacy.timeline);
-+
+ 	wcd->mclk = devm_clk_get(dev, "mclk");
+-	if (IS_ERR(wcd->mclk)) {
+-		dev_err(dev, "mclk not found\n");
+-		return PTR_ERR(wcd->mclk);
+-	}
++	if (IS_ERR(wcd->mclk))
++		return dev_err_probe(dev, PTR_ERR(wcd->mclk), "mclk not found\n");
+ 
+ 	wcd->native_clk = devm_clk_get(dev, "slimbus");
+-	if (IS_ERR(wcd->native_clk)) {
+-		dev_err(dev, "slimbus clock not found\n");
+-		return PTR_ERR(wcd->native_clk);
+-	}
++	if (IS_ERR(wcd->native_clk))
++		return dev_err_probe(dev, PTR_ERR(wcd->native_clk), "slimbus clock not found\n");
+ 
+ 	wcd->supplies[0].supply = "vdd-buck";
+ 	wcd->supplies[1].supply = "vdd-buck-sido";
+@@ -5052,10 +5046,8 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
+ 	wcd->supplies[4].supply = "vdd-io";
+ 
+ 	ret = regulator_bulk_get(dev, WCD9335_MAX_SUPPLY, wcd->supplies);
+-	if (ret) {
+-		dev_err(dev, "Failed to get supplies: err = %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to get supplies\n");
+ 
  	return 0;
  }
+@@ -5158,10 +5150,8 @@ static int wcd9335_slim_probe(struct slim_device *slim)
  
+ 	wcd->dev = dev;
+ 	ret = wcd9335_parse_dt(wcd);
+-	if (ret) {
+-		dev_err(dev, "Error parsing DT: %d\n", ret);
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	ret = wcd9335_power_on_reset(wcd);
+ 	if (ret)
 -- 
 2.39.5
 
