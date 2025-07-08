@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30897AFD286
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AEDAAFD46F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 107A1423FBE
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E181565E1D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAAC62E54BA;
-	Tue,  8 Jul 2025 16:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFA52E610C;
+	Tue,  8 Jul 2025 17:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rsJmp2Z3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLZbcCEL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9216C2E54B2;
-	Tue,  8 Jul 2025 16:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902772E49AF;
+	Tue,  8 Jul 2025 17:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993053; cv=none; b=mSy7vlfCv3dSboYUZQXnmTvCX+PRRLDlJWY8MBrwR3vnYYQ/Y9945R/wKLHyyvxe7CR36ENSQQRn7cGZVhCzjUcDDWSQvOgQ2DW8NHmBYwA3CdjgxmGXM3oYoWG0qmNYS6n3EKhJFP2nlUjo1SpLsrNg1Ke2glseJAj9E9Z3jwY=
+	t=1751994125; cv=none; b=epUFY3d5xgJUQOnRHTqRejOaAQit12vHk3HccreFzN8C06vmZ8DDZMYfGaxHYuYGq5il4rPrFT0CBh4Ni5AKvLTZgObID8Re+10wAGZ18TJKz8oUry4rUON4PeB+rgox7XwyT4YqRjLr0+9PX8hNx+DyqY5X9vEBCqX7SbFBd6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993053; c=relaxed/simple;
-	bh=n0mrC8bhRvr5b0/VwbP+QDmZuRADcfdO2Cj8hFEufy0=;
+	s=arc-20240116; t=1751994125; c=relaxed/simple;
+	bh=qvZmaN+jD/kcPfMLTFtPBm2MAH92EYjRxxkArfIN2uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEV341XVz0Lmip4muh7S+LeUw/V2vBrOfwf5XZFBu5uIjbAJ5Z6tCVspqW+rjNg4ZkoPwmZsUowg+JW4K13lU98gCHSnr2UwADJSzIbY1Zq/iqOniR+xOFWGQjjluF2spVOKfocYI902tP2Z1Xan+E0diiOEMk7QNEChSNN3qNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rsJmp2Z3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE96C4CEF9;
-	Tue,  8 Jul 2025 16:44:12 +0000 (UTC)
+	 MIME-Version; b=fGEMnAXml+T87Amh7lhaqixXysRP8NjxQUcZ2YMhGFR3Z3OThdpxi9GM0UQxoVG9JDCYTJ26I1UZBOnJf7M9aVtMMrVPLjkgtC1OF3g42bq3tF5UTNok5jA6ofjsNpJ6Ay5h5nOEweNcYH8Mgm/8ZRYWWchIYvAexwZIZ1yr910=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLZbcCEL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D130C4CEED;
+	Tue,  8 Jul 2025 17:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993053;
-	bh=n0mrC8bhRvr5b0/VwbP+QDmZuRADcfdO2Cj8hFEufy0=;
+	s=korg; t=1751994125;
+	bh=qvZmaN+jD/kcPfMLTFtPBm2MAH92EYjRxxkArfIN2uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rsJmp2Z3MH5+vDCfxfw/rJjV639IF38MMvuHZIfOQNkJxODFi3fM031qv7kwC0q9T
-	 6XKUKm1R+Jp3eY5XZfyDvz+T6f2qm/6MzFLjUSV+307IOvsHWK5XA/IALc/7qMNrBY
-	 Ah7KqIuO3XH5bat7+MlGD5S0HE1uk+Gez82FESZU=
+	b=GLZbcCELESdeY2zxYM/5lq/81NWwPLNcEPDZYuUuJubyTiftJAoEgbjvSt+Wb0a1k
+	 GFxjEoFkqJlSdpldNqZiJdLLdAZmBMlsk7S+9ehxtE82dt810ULtSwrE8SQ20JdpDp
+	 OV1s1ceibtY3qFcOCE9/5kuV5dPUIY+UwhcbmflQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 172/232] drm/msm: Fix another leak in the submit error path
-Date: Tue,  8 Jul 2025 18:22:48 +0200
-Message-ID: <20250708162245.940920044@linuxfoundation.org>
+Subject: [PATCH 5.15 132/160] wifi: mac80211: drop invalid source address OCB frames
+Date: Tue,  8 Jul 2025 18:22:49 +0200
+Message-ID: <20250708162235.057989099@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit f681c2aa8676a890eacc84044717ab0fd26e058f ]
+[ Upstream commit d1b1a5eb27c4948e8811cf4dbb05aaf3eb10700c ]
 
-put_unused_fd() doesn't free the installed file, if we've already done
-fd_install().  So we need to also free the sync_file.
+In OCB, don't accept frames from invalid source addresses
+(and in particular don't try to create stations for them),
+drop the frames instead.
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Patchwork: https://patchwork.freedesktop.org/patch/653583/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Reported-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/6788d2d9.050a0220.20d369.0028.GAE@google.com/
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Tested-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/20250616171838.7433379cab5d.I47444d63c72a0bd58d2e2b67bb99e1fea37eec6f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem_submit.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/mac80211/rx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
-index 937c1f5d88cbb..4b3a8ee8e278f 100644
---- a/drivers/gpu/drm/msm/msm_gem_submit.c
-+++ b/drivers/gpu/drm/msm/msm_gem_submit.c
-@@ -667,6 +667,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
- 	struct msm_ringbuffer *ring;
- 	struct msm_submit_post_dep *post_deps = NULL;
- 	struct drm_syncobj **syncobjs_to_reset = NULL;
-+	struct sync_file *sync_file = NULL;
- 	int out_fence_fd = -1;
- 	unsigned i;
- 	int ret;
-@@ -877,7 +878,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
- 	}
- 
- 	if (ret == 0 && args->flags & MSM_SUBMIT_FENCE_FD_OUT) {
--		struct sync_file *sync_file = sync_file_create(submit->user_fence);
-+		sync_file = sync_file_create(submit->user_fence);
- 		if (!sync_file) {
- 			ret = -ENOMEM;
- 		} else {
-@@ -911,8 +912,11 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
- out_unlock:
- 	mutex_unlock(&queue->lock);
- out_post_unlock:
--	if (ret && (out_fence_fd >= 0))
-+	if (ret && (out_fence_fd >= 0)) {
- 		put_unused_fd(out_fence_fd);
-+		if (sync_file)
-+			fput(sync_file->file);
-+	}
- 
- 	if (!IS_ERR_OR_NULL(submit)) {
- 		msm_gem_submit_put(submit);
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 26943c93f14c4..6c160ff2aab90 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4168,6 +4168,10 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
+ 		if (!multicast &&
+ 		    !ether_addr_equal(sdata->dev->dev_addr, hdr->addr1))
+ 			return false;
++		/* reject invalid/our STA address */
++		if (!is_valid_ether_addr(hdr->addr2) ||
++		    ether_addr_equal(sdata->dev->dev_addr, hdr->addr2))
++			return false;
+ 		if (!rx->sta) {
+ 			int rate_idx;
+ 			if (status->encoding != RX_ENC_LEGACY)
 -- 
 2.39.5
 
