@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-161073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9621CAFD344
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:55:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E31DAAFD10C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFB251C2764B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:52:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53FD37AF317
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394812E49AF;
-	Tue,  8 Jul 2025 16:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD5D1D5AC0;
+	Tue,  8 Jul 2025 16:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3MjcyYR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJkpDlJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DCB2045B5;
-	Tue,  8 Jul 2025 16:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7E4881E;
+	Tue,  8 Jul 2025 16:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993519; cv=none; b=fWEZX5KvXWaj9zCAWycZuYu6bl/3oQntpaLCDIizIKJva9sEESojy4umEnzBxJzPcw3mvkYhMhflRNgzuLP+qqfy2LPxHTFEMp1YWgmHglXu7zVSuAUklUxiSKUItl81ELvhCCyXpIjQh3LFqXCPmNgb4T4gbd6al9jrYPZ69vs=
+	t=1751992241; cv=none; b=kzPZYfpk9rxhn4l2mNVJwGRBQtK74sF1rAXKOu18SHxNOQs56o0BIW8/kfOQF81PNkfNXXQBHg0GvpubFGxbKa48ZwqYApzd91CumlvVqnd/GIN+5LQ2jkP++NMuKdFCtspPpfuGJzn/1RheevaiEby/bZuXvJYjD+anAR4ku4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993519; c=relaxed/simple;
-	bh=ObhDK+T/yB1fnH0TV0t5DME3vgPybpTw3Kwu5rWKmG8=;
+	s=arc-20240116; t=1751992241; c=relaxed/simple;
+	bh=Gzx8qDR9RxfGZsHOAOxnB/BuTIv0SXw2MaeRkMKNrpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E4N2b5BVzhPVul+MhdOwn3ykJGw6DY5tSTxXnoTffgzQshqkv7sEuv8HMBbTlrh69+AkzfWc64TBlcf1gu4ArOYjrdfBwynBeMOTz0HzSaa24hqJsfT1IqHIUtqq0FsSThMFGOXep1Qfu5OLZprx5mLK3cn9qcSl+3RsVn97zAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3MjcyYR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72630C4CEED;
-	Tue,  8 Jul 2025 16:51:58 +0000 (UTC)
+	 MIME-Version; b=Ghy72Fazqs0sxBWmrUzRcIaZi7DCdsfQXj58Cl/d/qQRdCbOThFJRNugZUF9yjxNGHt5yAUZ4JgsPY16Iqr1nvZlr5QEO4Y47lVHBatIUFCMY6JonO0eMBtSxaOzAU7QlFfw+GqoAz+qtn7T1zh12e/F1v1VR3b78UlxrrK6iQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJkpDlJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B50C4CEED;
+	Tue,  8 Jul 2025 16:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993518;
-	bh=ObhDK+T/yB1fnH0TV0t5DME3vgPybpTw3Kwu5rWKmG8=;
+	s=korg; t=1751992240;
+	bh=Gzx8qDR9RxfGZsHOAOxnB/BuTIv0SXw2MaeRkMKNrpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U3MjcyYRLUrUCEFOQW/cy56iictqx975Ugw2MU6LsNrOq6FLd/lpymgOpCBEVGAQN
-	 6ivlxfUtMGw9K2YJb7MxqEF8LaortfitfLZErNr47S3z6t07aqh9y2omWrwAtS7zQW
-	 1S1Qfwuld91ZCK6YyL+rF4LPHIcD7meTYk/UmXsE=
+	b=sJkpDlJ8VVFBYstix1HFmtLGGVorQuB60vcKyZYfQ3CR1Vif+pUj15UtkkPTg3rHv
+	 0GUlsLlmPv3tFmBBkJkMpUUlR8Qie+cWkAawC2JXZxUUyu4hlQUvuXV8tDiNb2zkHL
+	 68OXPrhcYMQWm/8R3/ryk9nuemS6oi7JPmAuv3no=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Steve French <sfrench@samba.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 100/178] smb: client: set missing retry flag in smb2_writev_callback()
+Subject: [PATCH 6.6 026/132] RDMA/mlx5: Fix HW counters query for non-representor devices
 Date: Tue,  8 Jul 2025 18:22:17 +0200
-Message-ID: <20250708162239.262018008@linuxfoundation.org>
+Message-ID: <20250708162231.480493205@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,42 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit e67e75edeb88022c04f8e0a173e1ff6dc688f155 ]
+[ Upstream commit 3cc1dbfddf88dc5ecce0a75185061403b1f7352d ]
 
-Set NETFS_SREQ_NEED_RETRY flag to tell netfslib that the subreq needs
-to be retried.
+To get the device HW counters, a non-representor switchdev device
+should use the mlx5_ib_query_q_counters() function and query all of
+the available counters. While a representor device in switchdev mode
+should use the mlx5_ib_query_q_counters_vport() function and query only
+the Q_Counters without the PPCNT counters and congestion control counters,
+since they aren't relevant for a representor device.
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/20250701163852.2171681-7-dhowells@redhat.com
-Tested-by: Steve French <sfrench@samba.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: netfs@lists.linux.dev
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Currently a non-representor switchdev device skips querying the PPCNT
+counters and congestion control counters, leaving them unupdated.
+Fix that by properly querying those counters for non-representor devices.
+
+Fixes: d22467a71ebe ("RDMA/mlx5: Expand switchdev Q-counters to expose representor statistics")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
+Link: https://patch.msgid.link/56bf8af4ca8c58e3fb9f7e47b1dca2009eeeed81.1750064969.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2pdu.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/mlx5/counters.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index c3b212175b2bf..2c0cc544dfb31 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -4852,6 +4852,7 @@ smb2_writev_callback(struct mid_q_entry *mid)
- 		break;
- 	case MID_REQUEST_SUBMITTED:
- 	case MID_RETRY_NEEDED:
-+		__set_bit(NETFS_SREQ_NEED_RETRY, &wdata->subreq.flags);
- 		result = -EAGAIN;
- 		break;
- 	case MID_RESPONSE_MALFORMED:
+diff --git a/drivers/infiniband/hw/mlx5/counters.c b/drivers/infiniband/hw/mlx5/counters.c
+index b049bba215790..f4aa72166cf35 100644
+--- a/drivers/infiniband/hw/mlx5/counters.c
++++ b/drivers/infiniband/hw/mlx5/counters.c
+@@ -387,7 +387,7 @@ static int do_get_hw_stats(struct ib_device *ibdev,
+ 		return ret;
+ 
+ 	/* We don't expose device counters over Vports */
+-	if (is_mdev_switchdev_mode(dev->mdev) && port_num != 0)
++	if (is_mdev_switchdev_mode(dev->mdev) && dev->is_rep && port_num != 0)
+ 		goto done;
+ 
+ 	if (MLX5_CAP_PCAM_FEATURE(dev->mdev, rx_icrc_encapsulated_counter)) {
 -- 
 2.39.5
 
