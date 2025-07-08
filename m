@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-160950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164A8AFD278
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74821AFD0BD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:27:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD39B7AE651
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57CE47A5A7A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D731DD0EF;
-	Tue,  8 Jul 2025 16:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFDA2E11DA;
+	Tue,  8 Jul 2025 16:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGEZ0YeD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVykRwnE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F8C2E62B8;
-	Tue,  8 Jul 2025 16:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098D2217722;
+	Tue,  8 Jul 2025 16:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993163; cv=none; b=eVr4t8rgOz4H/M1EmqQF798t36oP0S399sQ5tiuTAGv5fVPf274mvCMG0Wv8tzcPAwwe7RznWE7H9vOXuygUIUlOrmwA+pVd/wJQFn8O6JvwD94gk3AJZ7tETM/VRSiq68xMbol0XW11vRPd1/D8VU+XTYoAa7bhnIxnrLAZXdg=
+	t=1751992027; cv=none; b=UuKtAZuuqGuHECXjf4xL4IzWjOPXt8tDXTSTr4IUw6Ti2IGvtSbtgBDJJsCklgUtdoHNaew1SKe83Ed70qv12iTpG3V+rhizEs/uSZV9mhVwVlM7N1kmz0tgSMY5bOLlPWSs9siB1JPDb/6U0wg2VvTgkjOfYf0P23HHk/j/QDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993163; c=relaxed/simple;
-	bh=M0OBjhbiPgiCbA0K7yZq3XMB6tIbK2MUN2VcpaCqjYg=;
+	s=arc-20240116; t=1751992027; c=relaxed/simple;
+	bh=bw8aTxkXz0YXkxFMgYqltlVozn/ZuqXXslEi50nTkXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6oQwQjxt1c0XOAABxWgkgoJUsLwkSz/rjpiX5IZFNwizROqQu1pDIIKoHZh39BSjKyMcRQyqoCYJuSw+VBYKtsY70gO1TnjdbGlkshaL+FHkVXcvBfqBAKDjU58xra0VHpbuHbQ3WmhC1EJI8pGge3U6/FZBF7CvAEGv16XFwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGEZ0YeD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63648C4CEED;
-	Tue,  8 Jul 2025 16:46:03 +0000 (UTC)
+	 MIME-Version; b=Ofd2BZtaqvo2U8Nd6zGfsXF37MdCsCxH70vlJFHHivo8exjUqskkVT4FQCAIvonEWDhHU/VRH5WiP4aTXtMV5xMQ07cPKnTDrihibrlLOEIMX3OpZhO2/sRH4l05hjeKHRi8lnnHGFauZh/CWCr8o7Zl9qimHCKjJrn/tSKZj+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVykRwnE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1F4C4CEED;
+	Tue,  8 Jul 2025 16:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993163;
-	bh=M0OBjhbiPgiCbA0K7yZq3XMB6tIbK2MUN2VcpaCqjYg=;
+	s=korg; t=1751992026;
+	bh=bw8aTxkXz0YXkxFMgYqltlVozn/ZuqXXslEi50nTkXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nGEZ0YeDOnNiIUL0JPEWpOGIu2YEHWo59cExcguLe+tfXLtDTtibo/KmvAQ0qym/w
-	 UGd6WaRwN5ePLjdUX4Jt4oulODsP795eSvXC3Q6YqrQz9QDxzFAqoVyaiIEZoXmw1j
-	 gzcs+XfCJ6PAy8vmfozql1rd/yrgl9HwLnHS3SlE=
+	b=gVykRwnEYeKDSpkQiRFxto21Em/WJkkGFXxVA1P56rQhImbopueO7b3rWBRpR7I7M
+	 UuEiGsYEe/bQQY0Y+KWNcn3Il5xH3lf7zgtHyVuQ6fAc59MJ5nN7V2vK9O3gNAKTzc
+	 jOxLtyaAM+NhSbdRc549iG74NgTV3YxzvAtNVxcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>,
-	John Ernberg <john.ernberg@actia.se>,
-	stable <stable@kernel.org>,
-	Jun Li <jun.li@nxp.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.12 210/232] usb: chipidea: udc: disconnect/reconnect from host when do suspend/resume
-Date: Tue,  8 Jul 2025 18:23:26 +0200
-Message-ID: <20250708162246.937389345@linuxfoundation.org>
+	Furong Zhou <furong.zhou@intel.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Junxiao Chang <junxiao.chang@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 35/81] drm/i915/gsc: mei interrupt top half should be in irq disabled context
+Date: Tue,  8 Jul 2025 18:23:27 +0200
+Message-ID: <20250708162226.080746784@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Junxiao Chang <junxiao.chang@intel.com>
 
-commit 31a6afbe86e8e9deba9ab53876ec49eafc7fd901 upstream.
+[ Upstream commit 8cadce97bf264ed478669c6f32d5603b34608335 ]
 
-Shawn and John reported a hang issue during system suspend as below:
+MEI GSC interrupt comes from i915. It has top half and bottom half.
+Top half is called from i915 interrupt handler. It should be in
+irq disabled context.
 
- - USB gadget is enabled as Ethernet
- - There is data transfer over USB Ethernet (scp a big file between host
-                                             and device)
- - Device is going in/out suspend (echo mem > /sys/power/state)
+With RT kernel, by default i915 IRQ handler is in threaded IRQ. MEI GSC
+top half might be in threaded IRQ context. generic_handle_irq_safe API
+could be called from either IRQ or process context, it disables local
+IRQ then calls MEI GSC interrupt top half.
 
-The root cause is the USB device controller is suspended but the USB bus
-is still active which caused the USB host continues to transfer data with
-device and the device continues to queue USB requests (in this case, a
-delayed TCP ACK packet trigger the issue) after controller is suspended,
-however the USB controller clock is already gated off. Then if udc driver
-access registers after that point, the system will hang.
+This change fixes A380/A770 GPU boot hang issue with RT kernel.
 
-The correct way to avoid such issue is to disconnect device from host when
-the USB bus is not at suspend state. Then the host will receive disconnect
-event and stop data transfer in time. To continue make USB gadget device
-work after system resume, this will reconnect device automatically.
-
-To make usb wakeup work if USB bus is already at suspend state, this will
-keep connection for it only when USB device controller has enabled wakeup
-capability.
-
-Reported-by: Shawn Guo <shawnguo@kernel.org>
-Reported-by: John Ernberg <john.ernberg@actia.se>
-Closes: https://lore.kernel.org/linux-usb/aEZxmlHmjeWcXiF3@dragon/
-Tested-by: John Ernberg <john.ernberg@actia.se> # iMX8QXP
-Fixes: 235ffc17d014 ("usb: chipidea: udc: add suspend/resume support for device controller")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Jun Li <jun.li@nxp.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20250614124914.207540-1-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e3dc1d8622b ("drm/i915/gsc: add gsc as a mei auxiliary device")
+Tested-by: Furong Zhou <furong.zhou@intel.com>
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Junxiao Chang <junxiao.chang@intel.com>
+Link: https://lore.kernel.org/r/20250425151108.643649-1-junxiao.chang@intel.com
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit dccf655f69002d496a527ba441b4f008aa5bebbf)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/udc.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/i915/gt/intel_gsc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -2362,6 +2362,10 @@ static void udc_suspend(struct ci_hdrc *
- 	 */
- 	if (hw_read(ci, OP_ENDPTLISTADDR, ~0) == 0)
- 		hw_write(ci, OP_ENDPTLISTADDR, ~0, ~0);
-+
-+	if (ci->gadget.connected &&
-+	    (!ci->suspended || !device_may_wakeup(ci->dev)))
-+		usb_gadget_disconnect(&ci->gadget);
+diff --git a/drivers/gpu/drm/i915/gt/intel_gsc.c b/drivers/gpu/drm/i915/gt/intel_gsc.c
+index 7af6db3194ddb..0f83e1cedf781 100644
+--- a/drivers/gpu/drm/i915/gt/intel_gsc.c
++++ b/drivers/gpu/drm/i915/gt/intel_gsc.c
+@@ -273,7 +273,7 @@ static void gsc_irq_handler(struct intel_gt *gt, unsigned int intf_id)
+ 	if (gt->gsc.intf[intf_id].irq < 0)
+ 		return;
+ 
+-	ret = generic_handle_irq(gt->gsc.intf[intf_id].irq);
++	ret = generic_handle_irq_safe(gt->gsc.intf[intf_id].irq);
+ 	if (ret)
+ 		drm_err_ratelimited(&gt->i915->drm, "error handling GSC irq: %d\n", ret);
  }
- 
- static void udc_resume(struct ci_hdrc *ci, bool power_lost)
-@@ -2372,6 +2376,9 @@ static void udc_resume(struct ci_hdrc *c
- 					OTGSC_BSVIS | OTGSC_BSVIE);
- 		if (ci->vbus_active)
- 			usb_gadget_vbus_disconnect(&ci->gadget);
-+	} else if (ci->vbus_active && ci->driver &&
-+		   !ci->gadget.connected) {
-+		usb_gadget_connect(&ci->gadget);
- 	}
- 
- 	/* Restore value 0 if it was set for power lost check */
+-- 
+2.39.5
+
 
 
 
