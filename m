@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-161138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EDD2AFD39C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D16AFD295
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:48:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9D13188F46D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDE1E189EEB8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438C32DFA22;
-	Tue,  8 Jul 2025 16:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53162E5413;
+	Tue,  8 Jul 2025 16:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKhg4ny/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiiHvL14"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C08BE46;
-	Tue,  8 Jul 2025 16:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22392E3385;
+	Tue,  8 Jul 2025 16:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993705; cv=none; b=DBnDv31Re1Z0EGSpvvFNz3nB2slC1n31gWfzWkziVYxz5U+QTvcE7rJnTscx2rtR0Czv2TavL6a8BU008H6QLOSJ+OZ31G36FK5HhzQUhIFdPuogINoAca6/gykys26joGZxSyBJ/MeBySpaM5BSXpb7OpnH9xbfxh2Lyz10sG0=
+	t=1751993076; cv=none; b=g8h8RTu+UwQwYj8VDagpsNRZIPCqG+tJ/oEwL1CLgNtps4dGRYnsuKb+SN0kn3ZfRcTcu0FSCrbOWejXnPzHAEzlW0STcoP8EucjfVT/CUejAsBKnkyMrSjmvwGVsfhSm8Gz5Rd2Va+8zw8ES83NJd3nzlP/5fASV7F3Vl4Bqds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993705; c=relaxed/simple;
-	bh=vYKU5/F3QcilwL5E0uxwh9As+pWoCuML8CYM8jjC70k=;
+	s=arc-20240116; t=1751993076; c=relaxed/simple;
+	bh=lR36Ve0JjmqeX+/q8e7xwhMe5qTcl9iKIZaLzjON1Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovD1r3LlB+zOdU5KCLsAEo0McB2q91xTpEqA6CQR9NAR8DHm14UHOLmoKvzJ4qG475Rt4CXFKIP7cN1157yRKgpDcjCvKL/x3hldqx5/2wsS6DPXyjKtdCZVIxH3V3/+Xx+H/Jc8RGKpc3pMNi/WloQc0xVHJjNLEU76TCMER5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKhg4ny/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C304C4CEED;
-	Tue,  8 Jul 2025 16:55:04 +0000 (UTC)
+	 MIME-Version; b=A4KrCPWFl3uH6EJYpdqfW0/1ojVqVzDvM1jv6rmibY93FIq3ITdQhEUzRCaNKhMRZDO/4pOrqxC7bAmj/Qy4aUF3Ib1rSGYG6+R7NRgkoaYR5l1s0z5fxOru6sIkPFnvUDsvBZI2ktHDV2zwUiP9eUUpvnIwAAtajmqv7dWDZWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hiiHvL14; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A83CC4CEED;
+	Tue,  8 Jul 2025 16:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993704;
-	bh=vYKU5/F3QcilwL5E0uxwh9As+pWoCuML8CYM8jjC70k=;
+	s=korg; t=1751993076;
+	bh=lR36Ve0JjmqeX+/q8e7xwhMe5qTcl9iKIZaLzjON1Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jKhg4ny/kbouroqCccV0Jn8GheP8+AVH3sURfd938Za5H+YMOSQhgpRXgYB3QbAiv
-	 rK1ARDd2EdlkngoV+cg1w9PLXNBI2huAkUSwWiqC7IfsTGdJJeg0EGcBv2Emlz55CK
-	 ttkmmE4hxV1MZZ8JWydmgL1GnfRCjwTiYRHGZDOU=
+	b=hiiHvL146E+AjPCQyqDW+cIzl+wIuFo9oo/iVdcbOWHEXHuOstyBA8AeYuAuNwrWv
+	 GCj54nMEjLnaRRpEcie1oiW2ZutUtgAtExIq4jxSorVhUZujUCJipVGExvRkNpZNqq
+	 55k7rZHjYmiqkm6ZRDsYumb7Asl+WwNT8LElJh+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Williams <peter@newton.cx>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Hans de Goede <hansg@kernel.org>,
+	Tulio Magno <tuliom@ascii.art.br>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Justin M. Forbes" <jforbes@fedoraproject.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 138/178] ACPICA: Refuse to evaluate a method if arguments are missing
-Date: Tue,  8 Jul 2025 18:22:55 +0200
-Message-ID: <20250708162240.156255931@linuxfoundation.org>
+Subject: [PATCH 6.12 180/232] powerpc: Fix struct termio related ioctl macros
+Date: Tue,  8 Jul 2025 18:22:56 +0200
+Message-ID: <20250708162246.148488299@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
 
-[ Upstream commit 6fcab2791543924d438e7fa49276d0998b0a069f ]
+[ Upstream commit ab107276607af90b13a5994997e19b7b9731e251 ]
 
-As reported in [1], a platform firmware update that increased the number
-of method parameters and forgot to update a least one of its callers,
-caused ACPICA to crash due to use-after-free.
+Since termio interface is now obsolete, include/uapi/asm/ioctls.h
+has some constant macros referring to "struct termio", this caused
+build failure at userspace.
 
-Since this a result of a clear AML issue that arguably cannot be fixed
-up by the interpreter (it cannot produce missing data out of thin air),
-address it by making ACPICA refuse to evaluate a method if the caller
-attempts to pass fewer arguments than expected to it.
+In file included from /usr/include/asm/ioctl.h:12,
+                 from /usr/include/asm/ioctls.h:5,
+                 from tst-ioctls.c:3:
+tst-ioctls.c: In function 'get_TCGETA':
+tst-ioctls.c:12:10: error: invalid application of 'sizeof' to incomplete type 'struct termio'
+   12 |   return TCGETA;
+      |          ^~~~~~
 
-Closes: https://github.com/acpica/acpica/issues/1027 [1]
-Reported-by: Peter Williams <peter@newton.cx>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Tested-by: Hans de Goede <hansg@kernel.org> # Dell XPS 9640 with BIOS 1.12.0
-Link: https://patch.msgid.link/5909446.DvuYhMxLoT@rjwysocki.net
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Even though termios.h provides "struct termio", trying to juggle definitions around to
+make it compile could introduce regressions. So better to open code it.
+
+Reported-by: Tulio Magno <tuliom@ascii.art.br>
+Suggested-by: Nicholas Piggin <npiggin@gmail.com>
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
+Closes: https://lore.kernel.org/linuxppc-dev/8734dji5wl.fsf@ascii.art.br/
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250517142237.156665-1-maddy@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/dsmethod.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/powerpc/include/uapi/asm/ioctls.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
-index e809c2aed78ae..a232746d150a7 100644
---- a/drivers/acpi/acpica/dsmethod.c
-+++ b/drivers/acpi/acpica/dsmethod.c
-@@ -483,6 +483,13 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
- 		return_ACPI_STATUS(AE_NULL_OBJECT);
- 	}
+diff --git a/arch/powerpc/include/uapi/asm/ioctls.h b/arch/powerpc/include/uapi/asm/ioctls.h
+index 2c145da3b774a..b5211e413829a 100644
+--- a/arch/powerpc/include/uapi/asm/ioctls.h
++++ b/arch/powerpc/include/uapi/asm/ioctls.h
+@@ -23,10 +23,10 @@
+ #define TCSETSW		_IOW('t', 21, struct termios)
+ #define TCSETSF		_IOW('t', 22, struct termios)
  
-+	if (this_walk_state->num_operands < obj_desc->method.param_count) {
-+		ACPI_ERROR((AE_INFO, "Missing argument for method [%4.4s]",
-+			    acpi_ut_get_node_name(method_node)));
-+
-+		return_ACPI_STATUS(AE_AML_UNINITIALIZED_ARG);
-+	}
-+
- 	/* Init for new method, possibly wait on method mutex */
+-#define TCGETA		_IOR('t', 23, struct termio)
+-#define TCSETA		_IOW('t', 24, struct termio)
+-#define TCSETAW		_IOW('t', 25, struct termio)
+-#define TCSETAF		_IOW('t', 28, struct termio)
++#define TCGETA		0x40147417 /* _IOR('t', 23, struct termio) */
++#define TCSETA		0x80147418 /* _IOW('t', 24, struct termio) */
++#define TCSETAW		0x80147419 /* _IOW('t', 25, struct termio) */
++#define TCSETAF		0x8014741c /* _IOW('t', 28, struct termio) */
  
- 	status =
+ #define TCSBRK		_IO('t', 29)
+ #define TCXONC		_IO('t', 30)
 -- 
 2.39.5
 
