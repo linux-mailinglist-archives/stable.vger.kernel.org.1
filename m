@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-161148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392F5AFD38F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9173BAFD0C3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30C3716B09A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F94D1C219A4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698D42DE1FA;
-	Tue,  8 Jul 2025 16:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1030D2E0910;
+	Tue,  8 Jul 2025 16:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6x5XdUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9x29Hi0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283D32045B5;
-	Tue,  8 Jul 2025 16:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC04A217722;
+	Tue,  8 Jul 2025 16:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993733; cv=none; b=bry7yU2MTPNOhfNC7QTZlCNqArbqaMpmNdRITYLdgSC3iesR7WS2Y99H8HPhi4vkSW9OFMsZqcDF4PSH8S4HpYi89zNLQ1VL5lleQjYuWARGe3H78Fbn1EvBcD2JYAShuyWegYHC8U3Q8Ce7X5GBPJyw3kGvbIJTuCjAZ6+pyys=
+	t=1751991968; cv=none; b=V4oOrIMEHzKiLdEEX1OhR6+mLVIjWkX27a0mEe554y6uQcrpXlWyaCyMbKR3IA/1CeC3olyyZUF+CXWW1pVJIPLrn0WajER7SQzlO3Jffe3Fa9X8tZq65LkQgfs4QIOB1vMm1zrLo+TnTuOx09EzbWmkiK+tmofRA9JepD/CnMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993733; c=relaxed/simple;
-	bh=yelTn73FbOGsyS+nZhk376o2/FDkzC4BhvP/y5rr1sk=;
+	s=arc-20240116; t=1751991968; c=relaxed/simple;
+	bh=UibqEyeogtkArGDoBew0iofIXoAmV/OQ7V3qIGSdetw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YV9DH3nQPHpeKYMCSTFpcut2vlY6moB5QwLDj+IoaQJtwG5+deW5RnykN/WaaYE18Di8ktsqXqsbe5ApurNu0CWAXLSGsI+QeR64Dtjm35jIMfMlKjtIT2IFiRkr4ZqeFM2omz0cjjXqPSSm2uBH3QuI+WH1LYgTEQx4jVcl/Zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6x5XdUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A237DC4CEED;
-	Tue,  8 Jul 2025 16:55:32 +0000 (UTC)
+	 MIME-Version; b=HzMFzGs6/4G1p+xY6ZdDW6OxcWln8qzfbs0Y0pTSE/1Y3gqFPVWb+od1uUtPwDY/HDJYM00XPFbU0bX/YNv+AyY6AfguPBYfGqPsX3Py46qjHF1p2MGDQfr/IuSyC0L1MxgXtiZ+0lt92PZgmABzpx/BwuIf7gsHDT6AWok9UyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9x29Hi0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47384C4CEED;
+	Tue,  8 Jul 2025 16:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993733;
-	bh=yelTn73FbOGsyS+nZhk376o2/FDkzC4BhvP/y5rr1sk=;
+	s=korg; t=1751991968;
+	bh=UibqEyeogtkArGDoBew0iofIXoAmV/OQ7V3qIGSdetw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z6x5XdUfuGB3jD4cPN5qzw5mf0cVwtisleUxDs0MhvtrS3VGGfM9RXod+UwLJ207+
-	 MaxLmVbGImUKAq8HdcSNP4/WaPEPAKqYLqkEKKn3WqmMZTCTCm1qFSALn5BdwVQnTx
-	 1fKr10fm7rrx+37LDb8vwwG6rGhfbJaBp3kV7D80=
+	b=x9x29Hi0EGCgx4mI5xUMYrySZP8eyFVMTReFXgqDaZObOfGtmpMbpwNB44eWxrFe+
+	 XgdUy3r4RO7OfcvEHEz60LKdxcmxgyAusxDWBdMoJyqZ2Qvfx2nYpBCUoqO/NUdaNJ
+	 VNX4MYOp+8v2A5dqOuNmgG0M7LWXF5u9maaGxoM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.15 144/178] xhci: dbctty: disable ECHO flag by default
+	Christian Eggers <ceggers@arri.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 09/81] Bluetooth: MGMT: mesh_send: check instances prior disabling advertising
 Date: Tue,  8 Jul 2025 18:23:01 +0200
-Message-ID: <20250708162240.293055970@linuxfoundation.org>
+Message-ID: <20250708162225.141727913@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Łukasz Bartosik <ukaszb@chromium.org>
+From: Christian Eggers <ceggers@arri.de>
 
-commit 2b857d69a5e116150639a0c6c39c86cc329939ee upstream.
+commit f3cb5676e5c11c896ba647ee309a993e73531588 upstream.
 
-When /dev/ttyDBC0 device is created then by default ECHO flag
-is set for the terminal device. However if data arrives from
-a peer before application using /dev/ttyDBC0 applies its set
-of terminal flags then the arriving data will be echoed which
-might not be desired behavior.
+The unconditional call of hci_disable_advertising_sync() in
+mesh_send_done_sync() also disables other LE advertisings (non mesh
+related).
 
-Fixes: 4521f1613940 ("xhci: dbctty: split dbc tty driver registration and unregistration functions.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/stable/20250610111802.18742-1-ukaszb%40chromium.org
-Link: https://lore.kernel.org/r/20250627144127.3889714-4-mathias.nyman@linux.intel.com
+I am not sure whether this call is required at all, but checking the
+adv_instances list (like done at other places) seems to solve the
+problem.
+
+Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgtty.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/mgmt.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -617,6 +617,7 @@ int dbc_tty_init(void)
- 	dbc_tty_driver->type = TTY_DRIVER_TYPE_SERIAL;
- 	dbc_tty_driver->subtype = SERIAL_TYPE_NORMAL;
- 	dbc_tty_driver->init_termios = tty_std_termios;
-+	dbc_tty_driver->init_termios.c_lflag &= ~ECHO;
- 	dbc_tty_driver->init_termios.c_cflag =
- 			B9600 | CS8 | CREAD | HUPCL | CLOCAL;
- 	dbc_tty_driver->init_termios.c_ispeed = 9600;
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -1085,7 +1085,8 @@ static int mesh_send_done_sync(struct hc
+ 	struct mgmt_mesh_tx *mesh_tx;
+ 
+ 	hci_dev_clear_flag(hdev, HCI_MESH_SENDING);
+-	hci_disable_advertising_sync(hdev);
++	if (list_empty(&hdev->adv_instances))
++		hci_disable_advertising_sync(hdev);
+ 	mesh_tx = mgmt_mesh_next(hdev, NULL);
+ 
+ 	if (mesh_tx)
 
 
 
