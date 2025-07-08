@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-161190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2FDBAFD3CC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:00:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B07F3AFD307
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C95C16AB51
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E049E188B4F3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D0B2E5B11;
-	Tue,  8 Jul 2025 16:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0FE2DEA94;
+	Tue,  8 Jul 2025 16:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reVtx0Kq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWyYsHVF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01212E091E;
-	Tue,  8 Jul 2025 16:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19A1214A9B;
+	Tue,  8 Jul 2025 16:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993855; cv=none; b=BoBDW0P4dIuQUv78LuXoX7bIyYRa/OLZXVpsD2EpB48v6QYm2RNArfD9ZUN4nDCrBniUQI7fjXg3s2pl3A0Vbt0pTSTn172bzJCze1gc1ZYWnjrNYfsrOYyRS/MIh65UAilKTawicdUEZ9N5EPhma6oBsj4GarWdbfuMUPJzA3Q=
+	t=1751993350; cv=none; b=L5BdMc0F9v84/U2ajEyqj9ONnIHN+bsYMzgf5D2hqst5E44P87W+QsI3i++UmP0bz9zK2f+w+4bFJOJuINwhtO2YoKr+69K8RBTY9PCdVlvYGGdOoqNbYtIZCbi8woWLkrZl3vs9ksFZDWyn7klToBdBHOFTEVw1D0hP4hEOAe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993855; c=relaxed/simple;
-	bh=HsnKFW6q1v1hMPMw0hec1bXsIiUjh9nnsxmWxvF6Lzk=;
+	s=arc-20240116; t=1751993350; c=relaxed/simple;
+	bh=0PEapq4BZ+HnaqPbKqJQOJJ6RUnyWxSsCsOfTXgZYgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RpcL3BxBrVXha0Zu6tD3RDtuOHL2LatvAgGiU3szaVNSYyLOqubylWrNbzzuO0rB2ddSC+hayfejFFg0sJyY2tPvJXSrWdMv1IKLg/CUZv2UD3ZcmWP1KChrJ+/lohpI4o/HWEllNJVzHCBNC4vczLHCsDIS8Kqh6DuRdfk/IZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reVtx0Kq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E856FC4CEED;
-	Tue,  8 Jul 2025 16:57:34 +0000 (UTC)
+	 MIME-Version; b=aM8sPiRARJT3FNNx63fIvc/yV6MPCcGR3RwSey9ALYtILIfbek6x7ejuP3YlXQvlfYMZ6YeSocvYJRuoBqF+yavfGkRnoKCXrnBxzHq3a1CLsYpPszXprpClNZNY4EDCyUDfN8yShG8kktQ+kJAgZnuAWEzl1uSuoQQeSSkP27c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWyYsHVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C1CC4CEED;
+	Tue,  8 Jul 2025 16:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993855;
-	bh=HsnKFW6q1v1hMPMw0hec1bXsIiUjh9nnsxmWxvF6Lzk=;
+	s=korg; t=1751993350;
+	bh=0PEapq4BZ+HnaqPbKqJQOJJ6RUnyWxSsCsOfTXgZYgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=reVtx0Kq24v8p8NMxv3iHurltW58ocANu8jKfXoVl5jP7uBO4vw9cQXb73AtczZKt
-	 qtmXnc7NRtwj5GGa9QGod3Bi0IrbnSO6/BEJp5ljUf7d28jsuMB5NyJcPnxhjQr/4x
-	 aAlSAxfSF940b8iCdLIpjZ41nMCLbaEK8EnU/4O4=
+	b=WWyYsHVFHL6rPJzMK6IkKvzRdVGCV0dYT5KnzQ3K1VQPyQfz5zwFsQZz1i8VfGFeW
+	 9J6rHfLGF25kM6AHoj1BO67y1HOwXVUROiX8qUJYQ8rZEdXekc7hSnfBWq6uaHeNh8
+	 xTLSqBw1/DhhtzAsgtCUCoJlMmUj4dCkHAEIF52Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	linux-kbuild@vger.kernel.org,
-	kernel test robot <lkp@intel.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 013/160] um: Add cmpxchg8b_emu and checksum functions to asm-prototypes.h
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 013/178] net: libwx: fix the incorrect display of the queue number
 Date: Tue,  8 Jul 2025 18:20:50 +0200
-Message-ID: <20250708162231.876855851@linuxfoundation.org>
+Message-ID: <20250708162236.891929255@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sami Tolvanen <samitolvanen@google.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 674d03f6bd6b0f8327f1a4920ff5893557facfbd ]
+commit 5186ff7e1d0e26aaef998ba18b31c79c28d1441f upstream.
 
-With CONFIG_GENDWARFKSYMS, um builds fail due to missing prototypes
-in asm/asm-prototypes.h. Add declarations for cmpxchg8b_emu and the
-exported checksum functions, including csum_partial_copy_generic as
-it's also exported.
+When setting "ethtool -L eth0 combined 1", the number of RX/TX queue is
+changed to be 1. RSS is disabled at this moment, and the indices of FDIR
+have not be changed in wx_set_rss_queues(). So the combined count still
+shows the previous value. This issue was introduced when supporting
+FDIR. Fix it for those devices that support FDIR.
 
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: linux-kbuild@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202503251216.lE4t9Ikj-lkp@intel.com/
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-Link: https://patch.msgid.link/20250326190500.847236-2-samitolvanen@google.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 34744a7749b3 ("net: txgbe: add FDIR info to ethtool ops")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/A5C8FE56D6C04608+20250701070625.73680-1-jiawenwu@trustnetic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/include/asm/asm-prototypes.h | 5 +++++
- arch/x86/um/asm/checksum.h           | 3 +++
- 2 files changed, 8 insertions(+)
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/um/include/asm/asm-prototypes.h b/arch/um/include/asm/asm-prototypes.h
-index 5898a26daa0dd..408b31d591279 100644
---- a/arch/um/include/asm/asm-prototypes.h
-+++ b/arch/um/include/asm/asm-prototypes.h
-@@ -1 +1,6 @@
- #include <asm-generic/asm-prototypes.h>
-+#include <asm/checksum.h>
-+
-+#ifdef CONFIG_UML_X86
-+extern void cmpxchg8b_emu(void);
-+#endif
-diff --git a/arch/x86/um/asm/checksum.h b/arch/x86/um/asm/checksum.h
-index b07824500363f..ddc144657efad 100644
---- a/arch/x86/um/asm/checksum.h
-+++ b/arch/x86/um/asm/checksum.h
-@@ -20,6 +20,9 @@
-  */
- extern __wsum csum_partial(const void *buff, int len, __wsum sum);
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -1641,6 +1641,7 @@ static void wx_set_rss_queues(struct wx
  
-+/* Do not call this directly. Declared for export type visibility. */
-+extern __visible __wsum csum_partial_copy_generic(const void *src, void *dst, int len);
-+
- /**
-  * csum_fold - Fold and invert a 32bit checksum.
-  * sum: 32bit unfolded sum
--- 
-2.39.5
-
+ 	clear_bit(WX_FLAG_FDIR_HASH, wx->flags);
+ 
++	wx->ring_feature[RING_F_FDIR].indices = 1;
+ 	/* Use Flow Director in addition to RSS to ensure the best
+ 	 * distribution of flows across cores, even when an FDIR flow
+ 	 * isn't matched.
 
 
 
