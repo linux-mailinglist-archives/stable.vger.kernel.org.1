@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE91AFD415
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40323AFD311
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AEC8188B7AB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:59:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88679542AD0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7E8202F70;
-	Tue,  8 Jul 2025 16:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38082E0B4B;
+	Tue,  8 Jul 2025 16:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gJa3YG3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9SPs9vg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7958F5E;
-	Tue,  8 Jul 2025 16:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08361DB127;
+	Tue,  8 Jul 2025 16:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993950; cv=none; b=q2syV503pO/IJ9xPaQo8S09P2nYSrNv0b2nWo4Jo6WxTI6rGLRCC9OGQcCL8T9WQB4J1wPPupE3UtHmm4iitU8/4S+2MMFDRfbM1YQsHhnnXgZmyILDUs5YCYj6viDr6AuOr1IFEwbStrD4y/wNzPbqdUTAgTnB1zicWfWiJbDQ=
+	t=1751993437; cv=none; b=HkC9HJjTuN7s9CsjMDr9MZsfKRZmKYAsNqV4zu8zsb69KpClR5rDNu5Id6jbGPIWyZujGka0lGiQGOPNtDRCiJd4PJekJfa4dJZzdUL53Mj0FHD3lVsAAcXefOkvb+E++aCudnHkOBiH+VQ1/5bofd61wSwYytg7Ftif4pnDscg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993950; c=relaxed/simple;
-	bh=WlqP1P6gRj9MTyBkOWxqgd7b2CVTcxy1jeg3Q34VnCw=;
+	s=arc-20240116; t=1751993437; c=relaxed/simple;
+	bh=Of5tTqS0zSSvQTuNJf+5F2gY5R1dTtbPel5v6giVQfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4BcB2QYvh/qiVS44O1zOdCsTzYLphHpcnq1IpoxwgMhg95wfWJEodgiPow3naK7EAVz5SRfbSPWGYlFqOLIcPK1ctssgQXU5eedQ0pVaYloT3AnQ5fDFbGw0MJ339IXlibYsDAjCNtkU7LboZsIKcyPlTQSUAVijDFSy1l81sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gJa3YG3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5792FC4CEED;
-	Tue,  8 Jul 2025 16:59:09 +0000 (UTC)
+	 MIME-Version; b=LcKvH6Jb7jdpFpPrHFJw/rCHbulhDGJmvmNhLx6CcVwF82oBLjSncRKFAKBZ5Z7AvOYfY14FD75CV4z3STbiNKuNyzaCYlzhSPkNztOdfkyYNFTohzjkq0RpyimupvTY+FqovaDK0pY0jNRlGXCHoUvgG14lUiSYYRPu7OCyKY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9SPs9vg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73ECC4CEED;
+	Tue,  8 Jul 2025 16:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993949;
-	bh=WlqP1P6gRj9MTyBkOWxqgd7b2CVTcxy1jeg3Q34VnCw=;
+	s=korg; t=1751993437;
+	bh=Of5tTqS0zSSvQTuNJf+5F2gY5R1dTtbPel5v6giVQfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1gJa3YG3Wy21zrMPTLZ1Cuu/vH8LPgX5/xYXOXIYERwiQPSDStyoImcWzMx62X88d
-	 ydhF52psbVW8Mb+BzQMVYT3HmOF9+YrmKWaNQKCOu0vAksqb8rmpNeFW3+b5eEcSLX
-	 jOKt5n+jaqXD6sqGl01wHTSXnq1rZ6LN8rFlzJmc=
+	b=c9SPs9vgA8y5bELeDQ3GA+iK0118CaKgq62Lt0sKwhsRITfOEJIncaz24Cjn+mZZm
+	 YMMPzJkYVLBYlx6IXbkppHAZnjODhbUZkPPmFb+mw1Ecz29QgpseRdMAB2Z9VB9Uj5
+	 68r/32LaDHdyLL4P52FvFLJu7pHRvwM5QbwzuMyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Helge Deller <deller@gmx.de>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 044/160] fbdev: Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var
+Subject: [PATCH 6.15 044/178] RDMA/mlx5: Initialize obj_event->obj_sub_list before xa_insert
 Date: Tue,  8 Jul 2025 18:21:21 +0200
-Message-ID: <20250708162232.760659324@linuxfoundation.org>
+Message-ID: <20250708162237.830661529@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Mark Zhang <markzhang@nvidia.com>
 
-[ Upstream commit 17186f1f90d34fa701e4f14e6818305151637b9e ]
+[ Upstream commit 8edab8a72d67742f87e9dc2e2b0cdfddda5dc29a ]
 
-If fb_add_videomode() in do_register_framebuffer() fails to allocate
-memory for fb_videomode, it will later lead to a null-ptr dereference in
-fb_videomode_to_var(), as the fb_info is registered while not having the
-mode in modelist that is expected to be there, i.e. the one that is
-described in fb_info->var.
+The obj_event may be loaded immediately after inserted, then if the
+list_head is not initialized then we may get a poisonous pointer.  This
+fixes the crash below:
 
-================================================================
-general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-CPU: 1 PID: 30371 Comm: syz-executor.1 Not tainted 5.10.226-syzkaller #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:fb_videomode_to_var+0x24/0x610 drivers/video/fbdev/core/modedb.c:901
-Call Trace:
- display_to_var+0x3a/0x7c0 drivers/video/fbdev/core/fbcon.c:929
- fbcon_resize+0x3e2/0x8f0 drivers/video/fbdev/core/fbcon.c:2071
- resize_screen drivers/tty/vt/vt.c:1176 [inline]
- vc_do_resize+0x53a/0x1170 drivers/tty/vt/vt.c:1263
- fbcon_modechanged+0x3ac/0x6e0 drivers/video/fbdev/core/fbcon.c:2720
- fbcon_update_vcs+0x43/0x60 drivers/video/fbdev/core/fbcon.c:2776
- do_fb_ioctl+0x6d2/0x740 drivers/video/fbdev/core/fbmem.c:1128
- fb_ioctl+0xe7/0x150 drivers/video/fbdev/core/fbmem.c:1203
- vfs_ioctl fs/ioctl.c:48 [inline]
- __do_sys_ioctl fs/ioctl.c:753 [inline]
- __se_sys_ioctl fs/ioctl.c:739 [inline]
- __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:739
- do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x67/0xd1
-================================================================
+ mlx5_core 0000:03:00.0: MLX5E: StrdRq(1) RqSz(8) StrdSz(2048) RxCqeCmprss(0 enhanced)
+ mlx5_core.sf mlx5_core.sf.4: firmware version: 32.38.3056
+ mlx5_core 0000:03:00.0 en3f0pf0sf2002: renamed from eth0
+ mlx5_core.sf mlx5_core.sf.4: Rate limit: 127 rates are supported, range: 0Mbps to 195312Mbps
+ IPv6: ADDRCONF(NETDEV_CHANGE): en3f0pf0sf2002: link becomes ready
+ Unable to handle kernel NULL pointer dereference at virtual address 0000000000000060
+ Mem abort info:
+   ESR = 0x96000006
+   EC = 0x25: DABT (current EL), IL = 32 bits
+   SET = 0, FnV = 0
+   EA = 0, S1PTW = 0
+ Data abort info:
+   ISV = 0, ISS = 0x00000006
+   CM = 0, WnR = 0
+ user pgtable: 4k pages, 48-bit VAs, pgdp=00000007760fb000
+ [0000000000000060] pgd=000000076f6d7003, p4d=000000076f6d7003, pud=0000000777841003, pmd=0000000000000000
+ Internal error: Oops: 96000006 [#1] SMP
+ Modules linked in: ipmb_host(OE) act_mirred(E) cls_flower(E) sch_ingress(E) mptcp_diag(E) udp_diag(E) raw_diag(E) unix_diag(E) tcp_diag(E) inet_diag(E) binfmt_misc(E) bonding(OE) rdma_ucm(OE) rdma_cm(OE) iw_cm(OE) ib_ipoib(OE) ib_cm(OE) isofs(E) cdrom(E) mst_pciconf(OE) ib_umad(OE) mlx5_ib(OE) ipmb_dev_int(OE) mlx5_core(OE) kpatch_15237886(OEK) mlxdevm(OE) auxiliary(OE) ib_uverbs(OE) ib_core(OE) psample(E) mlxfw(OE) tls(E) sunrpc(E) vfat(E) fat(E) crct10dif_ce(E) ghash_ce(E) sha1_ce(E) sbsa_gwdt(E) virtio_console(E) ext4(E) mbcache(E) jbd2(E) xfs(E) libcrc32c(E) mmc_block(E) virtio_net(E) net_failover(E) failover(E) sha2_ce(E) sha256_arm64(E) nvme(OE) nvme_core(OE) gpio_mlxbf3(OE) mlx_compat(OE) mlxbf_pmc(OE) i2c_mlxbf(OE) sdhci_of_dwcmshc(OE) pinctrl_mlxbf3(OE) mlxbf_pka(OE) gpio_generic(E) i2c_core(E) mmc_core(E) mlxbf_gige(OE) vitesse(E) pwr_mlxbf(OE) mlxbf_tmfifo(OE) micrel(E) mlxbf_bootctl(OE) virtio_ring(E) virtio(E) ipmi_devintf(E) ipmi_msghandler(E)
+  [last unloaded: mst_pci]
+ CPU: 11 PID: 20913 Comm: rte-worker-11 Kdump: loaded Tainted: G           OE K   5.10.134-13.1.an8.aarch64 #1
+ Hardware name: https://www.mellanox.com BlueField-3 SmartNIC Main Card/BlueField-3 SmartNIC Main Card, BIOS 4.2.2.12968 Oct 26 2023
+ pstate: a0400089 (NzCv daIf +PAN -UAO -TCO BTYPE=--)
+ pc : dispatch_event_fd+0x68/0x300 [mlx5_ib]
+ lr : devx_event_notifier+0xcc/0x228 [mlx5_ib]
+ sp : ffff80001005bcf0
+ x29: ffff80001005bcf0 x28: 0000000000000001
+ x27: ffff244e0740a1d8 x26: ffff244e0740a1d0
+ x25: ffffda56beff5ae0 x24: ffffda56bf911618
+ x23: ffff244e0596a480 x22: ffff244e0596a480
+ x21: ffff244d8312ad90 x20: ffff244e0596a480
+ x19: fffffffffffffff0 x18: 0000000000000000
+ x17: 0000000000000000 x16: ffffda56be66d620
+ x15: 0000000000000000 x14: 0000000000000000
+ x13: 0000000000000000 x12: 0000000000000000
+ x11: 0000000000000040 x10: ffffda56bfcafb50
+ x9 : ffffda5655c25f2c x8 : 0000000000000010
+ x7 : 0000000000000000 x6 : ffff24545a2e24b8
+ x5 : 0000000000000003 x4 : ffff80001005bd28
+ x3 : 0000000000000000 x2 : 0000000000000000
+ x1 : ffff244e0596a480 x0 : ffff244d8312ad90
+ Call trace:
+  dispatch_event_fd+0x68/0x300 [mlx5_ib]
+  devx_event_notifier+0xcc/0x228 [mlx5_ib]
+  atomic_notifier_call_chain+0x58/0x80
+  mlx5_eq_async_int+0x148/0x2b0 [mlx5_core]
+  atomic_notifier_call_chain+0x58/0x80
+  irq_int_handler+0x20/0x30 [mlx5_core]
+  __handle_irq_event_percpu+0x60/0x220
+  handle_irq_event_percpu+0x3c/0x90
+  handle_irq_event+0x58/0x158
+  handle_fasteoi_irq+0xfc/0x188
+  generic_handle_irq+0x34/0x48
+  ...
 
-Even though fbcon_init() checks beforehand if fb_match_mode() in
-var_to_display() fails, it can not prevent the panic because fbcon_init()
-does not return error code. Considering this and the comment in the code
-about fb_match_mode() returning NULL - "This should not happen" - it is
-better to prevent registering the fb_info if its mode was not set
-successfully. Also move fb_add_videomode() closer to the beginning of
-do_register_framebuffer() to avoid having to do the cleanup on fail.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 759738537142 ("IB/mlx5: Enable subscription for device events over DEVX")
+Link: https://patch.msgid.link/r/3ce7f20e0d1a03dc7de6e57494ec4b8eaf1f05c2.1750147949.git.leon@kernel.org
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbmem.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/infiniband/hw/mlx5/devx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 5e8ee360f6ba2..a8d6bd465ffe4 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1622,7 +1622,7 @@ static void do_remove_conflicting_framebuffers(struct apertures_struct *a,
+diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
+index bceae1c1f9801..843dcd3122424 100644
+--- a/drivers/infiniband/hw/mlx5/devx.c
++++ b/drivers/infiniband/hw/mlx5/devx.c
+@@ -1958,6 +1958,7 @@ subscribe_event_xa_alloc(struct mlx5_devx_event_table *devx_event_table,
+ 			/* Level1 is valid for future use, no need to free */
+ 			return -ENOMEM;
  
- static int do_register_framebuffer(struct fb_info *fb_info)
- {
--	int i;
-+	int i, err = 0;
- 	struct fb_videomode mode;
++		INIT_LIST_HEAD(&obj_event->obj_sub_list);
+ 		err = xa_insert(&event->object_ids,
+ 				key_level2,
+ 				obj_event,
+@@ -1966,7 +1967,6 @@ subscribe_event_xa_alloc(struct mlx5_devx_event_table *devx_event_table,
+ 			kfree(obj_event);
+ 			return err;
+ 		}
+-		INIT_LIST_HEAD(&obj_event->obj_sub_list);
+ 	}
  
- 	if (fb_check_foreignness(fb_info))
-@@ -1635,10 +1635,18 @@ static int do_register_framebuffer(struct fb_info *fb_info)
- 	if (num_registered_fb == FB_MAX)
- 		return -ENXIO;
- 
--	num_registered_fb++;
- 	for (i = 0 ; i < FB_MAX; i++)
- 		if (!registered_fb[i])
- 			break;
-+
-+	if (!fb_info->modelist.prev || !fb_info->modelist.next)
-+		INIT_LIST_HEAD(&fb_info->modelist);
-+
-+	fb_var_to_videomode(&mode, &fb_info->var);
-+	err = fb_add_videomode(&mode, &fb_info->modelist);
-+	if (err < 0)
-+		return err;
-+
- 	fb_info->node = i;
- 	refcount_set(&fb_info->count, 1);
- 	mutex_init(&fb_info->lock);
-@@ -1671,16 +1679,12 @@ static int do_register_framebuffer(struct fb_info *fb_info)
- 	if (!fb_info->pixmap.blit_y)
- 		fb_info->pixmap.blit_y = ~(u32)0;
- 
--	if (!fb_info->modelist.prev || !fb_info->modelist.next)
--		INIT_LIST_HEAD(&fb_info->modelist);
--
- 	if (fb_info->skip_vt_switch)
- 		pm_vt_switch_required(fb_info->dev, false);
- 	else
- 		pm_vt_switch_required(fb_info->dev, true);
- 
--	fb_var_to_videomode(&mode, &fb_info->var);
--	fb_add_videomode(&mode, &fb_info->modelist);
-+	num_registered_fb++;
- 	registered_fb[i] = fb_info;
- 
- #ifdef CONFIG_GUMSTIX_AM200EPD
+ 	return 0;
 -- 
 2.39.5
 
