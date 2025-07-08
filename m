@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-161005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A9ACAFD2F5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92689AFD2F1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2516548133C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF36418845FF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9271F4190;
-	Tue,  8 Jul 2025 16:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A3B23D2AB;
+	Tue,  8 Jul 2025 16:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvIqFdTV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wp+xrxS6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9281AB672;
-	Tue,  8 Jul 2025 16:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B488A7E9;
+	Tue,  8 Jul 2025 16:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993324; cv=none; b=lXg+OwGa+izrnSFoJc6ARlF7Z/ddpLJ7ejeCvl7MAaPm7/qsrzy5ltOBmmSFIJ6boZ6QCWcmY0lZiYnaNGxAa4+YnmIMZhv22Ywm9P8BIy5AvGpT/0Rcc4UKHb0Wa7SGc7RfvX1G9tIYDoWAP2K7566o2gY69MMedwgL5Rk4rWE=
+	t=1751993336; cv=none; b=cByk0oplN6+hFbNTr8AtttdTrb1hNP6wHzZkrO/wMCiFeR6Ip0Q2PVJ2YTjP0/E3soT3EK7ZiegR6odu7LvN0vbgN9o0vhQhgnMxTz/H9qOd1F0ufxI+4YGOpArcN9wVCEFEUwn48oK+PFw6Y/HpxLFiIQ9mrq1sWqGDjPnn1mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993324; c=relaxed/simple;
-	bh=Zoh1cdPDnsnRnqYACXGy8j6NnWb/MgXg6Ps8Ja186tI=;
+	s=arc-20240116; t=1751993336; c=relaxed/simple;
+	bh=gn+Rt5vx75GDARGNGw/wWu7diSCeu/gDP/08706rKjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKy30UwKPuPoi1/cX7ZN3j3ALmzbrEeHB4rd04dMqoTjpOKsfJB1BwuhSLdYUR1FBGZiFZnwUTJ4u+wOgnCyMaELigesl48lBcXia4lcfnNyFfGzBigC9y83C13r7TYaCCSWRCCW2VvW2GA/CsoB+Kj0hCqjeasZxDSixKLzn+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvIqFdTV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF6EC4CEED;
-	Tue,  8 Jul 2025 16:48:43 +0000 (UTC)
+	 MIME-Version; b=hQMeoiGGK3f+8stOfz46FCzmxYacfDiprYt55CWbwUakArGGmlmID8Jg5/WmFcdvFsPK9cYMIuOAQ1Lu6J1a/a4JAQvFGkgsRBq5dAUDTldlOs9Xxkzpb/ut+iJf+UFkPACefhCX5XYIIOlROMbnJWUmUc8oQ2x6zVNfcKvP+Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wp+xrxS6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A09C4CEED;
+	Tue,  8 Jul 2025 16:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993324;
-	bh=Zoh1cdPDnsnRnqYACXGy8j6NnWb/MgXg6Ps8Ja186tI=;
+	s=korg; t=1751993336;
+	bh=gn+Rt5vx75GDARGNGw/wWu7diSCeu/gDP/08706rKjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvIqFdTVcYkBY7nMZC/Fj5anJfwb5RIEtlqJzUhkG+JraOybkACizfzHRwrZwx5tq
-	 jQkrCpDSGbrMbDzqbi0GQoK9St+lZx6PgLvLD0uR7TKs4fcPtWe4+UnP+QCS2uFXfV
-	 qy5kJxkf8IS6m6XRPCEYphNFJgirzxVnkCD9LX1w=
+	b=wp+xrxS6mOzs6WUtHmxTWI4HVQSJM5VJK+SjIm1o+P2qjQwt6j1U1X7PqgJ+Vrue2
+	 nI0VU4il4+6yInwNG2/jwQKlkp7VUMwrkJJgfXeHCEGlqAc7+3b5k3OOCnILxfv2G7
+	 y+po7tlQe0Ry8p8uJoZ6MPuFUkgw6JsBf4rrqdAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.15 007/178] s390/pci: Do not try re-enabling load/store if device is disabled
-Date: Tue,  8 Jul 2025 18:20:44 +0200
-Message-ID: <20250708162236.747010277@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.15 008/178] dt-bindings: net: sophgo,sg2044-dwmac: Drop status from the example
+Date: Tue,  8 Jul 2025 18:20:45 +0200
+Message-ID: <20250708162236.771055425@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
 References: <20250708162236.549307806@linuxfoundation.org>
@@ -66,38 +67,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit b97a7972b1f4f81417840b9a2ab0c19722b577d5 upstream.
+commit f030713e5abf67d0a88864c8855f809c763af954 upstream.
 
-If a device is disabled unblocking load/store on its own is not useful
-as a full re-enable of the function is necessary anyway. Note that SCLP
-Write Event Data Action Qualifier 0 (Reset) leaves the device disabled
-and triggers this case unless the driver already requests a reset.
+Examples should be complete and should not have a 'status' property,
+especially a disabled one because this disables the dt_binding_check of
+the example against the schema.  Dropping 'status' property shows
+missing other properties - phy-mode and phy-handle.
 
-Cc: stable@vger.kernel.org
-Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
-Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 114508a89ddc ("dt-bindings: net: Add support for Sophgo SG2044 dwmac")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
+Link: https://patch.msgid.link/20250701063621.23808-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/pci/pci_event.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/s390/pci/pci_event.c
-+++ b/arch/s390/pci/pci_event.c
-@@ -106,6 +106,10 @@ static pci_ers_result_t zpci_event_do_er
- 	struct zpci_dev *zdev = to_zpci(pdev);
- 	int rc;
+diff --git a/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml b/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml
+index 4dd2dc9c678b..8afbd9ebd73f 100644
+--- a/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml
+@@ -80,6 +80,8 @@ examples:
+       interrupt-parent = <&intc>;
+       interrupts = <296 IRQ_TYPE_LEVEL_HIGH>;
+       interrupt-names = "macirq";
++      phy-handle = <&phy0>;
++      phy-mode = "rgmii-id";
+       resets = <&rst 30>;
+       reset-names = "stmmaceth";
+       snps,multicast-filter-bins = <0>;
+@@ -91,7 +93,6 @@ examples:
+       snps,mtl-rx-config = <&gmac0_mtl_rx_setup>;
+       snps,mtl-tx-config = <&gmac0_mtl_tx_setup>;
+       snps,axi-config = <&gmac0_stmmac_axi_setup>;
+-      status = "disabled";
  
-+	/* The underlying device may have been disabled by the event */
-+	if (!zdev_enabled(zdev))
-+		return PCI_ERS_RESULT_NEED_RESET;
-+
- 	pr_info("%s: Unblocking device access for examination\n", pci_name(pdev));
- 	rc = zpci_reset_load_store_blocked(zdev);
- 	if (rc) {
+       gmac0_mtl_rx_setup: rx-queues-config {
+         snps,rx-queues-to-use = <8>;
+-- 
+2.50.0
+
 
 
 
