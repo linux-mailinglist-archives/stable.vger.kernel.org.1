@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-161163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63627AFD3A9
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FC5AFD2DD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5487C3BE5E8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C11DA188F5D7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE252DE1FA;
-	Tue,  8 Jul 2025 16:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6A82045B5;
+	Tue,  8 Jul 2025 16:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fs5cm3SA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjlfWQR7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1048F5E;
-	Tue,  8 Jul 2025 16:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C00BE46;
+	Tue,  8 Jul 2025 16:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993778; cv=none; b=RT7T/vYSrI3m/7bxE1g0LTpVMNH7SfpXHz8VScVFsshAkDwuA9MwvrVlI9VT0IaQRdRZl6/VRLIXKjT63xMXOQzZ2QeXpN8r2tDVtmrucPFlkfEgH0Nhy3TXsRQNmxcj+N6Jt/z+RRW8dji9RM9jVtVlDnMjeQ3e7Met+WG2/x8=
+	t=1751993267; cv=none; b=nBUnOvuXjJ4GYhIpml0K+n7mGGy+Si/ZZMy9SgtNfSXmapFoGVbz5AMuHHVHMNRwys7+/qZmetVEeO7w/49byNxjEWtFhV1NF62g/kO0ggaDjrVXZlZhudpzleIT/rgqPLDX5wBWeqho0cOjqaFV2/xhwueufZZDGK/04w60eZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993778; c=relaxed/simple;
-	bh=BFwVwBMDzkNs5aOlV5wZWt/D2CjGnwmiK9FLtK8B+Bk=;
+	s=arc-20240116; t=1751993267; c=relaxed/simple;
+	bh=xddW8fvts2LWgi5SkMCQ48yWCN0JMKqWhDuEJ5PlwTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqHQuG0rw1sPx5tqDfAW+se7HXPmeKpllBTCFaGvrhpWNX2LowiXSay7HU0D9b7yjP7v0Q2QD+ytv5jgq5YGCID6+0dIqpYFLbrtDy2Mli0pyevLrRm9BKv69sCtFmqE+95AFMUY0+nffmx7gyAuKpm+j88A/jMjk3GOiepW+Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fs5cm3SA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81A3C4CEED;
-	Tue,  8 Jul 2025 16:56:17 +0000 (UTC)
+	 MIME-Version; b=K4peZPvYCt1rORxiFKN8E7PjJh4IbwyQGSJyYU9fwyGRbw46cLK+vPsGgT/3W13H7dcAteXWxtCk8Jf6aLoVSBXXbHxRPMUwaVq020m71EpannSY9x+oFjOC8VH/BVVPzCjpIjvHeLKqNMM+0geKEQYWrSkT3hDB38lF5pm9E9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjlfWQR7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E631EC4CEED;
+	Tue,  8 Jul 2025 16:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993778;
-	bh=BFwVwBMDzkNs5aOlV5wZWt/D2CjGnwmiK9FLtK8B+Bk=;
+	s=korg; t=1751993267;
+	bh=xddW8fvts2LWgi5SkMCQ48yWCN0JMKqWhDuEJ5PlwTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fs5cm3SAAjfiKSbnux6VRMkeE3dF7RmngMVXxKxvZqJxdpIPNDuA0Kku7LfgUkNfk
-	 SI09ZysGBt0ha+ermG7yD7wNlYycnKBT1Qv5Mrd1O+LTIUA3MLxuLqEOEf6kj1V8F+
-	 CffQdlQbh2NsCUR6B/s4gv91Eg1MPEqak+8BkHpY=
+	b=TjlfWQR7QE1ju3hoRs8iyCD4ULHDcp2+kuDAgb0SN+U5faguR3YY63oqpRk/hLA2f
+	 lWnNXWJKTL5DDZjnZUWY0VcHLDTUm0DjlL9w+EtdS3QdafzowQevCZho2Kqzeg/e5k
+	 BumqMVS6J/ODnMRR8SLojPb9XQxeUd22uU3DofWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Minas Harutyunyan <hminas@synopsys.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 015/160] usb: dwc2: also exit clock_gating when stopping udc while suspended
-Date: Tue,  8 Jul 2025 18:20:52 +0200
-Message-ID: <20250708162231.929277214@linuxfoundation.org>
+	Erick Shepherd <erick.shepherd@ni.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jonathan Liu <net147@gmail.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.15 016/178] Revert "mmc: sdhci: Disable SD card clock before changing parameters"
+Date: Tue,  8 Jul 2025 18:20:53 +0200
+Message-ID: <20250708162236.970748390@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit af076a41f8a28faf9ceb9dd2d88aef2c202ef39a ]
+commit dcc3bcfc5b50c625b475dcc25d167b6b947a6637 upstream.
 
-It is possible that the gadget will be disabled, while the udc is
-suspended. When enabling the udc in that case, the clock gating
-will not be enabled again. Leaving the phy unclocked. Even when the
-udc is not enabled, connecting this powered but not clocked phy leads
-to enumeration errors on the host side.
+It has turned out the trying to strictly conform to the SDHCI specification
+is causing problems. Let's revert and start over.
 
-To ensure that the clock gating will be in an valid state, we ensure
-that the clock gating will be enabled before stopping the udc.
+This reverts commit fb3bbc46c94f261b6156ee863c1b06c84cf157dc.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Acked-by: Minas Harutyunyan <hminas@synopsys.com>
-Link: https://lore.kernel.org/r/20250417-dwc2_clock_gating-v1-1-8ea7c4d53d73@pengutronix.de
+Cc: Erick Shepherd <erick.shepherd@ni.com>
+Cc: stable@vger.kernel.org
+Fixes: fb3bbc46c94f ("mmc: sdhci: Disable SD card clock before changing parameters")
+Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
+Reported-by: Jonathan Liu <net147@gmail.com>
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Closes: https://bugs.debian.org/1108065
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20250624110932.176925-1-ulf.hansson@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/gadget.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mmc/host/sdhci.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
-index 7d8523398e191..525d1d0cfc249 100644
---- a/drivers/usb/dwc2/gadget.c
-+++ b/drivers/usb/dwc2/gadget.c
-@@ -4602,6 +4602,12 @@ static int dwc2_hsotg_udc_stop(struct usb_gadget *gadget)
- 	if (!hsotg)
- 		return -ENODEV;
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -2065,15 +2065,10 @@ void sdhci_set_clock(struct sdhci_host *
  
-+	/* Exit clock gating when driver is stopped. */
-+	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
-+	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
-+		dwc2_gadget_exit_clock_gating(hsotg, 0);
-+	}
-+
- 	/* all endpoints should be shutdown */
- 	for (ep = 1; ep < hsotg->num_of_eps; ep++) {
- 		if (hsotg->eps_in[ep])
--- 
-2.39.5
-
+ 	host->mmc->actual_clock = 0;
+ 
+-	clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
+-	if (clk & SDHCI_CLOCK_CARD_EN)
+-		sdhci_writew(host, clk & ~SDHCI_CLOCK_CARD_EN,
+-			SDHCI_CLOCK_CONTROL);
++	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
+ 
+-	if (clock == 0) {
+-		sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
++	if (clock == 0)
+ 		return;
+-	}
+ 
+ 	clk = sdhci_calc_clk(host, clock, &host->mmc->actual_clock);
+ 	sdhci_enable_clk(host, clk);
 
 
 
