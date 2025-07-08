@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5A1AFD1F7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADAEAFD3D6
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:01:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D71D316EB2C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:39:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA3831884D53
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8CFC2E5414;
-	Tue,  8 Jul 2025 16:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF85A2E5B24;
+	Tue,  8 Jul 2025 16:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NK7fnDyO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kegdVkYV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9520E2E041C;
-	Tue,  8 Jul 2025 16:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B72F2E1C74;
+	Tue,  8 Jul 2025 16:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992770; cv=none; b=USnVWggS/TUhrROFz2J9o9aWcfVtLCzrwe7WQ9+b20N4kZABiJ2xYZRZdx5l2iOJ6LQ02S+f8R7E8N5X5uUN6KmCa8nQF+IkrQnNpwNhTvShMzQ0CPvLVWYXAILPwa6Oi7DqhhXRi2jOb1QcCk8lBZM+YeUh0ETj0V+Ti9qLApY=
+	t=1751993835; cv=none; b=TpvZpt7EkNsOpQlQO6ilH9vv9GIwheS0Z8TOuLlexzOcjxcHGpO0KJLUuN0cKw4RKthNrMtk7OjVreN/ha/K+eFsKmQoOc16r4oDNlULLnQxBsK1roclX2XHcLTcJYwvc8FIDz867ktZYD6BTNVIORShvdzu2Axwx9FlYIPPwOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992770; c=relaxed/simple;
-	bh=b9ZZj2vX5j/28F5+RpK5aZB0UvAmO5LrRTQ82EJzfeI=;
+	s=arc-20240116; t=1751993835; c=relaxed/simple;
+	bh=sUfnF5uYJsssE5VLXVDpRslmZbRpiNcX7hNNTTt3DmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mK2p5W8g08ghEl1UVKfHbcs9mME/PS7CSJU6Ur169ra+PlHNd2LIJSOfqjDzKRupBJw2keJ+s5UCkuhOiEyQtrhmbOlSOrLUA+ZgtD5YgtQOMpMsMt4hCB8xp80X+QiNvREEiS8/RHloVQfzb4Q8+lt5/GnX6EY7Q8SpaZLkk68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NK7fnDyO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1B8C4CEF0;
-	Tue,  8 Jul 2025 16:39:29 +0000 (UTC)
+	 MIME-Version; b=Cw3b94Z6s4e4u3i5xriCKfrVdmhFBI7e0oM5g3ZfYkTu66MkS/lFbzz5xPoWVLnUaXAJzS8kLWEish1qNdmzGp+kThAUOFT8oNUCTnLRknds+V4vplzlllQL0OXKOHdD32BYlz47VRYcsIXYwa32VCT56iK/sThAevtrYyhAzsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kegdVkYV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D485BC4CEED;
+	Tue,  8 Jul 2025 16:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992770;
-	bh=b9ZZj2vX5j/28F5+RpK5aZB0UvAmO5LrRTQ82EJzfeI=;
+	s=korg; t=1751993835;
+	bh=sUfnF5uYJsssE5VLXVDpRslmZbRpiNcX7hNNTTt3DmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NK7fnDyOVh/fFuVZCvN6crW5HD+6PGS2xnXU9e2W1fb5yNSzoCM4sCTLTPIA5Xt8Y
-	 meij+0P2BNSy+fvu1LHvWAcbWjux8BZczuFSMlNc3p7hUWydYXAcAHEf+ro2OP9TrI
-	 X/JH6oLTLdRqCtnNEMG594oMVTarECsQtjdL3HVo=
+	b=kegdVkYVBtDPRLSl077B5V+ospUsqOQe9KO2ilhZD7pTz8YgORvRon4hHGySb4cKi
+	 r7Id29qSv3+cloUBjaB1E9W5VI7A/PhHinkFp3pIv2mNZn7FF5foptY89viHW3MieK
+	 Jr1D4j3DMHdOCXZ3hTWzlDUOBjYcIJWgUg1y2K9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/232] net: usb: lan78xx: fix WARN in __netif_napi_del_locked on disconnect
+Subject: [PATCH 5.15 034/160] regulator: Add devm helpers for get and enable
 Date: Tue,  8 Jul 2025 18:21:11 +0200
-Message-ID: <20250708162243.415297081@linuxfoundation.org>
+Message-ID: <20250708162232.471647521@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,285 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-[ Upstream commit 6c7ffc9af7186ed79403a3ffee9a1e5199fc7450 ]
+[ Upstream commit da279e6965b3838e99e5c0ab8f76b87bf86b31a5 ]
 
-Remove redundant netif_napi_del() call from disconnect path.
+A few regulator consumer drivers seem to be just getting a regulator,
+enabling it and registering a devm-action to disable the regulator at
+the driver detach and then forget about it.
 
-A WARN may be triggered in __netif_napi_del_locked() during USB device
-disconnect:
+We can simplify this a bit by adding a devm-helper for this pattern.
+Add devm_regulator_get_enable() and devm_regulator_get_enable_optional()
 
-  WARNING: CPU: 0 PID: 11 at net/core/dev.c:7417 __netif_napi_del_locked+0x2b4/0x350
-
-This happens because netif_napi_del() is called in the disconnect path while
-NAPI is still enabled. However, it is not necessary to call netif_napi_del()
-explicitly, since unregister_netdev() will handle NAPI teardown automatically
-and safely. Removing the redundant call avoids triggering the warning.
-
-Full trace:
- lan78xx 1-1:1.0 enu1: Failed to read register index 0x000000c4. ret = -ENODEV
- lan78xx 1-1:1.0 enu1: Failed to set MAC down with error -ENODEV
- lan78xx 1-1:1.0 enu1: Link is Down
- lan78xx 1-1:1.0 enu1: Failed to read register index 0x00000120. ret = -ENODEV
- ------------[ cut here ]------------
- WARNING: CPU: 0 PID: 11 at net/core/dev.c:7417 __netif_napi_del_locked+0x2b4/0x350
- Modules linked in: flexcan can_dev fuse
- CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted 6.16.0-rc2-00624-ge926949dab03 #9 PREEMPT
- Hardware name: SKOV IMX8MP CPU revC - bd500 (DT)
- Workqueue: usb_hub_wq hub_event
- pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : __netif_napi_del_locked+0x2b4/0x350
- lr : __netif_napi_del_locked+0x7c/0x350
- sp : ffffffc085b673c0
- x29: ffffffc085b673c0 x28: ffffff800b7f2000 x27: ffffff800b7f20d8
- x26: ffffff80110bcf58 x25: ffffff80110bd978 x24: 1ffffff0022179eb
- x23: ffffff80110bc000 x22: ffffff800b7f5000 x21: ffffff80110bc000
- x20: ffffff80110bcf38 x19: ffffff80110bcf28 x18: dfffffc000000000
- x17: ffffffc081578940 x16: ffffffc08284cee0 x15: 0000000000000028
- x14: 0000000000000006 x13: 0000000000040000 x12: ffffffb0022179e8
- x11: 1ffffff0022179e7 x10: ffffffb0022179e7 x9 : dfffffc000000000
- x8 : 0000004ffdde8619 x7 : ffffff80110bcf3f x6 : 0000000000000001
- x5 : ffffff80110bcf38 x4 : ffffff80110bcf38 x3 : 0000000000000000
- x2 : 0000000000000000 x1 : 1ffffff0022179e7 x0 : 0000000000000000
- Call trace:
-  __netif_napi_del_locked+0x2b4/0x350 (P)
-  lan78xx_disconnect+0xf4/0x360
-  usb_unbind_interface+0x158/0x718
-  device_remove+0x100/0x150
-  device_release_driver_internal+0x308/0x478
-  device_release_driver+0x1c/0x30
-  bus_remove_device+0x1a8/0x368
-  device_del+0x2e0/0x7b0
-  usb_disable_device+0x244/0x540
-  usb_disconnect+0x220/0x758
-  hub_event+0x105c/0x35e0
-  process_one_work+0x760/0x17b0
-  worker_thread+0x768/0xce8
-  kthread+0x3bc/0x690
-  ret_from_fork+0x10/0x20
- irq event stamp: 211604
- hardirqs last  enabled at (211603): [<ffffffc0828cc9ec>] _raw_spin_unlock_irqrestore+0x84/0x98
- hardirqs last disabled at (211604): [<ffffffc0828a9a84>] el1_dbg+0x24/0x80
- softirqs last  enabled at (211296): [<ffffffc080095f10>] handle_softirqs+0x820/0xbc8
- softirqs last disabled at (210993): [<ffffffc080010288>] __do_softirq+0x18/0x20
- ---[ end trace 0000000000000000 ]---
- lan78xx 1-1:1.0 enu1: failed to kill vid 0081/0
-
-Fixes: ec4c7e12396b ("lan78xx: Introduce NAPI polling support")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20250627051346.276029-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://lore.kernel.org/r/ed7b8841193bb9749d426f3cb3b199c9460794cd.1660292316.git.mazziesaccount@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 9079db287fc3 ("ASoC: codecs: wcd9335: Fix missing free of regulator supplies")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/regulator/devres.c         | 164 +++++++++++++++++++++++++++++
+ include/linux/regulator/consumer.h |  27 +++++
+ 2 files changed, 191 insertions(+)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 531b1b6a37d19..2f8637224b69e 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -4229,8 +4229,6 @@ static void lan78xx_disconnect(struct usb_interface *intf)
- 	if (!dev)
- 		return;
+diff --git a/drivers/regulator/devres.c b/drivers/regulator/devres.c
+index 32823a87fd409..3265e75e97ab4 100644
+--- a/drivers/regulator/devres.c
++++ b/drivers/regulator/devres.c
+@@ -70,6 +70,65 @@ struct regulator *devm_regulator_get_exclusive(struct device *dev,
+ }
+ EXPORT_SYMBOL_GPL(devm_regulator_get_exclusive);
  
--	netif_napi_del(&dev->napi);
--
- 	udev = interface_to_usbdev(intf);
- 	net = dev->net;
++static void regulator_action_disable(void *d)
++{
++	struct regulator *r = (struct regulator *)d;
++
++	regulator_disable(r);
++}
++
++static int _devm_regulator_get_enable(struct device *dev, const char *id,
++				      int get_type)
++{
++	struct regulator *r;
++	int ret;
++
++	r = _devm_regulator_get(dev, id, get_type);
++	if (IS_ERR(r))
++		return PTR_ERR(r);
++
++	ret = regulator_enable(r);
++	if (!ret)
++		ret = devm_add_action_or_reset(dev, &regulator_action_disable, r);
++
++	if (ret)
++		devm_regulator_put(r);
++
++	return ret;
++}
++
++/**
++ * devm_regulator_get_enable_optional - Resource managed regulator get and enable
++ * @dev: device to supply
++ * @id:  supply name or regulator ID.
++ *
++ * Get and enable regulator for duration of the device life-time.
++ * regulator_disable() and regulator_put() are automatically called on driver
++ * detach. See regulator_get_optional() and regulator_enable() for more
++ * information.
++ */
++int devm_regulator_get_enable_optional(struct device *dev, const char *id)
++{
++	return _devm_regulator_get_enable(dev, id, OPTIONAL_GET);
++}
++EXPORT_SYMBOL_GPL(devm_regulator_get_enable_optional);
++
++/**
++ * devm_regulator_get_enable - Resource managed regulator get and enable
++ * @dev: device to supply
++ * @id:  supply name or regulator ID.
++ *
++ * Get and enable regulator for duration of the device life-time.
++ * regulator_disable() and regulator_put() are automatically called on driver
++ * detach. See regulator_get() and regulator_enable() for more
++ * information.
++ */
++int devm_regulator_get_enable(struct device *dev, const char *id)
++{
++	return _devm_regulator_get_enable(dev, id, NORMAL_GET);
++}
++EXPORT_SYMBOL_GPL(devm_regulator_get_enable);
++
+ /**
+  * devm_regulator_get_optional - Resource managed regulator_get_optional()
+  * @dev: device to supply
+@@ -194,6 +253,111 @@ int devm_regulator_bulk_get_const(struct device *dev, int num_consumers,
+ }
+ EXPORT_SYMBOL_GPL(devm_regulator_bulk_get_const);
  
++static int devm_regulator_bulk_match(struct device *dev, void *res,
++				     void *data)
++{
++	struct regulator_bulk_devres *match = res;
++	struct regulator_bulk_data *target = data;
++
++	/*
++	 * We check the put uses same consumer list as the get did.
++	 * We _could_ scan all entries in consumer array and check the
++	 * regulators match but ATM I don't see the need. We can change this
++	 * later if needed.
++	 */
++	return match->consumers == target;
++}
++
++/**
++ * devm_regulator_bulk_put - Resource managed regulator_bulk_put()
++ * @consumers: consumers to free
++ *
++ * Deallocate regulators allocated with devm_regulator_bulk_get(). Normally
++ * this function will not need to be called and the resource management
++ * code will ensure that the resource is freed.
++ */
++void devm_regulator_bulk_put(struct regulator_bulk_data *consumers)
++{
++	int rc;
++	struct regulator *regulator = consumers[0].consumer;
++
++	rc = devres_release(regulator->dev, devm_regulator_bulk_release,
++			    devm_regulator_bulk_match, consumers);
++	if (rc != 0)
++		WARN_ON(rc);
++}
++EXPORT_SYMBOL_GPL(devm_regulator_bulk_put);
++
++static void devm_regulator_bulk_disable(void *res)
++{
++	struct regulator_bulk_devres *devres = res;
++	int i;
++
++	for (i = 0; i < devres->num_consumers; i++)
++		regulator_disable(devres->consumers[i].consumer);
++}
++
++/**
++ * devm_regulator_bulk_get_enable - managed get'n enable multiple regulators
++ *
++ * @dev:           device to supply
++ * @num_consumers: number of consumers to register
++ * @id:            list of supply names or regulator IDs
++ *
++ * @return 0 on success, an errno on failure.
++ *
++ * This helper function allows drivers to get several regulator
++ * consumers in one operation with management, the regulators will
++ * automatically be freed when the device is unbound.  If any of the
++ * regulators cannot be acquired then any regulators that were
++ * allocated will be freed before returning to the caller.
++ */
++int devm_regulator_bulk_get_enable(struct device *dev, int num_consumers,
++				   const char * const *id)
++{
++	struct regulator_bulk_devres *devres;
++	struct regulator_bulk_data *consumers;
++	int i, ret;
++
++	devres = devm_kmalloc(dev, sizeof(*devres), GFP_KERNEL);
++	if (!devres)
++		return -ENOMEM;
++
++	devres->consumers = devm_kcalloc(dev, num_consumers, sizeof(*consumers),
++					 GFP_KERNEL);
++	consumers = devres->consumers;
++	if (!consumers)
++		return -ENOMEM;
++
++	devres->num_consumers = num_consumers;
++
++	for (i = 0; i < num_consumers; i++)
++		consumers[i].supply = id[i];
++
++	ret = devm_regulator_bulk_get(dev, num_consumers, consumers);
++	if (ret)
++		return ret;
++
++	for (i = 0; i < num_consumers; i++) {
++		ret = regulator_enable(consumers[i].consumer);
++		if (ret)
++			goto unwind;
++	}
++
++	ret = devm_add_action(dev, devm_regulator_bulk_disable, devres);
++	if (!ret)
++		return 0;
++
++unwind:
++	while (--i >= 0)
++		regulator_disable(consumers[i].consumer);
++
++	devm_regulator_bulk_put(consumers);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(devm_regulator_bulk_get_enable);
++
+ static void devm_rdev_release(struct device *dev, void *res)
+ {
+ 	regulator_unregister(*(struct regulator_dev **)res);
+diff --git a/include/linux/regulator/consumer.h b/include/linux/regulator/consumer.h
+index 61f922e6fe353..a1fce0f27ce16 100644
+--- a/include/linux/regulator/consumer.h
++++ b/include/linux/regulator/consumer.h
+@@ -203,6 +203,8 @@ struct regulator *__must_check regulator_get_optional(struct device *dev,
+ 						      const char *id);
+ struct regulator *__must_check devm_regulator_get_optional(struct device *dev,
+ 							   const char *id);
++int devm_regulator_get_enable(struct device *dev, const char *id);
++int devm_regulator_get_enable_optional(struct device *dev, const char *id);
+ void regulator_put(struct regulator *regulator);
+ void devm_regulator_put(struct regulator *regulator);
+ 
+@@ -240,12 +242,15 @@ int __must_check regulator_bulk_get(struct device *dev, int num_consumers,
+ 				    struct regulator_bulk_data *consumers);
+ int __must_check devm_regulator_bulk_get(struct device *dev, int num_consumers,
+ 					 struct regulator_bulk_data *consumers);
++void devm_regulator_bulk_put(struct regulator_bulk_data *consumers);
+ int __must_check devm_regulator_bulk_get_const(
+ 	struct device *dev, int num_consumers,
+ 	const struct regulator_bulk_data *in_consumers,
+ 	struct regulator_bulk_data **out_consumers);
+ int __must_check regulator_bulk_enable(int num_consumers,
+ 				       struct regulator_bulk_data *consumers);
++int devm_regulator_bulk_get_enable(struct device *dev, int num_consumers,
++				   const char * const *id);
+ int regulator_bulk_disable(int num_consumers,
+ 			   struct regulator_bulk_data *consumers);
+ int regulator_bulk_force_disable(int num_consumers,
+@@ -350,6 +355,17 @@ devm_regulator_get_exclusive(struct device *dev, const char *id)
+ 	return ERR_PTR(-ENODEV);
+ }
+ 
++static inline int devm_regulator_get_enable(struct device *dev, const char *id)
++{
++	return -ENODEV;
++}
++
++static inline int devm_regulator_get_enable_optional(struct device *dev,
++						     const char *id)
++{
++	return -ENODEV;
++}
++
+ static inline struct regulator *__must_check
+ regulator_get_optional(struct device *dev, const char *id)
+ {
+@@ -371,6 +387,10 @@ static inline void devm_regulator_put(struct regulator *regulator)
+ {
+ }
+ 
++static inline void devm_regulator_bulk_put(struct regulator_bulk_data *consumers)
++{
++}
++
+ static inline int regulator_register_supply_alias(struct device *dev,
+ 						  const char *id,
+ 						  struct device *alias_dev,
+@@ -461,6 +481,13 @@ static inline int regulator_bulk_enable(int num_consumers,
+ 	return 0;
+ }
+ 
++static inline int devm_regulator_bulk_get_enable(struct device *dev,
++						 int num_consumers,
++						 const char * const *id)
++{
++	return 0;
++}
++
+ static inline int regulator_bulk_disable(int num_consumers,
+ 					 struct regulator_bulk_data *consumers)
+ {
 -- 
 2.39.5
 
