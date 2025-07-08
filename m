@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-161129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72EBFAFD38B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824A6AFD0CA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6666A188A8FB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D1C0484C2C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765972E0B4B;
-	Tue,  8 Jul 2025 16:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90D72DF3F8;
+	Tue,  8 Jul 2025 16:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+cHcLJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gjq4rOoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3418A2DEA94;
-	Tue,  8 Jul 2025 16:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AD62E659;
+	Tue,  8 Jul 2025 16:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993679; cv=none; b=rMPEuo3yfQR2ZtfUk0BrgEo8DfF1L4358pemOl+RDFeeX6nDxZXHgphESzmjnBfwT2cWqsxJXuj7cz/tSwB25Ms07UwoVDE5wTlzT3cvPJT3tR5J5S8Pn52gV+n+My+3Sc+0r+4N2wkvOdNQtSt2ooMSTjKhNSqJsyIDv3eGraw=
+	t=1751992078; cv=none; b=jZImIqMR6040XFwXp6WHMhdFWv8G4YHw30S/A6FYLUKf0BE5YB1td5vuhmUfDhKlwQc3/jetEQVa5Kyr6Gbnv75odoWBdDe2Sb/FuPxU1kITJVqSlA53jKwUvYXAYxWv637QhemVKp2scf+SxmiO170LFeGl/zvsZWunDzxqTRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993679; c=relaxed/simple;
-	bh=zlyO+6t9l74q0Uu/n4XKKcbNqKDMmY0HE3OY3VTKVTQ=;
+	s=arc-20240116; t=1751992078; c=relaxed/simple;
+	bh=ThudXU7Hr55bc3ROAT9iB0UHvnMjPkswgC8enjlxttc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KrgosIORynX8zoFk+oXNtI64HDFZjJCG8ksPrw/aMRZYF68+Gt9+08tjrJ0QuHW0c296asik/nT8Xah2PeM6EYhWQ/DgOKC/nE69x5oOZ1ZSxEXXXwLxVYSQD6bV83RmdrfL77OhLnfRocN13kzSPqT/7D5Wu70y8+8ZBZLYbwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+cHcLJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B069EC4CEED;
-	Tue,  8 Jul 2025 16:54:38 +0000 (UTC)
+	 MIME-Version; b=HSYE2rZecpymaoJcHXzHQcYDbpX865aqTMWRhncLtW8zh3txa3DBFFiLX78TnTm01vaxYpJoBZXylpnhMPeVR4Vl6DgnYig9nTeT+hb87A/qD3MOQvK8fznn2Fq+q232JpdCEm/xWeIFlqflidwpTTqk5U0Fp/PWDanjHDeemEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gjq4rOoL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E326C4CEED;
+	Tue,  8 Jul 2025 16:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993679;
-	bh=zlyO+6t9l74q0Uu/n4XKKcbNqKDMmY0HE3OY3VTKVTQ=;
+	s=korg; t=1751992078;
+	bh=ThudXU7Hr55bc3ROAT9iB0UHvnMjPkswgC8enjlxttc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+cHcLJnzaqM27s/iBPicd6flqQgTs4FZBLY9rZqeUrLlMVY5EV4KKdYG/WqDmXwH
-	 YMb7lQGOuiuiXUMJ4J18tcHgb8xAQwUvksULFPwfCh7KOOYE30lRfvD+1+hSyHHtKS
-	 Zkw8EhVlex+DEXY7CNgOg9BOkdzTzYyHeGg+Y2CE=
+	b=Gjq4rOoLIjUsBYN9EjVyesf0RbYWjvnYCiG650I0189HwdVsuC0XL37tVUwOjl/Gh
+	 b+CAwULQz9UHsaq7z+ueX2OhVL7BGO3h6C9CfW6kuGmEHk9viLcoTdWIK1LTV6U8GC
+	 JK2iPZtq3et5Tnzo8DXObkUsVo00ad6a2EJfHqpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Kerling <pkerling@casix.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 156/178] smb: client: fix readdir returning wrong type with POSIX extensions
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 21/81] scsi: qla4xxx: Fix missing DMA mapping error in qla4xxx_alloc_pdu()
 Date: Tue,  8 Jul 2025 18:23:13 +0200
-Message-ID: <20250708162240.571607489@linuxfoundation.org>
+Message-ID: <20250708162225.601673430@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Kerling <pkerling@casix.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit b8f89cb723b9e66f5dbd7199e4036fee34fb0de0 upstream.
+[ Upstream commit 00f452a1b084efbe8dcb60a29860527944a002a1 ]
 
-When SMB 3.1.1 POSIX Extensions are negotiated, userspace applications
-using readdir() or getdents() calls without stat() on each individual file
-(such as a simple "ls" or "find") would misidentify file types and exhibit
-strange behavior such as not descending into directories. The reason for
-this behavior is an oversight in the cifs_posix_to_fattr conversion
-function. Instead of extracting the entry type for cf_dtype from the
-properly converted cf_mode field, it tries to extract the type from the
-PDU. While the wire representation of the entry mode is similar in
-structure to POSIX stat(), the assignments of the entry types are
-different. Applying the S_DT macro to cf_mode instead yields the correct
-result. This is also what the equivalent function
-smb311_posix_info_to_fattr in inode.c already does for stat() etc.; which
-is why "ls -l" would give the correct file type but "ls" would not (as
-identified by the colors).
+dma_map_XXX() can fail and should be tested for errors with
+dma_mapping_error().
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Philipp Kerling <pkerling@casix.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b3a271a94d00 ("[SCSI] qla4xxx: support iscsiadm session mgmt")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250618071742.21822-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/readdir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qla4xxx/ql4_os.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/client/readdir.c
-+++ b/fs/smb/client/readdir.c
-@@ -263,7 +263,7 @@ cifs_posix_to_fattr(struct cifs_fattr *f
- 	/* The Mode field in the response can now include the file type as well */
- 	fattr->cf_mode = wire_mode_to_posix(le32_to_cpu(info->Mode),
- 					    fattr->cf_cifsattrs & ATTR_DIRECTORY);
--	fattr->cf_dtype = S_DT(le32_to_cpu(info->Mode));
-+	fattr->cf_dtype = S_DT(fattr->cf_mode);
+diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
+index 3f2f9734ee42e..2925823a494a6 100644
+--- a/drivers/scsi/qla4xxx/ql4_os.c
++++ b/drivers/scsi/qla4xxx/ql4_os.c
+@@ -3420,6 +3420,8 @@ static int qla4xxx_alloc_pdu(struct iscsi_task *task, uint8_t opcode)
+ 		task_data->data_dma = dma_map_single(&ha->pdev->dev, task->data,
+ 						     task->data_count,
+ 						     DMA_TO_DEVICE);
++		if (dma_mapping_error(&ha->pdev->dev, task_data->data_dma))
++			return -ENOMEM;
+ 	}
  
- 	switch (fattr->cf_mode & S_IFMT) {
- 	case S_IFLNK:
+ 	DEBUG2(ql4_printk(KERN_INFO, ha, "%s: MaxRecvLen %u, iscsi hrd %d\n",
+-- 
+2.39.5
+
 
 
 
