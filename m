@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-160800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFA3AFD1E8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC35AFD3B4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F900167BC7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F299188CB0B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75122E2F0E;
-	Tue,  8 Jul 2025 16:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD902DE1FA;
+	Tue,  8 Jul 2025 16:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQqDOGI7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKHexyh9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F14289E2C;
-	Tue,  8 Jul 2025 16:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD67D1DB127;
+	Tue,  8 Jul 2025 16:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992727; cv=none; b=swhE+UEIfxG69BLlUibduvDK4Mwb5aT9e/xugMQJTSc7XhHbuauMLx/r9dHGYKq2dlH9XYw4UC8E5erWFFtFnYT9GQP/MF1XvJkLCpaeZb794LLtFreWbdMie0JSu30wH640kQKQgV39veUYMKHhBFDo48NXSlz0fJb19cHXxcc=
+	t=1751993786; cv=none; b=pAMQvNTcpzzgAvyTm6gfG2eRAPqAqDODI1E93o4L+zcyvwhca1u4gvCR0g+1in/IDW8xSv/H18xZI+xpntw5zwLxeIm80DXEsyRvGgDe/fO79nbpMaC6+6UipV8o8S1hHCBQ2nFW2BNj0VUeRrEEH6+k1tDko4atEjNxqUuNwXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992727; c=relaxed/simple;
-	bh=Fs+hqsUyCpD09mdMMGg6LT7sosSzu0ljF9fGXeZTQ2c=;
+	s=arc-20240116; t=1751993786; c=relaxed/simple;
+	bh=2NGlPPw4zjKdNWzjKuHE1KRyo+A8C+5HQw6qr+krJhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SY7sgAUlLXDTFpHImreOg23+u0fnEeYQP2RPppzpB6ODIaTOgVrVxrp2g7L9/0lOEEi/S4jKBBJdKGvw8llgzJgLCP9be/27sexjygQBnLD6/DTcVWZDC72V2+a9xqgqW8umPK69UnIx7vbIpzPH1b3vHXa3CFNsRdi274NCH7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQqDOGI7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C8CC4CEED;
-	Tue,  8 Jul 2025 16:38:46 +0000 (UTC)
+	 MIME-Version; b=AxEAdZfyItUSqvUxbW1BT1CuuAk069cNgnewIZawy5VHNi/dG4g6lcAyg+rjj3buLEGimMfOihIuonxuZ+ZTuhV2AocaGZD5PconFou+pA7DFDlRL/i/aMagLothU/hwAVEKEPclovKJvrYD4I5KORB/t0QOYKc1EM21j704vxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKHexyh9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446ECC4CEF0;
+	Tue,  8 Jul 2025 16:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992727;
-	bh=Fs+hqsUyCpD09mdMMGg6LT7sosSzu0ljF9fGXeZTQ2c=;
+	s=korg; t=1751993786;
+	bh=2NGlPPw4zjKdNWzjKuHE1KRyo+A8C+5HQw6qr+krJhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CQqDOGI7uk0aerCh0KRvzyQFzDrOs7a7ZSlIwxFhq7TCFmP35b9jxAB8tJ9pXucdD
-	 EFxQg4dGkMZenivaCjFDMZkj56dpG456N28uzfeuDwRqQoN5jlYb61UpTYZzmavUze
-	 cwFqgooXoXVjctYoTktv6aV1aUAbViEktNbIZLpI=
+	b=rKHexyh9JTBjMuw8TQ3dOi/PHLm+1iPbdwdiZqQqXJjZRK/EDGDrEc7Ks30O0bBrE
+	 wmWM5LNt2oHFPyR3Mo6xYbvZQK4lOo31q/s7g6d49vzGdFFLj361HZUfkMNA+40yD9
+	 1mWOWjQwQorVQSw8EwT2pHoq9sVv+j/C+CB7QE8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chance Yang <chance.yang@kneron.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/232] spi: spi-fsl-dspi: Clear completion counter before initiating transfer
+Subject: [PATCH 5.15 018/160] usb: common: usb-conn-gpio: use a unique name for usb connector device
 Date: Tue,  8 Jul 2025 18:20:55 +0200
-Message-ID: <20250708162243.009331655@linuxfoundation.org>
+Message-ID: <20250708162232.012431452@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Chance Yang <chance.yang@kneron.us>
 
-[ Upstream commit fa60c094c19b97e103d653f528f8d9c178b6a5f5 ]
+[ Upstream commit d4e5b10c55627e2f3fc9e5b337a28b4e2f02a55e ]
 
-In target mode, extra interrupts can be received between the end of a
-transfer and halting the module if the host continues sending more data.
-If the interrupt from this occurs after the reinit_completion() then the
-completion counter is left at a non-zero value. The next unrelated
-transfer initiated by userspace will then complete immediately without
-waiting for the interrupt or writing to the RX buffer.
+The current implementation of the usb-conn-gpio driver uses a fixed
+"usb-charger" name for all USB connector devices. This causes conflicts
+in the power supply subsystem when multiple USB connectors are present,
+as duplicate names are not allowed.
 
-Fix it by resetting the counter before the transfer so that lingering
-values are cleared. This is done after clearing the FIFOs and the
-status register but before the transfer is initiated, so no interrupts
-should be received at this point resulting in other race conditions.
+Use IDA to manage unique IDs for naming usb connectors (e.g.,
+usb-charger-0, usb-charger-1).
 
-Fixes: 4f5ee75ea171 ("spi: spi-fsl-dspi: Replace interruptible wait queue with a simple completion")
-Signed-off-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250627-james-nxp-spi-dma-v4-1-178dba20c120@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Chance Yang <chance.yang@kneron.us>
+Link: https://lore.kernel.org/r/20250411-work-next-v3-1-7cd9aa80190c@kneron.us
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/usb/common/usb-conn-gpio.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 7c43df252328d..e26363ae74890 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -983,11 +983,20 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 		if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
- 			status = dspi_dma_xfer(dspi);
- 		} else {
-+			/*
-+			 * Reinitialize the completion before transferring data
-+			 * to avoid the case where it might remain in the done
-+			 * state due to a spurious interrupt from a previous
-+			 * transfer. This could falsely signal that the current
-+			 * transfer has completed.
-+			 */
-+			if (dspi->irq)
-+				reinit_completion(&dspi->xfer_done);
+diff --git a/drivers/usb/common/usb-conn-gpio.c b/drivers/usb/common/usb-conn-gpio.c
+index 521c95935d4c3..9691a1c8d8b0e 100644
+--- a/drivers/usb/common/usb-conn-gpio.c
++++ b/drivers/usb/common/usb-conn-gpio.c
+@@ -20,6 +20,9 @@
+ #include <linux/power_supply.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/usb/role.h>
++#include <linux/idr.h>
 +
- 			dspi_fifo_write(dspi);
++static DEFINE_IDA(usb_conn_ida);
  
- 			if (dspi->irq) {
- 				wait_for_completion(&dspi->xfer_done);
--				reinit_completion(&dspi->xfer_done);
- 			} else {
- 				do {
- 					status = dspi_poll(dspi);
+ #define USB_GPIO_DEB_MS		20	/* ms */
+ #define USB_GPIO_DEB_US		((USB_GPIO_DEB_MS) * 1000)	/* us */
+@@ -29,6 +32,7 @@
+ 
+ struct usb_conn_info {
+ 	struct device *dev;
++	int conn_id; /* store the IDA-allocated ID */
+ 	struct usb_role_switch *role_sw;
+ 	enum usb_role last_role;
+ 	struct regulator *vbus;
+@@ -160,7 +164,17 @@ static int usb_conn_psy_register(struct usb_conn_info *info)
+ 		.of_node = dev->of_node,
+ 	};
+ 
+-	desc->name = "usb-charger";
++	info->conn_id = ida_alloc(&usb_conn_ida, GFP_KERNEL);
++	if (info->conn_id < 0)
++		return info->conn_id;
++
++	desc->name = devm_kasprintf(dev, GFP_KERNEL, "usb-charger-%d",
++				    info->conn_id);
++	if (!desc->name) {
++		ida_free(&usb_conn_ida, info->conn_id);
++		return -ENOMEM;
++	}
++
+ 	desc->properties = usb_charger_properties;
+ 	desc->num_properties = ARRAY_SIZE(usb_charger_properties);
+ 	desc->get_property = usb_charger_get_property;
+@@ -168,8 +182,10 @@ static int usb_conn_psy_register(struct usb_conn_info *info)
+ 	cfg.drv_data = info;
+ 
+ 	info->charger = devm_power_supply_register(dev, desc, &cfg);
+-	if (IS_ERR(info->charger))
+-		dev_err(dev, "Unable to register charger\n");
++	if (IS_ERR(info->charger)) {
++		dev_err(dev, "Unable to register charger %d\n", info->conn_id);
++		ida_free(&usb_conn_ida, info->conn_id);
++	}
+ 
+ 	return PTR_ERR_OR_ZERO(info->charger);
+ }
+@@ -292,6 +308,9 @@ static int usb_conn_remove(struct platform_device *pdev)
+ 
+ 	cancel_delayed_work_sync(&info->dw_det);
+ 
++	if (info->charger)
++		ida_free(&usb_conn_ida, info->conn_id);
++
+ 	if (info->last_role == USB_ROLE_HOST && info->vbus)
+ 		regulator_disable(info->vbus);
+ 
 -- 
 2.39.5
 
