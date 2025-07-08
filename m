@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-160540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF75AFD09D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:25:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D23CAFD49C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B578C482C5C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:24:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3EA416DD33
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE4F2E54D6;
-	Tue,  8 Jul 2025 16:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA032DC32D;
+	Tue,  8 Jul 2025 17:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTQsDv0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Noty/Eu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB272A1BA;
-	Tue,  8 Jul 2025 16:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092371E492;
+	Tue,  8 Jul 2025 17:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991875; cv=none; b=Q8+Z0TMwEk6MsLtOtFxfGxVQjeZerOWYzvGUfesHt3qWwl1EMdrUubRRTp/1G7s2RftJzauVnU6gdZgYKU/em7ZIquHKWWIB1nnXobl5ftBcWs4JyYeDd7mpviwB1EAihl8XtE2M17xF92h66wFA9od0hEKNPoaS5B6gOsw0Pjw=
+	t=1751994213; cv=none; b=ByR+Kg+4Bw4prBhbgn1F1LU03owL3TK7sstTfDrPZeXoTlOtiDWOGyPIbNRpd87ob8I47aPN/qzmIacy5poqGIL3shBemaE7IV1jkVRkJc6M/m5IoCnVoZfYuIh/FF2D2A2fjG7N9d23877YUvJ/OIbzjkxQFuf8CCdl8xIs74Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991875; c=relaxed/simple;
-	bh=2sWBicXHt/6rJXGc/GJ7aSjanzKUi92aD58EmnjavMg=;
+	s=arc-20240116; t=1751994213; c=relaxed/simple;
+	bh=ljuGBNipfrt4rs83YwxONO8iqZsguWOEcC6ZBEzq71Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sxJkF9l9W61sji2flaR9WotlXrCPovJ9zMqJ6IlN1udFdHeruHNWi51l+TZcLkRz7SPu3BoG0rrZHCvK1AeK/AwFZ12NGl2yrVAtDk+mCoREin1FZChabTRXE7Tz2Xaxn7mpLvG+rKr4m2vjnVHXqONa/WJ1mljr5uzMlwsO5Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTQsDv0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08122C4CEED;
-	Tue,  8 Jul 2025 16:24:34 +0000 (UTC)
+	 MIME-Version; b=VnwvYH7yARTHesz2zLj9zt39iC/ixuV/x6NGbuyTmNAYrAKepeuJhb6TPG0VoYxvOszG815fi2P0wqHf54CP1qxjfCD0bDporEW2oy3Tad6TozGccMqJBdrPY/LC9ZGKt4YWw7zPmA9opjuhXRzzha8qsTJMvrfvKvsPjK5ljaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Noty/Eu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869D6C4CEED;
+	Tue,  8 Jul 2025 17:03:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751991874;
-	bh=2sWBicXHt/6rJXGc/GJ7aSjanzKUi92aD58EmnjavMg=;
+	s=korg; t=1751994212;
+	bh=ljuGBNipfrt4rs83YwxONO8iqZsguWOEcC6ZBEzq71Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oTQsDv0fNvAVlNnY3ReSSzx+rRhAQIxncRizgnsANPrGeCyDWdQ0oyItABPT7UFwq
-	 Je/Jcamn8OSx0M9xL2W6fnGrdvnK4Qyxkyy6e72Ce3i2NqXqr7llVgUHqk4WfW5BSW
-	 X82xmcYwrsjsanc8xNneH+VEHDgm+BSkFRRELwPU=
+	b=1Noty/EuagZ/MYgnJ+P7DCkb4eM6rF5gq/9+qv+q0XHHuZ8NI0dJk/0JFQuWrbpzV
+	 B1sI3WPCkkfjlHObaOspIUX/PeQEdabdG+xhE5NNagXWlzs8bf+O5RAXFPUU6vIqXk
+	 S9dU2mNdN66heOW7IvDQuRHi2VigY7mvWs71s+5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan Tan <bryan-bt.tan@broadcom.com>,
-	Vishnu Dasa <vishnu.dasa@broadcom.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	stable <stable@kernel.org>,
-	HarshaVardhana S A <harshavardhana.sa@broadcom.com>
-Subject: [PATCH 6.1 03/81] vsock/vmci: Clear the vmci transport packet properly when initializing it
+	Jerome Neanne <jneanne@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 138/160] regulator: gpio: Add input_supply support in gpio_regulator_config
 Date: Tue,  8 Jul 2025 18:22:55 +0200
-Message-ID: <20250708162224.937674966@linuxfoundation.org>
+Message-ID: <20250708162235.196311806@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,61 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+From: Jerome Neanne <jneanne@baylibre.com>
 
-commit 223e2288f4b8c262a864e2c03964ffac91744cd5 upstream.
+[ Upstream commit adfdfcbdbd32b356323a3db6d3a683270051a7e6 ]
 
-In vmci_transport_packet_init memset the vmci_transport_packet before
-populating the fields to avoid any uninitialised data being left in the
-structure.
+This is simillar as fixed-regulator.
+Used to extract regulator parent from the device tree.
 
-Cc: Bryan Tan <bryan-bt.tan@broadcom.com>
-Cc: Vishnu Dasa <vishnu.dasa@broadcom.com>
-Cc: Broadcom internal kernel review list
-Cc: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: virtualization@lists.linux.dev
-Cc: netdev@vger.kernel.org
-Cc: stable <stable@kernel.org>
-Signed-off-by: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20250701122254.2397440-1-gregkh@linuxfoundation.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Without that property used, the parent regulator can be shut down (if not an always on).
+Thus leading to inappropriate behavior:
+On am62-SP-SK this fix is required to avoid tps65219 ldo1 (SDMMC rail) to be shut down after boot completion.
+
+Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
+Link: https://lore.kernel.org/r/20220929132526.29427-2-jneanne@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: c9764fd88bc7 ("regulator: gpio: Fix the out-of-bounds access to drvdata::gpiods")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/vmci_transport.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/regulator/gpio-regulator.c       | 15 +++++++++++++++
+ include/linux/regulator/gpio-regulator.h |  2 ++
+ 2 files changed, 17 insertions(+)
 
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -119,6 +119,8 @@ vmci_transport_packet_init(struct vmci_t
- 			   u16 proto,
- 			   struct vmci_handle handle)
- {
-+	memset(pkt, 0, sizeof(*pkt));
-+
- 	/* We register the stream control handler as an any cid handle so we
- 	 * must always send from a source address of VMADDR_CID_ANY
- 	 */
-@@ -131,8 +133,6 @@ vmci_transport_packet_init(struct vmci_t
- 	pkt->type = type;
- 	pkt->src_port = src->svm_port;
- 	pkt->dst_port = dst->svm_port;
--	memset(&pkt->proto, 0, sizeof(pkt->proto));
--	memset(&pkt->_reserved2, 0, sizeof(pkt->_reserved2));
+diff --git a/drivers/regulator/gpio-regulator.c b/drivers/regulator/gpio-regulator.c
+index 5927d4f3eabd7..95e61a2f43f5d 100644
+--- a/drivers/regulator/gpio-regulator.c
++++ b/drivers/regulator/gpio-regulator.c
+@@ -220,6 +220,9 @@ of_get_gpio_regulator_config(struct device *dev, struct device_node *np,
+ 				 regtype);
+ 	}
  
- 	switch (pkt->type) {
- 	case VMCI_TRANSPORT_PACKET_TYPE_INVALID:
++	if (of_find_property(np, "vin-supply", NULL))
++		config->input_supply = "vin";
++
+ 	return config;
+ }
+ 
+@@ -259,6 +262,18 @@ static int gpio_regulator_probe(struct platform_device *pdev)
+ 
+ 	drvdata->gpiods = devm_kzalloc(dev, sizeof(struct gpio_desc *),
+ 				       GFP_KERNEL);
++
++	if (config->input_supply) {
++		drvdata->desc.supply_name = devm_kstrdup(&pdev->dev,
++							 config->input_supply,
++							 GFP_KERNEL);
++		if (!drvdata->desc.supply_name) {
++			dev_err(&pdev->dev,
++				"Failed to allocate input supply\n");
++			return -ENOMEM;
++		}
++	}
++
+ 	if (!drvdata->gpiods)
+ 		return -ENOMEM;
+ 	for (i = 0; i < config->ngpios; i++) {
+diff --git a/include/linux/regulator/gpio-regulator.h b/include/linux/regulator/gpio-regulator.h
+index fdeb312cdabdf..c223e50ff9f78 100644
+--- a/include/linux/regulator/gpio-regulator.h
++++ b/include/linux/regulator/gpio-regulator.h
+@@ -42,6 +42,7 @@ struct gpio_regulator_state {
+ /**
+  * struct gpio_regulator_config - config structure
+  * @supply_name:	Name of the regulator supply
++ * @input_supply:	Name of the input regulator supply
+  * @enabled_at_boot:	Whether regulator has been enabled at
+  *			boot or not. 1 = Yes, 0 = No
+  *			This is used to keep the regulator at
+@@ -62,6 +63,7 @@ struct gpio_regulator_state {
+  */
+ struct gpio_regulator_config {
+ 	const char *supply_name;
++	const char *input_supply;
+ 
+ 	unsigned enabled_at_boot:1;
+ 	unsigned startup_delay;
+-- 
+2.39.5
+
 
 
 
