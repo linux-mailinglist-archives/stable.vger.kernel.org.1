@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-160988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904FBAFD2DE
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CFA3AFD1E8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C49E18902E7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F900167BC7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0A6BE46;
-	Tue,  8 Jul 2025 16:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75122E2F0E;
+	Tue,  8 Jul 2025 16:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZ2Dp19Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQqDOGI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4735F2F37;
-	Tue,  8 Jul 2025 16:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F14289E2C;
+	Tue,  8 Jul 2025 16:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993273; cv=none; b=iHOt5KQGpopb8GsHzXLQzwbsSVMGuCC6c0qEgh+kyAejzosMcNIwHrRwRc9QZd7ZrGJxjfGjszMrq+rkM++ivbDUKY1K5dO2St9HpAPfqPYaCSsLWLACrp/LmZ8BXRt2MTkWV+1Rkfdmmp6fpS2K0jyHVbrUaxwfIQ9QKndRoNo=
+	t=1751992727; cv=none; b=swhE+UEIfxG69BLlUibduvDK4Mwb5aT9e/xugMQJTSc7XhHbuauMLx/r9dHGYKq2dlH9XYw4UC8E5erWFFtFnYT9GQP/MF1XvJkLCpaeZb794LLtFreWbdMie0JSu30wH640kQKQgV39veUYMKHhBFDo48NXSlz0fJb19cHXxcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993273; c=relaxed/simple;
-	bh=k9HZ5sTcf28S6qbuajTwnMdC1lM8FLzyPP4U0i3xF/A=;
+	s=arc-20240116; t=1751992727; c=relaxed/simple;
+	bh=Fs+hqsUyCpD09mdMMGg6LT7sosSzu0ljF9fGXeZTQ2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ol83pSu1K/fiVfqvg6HNT0RXvwPTIXrXrVimkpvaDmvdohoacF8N+W6MRQXQOKGnF3abXavL05jsKIDW5mUlYcQqmG1iWyyo8R1MX4Yevthv+kqWF9aY7cy1Bs9khFhY1smoRaqtcJUhZW1TuJFyWaSWZR+OcbG6uEX1dFXAfQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZ2Dp19Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF6BC4CEED;
-	Tue,  8 Jul 2025 16:47:52 +0000 (UTC)
+	 MIME-Version; b=SY7sgAUlLXDTFpHImreOg23+u0fnEeYQP2RPppzpB6ODIaTOgVrVxrp2g7L9/0lOEEi/S4jKBBJdKGvw8llgzJgLCP9be/27sexjygQBnLD6/DTcVWZDC72V2+a9xqgqW8umPK69UnIx7vbIpzPH1b3vHXa3CFNsRdi274NCH7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQqDOGI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C8CC4CEED;
+	Tue,  8 Jul 2025 16:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993273;
-	bh=k9HZ5sTcf28S6qbuajTwnMdC1lM8FLzyPP4U0i3xF/A=;
+	s=korg; t=1751992727;
+	bh=Fs+hqsUyCpD09mdMMGg6LT7sosSzu0ljF9fGXeZTQ2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZ2Dp19YbUMxqKhNYEKFjssgaA0sfIcxD6dAZ19Jt0gySQz9tJZ5kqGCkDDeGcKXJ
-	 R86qQ8MIxuC0ZXV/BVkPgp4eRS3z5RqSeuE4zn51wx0nF+G0XPzIl9EIT62Kc+36SP
-	 ftpMwlT6+WH6q3q6zU87Yt7iOay/oCTAxo54I6Jg=
+	b=CQqDOGI7uk0aerCh0KRvzyQFzDrOs7a7ZSlIwxFhq7TCFmP35b9jxAB8tJ9pXucdD
+	 EFxQg4dGkMZenivaCjFDMZkj56dpG456N28uzfeuDwRqQoN5jlYb61UpTYZzmavUze
+	 cwFqgooXoXVjctYoTktv6aV1aUAbViEktNbIZLpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Altman <avri.altman@sandisk.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.15 018/178] mmc: core: sd: Apply BROKEN_SD_DISCARD quirk earlier
+	James Clark <james.clark@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 059/232] spi: spi-fsl-dspi: Clear completion counter before initiating transfer
 Date: Tue,  8 Jul 2025 18:20:55 +0200
-Message-ID: <20250708162237.025471192@linuxfoundation.org>
+Message-ID: <20250708162243.009331655@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avri Altman <avri.altman@sandisk.com>
+From: James Clark <james.clark@linaro.org>
 
-commit 009c3a4bc41e855fd76f92727f9fbae4e5917d7f upstream.
+[ Upstream commit fa60c094c19b97e103d653f528f8d9c178b6a5f5 ]
 
-Move the BROKEN_SD_DISCARD quirk for certain SanDisk SD cards from the
-`mmc_blk_fixups[]` to `mmc_sd_fixups[]`. This ensures the quirk is
-applied earlier in the device initialization process, aligning with the
-reasoning in [1]. Applying the quirk sooner prevents the kernel from
-incorrectly enabling discard support on affected cards during initial
-setup.
+In target mode, extra interrupts can be received between the end of a
+transfer and halting the module if the host continues sending more data.
+If the interrupt from this occurs after the reinit_completion() then the
+completion counter is left at a non-zero value. The next unrelated
+transfer initiated by userspace will then complete immediately without
+waiting for the interrupt or writing to the RX buffer.
 
-[1] https://lore.kernel.org/all/20240820230631.GA436523@sony.com
+Fix it by resetting the counter before the transfer so that lingering
+values are cleared. This is done after clearing the FIFOs and the
+status register but before the transfer is initiated, so no interrupts
+should be received at this point resulting in other race conditions.
 
-Fixes: 07d2872bf4c8 ("mmc: core: Add SD card quirk for broken discard")
-Signed-off-by: Avri Altman <avri.altman@sandisk.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250526114445.675548-1-avri.altman@sandisk.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4f5ee75ea171 ("spi: spi-fsl-dspi: Replace interruptible wait queue with a simple completion")
+Signed-off-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250627-james-nxp-spi-dma-v4-1-178dba20c120@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/quirks.h |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -44,6 +44,12 @@ static const struct mmc_fixup __maybe_un
- 		   0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
- 		   MMC_QUIRK_NO_UHS_DDR50_TUNING, EXT_CSD_REV_ANY),
- 
-+	/*
-+	 * Some SD cards reports discard support while they don't
-+	 */
-+	MMC_FIXUP(CID_NAME_ANY, CID_MANFID_SANDISK_SD, 0x5344, add_quirk_sd,
-+		  MMC_QUIRK_BROKEN_SD_DISCARD),
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 7c43df252328d..e26363ae74890 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -983,11 +983,20 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 		if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
+ 			status = dspi_dma_xfer(dspi);
+ 		} else {
++			/*
++			 * Reinitialize the completion before transferring data
++			 * to avoid the case where it might remain in the done
++			 * state due to a spurious interrupt from a previous
++			 * transfer. This could falsely signal that the current
++			 * transfer has completed.
++			 */
++			if (dspi->irq)
++				reinit_completion(&dspi->xfer_done);
 +
- 	END_FIXUP
- };
+ 			dspi_fifo_write(dspi);
  
-@@ -147,12 +153,6 @@ static const struct mmc_fixup __maybe_un
- 	MMC_FIXUP("M62704", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
- 		  MMC_QUIRK_TRIM_BROKEN),
- 
--	/*
--	 * Some SD cards reports discard support while they don't
--	 */
--	MMC_FIXUP(CID_NAME_ANY, CID_MANFID_SANDISK_SD, 0x5344, add_quirk_sd,
--		  MMC_QUIRK_BROKEN_SD_DISCARD),
--
- 	END_FIXUP
- };
- 
+ 			if (dspi->irq) {
+ 				wait_for_completion(&dspi->xfer_done);
+-				reinit_completion(&dspi->xfer_done);
+ 			} else {
+ 				do {
+ 					status = dspi_poll(dspi);
+-- 
+2.39.5
+
 
 
 
