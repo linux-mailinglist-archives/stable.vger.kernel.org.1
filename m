@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-161155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5D2AFD3AD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E392AFD0D6
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E75631894C40
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B770167944
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902C42DAFAE;
-	Tue,  8 Jul 2025 16:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103E42DFF04;
+	Tue,  8 Jul 2025 16:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIYvh+4c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qM5r3/hC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2AF8F5E;
-	Tue,  8 Jul 2025 16:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C280B1DF74F;
+	Tue,  8 Jul 2025 16:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993754; cv=none; b=HfooRXSlyrw70xnEznomo2f9RaFALf7o/+b9h6mdnNbcn1egsFwinJWmTbSzvzF3PFH7iTl3UMJOv2wIINZRWeDxK9jWKRSBy8G9EGMIRUZjpCTgYs47b0VFsA2HjfVd6gJHfPUS5wHLGRqy2BHcSGYLHynePFxcaR+jMAznnxo=
+	t=1751992041; cv=none; b=ckF6ayaFq8/nSbbUZl/rQJtigx5JWjFvk/bZNyqezk7+LxiIt1vohd6QspSUw96CTqSyBjtzQsqR1fL88Hay0MYXl0r88ZCf/2hcLhCEQp1Lw5q5YeNXUHJqBgFjos5hQetGqcwiYIS6/IKYhB8nQuNPcAQhU2vV/nXstdluzTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993754; c=relaxed/simple;
-	bh=Nzh70/mlDp1qxqr/GnnH2nVxISXvFqcaxO7/xkj8ZFA=;
+	s=arc-20240116; t=1751992041; c=relaxed/simple;
+	bh=oje+7LZbQEDReRIWHQoXlAFHnHXp2c7RvI/am/iwoIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nj5l6bqH7bsmqc6DaiwZUSpf/2lzK9+/cXgFcmvbSdz42xvhfYK5JcqknM0ao10+oByB5SVfHACXR6AY/wP0pvXaPS6g7YQbXBraEbBpOdnJiD9+v1rkwTmfo5K4RXwKnysPLeg21mcVlSpHl1t5YISKMDw9G27nyvQlclZhezo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIYvh+4c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA663C4CEED;
-	Tue,  8 Jul 2025 16:55:53 +0000 (UTC)
+	 MIME-Version; b=JVGWMDYkK6fSi8AsIEKJ3mcIKXFRA1Izj4glHQhaStGX45L4RfyLze7huS0zJZcJRaDur+4gqEfl6Nmbe7CuvLB17kXNy2QVXtdpO4cBqeaMUWAiTDd/egf1j1AllfJKzrmT2rnpxwyD4MTIWDk2Gn8XARAz/4PfLQVOS5O09Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qM5r3/hC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F09FC4CEF0;
+	Tue,  8 Jul 2025 16:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993754;
-	bh=Nzh70/mlDp1qxqr/GnnH2nVxISXvFqcaxO7/xkj8ZFA=;
+	s=korg; t=1751992041;
+	bh=oje+7LZbQEDReRIWHQoXlAFHnHXp2c7RvI/am/iwoIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IIYvh+4cXVkFf9HPGUukkbfpw1SK9IKpJHOAEQBy3Zyfi4hbfV9/aIjrC806CZ11N
-	 xI4Do/el9KdhPHxV0vRH/Ct2qCaIC1XB70+FDskuKUu3wSYWtEphzNhZmhVkucuf6U
-	 QuubI9QlLY1hEBX/WR2wro3bj2vK/KhdWG9+RUo4=
+	b=qM5r3/hC9qqRpEBfzIeRGbuRToGd3r/gfbzErr3VbdMF590VFqmlph8CzBJY09Z0z
+	 KyTnFZpC+0BaVacWKgb+GLCi6Vj4vVGTzSJ7ea2JQJRt8xMoZoD2o30pXRfNYQaQvu
+	 j88bZ/GHtfv0+bhXJymOuhNwKoPZTbQCzuGEJQCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.15 175/178] KVM: x86: Sort CPUID_8000_0021_EAX leaf bits properly
+	syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com,
+	Kohei Enju <enjuk@amazon.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 40/81] rose: fix dangling neighbour pointers in rose_rt_device_down()
 Date: Tue,  8 Jul 2025 18:23:32 +0200
-Message-ID: <20250708162241.018040438@linuxfoundation.org>
+Message-ID: <20250708162226.264278012@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov <bp@alien8.de>
+From: Kohei Enju <enjuk@amazon.com>
 
-Commit 49c140d5af127ef4faf19f06a89a0714edf0316f upstream.
+[ Upstream commit 34a500caf48c47d5171f4aa1f237da39b07c6157 ]
 
-WRMSR_XX_BASE_NS is bit 1 so put it there, add some new bits as
-comments only.
+There are two bugs in rose_rt_device_down() that can cause
+use-after-free:
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20250324160617.15379-1-bp@kernel.org
-[sean: skip the FSRS/FSRC placeholders to avoid confusion]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1. The loop bound `t->count` is modified within the loop, which can
+   cause the loop to terminate early and miss some entries.
+
+2. When removing an entry from the neighbour array, the subsequent entries
+   are moved up to fill the gap, but the loop index `i` is still
+   incremented, causing the next entry to be skipped.
+
+For example, if a node has three neighbours (A, A, B) with count=3 and A
+is being removed, the second A is not checked.
+
+    i=0: (A, A, B) -> (A, B) with count=2
+          ^ checked
+    i=1: (A, B)    -> (A, B) with count=2
+             ^ checked (B, not A!)
+    i=2: (doesn't occur because i < count is false)
+
+This leaves the second A in the array with count=2, but the rose_neigh
+structure has been freed. Code that accesses these entries assumes that
+the first `count` entries are valid pointers, causing a use-after-free
+when it accesses the dangling pointer.
+
+Fix both issues by iterating over the array in reverse order with a fixed
+loop bound. This ensures that all entries are examined and that the removal
+of an entry doesn't affect subsequent iterations.
+
+Reported-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e04e2c007ba2c80476cb
+Tested-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250629030833.6680-1-enjuk@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/cpuid.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/rose/rose_route.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1164,6 +1164,7 @@ void kvm_set_cpu_caps(void)
+diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
+index fee772b4637c8..a7054546f52df 100644
+--- a/net/rose/rose_route.c
++++ b/net/rose/rose_route.c
+@@ -497,22 +497,15 @@ void rose_rt_device_down(struct net_device *dev)
+ 			t         = rose_node;
+ 			rose_node = rose_node->next;
  
- 	kvm_cpu_cap_init(CPUID_8000_0021_EAX,
- 		F(NO_NESTED_DATA_BP),
-+		F(WRMSR_XX_BASE_NS),
- 		/*
- 		 * Synthesize "LFENCE is serializing" into the AMD-defined entry
- 		 * in KVM's supported CPUID, i.e. if the feature is reported as
-@@ -1177,10 +1178,12 @@ void kvm_set_cpu_caps(void)
- 		SYNTHESIZED_F(LFENCE_RDTSC),
- 		/* SmmPgCfgLock */
- 		F(NULL_SEL_CLR_BASE),
-+		/* UpperAddressIgnore */
- 		F(AUTOIBRS),
- 		EMULATED_F(NO_SMM_CTL_MSR),
- 		/* PrefetchCtlMsr */
--		F(WRMSR_XX_BASE_NS),
-+		/* GpOnUserCpuid */
-+		/* EPSF */
- 		SYNTHESIZED_F(SBPB),
- 		SYNTHESIZED_F(IBPB_BRTYPE),
- 		SYNTHESIZED_F(SRSO_NO),
+-			for (i = 0; i < t->count; i++) {
++			for (i = t->count - 1; i >= 0; i--) {
+ 				if (t->neighbour[i] != s)
+ 					continue;
+ 
+ 				t->count--;
+ 
+-				switch (i) {
+-				case 0:
+-					t->neighbour[0] = t->neighbour[1];
+-					fallthrough;
+-				case 1:
+-					t->neighbour[1] = t->neighbour[2];
+-					break;
+-				case 2:
+-					break;
+-				}
++				memmove(&t->neighbour[i], &t->neighbour[i + 1],
++					sizeof(t->neighbour[0]) *
++						(t->count - i));
+ 			}
+ 
+ 			if (t->count <= 0)
+-- 
+2.39.5
+
 
 
 
