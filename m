@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70840AFD115
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DE9AFD407
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CD52486AF8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01E5E7B5470
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CB72E3701;
-	Tue,  8 Jul 2025 16:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FFC2E6139;
+	Tue,  8 Jul 2025 17:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISEitlNJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wT9Y3lfJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7586C881E;
-	Tue,  8 Jul 2025 16:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86BC2E49BD;
+	Tue,  8 Jul 2025 17:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992271; cv=none; b=JZiucRKuzvsI1XOdz33PGLv+ihTuTCugMxPXvPH7ijyeSXbAzQPoxB50hw147FdY6JguOUz6V3p/kR6aG2CNSj1E+spmvcUt9jKH0giEIYomM/7WLf1sR8f7zzfsR1yj2gN/k1XRg+mChr7TjceFtJ0ZFUaALuOfKveab7QxmXM=
+	t=1751994142; cv=none; b=Xu6CQfXEhPKiEfl+nkgNbmmFATOrJ7/PNiUK9j/2lYR/wThN9DC+QPBbvi9TvXNAlXTSg+m2AJChFBjQioVgYyxFA+X6Lfa4KUPXbr4Nch+sfO7o3MpRGCFolXY1FVBV9ydU5vOZaOw5sSAuGZNkGDfV7xwrwJOMsfhKoGgFsFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992271; c=relaxed/simple;
-	bh=/pp1hQQnJLyqaEy7Qy52neRWtlVE7bB0YycvzMnpe9s=;
+	s=arc-20240116; t=1751994142; c=relaxed/simple;
+	bh=MTb+yEDDtsiHnZ+3/1eue8UXyBNf8QMUVxxUP/qOz/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVE7+fDkvgObfd1HitBm6PoqXhqHbMOZd/dSlHGAMhibC6c+/s7sNxGSd3mfk7EHDbvMnhF4vJ5U5pvNprc7PYOPT+VJGAJyj4yAseUxFeNOdxjZJfmaTHkJeUlV1sOkX3TlOQrpFH8M/Lc8dmj1Va126EMxM8YarOiY3Rmvhcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISEitlNJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C6FC4CEED;
-	Tue,  8 Jul 2025 16:31:10 +0000 (UTC)
+	 MIME-Version; b=YmgmilHVNbPO6QROjHXRGnuHv52OdTljoo2I8zOzBU7a8N0fdeAY7cn0Sp2CH08M8IXAKgDM5NMbfHn6Q+X3blREsTRNi1BbHfnD8naAhsjwRsRcoH3pfWaSnkqp/h4V3uU6UqeuxX+Gpsy9QhFFKZOGbiOBE9qDaVeG20YrOxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wT9Y3lfJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F0DC4CEED;
+	Tue,  8 Jul 2025 17:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992271;
-	bh=/pp1hQQnJLyqaEy7Qy52neRWtlVE7bB0YycvzMnpe9s=;
+	s=korg; t=1751994142;
+	bh=MTb+yEDDtsiHnZ+3/1eue8UXyBNf8QMUVxxUP/qOz/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ISEitlNJFTjJmD70HHj9FzpAb/SEKMeC8+Zqd/AVkcPOUs3CC8c3Qj6ZTnDQP5j0O
-	 MGX1QLg7oFHT9Mg96DSMONyPKshDT1DffR86wPMxGL98kjC3D0nCF+x7/AqG5HsFI+
-	 ChQaZmoFXP/bAim5O1OlCuusQvdDP5aMbYFzTGt4=
+	b=wT9Y3lfJ+KBqx4f5zaQbvxBHYmPlFZRYqK3Pz8BRYYF5VV9S1zvt619thzUGAAIj3
+	 rIVTNhUJpeDonN7pYKQ3zMi7ZhKXImXoJUO/fG9uQdC37PlFOmP27svtYV+E5JBqNS
+	 IVdco7a7OIfczZn/IyMIoAPWc/Qfmjy3gT6kSmaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/132] btrfs: use btrfs_record_snapshot_destroy() during rmdir
+Subject: [PATCH 5.15 109/160] scsi: qla2xxx: Fix DMA mapping test in qla24xx_get_port_database()
 Date: Tue,  8 Jul 2025 18:22:26 +0200
-Message-ID: <20250708162231.726651878@linuxfoundation.org>
+Message-ID: <20250708162234.499284401@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 157501b0469969fc1ba53add5049575aadd79d80 ]
+[ Upstream commit c3b214719a87735d4f67333a8ef3c0e31a34837c ]
 
-We are setting the parent directory's last_unlink_trans directly which
-may result in a concurrent task starting to log the directory not see the
-update and therefore can log the directory after we removed a child
-directory which had a snapshot within instead of falling back to a
-transaction commit. Replaying such a log tree would result in a mount
-failure since we can't currently delete snapshots (and subvolumes) during
-log replay. This is the type of failure described in commit 1ec9a1ae1e30
-("Btrfs: fix unreplayable log after snapshot delete + parent dir fsync").
+dma_map_XXX() functions return as error values DMA_MAPPING_ERROR which is
+often ~0.  The error value should be tested with dma_mapping_error() like
+it was done in qla26xx_dport_diagnostics().
 
-Fix this by using btrfs_record_snapshot_destroy() which updates the
-last_unlink_trans field while holding the inode's log_mutex lock.
-
-Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 818c7f87a177 ("scsi: qla2xxx: Add changes in preparation for vendor extended FDMI/RDP")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250617161115.39888-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 2 +-
+ drivers/scsi/qla2xxx/qla_mbx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index cee1a11959c51..e8e57abb032d7 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4657,7 +4657,7 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	 * deletes for directory foo.
- 	 */
- 	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
--		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
-+		btrfs_record_snapshot_destroy(trans, BTRFS_I(dir));
+diff --git a/drivers/scsi/qla2xxx/qla_mbx.c b/drivers/scsi/qla2xxx/qla_mbx.c
+index d2ff54beb7cd7..7a28582b1f73a 100644
+--- a/drivers/scsi/qla2xxx/qla_mbx.c
++++ b/drivers/scsi/qla2xxx/qla_mbx.c
+@@ -2141,7 +2141,7 @@ qla24xx_get_port_database(scsi_qla_host_t *vha, u16 nport_handle,
  
- 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
- 		ret = btrfs_unlink_subvol(trans, BTRFS_I(dir), dentry);
+ 	pdb_dma = dma_map_single(&vha->hw->pdev->dev, pdb,
+ 	    sizeof(*pdb), DMA_FROM_DEVICE);
+-	if (!pdb_dma) {
++	if (dma_mapping_error(&vha->hw->pdev->dev, pdb_dma)) {
+ 		ql_log(ql_log_warn, vha, 0x1116, "Failed to map dma buffer.\n");
+ 		return QLA_MEMORY_ALLOC_FAILED;
+ 	}
 -- 
 2.39.5
 
