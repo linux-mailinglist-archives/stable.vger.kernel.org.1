@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-161011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4684AFD2FD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:52:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4A4AFD1E3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED8C916EB3A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EDDC5404FF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E842DEA94;
-	Tue,  8 Jul 2025 16:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923412E3B03;
+	Tue,  8 Jul 2025 16:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLztgBcx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZvYZdQr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EC918EAB;
-	Tue,  8 Jul 2025 16:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5177A1CD1E4;
+	Tue,  8 Jul 2025 16:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993342; cv=none; b=EJf/qNi2DDdBjyhCAInsxkxN1s9Uecelq7RO+BAA9gtnpIvfDuDu/VDm1NgMO6xzbJhIksHjJ9+wCoKB94Hhefu5naFf5//F/ucVP391sh0gb7xQlRwDprzvnXkGKNtxLpAvOBKnwv+YaisXKFSN+TKL740gqv1WdxWIXOudkPY=
+	t=1751992704; cv=none; b=uRIQFtrpft2SivTnZ0wikA/KmXTRBcKDFiFqkia6pP6/l7nVTSHoueS+5yfnGh8fliIH/uDoQsaTzmEERl2XH43Q9+yHNDRnT5+4bdDbqBY//iruqDFrgQ/vl4gJC/yqlOaargaTz0B772BGxUC0fMYBGr+c1EbONeS6nyBJ8zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993342; c=relaxed/simple;
-	bh=CJuZZnS8E1IrIBoxNdGTRrydZnA/1nREEWJwecd/M1I=;
+	s=arc-20240116; t=1751992704; c=relaxed/simple;
+	bh=kHIa0lJSgXb2PgqlFneyZQA/IdNm59tIa9N0ZO01IgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aoj4vcYUT1KL/2Fujsp3uCup07uA3s41ttPWi2L3YqVLsO+drOImLONLZKzckKK9ZNpb/36OTqf+hLUmYld4WfAp3RaoTce6/U7zJhFH7i5oIJBoYZbZEB1J02nVciLJ4vYwRUB3OzTAdBLdgVaYfmACqKzrFy7V/nYkJKGj5DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLztgBcx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759F4C4CEF0;
-	Tue,  8 Jul 2025 16:49:01 +0000 (UTC)
+	 MIME-Version; b=to2x+MRbTwE76AlWYCmXa0kMoEacRiikWyScpMCbS0qyFBZYD6+NWPE2hyDPdgLkL3MTYdtNwIkuB22khlrEnQZQdjdovZSuvmSVMCV5oxSxCpqqW/fzY2tgPt0nPSEX3t6ieb88PAyHwu11MvXv29lvOMZxegIS+68LuV8Vvsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZvYZdQr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94872C4CEED;
+	Tue,  8 Jul 2025 16:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993342;
-	bh=CJuZZnS8E1IrIBoxNdGTRrydZnA/1nREEWJwecd/M1I=;
+	s=korg; t=1751992704;
+	bh=kHIa0lJSgXb2PgqlFneyZQA/IdNm59tIa9N0ZO01IgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLztgBcxNqjQ9J+3IVaEHdisVSB8JbwT7RXJRxnZFH+OR4sjSCTmZNq6UpL4ZezfA
-	 izmnP6vgLe2muWZhXib+cXhU2QYh2zUVocOVA0fr0aPWWISCZUheYOZGxmjoPtR3uy
-	 QBlQrKEluCerGfvjGndhExLOOc6A4hd8K7FNuWIM=
+	b=NZvYZdQr4WY+JEHeiNjdBWlWhfnKiYyhczftAV6JgMlavY2P2EccZnr709RKCM4tY
+	 wqmHKT99bl4D3eDOH7wdqrQNyuu+fyy8n5g9uRDrrmy5X8tdPFQVHGCqQmnA3EXIjo
+	 QlF4fsKmpKryC+lSvLyAMdvSk7OKUxxhNK+Zb9xQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan Tan <bryan-bt.tan@broadcom.com>,
-	Vishnu Dasa <vishnu.dasa@broadcom.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	stable <stable@kernel.org>,
-	HarshaVardhana S A <harshavardhana.sa@broadcom.com>
-Subject: [PATCH 6.15 010/178] vsock/vmci: Clear the vmci transport packet properly when initializing it
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 051/232] btrfs: fix invalid inode pointer dereferences during log replay
 Date: Tue,  8 Jul 2025 18:20:47 +0200
-Message-ID: <20250708162236.819209078@linuxfoundation.org>
+Message-ID: <20250708162242.799367098@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,61 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 223e2288f4b8c262a864e2c03964ffac91744cd5 upstream.
+[ Upstream commit 2dcf838cf5c2f0f4501edaa1680fcad03618d760 ]
 
-In vmci_transport_packet_init memset the vmci_transport_packet before
-populating the fields to avoid any uninitialised data being left in the
-structure.
+In a few places where we call read_one_inode(), if we get a NULL pointer
+we end up jumping into an error path, or fallthrough in case of
+__add_inode_ref(), where we then do something like this:
 
-Cc: Bryan Tan <bryan-bt.tan@broadcom.com>
-Cc: Vishnu Dasa <vishnu.dasa@broadcom.com>
-Cc: Broadcom internal kernel review list
-Cc: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: virtualization@lists.linux.dev
-Cc: netdev@vger.kernel.org
-Cc: stable <stable@kernel.org>
-Signed-off-by: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20250701122254.2397440-1-gregkh@linuxfoundation.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   iput(&inode->vfs_inode);
+
+which results in an invalid inode pointer that triggers an invalid memory
+access, resulting in a crash.
+
+Fix this by making sure we don't do such dereferences.
+
+Fixes: b4c50cbb01a1 ("btrfs: return a btrfs_inode from read_one_inode()")
+CC: stable@vger.kernel.org # 6.15+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 5f61b961599a ("btrfs: fix inode lookup error handling during log replay")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/vmci_transport.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/tree-log.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -119,6 +119,8 @@ vmci_transport_packet_init(struct vmci_t
- 			   u16 proto,
- 			   struct vmci_handle handle)
- {
-+	memset(pkt, 0, sizeof(*pkt));
-+
- 	/* We register the stream control handler as an any cid handle so we
- 	 * must always send from a source address of VMADDR_CID_ANY
- 	 */
-@@ -131,8 +133,6 @@ vmci_transport_packet_init(struct vmci_t
- 	pkt->type = type;
- 	pkt->src_port = src->svm_port;
- 	pkt->dst_port = dst->svm_port;
--	memset(&pkt->proto, 0, sizeof(pkt->proto));
--	memset(&pkt->_reserved2, 0, sizeof(pkt->_reserved2));
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 7a1c7070287b2..f4317fce569b7 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -677,15 +677,12 @@ static noinline int replay_one_extent(struct btrfs_trans_handle *trans,
+ 		extent_end = ALIGN(start + size,
+ 				   fs_info->sectorsize);
+ 	} else {
+-		ret = 0;
+-		goto out;
++		return 0;
+ 	}
  
- 	switch (pkt->type) {
- 	case VMCI_TRANSPORT_PACKET_TYPE_INVALID:
+ 	inode = read_one_inode(root, key->objectid);
+-	if (!inode) {
+-		ret = -EIO;
+-		goto out;
+-	}
++	if (!inode)
++		return -EIO;
+ 
+ 	/*
+ 	 * first check to see if we already have this extent in the
+@@ -977,7 +974,8 @@ static noinline int drop_one_dir_item(struct btrfs_trans_handle *trans,
+ 	ret = unlink_inode_for_log_replay(trans, dir, inode, &name);
+ out:
+ 	kfree(name.name);
+-	iput(&inode->vfs_inode);
++	if (inode)
++		iput(&inode->vfs_inode);
+ 	return ret;
+ }
+ 
+@@ -1194,8 +1192,8 @@ static inline int __add_inode_ref(struct btrfs_trans_handle *trans,
+ 					ret = unlink_inode_for_log_replay(trans,
+ 							victim_parent,
+ 							inode, &victim_name);
++					iput(&victim_parent->vfs_inode);
+ 				}
+-				iput(&victim_parent->vfs_inode);
+ 				kfree(victim_name.name);
+ 				if (ret)
+ 					return ret;
+-- 
+2.39.5
+
 
 
 
