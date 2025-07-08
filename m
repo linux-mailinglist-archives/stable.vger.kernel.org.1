@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-160641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3547AAFD112
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1574AFD479
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5070D486ACE
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC47D161105
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A26A1714B7;
-	Tue,  8 Jul 2025 16:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FB11DC9B1;
+	Tue,  8 Jul 2025 17:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anJ8YudY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFAsEMQJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3885D2E3701;
-	Tue,  8 Jul 2025 16:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565C22DC34C;
+	Tue,  8 Jul 2025 17:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992259; cv=none; b=BKb7Jox3wNuKKlvanq+6wILhnpRgeRVzF+vspY1HfZWkdknbF2vVc9lClflJ0vDyzO98QGWYanRWaq1HdMc+TyafPd5tqTAf3OWZwFDCEB+9CLESKD2APV7ZSnG887zmNslyRRNTcHzY+PEkqFAqaHfwyd0H8AlKvnfl9oxkOls=
+	t=1751994131; cv=none; b=X90IRqFOq7IadE6o5DBWRsk+YVPt3vZISpTOlvmhKdsKn40GoRk2YFX3Xk85TS4vW1V8lrzrD2R05jgiWceNxjw2uA330ZD67Bv0CMAXvQteS723mxjErgP+d2GAvRkVZCp2eEbmWDfyc8SxQJ6Ws+/QBDkRNYSY6uIOJR8UOj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992259; c=relaxed/simple;
-	bh=djvJisH2C6/akxM6Nu7Sg8Ds4DY10CEqzA9eAzNN+6c=;
+	s=arc-20240116; t=1751994131; c=relaxed/simple;
+	bh=uo7Irl3XFewIbfsTG2OM6V3Mr55rvJTPRpJmRJ+XHsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jm7LivnZ1ZbwsJBIdOXz8bnt55Nd7b64yemC2T5gq1CSYZcWJoRpc8/BNCkdCw1VCXLRsv8G7gCJXso7wVi9egcs5sVL6XQk8c5D93TKcGT7SYoBYTDOQSWMiOyauEAddeOBaLV/WBiSQrPkrWRUFBcoOkfP7Dp9DMplsIwYAgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=anJ8YudY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B701AC4CEED;
-	Tue,  8 Jul 2025 16:30:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ovaLpl28uoMSF5MFK0osKTuMrlFJ6JasUovUzGK63SQDZUwNJh47WayizbYwicvA2JvcMyMyBnXS1P6GhDVrtFCt72R/tdPPOIJpDAbcYZTDY41h5o9dmA3W2yxNzGzZYgsYxF54eVai6oRn+S/rV7r5B2S2qacP0S5TqXIJ4xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFAsEMQJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2711C4CEED;
+	Tue,  8 Jul 2025 17:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992259;
-	bh=djvJisH2C6/akxM6Nu7Sg8Ds4DY10CEqzA9eAzNN+6c=;
+	s=korg; t=1751994131;
+	bh=uo7Irl3XFewIbfsTG2OM6V3Mr55rvJTPRpJmRJ+XHsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=anJ8YudY6OiBIVI5Ym7p6upZSTld3nn1sTdGOvSsrB4SYwru4wyyNuhD7mFHR71on
-	 SHYhCBngudjbAGJBJz2EoqC6yv/Qdu/Yy/eVlB5snnw9Bsqus1XMxHVvzlDRZZVNEh
-	 kFsTDx3uULjjSZB08ICNOhhGZfOfaJgyq+hnq69k=
+	b=MFAsEMQJJ6d6g/mKzmNDA4zLxLRvTFF1Z/PWPoVS2Sv0/8NdbdU/VjIJlNpRim43f
+	 d8PORn0cEzt4r+tvxceZN9jqPWTH92m2rupYfKVG+yFkP5LCA8bpvaDmR/Si22ks2f
+	 fcpSSlmTOsyVnbbCC01W4jYFfZNdvfcvbHygOJkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	kernel test robot <lkp@intel.com>,
+	David Thompson <davthompson@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/132] btrfs: fix missing error handling when searching for inode refs during log replay
+Subject: [PATCH 5.15 105/160] platform/mellanox: mlxbf-tmfifo: fix vring_desc.len assignment
 Date: Tue,  8 Jul 2025 18:22:22 +0200
-Message-ID: <20250708162231.618524669@linuxfoundation.org>
+Message-ID: <20250708162234.390160603@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit 6561a40ceced9082f50c374a22d5966cf9fc5f5c ]
+[ Upstream commit 109f4d29dade8ae5b4ac6325af9d1bc24b4230f8 ]
 
-During log replay, at __add_inode_ref(), when we are searching for inode
-ref keys we totally ignore if btrfs_search_slot() returns an error. This
-may make a log replay succeed when there was an actual error and leave
-some metadata inconsistency in a subvolume tree. Fix this by checking if
-an error was returned from btrfs_search_slot() and if so, return it to
-the caller.
+Fix warnings reported by sparse, related to incorrect type:
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38: warning: incorrect type in assignment (different base types)
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    expected restricted __virtio32 [usertype] len
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    got unsigned long
 
-Fixes: e02119d5a7b4 ("Btrfs: Add a write ahead tree log to optimize synchronous operations")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202404040339.S7CUIgf3-lkp@intel.com/
+Fixes: 78034cbece79 ("platform/mellanox: mlxbf-tmfifo: Drop the Rx packet if no more descriptors")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/20250613214608.2250130-1-davthompson@nvidia.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index cc9a2f8a4ae3b..6dbb62f83f8c8 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -1087,7 +1087,9 @@ static inline int __add_inode_ref(struct btrfs_trans_handle *trans,
- 	search_key.type = BTRFS_INODE_REF_KEY;
- 	search_key.offset = parent_objectid;
- 	ret = btrfs_search_slot(NULL, root, &search_key, path, 0, 0);
--	if (ret == 0) {
-+	if (ret < 0) {
-+		return ret;
-+	} else if (ret == 0) {
- 		struct btrfs_inode_ref *victim_ref;
- 		unsigned long ptr;
- 		unsigned long ptr_end;
+diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
+index 767f4406e55f1..1eb7f4eb1156c 100644
+--- a/drivers/platform/mellanox/mlxbf-tmfifo.c
++++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
+@@ -253,7 +253,8 @@ static int mlxbf_tmfifo_alloc_vrings(struct mlxbf_tmfifo *fifo,
+ 		vring->align = SMP_CACHE_BYTES;
+ 		vring->index = i;
+ 		vring->vdev_id = tm_vdev->vdev.id.device;
+-		vring->drop_desc.len = VRING_DROP_DESC_MAX_LEN;
++		vring->drop_desc.len = cpu_to_virtio32(&tm_vdev->vdev,
++						       VRING_DROP_DESC_MAX_LEN);
+ 		dev = &tm_vdev->vdev.dev;
+ 
+ 		size = vring_size(vring->num, vring->align);
 -- 
 2.39.5
 
