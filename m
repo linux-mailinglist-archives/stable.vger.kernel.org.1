@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-160671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9452BAFD13C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84D95AFD0B0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCBB01C224E5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:33:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F7DD17BBB9
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E192E49B0;
-	Tue,  8 Jul 2025 16:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B263B21B199;
+	Tue,  8 Jul 2025 16:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIbnmRlK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXCVBGDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E142E49AF;
-	Tue,  8 Jul 2025 16:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713442E5B25;
+	Tue,  8 Jul 2025 16:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992350; cv=none; b=svnidpBIIaFeJeut86fueHsXVp3Y9xo1Z1NMKexQbROKH71C0FDGFhyBg47zBhheuXIT7aE2GYunp2vDfAfRLrIqLBEkhaf5GZ9GqJJ0lMeaV0XROr0asUh2OFOdVNNNx50MJfVIZWm8ogtP3QkLB4HFGeG564Dne+7mxVbvzTA=
+	t=1751991866; cv=none; b=OeFGT83kAaKhokTy9zYMt8t26rIHuAxLTGBRkeXZlF6IN8xs1XSZJ7E8BjQLa93OOnAvG9XgsLSEQus7cF0Q4c2vAgRXuqUfuY4Ky/NE5yPIDHT1Aw67+T2LGMAP2Hr65+Dvj6ylP2culp18ZRWDFz6z/agdnT5K699gqjEsmuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992350; c=relaxed/simple;
-	bh=sxvDtlSsVq8L8ULGsDIF4OzuF4PSDJA4q2OqVEM3wZg=;
+	s=arc-20240116; t=1751991866; c=relaxed/simple;
+	bh=o9wl5zXh5YHn3K3BsK11wxJYE7YM1nU6+g6zdRhKYj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mvWTb/3vjWOVhmE86GwVIEw+1ytxwRaQFJai36c7to+TcZGbupFe/m0F+zg8/Vy9eB8nFduT6bI2JdAcKU6BzBew51tWMYu629fGCCHBvTVrt+dcJ9JW5lbbpaJYve1xF1ORbm6BNd+8iNVAglExWb8pB5Q7219DTpFLP5CxdMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIbnmRlK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8F9C4CEED;
-	Tue,  8 Jul 2025 16:32:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kdI9IcyOWDeRZG8XrIcP3lkcEyiRNpZCSTye6fAPqVks5vPmwyWM48wqqiZiiL4Fq5Iwx9sf+bVVXDBm0yxAJahBNkB1o+QMUfDEusCLZwqobkLLx7PSEypygydFT7QfqibFmxaj6L2HTO+v06OBFJpBKAcGeHHNT/SK0StV0Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXCVBGDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13DDC4CEED;
+	Tue,  8 Jul 2025 16:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992350;
-	bh=sxvDtlSsVq8L8ULGsDIF4OzuF4PSDJA4q2OqVEM3wZg=;
+	s=korg; t=1751991866;
+	bh=o9wl5zXh5YHn3K3BsK11wxJYE7YM1nU6+g6zdRhKYj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIbnmRlKbmNVa74CdzND/6THKnhY3hL94M6V1VDELiNRFTeBU2SmF51QnZeUIN28u
-	 GRSkYcSS/0M769ySaeIymrkZzwTHW+gY/ge/b4Q+ywOEkvn0mz81BuNbIb09i5bkie
-	 cyM1WlhDbwDt96duWl/Mki47zN8hlyBzr51RUVnQ=
+	b=iXCVBGDgjqbUPSSpvypya9GwcD4VgO1w7fZXz9NBjlyJiMOEFYblHo3QOLijN6Moo
+	 7B3dhriVjmgWPe8qkSFZDMrIXJHK4Kb7pjJDRUPnhmex1r8cKElY+ZR5E4wjVXXXZ9
+	 081Vn59WxuWPq4oXh97sqaXa3Y6wV65AgLXu9aHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 062/132] amd-xgbe: do not double read link status
+	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.1 01/81] rtc: cmos: use spin_lock_irqsave in cmos_interrupt
 Date: Tue,  8 Jul 2025 18:22:53 +0200
-Message-ID: <20250708162232.471600182@linuxfoundation.org>
+Message-ID: <20250708162224.863496004@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Mateusz Jończyk <mat.jonczyk@o2.pl>
 
-[ Upstream commit 16ceda2ef683a50cd0783006c0504e1931cd8879 ]
+commit 00a39d8652ff9088de07a6fe6e9e1893452fe0dd upstream.
 
-The link status is latched low so that momentary link drops
-can be detected. Always double-reading the status defeats this
-design feature. Only double read if link was already down
+cmos_interrupt() can be called in a non-interrupt context, such as in
+an ACPI event handler (which runs in an interrupt thread). Therefore,
+usage of spin_lock(&rtc_lock) is insecure. Use spin_lock_irqsave() /
+spin_unlock_irqrestore() instead.
 
-This prevents unnecessary duplicate readings of the link status.
+Before a misguided
+commit 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
+the cmos_interrupt() function used spin_lock_irqsave(). That commit
+changed it to spin_lock() and broke locking, which was partially fixed in
+commit 13be2efc390a ("rtc: cmos: Disable irq around direct invocation of cmos_interrupt()")
 
-Fixes: 4f3b20bfbb75 ("amd-xgbe: add support for rx-adaptation")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250701065016.4140707-1-Raju.Rangoju@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That second commit did not take account of the ACPI fixed event handler
+pathway, however. It introduced local_irq_disable() workarounds in
+cmos_check_wkalrm(), which can cause problems on PREEMPT_RT kernels
+and are now unnecessary.
+
+Add an explicit comment so that this change will not be reverted by
+mistake.
+
+Cc: stable@vger.kernel.org
+Fixes: 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
+Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Closes: https://lore.kernel.org/all/aDtJ92foPUYmGheF@debian.local/
+Link: https://lore.kernel.org/r/20250607210608.14835-1-mat.jonczyk@o2.pl
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c   |  4 ++++
- drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 24 +++++++++++++--------
- 2 files changed, 19 insertions(+), 9 deletions(-)
+ drivers/rtc/rtc-cmos.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index 154e7598a32bf..8345d439184eb 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -1413,6 +1413,10 @@ static void xgbe_phy_status(struct xgbe_prv_data *pdata)
- 
- 	pdata->phy.link = pdata->phy_if.phy_impl.link_status(pdata,
- 							     &an_restart);
-+	/* bail out if the link status register read fails */
-+	if (pdata->phy.link < 0)
-+		return;
-+
- 	if (an_restart) {
- 		xgbe_phy_config_aneg(pdata);
- 		goto adjust_link;
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-index 268399dfcf22f..32e633d113484 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-@@ -2855,8 +2855,7 @@ static bool xgbe_phy_valid_speed(struct xgbe_prv_data *pdata, int speed)
- static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
+--- a/drivers/rtc/rtc-cmos.c
++++ b/drivers/rtc/rtc-cmos.c
+@@ -697,8 +697,12 @@ static irqreturn_t cmos_interrupt(int ir
  {
- 	struct xgbe_phy_data *phy_data = pdata->phy_data;
--	unsigned int reg;
--	int ret;
-+	int reg, ret;
+ 	u8		irqstat;
+ 	u8		rtc_control;
++	unsigned long	flags;
  
- 	*an_restart = 0;
+-	spin_lock(&rtc_lock);
++	/* We cannot use spin_lock() here, as cmos_interrupt() is also called
++	 * in a non-irq context.
++	 */
++	spin_lock_irqsave(&rtc_lock, flags);
  
-@@ -2890,11 +2889,20 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
- 			return 0;
+ 	/* When the HPET interrupt handler calls us, the interrupt
+ 	 * status is passed as arg1 instead of the irq number.  But
+@@ -732,7 +736,7 @@ static irqreturn_t cmos_interrupt(int ir
+ 			hpet_mask_rtc_irq_bit(RTC_AIE);
+ 		CMOS_READ(RTC_INTR_FLAGS);
+ 	}
+-	spin_unlock(&rtc_lock);
++	spin_unlock_irqrestore(&rtc_lock, flags);
+ 
+ 	if (is_intr(irqstat)) {
+ 		rtc_update_irq(p, 1, irqstat);
+@@ -1289,9 +1293,7 @@ static void cmos_check_wkalrm(struct dev
+ 	 * ACK the rtc irq here
+ 	 */
+ 	if (t_now >= cmos->alarm_expires && cmos_use_acpi_alarm()) {
+-		local_irq_disable();
+ 		cmos_interrupt(0, (void *)cmos->rtc);
+-		local_irq_enable();
+ 		return;
  	}
  
--	/* Link status is latched low, so read once to clear
--	 * and then read again to get current state
--	 */
--	reg = XMDIO_READ(pdata, MDIO_MMD_PCS, MDIO_STAT1);
- 	reg = XMDIO_READ(pdata, MDIO_MMD_PCS, MDIO_STAT1);
-+	if (reg < 0)
-+		return reg;
-+
-+	/* Link status is latched low so that momentary link drops
-+	 * can be detected. If link was already down read again
-+	 * to get the latest state.
-+	 */
-+
-+	if (!pdata->phy.link && !(reg & MDIO_STAT1_LSTATUS)) {
-+		reg = XMDIO_READ(pdata, MDIO_MMD_PCS, MDIO_STAT1);
-+		if (reg < 0)
-+			return reg;
-+	}
- 
- 	if (pdata->en_rx_adap) {
- 		/* if the link is available and adaptation is done,
-@@ -2913,9 +2921,7 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
- 			xgbe_phy_set_mode(pdata, phy_data->cur_mode);
- 		}
- 
--		/* check again for the link and adaptation status */
--		reg = XMDIO_READ(pdata, MDIO_MMD_PCS, MDIO_STAT1);
--		if ((reg & MDIO_STAT1_LSTATUS) && pdata->rx_adapt_done)
-+		if (pdata->rx_adapt_done)
- 			return 1;
- 	} else if (reg & MDIO_STAT1_LSTATUS)
- 		return 1;
--- 
-2.39.5
-
 
 
 
