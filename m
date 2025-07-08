@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-161264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3298AFD490
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 428B2AFD129
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:32:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9DEF1BC0C57
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 376237B2C9E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036B92DAFAE;
-	Tue,  8 Jul 2025 17:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36A52E0910;
+	Tue,  8 Jul 2025 16:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JscIp86W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6+MHHT+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62D72DC32D;
-	Tue,  8 Jul 2025 17:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D972D8787;
+	Tue,  8 Jul 2025 16:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994071; cv=none; b=SH0RG94bcT1pKhY+IqxfkDbmAk6PCdyWaCEcmEAliiggn2iA12RtedadlgVxvCQMsc6gLlAEjuC+jxiDRuenZ+D5HwIPp7LIUc1hO5DQ8uqpYrTYNAOv0GqCs0Avz2GBxu6EbZ6CwBwNmsVc2TaClBOthLxBY6WaV43bY0HGpSI=
+	t=1751992295; cv=none; b=DywhLi3DCxn6N+ab2qZvbWMCbDfIcwQVHRSuT93BpZIsVqHYrhMC4ocdi1IJ7OXMc7miwYR1iSIskjgPJCP2JUay6iY5BOt9P36VaGvix/ztUEQK0sx6Ch6U2XgfuabF+SlrBuNx6UlE2wuU/XJuDaltr8mukdlYQ1EYZtcz/lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994071; c=relaxed/simple;
-	bh=aPnVQGuAo/237J6jwRAKcASreyZxrTDawSgAMPRlOSY=;
+	s=arc-20240116; t=1751992295; c=relaxed/simple;
+	bh=mxLBjJG/k55QHHXsV5UjIMSHA3MtnUPovqYsKG58L/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IemSVwHCxcDx5mdCx0tgqZ37g30cfBFGvU5TiJgoIAMyc5oPMhf15ya7C/XcMfm825exjhcr97VNcqjRZDHPWZe9nO5/dBK8FsNS6rGD2cYutAUtUS6huWwZhME4ZInNFACeAeSAYx4eKrKUSFQ8Q5aZlFmQ2U47DxUyTZOHwLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JscIp86W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F18DC4CEED;
-	Tue,  8 Jul 2025 17:01:11 +0000 (UTC)
+	 MIME-Version; b=PIgJK69vIsv4P8CRpp5BHbT9kdaqZWx0vgn1WpR5nEpxXP3b+CZZeE32ZQdtM3VYeja7ztlGKZlUhwjOaZIfiKaP+nKQTFNE/2kpn77rbDqHJmhIaVBCvfw6d2lK7isQAEUH6s2sBVeMIe8hG79iAD0bmcOmXjRgrvG/E7McVGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6+MHHT+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D9AC4CEED;
+	Tue,  8 Jul 2025 16:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994071;
-	bh=aPnVQGuAo/237J6jwRAKcASreyZxrTDawSgAMPRlOSY=;
+	s=korg; t=1751992295;
+	bh=mxLBjJG/k55QHHXsV5UjIMSHA3MtnUPovqYsKG58L/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JscIp86W6Si6GxbzzauIGQjz9r57oJS8Q/e9IyPH8YwO2PREKrTa4s5KF5jncrrBM
-	 8b0uvouQKv8TQTI5igRysPq9AjlMh/fpSsU1jP1V3N+zuEN0H7TI3REXow1IQfANUh
-	 Ells9crAMMyVSLdAYaZxDIoRfJ/tzYRwvkdGPNcA=
+	b=J6+MHHT+cZ6Rgt4Gr2QQEhSvfHRYvP+XbvOnKa8lnEhnIQTW3Zn1tQoffAQH9KUML
+	 VUY/m0NpnWLNzPrQV9d8/f+GtAbwt8epkI+IIklvuqtjqe6rGRlag2ZZweTUERb/v8
+	 bfeJChOwWEbX1i0bXMfck0de/YVM523dcEfThdDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 116/160] drm/i915/selftests: Change mock_request() to return error pointers
+Subject: [PATCH 6.6 042/132] arm64: dts: qcom: sm8550: add UART14 nodes
 Date: Tue,  8 Jul 2025 18:22:33 +0200
-Message-ID: <20250708162234.672150470@linuxfoundation.org>
+Message-ID: <20250708162231.909701628@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit caa7c7a76b78ce41d347003f84975125383e6b59 ]
+[ Upstream commit 75cac7090298978c12c59dbca377d957f6f8a8bb ]
 
-There was an error pointer vs NULL bug in __igt_breadcrumbs_smoketest().
-The __mock_request_alloc() function implements the
-smoketest->request_alloc() function pointer.  It was supposed to return
-error pointers, but it propogates the NULL return from mock_request()
-so in the event of a failure, it would lead to a NULL pointer
-dereference.
+Add the Geni High Speed UART QUP instance 2 element 6
+node and associated default pinctrl.
 
-To fix this, change the mock_request() function to return error pointers
-and update all the callers to expect that.
-
-Fixes: 52c0fdb25c7c ("drm/i915: Replace global breadcrumbs with per-context interrupt tracking")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://lore.kernel.org/r/685c1417.050a0220.696f5.5c05@mx.google.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 778fa8ad5f0f23397d045c7ebca048ce8def1c43)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20230911-topic-sm8550-upstream-bt-v4-1-a5a428c77418@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 5ff1fbb30597 ("platform/x86: think-lmi: Fix class device unregistration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/selftests/i915_request.c | 20 +++++++++----------
- drivers/gpu/drm/i915/selftests/mock_request.c |  2 +-
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi | 30 ++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/selftests/i915_request.c b/drivers/gpu/drm/i915/selftests/i915_request.c
-index 0e1a64b179a55..a4f1f5d2d9831 100644
---- a/drivers/gpu/drm/i915/selftests/i915_request.c
-+++ b/drivers/gpu/drm/i915/selftests/i915_request.c
-@@ -72,8 +72,8 @@ static int igt_add_request(void *arg)
- 	/* Basic preliminary test to create a request and let it loose! */
+diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+index c14c6f8583d54..2f0f1c2ab7391 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -1064,6 +1064,20 @@ spi13: spi@894000 {
+ 				status = "disabled";
+ 			};
  
- 	request = mock_request(rcs0(i915)->kernel_context, HZ / 10);
--	if (!request)
--		return -ENOMEM;
-+	if (IS_ERR(request))
-+		return PTR_ERR(request);
++			uart14: serial@898000 {
++				compatible = "qcom,geni-uart";
++				reg = <0 0x898000 0 0x4000>;
++				clock-names = "se";
++				clocks = <&gcc GCC_QUPV3_WRAP2_S6_CLK>;
++				pinctrl-names = "default";
++				pinctrl-0 = <&qup_uart14_default>, <&qup_uart14_cts_rts>;
++				interrupts = <GIC_SPI 461 IRQ_TYPE_LEVEL_HIGH>;
++				interconnects = <&clk_virt MASTER_QUP_CORE_2 0 &clk_virt SLAVE_QUP_CORE_2 0>,
++						<&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_QUP_2 0>;
++				interconnect-names = "qup-core", "qup-config";
++				status = "disabled";
++			};
++
+ 			i2c15: i2c@89c000 {
+ 				compatible = "qcom,geni-i2c";
+ 				reg = <0 0x0089c000 0 0x4000>;
+@@ -3640,6 +3654,22 @@ qup_uart7_default: qup-uart7-default-state {
+ 				bias-disable;
+ 			};
  
- 	i915_request_add(request);
- 
-@@ -90,8 +90,8 @@ static int igt_wait_request(void *arg)
- 	/* Submit a request, then wait upon it */
- 
- 	request = mock_request(rcs0(i915)->kernel_context, T);
--	if (!request)
--		return -ENOMEM;
-+	if (IS_ERR(request))
-+		return PTR_ERR(request);
- 
- 	i915_request_get(request);
- 
-@@ -159,8 +159,8 @@ static int igt_fence_wait(void *arg)
- 	/* Submit a request, treat it as a fence and wait upon it */
- 
- 	request = mock_request(rcs0(i915)->kernel_context, T);
--	if (!request)
--		return -ENOMEM;
-+	if (IS_ERR(request))
-+		return PTR_ERR(request);
- 
- 	if (dma_fence_wait_timeout(&request->fence, false, T) != -ETIME) {
- 		pr_err("fence wait success before submit (expected timeout)!\n");
-@@ -214,8 +214,8 @@ static int igt_request_rewind(void *arg)
- 	GEM_BUG_ON(IS_ERR(ce));
- 	request = mock_request(ce, 2 * HZ);
- 	intel_context_put(ce);
--	if (!request) {
--		err = -ENOMEM;
-+	if (IS_ERR(request)) {
-+		err = PTR_ERR(request);
- 		goto err_context_0;
- 	}
- 
-@@ -228,8 +228,8 @@ static int igt_request_rewind(void *arg)
- 	GEM_BUG_ON(IS_ERR(ce));
- 	vip = mock_request(ce, 0);
- 	intel_context_put(ce);
--	if (!vip) {
--		err = -ENOMEM;
-+	if (IS_ERR(vip)) {
-+		err = PTR_ERR(vip);
- 		goto err_context_1;
- 	}
- 
-diff --git a/drivers/gpu/drm/i915/selftests/mock_request.c b/drivers/gpu/drm/i915/selftests/mock_request.c
-index 09f747228dff5..1b0cf073e9643 100644
---- a/drivers/gpu/drm/i915/selftests/mock_request.c
-+++ b/drivers/gpu/drm/i915/selftests/mock_request.c
-@@ -35,7 +35,7 @@ mock_request(struct intel_context *ce, unsigned long delay)
- 	/* NB the i915->requests slab cache is enlarged to fit mock_request */
- 	request = intel_context_create_request(ce);
- 	if (IS_ERR(request))
--		return NULL;
-+		return request;
- 
- 	request->mock.delay = delay;
- 	return request;
++			qup_uart14_default: qup-uart14-default-state {
++				/* TX, RX */
++				pins = "gpio78", "gpio79";
++				function = "qup2_se6";
++				drive-strength = <2>;
++				bias-pull-up;
++			};
++
++			qup_uart14_cts_rts: qup-uart14-cts-rts-state {
++				/* CTS, RTS */
++				pins = "gpio76", "gpio77";
++				function = "qup2_se6";
++				drive-strength = <2>;
++				bias-pull-down;
++			};
++
+ 			sdc2_sleep: sdc2-sleep-state {
+ 				clk-pins {
+ 					pins = "sdc2_clk";
 -- 
 2.39.5
 
