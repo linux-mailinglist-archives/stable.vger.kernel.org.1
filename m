@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-160729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79163AFD191
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:37:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F389AFD2CD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 212C9565169
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 989B4188381D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A182E337A;
-	Tue,  8 Jul 2025 16:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC8C258CF7;
+	Tue,  8 Jul 2025 16:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNvnmCZu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2dmNVnt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124B517A2E0;
-	Tue,  8 Jul 2025 16:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499D123DE;
+	Tue,  8 Jul 2025 16:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992515; cv=none; b=WYPTeJ2OeZI5lk601it7mMir/tKot2srVzdsRmfhZYHy02SIlDo8ZsTfQDGkxRWm0EJjFxDCz+uV4Jz2hHQ3QVgRvBMc8oO7IUjo/Llano73giiRQolXNCpvOl4tPaHKHJdrYDx6QTe57REuMYcUxilnwI7f5xYiX7efZQTrPJg=
+	t=1751993213; cv=none; b=bwprBnkV4H4OAKtfR04UqCtaWhJnR/WPQ+5wrpr/+WOW/iH/fzgTHQUQEe0EPn69QK7OF5mm7y9EcV8MgIFARiIsYCekHQds+1xgld6pnwo0F4z/qa26GStQXi+u0NJVObkgAOV98yU2VRSvht3nAqfYGqkHMoJJYF03lWKX+lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992515; c=relaxed/simple;
-	bh=DxuLK38LlXJs1UdfaHQjpUclsIk1RJccipSo56gLInQ=;
+	s=arc-20240116; t=1751993213; c=relaxed/simple;
+	bh=yCAglCy19TPgV+IS/o/O7brQMut220LwdPre1C7ENOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bgu0cWap6N+pvG+Gwt51R7Nct4nasKK3P8WvAICpoHyp84BJNJIXqvsBxBKq6W6rkBPMyCgkmAVx7gbHLZd3b81/mwBKlqkplqTup08AYCWyCmEy8SW9mWuZ+1kcSUobQ3C/8//SaELfSrLrvYhReA4wZG4Ebfz4nmAJT9xnscE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNvnmCZu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2FDC4CEF0;
-	Tue,  8 Jul 2025 16:35:14 +0000 (UTC)
+	 MIME-Version; b=bje6SzysFVUkYT89T06c3ogks1PJQECGP9z0lHpOl45kJmr/rRMi72Trp0Su9CBM9IURHFBipCDU4XCQ+nOapNo9ZyatkIVuid17CHaegD+GdZXV329BaST+CrLwCwPHi5YYdgGCaKs1q4QdFipvMX4Xv1PD+lps3fdzA8DYUcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2dmNVnt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64E0C4CEED;
+	Tue,  8 Jul 2025 16:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992515;
-	bh=DxuLK38LlXJs1UdfaHQjpUclsIk1RJccipSo56gLInQ=;
+	s=korg; t=1751993213;
+	bh=yCAglCy19TPgV+IS/o/O7brQMut220LwdPre1C7ENOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DNvnmCZuNnv0k1fNwbPRIoRfjbKQRBrCM6ZXWbARyswNlC4HPC7vWQq/gRrnJm/bp
-	 BcUoMVqQ5duEZehOBDVggfmZBYM9+L2GEz37Oy5f54EwQu8zcvQFrPGsk4v5886zpI
-	 Ahu8O9tj33qVPmKw7ohpn2jzj1gsce3KYmjm9kUo=
+	b=r2dmNVnt8mDMlPjRHPOLODnDgGcrMwQvZU/KHeeLgqZxq5GUC9dZcwbbWXqIVp2IH
+	 VhRdEkRsd70P8Kld1FMQ9oxUN+Zdxx12oZTsCtd0A4YsKhwBQKUHQHtyBSViz6Du+M
+	 vHGiA844wer5iTrS1nmP3vWTa9SF/tNDjvw1EVfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.6 110/132] xhci: dbctty: disable ECHO flag by default
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.12 225/232] powerpc/kernel: Fix ppc_save_regs inclusion in build
 Date: Tue,  8 Jul 2025 18:23:41 +0200
-Message-ID: <20250708162233.803974144@linuxfoundation.org>
+Message-ID: <20250708162247.315479908@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Łukasz Bartosik <ukaszb@chromium.org>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
 
-commit 2b857d69a5e116150639a0c6c39c86cc329939ee upstream.
+commit 93bd4a80efeb521314485a06d8c21157240497bb upstream.
 
-When /dev/ttyDBC0 device is created then by default ECHO flag
-is set for the terminal device. However if data arrives from
-a peer before application using /dev/ttyDBC0 applies its set
-of terminal flags then the arriving data will be echoed which
-might not be desired behavior.
+Recent patch fixed an old commit
+'fc2a5a6161a2 ("powerpc/64s: ppc_save_regs is now needed for all 64s builds")'
+which is to include building of ppc_save_reg.c only when XMON
+and KEXEC_CORE and PPC_BOOK3S are enabled. This was valid, since
+ppc_save_regs was called only in replay_system_reset() of old
+irq.c which was under BOOK3S.
 
-Fixes: 4521f1613940 ("xhci: dbctty: split dbc tty driver registration and unregistration functions.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/stable/20250610111802.18742-1-ukaszb%40chromium.org
-Link: https://lore.kernel.org/r/20250627144127.3889714-4-mathias.nyman@linux.intel.com
+But there has been multiple refactoring of irq.c and have
+added call to ppc_save_regs() from __replay_soft_interrupts
+-> replay_soft_interrupts which is part of irq_64.c included
+under CONFIG_PPC64. And since ppc_save_regs is called in
+CRASH_DUMP path as part of crash_setup_regs in kexec.h,
+CONFIG_PPC32 also needs it.
+
+So with this recent patch which enabled the building of
+ppc_save_regs.c caused a build break when none of these
+(XMON, KEXEC_CORE, BOOK3S) where enabled as part of config.
+Patch to enable building of ppc_save_regs.c by defaults.
+
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250511041111.841158-1-maddy@linux.ibm.com
+Cc: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgtty.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/kernel/Makefile |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -585,6 +585,7 @@ int dbc_tty_init(void)
- 	dbc_tty_driver->type = TTY_DRIVER_TYPE_SERIAL;
- 	dbc_tty_driver->subtype = SERIAL_TYPE_NORMAL;
- 	dbc_tty_driver->init_termios = tty_std_termios;
-+	dbc_tty_driver->init_termios.c_lflag &= ~ECHO;
- 	dbc_tty_driver->init_termios.c_cflag =
- 			B9600 | CS8 | CREAD | HUPCL | CLOCAL;
- 	dbc_tty_driver->init_termios.c_ispeed = 9600;
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -162,9 +162,7 @@ endif
+ 
+ obj64-$(CONFIG_PPC_TRANSACTIONAL_MEM)	+= tm.o
+ 
+-ifneq ($(CONFIG_XMON)$(CONFIG_KEXEC_CORE)$(CONFIG_PPC_BOOK3S),)
+ obj-y				+= ppc_save_regs.o
+-endif
+ 
+ obj-$(CONFIG_EPAPR_PARAVIRT)	+= epapr_paravirt.o epapr_hcalls.o
+ obj-$(CONFIG_KVM_GUEST)		+= kvm.o kvm_emul.o
 
 
 
