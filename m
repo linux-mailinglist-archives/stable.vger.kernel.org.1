@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-161170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DDDAFD3BB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE707AFD229
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:43:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEE65189661B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:57:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FAF4583B84
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1AC2E54C4;
-	Tue,  8 Jul 2025 16:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F267C2E54C3;
+	Tue,  8 Jul 2025 16:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CgIMinY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="suDmTIFa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0092E5439;
-	Tue,  8 Jul 2025 16:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4CA2E2F0D;
+	Tue,  8 Jul 2025 16:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993798; cv=none; b=rWF7wIYBwE5nYeCcEJJoz+kjZieFpAae2uXcM6G5hreezNxSA8RqfNaq7N2pI4whZOcGSo8Y3wctk9p3sBcHrkUXlYpBCPuYBtNGygB5m1wAEO9xkWAxTg9YYkq3g80W8JWZuo0Q5OtY5KblibCcOyIeGcw1Ny5fO2UFlWgsi+4=
+	t=1751992851; cv=none; b=eZ9l2GdgqsqO04NoHY1NfniDfTAtEFF+F6aEPyvav0+XcEvRB/CAENba9vqhf0LWRRP7ux29ucZ4uZPeiM3QarDxGx5DCFCB6nAI4zuNDnBHDnvXrRKv9P96264q92e9+HA+sna/uHH5U8BwOR8UzZsdxJyHzn/KpTGNRggZiVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993798; c=relaxed/simple;
-	bh=QjI4bGFaAaIBlS+wrkbJs3bWl5PMveKVVEguB8i1Jrw=;
+	s=arc-20240116; t=1751992851; c=relaxed/simple;
+	bh=8FqWodATZeij6Xm5nnnqkP4PJizcRO294axsaC/5Aj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J0QUstmpiPc6vsD3jpB+dh5HRzhDZxAkddQUOcIxdE/Nk/T7maGvfxAzx2EW2V8cGvevIUVJr4AgiOEVluh8wqOuvtNvonq/ov9ah90K/NyhCwWuKh89/xtHyp89SNDtlannLdUUeyBlJEGq4txRGKcYFK+O1Ga9aTSyGVGSr1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CgIMinY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4410C4CEF0;
-	Tue,  8 Jul 2025 16:56:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jt7ldD9YcQ7D4c0tEyIL4vrsuyahXu5wdXshMk6fvBLhCFinXpdmUA5czywr2A7Zfd8efaaub+iKdFF+yTmb4onuWvzOHou4WBPHup+LOGjlCYb6nPsZIJ/MaepcEj6CDXUjcyV3AHVe91dJGP+AVZOdf4gF9e6trpdc63JB/5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=suDmTIFa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38EFFC4CEED;
+	Tue,  8 Jul 2025 16:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993798;
-	bh=QjI4bGFaAaIBlS+wrkbJs3bWl5PMveKVVEguB8i1Jrw=;
+	s=korg; t=1751992851;
+	bh=8FqWodATZeij6Xm5nnnqkP4PJizcRO294axsaC/5Aj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2CgIMinY09H8hPfJZuJSD5Rr4/7nhOzaXMQLKnNiQXZdMX0WcAHQS+lEVgX3+p/tR
-	 aRMOLYoFKXOdrQZEQL1fdBfLZ5rZVr4tou7PANdzP81sE2AizYdCmxPe4TWO1qnYtc
-	 7gDJ51N9i0Zt3Wew9L//DFL7uoahRE+A6w3xGb2E=
+	b=suDmTIFajCHi3SVBGafdfDOOStTilhWKo3/l7YAgDTEulVWtAy959GD3tpKfCYHL6
+	 x9InnRlsIr2FAlWokudH0nRTJ8HW/oPp+QMh9LTXOYJy7O1GRCj+UHCYhLUuTRLyrR
+	 qv2Tmds6qEZ1e+1iQbyHWYNhIkdDkmVIyROTic8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jan Graczyk <jangraczyk@yahoo.ca>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 022/160] ALSA: hda: Ignore unsol events for cards being shut down
+Subject: [PATCH 6.12 063/232] platform/x86: dell-wmi-sysman: Fix WMI data block retrieval in sysfs callbacks
 Date: Tue,  8 Jul 2025 18:20:59 +0200
-Message-ID: <20250708162232.121835852@linuxfoundation.org>
+Message-ID: <20250708162243.111270767@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +66,139 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Kurt Borja <kuurtb@gmail.com>
 
-[ Upstream commit 3f100f524e75586537e337b34d18c8d604b398e7 ]
+[ Upstream commit eb617dd25ca176f3fee24f873f0fd60010773d67 ]
 
-For the classic snd_hda_intel driver, codec->card and bus->card point to
-the exact same thing. When snd_card_diconnect() fires, bus->shutdown is
-set thanks to azx_dev_disconnect(). card->shutdown is already set when
-that happens but both provide basically the same functionality.
+After retrieving WMI data blocks in sysfs callbacks, check for the
+validity of them before dereferencing their content.
 
-For the DSP snd_soc_avs driver where multiple codecs are located on
-multiple cards, bus->shutdown 'shortcut' is not sufficient. One codec
-card may be unregistered while other codecs are still operational.
-Proper check in form of card->shutdown must be used to verify whether
-the codec's card is being shut down.
-
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250530141309.2943404-1-cezary.rojewski@intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Jan Graczyk <jangraczyk@yahoo.ca>
+Closes: https://lore.kernel.org/r/CAHk-=wgMiSKXf7SvQrfEnxVtmT=QVQPjJdNjfm3aXS7wc=rzTw@mail.gmail.com/
+Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250630-sysman-fix-v2-1-d185674d0a30@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_bind.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h   | 5 +++++
+ .../platform/x86/dell/dell-wmi-sysman/enum-attributes.c   | 5 +++--
+ .../platform/x86/dell/dell-wmi-sysman/int-attributes.c    | 5 +++--
+ .../x86/dell/dell-wmi-sysman/passobj-attributes.c         | 5 +++--
+ .../platform/x86/dell/dell-wmi-sysman/string-attributes.c | 5 +++--
+ drivers/platform/x86/dell/dell-wmi-sysman/sysman.c        | 8 ++++----
+ 6 files changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/sound/pci/hda/hda_bind.c b/sound/pci/hda/hda_bind.c
-index 8e35009ec25cb..a22f723ab3ab6 100644
---- a/sound/pci/hda/hda_bind.c
-+++ b/sound/pci/hda/hda_bind.c
-@@ -45,7 +45,7 @@ static void hda_codec_unsol_event(struct hdac_device *dev, unsigned int ev)
- 	struct hda_codec *codec = container_of(dev, struct hda_codec, core);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h b/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h
+index 3ad33a094588c..817ee7ba07ca0 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h
+@@ -89,6 +89,11 @@ extern struct wmi_sysman_priv wmi_priv;
  
- 	/* ignore unsol events during shutdown */
--	if (codec->bus->shutdown)
-+	if (codec->card->shutdown || codec->bus->shutdown)
- 		return;
+ enum { ENUM, INT, STR, PO };
  
- 	/* ignore unsol events during system suspend/resume */
++#define ENUM_MIN_ELEMENTS		8
++#define INT_MIN_ELEMENTS		9
++#define STR_MIN_ELEMENTS		8
++#define PO_MIN_ELEMENTS			4
++
+ enum {
+ 	ATTR_NAME,
+ 	DISPL_NAME_LANG_CODE,
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
+index 8cc212c852668..fc2f58b4cbc6e 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
+@@ -23,9 +23,10 @@ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *a
+ 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_ENUMERATION_ATTRIBUTE_GUID);
+ 	if (!obj)
+ 		return -EIO;
+-	if (obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < ENUM_MIN_ELEMENTS ||
++	    obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
+ 		kfree(obj);
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 	ret = snprintf(buf, PAGE_SIZE, "%s\n", obj->package.elements[CURRENT_VAL].string.pointer);
+ 	kfree(obj);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c
+index 951e75b538fad..7352480642391 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c
+@@ -25,9 +25,10 @@ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *a
+ 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_INTEGER_ATTRIBUTE_GUID);
+ 	if (!obj)
+ 		return -EIO;
+-	if (obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_INTEGER) {
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < INT_MIN_ELEMENTS ||
++	    obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_INTEGER) {
+ 		kfree(obj);
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 	ret = snprintf(buf, PAGE_SIZE, "%lld\n", obj->package.elements[CURRENT_VAL].integer.value);
+ 	kfree(obj);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
+index d8f1bf5e58a0f..3167e06d416ed 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
+@@ -26,9 +26,10 @@ static ssize_t is_enabled_show(struct kobject *kobj, struct kobj_attribute *attr
+ 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_PASSOBJ_ATTRIBUTE_GUID);
+ 	if (!obj)
+ 		return -EIO;
+-	if (obj->package.elements[IS_PASS_SET].type != ACPI_TYPE_INTEGER) {
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < PO_MIN_ELEMENTS ||
++	    obj->package.elements[IS_PASS_SET].type != ACPI_TYPE_INTEGER) {
+ 		kfree(obj);
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 	ret = snprintf(buf, PAGE_SIZE, "%lld\n", obj->package.elements[IS_PASS_SET].integer.value);
+ 	kfree(obj);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c
+index c392f0ecf8b55..0d2c74f8d1aad 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c
+@@ -25,9 +25,10 @@ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *a
+ 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_STRING_ATTRIBUTE_GUID);
+ 	if (!obj)
+ 		return -EIO;
+-	if (obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < STR_MIN_ELEMENTS ||
++	    obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
+ 		kfree(obj);
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 	ret = snprintf(buf, PAGE_SIZE, "%s\n", obj->package.elements[CURRENT_VAL].string.pointer);
+ 	kfree(obj);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
+index 40ddc6eb75624..decb3b997d86a 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
+@@ -408,10 +408,10 @@ static int init_bios_attributes(int attr_type, const char *guid)
+ 		return retval;
+ 
+ 	switch (attr_type) {
+-	case ENUM:	min_elements = 8;	break;
+-	case INT:	min_elements = 9;	break;
+-	case STR:	min_elements = 8;	break;
+-	case PO:	min_elements = 4;	break;
++	case ENUM:	min_elements = ENUM_MIN_ELEMENTS;	break;
++	case INT:	min_elements = INT_MIN_ELEMENTS;	break;
++	case STR:	min_elements = STR_MIN_ELEMENTS;	break;
++	case PO:	min_elements = PO_MIN_ELEMENTS;		break;
+ 	default:
+ 		pr_err("Error: Unknown attr_type: %d\n", attr_type);
+ 		return -EINVAL;
 -- 
 2.39.5
 
