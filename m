@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-161229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A100AFD41D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6ABBAFD111
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FDF4188E6BA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:00:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B7C1C21C0D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1C02E54DE;
-	Tue,  8 Jul 2025 16:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21EB2E0B45;
+	Tue,  8 Jul 2025 16:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmebui5w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPEpLbwR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D522E540B;
-	Tue,  8 Jul 2025 16:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916E62E49AF;
+	Tue,  8 Jul 2025 16:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993970; cv=none; b=O4yEZ6HEKH+aNiUUPmPZcZWPpBQQLpl3xcxzq5QdezIwfMDViiEhD6LmtvU6QYGvYnt9VyBzCRa5vKgmtHqjgT8+GcPAjkVaENMhWQ4cxoP0SwoQZ+p/I/0tRP7CALCZ0kbaJH+XDMTaN5Fc+oHuJa2mPmZmLjf837QsqSRqdMk=
+	t=1751992205; cv=none; b=r6oLFr3Uhm1dN2X29UNZ2bJTjLHl8Zmfof1aEuBY48mpmKLR0fdsBHoByjEN3bQiZqFoatfmQmmoC00ohyl8Vi98sOQY5Etd311I6X893GBXmsmENcJ3ssdpBV5xqa8+VcUNK1LrcuZg31f0dx4wfBrW1HXtHfIaG39eYcH4OiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993970; c=relaxed/simple;
-	bh=1I3cOiAs0YqyZ8ezuMQUegBQMdVBoiDyYYZEOL6VGUo=;
+	s=arc-20240116; t=1751992205; c=relaxed/simple;
+	bh=BqYf62IvgEYRILBmpf49iGf2AzTxXhfGx5cZ7R5/Cog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfc0wfaTz9WNs3515Iej819EUiBBALvuv2o0MED7xVinQV0H1N7wsSGOT0dwwL0Hho1eCaWbIhyUozhl7hvxBENGYEBzx47U7xu3p+AHrzXhT1c666xFdaBgymwwd3b2SZPFNF6NPNa+Njc5ogyU1DsbFxZCBaIBrRHwkUaQxdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmebui5w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BD7C4CEED;
-	Tue,  8 Jul 2025 16:59:29 +0000 (UTC)
+	 MIME-Version; b=q7kOJfgPeSgiFVaOgbhqFG1SEGpxsfCgru3ptNckD+fltYA9+EjaEH1L15nvwLKSw4dJph1VerRME6t18T3sItPXlurpwP9QO8rGnaaMawhs0RisKJZTi8GlGl9/GVin4j1alxl0OR8vMdY4/+8VNUksxDekErNg9Jqq0Q1epNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPEpLbwR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA109C4CEF5;
+	Tue,  8 Jul 2025 16:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993969;
-	bh=1I3cOiAs0YqyZ8ezuMQUegBQMdVBoiDyYYZEOL6VGUo=;
+	s=korg; t=1751992205;
+	bh=BqYf62IvgEYRILBmpf49iGf2AzTxXhfGx5cZ7R5/Cog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hmebui5wwo39u06+huWusv1ai/68VWmtOrcVHG5L/FuTly8s+0iR7se3DAaww3Gox
-	 WWGsmy2m4mCa0GJKnwpDFMm2o4pr47La900uIzERJVuoy06tUSgJt7+hRwCDkEq7Hf
-	 M2/DPSsQ6r37BEaGVKN2kxlrCFGnsP5aGSjGFSBc=
+	b=iPEpLbwR5JiQXwA9kqLQPWhv8wqdZ/JIGTu6fxVc2YavB8dZrztDtTVD7KcOMeQB7
+	 hcvLzzxyKktnd9EfwB42JEn6GzdqBFvbodK4OIFXcqvDBVpoVTWCho2612QmyLCUCb
+	 utQr06pzlJzk42zXH4556WCQ0TZIzypcED3Rw2UI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 5.15 081/160] drm/tegra: Fix a possible null pointer dereference
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 007/132] mmc: sdhci: Add a helper function for dump register in dynamic debug mode
 Date: Tue,  8 Jul 2025 18:21:58 +0200
-Message-ID: <20250708162233.777777804@linuxfoundation.org>
+Message-ID: <20250708162230.977212331@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-commit 780351a5f61416ed2ba1199cc57e4a076fca644d upstream.
+commit 2881ba9af073faa8ee7408a8d1e0575e50eb3f6c upstream.
 
-In tegra_crtc_reset(), new memory is allocated with kzalloc(), but
-no check is performed. Before calling __drm_atomic_helper_crtc_reset,
-state should be checked to prevent possible null pointer dereference.
+Add a helper function for dump register in dynamic debug mode.
 
-Fixes: b7e0b04ae450 ("drm/tegra: Convert to using __drm_atomic_helper_crtc_reset() for reset.")
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20241106095906.15247-1-chenqiuji666@gmail.com
+Link: https://lore.kernel.org/r/20250606110121.96314-3-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tegra/dc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci.h |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/gpu/drm/tegra/dc.c
-+++ b/drivers/gpu/drm/tegra/dc.c
-@@ -1293,7 +1293,10 @@ static void tegra_crtc_reset(struct drm_
- 	if (crtc->state)
- 		tegra_crtc_atomic_destroy_state(crtc, crtc->state);
+--- a/drivers/mmc/host/sdhci.h
++++ b/drivers/mmc/host/sdhci.h
+@@ -825,4 +825,20 @@ void sdhci_switch_external_dma(struct sd
+ void sdhci_set_data_timeout_irq(struct sdhci_host *host, bool enable);
+ void __sdhci_set_timeout(struct sdhci_host *host, struct mmc_command *cmd);
  
--	__drm_atomic_helper_crtc_reset(crtc, &state->base);
-+	if (state)
-+		__drm_atomic_helper_crtc_reset(crtc, &state->base);
-+	else
-+		__drm_atomic_helper_crtc_reset(crtc, NULL);
- }
- 
- static struct drm_crtc_state *
++#if defined(CONFIG_DYNAMIC_DEBUG) || \
++	(defined(CONFIG_DYNAMIC_DEBUG_CORE) && defined(DYNAMIC_DEBUG_MODULE))
++#define SDHCI_DBG_ANYWAY 0
++#elif defined(DEBUG)
++#define SDHCI_DBG_ANYWAY 1
++#else
++#define SDHCI_DBG_ANYWAY 0
++#endif
++
++#define sdhci_dbg_dumpregs(host, fmt)					\
++do {									\
++	DEFINE_DYNAMIC_DEBUG_METADATA(descriptor, fmt);			\
++	if (DYNAMIC_DEBUG_BRANCH(descriptor) ||	SDHCI_DBG_ANYWAY)	\
++		sdhci_dumpregs(host);					\
++} while (0)
++
+ #endif /* __SDHCI_HW_H */
 
 
 
