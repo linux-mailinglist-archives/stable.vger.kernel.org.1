@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9BC2AFD11B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B16CFAFD26D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32CB3188C54A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:31:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E954F3B747A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844151BEF7E;
-	Tue,  8 Jul 2025 16:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A912E540B;
+	Tue,  8 Jul 2025 16:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymBab8xz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvbG8dSy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FDA2E3701;
-	Tue,  8 Jul 2025 16:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBC62DECC4;
+	Tue,  8 Jul 2025 16:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992265; cv=none; b=gUOdaKEpWWA7wePUZo+zWqxzFuKp9S4c9CVNjM86IlVEqR75QPX0CCgY+7yfjfqcrXkpF3iQ6WoxqroJBvLnO+mM0zCsk9S6TYpWA87E07o1UMPXKX2z5eL+1syrJ+Tu8MkLbq6rtPdCu5k82D8eFDgTt4ontwNUnhs9faEs9+8=
+	t=1751992985; cv=none; b=TR92F5/I3nqhwjbmpYlzV6fw9lN4sEpDKFseAld+s5VCPhfEtSd88BC9AFzvuPmb8B7vD7xQa7bI7uZCNjwu+eG2S1jI4gI+3HAZoR9BRnu65P2GJrrLttwiXP8dNVj5eZqkAVGzhLL4LrKy8V+s+FbzxzC3PNSLR3/8YvlCfXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992265; c=relaxed/simple;
-	bh=EbYFWOZken8KVqDMT5ROEjLsEUfaq95gn+IEyZMMan4=;
+	s=arc-20240116; t=1751992985; c=relaxed/simple;
+	bh=3ps+4Nb/Bt+ppRnaXVLnE4Or9WlfBHTPT7hp2UulKBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RXbK9rfdnaCmhXOZOYjpLiIr+78bdzC98ZwDXAnFacJFsiojOhXkdIs1ECGbvk4tv8Y/1WrWWr33p7iSQg+E43dpbvSeNLeiof22jTy69uHaaoc5IMP2TCTMlnoA40h8UkOg2cY9YcqpFjbc0zo73VnpJdO7HbWYZWoc/jP6Idw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymBab8xz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39ACC4CEED;
-	Tue,  8 Jul 2025 16:31:04 +0000 (UTC)
+	 MIME-Version; b=RtGnpdAIi8KGDsppbq+qz96EYg6YEMIhQxl/OspkZ9Iv4waFwD+CxRJieNyLjBHV4RZXQxHwjeT8kO1nJdpMve1IZiiOMnFZ89r/+LGZTxzmgLufa1OBOXg0tda/RCnHiXbpVPweaxWGqHKC90oBf14lMV5Cnl55qLB+vIdN5qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvbG8dSy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CA0C4CEED;
+	Tue,  8 Jul 2025 16:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992265;
-	bh=EbYFWOZken8KVqDMT5ROEjLsEUfaq95gn+IEyZMMan4=;
+	s=korg; t=1751992985;
+	bh=3ps+4Nb/Bt+ppRnaXVLnE4Or9WlfBHTPT7hp2UulKBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ymBab8xzpPokTfy4nceDuZDmMSRL8XDTXPOFPBgbuLq2/7ScI139f0ytYBW9gaq5t
-	 g05+jR2i/RR7Iu5kIEsROc2kNbY8rG7D3u+IC6AZR0ozTu97f2+cEpZTuXWSxWqgyx
-	 WUJdtfKH1eLxDmtdFZkxtC811dma+2GNvVVOCzFQ=
+	b=VvbG8dSyEIuQegbHF+2BVAB4tEtG082etZc899WIR4600+xzVK/Et7MUpgde5Fpou
+	 8ho9sCC7XMEI+bGyBMiHgkS+ZuN2pHVwyQPXV/6uK4Oh5+RZB2+BEtcr5LN/GIqHhp
+	 xF8FQUbK6Q2y/m07sysph/EcX82t9B0fBZTwsv3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
+	Beleswar Padhi <b-padhi@ti.com>,
+	Andrew Davis <afd@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/132] btrfs: rename err to ret in btrfs_rmdir()
+Subject: [PATCH 6.12 148/232] remoteproc: k3-r5: Use devm_ioremap_wc() helper
 Date: Tue,  8 Jul 2025 18:22:24 +0200
-Message-ID: <20250708162231.673219324@linuxfoundation.org>
+Message-ID: <20250708162245.313296005@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anand Jain <anand.jain@oracle.com>
+From: Beleswar Padhi <b-padhi@ti.com>
 
-[ Upstream commit c3a1cc8ff48875b050fda5285ac8a9889eb7898d ]
+[ Upstream commit a572439f7143db5ea8446b7d755a16dfb12da7c7 ]
 
-Unify naming of return value to the preferred way.
+Use a device lifecycle managed ioremap helper function. This helps
+prevent mistakes like unmapping out of order in cleanup functions and
+forgetting to unmap on all error paths.
 
-Signed-off-by: Anand Jain <anand.jain@oracle.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: c466e33e729a ("btrfs: propagate last_unlink_trans earlier when doing a rmdir")
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+Reviewed-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20241219110545.1898883-4-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Stable-dep-of: 701177511abd ("remoteproc: k3-r5: Refactor sequential core power up/down operations")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c | 38 +++++-------------------
+ 1 file changed, 8 insertions(+), 30 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index af1f22b3cff7d..c2c07ad194c0d 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4615,7 +4615,7 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- {
- 	struct inode *inode = d_inode(dentry);
- 	struct btrfs_fs_info *fs_info = BTRFS_I(inode)->root->fs_info;
--	int err = 0;
-+	int ret = 0;
- 	struct btrfs_trans_handle *trans;
- 	u64 last_unlink_trans;
- 	struct fscrypt_name fname;
-@@ -4631,33 +4631,33 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 		return btrfs_delete_subvolume(BTRFS_I(dir), dentry);
- 	}
+diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+index c730ba09b92c7..c38b76b4943d5 100644
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -996,17 +996,13 @@ static int k3_r5_reserved_mem_init(struct k3_r5_rproc *kproc)
+ 	/* use remaining reserved memory regions for static carveouts */
+ 	for (i = 0; i < num_rmems; i++) {
+ 		rmem_np = of_parse_phandle(np, "memory-region", i + 1);
+-		if (!rmem_np) {
+-			ret = -EINVAL;
+-			goto unmap_rmem;
+-		}
++		if (!rmem_np)
++			return -EINVAL;
  
--	err = fscrypt_setup_filename(dir, &dentry->d_name, 1, &fname);
--	if (err)
--		return err;
-+	ret = fscrypt_setup_filename(dir, &dentry->d_name, 1, &fname);
-+	if (ret)
-+		return ret;
+ 		rmem = of_reserved_mem_lookup(rmem_np);
+ 		of_node_put(rmem_np);
+-		if (!rmem) {
+-			ret = -EINVAL;
+-			goto unmap_rmem;
+-		}
++		if (!rmem)
++			return -EINVAL;
  
- 	/* This needs to handle no-key deletions later on */
- 
- 	trans = __unlink_start_trans(BTRFS_I(dir));
- 	if (IS_ERR(trans)) {
--		err = PTR_ERR(trans);
-+		ret = PTR_ERR(trans);
- 		goto out_notrans;
- 	}
- 
- 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
--		err = btrfs_unlink_subvol(trans, BTRFS_I(dir), dentry);
-+		ret = btrfs_unlink_subvol(trans, BTRFS_I(dir), dentry);
- 		goto out;
- 	}
- 
--	err = btrfs_orphan_add(trans, BTRFS_I(inode));
--	if (err)
-+	ret = btrfs_orphan_add(trans, BTRFS_I(inode));
-+	if (ret)
- 		goto out;
- 
- 	last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
- 
- 	/* now the directory is empty */
--	err = btrfs_unlink_inode(trans, BTRFS_I(dir), BTRFS_I(d_inode(dentry)),
-+	ret = btrfs_unlink_inode(trans, BTRFS_I(dir), BTRFS_I(d_inode(dentry)),
- 				 &fname.disk_name);
--	if (!err) {
-+	if (!ret) {
- 		btrfs_i_size_write(BTRFS_I(inode), 0);
+ 		kproc->rmem[i].bus_addr = rmem->base;
  		/*
- 		 * Propagate the last_unlink_trans value of the deleted dir to
-@@ -4679,7 +4679,7 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	btrfs_btree_balance_dirty(fs_info);
- 	fscrypt_free_filename(&fname);
+@@ -1021,12 +1017,11 @@ static int k3_r5_reserved_mem_init(struct k3_r5_rproc *kproc)
+ 		 */
+ 		kproc->rmem[i].dev_addr = (u32)rmem->base;
+ 		kproc->rmem[i].size = rmem->size;
+-		kproc->rmem[i].cpu_addr = ioremap_wc(rmem->base, rmem->size);
++		kproc->rmem[i].cpu_addr = devm_ioremap_wc(dev, rmem->base, rmem->size);
+ 		if (!kproc->rmem[i].cpu_addr) {
+ 			dev_err(dev, "failed to map reserved memory#%d at %pa of size %pa\n",
+ 				i + 1, &rmem->base, &rmem->size);
+-			ret = -ENOMEM;
+-			goto unmap_rmem;
++			return -ENOMEM;
+ 		}
  
--	return err;
-+	return ret;
+ 		dev_dbg(dev, "reserved memory%d: bus addr %pa size 0x%zx va %pK da 0x%x\n",
+@@ -1037,19 +1032,6 @@ static int k3_r5_reserved_mem_init(struct k3_r5_rproc *kproc)
+ 	kproc->num_rmems = num_rmems;
+ 
+ 	return 0;
+-
+-unmap_rmem:
+-	for (i--; i >= 0; i--)
+-		iounmap(kproc->rmem[i].cpu_addr);
+-	return ret;
+-}
+-
+-static void k3_r5_reserved_mem_exit(struct k3_r5_rproc *kproc)
+-{
+-	int i;
+-
+-	for (i = 0; i < kproc->num_rmems; i++)
+-		iounmap(kproc->rmem[i].cpu_addr);
  }
  
  /*
+@@ -1278,8 +1260,8 @@ static int k3_r5_cluster_rproc_init(struct platform_device *pdev)
+ 
+ 		ret = rproc_add(rproc);
+ 		if (ret) {
+-			dev_err(dev, "rproc_add failed, ret = %d\n", ret);
+-			goto err_add;
++			dev_err_probe(dev, ret, "rproc_add failed\n");
++			goto out;
+ 		}
+ 
+ 		/* create only one rproc in lockstep, single-cpu or
+@@ -1325,8 +1307,6 @@ static int k3_r5_cluster_rproc_init(struct platform_device *pdev)
+ 
+ err_powerup:
+ 	rproc_del(rproc);
+-err_add:
+-	k3_r5_reserved_mem_exit(kproc);
+ out:
+ 	/* undo core0 upon any failures on core1 in split-mode */
+ 	if (cluster->mode == CLUSTER_MODE_SPLIT && core == core1) {
+@@ -1371,8 +1351,6 @@ static void k3_r5_cluster_rproc_exit(void *data)
+ 		mbox_free_channel(kproc->mbox);
+ 
+ 		rproc_del(rproc);
+-
+-		k3_r5_reserved_mem_exit(kproc);
+ 	}
+ }
+ 
 -- 
 2.39.5
 
