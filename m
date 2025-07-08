@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-160694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C29BAFD168
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:35:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF70AFD0C7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EC7E48787E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:33:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E45317E5CD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00E92E2F0E;
-	Tue,  8 Jul 2025 16:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E54F2E11B9;
+	Tue,  8 Jul 2025 16:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdvRtR3d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKmEA7Tl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E7D1548C;
-	Tue,  8 Jul 2025 16:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC242E0902;
+	Tue,  8 Jul 2025 16:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992417; cv=none; b=jo7M6kRErIq49RXKTJ7DiuWPcwMciXtgJn9hpciWa+VpTIFmce1EAm+/VSMHJIsJhFT+sQpG/Fpx+2hiJQ0nv8rGyUX0P3QlMAewFy9FWgH3sgGcC1FOflOBYxcFVZLR9uTo3HAntT52ccullwOJcYPcI9oU/U1KkVGQ6EzfUTk=
+	t=1751991987; cv=none; b=TJtmKZI9BlJhvj4FZzryPkNNHOiTDNsHiSni1U7sATjETiCyDa4tVv5eq3DZVRzkldOA8YRTsk21HUmvH9+N6PKWclFrIVqbuIBJwbp0jXcqGm3LpLBDVQKzySntrDOI46YDwtAwl0oHXSV2YWKoQ17EkLYm2YOdyCAXNDV0oD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992417; c=relaxed/simple;
-	bh=qeeztdyN5qEJEyP64RuO8o6gNtCPpPG7PZhv0ay5l/M=;
+	s=arc-20240116; t=1751991987; c=relaxed/simple;
+	bh=nXJVGaISufp9UHV2lvra7XqGHLbAAmKB+qo1fuQfIDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r3/iQwdEdudjgRPxXv+8R1SJygyVfNU69VqWseEdM+laidj4HCvCCO0CD02pjNES63U7Q0etchTGvj7a7J/netDiP0szCEGRwfZe+oozQG8vBIDRLrk7MKka7M23rKVf/uHkkAYet9lFGIBiO9e1UzDbuF50Mix2EGpO6FCaXvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdvRtR3d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA38C4CEED;
-	Tue,  8 Jul 2025 16:33:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EVdefpn+HOfzhghuaS+0d2RsFgXZqJhRqkGILwglZd2W/9appYacr9ZU00h69VzQh+j+8nDo2QkHTiwmUt1DJjaru8x92k+wf4KUnpmYZlYXeFeBV2fTBYp1QnhwElw8ji/Jm+uyUr0DByhp013SAPmy2DNPOACEmGaJHspWauo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKmEA7Tl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98F2C4CEED;
+	Tue,  8 Jul 2025 16:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992417;
-	bh=qeeztdyN5qEJEyP64RuO8o6gNtCPpPG7PZhv0ay5l/M=;
+	s=korg; t=1751991987;
+	bh=nXJVGaISufp9UHV2lvra7XqGHLbAAmKB+qo1fuQfIDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UdvRtR3dwONG4gAmB+TgHp9E5lTYE/5GU2mlXOki8AZD2w1IiyfEXO/eyIKgRdY8s
-	 YuvUYeWjxXC1xcdp3vTZgJiIdnllM+ksGCLoQQzLUVPah/VL7A8A8nXKTYj9MdNe53
-	 3m0c4PCFU9nVQZ4wi42+2qtf2YGgS53PYsp0em84=
+	b=BKmEA7TluLZAaEkJTIxt1ZsRtA2SYkVzg2lpRG1AhTzKMnp4h2jAtZcwIDZ7SlPYB
+	 AjYnr2Fcxw6yq9dr1WWnfX553AFVlAxErn+kn2BfWgmW8rokIXbvlTQQUeWpygiYgi
+	 S/YGnjp8JeEBD8UDJ8KBbc/8StQIJm5aHC4TILfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	kernel test robot <lkp@intel.com>,
+	David Thompson <davthompson@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/132] scsi: ufs: core: Fix abnormal scale up after last cmd finish
+Subject: [PATCH 6.1 16/81] platform/mellanox: mlxbf-tmfifo: fix vring_desc.len assignment
 Date: Tue,  8 Jul 2025 18:23:08 +0200
-Message-ID: <20250708162232.889925835@linuxfoundation.org>
+Message-ID: <20250708162225.417974051@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit 6fd53da45bbc834b9cfdf707d2f7ebe666667943 ]
+[ Upstream commit 109f4d29dade8ae5b4ac6325af9d1bc24b4230f8 ]
 
-When ufshcd_clk_scaling_suspend_work (thread A) running and new command
-coming, ufshcd_clk_scaling_start_busy (thread B) may get host_lock after
-thread A first time release host_lock. Then thread A second time get
-host_lock will set clk_scaling.window_start_t = 0 which scale up clock
-abnormal next polling_ms time.  Also inlines another
-__ufshcd_suspend_clkscaling calls.
+Fix warnings reported by sparse, related to incorrect type:
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38: warning: incorrect type in assignment (different base types)
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    expected restricted __virtio32 [usertype] len
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    got unsigned long
 
-Below is racing step:
-1	hba->clk_scaling.suspend_work (Thread A)
-	ufshcd_clk_scaling_suspend_work
-2		spin_lock_irqsave(hba->host->host_lock, irq_flags);
-3		hba->clk_scaling.is_suspended = true;
-4		spin_unlock_irqrestore(hba->host->host_lock, irq_flags);
-		__ufshcd_suspend_clkscaling
-7			spin_lock_irqsave(hba->host->host_lock, flags);
-8			hba->clk_scaling.window_start_t = 0;
-9			spin_unlock_irqrestore(hba->host->host_lock, flags);
-
-	ufshcd_send_command (Thread B)
-		ufshcd_clk_scaling_start_busy
-5			spin_lock_irqsave(hba->host->host_lock, flags);
-			....
-6			spin_unlock_irqrestore(hba->host->host_lock, flags);
-
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20230831130826.5592-3-peter.wang@mediatek.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 2e083cd80229 ("scsi: ufs: core: Fix clk scaling to be conditional in reset and restore")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202404040339.S7CUIgf3-lkp@intel.com/
+Fixes: 78034cbece79 ("platform/mellanox: mlxbf-tmfifo: Drop the Rx packet if no more descriptors")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/20250613214608.2250130-1-davthompson@nvidia.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 412931cf240f6..08c46fefb32b4 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -289,7 +289,6 @@ static inline void ufshcd_add_delay_before_dme_cmd(struct ufs_hba *hba);
- static int ufshcd_host_reset_and_restore(struct ufs_hba *hba);
- static void ufshcd_resume_clkscaling(struct ufs_hba *hba);
- static void ufshcd_suspend_clkscaling(struct ufs_hba *hba);
--static void __ufshcd_suspend_clkscaling(struct ufs_hba *hba);
- static int ufshcd_scale_clks(struct ufs_hba *hba, bool scale_up);
- static irqreturn_t ufshcd_intr(int irq, void *__hba);
- static int ufshcd_change_power_mode(struct ufs_hba *hba,
-@@ -1377,9 +1376,10 @@ static void ufshcd_clk_scaling_suspend_work(struct work_struct *work)
- 		return;
- 	}
- 	hba->clk_scaling.is_suspended = true;
-+	hba->clk_scaling.window_start_t = 0;
- 	spin_unlock_irqrestore(hba->host->host_lock, irq_flags);
+diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
+index 9925a6d94affc..d8565490e4870 100644
+--- a/drivers/platform/mellanox/mlxbf-tmfifo.c
++++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
+@@ -253,7 +253,8 @@ static int mlxbf_tmfifo_alloc_vrings(struct mlxbf_tmfifo *fifo,
+ 		vring->align = SMP_CACHE_BYTES;
+ 		vring->index = i;
+ 		vring->vdev_id = tm_vdev->vdev.id.device;
+-		vring->drop_desc.len = VRING_DROP_DESC_MAX_LEN;
++		vring->drop_desc.len = cpu_to_virtio32(&tm_vdev->vdev,
++						       VRING_DROP_DESC_MAX_LEN);
+ 		dev = &tm_vdev->vdev.dev;
  
--	__ufshcd_suspend_clkscaling(hba);
-+	devfreq_suspend_device(hba->devfreq);
- }
- 
- static void ufshcd_clk_scaling_resume_work(struct work_struct *work)
-@@ -1556,16 +1556,6 @@ static void ufshcd_devfreq_remove(struct ufs_hba *hba)
- 	dev_pm_opp_remove(hba->dev, clki->max_freq);
- }
- 
--static void __ufshcd_suspend_clkscaling(struct ufs_hba *hba)
--{
--	unsigned long flags;
--
--	devfreq_suspend_device(hba->devfreq);
--	spin_lock_irqsave(hba->host->host_lock, flags);
--	hba->clk_scaling.window_start_t = 0;
--	spin_unlock_irqrestore(hba->host->host_lock, flags);
--}
--
- static void ufshcd_suspend_clkscaling(struct ufs_hba *hba)
- {
- 	unsigned long flags;
-@@ -1578,11 +1568,12 @@ static void ufshcd_suspend_clkscaling(struct ufs_hba *hba)
- 	if (!hba->clk_scaling.is_suspended) {
- 		suspend = true;
- 		hba->clk_scaling.is_suspended = true;
-+		hba->clk_scaling.window_start_t = 0;
- 	}
- 	spin_unlock_irqrestore(hba->host->host_lock, flags);
- 
- 	if (suspend)
--		__ufshcd_suspend_clkscaling(hba);
-+		devfreq_suspend_device(hba->devfreq);
- }
- 
- static void ufshcd_resume_clkscaling(struct ufs_hba *hba)
+ 		size = vring_size(vring->num, vring->align);
 -- 
 2.39.5
 
