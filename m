@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-161052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C23AFD32B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:54:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A100AFD41D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD1D91896C73
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:51:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FDF4188E6BA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96532DEA94;
-	Tue,  8 Jul 2025 16:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1C02E54DE;
+	Tue,  8 Jul 2025 16:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6/UlL3J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmebui5w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6731A8F5E;
-	Tue,  8 Jul 2025 16:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D522E540B;
+	Tue,  8 Jul 2025 16:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993457; cv=none; b=dMvM919g4XG1SjpbbyT7DGxnKsTd3/74COHqm72MybJlGuNQv6T29QhUK4h7eW/miimCI2zMg0LmWSMJOuGLAEMWJa/V5OUnzWH+N5GY/Esiw+WG/Tnze9FQZijdTisdOhsiBpNxUzOKYsxT2WJh8GAtnwKZQL4lzu/Uo9BPn84=
+	t=1751993970; cv=none; b=O4yEZ6HEKH+aNiUUPmPZcZWPpBQQLpl3xcxzq5QdezIwfMDViiEhD6LmtvU6QYGvYnt9VyBzCRa5vKgmtHqjgT8+GcPAjkVaENMhWQ4cxoP0SwoQZ+p/I/0tRP7CALCZ0kbaJH+XDMTaN5Fc+oHuJa2mPmZmLjf837QsqSRqdMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993457; c=relaxed/simple;
-	bh=Pn99kzf00f5xZZLeCTM7bCItJntvRt6SiJW1p+EezKI=;
+	s=arc-20240116; t=1751993970; c=relaxed/simple;
+	bh=1I3cOiAs0YqyZ8ezuMQUegBQMdVBoiDyYYZEOL6VGUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dUpI/yCoc8jFewMd0bfR0OxT02Fj9JY+PDxpFD2sURt25QXgDy6/0VgcdLUTfViMalfQ7YgUiCZITzlYq6tB09LCX7NJWyBZjt0mV0CXZubq2gUZTFvDzj9zoNC49IivA3Fq8G7UilumZYhJKKp52ozDUSWo8GPMkUZiY1QAEnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6/UlL3J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E64C4CEED;
-	Tue,  8 Jul 2025 16:50:56 +0000 (UTC)
+	 MIME-Version; b=jfc0wfaTz9WNs3515Iej819EUiBBALvuv2o0MED7xVinQV0H1N7wsSGOT0dwwL0Hho1eCaWbIhyUozhl7hvxBENGYEBzx47U7xu3p+AHrzXhT1c666xFdaBgymwwd3b2SZPFNF6NPNa+Njc5ogyU1DsbFxZCBaIBrRHwkUaQxdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmebui5w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BD7C4CEED;
+	Tue,  8 Jul 2025 16:59:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993457;
-	bh=Pn99kzf00f5xZZLeCTM7bCItJntvRt6SiJW1p+EezKI=;
+	s=korg; t=1751993969;
+	bh=1I3cOiAs0YqyZ8ezuMQUegBQMdVBoiDyYYZEOL6VGUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V6/UlL3J0T4wcw23ob9MmuT+Ky08vcOXiTs2M1hosdeYHbJNGCVN+e0SwAw4hfXwl
-	 CxhaIbcZCdRIvDkTZFFwTb7nS9eaA6U1u2Zm8wuWOsOVpkJRBfdUyOW/YQqmcA20hb
-	 AaNueu/nEzfONFX5FFwGK53l3m1JgOMgO0XGFTOk=
+	b=hmebui5wwo39u06+huWusv1ai/68VWmtOrcVHG5L/FuTly8s+0iR7se3DAaww3Gox
+	 WWGsmy2m4mCa0GJKnwpDFMm2o4pr47La900uIzERJVuoy06tUSgJt7+hRwCDkEq7Hf
+	 M2/DPSsQ6r37BEaGVKN2kxlrCFGnsP5aGSjGFSBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 081/178] platform/x86: hp-bioscfg: Fix class device unregistration
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 5.15 081/160] drm/tegra: Fix a possible null pointer dereference
 Date: Tue,  8 Jul 2025 18:21:58 +0200
-Message-ID: <20250708162238.795918471@linuxfoundation.org>
+Message-ID: <20250708162233.777777804@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +59,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-[ Upstream commit 11cba4793b95df3bc192149a6eb044f69aa0b99e ]
+commit 780351a5f61416ed2ba1199cc57e4a076fca644d upstream.
 
-Devices under the firmware_attributes_class do not have unique a dev_t.
-Therefore, device_unregister() should be used instead of
-device_destroy(), since the latter may match any device with a given
-dev_t.
+In tegra_crtc_reset(), new memory is allocated with kzalloc(), but
+no check is performed. Before calling __drm_atomic_helper_crtc_reset,
+state should be checked to prevent possible null pointer dereference.
 
-Fixes: a34fc329b189 ("platform/x86: hp-bioscfg: bioscfg")
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250625-dest-fix-v1-1-3a0f342312bb@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b7e0b04ae450 ("drm/tegra: Convert to using __drm_atomic_helper_crtc_reset() for reset.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20241106095906.15247-1-chenqiuji666@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/hp/hp-bioscfg/bioscfg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/tegra/dc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-index 13237890fc920..5bfa7159f5bcd 100644
---- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-@@ -1034,7 +1034,7 @@ static int __init hp_init(void)
- 	release_attributes_data();
+--- a/drivers/gpu/drm/tegra/dc.c
++++ b/drivers/gpu/drm/tegra/dc.c
+@@ -1293,7 +1293,10 @@ static void tegra_crtc_reset(struct drm_
+ 	if (crtc->state)
+ 		tegra_crtc_atomic_destroy_state(crtc, crtc->state);
  
- err_destroy_classdev:
--	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
-+	device_unregister(bioscfg_drv.class_dev);
- 
- err_unregister_class:
- 	hp_exit_attr_set_interface();
-@@ -1045,7 +1045,7 @@ static int __init hp_init(void)
- static void __exit hp_exit(void)
- {
- 	release_attributes_data();
--	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
-+	device_unregister(bioscfg_drv.class_dev);
- 
- 	hp_exit_attr_set_interface();
+-	__drm_atomic_helper_crtc_reset(crtc, &state->base);
++	if (state)
++		__drm_atomic_helper_crtc_reset(crtc, &state->base);
++	else
++		__drm_atomic_helper_crtc_reset(crtc, NULL);
  }
--- 
-2.39.5
-
+ 
+ static struct drm_crtc_state *
 
 
 
