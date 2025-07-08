@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-161135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479E2AFD382
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 551D1AFD2CE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4166544828
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B2EC587339
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200DB2E091E;
-	Tue,  8 Jul 2025 16:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FF92DAFA3;
+	Tue,  8 Jul 2025 16:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqUZiZ7q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ye3UZAwO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44B1BE46;
-	Tue,  8 Jul 2025 16:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DB42E49BD;
+	Tue,  8 Jul 2025 16:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993696; cv=none; b=Hkr3RgRh50Do7B1kZTW8oUt5t5CXVcTm2KCI8T1s6GRsitn8abs/zGan/+YVfubF9mTgWQKQlOz3VUrOvByJns4BXi/XOU5yVr77V/tRpK4iSlmDFZrg0AsRg4ijCzAGsLTbmNuD8YRPaCchH/JuM9n8XGsUfOnPuTHiBCNOrZg=
+	t=1751993233; cv=none; b=jI+ZGVb8Unza2K1v3NI9kYa4hINLU5PDHYWQGRmofuHQLEbN+qRmfvJCsZ0plEHTZc/q4oH4vtkU/mI0J+5f2v2JaSoKpL0wYuhXIS2dc0cgbGoyHNSWbf/EERpDLIyC0gyInAERzE2TMGXg+PcGAm9FpkzjaDsjUXn3+msL5oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993696; c=relaxed/simple;
-	bh=UDZsli0uLeW8hktkSOOJSwB4He89jNi5xJx2TLYSSAc=;
+	s=arc-20240116; t=1751993233; c=relaxed/simple;
+	bh=7wtLDnVjQTQGw3RnFCfWGAS6YwKIMvRv3qzzz61wefg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=doCCjmCRN/SA5BbOz6E06k1OPnUQhbrCT5h83rIIKZ2xb93cT3ynr9haFs50lSrMP1QYHw+MdAzBq/rI96ZdnIYDRYrwBYRg8HQUcXwiOiyW3yYsyDPJ9t+5Cihld3TQjhnETjz4qQjc/XmOlsnmUW+jpoNHC42X45b8z4pLgho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqUZiZ7q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024A0C4CEED;
-	Tue,  8 Jul 2025 16:54:55 +0000 (UTC)
+	 MIME-Version; b=OyGMfkoCP0s0DqBbgpsjMxgBbAybVmnKritFUFQPe5/Q+dF1AQoG3x2WzYsYAgmY7/qzaYjkNMvTyk7Bdps4KyzhUCS/BzQWCMczDqZgniTyUorbD74h1R3wg7/WvHsvmS1CfrKFWOgX0GYXG1U7WGCB8AhBTuwkEISDLnQln28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ye3UZAwO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28BAC4CEED;
+	Tue,  8 Jul 2025 16:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993696;
-	bh=UDZsli0uLeW8hktkSOOJSwB4He89jNi5xJx2TLYSSAc=;
+	s=korg; t=1751993233;
+	bh=7wtLDnVjQTQGw3RnFCfWGAS6YwKIMvRv3qzzz61wefg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FqUZiZ7qbdJiKb6Vfp3E47qg3QGyRRU6462lJ/g58+aKuKyPOhWCvdu21bdrL5Psh
-	 jzpccyq2Fjv3bmO9OGcsDAvCfCIKjV6pOw6tfENue0WTySsnCjpA/KJBaTjQu12Gmp
-	 R8Kd8DL9tiuoAlrOU6lyuphbecDPOAg+wwD+2e2E=
+	b=Ye3UZAwOioguun9fpAIlD9KdwRspzQoataivVI0z8+okmb43a3We152V4V/cSlM5k
+	 kivOlfaccA2rfnjKB0lihjY+yNMZll/03nQwSJAwu05b/bAHbz28p+WfgSnyluoxGA
+	 GYOXpHEybJv2SRBEOZ7YB/h1vUzhwQzmas0ednOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.15 162/178] Logitech C-270 even more broken
+	stable <stable@kernel.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.12 203/232] xhci: dbc: Flush queued requests before stopping dbc
 Date: Tue,  8 Jul 2025 18:23:19 +0200
-Message-ID: <20250708162240.713374799@linuxfoundation.org>
+Message-ID: <20250708162246.749382974@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit cee4392a57e14a799fbdee193bc4c0de65b29521 upstream.
+commit efe3e3ae5a66cb38ef29c909e951b4039044bae9 upstream.
 
-Some varieties of this device don't work with
-RESET_RESUME alone.
+Flush dbc requests when dbc is stopped and transfer rings are freed.
+Failure to flush them lead to leaking memory and dbc completing odd
+requests after resuming from suspend, leading to error messages such as:
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
+[   95.344392] xhci_hcd 0000:00:0d.0: no matched request
+
 Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250605122852.1440382-1-oneukum@suse.com
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250627144127.3889714-5-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-dbgcap.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -227,7 +227,8 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x046a, 0x0023), .driver_info = USB_QUIRK_RESET_RESUME },
- 
- 	/* Logitech HD Webcam C270 */
--	{ USB_DEVICE(0x046d, 0x0825), .driver_info = USB_QUIRK_RESET_RESUME },
-+	{ USB_DEVICE(0x046d, 0x0825), .driver_info = USB_QUIRK_RESET_RESUME |
-+		USB_QUIRK_NO_LPM},
- 
- 	/* Logitech HD Pro Webcams C920, C920-C, C922, C925e and C930e */
- 	{ USB_DEVICE(0x046d, 0x082d), .driver_info = USB_QUIRK_DELAY_INIT },
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -651,6 +651,10 @@ static void xhci_dbc_stop(struct xhci_db
+ 	case DS_DISABLED:
+ 		return;
+ 	case DS_CONFIGURED:
++		spin_lock(&dbc->lock);
++		xhci_dbc_flush_requests(dbc);
++		spin_unlock(&dbc->lock);
++
+ 		if (dbc->driver->disconnect)
+ 			dbc->driver->disconnect(dbc);
+ 		break;
 
 
 
