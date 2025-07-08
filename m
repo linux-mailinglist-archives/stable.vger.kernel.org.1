@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-161313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D23CAFD49C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:07:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 006A6AFD290
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:48:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3EA416DD33
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:04:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC24616FA4A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA032DC32D;
-	Tue,  8 Jul 2025 17:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB032E54C8;
+	Tue,  8 Jul 2025 16:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Noty/Eu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6qyip4P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092371E492;
-	Tue,  8 Jul 2025 17:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7752E540C;
+	Tue,  8 Jul 2025 16:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994213; cv=none; b=ByR+Kg+4Bw4prBhbgn1F1LU03owL3TK7sstTfDrPZeXoTlOtiDWOGyPIbNRpd87ob8I47aPN/qzmIacy5poqGIL3shBemaE7IV1jkVRkJc6M/m5IoCnVoZfYuIh/FF2D2A2fjG7N9d23877YUvJ/OIbzjkxQFuf8CCdl8xIs74Y=
+	t=1751993073; cv=none; b=KmyKL50W2lp55zyMAIqfPejP1hcQUnEBlTQ6uNuqJZrIqOy0jIXGE3N6wdgTfz2EcLC3dVe+8jjwdBlkVqAOhpL+veyjThDS7Yk0QsRnQoXtI0P/7qMlnRHUH//xZUdv/6J+qwrZyL/o+tVgXLlTFZfe2kYBwPAMZ5GWFzwvKGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994213; c=relaxed/simple;
-	bh=ljuGBNipfrt4rs83YwxONO8iqZsguWOEcC6ZBEzq71Y=;
+	s=arc-20240116; t=1751993073; c=relaxed/simple;
+	bh=fLcKDY/BEiwve4Tztw8Z/GOBz1x7O0KG1r8HNte80E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VnwvYH7yARTHesz2zLj9zt39iC/ixuV/x6NGbuyTmNAYrAKepeuJhb6TPG0VoYxvOszG815fi2P0wqHf54CP1qxjfCD0bDporEW2oy3Tad6TozGccMqJBdrPY/LC9ZGKt4YWw7zPmA9opjuhXRzzha8qsTJMvrfvKvsPjK5ljaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Noty/Eu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869D6C4CEED;
-	Tue,  8 Jul 2025 17:03:32 +0000 (UTC)
+	 MIME-Version; b=nIsWm+2bfpn4ouo0Py0f8bJQh/lFHe+HM/qE4ZeNiVO1xNj6M5BHlTC7Ab/K7158vO/2MsTxsRBxUWvs+eIpxiXR/kENO6PX//yiY1sGWuB4YwVG5niYSwjroSMWCUTi1hFzwYmvPw2akxage0OtnyxycT9UUE5eZdXLmMTpJ9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6qyip4P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EA9C4CEED;
+	Tue,  8 Jul 2025 16:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994212;
-	bh=ljuGBNipfrt4rs83YwxONO8iqZsguWOEcC6ZBEzq71Y=;
+	s=korg; t=1751993073;
+	bh=fLcKDY/BEiwve4Tztw8Z/GOBz1x7O0KG1r8HNte80E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Noty/EuagZ/MYgnJ+P7DCkb4eM6rF5gq/9+qv+q0XHHuZ8NI0dJk/0JFQuWrbpzV
-	 B1sI3WPCkkfjlHObaOspIUX/PeQEdabdG+xhE5NNagXWlzs8bf+O5RAXFPUU6vIqXk
-	 S9dU2mNdN66heOW7IvDQuRHi2VigY7mvWs71s+5k=
+	b=M6qyip4P8Nxtnlfln3U0bDFrkgdCwkworMiuhRmpysCGgpSVnKZ07PtzlwXMeYiR0
+	 S9zfJchkJT6LBPvVKcQP7znDZGg8MVpP6JM/G403ZEx6W+U2XRva073lI3/K/nB86O
+	 oaUvpjlqVMm0JzY6fh9dOIW83NKZUYwXC5hA+fMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Neanne <jneanne@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Gyeyoung Baek <gye976@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/160] regulator: gpio: Add input_supply support in gpio_regulator_config
+Subject: [PATCH 6.12 179/232] genirq/irq_sim: Initialize work context pointers properly
 Date: Tue,  8 Jul 2025 18:22:55 +0200
-Message-ID: <20250708162235.196311806@linuxfoundation.org>
+Message-ID: <20250708162246.123564254@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Neanne <jneanne@baylibre.com>
+From: Gyeyoung Baek <gye976@gmail.com>
 
-[ Upstream commit adfdfcbdbd32b356323a3db6d3a683270051a7e6 ]
+[ Upstream commit 8a2277a3c9e4cc5398f80821afe7ecbe9bdf2819 ]
 
-This is simillar as fixed-regulator.
-Used to extract regulator parent from the device tree.
+Initialize `ops` member's pointers properly by using kzalloc() instead of
+kmalloc() when allocating the simulation work context. Otherwise the
+pointers contain random content leading to invalid dereferencing.
 
-Without that property used, the parent regulator can be shut down (if not an always on).
-Thus leading to inappropriate behavior:
-On am62-SP-SK this fix is required to avoid tps65219 ldo1 (SDMMC rail) to be shut down after boot completion.
-
-Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
-Link: https://lore.kernel.org/r/20220929132526.29427-2-jneanne@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: c9764fd88bc7 ("regulator: gpio: Fix the out-of-bounds access to drvdata::gpiods")
+Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250612124827.63259-1-gye976@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/gpio-regulator.c       | 15 +++++++++++++++
- include/linux/regulator/gpio-regulator.h |  2 ++
- 2 files changed, 17 insertions(+)
+ kernel/irq/irq_sim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/gpio-regulator.c b/drivers/regulator/gpio-regulator.c
-index 5927d4f3eabd7..95e61a2f43f5d 100644
---- a/drivers/regulator/gpio-regulator.c
-+++ b/drivers/regulator/gpio-regulator.c
-@@ -220,6 +220,9 @@ of_get_gpio_regulator_config(struct device *dev, struct device_node *np,
- 				 regtype);
- 	}
+diff --git a/kernel/irq/irq_sim.c b/kernel/irq/irq_sim.c
+index 1a3d483548e2f..ae4c9cbd1b4b9 100644
+--- a/kernel/irq/irq_sim.c
++++ b/kernel/irq/irq_sim.c
+@@ -202,7 +202,7 @@ struct irq_domain *irq_domain_create_sim_full(struct fwnode_handle *fwnode,
+ 					      void *data)
+ {
+ 	struct irq_sim_work_ctx *work_ctx __free(kfree) =
+-				kmalloc(sizeof(*work_ctx), GFP_KERNEL);
++				kzalloc(sizeof(*work_ctx), GFP_KERNEL);
  
-+	if (of_find_property(np, "vin-supply", NULL))
-+		config->input_supply = "vin";
-+
- 	return config;
- }
- 
-@@ -259,6 +262,18 @@ static int gpio_regulator_probe(struct platform_device *pdev)
- 
- 	drvdata->gpiods = devm_kzalloc(dev, sizeof(struct gpio_desc *),
- 				       GFP_KERNEL);
-+
-+	if (config->input_supply) {
-+		drvdata->desc.supply_name = devm_kstrdup(&pdev->dev,
-+							 config->input_supply,
-+							 GFP_KERNEL);
-+		if (!drvdata->desc.supply_name) {
-+			dev_err(&pdev->dev,
-+				"Failed to allocate input supply\n");
-+			return -ENOMEM;
-+		}
-+	}
-+
- 	if (!drvdata->gpiods)
- 		return -ENOMEM;
- 	for (i = 0; i < config->ngpios; i++) {
-diff --git a/include/linux/regulator/gpio-regulator.h b/include/linux/regulator/gpio-regulator.h
-index fdeb312cdabdf..c223e50ff9f78 100644
---- a/include/linux/regulator/gpio-regulator.h
-+++ b/include/linux/regulator/gpio-regulator.h
-@@ -42,6 +42,7 @@ struct gpio_regulator_state {
- /**
-  * struct gpio_regulator_config - config structure
-  * @supply_name:	Name of the regulator supply
-+ * @input_supply:	Name of the input regulator supply
-  * @enabled_at_boot:	Whether regulator has been enabled at
-  *			boot or not. 1 = Yes, 0 = No
-  *			This is used to keep the regulator at
-@@ -62,6 +63,7 @@ struct gpio_regulator_state {
-  */
- struct gpio_regulator_config {
- 	const char *supply_name;
-+	const char *input_supply;
- 
- 	unsigned enabled_at_boot:1;
- 	unsigned startup_delay;
+ 	if (!work_ctx)
+ 		return ERR_PTR(-ENOMEM);
 -- 
 2.39.5
 
