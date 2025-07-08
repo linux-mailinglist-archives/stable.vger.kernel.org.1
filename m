@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-161152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A575AFD39E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31728AFD17B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:36:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E26A9545774
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B70C8541B5F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7122E5B04;
-	Tue,  8 Jul 2025 16:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01F62E542C;
+	Tue,  8 Jul 2025 16:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H413k3Cv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2R19xrUx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB972E2F0D;
-	Tue,  8 Jul 2025 16:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8112E2F0E;
+	Tue,  8 Jul 2025 16:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993746; cv=none; b=WQJ7rFYrjr43bmmP5LON6l8EO+BSqCnvBDiZiA1Ethx9IsSvSpCUuFPkvd+q90vEhm7uy+Q/edZQAVrIH0pzUd252MBttwZxQJD4CM7q69M6dVgkGW2cfFUNO3GhkieZuAxaLH/c/moY/5nnmrCDqBVsPBPA14Gz26SdrUAf/KM=
+	t=1751992460; cv=none; b=FqlKawyc3AievOGJ/s1IaYNBOCT+e6KNIzeh4+ANikoMPW+GFIJHQjjQwYqY8PFRNLEHdE1PaDDa1MyZqV5DbDAlmfEyOBsMN2dEpmeXKR8+jX/qBNH62Hf6oVkDYaM1AmZMesOaG9fK1GLUFEVlJuUyWiXNiRLaV2a5mMZuVXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993746; c=relaxed/simple;
-	bh=IlIohNjIY9eD8ep4Zh4wME0mh6oKJ24XSgC3N+uoTGU=;
+	s=arc-20240116; t=1751992460; c=relaxed/simple;
+	bh=dN1t+4qDN2bv91lCVlsWdyteQqwgEqpqoyq/ttJdEWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fV9KgdjLaeXESBHTCTbZX7SAz9jVn97/xYAxoAnrFvV0slTkPkXvE4L6UgRRTbxZDxqeXRjxZULuO7j9mhI/5Yuj9caO81W1F3pMiL50T3hgdS6JkMpo2HhcUgGcrJYthH32H1FFE52gu4DGW8kdPaUhoYPzqhlUYT7zNapGzxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H413k3Cv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C0AC4CEED;
-	Tue,  8 Jul 2025 16:55:45 +0000 (UTC)
+	 MIME-Version; b=qXvG5TriQ4G+RYEXUaCv/gm8hxy18uvM1SyQ3nikjgDMMdozmJeyas79J2V/nvuWQnMhhCdfcV0UFmUxyoDVJpFB+oej0dAxCYmQvAwK9rlyLAaw0XL1N8ERKBUb4OgnpOITcyHHZKYFsTI+yoTUJOahFhK8vmXKNtcnAQ6wIsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2R19xrUx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9919FC4CEED;
+	Tue,  8 Jul 2025 16:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993745;
-	bh=IlIohNjIY9eD8ep4Zh4wME0mh6oKJ24XSgC3N+uoTGU=;
+	s=korg; t=1751992460;
+	bh=dN1t+4qDN2bv91lCVlsWdyteQqwgEqpqoyq/ttJdEWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H413k3Cvl7eUPOgMmVYCJAl8OiEaaZiT6/a1whjXQ6u5Bw+KQHh76XcwbI3/MifaP
-	 97Jlg5ZgGSUf9mnGVGDlx72VL3zHCjtDGY/y+lUtM5VFQBZrUg5I8uRQhLLSGppiZz
-	 yXMT7UqnnvHD3sEIRUXnRVeJy10Ue8YAWcWNLhvY=
+	b=2R19xrUxzzlLPJzzTz5mcd+MoBDo2q4YQe1KgmkP1s/neQG3u29O5ftsR+hsuUHlU
+	 EQAQoadLll63PSQDlwXQD8978IkxdGQ3oe4+I6rMef6Hgr8odROp7x1aTM202TrRm0
+	 aOFBpjtT6hV4sUE/sbBaqXGECrSp48DIByiC9fus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Subject: [PATCH 6.15 172/178] mm/vmalloc: fix data race in show_numa_info()
+	Pablo Martin-Gomez <pmartin-gomez@freebox.fr>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 098/132] mtd: spinand: fix memory leak of ECC engine conf
 Date: Tue,  8 Jul 2025 18:23:29 +0200
-Message-ID: <20250708162240.946538446@linuxfoundation.org>
+Message-ID: <20250708162233.482886499@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,169 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
 
-commit 5c5f0468d172ddec2e333d738d2a1f85402cf0bc upstream.
+[ Upstream commit 6463cbe08b0cbf9bba8763306764f5fd643023e1 ]
 
-The following data-race was found in show_numa_info():
+Memory allocated for the ECC engine conf is not released during spinand
+cleanup. Below kmemleak trace is seen for this memory leak:
 
-==================================================================
-BUG: KCSAN: data-race in vmalloc_info_show / vmalloc_info_show
+unreferenced object 0xffffff80064f00e0 (size 8):
+  comm "swapper/0", pid 1, jiffies 4294937458
+  hex dump (first 8 bytes):
+    00 00 00 00 00 00 00 00                          ........
+  backtrace (crc 0):
+    kmemleak_alloc+0x30/0x40
+    __kmalloc_cache_noprof+0x208/0x3c0
+    spinand_ondie_ecc_init_ctx+0x114/0x200
+    nand_ecc_init_ctx+0x70/0xa8
+    nanddev_ecc_engine_init+0xec/0x27c
+    spinand_probe+0xa2c/0x1620
+    spi_mem_probe+0x130/0x21c
+    spi_probe+0xf0/0x170
+    really_probe+0x17c/0x6e8
+    __driver_probe_device+0x17c/0x21c
+    driver_probe_device+0x58/0x180
+    __device_attach_driver+0x15c/0x1f8
+    bus_for_each_drv+0xec/0x150
+    __device_attach+0x188/0x24c
+    device_initial_probe+0x10/0x20
+    bus_probe_device+0x11c/0x160
 
-read to 0xffff88800971fe30 of 4 bytes by task 8289 on cpu 0:
- show_numa_info mm/vmalloc.c:4936 [inline]
- vmalloc_info_show+0x5a8/0x7e0 mm/vmalloc.c:5016
- seq_read_iter+0x373/0xb40 fs/seq_file.c:230
- proc_reg_read_iter+0x11e/0x170 fs/proc/inode.c:299
-....
+Fix the leak by calling nanddev_ecc_engine_cleanup() inside
+spinand_cleanup().
 
-write to 0xffff88800971fe30 of 4 bytes by task 8287 on cpu 1:
- show_numa_info mm/vmalloc.c:4934 [inline]
- vmalloc_info_show+0x38f/0x7e0 mm/vmalloc.c:5016
- seq_read_iter+0x373/0xb40 fs/seq_file.c:230
- proc_reg_read_iter+0x11e/0x170 fs/proc/inode.c:299
-....
-
-value changed: 0x0000008f -> 0x00000000
-==================================================================
-
-According to this report,there is a read/write data-race because
-m->private is accessible to multiple CPUs.  To fix this, instead of
-allocating the heap in proc_vmalloc_init() and passing the heap address to
-m->private, vmalloc_info_show() should allocate the heap.
-
-Link: https://lkml.kernel.org/r/20250508165620.15321-1-aha310510@gmail.com
-Fixes: 8e1d743f2c26 ("mm: vmalloc: support multiple nodes in vmallocinfo")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-Reviewed-by: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmalloc.c |   63 ++++++++++++++++++++++++++++++++---------------------------
- 1 file changed, 35 insertions(+), 28 deletions(-)
+ drivers/mtd/nand/spi/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3100,7 +3100,7 @@ static void clear_vm_uninitialized_flag(
- 	/*
- 	 * Before removing VM_UNINITIALIZED,
- 	 * we should make sure that vm has proper values.
--	 * Pair with smp_rmb() in show_numa_info().
-+	 * Pair with smp_rmb() in vread_iter() and vmalloc_info_show().
- 	 */
- 	smp_wmb();
- 	vm->flags &= ~VM_UNINITIALIZED;
-@@ -4934,28 +4934,29 @@ bool vmalloc_dump_obj(void *object)
- #endif
- 
- #ifdef CONFIG_PROC_FS
--static void show_numa_info(struct seq_file *m, struct vm_struct *v)
--{
--	if (IS_ENABLED(CONFIG_NUMA)) {
--		unsigned int nr, *counters = m->private;
--		unsigned int step = 1U << vm_area_page_order(v);
- 
--		if (!counters)
--			return;
-+/*
-+ * Print number of pages allocated on each memory node.
-+ *
-+ * This function can only be called if CONFIG_NUMA is enabled
-+ * and VM_UNINITIALIZED bit in v->flags is disabled.
-+ */
-+static void show_numa_info(struct seq_file *m, struct vm_struct *v,
-+				 unsigned int *counters)
-+{
-+	unsigned int nr;
-+	unsigned int step = 1U << vm_area_page_order(v);
- 
--		if (v->flags & VM_UNINITIALIZED)
--			return;
--		/* Pair with smp_wmb() in clear_vm_uninitialized_flag() */
--		smp_rmb();
-+	if (!counters)
-+		return;
- 
--		memset(counters, 0, nr_node_ids * sizeof(unsigned int));
-+	memset(counters, 0, nr_node_ids * sizeof(unsigned int));
- 
--		for (nr = 0; nr < v->nr_pages; nr += step)
--			counters[page_to_nid(v->pages[nr])] += step;
--		for_each_node_state(nr, N_HIGH_MEMORY)
--			if (counters[nr])
--				seq_printf(m, " N%u=%u", nr, counters[nr]);
--	}
-+	for (nr = 0; nr < v->nr_pages; nr += step)
-+		counters[page_to_nid(v->pages[nr])] += step;
-+	for_each_node_state(nr, N_HIGH_MEMORY)
-+		if (counters[nr])
-+			seq_printf(m, " N%u=%u", nr, counters[nr]);
- }
- 
- static void show_purge_info(struct seq_file *m)
-@@ -4983,6 +4984,10 @@ static int vmalloc_info_show(struct seq_
- 	struct vmap_area *va;
- 	struct vm_struct *v;
- 	int i;
-+	unsigned int *counters;
-+
-+	if (IS_ENABLED(CONFIG_NUMA))
-+		counters = kmalloc(nr_node_ids * sizeof(unsigned int), GFP_KERNEL);
- 
- 	for (i = 0; i < nr_vmap_nodes; i++) {
- 		vn = &vmap_nodes[i];
-@@ -4999,6 +5004,11 @@ static int vmalloc_info_show(struct seq_
- 			}
- 
- 			v = va->vm;
-+			if (v->flags & VM_UNINITIALIZED)
-+				continue;
-+
-+			/* Pair with smp_wmb() in clear_vm_uninitialized_flag() */
-+			smp_rmb();
- 
- 			seq_printf(m, "0x%pK-0x%pK %7ld",
- 				v->addr, v->addr + v->size, v->size);
-@@ -5033,7 +5043,9 @@ static int vmalloc_info_show(struct seq_
- 			if (is_vmalloc_addr(v->pages))
- 				seq_puts(m, " vpages");
- 
--			show_numa_info(m, v);
-+			if (IS_ENABLED(CONFIG_NUMA))
-+				show_numa_info(m, v, counters);
-+
- 			seq_putc(m, '\n');
- 		}
- 		spin_unlock(&vn->busy.lock);
-@@ -5043,19 +5055,14 @@ static int vmalloc_info_show(struct seq_
- 	 * As a final step, dump "unpurged" areas.
- 	 */
- 	show_purge_info(m);
-+	if (IS_ENABLED(CONFIG_NUMA))
-+		kfree(counters);
- 	return 0;
- }
- 
- static int __init proc_vmalloc_init(void)
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 393ff37f0d23c..cd21bf8f254a7 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -1316,6 +1316,7 @@ static void spinand_cleanup(struct spinand_device *spinand)
  {
--	void *priv_data = NULL;
--
--	if (IS_ENABLED(CONFIG_NUMA))
--		priv_data = kmalloc(nr_node_ids * sizeof(unsigned int), GFP_KERNEL);
--
--	proc_create_single_data("vmallocinfo",
--		0400, NULL, vmalloc_info_show, priv_data);
--
-+	proc_create_single("vmallocinfo", 0400, NULL, vmalloc_info_show);
- 	return 0;
- }
- module_init(proc_vmalloc_init);
+ 	struct nand_device *nand = spinand_to_nand(spinand);
+ 
++	nanddev_ecc_engine_cleanup(nand);
+ 	nanddev_cleanup(nand);
+ 	spinand_manufacturer_cleanup(spinand);
+ 	kfree(spinand->databuf);
+-- 
+2.39.5
+
 
 
 
