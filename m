@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-160998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B82AFD2F4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC81AFD225
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FC431679B2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D69485833F1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876661DD0EF;
-	Tue,  8 Jul 2025 16:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9F32E540C;
+	Tue,  8 Jul 2025 16:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmdwAuEc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ty3ITRNd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A7D1754B;
-	Tue,  8 Jul 2025 16:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC09264F9C;
+	Tue,  8 Jul 2025 16:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993303; cv=none; b=OkwtR+5yp0a2W/ZR/XIr3pkjd5kKB7nWyJ/Bu2RdhfUGs6Y+9YsPgZq6TJiQ1I5BYSub3vThZ4UfMwHHsN0lHPVj/cGKQIN12HE2UJvVh1Iw/wqkuA6jSYppXX6zkUljubSepzHFFCc1m4c85SCMwJ+/nUXrF8nH+FIBGYVoPEI=
+	t=1751992837; cv=none; b=YlS5TsVkS0B0YLlP/3u4UBQenzGjCgyy9oiFgKX5f2aZIrEEgnh+WqksJd8ZaHEn75v159esG9AN5XZPCrtP9Cy+dQb3ri0s1uRcb18Ynp3WXisgUj6jQmPSy5brLT6NFwWeNaEx6hLykfgXplIrWeGYkt6dxZc1thkFUPx4U4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993303; c=relaxed/simple;
-	bh=fFGzvZ8o8iHs6Ar3bzxukvHxVGgDoUKunaQz6dPSxY8=;
+	s=arc-20240116; t=1751992837; c=relaxed/simple;
+	bh=5t5BkgXuSljvLekdV0XxBgdA2r9hQbjVI1MV0akgCck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TsJcSYPSUNmRmnLHDoejokG+GAFXTeDTrzNqNuuiNWZ2Ga9IGFJNz2rcZkp7q0pLVdt30aU899S8LsN5Zo4tXJC9AUW9n4DGEyMNwD4XIB2syK01JYo7WewskeaAKziiV0msygklpZxP4bo7kjrIbSpJG7+XrDNHXuzDS+5I23o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmdwAuEc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC989C4CEED;
-	Tue,  8 Jul 2025 16:48:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kHkPYfR64jNcI42F+hIAogoiwmFRvDU67Z0FiNqWEa6tjY5is6WyuCcqdJUnqaDT3o0u0XwD5yRKlYUzgOXD1uaHG5qQFPa2qlmx047aq758rO6twSCHLp6sUzjZuyDKCCVjHa1/Z3hCMX01AQNwqaBNTmVthXrjx/hPSr1lz+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ty3ITRNd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C0CC4CEED;
+	Tue,  8 Jul 2025 16:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993303;
-	bh=fFGzvZ8o8iHs6Ar3bzxukvHxVGgDoUKunaQz6dPSxY8=;
+	s=korg; t=1751992837;
+	bh=5t5BkgXuSljvLekdV0XxBgdA2r9hQbjVI1MV0akgCck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QmdwAuEcK90zfX/ANVUv5d5WCXJkIkN6Gw1CM8lwCa5cj/oZien3qC/ZhayVI+2hM
-	 YiUCeWwH90/b3Rq2L/0ZHNS3Oh3goGIKim4tgWqrp5ueYUunDnddVmVdBAh8ow4sB4
-	 V+hDp4tQqHWiHFSdWOTMjDVjHQpey5aYcO6SOJjE=
+	b=Ty3ITRNdvuc6rZkSQvFiNP/khgLTWrEh6fU2dcNbh6/ZZNwg8gaVGun8hOJfr4LoP
+	 xH8q7Be2PqBtzAX9U55JPXYT1XiHOJzfhZ1nlr+jca1eYxGUigiZwy8V2555SaroF5
+	 pHYR2M9U5vYWlcZrwkDH4qy+BCSX5Ow3+FDsDrWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	stable@kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.15 027/178] anon_inode: rework assertions
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 068/232] platform/x86: think-lmi: Directly use firmware_attributes_class
 Date: Tue,  8 Jul 2025 18:21:04 +0200
-Message-ID: <20250708162237.258186480@linuxfoundation.org>
+Message-ID: <20250708162243.242401425@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit 1e7ab6f67824343ee3e96f100f0937c393749a8a upstream.
+[ Upstream commit 55922403807a12d4f96c67ba01a920edfb6f2633 ]
 
-Making anonymous inodes regular files comes with a lot of risk and
-regression potential as evidenced by a recent hickup in io_uring. We're
-better of continuing to not have them be regular files. Since we have
-S_ANON_INODE we can port all of our assertions easily.
+The usage of the lifecycle functions is not necessary anymore.
 
-Link: https://lore.kernel.org/20250702-work-fixes-v1-1-ff76ea589e33@kernel.org
-Fixes: cfd86ef7e8e7 ("anon_inode: use a proper mode internally")
-Acked-by: Jens Axboe <axboe@kernel.dk>
-Cc: stable@kernel.org
-Reported-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20250104-firmware-attributes-simplify-v1-3-949f9709e405@weissschuh.net
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 5ff1fbb30597 ("platform/x86: think-lmi: Fix class device unregistration")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exec.c  |    9 +++++++--
- fs/libfs.c |    8 +++-----
- fs/namei.c |    2 +-
- 3 files changed, 11 insertions(+), 8 deletions(-)
+ drivers/platform/x86/think-lmi.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -111,6 +111,9 @@ static inline void put_binfmt(struct lin
+diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
+index 1abd8378f158d..a7c3285323d6b 100644
+--- a/drivers/platform/x86/think-lmi.c
++++ b/drivers/platform/x86/think-lmi.c
+@@ -192,7 +192,6 @@ static const char * const level_options[] = {
+ 	[TLMI_LEVEL_MASTER] = "master",
+ };
+ static struct think_lmi tlmi_priv;
+-static const struct class *fw_attr_class;
+ static DEFINE_MUTEX(tlmi_mutex);
  
- bool path_noexec(const struct path *path)
+ static inline struct tlmi_pwd_setting *to_tlmi_pwd_setting(struct kobject *kobj)
+@@ -1375,11 +1374,7 @@ static int tlmi_sysfs_init(void)
  {
-+	/* If it's an anonymous inode make sure that we catch any shenanigans. */
-+	VFS_WARN_ON_ONCE(IS_ANON_FILE(d_inode(path->dentry)) &&
-+			 !(path->mnt->mnt_sb->s_iflags & SB_I_NOEXEC));
- 	return (path->mnt->mnt_flags & MNT_NOEXEC) ||
- 	       (path->mnt->mnt_sb->s_iflags & SB_I_NOEXEC);
+ 	int i, ret;
+ 
+-	ret = fw_attributes_class_get(&fw_attr_class);
+-	if (ret)
+-		return ret;
+-
+-	tlmi_priv.class_dev = device_create(fw_attr_class, NULL, MKDEV(0, 0),
++	tlmi_priv.class_dev = device_create(&firmware_attributes_class, NULL, MKDEV(0, 0),
+ 			NULL, "%s", "thinklmi");
+ 	if (IS_ERR(tlmi_priv.class_dev)) {
+ 		ret = PTR_ERR(tlmi_priv.class_dev);
+@@ -1492,9 +1487,8 @@ static int tlmi_sysfs_init(void)
+ fail_create_attr:
+ 	tlmi_release_attr();
+ fail_device_created:
+-	device_destroy(fw_attr_class, MKDEV(0, 0));
++	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
+ fail_class_created:
+-	fw_attributes_class_put();
+ 	return ret;
  }
-@@ -894,13 +897,15 @@ static struct file *do_open_execat(int f
- 	if (IS_ERR(file))
- 		return file;
  
-+	if (path_noexec(&file->f_path))
-+		return ERR_PTR(-EACCES);
-+
- 	/*
- 	 * In the past the regular type check was here. It moved to may_open() in
- 	 * 633fb6ac3980 ("exec: move S_ISREG() check earlier"). Since then it is
- 	 * an invariant that all non-regular files error out before we get here.
- 	 */
--	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode)) ||
--	    path_noexec(&file->f_path))
-+	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode)))
- 		return ERR_PTR(-EACCES);
+@@ -1717,8 +1711,7 @@ static int tlmi_analyze(void)
+ static void tlmi_remove(struct wmi_device *wdev)
+ {
+ 	tlmi_release_attr();
+-	device_destroy(fw_attr_class, MKDEV(0, 0));
+-	fw_attributes_class_put();
++	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
+ }
  
- 	err = exe_file_deny_write_access(file);
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -1648,12 +1648,10 @@ struct inode *alloc_anon_inode(struct su
- 	 */
- 	inode->i_state = I_DIRTY;
- 	/*
--	 * Historically anonymous inodes didn't have a type at all and
--	 * userspace has come to rely on this. Internally they're just
--	 * regular files but S_IFREG is masked off when reporting
--	 * information to userspace.
-+	 * Historically anonymous inodes don't have a type at all and
-+	 * userspace has come to rely on this.
- 	 */
--	inode->i_mode = S_IFREG | S_IRUSR | S_IWUSR;
-+	inode->i_mode = S_IRUSR | S_IWUSR;
- 	inode->i_uid = current_fsuid();
- 	inode->i_gid = current_fsgid();
- 	inode->i_flags |= S_PRIVATE | S_ANON_INODE;
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -3464,7 +3464,7 @@ static int may_open(struct mnt_idmap *id
- 			return -EACCES;
- 		break;
- 	default:
--		VFS_BUG_ON_INODE(1, inode);
-+		VFS_BUG_ON_INODE(!IS_ANON_FILE(inode), inode);
- 	}
- 
- 	error = inode_permission(idmap, inode, MAY_OPEN | acc_mode);
+ static int tlmi_probe(struct wmi_device *wdev, const void *context)
+-- 
+2.39.5
+
 
 
 
