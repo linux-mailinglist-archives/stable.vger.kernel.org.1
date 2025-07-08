@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-161316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672DDAFD4B7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:08:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB20DAFD0AB
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB670188532B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:04:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D61C482B8C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5D52E5B2C;
-	Tue,  8 Jul 2025 17:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDAA2E11B9;
+	Tue,  8 Jul 2025 16:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9YA0Bzr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCIyhqmc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0895D7263B;
-	Tue,  8 Jul 2025 17:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6262D9790;
+	Tue,  8 Jul 2025 16:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994223; cv=none; b=MIcNjxWy+/W8iDcrwSdFcqZuRcVlZ+3oIcx0ywwSoe0KkfZ7YQ007J/eu2UhM69eNVKPXGTsj8tdlykKzXCzxE8Gq/3vtsR8GODzGtCziGjfETz+lwCYgGxaYlTum8LHUbKCVAwYFB3N+FK91HEj9FWfcSRtumC6aT3uEoMOTbE=
+	t=1751991959; cv=none; b=GUoBrEh9LnCossecMyfQhnslr0efruROkxtAOjDy+6fAZHGwrFo7CcQS+W0ajzOyItM1+pjtcqs51kdFeiUiBYfH/a27GSG4DQlMRb2Ctc8okLHR+5mjtVIs1jfDbKUZ52sUCQitQc5VeUl4mC7yTCLcwGHFwNDBWqMpDlFRzyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994223; c=relaxed/simple;
-	bh=gGIQPgwL8RkjyVaWaL4bmKUDP1VUYGMbzyZdtTpErqg=;
+	s=arc-20240116; t=1751991959; c=relaxed/simple;
+	bh=Gl3irzZ53Dx/Di6R9rS77GYdm8Rc8ifxSjluPXo4vjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KzxQ/uPyZvwxm5+dMSxudl0QYlbSdTwLTCvUiVVQqyzaINAMoLS6RFfBa7IRkGecz+4m2Q0uNZ4VHbMbXpSetVc0rdTJqg7rpGCjOZbQzsWdcZBwIJTwReaLu8QhOZTDeFsqnsCiesVKGXMzxnQq9IPf4Vk4d2itas+sZLjiqV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9YA0Bzr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD5CC4CEED;
-	Tue,  8 Jul 2025 17:03:42 +0000 (UTC)
+	 MIME-Version; b=oI66YQhv8fXkKG1NwQ6HN/KAEYw0qjlpw4Ve8VXnfNSqy2IqNtcAqEm+TXAE43PeLycyd7s6bq0Ck/+NPGhPHJkCKiA1OXQr1VOB6c7GgikMfwyD0ZO5t5EeADpt9K+IiNAPx1y7JaeA0x13kGCjBwygMdvWISo3OEHQoTG82ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCIyhqmc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60FC1C4CEED;
+	Tue,  8 Jul 2025 16:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994222;
-	bh=gGIQPgwL8RkjyVaWaL4bmKUDP1VUYGMbzyZdtTpErqg=;
+	s=korg; t=1751991959;
+	bh=Gl3irzZ53Dx/Di6R9rS77GYdm8Rc8ifxSjluPXo4vjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9YA0BzrxopchqQTs1wpQRrcOC5V8x7XeiBgj4zY80FHQrdLme1xQQ1eV2eI1oOm5
-	 K9oUoBSSCi8l3yFCy0C1h+Y5MIgar9KF9hzwuSBtaqyPDX5fUrCGtZ4zkTAV9yJKl4
-	 ZH431mWvoQ5SUZ9OWc/dCk21q3R8Ffuaj/Ouf4EE=
+	b=VCIyhqmcLk+4U0pMfZiHXOOfIbz6kj8y8MSs2VkEtvUCQai7IBqBKDAJ2lOUkBdTk
+	 YZVzMiiQcmqw+yGg6kzEtLKreMcO+C27ZWVB/qvnwEWsT76tghfUqcvFPqLgdUbez/
+	 WsQj5N0LhdsTyshYPWuyQqLO+NptVgvCWuRQ60NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 141/160] NFSv4/flexfiles: Fix handling of NFS level errors in I/O
+	Avri Altman <avri.altman@sandisk.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 06/81] mmc: core: sd: Apply BROKEN_SD_DISCARD quirk earlier
 Date: Tue,  8 Jul 2025 18:22:58 +0200
-Message-ID: <20250708162235.268473517@linuxfoundation.org>
+Message-ID: <20250708162225.045134857@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,255 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Avri Altman <avri.altman@sandisk.com>
 
-[ Upstream commit 38074de35b015df5623f524d6f2b49a0cd395c40 ]
+commit 009c3a4bc41e855fd76f92727f9fbae4e5917d7f upstream.
 
-Allow the flexfiles error handling to recognise NFS level errors (as
-opposed to RPC level errors) and handle them separately. The main
-motivator is the NFSERR_PERM errors that get returned if the NFS client
-connects to the data server through a port number that is lower than
-1024. In that case, the client should disconnect and retry a READ on a
-different data server, or it should retry a WRITE after reconnecting.
+Move the BROKEN_SD_DISCARD quirk for certain SanDisk SD cards from the
+`mmc_blk_fixups[]` to `mmc_sd_fixups[]`. This ensures the quirk is
+applied earlier in the device initialization process, aligning with the
+reasoning in [1]. Applying the quirk sooner prevents the kernel from
+incorrectly enabling discard support on affected cards during initial
+setup.
 
-Reviewed-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
-Fixes: d67ae825a59d ("pnfs/flexfiles: Add the FlexFile Layout Driver")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] https://lore.kernel.org/all/20240820230631.GA436523@sony.com
+
+Fixes: 07d2872bf4c8 ("mmc: core: Add SD card quirk for broken discard")
+Signed-off-by: Avri Altman <avri.altman@sandisk.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250526114445.675548-1-avri.altman@sandisk.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c | 121 ++++++++++++++++++-------
- 1 file changed, 87 insertions(+), 34 deletions(-)
+ drivers/mmc/core/quirks.h |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index a55eec241657d..7a568d2de472e 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -1099,6 +1099,7 @@ static void ff_layout_reset_read(struct nfs_pgio_header *hdr)
- }
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -44,6 +44,12 @@ static const struct mmc_fixup __maybe_un
+ 		   0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
+ 		   MMC_QUIRK_NO_UHS_DDR50_TUNING, EXT_CSD_REV_ANY),
  
- static int ff_layout_async_handle_error_v4(struct rpc_task *task,
-+					   u32 op_status,
- 					   struct nfs4_state *state,
- 					   struct nfs_client *clp,
- 					   struct pnfs_layout_segment *lseg,
-@@ -1109,32 +1110,42 @@ static int ff_layout_async_handle_error_v4(struct rpc_task *task,
- 	struct nfs4_deviceid_node *devid = FF_LAYOUT_DEVID_NODE(lseg, idx);
- 	struct nfs4_slot_table *tbl = &clp->cl_session->fc_slot_table;
- 
--	switch (task->tk_status) {
--	case -NFS4ERR_BADSESSION:
--	case -NFS4ERR_BADSLOT:
--	case -NFS4ERR_BAD_HIGH_SLOT:
--	case -NFS4ERR_DEADSESSION:
--	case -NFS4ERR_CONN_NOT_BOUND_TO_SESSION:
--	case -NFS4ERR_SEQ_FALSE_RETRY:
--	case -NFS4ERR_SEQ_MISORDERED:
-+	switch (op_status) {
-+	case NFS4_OK:
-+	case NFS4ERR_NXIO:
-+		break;
-+	case NFSERR_PERM:
-+		if (!task->tk_xprt)
-+			break;
-+		xprt_force_disconnect(task->tk_xprt);
-+		goto out_retry;
-+	case NFS4ERR_BADSESSION:
-+	case NFS4ERR_BADSLOT:
-+	case NFS4ERR_BAD_HIGH_SLOT:
-+	case NFS4ERR_DEADSESSION:
-+	case NFS4ERR_CONN_NOT_BOUND_TO_SESSION:
-+	case NFS4ERR_SEQ_FALSE_RETRY:
-+	case NFS4ERR_SEQ_MISORDERED:
- 		dprintk("%s ERROR %d, Reset session. Exchangeid "
- 			"flags 0x%x\n", __func__, task->tk_status,
- 			clp->cl_exchange_flags);
- 		nfs4_schedule_session_recovery(clp->cl_session, task->tk_status);
--		break;
--	case -NFS4ERR_DELAY:
--	case -NFS4ERR_GRACE:
-+		goto out_retry;
-+	case NFS4ERR_DELAY:
-+		nfs_inc_stats(lseg->pls_layout->plh_inode, NFSIOS_DELAY);
-+		fallthrough;
-+	case NFS4ERR_GRACE:
- 		rpc_delay(task, FF_LAYOUT_POLL_RETRY_MAX);
--		break;
--	case -NFS4ERR_RETRY_UNCACHED_REP:
--		break;
-+		goto out_retry;
-+	case NFS4ERR_RETRY_UNCACHED_REP:
-+		goto out_retry;
- 	/* Invalidate Layout errors */
--	case -NFS4ERR_PNFS_NO_LAYOUT:
--	case -ESTALE:           /* mapped NFS4ERR_STALE */
--	case -EBADHANDLE:       /* mapped NFS4ERR_BADHANDLE */
--	case -EISDIR:           /* mapped NFS4ERR_ISDIR */
--	case -NFS4ERR_FHEXPIRED:
--	case -NFS4ERR_WRONG_TYPE:
-+	case NFS4ERR_PNFS_NO_LAYOUT:
-+	case NFS4ERR_STALE:
-+	case NFS4ERR_BADHANDLE:
-+	case NFS4ERR_ISDIR:
-+	case NFS4ERR_FHEXPIRED:
-+	case NFS4ERR_WRONG_TYPE:
- 		dprintk("%s Invalid layout error %d\n", __func__,
- 			task->tk_status);
- 		/*
-@@ -1147,6 +1158,11 @@ static int ff_layout_async_handle_error_v4(struct rpc_task *task,
- 		pnfs_destroy_layout(NFS_I(inode));
- 		rpc_wake_up(&tbl->slot_tbl_waitq);
- 		goto reset;
-+	default:
-+		break;
-+	}
++	/*
++	 * Some SD cards reports discard support while they don't
++	 */
++	MMC_FIXUP(CID_NAME_ANY, CID_MANFID_SANDISK_SD, 0x5344, add_quirk_sd,
++		  MMC_QUIRK_BROKEN_SD_DISCARD),
 +
-+	switch (task->tk_status) {
- 	/* RPC connection errors */
- 	case -ECONNREFUSED:
- 	case -EHOSTDOWN:
-@@ -1162,26 +1178,56 @@ static int ff_layout_async_handle_error_v4(struct rpc_task *task,
- 		nfs4_delete_deviceid(devid->ld, devid->nfs_client,
- 				&devid->deviceid);
- 		rpc_wake_up(&tbl->slot_tbl_waitq);
--		fallthrough;
-+		break;
- 	default:
--		if (ff_layout_avoid_mds_available_ds(lseg))
--			return -NFS4ERR_RESET_TO_PNFS;
--reset:
--		dprintk("%s Retry through MDS. Error %d\n", __func__,
--			task->tk_status);
--		return -NFS4ERR_RESET_TO_MDS;
-+		break;
- 	}
-+
-+	if (ff_layout_avoid_mds_available_ds(lseg))
-+		return -NFS4ERR_RESET_TO_PNFS;
-+reset:
-+	dprintk("%s Retry through MDS. Error %d\n", __func__,
-+		task->tk_status);
-+	return -NFS4ERR_RESET_TO_MDS;
-+
-+out_retry:
- 	task->tk_status = 0;
- 	return -EAGAIN;
- }
+ 	END_FIXUP
+ };
  
- /* Retry all errors through either pNFS or MDS except for -EJUKEBOX */
- static int ff_layout_async_handle_error_v3(struct rpc_task *task,
-+					   u32 op_status,
-+					   struct nfs_client *clp,
- 					   struct pnfs_layout_segment *lseg,
- 					   u32 idx)
- {
- 	struct nfs4_deviceid_node *devid = FF_LAYOUT_DEVID_NODE(lseg, idx);
+@@ -147,12 +153,6 @@ static const struct mmc_fixup __maybe_un
+ 	MMC_FIXUP("Q2J54A", CID_MANFID_MICRON, 0x014e, add_quirk_mmc,
+ 		  MMC_QUIRK_TRIM_BROKEN | MMC_QUIRK_BROKEN_CACHE_FLUSH),
  
-+	switch (op_status) {
-+	case NFS_OK:
-+	case NFSERR_NXIO:
-+		break;
-+	case NFSERR_PERM:
-+		if (!task->tk_xprt)
-+			break;
-+		xprt_force_disconnect(task->tk_xprt);
-+		goto out_retry;
-+	case NFSERR_ACCES:
-+	case NFSERR_BADHANDLE:
-+	case NFSERR_FBIG:
-+	case NFSERR_IO:
-+	case NFSERR_NOSPC:
-+	case NFSERR_ROFS:
-+	case NFSERR_STALE:
-+		goto out_reset_to_pnfs;
-+	case NFSERR_JUKEBOX:
-+		nfs_inc_stats(lseg->pls_layout->plh_inode, NFSIOS_DELAY);
-+		goto out_retry;
-+	default:
-+		break;
-+	}
-+
- 	switch (task->tk_status) {
- 	/* File access problems. Don't mark the device as unavailable */
- 	case -EACCES:
-@@ -1200,6 +1246,7 @@ static int ff_layout_async_handle_error_v3(struct rpc_task *task,
- 		nfs4_delete_deviceid(devid->ld, devid->nfs_client,
- 				&devid->deviceid);
- 	}
-+out_reset_to_pnfs:
- 	/* FIXME: Need to prevent infinite looping here. */
- 	return -NFS4ERR_RESET_TO_PNFS;
- out_retry:
-@@ -1210,6 +1257,7 @@ static int ff_layout_async_handle_error_v3(struct rpc_task *task,
- }
+-	/*
+-	 * Some SD cards reports discard support while they don't
+-	 */
+-	MMC_FIXUP(CID_NAME_ANY, CID_MANFID_SANDISK_SD, 0x5344, add_quirk_sd,
+-		  MMC_QUIRK_BROKEN_SD_DISCARD),
+-
+ 	END_FIXUP
+ };
  
- static int ff_layout_async_handle_error(struct rpc_task *task,
-+					u32 op_status,
- 					struct nfs4_state *state,
- 					struct nfs_client *clp,
- 					struct pnfs_layout_segment *lseg,
-@@ -1228,10 +1276,11 @@ static int ff_layout_async_handle_error(struct rpc_task *task,
- 
- 	switch (vers) {
- 	case 3:
--		return ff_layout_async_handle_error_v3(task, lseg, idx);
--	case 4:
--		return ff_layout_async_handle_error_v4(task, state, clp,
-+		return ff_layout_async_handle_error_v3(task, op_status, clp,
- 						       lseg, idx);
-+	case 4:
-+		return ff_layout_async_handle_error_v4(task, op_status, state,
-+						       clp, lseg, idx);
- 	default:
- 		/* should never happen */
- 		WARN_ON_ONCE(1);
-@@ -1284,6 +1333,7 @@ static void ff_layout_io_track_ds_error(struct pnfs_layout_segment *lseg,
- 	switch (status) {
- 	case NFS4ERR_DELAY:
- 	case NFS4ERR_GRACE:
-+	case NFS4ERR_PERM:
- 		break;
- 	case NFS4ERR_NXIO:
- 		ff_layout_mark_ds_unreachable(lseg, idx);
-@@ -1316,7 +1366,8 @@ static int ff_layout_read_done_cb(struct rpc_task *task,
- 		trace_ff_layout_read_error(hdr);
- 	}
- 
--	err = ff_layout_async_handle_error(task, hdr->args.context->state,
-+	err = ff_layout_async_handle_error(task, hdr->res.op_status,
-+					   hdr->args.context->state,
- 					   hdr->ds_clp, hdr->lseg,
- 					   hdr->pgio_mirror_idx);
- 
-@@ -1483,7 +1534,8 @@ static int ff_layout_write_done_cb(struct rpc_task *task,
- 		trace_ff_layout_write_error(hdr);
- 	}
- 
--	err = ff_layout_async_handle_error(task, hdr->args.context->state,
-+	err = ff_layout_async_handle_error(task, hdr->res.op_status,
-+					   hdr->args.context->state,
- 					   hdr->ds_clp, hdr->lseg,
- 					   hdr->pgio_mirror_idx);
- 
-@@ -1529,8 +1581,9 @@ static int ff_layout_commit_done_cb(struct rpc_task *task,
- 		trace_ff_layout_commit_error(data);
- 	}
- 
--	err = ff_layout_async_handle_error(task, NULL, data->ds_clp,
--					   data->lseg, data->ds_commit_index);
-+	err = ff_layout_async_handle_error(task, data->res.op_status,
-+					   NULL, data->ds_clp, data->lseg,
-+					   data->ds_commit_index);
- 
- 	trace_nfs4_pnfs_commit_ds(data, err);
- 	switch (err) {
--- 
-2.39.5
-
 
 
 
