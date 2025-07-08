@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-161210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A1FAFD40C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A02AFD255
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 857A41889A02
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:59:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCD11188978D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD002E5411;
-	Tue,  8 Jul 2025 16:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4F82E49B0;
+	Tue,  8 Jul 2025 16:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akIMg+s2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3oYII4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2602DECBD;
-	Tue,  8 Jul 2025 16:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886AB5464F;
+	Tue,  8 Jul 2025 16:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993915; cv=none; b=MwaNyI6VRdUCX9i+Q30/Azm/fng0j5MP/NVhAdjUCqMh2wK1jJc/24dVB1wB6fdW+3CNzeykzILKlhxyoZT+p68XVvvNZEC16dgUSQWBQ5uixgUHT2zFaPohXOIS8p0vx7rN4Xtb3x2dKJGe60+WR0uhTK5jj9inXLuRRyn4my0=
+	t=1751992938; cv=none; b=JYBRP32YG2uyNDgcQ70CFqv1eaK6dHO1B+jB4Wc+pcgYkyzSZe1c32VH+JsgiuFcCxQRZaVKq12Eg8DDtauONMftPQVBKRO2ktDodjqbp71TTDnJA8ALbkjQ1wwLB23INsm+r/l7mQafgaQjaow6q+C6t+jpoWKKXPLcziVfJeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993915; c=relaxed/simple;
-	bh=KAeayTl4JJYaIQH8WfmZ7I3Q2C53hm4cbjsOpE78NDY=;
+	s=arc-20240116; t=1751992938; c=relaxed/simple;
+	bh=i5pZlP8Ab4Du84pV1PT5qjw+4HZ3morFSzu8GnpudgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rc3uvmGOG+n8rG1cc7+D2YSr79kUo2JG870KH0KXj0X7Kiml8Z4YgWY8Rg8AbuQ32HKb01spqzjhr01Iwoq1G8SP1a4pHTTiQSlbscinBgRJ0PxAT/DbqHyUNTomX7EpdPasWHfwFy1ztatlNsZGB95mt4kirGCTZOUmEodb6p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akIMg+s2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699B6C4CEED;
-	Tue,  8 Jul 2025 16:58:34 +0000 (UTC)
+	 MIME-Version; b=ZkGgqB5IWiWPHLc1nJVOPUSUm6Gg6OU09hsK3kCtLQgiiWtaAVm0QfYSs9hY2FCQCptXkowKS1dlBWOV9AQWYyH/iMsYwooj42im2XO7sc7eSOhfyACPJuoEvKJalS6Pq4gr5N81nc5rbMcTAodv57KZes1b4ielbt+p2UnK9QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3oYII4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1027FC4CEF0;
+	Tue,  8 Jul 2025 16:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993914;
-	bh=KAeayTl4JJYaIQH8WfmZ7I3Q2C53hm4cbjsOpE78NDY=;
+	s=korg; t=1751992938;
+	bh=i5pZlP8Ab4Du84pV1PT5qjw+4HZ3morFSzu8GnpudgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=akIMg+s2fC6RAFVcfX6goJsR5IOCvolyAmnYB6Oqctm6RMIn7eLYBxZvpsv48lenx
-	 2N0Ex+qiPQg06/WN6qmhQ1mjytlufJ5pjp0Mkh8nHA3s9Cejo+Y6k0yNkQtXGfJgkk
-	 5LlxcoZEvONNTckY1l0q8jcZd0IiHl4t6VR6di/w=
+	b=x3oYII4HNqhRLG7x4GDj1DV8PbGBpNaf0pkEHPmuWjxgvl6eCDJO4ZxuHNESt4EqS
+	 mzmiAR+ozWwyvSesg816yynwaAN/FRrsXXSQzaF1SdF2BrgpCtzFaSpY+Nf+l5opUf
+	 SAQ320vKQktNjPR2MKYY5n3RNJLnSu9Lx2lA90+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Gengming Liu <l.dmxcsnsbh@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/160] atm: clip: prevent NULL deref in clip_push()
+Subject: [PATCH 6.12 102/232] gfs2: Rename GIF_{DEFERRED -> DEFER}_DELETE
 Date: Tue,  8 Jul 2025 18:21:38 +0200
-Message-ID: <20250708162233.242323625@linuxfoundation.org>
+Message-ID: <20250708162244.112200301@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit b993ea46b3b601915ceaaf3c802adf11e7d6bac6 ]
+[ Upstream commit 9fb794aac6ddd08a9c4982372250f06137696e90 ]
 
-Blamed commit missed that vcc_destroy_socket() calls
-clip_push() with a NULL skb.
+The GIF_DEFERRED_DELETE flag indicates an action that gfs2_evict_inode()
+should take, so rename the flag to GIF_DEFER_DELETE to clarify.
 
-If clip_devs is NULL, clip_push() then crashes when reading
-skb->truesize.
-
-Fixes: 93a2014afbac ("atm: fix a UAF in lec_arp_clear_vccs()")
-Reported-by: syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68556f59.a00a0220.137b3.004e.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Gengming Liu <l.dmxcsnsbh@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: 2c63986dd35f ("gfs2: deallocate inodes in gfs2_create_inode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/clip.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ fs/gfs2/glock.c  | 4 ++--
+ fs/gfs2/incore.h | 2 +-
+ fs/gfs2/super.c  | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/atm/clip.c b/net/atm/clip.c
-index 294cb9efe3d38..511467bb7fe40 100644
---- a/net/atm/clip.c
-+++ b/net/atm/clip.c
-@@ -193,12 +193,6 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index ed699f2872f55..9d72c5b8b7762 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -985,7 +985,7 @@ static bool gfs2_try_evict(struct gfs2_glock *gl)
+ 		ip = NULL;
+ 	spin_unlock(&gl->gl_lockref.lock);
+ 	if (ip) {
+-		set_bit(GIF_DEFERRED_DELETE, &ip->i_flags);
++		set_bit(GIF_DEFER_DELETE, &ip->i_flags);
+ 		d_prune_aliases(&ip->i_inode);
+ 		iput(&ip->i_inode);
  
- 	pr_debug("\n");
+@@ -993,7 +993,7 @@ static bool gfs2_try_evict(struct gfs2_glock *gl)
+ 		spin_lock(&gl->gl_lockref.lock);
+ 		ip = gl->gl_object;
+ 		if (ip) {
+-			clear_bit(GIF_DEFERRED_DELETE, &ip->i_flags);
++			clear_bit(GIF_DEFER_DELETE, &ip->i_flags);
+ 			if (!igrab(&ip->i_inode))
+ 				ip = NULL;
+ 		}
+diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
+index e5535d7b46592..98a41c631ce10 100644
+--- a/fs/gfs2/incore.h
++++ b/fs/gfs2/incore.h
+@@ -376,7 +376,7 @@ enum {
+ 	GIF_SW_PAGED		= 3,
+ 	GIF_FREE_VFS_INODE      = 5,
+ 	GIF_GLOP_PENDING	= 6,
+-	GIF_DEFERRED_DELETE	= 7,
++	GIF_DEFER_DELETE	= 7,
+ };
  
--	if (!clip_devs) {
--		atm_return(vcc, skb->truesize);
--		kfree_skb(skb);
--		return;
--	}
--
- 	if (!skb) {
- 		pr_debug("removing VCC %p\n", clip_vcc);
- 		if (clip_vcc->entry)
-@@ -208,6 +202,11 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
- 		return;
- 	}
- 	atm_return(vcc, skb->truesize);
-+	if (!clip_devs) {
-+		kfree_skb(skb);
-+		return;
-+	}
-+
- 	skb->dev = clip_vcc->entry ? clip_vcc->entry->neigh->dev : clip_devs;
- 	/* clip_vcc->entry == NULL if we don't have an IP address yet */
- 	if (!skb->dev) {
+ struct gfs2_inode {
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 5ecb857cf74e3..6584fd5e0a5b7 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -1326,7 +1326,7 @@ static enum dinode_demise evict_should_delete(struct inode *inode,
+ 	if (unlikely(test_bit(GIF_ALLOC_FAILED, &ip->i_flags)))
+ 		goto should_delete;
+ 
+-	if (test_bit(GIF_DEFERRED_DELETE, &ip->i_flags))
++	if (test_bit(GIF_DEFER_DELETE, &ip->i_flags))
+ 		return SHOULD_DEFER_EVICTION;
+ 
+ 	/* Deletes should never happen under memory pressure anymore.  */
 -- 
 2.39.5
 
