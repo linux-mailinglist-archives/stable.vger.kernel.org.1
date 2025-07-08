@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-160653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428B2AFD129
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:32:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01991AFD274
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 376237B2C9E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57E7E170B29
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36A52E0910;
-	Tue,  8 Jul 2025 16:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738B62E540D;
+	Tue,  8 Jul 2025 16:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6+MHHT+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxZPchmg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D972D8787;
-	Tue,  8 Jul 2025 16:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304782E49A8;
+	Tue,  8 Jul 2025 16:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992295; cv=none; b=DywhLi3DCxn6N+ab2qZvbWMCbDfIcwQVHRSuT93BpZIsVqHYrhMC4ocdi1IJ7OXMc7miwYR1iSIskjgPJCP2JUay6iY5BOt9P36VaGvix/ztUEQK0sx6Ch6U2XgfuabF+SlrBuNx6UlE2wuU/XJuDaltr8mukdlYQ1EYZtcz/lM=
+	t=1751993013; cv=none; b=ZQ26oYoVaA1GH97L1vX8YZ/TTqxt1FczylYUsHGT4BMr8w7amqEaefEiJPTQjko4SoNewMaNNaHKJm+e25M237r6OePeNgVJm5sFK4FN0RRDWlToI4OwrCewDgokdC00y+j0HgvVPghvxPjhcEdyxhKPQdAJ9likKLHAqWBhLPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992295; c=relaxed/simple;
-	bh=mxLBjJG/k55QHHXsV5UjIMSHA3MtnUPovqYsKG58L/I=;
+	s=arc-20240116; t=1751993013; c=relaxed/simple;
+	bh=9SyLkXoIqnQr5iu1TSqt0hIm6HS85GM7E7VjMf5h4Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PIgJK69vIsv4P8CRpp5BHbT9kdaqZWx0vgn1WpR5nEpxXP3b+CZZeE32ZQdtM3VYeja7ztlGKZlUhwjOaZIfiKaP+nKQTFNE/2kpn77rbDqHJmhIaVBCvfw6d2lK7isQAEUH6s2sBVeMIe8hG79iAD0bmcOmXjRgrvG/E7McVGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6+MHHT+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D9AC4CEED;
-	Tue,  8 Jul 2025 16:31:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nKR1OTS4W/8aVj/npf4Xdv4ccAVNomuGzAJnTHgxM2J/iIT03vDL2Hl865c441ic8uWB57zRWpPcUiRVc5Ojh0d92PauUUjm+9ojMvMUftGf3Pr2gw0fFsnwSo0gfTv3JwV1Z6B8TCDgTWX0IADqXftajZ/BvBz87HbW6PT6J70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxZPchmg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA788C4CEED;
+	Tue,  8 Jul 2025 16:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992295;
-	bh=mxLBjJG/k55QHHXsV5UjIMSHA3MtnUPovqYsKG58L/I=;
+	s=korg; t=1751993013;
+	bh=9SyLkXoIqnQr5iu1TSqt0hIm6HS85GM7E7VjMf5h4Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J6+MHHT+cZ6Rgt4Gr2QQEhSvfHRYvP+XbvOnKa8lnEhnIQTW3Zn1tQoffAQH9KUML
-	 VUY/m0NpnWLNzPrQV9d8/f+GtAbwt8epkI+IIklvuqtjqe6rGRlag2ZZweTUERb/v8
-	 bfeJChOwWEbX1i0bXMfck0de/YVM523dcEfThdDg=
+	b=sxZPchmgSXclvQCvmx01zWKEAFukiOsrOijHrhRPnnUA33D0Cd+T8JURbCvqJutg1
+	 KIYaeX6w/r9AHqlQmPEXK016q9c7hLzWOOUlDxKEUdf824OmgVO39v3tQghIEtjcvp
+	 0kMDo/ZisHh6KyNtN3JeeEnbYQgfuHyacjrFGKL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/132] arm64: dts: qcom: sm8550: add UART14 nodes
+Subject: [PATCH 6.12 157/232] drm/xe: move DPT l2 flush to a more sensible place
 Date: Tue,  8 Jul 2025 18:22:33 +0200
-Message-ID: <20250708162231.909701628@linuxfoundation.org>
+Message-ID: <20250708162245.544959612@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +63,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit 75cac7090298978c12c59dbca377d957f6f8a8bb ]
+[ Upstream commit f16873f42a06b620669d48a4b5c3f888cb3653a1 ]
 
-Add the Geni High Speed UART QUP instance 2 element 6
-node and associated default pinctrl.
+Only need the flush for DPT host updates here. Normal GGTT updates don't
+need special flush.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20230911-topic-sm8550-upstream-bt-v4-1-a5a428c77418@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 5ff1fbb30597 ("platform/x86: think-lmi: Fix class device unregistration")
+Fixes: 01570b446939 ("drm/xe/bmg: implement Wa_16023588340")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: stable@vger.kernel.org # v6.12+
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://lore.kernel.org/r/20250606104546.1996818-4-matthew.auld@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 35db1da40c8cfd7511dc42f342a133601eb45449)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi | 30 ++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/gpu/drm/xe/display/xe_fb_pin.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-index c14c6f8583d54..2f0f1c2ab7391 100644
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -1064,6 +1064,20 @@ spi13: spi@894000 {
- 				status = "disabled";
- 			};
+diff --git a/drivers/gpu/drm/xe/display/xe_fb_pin.c b/drivers/gpu/drm/xe/display/xe_fb_pin.c
+index 972b7db52f785..0558b106f8b60 100644
+--- a/drivers/gpu/drm/xe/display/xe_fb_pin.c
++++ b/drivers/gpu/drm/xe/display/xe_fb_pin.c
+@@ -154,6 +154,9 @@ static int __xe_pin_fb_vma_dpt(const struct intel_framebuffer *fb,
  
-+			uart14: serial@898000 {
-+				compatible = "qcom,geni-uart";
-+				reg = <0 0x898000 0 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP2_S6_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_uart14_default>, <&qup_uart14_cts_rts>;
-+				interrupts = <GIC_SPI 461 IRQ_TYPE_LEVEL_HIGH>;
-+				interconnects = <&clk_virt MASTER_QUP_CORE_2 0 &clk_virt SLAVE_QUP_CORE_2 0>,
-+						<&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_QUP_2 0>;
-+				interconnect-names = "qup-core", "qup-config";
-+				status = "disabled";
-+			};
+ 	vma->dpt = dpt;
+ 	vma->node = dpt->ggtt_node[tile0->id];
 +
- 			i2c15: i2c@89c000 {
- 				compatible = "qcom,geni-i2c";
- 				reg = <0 0x0089c000 0 0x4000>;
-@@ -3640,6 +3654,22 @@ qup_uart7_default: qup-uart7-default-state {
- 				bias-disable;
- 			};
++	/* Ensure DPT writes are flushed */
++	xe_device_l2_flush(xe);
+ 	return 0;
+ }
  
-+			qup_uart14_default: qup-uart14-default-state {
-+				/* TX, RX */
-+				pins = "gpio78", "gpio79";
-+				function = "qup2_se6";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			qup_uart14_cts_rts: qup-uart14-cts-rts-state {
-+				/* CTS, RTS */
-+				pins = "gpio76", "gpio77";
-+				function = "qup2_se6";
-+				drive-strength = <2>;
-+				bias-pull-down;
-+			};
-+
- 			sdc2_sleep: sdc2-sleep-state {
- 				clk-pins {
- 					pins = "sdc2_clk";
+@@ -318,8 +321,6 @@ static struct i915_vma *__xe_pin_fb_vma(const struct intel_framebuffer *fb,
+ 	if (ret)
+ 		goto err_unpin;
+ 
+-	/* Ensure DPT writes are flushed */
+-	xe_device_l2_flush(xe);
+ 	return vma;
+ 
+ err_unpin:
 -- 
 2.39.5
 
