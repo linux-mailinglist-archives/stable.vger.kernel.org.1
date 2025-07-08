@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-161187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC332AFD3DA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:01:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4684AFD2FD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:52:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5F131892544
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED8C916EB3A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F060F258CF7;
-	Tue,  8 Jul 2025 16:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E842DEA94;
+	Tue,  8 Jul 2025 16:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAZJGNfn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLztgBcx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF562E540B;
-	Tue,  8 Jul 2025 16:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EC918EAB;
+	Tue,  8 Jul 2025 16:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993846; cv=none; b=X5MTkir1KV6ADHjAs7JYYWyhmCmrX13AJvNbdrq2yI71OtnZJpHkNKkEDmjuxP1dXUa3CxwSeR2yHy3NM7EDKdj2Mpg8olUg0nRJNVj3WJycFk1a99voAQiGSPtUoOPW0do+8TH2pdLPYpTThFpnciRnqtGXSQwQN8KQsNAzQxg=
+	t=1751993342; cv=none; b=EJf/qNi2DDdBjyhCAInsxkxN1s9Uecelq7RO+BAA9gtnpIvfDuDu/VDm1NgMO6xzbJhIksHjJ9+wCoKB94Hhefu5naFf5//F/ucVP391sh0gb7xQlRwDprzvnXkGKNtxLpAvOBKnwv+YaisXKFSN+TKL740gqv1WdxWIXOudkPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993846; c=relaxed/simple;
-	bh=P7u7dK2cRCvjQdW4pYMIOl7E3j0pNQnuXQ1BxpybrXg=;
+	s=arc-20240116; t=1751993342; c=relaxed/simple;
+	bh=CJuZZnS8E1IrIBoxNdGTRrydZnA/1nREEWJwecd/M1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ErFVNBgnXrAi23qHjBiWhLqT0CcphIpXNUEQpcT7mLdUv+i81mq15OUkc6peRTOkcGM+slsy3TzrD/DzZrdQx1WqMjbUIeX2khYg074zFTYT0gg28fJ9bszKkcd0esu7j+0NBunF7cBo91PXqJelw/IH4EI0qlfnr7w6M8Ub8yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAZJGNfn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCD9C4CEED;
-	Tue,  8 Jul 2025 16:57:26 +0000 (UTC)
+	 MIME-Version; b=Aoj4vcYUT1KL/2Fujsp3uCup07uA3s41ttPWi2L3YqVLsO+drOImLONLZKzckKK9ZNpb/36OTqf+hLUmYld4WfAp3RaoTce6/U7zJhFH7i5oIJBoYZbZEB1J02nVciLJ4vYwRUB3OzTAdBLdgVaYfmACqKzrFy7V/nYkJKGj5DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLztgBcx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759F4C4CEF0;
+	Tue,  8 Jul 2025 16:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993846;
-	bh=P7u7dK2cRCvjQdW4pYMIOl7E3j0pNQnuXQ1BxpybrXg=;
+	s=korg; t=1751993342;
+	bh=CJuZZnS8E1IrIBoxNdGTRrydZnA/1nREEWJwecd/M1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAZJGNfnEiooyWzCzpXDMsHfIzDn9l2rouHirtRGc++rg0FVVQi2C8K8adgM4UDgA
-	 d8bForNbK9fLmiTUTYHe7FgWUXarRoft+1SoD2TBpiHha6JWaQuY+48LnCqQjC1b1L
-	 42OSzh4DvKc1yfeW670JUGEQrk842pdt+c1793rQ=
+	b=FLztgBcxNqjQ9J+3IVaEHdisVSB8JbwT7RXJRxnZFH+OR4sjSCTmZNq6UpL4ZezfA
+	 izmnP6vgLe2muWZhXib+cXhU2QYh2zUVocOVA0fr0aPWWISCZUheYOZGxmjoPtR3uy
+	 QBlQrKEluCerGfvjGndhExLOOc6A4hd8K7FNuWIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 010/160] md/md-bitmap: fix dm-raid max_write_behind setting
+	Bryan Tan <bryan-bt.tan@broadcom.com>,
+	Vishnu Dasa <vishnu.dasa@broadcom.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	stable <stable@kernel.org>,
+	HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+Subject: [PATCH 6.15 010/178] vsock/vmci: Clear the vmci transport packet properly when initializing it
 Date: Tue,  8 Jul 2025 18:20:47 +0200
-Message-ID: <20250708162231.793853948@linuxfoundation.org>
+Message-ID: <20250708162236.819209078@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +71,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
 
-[ Upstream commit 2afe17794cfed5f80295b1b9facd66e6f65e5002 ]
+commit 223e2288f4b8c262a864e2c03964ffac91744cd5 upstream.
 
-It's supposed to be COUNTER_MAX / 2, not COUNTER_MAX.
+In vmci_transport_packet_init memset the vmci_transport_packet before
+populating the fields to avoid any uninitialised data being left in the
+structure.
 
-Link: https://lore.kernel.org/linux-raid/20250524061320.370630-14-yukuai1@huaweicloud.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Bryan Tan <bryan-bt.tan@broadcom.com>
+Cc: Vishnu Dasa <vishnu.dasa@broadcom.com>
+Cc: Broadcom internal kernel review list
+Cc: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: virtualization@lists.linux.dev
+Cc: netdev@vger.kernel.org
+Cc: stable <stable@kernel.org>
+Signed-off-by: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20250701122254.2397440-1-gregkh@linuxfoundation.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md-bitmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/vmw_vsock/vmci_transport.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index b26e22dd9ba2e..cb84a4ab8d70f 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -546,7 +546,7 @@ static int md_bitmap_new_disk_sb(struct bitmap *bitmap)
- 	 * is a good choice?  We choose COUNTER_MAX / 2 arbitrarily.
+--- a/net/vmw_vsock/vmci_transport.c
++++ b/net/vmw_vsock/vmci_transport.c
+@@ -119,6 +119,8 @@ vmci_transport_packet_init(struct vmci_t
+ 			   u16 proto,
+ 			   struct vmci_handle handle)
+ {
++	memset(pkt, 0, sizeof(*pkt));
++
+ 	/* We register the stream control handler as an any cid handle so we
+ 	 * must always send from a source address of VMADDR_CID_ANY
  	 */
- 	write_behind = bitmap->mddev->bitmap_info.max_write_behind;
--	if (write_behind > COUNTER_MAX)
-+	if (write_behind > COUNTER_MAX / 2)
- 		write_behind = COUNTER_MAX / 2;
- 	sb->write_behind = cpu_to_le32(write_behind);
- 	bitmap->mddev->bitmap_info.max_write_behind = write_behind;
--- 
-2.39.5
-
+@@ -131,8 +133,6 @@ vmci_transport_packet_init(struct vmci_t
+ 	pkt->type = type;
+ 	pkt->src_port = src->svm_port;
+ 	pkt->dst_port = dst->svm_port;
+-	memset(&pkt->proto, 0, sizeof(pkt->proto));
+-	memset(&pkt->_reserved2, 0, sizeof(pkt->_reserved2));
+ 
+ 	switch (pkt->type) {
+ 	case VMCI_TRANSPORT_PACKET_TYPE_INVALID:
 
 
 
