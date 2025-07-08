@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-160820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E78FAFD201
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A5FAFD413
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 951841724BF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:39:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 166D7188AEBC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C2423A98D;
-	Tue,  8 Jul 2025 16:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA362E54D5;
+	Tue,  8 Jul 2025 16:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOnwItbT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oY0qZDTz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D9AF9E8;
-	Tue,  8 Jul 2025 16:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2B017C21E;
+	Tue,  8 Jul 2025 16:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992785; cv=none; b=DdZpJpi1eP3/Bgtz31pGqtXV2NGKKkXKyP5omGtHI6aqNXKdeSK+pKh/KGE6NJ5GipETCPZLAZXC0ZnwIgzoAzNzC5bSyuTUNAVY3qWjPPdqmCcIUeJYYwk/4e1XrRu5LUGGdkKeLT2fxgvun0uBreBU09Psydpq2ZDhETw2lDg=
+	t=1751993938; cv=none; b=pg8x7l1G+39QXMd3BFZaWFnam0DjBEh77koZK9tKnT5DSa9+50vXdj41mG5JBFAj6iKUsoZxnuyeOIhJZiSUIVhEytMTFa8yLf5hYGHBuBFz7V4Yl9Jd71u6S0bxln61l02+C4Ld7V83tPRXx5p/nwwH/X009OpFxb3lo8gRunM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992785; c=relaxed/simple;
-	bh=uKF3ESQFwUY3wvYyowaTuEgDpsyh0l3RSYnQ3WfjQ0M=;
+	s=arc-20240116; t=1751993938; c=relaxed/simple;
+	bh=ydLyymsysqWd2blfraIDh4JgRxRo/Um3AwcPMerAlWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYYUbkyb2UQhc5fuzj3vqa+IaWCuTJstJm0MA7iUnfFfjYjZCEwfbLbCCZO4ya5/8r2GR7wAnVVy0OoNxD2EhyW1VZwg6zaiuQlXBz5mngd6iE2BajxzD8gALArWqo97wtRcXNT+EAcJq+SzQqHMOZeQsOGaPNOlR1b7mdqC+h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOnwItbT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D127C4CEED;
-	Tue,  8 Jul 2025 16:39:44 +0000 (UTC)
+	 MIME-Version; b=SrhttlRAtn9GWUockx3pN9eLSmR2h8k6mN4Wb5dHG6C2d0Qp3cZ0i2mEYZK0bYF3sDzJYd1oR0CHlRwDcr7rvovLeJJ+Kwn/cwIDfX+0JklQCMAAyoCkppGSN519Ck6IKVB9Ochr+sG92gCFm92rEIMNthuoNJQsKz8ZNqiX6VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oY0qZDTz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F39C4CEED;
+	Tue,  8 Jul 2025 16:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992784;
-	bh=uKF3ESQFwUY3wvYyowaTuEgDpsyh0l3RSYnQ3WfjQ0M=;
+	s=korg; t=1751993938;
+	bh=ydLyymsysqWd2blfraIDh4JgRxRo/Um3AwcPMerAlWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOnwItbTZyWc6oZsADs9r6x+ZPxfjWvmu4WDGbgRQPZTQaLMe0b9JudHOW/zH2gti
-	 xdpBdoKKX/tMV2/eT3dbMLMlIERAsX7vgoszvd5j4PgxCY0UN6jPXUfflmmkomY6+1
-	 1g4xon5WUgCX6PG7ABRja65hX51/l5P25vZbID7Q=
+	b=oY0qZDTzOVVpljK8Cy01OuLC2TYR2yyAvZh1nEvqYF2k39PeJNKbucJ/UOHdrmoL/
+	 pa9ie7r+fKPVFB5vV+VeSjJSZzKAOoFJQm0LAAIsdy4sC3Go1zUiugehgNd2IP/T5A
+	 94oady9cQ8q0nvB4MDHoq75c3fSOmiRkomzuS0WQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Daniel Vetter <daniel.vetter@intel.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Claudio Suarez <cssk@net-c.es>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Du Cheng <ducheng2@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/232] igc: disable L1.2 PCI-E link substate to avoid performance issue
-Date: Tue,  8 Jul 2025 18:21:16 +0200
-Message-ID: <20250708162243.545859458@linuxfoundation.org>
+Subject: [PATCH 5.15 040/160] fbcon: Extract fbcon_open/release helpers
+Date: Tue,  8 Jul 2025 18:21:17 +0200
+Message-ID: <20250708162232.645779492@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +66,214 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-[ Upstream commit 0325143b59c6c6d79987afc57d2456e7a20d13b7 ]
+[ Upstream commit bd6026a8c4e6b7edf4bafcb71da885b284b8f4fd ]
 
-I226 devices advertise support for the PCI-E link L1.2 substate. However,
-due to a hardware limitation, the exit latency from this low-power state
-is longer than the packet buffer can tolerate under high traffic
-conditions. This can lead to packet loss and degraded performance.
+There's two minor behaviour changes in here:
+- in error paths we now consistently call fb_ops->fb_release
+- fb_release really can't fail (fbmem.c ignores it too) and there's no
+  reasonable cleanup we can do anyway.
 
-To mitigate this, disable the L1.2 substate. The increased power draw
-between L1.1 and L1.2 is insignificant.
+Note that everything in fbcon.c is protected by the big console_lock()
+lock (especially all the global variables), so the minor changes in
+ordering of setup/cleanup do not matter.
 
-Fixes: 43546211738e ("igc: Add new device ID's")
-Link: https://lore.kernel.org/intel-wired-lan/15248b4f-3271-42dd-8e35-02bfc92b25e1@intel.com
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+v2: Explain a bit better why this is all correct (Sam)
+
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Claudio Suarez <cssk@net-c.es>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc: Du Cheng <ducheng2@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20220405210335.3434130-10-daniel.vetter@ffwll.ch
+Stable-dep-of: 17186f1f90d3 ("fbdev: Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/video/fbdev/core/fbcon.c | 107 +++++++++++++++----------------
+ 1 file changed, 53 insertions(+), 54 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 082b0baf5d37c..2a0c5a343e472 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6987,6 +6987,10 @@ static int igc_probe(struct pci_dev *pdev,
- 	adapter->port_num = hw->bus.func;
- 	adapter->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index abea89d101626..2a230a6335a81 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -691,19 +691,37 @@ static int fbcon_invalid_charcount(struct fb_info *info, unsigned charcount)
  
-+	/* Disable ASPM L1.2 on I226 devices to avoid packet loss */
-+	if (igc_is_device_id_i226(hw))
-+		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
-+
- 	err = pci_save_state(pdev);
- 	if (err)
- 		goto err_ioremap;
-@@ -7368,6 +7372,9 @@ static int igc_resume(struct device *dev)
- 	pci_enable_wake(pdev, PCI_D3hot, 0);
- 	pci_enable_wake(pdev, PCI_D3cold, 0);
+ #endif /* CONFIG_MISC_TILEBLITTING */
  
-+	if (igc_is_device_id_i226(hw))
-+		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
++static int fbcon_open(struct fb_info *info)
++{
++	if (!try_module_get(info->fbops->owner))
++		return -ENODEV;
 +
- 	if (igc_init_interrupt_scheme(adapter, true)) {
- 		netdev_err(netdev, "Unable to allocate memory for queues\n");
- 		return -ENOMEM;
-@@ -7480,6 +7487,9 @@ static pci_ers_result_t igc_io_slot_reset(struct pci_dev *pdev)
- 		pci_enable_wake(pdev, PCI_D3hot, 0);
- 		pci_enable_wake(pdev, PCI_D3cold, 0);
++	if (info->fbops->fb_open &&
++	    info->fbops->fb_open(info, 0)) {
++		module_put(info->fbops->owner);
++		return -ENODEV;
++	}
++
++	return 0;
++}
++
++static void fbcon_release(struct fb_info *info)
++{
++	if (info->fbops->fb_release)
++		info->fbops->fb_release(info, 0);
++
++	module_put(info->fbops->owner);
++}
  
-+		if (igc_is_device_id_i226(hw))
-+			pci_disable_link_state_locked(pdev, PCIE_LINK_STATE_L1_2);
+ static int con2fb_acquire_newinfo(struct vc_data *vc, struct fb_info *info,
+ 				  int unit, int oldidx)
+ {
+ 	struct fbcon_ops *ops = NULL;
+-	int err = 0;
+-
+-	if (!try_module_get(info->fbops->owner))
+-		err = -ENODEV;
++	int err;
+ 
+-	if (!err && info->fbops->fb_open &&
+-	    info->fbops->fb_open(info, 0))
+-		err = -ENODEV;
++	err = fbcon_open(info);
++	if (err)
++		return err;
+ 
+ 	if (!err) {
+ 		ops = kzalloc(sizeof(struct fbcon_ops), GFP_KERNEL);
+@@ -724,7 +742,7 @@ static int con2fb_acquire_newinfo(struct vc_data *vc, struct fb_info *info,
+ 
+ 	if (err) {
+ 		con2fb_map[unit] = oldidx;
+-		module_put(info->fbops->owner);
++		fbcon_release(info);
+ 	}
+ 
+ 	return err;
+@@ -735,45 +753,34 @@ static int con2fb_release_oldinfo(struct vc_data *vc, struct fb_info *oldinfo,
+ 				  int oldidx, int found)
+ {
+ 	struct fbcon_ops *ops = oldinfo->fbcon_par;
+-	int err = 0, ret;
++	int ret;
+ 
+-	if (oldinfo->fbops->fb_release &&
+-	    oldinfo->fbops->fb_release(oldinfo, 0)) {
+-		con2fb_map[unit] = oldidx;
+-		if (!found && newinfo->fbops->fb_release)
+-			newinfo->fbops->fb_release(newinfo, 0);
+-		if (!found)
+-			module_put(newinfo->fbops->owner);
+-		err = -ENODEV;
+-	}
++	fbcon_release(oldinfo);
+ 
+-	if (!err) {
+-		fbcon_del_cursor_work(oldinfo);
+-		kfree(ops->cursor_state.mask);
+-		kfree(ops->cursor_data);
+-		kfree(ops->cursor_src);
+-		kfree(ops->fontbuffer);
+-		kfree(oldinfo->fbcon_par);
+-		oldinfo->fbcon_par = NULL;
+-		module_put(oldinfo->fbops->owner);
+-		/*
+-		  If oldinfo and newinfo are driving the same hardware,
+-		  the fb_release() method of oldinfo may attempt to
+-		  restore the hardware state.  This will leave the
+-		  newinfo in an undefined state. Thus, a call to
+-		  fb_set_par() may be needed for the newinfo.
+-		*/
+-		if (newinfo && newinfo->fbops->fb_set_par) {
+-			ret = newinfo->fbops->fb_set_par(newinfo);
++	fbcon_del_cursor_work(oldinfo);
++	kfree(ops->cursor_state.mask);
++	kfree(ops->cursor_data);
++	kfree(ops->cursor_src);
++	kfree(ops->fontbuffer);
++	kfree(oldinfo->fbcon_par);
++	oldinfo->fbcon_par = NULL;
++	/*
++	  If oldinfo and newinfo are driving the same hardware,
++	  the fb_release() method of oldinfo may attempt to
++	  restore the hardware state.  This will leave the
++	  newinfo in an undefined state. Thus, a call to
++	  fb_set_par() may be needed for the newinfo.
++	*/
++	if (newinfo && newinfo->fbops->fb_set_par) {
++		ret = newinfo->fbops->fb_set_par(newinfo);
+ 
+-			if (ret)
+-				printk(KERN_ERR "con2fb_release_oldinfo: "
+-					"detected unhandled fb_set_par error, "
+-					"error code %d\n", ret);
+-		}
++		if (ret)
++			printk(KERN_ERR "con2fb_release_oldinfo: "
++				"detected unhandled fb_set_par error, "
++				"error code %d\n", ret);
+ 	}
+ 
+-	return err;
++	return 0;
+ }
+ 
+ static void con2fb_init_display(struct vc_data *vc, struct fb_info *info,
+@@ -928,7 +935,6 @@ static const char *fbcon_startup(void)
+ 	struct fbcon_display *p = &fb_display[fg_console];
+ 	struct vc_data *vc = vc_cons[fg_console].d;
+ 	const struct font_desc *font = NULL;
+-	struct module *owner;
+ 	struct fb_info *info = NULL;
+ 	struct fbcon_ops *ops;
+ 	int rows, cols;
+@@ -947,17 +953,12 @@ static const char *fbcon_startup(void)
+ 	if (!info)
+ 		return NULL;
+ 	
+-	owner = info->fbops->owner;
+-	if (!try_module_get(owner))
++	if (fbcon_open(info))
+ 		return NULL;
+-	if (info->fbops->fb_open && info->fbops->fb_open(info, 0)) {
+-		module_put(owner);
+-		return NULL;
+-	}
+ 
+ 	ops = kzalloc(sizeof(struct fbcon_ops), GFP_KERNEL);
+ 	if (!ops) {
+-		module_put(owner);
++		fbcon_release(info);
+ 		return NULL;
+ 	}
+ 
+@@ -3387,10 +3388,6 @@ static void fbcon_exit(void)
+ 		}
+ 
+ 		if (mapped) {
+-			if (info->fbops->fb_release)
+-				info->fbops->fb_release(info, 0);
+-			module_put(info->fbops->owner);
+-
+ 			if (info->fbcon_par) {
+ 				struct fbcon_ops *ops = info->fbcon_par;
+ 
+@@ -3400,6 +3397,8 @@ static void fbcon_exit(void)
+ 				kfree(info->fbcon_par);
+ 				info->fbcon_par = NULL;
+ 			}
 +
- 		/* In case of PCI error, adapter loses its HW address
- 		 * so we should re-assign it here.
- 		 */
++			fbcon_release(info);
+ 		}
+ 	}
+ }
 -- 
 2.39.5
 
