@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-161001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB2CAAFD2EF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9439EAFD3C4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:00:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FCD5425044
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1F88164705
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443972253E0;
-	Tue,  8 Jul 2025 16:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A73B2E7623;
+	Tue,  8 Jul 2025 16:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fXjj9RTL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZl/2TF2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024D01754B;
-	Tue,  8 Jul 2025 16:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F262E718D;
+	Tue,  8 Jul 2025 16:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993312; cv=none; b=ZgZPwPgTWVfC8KViPlBUoTNYcDtouBgYvtWYYmY8V0lqZrLS0lbMsI0VU/vPJzA/JW3s/mc3UWyemLmof8LJ5CNtdmNQA4eLKJgRNslXfwllU71A/z4ZOIywKgV5qansvQsfeEGJe4RVyTMYrpUwKYnF70RYcwbgHiXvoa38vCs=
+	t=1751993824; cv=none; b=XOoW6nMdtHh/FHX6gGpJTOi3i9ydm8Je0oeg5sZCUlSk69HMsV3MsesIUP3YGO99ERGhXKuba03mnfqhjACasnXBzE67nyuvAk1dibdNzeIme8v6ThUnI5MhASp3Mhgj1OqcmcQyYBk6dl2Aumad+k1diitoa/T7xtFXsoNOGpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993312; c=relaxed/simple;
-	bh=1Y0E2UJQ47HDIswoxHXjz15N9OjtpX4mTU4/d3BLHFs=;
+	s=arc-20240116; t=1751993824; c=relaxed/simple;
+	bh=JX77fFu4AUNR5fHES6coRv/K+tEVyTYDEOsr3Rh2wjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YTCpv8WUL85c4tqVERwUtaIjJA6CsqU2Hl+4Vk1/K/uD+pSGb8O2mWyXx0fDLAEap8wgI26MVoJC+pZimzIb4tgFrce0pXdWNDj3d2zGKxiQvxcdCVMJoS1W/b1PiI5bjXmVR6rll4YcCtxzSFh0N4VwvfZkLIG7lECnMfRTuik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fXjj9RTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8D3C4CEED;
-	Tue,  8 Jul 2025 16:48:31 +0000 (UTC)
+	 MIME-Version; b=XlGadJrtZy4OB9FTo6iBKo+AIR0U9mPm50yvJ3g6XVh80BMKVo/zlsVAJJf2hxXYfLlJ3mE0w1RNyeehsvm0q7p1mZEsBp4642B2DByjj4bXPjSqnqxcf03Y4HLosjhMxFFIr3saJlal50/gRHsgpR4qA+c65MPjythpzKMeOLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZl/2TF2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50114C4CEED;
+	Tue,  8 Jul 2025 16:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993311;
-	bh=1Y0E2UJQ47HDIswoxHXjz15N9OjtpX4mTU4/d3BLHFs=;
+	s=korg; t=1751993823;
+	bh=JX77fFu4AUNR5fHES6coRv/K+tEVyTYDEOsr3Rh2wjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fXjj9RTLUWKOtKR/yTRN4Ws8TYy/lSCnohlY0pTRi6lxjnZehuYGy/NAOP+3pMSwn
-	 53EeJSL4AxvYbrlw36RHwwxPzVCFVA8jMHxed14aPBVTmYet5SO5iY9JtBkGrlMWwN
-	 MX2a4xTl3/AU6G6N429rVZU0YFobQnsNiVTJo1vI=
+	b=IZl/2TF2dopIVEEt84Znx2hRYW57zubyy+oQ7rZHiW4n/M7BLw+HxYPBjD382oRZ4
+	 H87JTV/4Vq4AldDXC1UdZguPUoEDM5zT5yShvXPt1KZtSCHbqe/lMFVgvvDd3b5CJa
+	 z/WTAZQzvYatPJUm7eSDuBxNGdZQSzSsVCiRliqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.15 030/178] mtk-sd: Prevent memory corruption from DMA map failure
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 030/160] media: omap3isp: use sgtable-based scatterlist wrappers
 Date: Tue,  8 Jul 2025 18:21:07 +0200
-Message-ID: <20250708162237.335112414@linuxfoundation.org>
+Message-ID: <20250708162232.355934170@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-commit f5de469990f19569627ea0dd56536ff5a13beaa3 upstream.
+[ Upstream commit 3de572fe2189a4a0bd80295e1f478401e739498e ]
 
-If msdc_prepare_data() fails to map the DMA region, the request is
-not prepared for data receiving, but msdc_start_data() proceeds
-the DMA with previous setting.
-Since this will lead a memory corruption, we have to stop the
-request operation soon after the msdc_prepare_data() fails to
-prepare it.
+Use common wrappers operating directly on the struct sg_table objects to
+fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
+functions have to be called with the number of elements originally passed
+to dma_map_sg_*() function, not the one returned in sgtable's nents.
 
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Fixes: 208489032bdd ("mmc: mediatek: Add Mediatek MMC driver")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/174972756982.3337526.6755001617701603082.stgit@mhiramat.tok.corp.google.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d33186d0be18 ("[media] omap3isp: ccdc: Use the DMA API for LSC")
+Fixes: 0e24e90f2ca7 ("[media] omap3isp: stat: Use the DMA API")
+CC: stable@vger.kernel.org
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mtk-sd.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/media/platform/omap3isp/ispccdc.c | 8 ++++----
+ drivers/media/platform/omap3isp/ispstat.c | 6 ++----
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -834,6 +834,11 @@ static void msdc_prepare_data(struct msd
+diff --git a/drivers/media/platform/omap3isp/ispccdc.c b/drivers/media/platform/omap3isp/ispccdc.c
+index 108b5e9f82cb0..ee966f8ee0103 100644
+--- a/drivers/media/platform/omap3isp/ispccdc.c
++++ b/drivers/media/platform/omap3isp/ispccdc.c
+@@ -446,8 +446,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
+ 		if (ret < 0)
+ 			goto done;
+ 
+-		dma_sync_sg_for_cpu(isp->dev, req->table.sgt.sgl,
+-				    req->table.sgt.nents, DMA_TO_DEVICE);
++		dma_sync_sgtable_for_cpu(isp->dev, &req->table.sgt,
++					 DMA_TO_DEVICE);
+ 
+ 		if (copy_from_user(req->table.addr, config->lsc,
+ 				   req->config.size)) {
+@@ -455,8 +455,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
+ 			goto done;
+ 		}
+ 
+-		dma_sync_sg_for_device(isp->dev, req->table.sgt.sgl,
+-				       req->table.sgt.nents, DMA_TO_DEVICE);
++		dma_sync_sgtable_for_device(isp->dev, &req->table.sgt,
++					    DMA_TO_DEVICE);
  	}
+ 
+ 	spin_lock_irqsave(&ccdc->lsc.req_lock, flags);
+diff --git a/drivers/media/platform/omap3isp/ispstat.c b/drivers/media/platform/omap3isp/ispstat.c
+index 68cf68dbcace2..dc496ca9748a6 100644
+--- a/drivers/media/platform/omap3isp/ispstat.c
++++ b/drivers/media/platform/omap3isp/ispstat.c
+@@ -161,8 +161,7 @@ static void isp_stat_buf_sync_for_device(struct ispstat *stat,
+ 	if (ISP_STAT_USES_DMAENGINE(stat))
+ 		return;
+ 
+-	dma_sync_sg_for_device(stat->isp->dev, buf->sgt.sgl,
+-			       buf->sgt.nents, DMA_FROM_DEVICE);
++	dma_sync_sgtable_for_device(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
  }
  
-+static bool msdc_data_prepared(struct mmc_data *data)
-+{
-+	return data->host_cookie & MSDC_PREPARE_FLAG;
-+}
-+
- static void msdc_unprepare_data(struct msdc_host *host, struct mmc_data *data)
- {
- 	if (data->host_cookie & MSDC_ASYNC_FLAG)
-@@ -1466,8 +1471,18 @@ static void msdc_ops_request(struct mmc_
- 	WARN_ON(!host->hsq_en && host->mrq);
- 	host->mrq = mrq;
+ static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
+@@ -171,8 +170,7 @@ static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
+ 	if (ISP_STAT_USES_DMAENGINE(stat))
+ 		return;
  
--	if (mrq->data)
-+	if (mrq->data) {
- 		msdc_prepare_data(host, mrq->data);
-+		if (!msdc_data_prepared(mrq->data)) {
-+			/*
-+			 * Failed to prepare DMA area, fail fast before
-+			 * starting any commands.
-+			 */
-+			mrq->cmd->error = -ENOSPC;
-+			mmc_request_done(mmc_from_priv(host), mrq);
-+			return;
-+		}
-+	}
+-	dma_sync_sg_for_cpu(stat->isp->dev, buf->sgt.sgl,
+-			    buf->sgt.nents, DMA_FROM_DEVICE);
++	dma_sync_sgtable_for_cpu(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
+ }
  
- 	/* if SBC is required, we have HW option and SW option.
- 	 * if HW option is enabled, and SBC does not have "special" flags,
+ static void isp_stat_buf_clear(struct ispstat *stat)
+-- 
+2.39.5
+
 
 
 
