@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-160705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D08AFD175
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:36:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8740FAFD0CE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57856540B1A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75A3A562CAB
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924CD2E5B04;
-	Tue,  8 Jul 2025 16:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A713D2DAFC1;
+	Tue,  8 Jul 2025 16:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oiZAf+j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1bhwU7E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4866A217F56;
-	Tue,  8 Jul 2025 16:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6571521B199;
+	Tue,  8 Jul 2025 16:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992451; cv=none; b=X4SFjqO2fSL4K2HLb+H4T6l0bLjRmr+C8mRqIq1jft3ppiSXGXuQGn1FS7AfYcRDyOF4BMClKP2DolWRILktvyM2SUnFE1ThvnOBnnGZri+JgO9iWPVkoj0V0eJLcHf/d2EcM5rDcarfo1J50xHRCtpiBdqiBMHSwIbJe/6pSLc=
+	t=1751992023; cv=none; b=PUlIfgOGgUaPuI9p5+PlFxL/0i4zmkdWDkka+AlAU1lafBujh6DF/xExRL0kTr17tj0LFlEk2vxpoADOiM/vubkIfcDMMpCax5L+5XOguvtMzEMwmxUzB/0n7a4ZekttvLoyOl+zDlio3SMITmy0GI64uifBCBoMs4y+IAxKjfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992451; c=relaxed/simple;
-	bh=37p6SkVNM5HaTlAC6C2ZeuOugk1A2oyoS3t9J48gHv8=;
+	s=arc-20240116; t=1751992023; c=relaxed/simple;
+	bh=F4XouhNbhjEbGgpw3uGew/EZIL10nWQBnMFHk6Kh678=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NmBG9f6SOl5Nt+oAvVW/Q1zFkuq7CQtWMinN/wpsF+k/MITC5wyvuRgmy/XeJ6WE1Ko6JGdqHf9KRtJUORuCS0vGbjzl5i8rNau7qN7/LsbiiFtIvTkYkiTZ3HKPsyB6fjkZmWRNAUmaoxujs14Cxoea6kv4m+FZL90khX+QubI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oiZAf+j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD152C4CEF0;
-	Tue,  8 Jul 2025 16:34:10 +0000 (UTC)
+	 MIME-Version; b=kLi5RT9PvjIMPr/7kNNEupfaN9gTqX70Udy/WfTMowWl3+PCD4FN6/bkoN+vHA98pB8ib6kgwqZFQbtTccCUkmhnCC57RlCtaeIccQO6tp+zkXsv0EXavvz+rc7ZvQStZ58s+7yKufG7h9poIynf/3MEx3yFW+pQZZPnGUYhEL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1bhwU7E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05E9C4CEED;
+	Tue,  8 Jul 2025 16:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992451;
-	bh=37p6SkVNM5HaTlAC6C2ZeuOugk1A2oyoS3t9J48gHv8=;
+	s=korg; t=1751992023;
+	bh=F4XouhNbhjEbGgpw3uGew/EZIL10nWQBnMFHk6Kh678=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0oiZAf+jJbGBkbkCljLcLpkfIDCx5U0qC8BgT9H//wAHcJFfbqKcY53FNQA/ntkV3
-	 RC7LST6a8uBacv/y3FJ6U/WfaND760tru8s7u6oV7ONxS3PPJw+e+1slKaiVhO2UeO
-	 tPy7twX3INujz+gYjmzeEZ+8dWKAB9RxpKYClnks=
+	b=z1bhwU7Eb352cgTdxW71BdqqxkNF8Gljr9KFt/489n7KWiqld7o0ovaMww/1bk7/E
+	 klyZ9/s1FqOJP1DC9/29AOQJwsJ1tO8bJHUMtN87DNnkqlK+CRvUjDaL1cnKmFguoP
+	 TjmffsBIiixYy0HLiPyQ7jfFNaHo2XaI0RaMuu7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/132] scsi: ufs: core: Add OPP support for scaling clocks and regulators
+Subject: [PATCH 6.1 17/81] RDMA/mlx5: Initialize obj_event->obj_sub_list before xa_insert
 Date: Tue,  8 Jul 2025 18:23:09 +0200
-Message-ID: <20250708162232.917326538@linuxfoundation.org>
+Message-ID: <20250708162225.460340313@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,401 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Mark Zhang <markzhang@nvidia.com>
 
-[ Upstream commit 930bd77ebe3dc23b18aa49e55e6a515d5663d67a ]
+[ Upstream commit 8edab8a72d67742f87e9dc2e2b0cdfddda5dc29a ]
 
-UFS core is only scaling the clocks during devfreq scaling and
-initialization. But for an optimum power saving, regulators should also be
-scaled along with the clocks.
+The obj_event may be loaded immediately after inserted, then if the
+list_head is not initialized then we may get a poisonous pointer.  This
+fixes the crash below:
 
-So let's use the OPP framework which supports scaling clocks, regulators,
-and performance state using OPP table defined in devicetree. For
-accomodating the OPP support, the existing APIs (ufshcd_scale_clks,
-ufshcd_is_devfreq_scaling_required and ufshcd_devfreq_scale) are modified
-to accept "freq" as an argument which in turn used by the OPP helpers.
+ mlx5_core 0000:03:00.0: MLX5E: StrdRq(1) RqSz(8) StrdSz(2048) RxCqeCmprss(0 enhanced)
+ mlx5_core.sf mlx5_core.sf.4: firmware version: 32.38.3056
+ mlx5_core 0000:03:00.0 en3f0pf0sf2002: renamed from eth0
+ mlx5_core.sf mlx5_core.sf.4: Rate limit: 127 rates are supported, range: 0Mbps to 195312Mbps
+ IPv6: ADDRCONF(NETDEV_CHANGE): en3f0pf0sf2002: link becomes ready
+ Unable to handle kernel NULL pointer dereference at virtual address 0000000000000060
+ Mem abort info:
+   ESR = 0x96000006
+   EC = 0x25: DABT (current EL), IL = 32 bits
+   SET = 0, FnV = 0
+   EA = 0, S1PTW = 0
+ Data abort info:
+   ISV = 0, ISS = 0x00000006
+   CM = 0, WnR = 0
+ user pgtable: 4k pages, 48-bit VAs, pgdp=00000007760fb000
+ [0000000000000060] pgd=000000076f6d7003, p4d=000000076f6d7003, pud=0000000777841003, pmd=0000000000000000
+ Internal error: Oops: 96000006 [#1] SMP
+ Modules linked in: ipmb_host(OE) act_mirred(E) cls_flower(E) sch_ingress(E) mptcp_diag(E) udp_diag(E) raw_diag(E) unix_diag(E) tcp_diag(E) inet_diag(E) binfmt_misc(E) bonding(OE) rdma_ucm(OE) rdma_cm(OE) iw_cm(OE) ib_ipoib(OE) ib_cm(OE) isofs(E) cdrom(E) mst_pciconf(OE) ib_umad(OE) mlx5_ib(OE) ipmb_dev_int(OE) mlx5_core(OE) kpatch_15237886(OEK) mlxdevm(OE) auxiliary(OE) ib_uverbs(OE) ib_core(OE) psample(E) mlxfw(OE) tls(E) sunrpc(E) vfat(E) fat(E) crct10dif_ce(E) ghash_ce(E) sha1_ce(E) sbsa_gwdt(E) virtio_console(E) ext4(E) mbcache(E) jbd2(E) xfs(E) libcrc32c(E) mmc_block(E) virtio_net(E) net_failover(E) failover(E) sha2_ce(E) sha256_arm64(E) nvme(OE) nvme_core(OE) gpio_mlxbf3(OE) mlx_compat(OE) mlxbf_pmc(OE) i2c_mlxbf(OE) sdhci_of_dwcmshc(OE) pinctrl_mlxbf3(OE) mlxbf_pka(OE) gpio_generic(E) i2c_core(E) mmc_core(E) mlxbf_gige(OE) vitesse(E) pwr_mlxbf(OE) mlxbf_tmfifo(OE) micrel(E) mlxbf_bootctl(OE) virtio_ring(E) virtio(E) ipmi_devintf(E) ipmi_msghandler(E)
+  [last unloaded: mst_pci]
+ CPU: 11 PID: 20913 Comm: rte-worker-11 Kdump: loaded Tainted: G           OE K   5.10.134-13.1.an8.aarch64 #1
+ Hardware name: https://www.mellanox.com BlueField-3 SmartNIC Main Card/BlueField-3 SmartNIC Main Card, BIOS 4.2.2.12968 Oct 26 2023
+ pstate: a0400089 (NzCv daIf +PAN -UAO -TCO BTYPE=--)
+ pc : dispatch_event_fd+0x68/0x300 [mlx5_ib]
+ lr : devx_event_notifier+0xcc/0x228 [mlx5_ib]
+ sp : ffff80001005bcf0
+ x29: ffff80001005bcf0 x28: 0000000000000001
+ x27: ffff244e0740a1d8 x26: ffff244e0740a1d0
+ x25: ffffda56beff5ae0 x24: ffffda56bf911618
+ x23: ffff244e0596a480 x22: ffff244e0596a480
+ x21: ffff244d8312ad90 x20: ffff244e0596a480
+ x19: fffffffffffffff0 x18: 0000000000000000
+ x17: 0000000000000000 x16: ffffda56be66d620
+ x15: 0000000000000000 x14: 0000000000000000
+ x13: 0000000000000000 x12: 0000000000000000
+ x11: 0000000000000040 x10: ffffda56bfcafb50
+ x9 : ffffda5655c25f2c x8 : 0000000000000010
+ x7 : 0000000000000000 x6 : ffff24545a2e24b8
+ x5 : 0000000000000003 x4 : ffff80001005bd28
+ x3 : 0000000000000000 x2 : 0000000000000000
+ x1 : ffff244e0596a480 x0 : ffff244d8312ad90
+ Call trace:
+  dispatch_event_fd+0x68/0x300 [mlx5_ib]
+  devx_event_notifier+0xcc/0x228 [mlx5_ib]
+  atomic_notifier_call_chain+0x58/0x80
+  mlx5_eq_async_int+0x148/0x2b0 [mlx5_core]
+  atomic_notifier_call_chain+0x58/0x80
+  irq_int_handler+0x20/0x30 [mlx5_core]
+  __handle_irq_event_percpu+0x60/0x220
+  handle_irq_event_percpu+0x3c/0x90
+  handle_irq_event+0x58/0x158
+  handle_fasteoi_irq+0xfc/0x188
+  generic_handle_irq+0x34/0x48
+  ...
 
-The OPP support is added along with the old freq-table based clock scaling
-so that the existing platforms work as expected.
-
-Co-developed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20231012172129.65172-3-manivannan.sadhasivam@linaro.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 2e083cd80229 ("scsi: ufs: core: Fix clk scaling to be conditional in reset and restore")
+Fixes: 759738537142 ("IB/mlx5: Enable subscription for device events over DEVX")
+Link: https://patch.msgid.link/r/3ce7f20e0d1a03dc7de6e57494ec4b8eaf1f05c2.1750147949.git.leon@kernel.org
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 144 +++++++++++++++++++++++++++++---------
- include/ufs/ufshcd.h      |   4 ++
- 2 files changed, 115 insertions(+), 33 deletions(-)
+ drivers/infiniband/hw/mlx5/devx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 08c46fefb32b4..fa86942efd11f 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -20,6 +20,7 @@
- #include <linux/delay.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-+#include <linux/pm_opp.h>
- #include <linux/regulator/consumer.h>
- #include <linux/sched/clock.h>
- #include <linux/iopoll.h>
-@@ -289,7 +290,8 @@ static inline void ufshcd_add_delay_before_dme_cmd(struct ufs_hba *hba);
- static int ufshcd_host_reset_and_restore(struct ufs_hba *hba);
- static void ufshcd_resume_clkscaling(struct ufs_hba *hba);
- static void ufshcd_suspend_clkscaling(struct ufs_hba *hba);
--static int ufshcd_scale_clks(struct ufs_hba *hba, bool scale_up);
-+static int ufshcd_scale_clks(struct ufs_hba *hba, unsigned long freq,
-+			     bool scale_up);
- static irqreturn_t ufshcd_intr(int irq, void *__hba);
- static int ufshcd_change_power_mode(struct ufs_hba *hba,
- 			     struct ufs_pa_layer_attr *pwr_mode);
-@@ -1078,14 +1080,32 @@ static int ufshcd_set_clk_freq(struct ufs_hba *hba, bool scale_up)
- 	return ret;
- }
+diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
+index 7013ce20549bd..cc126e62643a0 100644
+--- a/drivers/infiniband/hw/mlx5/devx.c
++++ b/drivers/infiniband/hw/mlx5/devx.c
+@@ -1914,6 +1914,7 @@ subscribe_event_xa_alloc(struct mlx5_devx_event_table *devx_event_table,
+ 			/* Level1 is valid for future use, no need to free */
+ 			return -ENOMEM;
  
-+static int ufshcd_opp_set_rate(struct ufs_hba *hba, unsigned long freq)
-+{
-+	struct dev_pm_opp *opp;
-+	int ret;
-+
-+	opp = dev_pm_opp_find_freq_floor_indexed(hba->dev,
-+						 &freq, 0);
-+	if (IS_ERR(opp))
-+		return PTR_ERR(opp);
-+
-+	ret = dev_pm_opp_set_opp(hba->dev, opp);
-+	dev_pm_opp_put(opp);
-+
-+	return ret;
-+}
-+
- /**
-  * ufshcd_scale_clks - scale up or scale down UFS controller clocks
-  * @hba: per adapter instance
-+ * @freq: frequency to scale
-  * @scale_up: True if scaling up and false if scaling down
-  *
-  * Return: 0 if successful; < 0 upon failure.
-  */
--static int ufshcd_scale_clks(struct ufs_hba *hba, bool scale_up)
-+static int ufshcd_scale_clks(struct ufs_hba *hba, unsigned long freq,
-+			     bool scale_up)
- {
- 	int ret = 0;
- 	ktime_t start = ktime_get();
-@@ -1094,13 +1114,21 @@ static int ufshcd_scale_clks(struct ufs_hba *hba, bool scale_up)
- 	if (ret)
- 		goto out;
- 
--	ret = ufshcd_set_clk_freq(hba, scale_up);
-+	if (hba->use_pm_opp)
-+		ret = ufshcd_opp_set_rate(hba, freq);
-+	else
-+		ret = ufshcd_set_clk_freq(hba, scale_up);
- 	if (ret)
- 		goto out;
- 
- 	ret = ufshcd_vops_clk_scale_notify(hba, scale_up, POST_CHANGE);
--	if (ret)
--		ufshcd_set_clk_freq(hba, !scale_up);
-+	if (ret) {
-+		if (hba->use_pm_opp)
-+			ufshcd_opp_set_rate(hba,
-+					    hba->devfreq->previous_freq);
-+		else
-+			ufshcd_set_clk_freq(hba, !scale_up);
-+	}
- 
- out:
- 	trace_ufshcd_profile_clk_scaling(dev_name(hba->dev),
-@@ -1112,12 +1140,13 @@ static int ufshcd_scale_clks(struct ufs_hba *hba, bool scale_up)
- /**
-  * ufshcd_is_devfreq_scaling_required - check if scaling is required or not
-  * @hba: per adapter instance
-+ * @freq: frequency to scale
-  * @scale_up: True if scaling up and false if scaling down
-  *
-  * Return: true if scaling is required, false otherwise.
-  */
- static bool ufshcd_is_devfreq_scaling_required(struct ufs_hba *hba,
--					       bool scale_up)
-+					       unsigned long freq, bool scale_up)
- {
- 	struct ufs_clk_info *clki;
- 	struct list_head *head = &hba->clk_list_head;
-@@ -1125,6 +1154,9 @@ static bool ufshcd_is_devfreq_scaling_required(struct ufs_hba *hba,
- 	if (list_empty(head))
- 		return false;
- 
-+	if (hba->use_pm_opp)
-+		return freq != hba->clk_scaling.target_freq;
-+
- 	list_for_each_entry(clki, head, list) {
- 		if (!IS_ERR_OR_NULL(clki->clk)) {
- 			if (scale_up && clki->max_freq) {
-@@ -1323,12 +1355,14 @@ static void ufshcd_clock_scaling_unprepare(struct ufs_hba *hba, int err, bool sc
- /**
-  * ufshcd_devfreq_scale - scale up/down UFS clocks and gear
-  * @hba: per adapter instance
-+ * @freq: frequency to scale
-  * @scale_up: True for scaling up and false for scalin down
-  *
-  * Return: 0 for success; -EBUSY if scaling can't happen at this time; non-zero
-  * for any other errors.
-  */
--static int ufshcd_devfreq_scale(struct ufs_hba *hba, bool scale_up)
-+static int ufshcd_devfreq_scale(struct ufs_hba *hba, unsigned long freq,
-+				bool scale_up)
- {
- 	int ret = 0;
- 
-@@ -1343,7 +1377,7 @@ static int ufshcd_devfreq_scale(struct ufs_hba *hba, bool scale_up)
- 			goto out_unprepare;
- 	}
- 
--	ret = ufshcd_scale_clks(hba, scale_up);
-+	ret = ufshcd_scale_clks(hba, freq, scale_up);
- 	if (ret) {
- 		if (!scale_up)
- 			ufshcd_scale_gear(hba, true);
-@@ -1354,7 +1388,8 @@ static int ufshcd_devfreq_scale(struct ufs_hba *hba, bool scale_up)
- 	if (scale_up) {
- 		ret = ufshcd_scale_gear(hba, true);
- 		if (ret) {
--			ufshcd_scale_clks(hba, false);
-+			ufshcd_scale_clks(hba, hba->devfreq->previous_freq,
-+					  false);
- 			goto out_unprepare;
++		INIT_LIST_HEAD(&obj_event->obj_sub_list);
+ 		err = xa_insert(&event->object_ids,
+ 				key_level2,
+ 				obj_event,
+@@ -1922,7 +1923,6 @@ subscribe_event_xa_alloc(struct mlx5_devx_event_table *devx_event_table,
+ 			kfree(obj_event);
+ 			return err;
  		}
- 	}
-@@ -1413,9 +1448,22 @@ static int ufshcd_devfreq_target(struct device *dev,
- 	if (!ufshcd_is_clkscaling_supported(hba))
- 		return -EINVAL;
- 
--	clki = list_first_entry(&hba->clk_list_head, struct ufs_clk_info, list);
--	/* Override with the closest supported frequency */
--	*freq = (unsigned long) clk_round_rate(clki->clk, *freq);
-+	if (hba->use_pm_opp) {
-+		struct dev_pm_opp *opp;
-+
-+		/* Get the recommended frequency from OPP framework */
-+		opp = devfreq_recommended_opp(dev, freq, flags);
-+		if (IS_ERR(opp))
-+			return PTR_ERR(opp);
-+
-+		dev_pm_opp_put(opp);
-+	} else {
-+		/* Override with the closest supported frequency */
-+		clki = list_first_entry(&hba->clk_list_head, struct ufs_clk_info,
-+					list);
-+		*freq =	(unsigned long) clk_round_rate(clki->clk, *freq);
-+	}
-+
- 	spin_lock_irqsave(hba->host->host_lock, irq_flags);
- 	if (ufshcd_eh_in_progress(hba)) {
- 		spin_unlock_irqrestore(hba->host->host_lock, irq_flags);
-@@ -1430,12 +1478,17 @@ static int ufshcd_devfreq_target(struct device *dev,
- 		goto out;
+-		INIT_LIST_HEAD(&obj_event->obj_sub_list);
  	}
  
--	/* Decide based on the rounded-off frequency and update */
--	scale_up = *freq == clki->max_freq;
--	if (!scale_up)
-+	/* Decide based on the target or rounded-off frequency and update */
-+	if (hba->use_pm_opp)
-+		scale_up = *freq > hba->clk_scaling.target_freq;
-+	else
-+		scale_up = *freq == clki->max_freq;
-+
-+	if (!hba->use_pm_opp && !scale_up)
- 		*freq = clki->min_freq;
-+
- 	/* Update the frequency */
--	if (!ufshcd_is_devfreq_scaling_required(hba, scale_up)) {
-+	if (!ufshcd_is_devfreq_scaling_required(hba, *freq, scale_up)) {
- 		spin_unlock_irqrestore(hba->host->host_lock, irq_flags);
- 		ret = 0;
- 		goto out; /* no state change required */
-@@ -1443,7 +1496,9 @@ static int ufshcd_devfreq_target(struct device *dev,
- 	spin_unlock_irqrestore(hba->host->host_lock, irq_flags);
- 
- 	start = ktime_get();
--	ret = ufshcd_devfreq_scale(hba, scale_up);
-+	ret = ufshcd_devfreq_scale(hba, *freq, scale_up);
-+	if (!ret)
-+		hba->clk_scaling.target_freq = *freq;
- 
- 	trace_ufshcd_profile_clk_scaling(dev_name(hba->dev),
- 		(scale_up ? "up" : "down"),
-@@ -1463,8 +1518,6 @@ static int ufshcd_devfreq_get_dev_status(struct device *dev,
- 	struct ufs_hba *hba = dev_get_drvdata(dev);
- 	struct ufs_clk_scaling *scaling = &hba->clk_scaling;
- 	unsigned long flags;
--	struct list_head *clk_list = &hba->clk_list_head;
--	struct ufs_clk_info *clki;
- 	ktime_t curr_t;
- 
- 	if (!ufshcd_is_clkscaling_supported(hba))
-@@ -1477,17 +1530,24 @@ static int ufshcd_devfreq_get_dev_status(struct device *dev,
- 	if (!scaling->window_start_t)
- 		goto start_window;
- 
--	clki = list_first_entry(clk_list, struct ufs_clk_info, list);
- 	/*
- 	 * If current frequency is 0, then the ondemand governor considers
- 	 * there's no initial frequency set. And it always requests to set
- 	 * to max. frequency.
- 	 */
--	stat->current_frequency = clki->curr_freq;
-+	if (hba->use_pm_opp) {
-+		stat->current_frequency = hba->clk_scaling.target_freq;
-+	} else {
-+		struct list_head *clk_list = &hba->clk_list_head;
-+		struct ufs_clk_info *clki;
-+
-+		clki = list_first_entry(clk_list, struct ufs_clk_info, list);
-+		stat->current_frequency = clki->curr_freq;
-+	}
-+
- 	if (scaling->is_busy_started)
- 		scaling->tot_busy_t += ktime_us_delta(curr_t,
- 				scaling->busy_start_t);
--
- 	stat->total_time = ktime_us_delta(curr_t, scaling->window_start_t);
- 	stat->busy_time = scaling->tot_busy_t;
- start_window:
-@@ -1516,9 +1576,11 @@ static int ufshcd_devfreq_init(struct ufs_hba *hba)
- 	if (list_empty(clk_list))
- 		return 0;
- 
--	clki = list_first_entry(clk_list, struct ufs_clk_info, list);
--	dev_pm_opp_add(hba->dev, clki->min_freq, 0);
--	dev_pm_opp_add(hba->dev, clki->max_freq, 0);
-+	if (!hba->use_pm_opp) {
-+		clki = list_first_entry(clk_list, struct ufs_clk_info, list);
-+		dev_pm_opp_add(hba->dev, clki->min_freq, 0);
-+		dev_pm_opp_add(hba->dev, clki->max_freq, 0);
-+	}
- 
- 	ufshcd_vops_config_scaling_param(hba, &hba->vps->devfreq_profile,
- 					 &hba->vps->ondemand_data);
-@@ -1530,8 +1592,10 @@ static int ufshcd_devfreq_init(struct ufs_hba *hba)
- 		ret = PTR_ERR(devfreq);
- 		dev_err(hba->dev, "Unable to register with devfreq %d\n", ret);
- 
--		dev_pm_opp_remove(hba->dev, clki->min_freq);
--		dev_pm_opp_remove(hba->dev, clki->max_freq);
-+		if (!hba->use_pm_opp) {
-+			dev_pm_opp_remove(hba->dev, clki->min_freq);
-+			dev_pm_opp_remove(hba->dev, clki->max_freq);
-+		}
- 		return ret;
- 	}
- 
-@@ -1543,7 +1607,6 @@ static int ufshcd_devfreq_init(struct ufs_hba *hba)
- static void ufshcd_devfreq_remove(struct ufs_hba *hba)
- {
- 	struct list_head *clk_list = &hba->clk_list_head;
--	struct ufs_clk_info *clki;
- 
- 	if (!hba->devfreq)
- 		return;
-@@ -1551,9 +1614,13 @@ static void ufshcd_devfreq_remove(struct ufs_hba *hba)
- 	devfreq_remove_device(hba->devfreq);
- 	hba->devfreq = NULL;
- 
--	clki = list_first_entry(clk_list, struct ufs_clk_info, list);
--	dev_pm_opp_remove(hba->dev, clki->min_freq);
--	dev_pm_opp_remove(hba->dev, clki->max_freq);
-+	if (!hba->use_pm_opp) {
-+		struct ufs_clk_info *clki;
-+
-+		clki = list_first_entry(clk_list, struct ufs_clk_info, list);
-+		dev_pm_opp_remove(hba->dev, clki->min_freq);
-+		dev_pm_opp_remove(hba->dev, clki->max_freq);
-+	}
- }
- 
- static void ufshcd_suspend_clkscaling(struct ufs_hba *hba)
-@@ -1629,7 +1696,7 @@ static ssize_t ufshcd_clkscale_enable_store(struct device *dev,
- 		ufshcd_resume_clkscaling(hba);
- 	} else {
- 		ufshcd_suspend_clkscaling(hba);
--		err = ufshcd_devfreq_scale(hba, true);
-+		err = ufshcd_devfreq_scale(hba, ULONG_MAX, true);
- 		if (err)
- 			dev_err(hba->dev, "%s: failed to scale clocks up %d\n",
- 					__func__, err);
-@@ -7713,7 +7780,7 @@ static int ufshcd_host_reset_and_restore(struct ufs_hba *hba)
- 	hba->silence_err_logs = false;
- 
- 	/* scale up clocks to max frequency before full reinitialization */
--	ufshcd_scale_clks(hba, true);
-+	ufshcd_scale_clks(hba, ULONG_MAX, true);
- 
- 	err = ufshcd_hba_enable(hba);
- 
-@@ -9351,6 +9418,17 @@ static int ufshcd_init_clocks(struct ufs_hba *hba)
- 		dev_dbg(dev, "%s: clk: %s, rate: %lu\n", __func__,
- 				clki->name, clk_get_rate(clki->clk));
- 	}
-+
-+	/* Set Max. frequency for all clocks */
-+	if (hba->use_pm_opp) {
-+		ret = ufshcd_opp_set_rate(hba, ULONG_MAX);
-+		if (ret) {
-+			dev_err(hba->dev, "%s: failed to set OPP: %d", __func__,
-+				ret);
-+			goto out;
-+		}
-+	}
-+
- out:
- 	return ret;
- }
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index d5aa832f8dba3..e9db9682316a2 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -430,6 +430,7 @@ struct ufs_clk_gating {
-  * @workq: workqueue to schedule devfreq suspend/resume work
-  * @suspend_work: worker to suspend devfreq
-  * @resume_work: worker to resume devfreq
-+ * @target_freq: frequency requested by devfreq framework
-  * @min_gear: lowest HS gear to scale down to
-  * @is_enabled: tracks if scaling is currently enabled or not, controlled by
-  *		clkscale_enable sysfs node
-@@ -449,6 +450,7 @@ struct ufs_clk_scaling {
- 	struct workqueue_struct *workq;
- 	struct work_struct suspend_work;
- 	struct work_struct resume_work;
-+	unsigned long target_freq;
- 	u32 min_gear;
- 	bool is_enabled;
- 	bool is_allowed;
-@@ -862,6 +864,7 @@ enum ufshcd_mcq_opr {
-  * @auto_bkops_enabled: to track whether bkops is enabled in device
-  * @vreg_info: UFS device voltage regulator information
-  * @clk_list_head: UFS host controller clocks list node head
-+ * @use_pm_opp: Indicates whether OPP based scaling is used or not
-  * @req_abort_count: number of times ufshcd_abort() has been called
-  * @lanes_per_direction: number of lanes per data direction between the UFS
-  *	controller and the UFS device.
-@@ -1014,6 +1017,7 @@ struct ufs_hba {
- 	bool auto_bkops_enabled;
- 	struct ufs_vreg_info vreg_info;
- 	struct list_head clk_list_head;
-+	bool use_pm_opp;
- 
- 	/* Number of requests aborts */
- 	int req_abort_count;
+ 	return 0;
 -- 
 2.39.5
 
