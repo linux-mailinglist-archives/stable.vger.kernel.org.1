@@ -1,128 +1,177 @@
-Return-Path: <stable+bounces-160477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDA9AFC874
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 12:29:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5366EAFC8D1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 12:48:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C3B77A28C6
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 10:27:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F0E4422986
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 10:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0802853EB;
-	Tue,  8 Jul 2025 10:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B99284B4F;
+	Tue,  8 Jul 2025 10:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NEkRfZLO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdtvmI/C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B022322F74D;
-	Tue,  8 Jul 2025 10:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532362D8DC5
+	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 10:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751970533; cv=none; b=GsUTcOUmi9k2SyPougg+5T1igKElvteoot07Kxq2Rdv0w3K5DxaWe4Sts/WwaixZSVpPFAy6yQbcH9KP11yfXBkXeRevvQ3g+BiNy9YkBtywCsht3uEYzQ2x+ojzlcxE0zyjbxyKWFHlAmnYT8Iz9opztGh4+BLGzJFRx1AUBiU=
+	t=1751971669; cv=none; b=PPgBsvhpOwg4gtnv4I+/MeXsmBO8iDtz2e7xqyobQp705DYEVsBQP04WotIYW1I5Tyz6VtRIvUAMz4TfraA6GOSFQ80QHpEgHTPCfaHRblG40ZTYlIhxogP8U1gMPIiJ0oz6yLwNImcglPG1j44nG1UOgtxqGyA/V+/xrj9Wvl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751970533; c=relaxed/simple;
-	bh=WAjiCvboyp+3JyFm44Np/epMYeJ/HardsZ0LS2Z1FaY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jAIbmCIJJW0nPVs2fdMrNdGvh8PEFQrmeZm/FAsU8KnGKLvl4+L0nL8j+leIJFg3dxJqEgJhuSgcRTuDOiL18X0aLa7ZHz4M8uLPg+cPGa5O8aWwGHrKIMnr2ew2KJN1eZn0lzgLr21gC1L8Cw3kl04Xf6AF7w23lI4e2zXTIx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NEkRfZLO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C7CC4CEED;
-	Tue,  8 Jul 2025 10:28:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751970533;
-	bh=WAjiCvboyp+3JyFm44Np/epMYeJ/HardsZ0LS2Z1FaY=;
-	h=From:Date:Subject:To:Cc:From;
-	b=NEkRfZLOPxhCjjMTDs8ZHV3gmcJafeh2WdtkBBvzZEVT4MvSr4I9SAd/h/a+V6g37
-	 25hvhcbH4Odt9MxHh+k/vvTBXX+178i9JxYES2bpglRgkujAKoksZJnMxfuhZQ1nWQ
-	 gG333jF6dYbqivGAnjEnh/LMWgm+8N3ZpQqXbZHBcC6wwSd3+beMv+9Ba//5d8WKk7
-	 4OI/hGyTgvVizz5zkuoTNt8TYca9HkqnO4n05IuvMig5NWBTjbAkJ80wDyIMMlfpJ1
-	 RyvKvViZ++FE07Ydg4TgMS5DHb3+3VFEEpOTUXJErNCoEHTLkyKkYRNJ6lIY3pSQ/x
-	 K2PgijR6KBjOQ==
-From: Konrad Dybcio <konradybcio@kernel.org>
-Date: Tue, 08 Jul 2025 12:28:42 +0200
-Subject: [PATCH] arm64: dts: qcom: qcm2290: Disable USB SS bus instances in
- park mode
+	s=arc-20240116; t=1751971669; c=relaxed/simple;
+	bh=+R22+CvKuQMG4Dha4/BVb8wE9TRrFhcP06ISD5dvU6c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iptj+kMG3dm5iaZEuH+2GuOn8yxMm4dwu76OdKcOkrvE5lRfo+BDBOianKEyaOdZ2o20S+8sbibe39zNP1jLnCtkTTqt4M0wbM7mND3eVoDjPJR87mS6R5TRImZl1Ef37UVbG1LqqD5ZduiHheeWp9K5u7YyowiOuaBsouRd80k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdtvmI/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739DCC4CEED;
+	Tue,  8 Jul 2025 10:47:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1751971668;
+	bh=+R22+CvKuQMG4Dha4/BVb8wE9TRrFhcP06ISD5dvU6c=;
+	h=Subject:To:Cc:From:Date:From;
+	b=JdtvmI/Cw152mRB8OwkXhTNha/1JHBn0W9RRTgk9lTQqNAv0I4RNHPmCDVuJlZIsh
+	 AecENV7aCEDF1Vjm6BQTuibaUJASQuMcpy36AXue2j+BPgAt5zX7Mdip8guwCD+RAd
+	 pj68jn3wTH4zml/QPixfHhvMI6aLD44X/62F9Tck=
+Subject: FAILED: patch "[PATCH] usb: dwc3: Abort suspend on soft disconnect failure" failed to apply to 6.6-stable tree
+To: khtsai@google.com,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,stable@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 08 Jul 2025 12:47:43 +0200
+Message-ID: <2025070843-mammal-recapture-b529@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250708-topic-2290_usb-v1-1-661e70a63339@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIANnybGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDcwML3ZL8gsxkXSMjS4P40uIkXTMzY6M0Q6NU0+QUMyWgpoKi1LTMCrC
- B0bG1tQDWBXmpYAAAAA==
-X-Change-ID: 20250708-topic-2290_usb-6632f12e5cd6
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Marijn Suijten <marijn.suijten@somainline.org>, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, stable@vger.kernel.org, 
- Rob Clark <robin.clark@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751970529; l=1791;
- i=konrad.dybcio@oss.qualcomm.com; s=20230215; h=from:subject:message-id;
- bh=dTNWeKPTeQhzcHl+gyzKi31A+qFWu41fN7Ysr/rjASs=;
- b=2Dz+5LpI5nzETphYdZE0zKLuRf5X9t0/IaCe1hpevfHWf/KuCoSXrTMZAkaaTN+k857naO4TU
- ObpB+5GrOEbA7efJQ/AqckivKm2P/72GQZoMYtKxTkmARqc/NnxvVEO
-X-Developer-Key: i=konrad.dybcio@oss.qualcomm.com; a=ed25519;
- pk=iclgkYvtl2w05SSXO5EjjSYlhFKsJ+5OSZBjOkQuEms=
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-2290 was found in the field to also require this quirk, as long &
-high-bandwidth workloads (e.g. USB ethernet) are consistently able to
-crash the controller otherwise.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-The same change has been made for a number of SoCs in [1], but QCM2290
-somehow escaped the list (even though the very closely related SM6115
-was there).
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Upon a controller crash, the log would read:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 630a1dec3b0eba2a695b9063f1c205d585cbfec9
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025070843-mammal-recapture-b529@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
-xhci-hcd.12.auto: xHCI host controller not responding, assume dead
-xhci-hcd.12.auto: HC died; cleaning up
+Possible dependencies:
 
-Add snps,parkmode-disable-ss-quirk to the DWC3 instance in order to
-prevent the aforementioned breakage.
 
-[1] https://lore.kernel.org/all/20240704152848.3380602-1-quic_kriskura@quicinc.com/
 
-Cc: stable@vger.kernel.org
-Reported-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Fixes: a64a0192b70c ("arm64: dts: qcom: Add initial QCM2290 device tree")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
----
- arch/arm64/boot/dts/qcom/qcm2290.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+thanks,
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm2290.dtsi b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-index fa24b77a31a7504020390522fabb0b783d897366..6b7070dad3df946649660eac1d087c0e8b6fe26d 100644
---- a/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-@@ -1454,6 +1454,7 @@ usb_dwc3: usb@4e00000 {
- 				snps,has-lpm-erratum;
- 				snps,hird-threshold = /bits/ 8 <0x10>;
- 				snps,usb3_lpm_capable;
-+				snps,parkmode-disable-ss-quirk;
- 				maximum-speed = "super-speed";
- 				dr_mode = "otg";
- 				usb-role-switch;
+greg k-h
 
----
-base-commit: 26ffb3d6f02cd0935fb9fa3db897767beee1cb2a
-change-id: 20250708-topic-2290_usb-6632f12e5cd6
+------------------ original commit in Linus's tree ------------------
 
-Best regards,
--- 
-Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From 630a1dec3b0eba2a695b9063f1c205d585cbfec9 Mon Sep 17 00:00:00 2001
+From: Kuen-Han Tsai <khtsai@google.com>
+Date: Wed, 28 May 2025 18:03:11 +0800
+Subject: [PATCH] usb: dwc3: Abort suspend on soft disconnect failure
+
+When dwc3_gadget_soft_disconnect() fails, dwc3_suspend_common() keeps
+going with the suspend, resulting in a period where the power domain is
+off, but the gadget driver remains connected.  Within this time frame,
+invoking vbus_event_work() will cause an error as it attempts to access
+DWC3 registers for endpoint disabling after the power domain has been
+completely shut down.
+
+Abort the suspend sequence when dwc3_gadget_suspend() cannot halt the
+controller and proceeds with a soft connect.
+
+Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
+Cc: stable <stable@kernel.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250528100315.2162699-1-khtsai@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 2bc775a747f2..8002c23a5a02 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -2422,6 +2422,7 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ {
+ 	u32 reg;
+ 	int i;
++	int ret;
+ 
+ 	if (!pm_runtime_suspended(dwc->dev) && !PMSG_IS_AUTO(msg)) {
+ 		dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
+@@ -2440,7 +2441,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
+ 		if (pm_runtime_suspended(dwc->dev))
+ 			break;
+-		dwc3_gadget_suspend(dwc);
++		ret = dwc3_gadget_suspend(dwc);
++		if (ret)
++			return ret;
+ 		synchronize_irq(dwc->irq_gadget);
+ 		dwc3_core_exit(dwc);
+ 		break;
+@@ -2475,7 +2478,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 			break;
+ 
+ 		if (dwc->current_otg_role == DWC3_OTG_ROLE_DEVICE) {
+-			dwc3_gadget_suspend(dwc);
++			ret = dwc3_gadget_suspend(dwc);
++			if (ret)
++				return ret;
+ 			synchronize_irq(dwc->irq_gadget);
+ 		}
+ 
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 321361288935..b6b63b530148 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4821,8 +4821,15 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
+ 	int ret;
+ 
+ 	ret = dwc3_gadget_soft_disconnect(dwc);
+-	if (ret)
+-		goto err;
++	/*
++	 * Attempt to reset the controller's state. Likely no
++	 * communication can be established until the host
++	 * performs a port reset.
++	 */
++	if (ret && dwc->softconnect) {
++		dwc3_gadget_soft_connect(dwc);
++		return -EAGAIN;
++	}
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	if (dwc->gadget_driver)
+@@ -4830,17 +4837,6 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
+ 	return 0;
+-
+-err:
+-	/*
+-	 * Attempt to reset the controller's state. Likely no
+-	 * communication can be established until the host
+-	 * performs a port reset.
+-	 */
+-	if (dwc->softconnect)
+-		dwc3_gadget_soft_connect(dwc);
+-
+-	return ret;
+ }
+ 
+ int dwc3_gadget_resume(struct dwc3 *dwc)
 
 
