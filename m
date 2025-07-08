@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-161137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084E5AFD387
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC99AFD2A8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CC7616DEB4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1185A5855FE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7482E266B;
-	Tue,  8 Jul 2025 16:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6E42045B5;
+	Tue,  8 Jul 2025 16:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyN0njWW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyz+kHGc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9C62DAFAE;
-	Tue,  8 Jul 2025 16:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885D52E06C3;
+	Tue,  8 Jul 2025 16:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993702; cv=none; b=tTV6coD6t/0Ubnz0LDGvCeeLQ8+5ihthLT9foUJhQfZMh5t3wVTuVIRsU6HgAVTNI4HiuBPirwRHlEHvj0g6UFh+fqGZ20GWbO2p2dhDV9R2ldJZFTtzT8V7SxKXgyiFBCd7WS0X8HVkzypcCP+XAcrg9smP7i9F4ZmK9iuS75c=
+	t=1751993149; cv=none; b=RKoC21PsTGObRAvjQ0YLya1SURTX8S/4xniznEOmhvo+mPew1N/3XkEoaq/Tg1UYKaLMuEBg9WV0dghYyvbd+PaWhZMa4TMOXR/3w6w+J5tQDpncIn2kCgeK0TkT7LfYMbngF+23/iS+ugXiVx2H/Y4NRkulk6x0UJKi/X+oTZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993702; c=relaxed/simple;
-	bh=+wRBvGEERmGix20yjir88w6XQfwKsIHhLZtEXyiH4gA=;
+	s=arc-20240116; t=1751993149; c=relaxed/simple;
+	bh=PqieVS0CkNjao5TJfFIiiLwX55XCzWE0Uj+go8wspEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MRgOuTZGWkIFS07EUrClWE07IIFHUygTu8sxzUamiRAdQnjJO99fEcVEzveAlaGf0v5zZL1gVPGWg9bbMsoOVXN2uTENNodo6BKbgbmHpnNLFABEq8UcPvFwzUHDRf28hmDVKjuE/K4K7SypKsUsvLOX/U09bUP78rRGJRk6NiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyN0njWW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD14AC4CEED;
-	Tue,  8 Jul 2025 16:55:01 +0000 (UTC)
+	 MIME-Version; b=bH/7cI6eEjeYBmix5FOhjLWbwSmq+PZbe/3QTFPDsk1c8GrYZo7vlL3kmv9KrPkcABBEEAA2wms9LUmQesKEwC2WeKelQFrY5uVmc5M3sglqMCt1PipENMz9d/dkhodkuCO59x7V8cG6ADE0xThSlaWkkRwqN6GXQAoXWPWp5EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyz+kHGc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA19CC4CEED;
+	Tue,  8 Jul 2025 16:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993702;
-	bh=+wRBvGEERmGix20yjir88w6XQfwKsIHhLZtEXyiH4gA=;
+	s=korg; t=1751993149;
+	bh=PqieVS0CkNjao5TJfFIiiLwX55XCzWE0Uj+go8wspEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kyN0njWWcQxW2wNU0UPVVetrJCzAoLlLe0vqAnAu4F/+jNYXo0oQ3cLno99hsC9dR
-	 f6ACzNbC3oB1zr+8KjSQis068D5whsw+vrCX+m2H61ABf5er3S8m1C37ZtpUfHHzMk
-	 49mI9+gclRSfjhALuiyatei2f0gJptwB0nvOcynQ=
+	b=vyz+kHGcKWsyS+G5CLzlt3VDP64anFSlsBZao8gHc22ODHFg+UaORbEazJFIZSTWq
+	 s8xYW3PcIweMYwnWcJmchtywiwq6oc9Jt2g6ij2if7r15yHnkLFroImIv2F687jjGE
+	 BPxazVtLiERpGE4bvHNgNtednUmooko3h5vmRQfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Xue <xxm@rock-chips.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.15 164/178] iommu/rockchip: prevent iommus dead loop when two masters share one IOMMU
+	Nilton Perim Neto <niltonperimneto@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 205/232] Input: xpad - support Acer NGR 200 Controller
 Date: Tue,  8 Jul 2025 18:23:21 +0200
-Message-ID: <20250708162240.760603465@linuxfoundation.org>
+Message-ID: <20250708162246.801975037@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Xue <xxm@rock-chips.com>
+From: Nilton Perim Neto <niltonperimneto@gmail.com>
 
-commit 62e062a29ad5133f67c20b333ba0a952a99161ae upstream.
+commit 22c69d786ef8fb789c61ca75492a272774221324 upstream.
 
-When two masters share an IOMMU, calling ops->of_xlate during
-the second master's driver init may overwrite iommu->domain set
-by the first. This causes the check if (iommu->domain == domain)
-in rk_iommu_attach_device() to fail, resulting in the same
-iommu->node being added twice to &rk_domain->iommus, which can
-lead to an infinite loop in subsequent &rk_domain->iommus operations.
+Add the NGR 200 Xbox 360 to the list of recognized controllers.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 25c2325575cc ("iommu/rockchip: Add missing set_platform_dma_ops callback")
-Signed-off-by: Simon Xue <xxm@rock-chips.com>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/20250623020018.584802-1-xxm@rock-chips.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
+Link: https://lore.kernel.org/r/20250608060517.14967-1-niltonperimneto@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/rockchip-iommu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/input/joystick/xpad.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iommu/rockchip-iommu.c
-+++ b/drivers/iommu/rockchip-iommu.c
-@@ -1155,7 +1155,6 @@ static int rk_iommu_of_xlate(struct devi
- 		return -ENOMEM;
- 
- 	data->iommu = platform_get_drvdata(iommu_dev);
--	data->iommu->domain = &rk_identity_domain;
- 	dev_iommu_priv_set(dev, data);
- 
- 	platform_device_put(iommu_dev);
-@@ -1193,6 +1192,8 @@ static int rk_iommu_probe(struct platfor
- 	if (!iommu)
- 		return -ENOMEM;
- 
-+	iommu->domain = &rk_identity_domain;
-+
- 	platform_set_drvdata(pdev, iommu);
- 	iommu->dev = dev;
- 	iommu->num_mmu = 0;
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -174,6 +174,7 @@ static const struct xpad_device {
+ 	{ 0x05fd, 0x107a, "InterAct 'PowerPad Pro' X-Box pad (Germany)", 0, XTYPE_XBOX },
+ 	{ 0x05fe, 0x3030, "Chic Controller", 0, XTYPE_XBOX },
+ 	{ 0x05fe, 0x3031, "Chic Controller", 0, XTYPE_XBOX },
++	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX },
+ 	{ 0x062a, 0x0020, "Logic3 Xbox GamePad", 0, XTYPE_XBOX },
+ 	{ 0x062a, 0x0033, "Competition Pro Steering Wheel", 0, XTYPE_XBOX },
+ 	{ 0x06a3, 0x0200, "Saitek Racing Wheel", 0, XTYPE_XBOX },
+@@ -515,6 +516,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft Xbox 360 controllers */
+ 	XPAD_XBOXONE_VENDOR(0x045e),		/* Microsoft Xbox One controllers */
+ 	XPAD_XBOX360_VENDOR(0x046d),		/* Logitech Xbox 360-style controllers */
++	XPAD_XBOX360_VENDOR(0x0502),		/* Acer Inc. Xbox 360 style controllers */
+ 	XPAD_XBOX360_VENDOR(0x056e),		/* Elecom JC-U3613M */
+ 	XPAD_XBOX360_VENDOR(0x06a3),		/* Saitek P3600 */
+ 	XPAD_XBOX360_VENDOR(0x0738),		/* Mad Catz Xbox 360 controllers */
 
 
 
