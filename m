@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-160662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B764AFD136
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3B0AFD452
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:04:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ACC05813DA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28D9317136B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCDD2E54BD;
-	Tue,  8 Jul 2025 16:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6BE1DB127;
+	Tue,  8 Jul 2025 17:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZmmbFvt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yheovrxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494552DD5EF;
-	Tue,  8 Jul 2025 16:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9F42E54DC;
+	Tue,  8 Jul 2025 17:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992323; cv=none; b=OmzK/hf8EVyP3m98iGvoSMjvNogudrZha49rodtx20rMdPOcqLB1TRSjKZMzikXbQEUp9Qxb+n2NodU3jOOANKCtQhdYeOjiNxFsALwS960to3UtnndGB3dRWua8+YLNxIlqZ+15pFCDCK8uYslPVCgHru7cyN3jX5XWjdA0zQU=
+	t=1751994080; cv=none; b=MTUfHRsk4ar3V9iwnRWQUatM1SwENZsFgtX1VH/uIHFk5AEwsFuiBaXZh90KrTZT+CRBrKx7GtCRB7Al/YJoEedAkp7XYraDErzjzeJhl7FcQFE0WM4CMCPUcfeWd2lyXtAOxN2ryRQK62y9UTT5MxpLka677XSe4AsM3RYLzAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992323; c=relaxed/simple;
-	bh=XDPYUVVVDhLrXFMGwzNBWwc23qX0yu2zEo0qsGumxxE=;
+	s=arc-20240116; t=1751994080; c=relaxed/simple;
+	bh=zqq/RihB88gTsVCpMezRj6jCm9USPl/XHC73x1NEJUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pSiT8WNGsxABjE3sYolBbsLQOJenZWsx+VSYs9gWhXCRG91ISgbprctxqyknKLSv1+gYGNMhWEiLeC9gmrHBDp4VHLQu8/TtQNCVt8a6d4/Cz1znBM7sQs3axQTfXj01x6UFGPT8hIQk0fASVGh/efdhp16Xi57+kI8K6dRxizc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZmmbFvt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82304C4CEED;
-	Tue,  8 Jul 2025 16:32:02 +0000 (UTC)
+	 MIME-Version; b=BoP8ChmEziMyFBDoxbOHj9kwCaXjeq9OQ4DShMHtSlvw3HEkhJtk8kn6HUQDZ+HOuju1O0gxmSXuOYShHGZBLI1SeQfK6COQqTOGynvtAUskSn27fFD9MSqMaCkbEzOxLcsAKTLP7PSnTxguj//Dx4Oyh+4mVAaEUdIim6Yj/lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yheovrxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63EFC4CEED;
+	Tue,  8 Jul 2025 17:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992322;
-	bh=XDPYUVVVDhLrXFMGwzNBWwc23qX0yu2zEo0qsGumxxE=;
+	s=korg; t=1751994080;
+	bh=zqq/RihB88gTsVCpMezRj6jCm9USPl/XHC73x1NEJUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZmmbFvtowW84UdSOXiFBOXRrSBtTRpsS4b1joWzqQOS6dgEJqzaUG9K8jq66LaW4
-	 +kjHxQa45EOZbdKd8iwpgUCGvQyo09gCOhxJ2nB5m8wW+kDH/4gAlihHE3EcmDkYFb
-	 dfZROIRWHl4EZTyVP955MQGTx77pu4apQm9V/yp8=
+	b=yheovrxBT6uTM2QEzKnCSVADc2DYN0DjZpD0Jab/Oo/hQ8DXzI38NaGMZg5GScJh7
+	 PjnSnSq3oKCoh5pZAn68GTlHNU1q1/aY31yU4o6d+mc7aLLEgQCrIN+ZCUi1CcHguY
+	 l0MF8pie85Dx2XW1whkora0LhIigy4Qc5hT5G8DA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/132] platform/x86: firmware_attributes_class: Simplify API
+Subject: [PATCH 5.15 119/160] igc: disable L1.2 PCI-E link substate to avoid performance issue
 Date: Tue,  8 Jul 2025 18:22:36 +0200
-Message-ID: <20250708162231.990694143@linuxfoundation.org>
+Message-ID: <20250708162234.746904089@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-[ Upstream commit d03cfde56f5cf9ec50b4cf099a42bf056fc80ddd ]
+[ Upstream commit 0325143b59c6c6d79987afc57d2456e7a20d13b7 ]
 
-The module core already guarantees that a module can only be unloaded
-after all other modules using its symbols have been unloaded.
-As it's already the responsibility of the drivers using
-firmware_attributes_class to clean up their devices before unloading,
-the lifetime of the firmware_attributes_class can be bound to the
-lifetime of the module.
-This enables the direct usage of firmware_attributes_class from the
-drivers, without having to go through the lifecycle functions,
-leading to simplifications for both the subsystem and its users.
+I226 devices advertise support for the PCI-E link L1.2 substate. However,
+due to a hardware limitation, the exit latency from this low-power state
+is longer than the packet buffer can tolerate under high traffic
+conditions. This can lead to packet loss and degraded performance.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://lore.kernel.org/r/20250104-firmware-attributes-simplify-v1-2-949f9709e405@weissschuh.net
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Stable-dep-of: 5ff1fbb30597 ("platform/x86: think-lmi: Fix class device unregistration")
+To mitigate this, disable the L1.2 substate. The increased power draw
+between L1.1 and L1.2 is insignificant.
+
+Fixes: 43546211738e ("igc: Add new device ID's")
+Link: https://lore.kernel.org/intel-wired-lan/15248b4f-3271-42dd-8e35-02bfc92b25e1@intel.com
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/x86/firmware_attributes_class.c  | 40 +++++++------------
- .../platform/x86/firmware_attributes_class.h  |  1 +
- 2 files changed, 15 insertions(+), 26 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/platform/x86/firmware_attributes_class.c b/drivers/platform/x86/firmware_attributes_class.c
-index 4801f9f44aaa6..e214efc97311e 100644
---- a/drivers/platform/x86/firmware_attributes_class.c
-+++ b/drivers/platform/x86/firmware_attributes_class.c
-@@ -2,47 +2,35 @@
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 4186e5732f972..f52c1674d19bd 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -6549,6 +6549,10 @@ static int igc_probe(struct pci_dev *pdev,
+ 	adapter->port_num = hw->bus.func;
+ 	adapter->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
  
- /* Firmware attributes class helper module */
- 
--#include <linux/mutex.h>
- #include <linux/module.h>
- #include "firmware_attributes_class.h"
- 
--static DEFINE_MUTEX(fw_attr_lock);
--static int fw_attr_inuse;
--
--static const struct class firmware_attributes_class = {
-+const struct class firmware_attributes_class = {
- 	.name = "firmware-attributes",
- };
-+EXPORT_SYMBOL_GPL(firmware_attributes_class);
++	/* Disable ASPM L1.2 on I226 devices to avoid packet loss */
++	if (igc_is_device_id_i226(hw))
++		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
 +
-+static __init int fw_attributes_class_init(void)
-+{
-+	return class_register(&firmware_attributes_class);
-+}
-+module_init(fw_attributes_class_init);
+ 	err = pci_save_state(pdev);
+ 	if (err)
+ 		goto err_ioremap;
+@@ -6914,6 +6918,9 @@ static int __maybe_unused igc_resume(struct device *dev)
+ 	pci_enable_wake(pdev, PCI_D3hot, 0);
+ 	pci_enable_wake(pdev, PCI_D3cold, 0);
+ 
++	if (igc_is_device_id_i226(hw))
++		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
 +
-+static __exit void fw_attributes_class_exit(void)
-+{
-+	class_unregister(&firmware_attributes_class);
-+}
-+module_exit(fw_attributes_class_exit);
+ 	if (igc_init_interrupt_scheme(adapter, true)) {
+ 		netdev_err(netdev, "Unable to allocate memory for queues\n");
+ 		return -ENOMEM;
+@@ -7029,6 +7036,9 @@ static pci_ers_result_t igc_io_slot_reset(struct pci_dev *pdev)
+ 		pci_enable_wake(pdev, PCI_D3hot, 0);
+ 		pci_enable_wake(pdev, PCI_D3cold, 0);
  
- int fw_attributes_class_get(const struct class **fw_attr_class)
- {
--	int err;
--
--	mutex_lock(&fw_attr_lock);
--	if (!fw_attr_inuse) { /*first time class is being used*/
--		err = class_register(&firmware_attributes_class);
--		if (err) {
--			mutex_unlock(&fw_attr_lock);
--			return err;
--		}
--	}
--	fw_attr_inuse++;
- 	*fw_attr_class = &firmware_attributes_class;
--	mutex_unlock(&fw_attr_lock);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(fw_attributes_class_get);
- 
- int fw_attributes_class_put(void)
- {
--	mutex_lock(&fw_attr_lock);
--	if (!fw_attr_inuse) {
--		mutex_unlock(&fw_attr_lock);
--		return -EINVAL;
--	}
--	fw_attr_inuse--;
--	if (!fw_attr_inuse) /* No more consumers */
--		class_unregister(&firmware_attributes_class);
--	mutex_unlock(&fw_attr_lock);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(fw_attributes_class_put);
-diff --git a/drivers/platform/x86/firmware_attributes_class.h b/drivers/platform/x86/firmware_attributes_class.h
-index 8e0f47cfdf92e..ef6c3764a8349 100644
---- a/drivers/platform/x86/firmware_attributes_class.h
-+++ b/drivers/platform/x86/firmware_attributes_class.h
-@@ -7,6 +7,7 @@
- 
- #include <linux/device/class.h>
- 
-+extern const struct class firmware_attributes_class;
- int fw_attributes_class_get(const struct class **fw_attr_class);
- int fw_attributes_class_put(void);
- 
++		if (igc_is_device_id_i226(hw))
++			pci_disable_link_state_locked(pdev, PCIE_LINK_STATE_L1_2);
++
+ 		/* In case of PCI error, adapter loses its HW address
+ 		 * so we should re-assign it here.
+ 		 */
 -- 
 2.39.5
 
