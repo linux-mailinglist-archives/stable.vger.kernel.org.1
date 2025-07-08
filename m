@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1DEAFD25D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E71AFD11C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 028B1188F33B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02CA716E26C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C4C2E2F0D;
-	Tue,  8 Jul 2025 16:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7B81BEF7E;
+	Tue,  8 Jul 2025 16:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dft+13kw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8W/VPDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132271714B7;
-	Tue,  8 Jul 2025 16:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC214881E;
+	Tue,  8 Jul 2025 16:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992973; cv=none; b=YVj3tlziIOSB6ii2ixyUTbcXRmbJx87eOylsTISVWttjjh48/Bawl9hAexUvF3+lsc66dpwdheKulSeavt4A19Wlc6m7pGWh+luWDgx7dMeK7ezjaMpW8rde11Bf4X3RMO5apEMSKxVV114tfV4+CIcre3PeOW2UzKgjl3p6M+0=
+	t=1751992253; cv=none; b=Hrr8qE7K8yY8Uy2/hcz/cvQ/54wGHSueHPJ6rKOESVO9+/PjyHrO4Ac/bS1Khh9zeAPhiFKYoFYH7qpWnidAgCBLDUE3eBowOnPL8pBRwr9RUDP00a3IWFoQt043/xq5QJEq/CaggrCnIvqDUKZPGXmhbYm77hJTJU3Q7zbyUmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992973; c=relaxed/simple;
-	bh=HVdk4Ia2q/1TtSYpfgvnCenY5BQ6pdcrOAs1tf+I5Tc=;
+	s=arc-20240116; t=1751992253; c=relaxed/simple;
+	bh=ZM2gHaWzfU3arykJJHtSgjQDDIZysiJxZli8Xbjul8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCXfqZ3SK4z0XmKUqTEmFJRUbSR//OtAwnJ5vxq1QrFK/8vujntEGTomWepZ1+By2/Gar8DqLIJ+ODp5x4B/ePZA5nvFGvs61gY0nMRBpuVlgdg/KbGuvtVKTxYOVJ/PDTiS89sUY5pROlHjEuMMWpp8D1O8cCuawUPFMkky6A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dft+13kw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903CBC4CEED;
-	Tue,  8 Jul 2025 16:42:52 +0000 (UTC)
+	 MIME-Version; b=LolgbP4Bkt758aTEQTDcDIxJZiiN5C3h64POto5bJoCjZ9QQRvmr9e80vUh03ikGlbvHCBmcKrQkoIWY1F9dXfvn5nWuIiTlFb8U3aHiyrx22q6AdYz4q49Gf4jEdVXju9maDj4k8/HyW5Rd9F/mPYqmFWLGgQb2O4T09KAHCmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8W/VPDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 794B1C4CEED;
+	Tue,  8 Jul 2025 16:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992973;
-	bh=HVdk4Ia2q/1TtSYpfgvnCenY5BQ6pdcrOAs1tf+I5Tc=;
+	s=korg; t=1751992252;
+	bh=ZM2gHaWzfU3arykJJHtSgjQDDIZysiJxZli8Xbjul8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dft+13kwejvnJxAQ60J/l2n4tli9U/eYuY3W6OxmpiP4WTAYhvphr7qTBfG6xVKjT
-	 MOc1iwMlRiJyx0O2bCY/WnfEgFwgYmWSM4H6NbcMirZzIU3pNzUDPoVH/x+KVpNFtE
-	 gSLdi7J+o/lZ7i9V10nPa56/lGE39u11NCgq+Hrg=
+	b=l8W/VPDCmO0hve+gdyuR11kXYrc5a+nhmQgvO8ZSzxfBvWTBUkWHnSG5oaqOXE5MJ
+	 4q4AqRuQzRY8nTxV+G47aN1OVlJ8qFexoLj3zJqYAigC/GHsNnoWEU91divra8E9JS
+	 k77BWl+6S3i5p4ZjcH9C674TPYcd2QHd6nnXjaU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Yang Li <yang.li@amlogic.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 145/232] remoteproc: k3: Call of_node_put(rmem_np) only once in three functions
+Subject: [PATCH 6.6 030/132] Bluetooth: Prevent unintended pause by checking if advertising is active
 Date: Tue,  8 Jul 2025 18:22:21 +0200
-Message-ID: <20250708162245.235536713@linuxfoundation.org>
+Message-ID: <20250708162231.590438525@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Yang Li <yang.li@amlogic.com>
 
-[ Upstream commit a36d9f96d1cf7c0308bf091e810bec06ce492c3d ]
+[ Upstream commit 1f029b4e30a602db33dedee5ac676e9236ad193c ]
 
-An of_node_put(rmem_np) call was immediately used after a pointer check
-for a of_reserved_mem_lookup() call in three function implementations.
-Thus call such a function only once instead directly before the checks.
+When PA Create Sync is enabled, advertising resumes unexpectedly.
+Therefore, it's necessary to check whether advertising is currently
+active before attempting to pause it.
 
-This issue was transformed by using the Coccinelle software.
+  < HCI Command: LE Add Device To... (0x08|0x0011) plen 7  #1345 [hci0] 48.306205
+  		Address type: Random (0x01)
+  		Address: 4F:84:84:5F:88:17 (Resolvable)
+  		Identity type: Random (0x01)
+  		Identity: FC:5B:8C:F7:5D:FB (Static)
+  < HCI Command: LE Set Address Re.. (0x08|0x002d) plen 1  #1347 [hci0] 48.308023
+  		Address resolution: Enabled (0x01)
+  ...
+  < HCI Command: LE Set Extended A.. (0x08|0x0039) plen 6  #1349 [hci0] 48.309650
+  		Extended advertising: Enabled (0x01)
+  		Number of sets: 1 (0x01)
+  		Entry 0
+  		Handle: 0x01
+  		Duration: 0 ms (0x00)
+  		Max ext adv events: 0
+  ...
+  < HCI Command: LE Periodic Adve.. (0x08|0x0044) plen 14  #1355 [hci0] 48.314575
+  		Options: 0x0000
+  		Use advertising SID, Advertiser Address Type and address
+  		Reporting initially enabled
+  		SID: 0x02
+  		Adv address type: Random (0x01)
+  		Adv address: 4F:84:84:5F:88:17 (Resolvable)
+  		Identity type: Random (0x01)
+  		Identity: FC:5B:8C:F7:5D:FB (Static)
+  		Skip: 0x0000
+  		Sync timeout: 20000 msec (0x07d0)
+  		Sync CTE type: 0x0000
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Link: https://lore.kernel.org/r/c46b06f9-72b1-420b-9dce-a392b982140e@web.de
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Stable-dep-of: 701177511abd ("remoteproc: k3-r5: Refactor sequential core power up/down operations")
+Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
+Signed-off-by: Yang Li <yang.li@amlogic.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/ti_k3_dsp_remoteproc.c | 6 ++----
- drivers/remoteproc/ti_k3_m4_remoteproc.c  | 6 ++----
- drivers/remoteproc/ti_k3_r5_remoteproc.c  | 3 +--
- 3 files changed, 5 insertions(+), 10 deletions(-)
+ net/bluetooth/hci_sync.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/remoteproc/ti_k3_dsp_remoteproc.c b/drivers/remoteproc/ti_k3_dsp_remoteproc.c
-index 2ae0655ddf1d2..73be3d2167914 100644
---- a/drivers/remoteproc/ti_k3_dsp_remoteproc.c
-+++ b/drivers/remoteproc/ti_k3_dsp_remoteproc.c
-@@ -568,11 +568,9 @@ static int k3_dsp_reserved_mem_init(struct k3_dsp_rproc *kproc)
- 			return -EINVAL;
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 9ba4cb90891b3..d602e9d8eff45 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2518,6 +2518,10 @@ static int hci_pause_advertising_sync(struct hci_dev *hdev)
+ 	int err;
+ 	int old_state;
  
- 		rmem = of_reserved_mem_lookup(rmem_np);
--		if (!rmem) {
--			of_node_put(rmem_np);
--			return -EINVAL;
--		}
- 		of_node_put(rmem_np);
-+		if (!rmem)
-+			return -EINVAL;
- 
- 		kproc->rmem[i].bus_addr = rmem->base;
- 		/* 64-bit address regions currently not supported */
-diff --git a/drivers/remoteproc/ti_k3_m4_remoteproc.c b/drivers/remoteproc/ti_k3_m4_remoteproc.c
-index fba6e393635e3..6cd50b16a8e82 100644
---- a/drivers/remoteproc/ti_k3_m4_remoteproc.c
-+++ b/drivers/remoteproc/ti_k3_m4_remoteproc.c
-@@ -433,11 +433,9 @@ static int k3_m4_reserved_mem_init(struct k3_m4_rproc *kproc)
- 			return -EINVAL;
- 
- 		rmem = of_reserved_mem_lookup(rmem_np);
--		if (!rmem) {
--			of_node_put(rmem_np);
--			return -EINVAL;
--		}
- 		of_node_put(rmem_np);
-+		if (!rmem)
-+			return -EINVAL;
- 
- 		kproc->rmem[i].bus_addr = rmem->base;
- 		/* 64-bit address regions currently not supported */
-diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-index 4894461aa65f3..6cbe74486ebd4 100644
---- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
-+++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-@@ -993,12 +993,11 @@ static int k3_r5_reserved_mem_init(struct k3_r5_rproc *kproc)
- 		}
- 
- 		rmem = of_reserved_mem_lookup(rmem_np);
-+		of_node_put(rmem_np);
- 		if (!rmem) {
--			of_node_put(rmem_np);
- 			ret = -EINVAL;
- 			goto unmap_rmem;
- 		}
--		of_node_put(rmem_np);
- 
- 		kproc->rmem[i].bus_addr = rmem->base;
- 		/*
++	/* If controller is not advertising we are done. */
++	if (!hci_dev_test_flag(hdev, HCI_LE_ADV))
++		return 0;
++
+ 	/* If already been paused there is nothing to do. */
+ 	if (hdev->advertising_paused)
+ 		return 0;
 -- 
 2.39.5
 
