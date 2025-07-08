@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9893AFD309
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:52:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D68AFD3DC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:01:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73785188BA32
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6EAB16F918
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BCF32E1C65;
-	Tue,  8 Jul 2025 16:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E890D202F70;
+	Tue,  8 Jul 2025 16:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhDacSkL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Je5DBRGI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49366217722;
-	Tue,  8 Jul 2025 16:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56838F5E;
+	Tue,  8 Jul 2025 16:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993356; cv=none; b=azgYgrfE2475Hax1JQlBg8JDe1VYkzy4hPOLXP+pUTcvtf1+eyDtbLcErc55PohVwjpvwMLQHgSW/9kuye3SKLhchimFdp2CGn377lBlqw5Jjh1AFNlwJjdoBCiNXJOUGHj2OPxY8G1QMbS7/27Ye9qdawK2G0ykJO+As8pMc3A=
+	t=1751993895; cv=none; b=PROEydPmaufBJtmwrALyMOq8SOIrp2X6QYZvrKNDOhGTTsajq2sZQj+N5o7d8gLZI6sEn33m9NJ35m5IwIrS3wbqdzFbWGSVp7bpA82EKA39VLihOMWn1dCiHcPisjWwAA9C4YrkCm/Gu35TZvAdYYeclRCFdBEi7R8IGom667A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993356; c=relaxed/simple;
-	bh=QTXZuXgHuWcOrS59oC6QO4zT8sW3JHlIxZ4I7PSxaX4=;
+	s=arc-20240116; t=1751993895; c=relaxed/simple;
+	bh=vlyi0JtrDk+oJyuz1DxtvDhnzVU+jt8TCIM2MyrLNgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZ06484T5Zp70LoZ8VNIDUn91UtB0NB+DXgp5iAt4fAIBm1w321ccBkl9JZgxjE4G6adIHUsp0gpn0WEkW+WztUPFmdHnxlWte0TJtljGzbKiX3rqd12Iq1d1vuflDeROrzV78O+KaYwf0NjcKlQP57oxbT80XoFzX/rcJIGOd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhDacSkL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E7CC4CEED;
-	Tue,  8 Jul 2025 16:49:15 +0000 (UTC)
+	 MIME-Version; b=MUNbxmK5MzAVbRMZOJ8qdfCDQn7dP5/3cS6/Bit3RynaAvnb48YcU5vO4gYObT3Hn7yNtmKIX2TpjUESpfYgBeSDW9tDWjiWlgOHL/3va4u/0ejvShR1mE8FZ4ivviwIScqdca9a21mYcad9U6JevPGi21jRlrF9uw8mrUIrIA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Je5DBRGI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F439C4CEED;
+	Tue,  8 Jul 2025 16:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993356;
-	bh=QTXZuXgHuWcOrS59oC6QO4zT8sW3JHlIxZ4I7PSxaX4=;
+	s=korg; t=1751993895;
+	bh=vlyi0JtrDk+oJyuz1DxtvDhnzVU+jt8TCIM2MyrLNgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vhDacSkLG5hcaQReRUOTWzQPgQkhJFdTRR5RHY8icR/W08aZTIdctKhT+jhe8f2pU
-	 dpfAOP+Pvq8bF6dQ0UYow9jgbO8SR5PU1jvab4I4TmM2V9aLefUFkTYVJ+OD0ccYoA
-	 +LHH4ahwxeSjpkiaEtLkah5cDtmOrpI0eLtXdFz8=
+	b=Je5DBRGIxQgk24gdQ61zGMZa92LX+TFB84lopXFTLh3I8t2gRHoTjga0x+oEnh9d9
+	 Et3pN1Wif3QeGq8Vg8CTgfE6XwKh7GAUJLWH22B0nf1U+a3M6S7HoHjco9UW/Z8x6W
+	 J6GItjOEB9qz1NP6Dx/cvMt70ZGfhHfgaAEu+PPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Leon Romanovsky <leon@kernel.org>,
+	stable@kernel.org,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 038/178] RDMA/mlx5: reduce stack usage in mlx5_ib_ufile_hw_cleanup
+Subject: [PATCH 5.15 038/160] f2fs: dont over-report free space or inodes in statvfs
 Date: Tue,  8 Jul 2025 18:21:15 +0200
-Message-ID: <20250708162237.675950943@linuxfoundation.org>
+Message-ID: <20250708162232.588311860@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit b26852daaa83f535109253d114426d1fa674155d ]
+[ Upstream commit a9201960623287927bf5776de3f70fb2fbde7e02 ]
 
-This function has an array of eight mlx5_async_cmd structures, which
-often fits on the stack, but depending on the configuration can
-end up blowing the stack frame warning limit:
+This fixes an analogus bug that was fixed in modern filesystems:
+a) xfs in commit 4b8d867ca6e2 ("xfs: don't over-report free space or
+inodes in statvfs")
+b) ext4 in commit f87d3af74193 ("ext4: don't over-report free space
+or inodes in statvfs")
+where statfs can report misleading / incorrect information where
+project quota is enabled, and the free space is less than the
+remaining quota.
 
-drivers/infiniband/hw/mlx5/devx.c:2670:6: error: stack frame size (1392) exceeds limit (1280) in 'mlx5_ib_ufile_hw_cleanup' [-Werror,-Wframe-larger-than]
+This commit will resolve a test failure in generic/762 which tests
+for this bug.
 
-Change this to a dynamic allocation instead. While a kmalloc()
-can theoretically fail, a GFP_KERNEL allocation under a page will
-block until memory has been freed up, so in the worst case, this
-only adds extra time in an already constrained environment.
+generic/762       - output mismatch (see /share/git/fstests/results//generic/762.out.bad)
+#    --- tests/generic/762.out   2025-04-15 10:21:53.371067071 +0800
+#    +++ /share/git/fstests/results//generic/762.out.bad 2025-05-13 16:13:37.000000000 +0800
+#    @@ -6,8 +6,10 @@
+#     root blocks2 is in range
+#     dir blocks2 is in range
+#     root bavail2 is in range
+#    -dir bavail2 is in range
+#    +dir bavail2 has value of 1539066
+#    +dir bavail2 is NOT in range 304734.87 .. 310891.13
+#     root blocks3 is in range
+#    ...
+#    (Run 'diff -u /share/git/fstests/tests/generic/762.out /share/git/fstests/results//generic/762.out.bad'  to see the entire diff)
 
-Fixes: 7c891a4dbcc1 ("RDMA/mlx5: Add implementation for ufile_hw_cleanup device operation")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250610092846.2642535-1-arnd@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+HINT: You _MAY_ be missing kernel fix:
+      XXXXXXXXXXXXXX xfs: don't over-report free space or inodes in statvfs
+
+Cc: stable@kernel.org
+Fixes: ddc34e328d06 ("f2fs: introduce f2fs_statfs_project")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/devx.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/f2fs/super.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
-index 2479da8620ca9..bceae1c1f9801 100644
---- a/drivers/infiniband/hw/mlx5/devx.c
-+++ b/drivers/infiniband/hw/mlx5/devx.c
-@@ -2669,7 +2669,7 @@ static void devx_wait_async_destroy(struct mlx5_async_cmd *cmd)
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 194d3f93ac5f2..b9da3074a1af8 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1737,26 +1737,32 @@ static int f2fs_statfs_project(struct super_block *sb,
  
- void mlx5_ib_ufile_hw_cleanup(struct ib_uverbs_file *ufile)
- {
--	struct mlx5_async_cmd async_cmd[MAX_ASYNC_CMDS];
-+	struct mlx5_async_cmd *async_cmd;
- 	struct ib_ucontext *ucontext = ufile->ucontext;
- 	struct ib_device *device = ucontext->device;
- 	struct mlx5_ib_dev *dev = to_mdev(device);
-@@ -2678,6 +2678,10 @@ void mlx5_ib_ufile_hw_cleanup(struct ib_uverbs_file *ufile)
- 	int head = 0;
- 	int tail = 0;
- 
-+	async_cmd = kcalloc(MAX_ASYNC_CMDS, sizeof(*async_cmd), GFP_KERNEL);
-+	if (!async_cmd)
-+		return;
+ 	limit = min_not_zero(dquot->dq_dqb.dqb_bsoftlimit,
+ 					dquot->dq_dqb.dqb_bhardlimit);
+-	if (limit)
+-		limit >>= sb->s_blocksize_bits;
++	limit >>= sb->s_blocksize_bits;
 +
- 	list_for_each_entry(uobject, &ufile->uobjects, list) {
- 		WARN_ON(uverbs_try_lock_object(uobject, UVERBS_LOOKUP_WRITE));
++	if (limit) {
++		uint64_t remaining = 0;
  
-@@ -2713,6 +2717,8 @@ void mlx5_ib_ufile_hw_cleanup(struct ib_uverbs_file *ufile)
- 		devx_wait_async_destroy(&async_cmd[head % MAX_ASYNC_CMDS]);
- 		head++;
+-	if (limit && buf->f_blocks > limit) {
+ 		curblock = (dquot->dq_dqb.dqb_curspace +
+ 			    dquot->dq_dqb.dqb_rsvspace) >> sb->s_blocksize_bits;
+-		buf->f_blocks = limit;
+-		buf->f_bfree = buf->f_bavail =
+-			(buf->f_blocks > curblock) ?
+-			 (buf->f_blocks - curblock) : 0;
++		if (limit > curblock)
++			remaining = limit - curblock;
++
++		buf->f_blocks = min(buf->f_blocks, limit);
++		buf->f_bfree = min(buf->f_bfree, remaining);
++		buf->f_bavail = min(buf->f_bavail, remaining);
  	}
-+
-+	kfree(async_cmd);
- }
  
- static ssize_t devx_async_cmd_event_read(struct file *filp, char __user *buf,
+ 	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
+ 					dquot->dq_dqb.dqb_ihardlimit);
+ 
+-	if (limit && buf->f_files > limit) {
+-		buf->f_files = limit;
+-		buf->f_ffree =
+-			(buf->f_files > dquot->dq_dqb.dqb_curinodes) ?
+-			 (buf->f_files - dquot->dq_dqb.dqb_curinodes) : 0;
++	if (limit) {
++		uint64_t remaining = 0;
++
++		if (limit > dquot->dq_dqb.dqb_curinodes)
++			remaining = limit - dquot->dq_dqb.dqb_curinodes;
++
++		buf->f_files = min(buf->f_files, limit);
++		buf->f_ffree = min(buf->f_ffree, remaining);
+ 	}
+ 
+ 	spin_unlock(&dquot->dq_dqb_lock);
 -- 
 2.39.5
 
