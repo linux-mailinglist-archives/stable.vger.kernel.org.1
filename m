@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-161204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D68AFD3DC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:01:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D11D4AFD200
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6EAB16F918
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6612E171FDD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E890D202F70;
-	Tue,  8 Jul 2025 16:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB752E2F0E;
+	Tue,  8 Jul 2025 16:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Je5DBRGI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktFstm2E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56838F5E;
-	Tue,  8 Jul 2025 16:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B733F9E8;
+	Tue,  8 Jul 2025 16:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993895; cv=none; b=PROEydPmaufBJtmwrALyMOq8SOIrp2X6QYZvrKNDOhGTTsajq2sZQj+N5o7d8gLZI6sEn33m9NJ35m5IwIrS3wbqdzFbWGSVp7bpA82EKA39VLihOMWn1dCiHcPisjWwAA9C4YrkCm/Gu35TZvAdYYeclRCFdBEi7R8IGom667A=
+	t=1751992782; cv=none; b=dbdKYOLXXdzTr6pIo3ZHmhGlwnZ7ugXfR9e0ujcAWNzSi/lOIrgSg+gKbdPTKHhigZ2vjRoe8q5+sJ5H5w5qsrADg6RIhMKXA68twiqrKyI/ddldQTthiCg3CvqagSOM4P7aWCVeORHpkD84p2L8TjeVmi45TAiaV0ptyCgUbzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993895; c=relaxed/simple;
-	bh=vlyi0JtrDk+oJyuz1DxtvDhnzVU+jt8TCIM2MyrLNgM=;
+	s=arc-20240116; t=1751992782; c=relaxed/simple;
+	bh=Anej8zQcEt9ZfX/UzHpwpgXGv/tpfGfP2jLepBNsce8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUNbxmK5MzAVbRMZOJ8qdfCDQn7dP5/3cS6/Bit3RynaAvnb48YcU5vO4gYObT3Hn7yNtmKIX2TpjUESpfYgBeSDW9tDWjiWlgOHL/3va4u/0ejvShR1mE8FZ4ivviwIScqdca9a21mYcad9U6JevPGi21jRlrF9uw8mrUIrIA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Je5DBRGI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F439C4CEED;
-	Tue,  8 Jul 2025 16:58:15 +0000 (UTC)
+	 MIME-Version; b=P9tW2jEuz6ohh45s3eDiCtbLdP9V6NzFYRnrOpJm54Vr8gMLMjgVFz0DShsVEqXfHNFGrIX81/n6cuTIDHui1+568uFYa5hdMVwyHzN3YgUid0rwt9VR23Qgfzkr3f/rPK+f9JQRWqlUzKbcsSyIIRGZ23DNOWPjMhFLbNnih/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktFstm2E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 958ECC4CEED;
+	Tue,  8 Jul 2025 16:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993895;
-	bh=vlyi0JtrDk+oJyuz1DxtvDhnzVU+jt8TCIM2MyrLNgM=;
+	s=korg; t=1751992782;
+	bh=Anej8zQcEt9ZfX/UzHpwpgXGv/tpfGfP2jLepBNsce8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Je5DBRGIxQgk24gdQ61zGMZa92LX+TFB84lopXFTLh3I8t2gRHoTjga0x+oEnh9d9
-	 Et3pN1Wif3QeGq8Vg8CTgfE6XwKh7GAUJLWH22B0nf1U+a3M6S7HoHjco9UW/Z8x6W
-	 J6GItjOEB9qz1NP6Dx/cvMt70ZGfhHfgaAEu+PPw=
+	b=ktFstm2EKqxtzW00g+yxbxPqB+MVwhLh9OyqfC3XGYPGV/Y/hZHYZXgwLtvuz+KrR
+	 hms17QM3EyMZgaFitLH1DOjVFCs5zgNK93F5xmWgW9aIQX9qkTe4wcHNUG5AisnmV1
+	 KAYuX04fuwyGHnBxYi4uqrbnivjR7wvC5u5HHyJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Ahmed Zaki <ahmed.zaki@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 038/160] f2fs: dont over-report free space or inodes in statvfs
+Subject: [PATCH 6.12 079/232] idpf: convert control queue mutex to a spinlock
 Date: Tue,  8 Jul 2025 18:21:15 +0200
-Message-ID: <20250708162232.588311860@linuxfoundation.org>
+Message-ID: <20250708162243.521574318@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +65,234 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Ahmed Zaki <ahmed.zaki@intel.com>
 
-[ Upstream commit a9201960623287927bf5776de3f70fb2fbde7e02 ]
+[ Upstream commit b2beb5bb2cd90d7939e470ed4da468683f41baa3 ]
 
-This fixes an analogus bug that was fixed in modern filesystems:
-a) xfs in commit 4b8d867ca6e2 ("xfs: don't over-report free space or
-inodes in statvfs")
-b) ext4 in commit f87d3af74193 ("ext4: don't over-report free space
-or inodes in statvfs")
-where statfs can report misleading / incorrect information where
-project quota is enabled, and the free space is less than the
-remaining quota.
+With VIRTCHNL2_CAP_MACFILTER enabled, the following warning is generated
+on module load:
 
-This commit will resolve a test failure in generic/762 which tests
-for this bug.
+[  324.701677] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:578
+[  324.701684] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1582, name: NetworkManager
+[  324.701689] preempt_count: 201, expected: 0
+[  324.701693] RCU nest depth: 0, expected: 0
+[  324.701697] 2 locks held by NetworkManager/1582:
+[  324.701702]  #0: ffffffff9f7be770 (rtnl_mutex){....}-{3:3}, at: rtnl_newlink+0x791/0x21e0
+[  324.701730]  #1: ff1100216c380368 (_xmit_ETHER){....}-{2:2}, at: __dev_open+0x3f0/0x870
+[  324.701749] Preemption disabled at:
+[  324.701752] [<ffffffff9cd23b9d>] __dev_open+0x3dd/0x870
+[  324.701765] CPU: 30 UID: 0 PID: 1582 Comm: NetworkManager Not tainted 6.15.0-rc5+ #2 PREEMPT(voluntary)
+[  324.701771] Hardware name: Intel Corporation M50FCP2SBSTD/M50FCP2SBSTD, BIOS SE5C741.86B.01.01.0001.2211140926 11/14/2022
+[  324.701774] Call Trace:
+[  324.701777]  <TASK>
+[  324.701779]  dump_stack_lvl+0x5d/0x80
+[  324.701788]  ? __dev_open+0x3dd/0x870
+[  324.701793]  __might_resched.cold+0x1ef/0x23d
+<..>
+[  324.701818]  __mutex_lock+0x113/0x1b80
+<..>
+[  324.701917]  idpf_ctlq_clean_sq+0xad/0x4b0 [idpf]
+[  324.701935]  ? kasan_save_track+0x14/0x30
+[  324.701941]  idpf_mb_clean+0x143/0x380 [idpf]
+<..>
+[  324.701991]  idpf_send_mb_msg+0x111/0x720 [idpf]
+[  324.702009]  idpf_vc_xn_exec+0x4cc/0x990 [idpf]
+[  324.702021]  ? rcu_is_watching+0x12/0xc0
+[  324.702035]  idpf_add_del_mac_filters+0x3ed/0xb50 [idpf]
+<..>
+[  324.702122]  __hw_addr_sync_dev+0x1cf/0x300
+[  324.702126]  ? find_held_lock+0x32/0x90
+[  324.702134]  idpf_set_rx_mode+0x317/0x390 [idpf]
+[  324.702152]  __dev_open+0x3f8/0x870
+[  324.702159]  ? __pfx___dev_open+0x10/0x10
+[  324.702174]  __dev_change_flags+0x443/0x650
+<..>
+[  324.702208]  netif_change_flags+0x80/0x160
+[  324.702218]  do_setlink.isra.0+0x16a0/0x3960
+<..>
+[  324.702349]  rtnl_newlink+0x12fd/0x21e0
 
-generic/762       - output mismatch (see /share/git/fstests/results//generic/762.out.bad)
-#    --- tests/generic/762.out   2025-04-15 10:21:53.371067071 +0800
-#    +++ /share/git/fstests/results//generic/762.out.bad 2025-05-13 16:13:37.000000000 +0800
-#    @@ -6,8 +6,10 @@
-#     root blocks2 is in range
-#     dir blocks2 is in range
-#     root bavail2 is in range
-#    -dir bavail2 is in range
-#    +dir bavail2 has value of 1539066
-#    +dir bavail2 is NOT in range 304734.87 .. 310891.13
-#     root blocks3 is in range
-#    ...
-#    (Run 'diff -u /share/git/fstests/tests/generic/762.out /share/git/fstests/results//generic/762.out.bad'  to see the entire diff)
+The sequence is as follows:
+	rtnl_newlink()->
+	__dev_change_flags()->
+	__dev_open()->
+	dev_set_rx_mode() - >  # disables BH and grabs "dev->addr_list_lock"
+	idpf_set_rx_mode() ->  # proceed only if VIRTCHNL2_CAP_MACFILTER is ON
+	__dev_uc_sync() ->
+	idpf_add_mac_filter ->
+	idpf_add_del_mac_filters ->
+	idpf_send_mb_msg() ->
+	idpf_mb_clean() ->
+	idpf_ctlq_clean_sq()   # mutex_lock(cq_lock)
 
-HINT: You _MAY_ be missing kernel fix:
-      XXXXXXXXXXXXXX xfs: don't over-report free space or inodes in statvfs
+Fix by converting cq_lock to a spinlock. All operations under the new
+lock are safe except freeing the DMA memory, which may use vunmap(). Fix
+by requesting a contiguous physical memory for the DMA mapping.
 
-Cc: stable@kernel.org
-Fixes: ddc34e328d06 ("f2fs: introduce f2fs_statfs_project")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: a251eee62133 ("idpf: add SRIOV support and other ndo_ops")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ .../net/ethernet/intel/idpf/idpf_controlq.c   | 23 +++++++++----------
+ .../ethernet/intel/idpf/idpf_controlq_api.h   |  2 +-
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    | 12 ++++++----
+ 3 files changed, 20 insertions(+), 17 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 194d3f93ac5f2..b9da3074a1af8 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1737,26 +1737,32 @@ static int f2fs_statfs_project(struct super_block *sb,
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq.c b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
+index b28991dd18703..48b8e184f3db6 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_controlq.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
+@@ -96,7 +96,7 @@ static void idpf_ctlq_init_rxq_bufs(struct idpf_ctlq_info *cq)
+  */
+ static void idpf_ctlq_shutdown(struct idpf_hw *hw, struct idpf_ctlq_info *cq)
+ {
+-	mutex_lock(&cq->cq_lock);
++	spin_lock(&cq->cq_lock);
  
- 	limit = min_not_zero(dquot->dq_dqb.dqb_bsoftlimit,
- 					dquot->dq_dqb.dqb_bhardlimit);
--	if (limit)
--		limit >>= sb->s_blocksize_bits;
-+	limit >>= sb->s_blocksize_bits;
-+
-+	if (limit) {
-+		uint64_t remaining = 0;
+ 	/* free ring buffers and the ring itself */
+ 	idpf_ctlq_dealloc_ring_res(hw, cq);
+@@ -104,8 +104,7 @@ static void idpf_ctlq_shutdown(struct idpf_hw *hw, struct idpf_ctlq_info *cq)
+ 	/* Set ring_size to 0 to indicate uninitialized queue */
+ 	cq->ring_size = 0;
  
--	if (limit && buf->f_blocks > limit) {
- 		curblock = (dquot->dq_dqb.dqb_curspace +
- 			    dquot->dq_dqb.dqb_rsvspace) >> sb->s_blocksize_bits;
--		buf->f_blocks = limit;
--		buf->f_bfree = buf->f_bavail =
--			(buf->f_blocks > curblock) ?
--			 (buf->f_blocks - curblock) : 0;
-+		if (limit > curblock)
-+			remaining = limit - curblock;
-+
-+		buf->f_blocks = min(buf->f_blocks, limit);
-+		buf->f_bfree = min(buf->f_bfree, remaining);
-+		buf->f_bavail = min(buf->f_bavail, remaining);
+-	mutex_unlock(&cq->cq_lock);
+-	mutex_destroy(&cq->cq_lock);
++	spin_unlock(&cq->cq_lock);
+ }
+ 
+ /**
+@@ -173,7 +172,7 @@ int idpf_ctlq_add(struct idpf_hw *hw,
+ 
+ 	idpf_ctlq_init_regs(hw, cq, is_rxq);
+ 
+-	mutex_init(&cq->cq_lock);
++	spin_lock_init(&cq->cq_lock);
+ 
+ 	list_add(&cq->cq_list, &hw->cq_list_head);
+ 
+@@ -272,7 +271,7 @@ int idpf_ctlq_send(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+ 	int err = 0;
+ 	int i;
+ 
+-	mutex_lock(&cq->cq_lock);
++	spin_lock(&cq->cq_lock);
+ 
+ 	/* Ensure there are enough descriptors to send all messages */
+ 	num_desc_avail = IDPF_CTLQ_DESC_UNUSED(cq);
+@@ -332,7 +331,7 @@ int idpf_ctlq_send(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+ 	wr32(hw, cq->reg.tail, cq->next_to_use);
+ 
+ err_unlock:
+-	mutex_unlock(&cq->cq_lock);
++	spin_unlock(&cq->cq_lock);
+ 
+ 	return err;
+ }
+@@ -364,7 +363,7 @@ int idpf_ctlq_clean_sq(struct idpf_ctlq_info *cq, u16 *clean_count,
+ 	if (*clean_count > cq->ring_size)
+ 		return -EBADR;
+ 
+-	mutex_lock(&cq->cq_lock);
++	spin_lock(&cq->cq_lock);
+ 
+ 	ntc = cq->next_to_clean;
+ 
+@@ -397,7 +396,7 @@ int idpf_ctlq_clean_sq(struct idpf_ctlq_info *cq, u16 *clean_count,
+ 
+ 	cq->next_to_clean = ntc;
+ 
+-	mutex_unlock(&cq->cq_lock);
++	spin_unlock(&cq->cq_lock);
+ 
+ 	/* Return number of descriptors actually cleaned */
+ 	*clean_count = i;
+@@ -435,7 +434,7 @@ int idpf_ctlq_post_rx_buffs(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+ 	if (*buff_count > 0)
+ 		buffs_avail = true;
+ 
+-	mutex_lock(&cq->cq_lock);
++	spin_lock(&cq->cq_lock);
+ 
+ 	if (tbp >= cq->ring_size)
+ 		tbp = 0;
+@@ -524,7 +523,7 @@ int idpf_ctlq_post_rx_buffs(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+ 		wr32(hw, cq->reg.tail, cq->next_to_post);
  	}
  
- 	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
- 					dquot->dq_dqb.dqb_ihardlimit);
+-	mutex_unlock(&cq->cq_lock);
++	spin_unlock(&cq->cq_lock);
  
--	if (limit && buf->f_files > limit) {
--		buf->f_files = limit;
--		buf->f_ffree =
--			(buf->f_files > dquot->dq_dqb.dqb_curinodes) ?
--			 (buf->f_files - dquot->dq_dqb.dqb_curinodes) : 0;
-+	if (limit) {
-+		uint64_t remaining = 0;
-+
-+		if (limit > dquot->dq_dqb.dqb_curinodes)
-+			remaining = limit - dquot->dq_dqb.dqb_curinodes;
-+
-+		buf->f_files = min(buf->f_files, limit);
-+		buf->f_ffree = min(buf->f_ffree, remaining);
- 	}
+ 	/* return the number of buffers that were not posted */
+ 	*buff_count = *buff_count - i;
+@@ -552,7 +551,7 @@ int idpf_ctlq_recv(struct idpf_ctlq_info *cq, u16 *num_q_msg,
+ 	u16 i;
  
- 	spin_unlock(&dquot->dq_dqb_lock);
+ 	/* take the lock before we start messing with the ring */
+-	mutex_lock(&cq->cq_lock);
++	spin_lock(&cq->cq_lock);
+ 
+ 	ntc = cq->next_to_clean;
+ 
+@@ -614,7 +613,7 @@ int idpf_ctlq_recv(struct idpf_ctlq_info *cq, u16 *num_q_msg,
+ 
+ 	cq->next_to_clean = ntc;
+ 
+-	mutex_unlock(&cq->cq_lock);
++	spin_unlock(&cq->cq_lock);
+ 
+ 	*num_q_msg = i;
+ 	if (*num_q_msg == 0)
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq_api.h b/drivers/net/ethernet/intel/idpf/idpf_controlq_api.h
+index e8e046ef2f0d7..5890d8adca4a8 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_controlq_api.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_controlq_api.h
+@@ -99,7 +99,7 @@ struct idpf_ctlq_info {
+ 
+ 	enum idpf_ctlq_type cq_type;
+ 	int q_id;
+-	struct mutex cq_lock;		/* control queue lock */
++	spinlock_t cq_lock;		/* control queue lock */
+ 	/* used for interrupt processing */
+ 	u16 next_to_use;
+ 	u16 next_to_clean;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index ba645ab22d394..746b655337275 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -2315,8 +2315,12 @@ void *idpf_alloc_dma_mem(struct idpf_hw *hw, struct idpf_dma_mem *mem, u64 size)
+ 	struct idpf_adapter *adapter = hw->back;
+ 	size_t sz = ALIGN(size, 4096);
+ 
+-	mem->va = dma_alloc_coherent(&adapter->pdev->dev, sz,
+-				     &mem->pa, GFP_KERNEL);
++	/* The control queue resources are freed under a spinlock, contiguous
++	 * pages will avoid IOMMU remapping and the use vmap (and vunmap in
++	 * dma_free_*() path.
++	 */
++	mem->va = dma_alloc_attrs(&adapter->pdev->dev, sz, &mem->pa,
++				  GFP_KERNEL, DMA_ATTR_FORCE_CONTIGUOUS);
+ 	mem->size = sz;
+ 
+ 	return mem->va;
+@@ -2331,8 +2335,8 @@ void idpf_free_dma_mem(struct idpf_hw *hw, struct idpf_dma_mem *mem)
+ {
+ 	struct idpf_adapter *adapter = hw->back;
+ 
+-	dma_free_coherent(&adapter->pdev->dev, mem->size,
+-			  mem->va, mem->pa);
++	dma_free_attrs(&adapter->pdev->dev, mem->size,
++		       mem->va, mem->pa, DMA_ATTR_FORCE_CONTIGUOUS);
+ 	mem->size = 0;
+ 	mem->va = NULL;
+ 	mem->pa = 0;
 -- 
 2.39.5
 
