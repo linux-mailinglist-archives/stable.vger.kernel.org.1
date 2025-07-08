@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-160673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F58AFD147
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44330AFD35C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCFD0488289
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 433ED1C27FDE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF941CAA85;
-	Tue,  8 Jul 2025 16:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8066C2E5B0A;
+	Tue,  8 Jul 2025 16:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2u9pNKT5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bip3P8rb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF9A2DECC4;
-	Tue,  8 Jul 2025 16:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE242E540B;
+	Tue,  8 Jul 2025 16:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992356; cv=none; b=Qd1KpJCakeGDOjhfGIKxcYksmsWXhYAzdRvvxljmlVch62NWCnDSiT+fKQSiW4tWYzVybvQ9jdnwVDkmxPtMB7NvIDDdysNClIEOmMWmey6uG/x84FJZk6MI8N419vWOMAkaikmCZI2mSN0z26S+ifH8DOWsyL3+riKxmxeZih4=
+	t=1751993570; cv=none; b=Dz77QPp0GeLvrdwAun0F6PsZ2muC7UkA4/s2yk9v0TphCtd5hefrOcmFBwdTiICEfovo26gZEEYqVDAHZxWGH9YyVzCMeqpSC0wimB6pUJeG4vILMS6nHYxNmaugnO95VSgacg71VHrUzL4bjJA754gtzAmdJWfHYyJhYXZ9rms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992356; c=relaxed/simple;
-	bh=4cBebe0Dhq04ofStaXBqoaVm+hpn/a1TzidTI6IEYsA=;
+	s=arc-20240116; t=1751993570; c=relaxed/simple;
+	bh=qSRpsC7DHJQudXRrYq8jHViiyS3RwlxaLU/4cb2/FfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jIbbioOSO3aIDq54cymzk+JD+3o4QPy++I9bfCdnNIBd/AnZ5vtAca0sAHp03n/noXR2jDYngKpWpbcpu/lTPCh0YihmN5yY4dKH2cTHg+IdzEGqlEDa5y4BEVF8MWB+1IQt3klNWDrv/nOWNgHqBu39whd17Kbr4uzets+1JMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2u9pNKT5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991EBC4CEED;
-	Tue,  8 Jul 2025 16:32:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NRxC0nuS6V/1BEmV37ZrUSNCh/oql9FKbeMNJkeCxBgWJBfg18ETrSdBL4tWQSM4e6k2bqV+7mbkMS/APVRS9vMo8e+2Xf72JkA+k99VqoTObpitqrmwjhl6hSfgJWMDmW2cjVnpcoD8BcLRZXJlh76rCxhSQ8j8Qc+cOC19yhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bip3P8rb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D05C4CEED;
+	Tue,  8 Jul 2025 16:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992356;
-	bh=4cBebe0Dhq04ofStaXBqoaVm+hpn/a1TzidTI6IEYsA=;
+	s=korg; t=1751993569;
+	bh=qSRpsC7DHJQudXRrYq8jHViiyS3RwlxaLU/4cb2/FfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2u9pNKT5DMt2edBdVX21URDXP61RniS3Ijkeqb8XMl/tO6D1JGI7GNX/dWEAHkpbk
-	 YczcUCZ+WUQw+1dWAoiclYIo4ufphBDhJbWW6J+ndq6sK3kHRSxt1b2zQ4XAyCcpq9
-	 M9kOikaH7Sonv79Rm1mm+xw6APHwRB4Ff5gA3t1k=
+	b=bip3P8rbu/SYjxVXB8puG/2z87wtP5lKqDOfNinDd8n43h245verpDMBq178B3EVt
+	 mtSCv1IKWTKlF48kb5xmUPl5QStCjipk/sLYJZT9i2nixqe8TmXnstyQdkjXLAv1ER
+	 YlLu712G9hEDbX7SovCe2ztkkCBbaI0Ve8udXqhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Harry Austen <hpausten@protonmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/132] platform/x86: think-lmi: Directly use firmware_attributes_class
+Subject: [PATCH 6.15 120/178] drm/xe: Allow dropping kunit dependency as built-in
 Date: Tue,  8 Jul 2025 18:22:37 +0200
-Message-ID: <20250708162232.015775908@linuxfoundation.org>
+Message-ID: <20250708162239.737765907@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +67,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Harry Austen <hpausten@protonmail.com>
 
-[ Upstream commit 55922403807a12d4f96c67ba01a920edfb6f2633 ]
+[ Upstream commit aa18d5769fcafe645a3ba01a9a69dde4f8dc8cc3 ]
 
-The usage of the lifecycle functions is not necessary anymore.
+Fix Kconfig symbol dependency on KUNIT, which isn't actually required
+for XE to be built-in. However, if KUNIT is enabled, it must be built-in
+too.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://lore.kernel.org/r/20250104-firmware-attributes-simplify-v1-3-949f9709e405@weissschuh.net
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Stable-dep-of: 5ff1fbb30597 ("platform/x86: think-lmi: Fix class device unregistration")
+Fixes: 08987a8b6820 ("drm/xe: Fix build with KUNIT=m")
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Signed-off-by: Harry Austen <hpausten@protonmail.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20250627-xe-kunit-v2-2-756fe5cd56cf@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit a559434880b320b83733d739733250815aecf1b0)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/think-lmi.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/xe/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
-index 3a496c615ce6b..f0efa60cf8ee2 100644
---- a/drivers/platform/x86/think-lmi.c
-+++ b/drivers/platform/x86/think-lmi.c
-@@ -195,7 +195,6 @@ static const char * const level_options[] = {
- 	[TLMI_LEVEL_MASTER] = "master",
- };
- static struct think_lmi tlmi_priv;
--static const struct class *fw_attr_class;
- static DEFINE_MUTEX(tlmi_mutex);
- 
- /* ------ Utility functions ------------*/
-@@ -1272,11 +1271,7 @@ static int tlmi_sysfs_init(void)
- {
- 	int i, ret;
- 
--	ret = fw_attributes_class_get(&fw_attr_class);
--	if (ret)
--		return ret;
--
--	tlmi_priv.class_dev = device_create(fw_attr_class, NULL, MKDEV(0, 0),
-+	tlmi_priv.class_dev = device_create(&firmware_attributes_class, NULL, MKDEV(0, 0),
- 			NULL, "%s", "thinklmi");
- 	if (IS_ERR(tlmi_priv.class_dev)) {
- 		ret = PTR_ERR(tlmi_priv.class_dev);
-@@ -1385,9 +1380,8 @@ static int tlmi_sysfs_init(void)
- fail_create_attr:
- 	tlmi_release_attr();
- fail_device_created:
--	device_destroy(fw_attr_class, MKDEV(0, 0));
-+	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
- fail_class_created:
--	fw_attributes_class_put();
- 	return ret;
- }
- 
-@@ -1610,8 +1604,7 @@ static int tlmi_analyze(void)
- static void tlmi_remove(struct wmi_device *wdev)
- {
- 	tlmi_release_attr();
--	device_destroy(fw_attr_class, MKDEV(0, 0));
--	fw_attributes_class_put();
-+	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
- }
- 
- static int tlmi_probe(struct wmi_device *wdev, const void *context)
+diff --git a/drivers/gpu/drm/xe/Kconfig b/drivers/gpu/drm/xe/Kconfig
+index 9a46aafcb33ba..0dc3512876b3a 100644
+--- a/drivers/gpu/drm/xe/Kconfig
++++ b/drivers/gpu/drm/xe/Kconfig
+@@ -1,7 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ config DRM_XE
+ 	tristate "Intel Xe Graphics"
+-	depends on DRM && PCI && MMU && (m || (y && KUNIT=y))
++	depends on DRM && PCI && MMU
++	depends on KUNIT || !KUNIT
+ 	depends on INTEL_VSEC || !INTEL_VSEC
+ 	depends on X86_PLATFORM_DEVICES || !(X86 && ACPI)
+ 	select INTERVAL_TREE
 -- 
 2.39.5
 
