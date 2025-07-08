@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCBBCAFD0E3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C645DAFD1A0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:38:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C93FB7AF74C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 724D01C2469F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8162E5439;
-	Tue,  8 Jul 2025 16:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2D62367CE;
+	Tue,  8 Jul 2025 16:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAmBh4IN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEX+cFNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296B62E542C;
-	Tue,  8 Jul 2025 16:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA28A2DCC02;
+	Tue,  8 Jul 2025 16:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992120; cv=none; b=BX7gzJgp4CRV6M/w1cF0OKAV26/A3lODKEDhi8HnZ8ZUkXLz7n1Xv1E0Kqhu5GbFva4uvsEbsuB9M5AkshhCnfqSu4IBkinU93HaVL7BQwQf84IcMRc47wQR2axeKe0ovkieUkakWK59QjCadGdyjX1jzhhcLkGqiMfU9dkG+uY=
+	t=1751992538; cv=none; b=qhCuj8Q20g4icjv0xuWVh191VLC2UyiIOQ03rvQAd/s/59wQRGjmImzPJO1Y3Wjk9iO+TPlYh+mH2hjo4w97NReX74y2EH0bPptEnT1u7xyiqPxMCR/qlyg5jiG6fYxy6IV0QlaUmRGsE+8NErjqqMLYhXS09jJZz/jCms8TlRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992120; c=relaxed/simple;
-	bh=vrD9e3+w6zpVAXEeZovkka1cIjd86FKnl68FhrwbT1U=;
+	s=arc-20240116; t=1751992538; c=relaxed/simple;
+	bh=+Ca/04lR2oONIl3+DHdFr1Y1ssfSIHT2hQ7AD/ExJEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HsRKuo/DbdIp1DjkcmQWX1rR07QjN40IVDuqKVxfgZgeqJHy4IS9aEufOWg4lqw5R82NYjd2P1Q3LZdo2rn1kMDA+fQx2+SplEE+oNZB8wf0h0Dz6P/X0UwLa+b2DqW9fhSEQfsUYP+M83Jngpgm5LTaE6/oxbF2I1zM3h4ghCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAmBh4IN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99AF9C4CEED;
-	Tue,  8 Jul 2025 16:28:39 +0000 (UTC)
+	 MIME-Version; b=UCPjiEkyB0/H+BCe+Ip/wKrSlepTGW9+zwmby4P76UIL5bReK1ts4U7cnsUK61jlNCAPeJ4mixTDap8kYn4aTluEAgC6+AkTB2BF1qcZVkydnCi4wF/8KbCBWjosCmcBGbnCBCwTzoSt8fAcogC+g6O4jHgcYQYnqv0J1wApYF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEX+cFNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72202C4CEED;
+	Tue,  8 Jul 2025 16:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992120;
-	bh=vrD9e3+w6zpVAXEeZovkka1cIjd86FKnl68FhrwbT1U=;
+	s=korg; t=1751992537;
+	bh=+Ca/04lR2oONIl3+DHdFr1Y1ssfSIHT2hQ7AD/ExJEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bAmBh4INPvtWhL2Ih0WH3LPsOMeTqOyyvVz+KXEuAdX5QohsCcLjojeo5+1s0OGOZ
-	 GUUBeutC1xcgvP2roCfo07oc6qSi2evGeJ67nDtkgPLzIWnuFY4XVaFouvOJ/htReg
-	 /4f2l9kmKVJV0k4acOYC8cq+em418RQfEnudpMM0=
+	b=EEX+cFNomi3aD20R/4AvIlKtH9qgw7YZIpH63y3MTeNhxYsYALQTND2FHMIMbTsHc
+	 Mu9PKJjUShvLDrYmKLNrthBe9H0XDArqd/KmgvB06kYj88kqMNH2NPnZblnWeiz2Dk
+	 koM6VNgpl5I2AFbMjCd1IWBhCpMPtsqOxBXZSQFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 65/81] platform/x86: think-lmi: Fix class device unregistration
+	stable <stable@kernel.org>,
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 126/132] usb: typec: displayport: Fix potential deadlock
 Date: Tue,  8 Jul 2025 18:23:57 +0200
-Message-ID: <20250708162227.037690385@linuxfoundation.org>
+Message-ID: <20250708162234.216240363@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Andrei Kuchynski <akuchynski@chromium.org>
 
-[ Upstream commit 5ff1fbb3059730700b4823f43999fc1315984632 ]
+commit 099cf1fbb8afc3771f408109f62bdec66f85160e upstream.
 
-Devices under the firmware_attributes_class do not have unique a dev_t.
-Therefore, device_unregister() should be used instead of
-device_destroy(), since the latter may match any device with a given
-dev_t.
+The deadlock can occur due to a recursive lock acquisition of
+`cros_typec_altmode_data::mutex`.
+The call chain is as follows:
+1. cros_typec_altmode_work() acquires the mutex
+2. typec_altmode_vdm() -> dp_altmode_vdm() ->
+3. typec_altmode_exit() -> cros_typec_altmode_exit()
+4. cros_typec_altmode_exit() attempts to acquire the mutex again
 
-Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250625-dest-fix-v1-2-3a0f342312bb@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To prevent this, defer the `typec_altmode_exit()` call by scheduling
+it rather than calling it directly from within the mutex-protected
+context.
+
+Cc: stable <stable@kernel.org>
+Fixes: b4b38ffb38c9 ("usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250624133246.3936737-1-akuchynski@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/think-lmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/altmodes/displayport.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
-index 6641f934f15bf..804e2493d7d21 100644
---- a/drivers/platform/x86/think-lmi.c
-+++ b/drivers/platform/x86/think-lmi.c
-@@ -1380,7 +1380,7 @@ static int tlmi_sysfs_init(void)
- fail_create_attr:
- 	tlmi_release_attr();
- fail_device_created:
--	device_destroy(fw_attr_class, MKDEV(0, 0));
-+	device_unregister(tlmi_priv.class_dev);
- fail_class_created:
- 	fw_attributes_class_put();
- 	return ret;
-@@ -1602,7 +1602,7 @@ static int tlmi_analyze(void)
- static void tlmi_remove(struct wmi_device *wdev)
- {
- 	tlmi_release_attr();
--	device_destroy(fw_attr_class, MKDEV(0, 0));
-+	device_unregister(tlmi_priv.class_dev);
- 	fw_attributes_class_put();
- }
- 
--- 
-2.39.5
-
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -324,8 +324,7 @@ static int dp_altmode_vdm(struct typec_a
+ 	case CMDT_RSP_NAK:
+ 		switch (cmd) {
+ 		case DP_CMD_STATUS_UPDATE:
+-			if (typec_altmode_exit(alt))
+-				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
++			dp->state = DP_STATE_EXIT;
+ 			break;
+ 		case DP_CMD_CONFIGURE:
+ 			dp->data.conf = 0;
 
 
 
