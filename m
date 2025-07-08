@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-160719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D836AFD18D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB378AFD1AE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:38:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17D761BC2BDF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6093A1892B45
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0AD2E2F0E;
-	Tue,  8 Jul 2025 16:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054842367CE;
+	Tue,  8 Jul 2025 16:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0giuieg0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IT1zalNQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B111548C;
-	Tue,  8 Jul 2025 16:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78272E266B;
+	Tue,  8 Jul 2025 16:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992492; cv=none; b=EkXzMa8rQlFkQvxB+UCy+agx66/f8u/sy0Wp2xhfBmvMgmYsZxu4w8VnDegRVDZdU3BT5KhMPRJ+7ywS2/l311v80dgIFAGzQW/BdH8e8x6ja+djF2kNj4U8MIsP695jAJ2f6H0k5MK7md2Spnb+OVjrA0+Xt2EP106TNVd3N7o=
+	t=1751992584; cv=none; b=jdVw203WoeVLu3FcBjA9lnL+UF1J4Udu55YShyv6cItyp8KhXMhLsvRtcNZAjM/dXOYnee+o/SPXrLIVt2zQgmYduPg2we00kKJEyOFc1HHLSh1BVaI3DJwlV0gyhHmCh/cg8FcTHOjCrM9ixFge6OW6RDboShmhpoAdPj16MGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992492; c=relaxed/simple;
-	bh=fKHrjSvrufbWNac6nbI0vZo0ACe8+d8zJB1XulStKvc=;
+	s=arc-20240116; t=1751992584; c=relaxed/simple;
+	bh=JzScFDGIt8j4YU8VH8DM7g6hOpX3aLfl+isgZaSWvkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OMnJVt0R/Ps/DrWi2s8mTEQeZp7X+i5kAjEft/mFxSaGh+hfpXrZAb24gWvmnE4463r47poHIfzKujrSAh0mo+Nv91XWglZcyCbeIq5FeIu/aHgXOlrlUwKIhZ9NOyyXLT9hTzmFhQ5Pzpf0KILsYnOGLmMu3l3KpvYm0GFXSLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0giuieg0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CDAC4CEED;
-	Tue,  8 Jul 2025 16:34:51 +0000 (UTC)
+	 MIME-Version; b=ctiZwo3efmL8jFaBUlaZS3jr6C0AOdgzzfXywBgLkPabSSq+vz7HMYsu7TNRKk3NYp7pgz4hdtO9JNSblQnCxdYEdulqeADe7hlSQvBUi7iZFJTB9XgNGfUh5tSxhTgSq7K04R3sluxE1tzgq2TCigbovAhWjxmUyIBZLGyjKIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IT1zalNQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414D3C4CEED;
+	Tue,  8 Jul 2025 16:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992492;
-	bh=fKHrjSvrufbWNac6nbI0vZo0ACe8+d8zJB1XulStKvc=;
+	s=korg; t=1751992584;
+	bh=JzScFDGIt8j4YU8VH8DM7g6hOpX3aLfl+isgZaSWvkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0giuieg0ftiQpdQdDU56xc37OD5Xk7vDSy6CkhuitKT5ti9bdCAE0T/VQryY9wOKV
-	 sHfuYIbU5AVlHfa4QwOamDvB3rY3bkF/SKKoo3NZWmHqfc0sFk6KA40SdLdHfTEwYT
-	 OLX5Z8fz1656I3GlnT2TlJFs+CTsQKrxsaIrPLEc=
+	b=IT1zalNQ3EPDrf7AU57Wyz2ftAQiIax6SeeJ5a720+RtvtfWye+K9lWZ4xoyXSR+0
+	 5eisDfRaKao+YVJFgYSEsthqXZGnfvmnGAifIdErQJYAd0ccIfCE9qyjIrOMRkICvK
+	 KdvWayTwhf3bYj95pgyLUyWS4uYOzTpxQJ7GY2n0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Ruess <julianr@linux.ibm.com>,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/132] s390/pci: Fix stale function handles in error handling
-Date: Tue,  8 Jul 2025 18:23:39 +0200
-Message-ID: <20250708162233.754242912@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.6 109/132] usb: xhci: quirk for data loss in ISOC transfers
+Date: Tue,  8 Jul 2025 18:23:40 +0200
+Message-ID: <20250708162233.778701101@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
 References: <20250708162230.765762963@linuxfoundation.org>
@@ -69,74 +66,111 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit 45537926dd2aaa9190ac0fac5a0fbeefcadfea95 ]
+commit cbc889ab0122366f6cdbe3c28d477c683ebcebc2 upstream.
 
-The error event information for PCI error events contains a function
-handle for the respective function. This handle is generally captured at
-the time the error event was recorded. Due to delays in processing or
-cascading issues, it may happen that during firmware recovery multiple
-events are generated. When processing these events in order Linux may
-already have recovered an affected function making the event information
-stale. Fix this by doing an unconditional CLP List PCI function
-retrieving the current function handle with the zdev->state_lock held
-and ignoring the event if its function handle is stale.
+During the High-Speed Isochronous Audio transfers, xHCI
+controller on certain AMD platforms experiences momentary data
+loss. This results in Missed Service Errors (MSE) being
+generated by the xHCI.
 
-Cc: stable@vger.kernel.org
-Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
-Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
-Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
-Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The root cause of the MSE is attributed to the ISOC OUT endpoint
+being omitted from scheduling. This can happen when an IN
+endpoint with a 64ms service interval either is pre-scheduled
+prior to the ISOC OUT endpoint or the interval of the ISOC OUT
+endpoint is shorter than that of the IN endpoint. Consequently,
+the OUT service is neglected when an IN endpoint with a service
+interval exceeding 32ms is scheduled concurrently (every 64ms in
+this scenario).
+
+This issue is particularly seen on certain older AMD platforms.
+To mitigate this problem, it is recommended to adjust the service
+interval of the IN endpoint to not exceed 32ms (interval 8). This
+adjustment ensures that the OUT endpoint will not be bypassed,
+even if a smaller interval value is utilized.
+
+Cc: stable <stable@kernel.org>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250627144127.3889714-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/pci/pci_event.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/usb/host/xhci-mem.c |    4 ++++
+ drivers/usb/host/xhci-pci.c |   25 +++++++++++++++++++++++++
+ drivers/usb/host/xhci.h     |    1 +
+ 3 files changed, 30 insertions(+)
 
-diff --git a/arch/s390/pci/pci_event.c b/arch/s390/pci/pci_event.c
-index d969f36bf186f..fd83588f3c11d 100644
---- a/arch/s390/pci/pci_event.c
-+++ b/arch/s390/pci/pci_event.c
-@@ -257,6 +257,8 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
- 	struct zpci_dev *zdev = get_zdev_by_fid(ccdf->fid);
- 	struct pci_dev *pdev = NULL;
- 	pci_ers_result_t ers_res;
-+	u32 fh = 0;
-+	int rc;
- 
- 	zpci_dbg(3, "err fid:%x, fh:%x, pec:%x\n",
- 		 ccdf->fid, ccdf->fh, ccdf->pec);
-@@ -264,6 +266,16 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
- 	zpci_err_hex(ccdf, sizeof(*ccdf));
- 
- 	if (zdev) {
-+		mutex_lock(&zdev->state_lock);
-+		rc = clp_refresh_fh(zdev->fid, &fh);
-+		if (rc)
-+			goto no_pdev;
-+		if (!fh || ccdf->fh != fh) {
-+			/* Ignore events with stale handles */
-+			zpci_dbg(3, "err fid:%x, fh:%x (stale %x)\n",
-+				 ccdf->fid, fh, ccdf->fh);
-+			goto no_pdev;
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1436,6 +1436,10 @@ int xhci_endpoint_init(struct xhci_hcd *
+ 	/* Periodic endpoint bInterval limit quirk */
+ 	if (usb_endpoint_xfer_int(&ep->desc) ||
+ 	    usb_endpoint_xfer_isoc(&ep->desc)) {
++		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
++		    interval >= 9) {
++			interval = 8;
 +		}
- 		zpci_update_fh(zdev, ccdf->fh);
- 		if (zdev->zbus->bus)
- 			pdev = pci_get_slot(zdev->zbus->bus, zdev->devfn);
-@@ -292,6 +304,8 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
- 	}
- 	pci_dev_put(pdev);
- no_pdev:
-+	if (zdev)
-+		mutex_unlock(&zdev->state_lock);
- 	zpci_zdev_put(zdev);
- }
+ 		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_7) &&
+ 		    udev->speed >= USB_SPEED_HIGH &&
+ 		    interval >= 7) {
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -65,12 +65,22 @@
+ #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_PCH_XHCI		0x51ed
+ #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_N_PCH_XHCI	0x54ed
  
--- 
-2.39.5
-
++#define PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI		0x13ed
++#define PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI		0x13ee
++#define PCI_DEVICE_ID_AMD_STARSHIP_XHCI			0x148c
++#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI		0x15d4
++#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI		0x15d5
++#define PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI		0x15e0
++#define PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI		0x15e1
++#define PCI_DEVICE_ID_AMD_RAVEN2_XHCI			0x15e5
+ #define PCI_DEVICE_ID_AMD_RENOIR_XHCI			0x1639
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_4			0x43b9
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_3			0x43ba
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_2			0x43bb
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_1			0x43bc
+ 
++#define PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI		0x7316
++
+ #define PCI_DEVICE_ID_ASMEDIA_1042_XHCI			0x1042
+ #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
+ #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
+@@ -348,6 +358,21 @@ static void xhci_pci_quirks(struct devic
+ 	if (pdev->vendor == PCI_VENDOR_ID_NEC)
+ 		xhci->quirks |= XHCI_NEC_HOST;
+ 
++	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
++	    (pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_STARSHIP_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN2_XHCI))
++		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
++
++	if (pdev->vendor == PCI_VENDOR_ID_ATI &&
++	    pdev->device == PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI)
++		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
++
+ 	if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version == 0x96)
+ 		xhci->quirks |= XHCI_AMD_0x96_HOST;
+ 
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1659,6 +1659,7 @@ struct xhci_hcd {
+ #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
+ #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
+ #define XHCI_ETRON_HOST	BIT_ULL(49)
++#define XHCI_LIMIT_ENDPOINT_INTERVAL_9 BIT_ULL(50)
+ 
+ 	unsigned int		num_active_eps;
+ 	unsigned int		limit_active_eps;
 
 
 
