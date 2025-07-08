@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-161171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC98AFD3C0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F681AFD1F1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E1253A955F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 106AC3B3B92
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BA42E5B2A;
-	Tue,  8 Jul 2025 16:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D36B2E3385;
+	Tue,  8 Jul 2025 16:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mo6IPg51"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aliF+D+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140482E5B26;
-	Tue,  8 Jul 2025 16:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4CF23A98D;
+	Tue,  8 Jul 2025 16:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993801; cv=none; b=S/xpyt4QU6VAjOGuZQcBldU7n/mqWlDNwSItmMN16eHHeMLX4oe2wqMWbcDikfiOU1Up6zdsmtWRIShdwgDwpiN0gtTYU78Kz9bTOHRV861zTgvvbI2c/nY8Z3tmi9dSRnnSnpqeiZaQ73rdDDX1Rle8v8/WCge6jYJYA98Qqxo=
+	t=1751992762; cv=none; b=atXsNlH6sel85bhWRNtydVNUtqqf7GV1ve5sXrwyQmm81aAeH8WcLbbCeoi0jQxkqeEg9E10+yIp3udWwhSCfSOd77c0uXoaxGVd3WyUYtKVNiRXyo6vE9GHtI5yk2f1/TaJ4qeArzx6nMuYhHoU0IzOh1Erpm2hLmfvcn0Z/co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993801; c=relaxed/simple;
-	bh=O5TDb5HNP4ftS15x1BQqy0bxrNkVEa1jM2ejQBkdH8c=;
+	s=arc-20240116; t=1751992762; c=relaxed/simple;
+	bh=zIcqvy6k5ibG2MZvunhQWJW81rfCJbV6Z0+5ldsd19A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QRoqy5GvYXEyaG0RFt3vQsOrVD1Zonoa9T+Op3DN2QtioU8F83SgNVL3u/hP6NotEDo/wg6DduqcaRr8Oeuqw5e2pZAPN5jRPsdXF3yqFHhI7tmE7hdHzhN8r9R29XYEQOLZzdNEiK+pi5JpJMBdv1j/N7ovJZwiY+OoaM3XMpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mo6IPg51; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C8FC4CEF5;
-	Tue,  8 Jul 2025 16:56:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ftwyGafSkAhtxt/SHlGXB9KJdkl3aQDFyvQgjtvPSm+Nl61T2WnZDABBx8ZOYQV8s8b1iqYPM7fTmm4BvE4d5RGese+A28seiTOG9e/Aip3UOaF6Rcq9TZEcjNDofZczn9WvsJs8XOwmdKbwXRkGvx1nJh0CRe5tWeO2CVMCABI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aliF+D+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74421C4CEED;
+	Tue,  8 Jul 2025 16:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993801;
-	bh=O5TDb5HNP4ftS15x1BQqy0bxrNkVEa1jM2ejQBkdH8c=;
+	s=korg; t=1751992761;
+	bh=zIcqvy6k5ibG2MZvunhQWJW81rfCJbV6Z0+5ldsd19A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mo6IPg51StaqJqcndk5VtQmE02e8YmHAEM3j5BvcmDCbiUw0xh9bqdQm9RASLAdHl
-	 se9TPikM/gomhRNq3UXfbL5uKSEh9+4DOXR++w+Q8f4lhbr0j/697+wHYfPhzp9O9p
-	 +82XgCdCsp5W51gR1CALjewo5GpAy8sYyatW5ZNM=
+	b=aliF+D+FbZHFf+dA5L/dZdG76FRHxRe5lVieYMN58SjQMeTf2G7e/9UbVQJJ8x5u1
+	 ej/veQHnh/EqgpIAyCiVgCpowPYnNb0EpjAOWiietLGZ19wWZKTEIn6dSCGOI4qjZO
+	 CoWJ5F6ejWb1K1xVIbDNg7QuAMkPmAcLdbDUiPAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/160] ALSA: hda: Add new pci id for AMD GPU display HD audio controller
+Subject: [PATCH 6.12 064/232] platform/x86: hp-bioscfg: Directly use firmware_attributes_class
 Date: Tue,  8 Jul 2025 18:21:00 +0200
-Message-ID: <20250708162232.151514696@linuxfoundation.org>
+Message-ID: <20250708162243.139017851@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit ab72bfce7647522e01a181e3600c3d14ff5c143e ]
+[ Upstream commit 63f8c058036057644f095123a35895cd11639b88 ]
 
-Add new pci id for AMD GPU display HD audio controller(device id- 0xab40).
+The usage of the lifecycle functions is not necessary anymore.
 
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://patch.msgid.link/20250529053838.2350071-1-Vijendar.Mukunda@amd.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20250104-firmware-attributes-simplify-v1-4-949f9709e405@weissschuh.net
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 11cba4793b95 ("platform/x86: hp-bioscfg: Fix class device unregistration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/platform/x86/hp/hp-bioscfg/bioscfg.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index cc8c066327b6c..c69f4e5989d4f 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2731,6 +2731,9 @@ static const struct pci_device_id azx_ids[] = {
- 	{ PCI_DEVICE(0x1002, 0xab38),
- 	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
- 	  AZX_DCAPS_PM_RUNTIME },
-+	{ PCI_VDEVICE(ATI, 0xab40),
-+	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
-+	  AZX_DCAPS_PM_RUNTIME },
- 	/* GLENFLY */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_GLENFLY, PCI_ANY_ID),
- 	  .class = PCI_CLASS_MULTIMEDIA_HD_AUDIO << 8,
+diff --git a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+index 2dc50152158a3..0b277b7e37dd6 100644
+--- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
++++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+@@ -24,8 +24,6 @@ struct bioscfg_priv bioscfg_drv = {
+ 	.mutex = __MUTEX_INITIALIZER(bioscfg_drv.mutex),
+ };
+ 
+-static const struct class *fw_attr_class;
+-
+ ssize_t display_name_language_code_show(struct kobject *kobj,
+ 					struct kobj_attribute *attr,
+ 					char *buf)
+@@ -972,11 +970,7 @@ static int __init hp_init(void)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = fw_attributes_class_get(&fw_attr_class);
+-	if (ret)
+-		goto err_unregister_class;
+-
+-	bioscfg_drv.class_dev = device_create(fw_attr_class, NULL, MKDEV(0, 0),
++	bioscfg_drv.class_dev = device_create(&firmware_attributes_class, NULL, MKDEV(0, 0),
+ 					      NULL, "%s", DRIVER_NAME);
+ 	if (IS_ERR(bioscfg_drv.class_dev)) {
+ 		ret = PTR_ERR(bioscfg_drv.class_dev);
+@@ -1043,10 +1037,9 @@ static int __init hp_init(void)
+ 	release_attributes_data();
+ 
+ err_destroy_classdev:
+-	device_destroy(fw_attr_class, MKDEV(0, 0));
++	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
+ 
+ err_unregister_class:
+-	fw_attributes_class_put();
+ 	hp_exit_attr_set_interface();
+ 
+ 	return ret;
+@@ -1055,9 +1048,8 @@ static int __init hp_init(void)
+ static void __exit hp_exit(void)
+ {
+ 	release_attributes_data();
+-	device_destroy(fw_attr_class, MKDEV(0, 0));
++	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
+ 
+-	fw_attributes_class_put();
+ 	hp_exit_attr_set_interface();
+ }
+ 
 -- 
 2.39.5
 
