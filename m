@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFB3AFD1DE
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89482AFD3B1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20960487A99
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:37:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7CA2188A501
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A37D2E2F0D;
-	Tue,  8 Jul 2025 16:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A622E0B4B;
+	Tue,  8 Jul 2025 16:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i743D+/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCxXH62F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090B91CD1E4;
-	Tue,  8 Jul 2025 16:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624622DE1FA;
+	Tue,  8 Jul 2025 16:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992683; cv=none; b=nRPqXvz/35l1n96JZ2KHWdpXpUSEoQM35nzrG/AXKUM5+4i/cwHOT/i8wToK0K2x7SmcguJmOP+nvNMIRcLfiIANNlbgoZbPA0wiiMMPmgTFNZMxobIbYZdW8BytlaBkaRSJpIMzSohzhVvdLsk7gFEq6+5FD7O8tcUW9iYeNj8=
+	t=1751993772; cv=none; b=FyOCZ4IjbayOdmU4E29rR3KGuutaJEhJOmn4W/uyx9aYaPIYdYFwRzZHUQSMqno9frEeEhO9+fmv218vqbuqYCLs+d7n9nLn0kR6nTwaaxaEjWeNyfzhZdMY8QqnGAK6jk80ivMVRkZiEZnjhpZvLhS0I+Y/u7KQzsWTwjgAgEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992683; c=relaxed/simple;
-	bh=RlK9dem7l2SsrbGDC6lfrEOTTQJIs0TyPnQ65f1lElo=;
+	s=arc-20240116; t=1751993772; c=relaxed/simple;
+	bh=o78DTNbxZXtms7/mPPMmLDwK3EsbrUEgWbKVVQB7S1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iMzJfftOrlrs/KplC2EdstdNqWOFq2hCUJccMQmWXMc4Rhs86an5vvWcUYi+OznyJi7QtMqvDuVe0dqM/BQ5XScxDgD8La8uhAVk9sQR3OVt/ZvGbQsLp2/4Lnzi1vGFV4dQU+0827Fsp/SD2WpmQDh2z2+z0kVxY93RsA3s1lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i743D+/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6565BC4CEED;
-	Tue,  8 Jul 2025 16:38:02 +0000 (UTC)
+	 MIME-Version; b=DzePh5nm6Uf5YkSYoZ51AUUqH9eMHjwOb3UdJltWjiq3fnyMgnkw0h12jPxLYvTynRO4UiUd3Zwrbgkwu4CEdWBD5U7BWKDl9xphFr5bGTl42cNjGIdZ373k9BdbE6JMVEwPd3rT7GG2eY/gvtHxMomuhfXsdZF9+iAq/WZ363Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCxXH62F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF39C4CEED;
+	Tue,  8 Jul 2025 16:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992682;
-	bh=RlK9dem7l2SsrbGDC6lfrEOTTQJIs0TyPnQ65f1lElo=;
+	s=korg; t=1751993772;
+	bh=o78DTNbxZXtms7/mPPMmLDwK3EsbrUEgWbKVVQB7S1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i743D+/Dk7WIloufxiJE2nRNPtJ9kdrcbV+slfA7AOVGsJ+v1IjuMxpagb+tzKiyx
-	 sCPRCrLMK/zg8abAZMpAdM/nCv+CiL5ig7KBgLvUtBiI9HWZ401RUkU0o//BYcojnB
-	 WZmMn1lqCtGHF7UEX0qlG4THDqTsIs6GReeBZZZc=
+	b=fCxXH62FhZgpnOl+PIxjwGeTNrJfHY7qdyfzgzApCpMWsxmjbMxvivTqCVPFtif7g
+	 Mx7U0ob2y9AkT/9Vrnfx7/TfPST04hEmpUo3zLGoOeFK33YRWI7hCNRIFB6L1w+xms
+	 OrIFwmilrZh7x+d9fpf+L4Lfcold+/dD3xW/X8es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/232] platform/mellanox: nvsw-sn2201: Fix bus number in adapter error message
+Subject: [PATCH 5.15 004/160] mailbox: Not protect module_put with spin_lock_irqsave
 Date: Tue,  8 Jul 2025 18:20:41 +0200
-Message-ID: <20250708162242.643200768@linuxfoundation.org>
+Message-ID: <20250708162231.628895447@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit d07143b507c51c04c091081627c5a130e9d3c517 ]
+[ Upstream commit dddbd233e67e792bb0a3f9694a4707e6be29b2c6 ]
 
-change error log to use correct bus number from main_mux_devs
-instead of cpld_devs.
+&chan->lock is not supposed to protect 'chan->mbox'.
+And in __mbox_bind_client, try_module_get is also not protected
+by &chan->lock. So move module_put out of the lock protected
+region.
 
-Fixes: 662f24826f95 ("platform/mellanox: Add support for new SN2201 system")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
-Link: https://lore.kernel.org/r/20250622072921.4111552-2-alok.a.tiwari@oracle.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/mellanox/nvsw-sn2201.c | 2 +-
+ drivers/mailbox/mailbox.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/mellanox/nvsw-sn2201.c b/drivers/platform/mellanox/nvsw-sn2201.c
-index abe7be602f846..e708521e52740 100644
---- a/drivers/platform/mellanox/nvsw-sn2201.c
-+++ b/drivers/platform/mellanox/nvsw-sn2201.c
-@@ -1088,7 +1088,7 @@ static int nvsw_sn2201_i2c_completion_notify(void *handle, int id)
- 	if (!nvsw_sn2201->main_mux_devs->adapter) {
- 		err = -ENODEV;
- 		dev_err(nvsw_sn2201->dev, "Failed to get adapter for bus %d\n",
--			nvsw_sn2201->cpld_devs->nr);
-+			nvsw_sn2201->main_mux_devs->nr);
- 		goto i2c_get_adapter_main_fail;
- 	}
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index 6f54501dc7762..cb31ad917b352 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -459,8 +459,8 @@ void mbox_free_channel(struct mbox_chan *chan)
+ 	if (chan->txdone_method == TXDONE_BY_ACK)
+ 		chan->txdone_method = TXDONE_BY_POLL;
+ 
+-	module_put(chan->mbox->dev->driver->owner);
+ 	spin_unlock_irqrestore(&chan->lock, flags);
++	module_put(chan->mbox->dev->driver->owner);
+ }
+ EXPORT_SYMBOL_GPL(mbox_free_channel);
  
 -- 
 2.39.5
