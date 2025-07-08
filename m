@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-160893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6C8AFD272
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D9AFAFD373
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED2753B9716
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 813CC169303
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C222DD5EF;
-	Tue,  8 Jul 2025 16:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD0EBE46;
+	Tue,  8 Jul 2025 16:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SY8LJWCd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0SkEAlW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F922DECC4;
-	Tue,  8 Jul 2025 16:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F9521C190;
+	Tue,  8 Jul 2025 16:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992999; cv=none; b=UCHgzmF9iUe0qvxKiLbQhWWbc8dR1ZaU+CpXBfW2JJnFX2O8HCSo0MoIjzpTALcMsTCSZuUfGGmkkKPDAxB6BncZMaIea4oFF9s1ISbKX0lU0MpPzM+/el+YhWH3sZPb/VV0/bsYEyfuE7sg9Pra0vb6CX/LoM7DTNrtwlXwgyQ=
+	t=1751993635; cv=none; b=kP6Umxnf/40fs60c1iU7QkpQOCWdH3533sUB62CYy+NhiOrl8Hs+7pDfBD0ap38lCIsnLvL/4fFMmX5we7IsxAH5sm3GsrLz69Sd9nAzdfL5meogfb2BmMZI9pslqSRIkB97jeVeVwLH1cdGhLFig0msz9UxcqLT1cpsAM5Dkek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992999; c=relaxed/simple;
-	bh=0Stst0sL+rnU3jHiL/jbTeZlIGpTwnT/iuZWTkdRUSw=;
+	s=arc-20240116; t=1751993635; c=relaxed/simple;
+	bh=duOVP3wIal1ZyaTkNpCTPaG4Rqq4w0sl/F8yPEZSjNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bWervy61l768Uibq24oGODJ1V6y8ftENksF3vRPHIyEz/OQ8/NEkTKbMjCsjjz5Cf5/V9R1yEJ9GnTuV6DO+YJiw55GIZ61Fb/22hy6r7o10dqZBXHwYbrymeydhnQmcnsz0yuCg9nIjXkgCi3rjwphxTSxxlgf+QJCyImuJWDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SY8LJWCd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05961C4CEED;
-	Tue,  8 Jul 2025 16:43:17 +0000 (UTC)
+	 MIME-Version; b=o1JvPIhpNPoihgkG4jHNSeEhJjMN7Z0DcP8ozE4bztyKmYuprEsjDXcVTTHBIVVSPAS1oPQAhR0WKyWIzOulIOeXeT7KehHezYUZc1GBzrXNToWsahyJLvvCIC2Rw3DWZ5IF3HHUmOKYyzMVYmO1qGNVrVG1FcUMxb5dm3b1bt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0SkEAlW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B7AC4CEED;
+	Tue,  8 Jul 2025 16:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992998;
-	bh=0Stst0sL+rnU3jHiL/jbTeZlIGpTwnT/iuZWTkdRUSw=;
+	s=korg; t=1751993635;
+	bh=duOVP3wIal1ZyaTkNpCTPaG4Rqq4w0sl/F8yPEZSjNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SY8LJWCd2xlJMeS0Y2BIJpMbK9hKmhQZHzorUjcuNebnK9uGX5aMW2F0vyx1RGdc3
-	 hOBbvj7oe07FrQgjpbzkjDG3puptoxuGNvf7T/KnkoXQ+vbfEGBw06S5hGIMkLhHo4
-	 Tk+GmZ05qUFFlWrIcgiN6vPuOr4VUqbvfUFc3hqM=
+	b=f0SkEAlWfer9UtLU19GT1z0ggy5krjELjT2zRGhzZ2WVAeTUme73ZE6r2fPPgyc1l
+	 uwaZvIfWce8L7fiPZtOUxLautfOk725BFxNyAAlnyfqAiKcbEP0NSzMPkzRE3R/Yvo
+	 ifcir/b/Ggd1gEBeFKjFS4xwyC4zTt6jtYA/uLeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	John Daley <johndale@cisco.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 152/232] mfd: exynos-lpass: Fix another error handling path in exynos_lpass_probe()
+Subject: [PATCH 6.15 111/178] enic: fix incorrect MTU comparison in enic_change_mtu()
 Date: Tue,  8 Jul 2025 18:22:28 +0200
-Message-ID: <20250708162245.415268252@linuxfoundation.org>
+Message-ID: <20250708162239.522576686@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit f41cc37f4bc0e8cd424697bf6e26586cadcf4b9b ]
+[ Upstream commit aaf2b2480375099c022a82023e1cd772bf1c6a5d ]
 
-If devm_of_platform_populate() fails, some clean-up needs to be done, as
-already done in the remove function.
+The comparison in enic_change_mtu() incorrectly used the current
+netdev->mtu instead of the new new_mtu value when warning about
+an MTU exceeding the port MTU. This could suppress valid warnings
+or issue incorrect ones.
 
-Add a new devm_add_action_or_reset() to fix the leak in the probe and
-remove the need of a remove function.
+Fix the condition and log to properly reflect the new_mtu.
 
-Fixes: c695abab2429 ("mfd: Add Samsung Exynos Low Power Audio Subsystem driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/69471e839efc0249a504492a8de3497fcdb6a009.1745247209.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: ab123fe071c9 ("enic: handle mtu change for vf properly")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Acked-by: John Daley <johndale@cisco.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250628145612.476096-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/exynos-lpass.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/cisco/enic/enic_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/exynos-lpass.c b/drivers/mfd/exynos-lpass.c
-index e36805f07282e..8b5fed4760394 100644
---- a/drivers/mfd/exynos-lpass.c
-+++ b/drivers/mfd/exynos-lpass.c
-@@ -104,11 +104,22 @@ static const struct regmap_config exynos_lpass_reg_conf = {
- 	.fast_io	= true,
- };
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index c753c35b26ebd..5a8ca5be9ca00 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -1864,10 +1864,10 @@ static int enic_change_mtu(struct net_device *netdev, int new_mtu)
+ 	if (enic_is_dynamic(enic) || enic_is_sriov_vf(enic))
+ 		return -EOPNOTSUPP;
  
-+static void exynos_lpass_disable_lpass(void *data)
-+{
-+	struct platform_device *pdev = data;
-+	struct exynos_lpass *lpass = platform_get_drvdata(pdev);
-+
-+	pm_runtime_disable(&pdev->dev);
-+	if (!pm_runtime_status_suspended(&pdev->dev))
-+		exynos_lpass_disable(lpass);
-+}
-+
- static int exynos_lpass_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct exynos_lpass *lpass;
- 	void __iomem *base_top;
-+	int ret;
+-	if (netdev->mtu > enic->port_mtu)
++	if (new_mtu > enic->port_mtu)
+ 		netdev_warn(netdev,
+ 			    "interface MTU (%d) set higher than port MTU (%d)\n",
+-			    netdev->mtu, enic->port_mtu);
++			    new_mtu, enic->port_mtu);
  
- 	lpass = devm_kzalloc(dev, sizeof(*lpass), GFP_KERNEL);
- 	if (!lpass)
-@@ -134,16 +145,11 @@ static int exynos_lpass_probe(struct platform_device *pdev)
- 	pm_runtime_enable(dev);
- 	exynos_lpass_enable(lpass);
- 
--	return devm_of_platform_populate(dev);
--}
--
--static void exynos_lpass_remove(struct platform_device *pdev)
--{
--	struct exynos_lpass *lpass = platform_get_drvdata(pdev);
-+	ret = devm_add_action_or_reset(dev, exynos_lpass_disable_lpass, pdev);
-+	if (ret)
-+		return ret;
- 
--	pm_runtime_disable(&pdev->dev);
--	if (!pm_runtime_status_suspended(&pdev->dev))
--		exynos_lpass_disable(lpass);
-+	return devm_of_platform_populate(dev);
+ 	return _enic_change_mtu(netdev, new_mtu);
  }
- 
- static int __maybe_unused exynos_lpass_suspend(struct device *dev)
-@@ -183,7 +189,6 @@ static struct platform_driver exynos_lpass_driver = {
- 		.of_match_table	= exynos_lpass_of_match,
- 	},
- 	.probe	= exynos_lpass_probe,
--	.remove_new = exynos_lpass_remove,
- };
- module_platform_driver(exynos_lpass_driver);
- 
 -- 
 2.39.5
 
