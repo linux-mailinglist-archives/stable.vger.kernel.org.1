@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-160953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0ECAFD2B7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 017BAAFD0D5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7273C3B9986
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:46:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA6D01673E5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0B02E5B0E;
-	Tue,  8 Jul 2025 16:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380582DAFC1;
+	Tue,  8 Jul 2025 16:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10Uj2QS2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVL1G80r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2402E5411;
-	Tue,  8 Jul 2025 16:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD142E659;
+	Tue,  8 Jul 2025 16:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993172; cv=none; b=p2VW4uyeWbT4h+PbKDld25u3RVmsoDdHDyeCBlsF1rkTMIfJlqverjbcIiqGjLsaPhGUKoW8eFy1Wv9InHMZrt1yrFiCiSeGNain5oeFBuKtZ5SkjW8yCr+5N7kiVngfXHsLKjG0dpPvxZc4bRXYVcMTqPkwoVz3FQ3Hk4yuL6A=
+	t=1751992033; cv=none; b=P6F3AWc/n6gsyzDbzh/W0QZs42dXOEO0Pt33j3EpR8GNULZxwcMN3ltbtIIT7+IL7iNUvfFQZJ7I97+HzgqOm9ZU7e/nJCZQoRtTTMX9Xg8ofWGdvpHPU7zGlcL7/B7ntQo2yV5H8ui5dFReZ0bj03+ryo1lhAzxC2MvgcTRF/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993172; c=relaxed/simple;
-	bh=M5i6ftJqg1+Eb3PfOk59uG4ACFFqjb2EbMijWZb4duU=;
+	s=arc-20240116; t=1751992033; c=relaxed/simple;
+	bh=LF0Awvfm+GPsf6flEAS8VGPcLOAhMLhisu5iOCd6itw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VCWqQNDCUrQ0h+SwZlkuYKOg1/DzuSNia/BVeR8hqhCTNhtbL+8H2zgEevMloqt4KUD1Tt8aeFUvu5jvG3EvQzisOFPgl361MYfvld4DkSs4I3MFl8/rmsOkos08ayOQ51uoul/V1ZB0Hc940zJHN0lOpMyooCRR/nw6kVdY2OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10Uj2QS2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3502C4CEF0;
-	Tue,  8 Jul 2025 16:46:11 +0000 (UTC)
+	 MIME-Version; b=Sop/bOkmBsUxdhWfLx4Ya3zRvszbbgH42+yZyGIT2mmGYBUSFp8dlbsYP3lotSclcT8MxPIJUWvoz8rhrz7mLgBX3K3sfWlLJC2I6CKMOnrrgGgbeJqQyouJmVcm+ybB8uGU1ixSPA6hV410eqSNZFwROEGgQakZyfvajvbNpWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVL1G80r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FEEC4CEED;
+	Tue,  8 Jul 2025 16:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993172;
-	bh=M5i6ftJqg1+Eb3PfOk59uG4ACFFqjb2EbMijWZb4duU=;
+	s=korg; t=1751992032;
+	bh=LF0Awvfm+GPsf6flEAS8VGPcLOAhMLhisu5iOCd6itw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=10Uj2QS21w1mtJ/eJ/NXPebmIsiXkB81820Mv2yl1v2ktexKuKbYSTMDCubPHD3Mq
-	 uIfa8diRnNAEjskMRMFyxtKa5PWAJsckV5HuM1QoEeRVAduMWylC340R7u/WR3+/IH
-	 WlEqW67/0j4s8r7N/m506zY3iXeoSPTynXdg5PW0=
+	b=kVL1G80rWpkXiVpTKn5ZozW+5iLl0l9xMpvENYwCzWEtipZykybmh2IN6X514tXRF
+	 Ck0eVntN54wvroCVZ8FZQ8TXAiXpzk3fJDruHBlTp+stG4xNHOl8JPkWPpSsfsrEXM
+	 J6C/FqZHUyOwJsL45tQicwx2G6d8lDGxyAMI5Oeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 213/232] cifs: all initializations for tcon should happen in tcon_info_alloc
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 37/81] lib: test_objagg: Set error message in check_expect_hints_stats()
 Date: Tue,  8 Jul 2025 18:23:29 +0200
-Message-ID: <20250708162247.013046646@linuxfoundation.org>
+Message-ID: <20250708162226.154288237@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 74ebd02163fde05baa23129e06dde4b8f0f2377a upstream.
+[ Upstream commit e6ed134a4ef592fe1fd0cafac9683813b3c8f3e8 ]
 
-Today, a few work structs inside tcon are initialized inside
-cifs_get_tcon and not in tcon_info_alloc. As a result, if a tcon
-is obtained from tcon_info_alloc, but not called as a part of
-cifs_get_tcon, we may trip over.
+Smatch complains that the error message isn't set in the caller:
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    lib/test_objagg.c:923 test_hints_case2()
+    error: uninitialized symbol 'errmsg'.
+
+This static checker warning only showed up after a recent refactoring
+but the bug dates back to when the code was originally added.  This
+likely doesn't affect anything in real life.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202506281403.DsuyHFTZ-lkp@intel.com/
+Fixes: 0a020d416d0a ("lib: introduce initial implementation of object aggregation manager")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/8548f423-2e3b-4bb7-b816-5041de2762aa@sabinyo.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsproto.h |    1 +
- fs/smb/client/connect.c   |    8 +-------
- fs/smb/client/misc.c      |    6 ++++++
- 3 files changed, 8 insertions(+), 7 deletions(-)
+ lib/test_objagg.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -136,6 +136,7 @@ extern int SendReceiveBlockingLock(const
- 			struct smb_hdr *out_buf,
- 			int *bytes_returned);
+diff --git a/lib/test_objagg.c b/lib/test_objagg.c
+index c0c957c506354..c0f7bb53db8d5 100644
+--- a/lib/test_objagg.c
++++ b/lib/test_objagg.c
+@@ -899,8 +899,10 @@ static int check_expect_hints_stats(struct objagg_hints *objagg_hints,
+ 	int err;
  
-+void smb2_query_server_interfaces(struct work_struct *work);
- void
- cifs_signal_cifsd_for_reconnect(struct TCP_Server_Info *server,
- 				      bool all_channels);
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -113,7 +113,7 @@ static int reconn_set_ipaddr_from_hostna
- 	return rc;
- }
- 
--static void smb2_query_server_interfaces(struct work_struct *work)
-+void smb2_query_server_interfaces(struct work_struct *work)
- {
- 	int rc;
- 	int xid;
-@@ -2819,20 +2819,14 @@ cifs_get_tcon(struct cifs_ses *ses, stru
- 	tcon->max_cached_dirs = ctx->max_cached_dirs;
- 	tcon->nodelete = ctx->nodelete;
- 	tcon->local_lease = ctx->local_lease;
--	INIT_LIST_HEAD(&tcon->pending_opens);
- 	tcon->status = TID_GOOD;
- 
--	INIT_DELAYED_WORK(&tcon->query_interfaces,
--			  smb2_query_server_interfaces);
- 	if (ses->server->dialect >= SMB30_PROT_ID &&
- 	    (ses->server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
- 		/* schedule query interfaces poll */
- 		queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
- 				   (SMB_INTERFACE_POLL_INTERVAL * HZ));
- 	}
--#ifdef CONFIG_CIFS_DFS_UPCALL
--	INIT_DELAYED_WORK(&tcon->dfs_cache_work, dfs_cache_refresh);
--#endif
- 	spin_lock(&cifs_tcp_ses_lock);
- 	list_add(&tcon->tcon_list, &ses->tcon_list);
- 	spin_unlock(&cifs_tcp_ses_lock);
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -148,6 +148,12 @@ tcon_info_alloc(bool dir_leases_enabled,
- #ifdef CONFIG_CIFS_DFS_UPCALL
- 	INIT_LIST_HEAD(&ret_buf->dfs_ses_list);
- #endif
-+	INIT_LIST_HEAD(&ret_buf->pending_opens);
-+	INIT_DELAYED_WORK(&ret_buf->query_interfaces,
-+			  smb2_query_server_interfaces);
-+#ifdef CONFIG_CIFS_DFS_UPCALL
-+	INIT_DELAYED_WORK(&ret_buf->dfs_cache_work, dfs_cache_refresh);
-+#endif
- 
- 	return ret_buf;
- }
+ 	stats = objagg_hints_stats_get(objagg_hints);
+-	if (IS_ERR(stats))
++	if (IS_ERR(stats)) {
++		*errmsg = "objagg_hints_stats_get() failed.";
+ 		return PTR_ERR(stats);
++	}
+ 	err = __check_expect_stats(stats, expect_stats, errmsg);
+ 	objagg_stats_put(stats);
+ 	return err;
+-- 
+2.39.5
+
 
 
 
