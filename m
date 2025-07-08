@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-161093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051DAAFD359
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 254B2AFD282
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFEE048559A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:52:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01FD1422573
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EC32DCF48;
-	Tue,  8 Jul 2025 16:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C99A2E3385;
+	Tue,  8 Jul 2025 16:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMBX9W5m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W50VEXWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D093225414;
-	Tue,  8 Jul 2025 16:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB2E264F9C;
+	Tue,  8 Jul 2025 16:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993573; cv=none; b=J0K7keNzdol/xDViwEfYz20LPlrUypmsn1lVw8VP/3Hig+CsNilPVfpDvB2FWq1pZaKeqeNB38pAiYX7uuVP0F4wY/ZdyWM4bTt/O1n4eKACN0EZ9E4worZG35X4sIT7N0HpCI5PBtWshdNlfj1xSx+JjGCIAtUTR7uWAqXs5rw=
+	t=1751993047; cv=none; b=hRotzRUr0ezVkYf83xQQcbWZaTDoCqrzxTu9TVXzFq9zY37u0fUqqi5KQLQU2rBD8Zq48thgg/Z6M1ca8MffWCClHo/5nq7Iy8sHeYSbSTRS/31L7rrqP1UnpRymxpYLORpjIdh04GUEmijHNi2jnW4c+BxpipvzNCx/YZ4JxzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993573; c=relaxed/simple;
-	bh=kXOdr1Lo8/epfWCeWs1+chvNjdHrkCxA0FFaaDj9Wiw=;
+	s=arc-20240116; t=1751993047; c=relaxed/simple;
+	bh=k6xzMWUEu6JVsawzxdvUfdUu7dBOdRF9eU/wQGRCUTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tejEUR7X2O9KADEl40kd7UosS6uvJ04W19Ppt31brdRn806Vsj33zOAwuvbl2YZTj6PA0zlJ9GnSG5yVCiyZyuOMq2DI5Y8B7zyIhCsORrJZa/FpoNYvle2m7urtqYdf3D9W3luS0+lmrpe9ukDWF10fmQLf18IL8mAWrgkbWeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMBX9W5m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633BBC4CEED;
-	Tue,  8 Jul 2025 16:52:52 +0000 (UTC)
+	 MIME-Version; b=SHBVw/y1LWT56y3zoETHEz5ONJiWs2/30udXW2lDOh2+mS+/z4YjJo1tCJ81KyHHom7tWQlgVwNy/Z8jRvoVirWEcTskJZqBUBYcl0yqHwLM7IUNKEBhJxUSU91xsB7a0Jo1k1UlXA4gpGwH2ejnywzCpkawoA+hq7fcjEaZkGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W50VEXWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CF8C4CEED;
+	Tue,  8 Jul 2025 16:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993572;
-	bh=kXOdr1Lo8/epfWCeWs1+chvNjdHrkCxA0FFaaDj9Wiw=;
+	s=korg; t=1751993047;
+	bh=k6xzMWUEu6JVsawzxdvUfdUu7dBOdRF9eU/wQGRCUTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JMBX9W5m3vonHRp1mtrwsOoQLojrrycCa4XEpI8iC8JJQB9x1PNwjmdX8kpx1PS6J
-	 lA47BlvLtVochI6rZkjokW6mHxtXOCQeMlNpnOWlHg7AkyZPemdjFThhwiQ6/PsDlY
-	 y8hzm6mOlwP9k+QTjz9Pp4fy5jj5g4vHW37AHDDQ=
+	b=W50VEXWd7oJ5WpXbbZjTEVhWgTHMLMTjMk1CjiSA+xcsmaG/Le5ljrdMBAnOHuS0K
+	 It+Xn5JMlbeoqdZIGhGcf7ngwXyBlw59Hh9SApvN91CP0I7UdyvAZdhuu+O6QTTY8N
+	 cdZmaXCbg06ZCeX+6gRiQ/7VNamThUj46m8R4yTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Blaise Sanouillet <linux@blaise.sanouillet.com>,
-	Suma Hegde <suma.hegde@amd.com>,
-	Jake Hillion <jake@hillion.co.uk>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 121/178] x86/platform/amd: move final timeout check to after final sleep
+Subject: [PATCH 6.12 162/232] drm/simpledrm: Do not upcast in release helpers
 Date: Tue,  8 Jul 2025 18:22:38 +0200
-Message-ID: <20250708162239.760057815@linuxfoundation.org>
+Message-ID: <20250708162245.676695968@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jake Hillion <jake@hillion.co.uk>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit f8afb12a2d7503de6558c23cacd7acbf6e9fe678 ]
+[ Upstream commit d231cde7c84359fb18fb268cf6cff03b5bce48ff ]
 
-__hsmp_send_message sleeps between result read attempts and has a
-timeout of 100ms. Under extreme load it's possible for these sleeps to
-take a long time, exceeding the 100ms. In this case the current code
-does not check the register and fails with ETIMEDOUT.
+The res pointer passed to simpledrm_device_release_clocks() and
+simpledrm_device_release_regulators() points to an instance of
+struct simpledrm_device. No need to upcast from struct drm_device.
+The upcast is harmless, as DRM device is the first field in struct
+simpledrm_device.
 
-Refactor the loop to ensure there is at least one read of the register
-after a sleep of any duration. This removes instances of ETIMEDOUT with
-a single caller, even with a misbehaving scheduler. Tested on AMD
-Bergamo machines.
-
-Suggested-by: Blaise Sanouillet <linux@blaise.sanouillet.com>
-Reviewed-by: Suma Hegde <suma.hegde@amd.com>
-Tested-by: Suma Hegde <suma.hegde@amd.com>
-Signed-off-by: Jake Hillion <jake@hillion.co.uk>
-Link: https://lore.kernel.org/r/20250605-amd-hsmp-v2-1-a811bc3dd74a@hillion.co.uk
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 11e8f5fd223b ("drm: Add simpledrm driver")
+Cc: <stable@vger.kernel.org> # v5.14+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://lore.kernel.org/r/20250407134753.985925-2-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/hsmp/hsmp.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tiny/simpledrm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/hsmp/hsmp.c b/drivers/platform/x86/amd/hsmp/hsmp.c
-index a3ac09a90de45..ab877112f4c80 100644
---- a/drivers/platform/x86/amd/hsmp/hsmp.c
-+++ b/drivers/platform/x86/amd/hsmp/hsmp.c
-@@ -99,7 +99,7 @@ static int __hsmp_send_message(struct hsmp_socket *sock, struct hsmp_message *ms
- 	short_sleep = jiffies + msecs_to_jiffies(HSMP_SHORT_SLEEP);
- 	timeout	= jiffies + msecs_to_jiffies(HSMP_MSG_TIMEOUT);
+diff --git a/drivers/gpu/drm/tiny/simpledrm.c b/drivers/gpu/drm/tiny/simpledrm.c
+index d19e102894282..07abaf27315f7 100644
+--- a/drivers/gpu/drm/tiny/simpledrm.c
++++ b/drivers/gpu/drm/tiny/simpledrm.c
+@@ -284,7 +284,7 @@ static struct simpledrm_device *simpledrm_device_of_dev(struct drm_device *dev)
  
--	while (time_before(jiffies, timeout)) {
-+	while (true) {
- 		ret = sock->amd_hsmp_rdwr(sock, mbinfo->msg_resp_off, &mbox_status, HSMP_RD);
- 		if (ret) {
- 			dev_err(sock->dev, "Error %d reading mailbox status\n", ret);
-@@ -108,6 +108,10 @@ static int __hsmp_send_message(struct hsmp_socket *sock, struct hsmp_message *ms
+ static void simpledrm_device_release_clocks(void *res)
+ {
+-	struct simpledrm_device *sdev = simpledrm_device_of_dev(res);
++	struct simpledrm_device *sdev = res;
+ 	unsigned int i;
  
- 		if (mbox_status != HSMP_STATUS_NOT_READY)
- 			break;
-+
-+		if (!time_before(jiffies, timeout))
-+			break;
-+
- 		if (time_before(jiffies, short_sleep))
- 			usleep_range(50, 100);
- 		else
+ 	for (i = 0; i < sdev->clk_count; ++i) {
+@@ -382,7 +382,7 @@ static int simpledrm_device_init_clocks(struct simpledrm_device *sdev)
+ 
+ static void simpledrm_device_release_regulators(void *res)
+ {
+-	struct simpledrm_device *sdev = simpledrm_device_of_dev(res);
++	struct simpledrm_device *sdev = res;
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < sdev->regulator_count; ++i) {
 -- 
 2.39.5
 
