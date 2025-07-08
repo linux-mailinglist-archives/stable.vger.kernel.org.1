@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-160717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 662A2AFD18C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E908AFD2C9
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BEC61BC07FA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 104291C26A19
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385C22E3385;
-	Tue,  8 Jul 2025 16:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D0A2E5B2C;
+	Tue,  8 Jul 2025 16:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbfkAe26"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLCzABmy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87C614A60D;
-	Tue,  8 Jul 2025 16:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71F21FC0F3;
+	Tue,  8 Jul 2025 16:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992487; cv=none; b=QbgVIcwJ3C35AvXOzTILukoMcnWYSs8ASq+Gz5K3pWy8RwBE3+c0i/xuAsIFJl4mwsNMJZfSOC5EmBIXuKDivMa83pkQENlgnxOePHg1UPa85qcvKmrhDCEUHz/JNpMVKBj3my8YwM8eMzxRq+axnSfl6bAVG/CEgAtnVvVW4dA=
+	t=1751993198; cv=none; b=MtDYVDDwXZiJRSSge2M3biRVket9RC7tMLp5xdOAo4kIN+5M/bZhQgp/cDvWWHW34/g61KBYn/bW7Y/UiNNh5aTY1qtsHfzMH64WJfqZORpGSqnlZELua18/+mht3/qFJH43eTEG+9iUeEcA59yaL6D5tsLQjqO0326zz8CdvnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992487; c=relaxed/simple;
-	bh=hORdthgwvyYteA/llmv7n7tVD6X8TpE+Y28QJvrirEQ=;
+	s=arc-20240116; t=1751993198; c=relaxed/simple;
+	bh=zPU7uOWNv2lUB/KTt8ImUP57EuU3mrpP4lscLwgSsvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EtipTXGLVLkTPxWAohyDe0aCEZ4sxNEQ5PEFAaauBpaZIo+Yqft85e3FQ6bm/3AhXhvJA+LdyFxoWCglU9cPant2fFVPqX9KhXoDE2V4UnqPa+MKqDXMii4JaSnQ6ASsPnkw5uPMYjEAZOJfViTAxjoIqkG9jS1Vw772wC6Fyho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbfkAe26; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A21AC4CEED;
-	Tue,  8 Jul 2025 16:34:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bXAc9nTsF2i272eOk0m9SoDNGaflne/UkB6QNo5zqbD4GtHgWhgEj7ayGho2WjlnOmQKgbwrvFt+QEpQgV7/XPIowyNlR3CJ+ZitSDXC+I3TAujDotAeMbLq6Zw99M2XXpl1B2pCjHR/EJWbgEJj9gWt9zbv5om3HacK4iA/sbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLCzABmy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E7EC4CEED;
+	Tue,  8 Jul 2025 16:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992486;
-	bh=hORdthgwvyYteA/llmv7n7tVD6X8TpE+Y28QJvrirEQ=;
+	s=korg; t=1751993198;
+	bh=zPU7uOWNv2lUB/KTt8ImUP57EuU3mrpP4lscLwgSsvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cbfkAe2637z2i7tGhgwMV6HQgnKUdrBvxlEQNckFs5ZV7usbf0QRM3rkt2H33fK0i
-	 I9E7IAbLPhPira/A62hdNdD5qtJj07vVEUiV+ehLK2M30Bswqqp0utaMWfpouvO8He
-	 zqRyek1lHQaGt3La7Wq5P21MxmHJAecCipE/RdiE=
+	b=lLCzABmyMUMZV8fLwBXn5S9PtvIjpEp2BCqAFvU1rsGMoIgDv7x1N/erRHiTWfMuN
+	 mZXrrkMq/UH12Cc+wLTvl9DIYxBQCoxKGnsOfk2Evf6I1vxjG+XYqh4lFDYyrkxWnk
+	 Zn9XaTP2UcwyT2pwa58UUpqTzFWghiortaCQ4yXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shivank Garg <shivankg@amd.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/132] fs: export anon_inode_make_secure_inode() and fix secretmem LSM bypass
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Kurt Borja <kuurtb@gmail.com>
+Subject: [PATCH 6.12 221/232] platform/x86: think-lmi: Create ksets consecutively
 Date: Tue,  8 Jul 2025 18:23:37 +0200
-Message-ID: <20250708162233.699869797@linuxfoundation.org>
+Message-ID: <20250708162247.216096070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,138 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivank Garg <shivankg@amd.com>
+From: Kurt Borja <kuurtb@gmail.com>
 
-[ Upstream commit cbe4134ea4bc493239786220bd69cb8a13493190 ]
+commit 8dab34ca77293b409c3223636dde915a22656748 upstream.
 
-Export anon_inode_make_secure_inode() to allow KVM guest_memfd to create
-anonymous inodes with proper security context. This replaces the current
-pattern of calling alloc_anon_inode() followed by
-inode_init_security_anon() for creating security context manually.
+Avoid entering tlmi_release_attr() in error paths if both ksets are not
+yet created.
 
-This change also fixes a security regression in secretmem where the
-S_PRIVATE flag was not cleared after alloc_anon_inode(), causing
-LSM/SELinux checks to be bypassed for secretmem file descriptors.
+This is accomplished by initializing them side by side.
 
-As guest_memfd currently resides in the KVM module, we need to export this
-symbol for use outside the core kernel. In the future, guest_memfd might be
-moved to core-mm, at which point the symbols no longer would have to be
-exported. When/if that happens is still unclear.
-
-Fixes: 2bfe15c52612 ("mm: create security context for memfd_secret inodes")
-Suggested-by: David Hildenbrand <david@redhat.com>
-Suggested-by: Mike Rapoport <rppt@kernel.org>
-Signed-off-by: Shivank Garg <shivankg@amd.com>
-Link: https://lore.kernel.org/20250620070328.803704-3-shivankg@amd.com
-Acked-by: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250630-lmi-fix-v3-1-ce4f81c9c481@gmail.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/anon_inodes.c   | 23 ++++++++++++++++++-----
- include/linux/fs.h |  2 ++
- mm/secretmem.c     | 11 +----------
- 3 files changed, 21 insertions(+), 15 deletions(-)
+ drivers/platform/x86/think-lmi.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/fs/anon_inodes.c b/fs/anon_inodes.c
-index 24192a7667edf..a25766e90f0a6 100644
---- a/fs/anon_inodes.c
-+++ b/fs/anon_inodes.c
-@@ -55,15 +55,26 @@ static struct file_system_type anon_inode_fs_type = {
- 	.kill_sb	= kill_anon_super,
- };
- 
--static struct inode *anon_inode_make_secure_inode(
--	const char *name,
--	const struct inode *context_inode)
-+/**
-+ * anon_inode_make_secure_inode - allocate an anonymous inode with security context
-+ * @sb:		[in]	Superblock to allocate from
-+ * @name:	[in]	Name of the class of the newfile (e.g., "secretmem")
-+ * @context_inode:
-+ *		[in]	Optional parent inode for security inheritance
-+ *
-+ * The function ensures proper security initialization through the LSM hook
-+ * security_inode_init_security_anon().
-+ *
-+ * Return:	Pointer to new inode on success, ERR_PTR on failure.
-+ */
-+struct inode *anon_inode_make_secure_inode(struct super_block *sb, const char *name,
-+					   const struct inode *context_inode)
- {
- 	struct inode *inode;
- 	const struct qstr qname = QSTR_INIT(name, strlen(name));
- 	int error;
- 
--	inode = alloc_anon_inode(anon_inode_mnt->mnt_sb);
-+	inode = alloc_anon_inode(sb);
- 	if (IS_ERR(inode))
- 		return inode;
- 	inode->i_flags &= ~S_PRIVATE;
-@@ -74,6 +85,7 @@ static struct inode *anon_inode_make_secure_inode(
+--- a/drivers/platform/x86/think-lmi.c
++++ b/drivers/platform/x86/think-lmi.c
+@@ -1388,6 +1388,14 @@ static int tlmi_sysfs_init(void)
+ 		goto fail_device_created;
  	}
- 	return inode;
- }
-+EXPORT_SYMBOL_GPL_FOR_MODULES(anon_inode_make_secure_inode, "kvm");
  
- static struct file *__anon_inode_getfile(const char *name,
- 					 const struct file_operations *fops,
-@@ -88,7 +100,8 @@ static struct file *__anon_inode_getfile(const char *name,
- 		return ERR_PTR(-ENOENT);
++	tlmi_priv.authentication_kset = kset_create_and_add("authentication", NULL,
++							    &tlmi_priv.class_dev->kobj);
++	if (!tlmi_priv.authentication_kset) {
++		kset_unregister(tlmi_priv.attribute_kset);
++		ret = -ENOMEM;
++		goto fail_device_created;
++	}
++
+ 	for (i = 0; i < TLMI_SETTINGS_COUNT; i++) {
+ 		/* Check if index is a valid setting - skip if it isn't */
+ 		if (!tlmi_priv.setting[i])
+@@ -1429,12 +1437,6 @@ static int tlmi_sysfs_init(void)
+ 	}
  
- 	if (secure) {
--		inode =	anon_inode_make_secure_inode(name, context_inode);
-+		inode =	anon_inode_make_secure_inode(anon_inode_mnt->mnt_sb,
-+						     name, context_inode);
- 		if (IS_ERR(inode)) {
- 			file = ERR_CAST(inode);
- 			goto err;
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 81edfa1e66b60..b641a01512fb0 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3170,6 +3170,8 @@ extern int simple_write_begin(struct file *file, struct address_space *mapping,
- extern const struct address_space_operations ram_aops;
- extern int always_delete_dentry(const struct dentry *);
- extern struct inode *alloc_anon_inode(struct super_block *);
-+struct inode *anon_inode_make_secure_inode(struct super_block *sb, const char *name,
-+					   const struct inode *context_inode);
- extern int simple_nosetlease(struct file *, int, struct file_lock **, void **);
- extern const struct dentry_operations simple_dentry_operations;
- 
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index 399552814fd0f..4bedf491a8a74 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -195,19 +195,10 @@ static struct file *secretmem_file_create(unsigned long flags)
- 	struct file *file;
- 	struct inode *inode;
- 	const char *anon_name = "[secretmem]";
--	const struct qstr qname = QSTR_INIT(anon_name, strlen(anon_name));
--	int err;
- 
--	inode = alloc_anon_inode(secretmem_mnt->mnt_sb);
-+	inode = anon_inode_make_secure_inode(secretmem_mnt->mnt_sb, anon_name, NULL);
- 	if (IS_ERR(inode))
- 		return ERR_CAST(inode);
--
--	err = security_inode_init_security_anon(inode, &qname, NULL);
--	if (err) {
--		file = ERR_PTR(err);
--		goto err_free_inode;
+ 	/* Create authentication entries */
+-	tlmi_priv.authentication_kset = kset_create_and_add("authentication", NULL,
+-								&tlmi_priv.class_dev->kobj);
+-	if (!tlmi_priv.authentication_kset) {
+-		ret = -ENOMEM;
+-		goto fail_create_attr;
 -	}
--
- 	file = alloc_file_pseudo(inode, secretmem_mnt, "secretmem",
- 				 O_RDWR, &secretmem_fops);
- 	if (IS_ERR(file))
--- 
-2.39.5
-
+ 	tlmi_priv.pwd_admin->kobj.kset = tlmi_priv.authentication_kset;
+ 	ret = kobject_add(&tlmi_priv.pwd_admin->kobj, NULL, "%s", "Admin");
+ 	if (ret)
 
 
 
