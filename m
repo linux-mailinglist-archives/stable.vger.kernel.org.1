@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CAAAFD26E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF6CAFD40F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86845189A034
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:44:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26D735A01D7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC622E49A8;
-	Tue,  8 Jul 2025 16:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F632E5B01;
+	Tue,  8 Jul 2025 16:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pX/iyRDf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0B0G3YRf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF43264F9C;
-	Tue,  8 Jul 2025 16:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BB92E54AF;
+	Tue,  8 Jul 2025 16:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993016; cv=none; b=DqvIBdvcl8u5HoT5Vawz/3o8utCFYpJopnXd6mP7SuhSdnn4laDOg2k3cMaOj3FW4Pp+PrdtSQhKXtMcv8iPqEY7n7fS/veziKrfyH6genAZS0pUH1IRh5usPyPPjXrcI9LOOpTMHydeedvIUh0Em8vV9USGoyg3t93YJiimtvc=
+	t=1751993998; cv=none; b=dpQKwU6LyQMtTQqTqH7vm1c17+jjSu2Dnx2UsmlS2pmnyU4V+NC/lpzdXKywHS+NISqB8MXxBu76nnr+6iY9k5Ii2h5Y4yFNxOila3yhW9sRLPhZzsq8ZEpQk/AaqrLN8J8appGDFXzoBstEpc/v9fIofxJ+POidXY6UJxWaaKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993016; c=relaxed/simple;
-	bh=HytYnIlkio5LmNBUyj7d1CYivxDP+7jqvukNs3CR3Ik=;
+	s=arc-20240116; t=1751993998; c=relaxed/simple;
+	bh=qm7u/YJlranPD+Ad14LqIKYvvY0TGuOPv/wwDRYOcKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATcOtX0+885CDEpnD0FTJVuGZ0RHXgIIzLLQDiGOWB+inv3m14RICHXbbZZV5Z+jkf+uq7vZ89puRg2dQhhN99GipLVr6+M2fKssju4pBHhg1tyRD3pqMLI/8KeLnxyLJThl2mlQblT8WQ96G9P/IUnrSbyp3dJG5C0vebA4pvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pX/iyRDf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98968C4CEF5;
-	Tue,  8 Jul 2025 16:43:35 +0000 (UTC)
+	 MIME-Version; b=fK1YNtUvGL61eJ2lOnSJkpkOJGS15Ok+WgRNvD7GZWQamVRfGSZSTXO9Xs/FZEDBYiP0klUU0+9gghDSE341uTiXQauNFY3n2GfuzkkDWbRyr6T033GxVTlIPa8/t/Vm5qRfhxqBx1s4PKcUp1DC6OwjGGbHg0wPvaejeYQLNd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0B0G3YRf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA21C4CEF5;
+	Tue,  8 Jul 2025 16:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993016;
-	bh=HytYnIlkio5LmNBUyj7d1CYivxDP+7jqvukNs3CR3Ik=;
+	s=korg; t=1751993998;
+	bh=qm7u/YJlranPD+Ad14LqIKYvvY0TGuOPv/wwDRYOcKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pX/iyRDfTa5UCILJkA/cuZ14U4gh0TO+KrdsStGm3uafiJucSL5L/lz5aRkdV7o0g
-	 76vbRnDvE/vzh9ebGvvf4N33fsCq09+OfZ4nfAEJbbNTaCbMfQREIBrGePXwszSnIY
-	 9dg3u7iusCsR2wOdtUDoK7wNIPRzWlWm35cNMSwI=
+	b=0B0G3YRfM0Y8SoTuFgo5ItRT/tROIhYO4S08goP9swyne2dCVMrYTgUzp7JWgoWDk
+	 kr59KIe/bEAhKtWXJV06yIzr81XeGlby8Z3g5uS++aiZnK01rXwiP+hRJh3uTMb3IJ
+	 KfadyS9l0ofN1LeP0H4erigIy7y4UoSSYwCEIzHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 131/232] scsi: lpfc: Remove NLP_RELEASE_RPI flag from nodelist structure
+	stable@kernel.org,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 090/160] media: uvcvideo: Rollback non processed entities on error
 Date: Tue,  8 Jul 2025 18:22:07 +0200
-Message-ID: <20250708162244.869476947@linuxfoundation.org>
+Message-ID: <20250708162234.002852156@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,425 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 32566a6f1ae558d0e79fed6e17a75c253367a57f ]
+commit a70705d3c020d0d5c3ab6a5cc93e011ac35e7d48 upstream.
 
-An RPI is tightly bound to an NDLP structure and is freed only upon
-release of an NDLP object.  As such, there should be no logic that frees
-an RPI outside of the lpfc_nlp_release() routine.  In order to reinforce
-the original design usage of RPIs, remove the NLP_RELEASE_RPI flag and
-related logic.
+If we fail to commit an entity, we need to restore the
+UVC_CTRL_DATA_BACKUP for the other uncommitted entities. Otherwise the
+control cache and the device would be out of sync.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20241031223219.152342-9-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: b5162bb6aa1e ("scsi: lpfc: Avoid potential ndlp use-after-free in dev_loss_tmo_callbk")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
+Reported-by: Hans de Goede <hdegoede@redhat.com>
+Closes: https://lore.kernel.org/linux-media/fe845e04-9fde-46ee-9763-a6f00867929a@redhat.com/
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-ID: <20250224-uvc-data-backup-v2-3-de993ed9823b@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_crtn.h    |  2 +-
- drivers/scsi/lpfc/lpfc_disc.h    |  1 -
- drivers/scsi/lpfc/lpfc_els.c     | 32 +++-----------------
- drivers/scsi/lpfc/lpfc_hbadisc.c | 52 +++++++-------------------------
- drivers/scsi/lpfc/lpfc_init.c    | 36 +++++++---------------
- drivers/scsi/lpfc/lpfc_sli.c     | 48 +++++++++++------------------
- 6 files changed, 44 insertions(+), 127 deletions(-)
+ drivers/media/usb/uvc/uvc_ctrl.c |   40 +++++++++++++++++++++++++--------------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_crtn.h b/drivers/scsi/lpfc/lpfc_crtn.h
-index d4e46a08f94da..36470bd716173 100644
---- a/drivers/scsi/lpfc/lpfc_crtn.h
-+++ b/drivers/scsi/lpfc/lpfc_crtn.h
-@@ -571,7 +571,7 @@ int lpfc_issue_reg_vfi(struct lpfc_vport *);
- int lpfc_issue_unreg_vfi(struct lpfc_vport *);
- int lpfc_selective_reset(struct lpfc_hba *);
- int lpfc_sli4_read_config(struct lpfc_hba *);
--void lpfc_sli4_node_prep(struct lpfc_hba *);
-+void lpfc_sli4_node_rpi_restore(struct lpfc_hba *phba);
- int lpfc_sli4_els_sgl_update(struct lpfc_hba *phba);
- int lpfc_sli4_nvmet_sgl_update(struct lpfc_hba *phba);
- int lpfc_io_buf_flush(struct lpfc_hba *phba, struct list_head *sglist);
-diff --git a/drivers/scsi/lpfc/lpfc_disc.h b/drivers/scsi/lpfc/lpfc_disc.h
-index f5ae8cc158205..5d6eabaeb094e 100644
---- a/drivers/scsi/lpfc/lpfc_disc.h
-+++ b/drivers/scsi/lpfc/lpfc_disc.h
-@@ -185,7 +185,6 @@ struct lpfc_node_rrq {
- /* Defines for nlp_flag (uint32) */
- #define NLP_IGNR_REG_CMPL  0x00000001 /* Rcvd rscn before we cmpl reg login */
- #define NLP_REG_LOGIN_SEND 0x00000002   /* sent reglogin to adapter */
--#define NLP_RELEASE_RPI    0x00000004   /* Release RPI to free pool */
- #define NLP_SUPPRESS_RSP   0x00000010	/* Remote NPort supports suppress rsp */
- #define NLP_PLOGI_SND      0x00000020	/* sent PLOGI request for this entry */
- #define NLP_PRLI_SND       0x00000040	/* sent PRLI request for this entry */
-diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
-index d737b897ddd82..4e049783fc94e 100644
---- a/drivers/scsi/lpfc/lpfc_els.c
-+++ b/drivers/scsi/lpfc/lpfc_els.c
-@@ -3063,8 +3063,6 @@ lpfc_cmpl_els_logo(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
- 	 */
- 	if (ndlp->nlp_flag & NLP_TARGET_REMOVE) {
- 		spin_lock_irq(&ndlp->lock);
--		if (phba->sli_rev == LPFC_SLI_REV4)
--			ndlp->nlp_flag |= NLP_RELEASE_RPI;
- 		ndlp->nlp_flag &= ~NLP_NPR_2B_DISC;
- 		spin_unlock_irq(&ndlp->lock);
- 		lpfc_disc_state_machine(vport, ndlp, cmdiocb,
-@@ -5456,24 +5454,14 @@ lpfc_cmpl_els_rsp(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
- 	}
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1697,7 +1697,7 @@ static int uvc_ctrl_commit_entity(struct
+ 	unsigned int processed_ctrls = 0;
+ 	struct uvc_control *ctrl;
+ 	unsigned int i;
+-	int ret;
++	int ret = 0;
  
- 	/* An SLI4 NPIV instance wants to drop the node at this point under
--	 * these conditions and release the RPI.
-+	 * these conditions because it doesn't need the login.
- 	 */
- 	if (phba->sli_rev == LPFC_SLI_REV4 &&
- 	    vport && vport->port_type == LPFC_NPIV_PORT &&
- 	    !(ndlp->fc4_xpt_flags & SCSI_XPT_REGD)) {
--		if (ndlp->nlp_flag & NLP_RELEASE_RPI) {
--			if (ndlp->nlp_state != NLP_STE_PLOGI_ISSUE &&
--			    ndlp->nlp_state != NLP_STE_REG_LOGIN_ISSUE) {
--				lpfc_sli4_free_rpi(phba, ndlp->nlp_rpi);
--				spin_lock_irq(&ndlp->lock);
--				ndlp->nlp_rpi = LPFC_RPI_ALLOC_ERROR;
--				ndlp->nlp_flag &= ~NLP_RELEASE_RPI;
--				spin_unlock_irq(&ndlp->lock);
--			}
--			lpfc_drop_node(vport, ndlp);
--		} else if (ndlp->nlp_state != NLP_STE_PLOGI_ISSUE &&
--			   ndlp->nlp_state != NLP_STE_REG_LOGIN_ISSUE &&
--			   ndlp->nlp_state != NLP_STE_PRLI_ISSUE) {
-+		if (ndlp->nlp_state != NLP_STE_PLOGI_ISSUE &&
-+		    ndlp->nlp_state != NLP_STE_REG_LOGIN_ISSUE &&
-+		    ndlp->nlp_state != NLP_STE_PRLI_ISSUE) {
- 			/* Drop ndlp if there is no planned or outstanding
- 			 * issued PRLI.
- 			 *
-@@ -5852,18 +5840,6 @@ lpfc_els_rsp_reject(struct lpfc_vport *vport, uint32_t rejectError,
- 		return 1;
- 	}
+ 	if (entity == NULL)
+ 		return 0;
+@@ -1725,8 +1725,6 @@ static int uvc_ctrl_commit_entity(struct
+ 				dev->intfnum, ctrl->info.selector,
+ 				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+ 				ctrl->info.size);
+-		else
+-			ret = 0;
  
--	/* The NPIV instance is rejecting this unsolicited ELS. Make sure the
--	 * node's assigned RPI gets released provided this node is not already
--	 * registered with the transport.
--	 */
--	if (phba->sli_rev == LPFC_SLI_REV4 &&
--	    vport->port_type == LPFC_NPIV_PORT &&
--	    !(ndlp->fc4_xpt_flags & SCSI_XPT_REGD)) {
--		spin_lock_irq(&ndlp->lock);
--		ndlp->nlp_flag |= NLP_RELEASE_RPI;
--		spin_unlock_irq(&ndlp->lock);
--	}
--
- 	rc = lpfc_sli_issue_iocb(phba, LPFC_ELS_RING, elsiocb, 0);
- 	if (rc == IOCB_ERROR) {
- 		lpfc_els_free_iocb(phba, elsiocb);
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 34f77b250387c..ff559b28738cf 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -5212,14 +5212,6 @@ lpfc_nlp_logo_unreg(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
- 		ndlp->nlp_defer_did = NLP_EVT_NOTHING_PENDING;
- 		lpfc_issue_els_plogi(vport, ndlp->nlp_DID, 0);
- 	} else {
--		/* NLP_RELEASE_RPI is only set for SLI4 ports. */
--		if (ndlp->nlp_flag & NLP_RELEASE_RPI) {
--			lpfc_sli4_free_rpi(vport->phba, ndlp->nlp_rpi);
--			spin_lock_irq(&ndlp->lock);
--			ndlp->nlp_flag &= ~NLP_RELEASE_RPI;
--			ndlp->nlp_rpi = LPFC_RPI_ALLOC_ERROR;
--			spin_unlock_irq(&ndlp->lock);
--		}
- 		spin_lock_irq(&ndlp->lock);
- 		ndlp->nlp_flag &= ~NLP_UNREG_INP;
- 		spin_unlock_irq(&ndlp->lock);
-@@ -5242,8 +5234,6 @@ static void
- lpfc_set_unreg_login_mbx_cmpl(struct lpfc_hba *phba, struct lpfc_vport *vport,
- 	struct lpfc_nodelist *ndlp, LPFC_MBOXQ_t *mbox)
- {
--	unsigned long iflags;
--
- 	/* Driver always gets a reference on the mailbox job
- 	 * in support of async jobs.
- 	 */
-@@ -5261,13 +5251,6 @@ lpfc_set_unreg_login_mbx_cmpl(struct lpfc_hba *phba, struct lpfc_vport *vport,
- 		    (kref_read(&ndlp->kref) > 0)) {
- 		mbox->mbox_cmpl = lpfc_sli4_unreg_rpi_cmpl_clr;
- 	} else {
--		if (test_bit(FC_UNLOADING, &vport->load_flag)) {
--			if (phba->sli_rev == LPFC_SLI_REV4) {
--				spin_lock_irqsave(&ndlp->lock, iflags);
--				ndlp->nlp_flag |= NLP_RELEASE_RPI;
--				spin_unlock_irqrestore(&ndlp->lock, iflags);
--			}
--		}
- 		mbox->mbox_cmpl = lpfc_sli_def_mbox_cmpl;
- 	}
- }
-@@ -5330,14 +5313,11 @@ lpfc_unreg_rpi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp)
- 				return 1;
- 			}
+ 		if (!ret)
+ 			processed_ctrls++;
+@@ -1738,17 +1736,24 @@ static int uvc_ctrl_commit_entity(struct
  
-+			/* Accept PLOGIs after unreg_rpi_cmpl. */
- 			if (mbox->mbox_cmpl == lpfc_sli4_unreg_rpi_cmpl_clr)
--				/*
--				 * accept PLOGIs after unreg_rpi_cmpl
--				 */
- 				acc_plogi = 0;
--			if (((ndlp->nlp_DID & Fabric_DID_MASK) !=
--			    Fabric_DID_MASK) &&
--			    (!test_bit(FC_OFFLINE_MODE, &vport->fc_flag)))
+ 		ctrl->dirty = 0;
+ 
+-		if (ret < 0) {
++		if (!rollback && handle && !ret &&
++		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
++			uvc_ctrl_set_handle(handle, ctrl, handle);
 +
-+			if (!test_bit(FC_OFFLINE_MODE, &vport->fc_flag))
- 				ndlp->nlp_flag |= NLP_UNREG_INP;
- 
- 			lpfc_printf_vlog(vport, KERN_INFO,
-@@ -5561,10 +5541,6 @@ lpfc_cleanup_node(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp)
- 	list_del_init(&ndlp->dev_loss_evt.evt_listp);
- 	list_del_init(&ndlp->recovery_evt.evt_listp);
- 	lpfc_cleanup_vports_rrqs(vport, ndlp);
--
--	if (phba->sli_rev == LPFC_SLI_REV4)
--		ndlp->nlp_flag |= NLP_RELEASE_RPI;
--
- 	return 0;
- }
- 
-@@ -6580,8 +6556,9 @@ lpfc_nlp_init(struct lpfc_vport *vport, uint32_t did)
- 	INIT_LIST_HEAD(&ndlp->nlp_listp);
- 	if (vport->phba->sli_rev == LPFC_SLI_REV4) {
- 		ndlp->nlp_rpi = rpi;
--		lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE | LOG_DISCOVERY,
--				 "0007 Init New ndlp x%px, rpi:x%x DID:%x "
-+		lpfc_printf_vlog(vport, KERN_INFO,
-+				 LOG_ELS | LOG_NODE | LOG_DISCOVERY,
-+				 "0007 Init New ndlp x%px, rpi:x%x DID:x%x "
- 				 "flg:x%x refcnt:%d\n",
- 				 ndlp, ndlp->nlp_rpi, ndlp->nlp_DID,
- 				 ndlp->nlp_flag, kref_read(&ndlp->kref));
-@@ -6626,19 +6603,12 @@ lpfc_nlp_release(struct kref *kref)
- 	lpfc_cancel_retry_delay_tmo(vport, ndlp);
- 	lpfc_cleanup_node(vport, ndlp);
- 
--	/* Not all ELS transactions have registered the RPI with the port.
--	 * In these cases the rpi usage is temporary and the node is
--	 * released when the WQE is completed.  Catch this case to free the
--	 * RPI to the pool.  Because this node is in the release path, a lock
--	 * is unnecessary.  All references are gone and the node has been
--	 * dequeued.
-+	/* All nodes are initialized with an RPI that needs to be released
-+	 * now. All references are gone and the node has been dequeued.
- 	 */
--	if (ndlp->nlp_flag & NLP_RELEASE_RPI) {
--		if (ndlp->nlp_rpi != LPFC_RPI_ALLOC_ERROR &&
--		    !(ndlp->nlp_flag & (NLP_RPI_REGISTERED | NLP_UNREG_INP))) {
--			lpfc_sli4_free_rpi(vport->phba, ndlp->nlp_rpi);
--			ndlp->nlp_rpi = LPFC_RPI_ALLOC_ERROR;
--		}
-+	if (vport->phba->sli_rev == LPFC_SLI_REV4) {
-+		lpfc_sli4_free_rpi(vport->phba, ndlp->nlp_rpi);
-+		ndlp->nlp_rpi = LPFC_RPI_ALLOC_ERROR;
- 	}
- 
- 	/* The node is not freed back to memory, it is released to a pool so
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index 50c761991191f..986e2898b10b8 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -3379,7 +3379,7 @@ lpfc_block_mgmt_io(struct lpfc_hba *phba, int mbx_action)
- }
- 
- /**
-- * lpfc_sli4_node_prep - Assign RPIs for active nodes.
-+ * lpfc_sli4_node_rpi_restore - Recover assigned RPIs for active nodes.
-  * @phba: pointer to lpfc hba data structure.
-  *
-  * Allocate RPIs for all active remote nodes. This is needed whenever
-@@ -3387,7 +3387,7 @@ lpfc_block_mgmt_io(struct lpfc_hba *phba, int mbx_action)
-  * is to fixup the temporary rpi assignments.
-  **/
- void
--lpfc_sli4_node_prep(struct lpfc_hba *phba)
-+lpfc_sli4_node_rpi_restore(struct lpfc_hba *phba)
- {
- 	struct lpfc_nodelist  *ndlp, *next_ndlp;
- 	struct lpfc_vport **vports;
-@@ -3397,10 +3397,10 @@ lpfc_sli4_node_prep(struct lpfc_hba *phba)
- 		return;
- 
- 	vports = lpfc_create_vport_work_array(phba);
--	if (vports == NULL)
-+	if (!vports)
- 		return;
- 
--	for (i = 0; i <= phba->max_vports && vports[i] != NULL; i++) {
-+	for (i = 0; i <= phba->max_vports && vports[i]; i++) {
- 		if (test_bit(FC_UNLOADING, &vports[i]->load_flag))
- 			continue;
- 
-@@ -3409,7 +3409,13 @@ lpfc_sli4_node_prep(struct lpfc_hba *phba)
- 					 nlp_listp) {
- 			rpi = lpfc_sli4_alloc_rpi(phba);
- 			if (rpi == LPFC_RPI_ALLOC_ERROR) {
--				/* TODO print log? */
-+				lpfc_printf_vlog(ndlp->vport, KERN_INFO,
-+						 LOG_NODE | LOG_DISCOVERY,
-+						 "0099 RPI alloc error for "
-+						 "ndlp x%px DID:x%06x "
-+						 "flg:x%x\n",
-+						 ndlp, ndlp->nlp_DID,
-+						 ndlp->nlp_flag);
- 				continue;
- 			}
- 			ndlp->nlp_rpi = rpi;
-@@ -3829,26 +3835,6 @@ lpfc_offline_prep(struct lpfc_hba *phba, int mbx_action)
- 					ndlp->nlp_flag &= ~(NLP_UNREG_INP |
- 							    NLP_RPI_REGISTERED);
- 					spin_unlock_irq(&ndlp->lock);
--					if (phba->sli_rev == LPFC_SLI_REV4)
--						lpfc_sli_rpi_release(vports[i],
--								     ndlp);
--				} else {
--					lpfc_unreg_rpi(vports[i], ndlp);
--				}
--				/*
--				 * Whenever an SLI4 port goes offline, free the
--				 * RPI. Get a new RPI when the adapter port
--				 * comes back online.
--				 */
--				if (phba->sli_rev == LPFC_SLI_REV4) {
--					lpfc_printf_vlog(vports[i], KERN_INFO,
--						 LOG_NODE | LOG_DISCOVERY,
--						 "0011 Free RPI x%x on "
--						 "ndlp: x%px did x%x\n",
--						 ndlp->nlp_rpi, ndlp,
--						 ndlp->nlp_DID);
--					lpfc_sli4_free_rpi(phba, ndlp->nlp_rpi);
--					ndlp->nlp_rpi = LPFC_RPI_ALLOC_ERROR;
- 				}
- 
- 				if (ndlp->nlp_type & NLP_FABRIC) {
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index 4dccbaeb63283..17ecb2625eb84 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -2842,27 +2842,6 @@ lpfc_sli_wake_mbox_wait(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmboxq)
- 	return;
- }
- 
--static void
--__lpfc_sli_rpi_release(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp)
--{
--	unsigned long iflags;
--
--	if (ndlp->nlp_flag & NLP_RELEASE_RPI) {
--		lpfc_sli4_free_rpi(vport->phba, ndlp->nlp_rpi);
--		spin_lock_irqsave(&ndlp->lock, iflags);
--		ndlp->nlp_flag &= ~NLP_RELEASE_RPI;
--		ndlp->nlp_rpi = LPFC_RPI_ALLOC_ERROR;
--		spin_unlock_irqrestore(&ndlp->lock, iflags);
--	}
--	ndlp->nlp_flag &= ~NLP_UNREG_INP;
--}
--
--void
--lpfc_sli_rpi_release(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp)
--{
--	__lpfc_sli_rpi_release(vport, ndlp);
--}
--
- /**
-  * lpfc_sli_def_mbox_cmpl - Default mailbox completion handler
-  * @phba: Pointer to HBA context object.
-@@ -2942,8 +2921,6 @@ lpfc_sli_def_mbox_cmpl(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
- 				ndlp->nlp_flag &= ~NLP_UNREG_INP;
- 				ndlp->nlp_defer_did = NLP_EVT_NOTHING_PENDING;
- 				lpfc_issue_els_plogi(vport, ndlp->nlp_DID, 0);
--			} else {
--				__lpfc_sli_rpi_release(vport, ndlp);
- 			}
- 
- 			/* The unreg_login mailbox is complete and had a
-@@ -2991,6 +2968,7 @@ lpfc_sli4_unreg_rpi_cmpl_clr(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
- {
- 	struct lpfc_vport  *vport = pmb->vport;
- 	struct lpfc_nodelist *ndlp;
-+	u32 unreg_inp;
- 
- 	ndlp = pmb->ctx_ndlp;
- 	if (pmb->u.mb.mbxCommand == MBX_UNREG_LOGIN) {
-@@ -3009,14 +2987,22 @@ lpfc_sli4_unreg_rpi_cmpl_clr(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
- 					 ndlp->nlp_DID, ndlp->nlp_defer_did,
- 					 ndlp->nlp_flag,
- 					 ndlp);
--				ndlp->nlp_flag &= ~NLP_LOGO_ACC;
-+
-+				/* Cleanup the nlp_flag now that the UNREG RPI
-+				 * has completed.
-+				 */
-+				spin_lock_irq(&ndlp->lock);
-+				unreg_inp = ndlp->nlp_flag & NLP_UNREG_INP;
-+				ndlp->nlp_flag &=
-+					~(NLP_UNREG_INP | NLP_LOGO_ACC);
-+				spin_unlock_irq(&ndlp->lock);
- 
- 				/* Check to see if there are any deferred
- 				 * events to process
- 				 */
--				if ((ndlp->nlp_flag & NLP_UNREG_INP) &&
--				    (ndlp->nlp_defer_did !=
--				    NLP_EVT_NOTHING_PENDING)) {
-+				if (unreg_inp &&
-+				    ndlp->nlp_defer_did !=
-+				    NLP_EVT_NOTHING_PENDING) {
- 					lpfc_printf_vlog(
- 						vport, KERN_INFO,
- 						LOG_MBOX | LOG_SLI | LOG_NODE,
-@@ -3025,14 +3011,12 @@ lpfc_sli4_unreg_rpi_cmpl_clr(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
- 						"NPort x%x Data: x%x x%px\n",
- 						ndlp->nlp_rpi, ndlp->nlp_DID,
- 						ndlp->nlp_defer_did, ndlp);
--					ndlp->nlp_flag &= ~NLP_UNREG_INP;
- 					ndlp->nlp_defer_did =
- 						NLP_EVT_NOTHING_PENDING;
- 					lpfc_issue_els_plogi(
- 						vport, ndlp->nlp_DID, 0);
--				} else {
--					__lpfc_sli_rpi_release(vport, ndlp);
- 				}
-+
- 				lpfc_nlp_put(ndlp);
- 			}
++		if (ret < 0 && !rollback) {
+ 			if (err_ctrl)
+ 				*err_ctrl = ctrl;
+-			return ret;
++			/*
++			 * If we fail to set a control, we need to rollback
++			 * the next ones.
++			 */
++			rollback = 1;
  		}
-@@ -8750,6 +8734,7 @@ lpfc_sli4_hba_setup(struct lpfc_hba *phba)
- 				lpfc_sli_config_mbox_opcode_get(
- 					phba, mboxq),
- 				rc, dd);
-+
- 	/*
- 	 * Allocate all resources (xri,rpi,vpi,vfi) now.  Subsequent
- 	 * calls depends on these resources to complete port setup.
-@@ -8762,6 +8747,8 @@ lpfc_sli4_hba_setup(struct lpfc_hba *phba)
- 		goto out_free_mbox;
+-
+-		if (!rollback && handle &&
+-		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+-			uvc_ctrl_set_handle(handle, ctrl, handle);
  	}
  
-+	lpfc_sli4_node_rpi_restore(phba);
++	if (ret)
++		return ret;
 +
- 	lpfc_set_host_data(phba, mboxq);
+ 	return processed_ctrls;
+ }
  
- 	rc = lpfc_sli_issue_mbox(phba, mboxq, MBX_POLL);
-@@ -8949,7 +8936,6 @@ lpfc_sli4_hba_setup(struct lpfc_hba *phba)
- 		rc = -ENODEV;
- 		goto out_free_iocblist;
+@@ -1779,7 +1784,8 @@ int __uvc_ctrl_commit(struct uvc_fh *han
+ 	struct uvc_video_chain *chain = handle->chain;
+ 	struct uvc_control *err_ctrl;
+ 	struct uvc_entity *entity;
+-	int ret = 0;
++	int ret_out = 0;
++	int ret;
+ 
+ 	/* Find the control. */
+ 	list_for_each_entry(entity, &chain->entities, chain) {
+@@ -1790,17 +1796,23 @@ int __uvc_ctrl_commit(struct uvc_fh *han
+ 				ctrls->error_idx =
+ 					uvc_ctrl_find_ctrl_idx(entity, ctrls,
+ 							       err_ctrl);
+-			goto done;
++			/*
++			 * When we fail to commit an entity, we need to
++			 * restore the UVC_CTRL_DATA_BACKUP for all the
++			 * controls in the other entities, otherwise our cache
++			 * and the hardware will be out of sync.
++			 */
++			rollback = 1;
++
++			ret_out = ret;
+ 		} else if (ret > 0 && !rollback) {
+ 			uvc_ctrl_send_events(handle, entity,
+ 					     ctrls->controls, ctrls->count);
+ 		}
  	}
--	lpfc_sli4_node_prep(phba);
  
- 	if (!test_bit(HBA_FCOE_MODE, &phba->hba_flag)) {
- 		if ((phba->nvmet_support == 0) || (phba->cfg_nvmet_mrq == 1)) {
--- 
-2.39.5
-
+-	ret = 0;
+-done:
+ 	mutex_unlock(&chain->ctrl_mutex);
+-	return ret;
++	return ret_out;
+ }
+ 
+ int uvc_ctrl_get(struct uvc_video_chain *chain,
 
 
 
