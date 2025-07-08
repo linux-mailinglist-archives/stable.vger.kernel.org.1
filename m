@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-160795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B7DAFD1DF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1D6AFD3F2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C47F188DD97
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77D8342515F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE242E3385;
-	Tue,  8 Jul 2025 16:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF15C2E0B4B;
+	Tue,  8 Jul 2025 16:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fP8Bx29U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlbTqBwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7CA289E2C;
-	Tue,  8 Jul 2025 16:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E29E2E091E;
+	Tue,  8 Jul 2025 16:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992712; cv=none; b=Sv8M+NczZE+TIbuOZHYX5jUxSusUVjVtheZ7a4CzLK4KVw+pcgNbMR6Z6V6GXblOaEL+OfogweTnHTqU9SL8Ago5Q2+Wgph5oRq2lHiazwCdDMFk+zPeMJlb8b0M1fsCLPR4pCgPeL67pEkluMQMKJDR4rCfeE04Yr5kc3+h8a8=
+	t=1751993858; cv=none; b=j1pb2mkzG3mjwMedzxQ1xjc8rDT5SP0JK8xBvZ+1qhj4RPNhN9iGd8AnSnWOOpnmL3zhPPL7JHuc+RaBRhaFhplUc4Opn/lCxaox5bp2bk6OIhlgBtqdkkUrshOTwIfHT976qAE9Jn0CEeV+dS7iHRMEXXPfouRsLtqIWLd1UaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992712; c=relaxed/simple;
-	bh=+5dW3cJwGVonpxpyVyeB6aCjPRp8APp7DtZHYai+Fhw=;
+	s=arc-20240116; t=1751993858; c=relaxed/simple;
+	bh=8FspT2VIhYhdVf3jdvJNBhHmVoOCRo2+MEhucrpFD7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bR684TeQJbtR9vPte3HLv9Cut4vu2ll9rQOEMu1h9XaW9f0OqO3Bh81gKqsDYQlbEfyIyKy8731SvznNFDn5zc9OiH+laveVo7IcMH6wVtYAxxrP3o+/k3R+DYgVjmQkTPA3vvXFKaoG/8cLDBUMWcnFDDmbkEDWmp36inwUyq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fP8Bx29U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C69BC4CEED;
-	Tue,  8 Jul 2025 16:38:32 +0000 (UTC)
+	 MIME-Version; b=CKSmTxmJJST5AblH6hdBx/vjTHBn0oufBxPLyGace+hYuoSI9qRA4ws3/qlfPNHqZSni/KWDno5Bw8dilXCb53KG79RERuV1wyA2S6D8/MHMp9+j9iHff9uKTKZW8Wq5HbE/v3Jm4JnfgeFNn0kVC9buU43UTisFtzToPi8EFVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlbTqBwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67EFC4CEED;
+	Tue,  8 Jul 2025 16:57:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992712;
-	bh=+5dW3cJwGVonpxpyVyeB6aCjPRp8APp7DtZHYai+Fhw=;
+	s=korg; t=1751993858;
+	bh=8FspT2VIhYhdVf3jdvJNBhHmVoOCRo2+MEhucrpFD7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fP8Bx29UpAuGZM7Lu+HDFAw4m4LNEkM4VKHClJgHfx3OTRNat9F0DpwuYv+f5qRxz
-	 HWbj1zV9SkqzFnDDvDIqv+yijMBl7Pp7EvUS94GNBqVSYzAL1ZufYi2ZS1AhNf0rk1
-	 o++oFJ9GkLToVpVnn4TV4TAjeHXMOs6i32AGte0M=
+	b=zlbTqBwj1TfthiZcfsECx5BZTczaJdkseP/Xw9lQxfDkwTiyZnfqDgymGGgsqINW1
+	 zFvOQ1Gx0FkxiQxoLpYGfZTda8dG+yoIzzt3M1CAteRhgSDOe/am6r6suVllhdhZ3a
+	 OG7F4DmdX2/UAfFLhcBSMNAGTnX5+0Z+lSixncns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/232] btrfs: propagate last_unlink_trans earlier when doing a rmdir
-Date: Tue,  8 Jul 2025 18:20:50 +0200
-Message-ID: <20250708162242.877790118@linuxfoundation.org>
+Subject: [PATCH 5.15 014/160] coresight: Only check bottom two claim bits
+Date: Tue,  8 Jul 2025 18:20:51 +0200
+Message-ID: <20250708162231.902877233@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: James Clark <james.clark@linaro.org>
 
-[ Upstream commit c466e33e729a0ee017d10d919cba18f503853c60 ]
+[ Upstream commit a4e65842e1142aa18ef36113fbd81d614eaefe5a ]
 
-In case the removed directory had a snapshot that was deleted, we are
-propagating its inode's last_unlink_trans to the parent directory after
-we removed the entry from the parent directory. This leaves a small race
-window where someone can log the parent directory after we removed the
-entry and before we updated last_unlink_trans, and as a result if we ever
-try to replay such a log tree, we will fail since we will attempt to
-remove a snapshot during log replay, which is currently not possible and
-results in the log replay (and mount) to fail. This is the type of failure
-described in commit 1ec9a1ae1e30 ("Btrfs: fix unreplayable log after
-snapshot delete + parent dir fsync").
+The use of the whole register and == could break the claim mechanism if
+any of the other bits are used in the future. The referenced doc "PSCI -
+ARM DEN 0022D" also says to only read and clear the bottom two bits.
 
-So fix this by propagating the last_unlink_trans to the parent directory
-before we remove the entry from it.
+Use FIELD_GET() to extract only the relevant part.
 
-Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250325-james-coresight-claim-tags-v4-2-dfbd3822b2e5@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/hwtracing/coresight/coresight-core.c | 3 ++-
+ drivers/hwtracing/coresight/coresight-priv.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 921ec3802648b..345e86fd844df 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4734,7 +4734,6 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	struct btrfs_fs_info *fs_info = BTRFS_I(inode)->root->fs_info;
- 	int ret = 0;
- 	struct btrfs_trans_handle *trans;
--	u64 last_unlink_trans;
- 	struct fscrypt_name fname;
+diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
+index 3ea6900542223..f6989a74fec94 100644
+--- a/drivers/hwtracing/coresight/coresight-core.c
++++ b/drivers/hwtracing/coresight/coresight-core.c
+@@ -161,7 +161,8 @@ static int coresight_find_link_outport(struct coresight_device *csdev,
  
- 	if (inode->i_size > BTRFS_EMPTY_DIR_SIZE)
-@@ -4760,6 +4759,23 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 		goto out_notrans;
- 	}
+ static inline u32 coresight_read_claim_tags(struct coresight_device *csdev)
+ {
+-	return csdev_access_relaxed_read32(&csdev->access, CORESIGHT_CLAIMCLR);
++	return FIELD_GET(CORESIGHT_CLAIM_MASK,
++			 csdev_access_relaxed_read32(&csdev->access, CORESIGHT_CLAIMCLR));
+ }
  
-+	/*
-+	 * Propagate the last_unlink_trans value of the deleted dir to its
-+	 * parent directory. This is to prevent an unrecoverable log tree in the
-+	 * case we do something like this:
-+	 * 1) create dir foo
-+	 * 2) create snapshot under dir foo
-+	 * 3) delete the snapshot
-+	 * 4) rmdir foo
-+	 * 5) mkdir foo
-+	 * 6) fsync foo or some file inside foo
-+	 *
-+	 * This is because we can't unlink other roots when replaying the dir
-+	 * deletes for directory foo.
-+	 */
-+	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
-+		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
-+
- 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
- 		ret = btrfs_unlink_subvol(trans, BTRFS_I(dir), dentry);
- 		goto out;
-@@ -4769,27 +4785,11 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	if (ret)
- 		goto out;
+ static inline bool coresight_is_claimed_self_hosted(struct coresight_device *csdev)
+diff --git a/drivers/hwtracing/coresight/coresight-priv.h b/drivers/hwtracing/coresight/coresight-priv.h
+index ff1dd2092ac5b..b416edcdf797d 100644
+--- a/drivers/hwtracing/coresight/coresight-priv.h
++++ b/drivers/hwtracing/coresight/coresight-priv.h
+@@ -32,6 +32,7 @@
+  * Coresight device CLAIM protocol.
+  * See PSCI - ARM DEN 0022D, Section: 6.8.1 Debug and Trace save and restore.
+  */
++#define CORESIGHT_CLAIM_MASK		GENMASK(1, 0)
+ #define CORESIGHT_CLAIM_SELF_HOSTED	BIT(1)
  
--	last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
--
- 	/* now the directory is empty */
- 	ret = btrfs_unlink_inode(trans, BTRFS_I(dir), BTRFS_I(d_inode(dentry)),
- 				 &fname.disk_name);
--	if (!ret) {
-+	if (!ret)
- 		btrfs_i_size_write(BTRFS_I(inode), 0);
--		/*
--		 * Propagate the last_unlink_trans value of the deleted dir to
--		 * its parent directory. This is to prevent an unrecoverable
--		 * log tree in the case we do something like this:
--		 * 1) create dir foo
--		 * 2) create snapshot under dir foo
--		 * 3) delete the snapshot
--		 * 4) rmdir foo
--		 * 5) mkdir foo
--		 * 6) fsync foo or some file inside foo
--		 */
--		if (last_unlink_trans >= trans->transid)
--			BTRFS_I(dir)->last_unlink_trans = last_unlink_trans;
--	}
- out:
- 	btrfs_end_transaction(trans);
- out_notrans:
+ #define TIMEOUT_US		100
 -- 
 2.39.5
 
