@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-160798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E69AFD1E4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40206AFD3B3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD3C716694B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19546188BD68
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EF72E4985;
-	Tue,  8 Jul 2025 16:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4801DB127;
+	Tue,  8 Jul 2025 16:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyqAzm6F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usuZTLDu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8373F289E2C;
-	Tue,  8 Jul 2025 16:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2B6202F70;
+	Tue,  8 Jul 2025 16:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992721; cv=none; b=JMP0vVRFRRX4qgOGeeRy4rjYKFRNrs0KF3stDk6HY6P/za8/Ue0r1E08NXWsRrXdc7qNhb2krzyA+96zgGoY+TECfjH/P7fciPfv0vbME+TyGlMdPC8r3QrOIhttO+yHzgajTUWlnVmg7tuamBoqnQQAUk5DDsO4zhnXTNUsS5k=
+	t=1751993781; cv=none; b=nnHTXppaIyVevLAs9HiEFiRPsPd4YNRnlH9ho9zyQSbo81c+sUqSnuuIrm/orluRK1GOT/nfjPKnAj767rEh/qUNlYzSS4g6zMnM7PF/ZcCoMmMKq2VL0xiin7G50R9bT4xLdzYsYjbBAkBOFKuHXp0I4i1nL5jQEk6n06sLv5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992721; c=relaxed/simple;
-	bh=+0xHeRuHr80/HlOdLmpqxsjQKjtDQHgyDJquQy80IBg=;
+	s=arc-20240116; t=1751993781; c=relaxed/simple;
+	bh=dEGKn04sl7WyPRSIk2F3GyRiLpOwqT1qa9pfnvqv8uE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eV1wrVM8gFtDoQ2YPxHqM68N8Hm0agmL3ua3Z9K/ElnxpscGsv2mNgFnebrHt2xD8pxbL41F2F+TyqICJZ/pV2pxtTXVnxBU4qzA19PQFumJc2jOg2LmmErzLRxLE/iCjik2/jHqKmDGmhxQMmaZ4CSDQ6cgmnd9fi4pl4E256E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyqAzm6F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD8BC4CEED;
-	Tue,  8 Jul 2025 16:38:40 +0000 (UTC)
+	 MIME-Version; b=K3eo/RbKZeA8ViiS1A0WvR5gnYwHkZHh1D9qEYOWsHKObujrFP1Q+ACG6uqSncvmzX6bBWp9v143JrnHvxA1AX7PcQZL8r+nnM02KpV08YMmcN4XqhXjQHE94Df0EaQ8kFxIYD6t0MZ8owFS2tWypE5T4MXOh8XIqdBTFDBWUyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usuZTLDu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B37C4CEED;
+	Tue,  8 Jul 2025 16:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992721;
-	bh=+0xHeRuHr80/HlOdLmpqxsjQKjtDQHgyDJquQy80IBg=;
+	s=korg; t=1751993780;
+	bh=dEGKn04sl7WyPRSIk2F3GyRiLpOwqT1qa9pfnvqv8uE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JyqAzm6F8mRejNcoOaboAsTnPypnXN2uWqhMyQCRkYIV4L1zd2rSKbNIvaDv62MuX
-	 Idxo2dytLU5Z8LIpgz/bcgU1VIAfUfhUQt5+rR7o0ReXSQp1MCeHq5Bf799/YRI534
-	 dmziUXdTGgJmA8nVSs4uLqTgpfWwHmF0X97D/OSA=
+	b=usuZTLDuQKUm0gIPOx0I4Obi2vNliToadUPNa47kKTYNHnA1+BG7cDTGkq/Y0dmWz
+	 dqxeNuZ8tcsnmK6HJep2t5y9wQot/NEqlcXCWaiMud2G2gsTbz47zkN9GrFSfChIIA
+	 9HFx2aFiSHafUPjECnXZdZYKlZY5aa1Pk9GoztD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fushuai Wang <wangfushuai@baidu.com>,
-	Simon Horman <horms@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chen Yufeng <chenyufeng@iie.ac.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/232] dpaa2-eth: fix xdp_rxq_info leak
+Subject: [PATCH 5.15 016/160] usb: potential integer overflow in usbg_make_tpg()
 Date: Tue,  8 Jul 2025 18:20:53 +0200
-Message-ID: <20250708162242.956024336@linuxfoundation.org>
+Message-ID: <20250708162231.955493210@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fushuai Wang <wangfushuai@baidu.com>
+From: Chen Yufeng <chenyufeng@iie.ac.cn>
 
-[ Upstream commit 2def09ead4ad5907988b655d1e1454003aaf8297 ]
+[ Upstream commit 153874010354d050f62f8ae25cbb960c17633dc5 ]
 
-The driver registered xdp_rxq_info structures via xdp_rxq_info_reg()
-but failed to properly unregister them in error paths and during
-removal.
+The variable tpgt in usbg_make_tpg() is defined as unsigned long and is
+assigned to tpgt->tport_tpgt, which is defined as u16. This may cause an
+integer overflow when tpgt is greater than USHRT_MAX (65535). I
+haven't tried to trigger it myself, but it is possible to trigger it
+by calling usbg_make_tpg() with a large value for tpgt.
 
-Fixes: d678be1dc1ec ("dpaa2-eth: add XDP_REDIRECT support")
-Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://patch.msgid.link/20250626133003.80136-1-wangfushuai@baidu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+I modified the type of tpgt to match tpgt->tport_tpgt and adjusted the
+relevant code accordingly.
+
+This patch is similar to commit 59c816c1f24d ("vhost/scsi: potential
+memory corruption").
+
+Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
+Link: https://lore.kernel.org/r/20250415065857.1619-1-chenyufeng@iie.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/freescale/dpaa2/dpaa2-eth.c  | 26 +++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_tcm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-index 29886a8ba73f3..efd0048acd3b2 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -3928,6 +3928,7 @@ static int dpaa2_eth_setup_rx_flow(struct dpaa2_eth_priv *priv,
- 					 MEM_TYPE_PAGE_ORDER0, NULL);
- 	if (err) {
- 		dev_err(dev, "xdp_rxq_info_reg_mem_model failed\n");
-+		xdp_rxq_info_unreg(&fq->channel->xdp_rxq);
- 		return err;
- 	}
+diff --git a/drivers/usb/gadget/function/f_tcm.c b/drivers/usb/gadget/function/f_tcm.c
+index 934e4b2a049ff..de54b0143894f 100644
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -1321,14 +1321,14 @@ static struct se_portal_group *usbg_make_tpg(struct se_wwn *wwn,
+ 	struct usbg_tport *tport = container_of(wwn, struct usbg_tport,
+ 			tport_wwn);
+ 	struct usbg_tpg *tpg;
+-	unsigned long tpgt;
++	u16 tpgt;
+ 	int ret;
+ 	struct f_tcm_opts *opts;
+ 	unsigned i;
  
-@@ -4421,17 +4422,25 @@ static int dpaa2_eth_bind_dpni(struct dpaa2_eth_priv *priv)
- 			return -EINVAL;
- 		}
- 		if (err)
--			return err;
-+			goto out;
- 	}
- 
- 	err = dpni_get_qdid(priv->mc_io, 0, priv->mc_token,
- 			    DPNI_QUEUE_TX, &priv->tx_qdid);
- 	if (err) {
- 		dev_err(dev, "dpni_get_qdid() failed\n");
--		return err;
-+		goto out;
- 	}
- 
- 	return 0;
-+
-+out:
-+	while (i--) {
-+		if (priv->fq[i].type == DPAA2_RX_FQ &&
-+		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
-+			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
-+	}
-+	return err;
- }
- 
- /* Allocate rings for storing incoming frame descriptors */
-@@ -4814,6 +4823,17 @@ static void dpaa2_eth_del_ch_napi(struct dpaa2_eth_priv *priv)
- 	}
- }
- 
-+static void dpaa2_eth_free_rx_xdp_rxq(struct dpaa2_eth_priv *priv)
-+{
-+	int i;
-+
-+	for (i = 0; i < priv->num_fqs; i++) {
-+		if (priv->fq[i].type == DPAA2_RX_FQ &&
-+		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
-+			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
-+	}
-+}
-+
- static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
- {
- 	struct device *dev;
-@@ -5017,6 +5037,7 @@ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
- 	free_percpu(priv->percpu_stats);
- err_alloc_percpu_stats:
- 	dpaa2_eth_del_ch_napi(priv);
-+	dpaa2_eth_free_rx_xdp_rxq(priv);
- err_bind:
- 	dpaa2_eth_free_dpbps(priv);
- err_dpbp_setup:
-@@ -5069,6 +5090,7 @@ static void dpaa2_eth_remove(struct fsl_mc_device *ls_dev)
- 	free_percpu(priv->percpu_extras);
- 
- 	dpaa2_eth_del_ch_napi(priv);
-+	dpaa2_eth_free_rx_xdp_rxq(priv);
- 	dpaa2_eth_free_dpbps(priv);
- 	dpaa2_eth_free_dpio(priv);
- 	dpaa2_eth_free_dpni(priv);
+ 	if (strstr(name, "tpgt_") != name)
+ 		return ERR_PTR(-EINVAL);
+-	if (kstrtoul(name + 5, 0, &tpgt) || tpgt > UINT_MAX)
++	if (kstrtou16(name + 5, 0, &tpgt))
+ 		return ERR_PTR(-EINVAL);
+ 	ret = -ENODEV;
+ 	mutex_lock(&tpg_instances_lock);
 -- 
 2.39.5
 
