@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0AFAAFD14C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:34:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C689CAFD38D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3309A1C23159
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:33:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 941EB16FDCF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BDA2E5B2D;
-	Tue,  8 Jul 2025 16:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18B32DE1FA;
+	Tue,  8 Jul 2025 16:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8uPlNtK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2Kivp08"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8D82E5425;
-	Tue,  8 Jul 2025 16:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEFA202F70;
+	Tue,  8 Jul 2025 16:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992370; cv=none; b=XBBxrjG8ToJKJ7BDw3m9p1jNRM0UAi7GAN4HCQmUTCZuRfRJ/9unAuRbrrKKp1bo+d8ttv402yEFbeDpFxJB2xD3uluICamZ0meJq3zku9whkdXAoVvD95PuwsHWmsHFRPv+LIbyKx/jBlkDBnG79PgFqNNxckl2w+fgMAiiquM=
+	t=1751993730; cv=none; b=msqRe0d/onZHQsID0dBJUkTK61TMRyODlO65wZy9Q8vFpMESsqGyB0RojY8YM3/8cpz8WQlwpHZf20yY/iYKjFCBZpYmWxmLWvLE03RXHlXbMgWxByenbD+Fx4NCGH6xCFEH0wX+mAAr6irBGPXAV4ysbtdhDzSqzvuYqQeX8xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992370; c=relaxed/simple;
-	bh=83nF9MFRNIWSlFs7ZyBWEDPBfOWCKZH4ynIXdcgeQe0=;
+	s=arc-20240116; t=1751993730; c=relaxed/simple;
+	bh=XxRgIK/QP1opY7A++TVOt+Oi1Z0Ka9BT3w/sxsYxjHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X+IoJwEZ/2nHKagTcf2HxeCU8taVjtBv3ET3m/jXiwWIgkjZY0k826cGoJsOdiv5+wE92rVBrGNAd1PV8jUPXSf6/MVfG8PtP5yu6ScD3D9Sk4l8HbZrJsrvRNvE9OVXQR3TQ90ZcvHWrf6Bcoip0VRqojZNjXPRPWyc655mLcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8uPlNtK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA24BC4CEED;
-	Tue,  8 Jul 2025 16:32:49 +0000 (UTC)
+	 MIME-Version; b=IsMzhKugMZePwrxOicNF392wbnc+2fkr2ksBo6HcxxTEHu1mwmJ3LhQEU4AslLMs/HH4qCnN1BM4IWO+7EJ1s0RIA0Khp63dvzqnVaNoTOdh5koCphm7b6wJyD9sW4sGjCNHHHak95Uw3r304AGdb9kUnOkVWLtz+ZXdDExoL6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2Kivp08; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC583C4CEED;
+	Tue,  8 Jul 2025 16:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992370;
-	bh=83nF9MFRNIWSlFs7ZyBWEDPBfOWCKZH4ynIXdcgeQe0=;
+	s=korg; t=1751993730;
+	bh=XxRgIK/QP1opY7A++TVOt+Oi1Z0Ka9BT3w/sxsYxjHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b8uPlNtKBzYqS3nkdhTQANJ1KKacpdO2h3S4zbfZj9yr9Ic0icslJ4PW+D96r1C1g
-	 /Od2SGB//Xjkokvf8iWRGg3vv7HXQsxp1keNxb/re315pnHrb0zlKUc+P/VONpsWq+
-	 qKu/lTNBjwMLO2zxzd57JSbg63tU0xyG4F1jujdI=
+	b=A2Kivp08jEyo+X++o/t8xFJBFJyfZb95MfqQjWXpM9eRIaPYTnWHnDY91RWB84/Lg
+	 0Aa1EY2VEx428BhaYsYERpqsvlC5+bECnAytQo2UVgruQyXrcvJlQfPdhPF/ywCG0f
+	 Rt3wXIl/FZcMSfWqIE90juG2ZGxz3e0TYSpWQTOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/132] wifi: mac80211: chan: chandef is non-NULL for reserved
-Date: Tue,  8 Jul 2025 18:22:59 +0200
-Message-ID: <20250708162232.640779520@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.15 143/178] usb: xhci: quirk for data loss in ISOC transfers
+Date: Tue,  8 Jul 2025 18:23:00 +0200
+Message-ID: <20250708162240.269411811@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit 9bf7079bc2271321fac467cae981c44e495b76b9 ]
+commit cbc889ab0122366f6cdbe3c28d477c683ebcebc2 upstream.
 
-The last caller of this with a NULL argument was related to
-the non-chanctx code, so we can now remove this odd logic.
+During the High-Speed Isochronous Audio transfers, xHCI
+controller on certain AMD platforms experiences momentary data
+loss. This results in Missed Service Errors (MSE) being
+generated by the xHCI.
 
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240129194108.bad8ec1e76c8.I12287452f42c54baf75821e75491cf6d021af20a@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: d87c3ca0f8f1 ("wifi: mac80211: finish link init before RCU publish")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The root cause of the MSE is attributed to the ISOC OUT endpoint
+being omitted from scheduling. This can happen when an IN
+endpoint with a 64ms service interval either is pre-scheduled
+prior to the ISOC OUT endpoint or the interval of the ISOC OUT
+endpoint is shorter than that of the IN endpoint. Consequently,
+the OUT service is neglected when an IN endpoint with a service
+interval exceeding 32ms is scheduled concurrently (every 64ms in
+this scenario).
+
+This issue is particularly seen on certain older AMD platforms.
+To mitigate this problem, it is recommended to adjust the service
+interval of the IN endpoint to not exceed 32ms (interval 8). This
+adjustment ensures that the OUT endpoint will not be bypassed,
+even if a smaller interval value is utilized.
+
+Cc: stable <stable@kernel.org>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250627144127.3889714-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/chan.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/host/xhci-mem.c |    4 ++++
+ drivers/usb/host/xhci-pci.c |   25 +++++++++++++++++++++++++
+ drivers/usb/host/xhci.h     |    1 +
+ 3 files changed, 30 insertions(+)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 68952752b5990..31c4f112345ea 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -89,11 +89,11 @@ ieee80211_chanctx_reserved_chandef(struct ieee80211_local *local,
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1420,6 +1420,10 @@ int xhci_endpoint_init(struct xhci_hcd *
+ 	/* Periodic endpoint bInterval limit quirk */
+ 	if (usb_endpoint_xfer_int(&ep->desc) ||
+ 	    usb_endpoint_xfer_isoc(&ep->desc)) {
++		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
++		    interval >= 9) {
++			interval = 8;
++		}
+ 		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_7) &&
+ 		    udev->speed >= USB_SPEED_HIGH &&
+ 		    interval >= 7) {
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -71,12 +71,22 @@
+ #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_XHCI		0x15ec
+ #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_XHCI		0x15f0
  
- 	lockdep_assert_held(&local->chanctx_mtx);
++#define PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI		0x13ed
++#define PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI		0x13ee
++#define PCI_DEVICE_ID_AMD_STARSHIP_XHCI			0x148c
++#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI		0x15d4
++#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI		0x15d5
++#define PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI		0x15e0
++#define PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI		0x15e1
++#define PCI_DEVICE_ID_AMD_RAVEN2_XHCI			0x15e5
+ #define PCI_DEVICE_ID_AMD_RENOIR_XHCI			0x1639
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_4			0x43b9
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_3			0x43ba
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_2			0x43bb
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_1			0x43bc
  
-+	if (WARN_ON(!compat))
-+		return NULL;
++#define PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI		0x7316
 +
- 	list_for_each_entry(link, &ctx->reserved_links,
- 			    reserved_chanctx_list) {
--		if (!compat)
--			compat = &link->reserved_chandef;
--
- 		compat = cfg80211_chandef_compatible(&link->reserved_chandef,
- 						     compat);
- 		if (!compat)
--- 
-2.39.5
-
+ #define PCI_DEVICE_ID_ASMEDIA_1042_XHCI			0x1042
+ #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
+ #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
+@@ -280,6 +290,21 @@ static void xhci_pci_quirks(struct devic
+ 	if (pdev->vendor == PCI_VENDOR_ID_NEC)
+ 		xhci->quirks |= XHCI_NEC_HOST;
+ 
++	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
++	    (pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_STARSHIP_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN2_XHCI))
++		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
++
++	if (pdev->vendor == PCI_VENDOR_ID_ATI &&
++	    pdev->device == PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI)
++		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
++
+ 	if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version == 0x96)
+ 		xhci->quirks |= XHCI_AMD_0x96_HOST;
+ 
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1637,6 +1637,7 @@ struct xhci_hcd {
+ #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
+ #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
+ #define XHCI_ETRON_HOST	BIT_ULL(49)
++#define XHCI_LIMIT_ENDPOINT_INTERVAL_9 BIT_ULL(50)
+ 
+ 	unsigned int		num_active_eps;
+ 	unsigned int		limit_active_eps;
 
 
 
