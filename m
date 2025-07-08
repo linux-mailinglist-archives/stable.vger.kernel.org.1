@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A600AFD09A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:25:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C82AFD13D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4690482CC2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:24:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3CC71C22663
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39B722FDE8;
-	Tue,  8 Jul 2025 16:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E7C2E5418;
+	Tue,  8 Jul 2025 16:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEW3OGoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTkB5xhm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C672E11B9;
-	Tue,  8 Jul 2025 16:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D88B1548C;
+	Tue,  8 Jul 2025 16:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991869; cv=none; b=mbwRhfK69dUYdKq1dlEHH4bLyzUbphJ1tuupwRBj+MogLkB4uPHfUS89WrrlgBQv+elCimmfc0KhYEO98738qsHJOcdvb8Da40VxGdfBnxI2hXV0BDsARjzrgmPGTS7NMcwU5frXzQfZuNbUJmrH1eyZBwXCKvXdL7EpNAlQx6o=
+	t=1751992353; cv=none; b=Og02NnlDV4h8idoMBwFtL7ZhtzKAb+yr4k//oKASNWhKhYPw9dN44BRw+WEY9nkT4W36Gxakybg95GPjUjcTSrrKWNuwDKVeaWT/+Rom7e4F+doyPoMfVNJ+kQO8VrGyn/sRRkGvwjETh6+Q5WHM/oWe4gJ2J9LPzsKlzkL3Kj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991869; c=relaxed/simple;
-	bh=XMw1SINHR1gLnwzgtRdnP3HFNvHNLeMMDBYkVJyv6c4=;
+	s=arc-20240116; t=1751992353; c=relaxed/simple;
+	bh=u/yv1fiHOHgIDZlk7ipp3IAIg+WrhTtTNqhzqstoJPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bariajgTdcYgGles4U4opXBxELOg2Y2Br86114KOA6lFJRKLhKu8yCAQHuecCFzj68XI7hZq2djTX1NkNQNL8Ql+yDtn2qQoTwvr7wrwfiYBu6ud/9f49c74X/dyy8/R+yqVFFSrinlZa5jTIQFfXT4WVnACr7YcOblil79IrBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEW3OGoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB582C4CEED;
-	Tue,  8 Jul 2025 16:24:28 +0000 (UTC)
+	 MIME-Version; b=oLhoPSKhW+W0G00vR7JPlSPvBn69s6ZEE7fmxOs1eBpLJqqxw7qTa20cwmfgQt3nCQbGH2pQ5pHgDor2i1bDdLPLDSaNvwJBLlSNtyCwrb8CB7jTw3VUnbnvJxCTtcuM1JGddvr9PcRZNKVggOPYqtPGP9C+Iyc59htfMhNTIc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTkB5xhm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F98C4CEED;
+	Tue,  8 Jul 2025 16:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751991869;
-	bh=XMw1SINHR1gLnwzgtRdnP3HFNvHNLeMMDBYkVJyv6c4=;
+	s=korg; t=1751992353;
+	bh=u/yv1fiHOHgIDZlk7ipp3IAIg+WrhTtTNqhzqstoJPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TEW3OGoVM1Xn9M53h3YeMJNu5QUMF445Vx/VWpF4SfYt15qwdU84nMg2G0Zyu/zjl
-	 zrztUhQuycyk1lU3chyGNJ8fbI1b5zHQCyuLkyKk7hpDNjuo6syQVB/roy547QEh6e
-	 80vsyiaZyx41StaudusAAPMgj0+bHkdspBBsAlos=
+	b=LTkB5xhmOsuiFjCMzolN0W+V1IB36Yat3CF1y8o7LOau57bZCxImdXu4xG6U8UC+w
+	 7WGI5FWGY47QLcBsJXkBrQpbIgP2ziRbycAeh8APk0mIGMpu2+/205g7QwQsOVaTjL
+	 HL0LsJpj4TwPR3mRqf39NplKc2vVZwmoexmGFung=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.1 02/81] s390/pci: Do not try re-enabling load/store if device is disabled
+	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 063/132] smb: client: fix race condition in negotiate timeout by using more precise timing
 Date: Tue,  8 Jul 2025 18:22:54 +0200
-Message-ID: <20250708162224.901528639@linuxfoundation.org>
+Message-ID: <20250708162232.499336773@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
 
-commit b97a7972b1f4f81417840b9a2ab0c19722b577d5 upstream.
+[ Upstream commit 266b5d02e14f3a0e07414e11f239397de0577a1d ]
 
-If a device is disabled unblocking load/store on its own is not useful
-as a full re-enable of the function is necessary anyway. Note that SCLP
-Write Event Data Action Qualifier 0 (Reset) leaves the device disabled
-and triggers this case unless the driver already requests a reset.
+When the SMB server reboots and the client immediately accesses the mount
+point, a race condition can occur that causes operations to fail with
+"Host is down" error.
 
-Cc: stable@vger.kernel.org
-Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
-Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reproduction steps:
+  # Mount SMB share
+  mount -t cifs //192.168.245.109/TEST /mnt/ -o xxxx
+  ls /mnt
+
+  # Reboot server
+  ssh root@192.168.245.109 reboot
+  ssh root@192.168.245.109 /path/to/cifs_server_setup.sh
+  ssh root@192.168.245.109 systemctl stop firewalld
+
+  # Immediate access fails
+  ls /mnt
+  ls: cannot access '/mnt': Host is down
+
+  # But works if there is a delay
+
+The issue is caused by a race condition between negotiate and reconnect.
+The 20-second negotiate timeout mechanism can interfere with the normal
+recovery process when both are triggered simultaneously.
+
+  ls                              cifsd
+---------------------------------------------------
+ cifs_getattr
+ cifs_revalidate_dentry
+ cifs_get_inode_info
+ cifs_get_fattr
+ smb2_query_path_info
+ smb2_compound_op
+ SMB2_open_init
+ smb2_reconnect
+ cifs_negotiate_protocol
+  smb2_negotiate
+   cifs_send_recv
+    smb_send_rqst
+    wait_for_response
+                            cifs_demultiplex_thread
+                              cifs_read_from_socket
+                              cifs_readv_from_socket
+                                server_unresponsive
+                                cifs_reconnect
+                                  __cifs_reconnect
+                                  cifs_abort_connection
+                                    mid->mid_state = MID_RETRY_NEEDED
+                                    cifs_wake_up_task
+    cifs_sync_mid_result
+     // case MID_RETRY_NEEDED
+     rc = -EAGAIN;
+   // In smb2_negotiate()
+   rc = -EHOSTDOWN;
+
+The server_unresponsive() timeout triggers cifs_reconnect(), which aborts
+ongoing mid requests and causes the ls command to receive -EAGAIN, leading
+to -EHOSTDOWN.
+
+Fix this by introducing a dedicated `neg_start` field to
+precisely tracks when the negotiate process begins. The timeout check
+now uses this accurate timestamp instead of `lstrp`, ensuring that:
+
+1. Timeout is only triggered after negotiate has actually run for 20s
+2. The mechanism doesn't interfere with concurrent recovery processes
+3. Uninitialized timestamps (value 0) don't trigger false timeouts
+
+Fixes: 7ccc1465465d ("smb: client: fix hang in wait_for_response() for negproto")
+Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_event.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/client/cifsglob.h | 1 +
+ fs/smb/client/connect.c  | 7 ++++---
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
---- a/arch/s390/pci/pci_event.c
-+++ b/arch/s390/pci/pci_event.c
-@@ -98,6 +98,10 @@ static pci_ers_result_t zpci_event_do_er
- 	struct zpci_dev *zdev = to_zpci(pdev);
- 	int rc;
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index a6020f7408fe5..5c856adf7be9e 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -743,6 +743,7 @@ struct TCP_Server_Info {
+ 	__le32 session_key_id; /* retrieved from negotiate response and send in session setup request */
+ 	struct session_key session_key;
+ 	unsigned long lstrp; /* when we got last response from this server */
++	unsigned long neg_start; /* when negotiate started (jiffies) */
+ 	struct cifs_secmech secmech; /* crypto sec mech functs, descriptors */
+ #define	CIFS_NEGFLAVOR_UNENCAP	1	/* wct == 17, but no ext_sec */
+ #define	CIFS_NEGFLAVOR_EXTENDED	2	/* wct == 17, ext_sec bit set */
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 454420aa02220..8298d1745f9b9 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -677,12 +677,12 @@ server_unresponsive(struct TCP_Server_Info *server)
+ 	/*
+ 	 * If we're in the process of mounting a share or reconnecting a session
+ 	 * and the server abruptly shut down (e.g. socket wasn't closed, packet
+-	 * had been ACK'ed but no SMB response), don't wait longer than 20s to
+-	 * negotiate protocol.
++	 * had been ACK'ed but no SMB response), don't wait longer than 20s from
++	 * when negotiate actually started.
+ 	 */
+ 	spin_lock(&server->srv_lock);
+ 	if (server->tcpStatus == CifsInNegotiate &&
+-	    time_after(jiffies, server->lstrp + 20 * HZ)) {
++	    time_after(jiffies, server->neg_start + 20 * HZ)) {
+ 		spin_unlock(&server->srv_lock);
+ 		cifs_reconnect(server, false);
+ 		return true;
+@@ -3998,6 +3998,7 @@ cifs_negotiate_protocol(const unsigned int xid, struct cifs_ses *ses,
  
-+	/* The underlying device may have been disabled by the event */
-+	if (!zdev_enabled(zdev))
-+		return PCI_ERS_RESULT_NEED_RESET;
-+
- 	pr_info("%s: Unblocking device access for examination\n", pci_name(pdev));
- 	rc = zpci_reset_load_store_blocked(zdev);
- 	if (rc) {
+ 	server->lstrp = jiffies;
+ 	server->tcpStatus = CifsInNegotiate;
++	server->neg_start = jiffies;
+ 	spin_unlock(&server->srv_lock);
+ 
+ 	rc = server->ops->negotiate(xid, ses, server);
+-- 
+2.39.5
+
 
 
 
