@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8E3AFD0B4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF82AFD345
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45F5E1C22124
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:25:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F59F16EDF5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601A42E5B08;
-	Tue,  8 Jul 2025 16:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23FF2E266B;
+	Tue,  8 Jul 2025 16:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PBHo5PJ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvljihpG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C86E2E5425;
-	Tue,  8 Jul 2025 16:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCF92E0B4B;
+	Tue,  8 Jul 2025 16:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991878; cv=none; b=OOM8HAQ4Q3R6DZl9F0Q6kPWwpK8Ws9BjJdicPiegnBa9hUe5R2voxMd0/dFuq53PwzrN54ECHdlkhN/k5z7IFCekwtmiwh9vuG3BH5G4s0+7b7EWvQqipNUQX7E7v7jwHLkKj7+VedN8nYmCzuqxAGijA6q571tZRvJeM8+j7Ks=
+	t=1751993538; cv=none; b=pVeW3E+YZzvVAVj3Vf1qcNDn8puU0qd72ae5Wuw5wRYEbxWvyQNJ5BEPcjFgwsyavY/THl/blD3Qv9tUElmZ0fbb8T0o63DS+bXEQbkCtPpfS8Dzak0CBkrfV6hwn+tF5BmRGHmp5DoJ994aDSIuuN+w/qoRSRhQgxuaom+JM04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991878; c=relaxed/simple;
-	bh=mp90SeCP9KbhX629jslIZNgj4/rZw4oDA8RUqTaIaXQ=;
+	s=arc-20240116; t=1751993538; c=relaxed/simple;
+	bh=xPkomWnSu9VHzzUjRBfRKDDvOetEmwr757+s9P9+lmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+f6urTenceIOo41YZO844rTmi6RO11SXongjKPL6ZU1/u6P4sXLdIcyEZVeRY/83xlIaueW6ur2wvFVEwX0TQBLsqGEDOyyC7JCkcVjxZW8R0yiEq76vw3e4Vhn3Qo+06lHPSFeroAgQJPjvDxnj32GGhD32PSFpXvoAqXpnME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PBHo5PJ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF22C4CEF5;
-	Tue,  8 Jul 2025 16:24:37 +0000 (UTC)
+	 MIME-Version; b=Uh/LrBw8gVnXG1NC/gf2u2b5d/jaN432HKn1AL7x9RKiCClDk24G/rj7eF8LBYMZ7J0CKHCqGrfza1GSbPkAbQrGzcxztkcePO9Jfaj8BrAWlH4HmfkArqEFK2s4g8rNrv5Ezt1ruDQuJ6DX7DhAHX3Xpih8L9zVDM9KgKJSzjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvljihpG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CDFC4CEED;
+	Tue,  8 Jul 2025 16:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751991878;
-	bh=mp90SeCP9KbhX629jslIZNgj4/rZw4oDA8RUqTaIaXQ=;
+	s=korg; t=1751993538;
+	bh=xPkomWnSu9VHzzUjRBfRKDDvOetEmwr757+s9P9+lmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PBHo5PJ3jo7z3u6LDmbXDsZBq1b9lPbYp3jZBS/ecc2IBJVc/xYEI7qAIatvzKdGJ
-	 ReChEvwbLXsva/bjDSTt+zDIxuoi/0Ap/zEByjaiysQH2EtWjHvDtZb1HUEddbOU+E
-	 CMqYYXIxy5HPcEq5ArSyS0IAIH08Nic1qEDzedrU=
+	b=gvljihpG2haBd0yb3hkI1/LId0M2LsYqMW+pQs2mzNkRllziU343kmfTHzBz38S4u
+	 ZwxjKAiT64RVUa5Va5u6QAugOKm3rRmFO6BsaGl6dtmvY3q7IFPSFzfyl30QBCcrEH
+	 VxxqYuXklyfgj0yZS+uL5uU9aokfN21ZNSuS3ylY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 004/132] virtio-net: ensure the received length does not exceed allocated size
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 078/178] nvmet: fix memory leak of bio integrity
 Date: Tue,  8 Jul 2025 18:21:55 +0200
-Message-ID: <20250708162230.892992060@linuxfoundation.org>
+Message-ID: <20250708162238.716720294@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Dmitry Bogdanov <d.bogdanov@yadro.com>
 
-commit 315dbdd7cdf6aa533829774caaf4d25f1fd20e73 upstream.
+[ Upstream commit 190f4c2c863af7cc5bb354b70e0805f06419c038 ]
 
-In xdp_linearize_page, when reading the following buffers from the ring,
-we forget to check the received length with the true allocate size. This
-can lead to an out-of-bound read. This commit adds that missing check.
+If nvmet receives commands with metadata there is a continuous memory
+leak of kmalloc-128 slab or more precisely bio->bi_integrity.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 4941d472bf95 ("virtio-net: do not reset during XDP set")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Link: https://patch.msgid.link/20250630144212.48471-2-minhquangbui99@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since commit bf4c89fc8797 ("block: don't call bio_uninit from bio_endio")
+each user of bio_init has to use bio_uninit as well. Otherwise the bio
+integrity is not getting free. Nvmet uses bio_init for inline bios.
+
+Uninit the inline bio to complete deallocation of integrity in bio.
+
+Fixes: bf4c89fc8797 ("block: don't call bio_uninit from bio_endio")
+Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c |   38 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+ drivers/nvme/target/nvmet.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -487,6 +487,26 @@ static unsigned int mergeable_ctx_to_tru
- 	return (unsigned long)mrg_ctx & ((1 << MRG_CTX_HEADER_SHIFT) - 1);
+diff --git a/drivers/nvme/target/nvmet.h b/drivers/nvme/target/nvmet.h
+index b6db8b74dc4ad..85e50e2981742 100644
+--- a/drivers/nvme/target/nvmet.h
++++ b/drivers/nvme/target/nvmet.h
+@@ -857,6 +857,8 @@ static inline void nvmet_req_bio_put(struct nvmet_req *req, struct bio *bio)
+ {
+ 	if (bio != &req->b.inline_bio)
+ 		bio_put(bio);
++	else
++		bio_uninit(bio);
  }
  
-+static int check_mergeable_len(struct net_device *dev, void *mrg_ctx,
-+			       unsigned int len)
-+{
-+	unsigned int headroom, tailroom, room, truesize;
-+
-+	truesize = mergeable_ctx_to_truesize(mrg_ctx);
-+	headroom = mergeable_ctx_to_headroom(mrg_ctx);
-+	tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
-+	room = SKB_DATA_ALIGN(headroom + tailroom);
-+
-+	if (len > truesize - room) {
-+		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
-+			 dev->name, len, (unsigned long)(truesize - room));
-+		DEV_STATS_INC(dev, rx_length_errors);
-+		return -1;
-+	}
-+
-+	return 0;
-+}
-+
- static struct sk_buff *virtnet_build_skb(void *buf, unsigned int buflen,
- 					 unsigned int headroom,
- 					 unsigned int len)
-@@ -1084,7 +1104,8 @@ static unsigned int virtnet_get_headroom
-  * across multiple buffers (num_buf > 1), and we make sure buffers
-  * have enough headroom.
-  */
--static struct page *xdp_linearize_page(struct receive_queue *rq,
-+static struct page *xdp_linearize_page(struct net_device *dev,
-+				       struct receive_queue *rq,
- 				       int *num_buf,
- 				       struct page *p,
- 				       int offset,
-@@ -1104,18 +1125,27 @@ static struct page *xdp_linearize_page(s
- 	memcpy(page_address(page) + page_off, page_address(p) + offset, *len);
- 	page_off += *len;
- 
-+	/* Only mergeable mode can go inside this while loop. In small mode,
-+	 * *num_buf == 1, so it cannot go inside.
-+	 */
- 	while (--*num_buf) {
- 		unsigned int buflen;
- 		void *buf;
-+		void *ctx;
- 		int off;
- 
--		buf = virtnet_rq_get_buf(rq, &buflen, NULL);
-+		buf = virtnet_rq_get_buf(rq, &buflen, &ctx);
- 		if (unlikely(!buf))
- 			goto err_buf;
- 
- 		p = virt_to_head_page(buf);
- 		off = buf - page_address(p);
- 
-+		if (check_mergeable_len(dev, ctx, buflen)) {
-+			put_page(p);
-+			goto err_buf;
-+		}
-+
- 		/* guard against a misconfigured or uncooperative backend that
- 		 * is sending packet larger than the MTU.
- 		 */
-@@ -1204,7 +1234,7 @@ static struct sk_buff *receive_small_xdp
- 		headroom = vi->hdr_len + header_offset;
- 		buflen = SKB_DATA_ALIGN(GOOD_PACKET_LEN + headroom) +
- 			SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
--		xdp_page = xdp_linearize_page(rq, &num_buf, page,
-+		xdp_page = xdp_linearize_page(dev, rq, &num_buf, page,
- 					      offset, header_offset,
- 					      &tlen);
- 		if (!xdp_page)
-@@ -1539,7 +1569,7 @@ static void *mergeable_xdp_get_buf(struc
- 	 */
- 	if (!xdp_prog->aux->xdp_has_frags) {
- 		/* linearize data for XDP */
--		xdp_page = xdp_linearize_page(rq, num_buf,
-+		xdp_page = xdp_linearize_page(vi->dev, rq, num_buf,
- 					      *page, offset,
- 					      VIRTIO_XDP_HEADROOM,
- 					      len);
+ #ifdef CONFIG_NVME_TARGET_TCP_TLS
+-- 
+2.39.5
+
 
 
 
