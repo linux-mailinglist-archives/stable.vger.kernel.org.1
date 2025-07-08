@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-161099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0681AFD361
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B636AFD3F9
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E32491C400CD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1FE17B4F09
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77967BE46;
-	Tue,  8 Jul 2025 16:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75EF22E540D;
+	Tue,  8 Jul 2025 17:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ij1lOOJT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDL5rfWM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316462E49AF;
-	Tue,  8 Jul 2025 16:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351497263B;
+	Tue,  8 Jul 2025 17:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993590; cv=none; b=CrqRhoJyCMLv9UY4P9E3WLGBEpw0hxSj7+wL2Jltl/JyH85vshUIk3ZDxBfd7G//gy4BHOuTOhNF1ZnIYkZL7nUBXvgU/uZfbbBb2wla5Xg3wlCo8ZmzU2gZkruy99L5ev96Lx9SQnRnB3k81ob0Z9gt6+YQz1lONf+lHRNP11M=
+	t=1751994104; cv=none; b=q7B7Z3YrXWXwxs+GpzUIyTrsN6Y1cKTZjQ7qXWbkqinQyaQFCZNC7YWTpUVWJF0wfO1WdIHlP1PtBXfrbdROCIk6EHwny0ualRBtHMx2C/uCTKaOGBVFGQnifH5Jge3bpfIh87yp1byaTgG23hKQJ7RTzBThSdjaYHDnpqkp2CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993590; c=relaxed/simple;
-	bh=0x5WOATSNiVVlI0fsA9qCGjJqPcmSf3jxf9EMRmia9g=;
+	s=arc-20240116; t=1751994104; c=relaxed/simple;
+	bh=vvyi3tLR3ihBsbFTY0ow0LDcGZAQtKytrFFW28AXG6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a55f8MiXS5Qsps3oBDIWf7wOKtrQi82PlJ8geZt//3d4DP4dz8gyRsUbP2XmJHS8L9LXtJD/3w5i6PcU4Efc1SPk98N0wGSdFLvzHU/Dur6xHXdwVHZ9g5h2Qr7h8LFE/qKyJ5SFG5ugETvMJL+TLgpVfUBkA7EvYuRNw9+SEFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ij1lOOJT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61169C4CEED;
-	Tue,  8 Jul 2025 16:53:09 +0000 (UTC)
+	 MIME-Version; b=fEOX4J+7egRPGmHu05PO9t8yQHKwqlFQJhY/Ee3m2amiQ4Obt7E/5r29vxirs71oaWVJLbG+yDErRshveu7ypxq3N/5S+mJfuAkGBhG8xJhD7NVHymn9J3FUBTTLq6F3PNPpvqB8njDsi5uVVY8b5Gzv0W3/xKGwvtxXhMtZtZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDL5rfWM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36A5C4CEF5;
+	Tue,  8 Jul 2025 17:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993589;
-	bh=0x5WOATSNiVVlI0fsA9qCGjJqPcmSf3jxf9EMRmia9g=;
+	s=korg; t=1751994104;
+	bh=vvyi3tLR3ihBsbFTY0ow0LDcGZAQtKytrFFW28AXG6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ij1lOOJTrbfvXujOui1Lhw6/iCxmsSdqkvclY7tzixC0MBZWUOYO+CYnuz67GHTa7
-	 GO/aq/BIFtPPxxilHVx+N9MCzmmDbjAxSH8t3DemPkznW36g0mCs0S6q8mCVSC6hXC
-	 ghvOb87JPtFg3OGX+YzZbHxFLm91SEWfKVq9nv5E=
+	b=GDL5rfWMHC+dlVyRnsylkjLZrlefmbgVJpUxgevfEQeSjQ7x8hcC7w0J3x4SUWdRU
+	 rKWdPm1mGJTpRLeTQJzgD9aYLrvzII7QVFsX0cOrqWmwnyGnLu0Xuw10SxXSoZBGc9
+	 FnHRtwFsoNxe0Cog9HSJeFeVrh+441o/yyrqfdqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tasos Sahanidis <tasos@tasossah.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Rob Clark <robdclark@chromium.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 126/178] ata: libata-acpi: Do not assume 40 wire cable if no devices are enabled
+Subject: [PATCH 5.15 126/160] drm/msm: Fix a fence leak in submit error path
 Date: Tue,  8 Jul 2025 18:22:43 +0200
-Message-ID: <20250708162239.874636515@linuxfoundation.org>
+Message-ID: <20250708162234.912744957@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,139 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tasos Sahanidis <tasos@tasossah.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 33877220b8641b4cde474a4229ea92c0e3637883 ]
+[ Upstream commit 5d319f75ccf7f0927425a7545aa1a22b3eedc189 ]
 
-On at least an ASRock 990FX Extreme 4 with a VIA VT6330, the devices
-have not yet been enabled by the first time ata_acpi_cbl_80wire() is
-called. This means that the ata_for_each_dev loop is never entered,
-and a 40 wire cable is assumed.
+In error paths, we could unref the submit without calling
+drm_sched_entity_push_job(), so msm_job_free() will never get
+called.  Since drm_sched_job_cleanup() will NULL out the
+s_fence, we can use that to detect this case.
 
-The VIA controller on this board does not report the cable in the PCI
-config space, thus having to fall back to ACPI even though no SATA
-bridge is present.
-
-The _GTM values are correctly reported by the firmware through ACPI,
-which has already set up faster transfer modes, but due to the above
-the controller is forced down to a maximum of UDMA/33.
-
-Resolve this by modifying ata_acpi_cbl_80wire() to directly return the
-cable type. First, an unknown cable is assumed which preserves the mode
-set by the firmware, and then on subsequent calls when the devices have
-been enabled, an 80 wire cable is correctly detected.
-
-Since the function now directly returns the cable type, it is renamed
-to ata_acpi_cbl_pata_type().
-
-Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
-Link: https://lore.kernel.org/r/20250519085945.1399466-1-tasos@tasossah.com
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Patchwork: https://patchwork.freedesktop.org/patch/653584/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-acpi.c | 24 ++++++++++++++++--------
- drivers/ata/pata_via.c    |  6 ++----
- include/linux/libata.h    |  7 +++----
- 3 files changed, 21 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/msm/msm_gem_submit.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/ata/libata-acpi.c b/drivers/ata/libata-acpi.c
-index b7f0bf7955213..f2140fc06ba0f 100644
---- a/drivers/ata/libata-acpi.c
-+++ b/drivers/ata/libata-acpi.c
-@@ -514,15 +514,19 @@ unsigned int ata_acpi_gtm_xfermask(struct ata_device *dev,
- EXPORT_SYMBOL_GPL(ata_acpi_gtm_xfermask);
+diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
+index fc2fb1019ea1c..2ffb2ca88ffe1 100644
+--- a/drivers/gpu/drm/msm/msm_gem_submit.c
++++ b/drivers/gpu/drm/msm/msm_gem_submit.c
+@@ -76,6 +76,15 @@ void __msm_gem_submit_destroy(struct kref *kref)
+ 	struct dma_fence *fence;
+ 	unsigned i;
  
- /**
-- * ata_acpi_cbl_80wire		-	Check for 80 wire cable
-+ * ata_acpi_cbl_pata_type - Return PATA cable type
-  * @ap: Port to check
-- * @gtm: GTM data to use
-  *
-- * Return 1 if the @gtm indicates the BIOS selected an 80wire mode.
-+ * Return ATA_CBL_PATA* according to the transfer mode selected by BIOS
-  */
--int ata_acpi_cbl_80wire(struct ata_port *ap, const struct ata_acpi_gtm *gtm)
-+int ata_acpi_cbl_pata_type(struct ata_port *ap)
- {
- 	struct ata_device *dev;
-+	int ret = ATA_CBL_PATA_UNK;
-+	const struct ata_acpi_gtm *gtm = ata_acpi_init_gtm(ap);
++	/*
++	 * In error paths, we could unref the submit without calling
++	 * drm_sched_entity_push_job(), so msm_job_free() will never
++	 * get called.  Since drm_sched_job_cleanup() will NULL out
++	 * s_fence, we can use that to detect this case.
++	 */
++	if (submit->base.s_fence)
++		drm_sched_job_cleanup(&submit->base);
 +
-+	if (!gtm)
-+		return ATA_CBL_PATA40;
- 
- 	ata_for_each_dev(dev, &ap->link, ENABLED) {
- 		unsigned int xfer_mask, udma_mask;
-@@ -530,13 +534,17 @@ int ata_acpi_cbl_80wire(struct ata_port *ap, const struct ata_acpi_gtm *gtm)
- 		xfer_mask = ata_acpi_gtm_xfermask(dev, gtm);
- 		ata_unpack_xfermask(xfer_mask, NULL, NULL, &udma_mask);
- 
--		if (udma_mask & ~ATA_UDMA_MASK_40C)
--			return 1;
-+		ret = ATA_CBL_PATA40;
-+
-+		if (udma_mask & ~ATA_UDMA_MASK_40C) {
-+			ret = ATA_CBL_PATA80;
-+			break;
-+		}
- 	}
- 
--	return 0;
-+	return ret;
- }
--EXPORT_SYMBOL_GPL(ata_acpi_cbl_80wire);
-+EXPORT_SYMBOL_GPL(ata_acpi_cbl_pata_type);
- 
- static void ata_acpi_gtf_to_tf(struct ata_device *dev,
- 			       const struct ata_acpi_gtf *gtf,
-diff --git a/drivers/ata/pata_via.c b/drivers/ata/pata_via.c
-index d82728a01832b..bb80e7800dcbe 100644
---- a/drivers/ata/pata_via.c
-+++ b/drivers/ata/pata_via.c
-@@ -201,11 +201,9 @@ static int via_cable_detect(struct ata_port *ap) {
- 	   two drives */
- 	if (ata66 & (0x10100000 >> (16 * ap->port_no)))
- 		return ATA_CBL_PATA80;
-+
- 	/* Check with ACPI so we can spot BIOS reported SATA bridges */
--	if (ata_acpi_init_gtm(ap) &&
--	    ata_acpi_cbl_80wire(ap, ata_acpi_init_gtm(ap)))
--		return ATA_CBL_PATA80;
--	return ATA_CBL_PATA40;
-+	return ata_acpi_cbl_pata_type(ap);
- }
- 
- static int via_pre_reset(struct ata_link *link, unsigned long deadline)
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index e5695998acb02..ec3b0c9c2a8cf 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -1363,7 +1363,7 @@ int ata_acpi_stm(struct ata_port *ap, const struct ata_acpi_gtm *stm);
- int ata_acpi_gtm(struct ata_port *ap, struct ata_acpi_gtm *stm);
- unsigned int ata_acpi_gtm_xfermask(struct ata_device *dev,
- 				   const struct ata_acpi_gtm *gtm);
--int ata_acpi_cbl_80wire(struct ata_port *ap, const struct ata_acpi_gtm *gtm);
-+int ata_acpi_cbl_pata_type(struct ata_port *ap);
- #else
- static inline const struct ata_acpi_gtm *ata_acpi_init_gtm(struct ata_port *ap)
- {
-@@ -1388,10 +1388,9 @@ static inline unsigned int ata_acpi_gtm_xfermask(struct ata_device *dev,
- 	return 0;
- }
- 
--static inline int ata_acpi_cbl_80wire(struct ata_port *ap,
--				      const struct ata_acpi_gtm *gtm)
-+static inline int ata_acpi_cbl_pata_type(struct ata_port *ap)
- {
--	return 0;
-+	return ATA_CBL_PATA40;
- }
- #endif
- 
+ 	if (submit->fence_id) {
+ 		mutex_lock(&submit->queue->lock);
+ 		idr_remove(&submit->queue->fence_idr, submit->fence_id);
 -- 
 2.39.5
 
