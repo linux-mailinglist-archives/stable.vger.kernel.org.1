@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-161046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF23AFD31F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 132C5AFD21F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEE6117647A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:50:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC6E41896514
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23FE2DAFA3;
-	Tue,  8 Jul 2025 16:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFC82DC34C;
+	Tue,  8 Jul 2025 16:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxx06poi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0D3/JPY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F658F5E;
-	Tue,  8 Jul 2025 16:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6072E5B09;
+	Tue,  8 Jul 2025 16:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993440; cv=none; b=Verz2bGtGovHYK6PV5WLX09qtwKPWqtk6h+WG6afwv5/qXgA2ZBi6gzDgrgTKmx6jvQaOtn6fk4ROMKyo6s8Xwc4GHUfX+bghH5P/SPdwqugyX8X+iRxBPd8V/hjcN+leAK26ERmnvpCiEhZLjjdPgAlizlHnk9MaoLi7GcugD4=
+	t=1751992804; cv=none; b=p/QFXTHa1ttd0nPe5SeVxw8FmUO/9FK6FhADRIy99PxzZQiKW8WO/x9BfncvM4SON35W2DVyMAXGRTCpH4F9/42CXNrSRnZOFefjT1X/yh+/qu9k15c7TqP/mopw6GPjly24oSESrZUUs6bliiHOZDip6rjKF4/EHkh+hMf3NSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993440; c=relaxed/simple;
-	bh=uhkaudExw0j/g8N1ZI/cqvnv5EucMvaTGIsItMIuH/w=;
+	s=arc-20240116; t=1751992804; c=relaxed/simple;
+	bh=XonC8lEnpBBZTipyu5EU4xEnPA3AzMAQftz0RO1Uy0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AWCdF3S/jYU0/oF/a0dUzZcdavr46LnopHc5XlwctRz5IBOucx+0Dtx37Z9qVE957J848I7Ydj9Xr9Eu9cdCDTH2SxJGGJPHxAlozrfd/TiNj33B9jsrPGhEix8eVS+0glFa3Mtne7xkLcS8SP+Ppr4OrWcKwXw9ybj+q/Wjrlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxx06poi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF98C4CEED;
-	Tue,  8 Jul 2025 16:50:39 +0000 (UTC)
+	 MIME-Version; b=JTBATTw0YjA07ODVfwrwZfx4wfdZen+rB5luk447qNZZWWpIc5of2ONCYD2TkgOFMLgZ5k2BnX7TDk3/j/PWTWpLN8ZWm6p3bRkmoKanLSZVh5J4tOXG77WynJ33+rAZr3SrkM4EvDj9VblwzLEmiet6VVUqKo/loQ6363F+3Tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0D3/JPY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543B3C4CEED;
+	Tue,  8 Jul 2025 16:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993440;
-	bh=uhkaudExw0j/g8N1ZI/cqvnv5EucMvaTGIsItMIuH/w=;
+	s=korg; t=1751992804;
+	bh=XonC8lEnpBBZTipyu5EU4xEnPA3AzMAQftz0RO1Uy0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yxx06poiRsiIq+1UU68h56mFlIF/3Xr4VuV1/GO9y5w7WXDy90n9IsErGPVLO7XFH
-	 WQwVVEWQMmsQqZ6DWha3KbegMR3IcOj8/+IA2ynFSlCVU0CVBzqudq0g96FyC6xHtM
-	 LcKcIzePrGxdCULbr8HNuVZFfb8/90J3w/Z8Nlxg=
+	b=G0D3/JPYl7BxUhW62wuYwwhc9/R9f/NIIOXFMjt5HZ4m5yGwM5KxrSFsYB/INf/N4
+	 Jm8m02zU52zQwx+thYJYn3NPVzvipKJmKJcKPPYbX1Wqvy8zIuWnPTmp9kKXHxYDFa
+	 EHr7jHQZIgLVCC4ft5XhW+zHkNnx6gy4OJ6CJvDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 045/178] module: Provide EXPORT_SYMBOL_GPL_FOR_MODULES() helper
+Subject: [PATCH 6.12 086/232] amd-xgbe: align CL37 AN sequence as per databook
 Date: Tue,  8 Jul 2025 18:21:22 +0200
-Message-ID: <20250708162237.857850056@linuxfoundation.org>
+Message-ID: <20250708162243.700048971@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit 707f853d7fa3ce323a6875487890c213e34d81a0 ]
+[ Upstream commit 42fd432fe6d320323215ebdf4de4d0d7e56e6792 ]
 
-Helper macro to more easily limit the export of a symbol to a given
-list of modules.
+Update the Clause 37 Auto-Negotiation implementation to properly align
+with the PCS hardware specifications:
+- Fix incorrect bit settings in Link Status and Link Duplex fields
+- Implement missing sequence steps 2 and 7
 
-Eg:
+These changes ensure CL37 auto-negotiation protocol follows the exact
+sequence patterns as specified in the hardware databook.
 
-  EXPORT_SYMBOL_GPL_FOR_MODULES(preempt_notifier_inc, "kvm");
-
-will limit the use of said function to kvm.ko, any other module trying
-to use this symbol will refure to load (and get modpost build
-failures).
-
-Requested-by: Masahiro Yamada <masahiroy@kernel.org>
-Requested-by: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Peter Zijlstra <peterz@infradead.org>
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Stable-dep-of: cbe4134ea4bc ("fs: export anon_inode_make_secure_inode() and fix secretmem LSM bypass")
+Fixes: 1bf40ada6290 ("amd-xgbe: Add support for clause 37 auto-negotiation")
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Link: https://patch.msgid.link/20250630192636.3838291-1-Raju.Rangoju@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/core-api/symbol-namespaces.rst | 22 ++++++++++++++++++++
- include/linux/export.h                       | 12 +++++++++--
- 2 files changed, 32 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-common.h | 2 ++
+ drivers/net/ethernet/amd/xgbe/xgbe-mdio.c   | 9 +++++++++
+ drivers/net/ethernet/amd/xgbe/xgbe.h        | 4 ++--
+ 3 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/core-api/symbol-namespaces.rst b/Documentation/core-api/symbol-namespaces.rst
-index 06f766a6aab24..c6f59c5e25648 100644
---- a/Documentation/core-api/symbol-namespaces.rst
-+++ b/Documentation/core-api/symbol-namespaces.rst
-@@ -28,6 +28,9 @@ kernel. As of today, modules that make use of symbols exported into namespaces,
- are required to import the namespace. Otherwise the kernel will, depending on
- its configuration, reject loading the module or warn about a missing import.
- 
-+Additionally, it is possible to put symbols into a module namespace, strictly
-+limiting which modules are allowed to use these symbols.
-+
- 2. How to define Symbol Namespaces
- ==================================
- 
-@@ -83,6 +86,22 @@ unit as preprocessor statement. The above example would then read::
- within the corresponding compilation unit before the #include for
- <linux/export.h>. Typically it's placed before the first #include statement.
- 
-+2.3 Using the EXPORT_SYMBOL_GPL_FOR_MODULES() macro
-+===================================================
-+
-+Symbols exported using this macro are put into a module namespace. This
-+namespace cannot be imported.
-+
-+The macro takes a comma separated list of module names, allowing only those
-+modules to access this symbol. Simple tail-globs are supported.
-+
-+For example:
-+
-+  EXPORT_SYMBOL_GPL_FOR_MODULES(preempt_notifier_inc, "kvm,kvm-*")
-+
-+will limit usage of this symbol to modules whoes name matches the given
-+patterns.
-+
- 3. How to use Symbols exported in Namespaces
- ============================================
- 
-@@ -154,3 +173,6 @@ in-tree modules::
- You can also run nsdeps for external module builds. A typical usage is::
- 
- 	$ make -C <path_to_kernel_src> M=$PWD nsdeps
-+
-+Note: it will happily generate an import statement for the module namespace;
-+which will not work and generates build and runtime failures.
-diff --git a/include/linux/export.h b/include/linux/export.h
-index a8c23d945634b..f35d03b4113b1 100644
---- a/include/linux/export.h
-+++ b/include/linux/export.h
-@@ -24,11 +24,17 @@
- 	.long sym
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-common.h b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
+index 3b70f67376331..aa25a8a0a106f 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-common.h
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
+@@ -1373,6 +1373,8 @@
+ #define MDIO_VEND2_CTRL1_SS13		BIT(13)
  #endif
  
--#define ___EXPORT_SYMBOL(sym, license, ns)		\
-+/*
-+ * LLVM integrated assembler cam merge adjacent string literals (like
-+ * C and GNU-as) passed to '.ascii', but not to '.asciz' and chokes on:
-+ *
-+ *   .asciz "MODULE_" "kvm" ;
-+ */
-+#define ___EXPORT_SYMBOL(sym, license, ns...)		\
- 	.section ".export_symbol","a"		ASM_NL	\
- 	__export_symbol_##sym:			ASM_NL	\
- 		.asciz license			ASM_NL	\
--		.asciz ns			ASM_NL	\
-+		.ascii ns "\0"			ASM_NL	\
- 		__EXPORT_SYMBOL_REF(sym)	ASM_NL	\
- 	.previous
- 
-@@ -85,4 +91,6 @@
- #define EXPORT_SYMBOL_NS(sym, ns)	__EXPORT_SYMBOL(sym, "", ns)
- #define EXPORT_SYMBOL_NS_GPL(sym, ns)	__EXPORT_SYMBOL(sym, "GPL", ns)
- 
-+#define EXPORT_SYMBOL_GPL_FOR_MODULES(sym, mods) __EXPORT_SYMBOL(sym, "GPL", "module:" mods)
++#define XGBE_VEND2_MAC_AUTO_SW		BIT(9)
 +
- #endif /* _LINUX_EXPORT_H */
+ /* MDIO mask values */
+ #define XGBE_AN_CL73_INT_CMPLT		BIT(0)
+ #define XGBE_AN_CL73_INC_LINK		BIT(1)
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+index 07f4f3418d018..3316c719f9f8c 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+@@ -375,6 +375,10 @@ static void xgbe_an37_set(struct xgbe_prv_data *pdata, bool enable,
+ 		reg |= MDIO_VEND2_CTRL1_AN_RESTART;
+ 
+ 	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_CTRL1, reg);
++
++	reg = XMDIO_READ(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL);
++	reg |= XGBE_VEND2_MAC_AUTO_SW;
++	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL, reg);
+ }
+ 
+ static void xgbe_an37_restart(struct xgbe_prv_data *pdata)
+@@ -1003,6 +1007,11 @@ static void xgbe_an37_init(struct xgbe_prv_data *pdata)
+ 
+ 	netif_dbg(pdata, link, pdata->netdev, "CL37 AN (%s) initialized\n",
+ 		  (pdata->an_mode == XGBE_AN_MODE_CL37) ? "BaseX" : "SGMII");
++
++	reg = XMDIO_READ(pdata, MDIO_MMD_AN, MDIO_CTRL1);
++	reg &= ~MDIO_AN_CTRL1_ENABLE;
++	XMDIO_WRITE(pdata, MDIO_MMD_AN, MDIO_CTRL1, reg);
++
+ }
+ 
+ static void xgbe_an73_init(struct xgbe_prv_data *pdata)
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
+index ed5d43c16d0e2..7526a0906b391 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe.h
++++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
+@@ -292,12 +292,12 @@
+ #define XGBE_LINK_TIMEOUT		5
+ #define XGBE_KR_TRAINING_WAIT_ITER	50
+ 
+-#define XGBE_SGMII_AN_LINK_STATUS	BIT(1)
++#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(1)
+ #define XGBE_SGMII_AN_LINK_SPEED	(BIT(2) | BIT(3))
+ #define XGBE_SGMII_AN_LINK_SPEED_10	0x00
+ #define XGBE_SGMII_AN_LINK_SPEED_100	0x04
+ #define XGBE_SGMII_AN_LINK_SPEED_1000	0x08
+-#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(4)
++#define XGBE_SGMII_AN_LINK_STATUS	BIT(4)
+ 
+ /* ECC correctable error notification window (seconds) */
+ #define XGBE_ECC_LIMIT			60
 -- 
 2.39.5
 
