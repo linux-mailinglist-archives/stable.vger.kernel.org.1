@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-161239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF6CAFD40F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B068AFD332
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:55:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26D735A01D7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 541EC5852C2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F632E5B01;
-	Tue,  8 Jul 2025 16:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0292E5B0D;
+	Tue,  8 Jul 2025 16:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0B0G3YRf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzHNnP7j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BB92E54AF;
-	Tue,  8 Jul 2025 16:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BCD52E5B0A;
+	Tue,  8 Jul 2025 16:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993998; cv=none; b=dpQKwU6LyQMtTQqTqH7vm1c17+jjSu2Dnx2UsmlS2pmnyU4V+NC/lpzdXKywHS+NISqB8MXxBu76nnr+6iY9k5Ii2h5Y4yFNxOila3yhW9sRLPhZzsq8ZEpQk/AaqrLN8J8appGDFXzoBstEpc/v9fIofxJ+POidXY6UJxWaaKg=
+	t=1751993487; cv=none; b=jSPyho1gQqOx3k29jT9RGEn9tpFR7gIN3AnuPypfShX5OG+y4CS+rFl83p6cJS4ffsa/EKbUdEkcd+wnDi/61+NsDvrG3tJuVoXDZPrc//kVOzvc2Zn6fwRxyvRumvh6aOkwsZqycbOS8h12i3yVIOCd/kU8lpgscjhWBV8tdro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993998; c=relaxed/simple;
-	bh=qm7u/YJlranPD+Ad14LqIKYvvY0TGuOPv/wwDRYOcKg=;
+	s=arc-20240116; t=1751993487; c=relaxed/simple;
+	bh=MzOLy/WYWVgdDE6+UoBuPuL8AI65r5eQZkasabg2JNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fK1YNtUvGL61eJ2lOnSJkpkOJGS15Ok+WgRNvD7GZWQamVRfGSZSTXO9Xs/FZEDBYiP0klUU0+9gghDSE341uTiXQauNFY3n2GfuzkkDWbRyr6T033GxVTlIPa8/t/Vm5qRfhxqBx1s4PKcUp1DC6OwjGGbHg0wPvaejeYQLNd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0B0G3YRf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA21C4CEF5;
-	Tue,  8 Jul 2025 16:59:57 +0000 (UTC)
+	 MIME-Version; b=B+G1z6Zg3ksIr6jLEUUnPvgzzShsGFORdF4UH4O+p5jR7vKC0HrHvYPq4kBlGeMRid0WF+/DSe+3FWvvEqjjAD/km5ITkHPYh9ReZtG/1/5xwk8jjH3HEk3QPQrW4elAKPM333cgCT17gqbwD3dIYdP27rLAGieIBQTCerhO6GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzHNnP7j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79942C4CEFB;
+	Tue,  8 Jul 2025 16:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993998;
-	bh=qm7u/YJlranPD+Ad14LqIKYvvY0TGuOPv/wwDRYOcKg=;
+	s=korg; t=1751993487;
+	bh=MzOLy/WYWVgdDE6+UoBuPuL8AI65r5eQZkasabg2JNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0B0G3YRfM0Y8SoTuFgo5ItRT/tROIhYO4S08goP9swyne2dCVMrYTgUzp7JWgoWDk
-	 kr59KIe/bEAhKtWXJV06yIzr81XeGlby8Z3g5uS++aiZnK01rXwiP+hRJh3uTMb3IJ
-	 KfadyS9l0ofN1LeP0H4erigIy7y4UoSSYwCEIzHA=
+	b=IzHNnP7jmNsdTQp3Ys+GY4g91xZfM1BLcHsAzuW1Yp1nxSeCMASKcCA+vlo6V4zuV
+	 3//dqBr/JoK7rqrmko0X1xCV9fk8ZpLJg2W0KgV8SCNBuoNQy9duSYcXvpY2VbJ6XP
+	 RU2VBq1swGUrHUsZiq4CVxDLvAkgU3zQ1B5/dJNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 090/160] media: uvcvideo: Rollback non processed entities on error
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 090/178] drm/i915/gt: Fix timeline left held on VMA alloc error
 Date: Tue,  8 Jul 2025 18:22:07 +0200
-Message-ID: <20250708162234.002852156@linuxfoundation.org>
+Message-ID: <20250708162239.017284192@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +69,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-commit a70705d3c020d0d5c3ab6a5cc93e011ac35e7d48 upstream.
+[ Upstream commit a5aa7bc1fca78c7fa127d9e33aa94a0c9066c1d6 ]
 
-If we fail to commit an entity, we need to restore the
-UVC_CTRL_DATA_BACKUP for the other uncommitted entities. Otherwise the
-control cache and the device would be out of sync.
+The following error has been reported sporadically by CI when a test
+unbinds the i915 driver on a ring submission platform:
 
-Cc: stable@kernel.org
-Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Closes: https://lore.kernel.org/linux-media/fe845e04-9fde-46ee-9763-a6f00867929a@redhat.com/
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250224-uvc-data-backup-v2-3-de993ed9823b@chromium.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+<4> [239.330153] ------------[ cut here ]------------
+<4> [239.330166] i915 0000:00:02.0: [drm] drm_WARN_ON(dev_priv->mm.shrink_count)
+<4> [239.330196] WARNING: CPU: 1 PID: 18570 at drivers/gpu/drm/i915/i915_gem.c:1309 i915_gem_cleanup_early+0x13e/0x150 [i915]
+...
+<4> [239.330640] RIP: 0010:i915_gem_cleanup_early+0x13e/0x150 [i915]
+...
+<4> [239.330942] Call Trace:
+<4> [239.330944]  <TASK>
+<4> [239.330949]  i915_driver_late_release+0x2b/0xa0 [i915]
+<4> [239.331202]  i915_driver_release+0x86/0xa0 [i915]
+<4> [239.331482]  devm_drm_dev_init_release+0x61/0x90
+<4> [239.331494]  devm_action_release+0x15/0x30
+<4> [239.331504]  release_nodes+0x3d/0x120
+<4> [239.331517]  devres_release_all+0x96/0xd0
+<4> [239.331533]  device_unbind_cleanup+0x12/0x80
+<4> [239.331543]  device_release_driver_internal+0x23a/0x280
+<4> [239.331550]  ? bus_find_device+0xa5/0xe0
+<4> [239.331563]  device_driver_detach+0x14/0x20
+...
+<4> [357.719679] ---[ end trace 0000000000000000 ]---
+
+If the test also unloads the i915 module then that's followed with:
+
+<3> [357.787478] =============================================================================
+<3> [357.788006] BUG i915_vma (Tainted: G     U  W        N ): Objects remaining on __kmem_cache_shutdown()
+<3> [357.788031] -----------------------------------------------------------------------------
+<3> [357.788204] Object 0xffff888109e7f480 @offset=29824
+<3> [357.788670] Allocated in i915_vma_instance+0xee/0xc10 [i915] age=292729 cpu=4 pid=2244
+<4> [357.788994]  i915_vma_instance+0xee/0xc10 [i915]
+<4> [357.789290]  init_status_page+0x7b/0x420 [i915]
+<4> [357.789532]  intel_engines_init+0x1d8/0x980 [i915]
+<4> [357.789772]  intel_gt_init+0x175/0x450 [i915]
+<4> [357.790014]  i915_gem_init+0x113/0x340 [i915]
+<4> [357.790281]  i915_driver_probe+0x847/0xed0 [i915]
+<4> [357.790504]  i915_pci_probe+0xe6/0x220 [i915]
+...
+
+Closer analysis of CI results history has revealed a dependency of the
+error on a few IGT tests, namely:
+- igt@api_intel_allocator@fork-simple-stress-signal,
+- igt@api_intel_allocator@two-level-inception-interruptible,
+- igt@gem_linear_blits@interruptible,
+- igt@prime_mmap_coherency@ioctl-errors,
+which invisibly trigger the issue, then exhibited with first driver unbind
+attempt.
+
+All of the above tests perform actions which are actively interrupted with
+signals.  Further debugging has allowed to narrow that scope down to
+DRM_IOCTL_I915_GEM_EXECBUFFER2, and ring_context_alloc(), specific to ring
+submission, in particular.
+
+If successful then that function, or its execlists or GuC submission
+equivalent, is supposed to be called only once per GEM context engine,
+followed by raise of a flag that prevents the function from being called
+again.  The function is expected to unwind its internal errors itself, so
+it may be safely called once more after it returns an error.
+
+In case of ring submission, the function first gets a reference to the
+engine's legacy timeline and then allocates a VMA.  If the VMA allocation
+fails, e.g. when i915_vma_instance() called from inside is interrupted
+with a signal, then ring_context_alloc() fails, leaving the timeline held
+referenced.  On next I915_GEM_EXECBUFFER2 IOCTL, another reference to the
+timeline is got, and only that last one is put on successful completion.
+As a consequence, the legacy timeline, with its underlying engine status
+page's VMA object, is still held and not released on driver unbind.
+
+Get the legacy timeline only after successful allocation of the context
+engine's VMA.
+
+v2: Add a note on other submission methods (Krzysztof Karas):
+    Both execlists and GuC submission use lrc_alloc() which seems free
+    from a similar issue.
+
+Fixes: 75d0a7f31eec ("drm/i915: Lift timeline into intel_context")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Reviewed-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Reviewed-by: Nitin Gote <nitin.r.gote@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/20250611104352.1014011-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit cc43422b3cc79eacff4c5a8ba0d224688ca9dd4f)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |   40 +++++++++++++++++++++++++--------------
- 1 file changed, 26 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_ring_submission.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1697,7 +1697,7 @@ static int uvc_ctrl_commit_entity(struct
- 	unsigned int processed_ctrls = 0;
- 	struct uvc_control *ctrl;
- 	unsigned int i;
--	int ret;
-+	int ret = 0;
+diff --git a/drivers/gpu/drm/i915/gt/intel_ring_submission.c b/drivers/gpu/drm/i915/gt/intel_ring_submission.c
+index 6e9977b2d1802..44a4b6723582f 100644
+--- a/drivers/gpu/drm/i915/gt/intel_ring_submission.c
++++ b/drivers/gpu/drm/i915/gt/intel_ring_submission.c
+@@ -604,7 +604,6 @@ static int ring_context_alloc(struct intel_context *ce)
+ 	/* One ringbuffer to rule them all */
+ 	GEM_BUG_ON(!engine->legacy.ring);
+ 	ce->ring = engine->legacy.ring;
+-	ce->timeline = intel_timeline_get(engine->legacy.timeline);
  
- 	if (entity == NULL)
- 		return 0;
-@@ -1725,8 +1725,6 @@ static int uvc_ctrl_commit_entity(struct
- 				dev->intfnum, ctrl->info.selector,
- 				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
- 				ctrl->info.size);
--		else
--			ret = 0;
- 
- 		if (!ret)
- 			processed_ctrls++;
-@@ -1738,17 +1736,24 @@ static int uvc_ctrl_commit_entity(struct
- 
- 		ctrl->dirty = 0;
- 
--		if (ret < 0) {
-+		if (!rollback && handle && !ret &&
-+		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
-+			uvc_ctrl_set_handle(handle, ctrl, handle);
-+
-+		if (ret < 0 && !rollback) {
- 			if (err_ctrl)
- 				*err_ctrl = ctrl;
--			return ret;
-+			/*
-+			 * If we fail to set a control, we need to rollback
-+			 * the next ones.
-+			 */
-+			rollback = 1;
- 		}
--
--		if (!rollback && handle &&
--		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
--			uvc_ctrl_set_handle(handle, ctrl, handle);
+ 	GEM_BUG_ON(ce->state);
+ 	if (engine->context_size) {
+@@ -617,6 +616,8 @@ static int ring_context_alloc(struct intel_context *ce)
+ 		ce->state = vma;
  	}
  
-+	if (ret)
-+		return ret;
++	ce->timeline = intel_timeline_get(engine->legacy.timeline);
 +
- 	return processed_ctrls;
+ 	return 0;
  }
  
-@@ -1779,7 +1784,8 @@ int __uvc_ctrl_commit(struct uvc_fh *han
- 	struct uvc_video_chain *chain = handle->chain;
- 	struct uvc_control *err_ctrl;
- 	struct uvc_entity *entity;
--	int ret = 0;
-+	int ret_out = 0;
-+	int ret;
- 
- 	/* Find the control. */
- 	list_for_each_entry(entity, &chain->entities, chain) {
-@@ -1790,17 +1796,23 @@ int __uvc_ctrl_commit(struct uvc_fh *han
- 				ctrls->error_idx =
- 					uvc_ctrl_find_ctrl_idx(entity, ctrls,
- 							       err_ctrl);
--			goto done;
-+			/*
-+			 * When we fail to commit an entity, we need to
-+			 * restore the UVC_CTRL_DATA_BACKUP for all the
-+			 * controls in the other entities, otherwise our cache
-+			 * and the hardware will be out of sync.
-+			 */
-+			rollback = 1;
-+
-+			ret_out = ret;
- 		} else if (ret > 0 && !rollback) {
- 			uvc_ctrl_send_events(handle, entity,
- 					     ctrls->controls, ctrls->count);
- 		}
- 	}
- 
--	ret = 0;
--done:
- 	mutex_unlock(&chain->ctrl_mutex);
--	return ret;
-+	return ret_out;
- }
- 
- int uvc_ctrl_get(struct uvc_video_chain *chain,
+-- 
+2.39.5
+
 
 
 
