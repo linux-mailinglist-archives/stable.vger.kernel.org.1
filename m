@@ -1,410 +1,184 @@
-Return-Path: <stable+bounces-160518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A74AFCF64
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:38:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54BC9AFCF81
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:42:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31F073AE6B8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 15:36:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2D551C202BE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 15:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9722E2647;
-	Tue,  8 Jul 2025 15:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F17A2E1749;
+	Tue,  8 Jul 2025 15:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nt4VRMnN"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t9WpH0sk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9E51D5150;
-	Tue,  8 Jul 2025 15:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE0F2E11C3
+	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 15:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751989006; cv=none; b=optLWydifMIVXeBR8CLWMAJC6szI9Cbfn3j/zEPrs22o/W0mw7hdjg+ZzG7vLyeKGSDOkk0uwXA4UknAp3/hc98dCZu5tGx56ZubNgs1huTkCOkLhLUm8k3Q2GFZt6tDgehsmCWVE7ME0nPCA1NHvalXDhpRimeaf+tcSXtlOo8=
+	t=1751989201; cv=none; b=XLjY2VtapLiWrK18BLHUSWk2EcZkSL2FHwnVmIvGAbLZB0gcy4opz4xmB1WnY831lqHHmnhfEbHFvFW583V5attR4wGbDge23CRRnSy4+xQPeNQVu8cyknxgTs/5jkX3Nw13aAkBwTR5ZiRuJS8D/ZNJQC4l6VrzmsGc77e0pkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751989006; c=relaxed/simple;
-	bh=f+0odlMoAiURP5XEYb36zKqxbGUvP08jEOpDSz1Yw5E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kkbpf4SstG1ZTetGPEx3UIlG3XmNZT4qNhk3g5yiZ3eKGUJEovLneLoXJv7bWKgOIceygRMiYooZVWWuyhBLra2YsZZ+UK7JlSwvA+5YLMxLP6o9odOYJGsG75PK5sEmsrewdPvS3H974C4RVg8kqm8tM/KEeoS/wB+804MbpV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nt4VRMnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40EE7C4CEEF;
-	Tue,  8 Jul 2025 15:36:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751989005;
-	bh=f+0odlMoAiURP5XEYb36zKqxbGUvP08jEOpDSz1Yw5E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nt4VRMnNiPXhqlmsy03wyMreCJZavdLg3sHP3F73IJObEdt8jdc1Pqf07+TNV0/GT
-	 YBkFuYFSXayMtW+M4fS8CFR3xizhavUgXkUspae29GWSV/ewtgA2uTt9ntZxArMZD5
-	 /DvpWC1KwZOx2bTbtM0fWJwI13nTyjwbaFGmCtKw=
-Date: Tue, 8 Jul 2025 17:36:42 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Christian Eggers <ceggers@arri.de>
-Cc: stable@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: Re: [PATCH 6.6.y] Bluetooth: HCI: Set extended advertising data
- synchronously
-Message-ID: <2025070807-dimple-radish-723b@gregkh>
-References: <2025070625-wafer-speed-20c1@gregkh>
- <20250707081306.22624-2-ceggers@arri.de>
+	s=arc-20240116; t=1751989201; c=relaxed/simple;
+	bh=/XygNlSmc7jYkBz+SlTl7nsjnFXuRu+7W/+6MamxwAM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d7yW1F2oBvVlagvPQb2DUcJhKPE9Tdv9kdZJFzKJvsKsh7zkqYk51GyjBYI2kQHhIAxX0ZrwTtObi2933HLogSZvXPsmGeJjJQJQHN+39S4yCmun3rzl4235o9xcEQDkbeaVvTfBtvnBiUlu3g6vgP0RqyTAEQYc/Ei6MP3rULE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t9WpH0sk; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4a7f5abac0aso320421cf.0
+        for <stable@vger.kernel.org>; Tue, 08 Jul 2025 08:39:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1751989198; x=1752593998; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8NLf7r1SqdhHC1Id+7p34mmn58G9MGm6E8awmU3gkNU=;
+        b=t9WpH0skWYclKX5Yl1UOgukM5GgEpEvU3S/yqVps/ONLUw3/rxS3Od87fWbtPye8Qm
+         9BHvthwfLNKxsBdQR+PVk3vfX22LPKexmmZPzogFKEc9JOzvi0Esy3DwZEmGyYBhyprh
+         /m9r+4oFUzZsyJUxocchVvvEZxcQaFZFnI7rQDsD4EReeRpKvdydLFFGIs7XMW+eXZ44
+         btwwv9AiF4deVZw1VNMtxp9Ik3fAn79ey9twhwquz7utyullspAWH11aWn8OoiJ9o4mK
+         UgIcdIUW3IaXMsgtKPoAqnWKrtTfMAg+IwnxkTOWC7VN9hTL8ZaAZMV9cCT1T7DWZ0wo
+         CylQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751989198; x=1752593998;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8NLf7r1SqdhHC1Id+7p34mmn58G9MGm6E8awmU3gkNU=;
+        b=n9LOk5QlXIOA6cc2uV0iizi9C2dpcKAv8pfUCsnXnqDjm0fWHxSK/CuczvDE8eUiyc
+         Qoi9zDrTGWeRRAuKxES/SKMGqGFOKYelFHffOFNbJUpJE0PaGXFLh4+PYZcAuspc0osV
+         GK13cj/h5xBOLFIZ94VZoZHJduNCp4uksXO8pnZm5jfax/3bUSZN1api/g2ciAeOniDu
+         BDfvgKRmNNrdaqQtDRE2vuNjkdLGc4zc+Q1Zig8ttXZJfctB0nn1Txy6v83tyxWNFmGB
+         6cKipXNaOctZQhdw3Sb7D56uZFKx6lsbQfFPwVXFEh2Dwplckuop4NWqG2dT4B6wfEEK
+         4EOw==
+X-Forwarded-Encrypted: i=1; AJvYcCVRPqR4KlOsxSprK5tLdkLSbkhtpSeWFhlatsrI7MtoljEnGXZ2B0zQZCYi3n62w/0WV5K8xMk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoYLXb7VGuKRHsrDUOsP0hJ7rp0J+bEvxnn2HqUPczdENEHXf7
+	4DLjIVdGUBvYNrkMR6WY5fIQInfns2knV4kZyxEHqy+VzdtlB1J2RJocr0CjgfODhWAFhvk2G3U
+	9PRWX0K11nbd4ehw7MovFwp7Uq/cwQKAu3WEK0PGb
+X-Gm-Gg: ASbGncs3dBhBXaGJ7HbTRvmLIEz6ST9NJm29Xy+xhFFIf5ZnTKdA9iQbU5+FWnBS94m
+	hY4kL3lrQlAhhWj9frhqGRc+9cA1mVqQS2uNlEMkYgLMemJuDPQRx7vL2SYsahy3Q8nG/11mtx5
+	UvGSFN/MMQNvuE3fmcBsVWTil2bWAwHvTUo0t9wlTTZ/JUjCIvUeVtAg2qtYGoACyvUQh0AgAtK
+	Q==
+X-Google-Smtp-Source: AGHT+IHG8Emt+gyL8UvFNaFyi+O07zeBWkW+UVHfL/feE1C+ZTRqBaq0OQuwKFyF0Kg/LheKjk2b3XFv0JAoeL/sHwo=
+X-Received: by 2002:a05:622a:8345:b0:4a9:c8bb:459 with SMTP id
+ d75a77b69052e-4a9d48ee47fmr2280891cf.29.1751989198055; Tue, 08 Jul 2025
+ 08:39:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250707081306.22624-2-ceggers@arri.de>
+References: <20250630031958.1225651-1-sashal@kernel.org> <20250630175746.e52af129fd2d88deecc25169@linux-foundation.org>
+ <a4d8b292-154a-4d14-90e4-6c822acf1cfb@redhat.com> <aG06QBVeBJgluSqP@lappy>
+In-Reply-To: <aG06QBVeBJgluSqP@lappy>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 8 Jul 2025 08:39:47 -0700
+X-Gm-Features: Ac12FXxgax9QRUHgWfWnI6-7Cpsi0Gj1hqhyNry_hrJmcV9KjYxfNpCr2VuvWkY
+Message-ID: <CAJuCfpH5NQBJMqs9U2VjyA_f6Fho2VAcQq=ORw-iW8qhVCDSuA@mail.gmail.com>
+Subject: Re: [PATCH] mm/userfaultfd: fix missing PTE unmap for non-migration entries
+To: Sasha Levin <sashal@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, peterx@redhat.com, 
+	aarcange@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 07, 2025 at 10:13:07AM +0200, Christian Eggers wrote:
-> Upstream commit 89fb8acc38852116d38d721ad394aad7f2871670
-> 
-> Currently, for controllers with extended advertising, the advertising
-> data is set in the asynchronous response handler for extended
-> adverstising params. As most advertising settings are performed in a
-> synchronous context, the (asynchronous) setting of the advertising data
-> is done too late (after enabling the advertising).
-> 
-> Move setting of adverstising data from asynchronous response handler
-> into synchronous context to fix ordering of HCI commands.
-> 
-> Signed-off-by: Christian Eggers <ceggers@arri.de>
-> Fixes: a0fb3726ba55 ("Bluetooth: Use Set ext adv/scan rsp data if controller supports")
-> Cc: stable@vger.kernel.org
-> v2: https://lore.kernel.org/linux-bluetooth/20250626115209.17839-1-ceggers@arri.de/
-> Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-> ---
->  net/bluetooth/hci_event.c |  36 -------
->  net/bluetooth/hci_sync.c  | 213 ++++++++++++++++++++++++--------------
->  2 files changed, 133 insertions(+), 116 deletions(-)
-> 
-> diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-> index 008d14b3d8b8..147766458a6c 100644
-> --- a/net/bluetooth/hci_event.c
-> +++ b/net/bluetooth/hci_event.c
-> @@ -2139,40 +2139,6 @@ static u8 hci_cc_set_adv_param(struct hci_dev *hdev, void *data,
->  	return rp->status;
->  }
->  
-> -static u8 hci_cc_set_ext_adv_param(struct hci_dev *hdev, void *data,
-> -				   struct sk_buff *skb)
-> -{
-> -	struct hci_rp_le_set_ext_adv_params *rp = data;
-> -	struct hci_cp_le_set_ext_adv_params *cp;
-> -	struct adv_info *adv_instance;
-> -
-> -	bt_dev_dbg(hdev, "status 0x%2.2x", rp->status);
-> -
-> -	if (rp->status)
-> -		return rp->status;
-> -
-> -	cp = hci_sent_cmd_data(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS);
-> -	if (!cp)
-> -		return rp->status;
-> -
-> -	hci_dev_lock(hdev);
-> -	hdev->adv_addr_type = cp->own_addr_type;
-> -	if (!cp->handle) {
-> -		/* Store in hdev for instance 0 */
-> -		hdev->adv_tx_power = rp->tx_power;
-> -	} else {
-> -		adv_instance = hci_find_adv_instance(hdev, cp->handle);
-> -		if (adv_instance)
-> -			adv_instance->tx_power = rp->tx_power;
-> -	}
-> -	/* Update adv data as tx power is known now */
-> -	hci_update_adv_data(hdev, cp->handle);
-> -
-> -	hci_dev_unlock(hdev);
-> -
-> -	return rp->status;
-> -}
-> -
->  static u8 hci_cc_read_rssi(struct hci_dev *hdev, void *data,
->  			   struct sk_buff *skb)
->  {
-> @@ -4153,8 +4119,6 @@ static const struct hci_cc {
->  	HCI_CC(HCI_OP_LE_READ_NUM_SUPPORTED_ADV_SETS,
->  	       hci_cc_le_read_num_adv_sets,
->  	       sizeof(struct hci_rp_le_read_num_supported_adv_sets)),
-> -	HCI_CC(HCI_OP_LE_SET_EXT_ADV_PARAMS, hci_cc_set_ext_adv_param,
-> -	       sizeof(struct hci_rp_le_set_ext_adv_params)),
->  	HCI_CC_STATUS(HCI_OP_LE_SET_EXT_ADV_ENABLE,
->  		      hci_cc_le_set_ext_adv_enable),
->  	HCI_CC_STATUS(HCI_OP_LE_SET_ADV_SET_RAND_ADDR,
-> diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-> index e92bc4ceb5ad..7b6c8f53e334 100644
-> --- a/net/bluetooth/hci_sync.c
-> +++ b/net/bluetooth/hci_sync.c
-> @@ -1224,9 +1224,129 @@ static int hci_set_adv_set_random_addr_sync(struct hci_dev *hdev, u8 instance,
->  				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
->  }
->  
-> +static int
-> +hci_set_ext_adv_params_sync(struct hci_dev *hdev, struct adv_info *adv,
-> +			    const struct hci_cp_le_set_ext_adv_params *cp,
-> +			    struct hci_rp_le_set_ext_adv_params *rp)
-> +{
-> +	struct sk_buff *skb;
-> +
-> +	skb = __hci_cmd_sync(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS, sizeof(*cp),
-> +			     cp, HCI_CMD_TIMEOUT);
-> +
-> +	/* If command return a status event, skb will be set to -ENODATA */
-> +	if (skb == ERR_PTR(-ENODATA))
-> +		return 0;
-> +
-> +	if (IS_ERR(skb)) {
-> +		bt_dev_err(hdev, "Opcode 0x%4.4x failed: %ld",
-> +			   HCI_OP_LE_SET_EXT_ADV_PARAMS, PTR_ERR(skb));
-> +		return PTR_ERR(skb);
-> +	}
-> +
-> +	if (skb->len != sizeof(*rp)) {
-> +		bt_dev_err(hdev, "Invalid response length for 0x%4.4x: %u",
-> +			   HCI_OP_LE_SET_EXT_ADV_PARAMS, skb->len);
-> +		kfree_skb(skb);
-> +		return -EIO;
-> +	}
-> +
-> +	memcpy(rp, skb->data, sizeof(*rp));
-> +	kfree_skb(skb);
-> +
-> +	if (!rp->status) {
-> +		hdev->adv_addr_type = cp->own_addr_type;
-> +		if (!cp->handle) {
-> +			/* Store in hdev for instance 0 */
-> +			hdev->adv_tx_power = rp->tx_power;
-> +		} else if (adv) {
-> +			adv->tx_power = rp->tx_power;
-> +		}
-> +	}
-> +
-> +	return rp->status;
-> +}
-> +
-> +static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
-> +{
-> +	struct {
-> +		struct hci_cp_le_set_ext_adv_data cp;
-> +		u8 data[HCI_MAX_EXT_AD_LENGTH];
-> +	} pdu;
-> +	u8 len;
-> +	struct adv_info *adv = NULL;
-> +	int err;
-> +
-> +	memset(&pdu, 0, sizeof(pdu));
-> +
-> +	if (instance) {
-> +		adv = hci_find_adv_instance(hdev, instance);
-> +		if (!adv || !adv->adv_data_changed)
-> +			return 0;
-> +	}
-> +
-> +	len = eir_create_adv_data(hdev, instance, pdu.data);
-> +
-> +	pdu.cp.length = len;
-> +	pdu.cp.handle = instance;
-> +	pdu.cp.operation = LE_SET_ADV_DATA_OP_COMPLETE;
-> +	pdu.cp.frag_pref = LE_SET_ADV_DATA_NO_FRAG;
-> +
-> +	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_DATA,
-> +				    sizeof(pdu.cp) + len, &pdu.cp,
-> +				    HCI_CMD_TIMEOUT);
-> +	if (err)
-> +		return err;
-> +
-> +	/* Update data if the command succeed */
-> +	if (adv) {
-> +		adv->adv_data_changed = false;
-> +	} else {
-> +		memcpy(hdev->adv_data, pdu.data, len);
-> +		hdev->adv_data_len = len;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int hci_set_adv_data_sync(struct hci_dev *hdev, u8 instance)
-> +{
-> +	struct hci_cp_le_set_adv_data cp;
-> +	u8 len;
-> +
-> +	memset(&cp, 0, sizeof(cp));
-> +
-> +	len = eir_create_adv_data(hdev, instance, cp.data);
-> +
-> +	/* There's nothing to do if the data hasn't changed */
-> +	if (hdev->adv_data_len == len &&
-> +	    memcmp(cp.data, hdev->adv_data, len) == 0)
-> +		return 0;
-> +
-> +	memcpy(hdev->adv_data, cp.data, sizeof(cp.data));
-> +	hdev->adv_data_len = len;
-> +
-> +	cp.length = len;
-> +
-> +	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_DATA,
-> +				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-> +}
-> +
-> +int hci_update_adv_data_sync(struct hci_dev *hdev, u8 instance)
-> +{
-> +	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED))
-> +		return 0;
-> +
-> +	if (ext_adv_capable(hdev))
-> +		return hci_set_ext_adv_data_sync(hdev, instance);
-> +
-> +	return hci_set_adv_data_sync(hdev, instance);
-> +}
-> +
->  int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
->  {
->  	struct hci_cp_le_set_ext_adv_params cp;
-> +	struct hci_rp_le_set_ext_adv_params rp;
->  	bool connectable;
->  	u32 flags;
->  	bdaddr_t random_addr;
-> @@ -1333,8 +1453,12 @@ int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
->  		cp.secondary_phy = HCI_ADV_PHY_1M;
->  	}
->  
-> -	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS,
-> -				    sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-> +	err = hci_set_ext_adv_params_sync(hdev, adv, &cp, &rp);
-> +	if (err)
-> +		return err;
-> +
-> +	/* Update adv data as tx power is known now */
-> +	err = hci_set_ext_adv_data_sync(hdev, cp.handle);
->  	if (err)
->  		return err;
->  
-> @@ -1859,82 +1983,6 @@ int hci_le_terminate_big_sync(struct hci_dev *hdev, u8 handle, u8 reason)
->  				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
->  }
->  
-> -static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
-> -{
-> -	struct {
-> -		struct hci_cp_le_set_ext_adv_data cp;
-> -		u8 data[HCI_MAX_EXT_AD_LENGTH];
-> -	} pdu;
-> -	u8 len;
-> -	struct adv_info *adv = NULL;
-> -	int err;
-> -
-> -	memset(&pdu, 0, sizeof(pdu));
-> -
-> -	if (instance) {
-> -		adv = hci_find_adv_instance(hdev, instance);
-> -		if (!adv || !adv->adv_data_changed)
-> -			return 0;
-> -	}
-> -
-> -	len = eir_create_adv_data(hdev, instance, pdu.data);
-> -
-> -	pdu.cp.length = len;
-> -	pdu.cp.handle = instance;
-> -	pdu.cp.operation = LE_SET_ADV_DATA_OP_COMPLETE;
-> -	pdu.cp.frag_pref = LE_SET_ADV_DATA_NO_FRAG;
-> -
-> -	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_DATA,
-> -				    sizeof(pdu.cp) + len, &pdu.cp,
-> -				    HCI_CMD_TIMEOUT);
-> -	if (err)
-> -		return err;
-> -
-> -	/* Update data if the command succeed */
-> -	if (adv) {
-> -		adv->adv_data_changed = false;
-> -	} else {
-> -		memcpy(hdev->adv_data, pdu.data, len);
-> -		hdev->adv_data_len = len;
-> -	}
-> -
-> -	return 0;
-> -}
-> -
-> -static int hci_set_adv_data_sync(struct hci_dev *hdev, u8 instance)
-> -{
-> -	struct hci_cp_le_set_adv_data cp;
-> -	u8 len;
-> -
-> -	memset(&cp, 0, sizeof(cp));
-> -
-> -	len = eir_create_adv_data(hdev, instance, cp.data);
-> -
-> -	/* There's nothing to do if the data hasn't changed */
-> -	if (hdev->adv_data_len == len &&
-> -	    memcmp(cp.data, hdev->adv_data, len) == 0)
-> -		return 0;
-> -
-> -	memcpy(hdev->adv_data, cp.data, sizeof(cp.data));
-> -	hdev->adv_data_len = len;
-> -
-> -	cp.length = len;
-> -
-> -	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_DATA,
-> -				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-> -}
-> -
-> -int hci_update_adv_data_sync(struct hci_dev *hdev, u8 instance)
-> -{
-> -	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED))
-> -		return 0;
-> -
-> -	if (ext_adv_capable(hdev))
-> -		return hci_set_ext_adv_data_sync(hdev, instance);
-> -
-> -	return hci_set_adv_data_sync(hdev, instance);
-> -}
-> -
->  int hci_schedule_adv_instance_sync(struct hci_dev *hdev, u8 instance,
->  				   bool force)
->  {
-> @@ -6257,6 +6305,7 @@ static int hci_le_ext_directed_advertising_sync(struct hci_dev *hdev,
->  						struct hci_conn *conn)
->  {
->  	struct hci_cp_le_set_ext_adv_params cp;
-> +	struct hci_rp_le_set_ext_adv_params rp;
->  	int err;
->  	bdaddr_t random_addr;
->  	u8 own_addr_type;
-> @@ -6298,8 +6347,12 @@ static int hci_le_ext_directed_advertising_sync(struct hci_dev *hdev,
->  	if (err)
->  		return err;
->  
-> -	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS,
-> -				    sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-> +	err = hci_set_ext_adv_params_sync(hdev, NULL, &cp, &rp);
-> +	if (err)
-> +		return err;
-> +
-> +	/* Update adv data as tx power is known now */
-> +	err = hci_set_ext_adv_data_sync(hdev, cp.handle);
->  	if (err)
->  		return err;
->  
-> -- 
-> [Resend, upstream commit id was missing]
-> 
-> Hi Greg,
-> 
-> I've backported this patch for 6.6. There were some trivial merge 
-> conflicts due to moved coded sections.
-> 
-> Please try it also for older trees. If I get any FAILED notices,
-> I'll try to prepare patches for specific trees.
+On Tue, Jul 8, 2025 at 8:33=E2=80=AFAM Sasha Levin <sashal@kernel.org> wrot=
+e:
+>
+> On Tue, Jul 08, 2025 at 05:10:44PM +0200, David Hildenbrand wrote:
+> >On 01.07.25 02:57, Andrew Morton wrote:
+> >>On Sun, 29 Jun 2025 23:19:58 -0400 Sasha Levin <sashal@kernel.org> wrot=
+e:
+> >>
+> >>>When handling non-swap entries in move_pages_pte(), the error handling
+> >>>for entries that are NOT migration entries fails to unmap the page tab=
+le
+> >>>entries before jumping to the error handling label.
+> >>>
+> >>>This results in a kmap/kunmap imbalance which on CONFIG_HIGHPTE system=
+s
+> >>>triggers a WARNING in kunmap_local_indexed() because the kmap stack is
+> >>>corrupted.
+> >>>
+> >>>Example call trace on ARM32 (CONFIG_HIGHPTE enabled):
+> >>>   WARNING: CPU: 1 PID: 633 at mm/highmem.c:622 kunmap_local_indexed+0=
+x178/0x17c
+> >>>   Call trace:
+> >>>     kunmap_local_indexed from move_pages+0x964/0x19f4
+> >>>     move_pages from userfaultfd_ioctl+0x129c/0x2144
+> >>>     userfaultfd_ioctl from sys_ioctl+0x558/0xd24
+> >>>
+> >>>The issue was introduced with the UFFDIO_MOVE feature but became more
+> >>>frequent with the addition of guard pages (commit 7c53dfbdb024 ("mm: a=
+dd
+> >>>PTE_MARKER_GUARD PTE marker")) which made the non-migration entry code
+> >>>path more commonly executed during userfaultfd operations.
+> >>>
+> >>>Fix this by ensuring PTEs are properly unmapped in all non-swap entry
+> >>>paths before jumping to the error handling label, not just for migrati=
+on
+> >>>entries.
+> >>
+> >>I don't get it.
+> >>
+> >>>--- a/mm/userfaultfd.c
+> >>>+++ b/mm/userfaultfd.c
+> >>>@@ -1384,14 +1384,15 @@ static int move_pages_pte(struct mm_struct *mm=
+, pmd_t *dst_pmd, pmd_t *src_pmd,
+> >>>             entry =3D pte_to_swp_entry(orig_src_pte);
+> >>>             if (non_swap_entry(entry)) {
+> >>>+                    pte_unmap(src_pte);
+> >>>+                    pte_unmap(dst_pte);
+> >>>+                    src_pte =3D dst_pte =3D NULL;
+> >>>                     if (is_migration_entry(entry)) {
+> >>>-                            pte_unmap(src_pte);
+> >>>-                            pte_unmap(dst_pte);
+> >>>-                            src_pte =3D dst_pte =3D NULL;
+> >>>                             migration_entry_wait(mm, src_pmd, src_add=
+r);
+> >>>                             err =3D -EAGAIN;
+> >>>-                    } else
+> >>>+                    } else {
+> >>>                             err =3D -EFAULT;
+> >>>+                    }
+> >>>                     goto out;
+> >>
+> >>where we have
+> >>
+> >>out:
+> >>      ...
+> >>      if (dst_pte)
+> >>              pte_unmap(dst_pte);
+> >>      if (src_pte)
+> >>              pte_unmap(src_pte);
+> >
+> >AI slop?
+>
+> Nah, this one is sadly all me :(
+>
+> I was trying to resolve some of the issues found with linus-next on
+> LKFT, and misunderstood the code. Funny enough, I thought that the
+> change above "fixed" it by making the warnings go away, but clearly is
+> the wrong thing to do so I went back to the drawing table...
+>
+> If you're curious, here's the issue: https://qa-reports.linaro.org/lkft/s=
+ashal-linus-next/build/v6.13-rc7-43418-g558c6dd4d863/testrun/29030370/suite=
+/log-parser-test/test/exception-warning-cpu-pid-at-mmhighmem-kunmap_local_i=
+ndexed/details/
 
-You made major changes here from the upstream version, PLEASE document
-them properly in the changelog.  Also, can you test it to verify that it
-works and doesn't blow up the stack like I'm guessing it might?
+Any way to symbolize that Call trace? I can't find build artefacts to
+extract vmlinux image...
 
-thanks,
-
-greg k-h
+>
+> --
+> Thanks,
+> Sasha
 
