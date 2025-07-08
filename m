@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 951F5AFD0F6
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:29:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5D0AFD1AC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:38:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BD111895A8F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:29:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C8B61C24B8A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9DA829B797;
-	Tue,  8 Jul 2025 16:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584F020766C;
+	Tue,  8 Jul 2025 16:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrKoQoCm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtB+otFS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979A32A1BA;
-	Tue,  8 Jul 2025 16:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1586C21773D;
+	Tue,  8 Jul 2025 16:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992163; cv=none; b=D3q89rROOO35rk2A1mtRSuRojMfyj8ssMWrbTuOqrbpUCop+ZU47OGnSS6Ws1SNwrje5aDD/+dtivlw5PAkzVem/bN8q2C+ozxc9rC5SFcY5NMJkk3c+5WtUVNpGxJwHfBMXM4L/9nBRigi9vA3aOR2GzX/IPWHTT6lUHXc4Y1Q=
+	t=1751992563; cv=none; b=OFBdqvq1bLnXOTz4fqaQ6lNmXwdRhwyUCKCRSP+k520TCGPTXsg5hVE1Bb/1oUL7eR12HpAW8/h7defnrZrU7dDTqwC8uc41URv8Y8VtelNsIW2bW74KQf8bOuXo0mo6K968nyBAL8cDmEYaKzpQQmaDO3XuJQqg6qp5G6haIL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992163; c=relaxed/simple;
-	bh=vPUsNDrygLzYcWaIAsE9aA24WOpGu8DXDBLrH9NGXm0=;
+	s=arc-20240116; t=1751992563; c=relaxed/simple;
+	bh=z2vjuRg7xBR0Nt2yoNb95A0M//iwoHHhMt8h8TeoNoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVhoJYXfi/sM479E1TpigTHHDGIMHODV/Uzcy9/Blbi0JBLmkobNNNY/lHk5OjBbiDTOJOJnMZmlMtNBLa71+orKysKzUNsm7szTDq1+9INyRSmnoZaqkmS/sHr2hfRxsPSlf2sFo4Uqigya1JKah7n/s6+4rshCtNZFeBNXH9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrKoQoCm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25422C4CEED;
-	Tue,  8 Jul 2025 16:29:22 +0000 (UTC)
+	 MIME-Version; b=Uvn6JoPuadbClJOd6gvp+2GU0sJeasHmVbYI2PwVWOOYkV5L+LH/7nKLCiM5+RwqpmHJFAMKlECJcRK/2y+miffAlc4EIfX0IKfsRqRX0DXM4IuwZjApgBCDYOCEhD9ezTkiD4DqNf4Y7FMdkxR/xlD7DvWL9atjkaELuGFLZe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtB+otFS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C4DC4CEED;
+	Tue,  8 Jul 2025 16:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992163;
-	bh=vPUsNDrygLzYcWaIAsE9aA24WOpGu8DXDBLrH9NGXm0=;
+	s=korg; t=1751992563;
+	bh=z2vjuRg7xBR0Nt2yoNb95A0M//iwoHHhMt8h8TeoNoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KrKoQoCm6LjKhKwOp+8NFer9ZI4HibyWMDoBV8OfxpBN2z1FoqILa23RhGNRS7v2D
-	 BBY849FaQQFn2LpOlOXA4Itr9gw243vVVy3hazBZPWWmecssPXq59g6E/50tSn4TZn
-	 z5iI+DUP4b+p6vIRGuevc5uFbk7nOVFxQYl4QaFE=
+	b=PtB+otFS0LOL81p9pl1jhBfWhfG6P5L/3KcEWzU68ue3yqE5MdcRXjZVoWe4spvDX
+	 VUNBKTMEEGgmFv6ATD55TGmTy2QN0k8qlnr+Z/PB6KcX9wBi2aTKhY/1FekJieBg59
+	 1pmg8RePWFR9GZ3MvPxFbOZxgQgawyddlmgSr6M0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raven Black <ravenblack@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 51/81] ASoC: amd: yc: update quirk data for HP Victus
+	stable <stable@kernel.org>,
+	Hongyu Xie <xiehongyu1@kylinos.cn>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.6 112/132] xhci: Disable stream for xHC controller with XHCI_BROKEN_STREAMS
 Date: Tue,  8 Jul 2025 18:23:43 +0200
-Message-ID: <20250708162226.633978831@linuxfoundation.org>
+Message-ID: <20250708162233.854211533@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raven Black <ravenblack@gmail.com>
+From: Hongyu Xie <xiehongyu1@kylinos.cn>
 
-[ Upstream commit 13b86ea92ebf0fa587fbadfb8a60ca2e9993203f ]
+commit cd65ee81240e8bc3c3119b46db7f60c80864b90b upstream.
 
-Make the internal microphone work on HP Victus laptops.
+Disable stream for platform xHC controller with broken stream.
 
-Signed-off-by: Raven Black <ravenblack@gmail.com>
-Link: https://patch.msgid.link/20250613-support-hp-victus-microphone-v1-1-bebc4c3a2041@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 14aec589327a6 ("storage: accept some UAS devices if streams are unavailable")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250627144127.3889714-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/host/xhci-plat.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 30f28f33a52ca..ecf4f4c0e6967 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -451,6 +451,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16z-n000"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Victus by HP Gaming Laptop 15-fb2xxx"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
--- 
-2.39.5
-
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -313,7 +313,8 @@ int xhci_plat_probe(struct platform_devi
+ 	}
+ 
+ 	usb3_hcd = xhci_get_usb3_hcd(xhci);
+-	if (usb3_hcd && HCC_MAX_PSA(xhci->hcc_params) >= 4)
++	if (usb3_hcd && HCC_MAX_PSA(xhci->hcc_params) >= 4 &&
++	    !(xhci->quirks & XHCI_BROKEN_STREAMS))
+ 		usb3_hcd->can_do_streams = 1;
+ 
+ 	if (xhci->shared_hcd) {
 
 
 
