@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-161226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E060AFD417
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE62DAFD24E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D38F188C447
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:59:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6C073A7B83
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6872E1C74;
-	Tue,  8 Jul 2025 16:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB652DC34C;
+	Tue,  8 Jul 2025 16:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="er5fqLjB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Zl0nQAw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668F72DCC03;
-	Tue,  8 Jul 2025 16:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0C21714B7;
+	Tue,  8 Jul 2025 16:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993961; cv=none; b=H+xMr3ymlVi2jv2mU+76mdqS1Twb+0BHG8DdJ93UMtWL7M7yFS7sdsBmtKLwY2gNmDFYoNe4+QgtohgnOpCgPP7DT4InIOslETW8tjg7xSJXsw2F25qQpnkZQ1riNGytXZ7FdIJ1Og7kfKAs2TTlQKkzy2xeMfap0NzR8cz8dzU=
+	t=1751992903; cv=none; b=E9D/udDk5cIRTK7f4qZ1eum4b7fTm9OmW5Lql67KqJDtgJZJXeZii2nWt0T2EhiYV8M02uMMomcT5zTntvgMB9JFJWuCBf6TvQBkwl5RpPwQOyYciEk9UEFB/8YWNiRbAR5EOmF4WqMzggkzS7ZA/ICAtuujodYzOqrNEacdCJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993961; c=relaxed/simple;
-	bh=lsbGeY06uz+VHmuR/2JW8q58XY5fGp7wrlg8N61xiDw=;
+	s=arc-20240116; t=1751992903; c=relaxed/simple;
+	bh=nroM5GMJOuT5cYdOyQFbQmuafdDAgAtOWr544bUxhQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SbAZ9wPgD0SVZUe5ux13tNwwnoj9Rn+xwbo6LJs69GDVR6tcsMEN86DOy80Yp1QmOMtcob3lSPEhDwYo8WxUe+3pGg+yf8BpOngHdG2sLYI7sYyEXa+mC72TVfNkS0CzhFLfhCAJKAhVI96v+jZNKJi/UcUhifdLZ08N6jOlfUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=er5fqLjB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4436C4CEED;
-	Tue,  8 Jul 2025 16:59:20 +0000 (UTC)
+	 MIME-Version; b=uAatDm2elgouo0yOZ2m6/HMI77KKTLvTOHHapRY+hKwRQznRjyMQdRwrvSMQrLs8HyjzUuEriP/M87lGhsGjqnoROQ5iU9VPr+ZJ46hlM1INy11T5RqWoG3LBe/oT1EMwqe3X2YZ64nOX2b2j4YkS8gzdXL+egq2zih3I0FGDnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Zl0nQAw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4BBC4CEED;
+	Tue,  8 Jul 2025 16:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993961;
-	bh=lsbGeY06uz+VHmuR/2JW8q58XY5fGp7wrlg8N61xiDw=;
+	s=korg; t=1751992903;
+	bh=nroM5GMJOuT5cYdOyQFbQmuafdDAgAtOWr544bUxhQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=er5fqLjBKHM6TU+c9KTUmLEbDMfJM5kaay0ybX7HG8xmHVyD0ikJS5xfdTtBPkKgF
-	 XnPRAq0c2/Ldkdk3HLvOKMClgMOZTPKXcl6wm6vqrfHGOA8j6NZo60WmXsK1HXMnZd
-	 PaCsJGX5W+21LtoGddwWuUtdVtOhUqT8Ur6/kAO8=
+	b=2Zl0nQAwR4K1IplwLLRlVZyQBIvklrpSVSC47jV70Bth9g/Vnc+OLUEp+ibkgvFHU
+	 GzuMOE4g41yVnp3QvrkLQ+bO5ModZTmzLyHiEqmjYT7r49OdbC/mWJExYG22v0BTUH
+	 tDqPMMC9x9MKg2MXjSIV1OGkRdfnHZiooZ+S4wEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.15 078/160] HID: wacom: fix memory leak on sysfs attribute creation failure
-Date: Tue,  8 Jul 2025 18:21:55 +0200
-Message-ID: <20250708162233.704538640@linuxfoundation.org>
+	xueqin Luo <luoxueqin@kylinos.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 120/232] ACPI: thermal: Fix stale comment regarding trip points
+Date: Tue,  8 Jul 2025 18:21:56 +0200
+Message-ID: <20250708162244.581252227@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: xueqin Luo <luoxueqin@kylinos.cn>
 
-commit 1a19ae437ca5d5c7d9ec2678946fb339b1c706bf upstream.
+[ Upstream commit 01ca2846338d314cdcd3da1aca7f290ec380542c ]
 
-When sysfs_create_files() fails during wacom_initialize_remotes() the
-fifo buffer is not freed leading to a memory leak.
+Update the comment next to acpi_thermal_get_trip_points() call site
+in acpi_thermal_add() to reflect what the code does.
 
-Fix this by calling kfifo_free() before returning.
+It has diverged from the code after changes that removed the _CRT
+evaluation from acpi_thermal_get_trip_points() among other things.
 
-Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: xueqin Luo <luoxueqin@kylinos.cn>
+Link: https://patch.msgid.link/20250208013335.126343-1-luoxueqin@kylinos.cn
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 3f7cd28ae3d1 ("ACPI: thermal: Execute _SCP before reading trip points")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_sys.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/thermal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2030,6 +2030,7 @@ static int wacom_initialize_remotes(stru
- 	if (error) {
- 		hid_err(wacom->hdev,
- 			"cannot create sysfs group err: %d\n", error);
-+		kfifo_free(&remote->remote_fifo);
- 		return error;
- 	}
+diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+index 78db38c7076e4..dbc371ac2fa66 100644
+--- a/drivers/acpi/thermal.c
++++ b/drivers/acpi/thermal.c
+@@ -803,7 +803,7 @@ static int acpi_thermal_add(struct acpi_device *device)
  
+ 	acpi_thermal_aml_dependency_fix(tz);
+ 
+-	/* Get trip points [_CRT, _PSV, etc.] (required). */
++	/* Get trip points [_ACi, _PSV, etc.] (required). */
+ 	acpi_thermal_get_trip_points(tz);
+ 
+ 	crit_temp = acpi_thermal_get_critical_trip(tz);
+-- 
+2.39.5
+
 
 
 
