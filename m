@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-160841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C040AAFD23A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2CAAFD2EF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50D8A188CF40
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FCD5425044
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BAE62E542C;
-	Tue,  8 Jul 2025 16:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443972253E0;
+	Tue,  8 Jul 2025 16:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgI+KHqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fXjj9RTL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3F42E49B0;
-	Tue,  8 Jul 2025 16:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024D01754B;
+	Tue,  8 Jul 2025 16:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992846; cv=none; b=AR9S+EJrsK5o2Y5LnXs4DMfe40pv20NzKk7izLkelnilkRfYj4kstFup7eoOvgaLQ4bnpbF66d2WZGOY4RZQW5br4d0qFmVvOfnGhbaeRnfLWU1RBsKof3o33q24TZ65aZjtNyPGpLxPUDYvLRizC8/ZH9G/1U6/fMZ6bZgNoeA=
+	t=1751993312; cv=none; b=ZgZPwPgTWVfC8KViPlBUoTNYcDtouBgYvtWYYmY8V0lqZrLS0lbMsI0VU/vPJzA/JW3s/mc3UWyemLmof8LJ5CNtdmNQA4eLKJgRNslXfwllU71A/z4ZOIywKgV5qansvQsfeEGJe4RVyTMYrpUwKYnF70RYcwbgHiXvoa38vCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992846; c=relaxed/simple;
-	bh=aRtQAaZOnflMgnNnfb/sZN2pkWUNBNGW1itYjBQ/ofU=;
+	s=arc-20240116; t=1751993312; c=relaxed/simple;
+	bh=1Y0E2UJQ47HDIswoxHXjz15N9OjtpX4mTU4/d3BLHFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tu3UbloJXczA0K28tKzaqTsdYCb2ZwK86piiPtaIOkezU0jEUnRlk4goVAVzJ8HN06+E4Oc3fJ8lOmqYrssz26b0B6mowfixzqkhbIB+DDDZQH1E9x9RpDMq77FV0PO6yxv6LY3BZk7gvQv8LeOB+Re60t9BEgGqOqMs1d6SGH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgI+KHqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67158C4CEED;
-	Tue,  8 Jul 2025 16:40:45 +0000 (UTC)
+	 MIME-Version; b=YTCpv8WUL85c4tqVERwUtaIjJA6CsqU2Hl+4Vk1/K/uD+pSGb8O2mWyXx0fDLAEap8wgI26MVoJC+pZimzIb4tgFrce0pXdWNDj3d2zGKxiQvxcdCVMJoS1W/b1PiI5bjXmVR6rll4YcCtxzSFh0N4VwvfZkLIG7lECnMfRTuik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fXjj9RTL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8D3C4CEED;
+	Tue,  8 Jul 2025 16:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992845;
-	bh=aRtQAaZOnflMgnNnfb/sZN2pkWUNBNGW1itYjBQ/ofU=;
+	s=korg; t=1751993311;
+	bh=1Y0E2UJQ47HDIswoxHXjz15N9OjtpX4mTU4/d3BLHFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgI+KHqhdHSQOxyi8lwCqW0J1Z7oTg3GSKj6FnlBBLlRCSvf2eGvPJ2dGcjgqitOl
-	 94OwnwxOYwB1/5AAnq9m2RndeWgl1q/1Y+LTdC/0Cg9hP1/K4czWdNQvrxRLkuWtmC
-	 enWQtP2xb7D4IROvosYwGmo7GVeMzkaWI/7WI3jE=
+	b=fXjj9RTLUWKOtKR/yTRN4Ws8TYy/lSCnohlY0pTRi6lxjnZehuYGy/NAOP+3pMSwn
+	 53EeJSL4AxvYbrlw36RHwwxPzVCFVA8jMHxed14aPBVTmYet5SO5iY9JtBkGrlMWwN
+	 MX2a4xTl3/AU6G6N429rVZU0YFobQnsNiVTJo1vI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/232] platform/x86: dell-wmi-sysman: Fix class device unregistration
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.15 030/178] mtk-sd: Prevent memory corruption from DMA map failure
 Date: Tue,  8 Jul 2025 18:21:07 +0200
-Message-ID: <20250708162243.319043495@linuxfoundation.org>
+Message-ID: <20250708162237.335112414@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +59,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 314e5ad4782d08858b3abc325c0487bd2abc23a1 ]
+commit f5de469990f19569627ea0dd56536ff5a13beaa3 upstream.
 
-Devices under the firmware_attributes_class do not have unique a dev_t.
-Therefore, device_unregister() should be used instead of
-device_destroy(), since the latter may match any device with a given
-dev_t.
+If msdc_prepare_data() fails to map the DMA region, the request is
+not prepared for data receiving, but msdc_start_data() proceeds
+the DMA with previous setting.
+Since this will lead a memory corruption, we have to stop the
+request operation soon after the msdc_prepare_data() fails to
+prepare it.
 
-Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250625-dest-fix-v1-3-3a0f342312bb@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 208489032bdd ("mmc: mediatek: Add Mediatek MMC driver")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/174972756982.3337526.6755001617701603082.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell/dell-wmi-sysman/sysman.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/mtk-sd.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-index 3c74d5e8350a4..f5402b7146572 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-@@ -597,7 +597,7 @@ static int __init sysman_init(void)
- 	release_attributes_data();
- 
- err_destroy_classdev:
--	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
-+	device_unregister(wmi_priv.class_dev);
- 
- err_exit_bios_attr_pass_interface:
- 	exit_bios_attr_pass_interface();
-@@ -611,7 +611,7 @@ static int __init sysman_init(void)
- static void __exit sysman_exit(void)
- {
- 	release_attributes_data();
--	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
-+	device_unregister(wmi_priv.class_dev);
- 	exit_bios_attr_set_interface();
- 	exit_bios_attr_pass_interface();
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -834,6 +834,11 @@ static void msdc_prepare_data(struct msd
+ 	}
  }
--- 
-2.39.5
-
+ 
++static bool msdc_data_prepared(struct mmc_data *data)
++{
++	return data->host_cookie & MSDC_PREPARE_FLAG;
++}
++
+ static void msdc_unprepare_data(struct msdc_host *host, struct mmc_data *data)
+ {
+ 	if (data->host_cookie & MSDC_ASYNC_FLAG)
+@@ -1466,8 +1471,18 @@ static void msdc_ops_request(struct mmc_
+ 	WARN_ON(!host->hsq_en && host->mrq);
+ 	host->mrq = mrq;
+ 
+-	if (mrq->data)
++	if (mrq->data) {
+ 		msdc_prepare_data(host, mrq->data);
++		if (!msdc_data_prepared(mrq->data)) {
++			/*
++			 * Failed to prepare DMA area, fail fast before
++			 * starting any commands.
++			 */
++			mrq->cmd->error = -ENOSPC;
++			mmc_request_done(mmc_from_priv(host), mrq);
++			return;
++		}
++	}
+ 
+ 	/* if SBC is required, we have HW option and SW option.
+ 	 * if HW option is enabled, and SBC does not have "special" flags,
 
 
 
