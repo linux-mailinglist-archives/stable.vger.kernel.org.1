@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-161301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01362AFD4AA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:08:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A7BAFD13B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F1471889E6A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B20131C220E0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8398C2E5B12;
-	Tue,  8 Jul 2025 17:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD56F8F5B;
+	Tue,  8 Jul 2025 16:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dc/EtmxX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urcrjXey"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4240A202F70;
-	Tue,  8 Jul 2025 17:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF511BEF7E;
+	Tue,  8 Jul 2025 16:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994180; cv=none; b=Qan7EIPTqoNkDPkGIMT5r3IgdOEaEtpXeLMveSg2/pqqO2w9riuzBZfQkGmXOYITfNJN7y4iJObJsegSLluQov8UYcHbOQ7HBi/pmvemqa48M7D54yoTEcJd7HHyKD1JfAARx43sz3tOD4zHOwLD2ewP83tBQ5+X6HarVqDki5w=
+	t=1751992347; cv=none; b=jj6HVpoStJqdMFzbuxeZlqXLb5yUsSjlM44B0ML7kIwXeka+FWNne9LVuit0atVUSRvJwurcBciEzBJw79WORSgzowcaVbrhzjmL/EO0X/2RW3SvqPzSCKpfPYDtogXECSkYP/zuf1pILIFiUjsoDckxu+NLT1uFOHnFTxtpBIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994180; c=relaxed/simple;
-	bh=Pq+qYefXhzsr99rEpEjyiMTVtiCabrFB0T3fqE/iX+I=;
+	s=arc-20240116; t=1751992347; c=relaxed/simple;
+	bh=JocXkFPIbdrwnF3IXZG1uHddCfqcBXS3sFdkN5nnhq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cv+eKqUEZ7BeTyGkdiJRFVB44sNrkRGH6hqZTTrr9gHRzp6phdSKpdHHl98u3dmdAIaWXDNMmry1wOlGFvBjbY04LflBSmjEQMFAGUfUvtkPRzCNGIwZBptBuHjbABWI/x81fYP4oimA4e0w1gP1ifZkNs7dXCWaTfk13eR1fEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dc/EtmxX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC91DC4CEED;
-	Tue,  8 Jul 2025 17:02:59 +0000 (UTC)
+	 MIME-Version; b=IrmTMwbCwNxJkFhNTZ9BP1+xQl9YMjWfbcT/szpVZY1UD6Sz/6mNAbQErkrPEWdWM7EfhZdzDE+ez+ej9MpMCehMKGRDp9CewVa6ho3dyrMQXYqghzH8ifuiHK5UDe+FELRSbvy8lXJiUac0Uv0HOD7XkR9gKD4rN/49TLRFzrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urcrjXey; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DFDC4CEED;
+	Tue,  8 Jul 2025 16:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994180;
-	bh=Pq+qYefXhzsr99rEpEjyiMTVtiCabrFB0T3fqE/iX+I=;
+	s=korg; t=1751992347;
+	bh=JocXkFPIbdrwnF3IXZG1uHddCfqcBXS3sFdkN5nnhq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dc/EtmxX6t8xBUIDetGHo4oSH/+EmALQdT5EgPidq1rkXe4anv8rZq/Qr9oF4ZL1c
-	 ORYP1aUnrbLeWyAhLT/yTQ5SAHUMGjb3i/EFVbvCDAc94OgaUWhuYN22Sp6bHLWwMU
-	 4Ukq4ayW8ZomY812/spwriPxkMBJL0u6VF6HmQSU=
+	b=urcrjXeyGBzyxv1tEiKeRdZVn9l+5/BXtoCBhIs2Ljwab/zZvHwoez1i/lJEPci1p
+	 0MlNEasfawsT31/dey5WSJYfRH7oUnDxcURl9PCQfK02S5t6ii/Z6v3vVsXgXxoztz
+	 PGdIHmL1q4mlw66v9nsf7mwuvAOumGxxoP9De9ZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Martin-Gomez <pmartin-gomez@freebox.fr>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Lion Ackermann <nnamrec@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 135/160] mtd: spinand: fix memory leak of ECC engine conf
+Subject: [PATCH 6.6 061/132] net/sched: Always pass notifications when child class becomes empty
 Date: Tue,  8 Jul 2025 18:22:52 +0200
-Message-ID: <20250708162235.128230919@linuxfoundation.org>
+Message-ID: <20250708162232.442499499@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +64,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
+From: Lion Ackermann <nnamrec@gmail.com>
 
-[ Upstream commit 6463cbe08b0cbf9bba8763306764f5fd643023e1 ]
+[ Upstream commit 103406b38c600fec1fe375a77b27d87e314aea09 ]
 
-Memory allocated for the ECC engine conf is not released during spinand
-cleanup. Below kmemleak trace is seen for this memory leak:
+Certain classful qdiscs may invoke their classes' dequeue handler on an
+enqueue operation. This may unexpectedly empty the child qdisc and thus
+make an in-flight class passive via qlen_notify(). Most qdiscs do not
+expect such behaviour at this point in time and may re-activate the
+class eventually anyways which will lead to a use-after-free.
 
-unreferenced object 0xffffff80064f00e0 (size 8):
-  comm "swapper/0", pid 1, jiffies 4294937458
-  hex dump (first 8 bytes):
-    00 00 00 00 00 00 00 00                          ........
-  backtrace (crc 0):
-    kmemleak_alloc+0x30/0x40
-    __kmalloc_cache_noprof+0x208/0x3c0
-    spinand_ondie_ecc_init_ctx+0x114/0x200
-    nand_ecc_init_ctx+0x70/0xa8
-    nanddev_ecc_engine_init+0xec/0x27c
-    spinand_probe+0xa2c/0x1620
-    spi_mem_probe+0x130/0x21c
-    spi_probe+0xf0/0x170
-    really_probe+0x17c/0x6e8
-    __driver_probe_device+0x17c/0x21c
-    driver_probe_device+0x58/0x180
-    __device_attach_driver+0x15c/0x1f8
-    bus_for_each_drv+0xec/0x150
-    __device_attach+0x188/0x24c
-    device_initial_probe+0x10/0x20
-    bus_probe_device+0x11c/0x160
+The referenced fix commit attempted to fix this behavior for the HFSC
+case by moving the backlog accounting around, though this turned out to
+be incomplete since the parent's parent may run into the issue too.
+The following reproducer demonstrates this use-after-free:
 
-Fix the leak by calling nanddev_ecc_engine_cleanup() inside
-spinand_cleanup().
+    tc qdisc add dev lo root handle 1: drr
+    tc filter add dev lo parent 1: basic classid 1:1
+    tc class add dev lo parent 1: classid 1:1 drr
+    tc qdisc add dev lo parent 1:1 handle 2: hfsc def 1
+    tc class add dev lo parent 2: classid 2:1 hfsc rt m1 8 d 1 m2 0
+    tc qdisc add dev lo parent 2:1 handle 3: netem
+    tc qdisc add dev lo parent 3:1 handle 4: blackhole
 
-Signed-off-by: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+    echo 1 | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888
+    tc class delete dev lo classid 1:1
+    echo 1 | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888
+
+Since backlog accounting issues leading to a use-after-frees on stale
+class pointers is a recurring pattern at this point, this patch takes
+a different approach. Instead of trying to fix the accounting, the patch
+ensures that qdisc_tree_reduce_backlog always calls qlen_notify when
+the child qdisc is empty. This solves the problem because deletion of
+qdiscs always involves a call to qdisc_reset() and / or
+qdisc_purge_queue() which ultimately resets its qlen to 0 thus causing
+the following qdisc_tree_reduce_backlog() to report to the parent. Note
+that this may call qlen_notify on passive classes multiple times. This
+is not a problem after the recent patch series that made all the
+classful qdiscs qlen_notify() handlers idempotent.
+
+Fixes: 3f981138109f ("sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue()")
+Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/sch_api.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 2c8685f1f2fa7..80d0112d18fa6 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -1271,6 +1271,7 @@ static void spinand_cleanup(struct spinand_device *spinand)
- {
- 	struct nand_device *nand = spinand_to_nand(spinand);
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index df89790c459ad..282423106f15d 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -779,15 +779,12 @@ static u32 qdisc_alloc_handle(struct net_device *dev)
  
-+	nanddev_ecc_engine_cleanup(nand);
- 	nanddev_cleanup(nand);
- 	spinand_manufacturer_cleanup(spinand);
- 	kfree(spinand->databuf);
+ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
+ {
+-	bool qdisc_is_offloaded = sch->flags & TCQ_F_OFFLOADED;
+ 	const struct Qdisc_class_ops *cops;
+ 	unsigned long cl;
+ 	u32 parentid;
+ 	bool notify;
+ 	int drops;
+ 
+-	if (n == 0 && len == 0)
+-		return;
+ 	drops = max_t(int, n, 0);
+ 	rcu_read_lock();
+ 	while ((parentid = sch->parent)) {
+@@ -796,17 +793,8 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
+ 
+ 		if (sch->flags & TCQ_F_NOPARENT)
+ 			break;
+-		/* Notify parent qdisc only if child qdisc becomes empty.
+-		 *
+-		 * If child was empty even before update then backlog
+-		 * counter is screwed and we skip notification because
+-		 * parent class is already passive.
+-		 *
+-		 * If the original child was offloaded then it is allowed
+-		 * to be seem as empty, so the parent is notified anyway.
+-		 */
+-		notify = !sch->q.qlen && !WARN_ON_ONCE(!n &&
+-						       !qdisc_is_offloaded);
++		/* Notify parent qdisc only if child qdisc becomes empty. */
++		notify = !sch->q.qlen;
+ 		/* TODO: perform the search on a per txq basis */
+ 		sch = qdisc_lookup_rcu(qdisc_dev(sch), TC_H_MAJ(parentid));
+ 		if (sch == NULL) {
+@@ -815,6 +803,9 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
+ 		}
+ 		cops = sch->ops->cl_ops;
+ 		if (notify && cops->qlen_notify) {
++			/* Note that qlen_notify must be idempotent as it may get called
++			 * multiple times.
++			 */
+ 			cl = cops->find(sch, parentid);
+ 			cops->qlen_notify(sch, cl);
+ 		}
 -- 
 2.39.5
 
