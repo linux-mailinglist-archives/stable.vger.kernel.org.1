@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514F5AFD12B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:32:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C132AFD45F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37D2E424CD9
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:31:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAEE63AB590
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E342E54BA;
-	Tue,  8 Jul 2025 16:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5662D2E7196;
+	Tue,  8 Jul 2025 16:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHd2HNaB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8taP9yE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B4F2E5432;
-	Tue,  8 Jul 2025 16:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0701821C190;
+	Tue,  8 Jul 2025 16:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992289; cv=none; b=JvvHUl0SXXnqSSpTLz84LWgV+qi0ziHB+B2NA2hq0r4RaE+UKpWicGUwh6NhjfeDj6l9lxchdMCtBo5xQctgRhozv65RBhuizoftoersjk5GQwk8TFLWZKZ7FAojqm+tO6+LNaGHBO35SISRv/HjYQOf5PqZwkfNIVblXM8m9/c=
+	t=1751993993; cv=none; b=PiNYyk2mbgeftTjk1NzS9INCdUyMYU71arWpgU9ggwSBUoZfTrPI66DIy7pwG39bIdRf3YlSRATKYfmCTYv3S+13uvI33dDtzTHBFIri1o4A3sRF8MpH/9RVhP51YSwy109H1FCrna3Q5dytaCQUm7wPk34HfUWj7gkjSjDuyTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992289; c=relaxed/simple;
-	bh=a55HmOkHonpzLWWHtKxCxXJMEFyerS0J3qL4TrBkltg=;
+	s=arc-20240116; t=1751993993; c=relaxed/simple;
+	bh=5DED0EOSC0IR4xEeS/ex8H+jBrBEt69QUKLEAigCwLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PwOGW7Ar/+8qkJB4RdYvfpr6RCUXkwTvgIvHRqa7nMaCJWwKbs+saedmC72TNZR37/eM48EGErvgopQTba2E2lMx8hwaCBiXRYRkwYlY7vrEgdoukKbURAOKgGKG+xtoNjqltWd4XgiG0LSkuwn8lyNyO1wk0OUbdj5Y96jl3q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHd2HNaB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01282C4CEF0;
-	Tue,  8 Jul 2025 16:31:28 +0000 (UTC)
+	 MIME-Version; b=E090MSkQ7e4oN6YS3s5Q22xkw+yFZtLJKEsx+rL9mwy6ySjhAgLtpYmjc/J3okQveFoRVEr49yvoQc3WZob+zDibcoO0EJiCs21+7tTRIK/m+Xxo0SWj6qrV9sLlbAI6QkoGNH8VYtSyr3D9is+z55eDIRIt2XS0envYch2Zw0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8taP9yE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318B1C4CEED;
+	Tue,  8 Jul 2025 16:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992289;
-	bh=a55HmOkHonpzLWWHtKxCxXJMEFyerS0J3qL4TrBkltg=;
+	s=korg; t=1751993992;
+	bh=5DED0EOSC0IR4xEeS/ex8H+jBrBEt69QUKLEAigCwLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wHd2HNaBKXY1uwghuZfzhcMAiSHZblnH51iReCNhqxH9xLcDCYpkRRN5LJEqVTeAs
-	 ulJyl8/7AVBQLYLdmlxp0kBgCkpIs2CiYw+bctOXcKzTutp56S51v8orLx1CsRD9I3
-	 0hZiW9ciulzxIMg03S19yuXXq7sRU5O6GS724Jzs=
+	b=m8taP9yEL1GAFICyrlCczhimUVpbYAKz/j7itbx0PpIQkalfbcK/Kwzp3MICd0uxG
+	 tfwbQfUJsiVyQuWTcB0E2oNyQ9L9zHc1hcom9ICFO8hQyJDWv+lP2Dp7oe3lsG9KLo
+	 tuLAf/BCdOtnBFbz9pi5GOsmsea5xQX04plrE5Zw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	RD Babiera <rdbabiera@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 014/132] usb: typec: altmodes/displayport: do not index invalid pin_assignments
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 088/160] drm/amd/display: Add null pointer check for get_first_active_display()
 Date: Tue,  8 Jul 2025 18:22:05 +0200
-Message-ID: <20250708162231.152143725@linuxfoundation.org>
+Message-ID: <20250708162233.954100797@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit af4db5a35a4ef7a68046883bfd12468007db38f1 upstream.
+commit c3e9826a22027a21d998d3e64882fa377b613006 upstream.
 
-A poorly implemented DisplayPort Alt Mode port partner can indicate
-that its pin assignment capabilities are greater than the maximum
-value, DP_PIN_ASSIGN_F. In this case, calls to pin_assignment_show
-will cause a BRK exception due to an out of bounds array access.
+The function mod_hdcp_hdcp1_enable_encryption() calls the function
+get_first_active_display(), but does not check its return value.
+The return value is a null pointer if the display list is empty.
+This will lead to a null pointer dereference in
+mod_hdcp_hdcp2_enable_encryption().
 
-Prevent for loop in pin_assignment_show from accessing
-invalid values in pin_assignments by adding DP_PIN_ASSIGN_MAX
-value in typec_dp.h and using i < DP_PIN_ASSIGN_MAX as a loop
-condition.
+Add a null pointer check for get_first_active_display() and return
+MOD_HDCP_STATUS_DISPLAY_NOT_FOUND if the function return null.
 
-Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
-Cc: stable <stable@kernel.org>
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250618224943.3263103-2-rdbabiera@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2deade5ede56 ("drm/amd/display: Remove hdcp display state with mst fix")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # v5.8
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    2 +-
- include/linux/usb/typec_dp.h             |    1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -528,7 +528,7 @@ static ssize_t pin_assignment_show(struc
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+@@ -364,6 +364,9 @@ enum mod_hdcp_status mod_hdcp_hdcp1_enab
+ 	struct mod_hdcp_display *display = get_first_active_display(hdcp);
+ 	enum mod_hdcp_status status = MOD_HDCP_STATUS_SUCCESS;
  
- 	assignments = get_current_pin_assignments(dp);
- 
--	for (i = 0; assignments; assignments >>= 1, i++) {
-+	for (i = 0; assignments && i < DP_PIN_ASSIGN_MAX; assignments >>= 1, i++) {
- 		if (assignments & 1) {
- 			if (i == cur)
- 				len += sprintf(buf + len, "[%s] ",
---- a/include/linux/usb/typec_dp.h
-+++ b/include/linux/usb/typec_dp.h
-@@ -56,6 +56,7 @@ enum {
- 	DP_PIN_ASSIGN_D,
- 	DP_PIN_ASSIGN_E,
- 	DP_PIN_ASSIGN_F, /* Not supported after v1.0b */
-+	DP_PIN_ASSIGN_MAX,
- };
- 
- /* DisplayPort alt mode specific commands */
++	if (!display)
++		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
++
+ 	mutex_lock(&psp->hdcp_context.mutex);
+ 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
+ 	memset(hdcp_cmd, 0, sizeof(struct ta_hdcp_shared_memory));
 
 
 
