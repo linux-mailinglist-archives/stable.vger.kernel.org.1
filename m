@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-161057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A43AFD2E5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C029AFD45A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB79F7B17DA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:50:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC637188A7CD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC822E0411;
-	Tue,  8 Jul 2025 16:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579422E540D;
+	Tue,  8 Jul 2025 16:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwaCFWqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nADmwMXa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DE72DEA94;
-	Tue,  8 Jul 2025 16:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E552E6D2A;
+	Tue,  8 Jul 2025 16:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993472; cv=none; b=FE/PCfJM0fJDaZWxoTmhkiUQ+PY1a5zV/ALHSvLm2xmDUQmn2+BbuVsDt2mGQXcXRa5kFcOSO7/X2QNTdOgVLZ4F1PPVLac2hvjz2kNidLIPp8uqJmoADSCsGTd1ep24pQZgW5wvL4DGoH+NAWyaZmdndcWTfd69ukeNsXChCn8=
+	t=1751993984; cv=none; b=O+Wf7d4o19p08am+/z94Hyyf8pP/dOgDlaWiFd+ToxSN7ntCJmurBz1UX+X6K3oQVc3uHIdk2X+hkxOFXW4hKQbTca2fMWM1dRLmvIrnmDxVjnynSrr/LG6SbHUkKex7gBZ70r7xfSEM9Rkp+NTESrW7Hp8teo+7n1VSWp9efFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993472; c=relaxed/simple;
-	bh=fkANsOTaA92nYBJ+YSA7iv+karP6h0A4Y07boWwI22k=;
+	s=arc-20240116; t=1751993984; c=relaxed/simple;
+	bh=5B1ZyrtmtA40612pWnqOptVc1XGN6IRSZ2iqlpluKZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAw6aMd6/WOL68DbW1FzS6Kim6/TY0m3xKMOkzQ8/Zrt9Jx7wJzOQKPR5XA5PWEjT6PtjrZK4AYgoFFXby9gAII4YiQfirxioV+rc9nCD6cja3JtdRHwXxbO9paKycSjhrCdfHi580e5yT88YhNSrPeVjTgY4qrdkmlxdWflwNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwaCFWqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3324FC4CEED;
-	Tue,  8 Jul 2025 16:51:12 +0000 (UTC)
+	 MIME-Version; b=i7kqqKJHQ5ZhMtrmdQlGWLgbWhrEnxDyOTobYFMHbrBnMyTVGH0al5GSEU9rZJfFgBE3jxvv58iJoLtsOs90FIfK0rNWeYWr0+v17vN7KvP84tZpIV5M8zHkgaObIELztOCgGNrn6VIQE3vi41INjwimtJl4dLD4s4JFI1nqqZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nADmwMXa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A5AC4CEF5;
+	Tue,  8 Jul 2025 16:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993472;
-	bh=fkANsOTaA92nYBJ+YSA7iv+karP6h0A4Y07boWwI22k=;
+	s=korg; t=1751993983;
+	bh=5B1ZyrtmtA40612pWnqOptVc1XGN6IRSZ2iqlpluKZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RwaCFWqyJTT9P7eOahWGLZ7eLRBezc53rtFgqng6SBR/XOJ0iGeAHuINLGxFf0taa
-	 uKFaKQcML3FOAB3yPx3rxzlABJ59YSNn4V8IjSApwbL3GCf2BIdvJNR2sPlo/+3MNb
-	 VsPtYoLscdYK2wloRTng9KGRec3zhZ4OXzuero3E=
+	b=nADmwMXaZh4UMbl/udKFja4tyMAgeoV7Kr+H/C3g0qn1ZFTqCJ27Btaqbp7D5QsPu
+	 MpC5VCOk52RtUuNZHgHOCvmAxsPcbOZL0jFH1Mc+GQXUTp0sblekDkslnH0sOG1B9m
+	 DXJsHV5T3heMW1eXlV1dsOCiWB6NWLhOMykOKiK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 086/178] drm/bridge: aux-hpd-bridge: fix assignment of the of_node
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 5.15 086/160] drm/bridge: cdns-dsi: Check return value when getting default PHY config
 Date: Tue,  8 Jul 2025 18:22:03 +0200
-Message-ID: <20250708162238.926867350@linuxfoundation.org>
+Message-ID: <20250708162233.900786242@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Aradhya Bhatia <a-bhatia1@ti.com>
 
-[ Upstream commit e8537cad824065b0425fb0429e762e14a08067c2 ]
+commit c6a7ef0d4856b9629df390e9935d7fd67fe39f81 upstream.
 
-Perform fix similar to the one in the commit 85e444a68126 ("drm/bridge:
-Fix assignment of the of_node of the parent to aux bridge").
+Check for the return value of the phy_mipi_dphy_get_default_config()
+call, and in case of an error, return back the same.
 
-The assignment of the of_node to the aux HPD bridge needs to mark the
-of_node as reused, otherwise driver core will attempt to bind resources
-like pinctrl, which is going to fail as corresponding pins are already
-marked as used by the parent device.
-Fix that by using the device_set_of_node_from_dev() helper instead of
-assigning it directly.
-
-Fixes: e560518a6c2e ("drm/bridge: implement generic DP HPD bridge")
+Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
+Cc: stable@vger.kernel.org
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Link: https://lore.kernel.org/r/20250329113925.68204-5-aradhya.bhatia@linux.dev
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250608-fix-aud-hpd-bridge-v1-1-4641a6f8e381@oss.qualcomm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/aux-hpd-bridge.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/cdns-dsi.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/aux-hpd-bridge.c b/drivers/gpu/drm/bridge/aux-hpd-bridge.c
-index 48f297c78ee67..1ec4f16b9939d 100644
---- a/drivers/gpu/drm/bridge/aux-hpd-bridge.c
-+++ b/drivers/gpu/drm/bridge/aux-hpd-bridge.c
-@@ -64,10 +64,11 @@ struct auxiliary_device *devm_drm_dp_hpd_bridge_alloc(struct device *parent, str
- 	adev->id = ret;
- 	adev->name = "dp_hpd_bridge";
- 	adev->dev.parent = parent;
--	adev->dev.of_node = of_node_get(parent->of_node);
- 	adev->dev.release = drm_aux_hpd_bridge_release;
- 	adev->dev.platform_data = of_node_get(np);
+--- a/drivers/gpu/drm/bridge/cdns-dsi.c
++++ b/drivers/gpu/drm/bridge/cdns-dsi.c
+@@ -615,9 +615,11 @@ static int cdns_dsi_check_conf(struct cd
+ 	if (ret)
+ 		return ret;
  
-+	device_set_of_node_from_dev(&adev->dev, parent);
-+
- 	ret = auxiliary_device_init(adev);
- 	if (ret) {
- 		of_node_put(adev->dev.platform_data);
--- 
-2.39.5
-
+-	phy_mipi_dphy_get_default_config(mode_clock * 1000,
+-					 mipi_dsi_pixel_format_to_bpp(output->dev->format),
+-					 nlanes, phy_cfg);
++	ret = phy_mipi_dphy_get_default_config(mode_clock * 1000,
++					       mipi_dsi_pixel_format_to_bpp(output->dev->format),
++					       nlanes, phy_cfg);
++	if (ret)
++		return ret;
+ 
+ 	ret = cdns_dsi_adjust_phy_config(dsi, dsi_cfg, phy_cfg, mode, mode_valid_check);
+ 	if (ret)
 
 
 
