@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-161269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0063AFD3E9
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F58AFD147
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5B907B0CF5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:00:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCFD0488289
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC012E54DC;
-	Tue,  8 Jul 2025 17:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF941CAA85;
+	Tue,  8 Jul 2025 16:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X847xzWn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2u9pNKT5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7382DC34C;
-	Tue,  8 Jul 2025 17:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF9A2DECC4;
+	Tue,  8 Jul 2025 16:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994086; cv=none; b=KbyKBHHipw8xOXKwEuY0Zpk/XtVq/3I/Mo4aILYhUXZWFsBkf/jcuMyyInz/osqJeFWlZEvtvLHq1AHbofpPKYHScpWL42MOwvx1V0MCh2Ti9HG7ltJH48wKP9tv5FXlDeiqvDxRe4GF0Y4892FhfuNQx/r9P1dQimBWkUZUyJw=
+	t=1751992356; cv=none; b=Qd1KpJCakeGDOjhfGIKxcYksmsWXhYAzdRvvxljmlVch62NWCnDSiT+fKQSiW4tWYzVybvQ9jdnwVDkmxPtMB7NvIDDdysNClIEOmMWmey6uG/x84FJZk6MI8N419vWOMAkaikmCZI2mSN0z26S+ifH8DOWsyL3+riKxmxeZih4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994086; c=relaxed/simple;
-	bh=Z5uiSz/ySAFudavRDsqYEW+F85f2z1hV8YKk+rAUnkU=;
+	s=arc-20240116; t=1751992356; c=relaxed/simple;
+	bh=4cBebe0Dhq04ofStaXBqoaVm+hpn/a1TzidTI6IEYsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QFAyKkJZaR1h52gJWx1+faPw40Q8DX1LTSpnASlgUeqv+r/46BBXHwYcohHEs0x2HuqDI7Ji9dZwGFiAJTit2NJhp32mCNvG0xa/aCSnlM56UbpWpka5AhJf5VMri5zr/QKzWbOI+LzwJB9kcMdof56cLlT8Me3uLaOFjRBfw0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X847xzWn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689B5C4CEED;
-	Tue,  8 Jul 2025 17:01:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jIbbioOSO3aIDq54cymzk+JD+3o4QPy++I9bfCdnNIBd/AnZ5vtAca0sAHp03n/noXR2jDYngKpWpbcpu/lTPCh0YihmN5yY4dKH2cTHg+IdzEGqlEDa5y4BEVF8MWB+1IQt3klNWDrv/nOWNgHqBu39whd17Kbr4uzets+1JMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2u9pNKT5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991EBC4CEED;
+	Tue,  8 Jul 2025 16:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994085;
-	bh=Z5uiSz/ySAFudavRDsqYEW+F85f2z1hV8YKk+rAUnkU=;
+	s=korg; t=1751992356;
+	bh=4cBebe0Dhq04ofStaXBqoaVm+hpn/a1TzidTI6IEYsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X847xzWnD0wlibwkRruHQ+h1gf7C5Frvh+sXr7wsGCYtV29FNbl4JQFmpFeultAq2
-	 qGiUyXykinQfDHrRvD2QvzWK8KV985ENM5wpOnG4E2z11FE4aApO8yGg6li7mxQ+X2
-	 a/SxqrivU3ocKb+WT1C7eQYrsR+sqoXKHMM9or2E=
+	b=2u9pNKT5DMt2edBdVX21URDXP61RniS3Ijkeqb8XMl/tO6D1JGI7GNX/dWEAHkpbk
+	 YczcUCZ+WUQw+1dWAoiclYIo4ufphBDhJbWW6J+ndq6sK3kHRSxt1b2zQ4XAyCcpq9
+	 M9kOikaH7Sonv79Rm1mm+xw6APHwRB4Ff5gA3t1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 120/160] lib: test_objagg: Set error message in check_expect_hints_stats()
+Subject: [PATCH 6.6 046/132] platform/x86: think-lmi: Directly use firmware_attributes_class
 Date: Tue,  8 Jul 2025 18:22:37 +0200
-Message-ID: <20250708162234.771525984@linuxfoundation.org>
+Message-ID: <20250708162232.015775908@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit e6ed134a4ef592fe1fd0cafac9683813b3c8f3e8 ]
+[ Upstream commit 55922403807a12d4f96c67ba01a920edfb6f2633 ]
 
-Smatch complains that the error message isn't set in the caller:
+The usage of the lifecycle functions is not necessary anymore.
 
-    lib/test_objagg.c:923 test_hints_case2()
-    error: uninitialized symbol 'errmsg'.
-
-This static checker warning only showed up after a recent refactoring
-but the bug dates back to when the code was originally added.  This
-likely doesn't affect anything in real life.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202506281403.DsuyHFTZ-lkp@intel.com/
-Fixes: 0a020d416d0a ("lib: introduce initial implementation of object aggregation manager")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/8548f423-2e3b-4bb7-b816-5041de2762aa@sabinyo.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20250104-firmware-attributes-simplify-v1-3-949f9709e405@weissschuh.net
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 5ff1fbb30597 ("platform/x86: think-lmi: Fix class device unregistration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_objagg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/platform/x86/think-lmi.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/lib/test_objagg.c b/lib/test_objagg.c
-index da137939a4100..78d25ab19a960 100644
---- a/lib/test_objagg.c
-+++ b/lib/test_objagg.c
-@@ -899,8 +899,10 @@ static int check_expect_hints_stats(struct objagg_hints *objagg_hints,
- 	int err;
+diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
+index 3a496c615ce6b..f0efa60cf8ee2 100644
+--- a/drivers/platform/x86/think-lmi.c
++++ b/drivers/platform/x86/think-lmi.c
+@@ -195,7 +195,6 @@ static const char * const level_options[] = {
+ 	[TLMI_LEVEL_MASTER] = "master",
+ };
+ static struct think_lmi tlmi_priv;
+-static const struct class *fw_attr_class;
+ static DEFINE_MUTEX(tlmi_mutex);
  
- 	stats = objagg_hints_stats_get(objagg_hints);
--	if (IS_ERR(stats))
-+	if (IS_ERR(stats)) {
-+		*errmsg = "objagg_hints_stats_get() failed.";
- 		return PTR_ERR(stats);
-+	}
- 	err = __check_expect_stats(stats, expect_stats, errmsg);
- 	objagg_stats_put(stats);
- 	return err;
+ /* ------ Utility functions ------------*/
+@@ -1272,11 +1271,7 @@ static int tlmi_sysfs_init(void)
+ {
+ 	int i, ret;
+ 
+-	ret = fw_attributes_class_get(&fw_attr_class);
+-	if (ret)
+-		return ret;
+-
+-	tlmi_priv.class_dev = device_create(fw_attr_class, NULL, MKDEV(0, 0),
++	tlmi_priv.class_dev = device_create(&firmware_attributes_class, NULL, MKDEV(0, 0),
+ 			NULL, "%s", "thinklmi");
+ 	if (IS_ERR(tlmi_priv.class_dev)) {
+ 		ret = PTR_ERR(tlmi_priv.class_dev);
+@@ -1385,9 +1380,8 @@ static int tlmi_sysfs_init(void)
+ fail_create_attr:
+ 	tlmi_release_attr();
+ fail_device_created:
+-	device_destroy(fw_attr_class, MKDEV(0, 0));
++	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
+ fail_class_created:
+-	fw_attributes_class_put();
+ 	return ret;
+ }
+ 
+@@ -1610,8 +1604,7 @@ static int tlmi_analyze(void)
+ static void tlmi_remove(struct wmi_device *wdev)
+ {
+ 	tlmi_release_attr();
+-	device_destroy(fw_attr_class, MKDEV(0, 0));
+-	fw_attributes_class_put();
++	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
+ }
+ 
+ static int tlmi_probe(struct wmi_device *wdev, const void *context)
 -- 
 2.39.5
 
