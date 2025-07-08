@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-160664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF68AFD138
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AFCDAFD4A0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE504581FC0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4794423DAC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756482E339D;
-	Tue,  8 Jul 2025 16:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78562E6D2C;
+	Tue,  8 Jul 2025 17:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvQK5Uog"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E13wUXfE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265A02E0910;
-	Tue,  8 Jul 2025 16:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A3C2E6D26;
+	Tue,  8 Jul 2025 17:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992329; cv=none; b=nqQH+QclVDseruCpzgaNrIH4fnr6eiOfiKzqUqyDkNPbLKNiJKud8+8cn79Hva6wbJ7eT9V7LI4dh4T1p4R39WXM+kMm9l2rVxLhoZDdkWL9REXdTWwyAAFWYSUgQ1fiithIzq1QIseH4gJ3Rn4Y0InmqyAnRmrcxC5FwAi6WU4=
+	t=1751994112; cv=none; b=C6hCnsO062631ncMNPXIKkPgpktMZMCBErLRyolBNCbGBIYw/lm02FkrzQ6cwy9ylYqRbPSaXTBE1Gnvl4s9S9nQ5da5epEeMgWIwJbtlpuvkXwdcg9T7ygl/0O41ip0qjKftdts7QpoIoiYzrHmDrzqgeUHNWsYMyVKh+YqyrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992329; c=relaxed/simple;
-	bh=wdXx79mwa0HtlKhBulvxZSlk1EW9VTmEWzp7oVNFXhs=;
+	s=arc-20240116; t=1751994112; c=relaxed/simple;
+	bh=k24SWQRlYMxrIoK7TFkIg+CQ/MQheAszvPTB59hQxgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KqzZjcEU1gU4Ysn1hgEdICpNkCYnsyJ+JYVtZVXlqGnY6+o/9aw9++/aB0RlW6mqqBDOto3IRAPY6hgyL9TcCXF7K6w0eXCzYXlCULg+U7OdtvcsT+49m3IyG1JRwTf0+WHuV/jjKFDe0ylNUohi8D+0b1XNciLvk/HTV8hTB0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvQK5Uog; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F50C4CEED;
-	Tue,  8 Jul 2025 16:32:08 +0000 (UTC)
+	 MIME-Version; b=YuB4MqYbrtMZz9Rh33uXXCfE+X8Nq7myisDcwCBqNVOrD9FDE6LExUcp99FPGK8YONSrOBkzlwgWnH2QmQPDj+Dbmu7vyJyd1A4CGCKdqBtpUpWGa6Z1c1w/EYw6aPNvws5CSw4+BxSFQXk+Pzn2BiBJRQt0FlgiGK9Ipdfd0ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E13wUXfE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEA5C4CEF5;
+	Tue,  8 Jul 2025 17:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992329;
-	bh=wdXx79mwa0HtlKhBulvxZSlk1EW9VTmEWzp7oVNFXhs=;
+	s=korg; t=1751994112;
+	bh=k24SWQRlYMxrIoK7TFkIg+CQ/MQheAszvPTB59hQxgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GvQK5Uog5yjetC1ejlfE1yuV4clN4pfhEkJ4vhEniwCl355hjdF2lW4oruwQnzr4I
-	 edF2SRWGbp5HYpqZL8CVUVMDvho9brJUJpC/kty1tznf33As48hy9nbAkFb/XtyWUV
-	 sVIv2OBK2z6az95b2Zt1sRH/BvmDoRAbCO0uRiUY=
+	b=E13wUXfEENhGRJmR/WpzySOS9DdHFjybI/Hw6fRTbx3Ukxk6IeQ4zOeHXU5JW3vKo
+	 h8yU1gxjyuKhqpJ12hjMaZpP7Nd2dfZsViUD/effJiUU+zQ9IvLf8T1qBdt9mRUns7
+	 Puk2BNMweTIDSfjxeNw5Dooa4CC0omu+T/VEKKSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/132] igc: disable L1.2 PCI-E link substate to avoid performance issue
+Subject: [PATCH 5.15 129/160] ata: pata_cs5536: fix build on 32-bit UML
 Date: Tue,  8 Jul 2025 18:22:46 +0200
-Message-ID: <20250708162232.269428071@linuxfoundation.org>
+Message-ID: <20250708162234.982717111@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 0325143b59c6c6d79987afc57d2456e7a20d13b7 ]
+[ Upstream commit fe5b391fc56f77cf3c22a9dd4f0ce20db0e3533f ]
 
-I226 devices advertise support for the PCI-E link L1.2 substate. However,
-due to a hardware limitation, the exit latency from this low-power state
-is longer than the packet buffer can tolerate under high traffic
-conditions. This can lead to packet loss and degraded performance.
+On 32-bit ARCH=um, CONFIG_X86_32 is still defined, so it
+doesn't indicate building on real X86 machines. There's
+no MSR on UML though, so add a check for CONFIG_X86.
 
-To mitigate this, disable the L1.2 substate. The increased power draw
-between L1.1 and L1.2 is insignificant.
-
-Fixes: 43546211738e ("igc: Add new device ID's")
-Link: https://lore.kernel.org/intel-wired-lan/15248b4f-3271-42dd-8e35-02bfc92b25e1@intel.com
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://lore.kernel.org/r/20250606090110.15784-2-johannes@sipsolutions.net
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/ata/pata_cs5536.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index e2f5c4384455e..11543db4c47f0 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6772,6 +6772,10 @@ static int igc_probe(struct pci_dev *pdev,
- 	adapter->port_num = hw->bus.func;
- 	adapter->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
+diff --git a/drivers/ata/pata_cs5536.c b/drivers/ata/pata_cs5536.c
+index 760ac6e65216f..3737d1bf1539d 100644
+--- a/drivers/ata/pata_cs5536.c
++++ b/drivers/ata/pata_cs5536.c
+@@ -27,7 +27,7 @@
+ #include <scsi/scsi_host.h>
+ #include <linux/dmi.h>
  
-+	/* Disable ASPM L1.2 on I226 devices to avoid packet loss */
-+	if (igc_is_device_id_i226(hw))
-+		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
-+
- 	err = pci_save_state(pdev);
- 	if (err)
- 		goto err_ioremap;
-@@ -7144,6 +7148,9 @@ static int __maybe_unused igc_resume(struct device *dev)
- 	pci_enable_wake(pdev, PCI_D3hot, 0);
- 	pci_enable_wake(pdev, PCI_D3cold, 0);
- 
-+	if (igc_is_device_id_i226(hw))
-+		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
-+
- 	if (igc_init_interrupt_scheme(adapter, true)) {
- 		netdev_err(netdev, "Unable to allocate memory for queues\n");
- 		return -ENOMEM;
-@@ -7259,6 +7266,9 @@ static pci_ers_result_t igc_io_slot_reset(struct pci_dev *pdev)
- 		pci_enable_wake(pdev, PCI_D3hot, 0);
- 		pci_enable_wake(pdev, PCI_D3cold, 0);
- 
-+		if (igc_is_device_id_i226(hw))
-+			pci_disable_link_state_locked(pdev, PCIE_LINK_STATE_L1_2);
-+
- 		/* In case of PCI error, adapter loses its HW address
- 		 * so we should re-assign it here.
- 		 */
+-#ifdef CONFIG_X86_32
++#if defined(CONFIG_X86) && defined(CONFIG_X86_32)
+ #include <asm/msr.h>
+ static int use_msr;
+ module_param_named(msr, use_msr, int, 0644);
 -- 
 2.39.5
 
