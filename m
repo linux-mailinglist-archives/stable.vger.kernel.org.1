@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-161102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2FAAFD364
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF68AFD138
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97214487AAF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:52:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE504581FC0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC2F2DAFA3;
-	Tue,  8 Jul 2025 16:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756482E339D;
+	Tue,  8 Jul 2025 16:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQaRe3E+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvQK5Uog"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A7F2F37;
-	Tue,  8 Jul 2025 16:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265A02E0910;
+	Tue,  8 Jul 2025 16:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993598; cv=none; b=bdjI0I734dirwkzEGbteDIH7zErUmWznnZ3IMFFGkUPcLjuWqXP3ehrwFjHyJg6KNU84RFeBIE9RwTczChykEX+8tYf2ZG3GiOwcw+SjjAymDSTWazGkOAhTfyA4VIkteE2U0bPRYDwrmVK6AnK5G/aw4LK1iFBV854+ep1vYBU=
+	t=1751992329; cv=none; b=nqQH+QclVDseruCpzgaNrIH4fnr6eiOfiKzqUqyDkNPbLKNiJKud8+8cn79Hva6wbJ7eT9V7LI4dh4T1p4R39WXM+kMm9l2rVxLhoZDdkWL9REXdTWwyAAFWYSUgQ1fiithIzq1QIseH4gJ3Rn4Y0InmqyAnRmrcxC5FwAi6WU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993598; c=relaxed/simple;
-	bh=IALXQ+mEonLEsqHu4XDPXe0ZO6CQ4ALBMBmbcOUqb5U=;
+	s=arc-20240116; t=1751992329; c=relaxed/simple;
+	bh=wdXx79mwa0HtlKhBulvxZSlk1EW9VTmEWzp7oVNFXhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eNK76vfx8nM7sGuC/0hDT47IwKWgHeDvA2BFqGfesdV63lED8sKGDN1XbcTmOn5iBVszBAkCAUzTeewumyb7PPXaWUF5Coieu1IkGGPvLrP34riLULVlWwLSzod8l6bqWPJ0bt4SZOYX1Rq1JiQnv8YdNKZt/AbVfRKHQyCKLZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQaRe3E+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12837C4CEED;
-	Tue,  8 Jul 2025 16:53:17 +0000 (UTC)
+	 MIME-Version; b=KqzZjcEU1gU4Ysn1hgEdICpNkCYnsyJ+JYVtZVXlqGnY6+o/9aw9++/aB0RlW6mqqBDOto3IRAPY6hgyL9TcCXF7K6w0eXCzYXlCULg+U7OdtvcsT+49m3IyG1JRwTf0+WHuV/jjKFDe0ylNUohi8D+0b1XNciLvk/HTV8hTB0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvQK5Uog; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F50C4CEED;
+	Tue,  8 Jul 2025 16:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993598;
-	bh=IALXQ+mEonLEsqHu4XDPXe0ZO6CQ4ALBMBmbcOUqb5U=;
+	s=korg; t=1751992329;
+	bh=wdXx79mwa0HtlKhBulvxZSlk1EW9VTmEWzp7oVNFXhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQaRe3E+fMrkSaRukgVkkKxZ++vAjzjJRjkDww5VSKyFkoLFk8K3EmQLuPoGYJGke
-	 OFgQq0lNg1cj2SHxouBRxOrbihlYPUi/iMQ82TSAr4GPURfW3alABCmodU0SQ7S5Ts
-	 O90fF4UpCSyVwbS5j+8ZcY0GS5+1jAOSpY6QecOw=
+	b=GvQK5Uog5yjetC1ejlfE1yuV4clN4pfhEkJ4vhEniwCl355hjdF2lW4oruwQnzr4I
+	 edF2SRWGbp5HYpqZL8CVUVMDvho9brJUJpC/kty1tznf33As48hy9nbAkFb/XtyWUV
+	 sVIv2OBK2z6az95b2Zt1sRH/BvmDoRAbCO0uRiUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raoul <ein4rth@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 129/178] platform/x86/amd/pmc: Add PCSpecialist Lafite Pro V 14M to 8042 quirks list
+Subject: [PATCH 6.6 055/132] igc: disable L1.2 PCI-E link substate to avoid performance issue
 Date: Tue,  8 Jul 2025 18:22:46 +0200
-Message-ID: <20250708162239.944022468@linuxfoundation.org>
+Message-ID: <20250708162232.269428071@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-[ Upstream commit 9ba75ccad85708c5a484637dccc1fc59295b0a83 ]
+[ Upstream commit 0325143b59c6c6d79987afc57d2456e7a20d13b7 ]
 
-Every other s2idle cycle fails to reach hardware sleep when keyboard
-wakeup is enabled.  This appears to be an EC bug, but the vendor
-refuses to fix it.
+I226 devices advertise support for the PCI-E link L1.2 substate. However,
+due to a hardware limitation, the exit latency from this low-power state
+is longer than the packet buffer can tolerate under high traffic
+conditions. This can lead to packet loss and degraded performance.
 
-It was confirmed that turning off i8042 wakeup avoids ths issue
-(albeit keyboard wakeup is disabled).  Take the lesser of two evils
-and add it to the i8042 quirk list.
+To mitigate this, disable the L1.2 substate. The increased power draw
+between L1.1 and L1.2 is insignificant.
 
-Reported-by: Raoul <ein4rth@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220116
-Tested-by: Raoul <ein4rth@gmail.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20250611203341.3733478-1-superm1@kernel.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 43546211738e ("igc: Add new device ID's")
+Link: https://lore.kernel.org/intel-wired-lan/15248b4f-3271-42dd-8e35-02bfc92b25e1@intel.com
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index 2e3f6fc67c568..7ed12c1d3b34c 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -224,6 +224,15 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "WUJIE14-GX4HRXL"),
- 		}
- 	},
-+	/* https://bugzilla.kernel.org/show_bug.cgi?id=220116 */
-+	{
-+		.ident = "PCSpecialist Lafite Pro V 14M",
-+		.driver_data = &quirk_spurious_8042,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "PCSpecialist"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Lafite Pro V 14M"),
-+		}
-+	},
- 	{}
- };
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index e2f5c4384455e..11543db4c47f0 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -6772,6 +6772,10 @@ static int igc_probe(struct pci_dev *pdev,
+ 	adapter->port_num = hw->bus.func;
+ 	adapter->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
  
++	/* Disable ASPM L1.2 on I226 devices to avoid packet loss */
++	if (igc_is_device_id_i226(hw))
++		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
++
+ 	err = pci_save_state(pdev);
+ 	if (err)
+ 		goto err_ioremap;
+@@ -7144,6 +7148,9 @@ static int __maybe_unused igc_resume(struct device *dev)
+ 	pci_enable_wake(pdev, PCI_D3hot, 0);
+ 	pci_enable_wake(pdev, PCI_D3cold, 0);
+ 
++	if (igc_is_device_id_i226(hw))
++		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
++
+ 	if (igc_init_interrupt_scheme(adapter, true)) {
+ 		netdev_err(netdev, "Unable to allocate memory for queues\n");
+ 		return -ENOMEM;
+@@ -7259,6 +7266,9 @@ static pci_ers_result_t igc_io_slot_reset(struct pci_dev *pdev)
+ 		pci_enable_wake(pdev, PCI_D3hot, 0);
+ 		pci_enable_wake(pdev, PCI_D3cold, 0);
+ 
++		if (igc_is_device_id_i226(hw))
++			pci_disable_link_state_locked(pdev, PCIE_LINK_STATE_L1_2);
++
+ 		/* In case of PCI error, adapter loses its HW address
+ 		 * so we should re-assign it here.
+ 		 */
 -- 
 2.39.5
 
