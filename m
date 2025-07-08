@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-161318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AF1AFD49D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:07:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC478AFD13A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6302516B7DD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:04:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BB691C2250B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC282E5B19;
-	Tue,  8 Jul 2025 17:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C92A2E49A8;
+	Tue,  8 Jul 2025 16:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOmQxfO2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVxRx/I9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1A52E5B04;
-	Tue,  8 Jul 2025 17:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0721DF74F;
+	Tue,  8 Jul 2025 16:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994228; cv=none; b=FRVauWOw70UcbLbELXtaVjqTWtSQpTUHuL44QbfXE2HkXqSnR7p/e18Dp3eIhSrZ1xVJqpqVyqgoY/MFXUxbIrhRMJ8DG5Nu8x874UgBkyuwLJKcG9T9gvpYAE7ks7mNREGJi6mfzOWiJ8fr3dE808zWlWWKU2MOZC9dH+5Ie+8=
+	t=1751992341; cv=none; b=Bst7YagFWRD6vghTNm4FwmhRGDU21CFOABNJhDnLLthjr3DjbPO3pSOx2L2EBqdVXYck5oDkIn3TMB7kHaYlxV0whTTeOX86SYkYbclrYy9er5jPzHuPM39THdL/nvAEYSkPIdsHVGxbuLEaGcopY6K1huziaFw1W1SkZZQCevE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994228; c=relaxed/simple;
-	bh=eOCd0SgkDWiP0j2dKlfYcAYHph9eJJQ1NQAhFvNL+38=;
+	s=arc-20240116; t=1751992341; c=relaxed/simple;
+	bh=s9sn/Ag5Th6v5EPfDPZucpMTj0QVEOj2FwpOPFflQ+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b3JKimEh1UNkSKZHEtQvQtGEc/QXhhHUYkGQgRK6ef7PoGUnMihMuOhmbTG3R+jXo+vP8Nz9NA5cWp21LxAG6Oj1lgO15mM0FzCrtEXpdg/p+xwcSLK68+h07rgHUliElOdzI0IOq1cIrWsppoSsheapFQGkL3xzPHkGJO0gv9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOmQxfO2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31998C4CEF6;
-	Tue,  8 Jul 2025 17:03:48 +0000 (UTC)
+	 MIME-Version; b=rdbfhV8Djfhs1ScA8dpKxJzAS8eQVVJkFbgmQIgHEJ8oy5Kki37s47ixjWd9Tf+S1sfSF6Ovq6SUmjFvxUsYBRff598BLaG1nnm5ie4xtdp6+Cn9kNxoQAhbFhlttfdPg6HXuHY2YG/3UsBbhyI2hw8yoh9o7hBagwY2OfEh+FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVxRx/I9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADCFC4CEED;
+	Tue,  8 Jul 2025 16:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994228;
-	bh=eOCd0SgkDWiP0j2dKlfYcAYHph9eJJQ1NQAhFvNL+38=;
+	s=korg; t=1751992340;
+	bh=s9sn/Ag5Th6v5EPfDPZucpMTj0QVEOj2FwpOPFflQ+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOmQxfO2knQjpx9LLkMQ/e2bT2oi1P2WS4YceiRIX0WUdAbamrBe1jqBz761EkQs6
-	 qOOrb98v0M+u7LEDYJAUnQ1fF163kZM3rVmyJRIcPPGcl3+TTEOs2pLDFhPzg7gbMe
-	 VgBZHMeu8NZREpslwS7kDCORHeMOvXELs8i70F/k=
+	b=yVxRx/I9QgDA5uki8C6ltRJyiFx1E9JJ1RCFsz2ylabZ8IrOVJLWuH0vkOLvaXqZX
+	 04OQrAq/6ooi7JD41pG8++/ii4xtRNfXhbRG+sOTwBAx+xjN7iIXMF26PG/Tr+LIzA
+	 4IGbhdys7sZyt3ibWBT4Ar0pFWlXp4zpTI7HL4Xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com,
+	Kohei Enju <enjuk@amazon.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 133/160] wifi: ath6kl: remove WARN on bad firmware input
+Subject: [PATCH 6.6 059/132] rose: fix dangling neighbour pointers in rose_rt_device_down()
 Date: Tue,  8 Jul 2025 18:22:50 +0200
-Message-ID: <20250708162235.081415349@linuxfoundation.org>
+Message-ID: <20250708162232.384700156@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit e7417421d89358da071fd2930f91e67c7128fbff ]
+[ Upstream commit 34a500caf48c47d5171f4aa1f237da39b07c6157 ]
 
-If the firmware gives bad input, that's nothing to do with
-the driver's stack at this point etc., so the WARN_ON()
-doesn't add any value. Additionally, this is one of the
-top syzbot reports now. Just print a message, and as an
-added bonus, print the sizes too.
+There are two bugs in rose_rt_device_down() that can cause
+use-after-free:
 
-Reported-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
-Tested-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
-Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250617114529.031a677a348e.I58bf1eb4ac16a82c546725ff010f3f0d2b0cca49@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+1. The loop bound `t->count` is modified within the loop, which can
+   cause the loop to terminate early and miss some entries.
+
+2. When removing an entry from the neighbour array, the subsequent entries
+   are moved up to fill the gap, but the loop index `i` is still
+   incremented, causing the next entry to be skipped.
+
+For example, if a node has three neighbours (A, A, B) with count=3 and A
+is being removed, the second A is not checked.
+
+    i=0: (A, A, B) -> (A, B) with count=2
+          ^ checked
+    i=1: (A, B)    -> (A, B) with count=2
+             ^ checked (B, not A!)
+    i=2: (doesn't occur because i < count is false)
+
+This leaves the second A in the array with count=2, but the rose_neigh
+structure has been freed. Code that accesses these entries assumes that
+the first `count` entries are valid pointers, causing a use-after-free
+when it accesses the dangling pointer.
+
+Fix both issues by iterating over the array in reverse order with a fixed
+loop bound. This ensures that all entries are examined and that the removal
+of an entry doesn't affect subsequent iterations.
+
+Reported-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e04e2c007ba2c80476cb
+Tested-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250629030833.6680-1-enjuk@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath6kl/bmi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/rose/rose_route.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/bmi.c b/drivers/net/wireless/ath/ath6kl/bmi.c
-index af98e871199d3..5a9e93fd1ef42 100644
---- a/drivers/net/wireless/ath/ath6kl/bmi.c
-+++ b/drivers/net/wireless/ath/ath6kl/bmi.c
-@@ -87,7 +87,9 @@ int ath6kl_bmi_get_target_info(struct ath6kl *ar,
- 		 * We need to do some backwards compatibility to make this work.
- 		 */
- 		if (le32_to_cpu(targ_info->byte_count) != sizeof(*targ_info)) {
--			WARN_ON(1);
-+			ath6kl_err("mismatched byte count %d vs. expected %zd\n",
-+				   le32_to_cpu(targ_info->byte_count),
-+				   sizeof(*targ_info));
- 			return -EINVAL;
- 		}
+diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
+index fee772b4637c8..a7054546f52df 100644
+--- a/net/rose/rose_route.c
++++ b/net/rose/rose_route.c
+@@ -497,22 +497,15 @@ void rose_rt_device_down(struct net_device *dev)
+ 			t         = rose_node;
+ 			rose_node = rose_node->next;
  
+-			for (i = 0; i < t->count; i++) {
++			for (i = t->count - 1; i >= 0; i--) {
+ 				if (t->neighbour[i] != s)
+ 					continue;
+ 
+ 				t->count--;
+ 
+-				switch (i) {
+-				case 0:
+-					t->neighbour[0] = t->neighbour[1];
+-					fallthrough;
+-				case 1:
+-					t->neighbour[1] = t->neighbour[2];
+-					break;
+-				case 2:
+-					break;
+-				}
++				memmove(&t->neighbour[i], &t->neighbour[i + 1],
++					sizeof(t->neighbour[0]) *
++						(t->count - i));
+ 			}
+ 
+ 			if (t->count <= 0)
 -- 
 2.39.5
 
