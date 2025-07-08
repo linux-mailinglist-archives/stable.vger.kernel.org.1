@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-160964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E6DAFD2C6
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D836AFD18D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1BC5421A3A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:46:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17D761BC2BDF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D4C21C190;
-	Tue,  8 Jul 2025 16:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0AD2E2F0E;
+	Tue,  8 Jul 2025 16:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+bunXNx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0giuieg0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AFC23DE;
-	Tue,  8 Jul 2025 16:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B111548C;
+	Tue,  8 Jul 2025 16:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993204; cv=none; b=iGiaD9AnzjKVqsgBCt9V2pZ4kDMncdERfCVEa04tTSNW0AxjdOxFcmj/GZImCM2+b7FTM3Ge85CNZlwlQbazvlkkPkEbb2o26Gl7s7ukKONutnURdbUERjdjxCcwvoNjsT6cXxbNosScJrF0pdgl0Nafc5wGo/1nAI3zK8EChXs=
+	t=1751992492; cv=none; b=EkXzMa8rQlFkQvxB+UCy+agx66/f8u/sy0Wp2xhfBmvMgmYsZxu4w8VnDegRVDZdU3BT5KhMPRJ+7ywS2/l311v80dgIFAGzQW/BdH8e8x6ja+djF2kNj4U8MIsP695jAJ2f6H0k5MK7md2Spnb+OVjrA0+Xt2EP106TNVd3N7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993204; c=relaxed/simple;
-	bh=gVLLepaXIbkUho/SP9VRmjje0JKInA4O7GiTWXV3xdA=;
+	s=arc-20240116; t=1751992492; c=relaxed/simple;
+	bh=fKHrjSvrufbWNac6nbI0vZo0ACe8+d8zJB1XulStKvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k5GviGMYF5ymd2qQQemH6TKRqgTsUS56mnStIqiKwKbLJU4164RHOa0WBzaQEn++SYQYsZzZrydlq4izieLRdPM7+e0BujxiXtUzXldB/DN5HbfuJGUERk5VXstd3VTIRHDmRJ/4Z5Sdd1x9i9sPquNJPXz7n9okISou/RJBKDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+bunXNx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F841C4CEED;
-	Tue,  8 Jul 2025 16:46:43 +0000 (UTC)
+	 MIME-Version; b=OMnJVt0R/Ps/DrWi2s8mTEQeZp7X+i5kAjEft/mFxSaGh+hfpXrZAb24gWvmnE4463r47poHIfzKujrSAh0mo+Nv91XWglZcyCbeIq5FeIu/aHgXOlrlUwKIhZ9NOyyXLT9hTzmFhQ5Pzpf0KILsYnOGLmMu3l3KpvYm0GFXSLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0giuieg0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CDAC4CEED;
+	Tue,  8 Jul 2025 16:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993204;
-	bh=gVLLepaXIbkUho/SP9VRmjje0JKInA4O7GiTWXV3xdA=;
+	s=korg; t=1751992492;
+	bh=fKHrjSvrufbWNac6nbI0vZo0ACe8+d8zJB1XulStKvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+bunXNxomi+GhSWS9/2Pe99T20I95rgiAzFZkL+Ef6bImerJqL90DAFLvLnQgqyu
-	 dmgA1b/jCzPTdxXnkfgXKEDh2oQNo3ByuUUOD255gXi+RHIFThdDpIxQLt1rNSFMiy
-	 aqFwpBtWr/HNVqpmQvKraU/Y+6M4jC5AMUQj6AHQ=
+	b=0giuieg0ftiQpdQdDU56xc37OD5Xk7vDSy6CkhuitKT5ti9bdCAE0T/VQryY9wOKV
+	 sHfuYIbU5AVlHfa4QwOamDvB3rY3bkF/SKKoo3NZWmHqfc0sFk6KA40SdLdHfTEwYT
+	 OLX5Z8fz1656I3GlnT2TlJFs+CTsQKrxsaIrPLEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Kurt Borja <kuurtb@gmail.com>
-Subject: [PATCH 6.12 223/232] platform/x86: think-lmi: Fix sysfs group cleanup
+	Julian Ruess <julianr@linux.ibm.com>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 108/132] s390/pci: Fix stale function handles in error handling
 Date: Tue,  8 Jul 2025 18:23:39 +0200
-Message-ID: <20250708162247.266850727@linuxfoundation.org>
+Message-ID: <20250708162233.754242912@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,160 +63,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-commit 4f30f946f27b7f044cf8f3f1f353dee1dcd3517a upstream.
+[ Upstream commit 45537926dd2aaa9190ac0fac5a0fbeefcadfea95 ]
 
-Many error paths in tlmi_sysfs_init() lead to sysfs groups being removed
-when they were not even created.
+The error event information for PCI error events contains a function
+handle for the respective function. This handle is generally captured at
+the time the error event was recorded. Due to delays in processing or
+cascading issues, it may happen that during firmware recovery multiple
+events are generated. When processing these events in order Linux may
+already have recovered an affected function making the event information
+stale. Fix this by doing an unconditional CLP List PCI function
+retrieving the current function handle with the zdev->state_lock held
+and ignoring the event if its function handle is stale.
 
-Fix this by letting the kobject core manage these groups through their
-kobj_type's defult_groups.
-
-Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250630-lmi-fix-v3-3-ce4f81c9c481@gmail.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
+Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
+Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
+Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/think-lmi.c |   43 +++------------------------------------
- 1 file changed, 4 insertions(+), 39 deletions(-)
+ arch/s390/pci/pci_event.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/platform/x86/think-lmi.c
-+++ b/drivers/platform/x86/think-lmi.c
-@@ -906,6 +906,7 @@ static const struct attribute_group auth
- 	.is_visible = auth_attr_is_visible,
- 	.attrs = auth_attrs,
- };
-+__ATTRIBUTE_GROUPS(auth_attr);
+diff --git a/arch/s390/pci/pci_event.c b/arch/s390/pci/pci_event.c
+index d969f36bf186f..fd83588f3c11d 100644
+--- a/arch/s390/pci/pci_event.c
++++ b/arch/s390/pci/pci_event.c
+@@ -257,6 +257,8 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
+ 	struct zpci_dev *zdev = get_zdev_by_fid(ccdf->fid);
+ 	struct pci_dev *pdev = NULL;
+ 	pci_ers_result_t ers_res;
++	u32 fh = 0;
++	int rc;
  
- /* ---- Attributes sysfs --------------------------------------------------------- */
- static ssize_t display_name_show(struct kobject *kobj, struct kobj_attribute *attr,
-@@ -1121,6 +1122,7 @@ static const struct attribute_group tlmi
- 	.is_visible = attr_is_visible,
- 	.attrs = tlmi_attrs,
- };
-+__ATTRIBUTE_GROUPS(tlmi_attr);
+ 	zpci_dbg(3, "err fid:%x, fh:%x, pec:%x\n",
+ 		 ccdf->fid, ccdf->fh, ccdf->pec);
+@@ -264,6 +266,16 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
+ 	zpci_err_hex(ccdf, sizeof(*ccdf));
  
- static void tlmi_attr_setting_release(struct kobject *kobj)
- {
-@@ -1140,11 +1142,13 @@ static void tlmi_pwd_setting_release(str
- static const struct kobj_type tlmi_attr_setting_ktype = {
- 	.release        = &tlmi_attr_setting_release,
- 	.sysfs_ops	= &kobj_sysfs_ops,
-+	.default_groups = tlmi_attr_groups,
- };
- 
- static const struct kobj_type tlmi_pwd_setting_ktype = {
- 	.release        = &tlmi_pwd_setting_release,
- 	.sysfs_ops	= &kobj_sysfs_ops,
-+	.default_groups = auth_attr_groups,
- };
- 
- static ssize_t pending_reboot_show(struct kobject *kobj, struct kobj_attribute *attr,
-@@ -1314,14 +1318,8 @@ static struct kobj_attribute debug_cmd =
- static void tlmi_release_attr(void)
- {
- 	struct kobject *pos, *n;
--	int i;
- 
- 	/* Attribute structures */
--	for (i = 0; i < TLMI_SETTINGS_COUNT; i++) {
--		if (tlmi_priv.setting[i]) {
--			sysfs_remove_group(&tlmi_priv.setting[i]->kobj, &tlmi_attr_group);
--		}
--	}
- 	sysfs_remove_file(&tlmi_priv.attribute_kset->kobj, &pending_reboot.attr);
- 	sysfs_remove_file(&tlmi_priv.attribute_kset->kobj, &save_settings.attr);
- 
-@@ -1338,15 +1336,6 @@ static void tlmi_release_attr(void)
- 	kfree(tlmi_priv.pwd_admin->save_signature);
- 
- 	/* Authentication structures */
--	sysfs_remove_group(&tlmi_priv.pwd_admin->kobj, &auth_attr_group);
--	sysfs_remove_group(&tlmi_priv.pwd_power->kobj, &auth_attr_group);
--
--	if (tlmi_priv.opcode_support) {
--		sysfs_remove_group(&tlmi_priv.pwd_system->kobj, &auth_attr_group);
--		sysfs_remove_group(&tlmi_priv.pwd_hdd->kobj, &auth_attr_group);
--		sysfs_remove_group(&tlmi_priv.pwd_nvme->kobj, &auth_attr_group);
--	}
--
- 	list_for_each_entry_safe(pos, n, &tlmi_priv.authentication_kset->list, entry)
- 		kobject_put(pos);
- 
-@@ -1417,10 +1406,6 @@ static int tlmi_sysfs_init(void)
- 					   NULL, "%s", tlmi_priv.setting[i]->display_name);
- 		if (ret)
- 			goto fail_create_attr;
--
--		ret = sysfs_create_group(&tlmi_priv.setting[i]->kobj, &tlmi_attr_group);
--		if (ret)
--			goto fail_create_attr;
+ 	if (zdev) {
++		mutex_lock(&zdev->state_lock);
++		rc = clp_refresh_fh(zdev->fid, &fh);
++		if (rc)
++			goto no_pdev;
++		if (!fh || ccdf->fh != fh) {
++			/* Ignore events with stale handles */
++			zpci_dbg(3, "err fid:%x, fh:%x (stale %x)\n",
++				 ccdf->fid, fh, ccdf->fh);
++			goto no_pdev;
++		}
+ 		zpci_update_fh(zdev, ccdf->fh);
+ 		if (zdev->zbus->bus)
+ 			pdev = pci_get_slot(zdev->zbus->bus, zdev->devfn);
+@@ -292,6 +304,8 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
  	}
+ 	pci_dev_put(pdev);
+ no_pdev:
++	if (zdev)
++		mutex_unlock(&zdev->state_lock);
+ 	zpci_zdev_put(zdev);
+ }
  
- 	ret = sysfs_create_file(&tlmi_priv.attribute_kset->kobj, &pending_reboot.attr);
-@@ -1444,20 +1429,12 @@ static int tlmi_sysfs_init(void)
- 	if (ret)
- 		goto fail_create_attr;
- 
--	ret = sysfs_create_group(&tlmi_priv.pwd_admin->kobj, &auth_attr_group);
--	if (ret)
--		goto fail_create_attr;
--
- 	tlmi_priv.pwd_power->kobj.kset = tlmi_priv.authentication_kset;
- 	ret = kobject_init_and_add(&tlmi_priv.pwd_power->kobj, &tlmi_pwd_setting_ktype,
- 				   NULL, "%s", "Power-on");
- 	if (ret)
- 		goto fail_create_attr;
- 
--	ret = sysfs_create_group(&tlmi_priv.pwd_power->kobj, &auth_attr_group);
--	if (ret)
--		goto fail_create_attr;
--
- 	if (tlmi_priv.opcode_support) {
- 		tlmi_priv.pwd_system->kobj.kset = tlmi_priv.authentication_kset;
- 		ret = kobject_init_and_add(&tlmi_priv.pwd_system->kobj, &tlmi_pwd_setting_ktype,
-@@ -1465,29 +1442,17 @@ static int tlmi_sysfs_init(void)
- 		if (ret)
- 			goto fail_create_attr;
- 
--		ret = sysfs_create_group(&tlmi_priv.pwd_system->kobj, &auth_attr_group);
--		if (ret)
--			goto fail_create_attr;
--
- 		tlmi_priv.pwd_hdd->kobj.kset = tlmi_priv.authentication_kset;
- 		ret = kobject_init_and_add(&tlmi_priv.pwd_hdd->kobj, &tlmi_pwd_setting_ktype,
- 					   NULL, "%s", "HDD");
- 		if (ret)
- 			goto fail_create_attr;
- 
--		ret = sysfs_create_group(&tlmi_priv.pwd_hdd->kobj, &auth_attr_group);
--		if (ret)
--			goto fail_create_attr;
--
- 		tlmi_priv.pwd_nvme->kobj.kset = tlmi_priv.authentication_kset;
- 		ret = kobject_init_and_add(&tlmi_priv.pwd_nvme->kobj, &tlmi_pwd_setting_ktype,
- 					   NULL, "%s", "NVMe");
- 		if (ret)
- 			goto fail_create_attr;
--
--		ret = sysfs_create_group(&tlmi_priv.pwd_nvme->kobj, &auth_attr_group);
--		if (ret)
--			goto fail_create_attr;
- 	}
- 
- 	return ret;
+-- 
+2.39.5
+
 
 
 
