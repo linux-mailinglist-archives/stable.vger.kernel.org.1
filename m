@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D510AFD091
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE819AFD1D5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED017188C56F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:24:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 218A1188752D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AB42E49AF;
-	Tue,  8 Jul 2025 16:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448652E0411;
+	Tue,  8 Jul 2025 16:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xygCvJhF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6emaWeO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D14D2E5417;
-	Tue,  8 Jul 2025 16:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C9F2E041C;
+	Tue,  8 Jul 2025 16:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991829; cv=none; b=ckphUlKJNEQ6WnoWVar0mDHBTT0buphHmHWOuJuaC76G7eBJgaIcfiFB90qSIWw6MCIkMOZxfoswr7IlkXvGo/6gjE3oS5WekowlNrFn6RT604IeM29d0X+GaN0J5vPGT0LNxJIo56JwoFqnynB0JH6n8PKooc1UEEyJ0W4GnEA=
+	t=1751992674; cv=none; b=RQq4Ujj5mAJAinDIY72lG3F/21Ua4yvL4kC5qgIUdWB0lzBKPy/E4/zLH3tqlceS1FCb9rEoEv/RC2m5JVT/QC1yRCBn5SkO1cjwlg+R7KhJ8XKgM8MTPT5pDnCse/I6K+Da22erDPKuHZDeuucPmFF0aujxsCNIsW/5Pi4FlvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991829; c=relaxed/simple;
-	bh=U2m/tQPuIKyrOGVH9saLBmx3y9NFrdvLMViY6tirfSE=;
+	s=arc-20240116; t=1751992674; c=relaxed/simple;
+	bh=F6hGe9seLl6QziEXPQ+D4nEpWxY7ttxIK1JSfu9pTxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UWWvUB58g3vPT4jwdTD+k9rRemo580oWuHYVfhIxqvYKRwTI2VD7ly0gbJAr7Fo1K2i9w8V1ymYVH4kYneoXogCZqxcy5Vk7/kLm86VqHu0KT2MsEdsJTTlIKa0m5ylxNZVmKg4ugEqGGb7GshBh4UIqL2GO6f/IRf1BzVV2vkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xygCvJhF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D9BC4CEED;
-	Tue,  8 Jul 2025 16:23:48 +0000 (UTC)
+	 MIME-Version; b=hSXSdMmSQfyeTtegj6kC9GW579oH965vGNi+X3zxy3ZiYsZt/0JzDclRN0P/tSE4QdW3q1WpCprOHhkSr6W1kYX+LN2geMdJXxcKUcqgXhmLhnSi63QiW+ifERya9ZbF6uBZnBGNgpXJNPoN/5OJ1gExfHlnaRCnpurrVRNUeZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6emaWeO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6C1C4CEED;
+	Tue,  8 Jul 2025 16:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751991828;
-	bh=U2m/tQPuIKyrOGVH9saLBmx3y9NFrdvLMViY6tirfSE=;
+	s=korg; t=1751992673;
+	bh=F6hGe9seLl6QziEXPQ+D4nEpWxY7ttxIK1JSfu9pTxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xygCvJhFXfHys1VRaJ4MvyicA9Oqy8ip6TvXNJnwW+QQR3+ISplWGtiTiRJEutvho
-	 f97H28fwFLLjmA9OAYnS6LlNx1lmp2UkBKYrjwxg0VeI9lM7z90eDMID54LJKTQeQB
-	 1aQ6eSvEEz7xdmHd37p8RgFmNssL6PYUyDiiQlpM=
+	b=L6emaWeOEqijvDHcQophkrHdRvOTwc05gO+UB9BIRZ0kbo8sttCHj2hrceHKYbbIw
+	 EKIRI6WmwDmuoPmOw2VJ8OXNlWPPZhCA7aUzyqt2FeRTPFqAOi+20K6A3Aqy/+MH1L
+	 3b4Ldl4oUDx6tlE7kLW+R7vpSs5xYqEOEZ3+GJ1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elena Popa <elena.popa@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.15 001/178] rtc: pcf2127: add missing semicolon after statement
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 042/232] RDMA/mlx5: Fix CC counters query for MPV
 Date: Tue,  8 Jul 2025 18:20:38 +0200
-Message-ID: <20250708162236.592550092@linuxfoundation.org>
+Message-ID: <20250708162242.536327297@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-commit 08d82d0cad51c2b1d454fe41ea1ff96ade676961 upstream.
+[ Upstream commit acd245b1e33fc4b9d0f2e3372021d632f7ee0652 ]
 
-Replace comma with semicolon at the end of the statement when setting
-config.max_register.
+In case, CC counters are querying for the second port use the correct
+core device for the query instead of always using the master core device.
 
-Fixes: fd28ceb4603f ("rtc: pcf2127: add variant-specific configuration structure")
-Cc: stable@vger.kernel.org
-Cc: Elena Popa <elena.popa@nxp.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20250529202923.1552560-1-hugo@hugovil.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aac4492ef23a ("IB/mlx5: Update counter implementation for dual port RoCE")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/9cace74dcf106116118bebfa9146d40d4166c6b0.1750064969.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf2127.c |    2 +-
+ drivers/infiniband/hw/mlx5/counters.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/rtc/rtc-pcf2127.c
-+++ b/drivers/rtc/rtc-pcf2127.c
-@@ -1538,7 +1538,7 @@ static int pcf2127_spi_probe(struct spi_
- 		variant = &pcf21xx_cfg[type];
- 	}
- 
--	config.max_register = variant->max_register,
-+	config.max_register = variant->max_register;
- 
- 	regmap = devm_regmap_init_spi(spi, &config);
- 	if (IS_ERR(regmap)) {
+diff --git a/drivers/infiniband/hw/mlx5/counters.c b/drivers/infiniband/hw/mlx5/counters.c
+index fbabc5ac9ef27..ad6c195d077bb 100644
+--- a/drivers/infiniband/hw/mlx5/counters.c
++++ b/drivers/infiniband/hw/mlx5/counters.c
+@@ -411,7 +411,7 @@ static int do_get_hw_stats(struct ib_device *ibdev,
+ 			 */
+ 			goto done;
+ 		}
+-		ret = mlx5_lag_query_cong_counters(dev->mdev,
++		ret = mlx5_lag_query_cong_counters(mdev,
+ 						   stats->value +
+ 						   cnts->num_q_counters,
+ 						   cnts->num_cong_counters,
+-- 
+2.39.5
+
 
 
 
