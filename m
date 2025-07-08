@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-161244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48077AFD46E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8775AFD104
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B630418989A3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86A067A1CDD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07FB2E6116;
-	Tue,  8 Jul 2025 17:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3961714B7;
+	Tue,  8 Jul 2025 16:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQ7sHYa1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sx1vTDsY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDF21E492;
-	Tue,  8 Jul 2025 17:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D051D8F5B;
+	Tue,  8 Jul 2025 16:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994013; cv=none; b=IsuCda7+2+lnGDq+O/LVd6a5CU2AXH+ah99omOWCPHzKT+fHscRWaCYb8DPPLja+xtgOMWZ7GWrJkKPl9az/t2o595qo6hZF2v+S2GlprEEFD3gGSq9BvBcf4pqHp66B0GGB4N/8ebgTsyNEeEhsLSRJY2J5fp9gptBBO8rShf8=
+	t=1751992224; cv=none; b=NSRe8Fl6l+GhUVLjYQQr/2r10kCbisTKwNMelMx150KtEDXZ06qkVA6FAnZHebGjdJWjrDGTaB2VcLQp1MxydjLQmS3m+d98xW3DE2TmOgmkO5pJdciY4xvBHYh5JLqwiuYLmk3rP80eOkLoPOfP/AvRxdrIln4ohzz2lFnjvGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994013; c=relaxed/simple;
-	bh=G6yjQU0QRbqifDc4TYWur3blJ3lBmDezKUv1Ys0MYpo=;
+	s=arc-20240116; t=1751992224; c=relaxed/simple;
+	bh=B6M/bJgKgSaqT7FT4hFVcgc8BDrLhFk6ClSFvukuOw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KtrvRh6idqTq9RqtOocAT4O65ISsyNOUbYN5tpBShIw7K6IsSFVTVFO5z20tDZcP208YPLheJNbRsB3WqG+bOWf0WPKQ0jZoUeNSquqirhrE2Ab1SiczRLbD+s+xFMTzYoE5KOUs1IMxYqMMzrNKqZC/ahzzy8WRmZ+sqPjfezM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQ7sHYa1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF8DC4CEF0;
-	Tue,  8 Jul 2025 17:00:12 +0000 (UTC)
+	 MIME-Version; b=skt+fOG8lU4BC7aplkLtxbEyml8dQT/8ooFFz68deCQm9pgsiIN5XvrQEF3DbyPPvvz/kul15MXYCdLmXpWWCkulm4Tk+e/vHEQPv6XiUvoAKCmITurkx9DdfJ24CtDjF612XTkCALwkbcW69MPwj0NkK19vhJxXc1cHuaOwkT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sx1vTDsY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED78FC4CEED;
+	Tue,  8 Jul 2025 16:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994013;
-	bh=G6yjQU0QRbqifDc4TYWur3blJ3lBmDezKUv1Ys0MYpo=;
+	s=korg; t=1751992224;
+	bh=B6M/bJgKgSaqT7FT4hFVcgc8BDrLhFk6ClSFvukuOw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQ7sHYa1hzFHJYMQ93CZWbJn4ssh/Vrwl6O8IDXyOPZU7+LbiXuWiV4hzpQb50RZd
-	 N7upRgwSGcaXEYHGI7k4waPfrViVnHRy6sP8Wv/2bzMFWt9f9VsIdQzVbpJfWalzvV
-	 AORcD7UeHIBVSOfvVsptnzkkCzanuPFWA6/RlRT4=
+	b=Sx1vTDsY87/C4zYOLHbjWQfhWd+UMyb/2gBWShlC14Gc1pENDcU4cgvA2SzXnxGvp
+	 5HvcTIOzLo0/9tJKnAT/hEDFTTQbMkbY/OD1lOw6dTwG3I2FVnr0qtQxX4pWp7Gpsf
+	 qUhxGGwQjwkBv+B7oscXibM/u/A24nAshTUEm8xM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Larry Bassel <larry.bassel@oracle.com>
-Subject: [PATCH 5.15 095/160] btrfs: dont drop extent_map for free space inode on write error
+	syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 021/132] nfs: Clean up /proc/net/rpc/nfs when nfs_fs_proc_net_init() fails.
 Date: Tue,  8 Jul 2025 18:22:12 +0200
-Message-ID: <20250708162234.133561100@linuxfoundation.org>
+Message-ID: <20250708162231.344866027@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 5571e41ec6e56e35f34ae9f5b3a335ef510e0ade upstream.
+[ Upstream commit e8d6f3ab59468e230f3253efe5cb63efa35289f7 ]
 
-While running the CI for an unrelated change I hit the following panic
-with generic/648 on btrfs_holes_spacecache.
+syzbot reported a warning below [1] following a fault injection in
+nfs_fs_proc_net_init(). [0]
 
-assertion failed: block_start != EXTENT_MAP_HOLE, in fs/btrfs/extent_io.c:1385
-------------[ cut here ]------------
-kernel BUG at fs/btrfs/extent_io.c:1385!
-invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 1 PID: 2695096 Comm: fsstress Kdump: loaded Tainted: G        W          6.8.0-rc2+ #1
-RIP: 0010:__extent_writepage_io.constprop.0+0x4c1/0x5c0
+When nfs_fs_proc_net_init() fails, /proc/net/rpc/nfs is not removed.
+
+Later, rpc_proc_exit() tries to remove /proc/net/rpc, and the warning
+is logged as the directory is not empty.
+
+Let's handle the error of nfs_fs_proc_net_init() properly.
+
+[0]:
+FAULT_INJECTION: forcing a failure.
+name failslab, interval 1, probability 0, space 0, times 0
+CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
 Call Trace:
  <TASK>
- extent_write_cache_pages+0x2ac/0x8f0
- extent_writepages+0x87/0x110
- do_writepages+0xd5/0x1f0
- filemap_fdatawrite_wbc+0x63/0x90
- __filemap_fdatawrite_range+0x5c/0x80
- btrfs_fdatawrite_range+0x1f/0x50
- btrfs_write_out_cache+0x507/0x560
- btrfs_write_dirty_block_groups+0x32a/0x420
- commit_cowonly_roots+0x21b/0x290
- btrfs_commit_transaction+0x813/0x1360
- btrfs_sync_file+0x51a/0x640
- __x64_sys_fdatasync+0x52/0x90
- do_syscall_64+0x9c/0x190
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
+  dump_stack_lvl (lib/dump_stack.c:123)
+ should_fail_ex (lib/fault-inject.c:73 lib/fault-inject.c:174)
+ should_failslab (mm/failslab.c:46)
+ kmem_cache_alloc_noprof (mm/slub.c:4178 mm/slub.c:4204)
+ __proc_create (fs/proc/generic.c:427)
+ proc_create_reg (fs/proc/generic.c:554)
+ proc_create_net_data (fs/proc/proc_net.c:120)
+ nfs_fs_proc_net_init (fs/nfs/client.c:1409)
+ nfs_net_init (fs/nfs/inode.c:2600)
+ ops_init (net/core/net_namespace.c:138)
+ setup_net (net/core/net_namespace.c:443)
+ copy_net_ns (net/core/net_namespace.c:576)
+ create_new_namespaces (kernel/nsproxy.c:110)
+ unshare_nsproxy_namespaces (kernel/nsproxy.c:218 (discriminator 4))
+ ksys_unshare (kernel/fork.c:3123)
+ __x64_sys_unshare (kernel/fork.c:3190)
+ do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+ </TASK>
 
-This happens because we fail to write out the free space cache in one
-instance, come back around and attempt to write it again.  However on
-the second pass through we go to call btrfs_get_extent() on the inode to
-get the extent mapping.  Because this is a new block group, and with the
-free space inode we always search the commit root to avoid deadlocking
-with the tree, we find nothing and return a EXTENT_MAP_HOLE for the
-requested range.
+[1]:
+remove_proc_entry: removing non-empty directory 'net/rpc', leaking at least 'nfs'
+ WARNING: CPU: 1 PID: 6120 at fs/proc/generic.c:727 remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
+Modules linked in:
+CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+ RIP: 0010:remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
+Code: 3c 02 00 0f 85 85 00 00 00 48 8b 93 d8 00 00 00 4d 89 f0 4c 89 e9 48 c7 c6 40 ba a2 8b 48 c7 c7 60 b9 a2 8b e8 33 81 1d ff 90 <0f> 0b 90 90 e9 5f fe ff ff e8 04 69 5e ff 90 48 b8 00 00 00 00 00
+RSP: 0018:ffffc90003637b08 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff88805f534140 RCX: ffffffff817a92c8
+RDX: ffff88807da99e00 RSI: ffffffff817a92d5 RDI: 0000000000000001
+RBP: ffff888033431ac0 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffff888033431a00
+R13: ffff888033431ae4 R14: ffff888033184724 R15: dffffc0000000000
+FS:  0000555580328500(0000) GS:ffff888124a62000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f71733743e0 CR3: 000000007f618000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  sunrpc_exit_net+0x46/0x90 net/sunrpc/sunrpc_syms.c:76
+  ops_exit_list net/core/net_namespace.c:200 [inline]
+  ops_undo_list+0x2eb/0xab0 net/core/net_namespace.c:253
+  setup_net+0x2e1/0x510 net/core/net_namespace.c:457
+  copy_net_ns+0x2a6/0x5f0 net/core/net_namespace.c:574
+  create_new_namespaces+0x3ea/0xa90 kernel/nsproxy.c:110
+  unshare_nsproxy_namespaces+0xc0/0x1f0 kernel/nsproxy.c:218
+  ksys_unshare+0x45b/0xa40 kernel/fork.c:3121
+  __do_sys_unshare kernel/fork.c:3192 [inline]
+  __se_sys_unshare kernel/fork.c:3190 [inline]
+  __x64_sys_unshare+0x31/0x40 kernel/fork.c:3190
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xcd/0x490 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa1a6b8e929
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff3a090368 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
+RAX: ffffffffffffffda RBX: 00007fa1a6db5fa0 RCX: 00007fa1a6b8e929
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000040000080
+RBP: 00007fa1a6c10b39 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa1a6db5fa0 R14: 00007fa1a6db5fa0 R15: 0000000000000001
+ </TASK>
 
-This happens because the first time we try to write the space cache out
-we hit an error, and on an error we drop the extent mapping.  This is
-normal for normal files, but the free space cache inode is special.  We
-always expect the extent map to be correct.  Thus the second time
-through we end up with a bogus extent map.
-
-Since we're deprecating this feature, the most straightforward way to
-fix this is to simply skip dropping the extent map range for this failed
-range.
-
-I shortened the test by using error injection to stress the area to make
-it easier to reproduce.  With this patch in place we no longer panic
-with my error injection test.
-
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ Larry: backport to 5.15.y. Minor conflict resolved due to missing commit 4c0c8cfc8433
-  btrfs: move btrfs_drop_extent_cache() to extent_map.c ]
-Signed-off-by: Larry Bassel <larry.bassel@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d47151b79e32 ("nfs: expose /proc/net/sunrpc/nfs in net namespaces")
+Reported-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a4cc4ac22daa4a71b87c
+Tested-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ fs/nfs/inode.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -3197,8 +3197,23 @@ out:
- 			unwritten_start += logical_len;
- 		clear_extent_uptodate(io_tree, unwritten_start, end, NULL);
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 419d98cf9e29f..7e7dd2aab449d 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -2442,15 +2442,26 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
+ static int nfs_net_init(struct net *net)
+ {
+ 	struct nfs_net *nn = net_generic(net, nfs_net_id);
++	int err;
  
--		/* Drop the cache for the part of the extent we didn't write. */
--		btrfs_drop_extent_cache(inode, unwritten_start, end, 0);
-+		/*
-+		 * Drop extent maps for the part of the extent we didn't write.
-+		 *
-+		 * We have an exception here for the free_space_inode, this is
-+		 * because when we do btrfs_get_extent() on the free space inode
-+		 * we will search the commit root.  If this is a new block group
-+		 * we won't find anything, and we will trip over the assert in
-+		 * writepage where we do ASSERT(em->block_start !=
-+		 * EXTENT_MAP_HOLE).
-+		 *
-+		 * Theoretically we could also skip this for any NOCOW extent as
-+		 * we don't mess with the extent map tree in the NOCOW case, but
-+		 * for now simply skip this if we are the free space inode.
-+		 */
-+		if (!btrfs_is_free_space_inode(inode))
-+			btrfs_drop_extent_cache(inode, unwritten_start,
-+						    end, 0);
+ 	nfs_clients_init(net);
  
- 		/*
- 		 * If the ordered extent had an IOERR or something else went
+ 	if (!rpc_proc_register(net, &nn->rpcstats)) {
+-		nfs_clients_exit(net);
+-		return -ENOMEM;
++		err = -ENOMEM;
++		goto err_proc_rpc;
+ 	}
+ 
+-	return nfs_fs_proc_net_init(net);
++	err = nfs_fs_proc_net_init(net);
++	if (err)
++		goto err_proc_nfs;
++
++	return 0;
++
++err_proc_nfs:
++	rpc_proc_unregister(net, "nfs");
++err_proc_rpc:
++	nfs_clients_exit(net);
++	return err;
+ }
+ 
+ static void nfs_net_exit(struct net *net)
+-- 
+2.39.5
+
 
 
 
