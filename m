@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88CBAFD235
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAA6AFD2E4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F325E189FED0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25BEE189E3A1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5083D2E3385;
-	Tue,  8 Jul 2025 16:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF261754B;
+	Tue,  8 Jul 2025 16:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9tl8bTL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnByIfZo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7C9264F9C;
-	Tue,  8 Jul 2025 16:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E555B672;
+	Tue,  8 Jul 2025 16:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992840; cv=none; b=YL6i1nYiduWqUkykSYyXmSsbItkt2pokbN7PwZkjtKonLXdmlDvz11/8MpvcCYrm8uS/XrXEIL64Rydd8NTEyHNx5PsxcJwkdcbqoeZCjvlxHeueWdMINkC8WKkJWysipk32ZIDrLtUiloI+mPNi3/9kgOqMj5WBfgfjfykPjjk=
+	t=1751993306; cv=none; b=H/QB7pcYTxQm8Ou5oT4iaT+46ribmz49+XE/SOt0ft3UOVcZj8pJxEftIgKdu9PNCQHFu7kY4cNiAro1hJMPGJleNKDpyk3CF1C9dSa1hxxxbKWJjZ1NPiztNinKmPCUbVaniyhaqT3vRUDTStP9wutSLE7QTHVmxh2gT+jVB18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992840; c=relaxed/simple;
-	bh=DNaK590l+sYUctDiaQfwGZoxt4ZnQ1y05gUzPB8OLcs=;
+	s=arc-20240116; t=1751993306; c=relaxed/simple;
+	bh=uWvzekiZvnL83j3TumG7K54+mLmWDQjYKwX+JUEi2nU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WgE3m0uNICK9X1T75jo/ckydCyJQOvebzMRUTwOjxhEXpTjZDtiY0XRKBKOialMJ9HWR+pdM2UyBluOZBusw/cjYl9+i1CHeFkigkBuQitqY+8x+eOW3m84llp//Gz6mlghprWczyJB8N9cSQGEtU9ATofm1ooAMdUcBFZCAu8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9tl8bTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2E4C4CEED;
-	Tue,  8 Jul 2025 16:40:39 +0000 (UTC)
+	 MIME-Version; b=JhAuTu0/iO8TBD1Ts/uog83B73lYvUmDnn9sOJxKZ9tPy9cJkDl+QBfKwEfny7iPCy6Xx9EM2I/zECvfTMvZXoEUUfrbWJas67wbWtY+z7fYFZpcWUuR69+ejDniDRMlNArleXvo83BR0+9FFtF0dttV8XIenZG09YrDNt5c2zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnByIfZo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC326C4CEED;
+	Tue,  8 Jul 2025 16:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992839;
-	bh=DNaK590l+sYUctDiaQfwGZoxt4ZnQ1y05gUzPB8OLcs=;
+	s=korg; t=1751993306;
+	bh=uWvzekiZvnL83j3TumG7K54+mLmWDQjYKwX+JUEi2nU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k9tl8bTLK+e6oyVeGJmS3ALkdJb9I3xyNYP9jhj/6HutqPVSq5isAs6+1EgOKi21t
-	 EzCywokR8gXO4STB2vjwjJBw5UD59fdHVQojXGyGPwW9V0d9jyBsR/U9sRQZrDEbE2
-	 Cl7eskeYB3FEhONDEhfY/wKmuPSj/GIhO9llF4TI=
+	b=PnByIfZomFObVomHll10PDV8rdq5oxI9jTiMrrXZfy4B/VWmUhFg0FxMG0bC3sg2z
+	 tOg5G0XkxVAnR+7Vt3ASldAWPdbHinRcPQ78aElV+5lsCRNNf68JkNtNy5fyc8yTgp
+	 +krGvNnSC5ql1N+C018ADmbfB+/4eQP8gps7k3Qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/232] platform/x86: think-lmi: Fix class device unregistration
+	stable <stable@kernel.org>,
+	RD Babiera <rdbabiera@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.15 028/178] usb: typec: altmodes/displayport: do not index invalid pin_assignments
 Date: Tue,  8 Jul 2025 18:21:05 +0200
-Message-ID: <20250708162243.269681586@linuxfoundation.org>
+Message-ID: <20250708162237.284548972@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit 5ff1fbb3059730700b4823f43999fc1315984632 ]
+commit af4db5a35a4ef7a68046883bfd12468007db38f1 upstream.
 
-Devices under the firmware_attributes_class do not have unique a dev_t.
-Therefore, device_unregister() should be used instead of
-device_destroy(), since the latter may match any device with a given
-dev_t.
+A poorly implemented DisplayPort Alt Mode port partner can indicate
+that its pin assignment capabilities are greater than the maximum
+value, DP_PIN_ASSIGN_F. In this case, calls to pin_assignment_show
+will cause a BRK exception due to an out of bounds array access.
 
-Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250625-dest-fix-v1-2-3a0f342312bb@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Prevent for loop in pin_assignment_show from accessing
+invalid values in pin_assignments by adding DP_PIN_ASSIGN_MAX
+value in typec_dp.h and using i < DP_PIN_ASSIGN_MAX as a loop
+condition.
+
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable <stable@kernel.org>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250618224943.3263103-2-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/think-lmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/altmodes/displayport.c |    2 +-
+ include/linux/usb/typec_dp.h             |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
-index a7c3285323d6b..3a8e84589518a 100644
---- a/drivers/platform/x86/think-lmi.c
-+++ b/drivers/platform/x86/think-lmi.c
-@@ -1487,7 +1487,7 @@ static int tlmi_sysfs_init(void)
- fail_create_attr:
- 	tlmi_release_attr();
- fail_device_created:
--	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
-+	device_unregister(tlmi_priv.class_dev);
- fail_class_created:
- 	return ret;
- }
-@@ -1711,7 +1711,7 @@ static int tlmi_analyze(void)
- static void tlmi_remove(struct wmi_device *wdev)
- {
- 	tlmi_release_attr();
--	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
-+	device_unregister(tlmi_priv.class_dev);
- }
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -677,7 +677,7 @@ static ssize_t pin_assignment_show(struc
  
- static int tlmi_probe(struct wmi_device *wdev, const void *context)
--- 
-2.39.5
-
+ 	assignments = get_current_pin_assignments(dp);
+ 
+-	for (i = 0; assignments; assignments >>= 1, i++) {
++	for (i = 0; assignments && i < DP_PIN_ASSIGN_MAX; assignments >>= 1, i++) {
+ 		if (assignments & 1) {
+ 			if (i == cur)
+ 				len += sprintf(buf + len, "[%s] ",
+--- a/include/linux/usb/typec_dp.h
++++ b/include/linux/usb/typec_dp.h
+@@ -57,6 +57,7 @@ enum {
+ 	DP_PIN_ASSIGN_D,
+ 	DP_PIN_ASSIGN_E,
+ 	DP_PIN_ASSIGN_F, /* Not supported after v1.0b */
++	DP_PIN_ASSIGN_MAX,
+ };
+ 
+ /* DisplayPort alt mode specific commands */
 
 
 
