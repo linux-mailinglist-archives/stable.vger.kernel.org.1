@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-161025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95487AFD2B3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:49:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4500AAFD249
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DF957ADC64
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C9511C2255F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97DA52DAFA3;
-	Tue,  8 Jul 2025 16:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B2D2E5413;
+	Tue,  8 Jul 2025 16:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnQB8Slc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSMQC088"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F402045B5;
-	Tue,  8 Jul 2025 16:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DE02E49A8;
+	Tue,  8 Jul 2025 16:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993381; cv=none; b=jCUco+0bDafne5p5OwFq31KOEpKv02SXFOzjJ9eJEgPtSCiP1AHsAX46EV16msc5CLQC8mKZhfyRepl0mplpiE2CjvR03cFhp9/rf9P32t62KmiSH4C9DSw0aoHbzp1Ew7lY9PSNpaZxIpQkxlT0KkUKakG/BIzXcUPou2J2TLw=
+	t=1751992886; cv=none; b=HLOqDmeZdHlK0Dyp9ZljaT18jDlK8NOXPXibcR8Asu4N5P5859uxr2W5vpSnURGeoUQ5ELGnHtNxFDejBwryoI1IZrL+M0sSo5R5eKQSTlcbfyhor6pJUTMg+TR3IP4OnBZsxo8jDiy8bqp4ypk9s+PHnhQoyvR5tfvQi2EASfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993381; c=relaxed/simple;
-	bh=pyjkkLDF0va/s1vvaxkh0Tz0ElR/GiXeMu1ah+oThk0=;
+	s=arc-20240116; t=1751992886; c=relaxed/simple;
+	bh=kwYCKBLwZ7leQSjcDzkNwfqxX6EZBm/smVJtjnZGQMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FytEUu3mwlXPl04FEOLjLh1n8lhpg0SlUx8aKcLrioOmEWWSQhK8Dhkb0ubEkN5ewUPj9pw7JyKMZkWDLKhLQPZ6h56MldGTtyQ2yz4eHaWxhaH7UWlA2G8/dKKedGogVmdekCJROPO677pWW+KhlTDQhwkNqT+V58voxcuY0WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnQB8Slc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA3EFC4CEED;
-	Tue,  8 Jul 2025 16:49:40 +0000 (UTC)
+	 MIME-Version; b=r95X/Ml1TVlxWgeHaRO3o+0sSgp06kdsNbgjJxn5tC1bu/o0ZlrxYA5wDdRfImUyLZXGzyjfVBpUYZkwJ6Sn7ESJOOBSfJSZjPva5/0rS69bQH8iCKd8Svon8WeRJxAUXb7pcvHKUhuAwij8nc2AQ3sBqQlpWP5pctcT8g6Skbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSMQC088; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B61C4CEED;
+	Tue,  8 Jul 2025 16:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993381;
-	bh=pyjkkLDF0va/s1vvaxkh0Tz0ElR/GiXeMu1ah+oThk0=;
+	s=korg; t=1751992886;
+	bh=kwYCKBLwZ7leQSjcDzkNwfqxX6EZBm/smVJtjnZGQMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnQB8SlcCor7MQBbfA81BXaZ4vs6WJkj/lVCj/vzrW5j4J7E70td1mEjWybYvUkCZ
-	 tJBl/YcqzR7DRIH64vt7P+WtCnlGWJ7UsWOcF6APfKPKhKpXNcSWIMSeX5iNbypl7p
-	 CUVKOtKPy4xzbzSu3i2D7LmfyG3oipm+SD5ELElg=
+	b=rSMQC088lVnT0VjgCfWupALCwOvjOSja6XNcP7zbizs+p0Gv6J5Bc0RPhga0t+jFI
+	 QA0Jcg66vGmj0/i6S15V3lbA/dt8GxOcDBiD/t9x9b1/E2HgUoau4py9+8211wjBm1
+	 Dls09K5+6y2XoDUFrpG1cE+iDW9HdWNmdPzHT3Lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 055/178] RDMA/mlx5: Fix HW counters query for non-representor devices
-Date: Tue,  8 Jul 2025 18:21:32 +0200
-Message-ID: <20250708162238.119222621@linuxfoundation.org>
+Subject: [PATCH 6.12 097/232] crypto: zynqmp-sha - Add locking
+Date: Tue,  8 Jul 2025 18:21:33 +0200
+Message-ID: <20250708162243.986359807@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 3cc1dbfddf88dc5ecce0a75185061403b1f7352d ]
+[ Upstream commit c7e68043620e0d5f89a37e573c667beab72d2937 ]
 
-To get the device HW counters, a non-representor switchdev device
-should use the mlx5_ib_query_q_counters() function and query all of
-the available counters. While a representor device in switchdev mode
-should use the mlx5_ib_query_q_counters_vport() function and query only
-the Q_Counters without the PPCNT counters and congestion control counters,
-since they aren't relevant for a representor device.
+The hardwrae is only capable of one hash at a time, so add a lock
+to make sure that it isn't used concurrently.
 
-Currently a non-representor switchdev device skips querying the PPCNT
-counters and congestion control counters, leaving them unupdated.
-Fix that by properly querying those counters for non-representor devices.
-
-Fixes: d22467a71ebe ("RDMA/mlx5: Expand switchdev Q-counters to expose representor statistics")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
-Link: https://patch.msgid.link/56bf8af4ca8c58e3fb9f7e47b1dca2009eeeed81.1750064969.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 7ecc3e34474b ("crypto: xilinx - Add Xilinx SHA3 driver")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/counters.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/xilinx/zynqmp-sha.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/counters.c b/drivers/infiniband/hw/mlx5/counters.c
-index b847084dcd998..943e9eb2ad20d 100644
---- a/drivers/infiniband/hw/mlx5/counters.c
-+++ b/drivers/infiniband/hw/mlx5/counters.c
-@@ -398,7 +398,7 @@ static int do_get_hw_stats(struct ib_device *ibdev,
- 		return ret;
+diff --git a/drivers/crypto/xilinx/zynqmp-sha.c b/drivers/crypto/xilinx/zynqmp-sha.c
+index 1bcec6f46c9c7..9b5345068604f 100644
+--- a/drivers/crypto/xilinx/zynqmp-sha.c
++++ b/drivers/crypto/xilinx/zynqmp-sha.c
+@@ -3,18 +3,19 @@
+  * Xilinx ZynqMP SHA Driver.
+  * Copyright (c) 2022 Xilinx Inc.
+  */
+-#include <linux/cacheflush.h>
+ #include <crypto/hash.h>
+ #include <crypto/internal/hash.h>
+ #include <crypto/sha3.h>
+-#include <linux/crypto.h>
++#include <linux/cacheflush.h>
++#include <linux/cleanup.h>
+ #include <linux/device.h>
+ #include <linux/dma-mapping.h>
++#include <linux/err.h>
+ #include <linux/firmware/xlnx-zynqmp.h>
+-#include <linux/init.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/spinlock.h>
+ #include <linux/platform_device.h>
  
- 	/* We don't expose device counters over Vports */
--	if (is_mdev_switchdev_mode(dev->mdev) && port_num != 0)
-+	if (is_mdev_switchdev_mode(dev->mdev) && dev->is_rep && port_num != 0)
- 		goto done;
+ #define ZYNQMP_DMA_BIT_MASK		32U
+@@ -43,6 +44,8 @@ struct zynqmp_sha_desc_ctx {
+ static dma_addr_t update_dma_addr, final_dma_addr;
+ static char *ubuf, *fbuf;
  
- 	if (MLX5_CAP_PCAM_FEATURE(dev->mdev, rx_icrc_encapsulated_counter)) {
++static DEFINE_SPINLOCK(zynqmp_sha_lock);
++
+ static int zynqmp_sha_init_tfm(struct crypto_shash *hash)
+ {
+ 	const char *fallback_driver_name = crypto_shash_alg_name(hash);
+@@ -124,7 +127,8 @@ static int zynqmp_sha_export(struct shash_desc *desc, void *out)
+ 	return crypto_shash_export(&dctx->fbk_req, out);
+ }
+ 
+-static int zynqmp_sha_digest(struct shash_desc *desc, const u8 *data, unsigned int len, u8 *out)
++static int __zynqmp_sha_digest(struct shash_desc *desc, const u8 *data,
++			       unsigned int len, u8 *out)
+ {
+ 	unsigned int remaining_len = len;
+ 	int update_size;
+@@ -159,6 +163,12 @@ static int zynqmp_sha_digest(struct shash_desc *desc, const u8 *data, unsigned i
+ 	return ret;
+ }
+ 
++static int zynqmp_sha_digest(struct shash_desc *desc, const u8 *data, unsigned int len, u8 *out)
++{
++	scoped_guard(spinlock_bh, &zynqmp_sha_lock)
++		return __zynqmp_sha_digest(desc, data, len, out);
++}
++
+ static struct zynqmp_sha_drv_ctx sha3_drv_ctx = {
+ 	.sha3_384 = {
+ 		.init = zynqmp_sha_init,
 -- 
 2.39.5
 
