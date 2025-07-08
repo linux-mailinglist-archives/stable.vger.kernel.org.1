@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-161007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C3AFAFD2EE
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B12AFD209
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8573A1AA38D9
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E42A0188C3AB
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61582045B5;
-	Tue,  8 Jul 2025 16:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EB22E543A;
+	Tue,  8 Jul 2025 16:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJrNK/yO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ct406OLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938EE225414;
-	Tue,  8 Jul 2025 16:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A692E2F0E;
+	Tue,  8 Jul 2025 16:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993330; cv=none; b=umIChxND0bJNIqf6mAH1Ph3R/+bYVJ4gtUIi/kwLVXLZSQF9iCi7AwhEc480wzkUpqOd9sGbuHJqIKJTAuzZnXnBlq9J0PkIrbskddb4JTxERPjqK/iPpppaTxp7mJWEwZmszO5ou16KmCsE9sruWAv88DII5Wrl4AO0KgOaiio=
+	t=1751992773; cv=none; b=K3XBbPX2j4zOssbB42ol+4pHpSsm6bJF/C7yo7wrjMtaKQwAtHeH6hbn3s6gvSvDU7y3AYHUkAr7p+qNOZfRB6D3zzRhn+zZuWUyfzUsWuNTeRu3ExMfN0Msh1QQ6UWcvY5Zitv703/NvADV+vSFxaWZGM9vOu2Ic/jps0j+ElM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993330; c=relaxed/simple;
-	bh=6B+DFUHsomSGL1LMyLaxzPp6thSvZYMAqFJFT4y5cQo=;
+	s=arc-20240116; t=1751992773; c=relaxed/simple;
+	bh=cYIf3lpBWq8P3oFx+Dz7A5vi5IRQ5PLfyrtngyP6gfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jWVuSR7nYZ3NvrHFpvbscBTJLI9YvwOVaupC0lQsu/M4EO8mxgVkX3mQLZM1q1nG5vaYmTLkFBhXIRXh2WJWEVuKJncWqtIe9z4YYhF5oA7ZkLI+vkGNR1XSyT2IJY+PcZxUv3aeOO5L7fb4+0/mDu9btr0esMIxcM2RHamJUn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJrNK/yO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5499C4CEED;
-	Tue,  8 Jul 2025 16:48:49 +0000 (UTC)
+	 MIME-Version; b=peaKvcu+NHrPzrI9r97ecZ8ldUxfYKcnttQ8RRw6xBbtcq2gglhWVJNtrcqX1rK9cfqJMI7TbiVni63tOHK8JYi15SROKwMYj+1yVfXarf+7Y853KFGOqXmrl7F86nzo2mCpvwQ5Ha4qPZEpc2ZqhjOYPWb2Zs8Vz2ROJTi8xOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ct406OLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51FFC4CEF0;
+	Tue,  8 Jul 2025 16:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993330;
-	bh=6B+DFUHsomSGL1LMyLaxzPp6thSvZYMAqFJFT4y5cQo=;
+	s=korg; t=1751992773;
+	bh=cYIf3lpBWq8P3oFx+Dz7A5vi5IRQ5PLfyrtngyP6gfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MJrNK/yOsn9XBCyCxCTSgJQLbDdOMDI97JFOiXFHC1vj7nfsGgPH8eIVQbUoHMx5t
-	 hmcMqfgnrRnoRgUDO56WLNtbTSeHW/BTdr0Q2dWmhivn01CK1vvcdLuqlQJG3g//Id
-	 APORgXtJf6CTeWwW83YQrbayTiR8wAt6h+onTHNw=
+	b=Ct406OLIjDmNw97PgeBpf+76PH753lgeMU4M2gDxHyHOSE15Emi5TY33hAn9NhTrp
+	 faEnpJjx/BGe6rqdkc0ZO94FwFqRj+dGyzih/++08SccxanTSxltS9AAMy6DhutP6p
+	 ZZpTXOUjLbNIyZuUNUAqIDqELve8rJ0qxrRYEr4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Forissier?= <jerome.forissier@linaro.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 035/178] firmware: arm_ffa: Replace mutex with rwlock to avoid sleep in atomic context
+Subject: [PATCH 6.12 076/232] drm/i915/gt: Fix timeline left held on VMA alloc error
 Date: Tue,  8 Jul 2025 18:21:12 +0200
-Message-ID: <20250708162237.600422112@linuxfoundation.org>
+Message-ID: <20250708162243.440251021@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,153 +67,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-[ Upstream commit 9ca7a421229bbdfbe2e1e628cff5cfa782720a10 ]
+[ Upstream commit a5aa7bc1fca78c7fa127d9e33aa94a0c9066c1d6 ]
 
-The current use of a mutex to protect the notifier hashtable accesses
-can lead to issues in the atomic context. It results in the below
-kernel warnings:
+The following error has been reported sporadically by CI when a test
+unbinds the i915 driver on a ring submission platform:
 
-  |  BUG: sleeping function called from invalid context at kernel/locking/mutex.c:258
-  |  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 9, name: kworker/0:0
-  |  preempt_count: 1, expected: 0
-  |  RCU nest depth: 0, expected: 0
-  |  CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not tainted 6.14.0 #4
-  |  Workqueue: ffa_pcpu_irq_notification notif_pcpu_irq_work_fn
-  |  Call trace:
-  |   show_stack+0x18/0x24 (C)
-  |   dump_stack_lvl+0x78/0x90
-  |   dump_stack+0x18/0x24
-  |   __might_resched+0x114/0x170
-  |   __might_sleep+0x48/0x98
-  |   mutex_lock+0x24/0x80
-  |   handle_notif_callbacks+0x54/0xe0
-  |   notif_get_and_handle+0x40/0x88
-  |   generic_exec_single+0x80/0xc0
-  |   smp_call_function_single+0xfc/0x1a0
-  |   notif_pcpu_irq_work_fn+0x2c/0x38
-  |   process_one_work+0x14c/0x2b4
-  |   worker_thread+0x2e4/0x3e0
-  |   kthread+0x13c/0x210
-  |   ret_from_fork+0x10/0x20
+<4> [239.330153] ------------[ cut here ]------------
+<4> [239.330166] i915 0000:00:02.0: [drm] drm_WARN_ON(dev_priv->mm.shrink_count)
+<4> [239.330196] WARNING: CPU: 1 PID: 18570 at drivers/gpu/drm/i915/i915_gem.c:1309 i915_gem_cleanup_early+0x13e/0x150 [i915]
+...
+<4> [239.330640] RIP: 0010:i915_gem_cleanup_early+0x13e/0x150 [i915]
+...
+<4> [239.330942] Call Trace:
+<4> [239.330944]  <TASK>
+<4> [239.330949]  i915_driver_late_release+0x2b/0xa0 [i915]
+<4> [239.331202]  i915_driver_release+0x86/0xa0 [i915]
+<4> [239.331482]  devm_drm_dev_init_release+0x61/0x90
+<4> [239.331494]  devm_action_release+0x15/0x30
+<4> [239.331504]  release_nodes+0x3d/0x120
+<4> [239.331517]  devres_release_all+0x96/0xd0
+<4> [239.331533]  device_unbind_cleanup+0x12/0x80
+<4> [239.331543]  device_release_driver_internal+0x23a/0x280
+<4> [239.331550]  ? bus_find_device+0xa5/0xe0
+<4> [239.331563]  device_driver_detach+0x14/0x20
+...
+<4> [357.719679] ---[ end trace 0000000000000000 ]---
 
-To address this, replace the mutex with an rwlock to protect the notifier
-hashtable accesses. This ensures that read-side locking does not sleep and
-multiple readers can acquire the lock concurrently, avoiding unnecessary
-contention and potential deadlocks. Writer access remains exclusive,
-preserving correctness.
+If the test also unloads the i915 module then that's followed with:
 
-This change resolves warnings from lockdep about potential sleep in
-atomic context.
+<3> [357.787478] =============================================================================
+<3> [357.788006] BUG i915_vma (Tainted: G     U  W        N ): Objects remaining on __kmem_cache_shutdown()
+<3> [357.788031] -----------------------------------------------------------------------------
+<3> [357.788204] Object 0xffff888109e7f480 @offset=29824
+<3> [357.788670] Allocated in i915_vma_instance+0xee/0xc10 [i915] age=292729 cpu=4 pid=2244
+<4> [357.788994]  i915_vma_instance+0xee/0xc10 [i915]
+<4> [357.789290]  init_status_page+0x7b/0x420 [i915]
+<4> [357.789532]  intel_engines_init+0x1d8/0x980 [i915]
+<4> [357.789772]  intel_gt_init+0x175/0x450 [i915]
+<4> [357.790014]  i915_gem_init+0x113/0x340 [i915]
+<4> [357.790281]  i915_driver_probe+0x847/0xed0 [i915]
+<4> [357.790504]  i915_pci_probe+0xe6/0x220 [i915]
+...
 
-Cc: Jens Wiklander <jens.wiklander@linaro.org>
-Reported-by: Jérôme Forissier <jerome.forissier@linaro.org>
-Closes: https://github.com/OP-TEE/optee_os/issues/7394
-Fixes: e0573444edbf ("firmware: arm_ffa: Add interfaces to request notification callbacks")
-Message-Id: <20250528-ffa_notif_fix-v1-3-5ed7bc7f8437@arm.com>
-Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
-Tested-by: Jens Wiklander <jens.wiklander@linaro.org>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Closer analysis of CI results history has revealed a dependency of the
+error on a few IGT tests, namely:
+- igt@api_intel_allocator@fork-simple-stress-signal,
+- igt@api_intel_allocator@two-level-inception-interruptible,
+- igt@gem_linear_blits@interruptible,
+- igt@prime_mmap_coherency@ioctl-errors,
+which invisibly trigger the issue, then exhibited with first driver unbind
+attempt.
+
+All of the above tests perform actions which are actively interrupted with
+signals.  Further debugging has allowed to narrow that scope down to
+DRM_IOCTL_I915_GEM_EXECBUFFER2, and ring_context_alloc(), specific to ring
+submission, in particular.
+
+If successful then that function, or its execlists or GuC submission
+equivalent, is supposed to be called only once per GEM context engine,
+followed by raise of a flag that prevents the function from being called
+again.  The function is expected to unwind its internal errors itself, so
+it may be safely called once more after it returns an error.
+
+In case of ring submission, the function first gets a reference to the
+engine's legacy timeline and then allocates a VMA.  If the VMA allocation
+fails, e.g. when i915_vma_instance() called from inside is interrupted
+with a signal, then ring_context_alloc() fails, leaving the timeline held
+referenced.  On next I915_GEM_EXECBUFFER2 IOCTL, another reference to the
+timeline is got, and only that last one is put on successful completion.
+As a consequence, the legacy timeline, with its underlying engine status
+page's VMA object, is still held and not released on driver unbind.
+
+Get the legacy timeline only after successful allocation of the context
+engine's VMA.
+
+v2: Add a note on other submission methods (Krzysztof Karas):
+    Both execlists and GuC submission use lrc_alloc() which seems free
+    from a similar issue.
+
+Fixes: 75d0a7f31eec ("drm/i915: Lift timeline into intel_context")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Reviewed-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Reviewed-by: Nitin Gote <nitin.r.gote@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/20250611104352.1014011-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit cc43422b3cc79eacff4c5a8ba0d224688ca9dd4f)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_ring_submission.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 44eecb786e67b..37eb2e6c2f9f4 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -110,7 +110,7 @@ struct ffa_drv_info {
- 	struct work_struct sched_recv_irq_work;
- 	struct xarray partition_info;
- 	DECLARE_HASHTABLE(notifier_hash, ilog2(FFA_MAX_NOTIFICATIONS));
--	struct mutex notify_lock; /* lock to protect notifier hashtable  */
-+	rwlock_t notify_lock; /* lock to protect notifier hashtable  */
- };
+diff --git a/drivers/gpu/drm/i915/gt/intel_ring_submission.c b/drivers/gpu/drm/i915/gt/intel_ring_submission.c
+index 72277bc8322e8..f84fa09cdb339 100644
+--- a/drivers/gpu/drm/i915/gt/intel_ring_submission.c
++++ b/drivers/gpu/drm/i915/gt/intel_ring_submission.c
+@@ -575,7 +575,6 @@ static int ring_context_alloc(struct intel_context *ce)
+ 	/* One ringbuffer to rule them all */
+ 	GEM_BUG_ON(!engine->legacy.ring);
+ 	ce->ring = engine->legacy.ring;
+-	ce->timeline = intel_timeline_get(engine->legacy.timeline);
  
- static struct ffa_drv_info *drv_info;
-@@ -1289,19 +1289,19 @@ static int __ffa_notify_relinquish(struct ffa_device *dev, int notify_id,
- 	if (notify_id >= FFA_MAX_NOTIFICATIONS)
- 		return -EINVAL;
- 
--	mutex_lock(&drv_info->notify_lock);
-+	write_lock(&drv_info->notify_lock);
- 
- 	rc = update_notifier_cb(dev, notify_id, NULL, is_framework);
- 	if (rc) {
- 		pr_err("Could not unregister notification callback\n");
--		mutex_unlock(&drv_info->notify_lock);
-+		write_unlock(&drv_info->notify_lock);
- 		return rc;
+ 	GEM_BUG_ON(ce->state);
+ 	if (engine->context_size) {
+@@ -588,6 +587,8 @@ static int ring_context_alloc(struct intel_context *ce)
+ 		ce->state = vma;
  	}
  
- 	if (!is_framework)
- 		rc = ffa_notification_unbind(dev->vm_id, BIT(notify_id));
- 
--	mutex_unlock(&drv_info->notify_lock);
-+	write_unlock(&drv_info->notify_lock);
- 
- 	return rc;
++	ce->timeline = intel_timeline_get(engine->legacy.timeline);
++
+ 	return 0;
  }
-@@ -1341,7 +1341,7 @@ static int __ffa_notify_request(struct ffa_device *dev, bool is_per_vcpu,
- 	else
- 		cb_info->cb = cb;
  
--	mutex_lock(&drv_info->notify_lock);
-+	write_lock(&drv_info->notify_lock);
- 
- 	if (!is_framework) {
- 		if (is_per_vcpu)
-@@ -1361,7 +1361,7 @@ static int __ffa_notify_request(struct ffa_device *dev, bool is_per_vcpu,
- 	}
- 
- out_unlock_free:
--	mutex_unlock(&drv_info->notify_lock);
-+	write_unlock(&drv_info->notify_lock);
- 	if (rc)
- 		kfree(cb_info);
- 
-@@ -1407,9 +1407,9 @@ static void handle_notif_callbacks(u64 bitmap, enum notify_type type)
- 		if (!(bitmap & 1))
- 			continue;
- 
--		mutex_lock(&drv_info->notify_lock);
-+		read_lock(&drv_info->notify_lock);
- 		cb_info = notifier_hnode_get_by_type(notify_id, type);
--		mutex_unlock(&drv_info->notify_lock);
-+		read_unlock(&drv_info->notify_lock);
- 
- 		if (cb_info && cb_info->cb)
- 			cb_info->cb(notify_id, cb_info->cb_data);
-@@ -1447,9 +1447,9 @@ static void handle_fwk_notif_callbacks(u32 bitmap)
- 
- 	ffa_rx_release();
- 
--	mutex_lock(&drv_info->notify_lock);
-+	read_lock(&drv_info->notify_lock);
- 	cb_info = notifier_hnode_get_by_vmid_uuid(notify_id, target, &uuid);
--	mutex_unlock(&drv_info->notify_lock);
-+	read_unlock(&drv_info->notify_lock);
- 
- 	if (cb_info && cb_info->fwk_cb)
- 		cb_info->fwk_cb(notify_id, cb_info->cb_data, buf);
-@@ -1974,7 +1974,7 @@ static void ffa_notifications_setup(void)
- 		goto cleanup;
- 
- 	hash_init(drv_info->notifier_hash);
--	mutex_init(&drv_info->notify_lock);
-+	rwlock_init(&drv_info->notify_lock);
- 
- 	drv_info->notif_enabled = true;
- 	return;
 -- 
 2.39.5
 
