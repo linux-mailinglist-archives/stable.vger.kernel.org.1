@@ -1,217 +1,372 @@
-Return-Path: <stable+bounces-160495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0520AFCEA5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:11:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B13A0AFCEB8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 752DB4A1FC0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 15:11:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D26073A7B24
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 15:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4D92E093D;
-	Tue,  8 Jul 2025 15:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9644C2DFA5B;
+	Tue,  8 Jul 2025 15:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L5v9nJyO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GXM5SfhW"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F992DECB0
-	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 15:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751987455; cv=none; b=uoiB0O1q5aFp75NnMfa3Zxwphuqy/5BHj9gKllGXpAM7wckA5O5zSxvpwysJNXYg/131GU37pE2inalBvXywVBT14Kz5X7FGy7r8gY4Y6jS1q8DahqUFQ9hjF+D6G0kPnYmmz98iR7OSgIjmc8AVUO8U/B6S1dUXyCTboNxCWMI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751987455; c=relaxed/simple;
-	bh=fGerUtoQfOMFV13NE4pLJmsZdVSRGXJsQRTXptzxl4E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GGXJjixaRvOCcLLbmEzq1FGg+vYgRs9hSIxZ0EyFPYVpVEa4JqD134srqPjVzRXsr+fK4JQ78ilNoh0SIV13IFI0GsT7ndJRmDe6raZ0YHoDpfLmovRRDnvcwNe7w2VjwTj/yQm/GK0TiYPxRtjYAP4UkUNhHZZ30jsJKO17O5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L5v9nJyO; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751987450;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=vF7pB9kaskUnbY7SdEoT1uFkNdrhk58b8baotVEUIFo=;
-	b=L5v9nJyOWopAzBGhpo3oDPzmu1Az+S7aS5YeoMk0Uot+Qrqyr+B477rd3wwHB5jGSyzUK/
-	ujNVtGp5+4J73yvmn4iREuWEAlBC+yAPzXctIWc6z2srttfodyuCUzsRCIBZhqnuMaNs1b
-	VjhXg7bozapEVHwotvIQRyhGsTmqBpc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-VyrwflheM9ajkIhZ3twXIA-1; Tue, 08 Jul 2025 11:10:49 -0400
-X-MC-Unique: VyrwflheM9ajkIhZ3twXIA-1
-X-Mimecast-MFC-AGG-ID: VyrwflheM9ajkIhZ3twXIA_1751987447
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-454b907e338so27277615e9.1
-        for <stable@vger.kernel.org>; Tue, 08 Jul 2025 08:10:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751987447; x=1752592247;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vF7pB9kaskUnbY7SdEoT1uFkNdrhk58b8baotVEUIFo=;
-        b=voUVHeSsMJ5pCV+D37VFz89CyqX7O7Ew2vvtIDHQOe2Waq1guNongWH3lFCCub43qK
-         JdxUnyIbWjW+oL0epnNxWO7mhT+khOi4Jfp8p6TJW+FQGo0/03Y6S6D1TXJSoWBIKfx/
-         P3NK7K3USPFbtbb0WJDfzoW8fdSF9B2gEo/t37Mw2OXU2KPERdFtGMsSNuLdQo3i9o8q
-         if4MGq6B6iP3yQ2gKwi6uDz7cA/wnEAofLEe2gjQmmF5Snxvmv6Ryys2oBnLQDxK4xCU
-         uNcGrizTSOnz33ePagl0FYFPrYgninH/IxLo6jcVRrxvXSeyskaZ6JksPxU9vWAopuWx
-         bkQA==
-X-Forwarded-Encrypted: i=1; AJvYcCXu33QVgYiJyqq9xYHcQLVyNT3weuzvMxSLst7l6lL4R0UwdJnWVvStPzKiHTgN60Y+k0e1CeY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxD0KNGGeow6+Sx68RI+NaobZK0e7r305qYQCBIHr+LUUpLoiVo
-	P8eBkuu5YAem+RoEB77xwGS17vkcrTgKETBeEWnTozECu4qZLj4N7UG+CcUlDTJrHm7UCiKnyCF
-	FjdHlNbRDA56YWlWzFs6UEaPuCPe6omf7ahAtyMwGAcCBWlTG4bjno4uXrQ==
-X-Gm-Gg: ASbGnctFkQNLL8vmWFHhxmFUhBpeeJdJsGzcMmIHa/8Ov1GtV9Ak3pd90TH8p8fg27T
-	1AI63HsKt55zeXIKVIhwkhTjmLP285hYEZZeNBwpMy15XpYJ0wQYAOZ5S7FSQUnlOLhAEFbyW69
-	n7KSKuEtvFUCdynjpcxHFAMcSgIH8JaMFiX3G8uTa0uvEzORIU0Of8W3NKqcnrumJ5XEVl2E5dN
-	Zabw/WG5iuCor+Vya/l3/PFtqdd9cWKbqn8wd3rrllHxTXyUMdExOH4mUzbBTOFXz8Qzehe6MHk
-	0XUrpWNM4Ntu46KLHNxjlQY3eax4TxDJAGF4vnXk36Ksd910yQSbJkJm8/YZCNGsB6zqM73xNAO
-	dxWKDIvI1W9IXPBOAYMYtQvvjXsId0jZlxkmQyWMJ7WejUNeRYw==
-X-Received: by 2002:a05:600c:5250:b0:453:a95:f07d with SMTP id 5b1f17b1804b1-454cd4cbed3mr42121235e9.10.1751987446538;
-        Tue, 08 Jul 2025 08:10:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHmKLwKgLc+QDyg2LOJPqGWeJ4FiXBWn3lZISABRTzIZSV3j7/eNP1RHFdrHD/ZrgFBqgc0Jg==
-X-Received: by 2002:a05:600c:5250:b0:453:a95:f07d with SMTP id 5b1f17b1804b1-454cd4cbed3mr42120285e9.10.1751987445940;
-        Tue, 08 Jul 2025 08:10:45 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f1a:f500:4346:f17c:2bde:808c? (p200300d82f1af5004346f17c2bde808c.dip0.t-ipconnect.de. [2003:d8:2f1a:f500:4346:f17c:2bde:808c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b47285c903sm13406200f8f.90.2025.07.08.08.10.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Jul 2025 08:10:45 -0700 (PDT)
-Message-ID: <a4d8b292-154a-4d14-90e4-6c822acf1cfb@redhat.com>
-Date: Tue, 8 Jul 2025 17:10:44 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F092264B0
+	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 15:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751987630; cv=fail; b=okqWnrFWHiInXg68g8+u38Kb7PGkuAS46X/h77z6TTgfYVxufcxKeYbENlUu75hG/oZ81fGlkw70rQbT9AV0Dj+99A0Nl87sb5o1xzMoXZsBE66NPzw6ahxI5zXGWKd5rPmX/16ZNjlBEUVIh5EGcu+YTDO/PBDd2eD/G10RQVk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751987630; c=relaxed/simple;
+	bh=kRAQQ1GidVEyLhZ1UPraxYKj2+g3O4JXI1C1t/Er/BQ=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ENHk9XzkmLR2afxFKHFp62I7VT95G8vOkdNjwJVkFvtNZKvoLw6/AxEP5SOq/8CXwkGnk4L929XVCfdt7ttyNwsSPOtWhfDVIV0dZS9mJtrzXgELYPoXdnoKt8kN/bnGkJStMFVAPHdygZE1pazZ/tcWYcRIUEDr54+6FawRMtA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GXM5SfhW; arc=fail smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751987628; x=1783523628;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=kRAQQ1GidVEyLhZ1UPraxYKj2+g3O4JXI1C1t/Er/BQ=;
+  b=GXM5SfhWz21zCqRyYZX1KHpCPHtM/fx3U5FJZ3LpBIsKQzXX0nFNiyb+
+   EWJ8b6k+C3gr017aEOBSLSIbtIa0B+ad7UytY47Q2jKSTUh5F9KIHhCoA
+   K744Tx8FbR1z1o/1pMlbGIf77CjxlpPSikonu9E2iUV5vVHhwV4T1XvoI
+   XYkggga95k+VycjWzQViDoISKeN1gPRBrHNY2ERIcadaC+2GlYZFlq+sy
+   hkY5HcG2uFTbSjccYma7iabtSSDgf0Ks7mAVYLCyK+M2wkEzr+IGMJvZv
+   0lS12dv2YV+6Lt9TpufM9ROZdu85F18erbE5JUKKgtU+MwZXvOrHHT6ye
+   Q==;
+X-CSE-ConnectionGUID: nMe59eV1Tumvxdp9wUfiMA==
+X-CSE-MsgGUID: Y7XtG7sCSFK3iksFR2gPQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="79661872"
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; 
+   d="scan'208";a="79661872"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 08:13:48 -0700
+X-CSE-ConnectionGUID: n0ojScx7QC263q9DNV6Vow==
+X-CSE-MsgGUID: UIETrXIDQNKWRXn2l8kGPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; 
+   d="scan'208";a="179201028"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 08:13:47 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 8 Jul 2025 08:13:46 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Tue, 8 Jul 2025 08:13:46 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (40.107.93.72) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 8 Jul 2025 08:13:45 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wIdqP1sUUrx3AsRwEJB321FVOs0jzyzoUQ/mIYwwDL9xQv5xcbfK9uI1+tzi2fceR60OaoSgQVg8+LOpSiL/rslZKQycwdZ9Kvrk+123jpnjxYwFerPKG0aiBhO2p4xxzp/qwqhh7BzwbmkcXbmtrpTs8C9CmxhT77ZJd2UQwV6daZEVKo7HC5C1hlD0xYyNESoUaBlkiEviIBLVQPy00jJ0Ecnj9CEBALPzhxzplDzK8aqXJh5xun2lw8AQ9oR13buoF8wgDuEH4/MRHFxGOxwzkFcu1FBa4wh7IaQ2l1pOKufCOQWvx2nL9wzzMSOxwNN76xLoZADObkio3BH8WQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=06E0BnMIWuNvmM8JCGUbgn0O3ufQ6Yey9PiaIrXAWK4=;
+ b=CuooinBalE9bfnCrU8p1MQz3ioA8on6py1I0ufgemztPXmILEt6JmfmCBsKvC0uxcQa/5c106+I0a+//+FNZAExHnx0e2180SfoGfJCC7s7EiHBsNK4P6SndXmLszFaSaJ+dj0NIiXrDLLduiNJ6WsU7P5ZHYv9Tj9Fnqq93kpDCGQZG2LedRj60dCbf7lNirtvKPmgJUG7OYTvTUaG5rpTHv1U0s0ngvVO3PZXOZC9hAv7/VKlz56/dULcgwYhbdJh6ey01aUN8m1vjJ8ae4/MM/zY0eCi/WqUalT3c0kpYvxP7EgUhHv3THdWmJZAwE5PYe+/KqiXQQQEMoFfppw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
+ by DM6PR11MB4754.namprd11.prod.outlook.com (2603:10b6:5:2ad::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.25; Tue, 8 Jul
+ 2025 15:13:43 +0000
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::397:7566:d626:e839]) by DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::397:7566:d626:e839%3]) with mapi id 15.20.8901.024; Tue, 8 Jul 2025
+ 15:13:43 +0000
+Message-ID: <094d5dba-3483-4133-99e8-9e32d42ba2f6@intel.com>
+Date: Tue, 8 Jul 2025 20:43:37 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND 1/1] drm/i915/dp: Refine TPS4-based HBR3 rejection and
+ add quirk to limit eDP to HBR2
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+CC: <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
+	<jani.nikula@linux.intel.com>, <stable@vger.kernel.org>
+References: <20250627084059.2575794-2-ankit.k.nautiyal@intel.com>
+ <20250706053149.3997091-1-ankit.k.nautiyal@intel.com>
+ <aG0nwwRNpH7X7BNg@intel.com>
+Content-Language: en-US
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <aG0nwwRNpH7X7BNg@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA0P287CA0015.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:d9::10) To DM4PR11MB5341.namprd11.prod.outlook.com
+ (2603:10b6:5:390::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/userfaultfd: fix missing PTE unmap for non-migration
- entries
-To: Andrew Morton <akpm@linux-foundation.org>, Sasha Levin <sashal@kernel.org>
-Cc: peterx@redhat.com, aarcange@redhat.com, surenb@google.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250630031958.1225651-1-sashal@kernel.org>
- <20250630175746.e52af129fd2d88deecc25169@linux-foundation.org>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQW
- AgMBAh4BAheAAhkBFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAl8Ox4kFCRKpKXgACgkQTd4Q
- 9wD/g1oHcA//a6Tj7SBNjFNM1iNhWUo1lxAja0lpSodSnB2g4FCZ4R61SBR4l/psBL73xktp
- rDHrx4aSpwkRP6Epu6mLvhlfjmkRG4OynJ5HG1gfv7RJJfnUdUM1z5kdS8JBrOhMJS2c/gPf
- wv1TGRq2XdMPnfY2o0CxRqpcLkx4vBODvJGl2mQyJF/gPepdDfcT8/PY9BJ7FL6Hrq1gnAo4
- 3Iv9qV0JiT2wmZciNyYQhmA1V6dyTRiQ4YAc31zOo2IM+xisPzeSHgw3ONY/XhYvfZ9r7W1l
- pNQdc2G+o4Di9NPFHQQhDw3YTRR1opJaTlRDzxYxzU6ZnUUBghxt9cwUWTpfCktkMZiPSDGd
- KgQBjnweV2jw9UOTxjb4LXqDjmSNkjDdQUOU69jGMUXgihvo4zhYcMX8F5gWdRtMR7DzW/YE
- BgVcyxNkMIXoY1aYj6npHYiNQesQlqjU6azjbH70/SXKM5tNRplgW8TNprMDuntdvV9wNkFs
- 9TyM02V5aWxFfI42+aivc4KEw69SE9KXwC7FSf5wXzuTot97N9Phj/Z3+jx443jo2NR34XgF
- 89cct7wJMjOF7bBefo0fPPZQuIma0Zym71cP61OP/i11ahNye6HGKfxGCOcs5wW9kRQEk8P9
- M/k2wt3mt/fCQnuP/mWutNPt95w9wSsUyATLmtNrwccz63XOwU0EVcufkQEQAOfX3n0g0fZz
- Bgm/S2zF/kxQKCEKP8ID+Vz8sy2GpDvveBq4H2Y34XWsT1zLJdvqPI4af4ZSMxuerWjXbVWb
- T6d4odQIG0fKx4F8NccDqbgHeZRNajXeeJ3R7gAzvWvQNLz4piHrO/B4tf8svmRBL0ZB5P5A
- 2uhdwLU3NZuK22zpNn4is87BPWF8HhY0L5fafgDMOqnf4guJVJPYNPhUFzXUbPqOKOkL8ojk
- CXxkOFHAbjstSK5Ca3fKquY3rdX3DNo+EL7FvAiw1mUtS+5GeYE+RMnDCsVFm/C7kY8c2d0G
- NWkB9pJM5+mnIoFNxy7YBcldYATVeOHoY4LyaUWNnAvFYWp08dHWfZo9WCiJMuTfgtH9tc75
- 7QanMVdPt6fDK8UUXIBLQ2TWr/sQKE9xtFuEmoQGlE1l6bGaDnnMLcYu+Asp3kDT0w4zYGsx
- 5r6XQVRH4+5N6eHZiaeYtFOujp5n+pjBaQK7wUUjDilPQ5QMzIuCL4YjVoylWiBNknvQWBXS
- lQCWmavOT9sttGQXdPCC5ynI+1ymZC1ORZKANLnRAb0NH/UCzcsstw2TAkFnMEbo9Zu9w7Kv
- AxBQXWeXhJI9XQssfrf4Gusdqx8nPEpfOqCtbbwJMATbHyqLt7/oz/5deGuwxgb65pWIzufa
- N7eop7uh+6bezi+rugUI+w6DABEBAAHCwXwEGAEIACYCGwwWIQQb2cqtc1xMOkYN/MpN3hD3
- AP+DWgUCXw7HsgUJEqkpoQAKCRBN3hD3AP+DWrrpD/4qS3dyVRxDcDHIlmguXjC1Q5tZTwNB
- boaBTPHSy/Nksu0eY7x6HfQJ3xajVH32Ms6t1trDQmPx2iP5+7iDsb7OKAb5eOS8h+BEBDeq
- 3ecsQDv0fFJOA9ag5O3LLNk+3x3q7e0uo06XMaY7UHS341ozXUUI7wC7iKfoUTv03iO9El5f
- XpNMx/YrIMduZ2+nd9Di7o5+KIwlb2mAB9sTNHdMrXesX8eBL6T9b+MZJk+mZuPxKNVfEQMQ
- a5SxUEADIPQTPNvBewdeI80yeOCrN+Zzwy/Mrx9EPeu59Y5vSJOx/z6OUImD/GhX7Xvkt3kq
- Er5KTrJz3++B6SH9pum9PuoE/k+nntJkNMmQpR4MCBaV/J9gIOPGodDKnjdng+mXliF3Ptu6
- 3oxc2RCyGzTlxyMwuc2U5Q7KtUNTdDe8T0uE+9b8BLMVQDDfJjqY0VVqSUwImzTDLX9S4g/8
- kC4HRcclk8hpyhY2jKGluZO0awwTIMgVEzmTyBphDg/Gx7dZU1Xf8HFuE+UZ5UDHDTnwgv7E
- th6RC9+WrhDNspZ9fJjKWRbveQgUFCpe1sa77LAw+XFrKmBHXp9ZVIe90RMe2tRL06BGiRZr
- jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250630175746.e52af129fd2d88deecc25169@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|DM6PR11MB4754:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3854fe5a-126e-4173-a5ab-08ddbe3206f5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007|13003099007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?TlZJL3VjMWsxZXBKRDJOeEJYV1J5YklMRnNxZW5BaXd0M1lNSjJ5N2N1UVlW?=
+ =?utf-8?B?V2lEMVFRY3dkWnBIemt1clc2cm1JWnZBaGZzZyt5b2V6K3ZUR0VlWisycFc1?=
+ =?utf-8?B?RURKaFJBRVB4ZDg2b3FJdHRDdmhjZjkwVmoyVGQxNXZJdFVlWGxEdHN5TnhX?=
+ =?utf-8?B?NUw0Smt4SUpjaXRnQVRwMHpaN1hOOHlwT3Z6R05TcXB1N09jdlZlS3RIclpS?=
+ =?utf-8?B?WnBndUhOWEJFMllGVGkvc1pNMGxrZW90VlFrQ2czaXBOUGFpY2N1YnhSVWc3?=
+ =?utf-8?B?c3o5MmhXU0F4YjVNYUd3UGlqWHlHSmNiMEIwQnlMUWNEOVNRUWpwK3NSQ3Vv?=
+ =?utf-8?B?NTVtNFNORXJUQ2xLMHJTeWlrRVNWQU9vTW5xWTlOelRlRFh2QjVXSC9HM3FX?=
+ =?utf-8?B?OEhPTmNzRlFRWGdWSDlnMXIxSXVReWx0RW9tODB4by9leHh2aVR1anROYXZK?=
+ =?utf-8?B?QUhIT1RlQTU3a3NyK2F6Rkt4U05IM1V1T2V2YzlQUGcySUtIeWVua05WY0hw?=
+ =?utf-8?B?OWN1VDl4VU9MaW5iS3pOa05FNWdmeExDRjVzZzkwclhWbmFXUnlGZldKTEdI?=
+ =?utf-8?B?QXEycEtML1JWL0JxR0h4ZTdQbkVXVmVtTTNkdCtXMDZtaHNuck04SllpV3l5?=
+ =?utf-8?B?NU9lUzhxVlVGRHM1V2JYQVZqN2xReHVvSlQvck85bklTUDl0NVNlQzg4eEdS?=
+ =?utf-8?B?WVJkTUdSaGpJZmViS1B0TUZzblN2Z2JxL1g5MmVUdC84b1JDby9OTDNRQlFk?=
+ =?utf-8?B?THFNZWp5WXNtWGlpaU12djUraGlaUW1NMysySlFuMEptMEZsU3VORTVLSEhl?=
+ =?utf-8?B?RDU4dlpFbUJ6dGYyU2RTY25xM3VOSEZWcjdHVmY0eFhrK2hMTUQxQ3dlRlpP?=
+ =?utf-8?B?dmVhbk5Oa0ErWXVEWWhXNXZjTVNQTEtRZ0wrY2l0Q0I0b1hQWFJnSlcyL2lH?=
+ =?utf-8?B?OFJBNVNtM0RxQ0gvV1FEVklweDgvdlcxWStaZkRZUkIvZFEyNUlHZjRobHEy?=
+ =?utf-8?B?SkJBeVVWZXRWeVBRVUYza3lZZVdkcEJqcTRqc3AwaXhFeGIzblE1MENlYys0?=
+ =?utf-8?B?WEpZUVVVVFVkUUpJY0hpNHNtSmUvZlNiRU5CWnQ5aUh4aXpkNnBtR1ZRMVdB?=
+ =?utf-8?B?Q2dVZSt3U29EdVNFTm03eWVPV1IyQ05BVkZ0RlRCdnJDZVFVVFJJRk9OYThx?=
+ =?utf-8?B?Vm95MlY1OGF3aXFKaGZFTnN1ZmIybWd6RVA4aDlod0NLRTlGcjI1TklycFk1?=
+ =?utf-8?B?QlU0SDEyRGN5dUVhYmhtSUNHWW4vVWNEMnRJSXdFbHBZN2VkeWlOaVBMUUN0?=
+ =?utf-8?B?elhPczcrZXYyYUs2RzVSM0ZpK1FCRWlJVG05V1ZEeVljYXJSb2dMT0xGNEYv?=
+ =?utf-8?B?dU5BYUpUK3JaL3F2Nzk3a3U3TkJSUXNWdFJhamwxOFVEZWpUTm5IS0kyWFVv?=
+ =?utf-8?B?NEZDR0x4MDBjdmdDQWdLZzdNcGFMS2JNYnoraTRUWVNFMWRYcEhDcm5waUFY?=
+ =?utf-8?B?ek9uTVc5eUh4RVhqT1BSRHhFZWIyUUZjeVZmL2RkRFFSQ3IyejQzUjVoTTlZ?=
+ =?utf-8?B?cXlrcldlb0lyandSSVU5Uk80YnVtbTY2d2FYMkd5SmdwdXFiaDZVekxvenQ0?=
+ =?utf-8?B?Z04ybUtzMFNSNlB1aGNwQzhrTW5uemszNGQ1eTVxSmdQTklTWVBLdVhQVlRL?=
+ =?utf-8?B?ZGpWMnI2WDFkQWc5MmUwNFV4Wm9GSFhac0RnQ3AyVjNobEk0SFNBSFJmMUNz?=
+ =?utf-8?B?eklTTEQ1RFIzSzBtMXp1YjlYNnNzckRNYmJLQmVvZmlaamtPa0phQzNxanRY?=
+ =?utf-8?Q?ahFO7DeUcJA4F5z5Mnv7QtBsht2pclr0z7XjM=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB5341.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SDhEbStheXdQU0lJN0VPME1SS0JNNzU5eXlqMmtPdmhNTG44ZklmcEYyQk04?=
+ =?utf-8?B?eTFKVWZqQ3A3bExqTFVTckZobC9wZEhNVER2TlNROFdkZStoQkNlTkpDbzlK?=
+ =?utf-8?B?SkExTXptUnp2ZnNBN1BMaktSSStIalhOOG9XRlpTazd1V1FMSWpGUjFQZXkz?=
+ =?utf-8?B?ck1qVk1HdGVqdXJYbXdlcW5xSkY2NVJSVkI5TWc3M3F5YWJCODcwNExvWXZj?=
+ =?utf-8?B?Y1F4cVU0Zlp2QmdqOEpkRnVuT0NYQzZCSk1nV0NGZWFkajkyNzZhODYvRWQ1?=
+ =?utf-8?B?OXBBcWtHWXp2Uy9HNlQxcmVFbXNZczJOZlNOQUF5MjF2UFBOTVI4dU0xSkJC?=
+ =?utf-8?B?NXBvSm0wNjluQW13eFY2N21RYUxZeUxVUkV4bElWdVZkVE5IUk1ibm5DZjQ0?=
+ =?utf-8?B?SlJzU3pIVTNwdG5BWjhPVEFybUJRK3RPZWtLZk9rUHZERFY4SnlZb3gvRWNq?=
+ =?utf-8?B?d0dWbytDVWdIQnZGTVhQVDBlaTRQSUwyamdvdkpDTU55Vm1YRG9udWtoSmd2?=
+ =?utf-8?B?c3o4SDNJNWk2MkhGU0xJQmI2dnNVYmFpYjNDL3FpMFRpUDd2eXJWZHY1NG55?=
+ =?utf-8?B?RmJGRFltM0F0UGEvZ3AzN1BOUUhHQlpxY2EvRzlORjZDM3ZYQmRYYlMreWlv?=
+ =?utf-8?B?Y2ZzK3lWQSsxM0M3NHNZOHlic1lwb2Z1dkJFMDlSek1abHRvby9Cdmx6bkxu?=
+ =?utf-8?B?d2ZEblJWclc3SzAvSTU1ck5CU0tHRnBoNStwMlBPc25YVkxXUjNKclE2ZlNs?=
+ =?utf-8?B?RitBRGV1UUk0Slg5cS9lTWprN3JDYXQ0dWxiZXVnZ3MrWUlSZ2FsVG1acmZs?=
+ =?utf-8?B?dG0rRENCcGtWeUx4K1ZCRWVjZ2ZTTmx6RkN4aGlpendIZk1WTFovMHAwTi8z?=
+ =?utf-8?B?alhGc3VEclNWbDVWWTE2V21acmJXRDFTK0p2ZW5vanJyVzF6L3B2TWJ0TGw1?=
+ =?utf-8?B?SVh5ek1yazNRMjBBb1NIVjBwMDFKbVNZMnlld3VMaUw0YjlUbzhreVdFMVU4?=
+ =?utf-8?B?WkEzWjBrWHZYelJDdGs5SGtNVFhBdUZreVdsb2Iwdm9DM1NkaUNjOTdRVTJu?=
+ =?utf-8?B?aUJYMlhwSjBFaUV1b1ZsZkp0a2RmNlF3R1lIYXV5WENsVlZTYUdjc1JLTGw0?=
+ =?utf-8?B?ZDZhVWVZeEowN2xlK0M2ZGVBRjJRRlVDNTJPcElKanp1dlBsUXkrd2k5enlT?=
+ =?utf-8?B?THAvZENoWFBQK1VmN2V0WFNXdnl0L2xoVWRFc1ZmK3llZEdQZCtKME9STjNp?=
+ =?utf-8?B?a1J0Zmp3Wmhtb2FkdGozWmlyTUdVS2xBNmVHMDByR0ZaNlNLQWp1Y0o0RW1S?=
+ =?utf-8?B?bGRNWG1JemhEcU1CVENyZlBsWjlNZVN3ckpNaDZzZFZLRVR0bHdYVHU1SWJv?=
+ =?utf-8?B?Z0RuY1p6N2VCclZQVVdYNHVjcW5xUm1OSVF3T0VRdEU1L2xTSGdUM3NLSFZ0?=
+ =?utf-8?B?cjVITzIyUnVqZjZmM1lBaDNvdER2WEZVWXVQcmJWVHBGNUdiU2dvMVp1THRV?=
+ =?utf-8?B?RFl5TnZXa3B2UmtJZ3IwUmFiaGtqUTA5Vk1vaXYzQzgwdFZzVi95V2Ezb04w?=
+ =?utf-8?B?V04yTmd6cnN5UFBIRVNMVXcwYXdYMDIwSzFFUTI5YjhyTlN2Y2t3eGFkYlVh?=
+ =?utf-8?B?Y1ZVWkVzS0ZQdHZnV3hQU01wT1lWTzJVNG1PQlFtWkJ1b3BMZXh4RG1Vcm5Q?=
+ =?utf-8?B?R0RhL09reFlEczZDNTNwYjJ4UUtTc1hSckkwTW5WTFdSS3k1TzBENHNpVFVE?=
+ =?utf-8?B?blgyaG9GbGYyQU1XRTcxT1ZmNEd0ZHA3aUJvRFNvRk1IRVQ0bHRrZ1hBZjZ5?=
+ =?utf-8?B?bjh6NXkvTUh4WEV0ZjZ0WjVUc09tUjFRRHFCenZRWFlNTHBEYWlFTWwwQm5r?=
+ =?utf-8?B?alM4eC9xSFR2bkdVaVFRS29oMFhZb0wxSnZ2U1JVU0tHVW5mejRCU21BdjlF?=
+ =?utf-8?B?OXNpcFN5c1ltMEE3SkFTMFQ2aFljenJVVlcrS0pTeXA5VmN4WHIwZllTcFBr?=
+ =?utf-8?B?SFZxSnJrbi9WOFQvMDc1aG5kWGIzMzcwWS9JdWE4d0ZqdDAzNTFPM3VQMjR6?=
+ =?utf-8?B?YkVGTlpzemxuNDRUR3lRWDBucUUydTNWVEsyN3JtTzZWYmxpVDJqdGVJOGRv?=
+ =?utf-8?B?TE1HYzM0RjJzTVBLUFlXWmcrRE9lS01nWkhlR2Z3QUFxMTVHckc5bkYybUhr?=
+ =?utf-8?B?Z3c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3854fe5a-126e-4173-a5ab-08ddbe3206f5
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 15:13:43.4369
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jKuBxSMJHMXvU/KGJ+JzB40wefH59Pc4kneb0PrnWP06ZDsWVprs2Fyrs9XHZ3XUv6J+ste/EnGKWadSGSMwsxkq8P4zjiGJNUKNaTqg/84=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4754
+X-OriginatorOrg: intel.com
 
-On 01.07.25 02:57, Andrew Morton wrote:
-> On Sun, 29 Jun 2025 23:19:58 -0400 Sasha Levin <sashal@kernel.org> wrote:
-> 
->> When handling non-swap entries in move_pages_pte(), the error handling
->> for entries that are NOT migration entries fails to unmap the page table
->> entries before jumping to the error handling label.
+
+On 7/8/2025 7:44 PM, Ville Syrjälä wrote:
+> On Sun, Jul 06, 2025 at 11:01:49AM +0530, Ankit Nautiyal wrote:
+>> Refine the logic introduced in commit 584cf613c24a ("drm/i915/dp: Reject
+>> HBR3 when sink doesn't support TPS4") to allow HBR3 on eDP panels that
+>> report DPCD revision 1.4, even if TPS4 is not supported. This aligns with
+>> the DisplayPort specification, which does not mandate TPS4 support for eDP
+>> with DPCD rev 1.4.
 >>
->> This results in a kmap/kunmap imbalance which on CONFIG_HIGHPTE systems
->> triggers a WARNING in kunmap_local_indexed() because the kmap stack is
->> corrupted.
+>> This change avoids regressions on panels that require HBR3 to operate at
+>> their native resolution but do not advertise TPS4 support.
 >>
->> Example call trace on ARM32 (CONFIG_HIGHPTE enabled):
->>    WARNING: CPU: 1 PID: 633 at mm/highmem.c:622 kunmap_local_indexed+0x178/0x17c
->>    Call trace:
->>      kunmap_local_indexed from move_pages+0x964/0x19f4
->>      move_pages from userfaultfd_ioctl+0x129c/0x2144
->>      userfaultfd_ioctl from sys_ioctl+0x558/0xd24
+>> Additionally, some ICL/TGL platforms with combo PHY ports suffer from
+>> signal integrity issues at HBR3. While certain systems include a
+>> Parade PS8461 mux to mitigate this, its presence cannot be reliably
+>> detected. Furthermore, broken or missing VBT entries make it unsafe to
+>> rely on VBT for enforcing link rate limits.
 >>
->> The issue was introduced with the UFFDIO_MOVE feature but became more
->> frequent with the addition of guard pages (commit 7c53dfbdb024 ("mm: add
->> PTE_MARKER_GUARD PTE marker")) which made the non-migration entry code
->> path more commonly executed during userfaultfd operations.
+>> To address the HBR3-related issues on such platforms and eDP panels,
+>> introduce a device specific quirk to cap the eDP link rate to HBR2
+>> (540000 kHz). This will override any higher advertised rates from
+>> the sink or DPCD for specific devices.
 >>
->> Fix this by ensuring PTEs are properly unmapped in all non-swap entry
->> paths before jumping to the error handling label, not just for migration
->> entries.
-> 
-> I don't get it.
-> 
->> --- a/mm/userfaultfd.c
->> +++ b/mm/userfaultfd.c
->> @@ -1384,14 +1384,15 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+>> Currently, the quirk is added for Dell XPS 13 7390 2-in-1 which is
+>> reported in gitlab issue #5969 [1].
+>>
+>> [1] https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5969
+>> [2] https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14517
+>>
+>> Fixes: 584cf613c24a ("drm/i915/dp: Reject HBR3 when sink doesn't support TPS4")
+>> Cc: Jani Nikula <jani.nikula@linux.intel.com>
+>> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+>> Cc: <stable@vger.kernel.org> # v6.15+
+>> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5969
+>> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14517
+>> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+>> ---
+>>   drivers/gpu/drm/i915/display/intel_dp.c     | 31 +++++++++++++++++++--
+>>   drivers/gpu/drm/i915/display/intel_quirks.c |  9 ++++++
+>>   drivers/gpu/drm/i915/display/intel_quirks.h |  1 +
+>>   3 files changed, 39 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+>> index f48912f308df..362e376fca27 100644
+>> --- a/drivers/gpu/drm/i915/display/intel_dp.c
+>> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+>> @@ -171,6 +171,15 @@ int intel_dp_link_symbol_clock(int rate)
+>>   	return DIV_ROUND_CLOSEST(rate * 10, intel_dp_link_symbol_size(rate));
+>>   }
 >>   
->>   		entry = pte_to_swp_entry(orig_src_pte);
->>   		if (non_swap_entry(entry)) {
->> +			pte_unmap(src_pte);
->> +			pte_unmap(dst_pte);
->> +			src_pte = dst_pte = NULL;
->>   			if (is_migration_entry(entry)) {
->> -				pte_unmap(src_pte);
->> -				pte_unmap(dst_pte);
->> -				src_pte = dst_pte = NULL;
->>   				migration_entry_wait(mm, src_pmd, src_addr);
->>   				err = -EAGAIN;
->> -			} else
->> +			} else {
->>   				err = -EFAULT;
->> +			}
->>   			goto out;
-> 
-> where we have
-> 
-> out:
-> 	...
-> 	if (dst_pte)
-> 		pte_unmap(dst_pte);
-> 	if (src_pte)
-> 		pte_unmap(src_pte);
+>> +static bool intel_dp_reject_hbr3_due_to_tps4(struct intel_dp *intel_dp)
+>> +{
+>> +	/* TPS4 is not mandatory for eDP with DPCD rev 1.4 */
+>> +	if (intel_dp_is_edp(intel_dp) && intel_dp->dpcd[DP_DPCD_REV] == 0x14)
+>> +		return false;
+>> +
+>> +	return !drm_dp_tps4_supported(intel_dp->dpcd);
+>> +}
+> This feels like it's getty too messy for comfort. I think we should just
+> revert the whole thing and quirk that one icl machine.
 
-AI slop?
+Alright sure.
 
--- 
-Cheers,
+Can this be done is same patch, I mean no need for a revert and a 
+separate quirk patch, right?
 
-David / dhildenb
 
+Regards,
+
+Ankit
+
+>
+>> +
+>>   static int max_dprx_rate(struct intel_dp *intel_dp)
+>>   {
+>>   	struct intel_display *display = to_intel_display(intel_dp);
+>> @@ -187,13 +196,22 @@ static int max_dprx_rate(struct intel_dp *intel_dp)
+>>   	 * HBR3 without TPS4, and are unable to produce a stable
+>>   	 * output. Reject HBR3 when TPS4 is not available.
+>>   	 */
+>> -	if (max_rate >= 810000 && !drm_dp_tps4_supported(intel_dp->dpcd)) {
+>> +	if (max_rate >= 810000 && intel_dp_reject_hbr3_due_to_tps4(intel_dp)) {
+>>   		drm_dbg_kms(display->drm,
+>>   			    "[ENCODER:%d:%s] Rejecting HBR3 due to missing TPS4 support\n",
+>>   			    encoder->base.base.id, encoder->base.name);
+>>   		max_rate = 540000;
+>>   	}
+>>   
+>> +	/*
+>> +	 * Some platforms + eDP panels may not reliably support HBR3
+>> +	 * due to signal integrity limitations, despite advertising it.
+>> +	 * Cap the link rate to HBR2 to avoid unstable configurations for the
+>> +	 * known machines.
+>> +	 */
+>> +	if (intel_dp_is_edp(intel_dp) && intel_has_quirk(display, QUIRK_EDP_LIMIT_RATE_HBR2))
+>> +		max_rate = min(max_rate, 540000);
+>> +
+>>   	return max_rate;
+>>   }
+>>   
+>> @@ -4304,13 +4322,22 @@ intel_edp_set_sink_rates(struct intel_dp *intel_dp)
+>>   			 * HBR3 without TPS4, and are unable to produce a stable
+>>   			 * output. Reject HBR3 when TPS4 is not available.
+>>   			 */
+>> -			if (rate >= 810000 && !drm_dp_tps4_supported(intel_dp->dpcd)) {
+>> +			if (rate >= 810000 && intel_dp_reject_hbr3_due_to_tps4(intel_dp)) {
+>>   				drm_dbg_kms(display->drm,
+>>   					    "[ENCODER:%d:%s] Rejecting HBR3 due to missing TPS4 support\n",
+>>   					    encoder->base.base.id, encoder->base.name);
+>>   				break;
+>>   			}
+>>   
+>> +			/*
+>> +			 * Some platforms cannot reliably drive HBR3 rates due to PHY limitations,
+>> +			 * even if the sink advertises support. Reject any sink rates above HBR2 on
+>> +			 * the known machines for stable output.
+>> +			 */
+>> +			if (rate >= 810000 &&
+>> +			    intel_has_quirk(display, QUIRK_EDP_LIMIT_RATE_HBR2))
+>> +				break;
+>> +
+>>   			intel_dp->sink_rates[i] = rate;
+>>   		}
+>>   		intel_dp->num_sink_rates = i;
+>> diff --git a/drivers/gpu/drm/i915/display/intel_quirks.c b/drivers/gpu/drm/i915/display/intel_quirks.c
+>> index a32fae510ed2..d2e16b79d6be 100644
+>> --- a/drivers/gpu/drm/i915/display/intel_quirks.c
+>> +++ b/drivers/gpu/drm/i915/display/intel_quirks.c
+>> @@ -80,6 +80,12 @@ static void quirk_fw_sync_len(struct intel_dp *intel_dp)
+>>   	drm_info(display->drm, "Applying Fast Wake sync pulse count quirk\n");
+>>   }
+>>   
+>> +static void quirk_edp_limit_rate_hbr2(struct intel_display *display)
+>> +{
+>> +	intel_set_quirk(display, QUIRK_EDP_LIMIT_RATE_HBR2);
+>> +	drm_info(display->drm, "Applying eDP Limit rate to HBR2 quirk\n");
+>> +}
+>> +
+>>   struct intel_quirk {
+>>   	int device;
+>>   	int subsystem_vendor;
+>> @@ -231,6 +237,9 @@ static struct intel_quirk intel_quirks[] = {
+>>   	{ 0x3184, 0x1019, 0xa94d, quirk_increase_ddi_disabled_time },
+>>   	/* HP Notebook - 14-r206nv */
+>>   	{ 0x0f31, 0x103c, 0x220f, quirk_invert_brightness },
+>> +
+>> +	/* Dell XPS 13 7390 2-in-1 */
+>> +	{ 0x8a12, 0x1028, 0x08b0, quirk_edp_limit_rate_hbr2 },
+>>   };
+>>   
+>>   static const struct intel_dpcd_quirk intel_dpcd_quirks[] = {
+>> diff --git a/drivers/gpu/drm/i915/display/intel_quirks.h b/drivers/gpu/drm/i915/display/intel_quirks.h
+>> index cafdebda7535..06da0e286c67 100644
+>> --- a/drivers/gpu/drm/i915/display/intel_quirks.h
+>> +++ b/drivers/gpu/drm/i915/display/intel_quirks.h
+>> @@ -20,6 +20,7 @@ enum intel_quirk_id {
+>>   	QUIRK_LVDS_SSC_DISABLE,
+>>   	QUIRK_NO_PPS_BACKLIGHT_POWER_HOOK,
+>>   	QUIRK_FW_SYNC_LEN,
+>> +	QUIRK_EDP_LIMIT_RATE_HBR2,
+>>   };
+>>   
+>>   void intel_init_quirks(struct intel_display *display);
+>> -- 
+>> 2.45.2
 
