@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-160720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A13AFD187
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:37:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38AF1AFD378
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6702A541DBF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 666AE543FD4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8460317A2E0;
-	Tue,  8 Jul 2025 16:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D946B2DA77B;
+	Tue,  8 Jul 2025 16:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tY22MjqN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfeMtsqC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E2E2E427E;
-	Tue,  8 Jul 2025 16:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CE3BE46;
+	Tue,  8 Jul 2025 16:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992495; cv=none; b=Vu+zQYvgjPIs3G12U3KhualzG84RsFSNiKiTV2AGWuK/8i1uVGIkKqRO96ZXEdGCy/Di/JQYUAwugHbcdmGJH0x5p3DZvRS9vbExPC1hOxBX6WCSEnQqitl4TY/33ItgDU6TBerFC+5ZwyiYSexXksVQMiOWKJcsHWpjLe0OeQA=
+	t=1751993670; cv=none; b=awJvMFrv2BNMLgl2G8QK9sLoDvVAnjdaae/DmjLxbACDPapZtZJ5F6u0+wBz4W+avbL+gy+rTCDvQFkaisDv3n+3xMceX32YEuuoZxwskR85NvLmYtl/Wv8eaK0jOLEIFVAD5dZRXpkTu2a3Cl5j6sTNa6tUGucP25pI3FFrOb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992495; c=relaxed/simple;
-	bh=sWEWJmuDss8a0DwqZFnqtEZ82cNZZCNVjM1NAzL3nTs=;
+	s=arc-20240116; t=1751993670; c=relaxed/simple;
+	bh=P1rj8AWxyUYV3J9qkZ0wtQbgHxMWJRaQvYysrS3Wdow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PXRr+SIcI0Q/2HsY+4l9ZYfDvi+fjFJ0vCpUWdsC/SvIHQfzcipmh0NEJv5mW/orOGigt/2zYHpjW3z3y1JHv7tU7U6mu3gXGKybbtAxskrky0nAmiMFdMkMmy3dimG74wQw1U7ghEy4K68ckg5ZJw5Iv46GTzyNSlWgxZNabz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tY22MjqN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBDDFC4CEF0;
-	Tue,  8 Jul 2025 16:34:54 +0000 (UTC)
+	 MIME-Version; b=NWpDGzFRefcCkakgF2o5VZGQrbdcHJWRcfgq5nxD/C+Kh++Pg4PjktVadFCH6rMna9w+XjfEzm0vQjSGrUYo4r2PJ/vF+QQKD5eZVO4TNHgLz72Fz56PNzrTLk5egA+rht/LdDn/Xr3HTaPI/nWEWi+t8ZnCKjaZPBibgxwWVs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfeMtsqC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1511CC4CEED;
+	Tue,  8 Jul 2025 16:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992495;
-	bh=sWEWJmuDss8a0DwqZFnqtEZ82cNZZCNVjM1NAzL3nTs=;
+	s=korg; t=1751993670;
+	bh=P1rj8AWxyUYV3J9qkZ0wtQbgHxMWJRaQvYysrS3Wdow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tY22MjqNNgIO4LLwB/arEy8JDEfT4psF36zo/cWAl7q6kAlvlZIHu42zqnwlrAe8n
-	 mOvW3kjPIDIbZOVRpFWjZcVcllQ7q1HjLzvriyTln1rMw8Uv5DjYa9M0WMKUJO98EZ
-	 Kbx4kJ8AWGkNA/A3xzPl/wej/4qKAOvbuy5/WJXU=
+	b=xfeMtsqCQkCDbv+uce4K50xfOhxWsZhosFTwjSjDpKIU70NFVb/qWCPf1jKpfYE/1
+	 E33L439KMhVEORb5rAAYjxsj805k9uzTVjBDBx4CeMUw3rgKw3bRcvz7b1+zM/Zy0j
+	 vLeWBnMxoPqxnu3fiRxlpBiV+8hlVPzcIcBlrY7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/132] drm/simpledrm: Do not upcast in release helpers
+	Shawn Guo <shawnguo@kernel.org>,
+	John Ernberg <john.ernberg@actia.se>,
+	stable <stable@kernel.org>,
+	Jun Li <jun.li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.15 154/178] usb: chipidea: udc: disconnect/reconnect from host when do suspend/resume
 Date: Tue,  8 Jul 2025 18:23:11 +0200
-Message-ID: <20250708162232.975489001@linuxfoundation.org>
+Message-ID: <20250708162240.526176956@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +65,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit d231cde7c84359fb18fb268cf6cff03b5bce48ff ]
+commit 31a6afbe86e8e9deba9ab53876ec49eafc7fd901 upstream.
 
-The res pointer passed to simpledrm_device_release_clocks() and
-simpledrm_device_release_regulators() points to an instance of
-struct simpledrm_device. No need to upcast from struct drm_device.
-The upcast is harmless, as DRM device is the first field in struct
-simpledrm_device.
+Shawn and John reported a hang issue during system suspend as below:
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 11e8f5fd223b ("drm: Add simpledrm driver")
-Cc: <stable@vger.kernel.org> # v5.14+
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Link: https://lore.kernel.org/r/20250407134753.985925-2-tzimmermann@suse.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ - USB gadget is enabled as Ethernet
+ - There is data transfer over USB Ethernet (scp a big file between host
+                                             and device)
+ - Device is going in/out suspend (echo mem > /sys/power/state)
+
+The root cause is the USB device controller is suspended but the USB bus
+is still active which caused the USB host continues to transfer data with
+device and the device continues to queue USB requests (in this case, a
+delayed TCP ACK packet trigger the issue) after controller is suspended,
+however the USB controller clock is already gated off. Then if udc driver
+access registers after that point, the system will hang.
+
+The correct way to avoid such issue is to disconnect device from host when
+the USB bus is not at suspend state. Then the host will receive disconnect
+event and stop data transfer in time. To continue make USB gadget device
+work after system resume, this will reconnect device automatically.
+
+To make usb wakeup work if USB bus is already at suspend state, this will
+keep connection for it only when USB device controller has enabled wakeup
+capability.
+
+Reported-by: Shawn Guo <shawnguo@kernel.org>
+Reported-by: John Ernberg <john.ernberg@actia.se>
+Closes: https://lore.kernel.org/linux-usb/aEZxmlHmjeWcXiF3@dragon/
+Tested-by: John Ernberg <john.ernberg@actia.se> # iMX8QXP
+Fixes: 235ffc17d014 ("usb: chipidea: udc: add suspend/resume support for device controller")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20250614124914.207540-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/simpledrm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/chipidea/udc.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/tiny/simpledrm.c b/drivers/gpu/drm/tiny/simpledrm.c
-index 8ea120eb8674b..30676b1073034 100644
---- a/drivers/gpu/drm/tiny/simpledrm.c
-+++ b/drivers/gpu/drm/tiny/simpledrm.c
-@@ -276,7 +276,7 @@ static struct simpledrm_device *simpledrm_device_of_dev(struct drm_device *dev)
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -2374,6 +2374,10 @@ static void udc_suspend(struct ci_hdrc *
+ 	 */
+ 	if (hw_read(ci, OP_ENDPTLISTADDR, ~0) == 0)
+ 		hw_write(ci, OP_ENDPTLISTADDR, ~0, ~0);
++
++	if (ci->gadget.connected &&
++	    (!ci->suspended || !device_may_wakeup(ci->dev)))
++		usb_gadget_disconnect(&ci->gadget);
+ }
  
- static void simpledrm_device_release_clocks(void *res)
- {
--	struct simpledrm_device *sdev = simpledrm_device_of_dev(res);
-+	struct simpledrm_device *sdev = res;
- 	unsigned int i;
+ static void udc_resume(struct ci_hdrc *ci, bool power_lost)
+@@ -2384,6 +2388,9 @@ static void udc_resume(struct ci_hdrc *c
+ 					OTGSC_BSVIS | OTGSC_BSVIE);
+ 		if (ci->vbus_active)
+ 			usb_gadget_vbus_disconnect(&ci->gadget);
++	} else if (ci->vbus_active && ci->driver &&
++		   !ci->gadget.connected) {
++		usb_gadget_connect(&ci->gadget);
+ 	}
  
- 	for (i = 0; i < sdev->clk_count; ++i) {
-@@ -374,7 +374,7 @@ static int simpledrm_device_init_clocks(struct simpledrm_device *sdev)
- 
- static void simpledrm_device_release_regulators(void *res)
- {
--	struct simpledrm_device *sdev = simpledrm_device_of_dev(res);
-+	struct simpledrm_device *sdev = res;
- 	unsigned int i;
- 
- 	for (i = 0; i < sdev->regulator_count; ++i) {
--- 
-2.39.5
-
+ 	/* Restore value 0 if it was set for power lost check */
 
 
 
