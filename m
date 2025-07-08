@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-160788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E71F6AFD1D8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:40:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6854EAFD3C5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF601188B8B5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BA3F1C27CD2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADBF2E3385;
-	Tue,  8 Jul 2025 16:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229C42E6D2C;
+	Tue,  8 Jul 2025 16:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTR2LAV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzpDjAzN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4C31CD1E4;
-	Tue,  8 Jul 2025 16:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B402E6D1A;
+	Tue,  8 Jul 2025 16:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992692; cv=none; b=q6hxN7xHMZl3r8EZxRHkH+VqIUycI16ydQmUWhVlF7hYbPLT3swMO8hAAHKnzJr6lcT6LuIXPaYQBGsupB/BuJizrsNDqhd03hvLAZpxAw880QAcBj6czmj5Rixjt2XaxxDOGy/N6zL4xUpgqfze6ew3jqEknaix1p4nj5YrPfM=
+	t=1751993806; cv=none; b=sfpNbOuxqxBaiCNDM17MSMYUogoFqS+GgPhV2SjwKViouWaoUnWrpSdQf8znl0nd0oXMSNkINQX+IxrcdYMhIbfEpKudIGJP6zUVjeImJInENB1ZK2IBJH2yvHxMzcYnlW1TnxmDHSCo9eWt++UXHDN2Q5xGuZfXh8UUuXws2Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992692; c=relaxed/simple;
-	bh=sbJWAu2Dh2350x2yURw34LYIc/4zXehfOgWC0uS4F8E=;
+	s=arc-20240116; t=1751993806; c=relaxed/simple;
+	bh=vDyzTBvmq4jk1mx3o+qtM4JmPXvIaX+BKs65MHRMNWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJbM7ZG4FN+lCcApwqe9AZZoqKY4NG3JS6y84nrMA+OgP+hJeClX7h2niRgC2x9BWOZ5irP/LwI9h97//2PLZ6RqlPw+ge47XGq2E11lXSTsInIvf/5XFewu4ldmVLkF7r7Zyy8zevRBeu4+RvYHvBY4lTpiX0/gJp89XL7/vyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTR2LAV8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BEC7C4CEED;
-	Tue,  8 Jul 2025 16:38:12 +0000 (UTC)
+	 MIME-Version; b=dhA9g+uc/K4uzfW4evfTofpbt6HgwExvnYwKQ1sEMj/N+29DlrVvPbKk6Q39bTSRSUBqnMceaYdMzAyuWtT5joQlM9Q8cIUYn10wl+WdZvT28FSoxCp0ByoeFB6W4+Iey1gZwhXmdEyGfZ9oqPYo1Vc9J4QiYUYHo/PBAx19TzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzpDjAzN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF65C4CEF5;
+	Tue,  8 Jul 2025 16:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992692;
-	bh=sbJWAu2Dh2350x2yURw34LYIc/4zXehfOgWC0uS4F8E=;
+	s=korg; t=1751993806;
+	bh=vDyzTBvmq4jk1mx3o+qtM4JmPXvIaX+BKs65MHRMNWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NTR2LAV83iMwWNeHPDmRwHgd2RFCv2X722nQhKd6HADOaOsnK++v8+2YzkcfECZWQ
-	 bXd9vfDiIOFcI5mbTz28RFgIsd8mX/EjZr0sb96DMUEJ5wAb4mTFbVHrc5JRBkc6xb
-	 0OuJ3NKFOoqh5brjTB4mUfz8QozwwlZAU2ozOPR4=
+	b=AzpDjAzNLdaFu/kaXE4umJXn+fCaxz8MQaiYMSYsacktyNyauQMgacWCaQbtxE2k+
+	 Y2rvFD+11aFEN30dfBosgCEgIAyUnMCfGs6LGTV2I51F0UkcW68iy1GQFF2GCRHKWv
+	 qIDb+17nK5MbAHSTRQ4Nq6/H97zCAmgfQ5eUosPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Alexis Czezar Torreno <alexisczezar.torreno@analog.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/232] btrfs: fix iteration of extrefs during log replay
+Subject: [PATCH 5.15 007/160] hwmon: (pmbus/max34440) Fix support for max34451
 Date: Tue,  8 Jul 2025 18:20:44 +0200
-Message-ID: <20250708162242.721244639@linuxfoundation.org>
+Message-ID: <20250708162231.713114056@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Alexis Czezar Torreno <alexisczezar.torreno@analog.com>
 
-[ Upstream commit 54a7081ed168b72a8a2d6ef4ba3a1259705a2926 ]
+[ Upstream commit 19932f844f3f51646f762f3eac4744ec3a405064 ]
 
-At __inode_add_ref() when processing extrefs, if we jump into the next
-label we have an undefined value of victim_name.len, since we haven't
-initialized it before we did the goto. This results in an invalid memory
-access in the next iteration of the loop since victim_name.len was not
-initialized to the length of the name of the current extref.
+The max344** family has an issue with some PMBUS address being switched.
+This includes max34451 however version MAX34451-NA6 and later has this
+issue fixed and this commit supports that update.
 
-Fix this by initializing victim_name.len with the current extref's name
-length.
-
-Fixes: e43eec81c516 ("btrfs: use struct qstr instead of name and namelen pairs")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Alexis Czezar Torreno <alexisczezar.torreno@analog.com>
+Link: https://lore.kernel.org/r/20250407-dev_adpm12160-v3-1-9cd3095445c8@analog.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwmon/pmbus/max34440.c | 48 +++++++++++++++++++++++++++++++---
+ 1 file changed, 44 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 40acf9ccccfe7..3ecab032907e7 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -1162,13 +1162,13 @@ static inline int __add_inode_ref(struct btrfs_trans_handle *trans,
- 			struct fscrypt_str victim_name;
+diff --git a/drivers/hwmon/pmbus/max34440.c b/drivers/hwmon/pmbus/max34440.c
+index ea7609058a12f..91359647d1e78 100644
+--- a/drivers/hwmon/pmbus/max34440.c
++++ b/drivers/hwmon/pmbus/max34440.c
+@@ -34,16 +34,21 @@ enum chips { max34440, max34441, max34446, max34451, max34460, max34461 };
+ /*
+  * The whole max344* family have IOUT_OC_WARN_LIMIT and IOUT_OC_FAULT_LIMIT
+  * swapped from the standard pmbus spec addresses.
++ * For max34451, version MAX34451ETNA6+ and later has this issue fixed.
+  */
+ #define MAX34440_IOUT_OC_WARN_LIMIT	0x46
+ #define MAX34440_IOUT_OC_FAULT_LIMIT	0x4A
  
- 			extref = (struct btrfs_inode_extref *)(base + cur_offset);
-+			victim_name.len = btrfs_inode_extref_name_len(leaf, extref);
++#define MAX34451ETNA6_MFR_REV		0x0012
++
+ #define MAX34451_MFR_CHANNEL_CONFIG	0xe4
+ #define MAX34451_MFR_CHANNEL_CONFIG_SEL_MASK	0x3f
  
- 			if (btrfs_inode_extref_parent(leaf, extref) != parent_objectid)
- 				goto next;
+ struct max34440_data {
+ 	int id;
+ 	struct pmbus_driver_info info;
++	u8 iout_oc_warn_limit;
++	u8 iout_oc_fault_limit;
+ };
  
- 			ret = read_alloc_one_name(leaf, &extref->name,
--				 btrfs_inode_extref_name_len(leaf, extref),
--				 &victim_name);
-+						  victim_name.len, &victim_name);
- 			if (ret)
- 				return ret;
+ #define to_max34440_data(x)  container_of(x, struct max34440_data, info)
+@@ -60,11 +65,11 @@ static int max34440_read_word_data(struct i2c_client *client, int page,
+ 	switch (reg) {
+ 	case PMBUS_IOUT_OC_FAULT_LIMIT:
+ 		ret = pmbus_read_word_data(client, page, phase,
+-					   MAX34440_IOUT_OC_FAULT_LIMIT);
++					   data->iout_oc_fault_limit);
+ 		break;
+ 	case PMBUS_IOUT_OC_WARN_LIMIT:
+ 		ret = pmbus_read_word_data(client, page, phase,
+-					   MAX34440_IOUT_OC_WARN_LIMIT);
++					   data->iout_oc_warn_limit);
+ 		break;
+ 	case PMBUS_VIRT_READ_VOUT_MIN:
+ 		ret = pmbus_read_word_data(client, page, phase,
+@@ -133,11 +138,11 @@ static int max34440_write_word_data(struct i2c_client *client, int page,
  
+ 	switch (reg) {
+ 	case PMBUS_IOUT_OC_FAULT_LIMIT:
+-		ret = pmbus_write_word_data(client, page, MAX34440_IOUT_OC_FAULT_LIMIT,
++		ret = pmbus_write_word_data(client, page, data->iout_oc_fault_limit,
+ 					    word);
+ 		break;
+ 	case PMBUS_IOUT_OC_WARN_LIMIT:
+-		ret = pmbus_write_word_data(client, page, MAX34440_IOUT_OC_WARN_LIMIT,
++		ret = pmbus_write_word_data(client, page, data->iout_oc_warn_limit,
+ 					    word);
+ 		break;
+ 	case PMBUS_VIRT_RESET_POUT_HISTORY:
+@@ -235,6 +240,25 @@ static int max34451_set_supported_funcs(struct i2c_client *client,
+ 	 */
+ 
+ 	int page, rv;
++	bool max34451_na6 = false;
++
++	rv = i2c_smbus_read_word_data(client, PMBUS_MFR_REVISION);
++	if (rv < 0)
++		return rv;
++
++	if (rv >= MAX34451ETNA6_MFR_REV) {
++		max34451_na6 = true;
++		data->info.format[PSC_VOLTAGE_IN] = direct;
++		data->info.format[PSC_CURRENT_IN] = direct;
++		data->info.m[PSC_VOLTAGE_IN] = 1;
++		data->info.b[PSC_VOLTAGE_IN] = 0;
++		data->info.R[PSC_VOLTAGE_IN] = 3;
++		data->info.m[PSC_CURRENT_IN] = 1;
++		data->info.b[PSC_CURRENT_IN] = 0;
++		data->info.R[PSC_CURRENT_IN] = 2;
++		data->iout_oc_fault_limit = PMBUS_IOUT_OC_FAULT_LIMIT;
++		data->iout_oc_warn_limit = PMBUS_IOUT_OC_WARN_LIMIT;
++	}
+ 
+ 	for (page = 0; page < 16; page++) {
+ 		rv = i2c_smbus_write_byte_data(client, PMBUS_PAGE, page);
+@@ -251,16 +275,30 @@ static int max34451_set_supported_funcs(struct i2c_client *client,
+ 		case 0x20:
+ 			data->info.func[page] = PMBUS_HAVE_VOUT |
+ 				PMBUS_HAVE_STATUS_VOUT;
++
++			if (max34451_na6)
++				data->info.func[page] |= PMBUS_HAVE_VIN |
++					PMBUS_HAVE_STATUS_INPUT;
+ 			break;
+ 		case 0x21:
+ 			data->info.func[page] = PMBUS_HAVE_VOUT;
++
++			if (max34451_na6)
++				data->info.func[page] |= PMBUS_HAVE_VIN;
+ 			break;
+ 		case 0x22:
+ 			data->info.func[page] = PMBUS_HAVE_IOUT |
+ 				PMBUS_HAVE_STATUS_IOUT;
++
++			if (max34451_na6)
++				data->info.func[page] |= PMBUS_HAVE_IIN |
++					PMBUS_HAVE_STATUS_INPUT;
+ 			break;
+ 		case 0x23:
+ 			data->info.func[page] = PMBUS_HAVE_IOUT;
++
++			if (max34451_na6)
++				data->info.func[page] |= PMBUS_HAVE_IIN;
+ 			break;
+ 		default:
+ 			break;
+@@ -494,6 +532,8 @@ static int max34440_probe(struct i2c_client *client)
+ 		return -ENOMEM;
+ 	data->id = i2c_match_id(max34440_id, client)->driver_data;
+ 	data->info = max34440_info[data->id];
++	data->iout_oc_fault_limit = MAX34440_IOUT_OC_FAULT_LIMIT;
++	data->iout_oc_warn_limit = MAX34440_IOUT_OC_WARN_LIMIT;
+ 
+ 	if (data->id == max34451) {
+ 		rv = max34451_set_supported_funcs(client, data);
 -- 
 2.39.5
 
