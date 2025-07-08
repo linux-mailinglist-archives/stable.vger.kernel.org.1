@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-161048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84B4AFD323
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:54:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A9FAFD1FF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 414F6165C70
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:50:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 337E1171C63
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530E82D838B;
-	Tue,  8 Jul 2025 16:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDAD2DC34C;
+	Tue,  8 Jul 2025 16:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDC+hlmc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZUqpAta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FADA2DC34C;
-	Tue,  8 Jul 2025 16:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27089F9E8;
+	Tue,  8 Jul 2025 16:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993446; cv=none; b=Z7R4lFGBwKBf04UkZ3zY8jiuUE3CTKVHkweQY60/ZcRXKFnUfNiZqMaOXNMtLKutjIxut1dhV+Hrx/97+64gOXqEF/qwBngqyEjbjvqeW2tc5nyK0WSrhmoF+qAM8iZJFbiLt9nbkg/y0idWeEYbsYO2aE6R+dJunFJIP9qjEhU=
+	t=1751992779; cv=none; b=l4UUijwGWlnKKt0p257NMmYN9iclbsxSNF8uhR3ZKrDpOpJika+XLotvAO0F0PgUE5ivSc9jDjrJ/dbt/OfBOu4BwNrJbCEmgkmsXIyrXCGtkRlhdZ/TOGn5etRAnd8L24crkvFZme0Sh5bF2mnvyQ8ozTGwz1Doe4lnSPY0z7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993446; c=relaxed/simple;
-	bh=9PjNrjpE33n14o7fnd4XvUw9aTWIQtOS2p4Rz+s4MfE=;
+	s=arc-20240116; t=1751992779; c=relaxed/simple;
+	bh=ZA4srMqAcO8J1m3of6/RXPqvXNSNqT6g2GHknek1WAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OMoPVxY+Go+HI05j5oOGMfoQ71RWsIM+pJyeJzHV/T+CxwE5uJLSV63Tx+t1lXuBFc9rboGqMDaVwbzoIt3edYMjygKzqSPmJ0KohQ1h+XC+MQyXPAQqLLC2mJ0+wFVxZrQ1D27ulYmX6BiyvpSwjK4J1mqHxl6xlsyT2xIfEU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDC+hlmc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897D2C4CEF6;
-	Tue,  8 Jul 2025 16:50:45 +0000 (UTC)
+	 MIME-Version; b=BJRrHAZqO8/0lN6owPS1zkwggN3DxH4jmSANO4Wy21R2kO+pRStVR4OVs+ddvtnq8Xy2gSxBVgqOi9kNPT4x92PdqqkvzvOG2rJXnkpeJtY+b4mgk3LXQIyLlJlU6rhhTCZW7ZgZYZoNGz2Bvp7T60NOMnbRHzGHIwXfV3EngE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZUqpAta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5736C4CEED;
+	Tue,  8 Jul 2025 16:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993445;
-	bh=9PjNrjpE33n14o7fnd4XvUw9aTWIQtOS2p4Rz+s4MfE=;
+	s=korg; t=1751992779;
+	bh=ZA4srMqAcO8J1m3of6/RXPqvXNSNqT6g2GHknek1WAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PDC+hlmc0OXCphiohw4BFipPZR/YkcK3ShRyU5asH/aXLJHOkcRzj8Y633YtXBXwd
-	 Lbjqz1cM3UIcj8b46RR/oU26fRxrQUWd9Dj6lFWgoTFvayF3wdZRAvGm2W5jeajAyn
-	 xZ94+cMkYxkjoTfVdQzfIw6/NTAbOjynpuzQo2qA=
+	b=aZUqpAtaEz9dvRqFj+RcEKOwH88u7I+24Z6PonV1SzyvGd4B00H0S9MzL/Dl3lFes
+	 Pzbyzj4530sKSiDeShEnl8whfnXJsfQVHX/wf0S215uPlgMK/cx15IMK5XNFc0CPpO
+	 nLCzi+9Y0Kfe07jwtTU5ytQnHJ6RMMcRTdOJRvBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Ahmed Zaki <ahmed.zaki@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 037/178] firmware: exynos-acpm: fix timeouts on xfers handling
+Subject: [PATCH 6.12 078/232] idpf: return 0 size for RSS key if not supported
 Date: Tue,  8 Jul 2025 18:21:14 +0200
-Message-ID: <20250708162237.651624669@linuxfoundation.org>
+Message-ID: <20250708162243.495484494@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +63,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-[ Upstream commit 8d2c2fa2209e83d0eb10f7330d8a0bbdc1df32ff ]
+[ Upstream commit f77bf1ebf8ff6301ccdbc346f7b52db928f9cbf8 ]
 
-The mailbox framework has a single inflight request at a time. If
-a request is sent while another is still active, it will be queued
-to the mailbox core ring buffer.
+Returning -EOPNOTSUPP from function returning u32 is leading to
+cast and invalid size value as a result.
 
-ACPM protocol did not serialize the calls to the mailbox subsystem so we
-could start the timeout ticks in parallel for multiple requests, while
-just one was being inflight.
+-EOPNOTSUPP as a size probably will lead to allocation fail.
 
-Consider a hypothetical case where the xfer timeout is 100ms and an ACPM
-transaction takes 90ms:
-      | 0ms: Message #0 is queued in mailbox layer and sent out, then sits
-      |      at acpm_dequeue_by_polling() with a timeout of 100ms
-      | 1ms: Message #1 is queued in mailbox layer but not sent out yet.
-      |      Since send_message() doesn't block, it also sits at
-      |      acpm_dequeue_by_polling() with a timeout of 100ms
-      |  ...
-      | 90ms: Message #0 is completed, txdone is called and message #1 is sent
-      | 101ms: Message #1 times out since the count started at 1ms. Even though
-      |       it has only been inflight for 11ms.
+Command: ethtool -x eth0
+It is visible on all devices that don't have RSS caps set.
 
-Fix the problem by moving mbox_send_message() and mbox_client_txdone()
-immediately after the message has been written to the TX queue and while
-still keeping the ACPM TX queue lock. We thus tie together the TX write
-with the doorbell ring and mark the TX as done after the doorbell has
-been rung. This guarantees that the doorbell has been rang before
-starting the timeout ticks. We should also see some performance
-improvement as we no longer wait to receive a response before ringing
-the doorbell for the next request, so the ACPM firmware shall be able to
-drain faster the TX queue. Another benefit is that requests are no
-longer able to ring the doorbell one for the other, so it eases
-debugging. Finally, the mailbox software queue will always contain a
-single doorbell request due to the serialization done at the ACPM TX
-queue level. Protocols like ACPM, that handle their own hardware queues
-need a passthrough mailbox API, where they are able to just ring the
-doorbell or flip a bit directly into the mailbox controller. The mailbox
-software queue mechanism, the locking done into the mailbox core is not
-really needed, so hopefully this lays the foundation for a passthrough
-mailbox API.
+[  136.615917] Call Trace:
+[  136.615921]  <TASK>
+[  136.615927]  ? __warn+0x89/0x130
+[  136.615942]  ? __alloc_frozen_pages_noprof+0x322/0x330
+[  136.615953]  ? report_bug+0x164/0x190
+[  136.615968]  ? handle_bug+0x58/0x90
+[  136.615979]  ? exc_invalid_op+0x17/0x70
+[  136.615987]  ? asm_exc_invalid_op+0x1a/0x20
+[  136.616001]  ? rss_prepare_get.constprop.0+0xb9/0x170
+[  136.616016]  ? __alloc_frozen_pages_noprof+0x322/0x330
+[  136.616028]  __alloc_pages_noprof+0xe/0x20
+[  136.616038]  ___kmalloc_large_node+0x80/0x110
+[  136.616072]  __kmalloc_large_node_noprof+0x1d/0xa0
+[  136.616081]  __kmalloc_noprof+0x32c/0x4c0
+[  136.616098]  ? rss_prepare_get.constprop.0+0xb9/0x170
+[  136.616105]  rss_prepare_get.constprop.0+0xb9/0x170
+[  136.616114]  ethnl_default_doit+0x107/0x3d0
+[  136.616131]  genl_family_rcv_msg_doit+0x100/0x160
+[  136.616147]  genl_rcv_msg+0x1b8/0x2c0
+[  136.616156]  ? __pfx_ethnl_default_doit+0x10/0x10
+[  136.616168]  ? __pfx_genl_rcv_msg+0x10/0x10
+[  136.616176]  netlink_rcv_skb+0x58/0x110
+[  136.616186]  genl_rcv+0x28/0x40
+[  136.616195]  netlink_unicast+0x19b/0x290
+[  136.616206]  netlink_sendmsg+0x222/0x490
+[  136.616215]  __sys_sendto+0x1fd/0x210
+[  136.616233]  __x64_sys_sendto+0x24/0x30
+[  136.616242]  do_syscall_64+0x82/0x160
+[  136.616252]  ? __sys_recvmsg+0x83/0xe0
+[  136.616265]  ? syscall_exit_to_user_mode+0x10/0x210
+[  136.616275]  ? do_syscall_64+0x8e/0x160
+[  136.616282]  ? __count_memcg_events+0xa1/0x130
+[  136.616295]  ? count_memcg_events.constprop.0+0x1a/0x30
+[  136.616306]  ? handle_mm_fault+0xae/0x2d0
+[  136.616319]  ? do_user_addr_fault+0x379/0x670
+[  136.616328]  ? clear_bhb_loop+0x45/0xa0
+[  136.616340]  ? clear_bhb_loop+0x45/0xa0
+[  136.616349]  ? clear_bhb_loop+0x45/0xa0
+[  136.616359]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  136.616369] RIP: 0033:0x7fd30ba7b047
+[  136.616376] Code: 0c 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 80 3d bd d5 0c 00 00 41 89 ca 74 10 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 71 c3 55 48 83 ec 30 44 89 4c 24 2c 4c 89 44
+[  136.616381] RSP: 002b:00007ffde1796d68 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+[  136.616388] RAX: ffffffffffffffda RBX: 000055d7bd89f2a0 RCX: 00007fd30ba7b047
+[  136.616392] RDX: 0000000000000028 RSI: 000055d7bd89f3b0 RDI: 0000000000000003
+[  136.616396] RBP: 00007ffde1796e10 R08: 00007fd30bb4e200 R09: 000000000000000c
+[  136.616399] R10: 0000000000000000 R11: 0000000000000202 R12: 000055d7bd89f340
+[  136.616403] R13: 000055d7bd89f3b0 R14: 000055d78943f200 R15: 0000000000000000
 
-Reported-by: André Draszik <andre.draszik@linaro.org>
-Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/r/20250606-acpm-timeout-v2-1-306b1aa07a6c@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 02cbfba1add5 ("idpf: add ethtool callbacks")
+Reviewed-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/samsung/exynos-acpm.c | 25 +++++++++----------------
- 1 file changed, 9 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_ethtool.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/samsung/exynos-acpm.c b/drivers/firmware/samsung/exynos-acpm.c
-index e80cb7a8da8f2..520a9fd3b0fd3 100644
---- a/drivers/firmware/samsung/exynos-acpm.c
-+++ b/drivers/firmware/samsung/exynos-acpm.c
-@@ -430,6 +430,9 @@ int acpm_do_xfer(const struct acpm_handle *handle, const struct acpm_xfer *xfer)
- 		return -EOPNOTSUPP;
- 	}
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
+index 59b1a1a099967..f72420cf68216 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
+@@ -46,7 +46,7 @@ static u32 idpf_get_rxfh_key_size(struct net_device *netdev)
+ 	struct idpf_vport_user_config_data *user_config;
  
-+	msg.chan_id = xfer->acpm_chan_id;
-+	msg.chan_type = EXYNOS_MBOX_CHAN_TYPE_DOORBELL;
-+
- 	scoped_guard(mutex, &achan->tx_lock) {
- 		tx_front = readl(achan->tx.front);
- 		idx = (tx_front + 1) % achan->qlen;
-@@ -446,25 +449,15 @@ int acpm_do_xfer(const struct acpm_handle *handle, const struct acpm_xfer *xfer)
+ 	if (!idpf_is_cap_ena_all(np->adapter, IDPF_RSS_CAPS, IDPF_CAP_RSS))
+-		return -EOPNOTSUPP;
++		return 0;
  
- 		/* Advance TX front. */
- 		writel(idx, achan->tx.front);
--	}
+ 	user_config = &np->adapter->vport_config[np->vport_idx]->user_config;
  
--	msg.chan_id = xfer->acpm_chan_id;
--	msg.chan_type = EXYNOS_MBOX_CHAN_TYPE_DOORBELL;
--	ret = mbox_send_message(achan->chan, (void *)&msg);
--	if (ret < 0)
--		return ret;
--
--	ret = acpm_wait_for_message_response(achan, xfer);
-+		ret = mbox_send_message(achan->chan, (void *)&msg);
-+		if (ret < 0)
-+			return ret;
+@@ -65,7 +65,7 @@ static u32 idpf_get_rxfh_indir_size(struct net_device *netdev)
+ 	struct idpf_vport_user_config_data *user_config;
  
--	/*
--	 * NOTE: we might prefer not to need the mailbox ticker to manage the
--	 * transfer queueing since the protocol layer queues things by itself.
--	 * Unfortunately, we have to kick the mailbox framework after we have
--	 * received our message.
--	 */
--	mbox_client_txdone(achan->chan, ret);
-+		mbox_client_txdone(achan->chan, 0);
-+	}
+ 	if (!idpf_is_cap_ena_all(np->adapter, IDPF_RSS_CAPS, IDPF_CAP_RSS))
+-		return -EOPNOTSUPP;
++		return 0;
  
--	return ret;
-+	return acpm_wait_for_message_response(achan, xfer);
- }
+ 	user_config = &np->adapter->vport_config[np->vport_idx]->user_config;
  
- /**
 -- 
 2.39.5
 
