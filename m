@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-161166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC35AFD3B4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3AFAFD28E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F299188CB0B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D2547AFEBD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD902DE1FA;
-	Tue,  8 Jul 2025 16:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64ECD17C21E;
+	Tue,  8 Jul 2025 16:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKHexyh9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hn/4HkD7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD67D1DB127;
-	Tue,  8 Jul 2025 16:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246092F37;
+	Tue,  8 Jul 2025 16:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993786; cv=none; b=pAMQvNTcpzzgAvyTm6gfG2eRAPqAqDODI1E93o4L+zcyvwhca1u4gvCR0g+1in/IDW8xSv/H18xZI+xpntw5zwLxeIm80DXEsyRvGgDe/fO79nbpMaC6+6UipV8o8S1hHCBQ2nFW2BNj0VUeRrEEH6+k1tDko4atEjNxqUuNwXs=
+	t=1751993276; cv=none; b=GPW0gBwE69qoAjwpgKjhHSOZKBnBYjM6hg2O99Hr7XY6b//PdwHyS0nRHd1GaVN19W2Sv0bjPbaU0MC7ppp8MbxJPRGIcutPAL2Gs+Ucb6sZ5/IjeUXcAjOMa98UWwDvypJRkSuUyE/mw3sPi6IX5WmtCY9eQWKUclwQiz/hNRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993786; c=relaxed/simple;
-	bh=2NGlPPw4zjKdNWzjKuHE1KRyo+A8C+5HQw6qr+krJhU=;
+	s=arc-20240116; t=1751993276; c=relaxed/simple;
+	bh=RSvMVWKIJBIIknUtvXALlvb1lmOyqVYkbIVdulo6b0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AxEAdZfyItUSqvUxbW1BT1CuuAk069cNgnewIZawy5VHNi/dG4g6lcAyg+rjj3buLEGimMfOihIuonxuZ+ZTuhV2AocaGZD5PconFou+pA7DFDlRL/i/aMagLothU/hwAVEKEPclovKJvrYD4I5KORB/t0QOYKc1EM21j704vxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKHexyh9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446ECC4CEF0;
-	Tue,  8 Jul 2025 16:56:26 +0000 (UTC)
+	 MIME-Version; b=hyyJv9riArhJTxsYWYTIlp2A9hf/Aj/xpW49OYUYFgYJalA5Hlr57kWmIYjvNQgfisxrDXGOZX2KVvIleZNnx08uxogBD8J2eztFo8G++1juHrH01MsCunM2H2Vo21a1+kO63ZF6Xsr1jDnqC9paGO5bOWrq0kkwKIHdO8hrn70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hn/4HkD7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BCDC4CEED;
+	Tue,  8 Jul 2025 16:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993786;
-	bh=2NGlPPw4zjKdNWzjKuHE1KRyo+A8C+5HQw6qr+krJhU=;
+	s=korg; t=1751993276;
+	bh=RSvMVWKIJBIIknUtvXALlvb1lmOyqVYkbIVdulo6b0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rKHexyh9JTBjMuw8TQ3dOi/PHLm+1iPbdwdiZqQqXJjZRK/EDGDrEc7Ks30O0bBrE
-	 wmWM5LNt2oHFPyR3Mo6xYbvZQK4lOo31q/s7g6d49vzGdFFLj361HZUfkMNA+40yD9
-	 1mWOWjQwQorVQSw8EwT2pHoq9sVv+j/C+CB7QE8U=
+	b=hn/4HkD7QTXWE5mQRbNAHNGGYbERLMvPznPS8QAL4O5jxXSpYr4tn/sqkxTz4PvnY
+	 aJ+1GtbqPb0xWhMxjIDdAqTlGdBvJPJMFeJ1tRMstuTqv0xNvlGbAWIa0QvAG/H/CF
+	 lae3d3msX3OWZRHfXxxNgpAxx/ozHGHCHmo1EU88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chance Yang <chance.yang@kneron.us>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 018/160] usb: common: usb-conn-gpio: use a unique name for usb connector device
-Date: Tue,  8 Jul 2025 18:20:55 +0200
-Message-ID: <20250708162232.012431452@linuxfoundation.org>
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.15 019/178] mmc: core: Adjust some error messages for SD UHS-II cards
+Date: Tue,  8 Jul 2025 18:20:56 +0200
+Message-ID: <20250708162237.050624923@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chance Yang <chance.yang@kneron.us>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-[ Upstream commit d4e5b10c55627e2f3fc9e5b337a28b4e2f02a55e ]
+commit 14633da0f416fdbb6844d1b295cdc828b666e273 upstream.
 
-The current implementation of the usb-conn-gpio driver uses a fixed
-"usb-charger" name for all USB connector devices. This causes conflicts
-in the power supply subsystem when multiple USB connectors are present,
-as duplicate names are not allowed.
+Adjust some error messages to debug mode to avoid causing
+misunderstanding it is an error.
 
-Use IDA to manage unique IDs for naming usb connectors (e.g.,
-usb-charger-0, usb-charger-1).
-
-Signed-off-by: Chance Yang <chance.yang@kneron.us>
-Link: https://lore.kernel.org/r/20250411-work-next-v3-1-7cd9aa80190c@kneron.us
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Fixes: 9a9f7e13952b ("mmc: core: Support UHS-II card control and access")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250606110121.96314-2-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/common/usb-conn-gpio.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ drivers/mmc/core/sd_uhs2.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/common/usb-conn-gpio.c b/drivers/usb/common/usb-conn-gpio.c
-index 521c95935d4c3..9691a1c8d8b0e 100644
---- a/drivers/usb/common/usb-conn-gpio.c
-+++ b/drivers/usb/common/usb-conn-gpio.c
-@@ -20,6 +20,9 @@
- #include <linux/power_supply.h>
- #include <linux/regulator/consumer.h>
- #include <linux/usb/role.h>
-+#include <linux/idr.h>
-+
-+static DEFINE_IDA(usb_conn_ida);
+--- a/drivers/mmc/core/sd_uhs2.c
++++ b/drivers/mmc/core/sd_uhs2.c
+@@ -91,8 +91,8 @@ static int sd_uhs2_phy_init(struct mmc_h
  
- #define USB_GPIO_DEB_MS		20	/* ms */
- #define USB_GPIO_DEB_US		((USB_GPIO_DEB_MS) * 1000)	/* us */
-@@ -29,6 +32,7 @@
+ 	err = host->ops->uhs2_control(host, UHS2_PHY_INIT);
+ 	if (err) {
+-		pr_err("%s: failed to initial phy for UHS-II!\n",
+-		       mmc_hostname(host));
++		pr_debug("%s: failed to initial phy for UHS-II!\n",
++			 mmc_hostname(host));
+ 	}
  
- struct usb_conn_info {
- 	struct device *dev;
-+	int conn_id; /* store the IDA-allocated ID */
- 	struct usb_role_switch *role_sw;
- 	enum usb_role last_role;
- 	struct regulator *vbus;
-@@ -160,7 +164,17 @@ static int usb_conn_psy_register(struct usb_conn_info *info)
- 		.of_node = dev->of_node,
- 	};
- 
--	desc->name = "usb-charger";
-+	info->conn_id = ida_alloc(&usb_conn_ida, GFP_KERNEL);
-+	if (info->conn_id < 0)
-+		return info->conn_id;
-+
-+	desc->name = devm_kasprintf(dev, GFP_KERNEL, "usb-charger-%d",
-+				    info->conn_id);
-+	if (!desc->name) {
-+		ida_free(&usb_conn_ida, info->conn_id);
-+		return -ENOMEM;
-+	}
-+
- 	desc->properties = usb_charger_properties;
- 	desc->num_properties = ARRAY_SIZE(usb_charger_properties);
- 	desc->get_property = usb_charger_get_property;
-@@ -168,8 +182,10 @@ static int usb_conn_psy_register(struct usb_conn_info *info)
- 	cfg.drv_data = info;
- 
- 	info->charger = devm_power_supply_register(dev, desc, &cfg);
--	if (IS_ERR(info->charger))
--		dev_err(dev, "Unable to register charger\n");
-+	if (IS_ERR(info->charger)) {
-+		dev_err(dev, "Unable to register charger %d\n", info->conn_id);
-+		ida_free(&usb_conn_ida, info->conn_id);
-+	}
- 
- 	return PTR_ERR_OR_ZERO(info->charger);
- }
-@@ -292,6 +308,9 @@ static int usb_conn_remove(struct platform_device *pdev)
- 
- 	cancel_delayed_work_sync(&info->dw_det);
- 
-+	if (info->charger)
-+		ida_free(&usb_conn_ida, info->conn_id);
-+
- 	if (info->last_role == USB_ROLE_HOST && info->vbus)
- 		regulator_disable(info->vbus);
- 
--- 
-2.39.5
-
+ 	return err;
 
 
 
