@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-161116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB9EAFD375
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8787EAFD4BE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:09:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40686169958
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 408453A91E5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052022045B5;
-	Tue,  8 Jul 2025 16:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737072DC34C;
+	Tue,  8 Jul 2025 17:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+4Vj4ZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIzCfb+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78D82DAFA3;
-	Tue,  8 Jul 2025 16:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BED21C9E4;
+	Tue,  8 Jul 2025 17:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993640; cv=none; b=kZuyzC8MvW5svUURa8nrASHk6Hzus713NimcURbl6bcdUv9iwsATiRoudi3ix6uKIrP3ztgXwfiUV+svmOi+kv2BWSk3htYr3Jx42OFknPVojcEyrmLGONw+P1RsjEaaFppc3aBGHLyZKVqLg/W1WM6cldHOiRa5pBs5HdsYQK4=
+	t=1751994207; cv=none; b=tmBJ+AImIhOx+bgMDbZfZlramP9lS0uCT+tVRhE/+p2528JDhnpaatpqRLaISPA0/DG8eUSlBSR57jtUPbYWblyqjzU+HHh8/t1LhgE6H8UK+9WxlFNq+2aP+nwFeBnY2iNe4BCeOAmtVS3jFMTTmcu4Fgus64/wNWY0toJI/ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993640; c=relaxed/simple;
-	bh=0wZ2vreWAhGymFsym2k0cVHxMWvZV5s+9KUCd1O9SwY=;
+	s=arc-20240116; t=1751994207; c=relaxed/simple;
+	bh=UDB7d3w3sJAyotZzPLibiZB/9Bvygk5leN5phJ7kgec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkCmkdFQ2BOmBVE0FIDcYtMoU/QnrG/6hW5p0m7h7IZb28EgMhwXdx8+5BrHPvzMRKhvMdATJNRDw3oka8x6NgS9ZTAsRTkq0oZleQJLL/zROR8KCZl3UtR5HGbAat6eYbkLYKPEJjytCK8+DdSSHd/nujMTGN2jbf4fji7YT24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+4Vj4ZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A31C4CEED;
-	Tue,  8 Jul 2025 16:54:00 +0000 (UTC)
+	 MIME-Version; b=gPNz/ojkIrbu92Zl+Ca000ltiAEPaI3j5/DZ/AEPhWxpIvbaNoDG7TZRbL+aluCJV/34IJQEVEM/CvzxqYlR3lXihknXv53QrwH6ltBI1/To8U9Wl6qOYegyTcGHPrIi4XdOLiWog8vMLZ7MHqWzKJd9kHRcS1rGdNVUAeDGjJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIzCfb+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B011BC4CEED;
+	Tue,  8 Jul 2025 17:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993640;
-	bh=0wZ2vreWAhGymFsym2k0cVHxMWvZV5s+9KUCd1O9SwY=;
+	s=korg; t=1751994207;
+	bh=UDB7d3w3sJAyotZzPLibiZB/9Bvygk5leN5phJ7kgec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+4Vj4ZRETZSkEdHsdY8xMGikZSP2becN1Y4CaV8NGzkg5lfryRs3m/Kh643WbqLg
-	 CT9iy2neZ7UajnhaAYzCtcMmZD/MBNK48Zh+T7MXFUmTgJdC6T27hcJ9J5xtk+Ukxo
-	 8XT0CE4toIgopTyUru6jjAD3jl0MZQibsyB1hPJE=
+	b=DIzCfb+icUDIye6dA+o04mxzavb8aEV61+QygIZl2ikhVAIleEIk4RNzG1GzinUwI
+	 PU0qJLeXati6ef6OaHKBOsZ0YqMXFW9KatF9vxvoCucNqbUd9ql9cGwQEpu91Td6U5
+	 DlABa54Y3bs0DzeGM69FLywi8lAPOx1F+VhtVOBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 136/178] wifi: mac80211: drop invalid source address OCB frames
+Subject: [PATCH 5.15 136/160] rcu: Return early if callback is not specified
 Date: Tue,  8 Jul 2025 18:22:53 +0200
-Message-ID: <20250708162240.106184157@linuxfoundation.org>
+Message-ID: <20250708162235.151700178@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-[ Upstream commit d1b1a5eb27c4948e8811cf4dbb05aaf3eb10700c ]
+[ Upstream commit 33b6a1f155d627f5bd80c7485c598ce45428f74f ]
 
-In OCB, don't accept frames from invalid source addresses
-(and in particular don't try to create stations for them),
-drop the frames instead.
+Currently the call_rcu() API does not check whether a callback
+pointer is NULL. If NULL is passed, rcu_core() will try to invoke
+it, resulting in NULL pointer dereference and a kernel crash.
 
-Reported-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/6788d2d9.050a0220.20d369.0028.GAE@google.com/
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Tested-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/20250616171838.7433379cab5d.I47444d63c72a0bd58d2e2b67bb99e1fea37eec6f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+To prevent this and improve debuggability, this patch adds a check
+for NULL and emits a kernel stack trace to help identify a faulty
+caller.
+
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 4 ++++
+ kernel/rcu/tree.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 09beb65d6108b..e73431549ce77 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4432,6 +4432,10 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
- 		if (!multicast &&
- 		    !ether_addr_equal(sdata->dev->dev_addr, hdr->addr1))
- 			return false;
-+		/* reject invalid/our STA address */
-+		if (!is_valid_ether_addr(hdr->addr2) ||
-+		    ether_addr_equal(sdata->dev->dev_addr, hdr->addr2))
-+			return false;
- 		if (!rx->sta) {
- 			int rate_idx;
- 			if (status->encoding != RX_ENC_LEGACY)
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 66c1ca01dd0e9..185d37b02dc9c 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -2988,6 +2988,10 @@ __call_rcu(struct rcu_head *head, rcu_callback_t func)
+ 	/* Misaligned rcu_head! */
+ 	WARN_ON_ONCE((unsigned long)head & (sizeof(void *) - 1));
+ 
++	/* Avoid NULL dereference if callback is NULL. */
++	if (WARN_ON_ONCE(!func))
++		return;
++
+ 	if (debug_rcu_head_queue(head)) {
+ 		/*
+ 		 * Probable double call_rcu(), so leak the callback.
 -- 
 2.39.5
 
