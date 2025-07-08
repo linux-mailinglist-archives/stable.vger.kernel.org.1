@@ -1,224 +1,242 @@
-Return-Path: <stable+bounces-160521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56AF8AFCF88
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:43:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA17EAFCFA2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:49:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0875F1C2009E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 15:42:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56A5C3BA2FC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 15:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBD02E11DE;
-	Tue,  8 Jul 2025 15:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24212E3B1E;
+	Tue,  8 Jul 2025 15:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UL+jT6t0"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IC/Rfehh"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6B72E0B74
-	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 15:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E332E0B5D
+	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 15:48:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751989344; cv=none; b=kuk4/3nCxbFAkfbANpeDEm5j+eJFsXqN8ytw/Zs6v6crRWo+YSfNSnpbywTR59u9BrnDjvB2fgggxBZIgVIXjENYi8ggDvCxVE91R8kL3ai7gTgAYMlbz/9hLw0rEdeYejkuOwNavSC5z9HAgYV/T9V14cBPGwjclW1nVypObSE=
+	t=1751989698; cv=none; b=m1aufAJA8i3B2U0DBvQTU2A3K+ZnA4ErXvCcehebX6wXJRNpdSGiePgca+nMpjUXU9YooGUIkYpwIHOeceMcUO3++1wKNCgoBbqyvdkf90k3TAJczyzbI79+DyXYxSPYbL7I1WXugRzEzPmxg/dLrqV8EwA5mkqpEfR1Vrwkdmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751989344; c=relaxed/simple;
-	bh=4PG6A4qdPDJaDK9rSecXFeyWQlvQfmN3rmHwoACWPPY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qRi9kDG4bvR4IJyE4gPC8oK4GklQPUk8TUEj2KgrJblfFVu5u5XgHBwFpvow776FCllX/LGAJJ8VBJ05JcXkvDHEgfeizDmxa1PKfT4Uae5pfWbYMDkiqA/kTyf+q6C1JMH6KLs3T5ImjnRLrKOUejquTiTIu3lJU2DnD0Kbtw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UL+jT6t0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751989340;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=O1MbuMS/xAVXqVQl4KdN8hBfeBeFym/jGvqVlzXbTwQ=;
-	b=UL+jT6t0+WgFzdzSVGg1N9RPvIIgc2B49rvK3Ww+JOxh10a8o1zYMAusU/OVviYBEIHnlo
-	VoSG5ydNyZCoLO95it6nd1cX5oMo91tVd92jVbqUZ+FWnUxTc3kAPIsSbv0WovzAxPvkH6
-	A7TODHEkR1i6e+Qr+QlO9vUgJKPH0pI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-475-q28CNyBEMQOhwNqVGbGVSg-1; Tue, 08 Jul 2025 11:42:19 -0400
-X-MC-Unique: q28CNyBEMQOhwNqVGbGVSg-1
-X-Mimecast-MFC-AGG-ID: q28CNyBEMQOhwNqVGbGVSg_1751989338
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-451ac1b43c4so25826685e9.0
-        for <stable@vger.kernel.org>; Tue, 08 Jul 2025 08:42:19 -0700 (PDT)
+	s=arc-20240116; t=1751989698; c=relaxed/simple;
+	bh=qLeCx9x+NE4hX1j+RsHDuyZScHbN7BgjRSqpoIdYf8A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PufalszFn9bZ9LoAgOj0Y9+QfNpTVtpz5jOYBNiw+7Z/2XnHJFTbV97rNna4v/SItdgjJByrTygMWoU1v8VtQ7joEGu5M8JcPqmLRhrT9UlUJJ+0gl3TXuMRQu7KBhLSbnOgbMmpA7ll4jL3U4HoZChIAybKPat9uXja0xLw2P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IC/Rfehh; arc=none smtp.client-ip=209.85.219.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e812fc35985so3839826276.0
+        for <stable@vger.kernel.org>; Tue, 08 Jul 2025 08:48:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1751989695; x=1752594495; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qklr2Zh9X6SWAjWGlHUWEDH7pWFNNuYHKmbm1Kh1Thw=;
+        b=IC/Rfehhi+SosD9kD7BkGwF6gPPPb3pXHP53sX+YQiwKHHXfeiUv1Z87j5HjKXafbs
+         cOqezQIjTCEyGRMBNL9mzqRxjWwePYCe2haOmJVQPBnczndDXTkoccbGLT9YWP1tmsng
+         sZEkF4iToiRtghmAKW4EiC0JLsR7JOrmYAYgyL+MjyldILJfVJKxuDummQ+sS5CDCkGW
+         XJIJaDm3FcUVbiF5sVTj+Vybkb/+UxN6nXu842nGfzhQ9mTwRyWi+hdcdCDi4nACycH8
+         Xcn65054lFHX9PqWbD48uqxeb++PvEZqTN9WsKiXUUFcj8BFCYqxTYPPv436c27RCAfV
+         ZYTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751989338; x=1752594138;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=O1MbuMS/xAVXqVQl4KdN8hBfeBeFym/jGvqVlzXbTwQ=;
-        b=OxKmEHoUxOoohnZFCXoZBFy3B3ZRNYQ7uOcrzGWu0W79F3bHOMTF3EfLaS/4lAN2Q+
-         Xa6DVqFnB75RSvsWQSq1a1KkWJZcUv0vEquKMOsHlNYqyNisBjSlpuk3sfIQ1XkoBHjU
-         tZ+IaiWWALstpaZBMuy7nBuXp/RFf6q8cSUEueh6CJ/1pQD5JxJe/PTF1KWfKnA5lJ1B
-         qhVqCOCVI2R+jhj0mob8R4CyPbkaiNQSHCPnZ8RZxW/12CwF821MXs82ho1S5SfCVg2k
-         GGPSVr7hvFn5C/YL4X/NIEj1Y1gTTMGoKF+iJlWci2wXQd8i3VVKSXHVhSTuVBkL8HK8
-         NW9g==
-X-Forwarded-Encrypted: i=1; AJvYcCVOw2Lb6A5pj9TWJXj0xIt5EdRo/jxh+C5s8zpnmAhXG1CK1TVq5atAkArYpU7o8zf5z8+fT6M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvnByN649mFYXhYWY51AkgrdOqn7mcjsIstH3iFzTVzeMzVDnu
-	l9zgpr4YfZMbuBqo6/dmsEahwSBM+I5FVQHqwi3KJ1neX4NSbuG5L2x4adBIZE1La8UyGHZAu7z
-	KO7wXA0bSojIQg6iHG6FvwqW4HGS65AANKgxAcSJIiC3y2AEcmXO7p6WAZg==
-X-Gm-Gg: ASbGncvr7XqC9bhpGQ6/50nTBhGYcRLhrCbPxhtG+D2LVrm6gBUUIVJwt5xA0zpAOMa
-	p5knCBKjoOY1TQNiZoajGIG7/E1gFFPmYeguTQ3kRKjeJk/d4ZaoX9r7UAbEyNSZvujL1ttfkhH
-	MNthgSR+uv0RqJqyQhb1lRgXqUaPILQaqaOkgFt5b+xzZ52ggi6cxCONBETL5WdgCLyu9ehnUf9
-	ijd4ZXWXUW4S9klARe700Dd4FjJakEmBKOqw2K0JGyRFL2I5RgrBM4fr52reeEInvBFj9nn738K
-	M8IF+GlZRCMEsrMuzILnU/HgYTD8vp997HBv6VHgyBhhcHDa7zPLtoCU9ax2Yuk4PaDcDlQIdyq
-	yfS4iZvutjpLBfJz5NtUM/DyIlE7n6IL51yU3fDr6ogj/+2SH9g==
-X-Received: by 2002:a05:600c:4f16:b0:450:d37d:7c with SMTP id 5b1f17b1804b1-454d31e6959mr2742985e9.21.1751989338073;
-        Tue, 08 Jul 2025 08:42:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8HZ/ySqJpRlxvKJLl+IGmRqojZ/l2Gp1cwjot7XvUeM+y9qFyp52qh/IPBupG3LXayXcx5Q==
-X-Received: by 2002:a05:600c:4f16:b0:450:d37d:7c with SMTP id 5b1f17b1804b1-454d31e6959mr2742615e9.21.1751989337562;
-        Tue, 08 Jul 2025 08:42:17 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f1a:f500:4346:f17c:2bde:808c? (p200300d82f1af5004346f17c2bde808c.dip0.t-ipconnect.de. [2003:d8:2f1a:f500:4346:f17c:2bde:808c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454cd3d2754sm25689455e9.24.2025.07.08.08.42.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Jul 2025 08:42:17 -0700 (PDT)
-Message-ID: <a8f863b1-ea06-4396-b4da-4dca41e3d9a5@redhat.com>
-Date: Tue, 8 Jul 2025 17:42:16 +0200
+        d=1e100.net; s=20230601; t=1751989695; x=1752594495;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Qklr2Zh9X6SWAjWGlHUWEDH7pWFNNuYHKmbm1Kh1Thw=;
+        b=ojf2dTeGyTuvLLSyv5+HFwSUIdWwKvBDf9q6PVAMXjCRTNclNYpWBtr/hYalJV6q0U
+         z4O6HLp/2Ga2O/nfDFkH7d/874bmPAeA/hxCx+atP0WobcaLHbmlr8O0O10vI/UhS4k6
+         J7C6SFrILhWn7RCWNuUnuxQUtpsiYfYK98OoN+VLdu1GQA/eolvBsR/MkWNv/K/e2HXP
+         6F6KDdjlQuyCJ33SeLBBjhqCElra8K+Cuutv55RPKg9QpbGoBEPDnKR0BYnf3E8GzSuA
+         vAVlHVB9XLsV2ATgnUrPna/wCgVQhrzRqCWRJnI95aI7/EqY5HAsamKyiQbQqEr6TFu8
+         F7Pw==
+X-Forwarded-Encrypted: i=1; AJvYcCXGoGEV3vNaxvU9Yueqz915HqvyvKHDeeYkcYfCePuHjOyghlmYQDhv9lYkILb5iuN84anUhLU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaD7lZKZH5pSctIQLJGkjg8tLFm554zTcAGP55K8CRFZtvhy53
+	Wf9x62v0DSZgnVXEFhv1Z+LtbtBzx0mdizwxHtKvAXXeHaHgBW5OjbjzHk3SqcJmarbC3qv9V3G
+	IKJiRD0kLc2cAJ4I0WUhxnAZyy7Jfk67AfERCcDAI+Q==
+X-Gm-Gg: ASbGncueU0CFcH9bl4uJf0EilmXxoaFFCcUBEs0ftmzO/ZMGMF0udS9tU2KrogZtOM6
+	f3eGWyFiFiw6tSa/H5uK0KP2Y4FwdwVz3T900s3WnOTUUflEBw/gBdAFHz3MiR9FwasPh0Blyep
+	OgDgDqBH+qiQnllUbfa1NHoXpFQwjzcyniZyKpjjgWEOjZ
+X-Google-Smtp-Source: AGHT+IHJ2JkBw4MdhgfhWWpTJS7l5p/VVWxebh/7WdPM4CubB1PhaFX2QqFAvYyIyeBV9Ktbf1AL6CIhe/kWfcGR0aY=
+X-Received: by 2002:a05:690c:4809:b0:710:d950:e70c with SMTP id
+ 00721157ae682-717ae118174mr4373687b3.28.1751989695308; Tue, 08 Jul 2025
+ 08:48:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/userfaultfd: fix missing PTE unmap for non-migration
- entries
-To: Sasha Levin <sashal@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, peterx@redhat.com,
- aarcange@redhat.com, surenb@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250630031958.1225651-1-sashal@kernel.org>
- <20250630175746.e52af129fd2d88deecc25169@linux-foundation.org>
- <a4d8b292-154a-4d14-90e4-6c822acf1cfb@redhat.com> <aG06QBVeBJgluSqP@lappy>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <aG06QBVeBJgluSqP@lappy>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250619085620.144181-1-avri.altman@sandisk.com> <20250619085620.144181-3-avri.altman@sandisk.com>
+In-Reply-To: <20250619085620.144181-3-avri.altman@sandisk.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 8 Jul 2025 17:47:39 +0200
+X-Gm-Features: Ac12FXwRMrIVw2pdRW8837eWb3r5j98xDjpQaNeZIC9Tx-bcKNq3RiBG5K7tzR8
+Message-ID: <CAPDyKFrbjCi4VdEdeUoVG7wbgwXS2BcOZV4yzh8PiTc_V+rxug@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mmc: core: sd: Fix and simplify SD card current limit handling
+To: Avri Altman <avri.altman@sandisk.com>
+Cc: linux-mmc@vger.kernel.org, Sarthak Garg <quic_sartgarg@quicinc.com>, 
+	Abraham Bachrach <abe@skydio.com>, Prathamesh Shete <pshete@nvidia.com>, Bibek Basu <bbasu@nvidia.com>, 
+	Sagiv Aharonoff <saharonoff@nvidia.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 08.07.25 17:33, Sasha Levin wrote:
-> On Tue, Jul 08, 2025 at 05:10:44PM +0200, David Hildenbrand wrote:
->> On 01.07.25 02:57, Andrew Morton wrote:
->>> On Sun, 29 Jun 2025 23:19:58 -0400 Sasha Levin <sashal@kernel.org> wrote:
->>>
->>>> When handling non-swap entries in move_pages_pte(), the error handling
->>>> for entries that are NOT migration entries fails to unmap the page table
->>>> entries before jumping to the error handling label.
->>>>
->>>> This results in a kmap/kunmap imbalance which on CONFIG_HIGHPTE systems
->>>> triggers a WARNING in kunmap_local_indexed() because the kmap stack is
->>>> corrupted.
->>>>
->>>> Example call trace on ARM32 (CONFIG_HIGHPTE enabled):
->>>>    WARNING: CPU: 1 PID: 633 at mm/highmem.c:622 kunmap_local_indexed+0x178/0x17c
->>>>    Call trace:
->>>>      kunmap_local_indexed from move_pages+0x964/0x19f4
->>>>      move_pages from userfaultfd_ioctl+0x129c/0x2144
->>>>      userfaultfd_ioctl from sys_ioctl+0x558/0xd24
->>>>
->>>> The issue was introduced with the UFFDIO_MOVE feature but became more
->>>> frequent with the addition of guard pages (commit 7c53dfbdb024 ("mm: add
->>>> PTE_MARKER_GUARD PTE marker")) which made the non-migration entry code
->>>> path more commonly executed during userfaultfd operations.
->>>>
->>>> Fix this by ensuring PTEs are properly unmapped in all non-swap entry
->>>> paths before jumping to the error handling label, not just for migration
->>>> entries.
->>>
->>> I don't get it.
->>>
->>>> --- a/mm/userfaultfd.c
->>>> +++ b/mm/userfaultfd.c
->>>> @@ -1384,14 +1384,15 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
->>>>   		entry = pte_to_swp_entry(orig_src_pte);
->>>>   		if (non_swap_entry(entry)) {
->>>> +			pte_unmap(src_pte);
->>>> +			pte_unmap(dst_pte);
->>>> +			src_pte = dst_pte = NULL;
->>>>   			if (is_migration_entry(entry)) {
->>>> -				pte_unmap(src_pte);
->>>> -				pte_unmap(dst_pte);
->>>> -				src_pte = dst_pte = NULL;
->>>>   				migration_entry_wait(mm, src_pmd, src_addr);
->>>>   				err = -EAGAIN;
->>>> -			} else
->>>> +			} else {
->>>>   				err = -EFAULT;
->>>> +			}
->>>>   			goto out;
->>>
->>> where we have
->>>
->>> out:
->>> 	...
->>> 	if (dst_pte)
->>> 		pte_unmap(dst_pte);
->>> 	if (src_pte)
->>> 		pte_unmap(src_pte);
->>
->> AI slop?
-> 
-> Nah, this one is sadly all me :(
+On Thu, 19 Jun 2025 at 11:04, Avri Altman <avri.altman@sandisk.com> wrote:
+>
+> The SD spec says: "In UHS-I mode, after selecting one of SDR50, SDR104,
+> or DDR50 mode by Function Group 1, host needs to change the Power Limit
+> to enable the card to operate in higher performance".
+>
+> The driver previously determined SD card current limits incorrectly by
+> checking capability bits before bus speed was established, and by using
+> support bits in function group 4 (bytes 6 & 7) rather than the actual
+> current requirement (bytes 0 & 1). This is wrong because the card
+> responds for a given bus speed.
+>
+> This patch queries the card's current requirement after setting the bus
+> speed, and uses the reported value to select the appropriate current
+> limit.
+>
+> while at it, remove some unused constants and the misleading comment in
+> the code.
+>
+> Fixes: d9812780a020 ("mmc: sd: limit SD card power limit according to cards capabilities")
+> Signed-off-by: Avri Altman <avri.altman@sandisk.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/mmc/core/sd.c    | 36 +++++++++++++-----------------------
+>  include/linux/mmc/card.h |  6 ------
+>  2 files changed, 13 insertions(+), 29 deletions(-)
+>
+> diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
+> index cf92c5b2059a..357edfb910df 100644
+> --- a/drivers/mmc/core/sd.c
+> +++ b/drivers/mmc/core/sd.c
+> @@ -365,7 +365,6 @@ static int mmc_read_switch(struct mmc_card *card)
+>                 card->sw_caps.sd3_bus_mode = status[13];
+>                 /* Driver Strengths supported by the card */
+>                 card->sw_caps.sd3_drv_type = status[9];
+> -               card->sw_caps.sd3_curr_limit = status[7] | status[6] << 8;
+>         }
+>
+>  out:
+> @@ -556,7 +555,7 @@ static int sd_set_current_limit(struct mmc_card *card, u8 *status)
+>  {
+>         int current_limit = SD_SET_CURRENT_LIMIT_200;
+>         int err;
+> -       u32 max_current;
+> +       u32 max_current, card_needs;
 
-Haha, sorry :P
+Please clarify this by renaming "card_needs" to "card_max_current".
 
--- 
-Cheers,
+>
+>         /*
+>          * Current limit switch is only defined for SDR50, SDR104, and DDR50
+> @@ -575,33 +574,24 @@ static int sd_set_current_limit(struct mmc_card *card, u8 *status)
+>         max_current = sd_get_host_max_current(card->host);
 
-David / dhildenb
+Looking at the implementation of sd_get_host_max_current(), it's very limiting.
 
+For example, if we are using MMC_VDD_34_35 or MMC_VDD_35_36, the
+function returns 0. Maybe this is good enough based upon those host
+drivers that actually sets host->max_current_180|300|330, but it kind
+of looks wrong to me.
+
+I think we should re-work this interface to let us retrieve the
+maximum current from the host in a more flexible way. What we are
+really looking for is a value in Watt instead, I think. Don't get me
+wrong, this deserved it's own standalone patch on top of $subject
+patch.
+
+>
+>         /*
+> -        * We only check host's capability here, if we set a limit that is
+> -        * higher than the card's maximum current, the card will be using its
+> -        * maximum current, e.g. if the card's maximum current is 300ma, and
+> -        * when we set current limit to 200ma, the card will draw 200ma, and
+> -        * when we set current limit to 400/600/800ma, the card will draw its
+> -        * maximum 300ma from the host.
+> -        *
+> -        * The above is incorrect: if we try to set a current limit that is
+> -        * not supported by the card, the card can rightfully error out the
+> -        * attempt, and remain at the default current limit.  This results
+> -        * in a 300mA card being limited to 200mA even though the host
+> -        * supports 800mA. Failures seen with SanDisk 8GB UHS cards with
+> -        * an iMX6 host. --rmk
+
+I think it's important to keep some of the information from above, as
+it still stands, if I understand correctly.
+
+> +        * query the card of its maximun current/power consumption given the
+> +        * bus speed mode
+>          */
+> -       if (max_current >= 800 &&
+> -           card->sw_caps.sd3_curr_limit & SD_MAX_CURRENT_800)
+> +       err = mmc_sd_switch(card, 0, 0, card->sd_bus_speed, status);
+> +       if (err)
+> +               return err;
+> +
+> +       card_needs = status[1] | status[0] << 8;
+
+Please add a comment on what bits/fields we are parsing for. This
+looks like magic to me. :-)
+
+> +
+> +       if (max_current >= 800 && card_needs > 600)
+>                 current_limit = SD_SET_CURRENT_LIMIT_800;
+> -       else if (max_current >= 600 &&
+> -                card->sw_caps.sd3_curr_limit & SD_MAX_CURRENT_600)
+> +       else if (max_current >= 600 && card_needs > 400)
+>                 current_limit = SD_SET_CURRENT_LIMIT_600;
+> -       else if (max_current >= 400 &&
+> -                card->sw_caps.sd3_curr_limit & SD_MAX_CURRENT_400)
+> +       else if (max_current >= 400 && card_needs > 200)
+>                 current_limit = SD_SET_CURRENT_LIMIT_400;
+>
+>         if (current_limit != SD_SET_CURRENT_LIMIT_200) {
+> -               err = mmc_sd_switch(card, SD_SWITCH_SET, 3,
+> -                               current_limit, status);
+> +               err = mmc_sd_switch(card, SD_SWITCH_SET, 3, current_limit, status);
+>                 if (err)
+>                         return err;
+>
+> diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+> index e9e964c20e53..67c1386ca574 100644
+> --- a/include/linux/mmc/card.h
+> +++ b/include/linux/mmc/card.h
+> @@ -177,17 +177,11 @@ struct sd_switch_caps {
+>  #define SD_DRIVER_TYPE_A       0x02
+>  #define SD_DRIVER_TYPE_C       0x04
+>  #define SD_DRIVER_TYPE_D       0x08
+> -       unsigned int            sd3_curr_limit;
+>  #define SD_SET_CURRENT_LIMIT_200       0
+>  #define SD_SET_CURRENT_LIMIT_400       1
+>  #define SD_SET_CURRENT_LIMIT_600       2
+>  #define SD_SET_CURRENT_LIMIT_800       3
+>
+> -#define SD_MAX_CURRENT_200     (1 << SD_SET_CURRENT_LIMIT_200)
+> -#define SD_MAX_CURRENT_400     (1 << SD_SET_CURRENT_LIMIT_400)
+> -#define SD_MAX_CURRENT_600     (1 << SD_SET_CURRENT_LIMIT_600)
+> -#define SD_MAX_CURRENT_800     (1 << SD_SET_CURRENT_LIMIT_800)
+> -
+>  #define SD4_SET_POWER_LIMIT_0_72W      0
+>  #define SD4_SET_POWER_LIMIT_1_44W      1
+>  #define SD4_SET_POWER_LIMIT_2_16W      2
+> --
+> 2.25.1
+>
+
+Finally, it would be nice to have some more information about the test
+you have done to verify this. The performance numbers are very
+interesting, as it seems like some cards/platforms could really
+benefit from this a lot. Would you mind extending the commit message
+with some more information about this?
+
+Kind regards
+Uffe
 
