@@ -1,241 +1,150 @@
-Return-Path: <stable+bounces-160492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FEFAFCD25
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C0BAFCE1D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 065A856582D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 14:14:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 155E95811D4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 14:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4D22DF3F9;
-	Tue,  8 Jul 2025 14:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402442E03E3;
+	Tue,  8 Jul 2025 14:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G/4qu78g"
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="R6vTkFSn"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0025A7E0FF
-	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 14:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1192DFF3F;
+	Tue,  8 Jul 2025 14:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751984073; cv=none; b=mhhT58uw1O+lQ1jTQJU8uUpFYxZ5Jj54MqaDyMgYzl2O/TwJ8I+NOch7Vrni4tFAK/+/9vjYC+P041r66zigM49zJ8eKj/VKUuqc7oX39vthNXS2E+yCtagfIfA73VwR/DuRgQoIUYXmutAn3sDz5tiv5+g/AiTLQ5RL65rjzVw=
+	t=1751985917; cv=none; b=XEKYaL0S4EYQVMqxKYGjcqHN1bmFhNjEkN0y0K5SRnS6+jQc6nITkEpr2NeYZl7tGAsqVr32HhtmxuVhhzEq+nTYpzjFDwq7QD1+h0F2CSzcGQkWhKeqmlXdPl2teufyHa+496E8+pDkL9GmbAxjwbb5XD0X9CqpVmALSfPz2HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751984073; c=relaxed/simple;
-	bh=HrMQcfKIL2lSx5Kf9dCLQ2vfBYK9zfM3nw3kSAIxhGk=;
+	s=arc-20240116; t=1751985917; c=relaxed/simple;
+	bh=u25jV0reS/3tEx0F0x715/FxyR/a64F4CgdnsSo65OI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dgJlGhxL1cdge2VDJKthHcEliSeIs/GD8pZTLBSNv5CLdQ3VfxksvgwR7UROVV37LqNWj+5L+SIqWO0Gb19MelH/1iSqoTR1CZO33drZFiub0c880dZ1lzkCZnW7pOnyiB1C9Zy6GwG3rMoH0wsfxqSXoj/9dHW3TNywq8oxmik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G/4qu78g; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751984072; x=1783520072;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=HrMQcfKIL2lSx5Kf9dCLQ2vfBYK9zfM3nw3kSAIxhGk=;
-  b=G/4qu78g5KoCBXWnhD/jM6wip2DTzOm8oSO4sB5oDVkwLTiyS2Vw4bgD
-   u6z+RQaaqfBfwBvUvdOq32121KWSpOoTSW83LEBKUhTft7B+qHPGTMzIE
-   No7j1Y/w3s9zNwP6jjDY4Eju9oOu7DRMaWsUCRd34IQ5PwBCb8SMp8Ta3
-   HNEUiJezuitD0Y+E2ZVwcINCo/yISGxw/4xZl/w02mfnuKpxs/WpuJPg1
-   rS5YN8EPLNDopeJlFrwafZhkS/4OmdTVlTDWsmYdaKIzbnrPPtv68gyTB
-   nyMv5iNPgzGG3/EESh61SPtYpGgPCx5OFiqiukrS/+m45+RIFQUe0IjDk
-   w==;
-X-CSE-ConnectionGUID: TsDwvXUpSLW8d0hiNZb7IA==
-X-CSE-MsgGUID: ULj/nv01T8OOMhiBJu7WPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54084568"
-X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; 
-   d="scan'208";a="54084568"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 07:14:31 -0700
-X-CSE-ConnectionGUID: FLJFZaQhSi6nUl0ved+Nrg==
-X-CSE-MsgGUID: gZMswYONR4WGlxbLtZ9Ycw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; 
-   d="scan'208";a="161147829"
-Received: from johunt-mobl9.ger.corp.intel.com (HELO stinkbox) ([10.245.245.55])
-  by orviesa005.jf.intel.com with SMTP; 08 Jul 2025 07:14:28 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Tue, 08 Jul 2025 17:14:27 +0300
-Date: Tue, 8 Jul 2025 17:14:27 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
-	jani.nikula@linux.intel.com, stable@vger.kernel.org
-Subject: Re: [RESEND 1/1] drm/i915/dp: Refine TPS4-based HBR3 rejection and
- add quirk to limit eDP to HBR2
-Message-ID: <aG0nwwRNpH7X7BNg@intel.com>
-References: <20250627084059.2575794-2-ankit.k.nautiyal@intel.com>
- <20250706053149.3997091-1-ankit.k.nautiyal@intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bcym/OWGPOAcfpyogdyB2kCkQDeCAo93P5wrbzZ68p3uUAhGAAR/h+8UtVMKJWr0RkBkQt27izasRldaQeS675roh30dYeSqrWfYSk/n/eBsHGptaX4HidbgdC23NwaEaaea8O33KIK55YymO7chStFXdlkfzs7ETpDItb1GciM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=R6vTkFSn reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7D52940E0221;
+	Tue,  8 Jul 2025 14:45:05 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id yxsqRW0PZ2Xo; Tue,  8 Jul 2025 14:45:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1751985901; bh=OR5nb2I3t4IhUMz0U4gpskt/BrUAd7by/O20+56zPxY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=R6vTkFSnqHn4S/r87nkVBIuHSxbjT9AtIAYneVu+aRg6ioPlgfIQaOohTmqcuwcWr
+	 WDl+X14pxsE7phpxXY5HWBSGxN43MeTdqAy3sw6e0tztHrGwKlOUPIaW4qibXsDhaD
+	 tDOnv4o3ZDkkUTTzRyzDAEb6J4lvJn7sAyvwQ+796UhGXHYp5HSSjkePHPe8CeCRiw
+	 LtQZdFvCnRmS3HtVF8Wssrgz84tEsZr6BNUyhElrrZUqKz4SI/UoNqrxYUD8nLTqDs
+	 bHUpG1HZH7Xi5EhSNJHBv4m2YoHFkz3jgfxJeGin2C5oLPZUSgNKcu/5QntZq6/Cbf
+	 GVYYrVEao2qKqsIJaRTypNtZZb3XFPaMUX2OH3PHrS1dcHN7/+HQdgQF7n7QO1/OHt
+	 Ye4qM+VkPpEihIzs1tAzYKVimUVfmVDMZjJTnHj8SvqTYiu7d5SIOnvzsGI2ReOGA8
+	 oakzG3+EOl9/C7ARyXMmUZJkDy/Jqsex8IK6PL/N204f5rByTTjjFjsxHFbIdYOL5s
+	 AO0ucYuE6LFHoMHZgii8n1RNtqEZgNCN6/+mNCLxVGcSNWyTQq5N9qd0Lx3DHPEH9m
+	 V6HhYVuPgaSOG/UMNbYKEYyhq4bglwr4P3sKbvB1qyiSH+UdavQi/3eRBoLIuwS94O
+	 ddvveiogLkKBNuID8cudfdLw=
+Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1A1A540E0218;
+	Tue,  8 Jul 2025 14:44:44 +0000 (UTC)
+Date: Tue, 8 Jul 2025 16:44:37 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: christian.koenig@amd.com, asrivats@redhat.com,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	airlied@gmail.com, simona@ffwll.ch, jean-christophe@guillain.net,
+	superm1@kernel.org, satadru@gmail.com,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	Bert Karwatzki <spasswolf@web.de>,
+	Sumit Semwal <sumit.semwal@linaro.org>, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] drm/framebuffer: Acquire internal references on GEM
+ handles
+Message-ID: <20250708144437.GBaG0u1c4E6aV5ekTH@fat_crate.local>
+References: <20250707131224.249496-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250706053149.3997091-1-ankit.k.nautiyal@intel.com>
-X-Patchwork-Hint: comment
+In-Reply-To: <20250707131224.249496-1-tzimmermann@suse.de>
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jul 06, 2025 at 11:01:49AM +0530, Ankit Nautiyal wrote:
-> Refine the logic introduced in commit 584cf613c24a ("drm/i915/dp: Reject
-> HBR3 when sink doesn't support TPS4") to allow HBR3 on eDP panels that
-> report DPCD revision 1.4, even if TPS4 is not supported. This aligns with
-> the DisplayPort specification, which does not mandate TPS4 support for eDP
-> with DPCD rev 1.4.
-> 
-> This change avoids regressions on panels that require HBR3 to operate at
-> their native resolution but do not advertise TPS4 support.
-> 
-> Additionally, some ICL/TGL platforms with combo PHY ports suffer from
-> signal integrity issues at HBR3. While certain systems include a
-> Parade PS8461 mux to mitigate this, its presence cannot be reliably
-> detected. Furthermore, broken or missing VBT entries make it unsafe to
-> rely on VBT for enforcing link rate limits.
-> 
-> To address the HBR3-related issues on such platforms and eDP panels,
-> introduce a device specific quirk to cap the eDP link rate to HBR2
-> (540000 kHz). This will override any higher advertised rates from
-> the sink or DPCD for specific devices.
-> 
-> Currently, the quirk is added for Dell XPS 13 7390 2-in-1 which is
-> reported in gitlab issue #5969 [1].
-> 
-> [1] https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5969
-> [2] https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14517
-> 
-> Fixes: 584cf613c24a ("drm/i915/dp: Reject HBR3 when sink doesn't support TPS4")
-> Cc: Jani Nikula <jani.nikula@linux.intel.com>
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Cc: <stable@vger.kernel.org> # v6.15+
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5969
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14517
-> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+On Mon, Jul 07, 2025 at 03:11:55PM +0200, Thomas Zimmermann wrote:
+> Acquire GEM handles in drm_framebuffer_init() and release them in
+> the corresponding drm_framebuffer_cleanup(). Ties the handle's
+> lifetime to the framebuffer. Not all GEM buffer objects have GEM
+> handles. If not set, no refcounting takes place. This is the case
+> for some fbdev emulation. This is not a problem as these GEM objects
+> do not use dma-bufs and drivers will not release them while fbdev
+> emulation is running. Framebuffer flags keep a bit per color plane
+> of which the framebuffer holds a GEM handle reference.
+>=20
+> As all drivers use drm_framebuffer_init(), they will now all hold
+> dma-buf references as fixed in commit 5307dce878d4 ("drm/gem: Acquire
+> references on GEM handles for framebuffers").
+>=20
+> In the GEM framebuffer helpers, restore the original ref counting
+> on buffer objects. As the helpers for handle refcounting are now
+> no longer called from outside the DRM core, unexport the symbols.
+>=20
+> v3:
+> - don't mix internal flags with mode flags (Christian)
+> v2:
+> - track framebuffer handle refs by flag
+> - drop gma500 cleanup (Christian)
+>=20
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: 5307dce878d4 ("drm/gem: Acquire references on GEM handles for fr=
+amebuffers")
+> Reported-by: Bert Karwatzki <spasswolf@web.de>
+> Closes: https://lore.kernel.org/dri-devel/20250703115915.3096-1-spasswo=
+lf@web.de/
+> Tested-by: Bert Karwatzki <spasswolf@web.de>
+> Tested-by: Mario Limonciello <superm1@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Anusha Srivatsa <asrivats@redhat.com>
+> Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Sumit Semwal <sumit.semwal@linaro.org>
+> Cc: "Christian K=C3=B6nig" <christian.koenig@amd.com>
+> Cc: linux-media@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linaro-mm-sig@lists.linaro.org
+> Cc: <stable@vger.kernel.org>
 > ---
->  drivers/gpu/drm/i915/display/intel_dp.c     | 31 +++++++++++++++++++--
->  drivers/gpu/drm/i915/display/intel_quirks.c |  9 ++++++
->  drivers/gpu/drm/i915/display/intel_quirks.h |  1 +
->  3 files changed, 39 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-> index f48912f308df..362e376fca27 100644
-> --- a/drivers/gpu/drm/i915/display/intel_dp.c
-> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
-> @@ -171,6 +171,15 @@ int intel_dp_link_symbol_clock(int rate)
->  	return DIV_ROUND_CLOSEST(rate * 10, intel_dp_link_symbol_size(rate));
->  }
->  
-> +static bool intel_dp_reject_hbr3_due_to_tps4(struct intel_dp *intel_dp)
-> +{
-> +	/* TPS4 is not mandatory for eDP with DPCD rev 1.4 */
-> +	if (intel_dp_is_edp(intel_dp) && intel_dp->dpcd[DP_DPCD_REV] == 0x14)
-> +		return false;
-> +
-> +	return !drm_dp_tps4_supported(intel_dp->dpcd);
-> +}
+>  drivers/gpu/drm/drm_framebuffer.c            | 31 ++++++++++++++--
+>  drivers/gpu/drm/drm_gem.c                    | 38 ++++++++++++--------
+>  drivers/gpu/drm/drm_gem_framebuffer_helper.c | 16 ++++-----
+>  drivers/gpu/drm/drm_internal.h               |  2 +-
+>  include/drm/drm_framebuffer.h                |  7 ++++
+>  5 files changed, 68 insertions(+), 26 deletions(-)
 
-This feels like it's getty too messy for comfort. I think we should just
-revert the whole thing and quirk that one icl machine.
+Thanks, that fixes it:
 
-> +
->  static int max_dprx_rate(struct intel_dp *intel_dp)
->  {
->  	struct intel_display *display = to_intel_display(intel_dp);
-> @@ -187,13 +196,22 @@ static int max_dprx_rate(struct intel_dp *intel_dp)
->  	 * HBR3 without TPS4, and are unable to produce a stable
->  	 * output. Reject HBR3 when TPS4 is not available.
->  	 */
-> -	if (max_rate >= 810000 && !drm_dp_tps4_supported(intel_dp->dpcd)) {
-> +	if (max_rate >= 810000 && intel_dp_reject_hbr3_due_to_tps4(intel_dp)) {
->  		drm_dbg_kms(display->drm,
->  			    "[ENCODER:%d:%s] Rejecting HBR3 due to missing TPS4 support\n",
->  			    encoder->base.base.id, encoder->base.name);
->  		max_rate = 540000;
->  	}
->  
-> +	/*
-> +	 * Some platforms + eDP panels may not reliably support HBR3
-> +	 * due to signal integrity limitations, despite advertising it.
-> +	 * Cap the link rate to HBR2 to avoid unstable configurations for the
-> +	 * known machines.
-> +	 */
-> +	if (intel_dp_is_edp(intel_dp) && intel_has_quirk(display, QUIRK_EDP_LIMIT_RATE_HBR2))
-> +		max_rate = min(max_rate, 540000);
-> +
->  	return max_rate;
->  }
->  
-> @@ -4304,13 +4322,22 @@ intel_edp_set_sink_rates(struct intel_dp *intel_dp)
->  			 * HBR3 without TPS4, and are unable to produce a stable
->  			 * output. Reject HBR3 when TPS4 is not available.
->  			 */
-> -			if (rate >= 810000 && !drm_dp_tps4_supported(intel_dp->dpcd)) {
-> +			if (rate >= 810000 && intel_dp_reject_hbr3_due_to_tps4(intel_dp)) {
->  				drm_dbg_kms(display->drm,
->  					    "[ENCODER:%d:%s] Rejecting HBR3 due to missing TPS4 support\n",
->  					    encoder->base.base.id, encoder->base.name);
->  				break;
->  			}
->  
-> +			/*
-> +			 * Some platforms cannot reliably drive HBR3 rates due to PHY limitations,
-> +			 * even if the sink advertises support. Reject any sink rates above HBR2 on
-> +			 * the known machines for stable output.
-> +			 */
-> +			if (rate >= 810000 &&
-> +			    intel_has_quirk(display, QUIRK_EDP_LIMIT_RATE_HBR2))
-> +				break;
-> +
->  			intel_dp->sink_rates[i] = rate;
->  		}
->  		intel_dp->num_sink_rates = i;
-> diff --git a/drivers/gpu/drm/i915/display/intel_quirks.c b/drivers/gpu/drm/i915/display/intel_quirks.c
-> index a32fae510ed2..d2e16b79d6be 100644
-> --- a/drivers/gpu/drm/i915/display/intel_quirks.c
-> +++ b/drivers/gpu/drm/i915/display/intel_quirks.c
-> @@ -80,6 +80,12 @@ static void quirk_fw_sync_len(struct intel_dp *intel_dp)
->  	drm_info(display->drm, "Applying Fast Wake sync pulse count quirk\n");
->  }
->  
-> +static void quirk_edp_limit_rate_hbr2(struct intel_display *display)
-> +{
-> +	intel_set_quirk(display, QUIRK_EDP_LIMIT_RATE_HBR2);
-> +	drm_info(display->drm, "Applying eDP Limit rate to HBR2 quirk\n");
-> +}
-> +
->  struct intel_quirk {
->  	int device;
->  	int subsystem_vendor;
-> @@ -231,6 +237,9 @@ static struct intel_quirk intel_quirks[] = {
->  	{ 0x3184, 0x1019, 0xa94d, quirk_increase_ddi_disabled_time },
->  	/* HP Notebook - 14-r206nv */
->  	{ 0x0f31, 0x103c, 0x220f, quirk_invert_brightness },
-> +
-> +	/* Dell XPS 13 7390 2-in-1 */
-> +	{ 0x8a12, 0x1028, 0x08b0, quirk_edp_limit_rate_hbr2 },
->  };
->  
->  static const struct intel_dpcd_quirk intel_dpcd_quirks[] = {
-> diff --git a/drivers/gpu/drm/i915/display/intel_quirks.h b/drivers/gpu/drm/i915/display/intel_quirks.h
-> index cafdebda7535..06da0e286c67 100644
-> --- a/drivers/gpu/drm/i915/display/intel_quirks.h
-> +++ b/drivers/gpu/drm/i915/display/intel_quirks.h
-> @@ -20,6 +20,7 @@ enum intel_quirk_id {
->  	QUIRK_LVDS_SSC_DISABLE,
->  	QUIRK_NO_PPS_BACKLIGHT_POWER_HOOK,
->  	QUIRK_FW_SYNC_LEN,
-> +	QUIRK_EDP_LIMIT_RATE_HBR2,
->  };
->  
->  void intel_init_quirks(struct intel_display *display);
-> -- 
-> 2.45.2
+Reported-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
 
--- 
-Ville Syrjälä
-Intel
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
