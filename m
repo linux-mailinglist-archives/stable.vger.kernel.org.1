@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-160750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C379AFD1AB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:38:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95387AFD2D8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18BCE541AD8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:36:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39C8A188C854
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D9A2E0B45;
-	Tue,  8 Jul 2025 16:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69351754B;
+	Tue,  8 Jul 2025 16:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKVWMn9A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkcbmeLa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23F821773D;
-	Tue,  8 Jul 2025 16:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D22D18EAB;
+	Tue,  8 Jul 2025 16:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992579; cv=none; b=IaOBfazQjlvDcih9NS9A1ODpFcNU0VTD40Ha63H1tgg9QHo87ihcbP3SGLSjlaPp0k+va76JgJhAcCT5/BNxtxCNoCYrT4sJkdpH4FUVWkfMu3gf4Jyw3VtENnbRAWfi3AqnP0VieQdkzaKUbApbLcfIpTqYA9aYVsqyTPji74w=
+	t=1751993250; cv=none; b=rXwRNFXBRug9ro91DcKLFD22lg78lrjcach0/rpeeEnqRzMnC8F1R1phjYGSSEAMlVbbGywS9kIgw06eQJu6XGTyvM6Tgd4phe9QsjfI6TOoIYlIiGo+HKMSnGnHsOHLoVK/gzhNwYtXvJB5BAcrCCf9TGhQM+q9JGjkhFmRHJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992579; c=relaxed/simple;
-	bh=wd9o4dN2WeLEm7A9I+OQnfLMkPa1tyJGxYQWmWMFTBc=;
+	s=arc-20240116; t=1751993250; c=relaxed/simple;
+	bh=9Ls2KIdE7Lvz/0tYls1BfjJjWnQcFz013ISUjlNpzMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FjvZSJG5NZNchYfgzHTBSLN3ShtAG+P+U12iYtP9Ps5z5o9HYCZJwCjLRnVg+1DuBh5afTTJ6IurDyAvfkWQ+MRL1DqjTb2aEnDjVEaQ6avytLRrpY10fhokoQjGNciIfuhrH14J5fNKz1ickYGQ3mg78a92abetIiwHlYLmrdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKVWMn9A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9ABC4CEED;
-	Tue,  8 Jul 2025 16:36:18 +0000 (UTC)
+	 MIME-Version; b=P/0fOam0JRt6p0PLfvXwuQaUL2DwalKVpCDvbKLqbtJfZTeFzCyMZGh9fVg+3HQLb7TV0q4h8nxWUoQCRkAA1f/9q9GnbHeMtmY1WI0gjf+vnopJnvR8y4f7+lsXFh87qkH5y6z9XjNs1kV0FfuVnih0A3gQDAQorjHfd9kI04Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkcbmeLa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9281C4CEED;
+	Tue,  8 Jul 2025 16:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992578;
-	bh=wd9o4dN2WeLEm7A9I+OQnfLMkPa1tyJGxYQWmWMFTBc=;
+	s=korg; t=1751993250;
+	bh=9Ls2KIdE7Lvz/0tYls1BfjJjWnQcFz013ISUjlNpzMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EKVWMn9A3tSsMUBvUxU+kxI5GqeaQKHDIn9YjsWaIT7ILN8iZHbEoTjs2OTeSrfsL
-	 2l/cFKQIuWUFr3wunBuhoZZaOx3g035SpLrofCtQ6OJbiKbN9OWCgDwJGm8y2fxpOy
-	 ecoEzGWQziNv0XUn+8tkqX+okNh/qAx6oe8CdEMg=
+	b=RkcbmeLa24Z61sZrFe2lA7hKteM51nYi+0yLTLZftUm6mYyMHyxGKdM3bQBkpZxjC
+	 3kdZUfL4S7alAqgAe+fY4ln6l6//MnD/B64st+/Qi0NWBoc+hJEFAJFBP+cR9zjDrV
+	 +IzzH8c/pYfHSmOaWRw3NV+3nr982d+0M5BJF+68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Kerling <pkerling@casix.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 117/132] smb: client: fix readdir returning wrong type with POSIX extensions
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.12 232/232] x86/process: Move the buffer clearing before MONITOR
 Date: Tue,  8 Jul 2025 18:23:48 +0200
-Message-ID: <20250708162233.978771844@linuxfoundation.org>
+Message-ID: <20250708162247.496360571@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Kerling <pkerling@casix.org>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit b8f89cb723b9e66f5dbd7199e4036fee34fb0de0 upstream.
+Commit 8e786a85c0a3c0fffae6244733fb576eeabd9dec upstream.
 
-When SMB 3.1.1 POSIX Extensions are negotiated, userspace applications
-using readdir() or getdents() calls without stat() on each individual file
-(such as a simple "ls" or "find") would misidentify file types and exhibit
-strange behavior such as not descending into directories. The reason for
-this behavior is an oversight in the cifs_posix_to_fattr conversion
-function. Instead of extracting the entry type for cf_dtype from the
-properly converted cf_mode field, it tries to extract the type from the
-PDU. While the wire representation of the entry mode is similar in
-structure to POSIX stat(), the assignments of the entry types are
-different. Applying the S_DT macro to cf_mode instead yields the correct
-result. This is also what the equivalent function
-smb311_posix_info_to_fattr in inode.c already does for stat() etc.; which
-is why "ls -l" would give the correct file type but "ls" would not (as
-identified by the colors).
+Move the VERW clearing before the MONITOR so that VERW doesn't disarm it
+and the machine never enters C1.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Philipp Kerling <pkerling@casix.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Original idea by Kim Phillips <kim.phillips@amd.com>.
+
+Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/readdir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/mwait.h |   25 +++++++++++++++----------
+ arch/x86/kernel/process.c    |   16 ++++++++++++----
+ 2 files changed, 27 insertions(+), 14 deletions(-)
 
---- a/fs/smb/client/readdir.c
-+++ b/fs/smb/client/readdir.c
-@@ -263,7 +263,7 @@ cifs_posix_to_fattr(struct cifs_fattr *f
- 	/* The Mode field in the response can now include the file type as well */
- 	fattr->cf_mode = wire_mode_to_posix(le32_to_cpu(info->Mode),
- 					    fattr->cf_cifsattrs & ATTR_DIRECTORY);
--	fattr->cf_dtype = S_DT(le32_to_cpu(info->Mode));
-+	fattr->cf_dtype = S_DT(fattr->cf_mode);
+--- a/arch/x86/include/asm/mwait.h
++++ b/arch/x86/include/asm/mwait.h
+@@ -44,8 +44,6 @@ static __always_inline void __monitorx(c
  
- 	switch (fattr->cf_mode & S_IFMT) {
- 	case S_IFLNK:
+ static __always_inline void __mwait(unsigned long eax, unsigned long ecx)
+ {
+-	x86_idle_clear_cpu_buffers();
+-
+ 	/* "mwait %eax, %ecx;" */
+ 	asm volatile(".byte 0x0f, 0x01, 0xc9;"
+ 		     :: "a" (eax), "c" (ecx));
+@@ -98,7 +96,6 @@ static __always_inline void __mwaitx(uns
+  */
+ static __always_inline void __sti_mwait(unsigned long eax, unsigned long ecx)
+ {
+-	x86_idle_clear_cpu_buffers();
+ 
+ 	/* "mwait %eax, %ecx;" */
+ 	asm volatile("sti; .byte 0x0f, 0x01, 0xc9;"
+@@ -117,21 +114,29 @@ static __always_inline void __sti_mwait(
+  */
+ static __always_inline void mwait_idle_with_hints(unsigned long eax, unsigned long ecx)
+ {
++	if (need_resched())
++		return;
++
++	x86_idle_clear_cpu_buffers();
++
+ 	if (static_cpu_has_bug(X86_BUG_MONITOR) || !current_set_polling_and_test()) {
+ 		const void *addr = &current_thread_info()->flags;
+ 
+ 		alternative_input("", "clflush (%[addr])", X86_BUG_CLFLUSH_MONITOR, [addr] "a" (addr));
+ 		__monitor(addr, 0, 0);
+ 
+-		if (!need_resched()) {
+-			if (ecx & 1) {
+-				__mwait(eax, ecx);
+-			} else {
+-				__sti_mwait(eax, ecx);
+-				raw_local_irq_disable();
+-			}
++		if (need_resched())
++			goto out;
++
++		if (ecx & 1) {
++			__mwait(eax, ecx);
++		} else {
++			__sti_mwait(eax, ecx);
++			raw_local_irq_disable();
+ 		}
+ 	}
++
++out:
+ 	current_clr_polling();
+ }
+ 
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -911,16 +911,24 @@ static __init bool prefer_mwait_c1_over_
+  */
+ static __cpuidle void mwait_idle(void)
+ {
++	if (need_resched())
++		return;
++
++	x86_idle_clear_cpu_buffers();
++
+ 	if (!current_set_polling_and_test()) {
+ 		const void *addr = &current_thread_info()->flags;
+ 
+ 		alternative_input("", "clflush (%[addr])", X86_BUG_CLFLUSH_MONITOR, [addr] "a" (addr));
+ 		__monitor(addr, 0, 0);
+-		if (!need_resched()) {
+-			__sti_mwait(0, 0);
+-			raw_local_irq_disable();
+-		}
++		if (need_resched())
++			goto out;
++
++		__sti_mwait(0, 0);
++		raw_local_irq_disable();
+ 	}
++
++out:
+ 	__current_clr_polling();
+ }
+ 
 
 
 
