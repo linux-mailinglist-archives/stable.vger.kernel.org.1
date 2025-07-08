@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-161276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D01AFD497
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70198AFD2A5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:49:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 841E91C27DEA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51315583FDD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBC52E62B3;
-	Tue,  8 Jul 2025 17:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F4B2E5B08;
+	Tue,  8 Jul 2025 16:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5lRj09O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOib21Rn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E331E2E1C74;
-	Tue,  8 Jul 2025 17:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B637F1E9B08;
+	Tue,  8 Jul 2025 16:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994107; cv=none; b=eEwOFuvJxgLxCTH3btp4Vabupp4SFtiEJUlDkVVTWqqPSiTE1+D4G11ntFmAQoel9tOh8PnvVKd/U5bLWcvoL4FcwF2iW1r7VIebk3rop0KWyjKE2LgvyIjsuiRpBjrwLEM/LriaTSYJU1Ukbg+hzcftmyLqLk5K4F3ts1QcJec=
+	t=1751993131; cv=none; b=ElidNpQ5uxgC8KTvVM9sdz2wyyPkciag5vkxqtMbpZEmQonNp07piSSSpaM7/zu23RWi3HGLJQp8wcgLjdy5VKcaIlsI0ZbD6hxKFeWGdnbUwvRMCEtBMDuoh55biNTBPp6BbJJhQMiLD2VEMJn9sHfwoHSZ6A1RXpGysLGSJXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994107; c=relaxed/simple;
-	bh=S39Szx6ynpHAiaIZnIxTIwfM1xANFT5ShqNCw8sBwIM=;
+	s=arc-20240116; t=1751993131; c=relaxed/simple;
+	bh=fvnZsvGY8Js3sf7I72JQQYZy1QVDzpaSSVzZLKkhZeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BzTVT2fWdCoP6cIubSMWuTyoxfSiqy18b7vyhHhXGTUfUVUP0mvwTgjrg/4lUCbseJB6PgIhNtatElCsZN3et8mHxtxuQg5kOvyOZlGr6Rwu0uwUAuhFCnKd9shUFKS3G9bc2pA3sNL9MqnWeJsW02IX56I78LUbDk521gTDtok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5lRj09O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7266EC4CEF6;
-	Tue,  8 Jul 2025 17:01:46 +0000 (UTC)
+	 MIME-Version; b=KPojuGhKF+ue2rUwc/eNGTD3nDzTwF3e5hhXCEvabyEC3ZagVuXtWM1f/7rIZtiAwQgkQIJgQxYTTASaD6BPNNQ67KKExq02GloFpHVudzznhZRdPvgdJZHgOkj1ddn7Vfx8W+QUYL0ncJ+fggh56cDT9SxFEHNypKdB4X1RBMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOib21Rn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5BDC4CEF5;
+	Tue,  8 Jul 2025 16:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994106;
-	bh=S39Szx6ynpHAiaIZnIxTIwfM1xANFT5ShqNCw8sBwIM=;
+	s=korg; t=1751993131;
+	bh=fvnZsvGY8Js3sf7I72JQQYZy1QVDzpaSSVzZLKkhZeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i5lRj09OovttdBOLgfAWpdAwxDGks0QLbHbvqYv76L/4HTchZLCdf8ksXdTlZK4fe
-	 iJ8/PmoG4/73BxGfUKNKb5PHg2jqiRfh59GSlgg9A09D8oIrUuCcTuCUiXXyDiNUlG
-	 o2sB4QIboLz5a37eVhYhnMGNy/FEcssS9lcX+DcQ=
+	b=fOib21Rn3XxAMUDWulodU8xo2YkRiiCdSPNWWchB97wb+Ua4KMyyoZ2K2a7IKtcCe
+	 ZVoqwRkzZYrLjpU52hBR3BQAqgxwgUYqk9Bqh/D06T6snFPYO97PMU4TI2aCO/GvJl
+	 FRKSKBOHGbxWJhAZ0qALzz4H3JxbR3CcLYkohWq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Michael Chen <michael.chen@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 127/160] ALSA: sb: Dont allow changing the DMA mode during operations
+Subject: [PATCH 6.12 168/232] drm/amdgpu/mes: add missing locking in helper functions
 Date: Tue,  8 Jul 2025 18:22:44 +0200
-Message-ID: <20250708162234.936337337@linuxfoundation.org>
+Message-ID: <20250708162245.834175380@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit ed29e073ba93f2d52832804cabdd831d5d357d33 ]
+[ Upstream commit 40f970ba7a4ab77be2ffe6d50a70416c8876496a ]
 
-When a PCM stream is already running, one shouldn't change the DMA
-mode via kcontrol, which may screw up the hardware.  Return -EBUSY
-instead.
+We need to take the MES lock.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218185
-Link: https://patch.msgid.link/20250610064322.26787-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Michael Chen <michael.chen@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/isa/sb/sb16_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/sound/isa/sb/sb16_main.c b/sound/isa/sb/sb16_main.c
-index a9b87e159b2d1..5efbd0a41312b 100644
---- a/sound/isa/sb/sb16_main.c
-+++ b/sound/isa/sb/sb16_main.c
-@@ -703,6 +703,9 @@ static int snd_sb16_dma_control_put(struct snd_kcontrol *kcontrol, struct snd_ct
- 	unsigned char nval, oval;
- 	int change;
- 	
-+	if (chip->mode & (SB_MODE_PLAYBACK | SB_MODE_CAPTURE))
-+		return -EBUSY;
-+
- 	nval = ucontrol->value.enumerated.item[0];
- 	if (nval > 2)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+index 7d4b540340e02..41b88e0ea98b8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+@@ -860,7 +860,9 @@ int amdgpu_mes_map_legacy_queue(struct amdgpu_device *adev,
+ 	queue_input.mqd_addr = amdgpu_bo_gpu_offset(ring->mqd_obj);
+ 	queue_input.wptr_addr = ring->wptr_gpu_addr;
+ 
++	amdgpu_mes_lock(&adev->mes);
+ 	r = adev->mes.funcs->map_legacy_queue(&adev->mes, &queue_input);
++	amdgpu_mes_unlock(&adev->mes);
+ 	if (r)
+ 		DRM_ERROR("failed to map legacy queue\n");
+ 
+@@ -883,7 +885,9 @@ int amdgpu_mes_unmap_legacy_queue(struct amdgpu_device *adev,
+ 	queue_input.trail_fence_addr = gpu_addr;
+ 	queue_input.trail_fence_data = seq;
+ 
++	amdgpu_mes_lock(&adev->mes);
+ 	r = adev->mes.funcs->unmap_legacy_queue(&adev->mes, &queue_input);
++	amdgpu_mes_unlock(&adev->mes);
+ 	if (r)
+ 		DRM_ERROR("failed to unmap legacy queue\n");
+ 
+@@ -910,7 +914,9 @@ int amdgpu_mes_reset_legacy_queue(struct amdgpu_device *adev,
+ 	queue_input.vmid = vmid;
+ 	queue_input.use_mmio = use_mmio;
+ 
++	amdgpu_mes_lock(&adev->mes);
+ 	r = adev->mes.funcs->reset_legacy_queue(&adev->mes, &queue_input);
++	amdgpu_mes_unlock(&adev->mes);
+ 	if (r)
+ 		DRM_ERROR("failed to reset legacy queue\n");
+ 
+@@ -931,7 +937,9 @@ uint32_t amdgpu_mes_rreg(struct amdgpu_device *adev, uint32_t reg)
+ 		goto error;
+ 	}
+ 
++	amdgpu_mes_lock(&adev->mes);
+ 	r = adev->mes.funcs->misc_op(&adev->mes, &op_input);
++	amdgpu_mes_unlock(&adev->mes);
+ 	if (r)
+ 		DRM_ERROR("failed to read reg (0x%x)\n", reg);
+ 	else
+@@ -957,7 +965,9 @@ int amdgpu_mes_wreg(struct amdgpu_device *adev,
+ 		goto error;
+ 	}
+ 
++	amdgpu_mes_lock(&adev->mes);
+ 	r = adev->mes.funcs->misc_op(&adev->mes, &op_input);
++	amdgpu_mes_unlock(&adev->mes);
+ 	if (r)
+ 		DRM_ERROR("failed to write reg (0x%x)\n", reg);
+ 
+@@ -984,7 +994,9 @@ int amdgpu_mes_reg_write_reg_wait(struct amdgpu_device *adev,
+ 		goto error;
+ 	}
+ 
++	amdgpu_mes_lock(&adev->mes);
+ 	r = adev->mes.funcs->misc_op(&adev->mes, &op_input);
++	amdgpu_mes_unlock(&adev->mes);
+ 	if (r)
+ 		DRM_ERROR("failed to reg_write_reg_wait\n");
+ 
+@@ -1009,7 +1021,9 @@ int amdgpu_mes_reg_wait(struct amdgpu_device *adev, uint32_t reg,
+ 		goto error;
+ 	}
+ 
++	amdgpu_mes_lock(&adev->mes);
+ 	r = adev->mes.funcs->misc_op(&adev->mes, &op_input);
++	amdgpu_mes_unlock(&adev->mes);
+ 	if (r)
+ 		DRM_ERROR("failed to reg_write_reg_wait\n");
+ 
 -- 
 2.39.5
 
