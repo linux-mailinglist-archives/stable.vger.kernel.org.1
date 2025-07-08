@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE62DAFD24E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1C3AFD107
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6C073A7B83
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EBBB1C218C6
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB652DC34C;
-	Tue,  8 Jul 2025 16:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D74E2E0B45;
+	Tue,  8 Jul 2025 16:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Zl0nQAw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHhSiMBU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0C21714B7;
-	Tue,  8 Jul 2025 16:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8322E11B9;
+	Tue,  8 Jul 2025 16:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992903; cv=none; b=E9D/udDk5cIRTK7f4qZ1eum4b7fTm9OmW5Lql67KqJDtgJZJXeZii2nWt0T2EhiYV8M02uMMomcT5zTntvgMB9JFJWuCBf6TvQBkwl5RpPwQOyYciEk9UEFB/8YWNiRbAR5EOmF4WqMzggkzS7ZA/ICAtuujodYzOqrNEacdCJ0=
+	t=1751992199; cv=none; b=nIY1/r2qVT4HmVxGZyYDldrZy2tbvNjDXyW1ham/5n32gF66WxvnzBD77MLFLA3glqLyMAgxVV9BwtnBT451anb62FowM9vAZ0mByzzkXg1vKYUHt5oqdFO+GXVVKk2mRSsbn621mfSJx4wk1dLPGPD17HgM0W1gpxUF+phufB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992903; c=relaxed/simple;
-	bh=nroM5GMJOuT5cYdOyQFbQmuafdDAgAtOWr544bUxhQM=;
+	s=arc-20240116; t=1751992199; c=relaxed/simple;
+	bh=atGLmWN54pH6e2NvZY2zH55xCJ73bTuZkZzeX6Ngx+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uAatDm2elgouo0yOZ2m6/HMI77KKTLvTOHHapRY+hKwRQznRjyMQdRwrvSMQrLs8HyjzUuEriP/M87lGhsGjqnoROQ5iU9VPr+ZJ46hlM1INy11T5RqWoG3LBe/oT1EMwqe3X2YZ64nOX2b2j4YkS8gzdXL+egq2zih3I0FGDnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Zl0nQAw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4BBC4CEED;
-	Tue,  8 Jul 2025 16:41:42 +0000 (UTC)
+	 MIME-Version; b=p3upwiEIcCL5SpTpkKW6nusabP+TXPErODn7lsMgf2M6eFeMpN79nwNS30BH/MCWLIRa8sx7KcXDZJ/VL/qLx43X4cC8E/aSjvwNi6tTN3iux/EfDcGg21ZlMN83g132hKna2dytgy6vpEhwCyQMUTPwu3W35DnwbFAa/iO1c9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHhSiMBU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F56C4CEED;
+	Tue,  8 Jul 2025 16:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992903;
-	bh=nroM5GMJOuT5cYdOyQFbQmuafdDAgAtOWr544bUxhQM=;
+	s=korg; t=1751992198;
+	bh=atGLmWN54pH6e2NvZY2zH55xCJ73bTuZkZzeX6Ngx+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Zl0nQAwR4K1IplwLLRlVZyQBIvklrpSVSC47jV70Bth9g/Vnc+OLUEp+ibkgvFHU
-	 GzuMOE4g41yVnp3QvrkLQ+bO5ModZTmzLyHiEqmjYT7r49OdbC/mWJExYG22v0BTUH
-	 tDqPMMC9x9MKg2MXjSIV1OGkRdfnHZiooZ+S4wEM=
+	b=PHhSiMBUQAcY1GnmTKqapLXs0QdBoJdSC9Ec/M7SBX3qbGWk8bpU5hHF7sFKNwuPh
+	 Qg8rHwYuKm8Frcmv32/aU2ZMKSxYy01wk6w9b3zf1pVGBhhzGrBany+OPbfDb6idJN
+	 OZU9ZoJruSqETtSFeFmSa1O3UjPqpAU2+XZtdgfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xueqin Luo <luoxueqin@kylinos.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 120/232] ACPI: thermal: Fix stale comment regarding trip points
+	Farhan Ali <alifm@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.6 005/132] s390/pci: Do not try re-enabling load/store if device is disabled
 Date: Tue,  8 Jul 2025 18:21:56 +0200
-Message-ID: <20250708162244.581252227@linuxfoundation.org>
+Message-ID: <20250708162230.923655896@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xueqin Luo <luoxueqin@kylinos.cn>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 01ca2846338d314cdcd3da1aca7f290ec380542c ]
+commit b97a7972b1f4f81417840b9a2ab0c19722b577d5 upstream.
 
-Update the comment next to acpi_thermal_get_trip_points() call site
-in acpi_thermal_add() to reflect what the code does.
+If a device is disabled unblocking load/store on its own is not useful
+as a full re-enable of the function is necessary anyway. Note that SCLP
+Write Event Data Action Qualifier 0 (Reset) leaves the device disabled
+and triggers this case unless the driver already requests a reset.
 
-It has diverged from the code after changes that removed the _CRT
-evaluation from acpi_thermal_get_trip_points() among other things.
-
-Signed-off-by: xueqin Luo <luoxueqin@kylinos.cn>
-Link: https://patch.msgid.link/20250208013335.126343-1-luoxueqin@kylinos.cn
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 3f7cd28ae3d1 ("ACPI: thermal: Execute _SCP before reading trip points")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
+Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/thermal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/pci/pci_event.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index 78db38c7076e4..dbc371ac2fa66 100644
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -803,7 +803,7 @@ static int acpi_thermal_add(struct acpi_device *device)
+--- a/arch/s390/pci/pci_event.c
++++ b/arch/s390/pci/pci_event.c
+@@ -98,6 +98,10 @@ static pci_ers_result_t zpci_event_do_er
+ 	struct zpci_dev *zdev = to_zpci(pdev);
+ 	int rc;
  
- 	acpi_thermal_aml_dependency_fix(tz);
- 
--	/* Get trip points [_CRT, _PSV, etc.] (required). */
-+	/* Get trip points [_ACi, _PSV, etc.] (required). */
- 	acpi_thermal_get_trip_points(tz);
- 
- 	crit_temp = acpi_thermal_get_critical_trip(tz);
--- 
-2.39.5
-
++	/* The underlying device may have been disabled by the event */
++	if (!zdev_enabled(zdev))
++		return PCI_ERS_RESULT_NEED_RESET;
++
+ 	pr_info("%s: Unblocking device access for examination\n", pci_name(pdev));
+ 	rc = zpci_reset_load_store_blocked(zdev);
+ 	if (rc) {
 
 
 
