@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-160856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B3F5AFD246
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F4069AFD0A2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:25:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABDED3A5A88
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79DC556304F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DA02E49A8;
-	Tue,  8 Jul 2025 16:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4592E5412;
+	Tue,  8 Jul 2025 16:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w52/l3X+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6oXVesJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406F52E3385;
-	Tue,  8 Jul 2025 16:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DFC2E5434;
+	Tue,  8 Jul 2025 16:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992889; cv=none; b=uChJjZL7imEwHm04/QJmjw+AMX4AYWDZe8+uAAYXIpRUKxmshZclsmyUZqrQT6GK1AZq7+1SEMP9GMZHUZ0epw9jr5Vn4zvtE9QShYqN6tokVpJmhUx3fdk29FW+h11URGpvbxAGCUoY+XIDyBGbY2WFbiGZ1GjbS4k0KpjDM0M=
+	t=1751991848; cv=none; b=uJTaJ2SaXAea9UIm/2iz0HCt69nHs9wtpp5x3KvBYJYB2z6bRAsptGemGS21G58S8+SQ6fsBxwq+7mP3kvPMu7kQjXsUV3dl6DUYlt0po9tQaZSf4Bp6wt7wSc6pTmcm21UeF3XT9rci4QJA2JzX4CUlq1rMxMXTysfNCIvj5+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992889; c=relaxed/simple;
-	bh=xOqYTmTaUhDlre5EXPWV5eHqTTaye2DyA+5aaoJAE00=;
+	s=arc-20240116; t=1751991848; c=relaxed/simple;
+	bh=Md+IK+CFgnWDzP1CmWaP+2RQSv6EnpOY5JcDfaFrVUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hVVzNtdfR4f1I+oj28Hr5vkyw5QHmC2I+9WEhvPXYLw+HiNUPUFcxu0EcogKUOWAduTwQgqPOSUaDeyZbrMhLNZLgEuGOOu4UIyzpAocN0zQXCaFCsf/DUba4IlIQcvNEeN1OmlZvNEYbUw6Y+sFc7Y+9I3J8burN1rOo4fVgWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w52/l3X+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777E4C4CEED;
-	Tue,  8 Jul 2025 16:41:28 +0000 (UTC)
+	 MIME-Version; b=kd5Uf8+xAnUHJdbN3WWekZQLKGFSNzn7lqJNTXXEWpkiBrWtSi8QxMOHZMkfGv4+w2sQ4Oda2hSguI6WZwKwUlG5zGx72jlnbNBSQIskh99garQwQJcppJAt6bbXj3kOn277hd4YrMhCoJ4EosyRRF/QEuUpCw/5Lxofal/amnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6oXVesJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC63C4CEED;
+	Tue,  8 Jul 2025 16:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992888;
-	bh=xOqYTmTaUhDlre5EXPWV5eHqTTaye2DyA+5aaoJAE00=;
+	s=korg; t=1751991847;
+	bh=Md+IK+CFgnWDzP1CmWaP+2RQSv6EnpOY5JcDfaFrVUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w52/l3X+ftkRRZ0Xb4GSnAMT7UfwVDQJzetkKVSPuaFNGpU0bpfnLPUebdkurhTwj
-	 3VgRkBDFkzJElwTEb7EkcwxoR/quF63NCB00jevohXO5WjQxJpvhZxM1/++G/XTpnM
-	 2wol9M0ZgYeM3p21OyRULEU+cGObzs+bp0SGVBv8=
+	b=u6oXVesJjjqSrqpncs282A4wplDkhGUb2HpxspuxMo7C31JkAa4L+tOoU+qOOqMeG
+	 /n0NDy/THDyz8VEr8DVhNJzbVBfp79SF3bRp+WQuX3W5tJ9DYDWFUb5S+8+MW6RadQ
+	 OwmsOZl3R9LghTVHsC9PAE+cSuYjHZGW+DJVxl6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuewen Yan <xuewen.yan@unisoc.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Tianchen Ding <dtcccc@linux.alibaba.com>
-Subject: [PATCH 6.12 115/232] sched/fair: Fixup wake_up_sync() vs DELAYED_DEQUEUE
-Date: Tue,  8 Jul 2025 18:21:51 +0200
-Message-ID: <20250708162244.448795596@linuxfoundation.org>
+	Elena Popa <elena.popa@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.6 001/132] rtc: pcf2127: add missing semicolon after statement
+Date: Tue,  8 Jul 2025 18:21:52 +0200
+Message-ID: <20250708162230.809601191@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuewen Yan <xuewen.yan@unisoc.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit aa3ee4f0b7541382c9f6f43f7408d73a5d4f4042 ]
+commit 08d82d0cad51c2b1d454fe41ea1ff96ade676961 upstream.
 
-Delayed dequeued feature keeps a sleeping task enqueued until its
-lag has elapsed. As a result, it stays also visible in rq->nr_running.
-So when in wake_affine_idle(), we should use the real running-tasks
-in rq to check whether we should place the wake-up task to
-current cpu.
-On the other hand, add a helper function to return the nr-delayed.
+Replace comma with semicolon at the end of the statement when setting
+config.max_register.
 
-Fixes: 152e11f6df29 ("sched/fair: Implement delayed dequeue")
-Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
-Reviewed-and-tested-by: Tianchen Ding <dtcccc@linux.alibaba.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20250303105241.17251-2-xuewen.yan@unisoc.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fd28ceb4603f ("rtc: pcf2127: add variant-specific configuration structure")
+Cc: stable@vger.kernel.org
+Cc: Elena Popa <elena.popa@nxp.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20250529202923.1552560-1-hugo@hugovil.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/fair.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/rtc/rtc-pcf2127.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 47ff4856561ea..7280ed04c96ce 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7313,6 +7313,11 @@ static bool dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)
- 	return true;
- }
+--- a/drivers/rtc/rtc-pcf2127.c
++++ b/drivers/rtc/rtc-pcf2127.c
+@@ -1456,7 +1456,7 @@ static int pcf2127_spi_probe(struct spi_
+ 		variant = &pcf21xx_cfg[type];
+ 	}
  
-+static inline unsigned int cfs_h_nr_delayed(struct rq *rq)
-+{
-+	return (rq->cfs.h_nr_queued - rq->cfs.h_nr_runnable);
-+}
-+
- #ifdef CONFIG_SMP
+-	config.max_register = variant->max_register,
++	config.max_register = variant->max_register;
  
- /* Working cpumask for: sched_balance_rq(), sched_balance_newidle(). */
-@@ -7474,8 +7479,12 @@ wake_affine_idle(int this_cpu, int prev_cpu, int sync)
- 	if (available_idle_cpu(this_cpu) && cpus_share_cache(this_cpu, prev_cpu))
- 		return available_idle_cpu(prev_cpu) ? prev_cpu : this_cpu;
- 
--	if (sync && cpu_rq(this_cpu)->nr_running == 1)
--		return this_cpu;
-+	if (sync) {
-+		struct rq *rq = cpu_rq(this_cpu);
-+
-+		if ((rq->nr_running - cfs_h_nr_delayed(rq)) == 1)
-+			return this_cpu;
-+	}
- 
- 	if (available_idle_cpu(prev_cpu))
- 		return prev_cpu;
--- 
-2.39.5
-
+ 	regmap = devm_regmap_init_spi(spi, &config);
+ 	if (IS_ERR(regmap)) {
 
 
 
