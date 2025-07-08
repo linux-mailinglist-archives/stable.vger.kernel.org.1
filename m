@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-161280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C1AAFD45E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1635AFD139
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0947A17AE91
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2796D581FDC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F802E6D3B;
-	Tue,  8 Jul 2025 17:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790FD2E337A;
+	Tue,  8 Jul 2025 16:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMqaP3vP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwzP+haN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6132DC32D;
-	Tue,  8 Jul 2025 17:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D802DD5EF;
+	Tue,  8 Jul 2025 16:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994118; cv=none; b=rho0izJWqg451rOZtB7PjHS1ZeQd0GkrBWj6VW0vzylhGfE7NdjPtv5zP/Rm9tAhKrtCzwurwRKfO+/3Nk/RzMnqgwEhLQJtiq8GCbeJoZWf/et6ELmWlXIKsglKeItmNGAJ5cOi5z348HJtCNFieAUs8pee/KaH6dqNIEmpPnU=
+	t=1751992332; cv=none; b=lwRBy7xlcNtg/6OXwx9EGZj9EAVkMdjYuqNmVoCWxLPWzmcAPV86iJs8SSv1gi+SoZeH9K9lTNDHdUatGxbfKLgjLO2amtXfLUab19mD9fzqJIenjOEROiLOw5s/wA4NgbkU4NKcMRO48I38rAtGFy2alT5mtOh/X5nkhMh/ki0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994118; c=relaxed/simple;
-	bh=Geq76jeWQBrGrsrd27rwArilar8v5U4IR5c7pBpYO1A=;
+	s=arc-20240116; t=1751992332; c=relaxed/simple;
+	bh=2gVo5mzT9YYSG9nZ4DkYFkKhixQHt0OSD5hcnrBrU7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewK1bvZ+KhWt2levUYiKtRIqZ7TcGbstWfICZcgEve09mRtWYUBitOEcPqgV0eP1uGrBBaMWNZXnKyIL64FkZrGBF7ELvy6B2wluqyj6C6cx4BR9sdwWPQ4cKeCAJneR0ObWXcq0xh1xWDVU3Tz/GqSLctfwaA55LwCo1d4Dq28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMqaP3vP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2C3C4CEED;
-	Tue,  8 Jul 2025 17:01:57 +0000 (UTC)
+	 MIME-Version; b=WbzdLmhBLd2kin75iOVuD+OrARQT+ZCyLdV32piwf2/FtrIP6iePCMiPpNyjd3yD74i1NIT3VcLUJfFYd2p7KzKFPkFACyH5W4sPw6TTwuLcZ00g2jWzRx1mrJQuMFGStv8KYR/I2YPBnvo8wM7OdxatPtrJFKHOOLNvdwnXkDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwzP+haN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DA2C4CEED;
+	Tue,  8 Jul 2025 16:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994118;
-	bh=Geq76jeWQBrGrsrd27rwArilar8v5U4IR5c7pBpYO1A=;
+	s=korg; t=1751992332;
+	bh=2gVo5mzT9YYSG9nZ4DkYFkKhixQHt0OSD5hcnrBrU7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CMqaP3vP3j4JrXIt+M9A1/lF/qGa8fuljERf+L4UPFobGiCmST9ZIeCtzWOVPLGsT
-	 KC00YzTX9z7WTRvdFPQXMx6EmWyDSGdrYoNB0G9roagnda0XBvLeFW9oWXg+09gJUM
-	 g6iYW5rCtM8siY+o8xSTbV8or0sh95jojat+W2D8=
+	b=dwzP+haNYummKDVm+2pCip3eRCJv4Tt1Pq71Z1Fk3TPk2++cZJjNxdrmO7Pt5nFoH
+	 6bSvDlGvU0m58BCj2a5NP2FqVIpjGbZBUc2wweyXLGuT8pbeW/xNlEtRT6ebSIGhSs
+	 djwZclpMYWcwh18DgU4KmJRJ2cOrSdRdK0RLiHbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tulio Magno <tuliom@ascii.art.br>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Justin M. Forbes" <jforbes@fedoraproject.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 130/160] powerpc: Fix struct termio related ioctl macros
+Subject: [PATCH 6.6 056/132] lib: test_objagg: Set error message in check_expect_hints_stats()
 Date: Tue,  8 Jul 2025 18:22:47 +0200
-Message-ID: <20250708162235.006734436@linuxfoundation.org>
+Message-ID: <20250708162232.297796124@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ab107276607af90b13a5994997e19b7b9731e251 ]
+[ Upstream commit e6ed134a4ef592fe1fd0cafac9683813b3c8f3e8 ]
 
-Since termio interface is now obsolete, include/uapi/asm/ioctls.h
-has some constant macros referring to "struct termio", this caused
-build failure at userspace.
+Smatch complains that the error message isn't set in the caller:
 
-In file included from /usr/include/asm/ioctl.h:12,
-                 from /usr/include/asm/ioctls.h:5,
-                 from tst-ioctls.c:3:
-tst-ioctls.c: In function 'get_TCGETA':
-tst-ioctls.c:12:10: error: invalid application of 'sizeof' to incomplete type 'struct termio'
-   12 |   return TCGETA;
-      |          ^~~~~~
+    lib/test_objagg.c:923 test_hints_case2()
+    error: uninitialized symbol 'errmsg'.
 
-Even though termios.h provides "struct termio", trying to juggle definitions around to
-make it compile could introduce regressions. So better to open code it.
+This static checker warning only showed up after a recent refactoring
+but the bug dates back to when the code was originally added.  This
+likely doesn't affect anything in real life.
 
-Reported-by: Tulio Magno <tuliom@ascii.art.br>
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
-Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
-Closes: https://lore.kernel.org/linuxppc-dev/8734dji5wl.fsf@ascii.art.br/
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250517142237.156665-1-maddy@linux.ibm.com
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202506281403.DsuyHFTZ-lkp@intel.com/
+Fixes: 0a020d416d0a ("lib: introduce initial implementation of object aggregation manager")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/8548f423-2e3b-4bb7-b816-5041de2762aa@sabinyo.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/uapi/asm/ioctls.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ lib/test_objagg.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/uapi/asm/ioctls.h b/arch/powerpc/include/uapi/asm/ioctls.h
-index 2c145da3b774a..b5211e413829a 100644
---- a/arch/powerpc/include/uapi/asm/ioctls.h
-+++ b/arch/powerpc/include/uapi/asm/ioctls.h
-@@ -23,10 +23,10 @@
- #define TCSETSW		_IOW('t', 21, struct termios)
- #define TCSETSF		_IOW('t', 22, struct termios)
+diff --git a/lib/test_objagg.c b/lib/test_objagg.c
+index c0c957c506354..c0f7bb53db8d5 100644
+--- a/lib/test_objagg.c
++++ b/lib/test_objagg.c
+@@ -899,8 +899,10 @@ static int check_expect_hints_stats(struct objagg_hints *objagg_hints,
+ 	int err;
  
--#define TCGETA		_IOR('t', 23, struct termio)
--#define TCSETA		_IOW('t', 24, struct termio)
--#define TCSETAW		_IOW('t', 25, struct termio)
--#define TCSETAF		_IOW('t', 28, struct termio)
-+#define TCGETA		0x40147417 /* _IOR('t', 23, struct termio) */
-+#define TCSETA		0x80147418 /* _IOW('t', 24, struct termio) */
-+#define TCSETAW		0x80147419 /* _IOW('t', 25, struct termio) */
-+#define TCSETAF		0x8014741c /* _IOW('t', 28, struct termio) */
- 
- #define TCSBRK		_IO('t', 29)
- #define TCXONC		_IO('t', 30)
+ 	stats = objagg_hints_stats_get(objagg_hints);
+-	if (IS_ERR(stats))
++	if (IS_ERR(stats)) {
++		*errmsg = "objagg_hints_stats_get() failed.";
+ 		return PTR_ERR(stats);
++	}
+ 	err = __check_expect_stats(stats, expect_stats, errmsg);
+ 	objagg_stats_put(stats);
+ 	return err;
 -- 
 2.39.5
 
