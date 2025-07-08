@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57F4AFD12D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:32:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79EB2AFD279
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA8031C220C2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 052433BF174
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C252E5B2A;
-	Tue,  8 Jul 2025 16:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA8C2E54AF;
+	Tue,  8 Jul 2025 16:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLkj3qJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCYC0rgd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824151CD1E4;
-	Tue,  8 Jul 2025 16:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B642E3385;
+	Tue,  8 Jul 2025 16:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992298; cv=none; b=oPruUtfof04jkxIM+rWGFCaNmOcRwXD0/75P2q7uogyLc3IX8RSB5bameNJWwyRuTYO6mLZtXp9+gwY1SWx9ZlQW1SaHhn/PkeeU4igRW3k3JtkjDVq4ypDhLfVjWKVvcRoMb/7dOpQDn0RNkT1X1E3puv9FkLGl3pEoRZKCIqk=
+	t=1751993019; cv=none; b=fkGgHkp9gMGRIhfgz3qTfqMG09MRasHeLPr/RERPWON4+x/XzEO8QaRdYOE1cJ/CT5WdOdyvX6EIUK/QgpQADi4aOdEgYkwn009Yr/SJshZHtVoyK193xswH4DcvO7PVQdJgp7Bx5r7baaMxSBw6UHnHxc1sBfXbTkE0LyA4A7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992298; c=relaxed/simple;
-	bh=fylyrkFVkXR7a7648c+oMRlx3H+PFI0IOBFohND85Aw=;
+	s=arc-20240116; t=1751993019; c=relaxed/simple;
+	bh=f5PoDmSIt5Uv4/Z1cegBDj0TWjvA/7tHfZOUhRYVleg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LsAe/X9HBYLtFXQeuK1ax6zon0AgRy5UaOqVg02JEIUHyRV/N52ql/ABF3/jsDMp0EjOYdWt0TiIkLnwh7yHv7W2nUz5DxsVsRO0w3rJOLG2CNuAwttNVsbAtmVLVD9z2bTtWwPNnHrosWtgFXnZ4LSCCQ9IoDKIQfe+ropvSu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLkj3qJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F4DC4CEF5;
-	Tue,  8 Jul 2025 16:31:37 +0000 (UTC)
+	 MIME-Version; b=PgxAK4ySB8KqTshFSCjvHEPgpbeAvgVcNMiYXOVIK5OraJrgRlzo88cfa/CiJTWgqtoxHlNyAggp+C4nEqpXlpQPEW+6cZxadVbbisvPRq8ZVgT+URXk/h7QBWLvRXVi3Uv+rsiW4udLREASqvGdgrcYkH1NmyQBuO3pRerdERg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCYC0rgd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A0DC4CEED;
+	Tue,  8 Jul 2025 16:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992298;
-	bh=fylyrkFVkXR7a7648c+oMRlx3H+PFI0IOBFohND85Aw=;
+	s=korg; t=1751993018;
+	bh=f5PoDmSIt5Uv4/Z1cegBDj0TWjvA/7tHfZOUhRYVleg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RLkj3qJ8ABM+eDsQ+0Zou2QpWWRen63R5Pl/ksn3e7vIB7CsS9/4IYhYdondPzBIy
-	 vMiUe0v2AMoqNFAT/vavDSu9bYdUm0BbQ1nwym/DPWXI/fk35ld3rHad8xrflnAsio
-	 i5O+boYpwGpMHhxuEsRVigY6oFI8iE5t8i09y8dQ=
+	b=vCYC0rgdj6WT4LZbKB4NRsRT+zHphx9na/13n0NafV1JAQRTxnPd82gj23musti/N
+	 bwwecJS8pKxA3Wo9hRSPRcb2ztq8bs9rbYzFMsV/nPOnHY/gzoDeOu3Qm0CtyIeUc4
+	 oObN/J9DwVtYrYQZg7e4CnyiYQT5bKSdPSzh2z7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ricardo B. Marliere" <ricardo@marliere.net>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/132] platform/x86: make fw_attr_class constant
+Subject: [PATCH 6.12 158/232] drm/xe: Replace double space with single space after comma
 Date: Tue,  8 Jul 2025 18:22:34 +0200
-Message-ID: <20250708162231.936537274@linuxfoundation.org>
+Message-ID: <20250708162245.571559021@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,109 +61,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marliere <ricardo@marliere.net>
+From: Nitin Gote <nitin.r.gote@intel.com>
 
-[ Upstream commit 5878e5b760b6fcf7bc00dec085ba2b439a929871 ]
+[ Upstream commit cd89de14bbacce1fc060fdfab75bacf95b1c5d40 ]
 
-Since commit 43a7206b0963 ("driver core: class: make class_register() take
-a const *"), the driver core allows for struct class to be in read-only
-memory, so move the fw_attr_class structure to be declared at build time
-placing it into read-only memory, instead of having to be dynamically
-allocated at boot time.
+Avoid using double space, ",  " in function or macro parameters
+where it's not required by any alignment purpose. Replace it with
+a single space, ", ".
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: "Ricardo B. Marliere" <ricardo@marliere.net>
-Link: https://lore.kernel.org/r/20240305-class_cleanup-platform-v1-1-9085c97b9355@marliere.net
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Stable-dep-of: 5ff1fbb30597 ("platform/x86: think-lmi: Fix class device unregistration")
+Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240823080643.2461992-1-nitin.r.gote@intel.com
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+Stable-dep-of: ad40098da5c3 ("drm/xe/guc: Explicitly exit CT safe mode on unwind")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-wmi-sysman/sysman.c | 2 +-
- drivers/platform/x86/firmware_attributes_class.c   | 4 ++--
- drivers/platform/x86/firmware_attributes_class.h   | 2 +-
- drivers/platform/x86/hp/hp-bioscfg/bioscfg.c       | 2 +-
- drivers/platform/x86/think-lmi.c                   | 2 +-
- 5 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/xe/regs/xe_reg_defs.h | 2 +-
+ drivers/gpu/drm/xe/xe_guc.c           | 2 +-
+ drivers/gpu/drm/xe/xe_guc_ct.c        | 4 ++--
+ drivers/gpu/drm/xe/xe_irq.c           | 4 ++--
+ drivers/gpu/drm/xe/xe_trace_bo.h      | 2 +-
+ 5 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-index f567d37a64a33..decb3b997d86a 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-@@ -25,7 +25,7 @@ struct wmi_sysman_priv wmi_priv = {
- /* reset bios to defaults */
- static const char * const reset_types[] = {"builtinsafe", "lastknowngood", "factory", "custom"};
- static int reset_option = -1;
--static struct class *fw_attr_class;
-+static const struct class *fw_attr_class;
+diff --git a/drivers/gpu/drm/xe/regs/xe_reg_defs.h b/drivers/gpu/drm/xe/regs/xe_reg_defs.h
+index 23f7dc5bbe995..51fd40ffafcb9 100644
+--- a/drivers/gpu/drm/xe/regs/xe_reg_defs.h
++++ b/drivers/gpu/drm/xe/regs/xe_reg_defs.h
+@@ -128,7 +128,7 @@ struct xe_reg_mcr {
+  *       options.
+  */
+ #define XE_REG_MCR(r_, ...)	((const struct xe_reg_mcr){					\
+-				 .__reg = XE_REG_INITIALIZER(r_,  ##__VA_ARGS__, .mcr = 1)	\
++				 .__reg = XE_REG_INITIALIZER(r_, ##__VA_ARGS__, .mcr = 1)	\
+ 				 })
  
+ static inline bool xe_reg_is_valid(struct xe_reg r)
+diff --git a/drivers/gpu/drm/xe/xe_guc.c b/drivers/gpu/drm/xe/xe_guc.c
+index 52df28032a6ff..c67d4807f37df 100644
+--- a/drivers/gpu/drm/xe/xe_guc.c
++++ b/drivers/gpu/drm/xe/xe_guc.c
+@@ -985,7 +985,7 @@ int xe_guc_mmio_send_recv(struct xe_guc *guc, const u32 *request,
+ 		BUILD_BUG_ON(FIELD_MAX(GUC_HXG_MSG_0_TYPE) != GUC_HXG_TYPE_RESPONSE_SUCCESS);
+ 		BUILD_BUG_ON((GUC_HXG_TYPE_RESPONSE_SUCCESS ^ GUC_HXG_TYPE_RESPONSE_FAILURE) != 1);
  
- /**
-diff --git a/drivers/platform/x86/firmware_attributes_class.c b/drivers/platform/x86/firmware_attributes_class.c
-index fafe8eaf6e3e4..dd8240009565d 100644
---- a/drivers/platform/x86/firmware_attributes_class.c
-+++ b/drivers/platform/x86/firmware_attributes_class.c
-@@ -10,11 +10,11 @@
- static DEFINE_MUTEX(fw_attr_lock);
- static int fw_attr_inuse;
+-		ret = xe_mmio_wait32(gt, reply_reg,  resp_mask, resp_mask,
++		ret = xe_mmio_wait32(gt, reply_reg, resp_mask, resp_mask,
+ 				     1000000, &header, false);
  
--static struct class firmware_attributes_class = {
-+static const struct class firmware_attributes_class = {
- 	.name = "firmware-attributes",
- };
+ 		if (unlikely(FIELD_GET(GUC_HXG_MSG_0_ORIGIN, header) !=
+diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
+index 1f74f6bd50f31..483c2b521a2d1 100644
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -182,7 +182,7 @@ int xe_guc_ct_init(struct xe_guc_ct *ct)
+ 	spin_lock_init(&ct->fast_lock);
+ 	xa_init(&ct->fence_lookup);
+ 	INIT_WORK(&ct->g2h_worker, g2h_worker_func);
+-	INIT_DELAYED_WORK(&ct->safe_mode_worker,  safe_mode_worker_func);
++	INIT_DELAYED_WORK(&ct->safe_mode_worker, safe_mode_worker_func);
+ 	init_waitqueue_head(&ct->wq);
+ 	init_waitqueue_head(&ct->g2h_fence_wq);
  
--int fw_attributes_class_get(struct class **fw_attr_class)
-+int fw_attributes_class_get(const struct class **fw_attr_class)
- {
- 	int err;
+@@ -851,7 +851,7 @@ static bool retry_failure(struct xe_guc_ct *ct, int ret)
+ #define ct_alive(ct)	\
+ 	(xe_guc_ct_enabled(ct) && !ct->ctbs.h2g.info.broken && \
+ 	 !ct->ctbs.g2h.info.broken)
+-	if (!wait_event_interruptible_timeout(ct->wq, ct_alive(ct),  HZ * 5))
++	if (!wait_event_interruptible_timeout(ct->wq, ct_alive(ct), HZ * 5))
+ 		return false;
+ #undef ct_alive
  
-diff --git a/drivers/platform/x86/firmware_attributes_class.h b/drivers/platform/x86/firmware_attributes_class.h
-index 486485cb1f54e..363c75f1ac1b8 100644
---- a/drivers/platform/x86/firmware_attributes_class.h
-+++ b/drivers/platform/x86/firmware_attributes_class.h
-@@ -5,7 +5,7 @@
- #ifndef FW_ATTR_CLASS_H
- #define FW_ATTR_CLASS_H
+diff --git a/drivers/gpu/drm/xe/xe_irq.c b/drivers/gpu/drm/xe/xe_irq.c
+index 5f2c368c35adb..14c3a476597a7 100644
+--- a/drivers/gpu/drm/xe/xe_irq.c
++++ b/drivers/gpu/drm/xe/xe_irq.c
+@@ -173,7 +173,7 @@ void xe_irq_enable_hwe(struct xe_gt *gt)
+ 		if (ccs_mask & (BIT(0)|BIT(1)))
+ 			xe_mmio_write32(gt, CCS0_CCS1_INTR_MASK, ~dmask);
+ 		if (ccs_mask & (BIT(2)|BIT(3)))
+-			xe_mmio_write32(gt,  CCS2_CCS3_INTR_MASK, ~dmask);
++			xe_mmio_write32(gt, CCS2_CCS3_INTR_MASK, ~dmask);
+ 	}
  
--int fw_attributes_class_get(struct class **fw_attr_class);
-+int fw_attributes_class_get(const struct class **fw_attr_class);
- int fw_attributes_class_put(void);
+ 	if (xe_gt_is_media_type(gt) || MEDIA_VER(xe) < 13) {
+@@ -504,7 +504,7 @@ static void gt_irq_reset(struct xe_tile *tile)
+ 	if (ccs_mask & (BIT(0)|BIT(1)))
+ 		xe_mmio_write32(mmio, CCS0_CCS1_INTR_MASK, ~0);
+ 	if (ccs_mask & (BIT(2)|BIT(3)))
+-		xe_mmio_write32(mmio,  CCS2_CCS3_INTR_MASK, ~0);
++		xe_mmio_write32(mmio, CCS2_CCS3_INTR_MASK, ~0);
  
- #endif /* FW_ATTR_CLASS_H */
-diff --git a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-index 6ddca857cc4d1..b8bac35ebd42b 100644
---- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-@@ -24,7 +24,7 @@ struct bioscfg_priv bioscfg_drv = {
- 	.mutex = __MUTEX_INITIALIZER(bioscfg_drv.mutex),
- };
+ 	if ((tile->media_gt &&
+ 	     xe_hw_engine_mask_per_class(tile->media_gt, XE_ENGINE_CLASS_OTHER)) ||
+diff --git a/drivers/gpu/drm/xe/xe_trace_bo.h b/drivers/gpu/drm/xe/xe_trace_bo.h
+index ba0f61e7d2d6b..4ff023b5d040d 100644
+--- a/drivers/gpu/drm/xe/xe_trace_bo.h
++++ b/drivers/gpu/drm/xe/xe_trace_bo.h
+@@ -189,7 +189,7 @@ DECLARE_EVENT_CLASS(xe_vm,
+ 			   ),
  
--static struct class *fw_attr_class;
-+static const struct class *fw_attr_class;
+ 		    TP_printk("dev=%s, vm=%p, asid=0x%05x", __get_str(dev),
+-			      __entry->vm,  __entry->asid)
++			      __entry->vm, __entry->asid)
+ );
  
- ssize_t display_name_language_code_show(struct kobject *kobj,
- 					struct kobj_attribute *attr,
-diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
-index 2396decdb3cb3..3a496c615ce6b 100644
---- a/drivers/platform/x86/think-lmi.c
-+++ b/drivers/platform/x86/think-lmi.c
-@@ -195,7 +195,7 @@ static const char * const level_options[] = {
- 	[TLMI_LEVEL_MASTER] = "master",
- };
- static struct think_lmi tlmi_priv;
--static struct class *fw_attr_class;
-+static const struct class *fw_attr_class;
- static DEFINE_MUTEX(tlmi_mutex);
- 
- /* ------ Utility functions ------------*/
+ DEFINE_EVENT(xe_vm, xe_vm_kill,
 -- 
 2.39.5
 
