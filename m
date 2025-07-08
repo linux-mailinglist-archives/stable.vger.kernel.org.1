@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-160790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5D8AFD1E1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CDBAFD1EA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C700454008A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:37:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F54E54103C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2592E3385;
-	Tue,  8 Jul 2025 16:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F9C1548C;
+	Tue,  8 Jul 2025 16:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tj6U9tpl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyTwvpPY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E721CD1E4;
-	Tue,  8 Jul 2025 16:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED6423A98D;
+	Tue,  8 Jul 2025 16:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992698; cv=none; b=tTMZPK+zyEAj8+YSLvpx2hf7D6b2JNPFHdx6lkeELYJ14gsULpL6c/z8cr1EuzxnDS9YOs2HBX1m2RpWDxuZwRFaPAzn4+h7zjxXcIHckNwpywOz9h+SL6FQF32qI43wxpx909uXzZ6nhLCF6rmx9G3wX17r5xgwui3ZJ7OHGlA=
+	t=1751992730; cv=none; b=ab6siB0p0QwmYQzDF0xKxbWaFWAUJ+xVYh+O5Ar8gN6jJEtFThYNQ2R8LZqsEAFMqGsiO8xB710BgA14oAxtMMakADxNhpFeKiR2j0723VNUtBGwga4AukyBIg2PwDrDPR385FcPHIB4d00gb7J97Rbw/NnXH/K/St5GdffipCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992698; c=relaxed/simple;
-	bh=D4IBacZZ1s54S0mq++Hd+BGEq2pGtc+k2fA+NNDZ8Wo=;
+	s=arc-20240116; t=1751992730; c=relaxed/simple;
+	bh=L0VIg7G2HyKiJQgKmu8qz5Mew4ZKZrqETqBIIsbtzew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DLmWxyYy6jMAojmD2MOnWVIXC8co1TAX+t9RmDUHXaGcxHFExBu4gHtfA+H30aur8Mc6d0U6yuXybNc1bfSd8yqjjDJNvzsJJGoDfBSJa5BLUz6iab57OXZJh0eXqIuEiqN0GJw8E/Trn8Rx8zJ3q731MZBDP/EL6nYXKtZzCvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tj6U9tpl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B364C4CEED;
-	Tue,  8 Jul 2025 16:38:17 +0000 (UTC)
+	 MIME-Version; b=Y77S0DQXHqocovyAfJHMKl0fDKGBF+I/fhRUYvZPDmrWUZ0xqOnAvbq5PF8ABFnskiqhFANFAbWG65sIEZ7DfwRug8MJ9LGCa/Ex5oozj9BOlgMTFVQy4S8/3ZhD0fqk5z5lbBhso5N9krTOg9T/qznxyhI/zV/0Wj0AhTk6SUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyTwvpPY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C432C4CEED;
+	Tue,  8 Jul 2025 16:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992698;
-	bh=D4IBacZZ1s54S0mq++Hd+BGEq2pGtc+k2fA+NNDZ8Wo=;
+	s=korg; t=1751992729;
+	bh=L0VIg7G2HyKiJQgKmu8qz5Mew4ZKZrqETqBIIsbtzew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tj6U9tplPCBh3zIAxLkFDPECZG2VQ79FxrLisqpSj7XhyFdDYfRwOhthv6KbwUzEl
-	 2FpbXgfhpSLGZr+RTqE2yesrPDAMrbFcA62I2fwsAS7CTEn/TffrWvSWRslGYuww2A
-	 CASzusH5ClDNSyEqT1/YwwM8ORQujeYTTO8DdG5Q=
+	b=gyTwvpPYVz5UVzNlZdKQmmuay8JGaXqlXuLsugtoY2vX3thqOYalFgFtI46u5iKEn
+	 w8vD0ehN2MCVVYRWhANquCdShOx2jv2aCuvzn+YPyfsYb33QeNzHntgMo335oSIpxp
+	 LC2cgzaD/++wwyKiRitdxY8EJKu3TlX97inHBl14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	David Thompson <davthompson@nvidia.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/232] platform/mellanox: mlxbf-tmfifo: fix vring_desc.len assignment
-Date: Tue,  8 Jul 2025 18:20:28 +0200
-Message-ID: <20250708162242.272630679@linuxfoundation.org>
+Subject: [PATCH 6.12 033/232] RDMA/mlx5: Fix unsafe xarray access in implicit ODP handling
+Date: Tue,  8 Jul 2025 18:20:29 +0200
+Message-ID: <20250708162242.298464625@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
 References: <20250708162241.426806072@linuxfoundation.org>
@@ -61,48 +62,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-[ Upstream commit 109f4d29dade8ae5b4ac6325af9d1bc24b4230f8 ]
+[ Upstream commit 2c6b640ea08bff1a192bf87fa45246ff1e40767c ]
 
-Fix warnings reported by sparse, related to incorrect type:
-drivers/platform/mellanox/mlxbf-tmfifo.c:284:38: warning: incorrect type in assignment (different base types)
-drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    expected restricted __virtio32 [usertype] len
-drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    got unsigned long
+__xa_store() and __xa_erase() were used without holding the proper lock,
+which led to a lockdep warning due to unsafe RCU usage.  This patch
+replaces them with xa_store() and xa_erase(), which perform the necessary
+locking internally.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202404040339.S7CUIgf3-lkp@intel.com/
-Fixes: 78034cbece79 ("platform/mellanox: mlxbf-tmfifo: Drop the Rx packet if no more descriptors")
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Link: https://lore.kernel.org/r/20250613214608.2250130-1-davthompson@nvidia.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+  =============================
+  WARNING: suspicious RCPU usage
+  6.14.0-rc7_for_upstream_debug_2025_03_18_15_01 #1 Not tainted
+  -----------------------------
+  ./include/linux/xarray.h:1211 suspicious rcu_dereference_protected() usage!
+
+  other info that might help us debug this:
+
+  rcu_scheduler_active = 2, debug_locks = 1
+  3 locks held by kworker/u136:0/219:
+      at: process_one_work+0xbe4/0x15f0
+      process_one_work+0x75c/0x15f0
+      pagefault_mr+0x9a5/0x1390 [mlx5_ib]
+
+  stack backtrace:
+  CPU: 14 UID: 0 PID: 219 Comm: kworker/u136:0 Not tainted
+  6.14.0-rc7_for_upstream_debug_2025_03_18_15_01 #1
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+  rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+  Workqueue: mlx5_ib_page_fault mlx5_ib_eqe_pf_action [mlx5_ib]
+  Call Trace:
+   dump_stack_lvl+0xa8/0xc0
+   lockdep_rcu_suspicious+0x1e6/0x260
+   xas_create+0xb8a/0xee0
+   xas_store+0x73/0x14c0
+   __xa_store+0x13c/0x220
+   ? xa_store_range+0x390/0x390
+   ? spin_bug+0x1d0/0x1d0
+   pagefault_mr+0xcb5/0x1390 [mlx5_ib]
+   ? _raw_spin_unlock+0x1f/0x30
+   mlx5_ib_eqe_pf_action+0x3be/0x2620 [mlx5_ib]
+   ? lockdep_hardirqs_on_prepare+0x400/0x400
+   ? mlx5_ib_invalidate_range+0xcb0/0xcb0 [mlx5_ib]
+   process_one_work+0x7db/0x15f0
+   ? pwq_dec_nr_in_flight+0xda0/0xda0
+   ? assign_work+0x168/0x240
+   worker_thread+0x57d/0xcd0
+   ? rescuer_thread+0xc40/0xc40
+   kthread+0x3b3/0x800
+   ? kthread_is_per_cpu+0xb0/0xb0
+   ? lock_downgrade+0x680/0x680
+   ? do_raw_spin_lock+0x12d/0x270
+   ? spin_bug+0x1d0/0x1d0
+   ? finish_task_switch.isra.0+0x284/0x9e0
+   ? lockdep_hardirqs_on_prepare+0x284/0x400
+   ? kthread_is_per_cpu+0xb0/0xb0
+   ret_from_fork+0x2d/0x70
+   ? kthread_is_per_cpu+0xb0/0xb0
+   ret_from_fork_asm+0x11/0x20
+
+Fixes: d3d930411ce3 ("RDMA/mlx5: Fix implicit ODP use after free")
+Link: https://patch.msgid.link/r/a85ddd16f45c8cb2bc0a188c2b0fcedfce975eb8.1750061791.git.leon@kernel.org
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/mellanox/mlxbf-tmfifo.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/odp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
-index 6c834e39352d6..d2c27cc0733bb 100644
---- a/drivers/platform/mellanox/mlxbf-tmfifo.c
-+++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
-@@ -281,7 +281,8 @@ static int mlxbf_tmfifo_alloc_vrings(struct mlxbf_tmfifo *fifo,
- 		vring->align = SMP_CACHE_BYTES;
- 		vring->index = i;
- 		vring->vdev_id = tm_vdev->vdev.id.device;
--		vring->drop_desc.len = VRING_DROP_DESC_MAX_LEN;
-+		vring->drop_desc.len = cpu_to_virtio32(&tm_vdev->vdev,
-+						       VRING_DROP_DESC_MAX_LEN);
- 		dev = &tm_vdev->vdev.dev;
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index e158d5b1ab17b..98a76c9db7aba 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -247,8 +247,8 @@ static void destroy_unused_implicit_child_mr(struct mlx5_ib_mr *mr)
+ 	}
  
- 		size = vring_size(vring->num, vring->align);
+ 	if (MLX5_CAP_ODP(mr_to_mdev(mr)->mdev, mem_page_fault))
+-		__xa_erase(&mr_to_mdev(mr)->odp_mkeys,
+-			   mlx5_base_mkey(mr->mmkey.key));
++		xa_erase(&mr_to_mdev(mr)->odp_mkeys,
++			 mlx5_base_mkey(mr->mmkey.key));
+ 	xa_unlock(&imr->implicit_children);
+ 
+ 	/* Freeing a MR is a sleeping operation, so bounce to a work queue */
+@@ -521,8 +521,8 @@ static struct mlx5_ib_mr *implicit_get_child_mr(struct mlx5_ib_mr *imr,
+ 	}
+ 
+ 	if (MLX5_CAP_ODP(dev->mdev, mem_page_fault)) {
+-		ret = __xa_store(&dev->odp_mkeys, mlx5_base_mkey(mr->mmkey.key),
+-				 &mr->mmkey, GFP_KERNEL);
++		ret = xa_store(&dev->odp_mkeys, mlx5_base_mkey(mr->mmkey.key),
++			       &mr->mmkey, GFP_KERNEL);
+ 		if (xa_is_err(ret)) {
+ 			ret = ERR_PTR(xa_err(ret));
+ 			__xa_erase(&imr->implicit_children, idx);
 -- 
 2.39.5
 
