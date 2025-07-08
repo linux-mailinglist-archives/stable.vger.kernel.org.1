@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-161181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E447AFD3C6
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:00:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7007AFD1F4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5414416598F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55D6116E1F3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6AC2E5B27;
-	Tue,  8 Jul 2025 16:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1704E2E041C;
+	Tue,  8 Jul 2025 16:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPwJ6jTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EurZloTu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD772DAFA3;
-	Tue,  8 Jul 2025 16:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E9B1DF74F;
+	Tue,  8 Jul 2025 16:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993829; cv=none; b=HAxhnDpcdMQeLnd1NrLfYLbbuiZldXoj1Z8J/Ab9ICcWxnm196cdA0DEnOFii5gIC81SyQxGHaN/WXe8C/QjSCeO2MStT9gERyZhLIenFeQ3yvH+xF8rGMI3+WRxiLH1NgHy88sTQ7m4gFHXDiff+G9aOrz9RpK7djL/8EzARHU=
+	t=1751992764; cv=none; b=CiGseZwNdbT1pqcdlvL0qLNVbl1wPm9tRmNvBJEeQ4SNn/TnINYI5m6cOW0W6Ki0cL9kyWGOkOjYxw+udpP2LQPqubM/BF6WNSaEqsILalAGuPxW88qrpyWUuXM5kBQAsLiddB9d3GOFPj8SatrX286kOqqwN3ZBVN6DvlGoke0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993829; c=relaxed/simple;
-	bh=xzlN8cJhfyhTJhWbpcBWMT2oTPRBh4usrJTywvziSa8=;
+	s=arc-20240116; t=1751992764; c=relaxed/simple;
+	bh=GjrKHGWjp21g31qqCF8tBAIRV5A/a9DjpNalJACwJP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtaSB05D1D+z+ia+7QJBT+B/nTTUuuBDcb6V7eK1bNJ2g1U0WipGmHKvHfazcpkPM7pfFrMwBPH7PUT0PPgtAm58OmkAn8WHZ/7fKEBsl8RJIYH+KnwcjzxpFjCiIaKg7VYBt/8NaU0RodUfky4rMLYD7e8xjn3fZ+4tPhZ6VgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPwJ6jTw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A3AC4CEED;
-	Tue,  8 Jul 2025 16:57:08 +0000 (UTC)
+	 MIME-Version; b=e9YLoVBupMvJjBCqV8TmLTuGkcuewodeUQ44t/Y4aK/S3LkMto2AuePzVN0K0sH+Cn14F4l85Yt1nTJmM2SeZgs78tL7LfznjYKz6kERNm3hM5qU/p5GyJAwZnXZGeDf0aUH2AP+sQ6LKhq2CIeUwR9kyJfbp2G8qCbfKMNaNsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EurZloTu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514E5C4CEED;
+	Tue,  8 Jul 2025 16:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993829;
-	bh=xzlN8cJhfyhTJhWbpcBWMT2oTPRBh4usrJTywvziSa8=;
+	s=korg; t=1751992764;
+	bh=GjrKHGWjp21g31qqCF8tBAIRV5A/a9DjpNalJACwJP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qPwJ6jTwBI1aQCxogCcLTsPMHIAOiBFPE7dOpMyX9+JDTS7+Ug/Iuu6oTkHD4hBzv
-	 YTpGL1zzxlZeuZrdGdEe1X/b9KHlTNb39GC7EN32lqNCZNVLYD68/8BP84GbHf2kP0
-	 JNfniLaPWFZgOAwOeJcHatBUC0XUtpYLnlFzhyK4=
+	b=EurZloTu2rTLUvff79XXQwM9YS4PT8mzLBuCx5nbCC01NmqNWkjKt/K9tTlC4lU19
+	 9ISvR5GO/nrvNdVdqDW57ZZEkJZRaAc5Mmu1GE2BbZ+C71qf1yuuSXxA5MMk0AfkqF
+	 PIdJRqYOz9AHXzPU08VbAN+d1V77IOh+QAysb5p8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 032/160] media: imx-jpeg: Drop the first error frames
+Subject: [PATCH 6.12 073/232] drm/bridge: aux-hpd-bridge: fix assignment of the of_node
 Date: Tue,  8 Jul 2025 18:21:09 +0200
-Message-ID: <20250708162232.414946962@linuxfoundation.org>
+Message-ID: <20250708162243.363319871@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit d52b9b7e2f10d22a49468128540533e8d76910cd ]
+[ Upstream commit e8537cad824065b0425fb0429e762e14a08067c2 ]
 
-When an output buffer contains error frame header,
-v4l2_jpeg_parse_header() will return error, then driver will mark this
-buffer and a capture buffer done with error flag in device_run().
+Perform fix similar to the one in the commit 85e444a68126 ("drm/bridge:
+Fix assignment of the of_node of the parent to aux bridge").
 
-But if the error occurs in the first frames, before setup the capture
-queue, there is no chance to schedule device_run(), and there may be no
-capture to mark error.
+The assignment of the of_node to the aux HPD bridge needs to mark the
+of_node as reused, otherwise driver core will attempt to bind resources
+like pinctrl, which is going to fail as corresponding pins are already
+marked as used by the parent device.
+Fix that by using the device_set_of_node_from_dev() helper instead of
+assigning it directly.
 
-So we need to drop this buffer with error flag, and make the decoding
-can continue.
-
-Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: e560518a6c2e ("drm/bridge: implement generic DP HPD bridge")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250608-fix-aud-hpd-bridge-v1-1-4641a6f8e381@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/imx-jpeg/mxc-jpeg.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/aux-hpd-bridge.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/imx-jpeg/mxc-jpeg.c
-index 059e45aa03b7f..2ab03444f742a 100644
---- a/drivers/media/platform/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/imx-jpeg/mxc-jpeg.c
-@@ -1450,9 +1450,19 @@ static void mxc_jpeg_buf_queue(struct vb2_buffer *vb)
- 	jpeg_src_buf = vb2_to_mxc_buf(vb);
- 	jpeg_src_buf->jpeg_parse_error = false;
- 	ret = mxc_jpeg_parse(ctx, vb);
--	if (ret)
-+	if (ret) {
- 		jpeg_src_buf->jpeg_parse_error = true;
+diff --git a/drivers/gpu/drm/bridge/aux-hpd-bridge.c b/drivers/gpu/drm/bridge/aux-hpd-bridge.c
+index 6886db2d9e00c..8e889a38fad00 100644
+--- a/drivers/gpu/drm/bridge/aux-hpd-bridge.c
++++ b/drivers/gpu/drm/bridge/aux-hpd-bridge.c
+@@ -64,10 +64,11 @@ struct auxiliary_device *devm_drm_dp_hpd_bridge_alloc(struct device *parent, str
+ 	adev->id = ret;
+ 	adev->name = "dp_hpd_bridge";
+ 	adev->dev.parent = parent;
+-	adev->dev.of_node = of_node_get(parent->of_node);
+ 	adev->dev.release = drm_aux_hpd_bridge_release;
+ 	adev->dev.platform_data = of_node_get(np);
  
-+		/*
-+		 * if the capture queue is not setup, the device_run() won't be scheduled,
-+		 * need to drop the error buffer, so that the decoding can continue
-+		 */
-+		if (!vb2_is_streaming(v4l2_m2m_get_dst_vq(ctx->fh.m2m_ctx))) {
-+			v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_ERROR);
-+			return;
-+		}
-+	}
++	device_set_of_node_from_dev(&adev->dev, parent);
 +
- end:
- 	v4l2_m2m_buf_queue(ctx->fh.m2m_ctx, vbuf);
- }
+ 	ret = auxiliary_device_init(adev);
+ 	if (ret) {
+ 		of_node_put(adev->dev.platform_data);
 -- 
 2.39.5
 
