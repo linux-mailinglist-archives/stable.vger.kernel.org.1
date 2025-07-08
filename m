@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8959FAFD261
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 104E6AFD2BB
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C7E73B45FB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC4097A6CE8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B838F5B;
-	Tue,  8 Jul 2025 16:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B15D2DFA22;
+	Tue,  8 Jul 2025 16:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5wuewtD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXb5gnPp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755222DD5EF;
-	Tue,  8 Jul 2025 16:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F512D838B;
+	Tue,  8 Jul 2025 16:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992941; cv=none; b=jI7Ldy7oh0wu0EjzyBns8i8F6JgEjaPij9LqSt6V9tFH3z8YxH+jiKAFnCKMLt/Ev85zdJCFUNG6AWiAVabIh+z4L8qP5GII42pr4mFcKxxshZj6Mxg4HFlhTqtniiszU+JUy/oC7i3df0jf87H+V3jxhZ63jimkyMQBRhGEP8Y=
+	t=1751993407; cv=none; b=EyXGgFDFJN24kNgW+O44Tq9O2gYIdMGv2PU6kRpv1loEkrITmqymWgyd3PLwLfxIe5H5Pi59sttmNghsFPSKrKA4CLLO7mJdeJCWM10pGu5ZozfXKc9isljuE/Qay0rg7QaBpDbbtDmGWB4/hdP/lXCUSFZx53mMsXjSkWJtL6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992941; c=relaxed/simple;
-	bh=Po/2cdsplhVzvJlPn1yzOfDgSDhBmrRYEGZJ9KF2b88=;
+	s=arc-20240116; t=1751993407; c=relaxed/simple;
+	bh=xu0HSdXfF/d1R/3xd3Ebt4rkNqTsjOhI+CZ2oriRD+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7hiYsWItoJQTuNnhBfaiFq7aCmDw7KfsBq+Ra+6r2wJou3cw3kg88D5wlt5R13W1Ea6lZcmmh9K8qbl3pZkAjup9lTBk9YDt0WaSWBo1/z520amePRrNnLABsO2MxLgCbp17LpHkL+3B7vj+eScc704RzzrguJ8LN/6bRHgVco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5wuewtD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC523C4CEED;
-	Tue,  8 Jul 2025 16:42:20 +0000 (UTC)
+	 MIME-Version; b=lYz4kitaHwWPPzOG/9wYiBDo/Bu5dEmgCETnS1FlqCrrhJ18uZZExJAE2ulIbhhJ5veu7Nid5J7fdG3HjsAddinDIrb+POBClN36gibY1d8D/XO6BB92NG4h/2OA9lN7Bc/haDglnxnNyPVNk7Y5A8SzyVQWbl5GDZhI805TIyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXb5gnPp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E43C4CEED;
+	Tue,  8 Jul 2025 16:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992941;
-	bh=Po/2cdsplhVzvJlPn1yzOfDgSDhBmrRYEGZJ9KF2b88=;
+	s=korg; t=1751993407;
+	bh=xu0HSdXfF/d1R/3xd3Ebt4rkNqTsjOhI+CZ2oriRD+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y5wuewtDcIRYpvukdRaxF1O2c2EybbM2FccFqJsQfLqUyHdJS246yXYRfI1juw8Uc
-	 ZEWNZnq9xTHhYQWnHHyQX3soqmLZ5eRoKTQ6hQMt5NxYFu0BjbwoFK1ez9pimbJrUB
-	 ilYlZZFy+d/Au+5tG9iycDPNLvTuNQC2zt1abwBU=
+	b=cXb5gnPpRTcWevzFYPlud+4MtZcl6tMoQBudGxzExUQoF146MucqWeQmq954rmOsS
+	 1gYCroWjJ9lGsbjO/njcYMziu6o7eWVFnHeisBySry/3bsgQo0ZlPR2d8JGIyZc43j
+	 HVFSgsBt/7ImDgzeY9/oxTQr4yU8/rTn5xZy0Ut8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Yang Li <yang.li@amlogic.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 103/232] gfs2: Rename dinode_demise to evict_behavior
-Date: Tue,  8 Jul 2025 18:21:39 +0200
-Message-ID: <20250708162244.138634871@linuxfoundation.org>
+Subject: [PATCH 6.15 063/178] Bluetooth: Prevent unintended pause by checking if advertising is active
+Date: Tue,  8 Jul 2025 18:21:40 +0200
+Message-ID: <20250708162238.322193323@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,137 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Yang Li <yang.li@amlogic.com>
 
-[ Upstream commit c79ba4be351a06e0ac4c51143a83023bb37888d6 ]
+[ Upstream commit 1f029b4e30a602db33dedee5ac676e9236ad193c ]
 
-Rename enum dinode_demise to evict_behavior and its items
-SHOULD_DELETE_DINODE to EVICT_SHOULD_DELETE,
-SHOULD_NOT_DELETE_DINODE to EVICT_SHOULD_SKIP_DELETE, and
-SHOULD_DEFER_EVICTION to EVICT_SHOULD_DEFER_DELETE.
+When PA Create Sync is enabled, advertising resumes unexpectedly.
+Therefore, it's necessary to check whether advertising is currently
+active before attempting to pause it.
 
-In gfs2_evict_inode(), add a separate variable of type enum
-evict_behavior instead of implicitly casting to int.
+  < HCI Command: LE Add Device To... (0x08|0x0011) plen 7  #1345 [hci0] 48.306205
+  		Address type: Random (0x01)
+  		Address: 4F:84:84:5F:88:17 (Resolvable)
+  		Identity type: Random (0x01)
+  		Identity: FC:5B:8C:F7:5D:FB (Static)
+  < HCI Command: LE Set Address Re.. (0x08|0x002d) plen 1  #1347 [hci0] 48.308023
+  		Address resolution: Enabled (0x01)
+  ...
+  < HCI Command: LE Set Extended A.. (0x08|0x0039) plen 6  #1349 [hci0] 48.309650
+  		Extended advertising: Enabled (0x01)
+  		Number of sets: 1 (0x01)
+  		Entry 0
+  		Handle: 0x01
+  		Duration: 0 ms (0x00)
+  		Max ext adv events: 0
+  ...
+  < HCI Command: LE Periodic Adve.. (0x08|0x0044) plen 14  #1355 [hci0] 48.314575
+  		Options: 0x0000
+  		Use advertising SID, Advertiser Address Type and address
+  		Reporting initially enabled
+  		SID: 0x02
+  		Adv address type: Random (0x01)
+  		Adv address: 4F:84:84:5F:88:17 (Resolvable)
+  		Identity type: Random (0x01)
+  		Identity: FC:5B:8C:F7:5D:FB (Static)
+  		Skip: 0x0000
+  		Sync timeout: 20000 msec (0x07d0)
+  		Sync CTE type: 0x0000
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Stable-dep-of: 2c63986dd35f ("gfs2: deallocate inodes in gfs2_create_inode")
+Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
+Signed-off-by: Yang Li <yang.li@amlogic.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/super.c | 37 +++++++++++++++++++------------------
- 1 file changed, 19 insertions(+), 18 deletions(-)
+ net/bluetooth/hci_sync.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 6584fd5e0a5b7..6a0c0f3780b4c 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -44,10 +44,10 @@
- #include "xattr.h"
- #include "lops.h"
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 3660da3b241a7..9955d6cd7b76f 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2507,6 +2507,10 @@ static int hci_pause_advertising_sync(struct hci_dev *hdev)
+ 	int err;
+ 	int old_state;
  
--enum dinode_demise {
--	SHOULD_DELETE_DINODE,
--	SHOULD_NOT_DELETE_DINODE,
--	SHOULD_DEFER_EVICTION,
-+enum evict_behavior {
-+	EVICT_SHOULD_DELETE,
-+	EVICT_SHOULD_SKIP_DELETE,
-+	EVICT_SHOULD_DEFER_DELETE,
- };
- 
- /**
-@@ -1315,8 +1315,8 @@ static bool gfs2_upgrade_iopen_glock(struct inode *inode)
-  *
-  * Returns: the fate of the dinode
-  */
--static enum dinode_demise evict_should_delete(struct inode *inode,
--					      struct gfs2_holder *gh)
-+static enum evict_behavior evict_should_delete(struct inode *inode,
-+					       struct gfs2_holder *gh)
- {
- 	struct gfs2_inode *ip = GFS2_I(inode);
- 	struct super_block *sb = inode->i_sb;
-@@ -1327,11 +1327,11 @@ static enum dinode_demise evict_should_delete(struct inode *inode,
- 		goto should_delete;
- 
- 	if (test_bit(GIF_DEFER_DELETE, &ip->i_flags))
--		return SHOULD_DEFER_EVICTION;
-+		return EVICT_SHOULD_DEFER_DELETE;
- 
- 	/* Deletes should never happen under memory pressure anymore.  */
- 	if (WARN_ON_ONCE(current->flags & PF_MEMALLOC))
--		return SHOULD_DEFER_EVICTION;
-+		return EVICT_SHOULD_DEFER_DELETE;
- 
- 	/* Must not read inode block until block type has been verified */
- 	ret = gfs2_glock_nq_init(ip->i_gl, LM_ST_EXCLUSIVE, GL_SKIP, gh);
-@@ -1339,34 +1339,34 @@ static enum dinode_demise evict_should_delete(struct inode *inode,
- 		glock_clear_object(ip->i_iopen_gh.gh_gl, ip);
- 		ip->i_iopen_gh.gh_flags |= GL_NOCACHE;
- 		gfs2_glock_dq_uninit(&ip->i_iopen_gh);
--		return SHOULD_DEFER_EVICTION;
-+		return EVICT_SHOULD_DEFER_DELETE;
- 	}
- 
- 	if (gfs2_inode_already_deleted(ip->i_gl, ip->i_no_formal_ino))
--		return SHOULD_NOT_DELETE_DINODE;
-+		return EVICT_SHOULD_SKIP_DELETE;
- 	ret = gfs2_check_blk_type(sdp, ip->i_no_addr, GFS2_BLKST_UNLINKED);
- 	if (ret)
--		return SHOULD_NOT_DELETE_DINODE;
-+		return EVICT_SHOULD_SKIP_DELETE;
- 
- 	ret = gfs2_instantiate(gh);
- 	if (ret)
--		return SHOULD_NOT_DELETE_DINODE;
-+		return EVICT_SHOULD_SKIP_DELETE;
- 
- 	/*
- 	 * The inode may have been recreated in the meantime.
- 	 */
- 	if (inode->i_nlink)
--		return SHOULD_NOT_DELETE_DINODE;
-+		return EVICT_SHOULD_SKIP_DELETE;
- 
- should_delete:
- 	if (gfs2_holder_initialized(&ip->i_iopen_gh) &&
- 	    test_bit(HIF_HOLDER, &ip->i_iopen_gh.gh_iflags)) {
- 		if (!gfs2_upgrade_iopen_glock(inode)) {
- 			gfs2_holder_uninit(&ip->i_iopen_gh);
--			return SHOULD_NOT_DELETE_DINODE;
-+			return EVICT_SHOULD_SKIP_DELETE;
- 		}
- 	}
--	return SHOULD_DELETE_DINODE;
-+	return EVICT_SHOULD_DELETE;
- }
- 
- /**
-@@ -1477,6 +1477,7 @@ static void gfs2_evict_inode(struct inode *inode)
- 	struct gfs2_sbd *sdp = sb->s_fs_info;
- 	struct gfs2_inode *ip = GFS2_I(inode);
- 	struct gfs2_holder gh;
-+	enum evict_behavior behavior;
- 	int ret;
- 
- 	if (inode->i_nlink || sb_rdonly(sb) || !ip->i_no_addr)
-@@ -1491,10 +1492,10 @@ static void gfs2_evict_inode(struct inode *inode)
- 		goto out;
- 
- 	gfs2_holder_mark_uninitialized(&gh);
--	ret = evict_should_delete(inode, &gh);
--	if (ret == SHOULD_DEFER_EVICTION)
-+	behavior = evict_should_delete(inode, &gh);
-+	if (behavior == EVICT_SHOULD_DEFER_DELETE)
- 		goto out;
--	if (ret == SHOULD_DELETE_DINODE)
-+	if (behavior == EVICT_SHOULD_DELETE)
- 		ret = evict_unlinked_inode(inode);
- 	else
- 		ret = evict_linked_inode(inode);
++	/* If controller is not advertising we are done. */
++	if (!hci_dev_test_flag(hdev, HCI_LE_ADV))
++		return 0;
++
+ 	/* If already been paused there is nothing to do. */
+ 	if (hdev->advertising_paused)
+ 		return 0;
 -- 
 2.39.5
 
