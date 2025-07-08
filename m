@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-160685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AAF7AFD152
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9384AFD37B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53D431C23380
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:33:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 989031885B01
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4231A2E5413;
-	Tue,  8 Jul 2025 16:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39E8BE46;
+	Tue,  8 Jul 2025 16:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmt8cKuQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjcmAokS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20072E0B45;
-	Tue,  8 Jul 2025 16:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A263D2F37;
+	Tue,  8 Jul 2025 16:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992392; cv=none; b=R48rCxthyfGgjzyQxWN0OqbQ/5XABwpHQGNfvxl907HeXFRS/cyxvPfBVKxZxNxs2gNUNwzenrwdH6pV6Wxj9AIbwTDR+gm7YGQ4uH9xA4pZ+oDCkcilm+Iy9suYq4fCEz7xXAho809x5JnjkxW/BJCI33Icw1Eef/BP+Eqv4sU=
+	t=1751993653; cv=none; b=ifk4R3sS6v/aimzHlj69oNfhaFjTeFXyV5RNHAZ1RfBq8nxdaroHtJpcnBKMlY6VO64weUUF9lM2UeSVOQaHEsD7bYCQ+Xzv4qP3iCJfE3dAK4DzuuWs5VxlVerLs3qihx+UdavK2Mv9aNHNPeNzYJtQgoHFyE2MRElx911OtqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992392; c=relaxed/simple;
-	bh=Xw3e3dmg0GHOgJdqzrj0az74XjMerZDBG+rK5Zs7fqo=;
+	s=arc-20240116; t=1751993653; c=relaxed/simple;
+	bh=FjUZjK8j++uCyUe5bgvQ2lkQsZbfHgmOmByfIYLEe+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qitzv/0FGEY/kG1q0Ga7Kfj/jdiyX3P1Mm6XhnYDTFhOMj2mi7cuX458k+fFJ8J1R0caGG67Pf+F3gjDc/QdqemBDRziOZ+fGo6EraVdibrAVjPeqKJMfYk3ymorghprpOxPcDCGBNd8pksuAW9jTAMxrrKTaIbf/9k+sfFD2S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmt8cKuQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F17C4CEED;
-	Tue,  8 Jul 2025 16:33:11 +0000 (UTC)
+	 MIME-Version; b=TPQc4tHYJ9D3iaA+gX98UoJRnnnJuO/aOMvcTfZlbufCWhWB1qzQqXPV4p9nmi5MlI515fGualModctn/oF05hwSJWPHZ28j9kAR/BH/z55xXdgFKoksK4BwfjJzGhcV0E0Ybv8/AOPjOVdzBGs8pc95TraJbjV5xlIsmZ+qw3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjcmAokS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C825C4CEED;
+	Tue,  8 Jul 2025 16:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992391;
-	bh=Xw3e3dmg0GHOgJdqzrj0az74XjMerZDBG+rK5Zs7fqo=;
+	s=korg; t=1751993653;
+	bh=FjUZjK8j++uCyUe5bgvQ2lkQsZbfHgmOmByfIYLEe+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmt8cKuQDwD5w3gkQEDP7ThScZE9M6hl7F+R0M0PYtdevQS4twlsZKT4zZar75W5M
-	 Myyiklp8oKpu4C0oBVRQ01iM5RzgsujdDqw2OE75G0uSZHPvAbOjmqMsXbJ3X4oFqV
-	 8cCLSmev7EZTN3cZnff7J9+ihM95FUV1zR3MrqOw=
+	b=tjcmAokScBXId4AYMJ0qm8aGDrsLvf6yzMHYAulNOzfzvBftENJoMa6d7GjOyWPNj
+	 lZzAEnwfPYEdkK55Z4j1CyuZ1p6GqNhi+f4S8aOYFJi+h0zM/QdT4wByPmtASST9iu
+	 qBLh5iV4JjWnDzlR2bFzqhjOJxFRGJeT1hurBqt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/132] f2fs: prevent writing without fallocate() for pinned files
+	Nilton Perim Neto <niltonperimneto@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.15 148/178] Input: xpad - support Acer NGR 200 Controller
 Date: Tue,  8 Jul 2025 18:23:05 +0200
-Message-ID: <20250708162232.805219002@linuxfoundation.org>
+Message-ID: <20250708162240.386640279@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daeho Jeong <daehojeong@google.com>
+From: Nilton Perim Neto <niltonperimneto@gmail.com>
 
-[ Upstream commit 3fdd89b452c2ea5e2195d6e315bef122769584c9 ]
+commit 22c69d786ef8fb789c61ca75492a272774221324 upstream.
 
-In a case writing without fallocate(), we can't guarantee it's allocated
-in the conventional area for zoned stroage. To make it consistent across
-storage devices, we disallow it regardless of storage device types.
+Add the NGR 200 Xbox 360 to the list of recognized controllers.
 
-Signed-off-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: ba8dac350faf ("f2fs: fix to zero post-eof page")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
+Link: https://lore.kernel.org/r/20250608060517.14967-1-niltonperimneto@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/input/joystick/xpad.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 3e3822115d1e4..2eff37cc37601 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -57,7 +57,7 @@ static vm_fault_t f2fs_vm_page_mkwrite(struct vm_fault *vmf)
- 	struct inode *inode = file_inode(vmf->vma->vm_file);
- 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
- 	struct dnode_of_data dn;
--	bool need_alloc = true;
-+	bool need_alloc = !f2fs_is_pinned_file(inode);
- 	int err = 0;
- 	vm_fault_t ret;
- 
-@@ -114,19 +114,18 @@ static vm_fault_t f2fs_vm_page_mkwrite(struct vm_fault *vmf)
- 		goto out_sem;
- 	}
- 
-+	set_new_dnode(&dn, inode, NULL, NULL, 0);
- 	if (need_alloc) {
- 		/* block allocation */
--		set_new_dnode(&dn, inode, NULL, NULL, 0);
- 		err = f2fs_get_block_locked(&dn, page->index);
--	}
--
--#ifdef CONFIG_F2FS_FS_COMPRESSION
--	if (!need_alloc) {
--		set_new_dnode(&dn, inode, NULL, NULL, 0);
-+	} else {
- 		err = f2fs_get_dnode_of_data(&dn, page->index, LOOKUP_NODE);
- 		f2fs_put_dnode(&dn);
-+		if (f2fs_is_pinned_file(inode) &&
-+		    !__is_valid_data_blkaddr(dn.data_blkaddr))
-+			err = -EIO;
- 	}
--#endif
-+
- 	if (err) {
- 		unlock_page(page);
- 		goto out_sem;
-@@ -3332,7 +3331,7 @@ static int f2fs_ioc_set_pin_file(struct file *filp, unsigned long arg)
- 		goto done;
- 	}
- 
--	if (f2fs_sb_has_blkzoned(sbi) && F2FS_HAS_BLOCKS(inode)) {
-+	if (F2FS_HAS_BLOCKS(inode)) {
- 		ret = -EFBIG;
- 		goto out;
- 	}
-@@ -4919,6 +4918,8 @@ static ssize_t f2fs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	bool dio;
- 	bool may_need_sync = true;
- 	int preallocated;
-+	const loff_t pos = iocb->ki_pos;
-+	const ssize_t count = iov_iter_count(from);
- 	ssize_t ret;
- 
- 	if (unlikely(f2fs_cp_error(F2FS_I_SB(inode)))) {
-@@ -4940,6 +4941,12 @@ static ssize_t f2fs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 		inode_lock(inode);
- 	}
- 
-+	if (f2fs_is_pinned_file(inode) &&
-+	    !f2fs_overwrite_io(inode, pos, count)) {
-+		ret = -EIO;
-+		goto out_unlock;
-+	}
-+
- 	ret = f2fs_write_checks(iocb, from);
- 	if (ret <= 0)
- 		goto out_unlock;
--- 
-2.39.5
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -174,6 +174,7 @@ static const struct xpad_device {
+ 	{ 0x05fd, 0x107a, "InterAct 'PowerPad Pro' X-Box pad (Germany)", 0, XTYPE_XBOX },
+ 	{ 0x05fe, 0x3030, "Chic Controller", 0, XTYPE_XBOX },
+ 	{ 0x05fe, 0x3031, "Chic Controller", 0, XTYPE_XBOX },
++	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX },
+ 	{ 0x062a, 0x0020, "Logic3 Xbox GamePad", 0, XTYPE_XBOX },
+ 	{ 0x062a, 0x0033, "Competition Pro Steering Wheel", 0, XTYPE_XBOX },
+ 	{ 0x06a3, 0x0200, "Saitek Racing Wheel", 0, XTYPE_XBOX },
+@@ -520,6 +521,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft Xbox 360 controllers */
+ 	XPAD_XBOXONE_VENDOR(0x045e),		/* Microsoft Xbox One controllers */
+ 	XPAD_XBOX360_VENDOR(0x046d),		/* Logitech Xbox 360-style controllers */
++	XPAD_XBOX360_VENDOR(0x0502),		/* Acer Inc. Xbox 360 style controllers */
+ 	XPAD_XBOX360_VENDOR(0x056e),		/* Elecom JC-U3613M */
+ 	XPAD_XBOX360_VENDOR(0x06a3),		/* Saitek P3600 */
+ 	XPAD_XBOX360_VENDOR(0x0738),		/* Mad Catz Xbox 360 controllers */
 
 
 
