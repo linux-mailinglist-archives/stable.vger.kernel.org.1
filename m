@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31728AFD17B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:36:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59EE0AFD0BF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:27:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B70C8541B5F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07CED3BFD51
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01F62E542C;
-	Tue,  8 Jul 2025 16:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25232E0910;
+	Tue,  8 Jul 2025 16:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2R19xrUx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNX0G//J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8112E2F0E;
-	Tue,  8 Jul 2025 16:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4A921B199;
+	Tue,  8 Jul 2025 16:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992460; cv=none; b=FqlKawyc3AievOGJ/s1IaYNBOCT+e6KNIzeh4+ANikoMPW+GFIJHQjjQwYqY8PFRNLEHdE1PaDDa1MyZqV5DbDAlmfEyOBsMN2dEpmeXKR8+jX/qBNH62Hf6oVkDYaM1AmZMesOaG9fK1GLUFEVlJuUyWiXNiRLaV2a5mMZuVXE=
+	t=1751992035; cv=none; b=CfWd4VHl9cnBoAxFU8d8cns4YqDCfS99jadKwFtuS2ei23DaMPlTfe7SqXAdJUn7gpb4VAQ8Sfb8QtyQH+5kroK13qiDpuecM7pEoHR5LNcwyl/vWranChTMRlAIC2kKP51QilbdxkSszw2GHg/gDfKMiAqU5GnITGMvwNJSWZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992460; c=relaxed/simple;
-	bh=dN1t+4qDN2bv91lCVlsWdyteQqwgEqpqoyq/ttJdEWg=;
+	s=arc-20240116; t=1751992035; c=relaxed/simple;
+	bh=knwgmFn/at/TV0Kp8IeKDshen8TNiIuwhTV7aHKiYf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qXvG5TriQ4G+RYEXUaCv/gm8hxy18uvM1SyQ3nikjgDMMdozmJeyas79J2V/nvuWQnMhhCdfcV0UFmUxyoDVJpFB+oej0dAxCYmQvAwK9rlyLAaw0XL1N8ERKBUb4OgnpOITcyHHZKYFsTI+yoTUJOahFhK8vmXKNtcnAQ6wIsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2R19xrUx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9919FC4CEED;
-	Tue,  8 Jul 2025 16:34:19 +0000 (UTC)
+	 MIME-Version; b=aGC1IUIU5x2sNesQxkGZxtUvGVatp2BzKbdFqjGMDpf9lufBqWYWt6GVn06kRecxGI39hzPlKX2nL6STWX3VsqwyIAJRNa05zn79NNmJY03ZqF1z7YLkJqheJb+vKo52WuFxbXiWbbxQc6qXajXBZVwdsnQyF1s7UBFRRW3S+Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNX0G//J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E271C4CEED;
+	Tue,  8 Jul 2025 16:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992460;
-	bh=dN1t+4qDN2bv91lCVlsWdyteQqwgEqpqoyq/ttJdEWg=;
+	s=korg; t=1751992035;
+	bh=knwgmFn/at/TV0Kp8IeKDshen8TNiIuwhTV7aHKiYf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2R19xrUxzzlLPJzzTz5mcd+MoBDo2q4YQe1KgmkP1s/neQG3u29O5ftsR+hsuUHlU
-	 EQAQoadLll63PSQDlwXQD8978IkxdGQ3oe4+I6rMef6Hgr8odROp7x1aTM202TrRm0
-	 aOFBpjtT6hV4sUE/sbBaqXGECrSp48DIByiC9fus=
+	b=nNX0G//JMp5jGKsh/MS+2Kfkf0VPzlOiF/vPZe3WZinvj3p/gtj5SIgxmJT1XqKbi
+	 bUfCjZGKqdTaNqsa432JrBLz7x/ourqU8vKdK+e7MpoN7HZ4W4tVpKYEEknLDieVYe
+	 GUrYwYQXPREDdxreUoguyI4qWeWrDFapEbW1bD70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Martin-Gomez <pmartin-gomez@freebox.fr>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/132] mtd: spinand: fix memory leak of ECC engine conf
-Date: Tue,  8 Jul 2025 18:23:29 +0200
-Message-ID: <20250708162233.482886499@linuxfoundation.org>
+Subject: [PATCH 6.1 38/81] amd-xgbe: align CL37 AN sequence as per databook
+Date: Tue,  8 Jul 2025 18:23:30 +0200
+Message-ID: <20250708162226.190824865@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit 6463cbe08b0cbf9bba8763306764f5fd643023e1 ]
+[ Upstream commit 42fd432fe6d320323215ebdf4de4d0d7e56e6792 ]
 
-Memory allocated for the ECC engine conf is not released during spinand
-cleanup. Below kmemleak trace is seen for this memory leak:
+Update the Clause 37 Auto-Negotiation implementation to properly align
+with the PCS hardware specifications:
+- Fix incorrect bit settings in Link Status and Link Duplex fields
+- Implement missing sequence steps 2 and 7
 
-unreferenced object 0xffffff80064f00e0 (size 8):
-  comm "swapper/0", pid 1, jiffies 4294937458
-  hex dump (first 8 bytes):
-    00 00 00 00 00 00 00 00                          ........
-  backtrace (crc 0):
-    kmemleak_alloc+0x30/0x40
-    __kmalloc_cache_noprof+0x208/0x3c0
-    spinand_ondie_ecc_init_ctx+0x114/0x200
-    nand_ecc_init_ctx+0x70/0xa8
-    nanddev_ecc_engine_init+0xec/0x27c
-    spinand_probe+0xa2c/0x1620
-    spi_mem_probe+0x130/0x21c
-    spi_probe+0xf0/0x170
-    really_probe+0x17c/0x6e8
-    __driver_probe_device+0x17c/0x21c
-    driver_probe_device+0x58/0x180
-    __device_attach_driver+0x15c/0x1f8
-    bus_for_each_drv+0xec/0x150
-    __device_attach+0x188/0x24c
-    device_initial_probe+0x10/0x20
-    bus_probe_device+0x11c/0x160
+These changes ensure CL37 auto-negotiation protocol follows the exact
+sequence patterns as specified in the hardware databook.
 
-Fix the leak by calling nanddev_ecc_engine_cleanup() inside
-spinand_cleanup().
-
-Signed-off-by: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 1bf40ada6290 ("amd-xgbe: Add support for clause 37 auto-negotiation")
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Link: https://patch.msgid.link/20250630192636.3838291-1-Raju.Rangoju@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/amd/xgbe/xgbe-common.h | 2 ++
+ drivers/net/ethernet/amd/xgbe/xgbe-mdio.c   | 9 +++++++++
+ drivers/net/ethernet/amd/xgbe/xgbe.h        | 4 ++--
+ 3 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 393ff37f0d23c..cd21bf8f254a7 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -1316,6 +1316,7 @@ static void spinand_cleanup(struct spinand_device *spinand)
- {
- 	struct nand_device *nand = spinand_to_nand(spinand);
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-common.h b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
+index 466273b22f0a4..893a52b2262b6 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-common.h
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
+@@ -1357,6 +1357,8 @@
+ #define MDIO_VEND2_CTRL1_SS13		BIT(13)
+ #endif
  
-+	nanddev_ecc_engine_cleanup(nand);
- 	nanddev_cleanup(nand);
- 	spinand_manufacturer_cleanup(spinand);
- 	kfree(spinand->databuf);
++#define XGBE_VEND2_MAC_AUTO_SW		BIT(9)
++
+ /* MDIO mask values */
+ #define XGBE_AN_CL73_INT_CMPLT		BIT(0)
+ #define XGBE_AN_CL73_INC_LINK		BIT(1)
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+index 60be836b294bb..19fed56b6ee3f 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+@@ -363,6 +363,10 @@ static void xgbe_an37_set(struct xgbe_prv_data *pdata, bool enable,
+ 		reg |= MDIO_VEND2_CTRL1_AN_RESTART;
+ 
+ 	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_CTRL1, reg);
++
++	reg = XMDIO_READ(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL);
++	reg |= XGBE_VEND2_MAC_AUTO_SW;
++	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL, reg);
+ }
+ 
+ static void xgbe_an37_restart(struct xgbe_prv_data *pdata)
+@@ -991,6 +995,11 @@ static void xgbe_an37_init(struct xgbe_prv_data *pdata)
+ 
+ 	netif_dbg(pdata, link, pdata->netdev, "CL37 AN (%s) initialized\n",
+ 		  (pdata->an_mode == XGBE_AN_MODE_CL37) ? "BaseX" : "SGMII");
++
++	reg = XMDIO_READ(pdata, MDIO_MMD_AN, MDIO_CTRL1);
++	reg &= ~MDIO_AN_CTRL1_ENABLE;
++	XMDIO_WRITE(pdata, MDIO_MMD_AN, MDIO_CTRL1, reg);
++
+ }
+ 
+ static void xgbe_an73_init(struct xgbe_prv_data *pdata)
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
+index b17c7d1dc4b00..f3ba76530b67b 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe.h
++++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
+@@ -292,11 +292,11 @@
+ #define XGBE_LINK_TIMEOUT		5
+ #define XGBE_KR_TRAINING_WAIT_ITER	50
+ 
+-#define XGBE_SGMII_AN_LINK_STATUS	BIT(1)
++#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(1)
+ #define XGBE_SGMII_AN_LINK_SPEED	(BIT(2) | BIT(3))
+ #define XGBE_SGMII_AN_LINK_SPEED_100	0x04
+ #define XGBE_SGMII_AN_LINK_SPEED_1000	0x08
+-#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(4)
++#define XGBE_SGMII_AN_LINK_STATUS	BIT(4)
+ 
+ /* ECC correctable error notification window (seconds) */
+ #define XGBE_ECC_LIMIT			60
 -- 
 2.39.5
 
