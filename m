@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-160562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD42DAFD0BA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 250D6AFD26A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D8F63B2609
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBC3D7ADC59
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159952DAFC1;
-	Tue,  8 Jul 2025 16:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DAB2E5B34;
+	Tue,  8 Jul 2025 16:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gl2U0Amc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzC2zrCK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E7E2E659;
-	Tue,  8 Jul 2025 16:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739E02E49A8;
+	Tue,  8 Jul 2025 16:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992007; cv=none; b=V2SBAh4bBMASkYYHfHnPii26nb8AB3jiF5J6QIEN3SfmVqnywwqe/i2+9uxJhaB8pfqcJLOVWFb56fSkPMvgCjBlfjwViMOqsUdMqizg/ucrNvhe7rj5dUNeF5jgAc4LWfWviK3BH9Hd2Y/dzCMmo710GYLw0kMrxzQxcI6FA5U=
+	t=1751993152; cv=none; b=NV7OhL0xW/caBkTxj4bGKi1pFdgK+pgkrrOQaVVEQqAOgOI/c770C1RrmOk3vjeYxnmTPgdEsJWfhv0W5daRl/X7gRJm4oUbQmascPaWbfSMsf8gI04cmsVPvxiUkz8lvh3hfu3QhmHPn0lWxHzyfoUoAYbCdBLa9YQfW2tw5ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992007; c=relaxed/simple;
-	bh=e9WakCXu3XoH2pU5IP2hEsuiMbpJj0tMHPI58aeS1H4=;
+	s=arc-20240116; t=1751993152; c=relaxed/simple;
+	bh=/rEYKvvgtvTk1c1d3lEoCEQY4o301FNGpbk4/FUiMjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JCcuSI5jBBAi6QQsvYs3Cxx3TpSaG/0kOnMGzKlj46ls8X/U4WGNGCifPCYyvGvHSglVDvF7WSL3NYI4zfZf2qZJ27sNTMUEjHJrqZS0XAbRRHTxYSyd+8VDq6Bq5RCFE9YD7hYHVsZZ+Yit7axsrtWvPvVb+zuTGb6xbHb7Yg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gl2U0Amc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39208C4CEED;
-	Tue,  8 Jul 2025 16:26:47 +0000 (UTC)
+	 MIME-Version; b=FDJTwxBa7vvSKgnYgxu4Kauag2WN5DAh5e2cI4BZbVtudrzZA3Z8M/KTS12itouq7L2APofW7LkRutKxpKjV43nGwZy3rVLN/oZSeVPtJX0K7NBR75XZXshi+MrCjDfxhy4uB0hlOJEIAJ++EB24ll/APTAG0mTR8v7IAOhhHQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzC2zrCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E283C4CEF0;
+	Tue,  8 Jul 2025 16:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992007;
-	bh=e9WakCXu3XoH2pU5IP2hEsuiMbpJj0tMHPI58aeS1H4=;
+	s=korg; t=1751993152;
+	bh=/rEYKvvgtvTk1c1d3lEoCEQY4o301FNGpbk4/FUiMjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gl2U0AmcvPfDqB/U9J1IKee9oQ5orWbas2OtwQWPTD6o6sT0SAoDwiqCY1OEnkkxZ
-	 97krZjuDqOjU3Yoy+j1aZtvWQ40a+0PF3vqdKutLHJ4a6T6Fd4hVG18C7kloHjvKOW
-	 pqQD7zlicNvOZf3ByYV8VFLQj5P9sOqUNXE47T7g=
+	b=VzC2zrCKvZ5UToC9fvgDV/ZMjo81HYy7nzmbEkh39IUGHFUnB8lxH+0duGxarxNpb
+	 J9hx/duhXZwgC6lJPv8FPb4NL3l1bPpJsWmCgAoC0qcLB0TnfD8WP68NScZhEEbtkc
+	 cdC7k6hSTG5J6wdnIq3CW7P8dh2svLg7AP5l0r8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 30/81] spi: spi-fsl-dspi: Clear completion counter before initiating transfer
+	Jeff LaBundy <jeff@labundy.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 206/232] Input: iqs7222 - explicitly define number of external channels
 Date: Tue,  8 Jul 2025 18:23:22 +0200
-Message-ID: <20250708162225.902400316@linuxfoundation.org>
+Message-ID: <20250708162246.828055185@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Jeff LaBundy <jeff@labundy.com>
 
-[ Upstream commit fa60c094c19b97e103d653f528f8d9c178b6a5f5 ]
+commit 63f4970a1219b5256e8ea952096c86dab666d312 upstream.
 
-In target mode, extra interrupts can be received between the end of a
-transfer and halting the module if the host continues sending more data.
-If the interrupt from this occurs after the reinit_completion() then the
-completion counter is left at a non-zero value. The next unrelated
-transfer initiated by userspace will then complete immediately without
-waiting for the interrupt or writing to the RX buffer.
+The number of external channels is assumed to be a multiple of 10,
+but this is not the case for IQS7222D. As a result, some CRx pins
+are wrongly prevented from being assigned to some channels.
 
-Fix it by resetting the counter before the transfer so that lingering
-values are cleared. This is done after clearing the FIFOs and the
-status register but before the transfer is initiated, so no interrupts
-should be received at this point resulting in other race conditions.
+Address this problem by explicitly defining the number of external
+channels for cases in which the number of external channels is not
+equal to the total number of available channels.
 
-Fixes: 4f5ee75ea171 ("spi: spi-fsl-dspi: Replace interruptible wait queue with a simple completion")
-Signed-off-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250627-james-nxp-spi-dma-v4-1-178dba20c120@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dd24e202ac72 ("Input: iqs7222 - add support for Azoteq IQS7222D")
+Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+Link: https://lore.kernel.org/r/aGHVf6HkyFZrzTPy@nixie71
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/input/misc/iqs7222.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 5374c6d44519a..3a33156f52740 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -964,11 +964,20 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 		if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
- 			status = dspi_dma_xfer(dspi);
- 		} else {
-+			/*
-+			 * Reinitialize the completion before transferring data
-+			 * to avoid the case where it might remain in the done
-+			 * state due to a spurious interrupt from a previous
-+			 * transfer. This could falsely signal that the current
-+			 * transfer has completed.
-+			 */
-+			if (dspi->irq)
-+				reinit_completion(&dspi->xfer_done);
-+
- 			dspi_fifo_write(dspi);
- 
- 			if (dspi->irq) {
- 				wait_for_completion(&dspi->xfer_done);
--				reinit_completion(&dspi->xfer_done);
- 			} else {
- 				do {
- 					status = dspi_poll(dspi);
--- 
-2.39.5
-
+--- a/drivers/input/misc/iqs7222.c
++++ b/drivers/input/misc/iqs7222.c
+@@ -301,6 +301,7 @@ struct iqs7222_dev_desc {
+ 	int allow_offset;
+ 	int event_offset;
+ 	int comms_offset;
++	int ext_chan;
+ 	bool legacy_gesture;
+ 	struct iqs7222_reg_grp_desc reg_grps[IQS7222_NUM_REG_GRPS];
+ };
+@@ -315,6 +316,7 @@ static const struct iqs7222_dev_desc iqs
+ 		.allow_offset = 9,
+ 		.event_offset = 10,
+ 		.comms_offset = 12,
++		.ext_chan = 10,
+ 		.reg_grps = {
+ 			[IQS7222_REG_GRP_STAT] = {
+ 				.base = IQS7222_SYS_STATUS,
+@@ -373,6 +375,7 @@ static const struct iqs7222_dev_desc iqs
+ 		.allow_offset = 9,
+ 		.event_offset = 10,
+ 		.comms_offset = 12,
++		.ext_chan = 10,
+ 		.legacy_gesture = true,
+ 		.reg_grps = {
+ 			[IQS7222_REG_GRP_STAT] = {
+@@ -2244,7 +2247,7 @@ static int iqs7222_parse_chan(struct iqs
+ 	const struct iqs7222_dev_desc *dev_desc = iqs7222->dev_desc;
+ 	struct i2c_client *client = iqs7222->client;
+ 	int num_chan = dev_desc->reg_grps[IQS7222_REG_GRP_CHAN].num_row;
+-	int ext_chan = rounddown(num_chan, 10);
++	int ext_chan = dev_desc->ext_chan ? : num_chan;
+ 	int error, i;
+ 	u16 *chan_setup = iqs7222->chan_setup[chan_index];
+ 	u16 *sys_setup = iqs7222->sys_setup;
+@@ -2448,7 +2451,7 @@ static int iqs7222_parse_sldr(struct iqs
+ 	const struct iqs7222_dev_desc *dev_desc = iqs7222->dev_desc;
+ 	struct i2c_client *client = iqs7222->client;
+ 	int num_chan = dev_desc->reg_grps[IQS7222_REG_GRP_CHAN].num_row;
+-	int ext_chan = rounddown(num_chan, 10);
++	int ext_chan = dev_desc->ext_chan ? : num_chan;
+ 	int count, error, reg_offset, i;
+ 	u16 *event_mask = &iqs7222->sys_setup[dev_desc->event_offset];
+ 	u16 *sldr_setup = iqs7222->sldr_setup[sldr_index];
 
 
 
