@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-160779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6B7AFD1CD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:40:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5D8AFD1E1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B35F3584A2D
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C700454008A
 	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D27A2E49B0;
-	Tue,  8 Jul 2025 16:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2592E3385;
+	Tue,  8 Jul 2025 16:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdeiB6kF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tj6U9tpl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393C82E2F0D;
-	Tue,  8 Jul 2025 16:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E721CD1E4;
+	Tue,  8 Jul 2025 16:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992665; cv=none; b=K/pzytW7evJA8i2Uy446wCT09Cl9dlmgjS9IIAkE+T+HRWUNoi/ScpMT4Hz9v9t+joenK9rSKQU1T/TD1ZM4acaAFUL3qd2TDAt5SjDhvz1vuyKJSSkToDvkMSuB8GbbisWwfATUJMiqTj5YXOZr8z6uSNuIBe+UvuEl3IEnE0Y=
+	t=1751992698; cv=none; b=tTMZPK+zyEAj8+YSLvpx2hf7D6b2JNPFHdx6lkeELYJ14gsULpL6c/z8cr1EuzxnDS9YOs2HBX1m2RpWDxuZwRFaPAzn4+h7zjxXcIHckNwpywOz9h+SL6FQF32qI43wxpx909uXzZ6nhLCF6rmx9G3wX17r5xgwui3ZJ7OHGlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992665; c=relaxed/simple;
-	bh=SxNBcCZechgbOe/s8pHlvD5M5WB0OHYdwwvVFCMdvwg=;
+	s=arc-20240116; t=1751992698; c=relaxed/simple;
+	bh=D4IBacZZ1s54S0mq++Hd+BGEq2pGtc+k2fA+NNDZ8Wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIADTVQUywmTYxBMy8dRlkxItt43s6d9R5fatb/oGP7ofkmQ3owaTRL5DR+07NM4mZ1AsB4vLJUh0s84AmBwYsZghKku81p1q2TX6EXfA7a5unmRBwVVPwRf7YPNGqxKr1QhewMQDPK6cdxNaKgBQDHcIxUK6Ug+nuCDBmfbMH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdeiB6kF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD586C4CEED;
-	Tue,  8 Jul 2025 16:37:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DLmWxyYy6jMAojmD2MOnWVIXC8co1TAX+t9RmDUHXaGcxHFExBu4gHtfA+H30aur8Mc6d0U6yuXybNc1bfSd8yqjjDJNvzsJJGoDfBSJa5BLUz6iab57OXZJh0eXqIuEiqN0GJw8E/Trn8Rx8zJ3q731MZBDP/EL6nYXKtZzCvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tj6U9tpl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B364C4CEED;
+	Tue,  8 Jul 2025 16:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992665;
-	bh=SxNBcCZechgbOe/s8pHlvD5M5WB0OHYdwwvVFCMdvwg=;
+	s=korg; t=1751992698;
+	bh=D4IBacZZ1s54S0mq++Hd+BGEq2pGtc+k2fA+NNDZ8Wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EdeiB6kFqYme4mbakLH/6n0/1+hA8LU/XvTpwcz3xAlG9S4oPlSLtfQxG2tO9WofB
-	 gofwFvbpxPB06ijfZSImkoKT88f/kBakz2PuhOkurLVL+67rdiYwgv7oIz1KJ1nc1B
-	 ouiS8bLzAXkzTYwdRDHgLhqXw9gslojHKgDQGnuk=
+	b=Tj6U9tplPCBh3zIAxLkFDPECZG2VQ79FxrLisqpSj7XhyFdDYfRwOhthv6KbwUzEl
+	 2FpbXgfhpSLGZr+RTqE2yesrPDAMrbFcA62I2fwsAS7CTEn/TffrWvSWRslGYuww2A
+	 CASzusH5ClDNSyEqT1/YwwM8ORQujeYTTO8DdG5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janne Grunau <j@jannau.net>,
-	Sven Peter <sven@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	David Thompson <davthompson@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/232] arm64: dts: apple: t8103: Fix PCIe BCM4377 nodename
-Date: Tue,  8 Jul 2025 18:20:27 +0200
-Message-ID: <20250708162242.248570140@linuxfoundation.org>
+Subject: [PATCH 6.12 032/232] platform/mellanox: mlxbf-tmfifo: fix vring_desc.len assignment
+Date: Tue,  8 Jul 2025 18:20:28 +0200
+Message-ID: <20250708162242.272630679@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
 References: <20250708162241.426806072@linuxfoundation.org>
@@ -60,46 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janne Grunau <j@jannau.net>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit ac1daa91e9370e3b88ef7826a73d62a4d09e2717 ]
+[ Upstream commit 109f4d29dade8ae5b4ac6325af9d1bc24b4230f8 ]
 
-Fix the following `make dtbs_check` warnings for all t8103 based devices:
+Fix warnings reported by sparse, related to incorrect type:
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38: warning: incorrect type in assignment (different base types)
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    expected restricted __virtio32 [usertype] len
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    got unsigned long
 
-arch/arm64/boot/dts/apple/t8103-j274.dtb: network@0,0: $nodename:0: 'network@0,0' does not match '^wifi(@.*)?$'
-        from schema $id: http://devicetree.org/schemas/net/wireless/brcm,bcm4329-fmac.yaml#
-arch/arm64/boot/dts/apple/t8103-j274.dtb: network@0,0: Unevaluated properties are not allowed ('local-mac-address' was unexpected)
-        from schema $id: http://devicetree.org/schemas/net/wireless/brcm,bcm4329-fmac.yaml#
-
-Fixes: bf2c05b619ff ("arm64: dts: apple: t8103: Expose PCI node for the WiFi MAC address")
-Signed-off-by: Janne Grunau <j@jannau.net>
-Reviewed-by: Sven Peter <sven@kernel.org>
-Link: https://lore.kernel.org/r/20250611-arm64_dts_apple_wifi-v1-1-fb959d8e1eb4@jannau.net
-Signed-off-by: Sven Peter <sven@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202404040339.S7CUIgf3-lkp@intel.com/
+Fixes: 78034cbece79 ("platform/mellanox: mlxbf-tmfifo: Drop the Rx packet if no more descriptors")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/20250613214608.2250130-1-davthompson@nvidia.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/apple/t8103-jxxx.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi b/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
-index 5988a4eb6efaa..cb78ce7af0b38 100644
---- a/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
-+++ b/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
-@@ -71,7 +71,7 @@ hpm1: usb-pd@3f {
-  */
- &port00 {
- 	bus-range = <1 1>;
--	wifi0: network@0,0 {
-+	wifi0: wifi@0,0 {
- 		compatible = "pci14e4,4425";
- 		reg = <0x10000 0x0 0x0 0x0 0x0>;
- 		/* To be filled by the loader */
+diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
+index 6c834e39352d6..d2c27cc0733bb 100644
+--- a/drivers/platform/mellanox/mlxbf-tmfifo.c
++++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
+@@ -281,7 +281,8 @@ static int mlxbf_tmfifo_alloc_vrings(struct mlxbf_tmfifo *fifo,
+ 		vring->align = SMP_CACHE_BYTES;
+ 		vring->index = i;
+ 		vring->vdev_id = tm_vdev->vdev.id.device;
+-		vring->drop_desc.len = VRING_DROP_DESC_MAX_LEN;
++		vring->drop_desc.len = cpu_to_virtio32(&tm_vdev->vdev,
++						       VRING_DROP_DESC_MAX_LEN);
+ 		dev = &tm_vdev->vdev.dev;
+ 
+ 		size = vring_size(vring->num, vring->align);
 -- 
 2.39.5
 
