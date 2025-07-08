@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3414BAFD1A6
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB6CAFD2D2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D88ED175A24
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:36:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59640169FBE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D79E2E337A;
-	Tue,  8 Jul 2025 16:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA24E1FC0F3;
+	Tue,  8 Jul 2025 16:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eT6FyBE4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uepfzBW+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD6921773D;
-	Tue,  8 Jul 2025 16:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A812E1754B;
+	Tue,  8 Jul 2025 16:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992569; cv=none; b=jsxB3QWO62UCLlTdBY9A4T1bz2UOdZfQF6afhIazGseBZyKdBpbJVKW0Q2Qo+Xxthmd+OcFt3CNh9BncidbdtbvHKTvSAK+RSMrBM4oaoDMuBsXYx+4iFEZyWoCYsnfLVMGXJ6DYgbvvs25zDRdcym7p2NyE9g5aVJ2fV9HqBoM=
+	t=1751993241; cv=none; b=gTZSzez1bpGm5AhWW3kZnbmySkovf5OSIuWARe+YLdQSYhzkkacufrLXZrdGWZ+DRwQhNupGkakdlcUEpzwQhT+Q7ml28Cxnn136VupWSvPP9l0jmISi3bdFI5mmqvMhhURDR4UV8A1pVDGcgk06S0gD8dtkgizvH46fniCTUmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992569; c=relaxed/simple;
-	bh=vdbwql6KC6mLhrxIRECS27fOgwZOjz04i4/PAuOmvYg=;
+	s=arc-20240116; t=1751993241; c=relaxed/simple;
+	bh=3ZSSAQilcSGvm4JmkWt0gjOkBV7zJKPax6DQMVYwavs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WnjO5I5bi3tqNJAJ32/ynbpvkPgK7v5xP0jLgZd3jnMBB5ciCdAvhWcWP6DqdIwhSuGkwqBn0Gkl/58ERIgmF1sT20yxn2FBPQWMUXUCxIdzF2zI+zuXb4YHnoGeljeXzLvOPy7bss4ytAOko2lKFd6atTtYIwWTDDJI+i0qEvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eT6FyBE4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6585BC4CEED;
-	Tue,  8 Jul 2025 16:36:08 +0000 (UTC)
+	 MIME-Version; b=GS8j/Ig5fe+PxWNF3Ni7HGcNVKXZJZ2McZyt1ts4jefWXJTkbXA17YCBKBx2sp8DZz839z88kxw4KU/Zv6Ph1y4DqqkDQ9aIiU7aTW6GRW7Tp2XOFpgqBw8W/61LQ4IbnwGxOGiwx7ewW+FXO+CnS4TqfxMPQE9brDfwaJPmS+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uepfzBW+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FCD7C4CEED;
+	Tue,  8 Jul 2025 16:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992568;
-	bh=vdbwql6KC6mLhrxIRECS27fOgwZOjz04i4/PAuOmvYg=;
+	s=korg; t=1751993241;
+	bh=3ZSSAQilcSGvm4JmkWt0gjOkBV7zJKPax6DQMVYwavs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eT6FyBE4QYYZ/IqeK7SHL9FulN73c6Rg3gwehbPSe6rUGZ+l/qabOVZLndbAJZZ83
-	 h/CtOuIrA7hy6QlOj640IuHsYii5o8c/Q7x6xWfCeOYTM1X6LIyMO1Q1q8fUAumMn3
-	 /Abpl7T9wuiRmnanspo8Zzd/D22Hn+v1idQo0GeU=
+	b=uepfzBW+veuiYcxCqR39gxQ8DmVtMwNQW1x+q1Z42EvLxvkazuaqYgyseKbYR95Em
+	 WtirU737S6/eg2Sxu6vDg/7CbH72FTqNfGsm6dOrpToGk7/8Jl3UClF0TeO7IuywMX
+	 BEWI9PW0DKMNKajcYbCKmNaD6f5sjctwJsb13hI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff LaBundy <jeff@labundy.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 114/132] Input: iqs7222 - explicitly define number of external channels
+	Kim Phillips <kim.phillips@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 6.12 229/232] x86/bugs: Add a Transient Scheduler Attacks mitigation
 Date: Tue,  8 Jul 2025 18:23:45 +0200
-Message-ID: <20250708162233.901296346@linuxfoundation.org>
+Message-ID: <20250708162247.418028916@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +62,562 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff LaBundy <jeff@labundy.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit 63f4970a1219b5256e8ea952096c86dab666d312 upstream.
+Commit d8010d4ba43e9f790925375a7de100604a5e2dba upstream.
 
-The number of external channels is assumed to be a multiple of 10,
-but this is not the case for IQS7222D. As a result, some CRx pins
-are wrongly prevented from being assigned to some channels.
+Add the required features detection glue to bugs.c et all in order to
+support the TSA mitigation.
 
-Address this problem by explicitly defining the number of external
-channels for cases in which the number of external channels is not
-equal to the total number of available channels.
-
-Fixes: dd24e202ac72 ("Input: iqs7222 - add support for Azoteq IQS7222D")
-Signed-off-by: Jeff LaBundy <jeff@labundy.com>
-Link: https://lore.kernel.org/r/aGHVf6HkyFZrzTPy@nixie71
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Co-developed-by: Kim Phillips <kim.phillips@amd.com>
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/iqs7222.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ Documentation/ABI/testing/sysfs-devices-system-cpu |    1 
+ Documentation/admin-guide/kernel-parameters.txt    |   13 ++
+ arch/x86/Kconfig                                   |    9 +
+ arch/x86/include/asm/cpu.h                         |   12 ++
+ arch/x86/include/asm/cpufeatures.h                 |    6 +
+ arch/x86/include/asm/mwait.h                       |    2 
+ arch/x86/include/asm/nospec-branch.h               |   14 +-
+ arch/x86/kernel/cpu/amd.c                          |   60 ++++++++++
+ arch/x86/kernel/cpu/bugs.c                         |  121 +++++++++++++++++++++
+ arch/x86/kernel/cpu/common.c                       |   14 ++
+ arch/x86/kernel/cpu/microcode/amd.c                |   12 --
+ arch/x86/kernel/cpu/scattered.c                    |    2 
+ arch/x86/kvm/svm/vmenter.S                         |    6 +
+ drivers/base/cpu.c                                 |    3 
+ include/linux/cpu.h                                |    1 
+ 15 files changed, 258 insertions(+), 18 deletions(-)
 
---- a/drivers/input/misc/iqs7222.c
-+++ b/drivers/input/misc/iqs7222.c
-@@ -301,6 +301,7 @@ struct iqs7222_dev_desc {
- 	int allow_offset;
- 	int event_offset;
- 	int comms_offset;
-+	int ext_chan;
- 	bool legacy_gesture;
- 	struct iqs7222_reg_grp_desc reg_grps[IQS7222_NUM_REG_GRPS];
+--- a/Documentation/ABI/testing/sysfs-devices-system-cpu
++++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+@@ -523,6 +523,7 @@ What:		/sys/devices/system/cpu/vulnerabi
+ 		/sys/devices/system/cpu/vulnerabilities/spectre_v1
+ 		/sys/devices/system/cpu/vulnerabilities/spectre_v2
+ 		/sys/devices/system/cpu/vulnerabilities/srbds
++		/sys/devices/system/cpu/vulnerabilities/tsa
+ 		/sys/devices/system/cpu/vulnerabilities/tsx_async_abort
+ Date:		January 2018
+ Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6993,6 +6993,19 @@
+ 			having this key zero'ed is acceptable. E.g. in testing
+ 			scenarios.
+ 
++	tsa=		[X86] Control mitigation for Transient Scheduler
++			Attacks on AMD CPUs. Search the following in your
++			favourite search engine for more details:
++
++			"Technical guidance for mitigating transient scheduler
++			attacks".
++
++			off		- disable the mitigation
++			on		- enable the mitigation (default)
++			user		- mitigate only user/kernel transitions
++			vm		- mitigate only guest/host transitions
++
++
+ 	tsc=		Disable clocksource stability checks for TSC.
+ 			Format: <string>
+ 			[x86] reliable: mark tsc clocksource as reliable, this
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2760,6 +2760,15 @@ config MITIGATION_ITS
+ 	  disabled, mitigation cannot be enabled via cmdline.
+ 	  See <file:Documentation/admin-guide/hw-vuln/indirect-target-selection.rst>
+ 
++config MITIGATION_TSA
++	bool "Mitigate Transient Scheduler Attacks"
++	depends on CPU_SUP_AMD
++	default y
++	help
++	  Enable mitigation for Transient Scheduler Attacks. TSA is a hardware
++	  security vulnerability on AMD CPUs which can lead to forwarding of
++	  invalid info to subsequent instructions and thus can affect their
++	  timing and thereby cause a leakage.
+ endif
+ 
+ config ARCH_HAS_ADD_PAGES
+--- a/arch/x86/include/asm/cpu.h
++++ b/arch/x86/include/asm/cpu.h
+@@ -69,4 +69,16 @@ int intel_microcode_sanity_check(void *m
+ 
+ extern struct cpumask cpus_stop_mask;
+ 
++union zen_patch_rev {
++	struct {
++		__u32 rev	 : 8,
++		      stepping	 : 4,
++		      model	 : 4,
++		      __reserved : 4,
++		      ext_model	 : 4,
++		      ext_fam	 : 8;
++	};
++	__u32 ucode_rev;
++};
++
+ #endif /* _ASM_X86_CPU_H */
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -455,6 +455,7 @@
+ #define X86_FEATURE_NO_NESTED_DATA_BP	(20*32+ 0) /* No Nested Data Breakpoints */
+ #define X86_FEATURE_WRMSR_XX_BASE_NS	(20*32+ 1) /* WRMSR to {FS,GS,KERNEL_GS}_BASE is non-serializing */
+ #define X86_FEATURE_LFENCE_RDTSC	(20*32+ 2) /* LFENCE always serializing / synchronizes RDTSC */
++#define X86_FEATURE_VERW_CLEAR		(20*32+ 5) /* The memory form of VERW mitigates TSA */
+ #define X86_FEATURE_NULL_SEL_CLR_BASE	(20*32+ 6) /* Null Selector Clears Base */
+ #define X86_FEATURE_AUTOIBRS		(20*32+ 8) /* Automatic IBRS */
+ #define X86_FEATURE_NO_SMM_CTL_MSR	(20*32+ 9) /* SMM_CTL MSR is not present */
+@@ -477,6 +478,10 @@
+ #define X86_FEATURE_FAST_CPPC		(21*32 + 5) /* AMD Fast CPPC */
+ #define X86_FEATURE_INDIRECT_THUNK_ITS	(21*32 + 6) /* Use thunk for indirect branches in lower half of cacheline */
+ 
++#define X86_FEATURE_TSA_SQ_NO          (21*32+11) /* AMD CPU not vulnerable to TSA-SQ */
++#define X86_FEATURE_TSA_L1_NO          (21*32+12) /* AMD CPU not vulnerable to TSA-L1 */
++#define X86_FEATURE_CLEAR_CPU_BUF_VM   (21*32+13) /* Clear CPU buffers using VERW before VMRUN */
++
+ /*
+  * BUG word(s)
+  */
+@@ -529,4 +534,5 @@
+ #define X86_BUG_IBPB_NO_RET	   	X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
+ #define X86_BUG_ITS			X86_BUG(1*32 + 5) /* "its" CPU is affected by Indirect Target Selection */
+ #define X86_BUG_ITS_NATIVE_ONLY		X86_BUG(1*32 + 6) /* "its_native_only" CPU is affected by ITS, VMX is not affected */
++#define X86_BUG_TSA			X86_BUG( 1*32+ 9) /* "tsa" CPU is affected by Transient Scheduler Attacks */
+ #endif /* _ASM_X86_CPUFEATURES_H */
+--- a/arch/x86/include/asm/mwait.h
++++ b/arch/x86/include/asm/mwait.h
+@@ -80,7 +80,7 @@ static __always_inline void __mwait(unsi
+ static __always_inline void __mwaitx(unsigned long eax, unsigned long ebx,
+ 				     unsigned long ecx)
+ {
+-	/* No MDS buffer clear as this is AMD/HYGON only */
++	/* No need for TSA buffer clearing on AMD */
+ 
+ 	/* "mwaitx %eax, %ebx, %ecx;" */
+ 	asm volatile(".byte 0x0f, 0x01, 0xfb;"
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -321,19 +321,25 @@
+  * CFLAGS.ZF.
+  * Note: Only the memory operand variant of VERW clears the CPU buffers.
+  */
+-.macro CLEAR_CPU_BUFFERS
++.macro __CLEAR_CPU_BUFFERS feature
+ #ifdef CONFIG_X86_64
+-	ALTERNATIVE "", "verw x86_verw_sel(%rip)", X86_FEATURE_CLEAR_CPU_BUF
++	ALTERNATIVE "", "verw x86_verw_sel(%rip)", \feature
+ #else
+ 	/*
+ 	 * In 32bit mode, the memory operand must be a %cs reference. The data
+ 	 * segments may not be usable (vm86 mode), and the stack segment may not
+ 	 * be flat (ESPFIX32).
+ 	 */
+-	ALTERNATIVE "", "verw %cs:x86_verw_sel", X86_FEATURE_CLEAR_CPU_BUF
++	ALTERNATIVE "", "verw %cs:x86_verw_sel", \feature
+ #endif
+ .endm
+ 
++#define CLEAR_CPU_BUFFERS \
++	__CLEAR_CPU_BUFFERS X86_FEATURE_CLEAR_CPU_BUF
++
++#define VM_CLEAR_CPU_BUFFERS \
++	__CLEAR_CPU_BUFFERS X86_FEATURE_CLEAR_CPU_BUF_VM
++
+ #ifdef CONFIG_X86_64
+ .macro CLEAR_BRANCH_HISTORY
+ 	ALTERNATIVE "", "call clear_bhb_loop", X86_FEATURE_CLEAR_BHB_LOOP
+@@ -617,7 +623,7 @@ static __always_inline void x86_clear_cp
+ 
+ /**
+  * x86_idle_clear_cpu_buffers - Buffer clearing support in idle for the MDS
+- * vulnerability
++ * and TSA vulnerabilities.
+  *
+  * Clear CPU buffers if the corresponding static key is enabled
+  */
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -368,6 +368,63 @@ static void bsp_determine_snp(struct cpu
+ #endif
+ }
+ 
++static bool amd_check_tsa_microcode(void)
++{
++	struct cpuinfo_x86 *c = &boot_cpu_data;
++	union zen_patch_rev p;
++	u32 min_rev = 0;
++
++	p.ext_fam	= c->x86 - 0xf;
++	p.model		= c->x86_model;
++	p.stepping	= c->x86_stepping;
++
++	if (cpu_has(c, X86_FEATURE_ZEN3) ||
++	    cpu_has(c, X86_FEATURE_ZEN4)) {
++		switch (p.ucode_rev >> 8) {
++		case 0xa0011:	min_rev = 0x0a0011d7; break;
++		case 0xa0012:	min_rev = 0x0a00123b; break;
++		case 0xa0082:	min_rev = 0x0a00820d; break;
++		case 0xa1011:	min_rev = 0x0a10114c; break;
++		case 0xa1012:	min_rev = 0x0a10124c; break;
++		case 0xa1081:	min_rev = 0x0a108109; break;
++		case 0xa2010:	min_rev = 0x0a20102e; break;
++		case 0xa2012:	min_rev = 0x0a201211; break;
++		case 0xa4041:	min_rev = 0x0a404108; break;
++		case 0xa5000:	min_rev = 0x0a500012; break;
++		case 0xa6012:	min_rev = 0x0a60120a; break;
++		case 0xa7041:	min_rev = 0x0a704108; break;
++		case 0xa7052:	min_rev = 0x0a705208; break;
++		case 0xa7080:	min_rev = 0x0a708008; break;
++		case 0xa70c0:	min_rev = 0x0a70c008; break;
++		case 0xaa002:	min_rev = 0x0aa00216; break;
++		default:
++			pr_debug("%s: ucode_rev: 0x%x, current revision: 0x%x\n",
++				 __func__, p.ucode_rev, c->microcode);
++			return false;
++		}
++	}
++
++	if (!min_rev)
++		return false;
++
++	return c->microcode >= min_rev;
++}
++
++static void tsa_init(struct cpuinfo_x86 *c)
++{
++	if (cpu_has(c, X86_FEATURE_HYPERVISOR))
++		return;
++
++	if (cpu_has(c, X86_FEATURE_ZEN3) ||
++	    cpu_has(c, X86_FEATURE_ZEN4)) {
++		if (amd_check_tsa_microcode())
++			setup_force_cpu_cap(X86_FEATURE_VERW_CLEAR);
++	} else {
++		setup_force_cpu_cap(X86_FEATURE_TSA_SQ_NO);
++		setup_force_cpu_cap(X86_FEATURE_TSA_L1_NO);
++	}
++}
++
+ static void bsp_init_amd(struct cpuinfo_x86 *c)
+ {
+ 	if (cpu_has(c, X86_FEATURE_CONSTANT_TSC)) {
+@@ -475,6 +532,9 @@ static void bsp_init_amd(struct cpuinfo_
+ 	}
+ 
+ 	bsp_determine_snp(c);
++
++	tsa_init(c);
++
+ 	return;
+ 
+ warn:
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -50,6 +50,7 @@ static void __init l1d_flush_select_miti
+ static void __init srso_select_mitigation(void);
+ static void __init gds_select_mitigation(void);
+ static void __init its_select_mitigation(void);
++static void __init tsa_select_mitigation(void);
+ 
+ /* The base value of the SPEC_CTRL MSR without task-specific bits set */
+ u64 x86_spec_ctrl_base;
+@@ -185,6 +186,7 @@ void __init cpu_select_mitigations(void)
+ 	srso_select_mitigation();
+ 	gds_select_mitigation();
+ 	its_select_mitigation();
++	tsa_select_mitigation();
+ }
+ 
+ /*
+@@ -2103,6 +2105,94 @@ static void update_mds_branch_idle(void)
+ #define TAA_MSG_SMT "TAA CPU bug present and SMT on, data leak possible. See https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/tsx_async_abort.html for more details.\n"
+ #define MMIO_MSG_SMT "MMIO Stale Data CPU bug present and SMT on, data leak possible. See https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/processor_mmio_stale_data.html for more details.\n"
+ 
++#undef pr_fmt
++#define pr_fmt(fmt)	"Transient Scheduler Attacks: " fmt
++
++enum tsa_mitigations {
++	TSA_MITIGATION_NONE,
++	TSA_MITIGATION_UCODE_NEEDED,
++	TSA_MITIGATION_USER_KERNEL,
++	TSA_MITIGATION_VM,
++	TSA_MITIGATION_FULL,
++};
++
++static const char * const tsa_strings[] = {
++	[TSA_MITIGATION_NONE]		= "Vulnerable",
++	[TSA_MITIGATION_UCODE_NEEDED]	= "Vulnerable: Clear CPU buffers attempted, no microcode",
++	[TSA_MITIGATION_USER_KERNEL]	= "Mitigation: Clear CPU buffers: user/kernel boundary",
++	[TSA_MITIGATION_VM]		= "Mitigation: Clear CPU buffers: VM",
++	[TSA_MITIGATION_FULL]		= "Mitigation: Clear CPU buffers",
++};
++
++static enum tsa_mitigations tsa_mitigation __ro_after_init =
++	IS_ENABLED(CONFIG_MITIGATION_TSA) ? TSA_MITIGATION_FULL : TSA_MITIGATION_NONE;
++
++static int __init tsa_parse_cmdline(char *str)
++{
++	if (!str)
++		return -EINVAL;
++
++	if (!strcmp(str, "off"))
++		tsa_mitigation = TSA_MITIGATION_NONE;
++	else if (!strcmp(str, "on"))
++		tsa_mitigation = TSA_MITIGATION_FULL;
++	else if (!strcmp(str, "user"))
++		tsa_mitigation = TSA_MITIGATION_USER_KERNEL;
++	else if (!strcmp(str, "vm"))
++		tsa_mitigation = TSA_MITIGATION_VM;
++	else
++		pr_err("Ignoring unknown tsa=%s option.\n", str);
++
++	return 0;
++}
++early_param("tsa", tsa_parse_cmdline);
++
++static void __init tsa_select_mitigation(void)
++{
++	if (tsa_mitigation == TSA_MITIGATION_NONE)
++		return;
++
++	if (cpu_mitigations_off() || !boot_cpu_has_bug(X86_BUG_TSA)) {
++		tsa_mitigation = TSA_MITIGATION_NONE;
++		return;
++	}
++
++	if (!boot_cpu_has(X86_FEATURE_VERW_CLEAR))
++		tsa_mitigation = TSA_MITIGATION_UCODE_NEEDED;
++
++	switch (tsa_mitigation) {
++	case TSA_MITIGATION_USER_KERNEL:
++		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
++		break;
++
++	case TSA_MITIGATION_VM:
++		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF_VM);
++		break;
++
++	case TSA_MITIGATION_UCODE_NEEDED:
++		if (!boot_cpu_has(X86_FEATURE_HYPERVISOR))
++			goto out;
++
++		pr_notice("Forcing mitigation on in a VM\n");
++
++		/*
++		 * On the off-chance that microcode has been updated
++		 * on the host, enable the mitigation in the guest just
++		 * in case.
++		 */
++		fallthrough;
++	case TSA_MITIGATION_FULL:
++		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
++		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF_VM);
++		break;
++	default:
++		break;
++	}
++
++out:
++	pr_info("%s\n", tsa_strings[tsa_mitigation]);
++}
++
+ void cpu_bugs_smt_update(void)
+ {
+ 	mutex_lock(&spec_ctrl_mutex);
+@@ -2156,6 +2246,24 @@ void cpu_bugs_smt_update(void)
+ 		break;
+ 	}
+ 
++	switch (tsa_mitigation) {
++	case TSA_MITIGATION_USER_KERNEL:
++	case TSA_MITIGATION_VM:
++	case TSA_MITIGATION_FULL:
++	case TSA_MITIGATION_UCODE_NEEDED:
++		/*
++		 * TSA-SQ can potentially lead to info leakage between
++		 * SMT threads.
++		 */
++		if (sched_smt_active())
++			static_branch_enable(&cpu_buf_idle_clear);
++		else
++			static_branch_disable(&cpu_buf_idle_clear);
++		break;
++	case TSA_MITIGATION_NONE:
++		break;
++	}
++
+ 	mutex_unlock(&spec_ctrl_mutex);
+ }
+ 
+@@ -3084,6 +3192,11 @@ static ssize_t gds_show_state(char *buf)
+ 	return sysfs_emit(buf, "%s\n", gds_strings[gds_mitigation]);
+ }
+ 
++static ssize_t tsa_show_state(char *buf)
++{
++	return sysfs_emit(buf, "%s\n", tsa_strings[tsa_mitigation]);
++}
++
+ static ssize_t cpu_show_common(struct device *dev, struct device_attribute *attr,
+ 			       char *buf, unsigned int bug)
+ {
+@@ -3145,6 +3258,9 @@ static ssize_t cpu_show_common(struct de
+ 	case X86_BUG_ITS:
+ 		return its_show_state(buf);
+ 
++	case X86_BUG_TSA:
++		return tsa_show_state(buf);
++
+ 	default:
+ 		break;
+ 	}
+@@ -3229,6 +3345,11 @@ ssize_t cpu_show_indirect_target_selecti
+ {
+ 	return cpu_show_common(dev, attr, buf, X86_BUG_ITS);
+ }
++
++ssize_t cpu_show_tsa(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	return cpu_show_common(dev, attr, buf, X86_BUG_TSA);
++}
+ #endif
+ 
+ void __warn_thunk(void)
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1233,6 +1233,8 @@ static const __initconst struct x86_cpu_
+ #define ITS		BIT(8)
+ /* CPU is affected by Indirect Target Selection, but guest-host isolation is not affected */
+ #define ITS_NATIVE_ONLY	BIT(9)
++/* CPU is affected by Transient Scheduler Attacks */
++#define TSA		BIT(10)
+ 
+ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
+ 	VULNBL_INTEL_STEPPINGS(INTEL_IVYBRIDGE,		X86_STEPPING_ANY,		SRBDS),
+@@ -1280,7 +1282,7 @@ static const struct x86_cpu_id cpu_vuln_
+ 	VULNBL_AMD(0x16, RETBLEED),
+ 	VULNBL_AMD(0x17, RETBLEED | SMT_RSB | SRSO),
+ 	VULNBL_HYGON(0x18, RETBLEED | SMT_RSB | SRSO),
+-	VULNBL_AMD(0x19, SRSO),
++	VULNBL_AMD(0x19, SRSO | TSA),
+ 	{}
  };
-@@ -315,6 +316,7 @@ static const struct iqs7222_dev_desc iqs
- 		.allow_offset = 9,
- 		.event_offset = 10,
- 		.comms_offset = 12,
-+		.ext_chan = 10,
- 		.reg_grps = {
- 			[IQS7222_REG_GRP_STAT] = {
- 				.base = IQS7222_SYS_STATUS,
-@@ -373,6 +375,7 @@ static const struct iqs7222_dev_desc iqs
- 		.allow_offset = 9,
- 		.event_offset = 10,
- 		.comms_offset = 12,
-+		.ext_chan = 10,
- 		.legacy_gesture = true,
- 		.reg_grps = {
- 			[IQS7222_REG_GRP_STAT] = {
-@@ -2244,7 +2247,7 @@ static int iqs7222_parse_chan(struct iqs
- 	const struct iqs7222_dev_desc *dev_desc = iqs7222->dev_desc;
- 	struct i2c_client *client = iqs7222->client;
- 	int num_chan = dev_desc->reg_grps[IQS7222_REG_GRP_CHAN].num_row;
--	int ext_chan = rounddown(num_chan, 10);
-+	int ext_chan = dev_desc->ext_chan ? : num_chan;
- 	int error, i;
- 	u16 *chan_setup = iqs7222->chan_setup[chan_index];
- 	u16 *sys_setup = iqs7222->sys_setup;
-@@ -2448,7 +2451,7 @@ static int iqs7222_parse_sldr(struct iqs
- 	const struct iqs7222_dev_desc *dev_desc = iqs7222->dev_desc;
- 	struct i2c_client *client = iqs7222->client;
- 	int num_chan = dev_desc->reg_grps[IQS7222_REG_GRP_CHAN].num_row;
--	int ext_chan = rounddown(num_chan, 10);
-+	int ext_chan = dev_desc->ext_chan ? : num_chan;
- 	int count, error, reg_offset, i;
- 	u16 *event_mask = &iqs7222->sys_setup[dev_desc->event_offset];
- 	u16 *sldr_setup = iqs7222->sldr_setup[sldr_index];
+ 
+@@ -1490,6 +1492,16 @@ static void __init cpu_set_bug_bits(stru
+ 			setup_force_cpu_bug(X86_BUG_ITS_NATIVE_ONLY);
+ 	}
+ 
++	if (c->x86_vendor == X86_VENDOR_AMD) {
++		if (!cpu_has(c, X86_FEATURE_TSA_SQ_NO) ||
++		    !cpu_has(c, X86_FEATURE_TSA_L1_NO)) {
++			if (cpu_matches(cpu_vuln_blacklist, TSA) ||
++			    /* Enable bug on Zen guests to allow for live migration. */
++			    (cpu_has(c, X86_FEATURE_HYPERVISOR) && cpu_has(c, X86_FEATURE_ZEN)))
++				setup_force_cpu_bug(X86_BUG_TSA);
++		}
++	}
++
+ 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
+ 		return;
+ 
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -94,18 +94,6 @@ static struct equiv_cpu_table {
+ 	struct equiv_cpu_entry *entry;
+ } equiv_table;
+ 
+-union zen_patch_rev {
+-	struct {
+-		__u32 rev	 : 8,
+-		      stepping	 : 4,
+-		      model	 : 4,
+-		      __reserved : 4,
+-		      ext_model	 : 4,
+-		      ext_fam	 : 8;
+-	};
+-	__u32 ucode_rev;
+-};
+-
+ union cpuid_1_eax {
+ 	struct {
+ 		__u32 stepping    : 4,
+--- a/arch/x86/kernel/cpu/scattered.c
++++ b/arch/x86/kernel/cpu/scattered.c
+@@ -49,6 +49,8 @@ static const struct cpuid_bit cpuid_bits
+ 	{ X86_FEATURE_MBA,		CPUID_EBX,  6, 0x80000008, 0 },
+ 	{ X86_FEATURE_SMBA,		CPUID_EBX,  2, 0x80000020, 0 },
+ 	{ X86_FEATURE_BMEC,		CPUID_EBX,  3, 0x80000020, 0 },
++	{ X86_FEATURE_TSA_SQ_NO,	CPUID_ECX,  1, 0x80000021, 0 },
++	{ X86_FEATURE_TSA_L1_NO,	CPUID_ECX,  2, 0x80000021, 0 },
+ 	{ X86_FEATURE_PERFMON_V2,	CPUID_EAX,  0, 0x80000022, 0 },
+ 	{ X86_FEATURE_AMD_LBR_V2,	CPUID_EAX,  1, 0x80000022, 0 },
+ 	{ X86_FEATURE_AMD_LBR_PMC_FREEZE,	CPUID_EAX,  2, 0x80000022, 0 },
+--- a/arch/x86/kvm/svm/vmenter.S
++++ b/arch/x86/kvm/svm/vmenter.S
+@@ -169,6 +169,9 @@ SYM_FUNC_START(__svm_vcpu_run)
+ #endif
+ 	mov VCPU_RDI(%_ASM_DI), %_ASM_DI
+ 
++	/* Clobbers EFLAGS.ZF */
++	VM_CLEAR_CPU_BUFFERS
++
+ 	/* Enter guest mode */
+ 3:	vmrun %_ASM_AX
+ 4:
+@@ -335,6 +338,9 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
+ 	mov SVM_current_vmcb(%rdi), %rax
+ 	mov KVM_VMCB_pa(%rax), %rax
+ 
++	/* Clobbers EFLAGS.ZF */
++	VM_CLEAR_CPU_BUFFERS
++
+ 	/* Enter guest mode */
+ 1:	vmrun %rax
+ 2:
+--- a/drivers/base/cpu.c
++++ b/drivers/base/cpu.c
+@@ -600,6 +600,7 @@ CPU_SHOW_VULN_FALLBACK(spec_rstack_overf
+ CPU_SHOW_VULN_FALLBACK(gds);
+ CPU_SHOW_VULN_FALLBACK(reg_file_data_sampling);
+ CPU_SHOW_VULN_FALLBACK(indirect_target_selection);
++CPU_SHOW_VULN_FALLBACK(tsa);
+ 
+ static DEVICE_ATTR(meltdown, 0444, cpu_show_meltdown, NULL);
+ static DEVICE_ATTR(spectre_v1, 0444, cpu_show_spectre_v1, NULL);
+@@ -616,6 +617,7 @@ static DEVICE_ATTR(spec_rstack_overflow,
+ static DEVICE_ATTR(gather_data_sampling, 0444, cpu_show_gds, NULL);
+ static DEVICE_ATTR(reg_file_data_sampling, 0444, cpu_show_reg_file_data_sampling, NULL);
+ static DEVICE_ATTR(indirect_target_selection, 0444, cpu_show_indirect_target_selection, NULL);
++static DEVICE_ATTR(tsa, 0444, cpu_show_tsa, NULL);
+ 
+ static struct attribute *cpu_root_vulnerabilities_attrs[] = {
+ 	&dev_attr_meltdown.attr,
+@@ -633,6 +635,7 @@ static struct attribute *cpu_root_vulner
+ 	&dev_attr_gather_data_sampling.attr,
+ 	&dev_attr_reg_file_data_sampling.attr,
+ 	&dev_attr_indirect_target_selection.attr,
++	&dev_attr_tsa.attr,
+ 	NULL
+ };
+ 
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -79,6 +79,7 @@ extern ssize_t cpu_show_reg_file_data_sa
+ 					       struct device_attribute *attr, char *buf);
+ extern ssize_t cpu_show_indirect_target_selection(struct device *dev,
+ 						  struct device_attribute *attr, char *buf);
++extern ssize_t cpu_show_tsa(struct device *dev, struct device_attribute *attr, char *buf);
+ 
+ extern __printf(4, 5)
+ struct device *cpu_device_create(struct device *parent, void *drvdata,
 
 
 
