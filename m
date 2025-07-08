@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-160889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16CFAFD26D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA59AFD4A3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E954F3B747A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F88D1C4167E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A912E540B;
-	Tue,  8 Jul 2025 16:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA592E6118;
+	Tue,  8 Jul 2025 17:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvbG8dSy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRx2vtEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBC62DECC4;
-	Tue,  8 Jul 2025 16:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397CC1548C;
+	Tue,  8 Jul 2025 17:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992985; cv=none; b=TR92F5/I3nqhwjbmpYlzV6fw9lN4sEpDKFseAld+s5VCPhfEtSd88BC9AFzvuPmb8B7vD7xQa7bI7uZCNjwu+eG2S1jI4gI+3HAZoR9BRnu65P2GJrrLttwiXP8dNVj5eZqkAVGzhLL4LrKy8V+s+FbzxzC3PNSLR3/8YvlCfXA=
+	t=1751994137; cv=none; b=CwuX2ykrZ6iotgZT2t3p/+SMpGbrzkE9DChehnNvy3YndMOULbI10il1WS8OQwPiZCP2kgLYzlEoiBrpXuX2dVj5EnSUq3Ors42rABEgozXwvX9iMWvAp3EabF/J85AopyNWlMzJiabQZ88rpGFw/cBnnBzTOhRe4l1ZIpOSBq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992985; c=relaxed/simple;
-	bh=3ps+4Nb/Bt+ppRnaXVLnE4Or9WlfBHTPT7hp2UulKBI=;
+	s=arc-20240116; t=1751994137; c=relaxed/simple;
+	bh=RZ3fhRxwbYJNcFPDnmUz8koAOmZSZrWNpdXwwKHArvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RtGnpdAIi8KGDsppbq+qz96EYg6YEMIhQxl/OspkZ9Iv4waFwD+CxRJieNyLjBHV4RZXQxHwjeT8kO1nJdpMve1IZiiOMnFZ89r/+LGZTxzmgLufa1OBOXg0tda/RCnHiXbpVPweaxWGqHKC90oBf14lMV5Cnl55qLB+vIdN5qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvbG8dSy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CA0C4CEED;
-	Tue,  8 Jul 2025 16:43:04 +0000 (UTC)
+	 MIME-Version; b=feZMwKO4LpzzkJNtN2wkB5zXrUJCKd3VI+0PNYaKg/XrNE9dFC2zX/OivFRF8jqizSJP96vfryYnoV6gsG7W4S4zorCCYtdZNHIy/T86TrU/8XphLqTMCAg0YXRFuxW50WXyHCljNO0pkIh/kUoJm/e0nfyFjBn15SWx3ntlWU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRx2vtEg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D9BC4CEED;
+	Tue,  8 Jul 2025 17:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992985;
-	bh=3ps+4Nb/Bt+ppRnaXVLnE4Or9WlfBHTPT7hp2UulKBI=;
+	s=korg; t=1751994137;
+	bh=RZ3fhRxwbYJNcFPDnmUz8koAOmZSZrWNpdXwwKHArvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VvbG8dSyEIuQegbHF+2BVAB4tEtG082etZc899WIR4600+xzVK/Et7MUpgde5Fpou
-	 8ho9sCC7XMEI+bGyBMiHgkS+ZuN2pHVwyQPXV/6uK4Oh5+RZB2+BEtcr5LN/GIqHhp
-	 xF8FQUbK6Q2y/m07sysph/EcX82t9B0fBZTwsv3E=
+	b=aRx2vtEgd4l5RB2s0/sI4399o1urwOfzohhBpAjmb5JvHKoVHpexET0ExSc3IJqVq
+	 WBtdE3JgNKmwzlK8YC+T/KNWiVTqjAcU/KuanbMRB8sT4MI3d6mkKATZs+5I5UMH11
+	 aeizTk6VSDuTXrsHx4lcQ0wG4j8POQHnhBbM0yUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Beleswar Padhi <b-padhi@ti.com>,
-	Andrew Davis <afd@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 148/232] remoteproc: k3-r5: Use devm_ioremap_wc() helper
+Subject: [PATCH 5.15 107/160] nfs: Clean up /proc/net/rpc/nfs when nfs_fs_proc_net_init() fails.
 Date: Tue,  8 Jul 2025 18:22:24 +0200
-Message-ID: <20250708162245.313296005@linuxfoundation.org>
+Message-ID: <20250708162234.443607737@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Beleswar Padhi <b-padhi@ti.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit a572439f7143db5ea8446b7d755a16dfb12da7c7 ]
+[ Upstream commit e8d6f3ab59468e230f3253efe5cb63efa35289f7 ]
 
-Use a device lifecycle managed ioremap helper function. This helps
-prevent mistakes like unmapping out of order in cleanup functions and
-forgetting to unmap on all error paths.
+syzbot reported a warning below [1] following a fault injection in
+nfs_fs_proc_net_init(). [0]
 
-Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
-Reviewed-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20241219110545.1898883-4-b-padhi@ti.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Stable-dep-of: 701177511abd ("remoteproc: k3-r5: Refactor sequential core power up/down operations")
+When nfs_fs_proc_net_init() fails, /proc/net/rpc/nfs is not removed.
+
+Later, rpc_proc_exit() tries to remove /proc/net/rpc, and the warning
+is logged as the directory is not empty.
+
+Let's handle the error of nfs_fs_proc_net_init() properly.
+
+[0]:
+FAULT_INJECTION: forcing a failure.
+name failslab, interval 1, probability 0, space 0, times 0
+CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+Call Trace:
+ <TASK>
+  dump_stack_lvl (lib/dump_stack.c:123)
+ should_fail_ex (lib/fault-inject.c:73 lib/fault-inject.c:174)
+ should_failslab (mm/failslab.c:46)
+ kmem_cache_alloc_noprof (mm/slub.c:4178 mm/slub.c:4204)
+ __proc_create (fs/proc/generic.c:427)
+ proc_create_reg (fs/proc/generic.c:554)
+ proc_create_net_data (fs/proc/proc_net.c:120)
+ nfs_fs_proc_net_init (fs/nfs/client.c:1409)
+ nfs_net_init (fs/nfs/inode.c:2600)
+ ops_init (net/core/net_namespace.c:138)
+ setup_net (net/core/net_namespace.c:443)
+ copy_net_ns (net/core/net_namespace.c:576)
+ create_new_namespaces (kernel/nsproxy.c:110)
+ unshare_nsproxy_namespaces (kernel/nsproxy.c:218 (discriminator 4))
+ ksys_unshare (kernel/fork.c:3123)
+ __x64_sys_unshare (kernel/fork.c:3190)
+ do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+ </TASK>
+
+[1]:
+remove_proc_entry: removing non-empty directory 'net/rpc', leaking at least 'nfs'
+ WARNING: CPU: 1 PID: 6120 at fs/proc/generic.c:727 remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
+Modules linked in:
+CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+ RIP: 0010:remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
+Code: 3c 02 00 0f 85 85 00 00 00 48 8b 93 d8 00 00 00 4d 89 f0 4c 89 e9 48 c7 c6 40 ba a2 8b 48 c7 c7 60 b9 a2 8b e8 33 81 1d ff 90 <0f> 0b 90 90 e9 5f fe ff ff e8 04 69 5e ff 90 48 b8 00 00 00 00 00
+RSP: 0018:ffffc90003637b08 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff88805f534140 RCX: ffffffff817a92c8
+RDX: ffff88807da99e00 RSI: ffffffff817a92d5 RDI: 0000000000000001
+RBP: ffff888033431ac0 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffff888033431a00
+R13: ffff888033431ae4 R14: ffff888033184724 R15: dffffc0000000000
+FS:  0000555580328500(0000) GS:ffff888124a62000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f71733743e0 CR3: 000000007f618000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  sunrpc_exit_net+0x46/0x90 net/sunrpc/sunrpc_syms.c:76
+  ops_exit_list net/core/net_namespace.c:200 [inline]
+  ops_undo_list+0x2eb/0xab0 net/core/net_namespace.c:253
+  setup_net+0x2e1/0x510 net/core/net_namespace.c:457
+  copy_net_ns+0x2a6/0x5f0 net/core/net_namespace.c:574
+  create_new_namespaces+0x3ea/0xa90 kernel/nsproxy.c:110
+  unshare_nsproxy_namespaces+0xc0/0x1f0 kernel/nsproxy.c:218
+  ksys_unshare+0x45b/0xa40 kernel/fork.c:3121
+  __do_sys_unshare kernel/fork.c:3192 [inline]
+  __se_sys_unshare kernel/fork.c:3190 [inline]
+  __x64_sys_unshare+0x31/0x40 kernel/fork.c:3190
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xcd/0x490 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa1a6b8e929
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff3a090368 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
+RAX: ffffffffffffffda RBX: 00007fa1a6db5fa0 RCX: 00007fa1a6b8e929
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000040000080
+RBP: 00007fa1a6c10b39 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa1a6db5fa0 R14: 00007fa1a6db5fa0 R15: 0000000000000001
+ </TASK>
+
+Fixes: d47151b79e32 ("nfs: expose /proc/net/sunrpc/nfs in net namespaces")
+Reported-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a4cc4ac22daa4a71b87c
+Tested-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/ti_k3_r5_remoteproc.c | 38 +++++-------------------
- 1 file changed, 8 insertions(+), 30 deletions(-)
+ fs/nfs/inode.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-index c730ba09b92c7..c38b76b4943d5 100644
---- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
-+++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-@@ -996,17 +996,13 @@ static int k3_r5_reserved_mem_init(struct k3_r5_rproc *kproc)
- 	/* use remaining reserved memory regions for static carveouts */
- 	for (i = 0; i < num_rmems; i++) {
- 		rmem_np = of_parse_phandle(np, "memory-region", i + 1);
--		if (!rmem_np) {
--			ret = -EINVAL;
--			goto unmap_rmem;
--		}
-+		if (!rmem_np)
-+			return -EINVAL;
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 28c24079c57a8..a8ac939edcf7e 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -2457,15 +2457,26 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
+ static int nfs_net_init(struct net *net)
+ {
+ 	struct nfs_net *nn = net_generic(net, nfs_net_id);
++	int err;
  
- 		rmem = of_reserved_mem_lookup(rmem_np);
- 		of_node_put(rmem_np);
--		if (!rmem) {
--			ret = -EINVAL;
--			goto unmap_rmem;
--		}
-+		if (!rmem)
-+			return -EINVAL;
+ 	nfs_clients_init(net);
  
- 		kproc->rmem[i].bus_addr = rmem->base;
- 		/*
-@@ -1021,12 +1017,11 @@ static int k3_r5_reserved_mem_init(struct k3_r5_rproc *kproc)
- 		 */
- 		kproc->rmem[i].dev_addr = (u32)rmem->base;
- 		kproc->rmem[i].size = rmem->size;
--		kproc->rmem[i].cpu_addr = ioremap_wc(rmem->base, rmem->size);
-+		kproc->rmem[i].cpu_addr = devm_ioremap_wc(dev, rmem->base, rmem->size);
- 		if (!kproc->rmem[i].cpu_addr) {
- 			dev_err(dev, "failed to map reserved memory#%d at %pa of size %pa\n",
- 				i + 1, &rmem->base, &rmem->size);
--			ret = -ENOMEM;
--			goto unmap_rmem;
-+			return -ENOMEM;
- 		}
- 
- 		dev_dbg(dev, "reserved memory%d: bus addr %pa size 0x%zx va %pK da 0x%x\n",
-@@ -1037,19 +1032,6 @@ static int k3_r5_reserved_mem_init(struct k3_r5_rproc *kproc)
- 	kproc->num_rmems = num_rmems;
- 
- 	return 0;
--
--unmap_rmem:
--	for (i--; i >= 0; i--)
--		iounmap(kproc->rmem[i].cpu_addr);
--	return ret;
--}
--
--static void k3_r5_reserved_mem_exit(struct k3_r5_rproc *kproc)
--{
--	int i;
--
--	for (i = 0; i < kproc->num_rmems; i++)
--		iounmap(kproc->rmem[i].cpu_addr);
- }
- 
- /*
-@@ -1278,8 +1260,8 @@ static int k3_r5_cluster_rproc_init(struct platform_device *pdev)
- 
- 		ret = rproc_add(rproc);
- 		if (ret) {
--			dev_err(dev, "rproc_add failed, ret = %d\n", ret);
--			goto err_add;
-+			dev_err_probe(dev, ret, "rproc_add failed\n");
-+			goto out;
- 		}
- 
- 		/* create only one rproc in lockstep, single-cpu or
-@@ -1325,8 +1307,6 @@ static int k3_r5_cluster_rproc_init(struct platform_device *pdev)
- 
- err_powerup:
- 	rproc_del(rproc);
--err_add:
--	k3_r5_reserved_mem_exit(kproc);
- out:
- 	/* undo core0 upon any failures on core1 in split-mode */
- 	if (cluster->mode == CLUSTER_MODE_SPLIT && core == core1) {
-@@ -1371,8 +1351,6 @@ static void k3_r5_cluster_rproc_exit(void *data)
- 		mbox_free_channel(kproc->mbox);
- 
- 		rproc_del(rproc);
--
--		k3_r5_reserved_mem_exit(kproc);
+ 	if (!rpc_proc_register(net, &nn->rpcstats)) {
+-		nfs_clients_exit(net);
+-		return -ENOMEM;
++		err = -ENOMEM;
++		goto err_proc_rpc;
  	}
+ 
+-	return nfs_fs_proc_net_init(net);
++	err = nfs_fs_proc_net_init(net);
++	if (err)
++		goto err_proc_nfs;
++
++	return 0;
++
++err_proc_nfs:
++	rpc_proc_unregister(net, "nfs");
++err_proc_rpc:
++	nfs_clients_exit(net);
++	return err;
  }
  
+ static void nfs_net_exit(struct net *net)
 -- 
 2.39.5
 
