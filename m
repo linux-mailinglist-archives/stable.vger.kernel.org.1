@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-160576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFC75AFD0C0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E88F4AFD3A6
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C402648338F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A40A0545911
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBAB82DAFC1;
-	Tue,  8 Jul 2025 16:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DC92DC34C;
+	Tue,  8 Jul 2025 16:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+FD2nXt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="giEgf1gF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A002264F9C;
-	Tue,  8 Jul 2025 16:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B224C1FC0F3;
+	Tue,  8 Jul 2025 16:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992052; cv=none; b=cnU8rT5002DvxvZaTCDyFdq1NPGK4C6gxKC7m0buY1wlCXr+p+3xA+9RnkFAKa4zGFTJKIfxB2yd8sPfZvuzt/IXvlXlpsg62CLEYc/kBeFm79a6Mknsv66abgntfVP4lLHBZIhTXJUnj6n0TT7Slo/sDkeKzw9L3Pjt0iacW6I=
+	t=1751993762; cv=none; b=EgjxE7Q4rOeqyzGzfPsg5jUrW46jHDMewHDSzgs1wI5fXXL3O/g8nTHYJF5jtgZMiV+Y5GboRWHdN5alBkwtiIgXkYBWPZCrexInbkOG4NRv2igTR0/6Y0PcX3F8Gx3yRD8be8Od86QbDme90O53dFnPo7wPt0Adeq21wHL1UTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992052; c=relaxed/simple;
-	bh=6FYg3EANqq6iyqbiniT6T34ywEZXzKiymffB9v8TdBg=;
+	s=arc-20240116; t=1751993762; c=relaxed/simple;
+	bh=TvWBu8vaUquX8Buz7zPBwg3zQpOPjoMY23VxIlDNfOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GubbIDBzxcCOXSBiz8z52483evgZE1cyzlOvCXw5U1+LBPdFL6kRKe60F/R303eV2XTBrSDl8AzZpcAwIMOBQKP1Z43KJFC+0nfYYKbQSQ0f3tgJuLHrI5nlYJWAVaEaJLWrf3vrBIrVQ29Sobye56NWSrDFJPXLxUpAsWRl4g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+FD2nXt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F035FC4CEED;
-	Tue,  8 Jul 2025 16:27:31 +0000 (UTC)
+	 MIME-Version; b=LBItg9Lgx9Gqq45YyVYNRzifWfvZGoUgICdc09B2qmdLd6SttMcCFva8xXrIIR77NdxG7BxWyciGDqJyVrShJT+huDmvWhc3XZfAr4/84T8RNPa01UkFQ9iqHxgt6XPM0BG0xUQZm+hVN4iVef2O3gV1HEWIGpYOMchR0lXisPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=giEgf1gF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F2BC4CEF0;
+	Tue,  8 Jul 2025 16:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992052;
-	bh=6FYg3EANqq6iyqbiniT6T34ywEZXzKiymffB9v8TdBg=;
+	s=korg; t=1751993762;
+	bh=TvWBu8vaUquX8Buz7zPBwg3zQpOPjoMY23VxIlDNfOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k+FD2nXtXV+74/xkXVRBir98t/7Phmw4St7kAgL3R6PPPmSq9Q1AOlRavK8y/uZJR
-	 E/Nqqwerj3u0FPVbEp9lP49FM/RsVjVLWpcOmc9AfMZtRGKvjVLWVlNCzDK99n9J45
-	 N4/0ofG3C8YlnyKIZIFnO9Zy0E/a5fcE4DexfePQ=
+	b=giEgf1gFWXpjcdsyaecWIDFXDVqIC2aQoOKtPBoOchrTRhKmFHZYKSlAMRulWEmYa
+	 8RERb1P5XSYOFbo3Zu3UiEOZsVEkOmxaB1hpfZgaUyIGJeNu35kRhx5vpLtNqGVbhy
+	 7LmA1W0phpp+dnJagE46W+oLzkZrxeOWHkYtFTF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 43/81] smb: client: fix race condition in negotiate timeout by using more precise timing
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.15 178/178] x86/process: Move the buffer clearing before MONITOR
 Date: Tue,  8 Jul 2025 18:23:35 +0200
-Message-ID: <20250708162226.377390027@linuxfoundation.org>
+Message-ID: <20250708162241.086263737@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-[ Upstream commit 266b5d02e14f3a0e07414e11f239397de0577a1d ]
+Commit 8e786a85c0a3c0fffae6244733fb576eeabd9dec upstream.
 
-When the SMB server reboots and the client immediately accesses the mount
-point, a race condition can occur that causes operations to fail with
-"Host is down" error.
+Move the VERW clearing before the MONITOR so that VERW doesn't disarm it
+and the machine never enters C1.
 
-Reproduction steps:
-  # Mount SMB share
-  mount -t cifs //192.168.245.109/TEST /mnt/ -o xxxx
-  ls /mnt
+Original idea by Kim Phillips <kim.phillips@amd.com>.
 
-  # Reboot server
-  ssh root@192.168.245.109 reboot
-  ssh root@192.168.245.109 /path/to/cifs_server_setup.sh
-  ssh root@192.168.245.109 systemctl stop firewalld
-
-  # Immediate access fails
-  ls /mnt
-  ls: cannot access '/mnt': Host is down
-
-  # But works if there is a delay
-
-The issue is caused by a race condition between negotiate and reconnect.
-The 20-second negotiate timeout mechanism can interfere with the normal
-recovery process when both are triggered simultaneously.
-
-  ls                              cifsd
----------------------------------------------------
- cifs_getattr
- cifs_revalidate_dentry
- cifs_get_inode_info
- cifs_get_fattr
- smb2_query_path_info
- smb2_compound_op
- SMB2_open_init
- smb2_reconnect
- cifs_negotiate_protocol
-  smb2_negotiate
-   cifs_send_recv
-    smb_send_rqst
-    wait_for_response
-                            cifs_demultiplex_thread
-                              cifs_read_from_socket
-                              cifs_readv_from_socket
-                                server_unresponsive
-                                cifs_reconnect
-                                  __cifs_reconnect
-                                  cifs_abort_connection
-                                    mid->mid_state = MID_RETRY_NEEDED
-                                    cifs_wake_up_task
-    cifs_sync_mid_result
-     // case MID_RETRY_NEEDED
-     rc = -EAGAIN;
-   // In smb2_negotiate()
-   rc = -EHOSTDOWN;
-
-The server_unresponsive() timeout triggers cifs_reconnect(), which aborts
-ongoing mid requests and causes the ls command to receive -EAGAIN, leading
-to -EHOSTDOWN.
-
-Fix this by introducing a dedicated `neg_start` field to
-precisely tracks when the negotiate process begins. The timeout check
-now uses this accurate timestamp instead of `lstrp`, ensuring that:
-
-1. Timeout is only triggered after negotiate has actually run for 20s
-2. The mechanism doesn't interfere with concurrent recovery processes
-3. Uninitialized timestamps (value 0) don't trigger false timeouts
-
-Fixes: 7ccc1465465d ("smb: client: fix hang in wait_for_response() for negproto")
-Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h | 1 +
- fs/smb/client/connect.c  | 7 ++++---
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/mwait.h |   25 +++++++++++++++----------
+ arch/x86/kernel/process.c    |   16 ++++++++++++----
+ 2 files changed, 27 insertions(+), 14 deletions(-)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 9c5aa646b8cc8..6df50ff6d9184 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -678,6 +678,7 @@ struct TCP_Server_Info {
- 	__le32 session_key_id; /* retrieved from negotiate response and send in session setup request */
- 	struct session_key session_key;
- 	unsigned long lstrp; /* when we got last response from this server */
-+	unsigned long neg_start; /* when negotiate started (jiffies) */
- 	struct cifs_secmech secmech; /* crypto sec mech functs, descriptors */
- #define	CIFS_NEGFLAVOR_UNENCAP	1	/* wct == 17, but no ext_sec */
- #define	CIFS_NEGFLAVOR_EXTENDED	2	/* wct == 17, ext_sec bit set */
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index 6486e514686f0..c3480e84f5c62 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -689,12 +689,12 @@ server_unresponsive(struct TCP_Server_Info *server)
- 	/*
- 	 * If we're in the process of mounting a share or reconnecting a session
- 	 * and the server abruptly shut down (e.g. socket wasn't closed, packet
--	 * had been ACK'ed but no SMB response), don't wait longer than 20s to
--	 * negotiate protocol.
-+	 * had been ACK'ed but no SMB response), don't wait longer than 20s from
-+	 * when negotiate actually started.
- 	 */
- 	spin_lock(&server->srv_lock);
- 	if (server->tcpStatus == CifsInNegotiate &&
--	    time_after(jiffies, server->lstrp + 20 * HZ)) {
-+	    time_after(jiffies, server->neg_start + 20 * HZ)) {
- 		spin_unlock(&server->srv_lock);
- 		cifs_reconnect(server, false);
- 		return true;
-@@ -4219,6 +4219,7 @@ cifs_negotiate_protocol(const unsigned int xid, struct cifs_ses *ses,
+--- a/arch/x86/include/asm/mwait.h
++++ b/arch/x86/include/asm/mwait.h
+@@ -43,8 +43,6 @@ static __always_inline void __monitorx(c
  
- 	server->lstrp = jiffies;
- 	server->tcpStatus = CifsInNegotiate;
-+	server->neg_start = jiffies;
- 	spin_unlock(&server->srv_lock);
+ static __always_inline void __mwait(unsigned long eax, unsigned long ecx)
+ {
+-	x86_idle_clear_cpu_buffers();
+-
+ 	/* "mwait %eax, %ecx;" */
+ 	asm volatile(".byte 0x0f, 0x01, 0xc9;"
+ 		     :: "a" (eax), "c" (ecx));
+@@ -97,7 +95,6 @@ static __always_inline void __mwaitx(uns
+  */
+ static __always_inline void __sti_mwait(unsigned long eax, unsigned long ecx)
+ {
+-	x86_idle_clear_cpu_buffers();
  
- 	rc = server->ops->negotiate(xid, ses, server);
--- 
-2.39.5
-
+ 	/* "mwait %eax, %ecx;" */
+ 	asm volatile("sti; .byte 0x0f, 0x01, 0xc9;"
+@@ -116,21 +113,29 @@ static __always_inline void __sti_mwait(
+  */
+ static __always_inline void mwait_idle_with_hints(unsigned long eax, unsigned long ecx)
+ {
++	if (need_resched())
++		return;
++
++	x86_idle_clear_cpu_buffers();
++
+ 	if (static_cpu_has_bug(X86_BUG_MONITOR) || !current_set_polling_and_test()) {
+ 		const void *addr = &current_thread_info()->flags;
+ 
+ 		alternative_input("", "clflush (%[addr])", X86_BUG_CLFLUSH_MONITOR, [addr] "a" (addr));
+ 		__monitor(addr, 0, 0);
+ 
+-		if (!need_resched()) {
+-			if (ecx & 1) {
+-				__mwait(eax, ecx);
+-			} else {
+-				__sti_mwait(eax, ecx);
+-				raw_local_irq_disable();
+-			}
++		if (need_resched())
++			goto out;
++
++		if (ecx & 1) {
++			__mwait(eax, ecx);
++		} else {
++			__sti_mwait(eax, ecx);
++			raw_local_irq_disable();
+ 		}
+ 	}
++
++out:
+ 	current_clr_polling();
+ }
+ 
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -912,16 +912,24 @@ static __init bool prefer_mwait_c1_over_
+  */
+ static __cpuidle void mwait_idle(void)
+ {
++	if (need_resched())
++		return;
++
++	x86_idle_clear_cpu_buffers();
++
+ 	if (!current_set_polling_and_test()) {
+ 		const void *addr = &current_thread_info()->flags;
+ 
+ 		alternative_input("", "clflush (%[addr])", X86_BUG_CLFLUSH_MONITOR, [addr] "a" (addr));
+ 		__monitor(addr, 0, 0);
+-		if (!need_resched()) {
+-			__sti_mwait(0, 0);
+-			raw_local_irq_disable();
+-		}
++		if (need_resched())
++			goto out;
++
++		__sti_mwait(0, 0);
++		raw_local_irq_disable();
+ 	}
++
++out:
+ 	__current_clr_polling();
+ }
+ 
 
 
 
