@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74DFCAFD2E0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C251BAFD1EC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2D7C1891F66
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9C295412FC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC76C17C21E;
-	Tue,  8 Jul 2025 16:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015B12E2F0E;
+	Tue,  8 Jul 2025 16:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDDZqUOn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcEnmrlu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4E58F5B;
-	Tue,  8 Jul 2025 16:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47671548C;
+	Tue,  8 Jul 2025 16:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993281; cv=none; b=Bklh5zSrQPBWKC32h18CR2k1A+f1T2e86YdVdwdoGx69WK/a8iO4bSOg8kmpx34v06Y0vy8k5pJCvNq3AXCNYOayvUaJJvCWcFi39Itj0GLRS9OmOJdYTsSh4/MYP3s6T4tXK8KABKdSMBJO7Sc06x0BuX5VPKTjlqIopNfzM7M=
+	t=1751992738; cv=none; b=Bb1uylTSw6SHWSseiLw0+F1KwL0qOSKdhZj9kfZfTqQcKlIhrhH0D4fRG1rXnGF+iIShYXYa1dECwct3UAyywcQRi4OdhUDRGSAwH5EOeLMpuskXewvU7SI1q8SmgByQH/S31X+E4gf8IqTTiXGrNbPz0tTU7oo32SkQVUSEDYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993281; c=relaxed/simple;
-	bh=yErvVbc8WJ+sHVmkX12+KwtEjm3fPnWEeQm93X1p1Fk=;
+	s=arc-20240116; t=1751992738; c=relaxed/simple;
+	bh=mrdLOo5GJw+oRVclQZAFnapCcv8ZQXtFfxqSPhbILeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQLb55mRugpf+GS41qaHNBEcgh0vvuVE4irX/JOIL5yolsXnVUtvEyoZrtQpJzJk8xUFTpzJVzfo2jC65i0iw84dTcqrOzWw47g8BB8bVZMtS88TnuwpsbBXQ1Qng5TPwFeheaHHgWXNSZKxNxrv9LzD7DIzQdcQEiOcdOJltS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDDZqUOn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34003C4CEED;
-	Tue,  8 Jul 2025 16:48:01 +0000 (UTC)
+	 MIME-Version; b=qXqkMK8B4TdRST2iW6N5mbVw26Ej4JmtGpxXlYyQgWsXddduzPI3YzfNipnucpMQlwOO6XTrV/51BFxLhtEzyfE9Cwz7jAi06Gm32SUbugXGE99FVBQIjLj3xDeCcdtXsMXSQB98NjU4SiqsHXbL5flQZU+mfEszZoB8QkMDdc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcEnmrlu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF7DC4CEED;
+	Tue,  8 Jul 2025 16:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993281;
-	bh=yErvVbc8WJ+sHVmkX12+KwtEjm3fPnWEeQm93X1p1Fk=;
+	s=korg; t=1751992738;
+	bh=mrdLOo5GJw+oRVclQZAFnapCcv8ZQXtFfxqSPhbILeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mDDZqUOn4wT8rtbsdOxDNi//uST8VKdSCu0ALSHUaT7mFzlqDv1HB9FPqMXF5gfgS
-	 XH1yBiuspDvvgn5HVGijfbAtGwSz2Dvffnykc8DTlJxjYu8MgN4pIhwUVEI/ovw9Hq
-	 CVezM2EbfjA5HsIjcFghfasWjzsVzPBhQB/q8lyI=
+	b=qcEnmrluAW6lLUPikW2wy55s2pwK8pKpb9Ur25UHj9DZRiz3qqQp/TFcZ73m5iwup
+	 dInzI4PH3xYWXf3xSNQmOcg3JrlzLFfOzH7EcHOnSvIseeCdo0mBOGFRoKv3Xwf3A/
+	 ylss+JSn20sNGkHGHnOxlsxfrCbH+wBdB7tK4Jo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.15 021/178] Bluetooth: hci_sync: revert some mesh modifications
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 062/232] nvmet: fix memory leak of bio integrity
 Date: Tue,  8 Jul 2025 18:20:58 +0200
-Message-ID: <20250708162237.103485542@linuxfoundation.org>
+Message-ID: <20250708162243.085800691@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Dmitry Bogdanov <d.bogdanov@yadro.com>
 
-commit 46c0d947b64ac8efcf89dd754213dab5d1bd00aa upstream.
+[ Upstream commit 190f4c2c863af7cc5bb354b70e0805f06419c038 ]
 
-This reverts minor parts of the changes made in commit b338d91703fa
-("Bluetooth: Implement support for Mesh"). It looks like these changes
-were only made for development purposes but shouldn't have been part of
-the commit.
+If nvmet receives commands with metadata there is a continuous memory
+leak of kmalloc-128 slab or more precisely bio->bi_integrity.
 
-Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since commit bf4c89fc8797 ("block: don't call bio_uninit from bio_endio")
+each user of bio_init has to use bio_uninit as well. Otherwise the bio
+integrity is not getting free. Nvmet uses bio_init for inline bios.
+
+Uninit the inline bio to complete deallocation of integrity in bio.
+
+Fixes: bf4c89fc8797 ("block: don't call bio_uninit from bio_endio")
+Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c |   16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/nvme/target/nvmet.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -2004,13 +2004,10 @@ static int hci_clear_adv_sets_sync(struc
- static int hci_clear_adv_sync(struct hci_dev *hdev, struct sock *sk, bool force)
+diff --git a/drivers/nvme/target/nvmet.h b/drivers/nvme/target/nvmet.h
+index 190f55e6d7532..3062562c096a1 100644
+--- a/drivers/nvme/target/nvmet.h
++++ b/drivers/nvme/target/nvmet.h
+@@ -714,6 +714,8 @@ static inline void nvmet_req_bio_put(struct nvmet_req *req, struct bio *bio)
  {
- 	struct adv_info *adv, *n;
--	int err = 0;
+ 	if (bio != &req->b.inline_bio)
+ 		bio_put(bio);
++	else
++		bio_uninit(bio);
+ }
  
- 	if (ext_adv_capable(hdev))
- 		/* Remove all existing sets */
--		err = hci_clear_adv_sets_sync(hdev, sk);
--	if (ext_adv_capable(hdev))
--		return err;
-+		return hci_clear_adv_sets_sync(hdev, sk);
- 
- 	/* This is safe as long as there is no command send while the lock is
- 	 * held.
-@@ -2038,13 +2035,11 @@ static int hci_clear_adv_sync(struct hci
- static int hci_remove_adv_sync(struct hci_dev *hdev, u8 instance,
- 			       struct sock *sk)
- {
--	int err = 0;
-+	int err;
- 
- 	/* If we use extended advertising, instance has to be removed first. */
- 	if (ext_adv_capable(hdev))
--		err = hci_remove_ext_adv_instance_sync(hdev, instance, sk);
--	if (ext_adv_capable(hdev))
--		return err;
-+		return hci_remove_ext_adv_instance_sync(hdev, instance, sk);
- 
- 	/* This is safe as long as there is no command send while the lock is
- 	 * held.
-@@ -2143,16 +2138,13 @@ int hci_read_tx_power_sync(struct hci_de
- int hci_disable_advertising_sync(struct hci_dev *hdev)
- {
- 	u8 enable = 0x00;
--	int err = 0;
- 
- 	/* If controller is not advertising we are done. */
- 	if (!hci_dev_test_flag(hdev, HCI_LE_ADV))
- 		return 0;
- 
- 	if (ext_adv_capable(hdev))
--		err = hci_disable_ext_adv_instance_sync(hdev, 0x00);
--	if (ext_adv_capable(hdev))
--		return err;
-+		return hci_disable_ext_adv_instance_sync(hdev, 0x00);
- 
- 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_ENABLE,
- 				     sizeof(enable), &enable, HCI_CMD_TIMEOUT);
+ #ifdef CONFIG_NVME_TARGET_AUTH
+-- 
+2.39.5
+
 
 
 
