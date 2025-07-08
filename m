@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DCDFAFD245
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A600AFD09A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:25:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1151D7ABF21
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4690482CC2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F5D2E54C3;
-	Tue,  8 Jul 2025 16:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39B722FDE8;
+	Tue,  8 Jul 2025 16:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qynG3mMQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEW3OGoV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F982E541D;
-	Tue,  8 Jul 2025 16:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C672E11B9;
+	Tue,  8 Jul 2025 16:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993068; cv=none; b=hkt/OYv75snXeYmDEahjvDXZhnBjbbBgCKHvxr49bczMJtHdptFLxyKxVvWxM2tcaqqTMMiYl2RTikBG9QHeY81kP2RGjRwDYDhVHu9/Gf6RuVCRVUsDuloloEKJuAr3CHHxZHt72Ai1aiUZ+Rpdbr0ESJ1lVPn/ehQJbMRsfyY=
+	t=1751991869; cv=none; b=mbwRhfK69dUYdKq1dlEHH4bLyzUbphJ1tuupwRBj+MogLkB4uPHfUS89WrrlgBQv+elCimmfc0KhYEO98738qsHJOcdvb8Da40VxGdfBnxI2hXV0BDsARjzrgmPGTS7NMcwU5frXzQfZuNbUJmrH1eyZBwXCKvXdL7EpNAlQx6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993068; c=relaxed/simple;
-	bh=6dQHnLa47+CdaYvT0yYwEl3kgNcHnA+B5PaoEg4n4Vc=;
+	s=arc-20240116; t=1751991869; c=relaxed/simple;
+	bh=XMw1SINHR1gLnwzgtRdnP3HFNvHNLeMMDBYkVJyv6c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kC6wc78gtYnnuDOoEITuTWxDEILxYz9BUAsnCnjtuJXgv0HaLpHep/7rbnJH17xkMkQQBk/JLqD6YEfeT0xq+gJqCxAyhxUVsDHt6M60pU8GD3Y74R5+nVM1AsIEj0qEcKqcxusj4jSU2koD0TUGR209ACBkdyvcgo5BV9GjWEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qynG3mMQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A27C4CEED;
-	Tue,  8 Jul 2025 16:44:27 +0000 (UTC)
+	 MIME-Version; b=bariajgTdcYgGles4U4opXBxELOg2Y2Br86114KOA6lFJRKLhKu8yCAQHuecCFzj68XI7hZq2djTX1NkNQNL8Ql+yDtn2qQoTwvr7wrwfiYBu6ud/9f49c74X/dyy8/R+yqVFFSrinlZa5jTIQFfXT4WVnACr7YcOblil79IrBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEW3OGoV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB582C4CEED;
+	Tue,  8 Jul 2025 16:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993067;
-	bh=6dQHnLa47+CdaYvT0yYwEl3kgNcHnA+B5PaoEg4n4Vc=;
+	s=korg; t=1751991869;
+	bh=XMw1SINHR1gLnwzgtRdnP3HFNvHNLeMMDBYkVJyv6c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qynG3mMQzmFuuvvj6yIN/f8t6Z3gtnwz+utxUtEhA5GsIJEQxpNWwsFEwT50pgc0a
-	 W6rSygPMjeFD7sSk6WyGMsf8voM2v5qSvL5mGbp1sLCc4BUdSIE9jI9m/OO1brmXtI
-	 9rMhKWDKyInuEdUbEdCXIe6o8sPgNUa3wXSinyAM=
+	b=TEW3OGoVM1Xn9M53h3YeMJNu5QUMF445Vx/VWpF4SfYt15qwdU84nMg2G0Zyu/zjl
+	 zrztUhQuycyk1lU3chyGNJ8fbI1b5zHQCyuLkyKk7hpDNjuo6syQVB/roy547QEh6e
+	 80vsyiaZyx41StaudusAAPMgj0+bHkdspBBsAlos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Santese <santesegabriel@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 177/232] ASoC: amd: yc: Add quirk for MSI Bravo 17 D7VF internal mic
-Date: Tue,  8 Jul 2025 18:22:53 +0200
-Message-ID: <20250708162246.070595155@linuxfoundation.org>
+	Farhan Ali <alifm@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.1 02/81] s390/pci: Do not try re-enabling load/store if device is disabled
+Date: Tue,  8 Jul 2025 18:22:54 +0200
+Message-ID: <20250708162224.901528639@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Santese <santesegabriel@gmail.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit ba06528ad5a31923efc24324706116ccd17e12d8 ]
+commit b97a7972b1f4f81417840b9a2ab0c19722b577d5 upstream.
 
-MSI Bravo 17 (D7VF), like other laptops from the family,
-has broken ACPI tables and needs a quirk for internal mic
-to work properly.
+If a device is disabled unblocking load/store on its own is not useful
+as a full re-enable of the function is necessary anyway. Note that SCLP
+Write Event Data Action Qualifier 0 (Reset) leaves the device disabled
+and triggers this case unless the driver already requests a reset.
 
-Signed-off-by: Gabriel Santese <santesegabriel@gmail.com>
-Link: https://patch.msgid.link/20250530005444.23398-1-santesegabriel@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
+Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/s390/pci/pci_event.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index b27966f82c8b6..4f8481c6802b1 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -451,6 +451,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 17 D7VEK"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 17 D7VF"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
--- 
-2.39.5
-
+--- a/arch/s390/pci/pci_event.c
++++ b/arch/s390/pci/pci_event.c
+@@ -98,6 +98,10 @@ static pci_ers_result_t zpci_event_do_er
+ 	struct zpci_dev *zdev = to_zpci(pdev);
+ 	int rc;
+ 
++	/* The underlying device may have been disabled by the event */
++	if (!zdev_enabled(zdev))
++		return PCI_ERS_RESULT_NEED_RESET;
++
+ 	pr_info("%s: Unblocking device access for examination\n", pci_name(pdev));
+ 	rc = zpci_reset_load_store_blocked(zdev);
+ 	if (rc) {
 
 
 
