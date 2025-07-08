@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-161115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80147AFD370
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F325AFD269
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E64E542D0D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C2C63B4E4B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560F42DC34C;
-	Tue,  8 Jul 2025 16:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B872E0910;
+	Tue,  8 Jul 2025 16:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGw7CMUb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLJe6ZA2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B7D2045B5;
-	Tue,  8 Jul 2025 16:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476701714B7;
+	Tue,  8 Jul 2025 16:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993638; cv=none; b=sPcVOizIqylRYRBWsQ/yPKoyTmziZOwF2CqSkyGkW0hOT9pcR0IrSf6bGvqatfxdjOCJ/7e1QYQTn+cpTGh2ptkvcKFzL95HFeM/DErC0/rikby9uhQlK1HT0GLvsmzDyWfYE/+MWUzKP3BYETgoasYHiGXJwopDEcA9hW1tBPg=
+	t=1751992967; cv=none; b=fyrgidMJv09RbL+NPLAzJBJ+kBe3XsG5AtiHdlfumIJD/5tMWFgxbxNAqg467UEl6/3qjyXrpGU15cwejRWjtRU430U0hcS87x46BgjrLN4GReGJBD7vOWXnednkXSNalhNHEf5q7K9fJ7aS+397t0LqYgp8j0EUr7KimYOcUX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993638; c=relaxed/simple;
-	bh=y/Co7S/XZG9D7uYiD1VT2P8hQh94uSAbtc6mNcbnarE=;
+	s=arc-20240116; t=1751992967; c=relaxed/simple;
+	bh=3SOD7Y/PwWpVWT7OS2IDDmdmi76GIRWjkQsoSVZ5XMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJ03TLd2fxkCK4XBg07/L8vozA7Lj8ssX1FmJkHw8OKQb8O8d1ElrzsJFFkv5ERm+o8hg2Cf7Q1srrMksQpUZ9mwO8JbHiA2UngUMRqN3pFBZm2komKMwS6HWkhzUJiElSBWM9YSnCDZXK596c8av34QWWxMBE6VhYodIofCoOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGw7CMUb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EA2C4CEED;
-	Tue,  8 Jul 2025 16:53:57 +0000 (UTC)
+	 MIME-Version; b=ReMcxXvdpuPsWMj3n+DKtD+uSQxPyBHYwatDZ671WHGHWynBJz6JoWdMZF4ww5M0UWxeI49+aGD2OSY2StPZiaUO4t/tTtZXYq11+GvXdGhAuXEzGl9YzKRS5B5lA1AIKTLNXh8RfkHT4L8rXfg+F+Uq0Fab3OYjX9T048hQ1Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLJe6ZA2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37CCC4CEED;
+	Tue,  8 Jul 2025 16:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993637;
-	bh=y/Co7S/XZG9D7uYiD1VT2P8hQh94uSAbtc6mNcbnarE=;
+	s=korg; t=1751992967;
+	bh=3SOD7Y/PwWpVWT7OS2IDDmdmi76GIRWjkQsoSVZ5XMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DGw7CMUbRdhxtArONQPfpH9Z5I0ObTFDhjd61yj7aIbIyNMa4jLSNpwLwtxcAWxYx
-	 NgRf6ya6PvqVFZz995DCIZlmStRRX9R+OrHSYAggWnUxC3t6B8A/Iw0IQrJt1BgaPO
-	 BNi/2KpObE4p13d5lcY4S7fWlbvbME4hVcQoKxCM=
+	b=uLJe6ZA2x+RPyJmXe7otaBV1LzNBzt/0ydusl6rVwksmMuoU9BGMjTVxDeW+3i2an
+	 8kCum1VLUvB7KdfWDQhHuoz2fRqUVSJkB9nd+x08O0ytQJFlgNB1epEZHbBzfKzAK4
+	 PhTfewKbBNxbXSpdUVmSwzKnXHjKLMzxFC/u94MQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Steve French <sfrench@samba.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
+	Pengyu Luo <mitltlatltl@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 102/178] smb: client: set missing retry flag in cifs_writev_callback()
+Subject: [PATCH 6.12 143/232] arm64: dts: qcom: sm8650: add the missing l2 cache node
 Date: Tue,  8 Jul 2025 18:22:19 +0200
-Message-ID: <20250708162239.311480572@linuxfoundation.org>
+Message-ID: <20250708162245.186984878@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,42 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Pengyu Luo <mitltlatltl@gmail.com>
 
-[ Upstream commit 74ee76bea4b445c023d04806e0bcd78a912fd30b ]
+[ Upstream commit 4becd72352b6861de0c24074a8502ca85080fd63 ]
 
-Set NETFS_SREQ_NEED_RETRY flag to tell netfslib that the subreq needs
-to be retried.
+Only two little a520s share the same L2, every a720 has their own L2
+cache.
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/20250701163852.2171681-9-dhowells@redhat.com
-Tested-by: Steve French <sfrench@samba.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: netfs@lists.linux.dev
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: d2350377997f ("arm64: dts: qcom: add initial SM8650 dtsi")
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250405105529.309711-1-mitltlatltl@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifssmb.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm8650.dtsi | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index f9ccae5de5b88..0e509a0433fb6 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -1715,6 +1715,7 @@ cifs_writev_callback(struct mid_q_entry *mid)
- 		break;
- 	case MID_REQUEST_SUBMITTED:
- 	case MID_RETRY_NEEDED:
-+		__set_bit(NETFS_SREQ_NEED_RETRY, &wdata->subreq.flags);
- 		result = -EAGAIN;
- 		break;
- 	default:
+diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+index 72e3dcd495c3b..bd91624bd3bfc 100644
+--- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+@@ -159,13 +159,20 @@ cpu3: cpu@300 {
+ 			power-domain-names = "psci";
+ 
+ 			enable-method = "psci";
+-			next-level-cache = <&l2_200>;
++			next-level-cache = <&l2_300>;
+ 			capacity-dmips-mhz = <1792>;
+ 			dynamic-power-coefficient = <238>;
+ 
+ 			qcom,freq-domain = <&cpufreq_hw 3>;
+ 
+ 			#cooling-cells = <2>;
++
++			l2_300: l2-cache {
++				compatible = "cache";
++				cache-level = <2>;
++				cache-unified;
++				next-level-cache = <&l3_0>;
++			};
+ 		};
+ 
+ 		cpu4: cpu@400 {
 -- 
 2.39.5
 
