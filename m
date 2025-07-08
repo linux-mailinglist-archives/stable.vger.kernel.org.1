@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-160731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625F5AFD16B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:35:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D669AFD0EC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:29:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7E857A32AB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C63A1645B4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ADF32E5B2A;
-	Tue,  8 Jul 2025 16:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CCE2D9790;
+	Tue,  8 Jul 2025 16:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIWfCXOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGTioVvI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEC62E3AE8;
-	Tue,  8 Jul 2025 16:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C4B2A1BA;
+	Tue,  8 Jul 2025 16:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992520; cv=none; b=iz0d0l4wDz5/5TJapUKUN91tICo1cVRYF6EYURMBvuENJP8W/ZDP2wo18N/wSiq60bVVdGI5IAex3/D4Y6nqosd6qVwADgx5ljUF2uKJgRorO2iHvJtHsnYvfgLXmYe+fVeQwc4DBt5Wp8RX5nw+HeNFnG6wgzoHMCzT88ZJlXU=
+	t=1751992104; cv=none; b=kPJyJ1kt2upaVDqNDNT/Wg9D0dwj4EUjSX7UKGKNM2j6njjGRKAAqKeyDifL9ILNo5ozK/EgcqUoqu+Wr0ontvFQyyU9VZnHZuG7AsiFmvNCFhusgv2RnmetxLZ4v6bcFVcKSVt9u3JKfiEF2SKK/s7hC/jstEu8DQ6j7uDxSVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992520; c=relaxed/simple;
-	bh=ZmbTdH7OONgbwFuK/3skgNcX9v/9FXXJmhCBLE51AKY=;
+	s=arc-20240116; t=1751992104; c=relaxed/simple;
+	bh=K1qx208vhqLS0VRIGhGteYTM3cuRdeeRDrw7OjCYYuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQjUku1B5ZOhOFLSP0VSbHxU3XksIctGTwQ57nDJw0SD9WJkQiyXLH5utZChAzE015fmdfz01yM6X0Bsss0Da3q7NevVu1n+hOSPl8mqHizhkr9IMPzhDHlPlfb8a3j2QQaFPPkiFfe3W/nIQUXUJzD0ObXi9USzUje3zJsYLlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIWfCXOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56FC4C4CEED;
-	Tue,  8 Jul 2025 16:35:20 +0000 (UTC)
+	 MIME-Version; b=Yi64LWTOGxPmA7/Ym63YR1b6ILXy/+dbCK3JyzAD73mPHPjfPE4cNIwD6ZRTKPcgfRgR/Wzxk5NxBpi2+Q/PR+B54B1TNc0h6kiyIgnAOboLZG17SkVduPs1V4hh4LD+wzG4tlZbE8yzkh1kefZKYw5gqrqkvrLmcN5XS06WpOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGTioVvI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E96FC4CEED;
+	Tue,  8 Jul 2025 16:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992520;
-	bh=ZmbTdH7OONgbwFuK/3skgNcX9v/9FXXJmhCBLE51AKY=;
+	s=korg; t=1751992104;
+	bh=K1qx208vhqLS0VRIGhGteYTM3cuRdeeRDrw7OjCYYuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dIWfCXOIE8QnLoVlGYO6ZonrpULEX2WH6SQeru4hOUazGg3+LdSaVDfhLBamWHgxp
-	 E6qlfZSPf0aywSxJPHsMFfJ4wbi48yC5bTSpeZhYRIRF1CK6Z4Hjj/04SNyYMAvS2G
-	 I9pxVPuk6ZlzFEJIYplDNuJpw5l6s4je/jebUCTc=
+	b=AGTioVvIek6PJ2JTR8P5/FWXVf7r/KxX0fGLKeH26aH1jYLz04SYh8h0ND6bAgXmc
+	 Mc09tiMye8Cf0j+IcSlCMxoJdQg6iSH0LlS8DRBFNO+M+JfxC99Svb6luCLXKrBhKH
+	 FEUElQlJXyfXK0D/TS3cSChESeMcPzYOyDJCcxPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 120/132] Logitech C-270 even more broken
-Date: Tue,  8 Jul 2025 18:23:51 +0200
-Message-ID: <20250708162234.056085230@linuxfoundation.org>
+	Julian Ruess <julianr@linux.ibm.com>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 60/81] s390/pci: Fix stale function handles in error handling
+Date: Tue,  8 Jul 2025 18:23:52 +0200
+Message-ID: <20250708162226.893789793@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +65,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-commit cee4392a57e14a799fbdee193bc4c0de65b29521 upstream.
+[ Upstream commit 45537926dd2aaa9190ac0fac5a0fbeefcadfea95 ]
 
-Some varieties of this device don't work with
-RESET_RESUME alone.
+The error event information for PCI error events contains a function
+handle for the respective function. This handle is generally captured at
+the time the error event was recorded. Due to delays in processing or
+cascading issues, it may happen that during firmware recovery multiple
+events are generated. When processing these events in order Linux may
+already have recovered an affected function making the event information
+stale. Fix this by doing an unconditional CLP List PCI function
+retrieving the current function handle with the zdev->state_lock held
+and ignoring the event if its function handle is stale.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250605122852.1440382-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
+Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
+Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
+Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/s390/pci/pci_event.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -227,7 +227,8 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x046a, 0x0023), .driver_info = USB_QUIRK_RESET_RESUME },
+diff --git a/arch/s390/pci/pci_event.c b/arch/s390/pci/pci_event.c
+index d969f36bf186f..dc512c8f82324 100644
+--- a/arch/s390/pci/pci_event.c
++++ b/arch/s390/pci/pci_event.c
+@@ -257,6 +257,8 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
+ 	struct zpci_dev *zdev = get_zdev_by_fid(ccdf->fid);
+ 	struct pci_dev *pdev = NULL;
+ 	pci_ers_result_t ers_res;
++	u32 fh = 0;
++	int rc;
  
- 	/* Logitech HD Webcam C270 */
--	{ USB_DEVICE(0x046d, 0x0825), .driver_info = USB_QUIRK_RESET_RESUME },
-+	{ USB_DEVICE(0x046d, 0x0825), .driver_info = USB_QUIRK_RESET_RESUME |
-+		USB_QUIRK_NO_LPM},
+ 	zpci_dbg(3, "err fid:%x, fh:%x, pec:%x\n",
+ 		 ccdf->fid, ccdf->fh, ccdf->pec);
+@@ -264,9 +266,23 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
+ 	zpci_err_hex(ccdf, sizeof(*ccdf));
  
- 	/* Logitech HD Pro Webcams C920, C920-C, C922, C925e and C930e */
- 	{ USB_DEVICE(0x046d, 0x082d), .driver_info = USB_QUIRK_DELAY_INIT },
+ 	if (zdev) {
++		mutex_lock(&zdev->state_lock);
++		rc = clp_refresh_fh(zdev->fid, &fh);
++		if (rc) {
++			mutex_unlock(&zdev->state_lock);
++			goto no_pdev;
++		}
++		if (!fh || ccdf->fh != fh) {
++			/* Ignore events with stale handles */
++			zpci_dbg(3, "err fid:%x, fh:%x (stale %x)\n",
++				 ccdf->fid, fh, ccdf->fh);
++			mutex_unlock(&zdev->state_lock);
++			goto no_pdev;
++		}
+ 		zpci_update_fh(zdev, ccdf->fh);
+ 		if (zdev->zbus->bus)
+ 			pdev = pci_get_slot(zdev->zbus->bus, zdev->devfn);
++		mutex_unlock(&zdev->state_lock);
+ 	}
+ 
+ 	pr_err("%s: Event 0x%x reports an error for PCI function 0x%x\n",
+-- 
+2.39.5
+
 
 
 
