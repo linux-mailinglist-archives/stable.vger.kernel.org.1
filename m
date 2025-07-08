@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-160936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B22CAFD2AB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:49:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 039AEAFD492
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A181188F931
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:46:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C65341C263FD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9108B2DC34C;
-	Tue,  8 Jul 2025 16:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BB82E62D3;
+	Tue,  8 Jul 2025 17:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exlS6Oh2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqbXuGHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0542DAFA3;
-	Tue,  8 Jul 2025 16:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E83A2E1C74;
+	Tue,  8 Jul 2025 17:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993123; cv=none; b=uh8g059MVgU7uQDXn49OsuhVIg5W8O0OlqJEVoHEG1es8LQcr+1uPwH9Pcf0G+D5KLb2BrILS001cnHWVRg8kZBP874TdQBUy/JizCWRBRS8jqwD9mxk03LDoNN4NjGFKLuPypZPEUb25v5tf6tQ8NpX27aAsZveasQl+ly847g=
+	t=1751994098; cv=none; b=MF2/2Gb6LC6yGpJ7btHrgaE7a6cxvsAtq9peGeAfBALyhlrzb0E2LoaAORepTmSV2d4dD+kvq8+oEGBOQJcES0G0XB6fxJPjmmbeqhuY542/GwyseVxOJQE+pvUIE1ZzLxyZa01n9HTK1gqzKSzhvHe03ddTp9+b3JaVrUslzSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993123; c=relaxed/simple;
-	bh=kc6+0XXMMn9KNc2PX51QMTDbKGSEgXEHV40vAV3sbLc=;
+	s=arc-20240116; t=1751994098; c=relaxed/simple;
+	bh=TZeeP8+h054JPpUkpD0MU7DBCwcCqKcdRYhIUdgtHIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hraJqZSX49Bv2hs4H3wCOng2uywnCcxF1bWukazOJSBatYda//8U+Uh2bkO8xjDrrjG5kV+5jHFgiDLfndv7QAL9IxjgoFGG4hyMOvERLb1J8TqDne/TOi/owXqiJs2ofx5p3WK8ITXzm3EfzCrd254SE6S8C+H4j4J2jhM0d+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exlS6Oh2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE24DC4CEED;
-	Tue,  8 Jul 2025 16:45:22 +0000 (UTC)
+	 MIME-Version; b=RfBm5dLHm/AjJl1BlqKKxX6hFOH59HmUArjn/DCTVFYMjkTGkxdZ62Bb5dbWA5rr4LmD63gC/xmXl+ExoY4/ZG3It8ePIPkJrTy3jnV8Vb3zhDUuhDLBk+JrYoQ6k9adaIFP/TLO68Dz4VkIwSE9s+wdau19nFOP+/z0NMNCEzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqbXuGHS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA6EDC4CEED;
+	Tue,  8 Jul 2025 17:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993123;
-	bh=kc6+0XXMMn9KNc2PX51QMTDbKGSEgXEHV40vAV3sbLc=;
+	s=korg; t=1751994098;
+	bh=TZeeP8+h054JPpUkpD0MU7DBCwcCqKcdRYhIUdgtHIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exlS6Oh2QEdNesuKdZDSfqiDt/9klR+cDBYNrKBTBUFxGZKGFoVkZHd/PN/eFwkE5
-	 9IMyGgouzWa3nhkvVpInq33YrPaD71RsrPPfp5ihB/7TepBNq78SMQtL6UrVCMVnK6
-	 qM/yKmsQWz0CY3kyikxNdpEflaGSzfpZom3GiBHo=
+	b=cqbXuGHSyAUU4DHqyCyIbmizBWJdY81CzoSFqoMzTVoWBCOjZdP2ZqOIBzHgXt9E0
+	 Tce+99J6vgBxgIpO++KhkyHb0vL2wQRdyORmTFNlJ5EJSVdrZwDygfgZTjlZ6rpYSV
+	 phqxv1rSfBRV/MvP6psa3qqAqnoCvtg2wVo4XPjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Min <Frank.Min@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 165/232] drm/amdgpu: add kicker fws loading for gfx11/smu13/psp13
+Subject: [PATCH 5.15 124/160] nui: Fix dma_mapping_error() check
 Date: Tue,  8 Jul 2025 18:22:41 +0200
-Message-ID: <20250708162245.755581547@linuxfoundation.org>
+Message-ID: <20250708162234.866268141@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,157 +63,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Min <Frank.Min@amd.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 854171405e7f093532b33d8ed0875b9e34fc55b4 ]
+[ Upstream commit 561aa0e22b70a5e7246b73d62a824b3aef3fc375 ]
 
-1. Add kicker firmwares loading for gfx11/smu13/psp13
-2. Register additional MODULE_FIRMWARE entries for kicker fws
-   - gc_11_0_0_rlc_kicker.bin
-   - gc_11_0_0_imu_kicker.bin
-   - psp_13_0_0_sos_kicker.bin
-   - psp_13_0_0_ta_kicker.bin
-   - smu_13_0_0_kicker.bin
+dma_map_XXX() functions return values DMA_MAPPING_ERROR as error values
+which is often ~0.  The error value should be tested with
+dma_mapping_error().
 
-Signed-off-by: Frank Min <Frank.Min@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit fb5ec2174d70a8989bc207d257db90ffeca3b163)
-Cc: stable@vger.kernel.org
+This patch creates a new function in niu_ops to test if the mapping
+failed.  The test is fixed in niu_rbr_add_page(), added in
+niu_start_xmit() and the successfully mapped pages are unmaped upon error.
+
+Fixes: ec2deec1f352 ("niu: Fix to check for dma mapping errors.")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c        | 10 ++++++++--
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c         |  4 ++++
- drivers/gpu/drm/amd/amdgpu/imu_v11_0.c         |  6 +++++-
- drivers/gpu/drm/amd/amdgpu/psp_v13_0.c         |  2 ++
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c |  8 ++++++--
- 5 files changed, 25 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/sun/niu.c | 31 ++++++++++++++++++++++++++++++-
+ drivers/net/ethernet/sun/niu.h |  4 ++++
+ 2 files changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-index 48e30e5f83389..3d42f6c3308ed 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -3430,7 +3430,10 @@ int psp_init_sos_microcode(struct psp_context *psp, const char *chip_name)
- 	uint8_t *ucode_array_start_addr;
- 	int err = 0;
+diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
+index 3fdc7c9824a39..8795063432838 100644
+--- a/drivers/net/ethernet/sun/niu.c
++++ b/drivers/net/ethernet/sun/niu.c
+@@ -3317,7 +3317,7 @@ static int niu_rbr_add_page(struct niu *np, struct rx_ring_info *rp,
  
--	err = amdgpu_ucode_request(adev, &adev->psp.sos_fw, "amdgpu/%s_sos.bin", chip_name);
-+	if (amdgpu_is_kicker_fw(adev))
-+		err = amdgpu_ucode_request(adev, &adev->psp.sos_fw, "amdgpu/%s_sos_kicker.bin", chip_name);
-+	else
-+		err = amdgpu_ucode_request(adev, &adev->psp.sos_fw, "amdgpu/%s_sos.bin", chip_name);
- 	if (err)
- 		goto out;
+ 	addr = np->ops->map_page(np->device, page, 0,
+ 				 PAGE_SIZE, DMA_FROM_DEVICE);
+-	if (!addr) {
++	if (np->ops->mapping_error(np->device, addr)) {
+ 		__free_page(page);
+ 		return -ENOMEM;
+ 	}
+@@ -6654,6 +6654,8 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ 	len = skb_headlen(skb);
+ 	mapping = np->ops->map_single(np->device, skb->data,
+ 				      len, DMA_TO_DEVICE);
++	if (np->ops->mapping_error(np->device, mapping))
++		goto out_drop;
  
-@@ -3672,7 +3675,10 @@ int psp_init_ta_microcode(struct psp_context *psp, const char *chip_name)
- 	struct amdgpu_device *adev = psp->adev;
- 	int err;
+ 	prod = rp->prod;
  
--	err = amdgpu_ucode_request(adev, &adev->psp.ta_fw, "amdgpu/%s_ta.bin", chip_name);
-+	if (amdgpu_is_kicker_fw(adev))
-+		err = amdgpu_ucode_request(adev, &adev->psp.ta_fw, "amdgpu/%s_ta_kicker.bin", chip_name);
-+	else
-+		err = amdgpu_ucode_request(adev, &adev->psp.ta_fw, "amdgpu/%s_ta.bin", chip_name);
- 	if (err)
- 		return err;
+@@ -6695,6 +6697,8 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ 		mapping = np->ops->map_page(np->device, skb_frag_page(frag),
+ 					    skb_frag_off(frag), len,
+ 					    DMA_TO_DEVICE);
++		if (np->ops->mapping_error(np->device, mapping))
++			goto out_unmap;
  
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 1f06b22dbe7c6..96e5c520af316 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -84,6 +84,7 @@ MODULE_FIRMWARE("amdgpu/gc_11_0_0_pfp.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_0_me.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_0_mec.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_0_rlc.bin");
-+MODULE_FIRMWARE("amdgpu/gc_11_0_0_rlc_kicker.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_0_rlc_1.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_0_toc.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_1_pfp.bin");
-@@ -734,6 +735,9 @@ static int gfx_v11_0_init_microcode(struct amdgpu_device *adev)
- 		    adev->pdev->revision == 0xCE)
- 			err = amdgpu_ucode_request(adev, &adev->gfx.rlc_fw,
- 						   "amdgpu/gc_11_0_0_rlc_1.bin");
-+		else if (amdgpu_is_kicker_fw(adev))
-+			err = amdgpu_ucode_request(adev, &adev->gfx.rlc_fw,
-+						   "amdgpu/%s_rlc_kicker.bin", ucode_prefix);
- 		else
- 			err = amdgpu_ucode_request(adev, &adev->gfx.rlc_fw,
- 						   "amdgpu/%s_rlc.bin", ucode_prefix);
-diff --git a/drivers/gpu/drm/amd/amdgpu/imu_v11_0.c b/drivers/gpu/drm/amd/amdgpu/imu_v11_0.c
-index d4f72e47ae9e2..c4f5cbf1ecd7d 100644
---- a/drivers/gpu/drm/amd/amdgpu/imu_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/imu_v11_0.c
-@@ -32,6 +32,7 @@
- #include "gc/gc_11_0_0_sh_mask.h"
+ 		rp->tx_buffs[prod].skb = NULL;
+ 		rp->tx_buffs[prod].mapping = mapping;
+@@ -6719,6 +6723,19 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ out:
+ 	return NETDEV_TX_OK;
  
- MODULE_FIRMWARE("amdgpu/gc_11_0_0_imu.bin");
-+MODULE_FIRMWARE("amdgpu/gc_11_0_0_imu_kicker.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_1_imu.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_2_imu.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_3_imu.bin");
-@@ -50,7 +51,10 @@ static int imu_v11_0_init_microcode(struct amdgpu_device *adev)
- 	DRM_DEBUG("\n");
++out_unmap:
++	while (i--) {
++		const skb_frag_t *frag;
++
++		prod = PREVIOUS_TX(rp, prod);
++		frag = &skb_shinfo(skb)->frags[i];
++		np->ops->unmap_page(np->device, rp->tx_buffs[prod].mapping,
++				    skb_frag_size(frag), DMA_TO_DEVICE);
++	}
++
++	np->ops->unmap_single(np->device, rp->tx_buffs[rp->prod].mapping,
++			      skb_headlen(skb), DMA_TO_DEVICE);
++
+ out_drop:
+ 	rp->tx_errors++;
+ 	kfree_skb(skb);
+@@ -9612,6 +9629,11 @@ static void niu_pci_unmap_single(struct device *dev, u64 dma_address,
+ 	dma_unmap_single(dev, dma_address, size, direction);
+ }
  
- 	amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix, sizeof(ucode_prefix));
--	err = amdgpu_ucode_request(adev, &adev->gfx.imu_fw, "amdgpu/%s_imu.bin", ucode_prefix);
-+	if (amdgpu_is_kicker_fw(adev))
-+		err = amdgpu_ucode_request(adev, &adev->gfx.imu_fw, "amdgpu/%s_imu_kicker.bin", ucode_prefix);
-+	else
-+		err = amdgpu_ucode_request(adev, &adev->gfx.imu_fw, "amdgpu/%s_imu.bin", ucode_prefix);
- 	if (err)
- 		goto out;
++static int niu_pci_mapping_error(struct device *dev, u64 addr)
++{
++	return dma_mapping_error(dev, addr);
++}
++
+ static const struct niu_ops niu_pci_ops = {
+ 	.alloc_coherent	= niu_pci_alloc_coherent,
+ 	.free_coherent	= niu_pci_free_coherent,
+@@ -9619,6 +9641,7 @@ static const struct niu_ops niu_pci_ops = {
+ 	.unmap_page	= niu_pci_unmap_page,
+ 	.map_single	= niu_pci_map_single,
+ 	.unmap_single	= niu_pci_unmap_single,
++	.mapping_error	= niu_pci_mapping_error,
+ };
  
-diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
-index bf00de763acb0..124f74e862d7f 100644
---- a/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
-@@ -42,7 +42,9 @@ MODULE_FIRMWARE("amdgpu/psp_13_0_5_ta.bin");
- MODULE_FIRMWARE("amdgpu/psp_13_0_8_toc.bin");
- MODULE_FIRMWARE("amdgpu/psp_13_0_8_ta.bin");
- MODULE_FIRMWARE("amdgpu/psp_13_0_0_sos.bin");
-+MODULE_FIRMWARE("amdgpu/psp_13_0_0_sos_kicker.bin");
- MODULE_FIRMWARE("amdgpu/psp_13_0_0_ta.bin");
-+MODULE_FIRMWARE("amdgpu/psp_13_0_0_ta_kicker.bin");
- MODULE_FIRMWARE("amdgpu/psp_13_0_7_sos.bin");
- MODULE_FIRMWARE("amdgpu/psp_13_0_7_ta.bin");
- MODULE_FIRMWARE("amdgpu/psp_13_0_10_sos.bin");
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-index 4f78c84da780c..c5bca3019de07 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-@@ -58,6 +58,7 @@
+ static void niu_driver_version(void)
+@@ -9985,6 +10008,11 @@ static void niu_phys_unmap_single(struct device *dev, u64 dma_address,
+ 	/* Nothing to do.  */
+ }
  
- MODULE_FIRMWARE("amdgpu/aldebaran_smc.bin");
- MODULE_FIRMWARE("amdgpu/smu_13_0_0.bin");
-+MODULE_FIRMWARE("amdgpu/smu_13_0_0_kicker.bin");
- MODULE_FIRMWARE("amdgpu/smu_13_0_7.bin");
- MODULE_FIRMWARE("amdgpu/smu_13_0_10.bin");
++static int niu_phys_mapping_error(struct device *dev, u64 dma_address)
++{
++	return false;
++}
++
+ static const struct niu_ops niu_phys_ops = {
+ 	.alloc_coherent	= niu_phys_alloc_coherent,
+ 	.free_coherent	= niu_phys_free_coherent,
+@@ -9992,6 +10020,7 @@ static const struct niu_ops niu_phys_ops = {
+ 	.unmap_page	= niu_phys_unmap_page,
+ 	.map_single	= niu_phys_map_single,
+ 	.unmap_single	= niu_phys_unmap_single,
++	.mapping_error	= niu_phys_mapping_error,
+ };
  
-@@ -92,7 +93,7 @@ const int pmfw_decoded_link_width[7] = {0, 1, 2, 4, 8, 12, 16};
- int smu_v13_0_init_microcode(struct smu_context *smu)
+ static int niu_of_probe(struct platform_device *op)
+diff --git a/drivers/net/ethernet/sun/niu.h b/drivers/net/ethernet/sun/niu.h
+index 04c215f91fc08..0b169c08b0f2d 100644
+--- a/drivers/net/ethernet/sun/niu.h
++++ b/drivers/net/ethernet/sun/niu.h
+@@ -2879,6 +2879,9 @@ struct tx_ring_info {
+ #define NEXT_TX(tp, index) \
+ 	(((index) + 1) < (tp)->pending ? ((index) + 1) : 0)
+ 
++#define PREVIOUS_TX(tp, index) \
++	(((index) - 1) >= 0 ? ((index) - 1) : (((tp)->pending) - 1))
++
+ static inline u32 niu_tx_avail(struct tx_ring_info *tp)
  {
- 	struct amdgpu_device *adev = smu->adev;
--	char ucode_prefix[15];
-+	char ucode_prefix[30];
- 	int err = 0;
- 	const struct smc_firmware_header_v1_0 *hdr;
- 	const struct common_firmware_header *header;
-@@ -103,7 +104,10 @@ int smu_v13_0_init_microcode(struct smu_context *smu)
- 		return 0;
+ 	return (tp->pending -
+@@ -3140,6 +3143,7 @@ struct niu_ops {
+ 			  enum dma_data_direction direction);
+ 	void (*unmap_single)(struct device *dev, u64 dma_address,
+ 			     size_t size, enum dma_data_direction direction);
++	int (*mapping_error)(struct device *dev, u64 dma_address);
+ };
  
- 	amdgpu_ucode_ip_version_decode(adev, MP1_HWIP, ucode_prefix, sizeof(ucode_prefix));
--	err = amdgpu_ucode_request(adev, &adev->pm.fw, "amdgpu/%s.bin", ucode_prefix);
-+	if (amdgpu_is_kicker_fw(adev))
-+		err = amdgpu_ucode_request(adev, &adev->pm.fw, "amdgpu/%s_kicker.bin", ucode_prefix);
-+	else
-+		err = amdgpu_ucode_request(adev, &adev->pm.fw, "amdgpu/%s.bin", ucode_prefix);
- 	if (err)
- 		goto out;
- 
+ struct niu_link_config {
 -- 
 2.39.5
 
