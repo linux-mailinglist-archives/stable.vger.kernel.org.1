@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-160714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44984AFD182
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:36:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C66AFD2C4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F5534A30A0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3EDF17A78C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EFE421773D;
-	Tue,  8 Jul 2025 16:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A31D2E5B2E;
+	Tue,  8 Jul 2025 16:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNHsKGpE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5z1PyWO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBF12E0910;
-	Tue,  8 Jul 2025 16:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA781FC0F3;
+	Tue,  8 Jul 2025 16:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992478; cv=none; b=SfwYbfK76pg9/J3uf32S4AfBxdCpUko7CqAnCkrl0rkRmF/7lPMRTigCzCnlDrt/vzxqDrwECMSyAqfHW38ge5HP2vPfMqj51XOIzKce4FBZqk+LTpO/gZLYTetCwBIYgvHIpHgoJU8qlqH9MZvrcXB8YI6kNVc6NG2A37q7/ZY=
+	t=1751993196; cv=none; b=ApGSwKe6lW27WLBk7ZOVRDBr1e8D7mXKJDn3CzfsDdNyR5xWDqB8QkPsf5oueoWmDOcqh1HVv1PQQw1tC9bJYbTPA5xUMUTm97uaVSEG1SrF0YwP5tsvmmNUEwDWUwBIXbTUMaGF9xfDmPLTgNGHgqbUgA9Jwdhkn7RFmp7dr4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992478; c=relaxed/simple;
-	bh=GppEX+t1WsV33swZETqo7xheUawwWbYZbyWeZwRE/qA=;
+	s=arc-20240116; t=1751993196; c=relaxed/simple;
+	bh=MinnXOqRHscRa/kaj7h6/hjWYHoGYZV3ia8KmmnsRB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VuP5nTvjdDtpj6Oz+g1S1kwWB/O239Ae/uMW8Usve+QxtXd6GSnYqepN8IHxrjMGVphvem2B3e7u3LZVTaErxXv9U3a908XZjcZgBAHLU2jnteWrj6ELnVJIs/iFjsp3odGXMYU3+BMvyiPVL1LTLFneCkK/GM9fcqPeT0QUkTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNHsKGpE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD73C4CEED;
-	Tue,  8 Jul 2025 16:34:36 +0000 (UTC)
+	 MIME-Version; b=OkKJuIpoyMJNg8Q5shLGEfi6IZ4rQockPZ0Bv6OJCM9cGpR5gmwBo5CuieAet5UBFNt6V0Dakvgk0sToUd/cUJv26XnSaQSUYzLg6oNYOeGTc3nDJ/rd7oqCd5uJPkwJ/NnsdM2fhU8iYqCcXWVBNQaZEOzys7okw8nbjkSz8/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5z1PyWO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD5FC4CEED;
+	Tue,  8 Jul 2025 16:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992477;
-	bh=GppEX+t1WsV33swZETqo7xheUawwWbYZbyWeZwRE/qA=;
+	s=korg; t=1751993195;
+	bh=MinnXOqRHscRa/kaj7h6/hjWYHoGYZV3ia8KmmnsRB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hNHsKGpEKUPnNG8z/v8UNTPyNPHUP7qfNX09BBv+jOsoRnfDf3aUktElBWn9A8+Gq
-	 FMBHg1zEmpn4vbjdmN+HPE+xnTcuV+adaR8A4LVeRZrs5FJnRLxQJE9xvQChEHU0EM
-	 eSwAXv5/0ouD1PpJKo5vdN4SKhOmSbxTaeABeXwg=
+	b=A5z1PyWO8iqVGzWCdKM12taa+gn/jD0YQvGGxu/y5AcVW+YvM9cYP9mnHJuuHrvbH
+	 vIbfxukY7aCzyCbGbgEJbCYepNgIC4FkfOY6FFg07Dx4flAZkgUvnUctWaOeB2N77r
+	 2i2GoF6RJ76vf9SWXyeo5Pvpotq8gpG7EFoeZkYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: [PATCH 6.6 104/132] iommu: Allow .iotlb_sync_map to fail and handle s390s -ENOMEM return
-Date: Tue,  8 Jul 2025 18:23:35 +0200
-Message-ID: <20250708162233.646157969@linuxfoundation.org>
+	Han Gao <rabenda.cn@gmail.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Vivian Wang <wangruikang@iscas.ac.cn>
+Subject: [PATCH 6.12 220/232] riscv: cpu_ops_sbi: Use static array for boot_data
+Date: Tue,  8 Jul 2025 18:23:36 +0200
+Message-ID: <20250708162247.191578475@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,321 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Vivian Wang <wangruikang@iscas.ac.cn>
 
-[ Upstream commit fa4c4507099f781ca89a748c480af9cf97629726 ]
+commit 2b29be967ae456fc09c320d91d52278cf721be1e upstream.
 
-On s390 when using a paging hypervisor, .iotlb_sync_map is used to sync
-mappings by letting the hypervisor inspect the synced IOVA range and
-updating a shadow table. This however means that .iotlb_sync_map can
-fail as the hypervisor may run out of resources while doing the sync.
-This can be due to the hypervisor being unable to pin guest pages, due
-to a limit on mapped addresses such as vfio_iommu_type1.dma_entry_limit
-or lack of other resources. Either way such a failure to sync a mapping
-should result in a DMA_MAPPING_ERROR.
+Since commit 6b9f29b81b15 ("riscv: Enable pcpu page first chunk
+allocator"), if NUMA is enabled, the page percpu allocator may be used
+on very sparse configurations, or when requested on boot with
+percpu_alloc=page.
 
-Now especially when running with batched IOTLB flushes for unmap it may
-be that some IOVAs have already been invalidated but not yet synced via
-.iotlb_sync_map. Thus if the hypervisor indicates running out of
-resources, first do a global flush allowing the hypervisor to free
-resources associated with these mappings as well a retry creating the
-new mappings and only if that also fails report this error to callers.
+In that case, percpu data gets put in the vmalloc area. However,
+sbi_hsm_hart_start() needs the physical address of a sbi_hart_boot_data,
+and simply assumes that __pa() would work. This causes the just started
+hart to immediately access an invalid address and hang.
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com> # sun50i
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230928-dma_iommu-v13-1-9e5fc4dacc36@linux.ibm.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: 45537926dd2a ("s390/pci: Fix stale function handles in error handling")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fortunately, struct sbi_hart_boot_data is not too large, so we can
+simply allocate an array for boot_data statically, putting it in the
+kernel image.
+
+This fixes NUMA=y SMP boot on Sophgo SG2042.
+
+To reproduce on QEMU: Set CONFIG_NUMA=y and CONFIG_DEBUG_VIRTUAL=y, then
+run with:
+
+  qemu-system-riscv64 -M virt -smp 2 -nographic \
+    -kernel arch/riscv/boot/Image \
+    -append "percpu_alloc=page"
+
+Kernel output:
+
+[    0.000000] Booting Linux on hartid 0
+[    0.000000] Linux version 6.16.0-rc1 (dram@sakuya) (riscv64-unknown-linux-gnu-gcc (GCC) 14.2.1 20250322, GNU ld (GNU Binutils) 2.44) #11 SMP Tue Jun 24 14:56:22 CST 2025
+...
+[    0.000000] percpu: 28 4K pages/cpu s85784 r8192 d20712
+...
+[    0.083192] smp: Bringing up secondary CPUs ...
+[    0.086722] ------------[ cut here ]------------
+[    0.086849] virt_to_phys used for non-linear address: (____ptrval____) (0xff2000000001d080)
+[    0.088001] WARNING: CPU: 0 PID: 1 at arch/riscv/mm/physaddr.c:14 __virt_to_phys+0xae/0xe8
+[    0.088376] Modules linked in:
+[    0.088656] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.16.0-rc1 #11 NONE
+[    0.088833] Hardware name: riscv-virtio,qemu (DT)
+[    0.088948] epc : __virt_to_phys+0xae/0xe8
+[    0.089001]  ra : __virt_to_phys+0xae/0xe8
+[    0.089037] epc : ffffffff80021eaa ra : ffffffff80021eaa sp : ff2000000004bbc0
+[    0.089057]  gp : ffffffff817f49c0 tp : ff60000001d60000 t0 : 5f6f745f74726976
+[    0.089076]  t1 : 0000000000000076 t2 : 705f6f745f747269 s0 : ff2000000004bbe0
+[    0.089095]  s1 : ff2000000001d080 a0 : 0000000000000000 a1 : 0000000000000000
+[    0.089113]  a2 : 0000000000000000 a3 : 0000000000000000 a4 : 0000000000000000
+[    0.089131]  a5 : 0000000000000000 a6 : 0000000000000000 a7 : 0000000000000000
+[    0.089155]  s2 : ffffffff8130dc00 s3 : 0000000000000001 s4 : 0000000000000001
+[    0.089174]  s5 : ffffffff8185eff8 s6 : ff2000007f1eb000 s7 : ffffffff8002a2ec
+[    0.089193]  s8 : 0000000000000001 s9 : 0000000000000001 s10: 0000000000000000
+[    0.089211]  s11: 0000000000000000 t3 : ffffffff8180a9f7 t4 : ffffffff8180a9f7
+[    0.089960]  t5 : ffffffff8180a9f8 t6 : ff2000000004b9d8
+[    0.089984] status: 0000000200000120 badaddr: ffffffff80021eaa cause: 0000000000000003
+[    0.090101] [<ffffffff80021eaa>] __virt_to_phys+0xae/0xe8
+[    0.090228] [<ffffffff8001d796>] sbi_cpu_start+0x6e/0xe8
+[    0.090247] [<ffffffff8001a5da>] __cpu_up+0x1e/0x8c
+[    0.090260] [<ffffffff8002a32e>] bringup_cpu+0x42/0x258
+[    0.090277] [<ffffffff8002914c>] cpuhp_invoke_callback+0xe0/0x40c
+[    0.090292] [<ffffffff800294e0>] __cpuhp_invoke_callback_range+0x68/0xfc
+[    0.090320] [<ffffffff8002a96a>] _cpu_up+0x11a/0x244
+[    0.090334] [<ffffffff8002aae6>] cpu_up+0x52/0x90
+[    0.090384] [<ffffffff80c09350>] bringup_nonboot_cpus+0x78/0x118
+[    0.090411] [<ffffffff80c11060>] smp_init+0x34/0xb8
+[    0.090425] [<ffffffff80c01220>] kernel_init_freeable+0x148/0x2e4
+[    0.090442] [<ffffffff80b83802>] kernel_init+0x1e/0x14c
+[    0.090455] [<ffffffff800124ca>] ret_from_fork_kernel+0xe/0xf0
+[    0.090471] [<ffffffff80b8d9c2>] ret_from_fork_kernel_asm+0x16/0x18
+[    0.090560] ---[ end trace 0000000000000000 ]---
+[    1.179875] CPU1: failed to come online
+[    1.190324] smp: Brought up 1 node, 1 CPU
+
+Cc: stable@vger.kernel.org
+Reported-by: Han Gao <rabenda.cn@gmail.com>
+Fixes: 6b9f29b81b15 ("riscv: Enable pcpu page first chunk allocator")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20250624-riscv-hsm-boot-data-array-v1-1-50b5eeafbe61@iscas.ac.cn
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/iommu.c    |  5 +++--
- drivers/iommu/apple-dart.c   |  5 +++--
- drivers/iommu/intel/iommu.c  |  5 +++--
- drivers/iommu/iommu.c        | 20 ++++++++++++++++----
- drivers/iommu/msm_iommu.c    |  5 +++--
- drivers/iommu/mtk_iommu.c    |  5 +++--
- drivers/iommu/s390-iommu.c   | 29 +++++++++++++++++++++++------
- drivers/iommu/sprd-iommu.c   |  5 +++--
- drivers/iommu/sun50i-iommu.c |  6 ++++--
- include/linux/iommu.h        |  4 ++--
- 10 files changed, 63 insertions(+), 26 deletions(-)
+ arch/riscv/kernel/cpu_ops_sbi.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index a5d6d786dba52..d6344b74d873c 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2241,14 +2241,15 @@ static int amd_iommu_attach_device(struct iommu_domain *dom,
- 	return ret;
- }
+--- a/arch/riscv/kernel/cpu_ops_sbi.c
++++ b/arch/riscv/kernel/cpu_ops_sbi.c
+@@ -18,10 +18,10 @@ const struct cpu_operations cpu_ops_sbi;
  
--static void amd_iommu_iotlb_sync_map(struct iommu_domain *dom,
--				     unsigned long iova, size_t size)
-+static int amd_iommu_iotlb_sync_map(struct iommu_domain *dom,
-+				    unsigned long iova, size_t size)
- {
- 	struct protection_domain *domain = to_pdomain(dom);
- 	struct io_pgtable_ops *ops = &domain->iop.iop.ops;
+ /*
+  * Ordered booting via HSM brings one cpu at a time. However, cpu hotplug can
+- * be invoked from multiple threads in parallel. Define a per cpu data
++ * be invoked from multiple threads in parallel. Define an array of boot data
+  * to handle that.
+  */
+-static DEFINE_PER_CPU(struct sbi_hart_boot_data, boot_data);
++static struct sbi_hart_boot_data boot_data[NR_CPUS];
  
- 	if (ops->map_pages)
- 		domain_flush_np_cache(domain, iova, size);
-+	return 0;
- }
+ static int sbi_hsm_hart_start(unsigned long hartid, unsigned long saddr,
+ 			      unsigned long priv)
+@@ -67,7 +67,7 @@ static int sbi_cpu_start(unsigned int cp
+ 	unsigned long boot_addr = __pa_symbol(secondary_start_sbi);
+ 	unsigned long hartid = cpuid_to_hartid_map(cpuid);
+ 	unsigned long hsm_data;
+-	struct sbi_hart_boot_data *bdata = &per_cpu(boot_data, cpuid);
++	struct sbi_hart_boot_data *bdata = &boot_data[cpuid];
  
- static int amd_iommu_map_pages(struct iommu_domain *dom, unsigned long iova,
-diff --git a/drivers/iommu/apple-dart.c b/drivers/iommu/apple-dart.c
-index 0b89275084274..d6263ce05b9ba 100644
---- a/drivers/iommu/apple-dart.c
-+++ b/drivers/iommu/apple-dart.c
-@@ -506,10 +506,11 @@ static void apple_dart_iotlb_sync(struct iommu_domain *domain,
- 	apple_dart_domain_flush_tlb(to_dart_domain(domain));
- }
- 
--static void apple_dart_iotlb_sync_map(struct iommu_domain *domain,
--				      unsigned long iova, size_t size)
-+static int apple_dart_iotlb_sync_map(struct iommu_domain *domain,
-+				     unsigned long iova, size_t size)
- {
- 	apple_dart_domain_flush_tlb(to_dart_domain(domain));
-+	return 0;
- }
- 
- static phys_addr_t apple_dart_iova_to_phys(struct iommu_domain *domain,
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 6a745616d85a4..ddfde6edf7566 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -4680,8 +4680,8 @@ static bool risky_device(struct pci_dev *pdev)
- 	return false;
- }
- 
--static void intel_iommu_iotlb_sync_map(struct iommu_domain *domain,
--				       unsigned long iova, size_t size)
-+static int intel_iommu_iotlb_sync_map(struct iommu_domain *domain,
-+				      unsigned long iova, size_t size)
- {
- 	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
- 	unsigned long pages = aligned_nrpages(iova, size);
-@@ -4691,6 +4691,7 @@ static void intel_iommu_iotlb_sync_map(struct iommu_domain *domain,
- 
- 	xa_for_each(&dmar_domain->iommu_array, i, info)
- 		__mapping_notify_one(info->iommu, dmar_domain, pfn, pages);
-+	return 0;
- }
- 
- static void intel_iommu_remove_dev_pasid(struct device *dev, ioasid_t pasid)
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 3fa5699b9ff19..481eb6766ee13 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -2530,8 +2530,17 @@ int iommu_map(struct iommu_domain *domain, unsigned long iova,
- 		return -EINVAL;
- 
- 	ret = __iommu_map(domain, iova, paddr, size, prot, gfp);
--	if (ret == 0 && ops->iotlb_sync_map)
--		ops->iotlb_sync_map(domain, iova, size);
-+	if (ret == 0 && ops->iotlb_sync_map) {
-+		ret = ops->iotlb_sync_map(domain, iova, size);
-+		if (ret)
-+			goto out_err;
-+	}
-+
-+	return ret;
-+
-+out_err:
-+	/* undo mappings already done */
-+	iommu_unmap(domain, iova, size);
- 
- 	return ret;
- }
-@@ -2672,8 +2681,11 @@ ssize_t iommu_map_sg(struct iommu_domain *domain, unsigned long iova,
- 			sg = sg_next(sg);
- 	}
- 
--	if (ops->iotlb_sync_map)
--		ops->iotlb_sync_map(domain, iova, mapped);
-+	if (ops->iotlb_sync_map) {
-+		ret = ops->iotlb_sync_map(domain, iova, mapped);
-+		if (ret)
-+			goto out_err;
-+	}
- 	return mapped;
- 
- out_err:
-diff --git a/drivers/iommu/msm_iommu.c b/drivers/iommu/msm_iommu.c
-index 79d89bad5132b..47926d3290e6c 100644
---- a/drivers/iommu/msm_iommu.c
-+++ b/drivers/iommu/msm_iommu.c
-@@ -486,12 +486,13 @@ static int msm_iommu_map(struct iommu_domain *domain, unsigned long iova,
- 	return ret;
- }
- 
--static void msm_iommu_sync_map(struct iommu_domain *domain, unsigned long iova,
--			       size_t size)
-+static int msm_iommu_sync_map(struct iommu_domain *domain, unsigned long iova,
-+			      size_t size)
- {
- 	struct msm_priv *priv = to_msm_priv(domain);
- 
- 	__flush_iotlb_range(iova, size, SZ_4K, false, priv);
-+	return 0;
- }
- 
- static size_t msm_iommu_unmap(struct iommu_domain *domain, unsigned long iova,
-diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-index 06c0770ff894e..2cba98233be0f 100644
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -817,12 +817,13 @@ static void mtk_iommu_iotlb_sync(struct iommu_domain *domain,
- 	mtk_iommu_tlb_flush_range_sync(gather->start, length, dom->bank);
- }
- 
--static void mtk_iommu_sync_map(struct iommu_domain *domain, unsigned long iova,
--			       size_t size)
-+static int mtk_iommu_sync_map(struct iommu_domain *domain, unsigned long iova,
-+			      size_t size)
- {
- 	struct mtk_iommu_domain *dom = to_mtk_domain(domain);
- 
- 	mtk_iommu_tlb_flush_range_sync(iova, size, dom->bank);
-+	return 0;
- }
- 
- static phys_addr_t mtk_iommu_iova_to_phys(struct iommu_domain *domain,
-diff --git a/drivers/iommu/s390-iommu.c b/drivers/iommu/s390-iommu.c
-index f0c867c57a5b9..3b512e52610b1 100644
---- a/drivers/iommu/s390-iommu.c
-+++ b/drivers/iommu/s390-iommu.c
-@@ -222,6 +222,12 @@ static void s390_iommu_release_device(struct device *dev)
- 		__s390_iommu_detach_device(zdev);
- }
- 
-+static int zpci_refresh_all(struct zpci_dev *zdev)
-+{
-+	return zpci_refresh_trans((u64)zdev->fh << 32, zdev->start_dma,
-+				  zdev->end_dma - zdev->start_dma + 1);
-+}
-+
- static void s390_iommu_flush_iotlb_all(struct iommu_domain *domain)
- {
- 	struct s390_domain *s390_domain = to_s390_domain(domain);
-@@ -229,8 +235,7 @@ static void s390_iommu_flush_iotlb_all(struct iommu_domain *domain)
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(zdev, &s390_domain->devices, iommu_list) {
--		zpci_refresh_trans((u64)zdev->fh << 32, zdev->start_dma,
--				   zdev->end_dma - zdev->start_dma + 1);
-+		zpci_refresh_all(zdev);
- 	}
- 	rcu_read_unlock();
- }
-@@ -254,20 +259,32 @@ static void s390_iommu_iotlb_sync(struct iommu_domain *domain,
- 	rcu_read_unlock();
- }
- 
--static void s390_iommu_iotlb_sync_map(struct iommu_domain *domain,
--				      unsigned long iova, size_t size)
-+static int s390_iommu_iotlb_sync_map(struct iommu_domain *domain,
-+				     unsigned long iova, size_t size)
- {
- 	struct s390_domain *s390_domain = to_s390_domain(domain);
- 	struct zpci_dev *zdev;
-+	int ret = 0;
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(zdev, &s390_domain->devices, iommu_list) {
- 		if (!zdev->tlb_refresh)
- 			continue;
--		zpci_refresh_trans((u64)zdev->fh << 32,
--				   iova, size);
-+		ret = zpci_refresh_trans((u64)zdev->fh << 32,
-+					 iova, size);
-+		/*
-+		 * let the hypervisor discover invalidated entries
-+		 * allowing it to free IOVAs and unpin pages
-+		 */
-+		if (ret == -ENOMEM) {
-+			ret = zpci_refresh_all(zdev);
-+			if (ret)
-+				break;
-+		}
- 	}
- 	rcu_read_unlock();
-+
-+	return ret;
- }
- 
- static int s390_iommu_validate_trans(struct s390_domain *s390_domain,
-diff --git a/drivers/iommu/sprd-iommu.c b/drivers/iommu/sprd-iommu.c
-index c8e79a2d8b4c6..03aea6ed0d422 100644
---- a/drivers/iommu/sprd-iommu.c
-+++ b/drivers/iommu/sprd-iommu.c
-@@ -345,8 +345,8 @@ static size_t sprd_iommu_unmap(struct iommu_domain *domain, unsigned long iova,
- 	return size;
- }
- 
--static void sprd_iommu_sync_map(struct iommu_domain *domain,
--				unsigned long iova, size_t size)
-+static int sprd_iommu_sync_map(struct iommu_domain *domain,
-+			       unsigned long iova, size_t size)
- {
- 	struct sprd_iommu_domain *dom = to_sprd_domain(domain);
- 	unsigned int reg;
-@@ -358,6 +358,7 @@ static void sprd_iommu_sync_map(struct iommu_domain *domain,
- 
- 	/* clear IOMMU TLB buffer after page table updated */
- 	sprd_iommu_write(dom->sdev, reg, 0xffffffff);
-+	return 0;
- }
- 
- static void sprd_iommu_sync(struct iommu_domain *domain,
-diff --git a/drivers/iommu/sun50i-iommu.c b/drivers/iommu/sun50i-iommu.c
-index 94bd7f25f6f26..e6b2fe3db4216 100644
---- a/drivers/iommu/sun50i-iommu.c
-+++ b/drivers/iommu/sun50i-iommu.c
-@@ -402,8 +402,8 @@ static void sun50i_iommu_flush_iotlb_all(struct iommu_domain *domain)
- 	spin_unlock_irqrestore(&iommu->iommu_lock, flags);
- }
- 
--static void sun50i_iommu_iotlb_sync_map(struct iommu_domain *domain,
--					unsigned long iova, size_t size)
-+static int sun50i_iommu_iotlb_sync_map(struct iommu_domain *domain,
-+				       unsigned long iova, size_t size)
- {
- 	struct sun50i_iommu_domain *sun50i_domain = to_sun50i_domain(domain);
- 	struct sun50i_iommu *iommu = sun50i_domain->iommu;
-@@ -412,6 +412,8 @@ static void sun50i_iommu_iotlb_sync_map(struct iommu_domain *domain,
- 	spin_lock_irqsave(&iommu->iommu_lock, flags);
- 	sun50i_iommu_zap_range(iommu, iova, size);
- 	spin_unlock_irqrestore(&iommu->iommu_lock, flags);
-+
-+	return 0;
- }
- 
- static void sun50i_iommu_iotlb_sync(struct iommu_domain *domain,
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index b6ef263e85c06..187528e0ebb99 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -346,8 +346,8 @@ struct iommu_domain_ops {
- 			      struct iommu_iotlb_gather *iotlb_gather);
- 
- 	void (*flush_iotlb_all)(struct iommu_domain *domain);
--	void (*iotlb_sync_map)(struct iommu_domain *domain, unsigned long iova,
--			       size_t size);
-+	int (*iotlb_sync_map)(struct iommu_domain *domain, unsigned long iova,
-+			      size_t size);
- 	void (*iotlb_sync)(struct iommu_domain *domain,
- 			   struct iommu_iotlb_gather *iotlb_gather);
- 
--- 
-2.39.5
-
+ 	/* Make sure tidle is updated */
+ 	smp_mb();
 
 
 
