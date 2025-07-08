@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-160647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585CCAFD122
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6C8AFD272
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7C6C562FCC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:31:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED2753B9716
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06021BEF7E;
-	Tue,  8 Jul 2025 16:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C222DD5EF;
+	Tue,  8 Jul 2025 16:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LR+eDeY9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SY8LJWCd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFA92E3701;
-	Tue,  8 Jul 2025 16:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F922DECC4;
+	Tue,  8 Jul 2025 16:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992277; cv=none; b=uMvFmeb2f/LzC+AqPX19ArUG7F2CqI3LaSnvA2yNzaZv9+Z/uUTh+XP5erSRVrNCB+2sXqtvMzlp+YkddMY1KoOZ56CMzkRM31FBn1SuuplmXleFq5MkJdam10BQsI+OiAX7ZK44QmOWnsVfKWqu61UpPFPrxQ2zIiWLQrt1riY=
+	t=1751992999; cv=none; b=UCHgzmF9iUe0qvxKiLbQhWWbc8dR1ZaU+CpXBfW2JJnFX2O8HCSo0MoIjzpTALcMsTCSZuUfGGmkkKPDAxB6BncZMaIea4oFF9s1ISbKX0lU0MpPzM+/el+YhWH3sZPb/VV0/bsYEyfuE7sg9Pra0vb6CX/LoM7DTNrtwlXwgyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992277; c=relaxed/simple;
-	bh=quZn6u2DBOsaIYB+HTr3HjwzNLYa7zZqp1xrBEEmnTU=;
+	s=arc-20240116; t=1751992999; c=relaxed/simple;
+	bh=0Stst0sL+rnU3jHiL/jbTeZlIGpTwnT/iuZWTkdRUSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rTInyNkbbelc9RPnrBYuXS++wzPCG0xCZTIFqd461uUTk/gSoyyYQdI57KDWA6mRN/3RbPPROdWyLM8UJmWnxbej2X2nFKYYNhRfIoWt+Gc4u+B27yCyz7IOGWIgnv7kOlBjEP87qQbeoZ+YvyqjsqpdIuX8ZgisdeG7eb1aoTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LR+eDeY9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84FCC4CEED;
-	Tue,  8 Jul 2025 16:31:16 +0000 (UTC)
+	 MIME-Version; b=bWervy61l768Uibq24oGODJ1V6y8ftENksF3vRPHIyEz/OQ8/NEkTKbMjCsjjz5Cf5/V9R1yEJ9GnTuV6DO+YJiw55GIZ61Fb/22hy6r7o10dqZBXHwYbrymeydhnQmcnsz0yuCg9nIjXkgCi3rjwphxTSxxlgf+QJCyImuJWDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SY8LJWCd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05961C4CEED;
+	Tue,  8 Jul 2025 16:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992277;
-	bh=quZn6u2DBOsaIYB+HTr3HjwzNLYa7zZqp1xrBEEmnTU=;
+	s=korg; t=1751992998;
+	bh=0Stst0sL+rnU3jHiL/jbTeZlIGpTwnT/iuZWTkdRUSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LR+eDeY9QjOyJpEWOrckpDGgxhYm02TMe3/xxuBCQAIXYmWQo/y2SN5GnZu1rB00h
-	 KAzViQG52ibqoDKNoG1suF+iHV4TvgpYeIovoQGod/zf108wqUQ3wkY8nOkdb0DVO8
-	 KhapRIoOhJDHN1RI6Zv1ORJh1EpKXMcpGWoAFGhI=
+	b=SY8LJWCd2xlJMeS0Y2BIJpMbK9hKmhQZHzorUjcuNebnK9uGX5aMW2F0vyx1RGdc3
+	 hOBbvj7oe07FrQgjpbzkjDG3puptoxuGNvf7T/KnkoXQ+vbfEGBw06S5hGIMkLhHo4
+	 Tk+GmZ05qUFFlWrIcgiN6vPuOr4VUqbvfUFc3hqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fushuai Wang <wangfushuai@baidu.com>,
-	Simon Horman <horms@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/132] dpaa2-eth: fix xdp_rxq_info leak
+Subject: [PATCH 6.12 152/232] mfd: exynos-lpass: Fix another error handling path in exynos_lpass_probe()
 Date: Tue,  8 Jul 2025 18:22:28 +0200
-Message-ID: <20250708162231.778857187@linuxfoundation.org>
+Message-ID: <20250708162245.415268252@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fushuai Wang <wangfushuai@baidu.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 2def09ead4ad5907988b655d1e1454003aaf8297 ]
+[ Upstream commit f41cc37f4bc0e8cd424697bf6e26586cadcf4b9b ]
 
-The driver registered xdp_rxq_info structures via xdp_rxq_info_reg()
-but failed to properly unregister them in error paths and during
-removal.
+If devm_of_platform_populate() fails, some clean-up needs to be done, as
+already done in the remove function.
 
-Fixes: d678be1dc1ec ("dpaa2-eth: add XDP_REDIRECT support")
-Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://patch.msgid.link/20250626133003.80136-1-wangfushuai@baidu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Add a new devm_add_action_or_reset() to fix the leak in the probe and
+remove the need of a remove function.
+
+Fixes: c695abab2429 ("mfd: Add Samsung Exynos Low Power Audio Subsystem driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/69471e839efc0249a504492a8de3497fcdb6a009.1745247209.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/freescale/dpaa2/dpaa2-eth.c  | 26 +++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ drivers/mfd/exynos-lpass.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-index 40e8818295951..d3c36a6f84b01 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -3928,6 +3928,7 @@ static int dpaa2_eth_setup_rx_flow(struct dpaa2_eth_priv *priv,
- 					 MEM_TYPE_PAGE_ORDER0, NULL);
- 	if (err) {
- 		dev_err(dev, "xdp_rxq_info_reg_mem_model failed\n");
-+		xdp_rxq_info_unreg(&fq->channel->xdp_rxq);
- 		return err;
- 	}
+diff --git a/drivers/mfd/exynos-lpass.c b/drivers/mfd/exynos-lpass.c
+index e36805f07282e..8b5fed4760394 100644
+--- a/drivers/mfd/exynos-lpass.c
++++ b/drivers/mfd/exynos-lpass.c
+@@ -104,11 +104,22 @@ static const struct regmap_config exynos_lpass_reg_conf = {
+ 	.fast_io	= true,
+ };
  
-@@ -4421,17 +4422,25 @@ static int dpaa2_eth_bind_dpni(struct dpaa2_eth_priv *priv)
- 			return -EINVAL;
- 		}
- 		if (err)
--			return err;
-+			goto out;
- 	}
- 
- 	err = dpni_get_qdid(priv->mc_io, 0, priv->mc_token,
- 			    DPNI_QUEUE_TX, &priv->tx_qdid);
- 	if (err) {
- 		dev_err(dev, "dpni_get_qdid() failed\n");
--		return err;
-+		goto out;
- 	}
- 
- 	return 0;
-+
-+out:
-+	while (i--) {
-+		if (priv->fq[i].type == DPAA2_RX_FQ &&
-+		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
-+			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
-+	}
-+	return err;
- }
- 
- /* Allocate rings for storing incoming frame descriptors */
-@@ -4813,6 +4822,17 @@ static void dpaa2_eth_del_ch_napi(struct dpaa2_eth_priv *priv)
- 	}
- }
- 
-+static void dpaa2_eth_free_rx_xdp_rxq(struct dpaa2_eth_priv *priv)
++static void exynos_lpass_disable_lpass(void *data)
 +{
-+	int i;
++	struct platform_device *pdev = data;
++	struct exynos_lpass *lpass = platform_get_drvdata(pdev);
 +
-+	for (i = 0; i < priv->num_fqs; i++) {
-+		if (priv->fq[i].type == DPAA2_RX_FQ &&
-+		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
-+			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
-+	}
++	pm_runtime_disable(&pdev->dev);
++	if (!pm_runtime_status_suspended(&pdev->dev))
++		exynos_lpass_disable(lpass);
 +}
 +
- static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
+ static int exynos_lpass_probe(struct platform_device *pdev)
  {
- 	struct device *dev;
-@@ -5016,6 +5036,7 @@ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
- 	free_percpu(priv->percpu_stats);
- err_alloc_percpu_stats:
- 	dpaa2_eth_del_ch_napi(priv);
-+	dpaa2_eth_free_rx_xdp_rxq(priv);
- err_bind:
- 	dpaa2_eth_free_dpbps(priv);
- err_dpbp_setup:
-@@ -5068,6 +5089,7 @@ static void dpaa2_eth_remove(struct fsl_mc_device *ls_dev)
- 	free_percpu(priv->percpu_extras);
+ 	struct device *dev = &pdev->dev;
+ 	struct exynos_lpass *lpass;
+ 	void __iomem *base_top;
++	int ret;
  
- 	dpaa2_eth_del_ch_napi(priv);
-+	dpaa2_eth_free_rx_xdp_rxq(priv);
- 	dpaa2_eth_free_dpbps(priv);
- 	dpaa2_eth_free_dpio(priv);
- 	dpaa2_eth_free_dpni(priv);
+ 	lpass = devm_kzalloc(dev, sizeof(*lpass), GFP_KERNEL);
+ 	if (!lpass)
+@@ -134,16 +145,11 @@ static int exynos_lpass_probe(struct platform_device *pdev)
+ 	pm_runtime_enable(dev);
+ 	exynos_lpass_enable(lpass);
+ 
+-	return devm_of_platform_populate(dev);
+-}
+-
+-static void exynos_lpass_remove(struct platform_device *pdev)
+-{
+-	struct exynos_lpass *lpass = platform_get_drvdata(pdev);
++	ret = devm_add_action_or_reset(dev, exynos_lpass_disable_lpass, pdev);
++	if (ret)
++		return ret;
+ 
+-	pm_runtime_disable(&pdev->dev);
+-	if (!pm_runtime_status_suspended(&pdev->dev))
+-		exynos_lpass_disable(lpass);
++	return devm_of_platform_populate(dev);
+ }
+ 
+ static int __maybe_unused exynos_lpass_suspend(struct device *dev)
+@@ -183,7 +189,6 @@ static struct platform_driver exynos_lpass_driver = {
+ 		.of_match_table	= exynos_lpass_of_match,
+ 	},
+ 	.probe	= exynos_lpass_probe,
+-	.remove_new = exynos_lpass_remove,
+ };
+ module_platform_driver(exynos_lpass_driver);
+ 
 -- 
 2.39.5
 
