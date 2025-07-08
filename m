@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-160870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4BA2AFD1FC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94CEAFD314
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96F417A9222
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AE7E188DF5F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51EE921773D;
-	Tue,  8 Jul 2025 16:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA122E0911;
+	Tue,  8 Jul 2025 16:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/+v5Vtk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="keP3g/Br"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AB25464F;
-	Tue,  8 Jul 2025 16:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EF5257459;
+	Tue,  8 Jul 2025 16:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992930; cv=none; b=sgJUcpr0twRIp1dHQDdzlCeKfppGZs1oCzqiUhvtx4Ftf42eKMKZ+rO3djVoxz2tNBYdbMIoAP2L134a+A0tht+1ZR2mrheHpgIqQFvN1SvnL+gkTsdH1g0Ed2vLwlLRACxvD4avPaTLyANKvEyhKLejVsZ1h5PmbFvo8sJq9E0=
+	t=1751993393; cv=none; b=EVpOlzpq1KGFWs7PRU2+/Cu7K+9vPjFo+diMw//jtr76eVSpRDa9AQdkGM9t4tOyqxQD99SP95sAAkS22FUraJA9MYy9QJ+wVtpjHT0VNezSZmRvenWLJ7DmYJq90RE4EpGxyJ3YQ5kL699bOFJKprRFsIwkP1XiElWXZcyIRR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992930; c=relaxed/simple;
-	bh=yh3Eqss4pl1JDtvPw/KL4FBhSEhjnA8rSaEOOPTlW4U=;
+	s=arc-20240116; t=1751993393; c=relaxed/simple;
+	bh=nbreTs6wvx8DMGgukpugh0+3q22Yd2LkiKZWlssFMTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LPNojslWWOZmR7+Mgj8m2/d8xQ8FQIUsNhwQkS4IOhAk0KBUsIGuCeYhezoHZoj8jtI+1aUh3Ebi5eZLKG28bPTGHJvv07QdN99lR2ALHDuzdUA7yNmyYhFjecqzO4eMuVuIULL8xBsKEP96KMfujhk9+47Mi1IMeYrjSYshxak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/+v5Vtk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47502C4CEED;
-	Tue,  8 Jul 2025 16:42:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TdCX6yL0tu3Sh3cttfTU5RDD7kaP7iJ1nYYCWf6V/PB1YDiQIxUZP6OuRfmywkzn5DObXOG3VyYXrW4gKmRg09tgy8QaILQRmiasiUWys2vKfO6jChgtxuwvjbvgSywaEtDFLVpVdPTt3VnJVuqHotnSEzwMYy+996xhC8pr3As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=keP3g/Br; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C2CC4CEED;
+	Tue,  8 Jul 2025 16:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992929;
-	bh=yh3Eqss4pl1JDtvPw/KL4FBhSEhjnA8rSaEOOPTlW4U=;
+	s=korg; t=1751993393;
+	bh=nbreTs6wvx8DMGgukpugh0+3q22Yd2LkiKZWlssFMTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/+v5Vtkbg3e+Ievf+QeuyKASqeNm5F7UGSwaI4XmxcTIW5GYNF1C4jPiirJiZjq1
-	 QdmRJ53A65W1SMlj2mJxi5deQaZw8EnhVYBKGZjIzPiOAFpFC/9YgphZB2XZJrZc7+
-	 X2CsHukWIsfPmyE1aw6AsT9kBSaqXExL9DXqzZ0E=
+	b=keP3g/Br5dOHgyUydSQcSNGYiRxMiaCcMzfFckkf4VWlP8wC3SftLAUPmsTeRdCft
+	 twLhOZCJESXGViG5uaK/Mw/hMMjXV/vZ6v/lp9lyO57q6Eo1+eUZ1O2N6NN7Wd3ls9
+	 cyXuI5UlDeZaeGjkHcIvZsqngwf+rYleEWYRPa9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	David Thompson <davthompson@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/232] kunit: qemu_configs: sparc: Explicitly enable CONFIG_SPARC32=y
+Subject: [PATCH 6.15 058/178] platform/mellanox: mlxbf-pmc: Fix duplicate event ID for CACHE_DATA1
 Date: Tue,  8 Jul 2025 18:21:35 +0200
-Message-ID: <20250708162244.036805363@linuxfoundation.org>
+Message-ID: <20250708162238.196140471@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +64,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit d16b3d0fb43cb0f9eb21b35c2d2c870b3f38ab1d ]
+[ Upstream commit 173bbec6693f3f3f00dac144f3aa0cd62fb60d33 ]
 
-The configuration generated by kunit ends up with a 32bit configuration.
-A new kunit configuration for 64bit is to be added.
-To make the difference clearer spell out the variant in the kunit
-reference config.
+same ID (103) was assigned to both GDC_BANK0_G_RSE_PIPE_CACHE_DATA0
+and GDC_BANK0_G_RSE_PIPE_CACHE_DATA1. This could lead to incorrect
+event mapping.
+Updated the ID to 104 to ensure uniqueness.
 
-Link: https://lore.kernel.org/r/20250415-kunit-qemu-sparc64-v1-1-253906f61102@linutronix.de
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Stable-dep-of: 1d31d536871f ("kunit: qemu_configs: Disable faulting tests on 32-bit SPARC")
+Fixes: 423c3361855c ("platform/mellanox: mlxbf-pmc: Add support for BlueField-3")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/20250619060502.3594350-1-alok.a.tiwari@oracle.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/kunit/qemu_configs/sparc.py | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/mellanox/mlxbf-pmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/kunit/qemu_configs/sparc.py b/tools/testing/kunit/qemu_configs/sparc.py
-index 256d9573b4464..3131dd299a6e3 100644
---- a/tools/testing/kunit/qemu_configs/sparc.py
-+++ b/tools/testing/kunit/qemu_configs/sparc.py
-@@ -2,6 +2,7 @@ from ..qemu_config import QemuArchParams
- 
- QEMU_ARCH = QemuArchParams(linux_arch='sparc',
- 			   kconfig='''
-+CONFIG_SPARC32=y
- CONFIG_SERIAL_SUNZILOG=y
- CONFIG_SERIAL_SUNZILOG_CONSOLE=y
- ''',
+diff --git a/drivers/platform/mellanox/mlxbf-pmc.c b/drivers/platform/mellanox/mlxbf-pmc.c
+index 36a00692347dc..771a24c397c12 100644
+--- a/drivers/platform/mellanox/mlxbf-pmc.c
++++ b/drivers/platform/mellanox/mlxbf-pmc.c
+@@ -713,7 +713,7 @@ static const struct mlxbf_pmc_events mlxbf_pmc_llt_events[] = {
+ 	{101, "GDC_BANK0_HIT_DCL_PARTIAL"},
+ 	{102, "GDC_BANK0_EVICT_DCL"},
+ 	{103, "GDC_BANK0_G_RSE_PIPE_CACHE_DATA0"},
+-	{103, "GDC_BANK0_G_RSE_PIPE_CACHE_DATA1"},
++	{104, "GDC_BANK0_G_RSE_PIPE_CACHE_DATA1"},
+ 	{105, "GDC_BANK0_ARB_STRB"},
+ 	{106, "GDC_BANK0_ARB_WAIT"},
+ 	{107, "GDC_BANK0_GGA_STRB"},
 -- 
 2.39.5
 
