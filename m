@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-161019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B564AFD2B1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:49:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D807AFD3F8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 329E27AB165
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6FE9427861
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21572E540C;
-	Tue,  8 Jul 2025 16:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801A12E6139;
+	Tue,  8 Jul 2025 16:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvCxgHwZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjym/d43"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A4123D2AB;
-	Tue,  8 Jul 2025 16:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD742E091E;
+	Tue,  8 Jul 2025 16:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993364; cv=none; b=pareL+k45Cto/o63KfrKZY6ioG4pCvWu8uxcq9Du39SMsUP8ivw16hxZkbU8p3SAI4S//vbdPHG+Rj4oEnV74Jj4kfx0fdliBcQR0FuBcfn1QDCEQxzSMUlbZHyvP/XteBvMt7gtcW1llK+Md4Muyt2Gs3RhltpA6gGQwmCGjsE=
+	t=1751993875; cv=none; b=bF/lxJmxbM1OV2VlqTdx5Fj0U+XGF3rZuZhQzudm0UijGXMfSW7TuWh3/fOROU8p1Pua6VRNyxF4HecNNmzOz0LLnmyxbGTbeF1pENTc5uBvRbx9L6SvnCtxsCcHFGTTZ6NCq+qg9SjO71E7lQeBJr9uT5dAkMmlmU85Sepz8uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993364; c=relaxed/simple;
-	bh=UH98qpj8p+Wnkbq5Q12KATVX+kfcVfXnymdjRyLqRq4=;
+	s=arc-20240116; t=1751993875; c=relaxed/simple;
+	bh=QExwU6hDBf3KBOnQ6yi21yYw1qH97DEMAvtuPLu1VcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dXMSPHD0a88DAeF56UTNmb5EBCW18WaXmEPgyDllCCc4t41XYIXrQXckdsayqRdtH3RaZ/x3f1A7sGAIxI0kzak01FZ1Ap65ZqM0UIZ4r+L9CGwx8SL3/i81zv9sRQLiLRQA2Zvy2uU3moU+o0eTSd32LjzoyTgMkGBQXJKYHFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvCxgHwZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFEBC4CEED;
-	Tue,  8 Jul 2025 16:49:23 +0000 (UTC)
+	 MIME-Version; b=HddVr92+Bbb+O9Tpg68o0Qs617YpI/4xm3qW78OBwpSYyCts56IRmh8Kp8lZPwukMfgh7jbARuyWkpYqCkUXEPdf/GdEadALko9M9JUZ+NRtY+D0/VFPqYmZ2ECIZElA6LUkAl3Z3Ba6dvkDIE3lWAmad8STZm5tFPKl9vhg2/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjym/d43; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FF3C4CEF5;
+	Tue,  8 Jul 2025 16:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993364;
-	bh=UH98qpj8p+Wnkbq5Q12KATVX+kfcVfXnymdjRyLqRq4=;
+	s=korg; t=1751993875;
+	bh=QExwU6hDBf3KBOnQ6yi21yYw1qH97DEMAvtuPLu1VcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yvCxgHwZ5yJ4vFBwd8sp4DgTu/i6d+5SL/QQyH8Z2aixId4hVr5FM3I/iG6ae4zvf
-	 qJlQJls1JzKZsabilXm0qUALymED/WB0fEmkGYT3AYCyT/VeE6uiD41U+FLJbv5nDR
-	 i+IEXRq1M74Ga0rFBax4KLTMwad7SQUtmOaT+rPw=
+	b=gjym/d43TnBG2zhNYJlvdZxLWeWql+sj1cFKpVEi51gtmV4E1vg6mE5lwPODUGkkr
+	 qtB4KX6zPnuoWeudpDXBZOEzuF71daqpJje0pVLC4jJItN/xXUlyVqF3TE2YM95twE
+	 yro+PJwZI8ckcn55y9GpFM7ePIt09u+x5JPfrfw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 049/178] scsi: qla2xxx: Fix DMA mapping test in qla24xx_get_port_database()
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Daniel Vetter <daniel.vetter@intel.com>,
+	Helge Deller <deller@gmx.de>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Du Cheng <ducheng2@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Claudio Suarez <cssk@net-c.es>,
+	Sasha Levin <sashal@kernel.org>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 5.15 049/160] fbcon: delete a few unneeded forward decl
 Date: Tue,  8 Jul 2025 18:21:26 +0200
-Message-ID: <20250708162237.966786448@linuxfoundation.org>
+Message-ID: <20250708162232.897517456@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +69,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-[ Upstream commit c3b214719a87735d4f67333a8ef3c0e31a34837c ]
+[ Upstream commit 9ad7acdad1d91545b99bf9fda3de4b86cf48b272 ]
 
-dma_map_XXX() functions return as error values DMA_MAPPING_ERROR which is
-often ~0.  The error value should be tested with dma_mapping_error() like
-it was done in qla26xx_dport_diagnostics().
+I didn't bother with any code movement to fix the others, these just
+got a bit in the way.
 
-Fixes: 818c7f87a177 ("scsi: qla2xxx: Add changes in preparation for vendor extended FDMI/RDP")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250617161115.39888-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+v2: Rebase on top of Helge's reverts.
+
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Sam Ravnborg <sam@ravnborg.org> (v1)
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org> (v1)
+Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Du Cheng <ducheng2@gmail.com>
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc: Claudio Suarez <cssk@net-c.es>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20220405210335.3434130-2-daniel.vetter@ffwll.ch
+Stable-dep-of: 03bcbbb3995b ("dummycon: Trigger redraw when switching consoles with deferred takeover")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_mbx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbcon.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_mbx.c b/drivers/scsi/qla2xxx/qla_mbx.c
-index 0cd6f3e148824..13b6cb1b93acd 100644
---- a/drivers/scsi/qla2xxx/qla_mbx.c
-+++ b/drivers/scsi/qla2xxx/qla_mbx.c
-@@ -2147,7 +2147,7 @@ qla24xx_get_port_database(scsi_qla_host_t *vha, u16 nport_handle,
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index a67f982fe2ec0..a3af7aacfaf11 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -163,29 +163,14 @@ static int fbcon_cursor_noblink;
+  *  Interface used by the world
+  */
  
- 	pdb_dma = dma_map_single(&vha->hw->pdev->dev, pdb,
- 	    sizeof(*pdb), DMA_FROM_DEVICE);
--	if (!pdb_dma) {
-+	if (dma_mapping_error(&vha->hw->pdev->dev, pdb_dma)) {
- 		ql_log(ql_log_warn, vha, 0x1116, "Failed to map dma buffer.\n");
- 		return QLA_MEMORY_ALLOC_FAILED;
- 	}
+-static const char *fbcon_startup(void);
+-static void fbcon_init(struct vc_data *vc, int init);
+-static void fbcon_deinit(struct vc_data *vc);
+-static void fbcon_clear(struct vc_data *vc, int sy, int sx, int height,
+-			int width);
+-static void fbcon_putc(struct vc_data *vc, int c, int ypos, int xpos);
+-static void fbcon_putcs(struct vc_data *vc, const unsigned short *s,
+-			int count, int ypos, int xpos);
+ static void fbcon_clear_margins(struct vc_data *vc, int bottom_only);
+-static void fbcon_cursor(struct vc_data *vc, int mode);
+ static void fbcon_bmove(struct vc_data *vc, int sy, int sx, int dy, int dx,
+ 			int height, int width);
+-static int fbcon_switch(struct vc_data *vc);
+-static int fbcon_blank(struct vc_data *vc, int blank, int mode_switch);
+ static void fbcon_set_palette(struct vc_data *vc, const unsigned char *table);
+ 
+ /*
+  *  Internal routines
+  */
+-static __inline__ void ywrap_up(struct vc_data *vc, int count);
+-static __inline__ void ywrap_down(struct vc_data *vc, int count);
+-static __inline__ void ypan_up(struct vc_data *vc, int count);
+-static __inline__ void ypan_down(struct vc_data *vc, int count);
+ static void fbcon_bmove_rec(struct vc_data *vc, struct fbcon_display *p, int sy, int sx,
+ 			    int dy, int dx, int height, int width, u_int y_break);
+ static void fbcon_set_disp(struct fb_info *info, struct fb_var_screeninfo *var,
+@@ -194,8 +179,8 @@ static void fbcon_redraw_move(struct vc_data *vc, struct fbcon_display *p,
+ 			      int line, int count, int dy);
+ static void fbcon_modechanged(struct fb_info *info);
+ static void fbcon_set_all_vcs(struct fb_info *info);
+-static void fbcon_start(void);
+ static void fbcon_exit(void);
++
+ static struct device *fbcon_device;
+ 
+ #ifdef CONFIG_FRAMEBUFFER_CONSOLE_ROTATION
 -- 
 2.39.5
 
