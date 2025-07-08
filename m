@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-161009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92689AFD2F1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11746AFD3D8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:01:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF36418845FF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D9BA1891CA1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A3B23D2AB;
-	Tue,  8 Jul 2025 16:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558FF2E4985;
+	Tue,  8 Jul 2025 16:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wp+xrxS6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgTJ5Vi4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B488A7E9;
-	Tue,  8 Jul 2025 16:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13511258CF7;
+	Tue,  8 Jul 2025 16:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993336; cv=none; b=cByk0oplN6+hFbNTr8AtttdTrb1hNP6wHzZkrO/wMCiFeR6Ip0Q2PVJ2YTjP0/E3soT3EK7ZiegR6odu7LvN0vbgN9o0vhQhgnMxTz/H9qOd1F0ufxI+4YGOpArcN9wVCEFEUwn48oK+PFw6Y/HpxLFiIQ9mrq1sWqGDjPnn1mY=
+	t=1751993838; cv=none; b=pTJCh4frPesEijJLYhiqrNAmivkCF9vlPqGcy3cYlnABnBajP84LdjZa5X9OkRuZr+rOipfleqNXwvo4VhRdqxvXyxvEHW7dunXXzZmxstj6EDVucePP/pTz45neEJVek1NWNpgv8yfTyVu5VG3RjBxuc8oJsbeDYACRRxLNeqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993336; c=relaxed/simple;
-	bh=gn+Rt5vx75GDARGNGw/wWu7diSCeu/gDP/08706rKjs=;
+	s=arc-20240116; t=1751993838; c=relaxed/simple;
+	bh=dlcqTbcgYe03c3aayuNfoUqG01YZ61Ls2mmmu+UmIP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQMeoiGGK3f+8stOfz46FCzmxYacfDiprYt55CWbwUakArGGmlmID8Jg5/WmFcdvFsPK9cYMIuOAQ1Lu6J1a/a4JAQvFGkgsRBq5dAUDTldlOs9Xxkzpb/ut+iJf+UFkPACefhCX5XYIIOlROMbnJWUmUc8oQ2x6zVNfcKvP+Ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wp+xrxS6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A09C4CEED;
-	Tue,  8 Jul 2025 16:48:55 +0000 (UTC)
+	 MIME-Version; b=M9nUXQVdFT9a+JsD+VpXFimrBTfef0j4QubO2KlVGBnd4UrqVzL5p7xiyY78YcoBQ0gPoX2YYnbUTwrn5gl8/iDS4laj+QpTSeYT1hkbYxexgEJB+RxWWzBzkcw7GfFuTOmMWnnUONrmVicMu/jhxKbsBNwgRl2QD7G+7UE5vMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgTJ5Vi4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FBCEC4CEED;
+	Tue,  8 Jul 2025 16:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993336;
-	bh=gn+Rt5vx75GDARGNGw/wWu7diSCeu/gDP/08706rKjs=;
+	s=korg; t=1751993837;
+	bh=dlcqTbcgYe03c3aayuNfoUqG01YZ61Ls2mmmu+UmIP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wp+xrxS6mOzs6WUtHmxTWI4HVQSJM5VJK+SjIm1o+P2qjQwt6j1U1X7PqgJ+Vrue2
-	 nI0VU4il4+6yInwNG2/jwQKlkp7VUMwrkJJgfXeHCEGlqAc7+3b5k3OOCnILxfv2G7
-	 y+po7tlQe0Ry8p8uJoZ6MPuFUkgw6JsBf4rrqdAk=
+	b=GgTJ5Vi4N9SaqLgsAwJvN6L5YRI8Wq5wc+BoNmuAdmSGg99RyfnD4Td3A72nLV0UB
+	 zC6ui7Vd/8cv0iJhlYu9UzwTwc1LiaAixAubAc5Aoxj8J8CnDVabKbrZdFmyxbXJI2
+	 2SE3CbEn6wv0u4E+zeW2/9OledcRzuzsWg+ciTMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.15 008/178] dt-bindings: net: sophgo,sg2044-dwmac: Drop status from the example
+	Philipp Kerling <pkerling@casix.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 008/160] ksmbd: allow a filename to contain special characters on SMB3.1.1 posix extension
 Date: Tue,  8 Jul 2025 18:20:45 +0200
-Message-ID: <20250708162236.771055425@linuxfoundation.org>
+Message-ID: <20250708162231.740783832@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit f030713e5abf67d0a88864c8855f809c763af954 upstream.
+[ Upstream commit dc3e0f17f74558e8a2fce00608855f050de10230 ]
 
-Examples should be complete and should not have a 'status' property,
-especially a disabled one because this disables the dt_binding_check of
-the example against the schema.  Dropping 'status' property shows
-missing other properties - phy-mode and phy-handle.
+If client send SMB2_CREATE_POSIX_CONTEXT to ksmbd, Allow a filename
+to contain special characters.
 
-Fixes: 114508a89ddc ("dt-bindings: net: Add support for Sophgo SG2044 dwmac")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
-Link: https://patch.msgid.link/20250701063621.23808-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Philipp Kerling <pkerling@casix.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ksmbd/smb2pdu.c | 53 +++++++++++++++++++++++-----------------------
+ 1 file changed, 27 insertions(+), 26 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml b/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml
-index 4dd2dc9c678b..8afbd9ebd73f 100644
---- a/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml
-@@ -80,6 +80,8 @@ examples:
-       interrupt-parent = <&intc>;
-       interrupts = <296 IRQ_TYPE_LEVEL_HIGH>;
-       interrupt-names = "macirq";
-+      phy-handle = <&phy0>;
-+      phy-mode = "rgmii-id";
-       resets = <&rst 30>;
-       reset-names = "stmmaceth";
-       snps,multicast-filter-bins = <0>;
-@@ -91,7 +93,6 @@ examples:
-       snps,mtl-rx-config = <&gmac0_mtl_rx_setup>;
-       snps,mtl-tx-config = <&gmac0_mtl_tx_setup>;
-       snps,axi-config = <&gmac0_stmmac_axi_setup>;
--      status = "disabled";
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index b21601c0a457c..76334a983cd25 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -2679,7 +2679,7 @@ int smb2_open(struct ksmbd_work *work)
+ 	int req_op_level = 0, open_flags = 0, may_flags = 0, file_info = 0;
+ 	int rc = 0;
+ 	int contxt_cnt = 0, query_disk_id = 0;
+-	int maximal_access_ctxt = 0, posix_ctxt = 0;
++	bool maximal_access_ctxt = false, posix_ctxt = false;
+ 	int s_type = 0;
+ 	int next_off = 0;
+ 	char *name = NULL;
+@@ -2706,6 +2706,27 @@ int smb2_open(struct ksmbd_work *work)
+ 		return create_smb2_pipe(work);
+ 	}
  
-       gmac0_mtl_rx_setup: rx-queues-config {
-         snps,rx-queues-to-use = <8>;
++	if (req->CreateContextsOffset && tcon->posix_extensions) {
++		context = smb2_find_context_vals(req, SMB2_CREATE_TAG_POSIX, 16);
++		if (IS_ERR(context)) {
++			rc = PTR_ERR(context);
++			goto err_out2;
++		} else if (context) {
++			struct create_posix *posix = (struct create_posix *)context;
++
++			if (le16_to_cpu(context->DataOffset) +
++				le32_to_cpu(context->DataLength) <
++			    sizeof(struct create_posix) - 4) {
++				rc = -EINVAL;
++				goto err_out2;
++			}
++			ksmbd_debug(SMB, "get posix context\n");
++
++			posix_mode = le32_to_cpu(posix->Mode);
++			posix_ctxt = true;
++		}
++	}
++
+ 	if (req->NameLength) {
+ 		if ((req->CreateOptions & FILE_DIRECTORY_FILE_LE) &&
+ 		    *(char *)req->Buffer == '\\') {
+@@ -2737,9 +2758,11 @@ int smb2_open(struct ksmbd_work *work)
+ 				goto err_out2;
+ 		}
+ 
+-		rc = ksmbd_validate_filename(name);
+-		if (rc < 0)
+-			goto err_out2;
++		if (posix_ctxt == false) {
++			rc = ksmbd_validate_filename(name);
++			if (rc < 0)
++				goto err_out2;
++		}
+ 
+ 		if (ksmbd_share_veto_filename(share, name)) {
+ 			rc = -ENOENT;
+@@ -2854,28 +2877,6 @@ int smb2_open(struct ksmbd_work *work)
+ 			rc = -EBADF;
+ 			goto err_out2;
+ 		}
+-
+-		if (tcon->posix_extensions) {
+-			context = smb2_find_context_vals(req,
+-							 SMB2_CREATE_TAG_POSIX, 16);
+-			if (IS_ERR(context)) {
+-				rc = PTR_ERR(context);
+-				goto err_out2;
+-			} else if (context) {
+-				struct create_posix *posix =
+-					(struct create_posix *)context;
+-				if (le16_to_cpu(context->DataOffset) +
+-				    le32_to_cpu(context->DataLength) <
+-				    sizeof(struct create_posix) - 4) {
+-					rc = -EINVAL;
+-					goto err_out2;
+-				}
+-				ksmbd_debug(SMB, "get posix context\n");
+-
+-				posix_mode = le32_to_cpu(posix->Mode);
+-				posix_ctxt = 1;
+-			}
+-		}
+ 	}
+ 
+ 	if (ksmbd_override_fsids(work)) {
 -- 
-2.50.0
+2.39.5
 
 
 
