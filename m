@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-160877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7050FAFD263
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D9EBAFD256
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C97A3B48F4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B18817675C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7888A2DD5EF;
-	Tue,  8 Jul 2025 16:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433DA2E49A8;
+	Tue,  8 Jul 2025 16:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSFRiFyC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0BeiOFI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE088F5B;
-	Tue,  8 Jul 2025 16:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31F08F5B;
+	Tue,  8 Jul 2025 16:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992950; cv=none; b=vFc6e5YBhSVF94iPjKC1vFKc59kfBXnKD30M5r9Jg2zAEbIndSyrfj3C43F5bcV8B51xJqY8AJO8sIshXxVPt3jo8xC+r5FQ87IjTjc7FQu62uMndXQjRXgTXKA0d8RoKPb9D0foJvyzJCH7yVe+ay0VeakCKmubGivy+vBTLOg=
+	t=1751992983; cv=none; b=etPdURg/UrKb3oJKHDq4rQw7zJaBtfDXVn7RhuzjyLlBAGp3l9IAjM02XWq+DJKR4fRmeCZaKYtAqlW2hknZkX9EDRrdmubVNSO7i5zTAWMdI1J7k9uauMMr0OhqHJdiD33wRPqiBaduWV5dr0YqTQ29ln5eDTNmx50rR8nj45g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992950; c=relaxed/simple;
-	bh=N7StNm1qv7d2/w9Af7scDGUvKVzYouezUmoLlwDyzD0=;
+	s=arc-20240116; t=1751992983; c=relaxed/simple;
+	bh=nEJJ66v5vdZT+j1DQAKdjCS6P+XYXk3YWxK5I29e3Is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fY8lUsEjy+av0YL+/YTf2JjUy+rr4GkXs++tHqaBXF6DRv0ylUcIMy8aQZsuuDzgzmwYK9SaDlKi5tR1ozwK0DyNFfbAASf4kmoqybi66tX3zBaMUtaBX2O1mVf4AR4U31fEvf6xBc6TnWarRb3+wzF864iEcG9fu7to5yuEXCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSFRiFyC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC74C4CEED;
-	Tue,  8 Jul 2025 16:42:29 +0000 (UTC)
+	 MIME-Version; b=ddIeGOqTGFsrtytGmKvfLfSS6GijC2vwvh1G/VUEEmUbLD7p50I6W2Z2u7V1neMs+ccINoOFIgkr84q9o+1HbfTRM9sEe64Zk+oc8nnyW0JkNo3T+x8YNP0EMF56/9+OgXqcjmgQG8+56XQfjEfVHCXbdN7Nl6i0qz6vGe0ilSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0BeiOFI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD58C4CEED;
+	Tue,  8 Jul 2025 16:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992950;
-	bh=N7StNm1qv7d2/w9Af7scDGUvKVzYouezUmoLlwDyzD0=;
+	s=korg; t=1751992982;
+	bh=nEJJ66v5vdZT+j1DQAKdjCS6P+XYXk3YWxK5I29e3Is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSFRiFyC6nFCjwBNNHXNeLTYG6TjFKeQysdnoKaJ8p9ge8QYCfIu2Ie1XFaAPBazU
-	 bSdUB9EsEsU+eD7GXYLqJ7TDjgAmgWE6f5vUSAxxUIJS2s3I5OmkOwasHrcblNwiDe
-	 I9G845iEjleckbtNGQzEcfmZjdraDJ5Uf9Iwm7XA=
+	b=T0BeiOFIKKuGt9zxTcI8U2LX7xab98uOHnkjLq9OmNOoeU4GGQvuDKK4iy1fEm9fx
+	 Sq3Pb5sa+4UHixXoCs/iPTMTBOP4fjoDgoUCqfEAmA5eAVeV4S90NpZ8/puZHEql7r
+	 8X01fHMO6hCICilvy9oT+J0qQSii3A7oqOA1Z8r4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Daeho Jeong <daehojeong@google.com>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 129/232] f2fs: zone: introduce first_zoned_segno in f2fs_sb_info
-Date: Tue,  8 Jul 2025 18:22:05 +0200
-Message-ID: <20250708162244.816756575@linuxfoundation.org>
+Subject: [PATCH 6.12 130/232] f2fs: zone: fix to calculate first_zoned_segno correctly
+Date: Tue,  8 Jul 2025 18:22:06 +0200
+Message-ID: <20250708162244.843617743@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
 References: <20250708162241.426806072@linuxfoundation.org>
@@ -68,44 +69,161 @@ Content-Transfer-Encoding: 8bit
 
 From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 5bc5aae843128aefb1c55d769d057c92dd8a32c9 ]
+[ Upstream commit dc6d9ef57fcf42fac1b3be4bff5ac5b3f1e8f9f3 ]
 
-first_zoned_segno() returns a fixed value, let's cache it in
-structure f2fs_sb_info to avoid redundant calculation.
+A zoned device can has both conventional zones and sequential zones,
+so we should not treat first segment of zoned device as first_zoned_segno,
+instead, we need to check zone type for each zone during traversing zoned
+device to find first_zoned_segno.
 
+Otherwise, for below case, first_zoned_segno will be 0, which could be
+wrong.
+
+create_null_blk 512 2 1024 1024
+mkfs.f2fs -m /dev/nullb0
+
+Testcase:
+
+export SCRIPTS_PATH=/share/git/scripts
+
+test multiple devices w/ zoned device
+for ((i=0;i<8;i++)) do {
+	zonesize=$((2<<$i))
+	conzone=$((4096/$zonesize))
+	seqzone=$((4096/$zonesize))
+	$SCRIPTS_PATH/nullblk_create.sh 512 $zonesize $conzone $seqzone
+	mkfs.f2fs -f -m /dev/vdb -c /dev/nullb0
+	mount /dev/vdb /mnt/f2fs
+	touch /mnt/f2fs/file
+	f2fs_io pinfile set /mnt/f2fs/file $((8589934592*2))
+	stat /mnt/f2fs/file
+	df
+	cat /proc/fs/f2fs/vdb/segment_info
+	umount /mnt/f2fs
+	$SCRIPTS_PATH/nullblk_remove.sh 0
+} done
+
+test single zoned device
+for ((i=0;i<8;i++)) do {
+	zonesize=$((2<<$i))
+	conzone=$((4096/$zonesize))
+	seqzone=$((4096/$zonesize))
+	$SCRIPTS_PATH/nullblk_create.sh 512 $zonesize $conzone $seqzone
+	mkfs.f2fs -f -m /dev/nullb0
+	mount /dev/nullb0 /mnt/f2fs
+	touch /mnt/f2fs/file
+	f2fs_io pinfile set /mnt/f2fs/file $((8589934592*2))
+	stat /mnt/f2fs/file
+	df
+	cat /proc/fs/f2fs/nullb0/segment_info
+	umount /mnt/f2fs
+	$SCRIPTS_PATH/nullblk_remove.sh 0
+} done
+
+Fixes: 9703d69d9d15 ("f2fs: support file pinning for zoned devices")
+Cc: Daeho Jeong <daehojeong@google.com>
 Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: dc6d9ef57fcf ("f2fs: zone: fix to calculate first_zoned_segno correctly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h    |  1 +
- fs/f2fs/segment.c |  4 ++--
- fs/f2fs/segment.h | 10 ----------
- fs/f2fs/super.c   | 13 +++++++++++++
- 4 files changed, 16 insertions(+), 12 deletions(-)
+ fs/f2fs/data.c    |  2 +-
+ fs/f2fs/f2fs.h    | 36 ++++++++++++++++++++++++++++--------
+ fs/f2fs/segment.c | 10 +++++-----
+ fs/f2fs/super.c   | 41 +++++++++++++++++++++++++++++++++++------
+ 4 files changed, 69 insertions(+), 20 deletions(-)
 
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 62c7fd1168a15..654f672639b3c 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -3986,7 +3986,7 @@ static int check_swap_activate(struct swap_info_struct *sis,
+ 
+ 		if ((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
+ 				nr_pblocks % blks_per_sec ||
+-				!f2fs_valid_pinned_area(sbi, pblock)) {
++				f2fs_is_sequential_zone_area(sbi, pblock)) {
+ 			bool last_extent = false;
+ 
+ 			not_aligned++;
 diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 61b715cc2e231..08b0f35be76bc 100644
+index 08b0f35be76bc..a435550b2839b 100644
 --- a/fs/f2fs/f2fs.h
 +++ b/fs/f2fs/f2fs.h
-@@ -1762,6 +1762,7 @@ struct f2fs_sb_info {
+@@ -1762,7 +1762,7 @@ struct f2fs_sb_info {
  	unsigned int dirty_device;		/* for checkpoint data flush */
  	spinlock_t dev_lock;			/* protect dirty_device */
  	bool aligned_blksize;			/* all devices has the same logical blksize */
-+	unsigned int first_zoned_segno;		/* first zoned segno */
+-	unsigned int first_zoned_segno;		/* first zoned segno */
++	unsigned int first_seq_zone_segno;	/* first segno in sequential zone */
  
  	/* For write statistics */
  	u64 sectors_written_start;
+@@ -4557,12 +4557,16 @@ F2FS_FEATURE_FUNCS(compression, COMPRESSION);
+ F2FS_FEATURE_FUNCS(readonly, RO);
+ 
+ #ifdef CONFIG_BLK_DEV_ZONED
+-static inline bool f2fs_blkz_is_seq(struct f2fs_sb_info *sbi, int devi,
+-				    block_t blkaddr)
++static inline bool f2fs_zone_is_seq(struct f2fs_sb_info *sbi, int devi,
++							unsigned int zone)
+ {
+-	unsigned int zno = blkaddr / sbi->blocks_per_blkz;
++	return test_bit(zone, FDEV(devi).blkz_seq);
++}
+ 
+-	return test_bit(zno, FDEV(devi).blkz_seq);
++static inline bool f2fs_blkz_is_seq(struct f2fs_sb_info *sbi, int devi,
++								block_t blkaddr)
++{
++	return f2fs_zone_is_seq(sbi, devi, blkaddr / sbi->blocks_per_blkz);
+ }
+ #endif
+ 
+@@ -4634,15 +4638,31 @@ static inline bool f2fs_lfs_mode(struct f2fs_sb_info *sbi)
+ 	return F2FS_OPTION(sbi).fs_mode == FS_MODE_LFS;
+ }
+ 
+-static inline bool f2fs_valid_pinned_area(struct f2fs_sb_info *sbi,
++static inline bool f2fs_is_sequential_zone_area(struct f2fs_sb_info *sbi,
+ 					  block_t blkaddr)
+ {
+ 	if (f2fs_sb_has_blkzoned(sbi)) {
++#ifdef CONFIG_BLK_DEV_ZONED
+ 		int devi = f2fs_target_device_index(sbi, blkaddr);
+ 
+-		return !bdev_is_zoned(FDEV(devi).bdev);
++		if (!bdev_is_zoned(FDEV(devi).bdev))
++			return false;
++
++		if (f2fs_is_multi_device(sbi)) {
++			if (blkaddr < FDEV(devi).start_blk ||
++				blkaddr > FDEV(devi).end_blk) {
++				f2fs_err(sbi, "Invalid block %x", blkaddr);
++				return false;
++			}
++			blkaddr -= FDEV(devi).start_blk;
++		}
++
++		return f2fs_blkz_is_seq(sbi, devi, blkaddr);
++#else
++		return false;
++#endif
+ 	}
+-	return true;
++	return false;
+ }
+ 
+ static inline bool f2fs_low_mem_mode(struct f2fs_sb_info *sbi)
 diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 3db89becdbfcd..c7919b9cebcd0 100644
+index c7919b9cebcd0..e48b5e2efea28 100644
 --- a/fs/f2fs/segment.c
 +++ b/fs/f2fs/segment.c
 @@ -2719,7 +2719,7 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
  		if (sbi->blkzone_alloc_policy == BLKZONE_ALLOC_PRIOR_CONV || pinning)
  			segno = 0;
  		else
--			segno = max(first_zoned_segno(sbi), *newseg);
-+			segno = max(sbi->first_zoned_segno, *newseg);
+-			segno = max(sbi->first_zoned_segno, *newseg);
++			segno = max(sbi->first_seq_zone_segno, *newseg);
  		hint = GET_SEC_FROM_SEG(sbi, segno);
  	}
  #endif
@@ -113,60 +231,101 @@ index 3db89becdbfcd..c7919b9cebcd0 100644
  	if (secno >= MAIN_SECS(sbi) && f2fs_sb_has_blkzoned(sbi)) {
  		/* Write only to sequential zones */
  		if (sbi->blkzone_alloc_policy == BLKZONE_ALLOC_ONLY_SEQ) {
--			hint = GET_SEC_FROM_SEG(sbi, first_zoned_segno(sbi));
-+			hint = GET_SEC_FROM_SEG(sbi, sbi->first_zoned_segno);
+-			hint = GET_SEC_FROM_SEG(sbi, sbi->first_zoned_segno);
++			hint = GET_SEC_FROM_SEG(sbi, sbi->first_seq_zone_segno);
  			secno = find_next_zero_bit(free_i->free_secmap, MAIN_SECS(sbi), hint);
  		} else
  			secno = find_first_zero_bit(free_i->free_secmap,
-diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index 05a342933f98f..52bb1a2819357 100644
---- a/fs/f2fs/segment.h
-+++ b/fs/f2fs/segment.h
-@@ -992,13 +992,3 @@ static inline void wake_up_discard_thread(struct f2fs_sb_info *sbi, bool force)
- 	dcc->discard_wake = true;
- 	wake_up_interruptible_all(&dcc->discard_wait_queue);
+@@ -2784,9 +2784,9 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
+ 		goto out_unlock;
+ 	}
+ 
+-	/* no free section in conventional zone */
++	/* no free section in conventional device or conventional zone */
+ 	if (new_sec && pinning &&
+-		!f2fs_valid_pinned_area(sbi, START_BLOCK(sbi, segno))) {
++		f2fs_is_sequential_zone_area(sbi, START_BLOCK(sbi, segno))) {
+ 		ret = -EAGAIN;
+ 		goto out_unlock;
+ 	}
+@@ -3250,7 +3250,7 @@ int f2fs_allocate_pinning_section(struct f2fs_sb_info *sbi)
+ 
+ 	if (f2fs_sb_has_blkzoned(sbi) && err == -EAGAIN && gc_required) {
+ 		f2fs_down_write(&sbi->gc_lock);
+-		err = f2fs_gc_range(sbi, 0, GET_SEGNO(sbi, FDEV(0).end_blk),
++		err = f2fs_gc_range(sbi, 0, sbi->first_seq_zone_segno - 1,
+ 				true, ZONED_PIN_SEC_REQUIRED_COUNT);
+ 		f2fs_up_write(&sbi->gc_lock);
+ 
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 0508527ebe115..3f2c6fa3623ba 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4260,14 +4260,35 @@ static void f2fs_record_error_work(struct work_struct *work)
+ 	f2fs_record_stop_reason(sbi);
  }
--
--static inline unsigned int first_zoned_segno(struct f2fs_sb_info *sbi)
--{
--	int devi;
--
+ 
+-static inline unsigned int get_first_zoned_segno(struct f2fs_sb_info *sbi)
++static inline unsigned int get_first_seq_zone_segno(struct f2fs_sb_info *sbi)
+ {
++#ifdef CONFIG_BLK_DEV_ZONED
++	unsigned int zoneno, total_zones;
+ 	int devi;
+ 
 -	for (devi = 0; devi < sbi->s_ndevs; devi++)
 -		if (bdev_is_zoned(FDEV(devi).bdev))
 -			return GET_SEGNO(sbi, FDEV(devi).start_blk);
 -	return 0;
--}
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index f0e83ea56e38c..0508527ebe115 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -4260,6 +4260,16 @@ static void f2fs_record_error_work(struct work_struct *work)
- 	f2fs_record_stop_reason(sbi);
++	if (!f2fs_sb_has_blkzoned(sbi))
++		return NULL_SEGNO;
++
++	for (devi = 0; devi < sbi->s_ndevs; devi++) {
++		if (!bdev_is_zoned(FDEV(devi).bdev))
++			continue;
++
++		total_zones = GET_ZONE_FROM_SEG(sbi, FDEV(devi).total_segments);
++
++		for (zoneno = 0; zoneno < total_zones; zoneno++) {
++			unsigned int segs, blks;
++
++			if (!f2fs_zone_is_seq(sbi, devi, zoneno))
++				continue;
++
++			segs = GET_SEG_FROM_SEC(sbi,
++					zoneno * sbi->secs_per_zone);
++			blks = SEGS_TO_BLKS(sbi, segs);
++			return GET_SEGNO(sbi, FDEV(devi).start_blk + blks);
++		}
++	}
++#endif
++	return NULL_SEGNO;
  }
  
-+static inline unsigned int get_first_zoned_segno(struct f2fs_sb_info *sbi)
-+{
-+	int devi;
-+
-+	for (devi = 0; devi < sbi->s_ndevs; devi++)
-+		if (bdev_is_zoned(FDEV(devi).bdev))
-+			return GET_SEGNO(sbi, FDEV(devi).start_blk);
-+	return 0;
-+}
-+
  static int f2fs_scan_devices(struct f2fs_sb_info *sbi)
- {
- 	struct f2fs_super_block *raw_super = F2FS_RAW_SUPER(sbi);
-@@ -4660,6 +4670,9 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
- 	/* For write statistics */
+@@ -4304,6 +4325,14 @@ static int f2fs_scan_devices(struct f2fs_sb_info *sbi)
+ #endif
+ 
+ 	for (i = 0; i < max_devices; i++) {
++		if (max_devices == 1) {
++			FDEV(i).total_segments =
++				le32_to_cpu(raw_super->segment_count_main);
++			FDEV(i).start_blk = 0;
++			FDEV(i).end_blk = FDEV(i).total_segments *
++						BLKS_PER_SEG(sbi);
++		}
++
+ 		if (i == 0)
+ 			FDEV(0).bdev_file = sbi->sb->s_bdev_file;
+ 		else if (!RDEV(i).path[0])
+@@ -4671,7 +4700,7 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
  	sbi->sectors_written_start = f2fs_get_sectors_written(sbi);
  
-+	/* get segno of first zoned block device */
-+	sbi->first_zoned_segno = get_first_zoned_segno(sbi);
-+
+ 	/* get segno of first zoned block device */
+-	sbi->first_zoned_segno = get_first_zoned_segno(sbi);
++	sbi->first_seq_zone_segno = get_first_seq_zone_segno(sbi);
+ 
  	/* Read accumulated write IO statistics if exists */
  	seg_i = CURSEG_I(sbi, CURSEG_HOT_NODE);
- 	if (__exist_node_summaries(sbi))
 -- 
 2.39.5
 
