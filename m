@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-161303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A3A6AFD4AC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:08:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F3B0AFD385
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EB0A188ADEC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7AFA1888E7B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DE92E62C8;
-	Tue,  8 Jul 2025 17:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3C72DEA94;
+	Tue,  8 Jul 2025 16:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNPmrHM5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZihjsht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343C42E62C0;
-	Tue,  8 Jul 2025 17:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA216BE46;
+	Tue,  8 Jul 2025 16:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994183; cv=none; b=P8FGXn+3Gs+2vonNEdqG5eQH9jR9cXFqPvx0gM9QBYAK7ff140PYziCG2Rc08lYRmWhsKYNVoB5ADYYyTGOPG0RGUpCKN56wQYC4q3Ex62jFyTwKKd2furlv7HVsnfP5rXg5w3BXaCxApq3PQFTJeOGKX8JxDE2waqojvETe46g=
+	t=1751993667; cv=none; b=oqeHfGOF93lj2Ym7EIiZGDdiLZXFvHbVAW8d0NdQShBUKW8Qn8Y1lVYEmituNqwY1RjO3NAdxfGBjglGWPElpjevX1sWXYoOE+0+vGIJ5q5L/NAkn4iOlHLI1eSXK7d8l8vQmqDwKzaF0vtXVwv89JVMQpoIYPjxI1PKWu1Afe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994183; c=relaxed/simple;
-	bh=03rpeH1r0pLnOxHFwuKS3Xwk5IhYX4NfHxriQacZsvY=;
+	s=arc-20240116; t=1751993667; c=relaxed/simple;
+	bh=H+Vh56akS7SyquGghMYyRCpDk0PvMHhP/3bbGMl0qFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hrLdjA1HEhtJ6TMN7Po9CauJ4dxaemXzo50JjDUSPLo/jcqD3tYLpYqnk8h9X+spE02Ah5A1ZBnvsgfsppCeXqKysg1bqSe6wIddIue0cKLIe0AMjhF4x5/Q/aT89v+ADzORpRluD+vxKEsZr9gQsh2hsLNjdgWbFzKGxG+OhVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNPmrHM5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DE5C4CEF0;
-	Tue,  8 Jul 2025 17:03:02 +0000 (UTC)
+	 MIME-Version; b=lHofO71Y7hw3fHgr+ajUAavUd4xWVeOgJIVNca6Fji/QjsnBKM62eucSD44WOmRUptzJHRCbsxYUO/eM505A/m5JympiuRNbeO+7TvswVmX+Q1uudZNYcGFg8W1lD7UzVUr6A99xSkBXImDraecBPzzSfJpiXRTq+bnk1qjnw3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZihjsht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3539CC4CEED;
+	Tue,  8 Jul 2025 16:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994183;
-	bh=03rpeH1r0pLnOxHFwuKS3Xwk5IhYX4NfHxriQacZsvY=;
+	s=korg; t=1751993667;
+	bh=H+Vh56akS7SyquGghMYyRCpDk0PvMHhP/3bbGMl0qFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mNPmrHM5C6ul2BG5GpdrquDlHn6SczIv5uE/I4fapntsiWWiuzMLsUS9LbdlZ6R1Z
-	 H0ah6AXeLAVLckW5BRI8aZIXHsec5MqAKnCgD2qYxaNQtcQStiDRqkBXgYVAqDzQB5
-	 KoCFRWFbGmoZkGbY3UECSTuMyyrFFFqhMx50WmWQ=
+	b=fZihjsht0kwBCsg05a7x6bvSYkGG3ET5zMOxtVBE/NcVMfHS/pzRUxDvFHsQhjmH5
+	 oritgCEm7LMfMAxjpPt4r2xcrgcotZ73MoF/BwIQFRp6d2COzyBpBoT6tjgbDM/KnI
+	 n5MPFSTrzJtc3j1tl7HC7fzcU9kUkIE78foD+Gwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
+	Johannes Schneider <johannes.schneider@leica-geosystems.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
 	stable <stable@kernel.org>
-Subject: [PATCH 5.15 153/160] Logitech C-270 even more broken
+Subject: [PATCH 6.15 153/178] usb: dwc3: gadget: Fix TRB reclaim logic for short transfers and ZLPs
 Date: Tue,  8 Jul 2025 18:23:10 +0200
-Message-ID: <20250708162235.549849610@linuxfoundation.org>
+Message-ID: <20250708162240.502124374@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: SCHNEIDER Johannes <johannes.schneider@leica-geosystems.com>
 
-commit cee4392a57e14a799fbdee193bc4c0de65b29521 upstream.
+commit 80e08394377559ed5a2ccadd861e62d24b826911 upstream.
 
-Some varieties of this device don't work with
-RESET_RESUME alone.
+Commit 96c7bf8f6b3e ("usb: dwc3: gadget: Cleanup SG handling") updated
+the TRB reclaim path to use the TRB CHN (Chain) bit to determine whether
+a TRB was part of a chain. However, this inadvertently changed the
+behavior of reclaiming the final TRB in some scatter-gather or short
+transfer cases.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
+In particular, if the final TRB did not have the CHN bit set, the
+cleanup path could incorrectly skip clearing the HWO (Hardware Own)
+bit, leaving stale TRBs in the ring. This resulted in broken data
+transfer completions in userspace, notably for MTP over FunctionFS.
+
+Fix this by unconditionally clearing the HWO bit during TRB reclaim,
+regardless of the CHN bit state. This restores correct behavior
+especially for transfers that require ZLPs or end on non-CHN TRBs.
+
+Fixes: 61440628a4ff ("usb: dwc3: gadget: Cleanup SG handling")
+Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250605122852.1440382-1-oneukum@suse.com
+Link: https://lore.kernel.org/r/AM8PR06MB7521A29A8863C838B54987B6BC7BA@AM8PR06MB7521.eurprd06.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/gadget.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -224,7 +224,8 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x046a, 0x0023), .driver_info = USB_QUIRK_RESET_RESUME },
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index b6b63b530148..74968f93d4a3 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3516,7 +3516,7 @@ static int dwc3_gadget_ep_reclaim_completed_trb(struct dwc3_ep *dep,
+ 	 * We're going to do that here to avoid problems of HW trying
+ 	 * to use bogus TRBs for transfers.
+ 	 */
+-	if (chain && (trb->ctrl & DWC3_TRB_CTRL_HWO))
++	if (trb->ctrl & DWC3_TRB_CTRL_HWO)
+ 		trb->ctrl &= ~DWC3_TRB_CTRL_HWO;
  
- 	/* Logitech HD Webcam C270 */
--	{ USB_DEVICE(0x046d, 0x0825), .driver_info = USB_QUIRK_RESET_RESUME },
-+	{ USB_DEVICE(0x046d, 0x0825), .driver_info = USB_QUIRK_RESET_RESUME |
-+		USB_QUIRK_NO_LPM},
- 
- 	/* Logitech HD Pro Webcams C920, C920-C, C922, C925e and C930e */
- 	{ USB_DEVICE(0x046d, 0x082d), .driver_info = USB_QUIRK_DELAY_INIT },
+ 	/*
+-- 
+2.50.0
+
 
 
 
