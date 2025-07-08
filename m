@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-161086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D496CAFD355
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D97AFD26B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 463D6188C155
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14BDF18974D2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2D8BE46;
-	Tue,  8 Jul 2025 16:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C732E54C8;
+	Tue,  8 Jul 2025 16:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="haWkHiIU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeeUf3rn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C6D21C190;
-	Tue,  8 Jul 2025 16:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F452E54A0;
+	Tue,  8 Jul 2025 16:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993552; cv=none; b=sHAhXRvwrQzlzjwfrmhtXOgK5B0PY7PSYbQHQp3vIgobURpu+iav6hTz5DLsZrZovwnODhDfvwIoIYIATJWkeA+j0lzdvjsBAlHle8YMKye4pJBUo3Qf9zZAdtfWhfHbu0/7Jf8oSS6e7AIGWnAP0CcJ8UPZzc+rXk+8LDSY7O0=
+	t=1751993007; cv=none; b=QHcB7rOKAWIo7JXeI0Z+FGnBTyL2htMbD27/0JUfnFNsr60BJ+LcbEqu4ITzvfXUaE9jQDhacxAPF1mOuvHm0bN0G9IrIpsYun4sraFC8SdBhmPIcobRhGGZO6sUWDDaP1fEXadS4u7vQgoRL33ciAgiaZjHJ00anU78FyNE3NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993552; c=relaxed/simple;
-	bh=QSZP6kc9DN/Y49/VEg+Pl5wKR8aZKalEsZBv7GlZumI=;
+	s=arc-20240116; t=1751993007; c=relaxed/simple;
+	bh=pSQ/lxZe+S9FXdfSXLHMXMU2wxAHG8c6FX+MnzZMj9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WqqcLBEJSe/B4HyZwW3NBMlqML04flTxsKRC6PBsfsvJ6o+Txar7A5zmHkNt0meYT+aczBNuDC81UzlNeDnOxfsiS2Aud/H05LYHFiQm+csYrWnCejFTdYJSUGxkb2QHoVjuv9EA/ZJm5MOjKMWN1l4KksNpPwu5wbPO5n0DaT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=haWkHiIU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232E1C4CEED;
-	Tue,  8 Jul 2025 16:52:31 +0000 (UTC)
+	 MIME-Version; b=c2stn8EXIbAE8yLlvUEXpsptEd07QB+wkNiGE//k5HhwL7EOzCTKgz5wg/nFnM4c0ynAP2N6b3a3BL0PFuaiLwWHvGmT6fccz3gC4PmlxElQyC+mT7IXxu8+nXltMLK8Jn+zVclewCZsn8/kpCVzYze6DjNmTpDanP6OW1mtOVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeeUf3rn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C9FC4CEF6;
+	Tue,  8 Jul 2025 16:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993552;
-	bh=QSZP6kc9DN/Y49/VEg+Pl5wKR8aZKalEsZBv7GlZumI=;
+	s=korg; t=1751993007;
+	bh=pSQ/lxZe+S9FXdfSXLHMXMU2wxAHG8c6FX+MnzZMj9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=haWkHiIUL13NHsmjKBmwKLiyKf6EwNeiRwqXF7uuF6cRueH+CNyzfjHNTcBkZ9AM8
-	 rP3tjPIUHocEOcobsnpmsnu20Nl8pWy1WswJuHPDbKbrWkbBt1zIwabTicGzu53PTa
-	 WIzrok6yZqHj2JSXDIAQ+yKTmcYbeFtuduXEb1Iw=
+	b=xeeUf3rnuLsR2nWc29o6Yc9Ri/blo42FB/O2Xj+2oxb+uKfFRYnJqE3Z/c6cC6TxQ
+	 jHNZsId3B8i/nZuCkkgl0FpqFQ55k/Ykk2LsPMe3ogVhcyjOaEgf4IGK3Wwz+n9qJ3
+	 czd/cn8EQkJwN5qM972ueGtxdnp4RsorUJkVVhvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lion Ackermann <nnamrec@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Mika Kahola <mika.kahola@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 114/178] net/sched: Always pass notifications when child class becomes empty
+Subject: [PATCH 6.12 155/232] drm/xe: add interface to request physical alignment for buffer objects
 Date: Tue,  8 Jul 2025 18:22:31 +0200
-Message-ID: <20250708162239.591456181@linuxfoundation.org>
+Message-ID: <20250708162245.493543139@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,111 +63,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lion Ackermann <nnamrec@gmail.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-[ Upstream commit 103406b38c600fec1fe375a77b27d87e314aea09 ]
+[ Upstream commit 3ad86ae1da97d0091f673f08846848714f6dd745 ]
 
-Certain classful qdiscs may invoke their classes' dequeue handler on an
-enqueue operation. This may unexpectedly empty the child qdisc and thus
-make an in-flight class passive via qlen_notify(). Most qdiscs do not
-expect such behaviour at this point in time and may re-activate the
-class eventually anyways which will lead to a use-after-free.
+Add xe_bo_create_pin_map_at_aligned() which augment
+xe_bo_create_pin_map_at() with alignment parameter allowing to pass
+required alignemnt if it differ from default.
 
-The referenced fix commit attempted to fix this behavior for the HFSC
-case by moving the backlog accounting around, though this turned out to
-be incomplete since the parent's parent may run into the issue too.
-The following reproducer demonstrates this use-after-free:
-
-    tc qdisc add dev lo root handle 1: drr
-    tc filter add dev lo parent 1: basic classid 1:1
-    tc class add dev lo parent 1: classid 1:1 drr
-    tc qdisc add dev lo parent 1:1 handle 2: hfsc def 1
-    tc class add dev lo parent 2: classid 2:1 hfsc rt m1 8 d 1 m2 0
-    tc qdisc add dev lo parent 2:1 handle 3: netem
-    tc qdisc add dev lo parent 3:1 handle 4: blackhole
-
-    echo 1 | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888
-    tc class delete dev lo classid 1:1
-    echo 1 | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888
-
-Since backlog accounting issues leading to a use-after-frees on stale
-class pointers is a recurring pattern at this point, this patch takes
-a different approach. Instead of trying to fix the accounting, the patch
-ensures that qdisc_tree_reduce_backlog always calls qlen_notify when
-the child qdisc is empty. This solves the problem because deletion of
-qdiscs always involves a call to qdisc_reset() and / or
-qdisc_purge_queue() which ultimately resets its qlen to 0 thus causing
-the following qdisc_tree_reduce_backlog() to report to the parent. Note
-that this may call qlen_notify on passive classes multiple times. This
-is not a problem after the recent patch series that made all the
-classful qdiscs qlen_notify() handlers idempotent.
-
-Fixes: 3f981138109f ("sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue()")
-Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Signed-off-by: Mika Kahola <mika.kahola@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241009151947.2240099-2-juhapekka.heikkila@gmail.com
+Stable-dep-of: f16873f42a06 ("drm/xe: move DPT l2 flush to a more sensible place")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_api.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ .../compat-i915-headers/gem/i915_gem_stolen.h |  2 +-
+ drivers/gpu/drm/xe/xe_bo.c                    | 29 +++++++++++++++----
+ drivers/gpu/drm/xe/xe_bo.h                    |  8 ++++-
+ drivers/gpu/drm/xe/xe_bo_types.h              |  5 ++++
+ drivers/gpu/drm/xe/xe_ggtt.c                  |  2 +-
+ 5 files changed, 37 insertions(+), 9 deletions(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index f74a097f54ae7..d58921ffcf35e 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -779,15 +779,12 @@ static u32 qdisc_alloc_handle(struct net_device *dev)
+diff --git a/drivers/gpu/drm/xe/compat-i915-headers/gem/i915_gem_stolen.h b/drivers/gpu/drm/xe/compat-i915-headers/gem/i915_gem_stolen.h
+index cb6c7598824be..9c4cf050059ac 100644
+--- a/drivers/gpu/drm/xe/compat-i915-headers/gem/i915_gem_stolen.h
++++ b/drivers/gpu/drm/xe/compat-i915-headers/gem/i915_gem_stolen.h
+@@ -29,7 +29,7 @@ static inline int i915_gem_stolen_insert_node_in_range(struct xe_device *xe,
  
- void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
+ 	bo = xe_bo_create_locked_range(xe, xe_device_get_root_tile(xe),
+ 				       NULL, size, start, end,
+-				       ttm_bo_type_kernel, flags);
++				       ttm_bo_type_kernel, flags, 0);
+ 	if (IS_ERR(bo)) {
+ 		err = PTR_ERR(bo);
+ 		bo = NULL;
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index 8acc4640f0a28..c92953c08d682 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -1454,7 +1454,8 @@ static struct xe_bo *
+ __xe_bo_create_locked(struct xe_device *xe,
+ 		      struct xe_tile *tile, struct xe_vm *vm,
+ 		      size_t size, u64 start, u64 end,
+-		      u16 cpu_caching, enum ttm_bo_type type, u32 flags)
++		      u16 cpu_caching, enum ttm_bo_type type, u32 flags,
++		      u64 alignment)
  {
--	bool qdisc_is_offloaded = sch->flags & TCQ_F_OFFLOADED;
- 	const struct Qdisc_class_ops *cops;
- 	unsigned long cl;
- 	u32 parentid;
- 	bool notify;
- 	int drops;
+ 	struct xe_bo *bo = NULL;
+ 	int err;
+@@ -1483,6 +1484,8 @@ __xe_bo_create_locked(struct xe_device *xe,
+ 	if (IS_ERR(bo))
+ 		return bo;
  
--	if (n == 0 && len == 0)
--		return;
- 	drops = max_t(int, n, 0);
- 	rcu_read_lock();
- 	while ((parentid = sch->parent)) {
-@@ -796,17 +793,8 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
++	bo->min_align = alignment;
++
+ 	/*
+ 	 * Note that instead of taking a reference no the drm_gpuvm_resv_bo(),
+ 	 * to ensure the shared resv doesn't disappear under the bo, the bo
+@@ -1523,16 +1526,18 @@ struct xe_bo *
+ xe_bo_create_locked_range(struct xe_device *xe,
+ 			  struct xe_tile *tile, struct xe_vm *vm,
+ 			  size_t size, u64 start, u64 end,
+-			  enum ttm_bo_type type, u32 flags)
++			  enum ttm_bo_type type, u32 flags, u64 alignment)
+ {
+-	return __xe_bo_create_locked(xe, tile, vm, size, start, end, 0, type, flags);
++	return __xe_bo_create_locked(xe, tile, vm, size, start, end, 0, type,
++				     flags, alignment);
+ }
  
- 		if (sch->flags & TCQ_F_NOPARENT)
- 			break;
--		/* Notify parent qdisc only if child qdisc becomes empty.
--		 *
--		 * If child was empty even before update then backlog
--		 * counter is screwed and we skip notification because
--		 * parent class is already passive.
--		 *
--		 * If the original child was offloaded then it is allowed
--		 * to be seem as empty, so the parent is notified anyway.
--		 */
--		notify = !sch->q.qlen && !WARN_ON_ONCE(!n &&
--						       !qdisc_is_offloaded);
-+		/* Notify parent qdisc only if child qdisc becomes empty. */
-+		notify = !sch->q.qlen;
- 		/* TODO: perform the search on a per txq basis */
- 		sch = qdisc_lookup_rcu(qdisc_dev(sch), TC_H_MAJ(parentid));
- 		if (sch == NULL) {
-@@ -815,6 +803,9 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
- 		}
- 		cops = sch->ops->cl_ops;
- 		if (notify && cops->qlen_notify) {
-+			/* Note that qlen_notify must be idempotent as it may get called
-+			 * multiple times.
-+			 */
- 			cl = cops->find(sch, parentid);
- 			cops->qlen_notify(sch, cl);
- 		}
+ struct xe_bo *xe_bo_create_locked(struct xe_device *xe, struct xe_tile *tile,
+ 				  struct xe_vm *vm, size_t size,
+ 				  enum ttm_bo_type type, u32 flags)
+ {
+-	return __xe_bo_create_locked(xe, tile, vm, size, 0, ~0ULL, 0, type, flags);
++	return __xe_bo_create_locked(xe, tile, vm, size, 0, ~0ULL, 0, type,
++				     flags, 0);
+ }
+ 
+ struct xe_bo *xe_bo_create_user(struct xe_device *xe, struct xe_tile *tile,
+@@ -1542,7 +1547,7 @@ struct xe_bo *xe_bo_create_user(struct xe_device *xe, struct xe_tile *tile,
+ {
+ 	struct xe_bo *bo = __xe_bo_create_locked(xe, tile, vm, size, 0, ~0ULL,
+ 						 cpu_caching, ttm_bo_type_device,
+-						 flags | XE_BO_FLAG_USER);
++						 flags | XE_BO_FLAG_USER, 0);
+ 	if (!IS_ERR(bo))
+ 		xe_bo_unlock_vm_held(bo);
+ 
+@@ -1565,6 +1570,17 @@ struct xe_bo *xe_bo_create_pin_map_at(struct xe_device *xe, struct xe_tile *tile
+ 				      struct xe_vm *vm,
+ 				      size_t size, u64 offset,
+ 				      enum ttm_bo_type type, u32 flags)
++{
++	return xe_bo_create_pin_map_at_aligned(xe, tile, vm, size, offset,
++					       type, flags, 0);
++}
++
++struct xe_bo *xe_bo_create_pin_map_at_aligned(struct xe_device *xe,
++					      struct xe_tile *tile,
++					      struct xe_vm *vm,
++					      size_t size, u64 offset,
++					      enum ttm_bo_type type, u32 flags,
++					      u64 alignment)
+ {
+ 	struct xe_bo *bo;
+ 	int err;
+@@ -1576,7 +1592,8 @@ struct xe_bo *xe_bo_create_pin_map_at(struct xe_device *xe, struct xe_tile *tile
+ 		flags |= XE_BO_FLAG_GGTT;
+ 
+ 	bo = xe_bo_create_locked_range(xe, tile, vm, size, start, end, type,
+-				       flags | XE_BO_FLAG_NEEDS_CPU_ACCESS);
++				       flags | XE_BO_FLAG_NEEDS_CPU_ACCESS,
++				       alignment);
+ 	if (IS_ERR(bo))
+ 		return bo;
+ 
+diff --git a/drivers/gpu/drm/xe/xe_bo.h b/drivers/gpu/drm/xe/xe_bo.h
+index d22269a230aa1..704f5068d0d0a 100644
+--- a/drivers/gpu/drm/xe/xe_bo.h
++++ b/drivers/gpu/drm/xe/xe_bo.h
+@@ -77,7 +77,7 @@ struct xe_bo *
+ xe_bo_create_locked_range(struct xe_device *xe,
+ 			  struct xe_tile *tile, struct xe_vm *vm,
+ 			  size_t size, u64 start, u64 end,
+-			  enum ttm_bo_type type, u32 flags);
++			  enum ttm_bo_type type, u32 flags, u64 alignment);
+ struct xe_bo *xe_bo_create_locked(struct xe_device *xe, struct xe_tile *tile,
+ 				  struct xe_vm *vm, size_t size,
+ 				  enum ttm_bo_type type, u32 flags);
+@@ -94,6 +94,12 @@ struct xe_bo *xe_bo_create_pin_map(struct xe_device *xe, struct xe_tile *tile,
+ struct xe_bo *xe_bo_create_pin_map_at(struct xe_device *xe, struct xe_tile *tile,
+ 				      struct xe_vm *vm, size_t size, u64 offset,
+ 				      enum ttm_bo_type type, u32 flags);
++struct xe_bo *xe_bo_create_pin_map_at_aligned(struct xe_device *xe,
++					      struct xe_tile *tile,
++					      struct xe_vm *vm,
++					      size_t size, u64 offset,
++					      enum ttm_bo_type type, u32 flags,
++					      u64 alignment);
+ struct xe_bo *xe_bo_create_from_data(struct xe_device *xe, struct xe_tile *tile,
+ 				     const void *data, size_t size,
+ 				     enum ttm_bo_type type, u32 flags);
+diff --git a/drivers/gpu/drm/xe/xe_bo_types.h b/drivers/gpu/drm/xe/xe_bo_types.h
+index 2ed558ac2264a..35372c46edfa5 100644
+--- a/drivers/gpu/drm/xe/xe_bo_types.h
++++ b/drivers/gpu/drm/xe/xe_bo_types.h
+@@ -76,6 +76,11 @@ struct xe_bo {
+ 
+ 	/** @vram_userfault_link: Link into @mem_access.vram_userfault.list */
+ 		struct list_head vram_userfault_link;
++
++	/** @min_align: minimum alignment needed for this BO if different
++	 * from default
++	 */
++	u64 min_align;
+ };
+ 
+ #define intel_bo_to_drm_bo(bo) (&(bo)->ttm.base)
+diff --git a/drivers/gpu/drm/xe/xe_ggtt.c b/drivers/gpu/drm/xe/xe_ggtt.c
+index e9820126feb96..9cb5760006a1c 100644
+--- a/drivers/gpu/drm/xe/xe_ggtt.c
++++ b/drivers/gpu/drm/xe/xe_ggtt.c
+@@ -620,7 +620,7 @@ static int __xe_ggtt_insert_bo_at(struct xe_ggtt *ggtt, struct xe_bo *bo,
+ 				  u64 start, u64 end)
+ {
+ 	int err;
+-	u64 alignment = XE_PAGE_SIZE;
++	u64 alignment = bo->min_align > 0 ? bo->min_align : XE_PAGE_SIZE;
+ 
+ 	if (xe_bo_is_vram(bo) && ggtt->flags & XE_GGTT_FLAGS_64K)
+ 		alignment = SZ_64K;
 -- 
 2.39.5
 
