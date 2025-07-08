@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-160573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E392AFD0D6
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C3AAFD17F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:36:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B770167944
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9889358350D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103E42DFF04;
-	Tue,  8 Jul 2025 16:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243182E5B2E;
+	Tue,  8 Jul 2025 16:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qM5r3/hC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSyYXYWR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C280B1DF74F;
-	Tue,  8 Jul 2025 16:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D385020766C;
+	Tue,  8 Jul 2025 16:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992041; cv=none; b=ckF6ayaFq8/nSbbUZl/rQJtigx5JWjFvk/bZNyqezk7+LxiIt1vohd6QspSUw96CTqSyBjtzQsqR1fL88Hay0MYXl0r88ZCf/2hcLhCEQp1Lw5q5YeNXUHJqBgFjos5hQetGqcwiYIS6/IKYhB8nQuNPcAQhU2vV/nXstdluzTg=
+	t=1751992468; cv=none; b=FXOUHjWXqWVsi9dmclkbHN6TEDMKlUzdw3o5zpQeqTQRsW4lHZcMyrxBzatnG6JSfjXLCCIqUiu8OSU0o8fc5XhUSihKt00bUqwEkKO3E2KY/pCM6qpHgGLMZ73ztIFsOskeGaMgf6kigpUuQoO/ledZdSk70Ut3ncv1+mshgO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992041; c=relaxed/simple;
-	bh=oje+7LZbQEDReRIWHQoXlAFHnHXp2c7RvI/am/iwoIQ=;
+	s=arc-20240116; t=1751992468; c=relaxed/simple;
+	bh=x5meIhN0vQYs9wMn6jPtSBoGPl+p+pykBTJGvzUH8WE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVGWMDYkK6fSi8AsIEKJ3mcIKXFRA1Izj4glHQhaStGX45L4RfyLze7huS0zJZcJRaDur+4gqEfl6Nmbe7CuvLB17kXNy2QVXtdpO4cBqeaMUWAiTDd/egf1j1AllfJKzrmT2rnpxwyD4MTIWDk2Gn8XARAz/4PfLQVOS5O09Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qM5r3/hC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F09FC4CEF0;
-	Tue,  8 Jul 2025 16:27:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ObmvAdishY5dZvXyFSlzBQxTzAeilRAqICQMYZQTSDnVAFbY7z7rQER/dzDrgQ2qq+YH3V+MSUXHP4rf/rmvwafd6Ub31RpL0TYFVws+xsrrkWpk3nXTPsh8NIpFrEX3gor5RVd0jbzEJD7oFYOkaPFS+ex2TzpLNNUUcoY6K0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSyYXYWR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B88C4CEED;
+	Tue,  8 Jul 2025 16:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992041;
-	bh=oje+7LZbQEDReRIWHQoXlAFHnHXp2c7RvI/am/iwoIQ=;
+	s=korg; t=1751992468;
+	bh=x5meIhN0vQYs9wMn6jPtSBoGPl+p+pykBTJGvzUH8WE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qM5r3/hC9qqRpEBfzIeRGbuRToGd3r/gfbzErr3VbdMF590VFqmlph8CzBJY09Z0z
-	 KyTnFZpC+0BaVacWKgb+GLCi6Vj4vVGTzSJ7ea2JQJRt8xMoZoD2o30pXRfNYQaQvu
-	 j88bZ/GHtfv0+bhXJymOuhNwKoPZTbQCzuGEJQCk=
+	b=MSyYXYWROUQaS06us4bk9Y6DlegIpuzvUT385gT4LIjTevZOcnQXauMQryjTs6+if
+	 Ch12nooSM76pSrf6CvGuFE5gLRxO/FIEiyxkRlK1GUJ8qIUoRD2QsigARUebTbxm2O
+	 5SadzZgKVbHAqK+qJ0spY/RJLtdyNVU0nFdX0yt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com,
-	Kohei Enju <enjuk@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 40/81] rose: fix dangling neighbour pointers in rose_rt_device_down()
+Subject: [PATCH 6.6 101/132] platform/x86: hp-bioscfg: Directly use firmware_attributes_class
 Date: Tue,  8 Jul 2025 18:23:32 +0200
-Message-ID: <20250708162226.264278012@linuxfoundation.org>
+Message-ID: <20250708162233.565248838@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 34a500caf48c47d5171f4aa1f237da39b07c6157 ]
+[ Upstream commit 63f8c058036057644f095123a35895cd11639b88 ]
 
-There are two bugs in rose_rt_device_down() that can cause
-use-after-free:
+The usage of the lifecycle functions is not necessary anymore.
 
-1. The loop bound `t->count` is modified within the loop, which can
-   cause the loop to terminate early and miss some entries.
-
-2. When removing an entry from the neighbour array, the subsequent entries
-   are moved up to fill the gap, but the loop index `i` is still
-   incremented, causing the next entry to be skipped.
-
-For example, if a node has three neighbours (A, A, B) with count=3 and A
-is being removed, the second A is not checked.
-
-    i=0: (A, A, B) -> (A, B) with count=2
-          ^ checked
-    i=1: (A, B)    -> (A, B) with count=2
-             ^ checked (B, not A!)
-    i=2: (doesn't occur because i < count is false)
-
-This leaves the second A in the array with count=2, but the rose_neigh
-structure has been freed. Code that accesses these entries assumes that
-the first `count` entries are valid pointers, causing a use-after-free
-when it accesses the dangling pointer.
-
-Fix both issues by iterating over the array in reverse order with a fixed
-loop bound. This ensures that all entries are examined and that the removal
-of an entry doesn't affect subsequent iterations.
-
-Reported-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e04e2c007ba2c80476cb
-Tested-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250629030833.6680-1-enjuk@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20250104-firmware-attributes-simplify-v1-4-949f9709e405@weissschuh.net
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 11cba4793b95 ("platform/x86: hp-bioscfg: Fix class device unregistration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rose/rose_route.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/platform/x86/hp/hp-bioscfg/bioscfg.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
-index fee772b4637c8..a7054546f52df 100644
---- a/net/rose/rose_route.c
-+++ b/net/rose/rose_route.c
-@@ -497,22 +497,15 @@ void rose_rt_device_down(struct net_device *dev)
- 			t         = rose_node;
- 			rose_node = rose_node->next;
+diff --git a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+index b8bac35ebd42b..049851e469f60 100644
+--- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
++++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+@@ -24,8 +24,6 @@ struct bioscfg_priv bioscfg_drv = {
+ 	.mutex = __MUTEX_INITIALIZER(bioscfg_drv.mutex),
+ };
  
--			for (i = 0; i < t->count; i++) {
-+			for (i = t->count - 1; i >= 0; i--) {
- 				if (t->neighbour[i] != s)
- 					continue;
+-static const struct class *fw_attr_class;
+-
+ ssize_t display_name_language_code_show(struct kobject *kobj,
+ 					struct kobj_attribute *attr,
+ 					char *buf)
+@@ -974,11 +972,7 @@ static int __init hp_init(void)
+ 	if (ret)
+ 		return ret;
  
- 				t->count--;
+-	ret = fw_attributes_class_get(&fw_attr_class);
+-	if (ret)
+-		goto err_unregister_class;
+-
+-	bioscfg_drv.class_dev = device_create(fw_attr_class, NULL, MKDEV(0, 0),
++	bioscfg_drv.class_dev = device_create(&firmware_attributes_class, NULL, MKDEV(0, 0),
+ 					      NULL, "%s", DRIVER_NAME);
+ 	if (IS_ERR(bioscfg_drv.class_dev)) {
+ 		ret = PTR_ERR(bioscfg_drv.class_dev);
+@@ -1045,10 +1039,9 @@ static int __init hp_init(void)
+ 	release_attributes_data();
  
--				switch (i) {
--				case 0:
--					t->neighbour[0] = t->neighbour[1];
--					fallthrough;
--				case 1:
--					t->neighbour[1] = t->neighbour[2];
--					break;
--				case 2:
--					break;
--				}
-+				memmove(&t->neighbour[i], &t->neighbour[i + 1],
-+					sizeof(t->neighbour[0]) *
-+						(t->count - i));
- 			}
+ err_destroy_classdev:
+-	device_destroy(fw_attr_class, MKDEV(0, 0));
++	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
  
- 			if (t->count <= 0)
+ err_unregister_class:
+-	fw_attributes_class_put();
+ 	hp_exit_attr_set_interface();
+ 
+ 	return ret;
+@@ -1057,9 +1050,8 @@ static int __init hp_init(void)
+ static void __exit hp_exit(void)
+ {
+ 	release_attributes_data();
+-	device_destroy(fw_attr_class, MKDEV(0, 0));
++	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
+ 
+-	fw_attributes_class_put();
+ 	hp_exit_attr_set_interface();
+ }
+ 
 -- 
 2.39.5
 
