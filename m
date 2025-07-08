@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87046AFD23F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B922CAFD483
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65AC4165745
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 430271AA0748
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EBF2E2F0D;
-	Tue,  8 Jul 2025 16:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFAB92E6D14;
+	Tue,  8 Jul 2025 17:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zytlq4LZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYsx6V6P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD852DC34C;
-	Tue,  8 Jul 2025 16:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839ED2E6D0B;
+	Tue,  8 Jul 2025 17:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992895; cv=none; b=duk59GQTJNLAmEaw0z6B89C9KzD/Bt6fOo8kkm/Velde84aoTvrz8BBOhZQEwTuI8csGKNbncr9za/6JW26y1rEMOwlOETJl0yvo6FkOp9m3yx33nilALjhFBiWrTQ9VH8qq+5PCe9QX0XQgYov84USuG+GrgfCdqQb4W46zmwc=
+	t=1751994042; cv=none; b=tjaC7Q1YnyPCsah+FUR2Yhnekj+CVJx0H/QoGv83JApMp3Q9RQjxFjfXBnY2Ju2Rn1VeX48xcm7VVYsATjy6lP1KLxEMMXkkWaFduQQCtUTauKjXdfiJ/nOiVko/ucVqSC5WZ/7c8/hGC1yAdS1ZBXlOxL4IbGOV6NR4ZOYN6eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992895; c=relaxed/simple;
-	bh=uQWZbevTLEldSguZORfw+iGvIDF5KxMrekAGbEFAYn8=;
+	s=arc-20240116; t=1751994042; c=relaxed/simple;
+	bh=6skdJ+K/YqLPqkF6/CU+LdDDu2W6S+tPo40cisEvOlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVjAXgCrfYr1y2CrJ/LeeSRhnIGmHem86uk8Q4qyhEgEqfttl1/bz9boQT1foisZ+23f+hPaCD4Rc1ZCTc0f6MtHoVr3OzVOCe2cmv/yLBiBb/6o6D/U9aOOSwz9xOb7Q1ihJsEeIaja/f/Rr6x8JWB2VRFOhhlFxkoWo85SKqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zytlq4LZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE08C4CEED;
-	Tue,  8 Jul 2025 16:41:34 +0000 (UTC)
+	 MIME-Version; b=eUlfzp/xVBGSKj7BsDx75io6iM3tvbArBKXoOJLvjA/3T0bVOM4AbXbGCrNtSLkEVNyndVsIwmd3CmVNPB6VaD9ERfILQiBg0utUhSb1LgeWeFVcxFT6NDoK9VGMh985TwRFtwcVqHgN+CxaJ91+jl4p97olJ2LcYI3IQPmEMOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYsx6V6P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0643CC4CEED;
+	Tue,  8 Jul 2025 17:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992894;
-	bh=uQWZbevTLEldSguZORfw+iGvIDF5KxMrekAGbEFAYn8=;
+	s=korg; t=1751994042;
+	bh=6skdJ+K/YqLPqkF6/CU+LdDDu2W6S+tPo40cisEvOlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zytlq4LZpC9lPviB31AM2Ws7vEDBIP3wll3YGMUzi6pSsDN+ILPjuAfqCOgmnGwsd
-	 Xn6IaW1HYwza43GlPPLQ5RwZm2tZ64GGwyMOx16NIupUr582y5mHdZpxBvw/tbPiVr
-	 HK91OGfFm3dnyJ3kc+q786LA+pjAi5f5LVELfCTA=
+	b=xYsx6V6PEtSiHFrZDPWlaidB4Jn1n38QUJQUiRXfWJgX1H7+wEmcY3MwlUTXkAuJl
+	 cdDUMn8D9ZBK5ZUYIFbNZ6gmawRnNVQunuAhcaoOfW/0/F/1D+n4SC+EwDXypG0PMo
+	 MLCLTj2M5wgL7sJweNXoZGAMswKpYFU3cJcuHMmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 117/232] gfs2: Dont start unnecessary transactions during log flush
+	Qu Wenruo <wqu@suse.com>,
+	Mark Harmstone <maharmstone@fb.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 076/160] btrfs: update superblocks device bytes_used when dropping chunk
 Date: Tue,  8 Jul 2025 18:21:53 +0200
-Message-ID: <20250708162244.502253107@linuxfoundation.org>
+Message-ID: <20250708162233.649903655@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,115 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Mark Harmstone <maharmstone@fb.com>
 
-[ Upstream commit 5a90f8d499225512a385585ffe3e28f687263d47 ]
+commit ae4477f937569d097ca5dbce92a89ba384b49bc6 upstream.
 
-Commit 8d391972ae2d ("gfs2: Remove __gfs2_writepage()") changed the log
-flush code in gfs2_ail1_start_one() to call aops->writepages() instead
-of aops->writepage().  For jdata inodes, this means that we will now try
-to reserve log space and start a transaction before we can determine
-that the pages in question have already been journaled.  When this
-happens in the context of gfs2_logd(), it can now appear that not enough
-log space is available for freeing up log space, and we will lock up.
+Each superblock contains a copy of the device item for that device. In a
+transaction which drops a chunk but doesn't create any new ones, we were
+correctly updating the device item in the chunk tree but not copying
+over the new bytes_used value to the superblock.
 
-Fix that by issuing journal writes directly instead of going through
-aops->writepages() in the log flush code.
+This can be seen by doing the following:
 
-Fixes: 8d391972ae2d ("gfs2: Remove __gfs2_writepage()")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  # dd if=/dev/zero of=test bs=4096 count=2621440
+  # mkfs.btrfs test
+  # mount test /root/temp
+
+  # cd /root/temp
+  # for i in {00..10}; do dd if=/dev/zero of=$i bs=4096 count=32768; done
+  # sync
+  # rm *
+  # sync
+  # btrfs balance start -dusage=0 .
+  # sync
+
+  # cd
+  # umount /root/temp
+  # btrfs check test
+
+For btrfs-check to detect this, you will also need my patch at
+https://github.com/kdave/btrfs-progs/pull/991.
+
+Change btrfs_remove_dev_extents() so that it adds the devices to the
+fs_info->post_commit_list if they're not there already. This causes
+btrfs_commit_device_sizes() to be called, which updates the bytes_used
+value in the superblock.
+
+Fixes: bbbf7243d62d ("btrfs: combine device update operations during transaction commit")
+CC: stable@vger.kernel.org # 5.10+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Mark Harmstone <maharmstone@fb.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/aops.c | 31 +++++++++++++++++++++++++++++++
- fs/gfs2/aops.h |  1 +
- fs/gfs2/log.c  |  7 ++++++-
- 3 files changed, 38 insertions(+), 1 deletion(-)
+ fs/btrfs/volumes.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/gfs2/aops.c b/fs/gfs2/aops.c
-index ed2c708a215a4..eb4270e82ef8e 100644
---- a/fs/gfs2/aops.c
-+++ b/fs/gfs2/aops.c
-@@ -117,6 +117,37 @@ static int __gfs2_jdata_write_folio(struct folio *folio,
- 	return gfs2_write_jdata_folio(folio, wbc);
- }
- 
-+/**
-+ * gfs2_jdata_writeback - Write jdata folios to the log
-+ * @mapping: The mapping to write
-+ * @wbc: The writeback control
-+ *
-+ * Returns: errno
-+ */
-+int gfs2_jdata_writeback(struct address_space *mapping, struct writeback_control *wbc)
-+{
-+	struct inode *inode = mapping->host;
-+	struct gfs2_inode *ip = GFS2_I(inode);
-+	struct gfs2_sbd *sdp = GFS2_SB(mapping->host);
-+	struct folio *folio = NULL;
-+	int error;
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -3197,6 +3197,12 @@ int btrfs_remove_chunk(struct btrfs_tran
+ 					device->bytes_used - dev_extent_len);
+ 			atomic64_add(dev_extent_len, &fs_info->free_chunk_space);
+ 			btrfs_clear_space_info_full(fs_info);
 +
-+	BUG_ON(current->journal_info);
-+	if (gfs2_assert_withdraw(sdp, ip->i_gl->gl_state == LM_ST_EXCLUSIVE))
-+		return 0;
++			if (list_empty(&device->post_commit_list)) {
++				list_add_tail(&device->post_commit_list,
++					      &trans->transaction->dev_update_list);
++			}
 +
-+	while ((folio = writeback_iter(mapping, wbc, folio, &error))) {
-+		if (folio_test_checked(folio)) {
-+			folio_redirty_for_writepage(wbc, folio);
-+			folio_unlock(folio);
-+			continue;
-+		}
-+		error = __gfs2_jdata_write_folio(folio, wbc);
-+	}
-+
-+	return error;
-+}
-+
- /**
-  * gfs2_writepages - Write a bunch of dirty pages back to disk
-  * @mapping: The mapping to write
-diff --git a/fs/gfs2/aops.h b/fs/gfs2/aops.h
-index f9fa41aaeaf41..bf002522a7822 100644
---- a/fs/gfs2/aops.h
-+++ b/fs/gfs2/aops.h
-@@ -9,5 +9,6 @@
- #include "incore.h"
- 
- void adjust_fs_space(struct inode *inode);
-+int gfs2_jdata_writeback(struct address_space *mapping, struct writeback_control *wbc);
- 
- #endif /* __AOPS_DOT_H__ */
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index f9c5089783d24..115c4ac457e90 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -31,6 +31,7 @@
- #include "dir.h"
- #include "trace_gfs2.h"
- #include "trans.h"
-+#include "aops.h"
- 
- static void gfs2_log_shutdown(struct gfs2_sbd *sdp);
- 
-@@ -131,7 +132,11 @@ __acquires(&sdp->sd_ail_lock)
- 		if (!mapping)
- 			continue;
- 		spin_unlock(&sdp->sd_ail_lock);
--		ret = mapping->a_ops->writepages(mapping, wbc);
-+		BUG_ON(GFS2_SB(mapping->host) != sdp);
-+		if (gfs2_is_jdata(GFS2_I(mapping->host)))
-+			ret = gfs2_jdata_writeback(mapping, wbc);
-+		else
-+			ret = mapping->a_ops->writepages(mapping, wbc);
- 		if (need_resched()) {
- 			blk_finish_plug(plug);
- 			cond_resched();
--- 
-2.39.5
-
+ 			mutex_unlock(&fs_info->chunk_mutex);
+ 		}
+ 	}
 
 
 
