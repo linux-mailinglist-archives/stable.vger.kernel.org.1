@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-160869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AACCAFD1FA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A43AFD2E5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0CFC7A94A2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB79F7B17DA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0027B2DD5EF;
-	Tue,  8 Jul 2025 16:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC822E0411;
+	Tue,  8 Jul 2025 16:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6A0DtVm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwaCFWqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EF78F5B;
-	Tue,  8 Jul 2025 16:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DE72DEA94;
+	Tue,  8 Jul 2025 16:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992926; cv=none; b=gvUzL7LQFvAbWPEZoCpboR6Rj9JeDZNWvBTvccBwibmFFCdhwkeQjUNNFShRzZBCC89pOngicNcrHHG/1U2c+HQU4Mk6ACw7flAT+Z3g1OKVJGqFIsYwE//XiMIkd3qYHNea7CXPGPAobGGh/6UxuU156ri2aupDglVq9U/iTd8=
+	t=1751993472; cv=none; b=FE/PCfJM0fJDaZWxoTmhkiUQ+PY1a5zV/ALHSvLm2xmDUQmn2+BbuVsDt2mGQXcXRa5kFcOSO7/X2QNTdOgVLZ4F1PPVLac2hvjz2kNidLIPp8uqJmoADSCsGTd1ep24pQZgW5wvL4DGoH+NAWyaZmdndcWTfd69ukeNsXChCn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992926; c=relaxed/simple;
-	bh=509NGWDV0CNv0luMW+xJKzP5f1PN3ycPgoMSXVSLwoI=;
+	s=arc-20240116; t=1751993472; c=relaxed/simple;
+	bh=fkANsOTaA92nYBJ+YSA7iv+karP6h0A4Y07boWwI22k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OgSnKuKlBHfO4TSYU+/RtIMHwy7BH97hbYxHefixlRog1FsxLWZrH0Cc2eKmmXUZKp5bIeDGCnWFT11sPzzwMncym88FsDoOQg/lKdUNG9cTwHhpEks5I0VcN6e8Tx1oBruPwgWOE/OUsYdwi1zjc//4D5T5NSZYsy8aUx+GQf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6A0DtVm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D00C4CEED;
-	Tue,  8 Jul 2025 16:42:06 +0000 (UTC)
+	 MIME-Version; b=XAw6aMd6/WOL68DbW1FzS6Kim6/TY0m3xKMOkzQ8/Zrt9Jx7wJzOQKPR5XA5PWEjT6PtjrZK4AYgoFFXby9gAII4YiQfirxioV+rc9nCD6cja3JtdRHwXxbO9paKycSjhrCdfHi580e5yT88YhNSrPeVjTgY4qrdkmlxdWflwNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwaCFWqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3324FC4CEED;
+	Tue,  8 Jul 2025 16:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992926;
-	bh=509NGWDV0CNv0luMW+xJKzP5f1PN3ycPgoMSXVSLwoI=;
+	s=korg; t=1751993472;
+	bh=fkANsOTaA92nYBJ+YSA7iv+karP6h0A4Y07boWwI22k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x6A0DtVmz4qzs1+QxEehFO84QG5k1ZuM28A7e8ZA0Wu9eOXUsFmpxoOfy+BT1QUnj
-	 7Wwy9kUWpJN9lOlpDcSUV9LSEyhMp9mEiLSNb+yoboSNIJaknWayPPp4taHRuUVZtZ
-	 smigZRFRGYfT8n71IjtYazJc33fH5wZCUTzMQohE=
+	b=RwaCFWqyJTT9P7eOahWGLZ7eLRBezc53rtFgqng6SBR/XOJ0iGeAHuINLGxFf0taa
+	 uKFaKQcML3FOAB3yPx3rxzlABJ59YSNn4V8IjSApwbL3GCf2BIdvJNR2sPlo/+3MNb
+	 VsPtYoLscdYK2wloRTng9KGRec3zhZ4OXzuero3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 127/232] iommu: ipmmu-vmsa: avoid Wformat-security warning
+Subject: [PATCH 6.15 086/178] drm/bridge: aux-hpd-bridge: fix assignment of the of_node
 Date: Tue,  8 Jul 2025 18:22:03 +0200
-Message-ID: <20250708162244.766153955@linuxfoundation.org>
+Message-ID: <20250708162238.926867350@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 33647d0be323f9e2f27cd1e86de5cfd965cec654 ]
+[ Upstream commit e8537cad824065b0425fb0429e762e14a08067c2 ]
 
-iommu_device_sysfs_add() requires a constant format string, otherwise
-a W=1 build produces a warning:
+Perform fix similar to the one in the commit 85e444a68126 ("drm/bridge:
+Fix assignment of the of_node of the parent to aux bridge").
 
-drivers/iommu/ipmmu-vmsa.c:1093:62: error: format string is not a string literal (potentially insecure) [-Werror,-Wformat-security]
- 1093 |         ret = iommu_device_sysfs_add(&mmu->iommu, &pdev->dev, NULL, dev_name(&pdev->dev));
-      |                                                                     ^~~~~~~~~~~~~~~~~~~~
-drivers/iommu/ipmmu-vmsa.c:1093:62: note: treat the string as an argument to avoid this
- 1093 |         ret = iommu_device_sysfs_add(&mmu->iommu, &pdev->dev, NULL, dev_name(&pdev->dev));
-      |                                                                     ^
-      |                                                                     "%s",
+The assignment of the of_node to the aux HPD bridge needs to mark the
+of_node as reused, otherwise driver core will attempt to bind resources
+like pinctrl, which is going to fail as corresponding pins are already
+marked as used by the parent device.
+Fix that by using the device_set_of_node_from_dev() helper instead of
+assigning it directly.
 
-This was an old bug but I saw it now because the code was changed as part
-of commit d9d3cede4167 ("iommu/ipmmu-vmsa: Register in a sensible order").
-
-Fixes: 7af9a5fdb9e0 ("iommu/ipmmu-vmsa: Use iommu_device_sysfs_add()/remove()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20250423164006.2661372-1-arnd@kernel.org
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: e560518a6c2e ("drm/bridge: implement generic DP HPD bridge")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250608-fix-aud-hpd-bridge-v1-1-4641a6f8e381@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/ipmmu-vmsa.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/aux-hpd-bridge.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/ipmmu-vmsa.c b/drivers/iommu/ipmmu-vmsa.c
-index ff55b8c307126..ae69691471e9f 100644
---- a/drivers/iommu/ipmmu-vmsa.c
-+++ b/drivers/iommu/ipmmu-vmsa.c
-@@ -1087,7 +1087,7 @@ static int ipmmu_probe(struct platform_device *pdev)
- 	 * - R-Car Gen3 IPMMU (leaf devices only - skip root IPMMU-MM device)
- 	 */
- 	if (!mmu->features->has_cache_leaf_nodes || !ipmmu_is_root(mmu)) {
--		ret = iommu_device_sysfs_add(&mmu->iommu, &pdev->dev, NULL,
-+		ret = iommu_device_sysfs_add(&mmu->iommu, &pdev->dev, NULL, "%s",
- 					     dev_name(&pdev->dev));
- 		if (ret)
- 			return ret;
+diff --git a/drivers/gpu/drm/bridge/aux-hpd-bridge.c b/drivers/gpu/drm/bridge/aux-hpd-bridge.c
+index 48f297c78ee67..1ec4f16b9939d 100644
+--- a/drivers/gpu/drm/bridge/aux-hpd-bridge.c
++++ b/drivers/gpu/drm/bridge/aux-hpd-bridge.c
+@@ -64,10 +64,11 @@ struct auxiliary_device *devm_drm_dp_hpd_bridge_alloc(struct device *parent, str
+ 	adev->id = ret;
+ 	adev->name = "dp_hpd_bridge";
+ 	adev->dev.parent = parent;
+-	adev->dev.of_node = of_node_get(parent->of_node);
+ 	adev->dev.release = drm_aux_hpd_bridge_release;
+ 	adev->dev.platform_data = of_node_get(np);
+ 
++	device_set_of_node_from_dev(&adev->dev, parent);
++
+ 	ret = auxiliary_device_init(adev);
+ 	if (ret) {
+ 		of_node_put(adev->dev.platform_data);
 -- 
 2.39.5
 
