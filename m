@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-161209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FD5AFD402
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7C8AFD260
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DAA3542F45
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E23B3B363F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DB22E62C4;
-	Tue,  8 Jul 2025 16:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484AC2DECC4;
+	Tue,  8 Jul 2025 16:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHhCbaRQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdVFz7i5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720152DC34C;
-	Tue,  8 Jul 2025 16:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058148F5B;
+	Tue,  8 Jul 2025 16:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993911; cv=none; b=kXrfaPRkLYFWaFId1RwViXBVXW6w6i7IkNW3nkhUj/crDNvm03W7PBc4KmGgP/uYsT6rnN3Ry+C88XsPMScp/VHCCuk4X1gV4WCUFXyMAcbVDFySahtV2o0rdCshOyVQEQrt4PBZruhMFt6VHn71Jo+0AWp5dpXSbz/pSePGEG4=
+	t=1751992936; cv=none; b=GHflSAIfx84M2PYXqq68Vcqi96cVOOeibuflwExcrlI0bdpKOWEidHXnnavhf273BciSvsjJ1dtcSdy3g4vy0oHbQp9UPiPsSX0QnXL0GZhVxgn/DMQeCubaR+Eas9TJz9XOWmo6AlRENYDgQkYaQa9kxjfKYzAJB4vgW6Z9Ga0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993911; c=relaxed/simple;
-	bh=S9BlATTaOfhzkEZpMKLkx27SHTSQgGjxINl/FT7Ip3c=;
+	s=arc-20240116; t=1751992936; c=relaxed/simple;
+	bh=SFpNC2r1nCfyhTnPYWxuysrLiufE8ravO9oz1Pmahiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m6KtJD36jRHDkNKZcn6HjoHSHFoGZAF8BmthJjld9H7+JHhnJexf+D731OggGs/qTI+QmAiXgSAaw5ZhHsZ8sh1M6Q2yRHi8Ha3RAYzHA6KxBfE6YsFZ8wiCPnXU3kJW6aSuvgk2wuYUo8hva/lGGC1cExP8+9McnAXN4TRlA1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHhCbaRQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1ECFC4CEED;
-	Tue,  8 Jul 2025 16:58:30 +0000 (UTC)
+	 MIME-Version; b=FkPPdGI9brjdMJbHtw2FdMqPWkJ4wdCiilWW6B7P+OPbkJFdqDr4fSoz+7R2iyqvPGDHgF12y+PiWxx9+OQ76smlvlB9rKCQYwWTEr51NWMnL+0IC2dtdd9YPwMi81WyjSIQiG/c3i9iB4oE6sqcd2mNoPdLfWQBqBylyk/uy5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdVFz7i5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC58C4CEF0;
+	Tue,  8 Jul 2025 16:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993911;
-	bh=S9BlATTaOfhzkEZpMKLkx27SHTSQgGjxINl/FT7Ip3c=;
+	s=korg; t=1751992935;
+	bh=SFpNC2r1nCfyhTnPYWxuysrLiufE8ravO9oz1Pmahiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHhCbaRQ5RaWspQonu8tCj2EQn/GBhFjwzcsmqcbNH6q1acxUUx1QxRMLg9+D5072
-	 ffHEp5DVOCLhL8YG84duIzeALafRGMpt1q6dt1xpeFW2+YugTKRhtfW3bZJcOVM5yw
-	 ZPhk1yBxeSjZMJlfJ8E5MXuGndDH4JCFwLaMkoG8=
+	b=pdVFz7i57Z/2nzB1JKe7Xrxv5CB+yghJVCH2t/b5ILNR3d3Pt2rIDNKjhVBHp0Enq
+	 p2bDhVDW+QK04ZPpPbRu0IRuaKiqR42nylvNvBfpUxvAjRQLE4Zo4hsDgWGSYz9bmh
+	 uRiB8iknhmDtLwx42a9ilHZPeEzhudKSGVxn2mvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 5.15 060/160] s390/pkey: Prevent overflow in size calculation for memdup_user()
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 101/232] gfs2: Initialize gl_no_formal_ino earlier
 Date: Tue,  8 Jul 2025 18:21:37 +0200
-Message-ID: <20250708162233.212561374@linuxfoundation.org>
+Message-ID: <20250708162244.086882400@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit 7360ee47599af91a1d5f4e74d635d9408a54e489 upstream.
+[ Upstream commit 1072b3aa6863bc4d91006038b032bfb4dcc98dec ]
 
-Number of apqn target list entries contained in 'nr_apqns' variable is
-determined by userspace via an ioctl call so the result of the product in
-calculation of size passed to memdup_user() may overflow.
+Set gl_no_formal_ino of the iopen glock to the generation of the
+associated inode (ip->i_no_formal_ino) as soon as that value is known.
+This saves us from setting it later, possibly repeatedly, when queuing
+GLF_VERIFY_DELETE work.
 
-In this case the actual size of the allocated area and the value
-describing it won't be in sync leading to various types of unpredictable
-behaviour later.
-
-Use a proper memdup_array_user() helper which returns an error if an
-overflow is detected. Note that it is different from when nr_apqns is
-initially zero - that case is considered valid and should be handled in
-subsequent pkey_handler implementations.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: f2bbc96e7cfa ("s390/pkey: add CCA AES cipher key support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250611192011.206057-1-pchelkin@ispras.ru
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: 2c63986dd35f ("gfs2: deallocate inodes in gfs2_create_inode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/pkey_api.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/glock.c | 1 -
+ fs/gfs2/glops.c | 9 ++++++++-
+ fs/gfs2/inode.c | 1 +
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/s390/crypto/pkey_api.c
-+++ b/drivers/s390/crypto/pkey_api.c
-@@ -1134,7 +1134,7 @@ static void *_copy_apqns_from_user(void
- 	if (!uapqns || nr_apqns == 0)
- 		return NULL;
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index aecce4bb5e1a9..ed699f2872f55 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -985,7 +985,6 @@ static bool gfs2_try_evict(struct gfs2_glock *gl)
+ 		ip = NULL;
+ 	spin_unlock(&gl->gl_lockref.lock);
+ 	if (ip) {
+-		gl->gl_no_formal_ino = ip->i_no_formal_ino;
+ 		set_bit(GIF_DEFERRED_DELETE, &ip->i_flags);
+ 		d_prune_aliases(&ip->i_inode);
+ 		iput(&ip->i_inode);
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index 72a0601ce65e2..4b6b23c638e29 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -494,11 +494,18 @@ int gfs2_inode_refresh(struct gfs2_inode *ip)
+ static int inode_go_instantiate(struct gfs2_glock *gl)
+ {
+ 	struct gfs2_inode *ip = gl->gl_object;
++	struct gfs2_glock *io_gl;
++	int error;
  
--	return memdup_user(uapqns, nr_apqns * sizeof(struct pkey_apqn));
-+	return memdup_array_user(uapqns, nr_apqns, sizeof(struct pkey_apqn));
+ 	if (!ip) /* no inode to populate - read it in later */
+ 		return 0;
+ 
+-	return gfs2_inode_refresh(ip);
++	error = gfs2_inode_refresh(ip);
++	if (error)
++		return error;
++	io_gl = ip->i_iopen_gh.gh_gl;
++	io_gl->gl_no_formal_ino = ip->i_no_formal_ino;
++	return 0;
  }
  
- static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+ static int inode_go_held(struct gfs2_holder *gh)
+diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+index 3be24285ab01d..2d2f7646440f5 100644
+--- a/fs/gfs2/inode.c
++++ b/fs/gfs2/inode.c
+@@ -751,6 +751,7 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+ 	if (error)
+ 		goto fail_free_inode;
+ 	gfs2_cancel_delete_work(io_gl);
++	io_gl->gl_no_formal_ino = ip->i_no_formal_ino;
+ 
+ retry:
+ 	error = insert_inode_locked4(inode, ip->i_no_addr, iget_test, &ip->i_no_addr);
+-- 
+2.39.5
+
 
 
 
