@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-160603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF80CAFD0E5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:29:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD69AFD1A7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4FF9485DE6
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:28:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 928A4541990
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729452A1BA;
-	Tue,  8 Jul 2025 16:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6301E2E540D;
+	Tue,  8 Jul 2025 16:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joFyZfAt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wCirT1c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306682DEA78;
-	Tue,  8 Jul 2025 16:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222C821773D;
+	Tue,  8 Jul 2025 16:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992139; cv=none; b=aSd7pO1QhVLT8tup12KdK7VGXDNjzTqvm+53MhAlNZ9MQZBOcjCks4Hsyu6Ye2AhzJ7SGDQmZVnTc8GFWPgtbwNu3iN1hA/GO2UhftQ0iNubvV1nFR790oS5LbvCwoCrjpf/+0gLcz2tdBCb5SBRHNKNPg3/HJDTotQCL4JUw6o=
+	t=1751992560; cv=none; b=HYsdSjgInVimLqYasYzoA//9bmjuqzGlIk1kwskOmU+j+VXRSlKZb0ajPxWg9TwfTtiBSbyrJmjP+fFGqjPcZHk0p5q7Mc/EykRucNYBjnlKPMtHkKkXu5yr1ZU9FUExmpDfXsBopwFn/OaeiE4UqWbVSibRs09CcUQKABE5hHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992139; c=relaxed/simple;
-	bh=zLPfmc18zX0Jr0gch/vMDDh//iOebMZZEB7sIm3YdKI=;
+	s=arc-20240116; t=1751992560; c=relaxed/simple;
+	bh=Cfu6EtFoisGCyy9vgG7oUHKclIoDqKamfDlX3JjQ3ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o2YHBHBxNI1nRacsLEvRRI8chGjdkF8fmE0l9mJmxl0WB/0sY7l92xgv4qbch56kEhdlANIfyH8V3shLEciS2e4jiaGluWDUYEjpPasZWe3YhRenxez2IHCs+LTJ4qpcoU3IBbKYWxa3rSce/vpa0Onwr6d6/RaN9PNyhAe4gYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joFyZfAt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE97C4CEED;
-	Tue,  8 Jul 2025 16:28:58 +0000 (UTC)
+	 MIME-Version; b=oaOWIQreQsllOmd7emYZmcHYBykbA3V3T7OJB6nsW3VhXzCELANz5RBTR0s0xxYOv5VKKqw9KiyogjqGOxbLMTZVhJUcTFslFbAEC+chGAWZoXgWgBi9j4NEpsFsrw9Y3AFpokkgppAZgYsOZgik9KXyXcTjCdBa8RKnhtcskz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wCirT1c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D372C4CEED;
+	Tue,  8 Jul 2025 16:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992139;
-	bh=zLPfmc18zX0Jr0gch/vMDDh//iOebMZZEB7sIm3YdKI=;
+	s=korg; t=1751992560;
+	bh=Cfu6EtFoisGCyy9vgG7oUHKclIoDqKamfDlX3JjQ3ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=joFyZfAtmuNlDcEwJlsurVgmgesyEjscISbD3rpywbutFLtuyPygswvzC4ZdgGyPP
-	 3+Zc0bMnrxzVb6d/TpZRGzHQXQaRhOp5ChTVfoqnUO/+OqwCA534ZaBeKDx9FZitNw
-	 v0ZcAxbhbUojOESs8Ia/84Pr4GMJkr0gJeLeuS98=
+	b=2wCirT1c09leidOOJwhHDLGP6sw2DCgm/DHiGW9w1/FMKSO/t5O/Z3X6aezAt8Mvu
+	 OMARczCQRzf9HkmehaAAX6q60c5svt4DOg2jmTLvV+asKZJgz797VTfv6//ySc7WNq
+	 zvH5/CWbKWY1uxG1PGrM9AglSRmaV3q++MX81NUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Hongyu Xie <xiehongyu1@kylinos.cn>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.1 70/81] xhci: Disable stream for xHC controller with XHCI_BROKEN_STREAMS
-Date: Tue,  8 Jul 2025 18:24:02 +0200
-Message-ID: <20250708162227.181021454@linuxfoundation.org>
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 132/132] x86/process: Move the buffer clearing before MONITOR
+Date: Tue,  8 Jul 2025 18:24:03 +0200
+Message-ID: <20250708162234.366467385@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongyu Xie <xiehongyu1@kylinos.cn>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit cd65ee81240e8bc3c3119b46db7f60c80864b90b upstream.
+Commit 8e786a85c0a3c0fffae6244733fb576eeabd9dec upstream.
 
-Disable stream for platform xHC controller with broken stream.
+Move the VERW clearing before the MONITOR so that VERW doesn't disarm it
+and the machine never enters C1.
 
-Fixes: 14aec589327a6 ("storage: accept some UAS devices if streams are unavailable")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250627144127.3889714-3-mathias.nyman@linux.intel.com
+Original idea by Kim Phillips <kim.phillips@amd.com>.
+
+Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-plat.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/mwait.h |   25 +++++++++++++++----------
+ arch/x86/kernel/process.c    |   16 ++++++++++++----
+ 2 files changed, 27 insertions(+), 14 deletions(-)
 
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -351,7 +351,8 @@ static int xhci_plat_probe(struct platfo
+--- a/arch/x86/include/asm/mwait.h
++++ b/arch/x86/include/asm/mwait.h
+@@ -44,8 +44,6 @@ static __always_inline void __monitorx(c
+ 
+ static __always_inline void __mwait(unsigned long eax, unsigned long ecx)
+ {
+-	x86_idle_clear_cpu_buffers();
+-
+ 	/* "mwait %eax, %ecx;" */
+ 	asm volatile(".byte 0x0f, 0x01, 0xc9;"
+ 		     :: "a" (eax), "c" (ecx));
+@@ -89,7 +87,6 @@ static __always_inline void __mwaitx(uns
+ 
+ static __always_inline void __sti_mwait(unsigned long eax, unsigned long ecx)
+ {
+-	x86_idle_clear_cpu_buffers();
+ 
+ 	/* "mwait %eax, %ecx;" */
+ 	asm volatile("sti; .byte 0x0f, 0x01, 0xc9;"
+@@ -108,21 +105,29 @@ static __always_inline void __sti_mwait(
+  */
+ static __always_inline void mwait_idle_with_hints(unsigned long eax, unsigned long ecx)
+ {
++	if (need_resched())
++		return;
++
++	x86_idle_clear_cpu_buffers();
++
+ 	if (static_cpu_has_bug(X86_BUG_MONITOR) || !current_set_polling_and_test()) {
+ 		const void *addr = &current_thread_info()->flags;
+ 
+ 		alternative_input("", "clflush (%[addr])", X86_BUG_CLFLUSH_MONITOR, [addr] "a" (addr));
+ 		__monitor(addr, 0, 0);
+ 
+-		if (!need_resched()) {
+-			if (ecx & 1) {
+-				__mwait(eax, ecx);
+-			} else {
+-				__sti_mwait(eax, ecx);
+-				raw_local_irq_disable();
+-			}
++		if (need_resched())
++			goto out;
++
++		if (ecx & 1) {
++			__mwait(eax, ecx);
++		} else {
++			__sti_mwait(eax, ecx);
++			raw_local_irq_disable();
+ 		}
  	}
++
++out:
+ 	current_clr_polling();
+ }
  
- 	usb3_hcd = xhci_get_usb3_hcd(xhci);
--	if (usb3_hcd && HCC_MAX_PSA(xhci->hcc_params) >= 4)
-+	if (usb3_hcd && HCC_MAX_PSA(xhci->hcc_params) >= 4 &&
-+	    !(xhci->quirks & XHCI_BROKEN_STREAMS))
- 		usb3_hcd->can_do_streams = 1;
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -928,16 +928,24 @@ static int prefer_mwait_c1_over_halt(con
+  */
+ static __cpuidle void mwait_idle(void)
+ {
++	if (need_resched())
++		return;
++
++	x86_idle_clear_cpu_buffers();
++
+ 	if (!current_set_polling_and_test()) {
+ 		const void *addr = &current_thread_info()->flags;
  
- 	if (xhci->shared_hcd) {
+ 		alternative_input("", "clflush (%[addr])", X86_BUG_CLFLUSH_MONITOR, [addr] "a" (addr));
+ 		__monitor(addr, 0, 0);
+-		if (!need_resched()) {
+-			__sti_mwait(0, 0);
+-			raw_local_irq_disable();
+-		}
++		if (need_resched())
++			goto out;
++
++		__sti_mwait(0, 0);
++		raw_local_irq_disable();
+ 	}
++
++out:
+ 	__current_clr_polling();
+ }
+ 
 
 
 
