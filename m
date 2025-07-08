@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-161126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38AF1AFD378
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F13D8AFD189
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 666AE543FD4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BCA04879F8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D946B2DA77B;
-	Tue,  8 Jul 2025 16:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C61614A60D;
+	Tue,  8 Jul 2025 16:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfeMtsqC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbJuUlDO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CE3BE46;
-	Tue,  8 Jul 2025 16:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED04C1548C;
+	Tue,  8 Jul 2025 16:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993670; cv=none; b=awJvMFrv2BNMLgl2G8QK9sLoDvVAnjdaae/DmjLxbACDPapZtZJ5F6u0+wBz4W+avbL+gy+rTCDvQFkaisDv3n+3xMceX32YEuuoZxwskR85NvLmYtl/Wv8eaK0jOLEIFVAD5dZRXpkTu2a3Cl5j6sTNa6tUGucP25pI3FFrOb4=
+	t=1751992498; cv=none; b=SLEBf6qahuI0LpQ4WQy4wAB8w3yoUWBjgV3iNd/Q0VWP5wEJidetR/1pxhVMOBsHNN2sT2wDlQ9w2c8RPe45fygFlS4T5RmwFLCOO/VRPx8MhMuBEHYnLGyIHOJe3EPre9sEFgsdEkXFx9uWU4ddq4bUDAXfPws9oqtAEgq6XyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993670; c=relaxed/simple;
-	bh=P1rj8AWxyUYV3J9qkZ0wtQbgHxMWJRaQvYysrS3Wdow=;
+	s=arc-20240116; t=1751992498; c=relaxed/simple;
+	bh=kcIFitZO8C81v/lWUGIldg1QGutfV185fnRvkBW2Arw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NWpDGzFRefcCkakgF2o5VZGQrbdcHJWRcfgq5nxD/C+Kh++Pg4PjktVadFCH6rMna9w+XjfEzm0vQjSGrUYo4r2PJ/vF+QQKD5eZVO4TNHgLz72Fz56PNzrTLk5egA+rht/LdDn/Xr3HTaPI/nWEWi+t8ZnCKjaZPBibgxwWVs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfeMtsqC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1511CC4CEED;
-	Tue,  8 Jul 2025 16:54:29 +0000 (UTC)
+	 MIME-Version; b=if/VoUDQINEGnJ16qZHY6ktS3HHwqtzQQHk/i/PdRiuvu00QU9O53/m/IPi6NMgOcf/20qm2vSNkLYiYMfTZT3DW/fBritqcI04+cQ57i+RixRXDvtW+om9khxrx3l35GHDQAgKZun5Ub5q7LHMQGzotbx1P4JfGGTbBEokV9n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbJuUlDO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E8AC4CEED;
+	Tue,  8 Jul 2025 16:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993670;
-	bh=P1rj8AWxyUYV3J9qkZ0wtQbgHxMWJRaQvYysrS3Wdow=;
+	s=korg; t=1751992497;
+	bh=kcIFitZO8C81v/lWUGIldg1QGutfV185fnRvkBW2Arw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xfeMtsqCQkCDbv+uce4K50xfOhxWsZhosFTwjSjDpKIU70NFVb/qWCPf1jKpfYE/1
-	 E33L439KMhVEORb5rAAYjxsj805k9uzTVjBDBx4CeMUw3rgKw3bRcvz7b1+zM/Zy0j
-	 vLeWBnMxoPqxnu3fiRxlpBiV+8hlVPzcIcBlrY7g=
+	b=gbJuUlDOEywEzuCDbiB8/gx6K3V0qAKVEz+DDVTw2rF0qBSkkNjrQE6N5G1XiSId8
+	 vZIOoBiON94ZybdFWv6PftP0GSg3/0DRtximxlh2fS6yoVgGeGXIlGtrijm00Cd/Tx
+	 od2SdCvHp8nAsLeP6BovkbZkWnIoGQNM1VlnGQmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>,
-	John Ernberg <john.ernberg@actia.se>,
-	stable <stable@kernel.org>,
-	Jun Li <jun.li@nxp.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.15 154/178] usb: chipidea: udc: disconnect/reconnect from host when do suspend/resume
-Date: Tue,  8 Jul 2025 18:23:11 +0200
-Message-ID: <20250708162240.526176956@linuxfoundation.org>
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 081/132] drm/i915/dp_mst: Work around Thunderbolt sink disconnect after SINK_COUNT_ESI read
+Date: Tue,  8 Jul 2025 18:23:12 +0200
+Message-ID: <20250708162233.004888582@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Xin Li (Intel) <xin@zytor.com>
 
-commit 31a6afbe86e8e9deba9ab53876ec49eafc7fd901 upstream.
+[ Upstream commit 9cb15478916e849d62a6ec44b10c593b9663328c ]
 
-Shawn and John reported a hang issue during system suspend as below:
+Due to a problem in the iTBT DP-in adapter's firmware the sink on a TBT
+link may get disconnected inadvertently if the SINK_COUNT_ESI and the
+DP_LINK_SERVICE_IRQ_VECTOR_ESI0 registers are read in a single AUX
+transaction. Work around the issue by reading these registers in
+separate transactions.
 
- - USB gadget is enabled as Ethernet
- - There is data transfer over USB Ethernet (scp a big file between host
-                                             and device)
- - Device is going in/out suspend (echo mem > /sys/power/state)
+The issue affects MTL+ platforms and will be fixed in the DP-in adapter
+firmware, however releasing that firmware fix may take some time and is
+not guaranteed to be available for all systems. Based on this apply the
+workaround on affected platforms.
 
-The root cause is the USB device controller is suspended but the USB bus
-is still active which caused the USB host continues to transfer data with
-device and the device continues to queue USB requests (in this case, a
-delayed TCP ACK packet trigger the issue) after controller is suspended,
-however the USB controller clock is already gated off. Then if udc driver
-access registers after that point, the system will hang.
+See HSD #13013007775.
 
-The correct way to avoid such issue is to disconnect device from host when
-the USB bus is not at suspend state. Then the host will receive disconnect
-event and stop data transfer in time. To continue make USB gadget device
-work after system resume, this will reconnect device automatically.
+v2: Cc'ing Mika Westerberg.
 
-To make usb wakeup work if USB bus is already at suspend state, this will
-keep connection for it only when USB device controller has enabled wakeup
-capability.
-
-Reported-by: Shawn Guo <shawnguo@kernel.org>
-Reported-by: John Ernberg <john.ernberg@actia.se>
-Closes: https://lore.kernel.org/linux-usb/aEZxmlHmjeWcXiF3@dragon/
-Tested-by: John Ernberg <john.ernberg@actia.se> # iMX8QXP
-Fixes: 235ffc17d014 ("usb: chipidea: udc: add suspend/resume support for device controller")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Jun Li <jun.li@nxp.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20250614124914.207540-1-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13760
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14147
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250519133417.1469181-1-imre.deak@intel.com
+(cherry picked from commit c3a48363cf1f76147088b1adb518136ac5df86a0)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/udc.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kernel/cpu/common.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -2374,6 +2374,10 @@ static void udc_suspend(struct ci_hdrc *
- 	 */
- 	if (hw_read(ci, OP_ENDPTLISTADDR, ~0) == 0)
- 		hw_write(ci, OP_ENDPTLISTADDR, ~0, ~0);
-+
-+	if (ci->gadget.connected &&
-+	    (!ci->suspended || !device_may_wakeup(ci->dev)))
-+		usb_gadget_disconnect(&ci->gadget);
- }
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 3390814de0a54..cc1bbf70477b0 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2215,9 +2215,6 @@ EXPORT_PER_CPU_SYMBOL(__stack_chk_guard);
  
- static void udc_resume(struct ci_hdrc *ci, bool power_lost)
-@@ -2384,6 +2388,9 @@ static void udc_resume(struct ci_hdrc *c
- 					OTGSC_BSVIS | OTGSC_BSVIE);
- 		if (ci->vbus_active)
- 			usb_gadget_vbus_disconnect(&ci->gadget);
-+	} else if (ci->vbus_active && ci->driver &&
-+		   !ci->gadget.connected) {
-+		usb_gadget_connect(&ci->gadget);
- 	}
+ #endif	/* CONFIG_X86_64 */
  
- 	/* Restore value 0 if it was set for power lost check */
+-/*
+- * Clear all 6 debug registers:
+- */
+ static void initialize_debug_regs(void)
+ {
+ 	/* Control register first -- to make sure everything is disabled. */
+-- 
+2.39.5
+
 
 
 
