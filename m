@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-161169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F09BAFD360
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74DFCAFD2E0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40EC07A6879
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2D7C1891F66
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22FE2DC34C;
-	Tue,  8 Jul 2025 16:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC76C17C21E;
+	Tue,  8 Jul 2025 16:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4j1vJds"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDDZqUOn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615DA8F5E;
-	Tue,  8 Jul 2025 16:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4E58F5B;
+	Tue,  8 Jul 2025 16:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993795; cv=none; b=pVDiLvXykS3KKgJdbliyOYxbQRsVd7SqeZx6o/1NXZNyRtxTRPs8nAoN0U65sBmBDO91v9+k5jRV/9O7R2xBo5OqM9N0wzAU4JFBs8Bf6fdfpl/XRMG1jPL1IL/j/0SB2EACACiipSOX6hEs3yG3mU/I1aw5zD0+92D9VsmyMis=
+	t=1751993281; cv=none; b=Bklh5zSrQPBWKC32h18CR2k1A+f1T2e86YdVdwdoGx69WK/a8iO4bSOg8kmpx34v06Y0vy8k5pJCvNq3AXCNYOayvUaJJvCWcFi39Itj0GLRS9OmOJdYTsSh4/MYP3s6T4tXK8KABKdSMBJO7Sc06x0BuX5VPKTjlqIopNfzM7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993795; c=relaxed/simple;
-	bh=AeZcPSl1MiJECnTm8xM3YfPlb2ZOYmItNI9p1Esg4vY=;
+	s=arc-20240116; t=1751993281; c=relaxed/simple;
+	bh=yErvVbc8WJ+sHVmkX12+KwtEjm3fPnWEeQm93X1p1Fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d86ycEzgS+P0Qk16v7ZEyfF+ErX4C2UC3AqZufp6YE+wpVG8rgRzoHkmU2qKpSCJrskVQYGoXawnX+LqNCjj2KGV38D7oy32yZGITL+BWMhJKK9o5clj6/MJfntazz4RBxZu2B8fx8amUS3RNTGzxkgIzGamp/3xk2TmO8giydY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4j1vJds; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2A9C4CEED;
-	Tue,  8 Jul 2025 16:56:34 +0000 (UTC)
+	 MIME-Version; b=cQLb55mRugpf+GS41qaHNBEcgh0vvuVE4irX/JOIL5yolsXnVUtvEyoZrtQpJzJk8xUFTpzJVzfo2jC65i0iw84dTcqrOzWw47g8BB8bVZMtS88TnuwpsbBXQ1Qng5TPwFeheaHHgWXNSZKxNxrv9LzD7DIzQdcQEiOcdOJltS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDDZqUOn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34003C4CEED;
+	Tue,  8 Jul 2025 16:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993795;
-	bh=AeZcPSl1MiJECnTm8xM3YfPlb2ZOYmItNI9p1Esg4vY=;
+	s=korg; t=1751993281;
+	bh=yErvVbc8WJ+sHVmkX12+KwtEjm3fPnWEeQm93X1p1Fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p4j1vJdsQ8pzNDItAokrSamnFB+jodDbj/67p1WzrTeLN0sRltzqhp0N5r2K3Jc0l
-	 8NaoFnWkGbj7t+eAC63SY0pQCkRxS9izpmrB7V3xNL+VrtAW023Q6AvBgO5QrCdB7j
-	 RrQ0j3xZtyZKx+e+tppmza3t7qgDScoj2YFqN+ic=
+	b=mDDZqUOn4wT8rtbsdOxDNi//uST8VKdSCu0ALSHUaT7mFzlqDv1HB9FPqMXF5gfgS
+	 XH1yBiuspDvvgn5HVGijfbAtGwSz2Dvffnykc8DTlJxjYu8MgN4pIhwUVEI/ovw9Hq
+	 CVezM2EbfjA5HsIjcFghfasWjzsVzPBhQB/q8lyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jos Wang <joswang@lenovo.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/160] usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode
+	Christian Eggers <ceggers@arri.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.15 021/178] Bluetooth: hci_sync: revert some mesh modifications
 Date: Tue,  8 Jul 2025 18:20:58 +0200
-Message-ID: <20250708162232.093731984@linuxfoundation.org>
+Message-ID: <20250708162237.103485542@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +59,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jos Wang <joswang@lenovo.com>
+From: Christian Eggers <ceggers@arri.de>
 
-[ Upstream commit b4b38ffb38c91afd4dc387608db26f6fc34ed40b ]
+commit 46c0d947b64ac8efcf89dd754213dab5d1bd00aa upstream.
 
-Although some Type-C DRD devices that do not support the DP Sink
-function (such as Huawei Mate 40Pro), the Source Port initiates
-Enter Mode CMD, but the device responds to Enter Mode ACK, the
-Source port then initiates DP Status Update CMD, and the device
-responds to DP Status Update NAK.
+This reverts minor parts of the changes made in commit b338d91703fa
+("Bluetooth: Implement support for Mesh"). It looks like these changes
+were only made for development purposes but shouldn't have been part of
+the commit.
 
-As PD2.0 spec ("6.4.4.3.4 Enter Mode Command")，A DR_Swap Message
-Shall Not be sent during Modal Operation between the Port Partners.
-At this time, the source port initiates DR_Swap message through the
-"echo device > /sys/class/typec/port0/data_role" command to switch
-the data role from host to device. The device will initiate a Hard
-Reset for recovery, resulting in the failure of data role swap.
-
-Therefore, when DP Status Update NAK is received, Exit Mode CMD is
-initiated to exit the currently entered DP altmode.
-
-Signed-off-by: Jos Wang <joswang@lenovo.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250209071926.69625-1-joswang1221@gmail.com
+Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/altmodes/displayport.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/bluetooth/hci_sync.c |   16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-index 97a912f0c4eed..c76b872535d17 100644
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -298,6 +298,10 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
- 		break;
- 	case CMDT_RSP_NAK:
- 		switch (cmd) {
-+		case DP_CMD_STATUS_UPDATE:
-+			if (typec_altmode_exit(alt))
-+				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
-+			break;
- 		case DP_CMD_CONFIGURE:
- 			dp->data.conf = 0;
- 			ret = dp_altmode_configured(dp);
--- 
-2.39.5
-
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2004,13 +2004,10 @@ static int hci_clear_adv_sets_sync(struc
+ static int hci_clear_adv_sync(struct hci_dev *hdev, struct sock *sk, bool force)
+ {
+ 	struct adv_info *adv, *n;
+-	int err = 0;
+ 
+ 	if (ext_adv_capable(hdev))
+ 		/* Remove all existing sets */
+-		err = hci_clear_adv_sets_sync(hdev, sk);
+-	if (ext_adv_capable(hdev))
+-		return err;
++		return hci_clear_adv_sets_sync(hdev, sk);
+ 
+ 	/* This is safe as long as there is no command send while the lock is
+ 	 * held.
+@@ -2038,13 +2035,11 @@ static int hci_clear_adv_sync(struct hci
+ static int hci_remove_adv_sync(struct hci_dev *hdev, u8 instance,
+ 			       struct sock *sk)
+ {
+-	int err = 0;
++	int err;
+ 
+ 	/* If we use extended advertising, instance has to be removed first. */
+ 	if (ext_adv_capable(hdev))
+-		err = hci_remove_ext_adv_instance_sync(hdev, instance, sk);
+-	if (ext_adv_capable(hdev))
+-		return err;
++		return hci_remove_ext_adv_instance_sync(hdev, instance, sk);
+ 
+ 	/* This is safe as long as there is no command send while the lock is
+ 	 * held.
+@@ -2143,16 +2138,13 @@ int hci_read_tx_power_sync(struct hci_de
+ int hci_disable_advertising_sync(struct hci_dev *hdev)
+ {
+ 	u8 enable = 0x00;
+-	int err = 0;
+ 
+ 	/* If controller is not advertising we are done. */
+ 	if (!hci_dev_test_flag(hdev, HCI_LE_ADV))
+ 		return 0;
+ 
+ 	if (ext_adv_capable(hdev))
+-		err = hci_disable_ext_adv_instance_sync(hdev, 0x00);
+-	if (ext_adv_capable(hdev))
+-		return err;
++		return hci_disable_ext_adv_instance_sync(hdev, 0x00);
+ 
+ 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_ENABLE,
+ 				     sizeof(enable), &enable, HCI_CMD_TIMEOUT);
 
 
 
