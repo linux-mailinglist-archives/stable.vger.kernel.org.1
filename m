@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F1C3AFD107
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A0FAFD3BD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EBBB1C218C6
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86D097B3F99
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D74E2E0B45;
-	Tue,  8 Jul 2025 16:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC47C2E5B11;
+	Tue,  8 Jul 2025 16:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHhSiMBU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iy9V4of"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8322E11B9;
-	Tue,  8 Jul 2025 16:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978062E542F;
+	Tue,  8 Jul 2025 16:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992199; cv=none; b=nIY1/r2qVT4HmVxGZyYDldrZy2tbvNjDXyW1ham/5n32gF66WxvnzBD77MLFLA3glqLyMAgxVV9BwtnBT451anb62FowM9vAZ0mByzzkXg1vKYUHt5oqdFO+GXVVKk2mRSsbn621mfSJx4wk1dLPGPD17HgM0W1gpxUF+phufB0=
+	t=1751993964; cv=none; b=dOJ9XxB47v2U4pzJksE8fvSPvYA3sOpVh4trx9fgVOVIcv3ErBQZDI83aRXxRzh7ta26CDsewKlHloXYO5ehBlEa7TP6c5aYO/nxQQ4FZejtc0VeVMmE2KBRk9Ok+5A7sWcwUzgokpMMgv7qtBMc39J08TGZfdpkPWocO5zRfVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992199; c=relaxed/simple;
-	bh=atGLmWN54pH6e2NvZY2zH55xCJ73bTuZkZzeX6Ngx+I=;
+	s=arc-20240116; t=1751993964; c=relaxed/simple;
+	bh=MBRfG6kKDCLYc3DVaafTKwa9aRTpgOkcHkRVQlfBMRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p3upwiEIcCL5SpTpkKW6nusabP+TXPErODn7lsMgf2M6eFeMpN79nwNS30BH/MCWLIRa8sx7KcXDZJ/VL/qLx43X4cC8E/aSjvwNi6tTN3iux/EfDcGg21ZlMN83g132hKna2dytgy6vpEhwCyQMUTPwu3W35DnwbFAa/iO1c9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHhSiMBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F56C4CEED;
-	Tue,  8 Jul 2025 16:29:58 +0000 (UTC)
+	 MIME-Version; b=ECeaNOKtsKsRSXc20dZX98hpGJb0cQnqe1rsTh+yciL0tgAVyARDKgbCc8XnnUcD75WBEPNRT4+e9R2jtkwwoKVklwrNX1WUIyL2+p8wHU7CcO2P0ecpF4zMmI8W06qpknst7Yn4FJnejuRVMQ7xIcGWorzfW8RKihmnwQ0rEX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iy9V4of; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC73C4CEF0;
+	Tue,  8 Jul 2025 16:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992198;
-	bh=atGLmWN54pH6e2NvZY2zH55xCJ73bTuZkZzeX6Ngx+I=;
+	s=korg; t=1751993964;
+	bh=MBRfG6kKDCLYc3DVaafTKwa9aRTpgOkcHkRVQlfBMRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PHhSiMBUQAcY1GnmTKqapLXs0QdBoJdSC9Ec/M7SBX3qbGWk8bpU5hHF7sFKNwuPh
-	 Qg8rHwYuKm8Frcmv32/aU2ZMKSxYy01wk6w9b3zf1pVGBhhzGrBany+OPbfDb6idJN
-	 OZU9ZoJruSqETtSFeFmSa1O3UjPqpAU2+XZtdgfI=
+	b=1iy9V4ofHRYe/hbfjQKO3slQFZcGt+elt8vgqcx8xBoBkqVUm+hKve9Y3ry54+P6X
+	 WlpiuDfkWcUHsBvlj6bk9KDtcp5PirtukYv8M6E5ZRpJjqAP6bPRflqYCqIKFH/CYm
+	 u4XA/QSBiXpAP2SdtWrsq/LTQ7TQ2FfxhTiRIm/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.6 005/132] s390/pci: Do not try re-enabling load/store if device is disabled
+	Ping Cheng <ping.cheng@wacom.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.15 079/160] HID: wacom: fix kobject reference count leak
 Date: Tue,  8 Jul 2025 18:21:56 +0200
-Message-ID: <20250708162230.923655896@linuxfoundation.org>
+Message-ID: <20250708162233.729243340@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-commit b97a7972b1f4f81417840b9a2ab0c19722b577d5 upstream.
+commit 85a720f4337f0ddf1603c8b75a8f1ffbbe022ef9 upstream.
 
-If a device is disabled unblocking load/store on its own is not useful
-as a full re-enable of the function is necessary anyway. Note that SCLP
-Write Event Data Action Qualifier 0 (Reset) leaves the device disabled
-and triggers this case unless the driver already requests a reset.
+When sysfs_create_files() fails in wacom_initialize_remotes() the error
+is returned and the cleanup action will not have been registered yet.
 
+As a result the kobject???s refcount is never dropped, so the
+kobject can never be freed leading to a reference leak.
+
+Fix this by calling kobject_put() before returning.
+
+Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
+Acked-by: Ping Cheng <ping.cheng@wacom.com>
 Cc: stable@vger.kernel.org
-Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
-Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/pci/pci_event.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hid/wacom_sys.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/s390/pci/pci_event.c
-+++ b/arch/s390/pci/pci_event.c
-@@ -98,6 +98,10 @@ static pci_ers_result_t zpci_event_do_er
- 	struct zpci_dev *zdev = to_zpci(pdev);
- 	int rc;
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2031,6 +2031,7 @@ static int wacom_initialize_remotes(stru
+ 		hid_err(wacom->hdev,
+ 			"cannot create sysfs group err: %d\n", error);
+ 		kfifo_free(&remote->remote_fifo);
++		kobject_put(remote->remote_dir);
+ 		return error;
+ 	}
  
-+	/* The underlying device may have been disabled by the event */
-+	if (!zdev_enabled(zdev))
-+		return PCI_ERS_RESULT_NEED_RESET;
-+
- 	pr_info("%s: Unblocking device access for examination\n", pci_name(pdev));
- 	rc = zpci_reset_load_store_blocked(zdev);
- 	if (rc) {
 
 
 
