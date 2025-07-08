@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-160637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41AB4AFD11A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12321AFD48C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 789DC16A07E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 956091BC2427
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807901548C;
-	Tue,  8 Jul 2025 16:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7117C2E5B34;
+	Tue,  8 Jul 2025 17:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7b7GCNY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzyW+j5Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E917881E;
-	Tue,  8 Jul 2025 16:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBEA1DC9B1;
+	Tue,  8 Jul 2025 17:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992247; cv=none; b=UoqIKD1yPPvMjM3az7/H//nnCzmL9vmefUq0lixTwGj/BcYcrRGzl+cGfa7p8OKOhcdClyxHPIOl6taaLcdlb4SiL4b+D6fA1pnfR5q5RgUircfGBVDD/3kIosxw219h3ig3qq/vIq9B3N7kzgT/eBR140VH5VydY56hysk0bjE=
+	t=1751994083; cv=none; b=nh0/2M/d3Eu1974Vz1ySnQXzBOHSU7TK2bckXrizd9vuNGBnQY0QsdypNrB/QhKhA7SRFpcXfmi1U+u51Bg5tB0Zgr6JR0ySj56MZjnnF2lKj+tbQ9n8lClMwf/n6DeFW3kpcSCpLHqoJCPgHj8mVBODtjYOzLgsBJ16fxAdF1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992247; c=relaxed/simple;
-	bh=qBxXnA3lLMjns3Lc90lpYjT7+hkNv95PXP4pzSUOd8E=;
+	s=arc-20240116; t=1751994083; c=relaxed/simple;
+	bh=y72BJzZJSIqMF0Jiu47E52yfI+Z8g0ScTg7rK1PAeIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ABgwFWeemcyn+aOSzAJhb+ozNiNhTbCcF2yukLvhQ63MWBNdCPkMTTXtRIJLVmVmfMTdzb3mZtjemz1ECfZpWTEcSuVDuqtiKgnTol1VUYMKjvB0jXJ3kZUh2wmH0WoP2WrECFzBn6jV6gFdMxw3la8TAVuKLlE6BUApJjBCdbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7b7GCNY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8166CC4CEED;
-	Tue,  8 Jul 2025 16:30:46 +0000 (UTC)
+	 MIME-Version; b=m06TT5aqQxNGbdETKLl3Uid8GbcHQhKp8n3qeEDXPrgMf4zVdCCpDl67ffYcc8pgnH9mJoR5nKmJrL6ibV6CEKeiWWESYWpORYH5Pmc/NfkY4ZyGhrM6XMw7Y80UDNYl+mqHUY8jfAnE0IR7OVy0xkDKArtF+YzbXHj/Op5JCMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzyW+j5Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A901BC4CEED;
+	Tue,  8 Jul 2025 17:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992246;
-	bh=qBxXnA3lLMjns3Lc90lpYjT7+hkNv95PXP4pzSUOd8E=;
+	s=korg; t=1751994083;
+	bh=y72BJzZJSIqMF0Jiu47E52yfI+Z8g0ScTg7rK1PAeIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7b7GCNYxGojPpJzsDehJphRn6miu6dKjBAwQjNblnsW157wdvx8n7FJeY66buose
-	 O/Ot/+G3iF3m9+V1D9r+N/90l7Vy93cAP/MoYrJu6IGnLnu1uXHP0dpagQRwPVDtuM
-	 5TccZsTqGLCwqrvHfBsk98U43YcUkS8kcMNUOWNI=
+	b=gzyW+j5YSoLb4rqp2KL4WLlJaUmgAaeowZYVHC+7BgrMCZ5NdoVlDZiajk7rCovBt
+	 INZli4lEHJzzJ7FzVvQSFKWHQ1+W9FL+84nUBzFaDwZET66voPyHWfATtjRsHfXVuL
+	 O+Q0QvKbTh3wdmpx8Ue5sUX2V8n7cMifCQvX4qHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/132] RDMA/mlx5: Fix vport loopback for MPV device
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 102/160] mtk-sd: Fix a pagefault in dma_unmap_sg() for not prepared data
 Date: Tue,  8 Jul 2025 18:22:19 +0200
-Message-ID: <20250708162231.534403803@linuxfoundation.org>
+Message-ID: <20250708162234.318509809@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit a9a9e68954f29b1e197663f76289db4879fd51bb ]
+commit 539d80575b810c7a5987c7ac8915e3bc99c03695 upstream.
 
-Always enable vport loopback for both MPV devices on driver start.
+When swiotlb buffer is full, the dma_map_sg() returns 0 to
+msdc_prepare_data(), but it does not check it and sets the
+MSDC_PREPARE_FLAG.
 
-Previously in some cases related to MPV RoCE, packets weren't correctly
-executing loopback check at vport in FW, since it was disabled.
-Due to complexity of identifying such cases for MPV always enable vport
-loopback for both GVMIs when binding the slave to the master port.
+swiotlb_tbl_map_single() /* prints "swiotlb buffer is full" */
+  <-swiotlb_map()
+    <-dma_direct_map_page()
+      <-dma_direct_map_sg()
+        <-__dma_map_sg_attrs()
+          <-dma_map_sg_attrs()
+            <-dma_map_sg()  /* returns 0 (pages mapped) */
+              <-msdc_prepare_data()
 
-Fixes: 0042f9e458a5 ("RDMA/mlx5: Enable vport loopback when user context or QP mandate")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/d4298f5ebb2197459e9e7221c51ecd6a34699847.1750064969.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Then, the msdc_unprepare_data() checks MSDC_PREPARE_FLAG and calls
+dma_unmap_sg() with unmapped pages. It causes a page fault.
+
+To fix this problem, Do not set MSDC_PREPARE_FLAG if dma_map_sg()
+fails because this is not prepared.
+
+Fixes: 208489032bdd ("mmc: mediatek: Add Mediatek MMC driver")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/174908565814.4056588.769599127120955383.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/main.c | 33 +++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ drivers/mmc/host/mtk-sd.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index ada7dbf8eb1cf..e922fb8728654 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -1690,6 +1690,33 @@ static void deallocate_uars(struct mlx5_ib_dev *dev,
- 					     context->devx_uid);
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -727,9 +727,10 @@ static inline void msdc_dma_setup(struct
+ static void msdc_prepare_data(struct msdc_host *host, struct mmc_data *data)
+ {
+ 	if (!(data->host_cookie & MSDC_PREPARE_FLAG)) {
+-		data->host_cookie |= MSDC_PREPARE_FLAG;
+ 		data->sg_count = dma_map_sg(host->dev, data->sg, data->sg_len,
+ 					    mmc_get_dma_dir(data));
++		if (data->sg_count)
++			data->host_cookie |= MSDC_PREPARE_FLAG;
+ 	}
  }
  
-+static int mlx5_ib_enable_lb_mp(struct mlx5_core_dev *master,
-+				struct mlx5_core_dev *slave)
-+{
-+	int err;
-+
-+	err = mlx5_nic_vport_update_local_lb(master, true);
-+	if (err)
-+		return err;
-+
-+	err = mlx5_nic_vport_update_local_lb(slave, true);
-+	if (err)
-+		goto out;
-+
-+	return 0;
-+
-+out:
-+	mlx5_nic_vport_update_local_lb(master, false);
-+	return err;
-+}
-+
-+static void mlx5_ib_disable_lb_mp(struct mlx5_core_dev *master,
-+				  struct mlx5_core_dev *slave)
-+{
-+	mlx5_nic_vport_update_local_lb(slave, false);
-+	mlx5_nic_vport_update_local_lb(master, false);
-+}
-+
- int mlx5_ib_enable_lb(struct mlx5_ib_dev *dev, bool td, bool qp)
- {
- 	int err = 0;
-@@ -3224,6 +3251,8 @@ static void mlx5_ib_unbind_slave_port(struct mlx5_ib_dev *ibdev,
- 
- 	lockdep_assert_held(&mlx5_ib_multiport_mutex);
- 
-+	mlx5_ib_disable_lb_mp(ibdev->mdev, mpi->mdev);
-+
- 	mlx5_core_mp_event_replay(ibdev->mdev,
- 				  MLX5_DRIVER_EVENT_AFFILIATION_REMOVED,
- 				  NULL);
-@@ -3319,6 +3348,10 @@ static bool mlx5_ib_bind_slave_port(struct mlx5_ib_dev *ibdev,
- 				  MLX5_DRIVER_EVENT_AFFILIATION_DONE,
- 				  &key);
- 
-+	err = mlx5_ib_enable_lb_mp(ibdev->mdev, mpi->mdev);
-+	if (err)
-+		goto unbind;
-+
- 	return true;
- 
- unbind:
--- 
-2.39.5
-
 
 
 
