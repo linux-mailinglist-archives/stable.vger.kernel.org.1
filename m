@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-161200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504DBAFD3D5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:01:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8356BAFD2FF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:52:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 777E516E960
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C8CD3A77F0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575312E62B2;
-	Tue,  8 Jul 2025 16:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F7C2DFA22;
+	Tue,  8 Jul 2025 16:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOdoU2pl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKM2G4gs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1264C2E091E;
-	Tue,  8 Jul 2025 16:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DBE217722;
+	Tue,  8 Jul 2025 16:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993884; cv=none; b=PSQts65YN4/PZFCCBsB7i1sRTD+muP71zlwhv29ZZOWl4QpgoqkgmIJd6XgrHrurtvFEc6hGFeiuS3xclvgSclIHlzMfgsHQ/y2PzS9ddD0PuPS35BN8RkwDCkeXm+rux2EVotToDqoeD2FI4SIyaBdjZX3TXWNzf08Lv0mTRHA=
+	t=1751993373; cv=none; b=UMx1v4Cv9+8aU89Q+5a3gWqzIFi5ktjPKCuUehXycZkYGDyZuh0gqUW8NLwFmeW2Ax+ccDjue76YrXC9LqgJL3P/73tamlHp/HW+1QFLaMUF1qR1dTFj6lbhKCMtcUcq20yZiWLeT4Cn6X+rPL1DSsV/p5vMCmiyrzvLFMsdd/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993884; c=relaxed/simple;
-	bh=kx6FJAjprvejNhhebn86h4bHayhejk5tCWnHq6kGeac=;
+	s=arc-20240116; t=1751993373; c=relaxed/simple;
+	bh=CajFqJAjf2z8JKj87C1O7WVLes/hmWBSDb/jhspOMm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCSfxWmzeCUkByXYGGcpC2eG60jYXZi37cZMDybnnKoYdD3wAFSVfL4dkPMh+suD4A36h97vYuZHJTEa88k8D6BEIO1vZNMDtQgw1AZks+PkBMF0N8zZ9JiPDYPRaDQxA0cD2ZbjXs//OCH4QcN7c4S7c9dgaMFKPIZOfPAYJzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOdoU2pl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF39C4CEED;
-	Tue,  8 Jul 2025 16:58:03 +0000 (UTC)
+	 MIME-Version; b=PKoYugptbpR+1EgaPXcac+90tEEdyacM+PxsdckCb0I6dqMwNqLhVyuE4d2giqPYyvfRqgyDqtVjp0kULOxGeIraAmq23vkaFUsnZU7wQeb7+N3X7OfkONwMxNkNQxt5fqXA3TkjhFOMb5oStyPtVv9zzXYLfzjmuSUL8tKFLXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKM2G4gs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73BECC4CEED;
+	Tue,  8 Jul 2025 16:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993883;
-	bh=kx6FJAjprvejNhhebn86h4bHayhejk5tCWnHq6kGeac=;
+	s=korg; t=1751993372;
+	bh=CajFqJAjf2z8JKj87C1O7WVLes/hmWBSDb/jhspOMm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOdoU2plpmjsRINrVazpm5NOmI0fyuC6YRtPVvC8DcqNfWw0ErmofvKHXimaWj0iK
-	 mveOWAQMxsc2Sgix9v2/ZfaqTjWADkPXb+5dVwB2PeIvGcLp5q3xJZlFNwGZN0seLT
-	 O7vHSfKAh34asKkBI5qF66qxelRmlydbLqproYI0=
+	b=cKM2G4gsDm2SqwdRN+q4OGE14nMWAEYy7cNQbW1fzv0qEWSzZzLa1GkRnK3aJ0IYs
+	 vvuUZN2Xu9pHjQTvxUQj3BOem66vljzVmU1Ae1qwt2lcrnYUsRvj7GTmGbGlMhYYJf
+	 XsfDDK0QcM1Omqn/MJL3j5rAwOlNURkJDOXeDUoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
+	Ming Lei <ming.lei@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	John Garry <john.g.garry@oracle.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 052/160] vgacon: remove unneeded forward declarations
+Subject: [PATCH 6.15 052/178] scsi: core: Enforce unlimited max_segment_size when virt_boundary_mask is set
 Date: Tue,  8 Jul 2025 18:21:29 +0200
-Message-ID: <20250708162232.984234899@linuxfoundation.org>
+Message-ID: <20250708162238.041729935@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +66,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 6ceed69cde8fe4a78fe50d62d7a88a5c1eed4709 ]
+[ Upstream commit 4937e604ca24c41cae3296d069c871c2f3f519c8 ]
 
-Most of the forward declarations in vgacon are not needed. Drop them.
+The virt_boundary_mask limit requires an unlimited max_segment_size for
+bio splitting to not corrupt data.  Historically, the block layer tried
+to validate this, although the check was half-hearted until the addition
+of the atomic queue limits API.  The full blown check then triggered
+issues with stacked devices incorrectly inheriting limits such as the
+virt boundary and got disabled in commit b561ea56a264 ("block: allow
+device to have both virt_boundary_mask and max segment size") instead of
+fixing the issue properly.
 
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Stable-dep-of: 03bcbbb3995b ("dummycon: Trigger redraw when switching consoles with deferred takeover")
+Ensure that the SCSI mid layer doesn't set the default low
+max_segment_size limit for this case, and check for invalid
+max_segment_size values in the host template, similar to the original
+block layer check given that SCSI devices can't be stacked.
+
+This fixes reported data corruption on storvsc, although as far as I can
+tell storvsc always failed to properly set the max_segment_size limit as
+the SCSI APIs historically applied that when setting up the host, while
+storvsc only set the virt_boundary_mask when configuring the scsi_device.
+
+Fixes: 81988a0e6b03 ("storvsc: get rid of bounce buffer")
+Fixes: b561ea56a264 ("block: allow device to have both virt_boundary_mask and max segment size")
+Reported-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250624125233.219635-3-hch@lst.de
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/console/vgacon.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/scsi/hosts.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
-index b2180fd183307..9bfe451050209 100644
---- a/drivers/video/console/vgacon.c
-+++ b/drivers/video/console/vgacon.c
-@@ -65,16 +65,8 @@ static struct vgastate vgastate;
-  *  Interface used by the world
-  */
+diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+index e021f1106beab..cc5d05dc395c4 100644
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -473,10 +473,17 @@ struct Scsi_Host *scsi_host_alloc(const struct scsi_host_template *sht, int priv
+ 	else
+ 		shost->max_sectors = SCSI_DEFAULT_MAX_SECTORS;
  
--static const char *vgacon_startup(void);
--static void vgacon_init(struct vc_data *c, int init);
--static void vgacon_deinit(struct vc_data *c);
--static void vgacon_cursor(struct vc_data *c, int mode);
--static int vgacon_switch(struct vc_data *c);
--static int vgacon_blank(struct vc_data *c, int blank, int mode_switch);
--static void vgacon_scrolldelta(struct vc_data *c, int lines);
- static int vgacon_set_origin(struct vc_data *c);
--static void vgacon_save_screen(struct vc_data *c);
--static void vgacon_invert_region(struct vc_data *c, u16 * p, int count);
-+
- static struct uni_pagedict *vgacon_uni_pagedir;
- static int vgacon_refcount;
+-	if (sht->max_segment_size)
+-		shost->max_segment_size = sht->max_segment_size;
+-	else
+-		shost->max_segment_size = BLK_MAX_SEGMENT_SIZE;
++	shost->virt_boundary_mask = sht->virt_boundary_mask;
++	if (shost->virt_boundary_mask) {
++		WARN_ON_ONCE(sht->max_segment_size &&
++			     sht->max_segment_size != UINT_MAX);
++		shost->max_segment_size = UINT_MAX;
++	} else {
++		if (sht->max_segment_size)
++			shost->max_segment_size = sht->max_segment_size;
++		else
++			shost->max_segment_size = BLK_MAX_SEGMENT_SIZE;
++	}
  
+ 	/* 32-byte (dword) is a common minimum for HBAs. */
+ 	if (sht->dma_alignment)
+@@ -492,9 +499,6 @@ struct Scsi_Host *scsi_host_alloc(const struct scsi_host_template *sht, int priv
+ 	else
+ 		shost->dma_boundary = 0xffffffff;
+ 
+-	if (sht->virt_boundary_mask)
+-		shost->virt_boundary_mask = sht->virt_boundary_mask;
+-
+ 	device_initialize(&shost->shost_gendev);
+ 	dev_set_name(&shost->shost_gendev, "host%d", shost->host_no);
+ 	shost->shost_gendev.bus = &scsi_bus_type;
 -- 
 2.39.5
 
