@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4710DAFD2BC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEFCEAFD391
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9822A1BC51D1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D3763AA525
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDCC62E54BA;
-	Tue,  8 Jul 2025 16:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1073E2E0B4B;
+	Tue,  8 Jul 2025 16:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSUalJMW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3mm5Oru"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9922045B5;
-	Tue,  8 Jul 2025 16:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21F52DAFAE;
+	Tue,  8 Jul 2025 16:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993169; cv=none; b=Pt3G8vvR7nQ+axgFdl83CMPwV0ZHMCEaWgkgCYK9rtJ1AcgWcVPENOoV6AY3NuSZXrOOg351XQWB4VTS0BmsVaVT/4KgBZpHJlAXvtFb1g1ViNTPe5QHGhmmInjQ/50l4r769Rp4wykk/Jtr4xwZQme0yg+jMQt2rQxrDWV8X44=
+	t=1751993741; cv=none; b=VCZcwiibhf6/enudKEK0xO8G8asVM/aPonutyTLtiwVxmM4AmEycQrh6XCGuYWEeXOEtiKhE61zQxLABK6Rksm3qEIiVSOyuo67iYOiHgswQ/b/QcLFbSflXdM4EH/bwXsWA7gNohsSyNZGdMElZvVvphDzwrwfNKr8gRdxN2aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993169; c=relaxed/simple;
-	bh=AoJJlVSUqckAZ7S3dJOwfBZB4o68Zcwrj8Wpq7jCpGw=;
+	s=arc-20240116; t=1751993741; c=relaxed/simple;
+	bh=2dQ3qGTMFcpAmQNcgpaPH5lHt1Nm0Ni1HeXXUryjnW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WvZohISpDDV18P/Sr8Z+DVraQSx3A8GCbF6kIWj5s2HuOsnIJZ8A69GUYJytZvR+8AtucnGjuDh6geotFK/Iv2nGywfZSNbSxk/IR3euPK5ilLnzGa3muP2VcUMoBzx+ucrKFiV+MzV81nEl4jwK0FyfLc0X2RjdTscDc0lII5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSUalJMW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E8FC4CEF0;
-	Tue,  8 Jul 2025 16:46:09 +0000 (UTC)
+	 MIME-Version; b=XTF9MT0OT2TwgDrE2qovpmX6RKoLFlmZNLveeAFXNbAZpULAF/986gW25NKsBD5VwhYTmXujgRtHWV73IGa7M7Tfh7IT8q+/iJ8LUlMNXHWzFYmwVdevFw7nIqwPEQLeeCt8lHygP1/iMEZuHbTcHrfVX6OMdk+YnOYCSm+y9Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3mm5Oru; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A02C4CEED;
+	Tue,  8 Jul 2025 16:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993169;
-	bh=AoJJlVSUqckAZ7S3dJOwfBZB4o68Zcwrj8Wpq7jCpGw=;
+	s=korg; t=1751993741;
+	bh=2dQ3qGTMFcpAmQNcgpaPH5lHt1Nm0Ni1HeXXUryjnW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSUalJMWF/AJb1w+dnDTJAvDDOhNaW5rxj+WNOK0PD95+HtJ/KrURBIxu84vcPtQd
-	 INTE4DP+1Wf1Ju9K358iSNl+1xhTnuz2bxfEwRnDo18IQJNRdx8Fqi5Ya9sfEWCkSL
-	 N3/aFK41gi4UVo3VtLGKL8Q74FoTifauF7Dipkco=
+	b=h3mm5OruAwqwb6rc4UtRQg9F3DnEgAu7fW6SPcjrq/hq646yzUYv7NtiRD7JBH7Ko
+	 quJpkoVXyi2wbOYvhzJiv8SCR9E495l632ftYZz1ielp63yt4ynB71o5hztZcYptMa
+	 MTzNsNN1jf5vRT+AM+ap+s9TvMJMyfEoxNrBW7Ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Kerling <pkerling@casix.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 212/232] smb: client: fix readdir returning wrong type with POSIX extensions
+	stable <stable@kernel.org>,
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.15 171/178] usb: typec: displayport: Fix potential deadlock
 Date: Tue,  8 Jul 2025 18:23:28 +0200
-Message-ID: <20250708162246.988670656@linuxfoundation.org>
+Message-ID: <20250708162240.923808607@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Kerling <pkerling@casix.org>
+From: Andrei Kuchynski <akuchynski@chromium.org>
 
-commit b8f89cb723b9e66f5dbd7199e4036fee34fb0de0 upstream.
+commit 099cf1fbb8afc3771f408109f62bdec66f85160e upstream.
 
-When SMB 3.1.1 POSIX Extensions are negotiated, userspace applications
-using readdir() or getdents() calls without stat() on each individual file
-(such as a simple "ls" or "find") would misidentify file types and exhibit
-strange behavior such as not descending into directories. The reason for
-this behavior is an oversight in the cifs_posix_to_fattr conversion
-function. Instead of extracting the entry type for cf_dtype from the
-properly converted cf_mode field, it tries to extract the type from the
-PDU. While the wire representation of the entry mode is similar in
-structure to POSIX stat(), the assignments of the entry types are
-different. Applying the S_DT macro to cf_mode instead yields the correct
-result. This is also what the equivalent function
-smb311_posix_info_to_fattr in inode.c already does for stat() etc.; which
-is why "ls -l" would give the correct file type but "ls" would not (as
-identified by the colors).
+The deadlock can occur due to a recursive lock acquisition of
+`cros_typec_altmode_data::mutex`.
+The call chain is as follows:
+1. cros_typec_altmode_work() acquires the mutex
+2. typec_altmode_vdm() -> dp_altmode_vdm() ->
+3. typec_altmode_exit() -> cros_typec_altmode_exit()
+4. cros_typec_altmode_exit() attempts to acquire the mutex again
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Philipp Kerling <pkerling@casix.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+To prevent this, defer the `typec_altmode_exit()` call by scheduling
+it rather than calling it directly from within the mutex-protected
+context.
+
+Cc: stable <stable@kernel.org>
+Fixes: b4b38ffb38c9 ("usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250624133246.3936737-1-akuchynski@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/readdir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/altmodes/displayport.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/smb/client/readdir.c
-+++ b/fs/smb/client/readdir.c
-@@ -263,7 +263,7 @@ cifs_posix_to_fattr(struct cifs_fattr *f
- 	/* The Mode field in the response can now include the file type as well */
- 	fattr->cf_mode = wire_mode_to_posix(le32_to_cpu(info->Mode),
- 					    fattr->cf_cifsattrs & ATTR_DIRECTORY);
--	fattr->cf_dtype = S_DT(le32_to_cpu(info->Mode));
-+	fattr->cf_dtype = S_DT(fattr->cf_mode);
- 
- 	switch (fattr->cf_mode & S_IFMT) {
- 	case S_IFLNK:
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -394,8 +394,7 @@ static int dp_altmode_vdm(struct typec_a
+ 	case CMDT_RSP_NAK:
+ 		switch (cmd) {
+ 		case DP_CMD_STATUS_UPDATE:
+-			if (typec_altmode_exit(alt))
+-				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
++			dp->state = DP_STATE_EXIT;
+ 			break;
+ 		case DP_CMD_CONFIGURE:
+ 			dp->data.conf = 0;
 
 
 
