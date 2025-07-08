@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B84D7AFD2DC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71861AFD1E7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA0B2188AA27
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C85C54095A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E231317C21E;
-	Tue,  8 Jul 2025 16:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A4B2E5402;
+	Tue,  8 Jul 2025 16:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsCfEm94"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dR2qApNG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04CCB672;
-	Tue,  8 Jul 2025 16:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4255289E2C;
+	Tue,  8 Jul 2025 16:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993261; cv=none; b=VBWSLhJAYYUq0Qb95Joou95eiohjsb42PKuRi16S0NzvRot76cn4pvKAMboW1VpR8Gk7oInHMlBGVM+/o5mhZF47XXOAx6pX7HgDiQEuUd0lanMmmKtVHNtQXzaAWrNN2g+kV1fkn4yt82hjcu/Rtro563AtdtpMGuDG40DPflg=
+	t=1751992715; cv=none; b=pTpdqS9i/aBzTTnUu7FW7xykqz80M6Nf28eB3M2npq+oX4RIgocWFx8A2BlclVYJFSA6fc1fDAUSgTHAOBHffwdj2GdugZ13M36MYiXZXj4Xg8lDbr0NoYdvinrVlzwbcfPx9FBazm810tquPQ0OmIJJIboWYEC9kxW3Sdh92VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993261; c=relaxed/simple;
-	bh=19yhZZ4RkNGP/sNPAfsUpaTt0shJmqFy9pD4xJUlYDY=;
+	s=arc-20240116; t=1751992715; c=relaxed/simple;
+	bh=1lH4AiIL0j6roZsbpA22QWkXbKUL0FuriRSSD1MzJ0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ofxdPmzCY1A1878A1FblpCKD2jCXgoVCvpjx+yVwtoSn29/6MTablsNLeXRjTWk9q5WJXZNnalJXUGBIz8555BguHCL8V62APNJ/j9KxhB56dHmcDcncKdHmBhjiU7KaantrWEhapKrnMYqGyXbK98tsn8gv3AgtX/ewiDH9s90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsCfEm94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F04C4CEED;
-	Tue,  8 Jul 2025 16:47:40 +0000 (UTC)
+	 MIME-Version; b=jCaUAmN/XV2Wk5F/6tB627h9t1K/WM6PXFDmVqTXcVATTqR94t+9fY5g9sSlHfF2/wJGT8eopm51ZeKitXdpRT+m8xMk2OQjQ+ZH3ueWcgv+ceIf+gaN2k5eNnTPfJvX1X2xLZE+9HYoTUJjUvQPbQhYG8y8SwJo3mg3rOvdnvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dR2qApNG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC7DC4CEED;
+	Tue,  8 Jul 2025 16:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993261;
-	bh=19yhZZ4RkNGP/sNPAfsUpaTt0shJmqFy9pD4xJUlYDY=;
+	s=korg; t=1751992715;
+	bh=1lH4AiIL0j6roZsbpA22QWkXbKUL0FuriRSSD1MzJ0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BsCfEm942sp//+ylqRgxtsyXWffAaVpuCykyXpezKIO3eX+3YCsufn4hveTFveaCk
-	 PAdxN2IASFq380wxDrl8pX0GS7CdPuNx7bAZty7IRcjC6PRxPxpRvwb+Oq6hoCfjtA
-	 L+kKvtt4p4LYRoaDPxXbWpYzGhOdFfyhul4HzhwU=
+	b=dR2qApNGXeluLalVQSJPMwZBUNxRyjRWoVXueGmchwsI9YaXfzLz39yg/2lNuD2NM
+	 P8tiV95DqL6EBaVlaUwXN7gM8dM8D1TpdpSPKXvpJ7uyUqLGeTsIU/nA3MVQ94cPik
+	 FO+kpwbN6n+fNSWp26SDD7oqJ02JR900Jw2+Tqsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Shih <victor.shih@genesyslogic.com.tw>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.15 014/178] mmc: sdhci: Add a helper function for dump register in dynamic debug mode
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 055/232] btrfs: use btrfs_record_snapshot_destroy() during rmdir
 Date: Tue,  8 Jul 2025 18:20:51 +0200
-Message-ID: <20250708162236.920037283@linuxfoundation.org>
+Message-ID: <20250708162242.904784485@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 2881ba9af073faa8ee7408a8d1e0575e50eb3f6c upstream.
+[ Upstream commit 157501b0469969fc1ba53add5049575aadd79d80 ]
 
-Add a helper function for dump register in dynamic debug mode.
+We are setting the parent directory's last_unlink_trans directly which
+may result in a concurrent task starting to log the directory not see the
+update and therefore can log the directory after we removed a child
+directory which had a snapshot within instead of falling back to a
+transaction commit. Replaying such a log tree would result in a mount
+failure since we can't currently delete snapshots (and subvolumes) during
+log replay. This is the type of failure described in commit 1ec9a1ae1e30
+("Btrfs: fix unreplayable log after snapshot delete + parent dir fsync").
 
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250606110121.96314-3-victorshihgli@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by using btrfs_record_snapshot_destroy() which updates the
+last_unlink_trans field while holding the inode's log_mutex lock.
+
+Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci.h |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ fs/btrfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci.h
-+++ b/drivers/mmc/host/sdhci.h
-@@ -898,4 +898,20 @@ void sdhci_switch_external_dma(struct sd
- void sdhci_set_data_timeout_irq(struct sdhci_host *host, bool enable);
- void __sdhci_set_timeout(struct sdhci_host *host, struct mmc_command *cmd);
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 345e86fd844df..f84e3f9fad84a 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4774,7 +4774,7 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	 * deletes for directory foo.
+ 	 */
+ 	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
+-		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
++		btrfs_record_snapshot_destroy(trans, BTRFS_I(dir));
  
-+#if defined(CONFIG_DYNAMIC_DEBUG) || \
-+	(defined(CONFIG_DYNAMIC_DEBUG_CORE) && defined(DYNAMIC_DEBUG_MODULE))
-+#define SDHCI_DBG_ANYWAY 0
-+#elif defined(DEBUG)
-+#define SDHCI_DBG_ANYWAY 1
-+#else
-+#define SDHCI_DBG_ANYWAY 0
-+#endif
-+
-+#define sdhci_dbg_dumpregs(host, fmt)					\
-+do {									\
-+	DEFINE_DYNAMIC_DEBUG_METADATA(descriptor, fmt);			\
-+	if (DYNAMIC_DEBUG_BRANCH(descriptor) ||	SDHCI_DBG_ANYWAY)	\
-+		sdhci_dumpregs(host);					\
-+} while (0)
-+
- #endif /* __SDHCI_HW_H */
+ 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
+ 		ret = btrfs_unlink_subvol(trans, BTRFS_I(dir), dentry);
+-- 
+2.39.5
+
 
 
 
