@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-160842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F65EAFD22B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:43:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DBB5AFD3D3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:01:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 880BC487359
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02C8B1890F57
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1849D2E54AF;
-	Tue,  8 Jul 2025 16:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A042E5B29;
+	Tue,  8 Jul 2025 16:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZaBXfDM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cb+MRmYb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AA02E49B0;
-	Tue,  8 Jul 2025 16:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF932DAFA3;
+	Tue,  8 Jul 2025 16:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992848; cv=none; b=JFLZ7bh4MuKNv8lKK3plAGlZ2aE0wjfmZKzWMbYvW88AdgSnQ7O/Y8J6PehZZBAVFc4hMw5+gd0gTAy+yjZLs1R0t4r4Z9cnGRvGnXpgpiUJ4dHLhu97L8dB8RojqBHqxX8o8zcJORuERZQ8o11MFiWx50I8WNC215XkpSeB1fc=
+	t=1751993826; cv=none; b=HMzNIvLdGhYDRGABfHC+fjXyR2FH2ecNR2v8ln4Q/kEE+mB26NtHlDFggH2EUZAv6zF5Jx3e5djviXdzOt5TjjG3ucX09yMDQ85m13VYQ0+GQ+1TKlisoYQS106b3hzcm/meuhppQ3Sh46MFjj5oDZQzCqS0QNCJDZWuKG7xRGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992848; c=relaxed/simple;
-	bh=K7SfNmUMx6DBAeBIXYa7Gx5fbGV1JS4MB+uk1aSS6i8=;
+	s=arc-20240116; t=1751993826; c=relaxed/simple;
+	bh=3T1bzfyutb7zYe8+YQBl6eXzrpPo6rH0wrEF+yimHl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dBa/LvsWStKMpKOU9Y8/icY1kQefC5yqSnNw9hmgIprXa1MYEhxAaVO3EuiKMEI7ttFgx+jALAYf371C6MxHzTc8ikAmqfIk6n4zp2wbChYvq7r3w3/6rjQTO2Fa3dBI8LmRVqCIBgDmO4UguwvWl8vtb4GFCWrT+H3U/zf+m0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZaBXfDM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522CFC4CEED;
-	Tue,  8 Jul 2025 16:40:48 +0000 (UTC)
+	 MIME-Version; b=maGrfbg0uIP4QHSujUFQECC6x9i5E4GmQdez0mrMU38yPUXY1KGN9jkQQD3SRz0SIm9ga1Ywo+Gb9Nqq6H3J8cCD3hxvsgAhe1deYt3/POeRNyzyo3CyuC1EW2mM0clTnyoudwTR5LthKyLnJm2uLOe1LlB6To7awHLnd8J83x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cb+MRmYb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2623FC4CEED;
+	Tue,  8 Jul 2025 16:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992848;
-	bh=K7SfNmUMx6DBAeBIXYa7Gx5fbGV1JS4MB+uk1aSS6i8=;
+	s=korg; t=1751993826;
+	bh=3T1bzfyutb7zYe8+YQBl6eXzrpPo6rH0wrEF+yimHl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZaBXfDM1BOSjjyhS1NMIyXwLP3cN5zC0XEGqfC0Jwqr7FjB3BPz2KFVjBXK7h+b2
-	 5eTgu59/HqrgbRo0ZwC+J9LqA3vsrccIAjvPRQdpz3lLAxagtLnBuIRoVppLmyGglF
-	 R/kg8KBFNNpYV3qZE6oKZr513o7xpiNZEMseVmSk=
+	b=cb+MRmYbv8LYmggfkBFS5auA/KO/jjvtUNjmz5mGCf+Ql4CWYoX/0tDy4Q+IP2feU
+	 Zj7FCtddQun9JgzrsYhFDbNs4hMd0iDC3j3LoELL83jgaZLptLcRUK4yemwkbKWXuq
+	 zi7uKl+RRKv0QcuWiXYPSHVulHwG9BOsCYYPbYJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Lee Jones <lee.jones@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/232] platform/mellanox: mlxreg-lc: Fix logic error in power state check
+Subject: [PATCH 5.15 031/160] clk: ti: am43xx: Add clkctrl data for am43xx ADC1
 Date: Tue,  8 Jul 2025 18:21:08 +0200
-Message-ID: <20250708162243.340827445@linuxfoundation.org>
+Message-ID: <20250708162232.387337810@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 644bec18e705ca41d444053407419a21832fcb2f ]
+[ Upstream commit 59139ada4a7eacd4db378ee40a3d6ffbf1d0d72f ]
 
-Fixes a logic issue in mlxreg_lc_completion_notify() where the
-intention was to check if MLXREG_LC_POWERED flag is not set before
-powering on the device.
+Declare ADC1 clkctrl which feeds the magnetic-reader/ADC1 hardware
+module.
 
-The original code used "state & ~MLXREG_LC_POWERED" to check for the
-absence of the POWERED bit. However this condition evaluates to true
-even when other bits are set, leading to potentially incorrect
-behavior.
-
-Corrected the logic to explicitly check for the absence of
-MLXREG_LC_POWERED using !(state & MLXREG_LC_POWERED).
-
-Fixes: 62f9529b8d5c ("platform/mellanox: mlxreg-lc: Add initial support for Nvidia line card devices")
-Suggested-by: Vadim Pasternak <vadimp@nvidia.com>
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://lore.kernel.org/r/20250630105812.601014-1-alok.a.tiwari@oracle.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Acked-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Link: https://lore.kernel.org/r/20211015081506.933180-2-miquel.raynal@bootlin.com
+Stable-dep-of: d52b9b7e2f10 ("media: imx-jpeg: Drop the first error frames")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/mellanox/mlxreg-lc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/ti/clk-43xx.c       | 1 +
+ include/dt-bindings/clock/am4.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/platform/mellanox/mlxreg-lc.c b/drivers/platform/mellanox/mlxreg-lc.c
-index 43d119e3a4734..99152676dbd28 100644
---- a/drivers/platform/mellanox/mlxreg-lc.c
-+++ b/drivers/platform/mellanox/mlxreg-lc.c
-@@ -688,7 +688,7 @@ static int mlxreg_lc_completion_notify(void *handle, struct i2c_adapter *parent,
- 	if (regval & mlxreg_lc->data->mask) {
- 		mlxreg_lc->state |= MLXREG_LC_SYNCED;
- 		mlxreg_lc_state_update_locked(mlxreg_lc, MLXREG_LC_SYNCED, 1);
--		if (mlxreg_lc->state & ~MLXREG_LC_POWERED) {
-+		if (!(mlxreg_lc->state & MLXREG_LC_POWERED)) {
- 			err = mlxreg_lc_power_on_off(mlxreg_lc, 1);
- 			if (err)
- 				goto mlxreg_lc_regmap_power_on_off_fail;
+diff --git a/drivers/clk/ti/clk-43xx.c b/drivers/clk/ti/clk-43xx.c
+index 46c0add995700..6e97a541cfd36 100644
+--- a/drivers/clk/ti/clk-43xx.c
++++ b/drivers/clk/ti/clk-43xx.c
+@@ -116,6 +116,7 @@ static const struct omap_clkctrl_reg_data am4_l3s_clkctrl_regs[] __initconst = {
+ 	{ AM4_L3S_VPFE0_CLKCTRL, NULL, CLKF_SW_SUP, "l3_gclk" },
+ 	{ AM4_L3S_VPFE1_CLKCTRL, NULL, CLKF_SW_SUP, "l3_gclk" },
+ 	{ AM4_L3S_GPMC_CLKCTRL, NULL, CLKF_SW_SUP, "l3s_gclk" },
++	{ AM4_L3S_ADC1_CLKCTRL, NULL, CLKF_SW_SUP, "l3s_gclk" },
+ 	{ AM4_L3S_MCASP0_CLKCTRL, NULL, CLKF_SW_SUP, "mcasp0_fck" },
+ 	{ AM4_L3S_MCASP1_CLKCTRL, NULL, CLKF_SW_SUP, "mcasp1_fck" },
+ 	{ AM4_L3S_MMC3_CLKCTRL, NULL, CLKF_SW_SUP, "mmc_clk" },
+diff --git a/include/dt-bindings/clock/am4.h b/include/dt-bindings/clock/am4.h
+index d961e7cb36821..4be6c5961f342 100644
+--- a/include/dt-bindings/clock/am4.h
++++ b/include/dt-bindings/clock/am4.h
+@@ -158,6 +158,7 @@
+ #define AM4_L3S_VPFE0_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x68)
+ #define AM4_L3S_VPFE1_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x70)
+ #define AM4_L3S_GPMC_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x220)
++#define AM4_L3S_ADC1_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x230)
+ #define AM4_L3S_MCASP0_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x238)
+ #define AM4_L3S_MCASP1_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x240)
+ #define AM4_L3S_MMC3_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x248)
 -- 
 2.39.5
 
