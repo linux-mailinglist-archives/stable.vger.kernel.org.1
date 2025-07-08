@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-161259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 200AEAFD47E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 585CCAFD122
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11897189376D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7C6C562FCC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BF32E5B2A;
-	Tue,  8 Jul 2025 17:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06021BEF7E;
+	Tue,  8 Jul 2025 16:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMRPv510"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LR+eDeY9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9222E6D18;
-	Tue,  8 Jul 2025 17:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFA92E3701;
+	Tue,  8 Jul 2025 16:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994056; cv=none; b=FFAPtiyMYIAcb4NcqY3PaXYV/mHwkPmJqPczBSusBXY6BxgGhmcpxh0wJqDqLUWwlZmHWLyLiUGYNLLYwIoJ+aMJpqOLH1oI4UZK5aYuK3gp1Kn0W2M4gwlgRp4Hk0Nf2nZbALU97DUTLv8PSOSvz41eQsp/+ive6QirG2dT078=
+	t=1751992277; cv=none; b=uMvFmeb2f/LzC+AqPX19ArUG7F2CqI3LaSnvA2yNzaZv9+Z/uUTh+XP5erSRVrNCB+2sXqtvMzlp+YkddMY1KoOZ56CMzkRM31FBn1SuuplmXleFq5MkJdam10BQsI+OiAX7ZK44QmOWnsVfKWqu61UpPFPrxQ2zIiWLQrt1riY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994056; c=relaxed/simple;
-	bh=17bK684FTnhfBlEpuZUf/9GNeyZSOXlNV1D9Co6s4mo=;
+	s=arc-20240116; t=1751992277; c=relaxed/simple;
+	bh=quZn6u2DBOsaIYB+HTr3HjwzNLYa7zZqp1xrBEEmnTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=No28v6MD6evkVThdP+9KD47UOaOoamPG3W0RnNSyoon/3kadA74lzA78LfvU0GFfRo3viyHKrSL0KAy51PJ8vRkvIqiWDnUPEtPlPs5aEwScIcjoVe3aLqTDRbCZV1IVzkELmSGrt0Qs99gndplToSC4txzxO2FFSam14NZCfV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMRPv510; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F623C4CEED;
-	Tue,  8 Jul 2025 17:00:56 +0000 (UTC)
+	 MIME-Version; b=rTInyNkbbelc9RPnrBYuXS++wzPCG0xCZTIFqd461uUTk/gSoyyYQdI57KDWA6mRN/3RbPPROdWyLM8UJmWnxbej2X2nFKYYNhRfIoWt+Gc4u+B27yCyz7IOGWIgnv7kOlBjEP87qQbeoZ+YvyqjsqpdIuX8ZgisdeG7eb1aoTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LR+eDeY9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84FCC4CEED;
+	Tue,  8 Jul 2025 16:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994056;
-	bh=17bK684FTnhfBlEpuZUf/9GNeyZSOXlNV1D9Co6s4mo=;
+	s=korg; t=1751992277;
+	bh=quZn6u2DBOsaIYB+HTr3HjwzNLYa7zZqp1xrBEEmnTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WMRPv510b6vm3SsKPT46vmY86cdUct7GM74F0ZLcdZJ3wmfG0unSMzE+2y15n5Qxa
-	 zRHO4w/NvAYKMB8fnsoFVMVGE7dNllwKLElDSGIYgJSr3MB0Sw9Xlgv/C+CDNYwMVI
-	 6vykbmg5iCvjWKq0aaN6AzH9FRJedemGh8r4HpFI=
+	b=LR+eDeY9QjOyJpEWOrckpDGgxhYm02TMe3/xxuBCQAIXYmWQo/y2SN5GnZu1rB00h
+	 KAzViQG52ibqoDKNoG1suF+iHV4TvgpYeIovoQGod/zf108wqUQ3wkY8nOkdb0DVO8
+	 KhapRIoOhJDHN1RI6Zv1ORJh1EpKXMcpGWoAFGhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Avri Altman <avri.altman@sandisk.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Fushuai Wang <wangfushuai@baidu.com>,
+	Simon Horman <horms@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 111/160] scsi: ufs: core: Fix spelling of a sysfs attribute name
+Subject: [PATCH 6.6 037/132] dpaa2-eth: fix xdp_rxq_info leak
 Date: Tue,  8 Jul 2025 18:22:28 +0200
-Message-ID: <20250708162234.548184620@linuxfoundation.org>
+Message-ID: <20250708162231.778857187@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Fushuai Wang <wangfushuai@baidu.com>
 
-[ Upstream commit 021f243627ead17eb6500170256d3d9be787dad8 ]
+[ Upstream commit 2def09ead4ad5907988b655d1e1454003aaf8297 ]
 
-Change "resourse" into "resource" in the name of a sysfs attribute.
+The driver registered xdp_rxq_info structures via xdp_rxq_info_reg()
+but failed to properly unregister them in error paths and during
+removal.
 
-Fixes: d829fc8a1058 ("scsi: ufs: sysfs: unit descriptor")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20250624181658.336035-1-bvanassche@acm.org
-Reviewed-by: Avri Altman <avri.altman@sandisk.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: d678be1dc1ec ("dpaa2-eth: add XDP_REDIRECT support")
+Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://patch.msgid.link/20250626133003.80136-1-wangfushuai@baidu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-driver-ufs | 2 +-
- drivers/scsi/ufs/ufs-sysfs.c               | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ .../net/ethernet/freescale/dpaa2/dpaa2-eth.c  | 26 +++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-driver-ufs b/Documentation/ABI/testing/sysfs-driver-ufs
-index ec3a7149ced59..2e2e0b992233d 100644
---- a/Documentation/ABI/testing/sysfs-driver-ufs
-+++ b/Documentation/ABI/testing/sysfs-driver-ufs
-@@ -655,7 +655,7 @@ Description:	This file shows the thin provisioning type. This is one of
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+index 40e8818295951..d3c36a6f84b01 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -3928,6 +3928,7 @@ static int dpaa2_eth_setup_rx_flow(struct dpaa2_eth_priv *priv,
+ 					 MEM_TYPE_PAGE_ORDER0, NULL);
+ 	if (err) {
+ 		dev_err(dev, "xdp_rxq_info_reg_mem_model failed\n");
++		xdp_rxq_info_unreg(&fq->channel->xdp_rxq);
+ 		return err;
+ 	}
  
- 		The file is read only.
+@@ -4421,17 +4422,25 @@ static int dpaa2_eth_bind_dpni(struct dpaa2_eth_priv *priv)
+ 			return -EINVAL;
+ 		}
+ 		if (err)
+-			return err;
++			goto out;
+ 	}
  
--What:		/sys/class/scsi_device/*/device/unit_descriptor/physical_memory_resourse_count
-+What:		/sys/class/scsi_device/*/device/unit_descriptor/physical_memory_resource_count
- Date:		February 2018
- Contact:	Stanislav Nijnikov <stanislav.nijnikov@wdc.com>
- Description:	This file shows the total physical memory resources. This is
-diff --git a/drivers/scsi/ufs/ufs-sysfs.c b/drivers/scsi/ufs/ufs-sysfs.c
-index 3bfdcc2f22dc0..369595dbb1fcd 100644
---- a/drivers/scsi/ufs/ufs-sysfs.c
-+++ b/drivers/scsi/ufs/ufs-sysfs.c
-@@ -1180,7 +1180,7 @@ UFS_UNIT_DESC_PARAM(logical_block_size, _LOGICAL_BLK_SIZE, 1);
- UFS_UNIT_DESC_PARAM(logical_block_count, _LOGICAL_BLK_COUNT, 8);
- UFS_UNIT_DESC_PARAM(erase_block_size, _ERASE_BLK_SIZE, 4);
- UFS_UNIT_DESC_PARAM(provisioning_type, _PROVISIONING_TYPE, 1);
--UFS_UNIT_DESC_PARAM(physical_memory_resourse_count, _PHY_MEM_RSRC_CNT, 8);
-+UFS_UNIT_DESC_PARAM(physical_memory_resource_count, _PHY_MEM_RSRC_CNT, 8);
- UFS_UNIT_DESC_PARAM(context_capabilities, _CTX_CAPABILITIES, 2);
- UFS_UNIT_DESC_PARAM(large_unit_granularity, _LARGE_UNIT_SIZE_M1, 1);
- UFS_UNIT_DESC_PARAM(hpb_lu_max_active_regions, _HPB_LU_MAX_ACTIVE_RGNS, 2);
-@@ -1200,7 +1200,7 @@ static struct attribute *ufs_sysfs_unit_descriptor[] = {
- 	&dev_attr_logical_block_count.attr,
- 	&dev_attr_erase_block_size.attr,
- 	&dev_attr_provisioning_type.attr,
--	&dev_attr_physical_memory_resourse_count.attr,
-+	&dev_attr_physical_memory_resource_count.attr,
- 	&dev_attr_context_capabilities.attr,
- 	&dev_attr_large_unit_granularity.attr,
- 	&dev_attr_hpb_lu_max_active_regions.attr,
+ 	err = dpni_get_qdid(priv->mc_io, 0, priv->mc_token,
+ 			    DPNI_QUEUE_TX, &priv->tx_qdid);
+ 	if (err) {
+ 		dev_err(dev, "dpni_get_qdid() failed\n");
+-		return err;
++		goto out;
+ 	}
+ 
+ 	return 0;
++
++out:
++	while (i--) {
++		if (priv->fq[i].type == DPAA2_RX_FQ &&
++		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
++			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
++	}
++	return err;
+ }
+ 
+ /* Allocate rings for storing incoming frame descriptors */
+@@ -4813,6 +4822,17 @@ static void dpaa2_eth_del_ch_napi(struct dpaa2_eth_priv *priv)
+ 	}
+ }
+ 
++static void dpaa2_eth_free_rx_xdp_rxq(struct dpaa2_eth_priv *priv)
++{
++	int i;
++
++	for (i = 0; i < priv->num_fqs; i++) {
++		if (priv->fq[i].type == DPAA2_RX_FQ &&
++		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
++			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
++	}
++}
++
+ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
+ {
+ 	struct device *dev;
+@@ -5016,6 +5036,7 @@ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
+ 	free_percpu(priv->percpu_stats);
+ err_alloc_percpu_stats:
+ 	dpaa2_eth_del_ch_napi(priv);
++	dpaa2_eth_free_rx_xdp_rxq(priv);
+ err_bind:
+ 	dpaa2_eth_free_dpbps(priv);
+ err_dpbp_setup:
+@@ -5068,6 +5089,7 @@ static void dpaa2_eth_remove(struct fsl_mc_device *ls_dev)
+ 	free_percpu(priv->percpu_extras);
+ 
+ 	dpaa2_eth_del_ch_napi(priv);
++	dpaa2_eth_free_rx_xdp_rxq(priv);
+ 	dpaa2_eth_free_dpbps(priv);
+ 	dpaa2_eth_free_dpio(priv);
+ 	dpaa2_eth_free_dpni(priv);
 -- 
 2.39.5
 
