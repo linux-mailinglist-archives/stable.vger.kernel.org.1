@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-160550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9173BAFD0C3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:27:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C120AFD157
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:34:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F94D1C219A4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3157B540F4F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1030D2E0910;
-	Tue,  8 Jul 2025 16:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B5B2E337A;
+	Tue,  8 Jul 2025 16:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9x29Hi0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQjHrH+U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC04A217722;
-	Tue,  8 Jul 2025 16:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961F21714B7;
+	Tue,  8 Jul 2025 16:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991968; cv=none; b=V4oOrIMEHzKiLdEEX1OhR6+mLVIjWkX27a0mEe554y6uQcrpXlWyaCyMbKR3IA/1CeC3olyyZUF+CXWW1pVJIPLrn0WajER7SQzlO3Jffe3Fa9X8tZq65LkQgfs4QIOB1vMm1zrLo+TnTuOx09EzbWmkiK+tmofRA9JepD/CnMg=
+	t=1751992376; cv=none; b=OXsiHWnztqHoCM9G+5xbhquIuHhcxPvPpuVPbzlAEK1pYebP9v3PcBabYw25agOHUC6c9b1PJ2rdorhjo/gp2DGwDZJ0/WFSENZfv6PGn8Okf5qfbgzfTS5bsmYFTS9+JuFSqgPR1xhfk/ZzSJJwEkww4U/48IkZOdlVYTOgR5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991968; c=relaxed/simple;
-	bh=UibqEyeogtkArGDoBew0iofIXoAmV/OQ7V3qIGSdetw=;
+	s=arc-20240116; t=1751992376; c=relaxed/simple;
+	bh=iz7leSBzopyB079DXk7LJrwosRKpySC9BmTWej3yveQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HzMFzGs6/4G1p+xY6ZdDW6OxcWln8qzfbs0Y0pTSE/1Y3gqFPVWb+od1uUtPwDY/HDJYM00XPFbU0bX/YNv+AyY6AfguPBYfGqPsX3Py46qjHF1p2MGDQfr/IuSyC0L1MxgXtiZ+0lt92PZgmABzpx/BwuIf7gsHDT6AWok9UyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9x29Hi0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47384C4CEED;
-	Tue,  8 Jul 2025 16:26:08 +0000 (UTC)
+	 MIME-Version; b=Lerp6VwGBHey0+LJIpeGf64aXX9KMC76HlGNJxbzwg3vWx6uDSn7MqjG7E/eSrMcuLGoSCRR5sMMuQRBRLJ/H7Z5+EmbHCivh9Sl8mwYr6tS89BHZjZ6zgpR2FBaaClnMPyQWIPmicoEGoZnAYNXCQBdcOt6wyGjtnBXXWHkDrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQjHrH+U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0060EC4CEED;
+	Tue,  8 Jul 2025 16:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751991968;
-	bh=UibqEyeogtkArGDoBew0iofIXoAmV/OQ7V3qIGSdetw=;
+	s=korg; t=1751992376;
+	bh=iz7leSBzopyB079DXk7LJrwosRKpySC9BmTWej3yveQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x9x29Hi0EGCgx4mI5xUMYrySZP8eyFVMTReFXgqDaZObOfGtmpMbpwNB44eWxrFe+
-	 XgdUy3r4RO7OfcvEHEz60LKdxcmxgyAusxDWBdMoJyqZ2Qvfx2nYpBCUoqO/NUdaNJ
-	 VNX4MYOp+8v2A5dqOuNmgG0M7LWXF5u9maaGxoM4=
+	b=uQjHrH+UOHHoMMtl0fkURg2GrZ1Xdfki38vBbD8TvtJUboDpERdq/X+BGq2QSKGHs
+	 VvvmZO7KQwUCqO1VYruBAS4NGYaxjpZLPnNZzqLuRPi24Hg/6s4Txa/vfyFtsPvBN0
+	 DZGqWkySdn7Uw6BQ05Ll5I+WV3qFY0PNOr/Gxtpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 09/81] Bluetooth: MGMT: mesh_send: check instances prior disabling advertising
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 070/132] wifi: mac80211: finish link init before RCU publish
 Date: Tue,  8 Jul 2025 18:23:01 +0200
-Message-ID: <20250708162225.141727913@linuxfoundation.org>
+Message-ID: <20250708162232.696338623@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit f3cb5676e5c11c896ba647ee309a993e73531588 upstream.
+[ Upstream commit d87c3ca0f8f1ca4c25f2ed819e954952f4d8d709 ]
 
-The unconditional call of hci_disable_advertising_sync() in
-mesh_send_done_sync() also disables other LE advertisings (non mesh
-related).
+Since the link/conf pointers can be accessed without any
+protection other than RCU, make sure the data is actually
+set up before publishing the structures.
 
-I am not sure whether this call is required at all, but checking the
-adv_instances list (like done at other places) seems to solve the
-problem.
-
-Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b2e8434f1829 ("wifi: mac80211: set up/tear down client vif links properly")
+Link: https://patch.msgid.link/20250624130749.9a308b713c74.I4a80f5eead112a38730939ea591d2e275c721256@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/link.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -1085,7 +1085,8 @@ static int mesh_send_done_sync(struct hc
- 	struct mgmt_mesh_tx *mesh_tx;
+diff --git a/net/mac80211/link.c b/net/mac80211/link.c
+index 16cbaea93fc32..af4d2b2e9a26f 100644
+--- a/net/mac80211/link.c
++++ b/net/mac80211/link.c
+@@ -28,8 +28,16 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
+ 	if (link_id < 0)
+ 		link_id = 0;
  
- 	hci_dev_clear_flag(hdev, HCI_MESH_SENDING);
--	hci_disable_advertising_sync(hdev);
-+	if (list_empty(&hdev->adv_instances))
-+		hci_disable_advertising_sync(hdev);
- 	mesh_tx = mgmt_mesh_next(hdev, NULL);
+-	rcu_assign_pointer(sdata->vif.link_conf[link_id], link_conf);
+-	rcu_assign_pointer(sdata->link[link_id], link);
++	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN) {
++		struct ieee80211_sub_if_data *ap_bss;
++		struct ieee80211_bss_conf *ap_bss_conf;
++
++		ap_bss = container_of(sdata->bss,
++				      struct ieee80211_sub_if_data, u.ap);
++		ap_bss_conf = sdata_dereference(ap_bss->vif.link_conf[link_id],
++						ap_bss);
++		memcpy(link_conf, ap_bss_conf, sizeof(*link_conf));
++	}
  
- 	if (mesh_tx)
+ 	link->sdata = sdata;
+ 	link->link_id = link_id;
+@@ -65,6 +73,9 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
+ 
+ 		ieee80211_link_debugfs_add(link);
+ 	}
++
++	rcu_assign_pointer(sdata->vif.link_conf[link_id], link_conf);
++	rcu_assign_pointer(sdata->link[link_id], link);
+ }
+ 
+ void ieee80211_link_stop(struct ieee80211_link_data *link)
+-- 
+2.39.5
+
 
 
 
