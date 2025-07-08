@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84641AFD18F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:37:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0769AFD0B3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C43A05647CB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEF623A0493
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5E42E5413;
-	Tue,  8 Jul 2025 16:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1684B2DC34C;
+	Tue,  8 Jul 2025 16:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UH3wZhwR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvByf5A3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB3B2E3385;
-	Tue,  8 Jul 2025 16:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44E22DAFC1;
+	Tue,  8 Jul 2025 16:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992509; cv=none; b=dtGSD0n1jL5Siqxuyyd2LPPw04j4i4CVbl1aL6sdxGLJBvHS/OV2n3TIQTJpxFOUQvJTUVTY+EvmfrA1Bk+lZXzz7WQ4SsPHwpRHK4Aw/xmb1mZraO2VJ22dOEXJhX4gz/kUNBSRLKHtqs1vu/BkYgVPKXjiOT3rPjmNgjgiweM=
+	t=1751991990; cv=none; b=VRSoaLOggPqbA8PW/mYL3ST/aBNzLl7Vb9sW9dG1QAFMosV8/bIMVMUVk0yg0oFg0VqlUilDKwm1qAX2kSMmlaxrAkPgR7CAmVBeFKswSIYFUVqq96IOB5Hqq3xHn+2MdEJu9dPQ+KekeQiCTfzDhEBJ6Zk6oRIQPwotx/dEPCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992509; c=relaxed/simple;
-	bh=aSoQpzahLMbecdPEQ5Q6VCr3CrijxRnxKYVxHd9TWF8=;
+	s=arc-20240116; t=1751991990; c=relaxed/simple;
+	bh=woF+iXVk3c/pdkGO7/86vhcrQq+BZjyEfTwTR9lC/uQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eGFknhQdGVIWLLjcnGsxGSfV2Vz9jkC+fy5gNZUJeXpyCp2uddBu2E3qY8YE08PgQk+MMpaeognu05DHGcr94FdTV5DbxKFxQHG9vWynylApkS84X3k4aQ5w8OrOxTKYEGNEALKZzCNwIDdFjNz/LREZ3LKYCQU0xtxVV8MZysQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UH3wZhwR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3E8C4CEED;
-	Tue,  8 Jul 2025 16:35:08 +0000 (UTC)
+	 MIME-Version; b=sVZPx/zzCaVe1SlO/MLEckyXc6c1DpaeoNKYtjsbHqeDpMnFCiwUDse1WH9237Kg0+idrbxZj0oYghOGc5Fb8Nz2WmvjbrnC7CkJUMbcGz06ExSVJbCtuuhn7Qs7+xmR7osHI4te9whPx8+Z9Ag9+1yZ/r+dejXwwdewULe0f6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvByf5A3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005A2C4CEED;
+	Tue,  8 Jul 2025 16:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992509;
-	bh=aSoQpzahLMbecdPEQ5Q6VCr3CrijxRnxKYVxHd9TWF8=;
+	s=korg; t=1751991990;
+	bh=woF+iXVk3c/pdkGO7/86vhcrQq+BZjyEfTwTR9lC/uQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UH3wZhwRIZ/DY0dG+7jUR/Jj9T6U7swEiMLq3H0CMyRZ7+L2K4ekuTmlDDWe+v0eK
-	 KNqM+lZIrV4JHWZmADW5WrSiG3GH6TvQqgRAf9Yh2RrHKZDGT07llYBpezKqpLYfWt
-	 ifiOrMtGAsZRSXePcfZSzjPMIyyisjuQNlPe/cs8=
+	b=HvByf5A3MCFro+7+6OpD/F93niOBYWMBa7Wla2xAOCc0xyqd8xtCx8SQnhkWkmXQm
+	 Vieg5Y296BsDtHhbigdVZ9aVplx2enkNN8oy6Sg5LOpwwhs+wTvK/soWietoouLmvk
+	 NBHh1cTvT2wPRLR85heRgRYH80IHiIM5SAI7ou9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Yang Li <yang.li@amlogic.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/132] ALSA: sb: Force to disable DMAs once when DMA mode is changed
-Date: Tue,  8 Jul 2025 18:23:16 +0200
-Message-ID: <20250708162233.121786921@linuxfoundation.org>
+Subject: [PATCH 6.1 25/81] Bluetooth: Prevent unintended pause by checking if advertising is active
+Date: Tue,  8 Jul 2025 18:23:17 +0200
+Message-ID: <20250708162225.733340459@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Yang Li <yang.li@amlogic.com>
 
-[ Upstream commit 4c267ae2ef349639b4d9ebf00dd28586a82fdbe6 ]
+[ Upstream commit 1f029b4e30a602db33dedee5ac676e9236ad193c ]
 
-When the DMA mode is changed on the (still real!) SB AWE32 after
-playing a stream and closing, the previous DMA setup was still
-silently kept, and it can confuse the hardware, resulting in the
-unexpected noises.  As a workaround, enforce the disablement of DMA
-setups when the DMA setup is changed by the kcontrol.
+When PA Create Sync is enabled, advertising resumes unexpectedly.
+Therefore, it's necessary to check whether advertising is currently
+active before attempting to pause it.
 
-https://bugzilla.kernel.org/show_bug.cgi?id=218185
-Link: https://patch.msgid.link/20250610064322.26787-2-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  < HCI Command: LE Add Device To... (0x08|0x0011) plen 7  #1345 [hci0] 48.306205
+  		Address type: Random (0x01)
+  		Address: 4F:84:84:5F:88:17 (Resolvable)
+  		Identity type: Random (0x01)
+  		Identity: FC:5B:8C:F7:5D:FB (Static)
+  < HCI Command: LE Set Address Re.. (0x08|0x002d) plen 1  #1347 [hci0] 48.308023
+  		Address resolution: Enabled (0x01)
+  ...
+  < HCI Command: LE Set Extended A.. (0x08|0x0039) plen 6  #1349 [hci0] 48.309650
+  		Extended advertising: Enabled (0x01)
+  		Number of sets: 1 (0x01)
+  		Entry 0
+  		Handle: 0x01
+  		Duration: 0 ms (0x00)
+  		Max ext adv events: 0
+  ...
+  < HCI Command: LE Periodic Adve.. (0x08|0x0044) plen 14  #1355 [hci0] 48.314575
+  		Options: 0x0000
+  		Use advertising SID, Advertiser Address Type and address
+  		Reporting initially enabled
+  		SID: 0x02
+  		Adv address type: Random (0x01)
+  		Adv address: 4F:84:84:5F:88:17 (Resolvable)
+  		Identity type: Random (0x01)
+  		Identity: FC:5B:8C:F7:5D:FB (Static)
+  		Skip: 0x0000
+  		Sync timeout: 20000 msec (0x07d0)
+  		Sync CTE type: 0x0000
+
+Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
+Signed-off-by: Yang Li <yang.li@amlogic.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/isa/sb/sb16_main.c | 4 ++++
+ net/bluetooth/hci_sync.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/sound/isa/sb/sb16_main.c b/sound/isa/sb/sb16_main.c
-index 5efbd0a41312b..1497a7822eee6 100644
---- a/sound/isa/sb/sb16_main.c
-+++ b/sound/isa/sb/sb16_main.c
-@@ -714,6 +714,10 @@ static int snd_sb16_dma_control_put(struct snd_kcontrol *kcontrol, struct snd_ct
- 	change = nval != oval;
- 	snd_sb16_set_dma_mode(chip, nval);
- 	spin_unlock_irqrestore(&chip->reg_lock, flags);
-+	if (change) {
-+		snd_dma_disable(chip->dma8);
-+		snd_dma_disable(chip->dma16);
-+	}
- 	return change;
- }
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index acaa8d45feb8a..c1e018eaa6f4c 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2474,6 +2474,10 @@ static int hci_pause_advertising_sync(struct hci_dev *hdev)
+ 	int err;
+ 	int old_state;
  
++	/* If controller is not advertising we are done. */
++	if (!hci_dev_test_flag(hdev, HCI_LE_ADV))
++		return 0;
++
+ 	/* If already been paused there is nothing to do. */
+ 	if (hdev->advertising_paused)
+ 		return 0;
 -- 
 2.39.5
 
