@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-161030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079F3AFD312
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9FD5AFD402
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F11116C123
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DAA3542F45
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A62B2DAFA3;
-	Tue,  8 Jul 2025 16:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DB22E62C4;
+	Tue,  8 Jul 2025 16:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2X1i2moO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHhCbaRQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4571D214A9B;
-	Tue,  8 Jul 2025 16:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720152DC34C;
+	Tue,  8 Jul 2025 16:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993396; cv=none; b=oos0xUBKnXwu4FQ6pLx0Un6npK3e26TPCVj2NR4DHN0blTwW2a30CUnkwU63g6nxGEzC7xucKAG/XTciQOWqLodHK97C360CMtyomhqRkaeOoatRxUQ7Q0yNDvnA1TGvj0jPlpKs1LLhKQ/bTb3ygUF6ZmkvO9zY/idP664viDw=
+	t=1751993911; cv=none; b=kXrfaPRkLYFWaFId1RwViXBVXW6w6i7IkNW3nkhUj/crDNvm03W7PBc4KmGgP/uYsT6rnN3Ry+C88XsPMScp/VHCCuk4X1gV4WCUFXyMAcbVDFySahtV2o0rdCshOyVQEQrt4PBZruhMFt6VHn71Jo+0AWp5dpXSbz/pSePGEG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993396; c=relaxed/simple;
-	bh=WU7v182laKwLLhQ02/Noz4GNBxGg0mFxlHrHZHD0+30=;
+	s=arc-20240116; t=1751993911; c=relaxed/simple;
+	bh=S9BlATTaOfhzkEZpMKLkx27SHTSQgGjxINl/FT7Ip3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G5doQ5RS5cQOmX4lK/nd29+j7gtylf1PMgICPeHCfk1WFnLnQf+H7ikbAA+xyozrePj/fRkWUiNrtCSsOa3wHa54mOx+DxB1OjBz0A/VgFA0WQ8eJsixkUpcz+JxZhD6jIGrntRBveB5F6RE/qS24uFRkPlbitIntkEoP3D2ALg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2X1i2moO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86E1C4CEF5;
-	Tue,  8 Jul 2025 16:49:55 +0000 (UTC)
+	 MIME-Version; b=m6KtJD36jRHDkNKZcn6HjoHSHFoGZAF8BmthJjld9H7+JHhnJexf+D731OggGs/qTI+QmAiXgSAaw5ZhHsZ8sh1M6Q2yRHi8Ha3RAYzHA6KxBfE6YsFZ8wiCPnXU3kJW6aSuvgk2wuYUo8hva/lGGC1cExP8+9McnAXN4TRlA1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHhCbaRQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1ECFC4CEED;
+	Tue,  8 Jul 2025 16:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993396;
-	bh=WU7v182laKwLLhQ02/Noz4GNBxGg0mFxlHrHZHD0+30=;
+	s=korg; t=1751993911;
+	bh=S9BlATTaOfhzkEZpMKLkx27SHTSQgGjxINl/FT7Ip3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2X1i2moO1gTe56Qa0ZjdHFGTE071w/J+rTG/0GWwJYNxP0quKxmItBnhDss8xo1bU
-	 5pSqu5yopiI72PgCxG159vHhP9O0PFg3MEu4MmsG7EGrZsnWY4xhtLn9/4qkAHm1ON
-	 7F38BRQR3Md+LbBumrT4qMqaKV97TlEwZdVf3IxE=
+	b=dHhCbaRQ5RaWspQonu8tCj2EQn/GBhFjwzcsmqcbNH6q1acxUUx1QxRMLg9+D5072
+	 ffHEp5DVOCLhL8YG84duIzeALafRGMpt1q6dt1xpeFW2+YugTKRhtfW3bZJcOVM5yw
+	 ZPhk1yBxeSjZMJlfJ8E5MXuGndDH4JCFwLaMkoG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 059/178] platform/mellanox: nvsw-sn2201: Fix bus number in adapter error message
-Date: Tue,  8 Jul 2025 18:21:36 +0200
-Message-ID: <20250708162238.222395734@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 5.15 060/160] s390/pkey: Prevent overflow in size calculation for memdup_user()
+Date: Tue,  8 Jul 2025 18:21:37 +0200
+Message-ID: <20250708162233.212561374@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit d07143b507c51c04c091081627c5a130e9d3c517 ]
+commit 7360ee47599af91a1d5f4e74d635d9408a54e489 upstream.
 
-change error log to use correct bus number from main_mux_devs
-instead of cpld_devs.
+Number of apqn target list entries contained in 'nr_apqns' variable is
+determined by userspace via an ioctl call so the result of the product in
+calculation of size passed to memdup_user() may overflow.
 
-Fixes: 662f24826f95 ("platform/mellanox: Add support for new SN2201 system")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
-Link: https://lore.kernel.org/r/20250622072921.4111552-2-alok.a.tiwari@oracle.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In this case the actual size of the allocated area and the value
+describing it won't be in sync leading to various types of unpredictable
+behaviour later.
+
+Use a proper memdup_array_user() helper which returns an error if an
+overflow is detected. Note that it is different from when nr_apqns is
+initially zero - that case is considered valid and should be handled in
+subsequent pkey_handler implementations.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: f2bbc96e7cfa ("s390/pkey: add CCA AES cipher key support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250611192011.206057-1-pchelkin@ispras.ru
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/mellanox/nvsw-sn2201.c | 2 +-
+ drivers/s390/crypto/pkey_api.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/mellanox/nvsw-sn2201.c b/drivers/platform/mellanox/nvsw-sn2201.c
-index 0c047aa2345b3..490001a9afd76 100644
---- a/drivers/platform/mellanox/nvsw-sn2201.c
-+++ b/drivers/platform/mellanox/nvsw-sn2201.c
-@@ -1088,7 +1088,7 @@ static int nvsw_sn2201_i2c_completion_notify(void *handle, int id)
- 	if (!nvsw_sn2201->main_mux_devs->adapter) {
- 		err = -ENODEV;
- 		dev_err(nvsw_sn2201->dev, "Failed to get adapter for bus %d\n",
--			nvsw_sn2201->cpld_devs->nr);
-+			nvsw_sn2201->main_mux_devs->nr);
- 		goto i2c_get_adapter_main_fail;
- 	}
+--- a/drivers/s390/crypto/pkey_api.c
++++ b/drivers/s390/crypto/pkey_api.c
+@@ -1134,7 +1134,7 @@ static void *_copy_apqns_from_user(void
+ 	if (!uapqns || nr_apqns == 0)
+ 		return NULL;
  
--- 
-2.39.5
-
+-	return memdup_user(uapqns, nr_apqns * sizeof(struct pkey_apqn));
++	return memdup_array_user(uapqns, nr_apqns, sizeof(struct pkey_apqn));
+ }
+ 
+ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
 
 
 
