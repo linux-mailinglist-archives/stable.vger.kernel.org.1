@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-161248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA59AFD477
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 479D9AFD109
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 970C21882D28
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18DFD7AEE4E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D562E6121;
-	Tue,  8 Jul 2025 17:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57321CAA85;
+	Tue,  8 Jul 2025 16:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sm+6uEQZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOuLYBh7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082102DC34C;
-	Tue,  8 Jul 2025 17:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9307D881E;
+	Tue,  8 Jul 2025 16:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994025; cv=none; b=CfBzMlRvUgXHUTugTBXSszQB5HJAicftKktNNJrN9C4Yfgv+4P3zsnHkAl+1L2+tEG6R/zUJrnd3pBmeR7d+dRBliw0dzhXirO5rWIf6g1hXYQJTkWRK+SKvkCxqJm6k3QFZm0BruJMYeSs68EdrAvhy7aygShR2/qiPyherhoo=
+	t=1751992234; cv=none; b=A83qOEzRfab8VTRKpbub2R1NVW5EQ8nIIsRTPXRLDv10qjCRz0loeX4RM+cYAExUjrNaKrVoed2X3sPOIgF9XH2fBbGhyZiopIyQf94rg14naPIwoqgBh2P0opEh7axLRryRnkcOfpn6A42bTmMmnh6Wya5BUFwjj/5keiJQtAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994025; c=relaxed/simple;
-	bh=kyBGzQCcu1QGgb55QiBh3v3yUyjOk4xMqWCcW6viA0s=;
+	s=arc-20240116; t=1751992234; c=relaxed/simple;
+	bh=R6DvkwU3qTUFBwjnAB83upTpYpW1/7GWKupjpXigh14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uKTMjf6KW3hgbwApdsWcI5dOz7EVUd9YxNTlFg1Bvl82RkyZ68c0sGGGH5jvstR1GLHbYQsk14Tw5qv6OdxnPm70ekTGW0/p+jf6Ah5JlChAMr3RSwVgpYIinMS7wx7CjpFnOECzV+noQF/65YH/pYAjx26zwuuOQa1F9eqZ35s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sm+6uEQZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573A8C4CEF0;
-	Tue,  8 Jul 2025 17:00:24 +0000 (UTC)
+	 MIME-Version; b=AaMMcu7dLGc1x2Zl/rvzEFkoWMr8a8c04eZ/PaAIB1osJWfzVPLKOK68yL0cIQv1LXX4ns0uEhPHkqiJxpPzBQsmBZ4qM4ls45y38Y5Aq6IfWIMxxcZ+LFzLq1X81BHdBhLsxhUGN+T+s6MZpW9G09Ny2SnRRqLPJyE6Mxd9lh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOuLYBh7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8BBC4CEED;
+	Tue,  8 Jul 2025 16:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994024;
-	bh=kyBGzQCcu1QGgb55QiBh3v3yUyjOk4xMqWCcW6viA0s=;
+	s=korg; t=1751992234;
+	bh=R6DvkwU3qTUFBwjnAB83upTpYpW1/7GWKupjpXigh14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sm+6uEQZgjbUwG3F/SS2w1VoZqVGzSjF/QhaujlDVvzsEKFI4dtP3gntjGt3TJrgI
-	 LQon9Qp+0rWz/939J10G/xMUZkXMfbUCOXCmf5E3IQb4wdg6RZioydb0x3cXibkLVy
-	 KFbxXf15mG61BsAHpRfWJ6OvWb4JvWwP8kJbgi2A=
+	b=UOuLYBh7EVRIDn4Ji0uqanqq9LVGObg9mg3dKzUhYb63VmJIKqNXYK7Kt6Lf9Y1Mw
+	 sQDqmnRl/gVeG+kx5gmbAgbl1Po45Fg832Clb2SpyMi0NqruT67NIievs+o9EhEtdC
+	 2GlyXgR6JERs9zRxRwDoMQ4d6e5aKci0XMCpQ1GM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan Tan <bryan-bt.tan@broadcom.com>,
-	Vishnu Dasa <vishnu.dasa@broadcom.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	stable <stable@kernel.org>,
-	HarshaVardhana S A <harshavardhana.sa@broadcom.com>
-Subject: [PATCH 5.15 098/160] vsock/vmci: Clear the vmci transport packet properly when initializing it
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 024/132] scsi: qla4xxx: Fix missing DMA mapping error in qla4xxx_alloc_pdu()
 Date: Tue,  8 Jul 2025 18:22:15 +0200
-Message-ID: <20250708162234.216370055@linuxfoundation.org>
+Message-ID: <20250708162231.427969861@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,61 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 223e2288f4b8c262a864e2c03964ffac91744cd5 upstream.
+[ Upstream commit 00f452a1b084efbe8dcb60a29860527944a002a1 ]
 
-In vmci_transport_packet_init memset the vmci_transport_packet before
-populating the fields to avoid any uninitialised data being left in the
-structure.
+dma_map_XXX() can fail and should be tested for errors with
+dma_mapping_error().
 
-Cc: Bryan Tan <bryan-bt.tan@broadcom.com>
-Cc: Vishnu Dasa <vishnu.dasa@broadcom.com>
-Cc: Broadcom internal kernel review list
-Cc: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: virtualization@lists.linux.dev
-Cc: netdev@vger.kernel.org
-Cc: stable <stable@kernel.org>
-Signed-off-by: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20250701122254.2397440-1-gregkh@linuxfoundation.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b3a271a94d00 ("[SCSI] qla4xxx: support iscsiadm session mgmt")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250618071742.21822-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/vmci_transport.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/qla4xxx/ql4_os.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -119,6 +119,8 @@ vmci_transport_packet_init(struct vmci_t
- 			   u16 proto,
- 			   struct vmci_handle handle)
- {
-+	memset(pkt, 0, sizeof(*pkt));
-+
- 	/* We register the stream control handler as an any cid handle so we
- 	 * must always send from a source address of VMADDR_CID_ANY
- 	 */
-@@ -131,8 +133,6 @@ vmci_transport_packet_init(struct vmci_t
- 	pkt->type = type;
- 	pkt->src_port = src->svm_port;
- 	pkt->dst_port = dst->svm_port;
--	memset(&pkt->proto, 0, sizeof(pkt->proto));
--	memset(&pkt->_reserved2, 0, sizeof(pkt->_reserved2));
+diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
+index 675332e49a7b0..77c28d2ebf013 100644
+--- a/drivers/scsi/qla4xxx/ql4_os.c
++++ b/drivers/scsi/qla4xxx/ql4_os.c
+@@ -3420,6 +3420,8 @@ static int qla4xxx_alloc_pdu(struct iscsi_task *task, uint8_t opcode)
+ 		task_data->data_dma = dma_map_single(&ha->pdev->dev, task->data,
+ 						     task->data_count,
+ 						     DMA_TO_DEVICE);
++		if (dma_mapping_error(&ha->pdev->dev, task_data->data_dma))
++			return -ENOMEM;
+ 	}
  
- 	switch (pkt->type) {
- 	case VMCI_TRANSPORT_PACKET_TYPE_INVALID:
+ 	DEBUG2(ql4_printk(KERN_INFO, ha, "%s: MaxRecvLen %u, iscsi hrd %d\n",
+-- 
+2.39.5
+
 
 
 
