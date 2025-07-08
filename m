@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E71AFD11C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EACFAFD4A2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:07:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02CA716E26C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F99A1C20775
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7B81BEF7E;
-	Tue,  8 Jul 2025 16:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC522E5B04;
+	Tue,  8 Jul 2025 17:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8W/VPDC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lS8IpZjE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC214881E;
-	Tue,  8 Jul 2025 16:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3272DC34C;
+	Tue,  8 Jul 2025 17:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992253; cv=none; b=Hrr8qE7K8yY8Uy2/hcz/cvQ/54wGHSueHPJ6rKOESVO9+/PjyHrO4Ac/bS1Khh9zeAPhiFKYoFYH7qpWnidAgCBLDUE3eBowOnPL8pBRwr9RUDP00a3IWFoQt043/xq5QJEq/CaggrCnIvqDUKZPGXmhbYm77hJTJU3Q7zbyUmA=
+	t=1751994128; cv=none; b=e+8+TwMmz0Jv9G6vQ1Em+OwzuvmD37GBvIQtM0n5kiMAFFzLCgraBSXTyexDUZ4zwtK+y+O6QW7Bstdh/fDtpP2gt8sI5mkdSb7mhqBz405gYpuf1KMqbK2TtEWrcQ1zumfnJ36AOO3qA3nqN2FSWdmftbWTQZJj8OiCnocqiGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992253; c=relaxed/simple;
-	bh=ZM2gHaWzfU3arykJJHtSgjQDDIZysiJxZli8Xbjul8E=;
+	s=arc-20240116; t=1751994128; c=relaxed/simple;
+	bh=dMPyQpBMiJcFI1ARTL+h+Ouxp7+1s9Ba8bV4qUfk3ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LolgbP4Bkt758aTEQTDcDIxJZiiN5C3h64POto5bJoCjZ9QQRvmr9e80vUh03ikGlbvHCBmcKrQkoIWY1F9dXfvn5nWuIiTlFb8U3aHiyrx22q6AdYz4q49Gf4jEdVXju9maDj4k8/HyW5Rd9F/mPYqmFWLGgQb2O4T09KAHCmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8W/VPDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 794B1C4CEED;
-	Tue,  8 Jul 2025 16:30:52 +0000 (UTC)
+	 MIME-Version; b=aUxZHo5jU16QLj2Sf5IxFjVyeqwaMrNkwtLBTRvXhRNIOASTMZM15F/w0r6b2NdvbkFZUo1TnBnAgDpl089yi7/UFhxCC7alWtbb8NRWyvG6J0MuneEZllkcPTyuYsfyiP87PpgKkuuaPNpYwu8VXcbkGY3fPGC3sG01frCr3Xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lS8IpZjE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F5DC4CEED;
+	Tue,  8 Jul 2025 17:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992252;
-	bh=ZM2gHaWzfU3arykJJHtSgjQDDIZysiJxZli8Xbjul8E=;
+	s=korg; t=1751994128;
+	bh=dMPyQpBMiJcFI1ARTL+h+Ouxp7+1s9Ba8bV4qUfk3ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l8W/VPDCmO0hve+gdyuR11kXYrc5a+nhmQgvO8ZSzxfBvWTBUkWHnSG5oaqOXE5MJ
-	 4q4AqRuQzRY8nTxV+G47aN1OVlJ8qFexoLj3zJqYAigC/GHsNnoWEU91divra8E9JS
-	 k77BWl+6S3i5p4ZjcH9C674TPYcd2QHd6nnXjaU4=
+	b=lS8IpZjEfherdZdDRmmuA7I8QDfAJG4I7aeaaxrhpN7jLr5nCpO2VE4nHb4zMLRy8
+	 jNc6y7Md9ZQXTtk680/74yg3zk723iy0hQmqeIqnYmpP917Iey/HXM8sTJpyq4gJe4
+	 tRbSjv8TxjR3vN+CPRm4V2iykQoxlv+maRE1FMBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Li <yang.li@amlogic.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/132] Bluetooth: Prevent unintended pause by checking if advertising is active
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 104/160] mtk-sd: reset host->mrq on prepare_data() error
 Date: Tue,  8 Jul 2025 18:22:21 +0200
-Message-ID: <20250708162231.590438525@linuxfoundation.org>
+Message-ID: <20250708162234.366409216@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Li <yang.li@amlogic.com>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit 1f029b4e30a602db33dedee5ac676e9236ad193c ]
+commit ec54c0a20709ed6e56f40a8d59eee725c31a916b upstream.
 
-When PA Create Sync is enabled, advertising resumes unexpectedly.
-Therefore, it's necessary to check whether advertising is currently
-active before attempting to pause it.
+Do not leave host with dangling ->mrq pointer if we hit
+the msdc_prepare_data() error out path.
 
-  < HCI Command: LE Add Device To... (0x08|0x0011) plen 7  #1345 [hci0] 48.306205
-  		Address type: Random (0x01)
-  		Address: 4F:84:84:5F:88:17 (Resolvable)
-  		Identity type: Random (0x01)
-  		Identity: FC:5B:8C:F7:5D:FB (Static)
-  < HCI Command: LE Set Address Re.. (0x08|0x002d) plen 1  #1347 [hci0] 48.308023
-  		Address resolution: Enabled (0x01)
-  ...
-  < HCI Command: LE Set Extended A.. (0x08|0x0039) plen 6  #1349 [hci0] 48.309650
-  		Extended advertising: Enabled (0x01)
-  		Number of sets: 1 (0x01)
-  		Entry 0
-  		Handle: 0x01
-  		Duration: 0 ms (0x00)
-  		Max ext adv events: 0
-  ...
-  < HCI Command: LE Periodic Adve.. (0x08|0x0044) plen 14  #1355 [hci0] 48.314575
-  		Options: 0x0000
-  		Use advertising SID, Advertiser Address Type and address
-  		Reporting initially enabled
-  		SID: 0x02
-  		Adv address type: Random (0x01)
-  		Adv address: 4F:84:84:5F:88:17 (Resolvable)
-  		Identity type: Random (0x01)
-  		Identity: FC:5B:8C:F7:5D:FB (Static)
-  		Skip: 0x0000
-  		Sync timeout: 20000 msec (0x07d0)
-  		Sync CTE type: 0x0000
-
-Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
-Signed-off-by: Yang Li <yang.li@amlogic.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: f5de469990f1 ("mtk-sd: Prevent memory corruption from DMA map failure")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250625052106.584905-1-senozhatsky@chromium.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sync.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mmc/host/mtk-sd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 9ba4cb90891b3..d602e9d8eff45 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -2518,6 +2518,10 @@ static int hci_pause_advertising_sync(struct hci_dev *hdev)
- 	int err;
- 	int old_state;
- 
-+	/* If controller is not advertising we are done. */
-+	if (!hci_dev_test_flag(hdev, HCI_LE_ADV))
-+		return 0;
-+
- 	/* If already been paused there is nothing to do. */
- 	if (hdev->advertising_paused)
- 		return 0;
--- 
-2.39.5
-
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -1314,6 +1314,7 @@ static void msdc_ops_request(struct mmc_
+ 	if (mrq->data) {
+ 		msdc_prepare_data(host, mrq->data);
+ 		if (!msdc_data_prepared(mrq->data)) {
++			host->mrq = NULL;
+ 			/*
+ 			 * Failed to prepare DMA area, fail fast before
+ 			 * starting any commands.
 
 
 
