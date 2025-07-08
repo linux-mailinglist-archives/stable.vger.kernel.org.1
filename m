@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1363AFD162
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:35:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0681AFD361
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0B3C541346
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:33:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E32491C400CD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8E12E5B29;
-	Tue,  8 Jul 2025 16:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77967BE46;
+	Tue,  8 Jul 2025 16:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LILKOAQA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ij1lOOJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266AA1548C;
-	Tue,  8 Jul 2025 16:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316462E49AF;
+	Tue,  8 Jul 2025 16:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992409; cv=none; b=kjuHgatfNuvbjOOTiqUjM/Cgt1c6ObOWgTh/Re9CcRaIdz3pfluxniwEkJ4FuuGcwchdyN1kymDKf9qgGxzqLbplygtFPOwuyqP0mP46a4Z1kvlqphkcB9wlDvQ3f7B2Y0wzxMfo3K4os1gfzr41zBQ1ymZcuAkLQJggvi0ccsg=
+	t=1751993590; cv=none; b=CrqRhoJyCMLv9UY4P9E3WLGBEpw0hxSj7+wL2Jltl/JyH85vshUIk3ZDxBfd7G//gy4BHOuTOhNF1ZnIYkZL7nUBXvgU/uZfbbBb2wla5Xg3wlCo8ZmzU2gZkruy99L5ev96Lx9SQnRnB3k81ob0Z9gt6+YQz1lONf+lHRNP11M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992409; c=relaxed/simple;
-	bh=S2wFQyGVhlv+AyCHeE6abHjIy2vxlYKCb5D96xxOXFE=;
+	s=arc-20240116; t=1751993590; c=relaxed/simple;
+	bh=0x5WOATSNiVVlI0fsA9qCGjJqPcmSf3jxf9EMRmia9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LP4f1Dsfv58Q0n1FBttW2Qzn+iZUBdm4pn7VcDNpK9i0idDqCxvujg3L0kJEBwaT2Kukvyb0s7xkBjPy65FdNOC7hSZUKZcTLDpx4m4ruezCyJhg2vrMy4ejsc6HfPQ4sslWV0ppced76NRjC7JryfeqJNgdeck/jX4Nhk7rg0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LILKOAQA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C025C4CEF0;
-	Tue,  8 Jul 2025 16:33:28 +0000 (UTC)
+	 MIME-Version; b=a55f8MiXS5Qsps3oBDIWf7wOKtrQi82PlJ8geZt//3d4DP4dz8gyRsUbP2XmJHS8L9LXtJD/3w5i6PcU4Efc1SPk98N0wGSdFLvzHU/Dur6xHXdwVHZ9g5h2Qr7h8LFE/qKyJ5SFG5ugETvMJL+TLgpVfUBkA7EvYuRNw9+SEFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ij1lOOJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61169C4CEED;
+	Tue,  8 Jul 2025 16:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992409;
-	bh=S2wFQyGVhlv+AyCHeE6abHjIy2vxlYKCb5D96xxOXFE=;
+	s=korg; t=1751993589;
+	bh=0x5WOATSNiVVlI0fsA9qCGjJqPcmSf3jxf9EMRmia9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LILKOAQAKv0mcecx7w88Ed5gSOGnGcQZblWjDy7Z3b2iQBrCxkzg3FCo7rEvoXnhb
-	 XDv8Xjnr4OtF6aCKMfxkhk4yW6zggvepD29jRz6eIeWGRm3ji/mcuK764qno3h+Jfo
-	 OxRHyzjRt3WjDmbCjvlEXGu1LZ0dIfyrOQMUAFLI=
+	b=ij1lOOJTrbfvXujOui1Lhw6/iCxmsSdqkvclY7tzixC0MBZWUOYO+CYnuz67GHTa7
+	 GO/aq/BIFtPPxxilHVx+N9MCzmmDbjAxSH8t3DemPkznW36g0mCs0S6q8mCVSC6hXC
+	 ghvOb87JPtFg3OGX+YzZbHxFLm91SEWfKVq9nv5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Tasos Sahanidis <tasos@tasossah.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/132] net: usb: lan78xx: fix WARN in __netif_napi_del_locked on disconnect
+Subject: [PATCH 6.15 126/178] ata: libata-acpi: Do not assume 40 wire cable if no devices are enabled
 Date: Tue,  8 Jul 2025 18:22:43 +0200
-Message-ID: <20250708162232.179921761@linuxfoundation.org>
+Message-ID: <20250708162239.874636515@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +62,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Tasos Sahanidis <tasos@tasossah.com>
 
-[ Upstream commit 6c7ffc9af7186ed79403a3ffee9a1e5199fc7450 ]
+[ Upstream commit 33877220b8641b4cde474a4229ea92c0e3637883 ]
 
-Remove redundant netif_napi_del() call from disconnect path.
+On at least an ASRock 990FX Extreme 4 with a VIA VT6330, the devices
+have not yet been enabled by the first time ata_acpi_cbl_80wire() is
+called. This means that the ata_for_each_dev loop is never entered,
+and a 40 wire cable is assumed.
 
-A WARN may be triggered in __netif_napi_del_locked() during USB device
-disconnect:
+The VIA controller on this board does not report the cable in the PCI
+config space, thus having to fall back to ACPI even though no SATA
+bridge is present.
 
-  WARNING: CPU: 0 PID: 11 at net/core/dev.c:7417 __netif_napi_del_locked+0x2b4/0x350
+The _GTM values are correctly reported by the firmware through ACPI,
+which has already set up faster transfer modes, but due to the above
+the controller is forced down to a maximum of UDMA/33.
 
-This happens because netif_napi_del() is called in the disconnect path while
-NAPI is still enabled. However, it is not necessary to call netif_napi_del()
-explicitly, since unregister_netdev() will handle NAPI teardown automatically
-and safely. Removing the redundant call avoids triggering the warning.
+Resolve this by modifying ata_acpi_cbl_80wire() to directly return the
+cable type. First, an unknown cable is assumed which preserves the mode
+set by the firmware, and then on subsequent calls when the devices have
+been enabled, an 80 wire cable is correctly detected.
 
-Full trace:
- lan78xx 1-1:1.0 enu1: Failed to read register index 0x000000c4. ret = -ENODEV
- lan78xx 1-1:1.0 enu1: Failed to set MAC down with error -ENODEV
- lan78xx 1-1:1.0 enu1: Link is Down
- lan78xx 1-1:1.0 enu1: Failed to read register index 0x00000120. ret = -ENODEV
- ------------[ cut here ]------------
- WARNING: CPU: 0 PID: 11 at net/core/dev.c:7417 __netif_napi_del_locked+0x2b4/0x350
- Modules linked in: flexcan can_dev fuse
- CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted 6.16.0-rc2-00624-ge926949dab03 #9 PREEMPT
- Hardware name: SKOV IMX8MP CPU revC - bd500 (DT)
- Workqueue: usb_hub_wq hub_event
- pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : __netif_napi_del_locked+0x2b4/0x350
- lr : __netif_napi_del_locked+0x7c/0x350
- sp : ffffffc085b673c0
- x29: ffffffc085b673c0 x28: ffffff800b7f2000 x27: ffffff800b7f20d8
- x26: ffffff80110bcf58 x25: ffffff80110bd978 x24: 1ffffff0022179eb
- x23: ffffff80110bc000 x22: ffffff800b7f5000 x21: ffffff80110bc000
- x20: ffffff80110bcf38 x19: ffffff80110bcf28 x18: dfffffc000000000
- x17: ffffffc081578940 x16: ffffffc08284cee0 x15: 0000000000000028
- x14: 0000000000000006 x13: 0000000000040000 x12: ffffffb0022179e8
- x11: 1ffffff0022179e7 x10: ffffffb0022179e7 x9 : dfffffc000000000
- x8 : 0000004ffdde8619 x7 : ffffff80110bcf3f x6 : 0000000000000001
- x5 : ffffff80110bcf38 x4 : ffffff80110bcf38 x3 : 0000000000000000
- x2 : 0000000000000000 x1 : 1ffffff0022179e7 x0 : 0000000000000000
- Call trace:
-  __netif_napi_del_locked+0x2b4/0x350 (P)
-  lan78xx_disconnect+0xf4/0x360
-  usb_unbind_interface+0x158/0x718
-  device_remove+0x100/0x150
-  device_release_driver_internal+0x308/0x478
-  device_release_driver+0x1c/0x30
-  bus_remove_device+0x1a8/0x368
-  device_del+0x2e0/0x7b0
-  usb_disable_device+0x244/0x540
-  usb_disconnect+0x220/0x758
-  hub_event+0x105c/0x35e0
-  process_one_work+0x760/0x17b0
-  worker_thread+0x768/0xce8
-  kthread+0x3bc/0x690
-  ret_from_fork+0x10/0x20
- irq event stamp: 211604
- hardirqs last  enabled at (211603): [<ffffffc0828cc9ec>] _raw_spin_unlock_irqrestore+0x84/0x98
- hardirqs last disabled at (211604): [<ffffffc0828a9a84>] el1_dbg+0x24/0x80
- softirqs last  enabled at (211296): [<ffffffc080095f10>] handle_softirqs+0x820/0xbc8
- softirqs last disabled at (210993): [<ffffffc080010288>] __do_softirq+0x18/0x20
- ---[ end trace 0000000000000000 ]---
- lan78xx 1-1:1.0 enu1: failed to kill vid 0081/0
+Since the function now directly returns the cable type, it is renamed
+to ata_acpi_cbl_pata_type().
 
-Fixes: ec4c7e12396b ("lan78xx: Introduce NAPI polling support")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20250627051346.276029-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
+Link: https://lore.kernel.org/r/20250519085945.1399466-1-tasos@tasossah.com
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/ata/libata-acpi.c | 24 ++++++++++++++++--------
+ drivers/ata/pata_via.c    |  6 ++----
+ include/linux/libata.h    |  7 +++----
+ 3 files changed, 21 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 09173d7b87ed5..ec5689cd240aa 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -4229,8 +4229,6 @@ static void lan78xx_disconnect(struct usb_interface *intf)
- 	if (!dev)
- 		return;
+diff --git a/drivers/ata/libata-acpi.c b/drivers/ata/libata-acpi.c
+index b7f0bf7955213..f2140fc06ba0f 100644
+--- a/drivers/ata/libata-acpi.c
++++ b/drivers/ata/libata-acpi.c
+@@ -514,15 +514,19 @@ unsigned int ata_acpi_gtm_xfermask(struct ata_device *dev,
+ EXPORT_SYMBOL_GPL(ata_acpi_gtm_xfermask);
  
--	netif_napi_del(&dev->napi);
--
- 	udev = interface_to_usbdev(intf);
- 	net = dev->net;
+ /**
+- * ata_acpi_cbl_80wire		-	Check for 80 wire cable
++ * ata_acpi_cbl_pata_type - Return PATA cable type
+  * @ap: Port to check
+- * @gtm: GTM data to use
+  *
+- * Return 1 if the @gtm indicates the BIOS selected an 80wire mode.
++ * Return ATA_CBL_PATA* according to the transfer mode selected by BIOS
+  */
+-int ata_acpi_cbl_80wire(struct ata_port *ap, const struct ata_acpi_gtm *gtm)
++int ata_acpi_cbl_pata_type(struct ata_port *ap)
+ {
+ 	struct ata_device *dev;
++	int ret = ATA_CBL_PATA_UNK;
++	const struct ata_acpi_gtm *gtm = ata_acpi_init_gtm(ap);
++
++	if (!gtm)
++		return ATA_CBL_PATA40;
+ 
+ 	ata_for_each_dev(dev, &ap->link, ENABLED) {
+ 		unsigned int xfer_mask, udma_mask;
+@@ -530,13 +534,17 @@ int ata_acpi_cbl_80wire(struct ata_port *ap, const struct ata_acpi_gtm *gtm)
+ 		xfer_mask = ata_acpi_gtm_xfermask(dev, gtm);
+ 		ata_unpack_xfermask(xfer_mask, NULL, NULL, &udma_mask);
+ 
+-		if (udma_mask & ~ATA_UDMA_MASK_40C)
+-			return 1;
++		ret = ATA_CBL_PATA40;
++
++		if (udma_mask & ~ATA_UDMA_MASK_40C) {
++			ret = ATA_CBL_PATA80;
++			break;
++		}
+ 	}
+ 
+-	return 0;
++	return ret;
+ }
+-EXPORT_SYMBOL_GPL(ata_acpi_cbl_80wire);
++EXPORT_SYMBOL_GPL(ata_acpi_cbl_pata_type);
+ 
+ static void ata_acpi_gtf_to_tf(struct ata_device *dev,
+ 			       const struct ata_acpi_gtf *gtf,
+diff --git a/drivers/ata/pata_via.c b/drivers/ata/pata_via.c
+index d82728a01832b..bb80e7800dcbe 100644
+--- a/drivers/ata/pata_via.c
++++ b/drivers/ata/pata_via.c
+@@ -201,11 +201,9 @@ static int via_cable_detect(struct ata_port *ap) {
+ 	   two drives */
+ 	if (ata66 & (0x10100000 >> (16 * ap->port_no)))
+ 		return ATA_CBL_PATA80;
++
+ 	/* Check with ACPI so we can spot BIOS reported SATA bridges */
+-	if (ata_acpi_init_gtm(ap) &&
+-	    ata_acpi_cbl_80wire(ap, ata_acpi_init_gtm(ap)))
+-		return ATA_CBL_PATA80;
+-	return ATA_CBL_PATA40;
++	return ata_acpi_cbl_pata_type(ap);
+ }
+ 
+ static int via_pre_reset(struct ata_link *link, unsigned long deadline)
+diff --git a/include/linux/libata.h b/include/linux/libata.h
+index e5695998acb02..ec3b0c9c2a8cf 100644
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -1363,7 +1363,7 @@ int ata_acpi_stm(struct ata_port *ap, const struct ata_acpi_gtm *stm);
+ int ata_acpi_gtm(struct ata_port *ap, struct ata_acpi_gtm *stm);
+ unsigned int ata_acpi_gtm_xfermask(struct ata_device *dev,
+ 				   const struct ata_acpi_gtm *gtm);
+-int ata_acpi_cbl_80wire(struct ata_port *ap, const struct ata_acpi_gtm *gtm);
++int ata_acpi_cbl_pata_type(struct ata_port *ap);
+ #else
+ static inline const struct ata_acpi_gtm *ata_acpi_init_gtm(struct ata_port *ap)
+ {
+@@ -1388,10 +1388,9 @@ static inline unsigned int ata_acpi_gtm_xfermask(struct ata_device *dev,
+ 	return 0;
+ }
+ 
+-static inline int ata_acpi_cbl_80wire(struct ata_port *ap,
+-				      const struct ata_acpi_gtm *gtm)
++static inline int ata_acpi_cbl_pata_type(struct ata_port *ap)
+ {
+-	return 0;
++	return ATA_CBL_PATA40;
+ }
+ #endif
  
 -- 
 2.39.5
