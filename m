@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1A3AFD368
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CDE1AFD253
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B374188F9AE
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED91B175A1D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CA72DAFAE;
-	Tue,  8 Jul 2025 16:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025BE2DD5EF;
+	Tue,  8 Jul 2025 16:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsPYnLn2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifKplZTc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E88DBE46;
-	Tue,  8 Jul 2025 16:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47981714B7;
+	Tue,  8 Jul 2025 16:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993609; cv=none; b=AqXrefZ+1oynH2UtAmmlSCxGU3s+Bl2ddD8KJn+QeSTas4EFW5/zLJiu/ngTnTxMHpCqe3m8wxIFXXQ36x++6G0r/Hd5ykh/jPlFk3IpC+0CVhPUsUig9oHz/3ax1J6FWR94NoM0M4mqz1eAsvlngChabMydv2XLOBOIOU89uhs=
+	t=1751992975; cv=none; b=PgE8gHsQ8jsdwVTdaQpbkoQWdkk9SCS2iyUi42GZibUvFwTLHC+AE6lAIR8/04yEj8mwklCmDQP3FBFr5Vv/nZT3SCgGIM7BhhsRrTxb9Jbr7VfDzIeHJzIgtrjw5/vhJ/yI3K8qm0b6zs6+o7jz9j6u6JM+zgzow/2ZlwqlUs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993609; c=relaxed/simple;
-	bh=aorVeP5cBaSUjeZKjjQ8dfpepO9/zD9MhUcONYTEWL8=;
+	s=arc-20240116; t=1751992975; c=relaxed/simple;
+	bh=u2GEhuN8RVXemPkfiTNi3JGJRQKas1YFukd6fw2TgPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YtwPR3O1CUFBxw0R/CzCXiE75T26wfATJlrByKNcqnkL187WVZydB5YC0MVqjcdM+zp7KjSeyioFLZt8ESWIzC1Pl/upYKfuCW1XGk+hD+ITlk43WMFooVDSrQB9QrxsG9WeWo7h4elieeAXdsD1x+mfXe4TiglgqvevMESdrMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsPYnLn2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9049C4CEED;
-	Tue,  8 Jul 2025 16:53:27 +0000 (UTC)
+	 MIME-Version; b=Tyew+C4QY3CFQz+G2+98NhkAZTFYjj/IFKaJGTAXhoKHi1rEv1QpVe+04yckdpPd5bemaT+PEXKjWfMfzJZwbf1RGSvNO2qzDOs8nRIVbIr8uoQ+4YUKka2LQg3tf2INzvsh79nJArel6GgmJ6elgiaJ+xNKVBXE6k8wdBv8sj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifKplZTc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E03C4CEED;
+	Tue,  8 Jul 2025 16:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993608;
-	bh=aorVeP5cBaSUjeZKjjQ8dfpepO9/zD9MhUcONYTEWL8=;
+	s=korg; t=1751992975;
+	bh=u2GEhuN8RVXemPkfiTNi3JGJRQKas1YFukd6fw2TgPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsPYnLn2Cx32UnZJ+kyo5fy3K8dyU9QOUqt7VYsk24EhwYJbeLoeVpAOm7xJdtJzb
-	 aZWiXb57bViBEES5yDjrcm8Y8eY3enprjayeVt+Z8oGjpZ8K+iuarfCWZmIcCjEM8y
-	 y8+lK3aVSTMp4McBdJ9viLt8pDbiCgv2QE2dybgc=
+	b=ifKplZTc8v42KqCvy3+qHzT+RbGrse6A7Xfbo98CnTBQrK4WJAWN1+QHx2P+YopkU
+	 q7gf16yrMaSztVnhdTYx67BZPCfoZQrBOU/eA6MHb1zjScTlQNQXEoqFtb+nrdw7IK
+	 ZXAfxiWreelD0YYR9SgCvbBJgr/4ZUU4CqpsvEDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Beleswar Padhi <b-padhi@ti.com>,
+	Andrew Davis <afd@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 105/178] drm/xe/guc_pc: Add _locked variant for min/max freq
+Subject: [PATCH 6.12 146/232] remoteproc: k3-r5: Add devm action to release reserved memory
 Date: Tue,  8 Jul 2025 18:22:22 +0200
-Message-ID: <20250708162239.381819377@linuxfoundation.org>
+Message-ID: <20250708162245.260926679@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,225 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Beleswar Padhi <b-padhi@ti.com>
 
-[ Upstream commit d8390768dcf6f5a78af56aa03797a076871b01f3 ]
+[ Upstream commit 972361e397797320a624d1a5b457520c10ab4a28 ]
 
-There are places in which the getters/setters are called one after the
-other causing a multiple lock()/unlock(). These are not currently a
-problem since they are all happening from the same thread, but there's a
-race possibility as calls are added outside of the early init when the
-max/min and stashed values need to be correlated.
+Use a device lifecycle managed action to release reserved memory. This
+helps prevent mistakes like releasing out of order in cleanup functions
+and forgetting to release on error paths.
 
-Add the _locked() variants to prepare for that.
-
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://lore.kernel.org/r/20250618-wa-22019338487-v5-1-b888388477f2@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 1beae9aa2b88d3a02eb666e7b777eb2d7bc645f4)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Stable-dep-of: 84c0b4a00610 ("drm/xe/bmg: Update Wa_22019338487")
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+Reviewed-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20241219110545.1898883-2-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Stable-dep-of: 701177511abd ("remoteproc: k3-r5: Refactor sequential core power up/down operations")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_pc.c | 123 ++++++++++++++++++---------------
- 1 file changed, 69 insertions(+), 54 deletions(-)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
-index a7b8bacfe64ef..23a4c525c03bf 100644
---- a/drivers/gpu/drm/xe/xe_guc_pc.c
-+++ b/drivers/gpu/drm/xe/xe_guc_pc.c
-@@ -5,6 +5,7 @@
- 
- #include "xe_guc_pc.h"
- 
-+#include <linux/cleanup.h>
- #include <linux/delay.h>
- #include <linux/ktime.h>
- 
-@@ -538,6 +539,25 @@ u32 xe_guc_pc_get_rpn_freq(struct xe_guc_pc *pc)
- 	return pc->rpn_freq;
+diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+index 6cbe74486ebd4..a9ec65c12fb93 100644
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -947,6 +947,13 @@ static int k3_r5_rproc_configure(struct k3_r5_rproc *kproc)
+ 	return ret;
  }
  
-+static int xe_guc_pc_get_min_freq_locked(struct xe_guc_pc *pc, u32 *freq)
++static void k3_r5_mem_release(void *data)
 +{
-+	int ret;
++	struct device *dev = data;
 +
-+	lockdep_assert_held(&pc->freq_lock);
++	of_reserved_mem_device_release(dev);
++}
 +
-+	/* Might be in the middle of a gt reset */
-+	if (!pc->freq_ready)
-+		return -EAGAIN;
-+
-+	ret = pc_action_query_task_state(pc);
+ static int k3_r5_reserved_mem_init(struct k3_r5_rproc *kproc)
+ {
+ 	struct device *dev = kproc->dev;
+@@ -977,12 +984,14 @@ static int k3_r5_reserved_mem_init(struct k3_r5_rproc *kproc)
+ 		return ret;
+ 	}
+ 
++	ret = devm_add_action_or_reset(dev, k3_r5_mem_release, dev);
 +	if (ret)
 +		return ret;
 +
-+	*freq = pc_get_min_freq(pc);
-+
-+	return 0;
-+}
-+
- /**
-  * xe_guc_pc_get_min_freq - Get the min operational frequency
-  * @pc: The GuC PC
-@@ -547,27 +567,29 @@ u32 xe_guc_pc_get_rpn_freq(struct xe_guc_pc *pc)
-  *         -EAGAIN if GuC PC not ready (likely in middle of a reset).
-  */
- int xe_guc_pc_get_min_freq(struct xe_guc_pc *pc, u32 *freq)
-+{
-+	guard(mutex)(&pc->freq_lock);
-+
-+	return xe_guc_pc_get_min_freq_locked(pc, freq);
-+}
-+
-+static int xe_guc_pc_set_min_freq_locked(struct xe_guc_pc *pc, u32 freq)
- {
- 	int ret;
- 
--	xe_device_assert_mem_access(pc_to_xe(pc));
-+	lockdep_assert_held(&pc->freq_lock);
- 
--	mutex_lock(&pc->freq_lock);
--	if (!pc->freq_ready) {
--		/* Might be in the middle of a gt reset */
--		ret = -EAGAIN;
--		goto out;
+ 	num_rmems--;
+ 	kproc->rmem = kcalloc(num_rmems, sizeof(*kproc->rmem), GFP_KERNEL);
+-	if (!kproc->rmem) {
+-		ret = -ENOMEM;
+-		goto release_rmem;
 -	}
-+	/* Might be in the middle of a gt reset */
-+	if (!pc->freq_ready)
-+		return -EAGAIN;
++	if (!kproc->rmem)
++		return -ENOMEM;
  
--	ret = pc_action_query_task_state(pc);
-+	ret = pc_set_min_freq(pc, freq);
- 	if (ret)
--		goto out;
-+		return ret;
- 
--	*freq = pc_get_min_freq(pc);
-+	pc->user_requested_min = freq;
- 
--out:
--	mutex_unlock(&pc->freq_lock);
--	return ret;
-+	return 0;
+ 	/* use remaining reserved memory regions for static carveouts */
+ 	for (i = 0; i < num_rmems; i++) {
+@@ -1033,8 +1042,6 @@ static int k3_r5_reserved_mem_init(struct k3_r5_rproc *kproc)
+ 	for (i--; i >= 0; i--)
+ 		iounmap(kproc->rmem[i].cpu_addr);
+ 	kfree(kproc->rmem);
+-release_rmem:
+-	of_reserved_mem_device_release(dev);
+ 	return ret;
  }
  
- /**
-@@ -580,25 +602,29 @@ int xe_guc_pc_get_min_freq(struct xe_guc_pc *pc, u32 *freq)
-  *         -EINVAL if value out of bounds.
-  */
- int xe_guc_pc_set_min_freq(struct xe_guc_pc *pc, u32 freq)
-+{
-+	guard(mutex)(&pc->freq_lock);
-+
-+	return xe_guc_pc_set_min_freq_locked(pc, freq);
-+}
-+
-+static int xe_guc_pc_get_max_freq_locked(struct xe_guc_pc *pc, u32 *freq)
- {
- 	int ret;
- 
--	mutex_lock(&pc->freq_lock);
--	if (!pc->freq_ready) {
--		/* Might be in the middle of a gt reset */
--		ret = -EAGAIN;
--		goto out;
--	}
-+	lockdep_assert_held(&pc->freq_lock);
- 
--	ret = pc_set_min_freq(pc, freq);
-+	/* Might be in the middle of a gt reset */
-+	if (!pc->freq_ready)
-+		return -EAGAIN;
-+
-+	ret = pc_action_query_task_state(pc);
- 	if (ret)
--		goto out;
-+		return ret;
- 
--	pc->user_requested_min = freq;
-+	*freq = pc_get_max_freq(pc);
- 
--out:
--	mutex_unlock(&pc->freq_lock);
--	return ret;
-+	return 0;
- }
- 
- /**
-@@ -610,25 +636,29 @@ int xe_guc_pc_set_min_freq(struct xe_guc_pc *pc, u32 freq)
-  *         -EAGAIN if GuC PC not ready (likely in middle of a reset).
-  */
- int xe_guc_pc_get_max_freq(struct xe_guc_pc *pc, u32 *freq)
-+{
-+	guard(mutex)(&pc->freq_lock);
-+
-+	return xe_guc_pc_get_max_freq_locked(pc, freq);
-+}
-+
-+static int xe_guc_pc_set_max_freq_locked(struct xe_guc_pc *pc, u32 freq)
- {
- 	int ret;
- 
--	mutex_lock(&pc->freq_lock);
--	if (!pc->freq_ready) {
--		/* Might be in the middle of a gt reset */
--		ret = -EAGAIN;
--		goto out;
--	}
-+	lockdep_assert_held(&pc->freq_lock);
- 
--	ret = pc_action_query_task_state(pc);
-+	/* Might be in the middle of a gt reset */
-+	if (!pc->freq_ready)
-+		return -EAGAIN;
-+
-+	ret = pc_set_max_freq(pc, freq);
- 	if (ret)
--		goto out;
-+		return ret;
- 
--	*freq = pc_get_max_freq(pc);
-+	pc->user_requested_max = freq;
- 
--out:
--	mutex_unlock(&pc->freq_lock);
--	return ret;
-+	return 0;
- }
- 
- /**
-@@ -642,24 +672,9 @@ int xe_guc_pc_get_max_freq(struct xe_guc_pc *pc, u32 *freq)
-  */
- int xe_guc_pc_set_max_freq(struct xe_guc_pc *pc, u32 freq)
- {
--	int ret;
+@@ -1045,8 +1052,6 @@ static void k3_r5_reserved_mem_exit(struct k3_r5_rproc *kproc)
+ 	for (i = 0; i < kproc->num_rmems; i++)
+ 		iounmap(kproc->rmem[i].cpu_addr);
+ 	kfree(kproc->rmem);
 -
--	mutex_lock(&pc->freq_lock);
--	if (!pc->freq_ready) {
--		/* Might be in the middle of a gt reset */
--		ret = -EAGAIN;
--		goto out;
--	}
--
--	ret = pc_set_max_freq(pc, freq);
--	if (ret)
--		goto out;
-+	guard(mutex)(&pc->freq_lock);
- 
--	pc->user_requested_max = freq;
--
--out:
--	mutex_unlock(&pc->freq_lock);
--	return ret;
-+	return xe_guc_pc_set_max_freq_locked(pc, freq);
+-	of_reserved_mem_device_release(kproc->dev);
  }
  
- /**
+ /*
 -- 
 2.39.5
 
