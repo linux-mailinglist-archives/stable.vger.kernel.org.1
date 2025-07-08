@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-160895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58137AFD266
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD5AAFD354
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 034E51668E5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06F441C27CEB
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991EE2E0910;
-	Tue,  8 Jul 2025 16:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9432DFA22;
+	Tue,  8 Jul 2025 16:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u51oUnks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqWMGMZu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F9C8F5B;
-	Tue,  8 Jul 2025 16:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD487BE46;
+	Tue,  8 Jul 2025 16:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993004; cv=none; b=OCNI2A2tvsU3MI1wwwmll+SN6FK1F2pxKYGnzAKAbN6fVXd/+V61NtJ3kigY1Ee8FE/wL+c4apV76FhNYyYXLUmmkoha0QCEg3SNX2rMO6TrL9+wSXghy2X1/3cWk8fIheHxibGs/zyYS+lmjQYp9c+5HgwcKk/bWsiKbuQJOLY=
+	t=1751993549; cv=none; b=rAZKGpakohOCbfnIH9TYSEDR40RNeoeQV1tfbYf5awvSu6PWMSPuAxVDsBS3Q39NCQK8YAcZ1BFx8BPEUmB4TZyjMK72hwFbJSKr2XAhnpT0pFEfVKOAhvNoD9Ls8kzDzAxQ52NA2a1g2fQ000ALmPWpeCbzC6ik+GGT9GdfMkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993004; c=relaxed/simple;
-	bh=FEDs2bFYZz9wD4eCrEEc387rxqhzmhYp0KZAVkI3vhA=;
+	s=arc-20240116; t=1751993549; c=relaxed/simple;
+	bh=lL1HiserIAGstZdU8uBTbM6vDrkLCJ+q0cdtYFetz5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nK5wPlpvb02FBwol0cWk8xsaUZSXF7S69h4RYkbFIh/SetoQYaMvsQP8r7rGKeU43OHe0BpSqyNCTe4PNww4Hq+0jlLxUNnmd0gAFmrvRyowomvRPzZvH/m/buxpqGJBCkY03IGXKV3z4/onO5Wqf3aWydRa7woPe7v8VC1LrwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u51oUnks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36B8C4CEED;
-	Tue,  8 Jul 2025 16:43:23 +0000 (UTC)
+	 MIME-Version; b=VrpPtWkdWgJdVMCmCZ6CandaltdX/65nLqJqRrizlYzob3/xAQhajqbHRPK3i0mR/2IHZC7IAS8AXsdD5X6t+5LsabEHRFWwXDQvaXTyQCaCwuuniTYmjfXjfRy8oHhIZuiQI6oyGl7EXQzZB2twzqAA59gqgBRNTOW/IC/poDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqWMGMZu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45699C4CEF0;
+	Tue,  8 Jul 2025 16:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993004;
-	bh=FEDs2bFYZz9wD4eCrEEc387rxqhzmhYp0KZAVkI3vhA=;
+	s=korg; t=1751993549;
+	bh=lL1HiserIAGstZdU8uBTbM6vDrkLCJ+q0cdtYFetz5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u51oUnksI+G6IhxvuVBpWAalH4DJA9n605Kf0mNm12nNuvjeRUXHBnigmMN7Es23O
-	 HacQyEY2ujM4I3COLmc/DoOXFx1oj8SNzzbRmLxE/d18EWIE8a9vvhH2E76r3IROCm
-	 85O6XCJjyNqiJ1gfOKxgx/RpFfaA1legH8rVZ2lg=
+	b=bqWMGMZudPC+11wCodTwZcR2J8zwC9gnsJD5f2ehWeLWY/jmn9js6voK5K45Ovpj4
+	 DRJE5+FOvDZY8RIjA2nDOcNebP/9MW5jD8Q9sNdbLRJxoiNwZ0ZES44xBnBTg62Vqp
+	 wPPQWLF4CUu0lnLcaxlwp6/RXXpKAQFn3d4T3Xvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 154/232] drm/xe: Move DSB l2 flush to a more sensible place
+Subject: [PATCH 6.15 113/178] nui: Fix dma_mapping_error() check
 Date: Tue,  8 Jul 2025 18:22:30 +0200
-Message-ID: <20250708162245.466846708@linuxfoundation.org>
+Message-ID: <20250708162239.568446219@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +61,147 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit a4b1b51ae132ac199412028a2df7b6c267888190 ]
+[ Upstream commit 561aa0e22b70a5e7246b73d62a824b3aef3fc375 ]
 
-Flushing l2 is only needed after all data has been written.
+dma_map_XXX() functions return values DMA_MAPPING_ERROR as error values
+which is often ~0.  The error value should be tested with
+dma_mapping_error().
 
-Fixes: 01570b446939 ("drm/xe/bmg: implement Wa_16023588340")
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: stable@vger.kernel.org # v6.12+
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://lore.kernel.org/r/20250606104546.1996818-3-matthew.auld@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 0dd2dd0182bc444a62652e89d08c7f0e4fde15ba)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+This patch creates a new function in niu_ops to test if the mapping
+failed.  The test is fixed in niu_rbr_add_page(), added in
+niu_start_xmit() and the successfully mapped pages are unmaped upon error.
+
+Fixes: ec2deec1f352 ("niu: Fix to check for dma mapping errors.")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/display/xe_dsb_buffer.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/sun/niu.c | 31 ++++++++++++++++++++++++++++++-
+ drivers/net/ethernet/sun/niu.h |  4 ++++
+ 2 files changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/display/xe_dsb_buffer.c b/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
-index f95375451e2fa..9f941fc2e36bb 100644
---- a/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
-+++ b/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
-@@ -17,10 +17,7 @@ u32 intel_dsb_buffer_ggtt_offset(struct intel_dsb_buffer *dsb_buf)
+diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
+index 379b6e90121d9..02b8a9e5c9a90 100644
+--- a/drivers/net/ethernet/sun/niu.c
++++ b/drivers/net/ethernet/sun/niu.c
+@@ -3336,7 +3336,7 @@ static int niu_rbr_add_page(struct niu *np, struct rx_ring_info *rp,
  
- void intel_dsb_buffer_write(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val)
- {
--	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
--
- 	iosys_map_wr(&dsb_buf->vma->bo->vmap, idx * 4, u32, val);
--	xe_device_l2_flush(xe);
- }
+ 	addr = np->ops->map_page(np->device, page, 0,
+ 				 PAGE_SIZE, DMA_FROM_DEVICE);
+-	if (!addr) {
++	if (np->ops->mapping_error(np->device, addr)) {
+ 		__free_page(page);
+ 		return -ENOMEM;
+ 	}
+@@ -6676,6 +6676,8 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ 	len = skb_headlen(skb);
+ 	mapping = np->ops->map_single(np->device, skb->data,
+ 				      len, DMA_TO_DEVICE);
++	if (np->ops->mapping_error(np->device, mapping))
++		goto out_drop;
  
- u32 intel_dsb_buffer_read(struct intel_dsb_buffer *dsb_buf, u32 idx)
-@@ -30,12 +27,9 @@ u32 intel_dsb_buffer_read(struct intel_dsb_buffer *dsb_buf, u32 idx)
+ 	prod = rp->prod;
  
- void intel_dsb_buffer_memset(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val, size_t size)
- {
--	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
--
- 	WARN_ON(idx > (dsb_buf->buf_size - size) / sizeof(*dsb_buf->cmd_buf));
+@@ -6717,6 +6719,8 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ 		mapping = np->ops->map_page(np->device, skb_frag_page(frag),
+ 					    skb_frag_off(frag), len,
+ 					    DMA_TO_DEVICE);
++		if (np->ops->mapping_error(np->device, mapping))
++			goto out_unmap;
  
- 	iosys_map_memset(&dsb_buf->vma->bo->vmap, idx * 4, val, size);
--	xe_device_l2_flush(xe);
- }
+ 		rp->tx_buffs[prod].skb = NULL;
+ 		rp->tx_buffs[prod].mapping = mapping;
+@@ -6741,6 +6745,19 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ out:
+ 	return NETDEV_TX_OK;
  
- bool intel_dsb_buffer_create(struct intel_crtc *crtc, struct intel_dsb_buffer *dsb_buf, size_t size)
-@@ -74,9 +68,12 @@ void intel_dsb_buffer_cleanup(struct intel_dsb_buffer *dsb_buf)
- 
- void intel_dsb_buffer_flush_map(struct intel_dsb_buffer *dsb_buf)
- {
-+	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
++out_unmap:
++	while (i--) {
++		const skb_frag_t *frag;
 +
- 	/*
- 	 * The memory barrier here is to ensure coherency of DSB vs MMIO,
- 	 * both for weak ordering archs and discrete cards.
- 	 */
--	xe_device_wmb(dsb_buf->vma->bo->tile->xe);
-+	xe_device_wmb(xe);
-+	xe_device_l2_flush(xe);
++		prod = PREVIOUS_TX(rp, prod);
++		frag = &skb_shinfo(skb)->frags[i];
++		np->ops->unmap_page(np->device, rp->tx_buffs[prod].mapping,
++				    skb_frag_size(frag), DMA_TO_DEVICE);
++	}
++
++	np->ops->unmap_single(np->device, rp->tx_buffs[rp->prod].mapping,
++			      skb_headlen(skb), DMA_TO_DEVICE);
++
+ out_drop:
+ 	rp->tx_errors++;
+ 	kfree_skb(skb);
+@@ -9644,6 +9661,11 @@ static void niu_pci_unmap_single(struct device *dev, u64 dma_address,
+ 	dma_unmap_single(dev, dma_address, size, direction);
  }
+ 
++static int niu_pci_mapping_error(struct device *dev, u64 addr)
++{
++	return dma_mapping_error(dev, addr);
++}
++
+ static const struct niu_ops niu_pci_ops = {
+ 	.alloc_coherent	= niu_pci_alloc_coherent,
+ 	.free_coherent	= niu_pci_free_coherent,
+@@ -9651,6 +9673,7 @@ static const struct niu_ops niu_pci_ops = {
+ 	.unmap_page	= niu_pci_unmap_page,
+ 	.map_single	= niu_pci_map_single,
+ 	.unmap_single	= niu_pci_unmap_single,
++	.mapping_error	= niu_pci_mapping_error,
+ };
+ 
+ static void niu_driver_version(void)
+@@ -10019,6 +10042,11 @@ static void niu_phys_unmap_single(struct device *dev, u64 dma_address,
+ 	/* Nothing to do.  */
+ }
+ 
++static int niu_phys_mapping_error(struct device *dev, u64 dma_address)
++{
++	return false;
++}
++
+ static const struct niu_ops niu_phys_ops = {
+ 	.alloc_coherent	= niu_phys_alloc_coherent,
+ 	.free_coherent	= niu_phys_free_coherent,
+@@ -10026,6 +10054,7 @@ static const struct niu_ops niu_phys_ops = {
+ 	.unmap_page	= niu_phys_unmap_page,
+ 	.map_single	= niu_phys_map_single,
+ 	.unmap_single	= niu_phys_unmap_single,
++	.mapping_error	= niu_phys_mapping_error,
+ };
+ 
+ static int niu_of_probe(struct platform_device *op)
+diff --git a/drivers/net/ethernet/sun/niu.h b/drivers/net/ethernet/sun/niu.h
+index 04c215f91fc08..0b169c08b0f2d 100644
+--- a/drivers/net/ethernet/sun/niu.h
++++ b/drivers/net/ethernet/sun/niu.h
+@@ -2879,6 +2879,9 @@ struct tx_ring_info {
+ #define NEXT_TX(tp, index) \
+ 	(((index) + 1) < (tp)->pending ? ((index) + 1) : 0)
+ 
++#define PREVIOUS_TX(tp, index) \
++	(((index) - 1) >= 0 ? ((index) - 1) : (((tp)->pending) - 1))
++
+ static inline u32 niu_tx_avail(struct tx_ring_info *tp)
+ {
+ 	return (tp->pending -
+@@ -3140,6 +3143,7 @@ struct niu_ops {
+ 			  enum dma_data_direction direction);
+ 	void (*unmap_single)(struct device *dev, u64 dma_address,
+ 			     size_t size, enum dma_data_direction direction);
++	int (*mapping_error)(struct device *dev, u64 dma_address);
+ };
+ 
+ struct niu_link_config {
 -- 
 2.39.5
 
