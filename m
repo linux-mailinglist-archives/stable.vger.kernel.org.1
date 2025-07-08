@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-161082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A39AFD34B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386F0AFD416
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 754801653C3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:52:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49D4E188BFDC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5372E5B27;
-	Tue,  8 Jul 2025 16:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71C42E5B24;
+	Tue,  8 Jul 2025 16:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MaO1+ApV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRPDQkeW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AC32E5B1C;
-	Tue,  8 Jul 2025 16:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C73A2E1C74;
+	Tue,  8 Jul 2025 16:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993541; cv=none; b=jtd7U8kePIpZqd+UeB6jPLerQOcCztp6Bjol7yJuoYlejrcuNEAY4jEZUvDTPeo0KXILjLilraXNkpbxkdWLnAol9cG3jQFRFVCyBa8mcplqJtG43zUjcj5Q6Il6B5VhjQqK72spoW0hovykC6caan+fdHy9zEXo/+pHJU7tEuA=
+	t=1751993958; cv=none; b=Wh3yQlRQQAM899LDC6MbT6Fu+ajj334Y70Us/kKntkZ7SOyem3uXidePSHzDE+chtVUoi9HvXL7hMeCX/4GOYh4JlF48QAXF7FZ/qx9GpWky8HDbKADTGoOyEM/0kJUYeAbhZCHm0U6UU2xi8644MutNtK2GrYBIsIokRJR5XUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993541; c=relaxed/simple;
-	bh=o7jUMGC3uPhk7MgrPpNOA41/sorBiTsmhFggq8gqI+Y=;
+	s=arc-20240116; t=1751993958; c=relaxed/simple;
+	bh=/ZMbop5PjzH9eCz9wiJEN9GTVSgmYwyZuxK3i3AD12Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JwDFZZ4aW/nnm42300fMJ1bD9FOxQ5kbU/zpV/R2JsvoqceKbZ0UpQ0VUyRhe2APvcUbF6IQl7QGKUA/nEN1dr8OVmTMar/jNosfpBQ/IMmCc2ZnglIlq/F9l+wxr/qeS5yBbyWddqvr/SYDwyLTk2iYDvP6yqkRW6yuVgVQACo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaO1+ApV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB76C4CEED;
-	Tue,  8 Jul 2025 16:52:20 +0000 (UTC)
+	 MIME-Version; b=ijhix8SBZAvFTXXiuKO+wOniPtCgBBY6nRR37Y6C+4iu49pM7UiC8XApsrRlLuGwhZs2obABM06YFxCd5ZLRrU91HSHL/9HLskxCmv9JthtlQK/6stHIP9Rf+Tk/np1Dx6NGhYln6drzxR2bCsN3zd1yM95tHyt6sxok6Aq9gXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRPDQkeW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CD2C4CEF0;
+	Tue,  8 Jul 2025 16:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993541;
-	bh=o7jUMGC3uPhk7MgrPpNOA41/sorBiTsmhFggq8gqI+Y=;
+	s=korg; t=1751993958;
+	bh=/ZMbop5PjzH9eCz9wiJEN9GTVSgmYwyZuxK3i3AD12Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MaO1+ApVqgunvkd2iOV6pTBHpIYxFer2iy4kdripZW9sfyIaWJV0MVPeVoLWKgY0I
-	 EX9dlVoRj6cIXXfaY+RryLVpwwBtvNSw75a2GSr97DDM9Up+5pIs0/hcQFi4jjf+Fp
-	 epOmfNuHtjfQ9smilu+x+uv1DMoHc6nWTtAC8+IY=
+	b=qRPDQkeWEVsL+Z3ln7yPk6Os1jo48Aqjbf46mOtMCtWEYGLTym9OGgHV/9PZgFVel
+	 OnsT1Gbgm9DQ0dUQUv/Nl1N7Fj/i6U5qNB7u5Ne60PYnfzLZSbAXcrd9BM6mqVhE4Y
+	 Qz6QkBLwLxuQzlqA1UZHkId+kR8VM9/yD937jZkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Simon Horman <horms@kernel.org>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 069/178] btrfs: propagate last_unlink_trans earlier when doing a rmdir
+Subject: [PATCH 5.15 069/160] net: enetc: Correct endianness handling in _enetc_rd_reg64
 Date: Tue,  8 Jul 2025 18:21:46 +0200
-Message-ID: <20250708162238.479801741@linuxfoundation.org>
+Message-ID: <20250708162233.461366756@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit c466e33e729a0ee017d10d919cba18f503853c60 ]
+[ Upstream commit 7b515f35a911fdc31fbde6531828dcd6ae9803d3 ]
 
-In case the removed directory had a snapshot that was deleted, we are
-propagating its inode's last_unlink_trans to the parent directory after
-we removed the entry from the parent directory. This leaves a small race
-window where someone can log the parent directory after we removed the
-entry and before we updated last_unlink_trans, and as a result if we ever
-try to replay such a log tree, we will fail since we will attempt to
-remove a snapshot during log replay, which is currently not possible and
-results in the log replay (and mount) to fail. This is the type of failure
-described in commit 1ec9a1ae1e30 ("Btrfs: fix unreplayable log after
-snapshot delete + parent dir fsync").
+enetc_hw.h provides two versions of _enetc_rd_reg64.
+One which simply calls ioread64() when available.
+And another that composes the 64-bit result from ioread32() calls.
 
-So fix this by propagating the last_unlink_trans to the parent directory
-before we remove the entry from it.
+In the second case the code appears to assume that each ioread32() call
+returns a little-endian value. However both the shift and logical or
+used to compose the return value would not work correctly on big endian
+systems if this were the case. Moreover, this is inconsistent with the
+first case where the return value of ioread64() is assumed to be in host
+byte order.
 
-Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+It appears that the correct approach is for both versions to treat the
+return value of ioread*() functions as being in host byte order. And
+this patch corrects the ioread32()-based version to do so.
+
+This is a bug but would only manifest on big endian systems
+that make use of the ioread32-based implementation of _enetc_rd_reg64.
+While all in-tree users of this driver are little endian and
+make use of the ioread64-based implementation of _enetc_rd_reg64.
+Thus, no in-tree user of this driver is affected by this bug.
+
+Flagged by Sparse.
+Compile tested only.
+
+Fixes: 16eb4c85c964 ("enetc: Add ethtool statistics")
+Closes: https://lore.kernel.org/all/AM9PR04MB850500D3FC24FE23DEFCEA158879A@AM9PR04MB8505.eurprd04.prod.outlook.com/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250624-etnetc-le-v1-1-a73a95d96e4e@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc_hw.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 391172b443e50..24db00a9319b3 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4724,7 +4724,6 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	struct btrfs_fs_info *fs_info = BTRFS_I(inode)->root->fs_info;
- 	int ret = 0;
- 	struct btrfs_trans_handle *trans;
--	u64 last_unlink_trans;
- 	struct fscrypt_name fname;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+index 0f5f081a5bafe..392348e285571 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+@@ -459,7 +459,7 @@ static inline u64 _enetc_rd_reg64(void __iomem *reg)
+ 		tmp = ioread32(reg + 4);
+ 	} while (high != tmp);
  
- 	if (inode->i_size > BTRFS_EMPTY_DIR_SIZE)
-@@ -4750,6 +4749,23 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 		goto out_notrans;
- 	}
+-	return le64_to_cpu((__le64)high << 32 | low);
++	return (u64)high << 32 | low;
+ }
+ #endif
  
-+	/*
-+	 * Propagate the last_unlink_trans value of the deleted dir to its
-+	 * parent directory. This is to prevent an unrecoverable log tree in the
-+	 * case we do something like this:
-+	 * 1) create dir foo
-+	 * 2) create snapshot under dir foo
-+	 * 3) delete the snapshot
-+	 * 4) rmdir foo
-+	 * 5) mkdir foo
-+	 * 6) fsync foo or some file inside foo
-+	 *
-+	 * This is because we can't unlink other roots when replaying the dir
-+	 * deletes for directory foo.
-+	 */
-+	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
-+		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
-+
- 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
- 		ret = btrfs_unlink_subvol(trans, BTRFS_I(dir), dentry);
- 		goto out;
-@@ -4759,27 +4775,11 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	if (ret)
- 		goto out;
- 
--	last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
--
- 	/* now the directory is empty */
- 	ret = btrfs_unlink_inode(trans, BTRFS_I(dir), BTRFS_I(d_inode(dentry)),
- 				 &fname.disk_name);
--	if (!ret) {
-+	if (!ret)
- 		btrfs_i_size_write(BTRFS_I(inode), 0);
--		/*
--		 * Propagate the last_unlink_trans value of the deleted dir to
--		 * its parent directory. This is to prevent an unrecoverable
--		 * log tree in the case we do something like this:
--		 * 1) create dir foo
--		 * 2) create snapshot under dir foo
--		 * 3) delete the snapshot
--		 * 4) rmdir foo
--		 * 5) mkdir foo
--		 * 6) fsync foo or some file inside foo
--		 */
--		if (last_unlink_trans >= trans->transid)
--			BTRFS_I(dir)->last_unlink_trans = last_unlink_trans;
--	}
- out:
- 	btrfs_end_transaction(trans);
- out_notrans:
 -- 
 2.39.5
 
