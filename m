@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B01AFD16A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:35:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD42DAFD0BA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B9775822B8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D8F63B2609
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CFB2E3385;
-	Tue,  8 Jul 2025 16:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159952DAFC1;
+	Tue,  8 Jul 2025 16:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/46etRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gl2U0Amc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AA02A1BA;
-	Tue,  8 Jul 2025 16:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E7E2E659;
+	Tue,  8 Jul 2025 16:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992435; cv=none; b=GTscp7car7JF05f/EImAkj9MvVBjWDeg4IN1daihNNlxpCCKMgzDwYnEPRzCM7DutYRyu067EFI2Zo1nQcpVoGOR+CtbZ6rvN51BogRrqcQSyrmQgJKAxjRCGKMgITsyEd5gBWxc82V+eNMTFnG53tjJOoFAhRUPC8gZx0VMmvI=
+	t=1751992007; cv=none; b=V2SBAh4bBMASkYYHfHnPii26nb8AB3jiF5J6QIEN3SfmVqnywwqe/i2+9uxJhaB8pfqcJLOVWFb56fSkPMvgCjBlfjwViMOqsUdMqizg/ucrNvhe7rj5dUNeF5jgAc4LWfWviK3BH9Hd2Y/dzCMmo710GYLw0kMrxzQxcI6FA5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992435; c=relaxed/simple;
-	bh=Sk10YMh7IGvxa5UhQoiR2x6BVURfUyM0Xc74MR4OV1Y=;
+	s=arc-20240116; t=1751992007; c=relaxed/simple;
+	bh=e9WakCXu3XoH2pU5IP2hEsuiMbpJj0tMHPI58aeS1H4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEShMvZFJ0OMLuWCHsK++cH1fR4G61XIE/f2DZg9q86EyIxquGSODknqMHDprSOptnME9EjSriMlIvxk4lFVjh0x5gAmNM8DAHOLnS0S4GxDbmz0qQemMdOp+6nHUX11YgNYukXatzYtZcu1INOJVYW40FXmHARJLw2COIBZ63g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/46etRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42140C4CEED;
-	Tue,  8 Jul 2025 16:33:55 +0000 (UTC)
+	 MIME-Version; b=JCcuSI5jBBAi6QQsvYs3Cxx3TpSaG/0kOnMGzKlj46ls8X/U4WGNGCifPCYyvGvHSglVDvF7WSL3NYI4zfZf2qZJ27sNTMUEjHJrqZS0XAbRRHTxYSyd+8VDq6Bq5RCFE9YD7hYHVsZZ+Yit7axsrtWvPvVb+zuTGb6xbHb7Yg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gl2U0Amc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39208C4CEED;
+	Tue,  8 Jul 2025 16:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992435;
-	bh=Sk10YMh7IGvxa5UhQoiR2x6BVURfUyM0Xc74MR4OV1Y=;
+	s=korg; t=1751992007;
+	bh=e9WakCXu3XoH2pU5IP2hEsuiMbpJj0tMHPI58aeS1H4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/46etRkENHOD3zSHxIaKoWVzfJfVLA28INIrWPxBdXbwuq21GCVLp3QnUOxUaAdE
-	 ck/fFwUqAheSo2NJlv7zBSseO1sMhoONzRRmNDvvQP49ldGr/r09UGpXcCadr3xTgl
-	 DLTmdTNkpDW0TaRyId068RV9e+6ar5d2w/xtvdi8=
+	b=gl2U0AmcvPfDqB/U9J1IKee9oQ5orWbas2OtwQWPTD6o6sT0SAoDwiqCY1OEnkkxZ
+	 97krZjuDqOjU3Yoy+j1aZtvWQ40a+0PF3vqdKutLHJ4a6T6Fd4hVG18C7kloHjvKOW
+	 pqQD7zlicNvOZf3ByYV8VFLQj5P9sOqUNXE47T7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raven Black <ravenblack@gmail.com>,
+	James Clark <james.clark@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/132] ASoC: amd: yc: update quirk data for HP Victus
+Subject: [PATCH 6.1 30/81] spi: spi-fsl-dspi: Clear completion counter before initiating transfer
 Date: Tue,  8 Jul 2025 18:23:22 +0200
-Message-ID: <20250708162233.284295594@linuxfoundation.org>
+Message-ID: <20250708162225.902400316@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raven Black <ravenblack@gmail.com>
+From: James Clark <james.clark@linaro.org>
 
-[ Upstream commit 13b86ea92ebf0fa587fbadfb8a60ca2e9993203f ]
+[ Upstream commit fa60c094c19b97e103d653f528f8d9c178b6a5f5 ]
 
-Make the internal microphone work on HP Victus laptops.
+In target mode, extra interrupts can be received between the end of a
+transfer and halting the module if the host continues sending more data.
+If the interrupt from this occurs after the reinit_completion() then the
+completion counter is left at a non-zero value. The next unrelated
+transfer initiated by userspace will then complete immediately without
+waiting for the interrupt or writing to the RX buffer.
 
-Signed-off-by: Raven Black <ravenblack@gmail.com>
-Link: https://patch.msgid.link/20250613-support-hp-victus-microphone-v1-1-bebc4c3a2041@gmail.com
+Fix it by resetting the counter before the transfer so that lingering
+values are cleared. This is done after clearing the FIFOs and the
+status register but before the transfer is initiated, so no interrupts
+should be received at this point resulting in other race conditions.
+
+Fixes: 4f5ee75ea171 ("spi: spi-fsl-dspi: Replace interruptible wait queue with a simple completion")
+Signed-off-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250627-james-nxp-spi-dma-v4-1-178dba20c120@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/spi/spi-fsl-dspi.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 1547cf8b46b13..429e61d47ffbb 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -521,6 +521,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16z-n000"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Victus by HP Gaming Laptop 15-fb2xxx"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 5374c6d44519a..3a33156f52740 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -964,11 +964,20 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 		if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
+ 			status = dspi_dma_xfer(dspi);
+ 		} else {
++			/*
++			 * Reinitialize the completion before transferring data
++			 * to avoid the case where it might remain in the done
++			 * state due to a spurious interrupt from a previous
++			 * transfer. This could falsely signal that the current
++			 * transfer has completed.
++			 */
++			if (dspi->irq)
++				reinit_completion(&dspi->xfer_done);
++
+ 			dspi_fifo_write(dspi);
+ 
+ 			if (dspi->irq) {
+ 				wait_for_completion(&dspi->xfer_done);
+-				reinit_completion(&dspi->xfer_done);
+ 			} else {
+ 				do {
+ 					status = dspi_poll(dspi);
 -- 
 2.39.5
 
