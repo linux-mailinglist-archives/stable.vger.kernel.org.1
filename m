@@ -1,75 +1,74 @@
-Return-Path: <stable+bounces-161330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2F1FAFD5D6
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:59:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69BB4AFD5D8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 362C2583103
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:59:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D15837A2E94
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23052E6D0D;
-	Tue,  8 Jul 2025 17:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5AF2E6D38;
+	Tue,  8 Jul 2025 17:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="SVK4GYAZ"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="UEPBeVHx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456042E6D08
-	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 17:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467E32E6D08
+	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 17:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751997554; cv=none; b=T6kNO332qTIlxnWuIBZwRKk6E51lNSINH8fSgfTF3p2amHsf8NXDC/xSo4cU+bUf7hJJkbLhw2cJ/x3b+7e31b9RSmQm6MxSbPO3GQJxNKuykVwbr18Ik8uVkvGLwE2qay26dz5tGoifGKsfJQ+RT8KfzGtnjeArwuSzKUg7pnE=
+	t=1751997556; cv=none; b=ZSQy1jrCY4QZV4rk5O7Pv0nsqvql36Oua3uZsL6FvxzhJpYNTYb78Nof77bFcbPxrsuPTSLy4BDLfzRl+ZwHYcoIsh026+n8oMz1vAKquZ/a1eloEWJV8tnAFm0YJhuuGcDeb/0OKAhcGx/jW9tWXHoYODzOQ7/t5w/Hqpha0C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751997554; c=relaxed/simple;
-	bh=t1MZSjDP6vDyXF3dphNAN3CeZkrhpOTyRV2QY1xbFFw=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=UDym+n1oH4JwzTte14A5u8wWUF59c+5zFU8fdycGczQPX3FtrYFGe2twRZvzYqNMdYnsM/+s56OmQFjTzU4t+o4May/stTJA0iiRc6i77i+kkxH8uZgKnqNT4o3dHUAMLa+9FdgnHnEIJQZG83ZJZr8FwogXRF84sYfjBF0GBU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=SVK4GYAZ; arc=none smtp.client-ip=209.85.219.171
+	s=arc-20240116; t=1751997556; c=relaxed/simple;
+	bh=SlKZIWrBTz4Yxvdzk2/A3SC47H+ueWZm1cXsaUakAZo=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=hbE767hJHF7QeLMQoaH/kmFfaK87C+xADpGdwNTakGcq/LNitKaz83yfgI9telenyVw9DgTYrn5Kq//972dhiYmJcCNuzPDK1KS16j6l3nAiE9DzCIRXt6z80/J+Mlfjo49RGHfN0+mCfVfuuhNR5FhbTg1gA6aWj1cVfmoKAyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=UEPBeVHx; arc=none smtp.client-ip=209.85.219.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e81cf6103a6so4318613276.3
-        for <stable@vger.kernel.org>; Tue, 08 Jul 2025 10:59:13 -0700 (PDT)
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e8b62d09908so998654276.2
+        for <stable@vger.kernel.org>; Tue, 08 Jul 2025 10:59:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1751997552; x=1752602352; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
-         :from:mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=em/P8jyoJusazo40SQL/Fi83LRVqdngWzYUHxpvDseU=;
-        b=SVK4GYAZ8FU1cMepBEUXblHz4pA3N3YrOF098RJ8yiEOnxa2lgXflkl3BG1Pbn923d
-         cop3eYI/dYPD7xt+vqvIDW1A0MlSaG52wEDZ9nzL/0yX7EK1yJvsGQUgY8Ev9ZWxJNM/
-         LktJAzp5ayo/mgzhI4YQF5V5tBX9bux61AQA488VUrssKbnSbIyDcIq403I4UE4Hg/6I
-         9AjRXmtu9KMQLlNhtwjiI4xbrxwyj1W8Ukbesw7JH4e3FaiRpQjbF0ksd8aKqoHsL8Id
-         Il0Rji5U63cTtgS3l7FzcGKQeZVLOIJpGo21xu8Iiy/tSSELbSIBSH6x/uvTRtbP9e5h
-         S/5g==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1751997554; x=1752602354; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:reply-to:from:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p3er1WSXYPtitR8HtSx6s8YEJ03vfGwTcXJhqutQC30=;
+        b=UEPBeVHxy2sfcUIHezWepqWN3I1trlT91SeDXlhhrIPrmgZXLIX3uMX3XuxGfknPsp
+         67ApqYYJ3zN6DD7un1iLNDRDaIu5MAymUMK3iZYMyUDa1SUdGfLOHG+/hCEtQ+TpPlWf
+         VcdSuBSSI+glfaEC8lfi/70Gd4WlSacRzlY5wlyYPh7pcTVEwGvt+F3Uofq/oHY5br0+
+         bKuoZDikUfUSaBMWGkYTvv9/87UhGy9BwLSQJAyG0Xm/jiXX63gU7YMqSSUb5vqC7BLx
+         Jj+wwa5ZsLm4m7Dk4t8S1Ce1Zk8BDV1DvOFrcL0yx6c897hA5BAWWrfck76bHWxkU7Tp
+         LBmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751997552; x=1752602352;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
-         :from:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=em/P8jyoJusazo40SQL/Fi83LRVqdngWzYUHxpvDseU=;
-        b=hgjVFR0T8Pe8N6IdlT+coFWch7W/oKeGciArlM78FVoC3AnRmWpFwaVEaE1Q8gs7Gj
-         YPAqt1IhJHDPOqROZ177PYuygrYNTBRocY72M2zSWiNlEoeSxCDrRNhJkjGitMgqDEdw
-         pZ04ulpZTCotkjvrVOKCR/CiFjE4JMuE1jm6U9FKxoJaG4nfhYSeBvFERiEx4h8w8b7q
-         OH64KyTa1JkBN5B0TN1gC10sm6zKnDG55gcCgdLDNU+Ik6S/Hf54dy1bBNkC5QyoE9zg
-         pXqABtBvunqsvsxDzQrRK88ubvxpR4lZYT64wNa5Ue/SDybitfLNNBO1uPee1TWNAJUs
-         TKzw==
-X-Forwarded-Encrypted: i=1; AJvYcCWh4nxCKp6ctW55gchItGTYM1WRXIBt0b+/KLQB1VRGBHRgQjK0sXNpAy+nVz37rt4SnQ/Rqoc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAJtGeaMFPsphxZPbgRAYqM2yzMFcd/SBJ6wZ1GVeBbfmK9LlW
-	iHrIWe3a8RcFmSN8aV40qoovFOPcUlh8rSSjrfJ8bUxRMl7Uy7Y8hOkzFXGP6Hbu9sSwLo+MgXC
-	xk3LRaZRgNFgDrFM2Vo2I1ytH+io/lJV0DrZW5B9aU91lKCfGphKauRErAw==
-X-Gm-Gg: ASbGncu1Gb9SOUbCCV7nKV9gipxFBUO9leLfHWP6rZFyFCWzcf2jWNzg7brpBHilU4i
-	SY4ecwN5Q3KX+kgOnL61MHv9cVnGDftww/P2IJcIFvW5ZGjjlA9DA7Tc3DV+DjSmy0kV+PaWtep
-	deh0wqhCg5cRNvmjTJ/x19L9zZJz4eoT/63L3YEqRUvA==
-X-Google-Smtp-Source: AGHT+IGqxpalozm16Ukjr1bU2pkUw80pv7nLvmJ3Z9ZmCQG2B/P22kQSHQ/sgLfQI3mKtzLaVJUCkq+VNnGQ01rF2ic=
-X-Received: by 2002:a05:690c:9c09:b0:70f:9fcd:2075 with SMTP id
- 00721157ae682-71668c0e0ddmr233717017b3.3.1751997552249; Tue, 08 Jul 2025
- 10:59:12 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751997554; x=1752602354;
+        h=cc:to:subject:message-id:date:reply-to:from:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p3er1WSXYPtitR8HtSx6s8YEJ03vfGwTcXJhqutQC30=;
+        b=rLCNbKhCKHRs7a8lPJerxnIw6B1xcq1zypk5VEAxq1XBGwe1atjXwD8RqP6nUN4CUA
+         AI3cgzkKjVtl2UlDNM7F17fHMn9nr9QznWpNdPe3NVRInnEq0Ef427CxWFknyB0CsnHr
+         UiqIq62bVpEgs+lXtLOtbjyFA6MK8kqCcJBt+KERza+il8uOfp0jCQUIeKrwS2Ou5EKc
+         IW3hicNtC0HbWJxtZVcWyXX8+QEXcHlIOKIocy493jpL1fRBf+uhkVbxjCRWKT1NmZtU
+         Yfvy/vXSnezsajKsboWkCr0ujDBwPnOefFl6ES16SDQf494a6mHi77gfGMoZtPc6wJer
+         Ne/A==
+X-Forwarded-Encrypted: i=1; AJvYcCW4nbgrfCL9uxew+bxHZ9AyN92b8Ysj2MQ3alYos8HB+XUXWVvqkxUKYgQr2AfeGXYu/xEN7qY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzY+ho8/DQYKrcVOFYbUqM58SY5zDN+S3OUE6kiZDklBU/jfE+/
+	kZeyF5fTkp8mnydEN0bI1c7oeCcW+Mtwcd+6DEz97ZxLWqyOF8juxWWAliqmOIqtBOgwzI+SPNG
+	14sURgeq2ya0ar4fihduS07qIPKlufaYusM+gPw42TQPqLkdTXubEYIpgRw==
+X-Gm-Gg: ASbGncu7XlGhfAdw2uWX9DWuB8e66n3wERTj0+NNWNfecIKJhStcdPhXJL/NvmxjQHn
+	rVFKiV0JE54HbRmlrVY3OYqq98OHRdwC19AbR6TMbBFU3jB0ssmcSTX9TftLI9f/YI99JZ0LlED
+	zYBcVSlSuG2x92tIGp5yQ/p0rRT9iHsEmRKr3oLhIEg9eC2DBhY9N2
+X-Google-Smtp-Source: AGHT+IHbOPNf0UOZ13k/N2vWUGAG+5iELz5MYwWYnMsk2yNrEgyPuAEi/GuxmtqcbpotIicqP+0aG3CtTUuX1S1nwEU=
+X-Received: by 2002:a05:690c:dc1:b0:70e:73ae:766c with SMTP id
+ 00721157ae682-7166b6be7b4mr233783727b3.22.1751997554058; Tue, 08 Jul 2025
+ 10:59:14 -0700 (PDT)
 Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Jul 2025 13:59:09 -0400
+ HTTPREST; Tue, 8 Jul 2025 10:59:12 -0700
 Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Jul 2025 13:59:09 -0400
+ HTTPREST; Tue, 8 Jul 2025 10:59:11 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,78 +77,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 from: KernelCI bot <bot@kernelci.org>
 Reply-To: kernelci@lists.linux.dev
-Date: Tue, 8 Jul 2025 13:59:09 -0400
-X-Gm-Features: Ac12FXyXgb7q5Gt24MgqyE2hz6ikXibVJxOQDZsv-MH0MMYWQ5yPuLqmcx4L0LM
-Message-ID: <CACo-S-2iWPJeSF5rcdKUQkpV=gzxKFCETp6y4hGj47Pxq83qvQ@mail.gmail.com>
-Subject: =?UTF-8?B?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC02LjYueTogKGJ1aWxkKSBpbml0aWFsaQ==?=
-	=?UTF-8?B?emF0aW9uIG9mIOKAmGludCAoKikoc3RydWN0IGlvbW11X2RvbWFpbiAqLCBsb25nIHVuc2lnbmVkIGlu?=
-	=?UTF-8?B?Li4u?=
+Date: Tue, 8 Jul 2025 10:59:11 -0700
+X-Gm-Features: Ac12FXzd5nv5iBZRyM3e_LV43M3kfz7ZmVoT7k_HOvwac27ufN7Dv1c1MIaF9_0
+Message-ID: <CACo-S-1s6=RbysGdhSz4tEiUaNiXFeTjHWK9xUk-pHUJG+0_ZA@mail.gmail.com>
+Subject: [REGRESSION] stable-rc/linux-5.15.y: (build) in vmlinux
+ (Makefile:1246) [logspec:kbuild,kbuild.other]
 To: kernelci-results@groups.io
 Cc: gus@collabora.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
 Hello,
 
-New build issue found on stable-rc/linux-6.6.y:
+New build issue found on stable-rc/linux-5.15.y:
 
 ---
- initialization of =E2=80=98int (*)(struct iommu_domain *, long unsigned in=
-t,
-size_t)=E2=80=99 {aka =E2=80=98int (*)(struct iommu_domain *, long unsigned=
- int,
-unsigned int)=E2=80=99} from incompatible pointer type =E2=80=98void (*)(st=
-ruct
-iommu_domain *, long unsigned int,  size_t)=E2=80=99 {aka =E2=80=98void (*)=
-(struct
-iommu_domain *, long unsigned int,  unsigned int)=E2=80=99}
-[-Werror=3Dincompatible-pointer-types] in drivers/iommu/tegra-gart.o
-(drivers/iommu/tegra-gart.c) [logspec:kbuild,kbuild.compiler.error]
+ in vmlinux (Makefile:1246) [logspec:kbuild,kbuild.other]
 ---
 
-- dashboard: https://d.kernelci.org/i/maestro:09d85088a9b9d1ca7627ec9c7a3e1=
-ea69a47f790
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git
-- commit HEAD:  b5872ed076bddad62df34a0ff4cbe4bbdfe45a67
+- dashboard: https://d.kernelci.org/i/maestro:16639fda313460b17cc53ce3fe28a6a8157c0596
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  57a10c76a9922f216165558513b1e0f5a2eae559
 
 
 
 Log excerpt:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-drivers/iommu/tegra-gart.c:281:35: error: initialization of =E2=80=98int
-(*)(struct iommu_domain *, long unsigned int,  size_t)=E2=80=99 {aka =E2=80=
-=98int
-(*)(struct iommu_domain *, long unsigned int,  unsigned int)=E2=80=99} from
-incompatible pointer type =E2=80=98void (*)(struct iommu_domain *, long
-unsigned int,  size_t)=E2=80=99 {aka =E2=80=98void (*)(struct iommu_domain =
-*, long
-unsigned int,  unsigned int)=E2=80=99} [-Werror=3Dincompatible-pointer-type=
-s]
-  281 |                 .iotlb_sync_map =3D gart_iommu_sync_map,
-      |                                   ^~~~~~~~~~~~~~~~~~~
-drivers/iommu/tegra-gart.c:281:35: note: (near initialization for
-=E2=80=98(anonymous).iotlb_sync_map=E2=80=99)
-  CC      drivers/gpu/host1x/hw/host1x05.o
-  AR      drivers/tty/serial/8250/built-in.a
-  CC      drivers/tty/serial/serial_core.o
-cc1: some warnings being treated as errors
+=====================================================
+.lds
+aarch64-linux-gnu-ld: drivers/base/cpu.o:(.data+0x178): undefined
+reference to `cpu_show_tsa'
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
+=====================================================
 
 
 # Builds where the incident occurred:
 
-## multi_v7_defconfig on (arm):
+## defconfig+arm64-chromebook+kcidebug+lab-setup on (arm64):
 - compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:686d54c434612746bbb54a0f
+- dashboard: https://d.kernelci.org/build/maestro:686d533334612746bbb53969
+
+## defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y
+on (arm64):
+- compiler: gcc-12
+- dashboard: https://d.kernelci.org/build/maestro:686d52c134612746bbb538ca
+
+## defconfig+lab-setup+kselftest on (arm64):
+- compiler: gcc-12
+- dashboard: https://d.kernelci.org/build/maestro:686d494334612746bbb51edf
+
+## imx_v6_v7_defconfig on (arm):
+- compiler: gcc-12
+- dashboard: https://d.kernelci.org/build/maestro:686d492934612746bbb51eb3
 
 
-#kernelci issue maestro:09d85088a9b9d1ca7627ec9c7a3e1ea69a47f790
+#kernelci issue maestro:16639fda313460b17cc53ce3fe28a6a8157c0596
 
 Reported-by: kernelci.org bot <bot@kernelci.org>
 
