@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6ABBAFD111
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5DD3AFD3FE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B7C1C21C0D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74D151784FA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21EB2E0B45;
-	Tue,  8 Jul 2025 16:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE512E6139;
+	Tue,  8 Jul 2025 16:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPEpLbwR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJ/OTYu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916E62E49AF;
-	Tue,  8 Jul 2025 16:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4912E6121;
+	Tue,  8 Jul 2025 16:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992205; cv=none; b=r6oLFr3Uhm1dN2X29UNZ2bJTjLHl8Zmfof1aEuBY48mpmKLR0fdsBHoByjEN3bQiZqFoatfmQmmoC00ohyl8Vi98sOQY5Etd311I6X893GBXmsmENcJ3ssdpBV5xqa8+VcUNK1LrcuZg31f0dx4wfBrW1HXtHfIaG39eYcH4OiM=
+	t=1751993972; cv=none; b=CcA8xYQyHLWKKjG5UhZf+bpMIPGFyIQaJdh64Xa8EGgjO9Id6CF8av1dkXT03xkDxLyb92doa4p3qXsiXCZgpMivsJEuclodcOEVOn+776R4FyEIS997rHcwCVba+61eFLS4VI371PjBZIx75z9B3LIeCAyxszfJ/voHTdsYY68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992205; c=relaxed/simple;
-	bh=BqYf62IvgEYRILBmpf49iGf2AzTxXhfGx5cZ7R5/Cog=;
+	s=arc-20240116; t=1751993972; c=relaxed/simple;
+	bh=30SCST7c6vSylFD7K60EIPhunqpTsf9CBepA/5trSAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q7kOJfgPeSgiFVaOgbhqFG1SEGpxsfCgru3ptNckD+fltYA9+EjaEH1L15nvwLKSw4dJph1VerRME6t18T3sItPXlurpwP9QO8rGnaaMawhs0RisKJZTi8GlGl9/GVin4j1alxl0OR8vMdY4/+8VNUksxDekErNg9Jqq0Q1epNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPEpLbwR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA109C4CEF5;
-	Tue,  8 Jul 2025 16:30:04 +0000 (UTC)
+	 MIME-Version; b=dYfQi1uYUxrrsj5Yk8IB969Qst+kE+HLwcmQSJhO8qBmoRj8juRxkGq6FbqUe5Z5t8Euu+5V33iee0PSat77f6frLT725ZvsmF+T6WtEHiDL+m+OpthxF35DX5KHNFkR+B8Ch1NSGAWswzvnNnPz6YA43jU5B9zU/xOUzx2NckI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJ/OTYu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FFCC4CEED;
+	Tue,  8 Jul 2025 16:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992205;
-	bh=BqYf62IvgEYRILBmpf49iGf2AzTxXhfGx5cZ7R5/Cog=;
+	s=korg; t=1751993972;
+	bh=30SCST7c6vSylFD7K60EIPhunqpTsf9CBepA/5trSAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPEpLbwR5JiQXwA9kqLQPWhv8wqdZ/JIGTu6fxVc2YavB8dZrztDtTVD7KcOMeQB7
-	 hcvLzzxyKktnd9EfwB42JEn6GzdqBFvbodK4OIFXcqvDBVpoVTWCho2612QmyLCUCb
-	 utQr06pzlJzk42zXH4556WCQ0TZIzypcED3Rw2UI=
+	b=vJ/OTYu4K/gxMuGMdDdHRmOoYlEX8StxJkBYkgmwgq7V3q+2Z8a+WppkE21C0KHsM
+	 iuzZKNUl5vhvRC/xCgS2QxPqEE1Z9qdjjAprGumQ618KwRZIUx9RiU9n/DhhA+0G5x
+	 yy9GUA5AKIuN7WdjVfhhsTpiPMyUegppFJWx7Vmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Shih <victor.shih@genesyslogic.com.tw>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 007/132] mmc: sdhci: Add a helper function for dump register in dynamic debug mode
-Date: Tue,  8 Jul 2025 18:21:58 +0200
-Message-ID: <20250708162230.977212331@linuxfoundation.org>
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	dri-devel@lists.freedesktop.org,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Subject: [PATCH 5.15 082/160] drm/udl: Unregister device before cleaning up on disconnect
+Date: Tue,  8 Jul 2025 18:21:59 +0200
+Message-ID: <20250708162233.802969105@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 2881ba9af073faa8ee7408a8d1e0575e50eb3f6c upstream.
+commit ff9cb6d2035c586ea7c8f1754d4409eec7a2d26d upstream.
 
-Add a helper function for dump register in dynamic debug mode.
+Disconnecting a DisplayLink device results in the following kernel
+error messages
 
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250606110121.96314-3-victorshihgli@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[   93.041748] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
+[   93.055299] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
+[   93.065363] [drm:udl_urb_completion [udl]] *ERROR* udl_urb_completion - nonzero write bulk status received: -115
+[   93.078207] [drm:udl_submit_urb [udl]] *ERROR* usb_submit_urb error fffffffe
+
+coming from KMS poll helpers. Shutting down poll helpers runs them
+one final time when the USB device is already gone.
+
+Run drm_dev_unplug() first in udl's USB disconnect handler. Udl's
+polling code already handles disconnects gracefully if the device has
+been marked as unplugged.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: b1a981bd5576 ("drm/udl: drop drm_driver.release hook")
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250303145604.62962-2-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci.h |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/gpu/drm/udl/udl_drv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci.h
-+++ b/drivers/mmc/host/sdhci.h
-@@ -825,4 +825,20 @@ void sdhci_switch_external_dma(struct sd
- void sdhci_set_data_timeout_irq(struct sdhci_host *host, bool enable);
- void __sdhci_set_timeout(struct sdhci_host *host, struct mmc_command *cmd);
+--- a/drivers/gpu/drm/udl/udl_drv.c
++++ b/drivers/gpu/drm/udl/udl_drv.c
+@@ -110,9 +110,9 @@ static void udl_usb_disconnect(struct us
+ {
+ 	struct drm_device *dev = usb_get_intfdata(interface);
  
-+#if defined(CONFIG_DYNAMIC_DEBUG) || \
-+	(defined(CONFIG_DYNAMIC_DEBUG_CORE) && defined(DYNAMIC_DEBUG_MODULE))
-+#define SDHCI_DBG_ANYWAY 0
-+#elif defined(DEBUG)
-+#define SDHCI_DBG_ANYWAY 1
-+#else
-+#define SDHCI_DBG_ANYWAY 0
-+#endif
-+
-+#define sdhci_dbg_dumpregs(host, fmt)					\
-+do {									\
-+	DEFINE_DYNAMIC_DEBUG_METADATA(descriptor, fmt);			\
-+	if (DYNAMIC_DEBUG_BRANCH(descriptor) ||	SDHCI_DBG_ANYWAY)	\
-+		sdhci_dumpregs(host);					\
-+} while (0)
-+
- #endif /* __SDHCI_HW_H */
++	drm_dev_unplug(dev);
+ 	drm_kms_helper_poll_fini(dev);
+ 	udl_drop_usb(dev);
+-	drm_dev_unplug(dev);
+ }
+ 
+ /*
 
 
 
