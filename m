@@ -1,210 +1,138 @@
-Return-Path: <stable+bounces-161369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E5CAFDA28
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 23:44:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC70BAFDA2C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 23:47:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A0331C25BD5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 21:45:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0602217406B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 21:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D402459F8;
-	Tue,  8 Jul 2025 21:44:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ar3U1XoX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F21217709;
+	Tue,  8 Jul 2025 21:46:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D972192F9;
-	Tue,  8 Jul 2025 21:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1909461;
+	Tue,  8 Jul 2025 21:46:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.70.13.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752011089; cv=none; b=G/qeEDfhLiTtC9wcjCDZ1bVkC9CDdcUJuRgmZjSIw2532M6VxlxfmLkn62RthvSB5WtdmMgShyGxBTekVlJ6gL8ByRzFmMNnXSKCB/utC9v+xZ+kirOQ0A/bDtbeWIP/OyJwy+6GI4IrUwajHIro6N/OPSeJH8+hS2wPUQmhZM8=
+	t=1752011218; cv=none; b=oGtaFd1q0PXjmpkCkMOwo52dZwg1VdbIDa4QMEh1bYIrjYibBn+Lndse2KJeZrO+Sdajal5oV2ZaiQ/m0myknEc/qqHzaSG8tkuomj1jJnDISrhYVZfiuA/DZnwf/sFXMxokoArcKXoR2SkIQJmsB2xDNQ9KDN4scSHvfFHTQCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752011089; c=relaxed/simple;
-	bh=7Jf91Uu04pu+2C+bUdrSkKkCPNCAdHpoDzfsFFQwnSU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AmT8pn2UNhXKJsH5P8SnBNrg+vNdE7eewn8LsfUsg92IKIJ8TEZRWtCzhJrsJBl/S8J//ChTL3nxmlgi8KESP4awe/rSAsSZWS8HgmwX8Yvva+EaVgUMmRZXBqY9WUJhcBnrwUHAg2ypalEUWRkkAqm7txjMQx8yQx6oVXUSDMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ar3U1XoX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65905C4CEF1;
-	Tue,  8 Jul 2025 21:44:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752011088;
-	bh=7Jf91Uu04pu+2C+bUdrSkKkCPNCAdHpoDzfsFFQwnSU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Ar3U1XoXkziTibmwnOYMYVcBQLAdcE080fj9vJ+YXi1hJp2HgB5J5aAK0kd4tQ+FL
-	 /5cPMXE/BLXPyY9L6dhk/zrsABU6NSAJ+tMLbeyTO9UdkOQUPX6Udt9ok6BmXeXHdy
-	 7fHMF5JmY3mJNs0+DVvb9lw62eE/y4CnZ8zHUlQkUD118FyWpmgZ49vn4GVa0HNy6V
-	 vFdzdmITQYFJiQ86ljGe2YFZdtVpdcRTPAswUfXn1Rv48gA8n8Oq+Oc7us0Kkmmla8
-	 BhLFgZw0gZkuH39DDkXZEL2H2y92O8ojPT+5d5PIK5YgmMKVJdeOsUMwqxWJEiQ0Uw
-	 AylIjmKyJkLqg==
-From: Eric Biggers <ebiggers@kernel.org>
-To: stable@vger.kernel.org
-Cc: linux-crypto@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Eric Biggers <ebiggers@kernel.org>,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.12,6.15] crypto: s390/sha - Fix uninitialized variable in SHA-1 and SHA-2
-Date: Tue,  8 Jul 2025 21:44:23 +0000
-Message-ID: <20250708214423.3786226-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
+	s=arc-20240116; t=1752011218; c=relaxed/simple;
+	bh=jwnMcgagJQV6o7x9MWruk3Ny5m9kmySmbNw9OijF/Vc=;
+	h=From:To:Cc:References:Date:In-Reply-To:Message-ID:MIME-Version:
+	 Content-Type:Subject; b=Fkh4VIMm2zwPtSv2K7VvTDJi+ENMRPyrEGTxDbkyRFLQYqvp6SUggQQjhnupaNHMWTqqPlW6boy2lHfz918352IZlxCsSGkE/vRNe6EY28VfgobXizdVpaFarqajTiFT8cR8lNIaY0HEd/SPk1NAsYJVHhxmucBR24UySY94dE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com; spf=pass smtp.mailfrom=xmission.com; arc=none smtp.client-ip=166.70.13.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xmission.com
+Received: from in02.mta.xmission.com ([166.70.13.52]:57132)
+	by out02.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1uZG9N-008LxS-Uc; Tue, 08 Jul 2025 15:46:53 -0600
+Received: from ip72-198-198-28.om.om.cox.net ([72.198.198.28]:36886 helo=email.froward.int.ebiederm.org.xmission.com)
+	by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1uZG9M-00Enas-U3; Tue, 08 Jul 2025 15:46:53 -0600
+From: "Eric W. Biederman" <ebiederm@xmission.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: patches@lists.linux.dev,  stable@vger.kernel.org,  Mario Limonciello
+ <mario.limonciello@amd.com>,  Nat Wittstock <nat@fardog.io>,  Lucian Langa
+ <lucilanga@7pot.org>,  "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+  rafael@kernel.org,  pavel@ucw.cz,  len.brown@intel.com,
+  linux-pm@vger.kernel.org,  kexec@lists.infradead.org
+References: <20250708000215.793090-1-sashal@kernel.org>
+	<20250708000215.793090-6-sashal@kernel.org>
+	<87ms9esclp.fsf@email.froward.int.ebiederm.org>
+	<aG2AcbhWmFwaHT6C@lappy>
+Date: Tue, 08 Jul 2025 16:46:19 -0500
+In-Reply-To: <aG2AcbhWmFwaHT6C@lappy> (Sasha Levin's message of "Tue, 8 Jul
+	2025 16:32:49 -0400")
+Message-ID: <87tt3mqrtg.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-XM-SPF: eid=1uZG9M-00Enas-U3;;;mid=<87tt3mqrtg.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=72.198.198.28;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX19OibnjGVd1ekZqgNZch7WHltki3akpgkU=
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	*  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+	*      [score: 0.4997]
+	*  0.7 XMSubLong Long Subject
+	*  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+	* -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+	*      [sa06 1397; Body=1 Fuz1=1 Fuz2=1]
+	*  0.0 T_TooManySym_01 4+ unique symbols in subject
+X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ;Sasha Levin <sashal@kernel.org>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 437 ms - load_scoreonly_sql: 0.04 (0.0%),
+	signal_user_changed: 10 (2.3%), b_tie_ro: 9 (2.0%), parse: 1.41 (0.3%),
+	 extract_message_metadata: 4.7 (1.1%), get_uri_detail_list: 2.2 (0.5%),
+	 tests_pri_-2000: 4.1 (0.9%), tests_pri_-1000: 3.9 (0.9%),
+	tests_pri_-950: 1.69 (0.4%), tests_pri_-900: 1.39 (0.3%),
+	tests_pri_-90: 62 (14.3%), check_bayes: 61 (13.9%), b_tokenize: 7
+	(1.7%), b_tok_get_all: 8 (1.7%), b_comp_prob: 2.4 (0.6%),
+	b_tok_touch_all: 40 (9.1%), b_finish: 0.88 (0.2%), tests_pri_0: 325
+	(74.5%), check_dkim_signature: 0.50 (0.1%), check_dkim_adsp: 2.9
+	(0.7%), poll_dns_idle: 1.08 (0.2%), tests_pri_10: 2.2 (0.5%),
+	tests_pri_500: 7 (1.6%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH AUTOSEL 6.15 6/8] PM: Restrict swap use to later in the
+ suspend sequence
+X-SA-Exim-Connect-IP: 166.70.13.52
+X-SA-Exim-Rcpt-To: kexec@lists.infradead.org, linux-pm@vger.kernel.org, len.brown@intel.com, pavel@ucw.cz, rafael@kernel.org, rafael.j.wysocki@intel.com, lucilanga@7pot.org, nat@fardog.io, mario.limonciello@amd.com, stable@vger.kernel.org, patches@lists.linux.dev, sashal@kernel.org
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-SA-Exim-Scanned: No (on out02.mta.xmission.com); SAEximRunCond expanded to false
 
-commit 68279380266a5fa70e664de754503338e2ec3f43 upstream.
+Sasha Levin <sashal@kernel.org> writes:
 
-Commit 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
-added the field s390_sha_ctx::first_message_part and made it be used by
-s390_sha_update() (now s390_sha_update_blocks()).  At the time,
-s390_sha_update() was used by all the s390 SHA-1, SHA-2, and SHA-3
-algorithms.  However, only the initialization functions for SHA-3 were
-updated, leaving SHA-1 and SHA-2 using first_message_part uninitialized.
+> On Tue, Jul 08, 2025 at 02:32:02PM -0500, Eric W. Biederman wrote:
+>>
+>>Wow!
+>>
+>>Sasha I think an impersonator has gotten into your account, and
+>>is just making nonsense up.
+>
+> https://lore.kernel.org/all/aDXQaq-bq5BMMlce@lappy/
 
-This could cause e.g. the function code CPACF_KIMD_SHA_512 |
-CPACF_KIMD_NIP to be used instead of just CPACF_KIMD_SHA_512.  This
-apparently was harmless, as the SHA-1 and SHA-2 function codes ignore
-CPACF_KIMD_NIP; it is recognized only by the SHA-3 function codes
-(https://lore.kernel.org/r/73477fe9-a1dc-4e38-98a6-eba9921e8afa@linux.ibm.com/).
-Therefore, this bug was found only when first_message_part was later
-converted to a boolean and UBSAN detected its uninitialized use.
-Regardless, let's fix this by just initializing to zero.
+It is nice it is giving explanations for it's backporting decisions.
 
-Note: in 6.16, we need to patch SHA-1, SHA-384, and SHA-512.  In 6.15
-and earlier, we'll also need to patch SHA-224 and SHA-256, as they
-hadn't yet been librarified (which incidentally fixed this bug).
+It would be nicer if those explanations were clearly marked as
+coming from a non-human agent, and did not read like a human being
+impatient for a patch to be backported.
 
-Fixes: 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
-Cc: stable@vger.kernel.org
-Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Closes: https://lore.kernel.org/r/12740696-595c-4604-873e-aefe8b405fbf@linux.ibm.com
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250703172316.7914-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
- arch/s390/crypto/sha1_s390.c   | 2 ++
- arch/s390/crypto/sha256_s390.c | 3 +++
- arch/s390/crypto/sha512_s390.c | 3 +++
- 3 files changed, 8 insertions(+)
+Further the machine given explanations were clearly wrong.  Do you have
+plans to do anything about that?  Using very incorrect justifications
+for backporting patches is scary.
 
-diff --git a/arch/s390/crypto/sha1_s390.c b/arch/s390/crypto/sha1_s390.c
-index bc3a22704e09..10950953429e 100644
---- a/arch/s390/crypto/sha1_s390.c
-+++ b/arch/s390/crypto/sha1_s390.c
-@@ -36,10 +36,11 @@ static int s390_sha1_init(struct shash_desc *desc)
- 	sctx->state[2] = SHA1_H2;
- 	sctx->state[3] = SHA1_H3;
- 	sctx->state[4] = SHA1_H4;
- 	sctx->count = 0;
- 	sctx->func = CPACF_KIMD_SHA_1;
-+	sctx->first_message_part = 0;
- 
- 	return 0;
- }
- 
- static int s390_sha1_export(struct shash_desc *desc, void *out)
-@@ -60,10 +61,11 @@ static int s390_sha1_import(struct shash_desc *desc, const void *in)
- 
- 	sctx->count = ictx->count;
- 	memcpy(sctx->state, ictx->state, sizeof(ictx->state));
- 	memcpy(sctx->buf, ictx->buffer, sizeof(ictx->buffer));
- 	sctx->func = CPACF_KIMD_SHA_1;
-+	sctx->first_message_part = 0;
- 	return 0;
- }
- 
- static struct shash_alg alg = {
- 	.digestsize	=	SHA1_DIGEST_SIZE,
-diff --git a/arch/s390/crypto/sha256_s390.c b/arch/s390/crypto/sha256_s390.c
-index 6f1ccdf93d3e..0204d4bca340 100644
---- a/arch/s390/crypto/sha256_s390.c
-+++ b/arch/s390/crypto/sha256_s390.c
-@@ -29,10 +29,11 @@ static int s390_sha256_init(struct shash_desc *desc)
- 	sctx->state[5] = SHA256_H5;
- 	sctx->state[6] = SHA256_H6;
- 	sctx->state[7] = SHA256_H7;
- 	sctx->count = 0;
- 	sctx->func = CPACF_KIMD_SHA_256;
-+	sctx->first_message_part = 0;
- 
- 	return 0;
- }
- 
- static int sha256_export(struct shash_desc *desc, void *out)
-@@ -53,10 +54,11 @@ static int sha256_import(struct shash_desc *desc, const void *in)
- 
- 	sctx->count = ictx->count;
- 	memcpy(sctx->state, ictx->state, sizeof(ictx->state));
- 	memcpy(sctx->buf, ictx->buf, sizeof(ictx->buf));
- 	sctx->func = CPACF_KIMD_SHA_256;
-+	sctx->first_message_part = 0;
- 	return 0;
- }
- 
- static struct shash_alg sha256_alg = {
- 	.digestsize	=	SHA256_DIGEST_SIZE,
-@@ -88,10 +90,11 @@ static int s390_sha224_init(struct shash_desc *desc)
- 	sctx->state[5] = SHA224_H5;
- 	sctx->state[6] = SHA224_H6;
- 	sctx->state[7] = SHA224_H7;
- 	sctx->count = 0;
- 	sctx->func = CPACF_KIMD_SHA_256;
-+	sctx->first_message_part = 0;
- 
- 	return 0;
- }
- 
- static struct shash_alg sha224_alg = {
-diff --git a/arch/s390/crypto/sha512_s390.c b/arch/s390/crypto/sha512_s390.c
-index 04f11c407763..b53a7793bd24 100644
---- a/arch/s390/crypto/sha512_s390.c
-+++ b/arch/s390/crypto/sha512_s390.c
-@@ -30,10 +30,11 @@ static int sha512_init(struct shash_desc *desc)
- 	*(__u64 *)&ctx->state[10] = SHA512_H5;
- 	*(__u64 *)&ctx->state[12] = SHA512_H6;
- 	*(__u64 *)&ctx->state[14] = SHA512_H7;
- 	ctx->count = 0;
- 	ctx->func = CPACF_KIMD_SHA_512;
-+	ctx->first_message_part = 0;
- 
- 	return 0;
- }
- 
- static int sha512_export(struct shash_desc *desc, void *out)
-@@ -58,10 +59,11 @@ static int sha512_import(struct shash_desc *desc, const void *in)
- 	sctx->count = ictx->count[0];
- 
- 	memcpy(sctx->state, ictx->state, sizeof(ictx->state));
- 	memcpy(sctx->buf, ictx->buf, sizeof(ictx->buf));
- 	sctx->func = CPACF_KIMD_SHA_512;
-+	sctx->first_message_part = 0;
- 	return 0;
- }
- 
- static struct shash_alg sha512_alg = {
- 	.digestsize	=	SHA512_DIGEST_SIZE,
-@@ -95,10 +97,11 @@ static int sha384_init(struct shash_desc *desc)
- 	*(__u64 *)&ctx->state[10] = SHA384_H5;
- 	*(__u64 *)&ctx->state[12] = SHA384_H6;
- 	*(__u64 *)&ctx->state[14] = SHA384_H7;
- 	ctx->count = 0;
- 	ctx->func = CPACF_KIMD_SHA_512;
-+	ctx->first_message_part = 0;
- 
- 	return 0;
- }
- 
- static struct shash_alg sha384_alg = {
+I still highly recommend that you get your tool to not randomly
+cut out bits from links it references, making them unfollowable.
 
-base-commit: 7b59ab988c01c190f1b528cf750d6f33b738d1e2
--- 
-2.50.0.727.gbf7dc18ff4-goog
+>>At best all of this appears to be an effort to get someone else to
+>>do necessary thinking for you.  As my time for kernel work is very
+>>limited I expect I will auto-nack any such future attempts to outsource
+>>someone else's thinking on me.
+>
+> I've gone ahead and added you to the list of people who AUTOSEL will
+> skip, so no need to worry about wasting your time here.
 
+Thank you for that.
+
+I assume going forward that AUTOSEL will not consider any patches
+involving the core kernel and the user/kernel ABI going forward.  The
+areas I have been involved with over the years, and for which my review
+might be interesting.
+
+Eric
 
