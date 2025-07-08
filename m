@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-161299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB50AFD4A8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:08:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33706AFD381
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24BA718898B1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AF7F1887754
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B952E613C;
-	Tue,  8 Jul 2025 17:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7D42DC34C;
+	Tue,  8 Jul 2025 16:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKvNiViK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOGNB8nj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65ABD2E5B12;
-	Tue,  8 Jul 2025 17:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB392DCF48;
+	Tue,  8 Jul 2025 16:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994174; cv=none; b=tcRAHMyZJoRnLBm8QRh6WzTThAZkiXiwRymZVIs49kuwUKWH6C5Yir103/fLZ0swjReG9YSuwHvO7DG2CVNnuyM/GFMFFY8QGhl3rNQfhA4jeY1NfxK9VEbIEm8PxRbnyqAOrCUg0tccX0opelT8T64mB4l8Q+VpTUsLt6w24oc=
+	t=1751993662; cv=none; b=eTC3e5rBsJzwK3P+yom8xOq9C9CobwQkT1daRLC3kMd1o46NthwENIhQ2FFoEhpoKYkhtSa9mNSp2gq/wEYUO9Axh+Khbmt51CG2CGi9ArzlRn79boAZcUD6yd1EpEmUKmyOFU9J8Cj0PmTbgq0kYN4cB47rZnS5Mie5b17nL5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994174; c=relaxed/simple;
-	bh=eGByNdQ2Xhtz3j74BeOuOzH001/UG66KXMWVtgB6R50=;
+	s=arc-20240116; t=1751993662; c=relaxed/simple;
+	bh=owVdmBhV5fqgUH98terFKhHCv1GWl6KUjFWpbm2+V1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TW7qX3/1XDaagxiJufnWlc1p5uJMVhU30i3Uh1biCFkB5E5B+eo78BbYXA6VE/81ZnhQFAHjZRrfZ3fyA4gSt6RFLkEigCRM6YUhwgHs7Fi1NgaLqtYdJa5TDSqHtazE4vd4E+7FklhOUMPsu1qRhkp2WIMDSAM4ssr+IlyX+o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKvNiViK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E350DC4CEED;
-	Tue,  8 Jul 2025 17:02:53 +0000 (UTC)
+	 MIME-Version; b=fSGsk8NoB5RUHYetyHPxhdS1/RNcv39k7PcwGpFPSBtv8HfiTtTA+ZUcYa2y0ndMKWqFFQ3mjmvpWnpuBiJYhjTr9E1ILa6s9RJRuB4oHUMtgIAAi/azWcpmhyW+wpGU9p2zyl6560SuPLVxjsYJZZpuk/gIlTREFQNHrqhFB8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOGNB8nj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C860FC4CEED;
+	Tue,  8 Jul 2025 16:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994174;
-	bh=eGByNdQ2Xhtz3j74BeOuOzH001/UG66KXMWVtgB6R50=;
+	s=korg; t=1751993662;
+	bh=owVdmBhV5fqgUH98terFKhHCv1GWl6KUjFWpbm2+V1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KKvNiViK9chJNaQJAPCHTn0dcHRzdqpkJHv9sysrTVpsYUy+rxbQMBuYKvGbHOW53
-	 9Cl6YlsC61xtBY29iXd6gVAjzUXMmF8qm3RuDyxcsUanfIaakc8NVRGkyMVE2gme1M
-	 gyRsOi93dM3dlh6P54hFXGUeeUwaNh3iH2YV4iDM=
+	b=QOGNB8njU2h6lf1PgwauCHl9d4uRzARshN0b+7HIfyBQE2lX0j6C6Uq2a3Z4cSaPx
+	 DKSiIWoX+vJqfOWbYDMVpnPyViN1SZgpMdm84CvDZLfcVRPD3F1BaZaQInzlMJ/gGd
+	 A4tz9Z2JtcOn2XDzLtHdOCnqdpCFHNlGox6j1DMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Hongliang Yang <hongliang.yang@cixtech.com>,
-	Fugang Duan <fugang.duan@cixtech.com>,
-	Peter Chen <peter.chen@cixtech.com>
-Subject: [PATCH 5.15 151/160] usb: cdnsp: do not disable slot for disabled slot
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.15 151/178] usb: cdnsp: Fix issue with CV Bad Descriptor test
 Date: Tue,  8 Jul 2025 18:23:08 +0200
-Message-ID: <20250708162235.500529094@linuxfoundation.org>
+Message-ID: <20250708162240.454997859@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chen <peter.chen@cixtech.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-commit 7e2c421ef88e9da9c39e01496b7f5b0b354b42bc upstream.
+commit 2831a81077f5162f104ba5a97a7d886eb371c21c upstream.
 
-It doesn't need to do it, and the related command event returns
-'Slot Not Enabled Error' status.
+The SSP2 controller has extra endpoint state preserve bit (ESP) which
+setting causes that endpoint state will be preserved during
+Halt Endpoint command. It is used only for EP0.
+Without this bit the Command Verifier "TD 9.10 Bad Descriptor Test"
+failed.
+Setting this bit doesn't have any impact for SSP controller.
 
 Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
 Cc: stable <stable@kernel.org>
-Suggested-by: Hongliang Yang <hongliang.yang@cixtech.com>
-Reviewed-by: Fugang Duan <fugang.duan@cixtech.com>
-Signed-off-by: Peter Chen <peter.chen@cixtech.com>
-Link: https://lore.kernel.org/r/20250619013413.35817-1-peter.chen@cixtech.com
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB95382CCD50549DABAEFD6156DD7CA@PH7PR07MB9538.namprd07.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdnsp-ring.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/cdnsp-debug.h  |    5 +++--
+ drivers/usb/cdns3/cdnsp-ep0.c    |   18 +++++++++++++++---
+ drivers/usb/cdns3/cdnsp-gadget.h |    6 ++++++
+ drivers/usb/cdns3/cdnsp-ring.c   |    3 ++-
+ 4 files changed, 26 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/cdns3/cdnsp-ring.c
-+++ b/drivers/usb/cdns3/cdnsp-ring.c
-@@ -772,7 +772,9 @@ static int cdnsp_update_port_id(struct c
+--- a/drivers/usb/cdns3/cdnsp-debug.h
++++ b/drivers/usb/cdns3/cdnsp-debug.h
+@@ -327,12 +327,13 @@ static inline const char *cdnsp_decode_t
+ 	case TRB_RESET_EP:
+ 	case TRB_HALT_ENDPOINT:
+ 		ret = scnprintf(str, size,
+-				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c",
++				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c %c",
+ 				cdnsp_trb_type_string(type),
+ 				ep_num, ep_id % 2 ? "out" : "in",
+ 				TRB_TO_EP_INDEX(field3), field1, field0,
+ 				TRB_TO_SLOT_ID(field3),
+-				field3 & TRB_CYCLE ? 'C' : 'c');
++				field3 & TRB_CYCLE ? 'C' : 'c',
++				field3 & TRB_ESP ? 'P' : 'p');
+ 		break;
+ 	case TRB_STOP_RING:
+ 		ret = scnprintf(str, size,
+--- a/drivers/usb/cdns3/cdnsp-ep0.c
++++ b/drivers/usb/cdns3/cdnsp-ep0.c
+@@ -414,6 +414,7 @@ static int cdnsp_ep0_std_request(struct
+ void cdnsp_setup_analyze(struct cdnsp_device *pdev)
+ {
+ 	struct usb_ctrlrequest *ctrl = &pdev->setup;
++	struct cdnsp_ep *pep;
+ 	int ret = -EINVAL;
+ 	u16 len;
+ 
+@@ -427,10 +428,21 @@ void cdnsp_setup_analyze(struct cdnsp_de
+ 		goto out;
  	}
  
- 	if (port_id != old_port) {
--		cdnsp_disable_slot(pdev);
-+		if (pdev->slot_id)
-+			cdnsp_disable_slot(pdev);
++	pep = &pdev->eps[0];
 +
- 		pdev->active_port = port;
- 		cdnsp_enable_slot(pdev);
+ 	/* Restore the ep0 to Stopped/Running state. */
+-	if (pdev->eps[0].ep_state & EP_HALTED) {
+-		trace_cdnsp_ep0_halted("Restore to normal state");
+-		cdnsp_halt_endpoint(pdev, &pdev->eps[0], 0);
++	if (pep->ep_state & EP_HALTED) {
++		if (GET_EP_CTX_STATE(pep->out_ctx) == EP_STATE_HALTED)
++			cdnsp_halt_endpoint(pdev, pep, 0);
++
++		/*
++		 * Halt Endpoint Command for SSP2 for ep0 preserve current
++		 * endpoint state and driver has to synchronize the
++		 * software endpoint state with endpoint output context
++		 * state.
++		 */
++		pep->ep_state &= ~EP_HALTED;
++		pep->ep_state |= EP_STOPPED;
  	}
+ 
+ 	/*
+--- a/drivers/usb/cdns3/cdnsp-gadget.h
++++ b/drivers/usb/cdns3/cdnsp-gadget.h
+@@ -987,6 +987,12 @@ enum cdnsp_setup_dev {
+ #define STREAM_ID_FOR_TRB(p)		((((p)) << 16) & GENMASK(31, 16))
+ #define SCT_FOR_TRB(p)			(((p) << 1) & 0x7)
+ 
++/*
++ * Halt Endpoint Command TRB field.
++ * The ESP bit only exists in the SSP2 controller.
++ */
++#define TRB_ESP				BIT(9)
++
+ /* Link TRB specific fields. */
+ #define TRB_TC				BIT(1)
+ 
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -2485,7 +2485,8 @@ void cdnsp_queue_halt_endpoint(struct cd
+ {
+ 	cdnsp_queue_command(pdev, 0, 0, 0, TRB_TYPE(TRB_HALT_ENDPOINT) |
+ 			    SLOT_ID_FOR_TRB(pdev->slot_id) |
+-			    EP_ID_FOR_TRB(ep_index));
++			    EP_ID_FOR_TRB(ep_index) |
++			    (!ep_index ? TRB_ESP : 0));
+ }
+ 
+ void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num)
 
 
 
