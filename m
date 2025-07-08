@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA2BAFD0A8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90298AFD487
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D49C3173F38
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:24:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BA273AE37F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C90E2E540A;
-	Tue,  8 Jul 2025 16:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183B32E6D16;
+	Tue,  8 Jul 2025 17:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TwZbxZlW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irEQYeZq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A0C2E5B25;
-	Tue,  8 Jul 2025 16:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87192E5412;
+	Tue,  8 Jul 2025 17:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991858; cv=none; b=TVwE+O0B+z13MT+Rw52lww4C13/ilI/KaFdLpZfIVXQfveTtTx9S+J0q10mHn5OZfasnABvgDgEnZ4WXEHi581OG5FKsGVoR/y0d602jGUHI+HIovZnwcCep1qiqUZuyGsNi2fl1vzvnKok9KN8T3UQjGbM83SKYkDDrvXbn3Ps=
+	t=1751994045; cv=none; b=L35yZJZrHzs6kiHvzTpuNJYeizy/M2s8H4Ko16WWHWZp5o2K6cxCroXekcRNmRhHN7mdvh1R6VudrC1tsV6b/F0GHDpWzEbCSS4Ueak+q6mBFmXuiXvrvmNR63Qql1wMLyJo2NvvGLq8tQONLy2JPwWWWBR7jKWTJ3NInuttZ7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991858; c=relaxed/simple;
-	bh=lUfp7HI4vmRxEkH0zrN2Af+SIrNjNUYfMbSG5vO1yj0=;
+	s=arc-20240116; t=1751994045; c=relaxed/simple;
+	bh=x6jzcryHhfbhIQw0BdUb/g0XNDJpWc3NJfM8d1YwMe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c5+8JeDWZPbdFRC/vrdDIVpqsQxbl6M5AkrkvACwGJac12HiD+wF9YDAJc1CVxsg9efOaFFf1+IT0aao1Bh5nchE7j8xi/MgOPwMIqxoejVppU+qNDSW9jK82LhGYxP+IAFPolFbUoOHavyV3t4Zr3f2orp3cMKe5uviNmGFbHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TwZbxZlW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83689C4CEF5;
-	Tue,  8 Jul 2025 16:24:17 +0000 (UTC)
+	 MIME-Version; b=kq9KbnK0/jWr7VoOMKCrcJLm390eGTcIL1ZWsZA4p65Epd/tw8N/+b7DzBRIn1udTR6KqJ2OQAMZ1ZDKbPZaqqsA/a62yiEAPIF8NXT0iH48/klEKmRgIgoU6PdByGT0q9UngOhwkLxaVKUSEswDMVukW4/KUZfwu7QZJZBBpeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irEQYeZq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A66C4CEED;
+	Tue,  8 Jul 2025 17:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751991857;
-	bh=lUfp7HI4vmRxEkH0zrN2Af+SIrNjNUYfMbSG5vO1yj0=;
+	s=korg; t=1751994045;
+	bh=x6jzcryHhfbhIQw0BdUb/g0XNDJpWc3NJfM8d1YwMe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TwZbxZlWQzxkLgUmugULjfohCOX4ZBV/2nEU38Mu+DTVKlW5h6qMlEu+P+2A+s2Nt
-	 +TxrqYK21pEfddJuBCVMzlcYiCkp+gmVqAbI+d/idmyuY20ADWXCxJuJvHWmWV61d6
-	 bm7JWhzDUCLX/OGs2TYplZXl5A2ljRrXW9vIQz4g=
+	b=irEQYeZqcW6cSwI/iPAsB1SVYmVW9fywiI38MKEVjizPDTHGO+dAy5YU1hSBEXRjC
+	 7Oa0T6+c2b0sjH02p9tiOQscpG5yq6U+VKy6qLRuc7YBKgsXGT3DqO+MTuFU4w/eJn
+	 +IwURRq877uj63ZkIx88BvNJ0s2C/ALpdomLqvu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 003/132] rtc: cmos: use spin_lock_irqsave in cmos_interrupt
+	Ping Cheng <ping.cheng@wacom.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.15 077/160] HID: wacom: fix memory leak on kobject creation failure
 Date: Tue,  8 Jul 2025 18:21:54 +0200
-Message-ID: <20250708162230.864458880@linuxfoundation.org>
+Message-ID: <20250708162233.676901775@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Jończyk <mat.jonczyk@o2.pl>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-commit 00a39d8652ff9088de07a6fe6e9e1893452fe0dd upstream.
+commit 5ae416c5b1e2e816aee7b3fc8347adf70afabb4c upstream.
 
-cmos_interrupt() can be called in a non-interrupt context, such as in
-an ACPI event handler (which runs in an interrupt thread). Therefore,
-usage of spin_lock(&rtc_lock) is insecure. Use spin_lock_irqsave() /
-spin_unlock_irqrestore() instead.
+During wacom_initialize_remotes() a fifo buffer is allocated
+with kfifo_alloc() and later a cleanup action is registered
+during devm_add_action_or_reset() to clean it up.
 
-Before a misguided
-commit 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
-the cmos_interrupt() function used spin_lock_irqsave(). That commit
-changed it to spin_lock() and broke locking, which was partially fixed in
-commit 13be2efc390a ("rtc: cmos: Disable irq around direct invocation of cmos_interrupt()")
+However if the code fails to create a kobject and register it
+with sysfs the code simply returns -ENOMEM before the cleanup
+action is registered leading to a memory leak.
 
-That second commit did not take account of the ACPI fixed event handler
-pathway, however. It introduced local_irq_disable() workarounds in
-cmos_check_wkalrm(), which can cause problems on PREEMPT_RT kernels
-and are now unnecessary.
+Fix this by ensuring the fifo is freed when the kobject creation
+and registration process fails.
 
-Add an explicit comment so that this change will not be reverted by
-mistake.
-
+Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
 Cc: stable@vger.kernel.org
-Fixes: 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
-Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Closes: https://lore.kernel.org/all/aDtJ92foPUYmGheF@debian.local/
-Link: https://lore.kernel.org/r/20250607210608.14835-1-mat.jonczyk@o2.pl
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-cmos.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/hid/wacom_sys.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -697,8 +697,12 @@ static irqreturn_t cmos_interrupt(int ir
- {
- 	u8		irqstat;
- 	u8		rtc_control;
-+	unsigned long	flags;
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2020,8 +2020,10 @@ static int wacom_initialize_remotes(stru
  
--	spin_lock(&rtc_lock);
-+	/* We cannot use spin_lock() here, as cmos_interrupt() is also called
-+	 * in a non-irq context.
-+	 */
-+	spin_lock_irqsave(&rtc_lock, flags);
+ 	remote->remote_dir = kobject_create_and_add("wacom_remote",
+ 						    &wacom->hdev->dev.kobj);
+-	if (!remote->remote_dir)
++	if (!remote->remote_dir) {
++		kfifo_free(&remote->remote_fifo);
+ 		return -ENOMEM;
++	}
  
- 	/* When the HPET interrupt handler calls us, the interrupt
- 	 * status is passed as arg1 instead of the irq number.  But
-@@ -732,7 +736,7 @@ static irqreturn_t cmos_interrupt(int ir
- 			hpet_mask_rtc_irq_bit(RTC_AIE);
- 		CMOS_READ(RTC_INTR_FLAGS);
- 	}
--	spin_unlock(&rtc_lock);
-+	spin_unlock_irqrestore(&rtc_lock, flags);
- 
- 	if (is_intr(irqstat)) {
- 		rtc_update_irq(p, 1, irqstat);
-@@ -1300,9 +1304,7 @@ static void cmos_check_wkalrm(struct dev
- 	 * ACK the rtc irq here
- 	 */
- 	if (t_now >= cmos->alarm_expires && cmos_use_acpi_alarm()) {
--		local_irq_disable();
- 		cmos_interrupt(0, (void *)cmos->rtc);
--		local_irq_enable();
- 		return;
- 	}
+ 	error = sysfs_create_files(remote->remote_dir, remote_unpair_attrs);
  
 
 
