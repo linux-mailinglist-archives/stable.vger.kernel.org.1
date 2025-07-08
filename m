@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-160533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4069AFD0A2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:25:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7424AFD41A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79DC556304F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:24:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07F2E5A0DE8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4592E5412;
-	Tue,  8 Jul 2025 16:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5802E541E;
+	Tue,  8 Jul 2025 17:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6oXVesJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6N1iuHV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DFC2E5434;
-	Tue,  8 Jul 2025 16:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0347263B;
+	Tue,  8 Jul 2025 17:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991848; cv=none; b=uJTaJ2SaXAea9UIm/2iz0HCt69nHs9wtpp5x3KvBYJYB2z6bRAsptGemGS21G58S8+SQ6fsBxwq+7mP3kvPMu7kQjXsUV3dl6DUYlt0po9tQaZSf4Bp6wt7wSc6pTmcm21UeF3XT9rci4QJA2JzX4CUlq1rMxMXTysfNCIvj5+w=
+	t=1751994039; cv=none; b=Ucw6gHoLUNifvNPa5/PAu0ldcJ1uG1VsyYmTrcDz01UwIBOAnjFkpLsYhvyzKd7mlFTe9hDZQqhyoX6jxPyWDvGdwZJ2A+12pqNXoQID0Bk7t+AXbwPUp0i/osUDw3jhaoj8pcQNN/yWITx9xYsRQbPo9HJtzYBu0Fea59D0Jms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991848; c=relaxed/simple;
-	bh=Md+IK+CFgnWDzP1CmWaP+2RQSv6EnpOY5JcDfaFrVUw=;
+	s=arc-20240116; t=1751994039; c=relaxed/simple;
+	bh=9OkjcX3Bhr2jMv9Tthe/zKX0EBDdPVuTad7fAm7wezw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kd5Uf8+xAnUHJdbN3WWekZQLKGFSNzn7lqJNTXXEWpkiBrWtSi8QxMOHZMkfGv4+w2sQ4Oda2hSguI6WZwKwUlG5zGx72jlnbNBSQIskh99garQwQJcppJAt6bbXj3kOn277hd4YrMhCoJ4EosyRRF/QEuUpCw/5Lxofal/amnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6oXVesJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC63C4CEED;
-	Tue,  8 Jul 2025 16:24:07 +0000 (UTC)
+	 MIME-Version; b=Vb3KRzgW6DByUsljiYspxNwwxtv71V2yq0Cc0ZmEox2kkXmKYPJAouU30PIlfZDb2KHou+P6iSJLWEb09gO5FSkovQse4dfeKW5qbFC90XQ6sQPEn6TCT8+5RR2ew61BkfGKiQ6mkcZ1idDbkbAud56KkZNnPPqyG4X5YMXJlrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6N1iuHV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7CAC4CEED;
+	Tue,  8 Jul 2025 17:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751991847;
-	bh=Md+IK+CFgnWDzP1CmWaP+2RQSv6EnpOY5JcDfaFrVUw=;
+	s=korg; t=1751994039;
+	bh=9OkjcX3Bhr2jMv9Tthe/zKX0EBDdPVuTad7fAm7wezw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u6oXVesJjjqSrqpncs282A4wplDkhGUb2HpxspuxMo7C31JkAa4L+tOoU+qOOqMeG
-	 /n0NDy/THDyz8VEr8DVhNJzbVBfp79SF3bRp+WQuX3W5tJ9DYDWFUb5S+8+MW6RadQ
-	 OwmsOZl3R9LghTVHsC9PAE+cSuYjHZGW+DJVxl6A=
+	b=l6N1iuHVVGWpMYUiizLraJATW0/3KbgtXIWHaPKGo7VRQAEZhbrafI4N5diKPo8LG
+	 a2DqIWCSxYObMYJQYzECfMRS6VLB4r+DcvpwqmNs/VbbWu5yaSMUJtXHKV5OuYG73C
+	 0SfdBL6glB7luwIuq/m17BJ3kmgnjM/Y9coddprQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elena Popa <elena.popa@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 001/132] rtc: pcf2127: add missing semicolon after statement
+	Heinz Mauelshagen <heinzm@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 5.15 075/160] dm-raid: fix variable in journal device check
 Date: Tue,  8 Jul 2025 18:21:52 +0200
-Message-ID: <20250708162230.809601191@linuxfoundation.org>
+Message-ID: <20250708162233.625540764@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Heinz Mauelshagen <heinzm@redhat.com>
 
-commit 08d82d0cad51c2b1d454fe41ea1ff96ade676961 upstream.
+commit db53805156f1e0aa6d059c0d3f9ac660d4ef3eb4 upstream.
 
-Replace comma with semicolon at the end of the statement when setting
-config.max_register.
+Replace "rdev" with correct loop variable name "r".
 
-Fixes: fd28ceb4603f ("rtc: pcf2127: add variant-specific configuration structure")
+Signed-off-by: Heinz Mauelshagen <heinzm@redhat.com>
 Cc: stable@vger.kernel.org
-Cc: Elena Popa <elena.popa@nxp.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20250529202923.1552560-1-hugo@hugovil.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 63c32ed4afc2 ("dm raid: add raid4/5/6 journaling support")
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-pcf2127.c |    2 +-
+ drivers/md/dm-raid.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/rtc/rtc-pcf2127.c
-+++ b/drivers/rtc/rtc-pcf2127.c
-@@ -1456,7 +1456,7 @@ static int pcf2127_spi_probe(struct spi_
- 		variant = &pcf21xx_cfg[type];
- 	}
- 
--	config.max_register = variant->max_register,
-+	config.max_register = variant->max_register;
- 
- 	regmap = devm_regmap_init_spi(spi, &config);
- 	if (IS_ERR(regmap)) {
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -2381,7 +2381,7 @@ static int super_init_validation(struct
+ 	 */
+ 	sb_retrieve_failed_devices(sb, failed_devices);
+ 	rdev_for_each(r, mddev) {
+-		if (test_bit(Journal, &rdev->flags) ||
++		if (test_bit(Journal, &r->flags) ||
+ 		    !r->sb_page)
+ 			continue;
+ 		sb2 = page_address(r->sb_page);
 
 
 
