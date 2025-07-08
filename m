@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-161310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84776AFD419
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:04:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F85AFD2D3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 903C37A4EC0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17021C26FAF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900DE2E540C;
-	Tue,  8 Jul 2025 17:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E884C2E49A8;
+	Tue,  8 Jul 2025 16:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLAvOyMg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLp0EvHs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7512E1C74;
-	Tue,  8 Jul 2025 17:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73732F37;
+	Tue,  8 Jul 2025 16:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994204; cv=none; b=s8UZ2VOcBxtbZE1wCA6uGqy/ut1OMuL7DC20InDR/8SMAfm8SqoIHfLj/oXrQf/jMw01jclnxg3UD7PtDk4Gc2ZMfpjiRg+ixcUqW/fmd8xQt91Yr7hgBj+I7np5BEKuyXuTM+mt+DwynDh0Yd0Y2gU2Iix7qzhPClGvpnZlD8c=
+	t=1751993227; cv=none; b=ArbmMgxyvapBgkueDOWlO/y7JIeRS5kRPJgTZBLao1UGtqyPtDDc9ebphPpkzK4lrmPNyFS3GfFS8oPscUTmvRIdVxnZBo8s7sI1uWieI9/IZfx82TC6f2hcrScsdT9EtIHxzo59XCwaMX+k9z3fqsQeXozmnhrifqQgmjkBdQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994204; c=relaxed/simple;
-	bh=YPL6KQcH+qOaCSAbBpy9vqFFBbBg4fYMv5w+FJ65UCQ=;
+	s=arc-20240116; t=1751993227; c=relaxed/simple;
+	bh=K3iuc+ynxInUB3b77Ky35hBwh3v7dBWEn7ejcQ6Po4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQ4qy/CVaqWuS9z1eXL2o2l63RNpsFq6rYcZs58diYbUvr6DFyM/bght9zXulRFPGI0kK3H9jKNK54SNi3rsU9UOpuziYJIVZ7H3Bggt9aw4jojlX+lE0ZCnjz3Vda96rc7BQ0+ebH1Z4/J6AWkVrRgDufzrNXM4RrKsKkyi5Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLAvOyMg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1AAC4CEED;
-	Tue,  8 Jul 2025 17:03:23 +0000 (UTC)
+	 MIME-Version; b=Q3a9ewg87ep3bNDrflKXTr6+TUUHYZq1XQZXX4xA19y5gv/perRCSbBdEa6pTpkLaK0Xn1xQgwefb/8Dw/tOXhvJywOtiGJCGL83QpFPBelELGXTQ4i05fnSkt1o3Ovmb+kuk92g17qwEr1mSdF3guJaEDUNMrzuw058r+690c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLp0EvHs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F0CC4CEED;
+	Tue,  8 Jul 2025 16:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994204;
-	bh=YPL6KQcH+qOaCSAbBpy9vqFFBbBg4fYMv5w+FJ65UCQ=;
+	s=korg; t=1751993227;
+	bh=K3iuc+ynxInUB3b77Ky35hBwh3v7dBWEn7ejcQ6Po4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iLAvOyMgg/skC3Hwgik4ggOvUhtjIniDr1eE+d+U2s8tOY9yUeELGzRcn/gjh8nw2
-	 JwiOSQUID8JHBb6lvYxJzYWNB6HeqSiajylR8GZ1l0tTkyeP2rsuKe1kFpzo/oFAIJ
-	 83VqKCGFT3GhNBLC6KuJ4u4yjCpuUhk1r8gXvQ8w=
+	b=kLp0EvHsok7HsdSpTJfToYZ0dFQK1axCy6MxFR7JQEwddslvqzHgGng+BsMIwh6Ic
+	 pBW1Ng9RRTuK2dJ/dVp6VolLFDQ2uagxY4xIYNhQuiyO+iijZufK/fhwIKPuE6X3Jz
+	 6s9kUu0z0Xr/ozQhun3eCILdNYWXYWqX1tZzCiTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 160/160] x86/process: Move the buffer clearing before MONITOR
+	stable <stable@kernel.org>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.12 201/232] usb: xhci: quirk for data loss in ISOC transfers
 Date: Tue,  8 Jul 2025 18:23:17 +0200
-Message-ID: <20250708162235.716750984@linuxfoundation.org>
+Message-ID: <20250708162246.698236535@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-Commit 8e786a85c0a3c0fffae6244733fb576eeabd9dec upstream.
+commit cbc889ab0122366f6cdbe3c28d477c683ebcebc2 upstream.
 
-Move the VERW clearing before the MONITOR so that VERW doesn't disarm it
-and the machine never enters C1.
+During the High-Speed Isochronous Audio transfers, xHCI
+controller on certain AMD platforms experiences momentary data
+loss. This results in Missed Service Errors (MSE) being
+generated by the xHCI.
 
-Original idea by Kim Phillips <kim.phillips@amd.com>.
+The root cause of the MSE is attributed to the ISOC OUT endpoint
+being omitted from scheduling. This can happen when an IN
+endpoint with a 64ms service interval either is pre-scheduled
+prior to the ISOC OUT endpoint or the interval of the ISOC OUT
+endpoint is shorter than that of the IN endpoint. Consequently,
+the OUT service is neglected when an IN endpoint with a service
+interval exceeding 32ms is scheduled concurrently (every 64ms in
+this scenario).
 
-Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+This issue is particularly seen on certain older AMD platforms.
+To mitigate this problem, it is recommended to adjust the service
+interval of the IN endpoint to not exceed 32ms (interval 8). This
+adjustment ensures that the OUT endpoint will not be bypassed,
+even if a smaller interval value is utilized.
+
+Cc: stable <stable@kernel.org>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250627144127.3889714-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/mwait.h |   16 +++++++++++-----
- arch/x86/kernel/process.c    |   15 ++++++++++++---
- 2 files changed, 23 insertions(+), 8 deletions(-)
+ drivers/usb/host/xhci-mem.c |    4 ++++
+ drivers/usb/host/xhci-pci.c |   25 +++++++++++++++++++++++++
+ drivers/usb/host/xhci.h     |    1 +
+ 3 files changed, 30 insertions(+)
 
---- a/arch/x86/include/asm/mwait.h
-+++ b/arch/x86/include/asm/mwait.h
-@@ -43,8 +43,6 @@ static inline void __monitorx(const void
- 
- static inline void __mwait(unsigned long eax, unsigned long ecx)
- {
--	x86_idle_clear_cpu_buffers();
--
- 	/* "mwait %eax, %ecx;" */
- 	asm volatile(".byte 0x0f, 0x01, 0xc9;"
- 		     :: "a" (eax), "c" (ecx));
-@@ -88,7 +86,6 @@ static inline void __mwaitx(unsigned lon
- 
- static inline void __sti_mwait(unsigned long eax, unsigned long ecx)
- {
--	x86_idle_clear_cpu_buffers();
- 
- 	/* "mwait %eax, %ecx;" */
- 	asm volatile("sti; .byte 0x0f, 0x01, 0xc9;"
-@@ -107,6 +104,11 @@ static inline void __sti_mwait(unsigned
-  */
- static inline void mwait_idle_with_hints(unsigned long eax, unsigned long ecx)
- {
-+	if (need_resched())
-+		return;
-+
-+	x86_idle_clear_cpu_buffers();
-+
- 	if (static_cpu_has_bug(X86_BUG_MONITOR) || !current_set_polling_and_test()) {
- 		if (static_cpu_has_bug(X86_BUG_CLFLUSH_MONITOR)) {
- 			mb();
-@@ -115,9 +117,13 @@ static inline void mwait_idle_with_hints
- 		}
- 
- 		__monitor((void *)&current_thread_info()->flags, 0, 0);
--		if (!need_resched())
--			__mwait(eax, ecx);
-+		if (need_resched())
-+			goto out;
-+
-+		__mwait(eax, ecx);
- 	}
-+
-+out:
- 	current_clr_polling();
- }
- 
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -836,6 +836,11 @@ static int prefer_mwait_c1_over_halt(con
-  */
- static __cpuidle void mwait_idle(void)
- {
-+	if (need_resched())
-+		return;
-+
-+	x86_idle_clear_cpu_buffers();
-+
- 	if (!current_set_polling_and_test()) {
- 		if (this_cpu_has(X86_BUG_CLFLUSH_MONITOR)) {
- 			mb(); /* quirk */
-@@ -844,13 +849,17 @@ static __cpuidle void mwait_idle(void)
- 		}
- 
- 		__monitor((void *)&current_thread_info()->flags, 0, 0);
--		if (!need_resched())
--			__sti_mwait(0, 0);
--		else
-+		if (need_resched()) {
- 			raw_local_irq_enable();
-+			goto out;
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1426,6 +1426,10 @@ int xhci_endpoint_init(struct xhci_hcd *
+ 	/* Periodic endpoint bInterval limit quirk */
+ 	if (usb_endpoint_xfer_int(&ep->desc) ||
+ 	    usb_endpoint_xfer_isoc(&ep->desc)) {
++		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
++		    interval >= 9) {
++			interval = 8;
 +		}
-+
-+		__sti_mwait(0, 0);
- 	} else {
- 		raw_local_irq_enable();
- 	}
-+
-+out:
- 	__current_clr_polling();
- }
+ 		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_7) &&
+ 		    udev->speed >= USB_SPEED_HIGH &&
+ 		    interval >= 7) {
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -71,12 +71,22 @@
+ #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_XHCI		0x15ec
+ #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_XHCI		0x15f0
  
++#define PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI		0x13ed
++#define PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI		0x13ee
++#define PCI_DEVICE_ID_AMD_STARSHIP_XHCI			0x148c
++#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI		0x15d4
++#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI		0x15d5
++#define PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI		0x15e0
++#define PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI		0x15e1
++#define PCI_DEVICE_ID_AMD_RAVEN2_XHCI			0x15e5
+ #define PCI_DEVICE_ID_AMD_RENOIR_XHCI			0x1639
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_4			0x43b9
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_3			0x43ba
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_2			0x43bb
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_1			0x43bc
+ 
++#define PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI		0x7316
++
+ #define PCI_DEVICE_ID_ASMEDIA_1042_XHCI			0x1042
+ #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
+ #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
+@@ -286,6 +296,21 @@ static void xhci_pci_quirks(struct devic
+ 	if (pdev->vendor == PCI_VENDOR_ID_NEC)
+ 		xhci->quirks |= XHCI_NEC_HOST;
+ 
++	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
++	    (pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_STARSHIP_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN2_XHCI))
++		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
++
++	if (pdev->vendor == PCI_VENDOR_ID_ATI &&
++	    pdev->device == PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI)
++		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
++
+ 	if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version == 0x96)
+ 		xhci->quirks |= XHCI_AMD_0x96_HOST;
+ 
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1626,6 +1626,7 @@ struct xhci_hcd {
+ #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
+ #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
+ #define XHCI_ETRON_HOST	BIT_ULL(49)
++#define XHCI_LIMIT_ENDPOINT_INTERVAL_9 BIT_ULL(50)
+ 
+ 	unsigned int		num_active_eps;
+ 	unsigned int		limit_active_eps;
 
 
 
