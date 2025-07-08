@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFEDAFD383
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52CB1AFD0DC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0281D188810F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5346178756
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3903721C190;
-	Tue,  8 Jul 2025 16:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9402E0910;
+	Tue,  8 Jul 2025 16:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9zhc2ax"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvQngXQA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA44A2F37;
-	Tue,  8 Jul 2025 16:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC1C2D9790;
+	Tue,  8 Jul 2025 16:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993665; cv=none; b=OWgoYqdkGVmbbJfuhxxxB+nlHok6HQuj2gQSkhSS9LbjPLTWnX1MgLcSjh7RVkX3Kah+bhZ80NZeFljoDfVg36Y2txvW3wKzxEMi/C5f2SYI/8UBU8CgjAPSEqKj9EFyzB+gDmNZJ3dXg+aVVgyLtnGgW37it+MZUeTS0BCgD/c=
+	t=1751992058; cv=none; b=AMUS4XoCeYdALr5RlvZPG8vqXVgv4Cz03RshHR+Np+VSRdZO3H1UQmrYxQiO/VNS3AoDyqw9nkzos3UZyV3xxSqBdDvZFM6/vRzCi/1qVWXJqwug0yx9gqKAeWGUWUAQ9ZHDUPVI4YE2vAqJkEC2xb9evOwWqGgUfZV7BKwyyrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993665; c=relaxed/simple;
-	bh=FH3gF+2F0FE6kPtZqlb9qT05ej73G94PvvRvMjHqbOQ=;
+	s=arc-20240116; t=1751992058; c=relaxed/simple;
+	bh=GvMcRZPY/7C9Ww4ySvc13GWr93+WSYDc3ahBpcpy4UU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+65htCrN9kgK4M1W8hivBmm31lzZe6BF/Mz7HfVKNpyS+GpmTW6Ow+Pz2zjm5gYj5uwH+KqHdQggQzItQpIflnVFsNmEXv4zjlz8MFMd5T9GgD3H/3YAndj9Zjq6sK/cbpkCphrTwdPN3oUdpBtd9df5afOH5Bl13N6XMW5s0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9zhc2ax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F8BC4CEED;
-	Tue,  8 Jul 2025 16:54:24 +0000 (UTC)
+	 MIME-Version; b=SM+jgJ7iQNsflaVrkzf9yG3wJKlyt5YfQrwy9wRwr5a40uD5JRyNjJcwr0EN+R53mvDX/8K5So0nQRNMPcxzu4lHVAhsBvY82jiKSG6OW1BT/aBS1qR5BRWkXdc/BMfrXa8TkrTusijh/WrilxVa7NZXFHi0C5JADXr/KYSV7UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvQngXQA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B20C4CEED;
+	Tue,  8 Jul 2025 16:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993664;
-	bh=FH3gF+2F0FE6kPtZqlb9qT05ej73G94PvvRvMjHqbOQ=;
+	s=korg; t=1751992058;
+	bh=GvMcRZPY/7C9Ww4ySvc13GWr93+WSYDc3ahBpcpy4UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I9zhc2axbO7YkP/WqD4HJ/xKS4YN41hTQfI26QSjqmO5HrJO22q02NnBrFtruwaV9
-	 3/FscXCWbv2CGuVYvoyLvi2OuXEMUg1bJU3MhXqInEln5Nnv0gP6f9YletTwEP+ku1
-	 APV6WH0plFC16dLA4VucYBd1XcJNGDXbYW4RX49I=
+	b=GvQngXQAJg4Rj/4r92bn2n4wlB6l4CF5QRQ2Q40+fuIRzXF4vykX0Vd78K/YQKHcp
+	 1SBoXTo82xjEgkdcC2igerDThbv4B3lV+6HDRzwl+getZB0ApYIKZRvYihnuOn3MWn
+	 PXjHS8sMZawqWxstf1h/G47NQ2Bb9YIsb2kEqreM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.15 152/178] usb: dwc3: Abort suspend on soft disconnect failure
-Date: Tue,  8 Jul 2025 18:23:09 +0200
-Message-ID: <20250708162240.478983015@linuxfoundation.org>
+	syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 18/81] nfs: Clean up /proc/net/rpc/nfs when nfs_fs_proc_net_init() fails.
+Date: Tue,  8 Jul 2025 18:23:10 +0200
+Message-ID: <20250708162225.499860280@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +63,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 630a1dec3b0eba2a695b9063f1c205d585cbfec9 upstream.
+[ Upstream commit e8d6f3ab59468e230f3253efe5cb63efa35289f7 ]
 
-When dwc3_gadget_soft_disconnect() fails, dwc3_suspend_common() keeps
-going with the suspend, resulting in a period where the power domain is
-off, but the gadget driver remains connected.  Within this time frame,
-invoking vbus_event_work() will cause an error as it attempts to access
-DWC3 registers for endpoint disabling after the power domain has been
-completely shut down.
+syzbot reported a warning below [1] following a fault injection in
+nfs_fs_proc_net_init(). [0]
 
-Abort the suspend sequence when dwc3_gadget_suspend() cannot halt the
-controller and proceeds with a soft connect.
+When nfs_fs_proc_net_init() fails, /proc/net/rpc/nfs is not removed.
 
-Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
-Cc: stable <stable@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250528100315.2162699-1-khtsai@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Later, rpc_proc_exit() tries to remove /proc/net/rpc, and the warning
+is logged as the directory is not empty.
+
+Let's handle the error of nfs_fs_proc_net_init() properly.
+
+[0]:
+FAULT_INJECTION: forcing a failure.
+name failslab, interval 1, probability 0, space 0, times 0
+CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+Call Trace:
+ <TASK>
+  dump_stack_lvl (lib/dump_stack.c:123)
+ should_fail_ex (lib/fault-inject.c:73 lib/fault-inject.c:174)
+ should_failslab (mm/failslab.c:46)
+ kmem_cache_alloc_noprof (mm/slub.c:4178 mm/slub.c:4204)
+ __proc_create (fs/proc/generic.c:427)
+ proc_create_reg (fs/proc/generic.c:554)
+ proc_create_net_data (fs/proc/proc_net.c:120)
+ nfs_fs_proc_net_init (fs/nfs/client.c:1409)
+ nfs_net_init (fs/nfs/inode.c:2600)
+ ops_init (net/core/net_namespace.c:138)
+ setup_net (net/core/net_namespace.c:443)
+ copy_net_ns (net/core/net_namespace.c:576)
+ create_new_namespaces (kernel/nsproxy.c:110)
+ unshare_nsproxy_namespaces (kernel/nsproxy.c:218 (discriminator 4))
+ ksys_unshare (kernel/fork.c:3123)
+ __x64_sys_unshare (kernel/fork.c:3190)
+ do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+ </TASK>
+
+[1]:
+remove_proc_entry: removing non-empty directory 'net/rpc', leaking at least 'nfs'
+ WARNING: CPU: 1 PID: 6120 at fs/proc/generic.c:727 remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
+Modules linked in:
+CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+ RIP: 0010:remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
+Code: 3c 02 00 0f 85 85 00 00 00 48 8b 93 d8 00 00 00 4d 89 f0 4c 89 e9 48 c7 c6 40 ba a2 8b 48 c7 c7 60 b9 a2 8b e8 33 81 1d ff 90 <0f> 0b 90 90 e9 5f fe ff ff e8 04 69 5e ff 90 48 b8 00 00 00 00 00
+RSP: 0018:ffffc90003637b08 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff88805f534140 RCX: ffffffff817a92c8
+RDX: ffff88807da99e00 RSI: ffffffff817a92d5 RDI: 0000000000000001
+RBP: ffff888033431ac0 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffff888033431a00
+R13: ffff888033431ae4 R14: ffff888033184724 R15: dffffc0000000000
+FS:  0000555580328500(0000) GS:ffff888124a62000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f71733743e0 CR3: 000000007f618000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  sunrpc_exit_net+0x46/0x90 net/sunrpc/sunrpc_syms.c:76
+  ops_exit_list net/core/net_namespace.c:200 [inline]
+  ops_undo_list+0x2eb/0xab0 net/core/net_namespace.c:253
+  setup_net+0x2e1/0x510 net/core/net_namespace.c:457
+  copy_net_ns+0x2a6/0x5f0 net/core/net_namespace.c:574
+  create_new_namespaces+0x3ea/0xa90 kernel/nsproxy.c:110
+  unshare_nsproxy_namespaces+0xc0/0x1f0 kernel/nsproxy.c:218
+  ksys_unshare+0x45b/0xa40 kernel/fork.c:3121
+  __do_sys_unshare kernel/fork.c:3192 [inline]
+  __se_sys_unshare kernel/fork.c:3190 [inline]
+  __x64_sys_unshare+0x31/0x40 kernel/fork.c:3190
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xcd/0x490 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa1a6b8e929
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff3a090368 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
+RAX: ffffffffffffffda RBX: 00007fa1a6db5fa0 RCX: 00007fa1a6b8e929
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000040000080
+RBP: 00007fa1a6c10b39 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa1a6db5fa0 R14: 00007fa1a6db5fa0 R15: 0000000000000001
+ </TASK>
+
+Fixes: d47151b79e32 ("nfs: expose /proc/net/sunrpc/nfs in net namespaces")
+Reported-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a4cc4ac22daa4a71b87c
+Tested-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c   |    9 +++++++--
- drivers/usb/dwc3/gadget.c |   22 +++++++++-------------
- 2 files changed, 16 insertions(+), 15 deletions(-)
+ fs/nfs/inode.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -2388,6 +2388,7 @@ static int dwc3_suspend_common(struct dw
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index e774cfc85eeed..627410be2e884 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -2431,15 +2431,26 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
+ static int nfs_net_init(struct net *net)
  {
- 	u32 reg;
- 	int i;
-+	int ret;
+ 	struct nfs_net *nn = net_generic(net, nfs_net_id);
++	int err;
  
- 	if (!pm_runtime_suspended(dwc->dev) && !PMSG_IS_AUTO(msg)) {
- 		dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
-@@ -2406,7 +2407,9 @@ static int dwc3_suspend_common(struct dw
- 	case DWC3_GCTL_PRTCAP_DEVICE:
- 		if (pm_runtime_suspended(dwc->dev))
- 			break;
--		dwc3_gadget_suspend(dwc);
-+		ret = dwc3_gadget_suspend(dwc);
-+		if (ret)
-+			return ret;
- 		synchronize_irq(dwc->irq_gadget);
- 		dwc3_core_exit(dwc);
- 		break;
-@@ -2441,7 +2444,9 @@ static int dwc3_suspend_common(struct dw
- 			break;
+ 	nfs_clients_init(net);
  
- 		if (dwc->current_otg_role == DWC3_OTG_ROLE_DEVICE) {
--			dwc3_gadget_suspend(dwc);
-+			ret = dwc3_gadget_suspend(dwc);
-+			if (ret)
-+				return ret;
- 			synchronize_irq(dwc->irq_gadget);
- 		}
+ 	if (!rpc_proc_register(net, &nn->rpcstats)) {
+-		nfs_clients_exit(net);
+-		return -ENOMEM;
++		err = -ENOMEM;
++		goto err_proc_rpc;
+ 	}
  
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4821,26 +4821,22 @@ int dwc3_gadget_suspend(struct dwc3 *dwc
- 	int ret;
- 
- 	ret = dwc3_gadget_soft_disconnect(dwc);
--	if (ret)
--		goto err;
--
--	spin_lock_irqsave(&dwc->lock, flags);
--	if (dwc->gadget_driver)
--		dwc3_disconnect_gadget(dwc);
--	spin_unlock_irqrestore(&dwc->lock, flags);
--
--	return 0;
--
--err:
- 	/*
- 	 * Attempt to reset the controller's state. Likely no
- 	 * communication can be established until the host
- 	 * performs a port reset.
- 	 */
--	if (dwc->softconnect)
-+	if (ret && dwc->softconnect) {
- 		dwc3_gadget_soft_connect(dwc);
-+		return -EAGAIN;
-+	}
- 
--	return ret;
-+	spin_lock_irqsave(&dwc->lock, flags);
-+	if (dwc->gadget_driver)
-+		dwc3_disconnect_gadget(dwc);
-+	spin_unlock_irqrestore(&dwc->lock, flags);
+-	return nfs_fs_proc_net_init(net);
++	err = nfs_fs_proc_net_init(net);
++	if (err)
++		goto err_proc_nfs;
 +
 +	return 0;
++
++err_proc_nfs:
++	rpc_proc_unregister(net, "nfs");
++err_proc_rpc:
++	nfs_clients_exit(net);
++	return err;
  }
  
- int dwc3_gadget_resume(struct dwc3 *dwc)
+ static void nfs_net_exit(struct net *net)
+-- 
+2.39.5
+
 
 
 
