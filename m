@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 310CEAFD0CD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E18F0AFD271
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5983E18971E9
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2DF57AE12E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5F52DC34C;
-	Tue,  8 Jul 2025 16:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495B72E6114;
+	Tue,  8 Jul 2025 16:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVgT8CWZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSkr8NqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B82E2E659;
-	Tue,  8 Jul 2025 16:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0629A2DAFA3;
+	Tue,  8 Jul 2025 16:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992017; cv=none; b=NqV39VVoBA4f0ftP8Uzk4UqpiBnHxC35ZfX+hNJiTcmuUgMA99vBq84rU+4TzLmi7Uyn4gEaMrAFolwxWLhlzPRGyj1x+w/24AUXsn6vml2ywGR+fLVtGC/VI6OD08GFEA0WCDJaNqj9sTdFzz4FmgTOp1Wa8v2D2Ak2PGXdpiY=
+	t=1751993161; cv=none; b=i+5Vl/W2DRW1+HNiX6Z6eQza4rLkYumi4kKJ8BUfG3w0H90GJi24MTZAkGWCq3O81Ewgl/BXPmEf9BPrKWuOwVDZQMKGmqw83myIvFX3XKccXCqu/UX3mE4W8n9grrtWC9w+KjY1JSu3kobngchG2SZ7CqsZspGC71oML3c4T/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992017; c=relaxed/simple;
-	bh=t8/pfNfEbbpoUywGdzzL3XqGhPzhgUjbcJqL7EMz+9g=;
+	s=arc-20240116; t=1751993161; c=relaxed/simple;
+	bh=Sj2s6Ijfe27O/khGGm0bW5r0F5AXmZcpvZ/I2mLXIbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OF5ZrVKo2id4KpGRnQMMLGHxXRrK1Nu5jEq6mICF0e9kCfL/Ss3mZemLwfUMREAjEUVpmxYPmTw/bA/o7a1bhQgTzWRGBXY+mvnfVADxi0wx+YIO2A0H7WzlToWQRlt9kjdKvPSFLXnCeIsKnXR5XcoJQiGRee+tbVsC5m+d2XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVgT8CWZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCF7C4CEED;
-	Tue,  8 Jul 2025 16:26:56 +0000 (UTC)
+	 MIME-Version; b=erMF8TAbvmj4j16FP95i+hIPJN/Dz2aEtmOrkmsoKwSg+X5MC582N/hZrJIL0GqijoQgwsct2+E5zHXigCntLg64C1SeGeeJ4CTrG9mw2wCBP5ynqJb1N82FmrnvWxf8vxPxwzMfqaeUiRxpg3ED6/cN110uxnkTLmKewUPTlhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSkr8NqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEB1C4CEF7;
+	Tue,  8 Jul 2025 16:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992017;
-	bh=t8/pfNfEbbpoUywGdzzL3XqGhPzhgUjbcJqL7EMz+9g=;
+	s=korg; t=1751993160;
+	bh=Sj2s6Ijfe27O/khGGm0bW5r0F5AXmZcpvZ/I2mLXIbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nVgT8CWZSUNm47QZUbfv33OO+83zTtZXWOHFXrMhgMKZrVRBXS6ZsFZ3fYG4IwTNO
-	 aE8DkqYUYFThOefp/7bhtLrAy7toE/nUfLmwkbkUchsO3HpM2OZvduAIRdh7Qv20ld
-	 8aLE/ENcR2h5iC7CiYc2cYvqUPpLJuzywF4N9DyU=
+	b=DSkr8NqWtBWibje0d0k9rMG+bMr1W19QNI79HuTaVmK3LxE722wx2tpK/aFZVjAvb
+	 GL+jNA7ki++/J99Imcr5PoSzcBmYhsFgJRujeZ7E58cLuJwcM8H9w1L5cOUzdbMxvA
+	 /43ixXPj4H1qwfjk9AXmiLGiqjgEsScqlVxg66/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 33/81] platform/mellanox: mlxreg-lc: Fix logic error in power state check
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.12 209/232] usb: dwc3: Abort suspend on soft disconnect failure
 Date: Tue,  8 Jul 2025 18:23:25 +0200
-Message-ID: <20250708162226.010900193@linuxfoundation.org>
+Message-ID: <20250708162246.907835259@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +60,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 644bec18e705ca41d444053407419a21832fcb2f ]
+commit 630a1dec3b0eba2a695b9063f1c205d585cbfec9 upstream.
 
-Fixes a logic issue in mlxreg_lc_completion_notify() where the
-intention was to check if MLXREG_LC_POWERED flag is not set before
-powering on the device.
+When dwc3_gadget_soft_disconnect() fails, dwc3_suspend_common() keeps
+going with the suspend, resulting in a period where the power domain is
+off, but the gadget driver remains connected.  Within this time frame,
+invoking vbus_event_work() will cause an error as it attempts to access
+DWC3 registers for endpoint disabling after the power domain has been
+completely shut down.
 
-The original code used "state & ~MLXREG_LC_POWERED" to check for the
-absence of the POWERED bit. However this condition evaluates to true
-even when other bits are set, leading to potentially incorrect
-behavior.
+Abort the suspend sequence when dwc3_gadget_suspend() cannot halt the
+controller and proceeds with a soft connect.
 
-Corrected the logic to explicitly check for the absence of
-MLXREG_LC_POWERED using !(state & MLXREG_LC_POWERED).
-
-Fixes: 62f9529b8d5c ("platform/mellanox: mlxreg-lc: Add initial support for Nvidia line card devices")
-Suggested-by: Vadim Pasternak <vadimp@nvidia.com>
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://lore.kernel.org/r/20250630105812.601014-1-alok.a.tiwari@oracle.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
+Cc: stable <stable@kernel.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250528100315.2162699-1-khtsai@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/mellanox/mlxreg-lc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c   |    9 +++++++--
+ drivers/usb/dwc3/gadget.c |   22 +++++++++-------------
+ 2 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/platform/mellanox/mlxreg-lc.c b/drivers/platform/mellanox/mlxreg-lc.c
-index 8d833836a6d32..74e9d78ff01ef 100644
---- a/drivers/platform/mellanox/mlxreg-lc.c
-+++ b/drivers/platform/mellanox/mlxreg-lc.c
-@@ -688,7 +688,7 @@ static int mlxreg_lc_completion_notify(void *handle, struct i2c_adapter *parent,
- 	if (regval & mlxreg_lc->data->mask) {
- 		mlxreg_lc->state |= MLXREG_LC_SYNCED;
- 		mlxreg_lc_state_update_locked(mlxreg_lc, MLXREG_LC_SYNCED, 1);
--		if (mlxreg_lc->state & ~MLXREG_LC_POWERED) {
-+		if (!(mlxreg_lc->state & MLXREG_LC_POWERED)) {
- 			err = mlxreg_lc_power_on_off(mlxreg_lc, 1);
- 			if (err)
- 				goto mlxreg_lc_regmap_power_on_off_fail;
--- 
-2.39.5
-
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -2364,6 +2364,7 @@ static int dwc3_suspend_common(struct dw
+ {
+ 	u32 reg;
+ 	int i;
++	int ret;
+ 
+ 	if (!pm_runtime_suspended(dwc->dev) && !PMSG_IS_AUTO(msg)) {
+ 		dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
+@@ -2382,7 +2383,9 @@ static int dwc3_suspend_common(struct dw
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
+ 		if (pm_runtime_suspended(dwc->dev))
+ 			break;
+-		dwc3_gadget_suspend(dwc);
++		ret = dwc3_gadget_suspend(dwc);
++		if (ret)
++			return ret;
+ 		synchronize_irq(dwc->irq_gadget);
+ 		dwc3_core_exit(dwc);
+ 		break;
+@@ -2417,7 +2420,9 @@ static int dwc3_suspend_common(struct dw
+ 			break;
+ 
+ 		if (dwc->current_otg_role == DWC3_OTG_ROLE_DEVICE) {
+-			dwc3_gadget_suspend(dwc);
++			ret = dwc3_gadget_suspend(dwc);
++			if (ret)
++				return ret;
+ 			synchronize_irq(dwc->irq_gadget);
+ 		}
+ 
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4788,26 +4788,22 @@ int dwc3_gadget_suspend(struct dwc3 *dwc
+ 	int ret;
+ 
+ 	ret = dwc3_gadget_soft_disconnect(dwc);
+-	if (ret)
+-		goto err;
+-
+-	spin_lock_irqsave(&dwc->lock, flags);
+-	if (dwc->gadget_driver)
+-		dwc3_disconnect_gadget(dwc);
+-	spin_unlock_irqrestore(&dwc->lock, flags);
+-
+-	return 0;
+-
+-err:
+ 	/*
+ 	 * Attempt to reset the controller's state. Likely no
+ 	 * communication can be established until the host
+ 	 * performs a port reset.
+ 	 */
+-	if (dwc->softconnect)
++	if (ret && dwc->softconnect) {
+ 		dwc3_gadget_soft_connect(dwc);
++		return -EAGAIN;
++	}
+ 
+-	return ret;
++	spin_lock_irqsave(&dwc->lock, flags);
++	if (dwc->gadget_driver)
++		dwc3_disconnect_gadget(dwc);
++	spin_unlock_irqrestore(&dwc->lock, flags);
++
++	return 0;
+ }
+ 
+ int dwc3_gadget_resume(struct dwc3 *dwc)
 
 
 
