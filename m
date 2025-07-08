@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-160997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C544EAFD2E3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA40AFD3D4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:01:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6E48189BAAC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68A303BF075
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9742253E0;
-	Tue,  8 Jul 2025 16:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE142E54C4;
+	Tue,  8 Jul 2025 16:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/gCdbC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6vM7W89"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12A71DD0EF;
-	Tue,  8 Jul 2025 16:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0888E202F70;
+	Tue,  8 Jul 2025 16:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993299; cv=none; b=j06TWPwwjaSjhVaWA7VuMWYaRZqHWe7/ZoHjRex9n4r1aqQKWCBfCA4Ig9g8gx21MniE737AurFUjKGFeaFgL18OVe0sfBlLeAZXtuOpjt3JsSe8VrAqV2qEwbTDY6VHsR7YfVKXGlxhhyIX0pBWV/qDG14tvQGhoH+pLAwEp/A=
+	t=1751993813; cv=none; b=RhXACc6jTC1hu+rlEBlLGifQosPuIksyNqDAc2PV/9Jbs5qdYPhfmMUtnTmfXeHDqt6W2yDJSUjWNEE6Ui2UQZLHWRFN4QYTGSLD8T2hasToiEp4y6RlRiW8dfJ54bN0mG0Nm/DpNbGGyUj9VKQAH7JnHSKO8Wkuux6kFowvYwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993299; c=relaxed/simple;
-	bh=0TYRbAN25owuAGaqg5SKW+m3fdWMh/BGXbY8cQdlihs=;
+	s=arc-20240116; t=1751993813; c=relaxed/simple;
+	bh=cO6tBYjm1G1sYCOt+VNGLrSAnKc9NyGsuU7xMcuS+hE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AkJz2xe9fxlYbdBCe7WrksJ/+6mLJ281r7FXmmpLXgF0sVxK+JErgaFe2/7G5VSUQMxn0rZU0CKx38H327RakLbuUtUw0Qq7S+HtDKSoRMl83qkRwKBB2YYXWY9gzGqCUMzI+Gk6olcw4mZC91ZHib7FS0sYWs1LYmHd0FauHGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/gCdbC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A355C4CEED;
-	Tue,  8 Jul 2025 16:48:19 +0000 (UTC)
+	 MIME-Version; b=LSdUYbjJ1gtLfLDZ8psZP63TzpIMip7QBlFO+QRjfYSZpP4ABk7GqpTKphKEH11Nrp9bGEjMZjxz0mx4M3IPDFgm6CUBMIPJMAd2DiQJDAYYnpx+khySaKBoukqI+F0IRUkQI1r63TQa394QK8dN8Zj8PQ06yoYMLkcTwLEVaf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6vM7W89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B234C4CEED;
+	Tue,  8 Jul 2025 16:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993299;
-	bh=0TYRbAN25owuAGaqg5SKW+m3fdWMh/BGXbY8cQdlihs=;
+	s=korg; t=1751993812;
+	bh=cO6tBYjm1G1sYCOt+VNGLrSAnKc9NyGsuU7xMcuS+hE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/gCdbC+4EFUM7Yip/lm5NcKhm+MkXty9k//pfs9GCsIRHpH16ILW7P6nAntFUs/d
-	 M3/ktQAvXrDrkaEVWakag0jvQGp3T2ntcytBO9SKIcjdSji/nd3TxgUjWug/Al80w1
-	 9mqRyqo7xBrLsSl6P1kvujGLBvA5ukLlSZVACKn0=
+	b=g6vM7W890z8+Ud/3L3FqnNEyfrGvgoWPu8k/YHiSkUjrAkYGBG7g/iX/S4NljrWhC
+	 HtxEp7HiV8Uds/2ZM+7oS731VTwhn+z9xXJrx3yICA/76+rTM5nWWKr0A1ucOsRuhr
+	 ie4Acxy5FfFQHnBfKSdZgwTmWOfnN9s2fia0Dj8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunshui Jiang <jiangyunshui@kylinos.cn>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.15 026/178] Input: cs40l50-vibra - fix potential NULL dereference in cs40l50_upload_owt()
+	Amir Goldstein <amir73il@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 026/160] ovl: Check for NULL d_inode() in ovl_dentry_upper()
 Date: Tue,  8 Jul 2025 18:21:03 +0200
-Message-ID: <20250708162237.233235748@linuxfoundation.org>
+Message-ID: <20250708162232.240323151@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunshui Jiang <jiangyunshui@kylinos.cn>
+From: Kees Cook <kees@kernel.org>
 
-commit 4cf65845fdd09d711fc7546d60c9abe010956922 upstream.
+[ Upstream commit 8a39f1c870e9d6fbac5638f3a42a6a6363829c49 ]
 
-The cs40l50_upload_owt() function allocates memory via kmalloc()
-without checking for allocation failure, which could lead to a
-NULL pointer dereference.
+In ovl_path_type() and ovl_is_metacopy_dentry() GCC notices that it is
+possible for OVL_E() to return NULL (which implies that d_inode(dentry)
+may be NULL). This would result in out of bounds reads via container_of(),
+seen with GCC 15's -Warray-bounds -fdiagnostics-details. For example:
 
-Return -ENOMEM in case allocation fails.
+In file included from arch/x86/include/generated/asm/rwonce.h:1,
+                 from include/linux/compiler.h:339,
+                 from include/linux/export.h:5,
+                 from include/linux/linkage.h:7,
+                 from include/linux/fs.h:5,
+                 from fs/overlayfs/util.c:7:
+In function 'ovl_upperdentry_dereference',
+    inlined from 'ovl_dentry_upper' at ../fs/overlayfs/util.c:305:9,
+    inlined from 'ovl_path_type' at ../fs/overlayfs/util.c:216:6:
+include/asm-generic/rwonce.h:44:26: error: array subscript 0 is outside array bounds of 'struct inode[7486503276667837]' [-Werror=array-bounds=]
+   44 | #define __READ_ONCE(x)  (*(const volatile __unqual_scalar_typeof(x) *)&(x))
+      |                         ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+include/asm-generic/rwonce.h:50:9: note: in expansion of macro '__READ_ONCE'
+   50 |         __READ_ONCE(x);                                                 \
+      |         ^~~~~~~~~~~
+fs/overlayfs/ovl_entry.h:195:16: note: in expansion of macro 'READ_ONCE'
+  195 |         return READ_ONCE(oi->__upperdentry);
+      |                ^~~~~~~~~
+  'ovl_path_type': event 1
+  185 |         return inode ? OVL_I(inode)->oe : NULL;
+  'ovl_path_type': event 2
 
-Signed-off-by: Yunshui Jiang <jiangyunshui@kylinos.cn>
-Fixes: c38fe1bb5d21 ("Input: cs40l50 - Add support for the CS40L50 haptic driver")
-Link: https://lore.kernel.org/r/20250704024010.2353841-1-jiangyunshui@kylinos.cn
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Avoid this by allowing ovl_dentry_upper() to return NULL if d_inode() is
+NULL, as that means the problematic dereferencing can never be reached.
+Note that this fixes the over-eager compiler warning in an effort to
+being able to enable -Warray-bounds globally. There is no known
+behavioral bug here.
+
+Suggested-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/cs40l50-vibra.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/overlayfs/util.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/input/misc/cs40l50-vibra.c
-+++ b/drivers/input/misc/cs40l50-vibra.c
-@@ -238,6 +238,8 @@ static int cs40l50_upload_owt(struct cs4
- 	header.data_words = len / sizeof(u32);
+diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
+index 8a9980ab2ad8f..74abba466f19b 100644
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -215,7 +215,9 @@ enum ovl_path_type ovl_path_real(struct dentry *dentry, struct path *path)
  
- 	new_owt_effect_data = kmalloc(sizeof(header) + len, GFP_KERNEL);
-+	if (!new_owt_effect_data)
-+		return -ENOMEM;
+ struct dentry *ovl_dentry_upper(struct dentry *dentry)
+ {
+-	return ovl_upperdentry_dereference(OVL_I(d_inode(dentry)));
++	struct inode *inode = d_inode(dentry);
++
++	return inode ? ovl_upperdentry_dereference(OVL_I(inode)) : NULL;
+ }
  
- 	memcpy(new_owt_effect_data, &header, sizeof(header));
- 	memcpy(new_owt_effect_data + sizeof(header), work_data->custom_data, len);
+ struct dentry *ovl_dentry_lower(struct dentry *dentry)
+-- 
+2.39.5
+
 
 
 
