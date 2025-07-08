@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B43CAFD1E5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F213EAFD3B5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC4A0166DED
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B033F188C759
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E4C2E3B03;
-	Tue,  8 Jul 2025 16:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699A52DAFAE;
+	Tue,  8 Jul 2025 16:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RM6AsNee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lxh8NE8w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57822E2F0D;
-	Tue,  8 Jul 2025 16:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C248F5E;
+	Tue,  8 Jul 2025 16:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992724; cv=none; b=DooGV/K5jY9tMem+LJimqrFf2y+Uh4/qs4eQMdslOLIxy/3tCOMrk1LQ28Vb6hCXyVw0p1n8vwB1AAz2bSFw0oCw2NP2UUcPAgDYVB3a/xilfa/+trGuNMuf0nJyaFup3YZlpdeQuWhD2pwkghsEVBGHxKz2ubDchndj7GBqwTc=
+	t=1751993784; cv=none; b=MAfSe4KeiMwmrNryZs3jE68ovuCjpDYzr639sVG7Ux0hwAQUPaB+UoY/IqkxGHgb2WIo+T/VJfUDsv6cjthZuV4YmdRDj475LfpnW1dubVGt5Sk/zJ1mHFAbG+YwZZHBB0jnsKMm6kpxW7W8Kp26lSq4YkR3xkfP3rWjUMVrRSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992724; c=relaxed/simple;
-	bh=Xe/Q9d3xqNJRibeHi0BmQnpBeM/OFQoPW64ugspSzXo=;
+	s=arc-20240116; t=1751993784; c=relaxed/simple;
+	bh=wpH3g0F6YVNXEImPUMwygfGv8A+7eaH0C5qf6SD3V1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZS2M6k5my+CsNBZ49YIY0Lr2uDo+Sqiei419DKRGrIYsdwAHWUTeOd0pKhvGg8Wp4mljkVKURcNOkxt5v+8EADhWBAVqeskg2Ic2FsZR2IItumCf9m5RALDNzw+7E1BE6c/+Gir47Pbvp0PhknYmD5Li7CBBxgNnryQuKTYtew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RM6AsNee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96CFC4CEED;
-	Tue,  8 Jul 2025 16:38:43 +0000 (UTC)
+	 MIME-Version; b=QkRm2XfmBx8B7MUFVMEdjZ307wX7nXlF0NXMED90AqEDB5UsPi2n7Vl8SaMuYkY1tDOk95YdlFOY/TLpx8+7HoYvGMdoqkFpwJB8PGRsfYtcNjns3q0QeTQ8jAxgn4ga9JtWlN9Jap3ckFQX4/QDX7Fxn7W9au1kFaGG3nwpO0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lxh8NE8w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62219C4CEF0;
+	Tue,  8 Jul 2025 16:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992724;
-	bh=Xe/Q9d3xqNJRibeHi0BmQnpBeM/OFQoPW64ugspSzXo=;
+	s=korg; t=1751993783;
+	bh=wpH3g0F6YVNXEImPUMwygfGv8A+7eaH0C5qf6SD3V1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RM6AsNee+yuMWuf01cDEevo2x/wrvTib418mgSm2Ly9Vc3hb4sGwBh84N26tgaIOA
-	 cJ5kfu/kzAX7xPM6hFvGld3klvJW3dKiXpEs69QxTHJGY94k43Un0L2Nf/y1R7/Jvv
-	 ReqvDtTtl0J37T0/C55EXXpLsVIMsXWLQS5S5LIw=
+	b=Lxh8NE8wrv59qqey8ogaTdEeKOPumNlpg2l+Q2tm4/NJY4Kt4Lyvkwh2FB5xFtcaX
+	 VTLNiOrOfb4ezM+oJztPHyCikGPTBA9zX78MsVuXzySRZA5a5LIX2qOf0D6Tp/lYRH
+	 2BXBPRQkXu4RU+tB9suQWZ1PWNWAAuwYkzu31pdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Inki Dae <inki.dae@samsung.com>,
+	Jakub Lewalski <jakub.lewalski@nokia.com>,
+	Elodie Decerle <elodie.decerle@nokia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/232] drm/exynos: fimd: Guard display clock control with runtime PM calls
+Subject: [PATCH 5.15 017/160] tty: serial: uartlite: register uart driver in init
 Date: Tue,  8 Jul 2025 18:20:54 +0200
-Message-ID: <20250708162242.983925178@linuxfoundation.org>
+Message-ID: <20250708162231.985264456@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Jakub Lewalski <jakub.lewalski@nokia.com>
 
-[ Upstream commit 5d91394f236167ac624b823820faf4aa928b889e ]
+[ Upstream commit 6bd697b5fc39fd24e2aa418c7b7d14469f550a93 ]
 
-Commit c9b1150a68d9 ("drm/atomic-helper: Re-order bridge chain pre-enable
-and post-disable") changed the call sequence to the CRTC enable/disable
-and bridge pre_enable/post_disable methods, so those bridge methods are
-now called when CRTC is not yet enabled.
+When two instances of uart devices are probing, a concurrency race can
+occur. If one thread calls uart_register_driver function, which first
+allocates and assigns memory to 'uart_state' member of uart_driver
+structure, the other instance can bypass uart driver registration and
+call ulite_assign. This calls uart_add_one_port, which expects the uart
+driver to be fully initialized. This leads to a kernel panic due to a
+null pointer dereference:
 
-This causes a lockup observed on Samsung Peach-Pit/Pi Chromebooks. The
-source of this lockup is a call to fimd_dp_clock_enable() function, when
-FIMD device is not yet runtime resumed. It worked before the mentioned
-commit only because the CRTC implemented by the FIMD driver was always
-enabled what guaranteed the FIMD device to be runtime resumed.
+[    8.143581] BUG: kernel NULL pointer dereference, address: 00000000000002b8
+[    8.156982] #PF: supervisor write access in kernel mode
+[    8.156984] #PF: error_code(0x0002) - not-present page
+[    8.156986] PGD 0 P4D 0
+...
+[    8.180668] RIP: 0010:mutex_lock+0x19/0x30
+[    8.188624] Call Trace:
+[    8.188629]  ? __die_body.cold+0x1a/0x1f
+[    8.195260]  ? page_fault_oops+0x15c/0x290
+[    8.209183]  ? __irq_resolve_mapping+0x47/0x80
+[    8.209187]  ? exc_page_fault+0x64/0x140
+[    8.209190]  ? asm_exc_page_fault+0x22/0x30
+[    8.209196]  ? mutex_lock+0x19/0x30
+[    8.223116]  uart_add_one_port+0x60/0x440
+[    8.223122]  ? proc_tty_register_driver+0x43/0x50
+[    8.223126]  ? tty_register_driver+0x1ca/0x1e0
+[    8.246250]  ulite_probe+0x357/0x4b0 [uartlite]
 
-This patch adds runtime PM guards to the fimd_dp_clock_enable() function
-to enable its proper operation also when the CRTC implemented by FIMD is
-not yet enabled.
+To prevent it, move uart driver registration in to init function. This
+will ensure that uart_driver is always registered when probe function
+is called.
 
-Fixes: 196e059a8a6a ("drm/exynos: convert clock_enable crtc callback to pipeline clock")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Jakub Lewalski <jakub.lewalski@nokia.com>
+Signed-off-by: Elodie Decerle <elodie.decerle@nokia.com>
+Link: https://lore.kernel.org/r/20250331160732.2042-1-elodie.decerle@nokia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_fimd.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/tty/serial/uartlite.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_fimd.c b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-index f57df8c481391..05e4a5a63f5d8 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-@@ -187,6 +187,7 @@ struct fimd_context {
- 	u32				i80ifcon;
- 	bool				i80_if;
- 	bool				suspended;
-+	bool				dp_clk_enabled;
- 	wait_queue_head_t		wait_vsync_queue;
- 	atomic_t			wait_vsync_event;
- 	atomic_t			win_updated;
-@@ -1047,7 +1048,18 @@ static void fimd_dp_clock_enable(struct exynos_drm_clk *clk, bool enable)
- 	struct fimd_context *ctx = container_of(clk, struct fimd_context,
- 						dp_clk);
- 	u32 val = enable ? DP_MIE_CLK_DP_ENABLE : DP_MIE_CLK_DISABLE;
+diff --git a/drivers/tty/serial/uartlite.c b/drivers/tty/serial/uartlite.c
+index 36871cebd6a0f..0345eaf969630 100644
+--- a/drivers/tty/serial/uartlite.c
++++ b/drivers/tty/serial/uartlite.c
+@@ -808,16 +808,6 @@ static int ulite_probe(struct platform_device *pdev)
+ 	pm_runtime_set_active(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
+ 
+-	if (!ulite_uart_driver.state) {
+-		dev_dbg(&pdev->dev, "uartlite: calling uart_register_driver()\n");
+-		ret = uart_register_driver(&ulite_uart_driver);
+-		if (ret < 0) {
+-			dev_err(&pdev->dev, "Failed to register driver\n");
+-			clk_disable_unprepare(pdata->clk);
+-			return ret;
+-		}
+-	}
+-
+ 	ret = ulite_assign(&pdev->dev, id, res->start, irq, pdata);
+ 
+ 	pm_runtime_mark_last_busy(&pdev->dev);
+@@ -859,16 +849,25 @@ static struct platform_driver ulite_platform_driver = {
+ 
+ static int __init ulite_init(void)
+ {
++	int ret;
 +
-+	if (enable == ctx->dp_clk_enabled)
-+		return;
++	pr_debug("uartlite: calling uart_register_driver()\n");
++	ret = uart_register_driver(&ulite_uart_driver);
++	if (ret)
++		return ret;
+ 
+ 	pr_debug("uartlite: calling platform_driver_register()\n");
+-	return platform_driver_register(&ulite_platform_driver);
++	ret = platform_driver_register(&ulite_platform_driver);
++	if (ret)
++		uart_unregister_driver(&ulite_uart_driver);
 +
-+	if (enable)
-+		pm_runtime_resume_and_get(ctx->dev);
-+
-+	ctx->dp_clk_enabled = enable;
- 	writel(val, ctx->regs + DP_MIE_CLKCON);
-+
-+	if (!enable)
-+		pm_runtime_put(ctx->dev);
++	return ret;
  }
  
- static const struct exynos_drm_crtc_ops fimd_crtc_ops = {
+ static void __exit ulite_exit(void)
+ {
+ 	platform_driver_unregister(&ulite_platform_driver);
+-	if (ulite_uart_driver.state)
+-		uart_unregister_driver(&ulite_uart_driver);
++	uart_unregister_driver(&ulite_uart_driver);
+ }
+ 
+ module_init(ulite_init);
 -- 
 2.39.5
 
