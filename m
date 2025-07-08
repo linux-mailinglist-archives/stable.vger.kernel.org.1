@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-160860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78AFAFD240
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D8E3AFD0B4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3ED37168665
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45F5E1C22124
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A7F2E49B0;
-	Tue,  8 Jul 2025 16:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601A42E5B08;
+	Tue,  8 Jul 2025 16:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qsj0byWE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PBHo5PJ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083CA2E3385;
-	Tue,  8 Jul 2025 16:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C86E2E5425;
+	Tue,  8 Jul 2025 16:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992901; cv=none; b=Ke1mLehN8oUWqh+HDIHd2uNDvSptmAy+XwD5Ja/8+jz4TXSfzV71/QohaJyaPNsQmBN8FAA0wMEwqdsLXuPmqbDnw7uLda2IlI3pVJjRUEqr25Qq8jjcPKklAos++rVHRtKuibA2iqhzrg9OM7VI34G7WhQ7MpF36diuUiWq39U=
+	t=1751991878; cv=none; b=OOM8HAQ4Q3R6DZl9F0Q6kPWwpK8Ws9BjJdicPiegnBa9hUe5R2voxMd0/dFuq53PwzrN54ECHdlkhN/k5z7IFCekwtmiwh9vuG3BH5G4s0+7b7EWvQqipNUQX7E7v7jwHLkKj7+VedN8nYmCzuqxAGijA6q571tZRvJeM8+j7Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992901; c=relaxed/simple;
-	bh=sJQ1OgICh6KxhoS1ei2PsckflVqkyRbBTEqFjTfBRxg=;
+	s=arc-20240116; t=1751991878; c=relaxed/simple;
+	bh=mp90SeCP9KbhX629jslIZNgj4/rZw4oDA8RUqTaIaXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AkAHBLSv1Y5fCz2L47Zw3ptE2OW59IvVSvx/VDjcBF83Z9AMA2ZUUPDKsLdPMXq1LpUMyEZWF/4fC8wrfI2PQNNV8mJu9RADcb2eVWNJyTHf/GdRonofT/Xy22NCcCfyUp6mD8xpcrFLhn8guJMEDDFWNOtgFzq8QUsxfFTYToY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qsj0byWE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24CC0C4CEED;
-	Tue,  8 Jul 2025 16:41:39 +0000 (UTC)
+	 MIME-Version; b=E+f6urTenceIOo41YZO844rTmi6RO11SXongjKPL6ZU1/u6P4sXLdIcyEZVeRY/83xlIaueW6ur2wvFVEwX0TQBLsqGEDOyyC7JCkcVjxZW8R0yiEq76vw3e4Vhn3Qo+06lHPSFeroAgQJPjvDxnj32GGhD32PSFpXvoAqXpnME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PBHo5PJ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF22C4CEF5;
+	Tue,  8 Jul 2025 16:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992900;
-	bh=sJQ1OgICh6KxhoS1ei2PsckflVqkyRbBTEqFjTfBRxg=;
+	s=korg; t=1751991878;
+	bh=mp90SeCP9KbhX629jslIZNgj4/rZw4oDA8RUqTaIaXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qsj0byWEDGAF2CwgaQ8cGdWIpYbhFpcM0MxTzRtLw02bYYDAu3XV+AlP29xXbkMw3
-	 liDBfYg+Yg50wXbJoLA/zKL10NYO05YMbLayLRnLxckz5O5X/gbw2wUKkDeeV/FN37
-	 ut8LKCaDYoCsruzSInEyeMeSlfBdE+2mfX/V50ow=
+	b=PBHo5PJ3jo7z3u6LDmbXDsZBq1b9lPbYp3jZBS/ecc2IBJVc/xYEI7qAIatvzKdGJ
+	 ReChEvwbLXsva/bjDSTt+zDIxuoi/0Ap/zEByjaiysQH2EtWjHvDtZb1HUEddbOU+E
+	 CMqYYXIxy5HPcEq5ArSyS0IAIH08Nic1qEDzedrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Gompa <neal@gompa.dev>,
-	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
-	James Calligeros <jcalligeros99@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 119/232] ASoC: tas2764: Reinit cache on part reset
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 004/132] virtio-net: ensure the received length does not exceed allocated size
 Date: Tue,  8 Jul 2025 18:21:55 +0200
-Message-ID: <20250708162244.555277938@linuxfoundation.org>
+Message-ID: <20250708162230.892992060@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +60,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Povišer <povik+lin@cutebit.org>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit 592ab3936b096da5deb64d4c906edbeb989174d6 ]
+commit 315dbdd7cdf6aa533829774caaf4d25f1fd20e73 upstream.
 
-When the part is reset in component_probe, do not forget to reinit the
-regcache, otherwise the cache can get out of sync with the part's
-actual state. This fix is similar to commit 0a0342ede303
-("ASoC: tas2770: Reinit regcache on reset") which concerned the
-tas2770 driver.
+In xdp_linearize_page, when reading the following buffers from the ring,
+we forget to check the received length with the true allocate size. This
+can lead to an out-of-bound read. This commit adds that missing check.
 
-Fixes: 827ed8a0fa50 ("ASoC: tas2764: Add the driver for the TAS2764")
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20250406-apple-codec-changes-v5-3-50a00ec850a3@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: 4941d472bf95 ("virtio-net: do not reset during XDP set")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://patch.msgid.link/20250630144212.48471-2-minhquangbui99@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/tas2764.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/virtio_net.c |   38 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index fb34d029f7a6d..e8fbe8a399f6d 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -538,6 +538,8 @@ static uint8_t sn012776_bop_presets[] = {
- 	0x06, 0x3e, 0x37, 0x30, 0xff, 0xe6
- };
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -487,6 +487,26 @@ static unsigned int mergeable_ctx_to_tru
+ 	return (unsigned long)mrg_ctx & ((1 << MRG_CTX_HEADER_SHIFT) - 1);
+ }
  
-+static const struct regmap_config tas2764_i2c_regmap;
++static int check_mergeable_len(struct net_device *dev, void *mrg_ctx,
++			       unsigned int len)
++{
++	unsigned int headroom, tailroom, room, truesize;
 +
- static int tas2764_codec_probe(struct snd_soc_component *component)
- {
- 	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
-@@ -551,6 +553,7 @@ static int tas2764_codec_probe(struct snd_soc_component *component)
- 	}
++	truesize = mergeable_ctx_to_truesize(mrg_ctx);
++	headroom = mergeable_ctx_to_headroom(mrg_ctx);
++	tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
++	room = SKB_DATA_ALIGN(headroom + tailroom);
++
++	if (len > truesize - room) {
++		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
++			 dev->name, len, (unsigned long)(truesize - room));
++		DEV_STATS_INC(dev, rx_length_errors);
++		return -1;
++	}
++
++	return 0;
++}
++
+ static struct sk_buff *virtnet_build_skb(void *buf, unsigned int buflen,
+ 					 unsigned int headroom,
+ 					 unsigned int len)
+@@ -1084,7 +1104,8 @@ static unsigned int virtnet_get_headroom
+  * across multiple buffers (num_buf > 1), and we make sure buffers
+  * have enough headroom.
+  */
+-static struct page *xdp_linearize_page(struct receive_queue *rq,
++static struct page *xdp_linearize_page(struct net_device *dev,
++				       struct receive_queue *rq,
+ 				       int *num_buf,
+ 				       struct page *p,
+ 				       int offset,
+@@ -1104,18 +1125,27 @@ static struct page *xdp_linearize_page(s
+ 	memcpy(page_address(page) + page_off, page_address(p) + offset, *len);
+ 	page_off += *len;
  
- 	tas2764_reset(tas2764);
-+	regmap_reinit_cache(tas2764->regmap, &tas2764_i2c_regmap);
++	/* Only mergeable mode can go inside this while loop. In small mode,
++	 * *num_buf == 1, so it cannot go inside.
++	 */
+ 	while (--*num_buf) {
+ 		unsigned int buflen;
+ 		void *buf;
++		void *ctx;
+ 		int off;
  
- 	if (tas2764->irq) {
- 		ret = snd_soc_component_write(tas2764->component, TAS2764_INT_MASK0, 0x00);
--- 
-2.39.5
-
+-		buf = virtnet_rq_get_buf(rq, &buflen, NULL);
++		buf = virtnet_rq_get_buf(rq, &buflen, &ctx);
+ 		if (unlikely(!buf))
+ 			goto err_buf;
+ 
+ 		p = virt_to_head_page(buf);
+ 		off = buf - page_address(p);
+ 
++		if (check_mergeable_len(dev, ctx, buflen)) {
++			put_page(p);
++			goto err_buf;
++		}
++
+ 		/* guard against a misconfigured or uncooperative backend that
+ 		 * is sending packet larger than the MTU.
+ 		 */
+@@ -1204,7 +1234,7 @@ static struct sk_buff *receive_small_xdp
+ 		headroom = vi->hdr_len + header_offset;
+ 		buflen = SKB_DATA_ALIGN(GOOD_PACKET_LEN + headroom) +
+ 			SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+-		xdp_page = xdp_linearize_page(rq, &num_buf, page,
++		xdp_page = xdp_linearize_page(dev, rq, &num_buf, page,
+ 					      offset, header_offset,
+ 					      &tlen);
+ 		if (!xdp_page)
+@@ -1539,7 +1569,7 @@ static void *mergeable_xdp_get_buf(struc
+ 	 */
+ 	if (!xdp_prog->aux->xdp_has_frags) {
+ 		/* linearize data for XDP */
+-		xdp_page = xdp_linearize_page(rq, num_buf,
++		xdp_page = xdp_linearize_page(vi->dev, rq, num_buf,
+ 					      *page, offset,
+ 					      VIRTIO_XDP_HEADROOM,
+ 					      len);
 
 
 
