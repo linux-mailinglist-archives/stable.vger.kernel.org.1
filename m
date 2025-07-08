@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-161092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44330AFD35C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B768AAFD2AE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 433ED1C27FDE
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1824B18924BF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8066C2E5B0A;
-	Tue,  8 Jul 2025 16:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2192253E0;
+	Tue,  8 Jul 2025 16:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bip3P8rb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmfsRNjy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE242E540B;
-	Tue,  8 Jul 2025 16:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9872045B5;
+	Tue,  8 Jul 2025 16:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993570; cv=none; b=Dz77QPp0GeLvrdwAun0F6PsZ2muC7UkA4/s2yk9v0TphCtd5hefrOcmFBwdTiICEfovo26gZEEYqVDAHZxWGH9YyVzCMeqpSC0wimB6pUJeG4vILMS6nHYxNmaugnO95VSgacg71VHrUzL4bjJA754gtzAmdJWfHYyJhYXZ9rms=
+	t=1751993140; cv=none; b=mZ0rvvhfudMVXyKbv82r2Pa8L2i0YvGPNhuOVQFXSxPa/dNeqpM/kHJixYES+Ne29n92kLodNA12J2UxwKq7eNjmPi7Uf7OxDhM2hEczLCerXzwXL262A5X5jBho7AnJPrtKl86EW5pC7RhdCrFaAElF/3apQ0P+k1P6VWLrmic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993570; c=relaxed/simple;
-	bh=qSRpsC7DHJQudXRrYq8jHViiyS3RwlxaLU/4cb2/FfQ=;
+	s=arc-20240116; t=1751993140; c=relaxed/simple;
+	bh=JqmoquB/39mT21yXaISIyPLGx7kYODkcxkpfFByy+Mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NRxC0nuS6V/1BEmV37ZrUSNCh/oql9FKbeMNJkeCxBgWJBfg18ETrSdBL4tWQSM4e6k2bqV+7mbkMS/APVRS9vMo8e+2Xf72JkA+k99VqoTObpitqrmwjhl6hSfgJWMDmW2cjVnpcoD8BcLRZXJlh76rCxhSQ8j8Qc+cOC19yhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bip3P8rb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D05C4CEED;
-	Tue,  8 Jul 2025 16:52:49 +0000 (UTC)
+	 MIME-Version; b=L+c2v8W6KSygkCdWavCDxVxYcsnaaYfgTnV4KzHzx25C1vzWd3wmc4YCW96qPZGs6E3yihHFX/FOJJ7oHXRwFOO0OiMm/FP17BdDKzmKcbDRwfygwzV8UoM/hNzR6ppxLebww+ZErEmEVVQZZp+7dqXs2241/nYkoaAIOKBlCO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmfsRNjy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02688C4CEF0;
+	Tue,  8 Jul 2025 16:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993569;
-	bh=qSRpsC7DHJQudXRrYq8jHViiyS3RwlxaLU/4cb2/FfQ=;
+	s=korg; t=1751993140;
+	bh=JqmoquB/39mT21yXaISIyPLGx7kYODkcxkpfFByy+Mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bip3P8rbu/SYjxVXB8puG/2z87wtP5lKqDOfNinDd8n43h245verpDMBq178B3EVt
-	 mtSCv1IKWTKlF48kb5xmUPl5QStCjipk/sLYJZT9i2nixqe8TmXnstyQdkjXLAv1ER
-	 YlLu712G9hEDbX7SovCe2ztkkCBbaI0Ve8udXqhc=
+	b=VmfsRNjyxmXO+tl15dDHwDctpi91Hs6sXhWBNJB4nc0zxoBAOsWiJeoi7FPsOyDX2
+	 CjmCILsit+MJWuYQa+XvDwjDA+Pcppj1wqzd2uIMvyspYEdJ33iUbgSIXr1XOIwrcy
+	 zPbfOXNhYJJNNfTYzfJHUUGBZeBzbQZdZKl1yfqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Harry Austen <hpausten@protonmail.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
+	Guido Trentalancia <guido@trentalancia.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Paul Moore <paul@paul-moore.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 120/178] drm/xe: Allow dropping kunit dependency as built-in
+Subject: [PATCH 6.12 161/232] selinux: change security_compute_sid to return the ssid or tsid on match
 Date: Tue,  8 Jul 2025 18:22:37 +0200
-Message-ID: <20250708162239.737765907@linuxfoundation.org>
+Message-ID: <20250708162245.649428809@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Austen <hpausten@protonmail.com>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-[ Upstream commit aa18d5769fcafe645a3ba01a9a69dde4f8dc8cc3 ]
+[ Upstream commit fde46f60f6c5138ee422087addbc5bf5b4968bf1 ]
 
-Fix Kconfig symbol dependency on KUNIT, which isn't actually required
-for XE to be built-in. However, if KUNIT is enabled, it must be built-in
-too.
+If the end result of a security_compute_sid() computation matches the
+ssid or tsid, return that SID rather than looking it up again. This
+avoids the problem of multiple initial SIDs that map to the same
+context.
 
-Fixes: 08987a8b6820 ("drm/xe: Fix build with KUNIT=m")
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Signed-off-by: Harry Austen <hpausten@protonmail.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/r/20250627-xe-kunit-v2-2-756fe5cd56cf@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit a559434880b320b83733d739733250815aecf1b0)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: stable@vger.kernel.org
+Reported-by: Guido Trentalancia <guido@trentalancia.com>
+Fixes: ae254858ce07 ("selinux: introduce an initial SID for early boot processes")
+Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Tested-by: Guido Trentalancia <guido@trentalancia.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ security/selinux/ss/services.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/Kconfig b/drivers/gpu/drm/xe/Kconfig
-index 9a46aafcb33ba..0dc3512876b3a 100644
---- a/drivers/gpu/drm/xe/Kconfig
-+++ b/drivers/gpu/drm/xe/Kconfig
-@@ -1,7 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config DRM_XE
- 	tristate "Intel Xe Graphics"
--	depends on DRM && PCI && MMU && (m || (y && KUNIT=y))
-+	depends on DRM && PCI && MMU
-+	depends on KUNIT || !KUNIT
- 	depends on INTEL_VSEC || !INTEL_VSEC
- 	depends on X86_PLATFORM_DEVICES || !(X86 && ACPI)
- 	select INTERVAL_TREE
+diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
+index 88850405ded92..f36332e64c4d1 100644
+--- a/security/selinux/ss/services.c
++++ b/security/selinux/ss/services.c
+@@ -1884,11 +1884,17 @@ static int security_compute_sid(u32 ssid,
+ 			goto out_unlock;
+ 	}
+ 	/* Obtain the sid for the context. */
+-	rc = sidtab_context_to_sid(sidtab, &newcontext, out_sid);
+-	if (rc == -ESTALE) {
+-		rcu_read_unlock();
+-		context_destroy(&newcontext);
+-		goto retry;
++	if (context_cmp(scontext, &newcontext))
++		*out_sid = ssid;
++	else if (context_cmp(tcontext, &newcontext))
++		*out_sid = tsid;
++	else {
++		rc = sidtab_context_to_sid(sidtab, &newcontext, out_sid);
++		if (rc == -ESTALE) {
++			rcu_read_unlock();
++			context_destroy(&newcontext);
++			goto retry;
++		}
+ 	}
+ out_unlock:
+ 	rcu_read_unlock();
 -- 
 2.39.5
 
