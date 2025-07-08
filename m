@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-161237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C132AFD45F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7050FAFD263
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAEE63AB590
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:00:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C97A3B48F4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5662D2E7196;
-	Tue,  8 Jul 2025 16:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7888A2DD5EF;
+	Tue,  8 Jul 2025 16:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8taP9yE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSFRiFyC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0701821C190;
-	Tue,  8 Jul 2025 16:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE088F5B;
+	Tue,  8 Jul 2025 16:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993993; cv=none; b=PiNYyk2mbgeftTjk1NzS9INCdUyMYU71arWpgU9ggwSBUoZfTrPI66DIy7pwG39bIdRf3YlSRATKYfmCTYv3S+13uvI33dDtzTHBFIri1o4A3sRF8MpH/9RVhP51YSwy109H1FCrna3Q5dytaCQUm7wPk34HfUWj7gkjSjDuyTw=
+	t=1751992950; cv=none; b=vFc6e5YBhSVF94iPjKC1vFKc59kfBXnKD30M5r9Jg2zAEbIndSyrfj3C43F5bcV8B51xJqY8AJO8sIshXxVPt3jo8xC+r5FQ87IjTjc7FQu62uMndXQjRXgTXKA0d8RoKPb9D0foJvyzJCH7yVe+ay0VeakCKmubGivy+vBTLOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993993; c=relaxed/simple;
-	bh=5DED0EOSC0IR4xEeS/ex8H+jBrBEt69QUKLEAigCwLk=;
+	s=arc-20240116; t=1751992950; c=relaxed/simple;
+	bh=N7StNm1qv7d2/w9Af7scDGUvKVzYouezUmoLlwDyzD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E090MSkQ7e4oN6YS3s5Q22xkw+yFZtLJKEsx+rL9mwy6ySjhAgLtpYmjc/J3okQveFoRVEr49yvoQc3WZob+zDibcoO0EJiCs21+7tTRIK/m+Xxo0SWj6qrV9sLlbAI6QkoGNH8VYtSyr3D9is+z55eDIRIt2XS0envYch2Zw0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8taP9yE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318B1C4CEED;
-	Tue,  8 Jul 2025 16:59:52 +0000 (UTC)
+	 MIME-Version; b=fY8lUsEjy+av0YL+/YTf2JjUy+rr4GkXs++tHqaBXF6DRv0ylUcIMy8aQZsuuDzgzmwYK9SaDlKi5tR1ozwK0DyNFfbAASf4kmoqybi66tX3zBaMUtaBX2O1mVf4AR4U31fEvf6xBc6TnWarRb3+wzF864iEcG9fu7to5yuEXCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSFRiFyC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC74C4CEED;
+	Tue,  8 Jul 2025 16:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993992;
-	bh=5DED0EOSC0IR4xEeS/ex8H+jBrBEt69QUKLEAigCwLk=;
+	s=korg; t=1751992950;
+	bh=N7StNm1qv7d2/w9Af7scDGUvKVzYouezUmoLlwDyzD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8taP9yEL1GAFICyrlCczhimUVpbYAKz/j7itbx0PpIQkalfbcK/Kwzp3MICd0uxG
-	 tfwbQfUJsiVyQuWTcB0E2oNyQ9L9zHc1hcom9ICFO8hQyJDWv+lP2Dp7oe3lsG9KLo
-	 tuLAf/BCdOtnBFbz9pi5GOsmsea5xQX04plrE5Zw=
+	b=sSFRiFyC6nFCjwBNNHXNeLTYG6TjFKeQysdnoKaJ8p9ge8QYCfIu2Ie1XFaAPBazU
+	 bSdUB9EsEsU+eD7GXYLqJ7TDjgAmgWE6f5vUSAxxUIJS2s3I5OmkOwasHrcblNwiDe
+	 I9G845iEjleckbtNGQzEcfmZjdraDJ5Uf9Iwm7XA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 088/160] drm/amd/display: Add null pointer check for get_first_active_display()
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 129/232] f2fs: zone: introduce first_zoned_segno in f2fs_sb_info
 Date: Tue,  8 Jul 2025 18:22:05 +0200
-Message-ID: <20250708162233.954100797@linuxfoundation.org>
+Message-ID: <20250708162244.816756575@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Chao Yu <chao@kernel.org>
 
-commit c3e9826a22027a21d998d3e64882fa377b613006 upstream.
+[ Upstream commit 5bc5aae843128aefb1c55d769d057c92dd8a32c9 ]
 
-The function mod_hdcp_hdcp1_enable_encryption() calls the function
-get_first_active_display(), but does not check its return value.
-The return value is a null pointer if the display list is empty.
-This will lead to a null pointer dereference in
-mod_hdcp_hdcp2_enable_encryption().
+first_zoned_segno() returns a fixed value, let's cache it in
+structure f2fs_sb_info to avoid redundant calculation.
 
-Add a null pointer check for get_first_active_display() and return
-MOD_HDCP_STATUS_DISPLAY_NOT_FOUND if the function return null.
-
-Fixes: 2deade5ede56 ("drm/amd/display: Remove hdcp display state with mst fix")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # v5.8
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: dc6d9ef57fcf ("f2fs: zone: fix to calculate first_zoned_segno correctly")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/f2fs/f2fs.h    |  1 +
+ fs/f2fs/segment.c |  4 ++--
+ fs/f2fs/segment.h | 10 ----------
+ fs/f2fs/super.c   | 13 +++++++++++++
+ 4 files changed, 16 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-@@ -364,6 +364,9 @@ enum mod_hdcp_status mod_hdcp_hdcp1_enab
- 	struct mod_hdcp_display *display = get_first_active_display(hdcp);
- 	enum mod_hdcp_status status = MOD_HDCP_STATUS_SUCCESS;
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 61b715cc2e231..08b0f35be76bc 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1762,6 +1762,7 @@ struct f2fs_sb_info {
+ 	unsigned int dirty_device;		/* for checkpoint data flush */
+ 	spinlock_t dev_lock;			/* protect dirty_device */
+ 	bool aligned_blksize;			/* all devices has the same logical blksize */
++	unsigned int first_zoned_segno;		/* first zoned segno */
  
-+	if (!display)
-+		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
+ 	/* For write statistics */
+ 	u64 sectors_written_start;
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 3db89becdbfcd..c7919b9cebcd0 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2719,7 +2719,7 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
+ 		if (sbi->blkzone_alloc_policy == BLKZONE_ALLOC_PRIOR_CONV || pinning)
+ 			segno = 0;
+ 		else
+-			segno = max(first_zoned_segno(sbi), *newseg);
++			segno = max(sbi->first_zoned_segno, *newseg);
+ 		hint = GET_SEC_FROM_SEG(sbi, segno);
+ 	}
+ #endif
+@@ -2731,7 +2731,7 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
+ 	if (secno >= MAIN_SECS(sbi) && f2fs_sb_has_blkzoned(sbi)) {
+ 		/* Write only to sequential zones */
+ 		if (sbi->blkzone_alloc_policy == BLKZONE_ALLOC_ONLY_SEQ) {
+-			hint = GET_SEC_FROM_SEG(sbi, first_zoned_segno(sbi));
++			hint = GET_SEC_FROM_SEG(sbi, sbi->first_zoned_segno);
+ 			secno = find_next_zero_bit(free_i->free_secmap, MAIN_SECS(sbi), hint);
+ 		} else
+ 			secno = find_first_zero_bit(free_i->free_secmap,
+diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
+index 05a342933f98f..52bb1a2819357 100644
+--- a/fs/f2fs/segment.h
++++ b/fs/f2fs/segment.h
+@@ -992,13 +992,3 @@ static inline void wake_up_discard_thread(struct f2fs_sb_info *sbi, bool force)
+ 	dcc->discard_wake = true;
+ 	wake_up_interruptible_all(&dcc->discard_wait_queue);
+ }
+-
+-static inline unsigned int first_zoned_segno(struct f2fs_sb_info *sbi)
+-{
+-	int devi;
+-
+-	for (devi = 0; devi < sbi->s_ndevs; devi++)
+-		if (bdev_is_zoned(FDEV(devi).bdev))
+-			return GET_SEGNO(sbi, FDEV(devi).start_blk);
+-	return 0;
+-}
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index f0e83ea56e38c..0508527ebe115 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4260,6 +4260,16 @@ static void f2fs_record_error_work(struct work_struct *work)
+ 	f2fs_record_stop_reason(sbi);
+ }
+ 
++static inline unsigned int get_first_zoned_segno(struct f2fs_sb_info *sbi)
++{
++	int devi;
 +
- 	mutex_lock(&psp->hdcp_context.mutex);
- 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
- 	memset(hdcp_cmd, 0, sizeof(struct ta_hdcp_shared_memory));
++	for (devi = 0; devi < sbi->s_ndevs; devi++)
++		if (bdev_is_zoned(FDEV(devi).bdev))
++			return GET_SEGNO(sbi, FDEV(devi).start_blk);
++	return 0;
++}
++
+ static int f2fs_scan_devices(struct f2fs_sb_info *sbi)
+ {
+ 	struct f2fs_super_block *raw_super = F2FS_RAW_SUPER(sbi);
+@@ -4660,6 +4670,9 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
+ 	/* For write statistics */
+ 	sbi->sectors_written_start = f2fs_get_sectors_written(sbi);
+ 
++	/* get segno of first zoned block device */
++	sbi->first_zoned_segno = get_first_zoned_segno(sbi);
++
+ 	/* Read accumulated write IO statistics if exists */
+ 	seg_i = CURSEG_I(sbi, CURSEG_HOT_NODE);
+ 	if (__exist_node_summaries(sbi))
+-- 
+2.39.5
+
 
 
 
