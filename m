@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-161243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF50CAFD414
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 961B6AFD32D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:54:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D9D55A04EB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60D393AF12E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FC22E7623;
-	Tue,  8 Jul 2025 17:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B169A2E49A8;
+	Tue,  8 Jul 2025 16:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SIBN0ny"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJTm42ho"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B072E6121;
-	Tue,  8 Jul 2025 17:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD422E3385;
+	Tue,  8 Jul 2025 16:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994010; cv=none; b=ZcsgHDkPl/wTb52TIFGflBfhYpo0bbJmCM7qaIFP+lUCeOmyfhQq5UEKz61V20dkOeIMrK93In2bgoPZQiPXB0J2n90qrqh3cFuDessjrIv+JJmHePAIeFI/mrDo/OiyajYIV1i8xajj6Rm7VKXrx2MoMvtzzAymXkfysmxG4Ew=
+	t=1751993501; cv=none; b=JXj/orRXOTdbJ/gQ+qRxvQO5GXXeoieNjpYSaENMPxsI5MM0rnAWFZUogxkKbs8BUfbbjvlxWCiJLtt89CoQQ5A6Pr1/52Y2jFoJ7vrWR/u14bV9EDGLMvnBX7HaWlJsJ7qSOYYxxzLDn/yEXYt8+2Zb5GyArvi9rimAHatNHyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994010; c=relaxed/simple;
-	bh=lx5STRVxkGqL0hORyjCl5yYmBVhdCqJaYte9nf22L6k=;
+	s=arc-20240116; t=1751993501; c=relaxed/simple;
+	bh=0g4K9U3MecERI4dzlp5J6o2WtBxw0MuUNfKsuX6mQQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YVa53bvGt70jy/3nvnZdnNvP5VlXbwIM3DRYDTjWrmLigCbmQUtPEikTyzFgh+yc+vovA/y3A6CzIwFGYYRKIQLb4BIvc2NvDO+5P8+YEWQ/pmo1fhyXHhdaLapzfM5yqZiRbH+vTLpn37JFb3N3kl5sniV3ZN4CCARFZ3F2QY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SIBN0ny; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD7DC4CEED;
-	Tue,  8 Jul 2025 17:00:09 +0000 (UTC)
+	 MIME-Version; b=mMgs2rg2aA8Ez4lkQnEY1i4rl8jEmoHfle7Guc5PJ4aP1zXOTQsJFgnOvZa6c0QauyrkVfIjnJxFz2gTmF8qe/iwzPD8duICvSuRtc03mZ+jWnnUZtyME9Aqe1RxRjKvURIY30C2SqNjBOTX41aSVDZWyWFXBcg0Hq9vLRmJxsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJTm42ho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED7BEC4CEED;
+	Tue,  8 Jul 2025 16:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994010;
-	bh=lx5STRVxkGqL0hORyjCl5yYmBVhdCqJaYte9nf22L6k=;
+	s=korg; t=1751993501;
+	bh=0g4K9U3MecERI4dzlp5J6o2WtBxw0MuUNfKsuX6mQQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2SIBN0nyOBJz3ovZRneQd/VD9oINAyBkrHdla14cJrhdxA5jT1ilijASjtCC72lZX
-	 8c/TWv/fLoWR2o/CIIQGjm6G6Comclu8qol26G3zWsxkxsQzQ+3Q5KhF1vgeFXbUFD
-	 XT0ElPjVS+6KxfOIDiH9gcaVejtRx4bOUsnTLFFk=
+	b=MJTm42ho8HIf+Fgxp2nJQ/IdnbQYh1nG76YVK5Xz0d8M6nq9hKmBsr15NZcB9c+dZ
+	 AfoP28EfCAn+T+bbv43Cy+wWApSUgfXh+3BAUfaaeNN9lTpD0iDqq3R8cmw+23zmS7
+	 iROa1Ib5P/Zwkuf23bpbpZYesGBG3sd7nbV7a0KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.15 094/160] arm64: Restrict pagetable teardown to avoid false warning
-Date: Tue,  8 Jul 2025 18:22:11 +0200
-Message-ID: <20250708162234.108663468@linuxfoundation.org>
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 095/178] igc: disable L1.2 PCI-E link substate to avoid performance issue
+Date: Tue,  8 Jul 2025 18:22:12 +0200
+Message-ID: <20250708162239.139179318@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dev Jain <dev.jain@arm.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-commit 650768c512faba8070bf4cfbb28c95eb5cd203f3 upstream.
+[ Upstream commit 0325143b59c6c6d79987afc57d2456e7a20d13b7 ]
 
-Commit 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from
-pXd_free_pYd_table()") removes the pxd_present() checks because the
-caller checks pxd_present(). But, in case of vmap_try_huge_pud(), the
-caller only checks pud_present(); pud_free_pmd_page() recurses on each
-pmd through pmd_free_pte_page(), wherein the pmd may be none. Thus it is
-possible to hit a warning in the latter, since pmd_none => !pmd_table().
-Thus, add a pmd_present() check in pud_free_pmd_page().
+I226 devices advertise support for the PCI-E link L1.2 substate. However,
+due to a hardware limitation, the exit latency from this low-power state
+is longer than the packet buffer can tolerate under high traffic
+conditions. This can lead to packet loss and degraded performance.
 
-This problem was found by code inspection.
+To mitigate this, disable the L1.2 substate. The increased power draw
+between L1.1 and L1.2 is insignificant.
 
-Fixes: 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table()")
-Cc: stable@vger.kernel.org
-Reported-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Link: https://lore.kernel.org/r/20250527082633.61073-1-dev.jain@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 43546211738e ("igc: Add new device ID's")
+Link: https://lore.kernel.org/intel-wired-lan/15248b4f-3271-42dd-8e35-02bfc92b25e1@intel.com
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/mm/mmu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1466,7 +1466,8 @@ int pud_free_pmd_page(pud_t *pudp, unsig
- 	next = addr;
- 	end = addr + PUD_SIZE;
- 	do {
--		pmd_free_pte_page(pmdp, next);
-+		if (pmd_present(READ_ONCE(*pmdp)))
-+			pmd_free_pte_page(pmdp, next);
- 	} while (pmdp++, next += PMD_SIZE, next != end);
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index b1669d7cf4359..7d8cc783b2282 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -7046,6 +7046,10 @@ static int igc_probe(struct pci_dev *pdev,
+ 	adapter->port_num = hw->bus.func;
+ 	adapter->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
  
- 	pud_clear(pudp);
++	/* Disable ASPM L1.2 on I226 devices to avoid packet loss */
++	if (igc_is_device_id_i226(hw))
++		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
++
+ 	err = pci_save_state(pdev);
+ 	if (err)
+ 		goto err_ioremap;
+@@ -7426,6 +7430,9 @@ static int __igc_resume(struct device *dev, bool rpm)
+ 	pci_enable_wake(pdev, PCI_D3hot, 0);
+ 	pci_enable_wake(pdev, PCI_D3cold, 0);
+ 
++	if (igc_is_device_id_i226(hw))
++		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
++
+ 	if (igc_init_interrupt_scheme(adapter, true)) {
+ 		netdev_err(netdev, "Unable to allocate memory for queues\n");
+ 		return -ENOMEM;
+@@ -7551,6 +7558,9 @@ static pci_ers_result_t igc_io_slot_reset(struct pci_dev *pdev)
+ 		pci_enable_wake(pdev, PCI_D3hot, 0);
+ 		pci_enable_wake(pdev, PCI_D3cold, 0);
+ 
++		if (igc_is_device_id_i226(hw))
++			pci_disable_link_state_locked(pdev, PCIE_LINK_STATE_L1_2);
++
+ 		/* In case of PCI error, adapter loses its HW address
+ 		 * so we should re-assign it here.
+ 		 */
+-- 
+2.39.5
+
 
 
 
