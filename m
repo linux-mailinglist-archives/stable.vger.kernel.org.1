@@ -1,176 +1,278 @@
-Return-Path: <stable+bounces-160441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E71A1AFBF11
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 02:04:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7357BAFBFCF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 03:20:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56404188C1B5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 00:04:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1E023B5EB0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 01:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17541DED5C;
-	Tue,  8 Jul 2025 00:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0722E1E570B;
+	Tue,  8 Jul 2025 01:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f5p4Gorj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bDmvco2X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6002030A;
-	Tue,  8 Jul 2025 00:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE167464;
+	Tue,  8 Jul 2025 01:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751932992; cv=none; b=RwbVnkHMWZ0qYmNEYeJiAFWgCt18iA9hASlGHEghpk776GogMvSTAJhhux8yN6TazgtyHkRJZul812jq1Xn/u5a1bidvOMhvYhXjlwu4Dq45bgS72Qp4YcZ47PtWre9v6R9VyHD2VK0qsZuXoUH3X2/Pd5YLWHvh8I07/0CAfPA=
+	t=1751937594; cv=none; b=nI/mk3Y4NCuqOs0C5yvkLdW06gvzYAnVm1VK7Tik7cxSyw5h4AFr53PEw2qNwr0DPSXnnuUm9aGpqf2aj+7mVo5pOFB/SJhdLzlHWS+aopCXf3PttlIyTEfC7Qd1L8wWRdJO33MRhWqZpNB4UoZJZCGA7nLMklu98+eII5vFclQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751932992; c=relaxed/simple;
-	bh=xq5sJP2IXD6XlYbJV37Zz2Oy/i0Bn1yBR02wa9zTCI8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XhPfSv5C2YRnGOs4AfWf/fGWWXFbVF4B9F29u/IeSdoJh85XK21C4rF5GAyHd4s8chN+ZE9AE5WA4lqhn1idx46syXabdyCMzCHJI+E7g8K6tXU5WfYPjd2M6nAGS3x4Wucp1MVm7jv0dvIGJrjIfq4cEnd2k2N34Etv3w5pDg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f5p4Gorj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429CFC4CEF5;
-	Tue,  8 Jul 2025 00:03:11 +0000 (UTC)
+	s=arc-20240116; t=1751937594; c=relaxed/simple;
+	bh=xXLBp1dzSbZ0T1gdudVULGsOqBwn9w3PKTIA1vQOwKk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WQ7FuedNF9I3YVI3nrcBh6jck1L3/jO++qQTHxTVdPsOi7DpIrww62hZqznKa4P4P2MJh80aHiUMsdrZhceV0ymghxID2oZs/bSJ3in4HL9hAvVHU1FmRl/W+enE2cRCqc7D7sVNfN7S6FQjsZN/ZqkVKV3GqAoXAGhZJRZebtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bDmvco2X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431ADC4CEF6;
+	Tue,  8 Jul 2025 01:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751932992;
-	bh=xq5sJP2IXD6XlYbJV37Zz2Oy/i0Bn1yBR02wa9zTCI8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5p4GorjD2Ag9Wy7+srD/NkE3WfwLTxxVOJJ9NNYTt6OVGRSRJbe2W5s7QshusIyp
-	 k0MKuVyZVFbG1DckD19EOIxBs1zx6vs5cK8hGL7SYug+2ilrT+AYla/nXpDtayeDwB
-	 PHEJ7bCTnomO6pyX8plE+/CThx3hNz1LkI00OKAAhU/U4NVmNBJy+JAA5aTsWmQZBq
-	 RtlCGIRNJUlPO+IbJfXA7T94MVCnLboK2LJd2JCbD9NTIz6Hj/RbN/yYHjaFgJ6hPs
-	 NPDRoVD2iqQ6dewXvedcbBKqkgUjyEpoDHR4XoXGLqNtgTvGiAhwJmkyX9/Iw77B2o
-	 rptJTxQjTLDBQ==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Maor Gottlieb <maorg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>,
-	leon@kernel.org,
-	msanalla@nvidia.com,
-	phaddad@nvidia.com
-Subject: [PATCH AUTOSEL 5.4 3/3] RDMA/core: Rate limit GID cache warning messages
-Date: Mon,  7 Jul 2025 20:03:05 -0400
-Message-Id: <20250708000306.793995-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250708000306.793995-1-sashal@kernel.org>
-References: <20250708000306.793995-1-sashal@kernel.org>
+	s=k20201202; t=1751937594;
+	bh=xXLBp1dzSbZ0T1gdudVULGsOqBwn9w3PKTIA1vQOwKk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bDmvco2Xj2rwGzzewW/jE0ahM6jRz6w9Z4AoGKf6cfaPwOz8T5VSo1Nza+Hu+xfnW
+	 4inOPwBGa8utcjg1MRxzt2y0F4WHjCE2BX9WJnu6t9YN0Cbn8av0/o9OIjEkkphKhK
+	 BF1bLr9uF9/M8GmfABzA0u613wqTA8I/9+SOHTG4UoXk2BM//dUSoz1PaNaiJPxeUd
+	 4jVeKV3Uq5iGRaOBAV1FrLwuMP1yLO2yYqTlFFzbA0coBhU+YWhRvObZkmfrj/3EOl
+	 HdNSPUGwu0fd3cS3Vcg1iDscpM2GrgSDuvGxzC939KHklyAjJgOwC95452ZtFf8qor
+	 hRzpWFHLliStg==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-54d98aa5981so4980981e87.0;
+        Mon, 07 Jul 2025 18:19:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUuQob8rtuBZ0RzyJGeTnd2rn2WIs26tC2gC8fgi5sTx7tUgPbQbqd9lL/KrDAGJpqz4uWWYMBB@vger.kernel.org, AJvYcCVHWofEEFBSbgUguQwLOmr9EA+Vcd+Gkhbpe2Vf8aN+33+kf0Fc7ZemDlQSfvVbTk2EmTfO85Mi6bs=@vger.kernel.org, AJvYcCVaf98rfxKV7ck0lScuhUwUOD0nRs8ajUJtI4ELERJSRfVOstMMWcDxhSffTGZuABPAY4m4P1Zpet0OIW4E@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoUAeUfEwtfmhFN3tCNgiIUjmnmm4usMg9/+r2atYqurYg2cKL
+	VB+yJG8SgQ4uNcgcR+AEWqacFg3NNFy4dM9oaR0yAYoe9wpiJIAm3Wfa14IQYJMeQ95O62SRQE3
+	BDAaX9DvbsfYs6Y92j1xU4UVx1A0NtfU=
+X-Google-Smtp-Source: AGHT+IFfDR3gsWOC7fygq7gdQV7NxSbjnvvkjwzS3D37iAnoO/LpDRJJzkFsSpXf4HJI1nXqR88gJI74GgGpjSsKLIg=
+X-Received: by 2002:a05:6512:3d88:b0:553:34b7:5731 with SMTP id
+ 2adb3069b0e04-557a1235debmr4075223e87.3.1751937592543; Mon, 07 Jul 2025
+ 18:19:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.295
-Content-Transfer-Encoding: 8bit
+References: <1751858087-10366-1-git-send-email-yangge1116@126.com>
+In-Reply-To: <1751858087-10366-1-git-send-email-yangge1116@126.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 8 Jul 2025 11:19:41 +1000
+X-Gmail-Original-Message-ID: <CAMj1kXEbTH3T_hYQnvPy_cAnBJi6z7VoZxh3KseW91D1o=R_4g@mail.gmail.com>
+X-Gm-Features: Ac12FXwcaEQw3NFCpAjmJAO1x6LBq3l8Z4iOHLKENljTRVEbOzMbumq--aR4dhE
+Message-ID: <CAMj1kXEbTH3T_hYQnvPy_cAnBJi6z7VoZxh3KseW91D1o=R_4g@mail.gmail.com>
+Subject: Re: [PATCH V3] efi/tpm: Fix the issue where the CC platforms event
+ log header can't be correctly identified
+To: yangge1116@126.com
+Cc: jarkko@kernel.org, sathyanarayanan.kuppuswamy@linux.intel.com, 
+	ilias.apalodimas@linaro.org, jgg@ziepe.ca, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, liuzixing@hygon.cn
+Content-Type: text/plain; charset="UTF-8"
 
-From: Maor Gottlieb <maorg@nvidia.com>
+On Mon, 7 Jul 2025 at 13:15, <yangge1116@126.com> wrote:
+>
+> From: Ge Yang <yangge1116@126.com>
+>
+> Since commit d228814b1913 ("efi/libstub: Add get_event_log() support
+> for CC platforms") reuses TPM2 support code for the CC platforms, when
+> launching a TDX virtual machine with coco measurement enabled, the
+> following error log is generated:
+>
+> [Firmware Bug]: Failed to parse event in TPM Final Events Log
+>
+> Call Trace:
+> efi_config_parse_tables()
+>   efi_tpm_eventlog_init()
+>     tpm2_calc_event_log_size()
+>       __calc_tpm2_event_size()
+>
+> The pcr_idx value in the Intel TDX log header is 1, causing the function
+> __calc_tpm2_event_size() to fail to recognize the log header, ultimately
+> leading to the "Failed to parse event in TPM Final Events Log" error.
+>
+> According to UEFI Specification 2.10, Section 38.4.1: For TDX, TPM PCR
+> 0 maps to MRTD, so the log header uses TPM PCR 1 instead. To successfully
+> parse the TDX event log header, the check for a pcr_idx value of 0
+> must be skipped.
+>
+> According to Table 6 in Section 10.2.1 of the TCG PC Client
+> Specification, the index field does not require the PCR index to be
+> fixed at zero. Therefore, skipping the check for a pcr_idx value of
+> 0 for CC platforms is safe.
+>
+> Link: https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#intel-trust-domain-extension
+> Link: https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClient_PFP_r1p05_v23_pub.pdf
+> Fixes: d228814b1913 ("efi/libstub: Add get_event_log() support for CC platforms")
+> Signed-off-by: Ge Yang <yangge1116@126.com>
+> Cc: stable@vger.kernel.org
+> ---
+>
+> V3:
+> - fix build error
+>
+> V2:
+> - limit the fix for CC only suggested by Jarkko and Sathyanarayanan
+>
+>  drivers/char/tpm/eventlog/tpm2.c   |  4 +++-
+>  drivers/firmware/efi/libstub/tpm.c | 13 +++++++++----
+>  drivers/firmware/efi/tpm.c         |  4 +++-
+>  include/linux/tpm_eventlog.h       | 14 +++++++++++---
+>  4 files changed, 26 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/char/tpm/eventlog/tpm2.c b/drivers/char/tpm/eventlog/tpm2.c
+> index 37a0580..30ef47c 100644
+> --- a/drivers/char/tpm/eventlog/tpm2.c
+> +++ b/drivers/char/tpm/eventlog/tpm2.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/module.h>
+>  #include <linux/slab.h>
+>  #include <linux/tpm_eventlog.h>
+> +#include <linux/cc_platform.h>
+>
+>  #include "../tpm.h"
+>  #include "common.h"
+> @@ -36,7 +37,8 @@
+>  static size_t calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+>                                    struct tcg_pcr_event *event_header)
+>  {
+> -       return __calc_tpm2_event_size(event, event_header, false);
+> +       return __calc_tpm2_event_size(event, event_header, false,
+> +                       cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
 
-[ Upstream commit 333e4d79316c9ed5877d7aac8b8ed22efc74e96d ]
 
-The GID cache warning messages can flood the kernel log when there are
-multiple failed attempts to add GIDs. This can happen when creating many
-virtual interfaces without having enough space for their GIDs in the GID
-table.
+This conflates TDX attestation with guest state encryption.
 
-Change pr_warn to pr_warn_ratelimited to prevent log flooding while still
-maintaining visibility of the issue.
+I think there could be meaningful ways for a confidential guest to use
+[emulated] TPM attestation rather than CC specific attestation, so I
+don't think it is a good idea to assume that the fact that we are
+running on a CoCo guest always implies that all the TCG data
+structures are of the CC variety.
 
-Link: https://patch.msgid.link/r/fd45ed4a1078e743f498b234c3ae816610ba1b18.1750062357.git.leon@kernel.org
-Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
 
-**YES**
-
-This commit should be backported to stable kernel trees. Here's my
-extensive analysis:
-
-## Key Reasons for Backporting:
-
-### 1. **Fixes a Real-World Bug**
-The commit addresses a concrete problem where warning messages can flood
-the kernel log. This is not a theoretical issue - it occurs when users
-create many virtual interfaces without sufficient GID table space. This
-is a common scenario in production environments with RDMA/InfiniBand
-deployments.
-
-### 2. **Small and Contained Change**
-The change is minimal - only replacing `pr_warn()` with
-`pr_warn_ratelimited()` on lines 585-586. This is exactly 2 lines of
-functional change with no architectural modifications or new features
-added.
-
-### 3. **Low Risk of Regression**
-- The change only affects logging behavior, not functional behavior
-- `pr_warn_ratelimited()` is a well-established kernel API that behaves
-  identically to `pr_warn()` except for rate limiting
-- No data structures are modified
-- No locking changes
-- No protocol or API changes
-
-### 4. **Follows Stable Kernel Rules**
-According to stable kernel rules, this fix qualifies because:
-- It fixes a bug that bothers people (kernel log flooding)
-- It's a trivial change (2 lines)
-- It has been tested in mainline
-- It doesn't add new features
-
-### 5. **Similar to Historical Backports**
-Looking at the similar commits provided:
-- Similar Commit #1 (backported): Fixed a hardware limitation issue with
-  clear bounds
-- Similar Commit #2 (NOT backported): Added rate limiting to ipoib_warn
-  but was more invasive with macro changes
-- This commit is more like #1 - a targeted fix for a specific issue
-
-### 6. **Production Impact**
-Log flooding can have serious production impacts:
-- Fills up `/var/log` partitions
-- Makes it difficult to find other important kernel messages
-- Can impact system performance due to excessive logging
-- Can trigger log rotation issues
-
-### 7. **Context-Specific Analysis**
-The error path where this warning occurs (line 571: `ret = -ENOSPC`)
-specifically handles the case when the GID table is full. In
-environments with many virtual interfaces, this condition can be hit
-repeatedly in quick succession, causing the flood described in the
-commit message.
-
-The commit message clearly states this is fixing an observed problem:
-"This can happen when creating many virtual interfaces without having
-enough space for their GIDs in the GID table."
-
-This is a perfect example of a stable-appropriate fix: minimal change,
-fixes a real bug, no risk of functional regression, and improves system
-stability in production environments.
-
- drivers/infiniband/core/cache.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
-index 7affe6b4ae210..641e537a0069a 100644
---- a/drivers/infiniband/core/cache.c
-+++ b/drivers/infiniband/core/cache.c
-@@ -578,8 +578,8 @@ static int __ib_cache_gid_add(struct ib_device *ib_dev, u8 port,
- out_unlock:
- 	mutex_unlock(&table->lock);
- 	if (ret)
--		pr_warn("%s: unable to add gid %pI6 error=%d\n",
--			__func__, gid->raw, ret);
-+		pr_warn_ratelimited("%s: unable to add gid %pI6 error=%d\n",
-+				    __func__, gid->raw, ret);
- 	return ret;
- }
- 
--- 
-2.39.5
-
+>  }
+>
+>  static void *tpm2_bios_measurements_start(struct seq_file *m, loff_t *pos)
+> diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
+> index a5c6c4f..9728060 100644
+> --- a/drivers/firmware/efi/libstub/tpm.c
+> +++ b/drivers/firmware/efi/libstub/tpm.c
+> @@ -50,7 +50,8 @@ void efi_enable_reset_attack_mitigation(void)
+>  static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_location,
+>                                        efi_physical_addr_t log_last_entry,
+>                                        efi_bool_t truncated,
+> -                                      struct efi_tcg2_final_events_table *final_events_table)
+> +                                      struct efi_tcg2_final_events_table *final_events_table,
+> +                                      bool is_cc_event)
+>  {
+>         efi_guid_t linux_eventlog_guid = LINUX_EFI_TPM_EVENT_LOG_GUID;
+>         efi_status_t status;
+> @@ -87,7 +88,8 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
+>                         last_entry_size =
+>                                 __calc_tpm2_event_size((void *)last_entry_addr,
+>                                                     (void *)(long)log_location,
+> -                                                   false);
+> +                                                   false,
+> +                                                   is_cc_event);
+>                 } else {
+>                         last_entry_size = sizeof(struct tcpa_event) +
+>                            ((struct tcpa_event *) last_entry_addr)->event_size;
+> @@ -123,7 +125,8 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
+>                         header = data + offset + final_events_size;
+>                         event_size = __calc_tpm2_event_size(header,
+>                                                    (void *)(long)log_location,
+> -                                                  false);
+> +                                                  false,
+> +                                                  is_cc_event);
+>                         /* If calc fails this is a malformed log */
+>                         if (!event_size)
+>                                 break;
+> @@ -157,6 +160,7 @@ void efi_retrieve_eventlog(void)
+>         efi_tcg2_protocol_t *tpm2 = NULL;
+>         efi_bool_t truncated;
+>         efi_status_t status;
+> +       bool is_cc_event = false;
+>
+>         status = efi_bs_call(locate_protocol, &tpm2_guid, NULL, (void **)&tpm2);
+>         if (status == EFI_SUCCESS) {
+> @@ -186,11 +190,12 @@ void efi_retrieve_eventlog(void)
+>
+>                 final_events_table =
+>                         get_efi_config_table(EFI_CC_FINAL_EVENTS_TABLE_GUID);
+> +               is_cc_event = true;
+>         }
+>
+>         if (status != EFI_SUCCESS || !log_location)
+>                 return;
+>
+>         efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
+> -                                  truncated, final_events_table);
+> +                                  truncated, final_events_table, is_cc_event);
+>  }
+> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+> index cdd4310..ca8535d 100644
+> --- a/drivers/firmware/efi/tpm.c
+> +++ b/drivers/firmware/efi/tpm.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/init.h>
+>  #include <linux/memblock.h>
+>  #include <linux/tpm_eventlog.h>
+> +#include <linux/cc_platform.h>
+>
+>  int efi_tpm_final_log_size;
+>  EXPORT_SYMBOL(efi_tpm_final_log_size);
+> @@ -23,7 +24,8 @@ static int __init tpm2_calc_event_log_size(void *data, int count, void *size_inf
+>
+>         while (count > 0) {
+>                 header = data + size;
+> -               event_size = __calc_tpm2_event_size(header, size_info, true);
+> +               event_size = __calc_tpm2_event_size(header, size_info, true,
+> +                                    cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
+>                 if (event_size == 0)
+>                         return -1;
+>                 size += event_size;
+> diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+> index 891368e..b3380c9 100644
+> --- a/include/linux/tpm_eventlog.h
+> +++ b/include/linux/tpm_eventlog.h
+> @@ -143,6 +143,7 @@ struct tcg_algorithm_info {
+>   * @event:        Pointer to the event whose size should be calculated
+>   * @event_header: Pointer to the initial event containing the digest lengths
+>   * @do_mapping:   Whether or not the event needs to be mapped
+> + * @is_cc_event:  Whether or not the event is from a CC platform
+>   *
+>   * The TPM2 event log format can contain multiple digests corresponding to
+>   * separate PCR banks, and also contains a variable length of the data that
+> @@ -159,7 +160,8 @@ struct tcg_algorithm_info {
+>
+>  static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+>                                          struct tcg_pcr_event *event_header,
+> -                                        bool do_mapping)
+> +                                        bool do_mapping,
+> +                                        bool is_cc_event)
+>  {
+>         struct tcg_efi_specid_event_head *efispecid;
+>         struct tcg_event_field *event_field;
+> @@ -201,8 +203,14 @@ static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *ev
+>         count = event->count;
+>         event_type = event->event_type;
+>
+> -       /* Verify that it's the log header */
+> -       if (event_header->pcr_idx != 0 ||
+> +       /*
+> +        * Verify that it's the log header. According to the TCG PC Client
+> +        * Specification, when identifying a log header, the check for a
+> +        * pcr_idx value of 0 is not required. For CC platforms, skipping
+> +        * this check during log header is necessary; otherwise, the CC
+> +        * platform's log header may fail to be recognized.
+> +        */
+> +       if ((!is_cc_event && event_header->pcr_idx != 0) ||
+>             event_header->event_type != NO_ACTION ||
+>             memcmp(event_header->digest, zero_digest, sizeof(zero_digest))) {
+>                 size = 0;
+> --
+> 2.7.4
+>
 
