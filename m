@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-161214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF6AAFD3E5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C93AFD2BE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED2751717AF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:59:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA5C77AF653
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0932E0B4B;
-	Tue,  8 Jul 2025 16:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4242DC34C;
+	Tue,  8 Jul 2025 16:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxfR1kd5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tii2si6J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6172E540B;
-	Tue,  8 Jul 2025 16:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF2C1DB127;
+	Tue,  8 Jul 2025 16:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993926; cv=none; b=pAZKWSI9C8ZF31hq0dUiMDILJ6PHwu9Fnt0LLfd/DY2BmRYZwFNcVY8Aa0Tdr3CmRdDFPwspsK5GXRS6uxhQkeM3jvfaDsBJu8h+HQHqDJc4vgJAUkkWtdZRD8teKhKMF321DHB1tDziYlTK7Gne1gQ1hOr3NOSSEo/WDNO2I8E=
+	t=1751993413; cv=none; b=pMyLoJf7Bob2mmR9HSwchYGYZlKq7K1rRfiGIM//JVZHKDPRTo4+BPFKqDKgLKrhd4fjetmmbARsB+Hq2M/fb4t5ToFgLPeL06yQkg+iVuCOfrR7Xr27Aib1Tum4atpO3vd0fyctffsB/SQ4vXQ5ox1rUkz3F8RLf6ni5Br+ZO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993926; c=relaxed/simple;
-	bh=4YrchkTvKUmtK8joCK2Nda53W+vW7KtduYc5rTxgOcc=;
+	s=arc-20240116; t=1751993413; c=relaxed/simple;
+	bh=t3JbKBosVQo/LrN2efddHEQdrVwMSte6/3J1gmnoCMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OaBUTVX3m03KyZiLuVNfleeUIcKpKeaUxbnsjuVgSUPcfKRkTnO7Oh/mRFGGFnua29KVpj/c7HdvVbgLxezgkQwI5X1ltQ5mSyDkFwHwCLv98yw3iaKdCovv8tXo4t9eWL60sGJ3swxEBLNaWwCtZ0FjkDo5tEs83C6aE7258fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxfR1kd5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37945C4CEED;
-	Tue,  8 Jul 2025 16:58:46 +0000 (UTC)
+	 MIME-Version; b=WJ14TrodqBu2G9LLDw+trX31/5g1k3/UHN3+ZTVf8rcGEEdU28w2/2ovoyoqtdk+WT/05uQVrFO02DKMqrRgKAQSXee5PpGnBQX3sASIMELJnRNujbVp/Qnw3MzMlhuxdpKxMgh7LoYOlHFuFERthJm7BnvgSaeGh2AHOqcO9d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tii2si6J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244D5C4CEED;
+	Tue,  8 Jul 2025 16:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993926;
-	bh=4YrchkTvKUmtK8joCK2Nda53W+vW7KtduYc5rTxgOcc=;
+	s=korg; t=1751993413;
+	bh=t3JbKBosVQo/LrN2efddHEQdrVwMSte6/3J1gmnoCMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NxfR1kd5Q+O1eSPLjDn5F7v1AE+/n+ZWctFXhQ6u0Mj46jkfQX20aoCvKP1hcnCTX
-	 emhQjKlToAnLnyQKt0Mi6OM/fpmjIYjoJtzPIo2czILVjtXdPg94FW75Bk9KkQc9a4
-	 18109I4xGKhdSw5NYv6IJ1yuSpAnMGeSVK6YCDXQ=
+	b=tii2si6JUSMp1d1kB6Ear0Vtb0Ku2cYhLGWS51gbJfWsQXnURy22oaGkxpw7lUFZK
+	 rHAR3sFQG8z+uz4mchzHcoEPOCaLq+N+ohVsiYouA1ZWKYaXDVWtkkG8lOvAJJY9N1
+	 iW2WZCE5K5ojn3KvfMsHXdHjulJaBYN+nhpe/hsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 065/160] wifi: mac80211: fix beacon interval calculation overflow
+Subject: [PATCH 6.15 065/178] btrfs: fix missing error handling when searching for inode refs during log replay
 Date: Tue,  8 Jul 2025 18:21:42 +0200
-Message-ID: <20250708162233.356126353@linuxfoundation.org>
+Message-ID: <20250708162238.373896497@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 7a3750ff0f2e8fee338a9c168f429f6c37f0e820 ]
+[ Upstream commit 6561a40ceced9082f50c374a22d5966cf9fc5f5c ]
 
-As we are converting from TU to usecs, a beacon interval of
-100*1024 usecs will lead to integer wrapping. To fix change
-to use a u32.
+During log replay, at __add_inode_ref(), when we are searching for inode
+ref keys we totally ignore if btrfs_search_slot() returns an error. This
+may make a log replay succeed when there was an actual error and leave
+some metadata inconsistency in a subvolume tree. Fix this by checking if
+an error was returned from btrfs_search_slot() and if so, return it to
+the caller.
 
-Fixes: 057d5f4ba1e4 ("mac80211: sync dtim_count to TSF")
-Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Link: https://patch.msgid.link/20250621123209.511796-1-lachlan.hodges@morsemicro.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: e02119d5a7b4 ("Btrfs: Add a write ahead tree log to optimize synchronous operations")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/util.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/tree-log.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index cc78d3cba45e4..07512f0d5576e 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -4350,7 +4350,7 @@ void ieee80211_recalc_dtim(struct ieee80211_local *local,
- {
- 	u64 tsf = drv_get_tsf(local, sdata);
- 	u64 dtim_count = 0;
--	u16 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
-+	u32 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
- 	u8 dtim_period = sdata->vif.bss_conf.dtim_period;
- 	struct ps_data *ps;
- 	u8 bcns_from_dtim;
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index ef9660eabf0c6..cc223c3b39c10 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -1070,7 +1070,9 @@ static inline int __add_inode_ref(struct btrfs_trans_handle *trans,
+ 	search_key.type = BTRFS_INODE_REF_KEY;
+ 	search_key.offset = parent_objectid;
+ 	ret = btrfs_search_slot(NULL, root, &search_key, path, 0, 0);
+-	if (ret == 0) {
++	if (ret < 0) {
++		return ret;
++	} else if (ret == 0) {
+ 		struct btrfs_inode_ref *victim_ref;
+ 		unsigned long ptr;
+ 		unsigned long ptr_end;
 -- 
 2.39.5
 
