@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-161220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6BD4AFD3BA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A785EAFD322
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 875947B3E5E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C3371893FA2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9741B2E5B04;
-	Tue,  8 Jul 2025 16:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E28D225414;
+	Tue,  8 Jul 2025 16:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4uRzm2J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iim6FTsY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554588F5E;
-	Tue,  8 Jul 2025 16:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3358F5E;
+	Tue,  8 Jul 2025 16:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993944; cv=none; b=TtiSXO9nKYWc+f9QRGnRNnLQrzpAUi/hsDxYYZIYQKtu67wxuEKglT+8CnS6sREx56woryVnZmK73bpTmlaHyY3a4b9fjdAHgI+E8qb2d2nTc53DMNz/vXvkBQzhgLk7sJLN/Db8cEonfqPe2qJ0FqkRL0ITmHizEnAUNLKQbAI=
+	t=1751993431; cv=none; b=XmhQrMnfXuR+gtaWqnhSnhF4lRevepN8v58Pdu8jktw1TpZUbLJrRSmoc56aS9Gnf0DUQUBphhCbs0UVUPMpPPJv88mKJ6hDoNYVzARHBJktBEP0ohHPB4WvL3C8EZOT7wmQmC0Ib3EvfFjFGaDbvTLDUeUW4Ous3bpxwx/REps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993944; c=relaxed/simple;
-	bh=ARySHLK5RF5iq+EY5Ji5WtGnIZVW+bEraYjCtUm5hUA=;
+	s=arc-20240116; t=1751993431; c=relaxed/simple;
+	bh=WEImpKk4OYmn1fzs4v0e4QzyLM6EiKksi4CQsQw77SI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDn7NL4DS9zTsQLQd/nQzW6vu4AdQ6z341EX9ySC/DAIF+887e0/HmBDqEXTPDASBHQymSqeH/TXly5Ues6psGiaV5QlZJnNtMvllSYLVp8BapPCSHHLSZzYaJN2zSjaqhFJfLPVdT/BYOmMv0QMDuUbRDUgjl/K10rZeHkD3H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4uRzm2J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A709FC4CEED;
-	Tue,  8 Jul 2025 16:59:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SSCkFx09u1790NzAaCMpYY4GeXS8YmhZERbZXx7xumd/ye+3LeJ3TB1RjtjpOYWzm4xE3RrroIOZFd3xSGjRUWEMANG+f23zt1rYIyb4xhPIZkmm+Wr1f2QRj/jd5rHehNOxwWMn4N059LMlE3tO8PbDg+Y9v5COFx1VUUi7e9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iim6FTsY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D15BC4CEED;
+	Tue,  8 Jul 2025 16:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993944;
-	bh=ARySHLK5RF5iq+EY5Ji5WtGnIZVW+bEraYjCtUm5hUA=;
+	s=korg; t=1751993431;
+	bh=WEImpKk4OYmn1fzs4v0e4QzyLM6EiKksi4CQsQw77SI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k4uRzm2JUMg7J9vbjWFesUt79DH7yqs2h4woJ9IQCWBzuYuktinOzp5SIC7qMiFyL
-	 IC/9sRhG7o2wdWs4kGNR27nhUTqpKO0CJ38b4Qifsr46hEtaX4dYt8DiZhi8tCNZy5
-	 pf0+F4Lv/NVhVnAEH4Ci2MU2bKAaiQfR3WdruKzc=
+	b=Iim6FTsY1Go/YyUx9TnRi1LQydSAGBBGAy2YrUaYkOFUU1FIJzRNSnpAD0PdNRMHb
+	 cerEnlKQq7PKMjpmyl/Dsl76lBfcRMMrUGx++l1+0tSga9G4iqVx58/0r+NtpfpRE4
+	 dlinodU97Ye6NIaafy2gnNTU/DgPBDPkOiSR2Y8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Daniel Vetter <daniel.vetter@intel.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Claudio Suarez <cssk@net-c.es>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Du Cheng <ducheng2@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	William Kucharski <william.kucharski@oracle.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Zheyu Ma <zheyuma97@gmail.com>,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Xiyu Yang <xiyuyang19@fudan.edu.cn>,
+	kernel test robot <lkp@intel.com>,
+	David Thompson <davthompson@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 042/160] fbcon: use lock_fb_info in fbcon_open/release
+Subject: [PATCH 6.15 042/178] platform/mellanox: mlxbf-tmfifo: fix vring_desc.len assignment
 Date: Tue,  8 Jul 2025 18:21:19 +0200
-Message-ID: <20250708162232.702340639@linuxfoundation.org>
+Message-ID: <20250708162237.778931524@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,112 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit 04933a294dacca3aaa480889d53e6195778d4578 ]
+[ Upstream commit 109f4d29dade8ae5b4ac6325af9d1bc24b4230f8 ]
 
-Now we get to the real motiviation, because fbmem.c insists that
-that's the right lock for these.
+Fix warnings reported by sparse, related to incorrect type:
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38: warning: incorrect type in assignment (different base types)
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    expected restricted __virtio32 [usertype] len
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    got unsigned long
 
-Ofc fbcon.c has a lot more places where it probably should call
-lock_fb_info(). But looking at fbmem.c at least most of these seem to
-be protected by console_lock() too, which is probably what papers over
-any issues.
-
-Note that this means we're shuffling around a bit the locking sections
-for some of the console takeover and unbind paths, but not all:
-- console binding/unbinding from the console layer never with
-lock_fb_info
-- unbind (as opposed to unlink) never bother with lock_fb_info
-
-Also the real serialization against set_par and set_pan are still
-doing by wrapping the entire ioctl code in console_lock(). So this
-shuffling shouldn't be worse than what we had from a "can you trigger
-races?" pov, but it's at least clearer.
-
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Claudio Suarez <cssk@net-c.es>
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Du Cheng <ducheng2@gmail.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: William Kucharski <william.kucharski@oracle.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Zheyu Ma <zheyuma97@gmail.com>
-Cc: Zhen Lei <thunder.leizhen@huawei.com>
-Cc: Xiyu Yang <xiyuyang19@fudan.edu.cn>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220405210335.3434130-13-daniel.vetter@ffwll.ch
-Stable-dep-of: 17186f1f90d3 ("fbdev: Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202404040339.S7CUIgf3-lkp@intel.com/
+Fixes: 78034cbece79 ("platform/mellanox: mlxbf-tmfifo: Drop the Rx packet if no more descriptors")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/20250613214608.2250130-1-davthompson@nvidia.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 5 +++++
- drivers/video/fbdev/core/fbmem.c | 4 ----
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 734b8f3f81b24..072a264ae380b 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -693,8 +693,10 @@ static int fbcon_invalid_charcount(struct fb_info *info, unsigned charcount)
+diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
+index aae99adb29eb0..70c58c4c6c842 100644
+--- a/drivers/platform/mellanox/mlxbf-tmfifo.c
++++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
+@@ -281,7 +281,8 @@ static int mlxbf_tmfifo_alloc_vrings(struct mlxbf_tmfifo *fifo,
+ 		vring->align = SMP_CACHE_BYTES;
+ 		vring->index = i;
+ 		vring->vdev_id = tm_vdev->vdev.id.device;
+-		vring->drop_desc.len = VRING_DROP_DESC_MAX_LEN;
++		vring->drop_desc.len = cpu_to_virtio32(&tm_vdev->vdev,
++						       VRING_DROP_DESC_MAX_LEN);
+ 		dev = &tm_vdev->vdev.dev;
  
- static void fbcon_release(struct fb_info *info)
- {
-+	lock_fb_info(info);
- 	if (info->fbops->fb_release)
- 		info->fbops->fb_release(info, 0);
-+	unlock_fb_info(info);
- 
- 	module_put(info->fbops->owner);
- }
-@@ -706,11 +708,14 @@ static int fbcon_open(struct fb_info *info)
- 	if (!try_module_get(info->fbops->owner))
- 		return -ENODEV;
- 
-+	lock_fb_info(info);
- 	if (info->fbops->fb_open &&
- 	    info->fbops->fb_open(info, 0)) {
-+		unlock_fb_info(info);
- 		module_put(info->fbops->owner);
- 		return -ENODEV;
- 	}
-+	unlock_fb_info(info);
- 
- 	ops = kzalloc(sizeof(struct fbcon_ops), GFP_KERNEL);
- 	if (!ops) {
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index d938c31e8f90a..f4253ec8a6409 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1700,9 +1700,7 @@ static int do_register_framebuffer(struct fb_info *fb_info)
- 		console_lock();
- 	else
- 		atomic_inc(&ignore_console_lock_warning);
--	lock_fb_info(fb_info);
- 	ret = fbcon_fb_registered(fb_info);
--	unlock_fb_info(fb_info);
- 
- 	if (!lockless_register_fb)
- 		console_unlock();
-@@ -1719,9 +1717,7 @@ static void unbind_console(struct fb_info *fb_info)
- 		return;
- 
- 	console_lock();
--	lock_fb_info(fb_info);
- 	fbcon_fb_unbind(fb_info);
--	unlock_fb_info(fb_info);
- 	console_unlock();
- }
- 
+ 		size = vring_size(vring->num, vring->align);
 -- 
 2.39.5
 
