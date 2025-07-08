@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 551D1AFD2CE
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4618AFD399
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B2EC587339
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C61FE188EB36
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FF92DAFA3;
-	Tue,  8 Jul 2025 16:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8592DEA94;
+	Tue,  8 Jul 2025 16:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ye3UZAwO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siyD4y6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DB42E49BD;
-	Tue,  8 Jul 2025 16:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D88BBE46;
+	Tue,  8 Jul 2025 16:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993233; cv=none; b=jI+ZGVb8Unza2K1v3NI9kYa4hINLU5PDHYWQGRmofuHQLEbN+qRmfvJCsZ0plEHTZc/q4oH4vtkU/mI0J+5f2v2JaSoKpL0wYuhXIS2dc0cgbGoyHNSWbf/EERpDLIyC0gyInAERzE2TMGXg+PcGAm9FpkzjaDsjUXn3+msL5oA=
+	t=1751993699; cv=none; b=nXebc6O+tvFqyzKtdGHmgPvC6kUVYLYToNUeklSQn3YljvbzD5bDuDre9zaaPtLyiyU/de0t7T5nMMJ3/RZdLhNLwKUa8RA0o6bYiviNlpHj2XYHNQKZKy4d3739M3Y8MxUW5OsXgSNRctNPrHp+muoPbQADh9ph/lVlH1enkUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993233; c=relaxed/simple;
-	bh=7wtLDnVjQTQGw3RnFCfWGAS6YwKIMvRv3qzzz61wefg=;
+	s=arc-20240116; t=1751993699; c=relaxed/simple;
+	bh=HLF1272x8uxMcZDCwco3yHD04lbYT95XkEDTojwuGNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OyGMfkoCP0s0DqBbgpsjMxgBbAybVmnKritFUFQPe5/Q+dF1AQoG3x2WzYsYAgmY7/qzaYjkNMvTyk7Bdps4KyzhUCS/BzQWCMczDqZgniTyUorbD74h1R3wg7/WvHsvmS1CfrKFWOgX0GYXG1U7WGCB8AhBTuwkEISDLnQln28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ye3UZAwO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28BAC4CEED;
-	Tue,  8 Jul 2025 16:47:12 +0000 (UTC)
+	 MIME-Version; b=iORUV3D7FIEle4l5iwTxBYTTWtvlkvufxREIaylaEmj1V5Z3Yr55DXYwdjGr3D0WYf7KEOXw8dFrrXYISAP8gnMM4fpti1MyoH81uSAz+SaJN0h55my2fU7KIS2zAXYez9ZqQJi1+mrqmgnevlix5n8YM1sO1Eh2tKPNaW7hNHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siyD4y6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1664C4CEED;
+	Tue,  8 Jul 2025 16:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993233;
-	bh=7wtLDnVjQTQGw3RnFCfWGAS6YwKIMvRv3qzzz61wefg=;
+	s=korg; t=1751993699;
+	bh=HLF1272x8uxMcZDCwco3yHD04lbYT95XkEDTojwuGNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ye3UZAwOioguun9fpAIlD9KdwRspzQoataivVI0z8+okmb43a3We152V4V/cSlM5k
-	 kivOlfaccA2rfnjKB0lihjY+yNMZll/03nQwSJAwu05b/bAHbz28p+WfgSnyluoxGA
-	 GYOXpHEybJv2SRBEOZ7YB/h1vUzhwQzmas0ednOA=
+	b=siyD4y6hy2CAyvlT+m/g1+C/bCAuK7O77Mxqp+We8BpsGwX6XxmGWCnVckDzMbken
+	 jrDnZRxxoYs/Th+vpdVBWN5PqlWvVOs2SJPmOg/1Z+eWzI9J3KHOGuWdH8m10K2GMt
+	 FHPz7Xw7ue7c98hk5qVvATnn2O2ztNX4zE6z8NJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.12 203/232] xhci: dbc: Flush queued requests before stopping dbc
-Date: Tue,  8 Jul 2025 18:23:19 +0200
-Message-ID: <20250708162246.749382974@linuxfoundation.org>
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>
+Subject: [PATCH 6.15 163/178] optee: ffa: fix sleep in atomic context
+Date: Tue,  8 Jul 2025 18:23:20 +0200
+Message-ID: <20250708162240.738106061@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Jens Wiklander <jens.wiklander@linaro.org>
 
-commit efe3e3ae5a66cb38ef29c909e951b4039044bae9 upstream.
+commit 312d02adb959ea199372f375ada06e0186f651e4 upstream.
 
-Flush dbc requests when dbc is stopped and transfer rings are freed.
-Failure to flush them lead to leaking memory and dbc completing odd
-requests after resuming from suspend, leading to error messages such as:
+The OP-TEE driver registers the function notif_callback() for FF-A
+notifications. However, this function is called in an atomic context
+leading to errors like this when processing asynchronous notifications:
 
-[   95.344392] xhci_hcd 0000:00:0d.0: no matched request
+ | BUG: sleeping function called from invalid context at kernel/locking/mutex.c:258
+ | in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 9, name: kworker/0:0
+ | preempt_count: 1, expected: 0
+ | RCU nest depth: 0, expected: 0
+ | CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not tainted 6.14.0-00019-g657536ebe0aa #13
+ | Hardware name: linux,dummy-virt (DT)
+ | Workqueue: ffa_pcpu_irq_notification notif_pcpu_irq_work_fn
+ | Call trace:
+ |  show_stack+0x18/0x24 (C)
+ |  dump_stack_lvl+0x78/0x90
+ |  dump_stack+0x18/0x24
+ |  __might_resched+0x114/0x170
+ |  __might_sleep+0x48/0x98
+ |  mutex_lock+0x24/0x80
+ |  optee_get_msg_arg+0x7c/0x21c
+ |  simple_call_with_arg+0x50/0xc0
+ |  optee_do_bottom_half+0x14/0x20
+ |  notif_callback+0x3c/0x48
+ |  handle_notif_callbacks+0x9c/0xe0
+ |  notif_get_and_handle+0x40/0x88
+ |  generic_exec_single+0x80/0xc0
+ |  smp_call_function_single+0xfc/0x1a0
+ |  notif_pcpu_irq_work_fn+0x2c/0x38
+ |  process_one_work+0x14c/0x2b4
+ |  worker_thread+0x2e4/0x3e0
+ |  kthread+0x13c/0x210
+ |  ret_from_fork+0x10/0x20
 
-Cc: stable <stable@kernel.org>
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250627144127.3889714-5-mathias.nyman@linux.intel.com
+Fix this by adding work queue to process the notification in a
+non-atomic context.
+
+Fixes: d0476a59de06 ("optee: ffa_abi: add asynchronous notifications")
+Cc: stable@vger.kernel.org
+Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Tested-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/20250602120452.2507084-1-jens.wiklander@linaro.org
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgcap.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/tee/optee/ffa_abi.c       |   41 +++++++++++++++++++++++++++++---------
+ drivers/tee/optee/optee_private.h |    2 +
+ 2 files changed, 34 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -651,6 +651,10 @@ static void xhci_dbc_stop(struct xhci_db
- 	case DS_DISABLED:
- 		return;
- 	case DS_CONFIGURED:
-+		spin_lock(&dbc->lock);
-+		xhci_dbc_flush_requests(dbc);
-+		spin_unlock(&dbc->lock);
+--- a/drivers/tee/optee/ffa_abi.c
++++ b/drivers/tee/optee/ffa_abi.c
+@@ -728,12 +728,21 @@ static bool optee_ffa_exchange_caps(stru
+ 	return true;
+ }
+ 
++static void notif_work_fn(struct work_struct *work)
++{
++	struct optee_ffa *optee_ffa = container_of(work, struct optee_ffa,
++						   notif_work);
++	struct optee *optee = container_of(optee_ffa, struct optee, ffa);
 +
- 		if (dbc->driver->disconnect)
- 			dbc->driver->disconnect(dbc);
- 		break;
++	optee_do_bottom_half(optee->ctx);
++}
++
+ static void notif_callback(int notify_id, void *cb_data)
+ {
+ 	struct optee *optee = cb_data;
+ 
+ 	if (notify_id == optee->ffa.bottom_half_value)
+-		optee_do_bottom_half(optee->ctx);
++		queue_work(optee->ffa.notif_wq, &optee->ffa.notif_work);
+ 	else
+ 		optee_notif_send(optee, notify_id);
+ }
+@@ -817,9 +826,11 @@ static void optee_ffa_remove(struct ffa_
+ 	struct optee *optee = ffa_dev_get_drvdata(ffa_dev);
+ 	u32 bottom_half_id = optee->ffa.bottom_half_value;
+ 
+-	if (bottom_half_id != U32_MAX)
++	if (bottom_half_id != U32_MAX) {
+ 		ffa_dev->ops->notifier_ops->notify_relinquish(ffa_dev,
+ 							      bottom_half_id);
++		destroy_workqueue(optee->ffa.notif_wq);
++	}
+ 	optee_remove_common(optee);
+ 
+ 	mutex_destroy(&optee->ffa.mutex);
+@@ -835,6 +846,13 @@ static int optee_ffa_async_notif_init(st
+ 	u32 notif_id = 0;
+ 	int rc;
+ 
++	INIT_WORK(&optee->ffa.notif_work, notif_work_fn);
++	optee->ffa.notif_wq = create_workqueue("optee_notification");
++	if (!optee->ffa.notif_wq) {
++		rc = -EINVAL;
++		goto err;
++	}
++
+ 	while (true) {
+ 		rc = ffa_dev->ops->notifier_ops->notify_request(ffa_dev,
+ 								is_per_vcpu,
+@@ -851,19 +869,24 @@ static int optee_ffa_async_notif_init(st
+ 		 * notifications in that case.
+ 		 */
+ 		if (rc != -EACCES)
+-			return rc;
++			goto err_wq;
+ 		notif_id++;
+ 		if (notif_id >= OPTEE_FFA_MAX_ASYNC_NOTIF_VALUE)
+-			return rc;
++			goto err_wq;
+ 	}
+ 	optee->ffa.bottom_half_value = notif_id;
+ 
+ 	rc = enable_async_notif(optee);
+-	if (rc < 0) {
+-		ffa_dev->ops->notifier_ops->notify_relinquish(ffa_dev,
+-							      notif_id);
+-		optee->ffa.bottom_half_value = U32_MAX;
+-	}
++	if (rc < 0)
++		goto err_rel;
++
++	return 0;
++err_rel:
++	ffa_dev->ops->notifier_ops->notify_relinquish(ffa_dev, notif_id);
++err_wq:
++	destroy_workqueue(optee->ffa.notif_wq);
++err:
++	optee->ffa.bottom_half_value = U32_MAX;
+ 
+ 	return rc;
+ }
+--- a/drivers/tee/optee/optee_private.h
++++ b/drivers/tee/optee/optee_private.h
+@@ -165,6 +165,8 @@ struct optee_ffa {
+ 	/* Serializes access to @global_ids */
+ 	struct mutex mutex;
+ 	struct rhashtable global_ids;
++	struct workqueue_struct *notif_wq;
++	struct work_struct notif_work;
+ };
+ 
+ struct optee;
 
 
 
