@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-161072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645F9AFD341
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:55:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9E5AFD10A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26FAC1C27164
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:52:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65D274869EA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F172E1C74;
-	Tue,  8 Jul 2025 16:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9B21BEF7E;
+	Tue,  8 Jul 2025 16:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSZnhYnW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAd7RYOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDEA2045B5;
-	Tue,  8 Jul 2025 16:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4AC881E;
+	Tue,  8 Jul 2025 16:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993516; cv=none; b=EJREsyoCnbrB1Mpu85QlI4RiRQaUbJFwp10ZZ455Aygqs7quyVMmwDW+qpLahhs4uAlcbdyaVHzs6Ioc5taFA8dkZ6YBwIKzILzA0sxkaOYokEpgGDina6v4wYI9PJsVUNGc7qJxDmaBTAnL3Hm5nH7pMBYc5QJb+kN8Wg/ZetI=
+	t=1751992239; cv=none; b=Cq1w+Zs50kn1Xgv7sbjKcIXcP2dOCXN0LiDw2AjXvePbgwwokC4ZUdJF1tZN+XBX4nl5/iEzXTzSCi7Dw4eQRzVUWtgoV5yuHmDZi4C1UW8PiHwi46f/tE8UPfxz9cRF1GUzGC+KGzPMemF3+dq1P/ww07XgdYy9LuWoPAl3/dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993516; c=relaxed/simple;
-	bh=6ilEutLt/KzJnLoEJg7lOe4AAoCmAMLmdxd+QYxN2ik=;
+	s=arc-20240116; t=1751992239; c=relaxed/simple;
+	bh=jpkqf1vCz/tltOfB1oB45JZ+TP6J0/f2hyR66qVK1HE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OPPJm2TJZJnKCk+6qOlKy5eCSgQ2ekNODTzxYWwoOH/AZ2IarxWeJEU4PL6r3jfqPGV2bytjTS4qdcYVb7NWj/Qq4Pq5GmOZkrU0whfpgyRl3I4vK1l1smR3oYegIhq+Tu88ta7fP644MvzZjsOEbzJKBBfE4SO1N2ufzeVaXEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSZnhYnW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B294C4CEED;
-	Tue,  8 Jul 2025 16:51:55 +0000 (UTC)
+	 MIME-Version; b=Gl0Tti7FfNAs9iOHjQQdHb5H/uHmzwCgXDNifcrSuaD14wafOU1cswdNTh+cRdM3w9ESK85gTaSbQ5BE1sxBUcS2DlxG9e5KaEPJYZZlCoDlcSoOnPnkEN25rCpAJS0Bz9pOnOSiXU0I7id24YXg0HqspnFwgKQkoTqQ3JQhGb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cAd7RYOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F98CC4CEED;
+	Tue,  8 Jul 2025 16:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993515;
-	bh=6ilEutLt/KzJnLoEJg7lOe4AAoCmAMLmdxd+QYxN2ik=;
+	s=korg; t=1751992237;
+	bh=jpkqf1vCz/tltOfB1oB45JZ+TP6J0/f2hyR66qVK1HE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mSZnhYnWdSLGxTjLsG1MN8qLuZnYgXEfTz8F4NjtSYteTnspAJzClOB2UfeNFjt2R
-	 j4W7cEYZ8AIpJdyJkaQ/yQ9rrMsO/whxAHo0cz/Q5jzCPKmjn/9C/9E3YD9c0UGAkP
-	 PxIgIj49lWy2jPieE0Kxu1g+W+wDLyNCDNnhjRJo=
+	b=cAd7RYOrqzVcKwA43H5ZS23KFGi3v17QfF0DOvVrYPO1Aq7P1MzawwjpDMC2OKVQZ
+	 5kJzhD43M4MVVbO7CYXKL6Yh6Ar/jJKWZRXL6PQ03KtJ14ReUZowhXG6WjHn2KaRZU
+	 nWcZ0iK8rNCG9A8L5anYgPXIE7MZrLVUUfS2FqTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Avri Altman <avri.altman@sandisk.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 099/178] netfs: Fix ref leak on inserted extra subreq in write retry
+Subject: [PATCH 6.6 025/132] scsi: ufs: core: Fix spelling of a sysfs attribute name
 Date: Tue,  8 Jul 2025 18:22:16 +0200
-Message-ID: <20250708162239.236123921@linuxfoundation.org>
+Message-ID: <20250708162231.454804695@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,51 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 97d8e8e52cb8ab3d7675880a92626d9a4332f7a6 ]
+[ Upstream commit 021f243627ead17eb6500170256d3d9be787dad8 ]
 
-The write-retry algorithm will insert extra subrequests into the list if it
-can't get sufficient capacity to split the range that needs to be retried
-into the sequence of subrequests it currently has (for instance, if the
-cifs credit pool has fewer credits available than it did when the range was
-originally divided).
+Change "resourse" into "resource" in the name of a sysfs attribute.
 
-However, the allocator furnishes each new subreq with 2 refs and then
-another is added for resubmission, causing one to be leaked.
-
-Fix this by replacing the ref-getting line with a neutral trace line.
-
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/20250701163852.2171681-6-dhowells@redhat.com
-Tested-by: Steve French <sfrench@samba.org>
-Reviewed-by: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: d829fc8a1058 ("scsi: ufs: sysfs: unit descriptor")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20250624181658.336035-1-bvanassche@acm.org
+Reviewed-by: Avri Altman <avri.altman@sandisk.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/write_retry.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/ABI/testing/sysfs-driver-ufs | 2 +-
+ drivers/ufs/core/ufs-sysfs.c               | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/netfs/write_retry.c b/fs/netfs/write_retry.c
-index 9d1d8a8bab726..7158657061e98 100644
---- a/fs/netfs/write_retry.c
-+++ b/fs/netfs/write_retry.c
-@@ -153,7 +153,7 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 			trace_netfs_sreq_ref(wreq->debug_id, subreq->debug_index,
- 					     refcount_read(&subreq->ref),
- 					     netfs_sreq_trace_new);
--			netfs_get_subrequest(subreq, netfs_sreq_trace_get_resubmit);
-+			trace_netfs_sreq(subreq, netfs_sreq_trace_split);
+diff --git a/Documentation/ABI/testing/sysfs-driver-ufs b/Documentation/ABI/testing/sysfs-driver-ufs
+index 0c7efaf62de0c..84131641580c9 100644
+--- a/Documentation/ABI/testing/sysfs-driver-ufs
++++ b/Documentation/ABI/testing/sysfs-driver-ufs
+@@ -711,7 +711,7 @@ Description:	This file shows the thin provisioning type. This is one of
  
- 			list_add(&subreq->rreq_link, &to->rreq_link);
- 			to = list_next_entry(to, rreq_link);
+ 		The file is read only.
+ 
+-What:		/sys/class/scsi_device/*/device/unit_descriptor/physical_memory_resourse_count
++What:		/sys/class/scsi_device/*/device/unit_descriptor/physical_memory_resource_count
+ Date:		February 2018
+ Contact:	Stanislav Nijnikov <stanislav.nijnikov@wdc.com>
+ Description:	This file shows the total physical memory resources. This is
+diff --git a/drivers/ufs/core/ufs-sysfs.c b/drivers/ufs/core/ufs-sysfs.c
+index 3692b39b35e78..6c48255dfff02 100644
+--- a/drivers/ufs/core/ufs-sysfs.c
++++ b/drivers/ufs/core/ufs-sysfs.c
+@@ -1278,7 +1278,7 @@ UFS_UNIT_DESC_PARAM(logical_block_size, _LOGICAL_BLK_SIZE, 1);
+ UFS_UNIT_DESC_PARAM(logical_block_count, _LOGICAL_BLK_COUNT, 8);
+ UFS_UNIT_DESC_PARAM(erase_block_size, _ERASE_BLK_SIZE, 4);
+ UFS_UNIT_DESC_PARAM(provisioning_type, _PROVISIONING_TYPE, 1);
+-UFS_UNIT_DESC_PARAM(physical_memory_resourse_count, _PHY_MEM_RSRC_CNT, 8);
++UFS_UNIT_DESC_PARAM(physical_memory_resource_count, _PHY_MEM_RSRC_CNT, 8);
+ UFS_UNIT_DESC_PARAM(context_capabilities, _CTX_CAPABILITIES, 2);
+ UFS_UNIT_DESC_PARAM(large_unit_granularity, _LARGE_UNIT_SIZE_M1, 1);
+ UFS_UNIT_DESC_PARAM(wb_buf_alloc_units, _WB_BUF_ALLOC_UNITS, 4);
+@@ -1295,7 +1295,7 @@ static struct attribute *ufs_sysfs_unit_descriptor[] = {
+ 	&dev_attr_logical_block_count.attr,
+ 	&dev_attr_erase_block_size.attr,
+ 	&dev_attr_provisioning_type.attr,
+-	&dev_attr_physical_memory_resourse_count.attr,
++	&dev_attr_physical_memory_resource_count.attr,
+ 	&dev_attr_context_capabilities.attr,
+ 	&dev_attr_large_unit_granularity.attr,
+ 	&dev_attr_wb_buf_alloc_units.attr,
 -- 
 2.39.5
 
