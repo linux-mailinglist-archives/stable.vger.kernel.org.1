@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37663AFD298
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:48:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED12BAFD156
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:34:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA9D21AA104D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F266540F0E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6761E2E54B2;
-	Tue,  8 Jul 2025 16:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD842E5B32;
+	Tue,  8 Jul 2025 16:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rllLBF12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJX3XQiU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D10B2E337A;
-	Tue,  8 Jul 2025 16:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F621714B7;
+	Tue,  8 Jul 2025 16:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993091; cv=none; b=VDnBJwz5SAFu50AwZJLJFi6E1eAJvruxsq2Em+uAdz7UQ2z2yQa5pmtfXeTY6CIsDBv7XR3LqIfKmFTQ+4tfgSvQGn+5UAyrSXS8Aful9vdR5qie1K0pjW0CKapnW1NYEPuacZfk8FsuiVgus2c7xyK3RQpZTlKgTKUU3YgFvtw=
+	t=1751992373; cv=none; b=L/6b5sAFg3WYlIEp2zDqnpviBwv2S8IMW775oUTgvWGLkOBOzXDZlhRHud55h2LYUEXh5U4hKFFdKd/5EgTFKVPziaZJS9aa0QasIMc+S6RQnvvUsdeJ4bQ5S2hQZtDhYuH6ndy4hb+vmjSSL70D07xEdQTedS/5Js39WMOJoVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993091; c=relaxed/simple;
-	bh=UyPhUM4ck0LiN412zXah1jhr7+8MswJIHgKfQig5Fjc=;
+	s=arc-20240116; t=1751992373; c=relaxed/simple;
+	bh=K4xboaidBIw/7YghyETmqYFJkaPA77dxSvUFC4yK+VM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OzxqNPevDIDCUJxs9hIa5XSpHZ2cKe4KMG4yPdLY+t9H5fKVy8DYPKjciqBJ+JiYEEj6MlMNRvfQJ0w/+EPyQ85ISTTfiIRekrsMj7cXvnDpScczAYn+xsD31nXfFDrS9J9DVOiXphc4OglBw85Ij8yj419hS9Bqx0MKNXr6zBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rllLBF12; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BDAC4CEED;
-	Tue,  8 Jul 2025 16:44:50 +0000 (UTC)
+	 MIME-Version; b=SBgvWCBxwYh4BT0Vj0i3uDlTeYsprRZjOCnynWr1IrhlpoBeQawDWJk0hIgPUpFwU0B7ZA5NpnMnH1Ot33D4nBg/Zpp/Zy6yHSn48NMdL1DmHfG3MKeL10acOdIBiunDxHsRQA6rA06DeJ0IDUQPjq/bpP2rNNZ/mU8H0F7I/fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJX3XQiU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37E5C4CEF0;
+	Tue,  8 Jul 2025 16:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993091;
-	bh=UyPhUM4ck0LiN412zXah1jhr7+8MswJIHgKfQig5Fjc=;
+	s=korg; t=1751992373;
+	bh=K4xboaidBIw/7YghyETmqYFJkaPA77dxSvUFC4yK+VM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rllLBF12jFwPuXhXH1Sutxpfxv/KrvYJ5JYzP34+3LOQ4tfpK4DBVb2U1mr3l5MTe
-	 uF1/ZyK7nhCL+FpOe2WwMtPZlqt+xBvfcqpiX1Ak5ZsszaKVQSlNTw6iCoEROkyotL
-	 W7pNQSSJSVQytg+ln9j+UF0kG/b3OpqzskOwPl+Q=
+	b=BJX3XQiUix6FJf1D/WLOPb4jcnoFrtnEk+8IjBELzlqIj0Fsg8uiuX1J2GwsDjz2c
+	 kE6gqYOSEhaCHbDQ7JNjb2HO6JT9AVio72lAc4/QtEO949tu0lYw2fLSBcJ+YeyvkT
+	 d8ilXcmPbtAYx4DpJwSwt0UNEyMXVSG7hIGW0zsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Sanders <jsanders.devel@gmail.com>,
-	Valentin Kleibel <valentin@vrvis.at>,
-	Jens Axboe <axboe@kernel.dk>,
+	Muna Sinada <muna.sinada@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 184/232] aoe: defer rexmit timer downdev work to workqueue
+Subject: [PATCH 6.6 069/132] wifi: mac80211: Add link iteration macro for link data
 Date: Tue,  8 Jul 2025 18:23:00 +0200
-Message-ID: <20250708162246.249255272@linuxfoundation.org>
+Message-ID: <20250708162232.668470907@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Sanders <jsanders.devel@gmail.com>
+From: Muna Sinada <muna.sinada@oss.qualcomm.com>
 
-[ Upstream commit cffc873d68ab09a0432b8212008c5613f8a70a2c ]
+[ Upstream commit f61c7b3d442bef91dd432d468d08f72eadcc3209 ]
 
-When aoe's rexmit_timer() notices that an aoe target fails to respond to
-commands for more than aoe_deadsecs, it calls aoedev_downdev() which
-cleans the outstanding aoe and block queues. This can involve sleeping,
-such as in blk_mq_freeze_queue(), which should not occur in irq context.
+Currently before iterating through valid links we are utilizing
+open-coding when checking if vif valid_links is a non-zero value.
 
-This patch defers that aoedev_downdev() call to the aoe device's
-workqueue.
+Add new macro, for_each_link_data(), which iterates through link_id
+and checks if it is set on vif valid_links. If it is a valid link then
+access link data for that link id.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=212665
-Signed-off-by: Justin Sanders <jsanders.devel@gmail.com>
-Link: https://lore.kernel.org/r/20250610170600.869-2-jsanders.devel@gmail.com
-Tested-By: Valentin Kleibel <valentin@vrvis.at>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Muna Sinada <muna.sinada@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250325213125.1509362-2-muna.sinada@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: d87c3ca0f8f1 ("wifi: mac80211: finish link init before RCU publish")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/aoe/aoe.h    | 1 +
- drivers/block/aoe/aoecmd.c | 8 ++++++--
- drivers/block/aoe/aoedev.c | 5 ++++-
- 3 files changed, 11 insertions(+), 3 deletions(-)
+ net/mac80211/ieee80211_i.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/block/aoe/aoe.h b/drivers/block/aoe/aoe.h
-index 749ae1246f4cf..d35caa3c69e15 100644
---- a/drivers/block/aoe/aoe.h
-+++ b/drivers/block/aoe/aoe.h
-@@ -80,6 +80,7 @@ enum {
- 	DEVFL_NEWSIZE = (1<<6),	/* need to update dev size in block layer */
- 	DEVFL_FREEING = (1<<7),	/* set when device is being cleaned up */
- 	DEVFL_FREED = (1<<8),	/* device has been cleaned up */
-+	DEVFL_DEAD = (1<<9),	/* device has timed out of aoe_deadsecs */
- };
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 04c876d78d3bf..44aad3394084b 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1186,6 +1186,15 @@ ieee80211_vif_get_shift(struct ieee80211_vif *vif)
+ 	return shift;
+ }
  
- enum {
-diff --git a/drivers/block/aoe/aoecmd.c b/drivers/block/aoe/aoecmd.c
-index 92b06d1de4cc7..6c94cfd1c480e 100644
---- a/drivers/block/aoe/aoecmd.c
-+++ b/drivers/block/aoe/aoecmd.c
-@@ -754,7 +754,7 @@ rexmit_timer(struct timer_list *timer)
- 
- 	utgts = count_targets(d, NULL);
- 
--	if (d->flags & DEVFL_TKILL) {
-+	if (d->flags & (DEVFL_TKILL | DEVFL_DEAD)) {
- 		spin_unlock_irqrestore(&d->lock, flags);
- 		return;
- 	}
-@@ -786,7 +786,8 @@ rexmit_timer(struct timer_list *timer)
- 			 * to clean up.
- 			 */
- 			list_splice(&flist, &d->factive[0]);
--			aoedev_downdev(d);
-+			d->flags |= DEVFL_DEAD;
-+			queue_work(aoe_wq, &d->work);
- 			goto out;
- 		}
- 
-@@ -898,6 +899,9 @@ aoecmd_sleepwork(struct work_struct *work)
- {
- 	struct aoedev *d = container_of(work, struct aoedev, work);
- 
-+	if (d->flags & DEVFL_DEAD)
-+		aoedev_downdev(d);
++#define for_each_link_data(sdata, __link)					\
++	struct ieee80211_sub_if_data *__sdata = sdata;				\
++	for (int __link_id = 0;							\
++	     __link_id < ARRAY_SIZE((__sdata)->link); __link_id++)		\
++		if ((!(__sdata)->vif.valid_links ||				\
++		     (__sdata)->vif.valid_links & BIT(__link_id)) &&		\
++		    ((__link) = sdata_dereference((__sdata)->link[__link_id],	\
++						  (__sdata))))
 +
- 	if (d->flags & DEVFL_GDALLOC)
- 		aoeblk_gdalloc(d);
- 
-diff --git a/drivers/block/aoe/aoedev.c b/drivers/block/aoe/aoedev.c
-index 280679bde3a50..4240e11adfb76 100644
---- a/drivers/block/aoe/aoedev.c
-+++ b/drivers/block/aoe/aoedev.c
-@@ -200,8 +200,11 @@ aoedev_downdev(struct aoedev *d)
- 	struct list_head *head, *pos, *nx;
- 	struct request *rq, *rqnext;
- 	int i;
-+	unsigned long flags;
- 
--	d->flags &= ~DEVFL_UP;
-+	spin_lock_irqsave(&d->lock, flags);
-+	d->flags &= ~(DEVFL_UP | DEVFL_DEAD);
-+	spin_unlock_irqrestore(&d->lock, flags);
- 
- 	/* clean out active and to-be-retransmitted buffers */
- 	for (i = 0; i < NFACTIVE; i++) {
+ static inline int
+ ieee80211_get_mbssid_beacon_len(struct cfg80211_mbssid_elems *elems,
+ 				struct cfg80211_rnr_elems *rnr_elems,
 -- 
 2.39.5
 
