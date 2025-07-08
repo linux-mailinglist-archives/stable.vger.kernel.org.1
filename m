@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-161076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A0AAFD33C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:55:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3F5AFD246
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5C7D3BF1A4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:51:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABDED3A5A88
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA072E5439;
-	Tue,  8 Jul 2025 16:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DA02E49A8;
+	Tue,  8 Jul 2025 16:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vz7lnUry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w52/l3X+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1642E5411;
-	Tue,  8 Jul 2025 16:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406F52E3385;
+	Tue,  8 Jul 2025 16:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993527; cv=none; b=TASmyUKk1Wphm6eVzUH0o507nv4mOhxUf7m84mB3UQeZ6n60bb+YbLoIWbfN8GiHdNiHSjJo4EPwUi+KqgGx8Vyqpbvk3zTjCd3Q0WaMoosi8VUyjSjJiRIQtGxJZbKxDfBWTgaBJ5P2sHTjpLGioMv2qmqt+hsEEfxSSwonuNI=
+	t=1751992889; cv=none; b=uChJjZL7imEwHm04/QJmjw+AMX4AYWDZe8+uAAYXIpRUKxmshZclsmyUZqrQT6GK1AZq7+1SEMP9GMZHUZ0epw9jr5Vn4zvtE9QShYqN6tokVpJmhUx3fdk29FW+h11URGpvbxAGCUoY+XIDyBGbY2WFbiGZ1GjbS4k0KpjDM0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993527; c=relaxed/simple;
-	bh=Yjfk15MsjFXBjNBQYtJz7PuGALF3BX3OIm0Z79ee2f0=;
+	s=arc-20240116; t=1751992889; c=relaxed/simple;
+	bh=xOqYTmTaUhDlre5EXPWV5eHqTTaye2DyA+5aaoJAE00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kML5WfG6LyYcO51eEahOCeGMYs4pKfjejDxmXblb59flo1bBRdU8q9vNkqAzFZcoSpU4k1bHcVCtKuT6I/Kwt4HL+ECoe4QDRXEUTV0npn4MF2eqOt88brTypDkJ2B9r/EPupQjBtM/H/aSiROTl9KVC4bQx0UG9hg09PjCHOgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vz7lnUry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0580AC4CEED;
-	Tue,  8 Jul 2025 16:52:06 +0000 (UTC)
+	 MIME-Version; b=hVVzNtdfR4f1I+oj28Hr5vkyw5QHmC2I+9WEhvPXYLw+HiNUPUFcxu0EcogKUOWAduTwQgqPOSUaDeyZbrMhLNZLgEuGOOu4UIyzpAocN0zQXCaFCsf/DUba4IlIQcvNEeN1OmlZvNEYbUw6Y+sFc7Y+9I3J8burN1rOo4fVgWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w52/l3X+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777E4C4CEED;
+	Tue,  8 Jul 2025 16:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993527;
-	bh=Yjfk15MsjFXBjNBQYtJz7PuGALF3BX3OIm0Z79ee2f0=;
+	s=korg; t=1751992888;
+	bh=xOqYTmTaUhDlre5EXPWV5eHqTTaye2DyA+5aaoJAE00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vz7lnUryR7MQIeUbnEAGO/fcfrQojteC0hYF9YnLRuWkEgTaHgxzwZZdtNxs1CA2G
-	 Oaaa3WuqGCCNMSp4dGqUJ4Ks5YakiqeT2UI3VDNmVozcrFPW/JKqLSMSzIIv3tlrUH
-	 qB7XFEftBv9zrIEwaeOIYW2bKkCyLf5MQLRo1xvk=
+	b=w52/l3X+ftkRRZ0Xb4GSnAMT7UfwVDQJzetkKVSPuaFNGpU0bpfnLPUebdkurhTwj
+	 3VgRkBDFkzJElwTEb7EkcwxoR/quF63NCB00jevohXO5WjQxJpvhZxM1/++G/XTpnM
+	 2wol9M0ZgYeM3p21OyRULEU+cGObzs+bp0SGVBv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 074/178] spi: spi-qpic-snand: reallocate BAM transactions
+	Xuewen Yan <xuewen.yan@unisoc.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Tianchen Ding <dtcccc@linux.alibaba.com>
+Subject: [PATCH 6.12 115/232] sched/fair: Fixup wake_up_sync() vs DELAYED_DEQUEUE
 Date: Tue,  8 Jul 2025 18:21:51 +0200
-Message-ID: <20250708162238.609019913@linuxfoundation.org>
+Message-ID: <20250708162244.448795596@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Xuewen Yan <xuewen.yan@unisoc.com>
 
-[ Upstream commit d85d0380292a7e618915069c3579ae23c7c80339 ]
+[ Upstream commit aa3ee4f0b7541382c9f6f43f7408d73a5d4f4042 ]
 
-Using the mtd_nandbiterrs module for testing the driver occasionally
-results in weird things like below.
+Delayed dequeued feature keeps a sleeping task enqueued until its
+lag has elapsed. As a result, it stays also visible in rq->nr_running.
+So when in wake_affine_idle(), we should use the real running-tasks
+in rq to check whether we should place the wake-up task to
+current cpu.
+On the other hand, add a helper function to return the nr-delayed.
 
-1. swiotlb mapping fails with the following message:
-
-  [   85.926216] qcom_snand 79b0000.spi: swiotlb buffer is full (sz: 4294967294 bytes), total 512 (slots), used 0 (slots)
-  [   85.932937] qcom_snand 79b0000.spi: failure in mapping desc
-  [   87.999314] qcom_snand 79b0000.spi: failure to write raw page
-  [   87.999352] mtd_nandbiterrs: error: write_oob failed (-110)
-
-  Rebooting the board after this causes a panic due to a NULL pointer
-  dereference.
-
-2. If the swiotlb mapping does not fail, rebooting the board may result
-   in a different panic due to a bad spinlock magic:
-
-  [  256.104459] BUG: spinlock bad magic on CPU#3, procd/2241
-  [  256.104488] Unable to handle kernel paging request at virtual address ffffffff0000049b
-  ...
-
-Investigating the issue revealed that these symptoms are results of
-memory corruption which is caused by out of bounds access within the
-driver.
-
-The driver uses a dynamically allocated structure for BAM transactions,
-which structure must have enough space for all possible variations of
-different flash operations initiated by the driver. The required space
-heavily depends on the actual number of 'codewords' which is calculated
-from the pagesize of the actual NAND chip.
-
-Although the qcom_nandc_alloc() function allocates memory for the BAM
-transactions during probe, but since the actual number of 'codewords'
-is not yet know the allocation is done for one 'codeword' only.
-
-Because of this, whenever the driver does a flash operation, and the
-number of the required transactions exceeds the size of the allocated
-arrays the driver accesses memory out of the allocated range.
-
-To avoid this, change the code to free the initially allocated BAM
-transactions memory, and allocate a new one once the actual number of
-'codewords' required for a given NAND chip is known.
-
-Fixes: 7304d1909080 ("spi: spi-qpic: add driver for QCOM SPI NAND flash Interface")
-Reviewed-by: Md Sadre Alam <quic_mdalam@quicinc.com>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://patch.msgid.link/20250618-qpic-snand-avoid-mem-corruption-v3-1-319c71296cda@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 152e11f6df29 ("sched/fair: Implement delayed dequeue")
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Reviewed-and-tested-by: Tianchen Ding <dtcccc@linux.alibaba.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lore.kernel.org/r/20250303105241.17251-2-xuewen.yan@unisoc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-qpic-snand.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ kernel/sched/fair.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
-index d3a4e091dca4e..80856d2fa35c6 100644
---- a/drivers/spi/spi-qpic-snand.c
-+++ b/drivers/spi/spi-qpic-snand.c
-@@ -316,6 +316,22 @@ static int qcom_spi_ecc_init_ctx_pipelined(struct nand_device *nand)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 47ff4856561ea..7280ed04c96ce 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -7313,6 +7313,11 @@ static bool dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)
+ 	return true;
+ }
  
- 	mtd_set_ooblayout(mtd, &qcom_spi_ooblayout);
++static inline unsigned int cfs_h_nr_delayed(struct rq *rq)
++{
++	return (rq->cfs.h_nr_queued - rq->cfs.h_nr_runnable);
++}
++
+ #ifdef CONFIG_SMP
  
-+	/*
-+	 * Free the temporary BAM transaction allocated initially by
-+	 * qcom_nandc_alloc(), and allocate a new one based on the
-+	 * updated max_cwperpage value.
-+	 */
-+	qcom_free_bam_transaction(snandc);
+ /* Working cpumask for: sched_balance_rq(), sched_balance_newidle(). */
+@@ -7474,8 +7479,12 @@ wake_affine_idle(int this_cpu, int prev_cpu, int sync)
+ 	if (available_idle_cpu(this_cpu) && cpus_share_cache(this_cpu, prev_cpu))
+ 		return available_idle_cpu(prev_cpu) ? prev_cpu : this_cpu;
+ 
+-	if (sync && cpu_rq(this_cpu)->nr_running == 1)
+-		return this_cpu;
++	if (sync) {
++		struct rq *rq = cpu_rq(this_cpu);
 +
-+	snandc->max_cwperpage = cwperpage;
-+
-+	snandc->bam_txn = qcom_alloc_bam_transaction(snandc);
-+	if (!snandc->bam_txn) {
-+		dev_err(snandc->dev, "failed to allocate BAM transaction\n");
-+		ret = -ENOMEM;
-+		goto err_free_ecc_cfg;
++		if ((rq->nr_running - cfs_h_nr_delayed(rq)) == 1)
++			return this_cpu;
 +	}
-+
- 	ecc_cfg->cfg0 = FIELD_PREP(CW_PER_PAGE_MASK, (cwperpage - 1)) |
- 			FIELD_PREP(UD_SIZE_BYTES_MASK, ecc_cfg->cw_data) |
- 			FIELD_PREP(DISABLE_STATUS_AFTER_WRITE, 1) |
+ 
+ 	if (available_idle_cpu(prev_cpu))
+ 		return prev_cpu;
 -- 
 2.39.5
 
