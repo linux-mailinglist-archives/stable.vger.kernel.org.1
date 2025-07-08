@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-160698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62FCAFD167
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:35:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D041AAFD0B9
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8D41188752D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04D463B1147
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5EA12D9ECD;
-	Tue,  8 Jul 2025 16:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2DF92D877F;
+	Tue,  8 Jul 2025 16:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OmMwQ1eM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSnRQ+bZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B6F2A1BA;
-	Tue,  8 Jul 2025 16:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AC02E659;
+	Tue,  8 Jul 2025 16:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992429; cv=none; b=c0iWNHyzHZEOXu0kyAvf2IOcVR+dW7JmsvqqQhmF635q7MlPcqcwPdDOqpgxIZ5qMAErg41NsAn6mCo2pRqiXMFsuHUrHhUuoFgG2+S+40PBosSetv5jkr/tS+9A1v6IuXTDnE76ebbxbC58AhCsG/zV+H+oe2rhTufRNbrRkdI=
+	t=1751992004; cv=none; b=pdng17cY70EBuhYqKFAJwU2Yieoqo/bp/5KoSM7xPBt1r5v0pleIFWqLrMRW3dkLw9vK0tt/UM3DlPb9Ngd2b4SG/VvlNi0n4j8StsUu2AYIsqkrMzd+7KIiRdjzUlduPDW3PBmY4tq96BZ8Ss8mEyKsBw7J9PKG7iFa0Mzq7IQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992429; c=relaxed/simple;
-	bh=lLlNjevhyIo4GAT/KU888I3ETw9jEFESLRxwCYCzveI=;
+	s=arc-20240116; t=1751992004; c=relaxed/simple;
+	bh=3FDB5FCdqpP4n/slqYxn4oZDOGdxQ+H6YyJWOgyJu6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CLwcgakWl7aZ7vAkhDcQE185Q4oC5dzRoIUBh0YmfnRVpnOZjhzaikY/+uB+9mdgC2ZomtP9nXe8W2lWsyoCeoJkOY1Empca67Gqb0I/Oww6rYsxtvzzppwwbsz49dbRDdhoTlrqXQwwK0FalQMH0WgZGGsv0kZZTtdxq3Wtwyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OmMwQ1eM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8742DC4CEED;
-	Tue,  8 Jul 2025 16:33:48 +0000 (UTC)
+	 MIME-Version; b=WDOZxDHjL1CggrI+EPQWsGgpwT1T1ADEZafrRL7RzZ8SjGrkhgaYj4OHmzVkjmUbDSKHZ6E0gczGpLyOwnlp414am5QC8j58gtHQU+FGkPHsKzUog15kc0RhRT496XLZp4uz/qa1sLdxLulF7+CmVXVGpIBl+yH8gD4qVrEzWsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSnRQ+bZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3941EC4CEED;
+	Tue,  8 Jul 2025 16:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992428;
-	bh=lLlNjevhyIo4GAT/KU888I3ETw9jEFESLRxwCYCzveI=;
+	s=korg; t=1751992004;
+	bh=3FDB5FCdqpP4n/slqYxn4oZDOGdxQ+H6YyJWOgyJu6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OmMwQ1eMXPRc4EZgpE/QbWAmWKGD7YElXHkjKe4mHaGjMF7wfe0YI7PjMrMO8suOc
-	 fMMHattXwLg/iGzl3UnIWRGEe+jQ7EeOZhZKOmbVRND7asHFVDNFpGYPS5GMCtwxgc
-	 45fSBqIOjIY48uSsofoOzdGgtAW2NSbxK/WHF6p4=
+	b=iSnRQ+bZZXFNNS9DIaIqrYCc3vS9KoXgCDWdbLOEtHzmiLGnNNFbD2o3kelc/BcmT
+	 l5+or02zcyQmTdsioim3rpMBsndWC9xBMZSv+EWs/xfugdZsXFrGdCpz3hc9mvf7uJ
+	 EVIdOY11biB8Q8HVxyutnWwvGiUZIxkH02G15ibQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raoul <ein4rth@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/132] platform/x86/amd/pmc: Add PCSpecialist Lafite Pro V 14M to 8042 quirks list
-Date: Tue,  8 Jul 2025 18:23:20 +0200
-Message-ID: <20250708162233.230015252@linuxfoundation.org>
+Subject: [PATCH 6.1 29/81] drm/exynos: fimd: Guard display clock control with runtime PM calls
+Date: Tue,  8 Jul 2025 18:23:21 +0200
+Message-ID: <20250708162225.866836027@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 9ba75ccad85708c5a484637dccc1fc59295b0a83 ]
+[ Upstream commit 5d91394f236167ac624b823820faf4aa928b889e ]
 
-Every other s2idle cycle fails to reach hardware sleep when keyboard
-wakeup is enabled.  This appears to be an EC bug, but the vendor
-refuses to fix it.
+Commit c9b1150a68d9 ("drm/atomic-helper: Re-order bridge chain pre-enable
+and post-disable") changed the call sequence to the CRTC enable/disable
+and bridge pre_enable/post_disable methods, so those bridge methods are
+now called when CRTC is not yet enabled.
 
-It was confirmed that turning off i8042 wakeup avoids ths issue
-(albeit keyboard wakeup is disabled).  Take the lesser of two evils
-and add it to the i8042 quirk list.
+This causes a lockup observed on Samsung Peach-Pit/Pi Chromebooks. The
+source of this lockup is a call to fimd_dp_clock_enable() function, when
+FIMD device is not yet runtime resumed. It worked before the mentioned
+commit only because the CRTC implemented by the FIMD driver was always
+enabled what guaranteed the FIMD device to be runtime resumed.
 
-Reported-by: Raoul <ein4rth@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220116
-Tested-by: Raoul <ein4rth@gmail.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20250611203341.3733478-1-superm1@kernel.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+This patch adds runtime PM guards to the fimd_dp_clock_enable() function
+to enable its proper operation also when the CRTC implemented by FIMD is
+not yet enabled.
+
+Fixes: 196e059a8a6a ("drm/exynos: convert clock_enable crtc callback to pipeline clock")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/exynos/exynos_drm_fimd.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index 2e3f6fc67c568..7ed12c1d3b34c 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -224,6 +224,15 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "WUJIE14-GX4HRXL"),
- 		}
- 	},
-+	/* https://bugzilla.kernel.org/show_bug.cgi?id=220116 */
-+	{
-+		.ident = "PCSpecialist Lafite Pro V 14M",
-+		.driver_data = &quirk_spurious_8042,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "PCSpecialist"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Lafite Pro V 14M"),
-+		}
-+	},
- 	{}
- };
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_fimd.c b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
+index 529033b980b20..0816714b1e581 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_fimd.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
+@@ -188,6 +188,7 @@ struct fimd_context {
+ 	u32				i80ifcon;
+ 	bool				i80_if;
+ 	bool				suspended;
++	bool				dp_clk_enabled;
+ 	wait_queue_head_t		wait_vsync_queue;
+ 	atomic_t			wait_vsync_event;
+ 	atomic_t			win_updated;
+@@ -1048,7 +1049,18 @@ static void fimd_dp_clock_enable(struct exynos_drm_clk *clk, bool enable)
+ 	struct fimd_context *ctx = container_of(clk, struct fimd_context,
+ 						dp_clk);
+ 	u32 val = enable ? DP_MIE_CLK_DP_ENABLE : DP_MIE_CLK_DISABLE;
++
++	if (enable == ctx->dp_clk_enabled)
++		return;
++
++	if (enable)
++		pm_runtime_resume_and_get(ctx->dev);
++
++	ctx->dp_clk_enabled = enable;
+ 	writel(val, ctx->regs + DP_MIE_CLKCON);
++
++	if (!enable)
++		pm_runtime_put(ctx->dev);
+ }
  
+ static const struct exynos_drm_crtc_ops fimd_crtc_ops = {
 -- 
 2.39.5
 
