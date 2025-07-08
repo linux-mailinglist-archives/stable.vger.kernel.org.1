@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-161149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2596AFD38E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B74FAFD28A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DD303A65DB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 030D84A329F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526232DC34C;
-	Tue,  8 Jul 2025 16:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951952E54BD;
+	Tue,  8 Jul 2025 16:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCKOTJpp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P81xusKO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC8C1DB127;
-	Tue,  8 Jul 2025 16:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8DD2E541D;
+	Tue,  8 Jul 2025 16:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993736; cv=none; b=FZlSGfoqBC7jQkk5Kn/6tNP1HHeuAT38uA68SS7XVFetdix4oZaLu5p/8MjOCKgr3nMSHuTPIg8j7YCAN6v3ZM0SG59vOv1sWfvNMqHzmCWjIezpfFVNMbE1jcUzEGhtSR1e76nA2ZW+/Bh7rnxNe1du/YTLyrF8pBWX2Hl1cYA=
+	t=1751993065; cv=none; b=RpfGR7Z3qL41sRpnScrY6ECBiVp9SSkbbSyOd0dPTry9WAtHmIXFhN/QKbjTlz19aV0SoixT04LB1ZgeZ/6AceuSi4xnOs/FB2sU/kAzATIoUiOYKRe5pf9kuORalaBHn9zUy/EO8Ml9/aohLAfcX6ZBZDe55cn3tXyiSA5rMJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993736; c=relaxed/simple;
-	bh=3co7QAW2WtA7Wt+id/ZIVs329ru+9o2JzbjWcXx/jrk=;
+	s=arc-20240116; t=1751993065; c=relaxed/simple;
+	bh=fbUYGFd+pbh2ASbjYFr6iirjQMzOsjBg+aIiGwUtULA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ka4HpEGPMrHnilCXTLJcOv1a8JPUtTiQP/wvnWSuttnP51QawVCuxMsHPVXk2q/et1CRLoEY97a4LdYTrSyjANYAT4WiU4OcJk63J5teDipmtiYvEtraxtl27bTeiqkrn8b2hDiso7HgzApZH5SnS70EuF8t/bGA5DcK8vynMus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCKOTJpp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8470BC4CEED;
-	Tue,  8 Jul 2025 16:55:35 +0000 (UTC)
+	 MIME-Version; b=TzWgi8mXQul7VcNKT1ZySmI2Qm60QnHKI+rcMjvlEY+aOqLKyIfSuj9JcM8PZ7C36+RMSmpmEbUUNh1u/z+w/JT03GlSbHfHoSmETTC0DD5cfTPod98L7XeOzEoFBU75r4zrKB1DZAfob3zSjbtB7zx8sRtYuXoqVS6VuU5xhEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P81xusKO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C566AC4CEED;
+	Tue,  8 Jul 2025 16:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993735;
-	bh=3co7QAW2WtA7Wt+id/ZIVs329ru+9o2JzbjWcXx/jrk=;
+	s=korg; t=1751993065;
+	bh=fbUYGFd+pbh2ASbjYFr6iirjQMzOsjBg+aIiGwUtULA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CCKOTJppFmhBv2SsSiMEWl+Hl2EzBBFpVcZJw4IQUXSymNiTNUaH1vWxkRvxlYuBw
-	 R2qCSQlaCHWitnz5ZJJIyAyozj1zS8PFEDed72hxJSDOAl86jfp+lWm7vbXgHbgzuz
-	 vtk4eMbiVxozj9m0sprryzwayIMle1XpGkNnlCHk=
+	b=P81xusKOpTSAcSi3+KNL72uCXIh8Te5KLz6WaijRwFTrV8nekoN9NSzg5+FfvxP1W
+	 yLOufjY5rrjNMwCXUrpMqiXcC0G0aorF4gAiNzLne9Lf2nfGMdl9qWdVgKNYYeCm0z
+	 +KIj635VzOVp///SC9/0SeN1H/OqwrOzInyJOC8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Sanders <jsanders.devel@gmail.com>,
-	Valentin Kleibel <valentin@vrvis.at>,
-	Jens Axboe <axboe@kernel.dk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 135/178] aoe: defer rexmit timer downdev work to workqueue
+Subject: [PATCH 6.12 176/232] ata: pata_cs5536: fix build on 32-bit UML
 Date: Tue,  8 Jul 2025 18:22:52 +0200
-Message-ID: <20250708162240.083245458@linuxfoundation.org>
+Message-ID: <20250708162246.044405933@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Sanders <jsanders.devel@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit cffc873d68ab09a0432b8212008c5613f8a70a2c ]
+[ Upstream commit fe5b391fc56f77cf3c22a9dd4f0ce20db0e3533f ]
 
-When aoe's rexmit_timer() notices that an aoe target fails to respond to
-commands for more than aoe_deadsecs, it calls aoedev_downdev() which
-cleans the outstanding aoe and block queues. This can involve sleeping,
-such as in blk_mq_freeze_queue(), which should not occur in irq context.
+On 32-bit ARCH=um, CONFIG_X86_32 is still defined, so it
+doesn't indicate building on real X86 machines. There's
+no MSR on UML though, so add a check for CONFIG_X86.
 
-This patch defers that aoedev_downdev() call to the aoe device's
-workqueue.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=212665
-Signed-off-by: Justin Sanders <jsanders.devel@gmail.com>
-Link: https://lore.kernel.org/r/20250610170600.869-2-jsanders.devel@gmail.com
-Tested-By: Valentin Kleibel <valentin@vrvis.at>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://lore.kernel.org/r/20250606090110.15784-2-johannes@sipsolutions.net
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/aoe/aoe.h    | 1 +
- drivers/block/aoe/aoecmd.c | 8 ++++++--
- drivers/block/aoe/aoedev.c | 5 ++++-
- 3 files changed, 11 insertions(+), 3 deletions(-)
+ drivers/ata/pata_cs5536.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/aoe/aoe.h b/drivers/block/aoe/aoe.h
-index 749ae1246f4cf..d35caa3c69e15 100644
---- a/drivers/block/aoe/aoe.h
-+++ b/drivers/block/aoe/aoe.h
-@@ -80,6 +80,7 @@ enum {
- 	DEVFL_NEWSIZE = (1<<6),	/* need to update dev size in block layer */
- 	DEVFL_FREEING = (1<<7),	/* set when device is being cleaned up */
- 	DEVFL_FREED = (1<<8),	/* device has been cleaned up */
-+	DEVFL_DEAD = (1<<9),	/* device has timed out of aoe_deadsecs */
- };
+diff --git a/drivers/ata/pata_cs5536.c b/drivers/ata/pata_cs5536.c
+index b811efd2cc346..73e81e160c91f 100644
+--- a/drivers/ata/pata_cs5536.c
++++ b/drivers/ata/pata_cs5536.c
+@@ -27,7 +27,7 @@
+ #include <scsi/scsi_host.h>
+ #include <linux/dmi.h>
  
- enum {
-diff --git a/drivers/block/aoe/aoecmd.c b/drivers/block/aoe/aoecmd.c
-index 92b06d1de4cc7..6c94cfd1c480e 100644
---- a/drivers/block/aoe/aoecmd.c
-+++ b/drivers/block/aoe/aoecmd.c
-@@ -754,7 +754,7 @@ rexmit_timer(struct timer_list *timer)
- 
- 	utgts = count_targets(d, NULL);
- 
--	if (d->flags & DEVFL_TKILL) {
-+	if (d->flags & (DEVFL_TKILL | DEVFL_DEAD)) {
- 		spin_unlock_irqrestore(&d->lock, flags);
- 		return;
- 	}
-@@ -786,7 +786,8 @@ rexmit_timer(struct timer_list *timer)
- 			 * to clean up.
- 			 */
- 			list_splice(&flist, &d->factive[0]);
--			aoedev_downdev(d);
-+			d->flags |= DEVFL_DEAD;
-+			queue_work(aoe_wq, &d->work);
- 			goto out;
- 		}
- 
-@@ -898,6 +899,9 @@ aoecmd_sleepwork(struct work_struct *work)
- {
- 	struct aoedev *d = container_of(work, struct aoedev, work);
- 
-+	if (d->flags & DEVFL_DEAD)
-+		aoedev_downdev(d);
-+
- 	if (d->flags & DEVFL_GDALLOC)
- 		aoeblk_gdalloc(d);
- 
-diff --git a/drivers/block/aoe/aoedev.c b/drivers/block/aoe/aoedev.c
-index 8c18034cb3d69..9b66f8ebce50d 100644
---- a/drivers/block/aoe/aoedev.c
-+++ b/drivers/block/aoe/aoedev.c
-@@ -200,8 +200,11 @@ aoedev_downdev(struct aoedev *d)
- 	struct list_head *head, *pos, *nx;
- 	struct request *rq, *rqnext;
- 	int i;
-+	unsigned long flags;
- 
--	d->flags &= ~DEVFL_UP;
-+	spin_lock_irqsave(&d->lock, flags);
-+	d->flags &= ~(DEVFL_UP | DEVFL_DEAD);
-+	spin_unlock_irqrestore(&d->lock, flags);
- 
- 	/* clean out active and to-be-retransmitted buffers */
- 	for (i = 0; i < NFACTIVE; i++) {
+-#ifdef CONFIG_X86_32
++#if defined(CONFIG_X86) && defined(CONFIG_X86_32)
+ #include <asm/msr.h>
+ static int use_msr;
+ module_param_named(msr, use_msr, int, 0644);
 -- 
 2.39.5
 
