@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-160992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6628AFD2E1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC98AFD3C0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81C17420DD5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E1253A955F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDAA18EAB;
-	Tue,  8 Jul 2025 16:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BA42E5B2A;
+	Tue,  8 Jul 2025 16:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMBnNczH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mo6IPg51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAFFB672;
-	Tue,  8 Jul 2025 16:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140482E5B26;
+	Tue,  8 Jul 2025 16:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993284; cv=none; b=e4aiA5kPnqwl9bgWTy6xx8AYIpgbY8UGEE1TnhMMQatCzupfUNm8bga8qF1FRsEWGqHjRaBvdaK445wBigYZudMzZpIX36Irj2atjWyUJ2/yUCpbge1Qk04xw1tk3hqoI/xH3RphH89B55g+VTUi+TQwd0n7unsHBUKEPmfgEIM=
+	t=1751993801; cv=none; b=S/xpyt4QU6VAjOGuZQcBldU7n/mqWlDNwSItmMN16eHHeMLX4oe2wqMWbcDikfiOU1Up6zdsmtWRIShdwgDwpiN0gtTYU78Kz9bTOHRV861zTgvvbI2c/nY8Z3tmi9dSRnnSnpqeiZaQ73rdDDX1Rle8v8/WCge6jYJYA98Qqxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993284; c=relaxed/simple;
-	bh=F1XNIMmqQ0CJwYRHV5OLj65uR2TO+V5jA82jQ2CTq90=;
+	s=arc-20240116; t=1751993801; c=relaxed/simple;
+	bh=O5TDb5HNP4ftS15x1BQqy0bxrNkVEa1jM2ejQBkdH8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NhpDsybzHiNaaSimOjJqI/t2vap7rfjZqJjBOyd7RDvtWYDam49YNEiAHtJD1tOOjyRrV+PERH/xYRvFmHk1fZP46fe7th7pgBOnmm9On1KjpRrksByj+mdJWLWUWngt1nkny1CVRquSi2ZevCEcaa8r25UIX6+ik9hAnzqGedQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMBnNczH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8E6C4CEED;
-	Tue,  8 Jul 2025 16:48:03 +0000 (UTC)
+	 MIME-Version; b=QRoqy5GvYXEyaG0RFt3vQsOrVD1Zonoa9T+Op3DN2QtioU8F83SgNVL3u/hP6NotEDo/wg6DduqcaRr8Oeuqw5e2pZAPN5jRPsdXF3yqFHhI7tmE7hdHzhN8r9R29XYEQOLZzdNEiK+pi5JpJMBdv1j/N7ovJZwiY+OoaM3XMpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mo6IPg51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C8FC4CEF5;
+	Tue,  8 Jul 2025 16:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993284;
-	bh=F1XNIMmqQ0CJwYRHV5OLj65uR2TO+V5jA82jQ2CTq90=;
+	s=korg; t=1751993801;
+	bh=O5TDb5HNP4ftS15x1BQqy0bxrNkVEa1jM2ejQBkdH8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QMBnNczH+DLwsBiD3Rua4rXBNms9xQ/71pbvnfBWGZ7311FfqaOsuG3ALTTZv8FNO
-	 epNS8URHhW+r5W7BDWjLKdkgzo8sj+5USWAcCPDYeeM9oi6BIAkrWs8j3Gy9TyPTFg
-	 mDWJS+cEbUaPxVaZFHDAWCkekIODga3+BJoZTKsw=
+	b=Mo6IPg51StaqJqcndk5VtQmE02e8YmHAEM3j5BvcmDCbiUw0xh9bqdQm9RASLAdHl
+	 se9TPikM/gomhRNq3UXfbL5uKSEh9+4DOXR++w+Q8f4lhbr0j/697+wHYfPhzp9O9p
+	 +82XgCdCsp5W51gR1CALjewo5GpAy8sYyatW5ZNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.15 022/178] Bluetooth: MGMT: set_mesh: update LE scan interval and window
-Date: Tue,  8 Jul 2025 18:20:59 +0200
-Message-ID: <20250708162237.128764267@linuxfoundation.org>
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 023/160] ALSA: hda: Add new pci id for AMD GPU display HD audio controller
+Date: Tue,  8 Jul 2025 18:21:00 +0200
+Message-ID: <20250708162232.151514696@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-commit e5af67a870f738bb8a4594b6c60c2caf4c87a3c9 upstream.
+[ Upstream commit ab72bfce7647522e01a181e3600c3d14ff5c143e ]
 
-According to the message of commit b338d91703fa ("Bluetooth: Implement
-support for Mesh"), MGMT_OP_SET_MESH_RECEIVER should set the passive scan
-parameters.  Currently the scan interval and window parameters are
-silently ignored, although user space (bluetooth-meshd) expects that
-they can be used [1]
+Add new pci id for AMD GPU display HD audio controller(device id- 0xab40).
 
-[1] https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/mesh/mesh-io-mgmt.c#n344
-Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://patch.msgid.link/20250529053838.2350071-1-Vijendar.Mukunda@amd.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ sound/pci/hda/hda_intel.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -2153,6 +2153,9 @@ static int set_mesh_sync(struct hci_dev
- 	else
- 		hci_dev_clear_flag(hdev, HCI_MESH);
- 
-+	hdev->le_scan_interval = __le16_to_cpu(cp->period);
-+	hdev->le_scan_window = __le16_to_cpu(cp->window);
-+
- 	len -= sizeof(*cp);
- 
- 	/* If filters don't fit, forward all adv pkts */
-@@ -2167,6 +2170,7 @@ static int set_mesh(struct sock *sk, str
- {
- 	struct mgmt_cp_set_mesh *cp = data;
- 	struct mgmt_pending_cmd *cmd;
-+	__u16 period, window;
- 	int err = 0;
- 
- 	bt_dev_dbg(hdev, "sock %p", sk);
-@@ -2180,6 +2184,23 @@ static int set_mesh(struct sock *sk, str
- 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
- 				       MGMT_STATUS_INVALID_PARAMS);
- 
-+	/* Keep allowed ranges in sync with set_scan_params() */
-+	period = __le16_to_cpu(cp->period);
-+
-+	if (period < 0x0004 || period > 0x4000)
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
-+				       MGMT_STATUS_INVALID_PARAMS);
-+
-+	window = __le16_to_cpu(cp->window);
-+
-+	if (window < 0x0004 || window > 0x4000)
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
-+				       MGMT_STATUS_INVALID_PARAMS);
-+
-+	if (window > period)
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
-+				       MGMT_STATUS_INVALID_PARAMS);
-+
- 	hci_dev_lock(hdev);
- 
- 	cmd = mgmt_pending_add(sk, MGMT_OP_SET_MESH_RECEIVER, hdev, data, len);
-@@ -6432,6 +6453,7 @@ static int set_scan_params(struct sock *
- 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_SCAN_PARAMS,
- 				       MGMT_STATUS_NOT_SUPPORTED);
- 
-+	/* Keep allowed ranges in sync with set_mesh() */
- 	interval = __le16_to_cpu(cp->interval);
- 
- 	if (interval < 0x0004 || interval > 0x4000)
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index cc8c066327b6c..c69f4e5989d4f 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2731,6 +2731,9 @@ static const struct pci_device_id azx_ids[] = {
+ 	{ PCI_DEVICE(0x1002, 0xab38),
+ 	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
+ 	  AZX_DCAPS_PM_RUNTIME },
++	{ PCI_VDEVICE(ATI, 0xab40),
++	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
++	  AZX_DCAPS_PM_RUNTIME },
+ 	/* GLENFLY */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_GLENFLY, PCI_ANY_ID),
+ 	  .class = PCI_CLASS_MULTIMEDIA_HD_AUDIO << 8,
+-- 
+2.39.5
+
 
 
 
