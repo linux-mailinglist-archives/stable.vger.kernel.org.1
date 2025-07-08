@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-161113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E54AAFD36E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00AFAFD21E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B64545416A1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77C8D7AAA4D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E263C2DA77B;
-	Tue,  8 Jul 2025 16:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1952E5414;
+	Tue,  8 Jul 2025 16:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NReE1mc1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzCuC2vO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F62BE46;
-	Tue,  8 Jul 2025 16:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D022E337A;
+	Tue,  8 Jul 2025 16:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993632; cv=none; b=hz3PWCPHlIjv4OAarfm6R4HfOcYmnfHTIvYW4Vigowc7QpLeGSht10KDcTAGq8Arfj/9hZ3BKCTek16JhUQKiq1kkFYUBJd0UgJJgrpvHzqAxsrI2mFaKoWtJsF33ZBruWFSw1ye4VfPpSfuUTzsnKT0p1Zk1W3JgdahPeJUvHk=
+	t=1751992995; cv=none; b=nmmD4uUNal+eLvElXQTVHgEchxo4zm8933YisBAVzCfj1f2GFIqEBihsN2s+wThVMQ2jRTiJvnzMrfcM1oQZB/wSfWGeZzn8ulmu2iTBAiIvl2k1q3dZjM2wq/n2cdfd09MSHHbryeTTFslpD/k2z+c9aj4BHD4kYnsJdRBSnYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993632; c=relaxed/simple;
-	bh=h8Wgy/ncW2npjKttmGxXxqKMP3bIBHRpUwzKjHdpEls=;
+	s=arc-20240116; t=1751992995; c=relaxed/simple;
+	bh=IKNCQMFSy/+vys7ZqtIGDE3JNL+s+xsJEgG5sYesM10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0vilBCPc8AfvZ9KtlulrmT/OU2oTTzoYisnk29aYt1Rlk/qDqF83kaCFUqcZcCEqQrUyTmg5E1ztq65Z8SfsCllPzev5tUg/Lh3id8O/luJhV0umThUbz2I5OIKeEnAhFyRYogzMbUmOStRBgZtiPrYMb5cAQWd4nV10K67SHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NReE1mc1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0AEC4CEED;
-	Tue,  8 Jul 2025 16:53:51 +0000 (UTC)
+	 MIME-Version; b=Arp1QWDItpYwicJU1NmhK+GbNPQVKkk3SPQjBQHff47f+OX4ZZGRpdZCjJ2XrZKQ5ztQcsUmAxSrEFtYRhK7GRtcvzjw+cwka7/rBpVRo/ltfCe4WH0XtY6koOZWyWf0FC9jiBsL8LKebOE6xM+skuPVpHJUn6bx0KXN6+Fn57k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzCuC2vO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6B6C4CEED;
+	Tue,  8 Jul 2025 16:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993632;
-	bh=h8Wgy/ncW2npjKttmGxXxqKMP3bIBHRpUwzKjHdpEls=;
+	s=korg; t=1751992995;
+	bh=IKNCQMFSy/+vys7ZqtIGDE3JNL+s+xsJEgG5sYesM10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NReE1mc1uC9OC5232l2M+7943SzmGlE2OCKnZ/1Go4gxQt6WXTOE5FuTzdZepGyAc
-	 xDVAPJVbLAdfXUldDL/hMaNvOO9G+J7F5QunxpYEGXqgIk42la/TMb4BBA1EwFKYMe
-	 sBDTHORBUnbd9DzLLGOboL1tKEdcnbZOBsKoCnHM=
+	b=dzCuC2vOBJ0SX97PGF1NPdpG9dZ1tZe3k/h7K/Gfb3GaIE6lxPH+LM7cs6hGXtST8
+	 UktnieAfef+8M/0L8WWsewcDYwuiPGkUjEtfD2GTBNFeND59PidiUhtQURPdg+umSb
+	 qQtO0mN3+4gcsT4K04F6ZjtikzJ81x69g71cBD0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+25b83a6f2c702075fcbc@syzkaller.appspotmail.com,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 110/178] amd-xgbe: align CL37 AN sequence as per databook
+Subject: [PATCH 6.12 151/232] netfs: Fix oops in write-retry from mis-resetting the subreq iterator
 Date: Tue,  8 Jul 2025 18:22:27 +0200
-Message-ID: <20250708162239.498928981@linuxfoundation.org>
+Message-ID: <20250708162245.390650881@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +66,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 42fd432fe6d320323215ebdf4de4d0d7e56e6792 ]
+[ Upstream commit 4481f7f2b3df123ec77e828c849138f75cff2bf2 ]
 
-Update the Clause 37 Auto-Negotiation implementation to properly align
-with the PCS hardware specifications:
-- Fix incorrect bit settings in Link Status and Link Duplex fields
-- Implement missing sequence steps 2 and 7
+Fix the resetting of the subrequest iterator in netfs_retry_write_stream()
+to use the iterator-reset function as the iterator may have been shortened
+by a previous retry.  In such a case, the amount of data to be written by
+the subrequest is not "subreq->len" but "subreq->len -
+subreq->transferred".
 
-These changes ensure CL37 auto-negotiation protocol follows the exact
-sequence patterns as specified in the hardware databook.
+Without this, KASAN may see an error in iov_iter_revert():
 
-Fixes: 1bf40ada6290 ("amd-xgbe: Add support for clause 37 auto-negotiation")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20250630192636.3838291-1-Raju.Rangoju@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+   BUG: KASAN: slab-out-of-bounds in iov_iter_revert lib/iov_iter.c:633 [inline]
+   BUG: KASAN: slab-out-of-bounds in iov_iter_revert+0x443/0x5a0 lib/iov_iter.c:611
+   Read of size 4 at addr ffff88802912a0b8 by task kworker/u32:7/1147
+
+   CPU: 1 UID: 0 PID: 1147 Comm: kworker/u32:7 Not tainted 6.15.0-rc6-syzkaller-00052-g9f35e33144ae #0 PREEMPT(full)
+   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+   Workqueue: events_unbound netfs_write_collection_worker
+   Call Trace:
+    <TASK>
+    __dump_stack lib/dump_stack.c:94 [inline]
+    dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+    print_address_description mm/kasan/report.c:408 [inline]
+    print_report+0xc3/0x670 mm/kasan/report.c:521
+    kasan_report+0xe0/0x110 mm/kasan/report.c:634
+    iov_iter_revert lib/iov_iter.c:633 [inline]
+    iov_iter_revert+0x443/0x5a0 lib/iov_iter.c:611
+    netfs_retry_write_stream fs/netfs/write_retry.c:44 [inline]
+    netfs_retry_writes+0x166d/0x1a50 fs/netfs/write_retry.c:231
+    netfs_collect_write_results fs/netfs/write_collect.c:352 [inline]
+    netfs_write_collection_worker+0x23fd/0x3830 fs/netfs/write_collect.c:374
+    process_one_work+0x9cf/0x1b70 kernel/workqueue.c:3238
+    process_scheduled_works kernel/workqueue.c:3319 [inline]
+    worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
+    kthread+0x3c2/0x780 kernel/kthread.c:464
+    ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
+    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+    </TASK>
+
+Fixes: cd0277ed0c18 ("netfs: Use new folio_queue data type and iterator instead of xarray iter")
+Reported-by: syzbot+25b83a6f2c702075fcbc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=25b83a6f2c702075fcbc
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/20250519090707.2848510-2-dhowells@redhat.com
+Tested-by: syzbot+25b83a6f2c702075fcbc@syzkaller.appspotmail.com
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-common.h | 2 ++
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c   | 9 +++++++++
- drivers/net/ethernet/amd/xgbe/xgbe.h        | 4 ++--
- 3 files changed, 13 insertions(+), 2 deletions(-)
+ fs/netfs/write_collect.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-common.h b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-index 3b70f67376331..aa25a8a0a106f 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-@@ -1373,6 +1373,8 @@
- #define MDIO_VEND2_CTRL1_SS13		BIT(13)
- #endif
+diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+index 412d4da742270..7cb21da40a0a4 100644
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -176,9 +176,10 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
+ 			if (test_bit(NETFS_SREQ_FAILED, &subreq->flags))
+ 				break;
+ 			if (__test_and_clear_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags)) {
+-				struct iov_iter source = subreq->io_iter;
++				struct iov_iter source;
  
-+#define XGBE_VEND2_MAC_AUTO_SW		BIT(9)
-+
- /* MDIO mask values */
- #define XGBE_AN_CL73_INT_CMPLT		BIT(0)
- #define XGBE_AN_CL73_INC_LINK		BIT(1)
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index 07f4f3418d018..3316c719f9f8c 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -375,6 +375,10 @@ static void xgbe_an37_set(struct xgbe_prv_data *pdata, bool enable,
- 		reg |= MDIO_VEND2_CTRL1_AN_RESTART;
- 
- 	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_CTRL1, reg);
-+
-+	reg = XMDIO_READ(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL);
-+	reg |= XGBE_VEND2_MAC_AUTO_SW;
-+	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL, reg);
- }
- 
- static void xgbe_an37_restart(struct xgbe_prv_data *pdata)
-@@ -1003,6 +1007,11 @@ static void xgbe_an37_init(struct xgbe_prv_data *pdata)
- 
- 	netif_dbg(pdata, link, pdata->netdev, "CL37 AN (%s) initialized\n",
- 		  (pdata->an_mode == XGBE_AN_MODE_CL37) ? "BaseX" : "SGMII");
-+
-+	reg = XMDIO_READ(pdata, MDIO_MMD_AN, MDIO_CTRL1);
-+	reg &= ~MDIO_AN_CTRL1_ENABLE;
-+	XMDIO_WRITE(pdata, MDIO_MMD_AN, MDIO_CTRL1, reg);
-+
- }
- 
- static void xgbe_an73_init(struct xgbe_prv_data *pdata)
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
-index ed5d43c16d0e2..7526a0906b391 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -292,12 +292,12 @@
- #define XGBE_LINK_TIMEOUT		5
- #define XGBE_KR_TRAINING_WAIT_ITER	50
- 
--#define XGBE_SGMII_AN_LINK_STATUS	BIT(1)
-+#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(1)
- #define XGBE_SGMII_AN_LINK_SPEED	(BIT(2) | BIT(3))
- #define XGBE_SGMII_AN_LINK_SPEED_10	0x00
- #define XGBE_SGMII_AN_LINK_SPEED_100	0x04
- #define XGBE_SGMII_AN_LINK_SPEED_1000	0x08
--#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(4)
-+#define XGBE_SGMII_AN_LINK_STATUS	BIT(4)
- 
- /* ECC correctable error notification window (seconds) */
- #define XGBE_ECC_LIMIT			60
+-				iov_iter_revert(&source, subreq->len - source.count);
++				netfs_reset_iter(subreq);
++				source = subreq->io_iter;
+ 				__set_bit(NETFS_SREQ_RETRYING, &subreq->flags);
+ 				netfs_get_subrequest(subreq, netfs_sreq_trace_get_resubmit);
+ 				netfs_reissue_write(stream, subreq, &source);
 -- 
 2.39.5
 
