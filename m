@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-160615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56BB5AFD0F9
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3414BAFD1A6
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5047118841E4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:29:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D88ED175A24
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735E22D877F;
-	Tue,  8 Jul 2025 16:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D79E2E337A;
+	Tue,  8 Jul 2025 16:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLi1/n2I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eT6FyBE4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF1E231CB0;
-	Tue,  8 Jul 2025 16:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD6921773D;
+	Tue,  8 Jul 2025 16:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992177; cv=none; b=BQVjsv5lZkvTLk03nHYwHPQVi6YCnDPUDRjWUGCxk1GfPxmb4K85Oi2VhMESuiVQoP6ZjF0FVeEkZGfTeEazVrZ1O/cgErlSjhhpNKnG+QAWtdcCnsBaVUlxKH+lALWyk1Ja8zmS73XiyXVWig92iutd3EUlSKskFK4N/WDZNSE=
+	t=1751992569; cv=none; b=jsxB3QWO62UCLlTdBY9A4T1bz2UOdZfQF6afhIazGseBZyKdBpbJVKW0Q2Qo+Xxthmd+OcFt3CNh9BncidbdtbvHKTvSAK+RSMrBM4oaoDMuBsXYx+4iFEZyWoCYsnfLVMGXJ6DYgbvvs25zDRdcym7p2NyE9g5aVJ2fV9HqBoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992177; c=relaxed/simple;
-	bh=7yAWZkOkxf7tL88Iq6qnNUU3qx6tAxk/UCgck/QG0N0=;
+	s=arc-20240116; t=1751992569; c=relaxed/simple;
+	bh=vdbwql6KC6mLhrxIRECS27fOgwZOjz04i4/PAuOmvYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uSbDYo+2DLggIFmyVMXKi7iazZ//CkA2xXgtilaGHA/fytUWHra7feE2bunjVmTzZ2Doa78X9dn3eElO3XYeLJSPyGhXh0WrH/bZx7M9hZKL3q/4cEpQWKqtfTNpcjN7B4qrfodzXWL5d4nOsn6gDHaJgnqM8FB7HS7QU84faHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLi1/n2I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA223C4CEED;
-	Tue,  8 Jul 2025 16:29:36 +0000 (UTC)
+	 MIME-Version; b=WnjO5I5bi3tqNJAJ32/ynbpvkPgK7v5xP0jLgZd3jnMBB5ciCdAvhWcWP6DqdIwhSuGkwqBn0Gkl/58ERIgmF1sT20yxn2FBPQWMUXUCxIdzF2zI+zuXb4YHnoGeljeXzLvOPy7bss4ytAOko2lKFd6atTtYIwWTDDJI+i0qEvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eT6FyBE4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6585BC4CEED;
+	Tue,  8 Jul 2025 16:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992177;
-	bh=7yAWZkOkxf7tL88Iq6qnNUU3qx6tAxk/UCgck/QG0N0=;
+	s=korg; t=1751992568;
+	bh=vdbwql6KC6mLhrxIRECS27fOgwZOjz04i4/PAuOmvYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZLi1/n2IjSs0/onVShOzF0QJLXrFB02uNh8dN17siiITLVis+wEGiTqnk81PFjH/J
-	 hNpanSQZ4AcwRPo0MxpHQk1sjwVZJC2jFmCxf5egM76GAwTG/wUUvRCE4wKzSevyHR
-	 D+KdL3bSJGQoq0lOuWXUK3klW1wBjqtQYAWWAfPk=
+	b=eT6FyBE4QYYZ/IqeK7SHL9FulN73c6Rg3gwehbPSe6rUGZ+l/qabOVZLndbAJZZ83
+	 h/CtOuIrA7hy6QlOj640IuHsYii5o8c/Q7x6xWfCeOYTM1X6LIyMO1Q1q8fUAumMn3
+	 /Abpl7T9wuiRmnanspo8Zzd/D22Hn+v1idQo0GeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Sanders <jsanders.devel@gmail.com>,
-	Valentin Kleibel <valentin@vrvis.at>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 53/81] aoe: defer rexmit timer downdev work to workqueue
+	Jeff LaBundy <jeff@labundy.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 114/132] Input: iqs7222 - explicitly define number of external channels
 Date: Tue,  8 Jul 2025 18:23:45 +0200
-Message-ID: <20250708162226.693352464@linuxfoundation.org>
+Message-ID: <20250708162233.901296346@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Sanders <jsanders.devel@gmail.com>
+From: Jeff LaBundy <jeff@labundy.com>
 
-[ Upstream commit cffc873d68ab09a0432b8212008c5613f8a70a2c ]
+commit 63f4970a1219b5256e8ea952096c86dab666d312 upstream.
 
-When aoe's rexmit_timer() notices that an aoe target fails to respond to
-commands for more than aoe_deadsecs, it calls aoedev_downdev() which
-cleans the outstanding aoe and block queues. This can involve sleeping,
-such as in blk_mq_freeze_queue(), which should not occur in irq context.
+The number of external channels is assumed to be a multiple of 10,
+but this is not the case for IQS7222D. As a result, some CRx pins
+are wrongly prevented from being assigned to some channels.
 
-This patch defers that aoedev_downdev() call to the aoe device's
-workqueue.
+Address this problem by explicitly defining the number of external
+channels for cases in which the number of external channels is not
+equal to the total number of available channels.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=212665
-Signed-off-by: Justin Sanders <jsanders.devel@gmail.com>
-Link: https://lore.kernel.org/r/20250610170600.869-2-jsanders.devel@gmail.com
-Tested-By: Valentin Kleibel <valentin@vrvis.at>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dd24e202ac72 ("Input: iqs7222 - add support for Azoteq IQS7222D")
+Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+Link: https://lore.kernel.org/r/aGHVf6HkyFZrzTPy@nixie71
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/aoe/aoe.h    | 1 +
- drivers/block/aoe/aoecmd.c | 8 ++++++--
- drivers/block/aoe/aoedev.c | 5 ++++-
- 3 files changed, 11 insertions(+), 3 deletions(-)
+ drivers/input/misc/iqs7222.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/aoe/aoe.h b/drivers/block/aoe/aoe.h
-index 749ae1246f4cf..d35caa3c69e15 100644
---- a/drivers/block/aoe/aoe.h
-+++ b/drivers/block/aoe/aoe.h
-@@ -80,6 +80,7 @@ enum {
- 	DEVFL_NEWSIZE = (1<<6),	/* need to update dev size in block layer */
- 	DEVFL_FREEING = (1<<7),	/* set when device is being cleaned up */
- 	DEVFL_FREED = (1<<8),	/* device has been cleaned up */
-+	DEVFL_DEAD = (1<<9),	/* device has timed out of aoe_deadsecs */
+--- a/drivers/input/misc/iqs7222.c
++++ b/drivers/input/misc/iqs7222.c
+@@ -301,6 +301,7 @@ struct iqs7222_dev_desc {
+ 	int allow_offset;
+ 	int event_offset;
+ 	int comms_offset;
++	int ext_chan;
+ 	bool legacy_gesture;
+ 	struct iqs7222_reg_grp_desc reg_grps[IQS7222_NUM_REG_GRPS];
  };
- 
- enum {
-diff --git a/drivers/block/aoe/aoecmd.c b/drivers/block/aoe/aoecmd.c
-index d1f4ddc576451..c4c5cf1ec71ba 100644
---- a/drivers/block/aoe/aoecmd.c
-+++ b/drivers/block/aoe/aoecmd.c
-@@ -754,7 +754,7 @@ rexmit_timer(struct timer_list *timer)
- 
- 	utgts = count_targets(d, NULL);
- 
--	if (d->flags & DEVFL_TKILL) {
-+	if (d->flags & (DEVFL_TKILL | DEVFL_DEAD)) {
- 		spin_unlock_irqrestore(&d->lock, flags);
- 		return;
- 	}
-@@ -786,7 +786,8 @@ rexmit_timer(struct timer_list *timer)
- 			 * to clean up.
- 			 */
- 			list_splice(&flist, &d->factive[0]);
--			aoedev_downdev(d);
-+			d->flags |= DEVFL_DEAD;
-+			queue_work(aoe_wq, &d->work);
- 			goto out;
- 		}
- 
-@@ -898,6 +899,9 @@ aoecmd_sleepwork(struct work_struct *work)
- {
- 	struct aoedev *d = container_of(work, struct aoedev, work);
- 
-+	if (d->flags & DEVFL_DEAD)
-+		aoedev_downdev(d);
-+
- 	if (d->flags & DEVFL_GDALLOC)
- 		aoeblk_gdalloc(d);
- 
-diff --git a/drivers/block/aoe/aoedev.c b/drivers/block/aoe/aoedev.c
-index 280679bde3a50..4240e11adfb76 100644
---- a/drivers/block/aoe/aoedev.c
-+++ b/drivers/block/aoe/aoedev.c
-@@ -200,8 +200,11 @@ aoedev_downdev(struct aoedev *d)
- 	struct list_head *head, *pos, *nx;
- 	struct request *rq, *rqnext;
- 	int i;
-+	unsigned long flags;
- 
--	d->flags &= ~DEVFL_UP;
-+	spin_lock_irqsave(&d->lock, flags);
-+	d->flags &= ~(DEVFL_UP | DEVFL_DEAD);
-+	spin_unlock_irqrestore(&d->lock, flags);
- 
- 	/* clean out active and to-be-retransmitted buffers */
- 	for (i = 0; i < NFACTIVE; i++) {
--- 
-2.39.5
-
+@@ -315,6 +316,7 @@ static const struct iqs7222_dev_desc iqs
+ 		.allow_offset = 9,
+ 		.event_offset = 10,
+ 		.comms_offset = 12,
++		.ext_chan = 10,
+ 		.reg_grps = {
+ 			[IQS7222_REG_GRP_STAT] = {
+ 				.base = IQS7222_SYS_STATUS,
+@@ -373,6 +375,7 @@ static const struct iqs7222_dev_desc iqs
+ 		.allow_offset = 9,
+ 		.event_offset = 10,
+ 		.comms_offset = 12,
++		.ext_chan = 10,
+ 		.legacy_gesture = true,
+ 		.reg_grps = {
+ 			[IQS7222_REG_GRP_STAT] = {
+@@ -2244,7 +2247,7 @@ static int iqs7222_parse_chan(struct iqs
+ 	const struct iqs7222_dev_desc *dev_desc = iqs7222->dev_desc;
+ 	struct i2c_client *client = iqs7222->client;
+ 	int num_chan = dev_desc->reg_grps[IQS7222_REG_GRP_CHAN].num_row;
+-	int ext_chan = rounddown(num_chan, 10);
++	int ext_chan = dev_desc->ext_chan ? : num_chan;
+ 	int error, i;
+ 	u16 *chan_setup = iqs7222->chan_setup[chan_index];
+ 	u16 *sys_setup = iqs7222->sys_setup;
+@@ -2448,7 +2451,7 @@ static int iqs7222_parse_sldr(struct iqs
+ 	const struct iqs7222_dev_desc *dev_desc = iqs7222->dev_desc;
+ 	struct i2c_client *client = iqs7222->client;
+ 	int num_chan = dev_desc->reg_grps[IQS7222_REG_GRP_CHAN].num_row;
+-	int ext_chan = rounddown(num_chan, 10);
++	int ext_chan = dev_desc->ext_chan ? : num_chan;
+ 	int count, error, reg_offset, i;
+ 	u16 *event_mask = &iqs7222->sys_setup[dev_desc->event_offset];
+ 	u16 *sldr_setup = iqs7222->sldr_setup[sldr_index];
 
 
 
