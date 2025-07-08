@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-160939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70198AFD2A5
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BDB1AFD164
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:35:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51315583FDD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03F5C5814C3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F4B2E5B08;
-	Tue,  8 Jul 2025 16:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D0C2E5425;
+	Tue,  8 Jul 2025 16:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOib21Rn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPzrlKdb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B637F1E9B08;
-	Tue,  8 Jul 2025 16:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266F31548C;
+	Tue,  8 Jul 2025 16:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993131; cv=none; b=ElidNpQ5uxgC8KTvVM9sdz2wyyPkciag5vkxqtMbpZEmQonNp07piSSSpaM7/zu23RWi3HGLJQp8wcgLjdy5VKcaIlsI0ZbD6hxKFeWGdnbUwvRMCEtBMDuoh55biNTBPp6BbJJhQMiLD2VEMJn9sHfwoHSZ6A1RXpGysLGSJXI=
+	t=1751992412; cv=none; b=LcV7lhFBG273F3bmoLTEf6yjB2SAztCl4tkSTYAoChO8Xdok4qshDzXjh/JvQGyZT9uIQ5zrT3t7ni6zojd2a1vCKsxXzNF9xP+9i79IDbyishl75uftTN5tTkOOl9llm3XbloHzY71svAA00sEDICM9BkRdB0t3MrEDijVREMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993131; c=relaxed/simple;
-	bh=fvnZsvGY8Js3sf7I72JQQYZy1QVDzpaSSVzZLKkhZeA=;
+	s=arc-20240116; t=1751992412; c=relaxed/simple;
+	bh=jl9LhLoYVmjw2vu84PrzNAfZeDt/mkOF5aPRJ9dT2Tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KPojuGhKF+ue2rUwc/eNGTD3nDzTwF3e5hhXCEvabyEC3ZagVuXtWM1f/7rIZtiAwQgkQIJgQxYTTASaD6BPNNQ67KKExq02GloFpHVudzznhZRdPvgdJZHgOkj1ddn7Vfx8W+QUYL0ncJ+fggh56cDT9SxFEHNypKdB4X1RBMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOib21Rn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5BDC4CEF5;
-	Tue,  8 Jul 2025 16:45:31 +0000 (UTC)
+	 MIME-Version; b=ogksqyeHSh5gJSQDvLtv21w82FaNMCjk/Pie1kRTskLOreHXtj8mWJq8ZWhe2GmxdDvO18JnEqD59cT+dWV7+21AqnM8owziHpLIBtVEyanRhgeUlk/KSjmVVmk0LB5VLp6VBHS12/LbZb9X74MuWco8j9RY1yYLIVqd3Auvwv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPzrlKdb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345B4C4CEED;
+	Tue,  8 Jul 2025 16:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993131;
-	bh=fvnZsvGY8Js3sf7I72JQQYZy1QVDzpaSSVzZLKkhZeA=;
+	s=korg; t=1751992411;
+	bh=jl9LhLoYVmjw2vu84PrzNAfZeDt/mkOF5aPRJ9dT2Tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fOib21Rn3XxAMUDWulodU8xo2YkRiiCdSPNWWchB97wb+Ua4KMyyoZ2K2a7IKtcCe
-	 ZVoqwRkzZYrLjpU52hBR3BQAqgxwgUYqk9Bqh/D06T6snFPYO97PMU4TI2aCO/GvJl
-	 FRKSKBOHGbxWJhAZ0qALzz4H3JxbR3CcLYkohWq8=
+	b=VPzrlKdbvIdzaSzuUFtiOi78SEECU6SiLsqIkjDvXYuMpHH31sdsiQcEMeQTA5Jal
+	 TLpiVf7Oskol2hMO6iuzNzhdN99jTmVb9mb73d5EgJif3L8aB/tzQjwiSFLqPBq3fF
+	 4Y1N+k5IQS6wCrKlXrRyIcAbmJFwTypcbupSxd/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chen <michael.chen@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 168/232] drm/amdgpu/mes: add missing locking in helper functions
+Subject: [PATCH 6.6 053/132] drm/i915/gt: Fix timeline left held on VMA alloc error
 Date: Tue,  8 Jul 2025 18:22:44 +0200
-Message-ID: <20250708162245.834175380@linuxfoundation.org>
+Message-ID: <20250708162232.212291968@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +69,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-[ Upstream commit 40f970ba7a4ab77be2ffe6d50a70416c8876496a ]
+[ Upstream commit a5aa7bc1fca78c7fa127d9e33aa94a0c9066c1d6 ]
 
-We need to take the MES lock.
+The following error has been reported sporadically by CI when a test
+unbinds the i915 driver on a ring submission platform:
 
-Reviewed-by: Michael Chen <michael.chen@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+<4> [239.330153] ------------[ cut here ]------------
+<4> [239.330166] i915 0000:00:02.0: [drm] drm_WARN_ON(dev_priv->mm.shrink_count)
+<4> [239.330196] WARNING: CPU: 1 PID: 18570 at drivers/gpu/drm/i915/i915_gem.c:1309 i915_gem_cleanup_early+0x13e/0x150 [i915]
+...
+<4> [239.330640] RIP: 0010:i915_gem_cleanup_early+0x13e/0x150 [i915]
+...
+<4> [239.330942] Call Trace:
+<4> [239.330944]  <TASK>
+<4> [239.330949]  i915_driver_late_release+0x2b/0xa0 [i915]
+<4> [239.331202]  i915_driver_release+0x86/0xa0 [i915]
+<4> [239.331482]  devm_drm_dev_init_release+0x61/0x90
+<4> [239.331494]  devm_action_release+0x15/0x30
+<4> [239.331504]  release_nodes+0x3d/0x120
+<4> [239.331517]  devres_release_all+0x96/0xd0
+<4> [239.331533]  device_unbind_cleanup+0x12/0x80
+<4> [239.331543]  device_release_driver_internal+0x23a/0x280
+<4> [239.331550]  ? bus_find_device+0xa5/0xe0
+<4> [239.331563]  device_driver_detach+0x14/0x20
+...
+<4> [357.719679] ---[ end trace 0000000000000000 ]---
+
+If the test also unloads the i915 module then that's followed with:
+
+<3> [357.787478] =============================================================================
+<3> [357.788006] BUG i915_vma (Tainted: G     U  W        N ): Objects remaining on __kmem_cache_shutdown()
+<3> [357.788031] -----------------------------------------------------------------------------
+<3> [357.788204] Object 0xffff888109e7f480 @offset=29824
+<3> [357.788670] Allocated in i915_vma_instance+0xee/0xc10 [i915] age=292729 cpu=4 pid=2244
+<4> [357.788994]  i915_vma_instance+0xee/0xc10 [i915]
+<4> [357.789290]  init_status_page+0x7b/0x420 [i915]
+<4> [357.789532]  intel_engines_init+0x1d8/0x980 [i915]
+<4> [357.789772]  intel_gt_init+0x175/0x450 [i915]
+<4> [357.790014]  i915_gem_init+0x113/0x340 [i915]
+<4> [357.790281]  i915_driver_probe+0x847/0xed0 [i915]
+<4> [357.790504]  i915_pci_probe+0xe6/0x220 [i915]
+...
+
+Closer analysis of CI results history has revealed a dependency of the
+error on a few IGT tests, namely:
+- igt@api_intel_allocator@fork-simple-stress-signal,
+- igt@api_intel_allocator@two-level-inception-interruptible,
+- igt@gem_linear_blits@interruptible,
+- igt@prime_mmap_coherency@ioctl-errors,
+which invisibly trigger the issue, then exhibited with first driver unbind
+attempt.
+
+All of the above tests perform actions which are actively interrupted with
+signals.  Further debugging has allowed to narrow that scope down to
+DRM_IOCTL_I915_GEM_EXECBUFFER2, and ring_context_alloc(), specific to ring
+submission, in particular.
+
+If successful then that function, or its execlists or GuC submission
+equivalent, is supposed to be called only once per GEM context engine,
+followed by raise of a flag that prevents the function from being called
+again.  The function is expected to unwind its internal errors itself, so
+it may be safely called once more after it returns an error.
+
+In case of ring submission, the function first gets a reference to the
+engine's legacy timeline and then allocates a VMA.  If the VMA allocation
+fails, e.g. when i915_vma_instance() called from inside is interrupted
+with a signal, then ring_context_alloc() fails, leaving the timeline held
+referenced.  On next I915_GEM_EXECBUFFER2 IOCTL, another reference to the
+timeline is got, and only that last one is put on successful completion.
+As a consequence, the legacy timeline, with its underlying engine status
+page's VMA object, is still held and not released on driver unbind.
+
+Get the legacy timeline only after successful allocation of the context
+engine's VMA.
+
+v2: Add a note on other submission methods (Krzysztof Karas):
+    Both execlists and GuC submission use lrc_alloc() which seems free
+    from a similar issue.
+
+Fixes: 75d0a7f31eec ("drm/i915: Lift timeline into intel_context")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Reviewed-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Reviewed-by: Nitin Gote <nitin.r.gote@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/20250611104352.1014011-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit cc43422b3cc79eacff4c5a8ba0d224688ca9dd4f)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpu/drm/i915/gt/intel_ring_submission.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-index 7d4b540340e02..41b88e0ea98b8 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-@@ -860,7 +860,9 @@ int amdgpu_mes_map_legacy_queue(struct amdgpu_device *adev,
- 	queue_input.mqd_addr = amdgpu_bo_gpu_offset(ring->mqd_obj);
- 	queue_input.wptr_addr = ring->wptr_gpu_addr;
+diff --git a/drivers/gpu/drm/i915/gt/intel_ring_submission.c b/drivers/gpu/drm/i915/gt/intel_ring_submission.c
+index 92085ffd23de0..4eb78895773f6 100644
+--- a/drivers/gpu/drm/i915/gt/intel_ring_submission.c
++++ b/drivers/gpu/drm/i915/gt/intel_ring_submission.c
+@@ -573,7 +573,6 @@ static int ring_context_alloc(struct intel_context *ce)
+ 	/* One ringbuffer to rule them all */
+ 	GEM_BUG_ON(!engine->legacy.ring);
+ 	ce->ring = engine->legacy.ring;
+-	ce->timeline = intel_timeline_get(engine->legacy.timeline);
  
-+	amdgpu_mes_lock(&adev->mes);
- 	r = adev->mes.funcs->map_legacy_queue(&adev->mes, &queue_input);
-+	amdgpu_mes_unlock(&adev->mes);
- 	if (r)
- 		DRM_ERROR("failed to map legacy queue\n");
- 
-@@ -883,7 +885,9 @@ int amdgpu_mes_unmap_legacy_queue(struct amdgpu_device *adev,
- 	queue_input.trail_fence_addr = gpu_addr;
- 	queue_input.trail_fence_data = seq;
- 
-+	amdgpu_mes_lock(&adev->mes);
- 	r = adev->mes.funcs->unmap_legacy_queue(&adev->mes, &queue_input);
-+	amdgpu_mes_unlock(&adev->mes);
- 	if (r)
- 		DRM_ERROR("failed to unmap legacy queue\n");
- 
-@@ -910,7 +914,9 @@ int amdgpu_mes_reset_legacy_queue(struct amdgpu_device *adev,
- 	queue_input.vmid = vmid;
- 	queue_input.use_mmio = use_mmio;
- 
-+	amdgpu_mes_lock(&adev->mes);
- 	r = adev->mes.funcs->reset_legacy_queue(&adev->mes, &queue_input);
-+	amdgpu_mes_unlock(&adev->mes);
- 	if (r)
- 		DRM_ERROR("failed to reset legacy queue\n");
- 
-@@ -931,7 +937,9 @@ uint32_t amdgpu_mes_rreg(struct amdgpu_device *adev, uint32_t reg)
- 		goto error;
+ 	GEM_BUG_ON(ce->state);
+ 	if (engine->context_size) {
+@@ -586,6 +585,8 @@ static int ring_context_alloc(struct intel_context *ce)
+ 		ce->state = vma;
  	}
  
-+	amdgpu_mes_lock(&adev->mes);
- 	r = adev->mes.funcs->misc_op(&adev->mes, &op_input);
-+	amdgpu_mes_unlock(&adev->mes);
- 	if (r)
- 		DRM_ERROR("failed to read reg (0x%x)\n", reg);
- 	else
-@@ -957,7 +965,9 @@ int amdgpu_mes_wreg(struct amdgpu_device *adev,
- 		goto error;
- 	}
- 
-+	amdgpu_mes_lock(&adev->mes);
- 	r = adev->mes.funcs->misc_op(&adev->mes, &op_input);
-+	amdgpu_mes_unlock(&adev->mes);
- 	if (r)
- 		DRM_ERROR("failed to write reg (0x%x)\n", reg);
- 
-@@ -984,7 +994,9 @@ int amdgpu_mes_reg_write_reg_wait(struct amdgpu_device *adev,
- 		goto error;
- 	}
- 
-+	amdgpu_mes_lock(&adev->mes);
- 	r = adev->mes.funcs->misc_op(&adev->mes, &op_input);
-+	amdgpu_mes_unlock(&adev->mes);
- 	if (r)
- 		DRM_ERROR("failed to reg_write_reg_wait\n");
- 
-@@ -1009,7 +1021,9 @@ int amdgpu_mes_reg_wait(struct amdgpu_device *adev, uint32_t reg,
- 		goto error;
- 	}
- 
-+	amdgpu_mes_lock(&adev->mes);
- 	r = adev->mes.funcs->misc_op(&adev->mes, &op_input);
-+	amdgpu_mes_unlock(&adev->mes);
- 	if (r)
- 		DRM_ERROR("failed to reg_write_reg_wait\n");
++	ce->timeline = intel_timeline_get(engine->legacy.timeline);
++
+ 	return 0;
+ }
  
 -- 
 2.39.5
