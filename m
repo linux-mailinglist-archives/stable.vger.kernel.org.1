@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-161253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7424AFD41A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03840AFD23E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07F2E5A0DE8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C966F1637B3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5802E541E;
-	Tue,  8 Jul 2025 17:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E3A2E540B;
+	Tue,  8 Jul 2025 16:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6N1iuHV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="juXdVUif"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0347263B;
-	Tue,  8 Jul 2025 17:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CBB2E2F0D;
+	Tue,  8 Jul 2025 16:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994039; cv=none; b=Ucw6gHoLUNifvNPa5/PAu0ldcJ1uG1VsyYmTrcDz01UwIBOAnjFkpLsYhvyzKd7mlFTe9hDZQqhyoX6jxPyWDvGdwZJ2A+12pqNXoQID0Bk7t+AXbwPUp0i/osUDw3jhaoj8pcQNN/yWITx9xYsRQbPo9HJtzYBu0Fea59D0Jms=
+	t=1751992892; cv=none; b=FJ0JlUEU013vrU4wu/a+w9uhajY1vm7nwra5t8cn1P0uQuVaf9ry1bBdREtpdBWhZ3LweNX/aeDbvonrCHsapQLKDAT8qmkDQsY+EV+2s+qjKzmrrwIdGsFjv5oCVBPx7UDBKc6ILiNDYjpg0H/rtLf+sOArVQaL524xbYpocT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994039; c=relaxed/simple;
-	bh=9OkjcX3Bhr2jMv9Tthe/zKX0EBDdPVuTad7fAm7wezw=;
+	s=arc-20240116; t=1751992892; c=relaxed/simple;
+	bh=R5ju/AEgwdtGii/zJbbdme4ko7C0DRm/j3YwdiO3L1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vb3KRzgW6DByUsljiYspxNwwxtv71V2yq0Cc0ZmEox2kkXmKYPJAouU30PIlfZDb2KHou+P6iSJLWEb09gO5FSkovQse4dfeKW5qbFC90XQ6sQPEn6TCT8+5RR2ew61BkfGKiQ6mkcZ1idDbkbAud56KkZNnPPqyG4X5YMXJlrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6N1iuHV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7CAC4CEED;
-	Tue,  8 Jul 2025 17:00:38 +0000 (UTC)
+	 MIME-Version; b=byxU58KkOliIrkvxmuRMjahAbICuNukDnslLTKwZqgPmG1Yb/bxkwR7BwLZ17sFOG4zu+eaBkb5vWiaDAYVAqqcsFLUz0aYwTwIWjvX5QMNMOzQTIfUf9HjTaooVArk464CL+/ymcC4UH2nUmQ+64bSz9xpume03T8+BGCAGu0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=juXdVUif; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A90DC4CEED;
+	Tue,  8 Jul 2025 16:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994039;
-	bh=9OkjcX3Bhr2jMv9Tthe/zKX0EBDdPVuTad7fAm7wezw=;
+	s=korg; t=1751992891;
+	bh=R5ju/AEgwdtGii/zJbbdme4ko7C0DRm/j3YwdiO3L1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6N1iuHVVGWpMYUiizLraJATW0/3KbgtXIWHaPKGo7VRQAEZhbrafI4N5diKPo8LG
-	 a2DqIWCSxYObMYJQYzECfMRS6VLB4r+DcvpwqmNs/VbbWu5yaSMUJtXHKV5OuYG73C
-	 0SfdBL6glB7luwIuq/m17BJ3kmgnjM/Y9coddprQ=
+	b=juXdVUifRKliipzMOiN8TvcZ+sPLAdZ5sEfq10R1GcGvdwWf4Jixi/fQCMdxd0caP
+	 N7uz/avrci2lmZB2vke9vuUNbniADmjf25k5lkCeGsiCmu/fkJxU8i0PdESeG2emNU
+	 Ux++k/DK+BcDaMkYEpQe/pKVbhZ96Reh+LynxTNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heinz Mauelshagen <heinzm@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.15 075/160] dm-raid: fix variable in journal device check
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 116/232] gfs2: Move gfs2_trans_add_databufs
 Date: Tue,  8 Jul 2025 18:21:52 +0200
-Message-ID: <20250708162233.625540764@linuxfoundation.org>
+Message-ID: <20250708162244.474654850@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heinz Mauelshagen <heinzm@redhat.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit db53805156f1e0aa6d059c0d3f9ac660d4ef3eb4 upstream.
+[ Upstream commit d50a64e3c55e59e45e415c65531b0d76ad4cea36 ]
 
-Replace "rdev" with correct loop variable name "r".
+Move gfs2_trans_add_databufs() to trans.c.  Pass in a glock instead of
+a gfs2_inode.
 
-Signed-off-by: Heinz Mauelshagen <heinzm@redhat.com>
-Cc: stable@vger.kernel.org
-Fixes: 63c32ed4afc2 ("dm raid: add raid4/5/6 journaling support")
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: 5a90f8d49922 ("gfs2: Don't start unnecessary transactions during log flush")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-raid.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/aops.c  | 23 +----------------------
+ fs/gfs2/aops.h  |  2 --
+ fs/gfs2/bmap.c  |  3 ++-
+ fs/gfs2/trans.c | 21 +++++++++++++++++++++
+ fs/gfs2/trans.h |  2 ++
+ 5 files changed, 26 insertions(+), 25 deletions(-)
 
---- a/drivers/md/dm-raid.c
-+++ b/drivers/md/dm-raid.c
-@@ -2381,7 +2381,7 @@ static int super_init_validation(struct
- 	 */
- 	sb_retrieve_failed_devices(sb, failed_devices);
- 	rdev_for_each(r, mddev) {
--		if (test_bit(Journal, &rdev->flags) ||
-+		if (test_bit(Journal, &r->flags) ||
- 		    !r->sb_page)
- 			continue;
- 		sb2 = page_address(r->sb_page);
+diff --git a/fs/gfs2/aops.c b/fs/gfs2/aops.c
+index 68fc8af14700d..ed2c708a215a4 100644
+--- a/fs/gfs2/aops.c
++++ b/fs/gfs2/aops.c
+@@ -37,27 +37,6 @@
+ #include "aops.h"
+ 
+ 
+-void gfs2_trans_add_databufs(struct gfs2_inode *ip, struct folio *folio,
+-			     size_t from, size_t len)
+-{
+-	struct buffer_head *head = folio_buffers(folio);
+-	unsigned int bsize = head->b_size;
+-	struct buffer_head *bh;
+-	size_t to = from + len;
+-	size_t start, end;
+-
+-	for (bh = head, start = 0; bh != head || !start;
+-	     bh = bh->b_this_page, start = end) {
+-		end = start + bsize;
+-		if (end <= from)
+-			continue;
+-		if (start >= to)
+-			break;
+-		set_buffer_uptodate(bh);
+-		gfs2_trans_add_data(ip->i_gl, bh);
+-	}
+-}
+-
+ /**
+  * gfs2_get_block_noalloc - Fills in a buffer head with details about a block
+  * @inode: The inode
+@@ -133,7 +112,7 @@ static int __gfs2_jdata_write_folio(struct folio *folio,
+ 					inode->i_sb->s_blocksize,
+ 					BIT(BH_Dirty)|BIT(BH_Uptodate));
+ 		}
+-		gfs2_trans_add_databufs(ip, folio, 0, folio_size(folio));
++		gfs2_trans_add_databufs(ip->i_gl, folio, 0, folio_size(folio));
+ 	}
+ 	return gfs2_write_jdata_folio(folio, wbc);
+ }
+diff --git a/fs/gfs2/aops.h b/fs/gfs2/aops.h
+index a10c4334d2489..f9fa41aaeaf41 100644
+--- a/fs/gfs2/aops.h
++++ b/fs/gfs2/aops.h
+@@ -9,7 +9,5 @@
+ #include "incore.h"
+ 
+ void adjust_fs_space(struct inode *inode);
+-void gfs2_trans_add_databufs(struct gfs2_inode *ip, struct folio *folio,
+-			     size_t from, size_t len);
+ 
+ #endif /* __AOPS_DOT_H__ */
+diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
+index 1795c4e8dbf66..28ad07b003484 100644
+--- a/fs/gfs2/bmap.c
++++ b/fs/gfs2/bmap.c
+@@ -988,7 +988,8 @@ static void gfs2_iomap_put_folio(struct inode *inode, loff_t pos,
+ 	struct gfs2_sbd *sdp = GFS2_SB(inode);
+ 
+ 	if (!gfs2_is_stuffed(ip))
+-		gfs2_trans_add_databufs(ip, folio, offset_in_folio(folio, pos),
++		gfs2_trans_add_databufs(ip->i_gl, folio,
++					offset_in_folio(folio, pos),
+ 					copied);
+ 
+ 	folio_unlock(folio);
+diff --git a/fs/gfs2/trans.c b/fs/gfs2/trans.c
+index 192213c7359af..42cf8c5204db4 100644
+--- a/fs/gfs2/trans.c
++++ b/fs/gfs2/trans.c
+@@ -226,6 +226,27 @@ void gfs2_trans_add_data(struct gfs2_glock *gl, struct buffer_head *bh)
+ 	unlock_buffer(bh);
+ }
+ 
++void gfs2_trans_add_databufs(struct gfs2_glock *gl, struct folio *folio,
++			     size_t from, size_t len)
++{
++	struct buffer_head *head = folio_buffers(folio);
++	unsigned int bsize = head->b_size;
++	struct buffer_head *bh;
++	size_t to = from + len;
++	size_t start, end;
++
++	for (bh = head, start = 0; bh != head || !start;
++	     bh = bh->b_this_page, start = end) {
++		end = start + bsize;
++		if (end <= from)
++			continue;
++		if (start >= to)
++			break;
++		set_buffer_uptodate(bh);
++		gfs2_trans_add_data(gl, bh);
++	}
++}
++
+ void gfs2_trans_add_meta(struct gfs2_glock *gl, struct buffer_head *bh)
+ {
+ 
+diff --git a/fs/gfs2/trans.h b/fs/gfs2/trans.h
+index f8ce5302280d3..790c55f59e612 100644
+--- a/fs/gfs2/trans.h
++++ b/fs/gfs2/trans.h
+@@ -42,6 +42,8 @@ int gfs2_trans_begin(struct gfs2_sbd *sdp, unsigned int blocks,
+ 
+ void gfs2_trans_end(struct gfs2_sbd *sdp);
+ void gfs2_trans_add_data(struct gfs2_glock *gl, struct buffer_head *bh);
++void gfs2_trans_add_databufs(struct gfs2_glock *gl, struct folio *folio,
++			     size_t from, size_t len);
+ void gfs2_trans_add_meta(struct gfs2_glock *gl, struct buffer_head *bh);
+ void gfs2_trans_add_revoke(struct gfs2_sbd *sdp, struct gfs2_bufdata *bd);
+ void gfs2_trans_remove_revoke(struct gfs2_sbd *sdp, u64 blkno, unsigned int len);
+-- 
+2.39.5
+
 
 
 
