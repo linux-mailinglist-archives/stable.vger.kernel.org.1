@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E908AFD2C9
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC21DAFD0C6
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:27:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 104291C26A19
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DC2D483EEC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D0A2E5B2C;
-	Tue,  8 Jul 2025 16:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6116C2D9790;
+	Tue,  8 Jul 2025 16:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLCzABmy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6n7sT4E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71F21FC0F3;
-	Tue,  8 Jul 2025 16:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E65D2A1BA;
+	Tue,  8 Jul 2025 16:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993198; cv=none; b=MtDYVDDwXZiJRSSge2M3biRVket9RC7tMLp5xdOAo4kIN+5M/bZhQgp/cDvWWHW34/g61KBYn/bW7Y/UiNNh5aTY1qtsHfzMH64WJfqZORpGSqnlZELua18/+mht3/qFJH43eTEG+9iUeEcA59yaL6D5tsLQjqO0326zz8CdvnM=
+	t=1751992062; cv=none; b=A+/VIdhyCeDh/CH1Ys+BU3bDxCi0Qv9GWwaTqZO/zhGnQJ/sHfX81SpQUxKewSrIMwMwDPeSPK33V9Fnq4zxsW6S31kpwKdteuMW/ml5CYigeBtOLjuBZSDFQ+Bh8tJcO/wwc0DXZIDVAdwykD27ezNLZEG8gxyK4DksZ+dC7zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993198; c=relaxed/simple;
-	bh=zPU7uOWNv2lUB/KTt8ImUP57EuU3mrpP4lscLwgSsvA=;
+	s=arc-20240116; t=1751992062; c=relaxed/simple;
+	bh=w3M1IemtThE0WUaEefTikqE4Ztv5XESoa/SHxkU1l7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bXAc9nTsF2i272eOk0m9SoDNGaflne/UkB6QNo5zqbD4GtHgWhgEj7ayGho2WjlnOmQKgbwrvFt+QEpQgV7/XPIowyNlR3CJ+ZitSDXC+I3TAujDotAeMbLq6Zw99M2XXpl1B2pCjHR/EJWbgEJj9gWt9zbv5om3HacK4iA/sbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLCzABmy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E7EC4CEED;
-	Tue,  8 Jul 2025 16:46:38 +0000 (UTC)
+	 MIME-Version; b=ByvSIxvQc98ensFZPuygVTFtlzeI1zOAMS3Qn4k+b3l0SZrZkCnLOtgBQKTv9eSEbVp6hg1+/mleZEqGCrqPRVWovcNEunn3Z00JvJU6lZ4CqQttTllMxfZyEm6nW3X9AckfyAiSSImHg/qgzUQpVjfCGbrNAy8zyTUAEGOg4WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6n7sT4E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B8AC4CEED;
+	Tue,  8 Jul 2025 16:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993198;
-	bh=zPU7uOWNv2lUB/KTt8ImUP57EuU3mrpP4lscLwgSsvA=;
+	s=korg; t=1751992062;
+	bh=w3M1IemtThE0WUaEefTikqE4Ztv5XESoa/SHxkU1l7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lLCzABmyMUMZV8fLwBXn5S9PtvIjpEp2BCqAFvU1rsGMoIgDv7x1N/erRHiTWfMuN
-	 mZXrrkMq/UH12Cc+wLTvl9DIYxBQCoxKGnsOfk2Evf6I1vxjG+XYqh4lFDYyrkxWnk
-	 Zn9XaTP2UcwyT2pwa58UUpqTzFWghiortaCQ4yXk=
+	b=c6n7sT4EFS5mKwDdLP/do6fG7LMKOXFTL1oWfAPTrkFrQd26/RJR8m7ogocvfn73H
+	 8ucxaa7uDYQB0r2LUPOBznD0sqZ7FgkAIwdi2oPEKDixxOwHeYgKZe11/ZCYNkDrxX
+	 efp+UL4ox4ffiNfFA1y0258XBmHfL3opHP90CWjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Kurt Borja <kuurtb@gmail.com>
-Subject: [PATCH 6.12 221/232] platform/x86: think-lmi: Create ksets consecutively
+	Rob Clark <robdclark@chromium.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 45/81] drm/msm: Fix another leak in the submit error path
 Date: Tue,  8 Jul 2025 18:23:37 +0200
-Message-ID: <20250708162247.216096070@linuxfoundation.org>
+Message-ID: <20250708162226.459289131@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Rob Clark <robdclark@chromium.org>
 
-commit 8dab34ca77293b409c3223636dde915a22656748 upstream.
+[ Upstream commit f681c2aa8676a890eacc84044717ab0fd26e058f ]
 
-Avoid entering tlmi_release_attr() in error paths if both ksets are not
-yet created.
+put_unused_fd() doesn't free the installed file, if we've already done
+fd_install().  So we need to also free the sync_file.
 
-This is accomplished by initializing them side by side.
-
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250630-lmi-fix-v3-1-ce4f81c9c481@gmail.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Patchwork: https://patchwork.freedesktop.org/patch/653583/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/think-lmi.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/msm/msm_gem_submit.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/think-lmi.c
-+++ b/drivers/platform/x86/think-lmi.c
-@@ -1388,6 +1388,14 @@ static int tlmi_sysfs_init(void)
- 		goto fail_device_created;
+diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
+index 4ee6aeb23c512..572dd662e8095 100644
+--- a/drivers/gpu/drm/msm/msm_gem_submit.c
++++ b/drivers/gpu/drm/msm/msm_gem_submit.c
+@@ -724,6 +724,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ 	struct msm_ringbuffer *ring;
+ 	struct msm_submit_post_dep *post_deps = NULL;
+ 	struct drm_syncobj **syncobjs_to_reset = NULL;
++	struct sync_file *sync_file = NULL;
+ 	int out_fence_fd = -1;
+ 	bool has_ww_ticket = false;
+ 	unsigned i;
+@@ -927,7 +928,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
  	}
  
-+	tlmi_priv.authentication_kset = kset_create_and_add("authentication", NULL,
-+							    &tlmi_priv.class_dev->kobj);
-+	if (!tlmi_priv.authentication_kset) {
-+		kset_unregister(tlmi_priv.attribute_kset);
-+		ret = -ENOMEM;
-+		goto fail_device_created;
+ 	if (ret == 0 && args->flags & MSM_SUBMIT_FENCE_FD_OUT) {
+-		struct sync_file *sync_file = sync_file_create(submit->user_fence);
++		sync_file = sync_file_create(submit->user_fence);
+ 		if (!sync_file) {
+ 			ret = -ENOMEM;
+ 		} else {
+@@ -958,8 +959,11 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ out_unlock:
+ 	mutex_unlock(&queue->lock);
+ out_post_unlock:
+-	if (ret && (out_fence_fd >= 0))
++	if (ret && (out_fence_fd >= 0)) {
+ 		put_unused_fd(out_fence_fd);
++		if (sync_file)
++			fput(sync_file->file);
 +	}
-+
- 	for (i = 0; i < TLMI_SETTINGS_COUNT; i++) {
- 		/* Check if index is a valid setting - skip if it isn't */
- 		if (!tlmi_priv.setting[i])
-@@ -1429,12 +1437,6 @@ static int tlmi_sysfs_init(void)
- 	}
  
- 	/* Create authentication entries */
--	tlmi_priv.authentication_kset = kset_create_and_add("authentication", NULL,
--								&tlmi_priv.class_dev->kobj);
--	if (!tlmi_priv.authentication_kset) {
--		ret = -ENOMEM;
--		goto fail_create_attr;
--	}
- 	tlmi_priv.pwd_admin->kobj.kset = tlmi_priv.authentication_kset;
- 	ret = kobject_add(&tlmi_priv.pwd_admin->kobj, NULL, "%s", "Admin");
- 	if (ret)
+ 	if (!IS_ERR_OR_NULL(submit)) {
+ 		msm_gem_submit_put(submit);
+-- 
+2.39.5
+
 
 
 
