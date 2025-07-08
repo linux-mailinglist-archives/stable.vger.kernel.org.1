@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-160996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 378E8AFD2F2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68AB2AFD3BE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9528165E78
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A6A016E182
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F7A1FC0F3;
-	Tue,  8 Jul 2025 16:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086222E7181;
+	Tue,  8 Jul 2025 16:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snQual+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdTs0/g4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E252F37;
-	Tue,  8 Jul 2025 16:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA592E62B8;
+	Tue,  8 Jul 2025 16:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993296; cv=none; b=OMhKTH5liSHzEZOWXPh4GVifvmMz3Lcq6D7PiPVFJ40ujHER/CqsoOiDeehWBn78pz+zvztpR8fVlStG8jqY1YmOBc4IIvhoBxDxTiE7EkHUHhzQK+xyFyaLFIrYtlXF4JDmGOIFNBjLhsMFUSNSKESvOjzuFSlAQkUC083ViVc=
+	t=1751993809; cv=none; b=scQAwMNQh8pi2ixCDhPKu/HQKX3lOq50MaPHhDolx379SYpvZjQFRE/8n9Z11rWI6hs+YQGlO3/BDGbiGv/4mPE+hxxbWnF7n3c5YDM85SLrdHTgXoVHbiEWRs/KtY37IUOwx3gLdBAUwqoVPwpAZGeMg7CeBcjhNSaYFApYt10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993296; c=relaxed/simple;
-	bh=O6dOEoEvuNjW0kIm/1feDwMhy80ZXV3fJyig6Dt7/9s=;
+	s=arc-20240116; t=1751993809; c=relaxed/simple;
+	bh=tfSvzQtpB+BIdVt0bLkDVrH6QbWnkdLrhyhJzoY6w5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bh6Be8dXdicABAd1Gv68UlJJ/asLOt1YrSB1MbsGgs/aLXEmUgSEGHRxnnNMJ0ksPUj9Udb25xNDpSlvb/8ufrNBFU65f4JkwCMRATLD/4A/2KHjf0cKiWdR386fqLMfzFPmqv5SR+LrO0qqwVOrEur+psQT5aQaIUYrF2YYvyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snQual+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5D0C4CEED;
-	Tue,  8 Jul 2025 16:48:15 +0000 (UTC)
+	 MIME-Version; b=WtQ5LnNsrTeWc71Qe+aDq8TlxYO1c80h+A2EHQUnAMHuE7Sivk2sraMt0Cpk09Ma38IDaVgY5FvQJzQkeyEs++xOmyCPMELhQsrkEdGQOoA9Fy5jvJUaAyLZpVI72BNmy6x4208Guj6ASqyCeuT0w+KvWrKUjYsQjVkPMKFyDN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdTs0/g4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435D9C4CEF6;
+	Tue,  8 Jul 2025 16:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993296;
-	bh=O6dOEoEvuNjW0kIm/1feDwMhy80ZXV3fJyig6Dt7/9s=;
+	s=korg; t=1751993809;
+	bh=tfSvzQtpB+BIdVt0bLkDVrH6QbWnkdLrhyhJzoY6w5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=snQual+YIjfS1k48j30fxN7ujB7CRb2/t4b4GIAHCLwCwg06UAgZEV5Yf1tmWxWh/
-	 uapKsV1n+zV/Y/495E+SRR09ecWKu9j9HTC7Jwn/iERHq8JFSz33zwzvb22cqSfxBB
-	 OC7+qe9v51l3K4F5S6tlHAnK3iasi6roP1dmMeb0=
+	b=CdTs0/g4s9YtdqltfqhoohFoaoO/8FTFnFmYD9tZRkEqKwUIXZd4c6BkLVVPEAxrX
+	 mfqdUOFCqaAEjM9Yj+D/62JRKovS8g25zKrfCqfqNTVpdmNb0p/il8OKVN2C8xEzW4
+	 e31vPtejh9N2vFWCC+HDmm3iR2FEdDs81BmBe20c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.15 025/178] regulator: gpio: Fix the out-of-bounds access to drvdata::gpiods
+	Dmitry Kandybka <d.kandybka@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 025/160] ceph: fix possible integer overflow in ceph_zero_objects()
 Date: Tue,  8 Jul 2025 18:21:02 +0200
-Message-ID: <20250708162237.205884546@linuxfoundation.org>
+Message-ID: <20250708162232.209623217@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <mani@kernel.org>
+From: Dmitry Kandybka <d.kandybka@gmail.com>
 
-commit c9764fd88bc744592b0604ccb6b6fc1a5f76b4e3 upstream.
+[ Upstream commit 0abd87942e0c93964e93224836944712feba1d91 ]
 
-drvdata::gpiods is supposed to hold an array of 'gpio_desc' pointers. But
-the memory is allocated for only one pointer. This will lead to
-out-of-bounds access later in the code if 'config::ngpios' is > 1. So
-fix the code to allocate enough memory to hold 'config::ngpios' of GPIO
-descriptors.
+In 'ceph_zero_objects', promote 'object_size' to 'u64' to avoid possible
+integer overflow.
 
-While at it, also move the check for memory allocation failure to be below
-the allocation to make it more readable.
+Compile tested only.
 
-Cc: stable@vger.kernel.org # 5.0
-Fixes: d6cd33ad7102 ("regulator: gpio: Convert to use descriptors")
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20250703103549.16558-1-mani@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/gpio-regulator.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ceph/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/regulator/gpio-regulator.c
-+++ b/drivers/regulator/gpio-regulator.c
-@@ -260,8 +260,10 @@ static int gpio_regulator_probe(struct p
- 		return -ENOMEM;
- 	}
+diff --git a/fs/ceph/file.c b/fs/ceph/file.c
+index f3fba3d27efa6..e92a10ba58b3f 100644
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -2032,7 +2032,7 @@ static int ceph_zero_objects(struct inode *inode, loff_t offset, loff_t length)
+ 	s32 stripe_unit = ci->i_layout.stripe_unit;
+ 	s32 stripe_count = ci->i_layout.stripe_count;
+ 	s32 object_size = ci->i_layout.object_size;
+-	u64 object_set_size = object_size * stripe_count;
++	u64 object_set_size = (u64) object_size * stripe_count;
+ 	u64 nearly, t;
  
--	drvdata->gpiods = devm_kzalloc(dev, sizeof(struct gpio_desc *),
--				       GFP_KERNEL);
-+	drvdata->gpiods = devm_kcalloc(dev, config->ngpios,
-+				       sizeof(struct gpio_desc *), GFP_KERNEL);
-+	if (!drvdata->gpiods)
-+		return -ENOMEM;
- 
- 	if (config->input_supply) {
- 		drvdata->desc.supply_name = devm_kstrdup(&pdev->dev,
-@@ -274,8 +276,6 @@ static int gpio_regulator_probe(struct p
- 		}
- 	}
- 
--	if (!drvdata->gpiods)
--		return -ENOMEM;
- 	for (i = 0; i < config->ngpios; i++) {
- 		drvdata->gpiods[i] = devm_gpiod_get_index(dev,
- 							  NULL,
+ 	/* round offset up to next period boundary */
+-- 
+2.39.5
+
 
 
 
