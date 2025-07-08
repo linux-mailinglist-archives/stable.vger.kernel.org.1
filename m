@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-161104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98FACAFD366
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30897AFD286
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E28F3B2D8F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 107A1423FBE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019652DC34C;
-	Tue,  8 Jul 2025 16:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAAC62E54BA;
+	Tue,  8 Jul 2025 16:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwKD5Rcy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rsJmp2Z3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B262045B5;
-	Tue,  8 Jul 2025 16:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9216C2E54B2;
+	Tue,  8 Jul 2025 16:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993604; cv=none; b=GqYRI2h0kftOlkb1Xn96lIEvBiZaCTRvmeV279q2tAm4F9b5fWzZitV1lBvZi7H+JkL3RiwaNExBtYnkW72XqbN5uzJGIbQd9NbxoVpdQBTl8HJxvJgs2CckdIMcQ6qyg4aLKSofKUMhyYZy/4oMZlQKtDyKoJ0T6U3QjSLNwlY=
+	t=1751993053; cv=none; b=mSy7vlfCv3dSboYUZQXnmTvCX+PRRLDlJWY8MBrwR3vnYYQ/Y9945R/wKLHyyvxe7CR36ENSQQRn7cGZVhCzjUcDDWSQvOgQ2DW8NHmBYwA3CdjgxmGXM3oYoWG0qmNYS6n3EKhJFP2nlUjo1SpLsrNg1Ke2glseJAj9E9Z3jwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993604; c=relaxed/simple;
-	bh=rktD87SNJVsiVzyLWLDmwod8mxHZ6R8OnO9NHcS69C0=;
+	s=arc-20240116; t=1751993053; c=relaxed/simple;
+	bh=n0mrC8bhRvr5b0/VwbP+QDmZuRADcfdO2Cj8hFEufy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azFjaSWmXK6RIpiiE46UudVtevQ1fyzp2IC9xTCUYvOIVXIrSHcejejWDmB1/8DyUaSrM6pLUK8Jt6xtNgQqXwKZDTw1YrsbF1wlhBU7d4OBB2bjrur24b1/robBkY06uiCVjOrD/Lu+k+wdQ93+QMWBTWOj2OFSHX32sw8h90A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwKD5Rcy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF74C4CEF0;
-	Tue,  8 Jul 2025 16:53:23 +0000 (UTC)
+	 MIME-Version; b=tEV341XVz0Lmip4muh7S+LeUw/V2vBrOfwf5XZFBu5uIjbAJ5Z6tCVspqW+rjNg4ZkoPwmZsUowg+JW4K13lU98gCHSnr2UwADJSzIbY1Zq/iqOniR+xOFWGQjjluF2spVOKfocYI902tP2Z1Xan+E0diiOEMk7QNEChSNN3qNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rsJmp2Z3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE96C4CEF9;
+	Tue,  8 Jul 2025 16:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993604;
-	bh=rktD87SNJVsiVzyLWLDmwod8mxHZ6R8OnO9NHcS69C0=;
+	s=korg; t=1751993053;
+	bh=n0mrC8bhRvr5b0/VwbP+QDmZuRADcfdO2Cj8hFEufy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EwKD5Rcy9+yMJ++l/OSDYi8ZPn2mC2XwYwiMwM+6gIfIX7uAgwrmGPwCNa4wo7TGP
-	 p6lhqyIWhRjCY3S2rsWrYsDj352PLs+FIbqAwx08WyVpfm9Vr3onVVV9qSU/++beqi
-	 z049M9ktXR6U9TqyybcI0D3+6W+biLQ0dIjCtEiE=
+	b=rsJmp2Z3MH5+vDCfxfw/rJjV639IF38MMvuHZIfOQNkJxODFi3fM031qv7kwC0q9T
+	 6XKUKm1R+Jp3eY5XZfyDvz+T6f2qm/6MzFLjUSV+307IOvsHWK5XA/IALc/7qMNrBY
+	 Ah7KqIuO3XH5bat7+MlGD5S0HE1uk+Gez82FESZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tulio Magno <tuliom@ascii.art.br>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Justin M. Forbes" <jforbes@fedoraproject.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Rob Clark <robdclark@chromium.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 131/178] powerpc: Fix struct termio related ioctl macros
+Subject: [PATCH 6.12 172/232] drm/msm: Fix another leak in the submit error path
 Date: Tue,  8 Jul 2025 18:22:48 +0200
-Message-ID: <20250708162239.989095952@linuxfoundation.org>
+Message-ID: <20250708162245.940920044@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit ab107276607af90b13a5994997e19b7b9731e251 ]
+[ Upstream commit f681c2aa8676a890eacc84044717ab0fd26e058f ]
 
-Since termio interface is now obsolete, include/uapi/asm/ioctls.h
-has some constant macros referring to "struct termio", this caused
-build failure at userspace.
+put_unused_fd() doesn't free the installed file, if we've already done
+fd_install().  So we need to also free the sync_file.
 
-In file included from /usr/include/asm/ioctl.h:12,
-                 from /usr/include/asm/ioctls.h:5,
-                 from tst-ioctls.c:3:
-tst-ioctls.c: In function 'get_TCGETA':
-tst-ioctls.c:12:10: error: invalid application of 'sizeof' to incomplete type 'struct termio'
-   12 |   return TCGETA;
-      |          ^~~~~~
-
-Even though termios.h provides "struct termio", trying to juggle definitions around to
-make it compile could introduce regressions. So better to open code it.
-
-Reported-by: Tulio Magno <tuliom@ascii.art.br>
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
-Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
-Closes: https://lore.kernel.org/linuxppc-dev/8734dji5wl.fsf@ascii.art.br/
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250517142237.156665-1-maddy@linux.ibm.com
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Patchwork: https://patchwork.freedesktop.org/patch/653583/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/uapi/asm/ioctls.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/msm/msm_gem_submit.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/uapi/asm/ioctls.h b/arch/powerpc/include/uapi/asm/ioctls.h
-index 2c145da3b774a..b5211e413829a 100644
---- a/arch/powerpc/include/uapi/asm/ioctls.h
-+++ b/arch/powerpc/include/uapi/asm/ioctls.h
-@@ -23,10 +23,10 @@
- #define TCSETSW		_IOW('t', 21, struct termios)
- #define TCSETSF		_IOW('t', 22, struct termios)
+diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
+index 937c1f5d88cbb..4b3a8ee8e278f 100644
+--- a/drivers/gpu/drm/msm/msm_gem_submit.c
++++ b/drivers/gpu/drm/msm/msm_gem_submit.c
+@@ -667,6 +667,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ 	struct msm_ringbuffer *ring;
+ 	struct msm_submit_post_dep *post_deps = NULL;
+ 	struct drm_syncobj **syncobjs_to_reset = NULL;
++	struct sync_file *sync_file = NULL;
+ 	int out_fence_fd = -1;
+ 	unsigned i;
+ 	int ret;
+@@ -877,7 +878,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ 	}
  
--#define TCGETA		_IOR('t', 23, struct termio)
--#define TCSETA		_IOW('t', 24, struct termio)
--#define TCSETAW		_IOW('t', 25, struct termio)
--#define TCSETAF		_IOW('t', 28, struct termio)
-+#define TCGETA		0x40147417 /* _IOR('t', 23, struct termio) */
-+#define TCSETA		0x80147418 /* _IOW('t', 24, struct termio) */
-+#define TCSETAW		0x80147419 /* _IOW('t', 25, struct termio) */
-+#define TCSETAF		0x8014741c /* _IOW('t', 28, struct termio) */
+ 	if (ret == 0 && args->flags & MSM_SUBMIT_FENCE_FD_OUT) {
+-		struct sync_file *sync_file = sync_file_create(submit->user_fence);
++		sync_file = sync_file_create(submit->user_fence);
+ 		if (!sync_file) {
+ 			ret = -ENOMEM;
+ 		} else {
+@@ -911,8 +912,11 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ out_unlock:
+ 	mutex_unlock(&queue->lock);
+ out_post_unlock:
+-	if (ret && (out_fence_fd >= 0))
++	if (ret && (out_fence_fd >= 0)) {
+ 		put_unused_fd(out_fence_fd);
++		if (sync_file)
++			fput(sync_file->file);
++	}
  
- #define TCSBRK		_IO('t', 29)
- #define TCXONC		_IO('t', 30)
+ 	if (!IS_ERR_OR_NULL(submit)) {
+ 		msm_gem_submit_put(submit);
 -- 
 2.39.5
 
