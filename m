@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-161208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC188AFD3F7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 079F3AFD312
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5624118816DA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:59:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F11116C123
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C492E5B24;
-	Tue,  8 Jul 2025 16:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A62B2DAFA3;
+	Tue,  8 Jul 2025 16:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqbIxdxA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2X1i2moO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CF22DECBD;
-	Tue,  8 Jul 2025 16:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4571D214A9B;
+	Tue,  8 Jul 2025 16:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993908; cv=none; b=RkHhs4iM5Y0TbdtH80LAegiKZwKJxKsqjJ7jJ746CPdB0hwrVdAIkDQhSoHInTNRBrf8xirz+J6r781y0yK/X0YXHZMJsudUrsx/5hZYObiaFkW+JnRB2Fsk6agYJIOAVOTiLNHrltJuxsOrHqCIGG65YaLiZsz11oRQDYUamL0=
+	t=1751993396; cv=none; b=oos0xUBKnXwu4FQ6pLx0Un6npK3e26TPCVj2NR4DHN0blTwW2a30CUnkwU63g6nxGEzC7xucKAG/XTciQOWqLodHK97C360CMtyomhqRkaeOoatRxUQ7Q0yNDvnA1TGvj0jPlpKs1LLhKQ/bTb3ygUF6ZmkvO9zY/idP664viDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993908; c=relaxed/simple;
-	bh=D3TavQ9uIqTIwhWQrj1ois90ieOo4GCxheptripsoiI=;
+	s=arc-20240116; t=1751993396; c=relaxed/simple;
+	bh=WU7v182laKwLLhQ02/Noz4GNBxGg0mFxlHrHZHD0+30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmKGEEQtyuEj5f/Qv3BWpIHe1xgPnGXWsjb76V+ujR+hLIVt3ARaJSKWpkFyL+/QEdOvLXnJbPA40yoYklimo2MMhlQ4lsQP9yk3tK4T09Mx5f08m5c2Zvx1DfrfcgwegNWMjViHWVEq5ZFhk0u4frBguJ3pINYF+20ZjI/otfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqbIxdxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97F4C4CEED;
-	Tue,  8 Jul 2025 16:58:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G5doQ5RS5cQOmX4lK/nd29+j7gtylf1PMgICPeHCfk1WFnLnQf+H7ikbAA+xyozrePj/fRkWUiNrtCSsOa3wHa54mOx+DxB1OjBz0A/VgFA0WQ8eJsixkUpcz+JxZhD6jIGrntRBveB5F6RE/qS24uFRkPlbitIntkEoP3D2ALg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2X1i2moO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86E1C4CEF5;
+	Tue,  8 Jul 2025 16:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993908;
-	bh=D3TavQ9uIqTIwhWQrj1ois90ieOo4GCxheptripsoiI=;
+	s=korg; t=1751993396;
+	bh=WU7v182laKwLLhQ02/Noz4GNBxGg0mFxlHrHZHD0+30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SqbIxdxAvCM9tc4oweTgdnYrUP7u2H6jwY78DUVThoq8dNbR94LxsZ5IUZv7XsA8i
-	 7ZS90LInh+4Nt4bMvsvs4yxgNux29YwVh4cKpm8JjaNzwtvBf0+fZZDguu4VkM5UIc
-	 6vW8327bgRkKa2k7vPz29wZV2o3nRU7dq5dGKi14=
+	b=2X1i2moO1gTe56Qa0ZjdHFGTE071w/J+rTG/0GWwJYNxP0quKxmItBnhDss8xo1bU
+	 5pSqu5yopiI72PgCxG159vHhP9O0PFg3MEu4MmsG7EGrZsnWY4xhtLn9/4qkAHm1ON
+	 7F38BRQR3Md+LbBumrT4qMqaKV97TlEwZdVf3IxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.15 059/160] i2c: robotfuzz-osif: disable zero-length read messages
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 059/178] platform/mellanox: nvsw-sn2201: Fix bus number in adapter error message
 Date: Tue,  8 Jul 2025 18:21:36 +0200
-Message-ID: <20250708162233.185130115@linuxfoundation.org>
+Message-ID: <20250708162238.222395734@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 56ad91c1aa9c18064348edf69308080b03c9dc48 upstream.
+[ Upstream commit d07143b507c51c04c091081627c5a130e9d3c517 ]
 
-This driver passes the length of an i2c_msg directly to
-usb_control_msg(). If the message is now a read and of length 0, it
-violates the USB protocol and a warning will be printed. Enable the
-I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
-read messages altogether.
+change error log to use correct bus number from main_mux_devs
+instead of cpld_devs.
 
-Fixes: 83e53a8f120f ("i2c: Add bus driver for for OSIF USB i2c device.")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: <stable@vger.kernel.org> # v3.14+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250522064234.3721-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 662f24826f95 ("platform/mellanox: Add support for new SN2201 system")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
+Link: https://lore.kernel.org/r/20250622072921.4111552-2-alok.a.tiwari@oracle.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-robotfuzz-osif.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/platform/mellanox/nvsw-sn2201.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-robotfuzz-osif.c
-+++ b/drivers/i2c/busses/i2c-robotfuzz-osif.c
-@@ -111,6 +111,11 @@ static u32 osif_func(struct i2c_adapter
- 	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL;
- }
+diff --git a/drivers/platform/mellanox/nvsw-sn2201.c b/drivers/platform/mellanox/nvsw-sn2201.c
+index 0c047aa2345b3..490001a9afd76 100644
+--- a/drivers/platform/mellanox/nvsw-sn2201.c
++++ b/drivers/platform/mellanox/nvsw-sn2201.c
+@@ -1088,7 +1088,7 @@ static int nvsw_sn2201_i2c_completion_notify(void *handle, int id)
+ 	if (!nvsw_sn2201->main_mux_devs->adapter) {
+ 		err = -ENODEV;
+ 		dev_err(nvsw_sn2201->dev, "Failed to get adapter for bus %d\n",
+-			nvsw_sn2201->cpld_devs->nr);
++			nvsw_sn2201->main_mux_devs->nr);
+ 		goto i2c_get_adapter_main_fail;
+ 	}
  
-+/* prevent invalid 0-length usb_control_msg */
-+static const struct i2c_adapter_quirks osif_quirks = {
-+	.flags = I2C_AQ_NO_ZERO_LEN_READ,
-+};
-+
- static const struct i2c_algorithm osif_algorithm = {
- 	.master_xfer	= osif_xfer,
- 	.functionality	= osif_func,
-@@ -143,6 +148,7 @@ static int osif_probe(struct usb_interfa
- 
- 	priv->adapter.owner = THIS_MODULE;
- 	priv->adapter.class = I2C_CLASS_HWMON;
-+	priv->adapter.quirks = &osif_quirks;
- 	priv->adapter.algo = &osif_algorithm;
- 	priv->adapter.algo_data = priv;
- 	snprintf(priv->adapter.name, sizeof(priv->adapter.name),
+-- 
+2.39.5
+
 
 
 
