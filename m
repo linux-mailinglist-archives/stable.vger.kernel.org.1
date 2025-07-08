@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-161013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634A3AFD304
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:52:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA528AFD3C9
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:00:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99A3E188B1AE
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7175416A217
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC57B2045B5;
-	Tue,  8 Jul 2025 16:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3FB2E6104;
+	Tue,  8 Jul 2025 16:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdS0FMUy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDk7Tap3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9FA264F9C;
-	Tue,  8 Jul 2025 16:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFDE2E091E;
+	Tue,  8 Jul 2025 16:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993347; cv=none; b=jtj05HOqlEVgXVkXuqkdycU3dQSWEiTr/BmmLTvsvl3JkVRCHPcjyWVhbbMvVSKE259W5JzyFffqnF15dxkbz2FVbPE4lXGq8KaPkZqA8YT1DseV8VesN7S6uIZJyVrrsP94wguAnBVsCSn9A5loEC3iTtIDBvTb1Iku+bWBnd0=
+	t=1751993852; cv=none; b=uwJEk3duwqB8IsmKQ5Y8/J7DAe32OlO0pHuTFb5sLJg1lfIZl/Rs3qH0C7A2R5DAyVM/AUgJd+T+BvtmmAdoBOOCInfPNaquwJUUIdr4UYe2rzakaNJBXCgXSFmDo72vh8ar2NPUapqOY6X9Mz0xj2CdejJT7oBozHpJnytAthw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993347; c=relaxed/simple;
-	bh=TTrCvHW5pHh2Iuxj9jpffNu2w1D4BYuhM6ZyvkGzuvQ=;
+	s=arc-20240116; t=1751993852; c=relaxed/simple;
+	bh=jdX6NrJqbBmaMDRJ8P5/phzFz3N6Xl1hXUmOm5fGJTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=foxdfDSXBdOCgm7KlOKeKCDDzM//suQrn+fM3LQIxnPeTu2XIjcdd7r5u1T567HMRUQ2u5aRRnroL9z722Phercys6rrZyumrOQ9Tp7LReMVeHLCJEza14Ta6sCGtVGNZtl8UVztpI3mtec4bOTndT4NyjkF9ThHkjvZJlcnkBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdS0FMUy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21145C4CEED;
-	Tue,  8 Jul 2025 16:49:06 +0000 (UTC)
+	 MIME-Version; b=hnIMPZZ64hjffXdVuGg1CKFYJ2EeNtRDPpDU/Pfm+Lj9J1QD8ByYWxv5nsjwnrtajD3vzX0wglYsKbmaKPc3nyeRC/Ib2ZGW5h5HcjFe46g3DhltqK5BvuXV13bEJdX+g/QlUU9vzHWQXVwC89T69DZ3vS7MqECAOhFxFtwuBhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDk7Tap3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E03C4CEED;
+	Tue,  8 Jul 2025 16:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993347;
-	bh=TTrCvHW5pHh2Iuxj9jpffNu2w1D4BYuhM6ZyvkGzuvQ=;
+	s=korg; t=1751993852;
+	bh=jdX6NrJqbBmaMDRJ8P5/phzFz3N6Xl1hXUmOm5fGJTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GdS0FMUy9V5AI1HHno0qvF3i4rVoLR7KqDKEbO658KSpA7Dlhyrdrv+lX2vjx4JWm
-	 ielo8kkmftbjpFFK4q1efck/uh0ScmdYo08IkqDWZcfm2iXg58XtXu/A7HhjU/n51f
-	 XUnD9ID4/69YJ74Ax8VGXXVrQpleVkkl/PxwbWBw=
+	b=zDk7Tap3HvOF/+UTXzfWw8hgUnCcOdMqU9TFtSoENSX0TVi4GeGOTjfqOqpmFdn1s
+	 d1lNvo3/wr3BAkfDXaKVJQi1nDWAZb9/HssEi1oELNDYUMjtu4xImfskX9OkUhLKm9
+	 cmPpNPfXZ9A9cfo1HsWQIGAVB5dxBOIIF2Iiy4cU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>
-Subject: [PATCH 6.15 012/178] iommufd/selftest: Add asserts testing global mfd
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 012/160] iio: pressure: zpa2326: Use aligned_s64 for the timestamp
 Date: Tue,  8 Jul 2025 18:20:49 +0200
-Message-ID: <20250708162236.866056338@linuxfoundation.org>
+Message-ID: <20250708162231.847193238@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-commit a9bf67ee170514b17541038c60bb94cb2cf5732f upstream.
+[ Upstream commit 886a446b76afddfad307488e95e87f23a08ffd51 ]
 
-The mfd and mfd_buffer will be used in the tests directly without an extra
-check. Test them in setup_sizes() to ensure they are safe to use.
+On x86_32 s64 fields are only 32-bit aligned.  Hence force the alignment of
+the field and padding in the structure by using aligned_s64 instead.
 
-Fixes: 0bcceb1f51c7 ("iommufd: Selftest coverage for IOMMU_IOAS_MAP_FILE")
-Link: https://patch.msgid.link/r/94bdc11d2b6d5db337b1361c5e5fce0ed494bb40.1750787928.git.nicolinc@nvidia.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250413103443.2420727-19-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/iommu/iommufd.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/pressure/zpa2326.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/iommu/iommufd.c
-+++ b/tools/testing/selftests/iommu/iommufd.c
-@@ -54,6 +54,8 @@ static __attribute__((constructor)) void
+diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
+index 50f3338778daf..741c95899e4ef 100644
+--- a/drivers/iio/pressure/zpa2326.c
++++ b/drivers/iio/pressure/zpa2326.c
+@@ -582,7 +582,7 @@ static int zpa2326_fill_sample_buffer(struct iio_dev               *indio_dev,
+ 	struct {
+ 		u32 pressure;
+ 		u16 temperature;
+-		u64 timestamp;
++		aligned_s64 timestamp;
+ 	}   sample;
+ 	int err;
  
- 	mfd_buffer = memfd_mmap(BUFFER_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED,
- 				&mfd);
-+	assert(mfd_buffer != MAP_FAILED);
-+	assert(mfd > 0);
- }
- 
- FIXTURE(iommufd)
+-- 
+2.39.5
+
 
 
 
