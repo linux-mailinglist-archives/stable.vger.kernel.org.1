@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-161295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09EB5AFD484
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3665FAFD2A2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:49:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D7DE168812
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39CC71BC0A6B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5022E5413;
-	Tue,  8 Jul 2025 17:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610172E610C;
+	Tue,  8 Jul 2025 16:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZBJBE0Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1bvJg8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D8121C9E4;
-	Tue,  8 Jul 2025 17:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5B32E5B3B;
+	Tue,  8 Jul 2025 16:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994162; cv=none; b=f7h62LTM0fFdMaCUmrOXMP+zha5QGUP3whXhM6HYZKa/1A9LtdygvD3Ukmx8NA+ixjWBw0RQ94rczlO/3cW9kYMDi16GAc/D+5fCEsll31v4wQRHu3hG6f8wQuvSSp7Zs8RxwsKb2TP9uwq9CmdqKmDszxHaOFKaegM9Jv5FsPs=
+	t=1751993103; cv=none; b=pi9ITmdXPaklYZqI34mggI+i2zi2N28yAnrjppR+2j1MAd8gmF+tq4UH0KwuoGxiOHWu7BY/YK+1UCUo/hHP6Xv4jN8WR1g4dIQIX9/hqudQzUzXD2wOHaqxbypG1IREQtnUT+RW3r8n9NNqb07gIguqgD31DvWpnumfQ74ccUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994162; c=relaxed/simple;
-	bh=WuPLYc2b26IGGa6KAenewDaStBOeJSyQVHD07KXXiQ8=;
+	s=arc-20240116; t=1751993103; c=relaxed/simple;
+	bh=ec9ymkO2Fb65lpA5mhxmqmWe21J8i7Y5hKrJsrZNzjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rck9WIw8an35vJaMuJ+c3ujcxvEgWPIqDaiLlbDRPLnDTuoS26V1ohBWK4oCXMxzi/W6yOzWLeZ6IbbL7xLXCpBdHcjyS3jcSzJsdZYgXUbaJP7suwZQrAlc3dW1WjTO7MoIMFy7M/xe1jT1qAGPAWM5t1YgAbxnf2tZahpEHzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZBJBE0Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49654C4CEED;
-	Tue,  8 Jul 2025 17:02:42 +0000 (UTC)
+	 MIME-Version; b=XpN9J23XoDLwpP4T2BaV8NcMfT07pTyZvNjGqzHhCqSJWMF8cyDlWoTgVY9YUfcxUPlbZJSvWqS4PjL8IHEUOZdnGel0iLkcGe0Y5VeIoO7KrsgdWP4boa74LWkBrRBU+Co6LDhX6vgknmlqKjEeOEq71BjmAtXM9wVyWz2LhQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1bvJg8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983D9C4CEED;
+	Tue,  8 Jul 2025 16:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994162;
-	bh=WuPLYc2b26IGGa6KAenewDaStBOeJSyQVHD07KXXiQ8=;
+	s=korg; t=1751993103;
+	bh=ec9ymkO2Fb65lpA5mhxmqmWe21J8i7Y5hKrJsrZNzjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZBJBE0ZCML7RUu5qpDjBrn1crNZvQLtmiUH//OGQUXSep1N0H0a8wB0XxcpouGx6
-	 7R9V5e+7oE85fQulwwbUig8S4z1VjLA/lR1rFUSnCNYmOaPJ93+cdub41exBgCmYPX
-	 uBlcPOiHuWVJU1MsJLr+9G058o/qjeFBjZdgcPnw=
+	b=n1bvJg8JIPwXBN8w5/9l2axm3Su4se6xTyiLYazF8N3vcSTktesQxnREJr1wiKlzr
+	 yAQN2eD9KwD8mczT283XMyC3659gRCdL/Ju6bsDWbi0YLfW1TgUSIDdXOI/k+ywS6N
+	 7G1+IOkk151aE7reGuiMSEhsR9I/pTtCoalPFZ6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Pablo Martin-Gomez <pmartin-gomez@freebox.fr>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 147/160] platform/x86: think-lmi: Fix class device unregistration
+Subject: [PATCH 6.12 188/232] mtd: spinand: fix memory leak of ECC engine conf
 Date: Tue,  8 Jul 2025 18:23:04 +0200
-Message-ID: <20250708162235.407748976@linuxfoundation.org>
+Message-ID: <20250708162246.355209820@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
 
-[ Upstream commit 5ff1fbb3059730700b4823f43999fc1315984632 ]
+[ Upstream commit 6463cbe08b0cbf9bba8763306764f5fd643023e1 ]
 
-Devices under the firmware_attributes_class do not have unique a dev_t.
-Therefore, device_unregister() should be used instead of
-device_destroy(), since the latter may match any device with a given
-dev_t.
+Memory allocated for the ECC engine conf is not released during spinand
+cleanup. Below kmemleak trace is seen for this memory leak:
 
-Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250625-dest-fix-v1-2-3a0f342312bb@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+unreferenced object 0xffffff80064f00e0 (size 8):
+  comm "swapper/0", pid 1, jiffies 4294937458
+  hex dump (first 8 bytes):
+    00 00 00 00 00 00 00 00                          ........
+  backtrace (crc 0):
+    kmemleak_alloc+0x30/0x40
+    __kmalloc_cache_noprof+0x208/0x3c0
+    spinand_ondie_ecc_init_ctx+0x114/0x200
+    nand_ecc_init_ctx+0x70/0xa8
+    nanddev_ecc_engine_init+0xec/0x27c
+    spinand_probe+0xa2c/0x1620
+    spi_mem_probe+0x130/0x21c
+    spi_probe+0xf0/0x170
+    really_probe+0x17c/0x6e8
+    __driver_probe_device+0x17c/0x21c
+    driver_probe_device+0x58/0x180
+    __device_attach_driver+0x15c/0x1f8
+    bus_for_each_drv+0xec/0x150
+    __device_attach+0x188/0x24c
+    device_initial_probe+0x10/0x20
+    bus_probe_device+0x11c/0x160
+
+Fix the leak by calling nanddev_ecc_engine_cleanup() inside
+spinand_cleanup().
+
+Signed-off-by: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/think-lmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/spi/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
-index 154b1b26d03f8..462f7779daaa6 100644
---- a/drivers/platform/x86/think-lmi.c
-+++ b/drivers/platform/x86/think-lmi.c
-@@ -892,7 +892,7 @@ static int tlmi_sysfs_init(void)
- fail_create_attr:
- 	tlmi_release_attr();
- fail_device_created:
--	device_destroy(fw_attr_class, MKDEV(0, 0));
-+	device_unregister(tlmi_priv.class_dev);
- fail_class_created:
- 	fw_attributes_class_put();
- 	return ret;
-@@ -1055,7 +1055,7 @@ static int tlmi_analyze(void)
- static void tlmi_remove(struct wmi_device *wdev)
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 4d76f9f71a0e9..241f6a4df16c1 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -1496,6 +1496,7 @@ static void spinand_cleanup(struct spinand_device *spinand)
  {
- 	tlmi_release_attr();
--	device_destroy(fw_attr_class, MKDEV(0, 0));
-+	device_unregister(tlmi_priv.class_dev);
- 	fw_attributes_class_put();
- }
+ 	struct nand_device *nand = spinand_to_nand(spinand);
  
++	nanddev_ecc_engine_cleanup(nand);
+ 	nanddev_cleanup(nand);
+ 	spinand_manufacturer_cleanup(spinand);
+ 	kfree(spinand->databuf);
 -- 
 2.39.5
 
