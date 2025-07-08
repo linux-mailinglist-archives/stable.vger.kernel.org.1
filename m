@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF674AFD377
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AAA7AFD0AD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91837169B49
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1763C4833C0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0E121C190;
-	Tue,  8 Jul 2025 16:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662E52E659;
+	Tue,  8 Jul 2025 16:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYPy4A8V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLfewZPJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890502F37;
-	Tue,  8 Jul 2025 16:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233A51DF74F;
+	Tue,  8 Jul 2025 16:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993647; cv=none; b=VtPyKOJFcfrQ41ZHs7uXe/A/Huh+W+HV1gUIp1VhLmEriMN/vHShJdcH2+23feUdHsvUF9MdapPxpzSrRlcNuKOk4QOPoEoIU8dhSgiTzOn7xkYxGGvRJ4TPUDdvwWeazSNU84pbiEJhrFcqa8ARSLx3TwqD1L40sCdKTsf2AFk=
+	t=1751991975; cv=none; b=VivFJuY53aCZMLhZdiK+yjHtY2cSekoUHSuMl3vCDiXo7vQhVLjkHK/WxWjb8q7R9YMxUFfQsNWpPytI69dowHySuTsRvHH25baGvyPkDBlA1VrBYKm+2v4EfPVNmUoZBr/PLt6iZlEDInxf1/GtY7++qUeniV3j2w1M59cq2Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993647; c=relaxed/simple;
-	bh=doRDC2s0lEWH0P2lAHpIo1gNeEmZQ12wNnsGgYQFMG4=;
+	s=arc-20240116; t=1751991975; c=relaxed/simple;
+	bh=VAnsWC2V4FwWN3Zpy6gDE8zF8UElV7sgcLYFNvYJAMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eubP9/JGhk/08t1aMc8f7POeRaSj+gctwSavyE22XLN2jx2dwkJMdZbb5XspDEdaQaMSl1IeGADt/uuIpo2dT/GY7nEMQaveJ8kKEc6Miha36N3oAv+mn23NtSurdhgadfpbsCpdAFOVsJUok71Z7hAEJuZHPopDvt4NhOInT/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYPy4A8V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A989C4CEED;
-	Tue,  8 Jul 2025 16:54:06 +0000 (UTC)
+	 MIME-Version; b=KUFaFKTjZxik+F91OFsYgHK4KV32GELWur3/PhW73jQVh+pD980yB+YSpvy/Z+s2eO7YY918/+PXq7P6q3Czl/ovjbTmfJ/FWt8zqBsvufUa0rD5jk3KIaY18N8FfWtJktzLgcNeKsg0LLzyysd4yRj+f4ZvgGmVkrvyPclG16g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLfewZPJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA7BC4CEED;
+	Tue,  8 Jul 2025 16:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993647;
-	bh=doRDC2s0lEWH0P2lAHpIo1gNeEmZQ12wNnsGgYQFMG4=;
+	s=korg; t=1751991974;
+	bh=VAnsWC2V4FwWN3Zpy6gDE8zF8UElV7sgcLYFNvYJAMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qYPy4A8VZTVIhUlTpH7Ldq1ueenT0JTgLpOhvKgYtAknkrHPktrvdhwStnYbZj2z5
-	 gOqNYKlGHrkV3A2oBnfOwrJFQmgyTJX2bod4mhoJQ8l0W4RUsO3RnriKH0bliE5CH0
-	 uGtRi9BgVpMf6dR62fe6jC2YNiqiGi6wSj8h1RSc=
+	b=DLfewZPJMUwAedyCUltg4owWPjk01d68VNJIDoKyRjA8GfuLj5+V1F+WdAqU6wqsR
+	 zi2FoUuJLIs3ExvDqIWPixqBbQsmAm3IO1LmRvIDwytrzxfd5rrz83Ya2CJRq44g8K
+	 Jl7Q58ipeFqMZ8j+LEPuPojdzj9STUjOB9utBOc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Hongyu Xie <xiehongyu1@kylinos.cn>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.15 146/178] xhci: Disable stream for xHC controller with XHCI_BROKEN_STREAMS
+	RD Babiera <rdbabiera@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 11/81] usb: typec: altmodes/displayport: do not index invalid pin_assignments
 Date: Tue,  8 Jul 2025 18:23:03 +0200
-Message-ID: <20250708162240.340958887@linuxfoundation.org>
+Message-ID: <20250708162225.202908916@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongyu Xie <xiehongyu1@kylinos.cn>
+From: RD Babiera <rdbabiera@google.com>
 
-commit cd65ee81240e8bc3c3119b46db7f60c80864b90b upstream.
+commit af4db5a35a4ef7a68046883bfd12468007db38f1 upstream.
 
-Disable stream for platform xHC controller with broken stream.
+A poorly implemented DisplayPort Alt Mode port partner can indicate
+that its pin assignment capabilities are greater than the maximum
+value, DP_PIN_ASSIGN_F. In this case, calls to pin_assignment_show
+will cause a BRK exception due to an out of bounds array access.
 
-Fixes: 14aec589327a6 ("storage: accept some UAS devices if streams are unavailable")
+Prevent for loop in pin_assignment_show from accessing
+invalid values in pin_assignments by adding DP_PIN_ASSIGN_MAX
+value in typec_dp.h and using i < DP_PIN_ASSIGN_MAX as a loop
+condition.
+
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250627144127.3889714-3-mathias.nyman@linux.intel.com
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250618224943.3263103-2-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-plat.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/typec/altmodes/displayport.c |    2 +-
+ include/linux/usb/typec_dp.h             |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -326,7 +326,8 @@ int xhci_plat_probe(struct platform_devi
- 	}
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -525,7 +525,7 @@ static ssize_t pin_assignment_show(struc
  
- 	usb3_hcd = xhci_get_usb3_hcd(xhci);
--	if (usb3_hcd && HCC_MAX_PSA(xhci->hcc_params) >= 4)
-+	if (usb3_hcd && HCC_MAX_PSA(xhci->hcc_params) >= 4 &&
-+	    !(xhci->quirks & XHCI_BROKEN_STREAMS))
- 		usb3_hcd->can_do_streams = 1;
+ 	assignments = get_current_pin_assignments(dp);
  
- 	if (xhci->shared_hcd) {
+-	for (i = 0; assignments; assignments >>= 1, i++) {
++	for (i = 0; assignments && i < DP_PIN_ASSIGN_MAX; assignments >>= 1, i++) {
+ 		if (assignments & 1) {
+ 			if (i == cur)
+ 				len += sprintf(buf + len, "[%s] ",
+--- a/include/linux/usb/typec_dp.h
++++ b/include/linux/usb/typec_dp.h
+@@ -56,6 +56,7 @@ enum {
+ 	DP_PIN_ASSIGN_D,
+ 	DP_PIN_ASSIGN_E,
+ 	DP_PIN_ASSIGN_F, /* Not supported after v1.0b */
++	DP_PIN_ASSIGN_MAX,
+ };
+ 
+ /* DisplayPort alt mode specific commands */
 
 
 
