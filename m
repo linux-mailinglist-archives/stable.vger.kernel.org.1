@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F816AFD103
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69371AFD1A8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:38:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB1EF1C217D8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A8465842C3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25EF32E11B9;
-	Tue,  8 Jul 2025 16:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDC42DCC02;
+	Tue,  8 Jul 2025 16:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjuRVH8r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvSIsxPL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E1C176ADB;
-	Tue,  8 Jul 2025 16:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D078220766C;
+	Tue,  8 Jul 2025 16:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992189; cv=none; b=nDrecwY9g5CmgRTIF9r9qhMg72sdA7YXqxy+ROFIQAfN15wgBrior3X08u1RhFXceyjHYhZf+RYrTChYgqRd64KBY6ITMriW4XgokZcvutWHy52AdbtidxSvpVGsryeGvIdNC06iiWoiSO0cEZaIitHn45cMGxVl6eeXn2FCHzI=
+	t=1751992581; cv=none; b=oVvj2wKw3zwzMl4DCceRpwuCUb+m/mWakPJagi0Eu7mgi+ud0nN4FO5zszA3PqMLo1OZl04RVwTi0hu0oLWGtprHJN+5Ni00z9vpW32aSwCwnO0PgZzJ4X2NDkMmfufGCGdJny/9yHR32jI0jZ7aZaN6E2Lc0DyvETdih2SJ7nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992189; c=relaxed/simple;
-	bh=YGxdjoUDduBmdgQgDUhDUIZzayRL/g2vyl3tUZucp9I=;
+	s=arc-20240116; t=1751992581; c=relaxed/simple;
+	bh=H+DmmtjsS8cDfOyJ92D/HjJ7HA+Tk9gUwZj4jNtY+x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMIXnTLnbsnwqzwtSF4CrwYisSJy5n7xEuLQotGW1olTN60yeFcm7ClcLCVI4qomAf7lI2nEq+6SMmgi24g8EshoOQhBW21phCLV6jAGmRZVr2kB14Cg8VoCZd9RcZy7+hE4kXm0r4T4TJnuG/lohz2ZH/p3lqXsiGU2BADHKiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjuRVH8r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E753C4CEED;
-	Tue,  8 Jul 2025 16:29:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t/ZcZtnUwljItUlY2w0e+w4Q0+UCA0sjElqormRnIZeCUA7BKCJZ0FVL/ol8NLjaS2GgRi3MQpU1swmOyUS96iaWKnTI5olrmUxJrjLweP9m+v8QIqdCsgk++SudyKcpTqHEcWN/RXWygLFHFTEq474sEuyW4zFSO0rqQhWQbXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvSIsxPL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58410C4CEED;
+	Tue,  8 Jul 2025 16:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992189;
-	bh=YGxdjoUDduBmdgQgDUhDUIZzayRL/g2vyl3tUZucp9I=;
+	s=korg; t=1751992581;
+	bh=H+DmmtjsS8cDfOyJ92D/HjJ7HA+Tk9gUwZj4jNtY+x0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjuRVH8rGZwyL9mxyHSRYr5W9IyqwJctrmvBHHG0FiuaeSw9/2G9SP2DsEpwRKk25
-	 IzxMAWkH9G7wbwO6AUi4l1tMGm7082QzWMGs5mrUWAH2IhHOXpjWvUEBZBnkeIjh1F
-	 GY2ViDwDeDA5LqTGTFNbtJk+zt5iHM5gQGxNjqes=
+	b=zvSIsxPLCam2DI8sI9RrYr85Oozn8q2T/MSjtoYXP4NsgMELERowVU2y5+ABQyB08
+	 lUyCxkEkAI307YSQPhobx1JRgPQUeVeBf3Tq2/8NJwcrj3k1eHTG5qH0je1dGeeShb
+	 vPMJIXdsZrF2zymvrUuhzFnsiHkyWQumgttRvd1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Martin-Gomez <pmartin-gomez@freebox.fr>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 57/81] mtd: spinand: fix memory leak of ECC engine conf
+	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.6 118/132] dma-buf: fix timeout handling in dma_resv_wait_timeout v2
 Date: Tue,  8 Jul 2025 18:23:49 +0200
-Message-ID: <20250708162226.807834472@linuxfoundation.org>
+Message-ID: <20250708162234.004682921@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 6463cbe08b0cbf9bba8763306764f5fd643023e1 ]
+commit 2b95a7db6e0f75587bffddbb490399cbb87e4985 upstream.
 
-Memory allocated for the ECC engine conf is not released during spinand
-cleanup. Below kmemleak trace is seen for this memory leak:
+Even the kerneldoc says that with a zero timeout the function should not
+wait for anything, but still return 1 to indicate that the fences are
+signaled now.
 
-unreferenced object 0xffffff80064f00e0 (size 8):
-  comm "swapper/0", pid 1, jiffies 4294937458
-  hex dump (first 8 bytes):
-    00 00 00 00 00 00 00 00                          ........
-  backtrace (crc 0):
-    kmemleak_alloc+0x30/0x40
-    __kmalloc_cache_noprof+0x208/0x3c0
-    spinand_ondie_ecc_init_ctx+0x114/0x200
-    nand_ecc_init_ctx+0x70/0xa8
-    nanddev_ecc_engine_init+0xec/0x27c
-    spinand_probe+0xa2c/0x1620
-    spi_mem_probe+0x130/0x21c
-    spi_probe+0xf0/0x170
-    really_probe+0x17c/0x6e8
-    __driver_probe_device+0x17c/0x21c
-    driver_probe_device+0x58/0x180
-    __device_attach_driver+0x15c/0x1f8
-    bus_for_each_drv+0xec/0x150
-    __device_attach+0x188/0x24c
-    device_initial_probe+0x10/0x20
-    bus_probe_device+0x11c/0x160
+Unfortunately that isn't what was implemented, instead of only returning
+1 we also waited for at least one jiffies.
 
-Fix the leak by calling nanddev_ecc_engine_cleanup() inside
-spinand_cleanup().
+Fix that by adjusting the handling to what the function is actually
+documented to do.
 
-Signed-off-by: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v2: improve code readability
+
+Reported-by: Marek Olšák <marek.olsak@amd.com>
+Reported-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20250129105841.1806-1-christian.koenig@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/spi/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma-buf/dma-resv.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index dacd9c0e8b202..80e9646d20503 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -1314,6 +1314,7 @@ static void spinand_cleanup(struct spinand_device *spinand)
- {
- 	struct nand_device *nand = spinand_to_nand(spinand);
+--- a/drivers/dma-buf/dma-resv.c
++++ b/drivers/dma-buf/dma-resv.c
+@@ -678,11 +678,13 @@ long dma_resv_wait_timeout(struct dma_re
+ 	dma_resv_iter_begin(&cursor, obj, usage);
+ 	dma_resv_for_each_fence_unlocked(&cursor, fence) {
  
-+	nanddev_ecc_engine_cleanup(nand);
- 	nanddev_cleanup(nand);
- 	spinand_manufacturer_cleanup(spinand);
- 	kfree(spinand->databuf);
--- 
-2.39.5
-
+-		ret = dma_fence_wait_timeout(fence, intr, ret);
+-		if (ret <= 0) {
+-			dma_resv_iter_end(&cursor);
+-			return ret;
+-		}
++		ret = dma_fence_wait_timeout(fence, intr, timeout);
++		if (ret <= 0)
++			break;
++
++		/* Even for zero timeout the return value is 1 */
++		if (timeout)
++			timeout = ret;
+ 	}
+ 	dma_resv_iter_end(&cursor);
+ 
 
 
 
