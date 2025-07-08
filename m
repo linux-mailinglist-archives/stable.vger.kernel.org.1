@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BF1AFD35D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F40E8AFD25A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63C6B48658F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:52:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDEF07AD2B2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2B42DA77B;
-	Tue,  8 Jul 2025 16:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214622E5439;
+	Tue,  8 Jul 2025 16:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2G685XQc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tidmuHIY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59312BE46;
-	Tue,  8 Jul 2025 16:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF3F2E337A;
+	Tue,  8 Jul 2025 16:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993581; cv=none; b=OEYXWLQ4LjxkVCCTqbsz2dDZ49Hp7BtwT1gx7hXh0ksebT6bVqf+v1uOFwVtIjGgwdylRLK3gESKxnqCiVhkcy7KDfZfJD0Z/jl4mFnpzcXHF0TgJ+bSx7VPCcRb6VlLjjF9n1Z2CMS+WiAuSDgKc97vq6ykAyDvIVF1Bjnjg6w=
+	t=1751993111; cv=none; b=WONflk9lC1ryDQB4PsOVZPhk0NOer+HTLpdDmLIr8Jl3g7yqThsWdhBqrsyafz0sYL/SVa3IkhGquJybKI/b4l6jZt/wNZCYhFHB8JTRD5nykMIqi9eefuOTVKUbRuqwlT0WC1/u/wQR1l3Gf/eBJY2oT6u61wBcDIvgFeLiBG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993581; c=relaxed/simple;
-	bh=5cSATWZRFNnzXywOWA9kOTDx5cVhl7WY6ks1HJix+lI=;
+	s=arc-20240116; t=1751993111; c=relaxed/simple;
+	bh=lD70CuOubs17uYSKRXCkmGLMHlS/359o0AdpVY+scYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VgU7wMV01weQNqR2qt0SYFRK1htdekaQ1Zce4kNODz60I+C6kHb95D8GUibeKj2tJ5GZBxH90lfRZrW5f0iUh6MYqjCHKD6RMXSMlVXUBit4ayiA/TCuVz4lN542iRKcq/PlWv8IrLYf+Jm9U/s1XQ1bPryxKH67rAv8OfiESe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2G685XQc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6691C4CEED;
-	Tue,  8 Jul 2025 16:53:00 +0000 (UTC)
+	 MIME-Version; b=qYKL84ihHnK9PqIT/VylCVBSGJMcvqhPFI8xmmTxyFTo/W9L+ErHLG9yomBF++uXScrevz8iYlPq6kugRnYDEjXB1nK1C/xOdGWEOt7TFfKYoEUpQBRvDY3tgeldlTvi3egxP5stWC+KDTdT152g3JX6d25z2FC7U2ytJi5VfBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tidmuHIY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E4FC4CEED;
+	Tue,  8 Jul 2025 16:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993581;
-	bh=5cSATWZRFNnzXywOWA9kOTDx5cVhl7WY6ks1HJix+lI=;
+	s=korg; t=1751993111;
+	bh=lD70CuOubs17uYSKRXCkmGLMHlS/359o0AdpVY+scYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2G685XQcDOPzyav8vbikrQjoTURYiDHHQHojLgym2jJAR8DgdfZqHLrave4dGaEmb
-	 aQPzA9wWuCPSKUJlLZdkxQeysCdi9YyqCBSKMCKoAwFaYm/br4nqlGGSjXfhxDBbEB
-	 jwxP41qtKV0V+jq8vSYGH7N+Ap6Z2+eahoGc9HVc=
+	b=tidmuHIYWYJznPzlnF/DzY1XGzj3A3qjzfjmPYivhI5RTQ1Z0/niYZ/p468w+XUxC
+	 PpI8LrbcaqiTT04FvMUN4NqaCNDNJZKATgGG7bBuEmh2Rn6vcbE3HDOd5xSuVjt/x+
+	 9sla9rmNFwWIgZe4hA8KJGafKXV2U6bV8jpCXKq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 123/178] drm/msm: Fix another leak in the submit error path
+Subject: [PATCH 6.12 164/232] drm/i915/dp_mst: Work around Thunderbolt sink disconnect after SINK_COUNT_ESI read
 Date: Tue,  8 Jul 2025 18:22:40 +0200
-Message-ID: <20250708162239.804559680@linuxfoundation.org>
+Message-ID: <20250708162245.728587400@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit f681c2aa8676a890eacc84044717ab0fd26e058f ]
+[ Upstream commit 9cb15478916e849d62a6ec44b10c593b9663328c ]
 
-put_unused_fd() doesn't free the installed file, if we've already done
-fd_install().  So we need to also free the sync_file.
+Due to a problem in the iTBT DP-in adapter's firmware the sink on a TBT
+link may get disconnected inadvertently if the SINK_COUNT_ESI and the
+DP_LINK_SERVICE_IRQ_VECTOR_ESI0 registers are read in a single AUX
+transaction. Work around the issue by reading these registers in
+separate transactions.
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Patchwork: https://patchwork.freedesktop.org/patch/653583/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+The issue affects MTL+ platforms and will be fixed in the DP-in adapter
+firmware, however releasing that firmware fix may take some time and is
+not guaranteed to be available for all systems. Based on this apply the
+workaround on affected platforms.
+
+See HSD #13013007775.
+
+v2: Cc'ing Mika Westerberg.
+
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13760
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14147
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250519133417.1469181-1-imre.deak@intel.com
+(cherry picked from commit c3a48363cf1f76147088b1adb518136ac5df86a0)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem_submit.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
-index b2aeaecaa39b3..d4f71bb54e84c 100644
---- a/drivers/gpu/drm/msm/msm_gem_submit.c
-+++ b/drivers/gpu/drm/msm/msm_gem_submit.c
-@@ -658,6 +658,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
- 	struct msm_ringbuffer *ring;
- 	struct msm_submit_post_dep *post_deps = NULL;
- 	struct drm_syncobj **syncobjs_to_reset = NULL;
-+	struct sync_file *sync_file = NULL;
- 	int out_fence_fd = -1;
- 	unsigned i;
- 	int ret;
-@@ -867,7 +868,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
- 	}
- 
- 	if (ret == 0 && args->flags & MSM_SUBMIT_FENCE_FD_OUT) {
--		struct sync_file *sync_file = sync_file_create(submit->user_fence);
-+		sync_file = sync_file_create(submit->user_fence);
- 		if (!sync_file) {
- 			ret = -ENOMEM;
- 		} else {
-@@ -901,8 +902,11 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
- out_unlock:
- 	mutex_unlock(&queue->lock);
- out_post_unlock:
--	if (ret && (out_fence_fd >= 0))
-+	if (ret && (out_fence_fd >= 0)) {
- 		put_unused_fd(out_fence_fd);
-+		if (sync_file)
-+			fput(sync_file->file);
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 45cca965c11b4..ca9e0c730013d 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -4300,6 +4300,24 @@ intel_dp_mst_disconnect(struct intel_dp *intel_dp)
+ static bool
+ intel_dp_get_sink_irq_esi(struct intel_dp *intel_dp, u8 *esi)
+ {
++	struct intel_display *display = to_intel_display(intel_dp);
++	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
++
++	/*
++	 * Display WA for HSD #13013007775: mtl/arl/lnl
++	 * Read the sink count and link service IRQ registers in separate
++	 * transactions to prevent disconnecting the sink on a TBT link
++	 * inadvertently.
++	 */
++	if (IS_DISPLAY_VER(display, 14, 20) && !IS_BATTLEMAGE(i915)) {
++		if (drm_dp_dpcd_read(&intel_dp->aux, DP_SINK_COUNT_ESI, esi, 3) != 3)
++			return false;
++
++		/* DP_SINK_COUNT_ESI + 3 == DP_LINK_SERVICE_IRQ_VECTOR_ESI0 */
++		return drm_dp_dpcd_readb(&intel_dp->aux, DP_LINK_SERVICE_IRQ_VECTOR_ESI0,
++					 &esi[3]) == 1;
 +	}
++
+ 	return drm_dp_dpcd_read(&intel_dp->aux, DP_SINK_COUNT_ESI, esi, 4) == 4;
+ }
  
- 	if (!IS_ERR_OR_NULL(submit)) {
- 		msm_gem_submit_put(submit);
 -- 
 2.39.5
 
