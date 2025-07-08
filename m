@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-161131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EEAFAFD37E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A73F5AFD18E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3438F5443B8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DB10561F07
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CB62DFA22;
-	Tue,  8 Jul 2025 16:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D51B2E5B08;
+	Tue,  8 Jul 2025 16:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LClbz7fP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVhLnp/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2392045B5;
-	Tue,  8 Jul 2025 16:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09D92E5B07;
+	Tue,  8 Jul 2025 16:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993685; cv=none; b=ngbl3Bkt/Bih4RZAzdqIYky3rUtE1z11oAXjIu7FPP6g0cselLxeUcAPAWLYa4zvAr9espNtjghQrwT4v+Iy8Vz+Uv+29IXyWHPRvVRStdCdl7eMBYMuSxcy/th2vj2IOxEBH4l3qZhX0flO1Upj4KshMLj7CWlNcVXXL6/fysg=
+	t=1751992507; cv=none; b=BSP6Qbp9+UtzUKEKgVvo0/AMMVgkFIz8/UdLaQe7EExxmWWg7BBmfUxVFBg43oj+mzpa8WERhDV5N5FEuwzk47/6XBFttcKlxnpUzW/wbZZltLo7B+JtXOHAl80KCdDjvcPNaNgu/N9Wl6v0fVSneVEapg5dmv9jYTRbCZLnC68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993685; c=relaxed/simple;
-	bh=7910NeWAciKgBjExdsYF9CDCt1tq8WJMPTfANACrYr0=;
+	s=arc-20240116; t=1751992507; c=relaxed/simple;
+	bh=BAXOkVnoPMw9nrgOfZEoSV9CRSdZyl487TyE6mxu7NA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sdYGcICepUUaJpVLMxwGgX7kSsF0shbsClAfh515x6V5OnyTnSGtBjeUSH181t3Tye13AaoycF5P2aO1WhbsUsx69usnX3tLdjj/d9qhIePn+oW2/CI1mvWMXQskoNQJtHgE7rtjYcq4UHXmPDNth5KgUUd9wK8SrM+LYX1v88U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LClbz7fP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A94CC4CEED;
-	Tue,  8 Jul 2025 16:54:44 +0000 (UTC)
+	 MIME-Version; b=EEeYnVTGuj29XAjT7CxgSyY6q7Xrj2OH/LmdLF3QyCJXsw/2l7x5tOiv5493h7w34MZ/eMwV2Fn0YMen8EBxMwtn+YMTOmlWSxwnKziZ77B7AeO/yeJ8HE3KWOM8v59P2gB+VmmwmXHc0qALr5bmr6k9oQVOPgl/pI8PjKEqcuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVhLnp/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199DCC4CEED;
+	Tue,  8 Jul 2025 16:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993685;
-	bh=7910NeWAciKgBjExdsYF9CDCt1tq8WJMPTfANACrYr0=;
+	s=korg; t=1751992506;
+	bh=BAXOkVnoPMw9nrgOfZEoSV9CRSdZyl487TyE6mxu7NA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LClbz7fPoCcARjq1r904uk64ICDbzIPuL9II+otfj/N7fLonmP0n86MxdbLKbccDs
-	 R3UN9u0oL/zUVOrEDS/LU+BeIaogX5ROgntAsdXTeQEjWwHvZGceowKuyt8eroE+cD
-	 4mSVk/fc3rhhGyj/7tk+dpngE+a5d1yDiRK2BS1Y=
+	b=BVhLnp/I0tNkRN4cwfKtKdXmMlez3JuQFMAfi7YQeUVDyjkHDesKQWU8mo7Y0CLzG
+	 Xrx6O7Cou3QTgtlG6PnaqhOL25sQCuuoLpXGDEf8HkfdL3RkNfUnXVglZJtx0VWs+w
+	 bk7u0+eWcO4QS4ntn4ruk94rg+mfFmVGI8xlut3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.15 158/178] dma-buf: fix timeout handling in dma_resv_wait_timeout v2
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 084/132] ALSA: sb: Dont allow changing the DMA mode during operations
 Date: Tue,  8 Jul 2025 18:23:15 +0200
-Message-ID: <20250708162240.618686315@linuxfoundation.org>
+Message-ID: <20250708162233.091337706@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 2b95a7db6e0f75587bffddbb490399cbb87e4985 upstream.
+[ Upstream commit ed29e073ba93f2d52832804cabdd831d5d357d33 ]
 
-Even the kerneldoc says that with a zero timeout the function should not
-wait for anything, but still return 1 to indicate that the fences are
-signaled now.
+When a PCM stream is already running, one shouldn't change the DMA
+mode via kcontrol, which may screw up the hardware.  Return -EBUSY
+instead.
 
-Unfortunately that isn't what was implemented, instead of only returning
-1 we also waited for at least one jiffies.
-
-Fix that by adjusting the handling to what the function is actually
-documented to do.
-
-v2: improve code readability
-
-Reported-by: Marek Olšák <marek.olsak@amd.com>
-Reported-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20250129105841.1806-1-christian.koenig@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218185
+Link: https://patch.msgid.link/20250610064322.26787-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/dma-resv.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ sound/isa/sb/sb16_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/dma-buf/dma-resv.c
-+++ b/drivers/dma-buf/dma-resv.c
-@@ -685,11 +685,13 @@ long dma_resv_wait_timeout(struct dma_re
- 	dma_resv_iter_begin(&cursor, obj, usage);
- 	dma_resv_for_each_fence_unlocked(&cursor, fence) {
- 
--		ret = dma_fence_wait_timeout(fence, intr, ret);
--		if (ret <= 0) {
--			dma_resv_iter_end(&cursor);
--			return ret;
--		}
-+		ret = dma_fence_wait_timeout(fence, intr, timeout);
-+		if (ret <= 0)
-+			break;
+diff --git a/sound/isa/sb/sb16_main.c b/sound/isa/sb/sb16_main.c
+index a9b87e159b2d1..5efbd0a41312b 100644
+--- a/sound/isa/sb/sb16_main.c
++++ b/sound/isa/sb/sb16_main.c
+@@ -703,6 +703,9 @@ static int snd_sb16_dma_control_put(struct snd_kcontrol *kcontrol, struct snd_ct
+ 	unsigned char nval, oval;
+ 	int change;
+ 	
++	if (chip->mode & (SB_MODE_PLAYBACK | SB_MODE_CAPTURE))
++		return -EBUSY;
 +
-+		/* Even for zero timeout the return value is 1 */
-+		if (timeout)
-+			timeout = ret;
- 	}
- 	dma_resv_iter_end(&cursor);
- 
+ 	nval = ucontrol->value.enumerated.item[0];
+ 	if (nval > 2)
+ 		return -EINVAL;
+-- 
+2.39.5
+
 
 
 
