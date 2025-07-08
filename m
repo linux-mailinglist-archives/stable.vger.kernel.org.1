@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-161192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C37AFD3DF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:01:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16613AFD1D4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9816F1C40DFC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB28816235F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF172E541E;
-	Tue,  8 Jul 2025 16:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5ED82E3B03;
+	Tue,  8 Jul 2025 16:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQOVLDnc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRzWX3jx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0F82E091E;
-	Tue,  8 Jul 2025 16:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A9121773D;
+	Tue,  8 Jul 2025 16:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993861; cv=none; b=DzjkYb8FVpYGQwam6MrLyU0oPYT1mWG3N8SIAx6HqLvdZvzjMUCbHa9hm3HNQgwi/k8kNXrdvp8utKGMcVdvo+MO5R7+n8pBMqnyvbA+iMkM2v2Jac6Lc0QpkVx3BXU8lIYUNW6OsenuQ+2ZiCNBicVLO0GUaON4m0eAjuYNZEY=
+	t=1751992686; cv=none; b=G2csP4eaHb/h4dhtXzwPVdCrC3sak6AlNQV6px11s3z4Sv0ZcI5Z3jOTdwHLWZKbh52bRo3dKJ6iEUQugdNwK9KTR9k7QuyttJ+sfKoa95HaQbiDdT3HKNgMJMoGyc1egnTWZzwo/txVZIxagwgtUyqNNXnqvgnAoAgikn4iKdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993861; c=relaxed/simple;
-	bh=KzEX0cI4uE0oll/Sks0GnQHdhyENMugYeeggK4SMiTg=;
+	s=arc-20240116; t=1751992686; c=relaxed/simple;
+	bh=depyVtMYbvkdeenP13s0d15Vm2BUEsMgz4PG5ZYdtoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+lK2mDCyVtEcqCN8LBaAdS4/RIZuo98DtMUdkTpBPtb4hM2/uDg+PWIAiep1E472VluNWLos6ZP1PPhsC4gIlDDhn2WsFOM9G31GJoNGx+avcWlt79XYP5lzB7MVOOmCsXK+/0xe19U72KlPUhSx+orJ6wd/YfOjaTVnlFRS6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQOVLDnc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65B9C4CEF5;
-	Tue,  8 Jul 2025 16:57:40 +0000 (UTC)
+	 MIME-Version; b=qv+21DV30NEmJpcfmLHnKxDhjvNd+cCxbun0BGFwnA0c1GwQqkC6xhtsioGMW2lwCKhVpU2a1KVP3N87etMBC9jY/hcBBiF8MUbUW59FV9iM1OuOFv/MFBvBPAllATyF17LvKDk6KKoWwffi8BctyYsieeldGE3aCwdVevVbuOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRzWX3jx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11631C4CEED;
+	Tue,  8 Jul 2025 16:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993861;
-	bh=KzEX0cI4uE0oll/Sks0GnQHdhyENMugYeeggK4SMiTg=;
+	s=korg; t=1751992686;
+	bh=depyVtMYbvkdeenP13s0d15Vm2BUEsMgz4PG5ZYdtoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TQOVLDnciIy4zTGqs4QQyM9RyW3gtcK5/U3hh4vkEP136MsYNrv1FnuaWvFgO07p8
-	 xCBMdBJoxbBcz9/i2cxaWCRhf7xP6/yPorOPkddqh1jHrNZ8Dsa3YnSnQYBITuy9BU
-	 +a7RbPz5afvHZQeYJ9wjbO1lknO2s7COxEUO4by0=
+	b=zRzWX3jxDzkr4PkrNLdUMZYPBCo/22FiH7Pg0k2BzGdCliOoBGkCVX/ROde+ZUZWP
+	 HlN3/C93Q+qmQ3L4+vpsFB51Dl2jpNaOGMjshIV8v+9AWKVhCBP+cvCJ1TgEpP7G3z
+	 /ruFt5A8DKgwNfI0jm9mR5FIzVoBhhFFGfbPZ+Oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>,
+	Yang Li <yang.li@amlogic.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 005/160] mfd: max14577: Fix wakeup source leaks on device unbind
+Subject: [PATCH 6.12 046/232] Bluetooth: Prevent unintended pause by checking if advertising is active
 Date: Tue,  8 Jul 2025 18:20:42 +0200
-Message-ID: <20250708162231.658689466@linuxfoundation.org>
+Message-ID: <20250708162242.669897037@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Yang Li <yang.li@amlogic.com>
 
-[ Upstream commit d905d06e64b0eb3da43af6186c132f5282197998 ]
+[ Upstream commit 1f029b4e30a602db33dedee5ac676e9236ad193c ]
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.
+When PA Create Sync is enabled, advertising resumes unexpectedly.
+Therefore, it's necessary to check whether advertising is currently
+active before attempting to pause it.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250406-mfd-device-wakekup-leak-v1-3-318e14bdba0a@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+  < HCI Command: LE Add Device To... (0x08|0x0011) plen 7  #1345 [hci0] 48.306205
+  		Address type: Random (0x01)
+  		Address: 4F:84:84:5F:88:17 (Resolvable)
+  		Identity type: Random (0x01)
+  		Identity: FC:5B:8C:F7:5D:FB (Static)
+  < HCI Command: LE Set Address Re.. (0x08|0x002d) plen 1  #1347 [hci0] 48.308023
+  		Address resolution: Enabled (0x01)
+  ...
+  < HCI Command: LE Set Extended A.. (0x08|0x0039) plen 6  #1349 [hci0] 48.309650
+  		Extended advertising: Enabled (0x01)
+  		Number of sets: 1 (0x01)
+  		Entry 0
+  		Handle: 0x01
+  		Duration: 0 ms (0x00)
+  		Max ext adv events: 0
+  ...
+  < HCI Command: LE Periodic Adve.. (0x08|0x0044) plen 14  #1355 [hci0] 48.314575
+  		Options: 0x0000
+  		Use advertising SID, Advertiser Address Type and address
+  		Reporting initially enabled
+  		SID: 0x02
+  		Adv address type: Random (0x01)
+  		Adv address: 4F:84:84:5F:88:17 (Resolvable)
+  		Identity type: Random (0x01)
+  		Identity: FC:5B:8C:F7:5D:FB (Static)
+  		Skip: 0x0000
+  		Sync timeout: 20000 msec (0x07d0)
+  		Sync CTE type: 0x0000
+
+Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
+Signed-off-by: Yang Li <yang.li@amlogic.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/max14577.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/hci_sync.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mfd/max14577.c b/drivers/mfd/max14577.c
-index be185e9d5f16b..c9e56145b08bd 100644
---- a/drivers/mfd/max14577.c
-+++ b/drivers/mfd/max14577.c
-@@ -467,6 +467,7 @@ static int max14577_i2c_remove(struct i2c_client *i2c)
- {
- 	struct max14577 *max14577 = i2c_get_clientdata(i2c);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 50cc60ac6242e..79d1a6ed08b29 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2531,6 +2531,10 @@ static int hci_pause_advertising_sync(struct hci_dev *hdev)
+ 	int err;
+ 	int old_state;
  
-+	device_init_wakeup(max14577->dev, false);
- 	mfd_remove_devices(max14577->dev);
- 	regmap_del_irq_chip(max14577->irq, max14577->irq_data);
- 	if (max14577->dev_type == MAXIM_DEVICE_TYPE_MAX77836)
++	/* If controller is not advertising we are done. */
++	if (!hci_dev_test_flag(hdev, HCI_LE_ADV))
++		return 0;
++
+ 	/* If already been paused there is nothing to do. */
+ 	if (hdev->advertising_paused)
+ 		return 0;
 -- 
 2.39.5
 
