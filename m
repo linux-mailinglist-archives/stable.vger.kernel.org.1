@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-161120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9384AFD37B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44AF6AFD0AF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 989031885B01
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BAED48325A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39E8BE46;
-	Tue,  8 Jul 2025 16:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556152D9790;
+	Tue,  8 Jul 2025 16:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjcmAokS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HROXAwng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A263D2F37;
-	Tue,  8 Jul 2025 16:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125A32367CE;
+	Tue,  8 Jul 2025 16:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993653; cv=none; b=ifk4R3sS6v/aimzHlj69oNfhaFjTeFXyV5RNHAZ1RfBq8nxdaroHtJpcnBKMlY6VO64weUUF9lM2UeSVOQaHEsD7bYCQ+Xzv4qP3iCJfE3dAK4DzuuWs5VxlVerLs3qihx+UdavK2Mv9aNHNPeNzYJtQgoHFyE2MRElx911OtqA=
+	t=1751991981; cv=none; b=Qdl8mmFzZGVfZp1UlpDZetuT1fkGXjuoR4GaZWxAIjwC4BF4NW4ZYLBYL6ordOKGGAZK1cOlKLOS7qy5MMZ/q/zJqA20vOqzkoLoVFRhxlGDSOSa91WcxIr1SLqQ/agi8BM1sIyRziTCiBEsXxVpbJVEfvvz9n++YW1NA6VCd64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993653; c=relaxed/simple;
-	bh=FjUZjK8j++uCyUe5bgvQ2lkQsZbfHgmOmByfIYLEe+I=;
+	s=arc-20240116; t=1751991981; c=relaxed/simple;
+	bh=FtwfQtTPq/KA3CoNM+0G2mKP6Vvb/uKBiC4HsDLUyMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPQc4tHYJ9D3iaA+gX98UoJRnnnJuO/aOMvcTfZlbufCWhWB1qzQqXPV4p9nmi5MlI515fGualModctn/oF05hwSJWPHZ28j9kAR/BH/z55xXdgFKoksK4BwfjJzGhcV0E0Ybv8/AOPjOVdzBGs8pc95TraJbjV5xlIsmZ+qw3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjcmAokS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C825C4CEED;
-	Tue,  8 Jul 2025 16:54:12 +0000 (UTC)
+	 MIME-Version; b=WE6ONmsDoE2yyz7llCtCjCB4gTRthfBqwhARDWQz8OQVA1Gxz85aeqHJV16XHURl+PBXrRMQpj+PR0zE3BL/08fteOJsbptNenyY4xwCMtTOM5PjXxIxiPQ0vLgJiW9VbpaZrgEoLlKSeYuK09r/f06aJQIo8EUUviNFosIlxAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HROXAwng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4DCC4CEED;
+	Tue,  8 Jul 2025 16:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993653;
-	bh=FjUZjK8j++uCyUe5bgvQ2lkQsZbfHgmOmByfIYLEe+I=;
+	s=korg; t=1751991981;
+	bh=FtwfQtTPq/KA3CoNM+0G2mKP6Vvb/uKBiC4HsDLUyMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjcmAokScBXId4AYMJ0qm8aGDrsLvf6yzMHYAulNOzfzvBftENJoMa6d7GjOyWPNj
-	 lZzAEnwfPYEdkK55Z4j1CyuZ1p6GqNhi+f4S8aOYFJi+h0zM/QdT4wByPmtASST9iu
-	 qBLh5iV4JjWnDzlR2bFzqhjOJxFRGJeT1hurBqt0=
+	b=HROXAwng9o4DmfDE3PJGgGmIWKFm4x8MJuzEYvjOuQS0u1k3aLW3pDaIbjuptBj7V
+	 ic5b4WEWaZh+Aur37k4LP5ZNnJsUzn+P16Dt3JqSP/Pz1ck/itBHMLjq625N8iIf5O
+	 hPl6n4gie2OVhstxXfFIpOGgsIIyd3j80tt+ENV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilton Perim Neto <niltonperimneto@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.15 148/178] Input: xpad - support Acer NGR 200 Controller
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 13/81] mtk-sd: Prevent memory corruption from DMA map failure
 Date: Tue,  8 Jul 2025 18:23:05 +0200
-Message-ID: <20250708162240.386640279@linuxfoundation.org>
+Message-ID: <20250708162225.282448215@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilton Perim Neto <niltonperimneto@gmail.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 22c69d786ef8fb789c61ca75492a272774221324 upstream.
+commit f5de469990f19569627ea0dd56536ff5a13beaa3 upstream.
 
-Add the NGR 200 Xbox 360 to the list of recognized controllers.
+If msdc_prepare_data() fails to map the DMA region, the request is
+not prepared for data receiving, but msdc_start_data() proceeds
+the DMA with previous setting.
+Since this will lead a memory corruption, we have to stop the
+request operation soon after the msdc_prepare_data() fails to
+prepare it.
 
-Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
-Link: https://lore.kernel.org/r/20250608060517.14967-1-niltonperimneto@gmail.com
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 208489032bdd ("mmc: mediatek: Add Mediatek MMC driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/174972756982.3337526.6755001617701603082.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mmc/host/mtk-sd.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -174,6 +174,7 @@ static const struct xpad_device {
- 	{ 0x05fd, 0x107a, "InterAct 'PowerPad Pro' X-Box pad (Germany)", 0, XTYPE_XBOX },
- 	{ 0x05fe, 0x3030, "Chic Controller", 0, XTYPE_XBOX },
- 	{ 0x05fe, 0x3031, "Chic Controller", 0, XTYPE_XBOX },
-+	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX },
- 	{ 0x062a, 0x0020, "Logic3 Xbox GamePad", 0, XTYPE_XBOX },
- 	{ 0x062a, 0x0033, "Competition Pro Steering Wheel", 0, XTYPE_XBOX },
- 	{ 0x06a3, 0x0200, "Saitek Racing Wheel", 0, XTYPE_XBOX },
-@@ -520,6 +521,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft Xbox 360 controllers */
- 	XPAD_XBOXONE_VENDOR(0x045e),		/* Microsoft Xbox One controllers */
- 	XPAD_XBOX360_VENDOR(0x046d),		/* Logitech Xbox 360-style controllers */
-+	XPAD_XBOX360_VENDOR(0x0502),		/* Acer Inc. Xbox 360 style controllers */
- 	XPAD_XBOX360_VENDOR(0x056e),		/* Elecom JC-U3613M */
- 	XPAD_XBOX360_VENDOR(0x06a3),		/* Saitek P3600 */
- 	XPAD_XBOX360_VENDOR(0x0738),		/* Mad Catz Xbox 360 controllers */
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -763,6 +763,11 @@ static void msdc_prepare_data(struct msd
+ 	}
+ }
+ 
++static bool msdc_data_prepared(struct mmc_data *data)
++{
++	return data->host_cookie & MSDC_PREPARE_FLAG;
++}
++
+ static void msdc_unprepare_data(struct msdc_host *host, struct mmc_data *data)
+ {
+ 	if (data->host_cookie & MSDC_ASYNC_FLAG)
+@@ -1323,8 +1328,18 @@ static void msdc_ops_request(struct mmc_
+ 	WARN_ON(host->mrq);
+ 	host->mrq = mrq;
+ 
+-	if (mrq->data)
++	if (mrq->data) {
+ 		msdc_prepare_data(host, mrq->data);
++		if (!msdc_data_prepared(mrq->data)) {
++			/*
++			 * Failed to prepare DMA area, fail fast before
++			 * starting any commands.
++			 */
++			mrq->cmd->error = -ENOSPC;
++			mmc_request_done(mmc_from_priv(host), mrq);
++			return;
++		}
++	}
+ 
+ 	/* if SBC is required, we have HW option and SW option.
+ 	 * if HW option is enabled, and SBC does not have "special" flags,
 
 
 
