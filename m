@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-161089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A07B0AFD34F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40066AFD44A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:04:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D1ED17277B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA981170815
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBD42DEA94;
-	Tue,  8 Jul 2025 16:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A960E2DECBD;
+	Tue,  8 Jul 2025 17:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOkKtyv8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lb6eTdQZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEA6225414;
-	Tue,  8 Jul 2025 16:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670832E1C74;
+	Tue,  8 Jul 2025 17:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993561; cv=none; b=fkXnfjm+R/KTEHQryiOQEbIsKwtr9rB/RYBGSq/iL+/PoaHek/x+jn2/vTNbB5MRzU+QG7hklhzrXM6iDtcAwJbJGz368l5euHYUH1RGA5XP2Vl0HSkeHmkThggJyZmBWitwbeBNmnflhBMFyG4R2v+GSJ7Erj87OF22eLZG6mg=
+	t=1751994077; cv=none; b=KSv08LuD2/n+Kp2KxqL5djfEoBMXoKdiYT1DcsL21YxpTRKI3aHcCqreHTAxHDslrlUY//6Y8Rd/ghM1Gt374dYMSgXp4qtXJN95mp0oLb6uvqgPGCUqmoMVntE68Si7nNOFkE2nOps8bYUu5HxyAPtLIVDbb8hshDOJO95oRP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993561; c=relaxed/simple;
-	bh=4zDJ56QBfvX8Hna1sSFPHrRL/oqc9LPrAGYcd8RzKAg=;
+	s=arc-20240116; t=1751994077; c=relaxed/simple;
+	bh=8LqYMZjCEnDJ8xvao8ABW8S6c5uo7//+skO7jRR7s0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aKlGawPfVN9QFUB5J1j3aFozplWCfGOScfLr1adYKRPfmUvpwmb2Mgt2KB7G3oWRriOWGus8lg03pKaxPp2cST52Z893cJo0uMfl0tVKXA19gxhIWozDqiJGgXrSK2P1X4ft8nYxwqj+RKnqV2/xQCnYOMPS1f5QQIRsVuJNCKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOkKtyv8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C39C4CEED;
-	Tue,  8 Jul 2025 16:52:40 +0000 (UTC)
+	 MIME-Version; b=RrfKIAzQFFsNWaLalhVJ2/k6Os211Hx+J5sqQ8Rh/h/ktdiny841Waa2Hw9ZJeA2Jl5QlFzpT3aVwjCjPMgsw0w2RUexIbNze4W9R3ObAaMdbJ0ENdZ0Rj0p5CkZODrTv9ETFFxTzqy0+OFLXlDBEElaYMloV8+QJqFuAVqNPgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lb6eTdQZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41D5C4CEED;
+	Tue,  8 Jul 2025 17:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993561;
-	bh=4zDJ56QBfvX8Hna1sSFPHrRL/oqc9LPrAGYcd8RzKAg=;
+	s=korg; t=1751994077;
+	bh=8LqYMZjCEnDJ8xvao8ABW8S6c5uo7//+skO7jRR7s0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KOkKtyv8dofpx0ZAYm3yBBvbRH+D1r9yoK+gV/1w5zyR03rCFUPt79W1HapS1CGne
-	 2TV+WjaMXPwmJelXVGOECVT+jsihJlnGlanFiGKIKiZwrzL2ZWg4Wm2AIgweAPZylk
-	 NKFcFB660aIcU3qydSnchR1gW1U5MRmX7d4bhR+Q=
+	b=Lb6eTdQZSRHY4IYiUHM5d7DPU9h6MmlH13gk6rAEvfYpoSJyeZi9ywr+eNYep47lE
+	 Bz2SAfBuHqpnvmpy3zaOGFw8c40jmYoeSZqiWliHBE4pVz6eQUCaDKyQ4LkRuOpRD+
+	 DT6W+max8t41kwvWCrpZfKMW8AqdWgcPmDytPyPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
-	Steve French <stfrench@microsoft.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 117/178] smb: client: fix race condition in negotiate timeout by using more precise timing
-Date: Tue,  8 Jul 2025 18:22:34 +0200
-Message-ID: <20250708162239.668683271@linuxfoundation.org>
+Subject: [PATCH 5.15 118/160] drm/i915/gt: Fix timeline left held on VMA alloc error
+Date: Tue,  8 Jul 2025 18:22:35 +0200
+Message-ID: <20250708162234.721849213@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +69,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-[ Upstream commit 266b5d02e14f3a0e07414e11f239397de0577a1d ]
+[ Upstream commit a5aa7bc1fca78c7fa127d9e33aa94a0c9066c1d6 ]
 
-When the SMB server reboots and the client immediately accesses the mount
-point, a race condition can occur that causes operations to fail with
-"Host is down" error.
+The following error has been reported sporadically by CI when a test
+unbinds the i915 driver on a ring submission platform:
 
-Reproduction steps:
-  # Mount SMB share
-  mount -t cifs //192.168.245.109/TEST /mnt/ -o xxxx
-  ls /mnt
+<4> [239.330153] ------------[ cut here ]------------
+<4> [239.330166] i915 0000:00:02.0: [drm] drm_WARN_ON(dev_priv->mm.shrink_count)
+<4> [239.330196] WARNING: CPU: 1 PID: 18570 at drivers/gpu/drm/i915/i915_gem.c:1309 i915_gem_cleanup_early+0x13e/0x150 [i915]
+...
+<4> [239.330640] RIP: 0010:i915_gem_cleanup_early+0x13e/0x150 [i915]
+...
+<4> [239.330942] Call Trace:
+<4> [239.330944]  <TASK>
+<4> [239.330949]  i915_driver_late_release+0x2b/0xa0 [i915]
+<4> [239.331202]  i915_driver_release+0x86/0xa0 [i915]
+<4> [239.331482]  devm_drm_dev_init_release+0x61/0x90
+<4> [239.331494]  devm_action_release+0x15/0x30
+<4> [239.331504]  release_nodes+0x3d/0x120
+<4> [239.331517]  devres_release_all+0x96/0xd0
+<4> [239.331533]  device_unbind_cleanup+0x12/0x80
+<4> [239.331543]  device_release_driver_internal+0x23a/0x280
+<4> [239.331550]  ? bus_find_device+0xa5/0xe0
+<4> [239.331563]  device_driver_detach+0x14/0x20
+...
+<4> [357.719679] ---[ end trace 0000000000000000 ]---
 
-  # Reboot server
-  ssh root@192.168.245.109 reboot
-  ssh root@192.168.245.109 /path/to/cifs_server_setup.sh
-  ssh root@192.168.245.109 systemctl stop firewalld
+If the test also unloads the i915 module then that's followed with:
 
-  # Immediate access fails
-  ls /mnt
-  ls: cannot access '/mnt': Host is down
+<3> [357.787478] =============================================================================
+<3> [357.788006] BUG i915_vma (Tainted: G     U  W        N ): Objects remaining on __kmem_cache_shutdown()
+<3> [357.788031] -----------------------------------------------------------------------------
+<3> [357.788204] Object 0xffff888109e7f480 @offset=29824
+<3> [357.788670] Allocated in i915_vma_instance+0xee/0xc10 [i915] age=292729 cpu=4 pid=2244
+<4> [357.788994]  i915_vma_instance+0xee/0xc10 [i915]
+<4> [357.789290]  init_status_page+0x7b/0x420 [i915]
+<4> [357.789532]  intel_engines_init+0x1d8/0x980 [i915]
+<4> [357.789772]  intel_gt_init+0x175/0x450 [i915]
+<4> [357.790014]  i915_gem_init+0x113/0x340 [i915]
+<4> [357.790281]  i915_driver_probe+0x847/0xed0 [i915]
+<4> [357.790504]  i915_pci_probe+0xe6/0x220 [i915]
+...
 
-  # But works if there is a delay
+Closer analysis of CI results history has revealed a dependency of the
+error on a few IGT tests, namely:
+- igt@api_intel_allocator@fork-simple-stress-signal,
+- igt@api_intel_allocator@two-level-inception-interruptible,
+- igt@gem_linear_blits@interruptible,
+- igt@prime_mmap_coherency@ioctl-errors,
+which invisibly trigger the issue, then exhibited with first driver unbind
+attempt.
 
-The issue is caused by a race condition between negotiate and reconnect.
-The 20-second negotiate timeout mechanism can interfere with the normal
-recovery process when both are triggered simultaneously.
+All of the above tests perform actions which are actively interrupted with
+signals.  Further debugging has allowed to narrow that scope down to
+DRM_IOCTL_I915_GEM_EXECBUFFER2, and ring_context_alloc(), specific to ring
+submission, in particular.
 
-  ls                              cifsd
----------------------------------------------------
- cifs_getattr
- cifs_revalidate_dentry
- cifs_get_inode_info
- cifs_get_fattr
- smb2_query_path_info
- smb2_compound_op
- SMB2_open_init
- smb2_reconnect
- cifs_negotiate_protocol
-  smb2_negotiate
-   cifs_send_recv
-    smb_send_rqst
-    wait_for_response
-                            cifs_demultiplex_thread
-                              cifs_read_from_socket
-                              cifs_readv_from_socket
-                                server_unresponsive
-                                cifs_reconnect
-                                  __cifs_reconnect
-                                  cifs_abort_connection
-                                    mid->mid_state = MID_RETRY_NEEDED
-                                    cifs_wake_up_task
-    cifs_sync_mid_result
-     // case MID_RETRY_NEEDED
-     rc = -EAGAIN;
-   // In smb2_negotiate()
-   rc = -EHOSTDOWN;
+If successful then that function, or its execlists or GuC submission
+equivalent, is supposed to be called only once per GEM context engine,
+followed by raise of a flag that prevents the function from being called
+again.  The function is expected to unwind its internal errors itself, so
+it may be safely called once more after it returns an error.
 
-The server_unresponsive() timeout triggers cifs_reconnect(), which aborts
-ongoing mid requests and causes the ls command to receive -EAGAIN, leading
-to -EHOSTDOWN.
+In case of ring submission, the function first gets a reference to the
+engine's legacy timeline and then allocates a VMA.  If the VMA allocation
+fails, e.g. when i915_vma_instance() called from inside is interrupted
+with a signal, then ring_context_alloc() fails, leaving the timeline held
+referenced.  On next I915_GEM_EXECBUFFER2 IOCTL, another reference to the
+timeline is got, and only that last one is put on successful completion.
+As a consequence, the legacy timeline, with its underlying engine status
+page's VMA object, is still held and not released on driver unbind.
 
-Fix this by introducing a dedicated `neg_start` field to
-precisely tracks when the negotiate process begins. The timeout check
-now uses this accurate timestamp instead of `lstrp`, ensuring that:
+Get the legacy timeline only after successful allocation of the context
+engine's VMA.
 
-1. Timeout is only triggered after negotiate has actually run for 20s
-2. The mechanism doesn't interfere with concurrent recovery processes
-3. Uninitialized timestamps (value 0) don't trigger false timeouts
+v2: Add a note on other submission methods (Krzysztof Karas):
+    Both execlists and GuC submission use lrc_alloc() which seems free
+    from a similar issue.
 
-Fixes: 7ccc1465465d ("smb: client: fix hang in wait_for_response() for negproto")
-Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 75d0a7f31eec ("drm/i915: Lift timeline into intel_context")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Reviewed-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Reviewed-by: Nitin Gote <nitin.r.gote@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/20250611104352.1014011-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit cc43422b3cc79eacff4c5a8ba0d224688ca9dd4f)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsglob.h | 1 +
- fs/smb/client/connect.c  | 7 ++++---
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_ring_submission.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index b89db44e0a8e3..eed29f043114a 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -777,6 +777,7 @@ struct TCP_Server_Info {
- 	__le32 session_key_id; /* retrieved from negotiate response and send in session setup request */
- 	struct session_key session_key;
- 	unsigned long lstrp; /* when we got last response from this server */
-+	unsigned long neg_start; /* when negotiate started (jiffies) */
- 	struct cifs_secmech secmech; /* crypto sec mech functs, descriptors */
- #define	CIFS_NEGFLAVOR_UNENCAP	1	/* wct == 17, but no ext_sec */
- #define	CIFS_NEGFLAVOR_EXTENDED	2	/* wct == 17, ext_sec bit set */
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index e92c7b71626fd..b4b162c93106b 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -679,12 +679,12 @@ server_unresponsive(struct TCP_Server_Info *server)
- 	/*
- 	 * If we're in the process of mounting a share or reconnecting a session
- 	 * and the server abruptly shut down (e.g. socket wasn't closed, packet
--	 * had been ACK'ed but no SMB response), don't wait longer than 20s to
--	 * negotiate protocol.
-+	 * had been ACK'ed but no SMB response), don't wait longer than 20s from
-+	 * when negotiate actually started.
- 	 */
- 	spin_lock(&server->srv_lock);
- 	if (server->tcpStatus == CifsInNegotiate &&
--	    time_after(jiffies, server->lstrp + 20 * HZ)) {
-+	    time_after(jiffies, server->neg_start + 20 * HZ)) {
- 		spin_unlock(&server->srv_lock);
- 		cifs_reconnect(server, false);
- 		return true;
-@@ -4209,6 +4209,7 @@ cifs_negotiate_protocol(const unsigned int xid, struct cifs_ses *ses,
+diff --git a/drivers/gpu/drm/i915/gt/intel_ring_submission.c b/drivers/gpu/drm/i915/gt/intel_ring_submission.c
+index 02e18e70c78ea..d85b80156913f 100644
+--- a/drivers/gpu/drm/i915/gt/intel_ring_submission.c
++++ b/drivers/gpu/drm/i915/gt/intel_ring_submission.c
+@@ -563,7 +563,6 @@ static int ring_context_alloc(struct intel_context *ce)
+ 	/* One ringbuffer to rule them all */
+ 	GEM_BUG_ON(!engine->legacy.ring);
+ 	ce->ring = engine->legacy.ring;
+-	ce->timeline = intel_timeline_get(engine->legacy.timeline);
  
- 	server->lstrp = jiffies;
- 	server->tcpStatus = CifsInNegotiate;
-+	server->neg_start = jiffies;
- 	spin_unlock(&server->srv_lock);
+ 	GEM_BUG_ON(ce->state);
+ 	if (engine->context_size) {
+@@ -576,6 +575,8 @@ static int ring_context_alloc(struct intel_context *ce)
+ 		ce->state = vma;
+ 	}
  
- 	rc = server->ops->negotiate(xid, ses, server);
++	ce->timeline = intel_timeline_get(engine->legacy.timeline);
++
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
