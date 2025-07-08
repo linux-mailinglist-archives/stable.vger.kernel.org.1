@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-160725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A73F5AFD18E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1983BAFD0E1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DB10561F07
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 164CC160CF5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D51B2E5B08;
-	Tue,  8 Jul 2025 16:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBAB2D9790;
+	Tue,  8 Jul 2025 16:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVhLnp/I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDwiVN8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09D92E5B07;
-	Tue,  8 Jul 2025 16:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC852E659;
+	Tue,  8 Jul 2025 16:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992507; cv=none; b=BSP6Qbp9+UtzUKEKgVvo0/AMMVgkFIz8/UdLaQe7EExxmWWg7BBmfUxVFBg43oj+mzpa8WERhDV5N5FEuwzk47/6XBFttcKlxnpUzW/wbZZltLo7B+JtXOHAl80KCdDjvcPNaNgu/N9Wl6v0fVSneVEapg5dmv9jYTRbCZLnC68=
+	t=1751992085; cv=none; b=OFhGKmeJpNpPaKTqn8EBOXkx6DqDw1vM2/VBHDy+IaCxOICECxVVDiA0voQCCfwqNSSuHcckYqjN7TpBVt+zv2LBHyw0ktqdsK+fE0iIG4td2T5zsX/aOyhFRcshTLJkc6jjfV2tGTtfEF+pXyvCrAzuLNh4GnJXxFCJtnhrCi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992507; c=relaxed/simple;
-	bh=BAXOkVnoPMw9nrgOfZEoSV9CRSdZyl487TyE6mxu7NA=;
+	s=arc-20240116; t=1751992085; c=relaxed/simple;
+	bh=WloMT+3vwc0QVvMuNk/PtuBOUjGSXGiAQVUt1CJ4DUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EEeYnVTGuj29XAjT7CxgSyY6q7Xrj2OH/LmdLF3QyCJXsw/2l7x5tOiv5493h7w34MZ/eMwV2Fn0YMen8EBxMwtn+YMTOmlWSxwnKziZ77B7AeO/yeJ8HE3KWOM8v59P2gB+VmmwmXHc0qALr5bmr6k9oQVOPgl/pI8PjKEqcuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVhLnp/I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199DCC4CEED;
-	Tue,  8 Jul 2025 16:35:05 +0000 (UTC)
+	 MIME-Version; b=SRX9KgoYuQk3CgRKPfZfyzbpnczfHFztHE+7tRnM7ZUFvjR0GfSNGfWkqN/vgzG9tCj7GX0QZAj+oH1tQJOYRRQMRyEzojT4EHAVSqPnCi0ARy9hzwYNZrTVRgfUi9kJLc43hlSx87E8TsTRPfXQagLuXGFuLM8czXjKsxradMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDwiVN8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFABC4CEED;
+	Tue,  8 Jul 2025 16:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992506;
-	bh=BAXOkVnoPMw9nrgOfZEoSV9CRSdZyl487TyE6mxu7NA=;
+	s=korg; t=1751992084;
+	bh=WloMT+3vwc0QVvMuNk/PtuBOUjGSXGiAQVUt1CJ4DUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BVhLnp/I0tNkRN4cwfKtKdXmMlez3JuQFMAfi7YQeUVDyjkHDesKQWU8mo7Y0CLzG
-	 Xrx6O7Cou3QTgtlG6PnaqhOL25sQCuuoLpXGDEf8HkfdL3RkNfUnXVglZJtx0VWs+w
-	 bk7u0+eWcO4QS4ntn4ruk94rg+mfFmVGI8xlut3E=
+	b=vDwiVN8rHxMU34v8PFyRkwKzxCpsS3sejrrJ3RPaii9LS3KnqpINwyc6w6nK+3O4q
+	 EKoBA+32xOFfSRn0Y1c2Jp3XkMubQ1mRYQT8PIPlv9iHoFfl1Bgiu0R/2c8C2Tj/Sn
+	 wf/gsPr3RHqaz5gPNgzKQ6yS109fgoiCLjcy3Res=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/132] ALSA: sb: Dont allow changing the DMA mode during operations
+Subject: [PATCH 6.1 23/81] RDMA/mlx5: Fix CC counters query for MPV
 Date: Tue,  8 Jul 2025 18:23:15 +0200
-Message-ID: <20250708162233.091337706@linuxfoundation.org>
+Message-ID: <20250708162225.667092900@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit ed29e073ba93f2d52832804cabdd831d5d357d33 ]
+[ Upstream commit acd245b1e33fc4b9d0f2e3372021d632f7ee0652 ]
 
-When a PCM stream is already running, one shouldn't change the DMA
-mode via kcontrol, which may screw up the hardware.  Return -EBUSY
-instead.
+In case, CC counters are querying for the second port use the correct
+core device for the query instead of always using the master core device.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218185
-Link: https://patch.msgid.link/20250610064322.26787-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: aac4492ef23a ("IB/mlx5: Update counter implementation for dual port RoCE")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/9cace74dcf106116118bebfa9146d40d4166c6b0.1750064969.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/isa/sb/sb16_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/hw/mlx5/counters.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/isa/sb/sb16_main.c b/sound/isa/sb/sb16_main.c
-index a9b87e159b2d1..5efbd0a41312b 100644
---- a/sound/isa/sb/sb16_main.c
-+++ b/sound/isa/sb/sb16_main.c
-@@ -703,6 +703,9 @@ static int snd_sb16_dma_control_put(struct snd_kcontrol *kcontrol, struct snd_ct
- 	unsigned char nval, oval;
- 	int change;
- 	
-+	if (chip->mode & (SB_MODE_PLAYBACK | SB_MODE_CAPTURE))
-+		return -EBUSY;
-+
- 	nval = ucontrol->value.enumerated.item[0];
- 	if (nval > 2)
- 		return -EINVAL;
+diff --git a/drivers/infiniband/hw/mlx5/counters.c b/drivers/infiniband/hw/mlx5/counters.c
+index 9915504ad1e18..39f71312e57a2 100644
+--- a/drivers/infiniband/hw/mlx5/counters.c
++++ b/drivers/infiniband/hw/mlx5/counters.c
+@@ -308,7 +308,7 @@ static int do_get_hw_stats(struct ib_device *ibdev,
+ 			 */
+ 			goto done;
+ 		}
+-		ret = mlx5_lag_query_cong_counters(dev->mdev,
++		ret = mlx5_lag_query_cong_counters(mdev,
+ 						   stats->value +
+ 						   cnts->num_q_counters,
+ 						   cnts->num_cong_counters,
 -- 
 2.39.5
 
