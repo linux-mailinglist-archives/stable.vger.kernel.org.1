@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-161042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8989CAFD321
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DEF5AFD213
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4594C1893B42
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:50:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02FA8188FF89
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBFB2D838B;
-	Tue,  8 Jul 2025 16:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9582E3385;
+	Tue,  8 Jul 2025 16:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6DScqXl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMFPnirC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAB08F5E;
-	Tue,  8 Jul 2025 16:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FFF23A98D;
+	Tue,  8 Jul 2025 16:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993428; cv=none; b=F5Qk1RV6vEAS/GtEZ1BThem/PxeBeAoTFOYw79cYOiAHbuzX2VndZi2UQwKFWJJezZYMcgA92gYt1J+DhC8lRB6QevrjRPgguMGjYO4ZyqPd5dWm9fMwHKtcmmk3vT+Hxr970xhdy/NB+tGnFwEr1y3GDHbuACoCQhKuzM/hwvc=
+	t=1751992790; cv=none; b=ps32ZkvlD/O3noxj080uw9zkGHiXfMdv1qvYuY+Afiiz8unVDdmYrQMGGHRu89flJJMLMVUXUb1piXnBmBSMrHs8QoPMG0YRSj+tIFHKeaJZnJDaRV+tCOoWmsvo7DyVUD043U79gvcA+WAVR3OjS6vDFm2Nv2YhtX07dHaMWpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993428; c=relaxed/simple;
-	bh=peQ/0zPOJXxLvNmH/Uc8HM6jfIkFpaMOXW3VQpy5v/4=;
+	s=arc-20240116; t=1751992790; c=relaxed/simple;
+	bh=IPjXgwwtXWqDDcqeM5/IC82ujLHA2GH5tSH9k2e+Ffk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gTKCyOPWdFs2KOo/3ZFVYiI8CqJgmnXvp3IOZpVo3GjrG9Xv3+vHXyxlAlnsXwen/ETd3HTmS/W5I1UgzMo4e3zrfWQM3c49BR32xlYHmRqDMPMk71JpIJnVqzrd3dZD8QBrParx4GhbUenptxdO3liEVruee5CumfCGWT8SUU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6DScqXl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16553C4CEED;
-	Tue,  8 Jul 2025 16:50:27 +0000 (UTC)
+	 MIME-Version; b=SgVYp/KsEZ8nNLmdutq4IoZPK5HRhSLKWBnzuiZrDt0YO1SHfukhe0L/ELWR7B1Eml3996NRmSDAMDfNrwBL7xtUKeAuVfjM/ROpVs8KPTbvq58pI3mpIP5qqk+pCS2ELjIx4sTaMUVbsHxDXcOsQ5pA1tgj0T/kvkK5q5XbGqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMFPnirC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F584C4CEF0;
+	Tue,  8 Jul 2025 16:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993428;
-	bh=peQ/0zPOJXxLvNmH/Uc8HM6jfIkFpaMOXW3VQpy5v/4=;
+	s=korg; t=1751992790;
+	bh=IPjXgwwtXWqDDcqeM5/IC82ujLHA2GH5tSH9k2e+Ffk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6DScqXlz7qW0RSg6iyV1pxqOPi+Vzb5WIIurdbWFncCDXBCrhNneGYOuagSKPIlr
-	 IVlmrs5GtaypbB6vO8PzZXP7wZF5mvLRNjk4mSvEzMKaurW2RsXiKjeO1SBg6xueYc
-	 AFEVCMAoXdTNNjkeUFH2o2J80JSg3ZJBmmJXimt8=
+	b=fMFPnirCNe9fg5Km2Eik2KxXkBSf6QlfAz2660KEhK323BUnIKdAh48uj8U95X0Gu
+	 2PcrSFfKmubyUG6EMOywOAkVGXMfT1PruWxarnBKODRoCTdfFyal1MZS0p6yRqtYU+
+	 CA0zwpm/jptgtOotAXUOACORVpGuJglqCd/nkj5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janne Grunau <j@jannau.net>,
-	Sven Peter <sven@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	Steve French <sfrench@samba.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 041/178] arm64: dts: apple: Move touchbar mipi {address,size}-cells from dtsi to dts
+Subject: [PATCH 6.12 082/232] smb: client: set missing retry flag in cifs_readv_callback()
 Date: Tue,  8 Jul 2025 18:21:18 +0200
-Message-ID: <20250708162237.752947861@linuxfoundation.org>
+Message-ID: <20250708162243.595940301@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +66,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Peter <sven@kernel.org>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit 08a0d93c353bd55de8b5fb77b464d89425be0215 ]
+[ Upstream commit 0e60bae24ad28ab06a485698077d3c626f1e54ab ]
 
-Move the {address,size}-cells property from the (disabled) touchbar screen
-mipi node inside the dtsi file to the model-specific dts file where it's
-enabled to fix the following W=1 warnings:
+Set NETFS_SREQ_NEED_RETRY flag to tell netfslib that the subreq needs
+to be retried.
 
-t8103.dtsi:404.34-433.5: Warning (avoid_unnecessary_addr_size): /soc/dsi@228600000: unnecessary #address-cells/#size-cells without "ranges", "dma-ranges" or child "reg" property
-t8112.dtsi:419.34-448.5: Warning (avoid_unnecessary_addr_size): /soc/dsi@228600000: unnecessary #address-cells/#size-cells without "ranges", "dma-ranges" or child "reg" property
-
-Fixes: 7275e795e520 ("arm64: dts: apple: Add touchbar screen nodes")
-Reviewed-by: Janne Grunau <j@jannau.net>
-Link: https://lore.kernel.org/r/20250611-display-pipe-mipi-warning-v1-1-bd80ba2c0eea@kernel.org
-Signed-off-by: Sven Peter <sven@kernel.org>
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/20250701163852.2171681-8-dhowells@redhat.com
+Tested-by: Steve French <sfrench@samba.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: netfs@lists.linux.dev
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/apple/t8103-j293.dts | 2 ++
- arch/arm64/boot/dts/apple/t8103.dtsi     | 2 --
- arch/arm64/boot/dts/apple/t8112-j493.dts | 2 ++
- arch/arm64/boot/dts/apple/t8112.dtsi     | 2 --
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ fs/smb/client/cifssmb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/apple/t8103-j293.dts b/arch/arm64/boot/dts/apple/t8103-j293.dts
-index e2d9439397f71..5b3c42e9f0e67 100644
---- a/arch/arm64/boot/dts/apple/t8103-j293.dts
-+++ b/arch/arm64/boot/dts/apple/t8103-j293.dts
-@@ -100,6 +100,8 @@ dfr_mipi_out_panel: endpoint@0 {
- 
- &displaydfr_mipi {
- 	status = "okay";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
- 
- 	dfr_panel: panel@0 {
- 		compatible = "apple,j293-summit", "apple,summit";
-diff --git a/arch/arm64/boot/dts/apple/t8103.dtsi b/arch/arm64/boot/dts/apple/t8103.dtsi
-index 97b6a067394e3..229b10efaab9e 100644
---- a/arch/arm64/boot/dts/apple/t8103.dtsi
-+++ b/arch/arm64/boot/dts/apple/t8103.dtsi
-@@ -404,8 +404,6 @@ displaydfr_mipi: dsi@228600000 {
- 			compatible = "apple,t8103-display-pipe-mipi", "apple,h7-display-pipe-mipi";
- 			reg = <0x2 0x28600000 0x0 0x100000>;
- 			power-domains = <&ps_mipi_dsi>;
--			#address-cells = <1>;
--			#size-cells = <0>;
- 			status = "disabled";
- 
- 			ports {
-diff --git a/arch/arm64/boot/dts/apple/t8112-j493.dts b/arch/arm64/boot/dts/apple/t8112-j493.dts
-index be86d34c6696c..fb8ad7d4c65a8 100644
---- a/arch/arm64/boot/dts/apple/t8112-j493.dts
-+++ b/arch/arm64/boot/dts/apple/t8112-j493.dts
-@@ -63,6 +63,8 @@ dfr_mipi_out_panel: endpoint@0 {
- 
- &displaydfr_mipi {
- 	status = "okay";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
- 
- 	dfr_panel: panel@0 {
- 		compatible = "apple,j493-summit", "apple,summit";
-diff --git a/arch/arm64/boot/dts/apple/t8112.dtsi b/arch/arm64/boot/dts/apple/t8112.dtsi
-index d9b966d68e4fa..7488e3850493b 100644
---- a/arch/arm64/boot/dts/apple/t8112.dtsi
-+++ b/arch/arm64/boot/dts/apple/t8112.dtsi
-@@ -420,8 +420,6 @@ displaydfr_mipi: dsi@228600000 {
- 			compatible = "apple,t8112-display-pipe-mipi", "apple,h7-display-pipe-mipi";
- 			reg = <0x2 0x28600000 0x0 0x100000>;
- 			power-domains = <&ps_mipi_dsi>;
--			#address-cells = <1>;
--			#size-cells = <0>;
- 			status = "disabled";
- 
- 			ports {
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index d6ba55d4720d2..449ac718a8beb 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -1310,6 +1310,7 @@ cifs_readv_callback(struct mid_q_entry *mid)
+ 		break;
+ 	case MID_REQUEST_SUBMITTED:
+ 	case MID_RETRY_NEEDED:
++		__set_bit(NETFS_SREQ_NEED_RETRY, &rdata->subreq.flags);
+ 		rdata->result = -EAGAIN;
+ 		if (server->sign && rdata->got_bytes)
+ 			/* reset bytes number since we can not check a sign */
 -- 
 2.39.5
 
