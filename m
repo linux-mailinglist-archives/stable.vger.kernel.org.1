@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-160504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40AEBAFCEE2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:19:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4AA0AFCEEC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:19:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3F461750D9
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 15:18:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BCE84839AA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 15:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277B22E0B72;
-	Tue,  8 Jul 2025 15:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A4E2E0B72;
+	Tue,  8 Jul 2025 15:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCAK3Dpo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFCXhOu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7FC2E11B3
-	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 15:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263212E0B7C
+	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 15:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751987920; cv=none; b=kUaOpwCG33N5q+eV3bloXSSoKV2FRYWphRkmgTVRbNyKEY+dIL1HCcsIkDZ/GlfLPsxCkJrFqfYadAlbvNe5AxzMCNpp5e+psDJw/W4xgb95CUoHzf1wxtxPuhA48tTcjMnSCeRihCR3w+NssbxXNqKTSh+0o2DYPN7c1ZyfVmo=
+	t=1751987960; cv=none; b=ZJDTt+OTAGo2HP0UpAP/4oYAKLLJC22giyPV7qeffWrAOaWf8zkVKpovFQT1U/vZaSxLIX58PRVteiUAAb3nWMGH7jgQlgt6XNl15FUdwma0RBVsoPYBTW107AAPhY5iNa9iIxMb9DD+BGpsSf9MNzYb3iypoIdxnh5hkmrXMLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751987920; c=relaxed/simple;
-	bh=mGD6BYNIQ+2Ysbp7ZAeYlluV+NXE7/1syAyVSVeCjdg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=vDxwyDxqXqRlhjhQ+VgM29e95M3KTfa3oe4Z5JZ7xzR3GCLjc+LpYNOYx0T0ojhQBIjwSR0b/sPoGvpGRN6UcrNoQ2LMdEPYXEHKyGeI6F9sCjR1m8eJGk8JiXFVg7NY3XYK+KsbcFeb9xgjquEvT8XUn0D1yM5W/IsVcilrKFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCAK3Dpo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44129C4CEED;
-	Tue,  8 Jul 2025 15:18:40 +0000 (UTC)
+	s=arc-20240116; t=1751987960; c=relaxed/simple;
+	bh=k6mdT05rVR7/UFPKz1DV2+tCugCoh1bw3dx2swq/Jmg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=U2Xne0yjcBsYFP/JBO9Vavo8uc4Wo1wTgaZVtiJtk1WlBS6Sm9F7LXhUCQNwdeBEipbZ7pbPT3w0eWqc9BoE44EzSlBTcCD1uXcSiofP2S7expLN+oWuP1NkAU6dfFqa9AauLlyVwdkj3H63h2HnS9peSps+EIl50MUn8VlmcOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFCXhOu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EECBC4CEED;
+	Tue,  8 Jul 2025 15:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751987920;
-	bh=mGD6BYNIQ+2Ysbp7ZAeYlluV+NXE7/1syAyVSVeCjdg=;
+	s=korg; t=1751987959;
+	bh=k6mdT05rVR7/UFPKz1DV2+tCugCoh1bw3dx2swq/Jmg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bCAK3Dpojuf+f55wiXS5SFMEmb3hxrWTVtIbmaWElnGaB6mmQpuV5Hw0Zj/3KrXtJ
-	 cSnQSEEjkngCHsURzxhln/mekUvgH+RzOpqmQPko7TKNQeRrb1Ft55KiCDfVgcKirm
-	 6n396/pJ/SzBh4M70mt0vYpKug+XKSDf5PGmf0Vw=
-Subject: FAILED: patch "[PATCH] platform/x86: think-lmi: Fix sysfs group cleanup" failed to apply to 5.15-stable tree
-To: kuurtb@gmail.com,ilpo.jarvinen@linux.intel.com,mpearson-lenovo@squebb.ca
+	b=RFCXhOu4mLrz8Bwv3nxQ/+pAkegSoD/oOxIFeNwMkMrfJu1NFWyQBjFNEc7VRBHdv
+	 KBuL8wNH8xyboIsd0LCVkDtoemdQqF3Aqt5tsevA/bMxOFNEDUePtWE5Z5dMIYCEVV
+	 8zBLyVARLBQ6oaRS7pc/Cv5Jb/LibqIGEN1UZpM4=
+Subject: FAILED: patch "[PATCH] usb: typec: tcpm: apply vbus before data bringup in" failed to apply to 6.12-stable tree
+To: rdbabiera@google.com,badhri@google.com,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 08 Jul 2025 17:18:29 +0200
-Message-ID: <2025070829-barometer-imagines-9277@gregkh>
+Date: Tue, 08 Jul 2025 17:19:13 +0200
+Message-ID: <2025070813-unwoven-idealness-eaa2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4f30f946f27b7f044cf8f3f1f353dee1dcd3517a
+git cherry-pick -x bec15191d52300defa282e3fd83820f69e447116
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025070829-barometer-imagines-9277@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025070813-unwoven-idealness-eaa2@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,154 +77,101 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4f30f946f27b7f044cf8f3f1f353dee1dcd3517a Mon Sep 17 00:00:00 2001
-From: Kurt Borja <kuurtb@gmail.com>
-Date: Mon, 30 Jun 2025 14:31:21 -0300
-Subject: [PATCH] platform/x86: think-lmi: Fix sysfs group cleanup
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From bec15191d52300defa282e3fd83820f69e447116 Mon Sep 17 00:00:00 2001
+From: RD Babiera <rdbabiera@google.com>
+Date: Wed, 18 Jun 2025 23:06:04 +0000
+Subject: [PATCH] usb: typec: tcpm: apply vbus before data bringup in
+ tcpm_src_attach
 
-Many error paths in tlmi_sysfs_init() lead to sysfs groups being removed
-when they were not even created.
+This patch fixes Type-C compliance test TD 4.7.6 - Try.SNK DRP Connect
+SNKAS.
 
-Fix this by letting the kobject core manage these groups through their
-kobj_type's defult_groups.
+tVbusON has a limit of 275ms when entering SRC_ATTACHED. Compliance
+testers can interpret the TryWait.Src to Attached.Src transition after
+Try.Snk as being in Attached.Src the entire time, so ~170ms is lost
+to the debounce timer.
 
-Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250630-lmi-fix-v3-3-ce4f81c9c481@gmail.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Setting the data role can be a costly operation in host mode, and when
+completed after 100ms can cause Type-C compliance test check TD 4.7.5.V.4
+to fail.
 
-diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
-index 69f361f21f0f..b73b84fdb15e 100644
---- a/drivers/platform/x86/think-lmi.c
-+++ b/drivers/platform/x86/think-lmi.c
-@@ -973,6 +973,7 @@ static const struct attribute_group auth_attr_group = {
- 	.is_visible = auth_attr_is_visible,
- 	.attrs = auth_attrs,
- };
-+__ATTRIBUTE_GROUPS(auth_attr);
+Turn VBUS on before tcpm_set_roles to meet timing requirement.
+
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Cc: stable <stable@kernel.org>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250618230606.3272497-2-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 1a1f9e1f8e4e..1f6fdfaa34bf 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -4410,17 +4410,6 @@ static int tcpm_src_attach(struct tcpm_port *port)
  
- /* ---- Attributes sysfs --------------------------------------------------------- */
- static ssize_t display_name_show(struct kobject *kobj, struct kobj_attribute *attr,
-@@ -1188,6 +1189,7 @@ static const struct attribute_group tlmi_attr_group = {
- 	.is_visible = attr_is_visible,
- 	.attrs = tlmi_attrs,
- };
-+__ATTRIBUTE_GROUPS(tlmi_attr);
+ 	tcpm_enable_auto_vbus_discharge(port, true);
  
- static void tlmi_attr_setting_release(struct kobject *kobj)
- {
-@@ -1207,11 +1209,13 @@ static void tlmi_pwd_setting_release(struct kobject *kobj)
- static const struct kobj_type tlmi_attr_setting_ktype = {
- 	.release        = &tlmi_attr_setting_release,
- 	.sysfs_ops	= &kobj_sysfs_ops,
-+	.default_groups = tlmi_attr_groups,
- };
- 
- static const struct kobj_type tlmi_pwd_setting_ktype = {
- 	.release        = &tlmi_pwd_setting_release,
- 	.sysfs_ops	= &kobj_sysfs_ops,
-+	.default_groups = auth_attr_groups,
- };
- 
- static ssize_t pending_reboot_show(struct kobject *kobj, struct kobj_attribute *attr,
-@@ -1381,14 +1385,8 @@ static struct kobj_attribute debug_cmd = __ATTR_WO(debug_cmd);
- static void tlmi_release_attr(void)
- {
- 	struct kobject *pos, *n;
--	int i;
- 
- 	/* Attribute structures */
--	for (i = 0; i < TLMI_SETTINGS_COUNT; i++) {
--		if (tlmi_priv.setting[i]) {
--			sysfs_remove_group(&tlmi_priv.setting[i]->kobj, &tlmi_attr_group);
--		}
--	}
- 	sysfs_remove_file(&tlmi_priv.attribute_kset->kobj, &pending_reboot.attr);
- 	sysfs_remove_file(&tlmi_priv.attribute_kset->kobj, &save_settings.attr);
- 
-@@ -1405,15 +1403,6 @@ static void tlmi_release_attr(void)
- 	kfree(tlmi_priv.pwd_admin->save_signature);
- 
- 	/* Authentication structures */
--	sysfs_remove_group(&tlmi_priv.pwd_admin->kobj, &auth_attr_group);
--	sysfs_remove_group(&tlmi_priv.pwd_power->kobj, &auth_attr_group);
+-	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
+-			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
+-	if (ret < 0)
+-		return ret;
 -
--	if (tlmi_priv.opcode_support) {
--		sysfs_remove_group(&tlmi_priv.pwd_system->kobj, &auth_attr_group);
--		sysfs_remove_group(&tlmi_priv.pwd_hdd->kobj, &auth_attr_group);
--		sysfs_remove_group(&tlmi_priv.pwd_nvme->kobj, &auth_attr_group);
+-	if (port->pd_supported) {
+-		ret = port->tcpc->set_pd_rx(port->tcpc, true);
+-		if (ret < 0)
+-			goto out_disable_mux;
 -	}
 -
- 	list_for_each_entry_safe(pos, n, &tlmi_priv.authentication_kset->list, entry)
- 		kobject_put(pos);
- 
-@@ -1484,10 +1473,6 @@ static int tlmi_sysfs_init(void)
- 					   NULL, "%s", tlmi_priv.setting[i]->display_name);
- 		if (ret)
- 			goto fail_create_attr;
--
--		ret = sysfs_create_group(&tlmi_priv.setting[i]->kobj, &tlmi_attr_group);
--		if (ret)
--			goto fail_create_attr;
+ 	/*
+ 	 * USB Type-C specification, version 1.2,
+ 	 * chapter 4.5.2.2.8.1 (Attached.SRC Requirements)
+@@ -4430,13 +4419,24 @@ static int tcpm_src_attach(struct tcpm_port *port)
+ 	    (polarity == TYPEC_POLARITY_CC2 && port->cc1 == TYPEC_CC_RA)) {
+ 		ret = tcpm_set_vconn(port, true);
+ 		if (ret < 0)
+-			goto out_disable_pd;
++			return ret;
  	}
  
- 	ret = sysfs_create_file(&tlmi_priv.attribute_kset->kobj, &pending_reboot.attr);
-@@ -1511,20 +1496,12 @@ static int tlmi_sysfs_init(void)
- 	if (ret)
- 		goto fail_create_attr;
+ 	ret = tcpm_set_vbus(port, true);
+ 	if (ret < 0)
+ 		goto out_disable_vconn;
  
--	ret = sysfs_create_group(&tlmi_priv.pwd_admin->kobj, &auth_attr_group);
--	if (ret)
--		goto fail_create_attr;
--
- 	tlmi_priv.pwd_power->kobj.kset = tlmi_priv.authentication_kset;
- 	ret = kobject_init_and_add(&tlmi_priv.pwd_power->kobj, &tlmi_pwd_setting_ktype,
- 				   NULL, "%s", "Power-on");
- 	if (ret)
- 		goto fail_create_attr;
++	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB, TYPEC_SOURCE,
++			     tcpm_data_role_for_source(port));
++	if (ret < 0)
++		goto out_disable_vbus;
++
++	if (port->pd_supported) {
++		ret = port->tcpc->set_pd_rx(port->tcpc, true);
++		if (ret < 0)
++			goto out_disable_mux;
++	}
++
+ 	port->pd_capable = false;
  
--	ret = sysfs_create_group(&tlmi_priv.pwd_power->kobj, &auth_attr_group);
--	if (ret)
--		goto fail_create_attr;
--
- 	if (tlmi_priv.opcode_support) {
- 		tlmi_priv.pwd_system->kobj.kset = tlmi_priv.authentication_kset;
- 		ret = kobject_init_and_add(&tlmi_priv.pwd_system->kobj, &tlmi_pwd_setting_ktype,
-@@ -1532,29 +1509,17 @@ static int tlmi_sysfs_init(void)
- 		if (ret)
- 			goto fail_create_attr;
+ 	port->partner = NULL;
+@@ -4447,14 +4447,14 @@ static int tcpm_src_attach(struct tcpm_port *port)
  
--		ret = sysfs_create_group(&tlmi_priv.pwd_system->kobj, &auth_attr_group);
--		if (ret)
--			goto fail_create_attr;
--
- 		tlmi_priv.pwd_hdd->kobj.kset = tlmi_priv.authentication_kset;
- 		ret = kobject_init_and_add(&tlmi_priv.pwd_hdd->kobj, &tlmi_pwd_setting_ktype,
- 					   NULL, "%s", "HDD");
- 		if (ret)
- 			goto fail_create_attr;
+ 	return 0;
  
--		ret = sysfs_create_group(&tlmi_priv.pwd_hdd->kobj, &auth_attr_group);
--		if (ret)
--			goto fail_create_attr;
--
- 		tlmi_priv.pwd_nvme->kobj.kset = tlmi_priv.authentication_kset;
- 		ret = kobject_init_and_add(&tlmi_priv.pwd_nvme->kobj, &tlmi_pwd_setting_ktype,
- 					   NULL, "%s", "NVMe");
- 		if (ret)
- 			goto fail_create_attr;
--
--		ret = sysfs_create_group(&tlmi_priv.pwd_nvme->kobj, &auth_attr_group);
--		if (ret)
--			goto fail_create_attr;
- 	}
- 
+-out_disable_vconn:
+-	tcpm_set_vconn(port, false);
+-out_disable_pd:
+-	if (port->pd_supported)
+-		port->tcpc->set_pd_rx(port->tcpc, false);
+ out_disable_mux:
+ 	tcpm_mux_set(port, TYPEC_STATE_SAFE, USB_ROLE_NONE,
+ 		     TYPEC_ORIENTATION_NONE);
++out_disable_vbus:
++	tcpm_set_vbus(port, false);
++out_disable_vconn:
++	tcpm_set_vconn(port, false);
++
  	return ret;
+ }
+ 
 
 
