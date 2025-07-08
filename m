@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-160661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013B6AFD135
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A3DAFD24A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EAD3581F84
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 048DE585AC4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEB12E54B2;
-	Tue,  8 Jul 2025 16:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFD22DFF04;
+	Tue,  8 Jul 2025 16:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUOPm0Td"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHncTb2e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5A91714B7;
-	Tue,  8 Jul 2025 16:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB978F5B;
+	Tue,  8 Jul 2025 16:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992320; cv=none; b=i5VOTK6tdaHQGMRu0wmjnX81BVO014X54llmGTo3tosEC177M2EgJ54SPFDp2xcwgX0HRuknjo+BfFlVrKIhq2S0ddLmVHfIKQRyGRaTlQ4Xq0QdVBLO9KiQY+5YpssGEsNkZw68jJQE93wmYpPkpbrgnc4DpZzf74/cidvBKMo=
+	t=1751992923; cv=none; b=D9PcnSqn+W45joajRCKcp2G+U9nTarC36PlyM50KeSI17Zwh3GBWYQqh4ghZ7gValF/olTLjW+2MRRBb/G8uljd3N38TaeDawOfd7sQevaWViI56edoJyMhxYlfMLROHG1J7eA0KPJSTmtva6gdbOiiqYmtrq1T/BhxvEfvPEoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992320; c=relaxed/simple;
-	bh=wMJnkZq36KAwY7EAFf6DizXdhv7cIEEkKXjLx0dXZQI=;
+	s=arc-20240116; t=1751992923; c=relaxed/simple;
+	bh=yoa3LFrmzd19i7IC8r2i1yApIPEzZuaUkX89mCpYq3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E2FEewsx20+mth3LdxlhkSmrhgSWglZ7l6V/2uIce9Nz7SsGLCn+DJmF5az92eVgxi8wIpgzUUL6zM0hyGS3cWST1v8m1GzCGjFdklBJX2a/Qt6iZNRuxFuiwETsI7444ITMytYXo9b4mRm2lHBCVZGTvaVigZr4wFQ8Vo8dl5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUOPm0Td; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697D8C4CEED;
-	Tue,  8 Jul 2025 16:31:59 +0000 (UTC)
+	 MIME-Version; b=J1hO7dzIqLiAs/yhSCwFaukoi1jKrJkdoKOt+Q9oabqIwNnnhxRp//4TuwfibBkaT/Ba4fF5InovjwSVr4j9Kfe8XZSXzp08xam0PwrmE1jB7G5JMKTYBu8yMYfRrPJBOtlUfqOdyfc1EE3Sg/XZYrxtFScGqIrOW6Uotzf1dVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHncTb2e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579E4C4CEED;
+	Tue,  8 Jul 2025 16:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992319;
-	bh=wMJnkZq36KAwY7EAFf6DizXdhv7cIEEkKXjLx0dXZQI=;
+	s=korg; t=1751992923;
+	bh=yoa3LFrmzd19i7IC8r2i1yApIPEzZuaUkX89mCpYq3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUOPm0Td5Bt8gozsvERfTuKf+UKHIysGKkKr9jL/Ge6cv5kruSb6nLKE5XBpMCsP5
-	 +8qWf/GXfZJuKea5j5pgcV8vvQgeYw+DxrFVkfYTtL67BJ+SszPts0KgIfokbMgS4k
-	 cCCeiFVOzmQvtXnZ6o5fMSqgmR6mEb066VEXyaJg=
+	b=QHncTb2eL0z8bpsiQhU/sgysPdLt960uBAgMXNrYjlDhbbBT7Qhd0ozelCtHCiWT4
+	 NDXBuvbXSnQo0Y6wCww1f0Y8USBwm90Y33jdnODVVDDPXKv5CX9HEs6YITajE80Ltt
+	 wXFwEzgpRZUpwVu7m90/pl9jSNjstj6N8nI1H/CY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 011/132] Bluetooth: MGMT: set_mesh: update LE scan interval and window
+	syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 126/232] RDMA/rxe: Fix "trying to register non-static key in rxe_qp_do_cleanup" bug
 Date: Tue,  8 Jul 2025 18:22:02 +0200
-Message-ID: <20250708162231.076224400@linuxfoundation.org>
+Message-ID: <20250708162244.740092874@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-commit e5af67a870f738bb8a4594b6c60c2caf4c87a3c9 upstream.
+[ Upstream commit 1c7eec4d5f3b39cdea2153abaebf1b7229a47072 ]
 
-According to the message of commit b338d91703fa ("Bluetooth: Implement
-support for Mesh"), MGMT_OP_SET_MESH_RECEIVER should set the passive scan
-parameters.  Currently the scan interval and window parameters are
-silently ignored, although user space (bluetooth-meshd) expects that
-they can be used [1]
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ assign_lock_key kernel/locking/lockdep.c:986 [inline]
+ register_lock_class+0x4a3/0x4c0 kernel/locking/lockdep.c:1300
+ __lock_acquire+0x99/0x1ba0 kernel/locking/lockdep.c:5110
+ lock_acquire kernel/locking/lockdep.c:5866 [inline]
+ lock_acquire+0x179/0x350 kernel/locking/lockdep.c:5823
+ __timer_delete_sync+0x152/0x1b0 kernel/time/timer.c:1644
+ rxe_qp_do_cleanup+0x5c3/0x7e0 drivers/infiniband/sw/rxe/rxe_qp.c:815
+ execute_in_process_context+0x3a/0x160 kernel/workqueue.c:4596
+ __rxe_cleanup+0x267/0x3c0 drivers/infiniband/sw/rxe/rxe_pool.c:232
+ rxe_create_qp+0x3f7/0x5f0 drivers/infiniband/sw/rxe/rxe_verbs.c:604
+ create_qp+0x62d/0xa80 drivers/infiniband/core/verbs.c:1250
+ ib_create_qp_kernel+0x9f/0x310 drivers/infiniband/core/verbs.c:1361
+ ib_create_qp include/rdma/ib_verbs.h:3803 [inline]
+ rdma_create_qp+0x10c/0x340 drivers/infiniband/core/cma.c:1144
+ rds_ib_setup_qp+0xc86/0x19a0 net/rds/ib_cm.c:600
+ rds_ib_cm_initiate_connect+0x1e8/0x3d0 net/rds/ib_cm.c:944
+ rds_rdma_cm_event_handler_cmn+0x61f/0x8c0 net/rds/rdma_transport.c:109
+ cma_cm_event_handler+0x94/0x300 drivers/infiniband/core/cma.c:2184
+ cma_work_handler+0x15b/0x230 drivers/infiniband/core/cma.c:3042
+ process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
+ process_scheduled_works kernel/workqueue.c:3319 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
+ kthread+0x3c2/0x780 kernel/kthread.c:464
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
-[1] https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/mesh/mesh-io-mgmt.c#n344
-Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The root cause is as below:
+
+In the function rxe_create_qp, the function rxe_qp_from_init is called
+to create qp, if this function rxe_qp_from_init fails, rxe_cleanup will
+be called to handle all the allocated resources, including the timers:
+retrans_timer and rnr_nak_timer.
+
+The function rxe_qp_from_init calls the function rxe_qp_init_req to
+initialize the timers: retrans_timer and rnr_nak_timer.
+
+But these timers are initialized in the end of rxe_qp_init_req.
+If some errors occur before the initialization of these timers, this
+problem will occur.
+
+The solution is to check whether these timers are initialized or not.
+If these timers are not initialized, ignore these timers.
+
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Reported-by: syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4edb496c3cad6e953a31
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://patch.msgid.link/20250419080741.1515231-1-yanjun.zhu@linux.dev
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/infiniband/sw/rxe/rxe_qp.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -2140,6 +2140,9 @@ static int set_mesh_sync(struct hci_dev
- 	else
- 		hci_dev_clear_flag(hdev, HCI_MESH);
+diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
+index 91d329e903083..8b805b16136e5 100644
+--- a/drivers/infiniband/sw/rxe/rxe_qp.c
++++ b/drivers/infiniband/sw/rxe/rxe_qp.c
+@@ -811,7 +811,12 @@ static void rxe_qp_do_cleanup(struct work_struct *work)
+ 	spin_unlock_irqrestore(&qp->state_lock, flags);
+ 	qp->qp_timeout_jiffies = 0;
  
-+	hdev->le_scan_interval = __le16_to_cpu(cp->period);
-+	hdev->le_scan_window = __le16_to_cpu(cp->window);
-+
- 	len -= sizeof(*cp);
- 
- 	/* If filters don't fit, forward all adv pkts */
-@@ -2154,6 +2157,7 @@ static int set_mesh(struct sock *sk, str
- {
- 	struct mgmt_cp_set_mesh *cp = data;
- 	struct mgmt_pending_cmd *cmd;
-+	__u16 period, window;
- 	int err = 0;
- 
- 	bt_dev_dbg(hdev, "sock %p", sk);
-@@ -2167,6 +2171,23 @@ static int set_mesh(struct sock *sk, str
- 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
- 				       MGMT_STATUS_INVALID_PARAMS);
- 
-+	/* Keep allowed ranges in sync with set_scan_params() */
-+	period = __le16_to_cpu(cp->period);
-+
-+	if (period < 0x0004 || period > 0x4000)
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
-+				       MGMT_STATUS_INVALID_PARAMS);
-+
-+	window = __le16_to_cpu(cp->window);
-+
-+	if (window < 0x0004 || window > 0x4000)
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
-+				       MGMT_STATUS_INVALID_PARAMS);
-+
-+	if (window > period)
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
-+				       MGMT_STATUS_INVALID_PARAMS);
-+
- 	hci_dev_lock(hdev);
- 
- 	cmd = mgmt_pending_add(sk, MGMT_OP_SET_MESH_RECEIVER, hdev, data, len);
-@@ -6529,6 +6550,7 @@ static int set_scan_params(struct sock *
- 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_SCAN_PARAMS,
- 				       MGMT_STATUS_NOT_SUPPORTED);
- 
-+	/* Keep allowed ranges in sync with set_mesh() */
- 	interval = __le16_to_cpu(cp->interval);
- 
- 	if (interval < 0x0004 || interval > 0x4000)
+-	if (qp_type(qp) == IB_QPT_RC) {
++	/* In the function timer_setup, .function is initialized. If .function
++	 * is NULL, it indicates the function timer_setup is not called, the
++	 * timer is not initialized. Or else, the timer is initialized.
++	 */
++	if (qp_type(qp) == IB_QPT_RC && qp->retrans_timer.function &&
++		qp->rnr_nak_timer.function) {
+ 		del_timer_sync(&qp->retrans_timer);
+ 		del_timer_sync(&qp->rnr_nak_timer);
+ 	}
+-- 
+2.39.5
+
 
 
 
