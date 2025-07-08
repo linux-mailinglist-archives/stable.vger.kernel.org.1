@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-160907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D286AFD281
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B94AFD32E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:54:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8A22422082
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF4963B091A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B9E2E3385;
-	Tue,  8 Jul 2025 16:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D342E542E;
+	Tue,  8 Jul 2025 16:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWD/xDu1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpivnXn9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616AD215F5C;
-	Tue,  8 Jul 2025 16:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A092DC34C;
+	Tue,  8 Jul 2025 16:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993039; cv=none; b=DfxC7CVJKArF9em7AJa6WABFu/EqgnEzLEDjoiuVyQ6PYbL4jh/Uba0DJNSSYSMh74iLXHmdQJKwLbdPUdwmZX/AiEtD198dlmeowJXCQjbzdZ/WX3jvcJ2gWUwD7WTdZpsEA5Q/I0N58fFJwOB+3AyW2qT7sxOQ7uydj9VPry0=
+	t=1751993504; cv=none; b=RtnDm6z9O+oHGdGZ/m5gBcLfAdIFgY77Yhvvkq1oFSXUEmbG18ru+khyO8+lsjWz/Tly0OBgjCnYRal+AvHeyefNVJKh/h8Ds0up2nJkdbc10WOOUB0uhUNq/3eQUYpAgbIbZ12OGvDn/ihG7MYihtYs8K6NRWDgulSyYxoENVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993039; c=relaxed/simple;
-	bh=UF+kX+BCoEmkkerPMWZG/U5IKgMIsu3/7iGLMDkfAR8=;
+	s=arc-20240116; t=1751993504; c=relaxed/simple;
+	bh=AYjuRb25YN2h3P+Sq+mYEH7sb+/RHtuHQMFGZxWMK54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfYOl2AlT76CVypek7CmuYSTkR1JuKtMDqd8uoauXSGy8mwnCiwhchRzOsYibHyz7cKxjTSPEoAJs1m5iCVgg4U4vTXWuHba9IiL2Yu+UHi51Jn5cAVBqSKQVKDgvuPHBghmXHAfYtwVKgwPtDKgMwCa4YnBCoRLyUge5rR8kBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWD/xDu1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E773CC4CEED;
-	Tue,  8 Jul 2025 16:43:58 +0000 (UTC)
+	 MIME-Version; b=amy+9U2vFk18vYbZek/c2UYbI2y3oZwTxZzC/mxy1R2wqn+hClARZKHrm0cF8FDKAmqfVtvUhc5v24K5S4JZnFJlJinSUZ16tXro2Wx6gAAtceK1Fgik/ETZ/TQjTWK4UyA2hn1emn8AdTK+DZgYMhC7KAbzKFy2IwgA0vF06F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpivnXn9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43D1C4CEF0;
+	Tue,  8 Jul 2025 16:51:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993039;
-	bh=UF+kX+BCoEmkkerPMWZG/U5IKgMIsu3/7iGLMDkfAR8=;
+	s=korg; t=1751993504;
+	bh=AYjuRb25YN2h3P+Sq+mYEH7sb+/RHtuHQMFGZxWMK54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWD/xDu11y/QM/Hiij0JlgAUhZe6/wW5s7oHpJwOCUYEr7MIvDdaJZVMH5lm9e3no
-	 1unPFxnvLKjhbBbvkYr9H3Teo70JXTq4rTXbJKBkyZ0GDW/zl4MUKRanODv5yxTks2
-	 3ESgb4XmwHF6cT3dynWQIY55g1QseOzyB4FEk47M=
+	b=PpivnXn9+5F4F2eu/InWgJMrpja42eYhrLQOEUXRn5ucMUXIrS4fI6KYFIZKfrkUt
+	 TmJ1IIT2OhKibURzkaiFrZ4o3uBD7jS7Cj7umOFUvkCXqArKKNzMGOrXCXKiMggoWz
+	 ETPtgS+r5d5YkHsKlaiMYUcpPrAmgMUweoHTOn9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Brian3 Nguyen <brian3.nguyen@intel.com>,
+	Alex Zuo <alex.zuo@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Maciej Patelczyk <maciej.patelczyk@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Jia Yao <jia.yao@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 136/232] bpf: use common instruction history across all states
-Date: Tue,  8 Jul 2025 18:22:12 +0200
-Message-ID: <20250708162244.999607366@linuxfoundation.org>
+Subject: [PATCH 6.15 096/178] drm/xe: Fix out-of-bounds field write in MI_STORE_DATA_IMM
+Date: Tue,  8 Jul 2025 18:22:13 +0200
+Message-ID: <20250708162239.164149226@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,423 +68,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Jia Yao <jia.yao@intel.com>
 
-[ Upstream commit 96a30e469ca1d2b8cc7811b40911f8614b558241 ]
+[ Upstream commit 2d5cff2b4bc567dcaad7ab5b46c973ba534cc062 ]
 
-Instead of allocating and copying instruction history each time we
-enqueue child verifier state, switch to a model where we use one common
-dynamically sized array of instruction history entries across all states.
+According to Bspec, bits 0~9 of MI_STORE_DATA_IMM must not exceed 0x3FE.
+The macro MI_SDI_NUM_QW(x) evaluates to 2 * x + 1, which means the
+condition 2 * x + 1 <= 0x3FE must be satisfied. Therefore, the maximum
+valid value for x is 0x1FE, not 0x1FF.
 
-The key observation for proving this is correct is that instruction
-history is only relevant while state is active, which means it either is
-a current state (and thus we are actively modifying instruction history
-and no other state can interfere with us) or we are checkpointed state
-with some children still active (either enqueued or being current).
+v2
+ - Replace 0x1fe with macro MAX_PTE_PER_SDI (Auld, Matthew & Patelczyk, Maciej)
 
-In the latter case our portion of instruction history is finalized and
-won't change or grow, so as long as we keep it immutable until the state
-is finalized, we are good.
+v3
+ - Change macro MAX_PTE_PER_SDI from 0x1fe to 0x1feU (De Marchi, Lucas)
 
-Now, when state is finalized and is put into state hash for potentially
-future pruning lookups, instruction history is not used anymore. This is
-because instruction history is only used by precision marking logic, and
-we never modify precision markings for finalized states.
+Bspec: 60246
 
-So, instead of each state having its own small instruction history, we
-keep a global dynamically-sized instruction history, where each state in
-current DFS path from root to active state remembers its portion of
-instruction history. Current state can append to this history, but
-cannot modify any of its parent histories.
-
-Async callback state enqueueing, while logically detached from parent
-state, still is part of verification backtracking tree, so has to follow
-the same schema as normal state checkpoints.
-
-Because the insn_hist array can be grown through realloc, states don't
-keep pointers, they instead maintain two indices, [start, end), into
-global instruction history array. End is exclusive index, so
-`start == end` means there is no relevant instruction history.
-
-This eliminates a lot of allocations and minimizes overall memory usage.
-
-For instance, running a worst-case test from [0] (but without the
-heuristics-based fix [1]), it took 12.5 minutes until we get -ENOMEM.
-With the changes in this patch the whole test succeeds in 10 minutes
-(very slow, so heuristics from [1] is important, of course).
-
-To further validate correctness, veristat-based comparison was performed for
-Meta production BPF objects and BPF selftests objects. In both cases there
-were no differences *at all* in terms of verdict or instruction and state
-counts, providing a good confidence in the change.
-
-Having this low-memory-overhead solution of keeping dynamic
-per-instruction history cheaply opens up some new possibilities, like
-keeping extra information for literally every single validated
-instruction. This will be used for simplifying precision backpropagation
-logic in follow up patches.
-
-  [0] https://lore.kernel.org/bpf/20241029172641.1042523-2-eddyz87@gmail.com/
-  [1] https://lore.kernel.org/bpf/20241029172641.1042523-1-eddyz87@gmail.com/
-
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20241115001303.277272-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: e2d2115e56c4 ("bpf: Do not include stack ptr register in precision backtracking bookkeeping")
+Fixes: 9c44fd5f6e8a ("drm/xe: Add migrate layer functions for SVM support")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Brian3 Nguyen <brian3.nguyen@intel.com>
+Cc: Alex Zuo <alex.zuo@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Maciej Patelczyk <maciej.patelczyk@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Suggested-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Signed-off-by: Jia Yao <jia.yao@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Maciej Patelczyk <maciej.patelczyk@intel.com>
+Link: https://lore.kernel.org/r/20250612224620.161105-1-jia.yao@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit c038bdba98c9f6a36378044a9d4385531a194d3e)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf_verifier.h |  19 ++++---
- kernel/bpf/verifier.c        | 107 +++++++++++++++++------------------
- 2 files changed, 63 insertions(+), 63 deletions(-)
+ drivers/gpu/drm/xe/xe_migrate.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-index 50eeb5b86ed70..b82ff91916e42 100644
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -349,7 +349,7 @@ struct bpf_func_state {
+diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
+index 5a3e89022c381..752f57fd515e1 100644
+--- a/drivers/gpu/drm/xe/xe_migrate.c
++++ b/drivers/gpu/drm/xe/xe_migrate.c
+@@ -82,7 +82,7 @@ struct xe_migrate {
+  * of the instruction.  Subtracting the instruction header (1 dword) and
+  * address (2 dwords), that leaves 0x3FD dwords (0x1FE qwords) for PTE values.
+  */
+-#define MAX_PTE_PER_SDI 0x1FE
++#define MAX_PTE_PER_SDI 0x1FEU
  
- #define MAX_CALL_FRAMES 8
+ /**
+  * xe_tile_migrate_exec_queue() - Get this tile's migrate exec queue.
+@@ -1550,15 +1550,17 @@ static u32 pte_update_cmd_size(u64 size)
+ 	u64 entries = DIV_U64_ROUND_UP(size, XE_PAGE_SIZE);
  
--/* instruction history flags, used in bpf_jmp_history_entry.flags field */
-+/* instruction history flags, used in bpf_insn_hist_entry.flags field */
- enum {
- 	/* instruction references stack slot through PTR_TO_STACK register;
- 	 * we also store stack's frame number in lower 3 bits (MAX_CALL_FRAMES is 8)
-@@ -367,7 +367,7 @@ enum {
- static_assert(INSN_F_FRAMENO_MASK + 1 >= MAX_CALL_FRAMES);
- static_assert(INSN_F_SPI_MASK + 1 >= MAX_BPF_STACK / 8);
- 
--struct bpf_jmp_history_entry {
-+struct bpf_insn_hist_entry {
- 	u32 idx;
- 	/* insn idx can't be bigger than 1 million */
- 	u32 prev_idx : 22;
-@@ -458,13 +458,14 @@ struct bpf_verifier_state {
- 	 * See get_loop_entry() for more information.
- 	 */
- 	struct bpf_verifier_state *loop_entry;
--	/* jmp history recorded from first to last.
--	 * backtracking is using it to go from last to first.
--	 * For most states jmp_history_cnt is [0-3].
-+	/* Sub-range of env->insn_hist[] corresponding to this state's
-+	 * instruction history.
-+	 * Backtracking is using it to go from last to first.
-+	 * For most states instruction history is short, 0-3 instructions.
- 	 * For loops can go up to ~40.
- 	 */
--	struct bpf_jmp_history_entry *jmp_history;
--	u32 jmp_history_cnt;
-+	u32 insn_hist_start;
-+	u32 insn_hist_end;
- 	u32 dfs_depth;
- 	u32 callback_unroll_depth;
- 	u32 may_goto_depth;
-@@ -748,7 +749,9 @@ struct bpf_verifier_env {
- 		int cur_stack;
- 	} cfg;
- 	struct backtrack_state bt;
--	struct bpf_jmp_history_entry *cur_hist_ent;
-+	struct bpf_insn_hist_entry *insn_hist;
-+	struct bpf_insn_hist_entry *cur_hist_ent;
-+	u32 insn_hist_cap;
- 	u32 pass_cnt; /* number of times do_check() was called */
- 	u32 subprog_cnt;
- 	/* number of instructions analyzed by the verifier */
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 39a3d750f2ff9..7f00dc993041b 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -1376,13 +1376,6 @@ static void free_func_state(struct bpf_func_state *state)
- 	kfree(state);
- }
- 
--static void clear_jmp_history(struct bpf_verifier_state *state)
--{
--	kfree(state->jmp_history);
--	state->jmp_history = NULL;
--	state->jmp_history_cnt = 0;
--}
--
- static void free_verifier_state(struct bpf_verifier_state *state,
- 				bool free_self)
- {
-@@ -1392,7 +1385,6 @@ static void free_verifier_state(struct bpf_verifier_state *state,
- 		free_func_state(state->frame[i]);
- 		state->frame[i] = NULL;
- 	}
--	clear_jmp_history(state);
- 	if (free_self)
- 		kfree(state);
- }
-@@ -1418,13 +1410,6 @@ static int copy_verifier_state(struct bpf_verifier_state *dst_state,
- 	struct bpf_func_state *dst;
- 	int i, err;
- 
--	dst_state->jmp_history = copy_array(dst_state->jmp_history, src->jmp_history,
--					  src->jmp_history_cnt, sizeof(*dst_state->jmp_history),
--					  GFP_USER);
--	if (!dst_state->jmp_history)
--		return -ENOMEM;
--	dst_state->jmp_history_cnt = src->jmp_history_cnt;
--
- 	/* if dst has more stack frames then src frame, free them, this is also
- 	 * necessary in case of exceptional exits using bpf_throw.
- 	 */
-@@ -1443,6 +1428,8 @@ static int copy_verifier_state(struct bpf_verifier_state *dst_state,
- 	dst_state->parent = src->parent;
- 	dst_state->first_insn_idx = src->first_insn_idx;
- 	dst_state->last_insn_idx = src->last_insn_idx;
-+	dst_state->insn_hist_start = src->insn_hist_start;
-+	dst_state->insn_hist_end = src->insn_hist_end;
- 	dst_state->dfs_depth = src->dfs_depth;
- 	dst_state->callback_unroll_depth = src->callback_unroll_depth;
- 	dst_state->used_as_loop_entry = src->used_as_loop_entry;
-@@ -2496,9 +2483,14 @@ static struct bpf_verifier_state *push_async_cb(struct bpf_verifier_env *env,
- 	 * The caller state doesn't matter.
- 	 * This is async callback. It starts in a fresh stack.
- 	 * Initialize it similar to do_check_common().
-+	 * But we do need to make sure to not clobber insn_hist, so we keep
-+	 * chaining insn_hist_start/insn_hist_end indices as for a normal
-+	 * child state.
- 	 */
- 	elem->st.branches = 1;
- 	elem->st.in_sleepable = is_sleepable;
-+	elem->st.insn_hist_start = env->cur_state->insn_hist_end;
-+	elem->st.insn_hist_end = elem->st.insn_hist_start;
- 	frame = kzalloc(sizeof(*frame), GFP_KERNEL);
- 	if (!frame)
- 		goto err;
-@@ -3513,11 +3505,10 @@ static void linked_regs_unpack(u64 val, struct linked_regs *s)
- }
- 
- /* for any branch, call, exit record the history of jmps in the given state */
--static int push_jmp_history(struct bpf_verifier_env *env, struct bpf_verifier_state *cur,
--			    int insn_flags, u64 linked_regs)
-+static int push_insn_history(struct bpf_verifier_env *env, struct bpf_verifier_state *cur,
-+			     int insn_flags, u64 linked_regs)
- {
--	u32 cnt = cur->jmp_history_cnt;
--	struct bpf_jmp_history_entry *p;
-+	struct bpf_insn_hist_entry *p;
- 	size_t alloc_size;
- 
- 	/* combine instruction flags if we already recorded this instruction */
-@@ -3537,29 +3528,32 @@ static int push_jmp_history(struct bpf_verifier_env *env, struct bpf_verifier_st
- 		return 0;
- 	}
- 
--	cnt++;
--	alloc_size = kmalloc_size_roundup(size_mul(cnt, sizeof(*p)));
--	p = krealloc(cur->jmp_history, alloc_size, GFP_USER);
--	if (!p)
--		return -ENOMEM;
--	cur->jmp_history = p;
-+	if (cur->insn_hist_end + 1 > env->insn_hist_cap) {
-+		alloc_size = size_mul(cur->insn_hist_end + 1, sizeof(*p));
-+		p = kvrealloc(env->insn_hist, alloc_size, GFP_USER);
-+		if (!p)
-+			return -ENOMEM;
-+		env->insn_hist = p;
-+		env->insn_hist_cap = alloc_size / sizeof(*p);
-+	}
- 
--	p = &cur->jmp_history[cnt - 1];
-+	p = &env->insn_hist[cur->insn_hist_end];
- 	p->idx = env->insn_idx;
- 	p->prev_idx = env->prev_insn_idx;
- 	p->flags = insn_flags;
- 	p->linked_regs = linked_regs;
--	cur->jmp_history_cnt = cnt;
+ 	XE_WARN_ON(size > MAX_PREEMPTDISABLE_TRANSFER);
 +
-+	cur->insn_hist_end++;
- 	env->cur_hist_ent = p;
+ 	/*
+ 	 * MI_STORE_DATA_IMM command is used to update page table. Each
+-	 * instruction can update maximumly 0x1ff pte entries. To update
+-	 * n (n <= 0x1ff) pte entries, we need:
+-	 * 1 dword for the MI_STORE_DATA_IMM command header (opcode etc)
+-	 * 2 dword for the page table's physical location
+-	 * 2*n dword for value of pte to fill (each pte entry is 2 dwords)
++	 * instruction can update maximumly MAX_PTE_PER_SDI pte entries. To
++	 * update n (n <= MAX_PTE_PER_SDI) pte entries, we need:
++	 *
++	 * - 1 dword for the MI_STORE_DATA_IMM command header (opcode etc)
++	 * - 2 dword for the page table's physical location
++	 * - 2*n dword for value of pte to fill (each pte entry is 2 dwords)
+ 	 */
+-	num_dword = (1 + 2) * DIV_U64_ROUND_UP(entries, 0x1ff);
++	num_dword = (1 + 2) * DIV_U64_ROUND_UP(entries, MAX_PTE_PER_SDI);
+ 	num_dword += entries * 2;
  
- 	return 0;
- }
+ 	return num_dword;
+@@ -1574,7 +1576,7 @@ static void build_pt_update_batch_sram(struct xe_migrate *m,
  
--static struct bpf_jmp_history_entry *get_jmp_hist_entry(struct bpf_verifier_state *st,
--						        u32 hist_end, int insn_idx)
-+static struct bpf_insn_hist_entry *get_insn_hist_entry(struct bpf_verifier_env *env,
-+						       u32 hist_start, u32 hist_end, int insn_idx)
- {
--	if (hist_end > 0 && st->jmp_history[hist_end - 1].idx == insn_idx)
--		return &st->jmp_history[hist_end - 1];
-+	if (hist_end > hist_start && env->insn_hist[hist_end - 1].idx == insn_idx)
-+		return &env->insn_hist[hist_end - 1];
- 	return NULL;
- }
+ 	ptes = DIV_ROUND_UP(size, XE_PAGE_SIZE);
+ 	while (ptes) {
+-		u32 chunk = min(0x1ffU, ptes);
++		u32 chunk = min(MAX_PTE_PER_SDI, ptes);
  
-@@ -3576,25 +3570,26 @@ static struct bpf_jmp_history_entry *get_jmp_hist_entry(struct bpf_verifier_stat
-  * history entry recording a jump from last instruction of parent state and
-  * first instruction of given state.
-  */
--static int get_prev_insn_idx(struct bpf_verifier_state *st, int i,
--			     u32 *history)
-+static int get_prev_insn_idx(const struct bpf_verifier_env *env,
-+			     struct bpf_verifier_state *st,
-+			     int insn_idx, u32 hist_start, u32 *hist_endp)
- {
--	u32 cnt = *history;
-+	u32 hist_end = *hist_endp;
-+	u32 cnt = hist_end - hist_start;
- 
--	if (i == st->first_insn_idx) {
-+	if (insn_idx == st->first_insn_idx) {
- 		if (cnt == 0)
- 			return -ENOENT;
--		if (cnt == 1 && st->jmp_history[0].idx == i)
-+		if (cnt == 1 && env->insn_hist[hist_start].idx == insn_idx)
- 			return -ENOENT;
- 	}
- 
--	if (cnt && st->jmp_history[cnt - 1].idx == i) {
--		i = st->jmp_history[cnt - 1].prev_idx;
--		(*history)--;
-+	if (cnt && env->insn_hist[hist_end - 1].idx == insn_idx) {
-+		(*hist_endp)--;
-+		return env->insn_hist[hist_end - 1].prev_idx;
- 	} else {
--		i--;
-+		return insn_idx - 1;
- 	}
--	return i;
- }
- 
- static const char *disasm_kfunc_name(void *data, const struct bpf_insn *insn)
-@@ -3766,7 +3761,7 @@ static void fmt_stack_mask(char *buf, ssize_t buf_sz, u64 stack_mask)
- /* If any register R in hist->linked_regs is marked as precise in bt,
-  * do bt_set_frame_{reg,slot}(bt, R) for all registers in hist->linked_regs.
-  */
--static void bt_sync_linked_regs(struct backtrack_state *bt, struct bpf_jmp_history_entry *hist)
-+static void bt_sync_linked_regs(struct backtrack_state *bt, struct bpf_insn_hist_entry *hist)
- {
- 	struct linked_regs linked_regs;
- 	bool some_precise = false;
-@@ -3811,7 +3806,7 @@ static bool calls_callback(struct bpf_verifier_env *env, int insn_idx);
-  *   - *was* processed previously during backtracking.
-  */
- static int backtrack_insn(struct bpf_verifier_env *env, int idx, int subseq_idx,
--			  struct bpf_jmp_history_entry *hist, struct backtrack_state *bt)
-+			  struct bpf_insn_hist_entry *hist, struct backtrack_state *bt)
- {
- 	const struct bpf_insn_cbs cbs = {
- 		.cb_call	= disasm_kfunc_name,
-@@ -4230,7 +4225,7 @@ static void mark_all_scalars_imprecise(struct bpf_verifier_env *env, struct bpf_
-  * SCALARS, as well as any other registers and slots that contribute to
-  * a tracked state of given registers/stack slots, depending on specific BPF
-  * assembly instructions (see backtrack_insns() for exact instruction handling
-- * logic). This backtracking relies on recorded jmp_history and is able to
-+ * logic). This backtracking relies on recorded insn_hist and is able to
-  * traverse entire chain of parent states. This process ends only when all the
-  * necessary registers/slots and their transitive dependencies are marked as
-  * precise.
-@@ -4347,8 +4342,9 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int regno)
- 
- 	for (;;) {
- 		DECLARE_BITMAP(mask, 64);
--		u32 history = st->jmp_history_cnt;
--		struct bpf_jmp_history_entry *hist;
-+		u32 hist_start = st->insn_hist_start;
-+		u32 hist_end = st->insn_hist_end;
-+		struct bpf_insn_hist_entry *hist;
- 
- 		if (env->log.level & BPF_LOG_LEVEL2) {
- 			verbose(env, "mark_precise: frame%d: last_idx %d first_idx %d subseq_idx %d \n",
-@@ -4387,7 +4383,7 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int regno)
- 				err = 0;
- 				skip_first = false;
- 			} else {
--				hist = get_jmp_hist_entry(st, history, i);
-+				hist = get_insn_hist_entry(env, hist_start, hist_end, i);
- 				err = backtrack_insn(env, i, subseq_idx, hist, bt);
- 			}
- 			if (err == -ENOTSUPP) {
-@@ -4404,7 +4400,7 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int regno)
- 				 */
- 				return 0;
- 			subseq_idx = i;
--			i = get_prev_insn_idx(st, i, &history);
-+			i = get_prev_insn_idx(env, st, i, hist_start, &hist_end);
- 			if (i == -ENOENT)
- 				break;
- 			if (i >= env->prog->len) {
-@@ -4771,7 +4767,7 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 	}
- 
- 	if (insn_flags)
--		return push_jmp_history(env, env->cur_state, insn_flags, 0);
-+		return push_insn_history(env, env->cur_state, insn_flags, 0);
- 	return 0;
- }
- 
-@@ -5078,7 +5074,7 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
- 		insn_flags = 0; /* we are not restoring spilled register */
- 	}
- 	if (insn_flags)
--		return push_jmp_history(env, env->cur_state, insn_flags, 0);
-+		return push_insn_history(env, env->cur_state, insn_flags, 0);
- 	return 0;
- }
- 
-@@ -15542,7 +15538,7 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
- 	if (dst_reg->type == SCALAR_VALUE && dst_reg->id)
- 		collect_linked_regs(this_branch, dst_reg->id, &linked_regs);
- 	if (linked_regs.cnt > 1) {
--		err = push_jmp_history(env, this_branch, 0, linked_regs_pack(&linked_regs));
-+		err = push_insn_history(env, this_branch, 0, linked_regs_pack(&linked_regs));
- 		if (err)
- 			return err;
- 	}
-@@ -17984,7 +17980,7 @@ static int is_state_visited(struct bpf_verifier_env *env, int insn_idx)
- 
- 	force_new_state = env->test_state_freq || is_force_checkpoint(env, insn_idx) ||
- 			  /* Avoid accumulating infinitely long jmp history */
--			  cur->jmp_history_cnt > 40;
-+			  cur->insn_hist_end - cur->insn_hist_start > 40;
- 
- 	/* bpf progs typically have pruning point every 4 instructions
- 	 * http://vger.kernel.org/bpfconf2019.html#session-1
-@@ -18182,7 +18178,7 @@ static int is_state_visited(struct bpf_verifier_env *env, int insn_idx)
- 			 * the current state.
- 			 */
- 			if (is_jmp_point(env, env->insn_idx))
--				err = err ? : push_jmp_history(env, cur, 0, 0);
-+				err = err ? : push_insn_history(env, cur, 0, 0);
- 			err = err ? : propagate_precision(env, &sl->state);
- 			if (err)
- 				return err;
-@@ -18281,8 +18277,8 @@ static int is_state_visited(struct bpf_verifier_env *env, int insn_idx)
- 
- 	cur->parent = new;
- 	cur->first_insn_idx = insn_idx;
-+	cur->insn_hist_start = cur->insn_hist_end;
- 	cur->dfs_depth = new->dfs_depth + 1;
--	clear_jmp_history(cur);
- 	new_sl->next = *explored_state(env, insn_idx);
- 	*explored_state(env, insn_idx) = new_sl;
- 	/* connect new state to parentage chain. Current frame needs all
-@@ -18450,7 +18446,7 @@ static int do_check(struct bpf_verifier_env *env)
- 		}
- 
- 		if (is_jmp_point(env, env->insn_idx)) {
--			err = push_jmp_history(env, state, 0, 0);
-+			err = push_insn_history(env, state, 0, 0);
- 			if (err)
- 				return err;
- 		}
-@@ -22716,6 +22712,7 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr, bpfptr_t uattr, __u3
- 	if (!is_priv)
- 		mutex_unlock(&bpf_verifier_lock);
- 	vfree(env->insn_aux_data);
-+	kvfree(env->insn_hist);
- err_free_env:
- 	kvfree(env);
- 	return ret;
+ 		bb->cs[bb->len++] = MI_STORE_DATA_IMM | MI_SDI_NUM_QW(chunk);
+ 		bb->cs[bb->len++] = pt_offset;
 -- 
 2.39.5
 
