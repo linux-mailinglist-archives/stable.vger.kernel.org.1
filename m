@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-161205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5966AFD400
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE9AAFD301
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:52:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BFA148510E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49D993ADD07
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4638F5E;
-	Tue,  8 Jul 2025 16:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453C2225414;
+	Tue,  8 Jul 2025 16:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkq32UR2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRRnm4tF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9757F20296E;
-	Tue,  8 Jul 2025 16:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D9F18EAB;
+	Tue,  8 Jul 2025 16:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993899; cv=none; b=ZJv2A6vkHkZaLckcEvebbwaqc/wsDEhjQHkty6kZgFd8rmIwDysZX2yGZRA7En0wARLws6irklnGwlMeIwlnL5rVrqD7xHpbATxIwjG6qSPqPO/JQJEIqiZXUyI5J+x5f0WOooIks/G5WGIf+eWaFzstO4RTk3uxW8/6fGD3Qn8=
+	t=1751993390; cv=none; b=pbjHXRUm+q4Pc8STQcASlcY4B1P0ASHu45tiAw5UgWUJbWDDSJwuBlmAfUvI5TVmFI1T/4oAacTrjGjnw9Ux9Oz5a4SYxBpqUuktzmvXYsaIOzZt6u5QkMHbo2rpm4XoI5uYANjmPXlx8yTMvvQpEuDubUWwWQAxdWDAZC+6ghw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993899; c=relaxed/simple;
-	bh=EsGUECeuU262/9k6MF8D/Bzo9ox1cy3zkxiJjfjyNhA=;
+	s=arc-20240116; t=1751993390; c=relaxed/simple;
+	bh=oahXISvbq6Q8RUF2iH6/qALfoTR0G55SDQNR+1v08E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMFpm1OuC2rFwkAYwjB63kFE1ZGZjfTXYpgB9tfwBShgylLgpvJX4lsLGHo9LSMtH9f2xLb1ybVztYmKgxE8kwC7VSrilpK7TB8mpTT/7kXgJeyxZnTYn//GijzCgg8gYqCpBmhtZhxxEf++XxpMPE0yVqlK3b/o4grykXnalSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkq32UR2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A18C4CEED;
-	Tue,  8 Jul 2025 16:58:18 +0000 (UTC)
+	 MIME-Version; b=ieo3PuiR8UHhXkS810nwo+N8x7gFlzIMMyHJz+PoWLmq77Bjx5LSfUjVCL1xfJBkfleLljUNI3f0XLgk6GFrvXDED44eqkkaPOXb/nIlB25oJJ99jzOqhemqs05f81Br3F+F2qj3DeXSeJjYsowBRbLgjYhPlyWNJuM1qTs4VK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRRnm4tF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50728C4CEED;
+	Tue,  8 Jul 2025 16:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993899;
-	bh=EsGUECeuU262/9k6MF8D/Bzo9ox1cy3zkxiJjfjyNhA=;
+	s=korg; t=1751993389;
+	bh=oahXISvbq6Q8RUF2iH6/qALfoTR0G55SDQNR+1v08E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hkq32UR253YQgjKzaMPRq7aAOauO65j+cocnXrhOfZvLVejXz1DFKxXcql+zhN3oq
-	 VwJDPLQoG+9K79ROsA95xFqzZp9UcYeJJTSXJWoVMGyjeVj59gh1l7CCv4P86+P0AH
-	 MFpwgmJ4/mRHTFwIGXzInz/ccMU5jiMTHW/SADxY=
+	b=vRRnm4tFukP+pZXgiDcN3SD6zrayc4WPh2RWy+wjsuyTzXHgZIDTYnl1inXDTVSno
+	 6aSBLrR0euzVX/Pw/PyF+o4MUqqPOYTLcGisOqmBt+t9A6dZnSs+PC6o/yyZsHQJL/
+	 iryA1jxk0/TTzMGNo2z1MF2/jcwG4TtxLwn5rpYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Andrei Borzenkov <arvidjaar@gmail.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 056/160] dummycon: Trigger redraw when switching consoles with deferred takeover
-Date: Tue,  8 Jul 2025 18:21:33 +0200
-Message-ID: <20250708162233.099847543@linuxfoundation.org>
+Subject: [PATCH 6.15 057/178] RDMA/mlx5: Fix vport loopback for MPV device
+Date: Tue,  8 Jul 2025 18:21:34 +0200
+Message-ID: <20250708162238.169484990@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,97 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit 03bcbbb3995ba5df43af9aba45334e35f2dfe27b ]
+[ Upstream commit a9a9e68954f29b1e197663f76289db4879fd51bb ]
 
-Signal vt subsystem to redraw console when switching to dummycon
-with deferred takeover enabled. Makes the console switch to fbcon
-and displays the available output.
+Always enable vport loopback for both MPV devices on driver start.
 
-With deferred takeover enabled, dummycon acts as the placeholder
-until the first output to the console happens. At that point, fbcon
-takes over. If the output happens while dummycon is not active, it
-cannot inform fbcon. This is the case if the vt subsystem runs in
-graphics mode.
+Previously in some cases related to MPV RoCE, packets weren't correctly
+executing loopback check at vport in FW, since it was disabled.
+Due to complexity of identifying such cases for MPV always enable vport
+loopback for both GVMIs when binding the slave to the master port.
 
-A typical graphical boot starts plymouth, a display manager and a
-compositor; all while leaving out dummycon. Switching to a text-mode
-console leaves the console with dummycon even if a getty terminal
-has been started.
-
-Returning true from dummycon's con_switch helper signals the vt
-subsystem to redraw the screen. If there's output available dummycon's
-con_putc{s} helpers trigger deferred takeover of fbcon, which sets a
-display mode and displays the output. If no output is available,
-dummycon remains active.
-
-v2:
-- make the comment slightly more verbose (Javier)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: Andrei Borzenkov <arvidjaar@gmail.com>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1242191
-Tested-by: Andrei Borzenkov <arvidjaar@gmail.com>
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-Fixes: 83d83bebf401 ("console/fbcon: Add support for deferred console takeover")
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.19+
-Link: https://lore.kernel.org/r/20250520071418.8462-1-tzimmermann@suse.de
+Fixes: 0042f9e458a5 ("RDMA/mlx5: Enable vport loopback when user context or QP mandate")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/d4298f5ebb2197459e9e7221c51ecd6a34699847.1750064969.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/console/dummycon.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/mlx5/main.c | 33 +++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
-index d701f2b51f5b1..d99e1b3e4e5c1 100644
---- a/drivers/video/console/dummycon.c
-+++ b/drivers/video/console/dummycon.c
-@@ -82,6 +82,15 @@ static int dummycon_blank(struct vc_data *vc, int blank, int mode_switch)
- 	/* Redraw, so that we get putc(s) for output done while blanked */
- 	return 1;
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index d07cacaa0abd0..4ffe3afb560c9 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -1779,6 +1779,33 @@ static void deallocate_uars(struct mlx5_ib_dev *dev,
+ 					     context->devx_uid);
  }
+ 
++static int mlx5_ib_enable_lb_mp(struct mlx5_core_dev *master,
++				struct mlx5_core_dev *slave)
++{
++	int err;
 +
-+static bool dummycon_switch(struct vc_data *vc)
-+{
-+	/*
-+	 * Redraw, so that we get putc(s) for output done while switched
-+	 * away. Informs deferred consoles to take over the display.
-+	 */
-+	return true;
++	err = mlx5_nic_vport_update_local_lb(master, true);
++	if (err)
++		return err;
++
++	err = mlx5_nic_vport_update_local_lb(slave, true);
++	if (err)
++		goto out;
++
++	return 0;
++
++out:
++	mlx5_nic_vport_update_local_lb(master, false);
++	return err;
 +}
- #else
- static void dummycon_putc(struct vc_data *vc, int c, int ypos, int xpos) { }
- static void dummycon_putcs(struct vc_data *vc, const unsigned short *s,
-@@ -90,6 +99,10 @@ static int dummycon_blank(struct vc_data *vc, int blank, int mode_switch)
++
++static void mlx5_ib_disable_lb_mp(struct mlx5_core_dev *master,
++				  struct mlx5_core_dev *slave)
++{
++	mlx5_nic_vport_update_local_lb(slave, false);
++	mlx5_nic_vport_update_local_lb(master, false);
++}
++
+ int mlx5_ib_enable_lb(struct mlx5_ib_dev *dev, bool td, bool qp)
  {
- 	return 0;
- }
-+static bool dummycon_switch(struct vc_data *vc)
-+{
-+	return false;
-+}
- #endif
+ 	int err = 0;
+@@ -3483,6 +3510,8 @@ static void mlx5_ib_unbind_slave_port(struct mlx5_ib_dev *ibdev,
  
- static const char *dummycon_startup(void)
-@@ -119,11 +132,6 @@ static bool dummycon_scroll(struct vc_data *vc, unsigned int top,
- 	return false;
- }
+ 	lockdep_assert_held(&mlx5_ib_multiport_mutex);
  
--static bool dummycon_switch(struct vc_data *vc)
--{
--	return false;
--}
--
- /*
-  *  The console `switch' structure for the dummy console
-  *
++	mlx5_ib_disable_lb_mp(ibdev->mdev, mpi->mdev);
++
+ 	mlx5_core_mp_event_replay(ibdev->mdev,
+ 				  MLX5_DRIVER_EVENT_AFFILIATION_REMOVED,
+ 				  NULL);
+@@ -3578,6 +3607,10 @@ static bool mlx5_ib_bind_slave_port(struct mlx5_ib_dev *ibdev,
+ 				  MLX5_DRIVER_EVENT_AFFILIATION_DONE,
+ 				  &key);
+ 
++	err = mlx5_ib_enable_lb_mp(ibdev->mdev, mpi->mdev);
++	if (err)
++		goto unbind;
++
+ 	return true;
+ 
+ unbind:
 -- 
 2.39.5
 
