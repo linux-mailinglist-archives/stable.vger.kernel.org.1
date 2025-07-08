@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-161094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1B5AFD35F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A1A3AFD368
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D979A163A2C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B374188F9AE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BBF1DB127;
-	Tue,  8 Jul 2025 16:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CA72DAFAE;
+	Tue,  8 Jul 2025 16:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZFnNfeR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsPYnLn2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919122E540B;
-	Tue,  8 Jul 2025 16:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E88DBE46;
+	Tue,  8 Jul 2025 16:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993575; cv=none; b=rNueC3kZ521LzJAtz00pfjuTB96we4eY0gBNBZLk4UYNypH7CeIyVx7n+NkURC5l2WIIWkawV6mlorhcgF8gAN+qGomtXgYpEPo4eNFE5LgSeYlvL5DkF3+C4jt3Qlji/M3JXLu7rd/Kwqji3C+6ONhEw90kWhGngf7p9QZfOAY=
+	t=1751993609; cv=none; b=AqXrefZ+1oynH2UtAmmlSCxGU3s+Bl2ddD8KJn+QeSTas4EFW5/zLJiu/ngTnTxMHpCqe3m8wxIFXXQ36x++6G0r/Hd5ykh/jPlFk3IpC+0CVhPUsUig9oHz/3ax1J6FWR94NoM0M4mqz1eAsvlngChabMydv2XLOBOIOU89uhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993575; c=relaxed/simple;
-	bh=MnrCui42+pUpBcVYtM6xHKtwRgEqUVUno61jvfZsaFw=;
+	s=arc-20240116; t=1751993609; c=relaxed/simple;
+	bh=aorVeP5cBaSUjeZKjjQ8dfpepO9/zD9MhUcONYTEWL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ANYkRA1xTkC8v2gODreprR95xmu1pqmgrHhdIlVMCXZV1GlbhIE9gtU3Lhl9BBWlgZI3n5e/oHEsm0BmKhUSAfge+/zUUWAXsduT/UqHgSuaA7vY/9OoExVQkqv0Vn+DGN4yuZc+/O4Ge84m3Sgr+8PNeltzT2PNK2+FPOBxDYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZFnNfeR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A0BC4CEED;
-	Tue,  8 Jul 2025 16:52:54 +0000 (UTC)
+	 MIME-Version; b=YtwPR3O1CUFBxw0R/CzCXiE75T26wfATJlrByKNcqnkL187WVZydB5YC0MVqjcdM+zp7KjSeyioFLZt8ESWIzC1Pl/upYKfuCW1XGk+hD+ITlk43WMFooVDSrQB9QrxsG9WeWo7h4elieeAXdsD1x+mfXe4TiglgqvevMESdrMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsPYnLn2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9049C4CEED;
+	Tue,  8 Jul 2025 16:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993575;
-	bh=MnrCui42+pUpBcVYtM6xHKtwRgEqUVUno61jvfZsaFw=;
+	s=korg; t=1751993608;
+	bh=aorVeP5cBaSUjeZKjjQ8dfpepO9/zD9MhUcONYTEWL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZFnNfeR2pk96BCEX26CXZ7sEWOgyYyX9rCFFicPOD30z6TmeVhUBcrgAS0hZWrUB
-	 c5mKudr7K2DwKCK++iDqsyyhAnHF1RqiKyG8AY7S/If1TicHU8kPndzTV/f/iqrMGT
-	 fXbUm702V4wT0deTqUQr/aOrnsWCudsGeY8IW/Kc=
+	b=nsPYnLn2Cx32UnZJ+kyo5fy3K8dyU9QOUqt7VYsk24EhwYJbeLoeVpAOm7xJdtJzb
+	 aZWiXb57bViBEES5yDjrcm8Y8eY3enprjayeVt+Z8oGjpZ8K+iuarfCWZmIcCjEM8y
+	 y8+lK3aVSTMp4McBdJ9viLt8pDbiCgv2QE2dybgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 104/178] drm/xe/guc: Enable w/a 16026508708
-Date: Tue,  8 Jul 2025 18:22:21 +0200
-Message-ID: <20250708162239.360196339@linuxfoundation.org>
+Subject: [PATCH 6.15 105/178] drm/xe/guc_pc: Add _locked variant for min/max freq
+Date: Tue,  8 Jul 2025 18:22:22 +0200
+Message-ID: <20250708162239.381819377@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
 References: <20250708162236.549307806@linuxfoundation.org>
@@ -67,62 +66,221 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Harrison <John.C.Harrison@Intel.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit d3e8349edf7ed9eaf076ab3d9973331ccc20e26c ]
+[ Upstream commit d8390768dcf6f5a78af56aa03797a076871b01f3 ]
 
-The workaround is only relevant to SRIOV but does affect all platforms.
+There are places in which the getters/setters are called one after the
+other causing a multiple lock()/unlock(). These are not currently a
+problem since they are all happening from the same thread, but there's a
+race possibility as calls are added outside of the early init when the
+max/min and stashed values need to be correlated.
 
-Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Link: https://lore.kernel.org/r/20250403185619.1555853-2-John.C.Harrison@Intel.com
+Add the _locked() variants to prepare for that.
+
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://lore.kernel.org/r/20250618-wa-22019338487-v5-1-b888388477f2@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 1beae9aa2b88d3a02eb666e7b777eb2d7bc645f4)
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Stable-dep-of: 84c0b4a00610 ("drm/xe/bmg: Update Wa_22019338487")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/abi/guc_klvs_abi.h | 1 +
- drivers/gpu/drm/xe/xe_guc_ads.c       | 5 +++++
- drivers/gpu/drm/xe/xe_wa_oob.rules    | 2 ++
- 3 files changed, 8 insertions(+)
+ drivers/gpu/drm/xe/xe_guc_pc.c | 123 ++++++++++++++++++---------------
+ 1 file changed, 69 insertions(+), 54 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/abi/guc_klvs_abi.h b/drivers/gpu/drm/xe/abi/guc_klvs_abi.h
-index d633f1c739e43..7de8f827281fc 100644
---- a/drivers/gpu/drm/xe/abi/guc_klvs_abi.h
-+++ b/drivers/gpu/drm/xe/abi/guc_klvs_abi.h
-@@ -367,6 +367,7 @@ enum xe_guc_klv_ids {
- 	GUC_WA_KLV_NP_RD_WRITE_TO_CLEAR_RCSM_AT_CGP_LATE_RESTORE			= 0x9008,
- 	GUC_WORKAROUND_KLV_ID_BACK_TO_BACK_RCS_ENGINE_RESET				= 0x9009,
- 	GUC_WA_KLV_WAKE_POWER_DOMAINS_FOR_OUTBOUND_MMIO					= 0x900a,
-+	GUC_WA_KLV_RESET_BB_STACK_PTR_ON_VF_SWITCH					= 0x900b,
- };
+diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
+index a7b8bacfe64ef..23a4c525c03bf 100644
+--- a/drivers/gpu/drm/xe/xe_guc_pc.c
++++ b/drivers/gpu/drm/xe/xe_guc_pc.c
+@@ -5,6 +5,7 @@
  
- #endif
-diff --git a/drivers/gpu/drm/xe/xe_guc_ads.c b/drivers/gpu/drm/xe/xe_guc_ads.c
-index 7031542a70ceb..1fccdef9e532e 100644
---- a/drivers/gpu/drm/xe/xe_guc_ads.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ads.c
-@@ -376,6 +376,11 @@ static void guc_waklv_init(struct xe_guc_ads *ads)
- 					GUC_WORKAROUND_KLV_ID_BACK_TO_BACK_RCS_ENGINE_RESET,
- 					&offset, &remain);
+ #include "xe_guc_pc.h"
  
-+	if (GUC_FIRMWARE_VER(&gt->uc.guc) >= MAKE_GUC_VER(70, 44, 0) && XE_WA(gt, 16026508708))
-+		guc_waklv_enable_simple(ads,
-+					GUC_WA_KLV_RESET_BB_STACK_PTR_ON_VF_SWITCH,
-+					&offset, &remain);
++#include <linux/cleanup.h>
+ #include <linux/delay.h>
+ #include <linux/ktime.h>
+ 
+@@ -538,6 +539,25 @@ u32 xe_guc_pc_get_rpn_freq(struct xe_guc_pc *pc)
+ 	return pc->rpn_freq;
+ }
+ 
++static int xe_guc_pc_get_min_freq_locked(struct xe_guc_pc *pc, u32 *freq)
++{
++	int ret;
 +
- 	size = guc_ads_waklv_size(ads) - remain;
- 	if (!size)
- 		return;
-diff --git a/drivers/gpu/drm/xe/xe_wa_oob.rules b/drivers/gpu/drm/xe/xe_wa_oob.rules
-index 9b9e176992a83..9efc5accd43d1 100644
---- a/drivers/gpu/drm/xe/xe_wa_oob.rules
-+++ b/drivers/gpu/drm/xe/xe_wa_oob.rules
-@@ -57,3 +57,5 @@ no_media_l3	MEDIA_VERSION(3000)
- 		GRAPHICS_VERSION(1260), GRAPHICS_STEP(A0, B0)
- 16023105232	GRAPHICS_VERSION_RANGE(2001, 3001)
- 		MEDIA_VERSION_RANGE(1301, 3000)
-+16026508708	GRAPHICS_VERSION_RANGE(1200, 3001)
-+		MEDIA_VERSION_RANGE(1300, 3000)
++	lockdep_assert_held(&pc->freq_lock);
++
++	/* Might be in the middle of a gt reset */
++	if (!pc->freq_ready)
++		return -EAGAIN;
++
++	ret = pc_action_query_task_state(pc);
++	if (ret)
++		return ret;
++
++	*freq = pc_get_min_freq(pc);
++
++	return 0;
++}
++
+ /**
+  * xe_guc_pc_get_min_freq - Get the min operational frequency
+  * @pc: The GuC PC
+@@ -547,27 +567,29 @@ u32 xe_guc_pc_get_rpn_freq(struct xe_guc_pc *pc)
+  *         -EAGAIN if GuC PC not ready (likely in middle of a reset).
+  */
+ int xe_guc_pc_get_min_freq(struct xe_guc_pc *pc, u32 *freq)
++{
++	guard(mutex)(&pc->freq_lock);
++
++	return xe_guc_pc_get_min_freq_locked(pc, freq);
++}
++
++static int xe_guc_pc_set_min_freq_locked(struct xe_guc_pc *pc, u32 freq)
+ {
+ 	int ret;
+ 
+-	xe_device_assert_mem_access(pc_to_xe(pc));
++	lockdep_assert_held(&pc->freq_lock);
+ 
+-	mutex_lock(&pc->freq_lock);
+-	if (!pc->freq_ready) {
+-		/* Might be in the middle of a gt reset */
+-		ret = -EAGAIN;
+-		goto out;
+-	}
++	/* Might be in the middle of a gt reset */
++	if (!pc->freq_ready)
++		return -EAGAIN;
+ 
+-	ret = pc_action_query_task_state(pc);
++	ret = pc_set_min_freq(pc, freq);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+-	*freq = pc_get_min_freq(pc);
++	pc->user_requested_min = freq;
+ 
+-out:
+-	mutex_unlock(&pc->freq_lock);
+-	return ret;
++	return 0;
+ }
+ 
+ /**
+@@ -580,25 +602,29 @@ int xe_guc_pc_get_min_freq(struct xe_guc_pc *pc, u32 *freq)
+  *         -EINVAL if value out of bounds.
+  */
+ int xe_guc_pc_set_min_freq(struct xe_guc_pc *pc, u32 freq)
++{
++	guard(mutex)(&pc->freq_lock);
++
++	return xe_guc_pc_set_min_freq_locked(pc, freq);
++}
++
++static int xe_guc_pc_get_max_freq_locked(struct xe_guc_pc *pc, u32 *freq)
+ {
+ 	int ret;
+ 
+-	mutex_lock(&pc->freq_lock);
+-	if (!pc->freq_ready) {
+-		/* Might be in the middle of a gt reset */
+-		ret = -EAGAIN;
+-		goto out;
+-	}
++	lockdep_assert_held(&pc->freq_lock);
+ 
+-	ret = pc_set_min_freq(pc, freq);
++	/* Might be in the middle of a gt reset */
++	if (!pc->freq_ready)
++		return -EAGAIN;
++
++	ret = pc_action_query_task_state(pc);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+-	pc->user_requested_min = freq;
++	*freq = pc_get_max_freq(pc);
+ 
+-out:
+-	mutex_unlock(&pc->freq_lock);
+-	return ret;
++	return 0;
+ }
+ 
+ /**
+@@ -610,25 +636,29 @@ int xe_guc_pc_set_min_freq(struct xe_guc_pc *pc, u32 freq)
+  *         -EAGAIN if GuC PC not ready (likely in middle of a reset).
+  */
+ int xe_guc_pc_get_max_freq(struct xe_guc_pc *pc, u32 *freq)
++{
++	guard(mutex)(&pc->freq_lock);
++
++	return xe_guc_pc_get_max_freq_locked(pc, freq);
++}
++
++static int xe_guc_pc_set_max_freq_locked(struct xe_guc_pc *pc, u32 freq)
+ {
+ 	int ret;
+ 
+-	mutex_lock(&pc->freq_lock);
+-	if (!pc->freq_ready) {
+-		/* Might be in the middle of a gt reset */
+-		ret = -EAGAIN;
+-		goto out;
+-	}
++	lockdep_assert_held(&pc->freq_lock);
+ 
+-	ret = pc_action_query_task_state(pc);
++	/* Might be in the middle of a gt reset */
++	if (!pc->freq_ready)
++		return -EAGAIN;
++
++	ret = pc_set_max_freq(pc, freq);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+-	*freq = pc_get_max_freq(pc);
++	pc->user_requested_max = freq;
+ 
+-out:
+-	mutex_unlock(&pc->freq_lock);
+-	return ret;
++	return 0;
+ }
+ 
+ /**
+@@ -642,24 +672,9 @@ int xe_guc_pc_get_max_freq(struct xe_guc_pc *pc, u32 *freq)
+  */
+ int xe_guc_pc_set_max_freq(struct xe_guc_pc *pc, u32 freq)
+ {
+-	int ret;
+-
+-	mutex_lock(&pc->freq_lock);
+-	if (!pc->freq_ready) {
+-		/* Might be in the middle of a gt reset */
+-		ret = -EAGAIN;
+-		goto out;
+-	}
+-
+-	ret = pc_set_max_freq(pc, freq);
+-	if (ret)
+-		goto out;
++	guard(mutex)(&pc->freq_lock);
+ 
+-	pc->user_requested_max = freq;
+-
+-out:
+-	mutex_unlock(&pc->freq_lock);
+-	return ret;
++	return xe_guc_pc_set_max_freq_locked(pc, freq);
+ }
+ 
+ /**
 -- 
 2.39.5
 
