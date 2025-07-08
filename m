@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-160774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 832D4AFD1D3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:40:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E157AFD1CF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFDC3486488
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:37:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CC8A1C23DDA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6072E5B1C;
-	Tue,  8 Jul 2025 16:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC13B2E49A8;
+	Tue,  8 Jul 2025 16:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPbLBM+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DlKG7N2u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793842E5B11;
-	Tue,  8 Jul 2025 16:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869AE2E4985;
+	Tue,  8 Jul 2025 16:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992650; cv=none; b=Pio3HEtvAdJ9Vui4xNs42BgvwsRKK/aziMJMoTJa123ssnUwg5d/9A0B4O3VB5NfhNgzqBssEePZIp381W/NPAUxmJT+y3Y5AZjRsCdmpdSbxGtLu2ce7kngIcruoKM9/m1oNCcs8ZlvVmiA/1mrVYR0uSGt6WprWk2eFXkVHAo=
+	t=1751992653; cv=none; b=f9btWhqn6K4NOsAkz6Bxg0tUlRA71tLHzfm1tFxX9xZc4PHNcsjY/Xst5irHwropxs+RlhsfiQ/nRz3XgC5PnHNXi/6dVqcgb/Qm22tca4z14g3yIdH11BHaxPlImGWejWAGUEWNEAbS8+GZEx3NeNmNIEI/Jqm9uAvvGH6hj7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992650; c=relaxed/simple;
-	bh=E1rNWJQwUI3RG7+rtfZJQl2tg63Bco4O1UMfWsFpx7Y=;
+	s=arc-20240116; t=1751992653; c=relaxed/simple;
+	bh=ECWiuLrV6eh4hCbriOQMxxhWqsc6XAe3tCJjAt/mGHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eaV5VrWKHBOeIQ0ef30yNvYDFOl7FxZFgkDUocgCI6fjAPCkCiYfOP6MCP0JgXrajeMKZ4TwBVc+Llq2eQ242pfnSVNlwsxl3Sgzz+Jc5ZvNRwF0vH4+2hQI9blnrqe+0Op1G/9ZLcLEfRc0IUJykob6fvasuVaHa7WO7p4yJNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPbLBM+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6A1C4CEF6;
-	Tue,  8 Jul 2025 16:37:29 +0000 (UTC)
+	 MIME-Version; b=UzAKa+kxntwkF/VtV4JU4F5zunWyLHfQlMJGI3U3tWX+JG2rrjCz+5rvrazLfKmJzcgwpFJunitOIiGVB25RJIHqy7yknyJqoVy15N6inqoTWgqbw4uFVloyQaz3PL/X26J43hXkethHge5YCHVVGkGvbURct5PY8X+IapDLmYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DlKG7N2u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C8DC4CEED;
+	Tue,  8 Jul 2025 16:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992650;
-	bh=E1rNWJQwUI3RG7+rtfZJQl2tg63Bco4O1UMfWsFpx7Y=;
+	s=korg; t=1751992653;
+	bh=ECWiuLrV6eh4hCbriOQMxxhWqsc6XAe3tCJjAt/mGHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HPbLBM+njuZv72FWbiOr3qHtJYTY/1/ybzY/LtPrDJ/yZyuwO1PzjKbb1XzqcO9DB
-	 pBcDnr+6WS9znbUKKmmkTGLw1Wjb4aDajN+TxdhQW/SRC6+OGSwSXciAcFvkLON6go
-	 iS/2BznJXsaYmNcjd7bCLETYjhyVLktxirilOjVo=
+	b=DlKG7N2uvYUwL/YdiL/xvPUOuDo365bZP8bBJ2rrujxC8fvL6FlhVrY6QUwcKWRDY
+	 qYvCFTUz/dzwMT6sUqnjwOZPIp8LxHO45y7zXUfQXdT1/N3lwOGmN0pPNJui8wEdtH
+	 Mw+hXCmXY8b+lC9hb30Aml/8BgfA31kXbaZOXHJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 010/232] net: libwx: fix the incorrect display of the queue number
-Date: Tue,  8 Jul 2025 18:20:06 +0200
-Message-ID: <20250708162241.703513585@linuxfoundation.org>
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 011/232] mmc: sdhci: Add a helper function for dump register in dynamic debug mode
+Date: Tue,  8 Jul 2025 18:20:07 +0200
+Message-ID: <20250708162241.731350607@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
 References: <20250708162241.426806072@linuxfoundation.org>
@@ -66,37 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-commit 5186ff7e1d0e26aaef998ba18b31c79c28d1441f upstream.
+commit 2881ba9af073faa8ee7408a8d1e0575e50eb3f6c upstream.
 
-When setting "ethtool -L eth0 combined 1", the number of RX/TX queue is
-changed to be 1. RSS is disabled at this moment, and the indices of FDIR
-have not be changed in wx_set_rss_queues(). So the combined count still
-shows the previous value. This issue was introduced when supporting
-FDIR. Fix it for those devices that support FDIR.
+Add a helper function for dump register in dynamic debug mode.
 
-Fixes: 34744a7749b3 ("net: txgbe: add FDIR info to ethtool ops")
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/A5C8FE56D6C04608+20250701070625.73680-1-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20250606110121.96314-3-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_lib.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/sdhci.h |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -1585,6 +1585,7 @@ static void wx_set_rss_queues(struct wx
+--- a/drivers/mmc/host/sdhci.h
++++ b/drivers/mmc/host/sdhci.h
+@@ -825,4 +825,20 @@ void sdhci_switch_external_dma(struct sd
+ void sdhci_set_data_timeout_irq(struct sdhci_host *host, bool enable);
+ void __sdhci_set_timeout(struct sdhci_host *host, struct mmc_command *cmd);
  
- 	clear_bit(WX_FLAG_FDIR_HASH, wx->flags);
- 
-+	wx->ring_feature[RING_F_FDIR].indices = 1;
- 	/* Use Flow Director in addition to RSS to ensure the best
- 	 * distribution of flows across cores, even when an FDIR flow
- 	 * isn't matched.
++#if defined(CONFIG_DYNAMIC_DEBUG) || \
++	(defined(CONFIG_DYNAMIC_DEBUG_CORE) && defined(DYNAMIC_DEBUG_MODULE))
++#define SDHCI_DBG_ANYWAY 0
++#elif defined(DEBUG)
++#define SDHCI_DBG_ANYWAY 1
++#else
++#define SDHCI_DBG_ANYWAY 0
++#endif
++
++#define sdhci_dbg_dumpregs(host, fmt)					\
++do {									\
++	DEFINE_DYNAMIC_DEBUG_METADATA(descriptor, fmt);			\
++	if (DYNAMIC_DEBUG_BRANCH(descriptor) ||	SDHCI_DBG_ANYWAY)	\
++		sdhci_dumpregs(host);					\
++} while (0)
++
+ #endif /* __SDHCI_HW_H */
 
 
 
