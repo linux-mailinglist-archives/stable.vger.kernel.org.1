@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-160957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1DEAFD2C1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171E9AFD3A3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6E21540E06
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:46:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 151BF1728FE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFAD32E540D;
-	Tue,  8 Jul 2025 16:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2A62E266B;
+	Tue,  8 Jul 2025 16:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kqzltk/Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTx14Os3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1BD1FC0F3;
-	Tue,  8 Jul 2025 16:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA08202F70;
+	Tue,  8 Jul 2025 16:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993184; cv=none; b=axa6F0kY6WyLHSwTO/vk36x1fEqhazjCi6B+zpIuAaBUmujUKkvSSCgmDbm2ftFUFGkEbrvm66BckaYSHZWoAOY/xxHMUbHF316Yhi4rx8zG7MHJGjBJAKWXfmAIri4r4N72jBGxdPKaZMqDaZFxHg6ygrJTnszy75EQL/9dfu8=
+	t=1751993757; cv=none; b=ayBsK09Avn4jbRkRj+N9bO0hVvMtD0UhWICqRjYZGmJLDrC07uJWo+hrJpKyV8cqyaE1F9jPqB7JuggAjxIWiaZELajlxYt8Ps1EKXkdjFDfHu2luUftNOFtF0GDv+Dxiuk0ojef/v0sqsRVFvnFmjGUnq6Kxkps2bWOQFs2V4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993184; c=relaxed/simple;
-	bh=miWteFMF38CQvnECIrTTEheltBoyF6a4M03/PD/++Pc=;
+	s=arc-20240116; t=1751993757; c=relaxed/simple;
+	bh=fpUbec1eP3B91S47SkGiVLKrT4SwRBMjM+UfsLakBk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVZn3oD5rK1tHVaTUo8X5TA4qJ65nlJG4+GXL9iMGMopHAA1ztwmiNtZ84bEJ5pxIUXtw9p3QjMrwylXflyZ6UlentzPgdrCT3a+jLUcVYihV9bCL/iMwfLKteS4c4hm1SLViQ66deTEfFM9ulL9Dg+GvfOBCaF0Y3bHipRRifA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kqzltk/Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3E2C4CEF5;
-	Tue,  8 Jul 2025 16:46:23 +0000 (UTC)
+	 MIME-Version; b=bvwpcthntSqB68/lIOyo+i/yqcBYfcpq3ETh0EYjxQwGtewTt3RmEGgnd/foOdCHK5p3rj3h6QvDDFZbIV59HgLUjDZj6YSzWloizrTa510QGELZr9kE2pdyx4J8j9DiXcbRjQGE1gi7DLTad75Jr2hHe9uIpxyOZ1BDv8VjaE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTx14Os3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA59DC4CEED;
+	Tue,  8 Jul 2025 16:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993184;
-	bh=miWteFMF38CQvnECIrTTEheltBoyF6a4M03/PD/++Pc=;
+	s=korg; t=1751993757;
+	bh=fpUbec1eP3B91S47SkGiVLKrT4SwRBMjM+UfsLakBk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kqzltk/QdEWXDdKN8rzkdHxSUIkLkWYwja0iF0xgwSkQAv8DUEAYzVY3HB3QQHKxU
-	 Gd0MSlncNGN+DjlgG8BqEANnMf1vAbQ51GjR/35J7gEITsgnZa61w0rGgDxSjXikbD
-	 EpD/iqU1BJcRa4vyALZfve9SiRQnVT6UZ8CWDtps=
+	b=FTx14Os3sU81z/yDjzh0Ge9eCvKiiogDf+BTNMLkQ1NA1587i8qpDwFPiNFc4KeJ7
+	 iqfOY8RZ5xD67Y0D6Uz42GHpaJo4muYFUvI3mQq5GCHX+U73+s5nCr1AbCgB3xxjKF
+	 RiX3oJZiEdUo5SUJxLq8HlEuOIfIA/737WjPvEkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.12 216/232] Logitech C-270 even more broken
-Date: Tue,  8 Jul 2025 18:23:32 +0200
-Message-ID: <20250708162247.088676938@linuxfoundation.org>
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.15 176/178] KVM: SVM: Advertise TSA CPUID bits to guests
+Date: Tue,  8 Jul 2025 18:23:33 +0200
+Message-ID: <20250708162241.039966573@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +60,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit cee4392a57e14a799fbdee193bc4c0de65b29521 upstream.
+Commit 31272abd5974b38ba312e9cf2ec2f09f9dd7dcba upstream.
 
-Some varieties of this device don't work with
-RESET_RESUME alone.
+Synthesize the TSA CPUID feature bits for guests. Set TSA_{SQ,L1}_NO on
+unaffected machines.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250605122852.1440382-1-oneukum@suse.com
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/kvm_host.h |    1 +
+ arch/x86/kvm/cpuid.c            |   10 +++++++++-
+ arch/x86/kvm/reverse_cpuid.h    |    7 +++++++
+ 3 files changed, 17 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -227,7 +227,8 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x046a, 0x0023), .driver_info = USB_QUIRK_RESET_RESUME },
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -756,6 +756,7 @@ enum kvm_only_cpuid_leafs {
+ 	CPUID_8000_0022_EAX,
+ 	CPUID_7_2_EDX,
+ 	CPUID_24_0_EBX,
++	CPUID_8000_0021_ECX,
+ 	NR_KVM_CPU_CAPS,
  
- 	/* Logitech HD Webcam C270 */
--	{ USB_DEVICE(0x046d, 0x0825), .driver_info = USB_QUIRK_RESET_RESUME },
-+	{ USB_DEVICE(0x046d, 0x0825), .driver_info = USB_QUIRK_RESET_RESUME |
-+		USB_QUIRK_NO_LPM},
+ 	NKVMCAPINTS = NR_KVM_CPU_CAPS - NCAPINTS,
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1177,6 +1177,8 @@ void kvm_set_cpu_caps(void)
+ 		 */
+ 		SYNTHESIZED_F(LFENCE_RDTSC),
+ 		/* SmmPgCfgLock */
++		/* 4: Resv */
++		SYNTHESIZED_F(VERW_CLEAR),
+ 		F(NULL_SEL_CLR_BASE),
+ 		/* UpperAddressIgnore */
+ 		F(AUTOIBRS),
+@@ -1190,6 +1192,11 @@ void kvm_set_cpu_caps(void)
+ 		F(SRSO_USER_KERNEL_NO),
+ 	);
  
- 	/* Logitech HD Pro Webcams C920, C920-C, C922, C925e and C930e */
- 	{ USB_DEVICE(0x046d, 0x082d), .driver_info = USB_QUIRK_DELAY_INIT },
++	kvm_cpu_cap_init(CPUID_8000_0021_ECX,
++		SYNTHESIZED_F(TSA_SQ_NO),
++		SYNTHESIZED_F(TSA_L1_NO),
++	);
++
+ 	kvm_cpu_cap_init(CPUID_8000_0022_EAX,
+ 		F(PERFMON_V2),
+ 	);
+@@ -1759,8 +1766,9 @@ static inline int __do_cpuid_func(struct
+ 		entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
+ 		break;
+ 	case 0x80000021:
+-		entry->ebx = entry->ecx = entry->edx = 0;
++		entry->ebx = entry->edx = 0;
+ 		cpuid_entry_override(entry, CPUID_8000_0021_EAX);
++		cpuid_entry_override(entry, CPUID_8000_0021_ECX);
+ 		break;
+ 	/* AMD Extended Performance Monitoring and Debug */
+ 	case 0x80000022: {
+--- a/arch/x86/kvm/reverse_cpuid.h
++++ b/arch/x86/kvm/reverse_cpuid.h
+@@ -52,6 +52,10 @@
+ /* CPUID level 0x80000022 (EAX) */
+ #define KVM_X86_FEATURE_PERFMON_V2	KVM_X86_FEATURE(CPUID_8000_0022_EAX, 0)
+ 
++/* CPUID level 0x80000021 (ECX) */
++#define KVM_X86_FEATURE_TSA_SQ_NO	KVM_X86_FEATURE(CPUID_8000_0021_ECX, 1)
++#define KVM_X86_FEATURE_TSA_L1_NO	KVM_X86_FEATURE(CPUID_8000_0021_ECX, 2)
++
+ struct cpuid_reg {
+ 	u32 function;
+ 	u32 index;
+@@ -82,6 +86,7 @@ static const struct cpuid_reg reverse_cp
+ 	[CPUID_8000_0022_EAX] = {0x80000022, 0, CPUID_EAX},
+ 	[CPUID_7_2_EDX]       = {         7, 2, CPUID_EDX},
+ 	[CPUID_24_0_EBX]      = {      0x24, 0, CPUID_EBX},
++	[CPUID_8000_0021_ECX] = {0x80000021, 0, CPUID_ECX},
+ };
+ 
+ /*
+@@ -121,6 +126,8 @@ static __always_inline u32 __feature_tra
+ 	KVM_X86_TRANSLATE_FEATURE(PERFMON_V2);
+ 	KVM_X86_TRANSLATE_FEATURE(RRSBA_CTRL);
+ 	KVM_X86_TRANSLATE_FEATURE(BHI_CTRL);
++	KVM_X86_TRANSLATE_FEATURE(TSA_SQ_NO);
++	KVM_X86_TRANSLATE_FEATURE(TSA_L1_NO);
+ 	default:
+ 		return x86_feature;
+ 	}
 
 
 
