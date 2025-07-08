@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E182CAFD12F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:32:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDF6AFD411
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBFCC1C22745
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EE285A0289
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8362E49A4;
-	Tue,  8 Jul 2025 16:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6792B2E610B;
+	Tue,  8 Jul 2025 17:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nepQmgkr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2rLpeXT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591082E4985;
-	Tue,  8 Jul 2025 16:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232D02E54D5;
+	Tue,  8 Jul 2025 17:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992307; cv=none; b=BeunZvXjrC2iYtotvrgNj1zzEYPfbC0cVFTyhfWzigWugMOYKicJ0muZMldiiJP6Pw1SbkPu+Y9rYyTJ44Dj1bTNn7G68IAv8irlgM3UGfQbPLovaK86GrSsz50goSxtN2t5Knu7/QeElf6xU3neDjaNvyPzAoYhurQZsgrz1wQ=
+	t=1751994002; cv=none; b=NQTfPqmOsfjBbbj/sBAqVB2tNwjaRNdtA/JMBTlp4V+uF8HXdvPVQncYPxZv5I/uE6Ft23nhqrL3xStIT3P4ER8ttGHYrNEHQsZBYnebo8PwOaWQVkL5eJcVdEB768AplzvVD9dMVtV4U+6/mbX7APyWtKAksGyyFszOC5Jy/S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992307; c=relaxed/simple;
-	bh=cyExTv0N4GUw+IGUD+p34Fqdku44b4Q3RSuPwcHBFXI=;
+	s=arc-20240116; t=1751994002; c=relaxed/simple;
+	bh=TtElT1b9aXNCIZBWowfHE9oRZ2n48m9qyeMqf9bJq20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YdDH4QYtXf2BVidXMYX2Vfus00jyl6HQ7moNRGYbib3zXscISdAmIIg5otoWyie6/3ebnbFjG4umk3AzRqWuFRPokTHfXWk3yUM8n3W2jBYLOD5fsv8eC209K/Hlr2VQZdcf9DJ3ukzFdJQs7/2tUMoQ85P7F03pInjbuEAqANA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nepQmgkr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B87C4CEED;
-	Tue,  8 Jul 2025 16:31:46 +0000 (UTC)
+	 MIME-Version; b=f5HIADKrKPFDm++JwcrsCV29GneuI/PCEJAQkn2VMtRQ+B5Os5HzGZNYPdqo813k6/Ki0bUx1Dza21RYTXvQJSZJLeWlp+AkfEMB0xh5IR2d34+Tj9hIiLYx0MlKdL3gfiIC6q4M4p5jGRnVg8vtjhe8Dg009ByzDc9asU7+X3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2rLpeXT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB86C4CEF0;
+	Tue,  8 Jul 2025 17:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992307;
-	bh=cyExTv0N4GUw+IGUD+p34Fqdku44b4Q3RSuPwcHBFXI=;
+	s=korg; t=1751994002;
+	bh=TtElT1b9aXNCIZBWowfHE9oRZ2n48m9qyeMqf9bJq20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nepQmgkrzUlQ0eS8ueJbaI6CbaOF2A8qFlMpOnHsrfoKVGMbheAuzZiCX9lREW1UK
-	 CkX33e9cCFZmAPQOCMx2Nbuc36Bz9u0K0duSrYdn5cPpDLVJ/X1EDGlqy3TkE6EOvO
-	 vymIaplK6Ip/V8hU9qlG31eTpOc/lGTrVv/IbK+Y=
+	b=i2rLpeXThLEZeYHOJq+72yXC+6HKWFj51+wX/uE7Go+FPVUX+/SdWptW4MQLP6Umn
+	 X1pjxqDBYGVp3fPB+fUI+pLem+67qXZh1x17W4oXOXXxIRHn06WAaifedKvQcNR9KQ
+	 BZPMPDx5pkM7aNEzk+9mcAil11eHvWdH/ajpmF2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 017/132] mtk-sd: reset host->mrq on prepare_data() error
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 5.15 091/160] s390/entry: Fix last breaking event handling in case of stack corruption
 Date: Tue,  8 Jul 2025 18:22:08 +0200
-Message-ID: <20250708162231.232002789@linuxfoundation.org>
+Message-ID: <20250708162234.029780937@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit ec54c0a20709ed6e56f40a8d59eee725c31a916b upstream.
+commit ae952eea6f4a7e2193f8721a5366049946e012e7 upstream.
 
-Do not leave host with dangling ->mrq pointer if we hit
-the msdc_prepare_data() error out path.
+In case of stack corruption stack_invalid() is called and the expectation
+is that register r10 contains the last breaking event address. This
+dependency is quite subtle and broke a couple of years ago without that
+anybody noticed.
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Fixes: f5de469990f1 ("mtk-sd: Prevent memory corruption from DMA map failure")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250625052106.584905-1-senozhatsky@chromium.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fix this by getting rid of the dependency and read the last breaking event
+address from lowcore.
+
+Fixes: 56e62a737028 ("s390: convert to generic entry")
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mtk-sd.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/s390/kernel/entry.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -1347,6 +1347,7 @@ static void msdc_ops_request(struct mmc_
- 	if (mrq->data) {
- 		msdc_prepare_data(host, mrq->data);
- 		if (!msdc_data_prepared(mrq->data)) {
-+			host->mrq = NULL;
- 			/*
- 			 * Failed to prepare DMA area, fail fast before
- 			 * starting any commands.
+--- a/arch/s390/kernel/entry.S
++++ b/arch/s390/kernel/entry.S
+@@ -676,7 +676,7 @@ ENTRY(stack_overflow)
+ 	stmg	%r0,%r7,__PT_R0(%r11)
+ 	stmg	%r8,%r9,__PT_PSW(%r11)
+ 	mvc	__PT_R8(64,%r11),0(%r14)
+-	stg	%r10,__PT_ORIG_GPR2(%r11) # store last break to orig_gpr2
++	mvc	__PT_ORIG_GPR2(8,%r11),__LC_LAST_BREAK
+ 	xc	__SF_BACKCHAIN(8,%r15),__SF_BACKCHAIN(%r15)
+ 	lgr	%r2,%r11		# pass pointer to pt_regs
+ 	jg	kernel_stack_overflow
 
 
 
