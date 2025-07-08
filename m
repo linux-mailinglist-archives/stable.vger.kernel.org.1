@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-161017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7DAAFD30A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:52:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84089AFD3F5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B68C1188BCEC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64C5A3BC9E4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2D4217722;
-	Tue,  8 Jul 2025 16:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359672E6126;
+	Tue,  8 Jul 2025 16:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acbrhyXi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxicwzMu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC4623D2AB;
-	Tue,  8 Jul 2025 16:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E769D2E542E;
+	Tue,  8 Jul 2025 16:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993359; cv=none; b=UQiYosdZPeyL7xD7epX+TQ42o/3rFir/hDu/vapVZw1vR+J9WFWLFAP46ofn5hAGDicZEU7+9KVl4PS0YTlzfIpSC8+wxeqJvyvfiYU1+6XQQmbsVhxTGttOVQPY3EhbGf+uu1d+1rwBKbE/R3rxR10hLkzn26Mhvuk1As21S5A=
+	t=1751993870; cv=none; b=h38DJc6qNyFtm68pn5i2bER9FzaCxizBqMo0zihP8/IXgw5PhoaYfK1yus1kclv8/DSdzCn4zG9nuhuKfwCmRwcSLjqnH5zLETWtZ3nMYusHihciRsvfu3f960FR2sUTrHSQYRCOMon6njp8F0Nwbd/IMkNLkTmeo3e1rX6fwec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993359; c=relaxed/simple;
-	bh=nq5Ruco36RDV9rS4zsjdoG7PJBrdwnjksyAHaK1Xz48=;
+	s=arc-20240116; t=1751993870; c=relaxed/simple;
+	bh=+HZyJfTSJQ4TG4ezhWmY7HJIyaVSjGnNB4SJhqJYKtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXLXHxGieySSTLMq0V8uudPC7g8/GSYBWVXQXrlom/DM1GgPkkdXqYeAgubXRAdCCbWePAw8+s6OHKNQfPDqrT9wAAb3IF1aNQRtZX9RspkEe1zFBIkGM0Gk8wpyy3tPr+NFLX/IyFLHBpt4SWmX2pLtg2pyHf6JzJNSWS7gTts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acbrhyXi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D205C4CEF5;
-	Tue,  8 Jul 2025 16:49:18 +0000 (UTC)
+	 MIME-Version; b=W2yUO73Ni6NQIYhmn5+lG3fbe5FRqAkApXMPwBE9BJPccDzSVSfOlA4Kd8yuGS4seQD5KLH9mFO7fZusDsSN4FN3nv6IHYPUkgjP32ctfz2uFEIHJnf7r/rE/Q425rBppmU42F6/HTJIEbO16ylSVYh5XBq9uPNmyaT0T1GGF9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxicwzMu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D5A9C4CEED;
+	Tue,  8 Jul 2025 16:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993358;
-	bh=nq5Ruco36RDV9rS4zsjdoG7PJBrdwnjksyAHaK1Xz48=;
+	s=korg; t=1751993869;
+	bh=+HZyJfTSJQ4TG4ezhWmY7HJIyaVSjGnNB4SJhqJYKtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=acbrhyXiZRbqBlSYVYnkFkuruvU+Oz3Kh67qK8/u/iuF08hCmtpf8TRIgKxZk/d09
-	 pAoMR2hVRc2F3/rgKYm8Ww2WFR0NOfZZH2xvi72tbUbMifb2fW5QowDB6kumi49lGu
-	 +jJnqc+4z3Oy2iHOTLg6YXvwIsEYywb3RMTq0xb4=
+	b=bxicwzMu8vm0RizooAGcpxdbkX9kuemKECTG9+Ki2MeCwgp2kENso39J52gJF676M
+	 ppoCJJHxnLCXpv4H1kcAbOJ19EZFRA8qvFLBrj/bpOcBoKPZK4btEN0Patf9lS4kJH
+	 D3ep9w8i9x5FrRrzTe50qVJwO8zgEx8WVE2a1kU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Long Li <longli@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 047/178] nfs: Clean up /proc/net/rpc/nfs when nfs_fs_proc_net_init() fails.
+Subject: [PATCH 5.15 047/160] uio_hv_generic: Query the ringbuffer size for device
 Date: Tue,  8 Jul 2025 18:21:24 +0200
-Message-ID: <20250708162237.914839298@linuxfoundation.org>
+Message-ID: <20250708162232.841070482@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,141 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-[ Upstream commit e8d6f3ab59468e230f3253efe5cb63efa35289f7 ]
+[ Upstream commit e566ed5b64177a0c07b677568f623ed31d23406d ]
 
-syzbot reported a warning below [1] following a fault injection in
-nfs_fs_proc_net_init(). [0]
+Query the ring buffer size from pre defined table per device
+and use that value for allocating the ring buffer for that
+device. Keep the size as current default which is 2 MB if
+the device doesn't have any preferred ring size.
 
-When nfs_fs_proc_net_init() fails, /proc/net/rpc/nfs is not removed.
-
-Later, rpc_proc_exit() tries to remove /proc/net/rpc, and the warning
-is logged as the directory is not empty.
-
-Let's handle the error of nfs_fs_proc_net_init() properly.
-
-[0]:
-FAULT_INJECTION: forcing a failure.
-name failslab, interval 1, probability 0, space 0, times 0
-CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
-  dump_stack_lvl (lib/dump_stack.c:123)
- should_fail_ex (lib/fault-inject.c:73 lib/fault-inject.c:174)
- should_failslab (mm/failslab.c:46)
- kmem_cache_alloc_noprof (mm/slub.c:4178 mm/slub.c:4204)
- __proc_create (fs/proc/generic.c:427)
- proc_create_reg (fs/proc/generic.c:554)
- proc_create_net_data (fs/proc/proc_net.c:120)
- nfs_fs_proc_net_init (fs/nfs/client.c:1409)
- nfs_net_init (fs/nfs/inode.c:2600)
- ops_init (net/core/net_namespace.c:138)
- setup_net (net/core/net_namespace.c:443)
- copy_net_ns (net/core/net_namespace.c:576)
- create_new_namespaces (kernel/nsproxy.c:110)
- unshare_nsproxy_namespaces (kernel/nsproxy.c:218 (discriminator 4))
- ksys_unshare (kernel/fork.c:3123)
- __x64_sys_unshare (kernel/fork.c:3190)
- do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
- entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
- </TASK>
-
-[1]:
-remove_proc_entry: removing non-empty directory 'net/rpc', leaking at least 'nfs'
- WARNING: CPU: 1 PID: 6120 at fs/proc/generic.c:727 remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
-Modules linked in:
-CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
- RIP: 0010:remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
-Code: 3c 02 00 0f 85 85 00 00 00 48 8b 93 d8 00 00 00 4d 89 f0 4c 89 e9 48 c7 c6 40 ba a2 8b 48 c7 c7 60 b9 a2 8b e8 33 81 1d ff 90 <0f> 0b 90 90 e9 5f fe ff ff e8 04 69 5e ff 90 48 b8 00 00 00 00 00
-RSP: 0018:ffffc90003637b08 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff88805f534140 RCX: ffffffff817a92c8
-RDX: ffff88807da99e00 RSI: ffffffff817a92d5 RDI: 0000000000000001
-RBP: ffff888033431ac0 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffff888033431a00
-R13: ffff888033431ae4 R14: ffff888033184724 R15: dffffc0000000000
-FS:  0000555580328500(0000) GS:ffff888124a62000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f71733743e0 CR3: 000000007f618000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  sunrpc_exit_net+0x46/0x90 net/sunrpc/sunrpc_syms.c:76
-  ops_exit_list net/core/net_namespace.c:200 [inline]
-  ops_undo_list+0x2eb/0xab0 net/core/net_namespace.c:253
-  setup_net+0x2e1/0x510 net/core/net_namespace.c:457
-  copy_net_ns+0x2a6/0x5f0 net/core/net_namespace.c:574
-  create_new_namespaces+0x3ea/0xa90 kernel/nsproxy.c:110
-  unshare_nsproxy_namespaces+0xc0/0x1f0 kernel/nsproxy.c:218
-  ksys_unshare+0x45b/0xa40 kernel/fork.c:3121
-  __do_sys_unshare kernel/fork.c:3192 [inline]
-  __se_sys_unshare kernel/fork.c:3190 [inline]
-  __x64_sys_unshare+0x31/0x40 kernel/fork.c:3190
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xcd/0x490 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa1a6b8e929
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff3a090368 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 00007fa1a6db5fa0 RCX: 00007fa1a6b8e929
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000040000080
-RBP: 00007fa1a6c10b39 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa1a6db5fa0 R14: 00007fa1a6db5fa0 R15: 0000000000000001
- </TASK>
-
-Fixes: d47151b79e32 ("nfs: expose /proc/net/sunrpc/nfs in net namespaces")
-Reported-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a4cc4ac22daa4a71b87c
-Tested-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Link: https://lore.kernel.org/r/1711788723-8593-3-git-send-email-ssengar@linux.microsoft.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/inode.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/uio/uio_hv_generic.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 8ab7868807a7d..a2fa6bc4d74e3 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2589,15 +2589,26 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
- static int nfs_net_init(struct net *net)
- {
- 	struct nfs_net *nn = net_generic(net, nfs_net_id);
-+	int err;
+diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
+index 9daa1afbf9dbf..db8a450b5a19b 100644
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -249,6 +249,7 @@ hv_uio_probe(struct hv_device *dev,
+ 	struct hv_uio_private_data *pdata;
+ 	void *ring_buffer;
+ 	int ret;
++	size_t ring_size = hv_dev_ring_size(channel);
  
- 	nfs_clients_init(net);
- 
- 	if (!rpc_proc_register(net, &nn->rpcstats)) {
--		nfs_clients_exit(net);
--		return -ENOMEM;
-+		err = -ENOMEM;
-+		goto err_proc_rpc;
+ 	/* Communicating with host has to be via shared memory not hypercall */
+ 	if (!channel->offermsg.monitor_allocated) {
+@@ -256,12 +257,14 @@ hv_uio_probe(struct hv_device *dev,
+ 		return -ENOTSUPP;
  	}
  
--	return nfs_fs_proc_net_init(net);
-+	err = nfs_fs_proc_net_init(net);
-+	if (err)
-+		goto err_proc_nfs;
++	if (!ring_size)
++		ring_size = HV_RING_SIZE * PAGE_SIZE;
 +
-+	return 0;
-+
-+err_proc_nfs:
-+	rpc_proc_unregister(net, "nfs");
-+err_proc_rpc:
-+	nfs_clients_exit(net);
-+	return err;
- }
+ 	pdata = devm_kzalloc(&dev->device, sizeof(*pdata), GFP_KERNEL);
+ 	if (!pdata)
+ 		return -ENOMEM;
  
- static void nfs_net_exit(struct net *net)
+-	ret = vmbus_alloc_ring(channel, HV_RING_SIZE * PAGE_SIZE,
+-			       HV_RING_SIZE * PAGE_SIZE);
++	ret = vmbus_alloc_ring(channel, ring_size, ring_size);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.39.5
 
