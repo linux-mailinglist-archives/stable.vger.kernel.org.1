@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-161106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84805AFD369
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 059DBAFD287
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD49F1C403B2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D87D4A0A56
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D012045B5;
-	Tue,  8 Jul 2025 16:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B972DD5EF;
+	Tue,  8 Jul 2025 16:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLxTteyH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9N03xD8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521EF2F37;
-	Tue,  8 Jul 2025 16:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7370A264F9C;
+	Tue,  8 Jul 2025 16:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993611; cv=none; b=qRLKUbe36QUfPm9Gi/HjT0olm7xLfaCD4jxVUF/zx5mYXV8hl4HJSEpZbq/ylzbNhZXyA2yr/mgTMZpvDb4Xsq8dFc1rdjLW5XnI60iEBlAyxV8LQxq4+ogoSxAiRnYI9/egqA8hEvW/7Anl8GtLLXjVMjhsrRHvp2TWHQBLkfU=
+	t=1751993056; cv=none; b=eNG25BAl8hoiJ5RvfuypdAt1XwRFhC5RE1dLVHeeqM7jFhOk+PNTV3dVSYXYe0GmDDsmEFpe6pu+aWvm6lQs9WIInH3ckfvvy0A6aPSpPoHZthspAdPMNAzNqyR4aZYVG2VTv6E0ccpIZIMOqxZ7OIFf844RS9z3tdbeQFczkp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993611; c=relaxed/simple;
-	bh=TUapS6L4JL1Wl84IaBf8c/u/IiLRhJxkQqVO/hmV5RA=;
+	s=arc-20240116; t=1751993056; c=relaxed/simple;
+	bh=CYTyjNrFuwol8+JBs7jqnvN+kANCkeKe3FHc2ruLGjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oI6tb+8E7VtOai6LoqPDPxM0Pm0gjaQsHOLwHeRPye1tPYj1m50TRcaQtFQ4XvKVXPPgFyJPtiRCBeLDlizQu0vhDA8HeZQmDB39dHfxGub5w/5Vw8r4J4BD9Vq7M7XOX95ug3IMKzZthahnrqPFUy5uFFl0d5UzfKC0KQ+kHUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLxTteyH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE45C4CEED;
-	Tue,  8 Jul 2025 16:53:30 +0000 (UTC)
+	 MIME-Version; b=LpylgKJElbkc1gEGyNlInJIBxINSJ/4uCZbTRTLa+FVAO8EzbW/ZZexI74EWryTx8FA47rUMrAkw8jhM5wzst0YF8Q7WRanOXSJrBMb3sG2uNcZn7lZaOYSYbv1c/1T/U/f0HOsxTyuas4fL1HEmjt2DH7l8Xk0QwYI1LyLJM6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9N03xD8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F387CC4CEED;
+	Tue,  8 Jul 2025 16:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993611;
-	bh=TUapS6L4JL1Wl84IaBf8c/u/IiLRhJxkQqVO/hmV5RA=;
+	s=korg; t=1751993056;
+	bh=CYTyjNrFuwol8+JBs7jqnvN+kANCkeKe3FHc2ruLGjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yLxTteyHhSCLlKxwdWrMCLWbkqEGVhhZhKwnl/HdDfzrAnNgVvRWO98yuq+HFIKKN
-	 a7pAYQnmKKviAtaDLmRtYOuAfklhNAEjLhRjFxh1tWOG6RZxlBtj3rzRRdlOvfP3gX
-	 9qTDibHBEe7Tc72MYnJLhbYzBr+HS+Erq/UgCUUE=
+	b=A9N03xD8WZNObuBwjm9Aow23fXdl/ND+CyBHzd9noNiVqL6jlazE12jUtQq3mzU5e
+	 ZNXIpiUCQKTWjdtuNC7u/wGkf6VyI6+z1DiKFjZpsRmnLJiluMG9A8ZP8LMtSeP19f
+	 REFbF+ZDnlk+/1KpU9L3j/3AhCDZJ4VwKM9p6Sc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raven Black <ravenblack@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 132/178] ASoC: amd: yc: update quirk data for HP Victus
+Subject: [PATCH 6.12 173/232] ALSA: sb: Dont allow changing the DMA mode during operations
 Date: Tue,  8 Jul 2025 18:22:49 +0200
-Message-ID: <20250708162240.014148896@linuxfoundation.org>
+Message-ID: <20250708162245.967305663@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raven Black <ravenblack@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 13b86ea92ebf0fa587fbadfb8a60ca2e9993203f ]
+[ Upstream commit ed29e073ba93f2d52832804cabdd831d5d357d33 ]
 
-Make the internal microphone work on HP Victus laptops.
+When a PCM stream is already running, one shouldn't change the DMA
+mode via kcontrol, which may screw up the hardware.  Return -EBUSY
+instead.
 
-Signed-off-by: Raven Black <ravenblack@gmail.com>
-Link: https://patch.msgid.link/20250613-support-hp-victus-microphone-v1-1-bebc4c3a2041@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218185
+Link: https://patch.msgid.link/20250610064322.26787-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/isa/sb/sb16_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 4f8481c6802b1..723cb7bc12851 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -521,6 +521,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16z-n000"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Victus by HP Gaming Laptop 15-fb2xxx"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/sound/isa/sb/sb16_main.c b/sound/isa/sb/sb16_main.c
+index 74db115250030..c4930efd44e3a 100644
+--- a/sound/isa/sb/sb16_main.c
++++ b/sound/isa/sb/sb16_main.c
+@@ -703,6 +703,9 @@ static int snd_sb16_dma_control_put(struct snd_kcontrol *kcontrol, struct snd_ct
+ 	unsigned char nval, oval;
+ 	int change;
+ 	
++	if (chip->mode & (SB_MODE_PLAYBACK | SB_MODE_CAPTURE))
++		return -EBUSY;
++
+ 	nval = ucontrol->value.enumerated.item[0];
+ 	if (nval > 2)
+ 		return -EINVAL;
 -- 
 2.39.5
 
