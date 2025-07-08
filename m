@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-160896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D97AFD26B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8AEAFD125
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14BDF18974D2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E6BE580E07
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C732E54C8;
-	Tue,  8 Jul 2025 16:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4B92E339D;
+	Tue,  8 Jul 2025 16:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeeUf3rn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uoiK27Zp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F452E54A0;
-	Tue,  8 Jul 2025 16:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885DD1DF74F;
+	Tue,  8 Jul 2025 16:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993007; cv=none; b=QHcB7rOKAWIo7JXeI0Z+FGnBTyL2htMbD27/0JUfnFNsr60BJ+LcbEqu4ITzvfXUaE9jQDhacxAPF1mOuvHm0bN0G9IrIpsYun4sraFC8SdBhmPIcobRhGGZO6sUWDDaP1fEXadS4u7vQgoRL33ciAgiaZjHJ00anU78FyNE3NA=
+	t=1751992286; cv=none; b=pQmEODjuzhBlmmv3+sBceiEigCIsODqDnsDY/JGnL7Vx8epu6vH/oyO/A8oTXwNiktFgEZikHZMNF+G7vTBELJps6ECjl26/Y9KFVh1CHxx1oGaRRMnZYm8Zq/u9Met1/vjZfokrrf5MjJWkEDuhwOeBFy6YXIKdABTt3XcwSbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993007; c=relaxed/simple;
-	bh=pSQ/lxZe+S9FXdfSXLHMXMU2wxAHG8c6FX+MnzZMj9U=;
+	s=arc-20240116; t=1751992286; c=relaxed/simple;
+	bh=w9w8Dzcfu4pchOKlP21jOV0/YibDDxicX8ebagsCmQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c2stn8EXIbAE8yLlvUEXpsptEd07QB+wkNiGE//k5HhwL7EOzCTKgz5wg/nFnM4c0ynAP2N6b3a3BL0PFuaiLwWHvGmT6fccz3gC4PmlxElQyC+mT7IXxu8+nXltMLK8Jn+zVclewCZsn8/kpCVzYze6DjNmTpDanP6OW1mtOVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeeUf3rn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C9FC4CEF6;
-	Tue,  8 Jul 2025 16:43:26 +0000 (UTC)
+	 MIME-Version; b=eT28MLTMeZLe3w2cNSHmnrYiFcW4V87dbWd1gMsjq0Sxu6QTHPE+/PY0hWS6LLlPA+rvpsm6beSaMyM2jQUtjFu8KsLw1SOs4gYL6z5sXYo4DG0M9+u9ZxMzC9EahHAOG4/BQhBQFFqr9UBfg1e9U6D40XLQ9zTX2iJNfGPiIFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uoiK27Zp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12786C4CEF5;
+	Tue,  8 Jul 2025 16:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993007;
-	bh=pSQ/lxZe+S9FXdfSXLHMXMU2wxAHG8c6FX+MnzZMj9U=;
+	s=korg; t=1751992286;
+	bh=w9w8Dzcfu4pchOKlP21jOV0/YibDDxicX8ebagsCmQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xeeUf3rnuLsR2nWc29o6Yc9Ri/blo42FB/O2Xj+2oxb+uKfFRYnJqE3Z/c6cC6TxQ
-	 jHNZsId3B8i/nZuCkkgl0FpqFQ55k/Ykk2LsPMe3ogVhcyjOaEgf4IGK3Wwz+n9qJ3
-	 czd/cn8EQkJwN5qM972ueGtxdnp4RsorUJkVVhvI=
+	b=uoiK27ZplikwBXQUG907q3Q0FdUG8RrcBYou2peXg/eGqrBoI9RgX8k16Ocs0D+yq
+	 EqlnWMvUX29mTNIDW3hObnhN1XYmwJFBTMpA5VmZhV0XKiBGq5KGYsfpBgsMHF8nkS
+	 wgnfpNL4jYqzrx3qG1q8VvXN+UFcjzchsQNrKNlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Mika Kahola <mika.kahola@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 155/232] drm/xe: add interface to request physical alignment for buffer objects
+Subject: [PATCH 6.6 040/132] drm/i915/selftests: Change mock_request() to return error pointers
 Date: Tue,  8 Jul 2025 18:22:31 +0200
-Message-ID: <20250708162245.493543139@linuxfoundation.org>
+Message-ID: <20250708162231.856030448@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,182 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 3ad86ae1da97d0091f673f08846848714f6dd745 ]
+[ Upstream commit caa7c7a76b78ce41d347003f84975125383e6b59 ]
 
-Add xe_bo_create_pin_map_at_aligned() which augment
-xe_bo_create_pin_map_at() with alignment parameter allowing to pass
-required alignemnt if it differ from default.
+There was an error pointer vs NULL bug in __igt_breadcrumbs_smoketest().
+The __mock_request_alloc() function implements the
+smoketest->request_alloc() function pointer.  It was supposed to return
+error pointers, but it propogates the NULL return from mock_request()
+so in the event of a failure, it would lead to a NULL pointer
+dereference.
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241009151947.2240099-2-juhapekka.heikkila@gmail.com
-Stable-dep-of: f16873f42a06 ("drm/xe: move DPT l2 flush to a more sensible place")
+To fix this, change the mock_request() function to return error pointers
+and update all the callers to expect that.
+
+Fixes: 52c0fdb25c7c ("drm/i915: Replace global breadcrumbs with per-context interrupt tracking")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://lore.kernel.org/r/685c1417.050a0220.696f5.5c05@mx.google.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 778fa8ad5f0f23397d045c7ebca048ce8def1c43)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../compat-i915-headers/gem/i915_gem_stolen.h |  2 +-
- drivers/gpu/drm/xe/xe_bo.c                    | 29 +++++++++++++++----
- drivers/gpu/drm/xe/xe_bo.h                    |  8 ++++-
- drivers/gpu/drm/xe/xe_bo_types.h              |  5 ++++
- drivers/gpu/drm/xe/xe_ggtt.c                  |  2 +-
- 5 files changed, 37 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/i915/selftests/i915_request.c | 20 +++++++++----------
+ drivers/gpu/drm/i915/selftests/mock_request.c |  2 +-
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/compat-i915-headers/gem/i915_gem_stolen.h b/drivers/gpu/drm/xe/compat-i915-headers/gem/i915_gem_stolen.h
-index cb6c7598824be..9c4cf050059ac 100644
---- a/drivers/gpu/drm/xe/compat-i915-headers/gem/i915_gem_stolen.h
-+++ b/drivers/gpu/drm/xe/compat-i915-headers/gem/i915_gem_stolen.h
-@@ -29,7 +29,7 @@ static inline int i915_gem_stolen_insert_node_in_range(struct xe_device *xe,
+diff --git a/drivers/gpu/drm/i915/selftests/i915_request.c b/drivers/gpu/drm/i915/selftests/i915_request.c
+index a9b79888c1931..c7ce2c570ad1f 100644
+--- a/drivers/gpu/drm/i915/selftests/i915_request.c
++++ b/drivers/gpu/drm/i915/selftests/i915_request.c
+@@ -73,8 +73,8 @@ static int igt_add_request(void *arg)
+ 	/* Basic preliminary test to create a request and let it loose! */
  
- 	bo = xe_bo_create_locked_range(xe, xe_device_get_root_tile(xe),
- 				       NULL, size, start, end,
--				       ttm_bo_type_kernel, flags);
-+				       ttm_bo_type_kernel, flags, 0);
- 	if (IS_ERR(bo)) {
- 		err = PTR_ERR(bo);
- 		bo = NULL;
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index 8acc4640f0a28..c92953c08d682 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -1454,7 +1454,8 @@ static struct xe_bo *
- __xe_bo_create_locked(struct xe_device *xe,
- 		      struct xe_tile *tile, struct xe_vm *vm,
- 		      size_t size, u64 start, u64 end,
--		      u16 cpu_caching, enum ttm_bo_type type, u32 flags)
-+		      u16 cpu_caching, enum ttm_bo_type type, u32 flags,
-+		      u64 alignment)
- {
- 	struct xe_bo *bo = NULL;
- 	int err;
-@@ -1483,6 +1484,8 @@ __xe_bo_create_locked(struct xe_device *xe,
- 	if (IS_ERR(bo))
- 		return bo;
+ 	request = mock_request(rcs0(i915)->kernel_context, HZ / 10);
+-	if (!request)
+-		return -ENOMEM;
++	if (IS_ERR(request))
++		return PTR_ERR(request);
  
-+	bo->min_align = alignment;
-+
- 	/*
- 	 * Note that instead of taking a reference no the drm_gpuvm_resv_bo(),
- 	 * to ensure the shared resv doesn't disappear under the bo, the bo
-@@ -1523,16 +1526,18 @@ struct xe_bo *
- xe_bo_create_locked_range(struct xe_device *xe,
- 			  struct xe_tile *tile, struct xe_vm *vm,
- 			  size_t size, u64 start, u64 end,
--			  enum ttm_bo_type type, u32 flags)
-+			  enum ttm_bo_type type, u32 flags, u64 alignment)
- {
--	return __xe_bo_create_locked(xe, tile, vm, size, start, end, 0, type, flags);
-+	return __xe_bo_create_locked(xe, tile, vm, size, start, end, 0, type,
-+				     flags, alignment);
- }
+ 	i915_request_add(request);
  
- struct xe_bo *xe_bo_create_locked(struct xe_device *xe, struct xe_tile *tile,
- 				  struct xe_vm *vm, size_t size,
- 				  enum ttm_bo_type type, u32 flags)
- {
--	return __xe_bo_create_locked(xe, tile, vm, size, 0, ~0ULL, 0, type, flags);
-+	return __xe_bo_create_locked(xe, tile, vm, size, 0, ~0ULL, 0, type,
-+				     flags, 0);
- }
+@@ -91,8 +91,8 @@ static int igt_wait_request(void *arg)
+ 	/* Submit a request, then wait upon it */
  
- struct xe_bo *xe_bo_create_user(struct xe_device *xe, struct xe_tile *tile,
-@@ -1542,7 +1547,7 @@ struct xe_bo *xe_bo_create_user(struct xe_device *xe, struct xe_tile *tile,
- {
- 	struct xe_bo *bo = __xe_bo_create_locked(xe, tile, vm, size, 0, ~0ULL,
- 						 cpu_caching, ttm_bo_type_device,
--						 flags | XE_BO_FLAG_USER);
-+						 flags | XE_BO_FLAG_USER, 0);
- 	if (!IS_ERR(bo))
- 		xe_bo_unlock_vm_held(bo);
+ 	request = mock_request(rcs0(i915)->kernel_context, T);
+-	if (!request)
+-		return -ENOMEM;
++	if (IS_ERR(request))
++		return PTR_ERR(request);
  
-@@ -1565,6 +1570,17 @@ struct xe_bo *xe_bo_create_pin_map_at(struct xe_device *xe, struct xe_tile *tile
- 				      struct xe_vm *vm,
- 				      size_t size, u64 offset,
- 				      enum ttm_bo_type type, u32 flags)
-+{
-+	return xe_bo_create_pin_map_at_aligned(xe, tile, vm, size, offset,
-+					       type, flags, 0);
-+}
-+
-+struct xe_bo *xe_bo_create_pin_map_at_aligned(struct xe_device *xe,
-+					      struct xe_tile *tile,
-+					      struct xe_vm *vm,
-+					      size_t size, u64 offset,
-+					      enum ttm_bo_type type, u32 flags,
-+					      u64 alignment)
- {
- 	struct xe_bo *bo;
- 	int err;
-@@ -1576,7 +1592,8 @@ struct xe_bo *xe_bo_create_pin_map_at(struct xe_device *xe, struct xe_tile *tile
- 		flags |= XE_BO_FLAG_GGTT;
+ 	i915_request_get(request);
  
- 	bo = xe_bo_create_locked_range(xe, tile, vm, size, start, end, type,
--				       flags | XE_BO_FLAG_NEEDS_CPU_ACCESS);
-+				       flags | XE_BO_FLAG_NEEDS_CPU_ACCESS,
-+				       alignment);
- 	if (IS_ERR(bo))
- 		return bo;
+@@ -160,8 +160,8 @@ static int igt_fence_wait(void *arg)
+ 	/* Submit a request, treat it as a fence and wait upon it */
  
-diff --git a/drivers/gpu/drm/xe/xe_bo.h b/drivers/gpu/drm/xe/xe_bo.h
-index d22269a230aa1..704f5068d0d0a 100644
---- a/drivers/gpu/drm/xe/xe_bo.h
-+++ b/drivers/gpu/drm/xe/xe_bo.h
-@@ -77,7 +77,7 @@ struct xe_bo *
- xe_bo_create_locked_range(struct xe_device *xe,
- 			  struct xe_tile *tile, struct xe_vm *vm,
- 			  size_t size, u64 start, u64 end,
--			  enum ttm_bo_type type, u32 flags);
-+			  enum ttm_bo_type type, u32 flags, u64 alignment);
- struct xe_bo *xe_bo_create_locked(struct xe_device *xe, struct xe_tile *tile,
- 				  struct xe_vm *vm, size_t size,
- 				  enum ttm_bo_type type, u32 flags);
-@@ -94,6 +94,12 @@ struct xe_bo *xe_bo_create_pin_map(struct xe_device *xe, struct xe_tile *tile,
- struct xe_bo *xe_bo_create_pin_map_at(struct xe_device *xe, struct xe_tile *tile,
- 				      struct xe_vm *vm, size_t size, u64 offset,
- 				      enum ttm_bo_type type, u32 flags);
-+struct xe_bo *xe_bo_create_pin_map_at_aligned(struct xe_device *xe,
-+					      struct xe_tile *tile,
-+					      struct xe_vm *vm,
-+					      size_t size, u64 offset,
-+					      enum ttm_bo_type type, u32 flags,
-+					      u64 alignment);
- struct xe_bo *xe_bo_create_from_data(struct xe_device *xe, struct xe_tile *tile,
- 				     const void *data, size_t size,
- 				     enum ttm_bo_type type, u32 flags);
-diff --git a/drivers/gpu/drm/xe/xe_bo_types.h b/drivers/gpu/drm/xe/xe_bo_types.h
-index 2ed558ac2264a..35372c46edfa5 100644
---- a/drivers/gpu/drm/xe/xe_bo_types.h
-+++ b/drivers/gpu/drm/xe/xe_bo_types.h
-@@ -76,6 +76,11 @@ struct xe_bo {
+ 	request = mock_request(rcs0(i915)->kernel_context, T);
+-	if (!request)
+-		return -ENOMEM;
++	if (IS_ERR(request))
++		return PTR_ERR(request);
  
- 	/** @vram_userfault_link: Link into @mem_access.vram_userfault.list */
- 		struct list_head vram_userfault_link;
-+
-+	/** @min_align: minimum alignment needed for this BO if different
-+	 * from default
-+	 */
-+	u64 min_align;
- };
+ 	if (dma_fence_wait_timeout(&request->fence, false, T) != -ETIME) {
+ 		pr_err("fence wait success before submit (expected timeout)!\n");
+@@ -219,8 +219,8 @@ static int igt_request_rewind(void *arg)
+ 	GEM_BUG_ON(IS_ERR(ce));
+ 	request = mock_request(ce, 2 * HZ);
+ 	intel_context_put(ce);
+-	if (!request) {
+-		err = -ENOMEM;
++	if (IS_ERR(request)) {
++		err = PTR_ERR(request);
+ 		goto err_context_0;
+ 	}
  
- #define intel_bo_to_drm_bo(bo) (&(bo)->ttm.base)
-diff --git a/drivers/gpu/drm/xe/xe_ggtt.c b/drivers/gpu/drm/xe/xe_ggtt.c
-index e9820126feb96..9cb5760006a1c 100644
---- a/drivers/gpu/drm/xe/xe_ggtt.c
-+++ b/drivers/gpu/drm/xe/xe_ggtt.c
-@@ -620,7 +620,7 @@ static int __xe_ggtt_insert_bo_at(struct xe_ggtt *ggtt, struct xe_bo *bo,
- 				  u64 start, u64 end)
- {
- 	int err;
--	u64 alignment = XE_PAGE_SIZE;
-+	u64 alignment = bo->min_align > 0 ? bo->min_align : XE_PAGE_SIZE;
+@@ -237,8 +237,8 @@ static int igt_request_rewind(void *arg)
+ 	GEM_BUG_ON(IS_ERR(ce));
+ 	vip = mock_request(ce, 0);
+ 	intel_context_put(ce);
+-	if (!vip) {
+-		err = -ENOMEM;
++	if (IS_ERR(vip)) {
++		err = PTR_ERR(vip);
+ 		goto err_context_1;
+ 	}
  
- 	if (xe_bo_is_vram(bo) && ggtt->flags & XE_GGTT_FLAGS_64K)
- 		alignment = SZ_64K;
+diff --git a/drivers/gpu/drm/i915/selftests/mock_request.c b/drivers/gpu/drm/i915/selftests/mock_request.c
+index 09f747228dff5..1b0cf073e9643 100644
+--- a/drivers/gpu/drm/i915/selftests/mock_request.c
++++ b/drivers/gpu/drm/i915/selftests/mock_request.c
+@@ -35,7 +35,7 @@ mock_request(struct intel_context *ce, unsigned long delay)
+ 	/* NB the i915->requests slab cache is enlarged to fit mock_request */
+ 	request = intel_context_create_request(ce);
+ 	if (IS_ERR(request))
+-		return NULL;
++		return request;
+ 
+ 	request->mock.delay = delay;
+ 	return request;
 -- 
 2.39.5
 
