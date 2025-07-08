@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-160796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71861AFD1E7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 401FEAFD2DB
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C85C54095A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94DAB3AD496
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A4B2E5402;
-	Tue,  8 Jul 2025 16:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB6B1FC0F3;
+	Tue,  8 Jul 2025 16:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dR2qApNG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rB6q6kgb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4255289E2C;
-	Tue,  8 Jul 2025 16:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D736B672;
+	Tue,  8 Jul 2025 16:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992715; cv=none; b=pTpdqS9i/aBzTTnUu7FW7xykqz80M6Nf28eB3M2npq+oX4RIgocWFx8A2BlclVYJFSA6fc1fDAUSgTHAOBHffwdj2GdugZ13M36MYiXZXj4Xg8lDbr0NoYdvinrVlzwbcfPx9FBazm810tquPQ0OmIJJIboWYEC9kxW3Sdh92VU=
+	t=1751993264; cv=none; b=gQwprxtpUG+hUBZBBLCPtPjg878Y4kNapNH/Oza9FrPuI0mgG6CWTcNE8m0A9QqBi/rHYHo6Tc4fP/PijujTN+MGWSP8xR9h5gqvUPuRjTOkqU/zntI6TiQdl7w4lJyxaQb4Eu/Jw1WIIqstYiQxDtQ75CI5h//tpWazvk5hLm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992715; c=relaxed/simple;
-	bh=1lH4AiIL0j6roZsbpA22QWkXbKUL0FuriRSSD1MzJ0Y=;
+	s=arc-20240116; t=1751993264; c=relaxed/simple;
+	bh=HMFoFSnRh4UKaZw8CuTzNzPuAfTn/lv7GD12DvqI8Xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCaUAmN/XV2Wk5F/6tB627h9t1K/WM6PXFDmVqTXcVATTqR94t+9fY5g9sSlHfF2/wJGT8eopm51ZeKitXdpRT+m8xMk2OQjQ+ZH3ueWcgv+ceIf+gaN2k5eNnTPfJvX1X2xLZE+9HYoTUJjUvQPbQhYG8y8SwJo3mg3rOvdnvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dR2qApNG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC7DC4CEED;
-	Tue,  8 Jul 2025 16:38:35 +0000 (UTC)
+	 MIME-Version; b=cv8o1cDo6khmZlU4b2v8mKSyBZbWnn4NuycrBz2/I0P0DK3sSTfPaluck2HPm5ZdtYSnP5DqhphdikEPMXALpD4jXrd77uUrdq5kd6mG0o8m5BXRNIwBJA44bzH1JlgVv5ZLTmVecLg+Ecvb1dqZ2XVdC/l6PP3DfcyIawSf2NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rB6q6kgb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3A1C4CEED;
+	Tue,  8 Jul 2025 16:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992715;
-	bh=1lH4AiIL0j6roZsbpA22QWkXbKUL0FuriRSSD1MzJ0Y=;
+	s=korg; t=1751993264;
+	bh=HMFoFSnRh4UKaZw8CuTzNzPuAfTn/lv7GD12DvqI8Xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dR2qApNGXeluLalVQSJPMwZBUNxRyjRWoVXueGmchwsI9YaXfzLz39yg/2lNuD2NM
-	 P8tiV95DqL6EBaVlaUwXN7gM8dM8D1TpdpSPKXvpJ7uyUqLGeTsIU/nA3MVQ94cPik
-	 FO+kpwbN6n+fNSWp26SDD7oqJ02JR900Jw2+Tqsg=
+	b=rB6q6kgbla/ziNuQxOA9f36/wjsTKNDYfAfwP3Et3t7Hq2MVZDdhl7UAa74fgcO9S
+	 mzMWWDwMzIuUdMGicI3tikhICR5WryEXVjAd3BJ89Cd3VaX2XAqLTeNR3dZ6uL9qfn
+	 RJDj6Rmh1KAFaqnyL4bFZUgxxoMaKMSdtrNiul3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/232] btrfs: use btrfs_record_snapshot_destroy() during rmdir
-Date: Tue,  8 Jul 2025 18:20:51 +0200
-Message-ID: <20250708162242.904784485@linuxfoundation.org>
+	rostedt@goodmis.org,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.15 015/178] xfs: actually use the xfs_growfs_check_rtgeom tracepoint
+Date: Tue,  8 Jul 2025 18:20:52 +0200
+Message-ID: <20250708162236.945882988@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 157501b0469969fc1ba53add5049575aadd79d80 ]
+commit db44d088a5ab030b741a3adf2e7b181a8a6dcfbe upstream.
 
-We are setting the parent directory's last_unlink_trans directly which
-may result in a concurrent task starting to log the directory not see the
-update and therefore can log the directory after we removed a child
-directory which had a snapshot within instead of falling back to a
-transaction commit. Replaying such a log tree would result in a mount
-failure since we can't currently delete snapshots (and subvolumes) during
-log replay. This is the type of failure described in commit 1ec9a1ae1e30
-("Btrfs: fix unreplayable log after snapshot delete + parent dir fsync").
+We created a new tracepoint but forgot to put it in.  Fix that.
 
-Fix this by using btrfs_record_snapshot_destroy() which updates the
-last_unlink_trans field while holding the inode's log_mutex lock.
-
-Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: rostedt@goodmis.org
+Cc: stable@vger.kernel.org # v6.14
+Fixes: 59a57acbce282d ("xfs: check that the rtrmapbt maxlevels doesn't increase when growing fs")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Reported-by: Steven Rostedt <rostedt@goodmis.org>
+Closes: https://lore.kernel.org/all/20250612131021.114e6ec8@batman.local.home/
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_rtalloc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 345e86fd844df..f84e3f9fad84a 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4774,7 +4774,7 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	 * deletes for directory foo.
- 	 */
- 	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
--		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
-+		btrfs_record_snapshot_destroy(trans, BTRFS_I(dir));
+diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
+index 6484c596ecea..736eb0924573 100644
+--- a/fs/xfs/xfs_rtalloc.c
++++ b/fs/xfs/xfs_rtalloc.c
+@@ -1259,6 +1259,8 @@ xfs_growfs_check_rtgeom(
  
- 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
- 		ret = btrfs_unlink_subvol(trans, BTRFS_I(dir), dentry);
+ 	kfree(nmp);
+ 
++	trace_xfs_growfs_check_rtgeom(mp, min_logfsbs);
++
+ 	if (min_logfsbs > mp->m_sb.sb_logblocks)
+ 		return -EINVAL;
+ 
 -- 
-2.39.5
+2.50.0
 
 
 
