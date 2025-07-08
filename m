@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-160667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1BBCAFD142
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84805AFD369
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82185487B7C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD49F1C403B2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320162E3B03;
-	Tue,  8 Jul 2025 16:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D012045B5;
+	Tue,  8 Jul 2025 16:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAbZ2SZC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLxTteyH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E251D2E0B45;
-	Tue,  8 Jul 2025 16:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521EF2F37;
+	Tue,  8 Jul 2025 16:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992338; cv=none; b=P751MpqMP3EmzuJLVwa9HLXD1eUCRpX5w7HSDDpSrmyuSh5lxI2DMiFLDemxtIuouwgzaCyccafkwdhgtLGnn5toktoDFpWvblxtK24oLVzWZdDqaeJaA7WZOwbN3j2sBK9LgXi/ZIP42/yCPgTd7d3ekL8pU9xnKuWhZEB9SoU=
+	t=1751993611; cv=none; b=qRLKUbe36QUfPm9Gi/HjT0olm7xLfaCD4jxVUF/zx5mYXV8hl4HJSEpZbq/ylzbNhZXyA2yr/mgTMZpvDb4Xsq8dFc1rdjLW5XnI60iEBlAyxV8LQxq4+ogoSxAiRnYI9/egqA8hEvW/7Anl8GtLLXjVMjhsrRHvp2TWHQBLkfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992338; c=relaxed/simple;
-	bh=b8jsxxUKARn0FsnFk0PC8LLao3VhGIgcZNE4M7Cf+fc=;
+	s=arc-20240116; t=1751993611; c=relaxed/simple;
+	bh=TUapS6L4JL1Wl84IaBf8c/u/IiLRhJxkQqVO/hmV5RA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPPy2an36Ux06TCKR75uUoJN+z8AKhhyYnO+2mIVlfVwm+LH8TTXLKVxBQvXA8PFCL4dEVrwJhGfN/Gfbe4tH2PGeVyjum2/J+kAxQQIU0AN20Tel3X3CI8X2a3pv/OAL0eE2/P6PyL/Bf7dCTekliskIhGfktYu9KdHXkavlp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAbZ2SZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6900DC4CEED;
-	Tue,  8 Jul 2025 16:32:17 +0000 (UTC)
+	 MIME-Version; b=oI6tb+8E7VtOai6LoqPDPxM0Pm0gjaQsHOLwHeRPye1tPYj1m50TRcaQtFQ4XvKVXPPgFyJPtiRCBeLDlizQu0vhDA8HeZQmDB39dHfxGub5w/5Vw8r4J4BD9Vq7M7XOX95ug3IMKzZthahnrqPFUy5uFFl0d5UzfKC0KQ+kHUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLxTteyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE45C4CEED;
+	Tue,  8 Jul 2025 16:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992337;
-	bh=b8jsxxUKARn0FsnFk0PC8LLao3VhGIgcZNE4M7Cf+fc=;
+	s=korg; t=1751993611;
+	bh=TUapS6L4JL1Wl84IaBf8c/u/IiLRhJxkQqVO/hmV5RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VAbZ2SZCLyr/xi3sp6zhu16Z8hZpPYbadHOOPFI8yYIHVf+t6WlW8co6pHcNl+P19
-	 ERIrSlNUsHt5ZdQUVvm2WkfbXb9vO18lz9IWodtNV6pvpuc4JGQ+aCSXlEzSBXeIkw
-	 fsbApuikoQIXC62GUR3yC4vT6JD1yaadTXRWkKbM=
+	b=yLxTteyHhSCLlKxwdWrMCLWbkqEGVhhZhKwnl/HdDfzrAnNgVvRWO98yuq+HFIKKN
+	 a7pAYQnmKKviAtaDLmRtYOuAfklhNAEjLhRjFxh1tWOG6RZxlBtj3rzRRdlOvfP3gX
+	 9qTDibHBEe7Tc72MYnJLhbYzBr+HS+Erq/UgCUUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	John Daley <johndale@cisco.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Raven Black <ravenblack@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/132] enic: fix incorrect MTU comparison in enic_change_mtu()
+Subject: [PATCH 6.15 132/178] ASoC: amd: yc: update quirk data for HP Victus
 Date: Tue,  8 Jul 2025 18:22:49 +0200
-Message-ID: <20250708162232.355934160@linuxfoundation.org>
+Message-ID: <20250708162240.014148896@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Raven Black <ravenblack@gmail.com>
 
-[ Upstream commit aaf2b2480375099c022a82023e1cd772bf1c6a5d ]
+[ Upstream commit 13b86ea92ebf0fa587fbadfb8a60ca2e9993203f ]
 
-The comparison in enic_change_mtu() incorrectly used the current
-netdev->mtu instead of the new new_mtu value when warning about
-an MTU exceeding the port MTU. This could suppress valid warnings
-or issue incorrect ones.
+Make the internal microphone work on HP Victus laptops.
 
-Fix the condition and log to properly reflect the new_mtu.
-
-Fixes: ab123fe071c9 ("enic: handle mtu change for vf properly")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Acked-by: John Daley <johndale@cisco.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250628145612.476096-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Raven Black <ravenblack@gmail.com>
+Link: https://patch.msgid.link/20250613-support-hp-victus-microphone-v1-1-bebc4c3a2041@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cisco/enic/enic_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index cccf0db2fb4e5..48701032c20c5 100644
---- a/drivers/net/ethernet/cisco/enic/enic_main.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -2057,10 +2057,10 @@ static int enic_change_mtu(struct net_device *netdev, int new_mtu)
- 	if (enic_is_dynamic(enic) || enic_is_sriov_vf(enic))
- 		return -EOPNOTSUPP;
- 
--	if (netdev->mtu > enic->port_mtu)
-+	if (new_mtu > enic->port_mtu)
- 		netdev_warn(netdev,
- 			    "interface MTU (%d) set higher than port MTU (%d)\n",
--			    netdev->mtu, enic->port_mtu);
-+			    new_mtu, enic->port_mtu);
- 
- 	return _enic_change_mtu(netdev, new_mtu);
- }
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 4f8481c6802b1..723cb7bc12851 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -521,6 +521,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16z-n000"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Victus by HP Gaming Laptop 15-fb2xxx"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.39.5
 
