@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-161054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B94AFD319
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69254AFD401
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0A295432FD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:50:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8E3E17FE64
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839812E5411;
-	Tue,  8 Jul 2025 16:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE262E62AD;
+	Tue,  8 Jul 2025 16:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wdVnJHpN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0DKlPQK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D97B2E4985;
-	Tue,  8 Jul 2025 16:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F432E5B09;
+	Tue,  8 Jul 2025 16:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993463; cv=none; b=ikslT6ROr4dOXgp+3ypAtmnQ5atSaVx8PJ9RSuJ97MeL1M935p/0soCxI3m4pxavdmEDnJP06eKnxPbSbSJroiNHZl4eh7GpI8a7ia0RUScfhVf7BfED7oHdYG0saOqO+i2n59VoFSn61eKHJFFvtAYx3CcYEvN4cGWzheQVOL8=
+	t=1751993975; cv=none; b=AoUGqnq/UUmUW9mbAKM9//blLATY04VwiRLyWA1cjsd2tlUiWEmtyD8pF3CfQ9TBzkfO9QavW5y4tBx7j4MRo9uDlt8UdfSFNRBrdZYRrpKtY0/66HRuhPZfPtItl30/5LfV8GP4eW/21JE6slFDwdl8crLiD6f63tVdbW3Z6tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993463; c=relaxed/simple;
-	bh=qWSFk0Ptwaxm5/dX6p1bddbtRm0yGjw9df3b3dwlL0s=;
+	s=arc-20240116; t=1751993975; c=relaxed/simple;
+	bh=fw6X2TlMemsczCOsNDZPixRUmknJmQc5zVkXTMsAQAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kgZgJXGK4d6t0wW+PQ8n9Dijw6LHjB8uo+gY502JnE8Ss3jDpRaOJAgukgPlMcdkU4SVyxGmrkSGuUD5r8Es2YmQv+wAGUInDyOE90h2u975rcfvXeuV5v3Rui+187HTwjgBL/G7Wr2vnhwNZxdtZKhIaWhEIgQ87OqoOnQm7Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdVnJHpN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F01C4CEED;
-	Tue,  8 Jul 2025 16:51:02 +0000 (UTC)
+	 MIME-Version; b=ZLwh5tnq/flHUx4dwYpIfy4HsA3xoLF1Mldj8Mo/dPdHdEFYBgZetX+eHbpr+962V3cBpBLhDv2stUwDCDvVtoOTHE9zqwxhXfL5UkxwbUaYjQk9ZTk8zSsFqGWR8wHGgI5e9SMA5MdBcac47TAEx224hhZfDQsm55h8Ufv7JMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0DKlPQK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215BDC4CEED;
+	Tue,  8 Jul 2025 16:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993463;
-	bh=qWSFk0Ptwaxm5/dX6p1bddbtRm0yGjw9df3b3dwlL0s=;
+	s=korg; t=1751993975;
+	bh=fw6X2TlMemsczCOsNDZPixRUmknJmQc5zVkXTMsAQAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wdVnJHpN09e2J6qzRF8YS3Y8DQCTd7xpms9M9bUvoJIvf4wbEhlnvZR93yAHk5zPn
-	 otAfu/4uJ3ZdwsxqFuTsFXgQCuYQVtB4UVyQ9wbfQXbwUSY2Ch1oGkFge9228HGegr
-	 oysEMDokOAbZK4wR7piubWq9pLarOdYRwYpqM4Bw=
+	b=L0DKlPQKs1jK2X4WcBPQuHJYyNF60nACssLlaOT+Qhhtjw2pOW0KgBpEAggjm5os+
+	 +B2Uacg6tyzVrEneFCZ0x5KeuJbs2WA35Jb5JlJJBC+BTZtmaJpX22cubiH0cCuk2q
+	 8lmpawkHKdcX/AcJwBl8O6AMzZ8tvtEK9omm37tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 083/178] platform/x86: dell-wmi-sysman: Fix class device unregistration
+	Jay Cornwall <jay.cornwall@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 083/160] drm/amdkfd: Fix race in GWS queue scheduling
 Date: Tue,  8 Jul 2025 18:22:00 +0200
-Message-ID: <20250708162238.848823484@linuxfoundation.org>
+Message-ID: <20250708162233.828574970@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Jay Cornwall <jay.cornwall@amd.com>
 
-[ Upstream commit 314e5ad4782d08858b3abc325c0487bd2abc23a1 ]
+commit cfb05257ae168a0496c7637e1d9e3ab8a25cbffe upstream.
 
-Devices under the firmware_attributes_class do not have unique a dev_t.
-Therefore, device_unregister() should be used instead of
-device_destroy(), since the latter may match any device with a given
-dev_t.
+q->gws is not updated atomically with qpd->mapped_gws_queue. If a
+runlist is created between pqm_set_gws and update_queue it will
+contain a queue which uses GWS in a process with no GWS allocated.
+This will result in a scheduler hang.
 
-Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250625-dest-fix-v1-3-3a0f342312bb@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use q->properties.is_gws which is changed while holding the DQM lock.
+
+Signed-off-by: Jay Cornwall <jay.cornwall@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b98370220eb3110e82248e3354e16a489a492cfb)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell/dell-wmi-sysman/sysman.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_packet_manager_v9.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-index 3c74d5e8350a4..f5402b7146572 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-@@ -597,7 +597,7 @@ static int __init sysman_init(void)
- 	release_attributes_data();
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_packet_manager_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_packet_manager_v9.c
+@@ -195,7 +195,7 @@ static int pm_map_queues_v9(struct packe
  
- err_destroy_classdev:
--	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
-+	device_unregister(wmi_priv.class_dev);
- 
- err_exit_bios_attr_pass_interface:
- 	exit_bios_attr_pass_interface();
-@@ -611,7 +611,7 @@ static int __init sysman_init(void)
- static void __exit sysman_exit(void)
- {
- 	release_attributes_data();
--	device_destroy(&firmware_attributes_class, MKDEV(0, 0));
-+	device_unregister(wmi_priv.class_dev);
- 	exit_bios_attr_set_interface();
- 	exit_bios_attr_pass_interface();
- }
--- 
-2.39.5
-
+ 	packet->bitfields2.engine_sel =
+ 		engine_sel__mes_map_queues__compute_vi;
+-	packet->bitfields2.gws_control_queue = q->gws ? 1 : 0;
++	packet->bitfields2.gws_control_queue = q->properties.is_gws ? 1 : 0;
+ 	packet->bitfields2.extended_engine_sel =
+ 		extended_engine_sel__mes_map_queues__legacy_engine_sel;
+ 	packet->bitfields2.queue_type =
 
 
 
