@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-161067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 961B6AFD32D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:54:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48077AFD46E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60D393AF12E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:51:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B630418989A3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B169A2E49A8;
-	Tue,  8 Jul 2025 16:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07FB2E6116;
+	Tue,  8 Jul 2025 17:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJTm42ho"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQ7sHYa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD422E3385;
-	Tue,  8 Jul 2025 16:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDF21E492;
+	Tue,  8 Jul 2025 17:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993501; cv=none; b=JXj/orRXOTdbJ/gQ+qRxvQO5GXXeoieNjpYSaENMPxsI5MM0rnAWFZUogxkKbs8BUfbbjvlxWCiJLtt89CoQQ5A6Pr1/52Y2jFoJ7vrWR/u14bV9EDGLMvnBX7HaWlJsJ7qSOYYxxzLDn/yEXYt8+2Zb5GyArvi9rimAHatNHyU=
+	t=1751994013; cv=none; b=IsuCda7+2+lnGDq+O/LVd6a5CU2AXH+ah99omOWCPHzKT+fHscRWaCYb8DPPLja+xtgOMWZ7GWrJkKPl9az/t2o595qo6hZF2v+S2GlprEEFD3gGSq9BvBcf4pqHp66B0GGB4N/8ebgTsyNEeEhsLSRJY2J5fp9gptBBO8rShf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993501; c=relaxed/simple;
-	bh=0g4K9U3MecERI4dzlp5J6o2WtBxw0MuUNfKsuX6mQQk=;
+	s=arc-20240116; t=1751994013; c=relaxed/simple;
+	bh=G6yjQU0QRbqifDc4TYWur3blJ3lBmDezKUv1Ys0MYpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMgs2rg2aA8Ez4lkQnEY1i4rl8jEmoHfle7Guc5PJ4aP1zXOTQsJFgnOvZa6c0QauyrkVfIjnJxFz2gTmF8qe/iwzPD8duICvSuRtc03mZ+jWnnUZtyME9Aqe1RxRjKvURIY30C2SqNjBOTX41aSVDZWyWFXBcg0Hq9vLRmJxsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJTm42ho; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED7BEC4CEED;
-	Tue,  8 Jul 2025 16:51:40 +0000 (UTC)
+	 MIME-Version; b=KtrvRh6idqTq9RqtOocAT4O65ISsyNOUbYN5tpBShIw7K6IsSFVTVFO5z20tDZcP208YPLheJNbRsB3WqG+bOWf0WPKQ0jZoUeNSquqirhrE2Ab1SiczRLbD+s+xFMTzYoE5KOUs1IMxYqMMzrNKqZC/ahzzy8WRmZ+sqPjfezM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQ7sHYa1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF8DC4CEF0;
+	Tue,  8 Jul 2025 17:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993501;
-	bh=0g4K9U3MecERI4dzlp5J6o2WtBxw0MuUNfKsuX6mQQk=;
+	s=korg; t=1751994013;
+	bh=G6yjQU0QRbqifDc4TYWur3blJ3lBmDezKUv1Ys0MYpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MJTm42ho8HIf+Fgxp2nJQ/IdnbQYh1nG76YVK5Xz0d8M6nq9hKmBsr15NZcB9c+dZ
-	 AfoP28EfCAn+T+bbv43Cy+wWApSUgfXh+3BAUfaaeNN9lTpD0iDqq3R8cmw+23zmS7
-	 iROa1Ib5P/Zwkuf23bpbpZYesGBG3sd7nbV7a0KU=
+	b=WQ7sHYa1hzFHJYMQ93CZWbJn4ssh/Vrwl6O8IDXyOPZU7+LbiXuWiV4hzpQb50RZd
+	 N7upRgwSGcaXEYHGI7k4waPfrViVnHRy6sP8Wv/2bzMFWt9f9VsIdQzVbpJfWalzvV
+	 AORcD7UeHIBVSOfvVsptnzkkCzanuPFWA6/RlRT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 095/178] igc: disable L1.2 PCI-E link substate to avoid performance issue
+	Filipe Manana <fdmanana@suse.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
+	Larry Bassel <larry.bassel@oracle.com>
+Subject: [PATCH 5.15 095/160] btrfs: dont drop extent_map for free space inode on write error
 Date: Tue,  8 Jul 2025 18:22:12 +0200
-Message-ID: <20250708162239.139179318@linuxfoundation.org>
+Message-ID: <20250708162234.133561100@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 0325143b59c6c6d79987afc57d2456e7a20d13b7 ]
+commit 5571e41ec6e56e35f34ae9f5b3a335ef510e0ade upstream.
 
-I226 devices advertise support for the PCI-E link L1.2 substate. However,
-due to a hardware limitation, the exit latency from this low-power state
-is longer than the packet buffer can tolerate under high traffic
-conditions. This can lead to packet loss and degraded performance.
+While running the CI for an unrelated change I hit the following panic
+with generic/648 on btrfs_holes_spacecache.
 
-To mitigate this, disable the L1.2 substate. The increased power draw
-between L1.1 and L1.2 is insignificant.
+assertion failed: block_start != EXTENT_MAP_HOLE, in fs/btrfs/extent_io.c:1385
+------------[ cut here ]------------
+kernel BUG at fs/btrfs/extent_io.c:1385!
+invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 1 PID: 2695096 Comm: fsstress Kdump: loaded Tainted: G        W          6.8.0-rc2+ #1
+RIP: 0010:__extent_writepage_io.constprop.0+0x4c1/0x5c0
+Call Trace:
+ <TASK>
+ extent_write_cache_pages+0x2ac/0x8f0
+ extent_writepages+0x87/0x110
+ do_writepages+0xd5/0x1f0
+ filemap_fdatawrite_wbc+0x63/0x90
+ __filemap_fdatawrite_range+0x5c/0x80
+ btrfs_fdatawrite_range+0x1f/0x50
+ btrfs_write_out_cache+0x507/0x560
+ btrfs_write_dirty_block_groups+0x32a/0x420
+ commit_cowonly_roots+0x21b/0x290
+ btrfs_commit_transaction+0x813/0x1360
+ btrfs_sync_file+0x51a/0x640
+ __x64_sys_fdatasync+0x52/0x90
+ do_syscall_64+0x9c/0x190
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
 
-Fixes: 43546211738e ("igc: Add new device ID's")
-Link: https://lore.kernel.org/intel-wired-lan/15248b4f-3271-42dd-8e35-02bfc92b25e1@intel.com
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This happens because we fail to write out the free space cache in one
+instance, come back around and attempt to write it again.  However on
+the second pass through we go to call btrfs_get_extent() on the inode to
+get the extent mapping.  Because this is a new block group, and with the
+free space inode we always search the commit root to avoid deadlocking
+with the tree, we find nothing and return a EXTENT_MAP_HOLE for the
+requested range.
+
+This happens because the first time we try to write the space cache out
+we hit an error, and on an error we drop the extent mapping.  This is
+normal for normal files, but the free space cache inode is special.  We
+always expect the extent map to be correct.  Thus the second time
+through we end up with a bogus extent map.
+
+Since we're deprecating this feature, the most straightforward way to
+fix this is to simply skip dropping the extent map range for this failed
+range.
+
+I shortened the test by using error injection to stress the area to make
+it easier to reproduce.  With this patch in place we no longer panic
+with my error injection test.
+
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ Larry: backport to 5.15.y. Minor conflict resolved due to missing commit 4c0c8cfc8433
+  btrfs: move btrfs_drop_extent_cache() to extent_map.c ]
+Signed-off-by: Larry Bassel <larry.bassel@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/btrfs/inode.c |   19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index b1669d7cf4359..7d8cc783b2282 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -7046,6 +7046,10 @@ static int igc_probe(struct pci_dev *pdev,
- 	adapter->port_num = hw->bus.func;
- 	adapter->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -3197,8 +3197,23 @@ out:
+ 			unwritten_start += logical_len;
+ 		clear_extent_uptodate(io_tree, unwritten_start, end, NULL);
  
-+	/* Disable ASPM L1.2 on I226 devices to avoid packet loss */
-+	if (igc_is_device_id_i226(hw))
-+		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
-+
- 	err = pci_save_state(pdev);
- 	if (err)
- 		goto err_ioremap;
-@@ -7426,6 +7430,9 @@ static int __igc_resume(struct device *dev, bool rpm)
- 	pci_enable_wake(pdev, PCI_D3hot, 0);
- 	pci_enable_wake(pdev, PCI_D3cold, 0);
+-		/* Drop the cache for the part of the extent we didn't write. */
+-		btrfs_drop_extent_cache(inode, unwritten_start, end, 0);
++		/*
++		 * Drop extent maps for the part of the extent we didn't write.
++		 *
++		 * We have an exception here for the free_space_inode, this is
++		 * because when we do btrfs_get_extent() on the free space inode
++		 * we will search the commit root.  If this is a new block group
++		 * we won't find anything, and we will trip over the assert in
++		 * writepage where we do ASSERT(em->block_start !=
++		 * EXTENT_MAP_HOLE).
++		 *
++		 * Theoretically we could also skip this for any NOCOW extent as
++		 * we don't mess with the extent map tree in the NOCOW case, but
++		 * for now simply skip this if we are the free space inode.
++		 */
++		if (!btrfs_is_free_space_inode(inode))
++			btrfs_drop_extent_cache(inode, unwritten_start,
++						    end, 0);
  
-+	if (igc_is_device_id_i226(hw))
-+		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
-+
- 	if (igc_init_interrupt_scheme(adapter, true)) {
- 		netdev_err(netdev, "Unable to allocate memory for queues\n");
- 		return -ENOMEM;
-@@ -7551,6 +7558,9 @@ static pci_ers_result_t igc_io_slot_reset(struct pci_dev *pdev)
- 		pci_enable_wake(pdev, PCI_D3hot, 0);
- 		pci_enable_wake(pdev, PCI_D3cold, 0);
- 
-+		if (igc_is_device_id_i226(hw))
-+			pci_disable_link_state_locked(pdev, PCIE_LINK_STATE_L1_2);
-+
- 		/* In case of PCI error, adapter loses its HW address
- 		 * so we should re-assign it here.
- 		 */
--- 
-2.39.5
-
+ 		/*
+ 		 * If the ordered extent had an IOERR or something else went
 
 
 
