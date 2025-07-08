@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2802CAFD14D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:34:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08AFBAFD3A2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B455E540AC7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1AAB1891657
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2038D2E54BA;
-	Tue,  8 Jul 2025 16:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F032DE1FA;
+	Tue,  8 Jul 2025 16:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtDLcTpN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFlbMm+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C158B2E5B15;
-	Tue,  8 Jul 2025 16:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C941B1DB127;
+	Tue,  8 Jul 2025 16:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992364; cv=none; b=PUfBjCK1nnCx5ihdx7XgwMBJZ5unwkOPAuz98lrYUZQ7L/K8cp8IQ1IF2FBVC696YxLBb4a/IrXmUcB/cJnc56S2AbT3rDudYA2HNkHizsygPkjUdCrPpmoKCWcrFAtjve7V+kpBMkDebtE3sIspft6oF7CBQTZaUQFhK7wXSzA=
+	t=1751993721; cv=none; b=YK9ZPLy3K48UTLyQ0eCQ2dA3GNA2JmiG02JkLpuPcOqKnBcKB8b/FM+kyG9HpCxMH4Dsy1rpP+uhmui4nu4/g9t+IweDV1ZvAfaO0zenwoRWdyuqAhcr6aRVlT8/WmgrZ6Z9+49Yv9+Eqat0hKkZyTfXQBJ8sIBPKytC3Tn58gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992364; c=relaxed/simple;
-	bh=kgNsivIV/KZ7UtjhpeYF0TO+ms2BIxW/erLpt+nfGMc=;
+	s=arc-20240116; t=1751993721; c=relaxed/simple;
+	bh=vR/tOs+4iwYGMY0rnVGHF5AdcX+L3rfJ7aNtKE6fr4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hJVCWUhrLrBEXMrlKifxGvpb4W+IxV5fsB8cTSh4mOmt+q/0x+QHoty9T512QoJaR/9ysBG/bzHsVhd1OnzphgS/gwSp1AfqORBFjqzsPzrv75jmUf/tktlewrw5k56y0SSP62MDKbaFVBnV9NixXFzWqGcYy3G4ceMvLRJ94IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtDLcTpN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5FAC4CEED;
-	Tue,  8 Jul 2025 16:32:44 +0000 (UTC)
+	 MIME-Version; b=tRizwmqfK9xh5Onys/XSO1+PLLnO8ynxZp9ipCjpRdEkT5dg/YyPGhQaB+QvcEkJbzbjj1moUWbRdopE7S596pyxJpnrBS7k1Wz+cSAgKrbBvFWLh/0z0zmL1+nQqCbTetsZD4YidsIPfiAy4WMTjsJQgobTHcsbIQbO58y68y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFlbMm+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552F0C4CEED;
+	Tue,  8 Jul 2025 16:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992364;
-	bh=kgNsivIV/KZ7UtjhpeYF0TO+ms2BIxW/erLpt+nfGMc=;
+	s=korg; t=1751993721;
+	bh=vR/tOs+4iwYGMY0rnVGHF5AdcX+L3rfJ7aNtKE6fr4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qtDLcTpNbvX0T+wnUj/B+4HIAwdz2KiH2XlgZhrcNFNZ242I5k/a0hGAXSslIZ3gF
-	 evC0wAOgJOON+LSiD99RuHLIidnjN5KSBiks2JWr/TtzV3WzGA6/o9hCJBU8uZuOHs
-	 pjJ9IrLdJIgoKsr0MTWiQsoyU4zLJgMoC0K+9ENw=
+	b=AFlbMm+Wz/n+KWsyXdiMAiN4Bh29v9dv+7XE2HmNUENXX3976SlCYH1qoPwojxt4g
+	 erda3uUPm5bBgmQ0eTDwgxITkM6Vu5XAvWEUfbDq+BiS/S/R7sqMHU1EpIiCuljuiv
+	 NNT0RdDmaU+AuRHrE+9nLULrx4fRt6hL3krbzsak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/132] smb: client: remove \t from TP_printk statements
+Subject: [PATCH 6.15 140/178] rcu: Return early if callback is not specified
 Date: Tue,  8 Jul 2025 18:22:57 +0200
-Message-ID: <20250708162232.584511161@linuxfoundation.org>
+Message-ID: <20250708162240.201669001@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-[ Upstream commit e97f9540ce001503a4539f337da742c1dfa7d86a ]
+[ Upstream commit 33b6a1f155d627f5bd80c7485c598ce45428f74f ]
 
-The generate '[FAILED TO PARSE]' strings in trace-cmd report output like this:
+Currently the call_rcu() API does not check whether a callback
+pointer is NULL. If NULL is passed, rcu_core() will try to invoke
+it, resulting in NULL pointer dereference and a kernel crash.
 
-  rm-5298  [001]  6084.533748493: smb3_exit_err:        [FAILED TO PARSE] xid=972 func_name=cifs_rmdir rc=-39
-  rm-5298  [001]  6084.533959234: smb3_enter:           [FAILED TO PARSE] xid=973 func_name=cifs_closedir
-  rm-5298  [001]  6084.533967630: smb3_close_enter:     [FAILED TO PARSE] xid=973 fid=94489281833 tid=1 sesid=96758029877361
-  rm-5298  [001]  6084.534004008: smb3_cmd_enter:       [FAILED TO PARSE] tid=1 sesid=96758029877361 cmd=6 mid=566
-  rm-5298  [001]  6084.552248232: smb3_cmd_done:        [FAILED TO PARSE] tid=1 sesid=96758029877361 cmd=6 mid=566
-  rm-5298  [001]  6084.552280542: smb3_close_done:      [FAILED TO PARSE] xid=973 fid=94489281833 tid=1 sesid=96758029877361
-  rm-5298  [001]  6084.552316034: smb3_exit_done:       [FAILED TO PARSE] xid=973 func_name=cifs_closedir
+To prevent this and improve debuggability, this patch adds a check
+for NULL and emits a kernel stack trace to help identify a faulty
+caller.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/trace.h | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ kernel/rcu/tree.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
-index 563cb4d8edf0c..4dfdc521c5c98 100644
---- a/fs/smb/client/trace.h
-+++ b/fs/smb/client/trace.h
-@@ -114,7 +114,7 @@ DECLARE_EVENT_CLASS(smb3_rw_err_class,
- 		__entry->len = len;
- 		__entry->rc = rc;
- 	),
--	TP_printk("\txid=%u sid=0x%llx tid=0x%x fid=0x%llx offset=0x%llx len=0x%x rc=%d",
-+	TP_printk("xid=%u sid=0x%llx tid=0x%x fid=0x%llx offset=0x%llx len=0x%x rc=%d",
- 		__entry->xid, __entry->sesid, __entry->tid, __entry->fid,
- 		__entry->offset, __entry->len, __entry->rc)
- )
-@@ -247,7 +247,7 @@ DECLARE_EVENT_CLASS(smb3_fd_class,
- 		__entry->tid = tid;
- 		__entry->sesid = sesid;
- 	),
--	TP_printk("\txid=%u sid=0x%llx tid=0x%x fid=0x%llx",
-+	TP_printk("xid=%u sid=0x%llx tid=0x%x fid=0x%llx",
- 		__entry->xid, __entry->sesid, __entry->tid, __entry->fid)
- )
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 80b10893b5038..37778d913f011 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -3068,6 +3068,10 @@ __call_rcu_common(struct rcu_head *head, rcu_callback_t func, bool lazy_in)
+ 	/* Misaligned rcu_head! */
+ 	WARN_ON_ONCE((unsigned long)head & (sizeof(void *) - 1));
  
-@@ -286,7 +286,7 @@ DECLARE_EVENT_CLASS(smb3_fd_err_class,
- 		__entry->sesid = sesid;
- 		__entry->rc = rc;
- 	),
--	TP_printk("\txid=%u sid=0x%llx tid=0x%x fid=0x%llx rc=%d",
-+	TP_printk("xid=%u sid=0x%llx tid=0x%x fid=0x%llx rc=%d",
- 		__entry->xid, __entry->sesid, __entry->tid, __entry->fid,
- 		__entry->rc)
- )
-@@ -558,7 +558,7 @@ DECLARE_EVENT_CLASS(smb3_cmd_err_class,
- 		__entry->status = status;
- 		__entry->rc = rc;
- 	),
--	TP_printk("\tsid=0x%llx tid=0x%x cmd=%u mid=%llu status=0x%x rc=%d",
-+	TP_printk("sid=0x%llx tid=0x%x cmd=%u mid=%llu status=0x%x rc=%d",
- 		__entry->sesid, __entry->tid, __entry->cmd, __entry->mid,
- 		__entry->status, __entry->rc)
- )
-@@ -593,7 +593,7 @@ DECLARE_EVENT_CLASS(smb3_cmd_done_class,
- 		__entry->cmd = cmd;
- 		__entry->mid = mid;
- 	),
--	TP_printk("\tsid=0x%llx tid=0x%x cmd=%u mid=%llu",
-+	TP_printk("sid=0x%llx tid=0x%x cmd=%u mid=%llu",
- 		__entry->sesid, __entry->tid,
- 		__entry->cmd, __entry->mid)
- )
-@@ -631,7 +631,7 @@ DECLARE_EVENT_CLASS(smb3_mid_class,
- 		__entry->when_sent = when_sent;
- 		__entry->when_received = when_received;
- 	),
--	TP_printk("\tcmd=%u mid=%llu pid=%u, when_sent=%lu when_rcv=%lu",
-+	TP_printk("cmd=%u mid=%llu pid=%u, when_sent=%lu when_rcv=%lu",
- 		__entry->cmd, __entry->mid, __entry->pid, __entry->when_sent,
- 		__entry->when_received)
- )
-@@ -662,7 +662,7 @@ DECLARE_EVENT_CLASS(smb3_exit_err_class,
- 		__assign_str(func_name, func_name);
- 		__entry->rc = rc;
- 	),
--	TP_printk("\t%s: xid=%u rc=%d",
-+	TP_printk("%s: xid=%u rc=%d",
- 		__get_str(func_name), __entry->xid, __entry->rc)
- )
- 
-@@ -688,7 +688,7 @@ DECLARE_EVENT_CLASS(smb3_sync_err_class,
- 		__entry->ino = ino;
- 		__entry->rc = rc;
- 	),
--	TP_printk("\tino=%lu rc=%d",
-+	TP_printk("ino=%lu rc=%d",
- 		__entry->ino, __entry->rc)
- )
- 
-@@ -714,7 +714,7 @@ DECLARE_EVENT_CLASS(smb3_enter_exit_class,
- 		__entry->xid = xid;
- 		__assign_str(func_name, func_name);
- 	),
--	TP_printk("\t%s: xid=%u",
-+	TP_printk("%s: xid=%u",
- 		__get_str(func_name), __entry->xid)
- )
- 
++	/* Avoid NULL dereference if callback is NULL. */
++	if (WARN_ON_ONCE(!func))
++		return;
++
+ 	if (debug_rcu_head_queue(head)) {
+ 		/*
+ 		 * Probable double call_rcu(), so leak the callback.
 -- 
 2.39.5
 
