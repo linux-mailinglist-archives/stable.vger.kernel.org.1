@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132C5AFD21F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:43:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A2EAFD3F1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC6E41896514
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D744E16C035
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFC82DC34C;
-	Tue,  8 Jul 2025 16:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2B72E5B1A;
+	Tue,  8 Jul 2025 16:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0D3/JPY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umCP/InD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6072E5B09;
-	Tue,  8 Jul 2025 16:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8C22E49AF;
+	Tue,  8 Jul 2025 16:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992804; cv=none; b=p/QFXTHa1ttd0nPe5SeVxw8FmUO/9FK6FhADRIy99PxzZQiKW8WO/x9BfncvM4SON35W2DVyMAXGRTCpH4F9/42CXNrSRnZOFefjT1X/yh+/qu9k15c7TqP/mopw6GPjly24oSESrZUUs6bliiHOZDip6rjKF4/EHkh+hMf3NSs=
+	t=1751993952; cv=none; b=FOeHdmV02E3Vrgh4vtYqCtMTnWZ+2ojjhxhQKl68hxf794xjMXIUSqnNthEz9OTclS3CtNQSUamFqpnUvHXTohsLxYFLwyS4s8ry/80X/Ura9CPZ7VE+FeHNdPbB3e4bHg5mO4H33pFvxUlKPME3TTHx8k/v/ZsG+Qnw/7J9qlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992804; c=relaxed/simple;
-	bh=XonC8lEnpBBZTipyu5EU4xEnPA3AzMAQftz0RO1Uy0U=;
+	s=arc-20240116; t=1751993952; c=relaxed/simple;
+	bh=j9qk0kAN8cMApbJrN7Qt9c1WUgBrhgLbp7Ujz3U3JR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JTBATTw0YjA07ODVfwrwZfx4wfdZen+rB5luk447qNZZWWpIc5of2ONCYD2TkgOFMLgZ5k2BnX7TDk3/j/PWTWpLN8ZWm6p3bRkmoKanLSZVh5J4tOXG77WynJ33+rAZr3SrkM4EvDj9VblwzLEmiet6VVUqKo/loQ6363F+3Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0D3/JPY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543B3C4CEED;
-	Tue,  8 Jul 2025 16:40:04 +0000 (UTC)
+	 MIME-Version; b=MYeqabtldrFz2yOyPLlQsK1yfHyW8kFkUMEmdirO8cW9aJGsXOnicrPNsOgRQwEqry+uxO/3VyBdaLBLqNYk02q2bmaRgMDyykmpYZAlhY0Lsdnow5nhqZnFbFZwqJgOVK+gP+ZcC7zYCMP/+pNp2zf0/yrAuFRySf7eU0dDX54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umCP/InD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D19C4CEED;
+	Tue,  8 Jul 2025 16:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992804;
-	bh=XonC8lEnpBBZTipyu5EU4xEnPA3AzMAQftz0RO1Uy0U=;
+	s=korg; t=1751993952;
+	bh=j9qk0kAN8cMApbJrN7Qt9c1WUgBrhgLbp7Ujz3U3JR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0D3/JPYl7BxUhW62wuYwwhc9/R9f/NIIOXFMjt5HZ4m5yGwM5KxrSFsYB/INf/N4
-	 Jm8m02zU52zQwx+thYJYn3NPVzvipKJmKJcKPPYbX1Wqvy8zIuWnPTmp9kKXHxYDFa
-	 EHr7jHQZIgLVCC4ft5XhW+zHkNnx6gy4OJ6CJvDk=
+	b=umCP/InDQIEH2p5A8tB4mLCkOgXkhNZ5B/OdcTEpHADmOGccNTpJzLCJ7Smuhn5L/
+	 JwHYPPoNzu5KIvd8200SwR5AS6cJSeMYEzm8Q6GdqcbZ6gNfSFZoirfVeFqEEvDc6g
+	 Foe80x66zMkav2ZTX6exVosehNPjo5tf4oxTFKlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Michael Kelley <mikelley@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 086/232] amd-xgbe: align CL37 AN sequence as per databook
+Subject: [PATCH 5.15 045/160] Drivers: hv: Rename alloced to allocated
 Date: Tue,  8 Jul 2025 18:21:22 +0200
-Message-ID: <20250708162243.700048971@linuxfoundation.org>
+Message-ID: <20250708162232.788600818@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +63,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
 
-[ Upstream commit 42fd432fe6d320323215ebdf4de4d0d7e56e6792 ]
+[ Upstream commit de96e8a09889b35dd8d1cb6d19ef2bb123b05be1 ]
 
-Update the Clause 37 Auto-Negotiation implementation to properly align
-with the PCS hardware specifications:
-- Fix incorrect bit settings in Link Status and Link Duplex fields
-- Implement missing sequence steps 2 and 7
+'Alloced' is not a real word and only saves us two letters, let's
+use 'allocated' instead.
 
-These changes ensure CL37 auto-negotiation protocol follows the exact
-sequence patterns as specified in the hardware databook.
+No functional change intended.
 
-Fixes: 1bf40ada6290 ("amd-xgbe: Add support for clause 37 auto-negotiation")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20250630192636.3838291-1-Raju.Rangoju@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/20220128103412.3033736-2-vkuznets@redhat.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Stable-dep-of: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-common.h | 2 ++
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c   | 9 +++++++++
- drivers/net/ethernet/amd/xgbe/xgbe.h        | 4 ++--
- 3 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/hv/channel_mgmt.c | 18 +++++++++---------
+ drivers/hv/hyperv_vmbus.h | 14 +++++++-------
+ drivers/hv/vmbus_drv.c    |  2 +-
+ 3 files changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-common.h b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-index 3b70f67376331..aa25a8a0a106f 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-@@ -1373,6 +1373,8 @@
- #define MDIO_VEND2_CTRL1_SS13		BIT(13)
- #endif
+diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
+index 62c864f8d991b..029f8269ad15d 100644
+--- a/drivers/hv/channel_mgmt.c
++++ b/drivers/hv/channel_mgmt.c
+@@ -459,7 +459,7 @@ void hv_process_channel_removal(struct vmbus_channel *channel)
+ 	 * init_vp_index() can (re-)use the CPU.
+ 	 */
+ 	if (hv_is_perf_channel(channel))
+-		hv_clear_alloced_cpu(channel->target_cpu);
++		hv_clear_allocated_cpu(channel->target_cpu);
  
-+#define XGBE_VEND2_MAC_AUTO_SW		BIT(9)
-+
- /* MDIO mask values */
- #define XGBE_AN_CL73_INT_CMPLT		BIT(0)
- #define XGBE_AN_CL73_INC_LINK		BIT(1)
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index 07f4f3418d018..3316c719f9f8c 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -375,6 +375,10 @@ static void xgbe_an37_set(struct xgbe_prv_data *pdata, bool enable,
- 		reg |= MDIO_VEND2_CTRL1_AN_RESTART;
+ 	/*
+ 	 * Upon suspend, an in-use hv_sock channel is marked as "rescinded" and
+@@ -733,7 +733,7 @@ static void init_vp_index(struct vmbus_channel *channel)
+ 	bool perf_chn = hv_is_perf_channel(channel);
+ 	u32 i, ncpu = num_online_cpus();
+ 	cpumask_var_t available_mask;
+-	struct cpumask *alloced_mask;
++	struct cpumask *allocated_mask;
+ 	u32 target_cpu;
+ 	int numa_node;
  
- 	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_CTRL1, reg);
-+
-+	reg = XMDIO_READ(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL);
-+	reg |= XGBE_VEND2_MAC_AUTO_SW;
-+	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL, reg);
+@@ -750,7 +750,7 @@ static void init_vp_index(struct vmbus_channel *channel)
+ 		 */
+ 		channel->target_cpu = VMBUS_CONNECT_CPU;
+ 		if (perf_chn)
+-			hv_set_alloced_cpu(VMBUS_CONNECT_CPU);
++			hv_set_allocated_cpu(VMBUS_CONNECT_CPU);
+ 		return;
+ 	}
+ 
+@@ -765,22 +765,22 @@ static void init_vp_index(struct vmbus_channel *channel)
+ 				continue;
+ 			break;
+ 		}
+-		alloced_mask = &hv_context.hv_numa_map[numa_node];
++		allocated_mask = &hv_context.hv_numa_map[numa_node];
+ 
+-		if (cpumask_weight(alloced_mask) ==
++		if (cpumask_weight(allocated_mask) ==
+ 		    cpumask_weight(cpumask_of_node(numa_node))) {
+ 			/*
+ 			 * We have cycled through all the CPUs in the node;
+-			 * reset the alloced map.
++			 * reset the allocated map.
+ 			 */
+-			cpumask_clear(alloced_mask);
++			cpumask_clear(allocated_mask);
+ 		}
+ 
+-		cpumask_xor(available_mask, alloced_mask,
++		cpumask_xor(available_mask, allocated_mask,
+ 			    cpumask_of_node(numa_node));
+ 
+ 		target_cpu = cpumask_first(available_mask);
+-		cpumask_set_cpu(target_cpu, alloced_mask);
++		cpumask_set_cpu(target_cpu, allocated_mask);
+ 
+ 		if (channel->offermsg.offer.sub_channel_index >= ncpu ||
+ 		    i > ncpu || !hv_cpuself_used(target_cpu, channel))
+diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
+index 631f0a138c2b9..6a0ae815a198e 100644
+--- a/drivers/hv/hyperv_vmbus.h
++++ b/drivers/hv/hyperv_vmbus.h
+@@ -405,7 +405,7 @@ static inline bool hv_is_perf_channel(struct vmbus_channel *channel)
+ 	return vmbus_devs[channel->device_id].perf_device;
  }
  
- static void xgbe_an37_restart(struct xgbe_prv_data *pdata)
-@@ -1003,6 +1007,11 @@ static void xgbe_an37_init(struct xgbe_prv_data *pdata)
+-static inline bool hv_is_alloced_cpu(unsigned int cpu)
++static inline bool hv_is_allocated_cpu(unsigned int cpu)
+ {
+ 	struct vmbus_channel *channel, *sc;
  
- 	netif_dbg(pdata, link, pdata->netdev, "CL37 AN (%s) initialized\n",
- 		  (pdata->an_mode == XGBE_AN_MODE_CL37) ? "BaseX" : "SGMII");
-+
-+	reg = XMDIO_READ(pdata, MDIO_MMD_AN, MDIO_CTRL1);
-+	reg &= ~MDIO_AN_CTRL1_ENABLE;
-+	XMDIO_WRITE(pdata, MDIO_MMD_AN, MDIO_CTRL1, reg);
-+
+@@ -427,23 +427,23 @@ static inline bool hv_is_alloced_cpu(unsigned int cpu)
+ 	return false;
  }
  
- static void xgbe_an73_init(struct xgbe_prv_data *pdata)
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
-index ed5d43c16d0e2..7526a0906b391 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -292,12 +292,12 @@
- #define XGBE_LINK_TIMEOUT		5
- #define XGBE_KR_TRAINING_WAIT_ITER	50
+-static inline void hv_set_alloced_cpu(unsigned int cpu)
++static inline void hv_set_allocated_cpu(unsigned int cpu)
+ {
+ 	cpumask_set_cpu(cpu, &hv_context.hv_numa_map[cpu_to_node(cpu)]);
+ }
  
--#define XGBE_SGMII_AN_LINK_STATUS	BIT(1)
-+#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(1)
- #define XGBE_SGMII_AN_LINK_SPEED	(BIT(2) | BIT(3))
- #define XGBE_SGMII_AN_LINK_SPEED_10	0x00
- #define XGBE_SGMII_AN_LINK_SPEED_100	0x04
- #define XGBE_SGMII_AN_LINK_SPEED_1000	0x08
--#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(4)
-+#define XGBE_SGMII_AN_LINK_STATUS	BIT(4)
+-static inline void hv_clear_alloced_cpu(unsigned int cpu)
++static inline void hv_clear_allocated_cpu(unsigned int cpu)
+ {
+-	if (hv_is_alloced_cpu(cpu))
++	if (hv_is_allocated_cpu(cpu))
+ 		return;
+ 	cpumask_clear_cpu(cpu, &hv_context.hv_numa_map[cpu_to_node(cpu)]);
+ }
  
- /* ECC correctable error notification window (seconds) */
- #define XGBE_ECC_LIMIT			60
+-static inline void hv_update_alloced_cpus(unsigned int old_cpu,
++static inline void hv_update_allocated_cpus(unsigned int old_cpu,
+ 					  unsigned int new_cpu)
+ {
+-	hv_set_alloced_cpu(new_cpu);
+-	hv_clear_alloced_cpu(old_cpu);
++	hv_set_allocated_cpu(new_cpu);
++	hv_clear_allocated_cpu(old_cpu);
+ }
+ 
+ #ifdef CONFIG_HYPERV_TESTING
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index cb3a5b13c3ec2..f42c3cb3cc0aa 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -1878,7 +1878,7 @@ static ssize_t target_cpu_store(struct vmbus_channel *channel,
+ 
+ 	/* See init_vp_index(). */
+ 	if (hv_is_perf_channel(channel))
+-		hv_update_alloced_cpus(origin_cpu, target_cpu);
++		hv_update_allocated_cpus(origin_cpu, target_cpu);
+ 
+ 	/* Currently set only for storvsc channels. */
+ 	if (channel->change_target_cpu_callback) {
 -- 
 2.39.5
 
