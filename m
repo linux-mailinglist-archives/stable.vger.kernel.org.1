@@ -1,283 +1,132 @@
-Return-Path: <stable+bounces-160490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E444AFCCD1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 15:58:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9561AAFCCF1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:06:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69D92427E35
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 13:57:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 611311883179
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 14:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A9A1D5CD1;
-	Tue,  8 Jul 2025 13:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79532DECC4;
+	Tue,  8 Jul 2025 14:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oqEYtRia"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="ob5JnNmL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4F92BE7B1
-	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 13:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3E82BE7B1
+	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 14:06:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751983089; cv=none; b=NukkAGL3fPGfIj23cONVr3q+4RsZql5NmBIa+Ol+0npquuZTqXe6JJ233pu9fIr5C+U6vcnZNrCpZmsnnWxbLRxHnDrkzme6df8kt3A8ecrKqRDrlLRIi+IhIZz1bdEDcGqqQP34bekhGyhzSRNIQVnbCMb4t9rX1fqqKsZ19sY=
+	t=1751983593; cv=none; b=hAXWod7aEjod+0U3rKPN38RwwK2tGHJXtL5XizUm+3BnrARU6LCKhwuDKHvYPNXXVNZT/8YaFELs+vMxw6IzkslYAjhDmNubshvFAAJHdNetQawdL05JZ3ICeqX8pHB9dWY7FOZbDAO8SM5TdKCOkq/iOL/D91VQLpc0gjy/xYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751983089; c=relaxed/simple;
-	bh=Gss1TmbWkIljllU+l1oVd53qZ0Uh5sImbeQ3A9jjNeg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sITyleOFUpGtdKS9y20Zq8ZKc80s1Y0oyxd0Dfs1IIxJZAvxBph0LwUEwHaiOzZ/x+/SVKQYFNjVnn28NdJcp4IMW37AYaYYU2ilclnR1ibFfQUp/loiR7kS8i9rVpqyaHhp39V+ifAQou+I/zUnnPyxbMLbJOK1zuXsPKGleto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--lokeshgidra.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oqEYtRia; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--lokeshgidra.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b31ca4b6a8eso2744928a12.1
-        for <stable@vger.kernel.org>; Tue, 08 Jul 2025 06:58:07 -0700 (PDT)
+	s=arc-20240116; t=1751983593; c=relaxed/simple;
+	bh=BINVLnRgyb20mtAp5cKy1Cm5MJUnIiU9I4ytjoEXwOw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jPgTg5bi6kIWB7deZBSN3/VZAoVbbZYkb2fXwJ/OETRzN4xmricToIyLsSA6hWguKHnOIuPiu0uf5SX2nBMRIkpShm4xafSVtya6rJX33qhgLy3diGL5lTvmxhgR3bGIF8l0PuGNvxZAJJRPfZwwdTP3FRg6ahLVkkkAE/QySk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=ob5JnNmL; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7d45f5fde50so404809285a.2
+        for <stable@vger.kernel.org>; Tue, 08 Jul 2025 07:06:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751983087; x=1752587887; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=U7q7ovtbvy1TcH8xZIMnEcJdKU8THqhL9yvx53zKs80=;
-        b=oqEYtRiapQDL0Rl/P89eAfHN+gTvXhHY6SDwLM95un8Zf9sIUqgPR52kIVnMPuqrbF
-         vbPRXewCn9hnTK9WtBIEnPrJkwBAH9I62PfPj87mHdwNfZeFVgaKqyNfSryHYfBPtEix
-         OFt+/sV4mQpG+7n/2vFcj845rhuLppi7690RvYIhxzF2Ylzp/7RXMxlO1rQWlVpUX+Oc
-         Qf9e6OscYZdUCkyoLczMdMG0pSlrx4mvQGZjCh8eBhh0903NjvBM9HsOMEOkNnoLd1gC
-         H1aK9LOMesCtWkE55W9q1ihoWDjNb1AWk8eZJLIc4+GBDu4DZgqS4et3Y0qFJtjppq0Y
-         hR+Q==
+        d=ziepe.ca; s=google; t=1751983591; x=1752588391; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zi7H4e9g21Nfu25Zqs4l/n2K5Xp4dE24U9jx1txkOqM=;
+        b=ob5JnNmL1bALluVuIazMQe61MO0lKCK0TSrKq/hifvHdCUnk0bBVkAsSlcFA8h7Vss
+         8cp5RK1FKBxIDpvbxIBcsdeq5c3lXWCcvmzcY0imUtSWWSu+WGCeDD8YfKIT5+K8l2uX
+         DXi5s3mCkbUzZa4kcT5sZjIR0tPKloF9KMe7VaDk7dP2fZlqhAeytpF87RN6P+N52Uj5
+         OgEXcm7pecPzj3OqXHRgRpGmPWfrTVL5OblT7ngJBNNvx07zRnZ80LP5Nm5mxVZlKFeU
+         Bn7EkX7MM8Ui3aNE/qJUNknNNXoWW3py+217mtH/2tdEk4JY+ORuc5VHpiN2jalPexmO
+         +MHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751983087; x=1752587887;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U7q7ovtbvy1TcH8xZIMnEcJdKU8THqhL9yvx53zKs80=;
-        b=OPzZhAwjQPlLTBKIyI3Cv+m7iE5r+rhGPB2gDXDruNjLtztdKrIMLlUerjcGLAhIil
-         CQKVRZKtkYd4h7QTP2RtGIfflRaGRGXZwB3ndgimidKVuWFcD2WZX3NSFMupFnoXHbtP
-         d9B67EbAb534MhRSVWRM1NiJY6wXE8yT5Ns+rdnVq8eL+fUikBLdcJm4DXLfT8XKWqUe
-         RsBmWIjvCaoSV3yQG9UrvGJC2zb5BZa6zY0gM9rC+LtmxIopLpUp3CGxvuS/WxjNrF0L
-         QaeCpzATkHETnKBhvG58ERM/79W9TxvI+lW5Bn1J1Uf1/lZMTrOdeaO6sJEeGzs7iC5C
-         nGvQ==
-X-Gm-Message-State: AOJu0YykXLHXR3/GJyYCgZpphkCpia1ne8RWuAroOHpUgjm1lpejtXof
-	xrM41Caa1pspgqocwoZwlr3qC7hNhQ4rLW1TqoZ76EjXyKSalCT5269GdXjAeH9+TH0V5F14Pgh
-	QMDsQrr7biNmHK0X9eUUrCMomdBsd6EsP36wMyY2L/FL5gTvXc5bS45RPZjEz7IyC3Wz3XEDz7n
-	zRqXxepG8niAnoPK/TD/3ZTDJXeSd6ZWb26oNw9ufYeIip1wv4wLkWQqKsOjxvL0M=
-X-Google-Smtp-Source: AGHT+IFq4nnbX5u+VsZ2G/v4toKgxO491pd5nt1Uu9TY15O29EAaWwZzYWX2p6A98lo2xunoBYlaUkIhDvHm9M+Wfw==
-X-Received: from plnd13.prod.google.com ([2002:a17:903:198d:b0:234:c5eb:fe1d])
- (user=lokeshgidra job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:1b0b:b0:234:8c64:7878 with SMTP id d9443c01a7336-23dd0a819c3mr41000755ad.11.1751983086608;
- Tue, 08 Jul 2025 06:58:06 -0700 (PDT)
-Date: Tue,  8 Jul 2025 06:58:02 -0700
-In-Reply-To: <2025063052-strive-fabulous-239b@gregkh>
+        d=1e100.net; s=20230601; t=1751983591; x=1752588391;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Zi7H4e9g21Nfu25Zqs4l/n2K5Xp4dE24U9jx1txkOqM=;
+        b=O3oDz7lFODzmc1QtTF77+jEkAcXSxq4NJ4KyRLAyv3LatHo9y2D42wT4mS9p7Y8+iV
+         /+g7sHi/Q2XLDpM7V1NOJzk8mvjaQVDoI9tByZxF0N2xrzqVCS73AGByaWTcdPhrnDtW
+         Qvk9RXoPyL8XkzX5A6xmEGhCgFJUeiCq1DIzOY4RiL5e7ecH7dhx1dZzYqXyCEDkAWtV
+         Dhm7LSK2NzbiTov5dzzK7KVXt0GkoLvrzmYwwIxUozUL418Ax6edt8ERYgcVWZh22b9t
+         9Jg7qV/zDYjiVGp7xYhoTxUMkoI5sGc7CjVerrEdR+kkzVBKMT3aSr6os/f1/Wg25G7N
+         yKrA==
+X-Forwarded-Encrypted: i=1; AJvYcCUGnntmkFQPShOpKU99AZcaCN8JS2v2xnqNit4XJRf/sOUurSe4LHfcqkgpnVKzeV8dQzhmoqI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3zoZHzuQUpDOPl4zYpPNy1F8lttFS71k3X9fWVN8D1bQ2BvMw
+	hHon/UGQh+2QpLMN5u7atICZTML4cCSJRtJJBTE7QOVcWIjwNhTUJAg9YYEGJ/j1d6o=
+X-Gm-Gg: ASbGncuxsuiy6807zQJZxcXW3fh6p+HfN48vfaZoVhuzHo2E5UKgyoDVAtMBXwMruhb
+	abass/R6u428Z7tzecA+1xPAAct4l5BqoggGHactyjwr49oFLspHoyYmjxoJgICe28PySfE5xrD
+	965QBtBH75aiF+n/D7PWnu4Zk8PQ+hM0nakP/oIsdsYWFZAUv4Hqw6OjiHHrMBKGN+Eit/RdnPU
+	XCwfTAGLwkkFZo56hhQfeEYwLXM7f27/sVZhpv/h39gxHopNMCVXl9pucmVf+QBskQpG86s6g0e
+	2ShkB7rSL01DtKk9xNpk6JYk+4eOVVAJUWica6lBgdZkJXub42n7QLcdq1DKxl2kr0nVqvagWEd
+	4ewI6+yN7u9UTmYg89eCVozGHoaiqvw0X/DOxHA==
+X-Google-Smtp-Source: AGHT+IE/cztazeqpYwjRDoFWW5gJZRO8uoDuF7N/tMta0ZaCg/Nk+lDvQEF/OVmMyutYglTV2SlC/w==
+X-Received: by 2002:a05:620a:8009:b0:7d0:97b1:bfa with SMTP id af79cd13be357-7da01a8a1e3mr539517585a.8.1751983590756;
+        Tue, 08 Jul 2025 07:06:30 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-167-56-70.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.56.70])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d5dbeb67f2sm781455285a.111.2025.07.08.07.06.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Jul 2025 07:06:30 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1uZ8xp-00000006iCd-3LhG;
+	Tue, 08 Jul 2025 11:06:29 -0300
+Date: Tue, 8 Jul 2025 11:06:29 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>, Jann Horn <jannh@google.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+	iommu@lists.linux.dev, security@kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] iommu/sva: Invalidate KVA range on kernel TLB flush
+Message-ID: <20250708140629.GQ904431@ziepe.ca>
+References: <20250704133056.4023816-1-baolu.lu@linux.intel.com>
+ <0c6f6b3e-d68d-4deb-963e-6074944afff7@linux.intel.com>
+ <20250708122755.GV1410929@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <2025063052-strive-fabulous-239b@gregkh>
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250708135802.2870878-1-lokeshgidra@google.com>
-Subject: [PATCH 6.12.y] mm: userfaultfd: fix race of userfaultfd_move and swap cache
-From: Lokesh Gidra <lokeshgidra@google.com>
-To: stable@vger.kernel.org
-Cc: Kairui Song <kasong@tencent.com>, Lokesh Gidra <lokeshgidra@google.com>, 
-	Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>, 
-	Chris Li <chrisl@kernel.org>, Andrea Arcangeli <aarcange@redhat.com>, 
-	David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250708122755.GV1410929@nvidia.com>
 
-From: Kairui Song <kasong@tencent.com>
+On Tue, Jul 08, 2025 at 09:27:55AM -0300, Jason Gunthorpe wrote:
+> On Tue, Jul 08, 2025 at 01:42:53PM +0800, Baolu Lu wrote:
+> > > +void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end)
+> > > +{
+> > > +	struct iommu_mm_data *iommu_mm;
+> > > +
+> > > +	might_sleep();
+> > 
+> > Yi Lai <yi1.lai@intel.com> reported an issue here. This interface could
+> > potentially be called in a non-sleepable context.
+> 
+> Oh thats really bad, the notifiers inside the iommu driver are not
+> required to be called in a sleepable context either and I don't really
+> want to change that requirement.
 
-This commit fixes two kinds of races, they may have different results:
+Actually, I have got confused here with the hmm use of notifiers.
 
-Barry reported a BUG_ON in commit c50f8e6053b0, we may see the same
-BUG_ON if the filemap lookup returned NULL and folio is added to swap
-cache after that.
+The iommu drivers use arch_invalidate_secondary_tlbs so they are
+already in atomic contexts.
 
-If another kind of race is triggered (folio changed after lookup) we
-may see RSS counter is corrupted:
+So your idea to use a spinlock seems correct.
 
-[  406.893936] BUG: Bad rss-counter state mm:ffff0000c5a9ddc0
-type:MM_ANONPAGES val:-1
-[  406.894071] BUG: Bad rss-counter state mm:ffff0000c5a9ddc0
-type:MM_SHMEMPAGES val:1
-
-Because the folio is being accounted to the wrong VMA.
-
-I'm not sure if there will be any data corruption though, seems no.
-The issues above are critical already.
-
-On seeing a swap entry PTE, userfaultfd_move does a lockless swap cache
-lookup, and tries to move the found folio to the faulting vma.  Currently,
-it relies on checking the PTE value to ensure that the moved folio still
-belongs to the src swap entry and that no new folio has been added to the
-swap cache, which turns out to be unreliable.
-
-While working and reviewing the swap table series with Barry, following
-existing races are observed and reproduced [1]:
-
-In the example below, move_pages_pte is moving src_pte to dst_pte, where
-src_pte is a swap entry PTE holding swap entry S1, and S1 is not in the
-swap cache:
-
-CPU1                               CPU2
-userfaultfd_move
-  move_pages_pte()
-    entry = pte_to_swp_entry(orig_src_pte);
-    // Here it got entry = S1
-    ... < interrupted> ...
-                                   <swapin src_pte, alloc and use folio A>
-                                   // folio A is a new allocated folio
-                                   // and get installed into src_pte
-                                   <frees swap entry S1>
-                                   // src_pte now points to folio A, S1
-                                   // has swap count == 0, it can be freed
-                                   // by folio_swap_swap or swap
-                                   // allocator's reclaim.
-                                   <try to swap out another folio B>
-                                   // folio B is a folio in another VMA.
-                                   <put folio B to swap cache using S1 >
-                                   // S1 is freed, folio B can use it
-                                   // for swap out with no problem.
-                                   ...
-    folio = filemap_get_folio(S1)
-    // Got folio B here !!!
-    ... < interrupted again> ...
-                                   <swapin folio B and free S1>
-                                   // Now S1 is free to be used again.
-                                   <swapout src_pte & folio A using S1>
-                                   // Now src_pte is a swap entry PTE
-                                   // holding S1 again.
-    folio_trylock(folio)
-    move_swap_pte
-      double_pt_lock
-      is_pte_pages_stable
-      // Check passed because src_pte == S1
-      folio_move_anon_rmap(...)
-      // Moved invalid folio B here !!!
-
-The race window is very short and requires multiple collisions of multiple
-rare events, so it's very unlikely to happen, but with a deliberately
-constructed reproducer and increased time window, it can be reproduced
-easily.
-
-This can be fixed by checking if the folio returned by filemap is the
-valid swap cache folio after acquiring the folio lock.
-
-Another similar race is possible: filemap_get_folio may return NULL, but
-folio (A) could be swapped in and then swapped out again using the same
-swap entry after the lookup.  In such a case, folio (A) may remain in the
-swap cache, so it must be moved too:
-
-CPU1                               CPU2
-userfaultfd_move
-  move_pages_pte()
-    entry = pte_to_swp_entry(orig_src_pte);
-    // Here it got entry = S1, and S1 is not in swap cache
-    folio = filemap_get_folio(S1)
-    // Got NULL
-    ... < interrupted again> ...
-                                   <swapin folio A and free S1>
-                                   <swapout folio A re-using S1>
-    move_swap_pte
-      double_pt_lock
-      is_pte_pages_stable
-      // Check passed because src_pte == S1
-      folio_move_anon_rmap(...)
-      // folio A is ignored !!!
-
-Fix this by checking the swap cache again after acquiring the src_pte
-lock.  And to avoid the filemap overhead, we check swap_map directly [2].
-
-The SWP_SYNCHRONOUS_IO path does make the problem more complex, but so far
-we don't need to worry about that, since folios can only be exposed to the
-swap cache in the swap out path, and this is covered in this patch by
-checking the swap cache again after acquiring the src_pte lock.
-
-Testing with a simple C program that allocates and moves several GB of
-memory did not show any observable performance change.
-
-Link: https://lkml.kernel.org/r/20250604151038.21968-1-ryncsn@gmail.com
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Closes: https://lore.kernel.org/linux-mm/CAMgjq7B1K=6OOrK2OUZ0-tqCzi+EJt+2_K97TPGoSt=9+JwP7Q@mail.gmail.com/ [1]
-Link: https://lore.kernel.org/all/CAGsJ_4yJhJBo16XhiC-nUzSheyX-V3-nFE+tAi=8Y560K8eT=A@mail.gmail.com/ [2]
-Reviewed-by: Lokesh Gidra <lokeshgidra@google.com>
-Acked-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Chris Li <chrisl@kernel.org>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 0ea148a799198518d8ebab63ddd0bb6114a103bc)
-[lokeshgidra: resolved merged conflict caused by the difference in
-move_swap_pte() arguments]
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
----
- mm/userfaultfd.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
-
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index e06e3d270961..2646b75163d5 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1078,8 +1078,18 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
- 			 pte_t *dst_pte, pte_t *src_pte,
- 			 pte_t orig_dst_pte, pte_t orig_src_pte,
- 			 spinlock_t *dst_ptl, spinlock_t *src_ptl,
--			 struct folio *src_folio)
-+			 struct folio *src_folio,
-+			 struct swap_info_struct *si, swp_entry_t entry)
- {
-+	/*
-+	 * Check if the folio still belongs to the target swap entry after
-+	 * acquiring the lock. Folio can be freed in the swap cache while
-+	 * not locked.
-+	 */
-+	if (src_folio && unlikely(!folio_test_swapcache(src_folio) ||
-+				  entry.val != src_folio->swap.val))
-+		return -EAGAIN;
-+
- 	double_pt_lock(dst_ptl, src_ptl);
- 
- 	if (!pte_same(ptep_get(src_pte), orig_src_pte) ||
-@@ -1096,6 +1106,25 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
- 	if (src_folio) {
- 		folio_move_anon_rmap(src_folio, dst_vma);
- 		src_folio->index = linear_page_index(dst_vma, dst_addr);
-+	} else {
-+		/*
-+		 * Check if the swap entry is cached after acquiring the src_pte
-+		 * lock. Otherwise, we might miss a newly loaded swap cache folio.
-+		 *
-+		 * Check swap_map directly to minimize overhead, READ_ONCE is sufficient.
-+		 * We are trying to catch newly added swap cache, the only possible case is
-+		 * when a folio is swapped in and out again staying in swap cache, using the
-+		 * same entry before the PTE check above. The PTL is acquired and released
-+		 * twice, each time after updating the swap_map's flag. So holding
-+		 * the PTL here ensures we see the updated value. False positive is possible,
-+		 * e.g. SWP_SYNCHRONOUS_IO swapin may set the flag without touching the
-+		 * cache, or during the tiny synchronization window between swap cache and
-+		 * swap_map, but it will be gone very quickly, worst result is retry jitters.
-+		 */
-+		if (READ_ONCE(si->swap_map[swp_offset(entry)]) & SWAP_HAS_CACHE) {
-+			double_pt_unlock(dst_ptl, src_ptl);
-+			return -EAGAIN;
-+		}
- 	}
- 
- 	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
-@@ -1391,7 +1420,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
- 		}
- 		err = move_swap_pte(mm, dst_vma, dst_addr, src_addr, dst_pte, src_pte,
- 				orig_dst_pte, orig_src_pte,
--				dst_ptl, src_ptl, src_folio);
-+				dst_ptl, src_ptl, src_folio, si, entry);
- 	}
- 
- out:
--- 
-2.50.0.727.gbf7dc18ff4-goog
-
+Jason
 
