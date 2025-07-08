@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F3B0AFD385
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD81AFD184
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7AFA1888E7B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 783684A41FF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3C72DEA94;
-	Tue,  8 Jul 2025 16:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1D92E540C;
+	Tue,  8 Jul 2025 16:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZihjsht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fXobbMMx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA216BE46;
-	Tue,  8 Jul 2025 16:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9866C14A60D;
+	Tue,  8 Jul 2025 16:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993667; cv=none; b=oqeHfGOF93lj2Ym7EIiZGDdiLZXFvHbVAW8d0NdQShBUKW8Qn8Y1lVYEmituNqwY1RjO3NAdxfGBjglGWPElpjevX1sWXYoOE+0+vGIJ5q5L/NAkn4iOlHLI1eSXK7d8l8vQmqDwKzaF0vtXVwv89JVMQpoIYPjxI1PKWu1Afe4=
+	t=1751992483; cv=none; b=TNi+njlQuGI8xM5L7uUshjzowyItPZX9dWVUmx86INgjXUgW63TPsv9ria2kIeipE4iCtisXcSnDGi4MXQinUGQbcRw1oHQzMeukO22+C07oAe/3r1pgyLNRb9NpcEm4Xt4f/nqVw2zOVvusXV/WCVlNPwkYrb/fpsQZSlmvkgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993667; c=relaxed/simple;
-	bh=H+Vh56akS7SyquGghMYyRCpDk0PvMHhP/3bbGMl0qFI=;
+	s=arc-20240116; t=1751992483; c=relaxed/simple;
+	bh=LHlvoroiG6GX8o5OjPzGR5DZ0RU/wtkqEIi7yU6MCgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHofO71Y7hw3fHgr+ajUAavUd4xWVeOgJIVNca6Fji/QjsnBKM62eucSD44WOmRUptzJHRCbsxYUO/eM505A/m5JympiuRNbeO+7TvswVmX+Q1uudZNYcGFg8W1lD7UzVUr6A99xSkBXImDraecBPzzSfJpiXRTq+bnk1qjnw3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZihjsht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3539CC4CEED;
-	Tue,  8 Jul 2025 16:54:27 +0000 (UTC)
+	 MIME-Version; b=jOd8tL9UbwVaKAm5Y9mGXOfyq369ZDbwhuUDEcm8TmYQD7cM9PDr5A44+9ug4EGtnbmiSdcmyT09W+2oA/f/Ma1GrD5ZDn8ObUR25eyRLiLcPkxaNv00LHbTsG4HcZLdIaxSmcgF2BqCK6OfMRUcLYfC49Z7UXgk1plTZNzfepc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fXobbMMx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B0DC4CEED;
+	Tue,  8 Jul 2025 16:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993667;
-	bh=H+Vh56akS7SyquGghMYyRCpDk0PvMHhP/3bbGMl0qFI=;
+	s=korg; t=1751992483;
+	bh=LHlvoroiG6GX8o5OjPzGR5DZ0RU/wtkqEIi7yU6MCgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fZihjsht0kwBCsg05a7x6bvSYkGG3ET5zMOxtVBE/NcVMfHS/pzRUxDvFHsQhjmH5
-	 oritgCEm7LMfMAxjpPt4r2xcrgcotZ73MoF/BwIQFRp6d2COzyBpBoT6tjgbDM/KnI
-	 n5MPFSTrzJtc3j1tl7HC7fzcU9kUkIE78foD+Gwg=
+	b=fXobbMMxxBvvfhuHxwkGSA7EdyWvvdTclX8D/PCFMzbaRzO0Go6/N2F2sGRtk1KVs
+	 fObgs0A2k8U3rE75pO20AnLyfebUZxLk0gfrsURioRY47qaIOGAVN8rxiMnB44Gj2h
+	 hznrxq9Agb7hwLWTKZWOnroxf0auyS8yVq4pNYKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Schneider <johannes.schneider@leica-geosystems.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.15 153/178] usb: dwc3: gadget: Fix TRB reclaim logic for short transfers and ZLPs
+	anvithdosapati <anvithdosapati@google.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 079/132] scsi: ufs: core: Fix clk scaling to be conditional in reset and restore
 Date: Tue,  8 Jul 2025 18:23:10 +0200
-Message-ID: <20250708162240.502124374@linuxfoundation.org>
+Message-ID: <20250708162232.944781312@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SCHNEIDER Johannes <johannes.schneider@leica-geosystems.com>
+From: anvithdosapati <anvithdosapati@google.com>
 
-commit 80e08394377559ed5a2ccadd861e62d24b826911 upstream.
+[ Upstream commit 2e083cd802294693a5414e4557a183dd7e442e71 ]
 
-Commit 96c7bf8f6b3e ("usb: dwc3: gadget: Cleanup SG handling") updated
-the TRB reclaim path to use the TRB CHN (Chain) bit to determine whether
-a TRB was part of a chain. However, this inadvertently changed the
-behavior of reclaiming the final TRB in some scatter-gather or short
-transfer cases.
+In ufshcd_host_reset_and_restore(), scale up clocks only when clock
+scaling is supported. Without this change CPU latency is voted for 0
+(ufshcd_pm_qos_update) during resume unconditionally.
 
-In particular, if the final TRB did not have the CHN bit set, the
-cleanup path could incorrectly skip clearing the HWO (Hardware Own)
-bit, leaving stale TRBs in the ring. This resulted in broken data
-transfer completions in userspace, notably for MTP over FunctionFS.
-
-Fix this by unconditionally clearing the HWO bit during TRB reclaim,
-regardless of the CHN bit state. This restores correct behavior
-especially for transfers that require ZLPs or end on non-CHN TRBs.
-
-Fixes: 61440628a4ff ("usb: dwc3: gadget: Cleanup SG handling")
-Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/AM8PR06MB7521A29A8863C838B54987B6BC7BA@AM8PR06MB7521.eurprd06.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: anvithdosapati <anvithdosapati@google.com>
+Link: https://lore.kernel.org/r/20250616085734.2133581-1-anvithdosapati@google.com
+Fixes: a3cd5ec55f6c ("scsi: ufs: add load based scaling of UFS gear")
+Cc: stable@vger.kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index b6b63b530148..74968f93d4a3 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3516,7 +3516,7 @@ static int dwc3_gadget_ep_reclaim_completed_trb(struct dwc3_ep *dep,
- 	 * We're going to do that here to avoid problems of HW trying
- 	 * to use bogus TRBs for transfers.
- 	 */
--	if (chain && (trb->ctrl & DWC3_TRB_CTRL_HWO))
-+	if (trb->ctrl & DWC3_TRB_CTRL_HWO)
- 		trb->ctrl &= ~DWC3_TRB_CTRL_HWO;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index fa86942efd11f..da20bd3d46bc7 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -7780,7 +7780,8 @@ static int ufshcd_host_reset_and_restore(struct ufs_hba *hba)
+ 	hba->silence_err_logs = false;
  
- 	/*
+ 	/* scale up clocks to max frequency before full reinitialization */
+-	ufshcd_scale_clks(hba, ULONG_MAX, true);
++	if (ufshcd_is_clkscaling_supported(hba))
++		ufshcd_scale_clks(hba, ULONG_MAX, true);
+ 
+ 	err = ufshcd_hba_enable(hba);
+ 
 -- 
-2.50.0
+2.39.5
 
 
 
