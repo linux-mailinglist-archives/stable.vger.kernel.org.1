@@ -1,335 +1,257 @@
-Return-Path: <stable+bounces-160453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C61AFC3F0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 09:24:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2879AFC43F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 09:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E027B7A2A5F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 07:22:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DAAC188173E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 07:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3D3298277;
-	Tue,  8 Jul 2025 07:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6ED298CDC;
+	Tue,  8 Jul 2025 07:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HYG2h1+s"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Z+cDIoqg";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oCcz3XoT";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Z+cDIoqg";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oCcz3XoT"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2084.outbound.protection.outlook.com [40.107.236.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D9A298243
-	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 07:23:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751959416; cv=fail; b=ayQKpq4ed8rRT9ky3iik8HmRUc74RxRsSobenLlqXx4SsMbmQBihFbfD8aSTYeAxK8IvfDkuwL7r7cnB/L556MXQtHSHfNuuTDFSVBMd05w9Q6RsjiiFMuzl+xCnII3iPPZ08/QD361KJ0raCDQdIT/L0IdKf9Ckk48zPqLFyZs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751959416; c=relaxed/simple;
-	bh=p0WFXUTwALeSJzCo5BCMOnY7nrvGxvWArjtKBtpFa6Y=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Qkrfa/XwIaylLOLPgEU2qIpK13IeUcSELj2dKXZZPAXm3BLuCIzFW3EVrEfOy57xS/dUyY+I+juckDfLaVxgBtdYWQNVwfoce98axteKpOsy2t46RmecEmtc35x9xe5UD+7s2rK/NobrNA/AleXkCxPBeJJL21BciSfXC36Lw6M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HYG2h1+s; arc=fail smtp.client-ip=40.107.236.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Sc7nVfxhxnZgzSya+Jo9nMYaysv2kZ3VxaXmgmhGyZSSYgHtokJFwB1wwoqXGBcbxB5OminSH3qfqhYYDgX87XNr4PKyu3R0rNhnEEfDuN+o9i81y0UJdray2NFKRmw4WipY03pu8gVLhF6lqFOI5TQehoAExGUgEyd1l0F6tXykOw+E6DpfMxuklIZy3we8cFbLtdZevzyFN8Y7NPCLCmYMwcX4nrm55xdyiEbr9IxX+cWD/dVE2vTlgnQWxixV9hz1NgTGW4INNsM1MatsagfLwPhCNvoTAmG10W2Aom1VMDg5ILz00gRQRNUdkEjYK/t50cuinc+onjT0SoHKlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ulNXThYv1QJerkVDfHWfc/ELa3mm4zw0AaPduVlzmLo=;
- b=XSwVj2QLJOZ9OoML80tCSm9B0Ig1p1QTO7fVRgt1ZwtvKtAoVURG7ceqQhOxoXW5xRF6wvcFrElclWixkbF138dICn/knr8f5ADEu/wHseSMSeuQLYmreJj5fuLDq0OvDxG1JuZVxJ9MiWmpMtb/oTh/tN8QaePTXL1Bp8gWruO5MQ5D4Aacxu4Inbl2uWbsDlwBgS0hN3PePGzo6Wygy4IwDU9e43es0xzF8a8ZCExzzZwq5PThTk2owJSvdysmz8JyAov3wszG0waUZO0ML+7P7B6t9SOguVipATo/WxI/memvPOd67/9KCUgp9TfrofVFPWQ75sfV+NsveXlkJQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ulNXThYv1QJerkVDfHWfc/ELa3mm4zw0AaPduVlzmLo=;
- b=HYG2h1+saLlNGpQVtHk38zDwCrxHc+KGFOmVJn41lh2TeN3voo7NyaFK32aAlaHELNGFim5pKZPSjizfxgJcJXnm7OwbNt9Rdj6F5+ymjZDUjzMEM73Az9VhDKrjFd6Vsud8fDnjXy1kxEIC88mk8TLj93EXPcAOI8Ajz/WLueM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ0PR12MB5673.namprd12.prod.outlook.com (2603:10b6:a03:42b::13)
- by CH3PR12MB8753.namprd12.prod.outlook.com (2603:10b6:610:178::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.29; Tue, 8 Jul
- 2025 07:23:31 +0000
-Received: from SJ0PR12MB5673.namprd12.prod.outlook.com
- ([fe80::ec7a:dd71:9d6c:3062]) by SJ0PR12MB5673.namprd12.prod.outlook.com
- ([fe80::ec7a:dd71:9d6c:3062%4]) with mapi id 15.20.8901.024; Tue, 8 Jul 2025
- 07:23:31 +0000
-Message-ID: <6361f2a3-5815-4b84-8600-ac1649c3413e@amd.com>
-Date: Tue, 8 Jul 2025 09:23:27 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] drm/amdgpu: Reset the clear flag in buddy during
- resume
-To: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
- dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- matthew.auld@intel.com, matthew.brost@intel.com
-Cc: alexander.deucher@amd.com, stable@vger.kernel.org
-References: <20250708065404.4185-1-Arunpravin.PaneerSelvam@amd.com>
- <20250708065404.4185-2-Arunpravin.PaneerSelvam@amd.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20250708065404.4185-2-Arunpravin.PaneerSelvam@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0289.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e7::18) To SJ0PR12MB5673.namprd12.prod.outlook.com
- (2603:10b6:a03:42b::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAF023BD09
+	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 07:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751960337; cv=none; b=ulW3PiqzyS5GHz0/wdE6QLQt5pqHq/+teyDAIgdtLN+3PQxrpy8+5ip+EViEEln01mQ+5e3dvTB2WAk47yHfA9b8ZDDnzp8v50z1NDAZVwW4dfjyjahjfzqnr6V4KOlEO1ptiUjd0KDalJlTsET1+UP12qK3CBDLjpyxcuJny0w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751960337; c=relaxed/simple;
+	bh=zCM8QgWrvDviVZ4FIBzFaUWr6BsAjVk0KYPCoXEN6uw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FhSN62YpWaSQOtUsljJzInUzjz3gkYUU61ngVilrssCJWTGnaSpz+7MPLn7l7wtEsmjwKYMoO5BISqqk0DnSn/yv14RqwbUgxow9cPzxLTL0WNcXbsxmIE/1Bn3i6YOcA9P/n5BhdYBCTIMVyQKGQGkFg+/B+8XA6EXNg7iAsfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Z+cDIoqg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oCcz3XoT; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Z+cDIoqg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oCcz3XoT; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7DE6C2115F;
+	Tue,  8 Jul 2025 07:38:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1751960333; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=gvG5OJSZUKUfmOaM9AGtFnkko27si3EQj7m9quIH+1U=;
+	b=Z+cDIoqgze0oqsRAESJ+3Zsubl5j79M5/pT1u8FEq56KkABuklx2yAl0/NOQBBq7cLliEG
+	w/BgzsdD5oNmLng+Ej9dIh+o55N1YVqhN4CqcCO+MbE7SxVxW7+kKpJ1tPj7QM2zeYl1gr
+	4jUnK5OWMyE7gIUGrduMElIiHqfl0PA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1751960333;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=gvG5OJSZUKUfmOaM9AGtFnkko27si3EQj7m9quIH+1U=;
+	b=oCcz3XoTG2OpMrgy6Go/NmHCi+I73sVD2Pqsd2PADEDbC8BCxQ6lqFq6fSktqH9ZfYBB//
+	meQGvKx6KWqOyyBQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Z+cDIoqg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oCcz3XoT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1751960333; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=gvG5OJSZUKUfmOaM9AGtFnkko27si3EQj7m9quIH+1U=;
+	b=Z+cDIoqgze0oqsRAESJ+3Zsubl5j79M5/pT1u8FEq56KkABuklx2yAl0/NOQBBq7cLliEG
+	w/BgzsdD5oNmLng+Ej9dIh+o55N1YVqhN4CqcCO+MbE7SxVxW7+kKpJ1tPj7QM2zeYl1gr
+	4jUnK5OWMyE7gIUGrduMElIiHqfl0PA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1751960333;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=gvG5OJSZUKUfmOaM9AGtFnkko27si3EQj7m9quIH+1U=;
+	b=oCcz3XoTG2OpMrgy6Go/NmHCi+I73sVD2Pqsd2PADEDbC8BCxQ6lqFq6fSktqH9ZfYBB//
+	meQGvKx6KWqOyyBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1198913A54;
+	Tue,  8 Jul 2025 07:38:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id HNbpAg3LbGhQRwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 08 Jul 2025 07:38:53 +0000
+Message-ID: <a421623f-e93f-4423-bf30-c7388c6a3508@suse.de>
+Date: Tue, 8 Jul 2025 09:38:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR12MB5673:EE_|CH3PR12MB8753:EE_
-X-MS-Office365-Filtering-Correlation-Id: 96b3e4d5-7281-4ea3-7c64-08ddbdf05773
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bU9FeXQrRGhWa3c0S3I2eFhBcmlmN3FkZWc5aFJOVGRZRDJSVzY3SUJ5SXZy?=
- =?utf-8?B?YjBveGsxUjVJWWpYRVRYeVVBMEJZcGtibVZTV0g2YUJrY1BVM3Y0YUFpczVl?=
- =?utf-8?B?S2hFMldNVG9SZDg4bFdHWEZXeFFHa1FDM3hiM1oyQ1VsTXBNSE9nRC9SUkZR?=
- =?utf-8?B?M2JCYW1BRUFTTnJXZ09HYitDbnBNV3A4cUY4RFYyaVpWK3ordGZBM3lHM3No?=
- =?utf-8?B?VFBjanozdnhlbzNaeU4rWlh6ejZDRUtIdXJVQXlTSHZmcGVuSlpmdjN5TUtH?=
- =?utf-8?B?Z09aYzNnQk9tbThmWnIvYWcxODZuWXRPN0V5MlRYZlluWWd1ZEdDQTMrQ2ZL?=
- =?utf-8?B?Y0M4QThhVWFxRzRNMmtCUHdqYVAzM01aMDhENGVmaUhwWlBRNm04dnFnOWVH?=
- =?utf-8?B?bUFIZnZJTmxQUjR5UE5yOGkxT3lRUUpNZzJrTUJhNjBOZGhiZzI3dXV1Mzc4?=
- =?utf-8?B?UVFPVHFkSW1ZV0xnNVM5ajNMbjhrQXA4dzZTTlJEZFBYM1NGbE9IaWZsWmwz?=
- =?utf-8?B?MjJzeTArOGNOSmhBODZoRVVlQXZBV0dxdkZHTTJVcksxWmFFaFVUajFqdnhG?=
- =?utf-8?B?a2Z2MXR1aVNEM3ZwMlRRM2xnaHFWRHlvc3p2MWpGU2R3TnhLWkxoN09kVXc5?=
- =?utf-8?B?T3lYM09Rdmc2VEhiNlJvMnY0K3BwYXNKNmFTem5LNGVtRjFyU0U0UngxdjVy?=
- =?utf-8?B?QW9xVGJDR2ExaVZKZHViU2xDcUliQW9sYmlNeTBheDJLcVJ3M0JUR05GdHZ4?=
- =?utf-8?B?TXIvc2prWmFXZWZsbm5VNnk2YytmRU5lSk5wSG9zT1Jrb0JjRnhOZjcyK0Vs?=
- =?utf-8?B?TldleUh4R0s3UkpFblhqU1ljRjJFYkNVSE4zUlhTNmQwQmR3WWE3UjNGcE5U?=
- =?utf-8?B?R1lHZEprV3JMQStLLzNLUU9Ga1FyUmtGR2NiQVczMUpLR3ZSZXZZMXp5Q1M0?=
- =?utf-8?B?KzR2aGhvWGhPa0taeHBmMlFGZFUrQk1PT3JYWlliN1lLUVUxRjdWWHFNTkFi?=
- =?utf-8?B?c21peUVna1pCWW1mcHRjaDAyT1hLbE9uOWpzRElrb1ltVWdvK0Z3WXdkREQ3?=
- =?utf-8?B?aEo1OUZ6SlZGSC9zZDdOdi9IUTBPSHNwdUY1bGZDOGhXVEFxZzB3VlVjNEFm?=
- =?utf-8?B?WTFNWFlLd0pCZkNJVkpRcW5YK1VHQWR5cUs5Rk5IK3dnczlNRW1Hb3IrbWJR?=
- =?utf-8?B?dDhqQXEvdkhmTUJtUjRXbXQ5anRxcVpYUmpURTlYcnU2blE2a1pmM001SjlF?=
- =?utf-8?B?bnYvY0ZNNjA4Y3ArNDFRSWx5aWRYdE5LU2dVeG1iTlhqZ0hvLzhUWGRPWUY1?=
- =?utf-8?B?cWcrSytnR1c5Q3hVcVJNWXNldUFJRy9pbVI5c3Y5SThKQUc5Q1cvRmVMcjB5?=
- =?utf-8?B?MHNWOVpNeVQrQ1hyVW5VNFE1MUZUbzRFK25Wa0hZZjdHKys5My9ZblRjMWxz?=
- =?utf-8?B?NXFBcTNBTCtROHFaNEtYWnF6ZzMralpWb3dUd1ZrWFNsZms5TEE1dTlxK2Yy?=
- =?utf-8?B?TDVDU01QRWJJTWtxdm1ORVhXRDQzL29OSENVaXFJNjg0TkJmalB5VHVxaHlx?=
- =?utf-8?B?Qy9mc0tHaWplRERXSXorZ2NoaFFPWVN1K28zMEVTRlcxdkI0L0F5Z2dWaXVr?=
- =?utf-8?B?MUZHd294azBFM0lwUm8xNTlVOEJVWXR0a3ovQzdSVlJEcGpZdTVDZnN0eFlT?=
- =?utf-8?B?UGQ0MUd2aUVOelYxOFkreVkwMGZsQmFtQkszM1pNQmV0QzYwODZOekRUM2Jr?=
- =?utf-8?B?bDl4Y3lYbnBEMGJFcWM2Y0s3T1I5TXAvY0Z6M2NXLytERDgvUjlZYXpQOWU0?=
- =?utf-8?Q?LfcAWJfy7iyBPu8fHXLVb6YBR/DqWrKvkOyWY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR12MB5673.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TitvNWI5SDRRc0VnakhaU2VwWEFuc2RXaUJFS2ROUFNRd1daMTQyMHFDMmEz?=
- =?utf-8?B?L0RPOU1UeDJTd0REdWdZWXBseUpYQTdESEVuWHpWakp1OUtNdkJOdkdQSEVu?=
- =?utf-8?B?S0NCTllxTTNVcmdBMkFJaVBUY2UrSFA4Unp1OFBhUDRaUURQSjJzaXU0eGpM?=
- =?utf-8?B?dk45bzZ5WmZWOXpVbG5KRUF5cElHalVQNHZYcTJheGp4UTRaL3F6Rk1ybVNq?=
- =?utf-8?B?U3R1Ty9RWkNJWU1NSzF4OGVwRHU5dE9IQld4aXlXUm5KTnFvb0RrWEQ0eVFN?=
- =?utf-8?B?RG9lbWloMVc3RXd2MjgzNGlrSTJQNmUxdHZMRktWVGoveGd2ck81K0I4b2dj?=
- =?utf-8?B?dHp0a1JnVzRESFgrMS9SWXFJdFBFeFF4RjNBUWU2eGZ4ZUI3dGU3c3IyUTVH?=
- =?utf-8?B?T0x3SHJHTGxMYjdLaTV0azdDdXVvdkN0b3NFTEdzU0FVUWNJb0c3dW53RDZi?=
- =?utf-8?B?TVdDd2N3WXFhNzc0ZVd1QVhZVk80dXNjbE1NSzd4TkhleWZyOHExYXJyZWJK?=
- =?utf-8?B?ZDBmSXNMbW9Vb3FXN3NvbjloL3U0M2hmYkRRTlJOc3dVZGl3TngzYTdtSEpX?=
- =?utf-8?B?Y0xoaFNyVEgwRUVYVWpFaGxQU1QrSG1UcGdEalNrQmgvMllKZ3U2NTB3dUhh?=
- =?utf-8?B?Q3BqSTFmdjFrRkxnZEVnYmYvemxGTDcvbW50eGM3cVZRK1BXd3BWVWhEYlVv?=
- =?utf-8?B?c09CSDQ5N3g1ZzFIdEZBYmo3Qkl4U2toS24zSS9vVndBV29Ob0pvV05aOGMw?=
- =?utf-8?B?akU0UXl4aWpoZnRHNldJK2N2QTd3a3ZoMkRDZ0VaZithQzhBZDR6Yk9XdVFK?=
- =?utf-8?B?Wi8xOS9LWjEzSE1aVUNMazRDWGsxa0x3eVhiQWJ6TkJUUnFNa2JrR0hJMXNJ?=
- =?utf-8?B?MVRzSlM0SHZwVW1XSjVlQWc4ZTFrWVJkdjhpV005Q1NZRVY1ZGpDNmJDSGJo?=
- =?utf-8?B?bmpTdkJJK0NTSkhYQ0hTemRSZUdabkNkamRmcTZ4amFQRHoxenR2dlF0MVRU?=
- =?utf-8?B?Mm4xTHZLZ1JOQThaM0VOcTBsbk9DWDkxUEJCNDdqNEp4bmVYS1dXWDBYandk?=
- =?utf-8?B?WVFNdXpzTForNWViOWJRVWd3Wjk2b1Q1eU9NS0pGS2x2S0lyUXRTeElDN1FI?=
- =?utf-8?B?ZkNtVnZFQUJLQ2hYakRjNTc5bGhJalB3NnAvYXJoZ3l4UjNVVS8zVzBKTm5y?=
- =?utf-8?B?THJlT284OEpVRkVzY25hQUVTdis1cC81ZnJENldNSklENVAvSzhYbWJSSjc0?=
- =?utf-8?B?N21hMDBzS0ZVRnd1R2QwNlVtN1ZCNWcvM0xGZkgrcFJCMFlaanhEU2dUdHJ3?=
- =?utf-8?B?UXZuSlVNNmM0eHJpc3FoWm9QWnRiRzBrazllMnM1aEx1ZjJLMDRqcFdqYnRP?=
- =?utf-8?B?QlY0b0pUZElib2NLZnF4ZHJHQy9ScXpyQ2Ywamt4QXd6bklEYVBobWdESzJl?=
- =?utf-8?B?NU9wYWZNajUyVm8veGg5VzNaRVdyTVNsZ3A2S0ZMdkZkUktkVlRxTk5CQmUr?=
- =?utf-8?B?M0tnWWxabzJFZ3lGWU5vU1pVN05mZStaT3YweHlCVFIxbmxrS3VsR25jK1FN?=
- =?utf-8?B?NEJGR0dMZlgxRGZmK2k1QjZwNTJpcmxKSTFyeHl1QjhYeHVFK25RdFhHWmZx?=
- =?utf-8?B?RldOMGhGRmwyUVh4V0RidHpKNjhpdm5BK1V2d0RoTnRXcDN5amYyRlBWWFhD?=
- =?utf-8?B?cEl1NVZJdkloZGF4REFEUG9SVjdvWVJLdjFacG1LVnFjTnVoZ1B2SkgrODhx?=
- =?utf-8?B?RkN1VXZWbmllSERUaE9rQk02eHFVdHFQbXNIaFRSTlcwU0ZOeGFYc3N3UkFC?=
- =?utf-8?B?S2hJN0pZQ2dmdnYxS2NsSXlubVExaWpMZkhDNVNqOUk3cThQYWVGTDl1Z1hW?=
- =?utf-8?B?QjlCbEdRbUFjQlVPa3NOdUUzcGpRNFRFeHp5OFJZMHBxMWh5THZzZFlPNkVj?=
- =?utf-8?B?Vm9haHkxcWlzdVQ5WTJXQkd5YnJUajhMQk9FY1NyTngzN3pXbFptc1hvQkhT?=
- =?utf-8?B?RkR2K3lHbDZ2bEYzcS9IYjVaTmtzWVZoZXJHclNQNWI2cGxqbHA3Z1NVMWxj?=
- =?utf-8?B?dDNFTFVIWXNNemRjUDNKWGl0cHIyTTNrZjhvZ0o2UDJZdUdJVlNtNjExSElQ?=
- =?utf-8?Q?3yvkpo2YhNW5snEtvmjy3ezxd?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 96b3e4d5-7281-4ea3-7c64-08ddbdf05773
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR12MB5673.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 07:23:31.4666
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q5KJanm7A7b1pDa3p3st5PALHY9gM0wZiSXk87vFOpOta8l3DrrxwWj/1o21a9U7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8753
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] drm/framebuffer: Acquire internal references on GEM
+ handles
+To: Satadru Pramanik <satadru@gmail.com>
+Cc: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ asrivats@redhat.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ airlied@gmail.com, simona@ffwll.ch, jean-christophe@guillain.net,
+ superm1@kernel.org, bp@alien8.de, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, Bert Karwatzki <spasswolf@web.de>,
+ Sumit Semwal <sumit.semwal@linaro.org>, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, stable@vger.kernel.org
+References: <20250707131224.249496-1-tzimmermann@suse.de>
+ <a3336964-1b72-421c-b4dc-2ac3f548430b@amd.com>
+ <4c1bc40d-6bd4-4102-b12f-fda320216e1d@suse.de>
+ <CAFrh3J9uh0M5bWeS3cv_Cb1yFTKhE2+9mSk5hsZTzWW3uYKaWg@mail.gmail.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <CAFrh3J9uh0M5bWeS3cv_Cb1yFTKhE2+9mSk5hsZTzWW3uYKaWg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,web.de];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[amd.com,redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,guillain.net,alien8.de,lists.freedesktop.org,vger.kernel.org,web.de,linaro.org,lists.linaro.org];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:mid,suse.de:dkim,suse.de:email]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 7DE6C2115F
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
 
-On 08.07.25 08:54, Arunpravin Paneer Selvam wrote:
-> - Added a handler in DRM buddy manager to reset the cleared
->   flag for the blocks in the freelist.
-> 
-> - This is necessary because, upon resuming, the VRAM becomes
->   cluttered with BIOS data, yet the VRAM backend manager
->   believes that everything has been cleared.
-> 
-> v2:
->   - Add lock before accessing drm_buddy_clear_reset_blocks()(Matthew Auld)
->   - Force merge the two dirty blocks.(Matthew Auld)
->   - Add a new unit test case for this issue.(Matthew Auld)
->   - Having this function being able to flip the state either way would be
->     good. (Matthew Brost)
-> 
-> v3(Matthew Auld):
->   - Do merge step first to avoid the use of extra reset flag.
-> 
-> Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-> Suggested-by: Christian König <christian.koenig@amd.com>
-> Cc: stable@vger.kernel.org
-> Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
+Hi
 
-Acked-by: Christian König <christian.koenig@amd.com>
+Am 07.07.25 um 18:14 schrieb Satadru Pramanik:
+> Applying this patch to 6.16-rc5 resolves the sleep issue regression 
+> from 6.16-rc4 I was having on my MacBookPro11,3 (Mid-2014 15" 
+> MacBookPro), which has the NVIDIA GK107M GPU enabled via the Nouveau 
+> driver.
 
-> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3812
+Thanks for testing. I think the sleep regression was just a side effect 
+of the broken reference counting.
 
-I'm not 100% sure if that really fully closes this issue. Keep an eye open if the warning we added in patch #1 ever triggers.
+Best regards
+Thomas
 
-Regards,
-Christian.
+>
+> Many thanks,
+>
+> Satadru
+>
+> On Mon, Jul 7, 2025 at 9:33 AM Thomas Zimmermann <tzimmermann@suse.de> 
+> wrote:
+>
+>     Hi
+>
+>     Am 07.07.25 um 15:21 schrieb Christian König:
+>
+>     >>
+>     >> +#define DRM_FRAMEBUFFER_HAS_HANDLE_REF(_i)  BIT(0u + (_i))
+>     > Why the "0u + (_i)" here? An macro trick?
+>
+>     You mean why not just BIT(_i)? internal_flags could possibly contain
+>     additional flags. Just using BIT(_i) would make it look as if it's
+>     only
+>     for those handle refs.
+>
+>     Best regards
+>     Thomas
+>
+>     >
+>     > Regards,
+>     > Christian.
+>     >
+>     >> +
+>     >>   /**
+>     >>    * struct drm_framebuffer - frame buffer object
+>     >>    *
+>     >> @@ -188,6 +191,10 @@ struct drm_framebuffer {
+>     >>       * DRM_MODE_FB_MODIFIERS.
+>     >>       */
+>     >>      int flags;
+>     >> +    /**
+>     >> +     * @internal_flags: Framebuffer flags like
+>     DRM_FRAMEBUFFER_HAS_HANDLE_REF.
+>     >> +     */
+>     >> +    unsigned int internal_flags;
+>     >>      /**
+>     >>       * @filp_head: Placed on &drm_file.fbs, protected by
+>     &drm_file.fbs_lock.
+>     >>       */
+>
+>     -- 
+>     --
+>     Thomas Zimmermann
+>     Graphics Driver Developer
+>     SUSE Software Solutions Germany GmbH
+>     Frankenstrasse 146, 90461 Nuernberg, Germany
+>     GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+>     HRB 36809 (AG Nuernberg)
+>
 
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_device.c   |  2 +
->  drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h      |  1 +
->  drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 17 ++++++++
->  drivers/gpu/drm/drm_buddy.c                  | 43 ++++++++++++++++++++
->  include/drm/drm_buddy.h                      |  2 +
->  5 files changed, 65 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> index a59f194e3360..b89e46f29b51 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> @@ -5193,6 +5193,8 @@ int amdgpu_device_resume(struct drm_device *dev, bool notify_clients)
->  		dev->dev->power.disable_depth--;
->  #endif
->  	}
-> +
-> +	amdgpu_vram_mgr_clear_reset_blocks(adev);
->  	adev->in_suspend = false;
->  
->  	if (amdgpu_acpi_smart_shift_update(dev, AMDGPU_SS_DEV_D0))
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
-> index 208b7d1d8a27..450e4bf093b7 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
-> @@ -154,6 +154,7 @@ int amdgpu_vram_mgr_reserve_range(struct amdgpu_vram_mgr *mgr,
->  				  uint64_t start, uint64_t size);
->  int amdgpu_vram_mgr_query_page_status(struct amdgpu_vram_mgr *mgr,
->  				      uint64_t start);
-> +void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev);
->  
->  bool amdgpu_res_cpu_visible(struct amdgpu_device *adev,
->  			    struct ttm_resource *res);
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-> index abdc52b0895a..07c936e90d8e 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-> @@ -782,6 +782,23 @@ uint64_t amdgpu_vram_mgr_vis_usage(struct amdgpu_vram_mgr *mgr)
->  	return atomic64_read(&mgr->vis_usage);
->  }
->  
-> +/**
-> + * amdgpu_vram_mgr_clear_reset_blocks - reset clear blocks
-> + *
-> + * @adev: amdgpu device pointer
-> + *
-> + * Reset the cleared drm buddy blocks.
-> + */
-> +void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev)
-> +{
-> +	struct amdgpu_vram_mgr *mgr = &adev->mman.vram_mgr;
-> +	struct drm_buddy *mm = &mgr->mm;
-> +
-> +	mutex_lock(&mgr->lock);
-> +	drm_buddy_reset_clear(mm, false);
-> +	mutex_unlock(&mgr->lock);
-> +}
-> +
->  /**
->   * amdgpu_vram_mgr_intersects - test each drm buddy block for intersection
->   *
-> diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
-> index a1e652b7631d..a94061f373de 100644
-> --- a/drivers/gpu/drm/drm_buddy.c
-> +++ b/drivers/gpu/drm/drm_buddy.c
-> @@ -405,6 +405,49 @@ drm_get_buddy(struct drm_buddy_block *block)
->  }
->  EXPORT_SYMBOL(drm_get_buddy);
->  
-> +/**
-> + * drm_buddy_reset_clear - reset blocks clear state
-> + *
-> + * @mm: DRM buddy manager
-> + * @is_clear: blocks clear state
-> + *
-> + * Reset the clear state based on @is_clear value for each block
-> + * in the freelist.
-> + */
-> +void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
-> +{
-> +	u64 root_size, size, start;
-> +	unsigned int order;
-> +	int i;
-> +
-> +	size = mm->size;
-> +	for (i = 0; i < mm->n_roots; ++i) {
-> +		order = ilog2(size) - ilog2(mm->chunk_size);
-> +		start = drm_buddy_block_offset(mm->roots[i]);
-> +		__force_merge(mm, start, start + size, order);
-> +
-> +		root_size = mm->chunk_size << order;
-> +		size -= root_size;
-> +	}
-> +
-> +	for (i = 0; i <= mm->max_order; ++i) {
-> +		struct drm_buddy_block *block;
-> +
-> +		list_for_each_entry_reverse(block, &mm->free_list[i], link) {
-> +			if (is_clear != drm_buddy_block_is_clear(block)) {
-> +				if (is_clear) {
-> +					mark_cleared(block);
-> +					mm->clear_avail += drm_buddy_block_size(mm, block);
-> +				} else {
-> +					clear_reset(block);
-> +					mm->clear_avail -= drm_buddy_block_size(mm, block);
-> +				}
-> +			}
-> +		}
-> +	}
-> +}
-> +EXPORT_SYMBOL(drm_buddy_reset_clear);
-> +
->  /**
->   * drm_buddy_free_block - free a block
->   *
-> diff --git a/include/drm/drm_buddy.h b/include/drm/drm_buddy.h
-> index 9689a7c5dd36..513837632b7d 100644
-> --- a/include/drm/drm_buddy.h
-> +++ b/include/drm/drm_buddy.h
-> @@ -160,6 +160,8 @@ int drm_buddy_block_trim(struct drm_buddy *mm,
->  			 u64 new_size,
->  			 struct list_head *blocks);
->  
-> +void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear);
-> +
->  void drm_buddy_free_block(struct drm_buddy *mm, struct drm_buddy_block *block);
->  
->  void drm_buddy_free_list(struct drm_buddy *mm,
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
 
