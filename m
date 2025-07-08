@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-160801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32CDBAFD1EA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CAE9AFD1ED
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F54E54103C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 368E95418DB
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F9C1548C;
-	Tue,  8 Jul 2025 16:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C5D2E5402;
+	Tue,  8 Jul 2025 16:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyTwvpPY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6FEp86y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED6423A98D;
-	Tue,  8 Jul 2025 16:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C9CF9E8;
+	Tue,  8 Jul 2025 16:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992730; cv=none; b=ab6siB0p0QwmYQzDF0xKxbWaFWAUJ+xVYh+O5Ar8gN6jJEtFThYNQ2R8LZqsEAFMqGsiO8xB710BgA14oAxtMMakADxNhpFeKiR2j0723VNUtBGwga4AukyBIg2PwDrDPR385FcPHIB4d00gb7J97Rbw/NnXH/K/St5GdffipCA=
+	t=1751992741; cv=none; b=ImtZoHsllAnacRyIRH/S2JxovtahjE8f6vzze+hJwUGbdogSxy747KHADFV015tasvSYVHzEv2391W+RwFuA6nU8CCiJaHV006jxlyy5OnoWnSGUMvQ/3Ce7gkKIo2hY0otGCqH4RNLdJFtTTSZqaqx2t9a+992r6rJX7ogNp5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992730; c=relaxed/simple;
-	bh=L0VIg7G2HyKiJQgKmu8qz5Mew4ZKZrqETqBIIsbtzew=;
+	s=arc-20240116; t=1751992741; c=relaxed/simple;
+	bh=Fa7SuaQ5rsAe6DicukaTWAK9LpyioLBWeJm59jmTOhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y77S0DQXHqocovyAfJHMKl0fDKGBF+I/fhRUYvZPDmrWUZ0xqOnAvbq5PF8ABFnskiqhFANFAbWG65sIEZ7DfwRug8MJ9LGCa/Ex5oozj9BOlgMTFVQy4S8/3ZhD0fqk5z5lbBhso5N9krTOg9T/qznxyhI/zV/0Wj0AhTk6SUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyTwvpPY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C432C4CEED;
-	Tue,  8 Jul 2025 16:38:49 +0000 (UTC)
+	 MIME-Version; b=IK6opqE9jyOlzv0yyW6YnmGCKDnvr2oubbbBPX2kbhM/NQrsqHh5bGoYIzj5U7y2i0gjAcVzQcr6Gg3xE2kmqjKCb8a/q4fRE/V4OLJaC7BI74IQTrjKN4v5DxflYA9jONrG/DlSCzH72zBcmNptxg6Y7BfvagYejg0tNJxkiYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6FEp86y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2080BC4CEF5;
+	Tue,  8 Jul 2025 16:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992729;
-	bh=L0VIg7G2HyKiJQgKmu8qz5Mew4ZKZrqETqBIIsbtzew=;
+	s=korg; t=1751992741;
+	bh=Fa7SuaQ5rsAe6DicukaTWAK9LpyioLBWeJm59jmTOhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gyTwvpPYVz5UVzNlZdKQmmuay8JGaXqlXuLsugtoY2vX3thqOYalFgFtI46u5iKEn
-	 w8vD0ehN2MCVVYRWhANquCdShOx2jv2aCuvzn+YPyfsYb33QeNzHntgMo335oSIpxp
-	 LC2cgzaD/++wwyKiRitdxY8EJKu3TlX97inHBl14=
+	b=T6FEp86yhRhNJ8hD+y6h9dy4lb/e0ipKE72Hjs4MAeMWib02pw86nVxZzZqg98rR6
+	 UhwNHoBw6p299f0bB2RaY0G5D9ubkNSQOhgY8VOmb0ccu5D1I9J2wXKSKn51zZB/01
+	 2YT489h73EbVDpfwZ83pF5SjeC7L6eDT/EW2SEho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Or Har-Toov <ohartoov@nvidia.com>,
-	Patrisious Haddad <phaddad@nvidia.com>,
+	Mark Zhang <markzhang@nvidia.com>,
 	Leon Romanovsky <leonro@nvidia.com>,
 	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 033/232] RDMA/mlx5: Fix unsafe xarray access in implicit ODP handling
-Date: Tue,  8 Jul 2025 18:20:29 +0200
-Message-ID: <20250708162242.298464625@linuxfoundation.org>
+Subject: [PATCH 6.12 034/232] RDMA/mlx5: Initialize obj_event->obj_sub_list before xa_insert
+Date: Tue,  8 Jul 2025 18:20:30 +0200
+Message-ID: <20250708162242.324092775@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
 References: <20250708162241.426806072@linuxfoundation.org>
@@ -68,102 +67,98 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Or Har-Toov <ohartoov@nvidia.com>
+From: Mark Zhang <markzhang@nvidia.com>
 
-[ Upstream commit 2c6b640ea08bff1a192bf87fa45246ff1e40767c ]
+[ Upstream commit 8edab8a72d67742f87e9dc2e2b0cdfddda5dc29a ]
 
-__xa_store() and __xa_erase() were used without holding the proper lock,
-which led to a lockdep warning due to unsafe RCU usage.  This patch
-replaces them with xa_store() and xa_erase(), which perform the necessary
-locking internally.
+The obj_event may be loaded immediately after inserted, then if the
+list_head is not initialized then we may get a poisonous pointer.  This
+fixes the crash below:
 
-  =============================
-  WARNING: suspicious RCPU usage
-  6.14.0-rc7_for_upstream_debug_2025_03_18_15_01 #1 Not tainted
-  -----------------------------
-  ./include/linux/xarray.h:1211 suspicious rcu_dereference_protected() usage!
+ mlx5_core 0000:03:00.0: MLX5E: StrdRq(1) RqSz(8) StrdSz(2048) RxCqeCmprss(0 enhanced)
+ mlx5_core.sf mlx5_core.sf.4: firmware version: 32.38.3056
+ mlx5_core 0000:03:00.0 en3f0pf0sf2002: renamed from eth0
+ mlx5_core.sf mlx5_core.sf.4: Rate limit: 127 rates are supported, range: 0Mbps to 195312Mbps
+ IPv6: ADDRCONF(NETDEV_CHANGE): en3f0pf0sf2002: link becomes ready
+ Unable to handle kernel NULL pointer dereference at virtual address 0000000000000060
+ Mem abort info:
+   ESR = 0x96000006
+   EC = 0x25: DABT (current EL), IL = 32 bits
+   SET = 0, FnV = 0
+   EA = 0, S1PTW = 0
+ Data abort info:
+   ISV = 0, ISS = 0x00000006
+   CM = 0, WnR = 0
+ user pgtable: 4k pages, 48-bit VAs, pgdp=00000007760fb000
+ [0000000000000060] pgd=000000076f6d7003, p4d=000000076f6d7003, pud=0000000777841003, pmd=0000000000000000
+ Internal error: Oops: 96000006 [#1] SMP
+ Modules linked in: ipmb_host(OE) act_mirred(E) cls_flower(E) sch_ingress(E) mptcp_diag(E) udp_diag(E) raw_diag(E) unix_diag(E) tcp_diag(E) inet_diag(E) binfmt_misc(E) bonding(OE) rdma_ucm(OE) rdma_cm(OE) iw_cm(OE) ib_ipoib(OE) ib_cm(OE) isofs(E) cdrom(E) mst_pciconf(OE) ib_umad(OE) mlx5_ib(OE) ipmb_dev_int(OE) mlx5_core(OE) kpatch_15237886(OEK) mlxdevm(OE) auxiliary(OE) ib_uverbs(OE) ib_core(OE) psample(E) mlxfw(OE) tls(E) sunrpc(E) vfat(E) fat(E) crct10dif_ce(E) ghash_ce(E) sha1_ce(E) sbsa_gwdt(E) virtio_console(E) ext4(E) mbcache(E) jbd2(E) xfs(E) libcrc32c(E) mmc_block(E) virtio_net(E) net_failover(E) failover(E) sha2_ce(E) sha256_arm64(E) nvme(OE) nvme_core(OE) gpio_mlxbf3(OE) mlx_compat(OE) mlxbf_pmc(OE) i2c_mlxbf(OE) sdhci_of_dwcmshc(OE) pinctrl_mlxbf3(OE) mlxbf_pka(OE) gpio_generic(E) i2c_core(E) mmc_core(E) mlxbf_gige(OE) vitesse(E) pwr_mlxbf(OE) mlxbf_tmfifo(OE) micrel(E) mlxbf_bootctl(OE) virtio_ring(E) virtio(E) ipmi_devintf(E) ipmi_msghandler(E)
+  [last unloaded: mst_pci]
+ CPU: 11 PID: 20913 Comm: rte-worker-11 Kdump: loaded Tainted: G           OE K   5.10.134-13.1.an8.aarch64 #1
+ Hardware name: https://www.mellanox.com BlueField-3 SmartNIC Main Card/BlueField-3 SmartNIC Main Card, BIOS 4.2.2.12968 Oct 26 2023
+ pstate: a0400089 (NzCv daIf +PAN -UAO -TCO BTYPE=--)
+ pc : dispatch_event_fd+0x68/0x300 [mlx5_ib]
+ lr : devx_event_notifier+0xcc/0x228 [mlx5_ib]
+ sp : ffff80001005bcf0
+ x29: ffff80001005bcf0 x28: 0000000000000001
+ x27: ffff244e0740a1d8 x26: ffff244e0740a1d0
+ x25: ffffda56beff5ae0 x24: ffffda56bf911618
+ x23: ffff244e0596a480 x22: ffff244e0596a480
+ x21: ffff244d8312ad90 x20: ffff244e0596a480
+ x19: fffffffffffffff0 x18: 0000000000000000
+ x17: 0000000000000000 x16: ffffda56be66d620
+ x15: 0000000000000000 x14: 0000000000000000
+ x13: 0000000000000000 x12: 0000000000000000
+ x11: 0000000000000040 x10: ffffda56bfcafb50
+ x9 : ffffda5655c25f2c x8 : 0000000000000010
+ x7 : 0000000000000000 x6 : ffff24545a2e24b8
+ x5 : 0000000000000003 x4 : ffff80001005bd28
+ x3 : 0000000000000000 x2 : 0000000000000000
+ x1 : ffff244e0596a480 x0 : ffff244d8312ad90
+ Call trace:
+  dispatch_event_fd+0x68/0x300 [mlx5_ib]
+  devx_event_notifier+0xcc/0x228 [mlx5_ib]
+  atomic_notifier_call_chain+0x58/0x80
+  mlx5_eq_async_int+0x148/0x2b0 [mlx5_core]
+  atomic_notifier_call_chain+0x58/0x80
+  irq_int_handler+0x20/0x30 [mlx5_core]
+  __handle_irq_event_percpu+0x60/0x220
+  handle_irq_event_percpu+0x3c/0x90
+  handle_irq_event+0x58/0x158
+  handle_fasteoi_irq+0xfc/0x188
+  generic_handle_irq+0x34/0x48
+  ...
 
-  other info that might help us debug this:
-
-  rcu_scheduler_active = 2, debug_locks = 1
-  3 locks held by kworker/u136:0/219:
-      at: process_one_work+0xbe4/0x15f0
-      process_one_work+0x75c/0x15f0
-      pagefault_mr+0x9a5/0x1390 [mlx5_ib]
-
-  stack backtrace:
-  CPU: 14 UID: 0 PID: 219 Comm: kworker/u136:0 Not tainted
-  6.14.0-rc7_for_upstream_debug_2025_03_18_15_01 #1
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-  rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-  Workqueue: mlx5_ib_page_fault mlx5_ib_eqe_pf_action [mlx5_ib]
-  Call Trace:
-   dump_stack_lvl+0xa8/0xc0
-   lockdep_rcu_suspicious+0x1e6/0x260
-   xas_create+0xb8a/0xee0
-   xas_store+0x73/0x14c0
-   __xa_store+0x13c/0x220
-   ? xa_store_range+0x390/0x390
-   ? spin_bug+0x1d0/0x1d0
-   pagefault_mr+0xcb5/0x1390 [mlx5_ib]
-   ? _raw_spin_unlock+0x1f/0x30
-   mlx5_ib_eqe_pf_action+0x3be/0x2620 [mlx5_ib]
-   ? lockdep_hardirqs_on_prepare+0x400/0x400
-   ? mlx5_ib_invalidate_range+0xcb0/0xcb0 [mlx5_ib]
-   process_one_work+0x7db/0x15f0
-   ? pwq_dec_nr_in_flight+0xda0/0xda0
-   ? assign_work+0x168/0x240
-   worker_thread+0x57d/0xcd0
-   ? rescuer_thread+0xc40/0xc40
-   kthread+0x3b3/0x800
-   ? kthread_is_per_cpu+0xb0/0xb0
-   ? lock_downgrade+0x680/0x680
-   ? do_raw_spin_lock+0x12d/0x270
-   ? spin_bug+0x1d0/0x1d0
-   ? finish_task_switch.isra.0+0x284/0x9e0
-   ? lockdep_hardirqs_on_prepare+0x284/0x400
-   ? kthread_is_per_cpu+0xb0/0xb0
-   ret_from_fork+0x2d/0x70
-   ? kthread_is_per_cpu+0xb0/0xb0
-   ret_from_fork_asm+0x11/0x20
-
-Fixes: d3d930411ce3 ("RDMA/mlx5: Fix implicit ODP use after free")
-Link: https://patch.msgid.link/r/a85ddd16f45c8cb2bc0a188c2b0fcedfce975eb8.1750061791.git.leon@kernel.org
-Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
-Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
+Fixes: 759738537142 ("IB/mlx5: Enable subscription for device events over DEVX")
+Link: https://patch.msgid.link/r/3ce7f20e0d1a03dc7de6e57494ec4b8eaf1f05c2.1750147949.git.leon@kernel.org
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/odp.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/mlx5/devx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
-index e158d5b1ab17b..98a76c9db7aba 100644
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -247,8 +247,8 @@ static void destroy_unused_implicit_child_mr(struct mlx5_ib_mr *mr)
+diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
+index 69999d8d24f37..f49f78b69ab9c 100644
+--- a/drivers/infiniband/hw/mlx5/devx.c
++++ b/drivers/infiniband/hw/mlx5/devx.c
+@@ -1914,6 +1914,7 @@ subscribe_event_xa_alloc(struct mlx5_devx_event_table *devx_event_table,
+ 			/* Level1 is valid for future use, no need to free */
+ 			return -ENOMEM;
+ 
++		INIT_LIST_HEAD(&obj_event->obj_sub_list);
+ 		err = xa_insert(&event->object_ids,
+ 				key_level2,
+ 				obj_event,
+@@ -1922,7 +1923,6 @@ subscribe_event_xa_alloc(struct mlx5_devx_event_table *devx_event_table,
+ 			kfree(obj_event);
+ 			return err;
+ 		}
+-		INIT_LIST_HEAD(&obj_event->obj_sub_list);
  	}
  
- 	if (MLX5_CAP_ODP(mr_to_mdev(mr)->mdev, mem_page_fault))
--		__xa_erase(&mr_to_mdev(mr)->odp_mkeys,
--			   mlx5_base_mkey(mr->mmkey.key));
-+		xa_erase(&mr_to_mdev(mr)->odp_mkeys,
-+			 mlx5_base_mkey(mr->mmkey.key));
- 	xa_unlock(&imr->implicit_children);
- 
- 	/* Freeing a MR is a sleeping operation, so bounce to a work queue */
-@@ -521,8 +521,8 @@ static struct mlx5_ib_mr *implicit_get_child_mr(struct mlx5_ib_mr *imr,
- 	}
- 
- 	if (MLX5_CAP_ODP(dev->mdev, mem_page_fault)) {
--		ret = __xa_store(&dev->odp_mkeys, mlx5_base_mkey(mr->mmkey.key),
--				 &mr->mmkey, GFP_KERNEL);
-+		ret = xa_store(&dev->odp_mkeys, mlx5_base_mkey(mr->mmkey.key),
-+			       &mr->mmkey, GFP_KERNEL);
- 		if (xa_is_err(ret)) {
- 			ret = ERR_PTR(xa_err(ret));
- 			__xa_erase(&imr->implicit_children, idx);
+ 	return 0;
 -- 
 2.39.5
 
