@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-160868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A3DAFD24A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF6CAFD100
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 048DE585AC4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80F9F4869B0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFD22DFF04;
-	Tue,  8 Jul 2025 16:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F181CAA85;
+	Tue,  8 Jul 2025 16:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHncTb2e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+83FPSG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB978F5B;
-	Tue,  8 Jul 2025 16:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5706A1548C;
+	Tue,  8 Jul 2025 16:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992923; cv=none; b=D9PcnSqn+W45joajRCKcp2G+U9nTarC36PlyM50KeSI17Zwh3GBWYQqh4ghZ7gValF/olTLjW+2MRRBb/G8uljd3N38TaeDawOfd7sQevaWViI56edoJyMhxYlfMLROHG1J7eA0KPJSTmtva6gdbOiiqYmtrq1T/BhxvEfvPEoQ=
+	t=1751992221; cv=none; b=VJgU6p0+LUmtu2vE/8J6QUGCSTCggjbHTu8o5zW/uGnQeOJQfqigNWqOBeBiwmtaOpPZd9S1ZXfayEK8gFQ5hRKZ0Gxjecg8AihG8ucbfxCH8fGMn/+UKWi35ejVJJBBGazo0gv1WUv7zePFzcvCxqpXpw+kpoU4HiNKdfK87No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992923; c=relaxed/simple;
-	bh=yoa3LFrmzd19i7IC8r2i1yApIPEzZuaUkX89mCpYq3k=;
+	s=arc-20240116; t=1751992221; c=relaxed/simple;
+	bh=Vsd56XY36b8bcByMo/GUq0wtd68Fg20UpytZcpLNwOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J1hO7dzIqLiAs/yhSCwFaukoi1jKrJkdoKOt+Q9oabqIwNnnhxRp//4TuwfibBkaT/Ba4fF5InovjwSVr4j9Kfe8XZSXzp08xam0PwrmE1jB7G5JMKTYBu8yMYfRrPJBOtlUfqOdyfc1EE3Sg/XZYrxtFScGqIrOW6Uotzf1dVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHncTb2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579E4C4CEED;
-	Tue,  8 Jul 2025 16:42:03 +0000 (UTC)
+	 MIME-Version; b=DDofLdPPzoQdaSbFoR7Ap03EAr4wVmF0/+VJBcXrYVNdh84aK0iT9eJ1mZ4iikUS358aYu722OnYozU+SNwO/vooH2K5++LqT2A+fLJa5x3MKai3SuycqlfYQbEBBlzWpBLbaBBLl0fwmPo4fkerB/4rptI3OZ7UniV70j8np3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+83FPSG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F55C4CEED;
+	Tue,  8 Jul 2025 16:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992923;
-	bh=yoa3LFrmzd19i7IC8r2i1yApIPEzZuaUkX89mCpYq3k=;
+	s=korg; t=1751992221;
+	bh=Vsd56XY36b8bcByMo/GUq0wtd68Fg20UpytZcpLNwOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QHncTb2eL0z8bpsiQhU/sgysPdLt960uBAgMXNrYjlDhbbBT7Qhd0ozelCtHCiWT4
-	 NDXBuvbXSnQo0Y6wCww1f0Y8USBwm90Y33jdnODVVDDPXKv5CX9HEs6YITajE80Ltt
-	 wXFwEzgpRZUpwVu7m90/pl9jSNjstj6N8nI1H/CY=
+	b=X+83FPSGANMfTZ1zvoL6RImkEOoIw0HvkX+O9vIjyTkpEF5tIWjl4R14UfQQT/8Ye
+	 nQwD2vgpq/ryInK+KPFN/KxZgMhxIuleQHYIvDqysB+Oi9ZVAdfmzUfmOqfXQQMBVE
+	 vWLHlWQZrQPqc8Zk5gzAkNV9NQk3L4EbwDJFm6/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/232] RDMA/rxe: Fix "trying to register non-static key in rxe_qp_do_cleanup" bug
-Date: Tue,  8 Jul 2025 18:22:02 +0200
-Message-ID: <20250708162244.740092874@linuxfoundation.org>
+	Christian Eggers <ceggers@arri.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 012/132] Bluetooth: MGMT: mesh_send: check instances prior disabling advertising
+Date: Tue,  8 Jul 2025 18:22:03 +0200
+Message-ID: <20250708162231.100623378@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Christian Eggers <ceggers@arri.de>
 
-[ Upstream commit 1c7eec4d5f3b39cdea2153abaebf1b7229a47072 ]
+commit f3cb5676e5c11c896ba647ee309a993e73531588 upstream.
 
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- assign_lock_key kernel/locking/lockdep.c:986 [inline]
- register_lock_class+0x4a3/0x4c0 kernel/locking/lockdep.c:1300
- __lock_acquire+0x99/0x1ba0 kernel/locking/lockdep.c:5110
- lock_acquire kernel/locking/lockdep.c:5866 [inline]
- lock_acquire+0x179/0x350 kernel/locking/lockdep.c:5823
- __timer_delete_sync+0x152/0x1b0 kernel/time/timer.c:1644
- rxe_qp_do_cleanup+0x5c3/0x7e0 drivers/infiniband/sw/rxe/rxe_qp.c:815
- execute_in_process_context+0x3a/0x160 kernel/workqueue.c:4596
- __rxe_cleanup+0x267/0x3c0 drivers/infiniband/sw/rxe/rxe_pool.c:232
- rxe_create_qp+0x3f7/0x5f0 drivers/infiniband/sw/rxe/rxe_verbs.c:604
- create_qp+0x62d/0xa80 drivers/infiniband/core/verbs.c:1250
- ib_create_qp_kernel+0x9f/0x310 drivers/infiniband/core/verbs.c:1361
- ib_create_qp include/rdma/ib_verbs.h:3803 [inline]
- rdma_create_qp+0x10c/0x340 drivers/infiniband/core/cma.c:1144
- rds_ib_setup_qp+0xc86/0x19a0 net/rds/ib_cm.c:600
- rds_ib_cm_initiate_connect+0x1e8/0x3d0 net/rds/ib_cm.c:944
- rds_rdma_cm_event_handler_cmn+0x61f/0x8c0 net/rds/rdma_transport.c:109
- cma_cm_event_handler+0x94/0x300 drivers/infiniband/core/cma.c:2184
- cma_work_handler+0x15b/0x230 drivers/infiniband/core/cma.c:3042
- process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c2/0x780 kernel/kthread.c:464
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+The unconditional call of hci_disable_advertising_sync() in
+mesh_send_done_sync() also disables other LE advertisings (non mesh
+related).
 
-The root cause is as below:
+I am not sure whether this call is required at all, but checking the
+adv_instances list (like done at other places) seems to solve the
+problem.
 
-In the function rxe_create_qp, the function rxe_qp_from_init is called
-to create qp, if this function rxe_qp_from_init fails, rxe_cleanup will
-be called to handle all the allocated resources, including the timers:
-retrans_timer and rnr_nak_timer.
-
-The function rxe_qp_from_init calls the function rxe_qp_init_req to
-initialize the timers: retrans_timer and rnr_nak_timer.
-
-But these timers are initialized in the end of rxe_qp_init_req.
-If some errors occur before the initialization of these timers, this
-problem will occur.
-
-The solution is to check whether these timers are initialized or not.
-If these timers are not initialized, ignore these timers.
-
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Reported-by: syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4edb496c3cad6e953a31
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://patch.msgid.link/20250419080741.1515231-1-yanjun.zhu@linux.dev
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/rxe/rxe_qp.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/bluetooth/mgmt.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
-index 91d329e903083..8b805b16136e5 100644
---- a/drivers/infiniband/sw/rxe/rxe_qp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_qp.c
-@@ -811,7 +811,12 @@ static void rxe_qp_do_cleanup(struct work_struct *work)
- 	spin_unlock_irqrestore(&qp->state_lock, flags);
- 	qp->qp_timeout_jiffies = 0;
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -1074,7 +1074,8 @@ static int mesh_send_done_sync(struct hc
+ 	struct mgmt_mesh_tx *mesh_tx;
  
--	if (qp_type(qp) == IB_QPT_RC) {
-+	/* In the function timer_setup, .function is initialized. If .function
-+	 * is NULL, it indicates the function timer_setup is not called, the
-+	 * timer is not initialized. Or else, the timer is initialized.
-+	 */
-+	if (qp_type(qp) == IB_QPT_RC && qp->retrans_timer.function &&
-+		qp->rnr_nak_timer.function) {
- 		del_timer_sync(&qp->retrans_timer);
- 		del_timer_sync(&qp->rnr_nak_timer);
- 	}
--- 
-2.39.5
-
+ 	hci_dev_clear_flag(hdev, HCI_MESH_SENDING);
+-	hci_disable_advertising_sync(hdev);
++	if (list_empty(&hdev->adv_instances))
++		hci_disable_advertising_sync(hdev);
+ 	mesh_tx = mgmt_mesh_next(hdev, NULL);
+ 
+ 	if (mesh_tx)
 
 
 
