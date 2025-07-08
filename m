@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-160648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FAF6AFD11E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6083AAFD351
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C9B81C219CA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:31:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0078482B81
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8781CD1E4;
-	Tue,  8 Jul 2025 16:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0742E5413;
+	Tue,  8 Jul 2025 16:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jR48LhfP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knGcKfBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC1A2E3701;
-	Tue,  8 Jul 2025 16:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0902BE46;
+	Tue,  8 Jul 2025 16:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992280; cv=none; b=h2673a9Yy5CRS4z0l3PwR31em3CgHK5ivMxibJxQOWV1cqwRWjqFnizt7nBUm3gJAAbucUyLKXfGGUoudPmN1Ig4iR6/Cp8os+XFo0RmIo3h3dLkiaM5aC4Q6edUIk2R9f+9BMet9zqp2w7T+ZSCJenkUe24CWw72d6DtJvE6Hw=
+	t=1751993547; cv=none; b=gPFQa9wXr+eRMlLG2WX6vQx6MlYp8tbykVt1TWl4f4WjyFSuzQyi5aXcjO1R5hb9660bka93uUz3E+rHsRIy5fwuWpVGfJcPpNH5/aS30/dOCEIfdo75f5fe0j6yPvWvwEHaG4x0mgHw4DKgGdutXqPybYdGD2npP8WY4T2LUIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992280; c=relaxed/simple;
-	bh=vseeM+pButf0L8KnGhixOXl4cH6qMdfkYywOkaZAVoQ=;
+	s=arc-20240116; t=1751993547; c=relaxed/simple;
+	bh=hIkX9fP0YDhMQ3LrLoiKSMDnQ1rfVVZYnJpG71IkH7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FdM6zkMYjfO1YYMNc4M/I8bSOsQGjixnapc78+TUPi+++2T/9s1Y9GciEogSFeDh3mEkda5aTZSX7Pca7lLnVFwOsz20uBx2We2C7elnxBMDHec5Pha1USLo7GZceohm4D318ibsfLrRitJb9vrXQ940i7TdhMHa0aSvIV5dMWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jR48LhfP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F61C4CEED;
-	Tue,  8 Jul 2025 16:31:19 +0000 (UTC)
+	 MIME-Version; b=XzwfnX5f89VjQksQLFTyi+2A1pV0Tg3JhlDrP/KB2dZDkC8PtqpRe5juFUV8PTC/mvbcXzDP6/JQn6a6TMp3u0ESWpk8WiJ0IC06OdSo3NT3bxPYilDeDmE3e9x7nMJUNpyOTL9sUVZupE3XGlRq2WvMiqI5YST/Enlh5g6TyLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knGcKfBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7396AC4CEF0;
+	Tue,  8 Jul 2025 16:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992280;
-	bh=vseeM+pButf0L8KnGhixOXl4cH6qMdfkYywOkaZAVoQ=;
+	s=korg; t=1751993546;
+	bh=hIkX9fP0YDhMQ3LrLoiKSMDnQ1rfVVZYnJpG71IkH7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jR48LhfPxrxhdJsF85f1z4UHl3V/AmtPXwEyvSnE1KTOjL2uVnSa0Y+bNLFUx3mfk
-	 /rlxRLoUPXjo9z7fy2TbIVOyzQJuPLfBxshjXdbplluOrYtXukHGT8ml5PBpHCdL88
-	 mD8yJOGvfaWP9GeEXc8g3E2/CvlmbglvSeaApXBo=
+	b=knGcKfBiR3MK0kIxQSjDf6vnBUzBaOALEiotfeeaACwwYgOmubwbG2YB/hQn8D8kw
+	 ZFYfH6JIRssVehWQmxAaZTJXh48ouKak+kAMUYWQ7vHzMI6y2mGl9EIhlWL1ehXnVK
+	 g9sCswjrkZoqf6Li/p2qRR3toaPpOHhyrh3iQyiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Inki Dae <inki.dae@samsung.com>,
+	syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com,
+	Kohei Enju <enjuk@amazon.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/132] drm/exynos: fimd: Guard display clock control with runtime PM calls
+Subject: [PATCH 6.15 112/178] rose: fix dangling neighbour pointers in rose_rt_device_down()
 Date: Tue,  8 Jul 2025 18:22:29 +0200
-Message-ID: <20250708162231.804899699@linuxfoundation.org>
+Message-ID: <20250708162239.545530383@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit 5d91394f236167ac624b823820faf4aa928b889e ]
+[ Upstream commit 34a500caf48c47d5171f4aa1f237da39b07c6157 ]
 
-Commit c9b1150a68d9 ("drm/atomic-helper: Re-order bridge chain pre-enable
-and post-disable") changed the call sequence to the CRTC enable/disable
-and bridge pre_enable/post_disable methods, so those bridge methods are
-now called when CRTC is not yet enabled.
+There are two bugs in rose_rt_device_down() that can cause
+use-after-free:
 
-This causes a lockup observed on Samsung Peach-Pit/Pi Chromebooks. The
-source of this lockup is a call to fimd_dp_clock_enable() function, when
-FIMD device is not yet runtime resumed. It worked before the mentioned
-commit only because the CRTC implemented by the FIMD driver was always
-enabled what guaranteed the FIMD device to be runtime resumed.
+1. The loop bound `t->count` is modified within the loop, which can
+   cause the loop to terminate early and miss some entries.
 
-This patch adds runtime PM guards to the fimd_dp_clock_enable() function
-to enable its proper operation also when the CRTC implemented by FIMD is
-not yet enabled.
+2. When removing an entry from the neighbour array, the subsequent entries
+   are moved up to fill the gap, but the loop index `i` is still
+   incremented, causing the next entry to be skipped.
 
-Fixes: 196e059a8a6a ("drm/exynos: convert clock_enable crtc callback to pipeline clock")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+For example, if a node has three neighbours (A, A, B) with count=3 and A
+is being removed, the second A is not checked.
+
+    i=0: (A, A, B) -> (A, B) with count=2
+          ^ checked
+    i=1: (A, B)    -> (A, B) with count=2
+             ^ checked (B, not A!)
+    i=2: (doesn't occur because i < count is false)
+
+This leaves the second A in the array with count=2, but the rose_neigh
+structure has been freed. Code that accesses these entries assumes that
+the first `count` entries are valid pointers, causing a use-after-free
+when it accesses the dangling pointer.
+
+Fix both issues by iterating over the array in reverse order with a fixed
+loop bound. This ensures that all entries are examined and that the removal
+of an entry doesn't affect subsequent iterations.
+
+Reported-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e04e2c007ba2c80476cb
+Tested-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250629030833.6680-1-enjuk@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_fimd.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/rose/rose_route.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_fimd.c b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-index 5bdc246f5fad0..341e95269836e 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-@@ -187,6 +187,7 @@ struct fimd_context {
- 	u32				i80ifcon;
- 	bool				i80_if;
- 	bool				suspended;
-+	bool				dp_clk_enabled;
- 	wait_queue_head_t		wait_vsync_queue;
- 	atomic_t			wait_vsync_event;
- 	atomic_t			win_updated;
-@@ -1047,7 +1048,18 @@ static void fimd_dp_clock_enable(struct exynos_drm_clk *clk, bool enable)
- 	struct fimd_context *ctx = container_of(clk, struct fimd_context,
- 						dp_clk);
- 	u32 val = enable ? DP_MIE_CLK_DP_ENABLE : DP_MIE_CLK_DISABLE;
-+
-+	if (enable == ctx->dp_clk_enabled)
-+		return;
-+
-+	if (enable)
-+		pm_runtime_resume_and_get(ctx->dev);
-+
-+	ctx->dp_clk_enabled = enable;
- 	writel(val, ctx->regs + DP_MIE_CLKCON);
-+
-+	if (!enable)
-+		pm_runtime_put(ctx->dev);
- }
+diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
+index 2dd6bd3a3011f..b72bf8a08d489 100644
+--- a/net/rose/rose_route.c
++++ b/net/rose/rose_route.c
+@@ -497,22 +497,15 @@ void rose_rt_device_down(struct net_device *dev)
+ 			t         = rose_node;
+ 			rose_node = rose_node->next;
  
- static const struct exynos_drm_crtc_ops fimd_crtc_ops = {
+-			for (i = 0; i < t->count; i++) {
++			for (i = t->count - 1; i >= 0; i--) {
+ 				if (t->neighbour[i] != s)
+ 					continue;
+ 
+ 				t->count--;
+ 
+-				switch (i) {
+-				case 0:
+-					t->neighbour[0] = t->neighbour[1];
+-					fallthrough;
+-				case 1:
+-					t->neighbour[1] = t->neighbour[2];
+-					break;
+-				case 2:
+-					break;
+-				}
++				memmove(&t->neighbour[i], &t->neighbour[i + 1],
++					sizeof(t->neighbour[0]) *
++						(t->count - i));
+ 			}
+ 
+ 			if (t->count <= 0)
 -- 
 2.39.5
 
