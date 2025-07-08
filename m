@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-160542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44ABEAFD0B1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7DDAFD1D2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:40:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A77D580A2F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:25:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E3F81C242AA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5741C2E5B0A;
-	Tue,  8 Jul 2025 16:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E511023A98D;
+	Tue,  8 Jul 2025 16:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tf0vHjZn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyxcDFB2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D452E542B;
-	Tue,  8 Jul 2025 16:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCE62E542E;
+	Tue,  8 Jul 2025 16:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991881; cv=none; b=dlXZNduohNYYQITj2wIvFAXHBF/lJ3qXyrV7daFLzXyxgIrUUvr/UQQPtJ9ebjZmGMA48EXRqaa2p/wpWo9cheUcW4z9gwe6dXzAGEIeEmS+yF0TFgIQzTFnVOcYn0T+koHxegziFny/yWsDO3ku+7Je+t45XQrI9Q1P//dUKJ0=
+	t=1751992662; cv=none; b=YeLl1K1GpzTa3pWVvMFBO79299/BoFNpN3gGIqXy+Xr9U4clCIt5LFyXal6DgdKPgMnQX7gG1nsp1CGFF3M+sZTwYR7p5k9ZdjfaQpgMaCakNWhaaJJESdr//NKUZ2H8SXPUQfPjZpXF0vuQC+WcOl7+IMbitVYZqO3RZmhWOVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991881; c=relaxed/simple;
-	bh=lQKESBdjjKN7fkwxihAXumKjCFMWiWRBPufD2MyYnIc=;
+	s=arc-20240116; t=1751992662; c=relaxed/simple;
+	bh=ThqnESc1CQOtOl0unqWCouQtxyXPl5kJMInw2ylRFuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SQ6lqB5bfsmtPFVmQt79tbeEpt5zBGZwXdN902KCDKfz98EvjhMMU8l1M/n+hYXHcyMp+s86jxxrvB6e+lW6pweIqcB80NGm685rYX6v1d0iestny/8U5JCZBndkszmKpMOvkG/lHwo+I9cww74qqrOFBAuKiTWhmTvPQgYCxn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tf0vHjZn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8433CC4CEED;
-	Tue,  8 Jul 2025 16:24:40 +0000 (UTC)
+	 MIME-Version; b=ZDJv6vg7hdr22A/Pwh2sTGoKQPQYXQ318Bhq8c2FbSl0fbNGI6QIXwdWZc/PXa+bX5Ac9LItJGqswUc9R6qR6lAm+FU28bByGEjUDScOtBAC5hKf/HuCXWEhXaYzAAePc2PE5uKWIIzHTuwzLwVpiCMkN7c8fnxYqnCvj9cMaFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyxcDFB2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF9A5C4CEED;
+	Tue,  8 Jul 2025 16:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751991880;
-	bh=lQKESBdjjKN7fkwxihAXumKjCFMWiWRBPufD2MyYnIc=;
+	s=korg; t=1751992662;
+	bh=ThqnESc1CQOtOl0unqWCouQtxyXPl5kJMInw2ylRFuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tf0vHjZnTZGp2V70RO1OFPnR8CZ54hYdX0DwypaaPZYGqxwaI9Pd1zeSZrcSWVQBi
-	 o5n7SXRqpYtsXWTmgus+UpumH2pOS+sOafV1PwhnRdEwf3INRi0HcLdKQWzk4paQbe
-	 jI52mIhKIFuv3gU9OzB364bp7wPtWhLXEHAXw2ik=
+	b=pyxcDFB2x/5c8UTUX064+g0no5qTK39ll9oe8k1iNFQkCod5MkFbvGZDo/F+wZwf8
+	 MjjAVtHsfVRMa+vL4X004DvozxwEUJdPHIPwWM1SclhxTJR0HBLTvwQrF9e6a5BoHf
+	 bZ5zG7U/oMDplb022A1+KlFEDRSExiwcrc3MM7DE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.12 003/232] rtc: cmos: use spin_lock_irqsave in cmos_interrupt
-Date: Tue,  8 Jul 2025 18:19:59 +0200
-Message-ID: <20250708162241.521214934@linuxfoundation.org>
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 004/232] virtio-net: xsk: rx: fix the frames length check
+Date: Tue,  8 Jul 2025 18:20:00 +0200
+Message-ID: <20250708162241.546760891@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
 References: <20250708162241.426806072@linuxfoundation.org>
@@ -61,84 +60,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Jończyk <mat.jonczyk@o2.pl>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-commit 00a39d8652ff9088de07a6fe6e9e1893452fe0dd upstream.
+commit 5177373c31318c3c6a190383bfd232e6cf565c36 upstream.
 
-cmos_interrupt() can be called in a non-interrupt context, such as in
-an ACPI event handler (which runs in an interrupt thread). Therefore,
-usage of spin_lock(&rtc_lock) is insecure. Use spin_lock_irqsave() /
-spin_unlock_irqrestore() instead.
+When calling buf_to_xdp, the len argument is the frame data's length
+without virtio header's length (vi->hdr_len). We check that len with
 
-Before a misguided
-commit 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
-the cmos_interrupt() function used spin_lock_irqsave(). That commit
-changed it to spin_lock() and broke locking, which was partially fixed in
-commit 13be2efc390a ("rtc: cmos: Disable irq around direct invocation of cmos_interrupt()")
+	xsk_pool_get_rx_frame_size() + vi->hdr_len
 
-That second commit did not take account of the ACPI fixed event handler
-pathway, however. It introduced local_irq_disable() workarounds in
-cmos_check_wkalrm(), which can cause problems on PREEMPT_RT kernels
-and are now unnecessary.
+to ensure the provided len does not larger than the allocated chunk
+size. The additional vi->hdr_len is because in virtnet_add_recvbuf_xsk,
+we use part of XDP_PACKET_HEADROOM for virtio header and ask the vhost
+to start placing data from
 
-Add an explicit comment so that this change will not be reverted by
-mistake.
+	hard_start + XDP_PACKET_HEADROOM - vi->hdr_len
+not
+	hard_start + XDP_PACKET_HEADROOM
+
+But the first buffer has virtio_header, so the maximum frame's length in
+the first buffer can only be
+
+	xsk_pool_get_rx_frame_size()
+not
+	xsk_pool_get_rx_frame_size() + vi->hdr_len
+
+like in the current check.
+
+This commit adds an additional argument to buf_to_xdp differentiate
+between the first buffer and other ones to correctly calculate the maximum
+frame's length.
 
 Cc: stable@vger.kernel.org
-Fixes: 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
-Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Closes: https://lore.kernel.org/all/aDtJ92foPUYmGheF@debian.local/
-Link: https://lore.kernel.org/r/20250607210608.14835-1-mat.jonczyk@o2.pl
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Fixes: a4e7ba702701 ("virtio_net: xsk: rx: support recv small mode")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Link: https://patch.msgid.link/20250630151315.86722-2-minhquangbui99@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-cmos.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/virtio_net.c |   22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -697,8 +697,12 @@ static irqreturn_t cmos_interrupt(int ir
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -1098,15 +1098,29 @@ static void sg_fill_dma(struct scatterli
+ 	sg->length = len;
+ }
+ 
++/* Note that @len is the length of received data without virtio header */
+ static struct xdp_buff *buf_to_xdp(struct virtnet_info *vi,
+-				   struct receive_queue *rq, void *buf, u32 len)
++				   struct receive_queue *rq, void *buf,
++				   u32 len, bool first_buf)
  {
- 	u8		irqstat;
- 	u8		rtc_control;
-+	unsigned long	flags;
+ 	struct xdp_buff *xdp;
+ 	u32 bufsize;
  
--	spin_lock(&rtc_lock);
-+	/* We cannot use spin_lock() here, as cmos_interrupt() is also called
-+	 * in a non-irq context.
+ 	xdp = (struct xdp_buff *)buf;
+ 
+-	bufsize = xsk_pool_get_rx_frame_size(rq->xsk_pool) + vi->hdr_len;
++	/* In virtnet_add_recvbuf_xsk, we use part of XDP_PACKET_HEADROOM for
++	 * virtio header and ask the vhost to fill data from
++	 *         hard_start + XDP_PACKET_HEADROOM - vi->hdr_len
++	 * The first buffer has virtio header so the remaining region for frame
++	 * data is
++	 *         xsk_pool_get_rx_frame_size()
++	 * While other buffers than the first one do not have virtio header, so
++	 * the maximum frame data's length can be
++	 *         xsk_pool_get_rx_frame_size() + vi->hdr_len
 +	 */
-+	spin_lock_irqsave(&rtc_lock, flags);
++	bufsize = xsk_pool_get_rx_frame_size(rq->xsk_pool);
++	if (!first_buf)
++		bufsize += vi->hdr_len;
  
- 	/* When the HPET interrupt handler calls us, the interrupt
- 	 * status is passed as arg1 instead of the irq number.  But
-@@ -732,7 +736,7 @@ static irqreturn_t cmos_interrupt(int ir
- 			hpet_mask_rtc_irq_bit(RTC_AIE);
- 		CMOS_READ(RTC_INTR_FLAGS);
- 	}
--	spin_unlock(&rtc_lock);
-+	spin_unlock_irqrestore(&rtc_lock, flags);
+ 	if (unlikely(len > bufsize)) {
+ 		pr_debug("%s: rx error: len %u exceeds truesize %u\n",
+@@ -1231,7 +1245,7 @@ static int xsk_append_merge_buffer(struc
  
- 	if (is_intr(irqstat)) {
- 		rtc_update_irq(p, 1, irqstat);
-@@ -1300,9 +1304,7 @@ static void cmos_check_wkalrm(struct dev
- 	 * ACK the rtc irq here
- 	 */
- 	if (t_now >= cmos->alarm_expires && cmos_use_acpi_alarm()) {
--		local_irq_disable();
- 		cmos_interrupt(0, (void *)cmos->rtc);
--		local_irq_enable();
+ 		u64_stats_add(&stats->bytes, len);
+ 
+-		xdp = buf_to_xdp(vi, rq, buf, len);
++		xdp = buf_to_xdp(vi, rq, buf, len, false);
+ 		if (!xdp)
+ 			goto err;
+ 
+@@ -1329,7 +1343,7 @@ static void virtnet_receive_xsk_buf(stru
+ 
+ 	u64_stats_add(&stats->bytes, len);
+ 
+-	xdp = buf_to_xdp(vi, rq, buf, len);
++	xdp = buf_to_xdp(vi, rq, buf, len, true);
+ 	if (!xdp)
  		return;
- 	}
  
 
 
