@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-161021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C073AAFD30D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:53:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B81D2AFD3FA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D4C817288D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D37EB48109E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950B72DC34C;
-	Tue,  8 Jul 2025 16:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF402E62A2;
+	Tue,  8 Jul 2025 16:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iz9ALWsL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SW75u4yX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC572045B5;
-	Tue,  8 Jul 2025 16:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE9D2E091E;
+	Tue,  8 Jul 2025 16:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993370; cv=none; b=YoI2vrkkCMsv2PLk6ZTCBvlXsnb+nX+6jGDo5Po19DcJdmUl5DIMRp067dH5081d3d3eNiVnPVpWPg0v70bEmG8f0p5dE8GbuSlCpQPQoBGvTrQwjbzJGd9nnm6RQ68Hf3Rsb08FIo/qLiT4ajjUEQfKpTHXiAcqQn8wRiOWNqY=
+	t=1751993881; cv=none; b=N9osA1VJAG0TBmU3WUgGdp3XEucQ00f6p4BHJNeV0TSyzLlu0y3OPdRU4pvxBJh0hKXylLprVRfWcsiG587LZ/ooF46XYUMIen749rcz2tozuatUQY/x+18+0tNgDiFe1yneuvtWEgvdt2dVIPzv2bUIVPH8KNk2/HJ98gYuUPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993370; c=relaxed/simple;
-	bh=REN3WwYQh3BYhKrnkO+4BHCFd1aRrOI5SEGFh+T7mhs=;
+	s=arc-20240116; t=1751993881; c=relaxed/simple;
+	bh=O8DY9iQvQuri9ETtgEtgVX+GYzEbahHXVwYWnNZ/LgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KeSvyon3ujrqMZ8+rxtN80WuoqA3ePgfwc4gvvm6/DPw4x4EC46I7RwfOcAswB5ZQk3xb8aYXIf+FMIj7h2nFjTPOE7DyaWX7HeixsSTVw8yaZDMOH2Y72gvjllbSPLllrmwedKS+0cB2sVcUv31OwMQr4yNHrfFwjPAM20ql8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iz9ALWsL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCEC5C4CEED;
-	Tue,  8 Jul 2025 16:49:29 +0000 (UTC)
+	 MIME-Version; b=JokDQhnw1LZAi0SuUWvk1UvxO+s+7tCR0sfrCKt135HzJfWBIgjRdr0Tdu0hwX4+8DDlHjdGW0sJRbHezVHcLTap9L6GjnHIK6B7FKaJSvtvzGH7lZDMbrOjr0wlYfvxNAiQg+P54NUet+JIoMLlB9FYXlhA3r9J/d0j3tdMjUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SW75u4yX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F31C4CEED;
+	Tue,  8 Jul 2025 16:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993370;
-	bh=REN3WwYQh3BYhKrnkO+4BHCFd1aRrOI5SEGFh+T7mhs=;
+	s=korg; t=1751993881;
+	bh=O8DY9iQvQuri9ETtgEtgVX+GYzEbahHXVwYWnNZ/LgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iz9ALWsLiCYugOiQM8+p9giDi9Gm8OrV0QsB0DXZ+ju/kfSCnWUf5yY9werqEG8Mo
-	 +ldbyjuH8KrI5xwX5N1imW02j6VPbI1erHwGOD9z7QIsjKFB7tjSL3grZZzxizQULp
-	 wPkNBQXjlXBB20QYURzeor5H+LyB9PuFKZBboP9o=
+	b=SW75u4yXfuGz4+cKzD4PijbaRETyCpIe1r6IOu7CWsslFc/X+Nwy9StmXAKrWqape
+	 V95zDxIHXdMWQo8ztGIGCHhFojeVA45f4OZKWX3HqIMbVvpSEqx969I7wZldSiS3/h
+	 NkVKKdnZOcekPHfkEoD4KONyLt/tT7xjpqf2RPtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	jackysliu <1972843537@qq.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 051/178] scsi: sd: Fix VPD page 0xb7 length check
+Subject: [PATCH 5.15 051/160] vgacon: switch vgacon_scrolldelta() and vgacon_restore_screen()
 Date: Tue,  8 Jul 2025 18:21:28 +0200
-Message-ID: <20250708162238.016304365@linuxfoundation.org>
+Message-ID: <20250708162232.956317981@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: jackysliu <1972843537@qq.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 8889676cd62161896f1d861ce294adc29c4f2cb5 ]
+[ Upstream commit 03b89a08484a88fb9e0604cab2b3eb0c2f265c74 ]
 
-sd_read_block_limits_ext() currently assumes that vpd->len excludes the
-size of the page header. However, vpd->len describes the size of the entire
-VPD page, therefore the sanity check is incorrect.
+Switch vgacon_scrolldelta() and vgacon_restore_screen() positions, so
+that the former is not needed to be forward-declared.
 
-In practice this is not really a problem since we don't attach VPD
-pages unless they actually report data trailing the header. But fix
-the length check regardless.
-
-This issue was identified by Wukong-Agent (formerly Tencent Woodpecker), a
-code security AI agent, through static code analysis.
-
-[mkp: rewrote patch description]
-
-Signed-off-by: jackysliu <1972843537@qq.com>
-Link: https://lore.kernel.org/r/tencent_ADA5210D1317EEB6CD7F3DE9FE9DA4591D05@qq.com
-Fixes: 96b171d6dba6 ("scsi: core: Query the Block Limits Extension VPD page")
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Stable-dep-of: 03bcbbb3995b ("dummycon: Trigger redraw when switching consoles with deferred takeover")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/console/vgacon.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index 950d8c9fb8843..89d5c4b17bc46 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3384,7 +3384,7 @@ static void sd_read_block_limits_ext(struct scsi_disk *sdkp)
- 
- 	rcu_read_lock();
- 	vpd = rcu_dereference(sdkp->device->vpd_pgb7);
--	if (vpd && vpd->len >= 2)
-+	if (vpd && vpd->len >= 6)
- 		sdkp->rscs = vpd->data[5] & 1;
- 	rcu_read_unlock();
+diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
+index 7bce5a174f388..b2180fd183307 100644
+--- a/drivers/video/console/vgacon.c
++++ b/drivers/video/console/vgacon.c
+@@ -163,12 +163,6 @@ static inline void vga_set_mem_top(struct vc_data *c)
+ 	write_vga(12, (c->vc_visible_origin - vga_vram_base) / 2);
  }
+ 
+-static void vgacon_restore_screen(struct vc_data *c)
+-{
+-	if (c->vc_origin != c->vc_visible_origin)
+-		vgacon_scrolldelta(c, 0);
+-}
+-
+ static void vgacon_scrolldelta(struct vc_data *c, int lines)
+ {
+ 	vc_scrolldelta_helper(c, lines, vga_rolled_over, (void *)vga_vram_base,
+@@ -176,6 +170,12 @@ static void vgacon_scrolldelta(struct vc_data *c, int lines)
+ 	vga_set_mem_top(c);
+ }
+ 
++static void vgacon_restore_screen(struct vc_data *c)
++{
++	if (c->vc_origin != c->vc_visible_origin)
++		vgacon_scrolldelta(c, 0);
++}
++
+ static const char *vgacon_startup(void)
+ {
+ 	const char *display_desc = NULL;
 -- 
 2.39.5
 
