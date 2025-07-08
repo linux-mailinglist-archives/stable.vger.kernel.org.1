@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-160999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EAA6AFD2E4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C39AFD3D9
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:01:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25BEE189E3A1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F24C04201ED
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF261754B;
-	Tue,  8 Jul 2025 16:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD932E5B12;
+	Tue,  8 Jul 2025 16:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnByIfZo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nIdtedUU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E555B672;
-	Tue,  8 Jul 2025 16:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FDE8F5E;
+	Tue,  8 Jul 2025 16:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993306; cv=none; b=H/QB7pcYTxQm8Ou5oT4iaT+46ribmz49+XE/SOt0ft3UOVcZj8pJxEftIgKdu9PNCQHFu7kY4cNiAro1hJMPGJleNKDpyk3CF1C9dSa1hxxxbKWJjZ1NPiztNinKmPCUbVaniyhaqT3vRUDTStP9wutSLE7QTHVmxh2gT+jVB18=
+	t=1751993821; cv=none; b=f7WtbrR7AQf5jSmx6VFQwMsO4vYDo/tbW0XAPLuLFFaDJ484pINTWzNAjSehYUJ6FrT8QQ+0Tyw4wBHUsZ7XUG0pEgyjEns9ek4CCHkRvXk4RQcz9Lz28nYwst51KauhCtxwe26OTnfvFvnkLIN1Y69DcZE8c9znsktpEl54xHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993306; c=relaxed/simple;
-	bh=uWvzekiZvnL83j3TumG7K54+mLmWDQjYKwX+JUEi2nU=;
+	s=arc-20240116; t=1751993821; c=relaxed/simple;
+	bh=fkxOKGDUqUuF47pPguoHssRU0NaW6UyunREz61H4lI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JhAuTu0/iO8TBD1Ts/uog83B73lYvUmDnn9sOJxKZ9tPy9cJkDl+QBfKwEfny7iPCy6Xx9EM2I/zECvfTMvZXoEUUfrbWJas67wbWtY+z7fYFZpcWUuR69+ejDniDRMlNArleXvo83BR0+9FFtF0dttV8XIenZG09YrDNt5c2zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnByIfZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC326C4CEED;
-	Tue,  8 Jul 2025 16:48:25 +0000 (UTC)
+	 MIME-Version; b=Rr4rFn+r6bkV3qpuJNEc6vBjE1WiWFUmhR6HOmVg71m3Em/18Z1Kd7x3sTMxlpXztP+x/srwu9K2RkBmZNrEfx5Iben2ltjeqHrvPQGb/ActtTaHomAPg3hzVLnjaLp8XeO7Cq4CP5Uk6idjBXecBOTW7q5iLhWmSFpzwRLthOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nIdtedUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E218C4CEF0;
+	Tue,  8 Jul 2025 16:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993306;
-	bh=uWvzekiZvnL83j3TumG7K54+mLmWDQjYKwX+JUEi2nU=;
+	s=korg; t=1751993821;
+	bh=fkxOKGDUqUuF47pPguoHssRU0NaW6UyunREz61H4lI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PnByIfZomFObVomHll10PDV8rdq5oxI9jTiMrrXZfy4B/VWmUhFg0FxMG0bC3sg2z
-	 tOg5G0XkxVAnR+7Vt3ASldAWPdbHinRcPQ78aElV+5lsCRNNf68JkNtNy5fyc8yTgp
-	 +krGvNnSC5ql1N+C018ADmbfB+/4eQP8gps7k3Qo=
+	b=nIdtedUURKCcoxP/nSXCbPdBjkiANDAdt+BfLPXvep55Oh6nFeP/TmeMX/8wy/VPu
+	 ZPTqmTy0Pq3mKk8e5BuQ0/SWV32E4zAsb5rCdJON1eu68LP8mAvQ0wxr5XV2FBlsI7
+	 8NBQuHlLQdvpWgcvM4gUD70IQc+A5wHDZih+d0FE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	RD Babiera <rdbabiera@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.15 028/178] usb: typec: altmodes/displayport: do not index invalid pin_assignments
-Date: Tue,  8 Jul 2025 18:21:05 +0200
-Message-ID: <20250708162237.284548972@linuxfoundation.org>
+	Dmitry Nikiforov <Dm1tryNk@yandex.ru>,
+	Johan Hovold <johan@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 029/160] media: davinci: vpif: Fix memory leak in probe error path
+Date: Tue,  8 Jul 2025 18:21:06 +0200
+Message-ID: <20250708162232.328001432@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Dmitry Nikiforov <Dm1tryNk@yandex.ru>
 
-commit af4db5a35a4ef7a68046883bfd12468007db38f1 upstream.
+[ Upstream commit 024bf40edf1155e7a587f0ec46294049777d9b02 ]
 
-A poorly implemented DisplayPort Alt Mode port partner can indicate
-that its pin assignment capabilities are greater than the maximum
-value, DP_PIN_ASSIGN_F. In this case, calls to pin_assignment_show
-will cause a BRK exception due to an out of bounds array access.
+If an error occurs during the initialization of `pdev_display`,
+the allocated platform device `pdev_capture` is not released properly,
+leading to a memory leak.
 
-Prevent for loop in pin_assignment_show from accessing
-invalid values in pin_assignments by adding DP_PIN_ASSIGN_MAX
-value in typec_dp.h and using i < DP_PIN_ASSIGN_MAX as a loop
-condition.
+Adjust error path handling to fix the leak.
 
-Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
-Cc: stable <stable@kernel.org>
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250618224943.3263103-2-rdbabiera@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 43acb728bbc4 ("media: davinci: vpif: fix use-after-free on driver unbind")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Nikiforov <Dm1tryNk@yandex.ru>
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    2 +-
- include/linux/usb/typec_dp.h             |    1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/platform/davinci/vpif.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -677,7 +677,7 @@ static ssize_t pin_assignment_show(struc
+diff --git a/drivers/media/platform/davinci/vpif.c b/drivers/media/platform/davinci/vpif.c
+index 8ffc01c606d0c..a59a059008cf8 100644
+--- a/drivers/media/platform/davinci/vpif.c
++++ b/drivers/media/platform/davinci/vpif.c
+@@ -503,7 +503,7 @@ static int vpif_probe(struct platform_device *pdev)
+ 	pdev_display = kzalloc(sizeof(*pdev_display), GFP_KERNEL);
+ 	if (!pdev_display) {
+ 		ret = -ENOMEM;
+-		goto err_put_pdev_capture;
++		goto err_del_pdev_capture;
+ 	}
  
- 	assignments = get_current_pin_assignments(dp);
+ 	pdev_display->name = "vpif_display";
+@@ -526,6 +526,8 @@ static int vpif_probe(struct platform_device *pdev)
  
--	for (i = 0; assignments; assignments >>= 1, i++) {
-+	for (i = 0; assignments && i < DP_PIN_ASSIGN_MAX; assignments >>= 1, i++) {
- 		if (assignments & 1) {
- 			if (i == cur)
- 				len += sprintf(buf + len, "[%s] ",
---- a/include/linux/usb/typec_dp.h
-+++ b/include/linux/usb/typec_dp.h
-@@ -57,6 +57,7 @@ enum {
- 	DP_PIN_ASSIGN_D,
- 	DP_PIN_ASSIGN_E,
- 	DP_PIN_ASSIGN_F, /* Not supported after v1.0b */
-+	DP_PIN_ASSIGN_MAX,
- };
- 
- /* DisplayPort alt mode specific commands */
+ err_put_pdev_display:
+ 	platform_device_put(pdev_display);
++err_del_pdev_capture:
++	platform_device_del(pdev_capture);
+ err_put_pdev_capture:
+ 	platform_device_put(pdev_capture);
+ err_put_rpm:
+-- 
+2.39.5
+
 
 
 
