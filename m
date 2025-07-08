@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-161039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58190AFD2C0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9113AFD211
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C2CF7B0009
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D316188F475
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844412E0411;
-	Tue,  8 Jul 2025 16:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDB32E49B0;
+	Tue,  8 Jul 2025 16:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+2a1ydK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDTEsd6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41974225414;
-	Tue,  8 Jul 2025 16:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACCFF9E8;
+	Tue,  8 Jul 2025 16:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993419; cv=none; b=M6SshSTmeX1+ZLQZK5e8rf3Gsmys384nofEJ3wgZ58P1a0+msqyO8SIdyhFDlGNM0yq8gVO2Gix7dsCnfc8KlLkM2gcxP6aF/sIaKUzGR9DRePyFyddfgj6l3RjQ06XuTcJE6SMp9fN8/67CzuLYZmBSvvI4jVpxHlaesYhVtdA=
+	t=1751992788; cv=none; b=TA9Vs9lvKv37Q3Fr82iTUlgp8tmnGnrTlzWC/YIO1zvS78VcUEd40cdAJKLk7iVG+bv9NOtnUbLBtuT8u0uWdDIQxLHHuAi6/wYeRRGE9Lr+i3RAVNX8cy8/EVWE90/sGmbAS/hyij9xgiltwGbN9tfEarEGzBVfg+zRkqutKNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993419; c=relaxed/simple;
-	bh=SS/kxkd453EtdTYXwQZhPuJpKCe7i5HZRkFwW6fpLRI=;
+	s=arc-20240116; t=1751992788; c=relaxed/simple;
+	bh=mc1527awR/yCeE2gxr/wRZEOb1D2fRNoLwSaQ35//y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uHOAeRXc+a303NE6XW12x/vEuHlaW7Eqo4C6c3+j4YPM+u3QrStVHLfumpUzwBrMR8LLJP5CWAomYEsHqLTxtsD1kMGuBHFyTVJ3nMw03Oa2M/Ib0L6i6OVUvON8P8jcBJ38BDmWp9XwXpATChukXIYfYD4TY3sNRE5SfD9NBLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+2a1ydK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB17CC4CEED;
-	Tue,  8 Jul 2025 16:50:18 +0000 (UTC)
+	 MIME-Version; b=aBqYkrbRfwm22SQ4/pLUvivimQwPpkFH6w6NC1t6dgec4xUbjsZ8EpGI3CmY3XGcoGlmdTVoPE4FO90IbEXSqzU40n3WlrfMGNTnmlNeGMQSMlUtcPkAciQd9IuZgLRl/IZPEHzFlhV4yt79lLSpVWUOxNGYOVwt5s0X/wLYyPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDTEsd6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6112FC4CEED;
+	Tue,  8 Jul 2025 16:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993419;
-	bh=SS/kxkd453EtdTYXwQZhPuJpKCe7i5HZRkFwW6fpLRI=;
+	s=korg; t=1751992787;
+	bh=mc1527awR/yCeE2gxr/wRZEOb1D2fRNoLwSaQ35//y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P+2a1ydKAgShcEdpHPyaWU0E+Amid4Zol8sL60M0AA4HzrmeRd2aLQSeQATULBSco
-	 t0BOIo6tf/yE8pZz6DUCb+UOxzYSvhFDP67MOgKetyj0rTLdLUROTOyXb3hnIKer+W
-	 P6enBgaN4pSyRsRykkTHYaln4Me9iTurQoeM79oU=
+	b=RDTEsd6zQJQrxl3uwB2gOIU8m6wZXMqneIE7AVXVQPHbr0u7PAjiEfAvcreey4Ywp
+	 +J9UEUMKIU+EW+1Bfw4zMCN+LGjNqSqkRd6U7qqszmvAcqp0Ab9j4ZXxpI7xBP/7WJ
+	 SzwfIr4DGNzrtGjHU2hqUCeNyId7Ct3oGoF04eTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janne Grunau <j@jannau.net>,
-	Sven Peter <sven@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	Steve French <sfrench@samba.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 040/178] arm64: dts: apple: Drop {address,size}-cells from SPI NOR
+Subject: [PATCH 6.12 081/232] smb: client: set missing retry flag in smb2_writev_callback()
 Date: Tue,  8 Jul 2025 18:21:17 +0200
-Message-ID: <20250708162237.726548429@linuxfoundation.org>
+Message-ID: <20250708162243.571907644@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +66,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Peter <sven@kernel.org>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit 811a909978bf59caa25359e0aca4e30500dcff26 ]
+[ Upstream commit e67e75edeb88022c04f8e0a173e1ff6dc688f155 ]
 
-Fix the following warning by dropping #{address,size}-cells from the SPI
-NOR node which only has a single child node without reg property:
+Set NETFS_SREQ_NEED_RETRY flag to tell netfslib that the subreq needs
+to be retried.
 
-spi1-nvram.dtsi:19.10-38.4: Warning (avoid_unnecessary_addr_size): /soc/spi@235104000/flash@0: unnecessary #address-cells/#size-cells without "ranges", "dma-ranges" or child "reg" property
-
-Fixes: 3febe9de5ca5 ("arm64: dts: apple: Add SPI NOR nvram partition to all devices")
-Reviewed-by: Janne Grunau <j@jannau.net>
-Link: https://lore.kernel.org/r/20250610-apple-dts-warnings-v1-1-70b53e8108a0@kernel.org
-Signed-off-by: Sven Peter <sven@kernel.org>
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/20250701163852.2171681-7-dhowells@redhat.com
+Tested-by: Steve French <sfrench@samba.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: netfs@lists.linux.dev
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/apple/spi1-nvram.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ fs/smb/client/smb2pdu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/apple/spi1-nvram.dtsi b/arch/arm64/boot/dts/apple/spi1-nvram.dtsi
-index 3df2fd3993b52..9740fbf200f0b 100644
---- a/arch/arm64/boot/dts/apple/spi1-nvram.dtsi
-+++ b/arch/arm64/boot/dts/apple/spi1-nvram.dtsi
-@@ -20,8 +20,6 @@ flash@0 {
- 		compatible = "jedec,spi-nor";
- 		reg = <0x0>;
- 		spi-max-frequency = <25000000>;
--		#address-cells = <1>;
--		#size-cells = <1>;
- 
- 		partitions {
- 			compatible = "fixed-partitions";
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 3e501da62880c..d514f95deb7e7 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4869,6 +4869,7 @@ smb2_writev_callback(struct mid_q_entry *mid)
+ 		break;
+ 	case MID_REQUEST_SUBMITTED:
+ 	case MID_RETRY_NEEDED:
++		__set_bit(NETFS_SREQ_NEED_RETRY, &wdata->subreq.flags);
+ 		result = -EAGAIN;
+ 		break;
+ 	case MID_RESPONSE_MALFORMED:
 -- 
 2.39.5
 
