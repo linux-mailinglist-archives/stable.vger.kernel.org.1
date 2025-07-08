@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B457AAFD268
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A30AFD489
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D13A53B1794
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54DEA3B041B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5D82E337A;
-	Tue,  8 Jul 2025 16:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD262E5B1D;
+	Tue,  8 Jul 2025 17:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxicGePc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qP7JG/SI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9878F5B;
-	Tue,  8 Jul 2025 16:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3272E6D18;
+	Tue,  8 Jul 2025 17:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992964; cv=none; b=azJ0+mrX7sgOpPFpLCnHZmgm0EADp9f9NNCxYCy6hmtMApe3yrwuXy3U5iaMvS9FERZWaLF+rMp79PxJovgVWtbwibQngUgT5L9BWsiFgsxE1YwmFbjSoZwk4eqI1chV+H5nH+rgpD5QDIvF8yYymbjniJYPOEgIrAO0QaC0URk=
+	t=1751994051; cv=none; b=gdbpQWvW2Nz+TDH1iSVQdsFmbt79lUQiy2xGi+Kj7mz5m5gpnynTmiRct/kOsBDZeOBejpMkCnFwX9d5MlZpCURjd9npkWVOM/bykRDLzMSvOKUymm3FWCVXl4O0k4S/F9dTjW+kowPdYnzCNUgzwznkDMaP6hpP1fVEXGinJhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992964; c=relaxed/simple;
-	bh=BwHeBEZ7lOwXvg5NNAGBW+ccl0lDm3ytNdCi5dL6Bg8=;
+	s=arc-20240116; t=1751994051; c=relaxed/simple;
+	bh=tCXH9pODovt9iAfdQ50vkL6GNumcdZuWuUqea9f9PXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IAEs7aMCe8+y1EngRQBvPp4IIPUDqSbpcluYPmi8Qho79+oMVHi8QkPKJkrp5HU6+pL1SNe6ZmigZZ2K2v9+Fdh+p/z/72FKjeqyr/uaIciTLzmNSNH0pPx4uEMy00UrMYkl+iaJFl8YhQ76tuIFuiVYOZG1VDQVz9aSvXoYTMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxicGePc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E093FC4CEED;
-	Tue,  8 Jul 2025 16:42:43 +0000 (UTC)
+	 MIME-Version; b=Tk74/BF/kSyuW3/WwUFyGL7Li6C5oEzi7FLU3Mi5PLAOJkTVh38907QOGCYQXfIs1hatQVuT5/P9wKYbkfkL6/sgPJvvlFJNYRM/pLFrgoFI1LEcp7Q9RGQv0zahQ9sachlUTmCyvKyeFhO/gI0w39oePLXRYxbAv2b/lYia0yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qP7JG/SI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87280C4CEED;
+	Tue,  8 Jul 2025 17:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992964;
-	bh=BwHeBEZ7lOwXvg5NNAGBW+ccl0lDm3ytNdCi5dL6Bg8=;
+	s=korg; t=1751994050;
+	bh=tCXH9pODovt9iAfdQ50vkL6GNumcdZuWuUqea9f9PXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GxicGePccMSlT/B34Ea8ZSKoHmxRN/+XpAgS1/Kc2xpsV0P+sTlzJ+DoRbvKVbuZW
-	 UXiJ0kt+I5/+fJ78MkCDYqrFeN2F4lTCwcipX+68mwx0E95XLCPtaxAkAhRb+O8jEZ
-	 6k1vBnQRLpMkwJw0r2K04AlNZni2u6AD/X9hAgt8=
+	b=qP7JG/SInLE5Ne5HxMYwCNaAovzML4QtjE62Uu1dAJjdQJltaPK2WkcEXng80/Qr/
+	 gcsikMzRWkiGXn7bAzXamt1fXzOSOAf/A3a7EjB0lYeRzpkUpXEYIXPqeuoujRlh2P
+	 rD3VL+huum82aAEg7hnoNx9slKas5qzCuECG384g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 142/232] arm64: dts: renesas: white-hawk-single: Improve Ethernet TSN description
+	stable <stable@kernel.org>,
+	RD Babiera <rdbabiera@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 101/160] usb: typec: altmodes/displayport: do not index invalid pin_assignments
 Date: Tue,  8 Jul 2025 18:22:18 +0200
-Message-ID: <20250708162245.158828157@linuxfoundation.org>
+Message-ID: <20250708162234.293244470@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit 8ffec7d62c6956199f442dac3b2d5d02231c3977 ]
+commit af4db5a35a4ef7a68046883bfd12468007db38f1 upstream.
 
-  - Add the missing "ethernet3" alias for the Ethernet TSN port, so
-    U-Boot will fill its local-mac-address property based on the
-    "eth3addr" environment variable (if set), avoiding a random MAC
-    address being assigned by the OS,
-  - Rename the numerical Ethernet PHY label to "tsn0_phy", to avoid
-    future conflicts, and for consistency with the "avbN_phy" labels.
+A poorly implemented DisplayPort Alt Mode port partner can indicate
+that its pin assignment capabilities are greater than the maximum
+value, DP_PIN_ASSIGN_F. In this case, calls to pin_assignment_show
+will cause a BRK exception due to an out of bounds array access.
 
-Fixes: 3d8e475bd7a724a9 ("arm64: dts: renesas: white-hawk-single: Wire-up Ethernet TSN")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://lore.kernel.org/367f10a18aa196ff1c96734dd9bd5634b312c421.1746624368.git.geert+renesas@glider.be
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Prevent for loop in pin_assignment_show from accessing
+invalid values in pin_assignments by adding DP_PIN_ASSIGN_MAX
+value in typec_dp.h and using i < DP_PIN_ASSIGN_MAX as a loop
+condition.
+
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable <stable@kernel.org>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250618224943.3263103-2-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/renesas/white-hawk-single.dtsi | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/usb/typec/altmodes/displayport.c |    2 +-
+ include/linux/usb/typec_dp.h             |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/white-hawk-single.dtsi b/arch/arm64/boot/dts/renesas/white-hawk-single.dtsi
-index 20e8232f2f323..976a3ab44e5a5 100644
---- a/arch/arm64/boot/dts/renesas/white-hawk-single.dtsi
-+++ b/arch/arm64/boot/dts/renesas/white-hawk-single.dtsi
-@@ -11,6 +11,10 @@
- / {
- 	model = "Renesas White Hawk Single board";
- 	compatible = "renesas,white-hawk-single";
-+
-+	aliases {
-+		ethernet3 = &tsn0;
-+	};
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -503,7 +503,7 @@ static ssize_t pin_assignment_show(struc
+ 
+ 	assignments = get_current_pin_assignments(dp);
+ 
+-	for (i = 0; assignments; assignments >>= 1, i++) {
++	for (i = 0; assignments && i < DP_PIN_ASSIGN_MAX; assignments >>= 1, i++) {
+ 		if (assignments & 1) {
+ 			if (i == cur)
+ 				len += sprintf(buf + len, "[%s] ",
+--- a/include/linux/usb/typec_dp.h
++++ b/include/linux/usb/typec_dp.h
+@@ -56,6 +56,7 @@ enum {
+ 	DP_PIN_ASSIGN_D,
+ 	DP_PIN_ASSIGN_E,
+ 	DP_PIN_ASSIGN_F, /* Not supported after v1.0b */
++	DP_PIN_ASSIGN_MAX,
  };
  
- &hscif0 {
-@@ -53,7 +57,7 @@ &tsn0 {
- 	pinctrl-0 = <&tsn0_pins>;
- 	pinctrl-names = "default";
- 	phy-mode = "rgmii";
--	phy-handle = <&phy3>;
-+	phy-handle = <&tsn0_phy>;
- 	status = "okay";
- 
- 	mdio {
-@@ -63,7 +67,7 @@ mdio {
- 		reset-gpios = <&gpio1 23 GPIO_ACTIVE_LOW>;
- 		reset-post-delay-us = <4000>;
- 
--		phy3: ethernet-phy@0 {
-+		tsn0_phy: ethernet-phy@0 {
- 			compatible = "ethernet-phy-id002b.0980",
- 				     "ethernet-phy-ieee802.3-c22";
- 			reg = <0>;
--- 
-2.39.5
-
+ /* DisplayPort alt mode specific commands */
 
 
 
