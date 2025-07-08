@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-161246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED958AFD472
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A68AFD258
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8CF73B0034
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:00:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54CB1188B5F1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1882E5B12;
-	Tue,  8 Jul 2025 17:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E022E540B;
+	Tue,  8 Jul 2025 16:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qX/zqdBw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2j1I1+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B12A1DC9B1;
-	Tue,  8 Jul 2025 17:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152952DECC4;
+	Tue,  8 Jul 2025 16:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994019; cv=none; b=kKvnokO708Yhkk6FRoXfjGjRUBX4LMkKbSaGsSP2cYgcNpyt/xgm7nAO1IggCMhPaq3DgUPpXJCZy0RwqAOgyZt5gpytWgEcfPyF3fM0SC2x78BizGzJoQYhMbp6mqsLEhd2xsVxRK5k9qLs7JwxYL5cyfRl8PMk+JRDGWg3yKs=
+	t=1751992953; cv=none; b=SHGcWllnMuV4/fHYWH8AbUTjH171CojzRrhzn7uRgUlwh6Wx078U/Ow+REPcKlIkmUlxL+GXiBSZA59ATeAx9wgErI0yO5aLqXOTVptcG6NYqk+w2GYCSDSUmvnthoQoVzHMjYbsEeoELUOscPzV/UGOybOnix/z3pTCrjSqLMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994019; c=relaxed/simple;
-	bh=sItBZWYJmWv4cgoAGM+NKVFnXNlNh+QUAoYj0WK5Rxg=;
+	s=arc-20240116; t=1751992953; c=relaxed/simple;
+	bh=bpy/Dif0cQoiz8ABDYfmmDHF9U5r3X07o0pjKjD7hW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dS+X1JksGBS0XIm3v/T/gWUUVFMA1u77gcY96F7ypfZ3MWjI5O4ovFB9ZRMLVJ0p8a6l1pmYCEr0R3w48fEg9woIDiZB7eo34GkQbPf9Vba9umNVxVduzX1ycHahWJRPbzFrfBxPkIcD0V+HiLq7uiiuwcI0ADA1nECrRPwahYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qX/zqdBw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6989C4CEED;
-	Tue,  8 Jul 2025 17:00:18 +0000 (UTC)
+	 MIME-Version; b=OKU+Ut9liR//TXDMfZm8Dfax2yEi7fMcW8jV1TbkQVt8zHeQyj+JIDCz1blW7TLvnlZP6cQggecUFAA3lA4e8j96iqkG0BEfYNoT0SsZyD1yOlcUoCPJsI2C11zfptA9QkDvqqbEfkmkxlOSYop01RSM/9Fg2GE/OD09YVvBo20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2j1I1+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941CAC4CEED;
+	Tue,  8 Jul 2025 16:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994019;
-	bh=sItBZWYJmWv4cgoAGM+NKVFnXNlNh+QUAoYj0WK5Rxg=;
+	s=korg; t=1751992953;
+	bh=bpy/Dif0cQoiz8ABDYfmmDHF9U5r3X07o0pjKjD7hW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qX/zqdBwiRCGYCYjjVq3pOnJyctw7R0yfiFD5feETG4J/x5+1K15Htiw7e1KvOb5r
-	 SMcG2FLSsvQILhpzdGbUdtkOsbtGoch5IkQ3DgpWaNQojFKobvTZPV6dp28V1dCgLu
-	 uPFqTK/euoiMWHfY+mwJu9bJn7lGAxKwJ+h3FvPM=
+	b=I2j1I1+iuBPXYdUH8TbmbMBUWaCcZc3N5EJmDDeQncpWBw75qf0uUDp8V6g0RMbsI
+	 j0ClltxAtuwHuqAQ4wVfIUjObso4ZG+wt4xI5zH1JWtBpvzPi6fE7siJpW8wg+OHm2
+	 H1QMzi9YN4EUjc3HKL3o1BN4sUrni+FtsfrWOJak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.15 097/160] rtc: cmos: use spin_lock_irqsave in cmos_interrupt
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 138/232] arm64: dts: qcom: sm8650: change labels to lower-case
 Date: Tue,  8 Jul 2025 18:22:14 +0200
-Message-ID: <20250708162234.192390731@linuxfoundation.org>
+Message-ID: <20250708162245.053022749@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +61,466 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Jończyk <mat.jonczyk@o2.pl>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 00a39d8652ff9088de07a6fe6e9e1893452fe0dd upstream.
+[ Upstream commit 20eb2057b3e46feb0c2b517bcff3acfbba28320f ]
 
-cmos_interrupt() can be called in a non-interrupt context, such as in
-an ACPI event handler (which runs in an interrupt thread). Therefore,
-usage of spin_lock(&rtc_lock) is insecure. Use spin_lock_irqsave() /
-spin_unlock_irqrestore() instead.
+DTS coding style expects labels to be lowercase.  No functional impact.
+Verified with comparing decompiled DTB (dtx_diff and fdtdump+diff).
 
-Before a misguided
-commit 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
-the cmos_interrupt() function used spin_lock_irqsave(). That commit
-changed it to spin_lock() and broke locking, which was partially fixed in
-commit 13be2efc390a ("rtc: cmos: Disable irq around direct invocation of cmos_interrupt()")
-
-That second commit did not take account of the ACPI fixed event handler
-pathway, however. It introduced local_irq_disable() workarounds in
-cmos_check_wkalrm(), which can cause problems on PREEMPT_RT kernels
-and are now unnecessary.
-
-Add an explicit comment so that this change will not be reverted by
-mistake.
-
-Cc: stable@vger.kernel.org
-Fixes: 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
-Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Closes: https://lore.kernel.org/all/aDtJ92foPUYmGheF@debian.local/
-Link: https://lore.kernel.org/r/20250607210608.14835-1-mat.jonczyk@o2.pl
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241022-dts-qcom-label-v3-14-0505bc7d2c56@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 9bb5ca464100 ("arm64: dts: qcom: sm8650: Fix domain-idle-state for CPU2")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-cmos.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8650.dtsi | 156 +++++++++++++--------------
+ 1 file changed, 78 insertions(+), 78 deletions(-)
 
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -698,8 +698,12 @@ static irqreturn_t cmos_interrupt(int ir
- {
- 	u8		irqstat;
- 	u8		rtc_control;
-+	unsigned long	flags;
+diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+index edde21972f5ac..3a7daeb2c12e3 100644
+--- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+@@ -68,18 +68,18 @@ cpus {
+ 		#address-cells = <2>;
+ 		#size-cells = <0>;
  
--	spin_lock(&rtc_lock);
-+	/* We cannot use spin_lock() here, as cmos_interrupt() is also called
-+	 * in a non-irq context.
-+	 */
-+	spin_lock_irqsave(&rtc_lock, flags);
+-		CPU0: cpu@0 {
++		cpu0: cpu@0 {
+ 			device_type = "cpu";
+ 			compatible = "arm,cortex-a520";
+ 			reg = <0 0>;
  
- 	/* When the HPET interrupt handler calls us, the interrupt
- 	 * status is passed as arg1 instead of the irq number.  But
-@@ -733,7 +737,7 @@ static irqreturn_t cmos_interrupt(int ir
- 			hpet_mask_rtc_irq_bit(RTC_AIE);
- 		CMOS_READ(RTC_INTR_FLAGS);
- 	}
--	spin_unlock(&rtc_lock);
-+	spin_unlock_irqrestore(&rtc_lock, flags);
+ 			clocks = <&cpufreq_hw 0>;
  
- 	if (is_intr(irqstat)) {
- 		rtc_update_irq(p, 1, irqstat);
-@@ -1284,9 +1288,7 @@ static void cmos_check_wkalrm(struct dev
- 	 * ACK the rtc irq here
- 	 */
- 	if (t_now >= cmos->alarm_expires && cmos_use_acpi_alarm()) {
--		local_irq_disable();
- 		cmos_interrupt(0, (void *)cmos->rtc);
--		local_irq_enable();
- 		return;
- 	}
+-			power-domains = <&CPU_PD0>;
++			power-domains = <&cpu_pd0>;
+ 			power-domain-names = "psci";
  
+ 			enable-method = "psci";
+-			next-level-cache = <&L2_0>;
++			next-level-cache = <&l2_0>;
+ 			capacity-dmips-mhz = <1024>;
+ 			dynamic-power-coefficient = <100>;
+ 
+@@ -87,13 +87,13 @@ CPU0: cpu@0 {
+ 
+ 			#cooling-cells = <2>;
+ 
+-			L2_0: l2-cache {
++			l2_0: l2-cache {
+ 				compatible = "cache";
+ 				cache-level = <2>;
+ 				cache-unified;
+-				next-level-cache = <&L3_0>;
++				next-level-cache = <&l3_0>;
+ 
+-				L3_0: l3-cache {
++				l3_0: l3-cache {
+ 					compatible = "cache";
+ 					cache-level = <3>;
+ 					cache-unified;
+@@ -101,18 +101,18 @@ L3_0: l3-cache {
+ 			};
+ 		};
+ 
+-		CPU1: cpu@100 {
++		cpu1: cpu@100 {
+ 			device_type = "cpu";
+ 			compatible = "arm,cortex-a520";
+ 			reg = <0 0x100>;
+ 
+ 			clocks = <&cpufreq_hw 0>;
+ 
+-			power-domains = <&CPU_PD1>;
++			power-domains = <&cpu_pd1>;
+ 			power-domain-names = "psci";
+ 
+ 			enable-method = "psci";
+-			next-level-cache = <&L2_0>;
++			next-level-cache = <&l2_0>;
+ 			capacity-dmips-mhz = <1024>;
+ 			dynamic-power-coefficient = <100>;
+ 
+@@ -121,18 +121,18 @@ CPU1: cpu@100 {
+ 			#cooling-cells = <2>;
+ 		};
+ 
+-		CPU2: cpu@200 {
++		cpu2: cpu@200 {
+ 			device_type = "cpu";
+ 			compatible = "arm,cortex-a720";
+ 			reg = <0 0x200>;
+ 
+ 			clocks = <&cpufreq_hw 3>;
+ 
+-			power-domains = <&CPU_PD2>;
++			power-domains = <&cpu_pd2>;
+ 			power-domain-names = "psci";
+ 
+ 			enable-method = "psci";
+-			next-level-cache = <&L2_200>;
++			next-level-cache = <&l2_200>;
+ 			capacity-dmips-mhz = <1792>;
+ 			dynamic-power-coefficient = <238>;
+ 
+@@ -140,26 +140,26 @@ CPU2: cpu@200 {
+ 
+ 			#cooling-cells = <2>;
+ 
+-			L2_200: l2-cache {
++			l2_200: l2-cache {
+ 				compatible = "cache";
+ 				cache-level = <2>;
+ 				cache-unified;
+-				next-level-cache = <&L3_0>;
++				next-level-cache = <&l3_0>;
+ 			};
+ 		};
+ 
+-		CPU3: cpu@300 {
++		cpu3: cpu@300 {
+ 			device_type = "cpu";
+ 			compatible = "arm,cortex-a720";
+ 			reg = <0 0x300>;
+ 
+ 			clocks = <&cpufreq_hw 3>;
+ 
+-			power-domains = <&CPU_PD3>;
++			power-domains = <&cpu_pd3>;
+ 			power-domain-names = "psci";
+ 
+ 			enable-method = "psci";
+-			next-level-cache = <&L2_200>;
++			next-level-cache = <&l2_200>;
+ 			capacity-dmips-mhz = <1792>;
+ 			dynamic-power-coefficient = <238>;
+ 
+@@ -168,18 +168,18 @@ CPU3: cpu@300 {
+ 			#cooling-cells = <2>;
+ 		};
+ 
+-		CPU4: cpu@400 {
++		cpu4: cpu@400 {
+ 			device_type = "cpu";
+ 			compatible = "arm,cortex-a720";
+ 			reg = <0 0x400>;
+ 
+ 			clocks = <&cpufreq_hw 3>;
+ 
+-			power-domains = <&CPU_PD4>;
++			power-domains = <&cpu_pd4>;
+ 			power-domain-names = "psci";
+ 
+ 			enable-method = "psci";
+-			next-level-cache = <&L2_400>;
++			next-level-cache = <&l2_400>;
+ 			capacity-dmips-mhz = <1792>;
+ 			dynamic-power-coefficient = <238>;
+ 
+@@ -187,26 +187,26 @@ CPU4: cpu@400 {
+ 
+ 			#cooling-cells = <2>;
+ 
+-			L2_400: l2-cache {
++			l2_400: l2-cache {
+ 				compatible = "cache";
+ 				cache-level = <2>;
+ 				cache-unified;
+-				next-level-cache = <&L3_0>;
++				next-level-cache = <&l3_0>;
+ 			};
+ 		};
+ 
+-		CPU5: cpu@500 {
++		cpu5: cpu@500 {
+ 			device_type = "cpu";
+ 			compatible = "arm,cortex-a720";
+ 			reg = <0 0x500>;
+ 
+ 			clocks = <&cpufreq_hw 1>;
+ 
+-			power-domains = <&CPU_PD5>;
++			power-domains = <&cpu_pd5>;
+ 			power-domain-names = "psci";
+ 
+ 			enable-method = "psci";
+-			next-level-cache = <&L2_500>;
++			next-level-cache = <&l2_500>;
+ 			capacity-dmips-mhz = <1792>;
+ 			dynamic-power-coefficient = <238>;
+ 
+@@ -214,26 +214,26 @@ CPU5: cpu@500 {
+ 
+ 			#cooling-cells = <2>;
+ 
+-			L2_500: l2-cache {
++			l2_500: l2-cache {
+ 				compatible = "cache";
+ 				cache-level = <2>;
+ 				cache-unified;
+-				next-level-cache = <&L3_0>;
++				next-level-cache = <&l3_0>;
+ 			};
+ 		};
+ 
+-		CPU6: cpu@600 {
++		cpu6: cpu@600 {
+ 			device_type = "cpu";
+ 			compatible = "arm,cortex-a720";
+ 			reg = <0 0x600>;
+ 
+ 			clocks = <&cpufreq_hw 1>;
+ 
+-			power-domains = <&CPU_PD6>;
++			power-domains = <&cpu_pd6>;
+ 			power-domain-names = "psci";
+ 
+ 			enable-method = "psci";
+-			next-level-cache = <&L2_600>;
++			next-level-cache = <&l2_600>;
+ 			capacity-dmips-mhz = <1792>;
+ 			dynamic-power-coefficient = <238>;
+ 
+@@ -241,26 +241,26 @@ CPU6: cpu@600 {
+ 
+ 			#cooling-cells = <2>;
+ 
+-			L2_600: l2-cache {
++			l2_600: l2-cache {
+ 				compatible = "cache";
+ 				cache-level = <2>;
+ 				cache-unified;
+-				next-level-cache = <&L3_0>;
++				next-level-cache = <&l3_0>;
+ 			};
+ 		};
+ 
+-		CPU7: cpu@700 {
++		cpu7: cpu@700 {
+ 			device_type = "cpu";
+ 			compatible = "arm,cortex-x4";
+ 			reg = <0 0x700>;
+ 
+ 			clocks = <&cpufreq_hw 2>;
+ 
+-			power-domains = <&CPU_PD7>;
++			power-domains = <&cpu_pd7>;
+ 			power-domain-names = "psci";
+ 
+ 			enable-method = "psci";
+-			next-level-cache = <&L2_700>;
++			next-level-cache = <&l2_700>;
+ 			capacity-dmips-mhz = <1894>;
+ 			dynamic-power-coefficient = <588>;
+ 
+@@ -268,46 +268,46 @@ CPU7: cpu@700 {
+ 
+ 			#cooling-cells = <2>;
+ 
+-			L2_700: l2-cache {
++			l2_700: l2-cache {
+ 				compatible = "cache";
+ 				cache-level = <2>;
+ 				cache-unified;
+-				next-level-cache = <&L3_0>;
++				next-level-cache = <&l3_0>;
+ 			};
+ 		};
+ 
+ 		cpu-map {
+ 			cluster0 {
+ 				core0 {
+-					cpu = <&CPU0>;
++					cpu = <&cpu0>;
+ 				};
+ 
+ 				core1 {
+-					cpu = <&CPU1>;
++					cpu = <&cpu1>;
+ 				};
+ 
+ 				core2 {
+-					cpu = <&CPU2>;
++					cpu = <&cpu2>;
+ 				};
+ 
+ 				core3 {
+-					cpu = <&CPU3>;
++					cpu = <&cpu3>;
+ 				};
+ 
+ 				core4 {
+-					cpu = <&CPU4>;
++					cpu = <&cpu4>;
+ 				};
+ 
+ 				core5 {
+-					cpu = <&CPU5>;
++					cpu = <&cpu5>;
+ 				};
+ 
+ 				core6 {
+-					cpu = <&CPU6>;
++					cpu = <&cpu6>;
+ 				};
+ 
+ 				core7 {
+-					cpu = <&CPU7>;
++					cpu = <&cpu7>;
+ 				};
+ 			};
+ 		};
+@@ -315,7 +315,7 @@ core7 {
+ 		idle-states {
+ 			entry-method = "psci";
+ 
+-			SILVER_CPU_SLEEP_0: cpu-sleep-0-0 {
++			silver_cpu_sleep_0: cpu-sleep-0-0 {
+ 				compatible = "arm,idle-state";
+ 				idle-state-name = "silver-rail-power-collapse";
+ 				arm,psci-suspend-param = <0x40000004>;
+@@ -325,7 +325,7 @@ SILVER_CPU_SLEEP_0: cpu-sleep-0-0 {
+ 				local-timer-stop;
+ 			};
+ 
+-			GOLD_CPU_SLEEP_0: cpu-sleep-1-0 {
++			gold_cpu_sleep_0: cpu-sleep-1-0 {
+ 				compatible = "arm,idle-state";
+ 				idle-state-name = "gold-rail-power-collapse";
+ 				arm,psci-suspend-param = <0x40000004>;
+@@ -335,7 +335,7 @@ GOLD_CPU_SLEEP_0: cpu-sleep-1-0 {
+ 				local-timer-stop;
+ 			};
+ 
+-			GOLD_PLUS_CPU_SLEEP_0: cpu-sleep-2-0 {
++			gold_plus_cpu_sleep_0: cpu-sleep-2-0 {
+ 				compatible = "arm,idle-state";
+ 				idle-state-name = "gold-plus-rail-power-collapse";
+ 				arm,psci-suspend-param = <0x40000004>;
+@@ -347,7 +347,7 @@ GOLD_PLUS_CPU_SLEEP_0: cpu-sleep-2-0 {
+ 		};
+ 
+ 		domain-idle-states {
+-			CLUSTER_SLEEP_0: cluster-sleep-0 {
++			cluster_sleep_0: cluster-sleep-0 {
+ 				compatible = "domain-idle-state";
+ 				arm,psci-suspend-param = <0x41000044>;
+ 				entry-latency-us = <750>;
+@@ -355,7 +355,7 @@ CLUSTER_SLEEP_0: cluster-sleep-0 {
+ 				min-residency-us = <9144>;
+ 			};
+ 
+-			CLUSTER_SLEEP_1: cluster-sleep-1 {
++			cluster_sleep_1: cluster-sleep-1 {
+ 				compatible = "domain-idle-state";
+ 				arm,psci-suspend-param = <0x4100c344>;
+ 				entry-latency-us = <2800>;
+@@ -411,58 +411,58 @@ psci {
+ 		compatible = "arm,psci-1.0";
+ 		method = "smc";
+ 
+-		CPU_PD0: power-domain-cpu0 {
++		cpu_pd0: power-domain-cpu0 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&CLUSTER_PD>;
+-			domain-idle-states = <&SILVER_CPU_SLEEP_0>;
++			power-domains = <&cluster_pd>;
++			domain-idle-states = <&silver_cpu_sleep_0>;
+ 		};
+ 
+-		CPU_PD1: power-domain-cpu1 {
++		cpu_pd1: power-domain-cpu1 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&CLUSTER_PD>;
+-			domain-idle-states = <&SILVER_CPU_SLEEP_0>;
++			power-domains = <&cluster_pd>;
++			domain-idle-states = <&silver_cpu_sleep_0>;
+ 		};
+ 
+-		CPU_PD2: power-domain-cpu2 {
++		cpu_pd2: power-domain-cpu2 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&CLUSTER_PD>;
+-			domain-idle-states = <&SILVER_CPU_SLEEP_0>;
++			power-domains = <&cluster_pd>;
++			domain-idle-states = <&silver_cpu_sleep_0>;
+ 		};
+ 
+-		CPU_PD3: power-domain-cpu3 {
++		cpu_pd3: power-domain-cpu3 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&CLUSTER_PD>;
+-			domain-idle-states = <&GOLD_CPU_SLEEP_0>;
++			power-domains = <&cluster_pd>;
++			domain-idle-states = <&gold_cpu_sleep_0>;
+ 		};
+ 
+-		CPU_PD4: power-domain-cpu4 {
++		cpu_pd4: power-domain-cpu4 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&CLUSTER_PD>;
+-			domain-idle-states = <&GOLD_CPU_SLEEP_0>;
++			power-domains = <&cluster_pd>;
++			domain-idle-states = <&gold_cpu_sleep_0>;
+ 		};
+ 
+-		CPU_PD5: power-domain-cpu5 {
++		cpu_pd5: power-domain-cpu5 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&CLUSTER_PD>;
+-			domain-idle-states = <&GOLD_CPU_SLEEP_0>;
++			power-domains = <&cluster_pd>;
++			domain-idle-states = <&gold_cpu_sleep_0>;
+ 		};
+ 
+-		CPU_PD6: power-domain-cpu6 {
++		cpu_pd6: power-domain-cpu6 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&CLUSTER_PD>;
+-			domain-idle-states = <&GOLD_CPU_SLEEP_0>;
++			power-domains = <&cluster_pd>;
++			domain-idle-states = <&gold_cpu_sleep_0>;
+ 		};
+ 
+-		CPU_PD7: power-domain-cpu7 {
++		cpu_pd7: power-domain-cpu7 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&CLUSTER_PD>;
+-			domain-idle-states = <&GOLD_PLUS_CPU_SLEEP_0>;
++			power-domains = <&cluster_pd>;
++			domain-idle-states = <&gold_plus_cpu_sleep_0>;
+ 		};
+ 
+-		CLUSTER_PD: power-domain-cluster {
++		cluster_pd: power-domain-cluster {
+ 			#power-domain-cells = <0>;
+-			domain-idle-states = <&CLUSTER_SLEEP_0>,
+-					     <&CLUSTER_SLEEP_1>;
++			domain-idle-states = <&cluster_sleep_0>,
++					     <&cluster_sleep_1>;
+ 		};
+ 	};
+ 
+@@ -5233,7 +5233,7 @@ apps_rsc: rsc@17a00000 {
+ 				     <GIC_SPI 4 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 5 IRQ_TYPE_LEVEL_HIGH>;
+ 
+-			power-domains = <&CLUSTER_PD>;
++			power-domains = <&cluster_pd>;
+ 
+ 			qcom,tcs-offset = <0xd00>;
+ 			qcom,drv-id = <2>;
+-- 
+2.39.5
+
 
 
 
