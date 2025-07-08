@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-160690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69285AFD160
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:35:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 847C8AFD496
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FFE85411EA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:33:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04D941C2774A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820C42E5B04;
-	Tue,  8 Jul 2025 16:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980AD2E5B09;
+	Tue,  8 Jul 2025 17:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSBW5RkE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8HQJ/NZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5B02E54C4;
-	Tue,  8 Jul 2025 16:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5622A2DD5EF;
+	Tue,  8 Jul 2025 17:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992406; cv=none; b=n8WaP3zXZTlw50HFq/fNT5dLlb23FMPhci7nMiCPZxnm9KU/b0TCdr6TQR5l5RPXMpGEaJzsDcxlKZqoXIaXhRx3Df/4idddsNlZicuE0CkBKPJk8iHXvvKIiCDH51Fk1N6ZLXyvOw780u7aiOyjGbXwdzwpNHkz6+8juKU51Rw=
+	t=1751994101; cv=none; b=HrptvRkm46uW/SY7oCRfqKmaMG+2OvKaG6CY1rsEwzPcZTwQ5KAE5NG8k8rAd4vzzkw8bZTvK631uV2kFYH/tqgSa/kxinPlMYH59UESmChcD+Tu8K5riqjkUVjc7ZGYI9XR+u6OhleOtM8WUShex7D5cbhEODiS+7tcrHzUmps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992406; c=relaxed/simple;
-	bh=z7kgl2wsC5yZCobHLrGav0cWtp95gQYTlpjZ7N/wTTc=;
+	s=arc-20240116; t=1751994101; c=relaxed/simple;
+	bh=THb4lH6pxW8NTYy+Pb69RX08CIhq3q5fM4vqDGPayHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHSSCQ+SKD4j+BGo16tGZXe4xGE7B4WoGGBoGu0XtgxrrP3n/kMDhFqom20Uzr3yivQfl5E17bkOXcKUbjmZcVe7mfsl6Qv1S8OvYNXERUYPWgdEJjn7pHLSW9ZfmEA1AOKj7my++g+GN/fbma5TxkHHfgPxQ/JVa0HAx/Gw6Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSBW5RkE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB783C4CEF5;
-	Tue,  8 Jul 2025 16:33:25 +0000 (UTC)
+	 MIME-Version; b=YqgeFa01tYxOB/RehdBuPCnWCAYSNLUpqE3DPWzCO55DDx5vj4mlAJfSw442i4+hI3KPFh5agl8PPy3gVYnv/1bPU9u09zlIJqNWAAuG4ULdVPK/uJAGNY4VukUjOE8jwq4lSonhu4Tu3S/cKAuhhY2udIfX1HiJB6+AcocGEOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8HQJ/NZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D556DC4CEED;
+	Tue,  8 Jul 2025 17:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992406;
-	bh=z7kgl2wsC5yZCobHLrGav0cWtp95gQYTlpjZ7N/wTTc=;
+	s=korg; t=1751994101;
+	bh=THb4lH6pxW8NTYy+Pb69RX08CIhq3q5fM4vqDGPayHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSBW5RkEVcHh7/0pETPQdycIe8xaqNFqhxVeHW3Fo9kUbyutFmu8DeavUZPkciyt0
-	 XlnxWXZCCgpkV2LUoHV1kfpP9BVGSxSqZJKu3mXVClLgPm9GRDriDNtex7Tw+9P9T/
-	 fL+1FKr8FZaPxRgFnjhvrmlZnBV8oEpZOLN06l50=
+	b=m8HQJ/NZ2RnuxiyEcLYdsK/RddMksCl9iyPfGP+KbuaIl4QJ51U69YnqThEFY+Ts3
+	 /2DAUWZ6dN/TPVM10kJf4QSZTjuzOEXaLtfj/giozxsmcJGDMXV49x5/9UtUqpgzfc
+	 B1XwTaJOWiINq51zqJ2eQyGKf/nGr98aNN0smfsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>,
+	Lion Ackermann <nnamrec@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/132] smb: client: fix warning when reconnecting channel
+Subject: [PATCH 5.15 125/160] net/sched: Always pass notifications when child class becomes empty
 Date: Tue,  8 Jul 2025 18:22:42 +0200
-Message-ID: <20250708162232.153036061@linuxfoundation.org>
+Message-ID: <20250708162234.889868325@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,131 +64,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Lion Ackermann <nnamrec@gmail.com>
 
-[ Upstream commit 3bbe46716092d8ef6b0df4b956f585c5cd0fc78e ]
+[ Upstream commit 103406b38c600fec1fe375a77b27d87e314aea09 ]
 
-When reconnecting a channel in smb2_reconnect_server(), a dummy tcon
-is passed down to smb2_reconnect() with ->query_interface
-uninitialized, so we can't call queue_delayed_work() on it.
+Certain classful qdiscs may invoke their classes' dequeue handler on an
+enqueue operation. This may unexpectedly empty the child qdisc and thus
+make an in-flight class passive via qlen_notify(). Most qdiscs do not
+expect such behaviour at this point in time and may re-activate the
+class eventually anyways which will lead to a use-after-free.
 
-Fix the following warning by ensuring that we're queueing the delayed
-worker from correct tcon.
+The referenced fix commit attempted to fix this behavior for the HFSC
+case by moving the backlog accounting around, though this turned out to
+be incomplete since the parent's parent may run into the issue too.
+The following reproducer demonstrates this use-after-free:
 
-WARNING: CPU: 4 PID: 1126 at kernel/workqueue.c:2498 __queue_delayed_work+0x1d2/0x200
-Modules linked in: cifs cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
-CPU: 4 UID: 0 PID: 1126 Comm: kworker/4:0 Not tainted 6.16.0-rc3 #5 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-4.fc42 04/01/2014
-Workqueue: cifsiod smb2_reconnect_server [cifs]
-RIP: 0010:__queue_delayed_work+0x1d2/0x200
-Code: 41 5e 41 5f e9 7f ee ff ff 90 0f 0b 90 e9 5d ff ff ff bf 02 00
-00 00 e8 6c f3 07 00 89 c3 eb bd 90 0f 0b 90 e9 57 f> 0b 90 e9 65 fe
-ff ff 90 0f 0b 90 e9 72 fe ff ff 90 0f 0b 90 e9
-RSP: 0018:ffffc900014afad8 EFLAGS: 00010003
-RAX: 0000000000000000 RBX: ffff888124d99988 RCX: ffffffff81399cc1
-RDX: dffffc0000000000 RSI: ffff888114326e00 RDI: ffff888124d999f0
-RBP: 000000000000ea60 R08: 0000000000000001 R09: ffffed10249b3331
-R10: ffff888124d9998f R11: 0000000000000004 R12: 0000000000000040
-R13: ffff888114326e00 R14: ffff888124d999d8 R15: ffff888114939020
-FS:  0000000000000000(0000) GS:ffff88829f7fe000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffe7a2b4038 CR3: 0000000120a6f000 CR4: 0000000000750ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- queue_delayed_work_on+0xb4/0xc0
- smb2_reconnect+0xb22/0xf50 [cifs]
- smb2_reconnect_server+0x413/0xd40 [cifs]
- ? __pfx_smb2_reconnect_server+0x10/0x10 [cifs]
- ? local_clock_noinstr+0xd/0xd0
- ? local_clock+0x15/0x30
- ? lock_release+0x29b/0x390
- process_one_work+0x4c5/0xa10
- ? __pfx_process_one_work+0x10/0x10
- ? __list_add_valid_or_report+0x37/0x120
- worker_thread+0x2f1/0x5a0
- ? __kthread_parkme+0xde/0x100
- ? __pfx_worker_thread+0x10/0x10
- kthread+0x1fe/0x380
- ? kthread+0x10f/0x380
- ? __pfx_kthread+0x10/0x10
- ? local_clock_noinstr+0xd/0xd0
- ? ret_from_fork+0x1b/0x1f0
- ? local_clock+0x15/0x30
- ? lock_release+0x29b/0x390
- ? rcu_is_watching+0x20/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x15b/0x1f0
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-irq event stamp: 1116206
-hardirqs last  enabled at (1116205): [<ffffffff8143af42>] __up_console_sem+0x52/0x60
-hardirqs last disabled at (1116206): [<ffffffff81399f0e>] queue_delayed_work_on+0x6e/0xc0
-softirqs last  enabled at (1116138): [<ffffffffc04562fd>] __smb_send_rqst+0x42d/0x950 [cifs]
-softirqs last disabled at (1116136): [<ffffffff823d35e1>] release_sock+0x21/0xf0
+    tc qdisc add dev lo root handle 1: drr
+    tc filter add dev lo parent 1: basic classid 1:1
+    tc class add dev lo parent 1: classid 1:1 drr
+    tc qdisc add dev lo parent 1:1 handle 2: hfsc def 1
+    tc class add dev lo parent 2: classid 2:1 hfsc rt m1 8 d 1 m2 0
+    tc qdisc add dev lo parent 2:1 handle 3: netem
+    tc qdisc add dev lo parent 3:1 handle 4: blackhole
 
-Cc: linux-cifs@vger.kernel.org
-Reported-by: David Howells <dhowells@redhat.com>
-Fixes: 42ca547b13a2 ("cifs: do not disable interface polling on failure")
-Reviewed-by: David Howells <dhowells@redhat.com>
-Tested-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Shyam Prasad N <nspmangalore@gmail.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+    echo 1 | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888
+    tc class delete dev lo classid 1:1
+    echo 1 | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888
+
+Since backlog accounting issues leading to a use-after-frees on stale
+class pointers is a recurring pattern at this point, this patch takes
+a different approach. Instead of trying to fix the accounting, the patch
+ensures that qdisc_tree_reduce_backlog always calls qlen_notify when
+the child qdisc is empty. This solves the problem because deletion of
+qdiscs always involves a call to qdisc_reset() and / or
+qdisc_purge_queue() which ultimately resets its qlen to 0 thus causing
+the following qdisc_tree_reduce_backlog() to report to the parent. Note
+that this may call qlen_notify on passive classes multiple times. This
+is not a problem after the recent patch series that made all the
+classful qdiscs qlen_notify() handlers idempotent.
+
+Fixes: 3f981138109f ("sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue()")
+Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsglob.h |  1 +
- fs/smb/client/smb2pdu.c  | 10 ++++------
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ net/sched/sch_api.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index d776340ad91ce..a6020f7408fe5 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -1268,6 +1268,7 @@ struct cifs_tcon {
- 	bool use_persistent:1; /* use persistent instead of durable handles */
- 	bool no_lease:1;    /* Do not request leases on files or directories */
- 	bool use_witness:1; /* use witness protocol */
-+	bool dummy:1; /* dummy tcon used for reconnecting channels */
- 	__le32 capabilities;
- 	__u32 share_flags;
- 	__u32 maximal_access;
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index e0f5860093305..357abb0170c49 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -437,9 +437,9 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
- 		free_xid(xid);
- 		ses->flags &= ~CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES;
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index d9ce273ba43d8..222921b4751f3 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -768,15 +768,12 @@ static u32 qdisc_alloc_handle(struct net_device *dev)
  
--		/* regardless of rc value, setup polling */
--		queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
--				   (SMB_INTERFACE_POLL_INTERVAL * HZ));
-+		if (!tcon->ipc && !tcon->dummy)
-+			queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
-+					   (SMB_INTERFACE_POLL_INTERVAL * HZ));
+ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
+ {
+-	bool qdisc_is_offloaded = sch->flags & TCQ_F_OFFLOADED;
+ 	const struct Qdisc_class_ops *cops;
+ 	unsigned long cl;
+ 	u32 parentid;
+ 	bool notify;
+ 	int drops;
  
- 		mutex_unlock(&ses->session_mutex);
+-	if (n == 0 && len == 0)
+-		return;
+ 	drops = max_t(int, n, 0);
+ 	rcu_read_lock();
+ 	while ((parentid = sch->parent)) {
+@@ -785,17 +782,8 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
  
-@@ -4228,10 +4228,8 @@ void smb2_reconnect_server(struct work_struct *work)
+ 		if (sch->flags & TCQ_F_NOPARENT)
+ 			break;
+-		/* Notify parent qdisc only if child qdisc becomes empty.
+-		 *
+-		 * If child was empty even before update then backlog
+-		 * counter is screwed and we skip notification because
+-		 * parent class is already passive.
+-		 *
+-		 * If the original child was offloaded then it is allowed
+-		 * to be seem as empty, so the parent is notified anyway.
+-		 */
+-		notify = !sch->q.qlen && !WARN_ON_ONCE(!n &&
+-						       !qdisc_is_offloaded);
++		/* Notify parent qdisc only if child qdisc becomes empty. */
++		notify = !sch->q.qlen;
+ 		/* TODO: perform the search on a per txq basis */
+ 		sch = qdisc_lookup(qdisc_dev(sch), TC_H_MAJ(parentid));
+ 		if (sch == NULL) {
+@@ -804,6 +792,9 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
  		}
- 		goto done;
- 	}
--
- 	tcon->status = TID_GOOD;
--	tcon->retry = false;
--	tcon->need_reconnect = false;
-+	tcon->dummy = true;
- 
- 	/* now reconnect sessions for necessary channels */
- 	list_for_each_entry_safe(ses, ses2, &tmp_ses_list, rlist) {
+ 		cops = sch->ops->cl_ops;
+ 		if (notify && cops->qlen_notify) {
++			/* Note that qlen_notify must be idempotent as it may get called
++			 * multiple times.
++			 */
+ 			cl = cops->find(sch, parentid);
+ 			cops->qlen_notify(sch, cl);
+ 		}
 -- 
 2.39.5
 
