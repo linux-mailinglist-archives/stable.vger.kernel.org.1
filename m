@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-161100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0029AFD362
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D01AFD497
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14EFE1C40137
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 841E91C27DEA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516D32DCF48;
-	Tue,  8 Jul 2025 16:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBC52E62B3;
+	Tue,  8 Jul 2025 17:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTcTV324"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5lRj09O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5F221D5BB;
-	Tue,  8 Jul 2025 16:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E331E2E1C74;
+	Tue,  8 Jul 2025 17:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993593; cv=none; b=bVPmMQx0Sk9FSX2BH0mfQlyjuXNphpopDiiznLWDCA+rUoBgbkagUqxXoFO6zFX/dXOpPHeufA7NJXdibHqJEWnrayU4rN0OJ7uaR1NM1IGa8MC2z+O89SE2L29nuWJ9qLBR1MfMlTrKZKqZCtgxzkLtIER5P0kVPGYrnTdIlcI=
+	t=1751994107; cv=none; b=eEwOFuvJxgLxCTH3btp4Vabupp4SFtiEJUlDkVVTWqqPSiTE1+D4G11ntFmAQoel9tOh8PnvVKd/U5bLWcvoL4FcwF2iW1r7VIebk3rop0KWyjKE2LgvyIjsuiRpBjrwLEM/LriaTSYJU1Ukbg+hzcftmyLqLk5K4F3ts1QcJec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993593; c=relaxed/simple;
-	bh=Qmk5TkGcJNQdmdFxnUzrEtgJuMlAGTT4kLyYsn2vu0k=;
+	s=arc-20240116; t=1751994107; c=relaxed/simple;
+	bh=S39Szx6ynpHAiaIZnIxTIwfM1xANFT5ShqNCw8sBwIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rh9ObSyVxz8Y5vameBz6jQxDlc+uTL8AO+f1E7aw0K+Ev/iGLtl5NerUufCG6+BZADTsjYhwTnJKPo7oiWJ80nsHCRJcrWdR1jsCWvebcKsYkkLOYL+TOW96xHN8b65gq6hszXLvCgWhK3MqC8ICF/LWthdIYK/ED2/IHRB77rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTcTV324; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392BAC4CEED;
-	Tue,  8 Jul 2025 16:53:12 +0000 (UTC)
+	 MIME-Version; b=BzTVT2fWdCoP6cIubSMWuTyoxfSiqy18b7vyhHhXGTUfUVUP0mvwTgjrg/4lUCbseJB6PgIhNtatElCsZN3et8mHxtxuQg5kOvyOZlGr6Rwu0uwUAuhFCnKd9shUFKS3G9bc2pA3sNL9MqnWeJsW02IX56I78LUbDk521gTDtok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5lRj09O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7266EC4CEF6;
+	Tue,  8 Jul 2025 17:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993592;
-	bh=Qmk5TkGcJNQdmdFxnUzrEtgJuMlAGTT4kLyYsn2vu0k=;
+	s=korg; t=1751994106;
+	bh=S39Szx6ynpHAiaIZnIxTIwfM1xANFT5ShqNCw8sBwIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTcTV324j6FOlRiLYll2yIYZ1mo8iiJzgTyfxHZReSYoXIzKsnxpPIrp4v47/AoiU
-	 B7XWr8d3kIMqDIujXz6ISvckAwTAACE/XGW9aNk/T63/HYCiYb4BL9smwUYxIYuwca
-	 tYncsQDCSdJ56TwK7CZ6kYinfIHfutNXSgifHIiU=
+	b=i5lRj09OovttdBOLgfAWpdAwxDGks0QLbHbvqYv76L/4HTchZLCdf8ksXdTlZK4fe
+	 iJ8/PmoG4/73BxGfUKNKb5PHg2jqiRfh59GSlgg9A09D8oIrUuCcTuCUiXXyDiNUlG
+	 o2sB4QIboLz5a37eVhYhnMGNy/FEcssS9lcX+DcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 127/178] ata: pata_cs5536: fix build on 32-bit UML
+Subject: [PATCH 5.15 127/160] ALSA: sb: Dont allow changing the DMA mode during operations
 Date: Tue,  8 Jul 2025 18:22:44 +0200
-Message-ID: <20250708162239.898316811@linuxfoundation.org>
+Message-ID: <20250708162234.936337337@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit fe5b391fc56f77cf3c22a9dd4f0ce20db0e3533f ]
+[ Upstream commit ed29e073ba93f2d52832804cabdd831d5d357d33 ]
 
-On 32-bit ARCH=um, CONFIG_X86_32 is still defined, so it
-doesn't indicate building on real X86 machines. There's
-no MSR on UML though, so add a check for CONFIG_X86.
+When a PCM stream is already running, one shouldn't change the DMA
+mode via kcontrol, which may screw up the hardware.  Return -EBUSY
+instead.
 
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://lore.kernel.org/r/20250606090110.15784-2-johannes@sipsolutions.net
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218185
+Link: https://patch.msgid.link/20250610064322.26787-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_cs5536.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/isa/sb/sb16_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/ata/pata_cs5536.c b/drivers/ata/pata_cs5536.c
-index b811efd2cc346..73e81e160c91f 100644
---- a/drivers/ata/pata_cs5536.c
-+++ b/drivers/ata/pata_cs5536.c
-@@ -27,7 +27,7 @@
- #include <scsi/scsi_host.h>
- #include <linux/dmi.h>
- 
--#ifdef CONFIG_X86_32
-+#if defined(CONFIG_X86) && defined(CONFIG_X86_32)
- #include <asm/msr.h>
- static int use_msr;
- module_param_named(msr, use_msr, int, 0644);
+diff --git a/sound/isa/sb/sb16_main.c b/sound/isa/sb/sb16_main.c
+index a9b87e159b2d1..5efbd0a41312b 100644
+--- a/sound/isa/sb/sb16_main.c
++++ b/sound/isa/sb/sb16_main.c
+@@ -703,6 +703,9 @@ static int snd_sb16_dma_control_put(struct snd_kcontrol *kcontrol, struct snd_ct
+ 	unsigned char nval, oval;
+ 	int change;
+ 	
++	if (chip->mode & (SB_MODE_PLAYBACK | SB_MODE_CAPTURE))
++		return -EBUSY;
++
+ 	nval = ucontrol->value.enumerated.item[0];
+ 	if (nval > 2)
+ 		return -EINVAL;
 -- 
 2.39.5
 
