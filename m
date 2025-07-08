@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-161232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DEA9AFD438
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD5AAFD0FF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B41B3AC039
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:59:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2740F4867D7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185912E5B24;
-	Tue,  8 Jul 2025 16:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646951CAA85;
+	Tue,  8 Jul 2025 16:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15JuIjQ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KB+zmkUA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79A62E5B20;
-	Tue,  8 Jul 2025 16:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2024313957E;
+	Tue,  8 Jul 2025 16:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993978; cv=none; b=VvhCFwk8+a5FfIkUlx7Q9jl2rMevB2TiorMIw2vznrPScg8JNmehFAY7VWWhdqvABh28EDURqVNGyCc1tko4vEcAUgiH82OcHhI2AxbnD2oi2DP7FMmfKVtvdQaSKThzrwnWbp9M9byhYtHEViO6steuYjQyKK+5QKGjlBw8JKE=
+	t=1751992215; cv=none; b=fN1DBHDObONugoxYTFyMbED/xx+N8FSHP+9wPo081nh3B9nlbbKwGV1N5Mo7c6u5tPSOpoG9nwGmoJUk+TN67rSqPHW0guqmx+qe1YwcJhiKMZMsHeyRG+kmoK3dq4g8+TpKUgRQAc9gET+Ru+yQj0ta2gpaSLWt7mFf/cyITwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993978; c=relaxed/simple;
-	bh=aHImYyamILo6EroWZrhH2PwvAIvoogH0jCkqzR/qiOI=;
+	s=arc-20240116; t=1751992215; c=relaxed/simple;
+	bh=kCIR6SYH2X4b5tMkmERe+mHFearDGazHclXbmQ5mdKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Odj9hAKnLRuMg3axeqUZ4pxofJb+Scfia5A1pLOouD9iUbGGP9Og0eMOhvZBJFb0L+Runm8gZaXgAPK7D2LDCDdKntvlK619G6g8XbGvps2wSeNNoyZ5qvSad7TYo3iz0ER4p05W4/lbNHKTO47IIVBufKcalmg3qKqTTzclG3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15JuIjQ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC72C4CEF0;
-	Tue,  8 Jul 2025 16:59:37 +0000 (UTC)
+	 MIME-Version; b=tI9o0teomwJUV1fkbAaaB6z8gvf+DGqdYOwd43pZXfpN0sGcd6pCp3lb1Bct1TLWSjFzQvsl7Wb20U0ttG2zH3AaqOYBXYygTGDCuZ6OAkqa3iSIcPqxjT5Ne9OoerCxgcO9pzqRveKalIqGWa/dVXtAHD2DWnEgA/U5LPvpsts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KB+zmkUA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F779C4CEED;
+	Tue,  8 Jul 2025 16:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993978;
-	bh=aHImYyamILo6EroWZrhH2PwvAIvoogH0jCkqzR/qiOI=;
+	s=korg; t=1751992215;
+	bh=kCIR6SYH2X4b5tMkmERe+mHFearDGazHclXbmQ5mdKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15JuIjQ8rhV9UKZiBvww541dHTZfPmpKReKIwAIOFRFHz3EZzLv9GQmGuyICFsegy
-	 2/UBUj4FbuLzucJEZ1cn5WKkVl7nEl+EJFsWxzixtuPz8MsZBIK6+J+l9cihqKrD+f
-	 3neuKnX4Qzrf2tA/XsmJwiqaNo90NLWTA78+53Yk=
+	b=KB+zmkUAL7T5v/VZGbGFI5Sef+VBt/qBQPvyl/mst1LD0OnWmxN15Gljblafkt/3U
+	 wy2q+b8i0FP2129Jj81crRwHiK5JypaMkNOeTmBtf77LxNWJyslzFeO7OgA27GtaIE
+	 +yfo4kzjYsDOcuBamczEkFTFdzRlsxwYlyZjXMjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 5.15 084/160] drm/bridge: cdns-dsi: Fix the clock variable for mode_valid()
+	Christian Eggers <ceggers@arri.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 010/132] Bluetooth: hci_sync: revert some mesh modifications
 Date: Tue,  8 Jul 2025 18:22:01 +0200
-Message-ID: <20250708162233.853895713@linuxfoundation.org>
+Message-ID: <20250708162231.050833016@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+From: Christian Eggers <ceggers@arri.de>
 
-commit 132bdcec399be6ae947582249a134b38cf56731c upstream.
+commit 46c0d947b64ac8efcf89dd754213dab5d1bd00aa upstream.
 
-The crtc_* mode parameters do not get generated (duplicated in this
-case) from the regular parameters before the mode validation phase
-begins.
+This reverts minor parts of the changes made in commit b338d91703fa
+("Bluetooth: Implement support for Mesh"). It looks like these changes
+were only made for development purposes but shouldn't have been part of
+the commit.
 
-The rest of the code conditionally uses the crtc_* parameters only
-during the bridge enable phase, but sticks to the regular parameters
-for mode validation. In this singular instance, however, the driver
-tries to use the crtc_clock parameter even during the mode validation,
-causing the validation to fail.
-
-Allow the D-Phy config checks to use mode->clock instead of
-mode->crtc_clock during mode_valid checks, like everywhere else in the
-driver.
-
-Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
+Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
 Cc: stable@vger.kernel.org
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Link: https://lore.kernel.org/r/20250329113925.68204-4-aradhya.bhatia@linux.dev
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/cdns-dsi.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_sync.c |   16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/bridge/cdns-dsi.c
-+++ b/drivers/gpu/drm/bridge/cdns-dsi.c
-@@ -608,13 +608,14 @@ static int cdns_dsi_check_conf(struct cd
- 	struct phy_configure_opts_mipi_dphy *phy_cfg = &output->phy_opts.mipi_dphy;
- 	unsigned long dsi_hss_hsa_hse_hbp;
- 	unsigned int nlanes = output->dev->lanes;
-+	int mode_clock = (mode_valid_check ? mode->clock : mode->crtc_clock);
- 	int ret;
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2010,13 +2010,10 @@ static int hci_clear_adv_sets_sync(struc
+ static int hci_clear_adv_sync(struct hci_dev *hdev, struct sock *sk, bool force)
+ {
+ 	struct adv_info *adv, *n;
+-	int err = 0;
  
- 	ret = cdns_dsi_mode2cfg(dsi, mode, dsi_cfg, mode_valid_check);
- 	if (ret)
- 		return ret;
+ 	if (ext_adv_capable(hdev))
+ 		/* Remove all existing sets */
+-		err = hci_clear_adv_sets_sync(hdev, sk);
+-	if (ext_adv_capable(hdev))
+-		return err;
++		return hci_clear_adv_sets_sync(hdev, sk);
  
--	phy_mipi_dphy_get_default_config(mode->crtc_clock * 1000,
-+	phy_mipi_dphy_get_default_config(mode_clock * 1000,
- 					 mipi_dsi_pixel_format_to_bpp(output->dev->format),
- 					 nlanes, phy_cfg);
+ 	/* This is safe as long as there is no command send while the lock is
+ 	 * held.
+@@ -2044,13 +2041,11 @@ static int hci_clear_adv_sync(struct hci
+ static int hci_remove_adv_sync(struct hci_dev *hdev, u8 instance,
+ 			       struct sock *sk)
+ {
+-	int err = 0;
++	int err;
  
+ 	/* If we use extended advertising, instance has to be removed first. */
+ 	if (ext_adv_capable(hdev))
+-		err = hci_remove_ext_adv_instance_sync(hdev, instance, sk);
+-	if (ext_adv_capable(hdev))
+-		return err;
++		return hci_remove_ext_adv_instance_sync(hdev, instance, sk);
+ 
+ 	/* This is safe as long as there is no command send while the lock is
+ 	 * held.
+@@ -2149,16 +2144,13 @@ int hci_read_tx_power_sync(struct hci_de
+ int hci_disable_advertising_sync(struct hci_dev *hdev)
+ {
+ 	u8 enable = 0x00;
+-	int err = 0;
+ 
+ 	/* If controller is not advertising we are done. */
+ 	if (!hci_dev_test_flag(hdev, HCI_LE_ADV))
+ 		return 0;
+ 
+ 	if (ext_adv_capable(hdev))
+-		err = hci_disable_ext_adv_instance_sync(hdev, 0x00);
+-	if (ext_adv_capable(hdev))
+-		return err;
++		return hci_disable_ext_adv_instance_sync(hdev, 0x00);
+ 
+ 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_ENABLE,
+ 				     sizeof(enable), &enable, HCI_CMD_TIMEOUT);
 
 
 
