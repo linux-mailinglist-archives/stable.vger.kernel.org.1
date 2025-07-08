@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-161180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DBB5AFD3D3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:01:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA61AFD2E8
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02C8B1890F57
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA1BE189F848
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A042E5B29;
-	Tue,  8 Jul 2025 16:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329B41FC0F3;
+	Tue,  8 Jul 2025 16:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cb+MRmYb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5LHfYsH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF932DAFA3;
-	Tue,  8 Jul 2025 16:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52991754B;
+	Tue,  8 Jul 2025 16:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993826; cv=none; b=HMzNIvLdGhYDRGABfHC+fjXyR2FH2ecNR2v8ln4Q/kEE+mB26NtHlDFggH2EUZAv6zF5Jx3e5djviXdzOt5TjjG3ucX09yMDQ85m13VYQ0+GQ+1TKlisoYQS106b3hzcm/meuhppQ3Sh46MFjj5oDZQzCqS0QNCJDZWuKG7xRGo=
+	t=1751993315; cv=none; b=UKoujCkKR5bYGhUJoVRxtXc8Qf3rb2dQj2peCQn0dSoQHuWnbTw2l694HxYB+y2oGjEAH1F/kAnU2HSE+BGYZnVyWHt4UIHkXApzLAmCxw/ERZ6shhb4P2PSV9+K8d9iQhoCrXC1PqSmAhIvEj3wT5MNdeQ+N6pO6BVzsqzTPpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993826; c=relaxed/simple;
-	bh=3T1bzfyutb7zYe8+YQBl6eXzrpPo6rH0wrEF+yimHl8=;
+	s=arc-20240116; t=1751993315; c=relaxed/simple;
+	bh=Gitb/Qofo6qzLRRfbWJxygGr8JI2nzoAu418PKXSEkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=maGrfbg0uIP4QHSujUFQECC6x9i5E4GmQdez0mrMU38yPUXY1KGN9jkQQD3SRz0SIm9ga1Ywo+Gb9Nqq6H3J8cCD3hxvsgAhe1deYt3/POeRNyzyo3CyuC1EW2mM0clTnyoudwTR5LthKyLnJm2uLOe1LlB6To7awHLnd8J83x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cb+MRmYb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2623FC4CEED;
-	Tue,  8 Jul 2025 16:57:05 +0000 (UTC)
+	 MIME-Version; b=U4XcvbMUj8dcdFLdDIZ4U+b6Sb4qN/fJtYTelaeY8CbNpjTe/ZJ1DJSBJrCfttmT6UXLWDLTObt6tanhuigsjUy3gzpOQgRsC6IRV+nue607rh9fyqtx7vW1WpCTAYZnP8wOPPmtqY3Xw0s3mf2j5tbTC2nCfbbuQr+6KRDMqPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5LHfYsH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6E3C4CEED;
+	Tue,  8 Jul 2025 16:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993826;
-	bh=3T1bzfyutb7zYe8+YQBl6eXzrpPo6rH0wrEF+yimHl8=;
+	s=korg; t=1751993314;
+	bh=Gitb/Qofo6qzLRRfbWJxygGr8JI2nzoAu418PKXSEkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cb+MRmYbv8LYmggfkBFS5auA/KO/jjvtUNjmz5mGCf+Ql4CWYoX/0tDy4Q+IP2feU
-	 Zj7FCtddQun9JgzrsYhFDbNs4hMd0iDC3j3LoELL83jgaZLptLcRUK4yemwkbKWXuq
-	 zi7uKl+RRKv0QcuWiXYPSHVulHwG9BOsCYYPbYJM=
+	b=j5LHfYsHw65v5vQhlt9UhFS6jcIA1zGienVnkCErHY2pSBN+BASXUU2S2510wcSle
+	 qzMxYZntqy9XZrayzBUaIaCk9aEdCv71CHpDmDxDDGnAdFHfc9I/JdFuam33b8WcvQ
+	 YWNKyaXL8SCM5FliB3syfQkDNUcq4nGojK8ONySc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Lee Jones <lee.jones@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 031/160] clk: ti: am43xx: Add clkctrl data for am43xx ADC1
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.15 031/178] mtk-sd: reset host->mrq on prepare_data() error
 Date: Tue,  8 Jul 2025 18:21:08 +0200
-Message-ID: <20250708162232.387337810@linuxfoundation.org>
+Message-ID: <20250708162237.360608967@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit 59139ada4a7eacd4db378ee40a3d6ffbf1d0d72f ]
+commit ec54c0a20709ed6e56f40a8d59eee725c31a916b upstream.
 
-Declare ADC1 clkctrl which feeds the magnetic-reader/ADC1 hardware
-module.
+Do not leave host with dangling ->mrq pointer if we hit
+the msdc_prepare_data() error out path.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Acked-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
-Link: https://lore.kernel.org/r/20211015081506.933180-2-miquel.raynal@bootlin.com
-Stable-dep-of: d52b9b7e2f10 ("media: imx-jpeg: Drop the first error frames")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: f5de469990f1 ("mtk-sd: Prevent memory corruption from DMA map failure")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250625052106.584905-1-senozhatsky@chromium.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/ti/clk-43xx.c       | 1 +
- include/dt-bindings/clock/am4.h | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/mmc/host/mtk-sd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/ti/clk-43xx.c b/drivers/clk/ti/clk-43xx.c
-index 46c0add995700..6e97a541cfd36 100644
---- a/drivers/clk/ti/clk-43xx.c
-+++ b/drivers/clk/ti/clk-43xx.c
-@@ -116,6 +116,7 @@ static const struct omap_clkctrl_reg_data am4_l3s_clkctrl_regs[] __initconst = {
- 	{ AM4_L3S_VPFE0_CLKCTRL, NULL, CLKF_SW_SUP, "l3_gclk" },
- 	{ AM4_L3S_VPFE1_CLKCTRL, NULL, CLKF_SW_SUP, "l3_gclk" },
- 	{ AM4_L3S_GPMC_CLKCTRL, NULL, CLKF_SW_SUP, "l3s_gclk" },
-+	{ AM4_L3S_ADC1_CLKCTRL, NULL, CLKF_SW_SUP, "l3s_gclk" },
- 	{ AM4_L3S_MCASP0_CLKCTRL, NULL, CLKF_SW_SUP, "mcasp0_fck" },
- 	{ AM4_L3S_MCASP1_CLKCTRL, NULL, CLKF_SW_SUP, "mcasp1_fck" },
- 	{ AM4_L3S_MMC3_CLKCTRL, NULL, CLKF_SW_SUP, "mmc_clk" },
-diff --git a/include/dt-bindings/clock/am4.h b/include/dt-bindings/clock/am4.h
-index d961e7cb36821..4be6c5961f342 100644
---- a/include/dt-bindings/clock/am4.h
-+++ b/include/dt-bindings/clock/am4.h
-@@ -158,6 +158,7 @@
- #define AM4_L3S_VPFE0_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x68)
- #define AM4_L3S_VPFE1_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x70)
- #define AM4_L3S_GPMC_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x220)
-+#define AM4_L3S_ADC1_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x230)
- #define AM4_L3S_MCASP0_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x238)
- #define AM4_L3S_MCASP1_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x240)
- #define AM4_L3S_MMC3_CLKCTRL	AM4_L3S_CLKCTRL_INDEX(0x248)
--- 
-2.39.5
-
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -1474,6 +1474,7 @@ static void msdc_ops_request(struct mmc_
+ 	if (mrq->data) {
+ 		msdc_prepare_data(host, mrq->data);
+ 		if (!msdc_data_prepared(mrq->data)) {
++			host->mrq = NULL;
+ 			/*
+ 			 * Failed to prepare DMA area, fail fast before
+ 			 * starting any commands.
 
 
 
