@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-161146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE87AFD3A4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9918FAFD4BC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:09:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A72251891CB2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 192B64E051B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56502E091E;
-	Tue,  8 Jul 2025 16:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D112E5B12;
+	Tue,  8 Jul 2025 17:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGROQzm/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zi1DUair"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CB32DE1FA;
-	Tue,  8 Jul 2025 16:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92852E5B1A;
+	Tue,  8 Jul 2025 17:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993727; cv=none; b=kPygHMcM9MwjrXHDhTMb128U7WBGTpDrKljKmJwd0qpmLMJ75JNAFd3lVfgNKNH6+mvQemiK9Q2xffv1B6veSIS0L1UTtcRXnBvnQACjXqclSxj1vZo9758si356+NApEqFVNcBuANtgAU3+O48wizH5PlJIK2wbejX64fNVQJ4=
+	t=1751994225; cv=none; b=qN7h20G9EUNcA9YK77xmjA0dGGCWmyvV4n8L2x2mMBeGbIdjyNrL6CfboV0GBBSEKrqDbaxywTGGmDbcx3neE5+0Ez0TaPCX9Yo/w9MT6z2sgSWj176rlZMYHhLaXGPzkAFUJzPvkTV5aXmvkpPcCh7DqhOahHziZDWJMOstmBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993727; c=relaxed/simple;
-	bh=yDPtLPVkG3PC3jWcRWF3KXiAGZCx3lp+qrgu359k9io=;
+	s=arc-20240116; t=1751994225; c=relaxed/simple;
+	bh=iX7Al+ESAsdB+1AbvIUd1FmFlz9gB25oaIfOPkk5wn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oq7ivy0SvTP2Ne0tlUPaDrgcp2BRMdAYA8LAyA/dM2ZrYOiKt39ptEJ+AMFsydf0Kzg4teyJfoZyUWLnjG6ea82P1iUbM44OeBXItBlnoSek87XwEXmueKPaPcID+1ZS2CKXo9DWLiLSmW/UfQuTqckbIid+zcV7rZf/cdmdqxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGROQzm/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55BBC4CEF5;
-	Tue,  8 Jul 2025 16:55:26 +0000 (UTC)
+	 MIME-Version; b=tO+17L/KzCVxfbJEUEqXo3Jo9FKhfIUyww9pKSUp0vvVOw1ZPmRj1WlpDVzMykRRekNMIoHgYlVZjFJvWzEVja6+uH+OGu23jjXEKB+IvQ+TGwLz8849IazHc7e7jAbaU6dx5ZXDv8Hl+wkyJ+0Jg72P67KoEXt5w8vgifIzAWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zi1DUair; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A42C4CEED;
+	Tue,  8 Jul 2025 17:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993727;
-	bh=yDPtLPVkG3PC3jWcRWF3KXiAGZCx3lp+qrgu359k9io=;
+	s=korg; t=1751994225;
+	bh=iX7Al+ESAsdB+1AbvIUd1FmFlz9gB25oaIfOPkk5wn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EGROQzm/0PVjIeUXsaIZ6PIUg4BjcvMC+15gJwLWi/cUDEQxaHRXBFfD4i9n9d/RL
-	 rIS2TCWolZ/Wb1ENd9m9gbPuTXqNLOwqXFxOLoCprDSBTyd31aLRe4Cmp6GJ6kyotY
-	 CX7ddYp4ATmNknlQqWPmq1WIkm6+54dJgEY85eIk=
+	b=Zi1DUairDiAOzcpn+z0DZwM+9ZCfzHnirGebfV9oZI1IGF4g6tXCU3RxkB0mxERc/
+	 s4uzA+vggMjpxuRj5Vlln5CDRbCs7are7zJQjzgB2i6aO08Fpkcp6HsyZ4BFJzuvzI
+	 Ohpn3yv1+2dJRdlgDHqUttcQgbqnyOADuwmhLbRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Roy Luo <royluo@google.com>
-Subject: [PATCH 6.15 142/178] Revert "usb: xhci: Implement xhci_handshake_check_state() helper"
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 142/160] ethernet: atl1: Add missing DMA mapping error checks and count errors
 Date: Tue,  8 Jul 2025 18:22:59 +0200
-Message-ID: <20250708162240.245949743@linuxfoundation.org>
+Message-ID: <20250708162235.291638017@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,117 +62,217 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roy Luo <royluo@google.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 7aed15379db9c6ec67999cdaf5c443b7be06ea73 upstream.
+[ Upstream commit d72411d20905180cdc452c553be17481b24463d2 ]
 
-This reverts commit 6ccb83d6c4972ebe6ae49de5eba051de3638362c.
+The `dma_map_XXX()` functions can fail and must be checked using
+`dma_mapping_error()`.  This patch adds proper error handling for all
+DMA mapping calls.
 
-Commit 6ccb83d6c497 ("usb: xhci: Implement xhci_handshake_check_state()
-helper") was introduced to workaround watchdog timeout issues on some
-platforms, allowing xhci_reset() to bail out early without waiting
-for the reset to complete.
+In `atl1_alloc_rx_buffers()`, if DMA mapping fails, the buffer is
+deallocated and marked accordingly.
 
-Skipping the xhci handshake during a reset is a dangerous move. The
-xhci specification explicitly states that certain registers cannot
-be accessed during reset in section 5.4.1 USB Command Register (USBCMD),
-Host Controller Reset (HCRST) field:
-"This bit is cleared to '0' by the Host Controller when the reset
-process is complete. Software cannot terminate the reset process
-early by writinga '0' to this bit and shall not write any xHC
-Operational or Runtime registers until while HCRST is '1'."
+In `atl1_tx_map()`, previously mapped buffers are unmapped and the
+packet is dropped on failure.
 
-This behavior causes a regression on SNPS DWC3 USB controller with
-dual-role capability. When the DWC3 controller exits host mode and
-removes xhci while a reset is still in progress, and then tries to
-configure its hardware for device mode, the ongoing reset leads to
-register access issues; specifically, all register reads returns 0.
-These issues extend beyond the xhci register space (which is expected
-during a reset) and affect the entire DWC3 IP block, causing the DWC3
-device mode to malfunction.
+If `atl1_xmit_frame()` drops the packet, increment the tx_error counter.
 
-Cc: stable <stable@kernel.org>
-Fixes: 6ccb83d6c497 ("usb: xhci: Implement xhci_handshake_check_state() helper")
-Signed-off-by: Roy Luo <royluo@google.com>
-Link: https://lore.kernel.org/r/20250522190912.457583-3-royluo@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f3cc28c79760 ("Add Attansic L1 ethernet driver.")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20250625141629.114984-2-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c |    5 ++---
- drivers/usb/host/xhci.c      |   26 +-------------------------
- drivers/usb/host/xhci.h      |    2 --
- 3 files changed, 3 insertions(+), 30 deletions(-)
+ drivers/net/ethernet/atheros/atlx/atl1.c | 78 +++++++++++++++++-------
+ 1 file changed, 56 insertions(+), 22 deletions(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -518,9 +518,8 @@ static int xhci_abort_cmd_ring(struct xh
- 	 * In the future we should distinguish between -ENODEV and -ETIMEDOUT
- 	 * and try to recover a -ETIMEDOUT with a host controller reset.
- 	 */
--	ret = xhci_handshake_check_state(xhci, &xhci->op_regs->cmd_ring,
--			CMD_RING_RUNNING, 0, 5 * 1000 * 1000,
--			XHCI_STATE_REMOVING);
-+	ret = xhci_handshake(&xhci->op_regs->cmd_ring,
-+			CMD_RING_RUNNING, 0, 5 * 1000 * 1000);
- 	if (ret < 0) {
- 		xhci_err(xhci, "Abort failed to stop command ring: %d\n", ret);
- 		xhci_halt(xhci);
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -84,29 +84,6 @@ int xhci_handshake(void __iomem *ptr, u3
+diff --git a/drivers/net/ethernet/atheros/atlx/atl1.c b/drivers/net/ethernet/atheros/atlx/atl1.c
+index 68f6c0bbd945c..ca8d7a82407b6 100644
+--- a/drivers/net/ethernet/atheros/atlx/atl1.c
++++ b/drivers/net/ethernet/atheros/atlx/atl1.c
+@@ -1861,14 +1861,21 @@ static u16 atl1_alloc_rx_buffers(struct atl1_adapter *adapter)
+ 			break;
+ 		}
+ 
+-		buffer_info->alloced = 1;
+-		buffer_info->skb = skb;
+-		buffer_info->length = (u16) adapter->rx_buffer_len;
+ 		page = virt_to_page(skb->data);
+ 		offset = offset_in_page(skb->data);
+ 		buffer_info->dma = dma_map_page(&pdev->dev, page, offset,
+ 						adapter->rx_buffer_len,
+ 						DMA_FROM_DEVICE);
++		if (dma_mapping_error(&pdev->dev, buffer_info->dma)) {
++			kfree_skb(skb);
++			adapter->soft_stats.rx_dropped++;
++			break;
++		}
++
++		buffer_info->alloced = 1;
++		buffer_info->skb = skb;
++		buffer_info->length = (u16)adapter->rx_buffer_len;
++
+ 		rfd_desc->buffer_addr = cpu_to_le64(buffer_info->dma);
+ 		rfd_desc->buf_len = cpu_to_le16(adapter->rx_buffer_len);
+ 		rfd_desc->coalese = 0;
+@@ -2180,8 +2187,8 @@ static int atl1_tx_csum(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 	return 0;
  }
  
- /*
-- * xhci_handshake_check_state - same as xhci_handshake but takes an additional
-- * exit_state parameter, and bails out with an error immediately when xhc_state
-- * has exit_state flag set.
-- */
--int xhci_handshake_check_state(struct xhci_hcd *xhci, void __iomem *ptr,
--		u32 mask, u32 done, int usec, unsigned int exit_state)
--{
--	u32	result;
--	int	ret;
--
--	ret = readl_poll_timeout_atomic(ptr, result,
--				(result & mask) == done ||
--				result == U32_MAX ||
--				xhci->xhc_state & exit_state,
--				1, usec);
--
--	if (result == U32_MAX || xhci->xhc_state & exit_state)
--		return -ENODEV;
--
--	return ret;
--}
--
--/*
-  * Disable interrupts and begin the xHCI halting process.
-  */
- void xhci_quiesce(struct xhci_hcd *xhci)
-@@ -226,8 +203,7 @@ int xhci_reset(struct xhci_hcd *xhci, u6
- 	if (xhci->quirks & XHCI_INTEL_HOST)
- 		udelay(1000);
+-static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+-	struct tx_packet_desc *ptpd)
++static bool atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
++			struct tx_packet_desc *ptpd)
+ {
+ 	struct atl1_tpd_ring *tpd_ring = &adapter->tpd_ring;
+ 	struct atl1_buffer *buffer_info;
+@@ -2191,6 +2198,7 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 	unsigned int nr_frags;
+ 	unsigned int f;
+ 	int retval;
++	u16 first_mapped;
+ 	u16 next_to_use;
+ 	u16 data_len;
+ 	u8 hdr_len;
+@@ -2198,6 +2206,7 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 	buf_len -= skb->data_len;
+ 	nr_frags = skb_shinfo(skb)->nr_frags;
+ 	next_to_use = atomic_read(&tpd_ring->next_to_use);
++	first_mapped = next_to_use;
+ 	buffer_info = &tpd_ring->buffer_info[next_to_use];
+ 	BUG_ON(buffer_info->skb);
+ 	/* put skb in last TPD */
+@@ -2213,6 +2222,8 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 		buffer_info->dma = dma_map_page(&adapter->pdev->dev, page,
+ 						offset, hdr_len,
+ 						DMA_TO_DEVICE);
++		if (dma_mapping_error(&adapter->pdev->dev, buffer_info->dma))
++			goto dma_err;
  
--	ret = xhci_handshake_check_state(xhci, &xhci->op_regs->command,
--				CMD_RESET, 0, timeout_us, XHCI_STATE_REMOVING);
-+	ret = xhci_handshake(&xhci->op_regs->command, CMD_RESET, 0, timeout_us);
- 	if (ret)
- 		return ret;
+ 		if (++next_to_use == tpd_ring->count)
+ 			next_to_use = 0;
+@@ -2239,6 +2250,9 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 								page, offset,
+ 								buffer_info->length,
+ 								DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      buffer_info->dma))
++					goto dma_err;
+ 				if (++next_to_use == tpd_ring->count)
+ 					next_to_use = 0;
+ 			}
+@@ -2251,6 +2265,8 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 		buffer_info->dma = dma_map_page(&adapter->pdev->dev, page,
+ 						offset, buf_len,
+ 						DMA_TO_DEVICE);
++		if (dma_mapping_error(&adapter->pdev->dev, buffer_info->dma))
++			goto dma_err;
+ 		if (++next_to_use == tpd_ring->count)
+ 			next_to_use = 0;
+ 	}
+@@ -2274,6 +2290,9 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 			buffer_info->dma = skb_frag_dma_map(&adapter->pdev->dev,
+ 				frag, i * ATL1_MAX_TX_BUF_LEN,
+ 				buffer_info->length, DMA_TO_DEVICE);
++			if (dma_mapping_error(&adapter->pdev->dev,
++					      buffer_info->dma))
++				goto dma_err;
  
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1855,8 +1855,6 @@ void xhci_remove_secondary_interrupter(s
- /* xHCI host controller glue */
- typedef void (*xhci_get_quirks_t)(struct device *, struct xhci_hcd *);
- int xhci_handshake(void __iomem *ptr, u32 mask, u32 done, u64 timeout_us);
--int xhci_handshake_check_state(struct xhci_hcd *xhci, void __iomem *ptr,
--		u32 mask, u32 done, int usec, unsigned int exit_state);
- void xhci_quiesce(struct xhci_hcd *xhci);
- int xhci_halt(struct xhci_hcd *xhci);
- int xhci_start(struct xhci_hcd *xhci);
+ 			if (++next_to_use == tpd_ring->count)
+ 				next_to_use = 0;
+@@ -2282,6 +2301,22 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 
+ 	/* last tpd's buffer-info */
+ 	buffer_info->skb = skb;
++
++	return true;
++
++ dma_err:
++	while (first_mapped != next_to_use) {
++		buffer_info = &tpd_ring->buffer_info[first_mapped];
++		dma_unmap_page(&adapter->pdev->dev,
++			       buffer_info->dma,
++			       buffer_info->length,
++			       DMA_TO_DEVICE);
++		buffer_info->dma = 0;
++
++		if (++first_mapped == tpd_ring->count)
++			first_mapped = 0;
++	}
++	return false;
+ }
+ 
+ static void atl1_tx_queue(struct atl1_adapter *adapter, u16 count,
+@@ -2352,10 +2387,8 @@ static netdev_tx_t atl1_xmit_frame(struct sk_buff *skb,
+ 
+ 	len = skb_headlen(skb);
+ 
+-	if (unlikely(skb->len <= 0)) {
+-		dev_kfree_skb_any(skb);
+-		return NETDEV_TX_OK;
+-	}
++	if (unlikely(skb->len <= 0))
++		goto drop_packet;
+ 
+ 	nr_frags = skb_shinfo(skb)->nr_frags;
+ 	for (f = 0; f < nr_frags; f++) {
+@@ -2369,10 +2402,8 @@ static netdev_tx_t atl1_xmit_frame(struct sk_buff *skb,
+ 		if (skb->protocol == htons(ETH_P_IP)) {
+ 			proto_hdr_len = (skb_transport_offset(skb) +
+ 					 tcp_hdrlen(skb));
+-			if (unlikely(proto_hdr_len > len)) {
+-				dev_kfree_skb_any(skb);
+-				return NETDEV_TX_OK;
+-			}
++			if (unlikely(proto_hdr_len > len))
++				goto drop_packet;
+ 			/* need additional TPD ? */
+ 			if (proto_hdr_len != len)
+ 				count += (len - proto_hdr_len +
+@@ -2404,23 +2435,26 @@ static netdev_tx_t atl1_xmit_frame(struct sk_buff *skb,
+ 	}
+ 
+ 	tso = atl1_tso(adapter, skb, ptpd);
+-	if (tso < 0) {
+-		dev_kfree_skb_any(skb);
+-		return NETDEV_TX_OK;
+-	}
++	if (tso < 0)
++		goto drop_packet;
+ 
+ 	if (!tso) {
+ 		ret_val = atl1_tx_csum(adapter, skb, ptpd);
+-		if (ret_val < 0) {
+-			dev_kfree_skb_any(skb);
+-			return NETDEV_TX_OK;
+-		}
++		if (ret_val < 0)
++			goto drop_packet;
+ 	}
+ 
+-	atl1_tx_map(adapter, skb, ptpd);
++	if (!atl1_tx_map(adapter, skb, ptpd))
++		goto drop_packet;
++
+ 	atl1_tx_queue(adapter, count, ptpd);
+ 	atl1_update_mailbox(adapter);
+ 	return NETDEV_TX_OK;
++
++drop_packet:
++	adapter->soft_stats.tx_errors++;
++	dev_kfree_skb_any(skb);
++	return NETDEV_TX_OK;
+ }
+ 
+ static int atl1_rings_clean(struct napi_struct *napi, int budget)
+-- 
+2.39.5
+
 
 
 
