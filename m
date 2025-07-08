@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-161024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFDE3AFD2B2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:49:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 385B7AFD3EA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:02:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 676777AD95F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3344A1C40FCF
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A57257459;
-	Tue,  8 Jul 2025 16:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA762E5B0D;
+	Tue,  8 Jul 2025 16:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkDGTGhv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nn2lIl0w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50BB1B4153;
-	Tue,  8 Jul 2025 16:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81762E091E;
+	Tue,  8 Jul 2025 16:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993378; cv=none; b=eFnYa90ZaRpLXpNOkphuAvLtK1kmbVtCNdUcAWVN+55jckL/6uwDb12igB9KYKk7kWd2rhZlcYS+QQXj0gHaXU+Lh8Mi2Pw7UfFiKJnNnxrBAMqrUcKthBrpCDbyzP8i6Oc3u6d+UhcIZ9WsvhcRkEuZLClo0UomPcm3Xmx7JJM=
+	t=1751993890; cv=none; b=GWCZ1GPFCEihQbzDWJIr+CaEu1Tc2OgIT/nvtQ84eCoMY9mNujUVyRpbDWqH1SDQcgjpcynyMqX4vi64M3yzOhiA/aTKT9vhDdqoTLbZ8bFaJ8wUjVUTkY19beJmFxaAKdBBAou1st8+0GAxa2lXKts92JaHfQ30cypqs99E5rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993378; c=relaxed/simple;
-	bh=8J6ldsDoKL+pgHts/dNClSH58OhQD+pjLsCVyGYBvRo=;
+	s=arc-20240116; t=1751993890; c=relaxed/simple;
+	bh=faHnp1A2N7r39jDwCGj9XTBz0WxWRUwffs1HVFksXyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IsijSR6qrkTs0xfCQCuRrc/iOiQp8HCiYquFQHwK+iUPjrGN+nHTf7Nz/Yap+PdWiAhNdJFjQV7Z02jrDLlkYfOM/bf+9tA1U6u4STmUgYSzKR41F9WXf7GQMZVCy+VtWHJsrNRMhKKBhXBDKhAm954T+GU6Ps8pAaAcsBhrr1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkDGTGhv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6ACC4CEED;
-	Tue,  8 Jul 2025 16:49:38 +0000 (UTC)
+	 MIME-Version; b=DkMhIqX6XCwVUd1Nove9pK3f5+Ziu7bsqaD6htRU0ukDJSDglTVPO7qD4w5KP2LGAIY1K3TsS8aiDX+56HXEUWOdF04SVZ+k/dFL6iouHMkAhYGo1BRDVh+T/ycsR18SCKUM8iHMIX5Kr9P1v0njcZ6kgtvXnzJakfK9jylyiMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nn2lIl0w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61347C4CEED;
+	Tue,  8 Jul 2025 16:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993378;
-	bh=8J6ldsDoKL+pgHts/dNClSH58OhQD+pjLsCVyGYBvRo=;
+	s=korg; t=1751993889;
+	bh=faHnp1A2N7r39jDwCGj9XTBz0WxWRUwffs1HVFksXyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jkDGTGhvYFFomi1TenxmB1+f+8r+d/EI8xcJx2oUY/ScTR5jLC+TLdelNBCVw+pNk
-	 seOFXdJqMegRQUf+xr1WBMyepjs7by91Dv4FHaMie75aK6RgkttixrpguubV99BUy7
-	 W7G/FMntm0tzlbnRuKnga/FiGqCblILf1ZS1rjuQ=
+	b=nn2lIl0wQqm3tO7erukgKEZJ1yvQrYNntZeIrpu+rVduXu9PBnEiKL37RdEJQeSvw
+	 zB1j4RnkZsL7cNQ56i9MutaPC5B910p8jgXGDI9xOKyYsBzBjnO2Ztm37CYnR+SJ94
+	 cs7BDpnhxUNwNPgjCI3lsgin3xAS+5KpTh6zLct4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Or Har-Toov <ohartoov@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Helge Deller <deller@gmx.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-parisc@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 054/178] IB/mlx5: Fix potential deadlock in MR deregistration
+Subject: [PATCH 5.15 054/160] tty: vt: sanitize arguments of consw::con_clear()
 Date: Tue,  8 Jul 2025 18:21:31 +0200
-Message-ID: <20250708162238.093252742@linuxfoundation.org>
+Message-ID: <20250708162233.042957881@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,270 +65,317 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Or Har-Toov <ohartoov@nvidia.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 2ed25aa7f7711f508b6120e336f05cd9d49943c0 ]
+[ Upstream commit 559f01a0ee6d924c6fec3eaf6a5b078b15e71070 ]
 
-The issue arises when kzalloc() is invoked while holding umem_mutex or
-any other lock acquired under umem_mutex. This is problematic because
-kzalloc() can trigger fs_reclaim_aqcuire(), which may, in turn, invoke
-mmu_notifier_invalidate_range_start(). This function can lead to
-mlx5_ib_invalidate_range(), which attempts to acquire umem_mutex again,
-resulting in a deadlock.
+In consw::con_clear():
+* Height is always 1, so drop it.
+* Offsets and width are always unsigned values, so re-type them as such.
 
-The problematic flow:
-             CPU0                      |              CPU1
----------------------------------------|------------------------------------------------
-mlx5_ib_dereg_mr()                     |
- → revoke_mr()                         |
-   → mutex_lock(&umem_odp->umem_mutex) |
-                                       | mlx5_mkey_cache_init()
-                                       |  → mutex_lock(&dev->cache.rb_lock)
-                                       |  → mlx5r_cache_create_ent_locked()
-                                       |    → kzalloc(GFP_KERNEL)
-                                       |      → fs_reclaim()
-                                       |        → mmu_notifier_invalidate_range_start()
-                                       |          → mlx5_ib_invalidate_range()
-                                       |            → mutex_lock(&umem_odp->umem_mutex)
-   → cache_ent_find_and_store()        |
-     → mutex_lock(&dev->cache.rb_lock) |
+This needs a new __fbcon_clear() in the fbcon code to still handle
+height which might not be 1 when called internally.
 
-Additionally, when kzalloc() is called from within
-cache_ent_find_and_store(), we encounter the same deadlock due to
-re-acquisition of umem_mutex.
+Note that tests for negative count/width are left in place -- they are
+taken care of in the next patches.
 
-Solve by releasing umem_mutex in dereg_mr() after umr_revoke_mr()
-and before acquiring rb_lock. This ensures that we don't hold
-umem_mutex while performing memory allocations that could trigger
-the reclaim path.
+And document the hook.
 
-This change prevents the deadlock by ensuring proper lock ordering and
-avoiding holding locks during memory allocation operations that could
-trigger the reclaim path.
-
-The following lockdep warning demonstrates the deadlock:
-
- python3/20557 is trying to acquire lock:
- ffff888387542128 (&umem_odp->umem_mutex){+.+.}-{4:4}, at:
- mlx5_ib_invalidate_range+0x5b/0x550 [mlx5_ib]
-
- but task is already holding lock:
- ffffffff82f6b840 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at:
- unmap_vmas+0x7b/0x1a0
-
- which lock already depends on the new lock.
-
- the existing dependency chain (in reverse order) is:
-
- -> #3 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}:
-       fs_reclaim_acquire+0x60/0xd0
-       mem_cgroup_css_alloc+0x6f/0x9b0
-       cgroup_init_subsys+0xa4/0x240
-       cgroup_init+0x1c8/0x510
-       start_kernel+0x747/0x760
-       x86_64_start_reservations+0x25/0x30
-       x86_64_start_kernel+0x73/0x80
-       common_startup_64+0x129/0x138
-
- -> #2 (fs_reclaim){+.+.}-{0:0}:
-       fs_reclaim_acquire+0x91/0xd0
-       __kmalloc_cache_noprof+0x4d/0x4c0
-       mlx5r_cache_create_ent_locked+0x75/0x620 [mlx5_ib]
-       mlx5_mkey_cache_init+0x186/0x360 [mlx5_ib]
-       mlx5_ib_stage_post_ib_reg_umr_init+0x3c/0x60 [mlx5_ib]
-       __mlx5_ib_add+0x4b/0x190 [mlx5_ib]
-       mlx5r_probe+0xd9/0x320 [mlx5_ib]
-       auxiliary_bus_probe+0x42/0x70
-       really_probe+0xdb/0x360
-       __driver_probe_device+0x8f/0x130
-       driver_probe_device+0x1f/0xb0
-       __driver_attach+0xd4/0x1f0
-       bus_for_each_dev+0x79/0xd0
-       bus_add_driver+0xf0/0x200
-       driver_register+0x6e/0xc0
-       __auxiliary_driver_register+0x6a/0xc0
-       do_one_initcall+0x5e/0x390
-       do_init_module+0x88/0x240
-       init_module_from_file+0x85/0xc0
-       idempotent_init_module+0x104/0x300
-       __x64_sys_finit_module+0x68/0xc0
-       do_syscall_64+0x6d/0x140
-       entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
- -> #1 (&dev->cache.rb_lock){+.+.}-{4:4}:
-       __mutex_lock+0x98/0xf10
-       __mlx5_ib_dereg_mr+0x6f2/0x890 [mlx5_ib]
-       mlx5_ib_dereg_mr+0x21/0x110 [mlx5_ib]
-       ib_dereg_mr_user+0x85/0x1f0 [ib_core]
-       uverbs_free_mr+0x19/0x30 [ib_uverbs]
-       destroy_hw_idr_uobject+0x21/0x80 [ib_uverbs]
-       uverbs_destroy_uobject+0x60/0x3d0 [ib_uverbs]
-       uobj_destroy+0x57/0xa0 [ib_uverbs]
-       ib_uverbs_cmd_verbs+0x4d5/0x1210 [ib_uverbs]
-       ib_uverbs_ioctl+0x129/0x230 [ib_uverbs]
-       __x64_sys_ioctl+0x596/0xaa0
-       do_syscall_64+0x6d/0x140
-       entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
- -> #0 (&umem_odp->umem_mutex){+.+.}-{4:4}:
-       __lock_acquire+0x1826/0x2f00
-       lock_acquire+0xd3/0x2e0
-       __mutex_lock+0x98/0xf10
-       mlx5_ib_invalidate_range+0x5b/0x550 [mlx5_ib]
-       __mmu_notifier_invalidate_range_start+0x18e/0x1f0
-       unmap_vmas+0x182/0x1a0
-       exit_mmap+0xf3/0x4a0
-       mmput+0x3a/0x100
-       do_exit+0x2b9/0xa90
-       do_group_exit+0x32/0xa0
-       get_signal+0xc32/0xcb0
-       arch_do_signal_or_restart+0x29/0x1d0
-       syscall_exit_to_user_mode+0x105/0x1d0
-       do_syscall_64+0x79/0x140
-       entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
- Chain exists of:
- &dev->cache.rb_lock --> mmu_notifier_invalidate_range_start -->
- &umem_odp->umem_mutex
-
- Possible unsafe locking scenario:
-
-       CPU0                        CPU1
-       ----                        ----
-   lock(&umem_odp->umem_mutex);
-                                lock(mmu_notifier_invalidate_range_start);
-                                lock(&umem_odp->umem_mutex);
-   lock(&dev->cache.rb_lock);
-
- *** DEADLOCK ***
-
-Fixes: abb604a1a9c8 ("RDMA/mlx5: Fix a race for an ODP MR which leads to CQE with error")
-Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
-Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://patch.msgid.link/3c8f225a8a9fade647d19b014df1172544643e4a.1750061612.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-parisc@vger.kernel.org
+Tested-by: Helge Deller <deller@gmx.de> # parisc STI console
+Link: https://lore.kernel.org/r/20240122110401.7289-22-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 03bcbbb3995b ("dummycon: Trigger redraw when switching consoles with deferred takeover")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/mr.c | 61 +++++++++++++++++++++++++--------
- 1 file changed, 47 insertions(+), 14 deletions(-)
+ drivers/tty/vt/vt.c                 |  2 +-
+ drivers/video/console/dummycon.c    |  4 ++--
+ drivers/video/console/mdacon.c      | 15 +++++---------
+ drivers/video/console/newport_con.c |  6 +++---
+ drivers/video/console/sticon.c      |  8 ++++----
+ drivers/video/console/vgacon.c      |  4 ++--
+ drivers/video/fbdev/core/fbcon.c    | 32 +++++++++++++++++------------
+ include/linux/console.h             |  5 +++--
+ 8 files changed, 39 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-index 5fbebafc87742..cb403134eeaea 100644
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -2027,23 +2027,50 @@ void mlx5_ib_revoke_data_direct_mrs(struct mlx5_ib_dev *dev)
+diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
+index 0e3d7d8f5e75a..765db5a7d5f52 100644
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -1628,7 +1628,7 @@ static void csi_X(struct vc_data *vc, unsigned int vpar)
+ 	vc_uniscr_clear_line(vc, vc->state.x, count);
+ 	scr_memsetw((unsigned short *)vc->vc_pos, vc->vc_video_erase_char, 2 * count);
+ 	if (con_should_update(vc))
+-		vc->vc_sw->con_clear(vc, vc->state.y, vc->state.x, 1, count);
++		vc->vc_sw->con_clear(vc, vc->state.y, vc->state.x, count);
+ 	vc->vc_need_wrap = 0;
+ }
+ 
+diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
+index 9a19eb72a18b9..6918014b02408 100644
+--- a/drivers/video/console/dummycon.c
++++ b/drivers/video/console/dummycon.c
+@@ -108,8 +108,8 @@ static void dummycon_init(struct vc_data *vc, bool init)
+ }
+ 
+ static void dummycon_deinit(struct vc_data *vc) { }
+-static void dummycon_clear(struct vc_data *vc, int sy, int sx, int height,
+-			   int width) { }
++static void dummycon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
++			   unsigned int width) { }
+ static void dummycon_cursor(struct vc_data *vc, int mode) { }
+ 
+ static bool dummycon_scroll(struct vc_data *vc, unsigned int top,
+diff --git a/drivers/video/console/mdacon.c b/drivers/video/console/mdacon.c
+index c5b255c968794..1ddbb6cd5b0ca 100644
+--- a/drivers/video/console/mdacon.c
++++ b/drivers/video/console/mdacon.c
+@@ -442,23 +442,18 @@ static void mdacon_putcs(struct vc_data *c, const unsigned short *s,
  	}
  }
  
--static int mlx5_revoke_mr(struct mlx5_ib_mr *mr)
-+static int mlx5_umr_revoke_mr_with_lock(struct mlx5_ib_mr *mr)
+-static void mdacon_clear(struct vc_data *c, int y, int x, 
+-			  int height, int width)
++static void mdacon_clear(struct vc_data *c, unsigned int y, unsigned int x,
++			 unsigned int width)
  {
--	struct mlx5_ib_dev *dev = to_mdev(mr->ibmr.device);
--	struct mlx5_cache_ent *ent = mr->mmkey.cache_ent;
--	bool is_odp = is_odp_mr(mr);
- 	bool is_odp_dma_buf = is_dmabuf_mr(mr) &&
--			!to_ib_umem_dmabuf(mr->umem)->pinned;
--	bool from_cache = !!ent;
--	int ret = 0;
-+			      !to_ib_umem_dmabuf(mr->umem)->pinned;
-+	bool is_odp = is_odp_mr(mr);
-+	int ret;
+ 	u16 *dest = mda_addr(x, y);
+ 	u16 eattr = mda_convert_attr(c->vc_video_erase_char);
  
- 	if (is_odp)
- 		mutex_lock(&to_ib_umem_odp(mr->umem)->umem_mutex);
+-	if (width <= 0 || height <= 0)
++	if (width <= 0)
+ 		return;
  
- 	if (is_odp_dma_buf)
--		dma_resv_lock(to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv, NULL);
-+		dma_resv_lock(to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv,
-+			      NULL);
+-	if (x==0 && width==mda_num_columns) {
+-		scr_memsetw(dest, eattr, height*width*2);
+-	} else {
+-		for (; height > 0; height--, dest+=mda_num_columns)
+-			scr_memsetw(dest, eattr, width*2);
+-	}
++	scr_memsetw(dest, eattr, width * 2);
+ }
+-                        
 +
-+	ret = mlx5r_umr_revoke_mr(mr);
-+
-+	if (is_odp) {
-+		if (!ret)
-+			to_ib_umem_odp(mr->umem)->private = NULL;
-+		mutex_unlock(&to_ib_umem_odp(mr->umem)->umem_mutex);
-+	}
-+
-+	if (is_odp_dma_buf) {
-+		if (!ret)
-+			to_ib_umem_dmabuf(mr->umem)->private = NULL;
-+		dma_resv_unlock(
-+			to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv);
-+	}
+ static int mdacon_switch(struct vc_data *c)
+ {
+ 	return 1;	/* redrawing needed */
+diff --git a/drivers/video/console/newport_con.c b/drivers/video/console/newport_con.c
+index 4b7161a81b2f6..5dac00c825946 100644
+--- a/drivers/video/console/newport_con.c
++++ b/drivers/video/console/newport_con.c
+@@ -346,12 +346,12 @@ static void newport_deinit(struct vc_data *c)
+ 	}
+ }
  
--	if (mr->mmkey.cacheable && !mlx5r_umr_revoke_mr(mr) && !cache_ent_find_and_store(dev, mr)) {
-+	return ret;
+-static void newport_clear(struct vc_data *vc, int sy, int sx, int height,
+-			  int width)
++static void newport_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
++			  unsigned int width)
+ {
+ 	int xend = ((sx + width) << 3) - 1;
+ 	int ystart = ((sy << 4) + topscan) & 0x3ff;
+-	int yend = (((sy + height) << 4) + topscan - 1) & 0x3ff;
++	int yend = (((sy + 1) << 4) + topscan - 1) & 0x3ff;
+ 
+ 	if (logo_active)
+ 		return;
+diff --git a/drivers/video/console/sticon.c b/drivers/video/console/sticon.c
+index 10302df885147..58e983b18f1f4 100644
+--- a/drivers/video/console/sticon.c
++++ b/drivers/video/console/sticon.c
+@@ -299,13 +299,13 @@ static void sticon_deinit(struct vc_data *c)
+ 	sticon_set_def_font(i, NULL);
+ }
+ 
+-static void sticon_clear(struct vc_data *conp, int sy, int sx, int height,
+-			 int width)
++static void sticon_clear(struct vc_data *conp, unsigned int sy, unsigned int sx,
++			 unsigned int width)
+ {
+-    if (!height || !width)
++    if (!width)
+ 	return;
+ 
+-    sti_clear(sticon_sti, sy, sx, height, width,
++    sti_clear(sticon_sti, sy, sx, 1, width,
+ 	      conp->vc_video_erase_char, font_data[conp->vc_num]);
+ }
+ 
+diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
+index a9777fd38ad92..54d79edbe85e1 100644
+--- a/drivers/video/console/vgacon.c
++++ b/drivers/video/console/vgacon.c
+@@ -1187,8 +1187,8 @@ static bool vgacon_scroll(struct vc_data *c, unsigned int t, unsigned int b,
+  *  The console `switch' structure for the VGA based console
+  */
+ 
+-static void vgacon_clear(struct vc_data *vc, int sy, int sx, int height,
+-			 int width) { }
++static void vgacon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
++			 unsigned int width) { }
+ static void vgacon_putc(struct vc_data *vc, int c, int ypos, int xpos) { }
+ static void vgacon_putcs(struct vc_data *vc, const unsigned short *s,
+ 			 int count, int ypos, int xpos) { }
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index f47dbba972fbb..7467b7a27ce2f 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -1210,8 +1210,8 @@ static void fbcon_deinit(struct vc_data *vc)
+  *  restriction is simplicity & efficiency at the moment.
+  */
+ 
+-static void fbcon_clear(struct vc_data *vc, int sy, int sx, int height,
+-			int width)
++static void __fbcon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
++			  unsigned int height, unsigned int width)
+ {
+ 	struct fb_info *info = registered_fb[con2fb_map[vc->vc_num]];
+ 	struct fbcon_ops *ops = info->fbcon_par;
+@@ -1250,6 +1250,12 @@ static void fbcon_clear(struct vc_data *vc, int sy, int sx, int height,
+ 		ops->clear(vc, info, real_y(p, sy), sx, height, width, fg, bg);
+ }
+ 
++static void fbcon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
++			unsigned int width)
++{
++	__fbcon_clear(vc, sy, sx, 1, width);
 +}
 +
-+static int mlx5r_handle_mkey_cleanup(struct mlx5_ib_mr *mr)
-+{
-+	bool is_odp_dma_buf = is_dmabuf_mr(mr) &&
-+			      !to_ib_umem_dmabuf(mr->umem)->pinned;
-+	struct mlx5_ib_dev *dev = to_mdev(mr->ibmr.device);
-+	struct mlx5_cache_ent *ent = mr->mmkey.cache_ent;
-+	bool is_odp = is_odp_mr(mr);
-+	bool from_cache = !!ent;
-+	int ret;
-+
-+	if (mr->mmkey.cacheable && !mlx5_umr_revoke_mr_with_lock(mr) &&
-+	    !cache_ent_find_and_store(dev, mr)) {
- 		ent = mr->mmkey.cache_ent;
- 		/* upon storing to a clean temp entry - schedule its cleanup */
- 		spin_lock_irq(&ent->mkeys_queue.lock);
-@@ -2055,7 +2082,7 @@ static int mlx5_revoke_mr(struct mlx5_ib_mr *mr)
- 			ent->tmp_cleanup_scheduled = true;
- 		}
- 		spin_unlock_irq(&ent->mkeys_queue.lock);
--		goto out;
-+		return 0;
- 	}
+ static void fbcon_putcs(struct vc_data *vc, const unsigned short *s,
+ 			int count, int ypos, int xpos)
+ {
+@@ -1673,7 +1679,7 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
+ 		case SCROLL_MOVE:
+ 			fbcon_redraw_blit(vc, info, p, t, b - t - count,
+ 				     count);
+-			fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
++			__fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
+ 			scr_memsetw((unsigned short *) (vc->vc_origin +
+ 							vc->vc_size_row *
+ 							(b - count)),
+@@ -1696,7 +1702,7 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
+ 					    b - t - count, vc->vc_cols);
+ 			else
+ 				goto redraw_up;
+-			fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
++			__fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
+ 			break;
  
- 	if (ent) {
-@@ -2064,8 +2091,14 @@ static int mlx5_revoke_mr(struct mlx5_ib_mr *mr)
- 		mr->mmkey.cache_ent = NULL;
- 		spin_unlock_irq(&ent->mkeys_queue.lock);
+ 		case SCROLL_PAN_REDRAW:
+@@ -1714,7 +1720,7 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
+ 							  vc->vc_rows - b, b);
+ 			} else
+ 				fbcon_redraw_move(vc, p, t + count, b - t - count, t);
+-			fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
++			__fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
+ 			break;
+ 
+ 		case SCROLL_PAN_MOVE:
+@@ -1737,14 +1743,14 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
+ 					    b - t - count, vc->vc_cols);
+ 			else
+ 				goto redraw_up;
+-			fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
++			__fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
+ 			break;
+ 
+ 		case SCROLL_REDRAW:
+ 		      redraw_up:
+ 			fbcon_redraw(vc, p, t, b - t - count,
+ 				     count * vc->vc_cols);
+-			fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
++			__fbcon_clear(vc, b - count, 0, count, vc->vc_cols);
+ 			scr_memsetw((unsigned short *) (vc->vc_origin +
+ 							vc->vc_size_row *
+ 							(b - count)),
+@@ -1761,7 +1767,7 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
+ 		case SCROLL_MOVE:
+ 			fbcon_redraw_blit(vc, info, p, b - 1, b - t - count,
+ 				     -count);
+-			fbcon_clear(vc, t, 0, count, vc->vc_cols);
++			__fbcon_clear(vc, t, 0, count, vc->vc_cols);
+ 			scr_memsetw((unsigned short *) (vc->vc_origin +
+ 							vc->vc_size_row *
+ 							t),
+@@ -1784,7 +1790,7 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
+ 					    b - t - count, vc->vc_cols);
+ 			else
+ 				goto redraw_down;
+-			fbcon_clear(vc, t, 0, count, vc->vc_cols);
++			__fbcon_clear(vc, t, 0, count, vc->vc_cols);
+ 			break;
+ 
+ 		case SCROLL_PAN_MOVE:
+@@ -1806,7 +1812,7 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
+ 					    b - t - count, vc->vc_cols);
+ 			else
+ 				goto redraw_down;
+-			fbcon_clear(vc, t, 0, count, vc->vc_cols);
++			__fbcon_clear(vc, t, 0, count, vc->vc_cols);
+ 			break;
+ 
+ 		case SCROLL_PAN_REDRAW:
+@@ -1823,14 +1829,14 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
+ 					fbcon_redraw_move(vc, p, count, t, 0);
+ 			} else
+ 				fbcon_redraw_move(vc, p, t, b - t - count, t + count);
+-			fbcon_clear(vc, t, 0, count, vc->vc_cols);
++			__fbcon_clear(vc, t, 0, count, vc->vc_cols);
+ 			break;
+ 
+ 		case SCROLL_REDRAW:
+ 		      redraw_down:
+ 			fbcon_redraw(vc, p, b - 1, b - t - count,
+ 				     -count * vc->vc_cols);
+-			fbcon_clear(vc, t, 0, count, vc->vc_cols);
++			__fbcon_clear(vc, t, 0, count, vc->vc_cols);
+ 			scr_memsetw((unsigned short *) (vc->vc_origin +
+ 							vc->vc_size_row *
+ 							t),
+@@ -2175,7 +2181,7 @@ static void fbcon_generic_blank(struct vc_data *vc, struct fb_info *info,
+ 
+ 		oldc = vc->vc_video_erase_char;
+ 		vc->vc_video_erase_char &= charmask;
+-		fbcon_clear(vc, 0, 0, vc->vc_rows, vc->vc_cols);
++		__fbcon_clear(vc, 0, 0, vc->vc_rows, vc->vc_cols);
+ 		vc->vc_video_erase_char = oldc;
  	}
-+
-+	if (is_odp)
-+		mutex_lock(&to_ib_umem_odp(mr->umem)->umem_mutex);
-+
-+	if (is_odp_dma_buf)
-+		dma_resv_lock(to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv,
-+			      NULL);
- 	ret = destroy_mkey(dev, mr);
--out:
- 	if (is_odp) {
- 		if (!ret)
- 			to_ib_umem_odp(mr->umem)->private = NULL;
-@@ -2075,9 +2108,9 @@ static int mlx5_revoke_mr(struct mlx5_ib_mr *mr)
- 	if (is_odp_dma_buf) {
- 		if (!ret)
- 			to_ib_umem_dmabuf(mr->umem)->private = NULL;
--		dma_resv_unlock(to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv);
-+		dma_resv_unlock(
-+			to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv);
- 	}
--
- 	return ret;
  }
- 
-@@ -2126,7 +2159,7 @@ static int __mlx5_ib_dereg_mr(struct ib_mr *ibmr)
- 	}
- 
- 	/* Stop DMA */
--	rc = mlx5_revoke_mr(mr);
-+	rc = mlx5r_handle_mkey_cleanup(mr);
- 	if (rc)
- 		return rc;
- 
+diff --git a/include/linux/console.h b/include/linux/console.h
+index 9258cb8e0841e..bd7f3a6a64cd0 100644
+--- a/include/linux/console.h
++++ b/include/linux/console.h
+@@ -36,6 +36,7 @@ enum vc_intensity;
+  *
+  * @con_init:   initialize the console on @vc. @init is true for the very first
+  *		call on this @vc.
++ * @con_clear:  erase @count characters at [@x, @y] on @vc. @count >= 1.
+  * @con_scroll: move lines from @top to @bottom in direction @dir by @lines.
+  *		Return true if no generic handling should be done.
+  *		Invoked by csi_M and printing to the console.
+@@ -48,8 +49,8 @@ struct consw {
+ 	const char *(*con_startup)(void);
+ 	void	(*con_init)(struct vc_data *vc, bool init);
+ 	void	(*con_deinit)(struct vc_data *vc);
+-	void	(*con_clear)(struct vc_data *vc, int sy, int sx, int height,
+-			int width);
++	void	(*con_clear)(struct vc_data *vc, unsigned int y,
++			     unsigned int x, unsigned int count);
+ 	void	(*con_putc)(struct vc_data *vc, int c, int ypos, int xpos);
+ 	void	(*con_putcs)(struct vc_data *vc, const unsigned short *s,
+ 			int count, int ypos, int xpos);
 -- 
 2.39.5
 
