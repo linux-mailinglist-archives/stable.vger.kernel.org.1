@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-161174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68AB2AFD3BE
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E55AFD223
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:43:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A6A016E182
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C993485D87
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086222E7181;
-	Tue,  8 Jul 2025 16:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA082E2F0D;
+	Tue,  8 Jul 2025 16:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdTs0/g4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMRZlnfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA592E62B8;
-	Tue,  8 Jul 2025 16:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1B72E5413;
+	Tue,  8 Jul 2025 16:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993809; cv=none; b=scQAwMNQh8pi2ixCDhPKu/HQKX3lOq50MaPHhDolx379SYpvZjQFRE/8n9Z11rWI6hs+YQGlO3/BDGbiGv/4mPE+hxxbWnF7n3c5YDM85SLrdHTgXoVHbiEWRs/KtY37IUOwx3gLdBAUwqoVPwpAZGeMg7CeBcjhNSaYFApYt10=
+	t=1751992825; cv=none; b=igzATNLJJlMeXCY/2zdW4hJmL11XozjsNgu4xBmAsDR/JxD1vrN0jrPnZJkQggQ+LgOHuYjsB4caoSBMhVXEWvzSG/dz+oUo8pTWs0e0Bbn7viELHl+LYo3l3XZdMLgjSF1s/XGwRM6vKJdzZjoqJwhKbqm7/2p9aohgQ89Z/Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993809; c=relaxed/simple;
-	bh=tfSvzQtpB+BIdVt0bLkDVrH6QbWnkdLrhyhJzoY6w5Y=;
+	s=arc-20240116; t=1751992825; c=relaxed/simple;
+	bh=fHuARlY3yiTFr01ZjDWx49QMkfD9b5kSh3Yga8pBmeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WtQ5LnNsrTeWc71Qe+aDq8TlxYO1c80h+A2EHQUnAMHuE7Sivk2sraMt0Cpk09Ma38IDaVgY5FvQJzQkeyEs++xOmyCPMELhQsrkEdGQOoA9Fy5jvJUaAyLZpVI72BNmy6x4208Guj6ASqyCeuT0w+KvWrKUjYsQjVkPMKFyDN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdTs0/g4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435D9C4CEF6;
-	Tue,  8 Jul 2025 16:56:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dtjP6cy7uPpcWlGC8CjA1tLBMieIUV6Rc0erdmbxvenCgGz9QxLK2PA2EuMz2G2afe1oUOAtyAz8BqoFbZEv+Okt+Y0bcVmOdAtj7rTotIuYWSwxaFwayCkdD2sk+hfmJssd0W2UK5Gbu1WPF91WzZZDCqN1p37IfdOPkQW3XOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMRZlnfe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248C0C4CEED;
+	Tue,  8 Jul 2025 16:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993809;
-	bh=tfSvzQtpB+BIdVt0bLkDVrH6QbWnkdLrhyhJzoY6w5Y=;
+	s=korg; t=1751992825;
+	bh=fHuARlY3yiTFr01ZjDWx49QMkfD9b5kSh3Yga8pBmeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CdTs0/g4s9YtdqltfqhoohFoaoO/8FTFnFmYD9tZRkEqKwUIXZd4c6BkLVVPEAxrX
-	 mfqdUOFCqaAEjM9Yj+D/62JRKovS8g25zKrfCqfqNTVpdmNb0p/il8OKVN2C8xEzW4
-	 e31vPtejh9N2vFWCC+HDmm3iR2FEdDs81BmBe20c=
+	b=HMRZlnfeYUX8ZtyXRy6JW0fbGQVGyb1+qvJ1xMfGMhJVgn2e9gpnyj/RI3Dwjus5B
+	 akli2pMBS9WFXa0ZJ3f7VqnAyqn4GPVJYyFnRYb+8dXlqsYrE+QoBwos3QHXy2mdFw
+	 CVB3x7qIorfOZOUCa4pprj6AtPNCGzbIujy3nXac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Kandybka <d.kandybka@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 025/160] ceph: fix possible integer overflow in ceph_zero_objects()
+Subject: [PATCH 6.12 066/232] platform/x86: firmware_attributes_class: Move include linux/device/class.h
 Date: Tue,  8 Jul 2025 18:21:02 +0200
-Message-ID: <20250708162232.209623217@linuxfoundation.org>
+Message-ID: <20250708162243.190232306@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Kandybka <d.kandybka@gmail.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 0abd87942e0c93964e93224836944712feba1d91 ]
+[ Upstream commit d0eee1be379204d2ee6cdb09bd98b3fd0165b6d3 ]
 
-In 'ceph_zero_objects', promote 'object_size' to 'u64' to avoid possible
-integer overflow.
+The header firmware_attributes_class.h uses 'struct class'. It should
+also include the necessary dependency header.
 
-Compile tested only.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20250104-firmware-attributes-simplify-v1-1-949f9709e405@weissschuh.net
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 5ff1fbb30597 ("platform/x86: think-lmi: Fix class device unregistration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/firmware_attributes_class.c | 1 -
+ drivers/platform/x86/firmware_attributes_class.h | 2 ++
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ceph/file.c b/fs/ceph/file.c
-index f3fba3d27efa6..e92a10ba58b3f 100644
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -2032,7 +2032,7 @@ static int ceph_zero_objects(struct inode *inode, loff_t offset, loff_t length)
- 	s32 stripe_unit = ci->i_layout.stripe_unit;
- 	s32 stripe_count = ci->i_layout.stripe_count;
- 	s32 object_size = ci->i_layout.object_size;
--	u64 object_set_size = object_size * stripe_count;
-+	u64 object_set_size = (u64) object_size * stripe_count;
- 	u64 nearly, t;
+diff --git a/drivers/platform/x86/firmware_attributes_class.c b/drivers/platform/x86/firmware_attributes_class.c
+index 182a07d8ae3df..cbc56e5db5928 100644
+--- a/drivers/platform/x86/firmware_attributes_class.c
++++ b/drivers/platform/x86/firmware_attributes_class.c
+@@ -3,7 +3,6 @@
+ /* Firmware attributes class helper module */
  
- 	/* round offset up to next period boundary */
+ #include <linux/mutex.h>
+-#include <linux/device/class.h>
+ #include <linux/module.h>
+ #include "firmware_attributes_class.h"
+ 
+diff --git a/drivers/platform/x86/firmware_attributes_class.h b/drivers/platform/x86/firmware_attributes_class.h
+index 363c75f1ac1b8..8e0f47cfdf92e 100644
+--- a/drivers/platform/x86/firmware_attributes_class.h
++++ b/drivers/platform/x86/firmware_attributes_class.h
+@@ -5,6 +5,8 @@
+ #ifndef FW_ATTR_CLASS_H
+ #define FW_ATTR_CLASS_H
+ 
++#include <linux/device/class.h>
++
+ int fw_attributes_class_get(const struct class **fw_attr_class);
+ int fw_attributes_class_put(void);
+ 
 -- 
 2.39.5
 
