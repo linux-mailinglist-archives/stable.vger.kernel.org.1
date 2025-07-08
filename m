@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-160649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1046AFD118
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58137AFD266
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC358486B74
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 034E51668E5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1592F1D5AC0;
-	Tue,  8 Jul 2025 16:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991EE2E0910;
+	Tue,  8 Jul 2025 16:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMRGdwWu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u51oUnks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA62881E;
-	Tue,  8 Jul 2025 16:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F9C8F5B;
+	Tue,  8 Jul 2025 16:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992283; cv=none; b=ZEOFOaECPcLlZDaY9JHUOhNPPnWOlqAFCwLWc3/wVy2mnwOiwbxbEAQCUo5WDwxq2YDbfNNswXFesAOxfI5xfuaMWueAEdRPmMttdUbJBCgkrLffTpYCReDRHbwVyxdPFYfXaBWgXlqCY6ueeWOnv+XV+lcQ42/FtFLfJaliKC8=
+	t=1751993004; cv=none; b=OCNI2A2tvsU3MI1wwwmll+SN6FK1F2pxKYGnzAKAbN6fVXd/+V61NtJ3kigY1Ee8FE/wL+c4apV76FhNYyYXLUmmkoha0QCEg3SNX2rMO6TrL9+wSXghy2X1/3cWk8fIheHxibGs/zyYS+lmjQYp9c+5HgwcKk/bWsiKbuQJOLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992283; c=relaxed/simple;
-	bh=Tu3r8+YMhuvRxIbn/DaNn/AfCQVqXHnfvTjfCOVMoJo=;
+	s=arc-20240116; t=1751993004; c=relaxed/simple;
+	bh=FEDs2bFYZz9wD4eCrEEc387rxqhzmhYp0KZAVkI3vhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=We/YyyWHN2JvbN/2nN0jmkrj8w0KovGYl/dxzS2jjAtlq/90M7dkOpgfq63co7fcZvdj+fkmXzxXFL5rebhKWopBSMVwkHMy7PbBoI7AgBTnIcA3Lh9S6IEpms58jmws5jzoYZqKE83pR5yjvX/NVa1Oa899l7zWaEyJg60NCZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMRGdwWu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45607C4CEED;
-	Tue,  8 Jul 2025 16:31:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nK5wPlpvb02FBwol0cWk8xsaUZSXF7S69h4RYkbFIh/SetoQYaMvsQP8r7rGKeU43OHe0BpSqyNCTe4PNww4Hq+0jlLxUNnmd0gAFmrvRyowomvRPzZvH/m/buxpqGJBCkY03IGXKV3z4/onO5Wqf3aWydRa7woPe7v8VC1LrwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u51oUnks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36B8C4CEED;
+	Tue,  8 Jul 2025 16:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992283;
-	bh=Tu3r8+YMhuvRxIbn/DaNn/AfCQVqXHnfvTjfCOVMoJo=;
+	s=korg; t=1751993004;
+	bh=FEDs2bFYZz9wD4eCrEEc387rxqhzmhYp0KZAVkI3vhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AMRGdwWuWuoSJNtrdgFMm+P9Rzh39ScnvtnSG9/CcAIoAX9tow4hiMbt0s0qZZGN/
-	 u6dVhK2wrVqx6ZKs0ZU7Oe3OQMO/ju4lszoa6gFvCI1z4U3rlnUh1OFCxsBKnz3yP/
-	 h6B70+mxWRAsupcWXcEyLloMCpH05mSKCOUrAqXM=
+	b=u51oUnksI+G6IhxvuVBpWAalH4DJA9n605Kf0mNm12nNuvjeRUXHBnigmMN7Es23O
+	 HacQyEY2ujM4I3COLmc/DoOXFx1oj8SNzzbRmLxE/d18EWIE8a9vvhH2E76r3IROCm
+	 85O6XCJjyNqiJ1gfOKxgx/RpFfaA1legH8rVZ2lg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/132] spi: spi-fsl-dspi: Clear completion counter before initiating transfer
+Subject: [PATCH 6.12 154/232] drm/xe: Move DSB l2 flush to a more sensible place
 Date: Tue,  8 Jul 2025 18:22:30 +0200
-Message-ID: <20250708162231.830575124@linuxfoundation.org>
+Message-ID: <20250708162245.466846708@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +63,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 
-[ Upstream commit fa60c094c19b97e103d653f528f8d9c178b6a5f5 ]
+[ Upstream commit a4b1b51ae132ac199412028a2df7b6c267888190 ]
 
-In target mode, extra interrupts can be received between the end of a
-transfer and halting the module if the host continues sending more data.
-If the interrupt from this occurs after the reinit_completion() then the
-completion counter is left at a non-zero value. The next unrelated
-transfer initiated by userspace will then complete immediately without
-waiting for the interrupt or writing to the RX buffer.
+Flushing l2 is only needed after all data has been written.
 
-Fix it by resetting the counter before the transfer so that lingering
-values are cleared. This is done after clearing the FIFOs and the
-status register but before the transfer is initiated, so no interrupts
-should be received at this point resulting in other race conditions.
-
-Fixes: 4f5ee75ea171 ("spi: spi-fsl-dspi: Replace interruptible wait queue with a simple completion")
-Signed-off-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250627-james-nxp-spi-dma-v4-1-178dba20c120@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 01570b446939 ("drm/xe/bmg: implement Wa_16023588340")
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: stable@vger.kernel.org # v6.12+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://lore.kernel.org/r/20250606104546.1996818-3-matthew.auld@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 0dd2dd0182bc444a62652e89d08c7f0e4fde15ba)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/display/xe_dsb_buffer.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 7dd94369abb47..3206c84c6f22f 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -988,11 +988,20 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 		if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
- 			status = dspi_dma_xfer(dspi);
- 		} else {
-+			/*
-+			 * Reinitialize the completion before transferring data
-+			 * to avoid the case where it might remain in the done
-+			 * state due to a spurious interrupt from a previous
-+			 * transfer. This could falsely signal that the current
-+			 * transfer has completed.
-+			 */
-+			if (dspi->irq)
-+				reinit_completion(&dspi->xfer_done);
-+
- 			dspi_fifo_write(dspi);
+diff --git a/drivers/gpu/drm/xe/display/xe_dsb_buffer.c b/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
+index f95375451e2fa..9f941fc2e36bb 100644
+--- a/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
++++ b/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
+@@ -17,10 +17,7 @@ u32 intel_dsb_buffer_ggtt_offset(struct intel_dsb_buffer *dsb_buf)
  
- 			if (dspi->irq) {
- 				wait_for_completion(&dspi->xfer_done);
--				reinit_completion(&dspi->xfer_done);
- 			} else {
- 				do {
- 					status = dspi_poll(dspi);
+ void intel_dsb_buffer_write(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val)
+ {
+-	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
+-
+ 	iosys_map_wr(&dsb_buf->vma->bo->vmap, idx * 4, u32, val);
+-	xe_device_l2_flush(xe);
+ }
+ 
+ u32 intel_dsb_buffer_read(struct intel_dsb_buffer *dsb_buf, u32 idx)
+@@ -30,12 +27,9 @@ u32 intel_dsb_buffer_read(struct intel_dsb_buffer *dsb_buf, u32 idx)
+ 
+ void intel_dsb_buffer_memset(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val, size_t size)
+ {
+-	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
+-
+ 	WARN_ON(idx > (dsb_buf->buf_size - size) / sizeof(*dsb_buf->cmd_buf));
+ 
+ 	iosys_map_memset(&dsb_buf->vma->bo->vmap, idx * 4, val, size);
+-	xe_device_l2_flush(xe);
+ }
+ 
+ bool intel_dsb_buffer_create(struct intel_crtc *crtc, struct intel_dsb_buffer *dsb_buf, size_t size)
+@@ -74,9 +68,12 @@ void intel_dsb_buffer_cleanup(struct intel_dsb_buffer *dsb_buf)
+ 
+ void intel_dsb_buffer_flush_map(struct intel_dsb_buffer *dsb_buf)
+ {
++	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
++
+ 	/*
+ 	 * The memory barrier here is to ensure coherency of DSB vs MMIO,
+ 	 * both for weak ordering archs and discrete cards.
+ 	 */
+-	xe_device_wmb(dsb_buf->vma->bo->tile->xe);
++	xe_device_wmb(xe);
++	xe_device_l2_flush(xe);
+ }
 -- 
 2.39.5
 
