@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-161083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF5D1AFD34D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C1A4AFD214
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B25817169B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:52:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E82B7AA585
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904122E5B37;
-	Tue,  8 Jul 2025 16:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6192DFF04;
+	Tue,  8 Jul 2025 16:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxbG2lOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJSPtOR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D7D8F5E;
-	Tue,  8 Jul 2025 16:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8138F5B;
+	Tue,  8 Jul 2025 16:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993544; cv=none; b=p54pmB4IJQ34lLvmdF0hPejmx+dIwP04Lt0CSeBJ9jFaiWC2OeU+phVfERjJ6KoklL9q+M4YDFtXu9WvEpyy0RHnHoQ+4wDnBHc+Aw0eJNan2rq01NKrL9Jen7a2UtzQ3Rvz/4VnQGw8RjOuNnqwCFbbzA1Z6+BhiRWopnZuNIo=
+	t=1751992970; cv=none; b=IjgWfj07xOwMGHEWwT3+tA11cFWyiEd5NO58UN9JRfZgknTOQw81Tof7m3zsYBFcFYnd5Pvh8cm17n0oFwmgGll4aL1sD/pVfFu8sCgCElkZcv2EMxrFSWwQsfFf4RQZ9yN87RDmGcYy1Lu/GrqRHq8zLBNWyT8T2OT+qPtcIec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993544; c=relaxed/simple;
-	bh=CdQn3rLS/2BH1r264x+HlF7H+yzkqyetW7VG+0adQSc=;
+	s=arc-20240116; t=1751992970; c=relaxed/simple;
+	bh=YBatTsqo9WkKGzhIoHTYfZBJPgjDmfXnCLhoKasCH7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Id7CRZ4wNqeIQh5xvP6YpcVLPLMIfGtgQYxX+/XyLWnGODRzZPVobNm7HKf9Pbv0vj8oEpPMtpG5dwrdVYJlcUj7QKaaDAQRSRCnbzUlCC2qC2UKbtXMJthki+3r4Rv+CFByHv5ZIXW1DH3xkDCzgG8s3dVxz2bkWQhrjaph4lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxbG2lOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E0EC4CEED;
-	Tue,  8 Jul 2025 16:52:23 +0000 (UTC)
+	 MIME-Version; b=k1pC0PPR6pThO3+9swAH64CHVnBmT8M61Ko1rh755wTW1nG64PWFiwVTF/KK5qB0N3rW9GznuaUTYzCxEJjjaXjM7qiOa68oP52tD0sA8P9CkVH1nGVZ0/EXJlILtIxJAwqf4Wr5wOit0HpakrslLTszjp6MmeX7JHVv0mWORqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJSPtOR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81FDC4CEED;
+	Tue,  8 Jul 2025 16:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993544;
-	bh=CdQn3rLS/2BH1r264x+HlF7H+yzkqyetW7VG+0adQSc=;
+	s=korg; t=1751992970;
+	bh=YBatTsqo9WkKGzhIoHTYfZBJPgjDmfXnCLhoKasCH7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxbG2lOb/31cMYv7vUfXiHR3pIVeT8+2uXA0D1avm8jYIF0tQPutHoWOITW7vZid4
-	 co+v/4ZZsqTOA/Zs57sVPPSGLyhgVQQ67K12NacUJDNMr4O9aTON8MawD3s3F8BTc2
-	 72TfLmlwvjEjbJwS+SxZL/oxbIPUKhrC+Qyp1qsU=
+	b=iJSPtOR9Ct/e8acRmnF+XUQeRDYUgaoBR4joYoVRDvfO6n4yBzG/MlaRaABepfnBP
+	 9V2S8Ou7beKiohUOKYCb0C1FstLk/twETa3zkuBIrES6NXdKiTJa/Egh8Tcth4bGxl
+	 WBdulknS8W+L7AS5DkfNHDyCACS8HvBPdWcwq7qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <sfrench@samba.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Marco Elver <elver@google.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 103/178] netfs: Fix i_size updating
+Subject: [PATCH 6.12 144/232] ubsan: integer-overflow: depend on BROKEN to keep this out of CI
 Date: Tue,  8 Jul 2025 18:22:20 +0200
-Message-ID: <20250708162239.336132436@linuxfoundation.org>
+Message-ID: <20250708162245.211448753@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,88 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 2e0658940d90a3dc130bb3b7f75bae9f4100e01f ]
+[ Upstream commit d6a0e0bfecccdcecb08defe75a137c7262352102 ]
 
-Fix the updating of i_size, particularly in regard to the completion of DIO
-writes and especially async DIO writes by using a lock.
+Depending on !COMPILE_TEST isn't sufficient to keep this feature out of
+CI because we can't stop it from being included in randconfig builds.
+This feature is still highly experimental, and is developed in lock-step
+with Clang's Overflow Behavior Types[1]. Depend on BROKEN to keep it
+from being enabled by anyone not expecting it.
 
-The bug is triggered occasionally by the generic/207 xfstest as it chucks a
-bunch of AIO DIO writes at the filesystem and then checks that fstat()
-returns a reasonable st_size as each completes.
-
-The problem is that netfs is trying to do "if new_size > inode->i_size,
-update inode->i_size" sort of thing but without a lock around it.
-
-This can be seen with cifs, but shouldn't be seen with kafs because kafs
-serialises modification ops on the client whereas cifs sends the requests
-to the server as they're generated and lets the server order them.
-
-Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/20250701163852.2171681-11-dhowells@redhat.com
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Link: https://discourse.llvm.org/t/rfc-v2-clang-introduce-overflowbehaviortypes-for-wrapping-and-non-wrapping-arithmetic/86507 [1]
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202505281024.f42beaa7-lkp@intel.com
+Fixes: 557f8c582a9b ("ubsan: Reintroduce signed overflow sanitizer")
+Acked-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://lore.kernel.org/r/20250528182616.work.296-kees@kernel.org
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Marco Elver <elver@google.com>
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_write.c | 2 ++
- fs/netfs/direct_write.c   | 8 ++++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ lib/Kconfig.ubsan | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index dbb544e183d13..9f22ff890a8cd 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -64,6 +64,7 @@ static void netfs_update_i_size(struct netfs_inode *ctx, struct inode *inode,
- 		return;
- 	}
+diff --git a/lib/Kconfig.ubsan b/lib/Kconfig.ubsan
+index 37655f58b8554..4e4dc430614a4 100644
+--- a/lib/Kconfig.ubsan
++++ b/lib/Kconfig.ubsan
+@@ -118,6 +118,8 @@ config UBSAN_UNREACHABLE
  
-+	spin_lock(&inode->i_lock);
- 	i_size_write(inode, pos);
- #if IS_ENABLED(CONFIG_FSCACHE)
- 	fscache_update_cookie(ctx->cache, NULL, &pos);
-@@ -77,6 +78,7 @@ static void netfs_update_i_size(struct netfs_inode *ctx, struct inode *inode,
- 					DIV_ROUND_UP(pos, SECTOR_SIZE),
- 					inode->i_blocks + add);
- 	}
-+	spin_unlock(&inode->i_lock);
- }
- 
- /**
-diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-index fa9a5bf3c6d51..3efa5894b2c07 100644
---- a/fs/netfs/direct_write.c
-+++ b/fs/netfs/direct_write.c
-@@ -14,13 +14,17 @@ static void netfs_cleanup_dio_write(struct netfs_io_request *wreq)
- 	struct inode *inode = wreq->inode;
- 	unsigned long long end = wreq->start + wreq->transferred;
- 
--	if (!wreq->error &&
--	    i_size_read(inode) < end) {
-+	if (wreq->error || end <= i_size_read(inode))
-+		return;
-+
-+	spin_lock(&inode->i_lock);
-+	if (end > i_size_read(inode)) {
- 		if (wreq->netfs_ops->update_i_size)
- 			wreq->netfs_ops->update_i_size(inode, end);
- 		else
- 			i_size_write(inode, end);
- 	}
-+	spin_unlock(&inode->i_lock);
- }
- 
- /*
+ config UBSAN_SIGNED_WRAP
+ 	bool "Perform checking for signed arithmetic wrap-around"
++	# This is very experimental so drop the next line if you really want it
++	depends on BROKEN
+ 	depends on !COMPILE_TEST
+ 	# The no_sanitize attribute was introduced in GCC with version 8.
+ 	depends on !CC_IS_GCC || GCC_VERSION >= 80000
 -- 
 2.39.5
 
