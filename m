@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-161088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1EA8AFD353
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 913ABAFD48B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE12C4839EC
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:52:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CB9C188831C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA2314A60D;
-	Tue,  8 Jul 2025 16:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C2A202F70;
+	Tue,  8 Jul 2025 17:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNoCDFxS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJeOxhHR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEA42E540C;
-	Tue,  8 Jul 2025 16:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AB72DC32D;
+	Tue,  8 Jul 2025 17:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993558; cv=none; b=JtJj8+FSkxMHrbM9I90+ab5YzcPsDm2vFWDkt79PzrdQXKBk4PgXkMeLJQJm2dmXLxjNMTS8gj/Xx89K0Mb3wcGFVWmipW6KiaGw6V6iGqt0v0ItmjVk6KniJ3EMlMu90XGAboeHImq1XFNVbTtt/zeA6TAu1Qb4q2aS/PUZrFI=
+	t=1751994074; cv=none; b=E0dtCSb+hpfRSkY5lNyd70vY9jMGpzaOovfW7bz+aFtbCHVTStc2qcrycTlBUj3XOy5OQpDaVsBqhxniaYKrrkdlPI6XODLWMdQ4HEPn71zSdcc0zsFTjJx6qXCbiZDC2qDvi2uYWXhmPAwvSLifnrxp2sfbWzX7yaaSNn+pZag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993558; c=relaxed/simple;
-	bh=gcLVMj5mOuNRjMl5EImKVCQyCrcDDpfweLz24J7Si3g=;
+	s=arc-20240116; t=1751994074; c=relaxed/simple;
+	bh=olQaiNPAuZMRaHrWD3DJZgUGZa5zzhhRgtbkUClhoXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sq7pmApOsPBJeqjzgCb4s2mJ54XCUwI9k5eviqmyvTMK8osqX/JLanpQUuINRFmAX0U36E8f2U0KzRfIW/4d6Ul1tcvRWY/OJyxkZkE+2LQzJ8uY5Z9IVBF+b1gwavndmjZ248fEwyF2Mytoz+18CXFUm9TO1gRKrsGVe6xMVIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNoCDFxS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7AB7C4CEF0;
-	Tue,  8 Jul 2025 16:52:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aoiXSz86zlCB7MYrSXl2PYZZ1VD2CXpenmRsXJptLUKo9PH5uNyXPdC7TuoaYvXiZOO2vwFoVRfbr6vYR4Xcmkt51rWK/hVV0snBZRPSaD5VQtaZSjVgvsGgCErCtXOpszqUriY3Ph33p432veiROS8nL8DlbSF0jJRnaZDqhjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJeOxhHR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAA1C4CEED;
+	Tue,  8 Jul 2025 17:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993558;
-	bh=gcLVMj5mOuNRjMl5EImKVCQyCrcDDpfweLz24J7Si3g=;
+	s=korg; t=1751994074;
+	bh=olQaiNPAuZMRaHrWD3DJZgUGZa5zzhhRgtbkUClhoXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vNoCDFxSP1rhxi5cQgVYcLI8gwUX5EwMdTS5huuatxCabacRG7BjEfFZdRuNneHn0
-	 /IDaeOccoHC8m9pFHnpgJC2OYsFlVHpVUqs09YZErSQPvWf4HWXjZj0RdQorc++dLt
-	 lC1CWgVJEjqRE50QIAGFMW85JtkcdS6QJqUNZs+k=
+	b=BJeOxhHRDovUMjGDZqq6wpOVq5tniCZpTn8w/qqUfF7LJfufFijxfm+lA8QcBF0w1
+	 Gsw0zYCctrctIMm7acTCRz6CVwToh8tBV4Y+KGSCTl0evr83OUtcoRUw3iLiteQwRT
+	 jOFkE0J+AewizJVkMMGliFjRNRFroHgodhNJdehc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <menglong8.dong@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Antoine Tenart <atenart@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jan Graczyk <jangraczyk@yahoo.ca>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 116/178] net: ipv4: fix stat increase when udp early demux drops the packet
-Date: Tue,  8 Jul 2025 18:22:33 +0200
-Message-ID: <20250708162239.646769480@linuxfoundation.org>
+Subject: [PATCH 5.15 117/160] platform/x86: dell-wmi-sysman: Fix WMI data block retrieval in sysfs callbacks
+Date: Tue,  8 Jul 2025 18:22:34 +0200
+Message-ID: <20250708162234.696900245@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,142 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Kurt Borja <kuurtb@gmail.com>
 
-[ Upstream commit c2a2ff6b4db55647575260bf2227b0e09d46addb ]
+[ Upstream commit eb617dd25ca176f3fee24f873f0fd60010773d67 ]
 
-udp_v4_early_demux now returns drop reasons as it either returns 0 or
-ip_mc_validate_source, which returns itself a drop reason. However its
-use was not converted in ip_rcv_finish_core and the drop reason is
-ignored, leading to potentially skipping increasing LINUX_MIB_IPRPFILTER
-if the drop reason is SKB_DROP_REASON_IP_RPFILTER.
+After retrieving WMI data blocks in sysfs callbacks, check for the
+validity of them before dereferencing their content.
 
-This is a fix and we're not converting udp_v4_early_demux to explicitly
-return a drop reason to ease backports; this can be done as a follow-up.
-
-Fixes: d46f827016d8 ("net: ip: make ip_mc_validate_source() return drop reason")
-Cc: Menglong Dong <menglong8.dong@gmail.com>
-Reported-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20250701074935.144134-1-atenart@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Jan Graczyk <jangraczyk@yahoo.ca>
+Closes: https://lore.kernel.org/r/CAHk-=wgMiSKXf7SvQrfEnxVtmT=QVQPjJdNjfm3aXS7wc=rzTw@mail.gmail.com/
+Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250630-sysman-fix-v2-1-d185674d0a30@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_input.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ .../platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h   | 5 +++++
+ .../platform/x86/dell/dell-wmi-sysman/enum-attributes.c   | 5 +++--
+ .../platform/x86/dell/dell-wmi-sysman/int-attributes.c    | 5 +++--
+ .../x86/dell/dell-wmi-sysman/passobj-attributes.c         | 5 +++--
+ .../platform/x86/dell/dell-wmi-sysman/string-attributes.c | 5 +++--
+ drivers/platform/x86/dell/dell-wmi-sysman/sysman.c        | 8 ++++----
+ 6 files changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
-index 30a5e9460d006..5a49eb99e5c48 100644
---- a/net/ipv4/ip_input.c
-+++ b/net/ipv4/ip_input.c
-@@ -319,8 +319,8 @@ static int ip_rcv_finish_core(struct net *net,
- 			      const struct sk_buff *hint)
- {
- 	const struct iphdr *iph = ip_hdr(skb);
--	int err, drop_reason;
- 	struct rtable *rt;
-+	int drop_reason;
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h b/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h
+index 3ad33a094588c..817ee7ba07ca0 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/dell-wmi-sysman.h
+@@ -89,6 +89,11 @@ extern struct wmi_sysman_priv wmi_priv;
  
- 	if (ip_can_use_hint(skb, iph, hint)) {
- 		drop_reason = ip_route_use_hint(skb, iph->daddr, iph->saddr,
-@@ -345,9 +345,10 @@ static int ip_rcv_finish_core(struct net *net,
- 			break;
- 		case IPPROTO_UDP:
- 			if (READ_ONCE(net->ipv4.sysctl_udp_early_demux)) {
--				err = udp_v4_early_demux(skb);
--				if (unlikely(err))
-+				drop_reason = udp_v4_early_demux(skb);
-+				if (unlikely(drop_reason))
- 					goto drop_error;
-+				drop_reason = SKB_DROP_REASON_NOT_SPECIFIED;
+ enum { ENUM, INT, STR, PO };
  
- 				/* must reload iph, skb->head might have changed */
- 				iph = ip_hdr(skb);
++#define ENUM_MIN_ELEMENTS		8
++#define INT_MIN_ELEMENTS		9
++#define STR_MIN_ELEMENTS		8
++#define PO_MIN_ELEMENTS			4
++
+ enum {
+ 	ATTR_NAME,
+ 	DISPL_NAME_LANG_CODE,
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
+index 8cc212c852668..fc2f58b4cbc6e 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
+@@ -23,9 +23,10 @@ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *a
+ 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_ENUMERATION_ATTRIBUTE_GUID);
+ 	if (!obj)
+ 		return -EIO;
+-	if (obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < ENUM_MIN_ELEMENTS ||
++	    obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
+ 		kfree(obj);
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 	ret = snprintf(buf, PAGE_SIZE, "%s\n", obj->package.elements[CURRENT_VAL].string.pointer);
+ 	kfree(obj);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c
+index 951e75b538fad..7352480642391 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/int-attributes.c
+@@ -25,9 +25,10 @@ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *a
+ 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_INTEGER_ATTRIBUTE_GUID);
+ 	if (!obj)
+ 		return -EIO;
+-	if (obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_INTEGER) {
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < INT_MIN_ELEMENTS ||
++	    obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_INTEGER) {
+ 		kfree(obj);
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 	ret = snprintf(buf, PAGE_SIZE, "%lld\n", obj->package.elements[CURRENT_VAL].integer.value);
+ 	kfree(obj);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
+index d8f1bf5e58a0f..3167e06d416ed 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
+@@ -26,9 +26,10 @@ static ssize_t is_enabled_show(struct kobject *kobj, struct kobj_attribute *attr
+ 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_PASSOBJ_ATTRIBUTE_GUID);
+ 	if (!obj)
+ 		return -EIO;
+-	if (obj->package.elements[IS_PASS_SET].type != ACPI_TYPE_INTEGER) {
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < PO_MIN_ELEMENTS ||
++	    obj->package.elements[IS_PASS_SET].type != ACPI_TYPE_INTEGER) {
+ 		kfree(obj);
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 	ret = snprintf(buf, PAGE_SIZE, "%lld\n", obj->package.elements[IS_PASS_SET].integer.value);
+ 	kfree(obj);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c
+index c392f0ecf8b55..0d2c74f8d1aad 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/string-attributes.c
+@@ -25,9 +25,10 @@ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *a
+ 	obj = get_wmiobj_pointer(instance_id, DELL_WMI_BIOS_STRING_ATTRIBUTE_GUID);
+ 	if (!obj)
+ 		return -EIO;
+-	if (obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count < STR_MIN_ELEMENTS ||
++	    obj->package.elements[CURRENT_VAL].type != ACPI_TYPE_STRING) {
+ 		kfree(obj);
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 	ret = snprintf(buf, PAGE_SIZE, "%s\n", obj->package.elements[CURRENT_VAL].string.pointer);
+ 	kfree(obj);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
+index 47f8c5a63343d..ab639dc8a8072 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
+@@ -411,10 +411,10 @@ static int init_bios_attributes(int attr_type, const char *guid)
+ 		return retval;
+ 
+ 	switch (attr_type) {
+-	case ENUM:	min_elements = 8;	break;
+-	case INT:	min_elements = 9;	break;
+-	case STR:	min_elements = 8;	break;
+-	case PO:	min_elements = 4;	break;
++	case ENUM:	min_elements = ENUM_MIN_ELEMENTS;	break;
++	case INT:	min_elements = INT_MIN_ELEMENTS;	break;
++	case STR:	min_elements = STR_MIN_ELEMENTS;	break;
++	case PO:	min_elements = PO_MIN_ELEMENTS;		break;
+ 	default:
+ 		pr_err("Error: Unknown attr_type: %d\n", attr_type);
+ 		return -EINVAL;
 -- 
 2.39.5
 
