@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-160602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42420AFD0E7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:29:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0545AFD1A3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 239E37AFB5B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B44B1C2481E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7962D877F;
-	Tue,  8 Jul 2025 16:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D982E49B0;
+	Tue,  8 Jul 2025 16:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l65qmBZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8B2y3f+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063592A1BA;
-	Tue,  8 Jul 2025 16:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5221C21773D;
+	Tue,  8 Jul 2025 16:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992136; cv=none; b=JQcgw8ESchtmdySxk5q+hwKSZLHay92ZWz+zh04Y+bPDp3KbPVTx1nabti2KDYxqaGrikorIvrKH47j8EHV07e6EnBwQGN8LG/XsnBjqiWVLSngp9XdLI7YyHOZBmHoPgHLjiTaFa3xp7CmClIAu8XIhQRer280TWK7h1167K5w=
+	t=1751992554; cv=none; b=GiDHso93r1XgtMqkqCqjcou/UTKe6xDNpRWja8PJjUo1Z+WuOD+UjcevHp7pBVTXexaf1fGeb8ouR6Az8L9wx8Q3J6uBKiarXiddjdiGnh9rjNADRkUv0U4KM0NRPgHwNJ4UhDXUUBhEapTZDa64xjSgNl+W94DLlLWxwMbgsz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992136; c=relaxed/simple;
-	bh=jfhMFws98up3FtXK7dC+H0PTlZkTRgX4opuzmnMFXRc=;
+	s=arc-20240116; t=1751992554; c=relaxed/simple;
+	bh=2TaOWiuCp9lzeZQW4SOg1nDX8Ks+9g8uDiKFQ3Wr6ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hc0Ii0sajpoYs010esO5hKyA4s/b8z5R0TfrnlHe9mkxye2nxwyK9ig/qQs9FqU1xN3owOqdqpnSfROROqYV6QfS4ulLclF2UFneuxl96X+NnPzDZzZnsWgg8ajqpmj/TzOrFGfNLs+Gu6M1d6pTHWzC6qmeWUVJBQpkQfSZp3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l65qmBZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81933C4CEED;
-	Tue,  8 Jul 2025 16:28:55 +0000 (UTC)
+	 MIME-Version; b=FOg7x/waHWZap259NexFC8vPe16HU6P5FdjW0Hyhkx/o+k+xBbWoYP4s1rSesngwWt9+sM/E8ROhdUQYBYTkZSrOCS9sn7aJF9Qb9LpZmOLrhMZ2Qy9XhRH1DmkRRfew0bn7oJAGxFxeARbFA8S8Bo7kqlgrLzsCv7IWOUUabaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p8B2y3f+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6A3C4CEED;
+	Tue,  8 Jul 2025 16:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992135;
-	bh=jfhMFws98up3FtXK7dC+H0PTlZkTRgX4opuzmnMFXRc=;
+	s=korg; t=1751992554;
+	bh=2TaOWiuCp9lzeZQW4SOg1nDX8Ks+9g8uDiKFQ3Wr6ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l65qmBZVVjoIYEcAUs2YS2nrk6X/a5eAQ9dO0zfS3pSUjJOs3DLAzUccEHaBQrVSD
-	 NybnS6eCynmZQNpmBSZwvdefvgp201TCBkuTrtASVdj3XA7mOtFHNmzAZqHK+2zHKO
-	 +NgssmYQ+7MFetp3MlmZYxvrbD31oHfUMzIRBG+c=
+	b=p8B2y3f+5Wfzq52jP/A9xAjDG5I7yqbKHTOFLO4fblHOHbOY++bB2VIO4Hc+SC5of
+	 sxT3fHcMla2lTLnzTDTiKHVMnhdiwm5nuKV8GyUUulm9ugLwwsvIBEieW2NtJ7gYyS
+	 AveAMe2G67jWP3Iy3U9S+cu2g9svnuyUtH6OhPsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.1 69/81] xhci: dbc: Flush queued requests before stopping dbc
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 130/132] KVM: SVM: Advertise TSA CPUID bits to guests
 Date: Tue,  8 Jul 2025 18:24:01 +0200
-Message-ID: <20250708162227.152204404@linuxfoundation.org>
+Message-ID: <20250708162234.318242139@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit efe3e3ae5a66cb38ef29c909e951b4039044bae9 upstream.
+Commit 31272abd5974b38ba312e9cf2ec2f09f9dd7dcba upstream.
 
-Flush dbc requests when dbc is stopped and transfer rings are freed.
-Failure to flush them lead to leaking memory and dbc completing odd
-requests after resuming from suspend, leading to error messages such as:
+Synthesize the TSA CPUID feature bits for guests. Set TSA_{SQ,L1}_NO on
+unaffected machines.
 
-[   95.344392] xhci_hcd 0000:00:0d.0: no matched request
-
-Cc: stable <stable@kernel.org>
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250627144127.3889714-5-mathias.nyman@linux.intel.com
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgcap.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kvm/cpuid.c         |    8 +++++++-
+ arch/x86/kvm/reverse_cpuid.h |    8 ++++++++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -639,6 +639,10 @@ static void xhci_dbc_stop(struct xhci_db
- 	case DS_DISABLED:
- 		return;
- 	case DS_CONFIGURED:
-+		spin_lock(&dbc->lock);
-+		xhci_dbc_flush_requests(dbc);
-+		spin_unlock(&dbc->lock);
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -780,6 +780,7 @@ void kvm_set_cpu_caps(void)
+ 
+ 	kvm_cpu_cap_mask(CPUID_8000_0021_EAX,
+ 		F(NO_NESTED_DATA_BP) | F(LFENCE_RDTSC) | 0 /* SmmPgCfgLock */ |
++		F(VERW_CLEAR) |
+ 		F(NULL_SEL_CLR_BASE) | F(AUTOIBRS) | 0 /* PrefetchCtlMsr */
+ 	);
+ 
+@@ -790,6 +791,10 @@ void kvm_set_cpu_caps(void)
+ 		F(PERFMON_V2)
+ 	);
+ 
++	kvm_cpu_cap_init_kvm_defined(CPUID_8000_0021_ECX,
++		F(TSA_SQ_NO) | F(TSA_L1_NO)
++	);
 +
- 		if (dbc->driver->disconnect)
- 			dbc->driver->disconnect(dbc);
+ 	/*
+ 	 * Synthesize "LFENCE is serializing" into the AMD-defined entry in
+ 	 * KVM's supported CPUID if the feature is reported as supported by the
+@@ -1296,8 +1301,9 @@ static inline int __do_cpuid_func(struct
+ 		entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
  		break;
+ 	case 0x80000021:
+-		entry->ebx = entry->ecx = entry->edx = 0;
++		entry->ebx = entry->edx = 0;
+ 		cpuid_entry_override(entry, CPUID_8000_0021_EAX);
++		cpuid_entry_override(entry, CPUID_8000_0021_ECX);
+ 		break;
+ 	/* AMD Extended Performance Monitoring and Debug */
+ 	case 0x80000022: {
+--- a/arch/x86/kvm/reverse_cpuid.h
++++ b/arch/x86/kvm/reverse_cpuid.h
+@@ -17,6 +17,7 @@ enum kvm_only_cpuid_leafs {
+ 	CPUID_8000_0007_EDX,
+ 	CPUID_8000_0022_EAX,
+ 	CPUID_7_2_EDX,
++	CPUID_8000_0021_ECX,
+ 	NR_KVM_CPU_CAPS,
+ 
+ 	NKVMCAPINTS = NR_KVM_CPU_CAPS - NCAPINTS,
+@@ -61,6 +62,10 @@ enum kvm_only_cpuid_leafs {
+ /* CPUID level 0x80000022 (EAX) */
+ #define KVM_X86_FEATURE_PERFMON_V2	KVM_X86_FEATURE(CPUID_8000_0022_EAX, 0)
+ 
++/* CPUID level 0x80000021 (ECX) */
++#define KVM_X86_FEATURE_TSA_SQ_NO	KVM_X86_FEATURE(CPUID_8000_0021_ECX, 1)
++#define KVM_X86_FEATURE_TSA_L1_NO	KVM_X86_FEATURE(CPUID_8000_0021_ECX, 2)
++
+ struct cpuid_reg {
+ 	u32 function;
+ 	u32 index;
+@@ -90,6 +95,7 @@ static const struct cpuid_reg reverse_cp
+ 	[CPUID_8000_0021_EAX] = {0x80000021, 0, CPUID_EAX},
+ 	[CPUID_8000_0022_EAX] = {0x80000022, 0, CPUID_EAX},
+ 	[CPUID_7_2_EDX]       = {         7, 2, CPUID_EDX},
++	[CPUID_8000_0021_ECX] = {0x80000021, 0, CPUID_ECX},
+ };
+ 
+ /*
+@@ -129,6 +135,8 @@ static __always_inline u32 __feature_tra
+ 	KVM_X86_TRANSLATE_FEATURE(PERFMON_V2);
+ 	KVM_X86_TRANSLATE_FEATURE(RRSBA_CTRL);
+ 	KVM_X86_TRANSLATE_FEATURE(BHI_CTRL);
++	KVM_X86_TRANSLATE_FEATURE(TSA_SQ_NO);
++	KVM_X86_TRANSLATE_FEATURE(TSA_L1_NO);
+ 	default:
+ 		return x86_feature;
+ 	}
 
 
 
