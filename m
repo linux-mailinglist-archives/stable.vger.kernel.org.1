@@ -1,96 +1,45 @@
-Return-Path: <stable+bounces-160454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2879AFC43F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 09:39:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8561AFC451
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 09:40:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DAAC188173E
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 07:39:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30F377AA415
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 07:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6ED298CDC;
-	Tue,  8 Jul 2025 07:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A41298CDC;
+	Tue,  8 Jul 2025 07:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Z+cDIoqg";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oCcz3XoT";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Z+cDIoqg";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oCcz3XoT"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="mCSiVsxt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAF023BD09
-	for <stable@vger.kernel.org>; Tue,  8 Jul 2025 07:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5BC2989BC;
+	Tue,  8 Jul 2025 07:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751960337; cv=none; b=ulW3PiqzyS5GHz0/wdE6QLQt5pqHq/+teyDAIgdtLN+3PQxrpy8+5ip+EViEEln01mQ+5e3dvTB2WAk47yHfA9b8ZDDnzp8v50z1NDAZVwW4dfjyjahjfzqnr6V4KOlEO1ptiUjd0KDalJlTsET1+UP12qK3CBDLjpyxcuJny0w=
+	t=1751960412; cv=none; b=LqTjio8+XdY7WRsw/s9puMvu1KoPPTsvvub1o30fHjWyh+wbGLjqS1BoeQIyxn/zdw6X7D4c/vF1mvJJMcUxMGPyW2WV50v2oGuoWLKZDSwZb39b8EbQECQhtnHDufeivoZO/IUGmuFkzpTEcRrhZhXf0vbBkBJp6Az6t1yjNRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751960337; c=relaxed/simple;
-	bh=zCM8QgWrvDviVZ4FIBzFaUWr6BsAjVk0KYPCoXEN6uw=;
+	s=arc-20240116; t=1751960412; c=relaxed/simple;
+	bh=3fo4EfdCIwepWMiWH+dpbuUTXqXmWdubD93vkAP8EFg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FhSN62YpWaSQOtUsljJzInUzjz3gkYUU61ngVilrssCJWTGnaSpz+7MPLn7l7wtEsmjwKYMoO5BISqqk0DnSn/yv14RqwbUgxow9cPzxLTL0WNcXbsxmIE/1Bn3i6YOcA9P/n5BhdYBCTIMVyQKGQGkFg+/B+8XA6EXNg7iAsfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Z+cDIoqg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oCcz3XoT; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Z+cDIoqg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oCcz3XoT; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7DE6C2115F;
-	Tue,  8 Jul 2025 07:38:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1751960333; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gvG5OJSZUKUfmOaM9AGtFnkko27si3EQj7m9quIH+1U=;
-	b=Z+cDIoqgze0oqsRAESJ+3Zsubl5j79M5/pT1u8FEq56KkABuklx2yAl0/NOQBBq7cLliEG
-	w/BgzsdD5oNmLng+Ej9dIh+o55N1YVqhN4CqcCO+MbE7SxVxW7+kKpJ1tPj7QM2zeYl1gr
-	4jUnK5OWMyE7gIUGrduMElIiHqfl0PA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1751960333;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gvG5OJSZUKUfmOaM9AGtFnkko27si3EQj7m9quIH+1U=;
-	b=oCcz3XoTG2OpMrgy6Go/NmHCi+I73sVD2Pqsd2PADEDbC8BCxQ6lqFq6fSktqH9ZfYBB//
-	meQGvKx6KWqOyyBQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Z+cDIoqg;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oCcz3XoT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1751960333; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gvG5OJSZUKUfmOaM9AGtFnkko27si3EQj7m9quIH+1U=;
-	b=Z+cDIoqgze0oqsRAESJ+3Zsubl5j79M5/pT1u8FEq56KkABuklx2yAl0/NOQBBq7cLliEG
-	w/BgzsdD5oNmLng+Ej9dIh+o55N1YVqhN4CqcCO+MbE7SxVxW7+kKpJ1tPj7QM2zeYl1gr
-	4jUnK5OWMyE7gIUGrduMElIiHqfl0PA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1751960333;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gvG5OJSZUKUfmOaM9AGtFnkko27si3EQj7m9quIH+1U=;
-	b=oCcz3XoTG2OpMrgy6Go/NmHCi+I73sVD2Pqsd2PADEDbC8BCxQ6lqFq6fSktqH9ZfYBB//
-	meQGvKx6KWqOyyBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1198913A54;
-	Tue,  8 Jul 2025 07:38:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id HNbpAg3LbGhQRwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 08 Jul 2025 07:38:53 +0000
-Message-ID: <a421623f-e93f-4423-bf30-c7388c6a3508@suse.de>
-Date: Tue, 8 Jul 2025 09:38:52 +0200
+	 In-Reply-To:Content-Type; b=ugWC/1ZwNQl/9WcGAIIbIc22X1/Vy+XQdQISaJlpb5AAzXWCtoGPBbpnmEFtdoe15H+CeYVjwoE1J+xdTKDTm3Jsdy0SJtIvVRof9XZvYd+q5dKvwVZi8oY4dHgln0kcCsMwRsGHTUM7gVDAZioMtGv5RyiAnmaD3UPAf/a37fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=mCSiVsxt; arc=none smtp.client-ip=220.197.31.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=4pcONlMtctRaQHK7fS6/2dAIUpqJuNsF4h6jvz/beT4=;
+	b=mCSiVsxtRndwqmss2ycRnowHt0DpJ3lfNRCsVJL8pvMVoAlR3DhmuNTE3rHHZ1
+	1KNS74CFDbo7z9sE34wlBk716LiX1LNaSy0kNFKQSkUQvl4qvEvD2CwyBYAiiD8u
+	L/bshUamWlWK4o/rFl0EQORUr4EPHIODu3HVEeItubvRA=
+Received: from [172.19.20.199] (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD39zc6y2xonS0mAA--.884S2;
+	Tue, 08 Jul 2025 15:39:39 +0800 (CST)
+Message-ID: <8497d07f-b0e2-4a0f-91b9-9e6ecd1f8b1e@126.com>
+Date: Tue, 8 Jul 2025 15:39:38 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,160 +47,233 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] drm/framebuffer: Acquire internal references on GEM
- handles
-To: Satadru Pramanik <satadru@gmail.com>
-Cc: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- asrivats@redhat.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- airlied@gmail.com, simona@ffwll.ch, jean-christophe@guillain.net,
- superm1@kernel.org, bp@alien8.de, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Bert Karwatzki <spasswolf@web.de>,
- Sumit Semwal <sumit.semwal@linaro.org>, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, stable@vger.kernel.org
-References: <20250707131224.249496-1-tzimmermann@suse.de>
- <a3336964-1b72-421c-b4dc-2ac3f548430b@amd.com>
- <4c1bc40d-6bd4-4102-b12f-fda320216e1d@suse.de>
- <CAFrh3J9uh0M5bWeS3cv_Cb1yFTKhE2+9mSk5hsZTzWW3uYKaWg@mail.gmail.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <CAFrh3J9uh0M5bWeS3cv_Cb1yFTKhE2+9mSk5hsZTzWW3uYKaWg@mail.gmail.com>
+Subject: Re: [PATCH V3] efi/tpm: Fix the issue where the CC platforms event
+ log header can't be correctly identified
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: jarkko@kernel.org, sathyanarayanan.kuppuswamy@linux.intel.com,
+ ilias.apalodimas@linaro.org, jgg@ziepe.ca, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, liuzixing@hygon.cn
+References: <1751858087-10366-1-git-send-email-yangge1116@126.com>
+ <CAMj1kXEbTH3T_hYQnvPy_cAnBJi6z7VoZxh3KseW91D1o=R_4g@mail.gmail.com>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <CAMj1kXEbTH3T_hYQnvPy_cAnBJi6z7VoZxh3KseW91D1o=R_4g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,web.de];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[amd.com,redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,guillain.net,alien8.de,lists.freedesktop.org,vger.kernel.org,web.de,linaro.org,lists.linaro.org];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:mid,suse.de:dkim,suse.de:email]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 7DE6C2115F
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
+X-CM-TRANSID:_____wD39zc6y2xonS0mAA--.884S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxKw48XF4xKr4UCryUGFW8Crg_yoW3tFyDpF
+	48JF9Ykr45JFW2gw1fZw1UA3ZxZw4ktrZrGFyDK3WjyrnxuryxWF4UGry5CF93trsrG3WY
+	q34Utr17ua4jvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbHUDUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiigCEG2hswwvYQwAAsC
 
-Hi
 
-Am 07.07.25 um 18:14 schrieb Satadru Pramanik:
-> Applying this patch to 6.16-rc5 resolves the sleep issue regression 
-> from 6.16-rc4 I was having on my MacBookPro11,3 (Mid-2014 15" 
-> MacBookPro), which has the NVIDIA GK107M GPU enabled via the Nouveau 
-> driver.
 
-Thanks for testing. I think the sleep regression was just a side effect 
-of the broken reference counting.
+在 2025/7/8 9:19, Ard Biesheuvel 写道:
+> On Mon, 7 Jul 2025 at 13:15, <yangge1116@126.com> wrote:
+>>
+>> From: Ge Yang <yangge1116@126.com>
+>>
+>> Since commit d228814b1913 ("efi/libstub: Add get_event_log() support
+>> for CC platforms") reuses TPM2 support code for the CC platforms, when
+>> launching a TDX virtual machine with coco measurement enabled, the
+>> following error log is generated:
+>>
+>> [Firmware Bug]: Failed to parse event in TPM Final Events Log
+>>
+>> Call Trace:
+>> efi_config_parse_tables()
+>>    efi_tpm_eventlog_init()
+>>      tpm2_calc_event_log_size()
+>>        __calc_tpm2_event_size()
+>>
+>> The pcr_idx value in the Intel TDX log header is 1, causing the function
+>> __calc_tpm2_event_size() to fail to recognize the log header, ultimately
+>> leading to the "Failed to parse event in TPM Final Events Log" error.
+>>
+>> According to UEFI Specification 2.10, Section 38.4.1: For TDX, TPM PCR
+>> 0 maps to MRTD, so the log header uses TPM PCR 1 instead. To successfully
+>> parse the TDX event log header, the check for a pcr_idx value of 0
+>> must be skipped.
+>>
+>> According to Table 6 in Section 10.2.1 of the TCG PC Client
+>> Specification, the index field does not require the PCR index to be
+>> fixed at zero. Therefore, skipping the check for a pcr_idx value of
+>> 0 for CC platforms is safe.
+>>
+>> Link: https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#intel-trust-domain-extension
+>> Link: https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClient_PFP_r1p05_v23_pub.pdf
+>> Fixes: d228814b1913 ("efi/libstub: Add get_event_log() support for CC platforms")
+>> Signed-off-by: Ge Yang <yangge1116@126.com>
+>> Cc: stable@vger.kernel.org
+>> ---
+>>
+>> V3:
+>> - fix build error
+>>
+>> V2:
+>> - limit the fix for CC only suggested by Jarkko and Sathyanarayanan
+>>
+>>   drivers/char/tpm/eventlog/tpm2.c   |  4 +++-
+>>   drivers/firmware/efi/libstub/tpm.c | 13 +++++++++----
+>>   drivers/firmware/efi/tpm.c         |  4 +++-
+>>   include/linux/tpm_eventlog.h       | 14 +++++++++++---
+>>   4 files changed, 26 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/char/tpm/eventlog/tpm2.c b/drivers/char/tpm/eventlog/tpm2.c
+>> index 37a0580..30ef47c 100644
+>> --- a/drivers/char/tpm/eventlog/tpm2.c
+>> +++ b/drivers/char/tpm/eventlog/tpm2.c
+>> @@ -18,6 +18,7 @@
+>>   #include <linux/module.h>
+>>   #include <linux/slab.h>
+>>   #include <linux/tpm_eventlog.h>
+>> +#include <linux/cc_platform.h>
+>>
+>>   #include "../tpm.h"
+>>   #include "common.h"
+>> @@ -36,7 +37,8 @@
+>>   static size_t calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+>>                                     struct tcg_pcr_event *event_header)
+>>   {
+>> -       return __calc_tpm2_event_size(event, event_header, false);
+>> +       return __calc_tpm2_event_size(event, event_header, false,
+>> +                       cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
+> 
+> 
+> This conflates TDX attestation with guest state encryption.
+> 
+> I think there could be meaningful ways for a confidential guest to use
+> [emulated] TPM attestation rather than CC specific attestation, so I
+> don't think it is a good idea to assume that the fact that we are
+> running on a CoCo guest always implies that all the TCG data
+> structures are of the CC variety.
+> 
 
-Best regards
-Thomas
+Okay, thank you. I'll adjust the patch again.
 
->
-> Many thanks,
->
-> Satadru
->
-> On Mon, Jul 7, 2025 at 9:33 AM Thomas Zimmermann <tzimmermann@suse.de> 
-> wrote:
->
->     Hi
->
->     Am 07.07.25 um 15:21 schrieb Christian König:
->
->     >>
->     >> +#define DRM_FRAMEBUFFER_HAS_HANDLE_REF(_i)  BIT(0u + (_i))
->     > Why the "0u + (_i)" here? An macro trick?
->
->     You mean why not just BIT(_i)? internal_flags could possibly contain
->     additional flags. Just using BIT(_i) would make it look as if it's
->     only
->     for those handle refs.
->
->     Best regards
->     Thomas
->
->     >
->     > Regards,
->     > Christian.
->     >
->     >> +
->     >>   /**
->     >>    * struct drm_framebuffer - frame buffer object
->     >>    *
->     >> @@ -188,6 +191,10 @@ struct drm_framebuffer {
->     >>       * DRM_MODE_FB_MODIFIERS.
->     >>       */
->     >>      int flags;
->     >> +    /**
->     >> +     * @internal_flags: Framebuffer flags like
->     DRM_FRAMEBUFFER_HAS_HANDLE_REF.
->     >> +     */
->     >> +    unsigned int internal_flags;
->     >>      /**
->     >>       * @filp_head: Placed on &drm_file.fbs, protected by
->     &drm_file.fbs_lock.
->     >>       */
->
->     -- 
->     --
->     Thomas Zimmermann
->     Graphics Driver Developer
->     SUSE Software Solutions Germany GmbH
->     Frankenstrasse 146, 90461 Nuernberg, Germany
->     GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
->     HRB 36809 (AG Nuernberg)
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+> 
+>>   }
+>>
+>>   static void *tpm2_bios_measurements_start(struct seq_file *m, loff_t *pos)
+>> diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
+>> index a5c6c4f..9728060 100644
+>> --- a/drivers/firmware/efi/libstub/tpm.c
+>> +++ b/drivers/firmware/efi/libstub/tpm.c
+>> @@ -50,7 +50,8 @@ void efi_enable_reset_attack_mitigation(void)
+>>   static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_location,
+>>                                         efi_physical_addr_t log_last_entry,
+>>                                         efi_bool_t truncated,
+>> -                                      struct efi_tcg2_final_events_table *final_events_table)
+>> +                                      struct efi_tcg2_final_events_table *final_events_table,
+>> +                                      bool is_cc_event)
+>>   {
+>>          efi_guid_t linux_eventlog_guid = LINUX_EFI_TPM_EVENT_LOG_GUID;
+>>          efi_status_t status;
+>> @@ -87,7 +88,8 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
+>>                          last_entry_size =
+>>                                  __calc_tpm2_event_size((void *)last_entry_addr,
+>>                                                      (void *)(long)log_location,
+>> -                                                   false);
+>> +                                                   false,
+>> +                                                   is_cc_event);
+>>                  } else {
+>>                          last_entry_size = sizeof(struct tcpa_event) +
+>>                             ((struct tcpa_event *) last_entry_addr)->event_size;
+>> @@ -123,7 +125,8 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
+>>                          header = data + offset + final_events_size;
+>>                          event_size = __calc_tpm2_event_size(header,
+>>                                                     (void *)(long)log_location,
+>> -                                                  false);
+>> +                                                  false,
+>> +                                                  is_cc_event);
+>>                          /* If calc fails this is a malformed log */
+>>                          if (!event_size)
+>>                                  break;
+>> @@ -157,6 +160,7 @@ void efi_retrieve_eventlog(void)
+>>          efi_tcg2_protocol_t *tpm2 = NULL;
+>>          efi_bool_t truncated;
+>>          efi_status_t status;
+>> +       bool is_cc_event = false;
+>>
+>>          status = efi_bs_call(locate_protocol, &tpm2_guid, NULL, (void **)&tpm2);
+>>          if (status == EFI_SUCCESS) {
+>> @@ -186,11 +190,12 @@ void efi_retrieve_eventlog(void)
+>>
+>>                  final_events_table =
+>>                          get_efi_config_table(EFI_CC_FINAL_EVENTS_TABLE_GUID);
+>> +               is_cc_event = true;
+>>          }
+>>
+>>          if (status != EFI_SUCCESS || !log_location)
+>>                  return;
+>>
+>>          efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
+>> -                                  truncated, final_events_table);
+>> +                                  truncated, final_events_table, is_cc_event);
+>>   }
+>> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+>> index cdd4310..ca8535d 100644
+>> --- a/drivers/firmware/efi/tpm.c
+>> +++ b/drivers/firmware/efi/tpm.c
+>> @@ -12,6 +12,7 @@
+>>   #include <linux/init.h>
+>>   #include <linux/memblock.h>
+>>   #include <linux/tpm_eventlog.h>
+>> +#include <linux/cc_platform.h>
+>>
+>>   int efi_tpm_final_log_size;
+>>   EXPORT_SYMBOL(efi_tpm_final_log_size);
+>> @@ -23,7 +24,8 @@ static int __init tpm2_calc_event_log_size(void *data, int count, void *size_inf
+>>
+>>          while (count > 0) {
+>>                  header = data + size;
+>> -               event_size = __calc_tpm2_event_size(header, size_info, true);
+>> +               event_size = __calc_tpm2_event_size(header, size_info, true,
+>> +                                    cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
+>>                  if (event_size == 0)
+>>                          return -1;
+>>                  size += event_size;
+>> diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+>> index 891368e..b3380c9 100644
+>> --- a/include/linux/tpm_eventlog.h
+>> +++ b/include/linux/tpm_eventlog.h
+>> @@ -143,6 +143,7 @@ struct tcg_algorithm_info {
+>>    * @event:        Pointer to the event whose size should be calculated
+>>    * @event_header: Pointer to the initial event containing the digest lengths
+>>    * @do_mapping:   Whether or not the event needs to be mapped
+>> + * @is_cc_event:  Whether or not the event is from a CC platform
+>>    *
+>>    * The TPM2 event log format can contain multiple digests corresponding to
+>>    * separate PCR banks, and also contains a variable length of the data that
+>> @@ -159,7 +160,8 @@ struct tcg_algorithm_info {
+>>
+>>   static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+>>                                           struct tcg_pcr_event *event_header,
+>> -                                        bool do_mapping)
+>> +                                        bool do_mapping,
+>> +                                        bool is_cc_event)
+>>   {
+>>          struct tcg_efi_specid_event_head *efispecid;
+>>          struct tcg_event_field *event_field;
+>> @@ -201,8 +203,14 @@ static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *ev
+>>          count = event->count;
+>>          event_type = event->event_type;
+>>
+>> -       /* Verify that it's the log header */
+>> -       if (event_header->pcr_idx != 0 ||
+>> +       /*
+>> +        * Verify that it's the log header. According to the TCG PC Client
+>> +        * Specification, when identifying a log header, the check for a
+>> +        * pcr_idx value of 0 is not required. For CC platforms, skipping
+>> +        * this check during log header is necessary; otherwise, the CC
+>> +        * platform's log header may fail to be recognized.
+>> +        */
+>> +       if ((!is_cc_event && event_header->pcr_idx != 0) ||
+>>              event_header->event_type != NO_ACTION ||
+>>              memcmp(event_header->digest, zero_digest, sizeof(zero_digest))) {
+>>                  size = 0;
+>> --
+>> 2.7.4
+>>
 
 
