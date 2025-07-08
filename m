@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-160886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CDE1AFD253
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3547AAFD112
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED91B175A1D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:42:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5070D486ACE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025BE2DD5EF;
-	Tue,  8 Jul 2025 16:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A26A1714B7;
+	Tue,  8 Jul 2025 16:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifKplZTc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anJ8YudY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47981714B7;
-	Tue,  8 Jul 2025 16:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3885D2E3701;
+	Tue,  8 Jul 2025 16:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992975; cv=none; b=PgE8gHsQ8jsdwVTdaQpbkoQWdkk9SCS2iyUi42GZibUvFwTLHC+AE6lAIR8/04yEj8mwklCmDQP3FBFr5Vv/nZT3SCgGIM7BhhsRrTxb9Jbr7VfDzIeHJzIgtrjw5/vhJ/yI3K8qm0b6zs6+o7jz9j6u6JM+zgzow/2ZlwqlUs0=
+	t=1751992259; cv=none; b=BKb7Jox3wNuKKlvanq+6wILhnpRgeRVzF+vspY1HfZWkdknbF2vVc9lClflJ0vDyzO98QGWYanRWaq1HdMc+TyafPd5tqTAf3OWZwFDCEB+9CLESKD2APV7ZSnG887zmNslyRRNTcHzY+PEkqFAqaHfwyd0H8AlKvnfl9oxkOls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992975; c=relaxed/simple;
-	bh=u2GEhuN8RVXemPkfiTNi3JGJRQKas1YFukd6fw2TgPI=;
+	s=arc-20240116; t=1751992259; c=relaxed/simple;
+	bh=djvJisH2C6/akxM6Nu7Sg8Ds4DY10CEqzA9eAzNN+6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tyew+C4QY3CFQz+G2+98NhkAZTFYjj/IFKaJGTAXhoKHi1rEv1QpVe+04yckdpPd5bemaT+PEXKjWfMfzJZwbf1RGSvNO2qzDOs8nRIVbIr8uoQ+4YUKka2LQg3tf2INzvsh79nJArel6GgmJ6elgiaJ+xNKVBXE6k8wdBv8sj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifKplZTc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E03C4CEED;
-	Tue,  8 Jul 2025 16:42:55 +0000 (UTC)
+	 MIME-Version; b=Jm7LivnZ1ZbwsJBIdOXz8bnt55Nd7b64yemC2T5gq1CSYZcWJoRpc8/BNCkdCw1VCXLRsv8G7gCJXso7wVi9egcs5sVL6XQk8c5D93TKcGT7SYoBYTDOQSWMiOyauEAddeOBaLV/WBiSQrPkrWRUFBcoOkfP7Dp9DMplsIwYAgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=anJ8YudY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B701AC4CEED;
+	Tue,  8 Jul 2025 16:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992975;
-	bh=u2GEhuN8RVXemPkfiTNi3JGJRQKas1YFukd6fw2TgPI=;
+	s=korg; t=1751992259;
+	bh=djvJisH2C6/akxM6Nu7Sg8Ds4DY10CEqzA9eAzNN+6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ifKplZTc8v42KqCvy3+qHzT+RbGrse6A7Xfbo98CnTBQrK4WJAWN1+QHx2P+YopkU
-	 q7gf16yrMaSztVnhdTYx67BZPCfoZQrBOU/eA6MHb1zjScTlQNQXEoqFtb+nrdw7IK
-	 ZXAfxiWreelD0YYR9SgCvbBJgr/4ZUU4CqpsvEDQ=
+	b=anJ8YudY6OiBIVI5Ym7p6upZSTld3nn1sTdGOvSsrB4SYwru4wyyNuhD7mFHR71on
+	 SHYhCBngudjbAGJBJz2EoqC6yv/Qdu/Yy/eVlB5snnw9Bsqus1XMxHVvzlDRZZVNEh
+	 kFsTDx3uULjjSZB08ICNOhhGZfOfaJgyq+hnq69k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Beleswar Padhi <b-padhi@ti.com>,
-	Andrew Davis <afd@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 146/232] remoteproc: k3-r5: Add devm action to release reserved memory
+Subject: [PATCH 6.6 031/132] btrfs: fix missing error handling when searching for inode refs during log replay
 Date: Tue,  8 Jul 2025 18:22:22 +0200
-Message-ID: <20250708162245.260926679@linuxfoundation.org>
+Message-ID: <20250708162231.618524669@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Beleswar Padhi <b-padhi@ti.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 972361e397797320a624d1a5b457520c10ab4a28 ]
+[ Upstream commit 6561a40ceced9082f50c374a22d5966cf9fc5f5c ]
 
-Use a device lifecycle managed action to release reserved memory. This
-helps prevent mistakes like releasing out of order in cleanup functions
-and forgetting to release on error paths.
+During log replay, at __add_inode_ref(), when we are searching for inode
+ref keys we totally ignore if btrfs_search_slot() returns an error. This
+may make a log replay succeed when there was an actual error and leave
+some metadata inconsistency in a subvolume tree. Fix this by checking if
+an error was returned from btrfs_search_slot() and if so, return it to
+the caller.
 
-Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
-Reviewed-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20241219110545.1898883-2-b-padhi@ti.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Stable-dep-of: 701177511abd ("remoteproc: k3-r5: Refactor sequential core power up/down operations")
+Fixes: e02119d5a7b4 ("Btrfs: Add a write ahead tree log to optimize synchronous operations")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/ti_k3_r5_remoteproc.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ fs/btrfs/tree-log.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-index 6cbe74486ebd4..a9ec65c12fb93 100644
---- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
-+++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-@@ -947,6 +947,13 @@ static int k3_r5_rproc_configure(struct k3_r5_rproc *kproc)
- 	return ret;
- }
- 
-+static void k3_r5_mem_release(void *data)
-+{
-+	struct device *dev = data;
-+
-+	of_reserved_mem_device_release(dev);
-+}
-+
- static int k3_r5_reserved_mem_init(struct k3_r5_rproc *kproc)
- {
- 	struct device *dev = kproc->dev;
-@@ -977,12 +984,14 @@ static int k3_r5_reserved_mem_init(struct k3_r5_rproc *kproc)
- 		return ret;
- 	}
- 
-+	ret = devm_add_action_or_reset(dev, k3_r5_mem_release, dev);
-+	if (ret)
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index cc9a2f8a4ae3b..6dbb62f83f8c8 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -1087,7 +1087,9 @@ static inline int __add_inode_ref(struct btrfs_trans_handle *trans,
+ 	search_key.type = BTRFS_INODE_REF_KEY;
+ 	search_key.offset = parent_objectid;
+ 	ret = btrfs_search_slot(NULL, root, &search_key, path, 0, 0);
+-	if (ret == 0) {
++	if (ret < 0) {
 +		return ret;
-+
- 	num_rmems--;
- 	kproc->rmem = kcalloc(num_rmems, sizeof(*kproc->rmem), GFP_KERNEL);
--	if (!kproc->rmem) {
--		ret = -ENOMEM;
--		goto release_rmem;
--	}
-+	if (!kproc->rmem)
-+		return -ENOMEM;
- 
- 	/* use remaining reserved memory regions for static carveouts */
- 	for (i = 0; i < num_rmems; i++) {
-@@ -1033,8 +1042,6 @@ static int k3_r5_reserved_mem_init(struct k3_r5_rproc *kproc)
- 	for (i--; i >= 0; i--)
- 		iounmap(kproc->rmem[i].cpu_addr);
- 	kfree(kproc->rmem);
--release_rmem:
--	of_reserved_mem_device_release(dev);
- 	return ret;
- }
- 
-@@ -1045,8 +1052,6 @@ static void k3_r5_reserved_mem_exit(struct k3_r5_rproc *kproc)
- 	for (i = 0; i < kproc->num_rmems; i++)
- 		iounmap(kproc->rmem[i].cpu_addr);
- 	kfree(kproc->rmem);
--
--	of_reserved_mem_device_release(kproc->dev);
- }
- 
- /*
++	} else if (ret == 0) {
+ 		struct btrfs_inode_ref *victim_ref;
+ 		unsigned long ptr;
+ 		unsigned long ptr_end;
 -- 
 2.39.5
 
