@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-161158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88F4AFD3A6
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:58:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD42DAFD2C7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A40A0545911
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:55:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F5981C265E4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DC92DC34C;
-	Tue,  8 Jul 2025 16:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536D92E5B03;
+	Tue,  8 Jul 2025 16:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="giEgf1gF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjldMTYV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B224C1FC0F3;
-	Tue,  8 Jul 2025 16:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C421FC0F3;
+	Tue,  8 Jul 2025 16:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993762; cv=none; b=EgjxE7Q4rOeqyzGzfPsg5jUrW46jHDMewHDSzgs1wI5fXXL3O/g8nTHYJF5jtgZMiV+Y5GboRWHdN5alBkwtiIgXkYBWPZCrexInbkOG4NRv2igTR0/6Y0PcX3F8Gx3yRD8be8Od86QbDme90O53dFnPo7wPt0Adeq21wHL1UTo=
+	t=1751993193; cv=none; b=bVUlC4yGSMoIlswjDIyGQOGUgeDUbbkULbmOhpXbw7IZwP+5rvBO6U02BG7LywO9Oe3Y2b0p3s+eeWk/27AL8t1EHw2dJWxthwwqWcbAzYbMZVJr8xONbb6d1TI1Nctcydwe/i9C32QimCWRbaQX0WUNVzA4M70FeiRVF0m42Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993762; c=relaxed/simple;
-	bh=TvWBu8vaUquX8Buz7zPBwg3zQpOPjoMY23VxIlDNfOE=;
+	s=arc-20240116; t=1751993193; c=relaxed/simple;
+	bh=Djs4V1iD5gYunWACg0wYCCvIdhQx9zRz+bu4VroTxfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LBItg9Lgx9Gqq45YyVYNRzifWfvZGoUgICdc09B2qmdLd6SttMcCFva8xXrIIR77NdxG7BxWyciGDqJyVrShJT+huDmvWhc3XZfAr4/84T8RNPa01UkFQ9iqHxgt6XPM0BG0xUQZm+hVN4iVef2O3gV1HEWIGpYOMchR0lXisPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=giEgf1gF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F2BC4CEF0;
-	Tue,  8 Jul 2025 16:56:02 +0000 (UTC)
+	 MIME-Version; b=u0Fl49abTnYVN4pL358D7mEdkyL7t+3zPxS2EuJ48eIcI/l6LHb1VIFXWUqe/36jM7AgVXS293T0TpDsNYDTzw69FU7fRo0ypOOCIi15SUwh1hZuhcZGMJpORd4oxShrH7nqca6LfSE7B6DsQrCpH0LVWZvJIJ4my2LM6I5/ADg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjldMTYV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D969C4CEED;
+	Tue,  8 Jul 2025 16:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993762;
-	bh=TvWBu8vaUquX8Buz7zPBwg3zQpOPjoMY23VxIlDNfOE=;
+	s=korg; t=1751993192;
+	bh=Djs4V1iD5gYunWACg0wYCCvIdhQx9zRz+bu4VroTxfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=giEgf1gFWXpjcdsyaecWIDFXDVqIC2aQoOKtPBoOchrTRhKmFHZYKSlAMRulWEmYa
-	 8RERb1P5XSYOFbo3Zu3UiEOZsVEkOmxaB1hpfZgaUyIGJeNu35kRhx5vpLtNqGVbhy
-	 7LmA1W0phpp+dnJagE46W+oLzkZrxeOWHkYtFTF4=
+	b=yjldMTYVaLMD7IQXu3Mo7uNUQjhlz9B4DmoVo9koJF9n4p8hqlijzEEP+nts4RuSG
+	 AiLl+bNeRxrVOUy5AT/zvVsyUIrBbrKsJ4NcGKISWwS+tRIW1Ow0jf6eJVGy7yjJPQ
+	 liLAIR9GXbYMNQFlj0usOa8R43+MiwtHzz04+9So=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.15 178/178] x86/process: Move the buffer clearing before MONITOR
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 219/232] powercap: intel_rapl: Do not change CLAMPING bit if ENABLE bit cannot be changed
 Date: Tue,  8 Jul 2025 18:23:35 +0200
-Message-ID: <20250708162241.086263737@linuxfoundation.org>
+Message-ID: <20250708162247.165069966@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Zhang Rui <rui.zhang@intel.com>
 
-Commit 8e786a85c0a3c0fffae6244733fb576eeabd9dec upstream.
+commit 964209202ebe1569c858337441e87ef0f9d71416 upstream.
 
-Move the VERW clearing before the MONITOR so that VERW doesn't disarm it
-and the machine never enters C1.
+PL1 cannot be disabled on some platforms. The ENABLE bit is still set
+after software clears it. This behavior leads to a scenario where, upon
+user request to disable the Power Limit through the powercap sysfs, the
+ENABLE bit remains set while the CLAMPING bit is inadvertently cleared.
 
-Original idea by Kim Phillips <kim.phillips@amd.com>.
+According to the Intel Software Developer's Manual, the CLAMPING bit,
+"When set, allows the processor to go below the OS requested P states in
+order to maintain the power below specified Platform Power Limit value."
 
-Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Thus this means the system may operate at higher power levels than
+intended on such platforms.
+
+Enhance the code to check ENABLE bit after writing to it, and stop
+further processing if ENABLE bit cannot be changed.
+
+Reported-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Fixes: 2d281d8196e3 ("PowerCap: Introduce Intel RAPL power capping driver")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://patch.msgid.link/20250619071340.384782-1-rui.zhang@intel.com
+[ rjw: Use str_enabled_disabled() instead of open-coded equivalent ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/mwait.h |   25 +++++++++++++++----------
- arch/x86/kernel/process.c    |   16 ++++++++++++----
- 2 files changed, 27 insertions(+), 14 deletions(-)
+ drivers/powercap/intel_rapl_common.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/mwait.h
-+++ b/arch/x86/include/asm/mwait.h
-@@ -43,8 +43,6 @@ static __always_inline void __monitorx(c
- 
- static __always_inline void __mwait(unsigned long eax, unsigned long ecx)
+--- a/drivers/powercap/intel_rapl_common.c
++++ b/drivers/powercap/intel_rapl_common.c
+@@ -340,12 +340,28 @@ static int set_domain_enable(struct powe
  {
--	x86_idle_clear_cpu_buffers();
--
- 	/* "mwait %eax, %ecx;" */
- 	asm volatile(".byte 0x0f, 0x01, 0xc9;"
- 		     :: "a" (eax), "c" (ecx));
-@@ -97,7 +95,6 @@ static __always_inline void __mwaitx(uns
-  */
- static __always_inline void __sti_mwait(unsigned long eax, unsigned long ecx)
- {
--	x86_idle_clear_cpu_buffers();
+ 	struct rapl_domain *rd = power_zone_to_rapl_domain(power_zone);
+ 	struct rapl_defaults *defaults = get_defaults(rd->rp);
++	u64 val;
+ 	int ret;
  
- 	/* "mwait %eax, %ecx;" */
- 	asm volatile("sti; .byte 0x0f, 0x01, 0xc9;"
-@@ -116,21 +113,29 @@ static __always_inline void __sti_mwait(
-  */
- static __always_inline void mwait_idle_with_hints(unsigned long eax, unsigned long ecx)
- {
-+	if (need_resched())
-+		return;
+ 	cpus_read_lock();
+ 	ret = rapl_write_pl_data(rd, POWER_LIMIT1, PL_ENABLE, mode);
+-	if (!ret && defaults->set_floor_freq)
++	if (ret)
++		goto end;
 +
-+	x86_idle_clear_cpu_buffers();
++	ret = rapl_read_pl_data(rd, POWER_LIMIT1, PL_ENABLE, false, &val);
++	if (ret)
++		goto end;
 +
- 	if (static_cpu_has_bug(X86_BUG_MONITOR) || !current_set_polling_and_test()) {
- 		const void *addr = &current_thread_info()->flags;
++	if (mode != val) {
++		pr_debug("%s cannot be %s\n", power_zone->name,
++			 str_enabled_disabled(mode));
++		goto end;
++	}
++
++	if (defaults->set_floor_freq)
+ 		defaults->set_floor_freq(rd, mode);
++
++end:
+ 	cpus_read_unlock();
  
- 		alternative_input("", "clflush (%[addr])", X86_BUG_CLFLUSH_MONITOR, [addr] "a" (addr));
- 		__monitor(addr, 0, 0);
- 
--		if (!need_resched()) {
--			if (ecx & 1) {
--				__mwait(eax, ecx);
--			} else {
--				__sti_mwait(eax, ecx);
--				raw_local_irq_disable();
--			}
-+		if (need_resched())
-+			goto out;
-+
-+		if (ecx & 1) {
-+			__mwait(eax, ecx);
-+		} else {
-+			__sti_mwait(eax, ecx);
-+			raw_local_irq_disable();
- 		}
- 	}
-+
-+out:
- 	current_clr_polling();
- }
- 
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -912,16 +912,24 @@ static __init bool prefer_mwait_c1_over_
-  */
- static __cpuidle void mwait_idle(void)
- {
-+	if (need_resched())
-+		return;
-+
-+	x86_idle_clear_cpu_buffers();
-+
- 	if (!current_set_polling_and_test()) {
- 		const void *addr = &current_thread_info()->flags;
- 
- 		alternative_input("", "clflush (%[addr])", X86_BUG_CLFLUSH_MONITOR, [addr] "a" (addr));
- 		__monitor(addr, 0, 0);
--		if (!need_resched()) {
--			__sti_mwait(0, 0);
--			raw_local_irq_disable();
--		}
-+		if (need_resched())
-+			goto out;
-+
-+		__sti_mwait(0, 0);
-+		raw_local_irq_disable();
- 	}
-+
-+out:
- 	__current_clr_polling();
- }
- 
+ 	return ret;
 
 
 
