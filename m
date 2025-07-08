@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EE0AFD0BF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:27:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DA2AFD17A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07CED3BFD51
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB92516BE89
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25232E0910;
-	Tue,  8 Jul 2025 16:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520DC2E5423;
+	Tue,  8 Jul 2025 16:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNX0G//J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTs8NA+S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4A921B199;
-	Tue,  8 Jul 2025 16:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6B42E5414;
+	Tue,  8 Jul 2025 16:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992035; cv=none; b=CfWd4VHl9cnBoAxFU8d8cns4YqDCfS99jadKwFtuS2ei23DaMPlTfe7SqXAdJUn7gpb4VAQ8Sfb8QtyQH+5kroK13qiDpuecM7pEoHR5LNcwyl/vWranChTMRlAIC2kKP51QilbdxkSszw2GHg/gDfKMiAqU5GnITGMvwNJSWZw=
+	t=1751992463; cv=none; b=j0v/OHJfsi3kFRn/BX0MarcGMrQ46aUYae4FEmnkWdESTrdrYhEAeQ0XT0St5kmuMp9QTYoS9/RI+J0uJXMBbu5TOW//JBM4bMQ4KEzSZnKzxeoSISaCxAWqwgfm6ezedkMJmAIy+DC8/tRvVoc+hCm6xijaoWOZzvCC2ddkJVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992035; c=relaxed/simple;
-	bh=knwgmFn/at/TV0Kp8IeKDshen8TNiIuwhTV7aHKiYf8=;
+	s=arc-20240116; t=1751992463; c=relaxed/simple;
+	bh=d0JE6yWSujr6ZLEtV2ZAITHAGFcB8fSdFhpZi/H0Ri0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aGC1IUIU5x2sNesQxkGZxtUvGVatp2BzKbdFqjGMDpf9lufBqWYWt6GVn06kRecxGI39hzPlKX2nL6STWX3VsqwyIAJRNa05zn79NNmJY03ZqF1z7YLkJqheJb+vKo52WuFxbXiWbbxQc6qXajXBZVwdsnQyF1s7UBFRRW3S+Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNX0G//J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E271C4CEED;
-	Tue,  8 Jul 2025 16:27:15 +0000 (UTC)
+	 MIME-Version; b=utAO5Od8W95Xy3zfOiw/kP2mM72rVMDH6kfD4QcTh1ia48JZ4siiXXt5DA4prsPdhzMN3BFujmNi365XVnSDYP6xl0bqHAuk6fwaHxdFObN9S8UnDcwvcy5fPBWGvpy1zFG//myIe7d6mzM7iC6/QU5+/+XoAv7H6cUDxr2zuB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTs8NA+S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85442C4CEF0;
+	Tue,  8 Jul 2025 16:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992035;
-	bh=knwgmFn/at/TV0Kp8IeKDshen8TNiIuwhTV7aHKiYf8=;
+	s=korg; t=1751992462;
+	bh=d0JE6yWSujr6ZLEtV2ZAITHAGFcB8fSdFhpZi/H0Ri0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nNX0G//JMp5jGKsh/MS+2Kfkf0VPzlOiF/vPZe3WZinvj3p/gtj5SIgxmJT1XqKbi
-	 bUfCjZGKqdTaNqsa432JrBLz7x/ourqU8vKdK+e7MpoN7HZ4W4tVpKYEEknLDieVYe
-	 GUrYwYQXPREDdxreUoguyI4qWeWrDFapEbW1bD70=
+	b=LTs8NA+SvY5NzJRMtjyxKmRBrFEegWIROuGXoQXU/1b+afnV1l+b85XdiXNPUOVwU
+	 RjSqBd1RcrlA6iqKenPtIQNe1y6CG9Z3XnZk/lCsyzIdnBJLqNP1QllmwWDleB2LyJ
+	 EWfRSy8XvqjFnrx8UgPwVrH2HHd7ELzmjsFcBtbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 38/81] amd-xgbe: align CL37 AN sequence as per databook
+Subject: [PATCH 6.6 099/132] rcu: Return early if callback is not specified
 Date: Tue,  8 Jul 2025 18:23:30 +0200
-Message-ID: <20250708162226.190824865@linuxfoundation.org>
+Message-ID: <20250708162233.507861324@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-[ Upstream commit 42fd432fe6d320323215ebdf4de4d0d7e56e6792 ]
+[ Upstream commit 33b6a1f155d627f5bd80c7485c598ce45428f74f ]
 
-Update the Clause 37 Auto-Negotiation implementation to properly align
-with the PCS hardware specifications:
-- Fix incorrect bit settings in Link Status and Link Duplex fields
-- Implement missing sequence steps 2 and 7
+Currently the call_rcu() API does not check whether a callback
+pointer is NULL. If NULL is passed, rcu_core() will try to invoke
+it, resulting in NULL pointer dereference and a kernel crash.
 
-These changes ensure CL37 auto-negotiation protocol follows the exact
-sequence patterns as specified in the hardware databook.
+To prevent this and improve debuggability, this patch adds a check
+for NULL and emits a kernel stack trace to help identify a faulty
+caller.
 
-Fixes: 1bf40ada6290 ("amd-xgbe: Add support for clause 37 auto-negotiation")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20250630192636.3838291-1-Raju.Rangoju@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-common.h | 2 ++
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c   | 9 +++++++++
- drivers/net/ethernet/amd/xgbe/xgbe.h        | 4 ++--
- 3 files changed, 13 insertions(+), 2 deletions(-)
+ kernel/rcu/tree.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-common.h b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-index 466273b22f0a4..893a52b2262b6 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-@@ -1357,6 +1357,8 @@
- #define MDIO_VEND2_CTRL1_SS13		BIT(13)
- #endif
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 1fb3b7a0ed5d2..536acebf22b0d 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -2699,6 +2699,10 @@ __call_rcu_common(struct rcu_head *head, rcu_callback_t func, bool lazy_in)
+ 	/* Misaligned rcu_head! */
+ 	WARN_ON_ONCE((unsigned long)head & (sizeof(void *) - 1));
  
-+#define XGBE_VEND2_MAC_AUTO_SW		BIT(9)
++	/* Avoid NULL dereference if callback is NULL. */
++	if (WARN_ON_ONCE(!func))
++		return;
 +
- /* MDIO mask values */
- #define XGBE_AN_CL73_INT_CMPLT		BIT(0)
- #define XGBE_AN_CL73_INC_LINK		BIT(1)
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index 60be836b294bb..19fed56b6ee3f 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -363,6 +363,10 @@ static void xgbe_an37_set(struct xgbe_prv_data *pdata, bool enable,
- 		reg |= MDIO_VEND2_CTRL1_AN_RESTART;
- 
- 	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_CTRL1, reg);
-+
-+	reg = XMDIO_READ(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL);
-+	reg |= XGBE_VEND2_MAC_AUTO_SW;
-+	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL, reg);
- }
- 
- static void xgbe_an37_restart(struct xgbe_prv_data *pdata)
-@@ -991,6 +995,11 @@ static void xgbe_an37_init(struct xgbe_prv_data *pdata)
- 
- 	netif_dbg(pdata, link, pdata->netdev, "CL37 AN (%s) initialized\n",
- 		  (pdata->an_mode == XGBE_AN_MODE_CL37) ? "BaseX" : "SGMII");
-+
-+	reg = XMDIO_READ(pdata, MDIO_MMD_AN, MDIO_CTRL1);
-+	reg &= ~MDIO_AN_CTRL1_ENABLE;
-+	XMDIO_WRITE(pdata, MDIO_MMD_AN, MDIO_CTRL1, reg);
-+
- }
- 
- static void xgbe_an73_init(struct xgbe_prv_data *pdata)
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
-index b17c7d1dc4b00..f3ba76530b67b 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -292,11 +292,11 @@
- #define XGBE_LINK_TIMEOUT		5
- #define XGBE_KR_TRAINING_WAIT_ITER	50
- 
--#define XGBE_SGMII_AN_LINK_STATUS	BIT(1)
-+#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(1)
- #define XGBE_SGMII_AN_LINK_SPEED	(BIT(2) | BIT(3))
- #define XGBE_SGMII_AN_LINK_SPEED_100	0x04
- #define XGBE_SGMII_AN_LINK_SPEED_1000	0x08
--#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(4)
-+#define XGBE_SGMII_AN_LINK_STATUS	BIT(4)
- 
- /* ECC correctable error notification window (seconds) */
- #define XGBE_ECC_LIMIT			60
+ 	if (debug_rcu_head_queue(head)) {
+ 		/*
+ 		 * Probable double call_rcu(), so leak the callback.
 -- 
 2.39.5
 
