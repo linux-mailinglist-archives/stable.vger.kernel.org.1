@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F85AFD2D3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 328F0AFD384
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17021C26FAF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12F3716D537
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E884C2E49A8;
-	Tue,  8 Jul 2025 16:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA052DEA94;
+	Tue,  8 Jul 2025 16:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLp0EvHs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joPlWHeF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73732F37;
-	Tue,  8 Jul 2025 16:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9855ABE46;
+	Tue,  8 Jul 2025 16:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993227; cv=none; b=ArbmMgxyvapBgkueDOWlO/y7JIeRS5kRPJgTZBLao1UGtqyPtDDc9ebphPpkzK4lrmPNyFS3GfFS8oPscUTmvRIdVxnZBo8s7sI1uWieI9/IZfx82TC6f2hcrScsdT9EtIHxzo59XCwaMX+k9z3fqsQeXozmnhrifqQgmjkBdQk=
+	t=1751993693; cv=none; b=NcphYsqQV/h1dzvu5mb5oeNkNmK7MhDG/N9i5JA3pcLs7oGMeuscFIQ3+VQEbIgtFNQwS+3RhSjQmsRiPH6Iz70//+uUIIw+gFNDS+fH7JK0vLNFVsxi8tEWpu/OlKat9gsHOvjN1XtmXwvG3eOZGHbKRVHhnOuX5ydxUZaGlSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993227; c=relaxed/simple;
-	bh=K3iuc+ynxInUB3b77Ky35hBwh3v7dBWEn7ejcQ6Po4M=;
+	s=arc-20240116; t=1751993693; c=relaxed/simple;
+	bh=MZq8L9L4U37vkJUaWCpo2bJdXTQBnEf0iy+XvrIfJYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q3a9ewg87ep3bNDrflKXTr6+TUUHYZq1XQZXX4xA19y5gv/perRCSbBdEa6pTpkLaK0Xn1xQgwefb/8Dw/tOXhvJywOtiGJCGL83QpFPBelELGXTQ4i05fnSkt1o3Ovmb+kuk92g17qwEr1mSdF3guJaEDUNMrzuw058r+690c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLp0EvHs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F0CC4CEED;
-	Tue,  8 Jul 2025 16:47:07 +0000 (UTC)
+	 MIME-Version; b=IdSzbf1tgADzqjgy7WU8q8D/xqtpT15BjyEELVE1ZDEtr87LAghgxwfOlg0NsdrAPhp+n3yAQ6kGIrDTg+eeC/QJRvlH/7VR4zFfZp53lkV1jn9lRC2HIiJp05wz1vLvV3+z8aMx4OSo9HU6fMUcbT08pEhjWH8yQU/udDHJeQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joPlWHeF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A37C4CEED;
+	Tue,  8 Jul 2025 16:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993227;
-	bh=K3iuc+ynxInUB3b77Ky35hBwh3v7dBWEn7ejcQ6Po4M=;
+	s=korg; t=1751993693;
+	bh=MZq8L9L4U37vkJUaWCpo2bJdXTQBnEf0iy+XvrIfJYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLp0EvHsok7HsdSpTJfToYZ0dFQK1axCy6MxFR7JQEwddslvqzHgGng+BsMIwh6Ic
-	 pBW1Ng9RRTuK2dJ/dVp6VolLFDQ2uagxY4xIYNhQuiyO+iijZufK/fhwIKPuE6X3Jz
-	 6s9kUu0z0Xr/ozQhun3eCILdNYWXYWqX1tZzCiTk=
+	b=joPlWHeF1kKMU9sITmMkJluXVJTRHr0S8zGgpw2olK/eygY5v30ldEksgVUBgb/uJ
+	 XZkef26m36/bTgjDDdFrifPLsnYoeveVVY7qACbwcTBzYcKqj7/9YrlI49W54d5fff
+	 ZPVACoAdSWTY/4RLfKri5EstXhA+IMLEwONu1K60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.12 201/232] usb: xhci: quirk for data loss in ISOC transfers
-Date: Tue,  8 Jul 2025 18:23:17 +0200
-Message-ID: <20250708162246.698236535@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.15 161/178] i2c/designware: Fix an initialization issue
+Date: Tue,  8 Jul 2025 18:23:18 +0200
+Message-ID: <20250708162240.689291870@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Michael J. Ruhl <michael.j.ruhl@intel.com>
 
-commit cbc889ab0122366f6cdbe3c28d477c683ebcebc2 upstream.
+commit 3d30048958e0d43425f6d4e76565e6249fa71050 upstream.
 
-During the High-Speed Isochronous Audio transfers, xHCI
-controller on certain AMD platforms experiences momentary data
-loss. This results in Missed Service Errors (MSE) being
-generated by the xHCI.
+The i2c_dw_xfer_init() function requires msgs and msg_write_idx from the
+dev context to be initialized.
 
-The root cause of the MSE is attributed to the ISOC OUT endpoint
-being omitted from scheduling. This can happen when an IN
-endpoint with a 64ms service interval either is pre-scheduled
-prior to the ISOC OUT endpoint or the interval of the ISOC OUT
-endpoint is shorter than that of the IN endpoint. Consequently,
-the OUT service is neglected when an IN endpoint with a service
-interval exceeding 32ms is scheduled concurrently (every 64ms in
-this scenario).
+amd_i2c_dw_xfer_quirk() inits msgs and msgs_num, but not msg_write_idx.
 
-This issue is particularly seen on certain older AMD platforms.
-To mitigate this problem, it is recommended to adjust the service
-interval of the IN endpoint to not exceed 32ms (interval 8). This
-adjustment ensures that the OUT endpoint will not be bypassed,
-even if a smaller interval value is utilized.
+This could allow an out of bounds access (of msgs).
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250627144127.3889714-2-mathias.nyman@linux.intel.com
+Initialize msg_write_idx before calling i2c_dw_xfer_init().
+
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 17631e8ca2d3 ("i2c: designware: Add driver support for AMD NAVI GPU")
+Cc: <stable@vger.kernel.org> # v5.13+
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250627143511.489570-1-michael.j.ruhl@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-mem.c |    4 ++++
- drivers/usb/host/xhci-pci.c |   25 +++++++++++++++++++++++++
- drivers/usb/host/xhci.h     |    1 +
- 3 files changed, 30 insertions(+)
+ drivers/i2c/busses/i2c-designware-master.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -1426,6 +1426,10 @@ int xhci_endpoint_init(struct xhci_hcd *
- 	/* Periodic endpoint bInterval limit quirk */
- 	if (usb_endpoint_xfer_int(&ep->desc) ||
- 	    usb_endpoint_xfer_isoc(&ep->desc)) {
-+		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
-+		    interval >= 9) {
-+			interval = 8;
-+		}
- 		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_7) &&
- 		    udev->speed >= USB_SPEED_HIGH &&
- 		    interval >= 7) {
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -71,12 +71,22 @@
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_XHCI		0x15ec
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_XHCI		0x15f0
+--- a/drivers/i2c/busses/i2c-designware-master.c
++++ b/drivers/i2c/busses/i2c-designware-master.c
+@@ -363,6 +363,7 @@ static int amd_i2c_dw_xfer_quirk(struct
  
-+#define PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI		0x13ed
-+#define PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI		0x13ee
-+#define PCI_DEVICE_ID_AMD_STARSHIP_XHCI			0x148c
-+#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI		0x15d4
-+#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI		0x15d5
-+#define PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI		0x15e0
-+#define PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI		0x15e1
-+#define PCI_DEVICE_ID_AMD_RAVEN2_XHCI			0x15e5
- #define PCI_DEVICE_ID_AMD_RENOIR_XHCI			0x1639
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_4			0x43b9
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_3			0x43ba
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_2			0x43bb
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_1			0x43bc
+ 	dev->msgs = msgs;
+ 	dev->msgs_num = num_msgs;
++	dev->msg_write_idx = 0;
+ 	i2c_dw_xfer_init(dev);
  
-+#define PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI		0x7316
-+
- #define PCI_DEVICE_ID_ASMEDIA_1042_XHCI			0x1042
- #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
- #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
-@@ -286,6 +296,21 @@ static void xhci_pci_quirks(struct devic
- 	if (pdev->vendor == PCI_VENDOR_ID_NEC)
- 		xhci->quirks |= XHCI_NEC_HOST;
- 
-+	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
-+	    (pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_STARSHIP_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN2_XHCI))
-+		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
-+
-+	if (pdev->vendor == PCI_VENDOR_ID_ATI &&
-+	    pdev->device == PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI)
-+		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
-+
- 	if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version == 0x96)
- 		xhci->quirks |= XHCI_AMD_0x96_HOST;
- 
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1626,6 +1626,7 @@ struct xhci_hcd {
- #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
- #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
- #define XHCI_ETRON_HOST	BIT_ULL(49)
-+#define XHCI_LIMIT_ENDPOINT_INTERVAL_9 BIT_ULL(50)
- 
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
+ 	/* Initiate messages read/write transaction */
 
 
 
