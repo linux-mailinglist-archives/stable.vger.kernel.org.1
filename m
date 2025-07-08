@@ -1,139 +1,167 @@
-Return-Path: <stable+bounces-160516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0AEAFCF4D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:33:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 182D1AFCF51
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 285527A80AF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 15:32:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC1B656736B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 15:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1987A1C8632;
-	Tue,  8 Jul 2025 15:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D702DAFCE;
+	Tue,  8 Jul 2025 15:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZihqUqDZ"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="nmqEZTF/";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OObDc50Q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8780231824;
-	Tue,  8 Jul 2025 15:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4032E1C58;
+	Tue,  8 Jul 2025 15:33:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751988805; cv=none; b=W/EbN/fGFH+OCe/2gupP1XaNnBh+g+IwyNw9g9OGgq/XRF1anrgrLSJtQoIFlZdTforSOnpd+lN/AJtKurki2WFRtzbJ4pvTnI0WEH+pQKjPxzMm4rNTP8mOB+aGnNoaKP0EcNkt2dhGe8wkeVH4B0P4ynStRfco0ILOiIzLMoc=
+	t=1751988813; cv=none; b=otbepMoz8eTEXeNWvgoWOE4NcigW8p16ci/prY93yjY0pz933sjS6qY9RpbrpHLYd6A5dxh6PaS597tdZXz0YqyqHxgJ2gFKJtTR5Z82P1IXuOL9kTpmfOsCNBQVLiG3bzRrOwhsJaepMNnIiZ7EU8C2ALV+kmhWbCnub0cVonk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751988805; c=relaxed/simple;
-	bh=gwGumTC/MUdoi0zvgWSQcU5vXJTTpO8IuLWj2o/iaKI=;
+	s=arc-20240116; t=1751988813; c=relaxed/simple;
+	bh=fpBPFDD4tKpz6ocn/tb8xoYBxYo6yO7grjXcPIJqDjE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HeUjzInKLKxyNnQW+PVlQ0Wn173loTXGCOknSBHK/60fD2UMpVe0cWAGxk1hzA7k8yDqRnuIxudO/BYhkezLOjh+AikzrpU89IUHvILmOXGh3VUajGFbNTxZUROfznaR0tH6uup2SMMfZxhZrb3vf1yB3kRQzCcJDxfouupdxls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZihqUqDZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FCDC4CEED;
-	Tue,  8 Jul 2025 15:33:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751988805;
-	bh=gwGumTC/MUdoi0zvgWSQcU5vXJTTpO8IuLWj2o/iaKI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZihqUqDZ21/bJmp92jGOEjOW9+ObwGzlwxGM6p1YOobHpqpKcvkOP5THwVG0wQhAx
-	 +oKkB50gUJrcou5+jvBHnG70R/ViVqTBEgR3KUxc/JFnlVoe7nX/tXChchlHBfemqO
-	 lRBp6Kmil3nStFCkazz3aJHbbCw8u/3YgPR1/buSwOu9BIDODJ6Si1Pya6mBBATvsN
-	 G7TY6q1yRwHlx5DnXiVDHp3RMSji8oSaouoOWf9iI4CpWLOAlzIfTq22iqQ6Miil2R
-	 V6wem4Sea1hduI98t2brAI2hGIOeCzAdgAKKZKtoAYdNquppWOVsZfe+Z4XE3VfuLj
-	 QVFpYaQUYDb2w==
-Date: Tue, 8 Jul 2025 11:33:20 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, peterx@redhat.com,
-	aarcange@redhat.com, surenb@google.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/userfaultfd: fix missing PTE unmap for non-migration
- entries
-Message-ID: <aG06QBVeBJgluSqP@lappy>
-References: <20250630031958.1225651-1-sashal@kernel.org>
- <20250630175746.e52af129fd2d88deecc25169@linux-foundation.org>
- <a4d8b292-154a-4d14-90e4-6c822acf1cfb@redhat.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JLwfhnrB+IY19roJTmuAPNgJXMMJt3xaIa7tWfwYtobnDq3gfT29Jc6q0Nlog6dceRaZ21hj3S9+NemevdNi1wbLLdkF/hU3K5xvo0amSQR5hXwg3Pt8r5svb7ImslIuR7bGFWhv7GB04w18pBITNDl2wnoOF7ainioVfJ1CTDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=nmqEZTF/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OObDc50Q; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id F2B3F7A00A5;
+	Tue,  8 Jul 2025 11:33:29 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 08 Jul 2025 11:33:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1751988809; x=1752075209; bh=00kuc6Tun/
+	Mdeocn4SukWyNJ3adxHVFCwUQHgORSuDU=; b=nmqEZTF/r1Ld592JTIW78I5ebe
+	26WEK/Ucq7UeL70blYm0u2sZEc2SMZgUpJt7ifw6uicEsO77wUdWF1/Nsk+zgTo6
+	EPXM61Fs+M+UMLW62tDQXtf6xfetrwKavwcT6KUzw399QgB1fVog+WRBZdK7t8qj
+	mU1fdACkdWnplhZbtg/TrSAKcICRqJDcZABqTStrDMyjj/cJTWBHJVOOuqnt167X
+	lG+ZnNfk5pAyEF53YZXQXsNn5bIyEYq3g9fAJkEocQlUg20J+ayji6I4Zz9ZX+Pg
+	0UVYyjMkGx/CapsTW9Yvlb51cbJftwAVKYE+RX6WNNPXaNdULzAK6j9orMjQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1751988809; x=1752075209; bh=00kuc6Tun/Mdeocn4SukWyNJ3adxHVFCwUQ
+	HgORSuDU=; b=OObDc50Qmy7W999e4908/6po5c3sVORRH1R/E1kVUtAWfxt+Z+7
+	M5LGZm7xkOrRAalXPxWSOREvY1gdWYRkO/4bzt8SAN9lWH0GKLlpQRu6+hj1KbZ5
+	H2XDmxDa2XP2eHjg+8zDH19q1axCw1ifv8YBOHEwr55ew3hH8GKDmwdfBsCxvEnb
+	K9Ifp9985oCxyWrbgYCDaOzpGwGUvk+Y2Vzhc+adHDRoQ3fBifwBD4W5OZ4Ly3+J
+	cyejpe7k2rp2PTJIyc4Uy/9eKViOI7VpFgBqDQl7p2uHbSBQP8HCV3874f21735m
+	kIvju9a1utfO1umRiswuvXdpq2Q5oKe8dpw==
+X-ME-Sender: <xms:SDptaLGqjCJ9OF85P45PFUtByQQUUJ9soo3jDSp5aab4EWmnFmMlFg>
+    <xme:SDptaI7ZXEBfPxv-fJw1IxrcR393PLKQj63pVL0rjiGO3eAyonFEcLwYV1-T5-YcS
+    mQhwHkU9DzKtg>
+X-ME-Received: <xmr:SDptaGBkiN5OhKfgUGxYV1kPFkbv3mhNrRtJI6ydHZ1iShEgdmKFlUIp3vOj>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdefhedthecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcumffj
+    uceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhefgtd
+    eluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghinhep
+    khgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopedvvddp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvggsihhgghgvrhhssehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehsthgrsghlvgdqtghomhhmihhtshesvhhgvghrrdhkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehjrghsohhnseiigidvtgegrdgtohhmpdhrtghpthhtoheprghr
+    uggssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorh
+    drrghprghnrgdrohhrghdrrghupdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhf
+    thdrnhgvthdprhgtphhtthhopehmrgguugihsehlihhnuhigrdhisghmrdgtohhmpdhrtg
+    hpthhtohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghu
+X-ME-Proxy: <xmx:SDptaDRJCzthlDxH_D58O_otia-1o9gr-t7nAjVTRxm0WexwOu6rbw>
+    <xmx:SDptaGd-3260jvs9uI6yiKlWiBo9WcPA7Af4GKFtMMDm8Z2uP7d-ew>
+    <xmx:SDptaMQMrNZNXdFf9MTE4apCg5CBhZ8sWorGVCNLyLsVNwlnvgjwoA>
+    <xmx:SDptaC192BBYOnKugByFKwpbaUQY4I_Tiw5rd-iKbVDklVfKrJIwDQ>
+    <xmx:STptaOMywC8LGp7-fSu0ITCvxwx3sDkRWc4Igj9WUShQ4tfZNy5N2I2g>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 8 Jul 2025 11:33:27 -0400 (EDT)
+Date: Tue, 8 Jul 2025 17:33:25 +0200
+From: Greg KH <greg@kroah.com>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: Patch "crypto: powerpc/poly1305 - add depends on BROKEN for now"
+ has been added to the 6.12-stable tree
+Message-ID: <2025070819-drivable-rhyme-eb49@gregkh>
+References: <20250707043445.484247-1-sashal@kernel.org>
+ <20250707172944.GA3116681@google.com>
+ <20250707213740.GB3178810@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a4d8b292-154a-4d14-90e4-6c822acf1cfb@redhat.com>
+In-Reply-To: <20250707213740.GB3178810@google.com>
 
-On Tue, Jul 08, 2025 at 05:10:44PM +0200, David Hildenbrand wrote:
->On 01.07.25 02:57, Andrew Morton wrote:
->>On Sun, 29 Jun 2025 23:19:58 -0400 Sasha Levin <sashal@kernel.org> wrote:
->>
->>>When handling non-swap entries in move_pages_pte(), the error handling
->>>for entries that are NOT migration entries fails to unmap the page table
->>>entries before jumping to the error handling label.
->>>
->>>This results in a kmap/kunmap imbalance which on CONFIG_HIGHPTE systems
->>>triggers a WARNING in kunmap_local_indexed() because the kmap stack is
->>>corrupted.
->>>
->>>Example call trace on ARM32 (CONFIG_HIGHPTE enabled):
->>>   WARNING: CPU: 1 PID: 633 at mm/highmem.c:622 kunmap_local_indexed+0x178/0x17c
->>>   Call trace:
->>>     kunmap_local_indexed from move_pages+0x964/0x19f4
->>>     move_pages from userfaultfd_ioctl+0x129c/0x2144
->>>     userfaultfd_ioctl from sys_ioctl+0x558/0xd24
->>>
->>>The issue was introduced with the UFFDIO_MOVE feature but became more
->>>frequent with the addition of guard pages (commit 7c53dfbdb024 ("mm: add
->>>PTE_MARKER_GUARD PTE marker")) which made the non-migration entry code
->>>path more commonly executed during userfaultfd operations.
->>>
->>>Fix this by ensuring PTEs are properly unmapped in all non-swap entry
->>>paths before jumping to the error handling label, not just for migration
->>>entries.
->>
->>I don't get it.
->>
->>>--- a/mm/userfaultfd.c
->>>+++ b/mm/userfaultfd.c
->>>@@ -1384,14 +1384,15 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
->>>  		entry = pte_to_swp_entry(orig_src_pte);
->>>  		if (non_swap_entry(entry)) {
->>>+			pte_unmap(src_pte);
->>>+			pte_unmap(dst_pte);
->>>+			src_pte = dst_pte = NULL;
->>>  			if (is_migration_entry(entry)) {
->>>-				pte_unmap(src_pte);
->>>-				pte_unmap(dst_pte);
->>>-				src_pte = dst_pte = NULL;
->>>  				migration_entry_wait(mm, src_pmd, src_addr);
->>>  				err = -EAGAIN;
->>>-			} else
->>>+			} else {
->>>  				err = -EFAULT;
->>>+			}
->>>  			goto out;
->>
->>where we have
->>
->>out:
->>	...
->>	if (dst_pte)
->>		pte_unmap(dst_pte);
->>	if (src_pte)
->>		pte_unmap(src_pte);
->
->AI slop?
+On Mon, Jul 07, 2025 at 09:37:40PM +0000, Eric Biggers wrote:
+> On Mon, Jul 07, 2025 at 05:29:47PM +0000, Eric Biggers wrote:
+> > On Mon, Jul 07, 2025 at 12:34:45AM -0400, Sasha Levin wrote:
+> > > This is a note to let you know that I've just added the patch titled
+> > > 
+> > >     crypto: powerpc/poly1305 - add depends on BROKEN for now
+> > > 
+> > > to the 6.12-stable tree which can be found at:
+> > >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > You forgot to Cc the relevant mailing lists.
+> > 
+> > > diff --git a/arch/powerpc/lib/crypto/Kconfig b/arch/powerpc/lib/crypto/Kconfig
+> > > new file mode 100644
+> > > index 0000000000000..3f9e1bbd9905b
+> > > --- /dev/null
+> > > +++ b/arch/powerpc/lib/crypto/Kconfig
+> > > @@ -0,0 +1,22 @@
+> > > +# SPDX-License-Identifier: GPL-2.0-only
+> > > +
+> > > +config CRYPTO_CHACHA20_P10
+> > > +	tristate
+> > > +	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+> > > +	default CRYPTO_LIB_CHACHA
+> > > +	select CRYPTO_LIB_CHACHA_GENERIC
+> > > +	select CRYPTO_ARCH_HAVE_LIB_CHACHA
+> > > +
+> > > +config CRYPTO_POLY1305_P10
+> > > +	tristate
+> > > +	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+> > > +	depends on BROKEN # Needs to be fixed to work in softirq context
+> > > +	default CRYPTO_LIB_POLY1305
+> > > +	select CRYPTO_ARCH_HAVE_LIB_POLY1305
+> > > +	select CRYPTO_LIB_POLY1305_GENERIC
+> > > +
+> > > +config CRYPTO_SHA256_PPC_SPE
+> > > +	tristate
+> > > +	depends on SPE
+> > > +	default CRYPTO_LIB_SHA256
+> > > +	select CRYPTO_ARCH_HAVE_LIB_SHA256
+> > 
+> > Really?
+> 
+> I see this was already backported correctly for 6.15, so please just
+> cherry-pick it from there.
 
-Nah, this one is sadly all me :(
+I've dropped it for now, thanks.
 
-I was trying to resolve some of the issues found with linus-next on
-LKFT, and misunderstood the code. Funny enough, I thought that the
-change above "fixed" it by making the warnings go away, but clearly is
-the wrong thing to do so I went back to the drawing table...
-
-If you're curious, here's the issue: https://qa-reports.linaro.org/lkft/sashal-linus-next/build/v6.13-rc7-43418-g558c6dd4d863/testrun/29030370/suite/log-parser-test/test/exception-warning-cpu-pid-at-mmhighmem-kunmap_local_indexed/details/
-
--- 
-Thanks,
-Sasha
+greg k-h
 
