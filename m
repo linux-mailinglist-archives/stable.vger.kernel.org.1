@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-160906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC309AFD27A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 135EEAFD337
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:55:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52464178AA9
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:44:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D27C71BC0E03
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0441D2DD5EF;
-	Tue,  8 Jul 2025 16:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71C72DEA94;
+	Tue,  8 Jul 2025 16:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/Dex4tK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdX/Xf0M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26CC7E9;
-	Tue,  8 Jul 2025 16:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F8F14A60D;
+	Tue,  8 Jul 2025 16:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993036; cv=none; b=QxEfme4wttsmHkRsm0Pn4yXdBiswSAsz/9ikZq/doI3PigGy6MAwNm4km4Y9b8yp+BCeJZGczx35qRxEYIN88sdmqcJHKWQwnKc/g+bBq89cZb6N66SfJKaIdika67fXgkGg3ame8bDoQm119SJttz+VaYjoKpJIyTrpHrnSjhk=
+	t=1751993498; cv=none; b=rnO4YkVdHXDHJWeyHnrVwoyeYKO5nQ/a4iDv1nnKewraYbOjshNMatUVFUGxweTf7FYLh8OBOXgt10fXg6Zn869kPAkvutCiOJ0K9+x55qusNxZom2Bz+ETfuO7UNlFSp7agL4lYmj+YfXpCBgCFKE6ZedFBjB/LyWCsHD9XbyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993036; c=relaxed/simple;
-	bh=L4NxTP4pa3DgTBVnYWWzgctjGiUGJz+DtHss/jRP8bI=;
+	s=arc-20240116; t=1751993498; c=relaxed/simple;
+	bh=rzAPBLzi0IYPlg6DeneVGsC5xUXQtrlMoR95LPJCW6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DOkO45xGVeRnYzHpJxJingLt/s0MGpbGeTD7/0ySLAzJ4PxC28wSnOHZTBc04YNhqgK3M8kX3gTplDumCRAMVXYyksBVrmV7ik9/uqdBT/SlFOe4ouh+Dk8CGWTWQRXLd8Sw8Ak2XYYt4Y7mn9nPbMKanumBmU6G2bJxQqIv720=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/Dex4tK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D684C4CEED;
-	Tue,  8 Jul 2025 16:43:56 +0000 (UTC)
+	 MIME-Version; b=fn1ic3iZ1PbRcwEFAdnUwT6Bj57dZ6CATWjL5TAYhL3DjKp6Z+y5yDjxAySEOz7XCyPi6hvMt4re+N112MTONfzIkDeuQcnw/4xRUDX0fkDq4eAM7eKKcbFbmdx6iiyCP2yc5bLdVb729LUzHnJaxzW0m/m1l6TgMu6WFVK1Kfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdX/Xf0M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8DFC4CEED;
+	Tue,  8 Jul 2025 16:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993036;
-	bh=L4NxTP4pa3DgTBVnYWWzgctjGiUGJz+DtHss/jRP8bI=;
+	s=korg; t=1751993498;
+	bh=rzAPBLzi0IYPlg6DeneVGsC5xUXQtrlMoR95LPJCW6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/Dex4tKz0pNQSfZahxQBLNJOz/MZPb2LYcdy8/lQdQGY2pQ8JQnPyoY4LdbBJ5NU
-	 AEZXxqdFk2VfNu/IibXtM0LE9chibKhYrB+UnsxW4ja6sa4+44bW/xis9BbEwBn9xR
-	 NgfS6YE7BK7PmaJWiVTcj3GM6yV2/fC0j4948tZ0=
+	b=mdX/Xf0Mab/UO3kqURPqDk/bXyIRPbsszr9TXAishkzyOrrcBCRP5ieJJeUqoM4T2
+	 g1+SCK2knzBxU21z582VQG4QabeAzYzNo/5ygTut8d4lud6p2sn3uX5m+uvgqhqg3w
+	 eikn/liEW4EE/ZMI1/Rr1O3tkLY1+kp6k257VWB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Longfang Liu <liulongfang@huawei.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Ahmed Zaki <ahmed.zaki@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/232] hisi_acc_vfio_pci: bugfix the problem of uninstalling driver
+Subject: [PATCH 6.15 094/178] idpf: convert control queue mutex to a spinlock
 Date: Tue,  8 Jul 2025 18:22:11 +0200
-Message-ID: <20250708162244.974684204@linuxfoundation.org>
+Message-ID: <20250708162239.109896502@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +65,234 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Longfang Liu <liulongfang@huawei.com>
+From: Ahmed Zaki <ahmed.zaki@intel.com>
 
-[ Upstream commit db6525a8573957faea28850392f4744e5f8f7a53 ]
+[ Upstream commit b2beb5bb2cd90d7939e470ed4da468683f41baa3 ]
 
-In a live migration scenario. If the number of VFs at the
-destination is greater than the source, the recovery operation
-will fail and qemu will not be able to complete the process and
-exit after shutting down the device FD.
+With VIRTCHNL2_CAP_MACFILTER enabled, the following warning is generated
+on module load:
 
-This will cause the driver to be unable to be unloaded normally due
-to abnormal reference counting of the live migration driver caused
-by the abnormal closing operation of fd.
+[  324.701677] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:578
+[  324.701684] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1582, name: NetworkManager
+[  324.701689] preempt_count: 201, expected: 0
+[  324.701693] RCU nest depth: 0, expected: 0
+[  324.701697] 2 locks held by NetworkManager/1582:
+[  324.701702]  #0: ffffffff9f7be770 (rtnl_mutex){....}-{3:3}, at: rtnl_newlink+0x791/0x21e0
+[  324.701730]  #1: ff1100216c380368 (_xmit_ETHER){....}-{2:2}, at: __dev_open+0x3f0/0x870
+[  324.701749] Preemption disabled at:
+[  324.701752] [<ffffffff9cd23b9d>] __dev_open+0x3dd/0x870
+[  324.701765] CPU: 30 UID: 0 PID: 1582 Comm: NetworkManager Not tainted 6.15.0-rc5+ #2 PREEMPT(voluntary)
+[  324.701771] Hardware name: Intel Corporation M50FCP2SBSTD/M50FCP2SBSTD, BIOS SE5C741.86B.01.01.0001.2211140926 11/14/2022
+[  324.701774] Call Trace:
+[  324.701777]  <TASK>
+[  324.701779]  dump_stack_lvl+0x5d/0x80
+[  324.701788]  ? __dev_open+0x3dd/0x870
+[  324.701793]  __might_resched.cold+0x1ef/0x23d
+<..>
+[  324.701818]  __mutex_lock+0x113/0x1b80
+<..>
+[  324.701917]  idpf_ctlq_clean_sq+0xad/0x4b0 [idpf]
+[  324.701935]  ? kasan_save_track+0x14/0x30
+[  324.701941]  idpf_mb_clean+0x143/0x380 [idpf]
+<..>
+[  324.701991]  idpf_send_mb_msg+0x111/0x720 [idpf]
+[  324.702009]  idpf_vc_xn_exec+0x4cc/0x990 [idpf]
+[  324.702021]  ? rcu_is_watching+0x12/0xc0
+[  324.702035]  idpf_add_del_mac_filters+0x3ed/0xb50 [idpf]
+<..>
+[  324.702122]  __hw_addr_sync_dev+0x1cf/0x300
+[  324.702126]  ? find_held_lock+0x32/0x90
+[  324.702134]  idpf_set_rx_mode+0x317/0x390 [idpf]
+[  324.702152]  __dev_open+0x3f8/0x870
+[  324.702159]  ? __pfx___dev_open+0x10/0x10
+[  324.702174]  __dev_change_flags+0x443/0x650
+<..>
+[  324.702208]  netif_change_flags+0x80/0x160
+[  324.702218]  do_setlink.isra.0+0x16a0/0x3960
+<..>
+[  324.702349]  rtnl_newlink+0x12fd/0x21e0
 
-Therefore, make sure the migration file descriptor references are
-always released when the device is closed.
+The sequence is as follows:
+	rtnl_newlink()->
+	__dev_change_flags()->
+	__dev_open()->
+	dev_set_rx_mode() - >  # disables BH and grabs "dev->addr_list_lock"
+	idpf_set_rx_mode() ->  # proceed only if VIRTCHNL2_CAP_MACFILTER is ON
+	__dev_uc_sync() ->
+	idpf_add_mac_filter ->
+	idpf_add_del_mac_filters ->
+	idpf_send_mb_msg() ->
+	idpf_mb_clean() ->
+	idpf_ctlq_clean_sq()   # mutex_lock(cq_lock)
 
-Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
-Signed-off-by: Longfang Liu <liulongfang@huawei.com>
-Reviewed-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Link: https://lore.kernel.org/r/20250510081155.55840-5-liulongfang@huawei.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fix by converting cq_lock to a spinlock. All operations under the new
+lock are safe except freeing the DMA memory, which may use vunmap(). Fix
+by requesting a contiguous physical memory for the DMA mapping.
+
+Fixes: a251eee62133 ("idpf: add SRIOV support and other ndo_ops")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../net/ethernet/intel/idpf/idpf_controlq.c   | 23 +++++++++----------
+ .../ethernet/intel/idpf/idpf_controlq_api.h   |  2 +-
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    | 12 ++++++----
+ 3 files changed, 20 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index e37699fc03707..dda8cb3262e0b 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -1359,6 +1359,7 @@ static void hisi_acc_vfio_pci_close_device(struct vfio_device *core_vdev)
- 			struct hisi_acc_vf_core_device, core_device.vdev);
- 	struct hisi_qm *vf_qm = &hisi_acc_vdev->vf_qm;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq.c b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
+index b28991dd18703..48b8e184f3db6 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_controlq.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
+@@ -96,7 +96,7 @@ static void idpf_ctlq_init_rxq_bufs(struct idpf_ctlq_info *cq)
+  */
+ static void idpf_ctlq_shutdown(struct idpf_hw *hw, struct idpf_ctlq_info *cq)
+ {
+-	mutex_lock(&cq->cq_lock);
++	spin_lock(&cq->cq_lock);
  
-+	hisi_acc_vf_disable_fds(hisi_acc_vdev);
- 	iounmap(vf_qm->io_base);
- 	vfio_pci_core_close_device(core_vdev);
+ 	/* free ring buffers and the ring itself */
+ 	idpf_ctlq_dealloc_ring_res(hw, cq);
+@@ -104,8 +104,7 @@ static void idpf_ctlq_shutdown(struct idpf_hw *hw, struct idpf_ctlq_info *cq)
+ 	/* Set ring_size to 0 to indicate uninitialized queue */
+ 	cq->ring_size = 0;
+ 
+-	mutex_unlock(&cq->cq_lock);
+-	mutex_destroy(&cq->cq_lock);
++	spin_unlock(&cq->cq_lock);
  }
+ 
+ /**
+@@ -173,7 +172,7 @@ int idpf_ctlq_add(struct idpf_hw *hw,
+ 
+ 	idpf_ctlq_init_regs(hw, cq, is_rxq);
+ 
+-	mutex_init(&cq->cq_lock);
++	spin_lock_init(&cq->cq_lock);
+ 
+ 	list_add(&cq->cq_list, &hw->cq_list_head);
+ 
+@@ -272,7 +271,7 @@ int idpf_ctlq_send(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+ 	int err = 0;
+ 	int i;
+ 
+-	mutex_lock(&cq->cq_lock);
++	spin_lock(&cq->cq_lock);
+ 
+ 	/* Ensure there are enough descriptors to send all messages */
+ 	num_desc_avail = IDPF_CTLQ_DESC_UNUSED(cq);
+@@ -332,7 +331,7 @@ int idpf_ctlq_send(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+ 	wr32(hw, cq->reg.tail, cq->next_to_use);
+ 
+ err_unlock:
+-	mutex_unlock(&cq->cq_lock);
++	spin_unlock(&cq->cq_lock);
+ 
+ 	return err;
+ }
+@@ -364,7 +363,7 @@ int idpf_ctlq_clean_sq(struct idpf_ctlq_info *cq, u16 *clean_count,
+ 	if (*clean_count > cq->ring_size)
+ 		return -EBADR;
+ 
+-	mutex_lock(&cq->cq_lock);
++	spin_lock(&cq->cq_lock);
+ 
+ 	ntc = cq->next_to_clean;
+ 
+@@ -397,7 +396,7 @@ int idpf_ctlq_clean_sq(struct idpf_ctlq_info *cq, u16 *clean_count,
+ 
+ 	cq->next_to_clean = ntc;
+ 
+-	mutex_unlock(&cq->cq_lock);
++	spin_unlock(&cq->cq_lock);
+ 
+ 	/* Return number of descriptors actually cleaned */
+ 	*clean_count = i;
+@@ -435,7 +434,7 @@ int idpf_ctlq_post_rx_buffs(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+ 	if (*buff_count > 0)
+ 		buffs_avail = true;
+ 
+-	mutex_lock(&cq->cq_lock);
++	spin_lock(&cq->cq_lock);
+ 
+ 	if (tbp >= cq->ring_size)
+ 		tbp = 0;
+@@ -524,7 +523,7 @@ int idpf_ctlq_post_rx_buffs(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+ 		wr32(hw, cq->reg.tail, cq->next_to_post);
+ 	}
+ 
+-	mutex_unlock(&cq->cq_lock);
++	spin_unlock(&cq->cq_lock);
+ 
+ 	/* return the number of buffers that were not posted */
+ 	*buff_count = *buff_count - i;
+@@ -552,7 +551,7 @@ int idpf_ctlq_recv(struct idpf_ctlq_info *cq, u16 *num_q_msg,
+ 	u16 i;
+ 
+ 	/* take the lock before we start messing with the ring */
+-	mutex_lock(&cq->cq_lock);
++	spin_lock(&cq->cq_lock);
+ 
+ 	ntc = cq->next_to_clean;
+ 
+@@ -614,7 +613,7 @@ int idpf_ctlq_recv(struct idpf_ctlq_info *cq, u16 *num_q_msg,
+ 
+ 	cq->next_to_clean = ntc;
+ 
+-	mutex_unlock(&cq->cq_lock);
++	spin_unlock(&cq->cq_lock);
+ 
+ 	*num_q_msg = i;
+ 	if (*num_q_msg == 0)
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq_api.h b/drivers/net/ethernet/intel/idpf/idpf_controlq_api.h
+index e8e046ef2f0d7..5890d8adca4a8 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_controlq_api.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_controlq_api.h
+@@ -99,7 +99,7 @@ struct idpf_ctlq_info {
+ 
+ 	enum idpf_ctlq_type cq_type;
+ 	int q_id;
+-	struct mutex cq_lock;		/* control queue lock */
++	spinlock_t cq_lock;		/* control queue lock */
+ 	/* used for interrupt processing */
+ 	u16 next_to_use;
+ 	u16 next_to_clean;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index 2ed801398971c..fe96e20573660 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -2329,8 +2329,12 @@ void *idpf_alloc_dma_mem(struct idpf_hw *hw, struct idpf_dma_mem *mem, u64 size)
+ 	struct idpf_adapter *adapter = hw->back;
+ 	size_t sz = ALIGN(size, 4096);
+ 
+-	mem->va = dma_alloc_coherent(&adapter->pdev->dev, sz,
+-				     &mem->pa, GFP_KERNEL);
++	/* The control queue resources are freed under a spinlock, contiguous
++	 * pages will avoid IOMMU remapping and the use vmap (and vunmap in
++	 * dma_free_*() path.
++	 */
++	mem->va = dma_alloc_attrs(&adapter->pdev->dev, sz, &mem->pa,
++				  GFP_KERNEL, DMA_ATTR_FORCE_CONTIGUOUS);
+ 	mem->size = sz;
+ 
+ 	return mem->va;
+@@ -2345,8 +2349,8 @@ void idpf_free_dma_mem(struct idpf_hw *hw, struct idpf_dma_mem *mem)
+ {
+ 	struct idpf_adapter *adapter = hw->back;
+ 
+-	dma_free_coherent(&adapter->pdev->dev, mem->size,
+-			  mem->va, mem->pa);
++	dma_free_attrs(&adapter->pdev->dev, mem->size,
++		       mem->va, mem->pa, DMA_ATTR_FORCE_CONTIGUOUS);
+ 	mem->size = 0;
+ 	mem->va = NULL;
+ 	mem->pa = 0;
 -- 
 2.39.5
 
