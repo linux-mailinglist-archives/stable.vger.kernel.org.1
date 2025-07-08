@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-161179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9439EAFD3C4
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:00:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F65EAFD22B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1F88164705
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 880BC487359
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A73B2E7623;
-	Tue,  8 Jul 2025 16:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1849D2E54AF;
+	Tue,  8 Jul 2025 16:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZl/2TF2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZaBXfDM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F262E718D;
-	Tue,  8 Jul 2025 16:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AA02E49B0;
+	Tue,  8 Jul 2025 16:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993824; cv=none; b=XOoW6nMdtHh/FHX6gGpJTOi3i9ydm8Je0oeg5sZCUlSk69HMsV3MsesIUP3YGO99ERGhXKuba03mnfqhjACasnXBzE67nyuvAk1dibdNzeIme8v6ThUnI5MhASp3Mhgj1OqcmcQyYBk6dl2Aumad+k1diitoa/T7xtFXsoNOGpA=
+	t=1751992848; cv=none; b=JFLZ7bh4MuKNv8lKK3plAGlZ2aE0wjfmZKzWMbYvW88AdgSnQ7O/Y8J6PehZZBAVFc4hMw5+gd0gTAy+yjZLs1R0t4r4Z9cnGRvGnXpgpiUJ4dHLhu97L8dB8RojqBHqxX8o8zcJORuERZQ8o11MFiWx50I8WNC215XkpSeB1fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993824; c=relaxed/simple;
-	bh=JX77fFu4AUNR5fHES6coRv/K+tEVyTYDEOsr3Rh2wjg=;
+	s=arc-20240116; t=1751992848; c=relaxed/simple;
+	bh=K7SfNmUMx6DBAeBIXYa7Gx5fbGV1JS4MB+uk1aSS6i8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XlGadJrtZy4OB9FTo6iBKo+AIR0U9mPm50yvJ3g6XVh80BMKVo/zlsVAJJf2hxXYfLlJ3mE0w1RNyeehsvm0q7p1mZEsBp4642B2DByjj4bXPjSqnqxcf03Y4HLosjhMxFFIr3saJlal50/gRHsgpR4qA+c65MPjythpzKMeOLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZl/2TF2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50114C4CEED;
-	Tue,  8 Jul 2025 16:57:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dBa/LvsWStKMpKOU9Y8/icY1kQefC5yqSnNw9hmgIprXa1MYEhxAaVO3EuiKMEI7ttFgx+jALAYf371C6MxHzTc8ikAmqfIk6n4zp2wbChYvq7r3w3/6rjQTO2Fa3dBI8LmRVqCIBgDmO4UguwvWl8vtb4GFCWrT+H3U/zf+m0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZaBXfDM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522CFC4CEED;
+	Tue,  8 Jul 2025 16:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993823;
-	bh=JX77fFu4AUNR5fHES6coRv/K+tEVyTYDEOsr3Rh2wjg=;
+	s=korg; t=1751992848;
+	bh=K7SfNmUMx6DBAeBIXYa7Gx5fbGV1JS4MB+uk1aSS6i8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZl/2TF2dopIVEEt84Znx2hRYW57zubyy+oQ7rZHiW4n/M7BLw+HxYPBjD382oRZ4
-	 H87JTV/4Vq4AldDXC1UdZguPUoEDM5zT5yShvXPt1KZtSCHbqe/lMFVgvvDd3b5CJa
-	 z/WTAZQzvYatPJUm7eSDuBxNGdZQSzSsVCiRliqc=
+	b=QZaBXfDM1BOSjjyhS1NMIyXwLP3cN5zC0XEGqfC0Jwqr7FjB3BPz2KFVjBXK7h+b2
+	 5eTgu59/HqrgbRo0ZwC+J9LqA3vsrccIAjvPRQdpz3lLAxagtLnBuIRoVppLmyGglF
+	 R/kg8KBFNNpYV3qZE6oKZr513o7xpiNZEMseVmSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 030/160] media: omap3isp: use sgtable-based scatterlist wrappers
-Date: Tue,  8 Jul 2025 18:21:07 +0200
-Message-ID: <20250708162232.355934170@linuxfoundation.org>
+Subject: [PATCH 6.12 072/232] platform/mellanox: mlxreg-lc: Fix logic error in power state check
+Date: Tue,  8 Jul 2025 18:21:08 +0200
+Message-ID: <20250708162243.340827445@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 3de572fe2189a4a0bd80295e1f478401e739498e ]
+[ Upstream commit 644bec18e705ca41d444053407419a21832fcb2f ]
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
-functions have to be called with the number of elements originally passed
-to dma_map_sg_*() function, not the one returned in sgtable's nents.
+Fixes a logic issue in mlxreg_lc_completion_notify() where the
+intention was to check if MLXREG_LC_POWERED flag is not set before
+powering on the device.
 
-Fixes: d33186d0be18 ("[media] omap3isp: ccdc: Use the DMA API for LSC")
-Fixes: 0e24e90f2ca7 ("[media] omap3isp: stat: Use the DMA API")
-CC: stable@vger.kernel.org
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+The original code used "state & ~MLXREG_LC_POWERED" to check for the
+absence of the POWERED bit. However this condition evaluates to true
+even when other bits are set, leading to potentially incorrect
+behavior.
+
+Corrected the logic to explicitly check for the absence of
+MLXREG_LC_POWERED using !(state & MLXREG_LC_POWERED).
+
+Fixes: 62f9529b8d5c ("platform/mellanox: mlxreg-lc: Add initial support for Nvidia line card devices")
+Suggested-by: Vadim Pasternak <vadimp@nvidia.com>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://lore.kernel.org/r/20250630105812.601014-1-alok.a.tiwari@oracle.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/omap3isp/ispccdc.c | 8 ++++----
- drivers/media/platform/omap3isp/ispstat.c | 6 ++----
- 2 files changed, 6 insertions(+), 8 deletions(-)
+ drivers/platform/mellanox/mlxreg-lc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/omap3isp/ispccdc.c b/drivers/media/platform/omap3isp/ispccdc.c
-index 108b5e9f82cb0..ee966f8ee0103 100644
---- a/drivers/media/platform/omap3isp/ispccdc.c
-+++ b/drivers/media/platform/omap3isp/ispccdc.c
-@@ -446,8 +446,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
- 		if (ret < 0)
- 			goto done;
- 
--		dma_sync_sg_for_cpu(isp->dev, req->table.sgt.sgl,
--				    req->table.sgt.nents, DMA_TO_DEVICE);
-+		dma_sync_sgtable_for_cpu(isp->dev, &req->table.sgt,
-+					 DMA_TO_DEVICE);
- 
- 		if (copy_from_user(req->table.addr, config->lsc,
- 				   req->config.size)) {
-@@ -455,8 +455,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
- 			goto done;
- 		}
- 
--		dma_sync_sg_for_device(isp->dev, req->table.sgt.sgl,
--				       req->table.sgt.nents, DMA_TO_DEVICE);
-+		dma_sync_sgtable_for_device(isp->dev, &req->table.sgt,
-+					    DMA_TO_DEVICE);
- 	}
- 
- 	spin_lock_irqsave(&ccdc->lsc.req_lock, flags);
-diff --git a/drivers/media/platform/omap3isp/ispstat.c b/drivers/media/platform/omap3isp/ispstat.c
-index 68cf68dbcace2..dc496ca9748a6 100644
---- a/drivers/media/platform/omap3isp/ispstat.c
-+++ b/drivers/media/platform/omap3isp/ispstat.c
-@@ -161,8 +161,7 @@ static void isp_stat_buf_sync_for_device(struct ispstat *stat,
- 	if (ISP_STAT_USES_DMAENGINE(stat))
- 		return;
- 
--	dma_sync_sg_for_device(stat->isp->dev, buf->sgt.sgl,
--			       buf->sgt.nents, DMA_FROM_DEVICE);
-+	dma_sync_sgtable_for_device(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
- }
- 
- static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
-@@ -171,8 +170,7 @@ static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
- 	if (ISP_STAT_USES_DMAENGINE(stat))
- 		return;
- 
--	dma_sync_sg_for_cpu(stat->isp->dev, buf->sgt.sgl,
--			    buf->sgt.nents, DMA_FROM_DEVICE);
-+	dma_sync_sgtable_for_cpu(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
- }
- 
- static void isp_stat_buf_clear(struct ispstat *stat)
+diff --git a/drivers/platform/mellanox/mlxreg-lc.c b/drivers/platform/mellanox/mlxreg-lc.c
+index 43d119e3a4734..99152676dbd28 100644
+--- a/drivers/platform/mellanox/mlxreg-lc.c
++++ b/drivers/platform/mellanox/mlxreg-lc.c
+@@ -688,7 +688,7 @@ static int mlxreg_lc_completion_notify(void *handle, struct i2c_adapter *parent,
+ 	if (regval & mlxreg_lc->data->mask) {
+ 		mlxreg_lc->state |= MLXREG_LC_SYNCED;
+ 		mlxreg_lc_state_update_locked(mlxreg_lc, MLXREG_LC_SYNCED, 1);
+-		if (mlxreg_lc->state & ~MLXREG_LC_POWERED) {
++		if (!(mlxreg_lc->state & MLXREG_LC_POWERED)) {
+ 			err = mlxreg_lc_power_on_off(mlxreg_lc, 1);
+ 			if (err)
+ 				goto mlxreg_lc_regmap_power_on_off_fail;
 -- 
 2.39.5
 
