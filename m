@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-160934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F5FAFD25F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:45:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C29BAFD168
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 669C17AD3C8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:44:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EC7E48787E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CD22DD5EF;
-	Tue,  8 Jul 2025 16:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00E92E2F0E;
+	Tue,  8 Jul 2025 16:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igW6rXX9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdvRtR3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D6E2E54D6;
-	Tue,  8 Jul 2025 16:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E7D1548C;
+	Tue,  8 Jul 2025 16:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993117; cv=none; b=MFWd+vN1kynbbffwzmmQFpEE4fki5Ls3G62PFwie6FPWpASvY2D7S9WHVeZhYAy3FWNVk8oQrRcDKQB9T1Vk2b9qi3Q45SqJwM2yHNAzUUkpdgvIOOgAEE7CPsKA+CGO4Bgi/syG3ey3vyzxAMHAYSERslX5qcYSZf7h3lZGXy4=
+	t=1751992417; cv=none; b=jo7M6kRErIq49RXKTJ7DiuWPcwMciXtgJn9hpciWa+VpTIFmce1EAm+/VSMHJIsJhFT+sQpG/Fpx+2hiJQ0nv8rGyUX0P3QlMAewFy9FWgH3sgGcC1FOflOBYxcFVZLR9uTo3HAntT52ccullwOJcYPcI9oU/U1KkVGQ6EzfUTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993117; c=relaxed/simple;
-	bh=DMuVjw41DmsEZi5sazZ/OfkkOfdPeDFjlDqslS/F0FU=;
+	s=arc-20240116; t=1751992417; c=relaxed/simple;
+	bh=qeeztdyN5qEJEyP64RuO8o6gNtCPpPG7PZhv0ay5l/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8JOovCU0t3zRkSshtmqKcEQyIAcr9uVIG5dTRMkj72i02edZZW7rO3uuDd7dA4tw/ejvSMYjrF2NIdPysh4IzIbNNsIlYjzYSdL6EnaN+yOWYJm6nS7bLcSfusVnkJz/Wv5dqZdJ8BuN2Ddv7JnfWUyjvqLdidUfmO0q3rDCEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igW6rXX9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C70DC4CEED;
-	Tue,  8 Jul 2025 16:45:17 +0000 (UTC)
+	 MIME-Version; b=r3/iQwdEdudjgRPxXv+8R1SJygyVfNU69VqWseEdM+laidj4HCvCCO0CD02pjNES63U7Q0etchTGvj7a7J/netDiP0szCEGRwfZe+oozQG8vBIDRLrk7MKka7M23rKVf/uHkkAYet9lFGIBiO9e1UzDbuF50Mix2EGpO6FCaXvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdvRtR3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA38C4CEED;
+	Tue,  8 Jul 2025 16:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993117;
-	bh=DMuVjw41DmsEZi5sazZ/OfkkOfdPeDFjlDqslS/F0FU=;
+	s=korg; t=1751992417;
+	bh=qeeztdyN5qEJEyP64RuO8o6gNtCPpPG7PZhv0ay5l/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igW6rXX90Nqv1KM7ud6MYvpGrjGXImO1riy2EZWaIulqXHqaJmovOwYrAqZboYuwE
-	 v9GxnoV9ByhTBBCaaVReutS5uZa9u6V2g0+yrKf7kkddw3Ye0c+C3A09mzLYcsuF0+
-	 Jv4zcYdhfZyqJpUF9o5THEfoIMCzNfxD+RZtPWG4=
+	b=UdvRtR3dwONG4gAmB+TgHp9E5lTYE/5GU2mlXOki8AZD2w1IiyfEXO/eyIKgRdY8s
+	 YuvUYeWjxXC1xcdp3vTZgJiIdnllM+ksGCLoQQzLUVPah/VL7A8A8nXKTYj9MdNe53
+	 3m0c4PCFU9nVQZ4wi42+2qtf2YGgS53PYsp0em84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 192/232] module: Provide EXPORT_SYMBOL_GPL_FOR_MODULES() helper
+Subject: [PATCH 6.6 077/132] scsi: ufs: core: Fix abnormal scale up after last cmd finish
 Date: Tue,  8 Jul 2025 18:23:08 +0200
-Message-ID: <20250708162246.459462704@linuxfoundation.org>
+Message-ID: <20250708162232.889925835@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 707f853d7fa3ce323a6875487890c213e34d81a0 ]
+[ Upstream commit 6fd53da45bbc834b9cfdf707d2f7ebe666667943 ]
 
-Helper macro to more easily limit the export of a symbol to a given
-list of modules.
+When ufshcd_clk_scaling_suspend_work (thread A) running and new command
+coming, ufshcd_clk_scaling_start_busy (thread B) may get host_lock after
+thread A first time release host_lock. Then thread A second time get
+host_lock will set clk_scaling.window_start_t = 0 which scale up clock
+abnormal next polling_ms time.  Also inlines another
+__ufshcd_suspend_clkscaling calls.
 
-Eg:
+Below is racing step:
+1	hba->clk_scaling.suspend_work (Thread A)
+	ufshcd_clk_scaling_suspend_work
+2		spin_lock_irqsave(hba->host->host_lock, irq_flags);
+3		hba->clk_scaling.is_suspended = true;
+4		spin_unlock_irqrestore(hba->host->host_lock, irq_flags);
+		__ufshcd_suspend_clkscaling
+7			spin_lock_irqsave(hba->host->host_lock, flags);
+8			hba->clk_scaling.window_start_t = 0;
+9			spin_unlock_irqrestore(hba->host->host_lock, flags);
 
-  EXPORT_SYMBOL_GPL_FOR_MODULES(preempt_notifier_inc, "kvm");
+	ufshcd_send_command (Thread B)
+		ufshcd_clk_scaling_start_busy
+5			spin_lock_irqsave(hba->host->host_lock, flags);
+			....
+6			spin_unlock_irqrestore(hba->host->host_lock, flags);
 
-will limit the use of said function to kvm.ko, any other module trying
-to use this symbol will refure to load (and get modpost build
-failures).
-
-Requested-by: Masahiro Yamada <masahiroy@kernel.org>
-Requested-by: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Peter Zijlstra <peterz@infradead.org>
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Stable-dep-of: cbe4134ea4bc ("fs: export anon_inode_make_secure_inode() and fix secretmem LSM bypass")
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20230831130826.5592-3-peter.wang@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 2e083cd80229 ("scsi: ufs: core: Fix clk scaling to be conditional in reset and restore")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/core-api/symbol-namespaces.rst | 22 ++++++++++++++++++++
- include/linux/export.h                       | 12 +++++++++--
- 2 files changed, 32 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufshcd.c | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/Documentation/core-api/symbol-namespaces.rst b/Documentation/core-api/symbol-namespaces.rst
-index d1154eb438101..cca94469fa414 100644
---- a/Documentation/core-api/symbol-namespaces.rst
-+++ b/Documentation/core-api/symbol-namespaces.rst
-@@ -28,6 +28,9 @@ kernel. As of today, modules that make use of symbols exported into namespaces,
- are required to import the namespace. Otherwise the kernel will, depending on
- its configuration, reject loading the module or warn about a missing import.
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 412931cf240f6..08c46fefb32b4 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -289,7 +289,6 @@ static inline void ufshcd_add_delay_before_dme_cmd(struct ufs_hba *hba);
+ static int ufshcd_host_reset_and_restore(struct ufs_hba *hba);
+ static void ufshcd_resume_clkscaling(struct ufs_hba *hba);
+ static void ufshcd_suspend_clkscaling(struct ufs_hba *hba);
+-static void __ufshcd_suspend_clkscaling(struct ufs_hba *hba);
+ static int ufshcd_scale_clks(struct ufs_hba *hba, bool scale_up);
+ static irqreturn_t ufshcd_intr(int irq, void *__hba);
+ static int ufshcd_change_power_mode(struct ufs_hba *hba,
+@@ -1377,9 +1376,10 @@ static void ufshcd_clk_scaling_suspend_work(struct work_struct *work)
+ 		return;
+ 	}
+ 	hba->clk_scaling.is_suspended = true;
++	hba->clk_scaling.window_start_t = 0;
+ 	spin_unlock_irqrestore(hba->host->host_lock, irq_flags);
  
-+Additionally, it is possible to put symbols into a module namespace, strictly
-+limiting which modules are allowed to use these symbols.
-+
- 2. How to define Symbol Namespaces
- ==================================
+-	__ufshcd_suspend_clkscaling(hba);
++	devfreq_suspend_device(hba->devfreq);
+ }
  
-@@ -84,6 +87,22 @@ unit as preprocessor statement. The above example would then read::
- within the corresponding compilation unit before any EXPORT_SYMBOL macro is
- used.
+ static void ufshcd_clk_scaling_resume_work(struct work_struct *work)
+@@ -1556,16 +1556,6 @@ static void ufshcd_devfreq_remove(struct ufs_hba *hba)
+ 	dev_pm_opp_remove(hba->dev, clki->max_freq);
+ }
  
-+2.3 Using the EXPORT_SYMBOL_GPL_FOR_MODULES() macro
-+===================================================
-+
-+Symbols exported using this macro are put into a module namespace. This
-+namespace cannot be imported.
-+
-+The macro takes a comma separated list of module names, allowing only those
-+modules to access this symbol. Simple tail-globs are supported.
-+
-+For example:
-+
-+  EXPORT_SYMBOL_GPL_FOR_MODULES(preempt_notifier_inc, "kvm,kvm-*")
-+
-+will limit usage of this symbol to modules whoes name matches the given
-+patterns.
-+
- 3. How to use Symbols exported in Namespaces
- ============================================
+-static void __ufshcd_suspend_clkscaling(struct ufs_hba *hba)
+-{
+-	unsigned long flags;
+-
+-	devfreq_suspend_device(hba->devfreq);
+-	spin_lock_irqsave(hba->host->host_lock, flags);
+-	hba->clk_scaling.window_start_t = 0;
+-	spin_unlock_irqrestore(hba->host->host_lock, flags);
+-}
+-
+ static void ufshcd_suspend_clkscaling(struct ufs_hba *hba)
+ {
+ 	unsigned long flags;
+@@ -1578,11 +1568,12 @@ static void ufshcd_suspend_clkscaling(struct ufs_hba *hba)
+ 	if (!hba->clk_scaling.is_suspended) {
+ 		suspend = true;
+ 		hba->clk_scaling.is_suspended = true;
++		hba->clk_scaling.window_start_t = 0;
+ 	}
+ 	spin_unlock_irqrestore(hba->host->host_lock, flags);
  
-@@ -155,3 +174,6 @@ in-tree modules::
- You can also run nsdeps for external module builds. A typical usage is::
+ 	if (suspend)
+-		__ufshcd_suspend_clkscaling(hba);
++		devfreq_suspend_device(hba->devfreq);
+ }
  
- 	$ make -C <path_to_kernel_src> M=$PWD nsdeps
-+
-+Note: it will happily generate an import statement for the module namespace;
-+which will not work and generates build and runtime failures.
-diff --git a/include/linux/export.h b/include/linux/export.h
-index 1e04dbc675c2f..b40ae79b767da 100644
---- a/include/linux/export.h
-+++ b/include/linux/export.h
-@@ -24,11 +24,17 @@
- 	.long sym
- #endif
- 
--#define ___EXPORT_SYMBOL(sym, license, ns)		\
-+/*
-+ * LLVM integrated assembler cam merge adjacent string literals (like
-+ * C and GNU-as) passed to '.ascii', but not to '.asciz' and chokes on:
-+ *
-+ *   .asciz "MODULE_" "kvm" ;
-+ */
-+#define ___EXPORT_SYMBOL(sym, license, ns...)		\
- 	.section ".export_symbol","a"		ASM_NL	\
- 	__export_symbol_##sym:			ASM_NL	\
- 		.asciz license			ASM_NL	\
--		.asciz ns			ASM_NL	\
-+		.ascii ns "\0"			ASM_NL	\
- 		__EXPORT_SYMBOL_REF(sym)	ASM_NL	\
- 	.previous
- 
-@@ -70,4 +76,6 @@
- #define EXPORT_SYMBOL_NS(sym, ns)	__EXPORT_SYMBOL(sym, "", __stringify(ns))
- #define EXPORT_SYMBOL_NS_GPL(sym, ns)	__EXPORT_SYMBOL(sym, "GPL", __stringify(ns))
- 
-+#define EXPORT_SYMBOL_GPL_FOR_MODULES(sym, mods) __EXPORT_SYMBOL(sym, "GPL", "module:" mods)
-+
- #endif /* _LINUX_EXPORT_H */
+ static void ufshcd_resume_clkscaling(struct ufs_hba *hba)
 -- 
 2.39.5
 
