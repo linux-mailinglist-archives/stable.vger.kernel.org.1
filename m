@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-161211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0604AFD406
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:03:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8959FAFD261
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC9E6544240
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:58:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C7E73B45FB
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571022DECBD;
-	Tue,  8 Jul 2025 16:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B838F5B;
+	Tue,  8 Jul 2025 16:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z2jpXGvO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5wuewtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142D32E540B;
-	Tue,  8 Jul 2025 16:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755222DD5EF;
+	Tue,  8 Jul 2025 16:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993918; cv=none; b=eP9RJDYuIHtScu+t4EGjoH2OgdTdl4tMt/EkB4B20UaON9gnc7W0MR9uW2G7z0nKRc6bqBd8HrUozvyql8ytIiEjXd4chdT6hAtAH0+H7j6oJHXpihdgyfCjq6Ng+25HZm690Wxza/v+HLqZQh39UKVEvy+IJoL4O0zUN+5t/0Q=
+	t=1751992941; cv=none; b=jI7Ldy7oh0wu0EjzyBns8i8F6JgEjaPij9LqSt6V9tFH3z8YxH+jiKAFnCKMLt/Ev85zdJCFUNG6AWiAVabIh+z4L8qP5GII42pr4mFcKxxshZj6Mxg4HFlhTqtniiszU+JUy/oC7i3df0jf87H+V3jxhZ63jimkyMQBRhGEP8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993918; c=relaxed/simple;
-	bh=K8xO9plDs48ag0Qic5pOf/7BtwIwOBMVlnd0T2whu5c=;
+	s=arc-20240116; t=1751992941; c=relaxed/simple;
+	bh=Po/2cdsplhVzvJlPn1yzOfDgSDhBmrRYEGZJ9KF2b88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z01PGqeGUYn9gyMb5U2pGWVpcmcggl+rVUnR+cTowSNrIhXeEWN9Dia8izbLmF6LrkBi6c7XyuRRxFr8tPff8G0UNInU+JSK/PEHgCm/ww6uo4jINfDG2hukvyC/DO4Nm3CtzmZWy4mHMIbPHw4Gzp07Me+t5aigjX1jTxDGBmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z2jpXGvO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DE3C4CEED;
-	Tue,  8 Jul 2025 16:58:37 +0000 (UTC)
+	 MIME-Version; b=h7hiYsWItoJQTuNnhBfaiFq7aCmDw7KfsBq+Ra+6r2wJou3cw3kg88D5wlt5R13W1Ea6lZcmmh9K8qbl3pZkAjup9lTBk9YDt0WaSWBo1/z520amePRrNnLABsO2MxLgCbp17LpHkL+3B7vj+eScc704RzzrguJ8LN/6bRHgVco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5wuewtD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC523C4CEED;
+	Tue,  8 Jul 2025 16:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993918;
-	bh=K8xO9plDs48ag0Qic5pOf/7BtwIwOBMVlnd0T2whu5c=;
+	s=korg; t=1751992941;
+	bh=Po/2cdsplhVzvJlPn1yzOfDgSDhBmrRYEGZJ9KF2b88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z2jpXGvOZyegadLHw2hQ8I+1/J+dhOq9pvMVFB2vSQzG6Ww+cnLO2jsEm69katRS5
-	 Q3hmisn1R3Ep585BA6qythWPRLkmEcnqldU+yoqsQ2hKR6yo9nKMSbYrFjhFY0Ku2c
-	 J9oD3VPmzbDNT/0HOL5TPZI8CHCNrcku0Kf9R5T8=
+	b=y5wuewtDcIRYpvukdRaxF1O2c2EybbM2FccFqJsQfLqUyHdJS246yXYRfI1juw8Uc
+	 ZEWNZnq9xTHhYQWnHHyQX3soqmLZ5eRoKTQ6hQMt5NxYFu0BjbwoFK1ez9pimbJrUB
+	 ilYlZZFy+d/Au+5tG9iycDPNLvTuNQC2zt1abwBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youngjun Lee <yjjuny.lee@samsung.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 062/160] ALSA: usb-audio: Fix out-of-bounds read in snd_usb_get_audioformat_uac3()
+Subject: [PATCH 6.12 103/232] gfs2: Rename dinode_demise to evict_behavior
 Date: Tue,  8 Jul 2025 18:21:39 +0200
-Message-ID: <20250708162233.271722957@linuxfoundation.org>
+Message-ID: <20250708162244.138634871@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youngjun Lee <yjjuny.lee@samsung.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit fb4e2a6e8f28a3c0ad382e363aeb9cd822007b8a ]
+[ Upstream commit c79ba4be351a06e0ac4c51143a83023bb37888d6 ]
 
-In snd_usb_get_audioformat_uac3(), the length value returned from
-snd_usb_ctl_msg() is used directly for memory allocation without
-validation. This length is controlled by the USB device.
+Rename enum dinode_demise to evict_behavior and its items
+SHOULD_DELETE_DINODE to EVICT_SHOULD_DELETE,
+SHOULD_NOT_DELETE_DINODE to EVICT_SHOULD_SKIP_DELETE, and
+SHOULD_DEFER_EVICTION to EVICT_SHOULD_DEFER_DELETE.
 
-The allocated buffer is cast to a uac3_cluster_header_descriptor
-and its fields are accessed without verifying that the buffer
-is large enough. If the device returns a smaller than expected
-length, this leads to an out-of-bounds read.
+In gfs2_evict_inode(), add a separate variable of type enum
+evict_behavior instead of implicitly casting to int.
 
-Add a length check to ensure the buffer is large enough for
-uac3_cluster_header_descriptor.
-
-Signed-off-by: Youngjun Lee <yjjuny.lee@samsung.com>
-Fixes: 9a2fe9b801f5 ("ALSA: usb: initial USB Audio Device Class 3.0 support")
-Link: https://patch.msgid.link/20250623-uac3-oob-fix-v1-1-527303eaf40a@samsung.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: 2c63986dd35f ("gfs2: deallocate inodes in gfs2_create_inode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/stream.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/gfs2/super.c | 37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/sound/usb/stream.c b/sound/usb/stream.c
-index e14c725acebf2..0f1558ef85553 100644
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -982,6 +982,8 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
- 	 * and request Cluster Descriptor
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 6584fd5e0a5b7..6a0c0f3780b4c 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -44,10 +44,10 @@
+ #include "xattr.h"
+ #include "lops.h"
+ 
+-enum dinode_demise {
+-	SHOULD_DELETE_DINODE,
+-	SHOULD_NOT_DELETE_DINODE,
+-	SHOULD_DEFER_EVICTION,
++enum evict_behavior {
++	EVICT_SHOULD_DELETE,
++	EVICT_SHOULD_SKIP_DELETE,
++	EVICT_SHOULD_DEFER_DELETE,
+ };
+ 
+ /**
+@@ -1315,8 +1315,8 @@ static bool gfs2_upgrade_iopen_glock(struct inode *inode)
+  *
+  * Returns: the fate of the dinode
+  */
+-static enum dinode_demise evict_should_delete(struct inode *inode,
+-					      struct gfs2_holder *gh)
++static enum evict_behavior evict_should_delete(struct inode *inode,
++					       struct gfs2_holder *gh)
+ {
+ 	struct gfs2_inode *ip = GFS2_I(inode);
+ 	struct super_block *sb = inode->i_sb;
+@@ -1327,11 +1327,11 @@ static enum dinode_demise evict_should_delete(struct inode *inode,
+ 		goto should_delete;
+ 
+ 	if (test_bit(GIF_DEFER_DELETE, &ip->i_flags))
+-		return SHOULD_DEFER_EVICTION;
++		return EVICT_SHOULD_DEFER_DELETE;
+ 
+ 	/* Deletes should never happen under memory pressure anymore.  */
+ 	if (WARN_ON_ONCE(current->flags & PF_MEMALLOC))
+-		return SHOULD_DEFER_EVICTION;
++		return EVICT_SHOULD_DEFER_DELETE;
+ 
+ 	/* Must not read inode block until block type has been verified */
+ 	ret = gfs2_glock_nq_init(ip->i_gl, LM_ST_EXCLUSIVE, GL_SKIP, gh);
+@@ -1339,34 +1339,34 @@ static enum dinode_demise evict_should_delete(struct inode *inode,
+ 		glock_clear_object(ip->i_iopen_gh.gh_gl, ip);
+ 		ip->i_iopen_gh.gh_flags |= GL_NOCACHE;
+ 		gfs2_glock_dq_uninit(&ip->i_iopen_gh);
+-		return SHOULD_DEFER_EVICTION;
++		return EVICT_SHOULD_DEFER_DELETE;
+ 	}
+ 
+ 	if (gfs2_inode_already_deleted(ip->i_gl, ip->i_no_formal_ino))
+-		return SHOULD_NOT_DELETE_DINODE;
++		return EVICT_SHOULD_SKIP_DELETE;
+ 	ret = gfs2_check_blk_type(sdp, ip->i_no_addr, GFS2_BLKST_UNLINKED);
+ 	if (ret)
+-		return SHOULD_NOT_DELETE_DINODE;
++		return EVICT_SHOULD_SKIP_DELETE;
+ 
+ 	ret = gfs2_instantiate(gh);
+ 	if (ret)
+-		return SHOULD_NOT_DELETE_DINODE;
++		return EVICT_SHOULD_SKIP_DELETE;
+ 
+ 	/*
+ 	 * The inode may have been recreated in the meantime.
  	 */
- 	wLength = le16_to_cpu(hc_header.wLength);
-+	if (wLength < sizeof(cluster))
-+		return NULL;
- 	cluster = kzalloc(wLength, GFP_KERNEL);
- 	if (!cluster)
- 		return ERR_PTR(-ENOMEM);
+ 	if (inode->i_nlink)
+-		return SHOULD_NOT_DELETE_DINODE;
++		return EVICT_SHOULD_SKIP_DELETE;
+ 
+ should_delete:
+ 	if (gfs2_holder_initialized(&ip->i_iopen_gh) &&
+ 	    test_bit(HIF_HOLDER, &ip->i_iopen_gh.gh_iflags)) {
+ 		if (!gfs2_upgrade_iopen_glock(inode)) {
+ 			gfs2_holder_uninit(&ip->i_iopen_gh);
+-			return SHOULD_NOT_DELETE_DINODE;
++			return EVICT_SHOULD_SKIP_DELETE;
+ 		}
+ 	}
+-	return SHOULD_DELETE_DINODE;
++	return EVICT_SHOULD_DELETE;
+ }
+ 
+ /**
+@@ -1477,6 +1477,7 @@ static void gfs2_evict_inode(struct inode *inode)
+ 	struct gfs2_sbd *sdp = sb->s_fs_info;
+ 	struct gfs2_inode *ip = GFS2_I(inode);
+ 	struct gfs2_holder gh;
++	enum evict_behavior behavior;
+ 	int ret;
+ 
+ 	if (inode->i_nlink || sb_rdonly(sb) || !ip->i_no_addr)
+@@ -1491,10 +1492,10 @@ static void gfs2_evict_inode(struct inode *inode)
+ 		goto out;
+ 
+ 	gfs2_holder_mark_uninitialized(&gh);
+-	ret = evict_should_delete(inode, &gh);
+-	if (ret == SHOULD_DEFER_EVICTION)
++	behavior = evict_should_delete(inode, &gh);
++	if (behavior == EVICT_SHOULD_DEFER_DELETE)
+ 		goto out;
+-	if (ret == SHOULD_DELETE_DINODE)
++	if (behavior == EVICT_SHOULD_DELETE)
+ 		ret = evict_unlinked_inode(inode);
+ 	else
+ 		ret = evict_linked_inode(inode);
 -- 
 2.39.5
 
