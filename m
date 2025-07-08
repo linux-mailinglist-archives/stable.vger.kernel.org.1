@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-160627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD5AAFD0FF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFB0AFD32C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:54:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2740F4867D7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:29:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F7204A587B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646951CAA85;
-	Tue,  8 Jul 2025 16:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7425314A60D;
+	Tue,  8 Jul 2025 16:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KB+zmkUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UveOoyKO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2024313957E;
-	Tue,  8 Jul 2025 16:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308B62E54C4;
+	Tue,  8 Jul 2025 16:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992215; cv=none; b=fN1DBHDObONugoxYTFyMbED/xx+N8FSHP+9wPo081nh3B9nlbbKwGV1N5Mo7c6u5tPSOpoG9nwGmoJUk+TN67rSqPHW0guqmx+qe1YwcJhiKMZMsHeyRG+kmoK3dq4g8+TpKUgRQAc9gET+Ru+yQj0ta2gpaSLWt7mFf/cyITwY=
+	t=1751993466; cv=none; b=PyZPC6rTmZNyjXZW/oGlSstUFR8BgRXXJizuMbQDfz5L+IpdeyVl8M4LFpEdoAAtIT2Or+SBN9TTOq7owWReb6GXcKnst9ryeHhSmf3/VZV9evOoLAhKkOBZuG7alsfRycjAmF1rQtPaDCdnwpK/S854WE2aQnhyXfhpHBLoG04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992215; c=relaxed/simple;
-	bh=kCIR6SYH2X4b5tMkmERe+mHFearDGazHclXbmQ5mdKY=;
+	s=arc-20240116; t=1751993466; c=relaxed/simple;
+	bh=Q1kS5/3k/2k+0FC2BeDDz17/vnXk1SpoqkFOLHzSr3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tI9o0teomwJUV1fkbAaaB6z8gvf+DGqdYOwd43pZXfpN0sGcd6pCp3lb1Bct1TLWSjFzQvsl7Wb20U0ttG2zH3AaqOYBXYygTGDCuZ6OAkqa3iSIcPqxjT5Ne9OoerCxgcO9pzqRveKalIqGWa/dVXtAHD2DWnEgA/U5LPvpsts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KB+zmkUA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F779C4CEED;
-	Tue,  8 Jul 2025 16:30:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HRDukbWc4N7ajQBKy+xT49N16Khl+9VWvhaf5HqdtuEgWk7BFAYxOdu9JZNR+4icunjjDahvnTW8pZu/22K8F1SgOaaBWtBHgXuCIr5wBRAnTqhfOsPU4d3oi6HaSJBjHu/gIrsO7tRgTHWbjAKcc0aA/3z6RyAlEGA9FZiaKQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UveOoyKO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5B3C4CEF0;
+	Tue,  8 Jul 2025 16:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992215;
-	bh=kCIR6SYH2X4b5tMkmERe+mHFearDGazHclXbmQ5mdKY=;
+	s=korg; t=1751993466;
+	bh=Q1kS5/3k/2k+0FC2BeDDz17/vnXk1SpoqkFOLHzSr3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KB+zmkUAL7T5v/VZGbGFI5Sef+VBt/qBQPvyl/mst1LD0OnWmxN15Gljblafkt/3U
-	 wy2q+b8i0FP2129Jj81crRwHiK5JypaMkNOeTmBtf77LxNWJyslzFeO7OgA27GtaIE
-	 +yfo4kzjYsDOcuBamczEkFTFdzRlsxwYlyZjXMjE=
+	b=UveOoyKODrrb/Foh29JIBb7P5Yc8k/7BgeebZl9yTXi1lP1LnKju/j9zp7t6b4iKO
+	 3wQdOnTdxajTBj8rl2MZDAc9amzdzaaOVpzr9KpDLkn5cFInv4JKmCHI8Q8UY9Vj/p
+	 8yfU+G4RUWbuRQ49wYKOt4sYGpau+aDF0YSMH6Xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 010/132] Bluetooth: hci_sync: revert some mesh modifications
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 084/178] platform/mellanox: mlxreg-lc: Fix logic error in power state check
 Date: Tue,  8 Jul 2025 18:22:01 +0200
-Message-ID: <20250708162231.050833016@linuxfoundation.org>
+Message-ID: <20250708162238.874830982@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,81 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 46c0d947b64ac8efcf89dd754213dab5d1bd00aa upstream.
+[ Upstream commit 644bec18e705ca41d444053407419a21832fcb2f ]
 
-This reverts minor parts of the changes made in commit b338d91703fa
-("Bluetooth: Implement support for Mesh"). It looks like these changes
-were only made for development purposes but shouldn't have been part of
-the commit.
+Fixes a logic issue in mlxreg_lc_completion_notify() where the
+intention was to check if MLXREG_LC_POWERED flag is not set before
+powering on the device.
 
-Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The original code used "state & ~MLXREG_LC_POWERED" to check for the
+absence of the POWERED bit. However this condition evaluates to true
+even when other bits are set, leading to potentially incorrect
+behavior.
+
+Corrected the logic to explicitly check for the absence of
+MLXREG_LC_POWERED using !(state & MLXREG_LC_POWERED).
+
+Fixes: 62f9529b8d5c ("platform/mellanox: mlxreg-lc: Add initial support for Nvidia line card devices")
+Suggested-by: Vadim Pasternak <vadimp@nvidia.com>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://lore.kernel.org/r/20250630105812.601014-1-alok.a.tiwari@oracle.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c |   16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/platform/mellanox/mlxreg-lc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -2010,13 +2010,10 @@ static int hci_clear_adv_sets_sync(struc
- static int hci_clear_adv_sync(struct hci_dev *hdev, struct sock *sk, bool force)
- {
- 	struct adv_info *adv, *n;
--	int err = 0;
- 
- 	if (ext_adv_capable(hdev))
- 		/* Remove all existing sets */
--		err = hci_clear_adv_sets_sync(hdev, sk);
--	if (ext_adv_capable(hdev))
--		return err;
-+		return hci_clear_adv_sets_sync(hdev, sk);
- 
- 	/* This is safe as long as there is no command send while the lock is
- 	 * held.
-@@ -2044,13 +2041,11 @@ static int hci_clear_adv_sync(struct hci
- static int hci_remove_adv_sync(struct hci_dev *hdev, u8 instance,
- 			       struct sock *sk)
- {
--	int err = 0;
-+	int err;
- 
- 	/* If we use extended advertising, instance has to be removed first. */
- 	if (ext_adv_capable(hdev))
--		err = hci_remove_ext_adv_instance_sync(hdev, instance, sk);
--	if (ext_adv_capable(hdev))
--		return err;
-+		return hci_remove_ext_adv_instance_sync(hdev, instance, sk);
- 
- 	/* This is safe as long as there is no command send while the lock is
- 	 * held.
-@@ -2149,16 +2144,13 @@ int hci_read_tx_power_sync(struct hci_de
- int hci_disable_advertising_sync(struct hci_dev *hdev)
- {
- 	u8 enable = 0x00;
--	int err = 0;
- 
- 	/* If controller is not advertising we are done. */
- 	if (!hci_dev_test_flag(hdev, HCI_LE_ADV))
- 		return 0;
- 
- 	if (ext_adv_capable(hdev))
--		err = hci_disable_ext_adv_instance_sync(hdev, 0x00);
--	if (ext_adv_capable(hdev))
--		return err;
-+		return hci_disable_ext_adv_instance_sync(hdev, 0x00);
- 
- 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_ENABLE,
- 				     sizeof(enable), &enable, HCI_CMD_TIMEOUT);
+diff --git a/drivers/platform/mellanox/mlxreg-lc.c b/drivers/platform/mellanox/mlxreg-lc.c
+index aee395bb48ae4..8681ceb7144ba 100644
+--- a/drivers/platform/mellanox/mlxreg-lc.c
++++ b/drivers/platform/mellanox/mlxreg-lc.c
+@@ -688,7 +688,7 @@ static int mlxreg_lc_completion_notify(void *handle, struct i2c_adapter *parent,
+ 	if (regval & mlxreg_lc->data->mask) {
+ 		mlxreg_lc->state |= MLXREG_LC_SYNCED;
+ 		mlxreg_lc_state_update_locked(mlxreg_lc, MLXREG_LC_SYNCED, 1);
+-		if (mlxreg_lc->state & ~MLXREG_LC_POWERED) {
++		if (!(mlxreg_lc->state & MLXREG_LC_POWERED)) {
+ 			err = mlxreg_lc_power_on_off(mlxreg_lc, 1);
+ 			if (err)
+ 				goto mlxreg_lc_regmap_power_on_off_fail;
+-- 
+2.39.5
+
 
 
 
