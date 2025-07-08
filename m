@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-160763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0730AFD1C6
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:39:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312A2AFD1BA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F103E422618
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:36:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41D52583918
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B098A2E5414;
-	Tue,  8 Jul 2025 16:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3DA2E0B45;
+	Tue,  8 Jul 2025 16:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRkofmJm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xt5q3BOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0B621C190;
-	Tue,  8 Jul 2025 16:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1ED2E2F0D;
+	Tue,  8 Jul 2025 16:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992618; cv=none; b=BHp61i3lP/ExcyV3oAVafdrsO+Yb+DPl0Y+Asr07LBcfbRY6CLvgm3rAsM6hV36aTdiaHt5cek5C/t+Cf2E+ih/67tpR2VGHwUARtjf5vPgILKm9hHDDNNa12xIVGpZhccNO9k+LjzzIeI8rxdYxOln1VhzpkI8U/xBKK1puZtc=
+	t=1751992624; cv=none; b=ragrsQoA4RCUWJamiujFpZsWvEDoWP0uXH/bPKqqD3m7KsPtAaZxSGeuMPPNCuV42liEIhKiAVH5ppUvs8fcGKBtK5NpBxHFzV8CyO35i3vmkPDTMuRWAahbb7b3HDsitoNR13i1iRB43HM86FeR6uu2WQU6efPW38vbWWtZu7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992618; c=relaxed/simple;
-	bh=5fZPMcKwqcfhbsadt6y4pPnGT1nW9S/NO07CnjV2xgE=;
+	s=arc-20240116; t=1751992624; c=relaxed/simple;
+	bh=GThcxEVqMberr2yJTvB/OY5luypqNGVL1I4R8qQtGMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=my15SCu63eoc0mYHwJZOZv7MnAo1HukcaTCt1ymypxVTLTJNtAADkXaQ251S2UEtTuRbahALlldjaO+B6FSAwBz3P6d64RsKp600kBLDPhF/fswrp4kIfNZ/Ymx+A8LVZLCDYqV275cVohJwLuypHv/FIaXGLNC4j37ZiJJH6l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRkofmJm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA0DC4CEED;
-	Tue,  8 Jul 2025 16:36:57 +0000 (UTC)
+	 MIME-Version; b=gUEztjDrx5bsOQ2hIq7NDm4KBQsr9JcQvdOUh6/o1tOvrzAg+K9iIu+T8yf2MjEsxkWDUgnhBs2TWNIDFHdH3AEVVeks//FbFYwmzjEE4TzT2rl5GGMcX2Mtg6Imr3rViw875hG6napa5MJ0IIfkz8b+qMk8QQYTgfNBA6/q73o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xt5q3BOW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F68C4CEED;
+	Tue,  8 Jul 2025 16:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992618;
-	bh=5fZPMcKwqcfhbsadt6y4pPnGT1nW9S/NO07CnjV2xgE=;
+	s=korg; t=1751992624;
+	bh=GThcxEVqMberr2yJTvB/OY5luypqNGVL1I4R8qQtGMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VRkofmJmvr7rmE8P4vfUegs2KwiwhHXazuuwuLr5/xAncrleFoqS/+wCP+WpVn/Qs
-	 UwiV7V/D/oi3v0sAW5HdIYbBI1r0CW/jLbyDojWosrCxoD/+2DjWBYQSnI9upUqbQ1
-	 ln0GvxV1p8a7a8JPg70YLumPs/JIbPDYVXve1P8s=
+	b=xt5q3BOWGuC3gjD/BVBbR+ALYfix9EHBuLtyPuaS5jO4QdrC3AwiKFarHdWoBzBbF
+	 Y/OL3amApr1QvLBmfl6HlxzJ08Vo6JSDfZtet6JHJ4FFKHz4ZgiJMBjlHMUkg+8btD
+	 sVis+pZdy057oNurqKfwPEYvIpaxVJoXSbMMXUxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 023/232] mtk-sd: Prevent memory corruption from DMA map failure
-Date: Tue,  8 Jul 2025 18:20:19 +0200
-Message-ID: <20250708162242.039234370@linuxfoundation.org>
+Subject: [PATCH 6.12 024/232] mtk-sd: reset host->mrq on prepare_data() error
+Date: Tue,  8 Jul 2025 18:20:20 +0200
+Message-ID: <20250708162242.063657547@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
 References: <20250708162241.426806072@linuxfoundation.org>
@@ -65,61 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-commit f5de469990f19569627ea0dd56536ff5a13beaa3 upstream.
+commit ec54c0a20709ed6e56f40a8d59eee725c31a916b upstream.
 
-If msdc_prepare_data() fails to map the DMA region, the request is
-not prepared for data receiving, but msdc_start_data() proceeds
-the DMA with previous setting.
-Since this will lead a memory corruption, we have to stop the
-request operation soon after the msdc_prepare_data() fails to
-prepare it.
+Do not leave host with dangling ->mrq pointer if we hit
+the msdc_prepare_data() error out path.
 
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Fixes: 208489032bdd ("mmc: mediatek: Add Mediatek MMC driver")
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: f5de469990f1 ("mtk-sd: Prevent memory corruption from DMA map failure")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/174972756982.3337526.6755001617701603082.stgit@mhiramat.tok.corp.google.com
+Link: https://lore.kernel.org/r/20250625052106.584905-1-senozhatsky@chromium.org
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mtk-sd.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/mmc/host/mtk-sd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
 --- a/drivers/mmc/host/mtk-sd.c
 +++ b/drivers/mmc/host/mtk-sd.c
-@@ -783,6 +783,11 @@ static void msdc_prepare_data(struct msd
- 	}
- }
- 
-+static bool msdc_data_prepared(struct mmc_data *data)
-+{
-+	return data->host_cookie & MSDC_PREPARE_FLAG;
-+}
-+
- static void msdc_unprepare_data(struct msdc_host *host, struct mmc_data *data)
- {
- 	if (data->host_cookie & MSDC_ASYNC_FLAG)
-@@ -1346,8 +1351,18 @@ static void msdc_ops_request(struct mmc_
- 	WARN_ON(host->mrq);
- 	host->mrq = mrq;
- 
--	if (mrq->data)
-+	if (mrq->data) {
+@@ -1354,6 +1354,7 @@ static void msdc_ops_request(struct mmc_
+ 	if (mrq->data) {
  		msdc_prepare_data(host, mrq->data);
-+		if (!msdc_data_prepared(mrq->data)) {
-+			/*
-+			 * Failed to prepare DMA area, fail fast before
-+			 * starting any commands.
-+			 */
-+			mrq->cmd->error = -ENOSPC;
-+			mmc_request_done(mmc_from_priv(host), mrq);
-+			return;
-+		}
-+	}
- 
- 	/* if SBC is required, we have HW option and SW option.
- 	 * if HW option is enabled, and SBC does not have "special" flags,
+ 		if (!msdc_data_prepared(mrq->data)) {
++			host->mrq = NULL;
+ 			/*
+ 			 * Failed to prepare DMA area, fail fast before
+ 			 * starting any commands.
 
 
 
