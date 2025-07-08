@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D15AFD2E9
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514F5AFD12B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64D367AC60A
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:50:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37D2E424CD9
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5BE42E49BD;
-	Tue,  8 Jul 2025 16:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E342E54BA;
+	Tue,  8 Jul 2025 16:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbwFobst"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHd2HNaB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735012DEA94;
-	Tue,  8 Jul 2025 16:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B4F2E5432;
+	Tue,  8 Jul 2025 16:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993478; cv=none; b=hMdYEQMx4F6D1GOuvftYyB+Nqo/k1cJiG6i59BWMDrUAeWExncL1VGHws5zAR+9ZDov9PasEYthRom56FDok/+M5FbjNM+EuoQ3BrtcAJPWausl24CG9g6BrlZ1GKxg6gXcEZE9FBIYZxhtZFVKwp5lof8yRVkj7G1vIQ/hl/fg=
+	t=1751992289; cv=none; b=JvvHUl0SXXnqSSpTLz84LWgV+qi0ziHB+B2NA2hq0r4RaE+UKpWicGUwh6NhjfeDj6l9lxchdMCtBo5xQctgRhozv65RBhuizoftoersjk5GQwk8TFLWZKZ7FAojqm+tO6+LNaGHBO35SISRv/HjYQOf5PqZwkfNIVblXM8m9/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993478; c=relaxed/simple;
-	bh=khkP0v3psbZuK9HilpyslOTlsLH+Cfk5xXplF8ewg9Y=;
+	s=arc-20240116; t=1751992289; c=relaxed/simple;
+	bh=a55HmOkHonpzLWWHtKxCxXJMEFyerS0J3qL4TrBkltg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJIpL3oUgBY217meDNmtUJSFZSJOgA60EjAf0k4glipQOovDU/rK8fJGqv7+u+kh9Wbnwl0hmbu1j9pnKTExB5WqA36eFNVR7ocWg1Hq1DSBhaHXWt56svtVQW4BYeVXJhs8ebcaPxHI+fF98B5PBr8f5GuLAJ5FgDTa7fVdBU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbwFobst; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C33C4CEED;
-	Tue,  8 Jul 2025 16:51:17 +0000 (UTC)
+	 MIME-Version; b=PwOGW7Ar/+8qkJB4RdYvfpr6RCUXkwTvgIvHRqa7nMaCJWwKbs+saedmC72TNZR37/eM48EGErvgopQTba2E2lMx8hwaCBiXRYRkwYlY7vrEgdoukKbURAOKgGKG+xtoNjqltWd4XgiG0LSkuwn8lyNyO1wk0OUbdj5Y96jl3q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHd2HNaB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01282C4CEF0;
+	Tue,  8 Jul 2025 16:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993478;
-	bh=khkP0v3psbZuK9HilpyslOTlsLH+Cfk5xXplF8ewg9Y=;
+	s=korg; t=1751992289;
+	bh=a55HmOkHonpzLWWHtKxCxXJMEFyerS0J3qL4TrBkltg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DbwFobstdPEnTghTdcKGotpNA3BPNjm8kNXhJSFhlRvyPU4BWabWSWCExSLM1BuOE
-	 h4TWSiI9RIeL4sTrAsDDNCGXGEB/F2a1IWl7pAL9SPsa7HB6jpQ2xOcVnYn1gGV7HK
-	 B3/phqTleGXR1IE7o+skY10PhjIm5sWoLHEDFwUY=
+	b=wHd2HNaBKXY1uwghuZfzhcMAiSHZblnH51iReCNhqxH9xLcDCYpkRRN5LJEqVTeAs
+	 ulJyl8/7AVBQLYLdmlxp0kBgCkpIs2CiYw+bctOXcKzTutp56S51v8orLx1CsRD9I3
+	 0hZiW9ciulzxIMg03S19yuXXq7sRU5O6GS724Jzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 088/178] net: usb: lan78xx: fix WARN in __netif_napi_del_locked on disconnect
+	stable <stable@kernel.org>,
+	RD Babiera <rdbabiera@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 014/132] usb: typec: altmodes/displayport: do not index invalid pin_assignments
 Date: Tue,  8 Jul 2025 18:22:05 +0200
-Message-ID: <20250708162238.972351382@linuxfoundation.org>
+Message-ID: <20250708162231.152143725@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit 6c7ffc9af7186ed79403a3ffee9a1e5199fc7450 ]
+commit af4db5a35a4ef7a68046883bfd12468007db38f1 upstream.
 
-Remove redundant netif_napi_del() call from disconnect path.
+A poorly implemented DisplayPort Alt Mode port partner can indicate
+that its pin assignment capabilities are greater than the maximum
+value, DP_PIN_ASSIGN_F. In this case, calls to pin_assignment_show
+will cause a BRK exception due to an out of bounds array access.
 
-A WARN may be triggered in __netif_napi_del_locked() during USB device
-disconnect:
+Prevent for loop in pin_assignment_show from accessing
+invalid values in pin_assignments by adding DP_PIN_ASSIGN_MAX
+value in typec_dp.h and using i < DP_PIN_ASSIGN_MAX as a loop
+condition.
 
-  WARNING: CPU: 0 PID: 11 at net/core/dev.c:7417 __netif_napi_del_locked+0x2b4/0x350
-
-This happens because netif_napi_del() is called in the disconnect path while
-NAPI is still enabled. However, it is not necessary to call netif_napi_del()
-explicitly, since unregister_netdev() will handle NAPI teardown automatically
-and safely. Removing the redundant call avoids triggering the warning.
-
-Full trace:
- lan78xx 1-1:1.0 enu1: Failed to read register index 0x000000c4. ret = -ENODEV
- lan78xx 1-1:1.0 enu1: Failed to set MAC down with error -ENODEV
- lan78xx 1-1:1.0 enu1: Link is Down
- lan78xx 1-1:1.0 enu1: Failed to read register index 0x00000120. ret = -ENODEV
- ------------[ cut here ]------------
- WARNING: CPU: 0 PID: 11 at net/core/dev.c:7417 __netif_napi_del_locked+0x2b4/0x350
- Modules linked in: flexcan can_dev fuse
- CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted 6.16.0-rc2-00624-ge926949dab03 #9 PREEMPT
- Hardware name: SKOV IMX8MP CPU revC - bd500 (DT)
- Workqueue: usb_hub_wq hub_event
- pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : __netif_napi_del_locked+0x2b4/0x350
- lr : __netif_napi_del_locked+0x7c/0x350
- sp : ffffffc085b673c0
- x29: ffffffc085b673c0 x28: ffffff800b7f2000 x27: ffffff800b7f20d8
- x26: ffffff80110bcf58 x25: ffffff80110bd978 x24: 1ffffff0022179eb
- x23: ffffff80110bc000 x22: ffffff800b7f5000 x21: ffffff80110bc000
- x20: ffffff80110bcf38 x19: ffffff80110bcf28 x18: dfffffc000000000
- x17: ffffffc081578940 x16: ffffffc08284cee0 x15: 0000000000000028
- x14: 0000000000000006 x13: 0000000000040000 x12: ffffffb0022179e8
- x11: 1ffffff0022179e7 x10: ffffffb0022179e7 x9 : dfffffc000000000
- x8 : 0000004ffdde8619 x7 : ffffff80110bcf3f x6 : 0000000000000001
- x5 : ffffff80110bcf38 x4 : ffffff80110bcf38 x3 : 0000000000000000
- x2 : 0000000000000000 x1 : 1ffffff0022179e7 x0 : 0000000000000000
- Call trace:
-  __netif_napi_del_locked+0x2b4/0x350 (P)
-  lan78xx_disconnect+0xf4/0x360
-  usb_unbind_interface+0x158/0x718
-  device_remove+0x100/0x150
-  device_release_driver_internal+0x308/0x478
-  device_release_driver+0x1c/0x30
-  bus_remove_device+0x1a8/0x368
-  device_del+0x2e0/0x7b0
-  usb_disable_device+0x244/0x540
-  usb_disconnect+0x220/0x758
-  hub_event+0x105c/0x35e0
-  process_one_work+0x760/0x17b0
-  worker_thread+0x768/0xce8
-  kthread+0x3bc/0x690
-  ret_from_fork+0x10/0x20
- irq event stamp: 211604
- hardirqs last  enabled at (211603): [<ffffffc0828cc9ec>] _raw_spin_unlock_irqrestore+0x84/0x98
- hardirqs last disabled at (211604): [<ffffffc0828a9a84>] el1_dbg+0x24/0x80
- softirqs last  enabled at (211296): [<ffffffc080095f10>] handle_softirqs+0x820/0xbc8
- softirqs last disabled at (210993): [<ffffffc080010288>] __do_softirq+0x18/0x20
- ---[ end trace 0000000000000000 ]---
- lan78xx 1-1:1.0 enu1: failed to kill vid 0081/0
-
-Fixes: ec4c7e12396b ("lan78xx: Introduce NAPI polling support")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20250627051346.276029-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable <stable@kernel.org>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250618224943.3263103-2-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/lan78xx.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/usb/typec/altmodes/displayport.c |    2 +-
+ include/linux/usb/typec_dp.h             |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index e4f1663b62047..5f014b8626853 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -4344,8 +4344,6 @@ static void lan78xx_disconnect(struct usb_interface *intf)
- 	if (!dev)
- 		return;
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -528,7 +528,7 @@ static ssize_t pin_assignment_show(struc
  
--	netif_napi_del(&dev->napi);
--
- 	udev = interface_to_usbdev(intf);
- 	net = dev->net;
+ 	assignments = get_current_pin_assignments(dp);
  
--- 
-2.39.5
-
+-	for (i = 0; assignments; assignments >>= 1, i++) {
++	for (i = 0; assignments && i < DP_PIN_ASSIGN_MAX; assignments >>= 1, i++) {
+ 		if (assignments & 1) {
+ 			if (i == cur)
+ 				len += sprintf(buf + len, "[%s] ",
+--- a/include/linux/usb/typec_dp.h
++++ b/include/linux/usb/typec_dp.h
+@@ -56,6 +56,7 @@ enum {
+ 	DP_PIN_ASSIGN_D,
+ 	DP_PIN_ASSIGN_E,
+ 	DP_PIN_ASSIGN_F, /* Not supported after v1.0b */
++	DP_PIN_ASSIGN_MAX,
+ };
+ 
+ /* DisplayPort alt mode specific commands */
 
 
 
