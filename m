@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-160569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B06EEAFD0CF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4710DAFD2BC
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E590D189E454
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9822A1BC51D1
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189492367CE;
-	Tue,  8 Jul 2025 16:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDCC62E54BA;
+	Tue,  8 Jul 2025 16:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qebVp2Wi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSUalJMW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6E42E659;
-	Tue,  8 Jul 2025 16:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9922045B5;
+	Tue,  8 Jul 2025 16:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992029; cv=none; b=C74KfaheF3TpPS9lhxvnVq8S7Ja8Vg4F0joFJZa2SvtzVqH3aTEDbfrfVpOIHpI31wHMmR+mOdqNlninDMhNyihsrT9panXHg51iuKNnSGBMHATA6iQE+1ZdclqyMMeOsTwF6zuQcRfHfJkGndcZvsXuwNoBqdP6ptAjwhWi1kM=
+	t=1751993169; cv=none; b=Pt3G8vvR7nQ+axgFdl83CMPwV0ZHMCEaWgkgCYK9rtJ1AcgWcVPENOoV6AY3NuSZXrOOg351XQWB4VTS0BmsVaVT/4KgBZpHJlAXvtFb1g1ViNTPe5QHGhmmInjQ/50l4r769Rp4wykk/Jtr4xwZQme0yg+jMQt2rQxrDWV8X44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992029; c=relaxed/simple;
-	bh=WUK9dEYblYdiyNJGHbWgW/WC/xM28p7xK30M6HSQ/gc=;
+	s=arc-20240116; t=1751993169; c=relaxed/simple;
+	bh=AoJJlVSUqckAZ7S3dJOwfBZB4o68Zcwrj8Wpq7jCpGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pi14BIDWT9LlDr9Xr39PAk83B7O5IraFSg4+hT5ZQ4imBxpgiW1wi7CPjdUxbtbzRBFRizy87KBkoLmMv1lnXf1/D/OimED88mATsm0joNcZ8EwFBibRekxajMTfnrdC4zutOQ1Yke03jx3K58dpl+9gOU30ENadQBli1MzI8QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qebVp2Wi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B5EC4CEED;
-	Tue,  8 Jul 2025 16:27:09 +0000 (UTC)
+	 MIME-Version; b=WvZohISpDDV18P/Sr8Z+DVraQSx3A8GCbF6kIWj5s2HuOsnIJZ8A69GUYJytZvR+8AtucnGjuDh6geotFK/Iv2nGywfZSNbSxk/IR3euPK5ilLnzGa3muP2VcUMoBzx+ucrKFiV+MzV81nEl4jwK0FyfLc0X2RjdTscDc0lII5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSUalJMW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E8FC4CEF0;
+	Tue,  8 Jul 2025 16:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992029;
-	bh=WUK9dEYblYdiyNJGHbWgW/WC/xM28p7xK30M6HSQ/gc=;
+	s=korg; t=1751993169;
+	bh=AoJJlVSUqckAZ7S3dJOwfBZB4o68Zcwrj8Wpq7jCpGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qebVp2Wiwy1NDHj46eC44ohatqcbE8E8d+SvoJDdxHOSb1QKpvrU+wSJXiGT367PF
-	 GiWjEb/VBOUHD91So73iZzn0PU4UA03pBNqsf+SHr6O1F+fC+gXXcZGQe3S/h544cL
-	 F2cVJmNh0jGT1IQxElED/hZLtf2nJwZ9WO1YS0x8=
+	b=pSUalJMWF/AJb1w+dnDTJAvDDOhNaW5rxj+WNOK0PD95+HtJ/KrURBIxu84vcPtQd
+	 INTE4DP+1Wf1Ju9K358iSNl+1xhTnuz2bxfEwRnDo18IQJNRdx8Fqi5Ya9sfEWCkSL
+	 N3/aFK41gi4UVo3VtLGKL8Q74FoTifauF7Dipkco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 36/81] igc: disable L1.2 PCI-E link substate to avoid performance issue
+	Philipp Kerling <pkerling@casix.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 212/232] smb: client: fix readdir returning wrong type with POSIX extensions
 Date: Tue,  8 Jul 2025 18:23:28 +0200
-Message-ID: <20250708162226.120991589@linuxfoundation.org>
+Message-ID: <20250708162246.988670656@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Philipp Kerling <pkerling@casix.org>
 
-[ Upstream commit 0325143b59c6c6d79987afc57d2456e7a20d13b7 ]
+commit b8f89cb723b9e66f5dbd7199e4036fee34fb0de0 upstream.
 
-I226 devices advertise support for the PCI-E link L1.2 substate. However,
-due to a hardware limitation, the exit latency from this low-power state
-is longer than the packet buffer can tolerate under high traffic
-conditions. This can lead to packet loss and degraded performance.
+When SMB 3.1.1 POSIX Extensions are negotiated, userspace applications
+using readdir() or getdents() calls without stat() on each individual file
+(such as a simple "ls" or "find") would misidentify file types and exhibit
+strange behavior such as not descending into directories. The reason for
+this behavior is an oversight in the cifs_posix_to_fattr conversion
+function. Instead of extracting the entry type for cf_dtype from the
+properly converted cf_mode field, it tries to extract the type from the
+PDU. While the wire representation of the entry mode is similar in
+structure to POSIX stat(), the assignments of the entry types are
+different. Applying the S_DT macro to cf_mode instead yields the correct
+result. This is also what the equivalent function
+smb311_posix_info_to_fattr in inode.c already does for stat() etc.; which
+is why "ls -l" would give the correct file type but "ls" would not (as
+identified by the colors).
 
-To mitigate this, disable the L1.2 substate. The increased power draw
-between L1.1 and L1.2 is insignificant.
-
-Fixes: 43546211738e ("igc: Add new device ID's")
-Link: https://lore.kernel.org/intel-wired-lan/15248b4f-3271-42dd-8e35-02bfc92b25e1@intel.com
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Philipp Kerling <pkerling@casix.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/smb/client/readdir.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 082f78beeb4ed..ca3fd02708102 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6553,6 +6553,10 @@ static int igc_probe(struct pci_dev *pdev,
- 	adapter->port_num = hw->bus.func;
- 	adapter->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
+--- a/fs/smb/client/readdir.c
++++ b/fs/smb/client/readdir.c
+@@ -263,7 +263,7 @@ cifs_posix_to_fattr(struct cifs_fattr *f
+ 	/* The Mode field in the response can now include the file type as well */
+ 	fattr->cf_mode = wire_mode_to_posix(le32_to_cpu(info->Mode),
+ 					    fattr->cf_cifsattrs & ATTR_DIRECTORY);
+-	fattr->cf_dtype = S_DT(le32_to_cpu(info->Mode));
++	fattr->cf_dtype = S_DT(fattr->cf_mode);
  
-+	/* Disable ASPM L1.2 on I226 devices to avoid packet loss */
-+	if (igc_is_device_id_i226(hw))
-+		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
-+
- 	err = pci_save_state(pdev);
- 	if (err)
- 		goto err_ioremap;
-@@ -6920,6 +6924,9 @@ static int __maybe_unused igc_resume(struct device *dev)
- 	pci_enable_wake(pdev, PCI_D3hot, 0);
- 	pci_enable_wake(pdev, PCI_D3cold, 0);
- 
-+	if (igc_is_device_id_i226(hw))
-+		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
-+
- 	if (igc_init_interrupt_scheme(adapter, true)) {
- 		netdev_err(netdev, "Unable to allocate memory for queues\n");
- 		return -ENOMEM;
-@@ -7035,6 +7042,9 @@ static pci_ers_result_t igc_io_slot_reset(struct pci_dev *pdev)
- 		pci_enable_wake(pdev, PCI_D3hot, 0);
- 		pci_enable_wake(pdev, PCI_D3cold, 0);
- 
-+		if (igc_is_device_id_i226(hw))
-+			pci_disable_link_state_locked(pdev, PCIE_LINK_STATE_L1_2);
-+
- 		/* In case of PCI error, adapter loses its HW address
- 		 * so we should re-assign it here.
- 		 */
--- 
-2.39.5
-
+ 	switch (fattr->cf_mode & S_IFMT) {
+ 	case S_IFLNK:
 
 
 
