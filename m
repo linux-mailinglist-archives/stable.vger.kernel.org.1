@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-161075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D0CAFD340
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:55:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA04AFD485
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DC3516302B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:52:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35C823A979B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2082DC34C;
-	Tue,  8 Jul 2025 16:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243AF2E62D6;
+	Tue,  8 Jul 2025 17:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgUEG2NT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpLblSKj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7AB1DB127;
-	Tue,  8 Jul 2025 16:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57222E62B3;
+	Tue,  8 Jul 2025 17:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993524; cv=none; b=qtpH30PcAA2B5XLvIqpm/HGAak7SXpEXRuM2CvOzidijNLSASpDfjYAbubT/OW3fEfd4VuyI8RDqW7JJsu6K0qgC0oSiNLmh/bOW97jSD/bPpawC4FXJklAdYXFD/Fnk3atbktoXQ5S8Zc/6clXCWNsuF/9LNGBVBSr3r8+F3xY=
+	t=1751994033; cv=none; b=EHV6nZh21stAez/xv1ZL2nT6oq4WfibE+nydDWIvxwb6CZz38Mgk5xsOcfzK5KjAHCsbXJs10oN6ztDzI1BY1/BmzA3Zj3ywHpAfOJAZ0Q4hMdRFcwS7DXECE3pIBVxXEAYEduwe6bVWHZ6yuOr4XWFJGnGmMvLecWEXu/pcakQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993524; c=relaxed/simple;
-	bh=luYFYyIrWges2POr0lQK2E6k+9pEZR67vk2d+I+aJK8=;
+	s=arc-20240116; t=1751994033; c=relaxed/simple;
+	bh=HNeztmOgElfAhDh63V9hDNCqTKY2OjqBeIM/2IizICg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reXdQ9nkrLO986gOCz92OkGfRShOiS5cA753SsNuo97IfvWHWjwGEBCLb64cUcJ/g9VMffqeOQ7VB1bjbyXFhKrq+rVDL5WrkUOK9bfgatdnnMTDPHh0+9dOmM70G5eBqsEOOplZOPAy+K/qXSNAxWFMWHcDE7CC/KOBPb9MW8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgUEG2NT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2373DC4CEF0;
-	Tue,  8 Jul 2025 16:52:03 +0000 (UTC)
+	 MIME-Version; b=UHcUMlIU1hcpT6hVxV9ibavD1Fgjcw4QmtP0yXTXTJ0Hu6Vw6/ttarKegDjET2jR8SZCPd9TdnbeyP2GzvbcAmLnECa3kPX9o92zMhz6Q6xjfi+LaSJxrTewqQodaFJdHcnFlKIR/394XOBMk9R2dl3kre+EWdbwq8gv6ZS75dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpLblSKj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC27C4CEF0;
+	Tue,  8 Jul 2025 17:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993524;
-	bh=luYFYyIrWges2POr0lQK2E6k+9pEZR67vk2d+I+aJK8=;
+	s=korg; t=1751994033;
+	bh=HNeztmOgElfAhDh63V9hDNCqTKY2OjqBeIM/2IizICg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fgUEG2NTZ0mHdTGIv9RWo+povElY3Qdtk+bwvnsOzqs/HOP4tkYDkysxq19ZSkK9v
-	 xT6engnAc3jzebcEZFTXuelW3/eSFMoRvKRNlo8EIH4/5Kh6Z+LFNYhTvEqsQkzm2y
-	 VXWr72Ov2HMhLTyo0nk1Ctriqvxp9/KhIltbGF5s=
+	b=LpLblSKj2GpQ2JcDGNCjByuhw2k9Hm09l0Y+PkKSYVVkNNiagyvCoRRVHULRAwPJ9
+	 1I7zPQQdxg49DeLx0hu2S+oMNjgL7LB4CnR2ZShp2dh6iNpttcmHjbASpjwLH94iXH
+	 gVCx+/P7k59zcfP3NPLscddQw62+m/Voxy06QSME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Inki Dae <inki.dae@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 073/178] drm/exynos: fimd: Guard display clock control with runtime PM calls
+	stable <stable@kernel.org>,
+	Yao Zi <ziyao@disroot.org>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 5.15 073/160] dt-bindings: serial: 8250: Make clocks and clock-frequency exclusive
 Date: Tue,  8 Jul 2025 18:21:50 +0200
-Message-ID: <20250708162238.582478896@linuxfoundation.org>
+Message-ID: <20250708162233.572119890@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Yao Zi <ziyao@disroot.org>
 
-[ Upstream commit 5d91394f236167ac624b823820faf4aa928b889e ]
+commit 09812134071b3941fb81def30b61ed36d3a5dfb5 upstream.
 
-Commit c9b1150a68d9 ("drm/atomic-helper: Re-order bridge chain pre-enable
-and post-disable") changed the call sequence to the CRTC enable/disable
-and bridge pre_enable/post_disable methods, so those bridge methods are
-now called when CRTC is not yet enabled.
+The 8250 binding before converting to json-schema states,
 
-This causes a lockup observed on Samsung Peach-Pit/Pi Chromebooks. The
-source of this lockup is a call to fimd_dp_clock_enable() function, when
-FIMD device is not yet runtime resumed. It worked before the mentioned
-commit only because the CRTC implemented by the FIMD driver was always
-enabled what guaranteed the FIMD device to be runtime resumed.
+  - clock-frequency : the input clock frequency for the UART
+  	or
+  - clocks phandle to refer to the clk used as per Documentation/devicetree
 
-This patch adds runtime PM guards to the fimd_dp_clock_enable() function
-to enable its proper operation also when the CRTC implemented by FIMD is
-not yet enabled.
+for clock-related properties, where "or" indicates these properties
+shouldn't exist at the same time.
 
-Fixes: 196e059a8a6a ("drm/exynos: convert clock_enable crtc callback to pipeline clock")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Additionally, the behavior of Linux's driver is strange when both clocks
+and clock-frequency are specified: it ignores clocks and obtains the
+frequency from clock-frequency, left the specified clocks unclaimed. It
+may even be disabled, which is undesired most of the time.
+
+But "anyOf" doesn't prevent these two properties from coexisting, as it
+considers the object valid as long as there's at LEAST one match.
+
+Let's switch to "oneOf" and disallows the other property if one exists,
+precisely matching the original binding and avoiding future confusion on
+the driver's behavior.
+
+Fixes: e69f5dc623f9 ("dt-bindings: serial: Convert 8250 to json-schema")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20250623093445.62327-1-ziyao@disroot.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_fimd.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ Documentation/devicetree/bindings/serial/8250.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_fimd.c b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-index c394cc702d7d4..205c238cc73a6 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-@@ -187,6 +187,7 @@ struct fimd_context {
- 	u32				i80ifcon;
- 	bool				i80_if;
- 	bool				suspended;
-+	bool				dp_clk_enabled;
- 	wait_queue_head_t		wait_vsync_queue;
- 	atomic_t			wait_vsync_event;
- 	atomic_t			win_updated;
-@@ -1047,7 +1048,18 @@ static void fimd_dp_clock_enable(struct exynos_drm_clk *clk, bool enable)
- 	struct fimd_context *ctx = container_of(clk, struct fimd_context,
- 						dp_clk);
- 	u32 val = enable ? DP_MIE_CLK_DP_ENABLE : DP_MIE_CLK_DISABLE;
-+
-+	if (enable == ctx->dp_clk_enabled)
-+		return;
-+
-+	if (enable)
-+		pm_runtime_resume_and_get(ctx->dev);
-+
-+	ctx->dp_clk_enabled = enable;
- 	writel(val, ctx->regs + DP_MIE_CLKCON);
-+
-+	if (!enable)
-+		pm_runtime_put(ctx->dev);
- }
+--- a/Documentation/devicetree/bindings/serial/8250.yaml
++++ b/Documentation/devicetree/bindings/serial/8250.yaml
+@@ -44,7 +44,7 @@ allOf:
+                   - ns16550
+                   - ns16550a
+     then:
+-      anyOf:
++      oneOf:
+         - required: [ clock-frequency ]
+         - required: [ clocks ]
  
- static const struct exynos_drm_crtc_ops fimd_crtc_ops = {
--- 
-2.39.5
-
 
 
 
