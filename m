@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C45AFD0C1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:27:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C0DEAFD37F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8639B1C218D3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65CFC1886C3D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2392DC34C;
-	Tue,  8 Jul 2025 16:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE35C2DA77B;
+	Tue,  8 Jul 2025 16:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCHZSn62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obEhDEym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED89E217722;
-	Tue,  8 Jul 2025 16:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAF0BE46;
+	Tue,  8 Jul 2025 16:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991957; cv=none; b=VRZlua6IJ/fOVYMOirxTFh/eU8GWdjNMIC6itoz7KSn98U/yk9KDBFKNPHIjal6B3d0HLNDCR5Lv7a1ZJSn+bqcyxYs3jP288UD5PrAJ0B6Ex8ErYa/1GNzZ92g4NVd7xIlUwsK8AcLcrnK+feudrM21ruHCrs/78i1CshyIZ6c=
+	t=1751993659; cv=none; b=IubPMv7/JEr4BSVH5McfqNBAoo1ES1yvkI4CVTv3q3BG97I0CWypJOKsPDw6BXo71qCY5xX9VCdTKdjI3uLDM/vgX6u3/n3DefWX5inwVXt83lSP3K01j3zbPEnlzk17Y7saQHzQFVzyd9qebFP7k62E2tpg7y11Cs+FJvUJNs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991957; c=relaxed/simple;
-	bh=jOOmqGqqtTenaiVXP6Gtf+y1Rm5wzk2DMd0TOe8z8Ts=;
+	s=arc-20240116; t=1751993659; c=relaxed/simple;
+	bh=1gvlkFzzNKqd8bOdstp6iwfobqSFci5JQUTfKR40q5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B3i2ijMZrsAKZbEP/N2U4XOnlzLh6ZMpkfB0yASL8O19pkrFZ4AJ8SuwROXRcu3r08xt9o6ii6pS3sJ5sqkr7Nvf9IxtaqmTjgnwDcMyD0as/wsMb/JMTPZ9Ohk60wO5H3Xe3S01ituJKQUEN/UV3FFOu6dpzDteBAmzrtQTFyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCHZSn62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7381BC4CEED;
-	Tue,  8 Jul 2025 16:25:56 +0000 (UTC)
+	 MIME-Version; b=ozbVGgVn5ycG4v8QMs0Po8oJfVq2scd74Rr0oouJbXn7426+6FynVQ8tuB5Vs43JCdUTW63FVP8YQpy5p85BVD1zkdD2M8SHDg3u9PFmcY5Tf+c3VB7Vj+Uug7JxP6sA61V0KsQzOZkxip4UEl5ItuV66rxe2l5vRZ19nIJ59Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obEhDEym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E759AC4CEED;
+	Tue,  8 Jul 2025 16:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751991956;
-	bh=jOOmqGqqtTenaiVXP6Gtf+y1Rm5wzk2DMd0TOe8z8Ts=;
+	s=korg; t=1751993659;
+	bh=1gvlkFzzNKqd8bOdstp6iwfobqSFci5JQUTfKR40q5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vCHZSn62xaXBPSN8Pud3PK8ydc1Vb3fETbmxOpu3yO3nNb0qccfu5lQ5Hz4fuyzCE
-	 vYJeW0h1+lJqG3HHizKHID3tugNdpOQAmrA/XZ8sPD9bm4CqXxvt8ODnBmfSfhk4pF
-	 kkwQk6p5ltWbah9tRbnXmMM9hIHCHcA4fEnMh/cs=
+	b=obEhDEymMfCr4tKHjtE4pTVDWWmFMtJUCIgmk5Zm6SmS4wiqmgVNju+zq8tUtY0ET
+	 5f8N2y0AgbaO0k5LW8wLsnfvGdfcySO/u+P3uClW0yG1Bj/iDCaxL5jvfisDlQNZK/
+	 9M0uPnTH7WLarb/5hMixlb5p5Euu7FdDXnMxuP/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 14/81] mtk-sd: reset host->mrq on prepare_data() error
-Date: Tue,  8 Jul 2025 18:23:06 +0200
-Message-ID: <20250708162225.328150256@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Hongliang Yang <hongliang.yang@cixtech.com>,
+	Fugang Duan <fugang.duan@cixtech.com>,
+	Peter Chen <peter.chen@cixtech.com>
+Subject: [PATCH 6.15 150/178] usb: cdnsp: do not disable slot for disabled slot
+Date: Tue,  8 Jul 2025 18:23:07 +0200
+Message-ID: <20250708162240.431790597@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Peter Chen <peter.chen@cixtech.com>
 
-commit ec54c0a20709ed6e56f40a8d59eee725c31a916b upstream.
+commit 7e2c421ef88e9da9c39e01496b7f5b0b354b42bc upstream.
 
-Do not leave host with dangling ->mrq pointer if we hit
-the msdc_prepare_data() error out path.
+It doesn't need to do it, and the related command event returns
+'Slot Not Enabled Error' status.
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Fixes: f5de469990f1 ("mtk-sd: Prevent memory corruption from DMA map failure")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250625052106.584905-1-senozhatsky@chromium.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Cc: stable <stable@kernel.org>
+Suggested-by: Hongliang Yang <hongliang.yang@cixtech.com>
+Reviewed-by: Fugang Duan <fugang.duan@cixtech.com>
+Signed-off-by: Peter Chen <peter.chen@cixtech.com>
+Link: https://lore.kernel.org/r/20250619013413.35817-1-peter.chen@cixtech.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mtk-sd.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/cdns3/cdnsp-ring.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -1331,6 +1331,7 @@ static void msdc_ops_request(struct mmc_
- 	if (mrq->data) {
- 		msdc_prepare_data(host, mrq->data);
- 		if (!msdc_data_prepared(mrq->data)) {
-+			host->mrq = NULL;
- 			/*
- 			 * Failed to prepare DMA area, fail fast before
- 			 * starting any commands.
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -772,7 +772,9 @@ static int cdnsp_update_port_id(struct c
+ 	}
+ 
+ 	if (port_id != old_port) {
+-		cdnsp_disable_slot(pdev);
++		if (pdev->slot_id)
++			cdnsp_disable_slot(pdev);
++
+ 		pdev->active_port = port;
+ 		cdnsp_enable_slot(pdev);
+ 	}
 
 
 
