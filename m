@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-160920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D16AFD295
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:48:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD18CAFD0C5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:27:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDE1E189EEB8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCEA65803C5
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53162E5413;
-	Tue,  8 Jul 2025 16:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9202D877F;
+	Tue,  8 Jul 2025 16:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiiHvL14"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZuJgeFC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22392E3385;
-	Tue,  8 Jul 2025 16:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5DA21B199;
+	Tue,  8 Jul 2025 16:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993076; cv=none; b=g8h8RTu+UwQwYj8VDagpsNRZIPCqG+tJ/oEwL1CLgNtps4dGRYnsuKb+SN0kn3ZfRcTcu0FSCrbOWejXnPzHAEzlW0STcoP8EucjfVT/CUejAsBKnkyMrSjmvwGVsfhSm8Gz5Rd2Va+8zw8ES83NJd3nzlP/5fASV7F3Vl4Bqds=
+	t=1751991984; cv=none; b=PltbwlhW/wu5MPyXC4zDcqUUFZUAZkSvDiGDT/ecwEyPxGiZqCYcQxWWNTXf8quiKEx8WXgRZVdYHabiRdH34pKAxKswk+PHKzeKqjf3okhcP/4wf4xtrA9R3GVhCvo/OEgAwazKIzrvGLKe1O7Kv3RLCkkHHDpGJZWLj+3Qe7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993076; c=relaxed/simple;
-	bh=lR36Ve0JjmqeX+/q8e7xwhMe5qTcl9iKIZaLzjON1Xs=;
+	s=arc-20240116; t=1751991984; c=relaxed/simple;
+	bh=OCl1l/fKqfy0BF0KbDdLme910Gs9XfOTdluedkEFmMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4KrCPWFl3uH6EJYpdqfW0/1ojVqVzDvM1jv6rmibY93FIq3ITdQhEUzRCaNKhMRZDO/4pOrqxC7bAmj/Qy4aUF3Ib1rSGYG6+R7NRgkoaYR5l1s0z5fxOru6sIkPFnvUDsvBZI2ktHDV2zwUiP9eUUpvnIwAAtajmqv7dWDZWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hiiHvL14; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A83CC4CEED;
-	Tue,  8 Jul 2025 16:44:35 +0000 (UTC)
+	 MIME-Version; b=X0hgtL1n5woLsbtpuD9jbz4vBoWQY6IG2e1nPL3t88T9cnLPF2r4y755QBStprdEE7o5aId7M0vlFqieVt0aHvs0R0cfnBfCgGCNyMln3dLBclZCtpeIuvVQsX1za1kmmNe4dru914ajveTwH+vmwlrhxjHbKLqs2cVMEOOEtI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZuJgeFC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C67C4CEED;
+	Tue,  8 Jul 2025 16:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993076;
-	bh=lR36Ve0JjmqeX+/q8e7xwhMe5qTcl9iKIZaLzjON1Xs=;
+	s=korg; t=1751991984;
+	bh=OCl1l/fKqfy0BF0KbDdLme910Gs9XfOTdluedkEFmMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hiiHvL146E+AjPCQyqDW+cIzl+wIuFo9oo/iVdcbOWHEXHuOstyBA8AeYuAuNwrWv
-	 GCj54nMEjLnaRRpEcie1oiW2ZutUtgAtExIq4jxSorVhUZujUCJipVGExvRkNpZNqq
-	 55k7rZHjYmiqkm6ZRDsYumb7Asl+WwNT8LElJh+w=
+	b=GZuJgeFCeei7rG9/sihKFWv1Ol1HghvHttztekmSa0MJdl3LsyIugdSQ/gBvRWBvr
+	 ytacrdIQ9e26Hvc/XLg5Jc+jXb9g4nYeY3X28T9WJuojN1IShv0EccezvCl4bO3Uiy
+	 w/G2jR7dTskrSsDDgDPcoI6uZOd0xlXN4KpoDtT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tulio Magno <tuliom@ascii.art.br>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Justin M. Forbes" <jforbes@fedoraproject.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 180/232] powerpc: Fix struct termio related ioctl macros
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 04/81] mmc: sdhci: Add a helper function for dump register in dynamic debug mode
 Date: Tue,  8 Jul 2025 18:22:56 +0200
-Message-ID: <20250708162246.148488299@linuxfoundation.org>
+Message-ID: <20250708162224.973457784@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-[ Upstream commit ab107276607af90b13a5994997e19b7b9731e251 ]
+commit 2881ba9af073faa8ee7408a8d1e0575e50eb3f6c upstream.
 
-Since termio interface is now obsolete, include/uapi/asm/ioctls.h
-has some constant macros referring to "struct termio", this caused
-build failure at userspace.
+Add a helper function for dump register in dynamic debug mode.
 
-In file included from /usr/include/asm/ioctl.h:12,
-                 from /usr/include/asm/ioctls.h:5,
-                 from tst-ioctls.c:3:
-tst-ioctls.c: In function 'get_TCGETA':
-tst-ioctls.c:12:10: error: invalid application of 'sizeof' to incomplete type 'struct termio'
-   12 |   return TCGETA;
-      |          ^~~~~~
-
-Even though termios.h provides "struct termio", trying to juggle definitions around to
-make it compile could introduce regressions. So better to open code it.
-
-Reported-by: Tulio Magno <tuliom@ascii.art.br>
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
-Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
-Closes: https://lore.kernel.org/linuxppc-dev/8734dji5wl.fsf@ascii.art.br/
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250517142237.156665-1-maddy@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250606110121.96314-3-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/uapi/asm/ioctls.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mmc/host/sdhci.h |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/powerpc/include/uapi/asm/ioctls.h b/arch/powerpc/include/uapi/asm/ioctls.h
-index 2c145da3b774a..b5211e413829a 100644
---- a/arch/powerpc/include/uapi/asm/ioctls.h
-+++ b/arch/powerpc/include/uapi/asm/ioctls.h
-@@ -23,10 +23,10 @@
- #define TCSETSW		_IOW('t', 21, struct termios)
- #define TCSETSF		_IOW('t', 22, struct termios)
+--- a/drivers/mmc/host/sdhci.h
++++ b/drivers/mmc/host/sdhci.h
+@@ -820,4 +820,20 @@ void sdhci_switch_external_dma(struct sd
+ void sdhci_set_data_timeout_irq(struct sdhci_host *host, bool enable);
+ void __sdhci_set_timeout(struct sdhci_host *host, struct mmc_command *cmd);
  
--#define TCGETA		_IOR('t', 23, struct termio)
--#define TCSETA		_IOW('t', 24, struct termio)
--#define TCSETAW		_IOW('t', 25, struct termio)
--#define TCSETAF		_IOW('t', 28, struct termio)
-+#define TCGETA		0x40147417 /* _IOR('t', 23, struct termio) */
-+#define TCSETA		0x80147418 /* _IOW('t', 24, struct termio) */
-+#define TCSETAW		0x80147419 /* _IOW('t', 25, struct termio) */
-+#define TCSETAF		0x8014741c /* _IOW('t', 28, struct termio) */
- 
- #define TCSBRK		_IO('t', 29)
- #define TCXONC		_IO('t', 30)
--- 
-2.39.5
-
++#if defined(CONFIG_DYNAMIC_DEBUG) || \
++	(defined(CONFIG_DYNAMIC_DEBUG_CORE) && defined(DYNAMIC_DEBUG_MODULE))
++#define SDHCI_DBG_ANYWAY 0
++#elif defined(DEBUG)
++#define SDHCI_DBG_ANYWAY 1
++#else
++#define SDHCI_DBG_ANYWAY 0
++#endif
++
++#define sdhci_dbg_dumpregs(host, fmt)					\
++do {									\
++	DEFINE_DYNAMIC_DEBUG_METADATA(descriptor, fmt);			\
++	if (DYNAMIC_DEBUG_BRANCH(descriptor) ||	SDHCI_DBG_ANYWAY)	\
++		sdhci_dumpregs(host);					\
++} while (0)
++
+ #endif /* __SDHCI_HW_H */
 
 
 
