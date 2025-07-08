@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-161279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB79AFD45C
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B34DAFD10D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:30:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D111176E49
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97B49486A81
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A8A2E5B2E;
-	Tue,  8 Jul 2025 17:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE7A1D5AC0;
+	Tue,  8 Jul 2025 16:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sgtbv0Ua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trMtvMTS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDB11E492;
-	Tue,  8 Jul 2025 17:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE108F5B;
+	Tue,  8 Jul 2025 16:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994115; cv=none; b=nZj39P69SX1FDT5BOZucnENx6DtzgcliuVm5op/AypNwdq/FdnThC6sfqJ+ybuRWPRfgfUYbgqkJ1P2CQAwnFypgCpK6xzxULc5wrXj9AVtTPCaGHQ0PNdysI499Axv93Cp2ROf1JmFcUyu0FEio+bxALQ8PniB+mZWPXiOlN30=
+	t=1751992250; cv=none; b=athQ0CQT1SUBsphmQFbAGtibvKOukcoveTLDvbD63AdbZuP5Iy8UX4PX4gPnxhpZv7OHQbIOD7LNAQFTuFYnpRieZO6HC9CcPYz2ldiPtPYXuf1Hq08PlcndUCXoW6R1fA4EAiXJ5EvGF4EbbWNJDSzOp/mEqSHuKL/kuPb7yKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994115; c=relaxed/simple;
-	bh=S28OdX/9KooApUJu/gqEACFGL8Hcmd0R6uKa42W2zyc=;
+	s=arc-20240116; t=1751992250; c=relaxed/simple;
+	bh=kTpJvnAea+vJyt7h/Z0FX1xqE0hpC5i+AiIUd/HfCFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LxJTPFuIOrOlZb/I2L6Qj9T3uxOK0Khf7ZjV/7V6B1y/qD3X0M7p2EzdhEtBKAqReDUsf10EKy1soH3Bwvrpl+4V4ONAPRamcduB0R0yXLAQylrNHsRrwo6jeOBk2mZNpae8ro1K1N+6EtaOUl8OF/kPuHDaz2+fmqNjMnpjxMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sgtbv0Ua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27822C4CEED;
-	Tue,  8 Jul 2025 17:01:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=edWB7PM0hCHABdFmVqdC8E8CceWFEjQP5874q4wsrHKBv3nrBQbLg8Zzl3lsikQMxrUOd8CN6lSUqy9NGgsiPY9eaDlBx3KBD4Ujh8epKoYqgZ/t1gYhUZt7XdT7+I2Prg3u9XlXxl1GbQQxbA/KtUrKIKvfDrYfcrnInOHgkQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trMtvMTS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9038FC4CEED;
+	Tue,  8 Jul 2025 16:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994115;
-	bh=S28OdX/9KooApUJu/gqEACFGL8Hcmd0R6uKa42W2zyc=;
+	s=korg; t=1751992249;
+	bh=kTpJvnAea+vJyt7h/Z0FX1xqE0hpC5i+AiIUd/HfCFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sgtbv0UaAe9P8a7ZzxpJnd7VEBNqlBKbuamrJAf86FldtrU+rJDSWrh2AxjXuJFqS
-	 4UUL/Dtgx3j7SvSoJVbFMBWlaFNR9Jh1C/I+CdrG0MIFOU3Vuz6qGY4WouL3T8Eg1G
-	 gttpunnZupkIqJSKJqHEiKgwhOiUxmCp3F3QIvsY=
+	b=trMtvMTSLJ/8c3OdLkEPDkEoED9P54kF8AoGNrqOzk3TBuGUaTHYXlczXwxSUUZ28
+	 +CNB0PYCndIhuC+YMIm9FTlReUPGtmjdRtL5wmNDfx2eQ0755inGLAzX2gaYDzexEO
+	 l9c8xPSZOk46tPeq6dmcmMLJEvNyLbotxVPj1XMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 103/160] mtk-sd: Prevent memory corruption from DMA map failure
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 029/132] platform/mellanox: nvsw-sn2201: Fix bus number in adapter error message
 Date: Tue,  8 Jul 2025 18:22:20 +0200
-Message-ID: <20250708162234.343494213@linuxfoundation.org>
+Message-ID: <20250708162231.562648504@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit f5de469990f19569627ea0dd56536ff5a13beaa3 upstream.
+[ Upstream commit d07143b507c51c04c091081627c5a130e9d3c517 ]
 
-If msdc_prepare_data() fails to map the DMA region, the request is
-not prepared for data receiving, but msdc_start_data() proceeds
-the DMA with previous setting.
-Since this will lead a memory corruption, we have to stop the
-request operation soon after the msdc_prepare_data() fails to
-prepare it.
+change error log to use correct bus number from main_mux_devs
+instead of cpld_devs.
 
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Fixes: 208489032bdd ("mmc: mediatek: Add Mediatek MMC driver")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/174972756982.3337526.6755001617701603082.stgit@mhiramat.tok.corp.google.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 662f24826f95 ("platform/mellanox: Add support for new SN2201 system")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
+Link: https://lore.kernel.org/r/20250622072921.4111552-2-alok.a.tiwari@oracle.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mtk-sd.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/platform/mellanox/nvsw-sn2201.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -734,6 +734,11 @@ static void msdc_prepare_data(struct msd
+diff --git a/drivers/platform/mellanox/nvsw-sn2201.c b/drivers/platform/mellanox/nvsw-sn2201.c
+index 1a7c45aa41bbf..6b4d3c44d7bd9 100644
+--- a/drivers/platform/mellanox/nvsw-sn2201.c
++++ b/drivers/platform/mellanox/nvsw-sn2201.c
+@@ -1088,7 +1088,7 @@ static int nvsw_sn2201_i2c_completion_notify(void *handle, int id)
+ 	if (!nvsw_sn2201->main_mux_devs->adapter) {
+ 		err = -ENODEV;
+ 		dev_err(nvsw_sn2201->dev, "Failed to get adapter for bus %d\n",
+-			nvsw_sn2201->cpld_devs->nr);
++			nvsw_sn2201->main_mux_devs->nr);
+ 		goto i2c_get_adapter_main_fail;
  	}
- }
  
-+static bool msdc_data_prepared(struct mmc_data *data)
-+{
-+	return data->host_cookie & MSDC_PREPARE_FLAG;
-+}
-+
- static void msdc_unprepare_data(struct msdc_host *host, struct mmc_data *data)
- {
- 	if (data->host_cookie & MSDC_ASYNC_FLAG)
-@@ -1306,8 +1311,18 @@ static void msdc_ops_request(struct mmc_
- 	WARN_ON(host->mrq);
- 	host->mrq = mrq;
- 
--	if (mrq->data)
-+	if (mrq->data) {
- 		msdc_prepare_data(host, mrq->data);
-+		if (!msdc_data_prepared(mrq->data)) {
-+			/*
-+			 * Failed to prepare DMA area, fail fast before
-+			 * starting any commands.
-+			 */
-+			mrq->cmd->error = -ENOSPC;
-+			mmc_request_done(mmc_from_priv(host), mrq);
-+			return;
-+		}
-+	}
- 
- 	/* if SBC is required, we have HW option and SW option.
- 	 * if HW option is enabled, and SBC does not have "special" flags,
+-- 
+2.39.5
+
 
 
 
