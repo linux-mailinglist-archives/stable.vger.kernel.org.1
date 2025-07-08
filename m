@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69371AFD1A8
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E44D4AFD0EB
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:29:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A8465842C3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:36:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76549163AE0
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDC42DCC02;
-	Tue,  8 Jul 2025 16:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3022A1BA;
+	Tue,  8 Jul 2025 16:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvSIsxPL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPt5g0R0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D078220766C;
-	Tue,  8 Jul 2025 16:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2C72E659;
+	Tue,  8 Jul 2025 16:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992581; cv=none; b=oVvj2wKw3zwzMl4DCceRpwuCUb+m/mWakPJagi0Eu7mgi+ud0nN4FO5zszA3PqMLo1OZl04RVwTi0hu0oLWGtprHJN+5Ni00z9vpW32aSwCwnO0PgZzJ4X2NDkMmfufGCGdJny/9yHR32jI0jZ7aZaN6E2Lc0DyvETdih2SJ7nE=
+	t=1751992097; cv=none; b=mm8i2W3CoilFAHbanptziELsttCpCwQ+pGRV+L/2N3Oquj749aDcf9Z9LU6Q/Tc/wuuU0JMEaTDrm2Qu1RcP/KaPguxLn5+rwRw8rkfBWaCnceMBkkkQZ/Q8DRW4REQPXuOaa7w0416vaQp6AFm6Ege5W42t3gnvJGIVVr4z4T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992581; c=relaxed/simple;
-	bh=H+DmmtjsS8cDfOyJ92D/HjJ7HA+Tk9gUwZj4jNtY+x0=;
+	s=arc-20240116; t=1751992097; c=relaxed/simple;
+	bh=QVLwFWqJReJc9uiYe0GcRacMnXtix6B2IXh98YZwIZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t/ZcZtnUwljItUlY2w0e+w4Q0+UCA0sjElqormRnIZeCUA7BKCJZ0FVL/ol8NLjaS2GgRi3MQpU1swmOyUS96iaWKnTI5olrmUxJrjLweP9m+v8QIqdCsgk++SudyKcpTqHEcWN/RXWygLFHFTEq474sEuyW4zFSO0rqQhWQbXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvSIsxPL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58410C4CEED;
-	Tue,  8 Jul 2025 16:36:21 +0000 (UTC)
+	 MIME-Version; b=e0e53hpN/ETaftC4xW7ICrzPofsv5pjKpWCmh5xxPLjEIlrw11m+056mISGk3XB3iGMHJtmyMagECQKGWot33S4iAflOrl/f5FAkEwFPqU38By5zESH99YUhBgDmtrMEHp64xhL70gGyD7BkrOqZoirqwiCcBWM3Z8GMuNe8ze8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPt5g0R0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50AEC4CEED;
+	Tue,  8 Jul 2025 16:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992581;
-	bh=H+DmmtjsS8cDfOyJ92D/HjJ7HA+Tk9gUwZj4jNtY+x0=;
+	s=korg; t=1751992097;
+	bh=QVLwFWqJReJc9uiYe0GcRacMnXtix6B2IXh98YZwIZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zvSIsxPLCam2DI8sI9RrYr85Oozn8q2T/MSjtoYXP4NsgMELERowVU2y5+ABQyB08
-	 lUyCxkEkAI307YSQPhobx1JRgPQUeVeBf3Tq2/8NJwcrj3k1eHTG5qH0je1dGeeShb
-	 vPMJIXdsZrF2zymvrUuhzFnsiHkyWQumgttRvd1s=
+	b=nPt5g0R0VCiDkwB1AlVB1v6WpVyUoG/Kz311pbKOGeNAN1mtgu0djbbt7XSgl+6Mg
+	 KWqSHnxV04sF9PRhYmT5zbV0Zf77wHowUZXy5apoqrS/gDRKetgV6rgh2Ahs545cSG
+	 BuzwqouUWs6IL0p7HMg5EWJb3JyruJQrREUCXG8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.6 118/132] dma-buf: fix timeout handling in dma_resv_wait_timeout v2
-Date: Tue,  8 Jul 2025 18:23:49 +0200
-Message-ID: <20250708162234.004682921@linuxfoundation.org>
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 58/81] rcu: Return early if callback is not specified
+Date: Tue,  8 Jul 2025 18:23:50 +0200
+Message-ID: <20250708162226.835204194@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-commit 2b95a7db6e0f75587bffddbb490399cbb87e4985 upstream.
+[ Upstream commit 33b6a1f155d627f5bd80c7485c598ce45428f74f ]
 
-Even the kerneldoc says that with a zero timeout the function should not
-wait for anything, but still return 1 to indicate that the fences are
-signaled now.
+Currently the call_rcu() API does not check whether a callback
+pointer is NULL. If NULL is passed, rcu_core() will try to invoke
+it, resulting in NULL pointer dereference and a kernel crash.
 
-Unfortunately that isn't what was implemented, instead of only returning
-1 we also waited for at least one jiffies.
+To prevent this and improve debuggability, this patch adds a check
+for NULL and emits a kernel stack trace to help identify a faulty
+caller.
 
-Fix that by adjusting the handling to what the function is actually
-documented to do.
-
-v2: improve code readability
-
-Reported-by: Marek Olšák <marek.olsak@amd.com>
-Reported-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20250129105841.1806-1-christian.koenig@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/dma-resv.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ kernel/rcu/tree.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/dma-buf/dma-resv.c
-+++ b/drivers/dma-buf/dma-resv.c
-@@ -678,11 +678,13 @@ long dma_resv_wait_timeout(struct dma_re
- 	dma_resv_iter_begin(&cursor, obj, usage);
- 	dma_resv_for_each_fence_unlocked(&cursor, fence) {
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index dd6e15ca63b0c..38ab28a53e108 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -2827,6 +2827,10 @@ void call_rcu(struct rcu_head *head, rcu_callback_t func)
+ 	/* Misaligned rcu_head! */
+ 	WARN_ON_ONCE((unsigned long)head & (sizeof(void *) - 1));
  
--		ret = dma_fence_wait_timeout(fence, intr, ret);
--		if (ret <= 0) {
--			dma_resv_iter_end(&cursor);
--			return ret;
--		}
-+		ret = dma_fence_wait_timeout(fence, intr, timeout);
-+		if (ret <= 0)
-+			break;
++	/* Avoid NULL dereference if callback is NULL. */
++	if (WARN_ON_ONCE(!func))
++		return;
 +
-+		/* Even for zero timeout the return value is 1 */
-+		if (timeout)
-+			timeout = ret;
- 	}
- 	dma_resv_iter_end(&cursor);
- 
+ 	if (debug_rcu_head_queue(head)) {
+ 		/*
+ 		 * Probable double call_rcu(), so leak the callback.
+-- 
+2.39.5
+
 
 
 
