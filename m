@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-160674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E11AFD144
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF75AFD09D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6E7A1C21DFA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:33:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B578C482C5C
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5511F2E5B03;
-	Tue,  8 Jul 2025 16:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE4F2E54D6;
+	Tue,  8 Jul 2025 16:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOTnmZt4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTQsDv0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3932E54D5;
-	Tue,  8 Jul 2025 16:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB272A1BA;
+	Tue,  8 Jul 2025 16:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992359; cv=none; b=DCssz7UdmIYNxanuX83PXucJHFAlBjVjnP8dtM02WmxOVe4ezN9TYe9sTKKk0Aloj3ICrYWti0Q3J2fcYoKRZcsELWEWPxyFQgT0L6gIZEJMx5rTgY2gWotWBnFoc+wqplIyukhzoGNrpQAvmWIPWAy2+aI6IgKTf0Jhxlfva3A=
+	t=1751991875; cv=none; b=Q8+Z0TMwEk6MsLtOtFxfGxVQjeZerOWYzvGUfesHt3qWwl1EMdrUubRRTp/1G7s2RftJzauVnU6gdZgYKU/em7ZIquHKWWIB1nnXobl5ftBcWs4JyYeDd7mpviwB1EAihl8XtE2M17xF92h66wFA9od0hEKNPoaS5B6gOsw0Pjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992359; c=relaxed/simple;
-	bh=SaTXyys1lK9i05WWMfi95JrbK/IlNAEcaEXMsJvxTv8=;
+	s=arc-20240116; t=1751991875; c=relaxed/simple;
+	bh=2sWBicXHt/6rJXGc/GJ7aSjanzKUi92aD58EmnjavMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TgJMEOuv0sVJRYFIL/4BTYKk/SoDB9i6UakvC2gk5r+8od+awUsQUgwBEynL9dIjF+FCeKPaplzlqwRt9A3b9fQep9daKza5x40zHt5qX+HlPmXEvP8DUDbqyVLi4HMLnYthKKDhWIDbPJXTAjay6OqOWt2x4jtQLCWTaZIa7CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOTnmZt4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C67C4CEF0;
-	Tue,  8 Jul 2025 16:32:38 +0000 (UTC)
+	 MIME-Version; b=sxJkF9l9W61sji2flaR9WotlXrCPovJ9zMqJ6IlN1udFdHeruHNWi51l+TZcLkRz7SPu3BoG0rrZHCvK1AeK/AwFZ12NGl2yrVAtDk+mCoREin1FZChabTRXE7Tz2Xaxn7mpLvG+rKr4m2vjnVHXqONa/WJ1mljr5uzMlwsO5Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTQsDv0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08122C4CEED;
+	Tue,  8 Jul 2025 16:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992358;
-	bh=SaTXyys1lK9i05WWMfi95JrbK/IlNAEcaEXMsJvxTv8=;
+	s=korg; t=1751991874;
+	bh=2sWBicXHt/6rJXGc/GJ7aSjanzKUi92aD58EmnjavMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gOTnmZt4Q25uhKYlVLYVUUDzZS/6eIANwi5S1BO54a1Bh9PhhTRnJeV+Lv4lEZ4fn
-	 r+5RK82DxVUf3D/RKQaLfI7S2pHovnM1K3NSRb3DZvf0KspTI5pMvooony+GdN51rb
-	 zt/RJhQ8HUuid/t41RnpKwazjRWsPDKfvgO+WlMk=
+	b=oTQsDv0fNvAVlNnY3ReSSzx+rRhAQIxncRizgnsANPrGeCyDWdQ0oyItABPT7UFwq
+	 Je/Jcamn8OSx0M9xL2W6fnGrdvnK4Qyxkyy6e72Ce3i2NqXqr7llVgUHqk4WfW5BSW
+	 X82xmcYwrsjsanc8xNneH+VEHDgm+BSkFRRELwPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/132] Revert "drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1"
+	Bryan Tan <bryan-bt.tan@broadcom.com>,
+	Vishnu Dasa <vishnu.dasa@broadcom.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	stable <stable@kernel.org>,
+	HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+Subject: [PATCH 6.1 03/81] vsock/vmci: Clear the vmci transport packet properly when initializing it
 Date: Tue,  8 Jul 2025 18:22:55 +0200
-Message-ID: <20250708162232.529894852@linuxfoundation.org>
+Message-ID: <20250708162224.937674966@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +69,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+From: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
 
-[ Upstream commit ed5915cfce2abb9a553c3737badebd4a11d6c9c7 ]
+commit 223e2288f4b8c262a864e2c03964ffac91744cd5 upstream.
 
-This reverts commit d6e020819612a4a06207af858e0978be4d3e3140.
+In vmci_transport_packet_init memset the vmci_transport_packet before
+populating the fields to avoid any uninitialised data being left in the
+structure.
 
-The IS_DGFX check was put in place because error capture of buffer
-objects is expected to be broken on devices with VRAM.
-
-Userspace fix[1] to the impacted media driver has been submitted, merged
-and a new driver release is out as 25.2.3 where the capture flag is
-dropped on DG1 thus unblocking the usage of media driver on DG1.
-
-[1] https://github.com/intel/media-driver/commit/93c07d9b4b96a78bab21f6acd4eb863f4313ea4a
-
-Cc: stable@vger.kernel.org # v6.0+
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20250522064127.24293-1-joonas.lahtinen@linux.intel.com
-[Joonas: Update message to point out the merged userspace fix]
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-(cherry picked from commit d2dc30e0aa252830f908c8e793d3139d51321370)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Bryan Tan <bryan-bt.tan@broadcom.com>
+Cc: Vishnu Dasa <vishnu.dasa@broadcom.com>
+Cc: Broadcom internal kernel review list
+Cc: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: virtualization@lists.linux.dev
+Cc: netdev@vger.kernel.org
+Cc: stable <stable@kernel.org>
+Signed-off-by: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20250701122254.2397440-1-gregkh@linuxfoundation.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/vmw_vsock/vmci_transport.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-index 023b2ea74c360..5a687a3686bd5 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-@@ -2013,7 +2013,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
- 			continue;
+--- a/net/vmw_vsock/vmci_transport.c
++++ b/net/vmw_vsock/vmci_transport.c
+@@ -119,6 +119,8 @@ vmci_transport_packet_init(struct vmci_t
+ 			   u16 proto,
+ 			   struct vmci_handle handle)
+ {
++	memset(pkt, 0, sizeof(*pkt));
++
+ 	/* We register the stream control handler as an any cid handle so we
+ 	 * must always send from a source address of VMADDR_CID_ANY
+ 	 */
+@@ -131,8 +133,6 @@ vmci_transport_packet_init(struct vmci_t
+ 	pkt->type = type;
+ 	pkt->src_port = src->svm_port;
+ 	pkt->dst_port = dst->svm_port;
+-	memset(&pkt->proto, 0, sizeof(pkt->proto));
+-	memset(&pkt->_reserved2, 0, sizeof(pkt->_reserved2));
  
- 		if (i915_gem_context_is_recoverable(eb->gem_context) &&
--		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
-+		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
- 			return -EINVAL;
- 
- 		for_each_batch_create_order(eb, j) {
--- 
-2.39.5
-
+ 	switch (pkt->type) {
+ 	case VMCI_TRANSPORT_PACKET_TYPE_INVALID:
 
 
 
