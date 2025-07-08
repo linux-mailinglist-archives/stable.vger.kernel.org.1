@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-160559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB4BAFD0B7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 479E2AFD382
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FEB43A04A3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4166544828
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F462E659;
-	Tue,  8 Jul 2025 16:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200DB2E091E;
+	Tue,  8 Jul 2025 16:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sH/gUaqE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqUZiZ7q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662A52E49A4;
-	Tue,  8 Jul 2025 16:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44B1BE46;
+	Tue,  8 Jul 2025 16:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991998; cv=none; b=nxAepSMfdq/vfZSdTJPH5opFbriSMfld/7AatVcHcZu8l5U7dMOBkntOo7QsJgOm9PCeHDZ4f3wlg/kFEQDyvOiv3Yz4SiVZC+jAS6NAOaAU1bpEaMSD1M+7euk0/1xNgMSURYnfKEkAH32x/Nvo9bzpBthSae+ERCYEgBFJdIk=
+	t=1751993696; cv=none; b=Hkr3RgRh50Do7B1kZTW8oUt5t5CXVcTm2KCI8T1s6GRsitn8abs/zGan/+YVfubF9mTgWQKQlOz3VUrOvByJns4BXi/XOU5yVr77V/tRpK4iSlmDFZrg0AsRg4ijCzAGsLTbmNuD8YRPaCchH/JuM9n8XGsUfOnPuTHiBCNOrZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991998; c=relaxed/simple;
-	bh=J0E848LNK3k+WXpJLp2ZZgmPldhS7gyDpNW8Vq8LIXk=;
+	s=arc-20240116; t=1751993696; c=relaxed/simple;
+	bh=UDZsli0uLeW8hktkSOOJSwB4He89jNi5xJx2TLYSSAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uYlxb9r6cM/SkPEFU8qNGwr92/sZ2NT94pmb+02i4KKJWUrQTfyxOoJ21V/ZR5Rmy+ZDSrmL0sTNX/bUKda2MS3p3ITrs1ebOIIaw7HSqkBVtIhagYo33FqEwWHcMu2bpcDi1fTg5UogS0vMm7HWR2cIiWOV68JmD+x6sySB5Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sH/gUaqE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9974C4CEED;
-	Tue,  8 Jul 2025 16:26:37 +0000 (UTC)
+	 MIME-Version; b=doCCjmCRN/SA5BbOz6E06k1OPnUQhbrCT5h83rIIKZ2xb93cT3ynr9haFs50lSrMP1QYHw+MdAzBq/rI96ZdnIYDRYrwBYRg8HQUcXwiOiyW3yYsyDPJ9t+5Cihld3TQjhnETjz4qQjc/XmOlsnmUW+jpoNHC42X45b8z4pLgho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqUZiZ7q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024A0C4CEED;
+	Tue,  8 Jul 2025 16:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751991998;
-	bh=J0E848LNK3k+WXpJLp2ZZgmPldhS7gyDpNW8Vq8LIXk=;
+	s=korg; t=1751993696;
+	bh=UDZsli0uLeW8hktkSOOJSwB4He89jNi5xJx2TLYSSAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sH/gUaqEIkoX+qQ/j0KIs4T7yiMEecU/+KPpki77A/F+AStci0GCKQTvuJzP8YjzS
-	 BWsyh0finepUZ5Bc4jIyk3ehhYtvbO0nGJMc8LSiszNfgBS2JvQG4XwlYWl+uHTpmj
-	 gaUai1U37mrG9bXl9qzcBggTt9olv5h+HH//q6As=
+	b=FqUZiZ7qbdJiKb6Vfp3E47qg3QGyRRU6462lJ/g58+aKuKyPOhWCvdu21bdrL5Psh
+	 jzpccyq2Fjv3bmO9OGcsDAvCfCIKjV6pOw6tfENue0WTySsnCjpA/KJBaTjQu12Gmp
+	 R8Kd8DL9tiuoAlrOU6lyuphbecDPOAg+wwD+2e2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 27/81] btrfs: fix iteration of extrefs during log replay
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.15 162/178] Logitech C-270 even more broken
 Date: Tue,  8 Jul 2025 18:23:19 +0200
-Message-ID: <20250708162225.798544686@linuxfoundation.org>
+Message-ID: <20250708162240.713374799@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 54a7081ed168b72a8a2d6ef4ba3a1259705a2926 ]
+commit cee4392a57e14a799fbdee193bc4c0de65b29521 upstream.
 
-At __inode_add_ref() when processing extrefs, if we jump into the next
-label we have an undefined value of victim_name.len, since we haven't
-initialized it before we did the goto. This results in an invalid memory
-access in the next iteration of the loop since victim_name.len was not
-initialized to the length of the name of the current extref.
+Some varieties of this device don't work with
+RESET_RESUME alone.
 
-Fix this by initializing victim_name.len with the current extref's name
-length.
-
-Fixes: e43eec81c516 ("btrfs: use struct qstr instead of name and namelen pairs")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250605122852.1440382-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/core/quirks.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 35bb364089f8a..982dc92bdf1df 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -1160,13 +1160,13 @@ static inline int __add_inode_ref(struct btrfs_trans_handle *trans,
- 			struct fscrypt_str victim_name;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -227,7 +227,8 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x046a, 0x0023), .driver_info = USB_QUIRK_RESET_RESUME },
  
- 			extref = (struct btrfs_inode_extref *)(base + cur_offset);
-+			victim_name.len = btrfs_inode_extref_name_len(leaf, extref);
+ 	/* Logitech HD Webcam C270 */
+-	{ USB_DEVICE(0x046d, 0x0825), .driver_info = USB_QUIRK_RESET_RESUME },
++	{ USB_DEVICE(0x046d, 0x0825), .driver_info = USB_QUIRK_RESET_RESUME |
++		USB_QUIRK_NO_LPM},
  
- 			if (btrfs_inode_extref_parent(leaf, extref) != parent_objectid)
- 				goto next;
- 
- 			ret = read_alloc_one_name(leaf, &extref->name,
--				 btrfs_inode_extref_name_len(leaf, extref),
--				 &victim_name);
-+						  victim_name.len, &victim_name);
- 			if (ret)
- 				return ret;
- 
--- 
-2.39.5
-
+ 	/* Logitech HD Pro Webcams C920, C920-C, C922, C925e and C930e */
+ 	{ USB_DEVICE(0x046d, 0x082d), .driver_info = USB_QUIRK_DELAY_INIT },
 
 
 
