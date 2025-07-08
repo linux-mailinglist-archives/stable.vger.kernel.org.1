@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-160902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E733AFD275
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:46:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B764AFD136
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:33:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1528A189CA2D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:44:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ACC05813DA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD70A215F5C;
-	Tue,  8 Jul 2025 16:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCDD2E54BD;
+	Tue,  8 Jul 2025 16:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJNGtn+2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZmmbFvt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1F32DD5EF;
-	Tue,  8 Jul 2025 16:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494552DD5EF;
+	Tue,  8 Jul 2025 16:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993024; cv=none; b=rUBGer/9em//6UFh2LSk2I95LXheFzB6Z6XSrCiQIWWpgGS9ug4hVIC4S5J74ozHwQbkl0rUO7YtB9aVzscZ7F8JEVHHACG+5Bq2dpugS2dZLWddKyzn8keb4gWlakz58n2vV6ehGyyMZjXxW8m7kjwhgQBvXj0zoj80/zw6fYM=
+	t=1751992323; cv=none; b=OmzK/hf8EVyP3m98iGvoSMjvNogudrZha49rodtx20rMdPOcqLB1TRSjKZMzikXbQEUp9Qxb+n2NodU3jOOANKCtQhdYeOjiNxFsALwS960to3UtnndGB3dRWua8+YLNxIlqZ+15pFCDCK8uYslPVCgHru7cyN3jX5XWjdA0zQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993024; c=relaxed/simple;
-	bh=uVEKugbLvKLbfnKSgAo6ka78o6+TZ3rjjhq5hiLG1Sc=;
+	s=arc-20240116; t=1751992323; c=relaxed/simple;
+	bh=XDPYUVVVDhLrXFMGwzNBWwc23qX0yu2zEo0qsGumxxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I/JQRsk/N7Mmz+NxZcIhtgSHE4foS1sghfvSPHS+siA9QjR5BC3FP9y3FOwTfvGqJeHgOLvh4n2GXx0Xgfv2nRkt0llDHamUAjfqw433X1eHMDTfphMjaR7NtKyYejJ7QpOMRpFqE4JfJMAOHXp556uzHuD/VNYrGNKhlItGb0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJNGtn+2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B634C4CEED;
-	Tue,  8 Jul 2025 16:43:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pSiT8WNGsxABjE3sYolBbsLQOJenZWsx+VSYs9gWhXCRG91ISgbprctxqyknKLSv1+gYGNMhWEiLeC9gmrHBDp4VHLQu8/TtQNCVt8a6d4/Cz1znBM7sQs3axQTfXj01x6UFGPT8hIQk0fASVGh/efdhp16Xi57+kI8K6dRxizc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZmmbFvt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82304C4CEED;
+	Tue,  8 Jul 2025 16:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993024;
-	bh=uVEKugbLvKLbfnKSgAo6ka78o6+TZ3rjjhq5hiLG1Sc=;
+	s=korg; t=1751992322;
+	bh=XDPYUVVVDhLrXFMGwzNBWwc23qX0yu2zEo0qsGumxxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJNGtn+24ulCVYi7t5gI5cX1U5fhMj45Y2Kgb6c67r9i4/sas9rcd8arcBvvv/SVn
-	 thXhURb5zjh7I016oB8uYNVrbufjd6qo9ombebsG4hCtniYNydBLsj79xUCIt0dUfe
-	 toiZHxGlKZOAfkCkLg6KFt9aincfSYThaxRW8HVE=
+	b=bZmmbFvtowW84UdSOXiFBOXRrSBtTRpsS4b1joWzqQOS6dgEJqzaUG9K8jq66LaW4
+	 +kjHxQa45EOZbdKd8iwpgUCGvQyo09gCOhxJ2nB5m8wW+kDH/4gAlihHE3EcmDkYFb
+	 dfZROIRWHl4EZTyVP955MQGTx77pu4apQm9V/yp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 160/232] drm/xe/guc: Explicitly exit CT safe mode on unwind
+Subject: [PATCH 6.6 045/132] platform/x86: firmware_attributes_class: Simplify API
 Date: Tue,  8 Jul 2025 18:22:36 +0200
-Message-ID: <20250708162245.623109485@linuxfoundation.org>
+Message-ID: <20250708162231.990694143@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +66,117 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit ad40098da5c3b43114d860a5b5740e7204158534 ]
+[ Upstream commit d03cfde56f5cf9ec50b4cf099a42bf056fc80ddd ]
 
-During driver probe we might be briefly using CT safe mode, which
-is based on a delayed work, but usually we are able to stop this
-once we have IRQ fully operational.  However, if we abort the probe
-quite early then during unwind we might try to destroy the workqueue
-while there is still a pending delayed work that attempts to restart
-itself which triggers a WARN.
+The module core already guarantees that a module can only be unloaded
+after all other modules using its symbols have been unloaded.
+As it's already the responsibility of the drivers using
+firmware_attributes_class to clean up their devices before unloading,
+the lifetime of the firmware_attributes_class can be bound to the
+lifetime of the module.
+This enables the direct usage of firmware_attributes_class from the
+drivers, without having to go through the lifecycle functions,
+leading to simplifications for both the subsystem and its users.
 
-This was recently observed during unsuccessful VF initialization:
-
- [ ] xe 0000:00:02.1: probe with driver xe failed with error -62
- [ ] ------------[ cut here ]------------
- [ ] workqueue: cannot queue safe_mode_worker_func [xe] on wq xe-g2h-wq
- [ ] WARNING: CPU: 9 PID: 0 at kernel/workqueue.c:2257 __queue_work+0x287/0x710
- [ ] RIP: 0010:__queue_work+0x287/0x710
- [ ] Call Trace:
- [ ]  delayed_work_timer_fn+0x19/0x30
- [ ]  call_timer_fn+0xa1/0x2a0
-
-Exit the CT safe mode on unwind to avoid that warning.
-
-Fixes: 09b286950f29 ("drm/xe/guc: Allow CTB G2H processing without G2H IRQ")
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250612220937.857-3-michal.wajdeczko@intel.com
-(cherry picked from commit 2ddbb73ec20b98e70a5200cb85deade22ccea2ec)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20250104-firmware-attributes-simplify-v1-2-949f9709e405@weissschuh.net
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 5ff1fbb30597 ("platform/x86: think-lmi: Fix class device unregistration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_ct.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ .../platform/x86/firmware_attributes_class.c  | 40 +++++++------------
+ .../platform/x86/firmware_attributes_class.h  |  1 +
+ 2 files changed, 15 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index 32d55be93ef30..f1ce4e14dcb5f 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -32,6 +32,11 @@
- #include "xe_pm.h"
- #include "xe_trace_guc.h"
+diff --git a/drivers/platform/x86/firmware_attributes_class.c b/drivers/platform/x86/firmware_attributes_class.c
+index 4801f9f44aaa6..e214efc97311e 100644
+--- a/drivers/platform/x86/firmware_attributes_class.c
++++ b/drivers/platform/x86/firmware_attributes_class.c
+@@ -2,47 +2,35 @@
  
-+static void receive_g2h(struct xe_guc_ct *ct);
-+static void g2h_worker_func(struct work_struct *w);
-+static void safe_mode_worker_func(struct work_struct *w);
-+static void ct_exit_safe_mode(struct xe_guc_ct *ct);
-+
- #if IS_ENABLED(CONFIG_DRM_XE_DEBUG)
- enum {
- 	/* Internal states, not error conditions */
-@@ -183,14 +188,11 @@ static void guc_ct_fini(struct drm_device *drm, void *arg)
- {
- 	struct xe_guc_ct *ct = arg;
+ /* Firmware attributes class helper module */
  
-+	ct_exit_safe_mode(ct);
- 	destroy_workqueue(ct->g2h_wq);
- 	xa_destroy(&ct->fence_lookup);
- }
+-#include <linux/mutex.h>
+ #include <linux/module.h>
+ #include "firmware_attributes_class.h"
  
--static void receive_g2h(struct xe_guc_ct *ct);
--static void g2h_worker_func(struct work_struct *w);
--static void safe_mode_worker_func(struct work_struct *w);
+-static DEFINE_MUTEX(fw_attr_lock);
+-static int fw_attr_inuse;
 -
- static void primelockdep(struct xe_guc_ct *ct)
+-static const struct class firmware_attributes_class = {
++const struct class firmware_attributes_class = {
+ 	.name = "firmware-attributes",
+ };
++EXPORT_SYMBOL_GPL(firmware_attributes_class);
++
++static __init int fw_attributes_class_init(void)
++{
++	return class_register(&firmware_attributes_class);
++}
++module_init(fw_attributes_class_init);
++
++static __exit void fw_attributes_class_exit(void)
++{
++	class_unregister(&firmware_attributes_class);
++}
++module_exit(fw_attributes_class_exit);
+ 
+ int fw_attributes_class_get(const struct class **fw_attr_class)
  {
- 	if (!IS_ENABLED(CONFIG_LOCKDEP))
+-	int err;
+-
+-	mutex_lock(&fw_attr_lock);
+-	if (!fw_attr_inuse) { /*first time class is being used*/
+-		err = class_register(&firmware_attributes_class);
+-		if (err) {
+-			mutex_unlock(&fw_attr_lock);
+-			return err;
+-		}
+-	}
+-	fw_attr_inuse++;
+ 	*fw_attr_class = &firmware_attributes_class;
+-	mutex_unlock(&fw_attr_lock);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(fw_attributes_class_get);
+ 
+ int fw_attributes_class_put(void)
+ {
+-	mutex_lock(&fw_attr_lock);
+-	if (!fw_attr_inuse) {
+-		mutex_unlock(&fw_attr_lock);
+-		return -EINVAL;
+-	}
+-	fw_attr_inuse--;
+-	if (!fw_attr_inuse) /* No more consumers */
+-		class_unregister(&firmware_attributes_class);
+-	mutex_unlock(&fw_attr_lock);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(fw_attributes_class_put);
+diff --git a/drivers/platform/x86/firmware_attributes_class.h b/drivers/platform/x86/firmware_attributes_class.h
+index 8e0f47cfdf92e..ef6c3764a8349 100644
+--- a/drivers/platform/x86/firmware_attributes_class.h
++++ b/drivers/platform/x86/firmware_attributes_class.h
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/device/class.h>
+ 
++extern const struct class firmware_attributes_class;
+ int fw_attributes_class_get(const struct class **fw_attr_class);
+ int fw_attributes_class_put(void);
+ 
 -- 
 2.39.5
 
