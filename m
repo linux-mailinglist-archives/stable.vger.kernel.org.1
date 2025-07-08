@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D95AFD0B0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DCDFAFD245
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F7DD17BBB9
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:25:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1151D7ABF21
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B263B21B199;
-	Tue,  8 Jul 2025 16:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F5D2E54C3;
+	Tue,  8 Jul 2025 16:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXCVBGDg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qynG3mMQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713442E5B25;
-	Tue,  8 Jul 2025 16:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F982E541D;
+	Tue,  8 Jul 2025 16:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991866; cv=none; b=OeFGT83kAaKhokTy9zYMt8t26rIHuAxLTGBRkeXZlF6IN8xs1XSZJ7E8BjQLa93OOnAvG9XgsLSEQus7cF0Q4c2vAgRXuqUfuY4Ky/NE5yPIDHT1Aw67+T2LGMAP2Hr65+Dvj6ylP2culp18ZRWDFz6z/agdnT5K699gqjEsmuE=
+	t=1751993068; cv=none; b=hkt/OYv75snXeYmDEahjvDXZhnBjbbBgCKHvxr49bczMJtHdptFLxyKxVvWxM2tcaqqTMMiYl2RTikBG9QHeY81kP2RGjRwDYDhVHu9/Gf6RuVCRVUsDuloloEKJuAr3CHHxZHt72Ai1aiUZ+Rpdbr0ESJ1lVPn/ehQJbMRsfyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991866; c=relaxed/simple;
-	bh=o9wl5zXh5YHn3K3BsK11wxJYE7YM1nU6+g6zdRhKYj4=;
+	s=arc-20240116; t=1751993068; c=relaxed/simple;
+	bh=6dQHnLa47+CdaYvT0yYwEl3kgNcHnA+B5PaoEg4n4Vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kdI9IcyOWDeRZG8XrIcP3lkcEyiRNpZCSTye6fAPqVks5vPmwyWM48wqqiZiiL4Fq5Iwx9sf+bVVXDBm0yxAJahBNkB1o+QMUfDEusCLZwqobkLLx7PSEypygydFT7QfqibFmxaj6L2HTO+v06OBFJpBKAcGeHHNT/SK0StV0Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXCVBGDg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13DDC4CEED;
-	Tue,  8 Jul 2025 16:24:25 +0000 (UTC)
+	 MIME-Version; b=kC6wc78gtYnnuDOoEITuTWxDEILxYz9BUAsnCnjtuJXgv0HaLpHep/7rbnJH17xkMkQQBk/JLqD6YEfeT0xq+gJqCxAyhxUVsDHt6M60pU8GD3Y74R5+nVM1AsIEj0qEcKqcxusj4jSU2koD0TUGR209ACBkdyvcgo5BV9GjWEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qynG3mMQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A27C4CEED;
+	Tue,  8 Jul 2025 16:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751991866;
-	bh=o9wl5zXh5YHn3K3BsK11wxJYE7YM1nU6+g6zdRhKYj4=;
+	s=korg; t=1751993067;
+	bh=6dQHnLa47+CdaYvT0yYwEl3kgNcHnA+B5PaoEg4n4Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iXCVBGDgjqbUPSSpvypya9GwcD4VgO1w7fZXz9NBjlyJiMOEFYblHo3QOLijN6Moo
-	 7B3dhriVjmgWPe8qkSFZDMrIXJHK4Kb7pjJDRUPnhmex1r8cKElY+ZR5E4wjVXXXZ9
-	 081Vn59WxuWPq4oXh97sqaXa3Y6wV65AgLXu9aHg=
+	b=qynG3mMQzmFuuvvj6yIN/f8t6Z3gtnwz+utxUtEhA5GsIJEQxpNWwsFEwT50pgc0a
+	 W6rSygPMjeFD7sSk6WyGMsf8voM2v5qSvL5mGbp1sLCc4BUdSIE9jI9m/OO1brmXtI
+	 9rMhKWDKyInuEdUbEdCXIe6o8sPgNUa3wXSinyAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.1 01/81] rtc: cmos: use spin_lock_irqsave in cmos_interrupt
+	Gabriel Santese <santesegabriel@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 177/232] ASoC: amd: yc: Add quirk for MSI Bravo 17 D7VF internal mic
 Date: Tue,  8 Jul 2025 18:22:53 +0200
-Message-ID: <20250708162224.863496004@linuxfoundation.org>
+Message-ID: <20250708162246.070595155@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Jończyk <mat.jonczyk@o2.pl>
+From: Gabriel Santese <santesegabriel@gmail.com>
 
-commit 00a39d8652ff9088de07a6fe6e9e1893452fe0dd upstream.
+[ Upstream commit ba06528ad5a31923efc24324706116ccd17e12d8 ]
 
-cmos_interrupt() can be called in a non-interrupt context, such as in
-an ACPI event handler (which runs in an interrupt thread). Therefore,
-usage of spin_lock(&rtc_lock) is insecure. Use spin_lock_irqsave() /
-spin_unlock_irqrestore() instead.
+MSI Bravo 17 (D7VF), like other laptops from the family,
+has broken ACPI tables and needs a quirk for internal mic
+to work properly.
 
-Before a misguided
-commit 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
-the cmos_interrupt() function used spin_lock_irqsave(). That commit
-changed it to spin_lock() and broke locking, which was partially fixed in
-commit 13be2efc390a ("rtc: cmos: Disable irq around direct invocation of cmos_interrupt()")
-
-That second commit did not take account of the ACPI fixed event handler
-pathway, however. It introduced local_irq_disable() workarounds in
-cmos_check_wkalrm(), which can cause problems on PREEMPT_RT kernels
-and are now unnecessary.
-
-Add an explicit comment so that this change will not be reverted by
-mistake.
-
-Cc: stable@vger.kernel.org
-Fixes: 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
-Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Closes: https://lore.kernel.org/all/aDtJ92foPUYmGheF@debian.local/
-Link: https://lore.kernel.org/r/20250607210608.14835-1-mat.jonczyk@o2.pl
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Gabriel Santese <santesegabriel@gmail.com>
+Link: https://patch.msgid.link/20250530005444.23398-1-santesegabriel@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-cmos.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -697,8 +697,12 @@ static irqreturn_t cmos_interrupt(int ir
- {
- 	u8		irqstat;
- 	u8		rtc_control;
-+	unsigned long	flags;
- 
--	spin_lock(&rtc_lock);
-+	/* We cannot use spin_lock() here, as cmos_interrupt() is also called
-+	 * in a non-irq context.
-+	 */
-+	spin_lock_irqsave(&rtc_lock, flags);
- 
- 	/* When the HPET interrupt handler calls us, the interrupt
- 	 * status is passed as arg1 instead of the irq number.  But
-@@ -732,7 +736,7 @@ static irqreturn_t cmos_interrupt(int ir
- 			hpet_mask_rtc_irq_bit(RTC_AIE);
- 		CMOS_READ(RTC_INTR_FLAGS);
- 	}
--	spin_unlock(&rtc_lock);
-+	spin_unlock_irqrestore(&rtc_lock, flags);
- 
- 	if (is_intr(irqstat)) {
- 		rtc_update_irq(p, 1, irqstat);
-@@ -1289,9 +1293,7 @@ static void cmos_check_wkalrm(struct dev
- 	 * ACK the rtc irq here
- 	 */
- 	if (t_now >= cmos->alarm_expires && cmos_use_acpi_alarm()) {
--		local_irq_disable();
- 		cmos_interrupt(0, (void *)cmos->rtc);
--		local_irq_enable();
- 		return;
- 	}
- 
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index b27966f82c8b6..4f8481c6802b1 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -451,6 +451,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 17 D7VEK"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 17 D7VF"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
+-- 
+2.39.5
+
 
 
 
