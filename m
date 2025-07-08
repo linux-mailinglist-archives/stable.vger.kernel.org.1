@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-160590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44D4AFD0EB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:29:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5BE4AFD196
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76549163AE0
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:28:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42C545420FE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3022A1BA;
-	Tue,  8 Jul 2025 16:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4182E5B10;
+	Tue,  8 Jul 2025 16:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPt5g0R0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtSHYWDj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2C72E659;
-	Tue,  8 Jul 2025 16:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA35B2E54AD;
+	Tue,  8 Jul 2025 16:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992097; cv=none; b=mm8i2W3CoilFAHbanptziELsttCpCwQ+pGRV+L/2N3Oquj749aDcf9Z9LU6Q/Tc/wuuU0JMEaTDrm2Qu1RcP/KaPguxLn5+rwRw8rkfBWaCnceMBkkkQZ/Q8DRW4REQPXuOaa7w0416vaQp6AFm6Ege5W42t3gnvJGIVVr4z4T8=
+	t=1751992518; cv=none; b=jazuc2P6H9Dsmpqci6SL82uQVSd8lXdAoW7u5xBIH6rXlW9BtDskM5JDfhdNhkbFcDalnOZVyHj/q2kq5+Tjnm2/8sBLVlUZMYwi9HYRTEDZCCZrhcTbNBkX89V5GwzZmpP3fASX5VfqYOu4GEE14kfTPZ2bKqjL0sMEYtLLdDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992097; c=relaxed/simple;
-	bh=QVLwFWqJReJc9uiYe0GcRacMnXtix6B2IXh98YZwIZk=;
+	s=arc-20240116; t=1751992518; c=relaxed/simple;
+	bh=FsvNyFMyTFaP+2q5pJzcE8l4L2NTcRe/4E0wXry/fwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e0e53hpN/ETaftC4xW7ICrzPofsv5pjKpWCmh5xxPLjEIlrw11m+056mISGk3XB3iGMHJtmyMagECQKGWot33S4iAflOrl/f5FAkEwFPqU38By5zESH99YUhBgDmtrMEHp64xhL70gGyD7BkrOqZoirqwiCcBWM3Z8GMuNe8ze8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPt5g0R0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50AEC4CEED;
-	Tue,  8 Jul 2025 16:28:16 +0000 (UTC)
+	 MIME-Version; b=BPN9kqTbAUefJU9cCGPxi/gS6dyiW8REEOUJ4sbQqABqfisDOe6pxgHLzIhfxBRZ15KGiapUbq/XZYhRQW9XmgABZGfT4owQL/m6Wd44xdz9DN1t48fp5ZLNMzHPQLWHywPcXrLXId20F3yDnZb7typQwOLXaGeJsEgox/KJODU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtSHYWDj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7353CC4CEED;
+	Tue,  8 Jul 2025 16:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992097;
-	bh=QVLwFWqJReJc9uiYe0GcRacMnXtix6B2IXh98YZwIZk=;
+	s=korg; t=1751992517;
+	bh=FsvNyFMyTFaP+2q5pJzcE8l4L2NTcRe/4E0wXry/fwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nPt5g0R0VCiDkwB1AlVB1v6WpVyUoG/Kz311pbKOGeNAN1mtgu0djbbt7XSgl+6Mg
-	 KWqSHnxV04sF9PRhYmT5zbV0Zf77wHowUZXy5apoqrS/gDRKetgV6rgh2Ahs545cSG
-	 BuzwqouUWs6IL0p7HMg5EWJb3JyruJQrREUCXG8Q=
+	b=HtSHYWDj0VdHDzPw8amiaBSOtjVJwu5vfL5Y6a57ZS7k9ynzRz5K9/vsr3EoI4iH2
+	 yfmwzqiZCqCRH34MfPf963bEASVVadq5eIH1EV2faGoEX5KxoMHSnsMnP85jHPZfVi
+	 oUvBq5sH5gMYjwvAMge59iBEdTDicnnvb7vg9GeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 58/81] rcu: Return early if callback is not specified
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.6 119/132] i2c/designware: Fix an initialization issue
 Date: Tue,  8 Jul 2025 18:23:50 +0200
-Message-ID: <20250708162226.835204194@linuxfoundation.org>
+Message-ID: <20250708162234.029989768@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
-References: <20250708162224.795155912@linuxfoundation.org>
+In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
+References: <20250708162230.765762963@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uladzislau Rezki (Sony) <urezki@gmail.com>
+From: Michael J. Ruhl <michael.j.ruhl@intel.com>
 
-[ Upstream commit 33b6a1f155d627f5bd80c7485c598ce45428f74f ]
+commit 3d30048958e0d43425f6d4e76565e6249fa71050 upstream.
 
-Currently the call_rcu() API does not check whether a callback
-pointer is NULL. If NULL is passed, rcu_core() will try to invoke
-it, resulting in NULL pointer dereference and a kernel crash.
+The i2c_dw_xfer_init() function requires msgs and msg_write_idx from the
+dev context to be initialized.
 
-To prevent this and improve debuggability, this patch adds a check
-for NULL and emits a kernel stack trace to help identify a faulty
-caller.
+amd_i2c_dw_xfer_quirk() inits msgs and msgs_num, but not msg_write_idx.
 
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This could allow an out of bounds access (of msgs).
+
+Initialize msg_write_idx before calling i2c_dw_xfer_init().
+
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 17631e8ca2d3 ("i2c: designware: Add driver support for AMD NAVI GPU")
+Cc: <stable@vger.kernel.org> # v5.13+
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250627143511.489570-1-michael.j.ruhl@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/rcu/tree.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i2c/busses/i2c-designware-master.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index dd6e15ca63b0c..38ab28a53e108 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -2827,6 +2827,10 @@ void call_rcu(struct rcu_head *head, rcu_callback_t func)
- 	/* Misaligned rcu_head! */
- 	WARN_ON_ONCE((unsigned long)head & (sizeof(void *) - 1));
+--- a/drivers/i2c/busses/i2c-designware-master.c
++++ b/drivers/i2c/busses/i2c-designware-master.c
+@@ -327,6 +327,7 @@ static int amd_i2c_dw_xfer_quirk(struct
  
-+	/* Avoid NULL dereference if callback is NULL. */
-+	if (WARN_ON_ONCE(!func))
-+		return;
-+
- 	if (debug_rcu_head_queue(head)) {
- 		/*
- 		 * Probable double call_rcu(), so leak the callback.
--- 
-2.39.5
-
+ 	dev->msgs = msgs;
+ 	dev->msgs_num = num_msgs;
++	dev->msg_write_idx = 0;
+ 	i2c_dw_xfer_init(dev);
+ 	regmap_write(dev->map, DW_IC_INTR_MASK, 0);
+ 
 
 
 
